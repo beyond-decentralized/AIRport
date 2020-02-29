@@ -3,7 +3,7 @@ import {
 	IAirportDatabase,
 	IDao
 }                         from '@airport/air-control'
-import {DI}               from '@airport/di'
+import {container, DI}               from '@airport/di'
 import {CascadeOverwrite} from '@airport/ground-control'
 import {DdlObjects}       from '@airport/takeoff'
 import {
@@ -34,7 +34,7 @@ import {
 	SchemaReferenceECreateProperties,
 	SchemaRelationColumnECreateProperties
 }                         from '@airport/traffic-pattern'
-import {SCHEMA_RECORDER}  from '../diTokens'
+import {SCHEMA_RECORDER}  from '../tokens'
 
 export interface ISchemaRecorder {
 
@@ -55,7 +55,7 @@ export class SchemaRecorder
 		const [airDb, domainDao, schemaColumnDao, schemaDao,
 			      schemaEntityDao, schemaPropertyColumnDao, schemaPropertyDao,
 			      schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao,
-			      schemaVersionDao] = await DI.get(
+			      schemaVersionDao] = await container(this).get(
 			AIR_DB, DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO,
 			SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_PROPERTY_DAO,
 			SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO,

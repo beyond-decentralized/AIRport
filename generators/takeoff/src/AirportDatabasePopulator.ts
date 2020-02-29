@@ -3,7 +3,7 @@ import {
 	IAirportDatabase
 }                         from '@airport/air-control'
 import {DI}               from '@airport/di'
-import {AIR_DB_POPULATOR} from './diTokens'
+import {AIR_DB_POPULATOR} from './tokens'
 
 export interface IAirportDatabasePopulator {
 

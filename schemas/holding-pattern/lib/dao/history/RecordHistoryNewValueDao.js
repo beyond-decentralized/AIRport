@@ -1,20 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../../diTokens");
-const generated_1 = require("../../generated/generated");
-class RecordHistoryNewValueDao extends generated_1.BaseRecordHistoryNewValueDao {
+import { DI } from '@airport/di';
+import { REC_HIST_NEW_VALUE_DAO } from '../../tokens';
+import { BaseRecordHistoryNewValueDao, Q } from '../../generated/generated';
+export class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
     async findByRecordHistoryIdIn(recordHistoryIds) {
         let rhnv;
         return await this.db.find.tree({
             select: {},
             from: [
-                rhnv = generated_1.Q.RecordHistoryNewValue
+                rhnv = Q.RecordHistoryNewValue
             ],
             where: rhnv.recordHistory.id.in(recordHistoryIds)
         });
     }
 }
-exports.RecordHistoryNewValueDao = RecordHistoryNewValueDao;
-di_1.DI.set(diTokens_1.REC_HIST_NEW_VALUE_DAO, RecordHistoryNewValueDao);
+DI.set(REC_HIST_NEW_VALUE_DAO, RecordHistoryNewValueDao);
 //# sourceMappingURL=RecordHistoryNewValueDao.js.map

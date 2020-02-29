@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SCHEMA = {
+export const SCHEMA = {
     "domain": "npmjs.org",
     "index": null,
     "name": "@airport/flight-log-archive",

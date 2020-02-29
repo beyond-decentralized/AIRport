@@ -7,11 +7,11 @@ import {
 	SharingNodeRepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
 }                                          from '@airport/arrivals-n-departures'
-import {DI}                                from '@airport/di'
+import {container, DI}                                from '@airport/di'
 import {ensureChildJsMap}                  from '@airport/ground-control'
 import {ensureChildArray}                  from '@airport/ground-control'
 import {SharingNodeId}                     from '../../ddl/ddl'
-import {SHARING_NODE_REPO_TRANS_BLOCK_DAO} from '../../diTokens'
+import {SHARING_NODE_REPO_TRANS_BLOCK_DAO} from '../../tokens'
 import {
 	BaseSharingNodeRepoTransBlockDao,
 	IBaseSharingNodeRepoTransBlockDao,
@@ -145,7 +145,7 @@ export class SharingNodeRepoTransBlockDao
 	): Promise<number> {
 		const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		let snrtb: QSharingNodeRepoTransBlock
 		return await airDb.insertValues(dbEntity, {
@@ -173,7 +173,7 @@ export class SharingNodeRepoTransBlockDao
 
 		let snrtb: QSharingNodeRepoTransBlock
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const records = await airDb.find.sheet({
 			      from: [

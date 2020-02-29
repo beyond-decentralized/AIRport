@@ -4,14 +4,14 @@ import {
 	JSONLogicalOperation,
 	or
 }                            from '@airport/air-control'
-import {DI}                  from '@airport/di'
+import {container, DI}                  from '@airport/di'
 import {
 	DailyArchiveDate,
 	DailyArchiveRepositoryData,
 	DailyArchiveRepositoryId,
 	DailyArchiveValues
 }                            from '../ddl/DailyArchive'
-import {DAILY_ARCHIVE_DAO}   from '../diTokens'
+import {DAILY_ARCHIVE_DAO}   from '../tokens'
 import {BaseDailyArchiveDao} from '../generated/baseDaos'
 import {QDailyArchive}       from '../generated/qdailyarchive'
 import {Q}                   from '../generated/qSchema'
@@ -39,7 +39,7 @@ export class DailyArchiveDao
 	async addRecords(
 		values: DailyArchiveValues[]
 	): Promise<void> {
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const dbEntity = Q.db.currentVersion.entityMapByName.DailyArchive
 		let da: QDailyArchive
@@ -58,7 +58,7 @@ export class DailyArchiveDao
 		repositoryIds: DailyArchiveRepositoryId[],
 		dates: DailyArchiveDate[][],
 	): Promise<FlatDailyArchive[]> {
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const whereClauseFragments: JSONLogicalOperation[] = []
 		let i                                              = -1

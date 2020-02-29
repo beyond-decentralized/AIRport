@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const lib_1 = require("@airport/di/lib");
-const diTokens_1 = require("../../diTokens");
-class QMetadataUtils {
+import { DI } from '@airport/di/lib';
+import { Q_METADATA_UTILS } from '../../tokens';
+export class QMetadataUtils {
     getAllColumns(qEntity) {
         return qEntity.__driver__.allColumns;
     }
@@ -18,6 +16,5 @@ class QMetadataUtils {
         return new entityConstructor();
     }
 }
-exports.QMetadataUtils = QMetadataUtils;
-lib_1.DI.set(diTokens_1.Q_METADATA_UTILS, QMetadataUtils);
+DI.set(Q_METADATA_UTILS, QMetadataUtils);
 //# sourceMappingURL=QMetadataUtils.js.map

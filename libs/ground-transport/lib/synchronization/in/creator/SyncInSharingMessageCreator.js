@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const src_1 = require("@airport/di/lib/src");
-const moving_walkway_1 = require("@airport/moving-walkway");
-const diTokens_1 = require("../../../diTokens");
-class SyncInSharingMessageCreator {
+import { DI } from '@airport/di/lib/src';
+import { DataOrigin } from '@airport/moving-walkway';
+import { SYNC_IN_SHARING_MESSAGE_CREATOR } from '../../../tokens';
+export class SyncInSharingMessageCreator {
     createRecord(sharingNode, syncTimestamp) {
         return {
             sharingNode,
-            origin: moving_walkway_1.DataOrigin.REMOTE,
+            origin: DataOrigin.REMOTE,
             syncTimestamp
         };
     }
@@ -18,6 +16,5 @@ class SyncInSharingMessageCreator {
         }
     }
 }
-exports.SyncInSharingMessageCreator = SyncInSharingMessageCreator;
-src_1.DI.set(diTokens_1.SYNC_IN_SHARING_MESSAGE_CREATOR, SyncInSharingMessageCreator);
+DI.set(SYNC_IN_SHARING_MESSAGE_CREATOR, SyncInSharingMessageCreator);
 //# sourceMappingURL=SyncInSharingMessageCreator.js.map

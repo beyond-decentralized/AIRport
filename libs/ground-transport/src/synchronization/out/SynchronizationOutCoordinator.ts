@@ -1,4 +1,4 @@
-import {DI}                         from '@airport/di'
+import {container, DI}                         from '@airport/di'
 import {
 	ISharingNode,
 	SharingNodeSyncFrequency
@@ -13,7 +13,7 @@ import {
 	SYNC_NODE_MANAGER,
 	SYNC_OUT_COORDINATOR,
 	SYNC_OUT_MANAGER
-}                                   from '../../diTokens'
+}                                   from '../../tokens'
 import {ISynchronizationOutManager} from './SynchronizationOutManager'
 
 export interface ISynchronizationOutCoordinator {
@@ -35,7 +35,7 @@ export class SynchronizationOutCoordinator
 
 	async initialize(): Promise<void> {
 		const [syncNodeManager, syncOutManager,
-			      terminalStore] = await DI.get(SYNC_NODE_MANAGER,
+			      terminalStore] = await container(this).get(SYNC_NODE_MANAGER,
 			SYNC_OUT_MANAGER, TERMINAL_STORE)
 		await syncNodeManager.initialize()
 

@@ -1,15 +1,10 @@
-"use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(require("./builder/postgre/PostgreSqlSchemaBuilder"));
-__export(require("./builder/sqlite/SqLiteSchemaBuilder"));
-__export(require("./builder/SqlSchemaBuilder"));
-__export(require("./checker/SchemaChecker"));
-__export(require("./locator/SchemaLocator"));
-__export(require("./recorder/SchemaComposer"));
-__export(require("./recorder/SchemaRecorder"));
-__export(require("./diTokens"));
-__export(require("./SchemaInitializer"));
+export * from './builder/postgre/PostgreSqlSchemaBuilder';
+export * from './builder/sqlite/SqLiteSchemaBuilder';
+export * from './builder/SqlSchemaBuilder';
+export * from './checker/SchemaChecker';
+export * from './locator/SchemaLocator';
+export * from './recorder/SchemaComposer';
+export * from './recorder/SchemaRecorder';
+export * from './tokens';
+export * from './SchemaInitializer';
 //# sourceMappingURL=index.js.map

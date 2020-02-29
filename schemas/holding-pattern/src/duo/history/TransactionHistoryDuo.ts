@@ -4,7 +4,7 @@ import {
 	RepositoryId,
 	TransactionHistory
 }                                         from '../../ddl/ddl'
-import {TRANS_HISTORY_DUO}                from '../../diTokens'
+import {TRANS_HISTORY_DUO}                from '../../tokens'
 import {
 	BaseTransactionHistoryDuo,
 	IActor,

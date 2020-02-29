@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const UpdateCacheType_1 = require("../../../lingo/core/data/UpdateCacheType");
-const Lookup_1 = require("./Lookup");
-class EntityLookup extends Lookup_1.LookupProxy {
+import { UpdateCacheType } from '../../../lingo/core/data/UpdateCacheType';
+import { LookupProxy } from './Lookup';
+export class EntityLookup extends LookupProxy {
     constructor(dbEntity, cacheForUpdate = EntityLookup.cacheForUpdate, mapResults = EntityLookup.mapResults) {
         super();
         this.dbEntity = dbEntity;
@@ -13,16 +11,15 @@ class EntityLookup extends Lookup_1.LookupProxy {
         return new MappedChildClass(this.dbEntity, this.cacheForUpdate, isMapped);
     }
     setNoCache(ChildClass) {
-        return new ChildClass(this.dbEntity, UpdateCacheType_1.UpdateCacheType.NONE, this.mapResults);
+        return new ChildClass(this.dbEntity, UpdateCacheType.NONE, this.mapResults);
     }
-    setCache(ChildClass, cacheForUpdate = UpdateCacheType_1.UpdateCacheType.ALL_QUERY_ENTITIES) {
+    setCache(ChildClass, cacheForUpdate = UpdateCacheType.ALL_QUERY_ENTITIES) {
         return new ChildClass(this.dbEntity, cacheForUpdate, this.mapResults);
     }
     entityLookup(rawEntityQuery, queryResultType, search, one) {
         return this.lookup(rawEntityQuery, queryResultType, search, one, null, this.dbEntity, this.cacheForUpdate, this.mapResults);
     }
 }
-exports.EntityLookup = EntityLookup;
-EntityLookup.cacheForUpdate = UpdateCacheType_1.UpdateCacheType.NONE;
+EntityLookup.cacheForUpdate = UpdateCacheType.NONE;
 EntityLookup.mapResults = false;
 //# sourceMappingURL=EntityLookup.js.map

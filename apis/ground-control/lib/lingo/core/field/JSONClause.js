@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * All possible types of serialized JSON clauses.
  */
-var JSONClauseObjectType;
+export var JSONClauseObjectType;
 (function (JSONClauseObjectType) {
     JSONClauseObjectType[JSONClauseObjectType["FIELD"] = 0] = "FIELD";
     JSONClauseObjectType[JSONClauseObjectType["FIELD_FUNCTION"] = 1] = "FIELD_FUNCTION";
@@ -11,11 +9,11 @@ var JSONClauseObjectType;
     JSONClauseObjectType[JSONClauseObjectType["DISTINCT_FUNCTION"] = 3] = "DISTINCT_FUNCTION";
     JSONClauseObjectType[JSONClauseObjectType["EXISTS_FUNCTION"] = 4] = "EXISTS_FUNCTION";
     JSONClauseObjectType[JSONClauseObjectType["MANY_TO_ONE_RELATION"] = 5] = "MANY_TO_ONE_RELATION"; // A many-to-one relation (used in a query)
-})(JSONClauseObjectType = exports.JSONClauseObjectType || (exports.JSONClauseObjectType = {}));
+})(JSONClauseObjectType || (JSONClauseObjectType = {}));
 /**
  * Types of data
  */
-var SQLDataType;
+export var SQLDataType;
 (function (SQLDataType) {
     SQLDataType[SQLDataType["ANY"] = 0] = "ANY";
     SQLDataType[SQLDataType["BOOLEAN"] = 1] = "BOOLEAN";
@@ -23,8 +21,8 @@ var SQLDataType;
     SQLDataType[SQLDataType["JSON"] = 3] = "JSON";
     SQLDataType[SQLDataType["NUMBER"] = 4] = "NUMBER";
     SQLDataType[SQLDataType["STRING"] = 5] = "STRING";
-})(SQLDataType = exports.SQLDataType || (exports.SQLDataType = {}));
-function getSqlDataType(type) {
+})(SQLDataType || (SQLDataType = {}));
+export function getSqlDataType(type) {
     switch (type) {
         case 'any':
             return SQLDataType.ANY;
@@ -42,5 +40,4 @@ function getSqlDataType(type) {
             throw new Error(`Uknown type: ${type}`);
     }
 }
-exports.getSqlDataType = getSqlDataType;
 //# sourceMappingURL=JSONClause.js.map

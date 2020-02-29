@@ -1,5 +1,5 @@
 import {RepoTransBlockSyncOutcomeType}    from '@airport/arrivals-n-departures'
-import {DI}                               from '@airport/di'
+import {container, DI}                               from '@airport/di'
 import {
 	CascadeOverwrite,
 	TransactionType
@@ -25,7 +25,7 @@ import {
 }                                         from '@airport/moving-walkway'
 import {ITransactionManager}              from '@airport/terminal-map'
 import {stringify}                        from 'zipson/lib'
-import {SYNC_IN_REPO_TRANS_BLOCK_CREATOR} from '../../../diTokens'
+import {SYNC_IN_REPO_TRANS_BLOCK_CREATOR} from '../../../tokens'
 import {IMissingRecordDataToTM}           from '../checker/SyncInDataChecker'
 import {IDataToTM}                        from '../SyncInUtils'
 
@@ -67,7 +67,7 @@ export class SyncInRepositoryTransactionBlockCreator
 		// TODO: remove unneeded dependencies once tested
 		const [repositoryTransactionBlockDao,
 			      missingRecordRepoTransBlockDao,
-			      sharingMessageRepoTransBlockDao] = await DI.get(
+			      sharingMessageRepoTransBlockDao] = await container(this).get(
 			REPO_TRANS_BLOCK_DAO, MISSING_RECORD_REPO_TRANS_BLOCK_DAO,
 			SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO
 		)

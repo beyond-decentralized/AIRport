@@ -1,5 +1,5 @@
 import {DI}                  from '@airport/di'
-import {LOG_ENTRY_VALUE_DAO} from '../diTokens'
+import {LOG_ENTRY_VALUE_DAO} from '../tokens'
 import {
 	BaseLogEntryValueDao,
 	IBaseLogEntryValueDao

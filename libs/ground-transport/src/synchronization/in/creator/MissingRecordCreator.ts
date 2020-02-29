@@ -1,5 +1,5 @@
 import {DI}                     from '@airport/di'
-import {MISSING_RECORD_CREATOR} from '../../../diTokens'
+import {MISSING_RECORD_CREATOR} from '../../../tokens'
 
 export interface IMissingRecordCreator {
 

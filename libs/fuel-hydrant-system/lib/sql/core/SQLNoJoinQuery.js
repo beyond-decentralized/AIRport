@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const SQLWhereBase_1 = require("./SQLWhereBase");
+import { QEntity, QRelation } from '@airport/air-control';
+import { SQLWhereBase } from './SQLWhereBase';
 /**
  * Created by Papa on 10/2/2016.
  */
-class SQLNoJoinQuery extends SQLWhereBase_1.SQLWhereBase {
+export class SQLNoJoinQuery extends SQLWhereBase {
     constructor(dbEntity, dialect, storeDriver) {
         super(dbEntity, dialect, storeDriver);
     }
@@ -25,12 +23,11 @@ class SQLNoJoinQuery extends SQLWhereBase_1.SQLWhereBase {
 			'${tableName}',
 			expecting: '${this.dbEntity.schemaVersion.schema.name}.${this.dbEntity.name}'`);
         }
-        const firstQEntity = new air_control_1.QEntity(firstDbEntity);
-        const tableAlias = air_control_1.QRelation.getAlias(fromRelation);
+        const firstQEntity = new QEntity(firstDbEntity);
+        const tableAlias = QRelation.getAlias(fromRelation);
         this.qEntityMapByAlias[tableAlias] = firstQEntity;
         const fromFragment = `\t${tableName} AS ${tableAlias}`;
         return fromFragment;
     }
 }
-exports.SQLNoJoinQuery = SQLNoJoinQuery;
 //# sourceMappingURL=SQLNoJoinQuery.js.map

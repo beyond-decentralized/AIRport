@@ -1,27 +1,25 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const ground_control_1 = require("@airport/ground-control");
-const EntityOrderByParser_1 = require("../orderBy/EntityOrderByParser");
-const IEntityResultParser_1 = require("../result/entity/IEntityResultParser");
-const SQLQuery_1 = require("./core/SQLQuery");
+import { AliasCache, EntityState, isID, isN, isStub, isY, JoinTreeNode, markAsStub, objectExists, QRelation, Y } from '@airport/air-control';
+import { EntityRelationType, JoinType, JSONRelationType } from '@airport/ground-control';
+import { EntityOrderByParser } from '../orderBy/EntityOrderByParser';
+import { getObjectResultParser } from '../result/entity/IEntityResultParser';
+import { SQLQuery } from './core/SQLQuery';
 /**
  * Created by Papa on 10/16/2016.
  */
 /**
  * Represents SQL String query with Entity tree Select clause.
  */
-class EntitySQLQuery extends SQLQuery_1.SQLQuery {
+export class EntitySQLQuery extends SQLQuery {
     constructor(jsonQuery, dbEntity, dialect, queryResultType, schemaUtils, storeDriver, graphQueryConfiguration) {
         super(jsonQuery, dbEntity, dialect, queryResultType, storeDriver);
         this.graphQueryConfiguration = graphQueryConfiguration;
-        this.columnAliases = new air_control_1.AliasCache();
+        this.columnAliases = new AliasCache();
         if (graphQueryConfiguration && this.graphQueryConfiguration.strict !== undefined) {
             throw new Error(`"strict" configuration is not yet implemented for 
 			QueryResultType.ENTITY_GRAPH`);
         }
         this.finalSelectTree = this.setupSelectFields(this.jsonQuery.S, dbEntity, schemaUtils);
-        this.orderByParser = new EntityOrderByParser_1.EntityOrderByParser(this.finalSelectTree, this.validator, jsonQuery.OB);
+        this.orderByParser = new EntityOrderByParser(this.finalSelectTree, this.validator, jsonQuery.OB);
     }
     toSQL(internalFragments, airDb, schemaUtils, metadataUtils) {
         let joinNodeMap = {};
@@ -59,7 +57,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
      * @returns {any[]}
      */
     parseQueryResults(airDb, schemaUtils, results) {
-        this.queryParser = IEntityResultParser_1.getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity);
+        this.queryParser = getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity);
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;
@@ -68,7 +66,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         let lastResult;
         for (let i = 0; i < results.length; i++) {
             let result = results[i];
-            let entityAlias = air_control_1.QRelation.getAlias(this.joinTree.jsonRelation);
+            let entityAlias = QRelation.getAlias(this.joinTree.jsonRelation);
             this.columnAliases.reset();
             let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, [0], airDb, schemaUtils);
             if (!lastResult) {
@@ -93,7 +91,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 fcp: [],
                 jt: null,
                 ri: null,
-                rt: ground_control_1.JSONRelationType.ENTITY_ROOT,
+                rt: JSONRelationType.ENTITY_ROOT,
                 rep: 'r_',
                 si: this.dbEntity.index
             };
@@ -101,12 +99,12 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         }
         let firstRelation = joinRelations[0];
         switch (firstRelation.rt) {
-            case ground_control_1.JSONRelationType.ENTITY_ROOT:
+            case JSONRelationType.ENTITY_ROOT:
                 break;
-            case ground_control_1.JSONRelationType.SUB_QUERY_ROOT:
-            case ground_control_1.JSONRelationType.SUB_QUERY_JOIN_ON:
+            case JSONRelationType.SUB_QUERY_ROOT:
+            case JSONRelationType.SUB_QUERY_JOIN_ON:
                 throw new Error(`Entity query's FROM clause cannot contain sub-queries`);
-            case ground_control_1.JSONRelationType.ENTITY_JOIN_ON:
+            case JSONRelationType.ENTITY_JOIN_ON:
                 throw new Error(`Entity queries cannot use JOIN ON`);
             default:
                 throw new Error(`First table in FROM clause cannot be joined`);
@@ -114,8 +112,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         // if (firstRelation.rt !== JSONRelationType.ENTITY_ROOT) {
         // 	throw new Error(`First table in FROM clause cannot be joined`)
         // }
-        let alias = air_control_1.QRelation.getAlias(firstRelation);
-        let firstEntity = air_control_1.QRelation.createRelatedQEntity(firstRelation, airDb, schemaUtils);
+        let alias = QRelation.getAlias(firstRelation);
+        let firstEntity = QRelation.createRelatedQEntity(firstRelation, airDb, schemaUtils);
         this.qEntityMapByAlias[alias] = firstEntity;
         this.jsonRelationMapByAlias[alias] = firstRelation;
         // In entity queries the first entity must always be the same as the query entity
@@ -127,16 +125,16 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
 			expecting:
 			'${this.dbEntity.schemaVersion.schema.name}.${this.dbEntity.name}'`);
         }
-        jsonTree = new air_control_1.JoinTreeNode(firstRelation, [], null);
+        jsonTree = new JoinTreeNode(firstRelation, [], null);
         joinNodeMap[alias] = jsonTree;
         for (let i = 1; i < joinRelations.length; i++) {
             let joinRelation = joinRelations[i];
             switch (joinRelation.rt) {
-                case ground_control_1.JSONRelationType.ENTITY_ROOT:
+                case JSONRelationType.ENTITY_ROOT:
                     throw new Error(`All Entity query tables after the first must be joined`);
-                case ground_control_1.JSONRelationType.SUB_QUERY_JOIN_ON:
+                case JSONRelationType.SUB_QUERY_JOIN_ON:
                     throw new Error(`Entity queries FROM clause cannot contain sub-queries`);
-                case ground_control_1.JSONRelationType.ENTITY_JOIN_ON:
+                case JSONRelationType.ENTITY_JOIN_ON:
                     throw new Error(`Entity queries cannot use JOIN ON`);
                 default:
                     break;
@@ -145,16 +143,16 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 throw new Error(`Table ${i + 1} in FROM clause is missing 
 				relationPropertyName`);
             }
-            let parentAlias = air_control_1.QRelation.getParentAlias(joinRelation);
+            let parentAlias = QRelation.getParentAlias(joinRelation);
             if (!joinNodeMap[parentAlias]) {
                 throw new Error(`Missing parent entity for alias ${parentAlias}, 
 				on table ${i + 1} in FROM clause`);
             }
             let leftNode = joinNodeMap[parentAlias];
-            let rightNode = new air_control_1.JoinTreeNode(joinRelation, [], leftNode);
+            let rightNode = new JoinTreeNode(joinRelation, [], leftNode);
             leftNode.addChildNode(rightNode);
-            alias = air_control_1.QRelation.getAlias(joinRelation);
-            let rightEntity = air_control_1.QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils);
+            alias = QRelation.getAlias(joinRelation);
+            let rightEntity = QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils);
             this.qEntityMapByAlias[alias] = rightEntity;
             this.jsonRelationMapByAlias[alias] = firstRelation;
             if (!rightEntity) {
@@ -169,22 +167,22 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         return jsonTree;
     }
     getSELECTFragment(dbEntity, selectClauseFragment, joinTree, parentProperty) {
-        const tableAlias = air_control_1.QRelation.getAlias(joinTree.jsonRelation);
+        const tableAlias = QRelation.getAlias(joinTree.jsonRelation);
         let selectSqlFragments = [];
-        let isStubProperty = air_control_1.isStub(selectClauseFragment);
+        let isStubProperty = isStub(selectClauseFragment);
         const defaults = this.entityDefaults.getForAlias(tableAlias);
         for (let propertyName in selectClauseFragment) {
             if (propertyName === '__state__') {
                 continue;
             }
             const value = selectClauseFragment[propertyName];
-            if (!air_control_1.isY(value)) {
+            if (!isY(value)) {
                 defaults[propertyName] = value;
             }
             const dbProperty = dbEntity.propertyMap[propertyName];
             if (dbProperty.relation && dbProperty.relation.length) {
                 const dbRelation = dbProperty.relation[0];
-                if (air_control_1.isStub(selectClauseFragment[propertyName])) {
+                if (isStub(selectClauseFragment[propertyName])) {
                     for (const relationColumn of dbRelation.manyRelationColumns) {
                         const dbColumn = relationColumn.manyColumn;
                         this.addFieldFromColumn(dbColumn);
@@ -231,9 +229,9 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 const childSelectClauseFragment = selectClauseFragment[propertyName];
                 const dbRelation = dbProperty.relation[0];
                 const childDbEntity = dbRelation.relationEntity;
-                if (childSelectClauseFragment === null || childSelectClauseFragment.__state__ === air_control_1.EntityState.STUB) {
+                if (childSelectClauseFragment === null || childSelectClauseFragment.__state__ === EntityState.STUB) {
                     switch (dbRelation.relationType) {
-                        case ground_control_1.EntityRelationType.MANY_TO_ONE:
+                        case EntityRelationType.MANY_TO_ONE:
                             let haveRelationValues = true;
                             let relationInfos = [];
                             schemaUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
@@ -244,7 +242,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                                     sqlDataType: dbColumn.type,
                                     value
                                 });
-                                if (air_control_1.objectExists(value)) {
+                                if (objectExists(value)) {
                                     haveRelationValues = true;
                                     numNonNullColumns++;
                                 }
@@ -256,7 +254,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                                 this.queryParser.bufferBlankManyToOneStub(entityAlias, resultObject, propertyName, relationInfos);
                             }
                             break;
-                        case ground_control_1.EntityRelationType.ONE_TO_MANY:
+                        case EntityRelationType.ONE_TO_MANY:
                             this.queryParser.bufferOneToManyStub(dbEntity, propertyName);
                             break;
                         default:
@@ -267,12 +265,12 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 }
                 else {
                     const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation);
-                    const childEntityAlias = air_control_1.QRelation.getAlias(childJoinNode.jsonRelation);
+                    const childEntityAlias = QRelation.getAlias(childJoinNode.jsonRelation);
                     const relationQEntity = this.qEntityMapByAlias[childEntityAlias];
                     const relationDbEntity = relationQEntity.__driver__.dbEntity;
                     let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextFieldIndex, airDb, schemaUtils);
                     switch (dbRelation.relationType) {
-                        case ground_control_1.EntityRelationType.MANY_TO_ONE:
+                        case EntityRelationType.MANY_TO_ONE:
                             if (childResultObject) {
                                 this.queryParser.bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, schemaUtils);
                             }
@@ -280,7 +278,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                                 this.queryParser.bufferBlankManyToOneObject(entityAlias, resultObject, propertyName);
                             }
                             break;
-                        case ground_control_1.EntityRelationType.ONE_TO_MANY:
+                        case EntityRelationType.ONE_TO_MANY:
                             if (childResultObject) {
                                 this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, dbEntity, propertyName, relationDbEntity, childResultObject, schemaUtils);
                             }
@@ -330,7 +328,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             }
             throw new Error(`'${dbEntity.name}' Entity SELECT clause ${ofProperty}must be specified as an Object.`);
         }
-        else if (air_control_1.isID(selectFragment)) {
+        else if (isID(selectFragment)) {
             selectFragment = {};
             retrieveAllOwnFields = false;
         }
@@ -345,7 +343,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 throw new Error(`Entity property '${dbEntity.name}.${propertyName}' does not exist.`);
             }
             const value = selectFragment[propertyName];
-            if (value === undefined || value === null || air_control_1.isN(value)) {
+            if (value === undefined || value === null || isN(value)) {
                 if (dbProperty.isId) {
                     throw new Error(`@Id properties cannot be excluded from entity queries.`);
                 }
@@ -364,8 +362,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 // 	//  At least one non-relational field is in the original select clause
                 // 	retrieveAllOwnFields = false
             }
-            else if (!air_control_1.isY(value)) {
-                selectFragment[propertyName] = air_control_1.Y;
+            else if (!isY(value)) {
+                selectFragment[propertyName] = Y;
             }
         }
         //  For {} select causes, entities with no @Id, retrieve the entire object.
@@ -378,11 +376,11 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             if (dbProperty.relation && dbProperty.relation.length) {
                 const dbRelation = dbProperty.relation[0];
                 switch (dbRelation.relationType) {
-                    case ground_control_1.EntityRelationType.ONE_TO_MANY:
+                    case EntityRelationType.ONE_TO_MANY:
                         break;
-                    case ground_control_1.EntityRelationType.MANY_TO_ONE:
+                    case EntityRelationType.MANY_TO_ONE:
                         const manyToOneRelation = {};
-                        air_control_1.markAsStub(manyToOneRelation);
+                        markAsStub(manyToOneRelation);
                         selectFragment[dbProperty.name] = manyToOneRelation;
                         // schemaUtils.addRelationToEntitySelectClause(dbRelation, selectFragment,
                         // allowDefaults)
@@ -395,13 +393,13 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             else {
                 const value = selectFragment[dbProperty.name];
                 if (value !== undefined && value !== null) {
-                    if (!allowDefaults && !air_control_1.isY(value)) {
+                    if (!allowDefaults && !isY(value)) {
                         throw new Error(`${entityDefinitionHasIds ? '@Id properties' : 'Entities without @Id'} 
 						cannot have default SELECT values.`);
                     }
                 }
                 else {
-                    selectFragment[dbProperty.name] = air_control_1.Y;
+                    selectFragment[dbProperty.name] = Y;
                 }
             }
         }
@@ -410,7 +408,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
     getFROMFragment(parentTree, currentTree, airDb, schemaUtils, metadataUtils) {
         let fromFragment = '\t';
         let currentRelation = currentTree.jsonRelation;
-        let currentAlias = air_control_1.QRelation.getAlias(currentRelation);
+        let currentAlias = QRelation.getAlias(currentRelation);
         let qEntity = this.qEntityMapByAlias[currentAlias];
         let tableName = schemaUtils.getTableName(qEntity.__driver__.dbEntity);
         if (!parentTree) {
@@ -418,27 +416,27 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         }
         else {
             let parentRelation = parentTree.jsonRelation;
-            let parentAlias = air_control_1.QRelation.getAlias(parentRelation);
+            let parentAlias = QRelation.getAlias(parentRelation);
             let leftEntity = this.qEntityMapByAlias[parentAlias];
             let rightEntity = this.qEntityMapByAlias[currentAlias];
             let joinTypeString;
             switch (currentRelation.jt) {
-                case ground_control_1.JoinType.FULL_JOIN:
+                case JoinType.FULL_JOIN:
                     throw new Error(`Full Joins are not allowed in Entity queries.`);
-                case ground_control_1.JoinType.INNER_JOIN:
+                case JoinType.INNER_JOIN:
                     joinTypeString = 'INNER JOIN';
                     break;
-                case ground_control_1.JoinType.LEFT_JOIN:
+                case JoinType.LEFT_JOIN:
                     joinTypeString = 'LEFT JOIN';
                     break;
-                case ground_control_1.JoinType.RIGHT_JOIN:
+                case JoinType.RIGHT_JOIN:
                     throw new Error(`Right Joins are not allowed in Entity queries.`);
                 default:
                     throw new Error(`Unsupported join type: ${currentRelation.jt}`);
             }
             let errorPrefix = 'Error building FROM: ';
             switch (currentRelation.rt) {
-                case ground_control_1.JSONRelationType.ENTITY_SCHEMA_RELATION:
+                case JSONRelationType.ENTITY_SCHEMA_RELATION:
                     fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, airDb, schemaUtils, metadataUtils);
                     break;
                 default:
@@ -452,5 +450,4 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         return fromFragment;
     }
 }
-exports.EntitySQLQuery = EntitySQLQuery;
 //# sourceMappingURL=EntitySQLQuery.js.map

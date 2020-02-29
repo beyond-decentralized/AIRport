@@ -1,4 +1,4 @@
-import {DI}          from '@airport/di'
+import {container, DI}          from '@airport/di'
 import {
 	JsonInsertValues,
 	PortableQuery
@@ -20,7 +20,7 @@ import {
 	INSERT_MANAGER,
 	QUERY_MANAGER,
 	UPDATE_MANAGER
-}                    from '../diTokens'
+}                    from '../tokens'
 
 export interface InternalPortableQuery
 	extends PortableQuery {
@@ -57,7 +57,7 @@ export class TransactionalServer
 	tempActor: IActor
 
 	async init(): Promise<void> {
-		const transManager = await DI.get(TRANSACTION_MANAGER)
+		const transManager = await container(this).get(TRANSACTION_MANAGER)
 
 		return await transManager.init('airport')
 	}
@@ -65,7 +65,7 @@ export class TransactionalServer
 	async transact(
 		credentials: ICredentials
 	): Promise<void> {
-		const transManager = await DI.get(TRANSACTION_MANAGER)
+		const transManager = await container(this).get(TRANSACTION_MANAGER)
 
 		return await transManager.transact(credentials)
 		// this.lastTransactionIndex++
@@ -76,7 +76,7 @@ export class TransactionalServer
 	async rollback(
 		credentials: ICredentials
 	): Promise<void> {
-		const transManager = await DI.get(TRANSACTION_MANAGER)
+		const transManager = await container(this).get(TRANSACTION_MANAGER)
 
 		return await transManager.rollback(credentials)
 		// await this.transactionManager.rollback(credentials)
@@ -86,7 +86,7 @@ export class TransactionalServer
 	async commit(
 		credentials: ICredentials
 	): Promise<void> {
-		const transManager = await DI.get(TRANSACTION_MANAGER)
+		const transManager = await container(this).get(TRANSACTION_MANAGER)
 
 		return await transManager.commit(credentials)
 		// await this.transactionManager.commit(credentials)
@@ -98,7 +98,7 @@ export class TransactionalServer
 		credentials: ICredentials,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		const queryManager = await DI.get(QUERY_MANAGER)
+		const queryManager = await container(this).get(QUERY_MANAGER)
 
 		return await queryManager.find<E, EntityArray>(portableQuery, cachedSqlQueryId)
 	}
@@ -108,7 +108,7 @@ export class TransactionalServer
 		credentials: ICredentials,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		const queryManager = await DI.get(QUERY_MANAGER)
+		const queryManager = await container(this).get(QUERY_MANAGER)
 
 		return await queryManager.findOne<E>(portableQuery, cachedSqlQueryId)
 	}
@@ -118,7 +118,7 @@ export class TransactionalServer
 		credentials: ICredentials,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<EntityArray>> {
-		const queryManager = await DI.get(QUERY_MANAGER)
+		const queryManager = await container(this).get(QUERY_MANAGER)
 
 		return await queryManager.search<E, EntityArray>(portableQuery)
 	}
@@ -128,7 +128,7 @@ export class TransactionalServer
 		credentials: ICredentials,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<E>> {
-		const queryManager = await DI.get(QUERY_MANAGER)
+		const queryManager = await container(this).get(QUERY_MANAGER)
 
 		return await queryManager.searchOne<E>(portableQuery)
 	}
@@ -141,7 +141,7 @@ export class TransactionalServer
 		distributionStrategy: DistributionStrategy,
 		credentials: ICredentials,
 	): Promise<number> {
-		const insertManager = await DI.get(INSERT_MANAGER)
+		const insertManager = await container(this).get(INSERT_MANAGER)
 
 		return await insertManager.addRepository(name, url, platform,
 			platformConfig, distributionStrategy)
@@ -171,7 +171,7 @@ export class TransactionalServer
 			}
 		}
 
-		const insertManager = await DI.get(INSERT_MANAGER)
+		const insertManager = await container(this).get(INSERT_MANAGER)
 
 		const actor = await this.getActor(portableQuery)
 		return await this.wrapInTransaction(async () =>
@@ -184,7 +184,7 @@ export class TransactionalServer
 		credentials: ICredentials,
 		transactionIndex?: number,
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const insertManager = await DI.get(INSERT_MANAGER)
+		const insertManager = await container(this).get(INSERT_MANAGER)
 
 		const actor = await this.getActor(portableQuery)
 		return await this.wrapInTransaction<number[] | string[] | number[][] | string[][]>(async () =>
@@ -197,7 +197,7 @@ export class TransactionalServer
 		credentials: ICredentials,
 		transactionIndex?: number,
 	): Promise<number> {
-		const updateManager = await DI.get(UPDATE_MANAGER)
+		const updateManager = await container(this).get(UPDATE_MANAGER)
 
 		const actor = await this.getActor(portableQuery)
 		return await this.wrapInTransaction(async () =>
@@ -210,7 +210,7 @@ export class TransactionalServer
 		credentials: ICredentials,
 		transactionIndex?: number,
 	): Promise<number> {
-		const deleteManager = await DI.get(DELETE_MANAGER)
+		const deleteManager = await container(this).get(DELETE_MANAGER)
 
 		const actor = await this.getActor(portableQuery)
 		return await this.wrapInTransaction(async () =>
@@ -234,7 +234,7 @@ export class TransactionalServer
 		operationName: string,
 		credentials: ICredentials
 	): Promise<T> {
-		const transManager = await DI.get(TRANSACTION_MANAGER)
+		const transManager = await container(this).get(TRANSACTION_MANAGER)
 
 		let transact = false
 		if (transManager.transactionInProgress) {

@@ -1,5 +1,5 @@
 import {DI}                                   from '@airport/di'
-import {SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO} from '../../diTokens'
+import {SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO} from '../../tokens'
 import {
 	BaseSharingMessageRepoTransBlockDao,
 	IBaseSharingMessageRepoTransBlockDao,

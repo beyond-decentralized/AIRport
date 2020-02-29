@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-class OperationManager {
+import { and, Delete, InsertColumnValues, InsertValues, isStub, QUERY_FACADE, UpdateProperties, valuesEqual } from '@airport/air-control';
+import { container } from '@airport/di';
+import { CascadeOverwrite, CascadeType, CRUDOperation, ensureChildArray, ensureChildMap, EntityRelationType, SQLDataType, TRANS_CONNECTOR } from '@airport/ground-control';
+export class OperationManager {
     // higherOrderOpsYieldLength: number = 100
     // transactionInProgress: boolean    = false
     throwUnexpectedProperty(dbProperty, dbColumn, value) {
@@ -19,7 +17,7 @@ class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performCreate(dbEntity, entity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, idData, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT) {
+    async performCreate(dbEntity, entity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, idData, cascadeOverwrite = CascadeOverwrite.DEFAULT) {
         let result = await this.internalCreate(dbEntity, [entity], createdEntityMap, !idData, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, cascadeOverwrite);
         await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite);
         return result.numberOfAffectedRecords;
@@ -30,27 +28,27 @@ class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performBulkCreate(dbEntity, entities, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, checkIfProcessed = true, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT, ensureGeneratedValues = true // For internal use only
+    async performBulkCreate(dbEntity, entities, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, checkIfProcessed = true, cascadeOverwrite = CascadeOverwrite.DEFAULT, ensureGeneratedValues = true // For internal use only
     ) {
         let result = await this.internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, cascadeOverwrite, ensureGeneratedValues);
         await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite);
         return result.numberOfAffectedRecords;
     }
     async internalInsertColumnValues(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils) {
-        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, air_control_1.QUERY_FACADE);
-        const insertColumnValues = new air_control_1.InsertColumnValues(rawInsertColumnValues);
+        const [transConnector, queryFacade] = await container(this).get(TRANS_CONNECTOR, QUERY_FACADE);
+        const insertColumnValues = new InsertColumnValues(rawInsertColumnValues);
         const portableQuery = queryFacade.getPortableQuery(dbEntity, insertColumnValues, null, queryUtils, fieldUtils);
         return await transConnector.insertValues(portableQuery);
     }
     async internalInsertValues(dbEntity, rawInsertValues, queryUtils, fieldUtils, ensureGeneratedValues) {
-        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, air_control_1.QUERY_FACADE);
-        const insertValues = new air_control_1.InsertValues(rawInsertValues);
+        const [transConnector, queryFacade] = await container(this).get(TRANS_CONNECTOR, QUERY_FACADE);
+        const insertValues = new InsertValues(rawInsertValues);
         const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null, queryUtils, fieldUtils);
         return await transConnector.insertValues(portableQuery, undefined, ensureGeneratedValues);
     }
     async internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils) {
-        const [transConnector, queryFacade] = await di_1.DI.get(ground_control_1.TRANS_CONNECTOR, air_control_1.QUERY_FACADE);
-        const insertValues = new air_control_1.InsertColumnValues(rawInsertColumnValues);
+        const [transConnector, queryFacade] = await container(this).get(TRANS_CONNECTOR, QUERY_FACADE);
+        const insertValues = new InsertColumnValues(rawInsertColumnValues);
         const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null, queryUtils, fieldUtils);
         return await transConnector.insertValuesGetIds(portableQuery);
     }
@@ -60,7 +58,7 @@ class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performUpdate(dbEntity, entity, updatedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, originalValue, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT) {
+    async performUpdate(dbEntity, entity, updatedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, originalValue, cascadeOverwrite = CascadeOverwrite.DEFAULT) {
         if (!originalValue) {
             let [isProcessed, entityIdData] = this.isProcessed(entity, updatedEntityMap, dbEntity, schemaUtils);
             if (isProcessed === true) {
@@ -79,7 +77,7 @@ class OperationManager {
         return result.numberOfAffectedRecords;
     }
     async internalInsertValuesGetIds(dbEntity, rawInsertValues, fieldUtils, queryFacade, queryUtils, transConnector) {
-        const insertValues = new air_control_1.InsertValues(rawInsertValues);
+        const insertValues = new InsertValues(rawInsertValues);
         const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null, queryUtils, fieldUtils);
         return await transConnector.insertValuesGetIds(portableQuery);
     }
@@ -190,7 +188,7 @@ class OperationManager {
                     const dbRelation = dbProperty.relation[0];
                     this.assertRelationValueIsAnObject(newValue, dbProperty);
                     switch (dbRelation.relationType) {
-                        case ground_control_1.EntityRelationType.MANY_TO_ONE:
+                        case EntityRelationType.MANY_TO_ONE:
                             this.assertManyToOneNotArray(newValue);
                             schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, propertyNameChains) => {
                                 if (dbProperty.isId) {
@@ -216,8 +214,8 @@ class OperationManager {
                             // Cascading on manyToOne is not currently implemented, nothing else needs
                             // to be done
                             continue;
-                        case ground_control_1.EntityRelationType.ONE_TO_MANY:
-                            this.checkCascade(newValue, cascadeOverwrite, dbProperty, dbRelation, schemaUtils, ground_control_1.CRUDOperation.CREATE, cascadeRecords);
+                        case EntityRelationType.ONE_TO_MANY:
+                            this.checkCascade(newValue, cascadeOverwrite, dbProperty, dbRelation, schemaUtils, CRUDOperation.CREATE, cascadeRecords);
                             break;
                     }
                 }
@@ -284,10 +282,10 @@ class OperationManager {
         }
         else {
             switch (cascadeOverwrite) {
-                case ground_control_1.CascadeOverwrite.NEVER:
+                case CascadeOverwrite.NEVER:
                     return false;
                 // If no overwrite was provided
-                case ground_control_1.CascadeOverwrite.DEFAULT:
+                case CascadeOverwrite.DEFAULT:
                     if (!schemaUtils.doCascade(dbRelation, crudOperation)) {
                         return false;
                     }
@@ -314,15 +312,15 @@ class OperationManager {
             foundValues[dbColumn.index] = value;
             return false;
         }
-        if (!air_control_1.valuesEqual(foundValues[dbColumn.index], value)) {
+        if (!valuesEqual(foundValues[dbColumn.index], value)) {
             throw new Error(`Found value mismatch in '${dbProperty.entity.name}.${dbProperty.name}'
 			(column: '${dbColumn.name}'): ${foundValues[dbColumn.index]} !== ${value}`);
         }
         return true;
     }
-    async cascadeOnPersist(cascadeRecords, parentDbEntity, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT) {
+    async cascadeOnPersist(cascadeRecords, parentDbEntity, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite = CascadeOverwrite.DEFAULT) {
         if (!cascadeRecords.length
-            || cascadeOverwrite === ground_control_1.CascadeOverwrite.NEVER) {
+            || cascadeOverwrite === CascadeOverwrite.NEVER) {
             return;
         }
         for (const cascadeRecord of cascadeRecords) {
@@ -330,8 +328,8 @@ class OperationManager {
                 continue;
             }
             switch (cascadeRecord.relation.oneToManyElems.cascade) {
-                case ground_control_1.CascadeType.ALL:
-                case ground_control_1.CascadeType.PERSIST:
+                case CascadeType.ALL:
+                case CascadeType.PERSIST:
                     break;
                 // Do not cascade if its for REMOVE only
                 default:
@@ -425,7 +423,7 @@ class OperationManager {
                     // cannot entity-update id fields
                     idWhereFragments.push(qEntity[dbProperty.name].equals(updatedValue));
                 }
-                else if (!air_control_1.valuesEqual(originalValue, updatedValue)) {
+                else if (!valuesEqual(originalValue, updatedValue)) {
                     setFragment[dbColumn.name] = updatedValue;
                     numUpdates++;
                 }
@@ -435,7 +433,7 @@ class OperationManager {
             this.assertRelationValueIsAnObject(updatedValue, dbProperty);
             const dbRelation = dbProperty.relation[0];
             switch (dbRelation.relationType) {
-                case ground_control_1.EntityRelationType.MANY_TO_ONE:
+                case EntityRelationType.MANY_TO_ONE:
                     this.assertManyToOneNotArray(updatedValue);
                     schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, value, propertyNameChains) => {
                         if (this.columnProcessed(dbProperty, valuesMapByColumn, dbColumn, value)) {
@@ -451,7 +449,7 @@ class OperationManager {
                             // empty) - cannot entity-update id fields
                             idWhereFragments.push(idQProperty.equals(value));
                         }
-                        else if (!air_control_1.valuesEqual(originalValue, value)) {
+                        else if (!valuesEqual(originalValue, value)) {
                             setFragment[dbColumn.name] = value;
                             numUpdates++;
                         }
@@ -459,8 +457,8 @@ class OperationManager {
                     // Cascading on manyToOne is not currently implemented, nothing else needs to
                     // be done
                     continue;
-                case ground_control_1.EntityRelationType.ONE_TO_MANY:
-                    this.checkCascade(updatedValue, cascadeOverwrite, dbProperty, dbRelation, schemaUtils, ground_control_1.CRUDOperation.UPDATE, cascadeRecords);
+                case EntityRelationType.ONE_TO_MANY:
+                    this.checkCascade(updatedValue, cascadeOverwrite, dbProperty, dbRelation, schemaUtils, CRUDOperation.UPDATE, cascadeRecords);
                     break;
             }
         }
@@ -468,7 +466,7 @@ class OperationManager {
         if (numUpdates) {
             let whereFragment;
             if (idWhereFragments.length > 1) {
-                whereFragment = air_control_1.and(...idWhereFragments);
+                whereFragment = and(...idWhereFragments);
             }
             else {
                 whereFragment = idWhereFragments[0];
@@ -478,7 +476,7 @@ class OperationManager {
                 set: setFragment,
                 where: whereFragment
             };
-            let update = new air_control_1.UpdateProperties(rawUpdate);
+            let update = new UpdateProperties(rawUpdate);
             numberOfAffectedRecords = await this.internalUpdateWhere(dbEntity, update, fieldUtils, queryFacade, queryUtils, transConnector);
         }
         return {
@@ -492,29 +490,29 @@ class OperationManager {
             return;
         }
         switch (dbColumn.type) {
-            case ground_control_1.SQLDataType.ANY:
+            case SQLDataType.ANY:
                 break;
-            case ground_control_1.SQLDataType.BOOLEAN:
+            case SQLDataType.BOOLEAN:
                 if (typeof value !== 'boolean') {
                     this.throwUnexpectedProperty(dbProperty, dbColumn, value);
                 }
                 break;
-            case ground_control_1.SQLDataType.DATE:
+            case SQLDataType.DATE:
                 if (typeof value !== 'object' || !(value instanceof Date)) {
                     this.throwUnexpectedProperty(dbProperty, dbColumn, value);
                 }
                 break;
-            case ground_control_1.SQLDataType.JSON:
+            case SQLDataType.JSON:
                 if (typeof value !== 'object' || value instanceof Date) {
                     this.throwUnexpectedProperty(dbProperty, dbColumn, value);
                 }
                 break;
-            case ground_control_1.SQLDataType.NUMBER:
+            case SQLDataType.NUMBER:
                 if (typeof value !== 'number') {
                     this.throwUnexpectedProperty(dbProperty, dbColumn, value);
                 }
                 break;
-            case ground_control_1.SQLDataType.STRING:
+            case SQLDataType.STRING:
                 if (typeof value !== 'string') {
                     this.throwUnexpectedProperty(dbProperty, dbColumn, value);
                 }
@@ -543,7 +541,7 @@ class OperationManager {
     isProcessed(entity, 
     // This is a per-operation map (for a single update or create or delete with cascades)
     operatedOnEntityMap, dbEntity, schemaUtils) {
-        if (air_control_1.isStub(entity)) {
+        if (isStub(entity)) {
             return [true, null];
         }
         if (!dbEntity.idColumns.length) {
@@ -567,8 +565,8 @@ class OperationManager {
         if (!idKey) {
             return [false, entityIdData];
         }
-        const mapForSchema = ground_control_1.ensureChildArray(operatedOnEntityMap, dbEntity.schemaVersion.schema.index);
-        const mapForEntityType = ground_control_1.ensureChildMap(mapForSchema, dbEntity.index);
+        const mapForSchema = ensureChildArray(operatedOnEntityMap, dbEntity.schemaVersion.schema.index);
+        const mapForEntityType = ensureChildMap(mapForSchema, dbEntity.index);
         const alreadyOperatedOnEntity = mapForEntityType[idKey];
         if (!alreadyOperatedOnEntity) {
             mapForEntityType[idKey] = entity;
@@ -629,7 +627,7 @@ class OperationManager {
             }
             this.assertRelationValueIsAnObject(deletedValue, dbProperty);
             switch (dbRelation.relationType) {
-                case ground_control_1.EntityRelationType.MANY_TO_ONE:
+                case EntityRelationType.MANY_TO_ONE:
                     this.assertManyToOneNotArray(deletedValue);
                     schemaUtils.forEachColumnOfRelation(dbRelation, dbEntity, (dbColumn, value, propertyNameChains) => {
                         if (dbProperty.isId && valuesMapByColumn[dbColumn.index] === undefined) {
@@ -650,7 +648,7 @@ class OperationManager {
                     // Cascading on manyToOne is not currently implemented, nothing else needs to
                     // be done
                     break;
-                case ground_control_1.EntityRelationType.ONE_TO_MANY:
+                case EntityRelationType.ONE_TO_MANY:
                     // Delete cascading is done on the server - there is no new information
                     // to pull for this from the client
                     break;
@@ -661,7 +659,7 @@ class OperationManager {
         }
         let idWhereClause;
         if (idWhereFragments.length > 1) {
-            idWhereClause = air_control_1.and(...idWhereFragments);
+            idWhereClause = and(...idWhereFragments);
         }
         else {
             idWhereClause = idWhereFragments[0];
@@ -670,9 +668,8 @@ class OperationManager {
             deleteFrom: qEntity,
             where: idWhereClause
         };
-        let deleteWhere = new air_control_1.Delete(rawDelete);
+        let deleteWhere = new Delete(rawDelete);
         return await this.internalDeleteWhere(dbEntity, deleteWhere, fieldUtils, queryFacade, queryUtils, transConnector);
     }
 }
-exports.OperationManager = OperationManager;
 //# sourceMappingURL=OperationManager.js.map

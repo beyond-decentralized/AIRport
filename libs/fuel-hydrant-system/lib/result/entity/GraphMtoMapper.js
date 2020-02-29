@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
+import { ensureChildArray, ensureChildMap } from '@airport/ground-control';
 // For MtO mapping in bridged queries
-class GraphMtoMapper {
+export class GraphMtoMapper {
     constructor() {
         // Map of all objects that have a given MtO reference
         // [] MtO reference Schema Entity Index
@@ -11,8 +9,8 @@ class GraphMtoMapper {
     }
     addMtoReference(mtoStubReference, mtoEntityIdValue) {
         const mtoDbEntity = mtoStubReference.mtoDbEntity;
-        let mtoEntitiesForTypeMap = ground_control_1.ensureChildMap(ground_control_1.ensureChildArray(this.mtoStubReferenceMap, mtoDbEntity.schemaVersion.schema.index), mtoDbEntity.index);
-        let mtosForEntity = ground_control_1.ensureChildMap(mtoEntitiesForTypeMap, mtoEntityIdValue);
+        let mtoEntitiesForTypeMap = ensureChildMap(ensureChildArray(this.mtoStubReferenceMap, mtoDbEntity.schemaVersion.schema.index), mtoDbEntity.index);
+        let mtosForEntity = ensureChildMap(mtoEntitiesForTypeMap, mtoEntityIdValue);
         mtosForEntity[mtoStubReference.mtoRelationField] = mtoStubReference;
     }
     populateMtos(entityMap) {
@@ -39,5 +37,4 @@ class GraphMtoMapper {
         }
     }
 }
-exports.GraphMtoMapper = GraphMtoMapper;
 //# sourceMappingURL=GraphMtoMapper.js.map

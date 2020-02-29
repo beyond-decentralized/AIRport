@@ -7,7 +7,7 @@ import {
 	Q,
 	QSchemaColumn
 }                          from '../generated/generated'
-import {SCHEMA_COLUMN_DAO} from '../diTokens'
+import {SCHEMA_COLUMN_DAO} from '../tokens'
 
 export interface ISchemaColumnDao
 	extends IBaseSchemaColumnDao {

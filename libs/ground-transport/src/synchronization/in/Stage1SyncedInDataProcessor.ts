@@ -1,4 +1,4 @@
-import {DI} from '@airport/di'
+import {container, DI} from '@airport/di'
 import {
 	ChangeType,
 	ColumnIndex,
@@ -30,7 +30,7 @@ import {
 import {
 	STAGE1_SYNCED_IN_DATA_PROCESSOR,
 	SYNC_IN_UTILS
-}           from '../../diTokens'
+}           from '../../tokens'
 import {
 	ISyncInUtils,
 	ISyncRepoTransHistory,
@@ -71,7 +71,7 @@ export class Stage1SyncedInDataProcessor
 		actorMayById: Map<ActorId, IActor>
 	): Promise<Stage1SyncedInDataProcessingResult> {
 		const [actorDao, repoTransHistoryDao,
-			      repoTransHistoryDuo, syncInUtils] = await DI.get(
+			      repoTransHistoryDuo, syncInUtils] = await container(this).get(
 			ACTOR_DAO, REPO_TRANS_HISTORY_DAO,
 			REPO_TRANS_HISTORY_DUO, SYNC_IN_UTILS)
 

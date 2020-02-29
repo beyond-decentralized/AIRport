@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const airport_code_1 = require("@airport/airport-code");
-const check_in_1 = require("@airport/check-in");
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
+import { SEQUENCE_DAO } from '@airport/airport-code';
+import { setSeqGen } from '@airport/check-in';
+import { container } from '@airport/di';
+import { ensureChildArray } from '@airport/ground-control';
 /**
  * Assumptions: 7/4/2019
  *
@@ -22,7 +20,7 @@ const ground_control_1 = require("@airport/ground-control");
  * Sequence-only solution
  *
  */
-class SqLiteSequenceGenerator {
+export class SqLiteSequenceGenerator {
     constructor() {
         this.sequences = [];
         this.sequenceBlocks = [];
@@ -44,17 +42,17 @@ class SqLiteSequenceGenerator {
         return generatedColumns.every(dbColumn => !!tableSequences[dbColumn.index]);
     }
     async init(sequences) {
-        const sequenceDao = await di_1.DI.get(airport_code_1.SEQUENCE_DAO);
+        const sequenceDao = await container(this).get(SEQUENCE_DAO);
         if (!sequences) {
             sequences = await sequenceDao.findAll();
         }
         this.addSequences(sequences);
         await sequenceDao.incrementCurrentValues();
-        check_in_1.setSeqGen(this);
+        setSeqGen(this);
     }
     async tempInit(sequences) {
         this.addSequences(sequences);
-        check_in_1.setSeqGen(this);
+        setSeqGen(this);
     }
     async generateSequenceNumbers(dbColumns, numSequencesNeeded) {
         if (!dbColumns.length) {
@@ -77,11 +75,11 @@ class SqLiteSequenceGenerator {
      */
     async doGenerateSequenceNumbers(dbColumns, numSequencesNeeded) {
         const sequentialNumbers = [];
-        const sequenceDao = await di_1.DI.get(airport_code_1.SEQUENCE_DAO);
+        const sequenceDao = await container(this).get(SEQUENCE_DAO);
         for (let i = 0; i < dbColumns.length; i++) {
             const dbColumn = dbColumns[i];
             let numColumnSequencesNeeded = numSequencesNeeded[i];
-            const columnNumbers = ground_control_1.ensureChildArray(sequentialNumbers, i);
+            const columnNumbers = ensureChildArray(sequentialNumbers, i);
             const dbEntity = dbColumn.propertyColumns[0].property.entity;
             const schema = dbEntity.schemaVersion.schema;
             let sequenceBlock = this.sequenceBlocks[schema.index][dbEntity.index][dbColumn.index];
@@ -125,11 +123,10 @@ class SqLiteSequenceGenerator {
     }
     addSequences(sequences) {
         for (const sequence of sequences) {
-            ground_control_1.ensureChildArray(ground_control_1.ensureChildArray(this.sequences, sequence.schemaIndex), sequence.tableIndex)[sequence.columnIndex] = sequence;
+            ensureChildArray(ensureChildArray(this.sequences, sequence.schemaIndex), sequence.tableIndex)[sequence.columnIndex] = sequence;
             sequence.currentValue += sequence.incrementBy;
-            ground_control_1.ensureChildArray(ground_control_1.ensureChildArray(this.sequenceBlocks, sequence.schemaIndex), sequence.tableIndex)[sequence.columnIndex] = sequence.incrementBy;
+            ensureChildArray(ensureChildArray(this.sequenceBlocks, sequence.schemaIndex), sequence.tableIndex)[sequence.columnIndex] = sequence.incrementBy;
         }
     }
 }
-exports.SqLiteSequenceGenerator = SqLiteSequenceGenerator;
 //# sourceMappingURL=SqLiteSequenceGenerator.js.map

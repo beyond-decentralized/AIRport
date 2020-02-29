@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var SharingNodeProtocol;
+export var SharingNodeProtocol;
 (function (SharingNodeProtocol) {
     SharingNodeProtocol[SharingNodeProtocol["HTTPS"] = 0] = "HTTPS";
     SharingNodeProtocol[SharingNodeProtocol["LOCAL"] = 1] = "LOCAL";
-})(SharingNodeProtocol = exports.SharingNodeProtocol || (exports.SharingNodeProtocol = {}));
+})(SharingNodeProtocol || (SharingNodeProtocol = {}));
 //# sourceMappingURL=SharingNodeProtocol.js.map

@@ -7,7 +7,7 @@ import {
 	IDatabaseFacade,
 	or
 }                                        from '@airport/air-control'
-import {DI}                              from '@airport/di'
+import {container, DI}                              from '@airport/di'
 import {
 	ColumnIndex,
 	ensureChildJsMap,
@@ -28,7 +28,7 @@ import {
 	RecordUpdateStageValues
 }                                        from '@airport/moving-walkway'
 import {ISchema}                         from '@airport/traffic-pattern'
-import {STAGE2_SYNCED_IN_DATA_PROCESSOR} from '../../diTokens'
+import {STAGE2_SYNCED_IN_DATA_PROCESSOR} from '../../tokens'
 import {
 	RecordUpdate,
 	Stage1SyncedInDataProcessingResult
@@ -70,7 +70,7 @@ export class Stage2SyncedInDataProcessor
 		stage1Result: Stage1SyncedInDataProcessingResult,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
 	): Promise<void> {
-		const [airDb, dbFacade, recordUpdateStageDao] = await DI.get(
+		const [airDb, dbFacade, recordUpdateStageDao] = await container(this).get(
 			AIR_DB, DB_FACADE, RECORD_UPDATE_STAGE_DAO)
 
 		await this.performCreates(stage1Result.recordCreations,

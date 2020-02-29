@@ -1,5 +1,5 @@
 import {DI}                                    from '@airport/di'
-import {REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO} from '../../diTokens'
+import {REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO} from '../../tokens'
 import {
 	BaseRepoTransBlockSchemaToChangeDao,
 	IBaseRepoTransBlockSchemaToChangeDao

@@ -1,14 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const check_in_1 = require("@airport/check-in");
-const di_1 = require("@airport/di");
-const takeoff_1 = require("@airport/takeoff");
-const terminal_map_1 = require("@airport/terminal-map");
-const diTokens_1 = require("./diTokens");
-class SchemaInitializer {
+import { AIR_DB } from '@airport/air-control';
+import { SEQUENCE_GENERATOR } from '@airport/check-in';
+import { container, DI } from '@airport/di';
+import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER } from '@airport/takeoff';
+import { TERMINAL_STORE } from '@airport/terminal-map';
+import { SCHEMA_BUILDER, SCHEMA_CHECKER, SCHEMA_COMPOSER, SCHEMA_INITIALIZER, SCHEMA_LOCATOR, SCHEMA_RECORDER } from './tokens';
+export class SchemaInitializer {
     async initialize(jsonSchemas, normalOperation = true) {
-        const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaBuilder, schemaChecker, schemaComposer, schemaLocator, schemaRecorder, sequenceGenerator, terminalStore] = await di_1.DI.get(air_control_1.AIR_DB, takeoff_1.DDL_OBJECT_LINKER, takeoff_1.DDL_OBJECT_RETRIEVER, takeoff_1.QUERY_ENTITY_CLASS_CREATOR, takeoff_1.QUERY_OBJECT_INITIALIZER, diTokens_1.SCHEMA_BUILDER, diTokens_1.SCHEMA_CHECKER, diTokens_1.SCHEMA_COMPOSER, diTokens_1.SCHEMA_LOCATOR, diTokens_1.SCHEMA_RECORDER, check_in_1.SEQUENCE_GENERATOR, terminal_map_1.TERMINAL_STORE);
+        const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaBuilder, schemaChecker, schemaComposer, schemaLocator, schemaRecorder, sequenceGenerator, terminalStore] = await container(this).get(AIR_DB, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER, SCHEMA_CHECKER, SCHEMA_COMPOSER, SCHEMA_LOCATOR, SCHEMA_RECORDER, SEQUENCE_GENERATOR, TERMINAL_STORE);
         const jsonSchemasToInstall = [];
         for (const jsonSchema of jsonSchemas) {
             await schemaChecker.check(jsonSchema);
@@ -55,7 +53,7 @@ class SchemaInitializer {
         }
     }
     async hydrate(jsonSchemas) {
-        const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaBuilder, schemaChecker, schemaComposer, schemaLocator, schemaRecorder, sequenceGenerator, terminalStore] = await di_1.DI.get(air_control_1.AIR_DB, takeoff_1.DDL_OBJECT_LINKER, takeoff_1.DDL_OBJECT_RETRIEVER, takeoff_1.QUERY_ENTITY_CLASS_CREATOR, takeoff_1.QUERY_OBJECT_INITIALIZER, diTokens_1.SCHEMA_BUILDER, diTokens_1.SCHEMA_CHECKER, diTokens_1.SCHEMA_COMPOSER, diTokens_1.SCHEMA_LOCATOR, diTokens_1.SCHEMA_RECORDER, check_in_1.SEQUENCE_GENERATOR, terminal_map_1.TERMINAL_STORE);
+        const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaBuilder, schemaChecker, schemaComposer, schemaLocator, schemaRecorder, sequenceGenerator, terminalStore] = await container(this).get(AIR_DB, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER, SCHEMA_CHECKER, SCHEMA_COMPOSER, SCHEMA_LOCATOR, SCHEMA_RECORDER, SEQUENCE_GENERATOR, TERMINAL_STORE);
         // Temporarily Initialize schema DDL objects and Sequences to allow for normal hydration
         const tempDdlObjects = schemaComposer.compose(jsonSchemas, ddlObjectRetriever, schemaLocator, terminalStore);
         this.addNewSchemaVersionsToAll(tempDdlObjects);
@@ -75,6 +73,5 @@ class SchemaInitializer {
         }
     }
 }
-exports.SchemaInitializer = SchemaInitializer;
-di_1.DI.set(diTokens_1.SCHEMA_INITIALIZER, SchemaInitializer);
+DI.set(SCHEMA_INITIALIZER, SchemaInitializer);
 //# sourceMappingURL=SchemaInitializer.js.map

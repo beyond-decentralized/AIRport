@@ -1,25 +1,23 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const holding_pattern_1 = require("@airport/holding-pattern");
-const moving_walkway_1 = require("@airport/moving-walkway");
-const tower_1 = require("@airport/tower");
-const lib_1 = require("zipson/lib");
-const diTokens_1 = require("../../diTokens");
-class SyncOutSerializer {
+import { MessageFromTMContentType } from '@airport/arrivals-n-departures';
+import { container, DI } from '@airport/di';
+import { CascadeOverwrite, ensureChildArray } from '@airport/ground-control';
+import { REPO_TRANS_HISTORY_DAO } from '@airport/holding-pattern';
+import { REPO_TRANS_BLOCK_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO } from '@airport/moving-walkway';
+import { transactional } from '@airport/tower';
+import { stringify } from 'zipson/lib';
+import { SYNC_OUT_SERIALIZER } from '../../tokens';
+export class SyncOutSerializer {
     async serializeMessages(sharingNodeDbMap, sharingNodeMap, repoMapBySharingNodeAndRepoIds, repoTransBlockDataByRepoId, repoTransHistoryIds, terminal) {
-        const [repoTransBlockDao, repoTransBlockRepoTransHistoryDao, sharingMessageDao, sharingMessageRepoTransBlockDao] = await di_1.DI.get(moving_walkway_1.REPO_TRANS_BLOCK_DAO, 
+        const [repoTransBlockDao, repoTransBlockRepoTransHistoryDao, sharingMessageDao, sharingMessageRepoTransBlockDao] = await container(this).get(REPO_TRANS_BLOCK_DAO, 
         // TODO: is this what needs to be injected
-        holding_pattern_1.REPO_TRANS_HISTORY_DAO, moving_walkway_1.SHARING_MESSAGE_DAO, moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO);
+        REPO_TRANS_HISTORY_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO);
         const messageMap = new Map();
         const lastSyncAttemptTimestamp = new Date();
         const repositoryTransactionBlocks = [];
         const repoTransBlocksByRepositoryId = new Map();
         let allTransLogRepoTransHistories = [];
         for (const [repositoryId, messageData] of repoTransBlockDataByRepoId) {
-            const repositoryTransactionBlockContents = lib_1.stringify(messageData);
+            const repositoryTransactionBlockContents = stringify(messageData);
             const repoTransBlockRepoTransHistories = [];
             const repositoryTransactionBlock = {
                 lastSyncAttemptTimestamp,
@@ -36,7 +34,7 @@ class SyncOutSerializer {
                 contents: repositoryTransactionBlockContents,
                 repoTransBlockRepoTransHistories,
             };
-            ground_control_1.ensureChildArray(repoTransBlocksByRepositoryId, repositoryId)
+            ensureChildArray(repoTransBlocksByRepositoryId, repositoryId)
                 .push(repositoryTransactionBlock);
             for (const repositoryTransactionHistory of messageData.repoTransHistories) {
                 repoTransBlockRepoTransHistories.push({
@@ -48,9 +46,9 @@ class SyncOutSerializer {
                 = allTransLogRepoTransHistories.concat(repoTransBlockRepoTransHistories);
             repositoryTransactionBlocks.push(repositoryTransactionBlock);
         }
-        await tower_1.transactional(async () => {
-            await repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, ground_control_1.CascadeOverwrite.DEFAULT, false);
-            await repoTransBlockRepoTransHistoryDao.bulkCreate(allTransLogRepoTransHistories, ground_control_1.CascadeOverwrite.DEFAULT, false);
+        await transactional(async () => {
+            await repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, CascadeOverwrite.DEFAULT, false);
+            await repoTransBlockRepoTransHistoryDao.bulkCreate(allTransLogRepoTransHistories, CascadeOverwrite.DEFAULT, false);
             const sharingMessages = [];
             const sharingMessageRepoTransBlocks = [];
             for (const [sharingNodeId, repositoryMapById] of repoMapBySharingNodeAndRepoIds) {
@@ -63,7 +61,7 @@ class SyncOutSerializer {
                 // FIXME: add sync ACKS
                 const message = {
                     protocolVersion: 0,
-                    contentType: arrivals_n_departures_1.MessageFromTMContentType.DATA_TRANSFER,
+                    contentType: MessageFromTMContentType.DATA_TRANSFER,
                     terminalCredentials,
                     tmSharingMessageId: null,
                     repositoryUpdateRequests,
@@ -88,11 +86,11 @@ class SyncOutSerializer {
                     sharingMessageRepoTransBlocks.push(sharingMessageRepoTransBlock);
                 }
             }
-            await sharingMessageDao.bulkCreate(sharingMessages, ground_control_1.CascadeOverwrite.DEFAULT, false);
+            await sharingMessageDao.bulkCreate(sharingMessages, CascadeOverwrite.DEFAULT, false);
             for (const sharingMessage of sharingMessages) {
                 messageMap.get(sharingMessage.sharingNode.id)[2] = sharingMessage.id;
             }
-            await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, ground_control_1.CascadeOverwrite.DEFAULT, false);
+            await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, CascadeOverwrite.DEFAULT, false);
         });
         // await this.repositoryTransactionHistoryDao.updateSyncStatusHistory(
         // 	SyncStatus.SYNCHRONIZING, Array.from(repoTransHistoryIds)
@@ -100,6 +98,5 @@ class SyncOutSerializer {
         return messageMap;
     }
 }
-exports.SyncOutSerializer = SyncOutSerializer;
-di_1.DI.set(diTokens_1.SYNC_OUT_SERIALIZER, SyncOutSerializer);
+DI.set(SYNC_OUT_SERIALIZER, SyncOutSerializer);
 //# sourceMappingURL=SyncOutSerializer.js.map

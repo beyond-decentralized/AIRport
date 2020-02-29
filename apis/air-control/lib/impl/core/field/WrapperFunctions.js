@@ -1,91 +1,88 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const BooleanField_1 = require("./BooleanField");
-const DateField_1 = require("./DateField");
-const NullFunction_1 = require("./NullFunction");
-const NumberField_1 = require("./NumberField");
-const StringField_1 = require("./StringField");
+import { SQLDataType } from '@airport/ground-control';
+import { QBooleanFunction } from './BooleanField';
+import { QDateFunction } from './DateField';
+import { QNullFunction } from './NullFunction';
+import { QNumberFunction } from './NumberField';
+import { QStringFunction } from './StringField';
 /**
  * Created by Papa on 12/31/2016.
  */
-exports.bool = function (primitive) {
+export const bool = function (primitive) {
     if (typeof primitive !== 'boolean') {
         throw new Error(`bool() accepts booleans only.`);
     }
-    return new BooleanField_1.QBooleanFunction(primitive);
+    return new QBooleanFunction(primitive);
 };
-exports.date = function (primitive) {
+export const date = function (primitive) {
     if (!(primitive instanceof Date)) {
         throw new Error(`date() accepts Dates only.`);
     }
-    return new DateField_1.QDateFunction(primitive);
+    return new QDateFunction(primitive);
 };
-exports.num = function (primitive) {
+export const num = function (primitive) {
     if (typeof primitive !== 'number') {
         throw new Error(`num() accepts numbers only.`);
     }
-    return new NumberField_1.QNumberFunction(primitive);
+    return new QNumberFunction(primitive);
 };
-exports.str = function (primitive) {
+export const str = function (primitive) {
     if (typeof primitive !== 'string') {
         throw new Error(`str() accepts strings only.`);
     }
-    return new StringField_1.QStringFunction(primitive);
+    return new QStringFunction(primitive);
 };
-function wrapPrimitive(value) {
+export function wrapPrimitive(value) {
     switch (typeof value) {
         case 'boolean':
-            return exports.bool(value);
+            return bool(value);
         case 'number':
-            return exports.num(value);
+            return num(value);
         case 'string':
-            return exports.str(value);
+            return str(value);
         case 'undefined':
             throw new Error(`Cannot use an 'undefined' value in an operation.`);
     }
     if (value === null) {
-        return new NullFunction_1.QNullFunction();
+        return new QNullFunction();
     }
     if (value instanceof Date) {
-        return exports.date(value);
+        return date(value);
     }
     return value;
 }
-exports.wrapPrimitive = wrapPrimitive;
-function getPrimitiveValue(value, dbColumn, rowIndex, datesToNumbers = true) {
+export function getPrimitiveValue(value, dbColumn, rowIndex, datesToNumbers = true) {
     switch (dbColumn.type) {
-        case ground_control_1.SQLDataType.ANY: {
+        case SQLDataType.ANY: {
             assertDataType([
                 'boolean', 'number', 'object', 'string'
             ], dbColumn, rowIndex, value);
             break;
         }
-        case ground_control_1.SQLDataType.BOOLEAN: {
+        case SQLDataType.BOOLEAN: {
             assertDataType([
                 'boolean'
             ], dbColumn, rowIndex, value);
             break;
         }
-        case ground_control_1.SQLDataType.DATE: {
+        case SQLDataType.DATE: {
             assertDataType([
                 'number', 'object'
             ], dbColumn, rowIndex, value);
             break;
         }
-        case ground_control_1.SQLDataType.JSON: {
+        case SQLDataType.JSON: {
             assertDataType([
                 'object'
             ], dbColumn, rowIndex, value);
             break;
         }
-        case ground_control_1.SQLDataType.NUMBER: {
+        case SQLDataType.NUMBER: {
             assertDataType([
                 'number'
             ], dbColumn, rowIndex, value);
             break;
         }
-        case ground_control_1.SQLDataType.STRING: {
+        case SQLDataType.STRING: {
             assertDataType([
                 'string'
             ], dbColumn, rowIndex, value);
@@ -106,13 +103,13 @@ function getPrimitiveValue(value, dbColumn, rowIndex, datesToNumbers = true) {
                 return value;
             }
             if (value instanceof Date) {
-                if (dbColumn.type !== ground_control_1.SQLDataType.DATE) {
+                if (dbColumn.type !== SQLDataType.DATE) {
                     throw new Error(`Unexpected Date object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`);
                 }
                 return datesToNumbers ? value.getTime() : value;
             }
             else {
-                if (dbColumn.type !== ground_control_1.SQLDataType.JSON) {
+                if (dbColumn.type !== SQLDataType.JSON) {
                     throw new Error(`Unexpected Json object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`);
                 }
                 return JSON.stringify(value);
@@ -124,7 +121,6 @@ function getPrimitiveValue(value, dbColumn, rowIndex, datesToNumbers = true) {
             throw new Error(`Unexpected object in operation.`);
     }
 }
-exports.getPrimitiveValue = getPrimitiveValue;
 function assertDataType(typesOfData, dbColumn, rowIndex, value) {
     if (typesOfData.indexOf(typeof value) < -1) {
         const expectedDataTypes = typesOfData.join(', ');

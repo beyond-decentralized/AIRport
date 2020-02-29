@@ -3,18 +3,16 @@ import {
 	ChangeType,
 	DbEntity
 }                                      from '@airport/ground-control'
-import {
-	IBaseOperationHistoryDuo,
-	SystemWideOperationId
-}                                      from '../../'
+import {SystemWideOperationId}         from '../../ddl/common'
 import {RepositoryEntityActorRecordId} from '../../ddl/ddl'
-import {OPER_HISTORY_DUO}              from '../../diTokens'
 import {
 	BaseOperationHistoryDuo,
+	IBaseOperationHistoryDuo,
 	IOperationHistory,
 	IRecordHistory,
 	IRepositoryTransactionHistory
 }                                      from '../../generated/generated'
+import {OPER_HISTORY_DUO}              from '../../tokens'
 import {IRecordHistoryDuo}             from './RecordHistoryDuo'
 
 export interface IOperationHistoryDuo

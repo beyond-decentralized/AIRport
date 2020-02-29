@@ -1,6 +1,6 @@
 import {DI}           from '@airport/di'
 import {UserUniqueId} from '../ddl/ddl'
-import {USER_DAO}     from '../diTokens'
+import {USER_DAO}     from '../tokens'
 import {
 	BaseUserDao,
 	IBaseUserDao,

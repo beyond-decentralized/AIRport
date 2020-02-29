@@ -8,10 +8,10 @@ import {
 	TerminalId,
 	TerminalPassword,
 }                                            from '@airport/arrivals-n-departures'
-import {DI}                                  from '@airport/di'
+import {container, DI}                                  from '@airport/di'
 import {ITerminal}                           from '../../generated/interfaces'
 import {TerminalLastPollConnectionDatetime,} from '../../ddl/ddl'
-import {TERMINAL_DAO}                        from '../../diTokens'
+import {TERMINAL_DAO}                        from '../../tokens'
 import {
 	BaseTerminalDao,
 	IBaseTerminalDao
@@ -75,7 +75,7 @@ export class TerminalDao
 
 		let t: QTerminal
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const results = await airDb.find.sheet({
 			from: [
@@ -103,7 +103,7 @@ export class TerminalDao
 		// Superset of all of repository ids received for all of the above terminals
 		repositoryIds: AgtRepositoryId[],
 	): Promise<Map<TerminalId, AgtRepositoryId>> {
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const resultMapByTerminalId: Map<TerminalId, AgtRepositoryId> = new Map()
 

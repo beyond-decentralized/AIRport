@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 8/27/2016.
  */
-class OracleQueryAdaptor {
+export class OracleQueryAdaptor {
     constructor(sqlValueProvider) {
         this.sqlValueProvider = sqlValueProvider;
     }
@@ -37,5 +35,4 @@ class OracleQueryAdaptor {
         throw new Error(`Not implemented`);
     }
 }
-exports.OracleQueryAdaptor = OracleQueryAdaptor;
 //# sourceMappingURL=OracleQueryAdaptor.js.map

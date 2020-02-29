@@ -4,7 +4,7 @@ import {
 	SyncSchemaMap
 }                       from '@airport/ground-control'
 import {ISubject}       from '@airport/observe'
-import {ACTIVE_QUERIES} from '../diTokens'
+import {ACTIVE_QUERIES} from '../tokens'
 import {SQLQuery}       from '../sql/core/SQLQuery'
 
 /**

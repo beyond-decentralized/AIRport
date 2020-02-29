@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Field_1 = require("./Field");
+import { QField } from "./Field";
 /**
  * Created by Papa on 10/25/2016.
  */
-class QOperableField extends Field_1.QField {
+export class QOperableField extends QField {
     constructor(dbColumn, dbProperty, q, objectType, operation) {
         super(dbColumn, dbProperty, q, objectType);
         this.operation = operation;
@@ -67,5 +65,4 @@ class QOperableField extends Field_1.QField {
         return this.operation.notIn(this, values);
     }
 }
-exports.QOperableField = QOperableField;
 //# sourceMappingURL=OperableField.js.map

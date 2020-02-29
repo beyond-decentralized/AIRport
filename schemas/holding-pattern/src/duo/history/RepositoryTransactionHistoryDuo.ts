@@ -10,7 +10,7 @@ import {
 	RepositoryTransactionHistory,
 	SystemWideOperationId
 } from '../../ddl/ddl'
-import {REPO_TRANS_HISTORY_DUO} from '../../diTokens'
+import {REPO_TRANS_HISTORY_DUO} from '../../tokens'
 import {
 	BaseRepositoryTransactionHistoryDuo,
 	IActor,

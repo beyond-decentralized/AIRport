@@ -17,7 +17,7 @@ import {
 	isY,
 	markAsStub
 } from '../..'
-import {SCHEMA_UTILS}       from '../../diTokens'
+import {SCHEMA_UTILS}       from '../../tokens'
 import {
 	IAirportDatabase,
 	QSchemaInternal

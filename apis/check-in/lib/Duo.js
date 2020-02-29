@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const ground_control_1 = require("@airport/ground-control");
+import { Y } from '@airport/air-control';
+import { EntityRelationType } from '@airport/ground-control';
 /**
  * Created by Papa on 8/26/2017.
  */
@@ -22,10 +20,10 @@ class FieldsSelect {
         return this.getSelect(propertyNames, false);
     }
     get manyToOnes() {
-        return this.getRelationSelect(ground_control_1.EntityRelationType.MANY_TO_ONE);
+        return this.getRelationSelect(EntityRelationType.MANY_TO_ONE);
     }
     get oneToManys() {
-        return this.getRelationSelect(ground_control_1.EntityRelationType.ONE_TO_MANY);
+        return this.getRelationSelect(EntityRelationType.ONE_TO_MANY);
     }
     getRelationSelect(relationType) {
         const propertyNames = this.dbEntity.properties
@@ -38,7 +36,7 @@ class FieldsSelect {
     getSelect(propertyNames, forRelations) {
         const selectFragment = {};
         for (const propertyName of propertyNames) {
-            selectFragment[propertyName] = forRelations ? {} : air_control_1.Y;
+            selectFragment[propertyName] = forRelations ? {} : Y;
         }
         return selectFragment;
     }
@@ -46,7 +44,7 @@ class FieldsSelect {
 /**
  * Data Manipulation object.
  */
-class Duo {
+export class Duo {
     constructor(dbEntityId, qSchema) {
         if (typeof dbEntityId === 'number') {
             this.dbEntity = qSchema.__dbSchema__.currentVersion.entities[dbEntityId];
@@ -63,12 +61,10 @@ class Duo {
         throw new Error(`Not Implemented.`);
     }
 }
-exports.Duo = Duo;
-function getAllFieldsSelect(dbEntity) {
+export function getAllFieldsSelect(dbEntity) {
     throw new Error(`Not implemented`);
 }
-exports.getAllFieldsSelect = getAllFieldsSelect;
-exports.DUO = {
+export const DUO = {
     getAllFieldsSelect: getAllFieldsSelect
 };
 //# sourceMappingURL=Duo.js.map

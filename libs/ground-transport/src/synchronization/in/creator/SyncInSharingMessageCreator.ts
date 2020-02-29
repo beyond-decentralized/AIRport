@@ -5,7 +5,7 @@ import {
 	ISharingNode,
 	SharingMessageSyncTimestamp
 }                                        from '@airport/moving-walkway'
-import {SYNC_IN_SHARING_MESSAGE_CREATOR} from '../../../diTokens'
+import {SYNC_IN_SHARING_MESSAGE_CREATOR} from '../../../tokens'
 import {IDataToTM}                       from '../SyncInUtils'
 
 export interface ISyncInSharingMessageCreator {

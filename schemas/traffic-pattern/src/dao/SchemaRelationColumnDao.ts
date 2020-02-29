@@ -1,7 +1,7 @@
 import {or}                         from '@airport/air-control'
 import {DI}                         from '@airport/di'
 import {ColumnId}                   from '@airport/ground-control'
-import {SCHEMA_RELATION_COLUMN_DAO} from '../diTokens'
+import {SCHEMA_RELATION_COLUMN_DAO} from '../tokens'
 import {
 	BaseSchemaRelationColumnDao,
 	IBaseSchemaRelationColumnDao,

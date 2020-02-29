@@ -1,5 +1,8 @@
 import { IContext } from './Context';
 import { IDiToken } from './Token';
+export interface IContainer {
+    set<I>(token: IDiToken<I>, clazz: new () => I): void;
+}
 export interface IChildContainer extends IContainer {
     context: IContext;
     get<A>(tokenA: IDiToken<A>): Promise<A>;
@@ -34,9 +37,6 @@ export interface IChildContainer extends IContainer {
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>, tokenN: IDiToken<N>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N];
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>, tokenN: IDiToken<N>, tokenO: IDiToken<O>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O];
     getSync(...tokens: IDiToken<any>[]): any;
-}
-export interface IContainer {
-    set<I>(token: IDiToken<I>, clazz: new () => I): void;
 }
 export interface IRootContainer extends IContainer {
     db(): IChildContainer;

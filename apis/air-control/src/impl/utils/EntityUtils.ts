@@ -1,5 +1,5 @@
 import {DI}             from '@airport/di'
-import {ENTITY_UTILS}   from '../../diTokens'
+import {ENTITY_UTILS}   from '../../tokens'
 import {RawEntityQuery} from '../../lingo/query/facade/EntityQuery'
 import {RawQuery}       from '../../lingo/query/facade/Query'
 import {IEntityUtils}   from '../../lingo/utils/EntityUtils'

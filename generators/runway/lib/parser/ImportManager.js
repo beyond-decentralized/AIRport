@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class ImportManager {
+export class ImportManager {
     static resolveImports(sourceFile, filePath) {
         const importMapByObjectAsName = {};
         const importMapByModulePath = {};
@@ -89,5 +87,4 @@ Entity file source rule violation:
         return path.startsWith('.');
     }
 }
-exports.ImportManager = ImportManager;
 //# sourceMappingURL=ImportManager.js.map

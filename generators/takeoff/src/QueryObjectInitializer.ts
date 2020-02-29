@@ -1,5 +1,8 @@
 import {IAirportDatabase}         from '@airport/air-control'
-import {DI}                       from '@airport/di'
+import {
+	container,
+	DI
+}                                 from '@airport/di'
 import {
 	ITerminalStore,
 	TERMINAL_STORE
@@ -17,13 +20,13 @@ import {
 	ISchemaVersion
 }                                 from '@airport/traffic-pattern'
 import {IDdlObjectLinker}         from './DdlObjectLinker'
+import {IQueryEntityClassCreator} from './QueryEntityClassCreator'
 import {
 	DDL_OBJECT_LINKER,
 	DDL_OBJECT_RETRIEVER,
 	QUERY_ENTITY_CLASS_CREATOR,
 	QUERY_OBJECT_INITIALIZER
-}                                 from './diTokens'
-import {IQueryEntityClassCreator} from './QueryEntityClassCreator'
+}                                 from './tokens'
 
 export interface IQueryObjectInitializer {
 
@@ -67,7 +70,7 @@ export class QueryObjectInitializer
 		airDb: IAirportDatabase
 	): Promise<DdlObjects> {
 		const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
-			      terminalStore] = await DI.get(
+			      terminalStore] = await container(this).get(
 			DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
 			QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE)
 

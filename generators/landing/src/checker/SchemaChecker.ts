@@ -1,4 +1,4 @@
-import {DI}             from '@airport/di'
+import {container, DI}             from '@airport/di'
 import {
 	DomainName,
 	ensureChildJsMap,
@@ -11,7 +11,7 @@ import {
 	ISchema,
 	SCHEMA_DAO
 }                       from '@airport/traffic-pattern'
-import {SCHEMA_CHECKER} from '../diTokens'
+import {SCHEMA_CHECKER} from '../tokens'
 
 
 export interface CoreDomainAndSchemaNames {
@@ -204,7 +204,7 @@ export class SchemaChecker
 		if (!schemaNames.length) {
 			existingSchemaMapByName = new Map()
 		} else {
-			const schemaDao         = await DI.get(SCHEMA_DAO)
+			const schemaDao         = await container(this).get(SCHEMA_DAO)
 			existingSchemaMapByName = await schemaDao.findMapByNames(schemaNames)
 
 		}

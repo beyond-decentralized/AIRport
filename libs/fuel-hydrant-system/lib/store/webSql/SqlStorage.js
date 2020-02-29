@@ -1,8 +1,6 @@
-"use strict";
 /**
  * Created by Papa on 9/1/2016.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
 const DB_NAME = '__ionicstorage';
 const win = window;
 /**
@@ -26,7 +24,7 @@ const win = window;
  * }
  *
  */
-class SqlStorage {
+export class SqlStorage {
     constructor() {
         let dbOptions = {
             name: DB_NAME,
@@ -75,7 +73,6 @@ class SqlStorage {
         });
     }
 }
-exports.SqlStorage = SqlStorage;
 SqlStorage.BACKUP_LOCAL = 2;
 SqlStorage.BACKUP_LIBRARY = 1;
 SqlStorage.BACKUP_DOCUMENTS = 0;

@@ -1,6 +1,6 @@
 import {IBlacklist} from '@airport/arrivals-n-departures';
 import {DI}         from '@airport/di'
-import {BLACKLIST}  from "../diTokens";
+import {BLACKLIST}  from "../tokens";
 
 export class Blacklist<Key>
 	implements IBlacklist<Key> {

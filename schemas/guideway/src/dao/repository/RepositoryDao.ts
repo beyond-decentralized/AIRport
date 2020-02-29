@@ -1,5 +1,5 @@
 import {DI}             from '@airport/di'
-import {REPOSITORY_DAO} from '../../diTokens'
+import {REPOSITORY_DAO} from '../../tokens'
 import {
 	BaseRepositoryDao,
 	IBaseRepositoryDao

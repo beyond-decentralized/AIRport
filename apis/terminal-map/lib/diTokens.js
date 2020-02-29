@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-exports.TERMINAL_STORE = di_1.diToken();
-exports.TRANSACTION_MANAGER = di_1.diToken();
+import { diToken } from '@airport/di';
+export const TERMINAL_STORE = diToken();
+export const TRANSACTION_MANAGER = diToken();
 //# sourceMappingURL=diTokens.js.map

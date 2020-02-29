@@ -1,17 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const di_1 = require("@airport/di");
-const ddl_1 = require("../../ddl/ddl");
-const diTokens_1 = require("../../diTokens");
-const generated_1 = require("../../generated/generated");
-class SyncLogDao extends generated_1.BaseSyncLogDao {
+import { AIR_DB, and, max, min, tree } from '@airport/air-control';
+import { container, DI } from '@airport/di';
+import { AgtSharingMessageAcknowledged } from '../../ddl/ddl';
+import { SYNC_LOG_DAO } from '../../tokens';
+import { BaseSyncLogDao, Q } from '../../generated/generated';
+export class SyncLogDao extends BaseSyncLogDao {
     async insertValues(values) {
-        const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
+        const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
         let sl;
-        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const airDb = await container(this).get(AIR_DB);
         await airDb.insertValues(dbEntity, {
-            insertInto: sl = generated_1.Q.SyncLog,
+            insertInto: sl = Q.SyncLog,
             columns: [
                 sl.repositoryTransactionBlock.id,
                 // sl.repositoryTransactionBlockAddDatetime,
@@ -24,7 +22,7 @@ class SyncLogDao extends generated_1.BaseSyncLogDao {
         const syncedTerminalRepositories = [];
         const dbSyncStatuses = await this.selectTmSyncStatusForAgtRepositoryIds(fromDateInclusive, toDateExlusive, repositoryIds);
         for (const dbSyncStatus of dbSyncStatuses) {
-            if (dbSyncStatus[2] === ddl_1.AgtSharingMessageAcknowledged.ACKNOWLEDGED) {
+            if (dbSyncStatus[2] === AgtSharingMessageAcknowledged.ACKNOWLEDGED) {
                 syncedTerminalRepositories.push([dbSyncStatus[0], dbSyncStatus[1]]);
             }
         }
@@ -45,9 +43,9 @@ class SyncLogDao extends generated_1.BaseSyncLogDao {
     async selectTmSyncStatusForAgtRepositoryIds(fromDateInclusive, toDateExlusive, repositoryIds) {
         let sl, sm, rtb;
         // AgtRepositoryTransactionBlock Sub-Query
-        const smrtb = air_control_1.tree({
+        const smrtb = tree({
             from: [
-                sl = generated_1.Q.SyncLog,
+                sl = Q.SyncLog,
                 sm = sl.sharingMessage.innerJoin(),
                 rtb = sl.repositoryTransactionBlock.innerJoin()
             ],
@@ -55,9 +53,9 @@ class SyncLogDao extends generated_1.BaseSyncLogDao {
                 repositoryTransactionBlockId: rtb.id,
                 terminalId: sm.terminal.id,
                 repositoryId: rtb.repository.id,
-                maxAcked: air_control_1.max(sm.acknowledged),
+                maxAcked: max(sm.acknowledged),
             },
-            where: air_control_1.and(
+            where: and(
             // sl.repositoryTransactionBlockAddDatetime.greaterThanOrEquals(fromDateInclusive),
             // sl.repositoryTransactionBlockAddDatetime.lessThan(toDateExlusive),
             rtb.addDatetime.greaterThanOrEquals(fromDateInclusive), rtb.addDatetime.lessThan(toDateExlusive), rtb.repository.id.in(repositoryIds)),
@@ -71,7 +69,7 @@ class SyncLogDao extends generated_1.BaseSyncLogDao {
                 sm.terminal.id.asc(),
             ]
         });
-        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const airDb = await container(this).get(AIR_DB);
         return await airDb.find.sheet({
             from: [
                 smrtb
@@ -79,7 +77,7 @@ class SyncLogDao extends generated_1.BaseSyncLogDao {
             select: [
                 smrtb.terminalId,
                 smrtb.repositoryId,
-                air_control_1.min(smrtb.maxAcked)
+                min(smrtb.maxAcked)
             ],
             groupBy: [
                 smrtb.terminalId,
@@ -88,6 +86,5 @@ class SyncLogDao extends generated_1.BaseSyncLogDao {
         });
     }
 }
-exports.SyncLogDao = SyncLogDao;
-di_1.DI.set(diTokens_1.SYNC_LOG_DAO, SyncLogDao);
+DI.set(SYNC_LOG_DAO, SyncLogDao);
 //# sourceMappingURL=SyncLogDao.js.map

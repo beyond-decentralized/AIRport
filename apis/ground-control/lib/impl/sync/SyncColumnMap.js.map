@@ -1,1 +1,1 @@
-{"version":3,"file":"SyncColumnMap.js","sourceRoot":"","sources":["../../../src/impl/sync/SyncColumnMap.ts"],"names":[],"mappings":";;AACA,kDAA8C;AAE9C,MAAa,aAAc,SAAQ,qBAAS;IAE3C,YACC,UAAsB,EACtB,aAAsB,KAAK;QAE3B,KAAK,CAAC,UAAU,EAAE,UAAU,CAAC,CAAC;IAC/B,CAAC;CAED;AATD,sCASC"}
+{"version":3,"file":"SyncColumnMap.js","sourceRoot":"","sources":["../../../src/impl/sync/SyncColumnMap.ts"],"names":[],"mappings":"AACA,OAAO,EAAC,SAAS,EAAC,MAAO,oBAAoB,CAAC;AAE9C,MAAM,OAAO,aAAc,SAAQ,SAAS;IAE3C,YACC,UAAsB,EACtB,aAAsB,KAAK;QAE3B,KAAK,CAAC,UAAU,EAAE,UAAU,CAAC,CAAC;IAC/B,CAAC;CAED"}

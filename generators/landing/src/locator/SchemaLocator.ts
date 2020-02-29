@@ -5,7 +5,7 @@ import {
 	TERMINAL_STORE
 }                       from '@airport/terminal-map'
 import {ISchemaVersion} from '@airport/traffic-pattern'
-import {SCHEMA_LOCATOR} from '../diTokens'
+import {SCHEMA_LOCATOR} from '../tokens'
 
 export interface ISchemaLocator {
 

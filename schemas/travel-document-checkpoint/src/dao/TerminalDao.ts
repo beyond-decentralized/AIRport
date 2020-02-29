@@ -6,7 +6,7 @@ import {
 import {DI}               from '@airport/di'
 import {ensureChildJsMap} from '@airport/ground-control'
 import {UserId}           from '../ddl/ddl'
-import {TERMINAL_DAO}     from '../diTokens'
+import {TERMINAL_DAO}     from '../tokens'
 import {
 	BaseTerminalDao,
 	IBaseTerminalDao,

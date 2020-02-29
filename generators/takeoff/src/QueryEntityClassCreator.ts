@@ -8,7 +8,7 @@ import {
 import {DI}                         from '@airport/di'
 import {DbSchema}                   from '@airport/ground-control'
 import {ISchema}                    from '@airport/traffic-pattern'
-import {QUERY_ENTITY_CLASS_CREATOR} from './diTokens'
+import {QUERY_ENTITY_CLASS_CREATOR} from './tokens'
 
 // https://github.com/russoturisto/tarmaq/blob/master/src/generated/data/schema/qRepositorySchema.ts
 

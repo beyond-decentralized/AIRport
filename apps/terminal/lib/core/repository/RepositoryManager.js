@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const holding_pattern_1 = require("@airport/holding-pattern");
-const terminal_map_1 = require("@airport/terminal-map");
-const DeltaStore_1 = require("../../data/DeltaStore");
-const diTokens_1 = require("../../diTokens");
-class RepositoryManager {
+import { and, DB_FACADE, } from '@airport/air-control';
+import { container, DI } from '@airport/di';
+import { StoreType } from '@airport/ground-control';
+import { REPOSITORY_DAO } from '@airport/holding-pattern';
+import { DeltaStoreConfig, DistributionStrategy, PlatformType, REPOSITORY_FIELD, } from '@airport/terminal-map';
+import { DeltaStore, getSharingAdaptor } from '../../data/DeltaStore';
+import { REPOSITORY_MANAGER } from '../../tokens';
+export class RepositoryManager {
     constructor() {
         this.repositoriesById = {};
     }
@@ -20,7 +18,7 @@ class RepositoryManager {
         }
     }
     async findReposWithDetailsByIds(...repositoryIds) {
-        const repositoryDao = await di_1.DI.get(holding_pattern_1.REPOSITORY_DAO);
+        const repositoryDao = await container(this).get(REPOSITORY_DAO);
         return await repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail);
     }
     async createRepository(appName, distributionStrategy, offlineStoreType, platformType, platformConfig, recordIdField) {
@@ -57,7 +55,7 @@ class RepositoryManager {
         return this.deltaStore[repository.id];
     }
     async ensureRepositoryRecords() {
-        const repositoryDao = await di_1.DI.get(holding_pattern_1.REPOSITORY_DAO);
+        const repositoryDao = await container(this).get(REPOSITORY_DAO);
         // TODO: verify that we want to get ALL of the repositories
         this.repositories = await repositoryDao.db.find.tree({
             select: {}
@@ -79,27 +77,27 @@ class RepositoryManager {
         // TODO: revisit configuration (instead of hard-coding
         // let sharingAdaptor                             =
         // getSharingAdaptor(repository.platform)
-        let sharingAdaptor = DeltaStore_1.getSharingAdaptor(terminal_map_1.PlatformType.OFFLINE);
+        let sharingAdaptor = getSharingAdaptor(PlatformType.OFFLINE);
         let jsonDeltaStoreConfig = {
             changeList: {
                 // distributionStrategy: repository.distributionStrategy
-                distributionStrategy: terminal_map_1.DistributionStrategy.S3_SECURE_POLL
+                distributionStrategy: DistributionStrategy.S3_SECURE_POLL
             },
             offlineDeltaStore: {
                 // type: this.dbFacade.storeType
-                type: ground_control_1.StoreType.SQLITE_CORDOVA
+                type: StoreType.SQLITE_CORDOVA
             },
             recordIdField: 'id',
             // platform: repository.platform
-            platform: terminal_map_1.PlatformType.OFFLINE
+            platform: PlatformType.OFFLINE
         };
         if (repository.platformConfig) {
             let platformConfig = JSON.parse(repository.platformConfig);
             jsonDeltaStoreConfig = { ...jsonDeltaStoreConfig, ...platformConfig };
         }
-        let deltaStoreConfig = new terminal_map_1.DeltaStoreConfig(jsonDeltaStoreConfig);
-        let deltaStore = new DeltaStore_1.DeltaStore(deltaStoreConfig, sharingAdaptor);
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        let deltaStoreConfig = new DeltaStoreConfig(jsonDeltaStoreConfig);
+        let deltaStore = new DeltaStore(deltaStoreConfig, sharingAdaptor);
+        const dbFacade = await container(this).get(DB_FACADE);
         deltaStore.config.changeListConfig.changeListInfo.dbId = dbFacade.name;
         this.deltaStore[repository.id] = deltaStore;
         return deltaStore;
@@ -118,13 +116,13 @@ class RepositoryManager {
             transactionHistory: null,
             url: null,
         };
-        const repositoryDao = await di_1.DI.get(holding_pattern_1.REPOSITORY_DAO);
+        const repositoryDao = await container(this).get(REPOSITORY_DAO);
         await repositoryDao.create(repository);
         this.repositories.push(repository);
         return repository;
     }
     async ensureAndCacheRepositories() {
-        const repositoryDao = await di_1.DI.get(holding_pattern_1.REPOSITORY_DAO);
+        const repositoryDao = await container(this).get(REPOSITORY_DAO);
         this.repositories = await repositoryDao.db.find.tree({
             select: {}
         });
@@ -150,11 +148,11 @@ class RepositoryManager {
         let columns = rawInsertValues.columns.slice();
         if (columns.some((column, index) => {
             // return column.fieldName === REPOSITORY_FIELD
-            return column.dbProperty.name === terminal_map_1.REPOSITORY_FIELD;
+            return column.dbProperty.name === REPOSITORY_FIELD;
         })) {
             return rawInsertValues;
         }
-        columns.push(qEntity[terminal_map_1.REPOSITORY_FIELD]);
+        columns.push(qEntity[REPOSITORY_FIELD]);
         let values = rawInsertValues.values.slice();
         for (let i = 0; i < values.length; i++) {
             let row = values[i].slice();
@@ -172,7 +170,7 @@ class RepositoryManager {
         return {
             update: rawUpdate.update,
             set: rawUpdate.set,
-            where: air_control_1.and(rawUpdate.where, qEntity.repository.id.equals(repository.id))
+            where: and(rawUpdate.where, qEntity.repository.id.equals(repository.id))
         };
     }
     ensureRepositoryScopeOnDeleteWhere(qEntity, repository, rawDelete) {
@@ -181,10 +179,9 @@ class RepositoryManager {
         }
         return {
             deleteFrom: rawDelete.deleteFrom,
-            where: air_control_1.and(rawDelete.where, qEntity.repository.id.equals(repository.id))
+            where: and(rawDelete.where, qEntity.repository.id.equals(repository.id))
         };
     }
 }
-exports.RepositoryManager = RepositoryManager;
-di_1.DI.set(diTokens_1.REPOSITORY_MANAGER, RepositoryManager);
+DI.set(REPOSITORY_MANAGER, RepositoryManager);
 //# sourceMappingURL=RepositoryManager.js.map

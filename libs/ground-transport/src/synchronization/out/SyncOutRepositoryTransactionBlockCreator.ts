@@ -1,4 +1,4 @@
-import {DI}                                from '@airport/di'
+import {container, DI}                                from '@airport/di'
 import {
 	CascadeOverwrite,
 	ensureChildArray,
@@ -35,7 +35,7 @@ import {
 	SCHEMA_DAO
 }                                          from '@airport/traffic-pattern'
 import {ITerminal}                         from '@airport/travel-document-checkpoint'
-import {SYNC_OUT_REPO_TRANS_BLOCK_CREATOR} from '../../diTokens'
+import {SYNC_OUT_REPO_TRANS_BLOCK_CREATOR} from '../../tokens'
 
 export interface ISyncOutRepositoryTransactionBlockCreator {
 
@@ -56,7 +56,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 	): Promise<Map<SharingNodeId, IRepositoryTransactionBlock[]>> {
 		const [actorDao, repositoryDao, repositoryTransactionBlockDao,
 			      repositoryTransactionHistoryUpdateStageDao, schemaDao,
-			      sharingNodeRepositoryDao] = await DI.get(ACTOR_DAO, REPOSITORY_DAO,
+			      sharingNodeRepositoryDao] = await container(this).get(ACTOR_DAO, REPOSITORY_DAO,
 			REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, SCHEMA_DAO,
 			SHARING_NODE_REPOSITORY_DAO)
 

@@ -1,4 +1,4 @@
-import {DI}                   from '@airport/di'
+import {container, DI}                   from '@airport/di'
 import {
 	DomainId,
 	SchemaIndex,
@@ -17,7 +17,7 @@ import {
 	SCHEMA_RELATION_DAO,
 	SCHEMA_VERSION_DAO
 }                             from '@airport/traffic-pattern'
-import {DDL_OBJECT_RETRIEVER} from './diTokens'
+import {DDL_OBJECT_RETRIEVER} from './tokens'
 import {DdlObjects}           from './QueryObjectInitializer'
 
 export interface IDdlObjectRetriever {
@@ -61,7 +61,7 @@ export class DdlObjectRetriever
 			      schemaEntityDao, schemaPropertyDao, schemaRelationDao,
 			      schemaColumnDao, schemaPropertyColumnDao,
 			      schemaRelationColumnDao
-		      ]                            = await DI.get(DOMAIN_DAO,
+		      ]                            = await container(this).get(DOMAIN_DAO,
 			SCHEMA_DAO, SCHEMA_VERSION_DAO, SCHEMA_REFERENCE_DAO,
 			SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_RELATION_DAO,
 			SCHEMA_COLUMN_DAO, SCHEMA_PROPERTY_COLUMN_DAO,

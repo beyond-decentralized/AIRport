@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const di_1 = require("@airport/di");
-const diTokens_1 = require("./diTokens");
-class QueryEntityClassCreator {
+import { orderSchemasInOrderOfPrecedence, setQSchemaEntities } from '@airport/air-control';
+import { DI } from '@airport/di';
+import { QUERY_ENTITY_CLASS_CREATOR } from './tokens';
+export class QueryEntityClassCreator {
     createAll(schemas, airDb) {
-        const schemasToCreate = air_control_1.orderSchemasInOrderOfPrecedence(schemas);
+        const schemasToCreate = orderSchemasInOrderOfPrecedence(schemas);
         schemasToCreate.map(dbSchema => this.create(dbSchema, airDb));
     }
     create(dbSchema, airDb) {
@@ -25,10 +23,9 @@ class QueryEntityClassCreator {
             airDb.QM[dbSchema.name] = qSchema;
         }
         airDb.Q[dbSchema.index] = qSchema;
-        air_control_1.setQSchemaEntities(dbSchema, qSchema, airDb.qSchemas);
+        setQSchemaEntities(dbSchema, qSchema, airDb.qSchemas);
         return qSchema;
     }
 }
-exports.QueryEntityClassCreator = QueryEntityClassCreator;
-di_1.DI.set(diTokens_1.QUERY_ENTITY_CLASS_CREATOR, QueryEntityClassCreator);
+DI.set(QUERY_ENTITY_CLASS_CREATOR, QueryEntityClassCreator);
 //# sourceMappingURL=QueryEntityClassCreator.js.map

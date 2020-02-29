@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const SharingAdaptor_1 = require("../SharingAdaptor");
-const ChangeListConfig_1 = require("./ChangeListConfig");
-const OfflineDeltaStoreConfig_1 = require("./OfflineDeltaStoreConfig");
-const PlatformType_1 = require("./PlatformType");
-class DeltaStoreConfig {
+import { deltaConst } from '@airport/air-control';
+import { deltaStore } from '../SharingAdaptor';
+import { ChangeListConfig } from './ChangeListConfig';
+import { OfflineDeltaStoreConfig } from './OfflineDeltaStoreConfig';
+import { PlatformType } from './PlatformType';
+export class DeltaStoreConfig {
     constructor(config) {
         this.config = config;
         if (!config.platform && config.platform !== 0) {
@@ -15,7 +13,7 @@ class DeltaStoreConfig {
         this.setupInfo = {
             platformType: platformType,
             recordIdField: config.recordIdField,
-            dbIdField: air_control_1.deltaConst.DB_ID_FIELD
+            dbIdField: deltaConst.DB_ID_FIELD
         };
         if (!config.changeList) {
             throw new Error(`ChangeList config is not defined`);
@@ -23,25 +21,23 @@ class DeltaStoreConfig {
         if (!config.offlineDeltaStore) {
             throw new Error(`OfflineDeltaStore must be specified if changeLists are specified.`);
         }
-        this.changeListConfig = new ChangeListConfig_1.ChangeListConfig(config.changeList, this);
-        this.offlineDeltaStore = new OfflineDeltaStoreConfig_1.OfflineDeltaStoreConfig(config.offlineDeltaStore, this);
+        this.changeListConfig = new ChangeListConfig(config.changeList, this);
+        this.offlineDeltaStore = new OfflineDeltaStoreConfig(config.offlineDeltaStore, this);
     }
 }
-exports.DeltaStoreConfig = DeltaStoreConfig;
-function getPlatformType(platform) {
+export function getPlatformType(platform) {
     let platformType;
     if (typeof platform === 'string') {
-        platformType = SharingAdaptor_1.deltaStore.platform.getValue(platform);
+        platformType = deltaStore.platform.getValue(platform);
     }
     else {
         // Verify the platform
-        SharingAdaptor_1.deltaStore.platform.getName(platform);
+        deltaStore.platform.getName(platform);
         platformType = platform;
     }
     return platformType;
 }
-exports.getPlatformType = getPlatformType;
-class GoogleDeltaStoreConfig extends DeltaStoreConfig {
+export class GoogleDeltaStoreConfig extends DeltaStoreConfig {
     constructor(config) {
         super(config);
         if (!config.rootFolder) {
@@ -58,33 +54,29 @@ class GoogleDeltaStoreConfig extends DeltaStoreConfig {
         this.setupInfo.clientId = config.clientId;
     }
 }
-exports.GoogleDeltaStoreConfig = GoogleDeltaStoreConfig;
-class InMemoryDeltaStoreConfig extends DeltaStoreConfig {
+export class InMemoryDeltaStoreConfig extends DeltaStoreConfig {
 }
-exports.InMemoryDeltaStoreConfig = InMemoryDeltaStoreConfig;
-class StubDeltaStoreConfig extends DeltaStoreConfig {
+export class StubDeltaStoreConfig extends DeltaStoreConfig {
 }
-exports.StubDeltaStoreConfig = StubDeltaStoreConfig;
-function createDeltaStoreConfig(jsonDeltaStoreConfig) {
+export function createDeltaStoreConfig(jsonDeltaStoreConfig) {
     if (!jsonDeltaStoreConfig.platform && jsonDeltaStoreConfig.platform !== 0) {
         throw new Error(`deltaStore.platform is nod specified`);
     }
     let platformType = getPlatformType(jsonDeltaStoreConfig.platform);
     switch (platformType) {
-        case PlatformType_1.PlatformType.GOOGLE_DOCS:
+        case PlatformType.GOOGLE_DOCS:
             return new GoogleDeltaStoreConfig(jsonDeltaStoreConfig);
-        case PlatformType_1.PlatformType.IN_MEMORY:
+        case PlatformType.IN_MEMORY:
             return new InMemoryDeltaStoreConfig(jsonDeltaStoreConfig);
-        case PlatformType_1.PlatformType.STUB:
+        case PlatformType.STUB:
             return new StubDeltaStoreConfig(jsonDeltaStoreConfig);
         default:
             throw new Error(`Unsupported platform type ${platformType}`);
     }
 }
-exports.createDeltaStoreConfig = createDeltaStoreConfig;
-function getPlatformConfig(deltaStoreConfig) {
+export function getPlatformConfig(deltaStoreConfig) {
     switch (deltaStoreConfig.setupInfo.platformType) {
-        case PlatformType_1.PlatformType.GOOGLE_DOCS:
+        case PlatformType.GOOGLE_DOCS:
             return {
                 rootFolder: this.setupInfo.rootFolder,
                 apiKey: this.setupInfo.apiKey,
@@ -94,5 +86,4 @@ function getPlatformConfig(deltaStoreConfig) {
             return {};
     }
 }
-exports.getPlatformConfig = getPlatformConfig;
 //# sourceMappingURL=DeltaStoreConfig.js.map

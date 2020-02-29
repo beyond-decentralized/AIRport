@@ -9,7 +9,7 @@ import {
 	SHARING_NODE_REPOSITORY_DAO,
 	SharingNodeId
 }                             from '@airport/moving-walkway'
-import {SYNC_IN_REPO_CHECKER} from '../../../diTokens'
+import {SYNC_IN_REPO_CHECKER} from '../../../tokens'
 import {IDataToTM}            from '../SyncInUtils'
 
 export interface RepositoryCheckResults {

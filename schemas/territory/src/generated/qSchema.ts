@@ -62,7 +62,7 @@ export function duoDiSet(
 	return ddS(Q.__dbSchema__, dbEntityId)
 }
 
-DI.get(AIR_DB).then((
+DI.db().get(AIR_DB).then((
 	airDb
 ) => {
 	airDb.QM[getSchemaName(Q_SCHEMA)] = Q

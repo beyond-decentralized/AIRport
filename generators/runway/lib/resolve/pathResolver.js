@@ -1,14 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 4/27/2016.
  */
-function resolveRelativeEntityPath(from, //
+export function resolveRelativeEntityPath(from, //
 to //
 ) {
     return resolveRelativePath(from.path, to.path);
 }
-exports.resolveRelativeEntityPath = resolveRelativeEntityPath;
 /**
  * Gets the full path to the import in a given file.
  *
@@ -16,7 +13,7 @@ exports.resolveRelativeEntityPath = resolveRelativeEntityPath;
  * @param {string} relativeToPath  /a/b/c/sourceFileName
  * @returns {string}
  */
-function getFullPathFromRelativePath(relativePath, //
+export function getFullPathFromRelativePath(relativePath, //
 relativeToPath) {
     if (relativePath.indexOf('.') !== 0) {
         return relativePath;
@@ -40,8 +37,7 @@ relativeToPath) {
     }
     return commonFragments.join('/');
 }
-exports.getFullPathFromRelativePath = getFullPathFromRelativePath;
-function resolveRelativePath(fromPath, //
+export function resolveRelativePath(fromPath, //
 toPath //
 ) {
     fromPath = normalizePath(fromPath);
@@ -82,8 +78,7 @@ toPath //
     }
     return relativePath;
 }
-exports.resolveRelativePath = resolveRelativePath;
-function addImportForType(entity, type, fileBuilder) {
+export function addImportForType(entity, type, fileBuilder) {
     const moduleImport = entity.docEntry.fileImports.importMapByObjectAsName[type];
     if (!moduleImport) {
         throw new Error(`Could not find import for ${type} in file for '${entity.type}'`);
@@ -95,25 +90,21 @@ function addImportForType(entity, type, fileBuilder) {
     }
     fileBuilder.addImport([moduleImport.objectMapByAsName[type]], relativePathToImport, false);
 }
-exports.addImportForType = addImportForType;
 /*
  *   ../../e/f/g
  *   /a/b/c/d
  *
  */
-function normalizePath(path) {
+export function normalizePath(path) {
     let forwardSlashedPath = path.replace(/\\/g, '/');
     return forwardSlashedPath;
     // let lowercasePath = forwardSlashedPath.toLowerCase();
     // return lowercasePath;
 }
-exports.normalizePath = normalizePath;
-function canBeInterface(type) {
+export function canBeInterface(type) {
     return type.startsWith('I');
 }
-exports.canBeInterface = canBeInterface;
-function getImplNameFromInterfaceName(interfaceName) {
+export function getImplNameFromInterfaceName(interfaceName) {
     return interfaceName.substr(1);
 }
-exports.getImplNameFromInterfaceName = getImplNameFromInterfaceName;
 //# sourceMappingURL=pathResolver.js.map

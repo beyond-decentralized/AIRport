@@ -1,14 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-function strsToNums(strings) {
+export function strsToNums(strings) {
     return strings.map(str => parseInt(str));
 }
-exports.strsToNums = strsToNums;
-function objectExists(object) {
+export function objectExists(object) {
     return object !== null && object !== undefined;
 }
-exports.objectExists = objectExists;
-function valuesEqual(value1, value2, checkChildObjects = false) {
+export function valuesEqual(value1, value2, checkChildObjects = false) {
     if (typeof value1 === 'object') {
         if (value1 instanceof Date) {
             if (value2 instanceof Date) {
@@ -62,8 +58,7 @@ function valuesEqual(value1, value2, checkChildObjects = false) {
     }
     return value1 === value2;
 }
-exports.valuesEqual = valuesEqual;
-function compareNumbers(number1, number2) {
+export function compareNumbers(number1, number2) {
     if (number1 < number2) {
         return -1;
     }
@@ -72,5 +67,4 @@ function compareNumbers(number1, number2) {
     }
     return 0;
 }
-exports.compareNumbers = compareNumbers;
 //# sourceMappingURL=Utils.js.map

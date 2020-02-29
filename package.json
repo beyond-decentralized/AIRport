@@ -29,8 +29,8 @@
   "devDependencies": {
     "nyc": "^12.0.2",
     "sql.js": "^0.5.0",
-    "ts-node": "^7.0.0",
-    "typescript": "3.0.0-dev.20180712"
+    "ts-node": "^8.6.2",
+    "typescript": "3.8.2"
   },
   "bugs": {
     "url": "https://github.com/russoturisto/tarmaq/issues"

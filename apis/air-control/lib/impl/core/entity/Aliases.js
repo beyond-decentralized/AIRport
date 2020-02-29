@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 10/18/2016.
  */
@@ -8,7 +6,7 @@ const ALIASES = ['a', 'b', 'c', 'd', 'e',
     'k', 'l', 'm', 'n', 'o',
     'p', 'q', 'r', 's', 't',
     'u', 'v', 'w', 'x', 'y', 'z'];
-class AliasCache {
+export class AliasCache {
     constructor(aliasPrefix = '') {
         this.aliasPrefix = aliasPrefix;
         this.reset();
@@ -33,8 +31,7 @@ class AliasCache {
         this.lastAlias = [-1, -1, -1];
     }
 }
-exports.AliasCache = AliasCache;
-class AliasMap {
+export class AliasMap {
     constructor(aliasCache) {
         this.aliasCache = aliasCache;
         this.aliasMap = new Map();
@@ -51,8 +48,7 @@ class AliasMap {
         return this.aliasMap.has(object);
     }
 }
-exports.AliasMap = AliasMap;
-class EntityAliases extends AliasMap {
+export class EntityAliases extends AliasMap {
     constructor(entityAliasCache = new AliasCache('E'), columnAliasCache = new AliasCache('C'), parameterAliasCache = new AliasCache('P')) {
         super(entityAliasCache);
         this.columnAliasCache = columnAliasCache;
@@ -79,8 +75,7 @@ class EntityAliases extends AliasMap {
         return this.aliasMap.get(this.aliasMap.keys().next().value);
     }
 }
-exports.EntityAliases = EntityAliases;
-class ParameterAliases extends AliasMap {
+export class ParameterAliases extends AliasMap {
     constructor(aliasCache) {
         super(aliasCache);
     }
@@ -111,8 +106,7 @@ class ParameterAliases extends AliasMap {
         return parameters;
     }
 }
-exports.ParameterAliases = ParameterAliases;
-class FieldColumnAliases extends AliasMap {
+export class FieldColumnAliases extends AliasMap {
     constructor(_entityAliases, aliasCache) {
         super(aliasCache);
         this._entityAliases = _entityAliases;
@@ -129,5 +123,4 @@ class FieldColumnAliases extends AliasMap {
         return this.aliasMap.get(field);
     }
 }
-exports.FieldColumnAliases = FieldColumnAliases;
 //# sourceMappingURL=Aliases.js.map

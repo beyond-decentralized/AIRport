@@ -8,7 +8,7 @@ import {
 	REC_HISTORY_DUO,
 	REC_HIST_NEW_VALUE_DUO,
 	REC_HIST_OLD_VALUE_DUO
-}                                  from '../../diTokens'
+}                                  from '../../tokens'
 import {
 	BaseRecordHistoryDuo,
 	IBaseRecordHistoryDuo,

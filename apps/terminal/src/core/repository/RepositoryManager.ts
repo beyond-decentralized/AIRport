@@ -9,7 +9,7 @@ import {
 	RawInsertValues,
 	RawUpdate,
 }                           from '@airport/air-control'
-import {DI}                 from '@airport/di'
+import {container, DI}                 from '@airport/di'
 import {StoreType}          from '@airport/ground-control'
 import {
 	IActor,
@@ -31,7 +31,7 @@ import {
 	getSharingAdaptor,
 	IDeltaStore
 }                           from '../../data/DeltaStore'
-import {REPOSITORY_MANAGER} from '../../diTokens'
+import {REPOSITORY_MANAGER} from '../../tokens'
 import {UpdateState}        from '../UpdateState'
 
 /**
@@ -124,7 +124,7 @@ export class RepositoryManager
 	async findReposWithDetailsByIds(
 		...repositoryIds: number[]
 	): Promise<MappedEntityArray<IRepository>> {
-		const repositoryDao = await DI.get(REPOSITORY_DAO)
+		const repositoryDao = await container(this).get(REPOSITORY_DAO)
 
 		return await repositoryDao.findReposWithDetailsByIds(
 			repositoryIds, this.terminal.name, this.userEmail)
@@ -183,7 +183,7 @@ export class RepositoryManager
 	}
 
 	private async ensureRepositoryRecords(): Promise<void> {
-		const repositoryDao = await DI.get(REPOSITORY_DAO)
+		const repositoryDao = await container(this).get(REPOSITORY_DAO)
 				// TODO: verify that we want to get ALL of the repositories
 		this.repositories = await repositoryDao.db.find.tree({
 					select: {}
@@ -229,7 +229,7 @@ export class RepositoryManager
 		let deltaStoreConfig = new DeltaStoreConfig(jsonDeltaStoreConfig)
 		let deltaStore       = new DeltaStore(deltaStoreConfig, sharingAdaptor)
 
-		const dbFacade                                         = await DI.get(DB_FACADE)
+		const dbFacade                                         = await container(this).get(DB_FACADE)
 		deltaStore.config.changeListConfig.changeListInfo.dbId = dbFacade.name
 		this.deltaStore[repository.id]                         = deltaStore
 
@@ -255,7 +255,7 @@ export class RepositoryManager
 			transactionHistory: null,
 			url: null,
 		}
-		const repositoryDao = await DI.get(REPOSITORY_DAO)
+		const repositoryDao = await container(this).get(REPOSITORY_DAO)
 		await repositoryDao.create(repository)
 		this.repositories.push(repository)
 
@@ -263,7 +263,7 @@ export class RepositoryManager
 	}
 
 	private async ensureAndCacheRepositories(): Promise<void> {
-		const repositoryDao = await DI.get(REPOSITORY_DAO)
+		const repositoryDao = await container(this).get(REPOSITORY_DAO)
 
 		this.repositories = await repositoryDao.db.find.tree({
 			select: {}

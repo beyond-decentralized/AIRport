@@ -1,6 +1,6 @@
 import {AIR_DB}              from '@airport/air-control'
 import {TmSharingMessageId}  from '@airport/arrivals-n-departures'
-import {DI}                  from '@airport/di'
+import {container, DI}                  from '@airport/di'
 import {ensureChildArray}    from '@airport/ground-control'
 import {
 	IRecordHistoryNewValueDao,
@@ -11,7 +11,7 @@ import {
 	REPO_TRANS_HISTORY_DAO
 }                            from '@airport/holding-pattern'
 import {SharingNodeId}       from '../../ddl/ddl'
-import {SHARING_MESSAGE_DAO} from '../../diTokens'
+import {SHARING_MESSAGE_DAO} from '../../tokens'
 import {
 	BaseSharingMessageDao,
 	IBaseSharingMessageDao,
@@ -99,7 +99,7 @@ export class SharingMessageDao
 		const sharingMessageIdsBySharingNodeId: Map<SharingNodeId, TmSharingMessageId[]>
 			      = new Map()
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		let sm: QSharingMessage
 		const data = await airDb.find.sheet({

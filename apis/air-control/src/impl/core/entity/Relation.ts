@@ -8,7 +8,7 @@ import {
 import {
 	AIR_DB,
 	SCHEMA_UTILS
-} from '../../../diTokens'
+} from '../../../tokens'
 import {IAirportDatabase} from '../../../lingo/AirportDatabase'
 import {
 	IQEntityDriver,
@@ -87,8 +87,8 @@ QRelation.prototype.leftJoin = function <IQ extends IQEntityInternal>(): IQ {
 QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinType: JoinType): IQ {
 	const dbEntity = this.dbRelation.property.entity
 
-	const qEntityConstructor = DI.getSync(SCHEMA_UTILS).getQEntityConstructor(
-		this.dbRelation.relationEntity, DI.getSync(AIR_DB))
+	const qEntityConstructor = DI.db().getSync(SCHEMA_UTILS).getQEntityConstructor(
+		this.dbRelation.relationEntity, DI.db().getSync(AIR_DB))
 
 	let newQEntity: IQEntityInternal       = new qEntityConstructor(
 		dbEntity,

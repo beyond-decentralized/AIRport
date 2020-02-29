@@ -1,5 +1,5 @@
 import {DI}                       from '@airport/di'
-import {SYNC_CONFLICT_VALUES_DAO} from '../../diTokens'
+import {SYNC_CONFLICT_VALUES_DAO} from '../../tokens'
 import {
 	BaseSynchronizationConflictValuesDao,
 	IBaseSynchronizationConflictValuesDao

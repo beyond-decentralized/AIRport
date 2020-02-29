@@ -1,11 +1,8 @@
-"use strict";
 /**
  * Created by Papa on 1/2/2016.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-class ApiConstants {
+export class ApiConstants {
 }
-exports.ApiConstants = ApiConstants;
 ApiConstants.URL_PREFIX = 'https://www.googleapis.com/auth/';
 ApiConstants.DRIVE_PREFIX = 'drive.';
 ApiConstants.PREFIX = ApiConstants.URL_PREFIX + ApiConstants.DRIVE_PREFIX;
@@ -15,7 +12,7 @@ ApiConstants.FILE = ApiConstants.PREFIX + 'file';
 ApiConstants.SHEETS = 'https://spreadsheets.google.com/feeds';
 ApiConstants.PROFILE = 'profile';
 ApiConstants.ALL_SCOPES = [ApiConstants.APP_FOLDER, ApiConstants.INSTALL, ApiConstants.FILE, ApiConstants.SHEETS, ApiConstants.PROFILE];
-class GoogleApi {
+export class GoogleApi {
     constructor() {
         this.rootUrl = 'https://accounts.google.com/o/oauth2/auth';
         this.redirectUri = 'http://localhost/callback';
@@ -114,5 +111,4 @@ class GoogleApi {
         });
     }
 }
-exports.GoogleApi = GoogleApi;
 //# sourceMappingURL=GoogleApi.js.map

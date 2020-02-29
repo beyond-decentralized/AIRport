@@ -7,7 +7,7 @@ import {
 	Q,
 	QSchemaEntity,
 }                          from '../generated/generated'
-import {SCHEMA_ENTITY_DAO} from '../diTokens'
+import {SCHEMA_ENTITY_DAO} from '../tokens'
 
 export interface ISchemaEntityDao
 	extends IBaseSchemaEntityDao {

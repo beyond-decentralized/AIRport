@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const observe_1 = require("@airport/observe");
+import { Subject } from '@airport/observe';
 /**
  * Created by Papa on 12/14/2016.
  */
-class InMemoryChangeStore {
+export class InMemoryChangeStore {
     constructor() {
         this.changeListMap = {};
         this._changesAddedSubjectMap = {};
@@ -38,11 +36,10 @@ class InMemoryChangeStore {
     getChangesAddedSubject(changeListName) {
         let changesAddedSubject = this._changesAddedSubjectMap[changeListName];
         if (!changesAddedSubject) {
-            changesAddedSubject = new observe_1.Subject();
+            changesAddedSubject = new Subject();
             this._changesAddedSubjectMap[changeListName] = changesAddedSubject;
         }
         return changesAddedSubject;
     }
 }
-exports.InMemoryChangeStore = InMemoryChangeStore;
 //# sourceMappingURL=InMemoryChangeStore.js.map

@@ -1,16 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const check_in_1 = require("@airport/check-in");
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const holding_pattern_1 = require("@airport/holding-pattern");
-const terminal_map_1 = require("@airport/terminal-map");
-const diTokens_1 = require("../diTokens");
-class UpdateManager {
+import { AIR_DB, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, SheetQuery } from '@airport/air-control';
+import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
+import { container, DI } from '@airport/di';
+import { ChangeType, ensureChildArray, ensureChildMap, QueryResultType, repositoryEntity, STORE_DRIVER, } from '@airport/ground-control';
+import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO } from '@airport/holding-pattern';
+import { TRANSACTION_MANAGER } from '@airport/terminal-map';
+import { HISTORY_MANAGER, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER, UPDATE_MANAGER } from '../tokens';
+export class UpdateManager {
     async updateValues(portableQuery, actor) {
         // TODO: remove unused dependencies after testing
-        const [airDb, fieldUtils, historyManager, offlineDataStore, operHistoryDuo, queryUtils, recHistoryDuo, recHistoryNewValueDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, schemaUtils, sequenceGenerator, storeDriver, transactionManager] = await di_1.DI.get(air_control_1.AIR_DB, air_control_1.FIELD_UTILS, diTokens_1.HISTORY_MANAGER, diTokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DUO, air_control_1.QUERY_UTILS, holding_pattern_1.REC_HISTORY_DUO, holding_pattern_1.REC_HIST_NEW_VALUE_DUO, holding_pattern_1.REC_HIST_OLD_VALUE_DUO, diTokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DUO, air_control_1.SCHEMA_UTILS, check_in_1.SEQUENCE_GENERATOR, ground_control_1.STORE_DRIVER, terminal_map_1.TRANSACTION_MANAGER);
+        const [airDb, fieldUtils, historyManager, offlineDataStore, operHistoryDuo, queryUtils, recHistoryDuo, recHistoryNewValueDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, schemaUtils, sequenceGenerator, storeDriver, transactionManager] = await container(this).get(AIR_DB, FIELD_UTILS, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, QUERY_UTILS, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO, SCHEMA_UTILS, SEQUENCE_GENERATOR, STORE_DRIVER, TRANSACTION_MANAGER);
         const dbEntity = airDb.schemas[portableQuery.schemaIndex]
             .currentVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error updating '${dbEntity.name}'
@@ -22,7 +20,7 @@ class UpdateManager {
         let repositorySheetSelectInfo;
         let systemWideOperationId;
         if (!dbEntity.isLocal) {
-            systemWideOperationId = await check_in_1.getSysWideOpId(airDb, sequenceGenerator);
+            systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator);
             [recordHistoryMap, repositorySheetSelectInfo]
                 = await this.addUpdateHistory(dbEntity, portableQuery, actor, systemWideOperationId, errorPrefix, airDb, fieldUtils, historyManager, operHistoryDuo, queryUtils, recHistoryDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, schemaUtils, storeDriver, transactionManager);
             internalFragments.SET.push({
@@ -46,7 +44,7 @@ class UpdateManager {
             .qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         const jsonUpdate = portableQuery.jsonQuery;
         const getSheetSelectFromSetClauseResult = schemaUtils.getSheetSelectFromSetClause(dbEntity, qEntity, jsonUpdate.S, errorPrefix);
-        const sheetQuery = new air_control_1.SheetQuery(null);
+        const sheetQuery = new SheetQuery(null);
         const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(getSheetSelectFromSetClauseResult.selectClause, queryUtils, fieldUtils);
         const jsonSelect = {
             S: jsonSelectClause,
@@ -57,7 +55,7 @@ class UpdateManager {
             schemaIndex: portableQuery.schemaIndex,
             tableIndex: portableQuery.tableIndex,
             jsonQuery: jsonSelect,
-            queryResultType: ground_control_1.QueryResultType.SHEET,
+            queryResultType: QueryResultType.SHEET,
             parameterMap: portableQuery.parameterMap,
         };
         const recordsToUpdate = await storeDriver.find(portableSelect, {});
@@ -71,11 +69,11 @@ class UpdateManager {
             const recordHistoryMapForRepository = {};
             recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository;
             const repoTransHistory = await histManager.getNewRepoTransHistory(transManager.currentTransHistory, repositoryId, actor);
-            const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ground_control_1.ChangeType.UPDATE_ROWS, dbEntity, operHistoryDuo);
+            const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.UPDATE_ROWS, dbEntity, operHistoryDuo);
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
             for (const recordToUpdate of recordsForRepositoryId) {
                 const actorId = recordToUpdate[getSheetSelectFromSetClauseResult.actorIdColumnIndex];
-                const recordHistoryMapForActor = ground_control_1.ensureChildMap(recordHistoryMapForRepository, actorId);
+                const recordHistoryMapForActor = ensureChildMap(recordHistoryMapForRepository, actorId);
                 const actorRecordId = recordToUpdate[getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex];
                 const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, actorRecordId, recHistoryDuo);
                 recordHistoryMapForActor[actorRecordId] = recordHistory;
@@ -102,16 +100,16 @@ class UpdateManager {
     }
     async addNewValueHistory(jsonUpdate, dbEntity, recordHistoryMapByRecordId, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, airDb, recHistoryDuo, recHistoryNewValueDuo, fieldUtils, queryUtils, storeDriver) {
         const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
-        const sheetQuery = new air_control_1.SheetQuery({
+        const sheetQuery = new SheetQuery({
             from: [
                 qEntity
             ],
             select: [],
-            where: qEntity[ground_control_1.repositoryEntity.systemWideOperationId]
+            where: qEntity[repositoryEntity.systemWideOperationId]
                 .equals(systemWideOperationId)
         });
-        const queryFacade = await di_1.DI.get(air_control_1.QUERY_FACADE);
-        let portableSelect = queryFacade.getPortableQuery(dbEntity, sheetQuery, ground_control_1.QueryResultType.SHEET, queryUtils, fieldUtils);
+        const queryFacade = await container(this).get(QUERY_FACADE);
+        let portableSelect = queryFacade.getPortableQuery(dbEntity, sheetQuery, QueryResultType.SHEET, queryUtils, fieldUtils);
         const internalFragments = {
             SELECT: repositorySheetSelectInfo.selectClause.map(field => field.dbColumn)
         };
@@ -151,7 +149,7 @@ may only be created as a draft record.`);
         for (const recordToUpdate of records) {
             const repositoryId = recordToUpdate[repositorySheetSelectInfo.repositoryIdColumnIndex];
             repositoryIdSet.add(repositoryId);
-            const recordsForRepositoryId = ground_control_1.ensureChildArray(recordsByRepositoryId, repositoryId);
+            const recordsForRepositoryId = ensureChildArray(recordsByRepositoryId, repositoryId);
             recordsForRepositoryId.push(recordToUpdate);
         }
         return {
@@ -160,6 +158,5 @@ may only be created as a draft record.`);
         };
     }
 }
-exports.UpdateManager = UpdateManager;
-di_1.DI.set(diTokens_1.UPDATE_MANAGER, UpdateManager);
+DI.set(UPDATE_MANAGER, UpdateManager);
 //# sourceMappingURL=UpdateManager.js.map

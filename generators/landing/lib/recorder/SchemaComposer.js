@@ -1,15 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const diTokens_1 = require("../diTokens");
-class SchemaComposer {
+import { DI } from '@airport/di';
+import { ensureChildArray, getSchemaName, SchemaStatus } from '@airport/ground-control';
+import { SCHEMA_COMPOSER } from '../tokens';
+export class SchemaComposer {
     compose(jsonSchemas, ddlObjectRetriever, schemaLocator, terminalStore) {
         const domainSet = new Set();
         const jsonSchemaMapByName = new Map();
         for (const jsonSchema of jsonSchemas) {
             domainSet.add(jsonSchema.domain);
-            jsonSchemaMapByName.set(ground_control_1.getSchemaName(jsonSchema), jsonSchema);
+            jsonSchemaMapByName.set(getSchemaName(jsonSchema), jsonSchema);
         }
         const allSchemaVersionsByIds = [...terminalStore.getAllSchemaVersionsByIds()];
         const { domainMapByName, allDomains, newDomains } = this.composeDomains(domainSet, ddlObjectRetriever, terminalStore);
@@ -89,7 +87,7 @@ class SchemaComposer {
                 index: ++ddlObjectRetriever.lastIds.schemas,
                 name: schemaName,
                 scope: 'public',
-                status: ground_control_1.SchemaStatus.CURRENT,
+                status: SchemaStatus.CURRENT,
             };
             allSchemas.push(schema);
             newSchemas.push(schema);
@@ -141,9 +139,9 @@ class SchemaComposer {
             const schema = ownSchemaVersion.schema;
             const jsonSchema = jsonSchemaMapByName.get(schema.name);
             const lastJsonSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
-            const schemaReferences = ground_control_1.ensureChildArray(newSchemaReferenceMap, schemaName);
+            const schemaReferences = ensureChildArray(newSchemaReferenceMap, schemaName);
             for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
-                const referencedSchemaName = ground_control_1.getSchemaName(jsonReferencedSchema);
+                const referencedSchemaName = getSchemaName(jsonReferencedSchema);
                 let referencedSchemaVersion = newSchemaVersionMapBySchemaName.get(referencedSchemaName);
                 if (!referencedSchemaVersion) {
                     referencedSchemaVersion = schemaLocator.locateLatestSchemaVersionBySchemaName(referencedSchemaName, terminalStore);
@@ -206,7 +204,7 @@ class SchemaComposer {
             const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
             const jsonEntities = currentSchemaVersion.entities;
             const entities = newEntitiesMapBySchemaName.get(schemaName);
-            const propertiesByEntityIndex = ground_control_1.ensureChildArray(newPropertiesMap, schemaName);
+            const propertiesByEntityIndex = ensureChildArray(newPropertiesMap, schemaName);
             jsonEntities.forEach((jsonEntity, tableIndex) => {
                 const entity = entities[tableIndex];
                 const propertiesForEntity = [];
@@ -242,7 +240,7 @@ class SchemaComposer {
             const jsonEntities = currentSchemaVersion.entities;
             const entitiesForSchema = newEntitiesMapBySchemaName.get(schemaName);
             const propertiesByEntityIndex = newPropertiesMap.get(schemaName);
-            const relationsByEntityIndex = ground_control_1.ensureChildArray(newRelationsMap, schemaName);
+            const relationsByEntityIndex = ensureChildArray(newRelationsMap, schemaName);
             const referencesForSchema = newSchemaReferenceMap.get(schemaName);
             jsonEntities.forEach((jsonEntity, tableIndex) => {
                 const propertiesForEntity = propertiesByEntityIndex[tableIndex];
@@ -438,6 +436,5 @@ class SchemaComposer {
         return referencedSchemaVersion;
     }
 }
-exports.SchemaComposer = SchemaComposer;
-di_1.DI.set(diTokens_1.SCHEMA_COMPOSER, SchemaComposer);
+DI.set(SCHEMA_COMPOSER, SchemaComposer);
 //# sourceMappingURL=SchemaComposer.js.map

@@ -35,4 +35,4 @@ export * from './store/RecordState';
 export * from './store/SqlDriver';
 export * from './store/Store';
 export * from './validation/Validator';
-export * from './diTokens';
+export * from './tokens';

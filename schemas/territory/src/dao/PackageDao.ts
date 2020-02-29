@@ -3,7 +3,7 @@ import {
 	BasePackageDao,
 	IBasePackageDao
 }                    from '../generated/baseDaos'
-import {PACKAGE_DAO} from '../diTokens'
+import {PACKAGE_DAO} from '../tokens'
 
 export interface IPackageDao
 	extends IBasePackageDao {

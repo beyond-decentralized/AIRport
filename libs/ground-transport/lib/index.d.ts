@@ -17,5 +17,5 @@ export * from './inMemory/InMemoryChangeStore';
 export * from './inMemory/InMemorySharingAdaptor';
 export * from './stub/StubChangeList';
 export * from './stub/StubSharingAdaptor';
-export * from './diTokens';
+export * from './tokens';
 export * from './PromiseHttp';

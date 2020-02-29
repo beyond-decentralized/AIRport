@@ -1,20 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const generated_1 = require("../generated/generated");
-const diTokens_1 = require("../diTokens");
-class SchemaColumnDao extends generated_1.BaseSchemaColumnDao {
+import { DI } from '@airport/di';
+import { BaseSchemaColumnDao, Q } from '../generated/generated';
+import { SCHEMA_COLUMN_DAO } from '../tokens';
+export class SchemaColumnDao extends BaseSchemaColumnDao {
     async findAllForEntities(entityIds) {
         let c;
         return this.db.find.tree({
             select: {},
             from: [
-                c = generated_1.Q.SchemaColumn
+                c = Q.SchemaColumn
             ],
             where: c.entity.id.in(entityIds)
         });
     }
 }
-exports.SchemaColumnDao = SchemaColumnDao;
-di_1.DI.set(diTokens_1.SCHEMA_COLUMN_DAO, SchemaColumnDao);
+DI.set(SCHEMA_COLUMN_DAO, SchemaColumnDao);
 //# sourceMappingURL=SchemaColumnDao.js.map

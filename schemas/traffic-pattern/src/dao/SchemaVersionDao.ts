@@ -2,7 +2,7 @@ import {DI}                from '@airport/di'
 import {
 	SCHEMA_VERSION_DAO,
 	SCHEMA_VERSION_DUO
-}                          from '../diTokens'
+}                          from '../tokens'
 import {ISchemaVersionDuo} from '../duo/SchemaVersionDuo'
 import {
 	BaseSchemaVersionDao,

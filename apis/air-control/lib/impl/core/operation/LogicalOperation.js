@@ -1,20 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const Operation_1 = require("./Operation");
+import { OperationCategory, SqlOperator } from "@airport/ground-control";
+import { Operation } from "./Operation";
 /**
  * Created by Papa on 4/21/2016.
  */
-exports.and = function (...ops) {
+export const and = function (...ops) {
     return new LogicalOperation().and(ops);
 };
-exports.or = function (...ops) {
+export const or = function (...ops) {
     return new LogicalOperation().or(ops);
 };
-exports.not = function (op) {
+export const not = function (op) {
     return new LogicalOperation().not(op);
 };
-class LogicalOperation extends Operation_1.Operation {
+export class LogicalOperation extends Operation {
     constructor() {
         super(null);
     }
@@ -25,25 +23,24 @@ class LogicalOperation extends Operation_1.Operation {
     }
     and(ops) {
         return {
-            c: ground_control_1.OperationCategory.LOGICAL,
-            o: ground_control_1.SqlOperator.AND,
+            c: OperationCategory.LOGICAL,
+            o: SqlOperator.AND,
             v: ops
         };
     }
     or(ops) {
         return {
-            c: ground_control_1.OperationCategory.LOGICAL,
-            o: ground_control_1.SqlOperator.OR,
+            c: OperationCategory.LOGICAL,
+            o: SqlOperator.OR,
             v: ops
         };
     }
     not(op) {
         return {
-            c: ground_control_1.OperationCategory.LOGICAL,
-            o: ground_control_1.SqlOperator.NOT,
+            c: OperationCategory.LOGICAL,
+            o: SqlOperator.NOT,
             v: op
         };
     }
 }
-exports.LogicalOperation = LogicalOperation;
 //# sourceMappingURL=LogicalOperation.js.map

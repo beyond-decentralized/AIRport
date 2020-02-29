@@ -2,7 +2,7 @@ import {
 	BatchedMessagesToTM,
 	MessageFromTM
 }                             from '@airport/arrivals-n-departures'
-import {DI}                   from '@airport/di'
+import {container, DI}                   from '@airport/di'
 import {
 	ISharingNode,
 	ISharingNodeTerminal,
@@ -14,7 +14,7 @@ import {TERMINAL_STORE}       from '@airport/terminal-map'
 import {
 	SYNC_IN_MANAGER,
 	SYNC_NODE_MANAGER,
-}                             from '../diTokens'
+}                             from '../tokens'
 import {ISharingNodeEndpoint} from './connect/SharingNodeEndpoint'
 
 export interface ISyncNodeManager {
@@ -36,7 +36,7 @@ export class SyncNodeManager
 	sharingNodeEndPoint: ISharingNodeEndpoint
 
 	async initialize(): Promise<void> {
-		const [sharingNodeDao, terminalStore] = await DI.get(
+		const [sharingNodeDao, terminalStore] = await container(this).get(
 			SHARING_NODE_DAO, TERMINAL_STORE)
 
 		const nodesBySyncFrequency = await sharingNodeDao.findAllGroupedBySyncFrequency()
@@ -50,7 +50,7 @@ export class SyncNodeManager
 		const [sharingNodeDao,
 			      sharingNodeTerminalDao,
 			      synchronizationInManager,
-			      terminalStore] = await DI.get(
+			      terminalStore] = await container(this).get(
 			SYNC_NODE_MANAGER, SHARING_NODE_TERMINAL_DAO,
 			SYNC_IN_MANAGER, TERMINAL_STORE)
 		let terminal

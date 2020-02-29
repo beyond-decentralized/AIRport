@@ -1,17 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
-const di_1 = require("@airport/di");
-const guideway_1 = require("@airport/guideway");
-const diTokens_1 = require("../../diTokens");
-const log = diTokens_1.AGTLogger.add('SyncConnectionServer');
-class SyncConnectionServer {
+import { MESSAGE_FROM_TM_DESERIALIZER, MESSAGE_FROM_TM_VERIFIER, MESSAGE_TO_TM_SERIALIZER, SYNC_CONNECTION_SERVER } from '@airport/arrivals-n-departures';
+import { container, DI } from '@airport/di';
+import { AGT_REPO_TRANS_BLOCK_DAO, AGT_SHARING_MESSAGE_DAO, SYNC_LOG_DAO } from '@airport/guideway';
+import { AGTLogger, BLACKLIST, SYNC_CONNECTION_PROCESSOR, SYNC_CONNECTION_VERIFIER, TUNNING_SETTINGS } from '../../tokens';
+const log = AGTLogger.add('SyncConnectionServer');
+export class SyncConnectionServer {
     async initialize() {
     }
     startProcessing(createServer, portNumberToListenOn, setInterval, intervalFrequencyMillis) {
         // TODO: removed unused depencencies once tested
-        di_1.DI.get(guideway_1.AGT_SHARING_MESSAGE_DAO, guideway_1.AGT_REPO_TRANS_BLOCK_DAO, guideway_1.SYNC_LOG_DAO);
-        di_1.DI.get(diTokens_1.BLACKLIST, arrivals_n_departures_1.MESSAGE_FROM_TM_VERIFIER, arrivals_n_departures_1.MESSAGE_FROM_TM_DESERIALIZER, arrivals_n_departures_1.MESSAGE_TO_TM_SERIALIZER, diTokens_1.SYNC_CONNECTION_PROCESSOR, diTokens_1.SYNC_CONNECTION_VERIFIER, diTokens_1.TUNNING_SETTINGS).then(([ipBlacklist, messageFromTMVerifier, messageFromTMDeserializer, messageToTMSerializer, syncConnectionProcessor, syncConnectionVerifier, tuningSettings]) => {
+        container(this).get(AGT_SHARING_MESSAGE_DAO, AGT_REPO_TRANS_BLOCK_DAO, SYNC_LOG_DAO);
+        container(this).get(BLACKLIST, MESSAGE_FROM_TM_VERIFIER, MESSAGE_FROM_TM_DESERIALIZER, MESSAGE_TO_TM_SERIALIZER, SYNC_CONNECTION_PROCESSOR, SYNC_CONNECTION_VERIFIER, TUNNING_SETTINGS).then(([ipBlacklist, messageFromTMVerifier, messageFromTMDeserializer, messageToTMSerializer, syncConnectionProcessor, syncConnectionVerifier, tuningSettings]) => {
             createServer((req, res) => {
                 const ip = this.getIP(req);
                 if (this.connectionBlocked(req, res, ip, ipBlacklist)) {
@@ -201,6 +199,5 @@ class SyncConnectionServer {
         res.end();
     }
 }
-exports.SyncConnectionServer = SyncConnectionServer;
-di_1.DI.set(arrivals_n_departures_1.SYNC_CONNECTION_SERVER, SyncConnectionServer);
+DI.set(SYNC_CONNECTION_SERVER, SyncConnectionServer);
 //# sourceMappingURL=SyncConnectionServer.js.map

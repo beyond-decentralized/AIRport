@@ -1,5 +1,5 @@
 import {DI}                   from '@airport/di'
-import {REPO_TRANS_BLOCK_DUO} from '../../diTokens'
+import {REPO_TRANS_BLOCK_DUO} from '../../tokens'
 import {
 	BaseRepositoryTransactionBlockDuo,
 	IBaseRepositoryTransactionBlockDuo

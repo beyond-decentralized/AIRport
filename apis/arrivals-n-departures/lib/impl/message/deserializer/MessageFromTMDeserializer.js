@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../../../diTokens");
-const lingo_1 = require("../../../lingo/lingo");
-class MessageFromTMDeserializer {
+import { DI } from '@airport/di';
+import { MESSAGE_FROM_TM_DESERIALIZER } from '../../../tokens';
+import { MessageFromTMContentType } from '../../../lingo/lingo';
+export class MessageFromTMDeserializer {
     deserialize(serializedMessageFromTM) {
         const protocolVersion = serializedMessageFromTM[0];
         if (protocolVersion !== 0) {
@@ -11,13 +9,13 @@ class MessageFromTMDeserializer {
         }
         const contentType = serializedMessageFromTM[1];
         switch (contentType) {
-            case lingo_1.MessageFromTMContentType.CONNECTION_REQUEST: {
+            case MessageFromTMContentType.CONNECTION_REQUEST: {
                 throw new Error('Not Implemented');
             }
-            case lingo_1.MessageFromTMContentType.SYNC_VERIFICATIONS: {
+            case MessageFromTMContentType.SYNC_VERIFICATIONS: {
                 throw new Error('Not Implemented');
             }
-            case lingo_1.MessageFromTMContentType.DATA_TRANSFER: {
+            case MessageFromTMContentType.DATA_TRANSFER: {
                 const serializedDataTransferMFTM = serializedMessageFromTM;
                 const serializedTerminalCredentials = serializedDataTransferMFTM[2];
                 const repositoryUpdateRequests = serializedDataTransferMFTM[4].map((serializedRepositoryUpdateRequest) => ({
@@ -53,6 +51,5 @@ class MessageFromTMDeserializer {
         }
     }
 }
-exports.MessageFromTMDeserializer = MessageFromTMDeserializer;
-di_1.DI.set(diTokens_1.MESSAGE_FROM_TM_DESERIALIZER, MessageFromTMDeserializer);
+DI.set(MESSAGE_FROM_TM_DESERIALIZER, MessageFromTMDeserializer);
 //# sourceMappingURL=MessageFromTMDeserializer.js.map

@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../diTokens");
-class Blacklist {
+import { DI } from '@airport/di';
+import { BLACKLIST } from "../tokens";
+export class Blacklist {
     constructor() {
         this.enabled = false;
         this.map = new Map();
@@ -42,6 +40,5 @@ class Blacklist {
         this.map.set(key, until);
     }
 }
-exports.Blacklist = Blacklist;
-di_1.DI.set(diTokens_1.BLACKLIST, Blacklist);
+DI.set(BLACKLIST, Blacklist);
 //# sourceMappingURL=Blacklist.js.map

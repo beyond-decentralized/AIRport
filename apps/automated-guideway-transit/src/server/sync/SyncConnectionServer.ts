@@ -16,7 +16,7 @@ import {
 	TerminalId,
 	TmToAgtProtocolVersion
 }                                 from '@airport/arrivals-n-departures'
-import {DI}                       from '@airport/di'
+import {container, DI}                       from '@airport/di'
 import {
 	AGT_REPO_TRANS_BLOCK_DAO,
 	AGT_SHARING_MESSAGE_DAO,
@@ -29,7 +29,7 @@ import {
 	SYNC_CONNECTION_PROCESSOR,
 	SYNC_CONNECTION_VERIFIER,
 	TUNNING_SETTINGS
-}                                 from '../../diTokens'
+}                                 from '../../tokens'
 import {ITuningSettings}          from '../../model/TuningSettings'
 import {ISyncConnectionProcessor} from './SyncConnectionProcessor'
 
@@ -57,11 +57,11 @@ export class SyncConnectionServer
 	): void {
 
 		// TODO: removed unused depencencies once tested
-		DI.get(AGT_SHARING_MESSAGE_DAO,
+		container(this).get(AGT_SHARING_MESSAGE_DAO,
 			AGT_REPO_TRANS_BLOCK_DAO,
 			SYNC_LOG_DAO)
 
-		DI.get(BLACKLIST,
+		container(this).get(BLACKLIST,
 			MESSAGE_FROM_TM_VERIFIER, MESSAGE_FROM_TM_DESERIALIZER,
 			MESSAGE_TO_TM_SERIALIZER, SYNC_CONNECTION_PROCESSOR,
 			SYNC_CONNECTION_VERIFIER, TUNNING_SETTINGS).then((

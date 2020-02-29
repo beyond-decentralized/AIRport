@@ -3,7 +3,7 @@ import {
 	TerminalName,
 	TerminalSecondId
 }                              from '@airport/arrivals-n-departures'
-import {DI}                    from '@airport/di'
+import {container, DI}                    from '@airport/di'
 import {
 	CascadeOverwrite,
 	ensureChildJsMap
@@ -18,7 +18,7 @@ import {
 	TERMINAL_DAO,
 	UserUniqueId
 }                              from '@airport/travel-document-checkpoint'
-import {SYNC_IN_ACTOR_CHECKER} from '../../../diTokens'
+import {SYNC_IN_ACTOR_CHECKER} from '../../../tokens'
 import {
 	IDataToTM,
 	RemoteActorId
@@ -60,7 +60,7 @@ export class SyncInActorChecker
 		terminalCheckResults: TerminalCheckResults,
 		dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<ActorCheckResults> {
-		const [actorDao, terminalDao] = await DI.get(ACTOR_DAO, TERMINAL_DAO)
+		const [actorDao, terminalDao] = await container(this).get(ACTOR_DAO, TERMINAL_DAO)
 
 		const actorRandomIdSet: Set<ActorRandomId>       = new Set()
 		const userUniqueIdsSet: Set<UserUniqueId>        = new Set()

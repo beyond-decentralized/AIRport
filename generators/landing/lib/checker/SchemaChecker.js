@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const traffic_pattern_1 = require("@airport/traffic-pattern");
-const diTokens_1 = require("../diTokens");
-class SchemaChecker {
+import { container, DI } from '@airport/di';
+import { ensureChildJsMap, getSchemaName, } from '@airport/ground-control';
+import { SCHEMA_DAO } from '@airport/traffic-pattern';
+import { SCHEMA_CHECKER } from '../tokens';
+export class SchemaChecker {
     async check(jsonSchema) {
         if (!jsonSchema) {
             throw new Error(`Json Schema not provided`);
@@ -26,10 +24,10 @@ class SchemaChecker {
         const referencedSchemaMapBySchema = new Map();
         for (const jsonSchema of jsonSchemas) {
             const lastJsonSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
-            const referencedSchemaMapForSchema = ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(referencedSchemaMapBySchema, jsonSchema.domain), jsonSchema.name);
+            const referencedSchemaMapForSchema = ensureChildJsMap(ensureChildJsMap(referencedSchemaMapBySchema, jsonSchema.domain), jsonSchema.name);
             for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
-                ground_control_1.ensureChildJsMap(allReferencedSchemaMap, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
-                ground_control_1.ensureChildJsMap(referencedSchemaMapForSchema, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
+                ensureChildJsMap(allReferencedSchemaMap, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
+                ensureChildJsMap(referencedSchemaMapForSchema, jsonReferencedSchema.domain).set(jsonReferencedSchema.name, jsonReferencedSchema);
             }
         }
         this.pruneInGroupReferences(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema);
@@ -98,7 +96,7 @@ class SchemaChecker {
         const coreDomainAndSchemaNamesBySchemaName = new Map();
         for (const [domainName, allReferencedSchemasForDomain] of allReferencedSchemaMap) {
             for (const [coreSchemaName, referencedSchema] of allReferencedSchemasForDomain) {
-                const schemaName = ground_control_1.getSchemaName(referencedSchema);
+                const schemaName = getSchemaName(referencedSchema);
                 schemaNames.push(schemaName);
                 coreDomainAndSchemaNamesBySchemaName.set(schemaName, {
                     domain: domainName,
@@ -111,7 +109,7 @@ class SchemaChecker {
             existingSchemaMapByName = new Map();
         }
         else {
-            const schemaDao = await di_1.DI.get(traffic_pattern_1.SCHEMA_DAO);
+            const schemaDao = await container(this).get(SCHEMA_DAO);
             existingSchemaMapByName = await schemaDao.findMapByNames(schemaNames);
         }
         return {
@@ -128,6 +126,5 @@ class SchemaChecker {
         return false;
     }
 }
-exports.SchemaChecker = SchemaChecker;
-di_1.DI.set(diTokens_1.SCHEMA_CHECKER, SchemaChecker);
+DI.set(SCHEMA_CHECKER, SchemaChecker);
 //# sourceMappingURL=SchemaChecker.js.map

@@ -1,10 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../../diTokens");
-const generated_1 = require("../../generated/generated");
-class RepoTransBlockSchemaToChangeDao extends generated_1.BaseRepoTransBlockSchemaToChangeDao {
+import { DI } from '@airport/di';
+import { REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO } from '../../tokens';
+import { BaseRepoTransBlockSchemaToChangeDao } from '../../generated/generated';
+export class RepoTransBlockSchemaToChangeDao extends BaseRepoTransBlockSchemaToChangeDao {
 }
-exports.RepoTransBlockSchemaToChangeDao = RepoTransBlockSchemaToChangeDao;
-di_1.DI.set(diTokens_1.REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO, RepoTransBlockSchemaToChangeDao);
+DI.set(REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO, RepoTransBlockSchemaToChangeDao);
 //# sourceMappingURL=RepoTransBlockSchemaToChangeDao.js.map

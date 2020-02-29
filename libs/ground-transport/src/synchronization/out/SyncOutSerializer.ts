@@ -6,7 +6,7 @@ import {
 	RepositoryUpdateRequest,
 	TerminalCredentials
 }                            from '@airport/arrivals-n-departures'
-import {DI}                  from '@airport/di'
+import {container, DI}                  from '@airport/di'
 import {
 	CascadeOverwrite,
 	ensureChildArray
@@ -32,7 +32,7 @@ import {
 import {transactional}       from '@airport/tower'
 import {ITerminal}           from '@airport/travel-document-checkpoint'
 import {stringify}           from 'zipson/lib'
-import {SYNC_OUT_SERIALIZER} from '../../diTokens'
+import {SYNC_OUT_SERIALIZER} from '../../tokens'
 
 export interface ISyncOutSerializer {
 
@@ -64,7 +64,7 @@ export class SyncOutSerializer
 			      repoTransBlockRepoTransHistoryDao,
 			      sharingMessageDao,
 			      sharingMessageRepoTransBlockDao
-		      ]                                             = await DI.get(REPO_TRANS_BLOCK_DAO,
+		      ]                                             = await container(this).get(REPO_TRANS_BLOCK_DAO,
 			// TODO: is this what needs to be injected
 			REPO_TRANS_HISTORY_DAO,
 			SHARING_MESSAGE_DAO,

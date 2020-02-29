@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const airport_code_1 = require("@airport/airport-code");
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const diTokens_1 = require("../../diTokens");
-const SqlSchemaBuilder_1 = require("../SqlSchemaBuilder");
-class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
+import { AIR_DB } from '@airport/air-control';
+import { SEQUENCE_DAO } from '@airport/airport-code';
+import { container, DI } from '@airport/di';
+import { getSchemaName, SQLDataType } from '@airport/ground-control';
+import { SCHEMA_BUILDER } from '../../tokens';
+import { SqlSchemaBuilder } from '../SqlSchemaBuilder';
+export class SqLiteSchemaBuilder extends SqlSchemaBuilder {
     async createSchema(jsonSchema) {
         // Nothing to do
     }
@@ -25,20 +23,20 @@ class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
         // }
         const suffix = primaryKeySuffix; // + autoincrementSuffix
         switch (jsonColumn.type) {
-            case ground_control_1.SQLDataType.ANY:
+            case SQLDataType.ANY:
                 return suffix;
-            case ground_control_1.SQLDataType.BOOLEAN:
+            case SQLDataType.BOOLEAN:
                 return `INTEGER ${suffix}`;
-            case ground_control_1.SQLDataType.DATE:
+            case SQLDataType.DATE:
                 return `REAL ${suffix}`;
-            case ground_control_1.SQLDataType.JSON:
+            case SQLDataType.JSON:
                 return `TEXT ${suffix}`;
-            case ground_control_1.SQLDataType.NUMBER:
+            case SQLDataType.NUMBER:
                 if (suffix) {
                     return `INTEGER ${suffix}`;
                 }
                 return 'REAL';
-            case ground_control_1.SQLDataType.STRING:
+            case SQLDataType.STRING:
                 return `TEXT ${suffix}`;
         }
     }
@@ -47,10 +45,10 @@ class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
     }
     async buildAllSequences(jsonSchemas) {
         console.log('buildAllSequences');
-        let [airDb, sequenceDao] = await di_1.DI.get(air_control_1.AIR_DB, airport_code_1.SEQUENCE_DAO);
+        let [airDb, sequenceDao] = await container(this).get(AIR_DB, SEQUENCE_DAO);
         let allSequences = [];
         for (const jsonSchema of jsonSchemas) {
-            const qSchema = airDb.QM[ground_control_1.getSchemaName(jsonSchema)];
+            const qSchema = airDb.QM[getSchemaName(jsonSchema)];
             for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
                 allSequences = allSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity));
             }
@@ -62,7 +60,7 @@ class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
         console.log('stageSequences');
         let stagedSequences = [];
         for (const jsonSchema of jsonSchemas) {
-            const qSchema = airDb.QM[ground_control_1.getSchemaName(jsonSchema)];
+            const qSchema = airDb.QM[getSchemaName(jsonSchema)];
             for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
                 stagedSequences = stagedSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity));
             }
@@ -90,6 +88,5 @@ class SqLiteSchemaBuilder extends SqlSchemaBuilder_1.SqlSchemaBuilder {
         return sequences;
     }
 }
-exports.SqLiteSchemaBuilder = SqLiteSchemaBuilder;
-di_1.DI.set(diTokens_1.SCHEMA_BUILDER, SqLiteSchemaBuilder);
+DI.set(SCHEMA_BUILDER, SqLiteSchemaBuilder);
 //# sourceMappingURL=SqLiteSchemaBuilder.js.map

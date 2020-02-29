@@ -6,9 +6,9 @@ import {
 	MessageFromTM,
 	SerializedBatchedMessagesToTM
 }                                    from '@airport/arrivals-n-departures'
-import {DI}                          from '@airport/di'
+import {container, DI}                          from '@airport/di'
 import {ISharingNode}                from '@airport/moving-walkway'
-import {HTTP_SHARING_NODE_ENDPOINT,} from '../../../diTokens'
+import {HTTP_SHARING_NODE_ENDPOINT,} from '../../../tokens'
 import {ISharingNodeEndpoint}        from '../SharingNodeEndpoint'
 
 // const log = GROUND_TRANSPORT_LOGGER.add('HttpSharingNodeEndpoint')
@@ -27,7 +27,7 @@ export class HttpSharingNodeEndpoint
 		message: MessageFromTM
 	): Promise<BatchedMessagesToTM> {
 		const [messageFromTMSerializer, messageToTMDeserializer,
-			      messageToTMVerifier]  = await DI.get(MESSAGE_FROM_TM_SERIALIZER,
+			      messageToTMVerifier]  = await container(this).get(MESSAGE_FROM_TM_SERIALIZER,
 			MESSAGE_TO_TM_DESERIALIZER, MESSAGE_TO_TM_VERIFIER)
 		const serializedMessageFromTM = messageFromTMSerializer.serialize(message)
 

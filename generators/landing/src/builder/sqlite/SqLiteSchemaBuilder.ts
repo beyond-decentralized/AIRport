@@ -7,7 +7,10 @@ import {
 	ISequence,
 	SEQUENCE_DAO
 }                         from '@airport/airport-code'
-import {DI}               from '@airport/di'
+import {
+	container,
+	DI
+}                         from '@airport/di'
 import {
 	DbSchema,
 	getSchemaName,
@@ -16,7 +19,7 @@ import {
 	JsonSchemaEntity,
 	SQLDataType
 }                         from '@airport/ground-control'
-import {SCHEMA_BUILDER}   from '../../diTokens'
+import {SCHEMA_BUILDER}   from '../../tokens'
 import {SqlSchemaBuilder} from '../SqlSchemaBuilder'
 
 export class SqLiteSchemaBuilder
@@ -80,7 +83,7 @@ export class SqLiteSchemaBuilder
 	): Promise<ISequence[]> {
 		console.log('buildAllSequences')
 
-		let [airDb, sequenceDao] = await DI.get(AIR_DB, SEQUENCE_DAO)
+		let [airDb, sequenceDao] = await container(this).get(AIR_DB, SEQUENCE_DAO)
 
 		let allSequences: ISequence[] = []
 		for (const jsonSchema of jsonSchemas) {

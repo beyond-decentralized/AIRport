@@ -7,7 +7,7 @@ import {
 	SyncNotificationMessageToTM,
 	TmSharingMessageId
 }                                 from '@airport/arrivals-n-departures'
-import {DI}                       from '@airport/di'
+import {container, DI}                       from '@airport/di'
 import {CascadeOverwrite}         from '@airport/ground-control'
 import {
 	DataOrigin,
@@ -25,7 +25,7 @@ import {
 	SYNC_IN_MANAGER,
 	SYNC_LOG_MESSAGE_PROCESSOR,
 	TWO_STAGE_SYNCED_IN_DATA_PROCESSOR
-}                                 from '../../diTokens'
+}                                 from '../../tokens'
 import {SyncInMessageWithContent} from './model/SyncInMessageWithContent'
 import {IDataToTM}                from './SyncInUtils'
 
@@ -86,7 +86,7 @@ export class SynchronizationInManager
 		// TODO: is syncInChecker needed (what was the reason for original injection)?
 		const [sharingMessageDao, syncInChecker,
 			      syncLogMessageProcessor, twoStageSyncedInDataProcessor
-		      ] = await DI.get(SHARING_MESSAGE_DAO, SYNC_IN_CHECKER,
+		      ] = await container(this).get(SHARING_MESSAGE_DAO, SYNC_IN_CHECKER,
 			SYNC_LOG_MESSAGE_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
 
 		const syncTimestamp                      = new Date()

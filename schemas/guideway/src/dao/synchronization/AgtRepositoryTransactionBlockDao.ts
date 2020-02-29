@@ -13,7 +13,7 @@ import {
 	TerminalId,
 	TmRepositoryTransactionBlockId
 }                                 from '@airport/arrivals-n-departures'
-import {DI}                       from '@airport/di'
+import {container, DI}                       from '@airport/di'
 import {ensureChildJsMap}         from '@airport/ground-control'
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
@@ -24,7 +24,7 @@ import {
 	ArchivingStatus,
 	ServerId,
 }                                 from '../../ddl/ddl'
-import {AGT_REPO_TRANS_BLOCK_DAO} from '../../diTokens'
+import {AGT_REPO_TRANS_BLOCK_DAO} from '../../tokens'
 import {
 	BaseAgtRepositoryTransactionBlockDao,
 	IBaseAgtRepositoryTransactionBlockDao,
@@ -153,7 +153,7 @@ export class AgtRepositoryTransactionBlockDao
 
 		let rtb: QAgtRepositoryTransactionBlock
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const records = await airDb.find.sheet({
 			from: [
@@ -185,7 +185,7 @@ export class AgtRepositoryTransactionBlockDao
 		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeAgtRepositoryTransactionBlock
 		let rtb: QAgtRepositoryTransactionBlock
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		return <AgtRepositoryTransactionBlockId[]>await airDb
 			.insertValuesGenerateIds(dbEntity, {
@@ -215,7 +215,7 @@ export class AgtRepositoryTransactionBlockDao
 		// TODO: once CockroachDb supports optimized (non-nested loop) correlated
 		// query, test against NOT EXISTS and see which is faster
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const rtbsToSend = await airDb.find.tree({
 			from: [
@@ -283,7 +283,7 @@ export class AgtRepositoryTransactionBlockDao
 		// TODO: test performance on CockroachDb vs TiDB for NOT EXISTS vs
 		// NOT IN vs EXCEPT
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		await airDb.find.sheet({
 			from: [
@@ -370,7 +370,7 @@ export class AgtRepositoryTransactionBlockDao
 
 		let rtb: QAgtRepositoryTransactionBlock
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const rtbsToArchive = await airDb.find.sheet({
 			from: [
@@ -425,7 +425,7 @@ export class AgtRepositoryTransactionBlockDao
 	): Promise<void> {
 		let rtb: QAgtRepositoryTransactionBlock
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		await airDb.find.sheet({
 			from: [

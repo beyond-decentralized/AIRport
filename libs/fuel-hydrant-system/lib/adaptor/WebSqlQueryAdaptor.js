@@ -1,13 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const SqLiteQueryAdaptor_1 = require("./SqLiteQueryAdaptor");
+import { SqLiteQueryAdaptor } from "./SqLiteQueryAdaptor";
 /**
  * Created by Papa on 2/8/2017.
  */
-class WebSqlQueryAdaptor extends SqLiteQueryAdaptor_1.SqLiteQueryAdaptor {
+export class WebSqlQueryAdaptor extends SqLiteQueryAdaptor {
     getResultCellRawValue(resultRow, columnName, index, dataType, defaultValue) {
         return resultRow[columnName];
     }
 }
-exports.WebSqlQueryAdaptor = WebSqlQueryAdaptor;
 //# sourceMappingURL=WebSqlQueryAdaptor.js.map

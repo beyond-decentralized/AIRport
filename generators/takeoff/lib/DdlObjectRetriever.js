@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const territory_1 = require("@airport/territory");
-const traffic_pattern_1 = require("@airport/traffic-pattern");
-const diTokens_1 = require("./diTokens");
-class DdlObjectRetriever {
+import { container, DI } from '@airport/di';
+import { DOMAIN_DAO } from '@airport/territory';
+import { SCHEMA_COLUMN_DAO, SCHEMA_DAO, SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO, SCHEMA_RELATION_DAO, SCHEMA_VERSION_DAO } from '@airport/traffic-pattern';
+import { DDL_OBJECT_RETRIEVER } from './tokens';
+export class DdlObjectRetriever {
     constructor() {
         this.lastIds = {
             columns: 0,
@@ -19,7 +17,7 @@ class DdlObjectRetriever {
         };
     }
     async retrieveDdlObjects() {
-        const [domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao] = await di_1.DI.get(territory_1.DOMAIN_DAO, traffic_pattern_1.SCHEMA_DAO, traffic_pattern_1.SCHEMA_VERSION_DAO, traffic_pattern_1.SCHEMA_REFERENCE_DAO, traffic_pattern_1.SCHEMA_ENTITY_DAO, traffic_pattern_1.SCHEMA_PROPERTY_DAO, traffic_pattern_1.SCHEMA_RELATION_DAO, traffic_pattern_1.SCHEMA_COLUMN_DAO, traffic_pattern_1.SCHEMA_PROPERTY_COLUMN_DAO, traffic_pattern_1.SCHEMA_RELATION_COLUMN_DAO);
+        const [domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao] = await container(this).get(DOMAIN_DAO, SCHEMA_DAO, SCHEMA_VERSION_DAO, SCHEMA_REFERENCE_DAO, SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_RELATION_DAO, SCHEMA_COLUMN_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_RELATION_COLUMN_DAO);
         const schemas = await schemaDao.findAllActive();
         const schemaIndexes = [];
         const domainIdSet = new Set();
@@ -101,6 +99,5 @@ class DdlObjectRetriever {
         };
     }
 }
-exports.DdlObjectRetriever = DdlObjectRetriever;
-di_1.DI.set(diTokens_1.DDL_OBJECT_RETRIEVER, DdlObjectRetriever);
+DI.set(DDL_OBJECT_RETRIEVER, DdlObjectRetriever);
 //# sourceMappingURL=DdlObjectRetriever.js.map

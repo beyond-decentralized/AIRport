@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const TreeResultParser_1 = require("../TreeResultParser");
+import { valuesEqual } from '@airport/air-control';
+import { TreeResultParser } from '../TreeResultParser';
 /**
  * Created by Papa on 10/16/2016.
  */
@@ -10,7 +8,7 @@ const TreeResultParser_1 = require("../TreeResultParser");
  * as they were in the previous row.  If the objects are the same this parser will merge
  * them.
  */
-class EntityTreeResultParser extends TreeResultParser_1.TreeResultParser {
+export class EntityTreeResultParser extends TreeResultParser {
     constructor() {
         super(...arguments);
         this.currentRowObjectMap = {};
@@ -37,7 +35,7 @@ class EntityTreeResultParser extends TreeResultParser_1.TreeResultParser {
         // Both last and current objects must exist here
         let lastMtoStub = this.lastRowObjectMap[entityAlias][propertyName];
         let currentMtoStub = resultObject[propertyName];
-        this.objectEqualityMap[entityAlias] = air_control_1.valuesEqual(lastMtoStub, currentMtoStub, true);
+        this.objectEqualityMap[entityAlias] = valuesEqual(lastMtoStub, currentMtoStub, true);
     }
     bufferBlankManyToOneStub(entityAlias, resultObject, propertyName) {
         resultObject[propertyName] = null;
@@ -76,5 +74,4 @@ class EntityTreeResultParser extends TreeResultParser_1.TreeResultParser {
         return parsedResults;
     }
 }
-exports.EntityTreeResultParser = EntityTreeResultParser;
 //# sourceMappingURL=EntityTreeResultParser.js.map

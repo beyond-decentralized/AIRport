@@ -3,7 +3,7 @@ import {
 	and,
 	distinct
 }                            from '@airport/air-control'
-import {DI}                  from '@airport/di'
+import {container, DI}                  from '@airport/di'
 import {
 	DailySyncLogDatabaseId,
 	DailySyncLogDateNumber,
@@ -11,7 +11,7 @@ import {
 	DailySyncLogSynced,
 	DailySyncLogValues
 }                            from '../ddl/DailySyncLog'
-import {DAILY_SYNC_LOG_DAO}  from '../diTokens'
+import {DAILY_SYNC_LOG_DAO}  from '../tokens'
 import {BaseDailySyncLogDao} from '../generated/baseDaos'
 import {QDailySyncLog}       from '../generated/qdailysynclog'
 import {Q}                   from '../generated/qSchema'
@@ -59,7 +59,7 @@ export class DailySyncLogDao
 		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog
 		let dsl: QDailySyncLog
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		await airDb.insertValues(dbEntity, {
 			insertInto: dsl = Q.DailySyncLog,
@@ -82,7 +82,7 @@ export class DailySyncLogDao
 	): Promise<void> {
 		let dsl: QDailySyncLog
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		await airDb.find.sheet({
 			from: [
@@ -129,7 +129,7 @@ export class DailySyncLogDao
 	): Promise<DailyToMonthlyResult[]> {
 		let dsl: QDailySyncLog
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		return <DailyToMonthlyResult[]>await airDb.find.sheet({
 			from: [

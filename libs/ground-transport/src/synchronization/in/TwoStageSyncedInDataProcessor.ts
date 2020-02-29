@@ -3,7 +3,7 @@ import {
 	RepoTransBlockSyncOutcomeType,
 	TmSharingMessageId
 }                                     from '@airport/arrivals-n-departures'
-import {DI}                           from '@airport/di'
+import {container, DI}                           from '@airport/di'
 import {
 	CascadeOverwrite,
 	ensureChildArray,
@@ -48,7 +48,7 @@ import {
 	STAGE2_SYNCED_IN_DATA_PROCESSOR,
 	SYNC_IN_CHECKER,
 	TWO_STAGE_SYNCED_IN_DATA_PROCESSOR
-}                                     from '../../diTokens'
+}                                     from '../../tokens'
 import {IStage1SyncedInDataProcessor} from './Stage1SyncedInDataProcessor'
 import {IStage2SyncedInDataProcessor} from './Stage2SyncedInDataProcessor'
 import {
@@ -97,7 +97,7 @@ export class TwoStageSyncedInDataProcessor
 			      synchronizationConflictPendingNotificationDao,
 			      syncInChecker,
 			      repositoryTransactionBlockDao,
-			      transactionManager] = await DI.get(REPO_ACTOR_DAO, REPO_TRANS_HISTORY_DUO,
+			      transactionManager] = await container(this).get(REPO_ACTOR_DAO, REPO_TRANS_HISTORY_DUO,
 			SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
 			STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR,
 			SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO,

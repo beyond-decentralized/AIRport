@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const ground_control_1 = require("@airport/ground-control");
-class GraphQueryConfiguration {
+import { isStub, markAsStub } from '@airport/air-control';
+import { QueryResultType } from '@airport/ground-control';
+export class GraphQueryConfiguration {
     constructor() {
         // This is for conflicts on OneToMany references
         this.strict = true;
@@ -13,26 +11,24 @@ class GraphQueryConfiguration {
         //failOnManyToOneConflicts: boolean = true;
     }
 }
-exports.GraphQueryConfiguration = GraphQueryConfiguration;
-function getObjectResultParser(queryResultType, config, rootDbEntity) {
+export function getObjectResultParser(queryResultType, config, rootDbEntity) {
     switch (queryResultType) {
-        case ground_control_1.QueryResultType.ENTITY_GRAPH:
-        case ground_control_1.QueryResultType.MAPPED_ENTITY_GRAPH:
+        case QueryResultType.ENTITY_GRAPH:
+        case QueryResultType.MAPPED_ENTITY_GRAPH:
             let EntityGraphResultParserClass = require('./EntityGraphResultParser').EntityGraphResultParser;
             return new EntityGraphResultParserClass(config, rootDbEntity);
-        case ground_control_1.QueryResultType.ENTITY_TREE:
-        case ground_control_1.QueryResultType.MAPPED_ENTITY_TREE:
+        case QueryResultType.ENTITY_TREE:
+        case QueryResultType.MAPPED_ENTITY_TREE:
             let EntityTreeResultParserClass = require('./EntityTreeResultParser').EntityTreeResultParser;
             return new EntityTreeResultParserClass();
         default:
             throw new Error(`ObjectQueryParser not supported for QueryResultType: ${queryResultType}`);
     }
 }
-exports.getObjectResultParser = getObjectResultParser;
-class AbstractObjectResultParser {
+export class AbstractObjectResultParser {
     addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils) {
         let manyToOneStub = {};
-        air_control_1.isStub(manyToOneStub);
+        isStub(manyToOneStub);
         resultObject[propertyName] = manyToOneStub;
         let haveAllIds = true;
         relationInfos.forEach((relationInfo) => {
@@ -48,7 +44,7 @@ class AbstractObjectResultParser {
                 // If there is no object in context, create one
                 if (!currentObject) {
                     currentObject = {};
-                    air_control_1.markAsStub(currentObject);
+                    markAsStub(currentObject);
                     lastObject[propertyNameChain[currentIndex - 1]] = currentObject;
                 }
                 // If it's not a leaf (more objects in the chain exist)
@@ -66,5 +62,4 @@ class AbstractObjectResultParser {
         return haveAllIds;
     }
 }
-exports.AbstractObjectResultParser = AbstractObjectResultParser;
 //# sourceMappingURL=IEntityResultParser.js.map

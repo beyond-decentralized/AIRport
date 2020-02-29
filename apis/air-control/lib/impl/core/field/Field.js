@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const Relation_1 = require("../entity/Relation");
-const FieldInOrderBy_1 = require("./FieldInOrderBy");
+import { JSONClauseObjectType, SortOrder } from '@airport/ground-control';
+import { QRelation } from '../entity/Relation';
+import { FieldInOrderBy } from './FieldInOrderBy';
 /**
  * Created by Papa on 4/21/2016.
  */
-class QField {
+export class QField {
     constructor(dbColumn, dbProperty, q, objectType) {
         this.dbColumn = dbColumn;
         this.dbProperty = dbProperty;
@@ -22,10 +20,10 @@ class QField {
     }
      */
     asc() {
-        return new FieldInOrderBy_1.FieldInOrderBy(this, ground_control_1.SortOrder.ASCENDING);
+        return new FieldInOrderBy(this, SortOrder.ASCENDING);
     }
     desc() {
-        return new FieldInOrderBy_1.FieldInOrderBy(this, ground_control_1.SortOrder.DESCENDING);
+        return new FieldInOrderBy(this, SortOrder.DESCENDING);
     }
     applySqlFunction(sqlFunctionCall) {
         let appliedField = this.getInstance();
@@ -56,13 +54,13 @@ class QField {
             fa: alias,
             pi: this.dbProperty.index,
             ci: this.dbColumn.index,
-            ta: Relation_1.QRelation.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
+            ta: QRelation.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
             ot: this.objectType,
             dt: this.dbColumn.type
         };
         if (this.__fieldSubQuery__) {
             jsonField.fsq = fieldUtils.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases, queryUtils);
-            jsonField.ot = ground_control_1.JSONClauseObjectType.FIELD_QUERY;
+            jsonField.ot = JSONClauseObjectType.FIELD_QUERY;
         }
         return jsonField;
     }
@@ -136,5 +134,4 @@ class QField {
          */
     }
 }
-exports.QField = QField;
 //# sourceMappingURL=Field.js.map

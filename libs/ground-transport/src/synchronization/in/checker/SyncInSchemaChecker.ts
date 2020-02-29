@@ -1,4 +1,4 @@
-import {DI}                     from '@airport/di'
+import {container, DI}                     from '@airport/di'
 import {
 	CascadeOverwrite,
 	DomainId,
@@ -26,7 +26,7 @@ import {
 	SCHEMA_VERSION_DAO
 }                               from '@airport/traffic-pattern'
 import {parse}                  from 'zipson/lib'
-import {SYNC_IN_SCHEMA_CHECKER} from '../../../diTokens'
+import {SYNC_IN_SCHEMA_CHECKER} from '../../../tokens'
 import {
 	IDataToTM,
 	SchemaComparisonResult
@@ -72,7 +72,7 @@ export class SyncInSchemaChecker
 	): Promise<SchemaCheckResults> {
 		// TODO: remove unused dependencies once tested
 		const [domainDao, schemaDao, schemaVersionDao, terminalStore
-		      ] = await DI.get(DOMAIN_DAO, SCHEMA_DAO,
+		      ] = await container(this).get(DOMAIN_DAO, SCHEMA_DAO,
 			SCHEMA_VERSION_DAO, TERMINAL_STORE)
 
 		const schemaNameSet: Set<SchemaName>       = new Set()

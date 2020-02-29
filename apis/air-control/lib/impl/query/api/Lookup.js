@@ -1,17 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const diTokens_1 = require("../../../diTokens");
-class LookupProxy {
+import { container, DI } from '@airport/di';
+import { QueryResultType, TRANS_CONNECTOR } from '@airport/ground-control';
+import { ENTITY_UTILS, FIELD_UTILS, LOOKUP, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, UPDATE_CACHE } from '../../../tokens';
+export class LookupProxy {
     lookup(rawQuery, queryResultType, search, one, QueryClass, dbEntity, cacheForUpdate, mapResults) {
-        return di_1.DI.get(diTokens_1.LOOKUP).then(lookup => lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, dbEntity, cacheForUpdate, mapResults));
+        return container(this).get(LOOKUP).then(lookup => lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, dbEntity, cacheForUpdate, mapResults));
     }
 }
-exports.LookupProxy = LookupProxy;
-class Lookup {
+export class Lookup {
     async lookup(rawQuery, queryResultType, search, one, QueryClass, dbEntity, cacheForUpdate, mapResults) {
-        const [entityUtils, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await di_1.DI.get(diTokens_1.ENTITY_UTILS, diTokens_1.FIELD_UTILS, diTokens_1.QUERY_FACADE, diTokens_1.QUERY_UTILS, diTokens_1.SCHEMA_UTILS, ground_control_1.TRANS_CONNECTOR, diTokens_1.UPDATE_CACHE);
+        const [entityUtils, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await container(this).get(ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE);
         let query;
         if (QueryClass) {
             const rawNonEntityQuery = entityUtils.getQuery(rawQuery);
@@ -42,21 +39,20 @@ class Lookup {
     }
     getQueryResultType(baseQueryResultType, mapResults) {
         switch (baseQueryResultType) {
-            case ground_control_1.QueryResultType.ENTITY_GRAPH:
+            case QueryResultType.ENTITY_GRAPH:
                 if (mapResults) {
-                    return ground_control_1.QueryResultType.MAPPED_ENTITY_GRAPH;
+                    return QueryResultType.MAPPED_ENTITY_GRAPH;
                 }
-                return ground_control_1.QueryResultType.ENTITY_GRAPH;
-            case ground_control_1.QueryResultType.ENTITY_TREE:
+                return QueryResultType.ENTITY_GRAPH;
+            case QueryResultType.ENTITY_TREE:
                 if (mapResults) {
-                    return ground_control_1.QueryResultType.MAPPED_ENTITY_TREE;
+                    return QueryResultType.MAPPED_ENTITY_TREE;
                 }
-                return ground_control_1.QueryResultType.ENTITY_TREE;
+                return QueryResultType.ENTITY_TREE;
             default:
                 throw new Error(`Unexpected Base Query ResultType: '${baseQueryResultType}'.`);
         }
     }
 }
-exports.Lookup = Lookup;
-di_1.DI.set(diTokens_1.LOOKUP, Lookup);
+DI.set(LOOKUP, Lookup);
 //# sourceMappingURL=Lookup.js.map

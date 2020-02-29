@@ -1,6 +1,6 @@
 import {DI}               from '@airport/di'
 import {JsonFieldQuery}   from '@airport/ground-control'
-import {FIELD_UTILS}      from '../../diTokens'
+import {FIELD_UTILS}      from '../../tokens'
 import {IEntityAliases}   from '../../lingo/core/entity/Aliases'
 import {IQOrderableField} from '../../lingo/core/field/Field'
 import {RawFieldQuery}    from '../../lingo/query/facade/FieldQuery'

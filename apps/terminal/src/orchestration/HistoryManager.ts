@@ -1,4 +1,4 @@
-import {DI}              from '@airport/di'
+import {container, DI}              from '@airport/di'
 import {TransactionType} from '@airport/ground-control'
 import {
 	IActor,
@@ -9,7 +9,7 @@ import {
 	RepositoryId,
 	TRANS_HISTORY_DUO
 }                        from '@airport/holding-pattern'
-import {HISTORY_MANAGER} from '../diTokens'
+import {HISTORY_MANAGER} from '../tokens'
 
 export interface IHistoryManager {
 
@@ -35,7 +35,7 @@ export class HistoryManager
 	async getNewTransHistory(
 		transactionType: TransactionType = TransactionType.LOCAL
 	): Promise<ITransactionHistory> {
-		const transHistoryDuo = await DI.get(TRANS_HISTORY_DUO)
+		const transHistoryDuo = await container(this).get(TRANS_HISTORY_DUO)
 
 		return await transHistoryDuo.getNewRecord(transactionType)
 	}
@@ -45,7 +45,7 @@ export class HistoryManager
 		repositoryId: RepositoryId,
 		actor: IActor,
 	): Promise<IRepositoryTransactionHistory> {
-		const [repoTransHistoryDuo, transHistoryDuo] = await DI.get(
+		const [repoTransHistoryDuo, transHistoryDuo] = await container(this).get(
 			REPO_TRANS_HISTORY_DUO, TRANS_HISTORY_DUO)
 
 		return await transHistoryDuo.getRepositoryTransaction(

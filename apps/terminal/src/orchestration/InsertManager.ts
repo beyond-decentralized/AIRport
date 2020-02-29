@@ -4,7 +4,7 @@ import {
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
 }                           from '@airport/check-in'
-import {DI}                 from '@airport/di'
+import {container, DI}                 from '@airport/di'
 import {
 	ChangeType,
 	DbColumn,
@@ -40,7 +40,7 @@ import {
 	INSERT_MANAGER,
 	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER
-}                           from '../diTokens'
+}                           from '../tokens'
 import {IHistoryManager}    from './HistoryManager'
 
 export type RecordId = number;
@@ -116,7 +116,7 @@ export class InsertManager
 			      repositoryManager,
 			      repoTransHistoryDuo,
 			      transactionManager
-		      ] = await DI.get(AIR_DB, STORE_DRIVER,
+		      ] = await container(this).get(AIR_DB, STORE_DRIVER,
 			SEQUENCE_GENERATOR, HISTORY_MANAGER,
 			OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
 			REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER,
@@ -192,7 +192,7 @@ appears more than once in the Columns clause`)
 		platformConfig: string                     = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
 	): Promise<number> {
-		const [repoManager, transManager] = await DI.get(
+		const [repoManager, transManager] = await container(this).get(
 			REPOSITORY_MANAGER, TRANSACTION_MANAGER)
 
 		const repository = await repoManager.createRepository(

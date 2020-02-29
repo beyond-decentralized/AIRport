@@ -1,9 +1,7 @@
-"use strict";
 /**
  * Column keys.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var column;
+export var column;
 (function (column) {
     /**
      * Name property of the column.
@@ -21,53 +19,53 @@ var column;
         type.NUMBER = 'number';
         type.STRING = 'string';
     })(type = column.type || (column.type = {}));
-})(column = exports.column || (exports.column = {}));
+})(column || (column = {}));
 /**
  * File level keys.
  */
-var file;
+export var file;
 (function (file) {
     file.ENTITY = 'Entity';
     file.TABLE = 'Table';
-})(file = exports.file || (exports.file = {}));
+})(file || (file = {}));
 /**
  * Entity configuration keys.
  */
-var entity;
+export var entity;
 (function (entity) {
     entity.DATABASES = 'databases';
-})(entity = exports.entity || (exports.entity = {}));
+})(entity || (entity = {}));
 /**
  * Foreign Key configuration keys.
  */
-var foreignkey;
+export var foreignkey;
 (function (foreignkey) {
     foreignkey.DEFINITION = 'foreignKeyDefinition';
     foreignkey.NAME = 'name';
     foreignkey.VALUE = 'value';
-})(foreignkey = exports.foreignkey || (exports.foreignkey = {}));
+})(foreignkey || (foreignkey = {}));
 /**
  * Index configuration keys.
  */
-var index;
+export var index;
 (function (index) {
     index.COLUMN_LIST = 'columnList';
     index.NAME = 'name';
     index.UNIQUE = 'unique';
-})(index = exports.index || (exports.index = {}));
+})(index || (index = {}));
 /**
  * JoinColumn configuration keys.
  */
-var joincolumn;
+export var joincolumn;
 (function (joincolumn) {
     joincolumn.FOREIGN_KEY = 'foreignKey';
     joincolumn.REFERENCED_COLUMN_NAME = 'referencedColumnName';
     joincolumn.VALUE = 'value';
-})(joincolumn = exports.joincolumn || (exports.joincolumn = {}));
+})(joincolumn || (joincolumn = {}));
 /**
  * Property annotation keys.
  */
-var property;
+export var property;
 (function (property) {
     property.COLUMN = 'Column';
     property.ENUM_TYPE = 'Enum';
@@ -83,30 +81,30 @@ var property;
     // export const R_JOIN_COLUMNS   = 'RJoinColumns';
     property.SUB_QUERY = 'SubQuery';
     // export const WHERE_JOIN_TABLE = 'WhereJoinTable';
-})(property = exports.property || (exports.property = {}));
+})(property || (property = {}));
 /**
  * OneToMany configuration keys.
  */
-var onetomany;
+export var onetomany;
 (function (onetomany) {
     onetomany.CASCADE = 'cascade';
     onetomany.MAPPED_BY = 'mappedBy';
-})(onetomany = exports.onetomany || (exports.onetomany = {}));
+})(onetomany || (onetomany = {}));
 /**
  * Table configuration keys.
  */
-var table;
+export var table;
 (function (table) {
     table.INDEXES = 'indexes';
     table.NAME = 'name';
     table.PRIMARY_KEY = 'primaryKey';
     table.SCHEMA = 'schema';
-})(table = exports.table || (exports.table = {}));
+})(table || (table = {}));
 /**
  * Name of the RepositoryId column
  * @type {string}
  */
-var repositoryEntity;
+export var repositoryEntity;
 (function (repositoryEntity) {
     repositoryEntity.ACTOR_ID = 'ACTOR_ID';
     repositoryEntity.ACTOR_RECORD_ID = 'ACTOR_RECORD_ID';
@@ -119,5 +117,5 @@ var repositoryEntity;
     repositoryEntity.SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId';
     repositoryEntity.systemWideOperationId = 'systemWideOperationId';
     repositoryEntity.SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID';
-})(repositoryEntity = exports.repositoryEntity || (exports.repositoryEntity = {}));
+})(repositoryEntity || (repositoryEntity = {}));
 //# sourceMappingURL=Dictionary.js.map

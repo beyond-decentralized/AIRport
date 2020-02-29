@@ -5,7 +5,7 @@ import {
 	tree,
 	Y
 }                   from '@airport/air-control'
-import {DI}         from '@airport/di'
+import {container, DI}         from '@airport/di'
 import {
 	DomainName,
 	ensureChildJsMap,
@@ -15,7 +15,7 @@ import {
 	SchemaVersionId
 }                   from '@airport/ground-control'
 import {QDomain}    from '@airport/territory'
-import {SCHEMA_DAO} from '../diTokens'
+import {SCHEMA_DAO} from '../tokens'
 import {
 	BaseSchemaDao,
 	IBaseSchemaDao,
@@ -107,7 +107,7 @@ export class SchemaDao
 	}
 
 	async findMaxIndex(): Promise<SchemaIndex> {
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const s = Q.Schema
 		return await airDb.findOne.field({
@@ -122,7 +122,7 @@ export class SchemaDao
 		schemaDomainNames: DomainName[],
 		schemaNames: SchemaName[]
 	): Promise<Map<DomainName, Map<SchemaName, ISchema>>> {
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const maxVersionedMapBySchemaAndDomainNames: Map<DomainName, Map<SchemaName, ISchema>>
 			      = new Map()

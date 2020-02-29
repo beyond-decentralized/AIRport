@@ -2,7 +2,7 @@ import {
 	field,
 	IQNumberField
 }           from '@airport/air-control'
-import {DI} from '@airport/di'
+import {container, DI} from '@airport/di'
 import {
 	REPO_TRANS_HISTORY_DAO,
 	RepositoryTransactionHistoryBlockId,
@@ -15,7 +15,7 @@ import {
 }           from '../../generated/generated'
 import {
 	REPO_TRANS_HISTORY_UPDATE_STAGE_DAO
-}           from '../../diTokens'
+}           from '../../tokens'
 import {Q}  from '../../generated/generated'
 
 export type RepositoryTransactionHistoryUpdateStageValues = [
@@ -59,7 +59,7 @@ export class RepositoryTransactionHistoryUpdateStageDao
 	async updateRepositoryTransactionHistory(): Promise<number> {
 		const rthus = this.db.from
 
-		const repoTransHistoryDao = await DI.get(REPO_TRANS_HISTORY_DAO)
+		const repoTransHistoryDao = await container(this).get(REPO_TRANS_HISTORY_DAO)
 
 		return await repoTransHistoryDao.setBlockIdWhereId((
 			idField: IQNumberField

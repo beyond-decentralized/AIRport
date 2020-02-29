@@ -15,7 +15,7 @@ import {
 	getSysWideOpId,
 	SEQUENCE_GENERATOR
 }                           from '@airport/check-in'
-import {DI}                 from '@airport/di'
+import {container, DI}                 from '@airport/di'
 import {
 	ChangeType,
 	DbEntity,
@@ -56,7 +56,7 @@ import {
 	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER,
 	UPDATE_MANAGER
-}                           from '../diTokens'
+}                           from '../tokens'
 import {IHistoryManager}    from './HistoryManager'
 
 export interface IUpdateManager {
@@ -98,7 +98,7 @@ export class UpdateManager
 			      schemaUtils,
 			      sequenceGenerator,
 			      storeDriver,
-			      transactionManager] = await DI.get(AIR_DB,
+			      transactionManager] = await container(this).get(AIR_DB,
 			FIELD_UTILS, HISTORY_MANAGER, OFFLINE_DELTA_STORE,
 			OPER_HISTORY_DUO, QUERY_UTILS, REC_HISTORY_DUO,
 			REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO,
@@ -293,7 +293,7 @@ export class UpdateManager
 				.equals(systemWideOperationId)
 		})
 
-		const queryFacade  = await DI.get(QUERY_FACADE)
+		const queryFacade  = await container(this).get(QUERY_FACADE)
 		let portableSelect = queryFacade.getPortableQuery(
 			dbEntity, sheetQuery, QueryResultType.SHEET, queryUtils, fieldUtils)
 

@@ -1,17 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const SQLWhereBase_1 = require("./SQLWhereBase");
+import { EntityRelationType, SqlOperator } from '@airport/ground-control';
+import { SQLWhereBase } from './SQLWhereBase';
 /**
  * Created by Papa on 8/20/2016.
  */
-var SQLDialect;
+export var SQLDialect;
 (function (SQLDialect) {
     SQLDialect[SQLDialect["SQLITE_SQLJS"] = 0] = "SQLITE_SQLJS";
     SQLDialect[SQLDialect["SQLITE_WEBSQL"] = 1] = "SQLITE_WEBSQL";
     SQLDialect[SQLDialect["ORACLE"] = 2] = "ORACLE";
-})(SQLDialect = exports.SQLDialect || (exports.SQLDialect = {}));
-class EntityDefaults {
+})(SQLDialect || (SQLDialect = {}));
+export class EntityDefaults {
     constructor() {
         this.map = {};
     }
@@ -24,11 +22,10 @@ class EntityDefaults {
         return defaultsForAlias;
     }
 }
-exports.EntityDefaults = EntityDefaults;
 /**
  * String based SQL query.
  */
-class SQLQuery extends SQLWhereBase_1.SQLWhereBase {
+export class SQLQuery extends SQLWhereBase {
     constructor(jsonQuery, dbEntity, dialect, queryResultType, storeDriver) {
         super(dbEntity, dialect, storeDriver);
         this.jsonQuery = jsonQuery;
@@ -45,10 +42,10 @@ class SQLQuery extends SQLWhereBase_1.SQLWhereBase {
         const dbRelation = leftDbEntity.relations[entityRelation.ri];
         let relationColumns;
         switch (dbRelation.relationType) {
-            case ground_control_1.EntityRelationType.MANY_TO_ONE:
+            case EntityRelationType.MANY_TO_ONE:
                 relationColumns = dbRelation.manyRelationColumns;
                 break;
-            case ground_control_1.EntityRelationType.ONE_TO_MANY:
+            case EntityRelationType.ONE_TO_MANY:
                 relationColumns = dbRelation.oneRelationColumns;
                 break;
             default:
@@ -59,11 +56,11 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
             let ownColumnName;
             let referencedColumnName;
             switch (dbRelation.relationType) {
-                case ground_control_1.EntityRelationType.MANY_TO_ONE:
+                case EntityRelationType.MANY_TO_ONE:
                     ownColumnName = relationColumn.manyColumn.name;
                     referencedColumnName = relationColumn.oneColumn.name;
                     break;
-                case ground_control_1.EntityRelationType.ONE_TO_MANY:
+                case EntityRelationType.ONE_TO_MANY:
                     ownColumnName = relationColumn.oneColumn.name;
                     referencedColumnName = relationColumn.manyColumn.name;
                     break;
@@ -79,7 +76,7 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
         let onClause = allJoinOnColumns.map(joinOnColumn => ` ${parentAlias}.${joinOnColumn.leftColumn} = ${currentAlias}.${joinOnColumn.rightColumn}`).join('\n\t\t\tAND');
         if (entityRelation.jwc) {
             const whereClause = this.getWHEREFragment(entityRelation.jwc, '\t\t', airDb, schemaUtils, metadataUtils);
-            const joinWhereOperator = entityRelation.wjto === ground_control_1.SqlOperator.AND ? 'AND' : 'OR';
+            const joinWhereOperator = entityRelation.wjto === SqlOperator.AND ? 'AND' : 'OR';
             onClause = `${onClause}
 			${joinWhereOperator} ${whereClause}`;
         }
@@ -88,5 +85,4 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
         return fromFragment;
     }
 }
-exports.SQLQuery = SQLQuery;
 //# sourceMappingURL=SQLQuery.js.map

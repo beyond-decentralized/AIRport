@@ -95,6 +95,7 @@ export class DbSchemaBuilder
 		const columnMap                = {}
 		const columns: DbColumn[]      = []
 		const idColumns: DbColumn[]    = []
+		const idColumnMap              = {}
 		const propertyMap              = {}
 		const properties: DbProperty[] = []
 		const relations: DbRelation[]  = []
@@ -102,6 +103,7 @@ export class DbSchemaBuilder
 			columnMap,
 			columns,
 			idColumns,
+			idColumnMap,
 			id: null,
 			index: jsonEntity.index,
 			isLocal: jsonEntity.isLocal,
@@ -238,8 +240,11 @@ export class DbSchemaBuilder
 			id: null,
 			index: jsonColumn.index,
 			isGenerated: !!jsonColumn.isGenerated,
+			manyRelationColumns: [],
 			name: jsonColumn.name,
 			notNull: jsonColumn.notNull,
+			oneRelationColumns: [],
+			propertyColumnMap: {},
 			propertyColumns: null,
 			sinceVersion: schemaVersion,
 			type: jsonColumn.type
@@ -250,7 +255,8 @@ export class DbSchemaBuilder
 				const property      = properties[propertyIndex]
 				return {
 					column: dbColumn,
-					property
+					property,
+					sinceVersion: schemaVersion,
 				}
 			}
 		)

@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 1/10/2016.
  */
-class DocumentHandle {
+export class DocumentHandle {
     constructor(document, changeList, valuesAddedSubject, valuesArchivedSubject, otherChangesSubject) {
         this.document = document;
         this.changeList = changeList;
@@ -24,5 +22,4 @@ class DocumentHandle {
         });
     }
 }
-exports.DocumentHandle = DocumentHandle;
 //# sourceMappingURL=DocumentHandle.js.map

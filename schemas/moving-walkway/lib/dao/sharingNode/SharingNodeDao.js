@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../../diTokens");
-const generated_1 = require("../../generated/generated");
-class SharingNodeDao extends generated_1.BaseSharingNodeDao {
+import { DI } from '@airport/di';
+import { SHARING_NODE_DAO } from '../../tokens';
+import { BaseSharingNodeDao, Q } from '../../generated/generated';
+export class SharingNodeDao extends BaseSharingNodeDao {
     async findAllGroupedBySyncFrequency( //
     ) {
         const allBySyncFrequency = new Map();
@@ -13,7 +11,7 @@ class SharingNodeDao extends generated_1.BaseSharingNodeDao {
                 ...this.db.duo.select.fields
             },
             from: [
-                sn = generated_1.Q.SharingNode
+                sn = Q.SharingNode
             ],
             orderBy: [
                 sn.syncFrequency.asc()
@@ -40,7 +38,7 @@ class SharingNodeDao extends generated_1.BaseSharingNodeDao {
     async updateIsActive(sharingNodeIds, isActive) {
         let sn;
         await this.db.updateWhere({
-            update: sn = generated_1.Q.SharingNode,
+            update: sn = Q.SharingNode,
             set: {
                 isActive: isActive
             },
@@ -48,6 +46,5 @@ class SharingNodeDao extends generated_1.BaseSharingNodeDao {
         });
     }
 }
-exports.SharingNodeDao = SharingNodeDao;
-di_1.DI.set(diTokens_1.SHARING_NODE_DAO, SharingNodeDao);
+DI.set(SHARING_NODE_DAO, SharingNodeDao);
 //# sourceMappingURL=SharingNodeDao.js.map

@@ -4,7 +4,7 @@ import {
 	SharingNodeIsActive,
 	SharingNodeSyncFrequency
 }                         from '../../ddl/ddl'
-import {SHARING_NODE_DAO} from '../../diTokens'
+import {SHARING_NODE_DAO} from '../../tokens'
 import {
 	BaseSharingNodeDao,
 	ISharingNode,

@@ -10,7 +10,7 @@ import {
 	MissingRecordId,
 	MissingRecordStatus
 }                                       from '../../ddl/ddl'
-import {REPO_TRANS_BLOCK_DAO}           from '../../diTokens'
+import {REPO_TRANS_BLOCK_DAO}           from '../../tokens'
 import {
 	BaseRepositoryTransactionBlockDao,
 	IBaseRepositoryTransactionBlockDao,

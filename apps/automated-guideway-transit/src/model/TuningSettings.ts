@@ -1,5 +1,5 @@
 import {DI}               from '@airport/di'
-import {TUNNING_SETTINGS} from '../diTokens'
+import {TUNNING_SETTINGS} from '../tokens'
 
 export interface ITuningSettings {
 	archiving: IArchivingTuningParams;

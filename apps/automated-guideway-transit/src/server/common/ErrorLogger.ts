@@ -1,7 +1,7 @@
 import {ILogger}             from "@airport/approach-lighting-system";
 import {TerminalCredentials} from "@airport/arrivals-n-departures";
 import {DI}                  from '@airport/di'
-import {ERROR_LOGGER}        from "../../diTokens";
+import {ERROR_LOGGER}        from "../../tokens";
 import {ServerErrorType}     from "../../model/ServerErrorType";
 
 export type ErroneousEntityInfo = string | number;

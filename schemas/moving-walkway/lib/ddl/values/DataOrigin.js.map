@@ -1,1 +1,1 @@
-{"version":3,"file":"DataOrigin.js","sourceRoot":"","sources":["../../../src/ddl/values/DataOrigin.ts"],"names":[],"mappings":";;AAAA,IAAY,UAGX;AAHD,WAAY,UAAU;IACrB,6CAAK,CAAA;IACL,+CAAM,CAAA;AACP,CAAC,EAHW,UAAU,GAAV,kBAAU,KAAV,kBAAU,QAGrB"}
+{"version":3,"file":"DataOrigin.js","sourceRoot":"","sources":["../../../src/ddl/values/DataOrigin.ts"],"names":[],"mappings":"AAAA,MAAM,CAAN,IAAY,UAGX;AAHD,WAAY,UAAU;IACrB,6CAAK,CAAA;IACL,+CAAM,CAAA;AACP,CAAC,EAHW,UAAU,KAAV,UAAU,QAGrB"}

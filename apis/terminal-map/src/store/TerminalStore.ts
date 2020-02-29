@@ -22,7 +22,7 @@ import {
 	ISchemaRelation,
 	ISchemaVersion
 }                       from '@airport/traffic-pattern'
-import {TERMINAL_STORE} from '../diTokens'
+import {TERMINAL_STORE} from '../tokens'
 import {ITerminalState} from './TerminalState'
 
 export interface ITerminalStore {

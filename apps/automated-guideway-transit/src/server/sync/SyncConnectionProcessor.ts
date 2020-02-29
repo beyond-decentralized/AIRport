@@ -13,7 +13,7 @@ import {
 	TmSharingMessageId,
 	VerifiedMessagesFromTM
 }                      from '@airport/arrivals-n-departures'
-import {DI}            from '@airport/di'
+import {container, DI}            from '@airport/di'
 import {
 	ensureChildArray,
 	ensureChildJsMap
@@ -45,7 +45,7 @@ import {
 	AGTLogger,
 	ERROR_LOGGER,
 	SYNC_CONNECTION_PROCESSOR
-}                      from '../../diTokens'
+}                      from '../../tokens'
 
 export interface ISyncConnectionProcessor {
 
@@ -66,7 +66,7 @@ export class SyncConnectionProcessor
 		// TODO: remove unused dependencies once tested
 		const [terminalDao, terminalRepositoryDao,
 			      agtSharingMessageDao, errorLogger, syncLogDao,
-			      agtRepositoryTransactionBlockDao] = await DI.get(
+			      agtRepositoryTransactionBlockDao] = await container(this).get(
 			TERMINAL_DAO, TERMINAL_REPOSITORY_DAO,
 			AGT_SHARING_MESSAGE_DAO, ERROR_LOGGER,
 			SYNC_LOG_DAO, AGT_REPO_TRANS_BLOCK_DAO

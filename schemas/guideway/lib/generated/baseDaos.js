@@ -1,183 +1,161 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const check_in_1 = require("@airport/check-in");
-const qSchema_1 = require("./qSchema");
+import { Dao } from '@airport/check-in';
+import { Q, duoDiSet } from './qSchema';
 // Schema Q object Dependency Injection readiness detection Dao
-class SQDIDao extends check_in_1.Dao {
+export class SQDIDao extends Dao {
     constructor(dbEntityId) {
-        super(dbEntityId, qSchema_1.Q);
+        super(dbEntityId, Q);
     }
 }
-exports.SQDIDao = SQDIDao;
-class BaseAgtRepositoryTransactionBlockDao extends SQDIDao {
+export class BaseAgtRepositoryTransactionBlockDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(16);
+        return duoDiSet(16);
     }
     constructor() {
         super(16);
     }
 }
-exports.BaseAgtRepositoryTransactionBlockDao = BaseAgtRepositoryTransactionBlockDao;
-class BaseAgtSharingMessageDao extends SQDIDao {
+export class BaseAgtSharingMessageDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(14);
+        return duoDiSet(14);
     }
     constructor() {
         super(14);
     }
 }
-exports.BaseAgtSharingMessageDao = BaseAgtSharingMessageDao;
-class BaseArchiveDao extends SQDIDao {
+export class BaseArchiveDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(0);
+        return duoDiSet(0);
     }
     constructor() {
         super(0);
     }
 }
-exports.BaseArchiveDao = BaseArchiveDao;
-class BaseDailyArchiveLogDao extends SQDIDao {
+export class BaseDailyArchiveLogDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(18);
+        return duoDiSet(18);
     }
     constructor() {
         super(18);
     }
 }
-exports.BaseDailyArchiveLogDao = BaseDailyArchiveLogDao;
-class BaseDailyTerminalSyncLogDao extends SQDIDao {
+export class BaseDailyTerminalSyncLogDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(1);
+        return duoDiSet(1);
     }
     constructor() {
         super(1);
     }
 }
-exports.BaseDailyTerminalSyncLogDao = BaseDailyTerminalSyncLogDao;
-class BaseMonthlyArchiveLogDao extends SQDIDao {
+export class BaseMonthlyArchiveLogDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(2);
+        return duoDiSet(2);
     }
     constructor() {
         super(2);
     }
 }
-exports.BaseMonthlyArchiveLogDao = BaseMonthlyArchiveLogDao;
-class BaseMonthlyTerminalSyncLogDao extends SQDIDao {
+export class BaseMonthlyTerminalSyncLogDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(3);
+        return duoDiSet(3);
     }
     constructor() {
         super(3);
     }
 }
-exports.BaseMonthlyTerminalSyncLogDao = BaseMonthlyTerminalSyncLogDao;
-class BaseRepositoryDao extends SQDIDao {
+export class BaseRepositoryDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(17);
+        return duoDiSet(17);
     }
     constructor() {
         super(17);
     }
 }
-exports.BaseRepositoryDao = BaseRepositoryDao;
-class BaseRepositoryArchiveDao extends SQDIDao {
+export class BaseRepositoryArchiveDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(4);
+        return duoDiSet(4);
     }
     constructor() {
         super(4);
     }
 }
-exports.BaseRepositoryArchiveDao = BaseRepositoryArchiveDao;
-class BaseSecurityAnswerDao extends SQDIDao {
+export class BaseSecurityAnswerDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(8);
+        return duoDiSet(8);
     }
     constructor() {
         super(8);
     }
 }
-exports.BaseSecurityAnswerDao = BaseSecurityAnswerDao;
-class BaseSecurityQuestionDao extends SQDIDao {
+export class BaseSecurityQuestionDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(7);
+        return duoDiSet(7);
     }
     constructor() {
         super(7);
     }
 }
-exports.BaseSecurityQuestionDao = BaseSecurityQuestionDao;
-class BaseServerDao extends SQDIDao {
+export class BaseServerDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(10);
+        return duoDiSet(10);
     }
     constructor() {
         super(10);
     }
 }
-exports.BaseServerDao = BaseServerDao;
-class BaseServerSyncLogDao extends SQDIDao {
+export class BaseServerSyncLogDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(9);
+        return duoDiSet(9);
     }
     constructor() {
         super(9);
     }
 }
-exports.BaseServerSyncLogDao = BaseServerSyncLogDao;
-class BaseSyncLogDao extends SQDIDao {
+export class BaseSyncLogDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(11);
+        return duoDiSet(11);
     }
     constructor() {
         super(11);
     }
 }
-exports.BaseSyncLogDao = BaseSyncLogDao;
-class BaseTerminalDao extends SQDIDao {
+export class BaseTerminalDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(15);
+        return duoDiSet(15);
     }
     constructor() {
         super(15);
     }
 }
-exports.BaseTerminalDao = BaseTerminalDao;
-class BaseTerminalRepositoryDao extends SQDIDao {
+export class BaseTerminalRepositoryDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(12);
+        return duoDiSet(12);
     }
     constructor() {
         super(12);
     }
 }
-exports.BaseTerminalRepositoryDao = BaseTerminalRepositoryDao;
-class BaseTuningParametersDao extends SQDIDao {
+export class BaseTuningParametersDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(13);
+        return duoDiSet(13);
     }
     constructor() {
         super(13);
     }
 }
-exports.BaseTuningParametersDao = BaseTuningParametersDao;
-class BaseUserDao extends SQDIDao {
+export class BaseUserDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(6);
+        return duoDiSet(6);
     }
     constructor() {
         super(6);
     }
 }
-exports.BaseUserDao = BaseUserDao;
-class BaseUserRepositoryDao extends SQDIDao {
+export class BaseUserRepositoryDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(5);
+        return duoDiSet(5);
     }
     constructor() {
         super(5);
     }
 }
-exports.BaseUserRepositoryDao = BaseUserRepositoryDao;
 //# sourceMappingURL=baseDaos.js.map

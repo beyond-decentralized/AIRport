@@ -10,7 +10,7 @@ import {
 	TerminalPassword,
 	VerifiedMessagesFromTM
 }                        from '@airport/arrivals-n-departures'
-import {DI}              from '@airport/di'
+import {container, DI}              from '@airport/di'
 import {
 	AGT_SHARING_MESSAGE_DAO,
 	ITerminalDao,
@@ -24,7 +24,7 @@ import {
 	BLACKLIST,
 	ERROR_LOGGER,
 	SYNC_CONNECTION_VERIFIER
-}                        from '../../diTokens'
+}                        from '../../tokens'
 import {ServerErrorType} from '../../model/ServerErrorType'
 import {IErrorLogger}    from '../common/ErrorLogger'
 
@@ -75,7 +75,7 @@ export class SyncConnectionVerifier
 			      terminalRepositoryDao,
 			      agtSharingMessageDao,
 			      errorLogger
-		      ] = await DI.get(BLACKLIST, TERMINAL_DAO,
+		      ] = await container(this).get(BLACKLIST, TERMINAL_DAO,
 			TERMINAL_REPOSITORY_DAO, AGT_SHARING_MESSAGE_DAO,
 			ERROR_LOGGER)
 

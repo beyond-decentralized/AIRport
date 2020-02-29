@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var TMDataError;
+export var TMDataError;
 (function (TMDataError) {
-})(TMDataError = exports.TMDataError || (exports.TMDataError = {}));
+})(TMDataError || (TMDataError = {}));
 //# sourceMappingURL=TMDataError.js.map

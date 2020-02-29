@@ -1,4 +1,4 @@
-import {DI}              from '@airport/di'
+import {container, DI}              from '@airport/di'
 import {
 	DbEntity,
 	QueryResultType,
@@ -12,7 +12,7 @@ import {
 	QUERY_UTILS,
 	SCHEMA_UTILS,
 	UPDATE_CACHE
-}                        from '../../../diTokens'
+}                        from '../../../tokens'
 import {UpdateCacheType} from '../../../lingo/core/data/UpdateCacheType'
 import {ILookup}         from '../../../lingo/query/api/Lookup'
 import {IAbstractQuery}  from '../../../lingo/query/facade/AbstractQuery'
@@ -31,7 +31,7 @@ export class LookupProxy
 		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any> {
-		return DI.get(LOOKUP).then(
+		return container(this).get(LOOKUP).then(
 			lookup => lookup.lookup(
 				rawQuery, queryResultType, search, one,
 				QueryClass, dbEntity, cacheForUpdate, mapResults))
@@ -54,7 +54,7 @@ export class Lookup
 		const [
 			      entityUtils, fieldUtils, queryFacade, queryUtils,
 			      schemaUtils, transConnector, updateCache
-		      ] = await DI.get(
+		      ] = await container(this).get(
 			ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS,
 			SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
 		)

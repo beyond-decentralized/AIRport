@@ -1,6 +1,6 @@
 import {DI}                   from '@airport/di'
 import {SchemaVersionId}      from '@airport/ground-control'
-import {SCHEMA_REFERENCE_DAO} from '../diTokens'
+import {SCHEMA_REFERENCE_DAO} from '../tokens'
 import {
 	BaseSchemaReferenceDao,
 	IBaseSchemaReferenceDao,

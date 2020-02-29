@@ -2,7 +2,7 @@ import {
 	TerminalName,
 	TerminalSecondId
 }                                 from '@airport/arrivals-n-departures'
-import {DI}                       from '@airport/di'
+import {container, DI}                       from '@airport/di'
 import {
 	CascadeOverwrite,
 	ensureChildJsMap
@@ -15,7 +15,7 @@ import {
 	UserId,
 	UserUniqueId
 }                                 from '@airport/travel-document-checkpoint'
-import {SYNC_IN_TERMINAL_CHECKER} from '../../../diTokens'
+import {SYNC_IN_TERMINAL_CHECKER} from '../../../tokens'
 import {IDataToTM}                from '../SyncInUtils'
 import {UserCheckResults}         from './SyncInUserChecker'
 
@@ -37,7 +37,7 @@ export class SyncInTerminalChecker
 		localTerminal: ITerminal,
 		userCheckResults: UserCheckResults
 	): Promise<TerminalCheckResults> {
-		const terminalDao = await DI.get(TERMINAL_DAO)
+		const terminalDao = await container(this).get(TERMINAL_DAO)
 
 		const remoteTerminalMapByUniqueIds: Map<UserUniqueId,
 			Map<TerminalName, Map<TerminalSecondId, ITerminal>>> = new Map()

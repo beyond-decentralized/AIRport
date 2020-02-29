@@ -1,20 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const BooleanOperation_1 = require("../operation/BooleanOperation");
-const OperableField_1 = require("./OperableField");
-class QBooleanField extends OperableField_1.QOperableField {
-    constructor(dbColumn, dbProperty, q, objectType = ground_control_1.JSONClauseObjectType.FIELD) {
-        super(dbColumn, dbProperty, q, objectType, new BooleanOperation_1.BooleanOperation());
+import { JSONClauseObjectType, SQLDataType } from '@airport/ground-control';
+import { BooleanOperation } from '../operation/BooleanOperation';
+import { QOperableField } from './OperableField';
+export class QBooleanField extends QOperableField {
+    constructor(dbColumn, dbProperty, q, objectType = JSONClauseObjectType.FIELD) {
+        super(dbColumn, dbProperty, q, objectType, new BooleanOperation());
     }
     getInstance(qEntity = this.q) {
         return this.copyFunctions(new QBooleanField(this.dbColumn, this.dbProperty, qEntity, this.objectType));
     }
 }
-exports.QBooleanField = QBooleanField;
-class QBooleanFunction extends QBooleanField {
+export class QBooleanFunction extends QBooleanField {
     constructor(value, isQueryParameter = false) {
-        super({ type: ground_control_1.SQLDataType.BOOLEAN }, null, null, ground_control_1.JSONClauseObjectType.FIELD_FUNCTION);
+        super({ type: SQLDataType.BOOLEAN }, null, null, JSONClauseObjectType.FIELD_FUNCTION);
         this.value = value;
         this.isQueryParameter = isQueryParameter;
     }
@@ -29,5 +26,4 @@ class QBooleanFunction extends QBooleanField {
         return json;
     }
 }
-exports.QBooleanFunction = QBooleanFunction;
 //# sourceMappingURL=BooleanField.js.map

@@ -6,9 +6,9 @@ import {
 	AgtRepositoryId,
 	TerminalId
 }                                     from '@airport/arrivals-n-departures'
-import {DI}                           from '@airport/di'
+import {container, DI}                           from '@airport/di'
 import {TerminalRepositoryPermission} from '../../ddl/ddl'
-import {TERMINAL_REPOSITORY_DAO}      from '../../diTokens'
+import {TERMINAL_REPOSITORY_DAO}      from '../../tokens'
 import {
 	BaseTerminalRepositoryDao,
 	QTerminalRepository
@@ -37,7 +37,7 @@ export class TerminalRepositoryDao
 
 		let tr: QTerminalRepository
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const results = await airDb.find.sheet({
 			from: [

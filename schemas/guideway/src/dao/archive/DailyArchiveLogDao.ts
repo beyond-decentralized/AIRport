@@ -1,7 +1,7 @@
 import {AIR_DB}                from '@airport/air-control'
-import {DI}                    from '@airport/di'
+import {container, DI}                    from '@airport/di'
 import {DailyArchiveLogValues} from '../../ddl/ddl'
-import {DAILY_ARCHIVE_LOG_DAO} from '../../diTokens'
+import {DAILY_ARCHIVE_LOG_DAO} from '../../tokens'
 import {
 	BaseDailyArchiveLogDao,
 	Q,
@@ -27,7 +27,7 @@ export class DailyArchiveLogDao
 
 		let dal: QDailyArchiveLog
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		return await airDb.insertValues(dbEntity, {
 			insertInto: dal = Q.DailyArchiveLog,

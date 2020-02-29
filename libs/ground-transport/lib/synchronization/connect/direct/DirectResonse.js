@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class DirectResponse {
+export class DirectResponse {
     constructor(callback) {
         this.callback = callback;
         this.data = {
@@ -20,5 +18,4 @@ class DirectResponse {
         this.callback(this.statusCode, this.data);
     }
 }
-exports.DirectResponse = DirectResponse;
 //# sourceMappingURL=DirectResonse.js.map

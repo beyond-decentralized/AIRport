@@ -1,20 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../diTokens");
-const generated_1 = require("../generated/generated");
-class SchemaPropertyDao extends generated_1.BaseSchemaPropertyDao {
+import { DI } from '@airport/di';
+import { SCHEMA_PROPERTY_DAO } from '../tokens';
+import { BaseSchemaPropertyDao, Q, } from '../generated/generated';
+export class SchemaPropertyDao extends BaseSchemaPropertyDao {
     async findAllForEntities(entityIds) {
         let p;
         return this.db.find.tree({
             select: {},
             from: [
-                p = generated_1.Q.SchemaProperty
+                p = Q.SchemaProperty
             ],
             where: p.entity.id.in(entityIds)
         });
     }
 }
-exports.SchemaPropertyDao = SchemaPropertyDao;
-di_1.DI.set(diTokens_1.SCHEMA_PROPERTY_DAO, SchemaPropertyDao);
+DI.set(SCHEMA_PROPERTY_DAO, SchemaPropertyDao);
 //# sourceMappingURL=SchemaPropertyDao.js.map

@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const SchemaStatus_1 = require("../../../lingo/schema/SchemaStatus");
-const DatastructureUtils_1 = require("../../utils/DatastructureUtils");
-class DbSchemaBuilder {
+import { SchemaStatus } from '../../../lingo/schema/SchemaStatus';
+import { ensureChildMap } from '../../utils/DatastructureUtils';
+export class DbSchemaBuilder {
     buildDbSchemaWithoutReferences(jsonSchema, allSchemas, dictionary) {
         const entities = [];
         const entityMapByName = {};
@@ -42,7 +40,7 @@ class DbSchemaBuilder {
             name: jsonSchema.name,
             scope: null,
             sinceVersion: dbSchemaVersion,
-            status: SchemaStatus_1.SchemaStatus.CURRENT,
+            status: SchemaStatus.CURRENT,
             versions: [dbSchemaVersion]
         };
         dbSchemaVersion.schema = dbSchema;
@@ -58,6 +56,7 @@ class DbSchemaBuilder {
         const columnMap = {};
         const columns = [];
         const idColumns = [];
+        const idColumnMap = {};
         const propertyMap = {};
         const properties = [];
         const relations = [];
@@ -65,6 +64,7 @@ class DbSchemaBuilder {
             columnMap,
             columns,
             idColumns,
+            idColumnMap,
             id: null,
             index: jsonEntity.index,
             isLocal: jsonEntity.isLocal,
@@ -146,8 +146,11 @@ class DbSchemaBuilder {
             id: null,
             index: jsonColumn.index,
             isGenerated: !!jsonColumn.isGenerated,
+            manyRelationColumns: [],
             name: jsonColumn.name,
             notNull: jsonColumn.notNull,
+            oneRelationColumns: [],
+            propertyColumnMap: {},
             propertyColumns: null,
             sinceVersion: schemaVersion,
             type: jsonColumn.type
@@ -157,7 +160,8 @@ class DbSchemaBuilder {
             const property = properties[propertyIndex];
             return {
                 column: dbColumn,
-                property
+                property,
+                sinceVersion: schemaVersion,
             };
         });
         dbColumn.propertyColumns = propertyColumns;
@@ -188,7 +192,7 @@ class DbSchemaBuilder {
             const oneTableIndex = relationColumnRef.oneTableIndex;
             const oneRelationIndex = relationColumnRef.oneRelationIndex;
             const oneColumnIndex = relationColumnRef.oneColumnIndex;
-            const manyRelationColumnMap = DatastructureUtils_1.ensureChildMap(DatastructureUtils_1.ensureChildMap(DatastructureUtils_1.ensureChildMap(DatastructureUtils_1.ensureChildMap(dictionary.dbColumnRelationMapByManySide, manySchema.name), manyTableIndex), manyRelationIndex), manySchema.domain);
+            const manyRelationColumnMap = ensureChildMap(ensureChildMap(ensureChildMap(ensureChildMap(dictionary.dbColumnRelationMapByManySide, manySchema.name), manyTableIndex), manyRelationIndex), manySchema.domain);
             manyRelationColumnMap[manyColumnIndex] = {
                 domain: oneSchema.domain,
                 schemaName: oneSchema.name,
@@ -364,5 +368,4 @@ class DbSchemaBuilder {
         }
     }
 }
-exports.DbSchemaBuilder = DbSchemaBuilder;
 //# sourceMappingURL=DbSchemaBuilder.js.map

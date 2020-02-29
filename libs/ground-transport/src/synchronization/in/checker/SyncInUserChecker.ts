@@ -1,5 +1,5 @@
 import {Y}                              from '@airport/air-control'
-import {DI}                             from '@airport/di'
+import {container, DI}                             from '@airport/di'
 import {CascadeOverwrite}               from '@airport/ground-control'
 import {RepositoryTransactionBlockData} from '@airport/moving-walkway'
 import {
@@ -9,7 +9,7 @@ import {
 	UserId,
 	UserUniqueId
 }                                       from '@airport/travel-document-checkpoint'
-import {SYNC_IN_USER_CHECKER}           from '../../../diTokens'
+import {SYNC_IN_USER_CHECKER}           from '../../../tokens'
 import {IDataToTM}                      from '../SyncInUtils'
 
 export interface UserCheckResults {
@@ -34,7 +34,7 @@ export class SyncInUserChecker
 	async ensureUsersAndGetAsMaps(
 		dataMessages: IDataToTM[]
 	): Promise<UserCheckResults> {
-		const userDao = await DI.get(USER_DAO)
+		const userDao = await container(this).get(USER_DAO)
 
 		const remoteUserMapByUniqueId: Map<UserUniqueId, IUser>      = new Map()
 		const mapById: Map<UserId, IUser>                            = new Map()

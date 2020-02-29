@@ -1,10 +1,5 @@
-"use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(require("./LogEntryType"));
-__export(require("./LogEntryType"));
-__export(require("./LogEntryValue"));
-__export(require("./LogLevel"));
+export * from './LogEntryType';
+export * from './LogEntryType';
+export * from './LogEntryValue';
+export * from './LogLevel';
 //# sourceMappingURL=ddl.js.map

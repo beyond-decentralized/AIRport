@@ -1,4 +1,4 @@
-import {DI}           from '@airport/di'
+import {container, DI}           from '@airport/di'
 import {
 	DistributionStrategy,
 	ITransactionalConnector,
@@ -16,7 +16,7 @@ export class TransactionalConnector
 	serverUrl: string
 
 	async init(): Promise<void> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		await transServer.init()
 	}
@@ -28,7 +28,7 @@ export class TransactionalConnector
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy
 	): Promise<number> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		return await transServer.addRepository(
 			name,
@@ -41,7 +41,7 @@ export class TransactionalConnector
 	}
 
 	async transact(): Promise<void> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		return await transServer.transact({
 			domainAndPort: 'test'
@@ -49,7 +49,7 @@ export class TransactionalConnector
 	}
 
 	async rollback(): Promise<void> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		return await transServer.rollback({
 			domainAndPort: 'test'
@@ -57,7 +57,7 @@ export class TransactionalConnector
 	}
 
 	async commit(): Promise<void> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		return await transServer.commit({
 			domainAndPort: 'test'
@@ -68,7 +68,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		return await transServer.find(
 			portableQuery,
@@ -83,7 +83,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		return await transServer.findOne(
 			portableQuery,
@@ -98,7 +98,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<EntityArray>> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		return await transServer.search(
 			portableQuery,
@@ -113,7 +113,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<E>> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		return await transServer.searchOne(
 			portableQuery,
@@ -129,7 +129,7 @@ export class TransactionalConnector
 		transactionIndex?: number,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		return await transServer.insertValues(
 			portableQuery,
@@ -145,7 +145,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		return await transServer.insertValuesGetIds(
 			portableQuery,
@@ -160,7 +160,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
 	): Promise<number> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		return await transServer.updateValues(
 			portableQuery,
@@ -175,7 +175,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		transactionIndex?: number,
 	): Promise<number> {
-		const transServer = await DI.get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER)
 
 		return await transServer.deleteWhere(
 			portableQuery,

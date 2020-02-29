@@ -10,7 +10,7 @@ import {
 	IBaseSchemaRelationDuo,
 	IBaseSchemaVersionDuo
 }                                                 from '../generated/generated'
-import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DUOS} from '../diTokens'
+import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DUOS} from '../tokens'
 
 export * from './SchemaVersionDuo'
 

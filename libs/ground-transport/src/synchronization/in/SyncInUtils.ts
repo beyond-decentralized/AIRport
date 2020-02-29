@@ -23,7 +23,7 @@ import {
 	RepositoryTransactionBlockData,
 	SharingNodeRepoTransBlock,
 }                      from '@airport/moving-walkway'
-import {SYNC_IN_UTILS} from '../../diTokens'
+import {SYNC_IN_UTILS} from '../../tokens'
 
 export type RemoteSchemaIndex = SchemaIndex;
 export type RemoteSchemaVersionId = SchemaVersionId;

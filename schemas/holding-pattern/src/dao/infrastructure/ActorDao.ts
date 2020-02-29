@@ -16,7 +16,7 @@ import {
 	ActorId,
 	ActorRandomId,
 }                  from '../../ddl/ddl'
-import {ACTOR_DAO} from '../../diTokens'
+import {ACTOR_DAO} from '../../tokens'
 import {
 	BaseActorDao,
 	IActor,

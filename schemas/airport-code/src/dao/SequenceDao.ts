@@ -1,6 +1,6 @@
 import {plus}         from '@airport/air-control'
 import {DI}           from '@airport/di'
-import {SEQUENCE_DAO} from '../diTokens'
+import {SEQUENCE_DAO} from '../tokens'
 import {
 	BaseSequenceDao,
 	IBaseSequenceDao,

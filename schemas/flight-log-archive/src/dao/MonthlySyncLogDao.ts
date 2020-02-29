@@ -2,14 +2,14 @@ import {
 	AIR_DB,
 	and
 }                              from '@airport/air-control'
-import {DI}                    from '@airport/di'
+import {container, DI}                    from '@airport/di'
 import {
 	MonthlySyncLogDatabaseId,
 	MonthlySyncLogDate,
 	MonthlySyncLogRepositoryId,
 	MonthlySyncLogSynced
 }                              from '../ddl/MonthlySyncLog'
-import {MONTHLY_SYNC_LOG_DAO}  from '../diTokens'
+import {MONTHLY_SYNC_LOG_DAO}  from '../tokens'
 import {BaseMonthlySyncLogDao} from '../generated/baseDaos'
 import {QMonthlySyncLog}       from '../generated/qmonthlysynclog'
 import {Q}                     from '../generated/qSchema'
@@ -45,7 +45,7 @@ export class MonthlySyncLogDao
 	): Promise<void> {
 		let dsl: QMonthlySyncLog
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		await airDb.find.sheet({
 			from: [

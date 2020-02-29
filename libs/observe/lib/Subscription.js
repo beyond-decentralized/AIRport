@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class Subscription {
+export class Subscription {
     constructor(observable, onNext, onError, onComplete, onUnsubscribe) {
         this.observable = observable;
         this.onNext = onNext;
@@ -24,5 +22,4 @@ class Subscription {
         return this._closed;
     }
 }
-exports.Subscription = Subscription;
 //# sourceMappingURL=Subscription.js.map

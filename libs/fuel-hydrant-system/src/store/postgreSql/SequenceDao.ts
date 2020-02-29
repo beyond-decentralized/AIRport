@@ -4,7 +4,7 @@ import {
 	SEQUENCE_DAO,
 	SequenceEId
 }                       from '@airport/airport-code'
-import {DI}             from '@airport/di'
+import {container, DI}             from '@airport/di'
 import {
 	DomainName,
 	SchemaName
@@ -20,7 +20,7 @@ export class SequenceDao
 	): Promise<ISequence[]> {
 		const latestSchemaVersionMapByNames
 			      : Map<DomainName, Map<SchemaName, ISchemaVersion>>
-			      = (await DI.get(TERMINAL_STORE)).getLatestSchemaVersionMapByNames()
+			      = (await container(this).get(TERMINAL_STORE)).getLatestSchemaVersionMapByNames()
 
 		const sequences: ISequence[] = []
 

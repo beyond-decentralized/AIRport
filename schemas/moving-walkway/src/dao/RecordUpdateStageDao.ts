@@ -4,7 +4,7 @@ import {
 	field,
 	or
 }                                from '@airport/air-control'
-import {DI}                      from '@airport/di'
+import {container, DI}                      from '@airport/di'
 import {
 	ColumnIndex,
 	JSONBaseOperation,
@@ -18,7 +18,7 @@ import {
 	RepositoryEntityActorRecordId,
 	RepositoryId
 }                                from '@airport/holding-pattern'
-import {RECORD_UPDATE_STAGE_DAO} from '../diTokens'
+import {RECORD_UPDATE_STAGE_DAO} from '../tokens'
 import {
 	BaseRecordUpdateStageDao,
 	IBaseRecordUpdateStageDao,
@@ -97,7 +97,7 @@ export class RecordUpdateStageDao
 		idMap: Map<RepositoryId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
 	): Promise<void> {
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const dbEntity = airDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
 		const qEntity  = airDb.qSchemas[schemaIndex][dbEntity.name]

@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const pathResolver_1 = require("../resolve/pathResolver");
-class QSchemaBuilder {
+import { resolveRelativePath } from '../resolve/pathResolver';
+export class QSchemaBuilder {
     constructor(pathBuilder) {
         this.pathBuilder = pathBuilder;
         this.entityNames = [];
@@ -11,10 +9,10 @@ class QSchemaBuilder {
         this.qSchemaFilePath = pathBuilder.fullGeneratedDirPath + '/qSchema.ts';
     }
     addFileNameAndPaths(entityName, fullDdlPath, fullGenerationPath) {
-        const ddlRelativePath = pathResolver_1.resolveRelativePath(this.qSchemaFilePath, fullDdlPath)
+        const ddlRelativePath = resolveRelativePath(this.qSchemaFilePath, fullDdlPath)
             .replace('.ts', '');
         this.ddlPathMapByEntityName[entityName] = ddlRelativePath;
-        const generatedRelativePath = pathResolver_1.resolveRelativePath(this.qSchemaFilePath, fullGenerationPath)
+        const generatedRelativePath = resolveRelativePath(this.qSchemaFilePath, fullGenerationPath)
             .replace('.ts', '');
         this.generatedFilePaths.push(generatedRelativePath);
         this.generatedPathMapByEntityName[entityName]
@@ -104,7 +102,7 @@ export function duoDiSet(
 	return ddS(Q.__dbSchema__, dbEntityId)
 }
 
-DI.get(AIR_DB).then((
+DI.db().get(AIR_DB).then((
 	airDb
 ) => {
 	airDb.QM[getSchemaName(Q_SCHEMA)] = Q
@@ -112,5 +110,4 @@ DI.get(AIR_DB).then((
 `;
     }
 }
-exports.QSchemaBuilder = QSchemaBuilder;
 //# sourceMappingURL=QSchemaBuilder.js.map

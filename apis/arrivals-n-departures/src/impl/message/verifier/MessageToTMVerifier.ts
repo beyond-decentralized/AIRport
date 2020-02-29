@@ -1,5 +1,5 @@
 import {DI}                            from '@airport/di'
-import {MESSAGE_TO_TM_VERIFIER}        from '../../../diTokens'
+import {MESSAGE_TO_TM_VERIFIER}        from '../../../tokens'
 import {
 	MessageToTMContentType,
 	MessageToTMError,

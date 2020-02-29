@@ -1,18 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 4/24/2016.
  */
-const Arguments_1 = require("./Arguments");
-function parseFlags(programArguments) {
-    let flags = new Arguments_1.Flags();
+import { ARGUMENT_FLAGS, ArgumentType, Flags } from './Arguments';
+export function parseFlags(programArguments) {
+    let flags = new Flags();
     let argumentGroups = getArgumentGroups(programArguments);
     let foundFlags = {};
     argumentGroups.forEach((argumentGroup) => {
         let flag = argumentGroup[0];
-        let argType = Arguments_1.ARGUMENT_FLAGS[flag];
+        let argType = ARGUMENT_FLAGS[flag];
         switch (argType) {
-            case Arguments_1.ArgumentType.CONFIG:
+            case ArgumentType.CONFIG:
                 if (foundFlags[argType]) {
                     throw new Error(`Flag already specified '${flag}'`);
                 }
@@ -28,7 +26,6 @@ function parseFlags(programArguments) {
     }
     return flags;
 }
-exports.parseFlags = parseFlags;
 function verifyArgumentGroupLength(argumentGroup, expectedLength) {
     if (argumentGroup.length !== expectedLength) {
         throw new Error(`Expecting '${expectedLength - 1}' values for '${argumentGroup[0]}' flag`);

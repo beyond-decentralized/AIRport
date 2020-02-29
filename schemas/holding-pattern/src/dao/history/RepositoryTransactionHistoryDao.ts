@@ -9,7 +9,7 @@ import {
 	RawFieldQuery,
 	Y
 }                             from '@airport/air-control'
-import {DI}                   from '@airport/di'
+import {container, DI}                   from '@airport/di'
 import {
 	ChangeType,
 	ensureChildArray,
@@ -30,7 +30,7 @@ import {
 	OPER_HISTORY_DUO,
 	REC_HISTORY_DUO,
 	REPO_TRANS_HISTORY_DAO,
-}                             from '../../diTokens'
+}                             from '../../tokens'
 import {IOperationHistoryDuo} from '../../duo/history/OperationHistoryDuo'
 import {IRecordHistoryDuo}    from '../../duo/history/RecordHistoryDuo'
 import {
@@ -145,7 +145,7 @@ export class RepositoryTransactionHistoryDao
 			): JSONBaseOperation
 		}
 	): Promise<IRepositoryTransactionHistory[]> {
-		const [operHistoryDuo, recHistoryDuo] = await DI.get(
+		const [operHistoryDuo, recHistoryDuo] = await container(this).get(
 			OPER_HISTORY_DUO, REC_HISTORY_DUO)
 
 		let rth: QRepositoryTransactionHistory,
@@ -375,7 +375,7 @@ export class RepositoryTransactionHistoryDao
 			))
 		}
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const records = await airDb.find.sheet({
 			from: [

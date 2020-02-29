@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("./diTokens");
-class DdlObjectLinker {
+import { DI } from '@airport/di';
+import { DDL_OBJECT_LINKER } from './tokens';
+export class DdlObjectLinker {
     link(ddlObjects, terminalStore) {
         const { allSchemaVersionsByIds, columns, domains, entities, latestSchemaVersions, properties, propertyColumns, relationColumns, relations, schemaReferences, schemas } = ddlObjects;
         this.linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, domains, schemas, latestSchemaVersions, schemaReferences);
@@ -154,6 +152,5 @@ class DdlObjectLinker {
         });
     }
 }
-exports.DdlObjectLinker = DdlObjectLinker;
-di_1.DI.set(diTokens_1.DDL_OBJECT_LINKER, DdlObjectLinker);
+DI.set(DDL_OBJECT_LINKER, DdlObjectLinker);
 //# sourceMappingURL=DdlObjectLinker.js.map

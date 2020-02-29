@@ -2,7 +2,7 @@ import {and}                       from '@airport/air-control'
 import {TerminalId}                from '@airport/arrivals-n-departures'
 import {DI}                        from '@airport/di'
 import {SharingNodeId}             from '../../ddl/ddl'
-import {SHARING_NODE_TERMINAL_DAO} from '../../diTokens'
+import {SHARING_NODE_TERMINAL_DAO} from '../../tokens'
 import {
 	BaseSharingNodeTerminalDao,
 	IBaseSharingNodeTerminalDao,

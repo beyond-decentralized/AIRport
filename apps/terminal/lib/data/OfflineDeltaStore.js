@@ -1,20 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const terminal_map_1 = require("@airport/terminal-map");
-const diTokens_1 = require("../diTokens");
-function getOfflineDeltaStore(localStore) {
+import { DI } from '@airport/di';
+import { StoreType } from '@airport/terminal-map';
+import { OFFLINE_DELTA_STORE } from '../tokens';
+export function getOfflineDeltaStore(localStore) {
     switch (localStore.type) {
-        case terminal_map_1.StoreType.SQLITE_CORDOVA:
-        case terminal_map_1.StoreType.SQLJS:
+        case StoreType.SQLITE_CORDOVA:
+        case StoreType.SQLJS:
             throw new Error(`Implement!`);
         // return new OfflineSqlDeltaStore(localStore);
         default:
             throw new Error(`Unsupported LocalStoreType: ${localStore.type}`);
     }
 }
-exports.getOfflineDeltaStore = getOfflineDeltaStore;
-class OfflineDeltaStore {
+export class OfflineDeltaStore {
     addRemoteChanges(repository, transactions) {
         throw new Error(`Implement!`);
     }
@@ -25,6 +22,5 @@ class OfflineDeltaStore {
         throw new Error(`Implement!`);
     }
 }
-exports.OfflineDeltaStore = OfflineDeltaStore;
-di_1.DI.set(diTokens_1.OFFLINE_DELTA_STORE, OfflineDeltaStore);
+DI.set(OFFLINE_DELTA_STORE, OfflineDeltaStore);
 //# sourceMappingURL=OfflineDeltaStore.js.map

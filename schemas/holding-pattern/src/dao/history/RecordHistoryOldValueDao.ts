@@ -1,5 +1,5 @@
 import {DI}                     from '@airport/di'
-import {REC_HIST_OLD_VALUE_DAO} from '../../diTokens'
+import {REC_HIST_OLD_VALUE_DAO} from '../../tokens'
 import {
 	BaseRecordHistoryOldValueDao,
 	IBaseRecordHistoryOldValueDao

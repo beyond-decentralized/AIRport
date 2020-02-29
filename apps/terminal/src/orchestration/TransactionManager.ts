@@ -1,5 +1,5 @@
 import {IQEntityInternal}        from '@airport/air-control'
-import {DI}                      from '@airport/di'
+import {container, DI}                      from '@airport/di'
 import {
 	ACTIVE_QUERIES,
 	ID_GENERATOR,
@@ -40,7 +40,7 @@ export class TransactionManager
 	async init(
 		dbName: string
 	): Promise<void> {
-		const storeDriver = await DI.get(STORE_DRIVER)
+		const storeDriver = await container(this).get(STORE_DRIVER)
 
 		return await storeDriver.initialize(dbName)
 		// await this.dataStore.initialize(dbName)
@@ -50,7 +50,7 @@ export class TransactionManager
 	async transact(
 		credentials: ICredentials
 	): Promise<void> {
-		const [storeDriver, transHistoryDuo] = await DI.get(
+		const [storeDriver, transHistoryDuo] = await container(this).get(
 			STORE_DRIVER, TRANS_HISTORY_DUO
 		)
 
@@ -101,7 +101,7 @@ export class TransactionManager
 			return
 		}
 		try {
-			await (await DI.get(STORE_DRIVER)).rollback()
+			await (await container(this).get(STORE_DRIVER)).rollback()
 		} finally {
 			this.clearTransaction()
 		}
@@ -110,7 +110,7 @@ export class TransactionManager
 	async commit(
 		credentials: ICredentials
 	): Promise<void> {
-		const [activeQueries, idGenerator, storeDriver] = await DI.get(
+		const [activeQueries, idGenerator, storeDriver] = await container(this).get(
 			ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER
 		)
 

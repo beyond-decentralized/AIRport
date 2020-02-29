@@ -7,7 +7,7 @@ import {
 	Y
 }                                    from '@airport/air-control'
 import {AgtRepositoryId}             from '@airport/arrivals-n-departures'
-import {DI}                          from '@airport/di'
+import {container, DI}                          from '@airport/di'
 import {
 	ensureChildJsMap,
 	ensureChildJsSet
@@ -28,7 +28,7 @@ import {
 	RepositoryTransactionHistoryId
 }                                    from '@airport/holding-pattern'
 import {SharingNodeId}               from '../../ddl/ddl'
-import {SHARING_NODE_REPOSITORY_DAO} from '../../diTokens'
+import {SHARING_NODE_REPOSITORY_DAO} from '../../tokens'
 import {
 	BaseSharingNodeRepositoryDao,
 	ISharingNodeRepository,
@@ -154,7 +154,7 @@ export class SharingNodeRepositoryDao
 		const sharingNodeIdMapByRepositoryId
 			      : Map<RepositoryId, Set<SharingNodeId>> = new Map()
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		let snr: QSharingNodeRepository = Q.SharingNodeRepository
 		let r: QRepository
@@ -189,7 +189,7 @@ export class SharingNodeRepositoryDao
 		}
 
 		const [recHistNewValueDao, recHistOldValueDao,
-			      repoTransHistoryDao] = await DI.get(
+			      repoTransHistoryDao] = await container(this).get(
 			REC_HIST_NEW_VALUE_DAO, REC_HIST_OLD_VALUE_DAO,
 			REPO_TRANS_HISTORY_DAO)
 		const repositoryTransactionHistories = await repoTransHistoryDao

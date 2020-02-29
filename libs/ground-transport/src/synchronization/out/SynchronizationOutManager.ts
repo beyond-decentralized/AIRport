@@ -1,4 +1,4 @@
-import {DI}         from '@airport/di'
+import {container, DI}         from '@airport/di'
 import {
 	BlockSyncStatus,
 	CascadeOverwrite
@@ -33,7 +33,7 @@ import {
 	SYNC_OUT_MSG_SENDER,
 	SYNC_OUT_REPO_TRANS_BLOCK_CREATOR,
 	SYNC_OUT_SERIALIZER,
-}                   from '../../diTokens'
+}                   from '../../tokens'
 
 export interface ISynchronizationOutManager {
 
@@ -79,7 +79,7 @@ export class SynchronizationOutManager
 			      syncOutRepoTransBlockCreator,
 			      syncOutMessageSender,
 			      syncOutSerializer,
-		      ] = await DI.get(
+		      ] = await container(this).get(
 			REPOSITORY_DAO,
 			REPO_TRANS_BLOCK_DAO,
 			REPO_TRANS_HISTORY_DAO,

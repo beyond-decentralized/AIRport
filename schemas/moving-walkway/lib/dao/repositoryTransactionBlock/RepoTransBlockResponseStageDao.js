@@ -1,16 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../../diTokens");
-const generated_1 = require("../../generated/generated");
-class RepoTransBlockResponseStageDao extends generated_1.BaseRepoTransBlockResponseStageDao {
+import { AIR_DB } from '@airport/air-control';
+import { container, DI } from '@airport/di';
+import { REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO } from '../../tokens';
+import { BaseRepoTransBlockResponseStageDao, Q } from '../../generated/generated';
+export class RepoTransBlockResponseStageDao extends BaseRepoTransBlockResponseStageDao {
     async insertValues(values) {
-        const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.RepoTransBlockResponseStage;
+        const dbEntity = Q.db.currentVersion.entityMapByName.RepoTransBlockResponseStage;
         let smrs;
-        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const airDb = await container(this).get(AIR_DB);
         return await airDb.insertValues(dbEntity, {
-            insertInto: smrs = generated_1.Q.RepoTransBlockResponseStage,
+            insertInto: smrs = Q.RepoTransBlockResponseStage,
             columns: [
                 smrs.id,
                 // smrs.agtSyncRecordId,
@@ -22,10 +20,9 @@ class RepoTransBlockResponseStageDao extends generated_1.BaseRepoTransBlockRespo
     async delete( //
     ) {
         return await this.db.deleteWhere({
-            deleteFrom: generated_1.Q.RepoTransBlockResponseStage
+            deleteFrom: Q.RepoTransBlockResponseStage
         });
     }
 }
-exports.RepoTransBlockResponseStageDao = RepoTransBlockResponseStageDao;
-di_1.DI.set(diTokens_1.REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO, RepoTransBlockResponseStageDao);
+DI.set(REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO, RepoTransBlockResponseStageDao);
 //# sourceMappingURL=RepoTransBlockResponseStageDao.js.map

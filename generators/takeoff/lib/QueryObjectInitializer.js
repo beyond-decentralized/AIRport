@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const terminal_map_1 = require("@airport/terminal-map");
-const diTokens_1 = require("./diTokens");
-class QueryObjectInitializer {
+import { container, DI } from '@airport/di';
+import { TERMINAL_STORE } from '@airport/terminal-map';
+import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER } from './tokens';
+export class QueryObjectInitializer {
     async initialize(airDb) {
-        const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, terminalStore] = await di_1.DI.get(diTokens_1.DDL_OBJECT_LINKER, diTokens_1.DDL_OBJECT_RETRIEVER, diTokens_1.QUERY_ENTITY_CLASS_CREATOR, terminal_map_1.TERMINAL_STORE);
+        const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, terminalStore] = await container(this).get(DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE);
         const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects();
         this.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
         return ddlObjects;
@@ -27,6 +25,5 @@ class QueryObjectInitializer {
         });
     }
 }
-exports.QueryObjectInitializer = QueryObjectInitializer;
-di_1.DI.set(diTokens_1.QUERY_OBJECT_INITIALIZER, QueryObjectInitializer);
+DI.set(QUERY_OBJECT_INITIALIZER, QueryObjectInitializer);
 //# sourceMappingURL=QueryObjectInitializer.js.map

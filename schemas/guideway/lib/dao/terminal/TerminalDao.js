@@ -1,18 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../../diTokens");
-const baseDaos_1 = require("../../generated/baseDaos");
-const qSchema_1 = require("../../generated/qSchema");
-class TerminalDao extends baseDaos_1.BaseTerminalDao {
+import { AIR_DB, and, Y } from '@airport/air-control';
+import { container, DI } from '@airport/di';
+import { TERMINAL_DAO } from '../../tokens';
+import { BaseTerminalDao } from '../../generated/baseDaos';
+import { Q } from '../../generated/qSchema';
+export class TerminalDao extends BaseTerminalDao {
     async findTerminalVerificationRecords(terminalIds) {
         const resultMapByTerminalId = new Map();
         let t;
-        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const airDb = await container(this).get(AIR_DB);
         const results = await airDb.find.sheet({
             from: [
-                t = qSchema_1.Q.Terminal
+                t = Q.Terminal
             ],
             select: [
                 t.password,
@@ -29,18 +27,18 @@ class TerminalDao extends baseDaos_1.BaseTerminalDao {
     async findTerminalRepositoryVerificationRecords(terminalIds, 
     // Superset of all of repository ids received for all of the above terminals
     repositoryIds) {
-        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const airDb = await container(this).get(AIR_DB);
         const resultMapByTerminalId = new Map();
         let tr;
         const results = await airDb.find.sheet({
             from: [
-                tr = qSchema_1.Q.TerminalRepository,
+                tr = Q.TerminalRepository,
             ],
             select: [
                 tr.terminal.id,
                 tr.repository.id
             ],
-            where: air_control_1.and(tr.terminal.id.in(terminalIds), 
+            where: and(tr.terminal.id.in(terminalIds), 
             // Joining on the superset of the repositories should return
             // all needed records and possibly additional ones
             tr.repository.id.in(repositoryIds))
@@ -53,7 +51,7 @@ class TerminalDao extends baseDaos_1.BaseTerminalDao {
     async findSseLoginVerificationRecords(terminalPasswords) {
         const resultMapByPassword = new Map();
         let t, tr;
-        const id = air_control_1.Y, password = air_control_1.Y, lastConnectionDatetime = air_control_1.Y;
+        const id = Y, password = Y, lastConnectionDatetime = Y;
         const results = await this.db.find.tree({
             select: {
                 id,
@@ -61,7 +59,7 @@ class TerminalDao extends baseDaos_1.BaseTerminalDao {
                 lastConnectionDatetime
             },
             from: [
-                t = qSchema_1.Q.Terminal,
+                t = Q.Terminal,
             ],
             where: t.password.in(terminalPasswords),
         });
@@ -73,7 +71,7 @@ class TerminalDao extends baseDaos_1.BaseTerminalDao {
     async updateLastPollConnectionDatetime(terminalIds, lastPollConnectionDatetime) {
         let t;
         await this.db.updateWhere({
-            update: t = qSchema_1.Q.Terminal,
+            update: t = Q.Terminal,
             set: {
                 lastPollConnectionDatetime
             },
@@ -83,7 +81,7 @@ class TerminalDao extends baseDaos_1.BaseTerminalDao {
     async updateLastSseConnectionDatetime(terminalPasswords) {
         let t;
         await this.db.updateWhere({
-            update: t = qSchema_1.Q.Terminal,
+            update: t = Q.Terminal,
             set: {
                 lastSseConnectionDatetime: new Date().getTime()
             },
@@ -91,6 +89,5 @@ class TerminalDao extends baseDaos_1.BaseTerminalDao {
         });
     }
 }
-exports.TerminalDao = TerminalDao;
-di_1.DI.set(diTokens_1.TERMINAL_DAO, TerminalDao);
+DI.set(TERMINAL_DAO, TerminalDao);
 //# sourceMappingURL=TerminalDao.js.map

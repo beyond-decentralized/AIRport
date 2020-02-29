@@ -2,8 +2,8 @@ import {
 	RepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
 }                                   from '@airport/arrivals-n-departures'
-import {DI}                         from '@airport/di'
-import {ensureChildJsMap}           from '@airport/ground-control/lib/src'
+import {container, DI}                         from '@airport/di'
+import {ensureChildJsMap}           from '@airport/ground-control'
 import {
 	ISharingNodeRepoTransBlockDao,
 	REPO_TRANS_BLOCK_DAO,
@@ -16,7 +16,7 @@ import {
 	SharingNodeRepoTransBlockStageValues,
 	SharingNodeRepoTransBlockValues
 }                                   from '@airport/moving-walkway'
-import {SYNC_LOG_MESSAGE_PROCESSOR} from '../../diTokens'
+import {SYNC_LOG_MESSAGE_PROCESSOR} from '../../tokens'
 import {ISyncLogToTM}               from './SynchronizationInManager'
 
 export interface ISyncLogMessageProcessor {
@@ -56,7 +56,7 @@ export class SyncLogMessageProcessor
 			      sharingNodeRepoTransBlockDao,
 			      sharingNodeRepoTransBlockStageDao,
 			      repositoryTransactionBlockDao,
-			      repoTransBlockResponseStageDao] = await DI.get(
+			      repoTransBlockResponseStageDao] = await container(this).get(
 			SHARING_MESSAGE_DAO, SHARING_NODE_REPO_TRANS_BLOCK_DAO,
 			SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO, REPO_TRANS_BLOCK_DAO,
 			REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO

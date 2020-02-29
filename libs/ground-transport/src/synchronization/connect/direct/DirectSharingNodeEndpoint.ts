@@ -3,9 +3,9 @@ import {
 	MessageToTM,
 	SYNC_CONNECTION_SERVER
 }                                     from '@airport/arrivals-n-departures'
-import {DI}                           from '@airport/di'
+import {container, DI}                           from '@airport/di'
 import {ISharingNode}                 from '@airport/moving-walkway'
-import {DIRECT_SHARING_NODE_ENDPOINT} from '../../../diTokens'
+import {DIRECT_SHARING_NODE_ENDPOINT} from '../../../tokens'
 import {ISharingNodeEndpoint}         from '../SharingNodeEndpoint'
 import {DirectResponse}               from './DirectResonse'
 
@@ -19,7 +19,7 @@ export class DirectSharingNodeEndpoint
 		sharingNode: ISharingNode,
 		message: MessageFromTM
 	): Promise<MessageToTM[]> {
-		const recentConnectionServer = await DI.get(SYNC_CONNECTION_SERVER)
+		const recentConnectionServer = await container(this).get(SYNC_CONNECTION_SERVER)
 
 		return new Promise<MessageToTM[]>((
 			resolve,

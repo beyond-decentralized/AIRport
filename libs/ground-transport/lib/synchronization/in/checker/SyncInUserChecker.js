@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
-const diTokens_1 = require("../../../diTokens");
-class SyncInUserChecker {
+import { Y } from '@airport/air-control';
+import { container, DI } from '@airport/di';
+import { CascadeOverwrite } from '@airport/ground-control';
+import { USER_DAO } from '@airport/travel-document-checkpoint';
+import { SYNC_IN_USER_CHECKER } from '../../../tokens';
+export class SyncInUserChecker {
     async ensureUsersAndGetAsMaps(dataMessages) {
-        const userDao = await di_1.DI.get(travel_document_checkpoint_1.USER_DAO);
+        const userDao = await container(this).get(USER_DAO);
         const remoteUserMapByUniqueId = new Map();
         const mapById = new Map();
         const mapByMessageIndexAndRemoteUserId = [];
@@ -24,8 +22,8 @@ class SyncInUserChecker {
             mapByMessageIndexAndRemoteUserId.push(mapForMessageByRemoteUserId);
         }
         const map = userDao.findFieldsMapByUniqueId(Array.from(remoteUserMapByUniqueId.keys()), {
-            id: air_control_1.Y,
-            uniqueId: air_control_1.Y
+            id: Y,
+            uniqueId: Y
         });
         await this.addMissingUsers(remoteUserMapByUniqueId, map, mapById, userDao);
         return {
@@ -80,13 +78,12 @@ class SyncInUserChecker {
             }
         }
         if (newUsers.length) {
-            await userDao.bulkCreate(newUsers, ground_control_1.CascadeOverwrite.DEFAULT, false);
+            await userDao.bulkCreate(newUsers, CascadeOverwrite.DEFAULT, false);
             for (const newUser of newUsers) {
                 userMapById.set(newUser.id, newUser);
             }
         }
     }
 }
-exports.SyncInUserChecker = SyncInUserChecker;
-di_1.DI.set(diTokens_1.SYNC_IN_USER_CHECKER, SyncInUserChecker);
+DI.set(SYNC_IN_USER_CHECKER, SyncInUserChecker);
 //# sourceMappingURL=SyncInUserChecker.js.map

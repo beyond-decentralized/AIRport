@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 	RawUpdateColumns
 }           from '@airport/air-control'
-import {DI} from '@airport/di'
+import {container, DI} from '@airport/di'
 import {
 	CascadeOverwrite,
 	DbEntity,
@@ -118,7 +118,7 @@ export class AirportDatabase
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.addRepository(name, url, platform,
 			platformConfig, distributionStrategy)
@@ -134,7 +134,7 @@ export class AirportDatabase
 		dbEntity: DbEntity,
 		entity: E,
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.create(dbEntity, entity)
 	}
@@ -153,7 +153,7 @@ export class AirportDatabase
 		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
 	                                  // creation
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.bulkCreate(dbEntity, entities, checkIfProcessed,
 					cascadeOverwrite, ensureGeneratedValues)
@@ -165,7 +165,7 @@ export class AirportDatabase
 			(...args: any[]): RawInsertColumnValues<IQE>
 		},
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.insertColumnValues(dbEntity, rawInsertValues)
 	}
@@ -176,7 +176,7 @@ export class AirportDatabase
 			(...args: any[]): RawInsertValues<IQE>
 		},
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.insertValues(dbEntity, rawInsertValues)
 	}
@@ -187,7 +187,7 @@ export class AirportDatabase
 			(...args: any[]): RawInsertColumnValues<IQE>
 		},
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.insertColumnValuesGenerateIds(dbEntity, rawInsertValues)
 	}
@@ -198,7 +198,7 @@ export class AirportDatabase
 			(...args: any[]): RawInsertValues<IQE>
 		},
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.insertValuesGenerateIds(dbEntity, rawInsertValues)
 	}
@@ -213,7 +213,7 @@ export class AirportDatabase
 		dbEntity: DbEntity,
 		entity: E,
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.delete(dbEntity, entity)
 	}
@@ -230,7 +230,7 @@ export class AirportDatabase
 			(...args: any[]): RawDelete<IQE>
 		},
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.deleteWhere(dbEntity, rawDelete)
 	}
@@ -245,7 +245,7 @@ export class AirportDatabase
 		dbEntity: DbEntity,
 		entity: E,
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.save(dbEntity, entity)
 	}
@@ -260,7 +260,7 @@ export class AirportDatabase
 		dbEntity: DbEntity,
 		entity: E,
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.update(dbEntity, entity)
 	}
@@ -278,7 +278,7 @@ export class AirportDatabase
 			(...args: any[]): RawUpdateColumns<IEUC, IQE>
 		},
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.updateColumnsWhere(dbEntity, rawUpdateColumns)
 	}
@@ -295,7 +295,7 @@ export class AirportDatabase
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.updateWhere(dbEntity, rawUpdate)
 	}

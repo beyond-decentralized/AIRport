@@ -10,7 +10,7 @@ import {
 	RawInsertValues,
 	SCHEMA_UTILS
 }           from '@airport/air-control'
-import {DI} from '@airport/di'
+import {container, DI} from '@airport/di'
 import {
 	DbColumn,
 	JsonQuery,
@@ -43,7 +43,7 @@ export class AbstractMutationManager {
 		entities: any[]
 	): Promise<number> {
 		const [fieldUtils, queryUtils, schemaUtils, storeDriver
-		      ] = await DI.get(
+		      ] = await container(this).get(
 			FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS, STORE_DRIVER)
 
 		const dbEntity                  = (q as IQEntityInternal).__driver__.dbEntity

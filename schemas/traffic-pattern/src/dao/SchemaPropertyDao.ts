@@ -1,6 +1,6 @@
 import {DI}                  from '@airport/di'
 import {EntityId}            from '@airport/ground-control'
-import {SCHEMA_PROPERTY_DAO} from '../diTokens'
+import {SCHEMA_PROPERTY_DAO} from '../tokens'
 import {
 	BaseSchemaPropertyDao,
 	IBaseSchemaPropertyDao,

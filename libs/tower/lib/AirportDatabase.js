@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const di_1 = require("@airport/di");
-class AirportDatabase {
+import { AIR_DB, DB_FACADE, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne } from '@airport/air-control';
+import { container, DI } from '@airport/di';
+export class AirportDatabase {
     // private databaseMap: { [databaseName: string]: IDatabaseFacade } = {}
     // private dbNames: string[]                                        = []
     // private dbNameSet: { [databaseName: string]: boolean }           = {}
@@ -13,10 +11,10 @@ class AirportDatabase {
         this.QM = {};
         this.S = this.schemas;
         this.Q = this.qSchemas;
-        this.find = new air_control_1.NonEntityFind();
-        this.findOne = new air_control_1.NonEntityFindOne();
-        this.search = new air_control_1.NonEntitySearch();
-        this.searchOne = new air_control_1.NonEntitySearchOne();
+        this.find = new NonEntityFind();
+        this.findOne = new NonEntityFindOne();
+        this.search = new NonEntitySearch();
+        this.searchOne = new NonEntitySearchOne();
     }
     /*
         registerDatabase(
@@ -61,7 +59,7 @@ class AirportDatabase {
         }
     */
     async addRepository(name, url, platform, platformConfig, distributionStrategy) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
     /**
@@ -71,7 +69,7 @@ class AirportDatabase {
      * @return Number of records created (1 or 0)
      */
     async create(dbEntity, entity) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.create(dbEntity, entity);
     }
     /**
@@ -85,23 +83,23 @@ class AirportDatabase {
     ensureGeneratedValues // for internal use only, needed at initial schema
     // creation
     ) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.bulkCreate(dbEntity, entities, checkIfProcessed, cascadeOverwrite, ensureGeneratedValues);
     }
     async insertColumnValues(dbEntity, rawInsertValues) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.insertColumnValues(dbEntity, rawInsertValues);
     }
     async insertValues(dbEntity, rawInsertValues) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.insertValues(dbEntity, rawInsertValues);
     }
     async insertColumnValuesGenerateIds(dbEntity, rawInsertValues) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.insertColumnValuesGenerateIds(dbEntity, rawInsertValues);
     }
     async insertValuesGenerateIds(dbEntity, rawInsertValues) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.insertValuesGenerateIds(dbEntity, rawInsertValues);
     }
     /**
@@ -111,7 +109,7 @@ class AirportDatabase {
      * @return Number of records deleted (1 or 0)
      */
     async delete(dbEntity, entity) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.delete(dbEntity, entity);
     }
     /**
@@ -121,7 +119,7 @@ class AirportDatabase {
      * @return Number of records deleted
      */
     async deleteWhere(dbEntity, rawDelete) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.deleteWhere(dbEntity, rawDelete);
     }
     /**
@@ -131,7 +129,7 @@ class AirportDatabase {
      * @return Number of records saved (1 or 0)
      */
     async save(dbEntity, entity) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.save(dbEntity, entity);
     }
     /**
@@ -141,7 +139,7 @@ class AirportDatabase {
      * @return Number of records updated (1 or 0)
      */
     async update(dbEntity, entity) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.update(dbEntity, entity);
     }
     /**
@@ -151,7 +149,7 @@ class AirportDatabase {
      * @return Number of records updated
      */
     async updateColumnsWhere(dbEntity, rawUpdateColumns) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.updateColumnsWhere(dbEntity, rawUpdateColumns);
     }
     /**
@@ -161,10 +159,9 @@ class AirportDatabase {
      * @return Number of records updated
      */
     async updateWhere(dbEntity, rawUpdate) {
-        const dbFacade = await di_1.DI.get(air_control_1.DB_FACADE);
+        const dbFacade = await container(this).get(DB_FACADE);
         return await dbFacade.updateWhere(dbEntity, rawUpdate);
     }
 }
-exports.AirportDatabase = AirportDatabase;
-di_1.DI.set(air_control_1.AIR_DB, AirportDatabase);
+DI.set(AIR_DB, AirportDatabase);
 //# sourceMappingURL=AirportDatabase.js.map

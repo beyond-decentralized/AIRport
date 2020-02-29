@@ -1,5 +1,5 @@
 import {DI}                   from '@airport/di'
-import {TM_DATA_DESERIALIZER} from '../../diTokens'
+import {TM_DATA_DESERIALIZER} from '../../tokens'
 
 export interface ITMDataDeserializer {
 

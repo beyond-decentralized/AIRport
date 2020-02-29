@@ -25,7 +25,7 @@ import {
 	UpdateRecord,
 	valuesEqual
 }           from '@airport/air-control'
-import {DI} from '@airport/di'
+import {container, DI} from '@airport/di'
 import {
 	CascadeOverwrite,
 	CascadeType,
@@ -163,7 +163,7 @@ export abstract class OperationManager
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): Promise<number> {
-		const [transConnector, queryFacade] = await DI.get(TRANS_CONNECTOR, QUERY_FACADE)
+		const [transConnector, queryFacade] = await container(this).get(TRANS_CONNECTOR, QUERY_FACADE)
 
 		const insertColumnValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
 
@@ -180,7 +180,7 @@ export abstract class OperationManager
 		fieldUtils: IFieldUtils,
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
-		const [transConnector, queryFacade] = await DI.get(TRANS_CONNECTOR, QUERY_FACADE)
+		const [transConnector, queryFacade] = await container(this).get(TRANS_CONNECTOR, QUERY_FACADE)
 
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 
@@ -196,7 +196,7 @@ export abstract class OperationManager
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const [transConnector, queryFacade] = await DI.get(TRANS_CONNECTOR, QUERY_FACADE)
+		const [transConnector, queryFacade] = await container(this).get(TRANS_CONNECTOR, QUERY_FACADE)
 
 		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
 

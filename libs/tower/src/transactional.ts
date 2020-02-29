@@ -8,7 +8,7 @@ import {TRANS_CONNECTOR} from '@airport/ground-control'
 var transactionInProgress = false
 
 export async function transact(): Promise<void> {
-	const transConnector = await DI.get(TRANS_CONNECTOR)
+	const transConnector = await DI.db().get(TRANS_CONNECTOR)
 	await transConnector.transact()
 	transactionInProgress = true
 }
@@ -18,7 +18,7 @@ export async function commit(): Promise<void> {
 		throw new Error('Cannot commit - no transaction in progress')
 	}
 	try {
-		const transConnector = await DI.get(TRANS_CONNECTOR)
+		const transConnector = await DI.db().get(TRANS_CONNECTOR)
 		await transConnector.commit()
 	} finally {
 		transactionInProgress = false
@@ -30,7 +30,7 @@ export async function rollback(): Promise<void> {
 		throw new Error('Cannot rollback - no transaction in progress')
 	}
 	try {
-		const transConnector = await DI.get(TRANS_CONNECTOR)
+		const transConnector = await DI.db().get(TRANS_CONNECTOR)
 		await transConnector.rollback()
 	} finally {
 		transactionInProgress = false
@@ -50,7 +50,7 @@ export async function transactional<T>(
 		await callback()
 		return
 	}
-	const transConnector = await DI.get(TRANS_CONNECTOR)
+	const transConnector = await DI.db().get(TRANS_CONNECTOR)
 	try {
 
 		await transConnector.transact()

@@ -1,5 +1,5 @@
 import {DI}                      from '@airport/di'
-import {APPLICATION_PACKAGE_DAO} from '../diTokens'
+import {APPLICATION_PACKAGE_DAO} from '../tokens'
 import {
 	BaseApplicationPackageDao,
 	IBaseApplicationPackageDao

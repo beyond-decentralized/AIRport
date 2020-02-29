@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../../diTokens");
-class TMDataSchemaVerifier {
+import { DI } from '@airport/di';
+import { TM_DATA_SCHEMA_VERIFIER } from '../../tokens';
+export class TMDataSchemaVerifier {
 }
-exports.TMDataSchemaVerifier = TMDataSchemaVerifier;
-di_1.DI.set(diTokens_1.TM_DATA_SCHEMA_VERIFIER, TMDataSchemaVerifier);
+DI.set(TM_DATA_SCHEMA_VERIFIER, TMDataSchemaVerifier);
 //# sourceMappingURL=TMDataSchemaVerifier.js.map

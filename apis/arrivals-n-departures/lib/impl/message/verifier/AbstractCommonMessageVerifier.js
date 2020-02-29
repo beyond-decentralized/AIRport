@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class AbstractCommonMessageVerifier {
+export class AbstractCommonMessageVerifier {
     verifyMessageHeader(message, messageTypeIndex, MessageError, index) {
         if (!(message instanceof Array)) {
             return index ? [MessageError.MESSAGE_IS_NOT_ARRAY, typeof message]
@@ -18,5 +16,4 @@ class AbstractCommonMessageVerifier {
         }
     }
 }
-exports.AbstractCommonMessageVerifier = AbstractCommonMessageVerifier;
 //# sourceMappingURL=AbstractCommonMessageVerifier.js.map

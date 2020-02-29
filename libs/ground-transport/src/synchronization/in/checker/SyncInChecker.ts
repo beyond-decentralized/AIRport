@@ -3,7 +3,7 @@ import {
 	TerminalName,
 	TerminalSecondId
 }                     from '@airport/arrivals-n-departures'
-import {DI}           from '@airport/di'
+import {container, DI}           from '@airport/di'
 import {
 	CascadeOverwrite,
 	DomainName,
@@ -39,7 +39,7 @@ import {
 	SYNC_IN_REPO_CHECKER,
 	SYNC_IN_REPO_TRANS_BLOCK_CREATOR,
 	SYNC_IN_SCHEMA_CHECKER
-}                     from '../../../diTokens'
+}                     from '../../../tokens'
 import {
 	IDataToTM,
 	RemoteActorId,
@@ -94,7 +94,7 @@ export class SyncInChecker
 		const [syncInActorChecker, syncInDataChecker,
 			      missingRecordRepoTransBlockDao, syncInRepositoryChecker,
 			      repoTransBlockSchemasToChangeDao, syncInSchemaChecker,
-			      sharingMessageRepoTransBlockDao, syncInRepoTransBlockCreator] = await DI.get(
+			      sharingMessageRepoTransBlockDao, syncInRepoTransBlockCreator] = await container(this).get(
 			SYNC_IN_ACTOR_CHECKER, SYNC_IN_DATA_CHECKER,
 			MISSING_RECORD_REPO_TRANS_BLOCK_DAO, SYNC_IN_REPO_CHECKER,
 			REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO, SYNC_IN_SCHEMA_CHECKER,

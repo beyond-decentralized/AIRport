@@ -1,20 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../diTokens");
-const generated_1 = require("../generated/generated");
-class SchemaRelationDao extends generated_1.BaseSchemaRelationDao {
+import { DI } from '@airport/di';
+import { SCHEMA_RELATION_DAO } from '../tokens';
+import { BaseSchemaRelationDao, Q, } from '../generated/generated';
+export class SchemaRelationDao extends BaseSchemaRelationDao {
     async findAllForProperties(propertyIds) {
         let r;
         return this.db.find.tree({
             select: {},
             from: [
-                r = generated_1.Q.SchemaRelation
+                r = Q.SchemaRelation
             ],
             where: r.property.id.in(propertyIds)
         });
     }
 }
-exports.SchemaRelationDao = SchemaRelationDao;
-di_1.DI.set(diTokens_1.SCHEMA_RELATION_DAO, SchemaRelationDao);
+DI.set(SCHEMA_RELATION_DAO, SchemaRelationDao);
 //# sourceMappingURL=SchemaRelationDao.js.map

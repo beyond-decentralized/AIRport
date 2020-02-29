@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const EntityDefinitionGenerator_1 = require("../../parser/EntityDefinitionGenerator");
-const pathResolver_1 = require("../../resolve/pathResolver");
-const SchemaRelationResolver_1 = require("./SchemaRelationResolver");
-const SSchema_1 = require("./SSchema");
-class SSchemaBuilder {
+import { EntityRelationType, file, property, repositoryEntity, } from '@airport/ground-control';
+import { globalCandidateRegistry } from '../../parser/EntityDefinitionGenerator';
+import { canBeInterface, getImplNameFromInterfaceName } from '../../resolve/pathResolver';
+import { SchemaRelationResolver } from './SchemaRelationResolver';
+import { buildIndexedSSchema } from './SSchema';
+export class SSchemaBuilder {
     constructor(config, entityMapByName) {
         this.config = config;
         this.entityMapByName = entityMapByName;
@@ -47,8 +45,8 @@ class SSchemaBuilder {
             }
         }
         referencedSchemas.sort((a, b) => a.index - b.index);
-        const indexedSchema = SSchema_1.buildIndexedSSchema(schema, referencedSchemasByProjectName);
-        new SchemaRelationResolver_1.SchemaRelationResolver().resolveAllRelationLinks(indexedSchema);
+        const indexedSchema = buildIndexedSSchema(schema, referencedSchemasByProjectName);
+        new SchemaRelationResolver().resolveAllRelationLinks(indexedSchema);
         return indexedSchema;
     }
     buildEntity(entityCandidate, tableIndex, referencedSchemasByProjectName) {
@@ -56,11 +54,11 @@ class SSchemaBuilder {
         let tableConfig;
         for (const decorator of entityCandidate.docEntry.decorators) {
             switch (decorator.name) {
-                case ground_control_1.file.ENTITY: {
+                case file.ENTITY: {
                     foundEntityDecorator = true;
                     break;
                 }
-                case ground_control_1.file.TABLE: {
+                case file.TABLE: {
                     tableConfig = {
                         ...decorator.values[0]
                     };
@@ -157,7 +155,7 @@ class SSchemaBuilder {
         let relationType;
         for (const decorator of aProperty.decorators) {
             switch (decorator.name) {
-                case ground_control_1.property.ID:
+                case property.ID:
                     isId = true;
                     break;
                 // case property.R_JOIN_COLUMN:
@@ -165,7 +163,7 @@ class SSchemaBuilder {
                 // 		throw new Error(`${entity.name}.${aProperty.name} cannot be @RJoinColumn `
                 // 		+ `- ${entity.name} does not extend RepositoryEntity or
                 // LocalRepositoryEntity.`); } repositoryJoin = true;
-                case ground_control_1.property.JOIN_COLUMN:
+                case property.JOIN_COLUMN:
                     if (columnsDefined) {
                         throw new Error(`Columns are defined more than once 
 						for ${entity.name}.${aProperty.name}`);
@@ -179,7 +177,7 @@ class SSchemaBuilder {
                 // 		throw new Error(`${entity.name}.${aProperty.name} cannot be @RJoinColumns `
                 // 		+ `- ${entity.name} does not extend RepositoryEntity or
                 // LocalRepositoryEntity.`); } repositoryJoin = true;
-                case ground_control_1.property.JOIN_COLUMNS:
+                case property.JOIN_COLUMNS:
                     if (columnsDefined) {
                         throw new Error(`Columns are defined more than once 
 						for ${entity.name}.${aProperty.name}`);
@@ -196,15 +194,15 @@ class SSchemaBuilder {
                         // foreignKey = decorator.values[0].foreignKey;
                     }
                     break;
-                case ground_control_1.property.MANY_TO_ONE:
+                case property.MANY_TO_ONE:
                     if (relationType) {
                         throw new Error(`Cardinality (@ManyToOne,@OneToMany) is defined more than once 
 							for ${entity.name}.${aProperty.name}`);
                     }
                     manyToOne = decorator.values[0];
-                    relationType = ground_control_1.EntityRelationType.MANY_TO_ONE;
+                    relationType = EntityRelationType.MANY_TO_ONE;
                     break;
-                case ground_control_1.property.ONE_TO_MANY:
+                case property.ONE_TO_MANY:
                     if (isId) {
                         throw new Error(`A property cannot be be both @OneToMany and @Id`);
                     }
@@ -213,7 +211,7 @@ class SSchemaBuilder {
 						for ${entity.name}.${aProperty.name}`);
                     }
                     oneToMany = decorator.values[0];
-                    relationType = ground_control_1.EntityRelationType.ONE_TO_MANY;
+                    relationType = EntityRelationType.ONE_TO_MANY;
                     break;
                 // case property.WHERE_JOIN_TABLE:
                 // 	addToJoinFunction = decorator.values[0];
@@ -266,12 +264,12 @@ class SSchemaBuilder {
                 let relationColumnReference;
                 let isManyToOne = false;
                 switch (relationType) {
-                    case ground_control_1.EntityRelationType.MANY_TO_ONE:
+                    case EntityRelationType.MANY_TO_ONE:
                         ownColumnReference = name;
                         relationColumnReference = referencedColumnName;
                         isManyToOne = true;
                         break;
-                    case ground_control_1.EntityRelationType.ONE_TO_MANY:
+                    case EntityRelationType.ONE_TO_MANY:
                         ownColumnReference = referencedColumnName;
                         relationColumnReference = name;
                         break;
@@ -287,7 +285,7 @@ class SSchemaBuilder {
         }
         else {
             switch (relationType) {
-                case ground_control_1.EntityRelationType.MANY_TO_ONE: {
+                case EntityRelationType.MANY_TO_ONE: {
                     if (!entityExtendsRepositoryEntity(aProperty.entity)) {
                         throw new Error(`@JoinColumn(s) must be specified for @ManyToOne
 					in ${entity.name}.${aProperty.name} (if the related entity does not extend RepositoryEntity).`);
@@ -312,7 +310,7 @@ class SSchemaBuilder {
                 // sRelationColumns.push(sRelationColumn)
                 // columns.push(sColumn)
                 // break
-                case ground_control_1.EntityRelationType.ONE_TO_MANY:
+                case EntityRelationType.ONE_TO_MANY:
                     // Nothing to do
                     break;
                 default:
@@ -328,7 +326,7 @@ class SSchemaBuilder {
             }
             let schemaReference = referencedSchemasByProjectName[aProperty.fromProject];
             if (!schemaReference) {
-                const dbSchema = EntityDefinitionGenerator_1.globalCandidateRegistry.getReferencedSchema(aProperty.fromProject, aProperty);
+                const dbSchema = globalCandidateRegistry.getReferencedSchema(aProperty.fromProject, aProperty);
                 if (!dbSchema) {
                     throw new Error(`Could not find related project '${aProperty.fromProject}' 
 					for ${entity.name}.${aProperty.name}`);
@@ -343,8 +341,8 @@ class SSchemaBuilder {
             const propertyType = aProperty.nonArrayType;
             let relatedEntity = schemaReference.dbSchema.currentVersion.entityMapByName[propertyType];
             if (!relatedEntity) {
-                if (pathResolver_1.canBeInterface(propertyType)) {
-                    const entityType = pathResolver_1.getImplNameFromInterfaceName(propertyType);
+                if (canBeInterface(propertyType)) {
+                    const entityType = getImplNameFromInterfaceName(propertyType);
                     relatedEntity = schemaReference.dbSchema.currentVersion.entityMapByName[entityType];
                     if (!relatedEntity) {
                         throw new Error(`Could not find related entity '${entityType}' 
@@ -418,7 +416,7 @@ class SSchemaBuilder {
         let columnDefined = false;
         for (const decorator of aProperty.decorators) {
             switch (decorator.name) {
-                case ground_control_1.property.COLUMN:
+                case property.COLUMN:
                     if (columnDefined) {
                         throw new Error(`@Column is defined more than once
 						 for ${entity.name}.${aProperty.name}`);
@@ -598,24 +596,22 @@ class SSchemaBuilder {
         return entity.numColumns++;
     }
 }
-exports.SSchemaBuilder = SSchemaBuilder;
-function entityExtendsRepositoryEntity(//
+export function entityExtendsRepositoryEntity(//
 entityCandidate //
 ) {
     const parentEntity = entityCandidate.parentEntity;
     if (!parentEntity) {
         return [false, true];
     }
-    if (parentEntity.docEntry.name === ground_control_1.repositoryEntity.ENTITY_NAME) {
+    if (parentEntity.docEntry.name === repositoryEntity.ENTITY_NAME) {
         return [true, false];
     }
-    if (parentEntity.docEntry.name === ground_control_1.repositoryEntity.LOCAL_ENTITY_NAME) {
+    if (parentEntity.docEntry.name === repositoryEntity.LOCAL_ENTITY_NAME) {
         return [true, true];
     }
     return entityExtendsRepositoryEntity(entityCandidate.parentEntity);
 }
-exports.entityExtendsRepositoryEntity = entityExtendsRepositoryEntity;
-function isManyToOnePropertyNotNull(aProperty) {
+export function isManyToOnePropertyNotNull(aProperty) {
     const manyToOneProperty = getManyToOneDecorator(aProperty);
     if (!manyToOneProperty) {
         throw `Not a @ManyToOne property.`;
@@ -626,13 +622,11 @@ function isManyToOnePropertyNotNull(aProperty) {
     }
     return manyToOneDecoratorValues[0].optional === false;
 }
-exports.isManyToOnePropertyNotNull = isManyToOnePropertyNotNull;
-function getManyToOneDecorator(aProperty) {
+export function getManyToOneDecorator(aProperty) {
     const manyToOneDecorators = aProperty.decorators.filter(decorator => decorator.name === 'ManyToOne');
     if (manyToOneDecorators.length) {
         return manyToOneDecorators[0];
     }
     return null;
 }
-exports.getManyToOneDecorator = getManyToOneDecorator;
 //# sourceMappingURL=SSchemaBuilder.js.map

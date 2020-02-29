@@ -1,5 +1,5 @@
 import {DI}                                       from '@airport/di'
-import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS} from '../diTokens'
+import {NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS} from '../tokens'
 import {
 	IBaseSchemaColumnDao,
 	IBaseSchemaDao,

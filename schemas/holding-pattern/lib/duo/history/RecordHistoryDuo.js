@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const ddl_1 = require("../../ddl/ddl");
-const diTokens_1 = require("../../diTokens");
-const generated_1 = require("../../generated/generated");
-class RecordHistoryDuo extends generated_1.BaseRecordHistoryDuo {
+import { DI } from '@airport/di';
+import { RecordHistory } from '../../ddl/ddl';
+import { REC_HISTORY_DUO } from '../../tokens';
+import { BaseRecordHistoryDuo, } from '../../generated/generated';
+export class RecordHistoryDuo extends BaseRecordHistoryDuo {
     getNewRecord(actorRecordId) {
-        const recordHistory = new ddl_1.RecordHistory();
+        const recordHistory = new RecordHistory();
         recordHistory.actorRecordId = actorRecordId;
         return recordHistory;
     }
@@ -25,6 +23,5 @@ class RecordHistoryDuo extends generated_1.BaseRecordHistoryDuo {
         return recordHistoryOldValue;
     }
 }
-exports.RecordHistoryDuo = RecordHistoryDuo;
-di_1.DI.set(diTokens_1.REC_HISTORY_DUO, RecordHistoryDuo);
+DI.set(REC_HISTORY_DUO, RecordHistoryDuo);
 //# sourceMappingURL=RecordHistoryDuo.js.map

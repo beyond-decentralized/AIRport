@@ -25,7 +25,7 @@ import {
 	ISchemaRelationColumn,
 	ISchemaVersion
 }                        from '@airport/traffic-pattern'
-import {SCHEMA_COMPOSER} from '../diTokens'
+import {SCHEMA_COMPOSER} from '../tokens'
 import {ISchemaLocator}  from '../locator/SchemaLocator'
 
 export interface ISchemaComposer {

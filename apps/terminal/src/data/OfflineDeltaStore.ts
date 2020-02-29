@@ -6,7 +6,7 @@ import {
 	ITransactionHistory
 }                            from '@airport/holding-pattern'
 import {StoreType}           from '@airport/terminal-map'
-import {OFFLINE_DELTA_STORE} from '../diTokens'
+import {OFFLINE_DELTA_STORE} from '../tokens'
 
 /**
  * Created by Papa on 5/31/2016.

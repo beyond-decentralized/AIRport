@@ -1,6 +1,6 @@
 import {DI}                                  from '@airport/di'
 import {MissingRecordId}                     from '../../ddl/ddl'
-import {MISSING_RECORD_REPO_TRANS_BLOCK_DAO} from '../../diTokens'
+import {MISSING_RECORD_REPO_TRANS_BLOCK_DAO} from '../../tokens'
 import {
 	BaseMissingRecordRepoTransBlockDao,
 	IBaseMissingRecordRepoTransBlockDao,

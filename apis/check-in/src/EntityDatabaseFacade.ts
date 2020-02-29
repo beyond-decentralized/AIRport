@@ -91,7 +91,7 @@ export class EntityDatabaseFacade<Entity,
 		entity: EntityCreate,
 		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.create(this.dbEntity, entity, cascadeGraph)
 	}
 
@@ -100,7 +100,7 @@ export class EntityDatabaseFacade<Entity,
 		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT,
 		checkIfProcessed: boolean                         = true
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.bulkCreate(this.dbEntity, entities,
 			checkIfProcessed, cascadeOverwrite)
 	}
@@ -109,7 +109,7 @@ export class EntityDatabaseFacade<Entity,
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		}): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.insertColumnValues(this.dbEntity, rawInsertColumnValues)
 	}
 
@@ -117,7 +117,7 @@ export class EntityDatabaseFacade<Entity,
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		}): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.insertValues(this.dbEntity, rawInsertValues)
 	}
 
@@ -125,7 +125,7 @@ export class EntityDatabaseFacade<Entity,
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		}): Promise<number[] | string[] | number[][] | string[][]> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.insertColumnValuesGenerateIds(this.dbEntity, rawInsertColumnValues)
 	}
 
@@ -133,7 +133,7 @@ export class EntityDatabaseFacade<Entity,
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		}): Promise<number[] | string[] | number[][] | string[][]> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.insertValuesGenerateIds(this.dbEntity, rawInsertValues)
 	}
 
@@ -141,7 +141,7 @@ export class EntityDatabaseFacade<Entity,
 		entity: EntityCreate,
 		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.update(this.dbEntity, entity, cascadeGraph)
 	}
 
@@ -151,7 +151,7 @@ export class EntityDatabaseFacade<Entity,
 				: RawUpdate<EntityUpdateColumns, IQ>
 		}
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.updateColumnsWhere(this.dbEntity, rawUpdateColumns)
 	}
 
@@ -161,7 +161,7 @@ export class EntityDatabaseFacade<Entity,
 				: RawUpdate<EntityUpdateProperties, IQ>
 		}
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.updateWhere(this.dbEntity, rawUpdate)
 	}
 
@@ -169,14 +169,14 @@ export class EntityDatabaseFacade<Entity,
 	async delete(
 		entity: EntityId
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.delete(this.dbEntity, entity)
 	}
 
 	async deleteWhere(
 		rawDelete: RawDelete<IQ> | { (...args: any[]): RawDelete<IQ> }
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.deleteWhere(this.dbEntity, rawDelete)
 	}
 
@@ -184,7 +184,7 @@ export class EntityDatabaseFacade<Entity,
 		entity: EntityCreate,
 		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
 	): Promise<number> {
-		const dbFacade = await DI.get(DB_FACADE)
+		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.save(this.dbEntity, entity, cascadeGraph)
 	}
 

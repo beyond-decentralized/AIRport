@@ -9,7 +9,7 @@ import {
 	ActorId,
 	RepositoryId
 }                         from '../../ddl/ddl'
-import {REPO_ACTOR_DAO}   from '../../diTokens'
+import {REPO_ACTOR_DAO}   from '../../tokens'
 import {
 	BaseRepositoryActorDao,
 	IBaseRepositoryActorDao,

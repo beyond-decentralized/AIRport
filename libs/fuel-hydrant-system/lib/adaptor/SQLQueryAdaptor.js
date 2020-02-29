@@ -1,23 +1,20 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const SQLQuery_1 = require("../sql/core/SQLQuery");
-function getSQLAdaptor(sqlValueProvider, sqlDialect) {
+import { SQLDialect } from '../sql/core/SQLQuery';
+export function getSQLAdaptor(sqlValueProvider, sqlDialect) {
     switch (sqlDialect) {
-        case SQLQuery_1.SQLDialect.ORACLE:
+        case SQLDialect.ORACLE:
             let OracleQueryAdaptorClass = require('./OracleQueryAdaptor').OracleQueryAdaptor;
             return new OracleQueryAdaptorClass(sqlValueProvider);
-        case SQLQuery_1.SQLDialect.SQLITE_SQLJS:
+        case SQLDialect.SQLITE_SQLJS:
             let SqlJsQueryAdaptorClass = require('./SqlJsQueryAdaptor').SqlJsQueryAdaptor;
             return new SqlJsQueryAdaptorClass(sqlValueProvider);
-        case SQLQuery_1.SQLDialect.SQLITE_WEBSQL:
+        case SQLDialect.SQLITE_WEBSQL:
             let WebSqlQueryAdaptorClass = require('./WebSqlQueryAdaptor').WebSqlQueryAdaptor;
             return new WebSqlQueryAdaptorClass(sqlValueProvider);
         default:
             throw new Error(`Unknown SQL Dialect ${sqlDialect}`);
     }
 }
-exports.getSQLAdaptor = getSQLAdaptor;
-class AbstractFunctionAdaptor {
+export class AbstractFunctionAdaptor {
     constructor(sqlValueProvider) {
         this.sqlValueProvider = sqlValueProvider;
     }
@@ -28,5 +25,4 @@ class AbstractFunctionAdaptor {
         return innerValue;
     }
 }
-exports.AbstractFunctionAdaptor = AbstractFunctionAdaptor;
 //# sourceMappingURL=SQLQueryAdaptor.js.map

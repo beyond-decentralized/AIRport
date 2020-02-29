@@ -6,7 +6,7 @@ import {
 	ISequenceGenerator,
 	setSeqGen
 }           from '@airport/check-in'
-import {DI} from '@airport/di'
+import {container, DI} from '@airport/di'
 import {
 	DbColumn,
 	DbEntity,
@@ -69,7 +69,7 @@ export class SqLiteSequenceGenerator
 	async init(
 		sequences?: ISequence[]
 	): Promise<void> {
-		const sequenceDao = await DI.get(SEQUENCE_DAO)
+		const sequenceDao = await container(this).get(SEQUENCE_DAO)
 		if (!sequences) {
 			sequences = await sequenceDao.findAll()
 		}
@@ -117,7 +117,7 @@ export class SqLiteSequenceGenerator
 	): Promise<number[][]> {
 		const sequentialNumbers: number[][] = []
 
-		const sequenceDao = await DI.get(SEQUENCE_DAO)
+		const sequenceDao = await container(this).get(SEQUENCE_DAO)
 
 		for (let i = 0; i < dbColumns.length; i++) {
 			const dbColumn = dbColumns[i]

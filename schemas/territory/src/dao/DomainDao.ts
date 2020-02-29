@@ -3,7 +3,7 @@ import {
 	DomainId,
 	DomainName
 }                   from '@airport/ground-control'
-import {DOMAIN_DAO} from '../diTokens'
+import {DOMAIN_DAO} from '../tokens'
 import {
 	BaseDomainDao,
 	IBaseDomainDao,

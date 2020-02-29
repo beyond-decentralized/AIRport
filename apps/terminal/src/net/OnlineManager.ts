@@ -1,5 +1,5 @@
 import {
-	DI
+	container, DI
 }                           from '@airport/di'
 import {BlockSyncStatus}    from '@airport/ground-control'
 import {
@@ -19,7 +19,7 @@ import {
 	OFFLINE_DELTA_STORE,
 	ONLINE_MANAGER,
 	REPOSITORY_MANAGER
-}                           from '../diTokens'
+}                           from '../tokens'
 
 export interface IOnlineManager {
 
@@ -35,7 +35,7 @@ export class OnlineManager
 	implements IOnlineManager {
 
 	async goOffline(): Promise<void> {
-		const repositoryManager = await DI.get(REPOSITORY_MANAGER)
+		const repositoryManager = await container(this).get(REPOSITORY_MANAGER)
 
 		repositoryManager.goOffline()
 		this.online = false
@@ -81,7 +81,7 @@ export class OnlineManager
 			      repositoryDao,
 			      repoTransHistoryDao,
 			      repositoryManager
-		      ] = await DI.get(
+		      ] = await container(this).get(
 		      	OFFLINE_DELTA_STORE, REPOSITORY_DAO,
 			REPO_TRANS_HISTORY_DAO, REPOSITORY_MANAGER)
 		await transactional(async () => {

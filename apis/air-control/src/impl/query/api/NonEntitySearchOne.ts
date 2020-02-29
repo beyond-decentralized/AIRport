@@ -4,7 +4,7 @@ import {
 	IObservable,
 	Observable
 }                             from '@airport/observe'
-import {LOOKUP}               from '../../../diTokens'
+import {LOOKUP}               from '../../../tokens'
 import {IQOrderableField}     from '../../../lingo/core/field/Field'
 import {INonEntitySearchOne}  from '../../../lingo/query/api/NonEntitySearchOne'
 import {RawFieldQuery}        from '../../../lingo/query/facade/FieldQuery'

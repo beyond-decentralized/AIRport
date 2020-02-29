@@ -1,10 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../diTokens");
-const baseDaos_1 = require("../generated/baseDaos");
-class LogEntryValueDao extends baseDaos_1.BaseLogEntryValueDao {
+import { DI } from '@airport/di';
+import { LOG_ENTRY_VALUE_DAO } from '../tokens';
+import { BaseLogEntryValueDao } from '../generated/baseDaos';
+export class LogEntryValueDao extends BaseLogEntryValueDao {
 }
-exports.LogEntryValueDao = LogEntryValueDao;
-di_1.DI.set(diTokens_1.LOG_ENTRY_VALUE_DAO, LogEntryValueDao);
+DI.set(LOG_ENTRY_VALUE_DAO, LogEntryValueDao);
 //# sourceMappingURL=LogEntryValueDao.js.map

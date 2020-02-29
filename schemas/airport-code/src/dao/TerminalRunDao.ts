@@ -1,5 +1,5 @@
 import {DI}               from '@airport/di'
-import {TERMINAL_RUN_DAO} from '../diTokens'
+import {TERMINAL_RUN_DAO} from '../tokens'
 import {
 	BaseTerminalRunDao,
 	IBaseTerminalRunDao,

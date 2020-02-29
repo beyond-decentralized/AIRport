@@ -5,7 +5,7 @@ import {
 	Q_METADATA_UTILS,
 	SCHEMA_UTILS
 }                            from '@airport/air-control'
-import {DI}                  from '@airport/di'
+import {container, DI}                  from '@airport/di'
 import {
 	InternalFragments,
 	IStoreDriver,
@@ -27,7 +27,7 @@ import {
 	IObservable,
 	Subject
 }                            from '@airport/observe'
-import {ACTIVE_QUERIES}      from '../diTokens'
+import {ACTIVE_QUERIES}      from '../tokens'
 import {SQLDelete}           from '../sql/core/SQLDelete'
 import {SQLInsertValues}     from '../sql/core/SQLInsertValues'
 import {
@@ -68,7 +68,7 @@ export abstract class SqlDriver
 	async abstract rollback(): Promise<void>;
 
 	async saveTransaction(transaction: ITransactionHistory): Promise<any> {
-		(await DI.get(ACTIVE_QUERIES)).markQueriesToRerun(transaction.schemaMap)
+		(await container(this).get(ACTIVE_QUERIES)).markQueriesToRerun(transaction.schemaMap)
 	}
 
 	async insertValues(
@@ -78,7 +78,7 @@ export abstract class SqlDriver
 		const splitValues = this.splitValues((portableQuery.jsonQuery as JsonInsertValues).V)
 
 		const [airDb, schemaUtils, metadataUtils] =
-			      await DI.get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
+			      await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
 
 		let numVals = 0
 		for (const V of splitValues) {
@@ -122,7 +122,7 @@ export abstract class SqlDriver
 		portableQuery: PortableQuery,
 	): Promise<number> {
 		const [airDb, schemaUtils, metadataUtils, activeQueries] =
-			      await DI.get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS, ACTIVE_QUERIES)
+			      await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS, ACTIVE_QUERIES)
 
 		let fieldMap                = new SyncSchemaMap()
 		let sqlDelete               = new SQLDelete(airDb,
@@ -140,7 +140,7 @@ export abstract class SqlDriver
 		internalFragments: InternalFragments
 	): Promise<number> {
 		const [airDb, schemaUtils, metadataUtils] =
-			      await DI.get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
+			      await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
 
 		let sqlUpdate  = new SQLUpdate(airDb,
 			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(), this)
@@ -161,7 +161,7 @@ export abstract class SqlDriver
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
 		const [airDb, schemaUtils, metadataUtils] =
-			      await DI.get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
+			      await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
 
 		const sqlQuery   = this.getSQLQuery(portableQuery, airDb, schemaUtils)
 		const sql        = sqlQuery.toSQL(internalFragments, airDb, schemaUtils, metadataUtils)
@@ -238,7 +238,7 @@ export abstract class SqlDriver
 	): IObservable<EntityArray> {
 		let resultsSubject                 = new Subject<EntityArray>(() => {
 			if (resultsSubject.subscriptions.length < 1) {
-				DI.get(ACTIVE_QUERIES).then(
+				container(this).get(ACTIVE_QUERIES).then(
 					activeQueries =>
 						// Remove the query for the list of cached queries, that are checked every
 						// time a mutation operation is run
@@ -268,7 +268,7 @@ export abstract class SqlDriver
 	): IObservable<E> {
 		let resultsSubject                 = new Subject<E>(() => {
 			if (resultsSubject.subscriptions.length < 1) {
-				DI.get(ACTIVE_QUERIES).then(
+				container(this).get(ACTIVE_QUERIES).then(
 					activeQueries =>
 						// Remove the query for the list of cached queries, that are checked every
 						// time a mutation operation is run

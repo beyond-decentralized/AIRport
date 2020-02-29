@@ -11,7 +11,7 @@ import {
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
 }                        from '@airport/check-in'
-import {DI}              from '@airport/di'
+import {container, DI}              from '@airport/di'
 import {
 	CascadeType,
 	ChangeType,
@@ -51,7 +51,7 @@ import {
 	HISTORY_MANAGER,
 	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER
-}                        from '../diTokens'
+}                        from '../tokens'
 import {IHistoryManager} from './HistoryManager'
 
 export interface IDeleteManager {
@@ -87,7 +87,7 @@ export class DeleteManager
 			      sequenceGenerator,
 			      storeDriver,
 			      transManager
-		      ] = await DI.get(AIR_DB, HISTORY_MANAGER,
+		      ] = await container(this).get(AIR_DB, HISTORY_MANAGER,
 			OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
 			REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER,
 			REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO,

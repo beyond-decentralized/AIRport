@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Token_1 = require("./Token");
+import { DiToken } from './Token';
 let diTokenSeq = -1;
-class Library {
+export class Library {
     constructor(name, system) {
         this.name = name;
         this.system = system;
@@ -10,10 +8,9 @@ class Library {
     }
     token() {
         diTokenSeq++;
-        const diToken = new Token_1.DiToken(this, diTokenSeq);
+        const diToken = new DiToken(this, diTokenSeq);
         this.tokens.push(diToken);
         return diToken;
     }
 }
-exports.Library = Library;
 //# sourceMappingURL=Library.js.map

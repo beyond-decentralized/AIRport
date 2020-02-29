@@ -10,13 +10,13 @@ import {
 	AgtSharingMessageId,
 	TerminalId,
 }                     from '@airport/arrivals-n-departures'
-import {DI}           from '@airport/di'
+import {container, DI}           from '@airport/di'
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtRepositoryTransactionBlockId,
 	AgtSharingMessageAcknowledged
 }                     from '../../ddl/ddl'
-import {SYNC_LOG_DAO} from '../../diTokens'
+import {SYNC_LOG_DAO} from '../../tokens'
 import {
 	BaseSyncLogDao,
 	IBaseSyncLogDao,
@@ -66,7 +66,7 @@ export class SyncLogDao
 		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog
 		let sl: QSyncLog
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		await airDb.insertValues(dbEntity, {
 			insertInto: sl = Q.SyncLog,
@@ -154,7 +154,7 @@ export class SyncLogDao
 			]
 		})
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		return <TerminalSyncStatus[]>await airDb.find.sheet({
 			from: [

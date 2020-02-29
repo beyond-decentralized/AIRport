@@ -19,7 +19,7 @@ import {
 	ISchemaRelationColumn,
 	ISchemaVersion
 }                          from '@airport/traffic-pattern'
-import {DDL_OBJECT_LINKER} from './diTokens'
+import {DDL_OBJECT_LINKER} from './tokens'
 import {DdlObjects}        from './QueryObjectInitializer'
 
 export interface IDdlObjectLinker {

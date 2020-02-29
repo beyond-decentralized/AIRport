@@ -4,7 +4,7 @@ import {
 	ISharingNode,
 	SharingNodeId
 }                            from '@airport/moving-walkway'
-import {SYNC_OUT_MSG_SENDER} from '../../diTokens'
+import {SYNC_OUT_MSG_SENDER} from '../../tokens'
 
 export interface ISyncOutMessageSender {
 

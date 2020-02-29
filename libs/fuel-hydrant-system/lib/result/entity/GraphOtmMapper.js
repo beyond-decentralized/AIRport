@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const ground_control_1 = require("@airport/ground-control");
+import { newMappedEntityArray } from '@airport/air-control';
+import { ensureChildArray, ensureChildMap } from '@airport/ground-control';
 // For OtM mapping in bridged queries
-class GraphOtmMapper {
+export class GraphOtmMapper {
     constructor() {
         // Map of MtO referred objects by OtM references
         // [] OTM Reference Entity Schema Index
@@ -21,7 +19,7 @@ class GraphOtmMapper {
         }
         // Add into mtoEntityReferenceMap
         const otmDbEntity = mtoStubReference.otmDbEntity;
-        let mtoEntityReferenceMapForEntity = ground_control_1.ensureChildMap(ground_control_1.ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.schemaVersion.schema.index), otmDbEntity.index);
+        let mtoEntityReferenceMapForEntity = ensureChildMap(ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.schemaVersion.schema.index), otmDbEntity.index);
         let mapForOtmEntity = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId];
         if (!mapForOtmEntity) {
             mapForOtmEntity = {};
@@ -29,7 +27,7 @@ class GraphOtmMapper {
         }
         let mtoCollection = mapForOtmEntity[mtoStubReference.otmEntityField];
         if (!mtoCollection) {
-            mtoCollection = air_control_1.newMappedEntityArray(schemaUtils, dbEntity);
+            mtoCollection = newMappedEntityArray(schemaUtils, dbEntity);
             mapForOtmEntity[mtoStubReference.otmEntityField]
                 = mtoCollection;
         }
@@ -38,7 +36,7 @@ class GraphOtmMapper {
     addOtmReference(otmStubReference, otmEntityIdValue) {
         // Add into otoEntityReferenceMap
         const otmDbEntity = otmStubReference.otmDbEntity;
-        let mtoEntityReferenceMapForEntity = ground_control_1.ensureChildMap(ground_control_1.ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.schemaVersion.schema.index), otmDbEntity.index);
+        let mtoEntityReferenceMapForEntity = ensureChildMap(ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.schemaVersion.schema.index), otmDbEntity.index);
         let otmRecordByPropertyName = mtoEntityReferenceMapForEntity[otmEntityIdValue];
         if (!otmRecordByPropertyName) {
             otmRecordByPropertyName = {};
@@ -92,5 +90,4 @@ class GraphOtmMapper {
         }
     }
 }
-exports.GraphOtmMapper = GraphOtmMapper;
 //# sourceMappingURL=GraphOtmMapper.js.map

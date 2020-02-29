@@ -1,16 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const ExactOrderByParser_1 = require("../orderBy/ExactOrderByParser");
-const SQLWhereBase_1 = require("./core/SQLWhereBase");
-const NonEntitySQLQuery_1 = require("./NonEntitySQLQuery");
+import { JSONClauseObjectType, QueryResultType } from '@airport/ground-control';
+import { ExactOrderByParser } from '../orderBy/ExactOrderByParser';
+import { ClauseType } from './core/SQLWhereBase';
+import { NonEntitySQLQuery } from './NonEntitySQLQuery';
 /**
  * Created by Papa on 10/29/2016.
  */
-class FieldSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
+export class FieldSQLQuery extends NonEntitySQLQuery {
     constructor(jsonQuery, dialect, storeDriver) {
-        super(jsonQuery, dialect, ground_control_1.QueryResultType.FIELD, storeDriver);
-        this.orderByParser = new ExactOrderByParser_1.ExactOrderByParser(this.validator);
+        super(jsonQuery, dialect, QueryResultType.FIELD, storeDriver);
+        this.orderByParser = new ExactOrderByParser(this.validator);
     }
     getSELECTFragment(nested, selectClauseFragment, internalFragments, airDb, schemaUtils, metadataUtils) {
         if (!selectClauseFragment) {
@@ -18,14 +16,14 @@ class FieldSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         }
         {
             let distinctClause = selectClauseFragment;
-            if (distinctClause.ot == ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION) {
+            if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
                 let distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0], internalFragments, airDb, schemaUtils, metadataUtils);
                 return `DISTINCT ${distinctSelect}`;
             }
         }
         let field = selectClauseFragment;
         let fieldIndex = 0;
-        let selectSqlFragment = this.getFieldSelectFragment(field, SQLWhereBase_1.ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++, airDb, schemaUtils, metadataUtils);
+        let selectSqlFragment = this.getFieldSelectFragment(field, ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++, airDb, schemaUtils, metadataUtils);
         return selectSqlFragment;
     }
     parseQueryResults(airDb, schemaUtils, results) {
@@ -48,5 +46,4 @@ class FieldSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
         return propertyValue;
     }
 }
-exports.FieldSQLQuery = FieldSQLQuery;
 //# sourceMappingURL=FieldSQLQuery.js.map

@@ -1,14 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const operator_1 = require("./operator");
-function map(project) {
+import { Operator } from './operator';
+export function map(project) {
     if (typeof project !== 'function') {
         throw new TypeError('map operator accepts a projection Function');
     }
     return new MapOperator(project);
 }
-exports.map = map;
-class MapOperator extends operator_1.Operator {
+export class MapOperator extends Operator {
     constructor(project) {
         super();
         this.project = project;
@@ -17,5 +14,4 @@ class MapOperator extends operator_1.Operator {
         return this.project(source.currentValue);
     }
 }
-exports.MapOperator = MapOperator;
 //# sourceMappingURL=map.js.map

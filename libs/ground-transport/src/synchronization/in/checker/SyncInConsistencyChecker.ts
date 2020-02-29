@@ -1,5 +1,5 @@
 import {DI}                          from '@airport/di'
-import {SYNC_IN_CONSISTENCY_CHECKER} from '../../../diTokens'
+import {SYNC_IN_CONSISTENCY_CHECKER} from '../../../tokens'
 import {IDataToTM}                   from '../SyncInUtils'
 
 export interface ISyncInConsistencyChecker {

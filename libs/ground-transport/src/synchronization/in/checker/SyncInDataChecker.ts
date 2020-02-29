@@ -1,4 +1,4 @@
-import {DI}             from '@airport/di'
+import {container, DI}             from '@airport/di'
 import {
 	CascadeOverwrite,
 	ChangeType,
@@ -34,7 +34,7 @@ import {
 	SYNC_IN_DATA_CHECKER,
 	SYNC_IN_REPO_TRANS_BLOCK_CREATOR,
 	SYNC_IN_UTILS
-}                       from '../../../diTokens'
+}                       from '../../../tokens'
 import {
 	IDataToTM,
 	ISyncInUtils
@@ -91,7 +91,7 @@ export class SyncInDataChecker
 		const [missingRecordDao, missingRecordRepoTransBlockDao,
 			      repositoryTransactionBlockDao, repositoryTransactionHistoryDao,
 			      sharingMessageDao, syncInRepositoryTransactionBlockCreator,
-			      syncInUtils, terminalStore] = await DI.get(
+			      syncInUtils, terminalStore] = await container(this).get(
 			MISSING_RECORD_DAO, MISSING_RECORD_REPO_TRANS_BLOCK_DAO,
 			REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_DAO,
 			SHARING_MESSAGE_DAO, SYNC_IN_REPO_TRANS_BLOCK_CREATOR,

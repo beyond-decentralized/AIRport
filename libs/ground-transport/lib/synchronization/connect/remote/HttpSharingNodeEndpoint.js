@@ -1,18 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../../../diTokens");
+import { MESSAGE_FROM_TM_SERIALIZER, MESSAGE_TO_TM_DESERIALIZER, MESSAGE_TO_TM_VERIFIER } from '@airport/arrivals-n-departures';
+import { container, DI } from '@airport/di';
+import { HTTP_SHARING_NODE_ENDPOINT, } from '../../../tokens';
 // const log = GROUND_TRANSPORT_LOGGER.add('HttpSharingNodeEndpoint')
 /**
  * P2P endpoint to a built-in AGT
  */
-class HttpSharingNodeEndpoint {
+export class HttpSharingNodeEndpoint {
     constructor() {
         this.xhr = new XMLHttpRequest();
     }
     async communicateWithAGT(sharingNode, message) {
-        const [messageFromTMSerializer, messageToTMDeserializer, messageToTMVerifier] = await di_1.DI.get(arrivals_n_departures_1.MESSAGE_FROM_TM_SERIALIZER, arrivals_n_departures_1.MESSAGE_TO_TM_DESERIALIZER, arrivals_n_departures_1.MESSAGE_TO_TM_VERIFIER);
+        const [messageFromTMSerializer, messageToTMDeserializer, messageToTMVerifier] = await container(this).get(MESSAGE_FROM_TM_SERIALIZER, MESSAGE_TO_TM_DESERIALIZER, MESSAGE_TO_TM_VERIFIER);
         const serializedMessageFromTM = messageFromTMSerializer.serialize(message);
         return new Promise((resolve, reject) => {
             this.xhr.open('PUT', this.agtUrl, true);
@@ -45,6 +43,5 @@ class HttpSharingNodeEndpoint {
         });
     }
 }
-exports.HttpSharingNodeEndpoint = HttpSharingNodeEndpoint;
-di_1.DI.set(diTokens_1.HTTP_SHARING_NODE_ENDPOINT, HttpSharingNodeEndpoint);
+DI.set(HTTP_SHARING_NODE_ENDPOINT, HttpSharingNodeEndpoint);
 //# sourceMappingURL=HttpSharingNodeEndpoint.js.map

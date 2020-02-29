@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../../../diTokens");
-const lingo_1 = require("../../../lingo/lingo");
-class MessageToTMSerializer {
+import { DI } from '@airport/di';
+import { MESSAGE_TO_TM_SERIALIZER } from '../../../tokens';
+import { MessageToTMContentType } from '../../../lingo/lingo';
+export class MessageToTMSerializer {
     serialize(batchedMessagesToTM) {
         const protocolVersion = batchedMessagesToTM.protocolVersion;
         if (protocolVersion !== 0) {
@@ -17,7 +15,7 @@ class MessageToTMSerializer {
     }
     serializeAMessage(messageToTM) {
         switch (messageToTM.contentType) {
-            case lingo_1.MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK: {
+            case MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK: {
                 return [
                     messageToTM.contentType,
                     // messageToTM.agtRepositoryTransactionBlockId,
@@ -28,7 +26,7 @@ class MessageToTMSerializer {
                     messageToTM.repositoryTransactionBlock
                 ];
             }
-            case lingo_1.MessageToTMContentType.SYNC_NOTIFICATION: {
+            case MessageToTMContentType.SYNC_NOTIFICATION: {
                 const serializedSyncOutcomes = this.serializeSyncOutcomes(messageToTM.syncOutcomes);
                 return [
                     messageToTM.contentType,
@@ -46,7 +44,7 @@ class MessageToTMSerializer {
             // 		serializedSyncOutcomes
             // 	];
             // }
-            case lingo_1.MessageToTMContentType.ALIVE_ACK: {
+            case MessageToTMContentType.ALIVE_ACK: {
                 return [
                     messageToTM.contentType
                 ];
@@ -65,6 +63,5 @@ class MessageToTMSerializer {
         ]);
     }
 }
-exports.MessageToTMSerializer = MessageToTMSerializer;
-di_1.DI.set(diTokens_1.MESSAGE_TO_TM_SERIALIZER, MessageToTMSerializer);
+DI.set(MESSAGE_TO_TM_SERIALIZER, MessageToTMSerializer);
 //# sourceMappingURL=MessageToTMSerializer.js.map

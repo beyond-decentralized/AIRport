@@ -1,17 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../diTokens");
-const baseDaos_1 = require("../generated/baseDaos");
-const qSchema_1 = require("../generated/qSchema");
-class DailyArchiveDao extends baseDaos_1.BaseDailyArchiveDao {
+import { AIR_DB, and, or } from '@airport/air-control';
+import { container, DI } from '@airport/di';
+import { DAILY_ARCHIVE_DAO } from '../tokens';
+import { BaseDailyArchiveDao } from '../generated/baseDaos';
+import { Q } from '../generated/qSchema';
+export class DailyArchiveDao extends BaseDailyArchiveDao {
     async addRecords(values) {
-        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
-        const dbEntity = qSchema_1.Q.db.currentVersion.entityMapByName.DailyArchive;
+        const airDb = await container(this).get(AIR_DB);
+        const dbEntity = Q.db.currentVersion.entityMapByName.DailyArchive;
         let da;
         await airDb.insertValues(dbEntity, {
-            insertInto: da = qSchema_1.Q.DailyArchive,
+            insertInto: da = Q.DailyArchive,
             columns: [
                 da.repository.id,
                 da.dailyArchiveLog.dateNumber,
@@ -21,13 +19,13 @@ class DailyArchiveDao extends baseDaos_1.BaseDailyArchiveDao {
         });
     }
     async findForRepositoryIdsOnDates(repositoryIds, dates) {
-        const airDb = await di_1.DI.get(air_control_1.AIR_DB);
+        const airDb = await container(this).get(AIR_DB);
         const whereClauseFragments = [];
         let i = -1;
-        let dsl = qSchema_1.Q.DailyArchive;
+        let dsl = Q.DailyArchive;
         for (const repositoryId of repositoryIds) {
             const repositoryDates = dates[++i];
-            whereClauseFragments.push(air_control_1.and(dsl.repository.id.equals(repositoryId), dsl.dailyArchiveLog.dateNumber.in(repositoryDates)));
+            whereClauseFragments.push(and(dsl.repository.id.equals(repositoryId), dsl.dailyArchiveLog.dateNumber.in(repositoryDates)));
         }
         return await airDb.find.sheet({
             from: [
@@ -38,10 +36,9 @@ class DailyArchiveDao extends baseDaos_1.BaseDailyArchiveDao {
                 dsl.dailyArchiveLog.dateNumber,
                 dsl.repositoryData
             ],
-            where: air_control_1.or(...whereClauseFragments)
+            where: or(...whereClauseFragments)
         });
     }
 }
-exports.DailyArchiveDao = DailyArchiveDao;
-di_1.DI.set(diTokens_1.DAILY_ARCHIVE_DAO, DailyArchiveDao);
+DI.set(DAILY_ARCHIVE_DAO, DailyArchiveDao);
 //# sourceMappingURL=DailyArchiveDao.js.map

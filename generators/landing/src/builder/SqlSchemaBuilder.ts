@@ -1,6 +1,6 @@
 import {IAirportDatabase} from '@airport/air-control'
 import {ISequence}        from '@airport/airport-code'
-import {DI}               from '@airport/di'
+import {container}        from '@airport/di'
 import {
 	getTableName,
 	IStoreDriver,
@@ -19,7 +19,7 @@ export abstract class SqlSchemaBuilder
 	async build(
 		jsonSchema: JsonSchema
 	): Promise<void> {
-		const storeDriver = await DI.get(STORE_DRIVER)
+		const storeDriver = await container(this).get(STORE_DRIVER)
 
 		await this.createSchema(jsonSchema, storeDriver)
 

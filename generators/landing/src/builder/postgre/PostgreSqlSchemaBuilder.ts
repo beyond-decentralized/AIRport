@@ -1,5 +1,5 @@
 import {ISequence}        from '@airport/airport-code'
-import {DI}               from '@airport/di'
+import {container, DI}               from '@airport/di'
 import {
 	getSchemaName,
 	getSequenceName,
@@ -12,7 +12,7 @@ import {
 	SQLDataType,
 	STORE_DRIVER
 }                         from '@airport/ground-control'
-import {SCHEMA_BUILDER}   from '../../diTokens'
+import {SCHEMA_BUILDER}   from '../../tokens'
 import {SqlSchemaBuilder} from '../SqlSchemaBuilder'
 
 export class PostgreSqlSchemaBuilder
@@ -70,7 +70,7 @@ export class PostgreSqlSchemaBuilder
 	async buildAllSequences(
 		jsonSchemas: JsonSchema[]
 	): Promise<ISequence[]> {
-		const storeDriver = await DI.get(STORE_DRIVER)
+		const storeDriver = await container(this).get(STORE_DRIVER)
 
 		for (const jsonSchema of jsonSchemas) {
 			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {

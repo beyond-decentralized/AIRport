@@ -1,5 +1,5 @@
 export * from './Dao';
-export * from './diTokens';
+export * from './tokens';
 export * from './Duo';
 export * from './EntityDatabaseFacade';
 export * from './Selector';

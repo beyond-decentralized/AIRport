@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const diTokens_1 = require("../diTokens");
-class SchemaLocator {
+import { DI } from '@airport/di';
+import { SCHEMA_LOCATOR } from '../tokens';
+export class SchemaLocator {
     // private terminalStore: ITerminalStore
     locateExistingSchemaVersionRecord(jsonSchema, terminalStore) {
         const schemaVersionsForDomainName = terminalStore
@@ -22,6 +20,5 @@ class SchemaLocator {
             .get(schemaName);
     }
 }
-exports.SchemaLocator = SchemaLocator;
-di_1.DI.set(diTokens_1.SCHEMA_LOCATOR, SchemaLocator);
+DI.set(SCHEMA_LOCATOR, SchemaLocator);
 //# sourceMappingURL=SchemaLocator.js.map

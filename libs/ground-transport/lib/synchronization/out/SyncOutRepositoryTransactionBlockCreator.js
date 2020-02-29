@@ -1,15 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const holding_pattern_1 = require("@airport/holding-pattern");
-const moving_walkway_1 = require("@airport/moving-walkway");
-const traffic_pattern_1 = require("@airport/traffic-pattern");
-const diTokens_1 = require("../../diTokens");
-class SyncOutRepositoryTransactionBlockCreator {
+import { container, DI } from '@airport/di';
+import { CascadeOverwrite, ensureChildArray, ensureChildJsSet } from '@airport/ground-control';
+import { ACTOR_DAO, REPOSITORY_DAO } from '@airport/holding-pattern';
+import { DataOrigin, REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, SHARING_NODE_REPOSITORY_DAO } from '@airport/moving-walkway';
+import { SCHEMA_DAO } from '@airport/traffic-pattern';
+import { SYNC_OUT_REPO_TRANS_BLOCK_CREATOR } from '../../tokens';
+export class SyncOutRepositoryTransactionBlockCreator {
     // Get new repository transaction histories not yet in RepoTransBlocks
     async createNewBlocks(sharingNodeIds, terminal) {
-        const [actorDao, repositoryDao, repositoryTransactionBlockDao, repositoryTransactionHistoryUpdateStageDao, schemaDao, sharingNodeRepositoryDao] = await di_1.DI.get(holding_pattern_1.ACTOR_DAO, holding_pattern_1.REPOSITORY_DAO, moving_walkway_1.REPO_TRANS_BLOCK_DAO, moving_walkway_1.REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, traffic_pattern_1.SCHEMA_DAO, moving_walkway_1.SHARING_NODE_REPOSITORY_DAO);
+        const [actorDao, repositoryDao, repositoryTransactionBlockDao, repositoryTransactionHistoryUpdateStageDao, schemaDao, sharingNodeRepositoryDao] = await container(this).get(ACTOR_DAO, REPOSITORY_DAO, REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, SCHEMA_DAO, SHARING_NODE_REPOSITORY_DAO);
         const [sharingNodeIdMapByRepositoryId, repoTransHistoriesToSync] = await sharingNodeRepositoryDao
             .findNewRepoTransHistoriesForSharingNodes(sharingNodeIds);
         const repositoryIdSet = new Set();
@@ -40,7 +38,7 @@ class SyncOutRepositoryTransactionBlockCreator {
             repositoryTransactionHistoryIds.add(repoTransHistory.id);
             const repositoryId = repoTransHistory.repository.id;
             repositoryIdSet.add(repoTransHistory.repository.id);
-            const repoTransHistoriesForRepositoryId = ground_control_1.ensureChildArray(repoTransHistoryMapByRepositoryId, repositoryId);
+            const repoTransHistoriesForRepositoryId = ensureChildArray(repoTransHistoryMapByRepositoryId, repositoryId);
             repoTransHistoriesForRepositoryId.push(repoTransHistory);
             this.gatherHistoryIds(repoTransHistory, schemaVersionIds, schemaVersionIdSetsByRepository, actorIdSet, repositoryIdsByActorId);
         });
@@ -49,9 +47,9 @@ class SyncOutRepositoryTransactionBlockCreator {
         const repoTransHistoryActorId = repoTransHistory.actor.id;
         actorIdSet.add(repoTransHistoryActorId);
         const repositoryId = repoTransHistory.repository.id;
-        let repositoryIdsForActorId = ground_control_1.ensureChildJsSet(repositoryIdsByActorId, repoTransHistoryActorId);
+        let repositoryIdsForActorId = ensureChildJsSet(repositoryIdsByActorId, repoTransHistoryActorId);
         repositoryIdsForActorId.add(repositoryId);
-        const schemaVersionIdSetForRepo = ground_control_1.ensureChildJsSet(schemaVersionIdSetsByRepository, repositoryId);
+        const schemaVersionIdSetForRepo = ensureChildJsSet(schemaVersionIdSetsByRepository, repositoryId);
         repoTransHistory.operationHistory.forEach(operationHistory => {
             const schemaVersionId = operationHistory.entity.schemaVersion.id;
             schemaVersionIds.add(schemaVersionId);
@@ -60,7 +58,7 @@ class SyncOutRepositoryTransactionBlockCreator {
                 const recordHistoryActorId = recordHistory.actor.id;
                 actorIdSet.add(recordHistoryActorId);
                 repositoryIdsForActorId
-                    = ground_control_1.ensureChildJsSet(repositoryIdsByActorId, recordHistoryActorId);
+                    = ensureChildJsSet(repositoryIdsByActorId, recordHistoryActorId);
                 repositoryIdsForActorId.add(repositoryId);
                 // actorIdsForRepositoryId.add(recordHistoryActorId);
             });
@@ -96,7 +94,7 @@ class SyncOutRepositoryTransactionBlockCreator {
         const schemaMapByVersionId = await schemaDao
             .findMapByVersionIds(Array.from(schemaVersionIds));
         for (const [repositoryId, schemaVersionIdSetForRepo] of schemaVersionIdSetsByRepository) {
-            const schemasForRepository = ground_control_1.ensureChildArray(schemasByRepositoryIdMap, repositoryId);
+            const schemasForRepository = ensureChildArray(schemasByRepositoryIdMap, repositoryId);
             for (const schemaVersionId of schemaVersionIdSetForRepo) {
                 schemasForRepository.push(schemaMapByVersionId.get(schemaVersionId));
             }
@@ -107,7 +105,7 @@ class SyncOutRepositoryTransactionBlockCreator {
         const repository = repositoryMapById.get(repositoryId);
         const repositoryOwnerActorId = repository.ownerActor.id;
         actorIdSet.add(repositoryOwnerActorId);
-        let repositoryIdsForActorId = ground_control_1.ensureChildJsSet(repositoryIdsByActorId, repositoryOwnerActorId);
+        let repositoryIdsForActorId = ensureChildJsSet(repositoryIdsByActorId, repositoryOwnerActorId);
         repositoryIdsForActorId.add(repositoryId);
         const repoTransBlockData = {
             terminal: {
@@ -127,7 +125,7 @@ class SyncOutRepositoryTransactionBlockCreator {
         const repositoryTransactionBlock = {
             source: terminal,
             repository,
-            origin: moving_walkway_1.DataOrigin.LOCAL
+            origin: DataOrigin.LOCAL
         };
         repositoryTransactionBlocks.push(repositoryTransactionBlock);
         repoTransBlocksByRepositoryId.set(repositoryId, repositoryTransactionBlock);
@@ -159,7 +157,7 @@ class SyncOutRepositoryTransactionBlockCreator {
             const repoTransBlockData = repoTransBlockDataByRepoId.get(repositoryId);
             repositoryTransactionBlock.contents = JSON.stringify(repoTransBlockData);
         }
-        await (await repositoryTransactionBlockDao).bulkCreate(repositoryTransactionBlocks, ground_control_1.CascadeOverwrite.DEFAULT, false);
+        await (await repositoryTransactionBlockDao).bulkCreate(repositoryTransactionBlocks, CascadeOverwrite.DEFAULT, false);
     }
     async setRepositoryTransactionBlockBlockIds(repoTransHistoryUpdateStageValuesByBlock, repoTransHistoryUpdateStageValues, repositoryTransactionHistoryUpdateStageDao) {
         for (const [repositoryTransactionBlock, repoTransHistoryUpdateStageValuesForBlock] of repoTransHistoryUpdateStageValuesByBlock) {
@@ -176,13 +174,12 @@ class SyncOutRepositoryTransactionBlockCreator {
             const repositoryId = repositoryTransactionBlock.repository.id;
             const sharingNodeIdSet = sharingNodeIdMapByRepositoryId.get(repositoryId);
             for (const sharingNodeId of sharingNodeIdSet) {
-                ground_control_1.ensureChildArray(reposTransHistoryBlockMapBySharingNodeId, sharingNodeId)
+                ensureChildArray(reposTransHistoryBlockMapBySharingNodeId, sharingNodeId)
                     .push(repositoryTransactionBlock);
             }
         }
         return reposTransHistoryBlockMapBySharingNodeId;
     }
 }
-exports.SyncOutRepositoryTransactionBlockCreator = SyncOutRepositoryTransactionBlockCreator;
-di_1.DI.set(diTokens_1.SYNC_OUT_REPO_TRANS_BLOCK_CREATOR, SyncOutRepositoryTransactionBlockCreator);
+DI.set(SYNC_OUT_REPO_TRANS_BLOCK_CREATOR, SyncOutRepositoryTransactionBlockCreator);
 //# sourceMappingURL=SyncOutRepositoryTransactionBlockCreator.js.map

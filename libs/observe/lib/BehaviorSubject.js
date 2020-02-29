@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Subject_1 = require("./Subject");
-class BehaviorSubject extends Subject_1.Subject {
+import { Subject } from './Subject';
+export class BehaviorSubject extends Subject {
     constructor(value) {
         super();
         this.currentValue = value;
@@ -13,5 +11,4 @@ class BehaviorSubject extends Subject_1.Subject {
     clear() {
     }
 }
-exports.BehaviorSubject = BehaviorSubject;
 //# sourceMappingURL=BehaviorSubject.js.map

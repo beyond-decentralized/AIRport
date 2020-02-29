@@ -3,7 +3,7 @@ import {
 	IAirportDatabase
 }                           from '@airport/air-control'
 import {SEQUENCE_GENERATOR} from '@airport/check-in'
-import {DI}                 from '@airport/di'
+import {container, DI}                 from '@airport/di'
 import {
 	DbSchema,
 	JsonSchema
@@ -23,7 +23,7 @@ import {
 	SCHEMA_INITIALIZER,
 	SCHEMA_LOCATOR,
 	SCHEMA_RECORDER
-}                           from './diTokens'
+}                           from './tokens'
 
 export interface ISchemaInitializer {
 
@@ -46,7 +46,7 @@ export class SchemaInitializer
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			      queryObjectInitializer, schemaBuilder, schemaChecker, schemaComposer,
 			      schemaLocator, schemaRecorder, sequenceGenerator, terminalStore]
-			      = await DI.get(AIR_DB, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
+			      = await container(this).get(AIR_DB, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
 			QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER,
 			SCHEMA_CHECKER, SCHEMA_COMPOSER, SCHEMA_LOCATOR, SCHEMA_RECORDER,
 			SEQUENCE_GENERATOR, TERMINAL_STORE)
@@ -119,7 +119,7 @@ export class SchemaInitializer
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			      queryObjectInitializer, schemaBuilder, schemaChecker, schemaComposer,
 			      schemaLocator, schemaRecorder, sequenceGenerator, terminalStore]
-			      = await DI.get(AIR_DB, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
+			      = await container(this).get(AIR_DB, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
 			QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER,
 			SCHEMA_CHECKER, SCHEMA_COMPOSER, SCHEMA_LOCATOR, SCHEMA_RECORDER,
 			SEQUENCE_GENERATOR, TERMINAL_STORE)

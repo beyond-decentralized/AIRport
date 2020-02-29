@@ -2,7 +2,7 @@ import {
 	AIR_DB,
 	IAirportDatabase,
 }                           from '@airport/air-control'
-import {DI}                 from '@airport/di'
+import {container, DI}                 from '@airport/di'
 import {setStoreDriver}     from '@airport/fuel-hydrant-system'
 import {
 	DomainName,
@@ -29,7 +29,7 @@ import {
 	User,
 	USER_DAO
 }                           from '@airport/travel-document-checkpoint'
-import {DATABASE_MANAGER}   from '../diTokens'
+import {DATABASE_MANAGER}   from '../tokens'
 
 export interface IDatabaseManager {
 
@@ -105,13 +105,13 @@ export class DatabaseManager
 		...schemas: JsonSchema[]
 	): Promise<void> {
 		await setStoreDriver(storeType)
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 		this.airDb  = airDb
 
-		const connector = await DI.get(TRANS_CONNECTOR)
+		const connector = await container(this).get(TRANS_CONNECTOR)
 		await connector.init()
 
-		const storeDriver = await DI.get(STORE_DRIVER)
+		const storeDriver = await container(this).get(STORE_DRIVER)
 		/*
 				await storeDriver.dropTable('npmjs_org___airport__airport_code__SEQUENCES')
 				await storeDriver.dropTable('npmjs_org___airport__airport_code__TERMINAL_RUNS')
@@ -175,7 +175,7 @@ export class DatabaseManager
 				await storeDriver.dropTable('public___votecube__public_db__VOTE_FACTOR_TYPES')
 		*/
 
-		const server              = await DI.get(TRANS_SERVER);
+		const server              = await container(this).get(TRANS_SERVER);
 		(server as any).tempActor = new Actor()
 
 		const hydrate = await storeDriver.doesTableExist('npmjs_org___airport__territory__PACKAGES')
@@ -220,7 +220,7 @@ export class DatabaseManager
 	private async initFeatureSchemas(
 		schemas: JsonSchema[]
 	) {
-		const schemaDao = await DI.get(SCHEMA_DAO)
+		const schemaDao = await container(this).get(SCHEMA_DAO)
 
 		const schemaNames: SchemaName[] = []
 		for (const jsonSchema of schemas) {
@@ -239,7 +239,7 @@ export class DatabaseManager
 		}
 
 		if (schemasToInitialize.length) {
-			const schemaInitializer = await DI.get(SCHEMA_INITIALIZER)
+			const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER)
 			await schemaInitializer.initialize(schemas)
 		}
 	}
@@ -248,27 +248,27 @@ export class DatabaseManager
 		await transactional(async () => {
 			const user    = new User()
 			user.uniqueId = domainName
-			const userDao = await DI.get(USER_DAO)
+			const userDao = await container(this).get(USER_DAO)
 			await userDao.save(user)
 
 			const terminal    = new Terminal()
 			terminal.name     = domainName
 			terminal.owner    = user
-			const terminalDao = await DI.get(TERMINAL_DAO)
+			const terminalDao = await container(this).get(TERMINAL_DAO)
 			await terminalDao.save(terminal)
 
 			const actor    = new Actor()
 			actor.user     = user
 			actor.terminal = terminal
 			actor.randomId = Math.random()
-			const actorDao = await DI.get(ACTOR_DAO)
+			const actorDao = await container(this).get(ACTOR_DAO)
 			await actorDao.save(actor)
 		})
 	}
 
 	private async installAirportSchema(hydrate: boolean) {
 		const blueprintFile     = await import('@airport/blueprint')
-		const schemaInitializer = await DI.get(SCHEMA_INITIALIZER)
+		const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER)
 		if (hydrate) {
 			await schemaInitializer.hydrate(blueprintFile.BLUEPRINT as any)
 		} else {

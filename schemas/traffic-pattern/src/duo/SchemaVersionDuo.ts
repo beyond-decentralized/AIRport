@@ -1,5 +1,5 @@
 import {DI}                 from '@airport/di'
-import {SCHEMA_VERSION_DUO} from '../diTokens'
+import {SCHEMA_VERSION_DUO} from '../tokens'
 import {
 	BaseSchemaVersionDuo,
 	IBaseSchemaVersionDuo

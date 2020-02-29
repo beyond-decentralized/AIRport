@@ -1,20 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const fs = require("fs");
-const pathResolver_1 = require("../resolve/pathResolver");
-const EntityCandidate_1 = require("./EntityCandidate");
-const EntityDefinitionGenerator_1 = require("./EntityDefinitionGenerator");
-const utils_1 = require("./utils");
+import { DbSchemaBuilder } from '@airport/ground-control';
+import * as fs from 'fs';
+import { canBeInterface, getImplNameFromInterfaceName } from '../resolve/pathResolver';
+import { EntityCandidate, Interface } from './EntityCandidate';
+import { globalCandidateInheritanceMap } from './EntityDefinitionGenerator';
+import { endsWith, isPrimitive, startsWith } from './utils';
 /**
  * Created by Papa on 3/27/2016.
  */
-class EntityCandidateRegistry {
+export class EntityCandidateRegistry {
     constructor(enumMap) {
         this.enumMap = enumMap;
         this.entityCandidateMap = new Map();
         this.allInterfacesMap = new Map();
-        this.dbSchemaBuilder = new ground_control_1.DbSchemaBuilder();
+        this.dbSchemaBuilder = new DbSchemaBuilder();
         this.allSchemas = [];
         this.schemaMap = {};
         this.mappedSuperClassMap = {};
@@ -45,13 +43,13 @@ class EntityCandidateRegistry {
             if (targetCandidate.parentEntity) {
                 continue;
             }
-            let parentType = EntityDefinitionGenerator_1.globalCandidateInheritanceMap[targetCandidate.type];
+            let parentType = globalCandidateInheritanceMap[targetCandidate.type];
             while (parentType) {
                 targetCandidate.parentEntity = targetCandidateRegistry.entityCandidateMap.get(parentType);
                 if (targetCandidate.parentEntity) {
                     break;
                 }
-                parentType = EntityDefinitionGenerator_1.globalCandidateInheritanceMap[parentType];
+                parentType = globalCandidateInheritanceMap[parentType];
             }
             if (targetCandidate.parentEntity) {
                 continue;
@@ -92,11 +90,11 @@ class EntityCandidateRegistry {
             property //
             ) => {
                 let type = property.type;
-                if (utils_1.endsWith(type, '[]')) {
+                if (endsWith(type, '[]')) {
                     property.isArray = true;
                     type = type.substr(0, type.length - 2);
                 }
-                else if (utils_1.startsWith(type, 'Array<')) {
+                else if (startsWith(type, 'Array<')) {
                     type = type.substr(6, type.length - 1);
                 }
                 property.nonArrayType = type;
@@ -163,7 +161,7 @@ class EntityCandidateRegistry {
                         .replace(';', '')
                         .trim();
                     type = property.mapValueType;
-                    property.mapValueIsPrimitive = utils_1.isPrimitive(type);
+                    property.mapValueIsPrimitive = isPrimitive(type);
                     const objectMapKeyNameFragment = objectMapFragments[0];
                     property.mapKeyName = objectMapKeyNameFragment
                         .replace('{', '')
@@ -203,11 +201,11 @@ class EntityCandidateRegistry {
                         property.entity = anInterface.implementation;
                     }
                     else {
-                        if (pathResolver_1.canBeInterface(type)) {
-                            const entityType = pathResolver_1.getImplNameFromInterfaceName(type);
+                        if (canBeInterface(type)) {
+                            const entityType = getImplNameFromInterfaceName(type);
                             verifiedEntity = this.entityCandidateMap.get(entityType);
                             if (verifiedEntity) {
-                                const externalInterface = new EntityCandidate_1.Interface(null, type);
+                                const externalInterface = new Interface(null, type);
                                 externalInterface.implementation = verifiedEntity;
                                 entityInterfaceMap[type] = externalInterface;
                                 this.registerInterface(externalInterface, property);
@@ -301,7 +299,7 @@ class EntityCandidateRegistry {
         return mappedSuperClassMapForProject[type];
     }
     deserializeEntityCandidate(serializedEntityCandidate) {
-        const entityCandidate = new EntityCandidate_1.EntityCandidate(null, null, null);
+        const entityCandidate = new EntityCandidate(null, null, null);
         for (let key in serializedEntityCandidate) {
             entityCandidate[key] = serializedEntityCandidate[key];
         }
@@ -314,8 +312,8 @@ class EntityCandidateRegistry {
         const type = property.nonArrayType;
         let otherSchemaDbEntity = dbSchema.currentVersion.entityMapByName[type];
         if (!otherSchemaDbEntity) {
-            if (pathResolver_1.canBeInterface(type)) {
-                const relatedImplementationName = pathResolver_1.getImplNameFromInterfaceName(type);
+            if (canBeInterface(type)) {
+                const relatedImplementationName = getImplNameFromInterfaceName(type);
                 otherSchemaDbEntity = dbSchema.currentVersion.entityMapByName[relatedImplementationName];
                 if (!otherSchemaDbEntity) {
                     throw new Error(`Could not find entity '${relatedImplementationName}' 
@@ -356,5 +354,4 @@ class EntityCandidateRegistry {
         return true;
     }
 }
-exports.EntityCandidateRegistry = EntityCandidateRegistry;
 //# sourceMappingURL=EntityCandidateRegistry.js.map

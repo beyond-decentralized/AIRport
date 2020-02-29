@@ -1,5 +1,5 @@
 import {DI}                         from '@airport/di'
-import {MESSAGE_TO_TM_DESERIALIZER} from '../../../diTokens'
+import {MESSAGE_TO_TM_DESERIALIZER} from '../../../tokens'
 import {
 	BatchedMessagesToTM,
 	MessageToTM,

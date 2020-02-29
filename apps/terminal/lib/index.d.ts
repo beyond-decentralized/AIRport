@@ -15,4 +15,4 @@ export * from './orchestration/UpdateManager';
 export * from './shared/logic/DatabaseLogic';
 export * from './shared/DateUtils';
 export * from './shared/PlatformUtils';
-export * from './diTokens';
+export * from './tokens';

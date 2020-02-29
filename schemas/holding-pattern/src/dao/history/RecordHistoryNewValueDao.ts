@@ -1,6 +1,6 @@
 import {DI}                     from '@airport/di'
 import {RecordHistoryId}        from '../../ddl/ddl'
-import {REC_HIST_NEW_VALUE_DAO} from '../../diTokens'
+import {REC_HIST_NEW_VALUE_DAO} from '../../tokens'
 import {
 	BaseRecordHistoryNewValueDao,
 	IBaseRecordHistoryNewValueDao,

@@ -1,7 +1,7 @@
 import { ChangeType, DbEntity } from '@airport/ground-control';
-import { IBaseOperationHistoryDuo, SystemWideOperationId } from '../../';
+import { SystemWideOperationId } from '../../ddl/common';
 import { RepositoryEntityActorRecordId } from '../../ddl/ddl';
-import { BaseOperationHistoryDuo, IOperationHistory, IRecordHistory, IRepositoryTransactionHistory } from '../../generated/generated';
+import { BaseOperationHistoryDuo, IBaseOperationHistoryDuo, IOperationHistory, IRecordHistory, IRepositoryTransactionHistory } from '../../generated/generated';
 import { IRecordHistoryDuo } from './RecordHistoryDuo';
 export interface IOperationHistoryDuo extends IBaseOperationHistoryDuo {
     getNewRecord(entityChangeType: ChangeType, dbEntity: DbEntity, repositoryTransactionHistory: IRepositoryTransactionHistory, systemWideOperationId: SystemWideOperationId): IOperationHistory;

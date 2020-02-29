@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Field_1 = require("../../core/field/Field");
-const NonEntityQuery_1 = require("./NonEntityQuery");
+import { QField } from '../../core/field/Field';
+import { DistinguishableQuery, NON_ENTITY_SELECT_ERROR_MESSAGE, } from './NonEntityQuery';
 /**
  * Created by Papa on 10/23/2016.
  */
-class SheetQuery extends NonEntityQuery_1.DistinguishableQuery {
+export class SheetQuery extends DistinguishableQuery {
     constructor(rawQuery) {
         super();
         this.rawQuery = rawQuery;
@@ -15,8 +13,8 @@ class SheetQuery extends NonEntityQuery_1.DistinguishableQuery {
             throw new Error(`Flat Queries an array of fields in SELECT clause.`);
         }
         return rawSelect.map((selectField) => {
-            if (!(selectField instanceof Field_1.QField)) {
-                throw new Error(NonEntityQuery_1.NON_ENTITY_SELECT_ERROR_MESSAGE);
+            if (!(selectField instanceof QField)) {
+                throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
             }
             this.columnAliases.entityAliases.getNextAlias(selectField.q.__driver__.getRootJoinEntity());
             return selectField.toJSON(this.columnAliases, true, queryUtils, fieldUtils);
@@ -30,5 +28,4 @@ class SheetQuery extends NonEntityQuery_1.DistinguishableQuery {
         return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils);
     }
 }
-exports.SheetQuery = SheetQuery;
 //# sourceMappingURL=SheetQuery.js.map

@@ -10,7 +10,7 @@ import {
 	TerminalName,
 	TerminalSecondId
 }                         from '@airport/arrivals-n-departures'
-import {DI}               from '@airport/di'
+import {container, DI}               from '@airport/di'
 import {ensureChildJsMap} from '@airport/ground-control'
 import {
 	QTerminal,
@@ -24,7 +24,7 @@ import {
 	RepositoryRandomId,
 	RepositoryTransactionHistoryId,
 }                         from '../../ddl/ddl'
-import {REPOSITORY_DAO}   from '../../diTokens'
+import {REPOSITORY_DAO}   from '../../tokens'
 import {
 	BaseRepositoryDao,
 	IBaseRepositoryDao,
@@ -231,7 +231,7 @@ export class RepositoryDao
 		let odu: QUser
 		let ou: QUser
 
-		const airDb = await DI.get(AIR_DB)
+		const airDb = await container(this).get(AIR_DB)
 
 		const resultRows = await airDb.find.sheet({
 			from: [

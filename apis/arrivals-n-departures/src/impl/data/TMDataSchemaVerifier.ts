@@ -1,5 +1,5 @@
 import {DI}                      from '@airport/di'
-import {TM_DATA_SCHEMA_VERIFIER} from '../../diTokens'
+import {TM_DATA_SCHEMA_VERIFIER} from '../../tokens'
 
 export interface ITMDataSchemaVerifier {
 
