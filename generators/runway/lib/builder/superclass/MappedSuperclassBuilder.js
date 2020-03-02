@@ -1,4 +1,6 @@
-export class MappedSuperclassBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class MappedSuperclassBuilder {
     constructor(config, entityMapByName) {
         this.config = config;
         this.entityMapByName = entityMapByName;
@@ -49,4 +51,5 @@ export class MappedSuperclassBuilder {
         }
     }
 }
+exports.MappedSuperclassBuilder = MappedSuperclassBuilder;
 //# sourceMappingURL=MappedSuperclassBuilder.js.map

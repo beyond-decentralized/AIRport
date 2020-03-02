@@ -1,1 +1,1 @@
-{"version":3,"file":"DataArchiver.js","sourceRoot":"","sources":["../../../../src/server/archive/write/DataArchiver.ts"],"names":[],"mappings":"AAaA,MAAM,OAAO,YAAY;IAIxB,KAAK,CAAC,SAAS,CACd,WAAwB,EACxB,IAA6E;QAE7E,MAAM,IAAI,KAAK,CAAC,WAAW,CAAC,CAAA;IAC7B,CAAC;CAED"}
+{"version":3,"file":"DataArchiver.js","sourceRoot":"","sources":["../../../../src/server/archive/write/DataArchiver.ts"],"names":[],"mappings":";;AAaA,MAAa,YAAY;IAIxB,KAAK,CAAC,SAAS,CACd,WAAwB,EACxB,IAA6E;QAE7E,MAAM,IAAI,KAAK,CAAC,WAAW,CAAC,CAAA;IAC7B,CAAC;CAED;AAXD,oCAWC"}

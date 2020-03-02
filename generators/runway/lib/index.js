@@ -1,11 +1,12 @@
+"use strict";
 /**
  * Created by Papa on 4/24/2016.
  */
-import * as fs from 'fs';
-import * as ts from 'typescript';
-import { watchFiles } from './FileWatcher';
-import { readConfiguration } from './options/generator';
-const configuration = readConfiguration(process.cwd(), process.argv);
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs = require("fs");
+const FileWatcher_1 = require("./FileWatcher");
+const generator_1 = require("./options/generator");
+const configuration = generator_1.readConfiguration(process.cwd(), process.argv);
 const ddlDirPath = process.cwd() + '/' + configuration.airport.ddlDir;
 const sourceFilePaths = findAllDdlFilePaths(ddlDirPath);
 function findAllDdlFilePaths(dirPath) {
@@ -34,7 +35,7 @@ function isTsFile(fileName) {
     return fileName.substr(fileName.length - 3, 3) === '.ts';
 }
 // Start the watcher
-watchFiles(configuration, {
-    module: ts.ModuleKind.CommonJS
+FileWatcher_1.watchFiles(configuration, {
+    module: 6 // ts.ModuleKind.ES2020,
 }, sourceFilePaths);
 //# sourceMappingURL=index.js.map

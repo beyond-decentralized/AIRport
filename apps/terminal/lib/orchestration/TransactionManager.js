@@ -1,10 +1,12 @@
-import { container, DI } from '@airport/di';
-import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system';
-import { STORE_DRIVER, SyncSchemaMap } from '@airport/ground-control';
-import { Q, TRANS_HISTORY_DUO } from '@airport/holding-pattern';
-import { TRANSACTION_MANAGER } from '@airport/terminal-map';
-import { AbstractMutationManager } from './AbstractMutationManager';
-export class TransactionManager extends AbstractMutationManager {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
+const ground_control_1 = require("@airport/ground-control");
+const holding_pattern_1 = require("@airport/holding-pattern");
+const terminal_map_1 = require("@airport/terminal-map");
+const AbstractMutationManager_1 = require("./AbstractMutationManager");
+class TransactionManager extends AbstractMutationManager_1.AbstractMutationManager {
     constructor() {
         super(...arguments);
         this.transactionIndexQueue = [];
@@ -16,13 +18,13 @@ export class TransactionManager extends AbstractMutationManager {
      * @returns {Promise<void>}
      */
     async init(dbName) {
-        const storeDriver = await container(this).get(STORE_DRIVER);
+        const storeDriver = await di_1.container(this).get(ground_control_1.STORE_DRIVER);
         return await storeDriver.initialize(dbName);
         // await this.dataStore.initialize(dbName)
         // await this.repositoryManager.initialize();
     }
     async transact(credentials) {
-        const [storeDriver, transHistoryDuo] = await container(this).get(STORE_DRIVER, TRANS_HISTORY_DUO);
+        const [storeDriver, transHistoryDuo] = await di_1.container(this).get(ground_control_1.STORE_DRIVER, holding_pattern_1.TRANS_HISTORY_DUO);
         if (credentials.domainAndPort === this.transactionInProgress
             || this.transactionIndexQueue.filter(transIndex => transIndex === credentials.domainAndPort).length) {
             // Either just continue using the current transaction
@@ -36,7 +38,7 @@ export class TransactionManager extends AbstractMutationManager {
         }
         this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== credentials.domainAndPort);
         this.transactionInProgress = credentials.domainAndPort;
-        let fieldMap = new SyncSchemaMap();
+        let fieldMap = new ground_control_1.SyncSchemaMap();
         this.currentTransHistory = transHistoryDuo.getNewRecord();
         await storeDriver.transact();
     }
@@ -56,14 +58,14 @@ export class TransactionManager extends AbstractMutationManager {
             return;
         }
         try {
-            await (await container(this).get(STORE_DRIVER)).rollback();
+            await (await di_1.container(this).get(ground_control_1.STORE_DRIVER)).rollback();
         }
         finally {
             this.clearTransaction();
         }
     }
     async commit(credentials) {
-        const [activeQueries, idGenerator, storeDriver] = await container(this).get(ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER);
+        const [activeQueries, idGenerator, storeDriver] = await di_1.container(this).get(fuel_hydrant_system_1.ACTIVE_QUERIES, fuel_hydrant_system_1.ID_GENERATOR, ground_control_1.STORE_DRIVER);
         if (this.transactionInProgress !== credentials.domainAndPort) {
             throw new Error(`Cannot commit inactive transaction '${credentials.domainAndPort}'.`);
         }
@@ -108,31 +110,31 @@ export class TransactionManager extends AbstractMutationManager {
         }
         let schemaMap = transaction.schemaMap;
         const transHistoryIds = await idGenerator.generateTransactionHistoryIds(transaction.repositoryTransactionHistories.length, transaction.allOperationHistory.length, transaction.allRecordHistory.length);
-        schemaMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true);
+        schemaMap.ensureEntity(holding_pattern_1.Q.TransactionHistory.__driver__.dbEntity, true);
         transaction.id = transHistoryIds.transactionHistoryId;
-        await this.doInsertValues(Q.TransactionHistory, [transaction]);
-        schemaMap.ensureEntity(Q.RepositoryTransactionHistory.__driver__.dbEntity, true);
+        await this.doInsertValues(holding_pattern_1.Q.TransactionHistory, [transaction]);
+        schemaMap.ensureEntity(holding_pattern_1.Q.RepositoryTransactionHistory.__driver__.dbEntity, true);
         transaction.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
             repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index];
         });
-        await this.doInsertValues(Q.RepositoryTransactionHistory, transaction.repositoryTransactionHistories);
-        schemaMap.ensureEntity(Q.OperationHistory.__driver__.dbEntity, true);
+        await this.doInsertValues(holding_pattern_1.Q.RepositoryTransactionHistory, transaction.repositoryTransactionHistories);
+        schemaMap.ensureEntity(holding_pattern_1.Q.OperationHistory.__driver__.dbEntity, true);
         transaction.allOperationHistory.forEach((operationHistory, index) => {
             operationHistory.id = transHistoryIds.operationHistoryIds[index];
         });
-        await this.doInsertValues(Q.OperationHistory, transaction.allOperationHistory);
-        schemaMap.ensureEntity(Q.RecordHistory.__driver__.dbEntity, true);
+        await this.doInsertValues(holding_pattern_1.Q.OperationHistory, transaction.allOperationHistory);
+        schemaMap.ensureEntity(holding_pattern_1.Q.RecordHistory.__driver__.dbEntity, true);
         transaction.allRecordHistory.forEach((recordHistory, index) => {
             recordHistory.id = transHistoryIds.recordHistoryIds[index];
         });
-        await this.doInsertValues(Q.RecordHistory, transaction.allRecordHistory);
+        await this.doInsertValues(holding_pattern_1.Q.RecordHistory, transaction.allRecordHistory);
         if (transaction.allRecordHistoryNewValues.length) {
-            schemaMap.ensureEntity(Q.RecordHistoryNewValue.__driver__.dbEntity, true);
-            await this.doInsertValues(Q.RecordHistoryNewValue, transaction.allRecordHistoryNewValues);
+            schemaMap.ensureEntity(holding_pattern_1.Q.RecordHistoryNewValue.__driver__.dbEntity, true);
+            await this.doInsertValues(holding_pattern_1.Q.RecordHistoryNewValue, transaction.allRecordHistoryNewValues);
         }
         if (transaction.allRecordHistoryOldValues.length) {
-            schemaMap.ensureEntity(Q.RecordHistoryOldValue.__driver__.dbEntity, true);
-            await this.doInsertValues(Q.RecordHistoryOldValue, transaction.allRecordHistoryOldValues);
+            schemaMap.ensureEntity(holding_pattern_1.Q.RecordHistoryOldValue.__driver__.dbEntity, true);
+            await this.doInsertValues(holding_pattern_1.Q.RecordHistoryOldValue, transaction.allRecordHistoryOldValues);
         }
         return true;
     }
@@ -156,5 +158,6 @@ export class TransactionManager extends AbstractMutationManager {
             === domainAndPort;
     }
 }
-DI.set(TRANSACTION_MANAGER, TransactionManager);
+exports.TransactionManager = TransactionManager;
+di_1.DI.set(terminal_map_1.TRANSACTION_MANAGER, TransactionManager);
 //# sourceMappingURL=TransactionManager.js.map

@@ -1,5 +1,7 @@
-import { resolveRelativePath } from '../resolve/pathResolver';
-export class QSchemaBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const pathResolver_1 = require("../resolve/pathResolver");
+class QSchemaBuilder {
     constructor(pathBuilder) {
         this.pathBuilder = pathBuilder;
         this.entityNames = [];
@@ -9,10 +11,10 @@ export class QSchemaBuilder {
         this.qSchemaFilePath = pathBuilder.fullGeneratedDirPath + '/qSchema.ts';
     }
     addFileNameAndPaths(entityName, fullDdlPath, fullGenerationPath) {
-        const ddlRelativePath = resolveRelativePath(this.qSchemaFilePath, fullDdlPath)
+        const ddlRelativePath = pathResolver_1.resolveRelativePath(this.qSchemaFilePath, fullDdlPath)
             .replace('.ts', '');
         this.ddlPathMapByEntityName[entityName] = ddlRelativePath;
-        const generatedRelativePath = resolveRelativePath(this.qSchemaFilePath, fullGenerationPath)
+        const generatedRelativePath = pathResolver_1.resolveRelativePath(this.qSchemaFilePath, fullGenerationPath)
             .replace('.ts', '');
         this.generatedFilePaths.push(generatedRelativePath);
         this.generatedPathMapByEntityName[entityName]
@@ -110,4 +112,5 @@ DI.db().get(AIR_DB).then((
 `;
     }
 }
+exports.QSchemaBuilder = QSchemaBuilder;
 //# sourceMappingURL=QSchemaBuilder.js.map

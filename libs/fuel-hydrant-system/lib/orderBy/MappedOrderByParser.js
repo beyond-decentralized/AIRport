@@ -1,4 +1,6 @@
-import { SortOrder } from '@airport/ground-control';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
 /**
  * Created by Papa on 11/8/2016.
  */
@@ -7,7 +9,7 @@ import { SortOrder } from '@airport/ground-control';
  * Within a given sub-select facade will take into account the sort order specified in the Order
  * By clause.
  */
-export class MappedOrderByParser {
+class MappedOrderByParser {
     constructor(validator) {
         this.validator = validator;
     }
@@ -71,7 +73,7 @@ export class MappedOrderByParser {
             for (let alias in currentSelectFragmentFieldSet) {
                 currentEntityOrderBy.push({
                     fa: alias,
-                    so: SortOrder.ASCENDING
+                    so: ground_control_1.SortOrder.ASCENDING
                 });
             }
             let entityOrderByFragments = this.buildOrderByFragmentForEntity(currentEntityOrderBy);
@@ -86,12 +88,13 @@ export class MappedOrderByParser {
         return orderByFields.map((orderByField) => {
             this.validator.validateAliasedFieldAccess(orderByField.fa);
             switch (orderByField.so) {
-                case SortOrder.ASCENDING:
+                case ground_control_1.SortOrder.ASCENDING:
                     return `${orderByField.fa} ASC`;
-                case SortOrder.DESCENDING:
+                case ground_control_1.SortOrder.DESCENDING:
                     return `${orderByField.fa} DESC`;
             }
         });
     }
 }
+exports.MappedOrderByParser = MappedOrderByParser;
 //# sourceMappingURL=MappedOrderByParser.js.map

@@ -1,8 +1,10 @@
-import { JoinType, JSONRelationType } from "@airport/ground-control";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
 /**
  * Created by Papa on 10/18/2016.
  */
-export class JoinTreeNode {
+class JoinTreeNode {
     constructor(jsonRelation, childNodes, parentNode) {
         this.jsonRelation = jsonRelation;
         this.childNodes = childNodes;
@@ -43,8 +45,8 @@ export class JoinTreeNode {
             cci: 0,
             fcp: childPosition,
             ti: tableIndex,
-            jt: JoinType.LEFT_JOIN,
-            rt: JSONRelationType.ENTITY_SCHEMA_RELATION,
+            jt: ground_control_1.JoinType.LEFT_JOIN,
+            rt: ground_control_1.JSONRelationType.ENTITY_SCHEMA_RELATION,
             rep: rootEntityPrefix,
             ri: relationIndex,
             si: schemaVersionId
@@ -54,4 +56,5 @@ export class JoinTreeNode {
         return childTreeNode;
     }
 }
+exports.JoinTreeNode = JoinTreeNode;
 //# sourceMappingURL=JoinTreeNode.js.map

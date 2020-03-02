@@ -1,7 +1,9 @@
+"use strict";
 /**
  * Created by Papa on 6/11/2016.
  */
-export class DateUtils {
+Object.defineProperty(exports, "__esModule", { value: true });
+class DateUtils {
     static getNowTimeStamp() {
         return new Date().toJSON();
     }
@@ -16,4 +18,5 @@ export class DateUtils {
                 */
     }
 }
+exports.DateUtils = DateUtils;
 //# sourceMappingURL=DateUtils.js.map

@@ -1,23 +1,25 @@
-import { and, field } from '@airport/air-control';
-import { AIR_DB } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { ensureChildJsMap } from '@airport/ground-control';
-import { ensureChildArray } from '@airport/ground-control';
-import { SHARING_NODE_REPO_TRANS_BLOCK_DAO } from '../../tokens';
-import { BaseSharingNodeRepoTransBlockDao, Q, } from '../../generated/generated';
-export class SharingNodeRepoTransBlockDao extends BaseSharingNodeRepoTransBlockDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const air_control_2 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const ground_control_2 = require("@airport/ground-control");
+const tokens_1 = require("../../tokens");
+const generated_1 = require("../../generated/generated");
+class SharingNodeRepoTransBlockDao extends generated_1.BaseSharingNodeRepoTransBlockDao {
     async findMapBySharingNodeIdWhereSharingNodeIdInAndRepoTransBlockIdIn(sharingNodeIds, repoTransBlockIds) {
         const mapBySharingNodeId = new Map();
         let snrtb;
         const records = await this.db.find.tree({
             select: {},
             from: [
-                snrtb = Q.SharingNodeRepoTransBlock
+                snrtb = generated_1.Q.SharingNodeRepoTransBlock
             ],
-            where: and(snrtb.sharingNode.id.in(sharingNodeIds), snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds))
+            where: air_control_1.and(snrtb.sharingNode.id.in(sharingNodeIds), snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds))
         });
         for (const record of records) {
-            ensureChildJsMap(mapBySharingNodeId, record.sharingNode.id)
+            ground_control_1.ensureChildJsMap(mapBySharingNodeId, record.sharingNode.id)
                 .set(record.repositoryTransactionBlock.id, record);
         }
         return mapBySharingNodeId;
@@ -27,14 +29,14 @@ export class SharingNodeRepoTransBlockDao extends BaseSharingNodeRepoTransBlockD
         let snrtb;
         let snrtbs;
         return await this.db.updateWhere({
-            update: snrtb = Q.SharingNodeRepoTransBlock,
+            update: snrtb = generated_1.Q.SharingNodeRepoTransBlock,
             set: {
-                syncStatus: field({
+                syncStatus: air_control_1.field({
                     from: [
-                        snrtbs = Q.SharingNodeRepoTransBlockStage
+                        snrtbs = generated_1.Q.SharingNodeRepoTransBlockStage
                     ],
                     select: snrtbs.syncStatus,
-                    where: and(snrtbs.sharingNodeId.equals(snrtb.sharingNode.id), snrtbs.repositoryTransactionBlockId.equals(snrtb.repositoryTransactionBlock.id))
+                    where: air_control_1.and(snrtbs.sharingNodeId.equals(snrtb.sharingNode.id), snrtbs.repositoryTransactionBlockId.equals(snrtb.repositoryTransactionBlock.id))
                 })
             }
         });
@@ -42,19 +44,19 @@ export class SharingNodeRepoTransBlockDao extends BaseSharingNodeRepoTransBlockD
     async updateBlockSyncStatus(sharingNodeIds, repoTransBlockIds, existingSyncStatus, newSyncStatus) {
         let snrtb;
         await this.db.updateWhere({
-            update: snrtb = Q.SharingNodeRepoTransBlock,
+            update: snrtb = generated_1.Q.SharingNodeRepoTransBlock,
             set: {
                 syncStatus: newSyncStatus
             },
-            where: and(snrtb.syncStatus.equals(existingSyncStatus), snrtb.sharingNode.id.in(sharingNodeIds), snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds))
+            where: air_control_1.and(snrtb.syncStatus.equals(existingSyncStatus), snrtb.sharingNode.id.in(sharingNodeIds), snrtb.repositoryTransactionBlock.id.in(repoTransBlockIds))
         });
     }
     async insertValues(values) {
-        const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock;
-        const airDb = await container(this).get(AIR_DB);
+        const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock;
+        const airDb = await di_1.container(this).get(air_control_2.AIR_DB);
         let snrtb;
         return await airDb.insertValues(dbEntity, {
-            insertInto: snrtb = Q.SharingNodeRepoTransBlock,
+            insertInto: snrtb = generated_1.Q.SharingNodeRepoTransBlock,
             columns: [
                 snrtb.sharingNode.id,
                 snrtb.repositoryTransactionBlock.id,
@@ -70,20 +72,20 @@ export class SharingNodeRepoTransBlockDao extends BaseSharingNodeRepoTransBlockD
         const repoTransBlocksBySharingNodeId = new Map();
         const repositoryTransactionBlockIds = new Set();
         let snrtb;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await di_1.container(this).get(air_control_2.AIR_DB);
         const records = await airDb.find.sheet({
             from: [
-                snrtb = Q.SharingNodeRepoTransBlock,
+                snrtb = generated_1.Q.SharingNodeRepoTransBlock,
             ],
             select: [
                 snrtb.sharingNode.id,
                 snrtb.repositoryTransactionBlock.id
             ],
-            where: and(snrtb.syncStatus.equals(syncStatus), snrtb.sharingNode.id.in(sharingNodeIds))
+            where: air_control_1.and(snrtb.syncStatus.equals(syncStatus), snrtb.sharingNode.id.in(sharingNodeIds))
         });
         for (const record of records) {
             const sharingNodeRepoTransBlockId = record[1];
-            ensureChildArray(repoTransBlocksBySharingNodeId, record[0])
+            ground_control_2.ensureChildArray(repoTransBlocksBySharingNodeId, record[0])
                 .push(sharingNodeRepoTransBlockId);
             repositoryTransactionBlockIds.add(sharingNodeRepoTransBlockId);
         }
@@ -93,5 +95,6 @@ export class SharingNodeRepoTransBlockDao extends BaseSharingNodeRepoTransBlockD
         };
     }
 }
-DI.set(SHARING_NODE_REPO_TRANS_BLOCK_DAO, SharingNodeRepoTransBlockDao);
+exports.SharingNodeRepoTransBlockDao = SharingNodeRepoTransBlockDao;
+di_1.DI.set(tokens_1.SHARING_NODE_REPO_TRANS_BLOCK_DAO, SharingNodeRepoTransBlockDao);
 //# sourceMappingURL=SharingNodeRepoTransBlockDao.js.map

@@ -1,49 +1,54 @@
-import { DI } from '@airport/di';
-import { TRANS_CONNECTOR } from '@airport/ground-control';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
 /**
  * Created by Papa on 4/3/2019.
  */
 var transactionInProgress = false;
-export async function transact() {
-    const transConnector = await DI.db().get(TRANS_CONNECTOR);
+async function transact() {
+    const transConnector = await di_1.DI.db().get(ground_control_1.TRANS_CONNECTOR);
     await transConnector.transact();
     transactionInProgress = true;
 }
-export async function commit() {
+exports.transact = transact;
+async function commit() {
     if (!transactionInProgress) {
         throw new Error('Cannot commit - no transaction in progress');
     }
     try {
-        const transConnector = await DI.db().get(TRANS_CONNECTOR);
+        const transConnector = await di_1.DI.db().get(ground_control_1.TRANS_CONNECTOR);
         await transConnector.commit();
     }
     finally {
         transactionInProgress = false;
     }
 }
-export async function rollback() {
+exports.commit = commit;
+async function rollback() {
     if (!transactionInProgress) {
         throw new Error('Cannot rollback - no transaction in progress');
     }
     try {
-        const transConnector = await DI.db().get(TRANS_CONNECTOR);
+        const transConnector = await di_1.DI.db().get(ground_control_1.TRANS_CONNECTOR);
         await transConnector.rollback();
     }
     finally {
         transactionInProgress = false;
     }
 }
+exports.rollback = rollback;
 /**
  * One transaction execution to one at a time, so a way to track existing
  * transactional context is required.  Zone.js can be used as a thread local context for
  * that.
  */
-export async function transactional(callback, keepAlive) {
+async function transactional(callback, keepAlive) {
     if (transactionInProgress) {
         await callback();
         return;
     }
-    const transConnector = await DI.db().get(TRANS_CONNECTOR);
+    const transConnector = await di_1.DI.db().get(ground_control_1.TRANS_CONNECTOR);
     try {
         await transConnector.transact();
         transactionInProgress = true;
@@ -69,4 +74,5 @@ export async function transactional(callback, keepAlive) {
         transactionInProgress = false;
     }
 }
+exports.transactional = transactional;
 //# sourceMappingURL=transactional.js.map

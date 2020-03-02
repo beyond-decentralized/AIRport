@@ -1,14 +1,16 @@
-import * as ts from 'typescript';
-import { EntityCandidate, Interface } from './EntityCandidate';
-import { EntityCandidateRegistry } from './EntityCandidateRegistry';
-import { ImportManager } from './ImportManager';
-import { getClassPath, getImplementedInterfaces, getParentClassImport, getParentClassName, isDecoratedAsEntity } from './utils';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ts = require("typescript");
+const EntityCandidate_1 = require("./EntityCandidate");
+const EntityCandidateRegistry_1 = require("./EntityCandidateRegistry");
+const ImportManager_1 = require("./ImportManager");
+const utils_1 = require("./utils");
 /**
  * Created by Papa on 3/26/2016.
  */
 const enumMap = new Map();
-export const globalCandidateRegistry = new EntityCandidateRegistry(enumMap);
-export const globalCandidateInheritanceMap = new Map();
+exports.globalCandidateRegistry = new EntityCandidateRegistry_1.EntityCandidateRegistry(enumMap);
+exports.globalCandidateInheritanceMap = new Map();
 var TsObjectType;
 (function (TsObjectType) {
     TsObjectType[TsObjectType["OBJECT_LITERAL"] = 0] = "OBJECT_LITERAL";
@@ -17,14 +19,14 @@ var TsObjectType;
     TsObjectType[TsObjectType["DECORATOR_ARRAY"] = 3] = "DECORATOR_ARRAY";
 })(TsObjectType || (TsObjectType = {}));
 /** Generate documention for all classes in a set of .ts files */
-export function generateEntityDefinitions(fileNames, options, configuration, schemaMapByProjectName) {
+function generateEntityDefinitions(fileNames, options, configuration, schemaMapByProjectName) {
     // Build a program using the set of root file names in fileNames
     let program = ts.createProgram(fileNames, options);
     // Get the checker, we will use it to find more about classes
     let checker = program.getTypeChecker();
-    globalCandidateRegistry.configuration = configuration;
-    globalCandidateRegistry.schemaMap = schemaMapByProjectName;
-    const processedCandidateRegistry = new EntityCandidateRegistry(enumMap);
+    exports.globalCandidateRegistry.configuration = configuration;
+    exports.globalCandidateRegistry.schemaMap = schemaMapByProjectName;
+    const processedCandidateRegistry = new EntityCandidateRegistry_1.EntityCandidateRegistry(enumMap);
     // const output: DocEntry[] = []
     const fileImportsMapByFilePath = {};
     const fileMap = {};
@@ -39,10 +41,10 @@ export function generateEntityDefinitions(fileNames, options, configuration, sch
     }
     // print out the doc
     // fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
-    return globalCandidateRegistry.matchVerifiedEntities(processedCandidateRegistry);
+    return exports.globalCandidateRegistry.matchVerifiedEntities(processedCandidateRegistry);
     /** visit nodes finding exported classes */
     function visit(node) {
-        let path = getClassPath(node.parent);
+        let path = utils_1.getClassPath(node.parent);
         // Only top level entities are supported
         if (!path) {
             return;
@@ -78,7 +80,7 @@ export function generateEntityDefinitions(fileNames, options, configuration, sch
             file.hasEntityCandidate = true;
             let fileImports = fileImportsMapByFilePath[path];
             if (!fileImports) {
-                fileImports = ImportManager.resolveImports(node.parent, file.path);
+                fileImports = ImportManager_1.ImportManager.resolveImports(node.parent, file.path);
                 fileImportsMapByFilePath[path] = fileImports;
             }
             currentFileImports = fileImports;
@@ -542,43 +544,43 @@ export default WhereJoinTableFunction`;
         // Get the construct signatures
         let constructorType = checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration);
         details.constructors = constructorType.getConstructSignatures().map(serializeSignature);
-        let parentClassName = getParentClassName(symbol);
+        let parentClassName = utils_1.getParentClassName(symbol);
         let parentClassImport;
         if (parentClassName) {
-            parentClassImport = getParentClassImport(symbol, parentClassName);
+            parentClassImport = utils_1.getParentClassImport(symbol, parentClassName);
         }
-        let entityDecorator = isDecoratedAsEntity(decorators);
-        let classInheritanceEntry = globalCandidateInheritanceMap[details.name];
+        let entityDecorator = utils_1.isDecoratedAsEntity(decorators);
+        let classInheritanceEntry = exports.globalCandidateInheritanceMap[details.name];
         if (classInheritanceEntry != undefined) {
             throw new Error(`Found duplicate entity '${details.name}'. 
 			Non-unique class names are not supported`);
         }
         if (entityDecorator) {
-            let entityCandidate = EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport, entityDecorator.isSuperclass);
+            let entityCandidate = EntityCandidate_1.EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport, entityDecorator.isSuperclass);
             entityCandidate.docEntry = details;
             entityCandidate.ids = ids;
-            entityCandidate.implementedInterfaceNames = getImplementedInterfaces(symbol);
+            entityCandidate.implementedInterfaceNames = utils_1.getImplementedInterfaces(symbol);
             details.properties.forEach(property => {
                 property.ownerEntity = entityCandidate;
             });
-            globalCandidateRegistry.addCandidate(entityCandidate);
+            exports.globalCandidateRegistry.addCandidate(entityCandidate);
             processedCandidateRegistry.addCandidate(entityCandidate);
-            globalCandidateInheritanceMap[details.name] = parentClassName;
-            if (globalCandidateInheritanceMap[parentClassName] == undefined) {
-                globalCandidateInheritanceMap[parentClassName] = null;
+            exports.globalCandidateInheritanceMap[details.name] = parentClassName;
+            if (exports.globalCandidateInheritanceMap[parentClassName] == undefined) {
+                exports.globalCandidateInheritanceMap[parentClassName] = null;
             }
         }
         else if (classInheritanceEntry == null) {
-            globalCandidateInheritanceMap[details.name] = parentClassName;
+            exports.globalCandidateInheritanceMap[details.name] = parentClassName;
         }
         return details;
     }
     function registerInterface(symbol, classPath) {
-        let anInterface = new Interface(classPath, symbol.name);
-        let interfaces = globalCandidateRegistry.allInterfacesMap.get(symbol.name);
+        let anInterface = new EntityCandidate_1.Interface(classPath, symbol.name);
+        let interfaces = exports.globalCandidateRegistry.allInterfacesMap.get(symbol.name);
         if (!interfaces) {
             interfaces = [];
-            globalCandidateRegistry.allInterfacesMap.set(symbol.name, interfaces);
+            exports.globalCandidateRegistry.allInterfacesMap.set(symbol.name, interfaces);
         }
         interfaces.push(anInterface);
     }
@@ -594,4 +596,5 @@ export default WhereJoinTableFunction`;
         return (node.flags & ts.ModifierFlags.Export) !== 0 || (node.parent && node.parent.kind === ts.SyntaxKind.SourceFile);
     }
 }
+exports.generateEntityDefinitions = generateEntityDefinitions;
 //# sourceMappingURL=EntityDefinitionGenerator.js.map

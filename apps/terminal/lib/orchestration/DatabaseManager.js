@@ -1,14 +1,16 @@
-import { AIR_DB, } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { setStoreDriver } from '@airport/fuel-hydrant-system';
-import { getSchemaName, STORE_DRIVER, TRANS_CONNECTOR } from '@airport/ground-control';
-import { Actor, ACTOR_DAO } from '@airport/holding-pattern';
-import { SCHEMA_INITIALIZER } from '@airport/landing';
-import { TRANS_SERVER, transactional } from '@airport/tower';
-import { SCHEMA_DAO } from '@airport/traffic-pattern';
-import { Terminal, TERMINAL_DAO, User, USER_DAO } from '@airport/travel-document-checkpoint';
-import { DATABASE_MANAGER } from '../tokens';
-export class DatabaseManager {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
+const ground_control_1 = require("@airport/ground-control");
+const holding_pattern_1 = require("@airport/holding-pattern");
+const landing_1 = require("@airport/landing");
+const tower_1 = require("@airport/tower");
+const traffic_pattern_1 = require("@airport/traffic-pattern");
+const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
+const tokens_1 = require("../tokens");
+class DatabaseManager {
     // constructor() {
     // }
     /*
@@ -49,12 +51,12 @@ export class DatabaseManager {
         return !!this.airDb;
     }
     async init(domainName, storeType, ...schemas) {
-        await setStoreDriver(storeType);
-        const airDb = await container(this).get(AIR_DB);
+        await fuel_hydrant_system_1.setStoreDriver(storeType);
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         this.airDb = airDb;
-        const connector = await container(this).get(TRANS_CONNECTOR);
+        const connector = await di_1.container(this).get(ground_control_1.TRANS_CONNECTOR);
         await connector.init();
-        const storeDriver = await container(this).get(STORE_DRIVER);
+        const storeDriver = await di_1.container(this).get(ground_control_1.STORE_DRIVER);
         /*
                 await storeDriver.dropTable('npmjs_org___airport__airport_code__SEQUENCES')
                 await storeDriver.dropTable('npmjs_org___airport__airport_code__TERMINAL_RUNS')
@@ -117,8 +119,8 @@ export class DatabaseManager {
                 await storeDriver.dropTable('public___votecube__public_db__VOTE_FACTORS')
                 await storeDriver.dropTable('public___votecube__public_db__VOTE_FACTOR_TYPES')
         */
-        const server = await container(this).get(TRANS_SERVER);
-        server.tempActor = new Actor();
+        const server = await di_1.container(this).get(tower_1.TRANS_SERVER);
+        server.tempActor = new holding_pattern_1.Actor();
         const hydrate = await storeDriver.doesTableExist('npmjs_org___airport__territory__PACKAGES');
         await this.installAirportSchema(hydrate);
         if (!hydrate) {
@@ -153,47 +155,47 @@ export class DatabaseManager {
                 */
     }
     async initFeatureSchemas(schemas) {
-        const schemaDao = await container(this).get(SCHEMA_DAO);
+        const schemaDao = await di_1.container(this).get(traffic_pattern_1.SCHEMA_DAO);
         const schemaNames = [];
         for (const jsonSchema of schemas) {
-            const schemaName = getSchemaName(jsonSchema);
+            const schemaName = ground_control_1.getSchemaName(jsonSchema);
             schemaNames.push(schemaName);
         }
         const existingSchemaMap = await schemaDao.findMapByNames(schemaNames);
         const schemasToInitialize = [];
         for (const jsonSchema of schemas) {
-            const schemaName = getSchemaName(jsonSchema);
+            const schemaName = ground_control_1.getSchemaName(jsonSchema);
             if (!existingSchemaMap.has(schemaName)) {
                 schemasToInitialize.push(jsonSchema);
             }
         }
         if (schemasToInitialize.length) {
-            const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
+            const schemaInitializer = await di_1.container(this).get(landing_1.SCHEMA_INITIALIZER);
             await schemaInitializer.initialize(schemas);
         }
     }
     async initTerminal(domainName) {
-        await transactional(async () => {
-            const user = new User();
+        await tower_1.transactional(async () => {
+            const user = new travel_document_checkpoint_1.User();
             user.uniqueId = domainName;
-            const userDao = await container(this).get(USER_DAO);
+            const userDao = await di_1.container(this).get(travel_document_checkpoint_1.USER_DAO);
             await userDao.save(user);
-            const terminal = new Terminal();
+            const terminal = new travel_document_checkpoint_1.Terminal();
             terminal.name = domainName;
             terminal.owner = user;
-            const terminalDao = await container(this).get(TERMINAL_DAO);
+            const terminalDao = await di_1.container(this).get(travel_document_checkpoint_1.TERMINAL_DAO);
             await terminalDao.save(terminal);
-            const actor = new Actor();
+            const actor = new holding_pattern_1.Actor();
             actor.user = user;
             actor.terminal = terminal;
             actor.randomId = Math.random();
-            const actorDao = await container(this).get(ACTOR_DAO);
+            const actorDao = await di_1.container(this).get(holding_pattern_1.ACTOR_DAO);
             await actorDao.save(actor);
         });
     }
     async installAirportSchema(hydrate) {
-        const blueprintFile = await import('@airport/blueprint');
-        const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
+        const blueprintFile = await Promise.resolve().then(() => require('@airport/blueprint'));
+        const schemaInitializer = await di_1.container(this).get(landing_1.SCHEMA_INITIALIZER);
         if (hydrate) {
             await schemaInitializer.hydrate(blueprintFile.BLUEPRINT);
         }
@@ -202,5 +204,6 @@ export class DatabaseManager {
         }
     }
 }
-DI.set(DATABASE_MANAGER, DatabaseManager);
+exports.DatabaseManager = DatabaseManager;
+di_1.DI.set(tokens_1.DATABASE_MANAGER, DatabaseManager);
 //# sourceMappingURL=DatabaseManager.js.map

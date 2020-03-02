@@ -15,6 +15,7 @@
   },
   "main": "lib/index.js",
   "name": "@airport/fuel-hydrant-system",
+  "type": "module",
   "typings": "lib/index",
   "version": "0.0.1"
 }

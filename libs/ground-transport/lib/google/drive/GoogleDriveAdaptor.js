@@ -1,18 +1,20 @@
-import { ApiConstants } from '../GoogleApi';
-import { DriveConstants, MimeTypes } from './GoogleDriveModel';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const GoogleApi_1 = require("../GoogleApi");
+const GoogleDriveModel_1 = require("./GoogleDriveModel");
 /**
  * Created by Papa on 1/3/2016.
  */
-export class GoogleDriveAdaptor {
+class GoogleDriveAdaptor {
     constructor(googleApi, googleDrive) {
         this.googleApi = googleApi;
         this.googleDrive = googleDrive;
     }
     initialize(apiKey, clientId) {
-        return this.googleApi.authorizeApis(apiKey, clientId, ApiConstants.ALL_SCOPES).then(() => {
+        return this.googleApi.authorizeApis(apiKey, clientId, GoogleApi_1.ApiConstants.ALL_SCOPES).then(() => {
             let loadRequests = [
-                this.googleApi.loadApi('drive', DriveConstants.VERSION),
-                this.googleApi.loadApi('drive-realtime,drive-share', DriveConstants.VERSION)
+                this.googleApi.loadApi('drive', GoogleDriveModel_1.DriveConstants.VERSION),
+                this.googleApi.loadApi('drive-realtime,drive-share', GoogleDriveModel_1.DriveConstants.VERSION)
             ];
             return Promise.all(loadRequests);
         });
@@ -44,7 +46,7 @@ export class GoogleDriveAdaptor {
                 return changeListInfo;
             }
             files.forEach((file) => {
-                if (file.mimeType.indexOf(MimeTypes.REALTIME) === 0) {
+                if (file.mimeType.indexOf(GoogleDriveModel_1.MimeTypes.REALTIME) === 0) {
                     if (changeListInfo.realtimeFileId) {
                         throw new Error(`Multiple Realtime files found for Change List: ${changeListInfo.name}`);
                     }
@@ -55,4 +57,5 @@ export class GoogleDriveAdaptor {
         });
     }
 }
+exports.GoogleDriveAdaptor = GoogleDriveAdaptor;
 //# sourceMappingURL=GoogleDriveAdaptor.js.map

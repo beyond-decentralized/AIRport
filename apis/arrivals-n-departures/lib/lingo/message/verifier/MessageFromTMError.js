@@ -1,4 +1,6 @@
-export var MessageFromTMError;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var MessageFromTMError;
 (function (MessageFromTMError) {
     MessageFromTMError[MessageFromTMError["NO_DATA_ERROR"] = 0] = "NO_DATA_ERROR";
     MessageFromTMError[MessageFromTMError["MESSAGE_IS_NOT_ARRAY"] = 1] = "MESSAGE_IS_NOT_ARRAY";
@@ -35,5 +37,5 @@ export var MessageFromTMError;
     MessageFromTMError[MessageFromTMError["SHARING_MESSAGES_TO_VERIFY_NOT_SUPPORTED"] = 32] = "SHARING_MESSAGES_TO_VERIFY_NOT_SUPPORTED";
     MessageFromTMError[MessageFromTMError["REPO_TRANS_BLOCKS_TO_VERIFY_IS_NOT_ARRAY"] = 33] = "REPO_TRANS_BLOCKS_TO_VERIFY_IS_NOT_ARRAY";
     MessageFromTMError[MessageFromTMError["REPO_TRANS_BLOCKS_TO_VERIFY_NOT_SUPPORTED"] = 34] = "REPO_TRANS_BLOCKS_TO_VERIFY_NOT_SUPPORTED";
-})(MessageFromTMError || (MessageFromTMError = {}));
+})(MessageFromTMError = exports.MessageFromTMError || (exports.MessageFromTMError = {}));
 //# sourceMappingURL=MessageFromTMError.js.map

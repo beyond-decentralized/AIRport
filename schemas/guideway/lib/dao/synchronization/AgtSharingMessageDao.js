@@ -1,17 +1,19 @@
-import { AIR_DB, and } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { ensureChildJsMap } from '@airport/ground-control';
-import { AgtSharingMessageAcknowledged } from '../../ddl/ddl';
-import { AGT_SHARING_MESSAGE_DAO } from '../../tokens';
-import { BaseAgtSharingMessageDao, Q } from '../../generated/generated';
-export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const ddl_1 = require("../../ddl/ddl");
+const tokens_1 = require("../../tokens");
+const generated_1 = require("../../generated/generated");
+class AgtSharingMessageDao extends generated_1.BaseAgtSharingMessageDao {
     async insertValues(values) {
         const sharingMessageIdsByTerminalId = new Map();
-        const dbEntity = Q.db.currentVersion.entityMapByName.AgtSharingMessage;
+        const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.AgtSharingMessage;
         let asm;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         const sharingMessageIds = await airDb.insertValuesGenerateIds(dbEntity, {
-            insertInto: asm = Q.AgtSharingMessage,
+            insertInto: asm = generated_1.Q.AgtSharingMessage,
             columns: [
                 asm.terminal.id,
                 asm.tmSharingMessageId,
@@ -28,16 +30,16 @@ export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
     async findNotSyncedByIdIn(agtSharingMessageIds) {
         const resultMapByTerminalId = new Map();
         let asm;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         const dbSyncLogs = await airDb.find.sheet({
             from: [
-                asm = Q.AgtSharingMessage
+                asm = generated_1.Q.AgtSharingMessage
             ],
             select: [
                 asm.terminal.id,
                 asm.id
             ],
-            where: and(asm.id.in(agtSharingMessageIds), asm.acknowledged.equals(AgtSharingMessageAcknowledged.NOT_ACKNOWLEDGED))
+            where: air_control_1.and(asm.id.in(agtSharingMessageIds), asm.acknowledged.equals(ddl_1.AgtSharingMessageAcknowledged.NOT_ACKNOWLEDGED))
         });
         for (const dbSyncLog of dbSyncLogs) {
             const terminalId = dbSyncLog[0];
@@ -54,9 +56,9 @@ export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
         let asm;
         // TODO: verify the query works as required
         await this.db.updateWhere({
-            update: asm = Q.AgtSharingMessage,
+            update: asm = generated_1.Q.AgtSharingMessage,
             set: {
-                acknowledged: AgtSharingMessageAcknowledged.ACKNOWLEDGED
+                acknowledged: ddl_1.AgtSharingMessageAcknowledged.ACKNOWLEDGED
             },
             where: asm.id.in(agtSharingMessageIds)
         });
@@ -64,20 +66,20 @@ export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
     async findIdMapByTerminalIdAndTmSharingMessageId(terminalIds, tmSharingMessageIds) {
         const idMapByTerminalIdAndTmSharingMessageId = new Map();
         let asm;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         const sharingMessages = await airDb.find.sheet({
             from: [
-                asm = Q.AgtSharingMessage
+                asm = generated_1.Q.AgtSharingMessage
             ],
             select: [
                 asm.terminal.id,
                 asm.tmSharingMessageId,
                 asm.id,
             ],
-            where: and(asm.terminal.id.in(terminalIds), asm.tmSharingMessageId.in(tmSharingMessageIds))
+            where: air_control_1.and(asm.terminal.id.in(terminalIds), asm.tmSharingMessageId.in(tmSharingMessageIds))
         });
         for (const sharingMessage of sharingMessages) {
-            ensureChildJsMap(idMapByTerminalIdAndTmSharingMessageId, sharingMessage[0])
+            ground_control_1.ensureChildJsMap(idMapByTerminalIdAndTmSharingMessageId, sharingMessage[0])
                 .set(sharingMessage[1], sharingMessage[2]);
         }
         return idMapByTerminalIdAndTmSharingMessageId;
@@ -119,5 +121,6 @@ export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
     async deleteForAgtRepositoryIdsOnDate(fromDateInclusive, toDateExclusive, terminalIds, repositoryIds) {
     }
 }
-DI.set(AGT_SHARING_MESSAGE_DAO, AgtSharingMessageDao);
+exports.AgtSharingMessageDao = AgtSharingMessageDao;
+di_1.DI.set(tokens_1.AGT_SHARING_MESSAGE_DAO, AgtSharingMessageDao);
 //# sourceMappingURL=AgtSharingMessageDao.js.map

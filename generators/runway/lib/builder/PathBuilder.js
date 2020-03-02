@@ -1,15 +1,17 @@
+"use strict";
 /**
  * Created by Papa on 4/28/2016.
  */
-import * as fs from 'fs';
-import { normalizePath } from '../resolve/pathResolver';
-export class PathBuilder {
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs = require("fs");
+const pathResolver_1 = require("../resolve/pathResolver");
+class PathBuilder {
     constructor(configuration) {
         this.configuration = configuration;
         this.dirExistanceMap = {};
-        this.workingDirPath = normalizePath(process.cwd());
-        this.ddlDirPath = this.workingDirPath + '/' + normalizePath(configuration.airport.ddlDir);
-        this.generatedDirPath = normalizePath(configuration.airport.generatedDir);
+        this.workingDirPath = pathResolver_1.normalizePath(process.cwd());
+        this.ddlDirPath = this.workingDirPath + '/' + pathResolver_1.normalizePath(configuration.airport.ddlDir);
+        this.generatedDirPath = pathResolver_1.normalizePath(configuration.airport.generatedDir);
         this.fullGeneratedDirPath = this.workingDirPath + '/' + this.generatedDirPath;
         this.usePathCache = configuration.airport.cacheGeneratedPaths ? true : false;
     }
@@ -71,7 +73,7 @@ export class PathBuilder {
         return pathFragments.join('/');
     }
     getGenerationPathForFile(sourcePath, prefixQ = true) {
-        sourcePath = normalizePath(sourcePath);
+        sourcePath = pathResolver_1.normalizePath(sourcePath);
         let indexOfSourceDirInPath = sourcePath.toLowerCase().indexOf(this.ddlDirPath.toLowerCase());
         if (indexOfSourceDirInPath !== 0) {
             throw new Error(`Cannot generate file from source outside of root source dir`);
@@ -83,4 +85,5 @@ export class PathBuilder {
         return this.generatedDirPath + '/' + sourceRelativePath;
     }
 }
+exports.PathBuilder = PathBuilder;
 //# sourceMappingURL=PathBuilder.js.map

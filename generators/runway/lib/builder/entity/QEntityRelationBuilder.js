@@ -1,5 +1,7 @@
-import { QCoreEntityBuilder } from "../Builder";
-export class QEntityRelationBuilder extends QCoreEntityBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Builder_1 = require("../Builder");
+class QEntityRelationBuilder extends Builder_1.QCoreEntityBuilder {
     constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName) {
         super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName);
     }
@@ -24,4 +26,5 @@ export interface ${qName}QRelation${genericType}
         return classSource;
     }
 }
+exports.QEntityRelationBuilder = QEntityRelationBuilder;
 //# sourceMappingURL=QEntityRelationBuilder.js.map

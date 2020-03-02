@@ -1,15 +1,17 @@
-import { resolveRelativeEntityPath, resolveRelativePath } from '../../resolve/pathResolver';
-import { FileBuilder } from './FileBuilder';
-import { IEntityInterfaceBuilder } from './IEntityInterfaceBuilder';
-import { QEntityBuilder } from './QEntityBuilder';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const pathResolver_1 = require("../../resolve/pathResolver");
+const FileBuilder_1 = require("./FileBuilder");
+const IEntityInterfaceBuilder_1 = require("./IEntityInterfaceBuilder");
+const QEntityBuilder_1 = require("./QEntityBuilder");
 /**
  * Created by Papa on 4/26/2016.
  */
-export class EntityInterfaceFileBuilder extends FileBuilder {
+class EntityInterfaceFileBuilder extends FileBuilder_1.FileBuilder {
     constructor(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, sIndexedEntity) {
         super(entity, fullGenerationPath, pathBuilder, configuration);
-        this.qEntityBuilder = new QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName, sIndexedEntity);
-        this.entityInterfaceBuilder = new IEntityInterfaceBuilder(entity, this.qEntityBuilder);
+        this.qEntityBuilder = new QEntityBuilder_1.QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName, sIndexedEntity);
+        this.entityInterfaceBuilder = new IEntityInterfaceBuilder_1.IEntityInterfaceBuilder(entity, this.qEntityBuilder);
         // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);
         if (entity.parentEntity) {
             let parentEntityRelativePath;
@@ -18,7 +20,7 @@ export class EntityInterfaceFileBuilder extends FileBuilder {
             }
             else {
                 let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path, false);
-                parentEntityRelativePath = resolveRelativePath(fullGenerationPath, parentFullGenerationPath);
+                parentEntityRelativePath = pathResolver_1.resolveRelativePath(fullGenerationPath, parentFullGenerationPath);
             }
             let parentEntityType = entity.parentEntity.type;
             this.addImport([
@@ -49,7 +51,7 @@ ${interfaceSource}
             }
             else {
                 type = property.entity.type;
-                entityInterfaceRelativePath = resolveRelativeEntityPath(this.entity, property.entity);
+                entityInterfaceRelativePath = pathResolver_1.resolveRelativeEntityPath(this.entity, property.entity);
                 entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '');
             }
             type = type.replace('[]', '');
@@ -63,4 +65,5 @@ ${interfaceSource}
         this.addRelationImports(this.qEntityBuilder.nonIdRelationBuilders);
     }
 }
+exports.EntityInterfaceFileBuilder = EntityInterfaceFileBuilder;
 //# sourceMappingURL=EntityInterfaceFileBuilder.js.map

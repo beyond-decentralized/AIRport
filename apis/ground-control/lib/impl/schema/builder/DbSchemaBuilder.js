@@ -1,6 +1,8 @@
-import { SchemaStatus } from '../../../lingo/schema/SchemaStatus';
-import { ensureChildMap } from '../../utils/DatastructureUtils';
-export class DbSchemaBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const SchemaStatus_1 = require("../../../lingo/schema/SchemaStatus");
+const DatastructureUtils_1 = require("../../utils/DatastructureUtils");
+class DbSchemaBuilder {
     buildDbSchemaWithoutReferences(jsonSchema, allSchemas, dictionary) {
         const entities = [];
         const entityMapByName = {};
@@ -40,7 +42,7 @@ export class DbSchemaBuilder {
             name: jsonSchema.name,
             scope: null,
             sinceVersion: dbSchemaVersion,
-            status: SchemaStatus.CURRENT,
+            status: SchemaStatus_1.SchemaStatus.CURRENT,
             versions: [dbSchemaVersion]
         };
         dbSchemaVersion.schema = dbSchema;
@@ -192,7 +194,7 @@ export class DbSchemaBuilder {
             const oneTableIndex = relationColumnRef.oneTableIndex;
             const oneRelationIndex = relationColumnRef.oneRelationIndex;
             const oneColumnIndex = relationColumnRef.oneColumnIndex;
-            const manyRelationColumnMap = ensureChildMap(ensureChildMap(ensureChildMap(ensureChildMap(dictionary.dbColumnRelationMapByManySide, manySchema.name), manyTableIndex), manyRelationIndex), manySchema.domain);
+            const manyRelationColumnMap = DatastructureUtils_1.ensureChildMap(DatastructureUtils_1.ensureChildMap(DatastructureUtils_1.ensureChildMap(DatastructureUtils_1.ensureChildMap(dictionary.dbColumnRelationMapByManySide, manySchema.name), manyTableIndex), manyRelationIndex), manySchema.domain);
             manyRelationColumnMap[manyColumnIndex] = {
                 domain: oneSchema.domain,
                 schemaName: oneSchema.name,
@@ -368,4 +370,5 @@ export class DbSchemaBuilder {
         }
     }
 }
+exports.DbSchemaBuilder = DbSchemaBuilder;
 //# sourceMappingURL=DbSchemaBuilder.js.map

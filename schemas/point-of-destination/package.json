@@ -18,6 +18,7 @@
   },
   "main": "lib/index.js",
   "name": "@airport/point-of-destination",
+  "type": "module",
   "typings": "lib/index",
   "version": "0.0.1"
 }

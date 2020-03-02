@@ -1,10 +1,12 @@
-import { field } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { REPO_TRANS_HISTORY_DAO } from '@airport/holding-pattern';
-import { BaseRepositoryTransactionHistoryUpdateStageDao } from '../../generated/generated';
-import { REPO_TRANS_HISTORY_UPDATE_STAGE_DAO } from '../../tokens';
-import { Q } from '../../generated/generated';
-export class RepositoryTransactionHistoryUpdateStageDao extends BaseRepositoryTransactionHistoryUpdateStageDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const holding_pattern_1 = require("@airport/holding-pattern");
+const generated_1 = require("../../generated/generated");
+const tokens_1 = require("../../tokens");
+const generated_2 = require("../../generated/generated");
+class RepositoryTransactionHistoryUpdateStageDao extends generated_1.BaseRepositoryTransactionHistoryUpdateStageDao {
     async insertValues(values) {
         const rthus = this.db.from;
         return await this.db.insertValues({
@@ -18,8 +20,8 @@ export class RepositoryTransactionHistoryUpdateStageDao extends BaseRepositoryTr
     }
     async updateRepositoryTransactionHistory() {
         const rthus = this.db.from;
-        const repoTransHistoryDao = await container(this).get(REPO_TRANS_HISTORY_DAO);
-        return await repoTransHistoryDao.setBlockIdWhereId((idField) => field({
+        const repoTransHistoryDao = await di_1.container(this).get(holding_pattern_1.REPO_TRANS_HISTORY_DAO);
+        return await repoTransHistoryDao.setBlockIdWhereId((idField) => air_control_1.field({
             from: [
                 rthus
             ],
@@ -30,9 +32,10 @@ export class RepositoryTransactionHistoryUpdateStageDao extends BaseRepositoryTr
     async delete( //
     ) {
         return await this.db.deleteWhere({
-            deleteFrom: Q.RepositoryTransactionHistoryUpdateStage
+            deleteFrom: generated_2.Q.RepositoryTransactionHistoryUpdateStage
         });
     }
 }
-DI.set(REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, RepositoryTransactionHistoryUpdateStageDao);
+exports.RepositoryTransactionHistoryUpdateStageDao = RepositoryTransactionHistoryUpdateStageDao;
+di_1.DI.set(tokens_1.REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, RepositoryTransactionHistoryUpdateStageDao);
 //# sourceMappingURL=RepositoryTransactionHistoryUpdateStageDao.js.map

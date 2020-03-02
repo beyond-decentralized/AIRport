@@ -1,17 +1,19 @@
-import { INVALID_TABLE_NAME, QueryType, StoreType } from '@airport/ground-control';
-import { SQLDialect } from '../../sql/core/SQLQuery';
-import { SqLiteDriver } from '../sqLite/SqLiteDriver';
-export class WebSqlDriver extends SqLiteDriver {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const SQLQuery_1 = require("../../sql/core/SQLQuery");
+const SqLiteDriver_1 = require("../sqLite/SqLiteDriver");
+class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
     constructor() {
         super();
         this.currentStatementId = 0;
         this.keepAlive = false;
         this.keepAliveCount = 0;
         this.pendingStatements = [];
-        this.type = StoreType.SQLITE_CORDOVA;
+        this.type = ground_control_1.StoreType.SQLITE_CORDOVA;
     }
     getDialect() {
-        return SQLDialect.SQLITE_WEBSQL;
+        return SQLQuery_1.SQLDialect.SQLITE_WEBSQL;
     }
     getBackupLocation(dbFlag) {
         switch (dbFlag) {
@@ -54,7 +56,7 @@ export class WebSqlDriver extends SqLiteDriver {
     }
     async rollback() {
         if (this.transaction) {
-            this.transaction.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, []);
+            this.transaction.executeSql('SELECT count(*) FROM ' + ground_control_1.INVALID_TABLE_NAME, []);
         }
         await this.commit();
     }
@@ -126,15 +128,16 @@ export class WebSqlDriver extends SqLiteDriver {
     }
     getReturnValue(queryType, response) {
         switch (queryType) {
-            case QueryType.MUTATE:
+            case ground_control_1.QueryType.MUTATE:
                 return response.rowsAffected;
-            case QueryType.SELECT:
+            case ground_control_1.QueryType.SELECT:
                 return response.rows;
             default:
                 return null;
         }
     }
 }
+exports.WebSqlDriver = WebSqlDriver;
 WebSqlDriver.BACKUP_LOCAL = 2;
 WebSqlDriver.BACKUP_LIBRARY = 1;
 WebSqlDriver.BACKUP_DOCUMENTS = 0;

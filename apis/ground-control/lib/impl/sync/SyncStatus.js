@@ -1,4 +1,6 @@
-export var BlockSyncStatus;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var BlockSyncStatus;
 (function (BlockSyncStatus) {
     // Sync request has been sent but no reply has come yet
     BlockSyncStatus[BlockSyncStatus["SYNCHRONIZING"] = 0] = "SYNCHRONIZING";
@@ -13,8 +15,8 @@ export var BlockSyncStatus;
     // RESYNC_SUSPENDED,
     // AGT requested re-sync for this block, send it again
     BlockSyncStatus[BlockSyncStatus["RESYNC_REQUESTED"] = 3] = "RESYNC_REQUESTED";
-})(BlockSyncStatus || (BlockSyncStatus = {}));
-export var RepositorySyncStatus;
+})(BlockSyncStatus = exports.BlockSyncStatus || (exports.BlockSyncStatus = {}));
+var RepositorySyncStatus;
 (function (RepositorySyncStatus) {
     // Actively syncing this repository
     RepositorySyncStatus[RepositorySyncStatus["ACTIVE"] = 0] = "ACTIVE";
@@ -28,12 +30,12 @@ export var RepositorySyncStatus;
     RepositorySyncStatus[RepositorySyncStatus["TEMPORARILY_REROUTED"] = 4] = "TEMPORARILY_REROUTED";
     // AGT (or TM) permanently rerouted syncing of this repository to a different AGT
     RepositorySyncStatus[RepositorySyncStatus["PERMANENTLY_REROUTED"] = 5] = "PERMANENTLY_REROUTED";
-})(RepositorySyncStatus || (RepositorySyncStatus = {}));
-export var TerminalSyncStatus;
+})(RepositorySyncStatus = exports.RepositorySyncStatus || (exports.RepositorySyncStatus = {}));
+var TerminalSyncStatus;
 (function (TerminalSyncStatus) {
     // Terminal is actively syncing
     TerminalSyncStatus[TerminalSyncStatus["ACTIVE"] = 0] = "ACTIVE";
     // Terminal syncing has been suspended
     TerminalSyncStatus[TerminalSyncStatus["SUSPENDED"] = 1] = "SUSPENDED";
-})(TerminalSyncStatus || (TerminalSyncStatus = {}));
+})(TerminalSyncStatus = exports.TerminalSyncStatus || (exports.TerminalSyncStatus = {}));
 //# sourceMappingURL=SyncStatus.js.map

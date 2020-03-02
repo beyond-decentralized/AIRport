@@ -1,3 +1,8 @@
-export * from './DailySyncLog';
-export * from './MonthlySyncLog';
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(require("./DailySyncLog"));
+__export(require("./MonthlySyncLog"));
 //# sourceMappingURL=ddl.js.map

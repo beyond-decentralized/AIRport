@@ -1,14 +1,17 @@
-import { Context, ContextType } from './Context';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Context_1 = require("./Context");
 const classes = [];
 let numPendingInits = 0;
 const theObjects = [];
-export class Container {
+class Container {
     set(token, clazz) {
         classes[token.sequence] = clazz;
         theObjects[token.sequence] = null;
     }
 }
-export class ChildContainer extends Container {
+exports.Container = Container;
+class ChildContainer extends Container {
     // TODO: implement continuous upgrading
     // classes: any[]  = []
     // numPendingInits = 0
@@ -94,18 +97,19 @@ export class ChildContainer extends Container {
         };
     }
 }
-export class RootContainer extends Container {
+exports.ChildContainer = ChildContainer;
+class RootContainer extends Container {
     constructor() {
         super(...arguments);
         this.childContainers = new Set();
         this.uiContainerMap = new Map();
     }
     db() {
-        const context = new Context(null, ContextType.DB);
+        const context = new Context_1.Context(null, Context_1.ContextType.DB);
         return this.addContainer(context);
     }
     ui(componentName) {
-        const context = new Context(componentName, ContextType.UI);
+        const context = new Context_1.Context(componentName, Context_1.ContextType.UI);
         const container = this.addContainer(context);
         let matchingUiContainerSet = this.uiContainerMap.get(componentName);
         if (!matchingUiContainerSet) {
@@ -127,5 +131,6 @@ export class RootContainer extends Container {
         return childContainer;
     }
 }
-export const DI = new RootContainer();
+exports.RootContainer = RootContainer;
+exports.DI = new RootContainer();
 //# sourceMappingURL=Container.js.map

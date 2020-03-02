@@ -1,15 +1,17 @@
-import { AIR_DB, and, max, tree, Y } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { ensureChildJsMap } from '@airport/ground-control';
-import { SCHEMA_DAO } from '../tokens';
-import { BaseSchemaDao, Q } from '../generated/generated';
-export class SchemaDao extends BaseSchemaDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const tokens_1 = require("../tokens");
+const generated_1 = require("../generated/generated");
+class SchemaDao extends generated_1.BaseSchemaDao {
     async findAllActive() {
         let s;
         return this.db.find.tree({
             select: {},
             from: [
-                s = Q.Schema
+                s = generated_1.Q.Schema
             ]
         });
     }
@@ -18,21 +20,21 @@ export class SchemaDao extends BaseSchemaDao {
         let s, sv;
         const schemas = await this.db.find.tree({
             select: {
-                index: Y,
+                index: air_control_1.Y,
                 domain: {
-                    id: Y,
-                    name: Y
+                    id: air_control_1.Y,
+                    name: air_control_1.Y
                 },
-                name: Y,
+                name: air_control_1.Y,
                 versions: {
-                    id: Y,
-                    majorVersion: Y,
-                    minorVersion: Y,
-                    patchVersion: Y
+                    id: air_control_1.Y,
+                    majorVersion: air_control_1.Y,
+                    minorVersion: air_control_1.Y,
+                    patchVersion: air_control_1.Y
                 }
             },
             from: [
-                s = Q.Schema,
+                s = generated_1.Q.Schema,
                 sv = s.versions.innerJoin()
             ],
             where: sv.id.in(schemaVersionIds)
@@ -45,17 +47,17 @@ export class SchemaDao extends BaseSchemaDao {
         return schemaMapByIndex;
     }
     async findMaxIndex() {
-        const airDb = await container(this).get(AIR_DB);
-        const s = Q.Schema;
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
+        const s = generated_1.Q.Schema;
         return await airDb.findOne.field({
-            select: max(s.index),
+            select: air_control_1.max(s.index),
             from: [
                 s
             ]
         });
     }
     async findMaxVersionedMapBySchemaAndDomainNames(schemaDomainNames, schemaNames) {
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         const maxVersionedMapBySchemaAndDomainNames = new Map();
         let sv;
         let s;
@@ -64,11 +66,11 @@ export class SchemaDao extends BaseSchemaDao {
         let sMiV;
         const schemas = await airDb.find.tree({
             from: [
-                sMiV = tree({
+                sMiV = air_control_1.tree({
                     from: [
-                        sMaV = tree({
+                        sMaV = air_control_1.tree({
                             from: [
-                                s = Q.Schema,
+                                s = generated_1.Q.Schema,
                                 sv = s.versions.innerJoin(),
                                 d = s.domain.innerJoin()
                             ],
@@ -77,11 +79,11 @@ export class SchemaDao extends BaseSchemaDao {
                                 domainId: d.id,
                                 domainName: d.name,
                                 name: s.name,
-                                majorVersion: max(sv.majorVersion),
+                                majorVersion: air_control_1.max(sv.majorVersion),
                                 minorVersion: sv.minorVersion,
                                 patchVersion: sv.patchVersion,
                             },
-                            where: and(d.name.in(schemaDomainNames), s.name.in(schemaNames)),
+                            where: air_control_1.and(d.name.in(schemaDomainNames), s.name.in(schemaNames)),
                             groupBy: [
                                 s.index,
                                 d.id,
@@ -98,7 +100,7 @@ export class SchemaDao extends BaseSchemaDao {
                         domainName: sMaV.domainName,
                         name: sMaV.name,
                         majorVersion: sMaV.majorVersion,
-                        minorVersion: max(sMaV.minorVersion),
+                        minorVersion: air_control_1.max(sMaV.minorVersion),
                         patchVersion: sMaV.patchVersion,
                     },
                     groupBy: [
@@ -120,7 +122,7 @@ export class SchemaDao extends BaseSchemaDao {
                 name: sMiV.name,
                 majorVersion: sMiV.majorVersion,
                 minorVersion: sMiV.minorVersion,
-                patchVersion: max(sMiV.patchVersion),
+                patchVersion: air_control_1.max(sMiV.patchVersion),
             },
             groupBy: [
                 sMiV.index,
@@ -132,7 +134,7 @@ export class SchemaDao extends BaseSchemaDao {
             ]
         });
         for (const schema of schemas) {
-            ensureChildJsMap(maxVersionedMapBySchemaAndDomainNames, schema.domain.name)
+            ground_control_1.ensureChildJsMap(maxVersionedMapBySchemaAndDomainNames, schema.domain.name)
                 .set(schema.name, schema);
         }
         return maxVersionedMapBySchemaAndDomainNames;
@@ -140,7 +142,7 @@ export class SchemaDao extends BaseSchemaDao {
     async setStatusByIndexes(indexes, status) {
         let s;
         await this.db.updateWhere({
-            update: s = Q.Schema,
+            update: s = generated_1.Q.Schema,
             set: {
                 status
             },
@@ -153,7 +155,7 @@ export class SchemaDao extends BaseSchemaDao {
         const records = await this.db.find.tree({
             select: {},
             from: [
-                s = Q.Schema
+                s = generated_1.Q.Schema
             ],
             where: s.name.in(schemaNames)
         });
@@ -163,5 +165,6 @@ export class SchemaDao extends BaseSchemaDao {
         return mapByName;
     }
 }
-DI.set(SCHEMA_DAO, SchemaDao);
+exports.SchemaDao = SchemaDao;
+di_1.DI.set(tokens_1.SCHEMA_DAO, SchemaDao);
 //# sourceMappingURL=SchemaDao.js.map

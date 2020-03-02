@@ -1,7 +1,9 @@
-import { DI } from '@airport/di';
-import { SCHEMA_VERSION_DAO } from '../tokens';
-import { BaseSchemaVersionDao, Q } from '../generated/generated';
-export class SchemaVersionDao extends BaseSchemaVersionDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const tokens_1 = require("../tokens");
+const generated_1 = require("../generated/generated");
+class SchemaVersionDao extends generated_1.BaseSchemaVersionDao {
     /*
     async findAllLatestForSchemaIndexes(
         schemaIndexes: SchemaIndex[]
@@ -25,7 +27,7 @@ export class SchemaVersionDao extends BaseSchemaVersionDao {
         // let s: QSchema
         return await this.db.find.tree({
             from: [
-                sv = Q.SchemaVersion,
+                sv = generated_1.Q.SchemaVersion,
             ],
             select: {},
             orderBy: [
@@ -35,5 +37,6 @@ export class SchemaVersionDao extends BaseSchemaVersionDao {
         });
     }
 }
-DI.set(SCHEMA_VERSION_DAO, SchemaVersionDao);
+exports.SchemaVersionDao = SchemaVersionDao;
+di_1.DI.set(tokens_1.SCHEMA_VERSION_DAO, SchemaVersionDao);
 //# sourceMappingURL=SchemaVersionDao.js.map

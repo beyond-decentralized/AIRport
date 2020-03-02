@@ -1,19 +1,21 @@
-import { createDeltaStoreConfig } from "./DeltaStoreConfig";
-import { createLocalStoreConfig } from "./LocalStoreConfig";
-import { DistributionStrategy, IdGeneration, PlatformType, StoreType } from "@airport/ground-control";
-export class PersistenceConfig {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const DeltaStoreConfig_1 = require("./DeltaStoreConfig");
+const LocalStoreConfig_1 = require("./LocalStoreConfig");
+const ground_control_1 = require("@airport/ground-control");
+class PersistenceConfig {
     constructor(config) {
         this.config = config;
         this.appName = config.appName;
         if (config.deltaStore) {
             let jsonDeltaStoreConfig = config.deltaStore;
-            this.deltaStoreConfig = createDeltaStoreConfig(jsonDeltaStoreConfig);
+            this.deltaStoreConfig = DeltaStoreConfig_1.createDeltaStoreConfig(jsonDeltaStoreConfig);
         }
         if (config.localStore) {
-            this.localStoreConfig = createLocalStoreConfig(config.appName, config.localStore);
+            this.localStoreConfig = LocalStoreConfig_1.createLocalStoreConfig(config.appName, config.localStore);
         }
     }
-    static getDefaultJsonConfig(appName = 'DefaultApp', distributionStrategy = DistributionStrategy.S3_SECURE_POLL, deltaStorePlatform = PlatformType.GOOGLE_DOCS, localStoreType = StoreType.SQLITE_CORDOVA, offlineDeltaStoreType = StoreType.SQLITE_CORDOVA, idGeneration = IdGeneration.ENTITY_CHANGE_ID) {
+    static getDefaultJsonConfig(appName = 'DefaultApp', distributionStrategy = ground_control_1.DistributionStrategy.S3_SECURE_POLL, deltaStorePlatform = ground_control_1.PlatformType.GOOGLE_DOCS, localStoreType = ground_control_1.StoreType.SQLITE_CORDOVA, offlineDeltaStoreType = ground_control_1.StoreType.SQLITE_CORDOVA, idGeneration = ground_control_1.IdGeneration.ENTITY_CHANGE_ID) {
         return {
             appName: appName,
             deltaStore: {
@@ -33,4 +35,5 @@ export class PersistenceConfig {
         };
     }
 }
+exports.PersistenceConfig = PersistenceConfig;
 //# sourceMappingURL=PersistenceConfig.js.map

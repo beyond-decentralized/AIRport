@@ -1,13 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 3/27/2016.
  */
-export class Interface {
+class Interface {
     constructor(path, name) {
         this.name = name;
         this.implementedBySet = new Set();
     }
 }
-export class EntityCandidate {
+exports.Interface = Interface;
+class EntityCandidate {
     constructor(type, path, parentClassName, location, verified, isSuperclass) {
         this.type = type;
         this.path = path;
@@ -56,4 +59,5 @@ export class EntityCandidate {
         return this.type === type;
     }
 }
+exports.EntityCandidate = EntityCandidate;
 //# sourceMappingURL=EntityCandidate.js.map

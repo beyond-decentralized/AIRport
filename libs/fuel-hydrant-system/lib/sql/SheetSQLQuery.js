@@ -1,17 +1,19 @@
-import { JSONClauseObjectType, QueryResultType } from '@airport/ground-control';
-import { ExactOrderByParser } from '../orderBy/ExactOrderByParser';
-import { ClauseType } from './core/SQLWhereBase';
-import { NonEntitySQLQuery } from './NonEntitySQLQuery';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const ExactOrderByParser_1 = require("../orderBy/ExactOrderByParser");
+const SQLWhereBase_1 = require("./core/SQLWhereBase");
+const NonEntitySQLQuery_1 = require("./NonEntitySQLQuery");
 /**
  * Created by Papa on 10/16/2016.
  */
 /**
  * Represents SQL String query with flat (aka traditional) Select clause.
  */
-export class SheetSQLQuery extends NonEntitySQLQuery {
+class SheetSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
     constructor(jsonQuery, dialect, storeDriver) {
-        super(jsonQuery, dialect, QueryResultType.SHEET, storeDriver);
-        this.orderByParser = new ExactOrderByParser(this.validator);
+        super(jsonQuery, dialect, ground_control_1.QueryResultType.SHEET, storeDriver);
+        this.orderByParser = new ExactOrderByParser_1.ExactOrderByParser(this.validator);
     }
     getSELECTFragment(nested, selectClauseFragment, internalFragments, airDb, schemaUtils, metadataUtils) {
         if (!selectClauseFragment) {
@@ -19,7 +21,7 @@ export class SheetSQLQuery extends NonEntitySQLQuery {
         }
         {
             let distinctClause = selectClauseFragment;
-            if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
+            if (distinctClause.ot == ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION) {
                 let distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0], internalFragments, airDb, schemaUtils, metadataUtils);
                 return `DISTINCT ${distinctSelect}`;
             }
@@ -29,7 +31,7 @@ export class SheetSQLQuery extends NonEntitySQLQuery {
         }
         let fieldIndex = 0;
         let selectSqlFragment = selectClauseFragment.map((field) => {
-            return this.getFieldSelectFragment(field, ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++, airDb, schemaUtils, metadataUtils);
+            return this.getFieldSelectFragment(field, SQLWhereBase_1.ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++, airDb, schemaUtils, metadataUtils);
         }).join('');
         const selectClause = internalFragments.SELECT;
         if (selectClause && selectClause.length) {
@@ -72,4 +74,5 @@ export class SheetSQLQuery extends NonEntitySQLQuery {
         return resultsFromSelect;
     }
 }
+exports.SheetSQLQuery = SheetSQLQuery;
 //# sourceMappingURL=SheetSQLQuery.js.map

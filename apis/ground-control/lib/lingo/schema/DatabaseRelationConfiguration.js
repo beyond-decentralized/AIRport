@@ -1,3 +1,4 @@
+"use strict";
 // export interface AddToDatabaseJoinFunction<QOtm extends IQEntity, QMto extends IQEntity> {
 // 	(
 // 		otm: QOtm, // One-to-Many IQEntity
@@ -6,7 +7,8 @@
 // 		f: FunctionsAndOperators // Reference to all available functions and operators
 // 	): JSONBaseOperation;
 // }
-export var CascadeType;
+Object.defineProperty(exports, "__esModule", { value: true });
+var CascadeType;
 (function (CascadeType) {
     CascadeType[CascadeType["NONE"] = 0] = "NONE";
     CascadeType[CascadeType["ALL"] = 1] = "ALL";
@@ -20,8 +22,8 @@ export var CascadeType;
     // REFRESH,
     CascadeType[CascadeType["REMOVE"] = 4] = "REMOVE";
     CascadeType[CascadeType["UPDATE"] = 5] = "UPDATE"; // New to Airport
-})(CascadeType || (CascadeType = {}));
-export var CascadeOverwrite;
+})(CascadeType = exports.CascadeType || (exports.CascadeType = {}));
+var CascadeOverwrite;
 (function (CascadeOverwrite) {
     // Always cascade
     CascadeOverwrite[CascadeOverwrite["ALWAYS"] = 0] = "ALWAYS";
@@ -29,5 +31,5 @@ export var CascadeOverwrite;
     CascadeOverwrite[CascadeOverwrite["DEFAULT"] = 1] = "DEFAULT";
     // Never cascade
     CascadeOverwrite[CascadeOverwrite["NEVER"] = 2] = "NEVER";
-})(CascadeOverwrite || (CascadeOverwrite = {}));
+})(CascadeOverwrite = exports.CascadeOverwrite || (exports.CascadeOverwrite = {}));
 //# sourceMappingURL=DatabaseRelationConfiguration.js.map

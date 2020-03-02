@@ -1,24 +1,26 @@
-import * as fs from 'fs';
-import * as ts from 'typescript';
-import { DaoBuilder } from './builder/DaoBuilder';
-import { DuoBuilder } from './builder/DuoBuilder';
-import { EntityInterfaceFileBuilder } from './builder/entity/EntityInterfaceFileBuilder';
-import { QEntityFileBuilder } from './builder/entity/QEntityFileBuilder';
-import { GeneratedFileListingBuilder } from './builder/GeneratedFileListingBuilder';
-import { GeneratedSummaryBuilder } from './builder/GeneratedSummaryBuilder';
-import { PathBuilder } from './builder/PathBuilder';
-import { QSchemaBuilder } from './builder/QSchemaBuilder';
-import { JsonSchemaBuilder } from './builder/schema/JsonSchemaBuilder';
-import { MappedSuperclassBuilder } from './builder/superclass/MappedSuperclassBuilder';
-import { generateEntityDefinitions } from './parser/EntityDefinitionGenerator';
-import { AirportDatabase } from '@airport/tower';
-AirportDatabase.bogus = 'loaded for schema generation';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs = require("fs");
+const ts = require("typescript");
+const DaoBuilder_1 = require("./builder/DaoBuilder");
+const DuoBuilder_1 = require("./builder/DuoBuilder");
+const EntityInterfaceFileBuilder_1 = require("./builder/entity/EntityInterfaceFileBuilder");
+const QEntityFileBuilder_1 = require("./builder/entity/QEntityFileBuilder");
+const GeneratedFileListingBuilder_1 = require("./builder/GeneratedFileListingBuilder");
+const GeneratedSummaryBuilder_1 = require("./builder/GeneratedSummaryBuilder");
+const PathBuilder_1 = require("./builder/PathBuilder");
+const QSchemaBuilder_1 = require("./builder/QSchemaBuilder");
+const JsonSchemaBuilder_1 = require("./builder/schema/JsonSchemaBuilder");
+const MappedSuperclassBuilder_1 = require("./builder/superclass/MappedSuperclassBuilder");
+const EntityDefinitionGenerator_1 = require("./parser/EntityDefinitionGenerator");
+const tower_1 = require("@airport/tower");
+tower_1.AirportDatabase.bogus = 'loaded for schema generation';
 /**
  * Created by Papa on 3/30/2016.
  */
-export function watchFiles(configuration, options, rootFileNames) {
+function watchFiles(configuration, options, rootFileNames) {
     const files = {};
-    const pathBuilder = new PathBuilder(configuration);
+    const pathBuilder = new PathBuilder_1.PathBuilder(configuration);
     // initialize the list of files
     rootFileNames.forEach(fileName => {
         files[fileName] = { version: 0 };
@@ -58,7 +60,7 @@ export function watchFiles(configuration, options, rootFileNames) {
     function processFiles(rootFileNames, options, configuration) {
         options.target = ts.ScriptTarget.ES5;
         const schemaMapByProjectName = {};
-        let entityMapByName = generateEntityDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
+        let entityMapByName = EntityDefinitionGenerator_1.generateEntityDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
         emitFiles(entityMapByName, configuration, schemaMapByProjectName);
     }
     function emitFiles(entityMapByName, configuration, schemaMapByProjectName) {
@@ -72,25 +74,25 @@ export function watchFiles(configuration, options, rootFileNames) {
         if (fs.existsSync(schemaPath)) {
             schemaString = fs.readFileSync(schemaPath, 'utf8');
         }
-        const schemaBuilder = new JsonSchemaBuilder(configuration, entityMapByName, schemaString);
+        const schemaBuilder = new JsonSchemaBuilder_1.JsonSchemaBuilder(configuration, entityMapByName, schemaString);
         const [schemaJsonString, indexedSchema] = schemaBuilder.build(configuration.airport.domain, schemaMapByProjectName);
         const schemaSourceString = `export const SCHEMA = `
             + schemaJsonString + ';';
         fs.writeFileSync(schemaPath, schemaJsonString);
         fs.writeFileSync(schemaSourcePath, schemaSourceString);
         const entityFileReference = {};
-        const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder);
-        const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
-        const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
-        const qSchemaBuilder = new QSchemaBuilder(pathBuilder);
-        const daoBuilder = new DaoBuilder(pathBuilder);
-        const duoBuilder = new DuoBuilder(pathBuilder);
+        const generatedSummaryBuilder = new GeneratedSummaryBuilder_1.GeneratedSummaryBuilder(pathBuilder);
+        const entityInterfaceListingBuilder = new GeneratedFileListingBuilder_1.GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
+        const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder_1.GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
+        const qSchemaBuilder = new QSchemaBuilder_1.QSchemaBuilder(pathBuilder);
+        const daoBuilder = new DaoBuilder_1.DaoBuilder(pathBuilder);
+        const duoBuilder = new DuoBuilder_1.DuoBuilder(pathBuilder);
         for (const entityName in entityMapByName) {
             const entity = entityMapByName[entityName];
             const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, false);
             const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
-            const qEntityFileBuilder = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
-            const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
+            const qEntityFileBuilder = new QEntityFileBuilder_1.QEntityFileBuilder(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
+            const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder_1.EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
             if (!entity.isSuperclass) {
                 entityFileReference[entity.docEntry.name] = fullGenerationPath;
             }
@@ -117,7 +119,7 @@ export function watchFiles(configuration, options, rootFileNames) {
         fs.writeFileSync(entityInterfaceListingBuilder.generatedListingFilePath, entityInterfaceListingBuilder.build());
         fs.writeFileSync(entityQInterfaceListingBuilder.generatedListingFilePath, entityQInterfaceListingBuilder.build());
         fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
-        const mappedSuperclassBuilder = new MappedSuperclassBuilder(configuration, entityMapByName);
+        const mappedSuperclassBuilder = new MappedSuperclassBuilder_1.MappedSuperclassBuilder(configuration, entityMapByName);
         const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
         fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
     }
@@ -150,4 +152,5 @@ export function watchFiles(configuration, options, rootFileNames) {
         });
     }
 }
+exports.watchFiles = watchFiles;
 //# sourceMappingURL=FileWatcher.js.map

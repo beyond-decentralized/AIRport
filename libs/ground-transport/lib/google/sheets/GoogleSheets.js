@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 1/5/2016.
  */
@@ -12,7 +14,7 @@ Scope.PUBLIC = 'public';
 class ReturnType {
 }
 ReturnType.FULL = 'full';
-export class GoogleSheets {
+class GoogleSheets {
     constructor(googleApi, promiseHttp) {
         this.googleApi = googleApi;
         this.promiseHttp = promiseHttp;
@@ -50,4 +52,5 @@ export class GoogleSheets {
         return this.promiseHttp.post(this.getListFeedUrl(fileId), rowXml);
     }
 }
+exports.GoogleSheets = GoogleSheets;
 //# sourceMappingURL=GoogleSheets.js.map

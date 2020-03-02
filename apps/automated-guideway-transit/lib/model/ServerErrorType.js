@@ -1,4 +1,6 @@
-export var ServerErrorType;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var ServerErrorType;
 (function (ServerErrorType) {
     ServerErrorType[ServerErrorType["DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_NO_MATCHING_DATABASE"] = 0] = "DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_NO_MATCHING_DATABASE";
     ServerErrorType[ServerErrorType["DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_INCORRECT_HASH"] = 1] = "DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_INCORRECT_HASH";
@@ -9,5 +11,5 @@ export var ServerErrorType;
     ServerErrorType[ServerErrorType["INCOMING_REPOSITORY_REPOSITORY_ID_NOT_FOUND"] = 6] = "INCOMING_REPOSITORY_REPOSITORY_ID_NOT_FOUND";
     ServerErrorType[ServerErrorType["MULTIPLE_DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_CORRECT_HASH"] = 7] = "MULTIPLE_DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_CORRECT_HASH";
     ServerErrorType[ServerErrorType["SYNC_CLIENT_CONNECTED_TOO_SOON"] = 8] = "SYNC_CLIENT_CONNECTED_TOO_SOON";
-})(ServerErrorType || (ServerErrorType = {}));
+})(ServerErrorType = exports.ServerErrorType || (exports.ServerErrorType = {}));
 //# sourceMappingURL=ServerErrorType.js.map

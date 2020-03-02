@@ -1,9 +1,11 @@
-import { AIR_DB } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { ensureChildArray } from '@airport/ground-control';
-import { SHARING_MESSAGE_DAO } from '../../tokens';
-import { BaseSharingMessageDao, Q, } from '../../generated/generated';
-export class SharingMessageDao extends BaseSharingMessageDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const tokens_1 = require("../../tokens");
+const generated_1 = require("../../generated/generated");
+class SharingMessageDao extends generated_1.BaseSharingMessageDao {
     // private repoTransHistoryDao: IRepositoryTransactionHistoryDao
     // private recHistNewValueDao: IRecordHistoryNewValueDao
     // private recHistOldValueDao: IRecordHistoryOldValueDao
@@ -51,11 +53,11 @@ export class SharingMessageDao extends BaseSharingMessageDao {
         }*/
     async findAllSyncedSharingMessageIdsForSharingNodes(sharingNodeIds) {
         const sharingMessageIdsBySharingNodeId = new Map();
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         let sm;
         const data = await airDb.find.sheet({
             from: [
-                sm = Q.SharingMessage
+                sm = generated_1.Q.SharingMessage
             ],
             select: [
                 sm.sharingNode.id,
@@ -64,11 +66,12 @@ export class SharingMessageDao extends BaseSharingMessageDao {
             where: sm.sharingNode.id.in(sharingNodeIds)
         });
         for (const record of data) {
-            ensureChildArray(sharingMessageIdsBySharingNodeId, record[0])
+            ground_control_1.ensureChildArray(sharingMessageIdsBySharingNodeId, record[0])
                 .push(record[1]);
         }
         return sharingMessageIdsBySharingNodeId;
     }
 }
-DI.set(SHARING_MESSAGE_DAO, SharingMessageDao);
+exports.SharingMessageDao = SharingMessageDao;
+di_1.DI.set(tokens_1.SHARING_MESSAGE_DAO, SharingMessageDao);
 //# sourceMappingURL=SharingMessageDao.js.map

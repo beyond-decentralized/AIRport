@@ -1,14 +1,16 @@
-import { AIR_DB } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO } from '../../tokens';
-import { BaseSharingNodeRepoTransBlockStageDao, Q } from '../../generated/generated';
-export class SharingNodeRepoTransBlockStageDao extends BaseSharingNodeRepoTransBlockStageDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const tokens_1 = require("../../tokens");
+const generated_1 = require("../../generated/generated");
+class SharingNodeRepoTransBlockStageDao extends generated_1.BaseSharingNodeRepoTransBlockStageDao {
     async insertValues(values) {
-        const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlockStage;
-        const airDb = await container(this).get(AIR_DB);
+        const dbEntity = generated_1.Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlockStage;
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         let snrtbs;
         return await airDb.insertValues(dbEntity, {
-            insertInto: snrtbs = Q.SharingNodeRepoTransBlockStage,
+            insertInto: snrtbs = generated_1.Q.SharingNodeRepoTransBlockStage,
             columns: [
                 snrtbs.sharingNodeId,
                 snrtbs.repositoryTransactionBlockId,
@@ -21,9 +23,10 @@ export class SharingNodeRepoTransBlockStageDao extends BaseSharingNodeRepoTransB
     async delete( //
     ) {
         return await this.db.deleteWhere({
-            deleteFrom: Q.SharingNodeRepoTransBlockStage
+            deleteFrom: generated_1.Q.SharingNodeRepoTransBlockStage
         });
     }
 }
-DI.set(SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO, SharingNodeRepoTransBlockStageDao);
+exports.SharingNodeRepoTransBlockStageDao = SharingNodeRepoTransBlockStageDao;
+di_1.DI.set(tokens_1.SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO, SharingNodeRepoTransBlockStageDao);
 //# sourceMappingURL=SharingNodeRepoTransBlockStageDao.js.map

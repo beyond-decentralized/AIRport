@@ -1,32 +1,41 @@
-export var EntityState;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var EntityState;
 (function (EntityState) {
     EntityState[EntityState["NEW"] = 0] = "NEW";
     EntityState[EntityState["STUB"] = 1] = "STUB";
     EntityState[EntityState["EXISTING"] = 2] = "EXISTING";
-})(EntityState || (EntityState = {}));
+})(EntityState = exports.EntityState || (exports.EntityState = {}));
 ;
-export function getEntityState(entity) {
+function getEntityState(entity) {
     return entity.__state__;
 }
-export function isStub(entity) {
+exports.getEntityState = getEntityState;
+function isStub(entity) {
     return getEntityState(entity) === EntityState.STUB;
 }
-export function markAsStub(entity) {
+exports.isStub = isStub;
+function markAsStub(entity) {
     entity.__state__ = EntityState.STUB;
     return entity;
 }
-export function isNew(entity) {
+exports.markAsStub = markAsStub;
+function isNew(entity) {
     return getEntityState(entity) === EntityState.NEW;
 }
-export function markAsNew(entity) {
+exports.isNew = isNew;
+function markAsNew(entity) {
     entity.__state__ = EntityState.NEW;
     return entity;
 }
-export function isExisting(entity) {
+exports.markAsNew = markAsNew;
+function isExisting(entity) {
     return getEntityState(entity) === EntityState.EXISTING;
 }
-export function markAsExisting(entity) {
+exports.isExisting = isExisting;
+function markAsExisting(entity) {
     entity.__state__ = EntityState.EXISTING;
     return entity;
 }
+exports.markAsExisting = markAsExisting;
 //# sourceMappingURL=EntityState.js.map

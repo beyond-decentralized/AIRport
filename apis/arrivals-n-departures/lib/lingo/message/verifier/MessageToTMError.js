@@ -1,4 +1,6 @@
-export var MessageToTMError;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var MessageToTMError;
 (function (MessageToTMError) {
     MessageToTMError[MessageToTMError["NO_DATA_ERROR"] = 0] = "NO_DATA_ERROR";
     MessageToTMError[MessageToTMError["MESSAGE_IS_NOT_ARRAY"] = 1] = "MESSAGE_IS_NOT_ARRAY";
@@ -23,5 +25,5 @@ export var MessageToTMError;
     MessageToTMError[MessageToTMError["AGT_DATABASE_ID_IS_NOT_NUMBER"] = 19] = "AGT_DATABASE_ID_IS_NOT_NUMBER";
     MessageToTMError[MessageToTMError["AGT_REPOSITORY_ID_IS_NOT_NUMBER"] = 20] = "AGT_REPOSITORY_ID_IS_NOT_NUMBER";
     MessageToTMError[MessageToTMError["AGT_SYNC_RECORD_REPOSITORY_TRANSACTION_BLOCK_IS_NOT_STRING"] = 21] = "AGT_SYNC_RECORD_REPOSITORY_TRANSACTION_BLOCK_IS_NOT_STRING";
-})(MessageToTMError || (MessageToTMError = {}));
+})(MessageToTMError = exports.MessageToTMError || (exports.MessageToTMError = {}));
 //# sourceMappingURL=MessageToTMError.js.map

@@ -1,11 +1,13 @@
-import { OperationCategory, SqlOperator } from "@airport/ground-control";
-import { ValueOperation } from "./Operation";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const Operation_1 = require("./Operation");
 /**
  * Created by papa on 7/13/17.
  */
-export class UntypedOperation extends ValueOperation {
+class UntypedOperation extends Operation_1.ValueOperation {
     constructor() {
-        super(OperationCategory.UNTYPED);
+        super(ground_control_1.OperationCategory.UNTYPED);
     }
     like(lValue, rValue
     // TODO: implement ReqExp
@@ -14,9 +16,10 @@ export class UntypedOperation extends ValueOperation {
         return {
             c: this.category,
             l: lValue,
-            o: SqlOperator.LIKE,
+            o: ground_control_1.SqlOperator.LIKE,
             r: rValue
         };
     }
 }
+exports.UntypedOperation = UntypedOperation;
 //# sourceMappingURL=UntypedOperation.js.map

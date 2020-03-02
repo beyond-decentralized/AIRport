@@ -1,12 +1,14 @@
-import { DI } from '@airport/di';
-import { ENTITY_UTILS } from '../../tokens';
-import { QOperableField } from '../core/field/OperableField';
-import { EntityQuery } from '../query/facade/EntityQuery';
-import { objectExists } from '../Utils';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const tokens_1 = require("../../tokens");
+const OperableField_1 = require("../core/field/OperableField");
+const EntityQuery_1 = require("../query/facade/EntityQuery");
+const Utils_1 = require("../Utils");
 /**
  * Created by Papa on 6/14/2016.
  */
-export class EntityUtils {
+class EntityUtils {
     getObjectClassName(object) {
         if (typeof object != 'object' || object === null) {
             throw new Error(`Not an object instance`);
@@ -22,7 +24,7 @@ export class EntityUtils {
         return className;
     }
     exists(object) {
-        return objectExists(object);
+        return Utils_1.objectExists(object);
     }
     /*
      static isBlank(
@@ -44,7 +46,7 @@ export class EntityUtils {
      }
      */
     isAppliable(object) {
-        return object instanceof QOperableField;
+        return object instanceof OperableField_1.QOperableField;
     }
     getQuery(query) {
         return this.getRawQuery(query);
@@ -58,8 +60,9 @@ export class EntityUtils {
         }
     }
     getEntityQuery(rawGraphQuery) {
-        return new EntityQuery(this.getRawQuery(rawGraphQuery));
+        return new EntityQuery_1.EntityQuery(this.getRawQuery(rawGraphQuery));
     }
 }
-DI.set(ENTITY_UTILS, EntityUtils);
+exports.EntityUtils = EntityUtils;
+di_1.DI.set(tokens_1.ENTITY_UTILS, EntityUtils);
 //# sourceMappingURL=EntityUtils.js.map

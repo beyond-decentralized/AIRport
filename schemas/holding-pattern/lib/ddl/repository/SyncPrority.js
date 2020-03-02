@@ -1,4 +1,6 @@
-export var SyncPriority;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var SyncPriority;
 (function (SyncPriority) {
     SyncPriority[SyncPriority["VITAL"] = 0] = "VITAL";
     SyncPriority[SyncPriority["CRITICAL"] = 1] = "CRITICAL";
@@ -7,5 +9,5 @@ export var SyncPriority;
     SyncPriority[SyncPriority["NORMAL"] = 4] = "NORMAL";
     SyncPriority[SyncPriority["BELOW_NORMAL"] = 5] = "BELOW_NORMAL";
     SyncPriority[SyncPriority["LOW"] = 6] = "LOW";
-})(SyncPriority || (SyncPriority = {}));
+})(SyncPriority = exports.SyncPriority || (exports.SyncPriority = {}));
 //# sourceMappingURL=SyncPrority.js.map

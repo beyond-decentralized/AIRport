@@ -1,8 +1,10 @@
-import { container, DI } from '@airport/di';
-import { TERMINAL_STORE, } from '@airport/terminal-map';
-import { AbstractCompletable } from '../../AbstractCompletable';
-import { SYNC_NODE_MANAGER, SYNC_OUT_COORDINATOR, SYNC_OUT_MANAGER } from '../../tokens';
-export class SynchronizationOutCoordinator extends AbstractCompletable {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const terminal_map_1 = require("@airport/terminal-map");
+const AbstractCompletable_1 = require("../../AbstractCompletable");
+const tokens_1 = require("../../tokens");
+class SynchronizationOutCoordinator extends AbstractCompletable_1.AbstractCompletable {
     constructor() {
         super(...arguments);
         this.nodesBySyncFrequency = new Map();
@@ -11,7 +13,7 @@ export class SynchronizationOutCoordinator extends AbstractCompletable {
     // private syncNodeManager: ISyncNodeManager
     // private terminalStore: ITerminalStore
     async initialize() {
-        const [syncNodeManager, syncOutManager, terminalStore] = await container(this).get(SYNC_NODE_MANAGER, SYNC_OUT_MANAGER, TERMINAL_STORE);
+        const [syncNodeManager, syncOutManager, terminalStore] = await di_1.container(this).get(tokens_1.SYNC_NODE_MANAGER, tokens_1.SYNC_OUT_MANAGER, terminal_map_1.TERMINAL_STORE);
         await syncNodeManager.initialize();
         /*
                 pipe(this.terminalStore.getTerminalState.observable, (
@@ -51,5 +53,6 @@ export class SynchronizationOutCoordinator extends AbstractCompletable {
         }, frequency);
     }
 }
-DI.set(SYNC_OUT_COORDINATOR, SynchronizationOutCoordinator);
+exports.SynchronizationOutCoordinator = SynchronizationOutCoordinator;
+di_1.DI.set(tokens_1.SYNC_OUT_COORDINATOR, SynchronizationOutCoordinator);
 //# sourceMappingURL=SynchronizationOutCoordinator.js.map

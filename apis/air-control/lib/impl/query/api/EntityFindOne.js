@@ -1,14 +1,16 @@
-import { QueryResultType } from '@airport/ground-control';
-import { EntityLookup } from './EntityLookup';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const EntityLookup_1 = require("./EntityLookup");
 /**
  * Created by Papa on 11/12/2016.
  */
-export class EntityFindOne extends EntityLookup {
+class EntityFindOne extends EntityLookup_1.EntityLookup {
     graph(rawGraphQuery) {
-        return this.findOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH);
+        return this.findOne(rawGraphQuery, ground_control_1.QueryResultType.ENTITY_GRAPH);
     }
     tree(rawTreeQuery) {
-        return this.findOne(rawTreeQuery, QueryResultType.ENTITY_TREE);
+        return this.findOne(rawTreeQuery, ground_control_1.QueryResultType.ENTITY_TREE);
     }
     findOne(rawEntityQuery, queryResultType) {
         return this.entityLookup(rawEntityQuery, queryResultType, false, true);
@@ -23,4 +25,5 @@ export class EntityFindOne extends EntityLookup {
         return this.setCache(EntityFindOne, cacheForUpdate);
     }
 }
+exports.EntityFindOne = EntityFindOne;
 //# sourceMappingURL=EntityFindOne.js.map

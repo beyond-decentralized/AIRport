@@ -1,7 +1,9 @@
-import { DI } from '@airport/di';
-import { USER_DAO } from '../tokens';
-import { BaseUserDao, Q } from '../generated/generated';
-export class UserDao extends BaseUserDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const tokens_1 = require("../tokens");
+const generated_1 = require("../generated/generated");
+class UserDao extends generated_1.BaseUserDao {
     async findMapByUniqueId(userUniqueIds) {
         return await this.findFieldsMapByUniqueId(userUniqueIds, {});
     }
@@ -21,11 +23,12 @@ export class UserDao extends BaseUserDao {
         return await this.db.find.tree({
             select,
             from: [
-                u = Q.User
+                u = generated_1.Q.User
             ],
             where: u.uniqueId.in(uniqueIds)
         });
     }
 }
-DI.set(USER_DAO, UserDao);
+exports.UserDao = UserDao;
+di_1.DI.set(tokens_1.USER_DAO, UserDao);
 //# sourceMappingURL=UserDao.js.map

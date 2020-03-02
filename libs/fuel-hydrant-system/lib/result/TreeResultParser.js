@@ -1,6 +1,8 @@
-import { objectExists } from '@airport/air-control';
-import { SQLDataType } from '@airport/ground-control';
-import { AbstractObjectResultParser } from './entity/IEntityResultParser';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
+const IEntityResultParser_1 = require("./entity/IEntityResultParser");
 /**
  * Created by Papa on 10/16/2016.
  */
@@ -9,7 +11,7 @@ import { AbstractObjectResultParser } from './entity/IEntityResultParser';
  * as they were in the previous row.  If the objects are the same this parser will merge
  * them.
  */
-export class TreeResultParser extends AbstractObjectResultParser {
+class TreeResultParser extends IEntityResultParser_1.AbstractObjectResultParser {
     constructor() {
         super(...arguments);
         this.currentRowObjectMap = {};
@@ -20,13 +22,13 @@ export class TreeResultParser extends AbstractObjectResultParser {
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject[propertyName] = propertyValue;
         if (this.isDifferentOrDoesntExist(entityAlias, resultObject, propertyName)) {
-            return objectExists(propertyValue);
+            return air_control_1.objectExists(propertyValue);
         }
         // Both last and current objects must exist here
         let lastObject = this.lastRowObjectMap[entityAlias];
         // Both of the properties are truthy
         switch (dataType) {
-            case SQLDataType.DATE:
+            case ground_control_1.SQLDataType.DATE:
                 this.objectEqualityMap[entityAlias] = (lastObject[propertyName].getTime() === resultObject[propertyName].getTime());
                 break;
             default:
@@ -125,4 +127,5 @@ export class TreeResultParser extends AbstractObjectResultParser {
         this.currentRowObjectMap = {};
     }
 }
+exports.TreeResultParser = TreeResultParser;
 //# sourceMappingURL=TreeResultParser.js.map

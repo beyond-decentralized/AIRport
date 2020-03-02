@@ -1,4 +1,6 @@
-export class SqlFunctionField {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class SqlFunctionField {
     constructor(jsonClauseField) {
         this.jsonClauseField = jsonClauseField;
         // Test
@@ -7,4 +9,5 @@ export class SqlFunctionField {
         return sqlValueProvider.getFieldFunctionValue(this.jsonClauseField, null, airDb, schemaUtils, metadataUtils);
     }
 }
+exports.SqlFunctionField = SqlFunctionField;
 //# sourceMappingURL=SqlFunctionField.js.map

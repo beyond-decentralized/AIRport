@@ -1,8 +1,10 @@
-import { container, DI } from '@airport/di';
-import { CascadeOverwrite } from '@airport/ground-control';
-import { MISSING_RECORD_REPO_TRANS_BLOCK_DAO, REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO, SchemaChangeStatus, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO } from '@airport/moving-walkway';
-import { SYNC_IN_ACTOR_CHECKER, SYNC_IN_CHECKER, SYNC_IN_DATA_CHECKER, SYNC_IN_REPO_CHECKER, SYNC_IN_REPO_TRANS_BLOCK_CREATOR, SYNC_IN_SCHEMA_CHECKER } from '../../../tokens';
-export class SyncInChecker {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const moving_walkway_1 = require("@airport/moving-walkway");
+const tokens_1 = require("../../../tokens");
+class SyncInChecker {
     /**
      *
      * @param {IDataToTM[]} dataMessages
@@ -14,7 +16,7 @@ export class SyncInChecker {
      *      ]
      */
     async checkSchemasAndDataAndRecordRepoTransBlocks(dataMessages) {
-        const [syncInActorChecker, syncInDataChecker, missingRecordRepoTransBlockDao, syncInRepositoryChecker, repoTransBlockSchemasToChangeDao, syncInSchemaChecker, sharingMessageRepoTransBlockDao, syncInRepoTransBlockCreator] = await container(this).get(SYNC_IN_ACTOR_CHECKER, SYNC_IN_DATA_CHECKER, MISSING_RECORD_REPO_TRANS_BLOCK_DAO, SYNC_IN_REPO_CHECKER, REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO, SYNC_IN_SCHEMA_CHECKER, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SYNC_IN_REPO_TRANS_BLOCK_CREATOR);
+        const [syncInActorChecker, syncInDataChecker, missingRecordRepoTransBlockDao, syncInRepositoryChecker, repoTransBlockSchemasToChangeDao, syncInSchemaChecker, sharingMessageRepoTransBlockDao, syncInRepoTransBlockCreator] = await di_1.container(this).get(tokens_1.SYNC_IN_ACTOR_CHECKER, tokens_1.SYNC_IN_DATA_CHECKER, moving_walkway_1.MISSING_RECORD_REPO_TRANS_BLOCK_DAO, tokens_1.SYNC_IN_REPO_CHECKER, moving_walkway_1.REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO, tokens_1.SYNC_IN_SCHEMA_CHECKER, moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, tokens_1.SYNC_IN_REPO_TRANS_BLOCK_CREATOR);
         const { dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleSchemas, dataMessagesWithInvalidSchemas, dataMessagesToBeUpgraded, maxVersionedMapBySchemaAndDomainNames, requiredSchemaVersionIds, schemasWithChangesMap, } = await syncInSchemaChecker.checkSchemas(dataMessages);
         const { actorMap, actorMapById, consistentMessages } = await syncInActorChecker.ensureActorsAndGetAsMaps(dataMessages, dataMessagesWithInvalidData);
         const { consistentMessages, sharingNodeRepositoryMap } = await syncInRepositoryChecker.ensureRepositories(allDataMessages, dataMessagesWithInvalidData);
@@ -203,12 +205,12 @@ export class SyncInChecker {
                 repoTransBlockSchemasToChange.push({
                     // sharingMessage,
                     repositoryTransactionBlock: message.repositoryTransactionBlock,
-                    status: SchemaChangeStatus.CHANGE_NEEDED,
+                    status: moving_walkway_1.SchemaChangeStatus.CHANGE_NEEDED,
                     schema: matchingSchema
                 });
             }
         }
-        await repoTransBlockSchemasToChangeDao.bulkCreate(repoTransBlockSchemasToChange, CascadeOverwrite.DEFAULT, false);
+        await repoTransBlockSchemasToChangeDao.bulkCreate(repoTransBlockSchemasToChange, ground_control_1.CascadeOverwrite.DEFAULT, false);
         return sharingMessagesWithCompatibleSchemasAndData;
     }
     findMatchingSchema(schemaMap, schema) {
@@ -219,5 +221,6 @@ export class SyncInChecker {
         return schemasForDomainName.get(schema.name);
     }
 }
-DI.set(SYNC_IN_CHECKER, SyncInChecker);
+exports.SyncInChecker = SyncInChecker;
+di_1.DI.set(tokens_1.SYNC_IN_CHECKER, SyncInChecker);
 //# sourceMappingURL=SyncInChecker.js.map

@@ -1,20 +1,22 @@
-import { AIR_DB, and, Y } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { ensureChildJsMap } from '@airport/ground-control';
-import { REPOSITORY_DAO } from '../../tokens';
-import { BaseRepositoryDao, Q, } from '../../generated/generated';
-export class RepositoryDao extends BaseRepositoryDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const tokens_1 = require("../../tokens");
+const generated_1 = require("../../generated/generated");
+class RepositoryDao extends generated_1.BaseRepositoryDao {
     async findReposWithTransactionLogDetailsByIds(repositoryIds) {
         let r;
         let ra;
         let a;
         let u;
         let d;
-        let id = Y;
+        let id = air_control_1.Y;
         return await this.db.find.map().tree({
             select: {
-                orderedId: Y,
-                randomId: Y,
+                orderedId: air_control_1.Y,
+                randomId: air_control_1.Y,
                 ownerActor: {
                     user: {
                         id
@@ -25,7 +27,7 @@ export class RepositoryDao extends BaseRepositoryDao {
                 },
             },
             from: [
-                r = Q.Repository,
+                r = generated_1.Q.Repository,
                 ra = r.repositoryActors.innerJoin(),
                 a = ra.actor.innerJoin(),
                 u = a.user.innerJoin(),
@@ -38,18 +40,18 @@ export class RepositoryDao extends BaseRepositoryDao {
     }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
         let r;
-        const id = Y;
+        const id = air_control_1.Y;
         return await this.db.find.tree({
             select: {
                 id,
                 ownerActor: {
                     id
                 },
-                orderedId: Y,
-                randomId: Y
+                orderedId: air_control_1.Y,
+                randomId: air_control_1.Y
             },
             from: [
-                r = Q.Repository
+                r = generated_1.Q.Repository
             ],
             where: r.id.in(repositoryIds)
         });
@@ -60,7 +62,7 @@ export class RepositoryDao extends BaseRepositoryDao {
         let a;
         let u;
         let d;
-        let id = Y;
+        let id = air_control_1.Y;
         return await this.db.find.map().tree({
             select: {
                 ...this.db.duo.select.fields,
@@ -76,13 +78,13 @@ export class RepositoryDao extends BaseRepositoryDao {
                 },
             },
             from: [
-                r = Q.Repository,
+                r = generated_1.Q.Repository,
                 ra = r.repositoryActors.innerJoin(),
                 a = ra.actor.innerJoin(),
                 u = a.user.innerJoin(),
                 d = a.terminal.innerJoin()
             ],
-            where: and(r.id.in(repositoryIdsInClause), d.name.equals(dbName), u.uniqueId.equals(userEmail))
+            where: air_control_1.and(r.id.in(repositoryIdsInClause), d.name.equals(dbName), u.uniqueId.equals(userEmail))
         });
     }
     async findReposWithGlobalIds(repositoryIds) {
@@ -92,18 +94,18 @@ export class RepositoryDao extends BaseRepositoryDao {
         let u;
         const repositories = await this.db.find.tree({
             select: {
-                id: Y,
-                orderedId: Y,
-                randomId: Y,
+                id: air_control_1.Y,
+                orderedId: air_control_1.Y,
+                randomId: air_control_1.Y,
                 ownerActor: {
-                    id: Y,
+                    id: air_control_1.Y,
                     user: {
-                        uniqueId: Y
+                        uniqueId: air_control_1.Y
                     },
                 }
             },
             from: [
-                r = Q.Repository,
+                r = generated_1.Q.Repository,
                 a = r.ownerActor.innerJoin(),
                 u = a.user.innerJoin()
             ],
@@ -121,10 +123,10 @@ export class RepositoryDao extends BaseRepositoryDao {
         let od;
         let odu;
         let ou;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         const resultRows = await airDb.find.sheet({
             from: [
-                r = Q.Repository,
+                r = generated_1.Q.Repository,
                 oa = r.ownerActor.innerJoin(),
                 ou = oa.user.innerJoin(),
                 od = oa.terminal.innerJoin(),
@@ -140,13 +142,14 @@ export class RepositoryDao extends BaseRepositoryDao {
                 r.randomId,
                 r.id,
             ],
-            where: and(r.orderedId.in(orderedIds), r.randomId.in(randomIds), oa.randomId.in(ownerActorRandomIds), ou.uniqueId.in(ownerUserUniqueIds), od.name.in(ownerTerminalNames), od.secondId.in(ownerTerminalSecondIds), odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds))
+            where: air_control_1.and(r.orderedId.in(orderedIds), r.randomId.in(randomIds), oa.randomId.in(ownerActorRandomIds), ou.uniqueId.in(ownerUserUniqueIds), od.name.in(ownerTerminalNames), od.secondId.in(ownerTerminalSecondIds), odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds))
         });
         for (const resultRow of resultRows) {
-            ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4]), resultRow[5]).set(resultRow[6], resultRow[7]);
+            ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4]), resultRow[5]).set(resultRow[6], resultRow[7]);
         }
         return repositoryIdMap;
     }
 }
-DI.set(REPOSITORY_DAO, RepositoryDao);
+exports.RepositoryDao = RepositoryDao;
+di_1.DI.set(tokens_1.REPOSITORY_DAO, RepositoryDao);
 //# sourceMappingURL=RepositoryDao.js.map

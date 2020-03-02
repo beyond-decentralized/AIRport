@@ -1,8 +1,10 @@
-import { entityExtendsRepositoryEntity, getManyToOneDecorator } from '../schema/SSchemaBuilder';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const SSchemaBuilder_1 = require("../schema/SSchemaBuilder");
 /**
  * Created by Papa on 5/20/2016.
  */
-export class IQEntityInterfaceBuilder {
+class IQEntityInterfaceBuilder {
     constructor(entity, qEntityBuilder) {
         this.entity = entity;
         this.qEntityBuilder = qEntityBuilder;
@@ -59,11 +61,11 @@ export class IQEntityInterfaceBuilder {
         this.nonIdRelationBuilders.forEach((builder) => {
             nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`;
         });
-        const [isRepositoryEntity, isLocal] = entityExtendsRepositoryEntity(this.entity);
+        const [isRepositoryEntity, isLocal] = SSchemaBuilder_1.entityExtendsRepositoryEntity(this.entity);
         let relationsForCascadeGraph = ``;
         if (!isRepositoryEntity) {
             this.idRelationBuilders.forEach((builder) => {
-                if (getManyToOneDecorator(builder.entityProperty)) {
+                if (SSchemaBuilder_1.getManyToOneDecorator(builder.entityProperty)) {
                     // Do NOT cascade @ManyToOne's
                     return;
                 }
@@ -71,7 +73,7 @@ export class IQEntityInterfaceBuilder {
             });
         }
         this.nonIdRelationBuilders.forEach((builder) => {
-            if (getManyToOneDecorator(builder.entityProperty)) {
+            if (SSchemaBuilder_1.getManyToOneDecorator(builder.entityProperty)) {
                 // Do NOT cascade @ManyToOne's
                 return;
             }
@@ -176,4 +178,5 @@ extends ${entityName}EId, ${entityName}EUpdateColumns {
         return interfaceSource;
     }
 }
+exports.IQEntityInterfaceBuilder = IQEntityInterfaceBuilder;
 //# sourceMappingURL=IQEntityInterfaceBuilder.js.map

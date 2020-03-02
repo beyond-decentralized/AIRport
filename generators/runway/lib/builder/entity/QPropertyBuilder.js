@@ -1,9 +1,11 @@
-import { addImportForType, getFullPathFromRelativePath, resolveRelativePath } from '../../resolve/pathResolver';
-import { getPropertyFieldClass, getPropertyFieldInterface } from '../Builder';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const pathResolver_1 = require("../../resolve/pathResolver");
+const Builder_1 = require("../Builder");
 /**
  * Created by Papa on 4/25/2016.
  */
-export class QPropertyBuilder {
+class QPropertyBuilder {
     constructor(parentBuilder, propertyDocEntry) {
         this.parentBuilder = parentBuilder;
         this.propertyDocEntry = propertyDocEntry;
@@ -11,7 +13,7 @@ export class QPropertyBuilder {
     buildDefinition() {
         let prop = this.propertyDocEntry;
         let name = prop.name;
-        let fieldClass = getPropertyFieldClass(prop);
+        let fieldClass = Builder_1.getPropertyFieldClass(prop);
         return `${name}: I${fieldClass};`;
     }
     build() {
@@ -26,22 +28,23 @@ export class QPropertyBuilder {
             const moduleImport = this.propertyDocEntry.ownerEntity.docEntry.fileImports.importMapByObjectAsName[propertyType];
             let relativePathToImport = moduleImport.path;
             if (moduleImport.path.indexOf('.') === 0) {
-                const fullPathToImport = getFullPathFromRelativePath(moduleImport.path, this.propertyDocEntry.ownerEntity.path);
-                relativePathToImport = resolveRelativePath(this.parentBuilder.fileBuilder.fullGenerationPath, fullPathToImport);
+                const fullPathToImport = pathResolver_1.getFullPathFromRelativePath(moduleImport.path, this.propertyDocEntry.ownerEntity.path);
+                relativePathToImport = pathResolver_1.resolveRelativePath(this.parentBuilder.fileBuilder.fullGenerationPath, fullPathToImport);
             }
             this.parentBuilder.addImport([moduleImport.objectMapByAsName[propertyType]], relativePathToImport);
         }
         let operableFieldSuffix = '';
         if (forInternalInterfaces) {
-            operableFieldSuffix = ' | ' + getPropertyFieldInterface(prop);
+            operableFieldSuffix = ' | ' + Builder_1.getPropertyFieldInterface(prop);
         }
         else {
             if (!prop.primitive) {
-                addImportForType(prop.ownerEntity, prop.type, this.parentBuilder.fileBuilder);
+                pathResolver_1.addImportForType(prop.ownerEntity, prop.type, this.parentBuilder.fileBuilder);
                 propertyType = prop.type;
             }
         }
         return `${name}${optional ? '?' : ''}: ${propertyType}${operableFieldSuffix};`;
     }
 }
+exports.QPropertyBuilder = QPropertyBuilder;
 //# sourceMappingURL=QPropertyBuilder.js.map

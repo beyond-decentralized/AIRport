@@ -1,81 +1,93 @@
-import { Dao } from '@airport/check-in';
-import { Q, duoDiSet } from './qSchema';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const check_in_1 = require("@airport/check-in");
+const qSchema_1 = require("./qSchema");
 // Schema Q object Dependency Injection readiness detection Dao
-export class SQDIDao extends Dao {
+class SQDIDao extends check_in_1.Dao {
     constructor(dbEntityId) {
-        super(dbEntityId, Q);
+        super(dbEntityId, qSchema_1.Q);
     }
 }
-export class BaseSchemaDao extends SQDIDao {
+exports.SQDIDao = SQDIDao;
+class BaseSchemaDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(8);
+        return qSchema_1.duoDiSet(8);
     }
     constructor() {
         super(8);
     }
 }
-export class BaseSchemaColumnDao extends SQDIDao {
+exports.BaseSchemaDao = BaseSchemaDao;
+class BaseSchemaColumnDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(4);
+        return qSchema_1.duoDiSet(4);
     }
     constructor() {
         super(4);
     }
 }
-export class BaseSchemaEntityDao extends SQDIDao {
+exports.BaseSchemaColumnDao = BaseSchemaColumnDao;
+class BaseSchemaEntityDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(5);
+        return qSchema_1.duoDiSet(5);
     }
     constructor() {
         super(5);
     }
 }
-export class BaseSchemaPropertyDao extends SQDIDao {
+exports.BaseSchemaEntityDao = BaseSchemaEntityDao;
+class BaseSchemaPropertyDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(2);
+        return qSchema_1.duoDiSet(2);
     }
     constructor() {
         super(2);
     }
 }
-export class BaseSchemaPropertyColumnDao extends SQDIDao {
+exports.BaseSchemaPropertyDao = BaseSchemaPropertyDao;
+class BaseSchemaPropertyColumnDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(3);
+        return qSchema_1.duoDiSet(3);
     }
     constructor() {
         super(3);
     }
 }
-export class BaseSchemaReferenceDao extends SQDIDao {
+exports.BaseSchemaPropertyColumnDao = BaseSchemaPropertyColumnDao;
+class BaseSchemaReferenceDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(6);
+        return qSchema_1.duoDiSet(6);
     }
     constructor() {
         super(6);
     }
 }
-export class BaseSchemaRelationDao extends SQDIDao {
+exports.BaseSchemaReferenceDao = BaseSchemaReferenceDao;
+class BaseSchemaRelationDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(1);
+        return qSchema_1.duoDiSet(1);
     }
     constructor() {
         super(1);
     }
 }
-export class BaseSchemaRelationColumnDao extends SQDIDao {
+exports.BaseSchemaRelationDao = BaseSchemaRelationDao;
+class BaseSchemaRelationColumnDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
     }
 }
-export class BaseSchemaVersionDao extends SQDIDao {
+exports.BaseSchemaRelationColumnDao = BaseSchemaRelationColumnDao;
+class BaseSchemaVersionDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(7);
+        return qSchema_1.duoDiSet(7);
     }
     constructor() {
         super(7);
     }
 }
+exports.BaseSchemaVersionDao = BaseSchemaVersionDao;
 //# sourceMappingURL=baseDaos.js.map

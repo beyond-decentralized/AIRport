@@ -1,9 +1,12 @@
-import { repositoryEntity } from '@airport/ground-control';
-export function setSeqGen(sequenceGenerator) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+function setSeqGen(sequenceGenerator) {
     SEQ_GEN = sequenceGenerator;
 }
+exports.setSeqGen = setSeqGen;
 var SEQ_GEN;
-export function diSet(dbSchema, dbEntityId // EntityId
+function diSet(dbSchema, dbEntityId // EntityId
 ) {
     if (!SEQ_GEN
         || !dbSchema) {
@@ -12,15 +15,18 @@ export function diSet(dbSchema, dbEntityId // EntityId
     const dbEntity = dbSchema.currentVersion.entities[dbEntityId];
     return SEQ_GEN.exists(dbEntity);
 }
-export function duoDiSet(dbSchema, dbEntityId) {
+exports.diSet = diSet;
+function duoDiSet(dbSchema, dbEntityId) {
     return dbSchema && dbSchema.currentVersion.entities[dbEntityId];
 }
-export async function getSysWideOpId(airDb, sequenceGenerator) {
-    const sysWideOpIdGeneratedColumn = airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA]
+exports.duoDiSet = duoDiSet;
+async function getSysWideOpId(airDb, sequenceGenerator) {
+    const sysWideOpIdGeneratedColumn = airDb.QM[ground_control_1.repositoryEntity.SYS_WIDE_OP_ID_SCHEMA]
         .__dbSchema__.currentVersion
-        .entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
+        .entityMapByName[ground_control_1.repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
     const generatedNumWrapper = await sequenceGenerator
         .generateSequenceNumbers([sysWideOpIdGeneratedColumn], [1]);
     return generatedNumWrapper[0][0];
 }
+exports.getSysWideOpId = getSysWideOpId;
 //# sourceMappingURL=SequenceGenerator.js.map

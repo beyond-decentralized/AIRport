@@ -1,11 +1,13 @@
-import { AIR_DB, and, distinct, or, Y } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet, TransactionType } from '@airport/ground-control';
-import { OPER_HISTORY_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DAO, } from '../../tokens';
-import { BaseRepositoryTransactionHistoryDao, Q } from '../../generated/generated';
-export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const tokens_1 = require("../../tokens");
+const generated_1 = require("../../generated/generated");
+class RepositoryTransactionHistoryDao extends generated_1.BaseRepositoryTransactionHistoryDao {
     getSelectClauseWithRecordHistory(operHistoryDuo, recHistoryDuo) {
-        const id = Y;
+        const id = air_control_1.Y;
         return {
             id,
             actor: {
@@ -17,7 +19,7 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
             operationHistory: {
                 ...operHistoryDuo.select.fields,
                 entity: {
-                    id: Y
+                    id: air_control_1.Y
                 },
                 recordHistory: {
                     ...recHistoryDuo.select.fields
@@ -26,13 +28,13 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
         };
     }
     async findWhere(whereClauseFunction) {
-        const [operHistoryDuo, recHistoryDuo] = await container(this).get(OPER_HISTORY_DUO, REC_HISTORY_DUO);
+        const [operHistoryDuo, recHistoryDuo] = await di_1.container(this).get(tokens_1.OPER_HISTORY_DUO, tokens_1.REC_HISTORY_DUO);
         let rth, r, oh, rh;
-        const id = Y;
+        const id = air_control_1.Y;
         return await this.db.find.tree({
             select: this.getSelectClauseWithRecordHistory(operHistoryDuo, recHistoryDuo),
             from: [
-                rth = Q.RepositoryTransactionHistory,
+                rth = generated_1.Q.RepositoryTransactionHistory,
                 oh = rth.operationHistory.innerJoin(),
                 rh = oh.recordHistory.innerJoin(),
             ],
@@ -48,20 +50,20 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
             select: {
                 ...this.db.duo.select.fields,
                 actor: {
-                    randomId: Y,
+                    randomId: air_control_1.Y,
                     user: {}
                 },
                 repository: {
-                    orderedId: Y,
-                    randomId: Y,
+                    orderedId: air_control_1.Y,
+                    randomId: air_control_1.Y,
                     ownerActor: {}
                 },
                 transactionHistory: {
-                    id: Y
+                    id: air_control_1.Y
                 }
             },
             from: [
-                rth = Q.RepositoryTransactionHistory,
+                rth = generated_1.Q.RepositoryTransactionHistory,
                 a = rth.actor.innerJoin(),
                 r = rth.repository.innerJoin(),
             ],
@@ -78,12 +80,12 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
                     getSchemaName('npmjs.org','@airport/traffic-pattern')
                     ]
         */
-        const rth = Q.RepositoryTransactionHistory;
+        const rth = generated_1.Q.RepositoryTransactionHistory;
         const th = rth.transactionHistory.innerJoin();
         const oh = rth.operationHistory.leftJoin();
         const rh = oh.recordHistory.leftJoin();
         const nv = rh.newValues.leftJoin();
-        let id = Y;
+        let id = air_control_1.Y;
         const repositoryEquals = [];
         for (const [repositoryId, idsForRepository] of changedRecordIds) {
             const recordMapForRepository = idsForRepository.ids;
@@ -91,11 +93,11 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
             for (const [entityId, recordMapForEntity] of recordMapForRepository) {
                 const actorEquals = [];
                 for (const [actorId, recordsForActor] of recordMapForEntity) {
-                    actorEquals.push(and(rh.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordsForActor))));
+                    actorEquals.push(air_control_1.and(rh.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordsForActor))));
                 }
-                entityEquals.push(and(oh.entity.id.equals(entityId), or(...actorEquals)));
+                entityEquals.push(air_control_1.and(oh.entity.id.equals(entityId), air_control_1.or(...actorEquals)));
             }
-            repositoryEquals.push(and(rth.repository.id.equals(repositoryId), rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime), or(...entityEquals)));
+            repositoryEquals.push(air_control_1.and(rth.repository.id.equals(repositoryId), rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime), air_control_1.or(...entityEquals)));
         }
         const repoTransHistories = await this.db.find.tree({
             select: {
@@ -105,23 +107,23 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
                 repository: {
                     id
                 },
-                saveTimestamp: Y,
+                saveTimestamp: air_control_1.Y,
                 operationHistory: {
-                    orderNumber: Y,
-                    changeType: Y,
+                    orderNumber: air_control_1.Y,
+                    changeType: air_control_1.Y,
                     entity: {
-                        index: Y,
+                        index: air_control_1.Y,
                         schemaVersion: {
-                            integerVersion: Y,
+                            integerVersion: air_control_1.Y,
                             schema: {
-                                index: Y
+                                index: air_control_1.Y
                             }
                         }
                     },
                     recordHistory: {
                         newValues: {
-                            columnIndex: Y,
-                            newValue: Y
+                            columnIndex: air_control_1.Y,
+                            newValue: air_control_1.Y
                         }
                     }
                 }
@@ -133,14 +135,14 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
                 rh,
                 nv
             ],
-            where: and(th.transactionType.equals(TransactionType.LOCAL), or(...repositoryEquals)),
+            where: air_control_1.and(th.transactionType.equals(ground_control_1.TransactionType.LOCAL), air_control_1.or(...repositoryEquals)),
             orderBy: [
                 rth.repository.id.asc(),
                 oh.orderNumber.desc()
             ]
         });
         for (const repoTransHistory of repoTransHistories) {
-            ensureChildArray(repoTransHistoryMapByRepositoryId, repoTransHistory.repository.id)
+            ground_control_1.ensureChildArray(repoTransHistoryMapByRepositoryId, repoTransHistory.repository.id)
                 .push(repoTransHistory);
             repoTransHistory.operationHistory.sort((rth1, rth2) => {
                 if (rth1.orderNumber < rth2.orderNumber) {
@@ -156,36 +158,36 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
     }
     async findExistingRecordIdMap(recordIdMap) {
         const existingRecordIdMap = new Map();
-        const rth = Q.RepositoryTransactionHistory, oh = rth.operationHistory.innerJoin(), rh = oh.recordHistory.innerJoin();
+        const rth = generated_1.Q.RepositoryTransactionHistory, oh = rth.operationHistory.innerJoin(), rh = oh.recordHistory.innerJoin();
         const idsFragments = [];
         for (const [repositoryId, recordIdMapForRepository] of recordIdMap) {
             let tableFragments = [];
             for (const [entityId, recordIdMapForTableInRepository] of recordIdMapForRepository) {
                 let actorIdsFragments = [];
                 for (const [actorId, recordIdSetForActor] of recordIdMapForTableInRepository) {
-                    actorIdsFragments.push(and(rh.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordIdSetForActor))));
+                    actorIdsFragments.push(air_control_1.and(rh.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordIdSetForActor))));
                 }
-                tableFragments.push(and(oh.entity.id.equals(entityId), or(...actorIdsFragments)));
+                tableFragments.push(air_control_1.and(oh.entity.id.equals(entityId), air_control_1.or(...actorIdsFragments)));
             }
-            idsFragments.push(and(rth.repository.id.equals(repositoryId), oh.changeType.equals(ChangeType.INSERT_VALUES), or(...tableFragments)));
+            idsFragments.push(air_control_1.and(rth.repository.id.equals(repositoryId), oh.changeType.equals(ground_control_1.ChangeType.INSERT_VALUES), air_control_1.or(...tableFragments)));
         }
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         const records = await airDb.find.sheet({
             from: [
                 rth,
                 oh,
                 rh
             ],
-            select: distinct([
+            select: air_control_1.distinct([
                 rth.repository.id,
                 oh.entity.id,
                 rh.actor.id,
                 rh.actorRecordId
             ]),
-            where: or(...idsFragments)
+            where: air_control_1.or(...idsFragments)
         });
         for (const record of records) {
-            ensureChildJsSet(ensureChildJsMap(ensureChildJsMap(existingRecordIdMap, record[0]), record[1]), record[2]).add(record[3]);
+            ground_control_1.ensureChildJsSet(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(existingRecordIdMap, record[0]), record[1]), record[2]).add(record[3]);
         }
         return existingRecordIdMap;
     }
@@ -199,5 +201,6 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
         });
     }
 }
-DI.set(REPO_TRANS_HISTORY_DAO, RepositoryTransactionHistoryDao);
+exports.RepositoryTransactionHistoryDao = RepositoryTransactionHistoryDao;
+di_1.DI.set(tokens_1.REPO_TRANS_HISTORY_DAO, RepositoryTransactionHistoryDao);
 //# sourceMappingURL=RepositoryTransactionHistoryDao.js.map

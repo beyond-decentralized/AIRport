@@ -1,9 +1,11 @@
-import { addImportForType } from '../../resolve/pathResolver';
-import { entityExtendsRepositoryEntity } from '../schema/SSchemaBuilder';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const pathResolver_1 = require("../../resolve/pathResolver");
+const SSchemaBuilder_1 = require("../schema/SSchemaBuilder");
 /**
  * Created by Papa on 5/20/2016.
  */
-export class IEntityInterfaceBuilder {
+class IEntityInterfaceBuilder {
     constructor(entity, qEntityBuilder) {
         this.entity = entity;
         this.qEntityBuilder = qEntityBuilder;
@@ -37,7 +39,7 @@ export class IEntityInterfaceBuilder {
                 nonIdRelations += `\t${nonIdRelation}\n`;
             }
         });
-        const [isRepositoryEntity, isLocal] = entityExtendsRepositoryEntity(this.entity);
+        const [isRepositoryEntity, isLocal] = SSchemaBuilder_1.entityExtendsRepositoryEntity(this.entity);
         let transientProperties = ``;
         this.transientPropertyBuilders.forEach((builder) => {
             transientProperties += `\t${builder.buildInterfaceDefinition()}\n`;
@@ -98,7 +100,7 @@ ${publicMethodSignatures}
             return type + suffix;
         }
         if (type !== 'Promise') {
-            addImportForType(this.entity, type, this.qEntityBuilder.fileBuilder);
+            pathResolver_1.addImportForType(this.entity, type, this.qEntityBuilder.fileBuilder);
         }
         if (docEntry.genericParams.length) {
             suffix = '<' + docEntry.genericParams.map(genericParam => this.getTypeString(genericParam)).join(', ') + '>' + suffix;
@@ -106,4 +108,5 @@ ${publicMethodSignatures}
         return type + suffix;
     }
 }
+exports.IEntityInterfaceBuilder = IEntityInterfaceBuilder;
 //# sourceMappingURL=IEntityInterfaceBuilder.js.map

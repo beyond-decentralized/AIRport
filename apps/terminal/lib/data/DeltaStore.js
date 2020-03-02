@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /*
 import {
     GoogleApi,
@@ -10,14 +12,14 @@ import {
     SharingAdaptor, SharedChangeList, ChangeListShareInfo, ChangeRecord, ChangeRecordIterator
 } from "@airport/ground-control";
 */
-import { PlatformType } from '@airport/ground-control';
-import { GoogleApi, GoogleDrive, GoogleDriveAdaptor, GoogleRealtime, GoogleRealtimeAdaptor, GoogleSharingAdaptor, InMemorySharingAdaptor, StubSharingAdaptor } from '@airport/ground-transport';
-import { UpdateState } from '../core/UpdateState';
-export class DeltaStore {
+const ground_control_1 = require("@airport/ground-control");
+const ground_transport_1 = require("@airport/ground-transport");
+const UpdateState_1 = require("../core/UpdateState");
+class DeltaStore {
     constructor(config, sharingAdaptor = null) {
         this.config = config;
         this.sharingAdaptor = sharingAdaptor;
-        this.updateState = UpdateState.LOCAL;
+        this.updateState = UpdateState_1.UpdateState.LOCAL;
     }
     async addChanges(changeListConfig, changeRecords) {
         await this.changeList.addChanges(changeRecords);
@@ -70,27 +72,29 @@ export class DeltaStore {
         });
     }
 }
+exports.DeltaStore = DeltaStore;
 var IN_MEMORY_SHARING_ADAPTOR;
 var GOOGLE_SHARING_ADAPTOR;
-export function getSharingAdaptor(platformType) {
+function getSharingAdaptor(platformType) {
     switch (platformType) {
-        case PlatformType.GOOGLE_DOCS:
+        case ground_control_1.PlatformType.GOOGLE_DOCS:
             if (!GOOGLE_SHARING_ADAPTOR) {
                 GOOGLE_SHARING_ADAPTOR = getGooglesSharingAdaptor();
             }
             return GOOGLE_SHARING_ADAPTOR;
-        case PlatformType.IN_MEMORY:
+        case ground_control_1.PlatformType.IN_MEMORY:
             if (!IN_MEMORY_SHARING_ADAPTOR) {
-                IN_MEMORY_SHARING_ADAPTOR = new InMemorySharingAdaptor();
+                IN_MEMORY_SHARING_ADAPTOR = new ground_transport_1.InMemorySharingAdaptor();
             }
             return IN_MEMORY_SHARING_ADAPTOR;
-        case PlatformType.STUB:
-            return new StubSharingAdaptor();
+        case ground_control_1.PlatformType.STUB:
+            return new ground_transport_1.StubSharingAdaptor();
         default:
             throw new Error(`Unsupported PlatformType: ${platformType}`);
     }
 }
-export function getGooglesSharingAdaptor() {
+exports.getSharingAdaptor = getSharingAdaptor;
+function getGooglesSharingAdaptor() {
     let googleApi = getGoogleApi();
     let googleDrive = getGoogleDrive(googleApi);
     let googleDriveAdaptor = getGoogleDriveAdaptor(googleApi, googleDrive);
@@ -99,22 +103,23 @@ export function getGooglesSharingAdaptor() {
     let googleSharingAdaptor = getGoogleSharingAdaptor(googleDrive, googleDriveAdaptor, googleRealtime, googleRealtimeAdaptor);
     return googleSharingAdaptor;
 }
+exports.getGooglesSharingAdaptor = getGooglesSharingAdaptor;
 function getGoogleApi() {
-    return new GoogleApi();
+    return new ground_transport_1.GoogleApi();
 }
 function getGoogleDrive(googleApi) {
-    return new GoogleDrive(googleApi);
+    return new ground_transport_1.GoogleDrive(googleApi);
 }
 function getGoogleDriveAdaptor(googleApi, googleDrive) {
-    return new GoogleDriveAdaptor(googleApi, googleDrive);
+    return new ground_transport_1.GoogleDriveAdaptor(googleApi, googleDrive);
 }
 function getGoogleRealtime(googleDrive) {
-    return new GoogleRealtime(googleDrive);
+    return new ground_transport_1.GoogleRealtime(googleDrive);
 }
 function getGoogleRealtimeAdaptor(googleRealtime) {
-    return new GoogleRealtimeAdaptor(googleRealtime);
+    return new ground_transport_1.GoogleRealtimeAdaptor(googleRealtime);
 }
 function getGoogleSharingAdaptor(googleDrive, googleDriveAdaptor, googleRealtime, googleRealtimeAdaptor) {
-    return new GoogleSharingAdaptor(googleDrive, googleDriveAdaptor, googleRealtime, googleRealtimeAdaptor);
+    return new ground_transport_1.GoogleSharingAdaptor(googleDrive, googleDriveAdaptor, googleRealtime, googleRealtimeAdaptor);
 }
 //# sourceMappingURL=DeltaStore.js.map

@@ -1,6 +1,8 @@
-import { CascadeType, EntityRelationType, getSqlDataType } from '@airport/ground-control';
-import { SSchemaBuilder } from './SSchemaBuilder';
-export class JsonSchemaBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const SSchemaBuilder_1 = require("./SSchemaBuilder");
+class JsonSchemaBuilder {
     // schemaVarName = 'SCHEMA'
     constructor(config, entityMapByName, existingSchemaString) {
         this.config = config;
@@ -27,7 +29,7 @@ export class JsonSchemaBuilder {
         }
     }
     build(domain, schemaMapByProjectName) {
-        const sSchemaBuilder = new SSchemaBuilder(this.config, this.entityMapByName);
+        const sSchemaBuilder = new SSchemaBuilder_1.SSchemaBuilder(this.config, this.entityMapByName);
         const sIndexedSchema = sSchemaBuilder.build(schemaMapByProjectName);
         const jsonSchema = this.convertSIndexedSchemaToJsonSchema(domain, sIndexedSchema);
         // TODO: reset table and column and relation indexes based on existing schema
@@ -49,7 +51,7 @@ export class JsonSchemaBuilder {
                     index
                 })),
                 sinceVersion: 1,
-                type: getSqlDataType(sColumn.type),
+                type: ground_control_1.getSqlDataType(sColumn.type),
             }));
             columns.sort((a, b) => a.index < b.index ? -1 : 1);
             const [properties, relations] = this.getPropertiesAndRelations(sIndexedSchema, sIndexedEntity, columns);
@@ -162,9 +164,9 @@ export class JsonSchemaBuilder {
     }
     buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationSchemaIndex, relationTableIndex, columns) {
         switch (sRelation.relationType) {
-            case EntityRelationType.MANY_TO_ONE:
+            case ground_control_1.EntityRelationType.MANY_TO_ONE:
                 break;
-            case EntityRelationType.ONE_TO_MANY:
+            case ground_control_1.EntityRelationType.ONE_TO_MANY:
                 // Currently only need to build manyRelationColumnRefs for ManyToOne relations.
                 return;
             default:
@@ -213,16 +215,17 @@ export class JsonSchemaBuilder {
         }
         switch (cascadeType) {
             case 'CascadeType.NONE':
-                return CascadeType.NONE;
+                return ground_control_1.CascadeType.NONE;
             case 'CascadeType.ALL':
-                return CascadeType.ALL;
+                return ground_control_1.CascadeType.ALL;
             case 'CascadeType.PERSIST':
-                return CascadeType.PERSIST;
+                return ground_control_1.CascadeType.PERSIST;
             case 'CascadeType.REMOVE':
-                return CascadeType.REMOVE;
+                return ground_control_1.CascadeType.REMOVE;
             default:
                 throw new Error(`Unknown CascadeType: ${cascadeType}.`);
         }
     }
 }
+exports.JsonSchemaBuilder = JsonSchemaBuilder;
 //# sourceMappingURL=JsonSchemaBuilder.js.map

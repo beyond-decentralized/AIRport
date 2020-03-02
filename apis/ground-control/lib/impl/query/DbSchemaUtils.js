@@ -1,4 +1,6 @@
-export function getSchemaName({ domain, name }) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function getSchemaName({ domain, name }) {
     if (domain.name) {
         domain = domain.name;
     }
@@ -41,7 +43,8 @@ export function getSchemaName({ domain, name }) {
     }
     return `${domainPrefix}__${schemaPrefix}`;
 }
-export function getTableName(schema, table) {
+exports.getSchemaName = getSchemaName;
+function getTableName(schema, table) {
     let theTableName = table.name;
     if (table.tableConfig && table.tableConfig.name) {
         theTableName = table.tableConfig.name;
@@ -55,7 +58,9 @@ export function getTableName(schema, table) {
     }
     return `${schemaName}__${theTableName}`;
 }
-export function getSequenceName(prefixedTableName, columnName) {
+exports.getTableName = getTableName;
+function getSequenceName(prefixedTableName, columnName) {
     return `${prefixedTableName}_${columnName}__SEQUENCE`;
 }
+exports.getSequenceName = getSequenceName;
 //# sourceMappingURL=DbSchemaUtils.js.map

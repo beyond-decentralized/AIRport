@@ -1,5 +1,7 @@
-import { DistributionStrategy, PlatformType } from '@airport/ground-control';
-export var deltaStore;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+var deltaStore;
 (function (deltaStore) {
     var platform;
     (function (platform) {
@@ -8,11 +10,11 @@ export var deltaStore;
         platform.STUB = 'STUB';
         function getName(platformType) {
             switch (platformType) {
-                case PlatformType.GOOGLE_DOCS:
+                case ground_control_1.PlatformType.GOOGLE_DOCS:
                     return platform.GOOGLE;
-                case PlatformType.IN_MEMORY:
+                case ground_control_1.PlatformType.IN_MEMORY:
                     return platform.IN_MEMORY;
-                case PlatformType.STUB:
+                case ground_control_1.PlatformType.STUB:
                     return platform.STUB;
                 default:
                     throw new Error(`Unsupported Platform Type: ${deltaStore.distributionStrategy}`);
@@ -22,18 +24,18 @@ export var deltaStore;
         function getValue(platformTypeName) {
             switch (platformTypeName) {
                 case platform.GOOGLE:
-                    return PlatformType.GOOGLE_DOCS;
+                    return ground_control_1.PlatformType.GOOGLE_DOCS;
                 case platform.IN_MEMORY:
-                    return PlatformType.IN_MEMORY;
+                    return ground_control_1.PlatformType.IN_MEMORY;
                 case platform.STUB:
-                    return PlatformType.STUB;
+                    return ground_control_1.PlatformType.STUB;
                 default:
                     throw new Error(`Unsupported Platform Type name: ${platformTypeName}`);
             }
         }
         platform.getValue = getValue;
     })(platform = deltaStore.platform || (deltaStore.platform = {}));
-})(deltaStore || (deltaStore = {}));
+})(deltaStore = exports.deltaStore || (exports.deltaStore = {}));
 (function (deltaStore) {
     var distributionStrategy;
     (function (distributionStrategy_1) {
@@ -41,9 +43,9 @@ export var deltaStore;
         distributionStrategy_1.S3_SECURE_POLL = 'S3_SECURE_POLL';
         function getName(distributionStrategy) {
             switch (distributionStrategy) {
-                case DistributionStrategy.S3_DISTIBUTED_PUSH:
+                case ground_control_1.DistributionStrategy.S3_DISTIBUTED_PUSH:
                     return distributionStrategy_1.S3_DISTRIBUTED_PUSH;
-                case DistributionStrategy.S3_SECURE_POLL:
+                case ground_control_1.DistributionStrategy.S3_SECURE_POLL:
                     return distributionStrategy_1.S3_SECURE_POLL;
                 default:
                     throw new Error(`Unsupported Distribution Strategy: ${distributionStrategy}`);
@@ -53,14 +55,14 @@ export var deltaStore;
         function getValue(distributionStrategyName) {
             switch (distributionStrategyName) {
                 case distributionStrategy_1.S3_DISTRIBUTED_PUSH:
-                    return DistributionStrategy.S3_DISTIBUTED_PUSH;
+                    return ground_control_1.DistributionStrategy.S3_DISTIBUTED_PUSH;
                 case distributionStrategy_1.S3_SECURE_POLL:
-                    return DistributionStrategy.S3_SECURE_POLL;
+                    return ground_control_1.DistributionStrategy.S3_SECURE_POLL;
                 default:
                     throw new Error(`Unsupported Distribution Strategy name: ${distributionStrategyName}`);
             }
         }
         distributionStrategy_1.getValue = getValue;
     })(distributionStrategy = deltaStore.distributionStrategy || (deltaStore.distributionStrategy = {}));
-})(deltaStore || (deltaStore = {}));
+})(deltaStore = exports.deltaStore || (exports.deltaStore = {}));
 //# sourceMappingURL=SharingAdaptor.js.map

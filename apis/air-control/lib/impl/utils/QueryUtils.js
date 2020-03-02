@@ -1,9 +1,11 @@
-import { DI } from '@airport/di';
-import { OperationCategory, SqlOperator } from '@airport/ground-control';
-import { QUERY_UTILS } from '../../tokens';
-import { QOperableField } from '../core/field/OperableField';
-import { wrapPrimitive } from '../core/field/WrapperFunctions';
-export class QueryUtils {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const tokens_1 = require("../../tokens");
+const OperableField_1 = require("../core/field/OperableField");
+const WrapperFunctions_1 = require("../core/field/WrapperFunctions");
+class QueryUtils {
     whereClauseToJSON(whereClause, columnAliases, fieldUtils) {
         if (!whereClause) {
             return null;
@@ -14,22 +16,22 @@ export class QueryUtils {
             o: operation.o
         };
         switch (operation.c) {
-            case OperationCategory.LOGICAL:
+            case ground_control_1.OperationCategory.LOGICAL:
                 let logicalOperation = operation;
                 let jsonLogicalOperation = jsonOperation;
                 switch (operation.o) {
-                    case SqlOperator.NOT:
+                    case ground_control_1.SqlOperator.NOT:
                         jsonLogicalOperation.v = this.whereClauseToJSON(logicalOperation.v, columnAliases, fieldUtils);
                         break;
-                    case SqlOperator.AND:
-                    case SqlOperator.OR:
+                    case ground_control_1.SqlOperator.AND:
+                    case ground_control_1.SqlOperator.OR:
                         jsonLogicalOperation.v = logicalOperation.v.map((value) => this.whereClauseToJSON(value, columnAliases, fieldUtils));
                         break;
                     default:
                         throw new Error(`Unsupported logical operation '${operation.o}'`);
                 }
                 break;
-            case OperationCategory.FUNCTION:
+            case ground_control_1.OperationCategory.FUNCTION:
                 // TODO: verify that cast of Q object is valid
                 let functionOperation = operation;
                 let query = functionOperation.getQuery();
@@ -37,11 +39,11 @@ export class QueryUtils {
                 let jsonQuery = new TreeQueryClass(query, columnAliases.entityAliases).toJSON(this, fieldUtils);
                 jsonOperation = functionOperation.toJSON(jsonQuery);
                 break;
-            case OperationCategory.BOOLEAN:
-            case OperationCategory.DATE:
-            case OperationCategory.NUMBER:
-            case OperationCategory.STRING:
-            case OperationCategory.UNTYPED:
+            case ground_control_1.OperationCategory.BOOLEAN:
+            case ground_control_1.OperationCategory.DATE:
+            case ground_control_1.OperationCategory.NUMBER:
+            case ground_control_1.OperationCategory.STRING:
+            case ground_control_1.OperationCategory.UNTYPED:
                 let valueOperation = operation;
                 // All Non logical or exists operations are value operations (eq, isNull, like,
                 // etc.)
@@ -61,12 +63,12 @@ export class QueryUtils {
         return jsonOperation;
     }
     convertLRValue(value, columnAliases, fieldUtils) {
-        value = wrapPrimitive(value);
+        value = WrapperFunctions_1.wrapPrimitive(value);
         switch (typeof value) {
             case 'undefined':
                 throw new Error(`'undefined' is not a valid L or R value`);
             default:
-                if (value instanceof QOperableField) {
+                if (value instanceof OperableField_1.QOperableField) {
                     return value.toJSON(columnAliases, false, this, fieldUtils);
                 } // Must be a Field Query
                 else {
@@ -76,5 +78,6 @@ export class QueryUtils {
         }
     }
 }
-DI.set(QUERY_UTILS, QueryUtils);
+exports.QueryUtils = QueryUtils;
+di_1.DI.set(tokens_1.QUERY_UTILS, QueryUtils);
 //# sourceMappingURL=QueryUtils.js.map

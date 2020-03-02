@@ -3,7 +3,7 @@
   "compilerOptions": {
     "declaration": true,
     "experimentalDecorators": true,
-    "module": "es2020",
+    "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": false,
     "removeComments": false,

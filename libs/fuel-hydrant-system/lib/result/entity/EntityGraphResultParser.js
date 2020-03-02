@@ -1,8 +1,10 @@
-import { newMappedEntityArray, objectExists } from '@airport/air-control';
-import { ensureChildArray, ensureChildMap, EntityRelationType } from '@airport/ground-control';
-import { GraphMtoMapper } from './GraphMtoMapper';
-import { GraphOtmMapper } from './GraphOtmMapper';
-import { AbstractObjectResultParser } from './IEntityResultParser';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
+const GraphMtoMapper_1 = require("./GraphMtoMapper");
+const GraphOtmMapper_1 = require("./GraphOtmMapper");
+const IEntityResultParser_1 = require("./IEntityResultParser");
 /**
  * Created by Papa on 10/16/2016.
  */
@@ -10,7 +12,7 @@ import { AbstractObjectResultParser } from './IEntityResultParser';
  * The goal of this parser to to bridge all entity references and arrive at an
  * inter-connected graph (where possible).
  */
-export class EntityGraphResultParser extends AbstractObjectResultParser {
+class EntityGraphResultParser extends IEntityResultParser_1.AbstractObjectResultParser {
     constructor(config, rootDbEntity) {
         super();
         this.config = config;
@@ -22,15 +24,15 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
         this.mtoStubBuffer = [];
         // Used in ENTITY_FLATTENED queries
         this.currentResultRow = [];
-        this.otmMapper = new GraphOtmMapper();
-        this.mtoMapper = new GraphMtoMapper();
+        this.otmMapper = new GraphOtmMapper_1.GraphOtmMapper();
+        this.mtoMapper = new GraphMtoMapper_1.GraphMtoMapper();
     }
     addEntity(entityAlias, dbEntity, airDb, schemaUtils) {
         return schemaUtils.getNewEntity(dbEntity, airDb);
     }
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject[propertyName] = propertyValue;
-        return objectExists(propertyValue);
+        return air_control_1.objectExists(propertyValue);
     }
     bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, schemaUtils) {
         const oneToManyStubAdded = this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils);
@@ -52,9 +54,9 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
         let otmEntityField;
         for (const dbRelation of relationDbEntity.relations) {
             switch (dbRelation.relationType) {
-                case EntityRelationType.ONE_TO_MANY:
+                case ground_control_1.EntityRelationType.ONE_TO_MANY:
                     break;
-                case EntityRelationType.MANY_TO_ONE:
+                case ground_control_1.EntityRelationType.MANY_TO_ONE:
                     continue;
                 default:
                     throw new Error(`Unknown EntityRelationType: ${dbRelation.relationType}`);
@@ -81,12 +83,12 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
     }
     bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject, schemaUtils) {
         this.bufferOneToMany(otmDbEntity, propertyName);
-        let childResultsArray = newMappedEntityArray(schemaUtils, relationDbEntity);
+        let childResultsArray = air_control_1.newMappedEntityArray(schemaUtils, relationDbEntity);
         childResultsArray.put(childResultObject);
         resultObject[propertyName] = childResultsArray;
     }
     bufferBlankOneToMany(entityAlias, resultObject, otmEntityName, propertyName, relationDbEntity, schemaUtils) {
-        resultObject[propertyName] = newMappedEntityArray(schemaUtils, relationDbEntity);
+        resultObject[propertyName] = air_control_1.newMappedEntityArray(schemaUtils, relationDbEntity);
     }
     bufferOneToMany(otmDbEntity, otmPropertyName) {
         this.otmStubBuffer.push({
@@ -109,7 +111,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
             throw new Error(`Entity ID not specified for entity 
 			'${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'.`);
         }
-        let entityMapForName = ensureChildMap(ensureChildArray(this.entityMapBySchemaAndTableIndexes, dbEntity.schemaVersion.schema.index), dbEntity.index);
+        let entityMapForName = ground_control_1.ensureChildMap(ground_control_1.ensureChildArray(this.entityMapBySchemaAndTableIndexes, dbEntity.schemaVersion.schema.index), dbEntity.index);
         let existingEntity = entityMapForName[idValue];
         let currentEntity = this.mergeEntities(existingEntity, resultObject, dbEntity, selectClauseFragment, schemaUtils);
         entityMapForName[idValue] = currentEntity;
@@ -163,7 +165,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
                     const dbRelation = dbProperty.relation[0];
                     const childDbEntity = dbRelation.relationEntity;
                     switch (dbRelation.relationType) {
-                        case EntityRelationType.MANY_TO_ONE:
+                        case ground_control_1.EntityRelationType.MANY_TO_ONE:
                             // Many-to-One (conflicts detected at query parsing time)
                             // If source is missing this mapping and target has it
                             if (source[propertyName] === undefined && target[propertyName] !== undefined) {
@@ -174,7 +176,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
                             // Assume that the child objects have already been merged themselves and
                             // don't process
                             break;
-                        case EntityRelationType.ONE_TO_MANY:
+                        case ground_control_1.EntityRelationType.ONE_TO_MANY:
                             let sourceArray = source[propertyName];
                             const targetArray = target[propertyName];
                             // Because parseQueryResult is depth-first, all child objects have already
@@ -249,7 +251,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
         this.mtoMapper.populateMtos(this.entityMapBySchemaAndTableIndexes);
         this.otmMapper.populateOtms(this.entityMapBySchemaAndTableIndexes, !this.config || this.config.mapped);
         // merge any out of order entity references (there shouldn't be any)
-        let resultMEA = newMappedEntityArray(schemaUtils, this.rootDbEntity);
+        let resultMEA = air_control_1.newMappedEntityArray(schemaUtils, this.rootDbEntity);
         resultMEA.putAll(parsedResults);
         if (!this.config || this.config.mapped) {
             return resultMEA;
@@ -257,4 +259,5 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
         return resultMEA.toArray();
     }
 }
+exports.EntityGraphResultParser = EntityGraphResultParser;
 //# sourceMappingURL=EntityGraphResultParser.js.map

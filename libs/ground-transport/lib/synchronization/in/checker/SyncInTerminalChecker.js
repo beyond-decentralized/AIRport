@@ -1,10 +1,12 @@
-import { container, DI } from '@airport/di';
-import { CascadeOverwrite, ensureChildJsMap } from '@airport/ground-control';
-import { TERMINAL_DAO } from '@airport/travel-document-checkpoint';
-import { SYNC_IN_TERMINAL_CHECKER } from '../../../tokens';
-export class SyncInTerminalChecker {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
+const tokens_1 = require("../../../tokens");
+class SyncInTerminalChecker {
     async ensureTerminalsAndGetAsMaps(dataMessages, localTerminal, userCheckResults) {
-        const terminalDao = await container(this).get(TERMINAL_DAO);
+        const terminalDao = await di_1.container(this).get(travel_document_checkpoint_1.TERMINAL_DAO);
         const remoteTerminalMapByUniqueIds = new Map();
         const terminalNameSet = new Set();
         const terminalSecondIdSet = new Set();
@@ -40,7 +42,7 @@ export class SyncInTerminalChecker {
         terminalNameSet.add(terminal.name);
         terminalSecondIdSet.add(terminal.secondId);
         ownerIdSet.add(owner.id);
-        ensureChildJsMap(ensureChildJsMap(remoteTerminalMapByUniqueIds, owner.uniqueId), terminal.name)
+        ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(remoteTerminalMapByUniqueIds, owner.uniqueId), terminal.name)
             .set(terminal.secondId, terminal);
         mapByMessageIndex.push(terminal);
         consistentMessages.push(message);
@@ -82,9 +84,10 @@ export class SyncInTerminalChecker {
             }
         }
         if (newTerminals.length) {
-            await terminalDao.bulkCreate(newTerminals, CascadeOverwrite.DEFAULT, false);
+            await terminalDao.bulkCreate(newTerminals, ground_control_1.CascadeOverwrite.DEFAULT, false);
         }
     }
 }
-DI.set(SYNC_IN_TERMINAL_CHECKER, SyncInTerminalChecker);
+exports.SyncInTerminalChecker = SyncInTerminalChecker;
+di_1.DI.set(tokens_1.SYNC_IN_TERMINAL_CHECKER, SyncInTerminalChecker);
 //# sourceMappingURL=SyncInTerminalChecker.js.map

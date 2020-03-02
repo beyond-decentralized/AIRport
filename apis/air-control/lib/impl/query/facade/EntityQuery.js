@@ -1,9 +1,11 @@
-import { QField } from '../../core/field/Field';
-import { MappableQuery } from './TreeQuery';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Field_1 = require("../../core/field/Field");
+const TreeQuery_1 = require("./TreeQuery");
 /**
  * Created by Papa on 10/24/2016.
  */
-export class EntityQuery extends MappableQuery {
+class EntityQuery extends TreeQuery_1.MappableQuery {
     constructor(rawQuery) {
         super();
         this.rawQuery = rawQuery;
@@ -21,7 +23,7 @@ export class EntityQuery extends MappableQuery {
     nonDistinctSelectClauseToJSON(rawSelect) {
         for (let field in rawSelect) {
             let value = rawSelect[field];
-            if (value instanceof QField) {
+            if (value instanceof Field_1.QField) {
                 throw new Error(`Field References cannot be used in Entity Queries`);
             }
             else if (value instanceof Object && !(value instanceof Date)) {
@@ -39,7 +41,8 @@ export class EntityQuery extends MappableQuery {
         });
     }
 }
-export class LimitedEntityQuery extends EntityQuery {
+exports.EntityQuery = EntityQuery;
+class LimitedEntityQuery extends EntityQuery {
     constructor(rawQuery) {
         super(rawQuery);
         this.rawQuery = rawQuery;
@@ -52,4 +55,5 @@ export class LimitedEntityQuery extends EntityQuery {
         return limitedJsonEntity;
     }
 }
+exports.LimitedEntityQuery = LimitedEntityQuery;
 //# sourceMappingURL=EntityQuery.js.map

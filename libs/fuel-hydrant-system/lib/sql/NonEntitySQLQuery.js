@@ -1,11 +1,13 @@
-import { JoinTreeNode, QBooleanField, QDateField, QNumberField, QRelation, QStringField, QTree, QUntypedField, } from '@airport/air-control';
-import { JoinType, JSONClauseObjectType, JSONRelationType, SortOrder, SQLDataType } from '@airport/ground-control';
-import { SQLQuery } from './core/SQLQuery';
-import { SqlFunctionField } from './SqlFunctionField';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
+const SQLQuery_1 = require("./core/SQLQuery");
+const SqlFunctionField_1 = require("./SqlFunctionField");
 /**
  * Created by Papa on 10/28/2016.
  */
-export class NonEntitySQLQuery extends SQLQuery {
+class NonEntitySQLQuery extends SQLQuery_1.SQLQuery {
     constructor(jsonQuery, dialect, queryResultType, storeDriver) {
         super(jsonQuery, null, dialect, queryResultType, storeDriver);
     }
@@ -80,17 +82,17 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         }
         let firstRelation = joinRelations[0];
         switch (firstRelation.rt) {
-            case JSONRelationType.SUB_QUERY_ROOT:
-            case JSONRelationType.ENTITY_ROOT:
+            case ground_control_1.JSONRelationType.SUB_QUERY_ROOT:
+            case ground_control_1.JSONRelationType.ENTITY_ROOT:
                 break;
             default:
                 throw new Error(`First table in FROM clause cannot be joined`);
         }
-        let alias = QRelation.getAlias(firstRelation);
+        let alias = air_control_1.QRelation.getAlias(firstRelation);
         this.validator.validateReadFromEntity(firstRelation);
-        let firstEntity = QRelation.createRelatedQEntity(firstRelation, airDb, schemaUtils);
+        let firstEntity = air_control_1.QRelation.createRelatedQEntity(firstRelation, airDb, schemaUtils);
         this.qEntityMapByAlias[alias] = firstEntity;
-        jsonTree = new JoinTreeNode(firstRelation, [], null);
+        jsonTree = new air_control_1.JoinTreeNode(firstRelation, [], null);
         jsonTrees.push(jsonTree);
         joinNodeMap[alias] = jsonTree;
         for (let i = 1; i < joinRelations.length; i++) {
@@ -100,51 +102,51 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                 throw new Error(`Table ${i + 1} in FROM clause is missing joinType`);
             }
             this.validator.validateReadFromEntity(joinRelation);
-            alias = QRelation.getAlias(joinRelation);
+            alias = air_control_1.QRelation.getAlias(joinRelation);
             switch (joinRelation.rt) {
-                case JSONRelationType.SUB_QUERY_ROOT:
+                case ground_control_1.JSONRelationType.SUB_QUERY_ROOT:
                     let view = this.addFieldsToView(joinRelation, alias, airDb, schemaUtils);
                     this.qEntityMapByAlias[alias] = view;
                     continue;
-                case JSONRelationType.ENTITY_ROOT:
+                case ground_control_1.JSONRelationType.ENTITY_ROOT:
                     // Non-Joined table
-                    let nonJoinedEntity = QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils);
+                    let nonJoinedEntity = air_control_1.QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils);
                     this.qEntityMapByAlias[alias] = nonJoinedEntity;
-                    let anotherTree = new JoinTreeNode(joinRelation, [], null);
+                    let anotherTree = new air_control_1.JoinTreeNode(joinRelation, [], null);
                     if (joinNodeMap[alias]) {
                         throw new Error(`Alias '${alias}' used more than once in the FROM clause.`);
                     }
                     jsonTrees.push(anotherTree);
                     joinNodeMap[alias] = anotherTree;
                     continue;
-                case JSONRelationType.ENTITY_SCHEMA_RELATION:
+                case ground_control_1.JSONRelationType.ENTITY_SCHEMA_RELATION:
                     if (!joinRelation.ri) {
                         throw new Error(`Table ${i + 1} in FROM clause is missing relationPropertyName`);
                     }
-                    rightEntity = QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils);
+                    rightEntity = air_control_1.QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils);
                     break;
-                case JSONRelationType.SUB_QUERY_JOIN_ON:
+                case ground_control_1.JSONRelationType.SUB_QUERY_JOIN_ON:
                     if (!joinRelation.jwc) {
                         this.warn(`View ${i + 1} in FROM clause is missing joinWhereClause`);
                     }
                     rightEntity = this.addFieldsToView(joinRelation, alias, airDb, schemaUtils);
                     break;
-                case JSONRelationType.ENTITY_JOIN_ON:
+                case ground_control_1.JSONRelationType.ENTITY_JOIN_ON:
                     if (!joinRelation.jwc) {
                         this.warn(`Table ${i + 1} in FROM clause is missing joinWhereClause`);
                     }
-                    rightEntity = QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils);
+                    rightEntity = air_control_1.QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils);
                     break;
                 default:
                     throw new Error(`Unknown JSONRelationType ${joinRelation.rt}`);
             }
-            let parentAlias = QRelation.getParentAlias(joinRelation);
+            let parentAlias = air_control_1.QRelation.getParentAlias(joinRelation);
             if (!joinNodeMap[parentAlias]) {
                 throw new Error(`Missing parent entity for alias ${parentAlias}, on table ${i + 1} in FROM clause. 
 					NOTE: sub-queries in FROM clause cannot reference parent FROM tables.`);
             }
             let leftNode = joinNodeMap[parentAlias];
-            let rightNode = new JoinTreeNode(joinRelation, [], leftNode);
+            let rightNode = new air_control_1.JoinTreeNode(joinRelation, [], leftNode);
             leftNode.addChildNode(rightNode);
             this.validator.validateReadFromEntity(joinRelation);
             this.qEntityMapByAlias[alias] = rightEntity;
@@ -159,7 +161,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         return jsonTrees;
     }
     addFieldsToView(viewJoinRelation, viewAlias, airDb, schemaUtils) {
-        let view = new QTree(viewJoinRelation.fcp, null);
+        let view = new air_control_1.QTree(viewJoinRelation.fcp, null);
         this.addFieldsToViewForSelect(view, viewAlias, viewJoinRelation.sq.S, 'f', null, airDb, schemaUtils);
         return view;
     }
@@ -199,44 +201,44 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         let dbProperty;
         let dbColumn;
         switch (fieldJson.ot) {
-            case JSONClauseObjectType.FIELD_FUNCTION:
-                view[alias] = new SqlFunctionField(fieldJson);
+            case ground_control_1.JSONClauseObjectType.FIELD_FUNCTION:
+                view[alias] = new SqlFunctionField_1.SqlFunctionField(fieldJson);
                 throw new Error('Not implemented');
-            case JSONClauseObjectType.EXISTS_FUNCTION:
+            case ground_control_1.JSONClauseObjectType.EXISTS_FUNCTION:
                 throw new Error(`Exists function cannot be used in SELECT clause.`);
-            case JSONClauseObjectType.FIELD:
+            case ground_control_1.JSONClauseObjectType.FIELD:
                 dbEntity = airDb.schemas[fieldJson.si].currentVersion.entities[fieldJson.ti];
                 dbProperty = dbEntity.properties[fieldJson.pi];
                 dbColumn = dbEntity.columns[fieldJson.ci];
                 switch (fieldJson.dt) {
-                    case SQLDataType.BOOLEAN:
-                        view[alias] = new QBooleanField(dbColumn, dbProperty, view);
+                    case ground_control_1.SQLDataType.BOOLEAN:
+                        view[alias] = new air_control_1.QBooleanField(dbColumn, dbProperty, view);
                         break;
-                    case SQLDataType.DATE:
-                        view[alias] = new QDateField(dbColumn, dbProperty, view);
+                    case ground_control_1.SQLDataType.DATE:
+                        view[alias] = new air_control_1.QDateField(dbColumn, dbProperty, view);
                         break;
-                    case SQLDataType.NUMBER:
-                        view[alias] = new QNumberField(dbColumn, dbProperty, view);
+                    case ground_control_1.SQLDataType.NUMBER:
+                        view[alias] = new air_control_1.QNumberField(dbColumn, dbProperty, view);
                         break;
-                    case SQLDataType.STRING:
-                        view[alias] = new QStringField(dbColumn, dbProperty, view);
+                    case ground_control_1.SQLDataType.STRING:
+                        view[alias] = new air_control_1.QStringField(dbColumn, dbProperty, view);
                         break;
-                    case SQLDataType.ANY:
-                        view[alias] = new QUntypedField(dbColumn, dbProperty, view);
+                    case ground_control_1.SQLDataType.ANY:
+                        view[alias] = new air_control_1.QUntypedField(dbColumn, dbProperty, view);
                         break;
                     default:
                         throw new Error(`Unknown SQLDataType: ${fieldJson.dt}.`);
                 }
                 break;
-            case JSONClauseObjectType.FIELD_QUERY:
+            case ground_control_1.JSONClauseObjectType.FIELD_QUERY:
                 let fieldQuery = fieldJson;
                 this.addFieldToViewForSelect(view, viewAlias, fieldPrefix, fieldQuery.S, alias, alias, airDb, schemaUtils);
                 break;
-            case JSONClauseObjectType.DISTINCT_FUNCTION:
+            case ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION:
                 this.addFieldsToViewForSelect(view, viewAlias, fieldJson.v, fieldPrefix, forFieldQueryAlias, airDb, schemaUtils);
                 hasDistinctClause = true;
                 break;
-            case JSONClauseObjectType.MANY_TO_ONE_RELATION:
+            case ground_control_1.JSONClauseObjectType.MANY_TO_ONE_RELATION:
                 throw new Error(`@ManyToOne fields cannot be directly in a select clause.
 					Please select a non-relational field within the relation.`);
             // let relation =
@@ -253,14 +255,14 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
     getFROMFragment(parentTree, currentTree, airDb, schemaUtils, metadataUtils) {
         let fromFragment = '\t';
         let currentRelation = currentTree.jsonRelation;
-        let currentAlias = QRelation.getAlias(currentRelation);
+        let currentAlias = air_control_1.QRelation.getAlias(currentRelation);
         let qEntity = this.qEntityMapByAlias[currentAlias];
         if (!parentTree) {
             switch (currentRelation.rt) {
-                case JSONRelationType.ENTITY_ROOT:
+                case ground_control_1.JSONRelationType.ENTITY_ROOT:
                     fromFragment += `${schemaUtils.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias}`;
                     break;
-                case JSONRelationType.SUB_QUERY_ROOT:
+                case ground_control_1.JSONRelationType.SUB_QUERY_ROOT:
                     let viewRelation = currentRelation;
                     let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
                     let subQuery = new TreeSQLQueryClass(viewRelation.sq, this.dialect, this.storeDriver);
@@ -273,21 +275,21 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         }
         else {
             let parentRelation = parentTree.jsonRelation;
-            let parentAlias = QRelation.getAlias(parentRelation);
+            let parentAlias = air_control_1.QRelation.getAlias(parentRelation);
             let leftEntity = this.qEntityMapByAlias[parentAlias];
             let rightEntity = this.qEntityMapByAlias[currentAlias];
             let joinTypeString;
             switch (currentRelation.jt) {
-                case JoinType.FULL_JOIN:
+                case ground_control_1.JoinType.FULL_JOIN:
                     joinTypeString = 'FULL JOIN';
                     break;
-                case JoinType.INNER_JOIN:
+                case ground_control_1.JoinType.INNER_JOIN:
                     joinTypeString = 'INNER JOIN';
                     break;
-                case JoinType.LEFT_JOIN:
+                case ground_control_1.JoinType.LEFT_JOIN:
                     joinTypeString = 'LEFT JOIN';
                     break;
-                case JoinType.RIGHT_JOIN:
+                case ground_control_1.JoinType.RIGHT_JOIN:
                     joinTypeString = 'RIGHT JOIN';
                 default:
                     throw new Error(`Unsupported join type: ${currentRelation.jt}`);
@@ -295,15 +297,15 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             let errorPrefix = 'Error building FROM: ';
             let joinOnClause;
             switch (currentRelation.rt) {
-                case JSONRelationType.ENTITY_JOIN_ON:
+                case ground_control_1.JSONRelationType.ENTITY_JOIN_ON:
                     let joinRelation = currentRelation;
                     joinOnClause = this.getWHEREFragment(joinRelation.jwc, '\t', airDb, schemaUtils, metadataUtils);
                     fromFragment += `\t${joinTypeString} ${schemaUtils.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias} ON\n${joinOnClause}`;
                     break;
-                case JSONRelationType.ENTITY_SCHEMA_RELATION:
+                case ground_control_1.JSONRelationType.ENTITY_SCHEMA_RELATION:
                     fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, airDb, schemaUtils, metadataUtils);
                     break;
-                case JSONRelationType.SUB_QUERY_JOIN_ON:
+                case ground_control_1.JSONRelationType.SUB_QUERY_JOIN_ON:
                     let viewJoinRelation = currentRelation;
                     let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
                     let mappedSqlQuery = new TreeSQLQueryClass(viewJoinRelation.sq, this.dialect, this.storeDriver);
@@ -332,12 +334,13 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         return orderBy.map((orderByField) => {
             this.validator.validateAliasedFieldAccess(orderByField.fa);
             switch (orderByField.so) {
-                case SortOrder.ASCENDING:
+                case ground_control_1.SortOrder.ASCENDING:
                     return `${orderByField.fa} ASC`;
-                case SortOrder.DESCENDING:
+                case ground_control_1.SortOrder.DESCENDING:
                     return `${orderByField.fa} DESC`;
             }
         }).join(', ');
     }
 }
+exports.NonEntitySQLQuery = NonEntitySQLQuery;
 //# sourceMappingURL=NonEntitySQLQuery.js.map

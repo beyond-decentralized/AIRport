@@ -1,8 +1,11 @@
-import { Operator } from './operator';
-export function distinctUntilChanged() {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const operator_1 = require("./operator");
+function distinctUntilChanged() {
     return new DistinctUntilChangedOperator();
 }
-export class DistinctUntilChangedOperator extends Operator {
+exports.distinctUntilChanged = distinctUntilChanged;
+class DistinctUntilChangedOperator extends operator_1.Operator {
     exec(source) {
         if (!source.upstream || !source.upstream.length) {
             return source.currentValue;
@@ -25,4 +28,5 @@ export class DistinctUntilChangedOperator extends Operator {
         }
     }
 }
+exports.DistinctUntilChangedOperator = DistinctUntilChangedOperator;
 //# sourceMappingURL=distinctUntilChanged.js.map

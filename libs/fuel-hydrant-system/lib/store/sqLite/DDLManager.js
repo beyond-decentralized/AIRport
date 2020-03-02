@@ -1,7 +1,9 @@
+"use strict";
 /**
  * Created by Papa on 8/31/2016.
  */
-export class DDLManager {
+Object.defineProperty(exports, "__esModule", { value: true });
+class DDLManager {
     static getCreateDDL() {
         let createQueries = [];
         throw new Error(`Implement!`);
@@ -26,4 +28,5 @@ export class DDLManager {
         console.log(message);
     }
 }
+exports.DDLManager = DDLManager;
 //# sourceMappingURL=DDLManager.js.map

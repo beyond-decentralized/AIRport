@@ -1,13 +1,15 @@
-import { DI } from '@airport/di';
-import { DOMAIN_DAO } from '../tokens';
-import { BaseDomainDao, Q } from '../generated/generated';
-export class DomainDao extends BaseDomainDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const tokens_1 = require("../tokens");
+const generated_1 = require("../generated/generated");
+class DomainDao extends generated_1.BaseDomainDao {
     async findByIdIn(domainIds) {
         let d;
         return await this.db.find.tree({
             select: {},
             from: [
-                d = Q.Domain
+                d = generated_1.Q.Domain
             ],
             where: d.id.in(domainIds)
         });
@@ -16,7 +18,7 @@ export class DomainDao extends BaseDomainDao {
         let d;
         const domains = await this.db.find.tree({
             select: {},
-            from: [d = Q.Domain],
+            from: [d = generated_1.Q.Domain],
             where: d.name.in(domainNames)
         });
         const domainMapByNameWithNames = new Map();
@@ -26,5 +28,6 @@ export class DomainDao extends BaseDomainDao {
         return domainMapByNameWithNames;
     }
 }
-DI.set(DOMAIN_DAO, DomainDao);
+exports.DomainDao = DomainDao;
+di_1.DI.set(tokens_1.DOMAIN_DAO, DomainDao);
 //# sourceMappingURL=DomainDao.js.map

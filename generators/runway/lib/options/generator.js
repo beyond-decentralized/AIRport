@@ -1,10 +1,12 @@
-import * as fs from "fs";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs = require("fs");
 /**
  * Created by Papa on 4/24/2016.
  */
-import { parseFlags } from "./parser";
-export function readConfiguration(projectPath, programArguments) {
-    let flags = parseFlags(programArguments);
+const parser_1 = require("./parser");
+function readConfiguration(projectPath, programArguments) {
+    let flags = parser_1.parseFlags(programArguments);
     let configFilePath = projectPath + '/' + flags.optionsFilePath;
     let configFile = fs.readFileSync(configFilePath);
     let configString = configFile.toString();
@@ -12,6 +14,7 @@ export function readConfiguration(projectPath, programArguments) {
     verifyConfiguration(config);
     return config;
 }
+exports.readConfiguration = readConfiguration;
 function verifyConfiguration(options) {
     if (!options.name) {
         throw new Error(`"name" must be specified in package.json.`);

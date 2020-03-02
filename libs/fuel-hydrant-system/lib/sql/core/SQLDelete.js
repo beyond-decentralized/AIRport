@@ -1,9 +1,11 @@
-import { QRelation } from '@airport/air-control';
-import { SQLNoJoinQuery } from './SQLNoJoinQuery';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const SQLNoJoinQuery_1 = require("./SQLNoJoinQuery");
 /**
  * Created by Papa on 10/2/2016.
  */
-export class SQLDelete extends SQLNoJoinQuery {
+class SQLDelete extends SQLNoJoinQuery_1.SQLNoJoinQuery {
     constructor(airportDb, jsonDelete, dialect, storeDriver) {
         super(airportDb.schemas[jsonDelete.DF.si]
             .currentVersion.entities[jsonDelete.DF.ti], dialect, storeDriver);
@@ -19,7 +21,7 @@ export class SQLDelete extends SQLNoJoinQuery {
 WHERE
 ${whereFragment}`;
             // Always replace the root entity alias reference with the table name
-            let tableAlias = QRelation.getAlias(this.jsonDelete.DF);
+            let tableAlias = air_control_1.QRelation.getAlias(this.jsonDelete.DF);
             let tableName = schemaUtils.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
             whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName);
         }
@@ -28,4 +30,5 @@ FROM
 ${fromFragment}${whereFragment}`;
     }
 }
+exports.SQLDelete = SQLDelete;
 //# sourceMappingURL=SQLDelete.js.map

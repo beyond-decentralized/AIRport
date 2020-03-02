@@ -1,9 +1,11 @@
-import { objectExists } from '@airport/air-control';
-import { AbstractObjectResultParser } from './entity/IEntityResultParser';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const IEntityResultParser_1 = require("./entity/IEntityResultParser");
 /**
  * Created by Papa on 10/16/2016.
  */
-export class FlattenedResultParser extends AbstractObjectResultParser {
+class FlattenedResultParser extends IEntityResultParser_1.AbstractObjectResultParser {
     constructor() {
         super(...arguments);
         this.currentResultRow = [];
@@ -13,7 +15,7 @@ export class FlattenedResultParser extends AbstractObjectResultParser {
     }
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject.push(propertyValue);
-        return objectExists(propertyValue);
+        return air_control_1.objectExists(propertyValue);
     }
     bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, schemaUtils) {
         this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils);
@@ -50,4 +52,5 @@ export class FlattenedResultParser extends AbstractObjectResultParser {
         return parsedResults;
     }
 }
+exports.FlattenedResultParser = FlattenedResultParser;
 //# sourceMappingURL=FlattenedResultParser.js.map

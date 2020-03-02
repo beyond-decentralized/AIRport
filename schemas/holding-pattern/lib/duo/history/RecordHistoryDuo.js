@@ -1,10 +1,12 @@
-import { DI } from '@airport/di';
-import { RecordHistory } from '../../ddl/ddl';
-import { REC_HISTORY_DUO } from '../../tokens';
-import { BaseRecordHistoryDuo, } from '../../generated/generated';
-export class RecordHistoryDuo extends BaseRecordHistoryDuo {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ddl_1 = require("../../ddl/ddl");
+const tokens_1 = require("../../tokens");
+const generated_1 = require("../../generated/generated");
+class RecordHistoryDuo extends generated_1.BaseRecordHistoryDuo {
     getNewRecord(actorRecordId) {
-        const recordHistory = new RecordHistory();
+        const recordHistory = new ddl_1.RecordHistory();
         recordHistory.actorRecordId = actorRecordId;
         return recordHistory;
     }
@@ -23,5 +25,6 @@ export class RecordHistoryDuo extends BaseRecordHistoryDuo {
         return recordHistoryOldValue;
     }
 }
-DI.set(REC_HISTORY_DUO, RecordHistoryDuo);
+exports.RecordHistoryDuo = RecordHistoryDuo;
+di_1.DI.set(tokens_1.REC_HISTORY_DUO, RecordHistoryDuo);
 //# sourceMappingURL=RecordHistoryDuo.js.map

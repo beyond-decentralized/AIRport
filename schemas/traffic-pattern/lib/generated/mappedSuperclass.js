@@ -1,4 +1,6 @@
-export const MAPPED_SUPERCLASS = [
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MAPPED_SUPERCLASS = [
     {
         "type": "VersionedSchemaObject",
         "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/VersionedSchemaObject.ts",

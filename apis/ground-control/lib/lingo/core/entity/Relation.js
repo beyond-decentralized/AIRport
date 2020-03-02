@@ -1,25 +1,27 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * SQL Join contentType.
  */
-export var JoinType;
+var JoinType;
 (function (JoinType) {
     JoinType[JoinType["FULL_JOIN"] = 0] = "FULL_JOIN";
     JoinType[JoinType["INNER_JOIN"] = 1] = "INNER_JOIN";
     JoinType[JoinType["LEFT_JOIN"] = 2] = "LEFT_JOIN";
     JoinType[JoinType["RIGHT_JOIN"] = 3] = "RIGHT_JOIN";
-})(JoinType || (JoinType = {}));
+})(JoinType = exports.JoinType || (exports.JoinType = {}));
 /**
  * Type of Entity Relation
  */
-export var EntityRelationType;
+var EntityRelationType;
 (function (EntityRelationType) {
     EntityRelationType[EntityRelationType["ONE_TO_MANY"] = 0] = "ONE_TO_MANY";
     EntityRelationType[EntityRelationType["MANY_TO_ONE"] = 1] = "MANY_TO_ONE";
-})(EntityRelationType || (EntityRelationType = {}));
+})(EntityRelationType = exports.EntityRelationType || (exports.EntityRelationType = {}));
 /**
  * Serialized relation contentType.
  */
-export var JSONRelationType;
+var JSONRelationType;
 (function (JSONRelationType) {
     // Join of an entity with the ON clause
     JSONRelationType[JSONRelationType["ENTITY_JOIN_ON"] = 0] = "ENTITY_JOIN_ON";
@@ -31,5 +33,5 @@ export var JSONRelationType;
     JSONRelationType[JSONRelationType["SUB_QUERY_JOIN_ON"] = 3] = "SUB_QUERY_JOIN_ON";
     // The root sub-query in a join
     JSONRelationType[JSONRelationType["SUB_QUERY_ROOT"] = 4] = "SUB_QUERY_ROOT";
-})(JSONRelationType || (JSONRelationType = {}));
+})(JSONRelationType = exports.JSONRelationType || (exports.JSONRelationType = {}));
 //# sourceMappingURL=Relation.js.map

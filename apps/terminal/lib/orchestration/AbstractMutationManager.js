@@ -1,7 +1,9 @@
-import { FIELD_UTILS, InsertValues, QUERY_UTILS, SCHEMA_UTILS } from '@airport/air-control';
-import { container } from '@airport/di';
-import { STORE_DRIVER } from '@airport/ground-control';
-export class AbstractMutationManager {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+class AbstractMutationManager {
     getPortableQuery(schemaIndex, tableIndex, query, queryResultType, queryUtils, fieldUtils) {
         return {
             schemaIndex,
@@ -12,7 +14,7 @@ export class AbstractMutationManager {
         };
     }
     async doInsertValues(q, entities) {
-        const [fieldUtils, queryUtils, schemaUtils, storeDriver] = await container(this).get(FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS, STORE_DRIVER);
+        const [fieldUtils, queryUtils, schemaUtils, storeDriver] = await di_1.container(this).get(air_control_1.FIELD_UTILS, air_control_1.QUERY_UTILS, air_control_1.SCHEMA_UTILS, ground_control_1.STORE_DRIVER);
         const dbEntity = q.__driver__.dbEntity;
         const columnIndexes = [];
         const columnValueLookups = [];
@@ -68,9 +70,10 @@ export class AbstractMutationManager {
             columns: null,
             values,
         };
-        let insertValues = new InsertValues(rawInsertValues, columnIndexes);
+        let insertValues = new air_control_1.InsertValues(rawInsertValues, columnIndexes);
         let portableQuery = this.getPortableQuery(dbEntity.schemaVersion.schema.index, dbEntity.index, insertValues, null, queryUtils, fieldUtils);
         return await storeDriver.insertValues(portableQuery);
     }
 }
+exports.AbstractMutationManager = AbstractMutationManager;
 //# sourceMappingURL=AbstractMutationManager.js.map

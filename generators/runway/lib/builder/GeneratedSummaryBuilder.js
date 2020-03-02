@@ -1,4 +1,6 @@
-export class GeneratedSummaryBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class GeneratedSummaryBuilder {
     constructor(pathBuilder) {
         this.pathBuilder = pathBuilder;
         this.generatedListingFilePath = pathBuilder.fullGeneratedDirPath + '/generated.ts';
@@ -13,4 +15,5 @@ export * from './interfaces';
 `;
     }
 }
+exports.GeneratedSummaryBuilder = GeneratedSummaryBuilder;
 //# sourceMappingURL=GeneratedSummaryBuilder.js.map

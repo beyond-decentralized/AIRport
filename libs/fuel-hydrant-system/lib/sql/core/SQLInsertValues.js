@@ -1,9 +1,11 @@
-import { SQLNoJoinQuery } from './SQLNoJoinQuery';
-import { ClauseType } from './SQLWhereBase';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const SQLNoJoinQuery_1 = require("./SQLNoJoinQuery");
+const SQLWhereBase_1 = require("./SQLWhereBase");
 /**
  * Created by Papa on 11/17/2016.
  */
-export class SQLInsertValues extends SQLNoJoinQuery {
+class SQLInsertValues extends SQLNoJoinQuery_1.SQLNoJoinQuery {
     constructor(airportDb, jsonInsertValues, dialect, storeDriver
     // repository?: IRepository
     ) {
@@ -40,7 +42,7 @@ ${valuesFragment}
                     return this.sqlAdaptor.getParameterReference(this.parameterReferences, value);
                 }
                 else {
-                    const fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
+                    const fieldValue = this.getFieldValue(value, SQLWhereBase_1.ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
                     return `\n${fieldValue}\n`;
                 }
             });
@@ -49,4 +51,5 @@ ${valuesFragment}
         return allValuesFragment.join(',\n');
     }
 }
+exports.SQLInsertValues = SQLInsertValues;
 //# sourceMappingURL=SQLInsertValues.js.map

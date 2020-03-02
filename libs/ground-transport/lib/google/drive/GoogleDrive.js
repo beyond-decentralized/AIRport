@@ -1,8 +1,10 @@
-import { DriveConstants, MimeTypes } from './GoogleDriveModel';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const GoogleDriveModel_1 = require("./GoogleDriveModel");
 /**
  * Created by Papa on 1/2/2016.
  */
-export class GoogleDrive {
+class GoogleDrive {
     constructor(googleApi) {
         this.googleApi = googleApi;
         let SCOPES = [
@@ -18,7 +20,7 @@ export class GoogleDrive {
         }
         let fileMetadata = {
             name: name,
-            mimeType: MimeTypes.FOLDER,
+            mimeType: GoogleDriveModel_1.MimeTypes.FOLDER,
             parents: parents
         };
         let createDescriptor = {
@@ -41,7 +43,7 @@ export class GoogleDrive {
         });
     }
     findOrCreateBook(name, folderId) {
-        return this.findOrCreateUniqueFile(name, MimeTypes.SPREAD_SHEET_BOOK, folderId);
+        return this.findOrCreateUniqueFile(name, GoogleDriveModel_1.MimeTypes.SPREAD_SHEET_BOOK, folderId);
     }
     findOrCreateUniqueFolder(fileName, folderId) {
         return this.findFile(fileName, folderId).then((response) => {
@@ -90,7 +92,7 @@ export class GoogleDrive {
             return gapi.client.drive.files.list(dirRef);
         });
     }
-    findFile(fileName, folderId = DriveConstants.DRIVE_FOLDER) {
+    findFile(fileName, folderId = GoogleDriveModel_1.DriveConstants.DRIVE_FOLDER) {
         let query = `name = '${fileName}' and '${folderId}' in parents and trashed=false`;
         return this.apiFileList({
             q: query
@@ -110,7 +112,7 @@ export class GoogleDrive {
             throw error;
         });
     }
-    listFiles(folderId, pageToken = null, space = DriveConstants.DRIVE_SPACE) {
+    listFiles(folderId, pageToken = null, space = GoogleDriveModel_1.DriveConstants.DRIVE_SPACE) {
         return this.apiFileList({
             fields: 'nextPageToken, files(id, mimeType, name)',
             pageToken: pageToken,
@@ -118,12 +120,13 @@ export class GoogleDrive {
             spaces: space
         });
     }
-    searchFiles(space = DriveConstants.DRIVE_SPACE) {
+    searchFiles(space = GoogleDriveModel_1.DriveConstants.DRIVE_SPACE) {
         return this.apiFileList({
             spaces: space,
-            fields: DriveConstants.APP_DATA_LIST_FIELDS,
+            fields: GoogleDriveModel_1.DriveConstants.APP_DATA_LIST_FIELDS,
             pageSize: 100
         });
     }
 }
+exports.GoogleDrive = GoogleDrive;
 //# sourceMappingURL=GoogleDrive.js.map

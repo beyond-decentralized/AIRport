@@ -1,15 +1,17 @@
-import { container, DI } from '@airport/di';
-import { BlockSyncStatus } from '@airport/ground-control';
-import { REPO_TRANS_HISTORY_DAO, REPOSITORY_DAO, RepositoryTransactionHistory } from '@airport/holding-pattern';
-import { transactional } from '@airport/tower';
-import { UpdateState } from '../core/UpdateState';
-import { OFFLINE_DELTA_STORE, ONLINE_MANAGER, REPOSITORY_MANAGER } from '../tokens';
-export class OnlineManager {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const holding_pattern_1 = require("@airport/holding-pattern");
+const tower_1 = require("@airport/tower");
+const UpdateState_1 = require("../core/UpdateState");
+const tokens_1 = require("../tokens");
+class OnlineManager {
     constructor() {
         this.online = false;
     }
     async goOffline() {
-        const repositoryManager = await container(this).get(REPOSITORY_MANAGER);
+        const repositoryManager = await di_1.container(this).get(tokens_1.REPOSITORY_MANAGER);
         repositoryManager.goOffline();
         this.online = false;
     }
@@ -46,11 +48,11 @@ export class OnlineManager {
      * @returns {Promise<void>}
      */
     async goOnline() {
-        const [offlineDeltaStore, repositoryDao, repoTransHistoryDao, repositoryManager] = await container(this).get(OFFLINE_DELTA_STORE, REPOSITORY_DAO, REPO_TRANS_HISTORY_DAO, REPOSITORY_MANAGER);
-        await transactional(async () => {
+        const [offlineDeltaStore, repositoryDao, repoTransHistoryDao, repositoryManager] = await di_1.container(this).get(tokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.REPOSITORY_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DAO, tokens_1.REPOSITORY_MANAGER);
+        await tower_1.transactional(async () => {
             try {
                 // 1)  Flip update state to GO_ONLINE
-                repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE);
+                repositoryManager.setUpdateStateForAll(UpdateState_1.UpdateState.GO_ONLINE);
                 // 2)  Find repositories
                 // const repoRecords = await this.repositoryDao.findWithTransaction()
                 const repoRecords = await repositoryDao.findReposWithDetailsByIds();
@@ -69,7 +71,7 @@ export class OnlineManager {
             }
             finally {
                 // Finally, always flip update state to LOCAL
-                repositoryManager.setUpdateStateForAll(UpdateState.LOCAL);
+                repositoryManager.setUpdateStateForAll(UpdateState_1.UpdateState.LOCAL);
             }
         });
     }
@@ -82,21 +84,21 @@ export class OnlineManager {
                 return;
             }
             transactions = transactions.map((repoTransaction) => {
-                repoTransaction = new RepositoryTransactionHistory(repoTransaction);
+                repoTransaction = new holding_pattern_1.RepositoryTransactionHistory(repoTransaction);
                 // TODO: ?is the following needed?
                 // repoTransaction.deserialize(repository)
                 return repoTransaction;
             });
             // a) While Go-Online is in progress continue gathering all remote transactions
             // that come in and add them to remoteChangesSinceInitialGoOffline
-            if (repositoryManager.getUpdateState(repository) === UpdateState.GO_ONLINE) {
+            if (repositoryManager.getUpdateState(repository) === UpdateState_1.UpdateState.GO_ONLINE) {
                 remoteChangesSinceInitialGoOnline.push(transactions);
             }
             // b) Once Go-Online finishes, when remote transactions come in
             else {
                 try {
                     // i)  Flip update state to REMOTE_CHANGES
-                    repositoryManager.setUpdateState(repository, UpdateState.REMOTE);
+                    repositoryManager.setUpdateState(repository, UpdateState_1.UpdateState.REMOTE);
                     // ii)  Add remote transactions to local store
                     await offlineDeltaStore.addRemoteChanges(repository, transactions);
                 }
@@ -106,7 +108,7 @@ export class OnlineManager {
                 }
                 finally {
                     // iii) Flip state to LOCAL
-                    repositoryManager.setUpdateState(repository, UpdateState.LOCAL);
+                    repositoryManager.setUpdateState(repository, UpdateState_1.UpdateState.LOCAL);
                 }
             }
         });
@@ -132,7 +134,7 @@ export class OnlineManager {
         if (unsyncedChanges.length) {
             unsyncedChanges.forEach((transaction) => {
                 // a)  Mark them as synchronized
-                transaction.syncStatus = BlockSyncStatus.SYNCHRONIZED;
+                transaction.syncStatus = ground_control_1.BlockSyncStatus.SYNCHRONIZED;
             });
             // b)  add them to deltaStore
             await deltaStore.addChanges(deltaStore.config.changeListConfig, unsyncedChanges);
@@ -154,5 +156,6 @@ export class OnlineManager {
         return this.online;
     }
 }
-DI.set(ONLINE_MANAGER, OnlineManager);
+exports.OnlineManager = OnlineManager;
+di_1.DI.set(tokens_1.ONLINE_MANAGER, OnlineManager);
 //# sourceMappingURL=OnlineManager.js.map

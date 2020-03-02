@@ -1,4 +1,6 @@
-export class RecordStateData {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class RecordStateData {
     constructor() {
         this.accessed = {};
         this.current = {};
@@ -6,13 +8,14 @@ export class RecordStateData {
         this.original = {};
     }
 }
-export var CurrentState;
+exports.RecordStateData = RecordStateData;
+var CurrentState;
 (function (CurrentState) {
     CurrentState[CurrentState["CREATED"] = 0] = "CREATED";
     CurrentState[CurrentState["DELETED"] = 1] = "DELETED";
     CurrentState[CurrentState["UPDATED"] = 2] = "UPDATED";
-})(CurrentState || (CurrentState = {}));
-export class RecordState {
+})(CurrentState = exports.CurrentState || (exports.CurrentState = {}));
+class RecordState {
     constructor() {
         this.data = new RecordStateData();
         this.initialized = false;
@@ -36,4 +39,5 @@ export class RecordState {
         this.currentState = CurrentState.UPDATED;
     }
 }
+exports.RecordState = RecordState;
 //# sourceMappingURL=RecordState.js.map

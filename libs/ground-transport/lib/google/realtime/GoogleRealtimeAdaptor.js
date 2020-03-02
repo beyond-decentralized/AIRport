@@ -1,15 +1,17 @@
-import { Subject } from '@airport/observe';
-import { DocumentHandle } from './DocumentHandle';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const observe_1 = require("@airport/observe");
+const DocumentHandle_1 = require("./DocumentHandle");
 /**
  * Created by Papa on 1/7/2016.
  */
-export var Operation;
+var Operation;
 (function (Operation) {
     Operation[Operation["CHANGES_ADDED_BY_OTHERS"] = 0] = "CHANGES_ADDED_BY_OTHERS";
     Operation[Operation["CLEAUP_BY_OWNER"] = 1] = "CLEAUP_BY_OWNER";
     Operation[Operation["GET_NEXT_CHANGE"] = 2] = "GET_NEXT_CHANGE";
-})(Operation || (Operation = {}));
-export class GoogleRealtimeAdaptorException {
+})(Operation = exports.Operation || (exports.Operation = {}));
+class GoogleRealtimeAdaptorException {
     constructor(message, operation, event, exception) {
         this.message = message;
         this.operation = operation;
@@ -17,7 +19,8 @@ export class GoogleRealtimeAdaptorException {
         this.exception = exception;
     }
 }
-export class GoogleChangeRecordIterator {
+exports.GoogleRealtimeAdaptorException = GoogleRealtimeAdaptorException;
+class GoogleChangeRecordIterator {
     constructor(changeList, event, nextIndex = 0) {
         this.changeList = changeList;
         this.event = event;
@@ -46,11 +49,12 @@ export class GoogleChangeRecordIterator {
         }
     }
 }
+exports.GoogleChangeRecordIterator = GoogleChangeRecordIterator;
 let generateException = function (message, operation, event, exception) {
     message = message + '.  User ID: ' + event.userId + ', Session ID: ' + event.sessionId;
     return new GoogleRealtimeAdaptorException(message, Operation.CLEAUP_BY_OWNER, event, exception);
 };
-export class GoogleRealtimeAdaptor {
+class GoogleRealtimeAdaptor {
     constructor(googleRealtime) {
         this.googleRealtime = googleRealtime;
     }
@@ -70,13 +74,13 @@ export class GoogleRealtimeAdaptor {
         let valuesAddedSubject = this.subscribeToChangesAddedByOthers(document);
         let valuesArchivedSubject = this.subscribeToCleanupByOwner(document, false);
         let otherChangesSubject = this.subscribeToUnexpectedModifications(changeList, document);
-        return new DocumentHandle(document, changeList, valuesAddedSubject, valuesArchivedSubject, otherChangesSubject);
+        return new DocumentHandle_1.DocumentHandle(document, changeList, valuesAddedSubject, valuesArchivedSubject, otherChangesSubject);
     }
     subscribeToChangesAddedByOthers(document) {
-        let valuesAddedSubject = new Subject();
+        let valuesAddedSubject = new observe_1.Subject();
         let changeList = this.googleRealtime.getChangeList(document);
         this.googleRealtime.subscribeToValuesAdded(changeList, valuesAddedSubject);
-        let changesAddedSubject = new Subject();
+        let changesAddedSubject = new observe_1.Subject();
         valuesAddedSubject.subscribe((event) => {
             console.log('Changes by others.  BaseModelEvent Type: ' + event.type);
             if (event.isLocal) {
@@ -95,10 +99,10 @@ export class GoogleRealtimeAdaptor {
         return changesAddedSubject;
     }
     subscribeToCleanupByOwner(document, iAmTheOwner) {
-        let valuesRemovedSubject = new Subject();
+        let valuesRemovedSubject = new observe_1.Subject();
         let changeList = this.googleRealtime.getChangeList(document);
         this.googleRealtime.subscribeToValuesRemoved(changeList, valuesRemovedSubject);
-        let changesRemovedSubject = new Subject();
+        let changesRemovedSubject = new observe_1.Subject();
         valuesRemovedSubject.subscribe((event) => {
             console.log('Clean-up by owner.  BaseModelEvent Type: ' + event.type);
             if (event.isLocal) {
@@ -123,9 +127,9 @@ export class GoogleRealtimeAdaptor {
         return changesRemovedSubject;
     }
     subscribeToUnexpectedModifications(changeList, document) {
-        let valuesRemovedSubject = new Subject();
+        let valuesRemovedSubject = new observe_1.Subject();
         this.googleRealtime.subscribeToAnyObjectChanged(document, valuesRemovedSubject);
-        let changesRemovedSubject = new Subject();
+        let changesRemovedSubject = new observe_1.Subject();
         valuesRemovedSubject.subscribe((event) => {
             let message = 'Unexpected change - ';
             if (!event.events) {
@@ -159,4 +163,5 @@ export class GoogleRealtimeAdaptor {
         });
     }
 }
+exports.GoogleRealtimeAdaptor = GoogleRealtimeAdaptor;
 //# sourceMappingURL=GoogleRealtimeAdaptor.js.map

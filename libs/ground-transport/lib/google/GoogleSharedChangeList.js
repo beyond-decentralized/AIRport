@@ -1,9 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 1/10/2016.
  */
-import { Subject } from '@airport/observe';
-import { ArrayChangeRecordIterator } from '@airport/terminal-map';
-export class GoogleSharedChangeList {
+const observe_1 = require("@airport/observe");
+const terminal_map_1 = require("@airport/terminal-map");
+class GoogleSharedChangeList {
     constructor(platformInfo, shareInfo, handle) {
         this.platformInfo = platformInfo;
         this.shareInfo = shareInfo;
@@ -13,13 +15,13 @@ export class GoogleSharedChangeList {
         return new Promise((resolve, reject) => {
             let allCurrentChangeRecords = this.handle.changeList.asArray();
             if (!changeRecord) {
-                resolve(new ArrayChangeRecordIterator(allCurrentChangeRecords));
+                resolve(new terminal_map_1.ArrayChangeRecordIterator(allCurrentChangeRecords));
             }
             let id = this.platformInfo.recordIdField;
             for (let i = 0; i < allCurrentChangeRecords.length; i++) {
                 let currentRecord = allCurrentChangeRecords[i];
                 if (currentRecord[id] === changeRecord[id]) {
-                    resolve(new ArrayChangeRecordIterator(allCurrentChangeRecords, i + 1));
+                    resolve(new terminal_map_1.ArrayChangeRecordIterator(allCurrentChangeRecords, i + 1));
                 }
             }
             reject(`Change record not found. ID: ${changeRecord[id]}.`);
@@ -29,7 +31,7 @@ export class GoogleSharedChangeList {
         await this.handle.addChangeRecords(changeRecords);
     }
     errorSubject() {
-        let errorSubject = new Subject();
+        let errorSubject = new observe_1.Subject();
         this.handle.otherChangesSubject.subscribe((otherChange) => {
             errorSubject.next({
                 fatal: true,
@@ -42,4 +44,5 @@ export class GoogleSharedChangeList {
         return this.handle.valuesAddedSubject;
     }
 }
+exports.GoogleSharedChangeList = GoogleSharedChangeList;
 //# sourceMappingURL=GoogleSharedChangeList.js.map

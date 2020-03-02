@@ -1,13 +1,15 @@
+"use strict";
 /**
  * Created by Papa on 1/6/2016.
  */
-import { MimeTypes } from '../drive/GoogleDriveModel';
-export class GoogleRealtime {
+Object.defineProperty(exports, "__esModule", { value: true });
+const GoogleDriveModel_1 = require("../drive/GoogleDriveModel");
+class GoogleRealtime {
     constructor(googleDrive) {
         this.googleDrive = googleDrive;
     }
     findOrCreateFileUniqueFile(fileName, folderId) {
-        return this.googleDrive.findOrCreateUniqueFile(fileName, MimeTypes.REALTIME, folderId);
+        return this.googleDrive.findOrCreateUniqueFile(fileName, GoogleDriveModel_1.MimeTypes.REALTIME, folderId);
     }
     initializeFile(fileId) {
         return this.loadFile(fileId).then((document) => {
@@ -52,4 +54,5 @@ export class GoogleRealtime {
         });
     }
 }
+exports.GoogleRealtime = GoogleRealtime;
 //# sourceMappingURL=GoogleRealtime.js.map

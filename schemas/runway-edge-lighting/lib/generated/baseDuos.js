@@ -1,49 +1,57 @@
-import { Duo } from '@airport/check-in';
-import { Q, duoDiSet } from './qSchema';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const check_in_1 = require("@airport/check-in");
+const qSchema_1 = require("./qSchema");
 // Schema Q object Dependency Injection readiness detection Duo
-export class SQDIDuo extends Duo {
+class SQDIDuo extends check_in_1.Duo {
     constructor(dbEntityId) {
-        super(dbEntityId, Q);
+        super(dbEntityId, qSchema_1.Q);
     }
 }
-export class BaseLogEntryDuo extends SQDIDuo {
+exports.SQDIDuo = SQDIDuo;
+class BaseLogEntryDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(2);
+        return qSchema_1.duoDiSet(2);
     }
     constructor() {
         super(2);
     }
 }
-export class BaseLogEntryTypeDuo extends SQDIDuo {
+exports.BaseLogEntryDuo = BaseLogEntryDuo;
+class BaseLogEntryTypeDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
     }
 }
-export class BaseLogEntryValueDuo extends SQDIDuo {
+exports.BaseLogEntryTypeDuo = BaseLogEntryTypeDuo;
+class BaseLogEntryValueDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(1);
+        return qSchema_1.duoDiSet(1);
     }
     constructor() {
         super(1);
     }
 }
-export class BaseLoggedErrorDuo extends SQDIDuo {
+exports.BaseLogEntryValueDuo = BaseLogEntryValueDuo;
+class BaseLoggedErrorDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(4);
+        return qSchema_1.duoDiSet(4);
     }
     constructor() {
         super(4);
     }
 }
-export class BaseLoggedErrorStackTraceDuo extends SQDIDuo {
+exports.BaseLoggedErrorDuo = BaseLoggedErrorDuo;
+class BaseLoggedErrorStackTraceDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(3);
+        return qSchema_1.duoDiSet(3);
     }
     constructor() {
         super(3);
     }
 }
+exports.BaseLoggedErrorStackTraceDuo = BaseLoggedErrorStackTraceDuo;
 //# sourceMappingURL=baseDuos.js.map

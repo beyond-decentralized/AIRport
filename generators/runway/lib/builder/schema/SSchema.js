@@ -1,4 +1,6 @@
-export function buildIndexedSSchema(schema, referencedSchemasByName) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function buildIndexedSSchema(schema, referencedSchemasByName) {
     const idx = {
         entities: [],
         entityMapByName: {},
@@ -42,4 +44,5 @@ export function buildIndexedSSchema(schema, referencedSchemasByName) {
     }
     return idx;
 }
+exports.buildIndexedSSchema = buildIndexedSSchema;
 //# sourceMappingURL=SSchema.js.map

@@ -1,9 +1,11 @@
-import { container, DI } from '@airport/di';
-import { BlockSyncStatus, CascadeOverwrite } from '@airport/ground-control';
-import { REPO_TRANS_HISTORY_DAO, REPOSITORY_DAO } from '@airport/holding-pattern';
-import { DataOrigin, REPO_TRANS_BLOCK_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SHARING_NODE_DAO, SHARING_NODE_REPO_TRANS_BLOCK_DAO, SHARING_NODE_REPOSITORY_DAO, SHARING_NODE_TERMINAL_DAO, } from '@airport/moving-walkway';
-import { SCHEMA_DAO } from '@airport/traffic-pattern';
-import { SYNC_OUT_MANAGER, SYNC_OUT_MSG_SENDER, SYNC_OUT_REPO_TRANS_BLOCK_CREATOR, SYNC_OUT_SERIALIZER, } from '../../tokens';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const holding_pattern_1 = require("@airport/holding-pattern");
+const moving_walkway_1 = require("@airport/moving-walkway");
+const traffic_pattern_1 = require("@airport/traffic-pattern");
+const tokens_1 = require("../../tokens");
 const maxSingleRepoChangeLength = 1048576;
 const maxAllRepoChangesLength = 10485760;
 // const log = GROUND_TRANSPORT_LOGGER.add('SynchronizationOutManager')
@@ -15,10 +17,10 @@ const maxAllRepoChangesLength = 10485760;
  * Transaction Log entries
  *
  */
-export class SynchronizationOutManager {
+class SynchronizationOutManager {
     async synchronize(sharingNodes, terminal) {
         // TODO: remove unneeded dependencies once implemented
-        const [repositoryDao, repoTransBlockDao, repoTransHistoryDao, schemaDao, sharingMessageDao, sharingMessageRepoTransBlockDao, sharingNodeDao, sharingNodeTerminalDao, sharingNodeRepositoryDao, sharingNodeRepoTransBlockDao, syncOutRepoTransBlockCreator, syncOutMessageSender, syncOutSerializer,] = await container(this).get(REPOSITORY_DAO, REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_DAO, SCHEMA_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SHARING_NODE_DAO, SHARING_NODE_TERMINAL_DAO, SHARING_NODE_REPOSITORY_DAO, SHARING_NODE_REPO_TRANS_BLOCK_DAO, SYNC_OUT_REPO_TRANS_BLOCK_CREATOR, SYNC_OUT_MSG_SENDER, SYNC_OUT_SERIALIZER);
+        const [repositoryDao, repoTransBlockDao, repoTransHistoryDao, schemaDao, sharingMessageDao, sharingMessageRepoTransBlockDao, sharingNodeDao, sharingNodeTerminalDao, sharingNodeRepositoryDao, sharingNodeRepoTransBlockDao, syncOutRepoTransBlockCreator, syncOutMessageSender, syncOutSerializer,] = await di_1.container(this).get(holding_pattern_1.REPOSITORY_DAO, moving_walkway_1.REPO_TRANS_BLOCK_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DAO, traffic_pattern_1.SCHEMA_DAO, moving_walkway_1.SHARING_MESSAGE_DAO, moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, moving_walkway_1.SHARING_NODE_DAO, moving_walkway_1.SHARING_NODE_TERMINAL_DAO, moving_walkway_1.SHARING_NODE_REPOSITORY_DAO, moving_walkway_1.SHARING_NODE_REPO_TRANS_BLOCK_DAO, tokens_1.SYNC_OUT_REPO_TRANS_BLOCK_CREATOR, tokens_1.SYNC_OUT_MSG_SENDER, tokens_1.SYNC_OUT_SERIALIZER);
         const sharingNodeMap = new Map();
         sharingNodes.forEach(sharingNode => {
             sharingNodeMap.set(sharingNode.id, sharingNode);
@@ -90,7 +92,7 @@ export class SynchronizationOutManager {
      */
     async getNotAcknowledgedRTBs(sharingNodeMap, sharingNodeDao, sharingNodeRepoTransBlockDao) {
         const startingSharingNodeIds = Array.from(sharingNodeMap.keys());
-        const { syncStatusRepositoryTransactionBlockIds, syncStatusRepoTransBlockIdsBySharingNodeId } = await sharingNodeRepoTransBlockDao.getForSharingNodeIdsAndBlockStatus(startingSharingNodeIds, BlockSyncStatus.REQUESTING_SYNC_STATUS);
+        const { syncStatusRepositoryTransactionBlockIds, syncStatusRepoTransBlockIdsBySharingNodeId } = await sharingNodeRepoTransBlockDao.getForSharingNodeIdsAndBlockStatus(startingSharingNodeIds, ground_control_1.BlockSyncStatus.REQUESTING_SYNC_STATUS);
         // If server did not respond to Sync Status requests
         if (syncStatusRepositoryTransactionBlockIds.length) {
             // scale down to keep-alive request
@@ -106,11 +108,11 @@ export class SynchronizationOutManager {
         if (!sharingNodeMap.size) {
             // None of the nodes to sync to are active
         }
-        const { syncingRepositoryTransactionBlockIds, syncingRepoTransBlockIdsBySharingNodeIds } = await sharingNodeRepoTransBlockDao.getForSharingNodeIdsAndBlockStatus(startingSharingNodeIds, BlockSyncStatus.SYNCHRONIZING);
+        const { syncingRepositoryTransactionBlockIds, syncingRepoTransBlockIdsBySharingNodeIds } = await sharingNodeRepoTransBlockDao.getForSharingNodeIdsAndBlockStatus(startingSharingNodeIds, ground_control_1.BlockSyncStatus.SYNCHRONIZING);
         if (syncingRepositoryTransactionBlockIds.length) {
             // scale down to sync status requests
             const syncAckSharingNodeIds = Array.from(syncingRepoTransBlockIdsBySharingNodeIds.keys());
-            await sharingNodeRepoTransBlockDao.updateBlockSyncStatus(syncAckSharingNodeIds, syncingRepositoryTransactionBlockIds, BlockSyncStatus.SYNCHRONIZING, BlockSyncStatus.REQUESTING_SYNC_STATUS);
+            await sharingNodeRepoTransBlockDao.updateBlockSyncStatus(syncAckSharingNodeIds, syncingRepositoryTransactionBlockIds, ground_control_1.BlockSyncStatus.SYNCHRONIZING, ground_control_1.BlockSyncStatus.REQUESTING_SYNC_STATUS);
             // Todo add sync ack requests
             for (const sharingNodeId in sharingNodeMap.keys()) {
             }
@@ -175,8 +177,8 @@ export class SynchronizationOutManager {
     clearDataOfSuccessfullySyncedRTBS() {
     }
     async addNewSharingMessages(newReposTransHistoryBlocksBySharingNodeId, source, sharingMessageDao, sharingMessageRepoTransBlockDao) {
-        const origin = DataOrigin.LOCAL;
-        const messageSyncStatus = BlockSyncStatus.SYNCHRONIZING;
+        const origin = moving_walkway_1.DataOrigin.LOCAL;
+        const messageSyncStatus = ground_control_1.BlockSyncStatus.SYNCHRONIZING;
         const processingStatus = SharingMessageProcessingStatus.PROCESSED;
         const transmissionRetryCount = 0;
         const firstSyncRequestTimestamp = new Date();
@@ -204,9 +206,10 @@ export class SynchronizationOutManager {
                 });
             }
         }
-        await sharingMessageDao.bulkCreate(sharingMessages, CascadeOverwrite.DEFAULT, false);
-        await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, CascadeOverwrite.DEFAULT, false);
+        await sharingMessageDao.bulkCreate(sharingMessages, ground_control_1.CascadeOverwrite.DEFAULT, false);
+        await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, ground_control_1.CascadeOverwrite.DEFAULT, false);
     }
 }
-DI.set(SYNC_OUT_MANAGER, SynchronizationOutManager);
+exports.SynchronizationOutManager = SynchronizationOutManager;
+di_1.DI.set(tokens_1.SYNC_OUT_MANAGER, SynchronizationOutManager);
 //# sourceMappingURL=SynchronizationOutManager.js.map

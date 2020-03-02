@@ -1,6 +1,8 @@
-import { ArchivingStatus } from '@airport/guideway';
-import { transactional } from '@airport/tower';
-import { MILLIS_IN_DAY } from '../../../model/Constaints';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const guideway_1 = require("@airport/guideway");
+const tower_1 = require("@airport/tower");
+const Constaints_1 = require("../../../model/Constaints");
 /**
  * Current approach to archiving previous day's records is to start 12 hours into any
  * given UTC date. Create batches of records for a small groups of Terminals, archive and
@@ -10,7 +12,7 @@ import { MILLIS_IN_DAY } from '../../../model/Constaints';
  *
  *
  */
-export class ArchivingServer {
+class ArchivingServer {
     constructor(cloudArchiver, dailyArchiveDao, dailyArchiveLogDao, dailySyncLogDao, server, syncLogDao, agtRepositoryTransactionBlockDao, tuningSettings) {
         this.cloudArchiver = cloudArchiver;
         this.dailyArchiveDao = dailyArchiveDao;
@@ -55,11 +57,11 @@ export class ArchivingServer {
      * @returns {Promise<void>}
      */
     async archiveRepositoryTransactionBlocks(onDate, archiveInTerminal, dateNumber) {
-        await transactional(async () => {
-            const toDateObject = new Date(onDate + MILLIS_IN_DAY + MILLIS_IN_DAY / 2);
+        await tower_1.transactional(async () => {
+            const toDateObject = new Date(onDate + Constaints_1.MILLIS_IN_DAY + Constaints_1.MILLIS_IN_DAY / 2);
             const toDate = Date.UTC(toDateObject.getUTCFullYear(), toDateObject.getUTCMonth(), toDateObject.getUTCDate());
             let numRecordsReserved;
-            while ((numRecordsReserved = await this.agtRepositoryTransactionBlockDao.reserveToArchive(onDate, toDate, this.server.id, ArchivingStatus.NOT_ARCHIVING, this.tuningSettings.archiving.numRepositoriesToProcessAtATime)) > 0) {
+            while ((numRecordsReserved = await this.agtRepositoryTransactionBlockDao.reserveToArchive(onDate, toDate, this.server.id, guideway_1.ArchivingStatus.NOT_ARCHIVING, this.tuningSettings.archiving.numRepositoriesToProcessAtATime)) > 0) {
                 const dailyArchiveValues = [];
                 let dailyArchiveLogValues = [];
                 let repositoryIds = [];
@@ -100,4 +102,5 @@ export class ArchivingServer {
         });
     }
 }
+exports.ArchivingServer = ArchivingServer;
 //# sourceMappingURL=ArchivingServer.js.map

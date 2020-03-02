@@ -1,15 +1,17 @@
-import { AIR_DB, and, distinct } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { DAILY_SYNC_LOG_DAO } from '../tokens';
-import { BaseDailySyncLogDao } from '../generated/baseDaos';
-import { Q } from '../generated/qSchema';
-export class DailySyncLogDao extends BaseDailySyncLogDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const tokens_1 = require("../tokens");
+const baseDaos_1 = require("../generated/baseDaos");
+const qSchema_1 = require("../generated/qSchema");
+class DailySyncLogDao extends baseDaos_1.BaseDailySyncLogDao {
     async insertValues(values) {
-        const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
+        const dbEntity = qSchema_1.Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
         let dsl;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         await airDb.insertValues(dbEntity, {
-            insertInto: dsl = Q.DailySyncLog,
+            insertInto: dsl = qSchema_1.Q.DailySyncLog,
             columns: [
                 dsl.databaseId,
                 dsl.repositoryId,
@@ -21,10 +23,10 @@ export class DailySyncLogDao extends BaseDailySyncLogDao {
     }
     async findAllForDatabase(databaseId, synced, callback) {
         let dsl;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         await airDb.find.sheet({
             from: [
-                dsl = Q.DailySyncLog
+                dsl = qSchema_1.Q.DailySyncLog
             ],
             select: [
                 dsl.repositoryId,
@@ -39,25 +41,25 @@ export class DailySyncLogDao extends BaseDailySyncLogDao {
     async updateSyncStatus(databaseId, repositoryIds, synced) {
         let dsl;
         await this.db.updateWhere({
-            update: dsl = Q.DailySyncLog,
+            update: dsl = qSchema_1.Q.DailySyncLog,
             set: {
                 synced
             },
-            where: and(dsl.databaseId.equals(databaseId), dsl.repositoryId.in(repositoryIds))
+            where: air_control_1.and(dsl.databaseId.equals(databaseId), dsl.repositoryId.in(repositoryIds))
         });
     }
     async findMonthlyResults(databaseIds, fromDateInclusive, toDateExclusive) {
         let dsl;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         return await airDb.find.sheet({
             from: [
-                dsl = Q.DailySyncLog
+                dsl = qSchema_1.Q.DailySyncLog
             ],
-            select: distinct([
+            select: air_control_1.distinct([
                 dsl.databaseId,
                 dsl.repositoryId,
             ]),
-            where: and(dsl.databaseId.in(databaseIds), dsl.date.greaterThanOrEquals(fromDateInclusive), dsl.date.lessThan(toDateExclusive)),
+            where: air_control_1.and(dsl.databaseId.in(databaseIds), dsl.date.greaterThanOrEquals(fromDateInclusive), dsl.date.lessThan(toDateExclusive)),
             orderBy: [
                 dsl.databaseId.asc(),
                 dsl.repositoryId.asc()
@@ -65,5 +67,6 @@ export class DailySyncLogDao extends BaseDailySyncLogDao {
         });
     }
 }
-DI.set(DAILY_SYNC_LOG_DAO, DailySyncLogDao);
+exports.DailySyncLogDao = DailySyncLogDao;
+di_1.DI.set(tokens_1.DAILY_SYNC_LOG_DAO, DailySyncLogDao);
 //# sourceMappingURL=DailySyncLogDao.js.map

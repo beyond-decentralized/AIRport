@@ -1,8 +1,10 @@
-import { QColumnBuilder } from './entity/QColumnBuilder';
-import { QPropertyBuilder } from './entity/QPropertyBuilder';
-import { QRelationBuilder } from './entity/QRelationBuilder';
-import { QTransientBuilder } from './entity/QTransientBuilder';
-export class QCoreEntityBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const QColumnBuilder_1 = require("./entity/QColumnBuilder");
+const QPropertyBuilder_1 = require("./entity/QPropertyBuilder");
+const QRelationBuilder_1 = require("./entity/QRelationBuilder");
+const QTransientBuilder_1 = require("./entity/QTransientBuilder");
+class QCoreEntityBuilder {
     constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName) {
         this.entity = entity;
         this.fullGenerationPath = fullGenerationPath;
@@ -15,13 +17,13 @@ export class QCoreEntityBuilder {
         this.fileBuilder.addImport(classNames, filePath, toLowerCase);
     }
     getColumnBuilders(columns) {
-        return columns.map(column => new QColumnBuilder(this, column));
+        return columns.map(column => new QColumnBuilder_1.QColumnBuilder(this, column));
     }
     getPropertyBuilders(properties) {
         return properties.map(property => this.addPropertyBuilder(property)).filter(builder => builder != null);
     }
     getTransientPropertyBuilders(properties) {
-        return properties.map(property => new QTransientBuilder(this, property));
+        return properties.map(property => new QTransientBuilder_1.QTransientBuilder(this, property));
     }
     getRelationBuilders(properties, buildRelationInstance) {
         return properties.map(property => this.addRelationBuilder(property, buildRelationInstance)).filter(builder => builder != null);
@@ -47,19 +49,20 @@ export class QCoreEntityBuilder {
     addPropertyBuilder(property) {
         let propertyBuilder = null;
         if (property.primitive) {
-            propertyBuilder = new QPropertyBuilder(this, property);
+            propertyBuilder = new QPropertyBuilder_1.QPropertyBuilder(this, property);
         }
         return propertyBuilder;
     }
     addRelationBuilder(property, buildRelationInstance) {
         let relationBuilder = null;
         if (property.entity || property.fromProject) {
-            relationBuilder = new QRelationBuilder(this, property, this.entityMapByName, buildRelationInstance);
+            relationBuilder = new QRelationBuilder_1.QRelationBuilder(this, property, this.entityMapByName, buildRelationInstance);
         }
         return relationBuilder;
     }
 }
-export function getPropertyFieldType(//
+exports.QCoreEntityBuilder = QCoreEntityBuilder;
+function getPropertyFieldType(//
 propertyDocEntry //
 ) {
     switch (propertyDocEntry.primitive) {
@@ -78,7 +81,8 @@ propertyDocEntry //
             throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`);
     }
 }
-export function getPropertyJSONOperationInterface(//
+exports.getPropertyFieldType = getPropertyFieldType;
+function getPropertyJSONOperationInterface(//
 propertyDocEntry //
 ) {
     switch (propertyDocEntry.primitive) {
@@ -97,7 +101,8 @@ propertyDocEntry //
             throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`);
     }
 }
-export function getPropertyTypedOperationInterface(//
+exports.getPropertyJSONOperationInterface = getPropertyJSONOperationInterface;
+function getPropertyTypedOperationInterface(//
 propertyDocEntry //
 ) {
     switch (propertyDocEntry.primitive) {
@@ -116,17 +121,20 @@ propertyDocEntry //
             throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`);
     }
 }
-export function getPropertyFieldInterface(//
+exports.getPropertyTypedOperationInterface = getPropertyTypedOperationInterface;
+function getPropertyFieldInterface(//
 propertyDocEntry //
 ) {
     return getPrimitiveFieldInterface(propertyDocEntry.primitive);
 }
-export function getColumnFieldInterface(//
+exports.getPropertyFieldInterface = getPropertyFieldInterface;
+function getColumnFieldInterface(//
 sColumn //
 ) {
     return getPrimitiveFieldInterface(sColumn.type);
 }
-export function getPrimitiveFieldInterface(//
+exports.getColumnFieldInterface = getColumnFieldInterface;
+function getPrimitiveFieldInterface(//
 primitive //
 ) {
     switch (primitive) {
@@ -145,7 +153,8 @@ primitive //
             throw new Error(`Unexpected primitive ${primitive}`);
     }
 }
-export function getPropertyFieldClass(//
+exports.getPrimitiveFieldInterface = getPrimitiveFieldInterface;
+function getPropertyFieldClass(//
 propertyDocEntry //
 ) {
     switch (propertyDocEntry.primitive) {
@@ -164,7 +173,8 @@ propertyDocEntry //
             throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`);
     }
 }
-export function getRelationFieldType(//
+exports.getPropertyFieldClass = getPropertyFieldClass;
+function getRelationFieldType(//
 entityProperty //
 ) {
     if (entityProperty.isArray) {
@@ -174,4 +184,5 @@ entityProperty //
         return 'MANY_TO_ONE';
     }
 }
+exports.getRelationFieldType = getRelationFieldType;
 //# sourceMappingURL=Builder.js.map

@@ -1,13 +1,16 @@
-import { DI } from '@airport/di';
-import { JoinType } from '@airport/ground-control';
-import { AIR_DB, SCHEMA_UTILS } from '../../../tokens';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const tokens_1 = require("../../../tokens");
 /**
  * Created by Papa on 4/26/2016.
  */
-export function QRelation(dbRelation, parentQ) {
+function QRelation(dbRelation, parentQ) {
     this.dbRelation = dbRelation;
     this.parentQ = parentQ;
 }
+exports.QRelation = QRelation;
 QRelation.getPositionAlias = function (rootEntityPrefix, fromClausePosition) {
     return `${rootEntityPrefix}_${fromClausePosition.join('_')}`;
 };
@@ -32,14 +35,14 @@ QRelation.getNextChildJoinPosition = function (joinParentDriver) {
     return nextChildJoinPosition;
 };
 QRelation.prototype.innerJoin = function () {
-    return this.getNewQEntity(JoinType.INNER_JOIN);
+    return this.getNewQEntity(ground_control_1.JoinType.INNER_JOIN);
 };
 QRelation.prototype.leftJoin = function () {
-    return this.getNewQEntity(JoinType.LEFT_JOIN);
+    return this.getNewQEntity(ground_control_1.JoinType.LEFT_JOIN);
 };
 QRelation.prototype.getNewQEntity = function (joinType) {
     const dbEntity = this.dbRelation.property.entity;
-    const qEntityConstructor = DI.db().getSync(SCHEMA_UTILS).getQEntityConstructor(this.dbRelation.relationEntity, DI.db().getSync(AIR_DB));
+    const qEntityConstructor = di_1.DI.db().getSync(tokens_1.SCHEMA_UTILS).getQEntityConstructor(this.dbRelation.relationEntity, di_1.DI.db().getSync(tokens_1.AIR_DB));
     let newQEntity = new qEntityConstructor(dbEntity, QRelation.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType);
     newQEntity.__driver__.parentJoinEntity = this.parentQ;
     return newQEntity;

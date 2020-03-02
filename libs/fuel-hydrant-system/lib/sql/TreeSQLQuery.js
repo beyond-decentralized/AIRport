@@ -1,22 +1,24 @@
-import { AliasCache } from '@airport/air-control';
-import { JSONClauseObjectType, QueryResultType } from '@airport/ground-control';
-import { MappedOrderByParser } from '../orderBy/MappedOrderByParser';
-import { TreeQueryResultParser } from '../result/TreeQueryResultParser';
-import { ClauseType } from './core/SQLWhereBase';
-import { NonEntitySQLQuery } from './NonEntitySQLQuery';
-import { SqlFunctionField } from './SqlFunctionField';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
+const MappedOrderByParser_1 = require("../orderBy/MappedOrderByParser");
+const TreeQueryResultParser_1 = require("../result/TreeQueryResultParser");
+const SQLWhereBase_1 = require("./core/SQLWhereBase");
+const NonEntitySQLQuery_1 = require("./NonEntitySQLQuery");
+const SqlFunctionField_1 = require("./SqlFunctionField");
 /**
  * Created by Papa on 10/28/2016.
  */
-export class TreeSQLQuery extends NonEntitySQLQuery {
+class TreeSQLQuery extends NonEntitySQLQuery_1.NonEntitySQLQuery {
     constructor(jsonQuery, dialect, storeDriver) {
-        super(jsonQuery, dialect, QueryResultType.TREE, storeDriver);
-        this.queryParser = new TreeQueryResultParser();
-        this.orderByParser = new MappedOrderByParser(this.validator);
+        super(jsonQuery, dialect, ground_control_1.QueryResultType.TREE, storeDriver);
+        this.queryParser = new TreeQueryResultParser_1.TreeQueryResultParser();
+        this.orderByParser = new MappedOrderByParser_1.MappedOrderByParser(this.validator);
     }
     getSELECTFragment(nested, selectClauseFragment, internalFragments, airDb, schemaUtils, metadataUtils) {
         const distinctClause = selectClauseFragment;
-        if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
+        if (distinctClause.ot == ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION) {
             if (nested) {
                 throw new Error(`Cannot have DISTINCT specified in a nested select clause`);
             }
@@ -46,11 +48,11 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
             if (value === undefined) {
                 continue;
             }
-            if (value instanceof SqlFunctionField) {
+            if (value instanceof SqlFunctionField_1.SqlFunctionField) {
                 selectSqlFragment += value.getValue(this, airDb, schemaUtils, metadataUtils);
                 continue;
             }
-            selectSqlFragment += this.getFieldSelectFragment(value, ClauseType.MAPPED_SELECT_CLAUSE, () => {
+            selectSqlFragment += this.getFieldSelectFragment(value, SQLWhereBase_1.ClauseType.MAPPED_SELECT_CLAUSE, () => {
                 return this.getSELECTFragment(true, value, internalFragments, airDb, schemaUtils, metadataUtils);
             }, fieldIndex++, airDb, schemaUtils, metadataUtils);
         }
@@ -71,7 +73,7 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
         parsedResults = [];
         let lastResult;
         results.forEach((result) => {
-            let aliasCache = new AliasCache();
+            let aliasCache = new air_control_1.AliasCache();
             let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0], aliasCache, aliasCache.getFollowingAlias());
             if (!lastResult) {
                 parsedResults.push(parsedResult);
@@ -91,7 +93,7 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
         }
         {
             let distinctClause = selectClauseFragment;
-            if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
+            if (distinctClause.ot == ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION) {
                 return this.parseQueryResult(distinctClause.af[0].p[0], resultRow, nextFieldIndex, aliasCache, entityAlias);
             }
         }
@@ -116,4 +118,5 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
         return this.queryParser.flushEntity(entityAlias, resultObject);
     }
 }
+exports.TreeSQLQuery = TreeSQLQuery;
 //# sourceMappingURL=TreeSQLQuery.js.map

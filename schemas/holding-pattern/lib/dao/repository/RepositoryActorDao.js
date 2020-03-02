@@ -1,12 +1,14 @@
-import { and, Y } from '@airport/air-control';
-import { DI } from '@airport/di';
-import { ensureChildJsSet } from '@airport/ground-control';
-import { REPO_ACTOR_DAO } from '../../tokens';
-import { BaseRepositoryActorDao, Q, } from '../../generated/generated';
-export class RepositoryActorDao extends BaseRepositoryActorDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const tokens_1 = require("../../tokens");
+const generated_1 = require("../../generated/generated");
+class RepositoryActorDao extends generated_1.BaseRepositoryActorDao {
     async findAllForLocalActorsWhereRepositoryIdIn(repositoryIds) {
         let ra, a, d;
-        const id = Y;
+        const id = air_control_1.Y;
         return await this.db.find.tree({
             select: {
                 repository: {
@@ -17,22 +19,23 @@ export class RepositoryActorDao extends BaseRepositoryActorDao {
                 }
             },
             from: [
-                ra = Q.RepositoryActor,
+                ra = generated_1.Q.RepositoryActor,
                 a = ra.actor.innerJoin(),
                 d = a.terminal.innerJoin()
             ],
-            where: and(ra.repository.id.in(repositoryIds), d.isLocal.equals(true))
+            where: air_control_1.and(ra.repository.id.in(repositoryIds), d.isLocal.equals(true))
         });
     }
     async findActorIdMapByRepositoryIdForLocalActorsWhereRepositoryIdIn(repositoryIds) {
         const records = await this.findAllForLocalActorsWhereRepositoryIdIn(repositoryIds);
         const actorIdMapByRepositoryId = new Map();
         for (const record of records) {
-            ensureChildJsSet(actorIdMapByRepositoryId, record.repository.id)
+            ground_control_1.ensureChildJsSet(actorIdMapByRepositoryId, record.repository.id)
                 .add(record.actor.id);
         }
         return actorIdMapByRepositoryId;
     }
 }
-DI.set(REPO_ACTOR_DAO, RepositoryActorDao);
+exports.RepositoryActorDao = RepositoryActorDao;
+di_1.DI.set(tokens_1.REPO_ACTOR_DAO, RepositoryActorDao);
 //# sourceMappingURL=RepositoryActorDao.js.map

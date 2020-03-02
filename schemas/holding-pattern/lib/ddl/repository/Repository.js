@@ -1,11 +1,13 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
-import { CascadeType } from "@airport/ground-control";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const ground_control_1 = require("@airport/ground-control");
 let Repository = class Repository {
     constructor() {
         /*
@@ -23,53 +25,53 @@ let Repository = class Repository {
     }
 };
 __decorate([
-    Column({ name: "ID" }),
-    GeneratedValue(),
-    Id(),
-    DbNumber()
+    air_control_1.Column({ name: "ID" }),
+    air_control_1.GeneratedValue(),
+    air_control_1.Id(),
+    air_control_1.DbNumber()
 ], Repository.prototype, "id", void 0);
 __decorate([
-    ManyToOne(),
-    JoinColumn({ name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
+    air_control_1.ManyToOne(),
+    air_control_1.JoinColumn({ name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
         nullable: false })
 ], Repository.prototype, "ownerActor", void 0);
 __decorate([
-    Column({ name: "ORDERED_ID", nullable: false }),
-    DbNumber()
+    air_control_1.Column({ name: "ORDERED_ID", nullable: false }),
+    air_control_1.DbNumber()
 ], Repository.prototype, "orderedId", void 0);
 __decorate([
-    Column({ name: "RANDOM_ID", nullable: false }),
-    DbNumber()
+    air_control_1.Column({ name: "RANDOM_ID", nullable: false }),
+    air_control_1.DbNumber()
 ], Repository.prototype, "randomId", void 0);
 __decorate([
-    Column({ name: "NAME", nullable: false }),
-    DbString()
+    air_control_1.Column({ name: "NAME", nullable: false }),
+    air_control_1.DbString()
 ], Repository.prototype, "name", void 0);
 __decorate([
-    Column({ name: "REPOSITORY_URL", nullable: false }),
-    DbString()
+    air_control_1.Column({ name: "REPOSITORY_URL", nullable: false }),
+    air_control_1.DbString()
 ], Repository.prototype, "url", void 0);
 __decorate([
-    Column({ name: "PLATFORM_CONFIG", nullable: false })
+    air_control_1.Column({ name: "PLATFORM_CONFIG", nullable: false })
 ], Repository.prototype, "platformConfig", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'repository' })
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repository' })
 ], Repository.prototype, "repositoryActors", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'repository' })
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repository' })
 ], Repository.prototype, "repositoryApplications", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'repository' })
+    air_control_1.OneToMany({ cascade: ground_control_1.CascadeType.ALL, mappedBy: 'repository' })
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
 __decorate([
-    Column({ name: "SYNC_PRIORITY", nullable: false }),
-    DbNumber()
+    air_control_1.Column({ name: "SYNC_PRIORITY", nullable: false }),
+    air_control_1.DbNumber()
 ], Repository.prototype, "syncPriority", void 0);
 Repository = __decorate([
-    Entity(),
-    Table({
+    air_control_1.Entity(),
+    air_control_1.Table({
         name: "REPOSITORY"
     })
 ], Repository);
-export { Repository };
+exports.Repository = Repository;
 //# sourceMappingURL=Repository.js.map

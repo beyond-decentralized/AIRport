@@ -1,32 +1,34 @@
-import { Subject } from '@airport/observe';
-import { ArrayChangeRecordIterator } from "@airport/terminal-map";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const observe_1 = require("@airport/observe");
+const terminal_map_1 = require("@airport/terminal-map");
 /**
  * Created by Papa on 11/26/2016.
  */
-export class InMemoryChangeList {
+class InMemoryChangeList {
     constructor(shareInfo, platformInfo, changeStore) {
         this.shareInfo = shareInfo;
         this.platformInfo = platformInfo;
         this.changeStore = changeStore;
-        this._errorSubject = new Subject();
-        this._changesAddedRemotelySubject = new Subject();
+        this._errorSubject = new observe_1.Subject();
+        this._changesAddedRemotelySubject = new observe_1.Subject();
         changeStore.getChangesAddedSubject(this.shareInfo.name).subscribe((changeRecords) => {
             let remotelyAddedChanges = changeRecords.filter(changeRecord => changeRecord[platformInfo.dbIdField] !== shareInfo.dbId);
             if (remotelyAddedChanges.length) {
-                this._changesAddedRemotelySubject.next(new ArrayChangeRecordIterator(remotelyAddedChanges));
+                this._changesAddedRemotelySubject.next(new terminal_map_1.ArrayChangeRecordIterator(remotelyAddedChanges));
             }
         });
     }
     async loadFromRecord(changeRecord) {
         let allCurrentChangeRecords = this.changeStore.getAllChanges(this.shareInfo.name);
         if (!changeRecord) {
-            return new ArrayChangeRecordIterator(allCurrentChangeRecords);
+            return new terminal_map_1.ArrayChangeRecordIterator(allCurrentChangeRecords);
         }
         let id = this.platformInfo.recordIdField;
         for (let i = 0; i < allCurrentChangeRecords.length; i++) {
             let currentRecord = allCurrentChangeRecords[i];
             if (currentRecord[id] === changeRecord[id]) {
-                return new ArrayChangeRecordIterator(allCurrentChangeRecords, i + 1);
+                return new terminal_map_1.ArrayChangeRecordIterator(allCurrentChangeRecords, i + 1);
             }
         }
         throw new Error(`Change record not found. ID: ${changeRecord[id]}.`);
@@ -41,4 +43,5 @@ export class InMemoryChangeList {
         return this._changesAddedRemotelySubject;
     }
 }
+exports.InMemoryChangeList = InMemoryChangeList;
 //# sourceMappingURL=InMemoryChangeList.js.map

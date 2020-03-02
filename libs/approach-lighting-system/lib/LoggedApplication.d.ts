@@ -12,6 +12,6 @@ export declare class LoggedApplication extends Logged implements ILoggedApplicat
     application: IApplication;
     packageMap: Map<PackageName, ILoggedPackage>;
     constructor(applicationName: ApplicationName, level?: SetLogLevel);
-    level: SetLogLevel;
+    set level(newLevel: SetLogLevel);
     addPackage(loggedPackage: ILoggedPackage): void;
 }

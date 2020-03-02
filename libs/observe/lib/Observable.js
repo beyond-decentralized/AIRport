@@ -1,5 +1,7 @@
-import { Subscription } from './Subscription';
-export class Observable {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Subscription_1 = require("./Subscription");
+class Observable {
     constructor(onUnsubscribe) {
         this.onUnsubscribe = onUnsubscribe;
         this.operators = [];
@@ -82,7 +84,7 @@ export class Observable {
         // if (!(observer instanceof Function)) {
         // 	throw new Error('Subjects can only be subscribed to with functions')
         // }
-        const subscription = new Subscription(this, onNext, onError, onComplete, this.onUnsubscribe);
+        const subscription = new Subscription_1.Subscription(this, onNext, onError, onComplete, this.onUnsubscribe);
         this.subscriptions.push(subscription);
         this.subscribeUpstream();
         onNext(this.valueFromUpstream());
@@ -115,4 +117,5 @@ export class Observable {
         }
     }
 }
+exports.Observable = Observable;
 //# sourceMappingURL=Observable.js.map

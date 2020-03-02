@@ -1,6 +1,8 @@
-import { deltaConst } from '@airport/air-control';
-import { deltaStore } from '../SharingAdaptor';
-export class ChangeListConfig {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const SharingAdaptor_1 = require("../SharingAdaptor");
+class ChangeListConfig {
     constructor(config, deltaStoreConfig) {
         this.config = config;
         this.deltaStoreConfig = deltaStoreConfig;
@@ -10,17 +12,18 @@ export class ChangeListConfig {
             throw new Error(`Distribution Strategy is not defined`);
         }
         if (typeof distributionStrategy === 'string') {
-            this.distributionStrategy = deltaStore.distributionStrategy.getValue(distributionStrategy);
+            this.distributionStrategy = SharingAdaptor_1.deltaStore.distributionStrategy.getValue(distributionStrategy);
         }
         else {
             // Verify the distributionStrategy
-            deltaStore.distributionStrategy.getName(config.distributionStrategy);
+            SharingAdaptor_1.deltaStore.distributionStrategy.getName(config.distributionStrategy);
             this.distributionStrategy = config.distributionStrategy;
         }
         this.changeListInfo = {
             name: 'Transactions',
-            dbId: deltaConst.DB_ID_FIELD
+            dbId: air_control_1.deltaConst.DB_ID_FIELD
         };
     }
 }
+exports.ChangeListConfig = ChangeListConfig;
 //# sourceMappingURL=ChangeListConfig.js.map

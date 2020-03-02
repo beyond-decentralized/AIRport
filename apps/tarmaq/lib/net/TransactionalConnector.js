@@ -1,84 +1,87 @@
-import { container, DI } from '@airport/di';
-import { TRANS_CONNECTOR } from '@airport/ground-control';
-import { TRANS_SERVER } from '@airport/tower';
-export class TransactionalConnector {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const tower_1 = require("@airport/tower");
+class TransactionalConnector {
     async init() {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         await transServer.init();
     }
     async addRepository(name, url, platform, platformConfig, distributionStrategy) {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         return await transServer.addRepository(name, url, platform, platformConfig, distributionStrategy, {
             domainAndPort: 'test'
         });
     }
     async transact() {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         return await transServer.transact({
             domainAndPort: 'test'
         });
     }
     async rollback() {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         return await transServer.rollback({
             domainAndPort: 'test'
         });
     }
     async commit() {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         return await transServer.commit({
             domainAndPort: 'test'
         });
     }
     async find(portableQuery, cachedSqlQueryId) {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         return await transServer.find(portableQuery, {
             domainAndPort: 'test'
         }, cachedSqlQueryId);
     }
     async findOne(portableQuery, cachedSqlQueryId) {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         return await transServer.findOne(portableQuery, {
             domainAndPort: 'test'
         }, cachedSqlQueryId);
     }
     async search(portableQuery, cachedSqlQueryId) {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         return await transServer.search(portableQuery, {
             domainAndPort: 'test'
         }, cachedSqlQueryId);
     }
     async searchOne(portableQuery, cachedSqlQueryId) {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         return await transServer.searchOne(portableQuery, {
             domainAndPort: 'test'
         }, cachedSqlQueryId);
     }
     async insertValues(portableQuery, transactionIndex, ensureGeneratedValues // For internal use only
     ) {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         return await transServer.insertValues(portableQuery, {
             domainAndPort: 'test'
         }, transactionIndex, ensureGeneratedValues);
     }
     async insertValuesGetIds(portableQuery, transactionIndex) {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         return await transServer.insertValuesGetIds(portableQuery, {
             domainAndPort: 'test'
         }, transactionIndex);
     }
     async updateValues(portableQuery, transactionIndex) {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         return await transServer.updateValues(portableQuery, {
             domainAndPort: 'test'
         }, transactionIndex);
     }
     async deleteWhere(portableQuery, transactionIndex) {
-        const transServer = await container(this).get(TRANS_SERVER);
+        const transServer = await di_1.container(this).get(tower_1.TRANS_SERVER);
         return await transServer.deleteWhere(portableQuery, {
             domainAndPort: 'test'
         }, transactionIndex);
     }
 }
-DI.set(TRANS_CONNECTOR, TransactionalConnector);
+exports.TransactionalConnector = TransactionalConnector;
+di_1.DI.set(ground_control_1.TRANS_CONNECTOR, TransactionalConnector);
 //# sourceMappingURL=TransactionalConnector.js.map

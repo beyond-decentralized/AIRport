@@ -1,6 +1,8 @@
-import { DI } from '@airport/di/lib';
-import { Q_METADATA_UTILS } from '../../tokens';
-export class QMetadataUtils {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const lib_1 = require("@airport/di/lib");
+const tokens_1 = require("../../tokens");
+class QMetadataUtils {
     getAllColumns(qEntity) {
         return qEntity.__driver__.allColumns;
     }
@@ -16,5 +18,6 @@ export class QMetadataUtils {
         return new entityConstructor();
     }
 }
-DI.set(Q_METADATA_UTILS, QMetadataUtils);
+exports.QMetadataUtils = QMetadataUtils;
+lib_1.DI.set(tokens_1.Q_METADATA_UTILS, QMetadataUtils);
 //# sourceMappingURL=QMetadataUtils.js.map

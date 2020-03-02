@@ -1,14 +1,16 @@
-export var StoreType;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var StoreType;
 (function (StoreType) {
     StoreType[StoreType["SQLITE_CORDOVA"] = 0] = "SQLITE_CORDOVA";
     StoreType[StoreType["SQLJS"] = 1] = "SQLJS";
     StoreType[StoreType["REMOTE"] = 2] = "REMOTE";
-})(StoreType || (StoreType = {}));
-export var IdGeneration;
+})(StoreType = exports.StoreType || (exports.StoreType = {}));
+var IdGeneration;
 (function (IdGeneration) {
     IdGeneration[IdGeneration["ENTITY_CHANGE_ID"] = 0] = "ENTITY_CHANGE_ID";
-})(IdGeneration || (IdGeneration = {}));
-export var store;
+})(IdGeneration = exports.IdGeneration || (exports.IdGeneration = {}));
+var store;
 (function (store) {
     var type;
     (function (type) {
@@ -37,5 +39,5 @@ export var store;
         }
         type.getValue = getValue;
     })(type = store.type || (store.type = {}));
-})(store || (store = {}));
+})(store = exports.store || (exports.store = {}));
 //# sourceMappingURL=storeInfo.js.map

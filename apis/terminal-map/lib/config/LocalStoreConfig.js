@@ -1,5 +1,7 @@
-import { store, StoreType } from './storeInfo';
-export class CommonLocalStoreConfig {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const storeInfo_1 = require("./storeInfo");
+class CommonLocalStoreConfig {
     constructor(localStoreName, type, idGeneration) {
         this.setupInfo = {
             name: localStoreName,
@@ -8,7 +10,8 @@ export class CommonLocalStoreConfig {
         };
     }
 }
-export function createLocalStoreConfig(localStoreName, config) {
+exports.CommonLocalStoreConfig = CommonLocalStoreConfig;
+function createLocalStoreConfig(localStoreName, config) {
     if (!config.type && config.type !== 0) {
         throw new Error(`Local Store Type is not specified`);
     }
@@ -17,26 +20,30 @@ export function createLocalStoreConfig(localStoreName, config) {
     }
     let type;
     if (typeof config.type === 'string') {
-        type = store.type.getValue(config.type);
+        type = storeInfo_1.store.type.getValue(config.type);
     }
     else {
         // Verify the type
-        store.type.getName(config.type);
+        storeInfo_1.store.type.getName(config.type);
         type = config.type;
     }
     switch (type) {
-        case StoreType.SQLITE_CORDOVA:
+        case storeInfo_1.StoreType.SQLITE_CORDOVA:
             return new SqLiteCordovaLocalStoreConfig(localStoreName, config.type, config.idGeneration);
-        case StoreType.SQLJS:
+        case storeInfo_1.StoreType.SQLJS:
             return new SqlJsCordovaLocalStoreConfig(localStoreName, config.type, config.idGeneration);
         default:
             throw new Error(`Unsupported LocalStoreType: ${type}`);
     }
 }
-export class PouchDbLocalStoreConfig extends CommonLocalStoreConfig {
+exports.createLocalStoreConfig = createLocalStoreConfig;
+class PouchDbLocalStoreConfig extends CommonLocalStoreConfig {
 }
-export class SqLiteCordovaLocalStoreConfig extends CommonLocalStoreConfig {
+exports.PouchDbLocalStoreConfig = PouchDbLocalStoreConfig;
+class SqLiteCordovaLocalStoreConfig extends CommonLocalStoreConfig {
 }
-export class SqlJsCordovaLocalStoreConfig extends CommonLocalStoreConfig {
+exports.SqLiteCordovaLocalStoreConfig = SqLiteCordovaLocalStoreConfig;
+class SqlJsCordovaLocalStoreConfig extends CommonLocalStoreConfig {
 }
+exports.SqlJsCordovaLocalStoreConfig = SqlJsCordovaLocalStoreConfig;
 //# sourceMappingURL=LocalStoreConfig.js.map

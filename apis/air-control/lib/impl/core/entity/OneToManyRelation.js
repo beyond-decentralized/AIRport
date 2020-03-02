@@ -1,10 +1,13 @@
-import { extend } from '../../utils/qSchemaBuilderUtils';
-import { QRelation } from './Relation';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const qSchemaBuilderUtils_1 = require("../../utils/qSchemaBuilderUtils");
+const Relation_1 = require("./Relation");
 /**
  * Created by Papa on 10/25/2016.
  */
-export function QOneToManyRelation(dbRelation, parentQ) {
+function QOneToManyRelation(dbRelation, parentQ) {
     QOneToManyRelation.base.constructor.call(this, dbRelation, parentQ);
 }
-extend(QRelation, QOneToManyRelation, {});
+exports.QOneToManyRelation = QOneToManyRelation;
+qSchemaBuilderUtils_1.extend(Relation_1.QRelation, QOneToManyRelation, {});
 //# sourceMappingURL=OneToManyRelation.js.map

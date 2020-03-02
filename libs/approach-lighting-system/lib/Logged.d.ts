@@ -5,5 +5,6 @@ export interface ILogged {
 export declare abstract class Logged implements ILogged {
     protected _level: SetLogLevel;
     constructor(level?: SetLogLevel);
-    level: SetLogLevel;
+    get level(): SetLogLevel;
+    set level(newLevel: SetLogLevel);
 }

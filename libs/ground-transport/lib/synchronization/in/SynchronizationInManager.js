@@ -1,15 +1,17 @@
-import { MessageToTMContentType } from '@airport/arrivals-n-departures';
-import { container, DI } from '@airport/di';
-import { CascadeOverwrite } from '@airport/ground-control';
-import { DataOrigin, SHARING_MESSAGE_DAO } from '@airport/moving-walkway';
-import { transactional } from '@airport/tower';
-import { parse } from 'zipson/lib';
-import { SYNC_IN_CHECKER, SYNC_IN_MANAGER, SYNC_LOG_MESSAGE_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR } from '../../tokens';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const moving_walkway_1 = require("@airport/moving-walkway");
+const tower_1 = require("@airport/tower");
+const lib_1 = require("zipson/lib");
+const tokens_1 = require("../../tokens");
 // const log = GROUND_TRANSPORT_LOGGER.add('SynchronizationInManager')
 /**
  * Synchronization in Manager implementation.
  */
-export class SynchronizationInManager {
+class SynchronizationInManager {
     /**
      * ASSUMPTION: all of the messages are intended for this TM.
      *
@@ -22,7 +24,7 @@ export class SynchronizationInManager {
      */
     async receiveMessages(sharingNodes, incomingMessages, sharingNodeTerminalMap) {
         // TODO: is syncInChecker needed (what was the reason for original injection)?
-        const [sharingMessageDao, syncInChecker, syncLogMessageProcessor, twoStageSyncedInDataProcessor] = await container(this).get(SHARING_MESSAGE_DAO, SYNC_IN_CHECKER, SYNC_LOG_MESSAGE_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR);
+        const [sharingMessageDao, syncInChecker, syncLogMessageProcessor, twoStageSyncedInDataProcessor] = await di_1.container(this).get(moving_walkway_1.SHARING_MESSAGE_DAO, tokens_1.SYNC_IN_CHECKER, tokens_1.SYNC_LOG_MESSAGE_PROCESSOR, tokens_1.TWO_STAGE_SYNCED_IN_DATA_PROCESSOR);
         const syncTimestamp = new Date();
         const allSyncLogMessages = [];
         const allDataMessages = [];
@@ -39,7 +41,7 @@ export class SynchronizationInManager {
                 continue;
             }
             const sharingMessage = {
-                origin: DataOrigin.REMOTE,
+                origin: moving_walkway_1.DataOrigin.REMOTE,
                 agtSharingMessageId: batchedMessagesToTM.agtSharingMessageId,
                 sharingNode,
                 syncTimestamp
@@ -55,7 +57,7 @@ export class SynchronizationInManager {
                 switch (incomingMessage.contentType) {
                     // Terminal sync log messages are responses from AGT on which messages coming
                     // form this TM have been synced (or not)
-                    case MessageToTMContentType.SYNC_NOTIFICATION: {
+                    case arrivals_n_departures_1.MessageToTMContentType.SYNC_NOTIFICATION: {
                         const syncNotificationMessage = incomingMessage;
                         const syncLogMessageToClient = {
                             // agtTerminalSyncLogId: syncNotificationMessage.agtTerminalSyncLogId,
@@ -74,10 +76,10 @@ export class SynchronizationInManager {
                         break;
                     }
                     // Sync Record messages are synced via AGT to this TM from other TMs
-                    case MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK: {
+                    case arrivals_n_departures_1.MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK: {
                         const repoTransBlockMessage = incomingMessage;
                         const serializedData = repoTransBlockMessage.repositoryTransactionBlock;
-                        const data = parse(serializedData);
+                        const data = lib_1.parse(serializedData);
                         const lastChangeTimeMillis = this.getLastChangeMillisFromRepoTransBlock(data);
                         if (!this.isValidLastChangeTime(syncTimestamp, lastChangeTimeMillis)) {
                             break;
@@ -94,7 +96,7 @@ export class SynchronizationInManager {
                         allDataMessages.push(dataMessage);
                         break;
                     }
-                    case MessageToTMContentType.ALIVE_ACK:
+                    case arrivals_n_departures_1.MessageToTMContentType.ALIVE_ACK:
                         throw new Error('Not Implemented');
                     default:
                         console.error(`Unsupported ClientInMessage type: ${incomingMessage.contentType}`);
@@ -102,8 +104,8 @@ export class SynchronizationInManager {
                 }
             }
         }
-        await transactional(async () => {
-            await sharingMessageDao.bulkCreate(sharingMessages, CascadeOverwrite.DEFAULT, false);
+        await tower_1.transactional(async () => {
+            await sharingMessageDao.bulkCreate(sharingMessages, ground_control_1.CascadeOverwrite.DEFAULT, false);
             // These messages are responses to already sent messages
             // no need to check for existence of repositories
             await syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages);
@@ -167,5 +169,6 @@ export class SynchronizationInManager {
         return lastChangeTimeMillis;
     }
 }
-DI.set(SYNC_IN_MANAGER, SynchronizationInManager);
+exports.SynchronizationInManager = SynchronizationInManager;
+di_1.DI.set(tokens_1.SYNC_IN_MANAGER, SynchronizationInManager);
 //# sourceMappingURL=SynchronizationInManager.js.map

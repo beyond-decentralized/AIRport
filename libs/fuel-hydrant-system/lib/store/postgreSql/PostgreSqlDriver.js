@@ -1,20 +1,22 @@
-import { QueryType } from '@airport/ground-control';
-import { transactional } from '@airport/tower';
-import { SqlDriver } from '../SqlDriver';
-import { DDLManager } from './DDLManager';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const tower_1 = require("@airport/tower");
+const SqlDriver_1 = require("../SqlDriver");
+const DDLManager_1 = require("./DDLManager");
 /**
  * Created by Papa on 11/27/2016.
  */
-export class PostgreSqlDriver extends SqlDriver {
+class PostgreSqlDriver extends SqlDriver_1.SqlDriver {
     async doesTableExist(tableName) {
         throw new Error(`Not implemented`);
     }
     async findNative(sqlQuery, parameters) {
         let nativeParameters = parameters.map((value) => this.convertValueIn(value));
-        return await this.query(QueryType.SELECT, sqlQuery, nativeParameters);
+        return await this.query(ground_control_1.QueryType.SELECT, sqlQuery, nativeParameters);
     }
     async executeNative(sql, parameters) {
-        return await this.query(QueryType.MUTATE, sql, parameters);
+        return await this.query(ground_control_1.QueryType.MUTATE, sql, parameters);
     }
     convertValueIn(value) {
         switch (typeof value) {
@@ -42,10 +44,10 @@ export class PostgreSqlDriver extends SqlDriver {
     async initAllTables() {
         let createOperations;
         let createQueries = [];
-        let createSql = DDLManager.getCreateDDL();
-        await transactional(async () => {
+        let createSql = DDLManager_1.DDLManager.getCreateDDL();
+        await tower_1.transactional(async () => {
             for (const createSqlStatement of createSql) {
-                const createTablePromise = this.query(QueryType.DDL, createSqlStatement, [], false);
+                const createTablePromise = this.query(ground_control_1.QueryType.DDL, createSqlStatement, [], false);
                 createQueries.push(createTablePromise);
             }
             await this.initTables(createQueries);
@@ -58,4 +60,5 @@ export class PostgreSqlDriver extends SqlDriver {
         }
     }
 }
+exports.PostgreSqlDriver = PostgreSqlDriver;
 //# sourceMappingURL=PostgreSqlDriver.js.map

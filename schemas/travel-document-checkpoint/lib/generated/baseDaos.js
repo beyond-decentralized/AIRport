@@ -1,57 +1,66 @@
-import { Dao } from '@airport/check-in';
-import { Q, duoDiSet } from './qSchema';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const check_in_1 = require("@airport/check-in");
+const qSchema_1 = require("./qSchema");
 // Schema Q object Dependency Injection readiness detection Dao
-export class SQDIDao extends Dao {
+class SQDIDao extends check_in_1.Dao {
     constructor(dbEntityId) {
-        super(dbEntityId, Q);
+        super(dbEntityId, qSchema_1.Q);
     }
 }
-export class BaseAgtDao extends SQDIDao {
+exports.SQDIDao = SQDIDao;
+class BaseAgtDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(5);
+        return qSchema_1.duoDiSet(5);
     }
     constructor() {
         super(5);
     }
 }
-export class BaseTerminalDao extends SQDIDao {
+exports.BaseAgtDao = BaseAgtDao;
+class BaseTerminalDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(3);
+        return qSchema_1.duoDiSet(3);
     }
     constructor() {
         super(3);
     }
 }
-export class BaseTerminalAgtDao extends SQDIDao {
+exports.BaseTerminalDao = BaseTerminalDao;
+class BaseTerminalAgtDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(4);
+        return qSchema_1.duoDiSet(4);
     }
     constructor() {
         super(4);
     }
 }
-export class BaseUserDao extends SQDIDao {
+exports.BaseTerminalAgtDao = BaseTerminalAgtDao;
+class BaseUserDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(2);
+        return qSchema_1.duoDiSet(2);
     }
     constructor() {
         super(2);
     }
 }
-export class BaseUserTerminalDao extends SQDIDao {
+exports.BaseUserDao = BaseUserDao;
+class BaseUserTerminalDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
     }
 }
-export class BaseUserTerminalAgtDao extends SQDIDao {
+exports.BaseUserTerminalDao = BaseUserTerminalDao;
+class BaseUserTerminalAgtDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(1);
+        return qSchema_1.duoDiSet(1);
     }
     constructor() {
         super(1);
     }
 }
+exports.BaseUserTerminalAgtDao = BaseUserTerminalAgtDao;
 //# sourceMappingURL=baseDaos.js.map

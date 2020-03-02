@@ -1,13 +1,15 @@
-import { DI } from '@airport/di';
-import { Repository, RepositoryTransactionHistory } from '../../ddl/ddl';
-import { REPO_TRANS_HISTORY_DUO } from '../../tokens';
-import { BaseRepositoryTransactionHistoryDuo, } from '../../generated/generated';
-export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHistoryDuo {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ddl_1 = require("../../ddl/ddl");
+const tokens_1 = require("../../tokens");
+const generated_1 = require("../../generated/generated");
+class RepositoryTransactionHistoryDuo extends generated_1.BaseRepositoryTransactionHistoryDuo {
     getNewRecord(repositoryId, actor) {
-        let transaction = new RepositoryTransactionHistory();
+        let transaction = new ddl_1.RepositoryTransactionHistory();
         let saveTimestamp = new Date();
         transaction.saveTimestamp = saveTimestamp;
-        transaction.repository = new Repository();
+        transaction.repository = new ddl_1.Repository();
         transaction.repository.id = repositoryId;
         transaction.actor = actor;
         // transaction.syncStatus = SyncStatus.SYNC_PENDING;
@@ -69,5 +71,6 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
         return 0;
     }
 }
-DI.set(REPO_TRANS_HISTORY_DUO, RepositoryTransactionHistoryDuo);
+exports.RepositoryTransactionHistoryDuo = RepositoryTransactionHistoryDuo;
+di_1.DI.set(tokens_1.REPO_TRANS_HISTORY_DUO, RepositoryTransactionHistoryDuo);
 //# sourceMappingURL=RepositoryTransactionHistoryDuo.js.map

@@ -1,4 +1,6 @@
-export class ArrayChangeRecordIterator {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class ArrayChangeRecordIterator {
     constructor(changeRecords, nextIndex = 0) {
         this.changeRecords = changeRecords;
         this.nextIndex = nextIndex;
@@ -16,4 +18,5 @@ export class ArrayChangeRecordIterator {
         return this.nextIndex < this.length;
     }
 }
+exports.ArrayChangeRecordIterator = ArrayChangeRecordIterator;
 //# sourceMappingURL=ArrayChangeRecordIterator.js.map

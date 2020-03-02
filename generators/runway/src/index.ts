@@ -3,7 +3,7 @@
  */
 
 import * as fs             from 'fs'
-import * as ts             from 'typescript'
+import * as ts        from 'typescript'
 import {watchFiles}        from './FileWatcher'
 import {readConfiguration} from './options/generator'
 
@@ -50,7 +50,7 @@ function isTsFile(
 watchFiles(
 	configuration,
 	{
-		module: ts.ModuleKind.CommonJS
+		module: 6 // ts.ModuleKind.ES2020,
 	},
 	sourceFilePaths
 )

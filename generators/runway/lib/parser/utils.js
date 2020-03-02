@@ -1,5 +1,7 @@
-import * as ts from 'typescript';
-export function isDecoratedAsEntity(decorators) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ts = require("typescript");
+function isDecoratedAsEntity(decorators) {
     if (!decorators || !decorators.length) {
         return null;
     }
@@ -31,7 +33,8 @@ export function isDecoratedAsEntity(decorators) {
     });
     return isDecoratedAsEntity;
 }
-export function getClassPath(sourceFile) {
+exports.isDecoratedAsEntity = isDecoratedAsEntity;
+function getClassPath(sourceFile) {
     if (!sourceFile) {
         return null;
     }
@@ -40,7 +43,8 @@ export function getClassPath(sourceFile) {
     }
     return sourceFile.path;
 }
-export function getImplementedInterfaces(classSymbol) {
+exports.getClassPath = getClassPath;
+function getImplementedInterfaces(classSymbol) {
     let valueDeclaration = classSymbol.valueDeclaration;
     if (!valueDeclaration.heritageClauses) {
         return [];
@@ -56,7 +60,8 @@ export function getImplementedInterfaces(classSymbol) {
     });
     return interfaces;
 }
-export function getParentClassImport(classSymbol, parentClassName) {
+exports.getImplementedInterfaces = getImplementedInterfaces;
+function getParentClassImport(classSymbol, parentClassName) {
     let parentClassImport = null;
     let parent = classSymbol.parent;
     if (!parent) {
@@ -89,7 +94,8 @@ export function getParentClassImport(classSymbol, parentClassName) {
     });
     return parentClassImport;
 }
-export function getParentClassName(classSymbol) {
+exports.getParentClassImport = getParentClassImport;
+function getParentClassName(classSymbol) {
     let parentEntityName = null;
     if (!classSymbol.declarations || !classSymbol.declarations.length) {
         return parentEntityName;
@@ -125,7 +131,8 @@ export function getParentClassName(classSymbol) {
     });
     return parentEntityName;
 }
-export function isPrimitive(type) {
+exports.getParentClassName = getParentClassName;
+function isPrimitive(type) {
     switch (type) {
         case 'boolean':
         case 'number':
@@ -136,10 +143,13 @@ export function isPrimitive(type) {
     }
     return false;
 }
-export function endsWith(target, suffix) {
+exports.isPrimitive = isPrimitive;
+function endsWith(target, suffix) {
     return target.indexOf(suffix, target.length - suffix.length) !== -1;
 }
-export function startsWith(target, suffix) {
+exports.endsWith = endsWith;
+function startsWith(target, suffix) {
     return target.indexOf(suffix) === 0;
 }
+exports.startsWith = startsWith;
 //# sourceMappingURL=utils.js.map

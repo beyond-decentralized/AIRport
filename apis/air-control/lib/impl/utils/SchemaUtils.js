@@ -1,17 +1,19 @@
-import { DI } from '@airport/di';
-import { CascadeType, CRUDOperation, EntityRelationType, getTableName, repositoryEntity } from '@airport/ground-control';
-import { convertToY, isY, markAsStub } from '../..';
-import { SCHEMA_UTILS } from '../../tokens';
-import { valuesEqual } from '../Utils';
-export class SchemaUtils {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const __1 = require("../..");
+const tokens_1 = require("../../tokens");
+const Utils_1 = require("../Utils");
+class SchemaUtils {
     getDbEntity(schemaIndex, tableIndex, airDb) {
         return airDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
     }
     isRepositoryId(columnName) {
-        return columnName === repositoryEntity.REPOSITORY_ID;
+        return columnName === ground_control_1.repositoryEntity.REPOSITORY_ID;
     }
     doCascade(dbRelation, crudOperation) {
-        if (dbRelation.relationType !== EntityRelationType.ONE_TO_MANY) {
+        if (dbRelation.relationType !== ground_control_1.EntityRelationType.ONE_TO_MANY) {
             return false;
         }
         if (!dbRelation.oneToManyElems) {
@@ -19,16 +21,16 @@ export class SchemaUtils {
         }
         const cascade = dbRelation.oneToManyElems.cascade;
         switch (crudOperation) {
-            case CRUDOperation.CREATE:
-                return cascade === CascadeType.ALL
-                    || cascade === CascadeType.PERSIST
-                    || cascade === CascadeType.CREATE;
-            case CRUDOperation.UPDATE:
-                return cascade === CascadeType.ALL
-                    || cascade === CascadeType.PERSIST
-                    || cascade === CascadeType.UPDATE;
-            case CRUDOperation.DELETE:
-                return cascade === CascadeType.ALL || cascade === CascadeType.REMOVE;
+            case ground_control_1.CRUDOperation.CREATE:
+                return cascade === ground_control_1.CascadeType.ALL
+                    || cascade === ground_control_1.CascadeType.PERSIST
+                    || cascade === ground_control_1.CascadeType.CREATE;
+            case ground_control_1.CRUDOperation.UPDATE:
+                return cascade === ground_control_1.CascadeType.ALL
+                    || cascade === ground_control_1.CascadeType.PERSIST
+                    || cascade === ground_control_1.CascadeType.UPDATE;
+            case ground_control_1.CRUDOperation.DELETE:
+                return cascade === ground_control_1.CascadeType.ALL || cascade === ground_control_1.CascadeType.REMOVE;
             default:
                 throw new Error(`Unsupported CRUDOperation '${crudOperation}' for cascade check.`);
         }
@@ -99,7 +101,7 @@ export class SchemaUtils {
         const propertyNameChains = [firstColumnValueAndPath.path];
         const value = firstColumnValueAndPath.value;
         columnValuesAndPaths.reduce((last, current) => {
-            if (!valuesEqual(last.value, current.value, true)) {
+            if (!Utils_1.valuesEqual(last.value, current.value, true)) {
                 throw new Error(`Values differ for ${dbEntity.name}.${dbColumn.name}:
 						'${last.path.join('.')}' = ${last.value}
 						'${current.path.join('.')}' = ${current.value}`);
@@ -197,7 +199,7 @@ export class SchemaUtils {
                 let propertyObject = propertySelectClause[propertyNameLink];
                 if (!propertyObject) {
                     propertyObject = {};
-                    markAsStub(propertyObject);
+                    __1.markAsStub(propertyObject);
                     propertySelectClause[propertyNameLink] = propertyObject;
                 }
                 else {
@@ -214,7 +216,7 @@ export class SchemaUtils {
                         }
                     }
                     else {
-                        if (!allowDefaults && !isY(propertyObject)) {
+                        if (!allowDefaults && !__1.isY(propertyObject)) {
                             const reason = dbRelation.property.isId
                                 ? `'${dbRelation.property.entity.name}.${dbRelation.property.name}' is an @Id property`
                                 : `'${dbRelation.property.entity.name}' has no @Id - all properties are treated as @Ids`;
@@ -232,7 +234,7 @@ export class SchemaUtils {
                 propertySelectClause = propertyObject;
             });
             if (convertTo) {
-                convertToY(propertySelectClause);
+                __1.convertToY(propertySelectClause);
             }
         });
     }
@@ -286,13 +288,13 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
             }
             const inQueryColumnIndex = selectClause.length - 1;
             switch (dbColumn.name) {
-                case repositoryEntity.ACTOR_ID:
+                case ground_control_1.repositoryEntity.ACTOR_ID:
                     actorIdColumnIndex = inQueryColumnIndex;
                     break;
-                case repositoryEntity.ACTOR_RECORD_ID:
+                case ground_control_1.repositoryEntity.ACTOR_RECORD_ID:
                     actorRecordIdColumnIndex = inQueryColumnIndex;
                     break;
-                case repositoryEntity.IS_DRAFT:
+                case ground_control_1.repositoryEntity.IS_DRAFT:
                     if (!nonIdColumnSet) {
                         this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
                     }
@@ -301,10 +303,10 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
                     }
                     draftColumnIndex = inQueryColumnIndex;
                     break;
-                case repositoryEntity.REPOSITORY_ID:
+                case ground_control_1.repositoryEntity.REPOSITORY_ID:
                     repositoryIdColumnIndex = inQueryColumnIndex;
                     break;
-                case repositoryEntity.SYSTEM_WIDE_OPERATION_ID:
+                case ground_control_1.repositoryEntity.SYSTEM_WIDE_OPERATION_ID:
                     if (nonIdColumnSet) {
                         throw new Error(errorPrefix +
                             `Cannot update 'systemWideOperationId' of Repository Entities.`);
@@ -324,7 +326,7 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
         };
     }
     getTableName(dbEntity) {
-        return getTableName(dbEntity.schemaVersion.schema, dbEntity);
+        return ground_control_1.getTableName(dbEntity.schemaVersion.schema, dbEntity);
     }
     addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause) {
         if (this.isManyRelationColumn(dbColumn)) {
@@ -383,6 +385,7 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
         return false;
     }
 }
+exports.SchemaUtils = SchemaUtils;
 SchemaUtils.TEMP_ID = 0;
-DI.set(SCHEMA_UTILS, SchemaUtils);
+di_1.DI.set(tokens_1.SCHEMA_UTILS, SchemaUtils);
 //# sourceMappingURL=SchemaUtils.js.map

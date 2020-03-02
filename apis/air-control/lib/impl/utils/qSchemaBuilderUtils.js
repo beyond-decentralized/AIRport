@@ -1,19 +1,21 @@
-import { EntityRelationType, SQLDataType } from '@airport/ground-control';
-import { QEntity } from '../core/entity/Entity';
-import { QOneToManyRelation } from '../core/entity/OneToManyRelation';
-import { QRelation } from '../core/entity/Relation';
-import { QBooleanField } from '../core/field/BooleanField';
-import { QDateField } from '../core/field/DateField';
-import { QNumberField } from '../core/field/NumberField';
-import { QStringField } from '../core/field/StringField';
-import { QUntypedField } from '../core/field/UntypedField';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const Entity_1 = require("../core/entity/Entity");
+const OneToManyRelation_1 = require("../core/entity/OneToManyRelation");
+const Relation_1 = require("../core/entity/Relation");
+const BooleanField_1 = require("../core/field/BooleanField");
+const DateField_1 = require("../core/field/DateField");
+const NumberField_1 = require("../core/field/NumberField");
+const StringField_1 = require("../core/field/StringField");
+const UntypedField_1 = require("../core/field/UntypedField");
 /**
  * From:
  * http://js-bits.blogspot.com/2010/08/javascript-inheritance-done-right.html
  * Via:
  * https://stackoverflow.com/questions/6617780/how-to-call-parent-constructor
  */
-export function extend(base, sub, methods) {
+function extend(base, sub, methods) {
     sub.prototype = Object.create(base.prototype);
     sub.prototype.constructor = sub;
     sub.base = base.prototype;
@@ -24,38 +26,41 @@ export function extend(base, sub, methods) {
     // so we can define the constructor inline
     return sub;
 }
-export function getColumnQField(entity, property, q, column) {
+exports.extend = extend;
+function getColumnQField(entity, property, q, column) {
     switch (column.type) {
-        case SQLDataType.ANY:
-            return new QUntypedField(column, property, q);
-        case SQLDataType.BOOLEAN:
-            return new QBooleanField(column, property, q);
-        case SQLDataType.DATE:
-            return new QDateField(column, property, q);
-        case SQLDataType.NUMBER:
-            return new QNumberField(column, property, q);
-        case SQLDataType.JSON:
-        case SQLDataType.STRING:
-            return new QStringField(column, property, q);
+        case ground_control_1.SQLDataType.ANY:
+            return new UntypedField_1.QUntypedField(column, property, q);
+        case ground_control_1.SQLDataType.BOOLEAN:
+            return new BooleanField_1.QBooleanField(column, property, q);
+        case ground_control_1.SQLDataType.DATE:
+            return new DateField_1.QDateField(column, property, q);
+        case ground_control_1.SQLDataType.NUMBER:
+            return new NumberField_1.QNumberField(column, property, q);
+        case ground_control_1.SQLDataType.JSON:
+        case ground_control_1.SQLDataType.STRING:
+            return new StringField_1.QStringField(column, property, q);
     }
 }
-export function getQRelation(entity, property, q, allQSchemas) {
+exports.getColumnQField = getColumnQField;
+function getQRelation(entity, property, q, allQSchemas) {
     const relation = property.relation[0];
     switch (relation.relationType) {
-        case EntityRelationType.MANY_TO_ONE:
+        case ground_control_1.EntityRelationType.MANY_TO_ONE:
             const relationEntity = relation.relationEntity;
             const relationSchema = relationEntity.schemaVersion.schema;
             const qIdRelationConstructor = allQSchemas[relationSchema.index]
                 .__qIdRelationConstructors__[relationEntity.index];
             // return new qIdRelationConstructor(relationEntity, property, q)
             return new qIdRelationConstructor(relation.relationEntity, relation, q);
-        case EntityRelationType.ONE_TO_MANY:
-            return new QOneToManyRelation(relation, q);
+        case ground_control_1.EntityRelationType.ONE_TO_MANY:
+            return new OneToManyRelation_1.QOneToManyRelation(relation, q);
         default:
             throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`);
     }
 }
-export function getQEntityConstructor(allQSchemas) {
+exports.getQRelation = getQRelation;
+function getQEntityConstructor(allQSchemas) {
     // ChildQEntity refers to the constructor
     var ChildQEntity = function (entity, nextChildJoinPosition, dbRelation, joinType) {
         ChildQEntity.base.constructor.call(this, entity, nextChildJoinPosition, dbRelation, joinType);
@@ -74,10 +79,11 @@ export function getQEntityConstructor(allQSchemas) {
         });
         // entity.__qConstructor__ = ChildQEntity
     };
-    extend(QEntity, ChildQEntity, {});
+    extend(Entity_1.QEntity, ChildQEntity, {});
     return ChildQEntity;
 }
-export function addColumnQField(entity, property, q, column) {
+exports.getQEntityConstructor = getQEntityConstructor;
+function addColumnQField(entity, property, q, column) {
     const qFieldOrRelation = getColumnQField(entity, property, q, column);
     q.__driver__.allColumns[column.index]
         = qFieldOrRelation;
@@ -87,15 +93,17 @@ export function addColumnQField(entity, property, q, column) {
     }
     return qFieldOrRelation;
 }
-export function getQEntityIdRelationConstructor() {
+exports.addColumnQField = addColumnQField;
+function getQEntityIdRelationConstructor() {
     function QEntityIdRelation(entity, relation, qEntity) {
         QEntityIdRelation.base.constructor.call(this, relation, qEntity);
         getQEntityIdFields(this, entity, qEntity, relation.property);
         // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
     }
-    extend(QRelation, QEntityIdRelation, {});
+    extend(Relation_1.QRelation, QEntityIdRelation, {});
     return QEntityIdRelation;
 }
+exports.getQEntityIdRelationConstructor = getQEntityIdRelationConstructor;
 /**
  * Set all fields behind an id relation.  For example
  *
@@ -118,7 +126,7 @@ export function getQEntityIdRelationConstructor() {
  * @param relationColumnMap  DbColumn map for the current path of properties
  *  (QA.rel2.otherRel), keyed by the column from the One side of the relation
  */
-export function getQEntityIdFields(addToObject, relationEntity, qEntity, parentProperty, relationColumnMap) {
+function getQEntityIdFields(addToObject, relationEntity, qEntity, parentProperty, relationColumnMap) {
     if (!relationColumnMap) {
         const parentRelation = parentProperty.relation[0];
         const relationColumns = parentRelation.manyRelationColumns;
@@ -153,7 +161,8 @@ export function getQEntityIdFields(addToObject, relationEntity, qEntity, parentP
     });
     return addToObject;
 }
-export function setQSchemaEntities(schema, qSchema, allQSchemas) {
+exports.getQEntityIdFields = getQEntityIdFields;
+function setQSchemaEntities(schema, qSchema, allQSchemas) {
     // const entities = orderEntitiesByIdDependencies(schema.currentVersion.entities,
     // schema)
     qSchema.__qIdRelationConstructors__ = [];
@@ -208,7 +217,8 @@ export function setQSchemaEntities(schema, qSchema, allQSchemas) {
     });
     // } while (haveMissingDependencies)
 }
-export function orderSchemasInOrderOfPrecedence(schemas) {
+exports.setQSchemaEntities = setQSchemaEntities;
+function orderSchemasInOrderOfPrecedence(schemas) {
     const schemaWithDepsMap = new Map();
     const schemasWithDeps = schemas.map(schema => {
         const dependencies = new Set();
@@ -233,7 +243,8 @@ export function orderSchemasInOrderOfPrecedence(schemas) {
     });
     return schemasWithDeps.map(schemaWithDeps => schemaWithDeps.schema);
 }
-export function schemaDependsOn(dependantSchema, dependsOnSchemaIndex, schemaWithDepsMap) {
+exports.orderSchemasInOrderOfPrecedence = orderSchemasInOrderOfPrecedence;
+function schemaDependsOn(dependantSchema, dependsOnSchemaIndex, schemaWithDepsMap) {
     if (dependantSchema.dependencies.has(dependsOnSchemaIndex)) {
         return true;
     }
@@ -242,4 +253,5 @@ export function schemaDependsOn(dependantSchema, dependsOnSchemaIndex, schemaWit
     // }
     return false;
 }
+exports.schemaDependsOn = schemaDependsOn;
 //# sourceMappingURL=qSchemaBuilderUtils.js.map

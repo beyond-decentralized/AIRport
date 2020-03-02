@@ -1,7 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 10/16/2016.
  */
-export class FieldInOrderBy {
+class FieldInOrderBy {
     constructor(field, sortOrder) {
         this.field = field;
         this.sortOrder = sortOrder;
@@ -27,4 +29,5 @@ export class FieldInOrderBy {
         };
     }
 }
+exports.FieldInOrderBy = FieldInOrderBy;
 //# sourceMappingURL=FieldInOrderBy.js.map

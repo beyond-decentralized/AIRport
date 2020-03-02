@@ -1,10 +1,12 @@
-import { DI } from '@airport/di';
-import { ensureChildJsMap } from '@airport/ground-control';
-import { SYNC_IN_UTILS } from '../../tokens';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const tokens_1 = require("../../tokens");
 /**
  * Result of comparing to versions of a given schema.
  */
-export var SchemaComparisonResult;
+var SchemaComparisonResult;
 (function (SchemaComparisonResult) {
     // Version specified in the message is lower than it's version in the receiving
     // Terminal (TM)
@@ -15,11 +17,11 @@ export var SchemaComparisonResult;
     // Version specified in the message in higher than it's version in the receiving
     // Terminal (TM)
     SchemaComparisonResult[SchemaComparisonResult["MESSAGE_SCHEMA_VERSION_IS_HIGHER"] = 1] = "MESSAGE_SCHEMA_VERSION_IS_HIGHER";
-})(SchemaComparisonResult || (SchemaComparisonResult = {}));
-export class SyncInUtils {
+})(SchemaComparisonResult = exports.SchemaComparisonResult || (exports.SchemaComparisonResult = {}));
+class SyncInUtils {
     ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordMapBySchemaTableAndRepository) {
         // FIXME: ensure that OperationHistory schemaVersion is correctly set
-        return ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(recordMapBySchemaTableAndRepository, operationHistory.entity.schemaVersion.id), operationHistory.entity.id), repositoryId);
+        return ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(recordMapBySchemaTableAndRepository, operationHistory.entity.schemaVersion.id), operationHistory.entity.id), repositoryId);
     }
     // createSharingMessage(
     // 	dataMessageToClient: IDataToTM,
@@ -43,5 +45,6 @@ export class SyncInUtils {
         let snrtb;
     }
 }
-DI.set(SYNC_IN_UTILS, SyncInUtils);
+exports.SyncInUtils = SyncInUtils;
+di_1.DI.set(tokens_1.SYNC_IN_UTILS, SyncInUtils);
 //# sourceMappingURL=SyncInUtils.js.map

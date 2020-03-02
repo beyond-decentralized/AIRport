@@ -1,6 +1,8 @@
-import { DI } from '@airport/di';
-import { FIELD_UTILS } from '../../tokens';
-export class FieldUtils {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const tokens_1 = require("../../tokens");
+class FieldUtils {
     getFieldQueryJson(fieldSubQuery, entityAliases, queryUtils) {
         if (!this.FieldQuery) {
             this.FieldQuery = require('../query/facade/FieldQuery').FieldQuery;
@@ -9,5 +11,6 @@ export class FieldUtils {
         return subSelectQuery.toJSON(queryUtils, this);
     }
 }
-DI.set(FIELD_UTILS, FieldUtils);
+exports.FieldUtils = FieldUtils;
+di_1.DI.set(tokens_1.FIELD_UTILS, FieldUtils);
 //# sourceMappingURL=FieldUtils.js.map

@@ -1,4 +1,6 @@
-export class QRelationBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class QRelationBuilder {
     constructor(parentBuilder, entityProperty, entityMapByName, buildRelationInstance) {
         this.parentBuilder = parentBuilder;
         this.entityProperty = entityProperty;
@@ -55,4 +57,5 @@ export class QRelationBuilder {
         return definition;
     }
 }
+exports.QRelationBuilder = QRelationBuilder;
 //# sourceMappingURL=QRelationBuilder.js.map

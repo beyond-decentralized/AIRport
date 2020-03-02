@@ -1,5 +1,7 @@
-import { Observable } from './Observable';
-export class Subject extends Observable {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Observable_1 = require("./Observable");
+class Subject extends Observable_1.Observable {
     // complete(): void {
     // }
     error(errorValue) {
@@ -9,4 +11,5 @@ export class Subject extends Observable {
         this.exec(value, 'onNext');
     }
 }
+exports.Subject = Subject;
 //# sourceMappingURL=Subject.js.map

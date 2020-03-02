@@ -1,81 +1,93 @@
-import { Duo } from '@airport/check-in';
-import { Q, duoDiSet } from './qSchema';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const check_in_1 = require("@airport/check-in");
+const qSchema_1 = require("./qSchema");
 // Schema Q object Dependency Injection readiness detection Duo
-export class SQDIDuo extends Duo {
+class SQDIDuo extends check_in_1.Duo {
     constructor(dbEntityId) {
-        super(dbEntityId, Q);
+        super(dbEntityId, qSchema_1.Q);
     }
 }
-export class BaseSchemaDuo extends SQDIDuo {
+exports.SQDIDuo = SQDIDuo;
+class BaseSchemaDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(8);
+        return qSchema_1.duoDiSet(8);
     }
     constructor() {
         super(8);
     }
 }
-export class BaseSchemaColumnDuo extends SQDIDuo {
+exports.BaseSchemaDuo = BaseSchemaDuo;
+class BaseSchemaColumnDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(4);
+        return qSchema_1.duoDiSet(4);
     }
     constructor() {
         super(4);
     }
 }
-export class BaseSchemaEntityDuo extends SQDIDuo {
+exports.BaseSchemaColumnDuo = BaseSchemaColumnDuo;
+class BaseSchemaEntityDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(5);
+        return qSchema_1.duoDiSet(5);
     }
     constructor() {
         super(5);
     }
 }
-export class BaseSchemaPropertyDuo extends SQDIDuo {
+exports.BaseSchemaEntityDuo = BaseSchemaEntityDuo;
+class BaseSchemaPropertyDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(2);
+        return qSchema_1.duoDiSet(2);
     }
     constructor() {
         super(2);
     }
 }
-export class BaseSchemaPropertyColumnDuo extends SQDIDuo {
+exports.BaseSchemaPropertyDuo = BaseSchemaPropertyDuo;
+class BaseSchemaPropertyColumnDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(3);
+        return qSchema_1.duoDiSet(3);
     }
     constructor() {
         super(3);
     }
 }
-export class BaseSchemaReferenceDuo extends SQDIDuo {
+exports.BaseSchemaPropertyColumnDuo = BaseSchemaPropertyColumnDuo;
+class BaseSchemaReferenceDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(6);
+        return qSchema_1.duoDiSet(6);
     }
     constructor() {
         super(6);
     }
 }
-export class BaseSchemaRelationDuo extends SQDIDuo {
+exports.BaseSchemaReferenceDuo = BaseSchemaReferenceDuo;
+class BaseSchemaRelationDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(1);
+        return qSchema_1.duoDiSet(1);
     }
     constructor() {
         super(1);
     }
 }
-export class BaseSchemaRelationColumnDuo extends SQDIDuo {
+exports.BaseSchemaRelationDuo = BaseSchemaRelationDuo;
+class BaseSchemaRelationColumnDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
     }
 }
-export class BaseSchemaVersionDuo extends SQDIDuo {
+exports.BaseSchemaRelationColumnDuo = BaseSchemaRelationColumnDuo;
+class BaseSchemaVersionDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(7);
+        return qSchema_1.duoDiSet(7);
     }
     constructor() {
         super(7);
     }
 }
+exports.BaseSchemaVersionDuo = BaseSchemaVersionDuo;
 //# sourceMappingURL=baseDuos.js.map

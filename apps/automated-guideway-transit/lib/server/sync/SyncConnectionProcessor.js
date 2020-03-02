@@ -1,14 +1,16 @@
-import { MessageToTMContentType, RepoTransBlockSyncOutcomeType } from '@airport/arrivals-n-departures';
-import { container, DI } from '@airport/di';
-import { ensureChildArray, ensureChildJsMap } from '@airport/ground-control';
-import { AGT_REPO_TRANS_BLOCK_DAO, AGT_SHARING_MESSAGE_DAO, AgtSharingMessageAcknowledged, ArchivingStatus, SYNC_LOG_DAO, TERMINAL_DAO, TERMINAL_REPOSITORY_DAO, UserRepositoryPermission } from '@airport/guideway';
-import { transactional } from '@airport/tower';
-import { AGTLogger, ERROR_LOGGER, SYNC_CONNECTION_PROCESSOR } from '../../tokens';
-const log = AGTLogger.add('SyncConnectionProcessor');
-export class SyncConnectionProcessor {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+const guideway_1 = require("@airport/guideway");
+const tower_1 = require("@airport/tower");
+const tokens_1 = require("../../tokens");
+const log = tokens_1.AGTLogger.add('SyncConnectionProcessor');
+class SyncConnectionProcessor {
     async processConnections(verifiedMessagesFromTM) {
         // TODO: remove unused dependencies once tested
-        const [terminalDao, terminalRepositoryDao, agtSharingMessageDao, errorLogger, syncLogDao, agtRepositoryTransactionBlockDao] = await container(this).get(TERMINAL_DAO, TERMINAL_REPOSITORY_DAO, AGT_SHARING_MESSAGE_DAO, ERROR_LOGGER, SYNC_LOG_DAO, AGT_REPO_TRANS_BLOCK_DAO);
+        const [terminalDao, terminalRepositoryDao, agtSharingMessageDao, errorLogger, syncLogDao, agtRepositoryTransactionBlockDao] = await di_1.container(this).get(guideway_1.TERMINAL_DAO, guideway_1.TERMINAL_REPOSITORY_DAO, guideway_1.AGT_SHARING_MESSAGE_DAO, tokens_1.ERROR_LOGGER, guideway_1.SYNC_LOG_DAO, guideway_1.AGT_REPO_TRANS_BLOCK_DAO);
         const verifiedTerminalIds = Array.from(verifiedMessagesFromTM.terminalIds);
         // Start writing data back to valid connections
         for (const [terminalId, verifiedLoginClaim] of verifiedMessagesFromTM.syncConnectionClaimsByTmId) {
@@ -36,7 +38,7 @@ export class SyncConnectionProcessor {
         await this.tryToInsertAgtRepositoryTransactionBlocks(verifiedTerminalIds, repositoryIdSet, verifiedConnectionClaimMap, agtRepoTransBlockDao, agtSharingMessageDao, syncLogDao, terminalRepositoryDao);
     }
     async tryToInsertAgtRepositoryTransactionBlocks(verifiedTerminalIds, repositoryIdSet, verifiedConnectionClaimMap, agtRepoTransBlockDao, agtSharingMessageDao, syncLogDao, terminalRepositoryDao) {
-        await transactional(async () => {
+        await tower_1.transactional(async () => {
             // Query TerminalRepositories to verify that the incoming repository change records
             // exist and get the permissions a given terminal has in a particular repository
             const terminalRepositoryMapByTerminalId = await terminalRepositoryDao.findByTerminalIdInAndRepositoryIdIn(verifiedTerminalIds, Array.from(repositoryIdSet));
@@ -56,7 +58,7 @@ export class SyncConnectionProcessor {
                 const verifiedLoginClaim = verifiedConnectionClaimMap.get(terminalId);
                 const messageFromTM = verifiedLoginClaim.messageFromTM;
                 verifiedLoginClaim.connectionDataCallback(terminalId, false, {
-                    contentType: MessageToTMContentType.SYNC_NOTIFICATION,
+                    contentType: arrivals_n_departures_1.MessageToTMContentType.SYNC_NOTIFICATION,
                     tmSharingMessageId: messageFromTM.tmSharingMessageId,
                     // agtAgtSharingMessageId: agtSharingMessageIdMapByTerminalId.get(terminalId),
                     // addDatetime: verifiedLoginClaim.loginClaimReceptionTime,
@@ -115,16 +117,16 @@ export class SyncConnectionProcessor {
             for (const repoUpdateRequest of repoUpdateRequests) {
                 const repoPermission = permissionByRepositoryId.get(repoUpdateRequest.agtRepositoryId);
                 if (!repoPermission) {
-                    const declinedTransSyncLogOutcomes = ensureChildArray(repoTransBlockSyncOutcomeMap, terminalId);
-                    this.declineTransSyncLog(terminalId, repoUpdateRequest, declinedTransSyncLogOutcomes, RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_DENIED_REPOSITORY_NOT_FOUND);
+                    const declinedTransSyncLogOutcomes = ground_control_1.ensureChildArray(repoTransBlockSyncOutcomeMap, terminalId);
+                    this.declineTransSyncLog(terminalId, repoUpdateRequest, declinedTransSyncLogOutcomes, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_DENIED_REPOSITORY_NOT_FOUND);
                     continue;
                 }
-                if (repoPermission >= UserRepositoryPermission.WRITE) {
+                if (repoPermission >= guideway_1.UserRepositoryPermission.WRITE) {
                     tmRepositoryTransactionBlockIds.add(repoUpdateRequest.tmRepositoryTransactionBlockId);
                 }
                 else {
-                    const declinedTransSyncLogOutcomes = ensureChildArray(repoTransBlockSyncOutcomeMap, terminalId);
-                    this.declineTransSyncLog(terminalId, repoUpdateRequest, declinedTransSyncLogOutcomes, RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_DENIED_NO_WRITE_PERMISSION);
+                    const declinedTransSyncLogOutcomes = ground_control_1.ensureChildArray(repoTransBlockSyncOutcomeMap, terminalId);
+                    this.declineTransSyncLog(terminalId, repoUpdateRequest, declinedTransSyncLogOutcomes, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_DENIED_NO_WRITE_PERMISSION);
                 }
             }
             return {
@@ -138,7 +140,7 @@ export class SyncConnectionProcessor {
             const declinedTransSyncLogOutcomes = [];
             // For every repository that that was requested to be updated
             for (const repoUpdateRequest of repoUpdateRequests) {
-                this.declineTransSyncLog(terminalId, repoUpdateRequest, declinedTransSyncLogOutcomes, RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_DENIED_DATABASE_NOT_FOUND);
+                this.declineTransSyncLog(terminalId, repoUpdateRequest, declinedTransSyncLogOutcomes, arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_DENIED_DATABASE_NOT_FOUND);
             }
             // [MessageFromTMOperation, TerminalCredentials, TmSharingMessageId,
             // RepositoryUpdateRequest[], AgtSharingMessageId[]]
@@ -149,7 +151,7 @@ export class SyncConnectionProcessor {
 		TerminalId:         {1}
 		TmSharingMessageId: {2}`, terminalId, tmSharingMessageId);
             recentConnectionClaim.connectionDataCallback(terminalId, false, {
-                contentType: MessageToTMContentType.SYNC_NOTIFICATION,
+                contentType: arrivals_n_departures_1.MessageToTMContentType.SYNC_NOTIFICATION,
                 tmSharingMessageId,
                 // agtSharingMessageId: 0,
                 // addDatetime: 0,
@@ -165,12 +167,12 @@ export class SyncConnectionProcessor {
         for (const [terminalId, permissionMapForTerminal] of permissionMapByTerminalAndRepositoryIds) {
             const verifiedLoginClaim = verifiedConnectionClaimMap.get(terminalId);
             const messageFromTM = verifiedLoginClaim.messageFromTM;
-            const transSyncLogOutcomes = ensureChildArray(repoTransBlockSyncOutcomeMap, terminalId);
+            const transSyncLogOutcomes = ground_control_1.ensureChildArray(repoTransBlockSyncOutcomeMap, terminalId);
             for (const repoUpdateRequest of messageFromTM.repositoryUpdateRequests) {
                 const repositoryId = repoUpdateRequest.agtRepositoryId;
                 const tmRepositoryTransactionBlockId = repoUpdateRequest.tmRepositoryTransactionBlockId;
                 const repoPermission = permissionMapForTerminal.get(repositoryId);
-                if (repoPermission < UserRepositoryPermission.WRITE) {
+                if (repoPermission < guideway_1.UserRepositoryPermission.WRITE) {
                     continue;
                 }
                 if (this.messageAlreadySynced(existingAgtRepoTransBlockInfoMap, terminalId, tmRepositoryTransactionBlockId, verifiedConnectionClaimMap, alreadySyncedInMessageTerminalIds, alreadySyncedInMessageTmSharingMessageIds, alreadySyncedMessageMapByTerminalIdAndTmSharingMessageId, repoUpdateRequest)) {
@@ -179,12 +181,12 @@ export class SyncConnectionProcessor {
                 const transSyncLogOutcome = {
                     tmRepositoryTransactionBlockId,
                     // agtRepositoryTransactionBlockId: null,
-                    syncOutcomeType: RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_SUCCESSFUL
+                    syncOutcomeType: arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_SUCCESSFUL
                 };
                 transSyncLogOutcomes.push(transSyncLogOutcome);
                 successTransSyncOutcomes.push(transSyncLogOutcome);
                 agtRepositoryTransactionBlockInserts.push([repositoryId, terminalId,
-                    ArchivingStatus.NOT_ARCHIVING, verifiedLoginClaim.loginClaimReceptionTime,
+                    guideway_1.ArchivingStatus.NOT_ARCHIVING, verifiedLoginClaim.loginClaimReceptionTime,
                     true, tmRepositoryTransactionBlockId, repoUpdateRequest.repositoryTransactionBlockContents]);
             }
         }
@@ -205,11 +207,11 @@ export class SyncConnectionProcessor {
         alreadySyncedInMessageTerminalIds.add(terminalId);
         const tmSharingMessageId = messageFromTM.tmSharingMessageId;
         alreadySyncedInMessageTmSharingMessageIds.add(tmSharingMessageId);
-        const alreadySyncedMessagesForTerminalId = ensureChildJsMap(alreadySyncedMessageMapByTerminalIdAndTmSharingMessageId, terminalId);
+        const alreadySyncedMessagesForTerminalId = ground_control_1.ensureChildJsMap(alreadySyncedMessageMapByTerminalIdAndTmSharingMessageId, terminalId);
         let alreadySyncedMessage = alreadySyncedMessagesForTerminalId.get(tmSharingMessageId);
         if (!alreadySyncedMessage) {
             alreadySyncedMessage = {
-                contentType: MessageToTMContentType.SYNC_NOTIFICATION,
+                contentType: arrivals_n_departures_1.MessageToTMContentType.SYNC_NOTIFICATION,
                 tmSharingMessageId,
                 // agtAgtSharingMessageId: null,
                 // addDatetime: repoTransBlockInfo[1],
@@ -227,7 +229,7 @@ export class SyncConnectionProcessor {
         alreadySyncedMessage.syncOutcomes.push({
             tmRepositoryTransactionBlockId,
             // agtRepositoryTransactionBlockId,
-            syncOutcomeType: RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_ALREADY_SYNCED
+            syncOutcomeType: arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_FROM_TM_ALREADY_SYNCED
         });
         return true;
     }
@@ -257,7 +259,7 @@ export class SyncConnectionProcessor {
             verifiedTerminalId,
             verifiedConnectionClaimMap.get(verifiedTerminalId)
                 .messageFromTM.tmSharingMessageId,
-            AgtSharingMessageAcknowledged.ACKNOWLEDGED,
+            guideway_1.AgtSharingMessageAcknowledged.ACKNOWLEDGED,
         ]);
         const [agtSharingMessageIdMapByTerminalId, agtRepositoryTransactionBlockIds] = await Promise.all([
             agtSharingMessageDao.insertValues(agtSharingMessageInserts),
@@ -286,7 +288,7 @@ export class SyncConnectionProcessor {
         await this.tryToUpdateAgtSharingMessages(agtSharingMessageIdSet, verifiedConnectionClaimMap, agtSharingMessageDao);
     }
     async tryToUpdateAgtSharingMessages(agtSharingMessageIdSet, verifiedConnectionClaimMap, agtSharingMessageDao) {
-        await transactional(async () => {
+        await tower_1.transactional(async () => {
             const sharingMessageMapByTerminalId = await agtSharingMessageDao.findNotSyncedByIdIn(Array.from(agtSharingMessageIdSet));
             const verifiedAgtSharingMessageIdSet = new Set();
             // For every found terminal sync log map, make sure that the client terminal
@@ -320,7 +322,7 @@ export class SyncConnectionProcessor {
             const tmSharingMessageId = connectionClaim.messageFromTM
                 .tmSharingMessageId;
             agtSharingMessagesToInsert.push([
-                terminalId, tmSharingMessageId, AgtSharingMessageAcknowledged.NOT_ACKNOWLEDGED
+                terminalId, tmSharingMessageId, guideway_1.AgtSharingMessageAcknowledged.NOT_ACKNOWLEDGED
             ]);
             const syncLogsForTerminalId = [];
             syncLogsByTerminalIdMap.set(terminalId, syncLogsForTerminalId);
@@ -369,5 +371,6 @@ export class SyncConnectionProcessor {
         await syncLogDao.insertValues(syncLogInserts);
     }
 }
-DI.set(SYNC_CONNECTION_PROCESSOR, SyncConnectionProcessor);
+exports.SyncConnectionProcessor = SyncConnectionProcessor;
+di_1.DI.set(tokens_1.SYNC_CONNECTION_PROCESSOR, SyncConnectionProcessor);
 //# sourceMappingURL=SyncConnectionProcessor.js.map

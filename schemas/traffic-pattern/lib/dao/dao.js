@@ -1,15 +1,20 @@
-import { DI } from '@airport/di';
-import { NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS } from '../tokens';
-export * from './SchemaColumnDao';
-export * from './SchemaDao';
-export * from './SchemaEntityDao';
-export * from './SchemaPropertyColumnDao';
-export * from './SchemaPropertyDao';
-export * from './SchemaReferenceDao';
-export * from './SchemaRelationColumnDao';
-export * from './SchemaRelationDao';
-export * from './SchemaVersionDao';
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const tokens_1 = require("../tokens");
+__export(require("./SchemaColumnDao"));
+__export(require("./SchemaDao"));
+__export(require("./SchemaEntityDao"));
+__export(require("./SchemaPropertyColumnDao"));
+__export(require("./SchemaPropertyDao"));
+__export(require("./SchemaReferenceDao"));
+__export(require("./SchemaRelationColumnDao"));
+__export(require("./SchemaRelationDao"));
+__export(require("./SchemaVersionDao"));
 class AtAirport_TrafficPattern_Daos {
 }
-DI.set(NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS, AtAirport_TrafficPattern_Daos);
+di_1.DI.set(tokens_1.NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS, AtAirport_TrafficPattern_Daos);
 //# sourceMappingURL=dao.js.map

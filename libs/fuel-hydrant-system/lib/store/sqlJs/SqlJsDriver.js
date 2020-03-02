@@ -1,15 +1,17 @@
-import { QueryType, StoreType } from '@airport/ground-control';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
 // FIXME: add support, in future, if needed
 // import {Database}      from 'sql.js'
-import { SQLDialect } from '../../sql/core/SQLQuery';
-import { SqLiteDriver } from '../sqLite/SqLiteDriver';
-export class SqlJsDriver extends SqLiteDriver {
+const SQLQuery_1 = require("../../sql/core/SQLQuery");
+const SqLiteDriver_1 = require("../sqLite/SqLiteDriver");
+class SqlJsDriver extends SqLiteDriver_1.SqLiteDriver {
     constructor() {
         super();
-        this.type = StoreType.SQLJS;
+        this.type = ground_control_1.StoreType.SQLJS;
     }
     getDialect() {
-        return SQLDialect.SQLITE_SQLJS;
+        return SQLQuery_1.SQLDialect.SQLITE_SQLJS;
     }
     async initialize() {
         if (typeof SQL !== 'undefined') {
@@ -73,9 +75,9 @@ export class SqlJsDriver extends SqLiteDriver {
     }
     getReturnValue(queryType, response) {
         switch (queryType) {
-            case QueryType.MUTATE:
+            case ground_control_1.QueryType.MUTATE:
                 return response.rowsAffected;
-            case QueryType.SELECT:
+            case ground_control_1.QueryType.SELECT:
                 return response.rows;
             default:
                 return null;
@@ -85,4 +87,5 @@ export class SqlJsDriver extends SqLiteDriver {
         throw error;
     }
 }
+exports.SqlJsDriver = SqlJsDriver;
 //# sourceMappingURL=SqlJsDriver.js.map

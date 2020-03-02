@@ -1,22 +1,24 @@
-import { EntityAliases } from '../../core/entity/Aliases';
-import { QOneToManyRelation } from '../../core/entity/OneToManyRelation';
-import { QField } from '../../core/field/Field';
-import { DistinguishableQuery, NON_ENTITY_SELECT_ERROR_MESSAGE } from './NonEntityQuery';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Aliases_1 = require("../../core/entity/Aliases");
+const OneToManyRelation_1 = require("../../core/entity/OneToManyRelation");
+const Field_1 = require("../../core/field/Field");
+const NonEntityQuery_1 = require("./NonEntityQuery");
 /**
  * Created by Papa on 10/24/2016.
  */
-export const FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE = `Entity SELECT clauses can only contain fields assigned: null | undefined | boolean | Date | number | string | Relation SELECT`;
+exports.FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE = `Entity SELECT clauses can only contain fields assigned: null | undefined | boolean | Date | number | string | Relation SELECT`;
 /**
  * A query whose select facade is a collection of properties.
  */
-export class MappableQuery extends DistinguishableQuery {
+class MappableQuery extends NonEntityQuery_1.DistinguishableQuery {
     nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils) {
         let select = {};
         for (let property in rawSelect) {
             let value = rawSelect[property];
-            if (value instanceof QField) {
+            if (value instanceof Field_1.QField) {
                 if (this.isEntityQuery) {
-                    throw new Error(FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE);
+                    throw new Error(exports.FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE);
                 }
                 // The same value may appear in the select clause more than once.
                 // In that case the last one will set the alias for all of them.
@@ -24,7 +26,7 @@ export class MappableQuery extends DistinguishableQuery {
                 // that is OK.
                 select[property] = value.toJSON(this.columnAliases, true, queryUtils, fieldUtils);
             }
-            else if (value instanceof QOneToManyRelation) {
+            else if (value instanceof OneToManyRelation_1.QOneToManyRelation) {
                 throw new Error(`@OneToMany relation objects can cannot be used in SELECT clauses`);
             } // Must be a primitive
             else {
@@ -50,7 +52,7 @@ export class MappableQuery extends DistinguishableQuery {
                 }
                 finally {
                     if (!isChildObject && !this.isEntityQuery) {
-                        throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
+                        throw new Error(NonEntityQuery_1.NON_ENTITY_SELECT_ERROR_MESSAGE);
                     }
                 }
             }
@@ -58,8 +60,9 @@ export class MappableQuery extends DistinguishableQuery {
         return select;
     }
 }
-export class TreeQuery extends MappableQuery {
-    constructor(rawQuery, entityAliases = new EntityAliases()) {
+exports.MappableQuery = MappableQuery;
+class TreeQuery extends MappableQuery {
+    constructor(rawQuery, entityAliases = new Aliases_1.EntityAliases()) {
         super(entityAliases);
         this.rawQuery = rawQuery;
     }
@@ -70,4 +73,5 @@ export class TreeQuery extends MappableQuery {
         return jsonMappedQuery;
     }
 }
+exports.TreeQuery = TreeQuery;
 //# sourceMappingURL=TreeQuery.js.map

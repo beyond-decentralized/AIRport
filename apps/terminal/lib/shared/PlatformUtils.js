@@ -1,10 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 6/30/2016.
  */
 var startTime = new Date().getTime();
 // Invoke the random algorithm (?change the seed?)
 Math.random();
-export class PlatformUtils {
+class PlatformUtils {
     static async getNewDatabaseId() {
         return new Date().getTime().toString(36) + await this.createNonce(7, true);
     }
@@ -34,4 +36,5 @@ export class PlatformUtils {
         */
     }
 }
+exports.PlatformUtils = PlatformUtils;
 //# sourceMappingURL=PlatformUtils.js.map

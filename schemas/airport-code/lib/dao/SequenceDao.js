@@ -1,21 +1,24 @@
-import { plus } from '@airport/air-control';
-import { DI } from '@airport/di';
-import { SEQUENCE_DAO } from '../tokens';
-import { BaseSequenceDao, Q } from '../generated/generated';
-export class SequenceDao extends BaseSequenceDao {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const tokens_1 = require("../tokens");
+const generated_1 = require("../generated/generated");
+class SequenceDao extends generated_1.BaseSequenceDao {
     static diSet() {
-        return Q.__dbSchema__ && Q.__dbSchema__
+        return generated_1.Q.__dbSchema__ && generated_1.Q.__dbSchema__
             .currentVersion.entities[0];
     }
     async incrementCurrentValues() {
-        const s = Q.Sequence;
+        const s = generated_1.Q.Sequence;
         await this.db.updateWhere({
             update: s,
             set: {
-                currentValue: plus(s.currentValue, s.incrementBy)
+                currentValue: air_control_1.plus(s.currentValue, s.incrementBy)
             }
         });
     }
 }
-DI.set(SEQUENCE_DAO, SequenceDao);
+exports.SequenceDao = SequenceDao;
+di_1.DI.set(tokens_1.SEQUENCE_DAO, SequenceDao);
 //# sourceMappingURL=SequenceDao.js.map

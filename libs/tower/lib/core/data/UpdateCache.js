@@ -1,7 +1,9 @@
-import { UPDATE_CACHE, UpdateCacheType, valuesEqual } from '@airport/air-control';
-import { DI } from '@airport/di';
-import { EntityRelationType, SQLDataType } from '@airport/ground-control';
-export class UpdateCache {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
+const di_1 = require("@airport/di");
+const ground_control_1 = require("@airport/ground-control");
+class UpdateCache {
     // private updateCache: EntityUpdateCache[][] = []
     // private saveRun                            = 0
     // dropCache(): void {
@@ -18,7 +20,7 @@ export class UpdateCache {
      */
     addToCache(schemaUtils, cacheForUpdate, dbEntity, ...entities) {
         if (!entities || !entities.length
-            || cacheForUpdate === UpdateCacheType.NONE) {
+            || cacheForUpdate === air_control_1.UpdateCacheType.NONE) {
             return;
         }
         this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbEntity, ...entities);
@@ -29,14 +31,14 @@ export class UpdateCache {
     getEntityUpdateDiff(schemaUtils, dbEntity, entity, failOnNoOriginalRecord = true) {
         let updateDiff = {};
         let originalRecord = this.getEntityUpdateCache(entity);
-        let currentRecord = this.getEntityCacheEntry(schemaUtils, UpdateCacheType.ROOT_QUERY_ENTITIES, dbEntity, entity, {});
+        let currentRecord = this.getEntityCacheEntry(schemaUtils, air_control_1.UpdateCacheType.ROOT_QUERY_ENTITIES, dbEntity, entity, {});
         if (!originalRecord) {
             return entity;
         }
         for (let columnName in originalRecord) {
             let originalValue = originalRecord[columnName];
             let newValue = currentRecord[columnName];
-            if (!valuesEqual(originalValue, newValue)) {
+            if (!air_control_1.valuesEqual(originalValue, newValue)) {
                 updateDiff[columnName] = newValue;
             }
         }
@@ -63,8 +65,8 @@ export class UpdateCache {
             if (dbProperty.relation) {
                 const dbRelation = dbProperty.relation[0];
                 switch (dbRelation.relationType) {
-                    case EntityRelationType.ONE_TO_MANY:
-                        if (cacheForUpdate !== UpdateCacheType.ALL_QUERY_ENTITIES) {
+                    case ground_control_1.EntityRelationType.ONE_TO_MANY:
+                        if (cacheForUpdate !== air_control_1.UpdateCacheType.ALL_QUERY_ENTITIES) {
                             continue;
                         }
                         if (!(value instanceof Array)) {
@@ -74,14 +76,14 @@ export class UpdateCache {
                             this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbRelation.relationEntity, manyObject);
                         });
                         break;
-                    case EntityRelationType.MANY_TO_ONE:
+                    case ground_control_1.EntityRelationType.MANY_TO_ONE:
                         if (!(value instanceof Object) || value instanceof Array) {
                             throw new Error(`Expecting @ManyToOne for a non-array entity relation`);
                         }
                         schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, value, propertyNameChains) => {
                             this.copyColumn(schemaUtils, dbColumn, entityCopy, value);
                         }, false);
-                        if (cacheForUpdate !== UpdateCacheType.ALL_QUERY_ENTITIES) {
+                        if (cacheForUpdate !== air_control_1.UpdateCacheType.ALL_QUERY_ENTITIES) {
                             continue;
                         }
                         this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbRelation.relationEntity, value);
@@ -105,16 +107,16 @@ export class UpdateCache {
         // 	throw new Error(`Values do not match for column
         // '${dbColumn.propertyColumns[0].property.entity.name}.${dbColumn.name}'`) }
         switch (dbColumn.type) {
-            case SQLDataType.BOOLEAN:
-            case SQLDataType.NUMBER:
-            case SQLDataType.ANY:
+            case ground_control_1.SQLDataType.BOOLEAN:
+            case ground_control_1.SQLDataType.NUMBER:
+            case ground_control_1.SQLDataType.ANY:
                 entityCopy[columnName] = value;
                 break;
-            case SQLDataType.STRING:
-            case SQLDataType.JSON:
+            case ground_control_1.SQLDataType.STRING:
+            case ground_control_1.SQLDataType.JSON:
                 entityCopy[columnName] = value.slice(0);
                 break;
-            case SQLDataType.DATE:
+            case ground_control_1.SQLDataType.DATE:
                 entityCopy[columnName] = new Date(value.getTime());
                 break;
             default:
@@ -122,5 +124,6 @@ export class UpdateCache {
         }
     }
 }
-DI.set(UPDATE_CACHE, UpdateCache);
+exports.UpdateCache = UpdateCache;
+di_1.DI.set(air_control_1.UPDATE_CACHE, UpdateCache);
 //# sourceMappingURL=UpdateCache.js.map

@@ -1,19 +1,21 @@
-import { INVALID_TABLE_NAME, QueryType, StoreType } from '@airport/ground-control';
-import { SQLDialect } from '../../sql/core/SQLQuery';
-import { SqLiteDriver } from '../sqLite/SqLiteDriver';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ground_control_1 = require("@airport/ground-control");
+const SQLQuery_1 = require("../../sql/core/SQLQuery");
+const SqLiteDriver_1 = require("../sqLite/SqLiteDriver");
 /**
  * Created by Papa on 8/30/2016.
  */
-export class CockroachdbDriver extends SqLiteDriver {
+class CockroachdbDriver extends SqLiteDriver_1.SqLiteDriver {
     constructor() {
         super();
         this.currentStatementId = 0;
         this.pendingStatements = [];
         this.executedResults = [];
-        this.type = StoreType.SQLITE_CORDOVA;
+        this.type = ground_control_1.StoreType.SQLITE_CORDOVA;
     }
     getDialect() {
-        return SQLDialect.SQLITE_WEBSQL;
+        return SQLQuery_1.SQLDialect.SQLITE_WEBSQL;
     }
     getBackupLocation(dbFlag) {
         switch (dbFlag) {
@@ -80,7 +82,7 @@ export class CockroachdbDriver extends SqLiteDriver {
     }
     async rollback() {
         if (this.currentTransaction) {
-            this.currentTransaction.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, []);
+            this.currentTransaction.executeSql('SELECT count(*) FROM ' + ground_control_1.INVALID_TABLE_NAME, []);
         }
     }
     async commit() {
@@ -187,9 +189,9 @@ export class CockroachdbDriver extends SqLiteDriver {
     }
     getReturnValue(queryType, response) {
         switch (queryType) {
-            case QueryType.MUTATE:
+            case ground_control_1.QueryType.MUTATE:
                 return response.rowsAffected;
-            case QueryType.SELECT:
+            case ground_control_1.QueryType.SELECT:
                 return response.rows;
             default:
                 return null;
@@ -199,6 +201,7 @@ export class CockroachdbDriver extends SqLiteDriver {
         throw error;
     }
 }
+exports.CockroachdbDriver = CockroachdbDriver;
 CockroachdbDriver.BACKUP_LOCAL = 2;
 CockroachdbDriver.BACKUP_LIBRARY = 1;
 CockroachdbDriver.BACKUP_DOCUMENTS = 0;

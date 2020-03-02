@@ -1,5 +1,7 @@
-import { Subject } from './Subject';
-export class BehaviorSubject extends Subject {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Subject_1 = require("./Subject");
+class BehaviorSubject extends Subject_1.Subject {
     constructor(value) {
         super();
         this.currentValue = value;
@@ -11,4 +13,5 @@ export class BehaviorSubject extends Subject {
     clear() {
     }
 }
+exports.BehaviorSubject = BehaviorSubject;
 //# sourceMappingURL=BehaviorSubject.js.map

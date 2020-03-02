@@ -1,36 +1,38 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, Entity, Id, Table } from '@airport/air-control';
+Object.defineProperty(exports, "__esModule", { value: true });
+const air_control_1 = require("@airport/air-control");
 let Sequence = class Sequence {
 };
 __decorate([
-    Id(),
-    Column({ name: 'SCHEMA_INDEX', nullable: false }),
-    DbNumber()
+    air_control_1.Id(),
+    air_control_1.Column({ name: 'SCHEMA_INDEX', nullable: false }),
+    air_control_1.DbNumber()
 ], Sequence.prototype, "schemaIndex", void 0);
 __decorate([
-    Id(),
-    Column({ name: 'TABLE_INDEX', nullable: false }),
-    DbNumber()
+    air_control_1.Id(),
+    air_control_1.Column({ name: 'TABLE_INDEX', nullable: false }),
+    air_control_1.DbNumber()
 ], Sequence.prototype, "tableIndex", void 0);
 __decorate([
-    Id(),
-    Column({ name: 'COLUMN_INDEX', nullable: false }),
-    DbNumber()
+    air_control_1.Id(),
+    air_control_1.Column({ name: 'COLUMN_INDEX', nullable: false }),
+    air_control_1.DbNumber()
 ], Sequence.prototype, "columnIndex", void 0);
 __decorate([
-    Column({ name: 'SEQUENCE_INCREMENT_BY', nullable: false })
+    air_control_1.Column({ name: 'SEQUENCE_INCREMENT_BY', nullable: false })
 ], Sequence.prototype, "incrementBy", void 0);
 __decorate([
-    Column({ name: 'CURRENT_VALUE', nullable: false })
+    air_control_1.Column({ name: 'CURRENT_VALUE', nullable: false })
 ], Sequence.prototype, "currentValue", void 0);
 Sequence = __decorate([
-    Entity(),
-    Table({ name: 'SEQUENCES' })
+    air_control_1.Entity(),
+    air_control_1.Table({ name: 'SEQUENCES' })
 ], Sequence);
-export { Sequence };
+exports.Sequence = Sequence;
 //# sourceMappingURL=Sequence.js.map

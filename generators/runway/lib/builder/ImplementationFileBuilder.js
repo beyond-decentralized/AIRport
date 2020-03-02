@@ -1,5 +1,7 @@
-import { resolveRelativePath } from '../resolve/pathResolver';
-export class ImplementationFileBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const pathResolver_1 = require("../resolve/pathResolver");
+class ImplementationFileBuilder {
     constructor(fileName, pathBuilder) {
         this.pathBuilder = pathBuilder;
         this.entityIdMapByName = {};
@@ -12,10 +14,10 @@ export class ImplementationFileBuilder {
         if (entityId === undefined) {
             return;
         }
-        const ddlRelativePath = resolveRelativePath(this.daoListingFilePath, fullDdlPath)
+        const ddlRelativePath = pathResolver_1.resolveRelativePath(this.daoListingFilePath, fullDdlPath)
             .replace('.ts', '');
         this.ddlPathMapByEntityName[entityName] = ddlRelativePath;
-        const generatedRelativePath = resolveRelativePath(this.daoListingFilePath, fullGenerationPath)
+        const generatedRelativePath = pathResolver_1.resolveRelativePath(this.daoListingFilePath, fullGenerationPath)
             .replace('.ts', '');
         this.generatedPathMapByEntityName[entityName]
             = this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath);
@@ -23,4 +25,5 @@ export class ImplementationFileBuilder {
         this.entityIdMapByName[entityName] = entityId;
     }
 }
+exports.ImplementationFileBuilder = ImplementationFileBuilder;
 //# sourceMappingURL=ImplementationFileBuilder.js.map

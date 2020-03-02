@@ -1,17 +1,21 @@
-import { Dao } from '@airport/check-in';
-import { Q, duoDiSet } from './qSchema';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const check_in_1 = require("@airport/check-in");
+const qSchema_1 = require("./qSchema");
 // Schema Q object Dependency Injection readiness detection Dao
-export class SQDIDao extends Dao {
+class SQDIDao extends check_in_1.Dao {
     constructor(dbEntityId) {
-        super(dbEntityId, Q);
+        super(dbEntityId, qSchema_1.Q);
     }
 }
-export class BaseDailyArchiveDao extends SQDIDao {
+exports.SQDIDao = SQDIDao;
+class BaseDailyArchiveDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
     }
 }
+exports.BaseDailyArchiveDao = BaseDailyArchiveDao;
 //# sourceMappingURL=baseDaos.js.map

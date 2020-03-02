@@ -1,5 +1,7 @@
-import { addImportForType } from "../../resolve/pathResolver";
-export class QTransientBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const pathResolver_1 = require("../../resolve/pathResolver");
+class QTransientBuilder {
     constructor(parentBuilder, propertyDocEntry) {
         this.parentBuilder = parentBuilder;
         this.propertyDocEntry = propertyDocEntry;
@@ -13,10 +15,11 @@ export class QTransientBuilder {
             }
             type = type.replace('[]', '');
             if (!prop.mapValueIsPrimitive) {
-                addImportForType(prop.ownerEntity, type, this.parentBuilder.fileBuilder);
+                pathResolver_1.addImportForType(prop.ownerEntity, type, this.parentBuilder.fileBuilder);
             }
         }
         return `${prop.name}?: ${prop.type};`;
     }
 }
+exports.QTransientBuilder = QTransientBuilder;
 //# sourceMappingURL=QTransientBuilder.js.map

@@ -1,7 +1,9 @@
-import { container, DI } from '@airport/di';
-import { TRANSACTION_MANAGER } from '@airport/terminal-map';
-import { TRANS_SERVER } from '@airport/tower';
-import { DELETE_MANAGER, INSERT_MANAGER, QUERY_MANAGER, UPDATE_MANAGER } from '../tokens';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const terminal_map_1 = require("@airport/terminal-map");
+const tower_1 = require("@airport/tower");
+const tokens_1 = require("../tokens");
 /**
  * Keeps track of transactions, per client and validates that a given
  * transaction belongs to the provided client.  If the connection
@@ -26,48 +28,48 @@ import { DELETE_MANAGER, INSERT_MANAGER, QUERY_MANAGER, UPDATE_MANAGER } from '.
  * A single transactional queue should be enough.
  *
  */
-export class TransactionalServer {
+class TransactionalServer {
     async init() {
-        const transManager = await container(this).get(TRANSACTION_MANAGER);
+        const transManager = await di_1.container(this).get(terminal_map_1.TRANSACTION_MANAGER);
         return await transManager.init('airport');
     }
     async transact(credentials) {
-        const transManager = await container(this).get(TRANSACTION_MANAGER);
+        const transManager = await di_1.container(this).get(terminal_map_1.TRANSACTION_MANAGER);
         return await transManager.transact(credentials);
         // this.lastTransactionIndex++
         // await this.transactionManager.transact(credentials)
         // this.currentTransactionIndex = this.lastTransactionIndex
     }
     async rollback(credentials) {
-        const transManager = await container(this).get(TRANSACTION_MANAGER);
+        const transManager = await di_1.container(this).get(terminal_map_1.TRANSACTION_MANAGER);
         return await transManager.rollback(credentials);
         // await this.transactionManager.rollback(credentials)
         // this.currentTransactionIndex = null
     }
     async commit(credentials) {
-        const transManager = await container(this).get(TRANSACTION_MANAGER);
+        const transManager = await di_1.container(this).get(terminal_map_1.TRANSACTION_MANAGER);
         return await transManager.commit(credentials);
         // await this.transactionManager.commit(credentials)
         // this.currentTransactionIndex = null
     }
     async find(portableQuery, credentials, cachedSqlQueryId) {
-        const queryManager = await container(this).get(QUERY_MANAGER);
+        const queryManager = await di_1.container(this).get(tokens_1.QUERY_MANAGER);
         return await queryManager.find(portableQuery, cachedSqlQueryId);
     }
     async findOne(portableQuery, credentials, cachedSqlQueryId) {
-        const queryManager = await container(this).get(QUERY_MANAGER);
+        const queryManager = await di_1.container(this).get(tokens_1.QUERY_MANAGER);
         return await queryManager.findOne(portableQuery, cachedSqlQueryId);
     }
     async search(portableQuery, credentials, cachedSqlQueryId) {
-        const queryManager = await container(this).get(QUERY_MANAGER);
+        const queryManager = await di_1.container(this).get(tokens_1.QUERY_MANAGER);
         return await queryManager.search(portableQuery);
     }
     async searchOne(portableQuery, credentials, cachedSqlQueryId) {
-        const queryManager = await container(this).get(QUERY_MANAGER);
+        const queryManager = await di_1.container(this).get(tokens_1.QUERY_MANAGER);
         return await queryManager.searchOne(portableQuery);
     }
     async addRepository(name, url, platform, platformConfig, distributionStrategy, credentials) {
-        const insertManager = await container(this).get(INSERT_MANAGER);
+        const insertManager = await di_1.container(this).get(tokens_1.INSERT_MANAGER);
         return await insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
     async insertValues(portableQuery, credentials, transactionIndex, ensureGeneratedValues // for internal use only
@@ -86,22 +88,22 @@ export class TransactionalServer {
                 return 0;
             }
         }
-        const insertManager = await container(this).get(INSERT_MANAGER);
+        const insertManager = await di_1.container(this).get(tokens_1.INSERT_MANAGER);
         const actor = await this.getActor(portableQuery);
         return await this.wrapInTransaction(async () => await insertManager.insertValues(portableQuery, actor, ensureGeneratedValues), 'INSERT', credentials);
     }
     async insertValuesGetIds(portableQuery, credentials, transactionIndex) {
-        const insertManager = await container(this).get(INSERT_MANAGER);
+        const insertManager = await di_1.container(this).get(tokens_1.INSERT_MANAGER);
         const actor = await this.getActor(portableQuery);
         return await this.wrapInTransaction(async () => await insertManager.insertValuesGetIds(portableQuery, actor), 'INSERT GET IDS', credentials);
     }
     async updateValues(portableQuery, credentials, transactionIndex) {
-        const updateManager = await container(this).get(UPDATE_MANAGER);
+        const updateManager = await di_1.container(this).get(tokens_1.UPDATE_MANAGER);
         const actor = await this.getActor(portableQuery);
         return await this.wrapInTransaction(async () => await updateManager.updateValues(portableQuery, actor), 'UPDATE', credentials);
     }
     async deleteWhere(portableQuery, credentials, transactionIndex) {
-        const deleteManager = await container(this).get(DELETE_MANAGER);
+        const deleteManager = await di_1.container(this).get(tokens_1.DELETE_MANAGER);
         const actor = await this.getActor(portableQuery);
         return await this.wrapInTransaction(async () => await deleteManager.deleteWhere(portableQuery, actor), 'DELETE', credentials);
     }
@@ -112,7 +114,7 @@ export class TransactionalServer {
         throw new Error(`Not Implemented`);
     }
     async wrapInTransaction(callback, operationName, credentials) {
-        const transManager = await container(this).get(TRANSACTION_MANAGER);
+        const transManager = await di_1.container(this).get(terminal_map_1.TRANSACTION_MANAGER);
         let transact = false;
         if (transManager.transactionInProgress) {
             if (credentials.domainAndPort !== transManager.transactionInProgress) {
@@ -139,5 +141,6 @@ export class TransactionalServer {
         }
     }
 }
-DI.set(TRANS_SERVER, TransactionalServer);
+exports.TransactionalServer = TransactionalServer;
+di_1.DI.set(tower_1.TRANS_SERVER, TransactionalServer);
 //# sourceMappingURL=TransactionalServer.js.map

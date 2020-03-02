@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Possible distribution strategies for Change List Federations.
  *
@@ -13,7 +15,7 @@
  *
  * In the future, we'll add a truly distributed setup, without any S3s.
  */
-export var DistributionStrategy;
+var DistributionStrategy;
 (function (DistributionStrategy) {
     /**
      *  The server is aware of all Personal Stores and it
@@ -26,5 +28,5 @@ export var DistributionStrategy;
      * and are responsible for pushing their changes to it.
      */
     DistributionStrategy[DistributionStrategy["S3_DISTIBUTED_PUSH"] = 1] = "S3_DISTIBUTED_PUSH";
-})(DistributionStrategy || (DistributionStrategy = {}));
+})(DistributionStrategy = exports.DistributionStrategy || (exports.DistributionStrategy = {}));
 //# sourceMappingURL=DistributionStrategy.js.map

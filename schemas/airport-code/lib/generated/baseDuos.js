@@ -1,33 +1,39 @@
-import { Duo } from '@airport/check-in';
-import { Q, duoDiSet } from './qSchema';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const check_in_1 = require("@airport/check-in");
+const qSchema_1 = require("./qSchema");
 // Schema Q object Dependency Injection readiness detection Duo
-export class SQDIDuo extends Duo {
+class SQDIDuo extends check_in_1.Duo {
     constructor(dbEntityId) {
-        super(dbEntityId, Q);
+        super(dbEntityId, qSchema_1.Q);
     }
 }
-export class BaseSequenceDuo extends SQDIDuo {
+exports.SQDIDuo = SQDIDuo;
+class BaseSequenceDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(0);
+        return qSchema_1.duoDiSet(0);
     }
     constructor() {
         super(0);
     }
 }
-export class BaseSystemWideOperationIdDuo extends SQDIDuo {
+exports.BaseSequenceDuo = BaseSequenceDuo;
+class BaseSystemWideOperationIdDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(1);
+        return qSchema_1.duoDiSet(1);
     }
     constructor() {
         super(1);
     }
 }
-export class BaseTerminalRunDuo extends SQDIDuo {
+exports.BaseSystemWideOperationIdDuo = BaseSystemWideOperationIdDuo;
+class BaseTerminalRunDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(2);
+        return qSchema_1.duoDiSet(2);
     }
     constructor() {
         super(2);
     }
 }
+exports.BaseTerminalRunDuo = BaseTerminalRunDuo;
 //# sourceMappingURL=baseDuos.js.map

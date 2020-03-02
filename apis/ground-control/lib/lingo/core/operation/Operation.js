@@ -1,7 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Category of a SQL contentType
  */
-export var OperationCategory;
+var OperationCategory;
 (function (OperationCategory) {
     OperationCategory[OperationCategory["BOOLEAN"] = 0] = "BOOLEAN";
     OperationCategory[OperationCategory["DATE"] = 1] = "DATE";
@@ -10,8 +12,8 @@ export var OperationCategory;
     OperationCategory[OperationCategory["NUMBER"] = 4] = "NUMBER";
     OperationCategory[OperationCategory["STRING"] = 5] = "STRING";
     OperationCategory[OperationCategory["UNTYPED"] = 6] = "UNTYPED"; // Operation on an untyped field
-})(OperationCategory || (OperationCategory = {}));
-export var SqlOperator;
+})(OperationCategory = exports.OperationCategory || (exports.OperationCategory = {}));
+var SqlOperator;
 (function (SqlOperator) {
     SqlOperator[SqlOperator["AND"] = 0] = "AND";
     SqlOperator[SqlOperator["EQUALS"] = 1] = "EQUALS";
@@ -28,12 +30,12 @@ export var SqlOperator;
     SqlOperator[SqlOperator["NOT"] = 12] = "NOT";
     SqlOperator[SqlOperator["NOT_EQUALS"] = 13] = "NOT_EQUALS";
     SqlOperator[SqlOperator["NOT_IN"] = 14] = "NOT_IN";
-})(SqlOperator || (SqlOperator = {}));
-export var CRUDOperation;
+})(SqlOperator = exports.SqlOperator || (exports.SqlOperator = {}));
+var CRUDOperation;
 (function (CRUDOperation) {
     CRUDOperation[CRUDOperation["CREATE"] = 0] = "CREATE";
     CRUDOperation[CRUDOperation["READ"] = 1] = "READ";
     CRUDOperation[CRUDOperation["UPDATE"] = 2] = "UPDATE";
     CRUDOperation[CRUDOperation["DELETE"] = 3] = "DELETE";
-})(CRUDOperation || (CRUDOperation = {}));
+})(CRUDOperation = exports.CRUDOperation || (exports.CRUDOperation = {}));
 //# sourceMappingURL=Operation.js.map

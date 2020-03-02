@@ -1,4 +1,6 @@
-export var UpdateCacheType;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var UpdateCacheType;
 (function (UpdateCacheType) {
     /**
      * Do not put retrieved entities into the update cache.
@@ -13,5 +15,5 @@ export var UpdateCacheType;
      * Put all entities in SELECT clause into the update cache.
      */
     UpdateCacheType[UpdateCacheType["ALL_QUERY_ENTITIES"] = 2] = "ALL_QUERY_ENTITIES";
-})(UpdateCacheType || (UpdateCacheType = {}));
+})(UpdateCacheType = exports.UpdateCacheType || (exports.UpdateCacheType = {}));
 //# sourceMappingURL=UpdateCacheType.js.map

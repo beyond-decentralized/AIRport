@@ -1,9 +1,11 @@
-import { container, DI } from '@airport/di';
-import { AGT_SHARING_MESSAGE_DAO, TERMINAL_DAO, TERMINAL_REPOSITORY_DAO, } from '@airport/guideway';
-import { AGTLogger, BLACKLIST, ERROR_LOGGER, SYNC_CONNECTION_VERIFIER } from '../../tokens';
-import { ServerErrorType } from '../../model/ServerErrorType';
-const log = AGTLogger.add('SyncConnectionVerifier');
-export class SyncConnectionVerifier {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
+const guideway_1 = require("@airport/guideway");
+const tokens_1 = require("../../tokens");
+const ServerErrorType_1 = require("../../model/ServerErrorType");
+const log = tokens_1.AGTLogger.add('SyncConnectionVerifier');
+class SyncConnectionVerifier {
     constructor() {
         this.pendingConnectionClaims = [];
     }
@@ -36,7 +38,7 @@ export class SyncConnectionVerifier {
     // serverId: ServerId,
     minMillisSinceLastConnection) {
         // TODO: removed unused dependencies once tested
-        const [blacklist, terminalDao, terminalRepositoryDao, agtSharingMessageDao, errorLogger] = await container(this).get(BLACKLIST, TERMINAL_DAO, TERMINAL_REPOSITORY_DAO, AGT_SHARING_MESSAGE_DAO, ERROR_LOGGER);
+        const [blacklist, terminalDao, terminalRepositoryDao, agtSharingMessageDao, errorLogger] = await di_1.container(this).get(tokens_1.BLACKLIST, guideway_1.TERMINAL_DAO, guideway_1.TERMINAL_REPOSITORY_DAO, guideway_1.AGT_SHARING_MESSAGE_DAO, tokens_1.ERROR_LOGGER);
         const currentConnectionClaims = this.pendingConnectionClaims;
         this.pendingConnectionClaims = [];
         // If there are no records to be processed
@@ -79,7 +81,7 @@ export class SyncConnectionVerifier {
                     duplicatePendingConnectionClaimsMapForTerminal.push(previousConnectionClaim);
                     duplicatePendingConnectionClaimsMap.set(terminalId, duplicatePendingConnectionClaimsMapForTerminal);
                     syncConnectionClaimsByTmId.delete(terminalId);
-                    errorLogger.logError(log, ServerErrorType.INCOMING_DATABASE_KEY_APPEARS_MORE_THAN_ONCE_IN_THE_BATCH, terminalCredentials, null);
+                    errorLogger.logError(log, ServerErrorType_1.ServerErrorType.INCOMING_DATABASE_KEY_APPEARS_MORE_THAN_ONCE_IN_THE_BATCH, terminalCredentials, null);
                 }
                 duplicatePendingConnectionClaimsMapForTerminal.push(currentConnectionClaim);
                 continue;
@@ -115,13 +117,13 @@ export class SyncConnectionVerifier {
     verifyTerminalInfo(terminalId, incomingTerminalCredentials, pendingConnectionClaim, terminalInfoMapById, errorLogger) {
         const terminalData = terminalInfoMapById.get(terminalId);
         if (!terminalData) {
-            errorLogger.logError(log, ServerErrorType.INCOMING_DATABASE_RECORD_WASNT_IN_DATABASES_TABLE, incomingTerminalCredentials, null);
+            errorLogger.logError(log, ServerErrorType_1.ServerErrorType.INCOMING_DATABASE_RECORD_WASNT_IN_DATABASES_TABLE, incomingTerminalCredentials, null);
             pendingConnectionClaim.connectionDataCallback(null, false, null);
             return null;
         }
         if (incomingTerminalCredentials.terminalPassword !== terminalData[0]) {
             // Terminal password does not match (probably a hack or an attack)
-            errorLogger.logError(log, ServerErrorType.INCOMING_DATABASE_HASH_DOES_NOT_MATCH, incomingTerminalCredentials, null);
+            errorLogger.logError(log, ServerErrorType_1.ServerErrorType.INCOMING_DATABASE_HASH_DOES_NOT_MATCH, incomingTerminalCredentials, null);
             pendingConnectionClaim.connectionDataCallback(null, false, null);
             return null;
         }
@@ -131,7 +133,7 @@ export class SyncConnectionVerifier {
         const message = pendingConnectionClaim.messageFromTM;
         // If the server connected too soon (probably a hack or an attack)
         if (lastConnectionDatetime > earliestAllowedLastConnectionDatetime) {
-            errorLogger.logError(log, ServerErrorType.SYNC_CLIENT_CONNECTED_TOO_SOON, message.terminalCredentials, null);
+            errorLogger.logError(log, ServerErrorType_1.ServerErrorType.SYNC_CLIENT_CONNECTED_TOO_SOON, message.terminalCredentials, null);
             pendingConnectionClaim.connectionDataCallback(null, false, null);
             return false;
         }
@@ -141,7 +143,7 @@ export class SyncConnectionVerifier {
         const sharingMessageIdSetForClaim = new Set();
         for (const agtSharingMessageId of message.terminalSyncAcks) {
             if (sharingMessageIdSetForClaim.has(agtSharingMessageId)) {
-                errorLogger.logError(log, ServerErrorType.INCOMING_DATABASE_SYNC_LOG_KEY_APPEARS_MORE_THAN_ONCE_IN_A_REQUEST, message.terminalCredentials, agtSharingMessageId);
+                errorLogger.logError(log, ServerErrorType_1.ServerErrorType.INCOMING_DATABASE_SYNC_LOG_KEY_APPEARS_MORE_THAN_ONCE_IN_A_REQUEST, message.terminalCredentials, agtSharingMessageId);
                 pendingConnectionClaimsMap.delete(terminalId);
                 pendingConnectionClaim.connectionDataCallback(null, false, null);
                 return false;
@@ -179,7 +181,7 @@ export class SyncConnectionVerifier {
                 }
                 else {
                     if (!foundClaimsWithIncorrectHash) {
-                        errorLogger.logError(log, ServerErrorType.DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_INCORRECT_HASH, duplicateConnectionClaimForTerminal.messageFromTM.terminalCredentials, null);
+                        errorLogger.logError(log, ServerErrorType_1.ServerErrorType.DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_INCORRECT_HASH, duplicateConnectionClaimForTerminal.messageFromTM.terminalCredentials, null);
                     }
                     foundClaimsWithIncorrectHash = true;
                     duplicateConnectionClaimForTerminal.connectionDataCallback(null, false, null);
@@ -187,7 +189,7 @@ export class SyncConnectionVerifier {
             }
             if (connectionClaimWithMatchingHash) {
                 if (foundMultipleWithCorrectHash) {
-                    errorLogger.logError(log, ServerErrorType.MULTIPLE_DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_CORRECT_HASH, connectionClaimWithMatchingHash.messageFromTM.terminalCredentials, null);
+                    errorLogger.logError(log, ServerErrorType_1.ServerErrorType.MULTIPLE_DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_CORRECT_HASH, connectionClaimWithMatchingHash.messageFromTM.terminalCredentials, null);
                     connectionClaimWithMatchingHash.connectionDataCallback(null, false, null);
                     continue;
                 }
@@ -200,12 +202,13 @@ export class SyncConnectionVerifier {
         }
         // For any remaining duplicate requests (that had no matching terminal record)
         for (const connectionClaimsForTerminal of duplicatePendingConnectionClaimsMap.values()) {
-            errorLogger.logError(log, ServerErrorType.DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_NO_MATCHING_DATABASE, connectionClaimsForTerminal[0].messageFromTM.terminalCredentials, null);
+            errorLogger.logError(log, ServerErrorType_1.ServerErrorType.DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_NO_MATCHING_DATABASE, connectionClaimsForTerminal[0].messageFromTM.terminalCredentials, null);
             for (const ConnectionClaimForTerminal of connectionClaimsForTerminal) {
                 ConnectionClaimForTerminal.connectionDataCallback(null, false, null);
             }
         }
     }
 }
-DI.set(SYNC_CONNECTION_VERIFIER, SyncConnectionVerifier);
+exports.SyncConnectionVerifier = SyncConnectionVerifier;
+di_1.DI.set(tokens_1.SYNC_CONNECTION_VERIFIER, SyncConnectionVerifier);
 //# sourceMappingURL=SyncConnectionVerifier.js.map
