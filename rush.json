@@ -1,8 +1,8 @@
 {
   // NOTE: Comments are allowed in all Rush config files :-)
-  "rushVersion": "5.5.4",
-  "pnpmVersion": "2.21.1",
-  "nodeSupportedVersionRange": ">=10.0.0 <11.0.0",
+  "rushVersion": "5.20.0",
+  "pnpmVersion": "4.11.1",
+  "nodeSupportedVersionRange": ">=13.0.0 <14.0.0",
   "projectFolderMinDepth": 1,
 
   "projects": [
@@ -25,6 +25,11 @@
     {
       "packageName": "@airport/ground-control",
       "projectFolder": "apis/ground-control",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/security-check",
+      "projectFolder": "apis/security-check",
       "shouldPublish": true
     },
     {

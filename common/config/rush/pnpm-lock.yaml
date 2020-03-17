@@ -4,9 +4,9 @@ dependencies:
   '@rush-temp/approach-lighting-system': 'file:projects/approach-lighting-system.tgz'
   '@rush-temp/arrivals-n-departures': 'file:projects/arrivals-n-departures.tgz'
   '@rush-temp/automated-guideway-transit': 'file:projects/automated-guideway-transit.tgz'
-  '@rush-temp/blueprint': 'file:projects/blueprint.tgz'
+  '@rush-temp/blueprint': 'file:projects/blueprint.tgz_typescript@3.8.3'
   '@rush-temp/check-in': 'file:projects/check-in.tgz'
-  '@rush-temp/di': 'file:projects/di.tgz'
+  '@rush-temp/di': 'file:projects/di.tgz_typescript@3.8.3'
   '@rush-temp/flight-log-archive': 'file:projects/flight-log-archive.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:projects/fuel-hydrant-system.tgz'
   '@rush-temp/ground-control': 'file:projects/ground-control.tgz'
@@ -20,6 +20,7 @@ dependencies:
   '@rush-temp/point-of-destination': 'file:projects/point-of-destination.tgz'
   '@rush-temp/runway': 'file:projects/runway.tgz'
   '@rush-temp/runway-edge-lighting': 'file:projects/runway-edge-lighting.tgz'
+  '@rush-temp/security-check': 'file:projects/security-check.tgz'
   '@rush-temp/takeoff': 'file:projects/takeoff.tgz'
   '@rush-temp/tarmaq': 'file:projects/tarmaq.tgz'
   '@rush-temp/terminal': 'file:projects/terminal.tgz'
@@ -31,10 +32,11 @@ dependencies:
   '@types/gapi': 0.0.35
   '@types/google-drive-realtime-api': 0.0.33
   sql.js: 0.5.0
-  tslint: 5.20.1
+  tslint: 5.20.1_typescript@3.8.3
   typedi: 0.8.0
-  typescript: 3.8.2
+  typescript: 3.8.3
   zipson: 0.2.12
+lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.8.3:
     dependencies:
@@ -200,17 +202,18 @@ packages:
     dev: false
     resolution:
       integrity: sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA==
-  /minimist/0.0.8:
+  /minimist/1.2.5:
     dev: false
     resolution:
-      integrity: sha1-hX/Kv8M5fSYluCKCYuhqp6ARsF0=
-  /mkdirp/0.5.1:
+      integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+  /mkdirp/0.5.3:
     dependencies:
-      minimist: 0.0.8
+      minimist: 1.2.5
+    deprecated: Legacy versions of mkdirp are no longer supported. Please update to mkdirp 1.x. (Note that the API surface has changed to use Promises in 1.x.)
     dev: false
     hasBin: true
     resolution:
-      integrity: sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
+      integrity: sha512-P+2gwrFqx8lhew375MQHHeTlY8AuOJSrGf0R5ddkEndUkmwpgUob/vQuBD1V22/Cw1/lJr4x+EjllSezBThzBg==
   /once/1.4.0:
     dependencies:
       wrappy: 1.0.2
@@ -258,7 +261,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-aZW88SY8kQbU7gpV19lN24LtXh/yD4ZZg6qieAJDDg+YBsJcSmLGK9QpnUjAKVG/xefmvJGd1WUmfpT/g6AJGA==
-  /tslint/5.20.1:
+  /tslint/5.20.1_typescript@3.8.3:
     dependencies:
       '@babel/code-frame': 7.8.3
       builtin-modules: 1.1.1
@@ -268,11 +271,12 @@ packages:
       glob: 7.1.6
       js-yaml: 3.13.1
       minimatch: 3.0.4
-      mkdirp: 0.5.1
+      mkdirp: 0.5.3
       resolve: 1.15.1
       semver: 5.7.1
       tslib: 1.11.1
-      tsutils: 2.29.0
+      tsutils: 2.29.0_typescript@3.8.3
+      typescript: 3.8.3
     dev: false
     engines:
       node: '>=4.8.0'
@@ -281,9 +285,10 @@ packages:
       typescript: '>=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >=3.0.0-dev || >= 3.1.0-dev || >= 3.2.0-dev'
     resolution:
       integrity: sha512-EcMxhzCFt8k+/UP5r8waCf/lzmeSyVlqxqMEDQE7rWYiQky8KpIBz1JAoYXfROHrPZ1XXd43q8yQnULOLiBRQg==
-  /tsutils/2.29.0:
+  /tsutils/2.29.0_typescript@3.8.3:
     dependencies:
       tslib: 1.11.1
+      typescript: 3.8.3
     dev: false
     peerDependencies:
       typescript: '>=2.1.0 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >= 3.0.0-dev || >= 3.1.0-dev'
@@ -293,20 +298,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-/c7Bxnm6eh5kXx2I+mTuO+2OvoWni5+rXA3PhXwVWCtJRYmz3hMok5s1AKLzoDvNAZqj/Q/acGstN0ri5aQoOA==
-  /typescript/3.3.3333:
+  /typescript/3.8.3:
     dev: false
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-JjSKsAfuHBE/fB2oZ8NxtRTk5iGcg6hkYXMnZ3Wc+b2RSqejEqTaem11mHASMnFilHrax3sLK0GDzcJrekZYLw==
-  /typescript/3.8.2:
-    dev: false
-    engines:
-      node: '>=4.2.0'
-    hasBin: true
-    resolution:
-      integrity: sha512-EgOVgL/4xfVrCMbhYKUQTdF37SQn4Iw73H5BgCrF1Abdun7Kwy/QZsE/ssAy0y4LxBbvua3PIbFsbRczWWnDdQ==
+      integrity: sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
   /wrappy/1.0.2:
     dev: false
     resolution:
@@ -352,11 +350,14 @@ packages:
       integrity: sha512-rWJzeV2QNJWe1x8mRwiil26y5nBiHL+cUOT6x2bv73bC19DqLir6NGWHBEAVDHlura6EhDIFRal8ceQRqkGQpA==
       tarball: 'file:projects/automated-guideway-transit.tgz'
     version: 0.0.0
-  'file:projects/blueprint.tgz':
+  'file:projects/blueprint.tgz_typescript@3.8.3':
     dependencies:
-      tslint: 5.20.1
+      tslint: 5.20.1_typescript@3.8.3
     dev: false
+    id: 'file:projects/blueprint.tgz'
     name: '@rush-temp/blueprint'
+    peerDependencies:
+      typescript: '*'
     resolution:
       integrity: sha512-uFZwXDXu/v16O+HwoVU175MyxGQY3Mpv0y8htzZzonC+r7b2mKtDt+/IHRQpsXPJkbpY0qA4Tgfi6X2fLe8zMg==
       tarball: 'file:projects/blueprint.tgz'
@@ -368,12 +369,14 @@ packages:
       integrity: sha512-skJdOUX95V0AcxMpRO6kL1HyKtVEBSOc3l5bXg2EyF7VOR9FkXQCuyQ7ZC4Shbu4+8/N/a9Akpi52EgY3cPdjA==
       tarball: 'file:projects/check-in.tgz'
     version: 0.0.0
-  'file:projects/di.tgz':
+  'file:projects/di.tgz_typescript@3.8.3':
     dependencies:
-      tslint: 5.20.1
-      typescript: 3.3.3333
+      tslint: 5.20.1_typescript@3.8.3
     dev: false
+    id: 'file:projects/di.tgz'
     name: '@rush-temp/di'
+    peerDependencies:
+      typescript: '*'
     resolution:
       integrity: sha512-XOE6s3VI6NKuJ7DK3+hJHXQgUkE0yRq+7agN+2GxnVl1N1Ntr5wRD3WGRQgwLObohUklD0N3sQ1W9hBnrns08g==
       tarball: 'file:projects/di.tgz'
@@ -475,12 +478,19 @@ packages:
   'file:projects/runway.tgz':
     dependencies:
       '@types/node': 6.14.9
-      typescript: 3.8.2
+      typescript: 3.8.3
     dev: false
     name: '@rush-temp/runway'
     resolution:
       integrity: sha512-2/M9tdNyd8Cz+AcPF+UqPLWR1EfQjvxwNRryjhQrLOeMScbKMQcjL2VQ56IOcRHvP9DiiyjqfyiPbGy4ZkBBHw==
       tarball: 'file:projects/runway.tgz'
+    version: 0.0.0
+  'file:projects/security-check.tgz':
+    dev: false
+    name: '@rush-temp/security-check'
+    resolution:
+      integrity: sha512-El3w1AbiOZm5wspVGOfJlVCuiVV54282UD2peSYLHNVaW9pTI3xrbSFDvo6BuGkFrRxcXsmKtIb7wnHlKWKrlQ==
+      tarball: 'file:projects/security-check.tgz'
     version: 0.0.0
   'file:projects/takeoff.tgz':
     dev: false
@@ -540,9 +550,6 @@ packages:
       integrity: sha512-FdeAN3q3StbNwY6xYkxD+uhqfJCxwglXFWLIiCiU6usbh6QQROxJKRZijjCad1xgT8CYwTogWfDwuas9eEjcZg==
       tarball: 'file:projects/travel-document-checkpoint.tgz'
     version: 0.0.0
-registry: 'https://registry.npmjs.org/'
-shrinkwrapMinorVersion: 9
-shrinkwrapVersion: 3
 specifiers:
   '@rush-temp/air-control': 'file:./projects/air-control.tgz'
   '@rush-temp/airport-code': 'file:./projects/airport-code.tgz'
@@ -565,6 +572,7 @@ specifiers:
   '@rush-temp/point-of-destination': 'file:./projects/point-of-destination.tgz'
   '@rush-temp/runway': 'file:./projects/runway.tgz'
   '@rush-temp/runway-edge-lighting': 'file:./projects/runway-edge-lighting.tgz'
+  '@rush-temp/security-check': 'file:./projects/security-check.tgz'
   '@rush-temp/takeoff': 'file:./projects/takeoff.tgz'
   '@rush-temp/tarmaq': 'file:./projects/tarmaq.tgz'
   '@rush-temp/terminal': 'file:./projects/terminal.tgz'

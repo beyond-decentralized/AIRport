@@ -1,0 +1,5 @@
+{
+  "@types/gapi@0.0.35": "sha512-6E+WHil3a2+ZQXxa+2Fg9WMi1SwVx9KXT3P/7VmfTwK9Uqw2F+TQ97Ig2yJ7cOa0fUEk4qgdQNKP4rzKZfNMOQ==",
+  "@types/google-drive-realtime-api@0.0.33": "sha1-GV61bxhGPoQtOvw49GobEDfO77A=",
+  "zipson@0.2.12": "sha512-+u+fyZQXJUJDTf4NGCChW+LoWGqCrhwHAfvtCtcmE0e40KmQt4YSP4l3TOay1WjRNv+VfODgBD/vNwaSSGnDwA=="
+}

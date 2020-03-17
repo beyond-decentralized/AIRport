@@ -19,7 +19,6 @@
   },
   "main": "lib/index.js",
   "name": "@airport/holding-pattern",
-  "type": "module",
   "typings": "lib/index",
   "version": "0.0.1"
 }
