@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/russoturisto/tarmaq.git"
+    "url": "git+https://bitbucket.org/autonomousinterdependentrepo/airport.git"
   },
   "main": "lib/index.js",
   "typings": "lib/index",
@@ -33,7 +33,7 @@
     "typescript": "3.8.2"
   },
   "bugs": {
-    "url": "https://github.com/russoturisto/tarmaq/issues"
+    "url": "https://bitbucket.org/autonomousinterdependentrepo/airport/issues"
   },
-  "homepage": "https://github.com/russoturisto/tarmaq#readme"
+  "homepage": "https://bitbucket.org/autonomousinterdependentrepo/airport#readme"
 }
