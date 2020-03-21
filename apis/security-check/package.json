@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@airport/di": "0.0.1",
+    "@airport/di": "0.0.1"
   },
   "main": "lib/index.js",
   "name": "@airport/security-check",

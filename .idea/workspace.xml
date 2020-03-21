@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="Switched to ES6 modules in compiled Javascript.">
+    <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="Added security-check API.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/config/rush/shrinkwrap.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/scripts/install-run-rush.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/scripts/install-run-rush.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/scripts/install-run.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/scripts/install-run.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/di/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/libs/di/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/observe/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/libs/observe/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/tower/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/libs/tower/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rush.json" beforeDir="false" afterPath="$PROJECT_DIR$/rush.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/travel-document-checkpoint/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/travel-document-checkpoint/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/security-check/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/apis/security-check/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +100,7 @@
       <workItem from="1539354406505" duration="1212000" />
       <workItem from="1539565089620" duration="2000" />
       <workItem from="1584467996916" duration="1066000" />
-      <workItem from="1584471943365" duration="824000" />
+      <workItem from="1584471943365" duration="3874000" />
     </task>
     <task id="LOCAL-00001" summary="adding not null constraints">
       <created>1535641136191</created>
@@ -206,7 +193,14 @@
       <option name="project" value="LOCAL" />
       <updated>1554678233530</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Added security-check API.">
+      <created>1584473493837</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1584473493837</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,7 +234,8 @@
     <MESSAGE value="finished removing DI.cache() api" />
     <MESSAGE value="Updated dependency injection usage to new API." />
     <MESSAGE value="Switched to ES6 modules in compiled Javascript." />
-    <option name="LAST_COMMIT_MESSAGE" value="Switched to ES6 modules in compiled Javascript." />
+    <MESSAGE value="Added security-check API." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added security-check API." />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="192" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583092500293">
@@ -252,14 +247,18 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="686" y="248" key="#territory/0.0.1920.1040@0.0.1920.1040" timestamp="1583092444175" />
-    <state x="0" y="0" width="1920" height="1040" key="CommitChangelistDialog2" timestamp="1583190937056">
+    <state x="0" y="0" width="1920" height="1040" key="CommitChangelistDialog2" timestamp="1584809839891">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="0" y="0" width="1920" height="1040" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1583190937056" />
+    <state x="0" y="0" width="1920" height="1040" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1584809839891" />
     <state width="586" height="466" key="DebuggerActiveHint" timestamp="1582998135987">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="586" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1582998135987" />
+    <state x="184" y="86" key="DiffContextDialog" timestamp="1584473204808">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="184" y="86" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1584473204808" />
     <state x="740" y="279" key="FileChooserDialogImpl" timestamp="1583432242719">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -332,10 +331,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="463" y="166" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1582948818974" />
-    <state x="552" y="257" key="Vcs.Push.Dialog.v2" timestamp="1583190526128">
+    <state x="552" y="257" key="Vcs.Push.Dialog.v2" timestamp="1584809848517">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1583190526128" />
+    <state x="552" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1584809848517" />
     <state x="667" y="285" width="710" height="546" key="find.popup" timestamp="1583098242886">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
