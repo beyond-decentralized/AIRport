@@ -3,7 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Property.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Property.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Property.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Property.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/blueprint/.rush/temp/shrinkwrap-deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/libs/blueprint/.rush/temp/shrinkwrap-deps.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/di/.rush/temp/shrinkwrap-deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/libs/di/.rush/temp/shrinkwrap-deps.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +45,7 @@
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/apis/security-check" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/generators/runway" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="settings.editor.selected.configurable" value="settings.typescriptcompiler" />
     <property name="ts.external.directory.path" value="C:\Users\Papa\AppData\Roaming\npm\node_modules\typescript\lib" />
@@ -101,7 +105,8 @@
       <workItem from="1539565089620" duration="2000" />
       <workItem from="1584467996916" duration="1066000" />
       <workItem from="1584471943365" duration="3874000" />
-      <workItem from="1584814425241" duration="240000" />
+      <workItem from="1584814425241" duration="2306000" />
+      <workItem from="1584840051071" duration="1214000" />
     </task>
     <task id="LOCAL-00001" summary="adding not null constraints">
       <created>1535641136191</created>
@@ -208,7 +213,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584814488634</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Url update.">
+      <created>1584814694542</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1584814694542</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -243,7 +255,8 @@
     <MESSAGE value="Updated dependency injection usage to new API." />
     <MESSAGE value="Switched to ES6 modules in compiled Javascript." />
     <MESSAGE value="Added security-check API." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added security-check API." />
+    <MESSAGE value="Url update." />
+    <option name="LAST_COMMIT_MESSAGE" value="Url update." />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="192" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583092500293">
@@ -255,10 +268,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="686" y="248" key="#territory/0.0.1920.1040@0.0.1920.1040" timestamp="1583092444175" />
-    <state x="0" y="0" width="1920" height="1040" key="CommitChangelistDialog2" timestamp="1584814487048">
+    <state x="0" y="0" width="1920" height="1040" key="CommitChangelistDialog2" timestamp="1584814693450">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="0" y="0" width="1920" height="1040" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1584814487048" />
+    <state x="0" y="0" width="1920" height="1040" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1584814693450" />
     <state width="586" height="466" key="DebuggerActiveHint" timestamp="1582998135987">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -267,10 +280,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="184" y="86" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1584473204808" />
-    <state x="740" y="279" key="FileChooserDialogImpl" timestamp="1583432242719">
+    <state x="740" y="279" key="FileChooserDialogImpl" timestamp="1584814888580">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="279" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1583432242719" />
+    <state x="740" y="279" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1584814888580" />
     <state width="1877" height="355" key="GridCell.Tab.0.bottom" timestamp="1583191952092">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -339,20 +352,20 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="463" y="166" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1582948818974" />
-    <state x="552" y="257" key="Vcs.Push.Dialog.v2" timestamp="1584814492049">
+    <state x="552" y="257" key="Vcs.Push.Dialog.v2" timestamp="1584814698101">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1584814492049" />
+    <state x="552" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1584814698101" />
     <state x="667" y="285" width="710" height="546" key="find.popup" timestamp="1583098242886">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="668" y="-784" width="710" height="546" key="find.popup/0.0.1920.1040/1.-1080.1920.1080/-1919.-1188.1920.1080/1921.-1188.1920.1080@1.-1080.1920.1080" timestamp="1582927918648" />
     <state x="667" y="285" width="710" height="546" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1583098242886" />
-    <state x="623" y="226" width="672" height="653" key="search.everywhere.popup" timestamp="1582934355902">
+    <state x="623" y="226" width="672" height="653" key="search.everywhere.popup" timestamp="1584842803275">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="624" y="-845" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1.-1080.1920.1080/-1919.-1188.1920.1080/1921.-1188.1920.1080@1.-1080.1920.1080" timestamp="1582925608008" />
-    <state x="623" y="226" width="672" height="653" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582934355902" />
+    <state x="623" y="226" width="672" height="653" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584842803275" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

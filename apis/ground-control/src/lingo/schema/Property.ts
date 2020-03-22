@@ -48,9 +48,9 @@ export interface JsonSchemaProperty
 	name: PropertyName;
 
 	/**
-	 * Columns represented by the property.
+	 * Column represented by the property.
 	 */
-	columnRefs?: SchemaReferenceByIndex<ColumnIndex>;
+	columnRef?: SchemaReferenceByIndex<ColumnIndex>;
 
 	/**
 	 * A Relation that is represented by the property (if any).
