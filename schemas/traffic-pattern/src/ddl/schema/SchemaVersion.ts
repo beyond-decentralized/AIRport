@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Entity,
 	Id,
 	JoinColumn,
@@ -9,7 +10,7 @@ import {
 	SequenceGenerator,
 	Table,
 	Transient
-}                        from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	SchemaVersionId,
 	SchemaVersionInteger,
@@ -27,15 +28,17 @@ import {SchemaReference} from './SchemaReference'
 @Table({name: 'SCHEMA_VERSIONS'})
 export class SchemaVersion {
 
+	@DbNumber()
 	@Id()
 	@SequenceGenerator({allocationSize: 100})
-	@DbNumber()
 	id: SchemaVersionId
 
 	@Column({name: 'INTEGER_VERSION', nullable: false})
+	@DbNumber()
 	integerVersion: SchemaVersionInteger
 
 	@Column({name: 'VERSION_STRING', nullable: false})
+	@DbString()
 	versionString: SchemaVersionString
 
 	@Column({name: 'MAJOR_VERSION', nullable: false})

@@ -4,6 +4,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./Dao"));
+__export(require("./DaoDecorators"));
 __export(require("./tokens"));
 __export(require("./Duo"));
 __export(require("./EntityDatabaseFacade"));

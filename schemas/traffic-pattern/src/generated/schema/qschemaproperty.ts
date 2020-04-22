@@ -131,10 +131,20 @@ export interface SchemaPropertyEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SchemaPropertyECascadeGraph
-	extends VersionedSchemaObjectECascadeGraph {
-	// Cascading Relations
-	propertyColumns?: SchemaPropertyColumnECascadeGraph;
-	relation?: SchemaRelationECascadeGraph;
+	extends VersionedSchemaObjectESelect, SchemaPropertyEOptionalId, VersionedSchemaObjectECascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	index?: number | IQNumberField;
+	name?: string | IQStringField;
+	isId?: boolean | IQBooleanField;
+
+	// Id Relations - full property interfaces
+
+  // Non-Id relations (including OneToMany's)
+	entity?: SchemaEntityESelect;
+	propertyColumns?: SchemaPropertyColumnESelect;
+	relation?: SchemaRelationESelect;
 
 }
 

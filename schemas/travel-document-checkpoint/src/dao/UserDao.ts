@@ -1,6 +1,8 @@
-import {DI}           from '@airport/di'
-import {UserUniqueId} from '../ddl/ddl'
-import {USER_DAO}     from '../tokens'
+import {Operation}         from '@airport/check-in/src'
+import {DI}                from '@airport/di'
+import {UserECascadeGraph} from '../../../guideway/src'
+import {UserUniqueId}      from '../ddl/ddl'
+import {USER_DAO}          from '../tokens'
 import {
 	BaseUserDao,
 	IBaseUserDao,
@@ -8,7 +10,7 @@ import {
 	Q,
 	QUser,
 	UserESelect
-}                     from '../generated/generated'
+}                          from '../generated/generated'
 
 export interface IUserDao
 	extends IBaseUserDao {
@@ -36,6 +38,12 @@ export interface IUserDao
 export class UserDao
 	extends BaseUserDao
 	implements IUserDao {
+
+
+	// @Operation<UserECascadeGraph>({
+	//
+	// })
+	// createNew = this.create
 
 	async findMapByUniqueId(
 		userUniqueIds: UserUniqueId[]

@@ -1,5 +1,6 @@
 import {
 	Column,
+	DbNumber,
 	Entity,
 	Id,
 	JoinColumn,
@@ -28,6 +29,7 @@ export class SchemaReference
 	referencedSchemaVersion: SchemaVersion
 
 	@Column({name: 'SCHEMA_REFERENCE_INDEX', nullable: false})
+	@DbNumber()
 	index: SchemaReferenceIndex
 
 }

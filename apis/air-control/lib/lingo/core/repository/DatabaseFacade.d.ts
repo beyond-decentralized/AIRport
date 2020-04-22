@@ -1,5 +1,6 @@
-import { CascadeOverwrite, DbEntity, DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery, QueryResultType } from '@airport/ground-control';
+import { DbEntity, DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
+import { OperationName } from '../../query/Dao';
 import { IAbstractQuery } from '../../query/facade/AbstractQuery';
 import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
@@ -42,7 +43,7 @@ export interface IDatabaseFacade {
      *
      * @return Number of records created (1 or 0)
      */
-    create<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    create<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, operationName?: OperationName): Promise<number>;
     /**
      * Creates an entity - internal API.  Use the API provided by the
      * IEntityDatabaseFacade.
@@ -50,8 +51,7 @@ export interface IDatabaseFacade {
      * @return Number of records created
      */
     bulkCreate<E, EntityCascadeGraph>(dbEntity: DbEntity, entities: E[], checkIfProcessed: boolean, // defaults to true
-    cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph, // defaults to false
-    ensureGeneratedValues?: boolean): Promise<number>;
+    operationName?: OperationName, ensureGeneratedValues?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }): Promise<number>;
@@ -70,7 +70,7 @@ export interface IDatabaseFacade {
      *
      * @return Number of records deleted (1 or 0)
      */
-    delete<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    delete<E>(dbEntity: DbEntity, entity: E, operationName?: OperationName): Promise<number>;
     /**
      * Creates an entity with a where clause - internal API.  Use the
      *  API provided by the IEntityDatabaseFacade.
@@ -86,14 +86,14 @@ export interface IDatabaseFacade {
      *
      * @return Number of records saved (1 or 0)
      */
-    save<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    save<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, operationName?: OperationName): Promise<number>;
     /**
      * Updates an entity - internal API.  Use the API provided by the
      * IEntityDatabaseFacade.
      *
      * @return Number of records updated (1 or 0)
      */
-    update<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    update<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, operationName?: OperationName): Promise<number>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.

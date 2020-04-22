@@ -1,19 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tower_1 = require("@airport/tower");
 const fs = require("fs");
 const ts = require("typescript");
-const DaoBuilder_1 = require("./builder/DaoBuilder");
-const DuoBuilder_1 = require("./builder/DuoBuilder");
-const EntityInterfaceFileBuilder_1 = require("./builder/entity/EntityInterfaceFileBuilder");
-const QEntityFileBuilder_1 = require("./builder/entity/QEntityFileBuilder");
-const GeneratedFileListingBuilder_1 = require("./builder/GeneratedFileListingBuilder");
-const GeneratedSummaryBuilder_1 = require("./builder/GeneratedSummaryBuilder");
-const PathBuilder_1 = require("./builder/PathBuilder");
-const QSchemaBuilder_1 = require("./builder/QSchemaBuilder");
-const JsonSchemaBuilder_1 = require("./builder/schema/JsonSchemaBuilder");
-const MappedSuperclassBuilder_1 = require("./builder/superclass/MappedSuperclassBuilder");
-const EntityDefinitionGenerator_1 = require("./parser/EntityDefinitionGenerator");
-const tower_1 = require("@airport/tower");
+const OperationGenerator_1 = require("./dao/parser/OperationGenerator");
+const DaoBuilder_1 = require("./ddl/builder/DaoBuilder");
+const DuoBuilder_1 = require("./ddl/builder/DuoBuilder");
+const EntityInterfaceFileBuilder_1 = require("./ddl/builder/entity/EntityInterfaceFileBuilder");
+const QEntityFileBuilder_1 = require("./ddl/builder/entity/QEntityFileBuilder");
+const GeneratedFileListingBuilder_1 = require("./ddl/builder/GeneratedFileListingBuilder");
+const GeneratedSummaryBuilder_1 = require("./ddl/builder/GeneratedSummaryBuilder");
+const PathBuilder_1 = require("./ddl/builder/PathBuilder");
+const QSchemaBuilder_1 = require("./ddl/builder/QSchemaBuilder");
+const JsonSchemaBuilder_1 = require("./ddl/builder/schema/JsonSchemaBuilder");
+const MappedSuperclassBuilder_1 = require("./ddl/builder/superclass/MappedSuperclassBuilder");
+const FileProcessor_1 = require("./FileProcessor");
 tower_1.AirportDatabase.bogus = 'loaded for schema generation';
 /**
  * Created by Papa on 3/30/2016.
@@ -60,7 +61,7 @@ function watchFiles(configuration, options, rootFileNames) {
     function processFiles(rootFileNames, options, configuration) {
         options.target = ts.ScriptTarget.ES5;
         const schemaMapByProjectName = {};
-        let entityMapByName = EntityDefinitionGenerator_1.generateEntityDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
+        let entityMapByName = FileProcessor_1.generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
         emitFiles(entityMapByName, configuration, schemaMapByProjectName);
     }
     function emitFiles(entityMapByName, configuration, schemaMapByProjectName) {
@@ -75,7 +76,7 @@ function watchFiles(configuration, options, rootFileNames) {
             schemaString = fs.readFileSync(schemaPath, 'utf8');
         }
         const schemaBuilder = new JsonSchemaBuilder_1.JsonSchemaBuilder(configuration, entityMapByName, schemaString);
-        const [schemaJsonString, indexedSchema] = schemaBuilder.build(configuration.airport.domain, schemaMapByProjectName);
+        const [schemaJsonString, indexedSchema] = schemaBuilder.build(configuration.airport.domain, schemaMapByProjectName, OperationGenerator_1.entityOperationMap);
         const schemaSourceString = `export const SCHEMA = `
             + schemaJsonString + ';';
         fs.writeFileSync(schemaPath, schemaJsonString);

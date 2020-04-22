@@ -95,8 +95,17 @@ export interface VersionedSchemaObjectEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface VersionedSchemaObjectECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+	extends IEntitySelectProperties, VersionedSchemaObjectEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+
+	// Id Relations - full property interfaces
+
+  // Non-Id relations (including OneToMany's)
+	deprecatedSinceVersion?: SchemaVersionESelect;
+	removedInVersion?: SchemaVersionESelect;
+	sinceVersion?: SchemaVersionESelect;
 
 }
 

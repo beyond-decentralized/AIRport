@@ -1,4 +1,5 @@
-import { CascadeOverwrite, DbEntity, DbSchema, DistributionStrategy, PlatformType } from '@airport/ground-control';
+import { OperationName } from './query/Dao';
+import { DbEntity, DbSchema, DistributionStrategy, PlatformType } from '@airport/ground-control';
 import { QEntityConstructor } from '../impl/core/entity/Entity';
 import { QRelation } from '../impl/core/entity/Relation';
 import { EntityConstructor, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from './core/entity/Entity';
@@ -35,7 +36,7 @@ export interface IAirportDatabase extends SchemaHub, FunctionAndOperatorHub {
      *
      * @return Number of records created (1 or 0)
      */
-    create<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    create<E>(dbEntity: DbEntity, entity: E, operationName?: OperationName): Promise<number>;
     /**
      * Creates an entity - internal API.  Use the API provided by the
      * IEntityDatabaseFacade.
@@ -43,8 +44,7 @@ export interface IAirportDatabase extends SchemaHub, FunctionAndOperatorHub {
      * @return Number of records created
      */
     bulkCreate<E>(dbEntity: DbEntity, entities: E[], checkIfProcessed: boolean, // defaults to true
-    cascadeOverwrite: CascadeOverwrite, // defaults to false
-    ensureGeneratedValues?: boolean): Promise<number>;
+    operationName?: OperationName, ensureGeneratedValues?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }): Promise<number>;
@@ -63,7 +63,7 @@ export interface IAirportDatabase extends SchemaHub, FunctionAndOperatorHub {
      *
      * @return Number of records deleted (1 or 0)
      */
-    delete<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    delete<E>(dbEntity: DbEntity, entity: E, operationName?: OperationName): Promise<number>;
     /**
      * Creates an entity with a where clause - internal API.  Use the
      *  API provided by the IEntityDatabaseFacade.
@@ -79,14 +79,14 @@ export interface IAirportDatabase extends SchemaHub, FunctionAndOperatorHub {
      *
      * @return Number of records saved (1 or 0)
      */
-    save<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    save<E>(dbEntity: DbEntity, entity: E, operationName?: OperationName): Promise<number>;
     /**
      * Updates an entity - internal API.  Use the API provided by the
      * IEntityDatabaseFacade.
      *
      * @return Number of records updated (1 or 0)
      */
-    update<E>(dbEntity: DbEntity, entity: E): Promise<number>;
+    update<E>(dbEntity: DbEntity, entity: E, operationName?: OperationName): Promise<number>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.

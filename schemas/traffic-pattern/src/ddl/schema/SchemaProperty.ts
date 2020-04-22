@@ -1,5 +1,8 @@
 import {
 	Column,
+	DbBoolean,
+	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
@@ -7,7 +10,7 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-}                              from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	CascadeType,
 	PropertyId,
@@ -27,23 +30,27 @@ import {VersionedSchemaObject} from './VersionedSchemaObject'
 export class SchemaProperty
 	extends VersionedSchemaObject {
 
+	@DbNumber()
 	@Id()
 	id: PropertyId
 
+	@DbNumber()
 	@Column({name: 'PROPERTY_INDEX', nullable: false})
 	index: PropertyIndex
+
+	@DbString()
+	@Column({name: 'NAME', nullable: false})
+	name: PropertyName
+
+	@DbBoolean()
+	@Column({name: 'IS_ID', nullable: false})
+	isId: PropertyIsId
 
 	@ManyToOne()
 	@JoinColumn(
 		{name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID', nullable: false}
 	)
 	entity: SchemaEntity
-
-	@Column({name: 'NAME', nullable: false})
-	name: PropertyName
-
-	@Column({name: 'IS_ID', nullable: false})
-	isId: PropertyIsId
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'property'})
 	propertyColumns: SchemaPropertyColumn[] = []

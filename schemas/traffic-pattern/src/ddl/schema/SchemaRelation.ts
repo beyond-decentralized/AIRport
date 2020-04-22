@@ -32,9 +32,11 @@ import {VersionedSchemaObject} from './VersionedSchemaObject'
 export class SchemaRelation
 	extends VersionedSchemaObject {
 
+	@DbNumber()
 	@Id()
 	id: RelationId
 
+	@DbNumber()
 	@Column({name: 'RELATION_INDEX', nullable: false})
 	index: RelationIndex
 

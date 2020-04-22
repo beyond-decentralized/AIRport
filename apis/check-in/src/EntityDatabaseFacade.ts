@@ -18,6 +18,7 @@ import {
 	IEntityUpdateProperties,
 	IQEntity,
 	MappedEntityArray,
+	OperationName,
 	QSchema,
 	RawDelete,
 	RawInsertColumnValues,
@@ -89,20 +90,20 @@ export class EntityDatabaseFacade<Entity,
 
 	async create(
 		entity: EntityCreate,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number> {
 		const dbFacade = await DI.db().get(DB_FACADE)
-		return await dbFacade.create(this.dbEntity, entity, cascadeGraph)
+		return await dbFacade.create(this.dbEntity, entity, operationName)
 	}
 
 	async bulkCreate(
 		entities: EntityCreate[],
-		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT,
-		checkIfProcessed: boolean                         = true
+		checkIfProcessed: boolean = true,
+		operationName?: OperationName
 	): Promise<number> {
 		const dbFacade = await DI.db().get(DB_FACADE)
 		return await dbFacade.bulkCreate(this.dbEntity, entities,
-			checkIfProcessed, cascadeOverwrite)
+			checkIfProcessed, operationName)
 	}
 
 	async insertColumnValues<IQE extends IQEntity>(
@@ -139,10 +140,10 @@ export class EntityDatabaseFacade<Entity,
 
 	async update(
 		entity: EntityCreate,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number> {
 		const dbFacade = await DI.db().get(DB_FACADE)
-		return await dbFacade.update(this.dbEntity, entity, cascadeGraph)
+		return await dbFacade.update(this.dbEntity, entity, operationName)
 	}
 
 	async updateColumnsWhere(
@@ -167,10 +168,11 @@ export class EntityDatabaseFacade<Entity,
 
 	// NOTE: Delete cascading is done on the server, no input is needed
 	async delete(
-		entity: EntityId
+		entity: EntityId,
+		operationName?: OperationName
 	): Promise<number> {
 		const dbFacade = await DI.db().get(DB_FACADE)
-		return await dbFacade.delete(this.dbEntity, entity)
+		return await dbFacade.delete(this.dbEntity, entity, operationName)
 	}
 
 	async deleteWhere(
@@ -182,10 +184,10 @@ export class EntityDatabaseFacade<Entity,
 
 	async save(
 		entity: EntityCreate,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number> {
 		const dbFacade = await DI.db().get(DB_FACADE)
-		return await dbFacade.save(this.dbEntity, entity, cascadeGraph)
+		return await dbFacade.save(this.dbEntity, entity, operationName)
 	}
 
 }

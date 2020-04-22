@@ -8,8 +8,9 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
+	OperationName,
 	QSchema
-}                             from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	CascadeOverwrite,
 	EntityId as DbEntityId
@@ -35,8 +36,6 @@ export abstract class Dao<Entity,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId,
 		EntityCascadeGraph, QE>
 
-	staged: Set<Entity> = new Set()
-
 	constructor(
 		dbEntityId: DbEntityId,
 		Q: QSchema
@@ -52,15 +51,11 @@ export abstract class Dao<Entity,
 
 	async bulkCreate(
 		entities: EntityCreate[],
-		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT,
-		checkIfProcessed: boolean          = true
+		checkIfProcessed: boolean          = true,
+		operationName?: OperationName
 	): Promise<number> {
 		const result = await this.db.bulkCreate(entities,
-			cascadeOverwrite, checkIfProcessed)
-
-		for(const entity of entities) {
-			this.staged.delete(entity as any)
-		}
+			checkIfProcessed, operationName)
 
 		return result
 	}
@@ -71,14 +66,13 @@ export abstract class Dao<Entity,
 
 	async create<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entityInfo: EntityInfo,
-		cascadeGraph: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
+		operationName?: OperationName
 	): Promise<number> {
 		if (entityInfo instanceof Array) {
 			return await this.db.bulkCreate(entityInfo,
-				CascadeOverwrite.DEFAULT, true)
+				true, operationName)
 		} else {
-			const result = await this.db.create(<EntityCreate>entityInfo, cascadeGraph)
-			this.staged.delete(entityInfo as any)
+			const result = await this.db.create(<EntityCreate>entityInfo, operationName)
 
 			return result
 		}
@@ -86,12 +80,12 @@ export abstract class Dao<Entity,
 
 	async delete(
 		entityIdInfo: EntityId | EntityId[],
-		cascadeGraph: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
+		operationName?: OperationName
 	): Promise<number> {
 		if (entityIdInfo instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
-			return await this.db.delete(entityIdInfo)
+			return await this.db.delete(entityIdInfo, operationName)
 		}
 	}
 
@@ -138,38 +132,25 @@ export abstract class Dao<Entity,
 
 	async save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entity: EntityInfo,
-		cascadeGraph: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
+		operationName?: OperationName
 	): Promise<number> {
 		if (entity instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
-			const result = await this.db.save(<EntityCreate>entity, cascadeGraph)
-			this.staged.delete(entity as any)
+			const result = await this.db.save(<EntityCreate>entity, operationName)
 
 			return result
 		}
 	}
 
-	async stage<EntityInfo extends Entity | Entity[]>(
-		entity: EntityInfo
-	): Promise<void> {
-		if (entity instanceof Array) {
-			for(const anEntity of entity){
-				this.staged.add(anEntity)
-			}
-		} else {
-				this.staged.add(entity as Entity)
-		}
-	}
-
 	async update(
 		entityInfo: EntityCreate | EntityCreate[],
-		cascadeGraph: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
+		operationName?: OperationName
 	): Promise<number> {
 		if (entityInfo instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
-			return await this.db.update(entityInfo, cascadeGraph)
+			return await this.db.update(entityInfo, operationName)
 		}
 	}
 

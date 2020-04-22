@@ -3,14 +3,21 @@
  */
 
 import * as fs             from 'fs'
-import * as ts        from 'typescript'
+import {readConfiguration} from './ddl/options/generator'
 import {watchFiles}        from './FileWatcher'
-import {readConfiguration} from './options/generator'
 
 const configuration = readConfiguration(process.cwd(), process.argv)
+globalThis.configuration = configuration
 
-const ddlDirPath      = process.cwd() + '/' + configuration.airport.ddlDir
-const sourceFilePaths = findAllDdlFilePaths(ddlDirPath)
+const ddlDirPath    = process.cwd() + '/' + configuration.airport.ddlDir
+let sourceFilePaths = findAllDdlFilePaths(ddlDirPath)
+
+if (configuration.airport.daoDir) {
+	const daoDirPath         = process.cwd() + '/' + configuration.airport.daoDir
+	const daoSourceFilePaths = findAllDdlFilePaths(daoDirPath)
+	sourceFilePaths          = [...daoSourceFilePaths, ...sourceFilePaths]
+}
+
 
 function findAllDdlFilePaths(
 	dirPath: string,

@@ -2,22 +2,23 @@ import {
 	DbSchema,
 	EntityId
 }                                    from '@airport/ground-control'
+import {AirportDatabase}             from '@airport/tower'
 import * as fs                       from 'fs'
-import * as ts                       from 'typescript'
-import {DaoBuilder}                  from './builder/DaoBuilder'
-import {DuoBuilder}                  from './builder/DuoBuilder'
-import {EntityInterfaceFileBuilder}  from './builder/entity/EntityInterfaceFileBuilder'
-import {QEntityFileBuilder}          from './builder/entity/QEntityFileBuilder'
-import {GeneratedFileListingBuilder} from './builder/GeneratedFileListingBuilder'
-import {GeneratedSummaryBuilder}     from './builder/GeneratedSummaryBuilder'
-import {PathBuilder}                 from './builder/PathBuilder'
-import {QSchemaBuilder}              from './builder/QSchemaBuilder'
-import {JsonSchemaBuilder}           from './builder/schema/JsonSchemaBuilder'
-import {MappedSuperclassBuilder}     from './builder/superclass/MappedSuperclassBuilder'
-import {Configuration}               from './options/Options'
-import {EntityCandidate}             from './parser/EntityCandidate'
-import {generateEntityDefinitions} from './parser/EntityDefinitionGenerator'
-import {AirportDatabase} from '@airport/tower'
+import * as ts              from 'typescript'
+import {entityOperationMap} from './dao/parser/OperationGenerator'
+import {DaoBuilder}         from './ddl/builder/DaoBuilder'
+import {DuoBuilder}                  from './ddl/builder/DuoBuilder'
+import {EntityInterfaceFileBuilder}  from './ddl/builder/entity/EntityInterfaceFileBuilder'
+import {QEntityFileBuilder}          from './ddl/builder/entity/QEntityFileBuilder'
+import {GeneratedFileListingBuilder} from './ddl/builder/GeneratedFileListingBuilder'
+import {GeneratedSummaryBuilder}     from './ddl/builder/GeneratedSummaryBuilder'
+import {PathBuilder}                 from './ddl/builder/PathBuilder'
+import {QSchemaBuilder}              from './ddl/builder/QSchemaBuilder'
+import {JsonSchemaBuilder}           from './ddl/builder/schema/JsonSchemaBuilder'
+import {MappedSuperclassBuilder}     from './ddl/builder/superclass/MappedSuperclassBuilder'
+import {Configuration}               from './ddl/options/Options'
+import {EntityCandidate}     from './ddl/parser/EntityCandidate'
+import {generateDefinitions} from './FileProcessor'
 
 (AirportDatabase as any).bogus = 'loaded for schema generation'
 
@@ -92,7 +93,8 @@ export function watchFiles(
 	): void {
 		options.target                                                    = ts.ScriptTarget.ES5
 		const schemaMapByProjectName: { [projectName: string]: DbSchema } = {}
-		let entityMapByName                                               = generateEntityDefinitions(rootFileNames, options, configuration, schemaMapByProjectName)
+		let entityMapByName                                               =
+			    generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName)
 		emitFiles(entityMapByName, configuration, schemaMapByProjectName)
 	}
 
@@ -117,7 +119,9 @@ export function watchFiles(
 		const schemaBuilder                     = new JsonSchemaBuilder(
 			configuration, entityMapByName, schemaString)
 		const [schemaJsonString, indexedSchema] =
-			      schemaBuilder.build(configuration.airport.domain, schemaMapByProjectName)
+			      schemaBuilder.build(configuration.airport.domain,
+				      schemaMapByProjectName,
+				      entityOperationMap)
 
 		const schemaSourceString = `export const SCHEMA = `
 			+ schemaJsonString + ';'
@@ -127,21 +131,21 @@ export function watchFiles(
 
 		const entityFileReference: { [entityName: string]: string } = {}
 
-		const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder)
-		const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts')
+		const generatedSummaryBuilder        = new GeneratedSummaryBuilder(pathBuilder)
+		const entityInterfaceListingBuilder  = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts')
 		const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts')
-		const qSchemaBuilder          = new QSchemaBuilder(pathBuilder)
-		const daoBuilder              = new DaoBuilder(pathBuilder)
-		const duoBuilder              = new DuoBuilder(pathBuilder)
+		const qSchemaBuilder                 = new QSchemaBuilder(pathBuilder)
+		const daoBuilder                     = new DaoBuilder(pathBuilder)
+		const duoBuilder                     = new DuoBuilder(pathBuilder)
 
 		for (const entityName in entityMapByName) {
 			const entity: EntityCandidate = entityMapByName[entityName]
 
-			const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, false)
-			const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path)
-			const qEntityFileBuilder  = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
+			const fullGenerationPath         = pathBuilder.getFullPathToGeneratedSource(entity.path, false)
+			const fullQGenerationPath        = pathBuilder.getFullPathToGeneratedSource(entity.path)
+			const qEntityFileBuilder         = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
 				entityMapByName, configuration, indexedSchema.entityMapByName[entityName])
-			const entityInterfaceFileBuilder  = new EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder,
+			const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder,
 				entityMapByName, configuration, indexedSchema.entityMapByName[entityName])
 
 			if (!entity.isSuperclass) {
@@ -160,7 +164,7 @@ export function watchFiles(
 			daoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath)
 			duoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath)
 			const qGenerationPath     = pathBuilder.setupFileForGeneration(entity.path)
-			const generationPath     = pathBuilder.setupFileForGeneration(entity.path, false)
+			const generationPath      = pathBuilder.setupFileForGeneration(entity.path, false)
 			const qEntitySourceString = qEntityFileBuilder.build()
 			fs.writeFileSync(qGenerationPath, qEntitySourceString)
 			const entityInterfaceSourceString = entityInterfaceFileBuilder.build()

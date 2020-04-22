@@ -1,21 +1,20 @@
-import { CascadeOverwrite } from '@airport/ground-control';
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../core/entity/Entity';
 import { IEntityDatabaseFacade } from '../core/repository/EntityDatabaseFacade';
+export declare type OperationName = string;
 /**
  * Data access object.
  */
 export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> {
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>;
-    staged: Set<Entity>;
-    bulkCreate(entities: EntityCreate[], cascadeOverwrite?: CascadeOverwrite | EntityCascadeGraph, checkIfProcessed?: boolean): Promise<number>;
+    bulkCreate(entities: EntityCreate[], checkIfProcessed?: boolean, operationName?: OperationName): Promise<number>;
     count(): Promise<number>;
     /**
      * Does not cascade?
      * @param {EntityCreate[] | EntityCreate} entityInfo
      * @returns {Promise<number>}
      */
-    create<EntityInfo extends EntityCreate | EntityCreate[]>(entityInfo: EntityInfo, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
-    delete(entityIdInfo: EntityId | EntityId[], cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    create<EntityInfo extends EntityCreate | EntityCreate[]>(entityInfo: EntityInfo, operationName?: OperationName): Promise<number>;
+    delete(entityIdInfo: EntityId | EntityId[], operationName?: OperationName): Promise<number>;
     deleteAll(): Promise<number>;
     exists(entityId: EntityId): Promise<boolean>;
     findAll(entityIds?: EntityId[]): Promise<Entity[]>;
@@ -29,27 +28,11 @@ export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, Enti
      * @param cascadeGraph
      * @returns {Promise<number>}
      */
-    save<EntityInfo extends EntityCreate | EntityCreate[]>(entityInfo: EntityInfo, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
-    /**
-     *
-     * @param {EntityCreate[] | EntityCreate} entity
-     * @param cascadeGraph
-     * @returns {Promise<number>}
-     */
-    stage<EntityInfo extends Entity | Entity[]>(entityInfo: EntityInfo): Promise<void>;
-    /**
-     * Stages/caches the entity for later modifications (modifications
-     * are not saved and are just stored in memory).
-     *
-     * TODO: probably not needed since cache is now on each entity
-     *
-     * @param entity
-     * @returns {Promise<number>}
-     */
+    save<EntityInfo extends EntityCreate | EntityCreate[]>(entityInfo: EntityInfo, operationName?: OperationName): Promise<number>;
     /**
      * Does not cascade?
      * @param {EntityCreate[] | EntityCreate} entityInfo
      * @returns {Promise<number>}
      */
-    update(entityInfo: EntityCreate | EntityCreate[], cascadeOverwrite?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    update(entityInfo: EntityCreate | EntityCreate[], operationName?: OperationName): Promise<number>;
 }

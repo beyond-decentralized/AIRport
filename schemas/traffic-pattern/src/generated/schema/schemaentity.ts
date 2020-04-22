@@ -17,6 +17,9 @@ import {
 	ISchemaColumn,
 } from './schemacolumn';
 import {
+	ISchemaOperation,
+} from './schemaoperation';
+import {
 	ISchemaProperty,
 } from './schemaproperty';
 import {
@@ -46,6 +49,7 @@ export interface ISchemaEntity extends IVersionedSchemaObject {
 	// Non-Id Relations
 	schemaVersion?: ISchemaVersion;
 	columns?: ISchemaColumn[];
+	operations?: ISchemaOperation[];
 	properties?: ISchemaProperty[];
 	relations?: ISchemaRelation[];
 	relationReferences?: ISchemaRelation[];

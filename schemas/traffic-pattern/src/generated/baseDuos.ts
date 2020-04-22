@@ -56,6 +56,19 @@ import {
 	QSchemaEntity
 } from './schema/qschemaentity'
 import {
+	ISchemaOperation
+} from './schema/schemaoperation'
+import {
+	SchemaOperationESelect,
+	SchemaOperationECreateColumns,
+	SchemaOperationECreateProperties,
+	SchemaOperationEUpdateColumns,
+	SchemaOperationEUpdateProperties,
+	SchemaOperationEId,
+	SchemaOperationECascadeGraph,
+	QSchemaOperation
+} from './schema/qschemaoperation'
+import {
 	ISchemaProperty
 } from './schema/schemaproperty'
 import {
@@ -170,11 +183,11 @@ export class BaseSchemaDuo
 	implements IBaseSchemaDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(8)
+		super(9)
 	}
 }
 
@@ -204,6 +217,24 @@ export interface IBaseSchemaEntityDuo
 export class BaseSchemaEntityDuo
   extends SQDIDuo<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityECascadeGraph, QSchemaEntity>
 	implements IBaseSchemaEntityDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(6)
+	}
+	
+	constructor() {
+		super(6)
+	}
+}
+
+
+export interface IBaseSchemaOperationDuo
+  extends IDuo<ISchemaOperation, SchemaOperationESelect, SchemaOperationECreateProperties, SchemaOperationEUpdateColumns, SchemaOperationEUpdateProperties, SchemaOperationEId, SchemaOperationECascadeGraph, QSchemaOperation> {
+}
+
+export class BaseSchemaOperationDuo
+  extends SQDIDuo<ISchemaOperation, SchemaOperationESelect, SchemaOperationECreateProperties, SchemaOperationEUpdateColumns, SchemaOperationEUpdateProperties, SchemaOperationEId, SchemaOperationECascadeGraph, QSchemaOperation>
+	implements IBaseSchemaOperationDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(5)
@@ -260,11 +291,11 @@ export class BaseSchemaReferenceDuo
 	implements IBaseSchemaReferenceDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(6)
+		super(7)
 	}
 }
 
@@ -314,10 +345,10 @@ export class BaseSchemaVersionDuo
 	implements IBaseSchemaVersionDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(7)
+		super(8)
 	}
 }

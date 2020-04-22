@@ -1,18 +1,19 @@
+import {OperationName}      from './query/Dao'
 import {
 	CascadeOverwrite,
 	DbEntity,
 	DbSchema,
 	DistributionStrategy,
 	PlatformType
-}                              from '@airport/ground-control'
-import {QEntityConstructor}    from '../impl/core/entity/Entity'
-import {QRelation}             from '../impl/core/entity/Relation'
+}                           from '@airport/ground-control'
+import {QEntityConstructor} from '../impl/core/entity/Entity'
+import {QRelation}          from '../impl/core/entity/Relation'
 import {
 	EntityConstructor,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-}                              from './core/entity/Entity'
+}                           from './core/entity/Entity'
 import {FunctionsAndOperators} from './core/FunctionsAndOperators'
 import {INonEntityFind}        from './query/api/NonEntityFind'
 import {INonEntityFindOne}     from './query/api/NonEntityFindOne'
@@ -89,6 +90,7 @@ export interface IAirportDatabase
 	create<E>(
 		dbEntity: DbEntity,
 		entity: E,
+		operationName?: OperationName,
 	): Promise<number>;
 
 	/**
@@ -101,7 +103,7 @@ export interface IAirportDatabase
 		dbEntity: DbEntity,
 		entities: E[],
 		checkIfProcessed: boolean, // defaults to true
-		cascadeOverwrite: CascadeOverwrite, // defaults to false
+		operationName?: OperationName,
 		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
 	                                  // creation
 	): Promise<number>;
@@ -143,6 +145,7 @@ export interface IAirportDatabase
 	delete<E>(
 		dbEntity: DbEntity,
 		entity: E,
+		operationName?: OperationName
 	): Promise<number>;
 
 	/**
@@ -167,6 +170,7 @@ export interface IAirportDatabase
 	save<E>(
 		dbEntity: DbEntity,
 		entity: E,
+		operationName?: OperationName
 	): Promise<number>;
 
 	/**
@@ -178,6 +182,7 @@ export interface IAirportDatabase
 	update<E>(
 		dbEntity: DbEntity,
 		entity: E,
+		operationName?: OperationName
 	): Promise<number>;
 
 	/**

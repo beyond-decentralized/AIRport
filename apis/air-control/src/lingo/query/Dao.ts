@@ -10,6 +10,8 @@ import {
 }                              from '../core/entity/Entity'
 import {IEntityDatabaseFacade} from '../core/repository/EntityDatabaseFacade'
 
+export type OperationName = string
+
 /**
  * Data access object.
  */
@@ -25,8 +27,6 @@ export interface IDao<Entity,
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>
 
-	staged: Set<Entity>
-
 	// releaseCachedForUpdate(
 	// 	updateCacheType: UpdateCacheType,
 	// 	...entities: Entity[]
@@ -34,8 +34,8 @@ export interface IDao<Entity,
 
 	bulkCreate(
 		entities: EntityCreate[],
-		cascadeOverwrite?: CascadeOverwrite | EntityCascadeGraph,
-		checkIfProcessed?: boolean
+		checkIfProcessed?: boolean,
+		operationName?: OperationName
 	): Promise<number>;
 
 	count(): Promise<number>;
@@ -47,12 +47,12 @@ export interface IDao<Entity,
 	 */
 	create<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entityInfo: EntityInfo,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number>;
 
 	delete(
 		entityIdInfo: EntityId | EntityId[],
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number>;
 
 	deleteAll(): Promise<number>;
@@ -81,31 +81,8 @@ export interface IDao<Entity,
 	 */
 	save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entityInfo: EntityInfo,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number>;
-
-	/**
-	 *
-	 * @param {EntityCreate[] | EntityCreate} entity
-	 * @param cascadeGraph
-	 * @returns {Promise<number>}
-	 */
-	stage<EntityInfo extends Entity | Entity[]>(
-		entityInfo: EntityInfo
-	): Promise<void>;
-
-	/**
-	 * Stages/caches the entity for later modifications (modifications
-	 * are not saved and are just stored in memory).
-	 *
-	 * TODO: probably not needed since cache is now on each entity
-	 *
-	 * @param entity
-	 * @returns {Promise<number>}
-	 */
-	// stage<EntityInfo extends EntityCreate | EntityCreate[]>(
-	// 	entity: EntityInfo,
-	// ): Promise<number>
 
 	/**
 	 * Does not cascade?
@@ -114,7 +91,7 @@ export interface IDao<Entity,
 	 */
 	update(
 		entityInfo: EntityCreate | EntityCreate[],
-		cascadeOverwrite?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number>;
 
 }

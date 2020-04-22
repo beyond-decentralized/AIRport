@@ -1,5 +1,4 @@
 import {
-	CascadeOverwrite,
 	DbEntity,
 	DistributionStrategy,
 	ITransactionalConnector,
@@ -8,6 +7,7 @@ import {
 	QueryResultType
 }                        from '@airport/ground-control'
 import {IObservable}     from '@airport/observe'
+import {OperationName}   from '../../query/Dao'
 import {IAbstractQuery}  from '../../query/facade/AbstractQuery'
 import {RawDelete}       from '../../query/facade/Delete'
 import {
@@ -90,7 +90,7 @@ export interface IDatabaseFacade {
 	create<E, EntityCascadeGraph>(
 		dbEntity: DbEntity,
 		entity: E,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number>;
 
 	/**
@@ -103,7 +103,7 @@ export interface IDatabaseFacade {
 		dbEntity: DbEntity,
 		entities: E[],
 		checkIfProcessed: boolean, // defaults to true
-		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph, // defaults to false
+		operationName?: OperationName,
 		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
 	                                  // creation
 	): Promise<number>;
@@ -144,7 +144,8 @@ export interface IDatabaseFacade {
 	 */
 	delete<E>(
 		dbEntity: DbEntity,
-		entity: E
+		entity: E,
+		operationName?: OperationName
 	): Promise<number>;
 
 	/**
@@ -169,7 +170,7 @@ export interface IDatabaseFacade {
 	save<E, EntityCascadeGraph>(
 		dbEntity: DbEntity,
 		entity: E,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number>;
 
 	/**
@@ -181,7 +182,7 @@ export interface IDatabaseFacade {
 	update<E, EntityCascadeGraph>(
 		dbEntity: DbEntity,
 		entity: E,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number>;
 
 	/**

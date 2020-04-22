@@ -1,6 +1,6 @@
-import {FileBuilder}        from '../builder/entity/FileBuilder'
-import {QEntityFileBuilder} from '../builder/entity/QEntityFileBuilder'
-import {EntityCandidate}    from '../parser/EntityCandidate'
+import {FileBuilder}        from '../ddl/builder/entity/FileBuilder'
+import {QEntityFileBuilder} from '../ddl/builder/entity/QEntityFileBuilder'
+import {EntityCandidate}    from '../ddl/parser/EntityCandidate'
 
 /**
  * Created by Papa on 4/27/2016.

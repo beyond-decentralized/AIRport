@@ -1,5 +1,9 @@
 import {DatabaseObjectConfiguration} from './DatabaseObjectConfiguration'
 import {
+	DbOperation,
+	JsonOperations
+} from './Operation'
+import {
 	DbColumn,
 	DbProperty,
 	DbRelation,
@@ -53,6 +57,11 @@ export interface JsonSchemaEntity
 	 * Name of the entity.
 	 */
 	name: EntityName;
+
+	/**
+	 * Mutation operations on the entity (and child entities)
+	 */
+	operations?: JsonOperations;
 
 	/**
 	 * Properties of the entity (parent properties included)
@@ -114,6 +123,11 @@ export interface DbEntity
 	 * Name of the entity.
 	 */
 	name: EntityName;
+
+	/**
+	 * Operations that can be peformed on this entity.
+	 */
+	operations?: DbOperation[]
 
 	/**
 	 * Map of all properties in the entity by name.

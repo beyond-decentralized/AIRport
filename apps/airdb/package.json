@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "@airport/di": "0.0.1",
+    "@airport/terminal": "0.0.1",
+    "axios": "^0.19.2",
+    "fastify": "^2.13.1",
+    "fastify-cookie": "^3.6.0",
+    "fastify-cors": "^3.0.3",
+    "fastify-favicon": "^2.0.0",
+    "fastify-static": "^2.6.0",
+    "serve-static": "^1.14.1"
+  },
+  "devDependencies": {
+    "@types/node": "^13.9.0"
+  },
+  "engines": {
+    "node": "13.9.0"
+  },
+  "main": "lib/server.js",
+  "name": "@airport/airdb",
+  "version": "0.0.1"
+}

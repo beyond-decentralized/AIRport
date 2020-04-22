@@ -5,18 +5,19 @@ import {
 	JoinColumn,
 	ManyToOne,
 	MappedSuperclass
-}                              from '@airport/air-control'
-import {Actor}                 from '../infrastructure/Actor'
-import {SystemWideOperationId} from '../common'
-import {Stageable}             from '../infrastructure/Stageable'
-import {Repository}            from './Repository'
+}                                      from '@airport/air-control'
+import {Actor}                         from '../infrastructure/Actor'
+import {SystemWideOperationId}         from '../common'
+import {Stageable}                     from '../infrastructure/Stageable'
+import {Repository}                    from './Repository'
 
 /**
  * Created by Papa on 2/17/2017.
  */
 
-export type RepositoryEntityActorRecordId = number
-export type RepositoryEntitySystemWideOperationId = SystemWideOperationId
+export type RepositoryEntity_ActorRecordId = number
+export type RepositoryEntity_AgeSuitability = number
+export type RepositoryEntity_SystemWideOperationId = SystemWideOperationId
 
 @MappedSuperclass()
 export abstract class RepositoryEntity
@@ -41,11 +42,14 @@ export abstract class RepositoryEntity
 	@Id()
 	@Column({name: 'ACTOR_RECORD_ID', nullable: false})
 	@GeneratedValue()
-	actorRecordId: RepositoryEntityActorRecordId
+	actorRecordId: RepositoryEntity_ActorRecordId
+
+	@Column({name: 'AGE_SUITABILITY', nullable: false})
+	ageSuitability: RepositoryEntity_AgeSuitability
 
 	// This field is local to the device only, when copied to new device this value is re-created
 	@Column({name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false})
-	systemWideOperationId: RepositoryEntitySystemWideOperationId
+	systemWideOperationId: RepositoryEntity_SystemWideOperationId
 
 	/*
 		@OneToMany()

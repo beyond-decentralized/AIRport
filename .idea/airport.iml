@@ -5,6 +5,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/apis" />
       <excludeFolder url="file://$MODULE_DIR$/apps" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/airdb/lib" />
       <excludeFolder url="file://$MODULE_DIR$/common" />
       <excludeFolder url="file://$MODULE_DIR$/generators" />
       <excludeFolder url="file://$MODULE_DIR$/libs" />
@@ -12,6 +13,7 @@
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
     </content>
+    <content url="file://$MODULE_DIR$/apps/airdb/lib" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

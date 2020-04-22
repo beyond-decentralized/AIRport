@@ -1,43 +1,37 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
 const EntityDatabaseFacade_1 = require("./EntityDatabaseFacade");
 /**
  * Created by Papa on 8/26/2017.
  */
 class Dao {
     constructor(dbEntityId, Q) {
-        this.staged = new Set();
         const dbEntity = Q.__dbSchema__.currentVersion.entities[dbEntityId];
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
         this.db = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q);
     }
-    async bulkCreate(entities, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT, checkIfProcessed = true) {
-        const result = await this.db.bulkCreate(entities, cascadeOverwrite, checkIfProcessed);
-        for (const entity of entities) {
-            this.staged.delete(entity);
-        }
+    async bulkCreate(entities, checkIfProcessed = true, operationName) {
+        const result = await this.db.bulkCreate(entities, checkIfProcessed, operationName);
         return result;
     }
     async count() {
         throw new Error(`Not Implemented`);
     }
-    async create(entityInfo, cascadeGraph = ground_control_1.CascadeOverwrite.DEFAULT) {
+    async create(entityInfo, operationName) {
         if (entityInfo instanceof Array) {
-            return await this.db.bulkCreate(entityInfo, ground_control_1.CascadeOverwrite.DEFAULT, true);
+            return await this.db.bulkCreate(entityInfo, true, operationName);
         }
         else {
-            const result = await this.db.create(entityInfo, cascadeGraph);
-            this.staged.delete(entityInfo);
+            const result = await this.db.create(entityInfo, operationName);
             return result;
         }
     }
-    async delete(entityIdInfo, cascadeGraph = ground_control_1.CascadeOverwrite.DEFAULT) {
+    async delete(entityIdInfo, operationName) {
         if (entityIdInfo instanceof Array) {
             throw new Error(`Not Implemented`);
         }
         else {
-            return await this.db.delete(entityIdInfo);
+            return await this.db.delete(entityIdInfo, operationName);
         }
     }
     async deleteAll() {
@@ -67,32 +61,21 @@ class Dao {
     findById(entityId, cacheForUpdate = false) {
         throw new Error(`Not implemented`);
     }
-    async save(entity, cascadeGraph = ground_control_1.CascadeOverwrite.DEFAULT) {
+    async save(entity, operationName) {
         if (entity instanceof Array) {
             throw new Error(`Not Implemented`);
         }
         else {
-            const result = await this.db.save(entity, cascadeGraph);
-            this.staged.delete(entity);
+            const result = await this.db.save(entity, operationName);
             return result;
         }
     }
-    async stage(entity) {
-        if (entity instanceof Array) {
-            for (const anEntity of entity) {
-                this.staged.add(anEntity);
-            }
-        }
-        else {
-            this.staged.add(entity);
-        }
-    }
-    async update(entityInfo, cascadeGraph = ground_control_1.CascadeOverwrite.DEFAULT) {
+    async update(entityInfo, operationName) {
         if (entityInfo instanceof Array) {
             throw new Error(`Not Implemented`);
         }
         else {
-            return await this.db.update(entityInfo, cascadeGraph);
+            return await this.db.update(entityInfo, operationName);
         }
     }
 }

@@ -1,5 +1,5 @@
-import { IDuo, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-control';
-import { CascadeOverwrite, DbEntity } from '@airport/ground-control';
+import { IDuo, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, OperationName, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-control';
+import { DbEntity } from '@airport/ground-control';
 /**
  * Created by Papa on 12/11/2016.
  */
@@ -13,8 +13,8 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     searchOne: IEntitySearchOne<Entity, EntitySelect>;
     constructor(dbEntity: DbEntity, Q: QSchema);
     get from(): IQ;
-    create(entity: EntityCreate, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
-    bulkCreate(entities: EntityCreate[], cascadeOverwrite?: CascadeOverwrite | EntityCascadeGraph, checkIfProcessed?: boolean): Promise<number>;
+    create(entity: EntityCreate, operationName?: OperationName): Promise<number>;
+    bulkCreate(entities: EntityCreate[], checkIfProcessed?: boolean, operationName?: OperationName): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }): Promise<number>;
@@ -27,16 +27,16 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }): Promise<number[] | string[] | number[][] | string[][]>;
-    update(entity: EntityCreate, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    update(entity: EntityCreate, operationName?: OperationName): Promise<number>;
     updateColumnsWhere(rawUpdateColumns: RawUpdate<EntityUpdateColumns, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateColumns, IQ>;
     }): Promise<number>;
     updateWhere(rawUpdate: RawUpdate<EntityUpdateProperties, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateProperties, IQ>;
     }): Promise<number>;
-    delete(entity: EntityId): Promise<number>;
+    delete(entity: EntityId, operationName?: OperationName): Promise<number>;
     deleteWhere(rawDelete: RawDelete<IQ> | {
         (...args: any[]): RawDelete<IQ>;
     }): Promise<number>;
-    save(entity: EntityCreate, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    save(entity: EntityCreate, operationName?: OperationName): Promise<number>;
 }

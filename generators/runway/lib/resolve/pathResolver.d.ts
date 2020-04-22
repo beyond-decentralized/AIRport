@@ -1,5 +1,5 @@
-import { FileBuilder } from '../builder/entity/FileBuilder';
-import { EntityCandidate } from '../parser/EntityCandidate';
+import { FileBuilder } from '../ddl/builder/entity/FileBuilder';
+import { EntityCandidate } from '../ddl/parser/EntityCandidate';
 /**
  * Created by Papa on 4/27/2016.
  */

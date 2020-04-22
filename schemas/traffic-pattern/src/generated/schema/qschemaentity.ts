@@ -53,6 +53,16 @@ import {
 	QSchemaColumnQRelation,
 } from './qschemacolumn';
 import {
+	SchemaOperationECascadeGraph,
+	SchemaOperationEId,
+	SchemaOperationEOptionalId,
+	SchemaOperationEUpdateProperties,
+	SchemaOperationESelect,
+	QSchemaOperation,
+	QSchemaOperationQId,
+	QSchemaOperationQRelation,
+} from './qschemaoperation';
+import {
 	SchemaPropertyECascadeGraph,
 	SchemaPropertyEId,
 	SchemaPropertyEOptionalId,
@@ -98,6 +108,7 @@ export interface SchemaEntityESelect
   // Non-Id relations (including OneToMany's)
 	schemaVersion?: SchemaVersionESelect;
 	columns?: SchemaColumnESelect;
+	operations?: SchemaOperationESelect;
 	properties?: SchemaPropertyESelect;
 	relations?: SchemaRelationESelect;
 	relationReferences?: SchemaRelationESelect;
@@ -148,12 +159,25 @@ export interface SchemaEntityEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SchemaEntityECascadeGraph
-	extends VersionedSchemaObjectECascadeGraph {
-	// Cascading Relations
-	columns?: SchemaColumnECascadeGraph;
-	properties?: SchemaPropertyECascadeGraph;
-	relations?: SchemaRelationECascadeGraph;
-	relationReferences?: SchemaRelationECascadeGraph;
+	extends VersionedSchemaObjectESelect, SchemaEntityEOptionalId, VersionedSchemaObjectECascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	index?: number | IQNumberField;
+	isLocal?: boolean | IQBooleanField;
+	isRepositoryEntity?: boolean | IQBooleanField;
+	name?: string | IQStringField;
+	tableConfig?: TableConfiguration | IQStringField;
+
+	// Id Relations - full property interfaces
+
+  // Non-Id relations (including OneToMany's)
+	schemaVersion?: SchemaVersionESelect;
+	columns?: SchemaColumnESelect;
+	operations?: SchemaOperationESelect;
+	properties?: SchemaPropertyESelect;
+	relations?: SchemaRelationESelect;
+	relationReferences?: SchemaRelationESelect;
 
 }
 
@@ -216,6 +240,7 @@ export interface QSchemaEntity extends QVersionedSchemaObject
 	// Non-Id Relations
 	schemaVersion: QSchemaVersionQRelation;
 	columns: IQOneToManyRelation<QSchemaColumn>;
+	operations: IQOneToManyRelation<QSchemaOperation>;
 	properties: IQOneToManyRelation<QSchemaProperty>;
 	relations: IQOneToManyRelation<QSchemaRelation>;
 	relationReferences: IQOneToManyRelation<QSchemaRelation>;

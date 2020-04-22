@@ -4,11 +4,17 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
+const generator_1 = require("./ddl/options/generator");
 const FileWatcher_1 = require("./FileWatcher");
-const generator_1 = require("./options/generator");
 const configuration = generator_1.readConfiguration(process.cwd(), process.argv);
+globalThis.configuration = configuration;
 const ddlDirPath = process.cwd() + '/' + configuration.airport.ddlDir;
-const sourceFilePaths = findAllDdlFilePaths(ddlDirPath);
+let sourceFilePaths = findAllDdlFilePaths(ddlDirPath);
+if (configuration.airport.daoDir) {
+    const daoDirPath = process.cwd() + '/' + configuration.airport.daoDir;
+    const daoSourceFilePaths = findAllDdlFilePaths(daoDirPath);
+    sourceFilePaths = [...daoSourceFilePaths, ...sourceFilePaths];
+}
 function findAllDdlFilePaths(dirPath) {
     const allFileNames = fs.readdirSync(dirPath);
     const containedFilePaths = allFileNames.map(fileName => {

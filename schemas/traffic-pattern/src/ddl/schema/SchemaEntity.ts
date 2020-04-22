@@ -1,6 +1,8 @@
 import {
 	Column,
+	DbBoolean,
 	DbNumber,
+	DbString,
 	Entity,
 	Id,
 	JoinColumn,
@@ -10,7 +12,7 @@ import {
 	Table,
 	TableConfiguration,
 	Transient
-}                              from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	CascadeType,
 	EntityId,
@@ -20,6 +22,7 @@ import {
 	TableIndex
 }                              from '@airport/ground-control'
 import {SchemaColumn}          from './SchemaColumn'
+import {SchemaOperation}       from './SchemaOperation'
 import {SchemaProperty}        from './SchemaProperty'
 import {SchemaRelation}        from './SchemaRelation'
 import {SchemaVersion}         from './SchemaVersion'
@@ -35,6 +38,7 @@ export class SchemaEntity
 	//
 	// Id columns
 	//
+	@DbNumber()
 	@Id()
 	id: EntityId
 
@@ -46,12 +50,15 @@ export class SchemaEntity
 	index: TableIndex
 
 	@Column({name: 'IS_LOCAL', nullable: false})
+	@DbBoolean()
 	isLocal: EntityIsLocal
 
 	@Column({name: 'IS_REPOSITORY_ENTITY', nullable: false})
+	@DbBoolean()
 	isRepositoryEntity: EntityIsRepositoryEntity
 
 	@Column({name: 'NAME', nullable: false})
+	@DbString()
 	name: EntityName
 
 	@Column({name: 'TABLE_CONFIGURATION', nullable: false})
@@ -84,6 +91,9 @@ export class SchemaEntity
 	// 	mto: QSchemaColumn
 	// ) => mto.idIndex.isNotNull())
 	// idColumns: ISchemaColumn[];
+
+	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entity'})
+	operations: SchemaOperation[] = []
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entity'})
 	properties: SchemaProperty[] = []

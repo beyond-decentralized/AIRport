@@ -70,9 +70,9 @@ class AirportDatabase {
      *
      * @return Number of records created (1 or 0)
      */
-    async create(dbEntity, entity) {
+    async create(dbEntity, entity, operationName) {
         const dbFacade = await di_1.container(this).get(air_control_1.DB_FACADE);
-        return await dbFacade.create(dbEntity, entity);
+        return await dbFacade.create(dbEntity, entity, operationName);
     }
     /**
      * Creates an entity - internal API.  Use the API provided by the
@@ -81,12 +81,11 @@ class AirportDatabase {
      * @return Number of records created
      */
     async bulkCreate(dbEntity, entities, checkIfProcessed, // defaults to true
-    cascadeOverwrite, // defaults to false
-    ensureGeneratedValues // for internal use only, needed at initial schema
+    operationName, ensureGeneratedValues // for internal use only, needed at initial schema
     // creation
     ) {
         const dbFacade = await di_1.container(this).get(air_control_1.DB_FACADE);
-        return await dbFacade.bulkCreate(dbEntity, entities, checkIfProcessed, cascadeOverwrite, ensureGeneratedValues);
+        return await dbFacade.bulkCreate(dbEntity, entities, checkIfProcessed, operationName, ensureGeneratedValues);
     }
     async insertColumnValues(dbEntity, rawInsertValues) {
         const dbFacade = await di_1.container(this).get(air_control_1.DB_FACADE);
@@ -110,7 +109,7 @@ class AirportDatabase {
      *
      * @return Number of records deleted (1 or 0)
      */
-    async delete(dbEntity, entity) {
+    async delete(dbEntity, entity, operationName) {
         const dbFacade = await di_1.container(this).get(air_control_1.DB_FACADE);
         return await dbFacade.delete(dbEntity, entity);
     }
@@ -130,7 +129,7 @@ class AirportDatabase {
      *
      * @return Number of records saved (1 or 0)
      */
-    async save(dbEntity, entity) {
+    async save(dbEntity, entity, operationName) {
         const dbFacade = await di_1.container(this).get(air_control_1.DB_FACADE);
         return await dbFacade.save(dbEntity, entity);
     }
@@ -140,7 +139,7 @@ class AirportDatabase {
      *
      * @return Number of records updated (1 or 0)
      */
-    async update(dbEntity, entity) {
+    async update(dbEntity, entity, operationName) {
         const dbFacade = await di_1.container(this).get(air_control_1.DB_FACADE);
         return await dbFacade.update(dbEntity, entity);
     }

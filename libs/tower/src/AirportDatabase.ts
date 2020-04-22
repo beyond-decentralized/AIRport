@@ -15,13 +15,14 @@ import {
 	NonEntityFindOne,
 	NonEntitySearch,
 	NonEntitySearchOne,
+	OperationName,
 	QSchema,
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
 	RawUpdate,
 	RawUpdateColumns
-}           from '@airport/air-control'
+} from '@airport/air-control'
 import {container, DI} from '@airport/di'
 import {
 	CascadeOverwrite,
@@ -133,10 +134,11 @@ export class AirportDatabase
 	async create<E>(
 		dbEntity: DbEntity,
 		entity: E,
+		operationName?: OperationName
 	): Promise<number> {
 		const dbFacade = await container(this).get(DB_FACADE)
 
-		return await dbFacade.create(dbEntity, entity)
+		return await dbFacade.create(dbEntity, entity, operationName)
 	}
 
 	/**
@@ -149,14 +151,14 @@ export class AirportDatabase
 		dbEntity: DbEntity,
 		entities: E[],
 		checkIfProcessed: boolean, // defaults to true
-		cascadeOverwrite: CascadeOverwrite, // defaults to false
+		operationName?: OperationName,
 		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
 	                                  // creation
 	): Promise<number> {
 		const dbFacade = await container(this).get(DB_FACADE)
 
 		return await dbFacade.bulkCreate(dbEntity, entities, checkIfProcessed,
-					cascadeOverwrite, ensureGeneratedValues)
+			operationName, ensureGeneratedValues)
 	}
 
 	async insertColumnValues<IQE extends IQEntity>(
@@ -212,6 +214,7 @@ export class AirportDatabase
 	async delete<E>(
 		dbEntity: DbEntity,
 		entity: E,
+		operationName?: OperationName,
 	): Promise<number> {
 		const dbFacade = await container(this).get(DB_FACADE)
 
@@ -244,6 +247,7 @@ export class AirportDatabase
 	async save<E>(
 		dbEntity: DbEntity,
 		entity: E,
+		operationName?: OperationName,
 	): Promise<number> {
 		const dbFacade = await container(this).get(DB_FACADE)
 
@@ -259,6 +263,7 @@ export class AirportDatabase
 	async update<E>(
 		dbEntity: DbEntity,
 		entity: E,
+		operationName?: OperationName,
 	): Promise<number> {
 		const dbFacade = await container(this).get(DB_FACADE)
 

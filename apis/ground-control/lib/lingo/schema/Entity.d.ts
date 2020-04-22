@@ -1,4 +1,5 @@
 import { DatabaseObjectConfiguration } from './DatabaseObjectConfiguration';
+import { DbOperation, JsonOperations } from './Operation';
 import { DbColumn, DbProperty, DbRelation, JsonSchemaColumn, JsonSchemaProperty, JsonSchemaRelation, SchemaReferenceByIndex } from './Property';
 import { DatabaseObject, DbSchemaVersion, JsonDatabaseObject } from './Schema';
 export declare type EntityId = number;
@@ -29,6 +30,10 @@ export interface JsonSchemaEntity extends SchemaReferenceByIndex<TableIndex>, Js
      * Name of the entity.
      */
     name: EntityName;
+    /**
+     * Mutation operations on the entity (and child entities)
+     */
+    operations?: JsonOperations;
     /**
      * Properties of the entity (parent properties included)
      */
@@ -76,6 +81,10 @@ export interface DbEntity extends SchemaReferenceByIndex<TableIndex>, DatabaseOb
      * Name of the entity.
      */
     name: EntityName;
+    /**
+     * Operations that can be peformed on this entity.
+     */
+    operations?: DbOperation[];
     /**
      * Map of all properties in the entity by name.
      */

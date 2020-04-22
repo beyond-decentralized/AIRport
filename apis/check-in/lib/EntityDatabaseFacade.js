@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
 const Duo_1 = require("./Duo");
 /**
  * Created by Papa on 12/11/2016.
@@ -28,13 +27,13 @@ class EntityDatabaseFacade {
     // 	const dbFacade = await DI.get(DB_FACADE)
     // 	return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity,
     // ...entities) }
-    async create(entity, cascadeGraph) {
+    async create(entity, operationName) {
         const dbFacade = await di_1.DI.db().get(air_control_1.DB_FACADE);
-        return await dbFacade.create(this.dbEntity, entity, cascadeGraph);
+        return await dbFacade.create(this.dbEntity, entity, operationName);
     }
-    async bulkCreate(entities, cascadeOverwrite = ground_control_1.CascadeOverwrite.DEFAULT, checkIfProcessed = true) {
+    async bulkCreate(entities, checkIfProcessed = true, operationName) {
         const dbFacade = await di_1.DI.db().get(air_control_1.DB_FACADE);
-        return await dbFacade.bulkCreate(this.dbEntity, entities, checkIfProcessed, cascadeOverwrite);
+        return await dbFacade.bulkCreate(this.dbEntity, entities, checkIfProcessed, operationName);
     }
     async insertColumnValues(rawInsertColumnValues) {
         const dbFacade = await di_1.DI.db().get(air_control_1.DB_FACADE);
@@ -52,9 +51,9 @@ class EntityDatabaseFacade {
         const dbFacade = await di_1.DI.db().get(air_control_1.DB_FACADE);
         return await dbFacade.insertValuesGenerateIds(this.dbEntity, rawInsertValues);
     }
-    async update(entity, cascadeGraph) {
+    async update(entity, operationName) {
         const dbFacade = await di_1.DI.db().get(air_control_1.DB_FACADE);
-        return await dbFacade.update(this.dbEntity, entity, cascadeGraph);
+        return await dbFacade.update(this.dbEntity, entity, operationName);
     }
     async updateColumnsWhere(rawUpdateColumns) {
         const dbFacade = await di_1.DI.db().get(air_control_1.DB_FACADE);
@@ -65,17 +64,17 @@ class EntityDatabaseFacade {
         return await dbFacade.updateWhere(this.dbEntity, rawUpdate);
     }
     // NOTE: Delete cascading is done on the server, no input is needed
-    async delete(entity) {
+    async delete(entity, operationName) {
         const dbFacade = await di_1.DI.db().get(air_control_1.DB_FACADE);
-        return await dbFacade.delete(this.dbEntity, entity);
+        return await dbFacade.delete(this.dbEntity, entity, operationName);
     }
     async deleteWhere(rawDelete) {
         const dbFacade = await di_1.DI.db().get(air_control_1.DB_FACADE);
         return await dbFacade.deleteWhere(this.dbEntity, rawDelete);
     }
-    async save(entity, cascadeGraph) {
+    async save(entity, operationName) {
         const dbFacade = await di_1.DI.db().get(air_control_1.DB_FACADE);
-        return await dbFacade.save(this.dbEntity, entity, cascadeGraph);
+        return await dbFacade.save(this.dbEntity, entity, operationName);
     }
 }
 exports.EntityDatabaseFacade = EntityDatabaseFacade;

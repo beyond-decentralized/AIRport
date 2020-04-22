@@ -1,11 +1,9 @@
-import {
-	CascadeOverwrite,
-	DbEntity
-}                          from '@airport/ground-control'
+import {DbEntity}          from '@airport/ground-control'
 import {IEntityFind}       from '../../query/api/EntityFind'
 import {IEntityFindOne}    from '../../query/api/EntityFindOne'
 import {IEntitySearch}     from '../../query/api/EntitySearch'
 import {IEntitySearchOne}  from '../../query/api/EntitySearchOne'
+import {OperationName}     from '../../query/Dao'
 import {IDuo}              from '../../query/Duo'
 import {RawDelete}         from '../../query/facade/Delete'
 import {
@@ -25,7 +23,7 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-} from '../entity/Entity'
+}                          from '../entity/Entity'
 
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -91,7 +89,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	create(
 		entity: EntityCreateProperties,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number>;
 
 	/**
@@ -101,8 +99,8 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	bulkCreate(
 		entities: EntityCreateProperties[],
-		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph, // defaults to false
-		checkIfProcessed: boolean // defaults to true
+		checkIfProcessed: boolean, // defaults to true
+		operationName?: OperationName
 	): Promise<number>;
 
 	insertColumnValues<IQE extends IQEntity>(
@@ -133,7 +131,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	update(
 		entity: EntityCreateProperties, // @Id fields must be populated
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number>;
 
 	/**
@@ -165,7 +163,8 @@ export interface IEntityDatabaseFacade<Entity,
 	 * @return Number of records deleted (1 or 0)
 	 */
 	delete(
-		entity: EntityId
+		entity: EntityId,
+		operationName?: OperationName
 	): Promise<number>;
 
 	/**
@@ -186,7 +185,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	save(
 		entity: EntityCreateProperties,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		operationName?: OperationName
 	): Promise<number>;
 
 }

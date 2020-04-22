@@ -1,8 +1,9 @@
-import { CascadeOverwrite, DbEntity } from '@airport/ground-control';
+import { DbEntity } from '@airport/ground-control';
 import { IEntityFind } from '../../query/api/EntityFind';
 import { IEntityFindOne } from '../../query/api/EntityFindOne';
 import { IEntitySearch } from '../../query/api/EntitySearch';
 import { IEntitySearchOne } from '../../query/api/EntitySearchOne';
+import { OperationName } from '../../query/Dao';
 import { IDuo } from '../../query/Duo';
 import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
@@ -46,14 +47,14 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records created (1 or 0)
      */
-    create(entity: EntityCreateProperties, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    create(entity: EntityCreateProperties, operationName?: OperationName): Promise<number>;
     /**
      * Creates the provided entities in the db.
      *
      * @return Number of records created
      */
-    bulkCreate(entities: EntityCreateProperties[], cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph, // defaults to false
-    checkIfProcessed: boolean): Promise<number>;
+    bulkCreate(entities: EntityCreateProperties[], checkIfProcessed: boolean, // defaults to true
+    operationName?: OperationName): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }): Promise<number>;
@@ -73,7 +74,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      * @return Number of records updated (1 or 0)
      */
     update(entity: EntityCreateProperties, // @Id fields must be populated
-    cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    operationName?: OperationName): Promise<number>;
     /**
      * Updates this entity type based on an UPDATE WHERE Query,
      * with a column based set clause.
@@ -99,7 +100,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records deleted (1 or 0)
      */
-    delete(entity: EntityId): Promise<number>;
+    delete(entity: EntityId, operationName?: OperationName): Promise<number>;
     /**
      * Deletes this entity type based on an DELETE WHERE Query.
      *
@@ -115,5 +116,5 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records saved (1 or 0)
      */
-    save(entity: EntityCreateProperties, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
+    save(entity: EntityCreateProperties, operationName?: OperationName): Promise<number>;
 }
