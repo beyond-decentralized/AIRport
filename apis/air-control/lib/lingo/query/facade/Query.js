@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SAME = null;
+function ANOTHER(a, b) {
+}
+exports.ANOTHER = ANOTHER;
+;
 exports.Y = {
     airportSelectField: true
 };

@@ -3,7 +3,7 @@ import {
 	IEntityCascadeGraph
 } from '@airport/air-control'
 
-export const Operation = function <IEntityGraph extends IEntityCascadeGraph>(
+export const Persist = function <IEntityGraph extends IEntityCascadeGraph>(
 	rules: IEntityGraph
 ) {
 	return function (

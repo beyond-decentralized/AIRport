@@ -23,12 +23,18 @@ export interface JsonOperation extends JsonOperationRule {
 }
 export interface JsonOperationRule {
     anyValue?: boolean;
+    functionCall?: JsonFunctionCall;
+    isArray?: boolean;
     isNull?: boolean;
-    operator?: '&' | '(' | '|';
     numericValue?: number;
+    operator?: '|';
     subRules?: {
         [key: string]: JsonOperationRule;
-    };
+    } | JsonOperationRule[];
+}
+export interface JsonFunctionCall {
+    functionName: string;
+    parameters: number[];
 }
 export interface DbOperation {
     id: Operation_Id;

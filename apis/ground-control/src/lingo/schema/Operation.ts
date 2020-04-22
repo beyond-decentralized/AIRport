@@ -29,10 +29,17 @@ export interface JsonOperation
 
 export interface JsonOperationRule {
 	anyValue?: boolean
+	functionCall?: JsonFunctionCall
+	isArray?: boolean
 	isNull?: boolean
-	operator?: '&' | '(' | '|'
 	numericValue?: number
-	subRules?: { [key: string]: JsonOperationRule }
+	operator?: '|'
+	subRules?: { [key: string]: JsonOperationRule } | JsonOperationRule[]
+}
+
+export interface JsonFunctionCall {
+	functionName: string
+	parameters: number[]
 }
 
 export interface DbOperation {

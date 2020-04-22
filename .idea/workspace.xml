@@ -1,284 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="Bug fix.">
-      <change afterPath="$PROJECT_DIR$/apis/check-in/lib/DaoDecorators.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/check-in/lib/DaoDecorators.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/check-in/lib/DaoDecorators.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/check-in/src/DaoDecorators.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Operation.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Operation.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Operation.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Operation.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/airdb/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/airdb/.idea/airdb.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/airdb/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/airdb/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/airdb/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generators/runway/src/FileProcessor.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generators/runway/src/dao/parser/OperationGenerator.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generators/runway/src/ddl/parser/EntityDefinitionGenerator.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaOperation.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaoperation.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemaoperation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/airport.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/airport.iml" afterDir="false" />
+    <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/lib/lingo/AirportDatabase.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/lib/lingo/AirportDatabase.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/lib/lingo/core/repository/DatabaseFacade.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/lib/lingo/core/repository/DatabaseFacade.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/lib/lingo/core/repository/EntityDatabaseFacade.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/lib/lingo/core/repository/EntityDatabaseFacade.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/lib/lingo/query/Dao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/lib/lingo/query/Dao.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/air-control/lib/lingo/query/facade/Query.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/lib/lingo/query/facade/Query.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/air-control/lib/lingo/query/facade/Query.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/lib/lingo/query/facade/Query.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/air-control/lib/lingo/query/facade/Query.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/lib/lingo/query/facade/Query.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/src/lingo/AirportDatabase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/src/lingo/AirportDatabase.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/src/lingo/core/repository/DatabaseFacade.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/src/lingo/core/repository/DatabaseFacade.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/src/lingo/core/repository/EntityDatabaseFacade.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/src/lingo/core/repository/EntityDatabaseFacade.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/air-control/src/lingo/query/Dao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/src/lingo/query/Dao.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apis/air-control/src/lingo/query/facade/Query.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/air-control/src/lingo/query/facade/Query.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/lib/Dao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/lib/Dao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/lib/Dao.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/lib/Dao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/lib/Dao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/lib/Dao.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/lib/EntityDatabaseFacade.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/lib/EntityDatabaseFacade.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/lib/EntityDatabaseFacade.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/lib/EntityDatabaseFacade.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/lib/EntityDatabaseFacade.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/lib/EntityDatabaseFacade.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/src/Dao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/src/Dao.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/src/EntityDatabaseFacade.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/src/EntityDatabaseFacade.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/check-in/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Entity.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Entity.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Entity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Entity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/check-in/lib/DaoDecorators.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/lib/DaoDecorators.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/check-in/lib/DaoDecorators.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/lib/DaoDecorators.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/check-in/lib/DaoDecorators.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/lib/DaoDecorators.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/check-in/src/DaoDecorators.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/check-in/src/DaoDecorators.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Operation.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/lib/lingo/schema/Operation.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Operation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ground-control/src/lingo/schema/Operation.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/terminal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apps/terminal/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/config/rush/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/rush/pnpm-lock.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/FileWatcher.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/FileWatcher.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/FileWatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/FileWatcher.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/FileWatcher.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/FileWatcher.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/Builder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/Builder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/Builder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/DaoBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/DaoBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/DaoBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/DuoBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/DuoBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/DuoBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/GeneratedFileListingBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/GeneratedFileListingBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/GeneratedFileListingBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/GeneratedSummaryBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/GeneratedSummaryBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/GeneratedSummaryBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/ImplementationFileBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/ImplementationFileBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/ImplementationFileBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/PathBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/PathBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/PathBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/QSchemaBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/QSchemaBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/QSchemaBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/UtilityBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/UtilityBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/UtilityBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/EntityInterfaceFileBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/EntityInterfaceFileBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/EntityInterfaceFileBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/FileBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/FileBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/FileBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/IEntityInterfaceBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/IEntityInterfaceBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/IEntityInterfaceBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/IQEntityInterfaceBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/IQEntityInterfaceBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/IQEntityInterfaceBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QColumnBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QColumnBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QColumnBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityFileBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityFileBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityFileBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityIdBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityIdBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityIdBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityRelationBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityRelationBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QEntityRelationBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QPropertyBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QPropertyBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QPropertyBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QRelationBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QRelationBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QRelationBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QTransientBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QTransientBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/entity/QTransientBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/options/Arguments.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/options/Arguments.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/options/Arguments.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/options/Options.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/options/Options.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/options/Options.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/options/generator.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/options/generator.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/options/generator.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/options/parser.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/options/parser.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/options/parser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/JsonSchemaBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/JsonSchemaBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/JsonSchemaBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SEntity.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SEntity.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SEntity.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SProperty.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SProperty.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SProperty.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SSchema.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SSchema.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SSchema.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SSchemaBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SSchemaBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SSchemaBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/schema/SchemaRelationResolver.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/superclass/MappedSuperclassBuilder.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/superclass/MappedSuperclassBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/builder/superclass/MappedSuperclassBuilder.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/options/Arguments.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/options/Arguments.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/options/Arguments.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/options/Options.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/options/Options.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/options/Options.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/options/generator.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/options/generator.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/options/generator.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/options/parser.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/options/parser.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/options/parser.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/DocEntry.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/DocEntry.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/DocEntry.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidate.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidate.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidate.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityCandidateRegistry.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityDefinitionGenerator.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityDefinitionGenerator.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/EntityDefinitionGenerator.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/FileImports.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/FileImports.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/FileImports.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/ImportManager.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/ImportManager.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/ImportManager.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/utils.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/utils.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/parser/utils.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/resolve/pathResolver.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/resolve/pathResolver.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/lib/resolve/pathResolver.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/FileWatcher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/FileWatcher.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/Builder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/Builder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/DaoBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/DaoBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/DuoBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/DuoBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/GeneratedFileListingBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/GeneratedFileListingBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/GeneratedSummaryBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/GeneratedSummaryBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/ImplementationFileBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/ImplementationFileBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/PathBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/PathBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/QSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/QSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/UtilityBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/UtilityBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/EntityInterfaceFileBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/entity/EntityInterfaceFileBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/FileBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/entity/FileBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/IEntityInterfaceBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/entity/IEntityInterfaceBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/IQEntityInterfaceBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/entity/IQEntityInterfaceBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/QColumnBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/entity/QColumnBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/QEntityBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/entity/QEntityBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/QEntityFileBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/entity/QEntityFileBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/QEntityIdBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/entity/QEntityIdBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/QEntityRelationBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/entity/QEntityRelationBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/QPropertyBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/entity/QPropertyBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/QRelationBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/entity/QRelationBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/entity/QTransientBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/entity/QTransientBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/schema/JsonSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/schema/JsonSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/schema/SEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/schema/SEntity.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/schema/SProperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/schema/SProperty.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/schema/SSchema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/schema/SSchema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/schema/SSchemaBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/schema/SSchemaBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/schema/SchemaRelationResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/schema/SchemaRelationResolver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/builder/superclass/MappedSuperclassBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/builder/superclass/MappedSuperclassBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/options/Arguments.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/options/Arguments.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/options/Options.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/options/Options.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/options/generator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/options/generator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/options/parser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/options/parser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/parser/DocEntry.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/parser/DocEntry.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/parser/EntityCandidate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/parser/EntityCandidate.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/parser/EntityCandidateRegistry.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/parser/EntityCandidateRegistry.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/parser/EntityDefinitionGenerator.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/parser/FileImports.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/parser/FileImports.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/parser/ImportManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/parser/ImportManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/parser/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/ddl/parser/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/runway/src/resolve/pathResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/resolve/pathResolver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/blueprint/.rush/temp/shrinkwrap-deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/libs/blueprint/.rush/temp/shrinkwrap-deps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/di/.rush/temp/shrinkwrap-deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/libs/di/.rush/temp/shrinkwrap-deps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/tower/lib/AirportDatabase.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/tower/lib/AirportDatabase.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/tower/lib/AirportDatabase.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/libs/tower/lib/AirportDatabase.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/tower/src/AirportDatabase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/tower/src/AirportDatabase.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rush.json" beforeDir="false" afterPath="$PROJECT_DIR$/rush.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaProperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaProperty.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaReference.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaReference.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaRelation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaRelation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaVersion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/ddl/schema/SchemaVersion.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/baseDaos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/baseDaos.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/baseDuos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/baseDuos.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/generated.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/generated.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/interfaces.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/mappedSuperclass.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/mappedSuperclass.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/qInterfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/qInterfaces.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/qSchema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/qSchema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemacolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemacolumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaentity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaentity.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaproperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaproperty.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemapropertycolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemapropertycolumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemareference.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemareference.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemarelation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemarelation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemarelationcolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemarelationcolumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaversion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qschemaversion.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qversionedschemaobject.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/qversionedschemaobject.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemacolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemacolumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemaentity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemaentity.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemaproperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemaproperty.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemapropertycolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemapropertycolumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemareference.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemareference.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemarelation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemarelation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemarelationcolumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemarelationcolumn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemaversion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/schemaversion.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/versionedschemaobject.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/traffic-pattern/src/generated/schema/versionedschemaobject.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/dao/parser/OperationGenerator.js" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/dao/parser/OperationGenerator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/lib/dao/parser/OperationGenerator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/lib/dao/parser/OperationGenerator.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/runway/src/dao/parser/OperationGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/generators/runway/src/dao/parser/OperationGenerator.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/travel-document-checkpoint/src/dao/UserDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/travel-document-checkpoint/src/dao/UserDao.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -400,7 +139,7 @@
       <workItem from="1587349278567" duration="2762000" />
       <workItem from="1587353818891" duration="193000" />
       <workItem from="1587355139778" duration="258000" />
-      <workItem from="1587501570746" duration="16998000" />
+      <workItem from="1587501570746" duration="19849000" />
     </task>
     <task id="LOCAL-00001" summary="adding not null constraints">
       <created>1535641136191</created>
@@ -528,7 +267,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584992003555</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Added operations API.  This allows to specify exact operation entity graphs in configuration and then reference them at runtime.">
+      <created>1587530343058</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1587530343058</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -565,7 +311,8 @@
     <MESSAGE value="Added security-check API." />
     <MESSAGE value="Url update." />
     <MESSAGE value="Bug fix." />
-    <option name="LAST_COMMIT_MESSAGE" value="Bug fix." />
+    <MESSAGE value="Added operations API.  This allows to specify exact operation entity graphs in configuration and then reference them at runtime." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added operations API.  This allows to specify exact operation entity graphs in configuration and then reference them at runtime." />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="199" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587512485717">
@@ -578,11 +325,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="686" y="248" key="#territory/0.0.1920.1040@0.0.1920.1040" timestamp="1583092444175" />
-    <state x="0" y="0" width="1676" height="976" key="CommitChangelistDialog2" timestamp="1584992029214">
+    <state x="0" y="0" width="1676" height="976" key="CommitChangelistDialog2" timestamp="1587530338107">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="0" y="0" width="1920" height="1040" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1584842898894" />
-    <state x="0" y="0" width="1676" height="976" key="CommitChangelistDialog2/0.0.1920.1080@0.0.1920.1080" timestamp="1584992029214" />
+    <state x="0" y="0" width="1676" height="976" key="CommitChangelistDialog2/0.0.1920.1080@0.0.1920.1080" timestamp="1587530338107" />
     <state width="888" height="484" key="DebuggerActiveHint" timestamp="1587509720494">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -677,11 +424,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="463" y="166" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1582948818974" />
-    <state x="552" y="267" key="Vcs.Push.Dialog.v2" timestamp="1584992004998">
+    <state x="552" y="267" key="Vcs.Push.Dialog.v2" timestamp="1587530345173">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="552" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1584842904549" />
-    <state x="552" y="267" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1584992004998" />
+    <state x="552" y="267" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1587530345173" />
     <state x="667" y="296" width="710" height="567" key="find.popup" timestamp="1587529133356">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -692,12 +439,12 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="616" y="250" key="run.anything.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1587528606697" />
-    <state x="623" y="235" width="672" height="679" key="search.everywhere.popup" timestamp="1587530101445">
+    <state x="623" y="235" width="672" height="679" key="search.everywhere.popup" timestamp="1587567059425">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="624" y="-845" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1.-1080.1920.1080/-1919.-1188.1920.1080/1921.-1188.1920.1080@1.-1080.1920.1080" timestamp="1582925608008" />
     <state x="623" y="226" width="672" height="653" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584842803275" />
-    <state x="623" y="235" width="672" height="679" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1587530101445" />
+    <state x="623" y="235" width="672" height="679" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1587567059425" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

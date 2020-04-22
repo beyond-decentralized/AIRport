@@ -31,7 +31,11 @@ export interface IQuery {
 	): JsonQuery;
 }
 
-export const SAME: any = null;
+export function ANOTHER(
+	a: number,
+	b?: number
+): any {
+};
 
 export const Y: any = {
 	airportSelectField: true

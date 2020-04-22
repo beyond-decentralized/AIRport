@@ -63,22 +63,28 @@ function serializeClass(symbol, daoName) {
         if (expression.expression.kind !== ts.SyntaxKind.ThisKeyword) {
             return;
         }
-        let type;
-        switch (expression.name.escapedText) {
-            case 'create':
-                type = ground_control_1.OperationType.CREATE;
-                break;
-            case 'delete':
-                type = ground_control_1.OperationType.DELETE;
-                break;
-            case 'save':
-                type = ground_control_1.OperationType.SAVE;
-                break;
-            case 'update':
-                type = ground_control_1.OperationType.UPDATE;
-                break;
-            default:
-                throw new Error(`Unsupported operation in "${daoName}": "this.${expression.name.escapedText}".
+        member.valueDeclaration.decorators.forEach(decorator => {
+            // decorator.expression.kind = 196 CallExpression
+            // decorator.expression.expression.kind = 75 Identifier
+            if (decorator.expression.expression.escapedText !== 'Persist') {
+                return;
+            }
+            let type;
+            switch (expression.name.escapedText) {
+                case 'create':
+                    type = ground_control_1.OperationType.CREATE;
+                    break;
+                case 'delete':
+                    type = ground_control_1.OperationType.DELETE;
+                    break;
+                case 'save':
+                    type = ground_control_1.OperationType.SAVE;
+                    break;
+                case 'update':
+                    type = ground_control_1.OperationType.UPDATE;
+                    break;
+                default:
+                    throw new Error(`Unsupported operation in "${daoName}": "this.${expression.name.escapedText}".
 							Expecting one of the following:
 							
 							${memberName} = this.create
@@ -86,19 +92,14 @@ function serializeClass(symbol, daoName) {
 							${memberName} = this.save
 							${memberName} = this.update
 							`);
-        }
-        member.valueDeclaration.decorators.forEach(decorator => {
-            // decorator.expression.kind = 196 CallExpression
-            // decorator.expression.expression.kind = 75 Identifier
-            if (decorator.expression.expression.escapedText === 'Operation') {
-                // decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
-                const rules = decorator.expression.arguments[0];
-                const operationRule = {
-                    type
-                };
-                serializeRules(rules, operationRule);
-                daoOperations[memberName] = operationRule;
             }
+            // decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
+            const rules = decorator.expression.arguments[0];
+            const operationRule = {
+                type
+            };
+            serializeRules(rules, operationRule);
+            daoOperations[memberName] = operationRule;
         });
     });
     return daoOperations;
@@ -118,11 +119,8 @@ function serializeRule(initializer, rule) {
         if (operatorKind === ts.SyntaxKind.BarBarToken) {
             rule.operator = '|';
         }
-        else if (operatorKind === ts.SyntaxKind.AmpersandAmpersandToken) {
-            rule.operator = '&';
-        }
         else {
-            throw new Error('Unsupported BinaryExpression.operatorToken.kind in save/update rules: '
+            throw new Error('Unsupported BinaryExpression.operatorToken.kind in @Persist rule: '
                 + operatorKind);
         }
         rule.subRules = {
@@ -143,7 +141,50 @@ function serializeRule(initializer, rule) {
     else if (initializer.kind === ts.SyntaxKind.ObjectLiteralExpression) {
         serializeRules(initializer, rule);
     }
+    else if (initializer.kind === ts.SyntaxKind.ArrayLiteralExpression) {
+        rule.isArray = true;
+        // serializeRules(initializer, rule)
+        rule.subRules = [];
+        initializer.elements.forEach((subInitializer) => {
+            const subRule = serializeRule(subInitializer, {});
+            rule.subRules.push(subRule);
+        });
+    }
+    else if (initializer.kind === ts.SyntaxKind.CallExpression
+        && initializer.expression.escapedText === 'ANOTHER') {
+        if (initializer.arguments.length === 1) {
+            rule.functionCall = {
+                functionName: 'ANOTHER',
+                parameters: [
+                    getNumericFunctionCallArgument(initializer.arguments[0], 'ANOTHER')
+                ]
+            };
+        }
+        else if (initializer.arguments.length === 2) {
+            rule.functionCall = {
+                functionName: 'ANOTHER',
+                parameters: [
+                    getNumericFunctionCallArgument(initializer.arguments[0], 'ANOTHER'),
+                    getNumericFunctionCallArgument(initializer.arguments[1], 'ANOTHER')
+                ]
+            };
+        }
+        else {
+            throw new Error(`Unsupported number of arguments in ANOTHER(X, Y?) call (in @Persist rule).
+			Expecting either ANOTHER(X) or ANOTHER(X, Y).
+			`);
+        }
+    }
+    else {
+        throw new Error('Unsupported syntax in @Persist rule');
+    }
     return rule;
+}
+function getNumericFunctionCallArgument(argument, functionName) {
+    if (argument.kind !== ts.SyntaxKind.NumericLiteral) {
+        throw new Error(`Expecting only Numeric Literals as parameters to "${functionName}" function call.`);
+    }
+    return parseInt(argument.text);
 }
 function forEach(collection, callback) {
     if (collection instanceof Map) {

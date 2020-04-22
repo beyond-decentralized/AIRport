@@ -21,7 +21,7 @@ export interface RawLimitedQuery {
 export interface IQuery {
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonQuery;
 }
-export declare const SAME: any;
+export declare function ANOTHER(a: number, b?: number): any;
 export declare const Y: any;
 export declare function convertToY(object: any): void;
 export declare function isY(object: any): boolean;
