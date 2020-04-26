@@ -1,9 +1,10 @@
 // Require the framework and instantiate it
 import * as fastifyLib from 'fastify'
 
-const fastify = fastifyLib({logger: false})
+const fastify = fastifyLib({logger: true})
+const fastifyLocal = fastifyLib({logger: true})
 
-fastify.register(require('fastify-cors'), {
+fastifyLocal.register(require('fastify-cors'), {
 	// put your options here
 })
 
@@ -16,14 +17,22 @@ fastify.get('/', async (
 })
 
 // Declare a route
-fastify.put('/save/:schemaId/:entityId', async (
+fastifyLocal.get('/', async (
+	request,
+	reply
+) => {
+	return {hello: 'local world'}
+})
+
+// Declare a route
+fastifyLocal.put('/save/:schemaId/:entityId', async (
 	request,
 	reply
 ) => {
 	return {hello: 'world'}
 })
 
-fastify.put('/addUser/:email', async (
+fastifyLocal.put('/addUser/:email', async (
 	request,
 	reply
 ) => {
@@ -35,11 +44,22 @@ fastify.put('/addUser/:email', async (
 // Run the server!
 const start = async () => {
 	try {
-		await fastify.listen(31808)
+		await fastify.listen(31817, '0.0.0.0')
 		fastify.log.info(`server listening on ${(fastify.server as any).address().port}`)
 	} catch (err) {
 		fastify.log.error(err)
 		process.exit(1)
 	}
 }
-start()
+
+const startLocal = async () => {
+	try {
+		await fastifyLocal.listen(31808, '127.0.0.1')
+		fastifyLocal.log.info(`local server listening on ${(fastifyLocal.server as any).address().port}`)
+	} catch (err) {
+		fastifyLocal.log.error(err)
+		process.exit(1)
+	}
+}
+
+Promise.all([start(), startLocal()]).then()

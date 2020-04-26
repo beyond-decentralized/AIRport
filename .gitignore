@@ -9,3 +9,6 @@ node_modules
 # Ignore Rush temporary files
 /common/temp/**
 
+# Ignore Microsoft Rush temp files
+.rush
+

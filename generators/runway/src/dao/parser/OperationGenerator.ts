@@ -61,13 +61,14 @@ export function visitDaoFile(
 
 	const entityName = daoName.substr(0, daoName.length - 3)
 
-	entityOperationMap[entityName] = serializeClass(symbol, daoName)
+	entityOperationMap[entityName] = serializeClass(symbol, daoName, entityName)
 }
 
 /** Serialize a class symbol information */
 function serializeClass(
 	symbol: ts.Symbol,
-	daoName: string
+	daoName: string,
+	entityName: string
 ): { [operationName: string]: JsonOperation } {
 	let daoOperations = {}
 
@@ -100,6 +101,17 @@ function serializeClass(
 			// decorator.expression.expression.kind = 75 Identifier
 			if (decorator.expression.expression.escapedText !== 'Persist') {
 				return
+			}
+
+			const typeArguments = decorator.expression.typeArguments
+
+			if (!typeArguments || typeArguments[0].typeName.escapedText !== `${entityName}Graph`) {
+				throw new Error(`@Persist decorator in "${daoName}" must be passed a generic parameter "${entityName}Graph":
+				@Persist<${entityName}Graph>({
+					...
+				})
+				${memberName} = ...
+				`)
 			}
 
 			let type: OperationType
@@ -196,11 +208,11 @@ function serializeRule(
 		})
 	} else if (initializer.kind === ts.SyntaxKind.CallExpression
 		&& (initializer.expression as ts.Identifier).escapedText === 'ANOTHER') {
-		if(initializer.arguments.length === 1) {
+		if (initializer.arguments.length === 1) {
 			rule.functionCall = {
 				functionName: 'ANOTHER',
 				parameters: [
-				      getNumericFunctionCallArgument(initializer.arguments[0], 'ANOTHER')
+					getNumericFunctionCallArgument(initializer.arguments[0], 'ANOTHER')
 				]
 			}
 		} else if (initializer.arguments.length === 2) {
@@ -227,7 +239,7 @@ function getNumericFunctionCallArgument(
 	argument,
 	functionName: string
 ) {
-	if(argument.kind !== ts.SyntaxKind.NumericLiteral) {
+	if (argument.kind !== ts.SyntaxKind.NumericLiteral) {
 		throw new Error(`Expecting only Numeric Literals as parameters to "${functionName}" function call.`)
 	}
 	return parseInt(argument.text)

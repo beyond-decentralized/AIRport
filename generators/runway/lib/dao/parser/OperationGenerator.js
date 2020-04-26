@@ -39,11 +39,11 @@ function visitDaoFile(node, path) {
     }
     daoMap[daoName] = true;
     const entityName = daoName.substr(0, daoName.length - 3);
-    exports.entityOperationMap[entityName] = serializeClass(symbol, daoName);
+    exports.entityOperationMap[entityName] = serializeClass(symbol, daoName, entityName);
 }
 exports.visitDaoFile = visitDaoFile;
 /** Serialize a class symbol information */
-function serializeClass(symbol, daoName) {
+function serializeClass(symbol, daoName, entityName) {
     let daoOperations = {};
     forEach(symbol.members, (memberName, member) => {
         if (!member.valueDeclaration) {
@@ -68,6 +68,15 @@ function serializeClass(symbol, daoName) {
             // decorator.expression.expression.kind = 75 Identifier
             if (decorator.expression.expression.escapedText !== 'Persist') {
                 return;
+            }
+            const typeArguments = decorator.expression.typeArguments;
+            if (!typeArguments || typeArguments[0].typeName.escapedText !== `${entityName}Graph`) {
+                throw new Error(`@Persist decorator in "${daoName}" must be passed a generic parameter "${entityName}Graph":
+				@Persist<${entityName}Graph>({
+					...
+				})
+				${memberName} = ...
+				`);
             }
             let type;
             switch (expression.name.escapedText) {

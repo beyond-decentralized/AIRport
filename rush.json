@@ -85,6 +85,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/jet-bridge",
+      "projectFolder": "libs/jet-bridge",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/mono-rail",
       "projectFolder": "libs/mono-rail",
       "shouldPublish": true
@@ -92,6 +97,11 @@
     {
       "packageName": "@airport/observe",
       "projectFolder": "libs/observe",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/ramp",
+      "projectFolder": "libs/ramp",
       "shouldPublish": true
     },
     {

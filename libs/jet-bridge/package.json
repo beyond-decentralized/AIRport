@@ -1,13 +1,25 @@
 {
   "dependencies": {
-    "@airport/air-control": "0.0.1",
     "@airport/di": "0.0.1",
-    "@airport/ground-control": "0.0.1",
-    "@airport/terminal-map": "0.0.1"
+    "@airport/ramp": "0.0.1"
   },
-  "main": "lib/index.js",
-  "name": "@airport/tower",
-  "type": "module",
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "css-loader": "^3.5.3",
+    "serve": "^11.3.0",
+    "style-loader": "^1.2.0",
+    "svelte": "^3.21.0",
+    "svelte-loader": "^2.13.6",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "main": "lib/main.js",
+  "name": "@airport/jet-bridge",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack",
+    "dev": "webpack-dev-server --content-base public"
+  },
   "typings": "lib/index",
   "version": "0.0.1"
 }
