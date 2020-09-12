@@ -28,3 +28,4 @@ export declare class EntitySearch<Entity, EntityArray extends Array<Entity>, IES
     noCache(): EntitySearch<Entity, Entity[], IESP>;
     cache(cacheForUpdate?: UpdateCacheType): EntitySearch<Entity, Entity[], IESP>;
 }
+//# sourceMappingURL=EntitySearch.d.ts.map

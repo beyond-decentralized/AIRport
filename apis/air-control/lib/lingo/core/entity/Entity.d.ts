@@ -126,3 +126,4 @@ export interface IQEntityDriver {
     isRootEntity(): boolean;
     join<IF extends IFrom>(right: IF, joinType: JoinType, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): IJoinFields<IF>;
 }
+//# sourceMappingURL=Entity.d.ts.map

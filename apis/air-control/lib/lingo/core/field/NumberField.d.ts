@@ -5,3 +5,4 @@ import { IQOperableField } from './OperableField';
  */
 export interface IQNumberField extends IQOperableField<number, JSONRawNumberOperation, INumberOperation, IQNumberField> {
 }
+//# sourceMappingURL=NumberField.d.ts.map

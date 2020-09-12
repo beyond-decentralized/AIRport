@@ -89,3 +89,4 @@ export declare const OneToMany: OneToManyDecorator;
 export declare const GeneratedValue: GeneratedValueDecorator;
 export declare const SequenceGenerator: SequenceGeneratorDecorator;
 export declare const TraditionalServerSeq: TraditionalServerSeqDecorator;
+//# sourceMappingURL=ColumnDecorators.d.ts.map

@@ -1,6 +1,7 @@
 {
   "airport": {
-    "domain": "npmjs.org",
+    "domain": "air",
+    "schema": "travel-document-checkpoint",
     "user": "diapco",
     "project": "airport",
     "path": "schemas/travel-document-checkpoint"

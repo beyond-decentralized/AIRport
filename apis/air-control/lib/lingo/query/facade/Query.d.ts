@@ -30,3 +30,4 @@ export declare function isN(object: any): boolean;
 export declare const ID: any;
 export declare function convertToID(object: any): void;
 export declare function isID(object: any): boolean;
+//# sourceMappingURL=Query.d.ts.map

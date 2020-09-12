@@ -92,3 +92,4 @@ export declare const except: exceptFunction;
  * B
  */
 export declare const minus: minusFunction;
+//# sourceMappingURL=Functions.d.ts.map

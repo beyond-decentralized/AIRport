@@ -30,3 +30,4 @@ export declare class CockroachdbDriver extends SqLiteDriver {
     private getReturnValue;
     handleError(error: any): void;
 }
+//# sourceMappingURL=CockroachDbDriver.d.ts.map

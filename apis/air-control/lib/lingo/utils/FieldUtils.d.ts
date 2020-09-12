@@ -6,3 +6,4 @@ import { IQueryUtils } from './QueryUtils';
 export interface IFieldUtils {
     getFieldQueryJson<IQF extends IQOrderableField<IQF>>(fieldSubQuery: RawFieldQuery<IQF>, entityAliases: IEntityAliases, queryUtils: IQueryUtils): JsonFieldQuery;
 }
+//# sourceMappingURL=FieldUtils.d.ts.map

@@ -17,3 +17,4 @@ export interface PropertyDecorator {
  * When decorated with this the decorated method will run
  * in a transactional context.
  */
+//# sourceMappingURL=decorators.d.ts.map

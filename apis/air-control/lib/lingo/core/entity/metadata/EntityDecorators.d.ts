@@ -25,3 +25,4 @@ export interface TableDecorator {
 export interface MappedSuperclassDecorator {
     (): ClassDecorator;
 }
+//# sourceMappingURL=EntityDecorators.d.ts.map

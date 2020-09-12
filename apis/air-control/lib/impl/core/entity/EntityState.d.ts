@@ -13,3 +13,4 @@ export declare function isNew(entity: any): boolean;
 export declare function markAsNew<T>(entity: T): T;
 export declare function isExisting(entity: any): boolean;
 export declare function markAsExisting<T>(entity: T): T;
+//# sourceMappingURL=EntityState.d.ts.map

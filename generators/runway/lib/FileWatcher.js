@@ -85,7 +85,7 @@ function watchFiles(configuration, options, rootFileNames) {
         const generatedSummaryBuilder = new GeneratedSummaryBuilder_1.GeneratedSummaryBuilder(pathBuilder);
         const entityInterfaceListingBuilder = new GeneratedFileListingBuilder_1.GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
         const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder_1.GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
-        const qSchemaBuilder = new QSchemaBuilder_1.QSchemaBuilder(pathBuilder);
+        const qSchemaBuilder = new QSchemaBuilder_1.QSchemaBuilder(pathBuilder, configuration);
         const daoBuilder = new DaoBuilder_1.DaoBuilder(pathBuilder);
         const duoBuilder = new DuoBuilder_1.DuoBuilder(pathBuilder);
         for (const entityName in entityMapByName) {

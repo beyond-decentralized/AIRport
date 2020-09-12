@@ -44,3 +44,4 @@ export interface ILogicalOperation extends IOperation {
      */
     not(op: JSONBaseOperation): JSONLogicalOperation;
 }
+//# sourceMappingURL=LogicalOperation.d.ts.map

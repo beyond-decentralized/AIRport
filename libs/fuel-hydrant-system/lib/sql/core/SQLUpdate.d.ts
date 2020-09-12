@@ -14,3 +14,4 @@ export declare class SQLUpdate extends SQLNoJoinQuery {
     private isManyToOneRelation;
     private addManyToOneMappings;
 }
+//# sourceMappingURL=SQLUpdate.d.ts.map

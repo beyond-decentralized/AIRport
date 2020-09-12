@@ -121,3 +121,4 @@ export interface QSchemaInternal extends QSchema {
     __qIdRelationConstructors__?: typeof QRelation[];
     __dbSchema__?: DbSchema;
 }
+//# sourceMappingURL=AirportDatabase.d.ts.map

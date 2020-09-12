@@ -27,3 +27,4 @@ export declare class QUntypedFunction extends QUntypedField implements IQFunctio
     getInstance(): QUntypedFunction;
     toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
 }
+//# sourceMappingURL=UntypedField.d.ts.map

@@ -35,3 +35,4 @@ export declare class EntityTreeResultParser extends TreeResultParser implements 
     flushEntity(entityAlias: string, dbEntity: DbEntity, selectClauseFragment: any, entityId: any, resultObject: any): any;
     bridge(parsedResults: any[], selectClauseFragment: any): any[];
 }
+//# sourceMappingURL=EntityTreeResultParser.d.ts.map

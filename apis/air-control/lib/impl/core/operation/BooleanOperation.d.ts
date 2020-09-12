@@ -8,3 +8,4 @@ import { ValueOperation } from "./Operation";
 export declare class BooleanOperation<IQ extends IQEntityInternal> extends ValueOperation<boolean, JSONRawBooleanOperation, IQBooleanField> implements IBooleanOperation {
     constructor();
 }
+//# sourceMappingURL=BooleanOperation.d.ts.map

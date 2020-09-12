@@ -25,3 +25,4 @@ export declare class NonEntitySearchOne extends Lookup implements INonEntitySear
         (...args: any[]): RawNonEntityQuery;
     }, queryResultType: QueryResultType, QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery): Promise<IObservable<any[]>>;
 }
+//# sourceMappingURL=NonEntitySearchOne.d.ts.map

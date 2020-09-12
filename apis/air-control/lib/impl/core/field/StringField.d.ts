@@ -28,3 +28,4 @@ export declare class QStringFunction extends QStringField implements IQFunction<
     getInstance(): QStringFunction;
     toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
 }
+//# sourceMappingURL=StringField.d.ts.map

@@ -4,3 +4,4 @@ import { IQOrderableField } from './Field';
  */
 export interface IFieldInOrderBy<IQF extends IQOrderableField<IQF>> {
 }
+//# sourceMappingURL=FieldInOrderBy.d.ts.map

@@ -25,3 +25,4 @@ export declare class QNumberFunction extends QNumberField implements IQFunction<
     getInstance(): QNumberFunction;
     toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
 }
+//# sourceMappingURL=NumberField.d.ts.map

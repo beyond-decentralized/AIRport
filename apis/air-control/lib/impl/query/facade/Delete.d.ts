@@ -12,3 +12,4 @@ export declare class Delete<IQE extends IQEntity> extends AbstractQuery {
     constructor(rawDelete: RawDelete<IQE>);
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonDelete;
 }
+//# sourceMappingURL=Delete.d.ts.map

@@ -35,3 +35,4 @@ export declare abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
     protected getGroupByFragment(groupBy?: JSONFieldInGroupBy[]): string;
     protected getOrderByFragment(orderBy: JSONFieldInOrderBy[]): string;
 }
+//# sourceMappingURL=NonEntitySQLQuery.d.ts.map

@@ -39,3 +39,4 @@ export declare class MappedOrderByParser implements INonEntityOrderByParser {
     getOrderByFragment(rootSelectClauseFragment: any, originalOrderBy: JSONFieldInOrderBy[]): string;
     buildOrderByFragmentForEntity(orderByFields: JSONFieldInOrderBy[]): string[];
 }
+//# sourceMappingURL=MappedOrderByParser.d.ts.map

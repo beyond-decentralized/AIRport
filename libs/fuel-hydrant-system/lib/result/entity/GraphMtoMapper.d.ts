@@ -21,3 +21,4 @@ export declare class GraphMtoMapper {
         [entityId: string]: any;
     }[][]): void;
 }
+//# sourceMappingURL=GraphMtoMapper.d.ts.map

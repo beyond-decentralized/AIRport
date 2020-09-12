@@ -64,3 +64,4 @@ export declare class RepositoryManager implements IRepositoryManager {
     ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal>(qEntity: IQEntityInternal, repository: IRepository, rawUpdate: RawUpdate<IEUP, IQE>): RawUpdate<IEUP, IQE>;
     ensureRepositoryScopeOnDeleteWhere<IQE extends IQEntityInternal>(qEntity: IQE, repository: IRepository, rawDelete: RawDelete<IQE>): RawDelete<IQE>;
 }
+//# sourceMappingURL=RepositoryManager.d.ts.map

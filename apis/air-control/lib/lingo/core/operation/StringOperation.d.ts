@@ -17,3 +17,4 @@ export interface JSONRawStringOperation extends JSONRawValueOperation<IQStringFi
     l: IQStringField;
     r: string | IQStringField | IQStringField[] | RawFieldQuery<IQStringField> | RawFieldQuery<IQStringField>[];
 }
+//# sourceMappingURL=StringOperation.d.ts.map

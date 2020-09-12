@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "@airport/di": "0.0.1",
+    "@airport/fuel-hydrant-system": "0.0.1",
+    "@airport/sqlite": "0.0.1",
+    "@airport/ground-control": "0.0.1",
+    "sql.js": "^1.3.0"
+  },
+  "main": "lib/index.js",
+  "name": "@airport/sqljs",
+  "type": "module",
+  "typings": "lib/index",
+  "version": "0.0.1"
+}

@@ -13,3 +13,4 @@ export interface ITreeEntity {
 export interface RawTreeQuery<ITC extends ITreeEntity> extends RawNonEntityQuery {
     select: ITC | IQDistinctFunction<ITC>;
 }
+//# sourceMappingURL=TreeQuery.d.ts.map

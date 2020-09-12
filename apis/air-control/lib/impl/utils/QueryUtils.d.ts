@@ -6,3 +6,4 @@ export declare class QueryUtils implements IQueryUtils {
     whereClauseToJSON(whereClause: JSONBaseOperation, columnAliases: IFieldColumnAliases<any>, fieldUtils: IFieldUtils): JSONBaseOperation;
     private convertLRValue;
 }
+//# sourceMappingURL=QueryUtils.d.ts.map

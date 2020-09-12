@@ -47,3 +47,4 @@ export declare abstract class SQLQuery<JQ extends JsonQuery> extends SQLWhereBas
     }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, schemaIndex?: number, tableIndex?: number): JoinTreeNode | JoinTreeNode[];
     protected getEntitySchemaRelationFromJoin(leftQEntity: IQEntityInternal, rightQEntity: IQEntityInternal, entityRelation: JSONEntityRelation, parentRelation: JSONRelation, currentAlias: string, parentAlias: string, joinTypeString: string, errorPrefix: string, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
 }
+//# sourceMappingURL=SQLQuery.d.ts.map

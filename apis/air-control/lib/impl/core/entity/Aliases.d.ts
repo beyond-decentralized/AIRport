@@ -40,3 +40,4 @@ export declare class FieldColumnAliases extends AliasMap<IQOrderableField<any>, 
     get entityAliases(): IEntityAliases;
     getExistingAlias(field: IQOrderableField<any>): string;
 }
+//# sourceMappingURL=Aliases.d.ts.map

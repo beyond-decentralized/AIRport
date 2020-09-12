@@ -27,3 +27,4 @@ export declare class EntitySearchOne<Entity, IESP extends IEntitySelectPropertie
     noCache(): EntitySearchOne<Entity, IESP>;
     cache(cacheForUpdate?: UpdateCacheType): EntitySearchOne<Entity, IESP>;
 }
+//# sourceMappingURL=EntitySearchOne.d.ts.map

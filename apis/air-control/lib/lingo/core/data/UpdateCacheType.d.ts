@@ -13,3 +13,4 @@ export declare enum UpdateCacheType {
      */
     ALL_QUERY_ENTITIES = 2
 }
+//# sourceMappingURL=UpdateCacheType.d.ts.map

@@ -12,3 +12,4 @@ export declare abstract class DistinguishableQuery extends AbstractQuery {
     protected selectClauseToJSON(rawSelect: any, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): any;
     protected abstract nonDistinctSelectClauseToJSON(rawSelect: any, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): any;
 }
+//# sourceMappingURL=NonEntityQuery.d.ts.map

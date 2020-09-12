@@ -6,3 +6,4 @@ export interface IQMetadataUtils {
     getAllNonGeneratedColumns(qEntity: IQEntityInternal): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
     getDbEntity<IQE extends IQEntityInternal>(qEntity: IQE): DbEntity;
 }
+//# sourceMappingURL=QMetadataUtils.d.ts.map

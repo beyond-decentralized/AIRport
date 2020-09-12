@@ -8,3 +8,4 @@ export interface ILookup {
         (...args: any[]): RawQuery;
     }, queryResultType: QueryResultType, search: boolean, one: boolean, QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => IAbstractQuery, dbEntity?: DbEntity, cacheForUpdate?: UpdateCacheType, mapResults?: boolean): Promise<any>;
 }
+//# sourceMappingURL=Lookup.d.ts.map

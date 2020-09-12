@@ -27,3 +27,4 @@ export declare class SqlLiteFunctionAdaptor extends AbstractFunctionAdaptor {
     }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
     toString(val: any): string;
 }
+//# sourceMappingURL=SqLiteQueryAdaptor.d.ts.map

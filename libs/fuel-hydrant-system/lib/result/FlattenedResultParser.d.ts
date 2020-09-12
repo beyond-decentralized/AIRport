@@ -19,3 +19,4 @@ export declare class FlattenedResultParser extends AbstractObjectResultParser im
     flushRow(): void;
     bridge(parsedResults: any[], selectClauseFragment: any): any[];
 }
+//# sourceMappingURL=FlattenedResultParser.d.ts.map

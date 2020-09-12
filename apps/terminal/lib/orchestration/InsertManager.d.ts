@@ -28,3 +28,4 @@ export declare class InsertManager implements IInsertManager {
      */
     private addInsertHistory;
 }
+//# sourceMappingURL=InsertManager.d.ts.map

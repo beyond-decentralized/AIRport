@@ -3,3 +3,4 @@ export declare enum UpdateState {
     REMOTE = 1,
     LOCAL = 2
 }
+//# sourceMappingURL=UpdateState.d.ts.map

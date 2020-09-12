@@ -40,3 +40,4 @@ export declare class EntityOrderByParser extends AbstractEntityOrderByParser imp
     }): string;
     isForParentNode(joinTreeNode: JoinTreeNode, orderByField: JSONEntityFieldInOrderBy): boolean;
 }
+//# sourceMappingURL=EntityOrderByParser.d.ts.map

@@ -9,3 +9,4 @@ export declare class UntypedOperation extends ValueOperation<number | string, JS
     constructor();
     like(lValue: IQUntypedField, rValue: string | IQUntypedField | RawFieldQuery<IQUntypedField>): JSONRawUntypedOperation;
 }
+//# sourceMappingURL=UntypedOperation.d.ts.map

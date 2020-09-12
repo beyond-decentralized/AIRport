@@ -36,3 +36,4 @@ export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, Enti
      */
     update(entityInfo: EntityCreate | EntityCreate[], operationName?: OperationName): Promise<number>;
 }
+//# sourceMappingURL=Dao.d.ts.map

@@ -12,3 +12,4 @@ export interface JoinOperation<IF extends IFrom> {
 export interface IJoinFields<IF extends IFrom> {
     on(joinOperation: JoinOperation<IF>): IF;
 }
+//# sourceMappingURL=Joins.d.ts.map

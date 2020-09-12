@@ -29,3 +29,4 @@ export declare abstract class EntityLookup<Child, MappedChild, IESP extends IEnt
         (...args: any[]): RawEntityQuery<IESP>;
     }, queryResultType: QueryResultType, search: boolean, one: boolean): Promise<any>;
 }
+//# sourceMappingURL=EntityLookup.d.ts.map

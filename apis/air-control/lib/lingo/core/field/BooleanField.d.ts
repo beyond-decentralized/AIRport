@@ -5,3 +5,4 @@ import { IQOperableField } from './OperableField';
  */
 export interface IQBooleanField extends IQOperableField<boolean, JSONRawBooleanOperation, IBooleanOperation, IQBooleanField> {
 }
+//# sourceMappingURL=BooleanField.d.ts.map

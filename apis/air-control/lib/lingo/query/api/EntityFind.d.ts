@@ -19,3 +19,4 @@ export interface IEntityFind<Entity, EntityArray extends Array<Entity>, IESP ext
         (...args: any[]): RawEntityQuery<IESP>;
     }): Promise<EntityArray>;
 }
+//# sourceMappingURL=EntityFind.d.ts.map

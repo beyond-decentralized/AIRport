@@ -118,3 +118,4 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      */
     save(entity: EntityCreateProperties, operationName?: OperationName): Promise<number>;
 }
+//# sourceMappingURL=EntityDatabaseFacade.d.ts.map

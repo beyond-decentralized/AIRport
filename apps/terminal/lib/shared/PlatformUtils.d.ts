@@ -3,3 +3,4 @@ export declare class PlatformUtils {
     private static createNonce;
     private static randomize;
 }
+//# sourceMappingURL=PlatformUtils.d.ts.map

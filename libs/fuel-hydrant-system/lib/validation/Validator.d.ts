@@ -27,3 +27,4 @@ export declare class QValidator implements IValidator {
     validateAliasedFieldAccess(fieldAlias: string): void;
 }
 export declare function getValidator(dbEntity: DbEntity): IValidator;
+//# sourceMappingURL=Validator.d.ts.map

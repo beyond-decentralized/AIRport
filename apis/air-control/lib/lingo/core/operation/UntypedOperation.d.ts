@@ -20,3 +20,4 @@ export interface JSONRawUntypedOperation extends JSONRawValueOperation<IQUntyped
     l: IQUntypedField;
     r: any | IQUntypedField | IQUntypedField[] | RawFieldQuery<IQUntypedField> | RawFieldQuery<IQUntypedField>[];
 }
+//# sourceMappingURL=UntypedOperation.d.ts.map

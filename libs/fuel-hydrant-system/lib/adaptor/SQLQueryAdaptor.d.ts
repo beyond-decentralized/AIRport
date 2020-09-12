@@ -46,3 +46,4 @@ export declare abstract class AbstractFunctionAdaptor implements ISQLFunctionAda
         [entityName: string]: IQEntityInternal;
     }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
 }
+//# sourceMappingURL=SQLQueryAdaptor.d.ts.map

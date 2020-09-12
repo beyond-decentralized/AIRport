@@ -1,161 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="49e253c2-4314-4455-b7f3-da0b7626ee2a" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../airdb/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/angular.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/browserslist" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/capacitor.config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/config.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/e2e/protractor.conf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/e2e/src/app.e2e-spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/e2e/src/app.po.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/e2e/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/ionic.config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/karma.conf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/nodejs-project/main.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/nodejs-project/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/nodejs-project/server.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/icon/drawable-hdpi-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/icon/drawable-ldpi-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/icon/drawable-mdpi-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/icon/drawable-xhdpi-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/icon/drawable-xxhdpi-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/icon/drawable-xxxhdpi-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/splash/drawable-land-hdpi-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/splash/drawable-land-ldpi-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/splash/drawable-land-mdpi-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/splash/drawable-land-xhdpi-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/splash/drawable-land-xxhdpi-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/splash/drawable-land-xxxhdpi-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/splash/drawable-port-hdpi-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/splash/drawable-port-ldpi-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/splash/drawable-port-mdpi-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/splash/drawable-port-xhdpi-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/splash/drawable-port-xxhdpi-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/splash/drawable-port-xxxhdpi-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/android/xml/network_security_config.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-1024.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-20.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-20@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-20@3x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-24@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-27.5@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-29.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-29@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-29@3x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-40.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-40@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-40@3x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-44@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-50.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-50@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-60.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-60@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-60@3x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-72.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-72@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-76.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-76@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-83.5@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-86@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-98@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-small.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-small@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon-small@3x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/icon/icon@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default-2436h.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default-568h@2x~iphone.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default-667h.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default-736h.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default-Landscape-2436h.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default-Landscape-736h.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default-Landscape@2x~ipad.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default-Landscape@~ipadpro.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default-Landscape~ipad.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default-Portrait@2x~ipad.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default-Portrait@~ipadpro.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default-Portrait~ipad.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default@2x~iphone.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default@2x~universal~anyany.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/ios/splash/Default~iphone.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/resources/splash.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/app-routing.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/app.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/app.component.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/app.component.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/app.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/app.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/explore-container/explore-container.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/explore-container/explore-container.component.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/explore-container/explore-container.component.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/explore-container/explore-container.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/explore-container/explore-container.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab1/tab1-routing.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab1/tab1.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab1/tab1.page.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab1/tab1.page.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab1/tab1.page.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab1/tab1.page.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab2/tab2-routing.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab2/tab2.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab2/tab2.page.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab2/tab2.page.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab2/tab2.page.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab2/tab2.page.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab3/tab3-routing.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab3/tab3.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab3/tab3.page.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab3/tab3.page.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab3/tab3.page.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tab3/tab3.page.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tabs/tabs-routing.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tabs/tabs.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tabs/tabs.page.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tabs/tabs.page.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tabs/tabs.page.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/app/tabs/tabs.page.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/assets/icon/favicon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/assets/shapes.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/environments/environment.prod.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/environments/environment.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/global.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/main.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/polyfills.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/theme/variables.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/src/zone-flags.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/tsconfig.app.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/tsconfig.spec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../airdb/tslint.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../airdb/lib/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/../airdb/lib/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../airdb/lib/server.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../airdb/lib/server.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../airdb/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../airdb/src/server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../airdb/src/server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../airdb/tsconfig.json" beforeDir="false" />
+    <list default="true" id="49e253c2-4314-4455-b7f3-da0b7626ee2a" name="Default" comment="Adding Cordova stubs for future Airport DB app.">
+      <change beforePath="$PROJECT_DIR$/../../apis/air-control/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/air-control/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/check-in/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/DaoDecorators.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/DaoDecorators.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/DaoDecorators.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/DaoDecorators.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/check-in/lib/DaoDecorators.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/lib/DaoDecorators.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../apis/check-in/src/DaoDecorators.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../apis/check-in/src/DaoDecorators.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../airdb/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../airdb/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../common/config/rush/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../common/config/rush/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/dao/parser/OperationGenerator.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/dao/parser/OperationGenerator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/lib/dao/parser/OperationGenerator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/lib/dao/parser/OperationGenerator.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../generators/runway/src/dao/parser/OperationGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../generators/runway/src/dao/parser/OperationGenerator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/ground-transport/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/ground-transport/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../libs/jet-bridge/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/jet-bridge/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../rush.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../rush.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FavoritesManager">
-    <favorites_list name="terminal" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -251,7 +110,7 @@
   <component name="PropertiesComponent">
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../airdb" />
+    <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/home/papa/nodejs-mobile-samples/cordova/UseNativeModules" />
     <property name="node.js.detected.package.prettier" value="true" />
     <property name="node.js.path.for.package.prettier" value="project" />
     <property name="node.js.selected.package.prettier" value="" />
@@ -386,7 +245,19 @@
       <workItem from="1587790022296" duration="591000" />
       <workItem from="1587846989596" duration="603000" />
       <workItem from="1587862297742" duration="618000" />
+      <workItem from="1587862943874" duration="3395000" />
+      <workItem from="1587912300738" duration="1347000" />
+      <workItem from="1587925615971" duration="2459000" />
+      <workItem from="1588195961429" duration="595000" />
     </task>
+    <task id="LOCAL-00001" summary="Adding Cordova stubs for future Airport DB app.">
+      <created>1587863093562</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1587863093562</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -396,16 +267,21 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Adding Cordova stubs for future Airport DB app." />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding Cordova stubs for future Airport DB app." />
   </component>
   <component name="WindowStateProjectService">
-    <state x="587" y="105" key="CommitChangelistDialog2" timestamp="1587862919473">
+    <state x="587" y="105" key="CommitChangelistDialog2" timestamp="1587863090142">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="587" y="105" key="CommitChangelistDialog2/0.0.1920.1080@0.0.1920.1080" timestamp="1587862919473" />
-    <state x="740" y="294" key="FileChooserDialogImpl" timestamp="1587785669645">
+    <state x="587" y="105" key="CommitChangelistDialog2/0.0.1920.1080@0.0.1920.1080" timestamp="1587863090142" />
+    <state x="740" y="294" key="FileChooserDialogImpl" timestamp="1587873690569">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="740" y="294" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1587785669645" />
+    <state x="740" y="294" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1587873690569" />
+    <state x="552" y="272" key="Vcs.Push.Dialog.v2" timestamp="1587863096317">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="552" y="272" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1587863096317" />
   </component>
 </project>

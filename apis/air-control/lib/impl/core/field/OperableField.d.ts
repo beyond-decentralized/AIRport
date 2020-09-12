@@ -37,3 +37,4 @@ export declare abstract class QOperableField<T, JO extends JSONRawValueOperation
         (...args: any[]): RawFieldQuery<IQF>;
     })[]): JO;
 }
+//# sourceMappingURL=OperableField.d.ts.map

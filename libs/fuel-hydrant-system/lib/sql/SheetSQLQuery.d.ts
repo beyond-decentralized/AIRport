@@ -14,3 +14,4 @@ export declare class SheetSQLQuery extends NonEntitySQLQuery<JsonSheetQuery> {
     parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[], internalFragments: InternalFragments): any[];
     protected parseQueryResult(selectClauseFragment: any, resultRow: any, nextFieldIndex: number[], internalFragments: InternalFragments): any;
 }
+//# sourceMappingURL=SheetSQLQuery.d.ts.map

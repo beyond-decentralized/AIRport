@@ -55,3 +55,4 @@ export interface DbEntityWithDependencies {
     entity: DbEntity;
     dependencies: Set<TableIndex>;
 }
+//# sourceMappingURL=qSchemaBuilderUtils.d.ts.map

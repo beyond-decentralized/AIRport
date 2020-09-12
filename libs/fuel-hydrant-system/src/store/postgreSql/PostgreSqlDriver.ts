@@ -11,6 +11,7 @@ export abstract class PostgreSqlDriver
 	extends SqlDriver {
 
 	async doesTableExist(
+		schemaName: string,
 		tableName: string
 	): Promise<boolean> {
 		throw new Error(`Not implemented`)

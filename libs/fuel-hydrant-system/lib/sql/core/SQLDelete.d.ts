@@ -10,3 +10,4 @@ export declare class SQLDelete extends SQLNoJoinQuery {
     constructor(airportDb: IAirportDatabase, jsonDelete: JsonDelete, dialect: SQLDialect, storeDriver: IStoreDriver);
     toSQL(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
 }
+//# sourceMappingURL=SQLDelete.d.ts.map

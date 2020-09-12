@@ -27,3 +27,4 @@ export interface CachedSQLQuery {
     sqlQuery: SQLQuery<any>;
     sql: string;
 }
+//# sourceMappingURL=ActiveQueries.d.ts.map

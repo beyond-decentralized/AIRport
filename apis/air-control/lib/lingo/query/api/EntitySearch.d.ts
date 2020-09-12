@@ -20,3 +20,4 @@ export interface IEntitySearch<Entity, EntityArray extends Array<Entity>, IESP e
         (...args: any[]): RawEntityQuery<IESP>;
     }): IObservable<EntityArray>;
 }
+//# sourceMappingURL=EntitySearch.d.ts.map

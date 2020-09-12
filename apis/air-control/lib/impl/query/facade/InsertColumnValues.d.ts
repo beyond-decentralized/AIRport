@@ -7,3 +7,4 @@ import { AbstractInsertValues } from './AbstractInsertValues';
 export declare class InsertColumnValues<IQE extends IQEntity> extends AbstractInsertValues<IQE, RawInsertColumnValues<IQE>> {
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonInsertValues;
 }
+//# sourceMappingURL=InsertColumnValues.d.ts.map

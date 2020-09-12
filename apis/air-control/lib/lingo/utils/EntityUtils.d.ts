@@ -16,3 +16,4 @@ export interface IEntityUtils {
         (...args: any[]): RawEntityQuery<any>;
     }): EntityQuery<any>;
 }
+//# sourceMappingURL=EntityUtils.d.ts.map

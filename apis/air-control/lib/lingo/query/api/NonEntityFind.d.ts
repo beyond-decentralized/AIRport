@@ -26,3 +26,4 @@ export interface INonEntityFind extends ILookup {
         (...args: any[]): RawFieldQuery<any>;
     }): Promise<any[]>;
 }
+//# sourceMappingURL=NonEntityFind.d.ts.map

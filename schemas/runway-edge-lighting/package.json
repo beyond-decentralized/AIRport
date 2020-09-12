@@ -1,6 +1,7 @@
 {
   "airport": {
-    "domain": "npmjs.org",
+    "domain": "air",
+    "schema": "runway-edge-lighting",
     "user": "diapco",
     "project": "airport",
     "path": "schemas/runway-edge-lighting"

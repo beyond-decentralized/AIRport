@@ -13,3 +13,4 @@ export interface RawInsertValues<IQE extends IQEntity> extends AbstractRawInsert
 export interface RawInsertColumnValues<IQE extends IQEntity> extends AbstractRawInsertValues<IQE> {
     columns: string[];
 }
+//# sourceMappingURL=InsertValues.d.ts.map

@@ -9,3 +9,4 @@ export declare const num: numFunction;
 export declare const str: strFunction;
 export declare function wrapPrimitive(value: any): any;
 export declare function getPrimitiveValue(value: any, dbColumn: DbColumn, rowIndex: number, datesToNumbers?: boolean): any;
+//# sourceMappingURL=WrapperFunctions.d.ts.map

@@ -13,3 +13,4 @@ export declare namespace QRelation {
     var createRelatedQEntity: <IQ extends IQEntityInternal>(joinRelation: JSONRelation, airDb: IAirportDatabase, schemaUtils: ISchemaUtils) => IQ;
     var getNextChildJoinPosition: (joinParentDriver: IQEntityDriver) => number[];
 }
+//# sourceMappingURL=Relation.d.ts.map

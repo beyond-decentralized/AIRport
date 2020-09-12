@@ -7,3 +7,4 @@ export interface IAbstractQuery {
     };
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonStatement;
 }
+//# sourceMappingURL=AbstractQuery.d.ts.map

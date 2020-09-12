@@ -25,3 +25,4 @@ export declare class QDateFunction extends QDateField implements IQFunction<Date
     getInstance(): QDateFunction;
     toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
 }
+//# sourceMappingURL=DateField.d.ts.map

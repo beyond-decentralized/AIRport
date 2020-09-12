@@ -40,3 +40,4 @@ export declare abstract class QField<IQF extends IQOrderableField<IQF>> implemen
     private functionCallToJson;
     private valueToJSON;
 }
+//# sourceMappingURL=Field.d.ts.map

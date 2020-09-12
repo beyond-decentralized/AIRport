@@ -27,3 +27,4 @@ export declare class EntityFind<Entity, EntityArray extends Array<Entity>, IESP 
     noCache(): EntityFind<Entity, Entity[], IESP>;
     cache(cacheForUpdate?: UpdateCacheType): EntityFind<Entity, Entity[], IESP>;
 }
+//# sourceMappingURL=EntityFind.d.ts.map

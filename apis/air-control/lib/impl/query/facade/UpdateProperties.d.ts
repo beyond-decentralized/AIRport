@@ -15,3 +15,4 @@ export declare class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE 
     private setFragmentToJSON;
     private getPropertyChainDesription;
 }
+//# sourceMappingURL=UpdateProperties.d.ts.map

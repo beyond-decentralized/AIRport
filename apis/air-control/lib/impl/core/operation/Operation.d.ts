@@ -23,3 +23,4 @@ export declare abstract class ValueOperation<T extends boolean | string | number
     notEquals(lValue: IQF, rValue: T | IQF | RawFieldQuery<IQF>): JRO;
     notIn(lValue: IQF, rValue: (T | IQF | RawFieldQuery<IQF>)[]): JRO;
 }
+//# sourceMappingURL=Operation.d.ts.map

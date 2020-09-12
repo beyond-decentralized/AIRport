@@ -32,3 +32,4 @@ export declare class SqlStorage {
     _tryInit(): void;
     query(query: string, params?: any[]): Promise<any>;
 }
+//# sourceMappingURL=SqlStorage.d.ts.map

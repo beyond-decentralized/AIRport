@@ -9,3 +9,4 @@ export declare class UpdateManager implements IUpdateManager {
     private addNewValueHistory;
     private groupRecordsByRepository;
 }
+//# sourceMappingURL=UpdateManager.d.ts.map

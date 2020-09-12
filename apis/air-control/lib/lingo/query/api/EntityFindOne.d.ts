@@ -18,3 +18,4 @@ export interface IEntityFindOne<Entity, IESP extends IEntitySelectProperties> ex
         (...args: any[]): RawEntityQuery<IESP>;
     }): Promise<Entity>;
 }
+//# sourceMappingURL=EntityFindOne.d.ts.map

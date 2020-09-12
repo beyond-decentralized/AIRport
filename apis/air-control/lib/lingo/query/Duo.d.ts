@@ -16,3 +16,4 @@ export interface IDuo<Entity, EntitySelect extends IEntitySelectProperties, Enti
     getIdStub(ids: number | string | number[] | string[]): EntityId;
     getIdStubs(ids: number[] | string[] | number[][] | string[][]): EntityId[];
 }
+//# sourceMappingURL=Duo.d.ts.map

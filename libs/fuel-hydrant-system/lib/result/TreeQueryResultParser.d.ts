@@ -7,3 +7,4 @@ export declare class TreeQueryResultParser extends TreeResultParser {
     bufferOneToManyCollection(entityAlias: string, resultObject: any, propertyName: string, childResultObject: any): void;
     flushEntity(entityAlias: string, resultObject: any): any;
 }
+//# sourceMappingURL=TreeQueryResultParser.d.ts.map

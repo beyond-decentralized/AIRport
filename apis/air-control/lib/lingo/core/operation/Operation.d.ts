@@ -63,3 +63,4 @@ export interface JSONRawValueOperation<IQF extends IQOperableField<any, any, any
     l?: IQF;
     r?: boolean | number | string | Date | IQF | IQF[] | RawFieldQuery<IQF> | RawFieldQuery<IQF>[];
 }
+//# sourceMappingURL=Operation.d.ts.map

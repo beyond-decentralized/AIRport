@@ -134,7 +134,7 @@ export function watchFiles(
 		const generatedSummaryBuilder        = new GeneratedSummaryBuilder(pathBuilder)
 		const entityInterfaceListingBuilder  = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts')
 		const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts')
-		const qSchemaBuilder                 = new QSchemaBuilder(pathBuilder)
+		const qSchemaBuilder                 = new QSchemaBuilder(pathBuilder, configuration)
 		const daoBuilder                     = new DaoBuilder(pathBuilder)
 		const duoBuilder                     = new DuoBuilder(pathBuilder)
 

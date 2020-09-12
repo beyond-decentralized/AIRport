@@ -5,3 +5,4 @@ import { IQOperableField } from "./OperableField";
  */
 export interface IQUntypedField extends IQOperableField<any, JSONRawUntypedOperation, IUntypedOperation, IQUntypedField> {
 }
+//# sourceMappingURL=UntypedField.d.ts.map

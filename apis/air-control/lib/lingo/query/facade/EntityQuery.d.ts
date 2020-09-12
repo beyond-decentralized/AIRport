@@ -12,3 +12,4 @@ export interface RawEntityQuery<EntitySelect> extends RawQuery {
  */
 export interface RawLimitedEntityQuery<EntitySelect> extends RawEntityQuery<EntitySelect>, RawLimitedQuery {
 }
+//# sourceMappingURL=EntityQuery.d.ts.map

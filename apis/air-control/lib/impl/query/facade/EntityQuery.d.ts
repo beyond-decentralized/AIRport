@@ -21,3 +21,4 @@ export declare class LimitedEntityQuery<IEP extends IEntitySelectProperties> ext
     constructor(rawQuery: RawLimitedEntityQuery<IEP>);
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonLimitedEntityQuery<IEP>;
 }
+//# sourceMappingURL=EntityQuery.d.ts.map

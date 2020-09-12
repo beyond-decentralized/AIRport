@@ -194,7 +194,6 @@ export class SqLiteSequenceGenerator
 				ensureChildArray(this.sequenceBlocks, sequence.schemaIndex),
 				sequence.tableIndex)[sequence.columnIndex] = sequence.incrementBy
 		}
-
 	}
 
 }

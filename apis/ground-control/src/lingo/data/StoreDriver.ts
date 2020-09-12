@@ -39,10 +39,12 @@ export interface IStoreDriver {
 	): Promise<number>;
 
 	doesTableExist(
+		schemaName: string,
 		tableName: string
 	): Promise<boolean>
 
 	dropTable(
+		schemaName: string,
 		tableName: string
 	): Promise<boolean>
 

@@ -8,3 +8,4 @@ export declare class HistoryManager implements IHistoryManager {
     getNewTransHistory(transactionType?: TransactionType): Promise<ITransactionHistory>;
     getNewRepoTransHistory(transactionHistory: ITransactionHistory, repositoryId: RepositoryId, actor: IActor): Promise<IRepositoryTransactionHistory>;
 }
+//# sourceMappingURL=HistoryManager.d.ts.map

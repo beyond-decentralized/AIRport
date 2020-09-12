@@ -9,3 +9,4 @@ export interface IQStringField extends IQOperableField<string, JSONRawStringOper
         (...args: any[]): RawFieldQuery<IQStringField>;
     }): JSONRawStringOperation;
 }
+//# sourceMappingURL=StringField.d.ts.map

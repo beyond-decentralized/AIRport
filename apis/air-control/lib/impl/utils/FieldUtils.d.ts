@@ -9,3 +9,4 @@ export declare class FieldUtils implements IFieldUtils {
     FieldQuery: typeof FieldQuery;
     getFieldQueryJson<IQF extends IQOrderableField<IQF>>(fieldSubQuery: RawFieldQuery<IQF>, entityAliases: IEntityAliases, queryUtils: IQueryUtils): JsonFieldQuery;
 }
+//# sourceMappingURL=FieldUtils.d.ts.map

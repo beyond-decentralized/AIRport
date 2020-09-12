@@ -16,3 +16,4 @@ export interface JSONRawNumberOperation extends JSONRawValueOperation<IQNumberFi
     l: IQNumberField;
     r: number | IQNumberField | IQNumberField[] | RawFieldQuery<IQNumberField> | RawFieldQuery<IQNumberField>[];
 }
+//# sourceMappingURL=NumberOperation.d.ts.map

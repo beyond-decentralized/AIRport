@@ -27,3 +27,4 @@ export declare class TreeResultParser extends AbstractObjectResultParser {
     protected mergeEntity(entityAlias: string, resultObject: any): any;
     flushRow(): void;
 }
+//# sourceMappingURL=TreeResultParser.d.ts.map

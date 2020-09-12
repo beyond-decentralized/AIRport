@@ -1,6 +1,7 @@
 {
   "airport": {
-    "domain": "npmjs.org",
+    "domain": "air",
+    "schema": "moving-walkway",
     "user": "diapco",
     "project": "airport",
     "path": "schemas/moving-walkway"

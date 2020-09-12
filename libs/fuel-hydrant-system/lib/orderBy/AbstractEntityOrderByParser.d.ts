@@ -19,3 +19,4 @@ export declare abstract class AbstractEntityOrderByParser {
     constructor(rootSelectClauseFragment: any, validator: IValidator, orderBy?: JSONEntityFieldInOrderBy[]);
     protected getCommonOrderByFragment(orderByFields: JSONFieldInOrderBy[]): string;
 }
+//# sourceMappingURL=AbstractEntityOrderByParser.d.ts.map

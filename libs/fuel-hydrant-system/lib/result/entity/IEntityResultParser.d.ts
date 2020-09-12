@@ -22,3 +22,4 @@ export declare function getObjectResultParser(queryResultType: QueryResultType, 
 export declare abstract class AbstractObjectResultParser {
     protected addManyToOneStub(resultObject: any, propertyName: string, relationInfos: ReferencedColumnData[], schemaUtils: ISchemaUtils): boolean;
 }
+//# sourceMappingURL=IEntityResultParser.d.ts.map

@@ -45,3 +45,4 @@ export declare class OnlineManager implements IOnlineManager {
     repositoryGoOnline(repository: IRepository, offlineDeltaStore: IOfflineDeltaStore, repositoryManager: IRepositoryManager, repoTransHistoryDao: IRepositoryTransactionHistoryDao): Promise<void>;
     isOnline(): boolean;
 }
+//# sourceMappingURL=OnlineManager.d.ts.map

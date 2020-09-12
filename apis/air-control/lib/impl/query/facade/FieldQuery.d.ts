@@ -16,3 +16,4 @@ export declare class FieldQuery<IQF extends IQOrderableField<IQF>> extends Disti
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonFieldQuery;
     getClauseDataType(): SQLDataType;
 }
+//# sourceMappingURL=FieldQuery.d.ts.map

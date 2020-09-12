@@ -227,3 +227,4 @@ export interface exceptFunction {
 export interface minusFunction {
     (...rawQueries: RawNonEntityQuery[]): RawNonEntityQuery;
 }
+//# sourceMappingURL=Functions.d.ts.map

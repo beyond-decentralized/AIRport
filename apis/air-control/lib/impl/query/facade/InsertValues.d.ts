@@ -10,3 +10,4 @@ import { AbstractInsertValues } from './AbstractInsertValues';
 export declare class InsertValues<IQE extends IQEntity> extends AbstractInsertValues<IQE, RawInsertValues<IQE>> {
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonInsertValues;
 }
+//# sourceMappingURL=InsertValues.d.ts.map

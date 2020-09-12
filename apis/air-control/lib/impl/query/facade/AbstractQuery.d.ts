@@ -28,3 +28,4 @@ export declare abstract class AbstractQuery implements IAbstractQuery {
     protected groupByClauseToJSON(groupBy: IQOperableField<any, any, any, any>[]): JSONFieldInGroupBy[];
     protected orderByClauseToJSON(orderBy: IFieldInOrderBy<any>[]): JSONFieldInOrderBy[];
 }
+//# sourceMappingURL=AbstractQuery.d.ts.map

@@ -24,3 +24,4 @@ export interface IUpdateCache {
     getEntityUpdateCache(entity: any): any;
     getEntityUpdateDiff(schemaUtils: ISchemaUtils, dbEntity: DbEntity, entity: any, failOnNoOriginalRecord?: boolean): any;
 }
+//# sourceMappingURL=UpdateCache.d.ts.map

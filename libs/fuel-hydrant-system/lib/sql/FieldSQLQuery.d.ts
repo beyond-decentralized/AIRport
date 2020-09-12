@@ -11,3 +11,4 @@ export declare class FieldSQLQuery extends NonEntitySQLQuery<JsonFieldQuery> {
     parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): any[];
     protected parseQueryResult(selectClauseFragment: any, resultRow: any, nextFieldIndex: number[]): any;
 }
+//# sourceMappingURL=FieldSQLQuery.d.ts.map

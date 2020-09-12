@@ -24,3 +24,4 @@ export declare class NonEntityFind extends Lookup implements INonEntityFind {
         (...args: any[]): RawNonEntityQuery;
     }, queryResultType: QueryResultType, QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery): Promise<any[]>;
 }
+//# sourceMappingURL=NonEntityFind.d.ts.map

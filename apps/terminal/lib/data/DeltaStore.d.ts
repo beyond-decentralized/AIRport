@@ -37,3 +37,4 @@ export declare class DeltaStore implements IDeltaStore {
 }
 export declare function getSharingAdaptor(platformType: PlatformType): SharingAdaptor;
 export declare function getGooglesSharingAdaptor(): GoogleSharingAdaptor;
+//# sourceMappingURL=DeltaStore.d.ts.map

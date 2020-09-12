@@ -58,3 +58,4 @@ export declare class RecordState implements IRecordState {
     toJSON(): any;
     update(): void;
 }
+//# sourceMappingURL=RecordState.d.ts.map

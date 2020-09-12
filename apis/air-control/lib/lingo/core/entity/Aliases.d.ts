@@ -31,3 +31,4 @@ export interface IAliases {
     entityAliases: IEntityAliases;
     getExistingAlias(field: IQOrderableField<any>): string;
 }
+//# sourceMappingURL=Aliases.d.ts.map

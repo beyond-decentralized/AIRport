@@ -6,3 +6,4 @@ import { SQLDataType } from "@airport/ground-control";
 export declare class WebSqlQueryAdaptor extends SqLiteQueryAdaptor {
     getResultCellRawValue(resultRow: any, columnName: string, index: number, dataType: SQLDataType, defaultValue: any): any;
 }
+//# sourceMappingURL=WebSqlQueryAdaptor.d.ts.map

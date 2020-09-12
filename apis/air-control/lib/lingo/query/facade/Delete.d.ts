@@ -7,3 +7,4 @@ export interface RawDelete<IQE extends IQEntity> {
     deleteFrom: IQE;
     where?: JSONBaseOperation;
 }
+//# sourceMappingURL=Delete.d.ts.map

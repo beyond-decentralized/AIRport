@@ -37,3 +37,4 @@ export declare class SchemaUtils implements ISchemaUtils {
     private addColumnToSheetSelect;
     private handleNoId;
 }
+//# sourceMappingURL=SchemaUtils.d.ts.map

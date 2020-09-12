@@ -25,8 +25,8 @@ export declare const INVALID_TABLE_NAME = "A0ZA2vKHIAeI9506rYzCSFKYcSbSuLy5sRieH
 export interface IStoreDriver {
     type: StoreType;
     deleteWhere(portableQuery: PortableQuery): Promise<number>;
-    doesTableExist(tableName: string): Promise<boolean>;
-    dropTable(tableName: string): Promise<boolean>;
+    doesTableExist(schemaName: string, tableName: string): Promise<boolean>;
+    dropTable(schemaName: string, tableName: string): Promise<boolean>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, cachedSqlQueryId?: number): Promise<E>;
     findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
@@ -42,3 +42,4 @@ export interface IStoreDriver {
     rollback(): Promise<void>;
     isValueValid(value: any, sqlDataType: SQLDataType): boolean;
 }
+//# sourceMappingURL=StoreDriver.d.ts.map

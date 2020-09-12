@@ -16,3 +16,4 @@ export interface JSONRawDateOperation extends JSONRawValueOperation<IQDateField>
     l: IQDateField;
     r: Date | IQDateField | IQDateField[] | RawFieldQuery<IQDateField> | RawFieldQuery<IQDateField>[];
 }
+//# sourceMappingURL=DateOperation.d.ts.map

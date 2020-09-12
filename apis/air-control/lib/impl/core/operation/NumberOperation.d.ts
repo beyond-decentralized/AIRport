@@ -8,3 +8,4 @@ import { ValueOperation } from "./Operation";
 export declare class NumberOperation<IQ extends IQEntityInternal> extends ValueOperation<number, JSONRawNumberOperation, IQNumberField> implements INumberOperation {
     constructor();
 }
+//# sourceMappingURL=NumberOperation.d.ts.map

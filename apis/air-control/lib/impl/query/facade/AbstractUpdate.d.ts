@@ -10,3 +10,4 @@ export declare abstract class AbstractUpdate<IQE extends IQEntity, ARE extends A
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonUpdate<JsonEntityUpdateColumns>;
     protected abstract setToJSON(set: any, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonEntityUpdateColumns;
 }
+//# sourceMappingURL=AbstractUpdate.d.ts.map

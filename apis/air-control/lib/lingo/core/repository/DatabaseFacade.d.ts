@@ -121,3 +121,4 @@ export interface IQueryFacade {
     searchOne<E>(dbEntity: DbEntity, query: IAbstractQuery, queryResultType: QueryResultType, fieldUtils: IFieldUtils, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, cacheForUpdate?: UpdateCacheType): Promise<IObservable<E>>;
     getPortableQuery<E>(dbEntity: DbEntity, query: IAbstractQuery, queryResultType: QueryResultType, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): PortableQuery;
 }
+//# sourceMappingURL=DatabaseFacade.d.ts.map

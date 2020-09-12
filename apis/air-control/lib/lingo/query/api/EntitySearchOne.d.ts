@@ -19,3 +19,4 @@ export interface IEntitySearchOne<Entity, IESP extends IEntitySelectProperties> 
         (...args: any[]): RawEntityQuery<IESP>;
     }): IObservable<Entity>;
 }
+//# sourceMappingURL=EntitySearchOne.d.ts.map

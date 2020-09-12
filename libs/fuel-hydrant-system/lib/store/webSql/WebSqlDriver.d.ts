@@ -34,3 +34,4 @@ export declare class WebSqlDriver extends SqLiteDriver {
     private executePendingStatements;
     private getReturnValue;
 }
+//# sourceMappingURL=WebSqlDriver.d.ts.map

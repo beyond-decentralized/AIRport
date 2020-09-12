@@ -5,3 +5,4 @@ export declare class DateUtils {
     static getNowTimeStamp(): string;
     iQuery(test: any): any;
 }
+//# sourceMappingURL=DateUtils.d.ts.map

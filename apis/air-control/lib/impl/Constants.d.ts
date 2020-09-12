@@ -12,3 +12,4 @@ export declare namespace dbConst {
     const OWN_DB_FACADE = "air-own_db_facade";
 }
 export declare function getDbIndex(dbName: string): DatabaseIndex;
+//# sourceMappingURL=Constants.d.ts.map

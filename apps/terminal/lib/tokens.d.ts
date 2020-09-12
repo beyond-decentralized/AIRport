@@ -16,3 +16,4 @@ export declare const ONLINE_MANAGER: import("@airport/di").IDiToken<IOnlineManag
 export declare const QUERY_MANAGER: import("@airport/di").IDiToken<IQueryManager>;
 export declare const REPOSITORY_MANAGER: import("@airport/di").IDiToken<IRepositoryManager>;
 export declare const UPDATE_MANAGER: import("@airport/di").IDiToken<IUpdateManager>;
+//# sourceMappingURL=tokens.d.ts.map

@@ -38,3 +38,4 @@ export declare class SqLiteSequenceGenerator implements ISequenceGenerator {
     private isDoneGeneratingSeqNums;
     private addSequences;
 }
+//# sourceMappingURL=SqLiteSequenceGenerator.d.ts.map

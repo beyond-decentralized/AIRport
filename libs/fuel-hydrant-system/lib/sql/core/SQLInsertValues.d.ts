@@ -12,3 +12,4 @@ export declare class SQLInsertValues extends SQLNoJoinQuery {
     protected getColumnsFragment(dbEntity: DbEntity, columns: number[]): string;
     protected getValuesFragment(valuesClauseFragment: any[][], airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
 }
+//# sourceMappingURL=SQLInsertValues.d.ts.map

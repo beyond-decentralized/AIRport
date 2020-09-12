@@ -75,3 +75,4 @@ export declare class QTreeDriver extends QEntityDriver implements IQTreeDriver {
     getJoinRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONViewJoinRelation;
     getRootRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONViewJoinRelation;
 }
+//# sourceMappingURL=Entity.d.ts.map

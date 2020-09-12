@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@airport/di": "0.0.1",
+    "@airport/fuel-hydrant-system": "0.0.1",
+    "@airport/sqlite": "0.0.1",
+    "@airport/ground-control": "0.0.1"
+  },
+  "main": "lib/index.js",
+  "name": "@airport/sqlite",
+  "type": "module",
+  "typings": "lib/index",
+  "version": "0.0.1"
+}

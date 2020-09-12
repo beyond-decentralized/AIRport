@@ -14,3 +14,4 @@ export declare class SqlJsDriver extends SqLiteDriver {
     private getReturnValue;
     handleError(error: any): void;
 }
+//# sourceMappingURL=SqlJsDriver.d.ts.map

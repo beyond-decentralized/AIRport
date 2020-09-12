@@ -17,7 +17,11 @@ class QEntityRelationBuilder extends Builder_1.QCoreEntityBuilder {
             parentEntityQType = `IQRelation<SubType>`;
         }
         if (this.entity.parentEntity) {
-            parentEntityQType = `Q${this.entity.parentEntity.type}QRelation<${qName}>`;
+            let iqEntity = qName;
+            if (isMappedSuperclass) {
+                iqEntity = 'SubType';
+            }
+            parentEntityQType = `Q${this.entity.parentEntity.type}QRelation<${iqEntity}>`;
         }
         const classSource = `// Entity Relation Interface
 export interface ${qName}QRelation${genericType}

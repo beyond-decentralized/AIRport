@@ -13,3 +13,4 @@ export declare class SheetQuery extends DistinguishableQuery implements IQuery {
     nonDistinctSelectClauseToJSON(rawSelect: any[], queryUtils: IQueryUtils, fieldUtils: IFieldUtils): any;
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonSheetQuery;
 }
+//# sourceMappingURL=SheetQuery.d.ts.map

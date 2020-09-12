@@ -12,3 +12,4 @@ export declare class FieldInOrderBy<IQF extends IQOrderableField<IQF>> implement
     toJSON(columnAliases: IFieldColumnAliases<IQF>): JSONFieldInOrderBy;
     toEntityJSON(): JSONEntityFieldInOrderBy;
 }
+//# sourceMappingURL=FieldInOrderBy.d.ts.map

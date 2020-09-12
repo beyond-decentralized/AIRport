@@ -9,3 +9,4 @@ export declare class DDLManager {
     static getGlobalTableIndex(applicationName: string, entityName: string): number;
     static warn(message: string): void;
 }
+//# sourceMappingURL=DDLManager.d.ts.map

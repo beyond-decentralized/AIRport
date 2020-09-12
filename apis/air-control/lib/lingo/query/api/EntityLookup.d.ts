@@ -21,3 +21,4 @@ export interface IEntityLookup<Child, MappedChild> extends ILookup {
     cache(cacheForUpdateState?: UpdateCacheType): Child;
     noCache(): Child;
 }
+//# sourceMappingURL=EntityLookup.d.ts.map

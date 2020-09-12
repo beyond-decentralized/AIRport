@@ -17,3 +17,4 @@ export declare class OracleQueryAdaptor implements ISQLQueryAdaptor {
     getParameterValue(parameter: Parameter): any;
     getValue(value: any): any;
 }
+//# sourceMappingURL=OracleQueryAdaptor.d.ts.map

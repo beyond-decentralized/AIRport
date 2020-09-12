@@ -25,3 +25,4 @@ export declare class QBooleanFunction extends QBooleanField implements IQFunctio
     getInstance(): QBooleanFunction;
     toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
 }
+//# sourceMappingURL=BooleanField.d.ts.map

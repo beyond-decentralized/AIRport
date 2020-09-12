@@ -24,3 +24,4 @@ export declare class GraphOtmMapper {
         [entityId: string]: any;
     }[][], keepMappedEntityArrays: boolean): void;
 }
+//# sourceMappingURL=GraphOtmMapper.d.ts.map

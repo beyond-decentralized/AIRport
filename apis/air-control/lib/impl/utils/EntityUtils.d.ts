@@ -20,3 +20,4 @@ export declare class EntityUtils implements IEntityUtils {
         (...args: any[]): RawEntityQuery<any>;
     }): EntityQuery<any>;
 }
+//# sourceMappingURL=EntityUtils.d.ts.map

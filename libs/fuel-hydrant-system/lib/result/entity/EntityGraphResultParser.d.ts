@@ -51,3 +51,4 @@ export declare class EntityGraphResultParser extends AbstractObjectResultParser 
     flushRow(): void;
     bridge(parsedResults: any[], selectClauseFragment: any, schemaUtils: ISchemaUtils): any[];
 }
+//# sourceMappingURL=EntityGraphResultParser.d.ts.map

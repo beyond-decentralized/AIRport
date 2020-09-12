@@ -40,3 +40,4 @@ export interface MappedEntityArray<E> extends Array<E> {
      */
     toArray(): E[];
 }
+//# sourceMappingURL=MappedEntityArray.d.ts.map

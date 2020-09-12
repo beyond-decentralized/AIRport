@@ -26,3 +26,4 @@ export interface numFunction {
 export interface strFunction {
     (primitive: string): IQStringField;
 }
+//# sourceMappingURL=WrapperFunctions.d.ts.map

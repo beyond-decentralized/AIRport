@@ -45,3 +45,4 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected getEntityManyToOneColumnName(qEntity: IQEntityInternal, columnIndex: number, metadataUtils: IQMetadataUtils): string;
     applyOperator(operator: SqlOperator, rValue: string): string;
 }
+//# sourceMappingURL=SQLWhereBase.d.ts.map

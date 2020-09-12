@@ -20,3 +20,4 @@ export declare class TreeQuery<ITE extends ITreeEntity> extends MappableQuery im
     constructor(rawQuery: RawTreeQuery<ITE>, entityAliases?: IEntityAliases);
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonTreeQuery;
 }
+//# sourceMappingURL=TreeQuery.d.ts.map

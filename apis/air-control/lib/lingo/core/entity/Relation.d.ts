@@ -12,3 +12,4 @@ export interface IQInternalRelation<IQ extends IQEntity> extends IQRelation<IQ> 
     dbRelation: DbRelation;
     parentQ: IQEntityInternal;
 }
+//# sourceMappingURL=Relation.d.ts.map

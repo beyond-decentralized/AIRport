@@ -1,7 +1,8 @@
 export enum StoreType {
+	REMOTE,
+	MYSQL,
 	SQLITE_CORDOVA,
 	SQLJS,
-	REMOTE
 }
 
 export interface StoreShareInfo {

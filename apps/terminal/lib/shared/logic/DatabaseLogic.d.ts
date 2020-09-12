@@ -8,3 +8,4 @@ export declare class DatabaseLogic {
     loadDatabaseFromShare(): void;
     addGroupToDatabase(): void;
 }
+//# sourceMappingURL=DatabaseLogic.d.ts.map

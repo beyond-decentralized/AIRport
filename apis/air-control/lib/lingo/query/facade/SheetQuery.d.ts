@@ -8,3 +8,4 @@ import { RawNonEntityQuery } from './NonEntityQuery';
 export interface RawSheetQuery extends RawNonEntityQuery {
     select: (IQOrderableField<any> | Primitive)[] | IQDistinctFunction<IQOrderableField<any>[]>;
 }
+//# sourceMappingURL=SheetQuery.d.ts.map

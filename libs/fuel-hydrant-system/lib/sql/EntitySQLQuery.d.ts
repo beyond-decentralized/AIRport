@@ -58,3 +58,4 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
     private setupSelectFields;
     private getFROMFragment;
 }
+//# sourceMappingURL=EntitySQLQuery.d.ts.map

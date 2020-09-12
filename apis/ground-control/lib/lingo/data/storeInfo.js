@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var StoreType;
 (function (StoreType) {
-    StoreType[StoreType["SQLITE_CORDOVA"] = 0] = "SQLITE_CORDOVA";
-    StoreType[StoreType["SQLJS"] = 1] = "SQLJS";
-    StoreType[StoreType["REMOTE"] = 2] = "REMOTE";
+    StoreType[StoreType["REMOTE"] = 0] = "REMOTE";
+    StoreType[StoreType["MYSQL"] = 1] = "MYSQL";
+    StoreType[StoreType["SQLITE_CORDOVA"] = 2] = "SQLITE_CORDOVA";
+    StoreType[StoreType["SQLJS"] = 3] = "SQLJS";
 })(StoreType = exports.StoreType || (exports.StoreType = {}));
 var IdGeneration;
 (function (IdGeneration) {

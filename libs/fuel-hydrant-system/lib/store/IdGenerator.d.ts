@@ -22,3 +22,4 @@ export declare class IdGenerator implements IIdGenerator {
     generateEntityIds(): Promise<void>;
     private getHoldingPatternDbEntity;
 }
+//# sourceMappingURL=IdGenerator.d.ts.map

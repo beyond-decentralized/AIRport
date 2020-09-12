@@ -5,3 +5,4 @@ import { IQRelation } from './Relation';
  */
 export interface IQOneToManyRelation<IQ extends IQEntity> extends IQRelation<IQ> {
 }
+//# sourceMappingURL=OneToManyRelation.d.ts.map

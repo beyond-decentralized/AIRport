@@ -15,3 +15,4 @@ export declare class LogicalOperation extends Operation implements ILogicalOpera
     or(ops: JSONBaseOperation[]): JSONLogicalOperation;
     not(op: JSONBaseOperation): JSONLogicalOperation;
 }
+//# sourceMappingURL=LogicalOperation.d.ts.map

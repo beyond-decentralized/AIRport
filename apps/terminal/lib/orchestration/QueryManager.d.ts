@@ -12,3 +12,4 @@ export declare class QueryManager implements IQueryManager {
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<IObservable<EntityArray>>;
     searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<IObservable<E>>;
 }
+//# sourceMappingURL=QueryManager.d.ts.map

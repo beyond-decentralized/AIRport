@@ -14,3 +14,4 @@ export declare class OfflineDeltaStore {
     addChange(transaction: ITransactionHistory): Promise<ITransactionHistory>;
     markChangesAsSynced(repository: IRepository, transactions: IRepositoryTransactionHistory[]): Promise<void>;
 }
+//# sourceMappingURL=OfflineDeltaStore.d.ts.map

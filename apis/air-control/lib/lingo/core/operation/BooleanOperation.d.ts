@@ -12,3 +12,4 @@ export interface JSONRawBooleanOperation extends JSONRawValueOperation<IQBoolean
     l: IQBooleanField;
     r: boolean | IQBooleanField | IQBooleanField[] | RawFieldQuery<IQBooleanField> | RawFieldQuery<IQBooleanField>[];
 }
+//# sourceMappingURL=BooleanOperation.d.ts.map

@@ -15,3 +15,4 @@ export declare class QNullFunction extends QField<QNullFunction> implements IQFu
     getInstance(): QNullFunction;
     toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
 }
+//# sourceMappingURL=NullFunction.d.ts.map

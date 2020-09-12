@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const pathResolver_1 = require("../../resolve/pathResolver");
 class QSchemaBuilder {
-    constructor(pathBuilder) {
+    constructor(pathBuilder, configuration) {
         this.pathBuilder = pathBuilder;
+        this.configuration = configuration;
         this.entityNames = [];
         this.ddlPathMapByEntityName = {};
         this.generatedFilePaths = [];
@@ -33,8 +34,12 @@ class QSchemaBuilder {
         // 	entityName => `${entityName}: IBase${entityName}Dao;`
         // ).join('\n\t\t');
         const constructorDefinitions = this.entityNames.map(entityName => `${entityName}: ${entityName}`).join(',\n\t');
-        const qEntityImports = this.entityNames.map(entityName => `import { ${entityName} } from '${this.ddlPathMapByEntityName[entityName]}';
-import { Q${entityName} } from '${this.generatedPathMapByEntityName[entityName]}';`).join('\n');
+        const qEntityImports = this.entityNames.map(entityName => 
+        // FIXME: this is a temporary hack to get Svelte to compile, revisit later
+        // `import { ${entityName} } from '${this.ddlPathMapByEntityName[entityName]}';
+        `import { Q${entityName} } from '${this.generatedPathMapByEntityName[entityName]}';`).join('\n');
+        // FIXME: this is a temporary hack to get Svelte to compile, revisit later
+        const entityImports = 'import {\n' + this.entityNames.map(entityName => `  ${entityName}`).join(',\n') + `\n} from '../ddl/ddl';`;
         // const iDuoImports = this.entityNames.map(
         // 	entityName =>
         // 		`IBase${entityName}Duo`
@@ -72,6 +77,7 @@ import {
 	getSchemaName
 }                      from '@airport/ground-control';
 ${qEntityImports}
+${entityImports}
 
 export interface LocalQSchema extends AirportQSchema {
 

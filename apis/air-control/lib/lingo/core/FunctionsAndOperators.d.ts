@@ -32,3 +32,4 @@ export interface FunctionsAndOperators {
     not: notOperator;
     or: orOperator;
 }
+//# sourceMappingURL=FunctionsAndOperators.d.ts.map

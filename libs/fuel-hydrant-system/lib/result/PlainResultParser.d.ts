@@ -22,3 +22,4 @@ export declare class PlainResultParser extends AbstractObjectResultParser implem
     flushRow(): void;
     bridge(parsedResults: any[], selectClauseFragment: any): any[];
 }
+//# sourceMappingURL=PlainResultParser.d.ts.map

@@ -9,3 +9,4 @@ export declare class QMetadataUtils implements IQMetadataUtils {
     getDbEntity<IQE extends IQEntityInternal>(qEntity: IQE): DbEntity;
     getNewEntity(qEntity: IQEntityInternal, airDb: IAirportDatabase): any;
 }
+//# sourceMappingURL=QMetadataUtils.d.ts.map

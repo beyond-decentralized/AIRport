@@ -58,6 +58,32 @@
       "projectFolder": "apps/terminal",
       "shouldPublish": true
     },
+    // "db" folder (alphabetical order)
+    {
+      "packageName": "@airport/mysql",
+      "projectFolder": "db/mysql",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/postgres",
+      "projectFolder": "db/postgres",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/sqlite",
+      "projectFolder": "db/sqlite",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/sqljs",
+      "projectFolder": "db/sqljs",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/websql",
+      "projectFolder": "db/websql",
+      "shouldPublish": true
+    },
     // "libs" folder (alphabetical order)
     {
       "packageName": "@airport/approach-lighting-system",

@@ -1,6 +1,7 @@
 {
   "airport": {
-    "domain": "npmjs.org",
+    "domain": "air",
+    "schema": "point-of-destination",
     "user": "diapco",
     "project": "airport",
     "path": "schemas/point-of-destination"

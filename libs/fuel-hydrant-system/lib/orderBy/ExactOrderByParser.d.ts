@@ -12,3 +12,4 @@ export declare class ExactOrderByParser implements INonEntityOrderByParser {
     constructor(validator: IValidator);
     getOrderByFragment(rootSelectClauseFragment: any, orderBy: JSONFieldInOrderBy[]): string;
 }
+//# sourceMappingURL=ExactOrderByParser.d.ts.map

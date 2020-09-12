@@ -8,7 +8,7 @@ const DDLManager_1 = require("./DDLManager");
  * Created by Papa on 11/27/2016.
  */
 class PostgreSqlDriver extends SqlDriver_1.SqlDriver {
-    async doesTableExist(tableName) {
+    async doesTableExist(schemaName, tableName) {
         throw new Error(`Not implemented`);
     }
     async findNative(sqlQuery, parameters) {

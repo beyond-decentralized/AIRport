@@ -14,3 +14,4 @@ export declare abstract class AbstractInsertValues<IQE extends IQEntity, ARIV ex
     protected validateColumn(dbColumn: DbColumn, dbEntity: DbEntity, columnName?: string): void;
     protected valuesToJSON(valueSets: any[][], dbColumns: DbColumn[], queryUtils: IQueryUtils, fieldUtils: IFieldUtils): any[][];
 }
+//# sourceMappingURL=AbstractInsertValues.d.ts.map

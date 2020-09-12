@@ -11,3 +11,4 @@ export interface IAppliable<JCO extends JSONClauseObject, IQF extends IQOrderabl
     applySqlFunction(sqlFunctionCall: JSONSqlFunctionCall): IQF;
     toJSON(...args: any[]): JCO | JSONFunctionOperation;
 }
+//# sourceMappingURL=Appliable.d.ts.map

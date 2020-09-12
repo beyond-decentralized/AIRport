@@ -27,3 +27,4 @@ export interface INonEntitySearchOne extends ILookup {
         (...args: any[]): RawFieldQuery<any>;
     }): IObservable<any>;
 }
+//# sourceMappingURL=NonEntitySearchOne.d.ts.map

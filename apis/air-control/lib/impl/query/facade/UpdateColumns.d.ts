@@ -7,3 +7,4 @@ export declare class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extend
     constructor(rawUpdate: RawUpdateColumns<IEUC, IQE>);
     protected setToJSON(set: any, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): IEUC;
 }
+//# sourceMappingURL=UpdateColumns.d.ts.map

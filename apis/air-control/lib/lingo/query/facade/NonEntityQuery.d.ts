@@ -12,3 +12,4 @@ export interface RawNonEntityQuery extends RawQuery {
     limit?: number;
     offset?: number;
 }
+//# sourceMappingURL=NonEntityQuery.d.ts.map

@@ -11,3 +11,4 @@ export declare class JoinTreeNode {
     getEntityRelationChildNode(dbRelation: DbRelation): JoinTreeNode;
     getEntityRelationChildNodeByIndexes(schemaVersionId: SchemaVersionId, tableIndex: TableIndex, relationIndex: RelationIndex): JoinTreeNode;
 }
+//# sourceMappingURL=JoinTreeNode.d.ts.map

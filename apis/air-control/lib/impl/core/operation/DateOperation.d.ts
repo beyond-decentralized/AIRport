@@ -7,3 +7,4 @@ import { ValueOperation } from "./Operation";
 export declare class DateOperation extends ValueOperation<Date, JSONRawDateOperation, IQDateField> implements IDateOperation {
     constructor();
 }
+//# sourceMappingURL=DateOperation.d.ts.map

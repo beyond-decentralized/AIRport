@@ -65,3 +65,4 @@ export interface IQOperableField<T, JO extends JSONBaseOperation, IO extends IOp
 }
 export interface IQOperableFieldInternal<T, JO extends JSONRawValueOperation<IQF>, IO extends IValueOperation<T, JO, IQF>, IQF extends IQOperableField<T, JO, IO, IQF>> extends IQOperableField<T, JO, IO, IQF>, IQFieldInternal<IQF> {
 }
+//# sourceMappingURL=OperableField.d.ts.map

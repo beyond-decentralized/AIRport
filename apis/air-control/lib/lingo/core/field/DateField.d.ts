@@ -5,3 +5,4 @@ import { IQOperableField } from './OperableField';
  */
 export interface IQDateField extends IQOperableField<Date, JSONRawDateOperation, IDateOperation, IQDateField> {
 }
+//# sourceMappingURL=DateField.d.ts.map

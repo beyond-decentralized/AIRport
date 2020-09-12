@@ -9,3 +9,4 @@ export declare class SqlFunctionField implements ISqlFunctionField {
     constructor(jsonClauseField: JSONClauseField);
     getValue(sqlValueProvider: ISqlValueProvider, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
 }
+//# sourceMappingURL=SqlFunctionField.d.ts.map

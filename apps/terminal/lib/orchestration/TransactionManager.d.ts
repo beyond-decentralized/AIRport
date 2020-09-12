@@ -21,3 +21,4 @@ export declare class TransactionManager extends AbstractMutationManager implemen
     private wait;
     private canRunTransaction;
 }
+//# sourceMappingURL=TransactionManager.d.ts.map

@@ -130,3 +130,4 @@ export interface SubQueryDecorator<QOtm extends IQEntity, QMto extends IQEntity>
 export interface TraditionalServerSeqDecorator {
     (): PropertyDecorator;
 }
+//# sourceMappingURL=ColumnDecorators.d.ts.map
