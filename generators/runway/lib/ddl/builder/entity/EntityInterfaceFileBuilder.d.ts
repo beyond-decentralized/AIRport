@@ -20,3 +20,4 @@ export declare class EntityInterfaceFileBuilder extends FileBuilder implements I
     addRelationImports(relationBuilders: QRelationBuilder[]): void;
     protected addImports(): void;
 }
+//# sourceMappingURL=EntityInterfaceFileBuilder.d.ts.map

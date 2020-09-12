@@ -1,0 +1,1 @@
+{"version":3,"file":"GeneratedSummaryBuilder.d.ts","sourceRoot":"","sources":["../../../src/ddl/builder/GeneratedSummaryBuilder.ts"],"names":[],"mappings":"AACA,OAAO,EAAC,WAAW,EAAC,MAAc,eAAe,CAAA;AACjD,OAAO,EAAC,QAAQ,EAAC,MAAiB,WAAW,CAAA;AAE7C,qBAAa,uBACZ,YAAW,QAAQ;IAKlB,OAAO,CAAC,WAAW;IAHb,wBAAwB,MAAA;gBAGtB,WAAW,EAAE,WAAW;IAKjC,KAAK,IAAI,MAAM;CASf"}

@@ -18,3 +18,4 @@ export declare class IQEntityInterfaceBuilder implements IBuilder {
     constructor(entity: EntityCandidate, qEntityBuilder: QEntityBuilder);
     build(): string;
 }
+//# sourceMappingURL=IQEntityInterfaceBuilder.d.ts.map

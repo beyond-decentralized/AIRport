@@ -58,3 +58,4 @@ export interface MethodSignatureDocEntry {
     parameters: TypeOrParamDocEntry[];
     returnType: TypeOrParamDocEntry;
 }
+//# sourceMappingURL=DocEntry.d.ts.map

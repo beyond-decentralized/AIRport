@@ -26,3 +26,4 @@ export interface JSONEntityFieldInOrderBy extends JSONFieldInOrderBy {
     pi: number;
     ci: number;
 }
+//# sourceMappingURL=FieldInOrderBy.d.ts.map

@@ -14,3 +14,4 @@ export declare class SchemaMap {
     ensure(schemaVersionId: SchemaVersionId, tableIndex: TableIndex, allColumns?: boolean, TableMapConstructor?: typeof TableMap): ColumnMap;
     existsByStructure(schemaVersionId: SchemaVersionId, tableIndex: TableIndex, columnIndex: ColumnIndex): boolean;
 }
+//# sourceMappingURL=SchemaMap.d.ts.map

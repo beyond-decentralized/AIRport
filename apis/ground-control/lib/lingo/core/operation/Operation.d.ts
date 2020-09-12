@@ -61,3 +61,4 @@ export declare enum CRUDOperation {
     UPDATE = 2,
     DELETE = 3
 }
+//# sourceMappingURL=Operation.d.ts.map

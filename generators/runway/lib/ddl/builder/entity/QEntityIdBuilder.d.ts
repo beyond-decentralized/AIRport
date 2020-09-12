@@ -11,3 +11,4 @@ export declare class QEntityIdBuilder extends QCoreEntityBuilder {
     });
     build(): string;
 }
+//# sourceMappingURL=QEntityIdBuilder.d.ts.map

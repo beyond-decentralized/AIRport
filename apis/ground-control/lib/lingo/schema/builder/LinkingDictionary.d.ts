@@ -23,3 +23,4 @@ export interface ILinkingDictionary {
         };
     };
 }
+//# sourceMappingURL=LinkingDictionary.d.ts.map

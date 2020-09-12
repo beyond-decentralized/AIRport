@@ -18,3 +18,4 @@ export declare function getTableName(schema: {
     };
 }): string;
 export declare function getSequenceName(prefixedTableName: string, columnName: ColumnName): string;
+//# sourceMappingURL=DbSchemaUtils.d.ts.map

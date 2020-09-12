@@ -6,3 +6,4 @@ export declare class GeneratedSummaryBuilder implements IBuilder {
     constructor(pathBuilder: PathBuilder);
     build(): string;
 }
+//# sourceMappingURL=GeneratedSummaryBuilder.d.ts.map

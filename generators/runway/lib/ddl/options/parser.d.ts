@@ -3,3 +3,4 @@
  */
 import { Flags } from './Arguments';
 export declare function parseFlags(programArguments: string[]): Flags;
+//# sourceMappingURL=parser.d.ts.map

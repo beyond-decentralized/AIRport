@@ -19,3 +19,4 @@ export declare abstract class FileBuilder {
     protected buildImports(): string;
     protected abstract addImports(): void;
 }
+//# sourceMappingURL=FileBuilder.d.ts.map

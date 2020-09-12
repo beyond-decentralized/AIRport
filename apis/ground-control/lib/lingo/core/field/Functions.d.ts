@@ -31,3 +31,4 @@ export declare enum SqlFunction {
     CONCATENATE = 22,
     COALESCE = 23
 }
+//# sourceMappingURL=Functions.d.ts.map

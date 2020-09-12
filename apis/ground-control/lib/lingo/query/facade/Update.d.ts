@@ -18,3 +18,4 @@ export interface JsonUpdate<IEUC extends JsonEntityUpdateColumns> extends JsonSt
      */
     S: IEUC;
 }
+//# sourceMappingURL=Update.d.ts.map

@@ -88,3 +88,4 @@ export interface JSONClauseField extends JSONClauseObject {
      */
     v?: string | JSONClauseField | JsonFieldQuery;
 }
+//# sourceMappingURL=JSONClause.d.ts.map

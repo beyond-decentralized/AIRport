@@ -4,3 +4,4 @@ export interface DbSequence {
     columnIndex?: number;
     incrementBy?: number;
 }
+//# sourceMappingURL=Sequence.d.ts.map

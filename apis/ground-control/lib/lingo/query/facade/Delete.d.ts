@@ -9,3 +9,4 @@ export interface JsonDelete extends JsonStatement {
      */
     DF: JSONEntityRelation;
 }
+//# sourceMappingURL=Delete.d.ts.map

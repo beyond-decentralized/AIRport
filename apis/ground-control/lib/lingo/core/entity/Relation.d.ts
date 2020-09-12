@@ -103,3 +103,4 @@ export interface JSONEntityRelation extends JSONJoinRelation {
      */
     wjto?: SqlOperator.AND | SqlOperator.OR;
 }
+//# sourceMappingURL=Relation.d.ts.map

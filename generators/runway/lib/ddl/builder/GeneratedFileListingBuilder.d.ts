@@ -9,3 +9,4 @@ export declare class GeneratedFileListingBuilder implements IBuilder {
     addFileNameAndPaths(entityName: string, fullDdlPath: string, fullGenerationPath: string): void;
     build(): string;
 }
+//# sourceMappingURL=GeneratedFileListingBuilder.d.ts.map

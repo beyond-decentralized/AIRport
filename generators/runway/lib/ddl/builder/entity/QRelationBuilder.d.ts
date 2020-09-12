@@ -31,3 +31,4 @@ export declare class QRelationBuilder implements IBuilder {
     build(): string;
     buildInterfaceDefinition(idOnly: boolean, optional?: boolean, forInternalInterfaces?: boolean, forCascadeGraph?: boolean): string;
 }
+//# sourceMappingURL=QRelationBuilder.d.ts.map

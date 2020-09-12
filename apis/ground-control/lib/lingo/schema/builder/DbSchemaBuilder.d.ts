@@ -12,3 +12,4 @@ export interface IDbSchemaBuilder {
         };
     }, dictionary: ILinkingDictionary, failOnMissingMappings: boolean): any;
 }
+//# sourceMappingURL=DbSchemaBuilder.d.ts.map

@@ -13,3 +13,4 @@ export declare function getParentClassName(classSymbol: ts.Symbol): string;
 export declare function isPrimitive(type: string): boolean;
 export declare function endsWith(target: string, suffix: string): boolean;
 export declare function startsWith(target: string, suffix: string): boolean;
+//# sourceMappingURL=utils.d.ts.map

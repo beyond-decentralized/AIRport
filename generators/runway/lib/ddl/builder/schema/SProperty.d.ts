@@ -131,3 +131,4 @@ export interface SRelationColumn {
      */
     relationColumnReference: string;
 }
+//# sourceMappingURL=SProperty.d.ts.map

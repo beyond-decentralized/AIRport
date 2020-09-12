@@ -11,3 +11,4 @@ export declare class QColumnBuilder implements IBuilder {
     build(): string;
     buildInterfaceDefinition(optional?: boolean, forInternalInterfaces?: boolean): string;
 }
+//# sourceMappingURL=QColumnBuilder.d.ts.map

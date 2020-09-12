@@ -8,3 +8,4 @@ export declare function generateDefinitions(fileNames: string[], options: ts.Com
 }): {
     [entityName: string]: EntityCandidate;
 };
+//# sourceMappingURL=FileProcessor.d.ts.map

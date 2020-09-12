@@ -10,3 +10,4 @@ export declare class Flags {
 export declare var ARGUMENT_FLAGS: {
     [optionFlag: string]: ArgumentType;
 };
+//# sourceMappingURL=Arguments.d.ts.map

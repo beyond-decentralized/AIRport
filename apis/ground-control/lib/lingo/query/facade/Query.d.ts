@@ -47,3 +47,4 @@ export interface JsonLimitedQuery {
      */
     O?: number;
 }
+//# sourceMappingURL=Query.d.ts.map

@@ -8,3 +8,4 @@ export declare class ColumnMap {
     constructor(tableIndex: TableIndex, allColumns?: boolean);
     ensure(columnIndex: ColumnIndex): void;
 }
+//# sourceMappingURL=ColumnMap.d.ts.map

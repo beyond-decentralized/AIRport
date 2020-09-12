@@ -109,3 +109,4 @@ export interface DbEntity extends SchemaReferenceByIndex<TableIndex>, DatabaseOb
     schemaVersion: DbSchemaVersion;
     relationReferences: DbRelation[];
 }
+//# sourceMappingURL=Entity.d.ts.map

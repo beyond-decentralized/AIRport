@@ -11,3 +11,4 @@ export declare class MappedSuperclassBuilder {
     private buildEntity;
     private dropCircularDependencies;
 }
+//# sourceMappingURL=MappedSuperclassBuilder.d.ts.map

@@ -77,3 +77,4 @@ export interface SIndexedEntity {
      */
     relations: SRelation[];
 }
+//# sourceMappingURL=SEntity.d.ts.map

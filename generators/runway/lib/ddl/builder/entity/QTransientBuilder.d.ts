@@ -6,3 +6,4 @@ export declare class QTransientBuilder {
     constructor(parentBuilder: IQCoreEntityBuilder, propertyDocEntry: PropertyDocEntry);
     buildInterfaceDefinition(): string;
 }
+//# sourceMappingURL=QTransientBuilder.d.ts.map

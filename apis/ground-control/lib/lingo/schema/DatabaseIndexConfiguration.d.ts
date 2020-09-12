@@ -3,3 +3,4 @@ export interface DatabaseIndexConfiguration {
     columnList: string[];
     unique?: boolean;
 }
+//# sourceMappingURL=DatabaseIndexConfiguration.d.ts.map

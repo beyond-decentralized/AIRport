@@ -23,3 +23,4 @@ export declare class QEntityBuilder extends QCoreEntityBuilder {
     }, sIndexedEntity: SIndexedEntity);
     build(): string;
 }
+//# sourceMappingURL=QEntityBuilder.d.ts.map

@@ -10,3 +10,4 @@ export interface PortableQuery {
     queryResultType: QueryResultType;
     parameterMap: any;
 }
+//# sourceMappingURL=PortableQuery.d.ts.map

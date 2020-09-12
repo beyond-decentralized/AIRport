@@ -45,3 +45,4 @@ export interface DatabaseOneToManyElements {
  */
 export interface DatabaseManyToOneElements {
 }
+//# sourceMappingURL=DatabaseRelationConfiguration.d.ts.map

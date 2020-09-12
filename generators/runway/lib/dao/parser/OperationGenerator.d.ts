@@ -6,3 +6,4 @@ export declare const entityOperationMap: {
     };
 };
 export declare function visitDaoFile(node: ts.Node, path: string): void;
+//# sourceMappingURL=OperationGenerator.d.ts.map

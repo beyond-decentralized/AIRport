@@ -20,3 +20,4 @@ export declare function addImportForType(entity: EntityCandidate, type: string, 
 export declare function normalizePath(path: string): string;
 export declare function canBeInterface(type: string): boolean;
 export declare function getImplNameFromInterfaceName(interfaceName: string): string;
+//# sourceMappingURL=pathResolver.d.ts.map

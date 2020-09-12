@@ -16,3 +16,4 @@ export declare enum TerminalSyncStatus {
     ACTIVE = 0,
     SUSPENDED = 1
 }
+//# sourceMappingURL=SyncStatus.d.ts.map

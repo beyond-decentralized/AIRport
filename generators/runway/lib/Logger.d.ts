@@ -7,3 +7,4 @@ export declare class Logger {
     getNowStamp(): string;
     getTimeStamp(date: Date): string;
 }
+//# sourceMappingURL=Logger.d.ts.map

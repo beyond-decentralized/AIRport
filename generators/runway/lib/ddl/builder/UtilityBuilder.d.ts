@@ -6,3 +6,4 @@ export declare class UtilityBuilder extends ImplementationFileBuilder {
     constructor(pathBuilder: PathBuilder, classSuffix: string, needsQEntity: boolean);
     build(): string;
 }
+//# sourceMappingURL=UtilityBuilder.d.ts.map

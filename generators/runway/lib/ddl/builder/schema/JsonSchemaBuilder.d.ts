@@ -23,3 +23,4 @@ export declare class JsonSchemaBuilder {
     private prepOneToManyElems;
     private deserializeCascadeType;
 }
+//# sourceMappingURL=JsonSchemaBuilder.d.ts.map

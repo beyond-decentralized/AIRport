@@ -41,3 +41,4 @@ export declare class EntityCandidateRegistry {
     getProjectReferenceFromPath(path: string): string;
     matchToExistingEntity(entityCandidate: EntityCandidate): boolean;
 }
+//# sourceMappingURL=EntityCandidateRegistry.d.ts.map

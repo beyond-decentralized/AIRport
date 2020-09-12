@@ -17,3 +17,4 @@ export interface JsonInsertValues extends JsonStatement {
      */
     V: any[][];
 }
+//# sourceMappingURL=InsertValues.d.ts.map

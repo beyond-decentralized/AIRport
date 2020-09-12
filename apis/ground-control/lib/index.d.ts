@@ -54,3 +54,4 @@ export * from './lingo/schema/Entity';
 export * from './lingo/schema/Property';
 export * from './lingo/schema/Schema';
 export * from './tokens';
+//# sourceMappingURL=index.d.ts.map

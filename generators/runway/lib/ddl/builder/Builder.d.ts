@@ -70,3 +70,4 @@ export declare function getPropertyFieldClass(//
 propertyDocEntry: PropertyDocEntry): string;
 export declare function getRelationFieldType(//
 entityProperty: PropertyDocEntry): string;
+//# sourceMappingURL=Builder.d.ts.map

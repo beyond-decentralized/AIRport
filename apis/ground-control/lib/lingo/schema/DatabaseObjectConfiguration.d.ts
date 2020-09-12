@@ -5,3 +5,4 @@ export interface DatabaseObjectConfiguration<DIC extends DatabaseIndexConfigurat
     schema?: string;
     primaryKey?: string[];
 }
+//# sourceMappingURL=DatabaseObjectConfiguration.d.ts.map

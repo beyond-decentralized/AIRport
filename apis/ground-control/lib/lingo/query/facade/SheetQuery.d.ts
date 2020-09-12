@@ -9,3 +9,4 @@ export interface JsonSheetQuery extends JsonNonEntityQuery {
      */
     S: JSONClauseField[];
 }
+//# sourceMappingURL=SheetQuery.d.ts.map

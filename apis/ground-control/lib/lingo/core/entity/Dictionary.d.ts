@@ -103,3 +103,4 @@ export declare namespace repositoryEntity {
     const systemWideOperationId = "systemWideOperationId";
     const SYSTEM_WIDE_OPERATION_ID = "SYSTEM_WIDE_OPERATION_ID";
 }
+//# sourceMappingURL=Dictionary.d.ts.map

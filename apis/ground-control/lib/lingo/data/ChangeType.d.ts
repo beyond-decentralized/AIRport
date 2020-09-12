@@ -3,3 +3,4 @@ export declare enum ChangeType {
     DELETE_ROWS = 1,
     UPDATE_ROWS = 2
 }
+//# sourceMappingURL=ChangeType.d.ts.map

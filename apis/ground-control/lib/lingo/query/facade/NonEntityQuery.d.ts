@@ -19,3 +19,4 @@ export interface JsonGroupedQuery {
  */
 export interface JsonNonEntityQuery extends JsonQuery, JsonGroupedQuery, JsonLimitedQuery {
 }
+//# sourceMappingURL=NonEntityQuery.d.ts.map

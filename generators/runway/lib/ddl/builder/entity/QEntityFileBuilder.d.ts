@@ -29,3 +29,4 @@ export declare class QEntityFileBuilder extends FileBuilder implements IBuilder 
     addRelationImports(relationBuilders: QRelationBuilder[]): void;
     protected addImports(): void;
 }
+//# sourceMappingURL=QEntityFileBuilder.d.ts.map

@@ -22,3 +22,4 @@ export declare class PathBuilder {
     path: string): string;
     private getGenerationPathForFile;
 }
+//# sourceMappingURL=PathBuilder.d.ts.map

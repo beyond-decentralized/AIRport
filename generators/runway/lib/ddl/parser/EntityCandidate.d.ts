@@ -28,3 +28,4 @@ export declare class EntityCandidate {
     getTransientProperties(): PropertyDocEntry[];
     matches(type: string, location?: string): boolean;
 }
+//# sourceMappingURL=EntityCandidate.d.ts.map

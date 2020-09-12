@@ -17,3 +17,4 @@ export declare class TableMap {
     ensure(tableIndex: TableIndex, allColumns?: boolean, ColumnMapConstructor?: typeof ColumnMap): ColumnMap;
     existsByStructure(tableIndex: TableIndex, columnIndex: ColumnIndex): boolean;
 }
+//# sourceMappingURL=TableMap.d.ts.map

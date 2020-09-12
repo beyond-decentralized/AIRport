@@ -4,3 +4,4 @@ export declare enum PlatformType {
     OFFLINE = 2,
     STUB = 3
 }
+//# sourceMappingURL=PatformType.d.ts.map

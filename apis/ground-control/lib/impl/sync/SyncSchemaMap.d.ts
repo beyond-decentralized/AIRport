@@ -9,3 +9,4 @@ export declare class SyncSchemaMap extends SchemaMap {
     ensureEntity(entity: DbEntity, allColumns?: boolean): SyncColumnMap;
     intersects(schemaMap: SchemaMap): boolean;
 }
+//# sourceMappingURL=SyncSchemaMap.d.ts.map

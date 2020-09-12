@@ -202,3 +202,4 @@ export interface DbRelationColumn extends DatabaseObject {
     oneRelation?: DbRelation;
     parentRelation: DbRelation;
 }
+//# sourceMappingURL=Property.d.ts.map

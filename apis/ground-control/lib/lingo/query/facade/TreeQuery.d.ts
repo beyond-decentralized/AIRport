@@ -4,3 +4,4 @@ import { JsonNonEntityQuery } from './NonEntityQuery';
  */
 export interface JsonTreeQuery extends JsonNonEntityQuery {
 }
+//# sourceMappingURL=TreeQuery.d.ts.map

@@ -11,3 +11,4 @@ export declare class QPropertyBuilder implements IBuilder {
     build(): string;
     buildInterfaceDefinition(optional?: boolean, forInternalInterfaces?: boolean): string;
 }
+//# sourceMappingURL=QPropertyBuilder.d.ts.map

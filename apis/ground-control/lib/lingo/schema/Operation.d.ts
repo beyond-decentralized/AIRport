@@ -43,3 +43,4 @@ export interface DbOperation {
     type: Operation_Type;
     entity: DbEntity;
 }
+//# sourceMappingURL=Operation.d.ts.map

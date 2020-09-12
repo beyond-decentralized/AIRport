@@ -5,3 +5,4 @@ export interface RelationColumnReference {
     relationIndex: number;
     columnIndex: number;
 }
+//# sourceMappingURL=RelationColumnReference.d.ts.map

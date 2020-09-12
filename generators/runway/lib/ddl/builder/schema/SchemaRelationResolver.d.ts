@@ -8,3 +8,4 @@ export declare class SchemaRelationResolver {
     private setTypeForLinkedColumns;
     private getTypeFromSQLDataType;
 }
+//# sourceMappingURL=SchemaRelationResolver.d.ts.map

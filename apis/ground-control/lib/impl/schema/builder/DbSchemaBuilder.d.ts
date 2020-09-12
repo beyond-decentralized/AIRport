@@ -39,3 +39,4 @@ export declare class DbSchemaBuilder implements IDbSchemaBuilder {
         };
     }, dictionary: ILinkingDictionary, failOnMissingMappings?: boolean): void;
 }
+//# sourceMappingURL=DbSchemaBuilder.d.ts.map

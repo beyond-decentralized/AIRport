@@ -13,3 +13,4 @@ export declare class SyncTableMap extends TableMap {
     ensureEntity(tableIndex: TableIndex, allColumns?: boolean): SyncColumnMap;
     intersects(columnMap: TableMap): boolean;
 }
+//# sourceMappingURL=SyncTableMap.d.ts.map

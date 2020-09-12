@@ -183,3 +183,4 @@ export interface DbDatabase {
     };
     storeType: number;
 }
+//# sourceMappingURL=Schema.d.ts.map

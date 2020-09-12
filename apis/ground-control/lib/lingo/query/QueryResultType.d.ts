@@ -8,3 +8,4 @@ export declare enum QueryResultType {
     MAPPED_ENTITY_GRAPH = 6,
     MAPPED_ENTITY_TREE = 7
 }
+//# sourceMappingURL=QueryResultType.d.ts.map

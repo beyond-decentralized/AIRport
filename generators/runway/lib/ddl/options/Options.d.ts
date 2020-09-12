@@ -14,3 +14,4 @@ export interface Configuration {
         };
     };
 }
+//# sourceMappingURL=Options.d.ts.map

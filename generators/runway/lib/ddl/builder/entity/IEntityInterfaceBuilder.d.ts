@@ -20,3 +20,4 @@ export declare class IEntityInterfaceBuilder implements IBuilder {
     build(): string;
     getTypeString(docEntry: TypeOrParamDocEntry): string;
 }
+//# sourceMappingURL=IEntityInterfaceBuilder.d.ts.map

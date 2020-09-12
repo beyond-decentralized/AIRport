@@ -18,3 +18,4 @@ export declare abstract class ImplementationFileBuilder implements IBuilder {
     addFileNameAndPaths(entityId: EntityId, entityName: string, fullDdlPath: string, fullGenerationPath: string): void;
     abstract build(): string;
 }
+//# sourceMappingURL=ImplementationFileBuilder.d.ts.map

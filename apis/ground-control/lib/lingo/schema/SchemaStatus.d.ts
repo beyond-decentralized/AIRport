@@ -3,3 +3,4 @@ export declare enum SchemaStatus {
     MISSING = 1,
     NEEDS_UPGRADES = 2
 }
+//# sourceMappingURL=SchemaStatus.d.ts.map

@@ -17,3 +17,4 @@ export interface JsonFieldQuery extends JsonNonEntityQuery {
      */
     dt: SQLDataType;
 }
+//# sourceMappingURL=FieldQuery.d.ts.map

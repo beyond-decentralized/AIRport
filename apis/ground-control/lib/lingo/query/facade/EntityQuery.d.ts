@@ -29,3 +29,4 @@ export interface JsonEntityQuery<IEP extends JsonEntityProperties> extends JsonQ
  */
 export interface JsonLimitedEntityQuery<IEP extends JsonEntityProperties> extends JsonEntityQuery<IEP>, JsonLimitedQuery {
 }
+//# sourceMappingURL=EntityQuery.d.ts.map

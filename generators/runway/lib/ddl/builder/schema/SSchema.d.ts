@@ -41,3 +41,4 @@ export interface SIndexedSchema {
 export declare function buildIndexedSSchema(schema: SSchema, referencedSchemasByName: {
     [projectName: string]: SSchemaReference;
 }): SIndexedSchema;
+//# sourceMappingURL=SSchema.d.ts.map
