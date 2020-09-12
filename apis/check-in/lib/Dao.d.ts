@@ -18,3 +18,4 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, operationName?: OperationName): Promise<number>;
     update(entityInfo: EntityCreate | EntityCreate[], operationName?: OperationName): Promise<number>;
 }
+//# sourceMappingURL=Dao.d.ts.map

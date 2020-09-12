@@ -40,3 +40,4 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     }): Promise<number>;
     save(entity: EntityCreate, operationName?: OperationName): Promise<number>;
 }
+//# sourceMappingURL=EntityDatabaseFacade.d.ts.map

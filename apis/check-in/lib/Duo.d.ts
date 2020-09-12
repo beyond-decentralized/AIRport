@@ -14,3 +14,4 @@ export declare function getAllFieldsSelect(dbEntity: DbEntity): IEntitySelectPro
 export declare const DUO: {
     getAllFieldsSelect: typeof getAllFieldsSelect;
 };
+//# sourceMappingURL=Duo.d.ts.map

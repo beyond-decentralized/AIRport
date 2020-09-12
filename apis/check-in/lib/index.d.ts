@@ -5,3 +5,4 @@ export * from './Duo';
 export * from './EntityDatabaseFacade';
 export * from './Selector';
 export * from './SequenceGenerator';
+//# sourceMappingURL=index.d.ts.map

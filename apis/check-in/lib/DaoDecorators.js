@@ -5,4 +5,14 @@ exports.Persist = function (rules) {
         // No runtime logic required.
     };
 };
+exports.Delete = function () {
+    return function (target, propertyKey) {
+        // No runtime logic required.
+    };
+};
+exports.Query = function () {
+    return function (target, propertyKey) {
+        // No runtime logic required.
+    };
+};
 //# sourceMappingURL=DaoDecorators.js.map
