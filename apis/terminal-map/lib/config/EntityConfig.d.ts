@@ -25,3 +25,4 @@ export declare class EntityConfig implements IEntityConfig {
     localStoreConfig: ILocalStoreConfig;
     constructor(className: string, clazz: Function, config: JsonEntityConfig, persistenceConfig: IPersistenceConfig);
 }
+//# sourceMappingURL=EntityConfig.d.ts.map

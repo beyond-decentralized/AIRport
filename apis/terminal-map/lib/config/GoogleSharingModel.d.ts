@@ -15,3 +15,4 @@ export interface GoogleChangeListShareInfo extends ChangeListShareInfo {
     recentFileId?: string;
     archiveFileId?: string;
 }
+//# sourceMappingURL=GoogleSharingModel.d.ts.map

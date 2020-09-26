@@ -11,3 +11,4 @@ export interface SharedChangeList {
     errorSubject(): ISubject<ChangeError>;
     changesAddedRemotelySubject(): ISubject<ChangeRecordIterator>;
 }
+//# sourceMappingURL=SharedChangeList.d.ts.map

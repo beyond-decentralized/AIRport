@@ -7,3 +7,4 @@ export declare class ArrayChangeRecordIterator implements ChangeRecordIterator {
     next(): ChangeRecord;
     hasNext(): boolean;
 }
+//# sourceMappingURL=ArrayChangeRecordIterator.d.ts.map

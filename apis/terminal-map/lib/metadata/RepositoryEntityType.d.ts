@@ -7,3 +7,4 @@ export declare enum RepositoryEntityType {
 }
 export declare const REPOSITORY_ID = "REPOSITORY_ID";
 export declare const REPOSITORY_FIELD = "repository";
+//# sourceMappingURL=RepositoryEntityType.d.ts.map

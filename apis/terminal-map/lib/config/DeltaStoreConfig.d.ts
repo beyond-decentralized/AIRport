@@ -44,3 +44,4 @@ export declare class StubDeltaStoreConfig extends DeltaStoreConfig {
 }
 export declare function createDeltaStoreConfig(jsonDeltaStoreConfig: JsonDeltaStoreConfig): IDeltaStoreConfig;
 export declare function getPlatformConfig(deltaStoreConfig: DeltaStoreConfig): any;
+//# sourceMappingURL=DeltaStoreConfig.d.ts.map

@@ -32,3 +32,4 @@ export interface SharingAdaptor {
     createChangeList(shareInfo: ChangeListShareInfo, setupInfo: SharingPlatformSetupInfo): Promise<SharedChangeList>;
     loadChangeList(shareInfo: ChangeListShareInfo, setupInfo: SharingPlatformSetupInfo): Promise<SharedChangeList>;
 }
+//# sourceMappingURL=SharingAdaptor.d.ts.map

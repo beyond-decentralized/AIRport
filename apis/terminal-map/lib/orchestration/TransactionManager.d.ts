@@ -10,3 +10,4 @@ export interface ITransactionManager {
     rollback(credentials: ICredentials): Promise<void>;
     commit(credentials: ICredentials): Promise<void>;
 }
+//# sourceMappingURL=TransactionManager.d.ts.map

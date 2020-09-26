@@ -8,3 +8,4 @@ export declare class Sequence {
     incrementBy: SequenceIncrementBy;
     currentValue: SequenceCurrentValue;
 }
+//# sourceMappingURL=Sequence.d.ts.map

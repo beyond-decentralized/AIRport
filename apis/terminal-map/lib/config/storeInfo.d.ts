@@ -20,3 +20,4 @@ export declare namespace store.type {
     function getName(localStoreType: StoreType): string;
     function getValue(localStoreTypeName: string): StoreType;
 }
+//# sourceMappingURL=storeInfo.d.ts.map

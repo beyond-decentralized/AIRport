@@ -3,3 +3,4 @@ export interface ITerminalRun {
     createTimestamp?: number;
     randomNumber?: number;
 }
+//# sourceMappingURL=terminalrun.d.ts.map

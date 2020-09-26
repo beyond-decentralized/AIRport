@@ -17,3 +17,4 @@ export declare class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig
     type: StoreType;
     constructor(config: JsonOfflineDeltaStoreConfig, deltaStoreConfig: IDeltaStoreConfig);
 }
+//# sourceMappingURL=OfflineDeltaStoreConfig.d.ts.map

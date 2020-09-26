@@ -68,3 +68,4 @@ export interface QSequenceQId {
 }
 export interface QSequenceQRelation extends IQRelation<QSequence>, QSequenceQId {
 }
+//# sourceMappingURL=qsequence.d.ts.map

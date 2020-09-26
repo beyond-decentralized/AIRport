@@ -60,3 +60,4 @@ export interface QTerminalRunQId {
 }
 export interface QTerminalRunQRelation extends IQRelation<QTerminalRun>, QTerminalRunQId {
 }
+//# sourceMappingURL=qterminalrun.d.ts.map

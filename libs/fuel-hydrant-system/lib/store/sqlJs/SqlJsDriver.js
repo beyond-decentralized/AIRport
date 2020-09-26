@@ -4,7 +4,7 @@ const ground_control_1 = require("@airport/ground-control");
 // FIXME: add support, in future, if needed
 // import {Database}      from 'sql.js'
 const SQLQuery_1 = require("../../sql/core/SQLQuery");
-const SqLiteDriver_1 = require("../sqLite/SqLiteDriver");
+const SqLiteDriver_1 = require("../../db/sqlite/src/SqLiteDriver");
 class SqlJsDriver extends SqLiteDriver_1.SqLiteDriver {
     constructor() {
         super();

@@ -8,3 +8,4 @@ export declare class SequenceDao extends BaseSequenceDao implements ISequenceDao
     static diSet(): boolean;
     incrementCurrentValues(): Promise<void>;
 }
+//# sourceMappingURL=SequenceDao.d.ts.map

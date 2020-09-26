@@ -52,3 +52,4 @@ export interface QSystemWideOperationIdQId {
 }
 export interface QSystemWideOperationIdQRelation extends IQRelation<QSystemWideOperationId>, QSystemWideOperationIdQId {
 }
+//# sourceMappingURL=qsystemwideoperationid.d.ts.map

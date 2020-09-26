@@ -28,3 +28,4 @@ export declare class BaseTerminalRunDao extends SQDIDao<ITerminalRun, TerminalRu
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDaos.d.ts.map

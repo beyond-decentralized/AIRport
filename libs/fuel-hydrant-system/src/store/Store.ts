@@ -17,18 +17,18 @@ export async function setStoreDriver(
 	let StoreDriver
 	switch (storeType) {
 		case StoreType.SQLITE_CORDOVA:
-			const webSqlDriverFile = await import('./webSql/WebSqlDriver')
+			const webSqlDriverFile = await import('../../db/websql/src/WebSqlDriver')
 			StoreDriver            = webSqlDriverFile.WebSqlDriver
 			break
 		case StoreType.SQLJS:
-			const sqlJsDriverFile = await import('./sqlJs/SqlJsDriver')
+			const sqlJsDriverFile = await import('../../db/sqljs/src/SqlJsDriver')
 			StoreDriver           = sqlJsDriverFile.SqlJsDriver
 			break
 		default:
 			throw new Error(`Unsupported StoreType: ${storeType}`)
 	}
 
-	const sqLiteSequenceGeneratorFile = await import('./sqLite/SqLiteSequenceGenerator')
+	const sqLiteSequenceGeneratorFile = await import('../../db/sqlite/src/SqLiteSequenceGenerator')
 	const SqLiteSequenceGenerator = sqLiteSequenceGeneratorFile.SqLiteSequenceGenerator
 
 	DI.set(STORE_DRIVER, StoreDriver)

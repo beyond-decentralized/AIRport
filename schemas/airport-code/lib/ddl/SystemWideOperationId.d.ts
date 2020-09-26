@@ -5,3 +5,4 @@ export declare type SystemWideOperationId_Id = number;
 export declare class SystemWideOperationId {
     id: SystemWideOperationId_Id;
 }
+//# sourceMappingURL=SystemWideOperationId.d.ts.map

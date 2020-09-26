@@ -12,3 +12,4 @@ export interface ChangeRecordIterator {
     next(): ChangeRecord;
     hasNext(): boolean;
 }
+//# sourceMappingURL=ChangeModel.d.ts.map

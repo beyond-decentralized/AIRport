@@ -60,6 +60,11 @@
     },
     // "db" folder (alphabetical order)
     {
+      "packageName": "@airport/cockroachdb",
+      "projectFolder": "db/cockroachdb",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/mysql",
       "projectFolder": "db/mysql",
       "shouldPublish": true

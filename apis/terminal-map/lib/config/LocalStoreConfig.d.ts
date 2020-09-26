@@ -26,3 +26,4 @@ export interface ISqlJsCordovaLocalStoreConfig extends ILocalStoreConfig {
 }
 export declare class SqlJsCordovaLocalStoreConfig extends CommonLocalStoreConfig implements SqlJsCordovaLocalStoreConfig {
 }
+//# sourceMappingURL=LocalStoreConfig.d.ts.map

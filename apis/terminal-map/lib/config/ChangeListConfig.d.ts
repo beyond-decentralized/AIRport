@@ -20,3 +20,4 @@ export declare class ChangeListConfig implements IChangeListConfig {
     distributionStrategy: DistributionStrategy;
     constructor(config: JsonChangeListConfig, deltaStoreConfig: IDeltaStoreConfig);
 }
+//# sourceMappingURL=ChangeListConfig.d.ts.map

@@ -32,3 +32,4 @@ export declare class TerminalStore implements ITerminalStore {
     getAllColumns: IMemoizedSelector<ISchemaColumn[], any>;
     getAllRelations: IMemoizedSelector<ISchemaRelation[], any>;
 }
+//# sourceMappingURL=TerminalStore.d.ts.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"SequenceDao.d.ts","sourceRoot":"","sources":["../src/SequenceDao.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,eAAe,EACf,SAAS,EAET,WAAW,EACX,MAA4B,gCAAgC,CAAA;AAS7D,qBAAa,WACZ,SAAQ,eAAe;IAEjB,OAAO,CACZ,SAAS,CAAC,EAAE,WAAW,EAAE,GACvB,OAAO,CAAC,SAAS,EAAE,CAAC;CA4BvB"}

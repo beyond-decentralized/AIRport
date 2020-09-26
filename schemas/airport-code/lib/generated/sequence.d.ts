@@ -5,3 +5,4 @@ export interface ISequence {
     incrementBy?: number;
     currentValue?: number;
 }
+//# sourceMappingURL=sequence.d.ts.map

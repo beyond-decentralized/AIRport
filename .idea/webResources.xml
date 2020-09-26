@@ -79,6 +79,13 @@
           </resourceRoots>
         </entryData>
       </entry>
+      <entry url="file://$PROJECT_DIR$/db/cockroachdb">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/db/cockroachdb/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
       <entry url="file://$PROJECT_DIR$/db/mysql">
         <entryData>
           <resourceRoots>

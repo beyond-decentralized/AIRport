@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
 const SQLQuery_1 = require("../../sql/core/SQLQuery");
-const SqLiteDriver_1 = require("../sqLite/SqLiteDriver");
+const SqLiteDriver_1 = require("../../db/sqlite/src/SqLiteDriver");
 class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
     constructor() {
         super();

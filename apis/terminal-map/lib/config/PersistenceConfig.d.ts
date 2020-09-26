@@ -22,3 +22,4 @@ export declare class PersistenceConfig<DSC extends JsonDeltaStoreConfig> impleme
     appName: string;
     constructor(config: JsonPersistenceConfig<DSC>);
 }
+//# sourceMappingURL=PersistenceConfig.d.ts.map

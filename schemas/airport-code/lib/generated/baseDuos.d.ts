@@ -28,3 +28,4 @@ export declare class BaseTerminalRunDuo extends SQDIDuo<ITerminalRun, TerminalRu
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDuos.d.ts.map

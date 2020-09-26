@@ -1,6 +1,6 @@
 import { QueryType } from '@airport/ground-control';
 import { SQLDialect } from '../../sql/core/SQLQuery';
-import { SqLiteDriver } from '../sqLite/SqLiteDriver';
+import { SqLiteDriver } from '../../db/sqlite/src/SqLiteDriver';
 /**
  * Created by Papa on 8/30/2016.
  */

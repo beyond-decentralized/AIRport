@@ -8,3 +8,4 @@ export interface ITerminalState {
     domains: IDomain[];
     schemas: ISchema[];
 }
+//# sourceMappingURL=TerminalState.d.ts.map
