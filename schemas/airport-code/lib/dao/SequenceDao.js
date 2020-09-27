@@ -18,6 +18,15 @@ class SequenceDao extends generated_1.BaseSequenceDao {
             }
         });
     }
+    async incrementSequence() {
+        const s = generated_1.Q.Sequence;
+        await this.db.updateWhere({
+            update: s,
+            set: {
+                currentValue: air_control_1.plus(s.currentValue, s.incrementBy)
+            }
+        });
+    }
 }
 exports.SequenceDao = SequenceDao;
 di_1.DI.set(tokens_1.SEQUENCE_DAO, SequenceDao);

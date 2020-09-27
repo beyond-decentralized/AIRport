@@ -3,14 +3,14 @@ import {
 	ISequence,
 	SEQUENCE_DAO,
 	SequenceEId
-}                       from '../../schemas/airport-code/lib'
+}                       from '@airport/airport-code'
 import {container, DI}  from '@airport/di'
 import {
 	DomainName,
 	SchemaName
 }                       from '@airport/ground-control'
-import {TERMINAL_STORE} from '../../apis/terminal-map/lib'
-import {ISchemaVersion} from '../../schemas/traffic-pattern/lib'
+import {TERMINAL_STORE} from '@airport/terminal-map'
+import {ISchemaVersion} from '@airport/traffic-pattern'
 
 export class SequenceDao
 	extends BaseSequenceDao {

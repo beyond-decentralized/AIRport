@@ -3,14 +3,14 @@ import {
 	QueryType,
 	StoreType
 }                     from '../../../apis/ground-control/lib'
-import {SQLDialect}   from 'sql/core/SQLQuery'
-import {SqLiteDriver} from '../../db/sqlite/src/SqLiteDriver'
+import {SQLDialect}   from '@airport/fuel-hydrant-system'
+import {SqlDriver} from '@airport/fuel-hydrant-system'
 
 /**
  * Created by Papa on 8/30/2016.
  */
 export class CockroachdbDriver
-	extends SqLiteDriver {
+	extends SqlDriver {
 
 	static BACKUP_LOCAL     = 2
 	static BACKUP_LIBRARY   = 1

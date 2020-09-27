@@ -22,7 +22,7 @@ const ground_control_1 = require("@airport/ground-control");
  * Sequence-only solution
  *
  */
-class SqLiteSequenceGenerator {
+class SequenceGenerator {
     constructor() {
         this.sequences = [];
         this.sequenceBlocks = [];
@@ -131,5 +131,5 @@ class SqLiteSequenceGenerator {
         }
     }
 }
-exports.SqLiteSequenceGenerator = SqLiteSequenceGenerator;
-//# sourceMappingURL=SqLiteSequenceGenerator.js.map
+exports.SequenceGenerator = SequenceGenerator;
+//# sourceMappingURL=SequenceGenerator.js.map

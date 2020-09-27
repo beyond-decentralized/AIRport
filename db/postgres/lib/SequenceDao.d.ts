@@ -1,4 +1,4 @@
-import { BaseSequenceDao, ISequence, SequenceEId } from '../../schemas/airport-code/lib';
+import { BaseSequenceDao, ISequence, SequenceEId } from '@airport/airport-code';
 export declare class SequenceDao extends BaseSequenceDao {
     findAll(entityIds?: SequenceEId[]): Promise<ISequence[]>;
 }

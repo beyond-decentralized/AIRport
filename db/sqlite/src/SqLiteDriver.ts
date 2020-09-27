@@ -2,7 +2,7 @@ import {
 	QueryType,
 	SQLDataType
 }                  from '@airport/ground-control'
-import {SqlDriver} from '@airport/fuel-hydrant-system/lib/store/SqlDriver'
+import {SqlDriver} from '@airport/fuel-hydrant-system'
 
 /**
  * Created by Papa on 11/27/2016.

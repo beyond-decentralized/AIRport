@@ -6,7 +6,7 @@ import {
 	ISequenceGenerator,
 	setSeqGen
 }                      from '@airport/check-in'
-import {container, DI} from '@airport/di'
+import {container} from '@airport/di'
 import {
 	DbColumn,
 	DbEntity,
@@ -31,7 +31,7 @@ import {
  * Sequence-only solution
  *
  */
-export class SqLiteSequenceGenerator
+export abstract class SequenceGenerator
 	implements ISequenceGenerator {
 
 	private sequences: ISequence[][][]   = []
@@ -163,7 +163,9 @@ export class SqLiteSequenceGenerator
 		return sequentialNumbers
 	}
 
-	private async waitForPreviousGeneration(): Promise<void> {
+	protected abstract async nativeGenerate(): Promise<number>;
+
+	private async waitForPreviousGeneration(): Promise<any> {
 		return new Promise(
 			resolve => {
 				this.isDoneGeneratingSeqNums(resolve)

@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
-const SqlDriver_1 = require("@airport/fuel-hydrant-system/lib/store/SqlDriver");
+const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 /**
  * Created by Papa on 11/27/2016.
  */
-class SqLiteDriver extends SqlDriver_1.SqlDriver {
+class SqLiteDriver extends fuel_hydrant_system_1.SqlDriver {
     constructor() {
         super();
         this.maxValues = 999;

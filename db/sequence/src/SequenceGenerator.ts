@@ -31,7 +31,7 @@ import {
  * Sequence-only solution
  *
  */
-export class SqLiteSequenceGenerator
+export abstract class SequenceGenerator
 	implements ISequenceGenerator {
 
 	private sequences: ISequence[][][]   = []
@@ -162,6 +162,8 @@ export class SqLiteSequenceGenerator
 
 		return sequentialNumbers
 	}
+
+	protected abstract async nativeGenerate(): Promise<number>;
 
 	private async waitForPreviousGeneration(): Promise<void> {
 		return new Promise(

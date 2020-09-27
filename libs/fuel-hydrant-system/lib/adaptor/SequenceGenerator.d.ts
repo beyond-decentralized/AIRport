@@ -19,7 +19,7 @@ import { DbColumn, DbEntity } from '@airport/ground-control';
  * Sequence-only solution
  *
  */
-export declare class SqLiteSequenceGenerator implements ISequenceGenerator {
+export declare abstract class SequenceGenerator implements ISequenceGenerator {
     private sequences;
     private sequenceBlocks;
     private generatingSequenceNumbers;
@@ -34,8 +34,9 @@ export declare class SqLiteSequenceGenerator implements ISequenceGenerator {
      * @param numSequencesNeeded
      */
     private doGenerateSequenceNumbers;
+    protected abstract nativeGenerate(): Promise<number>;
     private waitForPreviousGeneration;
     private isDoneGeneratingSeqNums;
     private addSequences;
 }
-//# sourceMappingURL=SqLiteSequenceGenerator.d.ts.map
+//# sourceMappingURL=SequenceGenerator.d.ts.map

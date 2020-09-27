@@ -1,3 +1,3 @@
 import { ISequenceGenerator } from './SequenceGenerator';
-export declare const SEQUENCE_GENERATOR: import("@airport/di").IDiToken<ISequenceGenerator>;
+export declare const SEQUENCE_GENERATOR: import("@airport/di/lib/Token").IDiToken<ISequenceGenerator>;
 //# sourceMappingURL=tokens.d.ts.map
