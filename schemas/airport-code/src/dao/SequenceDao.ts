@@ -35,6 +35,16 @@ export class SequenceDao
 		})
 	}
 
+	async incrementSequence(): Promise<void> {
+		const s = Q.Sequence
+		await this.db.updateWhere({
+			update: s,
+			set: {
+				currentValue: plus(s.currentValue, s.incrementBy)
+			}
+		})
+	}
+
 }
 
 DI.set(SEQUENCE_DAO, SequenceDao)
