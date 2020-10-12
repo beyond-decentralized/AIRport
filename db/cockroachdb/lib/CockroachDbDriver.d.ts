@@ -1,10 +1,10 @@
-import { QueryType } from '../../../apis/ground-control/lib';
+import { SqlDriver } from '@airport/fuel-hydrant-system';
+import { QueryType } from '@airport/ground-control';
 import { SQLDialect } from 'sql/core/SQLQuery';
-import { SqLiteDriver } from '../../db/sqlite/src/SqLiteDriver';
 /**
  * Created by Papa on 8/30/2016.
  */
-export declare class CockroachdbDriver extends SqLiteDriver {
+export declare class CockroachdbDriver extends SqlDriver {
     static BACKUP_LOCAL: number;
     static BACKUP_LIBRARY: number;
     static BACKUP_DOCUMENTS: number;

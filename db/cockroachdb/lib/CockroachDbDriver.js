@@ -1,18 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const lib_1 = require("../../../apis/ground-control/lib");
+const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
+const ground_control_1 = require("@airport/ground-control");
 const SQLQuery_1 = require("sql/core/SQLQuery");
-const SqLiteDriver_1 = require("../../db/sqlite/src/SqLiteDriver");
 /**
  * Created by Papa on 8/30/2016.
  */
-class CockroachdbDriver extends SqLiteDriver_1.SqLiteDriver {
+class CockroachdbDriver extends fuel_hydrant_system_1.SqlDriver {
     constructor() {
         super();
         this.currentStatementId = 0;
         this.pendingStatements = [];
         this.executedResults = [];
-        this.type = lib_1.StoreType.SQLITE_CORDOVA;
+        this.type = ground_control_1.StoreType.SQLITE_CORDOVA;
     }
     getDialect() {
         return SQLQuery_1.SQLDialect.SQLITE_WEBSQL;
@@ -82,7 +82,7 @@ class CockroachdbDriver extends SqLiteDriver_1.SqLiteDriver {
     }
     async rollback() {
         if (this.currentTransaction) {
-            this.currentTransaction.executeSql('SELECT count(*) FROM ' + lib_1.INVALID_TABLE_NAME, []);
+            this.currentTransaction.executeSql('SELECT count(*) FROM ' + ground_control_1.INVALID_TABLE_NAME, []);
         }
     }
     async commit() {
@@ -189,9 +189,9 @@ class CockroachdbDriver extends SqLiteDriver_1.SqLiteDriver {
     }
     getReturnValue(queryType, response) {
         switch (queryType) {
-            case lib_1.QueryType.MUTATE:
+            case ground_control_1.QueryType.MUTATE:
                 return response.rowsAffected;
-            case lib_1.QueryType.SELECT:
+            case ground_control_1.QueryType.SELECT:
                 return response.rows;
             default:
                 return null;

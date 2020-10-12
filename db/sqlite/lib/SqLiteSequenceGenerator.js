@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const lib_1 = require("../../schemas/airport-code/lib");
-const lib_2 = require("../../apis/check-in/lib");
+const airport_code_1 = require("@airport/airport-code");
+const check_in_1 = require("@airport/check-in");
 const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 /**
@@ -44,17 +44,17 @@ class SqLiteSequenceGenerator {
         return generatedColumns.every(dbColumn => !!tableSequences[dbColumn.index]);
     }
     async init(sequences) {
-        const sequenceDao = await di_1.container(this).get(lib_1.SEQUENCE_DAO);
+        const sequenceDao = await di_1.container(this).get(airport_code_1.SEQUENCE_DAO);
         if (!sequences) {
             sequences = await sequenceDao.findAll();
         }
         this.addSequences(sequences);
         await sequenceDao.incrementCurrentValues();
-        lib_2.setSeqGen(this);
+        check_in_1.setSeqGen(this);
     }
     async tempInit(sequences) {
         this.addSequences(sequences);
-        lib_2.setSeqGen(this);
+        check_in_1.setSeqGen(this);
     }
     async generateSequenceNumbers(dbColumns, numSequencesNeeded) {
         if (!dbColumns.length) {
@@ -77,7 +77,7 @@ class SqLiteSequenceGenerator {
      */
     async doGenerateSequenceNumbers(dbColumns, numSequencesNeeded) {
         const sequentialNumbers = [];
-        const sequenceDao = await di_1.container(this).get(lib_1.SEQUENCE_DAO);
+        const sequenceDao = await di_1.container(this).get(airport_code_1.SEQUENCE_DAO);
         for (let i = 0; i < dbColumns.length; i++) {
             const dbColumn = dbColumns[i];
             let numColumnSequencesNeeded = numSequencesNeeded[i];

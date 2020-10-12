@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
-const lib_1 = require("../../libs/tower/lib");
-const SqlDriver_1 = require("@airport/fuel-hydrant-system/lib/store/SqlDriver");
+const tower_1 = require("@airport/tower");
+const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 const DDLManager_1 = require("src/DDLManager");
 /**
  * Created by Papa on 11/27/2016.
  */
-class PostgreSqlDriver extends SqlDriver_1.SqlDriver {
+class PostgreSqlDriver extends fuel_hydrant_system_1.SqlDriver {
     async doesTableExist(schemaName, tableName) {
         throw new Error(`Not implemented`);
     }
@@ -45,7 +45,7 @@ class PostgreSqlDriver extends SqlDriver_1.SqlDriver {
         let createOperations;
         let createQueries = [];
         let createSql = DDLManager_1.DDLManager.getCreateDDL();
-        await lib_1.transactional(async () => {
+        await tower_1.transactional(async () => {
             for (const createSqlStatement of createSql) {
                 const createTablePromise = this.query(ground_control_1.QueryType.DDL, createSqlStatement, [], false);
                 createQueries.push(createTablePromise);

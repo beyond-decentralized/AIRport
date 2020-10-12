@@ -1,5 +1,5 @@
-import { ISequence } from '../../schemas/airport-code/lib';
-import { ISequenceGenerator } from '../../apis/check-in/lib';
+import { ISequence } from '@airport/airport-code';
+import { ISequenceGenerator } from '@airport/check-in';
 import { DbColumn, DbEntity } from '@airport/ground-control';
 /**
  * Assumptions: 7/4/2019

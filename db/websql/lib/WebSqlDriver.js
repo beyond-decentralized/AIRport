@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ground_control_1 = require("@airport/ground-control");
-const SQLQuery_1 = require("@airport/fuel-hydrant-system/lib/sql/core/SQLQuery");
-const SqLiteDriver_1 = require("../../db/sqlite/src/SqLiteDriver");
-class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
+const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
+const sqlite_1 = require("@airport/sqlite");
+class WebSqlDriver extends sqlite_1.SqLiteDriver {
     constructor() {
         super();
         this.currentStatementId = 0;
@@ -13,7 +13,7 @@ class WebSqlDriver extends SqLiteDriver_1.SqLiteDriver {
         this.type = ground_control_1.StoreType.SQLITE_CORDOVA;
     }
     getDialect() {
-        return SQLQuery_1.SQLDialect.SQLITE_WEBSQL;
+        return fuel_hydrant_system_1.SQLDialect.SQLITE_WEBSQL;
     }
     getBackupLocation(dbFlag) {
         switch (dbFlag) {

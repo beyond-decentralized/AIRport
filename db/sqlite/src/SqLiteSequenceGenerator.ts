@@ -1,11 +1,11 @@
 import {
 	ISequence,
 	SEQUENCE_DAO
-}                      from '../../schemas/airport-code/lib'
+}                      from '@airport/airport-code'
 import {
 	ISequenceGenerator,
 	setSeqGen
-}                      from '../../apis/check-in/lib'
+}                      from '@airport/check-in'
 import {container, DI} from '@airport/di'
 import {
 	DbColumn,

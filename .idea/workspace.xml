@@ -1,110 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/db/cockroachdb/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db/cockroachdb/src/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db/cockroachdb/tsconfig.json" afterDir="false" />
+    <list default="true" id="a07b5c83-0122-47a4-a92f-2307c5aaab01" name="Default Changelist" comment="Started breaking database specific implementations into their own directories.">
       <change beforePath="$PROJECT_DIR$/.idea/airport.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/airport.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webResources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webResources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/SharingAdaptor.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/SharingAdaptor.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/config/ChangeListConfig.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/config/ChangeListConfig.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/config/DeltaStoreConfig.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/config/DeltaStoreConfig.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/config/EntityConfig.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/config/EntityConfig.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/config/GoogleSharingModel.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/config/GoogleSharingModel.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/config/LocalStoreConfig.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/config/LocalStoreConfig.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/config/OfflineDeltaStoreConfig.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/config/OfflineDeltaStoreConfig.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/config/PersistenceConfig.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/config/PersistenceConfig.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/config/PlatformType.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/config/PlatformType.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/config/RemoveStoreConfig.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/config/RemoveStoreConfig.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/config/storeInfo.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/config/storeInfo.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/metadata/RepositoryEntityType.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/metadata/RepositoryEntityType.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/orchestration/Credentials.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/orchestration/Credentials.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/orchestration/TransactionManager.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/orchestration/TransactionManager.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/store/TerminalState.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/store/TerminalState.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/store/TerminalStore.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/store/TerminalStore.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/sync/ArrayChangeRecordIterator.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/sync/ArrayChangeRecordIterator.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/sync/ChangeModel.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/sync/ChangeModel.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/sync/DistributionStrategy.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/sync/DistributionStrategy.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/sync/SharedChangeList.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/sync/SharedChangeList.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/terminal-map/lib/tokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apis/terminal-map/lib/tokens.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/mysql/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/mysql/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/mysql/lib/index.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/mysql/lib/index.d.ts.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/mysql/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/mysql/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/mysql/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/mysql/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/mysql/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/mysql/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/postgres/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/postgres/lib/index.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/lib/index.d.ts.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/postgres/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/postgres/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/postgres/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/sqlite/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/sqlite/lib/index.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/lib/index.d.ts.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/sqlite/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/sqlite/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/sqlite/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/sqljs/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqljs/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/sqljs/lib/index.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqljs/lib/index.d.ts.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/sqljs/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqljs/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/sqljs/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqljs/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/sqljs/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqljs/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/websql/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/websql/lib/index.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/lib/index.d.ts.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/websql/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/lib/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/websql/lib/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/lib/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/websql/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/Store.js" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/Store.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/Store.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/Store.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/cockroachDb/CockroachDbDriver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/cockroachDb/CockroachDbDriver.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/cockroachDb/CockroachDbDriver.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/cockroachDb/CockroachDbDriver.d.ts.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/cockroachDb/CockroachDbDriver.js" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/cockroachDb/CockroachDbDriver.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/cockroachDb/CockroachDbDriver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/cockroachDb/CockroachDbDriver.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/sqlJs/SqlJsDriver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/sqlJs/SqlJsDriver.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/sqlJs/SqlJsDriver.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/sqlJs/SqlJsDriver.d.ts.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/sqlJs/SqlJsDriver.js" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/sqlJs/SqlJsDriver.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/sqlJs/SqlJsDriver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/sqlJs/SqlJsDriver.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/webSql/WebSqlDriver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/webSql/WebSqlDriver.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/webSql/WebSqlDriver.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/webSql/WebSqlDriver.d.ts.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/webSql/WebSqlDriver.js" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/webSql/WebSqlDriver.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/webSql/WebSqlDriver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/lib/store/webSql/WebSqlDriver.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/Store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/Store.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/cockroachDb/CockroachDbDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/cockroachdb/src/CockroachDbDriver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/mySql/MySqlDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/mysql/src/MySqlDriver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/postgreSql/DDLManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/src/DDLManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/postgreSql/PostgreSqlDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/src/PostgreSqlDriver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/postgreSql/SequenceDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/src/SequenceDao.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/sqLite/DDLManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/src/DDLManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/sqLite/SqLiteDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/src/SqLiteDriver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/sqLite/SqLiteSequenceGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/src/SqLiteSequenceGenerator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/sqlJs/SqlJsDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqljs/src/SqlJsDriver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/webSql/SqlStorage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/src/SqlStorage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/fuel-hydrant-system/src/store/webSql/WebSqlDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/src/WebSqlDriver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rush.json" beforeDir="false" afterPath="$PROJECT_DIR$/rush.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/dao/SequenceDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/dao/SequenceDao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/dao/TerminalRunDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/dao/TerminalRunDao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/dao/dao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/dao/dao.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/Sequence.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/Sequence.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/SystemWideOperationId.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/SystemWideOperationId.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/TerminalRun.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/TerminalRun.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/ddl.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/ddl/ddl.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/baseDaos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/baseDaos.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/baseDuos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/baseDuos.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/generated.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/generated.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/interfaces.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/interfaces.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/mappedSuperclass.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/mappedSuperclass.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qInterfaces.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qInterfaces.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qSchema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qSchema.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qsequence.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qsequence.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qsystemwideoperationid.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qsystemwideoperationid.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qterminalrun.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/qterminalrun.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/schema.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/schema.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/sequence.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/sequence.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/systemwideoperationid.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/systemwideoperationid.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/generated/terminalrun.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/generated/terminalrun.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/index.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/airport-code/lib/tokens.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/airport-code/lib/tokens.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/cockroachdb/lib/CockroachDbDriver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/cockroachdb/lib/CockroachDbDriver.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/cockroachdb/lib/CockroachDbDriver.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/cockroachdb/lib/CockroachDbDriver.d.ts.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/cockroachdb/lib/CockroachDbDriver.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/cockroachdb/lib/CockroachDbDriver.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/cockroachdb/lib/CockroachDbDriver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/cockroachdb/lib/CockroachDbDriver.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/cockroachdb/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/db/cockroachdb/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/cockroachdb/src/CockroachDbDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/cockroachdb/src/CockroachDbDriver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/mysql/lib/MySqlDriver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/mysql/lib/MySqlDriver.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/mysql/lib/MySqlDriver.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/mysql/lib/MySqlDriver.d.ts.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/mysql/lib/MySqlDriver.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/mysql/lib/MySqlDriver.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/mysql/lib/MySqlDriver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/mysql/lib/MySqlDriver.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/mysql/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/db/mysql/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/mysql/src/MySqlDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/mysql/src/MySqlDriver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/postgres/lib/PostgreSqlDriver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/lib/PostgreSqlDriver.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/postgres/lib/PostgreSqlDriver.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/lib/PostgreSqlDriver.d.ts.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/postgres/lib/PostgreSqlDriver.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/lib/PostgreSqlDriver.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/postgres/lib/PostgreSqlDriver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/lib/PostgreSqlDriver.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/postgres/lib/SequenceDao.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/lib/SequenceDao.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/postgres/lib/SequenceDao.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/lib/SequenceDao.d.ts.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/postgres/lib/SequenceDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/lib/SequenceDao.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/postgres/lib/SequenceDao.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/lib/SequenceDao.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/postgres/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/postgres/src/PostgreSqlDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/src/PostgreSqlDriver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/postgres/src/SequenceDao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres/src/SequenceDao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sqlite/lib/SqLiteDriver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/lib/SqLiteDriver.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sqlite/lib/SqLiteDriver.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/lib/SqLiteDriver.d.ts.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sqlite/lib/SqLiteDriver.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/lib/SqLiteDriver.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sqlite/lib/SqLiteDriver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/lib/SqLiteDriver.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sqlite/lib/SqLiteSequenceGenerator.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/lib/SqLiteSequenceGenerator.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sqlite/lib/SqLiteSequenceGenerator.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/lib/SqLiteSequenceGenerator.d.ts.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sqlite/lib/SqLiteSequenceGenerator.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/lib/SqLiteSequenceGenerator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sqlite/lib/SqLiteSequenceGenerator.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/lib/SqLiteSequenceGenerator.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sqlite/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sqlite/src/SqLiteDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/src/SqLiteDriver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sqlite/src/SqLiteSequenceGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqlite/src/SqLiteSequenceGenerator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sqljs/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/db/sqljs/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/websql/lib/WebSqlDriver.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/lib/WebSqlDriver.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/websql/lib/WebSqlDriver.d.ts.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/lib/WebSqlDriver.d.ts.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/websql/lib/WebSqlDriver.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/lib/WebSqlDriver.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/websql/lib/WebSqlDriver.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/lib/WebSqlDriver.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/websql/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/websql/src/WebSqlDriver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db/websql/src/WebSqlDriver.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,7 +92,7 @@
     <property name="go.sdk.automatically.set" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/db/cockroachdb" />
     <property name="nodejs_package_manager_path" value="yarn" />
-    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="C:\Users\Papa\AppData\Roaming\npm\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -264,7 +204,12 @@
       <workItem from="1599920164619" duration="167000" />
       <workItem from="1599920722187" duration="2688000" />
       <workItem from="1600003570451" duration="5076000" />
-      <workItem from="1601040126182" duration="1801000" />
+      <workItem from="1601040126182" duration="3963000" />
+      <workItem from="1602462264051" duration="277000" />
+      <workItem from="1602462661009" duration="845000" />
+      <workItem from="1602505475787" duration="961000" />
+      <workItem from="1602506834411" duration="373000" />
+      <workItem from="1602508203995" duration="342000" />
     </task>
     <task id="LOCAL-00001" summary="adding not null constraints">
       <created>1535641136191</created>
@@ -420,7 +365,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599922617054</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Started breaking database specific implementations into their own directories.">
+      <created>1601142497745</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1601142497745</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -791,12 +743,14 @@
     <MESSAGE value="Started adding support for MySql (and multiple dbs in general)." />
     <MESSAGE value="Missed generated files" />
     <MESSAGE value="Added initial @Delete and @Query decorators for supporting compile-time queries and delete statements." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added initial @Delete and @Query decorators for supporting compile-time queries and delete statements." />
+    <MESSAGE value="Started breaking database specific implementations into their own directories." />
+    <option name="LAST_COMMIT_MESSAGE" value="Started breaking database specific implementations into their own directories." />
   </component>
   <component name="WindowStateProjectService">
-    <state x="0" y="0" width="1920" height="1080" key="CommitChangelistDialog2" timestamp="1599922615840">
+    <state x="0" y="0" width="1920" height="1080" key="CommitChangelistDialog2" timestamp="1601142521387">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1920.1080/6.-1080.1920.1080@0.0.1920.1080" timestamp="1601142521387" />
     <state x="0" y="0" width="1920" height="1080" key="CommitChangelistDialog2/0.0.1920.1080@0.0.1920.1080" timestamp="1599922615840" />
     <state x="368" y="88" key="DiffContextDialog" timestamp="1599921893065">
       <screen x="0" y="0" width="1920" height="1080" />
@@ -806,13 +760,14 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="740" y="294" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1600003663364" />
-    <state x="461" y="184" width="1006" height="711" key="SettingsEditor" timestamp="1600003675051">
+    <state x="461" y="184" width="1006" height="711" key="SettingsEditor" timestamp="1602462208765">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="461" y="184" width="1006" height="711" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1600003675051" />
-    <state x="552" y="272" key="Vcs.Push.Dialog.v2" timestamp="1599922620276">
+    <state x="461" y="184" width="1006" height="711" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1602462208765" />
+    <state x="552" y="272" key="Vcs.Push.Dialog.v2" timestamp="1601142733264">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
+    <state x="552" y="272" key="Vcs.Push.Dialog.v2/0.0.1920.1080/6.-1080.1920.1080@0.0.1920.1080" timestamp="1601142733264" />
     <state x="552" y="272" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1599922620276" />
     <state x="777" y="453" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1599748667131">
       <screen x="0" y="0" width="1920" height="1080" />
@@ -822,10 +777,10 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="574" y="92" width="764" height="897" key="find.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1600006694953" />
-    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1600006496733">
+    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1602506945245">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1600006496733" />
+    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1602506945245" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,16 +1,16 @@
+import {SqlDriver}    from '@airport/fuel-hydrant-system'
 import {
 	INVALID_TABLE_NAME,
 	QueryType,
 	StoreType
-}                     from '../../../apis/ground-control/lib'
+}                     from '@airport/ground-control'
 import {SQLDialect}   from 'sql/core/SQLQuery'
-import {SqLiteDriver} from '../../db/sqlite/src/SqLiteDriver'
 
 /**
  * Created by Papa on 8/30/2016.
  */
 export class CockroachdbDriver
-	extends SqLiteDriver {
+	extends SqlDriver {
 
 	static BACKUP_LOCAL     = 2
 	static BACKUP_LIBRARY   = 1

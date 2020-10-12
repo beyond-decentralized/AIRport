@@ -1,6 +1,6 @@
-import {QueryType}     from '../../apis/ground-control/lib'
-import {transactional} from '../../libs/tower/lib'
-import {SqlDriver}     from '@airport/fuel-hydrant-system/lib/store/SqlDriver'
+import {QueryType}     from '@airport/ground-control'
+import {transactional} from '@airport/tower'
+import {SqlDriver}     from '@airport/fuel-hydrant-system'
 import {DDLManager}    from './DDLManager'
 
 /**

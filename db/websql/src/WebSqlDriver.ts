@@ -3,8 +3,8 @@ import {
 	QueryType,
 	StoreType
 }                     from '@airport/ground-control'
-import {SQLDialect}   from '@airport/fuel-hydrant-system/lib/sql/core/SQLQuery'
-import {SqLiteDriver} from '../../db/sqlite/src/SqLiteDriver'
+import {SQLDialect}   from '@airport/fuel-hydrant-system'
+import {SqLiteDriver} from '@airport/sqlite'
 
 /**
  * Created by Papa on 8/30/2016.

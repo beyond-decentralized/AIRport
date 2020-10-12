@@ -54,6 +54,10 @@
       <excludeFolder url="file://$MODULE_DIR$/apps/terminal/.rush" />
       <excludeFolder url="file://$MODULE_DIR$/apps/terminal/lib" />
     </content>
+    <content url="file://$MODULE_DIR$/db/cockroachdb">
+      <excludeFolder url="file://$MODULE_DIR$/db/cockroachdb/.rush" />
+      <excludeFolder url="file://$MODULE_DIR$/db/cockroachdb/lib" />
+    </content>
     <content url="file://$MODULE_DIR$/db/mysql">
       <excludeFolder url="file://$MODULE_DIR$/db/mysql/.rush" />
       <excludeFolder url="file://$MODULE_DIR$/db/mysql/lib" />

@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const lib_1 = require("../../schemas/airport-code/lib");
+const airport_code_1 = require("@airport/airport-code");
 const di_1 = require("@airport/di");
-const lib_2 = require("../../apis/terminal-map/lib");
-class SequenceDao extends lib_1.BaseSequenceDao {
+const terminal_map_1 = require("@airport/terminal-map");
+class SequenceDao extends airport_code_1.BaseSequenceDao {
     async findAll(entityIds) {
-        const latestSchemaVersionMapByNames = (await di_1.container(this).get(lib_2.TERMINAL_STORE)).getLatestSchemaVersionMapByNames();
+        const latestSchemaVersionMapByNames = (await di_1.container(this).get(terminal_map_1.TERMINAL_STORE)).getLatestSchemaVersionMapByNames();
         const sequences = [];
         for (const [domainName, schemaMapByName] of latestSchemaVersionMapByNames) {
             for (const [schemaName, schemaVersion] of schemaMapByName) {
@@ -28,5 +28,5 @@ class SequenceDao extends lib_1.BaseSequenceDao {
     }
 }
 exports.SequenceDao = SequenceDao;
-di_1.DI.set(lib_1.SEQUENCE_DAO, SequenceDao);
+di_1.DI.set(airport_code_1.SEQUENCE_DAO, SequenceDao);
 //# sourceMappingURL=SequenceDao.js.map
