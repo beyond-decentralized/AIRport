@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const air_control_1 = require("@airport/air-control");
 const di_1 = require("@airport/di");
-const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
 const ground_control_1 = require("@airport/ground-control");
 const holding_pattern_1 = require("@airport/holding-pattern");
 const landing_1 = require("@airport/landing");
@@ -50,8 +49,7 @@ class DatabaseManager {
     isInitialized() {
         return !!this.airDb;
     }
-    async init(domainName, storeType, ...schemas) {
-        await fuel_hydrant_system_1.setStoreDriver(storeType);
+    async init(domainName, ...schemas) {
         const airDb = await di_1.container(this).get(air_control_1.AIR_DB);
         this.airDb = airDb;
         const connector = await di_1.container(this).get(ground_control_1.TRANS_CONNECTOR);

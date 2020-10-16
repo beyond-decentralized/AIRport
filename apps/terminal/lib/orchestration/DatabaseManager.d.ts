@@ -1,13 +1,12 @@
 import { JsonSchema } from '@airport/ground-control';
-import { StoreType } from '@airport/terminal-map';
 export interface IDatabaseManager {
     isInitialized(): boolean;
-    init(domainName: string, storeType: StoreType, ...schemas: JsonSchema[]): Promise<void>;
+    init(domainName: string, ...schemas: JsonSchema[]): Promise<void>;
 }
 export declare class DatabaseManager implements IDatabaseManager {
     private airDb;
     isInitialized(): boolean;
-    init(domainName: string, storeType: StoreType, ...schemas: JsonSchema[]): Promise<void>;
+    init(domainName: string, ...schemas: JsonSchema[]): Promise<void>;
     private initFeatureSchemas;
     private initTerminal;
     private installAirportSchema;

@@ -1,17 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
 // FIXME: add support, in future, if needed
 // import {Database}      from 'sql.js'
-const SQLQuery_1 = require("@airport/fuel-hydrant-system/lib/sql/core/SQLQuery");
-const SqLiteDriver_1 = require("../../db/sqlite/src/SqLiteDriver");
-class SqlJsDriver extends SqLiteDriver_1.SqLiteDriver {
+const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
+const ground_control_1 = require("@airport/ground-control");
+const sqlite_1 = require("@airport/sqlite");
+class SqlJsDriver extends sqlite_1.SqLiteDriver {
     constructor() {
         super();
         this.type = ground_control_1.StoreType.SQLJS;
-    }
-    getDialect() {
-        return SQLQuery_1.SQLDialect.SQLITE_SQLJS;
     }
     async initialize() {
         if (typeof SQL !== 'undefined') {
@@ -73,6 +70,12 @@ class SqlJsDriver extends SqLiteDriver_1.SqLiteDriver {
             }
         });
     }
+    handleError(error) {
+        throw error;
+    }
+    getDialect() {
+        return fuel_hydrant_system_1.SQLDialect.SQLITE_SQLJS;
+    }
     getReturnValue(queryType, response) {
         switch (queryType) {
             case ground_control_1.QueryType.MUTATE:
@@ -82,9 +85,6 @@ class SqlJsDriver extends SqLiteDriver_1.SqLiteDriver {
             default:
                 return null;
         }
-    }
-    handleError(error) {
-        throw error;
     }
 }
 exports.SqlJsDriver = SqlJsDriver;

@@ -1,18 +1,51 @@
 import {DI}            from '@airport/di'
+import {SqlDriver}     from '@airport/fuel-hydrant-system'
 import {
 	QueryType,
+	SQLDataType,
 	STORE_DRIVER
 }                      from '@airport/ground-control'
 import {transactional} from '@airport/tower'
-import {SqlDriver}     from '@airport/fuel-hydrant-system'
 import {DDLManager}    from './DDLManager'
 
 /**
- * Created by Papa on 11/27/2016.
+ * Created by Papa on 10/16/2020.
  */
 
 export class MySqlDriver
 	extends SqlDriver {
+
+	query(
+		queryType: QueryType,
+		query: string,
+		params: any,
+		saveTransaction?: boolean
+	): Promise<any> {
+		throw new Error('Method not implemented.')
+	}
+
+	initialize(dbName: string): Promise<any> {
+		throw new Error('Method not implemented.')
+	}
+
+	transact(keepAlive?: boolean): Promise<void> {
+		throw new Error('Method not implemented.')
+	}
+
+	commit(): Promise<void> {
+		throw new Error('Method not implemented.')
+	}
+
+	rollback(): Promise<void> {
+		throw new Error('Method not implemented.')
+	}
+
+	isValueValid(
+		value: any,
+		sqlDataType: SQLDataType
+	): boolean {
+		throw new Error('Method not implemented.')
+	}
 
 	async doesTableExist(
 		schemaName: string,
@@ -20,9 +53,21 @@ export class MySqlDriver
 	): Promise<boolean> {
 		const matchingTableNames = await this.findNative(
 			// ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
-				`select * from information_schema.TABLES
+			`select * from information_schema.TABLES
 where TABLE_SCHEMA = '${schemaName}'
 and TABLE_NAME = '${tableName}';`,
+			[]
+		)
+
+		return matchingTableNames.length === 1
+	}
+
+	async dropTable(
+		schemaName: string,
+		tableName: string
+	): Promise<boolean> {
+		const matchingTableNames = await this.findNative(
+			`DROP TABLE '${schemaName}.${tableName}'`,
 			[]
 		)
 
@@ -36,13 +81,6 @@ and TABLE_NAME = '${tableName}';`,
 		let nativeParameters = parameters.map((value) => this.convertValueIn(value))
 		return await this.query(QueryType.SELECT, sqlQuery, nativeParameters)
 	}
-
-	abstract async query(
-		queryType: QueryType,
-		query: string,
-		params,
-		saveTransaction?: boolean
-	): Promise<any>;
 
 	async initAllTables(): Promise<any> {
 		let createOperations
@@ -65,6 +103,10 @@ and TABLE_NAME = '${tableName}';`,
 			let currentQuery = createQueries[i]
 			await currentQuery
 		}
+	}
+
+	protected getDialect(): import('@airport/fuel-hydrant-system').SQLDialect {
+		throw new Error('Method not implemented.')
 	}
 
 	protected async executeNative(

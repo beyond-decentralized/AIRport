@@ -1,11 +1,11 @@
+// FIXME: add support, in future, if needed
+// import {Database}      from 'sql.js'
+import {SQLDialect}   from '@airport/fuel-hydrant-system'
 import {
 	QueryType,
 	StoreType
 }                     from '@airport/ground-control'
-// FIXME: add support, in future, if needed
-// import {Database}      from 'sql.js'
-import {SQLDialect}   from '@airport/fuel-hydrant-system/lib/sql/core/SQLQuery'
-import {SqLiteDriver} from '../../db/sqlite/src/SqLiteDriver'
+import {SqLiteDriver} from '@airport/sqlite'
 
 declare function require(moduleName: string): any;
 
@@ -27,10 +27,6 @@ export class SqlJsDriver
 	constructor() {
 		super()
 		this.type = StoreType.SQLJS
-	}
-
-	protected getDialect(): SQLDialect {
-		return SQLDialect.SQLITE_SQLJS
 	}
 
 	async initialize(): Promise<any> {
@@ -102,6 +98,14 @@ export class SqlJsDriver
 		})
 	}
 
+	handleError(error: any) {
+		throw error
+	}
+
+	protected getDialect(): SQLDialect {
+		return SQLDialect.SQLITE_SQLJS
+	}
+
 	private getReturnValue(
 		queryType: QueryType,
 		response
@@ -114,10 +118,6 @@ export class SqlJsDriver
 			default:
 				return null
 		}
-	}
-
-	handleError(error: any) {
-		throw error
 	}
 
 }

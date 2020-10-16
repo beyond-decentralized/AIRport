@@ -3,7 +3,6 @@ import {
 	IAirportDatabase,
 }                           from '@airport/air-control'
 import {container, DI}                 from '@airport/di'
-import {setStoreDriver}     from '@airport/fuel-hydrant-system'
 import {
 	DomainName,
 	getSchemaName,
@@ -48,7 +47,6 @@ export interface IDatabaseManager {
 
 	init(
 		domainName: string,
-		storeType: StoreType,
 		...schemas: JsonSchema[]
 	): Promise<void>;
 
@@ -102,10 +100,8 @@ export class DatabaseManager
 
 	async init(
 		domainName: string,
-		storeType: StoreType,
 		...schemas: JsonSchema[]
 	): Promise<void> {
-		await setStoreDriver(storeType)
 		const airDb = await container(this).get(AIR_DB)
 		this.airDb  = airDb
 
