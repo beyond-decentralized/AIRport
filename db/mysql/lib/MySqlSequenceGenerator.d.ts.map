@@ -1,0 +1,1 @@
+{"version":3,"file":"MySqlSequenceGenerator.d.ts","sourceRoot":"","sources":["../src/MySqlSequenceGenerator.ts"],"names":[],"mappings":"AAEA,OAAO,EAAC,iBAAiB,EAAC,MAAO,mBAAmB,CAAA;AAEpD,qBAAa,sBACZ,SAAQ,iBAAiB;IAEzB,SAAS,CAAC,cAAc,IAAI,OAAO,CAAC,MAAM,CAAC;CAI3C"}
