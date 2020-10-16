@@ -1,4 +1,8 @@
-import {QueryType}     from '@airport/ground-control'
+import {DI}            from '@airport/di'
+import {
+	QueryType,
+	STORE_DRIVER
+}                      from '@airport/ground-control'
 import {transactional} from '@airport/tower'
 import {SqlDriver}     from '@airport/fuel-hydrant-system'
 import {DDLManager}    from './DDLManager'
@@ -7,7 +11,7 @@ import {DDLManager}    from './DDLManager'
  * Created by Papa on 11/27/2016.
  */
 
-export abstract class MySqlDriver
+export class MySqlDriver
 	extends SqlDriver {
 
 	async doesTableExist(
@@ -95,3 +99,5 @@ and TABLE_NAME = '${tableName}';`,
 	}
 
 }
+
+DI.set(STORE_DRIVER, MySqlDriver)

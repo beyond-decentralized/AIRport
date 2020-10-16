@@ -137,10 +137,10 @@ class WebSqlDriver extends sqlite_1.SqLiteDriver {
         }
     }
 }
-exports.WebSqlDriver = WebSqlDriver;
 WebSqlDriver.BACKUP_LOCAL = 2;
 WebSqlDriver.BACKUP_LIBRARY = 1;
 WebSqlDriver.BACKUP_DOCUMENTS = 0;
+exports.WebSqlDriver = WebSqlDriver;
 /*
 function runSqlSeries(
     tx,

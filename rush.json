@@ -75,6 +75,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/sequence",
+      "projectFolder": "db/sequence",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/sqlite",
       "projectFolder": "db/sqlite",
       "shouldPublish": true

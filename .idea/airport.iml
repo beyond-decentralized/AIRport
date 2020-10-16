@@ -66,6 +66,10 @@
       <excludeFolder url="file://$MODULE_DIR$/db/postgres/.rush" />
       <excludeFolder url="file://$MODULE_DIR$/db/postgres/lib" />
     </content>
+    <content url="file://$MODULE_DIR$/db/sequence">
+      <excludeFolder url="file://$MODULE_DIR$/db/sequence/.rush" />
+      <excludeFolder url="file://$MODULE_DIR$/db/sequence/lib" />
+    </content>
     <content url="file://$MODULE_DIR$/db/sqlite">
       <excludeFolder url="file://$MODULE_DIR$/db/sqlite/.rush" />
       <excludeFolder url="file://$MODULE_DIR$/db/sqlite/lib" />

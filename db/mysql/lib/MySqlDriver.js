@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const di_1 = require("@airport/di");
 const ground_control_1 = require("@airport/ground-control");
 const tower_1 = require("@airport/tower");
 const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
@@ -66,4 +67,5 @@ and TABLE_NAME = '${tableName}';`, []);
     }
 }
 exports.MySqlDriver = MySqlDriver;
+di_1.DI.set(ground_control_1.STORE_DRIVER, MySqlDriver);
 //# sourceMappingURL=MySqlDriver.js.map

@@ -100,6 +100,13 @@
           </resourceRoots>
         </entryData>
       </entry>
+      <entry url="file://$PROJECT_DIR$/db/sequence">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/db/sequence/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
       <entry url="file://$PROJECT_DIR$/db/sqlite">
         <entryData>
           <resourceRoots>

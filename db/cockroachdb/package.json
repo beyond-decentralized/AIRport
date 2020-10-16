@@ -11,7 +11,7 @@
     "@airport/traffic-pattern": "0.0.1"
   },
   "main": "lib/index.js",
-  "name": "@airport/sequence",
+  "name": "@airport/cockroachdb",
   "type": "module",
   "typings": "lib/index",
   "version": "0.0.1"
