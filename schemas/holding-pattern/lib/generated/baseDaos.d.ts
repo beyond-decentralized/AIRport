@@ -116,3 +116,4 @@ export declare class BaseTransactionHistoryDao extends SQDIDao<ITransactionHisto
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDaos.d.ts.map

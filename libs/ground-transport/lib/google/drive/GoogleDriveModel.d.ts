@@ -54,3 +54,4 @@ export declare class DriveConstants {
     static APP_DATA_LIST_FIELDS: string;
     static VERSION: string;
 }
+//# sourceMappingURL=GoogleDriveModel.d.ts.map

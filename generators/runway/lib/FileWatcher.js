@@ -1,27 +1,26 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const tower_1 = require("@airport/tower");
-const fs = require("fs");
-const ts = require("typescript");
-const OperationGenerator_1 = require("./dao/parser/OperationGenerator");
-const DaoBuilder_1 = require("./ddl/builder/DaoBuilder");
-const DuoBuilder_1 = require("./ddl/builder/DuoBuilder");
-const EntityInterfaceFileBuilder_1 = require("./ddl/builder/entity/EntityInterfaceFileBuilder");
-const QEntityFileBuilder_1 = require("./ddl/builder/entity/QEntityFileBuilder");
-const GeneratedFileListingBuilder_1 = require("./ddl/builder/GeneratedFileListingBuilder");
-const GeneratedSummaryBuilder_1 = require("./ddl/builder/GeneratedSummaryBuilder");
-const PathBuilder_1 = require("./ddl/builder/PathBuilder");
-const QSchemaBuilder_1 = require("./ddl/builder/QSchemaBuilder");
-const JsonSchemaBuilder_1 = require("./ddl/builder/schema/JsonSchemaBuilder");
-const MappedSuperclassBuilder_1 = require("./ddl/builder/superclass/MappedSuperclassBuilder");
-const FileProcessor_1 = require("./FileProcessor");
-tower_1.AirportDatabase.bogus = 'loaded for schema generation';
+import { AirportDatabase } from '@airport/tower';
+import * as fs from 'fs';
+import * as ts from 'typescript';
+import tsc from 'typescript';
+import { entityOperationMap } from './dao/parser/OperationGenerator';
+import { DaoBuilder } from './ddl/builder/DaoBuilder';
+import { DuoBuilder } from './ddl/builder/DuoBuilder';
+import { EntityInterfaceFileBuilder } from './ddl/builder/entity/EntityInterfaceFileBuilder';
+import { QEntityFileBuilder } from './ddl/builder/entity/QEntityFileBuilder';
+import { GeneratedFileListingBuilder } from './ddl/builder/GeneratedFileListingBuilder';
+import { GeneratedSummaryBuilder } from './ddl/builder/GeneratedSummaryBuilder';
+import { PathBuilder } from './ddl/builder/PathBuilder';
+import { QSchemaBuilder } from './ddl/builder/QSchemaBuilder';
+import { JsonSchemaBuilder } from './ddl/builder/schema/JsonSchemaBuilder';
+import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
+import { generateDefinitions } from './FileProcessor';
+AirportDatabase.bogus = 'loaded for schema generation';
 /**
  * Created by Papa on 3/30/2016.
  */
-function watchFiles(configuration, options, rootFileNames) {
+export async function watchFiles(configuration, options, rootFileNames) {
     const files = {};
-    const pathBuilder = new PathBuilder_1.PathBuilder(configuration);
+    const pathBuilder = new PathBuilder(configuration);
     // initialize the list of files
     rootFileNames.forEach(fileName => {
         files[fileName] = { version: 0 };
@@ -35,13 +34,13 @@ function watchFiles(configuration, options, rootFileNames) {
             if (!fs.existsSync(fileName)) {
                 return undefined;
             }
-            return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
+            return tsc.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
         },
         getCurrentDirectory: () => process.cwd(),
-        getDefaultLibFileName: (options) => ts.getDefaultLibFilePath(options)
+        getDefaultLibFileName: (options) => tsc.getDefaultLibFilePath(options)
     };
     // Create the language service files
-    const services = ts.createLanguageService(servicesHost, ts.createDocumentRegistry());
+    const services = tsc.createLanguageService(servicesHost, tsc.createDocumentRegistry());
     // First time around, process all files
     processFiles(rootFileNames, options, configuration);
     // Now let's watch the files
@@ -59,9 +58,9 @@ function watchFiles(configuration, options, rootFileNames) {
         });
     });
     function processFiles(rootFileNames, options, configuration) {
-        options.target = ts.ScriptTarget.ES5;
+        options.target = tsc.ScriptTarget.ES5;
         const schemaMapByProjectName = {};
-        let entityMapByName = FileProcessor_1.generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
+        let entityMapByName = generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
         emitFiles(entityMapByName, configuration, schemaMapByProjectName);
     }
     function emitFiles(entityMapByName, configuration, schemaMapByProjectName) {
@@ -75,25 +74,25 @@ function watchFiles(configuration, options, rootFileNames) {
         if (fs.existsSync(schemaPath)) {
             schemaString = fs.readFileSync(schemaPath, 'utf8');
         }
-        const schemaBuilder = new JsonSchemaBuilder_1.JsonSchemaBuilder(configuration, entityMapByName, schemaString);
-        const [schemaJsonString, indexedSchema] = schemaBuilder.build(configuration.airport.domain, schemaMapByProjectName, OperationGenerator_1.entityOperationMap);
+        const schemaBuilder = new JsonSchemaBuilder(configuration, entityMapByName, schemaString);
+        const [schemaJsonString, indexedSchema] = schemaBuilder.build(configuration.airport.domain, schemaMapByProjectName, entityOperationMap);
         const schemaSourceString = `export const SCHEMA = `
             + schemaJsonString + ';';
         fs.writeFileSync(schemaPath, schemaJsonString);
         fs.writeFileSync(schemaSourcePath, schemaSourceString);
         const entityFileReference = {};
-        const generatedSummaryBuilder = new GeneratedSummaryBuilder_1.GeneratedSummaryBuilder(pathBuilder);
-        const entityInterfaceListingBuilder = new GeneratedFileListingBuilder_1.GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
-        const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder_1.GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
-        const qSchemaBuilder = new QSchemaBuilder_1.QSchemaBuilder(pathBuilder, configuration);
-        const daoBuilder = new DaoBuilder_1.DaoBuilder(pathBuilder);
-        const duoBuilder = new DuoBuilder_1.DuoBuilder(pathBuilder);
+        const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder);
+        const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
+        const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
+        const qSchemaBuilder = new QSchemaBuilder(pathBuilder, configuration);
+        const daoBuilder = new DaoBuilder(pathBuilder);
+        const duoBuilder = new DuoBuilder(pathBuilder);
         for (const entityName in entityMapByName) {
             const entity = entityMapByName[entityName];
             const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, false);
             const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
-            const qEntityFileBuilder = new QEntityFileBuilder_1.QEntityFileBuilder(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
-            const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder_1.EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
+            const qEntityFileBuilder = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
+            const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
             if (!entity.isSuperclass) {
                 entityFileReference[entity.docEntry.name] = fullGenerationPath;
             }
@@ -120,7 +119,7 @@ function watchFiles(configuration, options, rootFileNames) {
         fs.writeFileSync(entityInterfaceListingBuilder.generatedListingFilePath, entityInterfaceListingBuilder.build());
         fs.writeFileSync(entityQInterfaceListingBuilder.generatedListingFilePath, entityQInterfaceListingBuilder.build());
         fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
-        const mappedSuperclassBuilder = new MappedSuperclassBuilder_1.MappedSuperclassBuilder(configuration, entityMapByName);
+        const mappedSuperclassBuilder = new MappedSuperclassBuilder(configuration, entityMapByName);
         const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
         fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
     }
@@ -153,5 +152,4 @@ function watchFiles(configuration, options, rootFileNames) {
         });
     }
 }
-exports.watchFiles = watchFiles;
 //# sourceMappingURL=FileWatcher.js.map

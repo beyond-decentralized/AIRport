@@ -28,3 +28,4 @@ export declare class BaseMonthlySyncLogDuo extends SQDIDuo<IMonthlySyncLog, Mont
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDuos.d.ts.map

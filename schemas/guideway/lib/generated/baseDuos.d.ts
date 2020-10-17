@@ -156,3 +156,4 @@ export declare class BaseUserRepositoryDuo extends SQDIDuo<IUserRepository, User
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDuos.d.ts.map

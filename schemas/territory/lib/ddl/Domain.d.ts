@@ -6,3 +6,4 @@ export declare class Domain implements DbDomain {
     applications: Application[];
     schemas: DbSchema[];
 }
+//# sourceMappingURL=Domain.d.ts.map

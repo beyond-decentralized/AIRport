@@ -10,3 +10,4 @@ export * from './Subject';
 export * from './SubscriberFunction';
 export * from './Subscription';
 export * from './SubscriptionObserver';
+//# sourceMappingURL=index.d.ts.map

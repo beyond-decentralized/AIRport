@@ -91,3 +91,4 @@ export declare class RootContainer extends Container implements IRootContainer {
     private addContainer;
 }
 export declare const DI: IRootContainer;
+//# sourceMappingURL=Container.d.ts.map

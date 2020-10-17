@@ -8,3 +8,4 @@ export declare class QueryEntityClassCreator implements IQueryEntityClassCreator
     createAll(schemas: ISchema[], airDb: IAirportDatabase): void;
     create(dbSchema: DbSchema, airDb: IAirportDatabase): QSchema;
 }
+//# sourceMappingURL=QueryEntityClassCreator.d.ts.map

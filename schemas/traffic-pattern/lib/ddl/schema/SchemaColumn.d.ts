@@ -9,7 +9,6 @@ export declare class SchemaColumn extends VersionedSchemaObject {
      * Overall column index (within the entity).
      */
     index: ColumnIndex;
-    entity: SchemaEntity;
     /**
      * Index of the ID (within the entity)
      */
@@ -19,7 +18,9 @@ export declare class SchemaColumn extends VersionedSchemaObject {
     name: ColumnName;
     notNull: ColumnNotNull;
     type: SQLDataType;
+    entity: SchemaEntity;
     propertyColumns: SchemaPropertyColumn[];
     manyRelationColumns: SchemaRelationColumn[];
     oneRelationColumns: SchemaRelationColumn[];
 }
+//# sourceMappingURL=SchemaColumn.d.ts.map

@@ -60,3 +60,4 @@ export interface QServerQId {
 }
 export interface QServerQRelation extends IQRelation<QServer>, QServerQId {
 }
+//# sourceMappingURL=qserver.d.ts.map

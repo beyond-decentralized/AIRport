@@ -58,3 +58,4 @@ export declare class ArchivingServer implements IArchivingServer {
      */
     archiveRepositoryTransactionBlocks(onDate: AgtRepositoryTransactionBlockAddDatetime, archiveInTerminal: boolean, dateNumber: DailyArchiveLogDate): Promise<void>;
 }
+//# sourceMappingURL=ArchivingServer.d.ts.map

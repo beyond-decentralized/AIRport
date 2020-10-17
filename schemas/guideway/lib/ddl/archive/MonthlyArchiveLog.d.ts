@@ -7,3 +7,4 @@ export declare class MonthlyArchiveLog {
     numberOfChanges: MonthlyArchiveLogNumberOfChanges;
     daysWithChanges: any;
 }
+//# sourceMappingURL=MonthlyArchiveLog.d.ts.map

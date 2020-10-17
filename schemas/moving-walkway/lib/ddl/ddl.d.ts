@@ -20,3 +20,4 @@ export * from './values/SchemaChangeStatus';
 export * from './values/SharingMechanism';
 export * from './values/SharingNodeProtocol';
 export * from './values/TransmissionStatus';
+//# sourceMappingURL=ddl.d.ts.map

@@ -79,3 +79,4 @@ export interface QOperationHistoryQId {
 }
 export interface QOperationHistoryQRelation extends IQRelation<QOperationHistory>, QOperationHistoryQId {
 }
+//# sourceMappingURL=qoperationhistory.d.ts.map

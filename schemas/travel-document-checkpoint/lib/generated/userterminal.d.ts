@@ -4,3 +4,4 @@ export interface IUserTerminal {
     user: IUser;
     terminal: ITerminal;
 }
+//# sourceMappingURL=userterminal.d.ts.map

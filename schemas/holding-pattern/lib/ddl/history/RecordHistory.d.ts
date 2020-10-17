@@ -14,3 +14,4 @@ export declare class RecordHistory {
     oldValues: RecordHistoryOldValue[];
     tableColumnMap: SyncColumnMap;
 }
+//# sourceMappingURL=RecordHistory.d.ts.map

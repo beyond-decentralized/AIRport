@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var RepositoryTransactionType;
+export var RepositoryTransactionType;
 (function (RepositoryTransactionType) {
     RepositoryTransactionType[RepositoryTransactionType["LOCAL"] = 0] = "LOCAL";
     RepositoryTransactionType[RepositoryTransactionType["REMOTE"] = 1] = "REMOTE";
-})(RepositoryTransactionType = exports.RepositoryTransactionType || (exports.RepositoryTransactionType = {}));
+})(RepositoryTransactionType || (RepositoryTransactionType = {}));
 //# sourceMappingURL=RepositoryTransactionType.js.map

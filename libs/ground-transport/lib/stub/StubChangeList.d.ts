@@ -14,3 +14,4 @@ export declare class StubChangeList implements SharedChangeList {
     errorSubject(): Subject<ChangeError>;
     changesAddedRemotelySubject(): Subject<ChangeRecordIterator>;
 }
+//# sourceMappingURL=StubChangeList.d.ts.map

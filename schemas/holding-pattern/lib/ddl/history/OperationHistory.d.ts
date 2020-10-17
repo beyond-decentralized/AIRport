@@ -21,3 +21,4 @@ export declare class OperationHistory {
     entity: ISchemaEntity;
     recordHistory: RecordHistory[];
 }
+//# sourceMappingURL=OperationHistory.d.ts.map

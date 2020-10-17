@@ -5,3 +5,4 @@ export interface ISchemaVersionDao extends IBaseSchemaVersionDao {
 export declare class SchemaVersionDao extends BaseSchemaVersionDao implements ISchemaVersionDao {
     findAllActiveOrderBySchemaIndexAndId(): Promise<ISchemaVersion[]>;
 }
+//# sourceMappingURL=SchemaVersionDao.d.ts.map

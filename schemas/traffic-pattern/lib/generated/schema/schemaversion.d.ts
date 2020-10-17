@@ -24,3 +24,4 @@ export interface ISchemaVersion {
         [schemaName: string]: SchemaReference;
     };
 }
+//# sourceMappingURL=schemaversion.d.ts.map

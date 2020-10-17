@@ -5,3 +5,4 @@ export interface IUserRepository {
     user: IUser;
     permission?: number;
 }
+//# sourceMappingURL=userrepository.d.ts.map

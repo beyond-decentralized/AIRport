@@ -7,3 +7,4 @@ export declare class Blacklist<Key> implements IBlacklist<Key> {
     isBlacklisted(key: Key, until?: number): boolean;
     blacklist(key: Key, until?: number): void;
 }
+//# sourceMappingURL=Blacklist.d.ts.map

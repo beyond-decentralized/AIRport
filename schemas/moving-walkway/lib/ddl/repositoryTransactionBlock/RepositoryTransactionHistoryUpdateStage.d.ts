@@ -3,3 +3,4 @@ export declare class RepositoryTransactionHistoryUpdateStage {
     repositoryTransactionHistoryId: RepositoryTransactionHistoryId;
     blockId: RepositoryTransactionHistoryBlockId;
 }
+//# sourceMappingURL=RepositoryTransactionHistoryUpdateStage.d.ts.map

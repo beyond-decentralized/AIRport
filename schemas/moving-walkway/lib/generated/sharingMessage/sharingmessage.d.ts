@@ -8,3 +8,4 @@ export interface ISharingMessage {
     syncTimestamp?: Date;
     sharingMessageRepoTransBlocks?: ISharingMessageRepoTransBlock[];
 }
+//# sourceMappingURL=sharingmessage.d.ts.map

@@ -58,3 +58,4 @@ export interface QMissingRecordRepoTransBlockQId {
 }
 export interface QMissingRecordRepoTransBlockQRelation extends IQRelation<QMissingRecordRepoTransBlock>, QMissingRecordRepoTransBlockQId {
 }
+//# sourceMappingURL=qmissingrecordrepotransblock.d.ts.map

@@ -80,3 +80,4 @@ export interface QUserQId {
 }
 export interface QUserQRelation extends IQRelation<QUser>, QUserQId {
 }
+//# sourceMappingURL=quser.d.ts.map

@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const ground_control_1 = require("@airport/ground-control");
-const AbstractEntityOrderByParser_1 = require("./AbstractEntityOrderByParser");
+import { QRelation } from '@airport/air-control';
+import { SortOrder } from '@airport/ground-control';
+import { AbstractEntityOrderByParser } from './AbstractEntityOrderByParser';
 /**
  * Created by Papa on 10/16/2016.
  */
@@ -11,7 +9,7 @@ const AbstractEntityOrderByParser_1 = require("./AbstractEntityOrderByParser");
  * Within a given entity will take into account the sort order specified in the Order By
  * clause.
  */
-class EntityOrderByParser extends AbstractEntityOrderByParser_1.AbstractEntityOrderByParser {
+export class EntityOrderByParser extends AbstractEntityOrderByParser {
     /**
      * Using the following algorithm
      * http://stackoverflow.com/questions/2549541/performing-breadth-first-search-recursively
@@ -49,7 +47,7 @@ class EntityOrderByParser extends AbstractEntityOrderByParser_1.AbstractEntityOr
         // Perform breadth-first select clause traversal
         while ((currentSelectFragment = selectFragmentQueue.shift())
             && (currentJoinNode = joinNodeQueue.shift())) {
-            const tableAlias = air_control_1.QRelation.getAlias(currentJoinNode.jsonRelation);
+            const tableAlias = QRelation.getAlias(currentJoinNode.jsonRelation);
             const dbEntity = qEntityMapByAlias[tableAlias].__driver__.dbEntity;
             const currentEntityOrderBy = [];
             let parentNodeFound;
@@ -140,7 +138,7 @@ class EntityOrderByParser extends AbstractEntityOrderByParser_1.AbstractEntityOr
                 if (!inputOrderByPropertyNameSet[idColumnName]) {
                     finalOrderByColumnsFragments.push({
                         fa: `${tableAlias}.${idColumnName}`,
-                        so: ground_control_1.SortOrder.ASCENDING
+                        so: SortOrder.ASCENDING
                     });
                 }
             }
@@ -150,7 +148,7 @@ class EntityOrderByParser extends AbstractEntityOrderByParser_1.AbstractEntityOr
                 if (!inputOrderByPropertyNameSet[columnName]) {
                     finalOrderByColumnsFragments.push({
                         fa: `${tableAlias}.${columnName}`,
-                        so: ground_control_1.SortOrder.ASCENDING
+                        so: SortOrder.ASCENDING
                     });
                 }
             });
@@ -171,5 +169,4 @@ class EntityOrderByParser extends AbstractEntityOrderByParser_1.AbstractEntityOr
         return false;
     }
 }
-exports.EntityOrderByParser = EntityOrderByParser;
 //# sourceMappingURL=EntityOrderByParser.js.map

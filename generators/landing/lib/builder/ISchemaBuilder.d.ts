@@ -6,3 +6,4 @@ export interface ISchemaBuilder {
     buildAllSequences(jsonSchemas: JsonSchema[]): Promise<ISequence[]>;
     stageSequences(jsonSchemas: JsonSchema[], airDb: IAirportDatabase): ISequence[];
 }
+//# sourceMappingURL=ISchemaBuilder.d.ts.map

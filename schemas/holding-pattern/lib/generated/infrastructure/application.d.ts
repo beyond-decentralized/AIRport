@@ -7,3 +7,4 @@ export interface IApplication {
     actorApplications?: IActorApplication[];
     repositoryApplications?: IRepositoryApplication[];
 }
+//# sourceMappingURL=application.d.ts.map

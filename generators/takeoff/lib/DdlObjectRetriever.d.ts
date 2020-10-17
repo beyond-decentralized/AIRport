@@ -18,3 +18,4 @@ export declare class DdlObjectRetriever implements IDdlObjectRetriever {
     lastIds: LastIds;
     retrieveDdlObjects(): Promise<DdlObjects>;
 }
+//# sourceMappingURL=DdlObjectRetriever.d.ts.map

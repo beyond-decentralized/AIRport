@@ -1,12 +1,10 @@
-"use strict";
 /**
  * Created by Papa on 1/7/2016.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-const terminal_map_1 = require("@airport/terminal-map");
-const GoogleSharedChangeList_1 = require("./GoogleSharedChangeList");
+import { PlatformType } from '@airport/terminal-map';
+import { GoogleSharedChangeList } from './GoogleSharedChangeList';
 // @Injectable()
-class GoogleSharingAdaptor {
+export class GoogleSharingAdaptor {
     constructor(drive, driveAdaptor, realtime, realtimeAdaptor) {
         this.drive = drive;
         this.driveAdaptor = driveAdaptor;
@@ -14,11 +12,11 @@ class GoogleSharingAdaptor {
         this.realtimeAdaptor = realtimeAdaptor;
     }
     setupInfoBelongsTo(setupInfo, setupInfos) {
-        if (setupInfo.platformType !== terminal_map_1.PlatformType.GOOGLE_DOCS) {
+        if (setupInfo.platformType !== PlatformType.GOOGLE_DOCS) {
             return false;
         }
         return setupInfos.some((otherSetupInfo) => {
-            if (otherSetupInfo.platformType === terminal_map_1.PlatformType.GOOGLE_DOCS) {
+            if (otherSetupInfo.platformType === PlatformType.GOOGLE_DOCS) {
                 return setupInfo.apiKey === otherSetupInfo.apiKey
                     && setupInfo.clientId === otherSetupInfo.clientId;
             }
@@ -48,7 +46,7 @@ class GoogleSharingAdaptor {
                 folderId: folderId,
                 realtimeFileId: realtimeFileId
             };
-            return new GoogleSharedChangeList_1.GoogleSharedChangeList(setupInfo, googleShareInfo, handle);
+            return new GoogleSharedChangeList(setupInfo, googleShareInfo, handle);
         });
     }
     findExistingChangeLists(setupInfo) {
@@ -59,10 +57,9 @@ class GoogleSharingAdaptor {
     loadChangeList(shareInfo, setupInfo) {
         return this.driveAdaptor.populateChangeListFileInfo(shareInfo).then((shareInfo) => {
             return this.realtimeAdaptor.openShare(shareInfo.realtimeFileId).then((handle) => {
-                return new GoogleSharedChangeList_1.GoogleSharedChangeList(setupInfo, shareInfo, handle);
+                return new GoogleSharedChangeList(setupInfo, shareInfo, handle);
             });
         });
     }
 }
-exports.GoogleSharingAdaptor = GoogleSharingAdaptor;
 //# sourceMappingURL=GoogleSharingAdaptor.js.map

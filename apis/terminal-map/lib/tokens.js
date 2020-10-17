@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const terminalMap = di_1.system('airport').lib('terminal-map');
-exports.TERMINAL_STORE = terminalMap.token();
-exports.TRANSACTION_MANAGER = terminalMap.token();
+import { system } from '@airport/di';
+const terminalMap = system('airport').lib('terminal-map');
+export const TERMINAL_STORE = terminalMap.token();
+export const TRANSACTION_MANAGER = terminalMap.token();
 //# sourceMappingURL=tokens.js.map

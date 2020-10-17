@@ -9,3 +9,4 @@ export interface IActor {
     actorApplications?: IActorApplication[];
     repositoryActor?: IRepositoryActor[];
 }
+//# sourceMappingURL=actor.d.ts.map

@@ -12,3 +12,4 @@ export declare class SyncInRepositoryChecker implements ISyncInRepositoryChecker
     ensureRepositories(incomingMessages: IDataToTM[], dataMessagesWithInvalidData: IDataToTM[]): Promise<RepositoryCheckResults>;
     private areRepositoryIdsConsistentInMessage;
 }
+//# sourceMappingURL=SyncInRepositoryChecker.d.ts.map

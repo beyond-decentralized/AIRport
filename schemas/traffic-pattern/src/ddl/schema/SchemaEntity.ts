@@ -93,7 +93,7 @@ export class SchemaEntity
 	// idColumns: ISchemaColumn[];
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entity'})
-	operations: SchemaOperation[] = []
+	operations?: SchemaOperation[] = []
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entity'})
 	properties: SchemaProperty[] = []

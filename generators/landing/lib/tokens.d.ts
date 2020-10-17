@@ -10,3 +10,4 @@ export declare const SCHEMA_COMPOSER: import("@airport/di").IDiToken<ISchemaComp
 export declare const SCHEMA_INITIALIZER: import("@airport/di").IDiToken<ISchemaInitializer>;
 export declare const SCHEMA_LOCATOR: import("@airport/di").IDiToken<ISchemaLocator>;
 export declare const SCHEMA_RECORDER: import("@airport/di").IDiToken<ISchemaRecorder>;
+//# sourceMappingURL=tokens.d.ts.map

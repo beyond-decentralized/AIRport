@@ -48,3 +48,4 @@ export declare class Observable<T> implements IObservable<T> {
     private valueFromUpstream;
     private subscribeUpstream;
 }
+//# sourceMappingURL=Observable.d.ts.map

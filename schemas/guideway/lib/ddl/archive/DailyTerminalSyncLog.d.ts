@@ -6,3 +6,4 @@ export declare class DailyTerminalSyncLog {
     terminal: Terminal;
     acknowledged: DailyTerminalSyncLogAcknowledged;
 }
+//# sourceMappingURL=DailyTerminalSyncLog.d.ts.map

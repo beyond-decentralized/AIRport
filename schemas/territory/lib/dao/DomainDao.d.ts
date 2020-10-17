@@ -8,3 +8,4 @@ export declare class DomainDao extends BaseDomainDao implements IDomainDao {
     findByIdIn(domainIds: DomainId[]): Promise<IDomain[]>;
     findMapByNameWithNames(domainNames: DomainName[]): Promise<Map<DomainName, IDomain>>;
 }
+//# sourceMappingURL=DomainDao.d.ts.map

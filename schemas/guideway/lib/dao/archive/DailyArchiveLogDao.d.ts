@@ -6,3 +6,4 @@ export interface IDailyArchiveLogDao {
 export declare class DailyArchiveLogDao extends BaseDailyArchiveLogDao implements IDailyArchiveLogDao {
     insertValues(values: DailyArchiveLogValues[]): Promise<number>;
 }
+//# sourceMappingURL=DailyArchiveLogDao.d.ts.map

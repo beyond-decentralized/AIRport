@@ -7,3 +7,4 @@ import { ISharingNodeEndpoint } from '../SharingNodeEndpoint';
 export declare class DirectSharingNodeEndpoint implements ISharingNodeEndpoint {
     communicateWithAGT(sharingNode: ISharingNode, message: MessageFromTM): Promise<MessageToTM[]>;
 }
+//# sourceMappingURL=DirectSharingNodeEndpoint.d.ts.map

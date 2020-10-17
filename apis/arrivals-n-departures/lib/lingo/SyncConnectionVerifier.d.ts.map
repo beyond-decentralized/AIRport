@@ -1,0 +1,1 @@
+{"version":3,"file":"SyncConnectionVerifier.d.ts","sourceRoot":"","sources":["../../src/lingo/SyncConnectionVerifier.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,mBAAmB,EACnB,sBAAsB,EACtB,MAAM,yBAAyB,CAAA;AAEhC,MAAM,WAAW,uBAAuB;IAEvC,oBAAoB,CACnB,sBAAsB,EAAE,mBAAmB,GACzC,IAAI,CAAC;IAER,mBAAmB,CAElB,4BAA4B,EAAE,MAAM,GAClC,OAAO,CAAC,sBAAsB,CAAC,CAAC;CAEnC"}

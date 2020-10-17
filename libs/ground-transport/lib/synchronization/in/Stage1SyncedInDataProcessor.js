@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const holding_pattern_1 = require("@airport/holding-pattern");
-const moving_walkway_1 = require("@airport/moving-walkway");
-const tokens_1 = require("../../tokens");
-class Stage1SyncedInDataProcessor {
+import { container, DI } from '@airport/di';
+import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
+import { ACTOR_DAO, REPO_TRANS_HISTORY_DAO, REPO_TRANS_HISTORY_DUO, } from '@airport/holding-pattern';
+import { SynchronizationConflictType } from '@airport/moving-walkway';
+import { STAGE1_SYNCED_IN_DATA_PROCESSOR, SYNC_IN_UTILS } from '../../tokens';
+export class Stage1SyncedInDataProcessor {
     /**
      * In stage one:
      *
@@ -17,7 +15,7 @@ class Stage1SyncedInDataProcessor {
      * @returns {Promise<void>}
      */
     async performStage1DataProcessing(repoTransHistoryMapByRepositoryId, actorMayById) {
-        const [actorDao, repoTransHistoryDao, repoTransHistoryDuo, syncInUtils] = await di_1.container(this).get(holding_pattern_1.ACTOR_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DUO, tokens_1.SYNC_IN_UTILS);
+        const [actorDao, repoTransHistoryDao, repoTransHistoryDuo, syncInUtils] = await container(this).get(ACTOR_DAO, REPO_TRANS_HISTORY_DAO, REPO_TRANS_HISTORY_DUO, SYNC_IN_UTILS);
         // query for all local operations on records in a repository (since the earliest
         // received change time).  Get the
         // changes by repository ids or by the actual tables and records in those tables
@@ -38,10 +36,10 @@ class Stage1SyncedInDataProcessor {
                 }
                 for (const operationHistory of repoTransHistory.operationHistory) {
                     // Collect the Actor related ids
-                    const idsForEntity = ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(changedRecordsForRepo.ids, operationHistory.entity.schemaVersion.id), operationHistory.entity.id);
+                    const idsForEntity = ensureChildJsMap(ensureChildJsMap(changedRecordsForRepo.ids, operationHistory.entity.schemaVersion.id), operationHistory.entity.id);
                     for (const recordHistory of operationHistory.recordHistory) {
                         // Collect the Actor related ids
-                        ground_control_1.ensureChildJsSet(idsForEntity, recordHistory.actor.id)
+                        ensureChildJsSet(idsForEntity, recordHistory.actor.id)
                             .add(recordHistory.actorRecordId);
                         // add a map of new values
                         const newValueMap = new Map();
@@ -93,13 +91,13 @@ class Stage1SyncedInDataProcessor {
             for (const repoTransHistory of repoTransHistoriesForRepo) {
                 for (const operationHistory of repoTransHistory.operationHistory) {
                     switch (operationHistory.changeType) {
-                        case ground_control_1.ChangeType.INSERT_VALUES:
+                        case ChangeType.INSERT_VALUES:
                             this.processCreation(repositoryId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, recordDeletions, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId, syncInUtils);
                             break;
-                        case ground_control_1.ChangeType.UPDATE_ROWS:
+                        case ChangeType.UPDATE_ROWS:
                             this.processUpdate(repositoryId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId, syncInUtils);
                             break;
-                        case ground_control_1.ChangeType.DELETE_ROWS:
+                        case ChangeType.DELETE_ROWS:
                             this.processDeletion(repositoryId, operationHistory, recordCreations, recordUpdates, recordDeletions, allLocalRecordDeletions, syncInUtils);
                             break;
                     }
@@ -114,7 +112,7 @@ class Stage1SyncedInDataProcessor {
         };
     }
     ensureRecordHistoryId(recordHistory, actorRecordIdSetByActor, actorRecordId = recordHistory.actorRecordId) {
-        ground_control_1.ensureChildJsMap(actorRecordIdSetByActor, recordHistory.actor.id)
+        ensureChildJsMap(actorRecordIdSetByActor, recordHistory.actor.id)
             .set(actorRecordId, recordHistory.id);
     }
     getDeletedRecordIds(allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepoId, syncInUtils, isLocal = false) {
@@ -125,7 +123,7 @@ class Stage1SyncedInDataProcessor {
                 repoTransHistory.isLocal = isLocal;
                 for (const operationHistory of repoTransHistory.operationHistory) {
                     switch (operationHistory.changeType) {
-                        case ground_control_1.ChangeType.DELETE_ROWS:
+                        case ChangeType.DELETE_ROWS:
                             for (const recordHistory of operationHistory.recordHistory) {
                                 this.ensureRecordHistoryId(recordHistory, syncInUtils
                                     .ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordDeletions));
@@ -184,7 +182,7 @@ class Stage1SyncedInDataProcessor {
             const remoteDeleteRecordHistoryId = this.getRecordHistoryId(recordHistory, allRemoteRecordDeletesForRepoInTable);
             if (remoteDeleteRecordHistoryId) {
                 // remotely created record has been remotely deleted
-                this.addSyncConflict(moving_walkway_1.SynchronizationConflictType.REMOTE_CREATE_REMOTELY_DELETED, repositoryId, recordHistory, {
+                this.addSyncConflict(SynchronizationConflictType.REMOTE_CREATE_REMOTELY_DELETED, repositoryId, recordHistory, {
                     id: remoteDeleteRecordHistoryId
                 }, syncConflictMapByRepoId);
                 // If the record has been deleted, do not process the create
@@ -217,7 +215,7 @@ class Stage1SyncedInDataProcessor {
             if (localDeleteRecordHistoryId) {
                 if (!isLocal) {
                     // A remote update to a record has been locally deleted
-                    this.addSyncConflict(moving_walkway_1.SynchronizationConflictType.REMOTE_UPDATE_LOCALLY_DELETED, repositoryId, recordHistory, {
+                    this.addSyncConflict(SynchronizationConflictType.REMOTE_UPDATE_LOCALLY_DELETED, repositoryId, recordHistory, {
                         id: localDeleteRecordHistoryId
                     }, syncConflictMapByRepoId);
                 }
@@ -229,7 +227,7 @@ class Stage1SyncedInDataProcessor {
             if (remoteDeleteRecordHistoryId) {
                 if (isLocal) {
                     // A local update for a record that has been deleted remotely
-                    this.addSyncConflict(moving_walkway_1.SynchronizationConflictType.LOCAL_UPDATE_REMOTELY_DELETED, repositoryId, recordHistory, {
+                    this.addSyncConflict(SynchronizationConflictType.LOCAL_UPDATE_REMOTELY_DELETED, repositoryId, recordHistory, {
                         id: remoteDeleteRecordHistoryId
                     }, syncConflictMapByRepoId);
                 }
@@ -265,7 +263,7 @@ class Stage1SyncedInDataProcessor {
                     if (recordUpdate) {
                         // remotely updated record value is being updated locally
                         if (!synchronizationConflict) {
-                            synchronizationConflict = this.addSyncConflict(moving_walkway_1.SynchronizationConflictType.REMOTE_UPDATE_LOCALLY_UPDATED, repositoryId, {
+                            synchronizationConflict = this.addSyncConflict(SynchronizationConflictType.REMOTE_UPDATE_LOCALLY_UPDATED, repositoryId, {
                                 id: recordUpdate.recordHistoryId,
                             }, {
                                 id: remoteDeleteRecordHistoryId
@@ -325,7 +323,7 @@ class Stage1SyncedInDataProcessor {
                 continue;
             }
             // record deletion
-            ground_control_1.ensureChildJsSet(deletesForEntityInRepo, recordHistory.actor.id)
+            ensureChildJsSet(deletesForEntityInRepo, recordHistory.actor.id)
                 .add(recordHistory.actorRecordId);
         }
     }
@@ -381,7 +379,7 @@ class Stage1SyncedInDataProcessor {
     }
     addSyncConflict(synchronizationConflictType, repositoryId, overwrittenRecordHistory, overwritingRecordHistory, syncConflictMapByRepoId) {
         const syncConflict = this.createSynchronizationConflict(synchronizationConflictType, repositoryId, overwrittenRecordHistory, overwritingRecordHistory);
-        ground_control_1.ensureChildArray(syncConflictMapByRepoId, repositoryId).push(syncConflict);
+        ensureChildArray(syncConflictMapByRepoId, repositoryId).push(syncConflict);
         return syncConflict;
     }
     createSynchronizationConflict(synchronizationConflictType, repositoryId, overwrittenRecordHistory, overwritingRecordHistory) {
@@ -395,12 +393,11 @@ class Stage1SyncedInDataProcessor {
         };
     }
     ensureColumnValueMap(recordHistory, dataMap) {
-        return ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(dataMap, recordHistory.actor.id), recordHistory.actorRecordId);
+        return ensureChildJsMap(ensureChildJsMap(dataMap, recordHistory.actor.id), recordHistory.actorRecordId);
     }
     ensureRecord(recordHistory, recordMapByActor) {
-        return ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(recordMapByActor, recordHistory.actor.id), recordHistory.actorRecordId);
+        return ensureChildJsMap(ensureChildJsMap(recordMapByActor, recordHistory.actor.id), recordHistory.actorRecordId);
     }
 }
-exports.Stage1SyncedInDataProcessor = Stage1SyncedInDataProcessor;
-di_1.DI.set(tokens_1.STAGE1_SYNCED_IN_DATA_PROCESSOR, Stage1SyncedInDataProcessor);
+DI.set(STAGE1_SYNCED_IN_DATA_PROCESSOR, Stage1SyncedInDataProcessor);
 //# sourceMappingURL=Stage1SyncedInDataProcessor.js.map

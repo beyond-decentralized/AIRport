@@ -7,3 +7,4 @@ export interface IAgtSharingMessage {
     terminal?: ITerminal;
     syncLogs?: ISyncLog[];
 }
+//# sourceMappingURL=agtsharingmessage.d.ts.map

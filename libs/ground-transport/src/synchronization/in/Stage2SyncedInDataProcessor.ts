@@ -19,7 +19,7 @@ import {
 }                                        from '@airport/ground-control'
 import {
 	ActorId,
-	RepositoryEntityActorRecordId,
+	RepositoryEntity_ActorRecordId,
 	RepositoryId
 }                                        from '@airport/holding-pattern'
 import {
@@ -58,7 +58,7 @@ interface ColumnUpdateKeyMap
 }
 
 interface RecordKeyMap
-	extends Map<RepositoryId, Map<ActorId, Set<RepositoryEntityActorRecordId>>> {
+	extends Map<RepositoryId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>> {
 }
 
 type ColumnIndexAndValue = [ColumnIndex, any];
@@ -97,7 +97,7 @@ export class Stage2SyncedInDataProcessor
 	async performCreates(
 		recordCreations: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
-				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
+				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
 		airDb: IAirportDatabase,
 		dbFacade: IDatabaseFacade
@@ -164,7 +164,7 @@ export class Stage2SyncedInDataProcessor
 	async performUpdates(
 		recordUpdates: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
-				Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
+				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
 		recordUpdateStageDao: IRecordUpdateStageDao
 	): Promise<void> {
@@ -220,7 +220,7 @@ export class Stage2SyncedInDataProcessor
 	async performDeletes(
 		recordDeletions: Map<SchemaVersionId,
 			Map<TableIndex, Map<RepositoryId, Map<ActorId,
-				Set<RepositoryEntityActorRecordId>>>>>,
+				Set<RepositoryEntity_ActorRecordId>>>>>,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
 		airDb: IAirportDatabase,
 		dbFacade: IDatabaseFacade
@@ -260,7 +260,7 @@ export class Stage2SyncedInDataProcessor
 
 	/**
 	 * Get the record key map (RecordKeyMap = RepositoryId -> ActorId
-	 * -> RepositoryEntityActorRecordId) for the recordUpdateMap (the specified combination
+	 * -> RepositoryEntity_ActorRecordId) for the recordUpdateMap (the specified combination
 	 * of columns/values being updated)
 	 * @param {Map<ColumnIndex, RecordUpdate>} recordUpdateMap
 	 * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap

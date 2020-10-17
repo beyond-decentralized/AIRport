@@ -3,3 +3,4 @@ export interface IRepoTransBlockSchemaToChangeDao extends IBaseRepoTransBlockSch
 }
 export declare class RepoTransBlockSchemaToChangeDao extends BaseRepoTransBlockSchemaToChangeDao {
 }
+//# sourceMappingURL=RepoTransBlockSchemaToChangeDao.d.ts.map

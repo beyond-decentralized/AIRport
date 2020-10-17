@@ -4,3 +4,4 @@ export interface IAirportDatabasePopulator {
 export declare class AirportDatabasePopulator implements IAirportDatabasePopulator {
     populate(): void;
 }
+//# sourceMappingURL=AirportDatabasePopulator.d.ts.map

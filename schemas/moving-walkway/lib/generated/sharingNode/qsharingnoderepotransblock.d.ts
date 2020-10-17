@@ -64,3 +64,4 @@ export interface QSharingNodeRepoTransBlockQId {
 }
 export interface QSharingNodeRepoTransBlockQRelation extends IQRelation<QSharingNodeRepoTransBlock>, QSharingNodeRepoTransBlockQId {
 }
+//# sourceMappingURL=qsharingnoderepotransblock.d.ts.map

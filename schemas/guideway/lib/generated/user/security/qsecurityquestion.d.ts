@@ -56,3 +56,4 @@ export interface QSecurityQuestionQId {
 }
 export interface QSecurityQuestionQRelation extends IQRelation<QSecurityQuestion>, QSecurityQuestionQId {
 }
+//# sourceMappingURL=qsecurityquestion.d.ts.map

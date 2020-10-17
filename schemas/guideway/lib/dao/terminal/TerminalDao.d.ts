@@ -25,3 +25,4 @@ export declare class TerminalDao extends BaseTerminalDao implements ITerminalDao
     updateLastPollConnectionDatetime(terminalIds: TerminalId[], lastPollConnectionDatetime: TerminalLastPollConnectionDatetime): Promise<void>;
     updateLastSseConnectionDatetime(terminalPasswords: TerminalPassword[]): Promise<void>;
 }
+//# sourceMappingURL=TerminalDao.d.ts.map

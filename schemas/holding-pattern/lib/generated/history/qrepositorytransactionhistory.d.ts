@@ -91,3 +91,4 @@ export interface QRepositoryTransactionHistoryQId {
 }
 export interface QRepositoryTransactionHistoryQRelation extends IQRelation<QRepositoryTransactionHistory>, QRepositoryTransactionHistoryQId {
 }
+//# sourceMappingURL=qrepositorytransactionhistory.d.ts.map

@@ -23,3 +23,4 @@ export declare const SCHEMA_RELATION_COLUMN_DAO: import("@airport/di").IDiToken<
 export declare const SCHEMA_RELATION_DAO: import("@airport/di").IDiToken<ISchemaRelationDao>;
 export declare const SCHEMA_VERSION_DAO: import("@airport/di").IDiToken<ISchemaVersionDao>;
 export declare const SCHEMA_VERSION_DUO: import("@airport/di").IDiToken<ISchemaVersionDuo>;
+//# sourceMappingURL=tokens.d.ts.map

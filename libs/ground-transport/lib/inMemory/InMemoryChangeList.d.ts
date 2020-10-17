@@ -16,3 +16,4 @@ export declare class InMemoryChangeList implements SharedChangeList {
     errorSubject(): Subject<ChangeError>;
     changesAddedRemotelySubject(): Subject<ChangeRecordIterator>;
 }
+//# sourceMappingURL=InMemoryChangeList.d.ts.map

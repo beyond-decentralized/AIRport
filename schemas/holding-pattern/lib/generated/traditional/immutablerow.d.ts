@@ -4,3 +4,4 @@ export interface IImmutableRow extends IStageable {
     createdAt?: Date;
     user?: IUser;
 }
+//# sourceMappingURL=immutablerow.d.ts.map

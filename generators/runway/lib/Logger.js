@@ -1,9 +1,7 @@
-"use strict";
 /**
  * Created by Papa on 3/26/2016.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-class Logger {
+export class Logger {
     error(message) {
         this.log('ERROR', message);
     }
@@ -18,5 +16,4 @@ class Logger {
         return date.toISOString();
     }
 }
-exports.Logger = Logger;
 //# sourceMappingURL=Logger.js.map

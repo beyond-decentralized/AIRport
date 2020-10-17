@@ -8,3 +8,4 @@ export declare const APPLICATION_PACKAGE_DAO: import("@airport/di").IDiToken<IAp
 export declare const DOMAIN_DAO: import("@airport/di").IDiToken<IDomainDao>;
 export declare const PACKAGE_DAO: import("@airport/di").IDiToken<IPackageDao>;
 export declare const PACKAGE_UNIT_DAO: import("@airport/di").IDiToken<IPackagedUnitDao>;
+//# sourceMappingURL=tokens.d.ts.map

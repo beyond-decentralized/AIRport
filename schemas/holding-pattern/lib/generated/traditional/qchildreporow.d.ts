@@ -49,3 +49,4 @@ export interface QChildRepoRowQId extends QRepositoryEntityQId {
 }
 export interface QChildRepoRowQRelation<SubType extends IQEntity> extends QRepositoryEntityQRelation<QChildRepoRow>, QChildRepoRowQId {
 }
+//# sourceMappingURL=qchildreporow.d.ts.map

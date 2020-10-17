@@ -4,3 +4,4 @@ export declare class MissingRecordRepoTransBlock {
     missingRecord: MissingRecord;
     repositoryTransactionBlock: RepositoryTransactionBlock;
 }
+//# sourceMappingURL=MissingRecordRepoTransBlock.d.ts.map

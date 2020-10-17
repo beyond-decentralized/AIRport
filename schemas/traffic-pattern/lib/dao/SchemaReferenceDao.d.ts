@@ -6,3 +6,4 @@ export interface ISchemaReferenceDao extends IBaseSchemaReferenceDao {
 export declare class SchemaReferenceDao extends BaseSchemaReferenceDao implements ISchemaReferenceDao {
     findAllForSchemaVersions(schemaVersionIds: SchemaVersionId[]): Promise<ISchemaReference[]>;
 }
+//# sourceMappingURL=SchemaReferenceDao.d.ts.map

@@ -17,3 +17,4 @@ export declare class TransactionalConnector implements ITransactionalConnector {
     updateValues(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
 }
+//# sourceMappingURL=TransactionalConnector.d.ts.map

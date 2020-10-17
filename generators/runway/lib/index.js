@@ -1,12 +1,10 @@
-"use strict";
 /**
  * Created by Papa on 4/24/2016.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-const fs = require("fs");
-const generator_1 = require("./ddl/options/generator");
-const FileWatcher_1 = require("./FileWatcher");
-const configuration = generator_1.readConfiguration(process.cwd(), process.argv);
+import * as fs from 'fs';
+import { readConfiguration } from './ddl/options/generator';
+import { watchFiles } from './FileWatcher';
+const configuration = readConfiguration(process.cwd(), process.argv);
 globalThis.configuration = configuration;
 const ddlDirPath = process.cwd() + '/' + configuration.airport.ddlDir;
 let sourceFilePaths = findAllDdlFilePaths(ddlDirPath);
@@ -41,7 +39,7 @@ function isTsFile(fileName) {
     return fileName.substr(fileName.length - 3, 3) === '.ts';
 }
 // Start the watcher
-FileWatcher_1.watchFiles(configuration, {
-    module: 6 // ts.ModuleKind.ES2020,
-}, sourceFilePaths);
+watchFiles(configuration, {
+    module: 6 // tsc.ModuleKind.ES2020,
+}, sourceFilePaths).then();
 //# sourceMappingURL=index.js.map

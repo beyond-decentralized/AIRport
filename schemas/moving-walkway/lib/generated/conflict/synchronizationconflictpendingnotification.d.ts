@@ -5,3 +5,4 @@ export interface ISynchronizationConflictPendingNotification {
     actor: IActor;
     acknowledged?: boolean;
 }
+//# sourceMappingURL=synchronizationconflictpendingnotification.d.ts.map

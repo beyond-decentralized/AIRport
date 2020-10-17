@@ -15,3 +15,4 @@ export declare class SyncInRepositoryTransactionBlockCreator implements ISyncInR
     private recordSharingMessageToHistoryRecords;
     createSharingNodeRepoTransBlocks(allDataToTM: IDataToTM[]): Promise<void>;
 }
+//# sourceMappingURL=SyncInRepositoryTransactionBlockCreator.d.ts.map

@@ -7,3 +7,4 @@ export interface IDataArchiver {
 export declare class DataArchiver implements IDataArchiver {
     writeData(archiveInfo: ArchiveInfo, data: [AgtRepositoryTransactionBlockId, RepositoryTransactionBlockContents][]): Promise<void>;
 }
+//# sourceMappingURL=DataArchiver.d.ts.map

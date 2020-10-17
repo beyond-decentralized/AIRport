@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class FileBuilder {
+export class FileBuilder {
     constructor(entity, fullGenerationPath, pathBuilder, configuration) {
         this.entity = entity;
         this.fullGenerationPath = fullGenerationPath;
@@ -69,5 +67,4 @@ class FileBuilder {
         return imports;
     }
 }
-exports.FileBuilder = FileBuilder;
 //# sourceMappingURL=FileBuilder.js.map

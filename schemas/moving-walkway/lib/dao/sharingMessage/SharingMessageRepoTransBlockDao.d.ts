@@ -3,3 +3,4 @@ export interface ISharingMessageRepoTransBlockDao extends IBaseSharingMessageRep
 }
 export declare class SharingMessageRepoTransBlockDao extends BaseSharingMessageRepoTransBlockDao implements ISharingMessageRepoTransBlockDao {
 }
+//# sourceMappingURL=SharingMessageRepoTransBlockDao.d.ts.map

@@ -9,3 +9,4 @@ export declare class SynchronizationOutCoordinator extends AbstractCompletable i
     private returnToSyncPool;
     private scheduleSyncsForFrequency;
 }
+//# sourceMappingURL=SynchronizationOutCoordinator.d.ts.map

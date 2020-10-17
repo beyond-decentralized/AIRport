@@ -6,3 +6,4 @@ export interface IMissingRecordRepoTransBlockDao extends IBaseMissingRecordRepoT
 export declare class MissingRecordRepoTransBlockDao extends BaseMissingRecordRepoTransBlockDao implements IMissingRecordRepoTransBlockDao {
     deleteWhereMissingRecordIdsIn(missingRecordIds: MissingRecordId[]): Promise<void>;
 }
+//# sourceMappingURL=MissingRecordRepoTransBlockDao.d.ts.map

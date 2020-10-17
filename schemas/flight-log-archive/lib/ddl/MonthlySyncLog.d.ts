@@ -9,3 +9,4 @@ export declare class MonthlySyncLog {
     repositoryId: MonthlySyncLogRepositoryId;
     synced: MonthlySyncLogSynced;
 }
+//# sourceMappingURL=MonthlySyncLog.d.ts.map

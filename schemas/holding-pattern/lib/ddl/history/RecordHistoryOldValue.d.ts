@@ -17,3 +17,4 @@ export declare class RecordHistoryOldValue {
     columnIndex: RecordHistoryOldValueColumnIndex;
     oldValue: RecordHistoryOldValueOldValue;
 }
+//# sourceMappingURL=RecordHistoryOldValue.d.ts.map

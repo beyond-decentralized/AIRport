@@ -52,3 +52,4 @@ export declare class BaseUserTerminalAgtDuo extends SQDIDuo<IUserTerminalAgt, Us
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDuos.d.ts.map

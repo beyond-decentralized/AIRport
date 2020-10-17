@@ -11,3 +11,4 @@ export declare class RepositoryTransactionBlockDao extends BaseRepositoryTransac
     findWithMissingRecordIdsAndNoMissingRecordsWithStatus(missingRecordIds: MissingRecordId[], status: MissingRecordStatus): Promise<IRepositoryTransactionBlock[]>;
     clearContentsWhereIdsIn(repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[]): Promise<void>;
 }
+//# sourceMappingURL=RepositoryTransactionBlockDao.d.ts.map

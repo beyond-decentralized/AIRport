@@ -5,3 +5,4 @@ export interface IActorApplication {
     actor: IActor;
     application?: IApplication;
 }
+//# sourceMappingURL=actorapplication.d.ts.map

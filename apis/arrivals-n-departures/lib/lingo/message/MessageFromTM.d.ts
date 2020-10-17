@@ -61,3 +61,4 @@ export interface SyncConnectionClaim {
     connectionDataCallback: ConnectionDataCallback;
     loginClaimReceptionTime: LoginClaimReceptionTime;
 }
+//# sourceMappingURL=MessageFromTM.d.ts.map

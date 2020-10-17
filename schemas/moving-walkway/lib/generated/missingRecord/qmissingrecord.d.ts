@@ -78,3 +78,4 @@ export interface QMissingRecordQId {
 }
 export interface QMissingRecordQRelation extends IQRelation<QMissingRecord>, QMissingRecordQId {
 }
+//# sourceMappingURL=qmissingrecord.d.ts.map

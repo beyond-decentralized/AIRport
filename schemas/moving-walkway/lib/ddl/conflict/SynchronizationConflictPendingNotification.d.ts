@@ -6,3 +6,4 @@ export declare class SynchronizationConflictPendingNotification {
     actor: IActor;
     acknowledged: SynchronizationConflictPendingNotificationAcknowledged;
 }
+//# sourceMappingURL=SynchronizationConflictPendingNotification.d.ts.map

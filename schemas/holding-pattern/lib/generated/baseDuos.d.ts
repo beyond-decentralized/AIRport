@@ -116,3 +116,4 @@ export declare class BaseTransactionHistoryDuo extends SQDIDuo<ITransactionHisto
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDuos.d.ts.map

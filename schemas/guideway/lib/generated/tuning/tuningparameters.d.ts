@@ -4,3 +4,4 @@ export interface ITuningParameters {
     parameterName: string;
     parameterValue?: string;
 }
+//# sourceMappingURL=tuningparameters.d.ts.map

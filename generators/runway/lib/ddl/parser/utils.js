@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
-function isDecoratedAsEntity(decorators) {
+import tsc from 'typescript';
+export function isDecoratedAsEntity(decorators) {
     if (!decorators || !decorators.length) {
         return null;
     }
@@ -11,10 +9,10 @@ function isDecoratedAsEntity(decorators) {
         if (!expression) {
             return false;
         }
-        if (expression.kind === ts.SyntaxKind.CallExpression) {
+        if (expression.kind === tsc.SyntaxKind.CallExpression) {
             expression = expression.expression;
         }
-        if (expression.kind !== ts.SyntaxKind.Identifier) {
+        if (expression.kind !== tsc.SyntaxKind.Identifier) {
             return false;
         }
         let decoratorName = expression.text;
@@ -33,25 +31,23 @@ function isDecoratedAsEntity(decorators) {
     });
     return isDecoratedAsEntity;
 }
-exports.isDecoratedAsEntity = isDecoratedAsEntity;
-function getClassPath(sourceFile) {
+export function getClassPath(sourceFile) {
     if (!sourceFile) {
         return null;
     }
-    if (!sourceFile || sourceFile.kind !== ts.SyntaxKind.SourceFile) {
+    if (!sourceFile || sourceFile.kind !== tsc.SyntaxKind.SourceFile) {
         return null;
     }
     return sourceFile.path;
 }
-exports.getClassPath = getClassPath;
-function getImplementedInterfaces(classSymbol) {
+export function getImplementedInterfaces(classSymbol) {
     let valueDeclaration = classSymbol.valueDeclaration;
     if (!valueDeclaration.heritageClauses) {
         return [];
     }
     let interfaces = [];
     valueDeclaration.heritageClauses.forEach((heritageClause) => {
-        if (heritageClause.token != ts.SyntaxKind.ImplementsKeyword) {
+        if (heritageClause.token != tsc.SyntaxKind.ImplementsKeyword) {
             return;
         }
         heritageClause.types.forEach(type => {
@@ -60,15 +56,14 @@ function getImplementedInterfaces(classSymbol) {
     });
     return interfaces;
 }
-exports.getImplementedInterfaces = getImplementedInterfaces;
-function getParentClassImport(classSymbol, parentClassName) {
+export function getParentClassImport(classSymbol, parentClassName) {
     let parentClassImport = null;
     let parent = classSymbol.parent;
     if (!parent) {
         return parentClassImport;
     }
     let valueDeclaration = parent.valueDeclaration;
-    if (!valueDeclaration || valueDeclaration.kind !== ts.SyntaxKind.SourceFile) {
+    if (!valueDeclaration || valueDeclaration.kind !== tsc.SyntaxKind.SourceFile) {
         return parentClassImport;
     }
     const imports = valueDeclaration['imports'];
@@ -76,11 +71,11 @@ function getParentClassImport(classSymbol, parentClassName) {
         return parentClassImport;
     }
     imports.some((anImport) => {
-        if (anImport.kind !== ts.SyntaxKind.StringLiteral) {
+        if (anImport.kind !== tsc.SyntaxKind.StringLiteral) {
             return false;
         }
         let parent = anImport.parent;
-        if (!parent || parent.kind !== ts.SyntaxKind.ImportDeclaration) {
+        if (!parent || parent.kind !== tsc.SyntaxKind.ImportDeclaration) {
             return false;
         }
         let nameMatches = endsWith(anImport.text, parentClassName);
@@ -94,14 +89,13 @@ function getParentClassImport(classSymbol, parentClassName) {
     });
     return parentClassImport;
 }
-exports.getParentClassImport = getParentClassImport;
-function getParentClassName(classSymbol) {
+export function getParentClassName(classSymbol) {
     let parentEntityName = null;
     if (!classSymbol.declarations || !classSymbol.declarations.length) {
         return parentEntityName;
     }
     classSymbol.declarations.some((declaration) => {
-        if (declaration.kind !== ts.SyntaxKind.ClassDeclaration) {
+        if (declaration.kind !== tsc.SyntaxKind.ClassDeclaration) {
             return false;
         }
         let heritageClauses = declaration.heritageClauses;
@@ -109,10 +103,10 @@ function getParentClassName(classSymbol) {
             return false;
         }
         return heritageClauses.some((heritageClause) => {
-            if (heritageClause.kind !== ts.SyntaxKind.HeritageClause) {
+            if (heritageClause.kind !== tsc.SyntaxKind.HeritageClause) {
                 return false;
             }
-            if (heritageClause.token !== ts.SyntaxKind.ExtendsKeyword) {
+            if (heritageClause.token !== tsc.SyntaxKind.ExtendsKeyword) {
                 return false;
             }
             let types = heritageClause.types;
@@ -121,7 +115,7 @@ function getParentClassName(classSymbol) {
             }
             return types.some((type) => {
                 let expression = type.expression;
-                if (!expression || expression.kind !== ts.SyntaxKind.Identifier) {
+                if (!expression || expression.kind !== tsc.SyntaxKind.Identifier) {
                     return false;
                 }
                 parentEntityName = expression.text;
@@ -131,8 +125,7 @@ function getParentClassName(classSymbol) {
     });
     return parentEntityName;
 }
-exports.getParentClassName = getParentClassName;
-function isPrimitive(type) {
+export function isPrimitive(type) {
     switch (type) {
         case 'boolean':
         case 'number':
@@ -143,13 +136,10 @@ function isPrimitive(type) {
     }
     return false;
 }
-exports.isPrimitive = isPrimitive;
-function endsWith(target, suffix) {
+export function endsWith(target, suffix) {
     return target.indexOf(suffix, target.length - suffix.length) !== -1;
 }
-exports.endsWith = endsWith;
-function startsWith(target, suffix) {
+export function startsWith(target, suffix) {
     return target.indexOf(suffix) === 0;
 }
-exports.startsWith = startsWith;
 //# sourceMappingURL=utils.js.map

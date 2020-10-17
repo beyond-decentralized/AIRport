@@ -20,3 +20,4 @@ export declare class SharingNodeRepoTransBlockDao extends BaseSharingNodeRepoTra
     insertValues(values: SharingNodeRepoTransBlockValues[]): Promise<number>;
     getForSharingNodeIdsAndBlockStatus(sharingNodeIds: SharingNodeId[], syncStatus: SharingNodeRepoTransBlockSyncStatus): Promise<RepoTransBlocksForSharingNodes>;
 }
+//# sourceMappingURL=SharingNodeRepoTransBlockDao.d.ts.map

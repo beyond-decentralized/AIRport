@@ -7,3 +7,4 @@ export interface ISyncConnectionServer<IncomingMessage, ServerResponse, Server, 
     handleConnection(req: IncomingMessage, res: ServerResponse, callback: (message: SerializedMessageFromTM) => void): void;
     handleInMemoryConnect(messageFromTM: MessageFromTM, res: ServerResponse, syncConnectionVerifier: ISyncConnectionVerifier): void;
 }
+//# sourceMappingURL=SyncConnectionServer.d.ts.map

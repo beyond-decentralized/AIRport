@@ -13,7 +13,7 @@ import {
 	IRecordHistoryNewValue,
 	IRepositoryTransactionHistory,
 	RecordHistoryId,
-	RepositoryEntityActorRecordId,
+	RepositoryEntity_ActorRecordId,
 	RepositoryId
 }                      from '@airport/holding-pattern'
 import {
@@ -108,13 +108,13 @@ export interface ISyncInUtils {
 export interface Stage1SyncedInDataProcessingResult {
 	recordCreations: Map<SchemaVersionId,
 		Map<EntityId, Map<RepositoryId, Map<ActorId,
-			Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>,
+			Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 	recordDeletions: Map<SchemaVersionId,
 		Map<EntityId, Map<RepositoryId, Map<ActorId,
-			Set<RepositoryEntityActorRecordId>>>>>,
+			Set<RepositoryEntity_ActorRecordId>>>>>,
 	recordUpdates: Map<SchemaVersionId,
 		Map<EntityId, Map<RepositoryId, Map<ActorId,
-			Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
+			Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 	syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>
 }
 

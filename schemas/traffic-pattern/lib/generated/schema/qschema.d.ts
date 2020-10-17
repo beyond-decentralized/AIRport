@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { DomainEOptionalId, DomainESelect, QDomainQRelation } from '@airport/territory';
-import { SchemaVersionECascadeGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersion, QSchemaVersionQRelation } from './qschemaversion';
+import { SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersion, QSchemaVersionQRelation } from './qschemaversion';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -37,8 +37,13 @@ export interface SchemaEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaECascadeGraph extends IEntityCascadeGraph {
-    versions?: SchemaVersionECascadeGraph;
+export interface SchemaECascadeGraph extends IEntitySelectProperties, SchemaEOptionalId, IEntityCascadeGraph {
+    scope?: string | IQStringField;
+    name?: string | IQStringField;
+    status?: number | IQNumberField;
+    domain?: DomainESelect;
+    versions?: SchemaVersionESelect;
+    currentVersion?: SchemaVersionESelect;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -77,3 +82,4 @@ export interface QSchemaQId {
 }
 export interface QSchemaQRelation extends IQRelation<QSchema>, QSchemaQId {
 }
+//# sourceMappingURL=qschema.d.ts.map

@@ -80,3 +80,4 @@ export interface QSharingNodeQId {
 }
 export interface QSharingNodeQRelation extends IQRelation<QSharingNode>, QSharingNodeQId {
 }
+//# sourceMappingURL=qsharingnode.d.ts.map

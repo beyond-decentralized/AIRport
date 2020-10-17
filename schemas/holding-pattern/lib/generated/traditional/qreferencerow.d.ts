@@ -48,3 +48,4 @@ export interface QReferenceRowQId {
 }
 export interface QReferenceRowQRelation<SubType extends IQEntity> extends IQRelation<SubType>, QReferenceRowQId {
 }
+//# sourceMappingURL=qreferencerow.d.ts.map

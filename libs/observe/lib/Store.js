@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const BehaviorSubject_1 = require("./BehaviorSubject");
-class Store extends BehaviorSubject_1.BehaviorSubject {
+import { BehaviorSubject } from './BehaviorSubject';
+export class Store extends BehaviorSubject {
     constructor(value) {
         super(value);
     }
@@ -9,5 +7,4 @@ class Store extends BehaviorSubject_1.BehaviorSubject {
         this.forceExec(value, 'onNext');
     }
 }
-exports.Store = Store;
 //# sourceMappingURL=Store.js.map

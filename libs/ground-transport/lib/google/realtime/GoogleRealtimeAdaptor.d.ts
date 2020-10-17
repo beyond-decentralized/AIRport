@@ -37,3 +37,4 @@ export declare class GoogleRealtimeAdaptor {
     private subscribeToUnexpectedModifications;
     openShare(fileId: string): Promise<DocumentHandle>;
 }
+//# sourceMappingURL=GoogleRealtimeAdaptor.d.ts.map

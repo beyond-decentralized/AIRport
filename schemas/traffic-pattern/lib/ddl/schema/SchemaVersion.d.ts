@@ -23,3 +23,4 @@ export declare class SchemaVersion {
         [schemaName: string]: SchemaReference;
     };
 }
+//# sourceMappingURL=SchemaVersion.d.ts.map

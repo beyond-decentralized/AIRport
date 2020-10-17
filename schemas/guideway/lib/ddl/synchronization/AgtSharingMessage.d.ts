@@ -14,3 +14,4 @@ export declare class AgtSharingMessage {
     syncLogs: SyncLog[];
     acknowledged: AgtSharingMessageAcknowledged;
 }
+//# sourceMappingURL=AgtSharingMessage.d.ts.map

@@ -10,3 +10,4 @@ export declare class SqLiteSchemaBuilder extends SqlSchemaBuilder {
     stageSequences(jsonSchemas: JsonSchema[], airDb: IAirportDatabase): ISequence[];
     buildSequences(dbSchema: DbSchema, jsonEntity: JsonSchemaEntity): ISequence[];
 }
+//# sourceMappingURL=SqLiteSchemaBuilder.d.ts.map

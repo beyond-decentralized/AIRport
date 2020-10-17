@@ -13,3 +13,4 @@ export declare class Library implements ILibrary {
     constructor(name: string, system: ISystem);
     token<T = GenericDependencyInjectionError>(): IDiToken<T>;
 }
+//# sourceMappingURL=Library.d.ts.map

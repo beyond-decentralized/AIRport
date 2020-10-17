@@ -68,3 +68,4 @@ export interface QRepositoryEntityQId extends QStageableQId {
 }
 export interface QRepositoryEntityQRelation<SubType extends IQEntity> extends QStageableQRelation<QRepositoryEntity>, QRepositoryEntityQId {
 }
+//# sourceMappingURL=qrepositoryentity.d.ts.map

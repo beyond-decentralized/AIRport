@@ -3,3 +3,4 @@ export interface IRepositoryTransactionBlockDuo extends IBaseRepositoryTransacti
 }
 export declare class RepositoryTransactionBlockDuo extends BaseRepositoryTransactionBlockDuo implements IRepositoryTransactionBlockDuo {
 }
+//# sourceMappingURL=RepositoryTransactionBlockDuo.d.ts.map

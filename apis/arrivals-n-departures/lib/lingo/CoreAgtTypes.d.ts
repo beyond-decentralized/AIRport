@@ -8,3 +8,4 @@ export declare type RepositoryTransactionBlockContents = string;
 export declare type RepositoryTransactionBlockData = string;
 export declare type TmRepositoryTransactionBlockId = number;
 export declare type TmSharingMessageId = number;
+//# sourceMappingURL=CoreAgtTypes.d.ts.map

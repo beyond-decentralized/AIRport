@@ -3,3 +3,4 @@ export interface ISharingNodeRepoTransBlockStage {
     repositoryTransactionBlockId: number;
     syncStatus?: number;
 }
+//# sourceMappingURL=sharingnoderepotransblockstage.d.ts.map

@@ -18,3 +18,4 @@ export declare class GoogleSharingAdaptor implements SharingAdaptor {
     findExistingChangeLists(setupInfo: GoogleSetupInfo): Promise<GoogleChangeListShareInfo[]>;
     loadChangeList(shareInfo: GoogleChangeListShareInfo, setupInfo: GoogleSetupInfo): Promise<SharedChangeList>;
 }
+//# sourceMappingURL=GoogleSharingAdaptor.d.ts.map

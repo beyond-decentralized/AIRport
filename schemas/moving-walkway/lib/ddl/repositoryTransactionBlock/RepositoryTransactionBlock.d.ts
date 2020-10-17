@@ -49,3 +49,4 @@ export declare class RepositoryTransactionBlock {
     missingRecordRepoTransBlocks: MissingRecordRepoTransBlock[];
     repoTransBlockSchemasToChange: RepoTransBlockSchemaToChange[];
 }
+//# sourceMappingURL=RepositoryTransactionBlock.d.ts.map

@@ -29,3 +29,4 @@ export declare class SynchronizationOutManager implements ISynchronizationOutMan
     private clearDataOfSuccessfullySyncedRTBS;
     private addNewSharingMessages;
 }
+//# sourceMappingURL=SynchronizationOutManager.d.ts.map

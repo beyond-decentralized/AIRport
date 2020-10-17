@@ -52,3 +52,4 @@ export declare class SharingMessage {
     syncTimestamp: SharingMessageSyncTimestamp;
     sharingMessageRepoTransBlocks: SharingMessageRepoTransBlock[];
 }
+//# sourceMappingURL=SharingMessage.d.ts.map

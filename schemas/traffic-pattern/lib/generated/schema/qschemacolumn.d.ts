@@ -1,8 +1,8 @@
 import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField } from '@airport/air-control';
 import { VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
-import { SchemaPropertyColumnECascadeGraph, SchemaPropertyColumnESelect, QSchemaPropertyColumn } from './qschemapropertycolumn';
-import { SchemaRelationColumnECascadeGraph, SchemaRelationColumnESelect, QSchemaRelationColumn } from './qschemarelationcolumn';
+import { SchemaPropertyColumnESelect, QSchemaPropertyColumn } from './qschemapropertycolumn';
+import { SchemaRelationColumnESelect, QSchemaRelationColumn } from './qschemarelationcolumn';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -47,10 +47,18 @@ export interface SchemaColumnEUpdateProperties extends VersionedSchemaObjectEUpd
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaColumnECascadeGraph extends VersionedSchemaObjectECascadeGraph {
-    propertyColumns?: SchemaPropertyColumnECascadeGraph;
-    manyRelationColumns?: SchemaRelationColumnECascadeGraph;
-    oneRelationColumns?: SchemaRelationColumnECascadeGraph;
+export interface SchemaColumnECascadeGraph extends VersionedSchemaObjectESelect, SchemaColumnEOptionalId, VersionedSchemaObjectECascadeGraph {
+    index?: number | IQNumberField;
+    idIndex?: number | IQNumberField;
+    isGenerated?: boolean | IQBooleanField;
+    allocationSize?: number | IQNumberField;
+    name?: string | IQStringField;
+    notNull?: boolean | IQBooleanField;
+    type?: number | IQNumberField;
+    entity?: SchemaEntityESelect;
+    propertyColumns?: SchemaPropertyColumnESelect;
+    manyRelationColumns?: SchemaRelationColumnESelect;
+    oneRelationColumns?: SchemaRelationColumnESelect;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -100,3 +108,4 @@ export interface QSchemaColumnQId extends QVersionedSchemaObjectQId {
 }
 export interface QSchemaColumnQRelation extends QVersionedSchemaObjectQRelation<QSchemaColumn>, QSchemaColumnQId {
 }
+//# sourceMappingURL=qschemacolumn.d.ts.map

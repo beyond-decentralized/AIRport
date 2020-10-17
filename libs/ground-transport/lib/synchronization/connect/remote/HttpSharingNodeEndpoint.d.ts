@@ -9,3 +9,4 @@ export declare class HttpSharingNodeEndpoint implements ISharingNodeEndpoint {
     agtUrl: string;
     communicateWithAGT(sharingNode: ISharingNode, message: MessageFromTM): Promise<BatchedMessagesToTM>;
 }
+//# sourceMappingURL=HttpSharingNodeEndpoint.d.ts.map

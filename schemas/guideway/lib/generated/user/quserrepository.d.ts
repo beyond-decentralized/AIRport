@@ -64,3 +64,4 @@ export interface QUserRepositoryQId {
 }
 export interface QUserRepositoryQRelation extends IQRelation<QUserRepository>, QUserRepositoryQId {
 }
+//# sourceMappingURL=quserrepository.d.ts.map

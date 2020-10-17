@@ -17,3 +17,4 @@ export * from './user/security/securityanswer';
 export * from './user/security/securityquestion';
 export * from './user/user';
 export * from './user/userrepository';
+//# sourceMappingURL=interfaces.d.ts.map

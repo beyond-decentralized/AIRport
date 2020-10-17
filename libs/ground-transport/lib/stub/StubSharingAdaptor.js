@@ -1,17 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const terminal_map_1 = require("@airport/terminal-map");
-const StubChangeList_1 = require("./StubChangeList");
+import { PlatformType, } from "@airport/terminal-map";
+import { StubChangeList } from "./StubChangeList";
 /**
  * Created by Papa on 12/14/2016.
  */
-class StubSharingAdaptor {
+export class StubSharingAdaptor {
     setupInfoBelongsTo(setupInfo, setupInfos) {
-        if (setupInfo.platformType !== terminal_map_1.PlatformType.STUB) {
+        if (setupInfo.platformType !== PlatformType.STUB) {
             return false;
         }
         return setupInfos.some((otherSetupInfo) => {
-            if (otherSetupInfo.platformType === terminal_map_1.PlatformType.STUB) {
+            if (otherSetupInfo.platformType === PlatformType.STUB) {
                 return true;
             }
         });
@@ -19,7 +17,7 @@ class StubSharingAdaptor {
     async initialize(setupInfo) {
         this.changeLists = [];
         return {
-            platformType: terminal_map_1.PlatformType.STUB,
+            platformType: PlatformType.STUB,
             recordIdField: 'id',
             dbIdField: 'dbId'
         };
@@ -30,7 +28,7 @@ class StubSharingAdaptor {
         });
     }
     async createChangeList(shareInfo, setupInfo) {
-        let changeList = new StubChangeList_1.StubChangeList(shareInfo, setupInfo);
+        let changeList = new StubChangeList(shareInfo, setupInfo);
         this.changeLists.push(changeList);
         return changeList;
     }
@@ -48,5 +46,4 @@ class StubSharingAdaptor {
         return matchingChangeList;
     }
 }
-exports.StubSharingAdaptor = StubSharingAdaptor;
 //# sourceMappingURL=StubSharingAdaptor.js.map

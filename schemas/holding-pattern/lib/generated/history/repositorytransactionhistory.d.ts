@@ -15,3 +15,4 @@ export interface IRepositoryTransactionHistory {
     actor?: IActor;
     operationHistory?: IOperationHistory[];
 }
+//# sourceMappingURL=repositorytransactionhistory.d.ts.map

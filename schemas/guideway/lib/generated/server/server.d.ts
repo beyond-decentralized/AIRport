@@ -4,3 +4,4 @@ export interface IServer {
     serverType?: number;
     serverSyncLogs?: IServerSyncLog[];
 }
+//# sourceMappingURL=server.d.ts.map

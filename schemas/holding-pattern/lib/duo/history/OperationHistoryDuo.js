@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const generated_1 = require("../../generated/generated");
-const tokens_1 = require("../../tokens");
-class OperationHistoryDuo extends generated_1.BaseOperationHistoryDuo {
+import { DI } from '@airport/di';
+import { BaseOperationHistoryDuo } from '../../generated/generated';
+import { OPER_HISTORY_DUO } from '../../tokens';
+export class OperationHistoryDuo extends BaseOperationHistoryDuo {
     getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory, systemWideOperationId) {
         let operationHistory = {
             changeType: entityChangeType,
@@ -34,6 +32,5 @@ class OperationHistoryDuo extends generated_1.BaseOperationHistoryDuo {
         return recordHistory;
     }
 }
-exports.OperationHistoryDuo = OperationHistoryDuo;
-di_1.DI.set(tokens_1.OPER_HISTORY_DUO, OperationHistoryDuo);
+DI.set(OPER_HISTORY_DUO, OperationHistoryDuo);
 //# sourceMappingURL=OperationHistoryDuo.js.map

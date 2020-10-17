@@ -56,3 +56,4 @@ export interface QRepositoryTransactionHistoryUpdateStageQId {
 }
 export interface QRepositoryTransactionHistoryUpdateStageQRelation extends IQRelation<QRepositoryTransactionHistoryUpdateStage>, QRepositoryTransactionHistoryUpdateStageQId {
 }
+//# sourceMappingURL=qrepositorytransactionhistoryupdatestage.d.ts.map

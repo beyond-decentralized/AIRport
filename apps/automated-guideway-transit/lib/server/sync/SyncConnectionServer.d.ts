@@ -18,3 +18,4 @@ export declare class SyncConnectionServer implements ISyncConnectionServer<http.
     private blockBlacklisted;
     private block;
 }
+//# sourceMappingURL=SyncConnectionServer.d.ts.map

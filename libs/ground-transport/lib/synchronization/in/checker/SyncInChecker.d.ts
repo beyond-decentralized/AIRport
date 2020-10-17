@@ -53,3 +53,4 @@ export declare class SyncInChecker implements ISyncInChecker {
     private recordRepoTransBlockSchemaToChange;
     private findMatchingSchema;
 }
+//# sourceMappingURL=SyncInChecker.d.ts.map

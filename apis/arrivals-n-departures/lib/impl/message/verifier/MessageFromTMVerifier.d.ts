@@ -8,3 +8,4 @@ export declare class MessageFromTMVerifier extends AbstractCommonMessageVerifier
     verifyDataTransferMessage(serializedataTransferMessage: SerializedDataTransferMessageFromTM, maxAllRepoTransBlocksLength: number, maxSingleRepoTransBlockLength: number): [MessageFromTMError, any] | [MessageFromTMError, any, any];
     verifySyncVerificationMessage(syncVerificationMessage: SerializedSyncVerificationMessageFromTM): [MessageFromTMError, any] | [MessageFromTMError, any, any];
 }
+//# sourceMappingURL=MessageFromTMVerifier.d.ts.map

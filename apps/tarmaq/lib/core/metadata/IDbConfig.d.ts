@@ -56,3 +56,4 @@ export interface IDbRelationColumn {
     column: string;
     referencedColumn: string;
 }
+//# sourceMappingURL=IDbConfig.d.ts.map

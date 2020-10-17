@@ -16,3 +16,4 @@ export declare class RepositoryTransactionHistoryDuo extends BaseRepositoryTrans
     private compareDates;
     private compareNumbers;
 }
+//# sourceMappingURL=RepositoryTransactionHistoryDuo.d.ts.map

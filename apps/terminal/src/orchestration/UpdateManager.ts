@@ -43,7 +43,7 @@ import {
 	REC_HIST_OLD_VALUE_DUO,
 	REC_HISTORY_DUO,
 	REPO_TRANS_HISTORY_DUO,
-	RepositoryEntitySystemWideOperationId,
+	RepositoryEntity_SystemWideOperationId,
 	SystemWideOperationId
 }                           from '@airport/holding-pattern'
 import {
@@ -272,7 +272,7 @@ export class UpdateManager
 		jsonUpdate: JsonUpdate<any>,
 		dbEntity: DbEntity,
 		recordHistoryMapByRecordId: RecordHistoryMap,
-		systemWideOperationId: RepositoryEntitySystemWideOperationId,
+		systemWideOperationId: RepositoryEntity_SystemWideOperationId,
 		repositorySheetSelectInfo: RepositorySheetSelectInfo,
 		errorPrefix: string,
 		airDb: IAirportDatabase,

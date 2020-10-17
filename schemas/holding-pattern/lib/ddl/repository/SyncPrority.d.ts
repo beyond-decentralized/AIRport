@@ -7,3 +7,4 @@ export declare enum SyncPriority {
     BELOW_NORMAL = 5,
     LOW = 6
 }
+//# sourceMappingURL=SyncPrority.d.ts.map

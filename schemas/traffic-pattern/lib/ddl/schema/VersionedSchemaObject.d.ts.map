@@ -1,0 +1,1 @@
+{"version":3,"file":"VersionedSchemaObject.d.ts","sourceRoot":"","sources":["../../../src/ddl/schema/VersionedSchemaObject.ts"],"names":[],"mappings":"AAKA,OAAO,EAAC,aAAa,EAAC,MAAM,iBAAiB,CAAA;AAE7C,qBACa,qBAAqB;IAIjC,sBAAsB,CAAC,EAAE,aAAa,CAAA;IAItC,gBAAgB,CAAC,EAAE,aAAa,CAAA;IAIhC,YAAY,CAAC,EAAE,aAAa,CAAA;CAE5B"}

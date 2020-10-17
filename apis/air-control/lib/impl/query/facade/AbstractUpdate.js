@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const AbstractQuery_1 = require("./AbstractQuery");
-class AbstractUpdate extends AbstractQuery_1.AbstractQuery {
+import { AbstractQuery } from './AbstractQuery';
+export class AbstractUpdate extends AbstractQuery {
     constructor(rawUpdate) {
         super();
         this.rawUpdate = rawUpdate;
@@ -15,5 +13,4 @@ class AbstractUpdate extends AbstractQuery_1.AbstractQuery {
         };
     }
 }
-exports.AbstractUpdate = AbstractUpdate;
 //# sourceMappingURL=AbstractUpdate.js.map

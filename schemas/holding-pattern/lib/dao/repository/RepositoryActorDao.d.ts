@@ -8,3 +8,4 @@ export declare class RepositoryActorDao extends BaseRepositoryActorDao implement
     findAllForLocalActorsWhereRepositoryIdIn(repositoryIds: RepositoryId[]): Promise<IRepositoryActor[]>;
     findActorIdMapByRepositoryIdForLocalActorsWhereRepositoryIdIn(repositoryIds: RepositoryId[]): Promise<Map<RepositoryId, Set<ActorId>>>;
 }
+//# sourceMappingURL=RepositoryActorDao.d.ts.map

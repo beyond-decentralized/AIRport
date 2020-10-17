@@ -3,6 +3,7 @@ import { DbSchema, EntityId } from '@airport/ground-control';
 import { QSchema } from './schema/qschema';
 import { QSchemaColumn } from './schema/qschemacolumn';
 import { QSchemaEntity } from './schema/qschemaentity';
+import { QSchemaOperation } from './schema/qschemaoperation';
 import { QSchemaProperty } from './schema/qschemaproperty';
 import { QSchemaPropertyColumn } from './schema/qschemapropertycolumn';
 import { QSchemaReference } from './schema/qschemareference';
@@ -15,6 +16,7 @@ export interface LocalQSchema extends AirportQSchema {
     Schema: QSchema;
     SchemaColumn: QSchemaColumn;
     SchemaEntity: QSchemaEntity;
+    SchemaOperation: QSchemaOperation;
     SchemaProperty: QSchemaProperty;
     SchemaPropertyColumn: QSchemaPropertyColumn;
     SchemaReference: QSchemaReference;
@@ -27,3 +29,4 @@ export declare const Q_SCHEMA: LocalQSchema;
 export declare const Q: LocalQSchema;
 export declare function diSet(dbEntityId: EntityId): boolean;
 export declare function duoDiSet(dbEntityId: EntityId): boolean;
+//# sourceMappingURL=qSchema.d.ts.map

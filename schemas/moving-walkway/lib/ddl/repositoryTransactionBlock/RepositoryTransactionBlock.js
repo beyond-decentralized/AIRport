@@ -1,12 +1,10 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
+import { Column, DbNumber, DbString, Entity, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
 // FIXME: SECURITY - ensure that a given RepoTransBlock is processed only once by a given TM
 // FIXME: SECURITY - ensure that a given RepoTransBlock is processed only once by a given AGT
 /**
@@ -41,51 +39,51 @@ const air_control_1 = require("@airport/air-control");
 let RepositoryTransactionBlock = class RepositoryTransactionBlock {
 };
 __decorate([
-    air_control_1.Id(),
-    air_control_1.DbNumber()
+    Id(),
+    DbNumber()
 ], RepositoryTransactionBlock.prototype, "id", void 0);
 __decorate([
-    air_control_1.Column({ name: "SOURCE_ID" }),
-    air_control_1.DbNumber()
+    Column({ name: "SOURCE_ID" }),
+    DbNumber()
 ], RepositoryTransactionBlock.prototype, "sourceId", void 0);
 __decorate([
-    air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({ name: "SOURCE_TERMINAL_ID", referencedColumnName: "ID" })
+    ManyToOne(),
+    JoinColumn({ name: "SOURCE_TERMINAL_ID", referencedColumnName: "ID" })
 ], RepositoryTransactionBlock.prototype, "source", void 0);
 __decorate([
-    air_control_1.ManyToOne(),
-    air_control_1.JoinColumn({
+    ManyToOne(),
+    JoinColumn({
         name: "REPOSITORY_ID", referencedColumnName: "ID"
     })
 ], RepositoryTransactionBlock.prototype, "repository", void 0);
 __decorate([
-    air_control_1.Column({ name: "SYNC_OUTCOME_TYPE" }),
-    air_control_1.DbNumber()
+    Column({ name: "SYNC_OUTCOME_TYPE" }),
+    DbNumber()
 ], RepositoryTransactionBlock.prototype, "syncOutcomeType", void 0);
 __decorate([
-    air_control_1.DbString()
+    DbString()
 ], RepositoryTransactionBlock.prototype, "contents", void 0);
 __decorate([
-    air_control_1.OneToMany(),
-    air_control_1.JoinColumn({
+    OneToMany(),
+    JoinColumn({
         name: "REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID", referencedColumnName: "ID"
     })
 ], RepositoryTransactionBlock.prototype, "repositoryTransactionHistory", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "repositoryTransactionBlock" })
+    OneToMany({ mappedBy: "repositoryTransactionBlock" })
 ], RepositoryTransactionBlock.prototype, "sharingNodeRepoTransBlocks", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "repositoryTransactionBlock" })
+    OneToMany({ mappedBy: "repositoryTransactionBlock" })
 ], RepositoryTransactionBlock.prototype, "sharingMessageRepoTransBlocks", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "repositoryTransactionBlock" })
+    OneToMany({ mappedBy: "repositoryTransactionBlock" })
 ], RepositoryTransactionBlock.prototype, "missingRecordRepoTransBlocks", void 0);
 __decorate([
-    air_control_1.OneToMany({ mappedBy: "repositoryTransactionBlock" })
+    OneToMany({ mappedBy: "repositoryTransactionBlock" })
 ], RepositoryTransactionBlock.prototype, "repoTransBlockSchemasToChange", void 0);
 RepositoryTransactionBlock = __decorate([
-    air_control_1.Entity(),
-    air_control_1.Table({ name: "REPOSITORY_TRANSACTION_BLOCKS" })
+    Entity(),
+    Table({ name: "REPOSITORY_TRANSACTION_BLOCKS" })
 ], RepositoryTransactionBlock);
-exports.RepositoryTransactionBlock = RepositoryTransactionBlock;
+export { RepositoryTransactionBlock };
 //# sourceMappingURL=RepositoryTransactionBlock.js.map

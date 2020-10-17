@@ -9,3 +9,4 @@ export declare const SYNC_CONNECTION_PROCESSOR: import("@airport/di").IDiToken<I
 export declare const SYNC_CONNECTION_VERIFIER: import("@airport/di").IDiToken<ISyncConnectionVerifier>;
 export declare const BLACKLIST: import("@airport/di").IDiToken<IBlacklist<any>>;
 export declare const AGTLogger: ILoggedPackage;
+//# sourceMappingURL=tokens.d.ts.map

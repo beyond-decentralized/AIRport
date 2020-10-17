@@ -5,3 +5,4 @@ export interface IMonthlyArchiveLog {
     numberOfChanges?: number;
     daysWithChanges?: any;
 }
+//# sourceMappingURL=monthlyarchivelog.d.ts.map

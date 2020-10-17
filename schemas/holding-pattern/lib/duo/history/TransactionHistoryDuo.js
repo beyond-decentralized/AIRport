@@ -1,14 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const ddl_1 = require("../../ddl/ddl");
-const tokens_1 = require("../../tokens");
-const generated_1 = require("../../generated/generated");
-class TransactionHistoryDuo extends generated_1.BaseTransactionHistoryDuo {
-    getNewRecord(transactionType = ground_control_1.TransactionType.LOCAL) {
-        let transaction = new ddl_1.TransactionHistory();
-        transaction.transactionType = ground_control_1.TransactionType.LOCAL;
+import { DI } from '@airport/di';
+import { TransactionType } from '@airport/ground-control';
+import { TransactionHistory } from '../../ddl/ddl';
+import { TRANS_HISTORY_DUO } from '../../tokens';
+import { BaseTransactionHistoryDuo, } from '../../generated/generated';
+export class TransactionHistoryDuo extends BaseTransactionHistoryDuo {
+    getNewRecord(transactionType = TransactionType.LOCAL) {
+        let transaction = new TransactionHistory();
+        transaction.transactionType = TransactionType.LOCAL;
         return transaction;
     }
     getRepositoryTransaction(transactionHistory, repositoryId, actor, repoTransHistoryDuo) {
@@ -21,6 +19,5 @@ class TransactionHistoryDuo extends generated_1.BaseTransactionHistoryDuo {
         return repoTransHistory;
     }
 }
-exports.TransactionHistoryDuo = TransactionHistoryDuo;
-di_1.DI.set(tokens_1.TRANS_HISTORY_DUO, TransactionHistoryDuo);
+DI.set(TRANS_HISTORY_DUO, TransactionHistoryDuo);
 //# sourceMappingURL=TransactionHistoryDuo.js.map

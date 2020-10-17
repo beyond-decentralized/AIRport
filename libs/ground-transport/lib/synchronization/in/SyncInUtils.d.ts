@@ -1,5 +1,5 @@
 import { ColumnIndex, EntityId, SchemaIndex, SchemaVersionId } from '@airport/ground-control';
-import { ActorId, IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRepositoryTransactionHistory, RecordHistoryId, RepositoryEntityActorRecordId, RepositoryId } from '@airport/holding-pattern';
+import { ActorId, IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRepositoryTransactionHistory, RecordHistoryId, RepositoryEntity_ActorRecordId, RepositoryId } from '@airport/holding-pattern';
 import { IRepositoryTransactionBlock, ISharingMessage, ISynchronizationConflict, RepositoryTransactionBlockData } from '@airport/moving-walkway';
 export declare type RemoteSchemaIndex = SchemaIndex;
 export declare type RemoteSchemaVersionId = SchemaVersionId;
@@ -43,9 +43,9 @@ export interface ISyncInUtils {
     ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: RepositoryId, operationHistory: IOperationHistory, recordMapBySchemaTableAndRepository: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<CI, V>>>>): Map<CI, V>;
 }
 export interface Stage1SyncedInDataProcessingResult {
-    recordCreations: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<ActorId, Map<RepositoryEntityActorRecordId, Map<ColumnIndex, any>>>>>>;
-    recordDeletions: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>;
-    recordUpdates: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<ActorId, Map<RepositoryEntityActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>;
+    recordCreations: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>;
+    recordDeletions: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
+    recordUpdates: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>;
     syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>;
 }
 export declare class SyncInUtils implements ISyncInUtils {
@@ -53,3 +53,4 @@ export declare class SyncInUtils implements ISyncInUtils {
     private recordSharingMessageRepoTransBlocks;
     private recordSharingNodeRepoTransBlocks;
 }
+//# sourceMappingURL=SyncInUtils.d.ts.map

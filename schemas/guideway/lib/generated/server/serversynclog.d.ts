@@ -9,3 +9,4 @@ export interface IServerSyncLog {
     dataCharsTotal?: number;
     server?: IServer;
 }
+//# sourceMappingURL=serversynclog.d.ts.map

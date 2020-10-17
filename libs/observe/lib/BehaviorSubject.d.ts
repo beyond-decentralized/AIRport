@@ -4,3 +4,4 @@ export declare class BehaviorSubject<V> extends Subject<V> {
     next(value: V): void;
     clear(): void;
 }
+//# sourceMappingURL=BehaviorSubject.d.ts.map

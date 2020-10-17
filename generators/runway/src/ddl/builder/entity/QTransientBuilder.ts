@@ -24,7 +24,7 @@ export class QTransientBuilder {
 			}
 		}
 
-		return `${prop.name}?: ${prop.type};`;
+		return `${prop.name}?: I${prop.type};`;
 	}
 
 }

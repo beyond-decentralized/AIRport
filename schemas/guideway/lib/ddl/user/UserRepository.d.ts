@@ -6,3 +6,4 @@ export declare class UserRepository {
     user: User;
     permission: UserRepositoryPermission;
 }
+//# sourceMappingURL=UserRepository.d.ts.map

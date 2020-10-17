@@ -4,3 +4,4 @@ export interface IVersionedSchemaObject {
     removedInVersion?: ISchemaVersion;
     sinceVersion?: ISchemaVersion;
 }
+//# sourceMappingURL=versionedschemaobject.d.ts.map

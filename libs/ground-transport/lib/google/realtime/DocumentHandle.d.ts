@@ -15,3 +15,4 @@ export declare class DocumentHandle {
     addChangeRecord(changeRecord: ChangeRecord): Promise<any>;
     addChangeRecords(changeRecords: ChangeRecord[]): Promise<void>;
 }
+//# sourceMappingURL=DocumentHandle.d.ts.map

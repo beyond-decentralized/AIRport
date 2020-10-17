@@ -4,3 +4,4 @@ export interface ISharingMessageRepoTransBlock {
     sharingMessage: ISharingMessage;
     repositoryTransactionBlock: IRepositoryTransactionBlock;
 }
+//# sourceMappingURL=sharingmessagerepotransblock.d.ts.map

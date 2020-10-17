@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Builder_1 = require("../Builder");
+import { QCoreEntityBuilder } from "../Builder";
 /**
  * Created by Papa on 4/25/2016.
  */
-class QEntityBuilder extends Builder_1.QCoreEntityBuilder {
+export class QEntityBuilder extends QCoreEntityBuilder {
     constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedEntity) {
         super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName);
         this.sIndexedEntity = sIndexedEntity;
@@ -59,5 +57,4 @@ ${nonIdRelationData.definitions}
         return classSource;
     }
 }
-exports.QEntityBuilder = QEntityBuilder;
 //# sourceMappingURL=QEntityBuilder.js.map

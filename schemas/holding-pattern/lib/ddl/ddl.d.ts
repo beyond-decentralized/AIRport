@@ -25,3 +25,4 @@ export * from './traditional/MutableRepoRow';
 export * from './traditional/MutableRow';
 export * from './traditional/ReferenceRow';
 export * from './common';
+//# sourceMappingURL=ddl.d.ts.map

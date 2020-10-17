@@ -10,3 +10,4 @@ export declare class TransactionHistoryDuo extends BaseTransactionHistoryDuo imp
     getNewRecord(transactionType?: TransactionType): ITransactionHistory;
     getRepositoryTransaction(transactionHistory: ITransactionHistory, repositoryId: RepositoryId, actor: IActor, repoTransHistoryDuo: IRepositoryTransactionHistoryDuo): IRepositoryTransactionHistory;
 }
+//# sourceMappingURL=TransactionHistoryDuo.d.ts.map

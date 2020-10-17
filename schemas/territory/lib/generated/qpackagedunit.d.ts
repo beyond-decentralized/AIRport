@@ -61,3 +61,4 @@ export interface QPackagedUnitQId {
 }
 export interface QPackagedUnitQRelation extends IQRelation<QPackagedUnit>, QPackagedUnitQId {
 }
+//# sourceMappingURL=qpackagedunit.d.ts.map

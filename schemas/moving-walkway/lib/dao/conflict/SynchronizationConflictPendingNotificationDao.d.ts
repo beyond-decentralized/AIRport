@@ -3,3 +3,4 @@ export interface ISynchronizationConflictPendingNotificationDao extends IBaseSyn
 }
 export declare class SynchronizationConflictPendingNotificationDao extends BaseSynchronizationConflictPendingNotificationDao implements ISynchronizationConflictPendingNotificationDao {
 }
+//# sourceMappingURL=SynchronizationConflictPendingNotificationDao.d.ts.map

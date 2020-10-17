@@ -7,3 +7,4 @@ export interface ISharingNodeTerminalDao extends IBaseSharingNodeTerminalDao {
 export declare class SharingNodeTerminalDao extends BaseSharingNodeTerminalDao implements ISharingNodeTerminalDao {
     findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(terminalId: TerminalId, sharingNodeIds: SharingNodeId[]): Promise<Map<SharingNodeId, ISharingNodeTerminal>>;
 }
+//# sourceMappingURL=SharingNodeTerminalDao.d.ts.map

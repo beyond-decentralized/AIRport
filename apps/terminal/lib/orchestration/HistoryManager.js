@@ -1,22 +1,19 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const holding_pattern_1 = require("@airport/holding-pattern");
-const tokens_1 = require("../tokens");
-class HistoryManager {
+import { container, DI } from '@airport/di';
+import { TransactionType } from '@airport/ground-control';
+import { REPO_TRANS_HISTORY_DUO, TRANS_HISTORY_DUO } from '@airport/holding-pattern';
+import { HISTORY_MANAGER } from '../tokens';
+export class HistoryManager {
     // private operHistoryDuo: Promise<IOperationHistoryDuo>
     // private recHistoryDuo: Promise<IRecordHistoryDuo>
     // private repoTransHistoryDuo: Promise<IRepositoryTransactionHistoryDuo>
-    async getNewTransHistory(transactionType = ground_control_1.TransactionType.LOCAL) {
-        const transHistoryDuo = await di_1.container(this).get(holding_pattern_1.TRANS_HISTORY_DUO);
+    async getNewTransHistory(transactionType = TransactionType.LOCAL) {
+        const transHistoryDuo = await container(this).get(TRANS_HISTORY_DUO);
         return await transHistoryDuo.getNewRecord(transactionType);
     }
     async getNewRepoTransHistory(transactionHistory, repositoryId, actor) {
-        const [repoTransHistoryDuo, transHistoryDuo] = await di_1.container(this).get(holding_pattern_1.REPO_TRANS_HISTORY_DUO, holding_pattern_1.TRANS_HISTORY_DUO);
+        const [repoTransHistoryDuo, transHistoryDuo] = await container(this).get(REPO_TRANS_HISTORY_DUO, TRANS_HISTORY_DUO);
         return await transHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryId, actor, repoTransHistoryDuo);
     }
 }
-exports.HistoryManager = HistoryManager;
-di_1.DI.set(tokens_1.HISTORY_MANAGER, HistoryManager);
+DI.set(HISTORY_MANAGER, HistoryManager);
 //# sourceMappingURL=HistoryManager.js.map

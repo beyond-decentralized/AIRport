@@ -1,6 +1,7 @@
 import { TableConfiguration } from '@airport/air-control';
 import { EntityId, EntityIsLocal, EntityIsRepositoryEntity, EntityName, TableIndex } from '@airport/ground-control';
 import { SchemaColumn } from './SchemaColumn';
+import { SchemaOperation } from './SchemaOperation';
 import { SchemaProperty } from './SchemaProperty';
 import { SchemaRelation } from './SchemaRelation';
 import { SchemaVersion } from './SchemaVersion';
@@ -14,6 +15,7 @@ export declare class SchemaEntity extends VersionedSchemaObject {
     tableConfig: TableConfiguration;
     schemaVersion: SchemaVersion;
     columns: SchemaColumn[];
+    operations?: SchemaOperation[];
     properties: SchemaProperty[];
     relations: SchemaRelation[];
     relationReferences: SchemaRelation[];
@@ -28,3 +30,4 @@ export declare class SchemaEntity extends VersionedSchemaObject {
         [name: string]: SchemaProperty;
     };
 }
+//# sourceMappingURL=SchemaEntity.d.ts.map

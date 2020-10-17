@@ -10,3 +10,4 @@ export declare class SchemaInitializer implements ISchemaInitializer {
     hydrate(jsonSchemas: JsonSchema[]): Promise<void>;
     private setAirDbSchemas;
 }
+//# sourceMappingURL=SchemaInitializer.d.ts.map

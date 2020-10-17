@@ -5,3 +5,4 @@ export interface ISchemaPropertyColumn extends IVersionedSchemaObject {
     column: ISchemaColumn;
     property: ISchemaProperty;
 }
+//# sourceMappingURL=schemapropertycolumn.d.ts.map

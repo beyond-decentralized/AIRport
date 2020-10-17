@@ -10,3 +10,4 @@ export interface ISharingNode {
     messages?: ISharingMessage[];
     sharingNodeRepoTransBlocks?: ISharingNodeRepoTransBlock[];
 }
+//# sourceMappingURL=sharingnode.d.ts.map

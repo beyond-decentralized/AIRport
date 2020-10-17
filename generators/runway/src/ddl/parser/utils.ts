@@ -1,4 +1,5 @@
 import * as ts from 'typescript'
+import tsc              from 'typescript'
 
 /**
  * Created by Papa on 3/27/2016.
@@ -22,10 +23,10 @@ export function isDecoratedAsEntity(
 		if (!expression) {
 			return false
 		}
-		if (<any>expression.kind === ts.SyntaxKind.CallExpression) {
+		if (<any>expression.kind === tsc.SyntaxKind.CallExpression) {
 			expression = <ts.Identifier>(<ts.CallExpression><any>expression).expression
 		}
-		if (expression.kind !== ts.SyntaxKind.Identifier) {
+		if (expression.kind !== tsc.SyntaxKind.Identifier) {
 			return false
 		}
 		let decoratorName = expression.text
@@ -53,7 +54,7 @@ export function getClassPath(
 		return null
 	}
 
-	if (!sourceFile || sourceFile.kind !== ts.SyntaxKind.SourceFile) {
+	if (!sourceFile || sourceFile.kind !== tsc.SyntaxKind.SourceFile) {
 		return null
 	}
 
@@ -69,7 +70,7 @@ export function getImplementedInterfaces(
 	}
 	let interfaces: string[] = []
 	valueDeclaration.heritageClauses.forEach((heritageClause: ts.HeritageClause) => {
-		if (heritageClause.token != ts.SyntaxKind.ImplementsKeyword) {
+		if (heritageClause.token != tsc.SyntaxKind.ImplementsKeyword) {
 			return
 		}
 		heritageClause.types.forEach(
@@ -93,7 +94,7 @@ export function getParentClassImport(
 		return parentClassImport
 	}
 	let valueDeclaration: ts.SourceFile = <ts.SourceFile>parent.valueDeclaration
-	if (!valueDeclaration || valueDeclaration.kind !== ts.SyntaxKind.SourceFile) {
+	if (!valueDeclaration || valueDeclaration.kind !== tsc.SyntaxKind.SourceFile) {
 		return parentClassImport
 	}
 	const imports: ts.Identifier[] = (<any>valueDeclaration)['imports']
@@ -103,11 +104,11 @@ export function getParentClassImport(
 	imports.some((
 		anImport: ts.Identifier
 	) => {
-		if (<any>anImport.kind !== ts.SyntaxKind.StringLiteral) {
+		if (<any>anImport.kind !== tsc.SyntaxKind.StringLiteral) {
 			return false
 		}
 		let parent = anImport.parent
-		if (!parent || parent.kind !== ts.SyntaxKind.ImportDeclaration) {
+		if (!parent || parent.kind !== tsc.SyntaxKind.ImportDeclaration) {
 			return false
 		}
 		let nameMatches = endsWith(anImport.text, parentClassName)
@@ -135,7 +136,7 @@ export function getParentClassName(
 	classSymbol.declarations.some((
 		declaration: ts.ClassLikeDeclaration
 	) => {
-		if (declaration.kind !== ts.SyntaxKind.ClassDeclaration) {
+		if (declaration.kind !== tsc.SyntaxKind.ClassDeclaration) {
 			return false
 		}
 		let heritageClauses = declaration.heritageClauses
@@ -145,10 +146,10 @@ export function getParentClassName(
 		return heritageClauses.some((
 			heritageClause: ts.HeritageClause
 		) => {
-			if (heritageClause.kind !== ts.SyntaxKind.HeritageClause) {
+			if (heritageClause.kind !== tsc.SyntaxKind.HeritageClause) {
 				return false
 			}
-			if (heritageClause.token !== ts.SyntaxKind.ExtendsKeyword) {
+			if (heritageClause.token !== tsc.SyntaxKind.ExtendsKeyword) {
 				return false
 			}
 			let types = heritageClause.types
@@ -159,7 +160,7 @@ export function getParentClassName(
 				type: ts.ExpressionWithTypeArguments
 			) => {
 				let expression: ts.Identifier = <any>type.expression
-				if (!expression || expression.kind !== ts.SyntaxKind.Identifier) {
+				if (!expression || expression.kind !== tsc.SyntaxKind.Identifier) {
 					return false
 				}
 				parentEntityName = expression.text

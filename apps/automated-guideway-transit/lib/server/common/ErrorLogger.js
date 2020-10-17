@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const tokens_1 = require("../../tokens");
-class ErrorLogger {
+import { DI } from '@airport/di';
+import { ERROR_LOGGER } from "../../tokens";
+export class ErrorLogger {
     async logError(log, errorType, terminalCredentials, erroneousEntityInfo) {
         log.error(`AGT error:
 		Type:               {1}
@@ -11,6 +9,5 @@ class ErrorLogger {
 		Entity w/ Error Id: {4}`, errorType, terminalCredentials[0], terminalCredentials[1], erroneousEntityInfo);
     }
 }
-exports.ErrorLogger = ErrorLogger;
-di_1.DI.set(tokens_1.ERROR_LOGGER, ErrorLogger);
+DI.set(ERROR_LOGGER, ErrorLogger);
 //# sourceMappingURL=ErrorLogger.js.map

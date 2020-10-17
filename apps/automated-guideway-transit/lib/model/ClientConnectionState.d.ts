@@ -4,3 +4,4 @@ export declare enum ClientConnectionState {
     ACTIVE = 3,
     INACTIVE = 4
 }
+//# sourceMappingURL=ClientConnectionState.d.ts.map

@@ -8,3 +8,4 @@ export declare class TuningParameters {
     parameterName: TuningParametersParameterName;
     parameterValue: TuningParametersParameterValue;
 }
+//# sourceMappingURL=TuningParameters.d.ts.map

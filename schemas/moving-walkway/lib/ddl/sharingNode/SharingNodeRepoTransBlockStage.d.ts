@@ -5,3 +5,4 @@ export declare class SharingNodeRepoTransBlockStage {
     repositoryTransactionBlockId: TmRepositoryTransactionBlockId;
     syncStatus: SharingNodeRepoTransBlockSyncStatus;
 }
+//# sourceMappingURL=SharingNodeRepoTransBlockStage.d.ts.map

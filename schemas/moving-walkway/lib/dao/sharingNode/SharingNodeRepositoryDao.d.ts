@@ -12,3 +12,4 @@ export declare class SharingNodeRepositoryDao extends BaseSharingNodeRepositoryD
     findBySharingNodeAndAgtRepositoryIds(sharingNodeIds: SharingNodeId[], agtRepositoryIds: AgtRepositoryId[]): Promise<Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>>;
     findNewRepoTransHistoriesForSharingNodes(sharingNodeIds: SharingNodeId[]): Promise<[Map<RepositoryId, Set<SharingNodeId>>, IRepositoryTransactionHistory[]]>;
 }
+//# sourceMappingURL=SharingNodeRepositoryDao.d.ts.map

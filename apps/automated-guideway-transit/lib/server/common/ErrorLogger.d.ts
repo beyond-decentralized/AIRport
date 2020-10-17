@@ -8,3 +8,4 @@ export interface IErrorLogger {
 export declare class ErrorLogger implements IErrorLogger {
     logError(log: ILogger, errorType: ServerErrorType, terminalCredentials: TerminalCredentials, erroneousEntityInfo: ErroneousEntityInfo): Promise<void>;
 }
+//# sourceMappingURL=ErrorLogger.d.ts.map

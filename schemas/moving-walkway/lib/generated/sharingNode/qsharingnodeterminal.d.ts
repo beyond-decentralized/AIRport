@@ -72,3 +72,4 @@ export interface QSharingNodeTerminalQId {
 }
 export interface QSharingNodeTerminalQRelation extends IQRelation<QSharingNodeTerminal>, QSharingNodeTerminalQId {
 }
+//# sourceMappingURL=qsharingnodeterminal.d.ts.map

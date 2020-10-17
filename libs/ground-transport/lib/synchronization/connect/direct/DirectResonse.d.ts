@@ -13,3 +13,4 @@ export declare class DirectResponse {
     write(data: MessageToTM): void;
     end(): void;
 }
+//# sourceMappingURL=DirectResonse.d.ts.map

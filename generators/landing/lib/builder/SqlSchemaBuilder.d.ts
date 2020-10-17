@@ -13,3 +13,4 @@ export declare abstract class SqlSchemaBuilder implements ISchemaBuilder {
     protected isPrimaryKeyColumn(jsonEntity: JsonSchemaEntity, jsonColumn: JsonSchemaColumn): boolean;
     protected getPrimaryKeyStatement(columnNames: string[]): string;
 }
+//# sourceMappingURL=SqlSchemaBuilder.d.ts.map

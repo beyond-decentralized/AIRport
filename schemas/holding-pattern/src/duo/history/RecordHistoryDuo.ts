@@ -2,7 +2,7 @@ import {DI}                        from '@airport/di'
 import {DbColumn}                  from '@airport/ground-control'
 import {
 	RecordHistory,
-	RepositoryEntityActorRecordId
+	RepositoryEntity_ActorRecordId
 }                                  from '../../ddl/ddl'
 import {
 	REC_HISTORY_DUO,
@@ -24,7 +24,7 @@ export interface IRecordHistoryDuo
 	extends IBaseRecordHistoryDuo {
 
 	getNewRecord(
-		actorRecordId: RepositoryEntityActorRecordId
+		actorRecordId: RepositoryEntity_ActorRecordId
 	): IRecordHistory;
 
 	addNewValue(
@@ -48,7 +48,7 @@ export class RecordHistoryDuo
 	implements IRecordHistoryDuo {
 
 	getNewRecord(
-		actorRecordId: RepositoryEntityActorRecordId
+		actorRecordId: RepositoryEntity_ActorRecordId
 	): IRecordHistory {
 		const recordHistory = new RecordHistory()
 

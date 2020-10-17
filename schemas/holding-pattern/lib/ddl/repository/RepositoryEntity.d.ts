@@ -5,11 +5,14 @@ import { Repository } from './Repository';
 /**
  * Created by Papa on 2/17/2017.
  */
-export declare type RepositoryEntityActorRecordId = number;
-export declare type RepositoryEntitySystemWideOperationId = SystemWideOperationId;
+export declare type RepositoryEntity_ActorRecordId = number;
+export declare type RepositoryEntity_AgeSuitability = number;
+export declare type RepositoryEntity_SystemWideOperationId = SystemWideOperationId;
 export declare abstract class RepositoryEntity extends Stageable {
     repository: Repository;
     actor: Actor;
-    actorRecordId: RepositoryEntityActorRecordId;
-    systemWideOperationId: RepositoryEntitySystemWideOperationId;
+    actorRecordId: RepositoryEntity_ActorRecordId;
+    ageSuitability: RepositoryEntity_AgeSuitability;
+    systemWideOperationId: RepositoryEntity_SystemWideOperationId;
 }
+//# sourceMappingURL=RepositoryEntity.d.ts.map

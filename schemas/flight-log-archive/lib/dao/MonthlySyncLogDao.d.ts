@@ -8,3 +8,4 @@ export declare class MonthlySyncLogDao extends BaseMonthlySyncLogDao implements 
     findAllForDatabase(databaseId: MonthlySyncLogDatabaseId, synced: MonthlySyncLogSynced, callback: (syncSyncLogRows: [MonthlySyncLogRepositoryId, MonthlySyncLogDate][]) => void): Promise<void>;
     updateSyncStatus(databaseId: MonthlySyncLogDatabaseId, repositoryIds: MonthlySyncLogRepositoryId[], synced: MonthlySyncLogSynced): Promise<void>;
 }
+//# sourceMappingURL=MonthlySyncLogDao.d.ts.map

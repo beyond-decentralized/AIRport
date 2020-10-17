@@ -11,3 +11,4 @@ export declare class RepositoryApplication {
     application: Application;
     repository: Repository;
 }
+//# sourceMappingURL=RepositoryApplication.d.ts.map

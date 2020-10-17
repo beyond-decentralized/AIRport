@@ -64,3 +64,4 @@ export interface QTuningParametersQId {
 }
 export interface QTuningParametersQRelation extends IQRelation<QTuningParameters>, QTuningParametersQId {
 }
+//# sourceMappingURL=qtuningparameters.d.ts.map

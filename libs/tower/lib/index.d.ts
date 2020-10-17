@@ -7,3 +7,4 @@ export * from './DatabaseFacade';
 export * from './transactional';
 export * from './OperationManager';
 export * from './QueryFacade';
+//# sourceMappingURL=index.d.ts.map

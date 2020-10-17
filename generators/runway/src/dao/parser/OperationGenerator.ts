@@ -5,6 +5,7 @@ import {
 }                from '@airport/ground-control'
 import * as ts   from 'typescript'
 import {DaoFile} from '../../ddl/parser/FileImports'
+import tsc              from 'typescript'
 
 export const entityOperationMap: {
 	[entityName: string]: {
@@ -42,7 +43,7 @@ export function visitDaoFile(
 	let symbol = globalThis.checker
 		.getSymbolAtLocation((<ts.ClassDeclaration>node).name)
 
-	if (node.kind !== ts.SyntaxKind.ClassDeclaration) {
+	if (node.kind !== tsc.SyntaxKind.ClassDeclaration) {
 		return
 	}
 
@@ -80,7 +81,7 @@ function serializeClass(
 			return
 		}
 		switch (member.valueDeclaration.kind) {
-			case ts.SyntaxKind.PropertyDeclaration:
+			case tsc.SyntaxKind.PropertyDeclaration:
 				console.log(`Property: ${memberName}`)
 				break
 			default:
@@ -88,10 +89,10 @@ function serializeClass(
 		}
 
 		const expression: ts.PropertyAccessExpression = member.valueDeclaration.initializer
-		if (expression.kind !== ts.SyntaxKind.PropertyAccessExpression) {
+		if (expression.kind !== tsc.SyntaxKind.PropertyAccessExpression) {
 			return
 		}
-		if (expression.expression.kind !== ts.SyntaxKind.ThisKeyword) {
+		if (expression.expression.kind !== tsc.SyntaxKind.ThisKeyword) {
 			return
 		}
 
@@ -175,9 +176,9 @@ function serializeRule(
 		| ts.NumericLiteral | ts.ObjectLiteralExpression,
 	rule: JsonOperationRule
 ): JsonOperationRule {
-	if (initializer.kind === ts.SyntaxKind.BinaryExpression) {
+	if (initializer.kind === tsc.SyntaxKind.BinaryExpression) {
 		const operatorKind = initializer.operatorToken.kind
-		if (operatorKind === ts.SyntaxKind.BarBarToken) {
+		if (operatorKind === tsc.SyntaxKind.BarBarToken) {
 			rule.operator = '|'
 		} else {
 			throw new Error('Unsupported BinaryExpression.operatorToken.kind in @Persist rule: '
@@ -187,16 +188,16 @@ function serializeRule(
 			left: serializeRule(initializer.left as any, {}),
 			right: serializeRule(initializer.right as any, {}),
 		}
-	} else if (initializer.kind === ts.SyntaxKind.Identifier
+	} else if (initializer.kind === tsc.SyntaxKind.Identifier
 		&& initializer.escapedText === 'Y') {
 		rule.anyValue = true
-	} else if (initializer.kind === ts.SyntaxKind.NullKeyword) {
+	} else if (initializer.kind === tsc.SyntaxKind.NullKeyword) {
 		rule.isNull = true
-	} else if (initializer.kind === ts.SyntaxKind.NumericLiteral) {
+	} else if (initializer.kind === tsc.SyntaxKind.NumericLiteral) {
 		rule.numericValue = parseInt(initializer.text)
-	} else if (initializer.kind === ts.SyntaxKind.ObjectLiteralExpression) {
+	} else if (initializer.kind === tsc.SyntaxKind.ObjectLiteralExpression) {
 		serializeRules(initializer, rule)
-	} else if (initializer.kind === ts.SyntaxKind.ArrayLiteralExpression) {
+	} else if (initializer.kind === tsc.SyntaxKind.ArrayLiteralExpression) {
 		rule.isArray  = true
 		// serializeRules(initializer, rule)
 		rule.subRules = []
@@ -206,7 +207,7 @@ function serializeRule(
 			const subRule = serializeRule(subInitializer as any, {});
 			(rule.subRules as JsonOperationRule[]).push(subRule)
 		})
-	} else if (initializer.kind === ts.SyntaxKind.CallExpression
+	} else if (initializer.kind === tsc.SyntaxKind.CallExpression
 		&& (initializer.expression as ts.Identifier).escapedText === 'ANOTHER') {
 		if (initializer.arguments.length === 1) {
 			rule.functionCall = {
@@ -239,7 +240,7 @@ function getNumericFunctionCallArgument(
 	argument,
 	functionName: string
 ) {
-	if (argument.kind !== ts.SyntaxKind.NumericLiteral) {
+	if (argument.kind !== tsc.SyntaxKind.NumericLiteral) {
 		throw new Error(`Expecting only Numeric Literals as parameters to "${functionName}" function call.`)
 	}
 	return parseInt(argument.text)

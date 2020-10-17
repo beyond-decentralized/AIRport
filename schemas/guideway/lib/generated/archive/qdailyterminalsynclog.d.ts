@@ -64,3 +64,4 @@ export interface QDailyTerminalSyncLogQId {
 }
 export interface QDailyTerminalSyncLogQRelation extends IQRelation<QDailyTerminalSyncLog>, QDailyTerminalSyncLogQId {
 }
+//# sourceMappingURL=qdailyterminalsynclog.d.ts.map

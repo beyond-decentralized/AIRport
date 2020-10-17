@@ -82,3 +82,4 @@ export interface QRecordUpdateStageQId {
 }
 export interface QRecordUpdateStageQRelation extends IQRelation<QRecordUpdateStage>, QRecordUpdateStageQId {
 }
+//# sourceMappingURL=qrecordupdatestage.d.ts.map

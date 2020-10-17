@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MAPPED_SUPERCLASS = [
+export const MAPPED_SUPERCLASS = [
     {
         "type": "Stageable",
         "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",

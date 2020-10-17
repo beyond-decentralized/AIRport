@@ -3,7 +3,8 @@
     "outDir": "lib/",
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "lib",

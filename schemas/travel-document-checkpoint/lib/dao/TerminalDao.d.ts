@@ -9,3 +9,4 @@ export declare class TerminalDao extends BaseTerminalDao implements ITerminalDao
     findMapByIds(ownerIds: UserId[], names: TerminalName[], secondIds: TerminalSecondId[]): Promise<Map<UserId, Map<TerminalName, Map<TerminalSecondId, ITerminal>>>>;
     findByIds(ownerIds: UserId[], names: TerminalName[], secondIds: TerminalSecondId[]): Promise<ITerminal[]>;
 }
+//# sourceMappingURL=TerminalDao.d.ts.map

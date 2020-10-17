@@ -1,18 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const schema_1 = require("@airport/airport-code/lib/generated/schema");
-const schema_2 = require("@airport/holding-pattern/lib/generated/schema");
-const schema_3 = require("@airport/territory/lib/generated/schema");
-const schema_4 = require("@airport/traffic-pattern/lib/generated/schema");
-const schema_5 = require("@airport/travel-document-checkpoint/lib/generated/schema");
+import { SCHEMA as AIRPORT_CODE } from '@airport/airport-code/lib/generated/schema';
+import { SCHEMA as HOLDING_PATTERN } from '@airport/holding-pattern/lib/generated/schema';
+import { SCHEMA as TERRITORY } from '@airport/territory/lib/generated/schema';
+import { SCHEMA as TRAFFIC_PATTERN } from '@airport/traffic-pattern/lib/generated/schema';
+import { SCHEMA as TRAVEL_DOCUMENT_CHECKPOINT } from '@airport/travel-document-checkpoint/lib/generated/schema';
 // TODO: remove once used
 // import {TERMINAL_DAO} from '@airport/travel-document-checkpoint'
 // var temp = TERMINAL_DAO
-exports.BLUEPRINT = [
-    schema_3.SCHEMA,
-    schema_1.SCHEMA,
-    schema_5.SCHEMA,
-    schema_4.SCHEMA,
-    schema_2.SCHEMA
+export const BLUEPRINT = [
+    TERRITORY,
+    AIRPORT_CODE,
+    TRAVEL_DOCUMENT_CHECKPOINT,
+    TRAFFIC_PATTERN,
+    HOLDING_PATTERN
 ];
 //# sourceMappingURL=index.js.map

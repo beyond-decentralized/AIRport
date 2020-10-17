@@ -10,3 +10,4 @@ export declare class SharingNodeRepoTransBlockStageDao extends BaseSharingNodeRe
     insertValues(values: SharingNodeRepoTransBlockStageValues[]): Promise<number>;
     delete(): Promise<number>;
 }
+//# sourceMappingURL=SharingNodeRepoTransBlockStageDao.d.ts.map

@@ -26,3 +26,4 @@ declare namespace gapi.client.drive.files {
     function list(dirRef?: DirRef): Promise<any>;
     function get(fileRef: FileRef): any;
 }
+//# sourceMappingURL=GoogleDriveNamespace.d.ts.map

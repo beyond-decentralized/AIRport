@@ -4,3 +4,4 @@ export interface IRecordHistoryNewValue {
     recordHistory: IRecordHistory;
     newValue?: any;
 }
+//# sourceMappingURL=recordhistorynewvalue.d.ts.map

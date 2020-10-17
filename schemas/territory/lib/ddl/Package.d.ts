@@ -5,3 +5,4 @@ export declare class Package {
     name: PackageName;
     applicationPackages: ApplicationPackage[];
 }
+//# sourceMappingURL=Package.d.ts.map

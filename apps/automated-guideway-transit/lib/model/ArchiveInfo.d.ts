@@ -8,3 +8,4 @@ export interface ArchiveInfo {
     month: number;
     date: number;
 }
+//# sourceMappingURL=ArchiveInfo.d.ts.map

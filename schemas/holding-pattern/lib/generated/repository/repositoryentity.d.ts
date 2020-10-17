@@ -7,3 +7,4 @@ export interface IRepositoryEntity extends IStageable {
     actor: IActor;
     systemWideOperationId?: number;
 }
+//# sourceMappingURL=repositoryentity.d.ts.map

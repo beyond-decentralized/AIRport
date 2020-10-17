@@ -1,12 +1,7 @@
-"use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(require("./history/RecordHistoryNewValueDao"));
-__export(require("./history/RecordHistoryOldValueDao"));
-__export(require("./history/RepositoryTransactionHistoryDao"));
-__export(require("./infrastructure/ActorDao"));
-__export(require("./repository/RepositoryActorDao"));
-__export(require("./repository/RepositoryDao"));
+export * from './history/RecordHistoryNewValueDao';
+export * from './history/RecordHistoryOldValueDao';
+export * from './history/RepositoryTransactionHistoryDao';
+export * from './infrastructure/ActorDao';
+export * from './repository/RepositoryActorDao';
+export * from './repository/RepositoryDao';
 //# sourceMappingURL=dao.js.map

@@ -47,3 +47,4 @@ export declare const SYNC_OUT_MSG_SENDER: import("@airport/di").IDiToken<ISyncOu
 export declare const SYNC_OUT_REPO_TRANS_BLOCK_CREATOR: import("@airport/di").IDiToken<ISyncOutRepositoryTransactionBlockCreator>;
 export declare const SYNC_OUT_SERIALIZER: import("@airport/di").IDiToken<ISyncOutSerializer>;
 export declare const TWO_STAGE_SYNCED_IN_DATA_PROCESSOR: import("@airport/di").IDiToken<ITwoStageSyncedInDataProcessor>;
+//# sourceMappingURL=tokens.d.ts.map

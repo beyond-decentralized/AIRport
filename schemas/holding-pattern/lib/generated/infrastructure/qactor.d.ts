@@ -73,3 +73,4 @@ export interface QActorQId {
 }
 export interface QActorQRelation extends IQRelation<QActor>, QActorQId {
 }
+//# sourceMappingURL=qactor.d.ts.map

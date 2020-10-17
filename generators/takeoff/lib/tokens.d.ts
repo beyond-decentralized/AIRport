@@ -8,3 +8,4 @@ export declare const DDL_OBJECT_LINKER: import("@airport/di").IDiToken<IDdlObjec
 export declare const DDL_OBJECT_RETRIEVER: import("@airport/di").IDiToken<IDdlObjectRetriever>;
 export declare const QUERY_ENTITY_CLASS_CREATOR: import("@airport/di").IDiToken<IQueryEntityClassCreator>;
 export declare const QUERY_OBJECT_INITIALIZER: import("@airport/di").IDiToken<IQueryObjectInitializer>;
+//# sourceMappingURL=tokens.d.ts.map

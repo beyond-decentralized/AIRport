@@ -2709,3 +2709,4 @@ export declare const MAPPED_SUPERCLASS: ({
     location?: undefined;
     parentEntity?: undefined;
 })[];
+//# sourceMappingURL=mappedSuperclass.d.ts.map

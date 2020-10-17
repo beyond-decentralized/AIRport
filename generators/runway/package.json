@@ -2,11 +2,12 @@
   "dependencies": {
     "@airport/ground-control": "0.0.1",
     "@airport/tower": "0.0.1",
-    "@types/node": "^6.0.85",
-    "typescript": "^3.8.2"
+    "@types/node": "^14.11.10",
+    "typescript": "^4.0.3"
   },
   "main": "lib/index.js",
   "name": "@airport/runway",
+  "type": "module",
   "typings": "lib/index",
   "version": "0.0.1"
 }

@@ -10,3 +10,4 @@ export interface IOperationHistory {
     entity?: ISchemaEntity;
     recordHistory?: IRecordHistory[];
 }
+//# sourceMappingURL=operationhistory.d.ts.map

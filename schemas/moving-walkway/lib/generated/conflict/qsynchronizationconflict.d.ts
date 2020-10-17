@@ -73,3 +73,4 @@ export interface QSynchronizationConflictQId {
 }
 export interface QSynchronizationConflictQRelation extends IQRelation<QSynchronizationConflict>, QSynchronizationConflictQId {
 }
+//# sourceMappingURL=qsynchronizationconflict.d.ts.map

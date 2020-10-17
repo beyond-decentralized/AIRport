@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * (At least at first) archiving should only be performed on a partition
  * that is no longer queried for daily sync entries.
@@ -9,7 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Then delete all AgtSharingMessage records that no longer have any SyncLog
  * children.
  */
-class ArchivedPartitionManagementServer {
+export class ArchivedPartitionManagementServer {
     async indexRTBPartitionToBeArchived(dateOfPartition) {
     }
     async indexSyncLogPartitionToBeArchived(dateOfPartition) {
@@ -22,5 +20,4 @@ class ArchivedPartitionManagementServer {
     ) {
     }
 }
-exports.ArchivedPartitionManagementServer = ArchivedPartitionManagementServer;
 //# sourceMappingURL=ArchivedPartitionManagementServer.js.map

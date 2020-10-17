@@ -6,3 +6,4 @@ export interface ISyncOutMessageSender {
 export declare class SyncOutMessageSender implements ISyncOutMessageSender {
     sendMessages(sharingNodeMap: Map<SharingNodeId, ISharingNode>, messagesBySharingNode: Map<SharingNodeId, MessageFromTM>): Promise<void>;
 }
+//# sourceMappingURL=SyncOutMessageSender.d.ts.map

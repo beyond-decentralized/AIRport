@@ -5,3 +5,4 @@ export interface ISecurityAnswer {
     securityQuestion: ISecurityQuestion;
     answer?: string;
 }
+//# sourceMappingURL=securityanswer.d.ts.map

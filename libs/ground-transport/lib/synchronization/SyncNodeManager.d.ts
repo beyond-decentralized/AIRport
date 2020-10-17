@@ -19,3 +19,4 @@ export declare class SyncNodeManager implements ISyncNodeManager {
  * a given memorized selector changes value.  Notification should be an observable
  *
  */
+//# sourceMappingURL=SyncNodeManager.d.ts.map

@@ -9,3 +9,4 @@ export declare class SharingNodeTerminal {
     agtTerminalPassword: TerminalPassword;
     terminalSyncStatus: TerminalSyncStatus;
 }
+//# sourceMappingURL=SharingNodeTerminal.d.ts.map

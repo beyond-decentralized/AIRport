@@ -26,3 +26,4 @@ export declare class SchemaChecker implements ISchemaChecker {
     private findExistingSchemas;
     private hasReferences;
 }
+//# sourceMappingURL=SchemaChecker.d.ts.map

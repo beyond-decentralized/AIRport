@@ -3,7 +3,11 @@ export declare type DailySyncLogDatabaseId = DatabaseId;
 export declare type DailySyncLogRepositoryId = RepositoryId;
 export declare type DailySyncLogSynced = number;
 export declare type DailySyncLogDateNumber = number;
-export declare type DailySyncLogValues = [DailySyncLogDatabaseId, DailySyncLogRepositoryId, DailySyncLogDateNumber];
+export declare type DailySyncLogValues = [
+    DailySyncLogDatabaseId,
+    DailySyncLogRepositoryId,
+    DailySyncLogDateNumber
+];
 /**
  * Sync log is used to determine which archive records a terminal still has not synced.
  *
@@ -48,3 +52,4 @@ export declare class DailySyncLog {
     date: DailySyncLogDateNumber;
     repositoryId: DailySyncLogRepositoryId;
 }
+//# sourceMappingURL=DailySyncLog.d.ts.map

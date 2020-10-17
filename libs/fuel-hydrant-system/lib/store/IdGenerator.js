@@ -1,18 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const check_in_1 = require("@airport/check-in");
-const di_1 = require("@airport/di");
-const holding_pattern_1 = require("@airport/holding-pattern");
-const tokens_1 = require("../tokens");
+import { SEQUENCE_GENERATOR } from '@airport/check-in';
+import { container, DI } from '@airport/di';
+import { Q } from '@airport/holding-pattern';
+import { ID_GENERATOR } from '../tokens';
 /**
  * Created by Papa on 9/2/2016.
  */
-class IdGenerator {
+export class IdGenerator {
     constructor() {
         this.transactionHistoryIdColumns = [];
     }
     async init() {
-        (await di_1.container(this).get(check_in_1.SEQUENCE_GENERATOR)).init();
+        (await container(this).get(SEQUENCE_GENERATOR)).init();
         const transHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
         const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
         const operationHistoryDbEntity = this.getHoldingPatternDbEntity('OperationHistory');
@@ -23,7 +21,7 @@ class IdGenerator {
         this.transactionHistoryIdColumns.push(recordHistoryDbEntity.idColumns[0]);
     }
     async generateTransactionHistoryIds(numRepositoryTransHistories, numOperationTransHistories, numRecordHistories) {
-        const generatedSequenceNumbers = await (await di_1.container(this).get(check_in_1.SEQUENCE_GENERATOR))
+        const generatedSequenceNumbers = await (await container(this).get(SEQUENCE_GENERATOR))
             .generateSequenceNumbers(this.transactionHistoryIdColumns, [
             1,
             numRepositoryTransHistories,
@@ -40,9 +38,8 @@ class IdGenerator {
     async generateEntityIds() {
     }
     getHoldingPatternDbEntity(holdingPatternEntityName) {
-        return holding_pattern_1.Q.db.currentVersion.entityMapByName[holdingPatternEntityName];
+        return Q.db.currentVersion.entityMapByName[holdingPatternEntityName];
     }
 }
-exports.IdGenerator = IdGenerator;
-di_1.DI.set(tokens_1.ID_GENERATOR, IdGenerator);
+DI.set(ID_GENERATOR, IdGenerator);
 //# sourceMappingURL=IdGenerator.js.map

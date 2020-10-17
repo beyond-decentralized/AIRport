@@ -72,3 +72,4 @@ export interface QSharingNodeRepositoryQId {
 }
 export interface QSharingNodeRepositoryQRelation extends IQRelation<QSharingNodeRepository>, QSharingNodeRepositoryQId {
 }
+//# sourceMappingURL=qsharingnoderepository.d.ts.map

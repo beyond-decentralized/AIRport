@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const TreeResultParser_1 = require("./TreeResultParser");
+import { TreeResultParser } from "./TreeResultParser";
 /**
  * Created by Papa on 11/8/2016.
  */
-class TreeQueryResultParser extends TreeResultParser_1.TreeResultParser {
+export class TreeQueryResultParser extends TreeResultParser {
     addEntity(entityAlias) {
         let resultObject = {};
         this.currentRowObjectMap[entityAlias] = resultObject;
@@ -18,5 +16,4 @@ class TreeQueryResultParser extends TreeResultParser_1.TreeResultParser {
         return this.mergeEntity(entityAlias, resultObject);
     }
 }
-exports.TreeQueryResultParser = TreeQueryResultParser;
 //# sourceMappingURL=TreeQueryResultParser.js.map

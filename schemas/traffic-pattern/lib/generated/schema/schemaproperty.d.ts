@@ -11,3 +11,4 @@ export interface ISchemaProperty extends IVersionedSchemaObject {
     propertyColumns?: ISchemaPropertyColumn[];
     relation?: ISchemaRelation[];
 }
+//# sourceMappingURL=schemaproperty.d.ts.map

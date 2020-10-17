@@ -7,3 +7,4 @@ export declare class Application {
     domain: Domain;
     applicationPackages: ApplicationPackage[];
 }
+//# sourceMappingURL=Application.d.ts.map

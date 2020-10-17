@@ -16,3 +16,4 @@ export declare class RecordUpdateStage {
     column: ISchemaColumn;
     updatedValue: any;
 }
+//# sourceMappingURL=RecordUpdateStage.d.ts.map

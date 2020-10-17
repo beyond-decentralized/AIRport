@@ -23,3 +23,4 @@ export declare class UpdateCache implements IUpdateCache {
     private getEntityCacheEntry;
     private copyColumn;
 }
+//# sourceMappingURL=UpdateCache.d.ts.map

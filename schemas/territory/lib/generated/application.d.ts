@@ -6,3 +6,4 @@ export interface IApplication {
     domain?: IDomain;
     applicationPackages?: IApplicationPackage[];
 }
+//# sourceMappingURL=application.d.ts.map

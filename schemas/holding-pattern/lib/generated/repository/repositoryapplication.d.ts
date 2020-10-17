@@ -5,3 +5,4 @@ export interface IRepositoryApplication {
     repository: IRepository;
     application?: IApplication;
 }
+//# sourceMappingURL=repositoryapplication.d.ts.map

@@ -16,3 +16,4 @@ export declare class User {
     userTerminal: UserTerminal[];
     userTerminalAgts: UserTerminalAgt[];
 }
+//# sourceMappingURL=User.d.ts.map

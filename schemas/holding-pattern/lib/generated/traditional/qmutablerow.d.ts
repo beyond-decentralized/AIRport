@@ -52,3 +52,4 @@ export interface QMutableRowQId extends QImmutableRowQId {
 }
 export interface QMutableRowQRelation<SubType extends IQEntity> extends QImmutableRowQRelation<QMutableRow>, QMutableRowQId {
 }
+//# sourceMappingURL=qmutablerow.d.ts.map

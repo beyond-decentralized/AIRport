@@ -7,3 +7,4 @@ export interface ISharingNodeTerminal {
     agtTerminalPassword?: string;
     terminalSyncStatus?: number;
 }
+//# sourceMappingURL=sharingnodeterminal.d.ts.map

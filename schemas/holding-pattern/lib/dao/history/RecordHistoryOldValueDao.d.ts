@@ -6,3 +6,4 @@ export interface IRecordHistoryOldValueDao extends IBaseRecordHistoryOldValueDao
 export declare class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao implements IRecordHistoryOldValueDao {
     findByRecordHistoryIdIn(recordHistoryIds: RecordHistoryId[]): Promise<IRecordHistoryOldValue[]>;
 }
+//# sourceMappingURL=RecordHistoryOldValueDao.d.ts.map

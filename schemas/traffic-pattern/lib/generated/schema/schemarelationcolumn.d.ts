@@ -9,3 +9,4 @@ export interface ISchemaRelationColumn extends IVersionedSchemaObject {
     oneRelation?: ISchemaRelation;
     parentRelation?: ISchemaRelation;
 }
+//# sourceMappingURL=schemarelationcolumn.d.ts.map

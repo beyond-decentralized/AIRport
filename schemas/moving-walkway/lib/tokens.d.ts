@@ -34,3 +34,4 @@ export declare const SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO: import("@airport/d
 export declare const SYNC_CONFLICT_DAO: import("@airport/di").IDiToken<ISynchronizationConflictDao>;
 export declare const SYNC_CONFLICT_PENDING_NOTIFICATION_DAO: import("@airport/di").IDiToken<ISynchronizationConflictPendingNotificationDao>;
 export declare const SYNC_CONFLICT_VALUES_DAO: import("@airport/di").IDiToken<ISynchronizationConflictValuesDao>;
+//# sourceMappingURL=tokens.d.ts.map

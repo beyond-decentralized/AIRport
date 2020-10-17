@@ -17,3 +17,4 @@ export interface ISchemaRelation extends IVersionedSchemaObject {
     manyRelationColumns?: ISchemaRelationColumn[];
     oneRelationColumns?: ISchemaRelationColumn[];
 }
+//# sourceMappingURL=schemarelation.d.ts.map

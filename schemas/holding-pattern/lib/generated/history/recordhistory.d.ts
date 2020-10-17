@@ -12,3 +12,4 @@ export interface IRecordHistory {
     oldValues?: IRecordHistoryOldValue[];
     tableColumnMap?: SyncColumnMap;
 }
+//# sourceMappingURL=recordhistory.d.ts.map

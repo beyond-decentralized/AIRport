@@ -1,12 +1,10 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
+import { Column, DbNumber, Entity, Id, Table } from "@airport/air-control";
 // export type DailySyncLogDatabaseDateRepositoryKey = string;
 /**
  * Sync log is used to determine which archive records a terminal still has not synced.
@@ -50,23 +48,23 @@ const air_control_1 = require("@airport/air-control");
 let DailySyncLog = class DailySyncLog {
 };
 __decorate([
-    air_control_1.Id(),
-    air_control_1.Column({ name: "DATABASE_ID", nullable: false }),
-    air_control_1.DbNumber()
+    Id(),
+    Column({ name: "DATABASE_ID", nullable: false }),
+    DbNumber()
 ], DailySyncLog.prototype, "databaseId", void 0);
 __decorate([
-    air_control_1.Id(),
-    air_control_1.Column({ name: "DATE_NUMBER", nullable: false }),
-    air_control_1.DbNumber()
+    Id(),
+    Column({ name: "DATE_NUMBER", nullable: false }),
+    DbNumber()
 ], DailySyncLog.prototype, "date", void 0);
 __decorate([
-    air_control_1.Id(),
-    air_control_1.Column({ name: "REPOSITORY_ID", nullable: false }),
-    air_control_1.DbNumber()
+    Id(),
+    Column({ name: "REPOSITORY_ID", nullable: false }),
+    DbNumber()
 ], DailySyncLog.prototype, "repositoryId", void 0);
 DailySyncLog = __decorate([
-    air_control_1.Entity(),
-    air_control_1.Table({ name: "DAILY_SYNC_LOG" })
+    Entity(),
+    Table({ name: "DAILY_SYNC_LOG" })
 ], DailySyncLog);
-exports.DailySyncLog = DailySyncLog;
+export { DailySyncLog };
 //# sourceMappingURL=DailySyncLog.js.map

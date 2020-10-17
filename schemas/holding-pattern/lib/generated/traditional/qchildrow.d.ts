@@ -49,3 +49,4 @@ export interface QChildRowQId extends QStageableQId {
 }
 export interface QChildRowQRelation<SubType extends IQEntity> extends QStageableQRelation<QChildRow>, QChildRowQId {
 }
+//# sourceMappingURL=qchildrow.d.ts.map

@@ -26,3 +26,4 @@ export declare class Subscription implements ISubscription {
     unsubscribe(onUnsubscribe?: () => void): void;
     get closed(): boolean;
 }
+//# sourceMappingURL=Subscription.d.ts.map

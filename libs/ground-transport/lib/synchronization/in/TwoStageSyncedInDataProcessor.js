@@ -1,14 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const arrivals_n_departures_1 = require("@airport/arrivals-n-departures");
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const holding_pattern_1 = require("@airport/holding-pattern");
-const moving_walkway_1 = require("@airport/moving-walkway");
-const terminal_map_1 = require("@airport/terminal-map");
-const lib_1 = require("zipson/lib");
-const tokens_1 = require("../../tokens");
-class TwoStageSyncedInDataProcessor {
+import { RepoTransBlockSyncOutcomeType } from '@airport/arrivals-n-departures';
+import { container, DI } from '@airport/di';
+import { CascadeOverwrite, ensureChildArray, TransactionType } from '@airport/ground-control';
+import { REPO_ACTOR_DAO, REPO_TRANS_HISTORY_DUO, RepositoryTransactionType } from '@airport/holding-pattern';
+import { REPO_TRANS_BLOCK_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO } from '@airport/moving-walkway';
+import { TRANSACTION_MANAGER } from '@airport/terminal-map';
+import { parse } from 'zipson/lib';
+import { STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR, SYNC_IN_CHECKER, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR } from '../../tokens';
+export class TwoStageSyncedInDataProcessor {
     /**
      * Synchronize the data messages coming from AGT (new data for this TM).
      * @param {IDataToTM[]} dataMessages  Incoming data messages.
@@ -22,7 +20,7 @@ class TwoStageSyncedInDataProcessor {
     // dataMessagesWithInvalidData: IDataToTM[]
     ) {
         // TODO: remove unused injections once tested
-        const [repositoryActorDao, repositoryTransactionHistoryDuo, sharingMessageDao, sharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictPendingNotificationDao, syncInChecker, repositoryTransactionBlockDao, transactionManager] = await di_1.container(this).get(holding_pattern_1.REPO_ACTOR_DAO, holding_pattern_1.REPO_TRANS_HISTORY_DUO, moving_walkway_1.SHARING_MESSAGE_DAO, moving_walkway_1.SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, tokens_1.STAGE1_SYNCED_IN_DATA_PROCESSOR, tokens_1.STAGE2_SYNCED_IN_DATA_PROCESSOR, moving_walkway_1.SYNC_CONFLICT_DAO, moving_walkway_1.SYNC_CONFLICT_PENDING_NOTIFICATION_DAO, tokens_1.SYNC_IN_CHECKER, moving_walkway_1.REPO_TRANS_BLOCK_DAO, terminal_map_1.TRANSACTION_MANAGER);
+        const [repositoryActorDao, repositoryTransactionHistoryDuo, sharingMessageDao, sharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictPendingNotificationDao, syncInChecker, repositoryTransactionBlockDao, transactionManager] = await container(this).get(REPO_ACTOR_DAO, REPO_TRANS_HISTORY_DUO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR, SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO, SYNC_IN_CHECKER, REPO_TRANS_BLOCK_DAO, TRANSACTION_MANAGER);
         const [actorMapById, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessagesWithCompatibleSchemas, sharingMessagesWithCompatibleSchemasAndData,] = await syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(
         // consistentMessages, actorMap, sharingNodeRepositoryMap,
         // dataMessagesWithInvalidData
@@ -36,7 +34,7 @@ class TwoStageSyncedInDataProcessor {
         const repositoryTransactionBlocks = [];
         const repoTransBlockRepoTransHistories = [];
         const transactionHistory = transactionManager.currentTransHistory;
-        transactionHistory.transactionType = ground_control_1.TransactionType.REMOTE_SYNC;
+        transactionHistory.transactionType = TransactionType.REMOTE_SYNC;
         // split messages by repository and record actor information
         for (let i = 0; i < dataMessages.length; i++) {
             const sharingMessage = sharingMessages[i];
@@ -44,7 +42,7 @@ class TwoStageSyncedInDataProcessor {
             const data = dataMessage.data;
             const repositoryTransactionBlock = {
                 repository: data.repository,
-                syncOutcomeType: arrivals_n_departures_1.RepoTransBlockSyncOutcomeType.SYNC_SUCCESSFUL
+                syncOutcomeType: RepoTransBlockSyncOutcomeType.SYNC_SUCCESSFUL
             };
             repositoryTransactionBlocks.push(repositoryTransactionBlock);
             sharingMessageRepoTransBlocks.push({
@@ -54,7 +52,7 @@ class TwoStageSyncedInDataProcessor {
             transactionHistory.repositoryTransactionHistories
                 = transactionHistory.repositoryTransactionHistories.concat(data.repoTransHistories);
             data.repoTransHistories.forEach((repositoryTransactionHistory) => {
-                repositoryTransactionHistory.repositoryTransactionType = holding_pattern_1.RepositoryTransactionType.REMOTE;
+                repositoryTransactionHistory.repositoryTransactionType = RepositoryTransactionType.REMOTE;
                 repoTransBlockRepoTransHistories.push({
                     repositoryTransactionHistory,
                     repositoryTransactionBlock
@@ -73,8 +71,8 @@ class TwoStageSyncedInDataProcessor {
                 });
             });
         }
-        await repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, ground_control_1.CascadeOverwrite.DEFAULT, false);
-        await repoTransBlockRepoTransHistoryDao.bulkCreate(repoTransBlockRepoTransHistories, ground_control_1.CascadeOverwrite.DEFAULT, false);
+        await repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, CascadeOverwrite.DEFAULT, false);
+        await repoTransBlockRepoTransHistoryDao.bulkCreate(repoTransBlockRepoTransHistories, CascadeOverwrite.DEFAULT, false);
         return repoTransHistoryMapByRepositoryId;
     }
     async getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById, repositoryTransactionBlockDao, repositoryTransactionHistoryDuo) {
@@ -85,7 +83,7 @@ class TwoStageSyncedInDataProcessor {
         }
         const repositoryTransactionBlockIds = [];
         for (const repositoryTransactionBlock of existingRepoTransBlocksWithCompatibleSchemasAndData) {
-            const data = lib_1.parse(repositoryTransactionBlock.contents);
+            const data = parse(repositoryTransactionBlock.contents);
             this.addRepoTransHistoriesToMapFromData(repoTransHistoryMapByRepositoryId, data);
             for (const actor of data.actors) {
                 actorMapById.set(actor.id, actor);
@@ -102,7 +100,7 @@ class TwoStageSyncedInDataProcessor {
         return repoTransHistoryMapByRepositoryId;
     }
     addRepoTransHistoriesToMapFromData(repoTransHistoryMapByRepositoryId, data) {
-        let repoTransHistories = ground_control_1.ensureChildArray(repoTransHistoryMapByRepositoryId, data.repository.id);
+        let repoTransHistories = ensureChildArray(repoTransHistoryMapByRepositoryId, data.repository.id);
         repoTransHistories = repoTransHistories.concat(data.repoTransHistories);
         repoTransHistoryMapByRepositoryId.set(data.repository.id, repoTransHistories);
     }
@@ -127,11 +125,10 @@ class TwoStageSyncedInDataProcessor {
                 }
             }
         }
-        await synchronizationConflictDao.bulkCreate(allSyncConflicts, ground_control_1.CascadeOverwrite.DEFAULT, false);
-        await synchronizationConflictPendingNotificationDao.bulkCreate(syncConflictPendingNotifications, ground_control_1.CascadeOverwrite.DEFAULT, false);
+        await synchronizationConflictDao.bulkCreate(allSyncConflicts, CascadeOverwrite.DEFAULT, false);
+        await synchronizationConflictPendingNotificationDao.bulkCreate(syncConflictPendingNotifications, CascadeOverwrite.DEFAULT, false);
         await stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap);
     }
 }
-exports.TwoStageSyncedInDataProcessor = TwoStageSyncedInDataProcessor;
-di_1.DI.set(tokens_1.TWO_STAGE_SYNCED_IN_DATA_PROCESSOR, TwoStageSyncedInDataProcessor);
+DI.set(TWO_STAGE_SYNCED_IN_DATA_PROCESSOR, TwoStageSyncedInDataProcessor);
 //# sourceMappingURL=TwoStageSyncedInDataProcessor.js.map

@@ -7,3 +7,4 @@ export interface ICloudArchiver {
 export declare class CloudArchiver implements ICloudArchiver {
     archive(dailyArchiveDtos: DailyArchiveValues[], dailyArchiveLogValues: DailyArchiveLogValues[], onDate: AgtRepositoryTransactionBlockAddDatetime): Promise<[AgtRepositoryTransactionBlockId[], DailyArchiveLogValues[], AgtRepositoryId[]]>;
 }
+//# sourceMappingURL=CloudArchiver.d.ts.map

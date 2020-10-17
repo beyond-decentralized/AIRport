@@ -16,3 +16,4 @@ export declare class ServerSyncLog {
     numberOfRecords: ServerSyncLogNumberOfRecords;
     dataCharsTotal: ServerSyncLogDataCharsTotal;
 }
+//# sourceMappingURL=ServerSyncLog.d.ts.map

@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const AbstractInsertValues_1 = require("./AbstractInsertValues");
+import { AbstractInsertValues } from './AbstractInsertValues';
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
-class InsertColumnValues extends AbstractInsertValues_1.AbstractInsertValues {
+export class InsertColumnValues extends AbstractInsertValues {
     toJSON(queryUtils, fieldUtils) {
         const entityDriver = this.rawInsertValues.insertInto.__driver__;
         const insertInto = entityDriver.getRelationJson(this.columnAliases, queryUtils, fieldUtils);
@@ -21,5 +19,4 @@ class InsertColumnValues extends AbstractInsertValues_1.AbstractInsertValues {
         };
     }
 }
-exports.InsertColumnValues = InsertColumnValues;
 //# sourceMappingURL=InsertColumnValues.js.map

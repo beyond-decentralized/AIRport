@@ -60,3 +60,4 @@ export interface QPackageQId {
 }
 export interface QPackageQRelation extends IQRelation<QPackage>, QPackageQId {
 }
+//# sourceMappingURL=qpackage.d.ts.map

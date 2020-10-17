@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const holding_pattern_1 = require("@airport/holding-pattern");
-const travel_document_checkpoint_1 = require("@airport/travel-document-checkpoint");
-const tokens_1 = require("../../../tokens");
-class SyncInActorChecker {
+import { container, DI } from '@airport/di';
+import { CascadeOverwrite, ensureChildJsMap } from '@airport/ground-control';
+import { ACTOR_DAO } from '@airport/holding-pattern';
+import { TERMINAL_DAO } from '@airport/travel-document-checkpoint';
+import { SYNC_IN_ACTOR_CHECKER } from '../../../tokens';
+export class SyncInActorChecker {
     async ensureActorsAndGetAsMaps(dataMessages, actorMap, actorMapById, userCheckResults, terminalCheckResults, dataMessagesWithInvalidData) {
-        const [actorDao, terminalDao] = await di_1.container(this).get(holding_pattern_1.ACTOR_DAO, travel_document_checkpoint_1.TERMINAL_DAO);
+        const [actorDao, terminalDao] = await container(this).get(ACTOR_DAO, TERMINAL_DAO);
         const actorRandomIdSet = new Set();
         const userUniqueIdsSet = new Set();
         const terminalNameSet = new Set();
@@ -43,7 +41,7 @@ class SyncInActorChecker {
         // this is because a given RTB is always generated in one and only one terminal
         await actorDao.findMapsWithDetailsByGlobalIds(Array.from(actorRandomIdSet), Array.from(userUniqueIdsSet), Array.from(terminalIdSet), actorMap, actorMapById);
         const newActors = this.getNewActors(consistentMessages, actorMap);
-        await actorDao.bulkCreate(newActors, ground_control_1.CascadeOverwrite.DEFAULT, false);
+        await actorDao.bulkCreate(newActors, CascadeOverwrite.DEFAULT, false);
         for (const newActor of newActors) {
             actorMapById.set(newActor.id, newActor);
         }
@@ -165,9 +163,8 @@ class SyncInActorChecker {
         return newActors;
     }
     addActorToMap(actor, actorMap) {
-        ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(actorMap, actor.randomId), actor.user.uniqueId), actor.terminal.name), actor.terminal.secondId).set(actor.terminal.owner.uniqueId, actor);
+        ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(actorMap, actor.randomId), actor.user.uniqueId), actor.terminal.name), actor.terminal.secondId).set(actor.terminal.owner.uniqueId, actor);
     }
 }
-exports.SyncInActorChecker = SyncInActorChecker;
-di_1.DI.set(tokens_1.SYNC_IN_ACTOR_CHECKER, SyncInActorChecker);
+DI.set(SYNC_IN_ACTOR_CHECKER, SyncInActorChecker);
 //# sourceMappingURL=SyncInActorChecker.js.map

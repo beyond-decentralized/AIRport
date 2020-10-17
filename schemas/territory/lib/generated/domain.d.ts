@@ -6,3 +6,4 @@ export interface IDomain {
     applications?: IApplication[];
     schemas?: DbSchema[];
 }
+//# sourceMappingURL=domain.d.ts.map

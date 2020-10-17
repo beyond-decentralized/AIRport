@@ -3,3 +3,4 @@ export declare class RepoTransBlockResponseStage {
     id: TmRepositoryTransactionBlockId;
     syncOutcomeType: RepoTransBlockSyncOutcomeType;
 }
+//# sourceMappingURL=RepoTransBlockResponseStage.d.ts.map

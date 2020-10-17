@@ -11,3 +11,4 @@ export declare class RepositoryActor {
     actor: Actor;
     repository: Repository;
 }
+//# sourceMappingURL=RepositoryActor.d.ts.map

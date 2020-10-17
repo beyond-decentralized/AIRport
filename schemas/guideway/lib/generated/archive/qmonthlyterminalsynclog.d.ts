@@ -68,3 +68,4 @@ export interface QMonthlyTerminalSyncLogQId {
 }
 export interface QMonthlyTerminalSyncLogQRelation extends IQRelation<QMonthlyTerminalSyncLog>, QMonthlyTerminalSyncLogQId {
 }
+//# sourceMappingURL=qmonthlyterminalsynclog.d.ts.map

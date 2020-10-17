@@ -9,3 +9,4 @@ export interface ISchema {
     versions?: ISchemaVersion[];
     currentVersion?: ISchemaVersion;
 }
+//# sourceMappingURL=schema.d.ts.map

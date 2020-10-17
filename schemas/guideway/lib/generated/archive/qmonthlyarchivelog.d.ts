@@ -66,3 +66,4 @@ export interface QMonthlyArchiveLogQId {
 }
 export interface QMonthlyArchiveLogQRelation extends IQRelation<QMonthlyArchiveLog>, QMonthlyArchiveLogQId {
 }
+//# sourceMappingURL=qmonthlyarchivelog.d.ts.map

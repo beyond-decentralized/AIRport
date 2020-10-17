@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const moving_walkway_1 = require("@airport/moving-walkway");
-const tokens_1 = require("../../tokens");
-class SyncLogMessageProcessor {
+import { container, DI } from '@airport/di';
+import { ensureChildJsMap } from '@airport/ground-control';
+import { REPO_TRANS_BLOCK_DAO, REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO, SHARING_MESSAGE_DAO, SHARING_NODE_REPO_TRANS_BLOCK_DAO, SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO } from '@airport/moving-walkway';
+import { SYNC_LOG_MESSAGE_PROCESSOR } from '../../tokens';
+export class SyncLogMessageProcessor {
     // private sharingMessageDao: ISharingMessageDao
     // private sharingNodeRepoTransBlockDao: ISharingNodeRepoTransBlockDao
     // private sharingNodeRepoTransBlockStageDao: ISharingNodeRepoTransBlockStageDao
@@ -23,7 +21,7 @@ class SyncLogMessageProcessor {
             return;
         }
         // TODO: remove unused dependencies once tested
-        const [sharingMessageDao, sharingNodeRepoTransBlockDao, sharingNodeRepoTransBlockStageDao, repositoryTransactionBlockDao, repoTransBlockResponseStageDao] = await di_1.container(this).get(moving_walkway_1.SHARING_MESSAGE_DAO, moving_walkway_1.SHARING_NODE_REPO_TRANS_BLOCK_DAO, moving_walkway_1.SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO, moving_walkway_1.REPO_TRANS_BLOCK_DAO, moving_walkway_1.REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO);
+        const [sharingMessageDao, sharingNodeRepoTransBlockDao, sharingNodeRepoTransBlockStageDao, repositoryTransactionBlockDao, repoTransBlockResponseStageDao] = await container(this).get(SHARING_MESSAGE_DAO, SHARING_NODE_REPO_TRANS_BLOCK_DAO, SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO, REPO_TRANS_BLOCK_DAO, REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO);
         const { repoTransBlockIdSet, sharingNodeRepoTransBlockStageValues, repoTransBlockSyncOutcomeMapBySharingNodeId, 
         // sharingMessageResponseStageValues,
         sharingNodeIdSet } = this.generateSyncLogDataStructures(syncLogMessages);
@@ -70,7 +68,7 @@ class SyncLogMessageProcessor {
             for (const outcome of syncLogMessage.outcomes) {
                 const tmRepositoryTransactionBlockId = outcome.tmRepositoryTransactionBlockId;
                 repoTransBlockIdSet.add(tmRepositoryTransactionBlockId);
-                ground_control_1.ensureChildJsMap(repoTransBlockSyncOutcomeMapBySharingNodeId, sharingNodeId)
+                ensureChildJsMap(repoTransBlockSyncOutcomeMapBySharingNodeId, sharingNodeId)
                     .set(tmRepositoryTransactionBlockId, outcome);
                 messageRepoTransBlockResponseStageValues.push([
                     sharingNodeId,
@@ -130,6 +128,5 @@ class SyncLogMessageProcessor {
         await sharingNodeRepoTransBlockDao.insertValues(sharingNodeTransBlockValues);
     }
 }
-exports.SyncLogMessageProcessor = SyncLogMessageProcessor;
-di_1.DI.set(tokens_1.SYNC_LOG_MESSAGE_PROCESSOR, SyncLogMessageProcessor);
+DI.set(SYNC_LOG_MESSAGE_PROCESSOR, SyncLogMessageProcessor);
 //# sourceMappingURL=SyncLogMessageProcessor.js.map

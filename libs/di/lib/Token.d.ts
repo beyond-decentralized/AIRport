@@ -11,3 +11,4 @@ export declare class DiToken<Injectable> implements IDiToken<Injectable> {
 export interface GenericDependencyInjectionError {
     DiTokenMustBeGenerisizedWithTypeOfInjectedObject(): void;
 }
+//# sourceMappingURL=Token.d.ts.map

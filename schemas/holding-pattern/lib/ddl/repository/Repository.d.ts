@@ -24,3 +24,4 @@ export declare class Repository {
     repositoryTransactionHistory: RepositoryTransactionHistory[];
     syncPriority: SyncPriority;
 }
+//# sourceMappingURL=Repository.d.ts.map

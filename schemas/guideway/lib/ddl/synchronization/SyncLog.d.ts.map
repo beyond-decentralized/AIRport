@@ -1,0 +1,1 @@
+{"version":3,"file":"SyncLog.d.ts","sourceRoot":"","sources":["../../../src/ddl/synchronization/SyncLog.ts"],"names":[],"mappings":"AACA,OAAO,EAAC,iBAAiB,EAAC,MAAqC,qBAAqB,CAAC;AACrF,OAAO,EAAC,6BAA6B,EAAC,MAAyB,iCAAiC,CAAC;AAEjG;;GAEG;AACH,qBAGa,OAAO;IAOnB,cAAc,EAAE,iBAAiB,CAAC;IAOlC,0BAA0B,EAAE,6BAA6B,CAAC;CAM1D"}

@@ -1,14 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
-const ground_control_1 = require("@airport/ground-control");
-const tower_1 = require("@airport/tower");
-const DDLManager_1 = require("./DDLManager");
+import { DI } from '@airport/di';
+import { SqlDriver } from '@airport/fuel-hydrant-system';
+import { QueryType, STORE_DRIVER } from '@airport/ground-control';
+import { transactional } from '@airport/tower';
+import { DDLManager } from './DDLManager';
 /**
  * Created by Papa on 10/16/2020.
  */
-class MySqlDriver extends fuel_hydrant_system_1.SqlDriver {
+export class MySqlDriver extends SqlDriver {
     query(queryType, query, params, saveTransaction) {
         throw new Error('Method not implemented.');
     }
@@ -41,15 +39,15 @@ and TABLE_NAME = '${tableName}';`, []);
     }
     async findNative(sqlQuery, parameters) {
         let nativeParameters = parameters.map((value) => this.convertValueIn(value));
-        return await this.query(ground_control_1.QueryType.SELECT, sqlQuery, nativeParameters);
+        return await this.query(QueryType.SELECT, sqlQuery, nativeParameters);
     }
     async initAllTables() {
         let createOperations;
         let createQueries = [];
-        let createSql = DDLManager_1.DDLManager.getCreateDDL();
-        await tower_1.transactional(async () => {
+        let createSql = DDLManager.getCreateDDL();
+        await transactional(async () => {
             for (const createSqlStatement of createSql) {
-                const createTablePromise = this.query(ground_control_1.QueryType.DDL, createSqlStatement, [], false);
+                const createTablePromise = this.query(QueryType.DDL, createSqlStatement, [], false);
                 createQueries.push(createTablePromise);
             }
             await this.initTables(createQueries);
@@ -65,7 +63,7 @@ and TABLE_NAME = '${tableName}';`, []);
         throw new Error('Method not implemented.');
     }
     async executeNative(sql, parameters) {
-        return await this.query(ground_control_1.QueryType.MUTATE, sql, parameters);
+        return await this.query(QueryType.MUTATE, sql, parameters);
     }
     convertValueIn(value) {
         switch (typeof value) {
@@ -91,6 +89,5 @@ and TABLE_NAME = '${tableName}';`, []);
         }
     }
 }
-exports.MySqlDriver = MySqlDriver;
-di_1.DI.set(ground_control_1.STORE_DRIVER, MySqlDriver);
+DI.set(STORE_DRIVER, MySqlDriver);
 //# sourceMappingURL=MySqlDriver.js.map

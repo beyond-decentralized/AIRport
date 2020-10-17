@@ -12,3 +12,4 @@ export * from './Blacklist';
 export * from './CoreAgtTypes';
 export * from './SyncConnectionServer';
 export * from './SyncConnectionVerifier';
+//# sourceMappingURL=lingo.d.ts.map

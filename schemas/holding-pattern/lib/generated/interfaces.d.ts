@@ -21,3 +21,4 @@ export * from './traditional/immutablerow';
 export * from './traditional/mutablereporow';
 export * from './traditional/mutablerow';
 export * from './traditional/referencerow';
+//# sourceMappingURL=interfaces.d.ts.map

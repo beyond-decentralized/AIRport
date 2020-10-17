@@ -48,3 +48,4 @@ export interface QLogQId {
 }
 export interface QLogQRelation extends IQRelation<QLog>, QLogQId {
 }
+//# sourceMappingURL=qlog.d.ts.map

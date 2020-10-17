@@ -19,3 +19,4 @@ export declare class GoogleRealtime {
     subscribeToValuesRemoved(list: gapi.drive.realtime.CollaborativeList<ChangeRecord>, subject: ISubject<gapi.drive.realtime.BaseModelEvent>): void;
     subscribeToAnyObjectChanged(document: gapi.drive.realtime.Document, subject: ISubject<gapi.drive.realtime.BaseModelEvent>): void;
 }
+//# sourceMappingURL=GoogleRealtime.d.ts.map

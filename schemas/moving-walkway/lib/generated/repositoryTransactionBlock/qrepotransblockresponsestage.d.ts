@@ -56,3 +56,4 @@ export interface QRepoTransBlockResponseStageQId {
 }
 export interface QRepoTransBlockResponseStageQRelation extends IQRelation<QRepoTransBlockResponseStage>, QRepoTransBlockResponseStageQId {
 }
+//# sourceMappingURL=qrepotransblockresponsestage.d.ts.map

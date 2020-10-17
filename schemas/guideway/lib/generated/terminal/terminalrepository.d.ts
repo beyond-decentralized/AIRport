@@ -5,3 +5,4 @@ export interface ITerminalRepository {
     repository: IRepository;
     permission?: number;
 }
+//# sourceMappingURL=terminalrepository.d.ts.map

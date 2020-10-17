@@ -33,3 +33,4 @@ export declare class AgtRepositoryTransactionBlockDao extends BaseAgtRepositoryT
     markChangesAsArchived(repositoryTransactionBlockIds: AgtRepositoryTransactionBlockId[]): Promise<void>;
     deleteByIds(repositoryTransactionBlockIds: AgtRepositoryTransactionBlockId[]): Promise<number>;
 }
+//# sourceMappingURL=AgtRepositoryTransactionBlockDao.d.ts.map

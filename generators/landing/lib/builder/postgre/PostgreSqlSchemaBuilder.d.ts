@@ -8,3 +8,4 @@ export declare class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
     buildAllSequences(jsonSchemas: JsonSchema[]): Promise<ISequence[]>;
     buildSequences(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity, storeDriver: IStoreDriver): Promise<void>;
 }
+//# sourceMappingURL=PostgreSqlSchemaBuilder.d.ts.map

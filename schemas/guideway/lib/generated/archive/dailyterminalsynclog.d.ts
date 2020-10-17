@@ -5,3 +5,4 @@ export interface IDailyTerminalSyncLog {
     terminal: ITerminal;
     acknowledged?: number;
 }
+//# sourceMappingURL=dailyterminalsynclog.d.ts.map

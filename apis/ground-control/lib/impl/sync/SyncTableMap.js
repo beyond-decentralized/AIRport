@@ -1,23 +1,21 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const TableMap_1 = require("../query/TableMap");
-const SyncColumnMap_1 = require("./SyncColumnMap");
+import { ALL_TABLE_COLUMNS, TableMap } from "../query/TableMap";
+import { SyncColumnMap } from "./SyncColumnMap";
 /**
  * Created by Papa on 10/7/2016.
  */
-class SyncTableMap extends TableMap_1.TableMap {
+export class SyncTableMap extends TableMap {
     constructor(schemaVersionId, tableMap) {
         super(schemaVersionId, tableMap);
     }
     ensureEntity(tableIndex, allColumns = false) {
-        return super.ensure(tableIndex, allColumns, SyncColumnMap_1.SyncColumnMap);
+        return super.ensure(tableIndex, allColumns, SyncColumnMap);
     }
     intersects(columnMap) {
         for (let tableIndex in this.tableMap) {
             if (columnMap.tableMap[tableIndex]) {
                 let tableColumnMap = this.tableMap[tableIndex];
                 let otherTableColumnMap = columnMap.tableMap[tableIndex];
-                if (tableColumnMap[TableMap_1.ALL_TABLE_COLUMNS] || tableColumnMap[TableMap_1.ALL_TABLE_COLUMNS]) {
+                if (tableColumnMap[ALL_TABLE_COLUMNS] || tableColumnMap[ALL_TABLE_COLUMNS]) {
                     return true;
                 }
                 for (let columnIndex in tableColumnMap.columnMap) {
@@ -30,5 +28,4 @@ class SyncTableMap extends TableMap_1.TableMap {
         return false;
     }
 }
-exports.SyncTableMap = SyncTableMap;
 //# sourceMappingURL=SyncTableMap.js.map

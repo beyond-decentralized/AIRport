@@ -6,3 +6,4 @@ export declare class RepoTransBlockSchemaToChange {
     status: SchemaChangeStatus;
     schema: Schema;
 }
+//# sourceMappingURL=RepoTransBlockSchemaToChange.d.ts.map

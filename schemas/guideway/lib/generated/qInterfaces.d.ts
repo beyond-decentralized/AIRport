@@ -17,3 +17,4 @@ export * from './user/quser';
 export * from './user/quserrepository';
 export * from './user/security/qsecurityanswer';
 export * from './user/security/qsecurityquestion';
+//# sourceMappingURL=qInterfaces.d.ts.map

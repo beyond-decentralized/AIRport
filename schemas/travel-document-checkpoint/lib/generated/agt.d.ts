@@ -6,3 +6,4 @@ export interface IAgt {
     terminalAgts?: ITerminalAgt[];
     userTerminalAgts?: IUserTerminalAgt[];
 }
+//# sourceMappingURL=agt.d.ts.map

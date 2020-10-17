@@ -7,3 +7,4 @@ export declare class SharingMessageRepoTransBlock {
     sharingMessage: SharingMessage;
     repositoryTransactionBlock: RepositoryTransactionBlock;
 }
+//# sourceMappingURL=SharingMessageRepoTransBlock.d.ts.map

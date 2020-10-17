@@ -9,3 +9,4 @@ export interface IMissingRecord {
     repository?: IRepository;
     actor?: IActor;
 }
+//# sourceMappingURL=missingrecord.d.ts.map

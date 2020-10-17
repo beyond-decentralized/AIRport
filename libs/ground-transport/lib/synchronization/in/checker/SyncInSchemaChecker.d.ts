@@ -41,3 +41,4 @@ export declare class SyncInSchemaChecker implements ISyncInSchemaChecker {
     private compareSchemaVersions;
     private compareGivenSchemaVersionLevel;
 }
+//# sourceMappingURL=SyncInSchemaChecker.d.ts.map

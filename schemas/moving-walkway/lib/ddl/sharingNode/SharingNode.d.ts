@@ -16,3 +16,4 @@ export declare class SharingNode {
     messages: SharingMessage[];
     sharingNodeRepoTransBlocks: SharingNodeRepoTransBlock[];
 }
+//# sourceMappingURL=SharingNode.d.ts.map

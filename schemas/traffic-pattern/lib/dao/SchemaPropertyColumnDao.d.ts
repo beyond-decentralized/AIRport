@@ -6,3 +6,4 @@ export interface ISchemaPropertyColumnDao extends IBaseSchemaPropertyColumnDao {
 export declare class SchemaPropertyColumnDao extends BaseSchemaPropertyColumnDao implements ISchemaPropertyColumnDao {
     findAllForColumns(columnIds: ColumnId[]): Promise<ISchemaPropertyColumn[]>;
 }
+//# sourceMappingURL=SchemaPropertyColumnDao.d.ts.map

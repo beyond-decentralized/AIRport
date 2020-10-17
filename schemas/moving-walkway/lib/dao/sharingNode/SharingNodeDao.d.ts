@@ -8,3 +8,4 @@ export declare class SharingNodeDao extends BaseSharingNodeDao implements IShari
     findAllGroupedBySyncFrequency(): Promise<Map<SharingNodeSyncFrequency, ISharingNode[]>>;
     updateIsActive(sharingNodeIds: SharingNodeId[], isActive: SharingNodeIsActive): Promise<void>;
 }
+//# sourceMappingURL=SharingNodeDao.d.ts.map

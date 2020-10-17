@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 9/10/2016.
  */
-class Query {
+export class Query {
 }
-exports.Query = Query;
-class ChangeToQueryRegistry {
+export class ChangeToQueryRegistry {
     constructor() {
         this.activeQueries = [];
     }
@@ -31,5 +28,4 @@ class ChangeToQueryRegistry {
         return affectedQueries;
     }
 }
-exports.ChangeToQueryRegistry = ChangeToQueryRegistry;
 //# sourceMappingURL=ChangeToQueryRegistry.js.map

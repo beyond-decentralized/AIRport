@@ -11,7 +11,7 @@ import {
 }                           from '@airport/ground-control'
 import {
 	ActorId,
-	RepositoryEntityActorRecordId,
+	RepositoryEntity_ActorRecordId,
 	RepositoryId
 }                           from '@airport/holding-pattern'
 import {ISchemaVersion}     from '@airport/traffic-pattern'
@@ -32,13 +32,13 @@ export interface IMissingRecordDao
 
 	setStatusWhereIdsInAndReturnIds(
 		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>,
+			Map<TableIndex, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>,
 		status: MissingRecordStatus
 	): Promise<MissingRecordId[]>;
 
 	findActualIdsByRecordIds(
 		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
+			Map<TableIndex, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>
 	): Promise<MissingRecordId[]>;
 
 	deleteWhereIdsIn(
@@ -53,7 +53,7 @@ export class MissingRecordDao
 
 	async setStatusWhereIdsInAndReturnIds(
 		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>,
+			Map<TableIndex, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>,
 		status: MissingRecordStatus
 	): Promise<MissingRecordId[]> {
 		const ids = await this.findActualIdsByRecordIds(recordIdMap)
@@ -77,7 +77,7 @@ export class MissingRecordDao
 
 	async findActualIdsByRecordIds(
 		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
-			Map<TableIndex, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>
+			Map<TableIndex, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>
 	): Promise<MissingRecordId[]> {
 		const mr = Q.MissingRecord
 

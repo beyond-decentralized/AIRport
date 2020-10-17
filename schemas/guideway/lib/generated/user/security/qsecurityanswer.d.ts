@@ -64,3 +64,4 @@ export interface QSecurityAnswerQId {
 }
 export interface QSecurityAnswerQRelation extends IQRelation<QSecurityAnswer>, QSecurityAnswerQId {
 }
+//# sourceMappingURL=qsecurityanswer.d.ts.map

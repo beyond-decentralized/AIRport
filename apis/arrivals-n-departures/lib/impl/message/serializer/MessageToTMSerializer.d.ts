@@ -8,3 +8,4 @@ export declare class MessageToTMSerializer implements IMessageToTMSerializer {
     serializeAMessage(messageToTM: MessageToTM): SerializedMessageToTM;
     private serializeSyncOutcomes;
 }
+//# sourceMappingURL=MessageToTMSerializer.d.ts.map

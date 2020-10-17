@@ -4,3 +4,4 @@ export interface IRepositorySchema {
     repository: IRepository;
     schemaIndex?: number;
 }
+//# sourceMappingURL=repositoryschema.d.ts.map

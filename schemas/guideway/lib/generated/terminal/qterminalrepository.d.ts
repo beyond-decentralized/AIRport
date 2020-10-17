@@ -64,3 +64,4 @@ export interface QTerminalRepositoryQId {
 }
 export interface QTerminalRepositoryQRelation extends IQRelation<QTerminalRepository>, QTerminalRepositoryQId {
 }
+//# sourceMappingURL=qterminalrepository.d.ts.map

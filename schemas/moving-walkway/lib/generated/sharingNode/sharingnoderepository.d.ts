@@ -7,3 +7,4 @@ export interface ISharingNodeRepository {
     advisedSyncPriority?: number;
     repositorySyncStatus?: number;
 }
+//# sourceMappingURL=sharingnoderepository.d.ts.map

@@ -14,3 +14,4 @@ export declare class GoogleDriveAdaptor {
     listChangeLists(info: GoogleSetupInfo): Promise<GoogleChangeListShareInfo[]>;
     populateChangeListFileInfo(changeListInfo: GoogleChangeListShareInfo): Promise<GoogleChangeListShareInfo>;
 }
+//# sourceMappingURL=GoogleDriveAdaptor.d.ts.map

@@ -12,3 +12,4 @@ export declare class UserDao extends BaseUserDao implements IUserDao {
     findByUniqueId(uniqueIds: UserUniqueId[]): Promise<IUser[]>;
     findFieldsByUniqueId(uniqueIds: UserUniqueId[], select: UserESelect): Promise<IUser[]>;
 }
+//# sourceMappingURL=UserDao.d.ts.map

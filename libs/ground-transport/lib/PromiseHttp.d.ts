@@ -7,3 +7,4 @@ export declare abstract class PromiseHttp {
     abstract post(url: string, data: string, requestOptionsArgs?: any): Promise<any>;
     private asPromise;
 }
+//# sourceMappingURL=PromiseHttp.d.ts.map

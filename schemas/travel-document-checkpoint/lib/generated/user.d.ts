@@ -10,3 +10,4 @@ export interface IUser {
     userTerminal?: IUserTerminal[];
     userTerminalAgts?: IUserTerminalAgt[];
 }
+//# sourceMappingURL=user.d.ts.map

@@ -15,7 +15,7 @@ import {
 import {
 	ActorId,
 	RecordHistoryActorRecordId,
-	RepositoryEntityActorRecordId,
+	RepositoryEntity_ActorRecordId,
 	RepositoryId
 }                                from '@airport/holding-pattern'
 import {RECORD_UPDATE_STAGE_DAO} from '../tokens'
@@ -49,7 +49,7 @@ export interface IRecordUpdateStageDao
 		schemaIndex: SchemaIndex,
 		schemaVersionId: SchemaVersionId,
 		tableIndex: TableIndex,
-		idMap: Map<RepositoryId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>,
+		idMap: Map<RepositoryId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
 	): Promise<void>;
 
@@ -94,7 +94,7 @@ export class RecordUpdateStageDao
 		schemaIndex: SchemaIndex,
 		schemaVersionId: SchemaVersionId,
 		tableIndex: TableIndex,
-		idMap: Map<RepositoryId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>,
+		idMap: Map<RepositoryId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
 	): Promise<void> {
 		const airDb = await container(this).get(AIR_DB)

@@ -6,3 +6,4 @@ export * from './schema/SchemaPropertyColumn';
 export * from './schema/SchemaReference';
 export * from './schema/SchemaRelation';
 export * from './schema/SchemaRelationColumn';
+//# sourceMappingURL=ddl.d.ts.map

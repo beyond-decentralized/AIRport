@@ -5,3 +5,4 @@ export declare class SecurityAnswer {
     securityQuestion: SecurityQuestion;
     answer: string;
 }
+//# sourceMappingURL=SecurityAnswer.d.ts.map

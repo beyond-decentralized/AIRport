@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 1/5/2016.
  */
-class PromiseHttp {
+export class PromiseHttp {
     constructor(
     // private http:Http
     ) {
@@ -30,5 +28,4 @@ class PromiseHttp {
         });
     }
 }
-exports.PromiseHttp = PromiseHttp;
 //# sourceMappingURL=PromiseHttp.js.map

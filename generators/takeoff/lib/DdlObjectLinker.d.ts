@@ -10,3 +10,4 @@ export declare class DdlObjectLinker implements IDdlObjectLinker {
     private linkPropertiesAndRelations;
     private linkColumns;
 }
+//# sourceMappingURL=DdlObjectLinker.d.ts.map

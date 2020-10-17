@@ -21,3 +21,4 @@ export * from './traditional/qimmutablerow';
 export * from './traditional/qmutablereporow';
 export * from './traditional/qmutablerow';
 export * from './traditional/qreferencerow';
+//# sourceMappingURL=qInterfaces.d.ts.map

@@ -12,3 +12,4 @@ export declare class Repository {
     terminalRepositories: TerminalRepository[];
     repositoryTransactionBlocks: AgtRepositoryTransactionBlock[];
 }
+//# sourceMappingURL=Repository.d.ts.map

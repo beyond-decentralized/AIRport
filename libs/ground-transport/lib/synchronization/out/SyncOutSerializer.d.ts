@@ -8,3 +8,4 @@ export interface ISyncOutSerializer {
 export declare class SyncOutSerializer implements ISyncOutSerializer {
     serializeMessages(sharingNodeDbMap: Map<SharingNodeId, ISharingNodeTerminal>, sharingNodeMap: Map<SharingNodeId, ISharingNode>, repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<RepositoryId, [IRepository, AgtRepositoryId]>>, repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>, repoTransHistoryIds: Set<RepositoryTransactionHistoryId>, terminal: ITerminal): Promise<Map<SharingNodeId, MessageFromTM>>;
 }
+//# sourceMappingURL=SyncOutSerializer.d.ts.map

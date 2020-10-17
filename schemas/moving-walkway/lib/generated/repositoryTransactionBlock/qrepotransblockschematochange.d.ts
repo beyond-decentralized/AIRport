@@ -64,3 +64,4 @@ export interface QRepoTransBlockSchemaToChangeQId {
 }
 export interface QRepoTransBlockSchemaToChangeQRelation extends IQRelation<QRepoTransBlockSchemaToChange>, QRepoTransBlockSchemaToChangeQId {
 }
+//# sourceMappingURL=qrepotransblockschematochange.d.ts.map

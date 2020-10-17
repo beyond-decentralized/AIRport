@@ -1,16 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
+import { SqlOperator } from "@airport/ground-control";
 /**
  * Created by Papa on 4/21/2016.
  */
-class Operation {
+export class Operation {
     constructor(category) {
         this.category = category;
     }
 }
-exports.Operation = Operation;
-class ValueOperation extends Operation {
+export class ValueOperation extends Operation {
     constructor(category) {
         super(category);
         this.category = category;
@@ -19,7 +16,7 @@ class ValueOperation extends Operation {
         return {
             c: this.category,
             l: lValue,
-            o: ground_control_1.SqlOperator.EQUALS,
+            o: SqlOperator.EQUALS,
             r: rValue
         };
     }
@@ -27,7 +24,7 @@ class ValueOperation extends Operation {
         return {
             c: this.category,
             l: lValue,
-            o: ground_control_1.SqlOperator.GREATER_THAN,
+            o: SqlOperator.GREATER_THAN,
             r: rValue
         };
     }
@@ -35,7 +32,7 @@ class ValueOperation extends Operation {
         return {
             c: this.category,
             l: lValue,
-            o: ground_control_1.SqlOperator.GREATER_THAN_OR_EQUALS,
+            o: SqlOperator.GREATER_THAN_OR_EQUALS,
             r: rValue
         };
     }
@@ -43,21 +40,21 @@ class ValueOperation extends Operation {
         return {
             c: this.category,
             l: lValue,
-            o: ground_control_1.SqlOperator.IS_NOT_NULL
+            o: SqlOperator.IS_NOT_NULL
         };
     }
     isNull(lValue) {
         return {
             c: this.category,
             l: lValue,
-            o: ground_control_1.SqlOperator.IS_NULL
+            o: SqlOperator.IS_NULL
         };
     }
     in(lValue, rValue) {
         return {
             c: this.category,
             l: lValue,
-            o: ground_control_1.SqlOperator.IN,
+            o: SqlOperator.IN,
             r: rValue
         };
     }
@@ -65,7 +62,7 @@ class ValueOperation extends Operation {
         return {
             c: this.category,
             l: lValue,
-            o: ground_control_1.SqlOperator.LESS_THAN,
+            o: SqlOperator.LESS_THAN,
             r: rValue
         };
     }
@@ -73,7 +70,7 @@ class ValueOperation extends Operation {
         return {
             c: this.category,
             l: lValue,
-            o: ground_control_1.SqlOperator.LESS_THAN_OR_EQUALS,
+            o: SqlOperator.LESS_THAN_OR_EQUALS,
             r: rValue
         };
     }
@@ -81,7 +78,7 @@ class ValueOperation extends Operation {
         return {
             c: this.category,
             l: lValue,
-            o: ground_control_1.SqlOperator.NOT_EQUALS,
+            o: SqlOperator.NOT_EQUALS,
             r: lValue
         };
     }
@@ -89,10 +86,9 @@ class ValueOperation extends Operation {
         return {
             c: this.category,
             l: lValue,
-            o: ground_control_1.SqlOperator.NOT_IN,
+            o: SqlOperator.NOT_IN,
             r: rValue
         };
     }
 }
-exports.ValueOperation = ValueOperation;
 //# sourceMappingURL=Operation.js.map

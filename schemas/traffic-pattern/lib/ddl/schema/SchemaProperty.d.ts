@@ -6,9 +6,10 @@ import { VersionedSchemaObject } from './VersionedSchemaObject';
 export declare class SchemaProperty extends VersionedSchemaObject {
     id: PropertyId;
     index: PropertyIndex;
-    entity: SchemaEntity;
     name: PropertyName;
     isId: PropertyIsId;
+    entity: SchemaEntity;
     propertyColumns: SchemaPropertyColumn[];
     relation: SchemaRelation[];
 }
+//# sourceMappingURL=SchemaProperty.d.ts.map

@@ -28,3 +28,4 @@ export declare class QueryObjectInitializer implements IQueryObjectInitializer {
     initialize(airDb: IAirportDatabase): Promise<DdlObjects>;
     generateQObjectsAndPopulateStore(ddlObjects: DdlObjects, airDb: IAirportDatabase, ddlObjectLinker: IDdlObjectLinker, queryEntityClassCreator: IQueryEntityClassCreator, terminalStore: ITerminalStore): void;
 }
+//# sourceMappingURL=QueryObjectInitializer.d.ts.map

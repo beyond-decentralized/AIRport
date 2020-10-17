@@ -13,3 +13,4 @@ export declare class GoogleSheets {
     private getUrlSuffix;
     addRow(fileId: string, rowXml: string): Promise<any>;
 }
+//# sourceMappingURL=GoogleSheets.d.ts.map

@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class EntityConfig {
+export class EntityConfig {
     constructor(className, clazz, config, persistenceConfig //
     ) {
         this.className = className;
@@ -35,5 +33,4 @@ class EntityConfig {
                 }*/
     }
 }
-exports.EntityConfig = EntityConfig;
 //# sourceMappingURL=EntityConfig.js.map

@@ -8,3 +8,4 @@ export interface IRepoTransHistoryChangedRepositoryActor {
     repository?: IRepository;
     actor?: IActor;
 }
+//# sourceMappingURL=repotranshistorychangedrepositoryactor.d.ts.map

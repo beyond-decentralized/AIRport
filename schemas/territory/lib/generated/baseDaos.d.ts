@@ -44,3 +44,4 @@ export declare class BasePackagedUnitDao extends SQDIDao<IPackagedUnit, Packaged
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDaos.d.ts.map

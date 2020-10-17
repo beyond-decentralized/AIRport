@@ -52,3 +52,4 @@ export interface QImmutableRepoRowQId extends QRepositoryEntityQId {
 }
 export interface QImmutableRepoRowQRelation<SubType extends IQEntity> extends QRepositoryEntityQRelation<QImmutableRepoRow>, QImmutableRepoRowQId {
 }
+//# sourceMappingURL=qimmutablereporow.d.ts.map

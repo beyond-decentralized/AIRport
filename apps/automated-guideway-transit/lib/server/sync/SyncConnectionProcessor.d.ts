@@ -38,3 +38,4 @@ export declare class SyncConnectionProcessor implements ISyncConnectionProcessor
     private sendRecentChangesToVerifiedConnections;
     private tryToSendRecentChangesToVerifiedConnections;
 }
+//# sourceMappingURL=SyncConnectionProcessor.d.ts.map

@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const moving_walkway_1 = require("@airport/moving-walkway");
-const tokens_1 = require("../../tokens");
-class Stage2SyncedInDataProcessor {
+import { AIR_DB, and, compareNumbers, DB_FACADE, or } from '@airport/air-control';
+import { container, DI } from '@airport/di';
+import { ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
+import { RECORD_UPDATE_STAGE_DAO } from '@airport/moving-walkway';
+import { STAGE2_SYNCED_IN_DATA_PROCESSOR } from '../../tokens';
+export class Stage2SyncedInDataProcessor {
     async applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap) {
-        const [airDb, dbFacade, recordUpdateStageDao] = await di_1.container(this).get(air_control_1.AIR_DB, air_control_1.DB_FACADE, moving_walkway_1.RECORD_UPDATE_STAGE_DAO);
+        const [airDb, dbFacade, recordUpdateStageDao] = await container(this).get(AIR_DB, DB_FACADE, RECORD_UPDATE_STAGE_DAO);
         await this.performCreates(stage1Result.recordCreations, schemasBySchemaVersionIdMap, airDb, dbFacade);
         await this.performUpdates(stage1Result.recordUpdates, schemasBySchemaVersionIdMap, recordUpdateStageDao);
         await this.performDeletes(stage1Result.recordDeletions, schemasBySchemaVersionIdMap, airDb, dbFacade);
@@ -54,7 +52,7 @@ class Stage2SyncedInDataProcessor {
                                 numInserts++;
                             }
                             columnIndexedValues.sort((col1IndexAndValue, col2IndexAndValue) => {
-                                return air_control_1.compareNumbers(col1IndexAndValue[0], col2IndexAndValue[0]);
+                                return compareNumbers(col1IndexAndValue[0], col2IndexAndValue[0]);
                             });
                             for (const [columnIndex, columnValue] of columnIndexedValues) {
                                 if (creatingColumns) {
@@ -84,14 +82,14 @@ class Stage2SyncedInDataProcessor {
         const recordUpdateStage = [];
         // Build the final update data structure
         for (const [schemaVersionId, schemaUpdateMap] of recordUpdates) {
-            const finalSchemaUpdateMap = ground_control_1.ensureChildJsMap(finalUpdateMap, schemaVersionId);
+            const finalSchemaUpdateMap = ensureChildJsMap(finalUpdateMap, schemaVersionId);
             for (const [tableIndex, tableUpdateMap] of schemaUpdateMap) {
-                const finalTableUpdateMap = ground_control_1.ensureChildJsMap(finalSchemaUpdateMap, tableIndex);
+                const finalTableUpdateMap = ensureChildJsMap(finalSchemaUpdateMap, tableIndex);
                 for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
                     for (const [actorId, actorUpdates] of repositoryUpdateMap) {
                         for (const [actorRecordId, recordUpdateMap] of actorUpdates) {
                             const recordKeyMap = this.getRecordKeyMap(recordUpdateMap, finalTableUpdateMap);
-                            ground_control_1.ensureChildJsSet(ground_control_1.ensureChildJsMap(recordKeyMap, repositoryId), actorId)
+                            ensureChildJsSet(ensureChildJsMap(recordKeyMap, repositoryId), actorId)
                                 .add(actorRecordId);
                             for (const [columnIndex, columnUpdate] of recordUpdateMap) {
                                 recordUpdateStage.push([
@@ -131,14 +129,14 @@ class Stage2SyncedInDataProcessor {
                     let actorWhereFragments = [];
                     for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
                         numClauses++;
-                        actorWhereFragments.push(air_control_1.and(qEntity.actorRecordId.in(Array.from(actorRecordIdSet)), qEntity.actor.id.equals(actorId)));
+                        actorWhereFragments.push(and(qEntity.actorRecordId.in(Array.from(actorRecordIdSet)), qEntity.actor.id.equals(actorId)));
                     }
-                    repositoryWhereFragments.push(air_control_1.and(qEntity.repository.id.equals(repositoryId), air_control_1.or(...actorWhereFragments)));
+                    repositoryWhereFragments.push(and(qEntity.repository.id.equals(repositoryId), or(...actorWhereFragments)));
                 }
                 if (numClauses) {
                     await dbFacade.deleteWhere(dbEntity, {
                         deleteFrom: qEntity,
-                        where: air_control_1.or(...repositoryWhereFragments)
+                        where: or(...repositoryWhereFragments)
                     });
                 }
             }
@@ -146,7 +144,7 @@ class Stage2SyncedInDataProcessor {
     }
     /**
      * Get the record key map (RecordKeyMap = RepositoryId -> ActorId
-     * -> RepositoryEntityActorRecordId) for the recordUpdateMap (the specified combination
+     * -> RepositoryEntity_ActorRecordId) for the recordUpdateMap (the specified combination
      * of columns/values being updated)
      * @param {Map<ColumnIndex, RecordUpdate>} recordUpdateMap
      * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap
@@ -161,7 +159,7 @@ class Stage2SyncedInDataProcessor {
         }
         // Sort the updated columns by column index, to ensure that all records with the
         // same combination of updated columns are grouped
-        updatedColumns.sort(air_control_1.compareNumbers);
+        updatedColumns.sort(compareNumbers);
         // Navigate down the table UpdateKeyMap to find the matching combination of
         // columns being updated
         let columnValueUpdate;
@@ -205,6 +203,5 @@ class Stage2SyncedInDataProcessor {
         }
     }
 }
-exports.Stage2SyncedInDataProcessor = Stage2SyncedInDataProcessor;
-di_1.DI.set(tokens_1.STAGE2_SYNCED_IN_DATA_PROCESSOR, Stage2SyncedInDataProcessor);
+DI.set(STAGE2_SYNCED_IN_DATA_PROCESSOR, Stage2SyncedInDataProcessor);
 //# sourceMappingURL=Stage2SyncedInDataProcessor.js.map

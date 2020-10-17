@@ -38,3 +38,4 @@ export declare class SynchronizationInManager implements ISynchronizationInManag
     private isValidLastChangeTime;
     private getLastChangeMillisFromRepoTransBlock;
 }
+//# sourceMappingURL=SynchronizationInManager.d.ts.map

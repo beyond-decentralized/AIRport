@@ -5,3 +5,4 @@ export interface IRepoTransBlockSchemaToChange {
     schema: ISchema;
     status?: number;
 }
+//# sourceMappingURL=repotransblockschematochange.d.ts.map

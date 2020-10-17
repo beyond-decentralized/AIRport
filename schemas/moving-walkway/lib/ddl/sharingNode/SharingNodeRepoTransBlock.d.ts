@@ -10,3 +10,4 @@ export declare class SharingNodeRepoTransBlock {
     repositoryTransactionBlock: RepositoryTransactionBlock;
     syncStatus: SharingNodeRepoTransBlockSyncStatus;
 }
+//# sourceMappingURL=SharingNodeRepoTransBlock.d.ts.map

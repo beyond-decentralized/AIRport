@@ -24,3 +24,4 @@ export declare class RepositoryTransactionHistory {
     operationHistory: OperationHistory[];
     constructor(data?: RepositoryTransactionHistory);
 }
+//# sourceMappingURL=RepositoryTransactionHistory.d.ts.map

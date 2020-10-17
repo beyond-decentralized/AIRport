@@ -13,3 +13,4 @@ export interface RepositoryTransactionBlockData {
     terminal: ITerminal;
     users: IUser[];
 }
+//# sourceMappingURL=common.d.ts.map

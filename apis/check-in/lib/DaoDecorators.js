@@ -1,16 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Persist = function (rules) {
+export const Persist = function (rules) {
     return function (target, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.Delete = function () {
+export const Delete = function () {
     return function (target, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.Query = function () {
+export const Query = function () {
     return function (target, propertyKey) {
         // No runtime logic required.
     };

@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class QValidator {
+export class QValidator {
     validateInsertQEntity(dbEntity) {
     }
     validateReadFromEntity(relation) {
@@ -22,10 +20,8 @@ class QValidator {
     validateAliasedFieldAccess(fieldAlias) {
     }
 }
-exports.QValidator = QValidator;
 const VALIDATOR = new QValidator();
-function getValidator(dbEntity) {
+export function getValidator(dbEntity) {
     return VALIDATOR;
 }
-exports.getValidator = getValidator;
 //# sourceMappingURL=Validator.js.map

@@ -4,6 +4,7 @@ import { SchemaColumn } from '../../ddl/schema/SchemaColumn';
 import { SchemaProperty } from '../../ddl/schema/SchemaProperty';
 import { ISchemaVersion } from './schemaversion';
 import { ISchemaColumn } from './schemacolumn';
+import { ISchemaOperation } from './schemaoperation';
 import { ISchemaProperty } from './schemaproperty';
 import { ISchemaRelation } from './schemarelation';
 export interface ISchemaEntity extends IVersionedSchemaObject {
@@ -15,6 +16,7 @@ export interface ISchemaEntity extends IVersionedSchemaObject {
     tableConfig?: TableConfiguration;
     schemaVersion?: ISchemaVersion;
     columns?: ISchemaColumn[];
+    operations?: ISchemaOperation[];
     properties?: ISchemaProperty[];
     relations?: ISchemaRelation[];
     relationReferences?: ISchemaRelation[];
@@ -29,3 +31,4 @@ export interface ISchemaEntity extends IVersionedSchemaObject {
         [name: string]: SchemaProperty;
     };
 }
+//# sourceMappingURL=schemaentity.d.ts.map

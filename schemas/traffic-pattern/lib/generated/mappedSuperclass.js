@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MAPPED_SUPERCLASS = [
+export const MAPPED_SUPERCLASS = [
     {
         "type": "VersionedSchemaObject",
-        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/VersionedSchemaObject.ts",
+        "path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/versionedschemaobject.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
@@ -91,13 +89,17 @@ exports.MAPPED_SUPERCLASS = [
                     "nonArrayType": "SchemaVersion",
                     "entity": {
                         "type": "SchemaVersion",
-                        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/SchemaVersion.ts",
+                        "path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schemaversion.ts",
                         "parentClassName": null,
                         "isSuperclass": false,
                         "ids": [
                             {
                                 "allocationSize": 100,
                                 "decorators": [
+                                    {
+                                        "name": "DbNumber",
+                                        "values": []
+                                    },
                                     {
                                         "name": "Id",
                                         "values": []
@@ -109,10 +111,6 @@ exports.MAPPED_SUPERCLASS = [
                                                 "allocationSize": 100
                                             }
                                         ]
-                                    },
-                                    {
-                                        "name": "DbNumber",
-                                        "values": []
                                     }
                                 ],
                                 "isGenerated": false,
@@ -120,9 +118,9 @@ exports.MAPPED_SUPERCLASS = [
                                 "isMappedSuperclass": false,
                                 "isTransient": false,
                                 "name": "id",
-                                "type": "number",
+                                "type": "SchemaVersionId",
                                 "ownerEntity": null,
-                                "nonArrayType": "number",
+                                "nonArrayType": "SchemaVersionId",
                                 "primitive": "number",
                                 "index": 0
                             }
@@ -163,6 +161,11 @@ exports.MAPPED_SUPERCLASS = [
                                                 "asName": "DbNumber",
                                                 "moduleImport": null,
                                                 "sourceName": "DbNumber"
+                                            },
+                                            "DbString": {
+                                                "asName": "DbString",
+                                                "moduleImport": null,
+                                                "sourceName": "DbString"
                                             },
                                             "Entity": {
                                                 "asName": "Entity",
@@ -208,6 +211,7 @@ exports.MAPPED_SUPERCLASS = [
                                         "path": "@airport/air-control"
                                     },
                                     "DbNumber": null,
+                                    "DbString": null,
                                     "Entity": null,
                                     "Id": null,
                                     "JoinColumn": null,
@@ -308,6 +312,10 @@ exports.MAPPED_SUPERCLASS = [
                                     "allocationSize": 100,
                                     "decorators": [
                                         {
+                                            "name": "DbNumber",
+                                            "values": []
+                                        },
+                                        {
                                             "name": "Id",
                                             "values": []
                                         },
@@ -318,10 +326,6 @@ exports.MAPPED_SUPERCLASS = [
                                                     "allocationSize": 100
                                                 }
                                             ]
-                                        },
-                                        {
-                                            "name": "DbNumber",
-                                            "values": []
                                         }
                                     ],
                                     "isGenerated": false,
@@ -329,9 +333,9 @@ exports.MAPPED_SUPERCLASS = [
                                     "isMappedSuperclass": false,
                                     "isTransient": false,
                                     "name": "id",
-                                    "type": "number",
+                                    "type": "SchemaVersionId",
                                     "ownerEntity": null,
-                                    "nonArrayType": "number",
+                                    "nonArrayType": "SchemaVersionId",
                                     "primitive": "number",
                                     "index": 0
                                 },
@@ -345,6 +349,10 @@ exports.MAPPED_SUPERCLASS = [
                                                     "nullable": false
                                                 }
                                             ]
+                                        },
+                                        {
+                                            "name": "DbNumber",
+                                            "values": []
                                         }
                                     ],
                                     "isGenerated": false,
@@ -352,9 +360,9 @@ exports.MAPPED_SUPERCLASS = [
                                     "isMappedSuperclass": false,
                                     "isTransient": false,
                                     "name": "integerVersion",
-                                    "type": "number",
+                                    "type": "SchemaVersionInteger",
                                     "ownerEntity": null,
-                                    "nonArrayType": "number",
+                                    "nonArrayType": "SchemaVersionInteger",
                                     "primitive": "number",
                                     "index": 1
                                 },
@@ -368,6 +376,10 @@ exports.MAPPED_SUPERCLASS = [
                                                     "nullable": false
                                                 }
                                             ]
+                                        },
+                                        {
+                                            "name": "DbString",
+                                            "values": []
                                         }
                                     ],
                                     "isGenerated": false,
@@ -375,9 +387,9 @@ exports.MAPPED_SUPERCLASS = [
                                     "isMappedSuperclass": false,
                                     "isTransient": false,
                                     "name": "versionString",
-                                    "type": "string",
+                                    "type": "SchemaVersionString",
                                     "ownerEntity": null,
-                                    "nonArrayType": "string",
+                                    "nonArrayType": "SchemaVersionString",
                                     "primitive": "string",
                                     "index": 2
                                 },
@@ -402,9 +414,9 @@ exports.MAPPED_SUPERCLASS = [
                                     "isMappedSuperclass": false,
                                     "isTransient": false,
                                     "name": "majorVersion",
-                                    "type": "number",
+                                    "type": "SchemaVersionMajor",
                                     "ownerEntity": null,
-                                    "nonArrayType": "number",
+                                    "nonArrayType": "SchemaVersionMajor",
                                     "primitive": "number",
                                     "index": 3
                                 },
@@ -429,9 +441,9 @@ exports.MAPPED_SUPERCLASS = [
                                     "isMappedSuperclass": false,
                                     "isTransient": false,
                                     "name": "minorVersion",
-                                    "type": "number",
+                                    "type": "SchemaVersionMinor",
                                     "ownerEntity": null,
-                                    "nonArrayType": "number",
+                                    "nonArrayType": "SchemaVersionMinor",
                                     "primitive": "number",
                                     "index": 4
                                 },
@@ -456,9 +468,9 @@ exports.MAPPED_SUPERCLASS = [
                                     "isMappedSuperclass": false,
                                     "isTransient": false,
                                     "name": "patchVersion",
-                                    "type": "number",
+                                    "type": "SchemaVersionPatch",
                                     "ownerEntity": null,
-                                    "nonArrayType": "number",
+                                    "nonArrayType": "SchemaVersionPatch",
                                     "primitive": "number",
                                     "index": 5
                                 },
@@ -488,7 +500,7 @@ exports.MAPPED_SUPERCLASS = [
                                     "nonArrayType": "Schema",
                                     "entity": {
                                         "type": "Schema",
-                                        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/Schema.ts",
+                                        "path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schema.ts",
                                         "parentClassName": null,
                                         "isSuperclass": false,
                                         "ids": [
@@ -517,9 +529,9 @@ exports.MAPPED_SUPERCLASS = [
                                                 "isMappedSuperclass": false,
                                                 "isTransient": false,
                                                 "name": "index",
-                                                "type": "number",
+                                                "type": "SchemaIndex",
                                                 "ownerEntity": null,
-                                                "nonArrayType": "number",
+                                                "nonArrayType": "SchemaIndex",
                                                 "primitive": "number",
                                                 "index": 0
                                             }
@@ -695,9 +707,9 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isMappedSuperclass": false,
                                                     "isTransient": false,
                                                     "name": "index",
-                                                    "type": "number",
+                                                    "type": "SchemaIndex",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "number",
+                                                    "nonArrayType": "SchemaIndex",
                                                     "primitive": "number",
                                                     "index": 0
                                                 },
@@ -735,12 +747,16 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "id": null,
                                                                 "index": 0,
                                                                 "isGenerated": false,
+                                                                "manyRelationColumns": [],
                                                                 "name": "ID",
                                                                 "notNull": false,
+                                                                "oneRelationColumns": [],
+                                                                "propertyColumnMap": null,
                                                                 "propertyColumns": [
                                                                     {
                                                                         "column": null,
-                                                                        "property": null
+                                                                        "property": null,
+                                                                        "sinceVersion": null
                                                                     }
                                                                 ],
                                                                 "sinceVersion": null,
@@ -752,12 +768,16 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "id": null,
                                                                 "index": 1,
                                                                 "isGenerated": false,
+                                                                "manyRelationColumns": [],
                                                                 "name": "NAME",
                                                                 "notNull": false,
+                                                                "oneRelationColumns": [],
+                                                                "propertyColumnMap": null,
                                                                 "propertyColumns": [
                                                                     {
                                                                         "column": null,
-                                                                        "property": null
+                                                                        "property": null,
+                                                                        "sinceVersion": null
                                                                     }
                                                                 ],
                                                                 "sinceVersion": null,
@@ -770,12 +790,16 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "id": null,
                                                                 "index": 0,
                                                                 "isGenerated": false,
+                                                                "manyRelationColumns": [],
                                                                 "name": "ID",
                                                                 "notNull": false,
+                                                                "oneRelationColumns": [],
+                                                                "propertyColumnMap": null,
                                                                 "propertyColumns": [
                                                                     {
                                                                         "column": null,
-                                                                        "property": null
+                                                                        "property": null,
+                                                                        "sinceVersion": null
                                                                     }
                                                                 ],
                                                                 "sinceVersion": null,
@@ -783,6 +807,7 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "idIndex": 0
                                                             }
                                                         ],
+                                                        "idColumnMap": null,
                                                         "id": null,
                                                         "index": 2,
                                                         "isLocal": true,
@@ -794,7 +819,8 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "propertyColumns": [
                                                                     {
                                                                         "column": null,
-                                                                        "property": null
+                                                                        "property": null,
+                                                                        "sinceVersion": null
                                                                     }
                                                                 ],
                                                                 "entity": null,
@@ -809,7 +835,8 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "propertyColumns": [
                                                                     {
                                                                         "column": null,
-                                                                        "property": null
+                                                                        "property": null,
+                                                                        "sinceVersion": null
                                                                     }
                                                                 ],
                                                                 "entity": null,
@@ -913,9 +940,9 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isMappedSuperclass": false,
                                                     "isTransient": false,
                                                     "name": "name",
-                                                    "type": "string",
+                                                    "type": "SchemaName",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "string",
+                                                    "nonArrayType": "SchemaName",
                                                     "primitive": "string",
                                                     "index": 3
                                                 },
@@ -1032,13 +1059,17 @@ exports.MAPPED_SUPERCLASS = [
                                     "nonArrayType": "SchemaEntity",
                                     "entity": {
                                         "type": "SchemaEntity",
-                                        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts",
+                                        "path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schemaentity.ts",
                                         "parentClassName": "VersionedSchemaObject",
                                         "location": "./VersionedSchemaObject",
                                         "isSuperclass": false,
                                         "ids": [
                                             {
                                                 "decorators": [
+                                                    {
+                                                        "name": "DbNumber",
+                                                        "values": []
+                                                    },
                                                     {
                                                         "name": "Id",
                                                         "values": []
@@ -1049,9 +1080,9 @@ exports.MAPPED_SUPERCLASS = [
                                                 "isMappedSuperclass": false,
                                                 "isTransient": false,
                                                 "name": "id",
-                                                "type": "number",
+                                                "type": "EntityId",
                                                 "ownerEntity": null,
-                                                "nonArrayType": "number",
+                                                "nonArrayType": "EntityId",
                                                 "primitive": "number",
                                                 "index": 0
                                             }
@@ -1088,10 +1119,20 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "moduleImport": null,
                                                                 "sourceName": "Column"
                                                             },
+                                                            "DbBoolean": {
+                                                                "asName": "DbBoolean",
+                                                                "moduleImport": null,
+                                                                "sourceName": "DbBoolean"
+                                                            },
                                                             "DbNumber": {
                                                                 "asName": "DbNumber",
                                                                 "moduleImport": null,
                                                                 "sourceName": "DbNumber"
+                                                            },
+                                                            "DbString": {
+                                                                "asName": "DbString",
+                                                                "moduleImport": null,
+                                                                "sourceName": "DbString"
                                                             },
                                                             "Entity": {
                                                                 "asName": "Entity",
@@ -1141,7 +1182,9 @@ exports.MAPPED_SUPERCLASS = [
                                                         },
                                                         "path": "@airport/air-control"
                                                     },
+                                                    "DbBoolean": null,
                                                     "DbNumber": null,
+                                                    "DbString": null,
                                                     "Entity": null,
                                                     "Id": null,
                                                     "JoinColumn": null,
@@ -1205,6 +1248,18 @@ exports.MAPPED_SUPERCLASS = [
                                                         },
                                                         "path": "./SchemaColumn"
                                                     },
+                                                    "SchemaOperation": {
+                                                        "fileImports": null,
+                                                        "isLocal": true,
+                                                        "objectMapByAsName": {
+                                                            "SchemaOperation": {
+                                                                "asName": "SchemaOperation",
+                                                                "moduleImport": null,
+                                                                "sourceName": "SchemaOperation"
+                                                            }
+                                                        },
+                                                        "path": "./SchemaOperation"
+                                                    },
                                                     "SchemaProperty": {
                                                         "fileImports": null,
                                                         "isLocal": true,
@@ -1258,6 +1313,7 @@ exports.MAPPED_SUPERCLASS = [
                                                     "@airport/air-control": null,
                                                     "@airport/ground-control": null,
                                                     "./SchemaColumn": null,
+                                                    "./SchemaOperation": null,
                                                     "./SchemaProperty": null,
                                                     "./SchemaRelation": null,
                                                     "./SchemaVersion": null,
@@ -1268,6 +1324,10 @@ exports.MAPPED_SUPERCLASS = [
                                                 {
                                                     "decorators": [
                                                         {
+                                                            "name": "DbNumber",
+                                                            "values": []
+                                                        },
+                                                        {
                                                             "name": "Id",
                                                             "values": []
                                                         }
@@ -1277,9 +1337,9 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isMappedSuperclass": false,
                                                     "isTransient": false,
                                                     "name": "id",
-                                                    "type": "number",
+                                                    "type": "EntityId",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "number",
+                                                    "nonArrayType": "EntityId",
                                                     "primitive": "number",
                                                     "index": 0
                                                 },
@@ -1304,9 +1364,9 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isMappedSuperclass": false,
                                                     "isTransient": false,
                                                     "name": "index",
-                                                    "type": "number",
+                                                    "type": "TableIndex",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "number",
+                                                    "nonArrayType": "TableIndex",
                                                     "primitive": "number",
                                                     "index": 1
                                                 },
@@ -1320,6 +1380,10 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "nullable": false
                                                                 }
                                                             ]
+                                                        },
+                                                        {
+                                                            "name": "DbBoolean",
+                                                            "values": []
                                                         }
                                                     ],
                                                     "isGenerated": false,
@@ -1327,9 +1391,9 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isMappedSuperclass": false,
                                                     "isTransient": false,
                                                     "name": "isLocal",
-                                                    "type": "boolean",
+                                                    "type": "EntityIsLocal",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "boolean",
+                                                    "nonArrayType": "EntityIsLocal",
                                                     "primitive": "boolean",
                                                     "index": 2
                                                 },
@@ -1343,6 +1407,10 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "nullable": false
                                                                 }
                                                             ]
+                                                        },
+                                                        {
+                                                            "name": "DbBoolean",
+                                                            "values": []
                                                         }
                                                     ],
                                                     "isGenerated": false,
@@ -1350,9 +1418,9 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isMappedSuperclass": false,
                                                     "isTransient": false,
                                                     "name": "isRepositoryEntity",
-                                                    "type": "boolean",
+                                                    "type": "EntityIsRepositoryEntity",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "boolean",
+                                                    "nonArrayType": "EntityIsRepositoryEntity",
                                                     "primitive": "boolean",
                                                     "index": 3
                                                 },
@@ -1366,6 +1434,10 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "nullable": false
                                                                 }
                                                             ]
+                                                        },
+                                                        {
+                                                            "name": "DbString",
+                                                            "values": []
                                                         }
                                                     ],
                                                     "isGenerated": false,
@@ -1373,9 +1445,9 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isMappedSuperclass": false,
                                                     "isTransient": false,
                                                     "name": "name",
-                                                    "type": "string",
+                                                    "type": "EntityName",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "string",
+                                                    "nonArrayType": "EntityName",
                                                     "primitive": "string",
                                                     "index": 4
                                                 },
@@ -1456,13 +1528,17 @@ exports.MAPPED_SUPERCLASS = [
                                                     "nonArrayType": "SchemaColumn",
                                                     "entity": {
                                                         "type": "SchemaColumn",
-                                                        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts",
+                                                        "path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schemacolumn.ts",
                                                         "parentClassName": "VersionedSchemaObject",
                                                         "location": "./VersionedSchemaObject",
                                                         "isSuperclass": false,
                                                         "ids": [
                                                             {
                                                                 "decorators": [
+                                                                    {
+                                                                        "name": "DbNumber",
+                                                                        "values": []
+                                                                    },
                                                                     {
                                                                         "name": "Id",
                                                                         "values": []
@@ -1473,9 +1549,9 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "isMappedSuperclass": false,
                                                                 "isTransient": false,
                                                                 "name": "id",
-                                                                "type": "number",
+                                                                "type": "ColumnId",
                                                                 "ownerEntity": null,
-                                                                "nonArrayType": "number",
+                                                                "nonArrayType": "ColumnId",
                                                                 "primitive": "number",
                                                                 "index": 0
                                                             }
@@ -1512,10 +1588,20 @@ exports.MAPPED_SUPERCLASS = [
                                                                                 "moduleImport": null,
                                                                                 "sourceName": "Column"
                                                                             },
+                                                                            "DbBoolean": {
+                                                                                "asName": "DbBoolean",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "DbBoolean"
+                                                                            },
                                                                             "DbNumber": {
                                                                                 "asName": "DbNumber",
                                                                                 "moduleImport": null,
                                                                                 "sourceName": "DbNumber"
+                                                                            },
+                                                                            "DbString": {
+                                                                                "asName": "DbString",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "DbString"
                                                                             },
                                                                             "Entity": {
                                                                                 "asName": "Entity",
@@ -1550,7 +1636,9 @@ exports.MAPPED_SUPERCLASS = [
                                                                         },
                                                                         "path": "@airport/air-control"
                                                                     },
+                                                                    "DbBoolean": null,
                                                                     "DbNumber": null,
+                                                                    "DbString": null,
                                                                     "Entity": null,
                                                                     "Id": null,
                                                                     "JoinColumn": null,
@@ -1673,6 +1761,10 @@ exports.MAPPED_SUPERCLASS = [
                                                                 {
                                                                     "decorators": [
                                                                         {
+                                                                            "name": "DbNumber",
+                                                                            "values": []
+                                                                        },
+                                                                        {
                                                                             "name": "Id",
                                                                             "values": []
                                                                         }
@@ -1682,9 +1774,9 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "isMappedSuperclass": false,
                                                                     "isTransient": false,
                                                                     "name": "id",
-                                                                    "type": "number",
+                                                                    "type": "ColumnId",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "number",
+                                                                    "nonArrayType": "ColumnId",
                                                                     "primitive": "number",
                                                                     "index": 0
                                                                 },
@@ -1698,6 +1790,10 @@ exports.MAPPED_SUPERCLASS = [
                                                                                     "nullable": false
                                                                                 }
                                                                             ]
+                                                                        },
+                                                                        {
+                                                                            "name": "DbNumber",
+                                                                            "values": []
                                                                         }
                                                                     ],
                                                                     "isGenerated": false,
@@ -1705,11 +1801,171 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "isMappedSuperclass": false,
                                                                     "isTransient": false,
                                                                     "name": "index",
-                                                                    "type": "number",
+                                                                    "type": "ColumnIndex",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "number",
+                                                                    "nonArrayType": "ColumnIndex",
                                                                     "primitive": "number",
                                                                     "index": 1
+                                                                },
+                                                                {
+                                                                    "decorators": [
+                                                                        {
+                                                                            "name": "Column",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "ID_INDEX"
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "name": "DbNumber",
+                                                                            "values": []
+                                                                        }
+                                                                    ],
+                                                                    "isGenerated": false,
+                                                                    "isId": false,
+                                                                    "isMappedSuperclass": false,
+                                                                    "isTransient": false,
+                                                                    "name": "idIndex",
+                                                                    "type": "IdColumnOnlyIndex",
+                                                                    "ownerEntity": null,
+                                                                    "nonArrayType": "IdColumnOnlyIndex",
+                                                                    "primitive": "number",
+                                                                    "index": 2
+                                                                },
+                                                                {
+                                                                    "decorators": [
+                                                                        {
+                                                                            "name": "Column",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "IS_GENERATED",
+                                                                                    "nullable": false
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "name": "DbBoolean",
+                                                                            "values": []
+                                                                        }
+                                                                    ],
+                                                                    "isGenerated": false,
+                                                                    "isId": false,
+                                                                    "isMappedSuperclass": false,
+                                                                    "isTransient": false,
+                                                                    "name": "isGenerated",
+                                                                    "type": "SchemaColumnIsGenerated",
+                                                                    "ownerEntity": null,
+                                                                    "nonArrayType": "SchemaColumnIsGenerated",
+                                                                    "primitive": "boolean",
+                                                                    "index": 3
+                                                                },
+                                                                {
+                                                                    "decorators": [
+                                                                        {
+                                                                            "name": "Column",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "ALLOCATION_SIZE"
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "name": "DbNumber",
+                                                                            "values": []
+                                                                        }
+                                                                    ],
+                                                                    "isGenerated": false,
+                                                                    "isId": false,
+                                                                    "isMappedSuperclass": false,
+                                                                    "isTransient": false,
+                                                                    "name": "allocationSize",
+                                                                    "type": "SchemaColumnAllocationSize",
+                                                                    "ownerEntity": null,
+                                                                    "nonArrayType": "SchemaColumnAllocationSize",
+                                                                    "primitive": "number",
+                                                                    "index": 4
+                                                                },
+                                                                {
+                                                                    "decorators": [
+                                                                        {
+                                                                            "name": "Column",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "NAME",
+                                                                                    "nullable": false
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "name": "DbString",
+                                                                            "values": []
+                                                                        }
+                                                                    ],
+                                                                    "isGenerated": false,
+                                                                    "isId": false,
+                                                                    "isMappedSuperclass": false,
+                                                                    "isTransient": false,
+                                                                    "name": "name",
+                                                                    "type": "ColumnName",
+                                                                    "ownerEntity": null,
+                                                                    "nonArrayType": "ColumnName",
+                                                                    "primitive": "string",
+                                                                    "index": 5
+                                                                },
+                                                                {
+                                                                    "decorators": [
+                                                                        {
+                                                                            "name": "Column",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "NOT_NULL",
+                                                                                    "nullable": false
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "name": "DbBoolean",
+                                                                            "values": []
+                                                                        }
+                                                                    ],
+                                                                    "isGenerated": false,
+                                                                    "isId": false,
+                                                                    "isMappedSuperclass": false,
+                                                                    "isTransient": false,
+                                                                    "name": "notNull",
+                                                                    "type": "ColumnNotNull",
+                                                                    "ownerEntity": null,
+                                                                    "nonArrayType": "ColumnNotNull",
+                                                                    "primitive": "boolean",
+                                                                    "index": 6
+                                                                },
+                                                                {
+                                                                    "decorators": [
+                                                                        {
+                                                                            "name": "Column",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "TYPE",
+                                                                                    "nullable": false
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "name": "DbNumber",
+                                                                            "values": []
+                                                                        }
+                                                                    ],
+                                                                    "isGenerated": false,
+                                                                    "isId": false,
+                                                                    "isMappedSuperclass": false,
+                                                                    "isTransient": false,
+                                                                    "name": "type",
+                                                                    "type": "SQLDataType",
+                                                                    "ownerEntity": null,
+                                                                    "nonArrayType": "SQLDataType",
+                                                                    "primitive": "number",
+                                                                    "index": 7
                                                                 },
                                                                 {
                                                                     "decorators": [
@@ -1737,146 +1993,6 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "ownerEntity": null,
                                                                     "nonArrayType": "SchemaEntity",
                                                                     "entity": null,
-                                                                    "index": 2
-                                                                },
-                                                                {
-                                                                    "decorators": [
-                                                                        {
-                                                                            "name": "Column",
-                                                                            "values": [
-                                                                                {
-                                                                                    "name": "ID_INDEX"
-                                                                                }
-                                                                            ]
-                                                                        }
-                                                                    ],
-                                                                    "isGenerated": false,
-                                                                    "isId": false,
-                                                                    "isMappedSuperclass": false,
-                                                                    "isTransient": false,
-                                                                    "name": "idIndex",
-                                                                    "type": "number",
-                                                                    "ownerEntity": null,
-                                                                    "nonArrayType": "number",
-                                                                    "primitive": "number",
-                                                                    "index": 3
-                                                                },
-                                                                {
-                                                                    "decorators": [
-                                                                        {
-                                                                            "name": "Column",
-                                                                            "values": [
-                                                                                {
-                                                                                    "name": "IS_GENERATED",
-                                                                                    "nullable": false
-                                                                                }
-                                                                            ]
-                                                                        }
-                                                                    ],
-                                                                    "isGenerated": false,
-                                                                    "isId": false,
-                                                                    "isMappedSuperclass": false,
-                                                                    "isTransient": false,
-                                                                    "name": "isGenerated",
-                                                                    "type": "boolean",
-                                                                    "ownerEntity": null,
-                                                                    "nonArrayType": "boolean",
-                                                                    "primitive": "boolean",
-                                                                    "index": 4
-                                                                },
-                                                                {
-                                                                    "decorators": [
-                                                                        {
-                                                                            "name": "Column",
-                                                                            "values": [
-                                                                                {
-                                                                                    "name": "ALLOCATION_SIZE"
-                                                                                }
-                                                                            ]
-                                                                        }
-                                                                    ],
-                                                                    "isGenerated": false,
-                                                                    "isId": false,
-                                                                    "isMappedSuperclass": false,
-                                                                    "isTransient": false,
-                                                                    "name": "allocationSize",
-                                                                    "type": "number",
-                                                                    "ownerEntity": null,
-                                                                    "nonArrayType": "number",
-                                                                    "primitive": "number",
-                                                                    "index": 5
-                                                                },
-                                                                {
-                                                                    "decorators": [
-                                                                        {
-                                                                            "name": "Column",
-                                                                            "values": [
-                                                                                {
-                                                                                    "name": "NAME",
-                                                                                    "nullable": false
-                                                                                }
-                                                                            ]
-                                                                        }
-                                                                    ],
-                                                                    "isGenerated": false,
-                                                                    "isId": false,
-                                                                    "isMappedSuperclass": false,
-                                                                    "isTransient": false,
-                                                                    "name": "name",
-                                                                    "type": "string",
-                                                                    "ownerEntity": null,
-                                                                    "nonArrayType": "string",
-                                                                    "primitive": "string",
-                                                                    "index": 6
-                                                                },
-                                                                {
-                                                                    "decorators": [
-                                                                        {
-                                                                            "name": "Column",
-                                                                            "values": [
-                                                                                {
-                                                                                    "name": "NOT_NULL",
-                                                                                    "nullable": false
-                                                                                }
-                                                                            ]
-                                                                        }
-                                                                    ],
-                                                                    "isGenerated": false,
-                                                                    "isId": false,
-                                                                    "isMappedSuperclass": false,
-                                                                    "isTransient": false,
-                                                                    "name": "notNull",
-                                                                    "type": "boolean",
-                                                                    "ownerEntity": null,
-                                                                    "nonArrayType": "boolean",
-                                                                    "primitive": "boolean",
-                                                                    "index": 7
-                                                                },
-                                                                {
-                                                                    "decorators": [
-                                                                        {
-                                                                            "name": "DbNumber",
-                                                                            "values": []
-                                                                        },
-                                                                        {
-                                                                            "name": "Column",
-                                                                            "values": [
-                                                                                {
-                                                                                    "name": "TYPE",
-                                                                                    "nullable": false
-                                                                                }
-                                                                            ]
-                                                                        }
-                                                                    ],
-                                                                    "isGenerated": false,
-                                                                    "isId": false,
-                                                                    "isMappedSuperclass": false,
-                                                                    "isTransient": false,
-                                                                    "name": "type",
-                                                                    "type": "SQLDataType",
-                                                                    "ownerEntity": null,
-                                                                    "nonArrayType": "SQLDataType",
-                                                                    "primitive": "number",
                                                                     "index": 8
                                                                 },
                                                                 {
@@ -1901,7 +2017,7 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "nonArrayType": "SchemaPropertyColumn",
                                                                     "entity": {
                                                                         "type": "SchemaPropertyColumn",
-                                                                        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/SchemaPropertyColumn.ts",
+                                                                        "path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schemapropertycolumn.ts",
                                                                         "parentClassName": "VersionedSchemaObject",
                                                                         "location": "./VersionedSchemaObject",
                                                                         "isSuperclass": false,
@@ -2229,13 +2345,369 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isId": false,
                                                     "isMappedSuperclass": false,
                                                     "isTransient": false,
+                                                    "name": "operations",
+                                                    "type": "SchemaOperation[]",
+                                                    "ownerEntity": null,
+                                                    "isArray": true,
+                                                    "nonArrayType": "SchemaOperation",
+                                                    "entity": {
+                                                        "type": "SchemaOperation",
+                                                        "path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schemaoperation.ts",
+                                                        "parentClassName": "VersionedSchemaObject",
+                                                        "location": "./VersionedSchemaObject",
+                                                        "isSuperclass": false,
+                                                        "ids": [
+                                                            {
+                                                                "decorators": [
+                                                                    {
+                                                                        "name": "Id",
+                                                                        "values": []
+                                                                    },
+                                                                    {
+                                                                        "name": "GeneratedValue",
+                                                                        "values": []
+                                                                    },
+                                                                    {
+                                                                        "name": "DbNumber",
+                                                                        "values": []
+                                                                    }
+                                                                ],
+                                                                "isGenerated": true,
+                                                                "isId": true,
+                                                                "isMappedSuperclass": false,
+                                                                "isTransient": false,
+                                                                "name": "id",
+                                                                "type": "Operation_Id",
+                                                                "ownerEntity": null,
+                                                                "nonArrayType": "Operation_Id",
+                                                                "primitive": "number",
+                                                                "index": 0
+                                                            }
+                                                        ],
+                                                        "docEntry": {
+                                                            "decorators": [
+                                                                {
+                                                                    "name": "Entity",
+                                                                    "values": []
+                                                                },
+                                                                {
+                                                                    "name": "Table",
+                                                                    "values": [
+                                                                        {
+                                                                            "name": "SCHEMA_OPERATIONS"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "isGenerated": false,
+                                                            "isId": false,
+                                                            "isMappedSuperclass": false,
+                                                            "isTransient": false,
+                                                            "name": "SchemaOperation",
+                                                            "type": "typeof SchemaOperation",
+                                                            "fileImports": {
+                                                                "importMapByObjectAsName": {
+                                                                    "Column": {
+                                                                        "fileImports": null,
+                                                                        "isLocal": false,
+                                                                        "objectMapByAsName": {
+                                                                            "Column": {
+                                                                                "asName": "Column",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "Column"
+                                                                            },
+                                                                            "DbNumber": {
+                                                                                "asName": "DbNumber",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "DbNumber"
+                                                                            },
+                                                                            "DbString": {
+                                                                                "asName": "DbString",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "DbString"
+                                                                            },
+                                                                            "Entity": {
+                                                                                "asName": "Entity",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "Entity"
+                                                                            },
+                                                                            "GeneratedValue": {
+                                                                                "asName": "GeneratedValue",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "GeneratedValue"
+                                                                            },
+                                                                            "Id": {
+                                                                                "asName": "Id",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "Id"
+                                                                            },
+                                                                            "JoinColumn": {
+                                                                                "asName": "JoinColumn",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "JoinColumn"
+                                                                            },
+                                                                            "Json": {
+                                                                                "asName": "Json",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "Json"
+                                                                            },
+                                                                            "ManyToOne": {
+                                                                                "asName": "ManyToOne",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "ManyToOne"
+                                                                            },
+                                                                            "Table": {
+                                                                                "asName": "Table",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "Table"
+                                                                            }
+                                                                        },
+                                                                        "path": "@airport/air-control"
+                                                                    },
+                                                                    "DbNumber": null,
+                                                                    "DbString": null,
+                                                                    "Entity": null,
+                                                                    "GeneratedValue": null,
+                                                                    "Id": null,
+                                                                    "JoinColumn": null,
+                                                                    "Json": null,
+                                                                    "ManyToOne": null,
+                                                                    "Table": null,
+                                                                    "Operation_Id": {
+                                                                        "fileImports": null,
+                                                                        "isLocal": false,
+                                                                        "objectMapByAsName": {
+                                                                            "Operation_Id": {
+                                                                                "asName": "Operation_Id",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "Operation_Id"
+                                                                            },
+                                                                            "Operation_Name": {
+                                                                                "asName": "Operation_Name",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "Operation_Name"
+                                                                            },
+                                                                            "Operation_Rule": {
+                                                                                "asName": "Operation_Rule",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "Operation_Rule"
+                                                                            },
+                                                                            "Operation_Type": {
+                                                                                "asName": "Operation_Type",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "Operation_Type"
+                                                                            }
+                                                                        },
+                                                                        "path": "@airport/ground-control"
+                                                                    },
+                                                                    "Operation_Name": null,
+                                                                    "Operation_Rule": null,
+                                                                    "Operation_Type": null,
+                                                                    "SchemaEntity": {
+                                                                        "fileImports": null,
+                                                                        "isLocal": true,
+                                                                        "objectMapByAsName": {
+                                                                            "SchemaEntity": {
+                                                                                "asName": "SchemaEntity",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "SchemaEntity"
+                                                                            }
+                                                                        },
+                                                                        "path": "./SchemaEntity"
+                                                                    },
+                                                                    "VersionedSchemaObject": {
+                                                                        "fileImports": null,
+                                                                        "isLocal": true,
+                                                                        "objectMapByAsName": {
+                                                                            "VersionedSchemaObject": {
+                                                                                "asName": "VersionedSchemaObject",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "VersionedSchemaObject"
+                                                                            }
+                                                                        },
+                                                                        "path": "./VersionedSchemaObject"
+                                                                    }
+                                                                },
+                                                                "importMapByModulePath": {
+                                                                    "@airport/air-control": null,
+                                                                    "@airport/ground-control": null,
+                                                                    "./SchemaEntity": null,
+                                                                    "./VersionedSchemaObject": null
+                                                                }
+                                                            },
+                                                            "properties": [
+                                                                {
+                                                                    "decorators": [
+                                                                        {
+                                                                            "name": "Id",
+                                                                            "values": []
+                                                                        },
+                                                                        {
+                                                                            "name": "GeneratedValue",
+                                                                            "values": []
+                                                                        },
+                                                                        {
+                                                                            "name": "DbNumber",
+                                                                            "values": []
+                                                                        }
+                                                                    ],
+                                                                    "isGenerated": true,
+                                                                    "isId": true,
+                                                                    "isMappedSuperclass": false,
+                                                                    "isTransient": false,
+                                                                    "name": "id",
+                                                                    "type": "Operation_Id",
+                                                                    "ownerEntity": null,
+                                                                    "nonArrayType": "Operation_Id",
+                                                                    "primitive": "number",
+                                                                    "index": 0
+                                                                },
+                                                                {
+                                                                    "decorators": [
+                                                                        {
+                                                                            "name": "Column",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "TYPE",
+                                                                                    "nullable": false
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "name": "DbNumber",
+                                                                            "values": []
+                                                                        }
+                                                                    ],
+                                                                    "isGenerated": false,
+                                                                    "isId": false,
+                                                                    "isMappedSuperclass": false,
+                                                                    "isTransient": false,
+                                                                    "name": "type",
+                                                                    "type": "Operation_Type",
+                                                                    "ownerEntity": null,
+                                                                    "nonArrayType": "Operation_Type",
+                                                                    "primitive": "number",
+                                                                    "index": 1
+                                                                },
+                                                                {
+                                                                    "decorators": [
+                                                                        {
+                                                                            "name": "ManyToOne",
+                                                                            "values": []
+                                                                        },
+                                                                        {
+                                                                            "name": "JoinColumn",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "SCHEMA_ENTITY_ID",
+                                                                                    "referencedColumnName": "ID",
+                                                                                    "nullable": false
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ],
+                                                                    "isGenerated": false,
+                                                                    "isId": false,
+                                                                    "isMappedSuperclass": false,
+                                                                    "isTransient": false,
+                                                                    "name": "entity",
+                                                                    "type": "SchemaEntity",
+                                                                    "ownerEntity": null,
+                                                                    "nonArrayType": "SchemaEntity",
+                                                                    "entity": null,
+                                                                    "index": 2
+                                                                },
+                                                                {
+                                                                    "decorators": [
+                                                                        {
+                                                                            "name": "Column",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "NAME",
+                                                                                    "nullable": false
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "name": "DbString",
+                                                                            "values": []
+                                                                        }
+                                                                    ],
+                                                                    "isGenerated": false,
+                                                                    "isId": false,
+                                                                    "isMappedSuperclass": false,
+                                                                    "isTransient": false,
+                                                                    "name": "name",
+                                                                    "type": "Operation_Name",
+                                                                    "ownerEntity": null,
+                                                                    "nonArrayType": "Operation_Name",
+                                                                    "primitive": "string",
+                                                                    "index": 3
+                                                                },
+                                                                {
+                                                                    "decorators": [
+                                                                        {
+                                                                            "name": "Column",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "RULE",
+                                                                                    "nullable": false
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "name": "Json",
+                                                                            "values": []
+                                                                        }
+                                                                    ],
+                                                                    "isGenerated": false,
+                                                                    "isId": false,
+                                                                    "isMappedSuperclass": false,
+                                                                    "isTransient": false,
+                                                                    "name": "rule",
+                                                                    "type": "Operation_Rule",
+                                                                    "ownerEntity": null,
+                                                                    "nonArrayType": "Operation_Rule",
+                                                                    "primitive": "Json",
+                                                                    "index": 4
+                                                                }
+                                                            ],
+                                                            "methodSignatures": [],
+                                                            "constructors": [
+                                                                {
+                                                                    "parameters": [],
+                                                                    "returnType": "SchemaOperation"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "implementedInterfaceNames": [],
+                                                        "parentEntity": null
+                                                    },
+                                                    "index": 8
+                                                },
+                                                {
+                                                    "decorators": [
+                                                        {
+                                                            "name": "OneToMany",
+                                                            "values": [
+                                                                {
+                                                                    "cascade": "CascadeType.ALL",
+                                                                    "mappedBy": "entity"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "isGenerated": false,
+                                                    "isId": false,
+                                                    "isMappedSuperclass": false,
+                                                    "isTransient": false,
                                                     "name": "properties",
                                                     "type": "SchemaProperty[]",
                                                     "ownerEntity": null,
                                                     "isArray": true,
                                                     "nonArrayType": "SchemaProperty",
                                                     "entity": null,
-                                                    "index": 8
+                                                    "index": 9
                                                 },
                                                 {
                                                     "decorators": [
@@ -2258,7 +2730,7 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isArray": true,
                                                     "nonArrayType": "SchemaRelation",
                                                     "entity": null,
-                                                    "index": 9
+                                                    "index": 10
                                                 },
                                                 {
                                                     "decorators": [
@@ -2281,7 +2753,7 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isArray": true,
                                                     "nonArrayType": "SchemaRelation",
                                                     "entity": null,
-                                                    "index": 10
+                                                    "index": 11
                                                 },
                                                 {
                                                     "decorators": [
@@ -2399,7 +2871,7 @@ exports.MAPPED_SUPERCLASS = [
                                     "nonArrayType": "SchemaReference",
                                     "entity": {
                                         "type": "SchemaReference",
-                                        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/traffic-pattern/src/ddl/schema/SchemaReference.ts",
+                                        "path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schemareference.ts",
                                         "parentClassName": "VersionedSchemaObject",
                                         "location": "./VersionedSchemaObject",
                                         "isSuperclass": false,
@@ -2501,6 +2973,11 @@ exports.MAPPED_SUPERCLASS = [
                                                                 "moduleImport": null,
                                                                 "sourceName": "Column"
                                                             },
+                                                            "DbNumber": {
+                                                                "asName": "DbNumber",
+                                                                "moduleImport": null,
+                                                                "sourceName": "DbNumber"
+                                                            },
                                                             "Entity": {
                                                                 "asName": "Entity",
                                                                 "moduleImport": null,
@@ -2529,6 +3006,7 @@ exports.MAPPED_SUPERCLASS = [
                                                         },
                                                         "path": "@airport/air-control"
                                                     },
+                                                    "DbNumber": null,
                                                     "Entity": null,
                                                     "Id": null,
                                                     "JoinColumn": null,
@@ -2653,6 +3131,10 @@ exports.MAPPED_SUPERCLASS = [
                                                                     "nullable": false
                                                                 }
                                                             ]
+                                                        },
+                                                        {
+                                                            "name": "DbNumber",
+                                                            "values": []
                                                         }
                                                     ],
                                                     "isGenerated": false,
@@ -2660,9 +3142,9 @@ exports.MAPPED_SUPERCLASS = [
                                                     "isMappedSuperclass": false,
                                                     "isTransient": false,
                                                     "name": "index",
-                                                    "type": "number",
+                                                    "type": "SchemaReferenceIndex",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "number",
+                                                    "nonArrayType": "SchemaReferenceIndex",
                                                     "primitive": "number",
                                                     "index": 2
                                                 }

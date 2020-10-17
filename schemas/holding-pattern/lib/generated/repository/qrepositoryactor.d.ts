@@ -63,3 +63,4 @@ export interface QRepositoryActorQId {
 }
 export interface QRepositoryActorQRelation extends IQRelation<QRepositoryActor>, QRepositoryActorQId {
 }
+//# sourceMappingURL=qrepositoryactor.d.ts.map

@@ -5,3 +5,4 @@ export interface SubscriberFunction<V> {
         (): void;
     } | Subscription;
 }
+//# sourceMappingURL=SubscriberFunction.d.ts.map

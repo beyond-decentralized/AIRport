@@ -14,3 +14,4 @@ export declare class GoogleSharedChangeList implements SharedChangeList {
     errorSubject(): ISubject<ChangeError>;
     changesAddedRemotelySubject(): ISubject<ChangeRecordIterator>;
 }
+//# sourceMappingURL=GoogleSharedChangeList.d.ts.map

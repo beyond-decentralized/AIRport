@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ImplementationFileBuilder_1 = require("./ImplementationFileBuilder");
-class UtilityBuilder extends ImplementationFileBuilder_1.ImplementationFileBuilder {
+import { ImplementationFileBuilder } from './ImplementationFileBuilder';
+export class UtilityBuilder extends ImplementationFileBuilder {
     constructor(pathBuilder, classSuffix, needsQEntity) {
         super('base' + classSuffix + 's', pathBuilder);
         this.classSuffix = classSuffix;
@@ -89,5 +87,4 @@ export class SQDI${this.classSuffix}<Entity,
 ${baseClassDefinitions}`;
     }
 }
-exports.UtilityBuilder = UtilityBuilder;
 //# sourceMappingURL=UtilityBuilder.js.map

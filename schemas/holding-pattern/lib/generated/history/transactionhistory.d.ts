@@ -19,3 +19,4 @@ export interface ITransactionHistory {
     allRecordHistoryOldValues?: RecordHistoryOldValue[];
     numberOfOperations?: number;
 }
+//# sourceMappingURL=transactionhistory.d.ts.map

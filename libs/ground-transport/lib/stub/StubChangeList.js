@@ -1,19 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const observe_1 = require("@airport/observe");
-const terminal_map_1 = require("@airport/terminal-map");
+import { Subject } from '@airport/observe';
+import { ArrayChangeRecordIterator } from "@airport/terminal-map";
 /**
  * Created by Papa on 12/14/2016.
  */
-class StubChangeList {
+export class StubChangeList {
     constructor(shareInfo, platformInfo) {
         this.shareInfo = shareInfo;
         this.platformInfo = platformInfo;
-        this._errorSubject = new observe_1.Subject();
-        this._changesAddedRemotelySubject = new observe_1.Subject();
+        this._errorSubject = new Subject();
+        this._changesAddedRemotelySubject = new Subject();
     }
     async loadFromRecord(changeRecord) {
-        return new terminal_map_1.ArrayChangeRecordIterator([]);
+        return new ArrayChangeRecordIterator([]);
     }
     async addChanges(changeRecords) {
     }
@@ -24,5 +22,4 @@ class StubChangeList {
         return this._changesAddedRemotelySubject;
     }
 }
-exports.StubChangeList = StubChangeList;
 //# sourceMappingURL=StubChangeList.js.map

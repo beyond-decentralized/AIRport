@@ -20,6 +20,7 @@
     "build": "cross-env NODE_ENV=production webpack",
     "dev": "webpack-dev-server --content-base public"
   },
+  "type": "module",
   "typings": "lib/index",
   "version": "0.0.1"
 }

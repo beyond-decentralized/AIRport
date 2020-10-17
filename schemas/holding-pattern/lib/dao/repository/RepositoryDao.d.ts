@@ -20,3 +20,4 @@ export declare class RepositoryDao extends BaseRepositoryDao implements IReposit
     findReposWithGlobalIds(repositoryIds: RepositoryId[]): Promise<Map<RepositoryId, IRepository>>;
     findLocalRepoIdsByGlobalIds(orderedIds: RepositoryOrderedId[], randomIds: RepositoryRandomId[], ownerActorRandomIds: ActorRandomId[], ownerUserUniqueIds: UserUniqueId[], ownerTerminalNames: TerminalName[], ownerTerminalSecondIds: TerminalSecondId[], ownerTerminalOwnerUserUniqueIds: UserUniqueId[]): Promise<RepositoryIdMap>;
 }
+//# sourceMappingURL=RepositoryDao.d.ts.map

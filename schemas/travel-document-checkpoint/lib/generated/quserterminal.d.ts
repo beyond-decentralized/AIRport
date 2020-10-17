@@ -60,3 +60,4 @@ export interface QUserTerminalQId {
 }
 export interface QUserTerminalQRelation extends IQRelation<QUserTerminal>, QUserTerminalQId {
 }
+//# sourceMappingURL=quserterminal.d.ts.map

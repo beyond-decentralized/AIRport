@@ -6,3 +6,4 @@ export interface IMonthlyTerminalSyncLog {
     allAcknowledged?: boolean;
     dailySyncStatuses?: string;
 }
+//# sourceMappingURL=monthlyterminalsynclog.d.ts.map

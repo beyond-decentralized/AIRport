@@ -49,3 +49,4 @@ export declare class AgtSharingMessageDao extends BaseAgtSharingMessageDao imple
      */
     deleteForAgtRepositoryIdsOnDate(fromDateInclusive: AgtRepositoryTransactionBlockAddDatetime, toDateExclusive: AgtRepositoryTransactionBlockAddDatetime, terminalIds: TerminalId[], repositoryIds: AgtRepositoryId[]): Promise<void>;
 }
+//# sourceMappingURL=AgtSharingMessageDao.d.ts.map

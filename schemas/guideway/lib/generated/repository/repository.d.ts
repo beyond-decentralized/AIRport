@@ -8,3 +8,4 @@ export interface IRepository {
     terminalRepositories?: ITerminalRepository[];
     repositoryTransactionBlocks?: IAgtRepositoryTransactionBlock[];
 }
+//# sourceMappingURL=repository.d.ts.map

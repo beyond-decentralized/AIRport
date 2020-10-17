@@ -1,4 +1,5 @@
 import * as ts                   from 'typescript'
+import tsc              from 'typescript'
 import {
 	ClassDocEntry,
 	Decorator,
@@ -64,7 +65,7 @@ export function visitEntityFile(
 		  Cannot declare entities in same files as interfaces and enums (needed for DDL hiding).
 		  NOTE: Entity interface is already generated for you.`
 
-	if (node.kind === ts.SyntaxKind.ClassDeclaration) {
+	if (node.kind === tsc.SyntaxKind.ClassDeclaration) {
 		if (file.hasEntityCandidate) {
 			throw new Error(`Cannot declare more than one entity per file.`)
 		}
@@ -89,7 +90,7 @@ export function visitEntityFile(
 		// }
 		// No need to walk any further, class expressions/inner declarations
 		// cannot be exported
-	} else if (node.kind === ts.SyntaxKind.InterfaceDeclaration) {
+	} else if (node.kind === tsc.SyntaxKind.InterfaceDeclaration) {
 		if (file.hasEntityCandidate) {
 			throw new Error(onlyClassInFileError)
 		}
@@ -98,11 +99,11 @@ export function visitEntityFile(
 		let symbol         = globalThis.checker
 			.getSymbolAtLocation((<ts.ClassDeclaration>node).name)
 		registerInterface(symbol, path)
-	} else if (node.kind === ts.SyntaxKind.ModuleDeclaration) {
+	} else if (node.kind === tsc.SyntaxKind.ModuleDeclaration) {
 		// This is a namespace, visit its children
-		// ts.forEachChild(node, visit);
+		// tsc.forEachChild(node, visit);
 		throw new Error(`Namespaces are not supported in DDL.`)
-	} else if (node.kind === ts.SyntaxKind.EnumDeclaration) {
+	} else if (node.kind === tsc.SyntaxKind.EnumDeclaration) {
 		if (file.hasEntityCandidate) {
 			throw new Error(onlyClassInFileError)
 		}
@@ -175,7 +176,7 @@ function serializeSymbol(
 				&& declaration.type.typeName) {
 				type = declaration.type.typeName.escapedText
 			} else if (declaration.type
-				&& declaration.type.kind === ts.SyntaxKind.AnyKeyword) {
+				&& declaration.type.kind === tsc.SyntaxKind.AnyKeyword) {
 				// Just the any keyword
 			} else {
 				throw new Error(`Unsupported type: ${type}`)
@@ -212,7 +213,7 @@ function serializeSymbol(
 		isTransient,
 		name: symbol.getName(),
 		// documentation:
-		// ts.displayPartsToString(symbol.getDocumentationComment(undefined)),
+		// tsc.displayPartsToString(symbol.getDocumentationComment(undefined)),
 		type
 	}
 }
@@ -261,23 +262,23 @@ function getType(
 		return typeInfo
 	}
 	switch (tsType.kind) {
-		case ts.SyntaxKind.ArrayType:
+		case tsc.SyntaxKind.ArrayType:
 			return getType((<ts.ArrayTypeNode>tsType).elementType, ++arrayDepth)
-		case ts.SyntaxKind.AnyKeyword:
+		case tsc.SyntaxKind.AnyKeyword:
 			return typeInfo
-		case ts.SyntaxKind.BooleanKeyword:
+		case tsc.SyntaxKind.BooleanKeyword:
 			type = primitive = 'boolean'
 			return {...typeInfo, primitive, type}
-		case ts.SyntaxKind.NumberKeyword:
+		case tsc.SyntaxKind.NumberKeyword:
 			type = primitive = 'number'
 			return {...typeInfo, primitive, type}
-		case ts.SyntaxKind.StringKeyword:
+		case tsc.SyntaxKind.StringKeyword:
 			type = primitive = 'string'
 			return {...typeInfo, primitive, type}
-		case ts.SyntaxKind.VoidKeyword:
+		case tsc.SyntaxKind.VoidKeyword:
 			type = 'void'
 			return {...typeInfo, type}
-		case ts.SyntaxKind.TypeReference:
+		case tsc.SyntaxKind.TypeReference:
 			const typeName: ts.Identifier = <ts.Identifier>(<ts.TypeReferenceNode>tsType).typeName
 			const typeArguments           = (<ts.TypeReferenceNode>tsType).typeArguments
 			if (typeArguments && typeArguments.length) {
@@ -346,7 +347,7 @@ function parseObjectProperty(
 ): any {
 	let value
 	switch (initializer.kind) {
-		case ts.SyntaxKind.Identifier:
+		case tsc.SyntaxKind.Identifier:
 			let identifier = <ts.Identifier>initializer
 			switch (identifier.text) {
 				case 'undefined':
@@ -361,24 +362,24 @@ function parseObjectProperty(
 					break
 			}
 			break
-		case ts.SyntaxKind.NullKeyword:
+		case tsc.SyntaxKind.NullKeyword:
 			value = null
 			break
-		case ts.SyntaxKind.RegularExpressionLiteral:
+		case tsc.SyntaxKind.RegularExpressionLiteral:
 			let regExp = <ts.Identifier>initializer
 			value      = convertRegExpStringToObject(regExp.text)
 			break
-		case ts.SyntaxKind.StringLiteral:
-		case ts.SyntaxKind.NoSubstitutionTemplateLiteral:
+		case tsc.SyntaxKind.StringLiteral:
+		case tsc.SyntaxKind.NoSubstitutionTemplateLiteral:
 			value = (<ts.StringLiteral>initializer).text
 			break
-		case ts.SyntaxKind.TrueKeyword:
+		case tsc.SyntaxKind.TrueKeyword:
 			value = true
 			break
-		case  ts.SyntaxKind.FalseKeyword:
+		case  tsc.SyntaxKind.FalseKeyword:
 			value = false
 			break
-		case ts.SyntaxKind.NumericLiteral:
+		case tsc.SyntaxKind.NumericLiteral:
 			let numberText = (<any>initializer).text
 			if (numberText.indexOf('.') > 0) {
 				value = parseFloat(numberText)
@@ -386,15 +387,15 @@ function parseObjectProperty(
 				value = parseInt(numberText)
 			}
 			break
-		case ts.SyntaxKind.NewExpression:
+		case tsc.SyntaxKind.NewExpression:
 			let newExpression = <ts.NewExpression>initializer
 			let type          = (<ts.Identifier>newExpression.expression).text
 			value             = 'new ' + type
 			break
-		case ts.SyntaxKind.ObjectLiteralExpression:
+		case tsc.SyntaxKind.ObjectLiteralExpression:
 			value = parseObjectLiteralExpression(<ts.ObjectLiteralExpression>initializer)
 			break
-		case ts.SyntaxKind.ArrayLiteralExpression:
+		case tsc.SyntaxKind.ArrayLiteralExpression:
 			value            = []
 			let arrayLiteral = <ts.ArrayLiteralExpression>initializer
 			arrayLiteral.elements.forEach((
@@ -413,18 +414,18 @@ function parseObjectProperty(
 				value.push(arrayValue)
 			})
 			break
-		case ts.SyntaxKind.PropertyAccessExpression:
+		case tsc.SyntaxKind.PropertyAccessExpression:
 			value = convertPropertyAccessExpressionToString(<ts.PropertyAccessExpression>initializer)
 			break
-		case ts.SyntaxKind.CallExpression:
+		case tsc.SyntaxKind.CallExpression:
 			throw new Error(
 				`Function calls are not allowed as parameter values.`)
-		case ts.SyntaxKind.BinaryExpression:
+		case tsc.SyntaxKind.BinaryExpression:
 			throw new Error(`Expression are not allowed as parameter values.`)
-		case ts.SyntaxKind.ArrowFunction:
+		case tsc.SyntaxKind.ArrowFunction:
 			if (objectType == TsObjectType.DECORATOR && objectName === 'WhereJoinTable') {
-				const printer = ts.createPrinter({
-					newLine: ts.NewLineKind.LineFeed,
+				const printer = tsc.createPrinter({
+					newLine: tsc.NewLineKind.LineFeed,
 					removeComments: true
 				})
 				/*
@@ -460,7 +461,7 @@ ${whereJoinTableFunction}
 export default WhereJoinTableFunction`;
 
 				const compilerOptions = {module: ts.ModuleKind.CommonJS};
-				const transpilationResult = ts.transpileModule(tempFile, {
+				const transpilationResult = tsc.transpileModule(tempFile, {
 					compilerOptions: compilerOptions,
 					moduleName: "WhereJoinTableModule"
 				});
@@ -472,7 +473,7 @@ export default WhereJoinTableFunction`;
 				const typescriptDefinition = printer.printNode(
 					ts.EmitHint.Expression, initializer, globalThis.currentSourceFile)
 				const compilerOptions      = {module: ts.ModuleKind.CommonJS}
-				const transpilationResult  = ts.transpileModule(typescriptDefinition, {
+				const transpilationResult  = tsc.transpileModule(typescriptDefinition, {
 					compilerOptions: compilerOptions,
 					moduleName: 'WhereJoinTableModule'
 				})
@@ -568,7 +569,7 @@ function serializeClass(
 	) => {
 		if (member.valueDeclaration) {
 			switch (member.valueDeclaration.kind) {
-				case ts.SyntaxKind.PropertyDeclaration:
+				case tsc.SyntaxKind.PropertyDeclaration:
 					console.log(`Property: ${memberName}`)
 					let propertySymbolDescriptor = serializeSymbol(member, file)
 					if (propertySymbolDescriptor) {
@@ -578,13 +579,13 @@ function serializeClass(
 						properties.push(propertySymbolDescriptor)
 					}
 					break
-				case ts.SyntaxKind.MethodDeclaration:
+				case tsc.SyntaxKind.MethodDeclaration:
 					console.log(`Method: ${memberName}`)
 					const isPublic = !member.valueDeclaration.modifiers
 						|| member.valueDeclaration.modifiers.filter(
 							modifier =>
-								modifier.kind === ts.SyntaxKind.PrivateKeyword
-								|| modifier.kind === ts.SyntaxKind.ProtectedKeyword).length < 1
+								modifier.kind === tsc.SyntaxKind.PrivateKeyword
+								|| modifier.kind === tsc.SyntaxKind.ProtectedKeyword).length < 1
 					if (isPublic) {
 						methodSignatures.push(serializeMethodDefinition(member))
 					}
@@ -594,7 +595,7 @@ function serializeClass(
 			}
 		} else if (member.declarations) {
 			// declaration (constructor, method)
-			if (member.declarations.length === 1 && member.declarations[0].kind === ts.SyntaxKind.Constructor) {
+			if (member.declarations.length === 1 && member.declarations[0].kind === tsc.SyntaxKind.Constructor) {
 				// do not record the constructor
 			} else {
 				throw new Error('Not implemented')
@@ -672,11 +673,11 @@ function serializeSignature(signature: ts.Signature) {
 		parameters: signature.parameters.map(serializeSymbol),
 		returnType: globalThis.checker.typeToString(signature.getReturnType()),
 		// documentation:
-		// ts.displayPartsToString(signature.getDocumentationComment(undefined))
+		// tsc.displayPartsToString(signature.getDocumentationComment(undefined))
 	}
 }
 
 /** True if this is visible outside this file, false otherwise */
 function isNodeExported(node: ts.Node): boolean {
-	return (node.flags & ts.ModifierFlags.Export) !== 0 || (node.parent && node.parent.kind === ts.SyntaxKind.SourceFile)
+	return (node.flags & ts.ModifierFlags.Export) !== 0 || (node.parent && node.parent.kind === tsc.SyntaxKind.SourceFile)
 }

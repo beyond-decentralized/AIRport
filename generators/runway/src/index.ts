@@ -57,9 +57,9 @@ function isTsFile(
 watchFiles(
 	configuration,
 	{
-		module: 6 // ts.ModuleKind.ES2020,
+		module: 6 // tsc.ModuleKind.ES2020,
 	},
 	sourceFilePaths
-)
+).then();
 
 

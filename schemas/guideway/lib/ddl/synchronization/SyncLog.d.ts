@@ -7,3 +7,4 @@ export declare class SyncLog {
     sharingMessage: AgtSharingMessage;
     repositoryTransactionBlock: AgtRepositoryTransactionBlock;
 }
+//# sourceMappingURL=SyncLog.d.ts.map

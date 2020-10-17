@@ -11,3 +11,4 @@ export declare class Context implements IContext {
     type: ContextType;
     constructor(name: string, type: ContextType);
 }
+//# sourceMappingURL=Context.d.ts.map

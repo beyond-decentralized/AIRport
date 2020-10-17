@@ -3,3 +3,4 @@
  */
 export interface GoogleRealtimeModel {
 }
+//# sourceMappingURL=GoogleRealtimeModel.d.ts.map

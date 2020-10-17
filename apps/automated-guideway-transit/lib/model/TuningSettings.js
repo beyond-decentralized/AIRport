@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const tokens_1 = require("../tokens");
-class TuningSettings {
+import { DI } from '@airport/di';
+import { TUNNING_SETTINGS } from '../tokens';
+export class TuningSettings {
     constructor() {
         this.archiving = {
             numRepositoriesToProcessAtATime: 20
@@ -17,6 +15,5 @@ class TuningSettings {
         };
     }
 }
-exports.TuningSettings = TuningSettings;
-di_1.DI.set(tokens_1.TUNNING_SETTINGS, TuningSettings);
+DI.set(TUNNING_SETTINGS, TuningSettings);
 //# sourceMappingURL=TuningSettings.js.map

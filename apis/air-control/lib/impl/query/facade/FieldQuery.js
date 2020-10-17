@@ -1,31 +1,29 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const Aliases_1 = require("../../core/entity/Aliases");
-const BooleanField_1 = require("../../core/field/BooleanField");
-const DateField_1 = require("../../core/field/DateField");
-const Field_1 = require("../../core/field/Field");
-const Functions_1 = require("../../core/field/Functions");
-const NumberField_1 = require("../../core/field/NumberField");
-const StringField_1 = require("../../core/field/StringField");
-const UntypedField_1 = require("../../core/field/UntypedField");
-const NonEntityQuery_1 = require("./NonEntityQuery");
+import { JSONClauseObjectType, SQLDataType } from '@airport/ground-control';
+import { EntityAliases } from '../../core/entity/Aliases';
+import { QBooleanField } from '../../core/field/BooleanField';
+import { QDateField } from '../../core/field/DateField';
+import { QField } from '../../core/field/Field';
+import { QDistinctFunction } from '../../core/field/Functions';
+import { QNumberField } from '../../core/field/NumberField';
+import { QStringField } from '../../core/field/StringField';
+import { QUntypedField } from '../../core/field/UntypedField';
+import { DistinguishableQuery, NON_ENTITY_SELECT_ERROR_MESSAGE, } from './NonEntityQuery';
 /**
  * Created by Papa on 10/24/2016.
  */
-class FieldQuery extends NonEntityQuery_1.DistinguishableQuery {
+export class FieldQuery extends DistinguishableQuery {
     // private qEntityMap: {[entityName: string]: QEntity<any>},
     //	private entitiesRelationPropertyMap: {[entityName: string]: {[propertyName: string]:
     // EntityRelationRecord}},
     //		private entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]:
     // boolean}}
-    constructor(rawQuery, entityAliases = new Aliases_1.EntityAliases()) {
+    constructor(rawQuery, entityAliases = new EntityAliases()) {
         super(entityAliases);
         this.rawQuery = rawQuery;
     }
     nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils) {
-        if (!(this.rawQuery.select instanceof Field_1.QField)) {
-            throw new Error(NonEntityQuery_1.NON_ENTITY_SELECT_ERROR_MESSAGE);
+        if (!(this.rawQuery.select instanceof QField)) {
+            throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
         }
         this.columnAliases.entityAliases.getNextAlias(this.rawQuery.select.q.__driver__.getRootJoinEntity());
         return this.rawQuery.select.toJSON(this.columnAliases, true, queryUtils, fieldUtils);
@@ -34,35 +32,34 @@ class FieldQuery extends NonEntityQuery_1.DistinguishableQuery {
         let select = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils);
         let jsonFieldQuery = {
             S: select,
-            ot: ground_control_1.JSONClauseObjectType.FIELD_QUERY,
+            ot: JSONClauseObjectType.FIELD_QUERY,
             dt: this.getClauseDataType()
         };
         return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils);
     }
     getClauseDataType() {
         let selectField = this.rawQuery.select;
-        if (selectField instanceof Functions_1.QDistinctFunction) {
+        if (selectField instanceof QDistinctFunction) {
             selectField = selectField.getSelectClause();
         }
-        if (selectField instanceof BooleanField_1.QBooleanField) {
-            return ground_control_1.SQLDataType.BOOLEAN;
+        if (selectField instanceof QBooleanField) {
+            return SQLDataType.BOOLEAN;
         }
-        else if (selectField instanceof DateField_1.QDateField) {
-            return ground_control_1.SQLDataType.DATE;
+        else if (selectField instanceof QDateField) {
+            return SQLDataType.DATE;
         }
-        else if (selectField instanceof NumberField_1.QNumberField) {
-            return ground_control_1.SQLDataType.NUMBER;
+        else if (selectField instanceof QNumberField) {
+            return SQLDataType.NUMBER;
         }
-        else if (selectField instanceof StringField_1.QStringField) {
-            return ground_control_1.SQLDataType.STRING;
+        else if (selectField instanceof QStringField) {
+            return SQLDataType.STRING;
         }
-        else if (selectField instanceof UntypedField_1.QUntypedField) {
-            return ground_control_1.SQLDataType.ANY;
+        else if (selectField instanceof QUntypedField) {
+            return SQLDataType.ANY;
         }
         else {
             throw new Error(`Unsupported type of select field in Field Query`);
         }
     }
 }
-exports.FieldQuery = FieldQuery;
 //# sourceMappingURL=FieldQuery.js.map

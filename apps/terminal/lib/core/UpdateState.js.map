@@ -1,1 +1,1 @@
-{"version":3,"file":"UpdateState.js","sourceRoot":"","sources":["../../src/core/UpdateState.ts"],"names":[],"mappings":";;AAAA,IAAY,WAIX;AAJD,WAAY,WAAW;IACtB,uDAAS,CAAA;IACT,iDAAM,CAAA;IACN,+CAAK,CAAA;AACN,CAAC,EAJW,WAAW,GAAX,mBAAW,KAAX,mBAAW,QAItB"}
+{"version":3,"file":"UpdateState.js","sourceRoot":"","sources":["../../src/core/UpdateState.ts"],"names":[],"mappings":"AAAA,MAAM,CAAN,IAAY,WAIX;AAJD,WAAY,WAAW;IACtB,uDAAS,CAAA;IACT,iDAAM,CAAA;IACN,+CAAK,CAAA;AACN,CAAC,EAJW,WAAW,KAAX,WAAW,QAItB"}

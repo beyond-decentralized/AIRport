@@ -7,3 +7,4 @@ export declare function rollback(): Promise<void>;
  * that.
  */
 export declare function transactional<T>(callback: () => Promise<T>, keepAlive?: boolean): Promise<T>;
+//# sourceMappingURL=transactional.d.ts.map

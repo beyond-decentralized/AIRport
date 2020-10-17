@@ -4,3 +4,4 @@ export interface IPackagedUnit {
     name?: string;
     package?: IPackage;
 }
+//# sourceMappingURL=packagedunit.d.ts.map

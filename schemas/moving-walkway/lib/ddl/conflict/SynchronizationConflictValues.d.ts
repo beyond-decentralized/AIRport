@@ -4,3 +4,4 @@ export declare class SynchronizationConflictValues {
     synchronizationConflict: SynchronizationConflict;
     columnIndex: ColumnIndex;
 }
+//# sourceMappingURL=SynchronizationConflictValues.d.ts.map

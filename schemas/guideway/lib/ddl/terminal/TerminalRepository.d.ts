@@ -10,3 +10,4 @@ export declare class TerminalRepository {
     repository: Repository;
     permission: TerminalRepositoryPermission;
 }
+//# sourceMappingURL=TerminalRepository.d.ts.map

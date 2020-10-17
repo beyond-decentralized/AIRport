@@ -3,3 +3,4 @@ export interface ISynchronizationConflictValuesDao extends IBaseSynchronizationC
 }
 export declare class SynchronizationConflictValuesDao extends BaseSynchronizationConflictValuesDao implements ISynchronizationConflictValuesDao {
 }
+//# sourceMappingURL=SynchronizationConflictValuesDao.d.ts.map

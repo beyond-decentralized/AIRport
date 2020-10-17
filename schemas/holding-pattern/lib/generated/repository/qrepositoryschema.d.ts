@@ -62,3 +62,4 @@ export interface QRepositorySchemaQId {
 }
 export interface QRepositorySchemaQRelation extends IQRelation<QRepositorySchema>, QRepositorySchemaQId {
 }
+//# sourceMappingURL=qrepositoryschema.d.ts.map

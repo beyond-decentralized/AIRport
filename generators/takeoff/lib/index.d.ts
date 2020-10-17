@@ -4,3 +4,4 @@ export * from './DdlObjectRetriever';
 export * from './tokens';
 export * from './QueryEntityClassCreator';
 export * from './QueryObjectInitializer';
+//# sourceMappingURL=index.d.ts.map

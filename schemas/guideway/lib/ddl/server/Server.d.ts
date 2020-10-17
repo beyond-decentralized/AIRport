@@ -6,3 +6,4 @@ export declare class Server {
     serverType: ServerType;
     serverSyncLogs: ServerSyncLog[];
 }
+//# sourceMappingURL=Server.d.ts.map

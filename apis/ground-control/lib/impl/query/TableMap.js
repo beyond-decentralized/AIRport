@@ -1,16 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ColumnMap_1 = require("./ColumnMap");
+import { ColumnMap } from "./ColumnMap";
 /**
  * Created by Papa on 9/10/2016.
  */
-exports.ALL_TABLE_COLUMNS = 'A';
-class TableMap {
+export const ALL_TABLE_COLUMNS = 'A';
+export class TableMap {
     constructor(schemaVersionId, tableMap = {}) {
         this.schemaVersionId = schemaVersionId;
         this.tableMap = tableMap;
     }
-    ensure(tableIndex, allColumns = false, ColumnMapConstructor = ColumnMap_1.ColumnMap) {
+    ensure(tableIndex, allColumns = false, ColumnMapConstructor = ColumnMap) {
         let tableColumnMap = this.tableMap[tableIndex];
         if (!tableColumnMap) {
             tableColumnMap = new ColumnMapConstructor(tableIndex, allColumns);
@@ -26,5 +24,4 @@ class TableMap {
         return !!tableColumnMap.columnMap[columnIndex];
     }
 }
-exports.TableMap = TableMap;
 //# sourceMappingURL=TableMap.js.map

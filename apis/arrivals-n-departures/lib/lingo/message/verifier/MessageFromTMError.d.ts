@@ -35,3 +35,4 @@ export declare enum MessageFromTMError {
     REPO_TRANS_BLOCKS_TO_VERIFY_IS_NOT_ARRAY = 33,
     REPO_TRANS_BLOCKS_TO_VERIFY_NOT_SUPPORTED = 34
 }
+//# sourceMappingURL=MessageFromTMError.d.ts.map

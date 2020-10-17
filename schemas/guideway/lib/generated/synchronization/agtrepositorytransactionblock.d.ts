@@ -15,3 +15,4 @@ export interface IAgtRepositoryTransactionBlock {
     archivingServer?: IServer;
     syncLogs?: ISyncLog[];
 }
+//# sourceMappingURL=agtrepositorytransactionblock.d.ts.map

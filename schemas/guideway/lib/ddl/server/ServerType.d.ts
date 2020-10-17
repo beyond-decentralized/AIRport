@@ -3,3 +3,4 @@ export declare enum ServerType {
     SYNC_LOG_PROCESSOR = 1,
     TRANS_DATA_ACCUMULATOR = 2
 }
+//# sourceMappingURL=ServerType.d.ts.map

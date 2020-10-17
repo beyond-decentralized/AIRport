@@ -19,3 +19,4 @@ export declare class SchemaComposer implements ISchemaComposer {
     private composeSchemaRelationColumns;
     getExistingLatestSchemaVersion(referencedSchemaName: SchemaName, terminalStore: ITerminalStore): ISchemaVersion;
 }
+//# sourceMappingURL=SchemaComposer.d.ts.map

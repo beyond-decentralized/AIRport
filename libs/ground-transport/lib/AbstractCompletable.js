@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class AbstractCompletable {
+export class AbstractCompletable {
     constructor() {
         this.subsriptions = [];
     }
@@ -12,5 +10,4 @@ class AbstractCompletable {
         this.subsriptions.push(subscription);
     }
 }
-exports.AbstractCompletable = AbstractCompletable;
 //# sourceMappingURL=AbstractCompletable.js.map

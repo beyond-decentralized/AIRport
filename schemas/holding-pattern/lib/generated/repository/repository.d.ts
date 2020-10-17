@@ -15,3 +15,4 @@ export interface IRepository {
     repositoryApplications?: IRepositoryApplication[];
     repositoryTransactionHistory?: IRepositoryTransactionHistory[];
 }
+//# sourceMappingURL=repository.d.ts.map

@@ -5,3 +5,4 @@ export interface ISchemaReference extends IVersionedSchemaObject {
     referencedSchemaVersion: ISchemaVersion;
     index?: number;
 }
+//# sourceMappingURL=schemareference.d.ts.map

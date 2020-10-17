@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Aliases_1 = require("../../core/entity/Aliases");
-const Entity_1 = require("../../core/entity/Entity");
+import { EntityAliases, } from '../../core/entity/Aliases';
+import { QEntity, QTree } from '../../core/entity/Entity';
 /**
  * Created by Papa on 10/27/2016.
  */
-class AbstractQuery {
-    constructor(entityAliases = new Aliases_1.EntityAliases(), columnAliases = entityAliases.getNewFieldColumnAliases()) {
+export class AbstractQuery {
+    constructor(entityAliases = new EntityAliases(), columnAliases = entityAliases.getNewFieldColumnAliases()) {
         this.entityAliases = entityAliases;
         this.columnAliases = columnAliases;
         this.isEntityQuery = false;
@@ -39,11 +37,11 @@ class AbstractQuery {
             }
         }
         return fromClause.map((fromEntity) => {
-            if (!(fromEntity instanceof Entity_1.QEntity)) {
+            if (!(fromEntity instanceof QEntity)) {
                 throw new Error(`FROM clause can contain only Views or Entities.`);
             }
             if (this.isEntityQuery) {
-                if (fromEntity instanceof Entity_1.QTree) {
+                if (fromEntity instanceof QTree) {
                     throw new Error(`Entity FROM clauses can contain only Entities.`);
                 }
             }
@@ -73,5 +71,4 @@ class AbstractQuery {
         });
     }
 }
-exports.AbstractQuery = AbstractQuery;
 //# sourceMappingURL=AbstractQuery.js.map

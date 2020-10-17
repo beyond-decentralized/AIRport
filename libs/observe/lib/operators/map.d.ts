@@ -6,3 +6,4 @@ export declare class MapOperator<T, R> extends Operator<T, R> {
     constructor(project: (value: T) => R);
     exec(source: IObservable<T>): R;
 }
+//# sourceMappingURL=map.d.ts.map

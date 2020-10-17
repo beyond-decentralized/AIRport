@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var TransmissionStatus;
+export var TransmissionStatus;
 (function (TransmissionStatus) {
     TransmissionStatus[TransmissionStatus["ACKNOWLEDGED"] = 0] = "ACKNOWLEDGED";
     TransmissionStatus[TransmissionStatus["SENT"] = 1] = "SENT";
-})(TransmissionStatus = exports.TransmissionStatus || (exports.TransmissionStatus = {}));
+})(TransmissionStatus || (TransmissionStatus = {}));
 //# sourceMappingURL=TransmissionStatus.js.map

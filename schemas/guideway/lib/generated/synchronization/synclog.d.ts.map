@@ -1,0 +1,1 @@
+{"version":3,"file":"synclog.d.ts","sourceRoot":"","sources":["../../../src/generated/synchronization/synclog.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,kBAAkB,EAClB,MAAM,qBAAqB,CAAC;AAC7B,OAAO,EACN,8BAA8B,EAC9B,MAAM,iCAAiC,CAAC;AAQzC,MAAM,WAAW,QAAQ;IAKxB,cAAc,EAAE,kBAAkB,CAAC;IACnC,0BAA0B,EAAE,8BAA8B,CAAC;CAU3D"}

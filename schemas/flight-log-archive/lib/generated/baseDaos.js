@@ -1,39 +1,33 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const check_in_1 = require("@airport/check-in");
-const qSchema_1 = require("./qSchema");
+import { Dao } from '@airport/check-in';
+import { Q, duoDiSet } from './qSchema';
 // Schema Q object Dependency Injection readiness detection Dao
-class SQDIDao extends check_in_1.Dao {
+export class SQDIDao extends Dao {
     constructor(dbEntityId) {
-        super(dbEntityId, qSchema_1.Q);
+        super(dbEntityId, Q);
     }
 }
-exports.SQDIDao = SQDIDao;
-class BaseDailySyncLogDao extends SQDIDao {
+export class BaseDailySyncLogDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(0);
+        return duoDiSet(0);
     }
     constructor() {
         super(0);
     }
 }
-exports.BaseDailySyncLogDao = BaseDailySyncLogDao;
-class BaseLogDao extends SQDIDao {
+export class BaseLogDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(2);
+        return duoDiSet(2);
     }
     constructor() {
         super(2);
     }
 }
-exports.BaseLogDao = BaseLogDao;
-class BaseMonthlySyncLogDao extends SQDIDao {
+export class BaseMonthlySyncLogDao extends SQDIDao {
     static diSet() {
-        return qSchema_1.duoDiSet(1);
+        return duoDiSet(1);
     }
     constructor() {
         super(1);
     }
 }
-exports.BaseMonthlySyncLogDao = BaseMonthlySyncLogDao;
 //# sourceMappingURL=baseDaos.js.map

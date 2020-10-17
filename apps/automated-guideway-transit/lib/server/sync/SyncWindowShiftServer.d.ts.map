@@ -1,0 +1,1 @@
+{"version":3,"file":"SyncWindowShiftServer.d.ts","sourceRoot":"","sources":["../../../src/server/sync/SyncWindowShiftServer.ts"],"names":[],"mappings":";AAAA,MAAM,WAAW,wBAAwB;IAExC,0BAA0B,CACzB,WAAW,EAAE,CACZ,QAAQ,EAAE,CAAC,GAAG,IAAI,EAAE,GAAG,EAAE,KAAK,IAAI,EAClC,EAAE,EAAE,MAAM,KACN,MAAM,CAAC,KAAK,EACjB,uBAAuB,EAAE,MAAM,EAC/B,kBAAkB,EAAE,MAAM,GACxB,IAAI,CAAC;CAER"}

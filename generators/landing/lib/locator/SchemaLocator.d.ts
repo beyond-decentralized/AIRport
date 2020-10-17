@@ -9,3 +9,4 @@ export declare class SchemaLocator implements ISchemaLocator {
     locateExistingSchemaVersionRecord(jsonSchema: JsonSchema, terminalStore: ITerminalStore): ISchemaVersion;
     locateLatestSchemaVersionBySchemaName(schemaName: string, terminalStore: ITerminalStore): ISchemaVersion;
 }
+//# sourceMappingURL=SchemaLocator.d.ts.map

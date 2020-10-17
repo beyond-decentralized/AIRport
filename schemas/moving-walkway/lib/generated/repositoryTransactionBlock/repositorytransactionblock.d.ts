@@ -18,3 +18,4 @@ export interface IRepositoryTransactionBlock {
     missingRecordRepoTransBlocks?: IMissingRecordRepoTransBlock[];
     repoTransBlockSchemasToChange?: IRepoTransBlockSchemaToChange[];
 }
+//# sourceMappingURL=repositorytransactionblock.d.ts.map

@@ -16,3 +16,4 @@ export interface ITransactionalServer {
     updateValues(portableQuery: PortableQuery, credentials: ICredentials, transactionIndex?: number): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, credentials: ICredentials, transactionIndex?: number): Promise<number>;
 }
+//# sourceMappingURL=ITransactionalServer.d.ts.map

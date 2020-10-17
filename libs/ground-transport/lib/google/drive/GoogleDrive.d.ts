@@ -16,3 +16,4 @@ export declare class GoogleDrive {
     listFiles(folderId: string, pageToken?: string, space?: string): Promise<any>;
     searchFiles(space?: string): Promise<any>;
 }
+//# sourceMappingURL=GoogleDrive.d.ts.map

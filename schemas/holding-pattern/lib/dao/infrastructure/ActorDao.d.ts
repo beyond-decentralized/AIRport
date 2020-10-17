@@ -12,3 +12,4 @@ export declare class ActorDao extends BaseActorDao implements IActorDao {
     findWithDetailsByGlobalIds(randomIds: ActorRandomId[], userIds: UserId[], terminalIds: TmTerminalId[]): Promise<IActor[]>;
     private findWithDetailsAndGlobalIdsByWhereClause;
 }
+//# sourceMappingURL=ActorDao.d.ts.map

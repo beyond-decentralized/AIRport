@@ -156,3 +156,4 @@ export declare class BaseUserRepositoryDao extends SQDIDao<IUserRepository, User
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDaos.d.ts.map

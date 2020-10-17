@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const WrapperFunctions_1 = require("../../core/field/WrapperFunctions");
-const AbstractUpdate_1 = require("./AbstractUpdate");
+import { EntityRelationType } from '@airport/ground-control';
+import { wrapPrimitive } from '../../core/field/WrapperFunctions';
+import { AbstractUpdate } from './AbstractUpdate';
 /**
  * Created by Papa on 10/2/2016.
  */
 // FIXME: add support for a full blown UPDATE, with expression support for SET
-class UpdateProperties extends AbstractUpdate_1.AbstractUpdate {
+export class UpdateProperties extends AbstractUpdate {
     constructor(rawUpdate) {
         super(rawUpdate);
     }
@@ -70,7 +68,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
             delete rawSetFragment[propertyName];
             return;
         }
-        value = WrapperFunctions_1.wrapPrimitive(value);
+        value = wrapPrimitive(value);
         // If this is not a nested object definition
         if (value.toJSON) {
             if (dbProperty.propertyColumns.length !== 1) {
@@ -119,11 +117,11 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
                 const childDbRelationChain = [...dbRelationChain];
                 childDbRelationChain.push(dbRelation);
                 switch (dbRelation.relationType) {
-                    case ground_control_1.EntityRelationType.MANY_TO_ONE: {
+                    case EntityRelationType.MANY_TO_ONE: {
                         this.setEntityFragmentsToJSON(value, jsonSetClause, dbPropertyChain, dbRelation.relationEntity.propertyMap, childDbRelationChain, queryUtils, fieldUtils);
                         break;
                     }
-                    case ground_control_1.EntityRelationType.ONE_TO_MANY:
+                    case EntityRelationType.ONE_TO_MANY:
                         // Not  nested property definition
                         throw new Error(`
 ${this.getPropertyChainDesription(dbPropertyChain)}
@@ -188,5 +186,4 @@ ${lastPrefix}}`;
 ${ending}`;
     }
 }
-exports.UpdateProperties = UpdateProperties;
 //# sourceMappingURL=UpdateProperties.js.map

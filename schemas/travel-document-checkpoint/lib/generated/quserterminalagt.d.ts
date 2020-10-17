@@ -78,3 +78,4 @@ export interface QUserTerminalAgtQId {
 }
 export interface QUserTerminalAgtQRelation extends IQRelation<QUserTerminalAgt>, QUserTerminalAgtQId {
 }
+//# sourceMappingURL=quserterminalagt.d.ts.map

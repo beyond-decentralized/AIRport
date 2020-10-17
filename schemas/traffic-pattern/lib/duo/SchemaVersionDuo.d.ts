@@ -3,3 +3,4 @@ export interface ISchemaVersionDuo extends IBaseSchemaVersionDuo {
 }
 export declare class SchemaVersionDuo extends BaseSchemaVersionDuo implements ISchemaVersionDuo {
 }
+//# sourceMappingURL=SchemaVersionDuo.d.ts.map

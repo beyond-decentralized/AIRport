@@ -10,3 +10,4 @@ export declare class StubSharingAdaptor implements SharingAdaptor {
     createChangeList(shareInfo: ChangeListShareInfo, setupInfo: SharingPlatformSetupInfo): Promise<SharedChangeList>;
     loadChangeList(shareInfo: ChangeListShareInfo, setupInfo: SharingPlatformSetupInfo): Promise<SharedChangeList>;
 }
+//# sourceMappingURL=StubSharingAdaptor.d.ts.map

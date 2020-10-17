@@ -15,3 +15,4 @@ export * from './sharingnode/qsharingnoderepository';
 export * from './sharingnode/qsharingnoderepotransblock';
 export * from './sharingnode/qsharingnoderepotransblockstage';
 export * from './sharingnode/qsharingnodeterminal';
+//# sourceMappingURL=qInterfaces.d.ts.map

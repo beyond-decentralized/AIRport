@@ -11,3 +11,4 @@ export declare class MissingRecord {
     actorRecordId: RecordHistoryActorRecordId;
     status: MissingRecordStatus;
 }
+//# sourceMappingURL=MissingRecord.d.ts.map

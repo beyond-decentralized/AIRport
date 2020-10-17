@@ -7,3 +7,4 @@ export interface ISharingMessageDao extends IBaseSharingMessageDao {
 export declare class SharingMessageDao extends BaseSharingMessageDao implements ISharingMessageDao {
     findAllSyncedSharingMessageIdsForSharingNodes(sharingNodeIds: SharingNodeId[]): Promise<Map<SharingNodeId, TmSharingMessageId[]>>;
 }
+//# sourceMappingURL=SharingMessageDao.d.ts.map

@@ -7,3 +7,4 @@ export interface ITerminalAgt {
     password?: string;
     userTerminalAgts?: IUserTerminalAgt[];
 }
+//# sourceMappingURL=terminalagt.d.ts.map

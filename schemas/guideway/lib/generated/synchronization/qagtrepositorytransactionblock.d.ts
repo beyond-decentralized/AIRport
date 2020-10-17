@@ -91,3 +91,4 @@ export interface QAgtRepositoryTransactionBlockQId {
 }
 export interface QAgtRepositoryTransactionBlockQRelation extends IQRelation<QAgtRepositoryTransactionBlock>, QAgtRepositoryTransactionBlockQId {
 }
+//# sourceMappingURL=qagtrepositorytransactionblock.d.ts.map

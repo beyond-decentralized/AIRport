@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const IEntityResultParser_1 = require("./entity/IEntityResultParser");
+import { objectExists } from '@airport/air-control';
+import { AbstractObjectResultParser } from './entity/IEntityResultParser';
 /**
  * Created by Papa on 10/16/2016.
  */
@@ -9,13 +7,13 @@ const IEntityResultParser_1 = require("./entity/IEntityResultParser");
  * The goal of this parser is to split a flat row of result set cells into an facade
  * graph (just for that row).
  */
-class PlainResultParser extends IEntityResultParser_1.AbstractObjectResultParser {
+export class PlainResultParser extends AbstractObjectResultParser {
     addEntity(entityAlias, dbEntity, airDb, schemaUtils) {
         return schemaUtils.getNewEntity(dbEntity, airDb);
     }
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject[propertyName] = propertyValue;
-        return air_control_1.objectExists(propertyValue);
+        return objectExists(propertyValue);
     }
     bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, schemaUtils) {
         this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils);
@@ -54,5 +52,4 @@ class PlainResultParser extends IEntityResultParser_1.AbstractObjectResultParser
         return parsedResults;
     }
 }
-exports.PlainResultParser = PlainResultParser;
 //# sourceMappingURL=PlainResultParser.js.map

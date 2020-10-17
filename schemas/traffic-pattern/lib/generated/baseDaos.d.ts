@@ -7,6 +7,8 @@ import { ISchemaColumn } from './schema/schemacolumn';
 import { SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, SchemaColumnECascadeGraph, QSchemaColumn } from './schema/qschemacolumn';
 import { ISchemaEntity } from './schema/schemaentity';
 import { SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityECascadeGraph, QSchemaEntity } from './schema/qschemaentity';
+import { ISchemaOperation } from './schema/schemaoperation';
+import { SchemaOperationESelect, SchemaOperationECreateProperties, SchemaOperationEUpdateColumns, SchemaOperationEUpdateProperties, SchemaOperationEId, SchemaOperationECascadeGraph, QSchemaOperation } from './schema/qschemaoperation';
 import { ISchemaProperty } from './schema/schemaproperty';
 import { SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, SchemaPropertyECascadeGraph, QSchemaProperty } from './schema/qschemaproperty';
 import { ISchemaPropertyColumn } from './schema/schemapropertycolumn';
@@ -37,6 +39,12 @@ export declare class BaseSchemaColumnDao extends SQDIDao<ISchemaColumn, SchemaCo
 export interface IBaseSchemaEntityDao extends IDao<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityECascadeGraph, QSchemaEntity> {
 }
 export declare class BaseSchemaEntityDao extends SQDIDao<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityECascadeGraph, QSchemaEntity> implements IBaseSchemaEntityDao {
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseSchemaOperationDao extends IDao<ISchemaOperation, SchemaOperationESelect, SchemaOperationECreateProperties, SchemaOperationEUpdateColumns, SchemaOperationEUpdateProperties, SchemaOperationEId, SchemaOperationECascadeGraph, QSchemaOperation> {
+}
+export declare class BaseSchemaOperationDao extends SQDIDao<ISchemaOperation, SchemaOperationESelect, SchemaOperationECreateProperties, SchemaOperationEUpdateColumns, SchemaOperationEUpdateProperties, SchemaOperationEId, SchemaOperationECascadeGraph, QSchemaOperation> implements IBaseSchemaOperationDao {
     static diSet(): boolean;
     constructor();
 }
@@ -76,3 +84,4 @@ export declare class BaseSchemaVersionDao extends SQDIDao<ISchemaVersion, Schema
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDaos.d.ts.map

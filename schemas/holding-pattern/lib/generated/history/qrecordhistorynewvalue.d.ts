@@ -62,3 +62,4 @@ export interface QRecordHistoryNewValueQId {
 }
 export interface QRecordHistoryNewValueQRelation extends IQRelation<QRecordHistoryNewValue>, QRecordHistoryNewValueQId {
 }
+//# sourceMappingURL=qrecordhistorynewvalue.d.ts.map

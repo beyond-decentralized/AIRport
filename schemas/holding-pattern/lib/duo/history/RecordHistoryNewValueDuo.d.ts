@@ -7,3 +7,4 @@ export declare class RecordHistoryNewValueDuo extends BaseRecordHistoryNewValueD
     constructor();
     getNewRecord(recordHistory: IRecordHistory, dbColumn: DbColumn, newValue: any): IRecordHistoryNewValue;
 }
+//# sourceMappingURL=RecordHistoryNewValueDuo.d.ts.map

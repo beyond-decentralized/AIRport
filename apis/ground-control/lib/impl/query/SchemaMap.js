@@ -1,14 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const TableMap_1 = require("./TableMap");
-class SchemaMap {
+import { TableMap } from "./TableMap";
+export class SchemaMap {
     constructor(schemaMap = {}) {
         this.schemaMap = schemaMap;
     }
-    ensureEntity(entity, allColumns = false, TableMapConstructor = TableMap_1.TableMap) {
+    ensureEntity(entity, allColumns = false, TableMapConstructor = TableMap) {
         return this.ensure(entity.schemaVersion.id, entity.index, allColumns, TableMapConstructor);
     }
-    ensure(schemaVersionId, tableIndex, allColumns = false, TableMapConstructor = TableMap_1.TableMap) {
+    ensure(schemaVersionId, tableIndex, allColumns = false, TableMapConstructor = TableMap) {
         let tableMap = this.schemaMap[schemaVersionId];
         if (!tableMap) {
             tableMap = new TableMapConstructor(schemaVersionId);
@@ -24,5 +22,4 @@ class SchemaMap {
         return tableMap.existsByStructure(tableIndex, columnIndex);
     }
 }
-exports.SchemaMap = SchemaMap;
 //# sourceMappingURL=SchemaMap.js.map

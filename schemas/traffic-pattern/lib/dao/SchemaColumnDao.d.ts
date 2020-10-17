@@ -6,3 +6,4 @@ export interface ISchemaColumnDao extends IBaseSchemaColumnDao {
 export declare class SchemaColumnDao extends BaseSchemaColumnDao implements ISchemaColumnDao {
     findAllForEntities(entityIds: EntityId[]): Promise<ISchemaColumn[]>;
 }
+//# sourceMappingURL=SchemaColumnDao.d.ts.map

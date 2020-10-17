@@ -1,8 +1,8 @@
 import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField } from '@airport/air-control';
 import { VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
-import { SchemaPropertyColumnECascadeGraph, SchemaPropertyColumnESelect, QSchemaPropertyColumn } from './qschemapropertycolumn';
-import { SchemaRelationECascadeGraph, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
+import { SchemaPropertyColumnESelect, QSchemaPropertyColumn } from './qschemapropertycolumn';
+import { SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -38,9 +38,13 @@ export interface SchemaPropertyEUpdateProperties extends VersionedSchemaObjectEU
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaPropertyECascadeGraph extends VersionedSchemaObjectECascadeGraph {
-    propertyColumns?: SchemaPropertyColumnECascadeGraph;
-    relation?: SchemaRelationECascadeGraph;
+export interface SchemaPropertyECascadeGraph extends VersionedSchemaObjectESelect, SchemaPropertyEOptionalId, VersionedSchemaObjectECascadeGraph {
+    index?: number | IQNumberField;
+    name?: string | IQStringField;
+    isId?: boolean | IQBooleanField;
+    entity?: SchemaEntityESelect;
+    propertyColumns?: SchemaPropertyColumnESelect;
+    relation?: SchemaRelationESelect;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -81,3 +85,4 @@ export interface QSchemaPropertyQId extends QVersionedSchemaObjectQId {
 }
 export interface QSchemaPropertyQRelation extends QVersionedSchemaObjectQRelation<QSchemaProperty>, QSchemaPropertyQId {
 }
+//# sourceMappingURL=qschemaproperty.d.ts.map

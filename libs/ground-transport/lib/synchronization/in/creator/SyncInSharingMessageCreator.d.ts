@@ -6,3 +6,4 @@ export declare class SyncInSharingMessageCreator implements ISyncInSharingMessag
     createRecord(sharingNode: ISharingNode, syncTimestamp: SharingMessageSyncTimestamp): ISharingMessage;
     saveIncoming(dataMessages: IDataToTM[]): Promise<void>;
 }
+//# sourceMappingURL=SyncInSharingMessageCreator.d.ts.map

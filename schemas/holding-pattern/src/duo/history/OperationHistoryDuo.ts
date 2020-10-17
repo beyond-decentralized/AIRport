@@ -4,7 +4,7 @@ import {
 	DbEntity
 }                                      from '@airport/ground-control'
 import {SystemWideOperationId}         from '../../ddl/common'
-import {RepositoryEntityActorRecordId} from '../../ddl/ddl'
+import {RepositoryEntity_ActorRecordId} from '../../ddl/ddl'
 import {
 	BaseOperationHistoryDuo,
 	IBaseOperationHistoryDuo,
@@ -32,7 +32,7 @@ export interface IOperationHistoryDuo
 
 	startRecordHistory(
 		operationHistory: IOperationHistory,
-		actorRecordId: RepositoryEntityActorRecordId,
+		actorRecordId: RepositoryEntity_ActorRecordId,
 		recHistoryDuo: IRecordHistoryDuo
 	): IRecordHistory;
 
@@ -76,7 +76,7 @@ export class OperationHistoryDuo
 
 	startRecordHistory(
 		operationHistory: IOperationHistory,
-		actorRecordId: RepositoryEntityActorRecordId,
+		actorRecordId: RepositoryEntity_ActorRecordId,
 		recHistoryDuo: IRecordHistoryDuo
 	): IRecordHistory {
 		const recordHistory = recHistoryDuo.getNewRecord(actorRecordId)

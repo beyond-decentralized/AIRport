@@ -9,3 +9,4 @@ export declare class SchemaRecorder implements ISchemaRecorder {
     private bootstrapRecord;
     private bulkCreate;
 }
+//# sourceMappingURL=SchemaRecorder.d.ts.map

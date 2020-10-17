@@ -6,3 +6,4 @@ export declare class PackagedUnit {
     name: PackagedUnitName;
     package: Package;
 }
+//# sourceMappingURL=PackagedUnit.d.ts.map

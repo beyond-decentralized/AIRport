@@ -1,1 +1,1 @@
-{"version":3,"file":"SharingMechanism.js","sourceRoot":"","sources":["../../../src/ddl/values/SharingMechanism.ts"],"names":[],"mappings":";;AAAA,IAAY,gBAIX;AAJD,WAAY,gBAAgB;IAC3B,2EAAc,CAAA;IACd,qEAAW,CAAA;IACX,uEAAY,CAAA;AACb,CAAC,EAJW,gBAAgB,GAAhB,wBAAgB,KAAhB,wBAAgB,QAI3B"}
+{"version":3,"file":"SharingMechanism.js","sourceRoot":"","sources":["../../../src/ddl/values/SharingMechanism.ts"],"names":[],"mappings":"AAAA,MAAM,CAAN,IAAY,gBAIX;AAJD,WAAY,gBAAgB;IAC3B,2EAAc,CAAA;IACd,qEAAW,CAAA;IACX,uEAAY,CAAA;AACb,CAAC,EAJW,gBAAgB,KAAhB,gBAAgB,QAI3B"}

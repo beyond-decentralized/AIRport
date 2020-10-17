@@ -28,3 +28,4 @@ export declare enum MessageFromTMContentType {
     SYNC_VERIFICATIONS = 1,
     DATA_TRANSFER = 2
 }
+//# sourceMappingURL=MessageTypes.d.ts.map

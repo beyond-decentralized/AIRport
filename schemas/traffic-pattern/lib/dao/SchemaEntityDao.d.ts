@@ -6,3 +6,4 @@ export interface ISchemaEntityDao extends IBaseSchemaEntityDao {
 export declare class SchemaEntityDao extends BaseSchemaEntityDao implements ISchemaEntityDao {
     findAllForSchemaVersions(schemaVersionIds: SchemaVersionId[]): Promise<ISchemaEntity[]>;
 }
+//# sourceMappingURL=SchemaEntityDao.d.ts.map

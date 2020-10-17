@@ -1,22 +1,20 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const pathResolver_1 = require("../../../resolve/pathResolver");
-const FileBuilder_1 = require("./FileBuilder");
-const IQEntityInterfaceBuilder_1 = require("./IQEntityInterfaceBuilder");
-const QEntityBuilder_1 = require("./QEntityBuilder");
-const QEntityIdBuilder_1 = require("./QEntityIdBuilder");
-const QEntityRelationBuilder_1 = require("./QEntityRelationBuilder");
+import { resolveRelativeEntityPath, resolveRelativePath } from '../../../resolve/pathResolver';
+import { FileBuilder } from './FileBuilder';
+import { IQEntityInterfaceBuilder } from './IQEntityInterfaceBuilder';
+import { QEntityBuilder } from './QEntityBuilder';
+import { QEntityIdBuilder } from './QEntityIdBuilder';
+import { QEntityRelationBuilder } from './QEntityRelationBuilder';
 /**
  * Created by Papa on 4/26/2016.
  */
-class QEntityFileBuilder extends FileBuilder_1.FileBuilder {
+export class QEntityFileBuilder extends FileBuilder {
     constructor(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, sIndexedEntity) {
         super(entity, fullGenerationPath, pathBuilder, configuration);
         this.importMap = {};
-        this.qEntityBuilder = new QEntityBuilder_1.QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName, sIndexedEntity);
-        this.qEntityIdBuilder = new QEntityIdBuilder_1.QEntityIdBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName);
-        this.qEntityRelationBuilder = new QEntityRelationBuilder_1.QEntityRelationBuilder(entity, this.fullGenerationPath, this.pathBuilder.workingDirPath, this, entityMapByName);
-        this.qEntityInterfaceBuilder = new IQEntityInterfaceBuilder_1.IQEntityInterfaceBuilder(entity, this.qEntityBuilder);
+        this.qEntityBuilder = new QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName, sIndexedEntity);
+        this.qEntityIdBuilder = new QEntityIdBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName);
+        this.qEntityRelationBuilder = new QEntityRelationBuilder(entity, this.fullGenerationPath, this.pathBuilder.workingDirPath, this, entityMapByName);
+        this.qEntityInterfaceBuilder = new IQEntityInterfaceBuilder(entity, this.qEntityBuilder);
         this.addImport([
             'IQEntityInternal',
             'IEntityIdProperties',
@@ -45,7 +43,7 @@ class QEntityFileBuilder extends FileBuilder_1.FileBuilder {
             }
             else {
                 let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path);
-                parentQEntityRelativePath = pathResolver_1.resolveRelativePath(fullGenerationPath, parentFullGenerationPath);
+                parentQEntityRelativePath = resolveRelativePath(fullGenerationPath, parentFullGenerationPath);
             }
             let parentEntityType = entity.parentEntity.type;
             this.addImport([
@@ -102,7 +100,7 @@ ${addEntityCommand}`;
             }
             else {
                 type = property.entity.type;
-                qEntityRelativePath = pathResolver_1.resolveRelativeEntityPath(this.entity, property.entity);
+                qEntityRelativePath = resolveRelativeEntityPath(this.entity, property.entity);
                 qEntityRelativePath = qEntityRelativePath.replace('.ts', '');
                 qEntityRelativePath = this.pathBuilder.prefixQToFileName(qEntityRelativePath);
             }
@@ -126,5 +124,4 @@ ${addEntityCommand}`;
         this.addRelationImports(this.qEntityBuilder.nonIdRelationBuilders);
     }
 }
-exports.QEntityFileBuilder = QEntityFileBuilder;
 //# sourceMappingURL=QEntityFileBuilder.js.map

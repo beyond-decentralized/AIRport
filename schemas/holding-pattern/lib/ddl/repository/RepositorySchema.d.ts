@@ -6,3 +6,4 @@ export declare class RepositorySchema {
     repository: Repository;
     schemaIndex: SchemaIndex;
 }
+//# sourceMappingURL=RepositorySchema.d.ts.map

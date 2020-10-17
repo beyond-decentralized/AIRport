@@ -11,3 +11,4 @@ export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Duos {
     SchemaRelationColumn: IBaseSchemaRelationColumnDuo;
     SchemaVersion: IBaseSchemaVersionDuo;
 }
+//# sourceMappingURL=duo.d.ts.map

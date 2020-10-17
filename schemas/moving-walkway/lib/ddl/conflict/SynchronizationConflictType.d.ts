@@ -4,3 +4,4 @@ export declare enum SynchronizationConflictType {
     REMOTE_UPDATE_LOCALLY_DELETED = 2,
     REMOTE_UPDATE_LOCALLY_UPDATED = 3
 }
+//# sourceMappingURL=SynchronizationConflictType.d.ts.map

@@ -7,3 +7,4 @@ export declare class SyncInConsistencyChecker implements ISyncInConsistencyCheck
     private areActorsConsistent;
     private areSchemasConsistent;
 }
+//# sourceMappingURL=SyncInConsistencyChecker.d.ts.map

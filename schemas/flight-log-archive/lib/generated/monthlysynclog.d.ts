@@ -4,3 +4,4 @@ export interface IMonthlySyncLog {
     repositoryId: number;
     synced?: boolean;
 }
+//# sourceMappingURL=monthlysynclog.d.ts.map

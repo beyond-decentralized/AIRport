@@ -6,3 +6,4 @@ export interface SyncInMessageWithContent {
     dataMessages: IDataToTM[];
     syncLogMessages: ISyncLogToTM[];
 }
+//# sourceMappingURL=SyncInMessageWithContent.d.ts.map

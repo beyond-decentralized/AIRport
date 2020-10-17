@@ -1,24 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Papa on 8/20/2016.
  */
-exports.Id = function () {
+export const Id = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.Column = function (columnConfiguration) {
+export const Column = function (columnConfiguration) {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.JoinColumn = function (joinColumnConfiguration) {
+export const JoinColumn = function (joinColumnConfiguration) {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.JoinColumns = function (joinColumnConfigurations) {
+export const JoinColumns = function (joinColumnConfigurations) {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
@@ -37,77 +35,77 @@ exports.JoinColumns = function (joinColumnConfigurations) {
 // QMto>, // Function to add to the join joinFunctionWithOperator?: andOperator | orOperator //
 // How to add the function to the join ) { return function ( targetObject: any, propertyKey:
 // string ) { // No runtime logic required. } };
-exports.SubQuery = function (addToJoinFunction) {
+export const SubQuery = function (addToJoinFunction) {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.RJoinColumn = function (rJoinColumnConfiguration) {
+export const RJoinColumn = function (rJoinColumnConfiguration) {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.RJoinColumns = function (joinColumnConfigurations) {
+export const RJoinColumns = function (joinColumnConfigurations) {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.Json = function () {
+export const Json = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.DbAny = function () {
+export const DbAny = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.DbBoolean = function () {
+export const DbBoolean = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.DbDate = function () {
+export const DbDate = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.DbNumber = function () {
+export const DbNumber = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.DbString = function () {
+export const DbString = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.Transient = function () {
+export const Transient = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.ManyToOne = function (elements) {
+export const ManyToOne = function (elements) {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.OneToMany = function (elements) {
+export const OneToMany = function (elements) {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.GeneratedValue = function () {
+export const GeneratedValue = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.SequenceGenerator = function () {
+export const SequenceGenerator = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };
 };
-exports.TraditionalServerSeq = function () {
+export const TraditionalServerSeq = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
     };

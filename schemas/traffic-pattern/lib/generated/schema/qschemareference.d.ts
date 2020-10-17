@@ -32,7 +32,10 @@ export interface SchemaReferenceEUpdateProperties extends VersionedSchemaObjectE
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaReferenceECascadeGraph extends VersionedSchemaObjectECascadeGraph {
+export interface SchemaReferenceECascadeGraph extends VersionedSchemaObjectESelect, SchemaReferenceEOptionalId, VersionedSchemaObjectECascadeGraph {
+    index?: number | IQNumberField;
+    ownSchemaVersion?: SchemaVersionESelect;
+    referencedSchemaVersion?: SchemaVersionESelect;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -67,3 +70,4 @@ export interface QSchemaReferenceQId extends QVersionedSchemaObjectQId {
 }
 export interface QSchemaReferenceQRelation extends QVersionedSchemaObjectQRelation<QSchemaReference>, QSchemaReferenceQId {
 }
+//# sourceMappingURL=qschemareference.d.ts.map

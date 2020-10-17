@@ -4,3 +4,4 @@ export interface IRepositoryArchive {
     repository: IRepository;
     archive: IArchive;
 }
+//# sourceMappingURL=repositoryarchive.d.ts.map

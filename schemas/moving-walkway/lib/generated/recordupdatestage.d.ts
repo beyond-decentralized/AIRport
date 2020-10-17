@@ -10,3 +10,4 @@ export interface IRecordUpdateStage {
     actor?: IActor;
     column?: ISchemaColumn;
 }
+//# sourceMappingURL=recordupdatestage.d.ts.map

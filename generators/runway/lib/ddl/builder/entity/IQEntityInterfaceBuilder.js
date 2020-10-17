@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const SSchemaBuilder_1 = require("../schema/SSchemaBuilder");
+import { entityExtendsRepositoryEntity } from '../schema/SSchemaBuilder';
 /**
  * Created by Papa on 5/20/2016.
  */
-class IQEntityInterfaceBuilder {
+export class IQEntityInterfaceBuilder {
     constructor(entity, qEntityBuilder) {
         this.entity = entity;
         this.qEntityBuilder = qEntityBuilder;
@@ -61,7 +59,7 @@ class IQEntityInterfaceBuilder {
         this.nonIdRelationBuilders.forEach((builder) => {
             nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`;
         });
-        const [isRepositoryEntity, isLocal] = SSchemaBuilder_1.entityExtendsRepositoryEntity(this.entity);
+        const [isRepositoryEntity, isLocal] = entityExtendsRepositoryEntity(this.entity);
         let relationsForCascadeGraph = ``;
         if (!isRepositoryEntity) {
             this.idRelationBuilders.forEach((builder) => {
@@ -182,5 +180,4 @@ extends ${entityName}EId, ${entityName}EUpdateColumns {
         return interfaceSource;
     }
 }
-exports.IQEntityInterfaceBuilder = IQEntityInterfaceBuilder;
 //# sourceMappingURL=IQEntityInterfaceBuilder.js.map

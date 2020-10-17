@@ -10,3 +10,4 @@ export declare class Schema {
     versions: SchemaVersion[];
     currentVersion: SchemaVersion;
 }
+//# sourceMappingURL=schema.d.ts.map

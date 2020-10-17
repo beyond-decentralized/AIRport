@@ -8,3 +8,4 @@ export declare class TerminalAgt {
     password: TerminalPassword;
     userTerminalAgts: UserTerminalAgt[];
 }
+//# sourceMappingURL=TerminalAgt.d.ts.map

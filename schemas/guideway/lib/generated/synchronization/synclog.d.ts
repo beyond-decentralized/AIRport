@@ -4,3 +4,4 @@ export interface ISyncLog {
     sharingMessage: IAgtSharingMessage;
     repositoryTransactionBlock: IAgtRepositoryTransactionBlock;
 }
+//# sourceMappingURL=synclog.d.ts.map

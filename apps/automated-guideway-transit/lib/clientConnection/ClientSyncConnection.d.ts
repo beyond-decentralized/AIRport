@@ -6,3 +6,4 @@ export interface IClientSyncConnection {
     send(data: string): void;
     close(): void;
 }
+//# sourceMappingURL=ClientSyncConnection.d.ts.map

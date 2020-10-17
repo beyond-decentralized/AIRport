@@ -62,3 +62,4 @@ export interface QDailyArchiveLogQId {
 }
 export interface QDailyArchiveLogQRelation extends IQRelation<QDailyArchiveLog>, QDailyArchiveLogQId {
 }
+//# sourceMappingURL=qdailyarchivelog.d.ts.map

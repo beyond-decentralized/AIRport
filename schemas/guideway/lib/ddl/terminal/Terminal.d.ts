@@ -18,3 +18,4 @@ export declare class Terminal {
     terminalRepositories: TerminalRepository[];
     sharingMessages: AgtSharingMessage[];
 }
+//# sourceMappingURL=Terminal.d.ts.map

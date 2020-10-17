@@ -19,3 +19,4 @@ export * from './stub/StubChangeList';
 export * from './stub/StubSharingAdaptor';
 export * from './tokens';
 export * from './PromiseHttp';
+//# sourceMappingURL=index.d.ts.map

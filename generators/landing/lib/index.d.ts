@@ -8,3 +8,4 @@ export * from './recorder/SchemaComposer';
 export * from './recorder/SchemaRecorder';
 export * from './tokens';
 export * from './SchemaInitializer';
+//# sourceMappingURL=index.d.ts.map

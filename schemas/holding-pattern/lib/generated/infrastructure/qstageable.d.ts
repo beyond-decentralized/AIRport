@@ -51,3 +51,4 @@ export interface QStageableQId {
 }
 export interface QStageableQRelation<SubType extends IQEntity> extends IQRelation<SubType>, QStageableQId {
 }
+//# sourceMappingURL=qstageable.d.ts.map

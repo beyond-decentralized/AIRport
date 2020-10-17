@@ -9,3 +9,4 @@ export declare abstract class AbstractCompletable implements IAbstractCompletabl
     tearDown(): Promise<void>;
     protected record(subscription: ISubscription): void;
 }
+//# sourceMappingURL=AbstractCompletable.d.ts.map

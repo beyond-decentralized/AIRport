@@ -48,3 +48,4 @@ export declare class FunctionWrapper<QF extends Function> implements IFunctionWr
     constructor(queryFunction: QF);
     find(...params: any[]): any;
 }
+//# sourceMappingURL=DatabaseFacade.d.ts.map

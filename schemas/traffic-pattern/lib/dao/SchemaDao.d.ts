@@ -15,3 +15,4 @@ export declare class SchemaDao extends BaseSchemaDao implements ISchemaDao {
     setStatusByIndexes(indexes: SchemaIndex[], status: SchemaStatus): Promise<void>;
     findMapByNames(schemaNames: SchemaName[]): Promise<Map<SchemaName, ISchema>>;
 }
+//# sourceMappingURL=SchemaDao.d.ts.map

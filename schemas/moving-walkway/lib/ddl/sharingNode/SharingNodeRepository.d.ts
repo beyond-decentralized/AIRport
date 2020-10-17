@@ -11,3 +11,4 @@ export declare class SharingNodeRepository {
     advisedSyncPriority: SyncPriority;
     repositorySyncStatus: RepositorySyncStatus;
 }
+//# sourceMappingURL=SharingNodeRepository.d.ts.map

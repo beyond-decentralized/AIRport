@@ -19,3 +19,4 @@ export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInD
     private addRepoTransHistoriesToMapFromData;
     private updateLocalData;
 }
+//# sourceMappingURL=TwoStageSyncedInDataProcessor.d.ts.map

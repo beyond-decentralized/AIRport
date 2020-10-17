@@ -22,3 +22,4 @@ export declare const REPOSITORY_DAO: import("@airport/di").IDiToken<IRepositoryD
 export declare const REPO_TRANS_HISTORY_DAO: import("@airport/di").IDiToken<IRepositoryTransactionHistoryDao>;
 export declare const REPO_TRANS_HISTORY_DUO: import("@airport/di").IDiToken<IRepositoryTransactionHistoryDuo>;
 export declare const TRANS_HISTORY_DUO: import("@airport/di").IDiToken<ITransactionHistoryDuo>;
+//# sourceMappingURL=tokens.d.ts.map

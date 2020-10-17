@@ -8,3 +8,4 @@ export declare class SchemaPropertyColumn extends VersionedSchemaObject {
     column: SchemaColumn;
     property: SchemaProperty;
 }
+//# sourceMappingURL=SchemaPropertyColumn.d.ts.map

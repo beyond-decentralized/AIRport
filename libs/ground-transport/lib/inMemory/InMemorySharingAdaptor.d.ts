@@ -11,3 +11,4 @@ export declare class InMemorySharingAdaptor implements SharingAdaptor {
     createChangeList(shareInfo: ChangeListShareInfo, setupInfo: SharingPlatformSetupInfo): Promise<SharedChangeList>;
     loadChangeList(shareInfo: ChangeListShareInfo, setupInfo: SharingPlatformSetupInfo): Promise<SharedChangeList>;
 }
+//# sourceMappingURL=InMemorySharingAdaptor.d.ts.map

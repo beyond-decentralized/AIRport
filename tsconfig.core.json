@@ -4,16 +4,16 @@
     "declaration": true,
     "declarationMap": true,
     "experimentalDecorators": true,
-    "module": "commonjs",
+    "module": "ES2020",
     "moduleResolution": "node",
     "noImplicitAny": false,
     "removeComments": false,
     "sourceMap": true,
-    "target": "esnext",
+    "target": "ES2020",
     "lib": [
       "esnext",
       "dom"
     ]
   },
-  "version": "3.8.2"
+  "version": "4.0.3"
 }

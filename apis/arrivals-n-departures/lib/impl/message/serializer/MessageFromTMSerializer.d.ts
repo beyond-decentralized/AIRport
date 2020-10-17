@@ -5,3 +5,4 @@ export interface IMessageFromTMSerializer {
 export declare class MessageFromTMSerializer implements IMessageFromTMSerializer {
     serialize(messageFromTM: MessageFromTM): SerializedMessageFromTM;
 }
+//# sourceMappingURL=MessageFromTMSerializer.d.ts.map

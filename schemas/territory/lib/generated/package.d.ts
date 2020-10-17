@@ -4,3 +4,4 @@ export interface IPackage {
     name?: string;
     applicationPackages?: IApplicationPackage[];
 }
+//# sourceMappingURL=package.d.ts.map

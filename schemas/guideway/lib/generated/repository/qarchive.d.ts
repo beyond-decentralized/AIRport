@@ -56,3 +56,4 @@ export interface QArchiveQId {
 }
 export interface QArchiveQRelation extends IQRelation<QArchive>, QArchiveQId {
 }
+//# sourceMappingURL=qarchive.d.ts.map

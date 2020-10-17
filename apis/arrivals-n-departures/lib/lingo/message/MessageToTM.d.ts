@@ -41,3 +41,4 @@ export interface AliveAcknowledgementMessageToTM extends AbstractMessageToTM {
 export interface ConnectionDataCallback {
     (terminalId: TerminalId, writeHeaders: boolean, data: MessageToTM): void;
 }
+//# sourceMappingURL=MessageToTM.d.ts.map

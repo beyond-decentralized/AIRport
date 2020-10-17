@@ -53,3 +53,4 @@ export declare const Q_SCHEMA: LocalQSchema;
 export declare const Q: LocalQSchema;
 export declare function diSet(dbEntityId: EntityId): boolean;
 export declare function duoDiSet(dbEntityId: EntityId): boolean;
+//# sourceMappingURL=qSchema.d.ts.map

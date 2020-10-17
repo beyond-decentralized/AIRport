@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const air_control_2 = require("@airport/air-control");
-const di_1 = require("@airport/di");
-const tokens_1 = require("../../tokens");
-const generated_1 = require("../../generated/generated");
-class MissingRecordDao extends generated_1.BaseMissingRecordDao {
+import { and, or } from '@airport/air-control';
+import { AIR_DB } from '@airport/air-control';
+import { container, DI } from '@airport/di';
+import { MISSING_RECORD_DAO } from '../../tokens';
+import { BaseMissingRecordDao, Q } from '../../generated/generated';
+export class MissingRecordDao extends BaseMissingRecordDao {
     async setStatusWhereIdsInAndReturnIds(recordIdMap, status) {
         const ids = await this.findActualIdsByRecordIds(recordIdMap);
         if (!ids.length) {
@@ -13,7 +11,7 @@ class MissingRecordDao extends generated_1.BaseMissingRecordDao {
         }
         let mr;
         await this.db.updateWhere({
-            update: mr = generated_1.Q.MissingRecord,
+            update: mr = Q.MissingRecord,
             set: {
                 status
             },
@@ -22,10 +20,10 @@ class MissingRecordDao extends generated_1.BaseMissingRecordDao {
         return ids;
     }
     async findActualIdsByRecordIds(recordIdMap) {
-        const mr = generated_1.Q.MissingRecord;
+        const mr = Q.MissingRecord;
         let numClauses = 0;
         const currentSchemaVersionMapById = {};
-        const airDb = await di_1.container(this).get(air_control_2.AIR_DB);
+        const airDb = await container(this).get(AIR_DB);
         for (const schema of airDb.schemas) {
             const schemaVersion = schema.currentVersion;
             currentSchemaVersionMapById[schemaVersion.id] = schemaVersion;
@@ -40,13 +38,13 @@ class MissingRecordDao extends generated_1.BaseMissingRecordDao {
                     let actorWhereFragments = [];
                     for (const [actorId, recordIdsForActor] of recordIdsForTable) {
                         numClauses++;
-                        actorWhereFragments.push(air_control_1.and(mr.actorRecordId.in(Array.from(recordIdsForActor)), mr.actor.id.equals(actorId)));
+                        actorWhereFragments.push(and(mr.actorRecordId.in(Array.from(recordIdsForActor)), mr.actor.id.equals(actorId)));
                     }
-                    tableWhereFragments.push(air_control_1.and(mr.entity.id.equals(dbEntity.id), air_control_1.or(...actorWhereFragments)));
+                    tableWhereFragments.push(and(mr.entity.id.equals(dbEntity.id), or(...actorWhereFragments)));
                 }
-                schemaWhereFragments.push(air_control_1.and(mr.schemaVersion.id.equals(schemaVersionId), air_control_1.or(...tableWhereFragments)));
+                schemaWhereFragments.push(and(mr.schemaVersion.id.equals(schemaVersionId), or(...tableWhereFragments)));
             }
-            repositoryWhereFragments.push(air_control_1.and(mr.repository.id.equals(repositoryId), air_control_1.or(...schemaWhereFragments)));
+            repositoryWhereFragments.push(and(mr.repository.id.equals(repositoryId), or(...schemaWhereFragments)));
         }
         if (!numClauses) {
             return [];
@@ -54,17 +52,16 @@ class MissingRecordDao extends generated_1.BaseMissingRecordDao {
         return await airDb.find.field({
             select: mr.id,
             from: [mr],
-            where: air_control_1.or(...repositoryWhereFragments)
+            where: or(...repositoryWhereFragments)
         });
     }
     async deleteWhereIdsIn(ids) {
         let mr;
         await this.db.deleteWhere({
-            deleteFrom: mr = generated_1.Q.MissingRecord,
+            deleteFrom: mr = Q.MissingRecord,
             where: mr.id.in(ids)
         });
     }
 }
-exports.MissingRecordDao = MissingRecordDao;
-di_1.DI.set(tokens_1.MISSING_RECORD_DAO, MissingRecordDao);
+DI.set(MISSING_RECORD_DAO, MissingRecordDao);
 //# sourceMappingURL=MissingRecordDao.js.map

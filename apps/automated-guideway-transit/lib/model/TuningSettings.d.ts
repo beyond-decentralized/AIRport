@@ -28,3 +28,4 @@ export declare class TuningSettings implements ITuningSettings {
         minMillisSinceLastConnection: number;
     };
 }
+//# sourceMappingURL=TuningSettings.d.ts.map

@@ -1,15 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
-const EntityCandidate_1 = require("./EntityCandidate");
-const EntityCandidateRegistry_1 = require("./EntityCandidateRegistry");
-const ImportManager_1 = require("./ImportManager");
-const utils_1 = require("./utils");
+import * as ts from 'typescript';
+import tsc from 'typescript';
+import { EntityCandidate, Interface } from './EntityCandidate';
+import { EntityCandidateRegistry } from './EntityCandidateRegistry';
+import { ImportManager } from './ImportManager';
+import { getImplementedInterfaces, getParentClassImport, getParentClassName, isDecoratedAsEntity } from './utils';
 /**
  * Created by Papa on 3/26/2016.
  */
-exports.globalCandidateRegistry = new EntityCandidateRegistry_1.EntityCandidateRegistry(globalThis.enumMap);
-exports.globalCandidateInheritanceMap = new Map();
+export const globalCandidateRegistry = new EntityCandidateRegistry(globalThis.enumMap);
+export const globalCandidateInheritanceMap = new Map();
 var TsObjectType;
 (function (TsObjectType) {
     TsObjectType[TsObjectType["OBJECT_LITERAL"] = 0] = "OBJECT_LITERAL";
@@ -20,7 +19,7 @@ var TsObjectType;
 let currentFileImports;
 const entityFileMap = {};
 const fileImportsMapByFilePath = {};
-function visitEntityFile(node, path) {
+export function visitEntityFile(node, path) {
     let file = entityFileMap[path];
     if (!file) {
         file = {
@@ -34,7 +33,7 @@ function visitEntityFile(node, path) {
     const onlyClassInFileError = `
 		  Cannot declare entities in same files as interfaces and enums (needed for DDL hiding).
 		  NOTE: Entity interface is already generated for you.`;
-    if (node.kind === ts.SyntaxKind.ClassDeclaration) {
+    if (node.kind === tsc.SyntaxKind.ClassDeclaration) {
         if (file.hasEntityCandidate) {
             throw new Error(`Cannot declare more than one entity per file.`);
         }
@@ -44,7 +43,7 @@ function visitEntityFile(node, path) {
         file.hasEntityCandidate = true;
         let fileImports = fileImportsMapByFilePath[path];
         if (!fileImports) {
-            fileImports = ImportManager_1.ImportManager.resolveImports(node.parent, file.path);
+            fileImports = ImportManager.resolveImports(node.parent, file.path);
             fileImportsMapByFilePath[path] = fileImports;
         }
         currentFileImports = fileImports;
@@ -58,7 +57,7 @@ function visitEntityFile(node, path) {
         // No need to walk any further, class expressions/inner declarations
         // cannot be exported
     }
-    else if (node.kind === ts.SyntaxKind.InterfaceDeclaration) {
+    else if (node.kind === tsc.SyntaxKind.InterfaceDeclaration) {
         if (file.hasEntityCandidate) {
             throw new Error(onlyClassInFileError);
         }
@@ -68,12 +67,12 @@ function visitEntityFile(node, path) {
             .getSymbolAtLocation(node.name);
         registerInterface(symbol, path);
     }
-    else if (node.kind === ts.SyntaxKind.ModuleDeclaration) {
+    else if (node.kind === tsc.SyntaxKind.ModuleDeclaration) {
         // This is a namespace, visit its children
-        // ts.forEachChild(node, visit);
+        // tsc.forEachChild(node, visit);
         throw new Error(`Namespaces are not supported in DDL.`);
     }
-    else if (node.kind === ts.SyntaxKind.EnumDeclaration) {
+    else if (node.kind === tsc.SyntaxKind.EnumDeclaration) {
         if (file.hasEntityCandidate) {
             throw new Error(onlyClassInFileError);
         }
@@ -83,7 +82,6 @@ function visitEntityFile(node, path) {
         globalThis.enumMap.set(symbol.name, path);
     }
 }
-exports.visitEntityFile = visitEntityFile;
 /** Serialize a symbol into a json object */
 function serializeSymbol(symbol, parent = symbol.parent) {
     const declarations = symbol.declarations;
@@ -135,7 +133,7 @@ function serializeSymbol(symbol, parent = symbol.parent) {
                 type = declaration.type.typeName.escapedText;
             }
             else if (declaration.type
-                && declaration.type.kind === ts.SyntaxKind.AnyKeyword) {
+                && declaration.type.kind === tsc.SyntaxKind.AnyKeyword) {
                 // Just the any keyword
             }
             else {
@@ -177,7 +175,7 @@ function serializeSymbol(symbol, parent = symbol.parent) {
         isTransient,
         name: symbol.getName(),
         // documentation:
-        // ts.displayPartsToString(symbol.getDocumentationComment(undefined)),
+        // tsc.displayPartsToString(symbol.getDocumentationComment(undefined)),
         type
     };
 }
@@ -215,23 +213,23 @@ function getType(tsType, arrayDepth) {
         return typeInfo;
     }
     switch (tsType.kind) {
-        case ts.SyntaxKind.ArrayType:
+        case tsc.SyntaxKind.ArrayType:
             return getType(tsType.elementType, ++arrayDepth);
-        case ts.SyntaxKind.AnyKeyword:
+        case tsc.SyntaxKind.AnyKeyword:
             return typeInfo;
-        case ts.SyntaxKind.BooleanKeyword:
+        case tsc.SyntaxKind.BooleanKeyword:
             type = primitive = 'boolean';
             return { ...typeInfo, primitive, type };
-        case ts.SyntaxKind.NumberKeyword:
+        case tsc.SyntaxKind.NumberKeyword:
             type = primitive = 'number';
             return { ...typeInfo, primitive, type };
-        case ts.SyntaxKind.StringKeyword:
+        case tsc.SyntaxKind.StringKeyword:
             type = primitive = 'string';
             return { ...typeInfo, primitive, type };
-        case ts.SyntaxKind.VoidKeyword:
+        case tsc.SyntaxKind.VoidKeyword:
             type = 'void';
             return { ...typeInfo, type };
-        case ts.SyntaxKind.TypeReference:
+        case tsc.SyntaxKind.TypeReference:
             const typeName = tsType.typeName;
             const typeArguments = tsType.typeArguments;
             if (typeArguments && typeArguments.length) {
@@ -282,7 +280,7 @@ function parseObjectLiteralExpression(objLitExpr) {
 function parseObjectProperty(initializer, objectType, objectName) {
     let value;
     switch (initializer.kind) {
-        case ts.SyntaxKind.Identifier:
+        case tsc.SyntaxKind.Identifier:
             let identifier = initializer;
             switch (identifier.text) {
                 case 'undefined':
@@ -297,24 +295,24 @@ function parseObjectProperty(initializer, objectType, objectName) {
                     break;
             }
             break;
-        case ts.SyntaxKind.NullKeyword:
+        case tsc.SyntaxKind.NullKeyword:
             value = null;
             break;
-        case ts.SyntaxKind.RegularExpressionLiteral:
+        case tsc.SyntaxKind.RegularExpressionLiteral:
             let regExp = initializer;
             value = convertRegExpStringToObject(regExp.text);
             break;
-        case ts.SyntaxKind.StringLiteral:
-        case ts.SyntaxKind.NoSubstitutionTemplateLiteral:
+        case tsc.SyntaxKind.StringLiteral:
+        case tsc.SyntaxKind.NoSubstitutionTemplateLiteral:
             value = initializer.text;
             break;
-        case ts.SyntaxKind.TrueKeyword:
+        case tsc.SyntaxKind.TrueKeyword:
             value = true;
             break;
-        case ts.SyntaxKind.FalseKeyword:
+        case tsc.SyntaxKind.FalseKeyword:
             value = false;
             break;
-        case ts.SyntaxKind.NumericLiteral:
+        case tsc.SyntaxKind.NumericLiteral:
             let numberText = initializer.text;
             if (numberText.indexOf('.') > 0) {
                 value = parseFloat(numberText);
@@ -323,15 +321,15 @@ function parseObjectProperty(initializer, objectType, objectName) {
                 value = parseInt(numberText);
             }
             break;
-        case ts.SyntaxKind.NewExpression:
+        case tsc.SyntaxKind.NewExpression:
             let newExpression = initializer;
             let type = newExpression.expression.text;
             value = 'new ' + type;
             break;
-        case ts.SyntaxKind.ObjectLiteralExpression:
+        case tsc.SyntaxKind.ObjectLiteralExpression:
             value = parseObjectLiteralExpression(initializer);
             break;
-        case ts.SyntaxKind.ArrayLiteralExpression:
+        case tsc.SyntaxKind.ArrayLiteralExpression:
             value = [];
             let arrayLiteral = initializer;
             arrayLiteral.elements.forEach((element) => {
@@ -348,17 +346,17 @@ function parseObjectProperty(initializer, objectType, objectName) {
                 value.push(arrayValue);
             });
             break;
-        case ts.SyntaxKind.PropertyAccessExpression:
+        case tsc.SyntaxKind.PropertyAccessExpression:
             value = convertPropertyAccessExpressionToString(initializer);
             break;
-        case ts.SyntaxKind.CallExpression:
+        case tsc.SyntaxKind.CallExpression:
             throw new Error(`Function calls are not allowed as parameter values.`);
-        case ts.SyntaxKind.BinaryExpression:
+        case tsc.SyntaxKind.BinaryExpression:
             throw new Error(`Expression are not allowed as parameter values.`);
-        case ts.SyntaxKind.ArrowFunction:
+        case tsc.SyntaxKind.ArrowFunction:
             if (objectType == TsObjectType.DECORATOR && objectName === 'WhereJoinTable') {
-                const printer = ts.createPrinter({
-                    newLine: ts.NewLineKind.LineFeed,
+                const printer = tsc.createPrinter({
+                    newLine: tsc.NewLineKind.LineFeed,
                     removeComments: true
                 });
                 /*
@@ -394,7 +392,7 @@ ${whereJoinTableFunction}
 export default WhereJoinTableFunction`;
 
                 const compilerOptions = {module: ts.ModuleKind.CommonJS};
-                const transpilationResult = ts.transpileModule(tempFile, {
+                const transpilationResult = tsc.transpileModule(tempFile, {
                     compilerOptions: compilerOptions,
                     moduleName: "WhereJoinTableModule"
                 });
@@ -404,7 +402,7 @@ export default WhereJoinTableFunction`;
                 // airport reference (and nothing else)
                 const typescriptDefinition = printer.printNode(ts.EmitHint.Expression, initializer, globalThis.currentSourceFile);
                 const compilerOptions = { module: ts.ModuleKind.CommonJS };
-                const transpilationResult = ts.transpileModule(typescriptDefinition, {
+                const transpilationResult = tsc.transpileModule(typescriptDefinition, {
                     compilerOptions: compilerOptions,
                     moduleName: 'WhereJoinTableModule'
                 });
@@ -470,7 +468,7 @@ function serializeClass(symbol, decorators, classPath, fileImports, file) {
     forEach(symbol.members, (memberName, member) => {
         if (member.valueDeclaration) {
             switch (member.valueDeclaration.kind) {
-                case ts.SyntaxKind.PropertyDeclaration:
+                case tsc.SyntaxKind.PropertyDeclaration:
                     console.log(`Property: ${memberName}`);
                     let propertySymbolDescriptor = serializeSymbol(member, file);
                     if (propertySymbolDescriptor) {
@@ -480,11 +478,11 @@ function serializeClass(symbol, decorators, classPath, fileImports, file) {
                         properties.push(propertySymbolDescriptor);
                     }
                     break;
-                case ts.SyntaxKind.MethodDeclaration:
+                case tsc.SyntaxKind.MethodDeclaration:
                     console.log(`Method: ${memberName}`);
                     const isPublic = !member.valueDeclaration.modifiers
-                        || member.valueDeclaration.modifiers.filter(modifier => modifier.kind === ts.SyntaxKind.PrivateKeyword
-                            || modifier.kind === ts.SyntaxKind.ProtectedKeyword).length < 1;
+                        || member.valueDeclaration.modifiers.filter(modifier => modifier.kind === tsc.SyntaxKind.PrivateKeyword
+                            || modifier.kind === tsc.SyntaxKind.ProtectedKeyword).length < 1;
                     if (isPublic) {
                         methodSignatures.push(serializeMethodDefinition(member));
                     }
@@ -495,7 +493,7 @@ function serializeClass(symbol, decorators, classPath, fileImports, file) {
         }
         else if (member.declarations) {
             // declaration (constructor, method)
-            if (member.declarations.length === 1 && member.declarations[0].kind === ts.SyntaxKind.Constructor) {
+            if (member.declarations.length === 1 && member.declarations[0].kind === tsc.SyntaxKind.Constructor) {
                 // do not record the constructor
             }
             else {
@@ -513,43 +511,43 @@ function serializeClass(symbol, decorators, classPath, fileImports, file) {
     let constructorType = globalThis.checker
         .getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration);
     details.constructors = constructorType.getConstructSignatures().map(serializeSignature);
-    let parentClassName = utils_1.getParentClassName(symbol);
+    let parentClassName = getParentClassName(symbol);
     let parentClassImport;
     if (parentClassName) {
-        parentClassImport = utils_1.getParentClassImport(symbol, parentClassName);
+        parentClassImport = getParentClassImport(symbol, parentClassName);
     }
-    let entityDecorator = utils_1.isDecoratedAsEntity(decorators);
-    let classInheritanceEntry = exports.globalCandidateInheritanceMap[details.name];
+    let entityDecorator = isDecoratedAsEntity(decorators);
+    let classInheritanceEntry = globalCandidateInheritanceMap[details.name];
     if (classInheritanceEntry != undefined) {
         throw new Error(`Found duplicate entity '${details.name}'. 
 			Non-unique class names are not supported`);
     }
     if (entityDecorator) {
-        let entityCandidate = EntityCandidate_1.EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport, entityDecorator.isSuperclass);
+        let entityCandidate = EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport, entityDecorator.isSuperclass);
         entityCandidate.docEntry = details;
         entityCandidate.ids = ids;
-        entityCandidate.implementedInterfaceNames = utils_1.getImplementedInterfaces(symbol);
+        entityCandidate.implementedInterfaceNames = getImplementedInterfaces(symbol);
         details.properties.forEach(property => {
             property.ownerEntity = entityCandidate;
         });
-        exports.globalCandidateRegistry.addCandidate(entityCandidate);
+        globalCandidateRegistry.addCandidate(entityCandidate);
         globalThis.processedCandidateRegistry.addCandidate(entityCandidate);
-        exports.globalCandidateInheritanceMap[details.name] = parentClassName;
-        if (exports.globalCandidateInheritanceMap[parentClassName] == undefined) {
-            exports.globalCandidateInheritanceMap[parentClassName] = null;
+        globalCandidateInheritanceMap[details.name] = parentClassName;
+        if (globalCandidateInheritanceMap[parentClassName] == undefined) {
+            globalCandidateInheritanceMap[parentClassName] = null;
         }
     }
     else if (classInheritanceEntry == null) {
-        exports.globalCandidateInheritanceMap[details.name] = parentClassName;
+        globalCandidateInheritanceMap[details.name] = parentClassName;
     }
     return details;
 }
 function registerInterface(symbol, classPath) {
-    let anInterface = new EntityCandidate_1.Interface(classPath, symbol.name);
-    let interfaces = exports.globalCandidateRegistry.allInterfacesMap.get(symbol.name);
+    let anInterface = new Interface(classPath, symbol.name);
+    let interfaces = globalCandidateRegistry.allInterfacesMap.get(symbol.name);
     if (!interfaces) {
         interfaces = [];
-        exports.globalCandidateRegistry.allInterfacesMap.set(symbol.name, interfaces);
+        globalCandidateRegistry.allInterfacesMap.set(symbol.name, interfaces);
     }
     interfaces.push(anInterface);
 }
@@ -562,6 +560,6 @@ function serializeSignature(signature) {
 }
 /** True if this is visible outside this file, false otherwise */
 function isNodeExported(node) {
-    return (node.flags & ts.ModifierFlags.Export) !== 0 || (node.parent && node.parent.kind === ts.SyntaxKind.SourceFile);
+    return (node.flags & ts.ModifierFlags.Export) !== 0 || (node.parent && node.parent.kind === tsc.SyntaxKind.SourceFile);
 }
 //# sourceMappingURL=EntityDefinitionGenerator.js.map

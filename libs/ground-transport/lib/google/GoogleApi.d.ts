@@ -22,3 +22,4 @@ export declare class GoogleApi {
     loadApi(apiName: string, version: string): Promise<any>;
     request(path: string, method?: string, params?: any, headers?: any, body?: any): Promise<any>;
 }
+//# sourceMappingURL=GoogleApi.d.ts.map

@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-function ensureChildArray(parentContainer, index) {
+export function ensureChildArray(parentContainer, index) {
     let childArray;
     if (parentContainer instanceof Map) {
         childArray = parentContainer.get(index);
@@ -19,8 +17,7 @@ function ensureChildArray(parentContainer, index) {
     }
     return childArray;
 }
-exports.ensureChildArray = ensureChildArray;
-function ensureChildMap(parentContainer, index) {
+export function ensureChildMap(parentContainer, index) {
     let childObject;
     if (parentContainer instanceof Map) {
         childObject = parentContainer.get(index);
@@ -38,8 +35,7 @@ function ensureChildMap(parentContainer, index) {
     }
     return childObject;
 }
-exports.ensureChildMap = ensureChildMap;
-function ensureChildJsMap(parentContainer, index) {
+export function ensureChildJsMap(parentContainer, index) {
     let childMap = parentContainer.get(index);
     if (!childMap) {
         childMap = new Map();
@@ -47,8 +43,7 @@ function ensureChildJsMap(parentContainer, index) {
     }
     return childMap;
 }
-exports.ensureChildJsMap = ensureChildJsMap;
-function ensureChildJsSet(parentContainer, index) {
+export function ensureChildJsSet(parentContainer, index) {
     let childSet = parentContainer.get(index);
     if (!childSet) {
         childSet = new Set();
@@ -56,5 +51,4 @@ function ensureChildJsSet(parentContainer, index) {
     }
     return childSet;
 }
-exports.ensureChildJsSet = ensureChildJsSet;
 //# sourceMappingURL=DatastructureUtils.js.map

@@ -60,3 +60,4 @@ export interface QDomainQId {
 }
 export interface QDomainQRelation extends IQRelation<QDomain>, QDomainQId {
 }
+//# sourceMappingURL=qdomain.d.ts.map

@@ -26,3 +26,4 @@ export declare class SyncLogDao extends BaseSyncLogDao implements ISyncLogDao {
      */
     selectTmSyncStatusForAgtRepositoryIds(fromDateInclusive: AgtRepositoryTransactionBlockAddDatetime, toDateExlusive: AgtRepositoryTransactionBlockAddDatetime, repositoryIds: AgtRepositoryId[]): Promise<TerminalSyncStatus[]>;
 }
+//# sourceMappingURL=SyncLogDao.d.ts.map

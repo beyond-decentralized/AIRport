@@ -7,3 +7,4 @@ export interface ITerminalRepositoryDao {
 export declare class TerminalRepositoryDao extends BaseTerminalRepositoryDao implements ITerminalRepositoryDao {
     findByTerminalIdInAndRepositoryIdIn(terminalIds: TerminalId[], repositoryIds: AgtRepositoryId[]): Promise<Map<TerminalId, Map<AgtRepositoryId, TerminalRepositoryPermission>>>;
 }
+//# sourceMappingURL=TerminalRepositoryDao.d.ts.map

@@ -8,3 +8,4 @@ export declare class QueryFacade implements IQueryFacade {
     search<E, EntityArray extends Array<E>>(dbEntity: DbEntity, query: IAbstractQuery, queryResultType: QueryResultType, fieldUtils: IFieldUtils, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, cacheForUpdate?: UpdateCacheType): Promise<IObservable<EntityArray>>;
     searchOne<E>(dbEntity: DbEntity, query: IAbstractQuery, queryResultType: QueryResultType, fieldUtils: IFieldUtils, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, cacheForUpdate?: UpdateCacheType): Promise<IObservable<E>>;
 }
+//# sourceMappingURL=QueryFacade.d.ts.map

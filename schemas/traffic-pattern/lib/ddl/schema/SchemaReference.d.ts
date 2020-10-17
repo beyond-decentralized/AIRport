@@ -6,3 +6,4 @@ export declare class SchemaReference extends VersionedSchemaObject {
     referencedSchemaVersion: SchemaVersion;
     index: SchemaReferenceIndex;
 }
+//# sourceMappingURL=SchemaReference.d.ts.map

@@ -12,3 +12,4 @@ export interface IUser {
     terminals?: ITerminal[];
     repositoryTransactionBlocks?: IAgtRepositoryTransactionBlock[];
 }
+//# sourceMappingURL=user.d.ts.map

@@ -14,3 +14,4 @@ export declare class SyncInTerminalChecker implements ISyncInTerminalChecker {
     private areTerminalIdsConsistentInMessageData;
     private addMissingTerminals;
 }
+//# sourceMappingURL=SyncInTerminalChecker.d.ts.map

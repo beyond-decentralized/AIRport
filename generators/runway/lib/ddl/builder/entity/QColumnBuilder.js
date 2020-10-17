@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Builder_1 = require("../Builder");
+import { getColumnFieldInterface } from '../Builder';
 /**
  * Created by Papa on 4/25/2016.
  */
-class QColumnBuilder {
+export class QColumnBuilder {
     constructor(parentBuilder, sColumn) {
         this.parentBuilder = parentBuilder;
         this.sColumn = sColumn;
@@ -25,10 +23,9 @@ class QColumnBuilder {
         }
         let operableFieldSuffix = '';
         if (forInternalInterfaces) {
-            operableFieldSuffix = ' | ' + Builder_1.getColumnFieldInterface(column);
+            operableFieldSuffix = ' | ' + getColumnFieldInterface(column);
         }
         return `${name}${optional ? '?' : ''}: ${type}${operableFieldSuffix};`;
     }
 }
-exports.QColumnBuilder = QColumnBuilder;
 //# sourceMappingURL=QColumnBuilder.js.map

@@ -60,3 +60,4 @@ export interface QSyncLogQId {
 }
 export interface QSyncLogQRelation extends IQRelation<QSyncLog>, QSyncLogQId {
 }
+//# sourceMappingURL=qsynclog.d.ts.map

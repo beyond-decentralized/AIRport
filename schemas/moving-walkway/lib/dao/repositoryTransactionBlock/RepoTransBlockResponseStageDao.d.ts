@@ -9,3 +9,4 @@ export declare class RepoTransBlockResponseStageDao extends BaseRepoTransBlockRe
     insertValues(values: RepoTransBlockResponseStageValues[]): Promise<number>;
     delete(): Promise<number>;
 }
+//# sourceMappingURL=RepoTransBlockResponseStageDao.d.ts.map

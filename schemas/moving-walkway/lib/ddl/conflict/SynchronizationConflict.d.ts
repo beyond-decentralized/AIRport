@@ -10,3 +10,4 @@ export declare class SynchronizationConflict {
     values: SynchronizationConflictValues[];
     type: SynchronizationConflictType;
 }
+//# sourceMappingURL=SynchronizationConflict.d.ts.map

@@ -14,3 +14,4 @@ export declare class InMemoryChangeStore {
     getAllChanges(changeListName: string): ChangeRecord[];
     getChangesAddedSubject(changeListName: string): Subject<ChangeRecord[]>;
 }
+//# sourceMappingURL=InMemoryChangeStore.d.ts.map

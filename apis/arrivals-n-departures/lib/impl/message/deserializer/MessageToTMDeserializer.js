@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const tokens_1 = require("../../../tokens");
-const MessageTypes_1 = require("../../../lingo/message/MessageTypes");
-class MessageToTMDeserializer {
+import { DI } from '@airport/di';
+import { MESSAGE_TO_TM_DESERIALIZER } from '../../../tokens';
+import { MessageToTMContentType } from '../../../lingo/message/MessageTypes';
+export class MessageToTMDeserializer {
     deserialize(serializedBatchedMessagesToTM) {
         const protocolVersion = serializedBatchedMessagesToTM[0];
         if (protocolVersion !== 0) {
@@ -21,7 +19,7 @@ class MessageToTMDeserializer {
     deserializeAMessage(serializedMessageToTM) {
         const contentType = serializedMessageToTM[0];
         switch (contentType) {
-            case MessageTypes_1.MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK: {
+            case MessageToTMContentType.REPOSITORY_TRANSACTION_BLOCK: {
                 return {
                     contentType,
                     // agtRepositoryTransactionBlockId: serializedMessageToTM[1],
@@ -31,7 +29,7 @@ class MessageToTMDeserializer {
                     repositoryTransactionBlock: serializedMessageToTM[1]
                 };
             }
-            case MessageTypes_1.MessageToTMContentType.SYNC_NOTIFICATION: {
+            case MessageToTMContentType.SYNC_NOTIFICATION: {
                 const syncOutcomes = this.deserializeSyncOutcomes(serializedMessageToTM[2]);
                 return {
                     contentType,
@@ -62,6 +60,5 @@ class MessageToTMDeserializer {
         }));
     }
 }
-exports.MessageToTMDeserializer = MessageToTMDeserializer;
-di_1.DI.set(tokens_1.MESSAGE_TO_TM_DESERIALIZER, MessageToTMDeserializer);
+DI.set(MESSAGE_TO_TM_DESERIALIZER, MessageToTMDeserializer);
 //# sourceMappingURL=MessageToTMDeserializer.js.map

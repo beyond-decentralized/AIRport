@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const check_in_1 = require("@airport/check-in");
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const holding_pattern_1 = require("@airport/holding-pattern");
-const terminal_map_1 = require("@airport/terminal-map");
-const tokens_1 = require("../tokens");
-class InsertManager {
+import { AIR_DB } from '@airport/air-control';
+import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
+import { container, DI } from '@airport/di';
+import { ChangeType, repositoryEntity, STORE_DRIVER } from '@airport/ground-control';
+import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO } from '@airport/holding-pattern';
+import { DistributionStrategy, PlatformType, TRANSACTION_MANAGER } from '@airport/terminal-map';
+import { HISTORY_MANAGER, INSERT_MANAGER, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER } from '../tokens';
+export class InsertManager {
     // get currentTransHistory(): ITransactionHistory {
     // 	return this.transManager.currentTransHistory
     // }
@@ -19,7 +17,7 @@ class InsertManager {
     }
     async internalInsertValues(portableQuery, actor, getIds = false, ensureGeneratedValues = true) {
         // TODO: remove unused dependencies after testing
-        const [airDb, storeDriver, sequenceGenerator, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transactionManager] = await di_1.container(this).get(air_control_1.AIR_DB, ground_control_1.STORE_DRIVER, check_in_1.SEQUENCE_GENERATOR, tokens_1.HISTORY_MANAGER, tokens_1.OFFLINE_DELTA_STORE, holding_pattern_1.OPER_HISTORY_DUO, holding_pattern_1.REC_HISTORY_DUO, holding_pattern_1.REC_HIST_NEW_VALUE_DUO, tokens_1.REPOSITORY_MANAGER, holding_pattern_1.REPO_TRANS_HISTORY_DUO, terminal_map_1.TRANSACTION_MANAGER);
+        const [airDb, storeDriver, sequenceGenerator, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transactionManager] = await container(this).get(AIR_DB, STORE_DRIVER, SEQUENCE_GENERATOR, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO, TRANSACTION_MANAGER);
         const dbEntity = airDb.schemas[portableQuery.schemaIndex]
             .currentVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error inserting into '${dbEntity.name}'.'
@@ -47,7 +45,7 @@ appears more than once in the Columns clause`);
         let ids;
         let systemWideOperationId;
         if (!dbEntity.isLocal) {
-            systemWideOperationId = await check_in_1.getSysWideOpId(airDb, sequenceGenerator);
+            systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator);
         }
         if (ensureGeneratedValues) {
             ids = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator);
@@ -58,8 +56,8 @@ appears more than once in the Columns clause`);
         const numberOfInsertedRecords = await storeDriver.insertValues(portableQuery);
         return getIds ? ids : numberOfInsertedRecords;
     }
-    async addRepository(name, url = null, platform = terminal_map_1.PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = terminal_map_1.DistributionStrategy.S3_DISTIBUTED_PUSH) {
-        const [repoManager, transManager] = await di_1.container(this).get(tokens_1.REPOSITORY_MANAGER, terminal_map_1.TRANSACTION_MANAGER);
+    async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH) {
+        const [repoManager, transManager] = await container(this).get(REPOSITORY_MANAGER, TRANSACTION_MANAGER);
         const repository = await repoManager.createRepository(name, distributionStrategy, transManager.storeType, platform, platformConfig, 'id');
         return repository.id;
     }
@@ -204,11 +202,11 @@ appears more than once in the Columns clause`);
         return allIds;
     }
     ensureRepositoryEntityIdValues(actor, dbEntity, jsonInsertValues, errorPrefix) {
-        const actorIdColumn = dbEntity.idColumnMap[ground_control_1.repositoryEntity.ACTOR_ID];
-        const actorRecordIdColumn = dbEntity.idColumnMap[ground_control_1.repositoryEntity.ACTOR_RECORD_ID];
-        const repositoryIdColumn = dbEntity.idColumnMap[ground_control_1.repositoryEntity.REPOSITORY_ID];
-        const isDraftIdColumn = dbEntity.columnMap[ground_control_1.repositoryEntity.IS_DRAFT];
-        const sysWideOperationIdColumn = dbEntity.columnMap[ground_control_1.repositoryEntity.SYSTEM_WIDE_OPERATION_ID];
+        const actorIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_ID];
+        const actorRecordIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_RECORD_ID];
+        const repositoryIdColumn = dbEntity.idColumnMap[repositoryEntity.REPOSITORY_ID];
+        const isDraftIdColumn = dbEntity.columnMap[repositoryEntity.IS_DRAFT];
+        const sysWideOperationIdColumn = dbEntity.columnMap[repositoryEntity.SYSTEM_WIDE_OPERATION_ID];
         let repositoryIdColumnQueryIndex;
         let isDraftColumnQueryIndex;
         for (let i = 0; i < jsonInsertValues.C.length; i++) {
@@ -313,9 +311,9 @@ and cannot have NULL values for non-draft records.`);
         const jsonInsertValues = portableQuery.jsonQuery;
         let operationsByRepo = [];
         let repoTransHistories = [];
-        const repositoryIdIndex = dbEntity.columnMap[ground_control_1.repositoryEntity.REPOSITORY_ID].index;
-        const actorIdIndex = dbEntity.columnMap[ground_control_1.repositoryEntity.ACTOR_ID].index;
-        const actorRecordIdIndex = dbEntity.columnMap[ground_control_1.repositoryEntity.ACTOR_RECORD_ID].index;
+        const repositoryIdIndex = dbEntity.columnMap[repositoryEntity.REPOSITORY_ID].index;
+        const actorIdIndex = dbEntity.columnMap[repositoryEntity.ACTOR_ID].index;
+        const actorRecordIdIndex = dbEntity.columnMap[repositoryEntity.ACTOR_RECORD_ID].index;
         let repositoryIdColumnNumber;
         let actorIdColumnNumber;
         let actorRecordIdColumnNumber;
@@ -344,7 +342,7 @@ and cannot have NULL values for non-draft records.`);
             }
             let operationHistory = operationsByRepo[repositoryId];
             if (!operationHistory) {
-                operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ground_control_1.ChangeType.INSERT_VALUES, dbEntity, operHistoryDuo);
+                operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.INSERT_VALUES, dbEntity, operHistoryDuo);
                 operationsByRepo[repositoryId] = operationHistory;
             }
             const actorRecordId = row[actorRecordIdColumnNumber];
@@ -369,6 +367,5 @@ and cannot have NULL values for non-draft records.`);
         // }
     }
 }
-exports.InsertManager = InsertManager;
-di_1.DI.set(tokens_1.INSERT_MANAGER, InsertManager);
+DI.set(INSERT_MANAGER, InsertManager);
 //# sourceMappingURL=InsertManager.js.map

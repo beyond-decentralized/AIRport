@@ -44,3 +44,4 @@ export declare class BasePackagedUnitDuo extends SQDIDuo<IPackagedUnit, Packaged
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDuos.d.ts.map

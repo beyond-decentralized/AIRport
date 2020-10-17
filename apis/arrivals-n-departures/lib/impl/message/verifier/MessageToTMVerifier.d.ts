@@ -10,3 +10,4 @@ export declare class MessageToTMVerifier extends AbstractCommonMessageVerifier i
     verifySyncNotificationMessage(message: SerializedSyncNotificationMessageToTM, index: number): [MessageToTMError, any, any] | [MessageToTMError, any, any, any] | void;
     verifyRepoTransBlockMessage(message: SerializedRepoTransBlockMessageToTM, index: number): [MessageToTMError, any, any] | void;
 }
+//# sourceMappingURL=MessageToTMVerifier.d.ts.map

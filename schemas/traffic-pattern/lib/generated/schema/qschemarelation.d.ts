@@ -2,7 +2,7 @@ import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, Fore
 import { VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { SchemaPropertyEOptionalId, SchemaPropertyESelect, QSchemaPropertyQRelation } from './qschemaproperty';
 import { SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
-import { SchemaRelationColumnECascadeGraph, SchemaRelationColumnESelect, QSchemaRelationColumn } from './qschemarelationcolumn';
+import { SchemaRelationColumnESelect, QSchemaRelationColumn } from './qschemarelationcolumn';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -48,9 +48,18 @@ export interface SchemaRelationEUpdateProperties extends VersionedSchemaObjectEU
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaRelationECascadeGraph extends VersionedSchemaObjectECascadeGraph {
-    manyRelationColumns?: SchemaRelationColumnECascadeGraph;
-    oneRelationColumns?: SchemaRelationColumnECascadeGraph;
+export interface SchemaRelationECascadeGraph extends VersionedSchemaObjectESelect, SchemaRelationEOptionalId, VersionedSchemaObjectECascadeGraph {
+    index?: number | IQNumberField;
+    foreignKey?: ForeignKey | IQStringField;
+    manyToOneElems?: ManyToOneElements | IQStringField;
+    oneToManyElems?: OneToManyElements | IQStringField;
+    relationType?: number | IQNumberField;
+    isId?: boolean | IQBooleanField;
+    property?: SchemaPropertyESelect;
+    entity?: SchemaEntityESelect;
+    relationEntity?: SchemaEntityESelect;
+    manyRelationColumns?: SchemaRelationColumnESelect;
+    oneRelationColumns?: SchemaRelationColumnESelect;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -101,3 +110,4 @@ export interface QSchemaRelationQId extends QVersionedSchemaObjectQId {
 }
 export interface QSchemaRelationQRelation extends QVersionedSchemaObjectQRelation<QSchemaRelation>, QSchemaRelationQId {
 }
+//# sourceMappingURL=qschemarelation.d.ts.map

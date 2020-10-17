@@ -15,3 +15,4 @@ export * from './sharingnode/sharingnoderepository';
 export * from './sharingnode/sharingnoderepotransblock';
 export * from './sharingnode/sharingnoderepotransblockstage';
 export * from './sharingnode/sharingnodeterminal';
+//# sourceMappingURL=interfaces.d.ts.map

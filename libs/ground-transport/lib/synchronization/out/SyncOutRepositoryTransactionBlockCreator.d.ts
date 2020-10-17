@@ -15,3 +15,4 @@ export declare class SyncOutRepositoryTransactionBlockCreator implements ISyncOu
     private setRepositoryTransactionBlockBlockIds;
     private groupRepoTransBlocksBySharingNode;
 }
+//# sourceMappingURL=SyncOutRepositoryTransactionBlockCreator.d.ts.map

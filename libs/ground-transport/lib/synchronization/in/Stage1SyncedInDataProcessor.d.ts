@@ -1,4 +1,4 @@
-import { ActorId, IActor, IRecordHistory, RecordHistoryId, RepositoryEntityActorRecordId, RepositoryId } from '@airport/holding-pattern';
+import { ActorId, IActor, IRecordHistory, RecordHistoryId, RepositoryEntity_ActorRecordId, RepositoryId } from '@airport/holding-pattern';
 import { ISyncRepoTransHistory, Stage1SyncedInDataProcessingResult } from './SyncInUtils';
 /**
  * Stage 1 data processor is used to
@@ -21,7 +21,7 @@ export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataP
      * @returns {Promise<void>}
      */
     performStage1DataProcessing(repoTransHistoryMapByRepositoryId: Map<RepositoryId, ISyncRepoTransHistory[]>, actorMayById: Map<ActorId, IActor>): Promise<Stage1SyncedInDataProcessingResult>;
-    ensureRecordHistoryId(recordHistory: IRecordHistory, actorRecordIdSetByActor: Map<ActorId, Map<RepositoryEntityActorRecordId, RecordHistoryId>>, actorRecordId?: RepositoryEntityActorRecordId): void;
+    ensureRecordHistoryId(recordHistory: IRecordHistory, actorRecordIdSetByActor: Map<ActorId, Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>, actorRecordId?: RepositoryEntity_ActorRecordId): void;
     private getDeletedRecordIds;
     private mergeArraysInMap;
     private processCreation;
@@ -38,3 +38,4 @@ export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataP
     private ensureColumnValueMap;
     private ensureRecord;
 }
+//# sourceMappingURL=Stage1SyncedInDataProcessor.d.ts.map

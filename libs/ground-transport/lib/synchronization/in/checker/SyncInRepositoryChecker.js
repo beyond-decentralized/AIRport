@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const tokens_1 = require("../../../tokens");
-class SyncInRepositoryChecker {
+import { DI } from '@airport/di';
+import { ensureChildArray, ensureChildJsSet } from '@airport/ground-control';
+import { SYNC_IN_REPO_CHECKER } from '../../../tokens';
+export class SyncInRepositoryChecker {
     async ensureRepositories(incomingMessages, dataMessagesWithInvalidData) {
         const consistentMessages = [];
         // const dataMessageMapBySharingNodeAndAgtRepositoryId:
@@ -24,9 +22,9 @@ class SyncInRepositoryChecker {
                 // 	this.utils.ensureChildJsMap(
                 // 		dataMessageMapBySharingNodeAndAgtRepositoryId,
                 // 		sharingNodeId), agtRepositoryId).push();
-                ground_control_1.ensureChildArray(dataMessageMapBySharingNodeId, sharingNodeId)
+                ensureChildArray(dataMessageMapBySharingNodeId, sharingNodeId)
                     .push(message);
-                ground_control_1.ensureChildJsSet(sharingNodeRepositoryMap, sharingNodeId)
+                ensureChildJsSet(sharingNodeRepositoryMap, sharingNodeId)
                     .add(message.data.repository.id);
                 consistentMessages.push(message);
             }
@@ -65,6 +63,5 @@ class SyncInRepositoryChecker {
         return true;
     }
 }
-exports.SyncInRepositoryChecker = SyncInRepositoryChecker;
-di_1.DI.set(tokens_1.SYNC_IN_REPO_CHECKER, SyncInRepositoryChecker);
+DI.set(SYNC_IN_REPO_CHECKER, SyncInRepositoryChecker);
 //# sourceMappingURL=SyncInRepositoryChecker.js.map

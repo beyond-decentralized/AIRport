@@ -64,3 +64,4 @@ export interface QSynchronizationConflictPendingNotificationQId {
 }
 export interface QSynchronizationConflictPendingNotificationQRelation extends IQRelation<QSynchronizationConflictPendingNotification>, QSynchronizationConflictPendingNotificationQId {
 }
+//# sourceMappingURL=qsynchronizationconflictpendingnotification.d.ts.map

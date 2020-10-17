@@ -20,3 +20,4 @@ export declare const TM_DATA_SERIALIZER: import("@airport/di").IDiToken<ITMDataS
 export declare const TM_DATA_DESERIALIZER: import("@airport/di").IDiToken<ITMDataDeserializer>;
 export declare const TM_DATA_FORMAT_VERIFIER: import("@airport/di").IDiToken<ITMDataFormatVerifier>;
 export declare const TM_DATA_SCHEMA_VERIFIER: import("@airport/di").IDiToken<ITMDataSchemaVerifier>;
+//# sourceMappingURL=tokens.d.ts.map

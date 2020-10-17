@@ -1,14 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const EntityDatabaseFacade_1 = require("./EntityDatabaseFacade");
+import { EntityDatabaseFacade } from './EntityDatabaseFacade';
 /**
  * Created by Papa on 8/26/2017.
  */
-class Dao {
+export class Dao {
     constructor(dbEntityId, Q) {
         const dbEntity = Q.__dbSchema__.currentVersion.entities[dbEntityId];
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
-        this.db = new EntityDatabaseFacade_1.EntityDatabaseFacade(dbEntity, Q);
+        this.db = new EntityDatabaseFacade(dbEntity, Q);
     }
     async bulkCreate(entities, checkIfProcessed = true, operationName) {
         const result = await this.db.bulkCreate(entities, checkIfProcessed, operationName);
@@ -79,5 +77,4 @@ class Dao {
         }
     }
 }
-exports.Dao = Dao;
 //# sourceMappingURL=Dao.js.map

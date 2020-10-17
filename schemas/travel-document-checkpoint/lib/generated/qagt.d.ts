@@ -64,3 +64,4 @@ export interface QAgtQId {
 }
 export interface QAgtQRelation extends IQRelation<QAgt>, QAgtQId {
 }
+//# sourceMappingURL=qagt.d.ts.map

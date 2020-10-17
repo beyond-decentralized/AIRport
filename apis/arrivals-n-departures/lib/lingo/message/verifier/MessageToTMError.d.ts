@@ -22,3 +22,4 @@ export declare enum MessageToTMError {
     AGT_REPOSITORY_ID_IS_NOT_NUMBER = 20,
     AGT_SYNC_RECORD_REPOSITORY_TRANSACTION_BLOCK_IS_NOT_STRING = 21
 }
+//# sourceMappingURL=MessageToTMError.d.ts.map

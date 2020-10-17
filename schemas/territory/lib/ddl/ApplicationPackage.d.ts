@@ -6,3 +6,4 @@ export declare class ApplicationPackage {
     application: Application;
     package: Package;
 }
+//# sourceMappingURL=ApplicationPackage.d.ts.map

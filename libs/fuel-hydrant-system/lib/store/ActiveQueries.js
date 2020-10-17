@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const tokens_1 = require("../tokens");
-class ActiveQueries {
+import { DI } from '@airport/di';
+import { ACTIVE_QUERIES } from '../tokens';
+export class ActiveQueries {
     constructor() {
         this.queries = new Map();
     }
@@ -33,6 +31,5 @@ class ActiveQueries {
         }, 100);
     }
 }
-exports.ActiveQueries = ActiveQueries;
-di_1.DI.set(tokens_1.ACTIVE_QUERIES, ActiveQueries);
+DI.set(ACTIVE_QUERIES, ActiveQueries);
 //# sourceMappingURL=ActiveQueries.js.map

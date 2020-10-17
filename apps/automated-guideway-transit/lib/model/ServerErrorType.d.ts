@@ -9,3 +9,4 @@ export declare enum ServerErrorType {
     MULTIPLE_DUPLICATE_INCOMING_DATABASE_KEYS_HAVE_CORRECT_HASH = 7,
     SYNC_CLIENT_CONNECTED_TOO_SOON = 8
 }
+//# sourceMappingURL=ServerErrorType.d.ts.map

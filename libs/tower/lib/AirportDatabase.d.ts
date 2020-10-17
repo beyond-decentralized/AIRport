@@ -93,3 +93,4 @@ export declare class AirportDatabase implements IAirportDatabase {
         (...args: any[]): RawUpdate<IEUP, IQE>;
     }): Promise<number>;
 }
+//# sourceMappingURL=AirportDatabase.d.ts.map

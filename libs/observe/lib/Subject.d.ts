@@ -6,3 +6,4 @@ export declare class Subject<V> extends Observable<V> implements ISubject<V> {
     error(errorValue: any): void;
     next(value: V): void;
 }
+//# sourceMappingURL=Subject.d.ts.map

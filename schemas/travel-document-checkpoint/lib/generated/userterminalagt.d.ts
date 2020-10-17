@@ -11,3 +11,4 @@ export interface IUserTerminalAgt {
     agt?: IAgt;
     terminalAgt?: ITerminalAgt;
 }
+//# sourceMappingURL=userterminalagt.d.ts.map

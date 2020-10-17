@@ -140,3 +140,4 @@ export declare class BaseSynchronizationConflictValuesDao extends SQDIDao<ISynch
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDaos.d.ts.map

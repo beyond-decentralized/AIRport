@@ -21,3 +21,4 @@ export declare class ArchivedPartitionManagementServer implements IArchivedParti
     dropArchivedSyncLogPartition(dateOfPartition: number): Promise<void>;
     deleteAgtSharingMessagesWithoutChildSyncLogs(): Promise<void>;
 }
+//# sourceMappingURL=ArchivedPartitionManagementServer.d.ts.map

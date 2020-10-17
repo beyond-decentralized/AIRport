@@ -9,6 +9,7 @@ import {
 	visitEntityFile
 }                                from './ddl/parser/EntityDefinitionGenerator'
 import {getClassPath}            from './ddl/parser/utils'
+import tsc              from 'typescript'
 
 const enumMap: Map<string, string> = new Map<string, string>()
 globalThis.enumMap                 = enumMap
@@ -21,7 +22,7 @@ export function generateDefinitions(
 	schemaMapByProjectName: { [projectName: string]: DbSchema }
 ): { [entityName: string]: EntityCandidate } {
 	// Build a program using the set of root file names in fileNames
-	let program        = ts.createProgram(fileNames, options)
+	let program        = tsc.createProgram(fileNames, options)
 	globalThis.checker = program.getTypeChecker()
 
 	// Get the checker, we will use it to find more about classes
@@ -37,7 +38,7 @@ export function generateDefinitions(
 	for (const sourceFile of sourceFiles) {
 		globalThis.currentSourceFile = sourceFile
 		// Walk the tree to searchOne for classes
-		ts.forEachChild(sourceFile, visit)
+		tsc.forEachChild(sourceFile, visit)
 	}
 
 	// print out the doc

@@ -13,3 +13,4 @@ export declare class ChangeToQueryRegistry {
     removeQuery(subject: ISubject<any>): void;
     findAffectedQueries(changeRecords: any[]): Query[];
 }
+//# sourceMappingURL=ChangeToQueryRegistry.d.ts.map

@@ -1,9 +1,7 @@
-"use strict";
 /**
  * Created by Papa on 1/28/2017.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-class DatabaseLogic {
+export class DatabaseLogic {
     constructor() {
         //
     }
@@ -20,5 +18,4 @@ class DatabaseLogic {
         //
     }
 }
-exports.DatabaseLogic = DatabaseLogic;
 //# sourceMappingURL=DatabaseLogic.js.map

@@ -68,3 +68,4 @@ export interface QTerminalAgtQId {
 }
 export interface QTerminalAgtQRelation extends IQRelation<QTerminalAgt>, QTerminalAgtQId {
 }
+//# sourceMappingURL=qterminalagt.d.ts.map

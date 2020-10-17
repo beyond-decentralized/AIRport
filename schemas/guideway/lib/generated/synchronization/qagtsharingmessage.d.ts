@@ -69,3 +69,4 @@ export interface QAgtSharingMessageQId {
 }
 export interface QAgtSharingMessageQRelation extends IQRelation<QAgtSharingMessage>, QAgtSharingMessageQId {
 }
+//# sourceMappingURL=qagtsharingmessage.d.ts.map

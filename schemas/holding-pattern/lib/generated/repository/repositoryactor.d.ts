@@ -5,3 +5,4 @@ export interface IRepositoryActor {
     repository: IRepository;
     actor?: IActor;
 }
+//# sourceMappingURL=repositoryactor.d.ts.map

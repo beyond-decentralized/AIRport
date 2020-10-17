@@ -12,3 +12,4 @@ export interface ITerminal {
     terminalRepositories?: ITerminalRepository[];
     sharingMessages?: IAgtSharingMessage[];
 }
+//# sourceMappingURL=terminal.d.ts.map

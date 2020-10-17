@@ -1,0 +1,1 @@
+{"version":3,"file":"BehaviorSubject.d.ts","sourceRoot":"","sources":["../src/BehaviorSubject.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,OAAO,EAAC,MAAM,WAAW,CAAA;AAEjC,qBAAa,eAAe,CAAC,CAAC,CAC7B,SAAQ,OAAO,CAAC,CAAC,CAAC;gBAGjB,KAAK,EAAE,CAAC;IAMT,IAAI,CAAC,KAAK,EAAE,CAAC,GAAG,IAAI;IAKpB,KAAK,IAAI,IAAI;CAGb"}

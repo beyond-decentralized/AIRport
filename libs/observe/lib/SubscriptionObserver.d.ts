@@ -8,3 +8,4 @@ export interface SubscriptionObserver<V> {
     complete(): void;
     closed: boolean;
 }
+//# sourceMappingURL=SubscriptionObserver.d.ts.map

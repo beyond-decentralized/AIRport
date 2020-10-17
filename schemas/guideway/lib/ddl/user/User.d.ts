@@ -16,3 +16,4 @@ export declare class User {
     terminals: Terminal[];
     repositoryTransactionBlocks: AgtRepositoryTransactionBlock[];
 }
+//# sourceMappingURL=User.d.ts.map

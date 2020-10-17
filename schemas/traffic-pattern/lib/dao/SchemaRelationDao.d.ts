@@ -6,3 +6,4 @@ export interface ISchemaRelationDao extends IBaseSchemaRelationDao {
 export declare class SchemaRelationDao extends BaseSchemaRelationDao implements ISchemaRelationDao {
     findAllForProperties(propertyIds: PropertyId[]): Promise<ISchemaRelation[]>;
 }
+//# sourceMappingURL=SchemaRelationDao.d.ts.map

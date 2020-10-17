@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
+import { QueryType, SQLDataType } from '@airport/ground-control';
+import { SqlDriver } from '@airport/fuel-hydrant-system';
 /**
  * Created by Papa on 11/27/2016.
  */
-class SqLiteDriver extends fuel_hydrant_system_1.SqlDriver {
+export class SqLiteDriver extends SqlDriver {
     constructor() {
         super();
         this.maxValues = 999;
@@ -28,10 +26,10 @@ WHERE
     }
     async findNative(sqlQuery, parameters) {
         let nativeParameters = parameters.map((value) => this.convertValueIn(value));
-        return await this.query(ground_control_1.QueryType.SELECT, sqlQuery, nativeParameters);
+        return await this.query(QueryType.SELECT, sqlQuery, nativeParameters);
     }
     async executeNative(sql, parameters) {
-        return await this.query(ground_control_1.QueryType.MUTATE, sql, parameters);
+        return await this.query(QueryType.MUTATE, sql, parameters);
     }
     convertValueIn(value) {
         switch (typeof value) {
@@ -58,8 +56,8 @@ WHERE
     }
     isValueValid(value, sqlDataType) {
         switch (sqlDataType) {
-            case ground_control_1.SQLDataType.DATE:
-            case ground_control_1.SQLDataType.NUMBER:
+            case SQLDataType.DATE:
+            case SQLDataType.NUMBER:
         }
         return false;
     }
@@ -70,5 +68,4 @@ WHERE
         }
     }
 }
-exports.SqLiteDriver = SqLiteDriver;
 //# sourceMappingURL=SqLiteDriver.js.map

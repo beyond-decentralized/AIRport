@@ -1,8 +1,8 @@
 {
   // NOTE: Comments are allowed in all Rush config files :-)
-  "rushVersion": "5.20.0",
-  "pnpmVersion": "4.11.1",
-  "nodeSupportedVersionRange": ">=12.0.0 <14.0.0",
+  "rushVersion": "5.34.4",
+  "pnpmVersion": "5.9.3",
+  "nodeSupportedVersionRange": ">=14.0.0 <15.0.0",
   "projectFolderMinDepth": 1,
 
   "projects": [

@@ -52,3 +52,4 @@ export declare class BaseUserTerminalAgtDao extends SQDIDao<IUserTerminalAgt, Us
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDaos.d.ts.map

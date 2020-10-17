@@ -58,3 +58,4 @@ export interface QSynchronizationConflictValuesQId {
 }
 export interface QSynchronizationConflictValuesQRelation extends IQRelation<QSynchronizationConflictValues>, QSynchronizationConflictValuesQId {
 }
+//# sourceMappingURL=qsynchronizationconflictvalues.d.ts.map

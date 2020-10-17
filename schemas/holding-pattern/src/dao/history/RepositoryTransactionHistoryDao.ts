@@ -22,7 +22,7 @@ import {
 import {
 	ActorId,
 	RecordHistoryActorRecordId,
-	RepositoryEntityActorRecordId,
+	RepositoryEntity_ActorRecordId,
 	RepositoryId,
 	RepositoryTransactionHistoryId
 }                             from '../../ddl/ddl'
@@ -77,9 +77,9 @@ export interface IRepositoryTransactionHistoryDao {
 
 	findExistingRecordIdMap(
 		recordIdMap: Map<RepositoryId,
-			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>
+			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>
 	): Promise<Map<RepositoryId,
-		Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>>;
+		Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
 
 	// updateSyncStatusHistory(
 	// 	syncStatus: SyncStatus,
@@ -339,11 +339,11 @@ export class RepositoryTransactionHistoryDao
 
 	async findExistingRecordIdMap(
 		recordIdMap: Map<RepositoryId,
-			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>
+			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>
 	): Promise<Map<RepositoryId,
-		Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>> {
+		Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>> {
 		const existingRecordIdMap: Map<RepositoryId,
-			Map<EntityId, Map<ActorId, Set<RepositoryEntityActorRecordId>>>>
+			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>
 			      = new Map()
 
 		const rth = Q.RepositoryTransactionHistory,

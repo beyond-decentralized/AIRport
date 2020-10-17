@@ -71,3 +71,4 @@ export interface QRepoTransHistoryChangedRepositoryActorQId {
 }
 export interface QRepoTransHistoryChangedRepositoryActorQRelation extends IQRelation<QRepoTransHistoryChangedRepositoryActor>, QRepoTransHistoryChangedRepositoryActorQId {
 }
+//# sourceMappingURL=qrepotranshistorychangedrepositoryactor.d.ts.map

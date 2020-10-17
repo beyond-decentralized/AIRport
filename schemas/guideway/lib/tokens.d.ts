@@ -12,3 +12,4 @@ export declare const REPOSITORY_DAO: import("@airport/di").IDiToken<IRepositoryD
 export declare const SYNC_LOG_DAO: import("@airport/di").IDiToken<ISyncLogDao>;
 export declare const AGT_SHARING_MESSAGE_DAO: import("@airport/di").IDiToken<IAgtSharingMessageDao>;
 export declare const AGT_REPO_TRANS_BLOCK_DAO: import("@airport/di").IDiToken<IAgtRepositoryTransactionBlockDao>;
+//# sourceMappingURL=tokens.d.ts.map

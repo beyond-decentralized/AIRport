@@ -140,3 +140,4 @@ export declare class BaseSynchronizationConflictValuesDuo extends SQDIDuo<ISynch
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDuos.d.ts.map

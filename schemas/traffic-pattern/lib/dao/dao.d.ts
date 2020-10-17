@@ -19,3 +19,4 @@ export interface NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos {
     SchemaRelationColumn: IBaseSchemaRelationColumnDao;
     SchemaVersion: IBaseSchemaVersionDao;
 }
+//# sourceMappingURL=dao.d.ts.map

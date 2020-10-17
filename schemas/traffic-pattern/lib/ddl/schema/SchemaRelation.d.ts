@@ -18,3 +18,4 @@ export declare class SchemaRelation extends VersionedSchemaObject {
     manyRelationColumns: SchemaRelationColumn[];
     oneRelationColumns?: SchemaRelationColumn[];
 }
+//# sourceMappingURL=SchemaRelation.d.ts.map

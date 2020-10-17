@@ -1,9 +1,10 @@
 import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, TableConfiguration } from '@airport/air-control';
 import { VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
-import { SchemaColumnECascadeGraph, SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
-import { SchemaPropertyECascadeGraph, SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';
-import { SchemaRelationECascadeGraph, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
+import { SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
+import { SchemaOperationESelect, QSchemaOperation } from './qschemaoperation';
+import { SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';
+import { SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -15,6 +16,7 @@ export interface SchemaEntityESelect extends VersionedSchemaObjectESelect, Schem
     tableConfig?: TableConfiguration | IQStringField;
     schemaVersion?: SchemaVersionESelect;
     columns?: SchemaColumnESelect;
+    operations?: SchemaOperationESelect;
     properties?: SchemaPropertyESelect;
     relations?: SchemaRelationESelect;
     relationReferences?: SchemaRelationESelect;
@@ -45,11 +47,18 @@ export interface SchemaEntityEUpdateProperties extends VersionedSchemaObjectEUpd
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaEntityECascadeGraph extends VersionedSchemaObjectECascadeGraph {
-    columns?: SchemaColumnECascadeGraph;
-    properties?: SchemaPropertyECascadeGraph;
-    relations?: SchemaRelationECascadeGraph;
-    relationReferences?: SchemaRelationECascadeGraph;
+export interface SchemaEntityECascadeGraph extends VersionedSchemaObjectESelect, SchemaEntityEOptionalId, VersionedSchemaObjectECascadeGraph {
+    index?: number | IQNumberField;
+    isLocal?: boolean | IQBooleanField;
+    isRepositoryEntity?: boolean | IQBooleanField;
+    name?: string | IQStringField;
+    tableConfig?: TableConfiguration | IQStringField;
+    schemaVersion?: SchemaVersionESelect;
+    columns?: SchemaColumnESelect;
+    operations?: SchemaOperationESelect;
+    properties?: SchemaPropertyESelect;
+    relations?: SchemaRelationESelect;
+    relationReferences?: SchemaRelationESelect;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -87,6 +96,7 @@ export interface QSchemaEntity extends QVersionedSchemaObject {
     tableConfig: IQStringField;
     schemaVersion: QSchemaVersionQRelation;
     columns: IQOneToManyRelation<QSchemaColumn>;
+    operations: IQOneToManyRelation<QSchemaOperation>;
     properties: IQOneToManyRelation<QSchemaProperty>;
     relations: IQOneToManyRelation<QSchemaRelation>;
     relationReferences: IQOneToManyRelation<QSchemaRelation>;
@@ -96,3 +106,4 @@ export interface QSchemaEntityQId extends QVersionedSchemaObjectQId {
 }
 export interface QSchemaEntityQRelation extends QVersionedSchemaObjectQRelation<QSchemaEntity>, QSchemaEntityQId {
 }
+//# sourceMappingURL=qschemaentity.d.ts.map

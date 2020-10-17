@@ -1,23 +1,21 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const terminal_map_1 = require("@airport/terminal-map");
-const territory_1 = require("@airport/territory");
-const traffic_pattern_1 = require("@airport/traffic-pattern");
-const lib_1 = require("zipson/lib");
-const tokens_1 = require("../../../tokens");
-const SyncInUtils_1 = require("../SyncInUtils");
-class SyncInSchemaChecker {
+import { container, DI } from '@airport/di';
+import { CascadeOverwrite, ensureChildJsMap, SchemaStatus } from '@airport/ground-control';
+import { TERMINAL_STORE } from '@airport/terminal-map';
+import { DOMAIN_DAO } from '@airport/territory';
+import { SCHEMA_DAO, SCHEMA_VERSION_DAO } from '@airport/traffic-pattern';
+import { parse } from 'zipson/lib';
+import { SYNC_IN_SCHEMA_CHECKER } from '../../../tokens';
+import { SchemaComparisonResult } from '../SyncInUtils';
+export class SyncInSchemaChecker {
     async checkSchemas(dataMessages) {
         // TODO: remove unused dependencies once tested
-        const [domainDao, schemaDao, schemaVersionDao, terminalStore] = await di_1.container(this).get(territory_1.DOMAIN_DAO, traffic_pattern_1.SCHEMA_DAO, traffic_pattern_1.SCHEMA_VERSION_DAO, terminal_map_1.TERMINAL_STORE);
+        const [domainDao, schemaDao, schemaVersionDao, terminalStore] = await container(this).get(DOMAIN_DAO, SCHEMA_DAO, SCHEMA_VERSION_DAO, TERMINAL_STORE);
         const schemaNameSet = new Set();
         const schemaDomainNameSet = new Set();
         const dataMessagesWithInvalidSchemas = [];
         // Build schema name and domainName sets
         for (const message of dataMessages) {
-            message.data = lib_1.parse(message.data);
+            message.data = parse(message.data);
             if (!this.verifyRTBSchemaConsistency(message)) {
                 dataMessagesWithInvalidSchemas.push(message);
                 continue;
@@ -84,7 +82,7 @@ class SyncInSchemaChecker {
                         name: domain.name
                     };
                     missingDomainMap.set(domain.name, missingDomain);
-                    ground_control_1.ensureChildJsMap(missingSchemaMap, domain.name)
+                    ensureChildJsMap(missingSchemaMap, domain.name)
                         .set(schema.name, {
                         domain: missingDomain,
                         name: schema.name
@@ -95,22 +93,22 @@ class SyncInSchemaChecker {
                 const maxSchemaVersion = maxVersionedMapBySchemaName.get(schema.name);
                 // If the schema of the message is not present in this TM
                 if (!maxSchemaVersion) {
-                    ground_control_1.ensureChildJsMap(missingSchemaMap, domain.name)
+                    ensureChildJsMap(missingSchemaMap, domain.name)
                         .set(schema.name, {
                         domain: domain,
                         name: schema.name
                     });
-                    ground_control_1.ensureChildJsMap(missingSchemaMap, schema.domain.name)
+                    ensureChildJsMap(missingSchemaMap, schema.domain.name)
                         .set(schema.name, schema);
                     allMessageSchemasAreCompatible = false;
                     continue;
                 }
                 switch (this.compareSchemaVersions(schemaVersion, maxSchemaVersion)) {
-                    case SyncInUtils_1.SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_LOWER:
+                    case SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_LOWER:
                         messageBuildWithOutdatedSchemaVersions = true;
                         break;
-                    case SyncInUtils_1.SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_HIGHER:
-                        ground_control_1.ensureChildJsMap(schemasToBeUpgradedMap, schema.domain.name)
+                    case SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_HIGHER:
+                        ensureChildJsMap(schemasToBeUpgradedMap, schema.domain.name)
                             .set(schema.name, schema);
                         allMessageSchemasAreCompatible = false;
                         break;
@@ -162,7 +160,7 @@ class SyncInSchemaChecker {
                 && schemaMapForDomainByName.has(schema.name)) {
                 return false;
             }
-            ground_control_1.ensureChildJsMap(schemaMapByDomainIdAndName, domainId)
+            ensureChildJsMap(schemaMapByDomainIdAndName, domainId)
                 .set(schema.name, schema);
             if (schemaMapByIndex.has(schema.index)) {
                 return false;
@@ -191,7 +189,7 @@ class SyncInSchemaChecker {
                     }
                 }
             }
-            ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(ground_control_1.ensureChildJsMap(schemaVersionMapBySchemaIndexAndVersions, schema.index), schemaVersion.majorVersion), schemaVersion.minorVersion).set(schemaVersion.patchVersion, schemaVersion);
+            ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(schemaVersionMapBySchemaIndexAndVersions, schema.index), schemaVersion.majorVersion), schemaVersion.minorVersion).set(schemaVersion.patchVersion, schemaVersion);
             schemaVersion.schema = schemaMapByIndex.get(schema.index);
         }
         return true;
@@ -215,23 +213,23 @@ class SyncInSchemaChecker {
                 schemaIndexesToUpdateStatusBy.push(schema.index);
             }
         }
-        await (await schemaDao).setStatusByIndexes(schemaIndexesToUpdateStatusBy, ground_control_1.SchemaStatus.NEEDS_UPGRADES);
+        await (await schemaDao).setStatusByIndexes(schemaIndexesToUpdateStatusBy, SchemaStatus.NEEDS_UPGRADES);
         // All schemas needed (that do not yet exist in this TM)
         const newlyNeededSchemas = [];
         for (const [domainName, schemaMapForDomain] of missingSchemaMap) {
-            const schemaDomainWithChangesMap = ground_control_1.ensureChildJsMap(schemaWithChangesMap, domainName);
+            const schemaDomainWithChangesMap = ensureChildJsMap(schemaWithChangesMap, domainName);
             for (const [schemaName, missingSchema] of schemaMapForDomain) {
                 const schema = {
                     domain: missingSchema.domain,
                     name: schemaName,
-                    status: ground_control_1.SchemaStatus.MISSING
+                    status: SchemaStatus.MISSING
                 };
                 schemaDomainWithChangesMap.set(name, schema);
                 newlyNeededSchemas.push(schema);
             }
         }
-        await (await domainDao).bulkCreate(Array.from(missingDomainMap.values()), ground_control_1.CascadeOverwrite.DEFAULT, false);
-        await (await schemaDao).bulkCreate(newlyNeededSchemas, ground_control_1.CascadeOverwrite.DEFAULT, false);
+        await (await domainDao).bulkCreate(Array.from(missingDomainMap.values()), CascadeOverwrite.DEFAULT, false);
+        await (await schemaDao).bulkCreate(newlyNeededSchemas, CascadeOverwrite.DEFAULT, false);
         return schemaWithChangesMap;
     }
     /*
@@ -281,14 +279,13 @@ class SyncInSchemaChecker {
     }
     compareGivenSchemaVersionLevel(messageSchemaVersion, localSchemaVersion) {
         if (messageSchemaVersion < localSchemaVersion) {
-            return SyncInUtils_1.SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_LOWER;
+            return SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_LOWER;
         }
         if (messageSchemaVersion > localSchemaVersion) {
-            return SyncInUtils_1.SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_HIGHER;
+            return SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_HIGHER;
         }
-        return SyncInUtils_1.SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_EQUAL;
+        return SchemaComparisonResult.MESSAGE_SCHEMA_VERSION_IS_EQUAL;
     }
 }
-exports.SyncInSchemaChecker = SyncInSchemaChecker;
-di_1.DI.set(tokens_1.SYNC_IN_SCHEMA_CHECKER, SyncInSchemaChecker);
+DI.set(SYNC_IN_SCHEMA_CHECKER, SyncInSchemaChecker);
 //# sourceMappingURL=SyncInSchemaChecker.js.map

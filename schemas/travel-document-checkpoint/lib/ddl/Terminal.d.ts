@@ -15,3 +15,4 @@ export declare class Terminal {
     userTerminal: UserTerminal[];
     userTerminalAgt: UserTerminalAgt[];
 }
+//# sourceMappingURL=Terminal.d.ts.map

@@ -8,3 +8,4 @@ export declare class DailyArchiveLog {
     dateNumber: DailyArchiveLogDate;
     numberOfChanges: DailyArchiveLogNumberOfChanges;
 }
+//# sourceMappingURL=DailyArchiveLog.d.ts.map

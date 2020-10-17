@@ -299,3 +299,4 @@ export declare const SCHEMA: {
         versionString: string;
     }[];
 };
+//# sourceMappingURL=schema.d.ts.map

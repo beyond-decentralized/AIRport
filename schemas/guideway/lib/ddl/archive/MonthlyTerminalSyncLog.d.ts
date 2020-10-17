@@ -8,3 +8,4 @@ export declare class MonthlyTerminalSyncLog {
     allAcknowledged: MonthlyTerminalSyncLogAcknowledged;
     dailySyncStatuses: MonthlyTerminalSyncLogMonthlySyncStatuses;
 }
+//# sourceMappingURL=MonthlyTerminalSyncLog.d.ts.map

@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@airport/di");
-const tokens_1 = require("../../../tokens");
-class MissingRecordCreator {
+import { DI } from '@airport/di';
+import { MISSING_RECORD_CREATOR } from '../../../tokens';
+export class MissingRecordCreator {
 }
-exports.MissingRecordCreator = MissingRecordCreator;
-di_1.DI.set(tokens_1.MISSING_RECORD_CREATOR, MissingRecordCreator);
+DI.set(MISSING_RECORD_CREATOR, MissingRecordCreator);
 //# sourceMappingURL=MissingRecordCreator.js.map

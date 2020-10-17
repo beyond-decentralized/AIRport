@@ -6,3 +6,4 @@ export interface ISchemaPropertyDao extends IBaseSchemaPropertyDao {
 export declare class SchemaPropertyDao extends BaseSchemaPropertyDao implements ISchemaPropertyDao {
     findAllForEntities(entityIds: EntityId[]): Promise<ISchemaProperty[]>;
 }
+//# sourceMappingURL=SchemaPropertyDao.d.ts.map

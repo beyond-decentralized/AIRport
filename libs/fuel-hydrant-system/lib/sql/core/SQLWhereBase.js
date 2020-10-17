@@ -1,29 +1,27 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const SQLQueryAdaptor_1 = require("../../adaptor/SQLQueryAdaptor");
-const Validator_1 = require("../../validation/Validator");
+import { JSONClauseObjectType, OperationCategory, SchemaMap, SqlOperator } from '@airport/ground-control';
+import { getSQLAdaptor } from '../../adaptor/SQLQueryAdaptor';
+import { getValidator } from '../../validation/Validator';
 /**
  * Created by Papa on 10/2/2016.
  */
-var ClauseType;
+export var ClauseType;
 (function (ClauseType) {
     ClauseType[ClauseType["MAPPED_SELECT_CLAUSE"] = 0] = "MAPPED_SELECT_CLAUSE";
     ClauseType[ClauseType["NON_MAPPED_SELECT_CLAUSE"] = 1] = "NON_MAPPED_SELECT_CLAUSE";
     ClauseType[ClauseType["WHERE_CLAUSE"] = 2] = "WHERE_CLAUSE";
     ClauseType[ClauseType["FUNCTION_CALL"] = 3] = "FUNCTION_CALL";
-})(ClauseType = exports.ClauseType || (exports.ClauseType = {}));
-class SQLWhereBase {
+})(ClauseType || (ClauseType = {}));
+export class SQLWhereBase {
     constructor(dbEntity, dialect, storeDriver) {
         this.dbEntity = dbEntity;
         this.dialect = dialect;
         this.storeDriver = storeDriver;
-        this.fieldMap = new ground_control_1.SchemaMap();
+        this.fieldMap = new SchemaMap();
         this.qEntityMapByAlias = {};
         this.jsonRelationMapByAlias = {};
         this.parameterReferences = [];
-        this.sqlAdaptor = SQLQueryAdaptor_1.getSQLAdaptor(this, dialect);
-        this.validator = Validator_1.getValidator(dbEntity);
+        this.sqlAdaptor = getSQLAdaptor(this, dialect);
+        this.validator = getValidator(dbEntity);
     }
     getParameters(parameterMap //,
     // valuesArray: (boolean | Date | number | string)[] = null
@@ -62,20 +60,20 @@ class SQLWhereBase {
         }
         nestingPrefix = `${nestingPrefix}\t`;
         switch (operation.c) {
-            case ground_control_1.OperationCategory.LOGICAL:
+            case OperationCategory.LOGICAL:
                 return this.getLogicalWhereFragment(operation, nestingPrefix, airDb, schemaUtils, metadataUtils);
-            case ground_control_1.OperationCategory.BOOLEAN:
-            case ground_control_1.OperationCategory.DATE:
-            case ground_control_1.OperationCategory.NUMBER:
-            case ground_control_1.OperationCategory.STRING:
-            case ground_control_1.OperationCategory.UNTYPED:
+            case OperationCategory.BOOLEAN:
+            case OperationCategory.DATE:
+            case OperationCategory.NUMBER:
+            case OperationCategory.STRING:
+            case OperationCategory.UNTYPED:
                 let valueOperation = operation;
                 let lValueSql = this.getFieldValue(valueOperation.l, ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
                 let rValueSql = this.getFieldValue(valueOperation.r, ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
                 let rValueWithOperator = this.applyOperator(valueOperation.o, rValueSql);
                 whereFragment += `${lValueSql}${rValueWithOperator}`;
                 break;
-            case ground_control_1.OperationCategory.FUNCTION:
+            case OperationCategory.FUNCTION:
                 let functionOperation = operation;
                 whereFragment = this.getFieldValue(functionOperation.ob, ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
                 // exists function and maybe others
@@ -86,13 +84,13 @@ class SQLWhereBase {
     getLogicalWhereFragment(operation, nestingPrefix, airDb, schemaUtils, metadataUtils) {
         let operator;
         switch (operation.o) {
-            case ground_control_1.SqlOperator.AND:
+            case SqlOperator.AND:
                 operator = 'AND';
                 break;
-            case ground_control_1.SqlOperator.OR:
+            case SqlOperator.OR:
                 operator = 'OR';
                 break;
-            case ground_control_1.SqlOperator.NOT:
+            case SqlOperator.NOT:
                 const whereFragment = this.getWHEREFragment(operation.v, nestingPrefix, airDb, schemaUtils, metadataUtils);
                 return ` NOT (${whereFragment})`;
             default:
@@ -155,24 +153,24 @@ class SQLWhereBase {
         const aField = clauseField;
         let qEntity;
         switch (clauseField.ot) {
-            case ground_control_1.JSONClauseObjectType.FIELD_FUNCTION:
+            case JSONClauseObjectType.FIELD_FUNCTION:
                 return this.getFieldFunctionValue(aField, defaultCallback, airDb, schemaUtils, metadataUtils);
-            case ground_control_1.JSONClauseObjectType.DISTINCT_FUNCTION:
+            case JSONClauseObjectType.DISTINCT_FUNCTION:
                 throw new Error(`Distinct function cannot be nested.`);
-            case ground_control_1.JSONClauseObjectType.EXISTS_FUNCTION:
+            case JSONClauseObjectType.EXISTS_FUNCTION:
                 if (clauseType !== ClauseType.WHERE_CLAUSE) {
                     throw new Error(`Exists can only be used as a top function in a WHERE clause.`);
                 }
                 let TreeSQLQueryClass = require('../TreeSQLQuery').TreeSQLQuery;
                 let mappedSqlQuery = new TreeSQLQueryClass(aField.v, this.dialect, this.storeDriver);
                 return `EXISTS(${mappedSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`;
-            case ground_control_1.JSONClauseObjectType.FIELD:
+            case JSONClauseObjectType.FIELD:
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 this.validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityPropertyColumnName(qEntity, aField.ci, metadataUtils);
                 this.addField(aField.si, aField.ti, aField.ci);
                 return this.getComplexColumnFragment(aField, columnName, airDb, schemaUtils, metadataUtils);
-            case ground_control_1.JSONClauseObjectType.FIELD_QUERY:
+            case JSONClauseObjectType.FIELD_QUERY:
                 let jsonFieldSqlSubQuery = aField.fsq;
                 if (aField.S) {
                     jsonFieldSqlSubQuery = aField;
@@ -182,7 +180,7 @@ class SQLWhereBase {
                 fieldSqlQuery.addQEntityMapByAlias(this.qEntityMapByAlias);
                 this.validator.addSubQueryAlias(aField.fa);
                 return `(${fieldSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`;
-            case ground_control_1.JSONClauseObjectType.MANY_TO_ONE_RELATION:
+            case JSONClauseObjectType.MANY_TO_ONE_RELATION:
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 this.validator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, metadataUtils);
@@ -229,32 +227,31 @@ class SQLWhereBase {
     }
     applyOperator(operator, rValue) {
         switch (operator) {
-            case ground_control_1.SqlOperator.EQUALS:
+            case SqlOperator.EQUALS:
                 return ` = ${rValue}`;
-            case ground_control_1.SqlOperator.GREATER_THAN:
+            case SqlOperator.GREATER_THAN:
                 return ` > ${rValue}`;
-            case ground_control_1.SqlOperator.GREATER_THAN_OR_EQUALS:
+            case SqlOperator.GREATER_THAN_OR_EQUALS:
                 return ` >= ${rValue}`;
-            case ground_control_1.SqlOperator.IS_NOT_NULL:
+            case SqlOperator.IS_NOT_NULL:
                 return ` IS NOT NULL`;
-            case ground_control_1.SqlOperator.IS_NULL:
+            case SqlOperator.IS_NULL:
                 return ` IS NULL`;
-            case ground_control_1.SqlOperator.IN:
+            case SqlOperator.IN:
                 return ` IN (${rValue})`;
-            case ground_control_1.SqlOperator.LESS_THAN:
+            case SqlOperator.LESS_THAN:
                 return ` < ${rValue}`;
-            case ground_control_1.SqlOperator.LESS_THAN_OR_EQUALS:
+            case SqlOperator.LESS_THAN_OR_EQUALS:
                 return ` <= ${rValue}`;
-            case ground_control_1.SqlOperator.NOT_EQUALS:
+            case SqlOperator.NOT_EQUALS:
                 return ` != ${rValue}`;
-            case ground_control_1.SqlOperator.NOT_IN:
+            case SqlOperator.NOT_IN:
                 return ` NOT IN (${rValue})`;
-            case ground_control_1.SqlOperator.LIKE:
+            case SqlOperator.LIKE:
                 return ` LIKE ${rValue}`;
             default:
                 throw new Error(`Unsupported operator ${operator}`);
         }
     }
 }
-exports.SQLWhereBase = SQLWhereBase;
 //# sourceMappingURL=SQLWhereBase.js.map

@@ -5,6 +5,7 @@ import {
 import {AirportDatabase}             from '@airport/tower'
 import * as fs                       from 'fs'
 import * as ts              from 'typescript'
+import tsc              from 'typescript'
 import {entityOperationMap} from './dao/parser/OperationGenerator'
 import {DaoBuilder}         from './ddl/builder/DaoBuilder'
 import {DuoBuilder}                  from './ddl/builder/DuoBuilder'
@@ -26,7 +27,7 @@ import {generateDefinitions} from './FileProcessor'
  * Created by Papa on 3/30/2016.
  */
 
-export function watchFiles(
+export async function watchFiles(
 	configuration: Configuration,
 	options: ts.CompilerOptions,
 	rootFileNames: string[]
@@ -50,14 +51,14 @@ export function watchFiles(
 				return undefined
 			}
 
-			return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString())
+			return tsc.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString())
 		},
 		getCurrentDirectory: () => process.cwd(),
-		getDefaultLibFileName: (options) => ts.getDefaultLibFilePath(options)
+		getDefaultLibFileName: (options) => tsc.getDefaultLibFilePath(options)
 	}
 
 	// Create the language service files
-	const services = ts.createLanguageService(servicesHost, ts.createDocumentRegistry())
+	const services = tsc.createLanguageService(servicesHost, tsc.createDocumentRegistry())
 
 	// First time around, process all files
 	processFiles(rootFileNames, options, configuration)
@@ -91,7 +92,7 @@ export function watchFiles(
 		options: ts.CompilerOptions,
 		configuration: Configuration
 	): void {
-		options.target                                                    = ts.ScriptTarget.ES5
+		options.target                                                    = tsc.ScriptTarget.ES5
 		const schemaMapByProjectName: { [projectName: string]: DbSchema } = {}
 		let entityMapByName                                               =
 			    generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName)

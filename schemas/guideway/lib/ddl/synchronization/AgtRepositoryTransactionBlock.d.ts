@@ -55,3 +55,4 @@ export declare class AgtRepositoryTransactionBlock {
     contents: RepositoryTransactionBlockContents;
     syncLogs: SyncLog[];
 }
+//# sourceMappingURL=AgtRepositoryTransactionBlock.d.ts.map

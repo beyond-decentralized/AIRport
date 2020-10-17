@@ -28,3 +28,4 @@ export declare class BaseMonthlySyncLogDao extends SQDIDao<IMonthlySyncLog, Mont
     static diSet(): boolean;
     constructor();
 }
+//# sourceMappingURL=baseDaos.d.ts.map

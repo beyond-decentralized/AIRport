@@ -1,14 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const Operation_1 = require("./Operation");
+import { OperationCategory } from "@airport/ground-control";
+import { ValueOperation } from "./Operation";
 /**
  * Created by Papa on 6/20/2016.
  */
-class DateOperation extends Operation_1.ValueOperation {
+export class DateOperation extends ValueOperation {
     constructor() {
-        super(ground_control_1.OperationCategory.DATE);
+        super(OperationCategory.DATE);
     }
 }
-exports.DateOperation = DateOperation;
 //# sourceMappingURL=DateOperation.js.map

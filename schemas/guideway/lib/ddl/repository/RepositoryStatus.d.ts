@@ -3,3 +3,4 @@ export declare enum RepositoryStatus {
     ON_HOLD = 1,
     CLOSED = 2
 }
+//# sourceMappingURL=RepositoryStatus.d.ts.map

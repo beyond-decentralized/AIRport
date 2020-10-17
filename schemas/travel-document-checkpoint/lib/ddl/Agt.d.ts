@@ -8,3 +8,4 @@ export declare class Agt {
     terminalAgts: TerminalAgt[];
     userTerminalAgts: UserTerminalAgt[];
 }
+//# sourceMappingURL=Agt.d.ts.map

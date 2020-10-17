@@ -23,3 +23,4 @@ export * from './user/security/SecurityQuestion';
 export * from './user/Permission';
 export * from './user/User';
 export * from './user/UserRepository';
+//# sourceMappingURL=ddl.d.ts.map

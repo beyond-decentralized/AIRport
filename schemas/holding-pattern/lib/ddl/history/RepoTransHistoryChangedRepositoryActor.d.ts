@@ -10,3 +10,4 @@ export declare class RepoTransHistoryChangedRepositoryActor {
     actor: Actor;
     referenceType: RepoTransHistoryChangedReferenceType;
 }
+//# sourceMappingURL=RepoTransHistoryChangedRepositoryActor.d.ts.map

@@ -15,3 +15,4 @@ export declare class SyncLogMessageProcessor implements ISyncLogMessageProcessor
     private generateSyncLogDataStructures;
     private insertNewSharingNodeRepoTransBlocks;
 }
+//# sourceMappingURL=SyncLogMessageProcessor.d.ts.map

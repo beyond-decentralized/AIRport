@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const ts = require("typescript");
-exports.entityOperationMap = {};
+import { OperationType } from '@airport/ground-control';
+import tsc from 'typescript';
+export const entityOperationMap = {};
 // let currentFileImports
 const daoFileMap = {};
 const daoMap = {};
 // const fileImportsMapByFilePath: { [path: string]: FileImports } = {}
-function visitDaoFile(node, path) {
+export function visitDaoFile(node, path) {
     let file = daoFileMap[path];
     if (!file) {
         file = {
@@ -25,7 +23,7 @@ function visitDaoFile(node, path) {
     // This is a top level class, get its symbol
     let symbol = globalThis.checker
         .getSymbolAtLocation(node.name);
-    if (node.kind !== ts.SyntaxKind.ClassDeclaration) {
+    if (node.kind !== tsc.SyntaxKind.ClassDeclaration) {
         return;
     }
     if (file.hasDao) {
@@ -39,9 +37,8 @@ function visitDaoFile(node, path) {
     }
     daoMap[daoName] = true;
     const entityName = daoName.substr(0, daoName.length - 3);
-    exports.entityOperationMap[entityName] = serializeClass(symbol, daoName, entityName);
+    entityOperationMap[entityName] = serializeClass(symbol, daoName, entityName);
 }
-exports.visitDaoFile = visitDaoFile;
 /** Serialize a class symbol information */
 function serializeClass(symbol, daoName, entityName) {
     let daoOperations = {};
@@ -50,17 +47,17 @@ function serializeClass(symbol, daoName, entityName) {
             return;
         }
         switch (member.valueDeclaration.kind) {
-            case ts.SyntaxKind.PropertyDeclaration:
+            case tsc.SyntaxKind.PropertyDeclaration:
                 console.log(`Property: ${memberName}`);
                 break;
             default:
                 return;
         }
         const expression = member.valueDeclaration.initializer;
-        if (expression.kind !== ts.SyntaxKind.PropertyAccessExpression) {
+        if (expression.kind !== tsc.SyntaxKind.PropertyAccessExpression) {
             return;
         }
-        if (expression.expression.kind !== ts.SyntaxKind.ThisKeyword) {
+        if (expression.expression.kind !== tsc.SyntaxKind.ThisKeyword) {
             return;
         }
         member.valueDeclaration.decorators.forEach(decorator => {
@@ -81,16 +78,16 @@ function serializeClass(symbol, daoName, entityName) {
             let type;
             switch (expression.name.escapedText) {
                 case 'create':
-                    type = ground_control_1.OperationType.CREATE;
+                    type = OperationType.CREATE;
                     break;
                 case 'delete':
-                    type = ground_control_1.OperationType.DELETE;
+                    type = OperationType.DELETE;
                     break;
                 case 'save':
-                    type = ground_control_1.OperationType.SAVE;
+                    type = OperationType.SAVE;
                     break;
                 case 'update':
-                    type = ground_control_1.OperationType.UPDATE;
+                    type = OperationType.UPDATE;
                     break;
                 default:
                     throw new Error(`Unsupported operation in "${daoName}": "this.${expression.name.escapedText}".
@@ -123,9 +120,9 @@ function serializeRules(objectLiteralExpression, parentRule) {
     });
 }
 function serializeRule(initializer, rule) {
-    if (initializer.kind === ts.SyntaxKind.BinaryExpression) {
+    if (initializer.kind === tsc.SyntaxKind.BinaryExpression) {
         const operatorKind = initializer.operatorToken.kind;
-        if (operatorKind === ts.SyntaxKind.BarBarToken) {
+        if (operatorKind === tsc.SyntaxKind.BarBarToken) {
             rule.operator = '|';
         }
         else {
@@ -137,20 +134,20 @@ function serializeRule(initializer, rule) {
             right: serializeRule(initializer.right, {}),
         };
     }
-    else if (initializer.kind === ts.SyntaxKind.Identifier
+    else if (initializer.kind === tsc.SyntaxKind.Identifier
         && initializer.escapedText === 'Y') {
         rule.anyValue = true;
     }
-    else if (initializer.kind === ts.SyntaxKind.NullKeyword) {
+    else if (initializer.kind === tsc.SyntaxKind.NullKeyword) {
         rule.isNull = true;
     }
-    else if (initializer.kind === ts.SyntaxKind.NumericLiteral) {
+    else if (initializer.kind === tsc.SyntaxKind.NumericLiteral) {
         rule.numericValue = parseInt(initializer.text);
     }
-    else if (initializer.kind === ts.SyntaxKind.ObjectLiteralExpression) {
+    else if (initializer.kind === tsc.SyntaxKind.ObjectLiteralExpression) {
         serializeRules(initializer, rule);
     }
-    else if (initializer.kind === ts.SyntaxKind.ArrayLiteralExpression) {
+    else if (initializer.kind === tsc.SyntaxKind.ArrayLiteralExpression) {
         rule.isArray = true;
         // serializeRules(initializer, rule)
         rule.subRules = [];
@@ -159,7 +156,7 @@ function serializeRule(initializer, rule) {
             rule.subRules.push(subRule);
         });
     }
-    else if (initializer.kind === ts.SyntaxKind.CallExpression
+    else if (initializer.kind === tsc.SyntaxKind.CallExpression
         && initializer.expression.escapedText === 'ANOTHER') {
         if (initializer.arguments.length === 1) {
             rule.functionCall = {
@@ -190,7 +187,7 @@ function serializeRule(initializer, rule) {
     return rule;
 }
 function getNumericFunctionCallArgument(argument, functionName) {
-    if (argument.kind !== ts.SyntaxKind.NumericLiteral) {
+    if (argument.kind !== tsc.SyntaxKind.NumericLiteral) {
         throw new Error(`Expecting only Numeric Literals as parameters to "${functionName}" function call.`);
     }
     return parseInt(argument.text);

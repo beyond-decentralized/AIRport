@@ -4,3 +4,4 @@ export interface IDailyArchiveLog {
     repository: IRepository;
     numberOfChanges?: number;
 }
+//# sourceMappingURL=dailyarchivelog.d.ts.map

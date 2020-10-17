@@ -11,3 +11,4 @@ export declare class RepositoryTransactionHistoryUpdateStageDao extends BaseRepo
     updateRepositoryTransactionHistory(): Promise<number>;
     delete(): Promise<number>;
 }
+//# sourceMappingURL=RepositoryTransactionHistoryUpdateStageDao.d.ts.map

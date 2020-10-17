@@ -11,3 +11,4 @@ export declare class ActorApplication {
     actor: Actor;
     application: Application;
 }
+//# sourceMappingURL=ActorApplication.d.ts.map

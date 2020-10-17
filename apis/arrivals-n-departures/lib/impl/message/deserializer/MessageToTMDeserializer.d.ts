@@ -8,3 +8,4 @@ export declare class MessageToTMDeserializer implements IMessageToTMDeserializer
     deserializeAMessage(serializedMessageToTM: SerializedMessageToTM): MessageToTM;
     private deserializeSyncOutcomes;
 }
+//# sourceMappingURL=MessageToTMDeserializer.d.ts.map

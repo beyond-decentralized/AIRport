@@ -8,3 +8,4 @@ export interface ISynchronizationConflict {
     overwritingRecordHistory?: IRecordHistory;
     values?: ISynchronizationConflictValues[];
 }
+//# sourceMappingURL=synchronizationconflict.d.ts.map

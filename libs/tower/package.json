@@ -8,6 +8,7 @@
   },
   "main": "lib/index.js",
   "name": "@airport/tower",
+  "type": "module",
   "typings": "lib/index",
   "version": "0.0.1"
 }

@@ -1,17 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const observe_1 = require("@airport/observe");
-const EntityLookup_1 = require("./EntityLookup");
+import { QueryResultType } from '@airport/ground-control';
+import { Observable } from '@airport/observe';
+import { EntityLookup } from './EntityLookup';
 /**
  * Created by Papa on 11/12/2016.
  */
-class EntitySearchOne extends EntityLookup_1.EntityLookup {
+export class EntitySearchOne extends EntityLookup {
     graph(rawGraphQuery) {
-        return observe_1.Observable.from(this.searchOne(rawGraphQuery, ground_control_1.QueryResultType.ENTITY_GRAPH));
+        return Observable.from(this.searchOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH));
     }
     tree(rawTreeQuery) {
-        return observe_1.Observable.from(this.searchOne(rawTreeQuery, ground_control_1.QueryResultType.ENTITY_TREE));
+        return Observable.from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE));
     }
     searchOne(rawEntityQuery, queryResultType) {
         return this.entityLookup(rawEntityQuery, queryResultType, true, true);
@@ -26,5 +24,4 @@ class EntitySearchOne extends EntityLookup_1.EntityLookup {
         return this.setCache(EntitySearchOne, cacheForUpdate);
     }
 }
-exports.EntitySearchOne = EntitySearchOne;
 //# sourceMappingURL=EntitySearchOne.js.map

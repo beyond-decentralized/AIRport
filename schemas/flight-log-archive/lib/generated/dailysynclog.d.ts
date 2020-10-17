@@ -3,3 +3,4 @@ export interface IDailySyncLog {
     date: number;
     repositoryId: number;
 }
+//# sourceMappingURL=dailysynclog.d.ts.map

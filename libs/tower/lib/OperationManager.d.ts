@@ -79,3 +79,4 @@ export declare abstract class OperationManager implements IOperationManager {
     private isProcessed;
     private internalDelete;
 }
+//# sourceMappingURL=OperationManager.d.ts.map
