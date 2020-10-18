@@ -12,16 +12,18 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { Application } from '../ddl/Application';
 import { QApplication } from './qapplication';
-import { ApplicationPackage } from '../ddl/ApplicationPackage';
 import { QApplicationPackage } from './qapplicationpackage';
-import { Domain } from '../ddl/Domain';
 import { QDomain } from './qdomain';
-import { Package } from '../ddl/Package';
 import { QPackage } from './qpackage';
-import { PackagedUnit } from '../ddl/PackagedUnit';
 import { QPackagedUnit } from './qpackagedunit';
+import {
+  Application,
+  ApplicationPackage,
+  Domain,
+  Package,
+  PackagedUnit
+} from '../ddl/ddl';
 
 export interface LocalQSchema extends AirportQSchema {
 
@@ -45,7 +47,7 @@ const __constructors__ = {
 
 export const Q_SCHEMA: LocalQSchema = <any>{
 	__constructors__,
-  domain: 'npmjs.org',
+  domain: 'air',
   name: '@airport/territory'
 };
 export const Q: LocalQSchema = Q_SCHEMA

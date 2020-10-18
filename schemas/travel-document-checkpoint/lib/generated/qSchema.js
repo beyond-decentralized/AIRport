@@ -2,12 +2,7 @@ import { AIR_DB } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
-import { Agt } from '../ddl/Agt';
-import { Terminal } from '../ddl/Terminal';
-import { TerminalAgt } from '../ddl/TerminalAgt';
-import { User } from '../ddl/User';
-import { UserTerminal } from '../ddl/UserTerminal';
-import { UserTerminalAgt } from '../ddl/UserTerminalAgt';
+import { Agt, Terminal, TerminalAgt, User, UserTerminal, UserTerminalAgt } from '../ddl/ddl';
 const __constructors__ = {
     Agt: Agt,
     Terminal: Terminal,
@@ -18,7 +13,7 @@ const __constructors__ = {
 };
 export const Q_SCHEMA = {
     __constructors__,
-    domain: 'npmjs.org',
+    domain: 'air',
     name: '@airport/travel-document-checkpoint'
 };
 export const Q = Q_SCHEMA;

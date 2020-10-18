@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	MonthlyArchiveLogECascadeGraph,
+	MonthlyArchiveLogGraph,
 	MonthlyArchiveLogEId,
 	MonthlyArchiveLogEOptionalId,
 	MonthlyArchiveLogEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QMonthlyArchiveLogQRelation,
 } from './qmonthlyarchivelog';
 import {
-	TerminalECascadeGraph,
+	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -108,9 +108,17 @@ export interface MonthlyTerminalSyncLogEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MonthlyTerminalSyncLogECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface MonthlyTerminalSyncLogGraph
+	extends IEntitySelectProperties, MonthlyTerminalSyncLogEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	allAcknowledged?: boolean | IQBooleanField;
+	dailySyncStatuses?: string | IQStringField;
+
+	// Relations
+	monthlyArchiveLog?: MonthlyArchiveLogGraph;
+	terminal?: TerminalGraph;
 
 }
 

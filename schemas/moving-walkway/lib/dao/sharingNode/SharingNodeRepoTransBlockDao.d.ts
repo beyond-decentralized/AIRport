@@ -1,7 +1,11 @@
 import { SharingNodeRepoTransBlockSyncStatus, TmRepositoryTransactionBlockId } from '@airport/arrivals-n-departures';
 import { SharingNodeId } from '../../ddl/ddl';
 import { BaseSharingNodeRepoTransBlockDao, IBaseSharingNodeRepoTransBlockDao, ISharingNodeRepoTransBlock } from '../../generated/generated';
-export declare type SharingNodeRepoTransBlockValues = [SharingNodeId, TmRepositoryTransactionBlockId, SharingNodeRepoTransBlockSyncStatus];
+export declare type SharingNodeRepoTransBlockValues = [
+    SharingNodeId,
+    TmRepositoryTransactionBlockId,
+    SharingNodeRepoTransBlockSyncStatus
+];
 export interface RepoTransBlocksForSharingNodes {
     repositoryTransactionBlockIds: Set<TmRepositoryTransactionBlockId>;
     repoTransBlocksBySharingNodeId: Map<SharingNodeId, TmRepositoryTransactionBlockId[]>;

@@ -1,8 +1,8 @@
 import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/air-control';
-import { VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
-import { SchemaPropertyEOptionalId, SchemaPropertyESelect, QSchemaPropertyQRelation } from './qschemaproperty';
-import { SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
-import { SchemaRelationColumnESelect, QSchemaRelationColumn } from './qschemarelationcolumn';
+import { VersionedSchemaObjectGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
+import { SchemaPropertyGraph, SchemaPropertyEOptionalId, SchemaPropertyESelect, QSchemaPropertyQRelation } from './qschemaproperty';
+import { SchemaEntityGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
+import { SchemaRelationColumnGraph, SchemaRelationColumnESelect, QSchemaRelationColumn } from './qschemarelationcolumn';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -48,18 +48,18 @@ export interface SchemaRelationEUpdateProperties extends VersionedSchemaObjectEU
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaRelationECascadeGraph extends VersionedSchemaObjectESelect, SchemaRelationEOptionalId, VersionedSchemaObjectECascadeGraph {
+export interface SchemaRelationGraph extends VersionedSchemaObjectESelect, SchemaRelationEOptionalId, VersionedSchemaObjectGraph {
     index?: number | IQNumberField;
     foreignKey?: ForeignKey | IQStringField;
     manyToOneElems?: ManyToOneElements | IQStringField;
     oneToManyElems?: OneToManyElements | IQStringField;
     relationType?: number | IQNumberField;
     isId?: boolean | IQBooleanField;
-    property?: SchemaPropertyESelect;
-    entity?: SchemaEntityESelect;
-    relationEntity?: SchemaEntityESelect;
-    manyRelationColumns?: SchemaRelationColumnESelect;
-    oneRelationColumns?: SchemaRelationColumnESelect;
+    property?: SchemaPropertyGraph;
+    entity?: SchemaEntityGraph;
+    relationEntity?: SchemaEntityGraph;
+    manyRelationColumns?: SchemaRelationColumnGraph[];
+    oneRelationColumns?: SchemaRelationColumnGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).

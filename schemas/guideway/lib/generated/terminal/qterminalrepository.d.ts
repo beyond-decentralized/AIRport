@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from './qterminal';
-import { RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '../repository/qrepository';
+import { TerminalGraph, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from './qterminal';
+import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '../repository/qrepository';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -32,7 +32,10 @@ export interface TerminalRepositoryEUpdateProperties extends IEntityUpdateProper
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface TerminalRepositoryECascadeGraph extends IEntityCascadeGraph {
+export interface TerminalRepositoryGraph extends IEntitySelectProperties, TerminalRepositoryEOptionalId, IEntityCascadeGraph {
+    permission?: number | IQNumberField;
+    terminal?: TerminalGraph;
+    repository?: RepositoryGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

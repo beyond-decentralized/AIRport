@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	SharingMessageECascadeGraph,
+	SharingMessageGraph,
 	SharingMessageEId,
 	SharingMessageEOptionalId,
 	SharingMessageEUpdateProperties,
@@ -30,9 +30,9 @@ import {
 	QSharingMessage,
 	QSharingMessageQId,
 	QSharingMessageQRelation,
-} from '../sharingMessage/qsharingmessage';
+} from '../sharingmessage/qsharingmessage';
 import {
-	SharingNodeRepoTransBlockECascadeGraph,
+	SharingNodeRepoTransBlockGraph,
 	SharingNodeRepoTransBlockEId,
 	SharingNodeRepoTransBlockEOptionalId,
 	SharingNodeRepoTransBlockEUpdateProperties,
@@ -112,11 +112,20 @@ export interface SharingNodeEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SharingNodeECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	messages?: SharingMessageECascadeGraph;
-	sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockECascadeGraph;
+export interface SharingNodeGraph
+	extends IEntitySelectProperties, SharingNodeEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	sharingMechanism?: number | IQNumberField;
+	isActive?: boolean | IQBooleanField;
+	syncFrequency?: number | IQNumberField;
+	connectionProtocol?: number | IQNumberField;
+	connectionUrl?: string | IQStringField;
+
+	// Relations
+	messages?: SharingMessageGraph[];
+	sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockGraph[];
 
 }
 

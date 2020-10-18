@@ -1,8 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { SecurityAnswerECascadeGraph, SecurityAnswerESelect, QSecurityAnswer } from './security/qsecurityanswer';
-import { UserRepositoryECascadeGraph, UserRepositoryESelect, QUserRepository } from './quserrepository';
-import { TerminalECascadeGraph, TerminalESelect, QTerminal } from '../terminal/qterminal';
-import { AgtRepositoryTransactionBlockECascadeGraph, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
+import { SecurityAnswerGraph, SecurityAnswerESelect, QSecurityAnswer } from './security/qsecurityanswer';
+import { UserRepositoryGraph, UserRepositoryESelect, QUserRepository } from './quserrepository';
+import { TerminalGraph, TerminalESelect, QTerminal } from '../terminal/qterminal';
+import { AgtRepositoryTransactionBlockGraph, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -38,11 +38,14 @@ export interface UserEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface UserECascadeGraph extends IEntityCascadeGraph {
-    securityAnswers?: SecurityAnswerECascadeGraph;
-    userRepositories?: UserRepositoryECascadeGraph;
-    terminals?: TerminalECascadeGraph;
-    repositoryTransactionBlocks?: AgtRepositoryTransactionBlockECascadeGraph;
+export interface UserGraph extends IEntitySelectProperties, UserEOptionalId, IEntityCascadeGraph {
+    hash?: string | IQStringField;
+    email?: string | IQStringField;
+    isInvitation?: boolean | IQBooleanField;
+    securityAnswers?: SecurityAnswerGraph[];
+    userRepositories?: UserRepositoryGraph[];
+    terminals?: TerminalGraph[];
+    repositoryTransactionBlocks?: AgtRepositoryTransactionBlockGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).

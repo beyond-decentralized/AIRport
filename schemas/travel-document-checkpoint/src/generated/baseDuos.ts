@@ -26,7 +26,7 @@ import {
 	AgtEUpdateColumns,
 	AgtEUpdateProperties,
 	AgtEId,
-	AgtECascadeGraph,
+	AgtGraph,
 	QAgt
 } from './qagt'
 import {
@@ -39,7 +39,7 @@ import {
 	TerminalEUpdateColumns,
 	TerminalEUpdateProperties,
 	TerminalEId,
-	TerminalECascadeGraph,
+	TerminalGraph,
 	QTerminal
 } from './qterminal'
 import {
@@ -52,7 +52,7 @@ import {
 	TerminalAgtEUpdateColumns,
 	TerminalAgtEUpdateProperties,
 	TerminalAgtEId,
-	TerminalAgtECascadeGraph,
+	TerminalAgtGraph,
 	QTerminalAgt
 } from './qterminalagt'
 import {
@@ -65,7 +65,7 @@ import {
 	UserEUpdateColumns,
 	UserEUpdateProperties,
 	UserEId,
-	UserECascadeGraph,
+	UserGraph,
 	QUser
 } from './quser'
 import {
@@ -78,7 +78,7 @@ import {
 	UserTerminalEUpdateColumns,
 	UserTerminalEUpdateProperties,
 	UserTerminalEId,
-	UserTerminalECascadeGraph,
+	UserTerminalGraph,
 	QUserTerminal
 } from './quserterminal'
 import {
@@ -91,7 +91,7 @@ import {
 	UserTerminalAgtEUpdateColumns,
 	UserTerminalAgtEUpdateProperties,
 	UserTerminalAgtEId,
-	UserTerminalAgtECascadeGraph,
+	UserTerminalAgtGraph,
 	QUserTerminalAgt
 } from './quserterminalagt'
 
@@ -123,11 +123,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseAgtDuo
-  extends IDuo<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtECascadeGraph, QAgt> {
+  extends IDuo<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt> {
 }
 
 export class BaseAgtDuo
-  extends SQDIDuo<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtECascadeGraph, QAgt>
+  extends SQDIDuo<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt>
 	implements IBaseAgtDuo {
 
 	static diSet(): boolean {
@@ -141,11 +141,11 @@ export class BaseAgtDuo
 
 
 export interface IBaseTerminalDuo
-  extends IDuo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalECascadeGraph, QTerminal> {
+  extends IDuo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal> {
 }
 
 export class BaseTerminalDuo
-  extends SQDIDuo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalECascadeGraph, QTerminal>
+  extends SQDIDuo<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal>
 	implements IBaseTerminalDuo {
 
 	static diSet(): boolean {
@@ -159,11 +159,11 @@ export class BaseTerminalDuo
 
 
 export interface IBaseTerminalAgtDuo
-  extends IDuo<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtECascadeGraph, QTerminalAgt> {
+  extends IDuo<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtGraph, QTerminalAgt> {
 }
 
 export class BaseTerminalAgtDuo
-  extends SQDIDuo<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtECascadeGraph, QTerminalAgt>
+  extends SQDIDuo<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtGraph, QTerminalAgt>
 	implements IBaseTerminalAgtDuo {
 
 	static diSet(): boolean {
@@ -177,11 +177,11 @@ export class BaseTerminalAgtDuo
 
 
 export interface IBaseUserDuo
-  extends IDuo<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserECascadeGraph, QUser> {
+  extends IDuo<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser> {
 }
 
 export class BaseUserDuo
-  extends SQDIDuo<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserECascadeGraph, QUser>
+  extends SQDIDuo<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser>
 	implements IBaseUserDuo {
 
 	static diSet(): boolean {
@@ -195,11 +195,11 @@ export class BaseUserDuo
 
 
 export interface IBaseUserTerminalDuo
-  extends IDuo<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalECascadeGraph, QUserTerminal> {
+  extends IDuo<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal> {
 }
 
 export class BaseUserTerminalDuo
-  extends SQDIDuo<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalECascadeGraph, QUserTerminal>
+  extends SQDIDuo<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal>
 	implements IBaseUserTerminalDuo {
 
 	static diSet(): boolean {
@@ -213,11 +213,11 @@ export class BaseUserTerminalDuo
 
 
 export interface IBaseUserTerminalAgtDuo
-  extends IDuo<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtECascadeGraph, QUserTerminalAgt> {
+  extends IDuo<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtGraph, QUserTerminalAgt> {
 }
 
 export class BaseUserTerminalAgtDuo
-  extends SQDIDuo<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtECascadeGraph, QUserTerminalAgt>
+  extends SQDIDuo<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtGraph, QUserTerminalAgt>
 	implements IBaseUserTerminalAgtDuo {
 
 	static diSet(): boolean {

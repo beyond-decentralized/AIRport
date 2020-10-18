@@ -38,6 +38,7 @@ export class AgtSharingMessage {
 	terminal: Terminal;
 
 	@Column({name: "TM_SHARING_MESSAGE_ID", nullable: false})
+	@DbNumber()
 	tmSharingMessageId: TmSharingMessageId;
 
 	@OneToMany()

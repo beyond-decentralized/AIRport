@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	TerminalECascadeGraph,
+	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QTerminalQRelation,
 } from './qterminal';
 import {
-	RepositoryECascadeGraph,
+	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -106,9 +106,16 @@ export interface TerminalRepositoryEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface TerminalRepositoryECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface TerminalRepositoryGraph
+	extends IEntitySelectProperties, TerminalRepositoryEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	permission?: number | IQNumberField;
+
+	// Relations
+	terminal?: TerminalGraph;
+	repository?: RepositoryGraph;
 
 }
 

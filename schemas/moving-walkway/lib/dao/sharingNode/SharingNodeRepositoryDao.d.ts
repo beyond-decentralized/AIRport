@@ -5,11 +5,17 @@ import { BaseSharingNodeRepositoryDao, ISharingNodeRepository } from '../../gene
 export interface ISharingNodeRepositoryDao {
     findRepositoryMapBySharingNodeAndRepositoryIds(repositoryIds: RepositoryId[], sharingNodeIds: SharingNodeId[]): Promise<Map<SharingNodeId, Map<RepositoryId, ISharingNodeRepository>>>;
     findBySharingNodeAndAgtRepositoryIds(sharingNodeIds: SharingNodeId[], agtRepositoryIds: AgtRepositoryId[]): Promise<Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>>;
-    findNewRepoTransHistoriesForSharingNodes(sharingNodeIds: SharingNodeId[]): Promise<[Map<RepositoryId, Set<SharingNodeId>>, IRepositoryTransactionHistory[]]>;
+    findNewRepoTransHistoriesForSharingNodes(sharingNodeIds: SharingNodeId[]): Promise<[
+        Map<RepositoryId, Set<SharingNodeId>>,
+        IRepositoryTransactionHistory[]
+    ]>;
 }
 export declare class SharingNodeRepositoryDao extends BaseSharingNodeRepositoryDao implements ISharingNodeRepositoryDao {
     findRepositoryMapBySharingNodeAndRepositoryIds(repositoryIds: RepositoryId[], sharingNodeIds: SharingNodeId[]): Promise<Map<SharingNodeId, Map<RepositoryId, ISharingNodeRepository>>>;
     findBySharingNodeAndAgtRepositoryIds(sharingNodeIds: SharingNodeId[], agtRepositoryIds: AgtRepositoryId[]): Promise<Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>>;
-    findNewRepoTransHistoriesForSharingNodes(sharingNodeIds: SharingNodeId[]): Promise<[Map<RepositoryId, Set<SharingNodeId>>, IRepositoryTransactionHistory[]]>;
+    findNewRepoTransHistoriesForSharingNodes(sharingNodeIds: SharingNodeId[]): Promise<[
+        Map<RepositoryId, Set<SharingNodeId>>,
+        IRepositoryTransactionHistory[]
+    ]>;
 }
 //# sourceMappingURL=SharingNodeRepositoryDao.d.ts.map

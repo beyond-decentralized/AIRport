@@ -1,0 +1,1 @@
+{"version":3,"file":"loggederror.d.ts","sourceRoot":"","sources":["../../src/generated/loggederror.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,SAAS,EACT,MAAM,YAAY,CAAC;AACpB,OAAO,EACN,sBAAsB,EACtB,MAAM,yBAAyB,CAAC;AAQjC,MAAM,WAAW,YAAY;IAK5B,QAAQ,EAAE,SAAS,CAAC;IAKpB,UAAU,CAAC,EAAE,sBAAsB,CAAC;CAMpC"}

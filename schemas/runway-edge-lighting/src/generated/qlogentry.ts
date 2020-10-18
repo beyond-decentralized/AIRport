@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	LogEntryTypeECascadeGraph,
+	LogEntryTypeGraph,
 	LogEntryTypeEId,
 	LogEntryTypeEOptionalId,
 	LogEntryTypeEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QLogEntryTypeQRelation,
 } from './qlogentrytype';
 import {
-	LogEntryValueECascadeGraph,
+	LogEntryValueGraph,
 	LogEntryValueEId,
 	LogEntryValueEOptionalId,
 	LogEntryValueEUpdateProperties,
@@ -105,10 +105,16 @@ export interface LogEntryEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface LogEntryECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	values?: LogEntryValueECascadeGraph;
+export interface LogEntryGraph
+	extends IEntitySelectProperties, LogEntryEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	timestamp?: Date | IQDateField;
+
+	// Relations
+	type?: LogEntryTypeGraph;
+	values?: LogEntryValueGraph[];
 
 }
 

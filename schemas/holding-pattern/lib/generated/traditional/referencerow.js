@@ -1,4 +1,5 @@
 //////////////////////////////
 //     ENTITY INTERFACE     //
 //////////////////////////////
+export {};
 //# sourceMappingURL=referencerow.js.map

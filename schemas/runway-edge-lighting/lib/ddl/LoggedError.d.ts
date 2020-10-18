@@ -4,3 +4,4 @@ export declare class LoggedError {
     logEntry: LogEntry;
     stackTrace: LoggedErrorStackTrace;
 }
+//# sourceMappingURL=LoggedError.d.ts.map

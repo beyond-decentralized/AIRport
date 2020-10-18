@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from '@airport/air-control';
+import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from '@airport/air-control';
 let AgtRepositoryTransactionBlock = 
 // TODO: partition by add date for efficient dropping of records
 class AgtRepositoryTransactionBlock {
@@ -42,7 +42,8 @@ __decorate([
     DbNumber()
 ], AgtRepositoryTransactionBlock.prototype, "tmRepositoryTransactionBlockId", void 0);
 __decorate([
-    Column({ name: 'REPOSITORY_TRANSACTION_BLOCK', nullable: false })
+    Column({ name: 'REPOSITORY_TRANSACTION_BLOCK', nullable: false }),
+    DbString()
 ], AgtRepositoryTransactionBlock.prototype, "contents", void 0);
 __decorate([
     OneToMany()

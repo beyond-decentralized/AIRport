@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { ServerEOptionalId, ServerESelect, QServerQRelation } from './qserver';
+import { ServerGraph, ServerEOptionalId, ServerESelect, QServerQRelation } from './qserver';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -39,7 +39,14 @@ export interface ServerSyncLogEUpdateProperties extends IEntityUpdateProperties 
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ServerSyncLogECascadeGraph extends IEntityCascadeGraph {
+export interface ServerSyncLogGraph extends IEntitySelectProperties, ServerSyncLogEOptionalId, IEntityCascadeGraph {
+    type?: number | IQNumberField;
+    startDatetime?: Date | IQDateField;
+    endDatetime?: Date | IQDateField;
+    numberOfConnections?: number | IQNumberField;
+    numberOfRecords?: number | IQNumberField;
+    dataCharsTotal?: number | IQNumberField;
+    server?: ServerGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

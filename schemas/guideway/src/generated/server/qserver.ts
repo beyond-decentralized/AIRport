@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ServerSyncLogECascadeGraph,
+	ServerSyncLogGraph,
 	ServerSyncLogEId,
 	ServerSyncLogEOptionalId,
 	ServerSyncLogEUpdateProperties,
@@ -93,10 +93,15 @@ export interface ServerEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ServerECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	serverSyncLogs?: ServerSyncLogECascadeGraph;
+export interface ServerGraph
+	extends IEntitySelectProperties, ServerEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	serverType?: number | IQNumberField;
+
+	// Relations
+	serverSyncLogs?: ServerSyncLogGraph[];
 
 }
 

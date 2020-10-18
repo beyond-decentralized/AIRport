@@ -7,3 +7,4 @@ export declare enum LogLevel {
     TRACE = 5
 }
 export declare type SetLogLevel = LogLevel.INFO | LogLevel.DEBUG | LogLevel.TRACE;
+//# sourceMappingURL=LogLevel.d.ts.map

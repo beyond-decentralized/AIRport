@@ -8,3 +8,4 @@ export interface ILogEntryType {
     packagedUnit?: IPackagedUnit;
     logEntries?: ILogEntry[];
 }
+//# sourceMappingURL=logentrytype.d.ts.map

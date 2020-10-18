@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	SchemaVersionECascadeGraph,
+	SchemaVersionGraph,
 	SchemaVersionEId,
 	SchemaVersionEOptionalId,
 	SchemaVersionEUpdateProperties,
@@ -30,7 +30,7 @@ import {
 	QSchemaVersion,
 	QSchemaVersionQId,
 	QSchemaVersionQRelation,
-	SchemaEntityECascadeGraph,
+	SchemaEntityGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
 	SchemaEntityEUpdateProperties,
@@ -40,7 +40,7 @@ import {
 	QSchemaEntityQRelation,
 } from '@airport/traffic-pattern';
 import {
-	RepositoryECascadeGraph,
+	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -48,7 +48,7 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
-	ActorECascadeGraph,
+	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -128,9 +128,19 @@ export interface MissingRecordEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MissingRecordECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface MissingRecordGraph
+	extends IEntitySelectProperties, MissingRecordEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	actorRecordId?: number | IQNumberField;
+	status?: number | IQNumberField;
+
+	// Relations
+	schemaVersion?: SchemaVersionGraph;
+	entity?: SchemaEntityGraph;
+	repository?: RepositoryGraph;
+	actor?: ActorGraph;
 
 }
 

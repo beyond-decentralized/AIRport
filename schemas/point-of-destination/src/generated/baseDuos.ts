@@ -26,7 +26,7 @@ import {
 	DailyArchiveEUpdateColumns,
 	DailyArchiveEUpdateProperties,
 	DailyArchiveEId,
-	DailyArchiveECascadeGraph,
+	DailyArchiveGraph,
 	QDailyArchive
 } from './qdailyarchive'
 
@@ -58,11 +58,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseDailyArchiveDuo
-  extends IDuo<IDailyArchive, DailyArchiveESelect, DailyArchiveECreateProperties, DailyArchiveEUpdateColumns, DailyArchiveEUpdateProperties, DailyArchiveEId, DailyArchiveECascadeGraph, QDailyArchive> {
+  extends IDuo<IDailyArchive, DailyArchiveESelect, DailyArchiveECreateProperties, DailyArchiveEUpdateColumns, DailyArchiveEUpdateProperties, DailyArchiveEId, DailyArchiveGraph, QDailyArchive> {
 }
 
 export class BaseDailyArchiveDuo
-  extends SQDIDuo<IDailyArchive, DailyArchiveESelect, DailyArchiveECreateProperties, DailyArchiveEUpdateColumns, DailyArchiveEUpdateProperties, DailyArchiveEId, DailyArchiveECascadeGraph, QDailyArchive>
+  extends SQDIDuo<IDailyArchive, DailyArchiveESelect, DailyArchiveECreateProperties, DailyArchiveEUpdateColumns, DailyArchiveEUpdateProperties, DailyArchiveEId, DailyArchiveGraph, QDailyArchive>
 	implements IBaseDailyArchiveDuo {
 
 	static diSet(): boolean {

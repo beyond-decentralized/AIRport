@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { LogEntryTypeEOptionalId, LogEntryTypeESelect, QLogEntryTypeQRelation } from './qlogentrytype';
-import { LogEntryValueECascadeGraph, LogEntryValueESelect, QLogEntryValue } from './qlogentryvalue';
+import { LogEntryTypeGraph, LogEntryTypeEOptionalId, LogEntryTypeESelect, QLogEntryTypeQRelation } from './qlogentrytype';
+import { LogEntryValueGraph, LogEntryValueESelect, QLogEntryValue } from './qlogentryvalue';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -31,8 +31,10 @@ export interface LogEntryEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface LogEntryECascadeGraph extends IEntityCascadeGraph {
-    values?: LogEntryValueECascadeGraph;
+export interface LogEntryGraph extends IEntitySelectProperties, LogEntryEOptionalId, IEntityCascadeGraph {
+    timestamp?: Date | IQDateField;
+    type?: LogEntryTypeGraph;
+    values?: LogEntryValueGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -65,3 +67,4 @@ export interface QLogEntryQId {
 }
 export interface QLogEntryQRelation extends IQRelation<QLogEntry>, QLogEntryQId {
 }
+//# sourceMappingURL=qlogentry.d.ts.map

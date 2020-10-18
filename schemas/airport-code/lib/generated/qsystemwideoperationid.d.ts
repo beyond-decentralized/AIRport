@@ -24,7 +24,7 @@ export interface SystemWideOperationIdEUpdateProperties extends IEntityUpdatePro
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SystemWideOperationIdECascadeGraph extends IEntityCascadeGraph {
+export interface SystemWideOperationIdGraph extends IEntitySelectProperties, SystemWideOperationIdEOptionalId, IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

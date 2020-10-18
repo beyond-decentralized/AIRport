@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var LogLevel;
+export var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["FATAL"] = 0] = "FATAL";
     LogLevel[LogLevel["ERROR"] = 1] = "ERROR";
@@ -8,5 +6,5 @@ var LogLevel;
     LogLevel[LogLevel["INFO"] = 3] = "INFO";
     LogLevel[LogLevel["DEBUG"] = 4] = "DEBUG";
     LogLevel[LogLevel["TRACE"] = 5] = "TRACE";
-})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
+})(LogLevel || (LogLevel = {}));
 //# sourceMappingURL=LogLevel.js.map

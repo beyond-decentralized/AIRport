@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ApplicationECascadeGraph,
+	ApplicationGraph,
 	ApplicationEId,
 	ApplicationEOptionalId,
 	ApplicationEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QApplicationQRelation,
 } from './qapplication';
 import {
-	PackageECascadeGraph,
+	PackageGraph,
 	PackageEId,
 	PackageEOptionalId,
 	PackageEUpdateProperties,
@@ -104,9 +104,15 @@ export interface ApplicationPackageEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ApplicationPackageECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface ApplicationPackageGraph
+	extends IEntitySelectProperties, ApplicationPackageEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+
+	// Relations
+	application?: ApplicationGraph;
+	package?: PackageGraph;
 
 }
 

@@ -6,3 +6,4 @@ export declare class LoggedErrorStackTrace {
     stackHash: LoggedErrorStackTraceStackHash;
     stack: LoggedErrorStackTraceStack;
 }
+//# sourceMappingURL=LoggedErrorStackTrace.d.ts.map

@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
@@ -8,7 +9,7 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-}                           from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	RepositoryTransactionBlockContents,
 	TmRepositoryTransactionBlockId
@@ -116,6 +117,7 @@ export class AgtRepositoryTransactionBlock {
 	 *
 	 */
 	@Column({name: 'REPOSITORY_TRANSACTION_BLOCK', nullable: false})
+	@DbString()
 	contents: RepositoryTransactionBlockContents
 
 	@OneToMany()

@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
-import { SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
+import { SchemaVersionGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -29,10 +29,10 @@ export interface VersionedSchemaObjectEUpdateProperties extends IEntityUpdatePro
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface VersionedSchemaObjectECascadeGraph extends IEntitySelectProperties, VersionedSchemaObjectEOptionalId, IEntityCascadeGraph {
-    deprecatedSinceVersion?: SchemaVersionESelect;
-    removedInVersion?: SchemaVersionESelect;
-    sinceVersion?: SchemaVersionESelect;
+export interface VersionedSchemaObjectGraph extends IEntitySelectProperties, VersionedSchemaObjectEOptionalId, IEntityCascadeGraph {
+    deprecatedSinceVersion?: SchemaVersionGraph;
+    removedInVersion?: SchemaVersionGraph;
+    sinceVersion?: SchemaVersionGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

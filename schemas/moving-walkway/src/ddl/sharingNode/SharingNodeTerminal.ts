@@ -1,14 +1,15 @@
+import {DbString} from '@airport/air-control'
 import {
 	Column,
 	DbNumber,
 	Id,
 	JoinColumn,
 	ManyToOne
-}                           from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
+}                 from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
 import {
 	Entity,
 	Table
-}                           from "@airport/air-control/lib/impl/core/entity/metadata/EntityDecorators";
+}                 from "@airport/air-control/lib/impl/core/entity/metadata/EntityDecorators";
 import {
 	TerminalPassword,
 	TerminalId
@@ -37,13 +38,16 @@ export class SharingNodeTerminal {
 	terminal: ITerminal;
 
 	@Column({name: "AGT_TERMINAL_ID"})
+	@DbNumber()
 	agtTerminalId: TerminalId;
 
 	@Column({name: "TERMINAL_PASSWORD"})
+	@DbString()
 	agtTerminalPassword: TerminalPassword;
 
 	@DbNumber()
 	@Column({name: "TERMINAL_SYNC_STATUS"})
+	@DbNumber()
 	terminalSyncStatus: TerminalSyncStatus;
 
 }

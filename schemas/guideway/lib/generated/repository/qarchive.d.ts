@@ -26,7 +26,8 @@ export interface ArchiveEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ArchiveECascadeGraph extends IEntityCascadeGraph {
+export interface ArchiveGraph extends IEntitySelectProperties, ArchiveEOptionalId, IEntityCascadeGraph {
+    location?: string | IQStringField;
 }
 /**
  * UPDATE - non-id columns (optional).

@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	UserECascadeGraph,
+	UserGraph,
 	UserEId,
 	UserEOptionalId,
 	UserEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QUserQRelation,
 } from '../user/quser';
 import {
-	TerminalRepositoryECascadeGraph,
+	TerminalRepositoryGraph,
 	TerminalRepositoryEId,
 	TerminalRepositoryEOptionalId,
 	TerminalRepositoryEUpdateProperties,
@@ -42,7 +42,7 @@ import {
 	QTerminalRepositoryQRelation,
 } from './qterminalrepository';
 import {
-	AgtSharingMessageECascadeGraph,
+	AgtSharingMessageGraph,
 	AgtSharingMessageEId,
 	AgtSharingMessageEOptionalId,
 	AgtSharingMessageEUpdateProperties,
@@ -124,11 +124,21 @@ export interface TerminalEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface TerminalECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	terminalRepositories?: TerminalRepositoryECascadeGraph;
-	sharingMessages?: AgtSharingMessageECascadeGraph;
+export interface TerminalGraph
+	extends IEntitySelectProperties, TerminalEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	name?: string | IQStringField;
+	secondId?: number | IQNumberField;
+	password?: string | IQStringField;
+	lastPollConnectionDatetime?: number | IQNumberField;
+	lastSseConnectionDatetime?: number | IQNumberField;
+
+	// Relations
+	user?: UserGraph;
+	terminalRepositories?: TerminalRepositoryGraph[];
+	sharingMessages?: AgtSharingMessageGraph[];
 
 }
 

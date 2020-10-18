@@ -241,7 +241,12 @@ export class EntityCandidateRegistry {
 				if (moduleImport && !moduleImport.isLocal) {
 					const projectName    = this.getProjectReferenceFromPath(moduleImport.path)
 					property.fromProject = projectName
-					this.getReferencedSchema(projectName, property)
+					if(!this.getReferencedSchema(projectName, property)) {
+						throw new Error(`
+						Processing property ${property.ownerEntity.type}.${property.name}
+						Could not find related schema in project '${projectName}'
+						if using external primitive types did you forget to add @DbBoolean(), @DbNumber(), @DbDate() or @DbString() decorator to this property?`)
+					}
 				} else {
 					let verifiedEntity: EntityCandidate = this.entityCandidateMap.get(type)
 					if (verifiedEntity) {
@@ -299,7 +304,12 @@ export class EntityCandidateRegistry {
 		// (fs.existsSync(pathToSchema) && fs.lstatSync(pathToSchema).isDirectory()) {
 		// relatedSchemaProject = require(pathToSchema) break } } } else {
 		// relatedSchemaProject = require(process.cwd() + '/node_modules/' + projectName) }
-		const relatedSchemaJson: any = fs.readFileSync(process.cwd() + '/node_modules/' + projectName + '/src/generated/schema.json')
+		let relatedSchemaJson
+		try {
+			relatedSchemaJson = fs.readFileSync(process.cwd() + '/node_modules/' + projectName + '/src/generated/schema.json')
+		} catch(e) {
+			return null;
+		}
 		// if (!relatedSchemaProject) {
 		// 	throw new Error(`Could not find related schema project '${projectName}'`)
 		// }
@@ -307,7 +317,7 @@ export class EntityCandidateRegistry {
 		// 	throw new Error(`Could not find related schema in project '${projectName}'`)
 		// }
 		if (!relatedSchemaJson) {
-			throw new Error(`Could not find related schema in project '${projectName}'`)
+			return null;
 		}
 		const relatedSchema          = JSON.parse(relatedSchemaJson)
 		const dbSchema               = this.dbSchemaBuilder.buildDbSchemaWithoutReferences(
@@ -394,8 +404,10 @@ export class EntityCandidateRegistry {
 					(from interface ${type}) in project '${projectName}'`)
 				}
 			} else {
-				throw new Error(
-					`Could not find entity '${type}' in project '${projectName}'`)
+				throw new Error(`
+						Processing property ${property.ownerEntity.type}.${property.name}
+						Could not find entity '${type}' in project '${projectName}'
+						if using external primitive types did you forget to add @DbBoolean(), @DbNumber(), @DbDate() or @DbString() decorator to this property?`)
 			}
 		}
 

@@ -84,9 +84,15 @@ export interface TerminalRunEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface TerminalRunECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface TerminalRunGraph
+	extends IEntitySelectProperties, TerminalRunEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	createTimestamp?: number | IQNumberField;
+	randomNumber?: number | IQNumberField;
+
+	// Relations
 
 }
 

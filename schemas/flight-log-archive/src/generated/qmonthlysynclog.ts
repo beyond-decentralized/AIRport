@@ -86,9 +86,14 @@ export interface MonthlySyncLogEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MonthlySyncLogECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface MonthlySyncLogGraph
+	extends IEntitySelectProperties, MonthlySyncLogEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	synced?: boolean | IQBooleanField;
+
+	// Relations
 
 }
 

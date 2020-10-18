@@ -82,9 +82,14 @@ export interface RepositoryTransactionHistoryUpdateStageEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryTransactionHistoryUpdateStageECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface RepositoryTransactionHistoryUpdateStageGraph
+	extends IEntitySelectProperties, RepositoryTransactionHistoryUpdateStageEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	blockId?: number | IQNumberField;
+
+	// Relations
 
 }
 

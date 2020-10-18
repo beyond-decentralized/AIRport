@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
-import { SharingMessageEId, SharingMessageEOptionalId, SharingMessageESelect, QSharingMessageQId, QSharingMessageQRelation } from './qsharingmessage';
-import { RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from '../repositoryTransactionBlock/qrepositorytransactionblock';
+import { SharingMessageGraph, SharingMessageEId, SharingMessageEOptionalId, SharingMessageESelect, QSharingMessageQId, QSharingMessageQRelation } from './qsharingmessage';
+import { RepositoryTransactionBlockGraph, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from '../repositorytransactionblock/qrepositorytransactionblock';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -30,7 +30,9 @@ export interface SharingMessageRepoTransBlockEUpdateProperties extends IEntityUp
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SharingMessageRepoTransBlockECascadeGraph extends IEntityCascadeGraph {
+export interface SharingMessageRepoTransBlockGraph extends IEntitySelectProperties, SharingMessageRepoTransBlockEOptionalId, IEntityCascadeGraph {
+    sharingMessage?: SharingMessageGraph;
+    repositoryTransactionBlock?: RepositoryTransactionBlockGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

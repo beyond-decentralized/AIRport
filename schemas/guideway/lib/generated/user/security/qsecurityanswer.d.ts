@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { UserEId, UserEOptionalId, UserESelect, QUserQId, QUserQRelation } from '../quser';
-import { SecurityQuestionEId, SecurityQuestionEOptionalId, SecurityQuestionESelect, QSecurityQuestionQId, QSecurityQuestionQRelation } from './qsecurityquestion';
+import { UserGraph, UserEId, UserEOptionalId, UserESelect, QUserQId, QUserQRelation } from '../quser';
+import { SecurityQuestionGraph, SecurityQuestionEId, SecurityQuestionEOptionalId, SecurityQuestionESelect, QSecurityQuestionQId, QSecurityQuestionQRelation } from './qsecurityquestion';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -32,7 +32,10 @@ export interface SecurityAnswerEUpdateProperties extends IEntityUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SecurityAnswerECascadeGraph extends IEntityCascadeGraph {
+export interface SecurityAnswerGraph extends IEntitySelectProperties, SecurityAnswerEOptionalId, IEntityCascadeGraph {
+    answer?: string | IQStringField;
+    user?: UserGraph;
+    securityQuestion?: SecurityQuestionGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

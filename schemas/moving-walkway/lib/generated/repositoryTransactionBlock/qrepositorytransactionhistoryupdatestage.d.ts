@@ -26,7 +26,8 @@ export interface RepositoryTransactionHistoryUpdateStageEUpdateProperties extend
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryTransactionHistoryUpdateStageECascadeGraph extends IEntityCascadeGraph {
+export interface RepositoryTransactionHistoryUpdateStageGraph extends IEntitySelectProperties, RepositoryTransactionHistoryUpdateStageEOptionalId, IEntityCascadeGraph {
+    blockId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id columns (optional).

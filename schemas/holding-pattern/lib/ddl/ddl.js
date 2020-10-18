@@ -17,11 +17,10 @@ export * from './repository/RepositoryApplication';
 export * from './repository/RepositoryEntity';
 export * from './repository/RepositorySchema';
 export * from './repository/SyncPrority';
-export * from './traditional/ChildRepoRow';
-export * from './traditional/ChildRow';
 export * from './traditional/ImmutableRepoRow';
 export * from './traditional/ImmutableRow';
 export * from './traditional/MutableRepoRow';
 export * from './traditional/MutableRow';
 export * from './traditional/ReferenceRow';
+export * from './common';
 //# sourceMappingURL=ddl.js.map

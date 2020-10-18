@@ -22,7 +22,8 @@ __decorate([
     JoinColumn({ name: "SYNCED_TERMINAL_ID", referencedColumnName: 'ID', nullable: false })
 ], AgtSharingMessage.prototype, "terminal", void 0);
 __decorate([
-    Column({ name: "TM_SHARING_MESSAGE_ID", nullable: false })
+    Column({ name: "TM_SHARING_MESSAGE_ID", nullable: false }),
+    DbNumber()
 ], AgtSharingMessage.prototype, "tmSharingMessageId", void 0);
 __decorate([
     OneToMany()

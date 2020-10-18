@@ -1,10 +1,12 @@
 import {
+	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
 	OneToMany,
 	Table
-}                           from "@airport/air-control";
+} from '@airport/air-control'
 import {
 	PackageId,
 	PackageName
@@ -18,8 +20,10 @@ export class Package {
 
 	@Id()
 	@GeneratedValue()
+	@DbNumber()
 	id: PackageId
 
+	@DbString()
 	name: PackageName
 
 	@OneToMany({mappedBy: "package"})

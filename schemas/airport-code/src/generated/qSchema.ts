@@ -12,12 +12,14 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { Sequence } from '../ddl/Sequence';
 import { QSequence } from './qsequence';
-import { SystemWideOperationId } from '../ddl/SystemWideOperationId';
 import { QSystemWideOperationId } from './qsystemwideoperationid';
-import { TerminalRun } from '../ddl/TerminalRun';
 import { QTerminalRun } from './qterminalrun';
+import {
+  Sequence,
+  SystemWideOperationId,
+  TerminalRun
+} from '../ddl/ddl';
 
 export interface LocalQSchema extends AirportQSchema {
 
@@ -37,7 +39,7 @@ const __constructors__ = {
 
 export const Q_SCHEMA: LocalQSchema = <any>{
 	__constructors__,
-  domain: 'npmjs.org',
+  domain: 'air',
   name: '@airport/airport-code'
 };
 export const Q: LocalQSchema = Q_SCHEMA

@@ -80,9 +80,13 @@ export interface SystemWideOperationIdEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SystemWideOperationIdECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface SystemWideOperationIdGraph
+	extends IEntitySelectProperties, SystemWideOperationIdEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+
+	// Relations
 
 }
 

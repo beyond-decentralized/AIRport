@@ -6,3 +6,4 @@ export interface ILogEntry {
     type?: ILogEntryType;
     values?: ILogEntryValue[];
 }
+//# sourceMappingURL=logentry.d.ts.map

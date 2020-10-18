@@ -28,7 +28,8 @@ export interface SharingNodeRepoTransBlockStageEUpdateProperties extends IEntity
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SharingNodeRepoTransBlockStageECascadeGraph extends IEntityCascadeGraph {
+export interface SharingNodeRepoTransBlockStageGraph extends IEntitySelectProperties, SharingNodeRepoTransBlockStageEOptionalId, IEntityCascadeGraph {
+    syncStatus?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id columns (optional).

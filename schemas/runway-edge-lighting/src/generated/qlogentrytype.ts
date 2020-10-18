@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ApplicationPackageECascadeGraph,
+	ApplicationPackageGraph,
 	ApplicationPackageEId,
 	ApplicationPackageEOptionalId,
 	ApplicationPackageEUpdateProperties,
@@ -30,7 +30,7 @@ import {
 	QApplicationPackage,
 	QApplicationPackageQId,
 	QApplicationPackageQRelation,
-	PackagedUnitECascadeGraph,
+	PackagedUnitGraph,
 	PackagedUnitEId,
 	PackagedUnitEOptionalId,
 	PackagedUnitEUpdateProperties,
@@ -40,7 +40,7 @@ import {
 	QPackagedUnitQRelation,
 } from '@airport/territory';
 import {
-	LogEntryECascadeGraph,
+	LogEntryGraph,
 	LogEntryEId,
 	LogEntryEOptionalId,
 	LogEntryEUpdateProperties,
@@ -117,10 +117,18 @@ export interface LogEntryTypeEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface LogEntryTypeECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	logEntries?: LogEntryECascadeGraph;
+export interface LogEntryTypeGraph
+	extends IEntitySelectProperties, LogEntryTypeEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	level?: number | IQNumberField;
+	text?: string | IQStringField;
+
+	// Relations
+	applicationPackage?: ApplicationPackageGraph;
+	packagedUnit?: PackagedUnitGraph;
+	logEntries?: LogEntryGraph[];
 
 }
 

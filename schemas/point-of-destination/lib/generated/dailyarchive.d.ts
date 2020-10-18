@@ -4,3 +4,4 @@ export interface IDailyArchive {
     repositoryData?: string;
     repository?: IRepository;
 }
+//# sourceMappingURL=dailyarchive.d.ts.map

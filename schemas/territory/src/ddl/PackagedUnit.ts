@@ -1,11 +1,13 @@
 import {
+	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
 	JoinColumn,
 	ManyToOne,
 	Table
-}                from "@airport/air-control";
+} from '@airport/air-control'
 import {Package} from "./Package";
 
 export type PackagedUnitId = number;
@@ -17,8 +19,10 @@ export class PackagedUnit {
 
 	@Id()
 	@GeneratedValue()
+	@DbNumber()
 	id: PackagedUnitId;
 
+	@DbString()
 	name: PackagedUnitName;
 
 	@ManyToOne()

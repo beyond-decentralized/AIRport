@@ -8,3 +8,4 @@ export declare class LogEntry {
     type: LogEntryType;
     values: LogEntryValue[];
 }
+//# sourceMappingURL=LogEntry.d.ts.map

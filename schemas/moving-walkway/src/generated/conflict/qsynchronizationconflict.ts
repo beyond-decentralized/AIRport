@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	RepositoryECascadeGraph,
+	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -30,7 +30,7 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
-	RecordHistoryECascadeGraph,
+	RecordHistoryGraph,
 	RecordHistoryEId,
 	RecordHistoryEOptionalId,
 	RecordHistoryEUpdateProperties,
@@ -40,7 +40,7 @@ import {
 	QRecordHistoryQRelation,
 } from '@airport/holding-pattern';
 import {
-	SynchronizationConflictValuesECascadeGraph,
+	SynchronizationConflictValuesGraph,
 	SynchronizationConflictValuesEId,
 	SynchronizationConflictValuesEOptionalId,
 	SynchronizationConflictValuesEUpdateProperties,
@@ -117,10 +117,18 @@ export interface SynchronizationConflictEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SynchronizationConflictECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	values?: SynchronizationConflictValuesECascadeGraph;
+export interface SynchronizationConflictGraph
+	extends IEntitySelectProperties, SynchronizationConflictEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	type?: number | IQNumberField;
+
+	// Relations
+	repository?: RepositoryGraph;
+	overwrittenRecordHistory?: RecordHistoryGraph;
+	overwritingRecordHistory?: RecordHistoryGraph;
+	values?: SynchronizationConflictValuesGraph[];
 
 }
 

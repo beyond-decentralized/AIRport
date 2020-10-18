@@ -41,9 +41,9 @@ export interface ISchemaVersion {
 	referencedBy?: ISchemaReference[];
 
 	// Transient Properties
-	entityMapByName?: { [entityName: string]: SchemaEntity; };
-	referencesMapByName?: { [schemaName: string]: SchemaReference; };
-	referencedByMapByName?: { [schemaName: string]: SchemaReference; };
+	entityMapByName?: I{ [entityName: string]: SchemaEntity; };
+	referencesMapByName?: I{ [schemaName: string]: SchemaReference; };
+	referencedByMapByName?: I{ [schemaName: string]: SchemaReference; };
 
 	// Public Methods
 	

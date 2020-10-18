@@ -2,13 +2,14 @@ import {
 	Column,
 	DbBoolean,
 	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
 	JoinColumn,
 	ManyToOne,
 	OneToMany
-}                        from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	TerminalName,
 	TerminalSecondId
@@ -29,6 +30,7 @@ export class Terminal {
 	@DbNumber()
 	id: TmTerminalId
 
+	@DbString()
 	name: TerminalName
 
 	@Column({name: 'SECOND_ID'})

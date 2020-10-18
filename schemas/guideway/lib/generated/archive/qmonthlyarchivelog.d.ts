@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
-import { RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '../repository/qrepository';
+import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '../repository/qrepository';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -32,7 +32,10 @@ export interface MonthlyArchiveLogEUpdateProperties extends IEntityUpdatePropert
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MonthlyArchiveLogECascadeGraph extends IEntityCascadeGraph {
+export interface MonthlyArchiveLogGraph extends IEntitySelectProperties, MonthlyArchiveLogEOptionalId, IEntityCascadeGraph {
+    numberOfChanges?: number | IQNumberField;
+    daysWithChanges?: any | IQUntypedField;
+    repository?: RepositoryGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

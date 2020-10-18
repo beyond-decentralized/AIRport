@@ -82,9 +82,14 @@ export interface RepoTransBlockResponseStageEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepoTransBlockResponseStageECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface RepoTransBlockResponseStageGraph
+	extends IEntitySelectProperties, RepoTransBlockResponseStageEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	syncOutcomeType?: number | IQNumberField;
+
+	// Relations
 
 }
 

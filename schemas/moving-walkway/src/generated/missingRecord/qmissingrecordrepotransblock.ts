@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	MissingRecordECascadeGraph,
+	MissingRecordGraph,
 	MissingRecordEId,
 	MissingRecordEOptionalId,
 	MissingRecordEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QMissingRecordQRelation,
 } from './qmissingrecord';
 import {
-	RepositoryTransactionBlockECascadeGraph,
+	RepositoryTransactionBlockGraph,
 	RepositoryTransactionBlockEId,
 	RepositoryTransactionBlockEOptionalId,
 	RepositoryTransactionBlockEUpdateProperties,
@@ -40,7 +40,7 @@ import {
 	QRepositoryTransactionBlock,
 	QRepositoryTransactionBlockQId,
 	QRepositoryTransactionBlockQRelation,
-} from '../repositoryTransactionBlock/qrepositorytransactionblock';
+} from '../repositorytransactionblock/qrepositorytransactionblock';
 
 
 declare function require(moduleName: string): any;
@@ -102,9 +102,15 @@ export interface MissingRecordRepoTransBlockEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MissingRecordRepoTransBlockECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface MissingRecordRepoTransBlockGraph
+	extends IEntitySelectProperties, MissingRecordRepoTransBlockEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+
+	// Relations
+	missingRecord?: MissingRecordGraph;
+	repositoryTransactionBlock?: RepositoryTransactionBlockGraph;
 
 }
 

@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
-import { AgtSharingMessageEId, AgtSharingMessageEOptionalId, AgtSharingMessageESelect, QAgtSharingMessageQId, QAgtSharingMessageQRelation } from './qagtsharingmessage';
-import { AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockEOptionalId, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlockQId, QAgtRepositoryTransactionBlockQRelation } from './qagtrepositorytransactionblock';
+import { AgtSharingMessageGraph, AgtSharingMessageEId, AgtSharingMessageEOptionalId, AgtSharingMessageESelect, QAgtSharingMessageQId, QAgtSharingMessageQRelation } from './qagtsharingmessage';
+import { AgtRepositoryTransactionBlockGraph, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockEOptionalId, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlockQId, QAgtRepositoryTransactionBlockQRelation } from './qagtrepositorytransactionblock';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -30,7 +30,9 @@ export interface SyncLogEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SyncLogECascadeGraph extends IEntityCascadeGraph {
+export interface SyncLogGraph extends IEntitySelectProperties, SyncLogEOptionalId, IEntityCascadeGraph {
+    sharingMessage?: AgtSharingMessageGraph;
+    repositoryTransactionBlock?: AgtRepositoryTransactionBlockGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

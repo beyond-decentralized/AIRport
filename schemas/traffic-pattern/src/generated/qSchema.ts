@@ -12,28 +12,30 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { Schema } from '../ddl/schema/schema';
 import { QSchema } from './schema/qschema';
-import { SchemaColumn } from '../ddl/schema/schemacolumn';
 import { QSchemaColumn } from './schema/qschemacolumn';
-import { SchemaEntity } from '../ddl/schema/schemaentity';
 import { QSchemaEntity } from './schema/qschemaentity';
-import { SchemaOperation } from '../ddl/schema/schemaoperation';
 import { QSchemaOperation } from './schema/qschemaoperation';
-import { SchemaProperty } from '../ddl/schema/schemaproperty';
 import { QSchemaProperty } from './schema/qschemaproperty';
-import { SchemaPropertyColumn } from '../ddl/schema/schemapropertycolumn';
 import { QSchemaPropertyColumn } from './schema/qschemapropertycolumn';
-import { SchemaReference } from '../ddl/schema/schemareference';
 import { QSchemaReference } from './schema/qschemareference';
-import { SchemaRelation } from '../ddl/schema/schemarelation';
 import { QSchemaRelation } from './schema/qschemarelation';
-import { SchemaRelationColumn } from '../ddl/schema/schemarelationcolumn';
 import { QSchemaRelationColumn } from './schema/qschemarelationcolumn';
-import { SchemaVersion } from '../ddl/schema/schemaversion';
 import { QSchemaVersion } from './schema/qschemaversion';
-import { VersionedSchemaObject } from '../ddl/schema/versionedschemaobject';
 import { QVersionedSchemaObject } from './schema/qversionedschemaobject';
+import {
+  Schema,
+  SchemaColumn,
+  SchemaEntity,
+  SchemaOperation,
+  SchemaProperty,
+  SchemaPropertyColumn,
+  SchemaReference,
+  SchemaRelation,
+  SchemaRelationColumn,
+  SchemaVersion,
+  VersionedSchemaObject
+} from '../ddl/ddl';
 
 export interface LocalQSchema extends AirportQSchema {
 
@@ -69,7 +71,7 @@ const __constructors__ = {
 
 export const Q_SCHEMA: LocalQSchema = <any>{
 	__constructors__,
-  domain: 'npmjs.org',
+  domain: 'air',
   name: '@airport/traffic-pattern'
 };
 export const Q: LocalQSchema = Q_SCHEMA

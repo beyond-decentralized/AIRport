@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	RepositoryECascadeGraph,
+	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -97,9 +97,16 @@ export interface MonthlyArchiveLogEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MonthlyArchiveLogECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface MonthlyArchiveLogGraph
+	extends IEntitySelectProperties, MonthlyArchiveLogEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	numberOfChanges?: number | IQNumberField;
+	daysWithChanges?: any | IQUntypedField;
+
+	// Relations
+	repository?: RepositoryGraph;
 
 }
 

@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	SchemaECascadeGraph,
+	SchemaGraph,
 	SchemaEId,
 	SchemaEOptionalId,
 	SchemaEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QSchemaQRelation,
 } from './qschema';
 import {
-	SchemaEntityECascadeGraph,
+	SchemaEntityGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
 	SchemaEntityEUpdateProperties,
@@ -42,7 +42,7 @@ import {
 	QSchemaEntityQRelation,
 } from './qschemaentity';
 import {
-	SchemaReferenceECascadeGraph,
+	SchemaReferenceGraph,
 	SchemaReferenceEId,
 	SchemaReferenceEOptionalId,
 	SchemaReferenceEUpdateProperties,
@@ -125,7 +125,7 @@ export interface SchemaVersionEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaVersionECascadeGraph
+export interface SchemaVersionGraph
 	extends IEntitySelectProperties, SchemaVersionEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
@@ -136,13 +136,11 @@ export interface SchemaVersionECascadeGraph
 	minorVersion?: number | IQNumberField;
 	patchVersion?: number | IQNumberField;
 
-	// Id Relations - full property interfaces
-
-  // Non-Id relations (including OneToMany's)
-	schema?: SchemaESelect;
-	entities?: SchemaEntityESelect;
-	references?: SchemaReferenceESelect;
-	referencedBy?: SchemaReferenceESelect;
+	// Relations
+	schema?: SchemaGraph;
+	entities?: SchemaEntityGraph[];
+	references?: SchemaReferenceGraph[];
+	referencedBy?: SchemaReferenceGraph[];
 
 }
 

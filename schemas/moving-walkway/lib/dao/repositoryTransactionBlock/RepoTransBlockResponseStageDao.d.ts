@@ -1,6 +1,9 @@
 import { RepoTransBlockSyncOutcomeType, TmRepositoryTransactionBlockId } from '@airport/arrivals-n-departures';
 import { BaseRepoTransBlockResponseStageDao } from '../../generated/generated';
-export declare type RepoTransBlockResponseStageValues = [TmRepositoryTransactionBlockId, RepoTransBlockSyncOutcomeType];
+export declare type RepoTransBlockResponseStageValues = [
+    TmRepositoryTransactionBlockId,
+    RepoTransBlockSyncOutcomeType
+];
 export interface IRepoTransBlockResponseStageDao {
     insertValues(values: RepoTransBlockResponseStageValues[]): Promise<number>;
     delete(): Promise<number>;

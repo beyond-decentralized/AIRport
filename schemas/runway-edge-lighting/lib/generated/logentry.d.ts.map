@@ -1,0 +1,1 @@
+{"version":3,"file":"logentry.d.ts","sourceRoot":"","sources":["../../src/generated/logentry.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,aAAa,EACb,MAAM,gBAAgB,CAAC;AACxB,OAAO,EACN,cAAc,EACd,MAAM,iBAAiB,CAAC;AAQzB,MAAM,WAAW,SAAS;IAGzB,EAAE,EAAE,MAAM,CAAC;IAKX,SAAS,CAAC,EAAE,IAAI,CAAC;IAGjB,IAAI,CAAC,EAAE,aAAa,CAAC;IACrB,MAAM,CAAC,EAAE,cAAc,EAAE,CAAC;CAM1B"}

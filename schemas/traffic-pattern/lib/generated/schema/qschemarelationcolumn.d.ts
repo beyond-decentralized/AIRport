@@ -1,7 +1,7 @@
 import { IQNumberField } from '@airport/air-control';
-import { VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
-import { SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQRelation } from './qschemacolumn';
-import { SchemaRelationEOptionalId, SchemaRelationESelect, QSchemaRelationQRelation } from './qschemarelation';
+import { VersionedSchemaObjectGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
+import { SchemaColumnGraph, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQRelation } from './qschemacolumn';
+import { SchemaRelationGraph, SchemaRelationEOptionalId, SchemaRelationESelect, QSchemaRelationQRelation } from './qschemarelation';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -37,12 +37,12 @@ export interface SchemaRelationColumnEUpdateProperties extends VersionedSchemaOb
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaRelationColumnECascadeGraph extends VersionedSchemaObjectESelect, SchemaRelationColumnEOptionalId, VersionedSchemaObjectECascadeGraph {
-    manyColumn?: SchemaColumnESelect;
-    oneColumn?: SchemaColumnESelect;
-    manyRelation?: SchemaRelationESelect;
-    oneRelation?: SchemaRelationESelect;
-    parentRelation?: SchemaRelationESelect;
+export interface SchemaRelationColumnGraph extends VersionedSchemaObjectESelect, SchemaRelationColumnEOptionalId, VersionedSchemaObjectGraph {
+    manyColumn?: SchemaColumnGraph;
+    oneColumn?: SchemaColumnGraph;
+    manyRelation?: SchemaRelationGraph;
+    oneRelation?: SchemaRelationGraph;
+    parentRelation?: SchemaRelationGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

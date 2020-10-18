@@ -3,7 +3,10 @@ import { AgtRepositoryTransactionBlockAddDatetime, AgtRepositoryTransactionBlock
 import { BaseSyncLogDao, IBaseSyncLogDao } from '../../generated/generated';
 export declare type SyncedTerminalRepository = [TerminalId, AgtRepositoryId];
 export declare type TerminalSyncStatus = [TerminalId, AgtRepositoryId, AgtSharingMessageAcknowledged];
-export declare type InsertSyncLog = [AgtRepositoryTransactionBlockId, AgtSharingMessageId];
+export declare type InsertSyncLog = [
+    AgtRepositoryTransactionBlockId,
+    AgtSharingMessageId
+];
 export interface ISyncLogDao extends IBaseSyncLogDao {
     insertValues(values: InsertSyncLog[]): Promise<void>;
     selectSyncedTerminalRepositories(fromDateInclusive: AgtRepositoryTransactionBlockAddDatetime, toDateExlusive: AgtRepositoryTransactionBlockAddDatetime, repositoryIds: AgtRepositoryId[]): Promise<SyncedTerminalRepository[]>;

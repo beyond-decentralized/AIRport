@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from './qsharingnode';
-import { RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '@airport/holding-pattern';
+import { SharingNodeGraph, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from './qsharingnode';
+import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '@airport/holding-pattern';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -36,7 +36,12 @@ export interface SharingNodeRepositoryEUpdateProperties extends IEntityUpdatePro
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SharingNodeRepositoryECascadeGraph extends IEntityCascadeGraph {
+export interface SharingNodeRepositoryGraph extends IEntitySelectProperties, SharingNodeRepositoryEOptionalId, IEntityCascadeGraph {
+    agtRepositoryId?: number | IQNumberField;
+    advisedSyncPriority?: number | IQNumberField;
+    repositorySyncStatus?: number | IQNumberField;
+    sharingNode?: SharingNodeGraph;
+    repository?: RepositoryGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

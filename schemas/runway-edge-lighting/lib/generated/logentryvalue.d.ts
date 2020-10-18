@@ -5,3 +5,4 @@ export interface ILogEntryValue {
     value?: any;
     logEntry?: ILogEntry;
 }
+//# sourceMappingURL=logentryvalue.d.ts.map

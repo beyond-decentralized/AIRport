@@ -12,16 +12,18 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { LogEntry } from '../ddl/LogEntry';
 import { QLogEntry } from './qlogentry';
-import { LogEntryType } from '../ddl/LogEntryType';
 import { QLogEntryType } from './qlogentrytype';
-import { LogEntryValue } from '../ddl/LogEntryValue';
 import { QLogEntryValue } from './qlogentryvalue';
-import { LoggedError } from '../ddl/LoggedError';
 import { QLoggedError } from './qloggederror';
-import { LoggedErrorStackTrace } from '../ddl/LoggedErrorStackTrace';
 import { QLoggedErrorStackTrace } from './qloggederrorstacktrace';
+import {
+  LogEntry,
+  LogEntryType,
+  LogEntryValue,
+  LoggedError,
+  LoggedErrorStackTrace
+} from '../ddl/ddl';
 
 export interface LocalQSchema extends AirportQSchema {
 
@@ -45,7 +47,7 @@ const __constructors__ = {
 
 export const Q_SCHEMA: LocalQSchema = <any>{
 	__constructors__,
-  domain: 'npmjs.org',
+  domain: 'air',
   name: '@airport/runway-edge-lighting'
 };
 export const Q: LocalQSchema = Q_SCHEMA

@@ -2,9 +2,7 @@ import { AIR_DB } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
-import { Sequence } from '../ddl/Sequence';
-import { SystemWideOperationId } from '../ddl/SystemWideOperationId';
-import { TerminalRun } from '../ddl/TerminalRun';
+import { Sequence, SystemWideOperationId, TerminalRun } from '../ddl/ddl';
 const __constructors__ = {
     Sequence: Sequence,
     SystemWideOperationId: SystemWideOperationId,
@@ -12,7 +10,7 @@ const __constructors__ = {
 };
 export const Q_SCHEMA = {
     __constructors__,
-    domain: 'npmjs.org',
+    domain: 'air',
     name: '@airport/airport-code'
 };
 export const Q = Q_SCHEMA;

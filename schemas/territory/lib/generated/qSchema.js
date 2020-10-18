@@ -2,11 +2,7 @@ import { AIR_DB } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
-import { Application } from '../ddl/Application';
-import { ApplicationPackage } from '../ddl/ApplicationPackage';
-import { Domain } from '../ddl/Domain';
-import { Package } from '../ddl/Package';
-import { PackagedUnit } from '../ddl/PackagedUnit';
+import { Application, ApplicationPackage, Domain, Package, PackagedUnit } from '../ddl/ddl';
 const __constructors__ = {
     Application: Application,
     ApplicationPackage: ApplicationPackage,
@@ -16,7 +12,7 @@ const __constructors__ = {
 };
 export const Q_SCHEMA = {
     __constructors__,
-    domain: 'npmjs.org',
+    domain: 'air',
     name: '@airport/territory'
 };
 export const Q = Q_SCHEMA;

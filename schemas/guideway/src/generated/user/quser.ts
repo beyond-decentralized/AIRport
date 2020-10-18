@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	SecurityAnswerECascadeGraph,
+	SecurityAnswerGraph,
 	SecurityAnswerEId,
 	SecurityAnswerEOptionalId,
 	SecurityAnswerEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QSecurityAnswerQRelation,
 } from './security/qsecurityanswer';
 import {
-	UserRepositoryECascadeGraph,
+	UserRepositoryGraph,
 	UserRepositoryEId,
 	UserRepositoryEOptionalId,
 	UserRepositoryEUpdateProperties,
@@ -42,7 +42,7 @@ import {
 	QUserRepositoryQRelation,
 } from './quserrepository';
 import {
-	TerminalECascadeGraph,
+	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -52,7 +52,7 @@ import {
 	QTerminalQRelation,
 } from '../terminal/qterminal';
 import {
-	AgtRepositoryTransactionBlockECascadeGraph,
+	AgtRepositoryTransactionBlockGraph,
 	AgtRepositoryTransactionBlockEId,
 	AgtRepositoryTransactionBlockEOptionalId,
 	AgtRepositoryTransactionBlockEUpdateProperties,
@@ -130,13 +130,20 @@ export interface UserEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface UserECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	securityAnswers?: SecurityAnswerECascadeGraph;
-	userRepositories?: UserRepositoryECascadeGraph;
-	terminals?: TerminalECascadeGraph;
-	repositoryTransactionBlocks?: AgtRepositoryTransactionBlockECascadeGraph;
+export interface UserGraph
+	extends IEntitySelectProperties, UserEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	hash?: string | IQStringField;
+	email?: string | IQStringField;
+	isInvitation?: boolean | IQBooleanField;
+
+	// Relations
+	securityAnswers?: SecurityAnswerGraph[];
+	userRepositories?: UserRepositoryGraph[];
+	terminals?: TerminalGraph[];
+	repositoryTransactionBlocks?: AgtRepositoryTransactionBlockGraph[];
 
 }
 

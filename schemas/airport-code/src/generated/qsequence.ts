@@ -88,9 +88,15 @@ export interface SequenceEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SequenceECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface SequenceGraph
+	extends IEntitySelectProperties, SequenceEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	incrementBy?: number | IQNumberField;
+	currentValue?: number | IQNumberField;
+
+	// Relations
 
 }
 

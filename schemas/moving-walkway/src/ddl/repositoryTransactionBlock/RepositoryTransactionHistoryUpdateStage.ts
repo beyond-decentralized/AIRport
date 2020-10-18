@@ -1,9 +1,10 @@
 import {
 	Column,
+	DbNumber,
 	Entity,
 	Id,
 	Table
-} from "@airport/air-control";
+} from '@airport/air-control'
 import {
 	RepositoryTransactionHistoryBlockId,
 	RepositoryTransactionHistoryId
@@ -15,9 +16,11 @@ export class RepositoryTransactionHistoryUpdateStage {
 
 	@Id()
 	@Column({name: "REPOSITORY_TRANSACTION_HISTORY_ID"})
+	@DbNumber()
 	repositoryTransactionHistoryId: RepositoryTransactionHistoryId;
 
 	@Column({name: "BLOCK_ID"})
+	@DbNumber()
 	blockId: RepositoryTransactionHistoryBlockId;
 
 }

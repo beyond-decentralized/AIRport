@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	SharingMessageECascadeGraph,
+	SharingMessageGraph,
 	SharingMessageEId,
 	SharingMessageEOptionalId,
 	SharingMessageEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QSharingMessageQRelation,
 } from './qsharingmessage';
 import {
-	RepositoryTransactionBlockECascadeGraph,
+	RepositoryTransactionBlockGraph,
 	RepositoryTransactionBlockEId,
 	RepositoryTransactionBlockEOptionalId,
 	RepositoryTransactionBlockEUpdateProperties,
@@ -40,7 +40,7 @@ import {
 	QRepositoryTransactionBlock,
 	QRepositoryTransactionBlockQId,
 	QRepositoryTransactionBlockQRelation,
-} from '../repositoryTransactionBlock/qrepositorytransactionblock';
+} from '../repositorytransactionblock/qrepositorytransactionblock';
 
 
 declare function require(moduleName: string): any;
@@ -104,9 +104,15 @@ export interface SharingMessageRepoTransBlockEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SharingMessageRepoTransBlockECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface SharingMessageRepoTransBlockGraph
+	extends IEntitySelectProperties, SharingMessageRepoTransBlockEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+
+	// Relations
+	sharingMessage?: SharingMessageGraph;
+	repositoryTransactionBlock?: RepositoryTransactionBlockGraph;
 
 }
 

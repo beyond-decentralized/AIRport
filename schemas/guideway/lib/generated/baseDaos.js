@@ -8,37 +8,13 @@ export class SQDIDao extends Dao {
 }
 export class BaseAgtRepositoryTransactionBlockDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(16);
+        return duoDiSet(8);
     }
     constructor() {
-        super(16);
+        super(8);
     }
 }
 export class BaseAgtSharingMessageDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(14);
-    }
-    constructor() {
-        super(14);
-    }
-}
-export class BaseArchiveDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(0);
-    }
-    constructor() {
-        super(0);
-    }
-}
-export class BaseDailyArchiveLogDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(18);
-    }
-    constructor() {
-        super(18);
-    }
-}
-export class BaseDailyTerminalSyncLogDao extends SQDIDao {
     static diSet() {
         return duoDiSet(1);
     }
@@ -46,55 +22,15 @@ export class BaseDailyTerminalSyncLogDao extends SQDIDao {
         super(1);
     }
 }
-export class BaseMonthlyArchiveLogDao extends SQDIDao {
+export class BaseArchiveDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(2);
+        return duoDiSet(14);
     }
     constructor() {
-        super(2);
+        super(14);
     }
 }
-export class BaseMonthlyTerminalSyncLogDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(3);
-    }
-    constructor() {
-        super(3);
-    }
-}
-export class BaseRepositoryDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(17);
-    }
-    constructor() {
-        super(17);
-    }
-}
-export class BaseRepositoryArchiveDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(4);
-    }
-    constructor() {
-        super(4);
-    }
-}
-export class BaseSecurityAnswerDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(8);
-    }
-    constructor() {
-        super(8);
-    }
-}
-export class BaseSecurityQuestionDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(7);
-    }
-    constructor() {
-        super(7);
-    }
-}
-export class BaseServerDao extends SQDIDao {
+export class BaseDailyArchiveLogDao extends SQDIDao {
     static diSet() {
         return duoDiSet(10);
     }
@@ -102,15 +38,7 @@ export class BaseServerDao extends SQDIDao {
         super(10);
     }
 }
-export class BaseServerSyncLogDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(9);
-    }
-    constructor() {
-        super(9);
-    }
-}
-export class BaseSyncLogDao extends SQDIDao {
+export class BaseDailyTerminalSyncLogDao extends SQDIDao {
     static diSet() {
         return duoDiSet(11);
     }
@@ -118,15 +46,7 @@ export class BaseSyncLogDao extends SQDIDao {
         super(11);
     }
 }
-export class BaseTerminalDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(15);
-    }
-    constructor() {
-        super(15);
-    }
-}
-export class BaseTerminalRepositoryDao extends SQDIDao {
+export class BaseMonthlyArchiveLogDao extends SQDIDao {
     static diSet() {
         return duoDiSet(12);
     }
@@ -134,7 +54,7 @@ export class BaseTerminalRepositoryDao extends SQDIDao {
         super(12);
     }
 }
-export class BaseTuningParametersDao extends SQDIDao {
+export class BaseMonthlyTerminalSyncLogDao extends SQDIDao {
     static diSet() {
         return duoDiSet(13);
     }
@@ -142,7 +62,71 @@ export class BaseTuningParametersDao extends SQDIDao {
         super(13);
     }
 }
-export class BaseUserDao extends SQDIDao {
+export class BaseRepositoryDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(9);
+    }
+    constructor() {
+        super(9);
+    }
+}
+export class BaseRepositoryArchiveDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(15);
+    }
+    constructor() {
+        super(15);
+    }
+}
+export class BaseSecurityAnswerDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(3);
+    }
+    constructor() {
+        super(3);
+    }
+}
+export class BaseSecurityQuestionDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(2);
+    }
+    constructor() {
+        super(2);
+    }
+}
+export class BaseServerDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(17);
+    }
+    constructor() {
+        super(17);
+    }
+}
+export class BaseServerSyncLogDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(16);
+    }
+    constructor() {
+        super(16);
+    }
+}
+export class BaseSyncLogDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(0);
+    }
+    constructor() {
+        super(0);
+    }
+}
+export class BaseTerminalDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(7);
+    }
+    constructor() {
+        super(7);
+    }
+}
+export class BaseTerminalRepositoryDao extends SQDIDao {
     static diSet() {
         return duoDiSet(6);
     }
@@ -150,12 +134,28 @@ export class BaseUserDao extends SQDIDao {
         super(6);
     }
 }
-export class BaseUserRepositoryDao extends SQDIDao {
+export class BaseTuningParametersDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(18);
+    }
+    constructor() {
+        super(18);
+    }
+}
+export class BaseUserDao extends SQDIDao {
     static diSet() {
         return duoDiSet(5);
     }
     constructor() {
         super(5);
+    }
+}
+export class BaseUserRepositoryDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(4);
+    }
+    constructor() {
+        super(4);
     }
 }
 //# sourceMappingURL=baseDaos.js.map

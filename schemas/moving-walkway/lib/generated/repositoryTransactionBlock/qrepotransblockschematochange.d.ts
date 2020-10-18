@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from './qrepositorytransactionblock';
-import { SchemaEId, SchemaEOptionalId, SchemaESelect, QSchemaQId, QSchemaQRelation } from '@airport/traffic-pattern';
+import { RepositoryTransactionBlockGraph, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from './qrepositorytransactionblock';
+import { SchemaGraph, SchemaEId, SchemaEOptionalId, SchemaESelect, QSchemaQId, QSchemaQRelation } from '@airport/traffic-pattern';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -32,7 +32,10 @@ export interface RepoTransBlockSchemaToChangeEUpdateProperties extends IEntityUp
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepoTransBlockSchemaToChangeECascadeGraph extends IEntityCascadeGraph {
+export interface RepoTransBlockSchemaToChangeGraph extends IEntitySelectProperties, RepoTransBlockSchemaToChangeEOptionalId, IEntityCascadeGraph {
+    status?: number | IQNumberField;
+    repositoryTransactionBlock?: RepositoryTransactionBlockGraph;
+    schema?: SchemaGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

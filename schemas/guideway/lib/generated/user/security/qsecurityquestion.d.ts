@@ -26,7 +26,8 @@ export interface SecurityQuestionEUpdateProperties extends IEntityUpdateProperti
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SecurityQuestionECascadeGraph extends IEntityCascadeGraph {
+export interface SecurityQuestionGraph extends IEntitySelectProperties, SecurityQuestionEOptionalId, IEntityCascadeGraph {
+    question?: string | IQStringField;
 }
 /**
  * UPDATE - non-id columns (optional).

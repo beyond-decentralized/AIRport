@@ -11,3 +11,4 @@ export declare class LogEntryType {
     text: LogEntryTypeText;
     logEntries: LogEntry[];
 }
+//# sourceMappingURL=LogEntryType.d.ts.map

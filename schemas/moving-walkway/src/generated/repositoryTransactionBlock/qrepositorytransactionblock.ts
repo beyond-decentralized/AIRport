@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	TerminalECascadeGraph,
+	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QTerminalQRelation,
 } from '@airport/travel-document-checkpoint';
 import {
-	RepositoryECascadeGraph,
+	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -40,7 +40,7 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
-	RepositoryTransactionHistoryECascadeGraph,
+	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
 	RepositoryTransactionHistoryEUpdateProperties,
@@ -50,7 +50,7 @@ import {
 	QRepositoryTransactionHistoryQRelation,
 } from '@airport/holding-pattern';
 import {
-	SharingNodeRepoTransBlockECascadeGraph,
+	SharingNodeRepoTransBlockGraph,
 	SharingNodeRepoTransBlockEId,
 	SharingNodeRepoTransBlockEOptionalId,
 	SharingNodeRepoTransBlockEUpdateProperties,
@@ -58,9 +58,9 @@ import {
 	QSharingNodeRepoTransBlock,
 	QSharingNodeRepoTransBlockQId,
 	QSharingNodeRepoTransBlockQRelation,
-} from '../sharingNode/qsharingnoderepotransblock';
+} from '../sharingnode/qsharingnoderepotransblock';
 import {
-	SharingMessageRepoTransBlockECascadeGraph,
+	SharingMessageRepoTransBlockGraph,
 	SharingMessageRepoTransBlockEId,
 	SharingMessageRepoTransBlockEOptionalId,
 	SharingMessageRepoTransBlockEUpdateProperties,
@@ -68,9 +68,9 @@ import {
 	QSharingMessageRepoTransBlock,
 	QSharingMessageRepoTransBlockQId,
 	QSharingMessageRepoTransBlockQRelation,
-} from '../sharingMessage/qsharingmessagerepotransblock';
+} from '../sharingmessage/qsharingmessagerepotransblock';
 import {
-	MissingRecordRepoTransBlockECascadeGraph,
+	MissingRecordRepoTransBlockGraph,
 	MissingRecordRepoTransBlockEId,
 	MissingRecordRepoTransBlockEOptionalId,
 	MissingRecordRepoTransBlockEUpdateProperties,
@@ -78,9 +78,9 @@ import {
 	QMissingRecordRepoTransBlock,
 	QMissingRecordRepoTransBlockQId,
 	QMissingRecordRepoTransBlockQRelation,
-} from '../missingRecord/qmissingrecordrepotransblock';
+} from '../missingrecord/qmissingrecordrepotransblock';
 import {
-	RepoTransBlockSchemaToChangeECascadeGraph,
+	RepoTransBlockSchemaToChangeGraph,
 	RepoTransBlockSchemaToChangeEId,
 	RepoTransBlockSchemaToChangeEOptionalId,
 	RepoTransBlockSchemaToChangeEUpdateProperties,
@@ -165,14 +165,24 @@ export interface RepositoryTransactionBlockEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryTransactionBlockECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	repositoryTransactionHistory?: RepositoryTransactionHistoryECascadeGraph;
-	sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockECascadeGraph;
-	sharingMessageRepoTransBlocks?: SharingMessageRepoTransBlockECascadeGraph;
-	missingRecordRepoTransBlocks?: MissingRecordRepoTransBlockECascadeGraph;
-	repoTransBlockSchemasToChange?: RepoTransBlockSchemaToChangeECascadeGraph;
+export interface RepositoryTransactionBlockGraph
+	extends IEntitySelectProperties, RepositoryTransactionBlockEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	sourceId?: number | IQNumberField;
+	hash?: string | IQStringField;
+	syncOutcomeType?: number | IQNumberField;
+	contents?: string | IQStringField;
+
+	// Relations
+	source?: TerminalGraph;
+	repository?: RepositoryGraph;
+	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
+	sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockGraph[];
+	sharingMessageRepoTransBlocks?: SharingMessageRepoTransBlockGraph[];
+	missingRecordRepoTransBlocks?: MissingRecordRepoTransBlockGraph[];
+	repoTransBlockSchemasToChange?: RepoTransBlockSchemaToChangeGraph[];
 
 }
 

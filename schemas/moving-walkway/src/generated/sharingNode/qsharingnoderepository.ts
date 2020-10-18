@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	SharingNodeECascadeGraph,
+	SharingNodeGraph,
 	SharingNodeEId,
 	SharingNodeEOptionalId,
 	SharingNodeEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QSharingNodeQRelation,
 } from './qsharingnode';
 import {
-	RepositoryECascadeGraph,
+	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -110,9 +110,18 @@ export interface SharingNodeRepositoryEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SharingNodeRepositoryECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface SharingNodeRepositoryGraph
+	extends IEntitySelectProperties, SharingNodeRepositoryEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	agtRepositoryId?: number | IQNumberField;
+	advisedSyncPriority?: number | IQNumberField;
+	repositorySyncStatus?: number | IQNumberField;
+
+	// Relations
+	sharingNode?: SharingNodeGraph;
+	repository?: RepositoryGraph;
 
 }
 

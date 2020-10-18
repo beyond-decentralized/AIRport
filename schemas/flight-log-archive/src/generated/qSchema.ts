@@ -12,12 +12,14 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { DailySyncLog } from '../ddl/DailySyncLog';
 import { QDailySyncLog } from './qdailysynclog';
-import { Log } from '../ddl/log/Log';
 import { QLog } from './log/qlog';
-import { MonthlySyncLog } from '../ddl/MonthlySyncLog';
 import { QMonthlySyncLog } from './qmonthlysynclog';
+import {
+  DailySyncLog,
+  Log,
+  MonthlySyncLog
+} from '../ddl/ddl';
 
 export interface LocalQSchema extends AirportQSchema {
 
@@ -37,7 +39,7 @@ const __constructors__ = {
 
 export const Q_SCHEMA: LocalQSchema = <any>{
 	__constructors__,
-  domain: 'npmjs.org',
+  domain: 'air',
   name: '@airport/flight-log-archive'
 };
 export const Q: LocalQSchema = Q_SCHEMA

@@ -2,9 +2,7 @@ import { AIR_DB } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
-import { DailySyncLog } from '../ddl/DailySyncLog';
-import { Log } from '../ddl/log/Log';
-import { MonthlySyncLog } from '../ddl/MonthlySyncLog';
+import { DailySyncLog, Log, MonthlySyncLog } from '../ddl/ddl';
 const __constructors__ = {
     DailySyncLog: DailySyncLog,
     Log: Log,
@@ -12,7 +10,7 @@ const __constructors__ = {
 };
 export const Q_SCHEMA = {
     __constructors__,
-    domain: 'npmjs.org',
+    domain: 'air',
     name: '@airport/flight-log-archive'
 };
 export const Q = Q_SCHEMA;

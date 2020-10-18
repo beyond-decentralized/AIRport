@@ -1,4 +1,5 @@
 //////////////////////////////
 //     ENTITY INTERFACE     //
 //////////////////////////////
+export {};
 //# sourceMappingURL=repotransblockresponsestage.js.map

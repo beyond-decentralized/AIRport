@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { ApplicationPackageEOptionalId, ApplicationPackageESelect, QApplicationPackageQRelation, PackagedUnitEOptionalId, PackagedUnitESelect, QPackagedUnitQRelation } from '@airport/territory';
-import { LogEntryECascadeGraph, LogEntryESelect, QLogEntry } from './qlogentry';
+import { ApplicationPackageGraph, ApplicationPackageEOptionalId, ApplicationPackageESelect, QApplicationPackageQRelation, PackagedUnitGraph, PackagedUnitEOptionalId, PackagedUnitESelect, QPackagedUnitQRelation } from '@airport/territory';
+import { LogEntryGraph, LogEntryESelect, QLogEntry } from './qlogentry';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -35,8 +35,12 @@ export interface LogEntryTypeEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface LogEntryTypeECascadeGraph extends IEntityCascadeGraph {
-    logEntries?: LogEntryECascadeGraph;
+export interface LogEntryTypeGraph extends IEntitySelectProperties, LogEntryTypeEOptionalId, IEntityCascadeGraph {
+    level?: number | IQNumberField;
+    text?: string | IQStringField;
+    applicationPackage?: ApplicationPackageGraph;
+    packagedUnit?: PackagedUnitGraph;
+    logEntries?: LogEntryGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -73,3 +77,4 @@ export interface QLogEntryTypeQId {
 }
 export interface QLogEntryTypeQRelation extends IQRelation<QLogEntryType>, QLogEntryTypeQId {
 }
+//# sourceMappingURL=qlogentrytype.d.ts.map

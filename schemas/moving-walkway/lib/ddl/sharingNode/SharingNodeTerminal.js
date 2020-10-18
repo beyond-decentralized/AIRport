@@ -4,6 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+import { DbString } from '@airport/air-control';
 import { Column, DbNumber, Id, JoinColumn, ManyToOne } from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
 import { Entity, Table } from "@airport/air-control/lib/impl/core/entity/metadata/EntityDecorators";
 let SharingNodeTerminal = class SharingNodeTerminal {
@@ -23,14 +24,17 @@ __decorate([
     })
 ], SharingNodeTerminal.prototype, "terminal", void 0);
 __decorate([
-    Column({ name: "AGT_TERMINAL_ID" })
+    Column({ name: "AGT_TERMINAL_ID" }),
+    DbNumber()
 ], SharingNodeTerminal.prototype, "agtTerminalId", void 0);
 __decorate([
-    Column({ name: "TERMINAL_PASSWORD" })
+    Column({ name: "TERMINAL_PASSWORD" }),
+    DbString()
 ], SharingNodeTerminal.prototype, "agtTerminalPassword", void 0);
 __decorate([
     DbNumber(),
-    Column({ name: "TERMINAL_SYNC_STATUS" })
+    Column({ name: "TERMINAL_SYNC_STATUS" }),
+    DbNumber()
 ], SharingNodeTerminal.prototype, "terminalSyncStatus", void 0);
 SharingNodeTerminal = __decorate([
     Entity(),

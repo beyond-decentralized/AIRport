@@ -1,9 +1,9 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
-import { TerminalRepositoryECascadeGraph, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
-import { TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
-import { ServerEOptionalId, ServerESelect, QServerQRelation } from '../server/qserver';
-import { SyncLogECascadeGraph, SyncLogESelect, QSyncLog } from './qsynclog';
+import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
+import { TerminalRepositoryGraph, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
+import { TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
+import { ServerGraph, ServerEOptionalId, ServerESelect, QServerQRelation } from '../server/qserver';
+import { SyncLogGraph, SyncLogESelect, QSyncLog } from './qsynclog';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -45,9 +45,16 @@ export interface AgtRepositoryTransactionBlockEUpdateProperties extends IEntityU
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface AgtRepositoryTransactionBlockECascadeGraph extends IEntityCascadeGraph {
-    terminalRepositories?: TerminalRepositoryECascadeGraph;
-    syncLogs?: SyncLogECascadeGraph;
+export interface AgtRepositoryTransactionBlockGraph extends IEntitySelectProperties, AgtRepositoryTransactionBlockEOptionalId, IEntityCascadeGraph {
+    archivingStatus?: number | IQNumberField;
+    addDatetime?: number | IQNumberField;
+    tmRepositoryTransactionBlockId?: number | IQNumberField;
+    contents?: string | IQStringField;
+    repository?: RepositoryGraph;
+    terminalRepositories?: TerminalRepositoryGraph[];
+    terminal?: TerminalGraph;
+    archivingServer?: ServerGraph;
+    syncLogs?: SyncLogGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).

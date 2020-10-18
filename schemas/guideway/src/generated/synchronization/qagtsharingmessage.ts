@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	TerminalECascadeGraph,
+	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QTerminalQRelation,
 } from '../terminal/qterminal';
 import {
-	SyncLogECascadeGraph,
+	SyncLogGraph,
 	SyncLogEId,
 	SyncLogEOptionalId,
 	SyncLogEUpdateProperties,
@@ -107,10 +107,17 @@ export interface AgtSharingMessageEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface AgtSharingMessageECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	syncLogs?: SyncLogECascadeGraph;
+export interface AgtSharingMessageGraph
+	extends IEntitySelectProperties, AgtSharingMessageEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	tmSharingMessageId?: number | IQNumberField;
+	acknowledged?: number | IQNumberField;
+
+	// Relations
+	terminal?: TerminalGraph;
+	syncLogs?: SyncLogGraph[];
 
 }
 

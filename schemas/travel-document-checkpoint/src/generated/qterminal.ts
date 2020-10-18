@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	UserECascadeGraph,
+	UserGraph,
 	UserEId,
 	UserEOptionalId,
 	UserEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QUserQRelation,
 } from './quser';
 import {
-	TerminalAgtECascadeGraph,
+	TerminalAgtGraph,
 	TerminalAgtEId,
 	TerminalAgtEOptionalId,
 	TerminalAgtEUpdateProperties,
@@ -42,7 +42,7 @@ import {
 	QTerminalAgtQRelation,
 } from './qterminalagt';
 import {
-	UserTerminalECascadeGraph,
+	UserTerminalGraph,
 	UserTerminalEId,
 	UserTerminalEOptionalId,
 	UserTerminalEUpdateProperties,
@@ -52,7 +52,7 @@ import {
 	QUserTerminalQRelation,
 } from './quserterminal';
 import {
-	UserTerminalAgtECascadeGraph,
+	UserTerminalAgtGraph,
 	UserTerminalAgtEId,
 	UserTerminalAgtEOptionalId,
 	UserTerminalAgtEUpdateProperties,
@@ -131,12 +131,20 @@ export interface TerminalEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface TerminalECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	terminalAgts?: TerminalAgtECascadeGraph;
-	userTerminal?: UserTerminalECascadeGraph;
-	userTerminalAgt?: UserTerminalAgtECascadeGraph;
+export interface TerminalGraph
+	extends IEntitySelectProperties, TerminalEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	name?: string | IQStringField;
+	secondId?: number | IQNumberField;
+	isLocal?: boolean | IQBooleanField;
+
+	// Relations
+	owner?: UserGraph;
+	terminalAgts?: TerminalAgtGraph[];
+	userTerminal?: UserTerminalGraph[];
+	userTerminalAgt?: UserTerminalAgtGraph[];
 
 }
 

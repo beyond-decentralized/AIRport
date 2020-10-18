@@ -1,4 +1,6 @@
 import {
+	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
@@ -6,7 +8,7 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-}                           from "@airport/air-control";
+} from '@airport/air-control'
 import {
 	ApplicationId,
 	ApplicationName
@@ -21,8 +23,10 @@ export class Application {
 
 	@Id()
 	@GeneratedValue()
+	@DbNumber()
 	id: ApplicationId
 
+	@DbString()
 	name: ApplicationName
 
 	@ManyToOne()

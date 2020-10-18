@@ -1,7 +1,7 @@
-import { AgtSharingMessageId, TmSharingMessageId } from "@airport/arrivals-n-departures";
-import { DataOrigin } from "../..";
-import { SharingNode } from "../sharingNode/SharingNode";
-import { SharingMessageRepoTransBlock } from "./SharingMessageRepoTransBlock";
+import { AgtSharingMessageId, TmSharingMessageId } from '@airport/arrivals-n-departures';
+import { DataOrigin } from '../..';
+import { SharingNode } from '../sharingNode/SharingNode';
+import { SharingMessageRepoTransBlock } from './SharingMessageRepoTransBlock';
 export declare type SharingMessageSyncTimestamp = Date;
 export declare type SharingMessageDataCache = string;
 /**

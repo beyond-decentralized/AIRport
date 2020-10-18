@@ -1,5 +1,5 @@
 export const SCHEMA = {
-    "domain": "npmjs.org",
+    "domain": "air",
     "index": null,
     "name": "@airport/territory",
     "sinceVersion": 1,

@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SCHEMA = {
-    "domain": "npmjs.org",
+export const SCHEMA = {
+    "domain": "air",
     "index": null,
     "name": "@airport/point-of-destination",
     "sinceVersion": 1,
@@ -154,7 +152,7 @@ exports.SCHEMA = {
             "integerVersion": 1,
             "referencedSchemas": [
                 {
-                    "domain": "npmjs.org",
+                    "domain": "air",
                     "index": 0,
                     "name": "@airport/guideway",
                     "sinceVersion": 1,

@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation } from './qdailyarchivelog';
-import { TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '../terminal/qterminal';
+import { DailyArchiveLogGraph, DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation } from './qdailyarchivelog';
+import { TerminalGraph, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '../terminal/qterminal';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -32,7 +32,10 @@ export interface DailyTerminalSyncLogEUpdateProperties extends IEntityUpdateProp
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface DailyTerminalSyncLogECascadeGraph extends IEntityCascadeGraph {
+export interface DailyTerminalSyncLogGraph extends IEntitySelectProperties, DailyTerminalSyncLogEOptionalId, IEntityCascadeGraph {
+    acknowledged?: number | IQNumberField;
+    dailyArchiveLog?: DailyArchiveLogGraph;
+    terminal?: TerminalGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

@@ -1,3 +1,2 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+export * from './dailyarchive';
 //# sourceMappingURL=interfaces.js.map

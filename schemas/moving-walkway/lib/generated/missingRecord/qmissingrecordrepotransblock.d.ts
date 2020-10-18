@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { MissingRecordEOptionalId, MissingRecordESelect, QMissingRecordQRelation } from './qmissingrecord';
-import { RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQRelation } from '../repositoryTransactionBlock/qrepositorytransactionblock';
+import { MissingRecordGraph, MissingRecordEOptionalId, MissingRecordESelect, QMissingRecordQRelation } from './qmissingrecord';
+import { RepositoryTransactionBlockGraph, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQRelation } from '../repositorytransactionblock/qrepositorytransactionblock';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -28,7 +28,9 @@ export interface MissingRecordRepoTransBlockEUpdateProperties extends IEntityUpd
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MissingRecordRepoTransBlockECascadeGraph extends IEntityCascadeGraph {
+export interface MissingRecordRepoTransBlockGraph extends IEntitySelectProperties, MissingRecordRepoTransBlockEOptionalId, IEntityCascadeGraph {
+    missingRecord?: MissingRecordGraph;
+    repositoryTransactionBlock?: RepositoryTransactionBlockGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

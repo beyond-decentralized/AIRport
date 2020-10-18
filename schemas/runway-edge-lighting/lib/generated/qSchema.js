@@ -1,36 +1,28 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const air_control_1 = require("@airport/air-control");
-const check_in_1 = require("@airport/check-in");
-const di_1 = require("@airport/di");
-const ground_control_1 = require("@airport/ground-control");
-const LogEntry_1 = require("../ddl/LogEntry");
-const LogEntryType_1 = require("../ddl/LogEntryType");
-const LogEntryValue_1 = require("../ddl/LogEntryValue");
-const LoggedError_1 = require("../ddl/LoggedError");
-const LoggedErrorStackTrace_1 = require("../ddl/LoggedErrorStackTrace");
+import { AIR_DB } from '@airport/air-control';
+import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
+import { DI } from '@airport/di';
+import { getSchemaName } from '@airport/ground-control';
+import { LogEntry, LogEntryType, LogEntryValue, LoggedError, LoggedErrorStackTrace } from '../ddl/ddl';
 const __constructors__ = {
-    LogEntry: LogEntry_1.LogEntry,
-    LogEntryType: LogEntryType_1.LogEntryType,
-    LogEntryValue: LogEntryValue_1.LogEntryValue,
-    LoggedError: LoggedError_1.LoggedError,
-    LoggedErrorStackTrace: LoggedErrorStackTrace_1.LoggedErrorStackTrace
+    LogEntry: LogEntry,
+    LogEntryType: LogEntryType,
+    LogEntryValue: LogEntryValue,
+    LoggedError: LoggedError,
+    LoggedErrorStackTrace: LoggedErrorStackTrace
 };
-exports.Q_SCHEMA = {
+export const Q_SCHEMA = {
     __constructors__,
-    domain: 'npmjs.org',
+    domain: 'air',
     name: '@airport/runway-edge-lighting'
 };
-exports.Q = exports.Q_SCHEMA;
-function diSet(dbEntityId) {
-    return check_in_1.diSet(exports.Q.__dbSchema__, dbEntityId);
+export const Q = Q_SCHEMA;
+export function diSet(dbEntityId) {
+    return dS(Q.__dbSchema__, dbEntityId);
 }
-exports.diSet = diSet;
-function duoDiSet(dbEntityId) {
-    return check_in_1.duoDiSet(exports.Q.__dbSchema__, dbEntityId);
+export function duoDiSet(dbEntityId) {
+    return ddS(Q.__dbSchema__, dbEntityId);
 }
-exports.duoDiSet = duoDiSet;
-di_1.DI.db().get(air_control_1.AIR_DB).then((airDb) => {
-    airDb.QM[ground_control_1.getSchemaName(exports.Q_SCHEMA)] = exports.Q;
+DI.db().get(AIR_DB).then((airDb) => {
+    airDb.QM[getSchemaName(Q_SCHEMA)] = Q;
 });
 //# sourceMappingURL=qSchema.js.map

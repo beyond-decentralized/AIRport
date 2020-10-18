@@ -1,8 +1,8 @@
 import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField } from '@airport/air-control';
-import { VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
-import { SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
-import { SchemaPropertyColumnESelect, QSchemaPropertyColumn } from './qschemapropertycolumn';
-import { SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
+import { VersionedSchemaObjectGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
+import { SchemaEntityGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
+import { SchemaPropertyColumnGraph, SchemaPropertyColumnESelect, QSchemaPropertyColumn } from './qschemapropertycolumn';
+import { SchemaRelationGraph, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -38,13 +38,13 @@ export interface SchemaPropertyEUpdateProperties extends VersionedSchemaObjectEU
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaPropertyECascadeGraph extends VersionedSchemaObjectESelect, SchemaPropertyEOptionalId, VersionedSchemaObjectECascadeGraph {
+export interface SchemaPropertyGraph extends VersionedSchemaObjectESelect, SchemaPropertyEOptionalId, VersionedSchemaObjectGraph {
     index?: number | IQNumberField;
     name?: string | IQStringField;
     isId?: boolean | IQBooleanField;
-    entity?: SchemaEntityESelect;
-    propertyColumns?: SchemaPropertyColumnESelect;
-    relation?: SchemaRelationESelect;
+    entity?: SchemaEntityGraph;
+    propertyColumns?: SchemaPropertyColumnGraph[];
+    relation?: SchemaRelationGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).

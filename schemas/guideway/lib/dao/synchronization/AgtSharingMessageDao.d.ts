@@ -1,7 +1,11 @@
 import { AgtRepositoryId, AgtSharingMessageId, TerminalId, TmSharingMessageId } from '@airport/arrivals-n-departures';
 import { AgtRepositoryTransactionBlockAddDatetime, AgtSharingMessageAcknowledged } from '../../ddl/ddl';
 import { BaseAgtSharingMessageDao, IBaseAgtSharingMessageDao } from '../../generated/generated';
-export declare type InsertAgtSharingMessage = [TerminalId, TmSharingMessageId, AgtSharingMessageAcknowledged];
+export declare type InsertAgtSharingMessage = [
+    TerminalId,
+    TmSharingMessageId,
+    AgtSharingMessageAcknowledged
+];
 export interface IAgtSharingMessageDao extends IBaseAgtSharingMessageDao {
     insertValues(values: InsertAgtSharingMessage[]): Promise<Map<TerminalId, AgtSharingMessageId>>;
     findNotSyncedByIdIn(agtSharingMessageIds: AgtSharingMessageId[]): Promise<Map<TerminalId, Set<AgtSharingMessageId>>>;

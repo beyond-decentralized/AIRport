@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	AgtSharingMessageECascadeGraph,
+	AgtSharingMessageGraph,
 	AgtSharingMessageEId,
 	AgtSharingMessageEOptionalId,
 	AgtSharingMessageEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QAgtSharingMessageQRelation,
 } from './qagtsharingmessage';
 import {
-	AgtRepositoryTransactionBlockECascadeGraph,
+	AgtRepositoryTransactionBlockGraph,
 	AgtRepositoryTransactionBlockEId,
 	AgtRepositoryTransactionBlockEOptionalId,
 	AgtRepositoryTransactionBlockEUpdateProperties,
@@ -104,9 +104,15 @@ export interface SyncLogEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SyncLogECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface SyncLogGraph
+	extends IEntitySelectProperties, SyncLogEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+
+	// Relations
+	sharingMessage?: AgtSharingMessageGraph;
+	repositoryTransactionBlock?: AgtRepositoryTransactionBlockGraph;
 
 }
 

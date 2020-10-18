@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	VersionedSchemaObjectECascadeGraph,
+	VersionedSchemaObjectGraph,
 	VersionedSchemaObjectEId,
 	VersionedSchemaObjectEUpdateColumns,
 	VersionedSchemaObjectEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QVersionedSchemaObject,
 } from './qversionedschemaobject';
 import {
-	SchemaColumnECascadeGraph,
+	SchemaColumnGraph,
 	SchemaColumnEId,
 	SchemaColumnEOptionalId,
 	SchemaColumnEUpdateProperties,
@@ -42,7 +42,7 @@ import {
 	QSchemaColumnQRelation,
 } from './qschemacolumn';
 import {
-	SchemaPropertyECascadeGraph,
+	SchemaPropertyGraph,
 	SchemaPropertyEId,
 	SchemaPropertyEOptionalId,
 	SchemaPropertyEUpdateProperties,
@@ -114,17 +114,15 @@ export interface SchemaPropertyColumnEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaPropertyColumnECascadeGraph
-	extends VersionedSchemaObjectESelect, SchemaPropertyColumnEOptionalId, VersionedSchemaObjectECascadeGraph {
+export interface SchemaPropertyColumnGraph
+	extends VersionedSchemaObjectESelect, SchemaPropertyColumnEOptionalId, VersionedSchemaObjectGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 
-	// Id Relations - full property interfaces
-	column?: SchemaColumnESelect;
-	property?: SchemaPropertyESelect;
-
-  // Non-Id relations (including OneToMany's)
+	// Relations
+	column?: SchemaColumnGraph;
+	property?: SchemaPropertyGraph;
 
 }
 

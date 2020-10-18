@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { LogEntryEId, LogEntryEOptionalId, LogEntryESelect, QLogEntryQId, QLogEntryQRelation } from './qlogentry';
-import { LoggedErrorStackTraceEOptionalId, LoggedErrorStackTraceESelect, QLoggedErrorStackTraceQRelation } from './qloggederrorstacktrace';
+import { LogEntryGraph, LogEntryEId, LogEntryEOptionalId, LogEntryESelect, QLogEntryQId, QLogEntryQRelation } from './qlogentry';
+import { LoggedErrorStackTraceGraph, LoggedErrorStackTraceEOptionalId, LoggedErrorStackTraceESelect, QLoggedErrorStackTraceQRelation } from './qloggederrorstacktrace';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -29,7 +29,9 @@ export interface LoggedErrorEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface LoggedErrorECascadeGraph extends IEntityCascadeGraph {
+export interface LoggedErrorGraph extends IEntitySelectProperties, LoggedErrorEOptionalId, IEntityCascadeGraph {
+    logEntry?: LogEntryGraph;
+    stackTrace?: LoggedErrorStackTraceGraph;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -59,3 +61,4 @@ export interface QLoggedErrorQId {
 }
 export interface QLoggedErrorQRelation extends IQRelation<QLoggedError>, QLoggedErrorQId {
 }
+//# sourceMappingURL=qloggederror.d.ts.map

@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
-import { SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQRelation } from '@airport/traffic-pattern';
-import { RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
+import { SchemaVersionGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, SchemaEntityGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation, SchemaColumnGraph, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQRelation } from '@airport/traffic-pattern';
+import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -40,7 +40,14 @@ export interface RecordUpdateStageEUpdateProperties extends IEntityUpdatePropert
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RecordUpdateStageECascadeGraph extends IEntityCascadeGraph {
+export interface RecordUpdateStageGraph extends IEntitySelectProperties, RecordUpdateStageEOptionalId, IEntityCascadeGraph {
+    actorRecordId?: number | IQNumberField;
+    updatedValue?: any | IQUntypedField;
+    schemaVersion?: SchemaVersionGraph;
+    entity?: SchemaEntityGraph;
+    repository?: RepositoryGraph;
+    actor?: ActorGraph;
+    column?: SchemaColumnGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

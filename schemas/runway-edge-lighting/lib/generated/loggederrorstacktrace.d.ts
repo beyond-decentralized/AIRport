@@ -3,3 +3,4 @@ export interface ILoggedErrorStackTrace {
     stackHash?: string;
     stack?: string;
 }
+//# sourceMappingURL=loggederrorstacktrace.d.ts.map

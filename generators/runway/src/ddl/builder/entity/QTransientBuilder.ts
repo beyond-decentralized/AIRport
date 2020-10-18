@@ -24,7 +24,14 @@ export class QTransientBuilder {
 			}
 		}
 
-		return `${prop.name}?: I${prop.type};`;
+		let type = prop.type;
+		if(type.indexOf(']: ') > -1) {
+				type = type.replace(/\]\: (?!.*\]\: )/, "]: I");
+		} else {
+			type = `I${type}`
+		}
+
+		return `${prop.name}?: ${prop.type};`;
 	}
 
 }

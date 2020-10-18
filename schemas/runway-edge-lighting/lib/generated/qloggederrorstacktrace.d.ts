@@ -28,7 +28,9 @@ export interface LoggedErrorStackTraceEUpdateProperties extends IEntityUpdatePro
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface LoggedErrorStackTraceECascadeGraph extends IEntityCascadeGraph {
+export interface LoggedErrorStackTraceGraph extends IEntitySelectProperties, LoggedErrorStackTraceEOptionalId, IEntityCascadeGraph {
+    stackHash?: string | IQStringField;
+    stack?: string | IQStringField;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -60,3 +62,4 @@ export interface QLoggedErrorStackTraceQId {
 }
 export interface QLoggedErrorStackTraceQRelation extends IQRelation<QLoggedErrorStackTrace>, QLoggedErrorStackTraceQId {
 }
+//# sourceMappingURL=qloggederrorstacktrace.d.ts.map

@@ -86,9 +86,14 @@ export interface TuningParametersEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface TuningParametersECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface TuningParametersGraph
+	extends IEntitySelectProperties, TuningParametersEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	parameterValue?: string | IQStringField;
+
+	// Relations
 
 }
 

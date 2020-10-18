@@ -1,10 +1,10 @@
 import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, TableConfiguration } from '@airport/air-control';
-import { VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
-import { SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
-import { SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
-import { SchemaOperationESelect, QSchemaOperation } from './qschemaoperation';
-import { SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';
-import { SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
+import { VersionedSchemaObjectGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
+import { SchemaVersionGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation } from './qschemaversion';
+import { SchemaColumnGraph, SchemaColumnESelect, QSchemaColumn } from './qschemacolumn';
+import { SchemaOperationGraph, SchemaOperationESelect, QSchemaOperation } from './qschemaoperation';
+import { SchemaPropertyGraph, SchemaPropertyESelect, QSchemaProperty } from './qschemaproperty';
+import { SchemaRelationGraph, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -47,18 +47,18 @@ export interface SchemaEntityEUpdateProperties extends VersionedSchemaObjectEUpd
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaEntityECascadeGraph extends VersionedSchemaObjectESelect, SchemaEntityEOptionalId, VersionedSchemaObjectECascadeGraph {
+export interface SchemaEntityGraph extends VersionedSchemaObjectESelect, SchemaEntityEOptionalId, VersionedSchemaObjectGraph {
     index?: number | IQNumberField;
     isLocal?: boolean | IQBooleanField;
     isRepositoryEntity?: boolean | IQBooleanField;
     name?: string | IQStringField;
     tableConfig?: TableConfiguration | IQStringField;
-    schemaVersion?: SchemaVersionESelect;
-    columns?: SchemaColumnESelect;
-    operations?: SchemaOperationESelect;
-    properties?: SchemaPropertyESelect;
-    relations?: SchemaRelationESelect;
-    relationReferences?: SchemaRelationESelect;
+    schemaVersion?: SchemaVersionGraph;
+    columns?: SchemaColumnGraph[];
+    operations?: SchemaOperationGraph[];
+    properties?: SchemaPropertyGraph[];
+    relations?: SchemaRelationGraph[];
+    relationReferences?: SchemaRelationGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).

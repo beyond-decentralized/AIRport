@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	DomainECascadeGraph,
+	DomainGraph,
 	DomainEId,
 	DomainEOptionalId,
 	DomainEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QDomainQRelation,
 } from '@airport/territory';
 import {
-	SchemaVersionECascadeGraph,
+	SchemaVersionGraph,
 	SchemaVersionEId,
 	SchemaVersionEOptionalId,
 	SchemaVersionEUpdateProperties,
@@ -111,7 +111,7 @@ export interface SchemaEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaECascadeGraph
+export interface SchemaGraph
 	extends IEntitySelectProperties, SchemaEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
@@ -120,12 +120,10 @@ export interface SchemaECascadeGraph
 	name?: string | IQStringField;
 	status?: number | IQNumberField;
 
-	// Id Relations - full property interfaces
-
-  // Non-Id relations (including OneToMany's)
-	domain?: DomainESelect;
-	versions?: SchemaVersionESelect;
-	currentVersion?: SchemaVersionESelect;
+	// Relations
+	domain?: DomainGraph;
+	versions?: SchemaVersionGraph[];
+	currentVersion?: SchemaVersionGraph;
 
 }
 

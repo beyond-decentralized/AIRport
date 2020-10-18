@@ -84,9 +84,15 @@ export interface LoggedErrorStackTraceEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface LoggedErrorStackTraceECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface LoggedErrorStackTraceGraph
+	extends IEntitySelectProperties, LoggedErrorStackTraceEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	stackHash?: string | IQStringField;
+	stack?: string | IQStringField;
+
+	// Relations
 
 }
 

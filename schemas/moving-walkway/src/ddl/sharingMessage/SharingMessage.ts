@@ -9,14 +9,14 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-}                                     from "@airport/air-control";
+}                                     from '@airport/air-control'
 import {
 	AgtSharingMessageId,
 	TmSharingMessageId
-}                                     from "@airport/arrivals-n-departures";
-import {DataOrigin}                   from "../..";
-import {SharingNode}                  from "../sharingNode/SharingNode";
-import {SharingMessageRepoTransBlock} from "./SharingMessageRepoTransBlock";
+}                                     from '@airport/arrivals-n-departures'
+import {DataOrigin}                   from '../..'
+import {SharingNode}                  from '../sharingNode/SharingNode'
+import {SharingMessageRepoTransBlock} from './SharingMessageRepoTransBlock'
 
 // export type SharingMessageTransmissionRetryCount = number;
 export type SharingMessageSyncTimestamp = Date;
@@ -68,26 +68,28 @@ export type SharingMessageDataCache = string;
  * the latest possible snapshot of the data.
  */
 @Entity()
-@Table({name: "SHARING_MESSAGES"})
+@Table({name: 'SHARING_MESSAGES'})
 export class SharingMessage {
 
 	@Id()
 	@GeneratedValue()
-	id: TmSharingMessageId;
+	@DbNumber()
+	id: TmSharingMessageId
 
 	@Id()
 	@ManyToOne()
 	@JoinColumn({
-		name: "SHARING_NODE_ID", referencedColumnName: "ID"
+		name: 'SHARING_NODE_ID', referencedColumnName: 'ID'
 	})
-	sharingNode: SharingNode;
+	sharingNode: SharingNode
 
 	@DbNumber()
-	origin: DataOrigin;
+	origin: DataOrigin
 
 	// Needed to ACK back the fact that the message was synced
-	@Column({name: "AGT_SHARING_MESSAGE_ID"})
-	agtSharingMessageId: AgtSharingMessageId;
+	@Column({name: 'AGT_SHARING_MESSAGE_ID'})
+	@DbNumber()
+	agtSharingMessageId: AgtSharingMessageId
 
 	/* Merged with RepoTransBlockSyncOutcomeType
 		@Column({name: "PROCESSING_STATUS"})
@@ -95,12 +97,12 @@ export class SharingMessage {
 		processingStatus: SharingMessageProcessingStatus;
 		*/
 
-	@Column({name: "SYNC_TIMESTAMP"})
+	@Column({name: 'SYNC_TIMESTAMP'})
 	@DbDate()
-	syncTimestamp: SharingMessageSyncTimestamp;
+	syncTimestamp: SharingMessageSyncTimestamp
 
-	@OneToMany({mappedBy: "sharingMessage"})
-	sharingMessageRepoTransBlocks: SharingMessageRepoTransBlock[];
+	@OneToMany({mappedBy: 'sharingMessage'})
+	sharingMessageRepoTransBlocks: SharingMessageRepoTransBlock[]
 
 	// Moved to RTB
 	// @OneToMany({mappedBy: "sharingMessage"})

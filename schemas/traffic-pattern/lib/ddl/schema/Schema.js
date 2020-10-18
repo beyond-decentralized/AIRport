@@ -45,4 +45,4 @@ Schema = __decorate([
     })
 ], Schema);
 export { Schema };
-//# sourceMappingURL=schema.js.map
+//# sourceMappingURL=Schema.js.map

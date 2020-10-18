@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	VersionedSchemaObjectECascadeGraph,
+	VersionedSchemaObjectGraph,
 	VersionedSchemaObjectEId,
 	VersionedSchemaObjectEUpdateColumns,
 	VersionedSchemaObjectEUpdateProperties,
@@ -35,7 +35,7 @@ import {
 	Operation_Rule,
 } from '@airport/ground-control';
 import {
-	SchemaEntityECascadeGraph,
+	SchemaEntityGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
 	SchemaEntityEUpdateProperties,
@@ -111,8 +111,8 @@ export interface SchemaOperationEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaOperationECascadeGraph
-	extends VersionedSchemaObjectESelect, SchemaOperationEOptionalId, VersionedSchemaObjectECascadeGraph {
+export interface SchemaOperationGraph
+	extends VersionedSchemaObjectESelect, SchemaOperationEOptionalId, VersionedSchemaObjectGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
@@ -120,10 +120,8 @@ export interface SchemaOperationECascadeGraph
 	name?: string | IQStringField;
 	rule?: Operation_Rule | IQStringField;
 
-	// Id Relations - full property interfaces
-
-  // Non-Id relations (including OneToMany's)
-	entity?: SchemaEntityESelect;
+	// Relations
+	entity?: SchemaEntityGraph;
 
 }
 

@@ -22,7 +22,7 @@ export interface LogEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface LogECascadeGraph extends IEntityCascadeGraph {
+export interface LogGraph extends IEntitySelectProperties, LogEOptionalId, IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

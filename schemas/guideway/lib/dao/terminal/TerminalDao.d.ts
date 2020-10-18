@@ -4,7 +4,11 @@ import { TerminalLastPollConnectionDatetime } from '../../ddl/ddl';
 import { BaseTerminalDao, IBaseTerminalDao } from '../../generated/baseDaos';
 export declare type TerminalKey = string;
 export interface ITerminalDao extends IBaseTerminalDao {
-    findTerminalVerificationRecords(terminalIds: TerminalId[]): Promise<Map<TerminalId, [TerminalPassword, TerminalLastPollConnectionDatetime, TerminalId]>>;
+    findTerminalVerificationRecords(terminalIds: TerminalId[]): Promise<Map<TerminalId, [
+        TerminalPassword,
+        TerminalLastPollConnectionDatetime,
+        TerminalId
+    ]>>;
     /**
      * Finds Terminals with Repository Relations and User Info,
      * via matching records in Terminal Repository Verification Stage.
@@ -19,7 +23,11 @@ export interface ITerminalDao extends IBaseTerminalDao {
     updateLastSseConnectionDatetime(terminalPasswords: TerminalPassword[]): Promise<void>;
 }
 export declare class TerminalDao extends BaseTerminalDao implements ITerminalDao {
-    findTerminalVerificationRecords(terminalIds: TerminalId[]): Promise<Map<TerminalId, [TerminalPassword, TerminalLastPollConnectionDatetime, TerminalId]>>;
+    findTerminalVerificationRecords(terminalIds: TerminalId[]): Promise<Map<TerminalId, [
+        TerminalPassword,
+        TerminalLastPollConnectionDatetime,
+        TerminalId
+    ]>>;
     findTerminalRepositoryVerificationRecords(terminalIds: TerminalId[], repositoryIds: AgtRepositoryId[]): Promise<Map<TerminalId, AgtRepositoryId>>;
     findSseLoginVerificationRecords(terminalPasswords: TerminalPassword[]): Promise<Map<TerminalPassword, ITerminal>>;
     updateLastPollConnectionDatetime(terminalIds: TerminalId[], lastPollConnectionDatetime: TerminalLastPollConnectionDatetime): Promise<void>;

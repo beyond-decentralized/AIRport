@@ -3,3 +3,4 @@ export interface ILogEntryValueDao extends IBaseLogEntryValueDao {
 }
 export declare class LogEntryValueDao extends BaseLogEntryValueDao implements ILogEntryValueDao {
 }
+//# sourceMappingURL=LogEntryValueDao.d.ts.map

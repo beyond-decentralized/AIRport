@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '@airport/guideway';
+import { DailyArchiveLogGraph, DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation, RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '@airport/guideway';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -30,7 +30,10 @@ export interface DailyArchiveEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface DailyArchiveECascadeGraph extends IEntityCascadeGraph {
+export interface DailyArchiveGraph extends IEntitySelectProperties, DailyArchiveEOptionalId, IEntityCascadeGraph {
+    repositoryData?: string | IQStringField;
+    dailyArchiveLog?: DailyArchiveLogGraph;
+    repository?: RepositoryGraph;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -61,3 +64,4 @@ export interface QDailyArchiveQId {
 }
 export interface QDailyArchiveQRelation extends IQRelation<QDailyArchive>, QDailyArchiveQId {
 }
+//# sourceMappingURL=qdailyarchive.d.ts.map

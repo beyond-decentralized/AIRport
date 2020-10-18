@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	VersionedSchemaObjectECascadeGraph,
+	VersionedSchemaObjectGraph,
 	VersionedSchemaObjectEId,
 	VersionedSchemaObjectEUpdateColumns,
 	VersionedSchemaObjectEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QVersionedSchemaObject,
 } from './qversionedschemaobject';
 import {
-	SchemaEntityECascadeGraph,
+	SchemaEntityGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
 	SchemaEntityEUpdateProperties,
@@ -42,7 +42,7 @@ import {
 	QSchemaEntityQRelation,
 } from './qschemaentity';
 import {
-	SchemaPropertyColumnECascadeGraph,
+	SchemaPropertyColumnGraph,
 	SchemaPropertyColumnEId,
 	SchemaPropertyColumnEOptionalId,
 	SchemaPropertyColumnEUpdateProperties,
@@ -52,7 +52,7 @@ import {
 	QSchemaPropertyColumnQRelation,
 } from './qschemapropertycolumn';
 import {
-	SchemaRelationColumnECascadeGraph,
+	SchemaRelationColumnGraph,
 	SchemaRelationColumnEId,
 	SchemaRelationColumnEOptionalId,
 	SchemaRelationColumnEUpdateProperties,
@@ -139,8 +139,8 @@ export interface SchemaColumnEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaColumnECascadeGraph
-	extends VersionedSchemaObjectESelect, SchemaColumnEOptionalId, VersionedSchemaObjectECascadeGraph {
+export interface SchemaColumnGraph
+	extends VersionedSchemaObjectESelect, SchemaColumnEOptionalId, VersionedSchemaObjectGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
@@ -152,13 +152,11 @@ export interface SchemaColumnECascadeGraph
 	notNull?: boolean | IQBooleanField;
 	type?: number | IQNumberField;
 
-	// Id Relations - full property interfaces
-
-  // Non-Id relations (including OneToMany's)
-	entity?: SchemaEntityESelect;
-	propertyColumns?: SchemaPropertyColumnESelect;
-	manyRelationColumns?: SchemaRelationColumnESelect;
-	oneRelationColumns?: SchemaRelationColumnESelect;
+	// Relations
+	entity?: SchemaEntityGraph;
+	propertyColumns?: SchemaPropertyColumnGraph[];
+	manyRelationColumns?: SchemaRelationColumnGraph[];
+	oneRelationColumns?: SchemaRelationColumnGraph[];
 
 }
 

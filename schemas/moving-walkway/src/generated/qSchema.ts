@@ -12,40 +12,42 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { MissingRecord } from '../ddl/missingRecord/MissingRecord';
-import { QMissingRecord } from './missingRecord/qmissingrecord';
-import { MissingRecordRepoTransBlock } from '../ddl/missingRecord/MissingRecordRepoTransBlock';
-import { QMissingRecordRepoTransBlock } from './missingRecord/qmissingrecordrepotransblock';
-import { RecordUpdateStage } from '../ddl/RecordUpdateStage';
+import { QMissingRecord } from './missingrecord/qmissingrecord';
+import { QMissingRecordRepoTransBlock } from './missingrecord/qmissingrecordrepotransblock';
 import { QRecordUpdateStage } from './qrecordupdatestage';
-import { RepoTransBlockResponseStage } from '../ddl/repositoryTransactionBlock/RepoTransBlockResponseStage';
-import { QRepoTransBlockResponseStage } from './repositoryTransactionBlock/qrepotransblockresponsestage';
-import { RepoTransBlockSchemaToChange } from '../ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange';
-import { QRepoTransBlockSchemaToChange } from './repositoryTransactionBlock/qrepotransblockschematochange';
-import { RepositoryTransactionBlock } from '../ddl/repositoryTransactionBlock/RepositoryTransactionBlock';
-import { QRepositoryTransactionBlock } from './repositoryTransactionBlock/qrepositorytransactionblock';
-import { RepositoryTransactionHistoryUpdateStage } from '../ddl/repositoryTransactionBlock/RepositoryTransactionHistoryUpdateStage';
-import { QRepositoryTransactionHistoryUpdateStage } from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage';
-import { SharingMessage } from '../ddl/sharingMessage/SharingMessage';
-import { QSharingMessage } from './sharingMessage/qsharingmessage';
-import { SharingMessageRepoTransBlock } from '../ddl/sharingMessage/SharingMessageRepoTransBlock';
-import { QSharingMessageRepoTransBlock } from './sharingMessage/qsharingmessagerepotransblock';
-import { SharingNode } from '../ddl/sharingNode/SharingNode';
-import { QSharingNode } from './sharingNode/qsharingnode';
-import { SharingNodeRepoTransBlock } from '../ddl/sharingNode/SharingNodeRepoTransBlock';
-import { QSharingNodeRepoTransBlock } from './sharingNode/qsharingnoderepotransblock';
-import { SharingNodeRepoTransBlockStage } from '../ddl/sharingNode/SharingNodeRepoTransBlockStage';
-import { QSharingNodeRepoTransBlockStage } from './sharingNode/qsharingnoderepotransblockstage';
-import { SharingNodeRepository } from '../ddl/sharingNode/SharingNodeRepository';
-import { QSharingNodeRepository } from './sharingNode/qsharingnoderepository';
-import { SharingNodeTerminal } from '../ddl/sharingNode/SharingNodeTerminal';
-import { QSharingNodeTerminal } from './sharingNode/qsharingnodeterminal';
-import { SynchronizationConflict } from '../ddl/conflict/SynchronizationConflict';
+import { QRepoTransBlockResponseStage } from './repositorytransactionblock/qrepotransblockresponsestage';
+import { QRepoTransBlockSchemaToChange } from './repositorytransactionblock/qrepotransblockschematochange';
+import { QRepositoryTransactionBlock } from './repositorytransactionblock/qrepositorytransactionblock';
+import { QRepositoryTransactionHistoryUpdateStage } from './repositorytransactionblock/qrepositorytransactionhistoryupdatestage';
+import { QSharingMessage } from './sharingmessage/qsharingmessage';
+import { QSharingMessageRepoTransBlock } from './sharingmessage/qsharingmessagerepotransblock';
+import { QSharingNode } from './sharingnode/qsharingnode';
+import { QSharingNodeRepoTransBlock } from './sharingnode/qsharingnoderepotransblock';
+import { QSharingNodeRepoTransBlockStage } from './sharingnode/qsharingnoderepotransblockstage';
+import { QSharingNodeRepository } from './sharingnode/qsharingnoderepository';
+import { QSharingNodeTerminal } from './sharingnode/qsharingnodeterminal';
 import { QSynchronizationConflict } from './conflict/qsynchronizationconflict';
-import { SynchronizationConflictPendingNotification } from '../ddl/conflict/SynchronizationConflictPendingNotification';
 import { QSynchronizationConflictPendingNotification } from './conflict/qsynchronizationconflictpendingnotification';
-import { SynchronizationConflictValues } from '../ddl/conflict/SynchronizationConflictValues';
 import { QSynchronizationConflictValues } from './conflict/qsynchronizationconflictvalues';
+import {
+  MissingRecord,
+  MissingRecordRepoTransBlock,
+  RecordUpdateStage,
+  RepoTransBlockResponseStage,
+  RepoTransBlockSchemaToChange,
+  RepositoryTransactionBlock,
+  RepositoryTransactionHistoryUpdateStage,
+  SharingMessage,
+  SharingMessageRepoTransBlock,
+  SharingNode,
+  SharingNodeRepoTransBlock,
+  SharingNodeRepoTransBlockStage,
+  SharingNodeRepository,
+  SharingNodeTerminal,
+  SynchronizationConflict,
+  SynchronizationConflictPendingNotification,
+  SynchronizationConflictValues
+} from '../ddl/ddl';
 
 export interface LocalQSchema extends AirportQSchema {
 
@@ -93,7 +95,7 @@ const __constructors__ = {
 
 export const Q_SCHEMA: LocalQSchema = <any>{
 	__constructors__,
-  domain: 'npmjs.org',
+  domain: 'air',
   name: '@airport/moving-walkway'
 };
 export const Q: LocalQSchema = Q_SCHEMA

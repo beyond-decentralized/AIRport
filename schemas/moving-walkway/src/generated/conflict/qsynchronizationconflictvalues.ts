@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	SynchronizationConflictECascadeGraph,
+	SynchronizationConflictGraph,
 	SynchronizationConflictEId,
 	SynchronizationConflictEOptionalId,
 	SynchronizationConflictEUpdateProperties,
@@ -93,9 +93,14 @@ export interface SynchronizationConflictValuesEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SynchronizationConflictValuesECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface SynchronizationConflictValuesGraph
+	extends IEntitySelectProperties, SynchronizationConflictValuesEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+
+	// Relations
+	synchronizationConflict?: SynchronizationConflictGraph;
 
 }
 

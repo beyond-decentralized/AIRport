@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	SynchronizationConflictECascadeGraph,
+	SynchronizationConflictGraph,
 	SynchronizationConflictEId,
 	SynchronizationConflictEOptionalId,
 	SynchronizationConflictEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QSynchronizationConflictQRelation,
 } from './qsynchronizationconflict';
 import {
-	ActorECascadeGraph,
+	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -106,9 +106,16 @@ export interface SynchronizationConflictPendingNotificationEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SynchronizationConflictPendingNotificationECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface SynchronizationConflictPendingNotificationGraph
+	extends IEntitySelectProperties, SynchronizationConflictPendingNotificationEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	acknowledged?: boolean | IQBooleanField;
+
+	// Relations
+	synchronizationConflict?: SynchronizationConflictGraph;
+	actor?: ActorGraph;
 
 }
 

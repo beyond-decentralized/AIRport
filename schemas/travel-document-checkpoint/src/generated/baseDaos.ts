@@ -26,7 +26,7 @@ import {
 	AgtEUpdateColumns,
 	AgtEUpdateProperties,
 	AgtEId,
-	AgtECascadeGraph,
+	AgtGraph,
 	QAgt
 } from './qagt'
 import {
@@ -39,7 +39,7 @@ import {
 	TerminalEUpdateColumns,
 	TerminalEUpdateProperties,
 	TerminalEId,
-	TerminalECascadeGraph,
+	TerminalGraph,
 	QTerminal
 } from './qterminal'
 import {
@@ -52,7 +52,7 @@ import {
 	TerminalAgtEUpdateColumns,
 	TerminalAgtEUpdateProperties,
 	TerminalAgtEId,
-	TerminalAgtECascadeGraph,
+	TerminalAgtGraph,
 	QTerminalAgt
 } from './qterminalagt'
 import {
@@ -65,7 +65,7 @@ import {
 	UserEUpdateColumns,
 	UserEUpdateProperties,
 	UserEId,
-	UserECascadeGraph,
+	UserGraph,
 	QUser
 } from './quser'
 import {
@@ -78,7 +78,7 @@ import {
 	UserTerminalEUpdateColumns,
 	UserTerminalEUpdateProperties,
 	UserTerminalEId,
-	UserTerminalECascadeGraph,
+	UserTerminalGraph,
 	QUserTerminal
 } from './quserterminal'
 import {
@@ -91,7 +91,7 @@ import {
 	UserTerminalAgtEUpdateColumns,
 	UserTerminalAgtEUpdateProperties,
 	UserTerminalAgtEId,
-	UserTerminalAgtECascadeGraph,
+	UserTerminalAgtGraph,
 	QUserTerminalAgt
 } from './quserterminalagt'
 
@@ -123,11 +123,11 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseAgtDao
-  extends IDao<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtECascadeGraph, QAgt> {
+  extends IDao<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt> {
 }
 
 export class BaseAgtDao
-  extends SQDIDao<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtECascadeGraph, QAgt>
+  extends SQDIDao<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt>
 	implements IBaseAgtDao {
 
 	static diSet(): boolean {
@@ -141,11 +141,11 @@ export class BaseAgtDao
 
 
 export interface IBaseTerminalDao
-  extends IDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalECascadeGraph, QTerminal> {
+  extends IDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal> {
 }
 
 export class BaseTerminalDao
-  extends SQDIDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalECascadeGraph, QTerminal>
+  extends SQDIDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal>
 	implements IBaseTerminalDao {
 
 	static diSet(): boolean {
@@ -159,11 +159,11 @@ export class BaseTerminalDao
 
 
 export interface IBaseTerminalAgtDao
-  extends IDao<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtECascadeGraph, QTerminalAgt> {
+  extends IDao<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtGraph, QTerminalAgt> {
 }
 
 export class BaseTerminalAgtDao
-  extends SQDIDao<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtECascadeGraph, QTerminalAgt>
+  extends SQDIDao<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtGraph, QTerminalAgt>
 	implements IBaseTerminalAgtDao {
 
 	static diSet(): boolean {
@@ -177,11 +177,11 @@ export class BaseTerminalAgtDao
 
 
 export interface IBaseUserDao
-  extends IDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserECascadeGraph, QUser> {
+  extends IDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser> {
 }
 
 export class BaseUserDao
-  extends SQDIDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserECascadeGraph, QUser>
+  extends SQDIDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser>
 	implements IBaseUserDao {
 
 	static diSet(): boolean {
@@ -195,11 +195,11 @@ export class BaseUserDao
 
 
 export interface IBaseUserTerminalDao
-  extends IDao<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalECascadeGraph, QUserTerminal> {
+  extends IDao<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal> {
 }
 
 export class BaseUserTerminalDao
-  extends SQDIDao<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalECascadeGraph, QUserTerminal>
+  extends SQDIDao<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal>
 	implements IBaseUserTerminalDao {
 
 	static diSet(): boolean {
@@ -213,11 +213,11 @@ export class BaseUserTerminalDao
 
 
 export interface IBaseUserTerminalAgtDao
-  extends IDao<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtECascadeGraph, QUserTerminalAgt> {
+  extends IDao<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtGraph, QUserTerminalAgt> {
 }
 
 export class BaseUserTerminalAgtDao
-  extends SQDIDao<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtECascadeGraph, QUserTerminalAgt>
+  extends SQDIDao<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtGraph, QUserTerminalAgt>
 	implements IBaseUserTerminalAgtDao {
 
 	static diSet(): boolean {

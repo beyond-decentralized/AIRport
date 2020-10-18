@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbDate, DbNumber, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
+import { Column, DbDate, DbNumber, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from '@airport/air-control';
 // FIXME: SECURITY - ensure that a given sharing message is processed only once by a given AGT
 /**
  * A sharing message is a record of a number of RepositoryTransactionBlocks
@@ -50,31 +50,33 @@ let SharingMessage = class SharingMessage {
 };
 __decorate([
     Id(),
-    GeneratedValue()
+    GeneratedValue(),
+    DbNumber()
 ], SharingMessage.prototype, "id", void 0);
 __decorate([
     Id(),
     ManyToOne(),
     JoinColumn({
-        name: "SHARING_NODE_ID", referencedColumnName: "ID"
+        name: 'SHARING_NODE_ID', referencedColumnName: 'ID'
     })
 ], SharingMessage.prototype, "sharingNode", void 0);
 __decorate([
     DbNumber()
 ], SharingMessage.prototype, "origin", void 0);
 __decorate([
-    Column({ name: "AGT_SHARING_MESSAGE_ID" })
+    Column({ name: 'AGT_SHARING_MESSAGE_ID' }),
+    DbNumber()
 ], SharingMessage.prototype, "agtSharingMessageId", void 0);
 __decorate([
-    Column({ name: "SYNC_TIMESTAMP" }),
+    Column({ name: 'SYNC_TIMESTAMP' }),
     DbDate()
 ], SharingMessage.prototype, "syncTimestamp", void 0);
 __decorate([
-    OneToMany({ mappedBy: "sharingMessage" })
+    OneToMany({ mappedBy: 'sharingMessage' })
 ], SharingMessage.prototype, "sharingMessageRepoTransBlocks", void 0);
 SharingMessage = __decorate([
     Entity(),
-    Table({ name: "SHARING_MESSAGES" })
+    Table({ name: 'SHARING_MESSAGES' })
 ], SharingMessage);
 export { SharingMessage };
 //# sourceMappingURL=SharingMessage.js.map

@@ -26,7 +26,7 @@ import {
 	SequenceEUpdateColumns,
 	SequenceEUpdateProperties,
 	SequenceEId,
-	SequenceECascadeGraph,
+	SequenceGraph,
 	QSequence
 } from './qsequence'
 import {
@@ -39,7 +39,7 @@ import {
 	SystemWideOperationIdEUpdateColumns,
 	SystemWideOperationIdEUpdateProperties,
 	SystemWideOperationIdEId,
-	SystemWideOperationIdECascadeGraph,
+	SystemWideOperationIdGraph,
 	QSystemWideOperationId
 } from './qsystemwideoperationid'
 import {
@@ -52,7 +52,7 @@ import {
 	TerminalRunEUpdateColumns,
 	TerminalRunEUpdateProperties,
 	TerminalRunEId,
-	TerminalRunECascadeGraph,
+	TerminalRunGraph,
 	QTerminalRun
 } from './qterminalrun'
 
@@ -84,11 +84,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseSequenceDuo
-  extends IDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceECascadeGraph, QSequence> {
+  extends IDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence> {
 }
 
 export class BaseSequenceDuo
-  extends SQDIDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceECascadeGraph, QSequence>
+  extends SQDIDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence>
 	implements IBaseSequenceDuo {
 
 	static diSet(): boolean {
@@ -102,30 +102,12 @@ export class BaseSequenceDuo
 
 
 export interface IBaseSystemWideOperationIdDuo
-  extends IDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdECascadeGraph, QSystemWideOperationId> {
+  extends IDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId> {
 }
 
 export class BaseSystemWideOperationIdDuo
-  extends SQDIDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdECascadeGraph, QSystemWideOperationId>
+  extends SQDIDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId>
 	implements IBaseSystemWideOperationIdDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(1)
-	}
-	
-	constructor() {
-		super(1)
-	}
-}
-
-
-export interface IBaseTerminalRunDuo
-  extends IDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunECascadeGraph, QTerminalRun> {
-}
-
-export class BaseTerminalRunDuo
-  extends SQDIDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunECascadeGraph, QTerminalRun>
-	implements IBaseTerminalRunDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(2)
@@ -133,5 +115,23 @@ export class BaseTerminalRunDuo
 	
 	constructor() {
 		super(2)
+	}
+}
+
+
+export interface IBaseTerminalRunDuo
+  extends IDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun> {
+}
+
+export class BaseTerminalRunDuo
+  extends SQDIDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun>
+	implements IBaseTerminalRunDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(1)
+	}
+	
+	constructor() {
+		super(1)
 	}
 }

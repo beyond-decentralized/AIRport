@@ -4,3 +4,4 @@ export interface ILoggedError {
     logEntry: ILogEntry;
     stackTrace?: ILoggedErrorStackTrace;
 }
+//# sourceMappingURL=loggederror.d.ts.map

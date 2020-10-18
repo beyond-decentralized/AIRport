@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	PackageECascadeGraph,
+	PackageGraph,
 	PackageEId,
 	PackageEOptionalId,
 	PackageEUpdateProperties,
@@ -94,9 +94,15 @@ export interface PackagedUnitEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface PackagedUnitECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface PackagedUnitGraph
+	extends IEntitySelectProperties, PackagedUnitEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	name?: string | IQStringField;
+
+	// Relations
+	package?: PackageGraph;
 
 }
 

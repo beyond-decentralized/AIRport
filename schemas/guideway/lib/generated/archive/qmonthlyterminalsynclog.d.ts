@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { MonthlyArchiveLogEId, MonthlyArchiveLogEOptionalId, MonthlyArchiveLogESelect, QMonthlyArchiveLogQId, QMonthlyArchiveLogQRelation } from './qmonthlyarchivelog';
-import { TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '../terminal/qterminal';
+import { MonthlyArchiveLogGraph, MonthlyArchiveLogEId, MonthlyArchiveLogEOptionalId, MonthlyArchiveLogESelect, QMonthlyArchiveLogQId, QMonthlyArchiveLogQRelation } from './qmonthlyarchivelog';
+import { TerminalGraph, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '../terminal/qterminal';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -34,7 +34,11 @@ export interface MonthlyTerminalSyncLogEUpdateProperties extends IEntityUpdatePr
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MonthlyTerminalSyncLogECascadeGraph extends IEntityCascadeGraph {
+export interface MonthlyTerminalSyncLogGraph extends IEntitySelectProperties, MonthlyTerminalSyncLogEOptionalId, IEntityCascadeGraph {
+    allAcknowledged?: boolean | IQBooleanField;
+    dailySyncStatuses?: string | IQStringField;
+    monthlyArchiveLog?: MonthlyArchiveLogGraph;
+    terminal?: TerminalGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

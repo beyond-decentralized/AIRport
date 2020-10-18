@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	DailyArchiveLogECascadeGraph,
+	DailyArchiveLogGraph,
 	DailyArchiveLogEId,
 	DailyArchiveLogEOptionalId,
 	DailyArchiveLogEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QDailyArchiveLogQRelation,
 } from './qdailyarchivelog';
 import {
-	TerminalECascadeGraph,
+	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -106,9 +106,16 @@ export interface DailyTerminalSyncLogEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface DailyTerminalSyncLogECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface DailyTerminalSyncLogGraph
+	extends IEntitySelectProperties, DailyTerminalSyncLogEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	acknowledged?: number | IQNumberField;
+
+	// Relations
+	dailyArchiveLog?: DailyArchiveLogGraph;
+	terminal?: TerminalGraph;
 
 }
 

@@ -1,7 +1,7 @@
 import { IQNumberField, IQStringField } from '@airport/air-control';
-import { VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
+import { VersionedSchemaObjectGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { Operation_Rule } from '@airport/ground-control';
-import { SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
+import { SchemaEntityGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -35,11 +35,11 @@ export interface SchemaOperationEUpdateProperties extends VersionedSchemaObjectE
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaOperationECascadeGraph extends VersionedSchemaObjectESelect, SchemaOperationEOptionalId, VersionedSchemaObjectECascadeGraph {
+export interface SchemaOperationGraph extends VersionedSchemaObjectESelect, SchemaOperationEOptionalId, VersionedSchemaObjectGraph {
     type?: number | IQNumberField;
     name?: string | IQStringField;
     rule?: Operation_Rule | IQStringField;
-    entity?: SchemaEntityESelect;
+    entity?: SchemaEntityGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

@@ -23,7 +23,7 @@ import {
 	TableConfiguration,
 } from '@airport/air-control';
 import {
-	VersionedSchemaObjectECascadeGraph,
+	VersionedSchemaObjectGraph,
 	VersionedSchemaObjectEId,
 	VersionedSchemaObjectEUpdateColumns,
 	VersionedSchemaObjectEUpdateProperties,
@@ -33,7 +33,7 @@ import {
 	QVersionedSchemaObject,
 } from './qversionedschemaobject';
 import {
-	SchemaVersionECascadeGraph,
+	SchemaVersionGraph,
 	SchemaVersionEId,
 	SchemaVersionEOptionalId,
 	SchemaVersionEUpdateProperties,
@@ -43,7 +43,7 @@ import {
 	QSchemaVersionQRelation,
 } from './qschemaversion';
 import {
-	SchemaColumnECascadeGraph,
+	SchemaColumnGraph,
 	SchemaColumnEId,
 	SchemaColumnEOptionalId,
 	SchemaColumnEUpdateProperties,
@@ -53,7 +53,7 @@ import {
 	QSchemaColumnQRelation,
 } from './qschemacolumn';
 import {
-	SchemaOperationECascadeGraph,
+	SchemaOperationGraph,
 	SchemaOperationEId,
 	SchemaOperationEOptionalId,
 	SchemaOperationEUpdateProperties,
@@ -63,7 +63,7 @@ import {
 	QSchemaOperationQRelation,
 } from './qschemaoperation';
 import {
-	SchemaPropertyECascadeGraph,
+	SchemaPropertyGraph,
 	SchemaPropertyEId,
 	SchemaPropertyEOptionalId,
 	SchemaPropertyEUpdateProperties,
@@ -73,7 +73,7 @@ import {
 	QSchemaPropertyQRelation,
 } from './qschemaproperty';
 import {
-	SchemaRelationECascadeGraph,
+	SchemaRelationGraph,
 	SchemaRelationEId,
 	SchemaRelationEOptionalId,
 	SchemaRelationEUpdateProperties,
@@ -158,8 +158,8 @@ export interface SchemaEntityEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaEntityECascadeGraph
-	extends VersionedSchemaObjectESelect, SchemaEntityEOptionalId, VersionedSchemaObjectECascadeGraph {
+export interface SchemaEntityGraph
+	extends VersionedSchemaObjectESelect, SchemaEntityEOptionalId, VersionedSchemaObjectGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
@@ -169,15 +169,13 @@ export interface SchemaEntityECascadeGraph
 	name?: string | IQStringField;
 	tableConfig?: TableConfiguration | IQStringField;
 
-	// Id Relations - full property interfaces
-
-  // Non-Id relations (including OneToMany's)
-	schemaVersion?: SchemaVersionESelect;
-	columns?: SchemaColumnESelect;
-	operations?: SchemaOperationESelect;
-	properties?: SchemaPropertyESelect;
-	relations?: SchemaRelationESelect;
-	relationReferences?: SchemaRelationESelect;
+	// Relations
+	schemaVersion?: SchemaVersionGraph;
+	columns?: SchemaColumnGraph[];
+	operations?: SchemaOperationGraph[];
+	properties?: SchemaPropertyGraph[];
+	relations?: SchemaRelationGraph[];
+	relationReferences?: SchemaRelationGraph[];
 
 }
 

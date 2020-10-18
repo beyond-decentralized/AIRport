@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	RepositoryECascadeGraph,
+	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QRepositoryQRelation,
 } from '../repository/qrepository';
 import {
-	TerminalRepositoryECascadeGraph,
+	TerminalRepositoryGraph,
 	TerminalRepositoryEId,
 	TerminalRepositoryEOptionalId,
 	TerminalRepositoryEUpdateProperties,
@@ -42,7 +42,7 @@ import {
 	QTerminalRepositoryQRelation,
 } from '../terminal/qterminalrepository';
 import {
-	TerminalECascadeGraph,
+	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -52,7 +52,7 @@ import {
 	QTerminalQRelation,
 } from '../terminal/qterminal';
 import {
-	ServerECascadeGraph,
+	ServerGraph,
 	ServerEId,
 	ServerEOptionalId,
 	ServerEUpdateProperties,
@@ -62,7 +62,7 @@ import {
 	QServerQRelation,
 } from '../server/qserver';
 import {
-	SyncLogECascadeGraph,
+	SyncLogGraph,
 	SyncLogEId,
 	SyncLogEOptionalId,
 	SyncLogEUpdateProperties,
@@ -146,11 +146,22 @@ export interface AgtRepositoryTransactionBlockEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface AgtRepositoryTransactionBlockECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	terminalRepositories?: TerminalRepositoryECascadeGraph;
-	syncLogs?: SyncLogECascadeGraph;
+export interface AgtRepositoryTransactionBlockGraph
+	extends IEntitySelectProperties, AgtRepositoryTransactionBlockEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	archivingStatus?: number | IQNumberField;
+	addDatetime?: number | IQNumberField;
+	tmRepositoryTransactionBlockId?: number | IQNumberField;
+	contents?: string | IQStringField;
+
+	// Relations
+	repository?: RepositoryGraph;
+	terminalRepositories?: TerminalRepositoryGraph[];
+	terminal?: TerminalGraph;
+	archivingServer?: ServerGraph;
+	syncLogs?: SyncLogGraph[];
 
 }
 

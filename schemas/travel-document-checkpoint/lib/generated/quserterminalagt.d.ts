@@ -1,8 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { UserEOptionalId, UserESelect, QUserQRelation } from './quser';
-import { TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from './qterminal';
-import { AgtEOptionalId, AgtESelect, QAgtQRelation } from './qagt';
-import { TerminalAgtEOptionalId, TerminalAgtESelect, QTerminalAgtQRelation } from './qterminalagt';
+import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from './quser';
+import { TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from './qterminal';
+import { AgtGraph, AgtEOptionalId, AgtESelect, QAgtQRelation } from './qagt';
+import { TerminalAgtGraph, TerminalAgtEOptionalId, TerminalAgtESelect, QTerminalAgtQRelation } from './qterminalagt';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -40,7 +40,12 @@ export interface UserTerminalAgtEUpdateProperties extends IEntityUpdatePropertie
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface UserTerminalAgtECascadeGraph extends IEntityCascadeGraph {
+export interface UserTerminalAgtGraph extends IEntitySelectProperties, UserTerminalAgtEOptionalId, IEntityCascadeGraph {
+    password?: number | IQNumberField;
+    user?: UserGraph;
+    terminal?: TerminalGraph;
+    agt?: AgtGraph;
+    terminalAgt?: TerminalAgtGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

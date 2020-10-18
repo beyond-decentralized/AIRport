@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, RecordHistoryEOptionalId, RecordHistoryESelect, QRecordHistoryQRelation } from '@airport/holding-pattern';
-import { SynchronizationConflictValuesECascadeGraph, SynchronizationConflictValuesESelect, QSynchronizationConflictValues } from './qsynchronizationconflictvalues';
+import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, RecordHistoryGraph, RecordHistoryEOptionalId, RecordHistoryESelect, QRecordHistoryQRelation } from '@airport/holding-pattern';
+import { SynchronizationConflictValuesGraph, SynchronizationConflictValuesESelect, QSynchronizationConflictValues } from './qsynchronizationconflictvalues';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -35,8 +35,12 @@ export interface SynchronizationConflictEUpdateProperties extends IEntityUpdateP
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SynchronizationConflictECascadeGraph extends IEntityCascadeGraph {
-    values?: SynchronizationConflictValuesECascadeGraph;
+export interface SynchronizationConflictGraph extends IEntitySelectProperties, SynchronizationConflictEOptionalId, IEntityCascadeGraph {
+    type?: number | IQNumberField;
+    repository?: RepositoryGraph;
+    overwrittenRecordHistory?: RecordHistoryGraph;
+    overwritingRecordHistory?: RecordHistoryGraph;
+    values?: SynchronizationConflictValuesGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).

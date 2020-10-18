@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	UserECascadeGraph,
+	UserGraph,
 	UserEId,
 	UserEOptionalId,
 	UserEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QUserQRelation,
 } from './quser';
 import {
-	TerminalECascadeGraph,
+	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -104,9 +104,15 @@ export interface UserTerminalEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface UserTerminalECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface UserTerminalGraph
+	extends IEntitySelectProperties, UserTerminalEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+
+	// Relations
+	user?: UserGraph;
+	terminal?: TerminalGraph;
 
 }
 

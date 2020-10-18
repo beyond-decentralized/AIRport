@@ -8,3 +8,4 @@ export declare class LogEntryValue {
     position: LogEntryValuePosition;
     value: LogEntryValueValue;
 }
+//# sourceMappingURL=LogEntryValue.d.ts.map

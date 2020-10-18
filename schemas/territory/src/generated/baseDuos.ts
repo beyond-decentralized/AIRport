@@ -26,7 +26,7 @@ import {
 	ApplicationEUpdateColumns,
 	ApplicationEUpdateProperties,
 	ApplicationEId,
-	ApplicationECascadeGraph,
+	ApplicationGraph,
 	QApplication
 } from './qapplication'
 import {
@@ -39,7 +39,7 @@ import {
 	ApplicationPackageEUpdateColumns,
 	ApplicationPackageEUpdateProperties,
 	ApplicationPackageEId,
-	ApplicationPackageECascadeGraph,
+	ApplicationPackageGraph,
 	QApplicationPackage
 } from './qapplicationpackage'
 import {
@@ -52,7 +52,7 @@ import {
 	DomainEUpdateColumns,
 	DomainEUpdateProperties,
 	DomainEId,
-	DomainECascadeGraph,
+	DomainGraph,
 	QDomain
 } from './qdomain'
 import {
@@ -65,7 +65,7 @@ import {
 	PackageEUpdateColumns,
 	PackageEUpdateProperties,
 	PackageEId,
-	PackageECascadeGraph,
+	PackageGraph,
 	QPackage
 } from './qpackage'
 import {
@@ -78,7 +78,7 @@ import {
 	PackagedUnitEUpdateColumns,
 	PackagedUnitEUpdateProperties,
 	PackagedUnitEId,
-	PackagedUnitECascadeGraph,
+	PackagedUnitGraph,
 	QPackagedUnit
 } from './qpackagedunit'
 
@@ -110,11 +110,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseApplicationDuo
-  extends IDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationECascadeGraph, QApplication> {
+  extends IDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> {
 }
 
 export class BaseApplicationDuo
-  extends SQDIDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationECascadeGraph, QApplication>
+  extends SQDIDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication>
 	implements IBaseApplicationDuo {
 
 	static diSet(): boolean {
@@ -128,11 +128,11 @@ export class BaseApplicationDuo
 
 
 export interface IBaseApplicationPackageDuo
-  extends IDuo<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateColumns, ApplicationPackageEUpdateProperties, ApplicationPackageEId, ApplicationPackageECascadeGraph, QApplicationPackage> {
+  extends IDuo<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateColumns, ApplicationPackageEUpdateProperties, ApplicationPackageEId, ApplicationPackageGraph, QApplicationPackage> {
 }
 
 export class BaseApplicationPackageDuo
-  extends SQDIDuo<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateColumns, ApplicationPackageEUpdateProperties, ApplicationPackageEId, ApplicationPackageECascadeGraph, QApplicationPackage>
+  extends SQDIDuo<IApplicationPackage, ApplicationPackageESelect, ApplicationPackageECreateProperties, ApplicationPackageEUpdateColumns, ApplicationPackageEUpdateProperties, ApplicationPackageEId, ApplicationPackageGraph, QApplicationPackage>
 	implements IBaseApplicationPackageDuo {
 
 	static diSet(): boolean {
@@ -146,11 +146,11 @@ export class BaseApplicationPackageDuo
 
 
 export interface IBaseDomainDuo
-  extends IDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainECascadeGraph, QDomain> {
+  extends IDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
 }
 
 export class BaseDomainDuo
-  extends SQDIDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainECascadeGraph, QDomain>
+  extends SQDIDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain>
 	implements IBaseDomainDuo {
 
 	static diSet(): boolean {
@@ -164,11 +164,11 @@ export class BaseDomainDuo
 
 
 export interface IBasePackageDuo
-  extends IDuo<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateColumns, PackageEUpdateProperties, PackageEId, PackageECascadeGraph, QPackage> {
+  extends IDuo<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateColumns, PackageEUpdateProperties, PackageEId, PackageGraph, QPackage> {
 }
 
 export class BasePackageDuo
-  extends SQDIDuo<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateColumns, PackageEUpdateProperties, PackageEId, PackageECascadeGraph, QPackage>
+  extends SQDIDuo<IPackage, PackageESelect, PackageECreateProperties, PackageEUpdateColumns, PackageEUpdateProperties, PackageEId, PackageGraph, QPackage>
 	implements IBasePackageDuo {
 
 	static diSet(): boolean {
@@ -182,11 +182,11 @@ export class BasePackageDuo
 
 
 export interface IBasePackagedUnitDuo
-  extends IDuo<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateColumns, PackagedUnitEUpdateProperties, PackagedUnitEId, PackagedUnitECascadeGraph, QPackagedUnit> {
+  extends IDuo<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateColumns, PackagedUnitEUpdateProperties, PackagedUnitEId, PackagedUnitGraph, QPackagedUnit> {
 }
 
 export class BasePackagedUnitDuo
-  extends SQDIDuo<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateColumns, PackagedUnitEUpdateProperties, PackagedUnitEId, PackagedUnitECascadeGraph, QPackagedUnit>
+  extends SQDIDuo<IPackagedUnit, PackagedUnitESelect, PackagedUnitECreateProperties, PackagedUnitEUpdateColumns, PackagedUnitEUpdateProperties, PackagedUnitEId, PackagedUnitGraph, QPackagedUnit>
 	implements IBasePackagedUnitDuo {
 
 	static diSet(): boolean {

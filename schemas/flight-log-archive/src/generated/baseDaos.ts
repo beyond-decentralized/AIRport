@@ -26,7 +26,7 @@ import {
 	DailySyncLogEUpdateColumns,
 	DailySyncLogEUpdateProperties,
 	DailySyncLogEId,
-	DailySyncLogECascadeGraph,
+	DailySyncLogGraph,
 	QDailySyncLog
 } from './qdailysynclog'
 import {
@@ -39,7 +39,7 @@ import {
 	LogEUpdateColumns,
 	LogEUpdateProperties,
 	LogEId,
-	LogECascadeGraph,
+	LogGraph,
 	QLog
 } from './log/qlog'
 import {
@@ -52,7 +52,7 @@ import {
 	MonthlySyncLogEUpdateColumns,
 	MonthlySyncLogEUpdateProperties,
 	MonthlySyncLogEId,
-	MonthlySyncLogECascadeGraph,
+	MonthlySyncLogGraph,
 	QMonthlySyncLog
 } from './qmonthlysynclog'
 
@@ -84,11 +84,11 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseDailySyncLogDao
-  extends IDao<IDailySyncLog, DailySyncLogESelect, DailySyncLogECreateProperties, DailySyncLogEUpdateColumns, DailySyncLogEUpdateProperties, DailySyncLogEId, DailySyncLogECascadeGraph, QDailySyncLog> {
+  extends IDao<IDailySyncLog, DailySyncLogESelect, DailySyncLogECreateProperties, DailySyncLogEUpdateColumns, DailySyncLogEUpdateProperties, DailySyncLogEId, DailySyncLogGraph, QDailySyncLog> {
 }
 
 export class BaseDailySyncLogDao
-  extends SQDIDao<IDailySyncLog, DailySyncLogESelect, DailySyncLogECreateProperties, DailySyncLogEUpdateColumns, DailySyncLogEUpdateProperties, DailySyncLogEId, DailySyncLogECascadeGraph, QDailySyncLog>
+  extends SQDIDao<IDailySyncLog, DailySyncLogESelect, DailySyncLogECreateProperties, DailySyncLogEUpdateColumns, DailySyncLogEUpdateProperties, DailySyncLogEId, DailySyncLogGraph, QDailySyncLog>
 	implements IBaseDailySyncLogDao {
 
 	static diSet(): boolean {
@@ -102,11 +102,11 @@ export class BaseDailySyncLogDao
 
 
 export interface IBaseLogDao
-  extends IDao<ILog, LogESelect, LogECreateProperties, LogEUpdateColumns, LogEUpdateProperties, LogEId, LogECascadeGraph, QLog> {
+  extends IDao<ILog, LogESelect, LogECreateProperties, LogEUpdateColumns, LogEUpdateProperties, LogEId, LogGraph, QLog> {
 }
 
 export class BaseLogDao
-  extends SQDIDao<ILog, LogESelect, LogECreateProperties, LogEUpdateColumns, LogEUpdateProperties, LogEId, LogECascadeGraph, QLog>
+  extends SQDIDao<ILog, LogESelect, LogECreateProperties, LogEUpdateColumns, LogEUpdateProperties, LogEId, LogGraph, QLog>
 	implements IBaseLogDao {
 
 	static diSet(): boolean {
@@ -120,11 +120,11 @@ export class BaseLogDao
 
 
 export interface IBaseMonthlySyncLogDao
-  extends IDao<IMonthlySyncLog, MonthlySyncLogESelect, MonthlySyncLogECreateProperties, MonthlySyncLogEUpdateColumns, MonthlySyncLogEUpdateProperties, MonthlySyncLogEId, MonthlySyncLogECascadeGraph, QMonthlySyncLog> {
+  extends IDao<IMonthlySyncLog, MonthlySyncLogESelect, MonthlySyncLogECreateProperties, MonthlySyncLogEUpdateColumns, MonthlySyncLogEUpdateProperties, MonthlySyncLogEId, MonthlySyncLogGraph, QMonthlySyncLog> {
 }
 
 export class BaseMonthlySyncLogDao
-  extends SQDIDao<IMonthlySyncLog, MonthlySyncLogESelect, MonthlySyncLogECreateProperties, MonthlySyncLogEUpdateColumns, MonthlySyncLogEUpdateProperties, MonthlySyncLogEId, MonthlySyncLogECascadeGraph, QMonthlySyncLog>
+  extends SQDIDao<IMonthlySyncLog, MonthlySyncLogESelect, MonthlySyncLogECreateProperties, MonthlySyncLogEUpdateColumns, MonthlySyncLogEUpdateProperties, MonthlySyncLogEId, MonthlySyncLogGraph, QMonthlySyncLog>
 	implements IBaseMonthlySyncLogDao {
 
 	static diSet(): boolean {

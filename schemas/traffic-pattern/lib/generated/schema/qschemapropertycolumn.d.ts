@@ -1,7 +1,7 @@
 import { IQNumberField } from '@airport/air-control';
-import { VersionedSchemaObjectECascadeGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
-import { SchemaColumnEId, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQId, QSchemaColumnQRelation } from './qschemacolumn';
-import { SchemaPropertyEId, SchemaPropertyEOptionalId, SchemaPropertyESelect, QSchemaPropertyQId, QSchemaPropertyQRelation } from './qschemaproperty';
+import { VersionedSchemaObjectGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
+import { SchemaColumnGraph, SchemaColumnEId, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQId, QSchemaColumnQRelation } from './qschemacolumn';
+import { SchemaPropertyGraph, SchemaPropertyEId, SchemaPropertyEOptionalId, SchemaPropertyESelect, QSchemaPropertyQId, QSchemaPropertyQRelation } from './qschemaproperty';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -31,9 +31,9 @@ export interface SchemaPropertyColumnEUpdateProperties extends VersionedSchemaOb
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaPropertyColumnECascadeGraph extends VersionedSchemaObjectESelect, SchemaPropertyColumnEOptionalId, VersionedSchemaObjectECascadeGraph {
-    column?: SchemaColumnESelect;
-    property?: SchemaPropertyESelect;
+export interface SchemaPropertyColumnGraph extends VersionedSchemaObjectESelect, SchemaPropertyColumnEOptionalId, VersionedSchemaObjectGraph {
+    column?: SchemaColumnGraph;
+    property?: SchemaPropertyGraph;
 }
 /**
  * UPDATE - non-id columns (optional).

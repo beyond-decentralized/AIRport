@@ -12,18 +12,20 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { Agt } from '../ddl/Agt';
 import { QAgt } from './qagt';
-import { Terminal } from '../ddl/Terminal';
 import { QTerminal } from './qterminal';
-import { TerminalAgt } from '../ddl/TerminalAgt';
 import { QTerminalAgt } from './qterminalagt';
-import { User } from '../ddl/User';
 import { QUser } from './quser';
-import { UserTerminal } from '../ddl/UserTerminal';
 import { QUserTerminal } from './quserterminal';
-import { UserTerminalAgt } from '../ddl/UserTerminalAgt';
 import { QUserTerminalAgt } from './quserterminalagt';
+import {
+  Agt,
+  Terminal,
+  TerminalAgt,
+  User,
+  UserTerminal,
+  UserTerminalAgt
+} from '../ddl/ddl';
 
 export interface LocalQSchema extends AirportQSchema {
 
@@ -49,7 +51,7 @@ const __constructors__ = {
 
 export const Q_SCHEMA: LocalQSchema = <any>{
 	__constructors__,
-  domain: 'npmjs.org',
+  domain: 'air',
   name: '@airport/travel-document-checkpoint'
 };
 export const Q: LocalQSchema = Q_SCHEMA
