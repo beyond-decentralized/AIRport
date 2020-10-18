@@ -24,7 +24,8 @@ export interface StageableEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface StageableECascadeGraph extends IEntityCascadeGraph {
+export interface StageableGraph extends StageableEOptionalId, IEntityCascadeGraph {
+    draft?: boolean | IQBooleanField;
 }
 /**
  * UPDATE - non-id columns (optional).

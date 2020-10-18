@@ -48,7 +48,7 @@ export interface SchemaRelationEUpdateProperties extends VersionedSchemaObjectEU
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaRelationGraph extends VersionedSchemaObjectESelect, SchemaRelationEOptionalId, VersionedSchemaObjectGraph {
+export interface SchemaRelationGraph extends SchemaRelationEOptionalId, VersionedSchemaObjectGraph {
     index?: number | IQNumberField;
     foreignKey?: ForeignKey | IQStringField;
     manyToOneElems?: ManyToOneElements | IQStringField;

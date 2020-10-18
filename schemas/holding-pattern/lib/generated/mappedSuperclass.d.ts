@@ -1488,11 +1488,15 @@ export declare const MAPPED_SUPERCLASS: ({
                     id: any;
                     index: number;
                     isGenerated: boolean;
+                    manyRelationColumns: any[];
                     name: string;
                     notNull: boolean;
+                    oneRelationColumns: any[];
+                    propertyColumnMap: any;
                     propertyColumns: {
                         column: any;
                         property: any;
+                        sinceVersion: any;
                     }[];
                     sinceVersion: any;
                     type: number;
@@ -1502,11 +1506,15 @@ export declare const MAPPED_SUPERCLASS: ({
                     id: any;
                     index: number;
                     isGenerated: boolean;
+                    manyRelationColumns: any[];
                     name: string;
                     notNull: boolean;
+                    oneRelationColumns: any[];
+                    propertyColumnMap: any;
                     propertyColumns: {
                         column: any;
                         property: any;
+                        sinceVersion: any;
                     }[];
                     sinceVersion: any;
                     type: number;
@@ -1517,16 +1525,21 @@ export declare const MAPPED_SUPERCLASS: ({
                     id: any;
                     index: number;
                     isGenerated: boolean;
+                    manyRelationColumns: any[];
                     name: string;
                     notNull: boolean;
+                    oneRelationColumns: any[];
+                    propertyColumnMap: any;
                     propertyColumns: {
                         column: any;
                         property: any;
+                        sinceVersion: any;
                     }[];
                     sinceVersion: any;
                     type: number;
                     idIndex: number;
                 }[];
+                idColumnMap: any;
                 id: any;
                 index: number;
                 isLocal: boolean;
@@ -1537,6 +1550,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     propertyColumns: {
                         column: any;
                         property: any;
+                        sinceVersion: any;
                     }[];
                     entity: any;
                     id: any;
@@ -2425,11 +2439,15 @@ export declare const MAPPED_SUPERCLASS: ({
                         id: any;
                         index: number;
                         isGenerated: boolean;
+                        manyRelationColumns: any[];
                         name: string;
                         notNull: boolean;
+                        oneRelationColumns: any[];
+                        propertyColumnMap: any;
                         propertyColumns: {
                             column: any;
                             property: any;
+                            sinceVersion: any;
                         }[];
                         sinceVersion: any;
                         type: number;
@@ -2439,11 +2457,15 @@ export declare const MAPPED_SUPERCLASS: ({
                         id: any;
                         index: number;
                         isGenerated: boolean;
+                        manyRelationColumns: any[];
                         name: string;
                         notNull: boolean;
+                        oneRelationColumns: any[];
+                        propertyColumnMap: any;
                         propertyColumns: {
                             column: any;
                             property: any;
+                            sinceVersion: any;
                         }[];
                         sinceVersion: any;
                         type: number;
@@ -2454,16 +2476,21 @@ export declare const MAPPED_SUPERCLASS: ({
                         id: any;
                         index: number;
                         isGenerated: boolean;
+                        manyRelationColumns: any[];
                         name: string;
                         notNull: boolean;
+                        oneRelationColumns: any[];
+                        propertyColumnMap: any;
                         propertyColumns: {
                             column: any;
                             property: any;
+                            sinceVersion: any;
                         }[];
                         sinceVersion: any;
                         type: number;
                         idIndex: number;
                     }[];
+                    idColumnMap: any;
                     id: any;
                     index: number;
                     isLocal: boolean;
@@ -2474,6 +2501,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         propertyColumns: {
                             column: any;
                             property: any;
+                            sinceVersion: any;
                         }[];
                         entity: any;
                         id: any;

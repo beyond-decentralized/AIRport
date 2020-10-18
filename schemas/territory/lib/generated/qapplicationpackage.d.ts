@@ -30,7 +30,7 @@ export interface ApplicationPackageEUpdateProperties extends IEntityUpdateProper
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ApplicationPackageGraph extends IEntitySelectProperties, ApplicationPackageEOptionalId, IEntityCascadeGraph {
+export interface ApplicationPackageGraph extends ApplicationPackageEOptionalId, IEntityCascadeGraph {
     application?: ApplicationGraph;
     package?: PackageGraph;
 }

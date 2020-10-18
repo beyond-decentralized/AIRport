@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ActorECascadeGraph,
+	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QActorQRelation,
 } from '../infrastructure/qactor';
 import {
-	OperationHistoryECascadeGraph,
+	OperationHistoryGraph,
 	OperationHistoryEId,
 	OperationHistoryEOptionalId,
 	OperationHistoryEUpdateProperties,
@@ -42,7 +42,7 @@ import {
 	QOperationHistoryQRelation,
 } from './qoperationhistory';
 import {
-	RecordHistoryNewValueECascadeGraph,
+	RecordHistoryNewValueGraph,
 	RecordHistoryNewValueEId,
 	RecordHistoryNewValueEOptionalId,
 	RecordHistoryNewValueEUpdateProperties,
@@ -52,7 +52,7 @@ import {
 	QRecordHistoryNewValueQRelation,
 } from './qrecordhistorynewvalue';
 import {
-	RecordHistoryOldValueECascadeGraph,
+	RecordHistoryOldValueGraph,
 	RecordHistoryOldValueEId,
 	RecordHistoryOldValueEOptionalId,
 	RecordHistoryOldValueEUpdateProperties,
@@ -128,11 +128,18 @@ export interface RecordHistoryEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RecordHistoryECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	newValues?: RecordHistoryNewValueECascadeGraph;
-	oldValues?: RecordHistoryOldValueECascadeGraph;
+export interface RecordHistoryGraph
+	extends RecordHistoryEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	actorRecordId?: number | IQNumberField;
+
+	// Relations
+	actor?: ActorGraph;
+	operationHistory?: OperationHistoryGraph;
+	newValues?: RecordHistoryNewValueGraph[];
+	oldValues?: RecordHistoryOldValueGraph[];
 
 }
 

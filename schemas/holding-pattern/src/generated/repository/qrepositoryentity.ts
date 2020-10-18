@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	StageableECascadeGraph,
+	StageableGraph,
 	StageableEId,
 	StageableEUpdateColumns,
 	StageableEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QStageable,
 } from '../infrastructure/qstageable';
 import {
-	RepositoryECascadeGraph,
+	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -42,7 +42,7 @@ import {
 	QRepositoryQRelation,
 } from './qrepository';
 import {
-	ActorECascadeGraph,
+	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -66,6 +66,7 @@ declare function require(moduleName: string): any;
 export interface RepositoryEntityESelect
     extends StageableESelect, RepositoryEntityEOptionalId {
 	// Non-Id Properties
+	ageSuitability?: number | IQNumberField;
 	systemWideOperationId?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
@@ -109,6 +110,7 @@ export interface RepositoryEntityEOptionalId {
 export interface RepositoryEntityEUpdateProperties
 	extends StageableEUpdateProperties {
 	// Non-Id Properties
+	ageSuitability?: number | IQNumberField;
 	systemWideOperationId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -118,9 +120,17 @@ export interface RepositoryEntityEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryEntityECascadeGraph
-	extends StageableECascadeGraph {
-	// Cascading Relations
+export interface RepositoryEntityGraph
+	extends RepositoryEntityEOptionalId, StageableGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	ageSuitability?: number | IQNumberField;
+	systemWideOperationId?: number | IQNumberField;
+
+	// Relations
+	repository?: RepositoryGraph;
+	actor?: ActorGraph;
 
 }
 
@@ -167,6 +177,7 @@ export interface QRepositoryEntity extends QStageable
 	actor: QActorQRelation;
 
 	// Non-Id Fields
+	ageSuitability: IQNumberField;
 	systemWideOperationId: IQNumberField;
 
 	// Non-Id Relations
@@ -190,6 +201,6 @@ export interface QRepositoryEntityQId extends QStageableQId
 
 // Entity Relation Interface
 export interface QRepositoryEntityQRelation<SubType extends IQEntity>
-	extends QStageableQRelation<QRepositoryEntity>, QRepositoryEntityQId {
+	extends QStageableQRelation<SubType>, QRepositoryEntityQId {
 }
 

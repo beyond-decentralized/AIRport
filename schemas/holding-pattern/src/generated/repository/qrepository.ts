@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ActorECascadeGraph,
+	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QActorQRelation,
 } from '../infrastructure/qactor';
 import {
-	RepositoryActorECascadeGraph,
+	RepositoryActorGraph,
 	RepositoryActorEId,
 	RepositoryActorEOptionalId,
 	RepositoryActorEUpdateProperties,
@@ -42,7 +42,7 @@ import {
 	QRepositoryActorQRelation,
 } from './qrepositoryactor';
 import {
-	RepositoryApplicationECascadeGraph,
+	RepositoryApplicationGraph,
 	RepositoryApplicationEId,
 	RepositoryApplicationEOptionalId,
 	RepositoryApplicationEUpdateProperties,
@@ -52,7 +52,7 @@ import {
 	QRepositoryApplicationQRelation,
 } from './qrepositoryapplication';
 import {
-	RepositoryTransactionHistoryECascadeGraph,
+	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
 	RepositoryTransactionHistoryEUpdateProperties,
@@ -137,12 +137,23 @@ export interface RepositoryEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	repositoryActors?: RepositoryActorECascadeGraph;
-	repositoryApplications?: RepositoryApplicationECascadeGraph;
-	repositoryTransactionHistory?: RepositoryTransactionHistoryECascadeGraph;
+export interface RepositoryGraph
+	extends RepositoryEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	orderedId?: number | IQNumberField;
+	randomId?: number | IQNumberField;
+	name?: string | IQStringField;
+	url?: string | IQStringField;
+	platformConfig?: string | IQStringField;
+	syncPriority?: number | IQNumberField;
+
+	// Relations
+	ownerActor?: ActorGraph;
+	repositoryActors?: RepositoryActorGraph[];
+	repositoryApplications?: RepositoryApplicationGraph[];
+	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
 
 }
 

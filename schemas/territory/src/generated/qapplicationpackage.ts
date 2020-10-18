@@ -105,7 +105,7 @@ export interface ApplicationPackageEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ApplicationPackageGraph
-	extends IEntitySelectProperties, ApplicationPackageEOptionalId, IEntityCascadeGraph {
+	extends ApplicationPackageEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

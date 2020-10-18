@@ -29,7 +29,7 @@ export interface VersionedSchemaObjectEUpdateProperties extends IEntityUpdatePro
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface VersionedSchemaObjectGraph extends IEntitySelectProperties, VersionedSchemaObjectEOptionalId, IEntityCascadeGraph {
+export interface VersionedSchemaObjectGraph extends VersionedSchemaObjectEOptionalId, IEntityCascadeGraph {
     deprecatedSinceVersion?: SchemaVersionGraph;
     removedInVersion?: SchemaVersionGraph;
     sinceVersion?: SchemaVersionGraph;

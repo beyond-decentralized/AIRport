@@ -24,6 +24,7 @@ export interface IRepositoryEntity extends IStageable {
 	actor: IActor;
 
 	// Non-Id Properties
+	ageSuitability?: number;
 	systemWideOperationId?: number;
 
 	// Non-Id Relations

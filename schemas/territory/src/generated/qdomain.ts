@@ -94,7 +94,7 @@ export interface DomainEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface DomainGraph
-	extends IEntitySelectProperties, DomainEOptionalId, IEntityCascadeGraph {
+	extends DomainEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

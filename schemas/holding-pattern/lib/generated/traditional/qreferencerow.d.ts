@@ -22,7 +22,7 @@ export interface ReferenceRowEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ReferenceRowECascadeGraph extends IEntityCascadeGraph {
+export interface ReferenceRowGraph extends ReferenceRowEOptionalId, IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).

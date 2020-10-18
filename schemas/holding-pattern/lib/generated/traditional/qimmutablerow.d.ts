@@ -1,6 +1,6 @@
 import { IQDateField, IQEntity } from '@airport/air-control';
-import { StageableECascadeGraph, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
-import { UserEOptionalId, UserESelect, QUserQRelation } from '@airport/travel-document-checkpoint';
+import { StageableGraph, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
+import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from '@airport/travel-document-checkpoint';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -28,7 +28,9 @@ export interface ImmutableRowEUpdateProperties extends StageableEUpdatePropertie
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ImmutableRowECascadeGraph extends StageableECascadeGraph {
+export interface ImmutableRowGraph extends ImmutableRowEOptionalId, StageableGraph {
+    createdAt?: Date | IQDateField;
+    user?: UserGraph;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -54,6 +56,6 @@ export interface QImmutableRow extends QStageable {
 }
 export interface QImmutableRowQId extends QStageableQId {
 }
-export interface QImmutableRowQRelation<SubType extends IQEntity> extends QStageableQRelation<QImmutableRow>, QImmutableRowQId {
+export interface QImmutableRowQRelation<SubType extends IQEntity> extends QStageableQRelation<SubType>, QImmutableRowQId {
 }
 //# sourceMappingURL=qimmutablerow.d.ts.map

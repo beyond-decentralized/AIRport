@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	RecordHistoryECascadeGraph,
+	RecordHistoryGraph,
 	RecordHistoryEId,
 	RecordHistoryEOptionalId,
 	RecordHistoryEUpdateProperties,
@@ -95,9 +95,15 @@ export interface RecordHistoryNewValueEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RecordHistoryNewValueECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface RecordHistoryNewValueGraph
+	extends RecordHistoryNewValueEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	newValue?: any | IQUntypedField;
+
+	// Relations
+	recordHistory?: RecordHistoryGraph;
 
 }
 

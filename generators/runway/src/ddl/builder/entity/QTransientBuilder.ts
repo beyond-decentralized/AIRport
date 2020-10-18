@@ -25,13 +25,14 @@ export class QTransientBuilder {
 		}
 
 		let type = prop.type;
-		if(type.indexOf(']: ') > -1) {
+		if(prop.isMap && type.indexOf(']: ') > -1) {
 				type = type.replace(/\]\: (?!.*\]\: )/, "]: I");
 		} else {
-			type = `I${type}`
+
+			type = prop.primitive ? `${type}` : `I${type}`
 		}
 
-		return `${prop.name}?: ${prop.type};`;
+		return `${prop.name}?: ${type};`;
 	}
 
 }

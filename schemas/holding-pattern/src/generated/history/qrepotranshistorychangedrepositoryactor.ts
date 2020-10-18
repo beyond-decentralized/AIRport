@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	RepositoryTransactionHistoryECascadeGraph,
+	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
 	RepositoryTransactionHistoryEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QRepositoryTransactionHistoryQRelation,
 } from './qrepositorytransactionhistory';
 import {
-	RepositoryECascadeGraph,
+	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -42,7 +42,7 @@ import {
 	QRepositoryQRelation,
 } from '../repository/qrepository';
 import {
-	ActorECascadeGraph,
+	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -118,9 +118,17 @@ export interface RepoTransHistoryChangedRepositoryActorEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepoTransHistoryChangedRepositoryActorECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface RepoTransHistoryChangedRepositoryActorGraph
+	extends RepoTransHistoryChangedRepositoryActorEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	referenceType?: number | IQNumberField;
+
+	// Relations
+	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph;
+	repository?: RepositoryGraph;
+	actor?: ActorGraph;
 
 }
 

@@ -28,7 +28,7 @@ export interface PackageEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface PackageGraph extends IEntitySelectProperties, PackageEOptionalId, IEntityCascadeGraph {
+export interface PackageGraph extends PackageEOptionalId, IEntityCascadeGraph {
     name?: string | IQStringField;
     applicationPackages?: ApplicationPackageGraph[];
 }

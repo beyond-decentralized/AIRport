@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	UserECascadeGraph,
+	UserGraph,
 	UserEId,
 	UserEOptionalId,
 	UserEUpdateProperties,
@@ -30,7 +30,7 @@ import {
 	QUser,
 	QUserQId,
 	QUserQRelation,
-	TerminalECascadeGraph,
+	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
 	TerminalEUpdateProperties,
@@ -40,7 +40,7 @@ import {
 	QTerminalQRelation,
 } from '@airport/travel-document-checkpoint';
 import {
-	ActorApplicationECascadeGraph,
+	ActorApplicationGraph,
 	ActorApplicationEId,
 	ActorApplicationEOptionalId,
 	ActorApplicationEUpdateProperties,
@@ -50,7 +50,7 @@ import {
 	QActorApplicationQRelation,
 } from './qactorapplication';
 import {
-	RepositoryActorECascadeGraph,
+	RepositoryActorGraph,
 	RepositoryActorEId,
 	RepositoryActorEOptionalId,
 	RepositoryActorEUpdateProperties,
@@ -126,11 +126,18 @@ export interface ActorEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ActorECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	actorApplications?: ActorApplicationECascadeGraph;
-	repositoryActor?: RepositoryActorECascadeGraph;
+export interface ActorGraph
+	extends ActorEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	randomId?: number | IQNumberField;
+
+	// Relations
+	user?: UserGraph;
+	terminal?: TerminalGraph;
+	actorApplications?: ActorApplicationGraph[];
+	repositoryActor?: RepositoryActorGraph[];
 
 }
 

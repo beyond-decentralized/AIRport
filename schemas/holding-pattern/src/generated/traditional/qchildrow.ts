@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	StageableECascadeGraph,
+	StageableGraph,
 	StageableEId,
 	StageableEUpdateColumns,
 	StageableEUpdateProperties,
@@ -88,9 +88,13 @@ export interface ChildRowEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ChildRowECascadeGraph
-	extends StageableECascadeGraph {
-	// Cascading Relations
+export interface ChildRowGraph
+	extends ChildRowEOptionalId, StageableGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+
+	// Relations
 
 }
 
@@ -153,6 +157,6 @@ export interface QChildRowQId extends QStageableQId
 
 // Entity Relation Interface
 export interface QChildRowQRelation<SubType extends IQEntity>
-	extends QStageableQRelation<QChildRow>, QChildRowQId {
+	extends QStageableQRelation<SubType>, QChildRowQId {
 }
 

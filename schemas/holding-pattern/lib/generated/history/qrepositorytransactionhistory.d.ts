@@ -1,9 +1,9 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { TransactionHistoryEOptionalId, TransactionHistoryESelect, QTransactionHistoryQRelation } from './qtransactionhistory';
-import { RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
-import { RepoTransHistoryChangedRepositoryActorECascadeGraph, RepoTransHistoryChangedRepositoryActorESelect, QRepoTransHistoryChangedRepositoryActor } from './qrepotranshistorychangedrepositoryactor';
-import { ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
-import { OperationHistoryECascadeGraph, OperationHistoryESelect, QOperationHistory } from './qoperationhistory';
+import { TransactionHistoryGraph, TransactionHistoryEOptionalId, TransactionHistoryESelect, QTransactionHistoryQRelation } from './qtransactionhistory';
+import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
+import { RepoTransHistoryChangedRepositoryActorGraph, RepoTransHistoryChangedRepositoryActorESelect, QRepoTransHistoryChangedRepositoryActor } from './qrepotranshistorychangedrepositoryactor';
+import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
+import { OperationHistoryGraph, OperationHistoryESelect, QOperationHistory } from './qoperationhistory';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -45,9 +45,16 @@ export interface RepositoryTransactionHistoryEUpdateProperties extends IEntityUp
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryTransactionHistoryECascadeGraph extends IEntityCascadeGraph {
-    changedRepositoryActors?: RepoTransHistoryChangedRepositoryActorECascadeGraph;
-    operationHistory?: OperationHistoryECascadeGraph;
+export interface RepositoryTransactionHistoryGraph extends RepositoryTransactionHistoryEOptionalId, IEntityCascadeGraph {
+    remoteId?: number | IQNumberField;
+    saveTimestamp?: Date | IQDateField;
+    repositoryTransactionType?: number | IQNumberField;
+    blockId?: number | IQNumberField;
+    transactionHistory?: TransactionHistoryGraph;
+    repository?: RepositoryGraph;
+    changedRepositoryActors?: RepoTransHistoryChangedRepositoryActorGraph[];
+    actor?: ActorGraph;
+    operationHistory?: OperationHistoryGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).

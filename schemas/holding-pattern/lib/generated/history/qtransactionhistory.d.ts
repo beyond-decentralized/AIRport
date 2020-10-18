@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { RepositoryTransactionHistoryECascadeGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from './qrepositorytransactionhistory';
+import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from './qrepositorytransactionhistory';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -28,8 +28,9 @@ export interface TransactionHistoryEUpdateProperties extends IEntityUpdateProper
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface TransactionHistoryECascadeGraph extends IEntityCascadeGraph {
-    repositoryTransactionHistories?: RepositoryTransactionHistoryECascadeGraph;
+export interface TransactionHistoryGraph extends TransactionHistoryEOptionalId, IEntityCascadeGraph {
+    transactionType?: number | IQNumberField;
+    repositoryTransactionHistories?: RepositoryTransactionHistoryGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).

@@ -32,7 +32,7 @@ export interface SchemaReferenceEUpdateProperties extends VersionedSchemaObjectE
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaReferenceGraph extends VersionedSchemaObjectESelect, SchemaReferenceEOptionalId, VersionedSchemaObjectGraph {
+export interface SchemaReferenceGraph extends SchemaReferenceEOptionalId, VersionedSchemaObjectGraph {
     index?: number | IQNumberField;
     ownSchemaVersion?: SchemaVersionGraph;
     referencedSchemaVersion?: SchemaVersionGraph;

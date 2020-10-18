@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	TransactionHistoryECascadeGraph,
+	TransactionHistoryGraph,
 	TransactionHistoryEId,
 	TransactionHistoryEOptionalId,
 	TransactionHistoryEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QTransactionHistoryQRelation,
 } from './qtransactionhistory';
 import {
-	RepositoryECascadeGraph,
+	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -42,7 +42,7 @@ import {
 	QRepositoryQRelation,
 } from '../repository/qrepository';
 import {
-	RepoTransHistoryChangedRepositoryActorECascadeGraph,
+	RepoTransHistoryChangedRepositoryActorGraph,
 	RepoTransHistoryChangedRepositoryActorEId,
 	RepoTransHistoryChangedRepositoryActorEOptionalId,
 	RepoTransHistoryChangedRepositoryActorEUpdateProperties,
@@ -52,7 +52,7 @@ import {
 	QRepoTransHistoryChangedRepositoryActorQRelation,
 } from './qrepotranshistorychangedrepositoryactor';
 import {
-	ActorECascadeGraph,
+	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -62,7 +62,7 @@ import {
 	QActorQRelation,
 } from '../infrastructure/qactor';
 import {
-	OperationHistoryECascadeGraph,
+	OperationHistoryGraph,
 	OperationHistoryEId,
 	OperationHistoryEOptionalId,
 	OperationHistoryEUpdateProperties,
@@ -146,11 +146,22 @@ export interface RepositoryTransactionHistoryEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryTransactionHistoryECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	changedRepositoryActors?: RepoTransHistoryChangedRepositoryActorECascadeGraph;
-	operationHistory?: OperationHistoryECascadeGraph;
+export interface RepositoryTransactionHistoryGraph
+	extends RepositoryTransactionHistoryEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	remoteId?: number | IQNumberField;
+	saveTimestamp?: Date | IQDateField;
+	repositoryTransactionType?: number | IQNumberField;
+	blockId?: number | IQNumberField;
+
+	// Relations
+	transactionHistory?: TransactionHistoryGraph;
+	repository?: RepositoryGraph;
+	changedRepositoryActors?: RepoTransHistoryChangedRepositoryActorGraph[];
+	actor?: ActorGraph;
+	operationHistory?: OperationHistoryGraph[];
 
 }
 

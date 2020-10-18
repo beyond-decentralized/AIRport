@@ -133,7 +133,7 @@ export interface UserTerminalAgtEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface UserTerminalAgtGraph
-	extends IEntitySelectProperties, UserTerminalAgtEOptionalId, IEntityCascadeGraph {
+	extends UserTerminalAgtEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

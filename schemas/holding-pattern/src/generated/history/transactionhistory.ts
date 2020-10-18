@@ -40,12 +40,12 @@ export interface ITransactionHistory {
 	repositoryTransactionHistories?: IRepositoryTransactionHistory[];
 
 	// Transient Properties
-	repoTransHistoryMap?: { [repositoryId: number]: RepositoryTransactionHistory; };
-	schemaMap?: SyncSchemaMap;
-	allOperationHistory?: OperationHistory[];
-	allRecordHistory?: RecordHistory[];
-	allRecordHistoryNewValues?: RecordHistoryNewValue[];
-	allRecordHistoryOldValues?: RecordHistoryOldValue[];
+	repoTransHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory; };
+	schemaMap?: ISyncSchemaMap;
+	allOperationHistory?: IOperationHistory[];
+	allRecordHistory?: IRecordHistory[];
+	allRecordHistoryNewValues?: IRecordHistoryNewValue[];
+	allRecordHistoryOldValues?: IRecordHistoryOldValue[];
 	numberOfOperations?: number;
 
 	// Public Methods

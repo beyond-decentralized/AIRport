@@ -1,5 +1,5 @@
 import { IQDateField, IQEntity } from '@airport/air-control';
-import { ImmutableRepoRowECascadeGraph, ImmutableRepoRowEId, ImmutableRepoRowEUpdateColumns, ImmutableRepoRowEUpdateProperties, ImmutableRepoRowESelect, QImmutableRepoRowQId, QImmutableRepoRowQRelation, QImmutableRepoRow } from './qimmutablereporow';
+import { ImmutableRepoRowGraph, ImmutableRepoRowEId, ImmutableRepoRowEUpdateColumns, ImmutableRepoRowEUpdateProperties, ImmutableRepoRowESelect, QImmutableRepoRowQId, QImmutableRepoRowQRelation, QImmutableRepoRow } from './qimmutablereporow';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -25,7 +25,8 @@ export interface MutableRepoRowEUpdateProperties extends ImmutableRepoRowEUpdate
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MutableRepoRowECascadeGraph extends ImmutableRepoRowECascadeGraph {
+export interface MutableRepoRowGraph extends MutableRepoRowEOptionalId, ImmutableRepoRowGraph {
+    updatedAt?: Date | IQDateField;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -50,6 +51,6 @@ export interface QMutableRepoRow extends QImmutableRepoRow {
 }
 export interface QMutableRepoRowQId extends QImmutableRepoRowQId {
 }
-export interface QMutableRepoRowQRelation<SubType extends IQEntity> extends QImmutableRepoRowQRelation<QMutableRepoRow>, QMutableRepoRowQId {
+export interface QMutableRepoRowQRelation<SubType extends IQEntity> extends QImmutableRepoRowQRelation<SubType>, QMutableRepoRowQId {
 }
 //# sourceMappingURL=qmutablereporow.d.ts.map

@@ -105,7 +105,7 @@ export interface AgtEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface AgtGraph
-	extends IEntitySelectProperties, AgtEOptionalId, IEntityCascadeGraph {
+	extends AgtEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

@@ -202,7 +202,7 @@ ${nonIdRelationsForUpdateEProperties}
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ${entityName}Graph
-	extends ${extendedQInterface}, ${entityName}EOptionalId, ${extendedQCascadeGraphInterface} {
+	extends ${entityName}EOptionalId, ${extendedQCascadeGraphInterface} {
 // NOT USED: Cascading Relations
 // NOT USED: \${relationsForCascadeGraph}
 \t// Non-Id Properties

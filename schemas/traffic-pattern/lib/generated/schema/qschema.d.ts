@@ -37,7 +37,7 @@ export interface SchemaEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaGraph extends IEntitySelectProperties, SchemaEOptionalId, IEntityCascadeGraph {
+export interface SchemaGraph extends SchemaEOptionalId, IEntityCascadeGraph {
     scope?: string | IQStringField;
     name?: string | IQStringField;
     status?: number | IQNumberField;

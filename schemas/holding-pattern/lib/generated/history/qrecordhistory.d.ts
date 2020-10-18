@@ -1,8 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
-import { OperationHistoryEOptionalId, OperationHistoryESelect, QOperationHistoryQRelation } from './qoperationhistory';
-import { RecordHistoryNewValueECascadeGraph, RecordHistoryNewValueESelect, QRecordHistoryNewValue } from './qrecordhistorynewvalue';
-import { RecordHistoryOldValueECascadeGraph, RecordHistoryOldValueESelect, QRecordHistoryOldValue } from './qrecordhistoryoldvalue';
+import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
+import { OperationHistoryGraph, OperationHistoryEOptionalId, OperationHistoryESelect, QOperationHistoryQRelation } from './qoperationhistory';
+import { RecordHistoryNewValueGraph, RecordHistoryNewValueESelect, QRecordHistoryNewValue } from './qrecordhistorynewvalue';
+import { RecordHistoryOldValueGraph, RecordHistoryOldValueESelect, QRecordHistoryOldValue } from './qrecordhistoryoldvalue';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -36,9 +36,12 @@ export interface RecordHistoryEUpdateProperties extends IEntityUpdateProperties 
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RecordHistoryECascadeGraph extends IEntityCascadeGraph {
-    newValues?: RecordHistoryNewValueECascadeGraph;
-    oldValues?: RecordHistoryOldValueECascadeGraph;
+export interface RecordHistoryGraph extends RecordHistoryEOptionalId, IEntityCascadeGraph {
+    actorRecordId?: number | IQNumberField;
+    actor?: ActorGraph;
+    operationHistory?: OperationHistoryGraph;
+    newValues?: RecordHistoryNewValueGraph[];
+    oldValues?: RecordHistoryOldValueGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).

@@ -35,7 +35,7 @@ export interface SchemaOperationEUpdateProperties extends VersionedSchemaObjectE
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaOperationGraph extends VersionedSchemaObjectESelect, SchemaOperationEOptionalId, VersionedSchemaObjectGraph {
+export interface SchemaOperationGraph extends SchemaOperationEOptionalId, VersionedSchemaObjectGraph {
     type?: number | IQNumberField;
     name?: string | IQStringField;
     rule?: Operation_Rule | IQStringField;

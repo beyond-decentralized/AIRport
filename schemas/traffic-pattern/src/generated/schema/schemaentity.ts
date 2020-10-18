@@ -55,10 +55,10 @@ export interface ISchemaEntity extends IVersionedSchemaObject {
 	relationReferences?: ISchemaRelation[];
 
 	// Transient Properties
-	columnMap?: I{ [name: string]: SchemaColumn; };
-	idColumns?: ISchemaColumn[];
-	idColumnMap?: I{ [name: string]: SchemaColumn; };
-	propertyMap?: I{ [name: string]: SchemaProperty; };
+	columnMap?: { [name: string]: SchemaColumn; };
+	idColumns?: SchemaColumn[];
+	idColumnMap?: { [name: string]: SchemaColumn; };
+	propertyMap?: { [name: string]: SchemaProperty; };
 
 	// Public Methods
 	

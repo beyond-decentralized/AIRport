@@ -30,7 +30,7 @@ export interface UserTerminalEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface UserTerminalGraph extends IEntitySelectProperties, UserTerminalEOptionalId, IEntityCascadeGraph {
+export interface UserTerminalGraph extends UserTerminalEOptionalId, IEntityCascadeGraph {
     user?: UserGraph;
     terminal?: TerminalGraph;
 }

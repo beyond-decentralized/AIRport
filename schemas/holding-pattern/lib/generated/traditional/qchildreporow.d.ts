@@ -1,5 +1,5 @@
 import { IQEntity } from '@airport/air-control';
-import { RepositoryEntityECascadeGraph, RepositoryEntityEId, RepositoryEntityEUpdateColumns, RepositoryEntityEUpdateProperties, RepositoryEntityESelect, QRepositoryEntityQId, QRepositoryEntityQRelation, QRepositoryEntity } from '../repository/qrepositoryentity';
+import { RepositoryEntityGraph, RepositoryEntityEId, RepositoryEntityEUpdateColumns, RepositoryEntityEUpdateProperties, RepositoryEntityESelect, QRepositoryEntityQId, QRepositoryEntityQRelation, QRepositoryEntity } from '../repository/qrepositoryentity';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -23,7 +23,7 @@ export interface ChildRepoRowEUpdateProperties extends RepositoryEntityEUpdatePr
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ChildRepoRowECascadeGraph extends RepositoryEntityECascadeGraph {
+export interface ChildRepoRowGraph extends ChildRepoRowEOptionalId, RepositoryEntityGraph {
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -47,6 +47,6 @@ export interface QChildRepoRow extends QRepositoryEntity {
 }
 export interface QChildRepoRowQId extends QRepositoryEntityQId {
 }
-export interface QChildRepoRowQRelation<SubType extends IQEntity> extends QRepositoryEntityQRelation<QChildRepoRow>, QChildRepoRowQId {
+export interface QChildRepoRowQRelation<SubType extends IQEntity> extends QRepositoryEntityQRelation<SubType>, QChildRepoRowQId {
 }
 //# sourceMappingURL=qchildreporow.d.ts.map

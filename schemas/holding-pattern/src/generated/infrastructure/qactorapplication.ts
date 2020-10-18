@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ActorECascadeGraph,
+	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QActorQRelation,
 } from './qactor';
 import {
-	ApplicationECascadeGraph,
+	ApplicationGraph,
 	ApplicationEId,
 	ApplicationEOptionalId,
 	ApplicationEUpdateProperties,
@@ -105,9 +105,15 @@ export interface ActorApplicationEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ActorApplicationECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface ActorApplicationGraph
+	extends ActorApplicationEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+
+	// Relations
+	actor?: ActorGraph;
+	application?: ApplicationGraph;
 
 }
 

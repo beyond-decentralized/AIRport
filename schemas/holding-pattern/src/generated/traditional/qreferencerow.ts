@@ -78,9 +78,13 @@ export interface ReferenceRowEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ReferenceRowECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface ReferenceRowGraph
+	extends ReferenceRowEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+
+	// Relations
 
 }
 

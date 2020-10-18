@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	RepositoryTransactionHistoryECascadeGraph,
+	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
 	RepositoryTransactionHistoryEUpdateProperties,
@@ -93,10 +93,15 @@ export interface TransactionHistoryEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface TransactionHistoryECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
-	repositoryTransactionHistories?: RepositoryTransactionHistoryECascadeGraph;
+export interface TransactionHistoryGraph
+	extends TransactionHistoryEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	transactionType?: number | IQNumberField;
+
+	// Relations
+	repositoryTransactionHistories?: RepositoryTransactionHistoryGraph[];
 
 }
 

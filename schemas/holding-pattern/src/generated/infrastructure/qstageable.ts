@@ -80,9 +80,14 @@ export interface StageableEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface StageableECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface StageableGraph
+	extends StageableEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	draft?: boolean | IQBooleanField;
+
+	// Relations
 
 }
 

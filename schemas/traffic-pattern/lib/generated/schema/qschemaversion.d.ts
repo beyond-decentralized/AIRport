@@ -42,7 +42,7 @@ export interface SchemaVersionEUpdateProperties extends IEntityUpdateProperties 
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaVersionGraph extends IEntitySelectProperties, SchemaVersionEOptionalId, IEntityCascadeGraph {
+export interface SchemaVersionGraph extends SchemaVersionEOptionalId, IEntityCascadeGraph {
     integerVersion?: number | IQNumberField;
     versionString?: string | IQStringField;
     majorVersion?: number | IQNumberField;

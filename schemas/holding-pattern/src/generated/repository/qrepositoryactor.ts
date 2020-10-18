@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	RepositoryECascadeGraph,
+	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
 	RepositoryEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QRepositoryQRelation,
 } from './qrepository';
 import {
-	ActorECascadeGraph,
+	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
 	ActorEUpdateProperties,
@@ -105,9 +105,15 @@ export interface RepositoryActorEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryActorECascadeGraph
-	extends IEntityCascadeGraph {
-	// Cascading Relations
+export interface RepositoryActorGraph
+	extends RepositoryActorEOptionalId, IEntityCascadeGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+
+	// Relations
+	repository?: RepositoryGraph;
+	actor?: ActorGraph;
 
 }
 

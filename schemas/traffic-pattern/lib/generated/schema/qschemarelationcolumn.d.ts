@@ -37,7 +37,7 @@ export interface SchemaRelationColumnEUpdateProperties extends VersionedSchemaOb
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaRelationColumnGraph extends VersionedSchemaObjectESelect, SchemaRelationColumnEOptionalId, VersionedSchemaObjectGraph {
+export interface SchemaRelationColumnGraph extends SchemaRelationColumnEOptionalId, VersionedSchemaObjectGraph {
     manyColumn?: SchemaColumnGraph;
     oneColumn?: SchemaColumnGraph;
     manyRelation?: SchemaRelationGraph;

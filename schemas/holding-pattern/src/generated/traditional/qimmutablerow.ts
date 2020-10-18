@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	StageableECascadeGraph,
+	StageableGraph,
 	StageableEId,
 	StageableEUpdateColumns,
 	StageableEUpdateProperties,
@@ -32,7 +32,7 @@ import {
 	QStageable,
 } from '../infrastructure/qstageable';
 import {
-	UserECascadeGraph,
+	UserGraph,
 	UserEId,
 	UserEOptionalId,
 	UserEUpdateProperties,
@@ -102,9 +102,15 @@ export interface ImmutableRowEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ImmutableRowECascadeGraph
-	extends StageableECascadeGraph {
-	// Cascading Relations
+export interface ImmutableRowGraph
+	extends ImmutableRowEOptionalId, StageableGraph {
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
+	// Non-Id Properties
+	createdAt?: Date | IQDateField;
+
+	// Relations
+	user?: UserGraph;
 
 }
 
@@ -169,6 +175,6 @@ export interface QImmutableRowQId extends QStageableQId
 
 // Entity Relation Interface
 export interface QImmutableRowQRelation<SubType extends IQEntity>
-	extends QStageableQRelation<QImmutableRow>, QImmutableRowQId {
+	extends QStageableQRelation<SubType>, QImmutableRowQId {
 }
 

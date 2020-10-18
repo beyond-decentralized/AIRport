@@ -118,7 +118,7 @@ export interface TerminalAgtEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface TerminalAgtGraph
-	extends IEntitySelectProperties, TerminalAgtEOptionalId, IEntityCascadeGraph {
+	extends TerminalAgtEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

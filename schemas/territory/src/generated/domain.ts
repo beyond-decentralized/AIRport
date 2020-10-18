@@ -25,7 +25,7 @@ export interface IDomain {
 	applications?: IApplication[];
 
 	// Transient Properties
-	schemas?: IDbSchema[];
+	schemas?: DbSchema[];
 
 	// Public Methods
 	

@@ -1,8 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
-import { RepositoryActorECascadeGraph, RepositoryActorESelect, QRepositoryActor } from './qrepositoryactor';
-import { RepositoryApplicationECascadeGraph, RepositoryApplicationESelect, QRepositoryApplication } from './qrepositoryapplication';
-import { RepositoryTransactionHistoryECascadeGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
+import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
+import { RepositoryActorGraph, RepositoryActorESelect, QRepositoryActor } from './qrepositoryactor';
+import { RepositoryApplicationGraph, RepositoryApplicationESelect, QRepositoryApplication } from './qrepositoryapplication';
+import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -45,10 +45,17 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryECascadeGraph extends IEntityCascadeGraph {
-    repositoryActors?: RepositoryActorECascadeGraph;
-    repositoryApplications?: RepositoryApplicationECascadeGraph;
-    repositoryTransactionHistory?: RepositoryTransactionHistoryECascadeGraph;
+export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGraph {
+    orderedId?: number | IQNumberField;
+    randomId?: number | IQNumberField;
+    name?: string | IQStringField;
+    url?: string | IQStringField;
+    platformConfig?: string | IQStringField;
+    syncPriority?: number | IQNumberField;
+    ownerActor?: ActorGraph;
+    repositoryActors?: RepositoryActorGraph[];
+    repositoryApplications?: RepositoryApplicationGraph[];
+    repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).

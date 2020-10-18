@@ -47,7 +47,7 @@ export interface SchemaColumnEUpdateProperties extends VersionedSchemaObjectEUpd
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SchemaColumnGraph extends VersionedSchemaObjectESelect, SchemaColumnEOptionalId, VersionedSchemaObjectGraph {
+export interface SchemaColumnGraph extends SchemaColumnEOptionalId, VersionedSchemaObjectGraph {
     index?: number | IQNumberField;
     idIndex?: number | IQNumberField;
     isGenerated?: boolean | IQBooleanField;

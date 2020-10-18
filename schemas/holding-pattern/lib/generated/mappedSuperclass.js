@@ -1,7 +1,7 @@
 export const MAPPED_SUPERCLASS = [
     {
         "type": "Stageable",
-        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
+        "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
@@ -81,7 +81,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "RepositoryEntity",
-        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
+        "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/repository/repositoryentity.ts",
         "parentClassName": "Stageable",
         "location": "../infrastructure/Stageable",
         "isSuperclass": true,
@@ -398,6 +398,29 @@ export const MAPPED_SUPERCLASS = [
                             "name": "Column",
                             "values": [
                                 {
+                                    "name": "AGE_SUITABILITY",
+                                    "nullable": false
+                                }
+                            ]
+                        }
+                    ],
+                    "isGenerated": false,
+                    "isId": false,
+                    "isMappedSuperclass": false,
+                    "isTransient": false,
+                    "name": "ageSuitability",
+                    "type": "number",
+                    "ownerEntity": null,
+                    "nonArrayType": "number",
+                    "primitive": "number",
+                    "index": 3
+                },
+                {
+                    "decorators": [
+                        {
+                            "name": "Column",
+                            "values": [
+                                {
                                     "name": "SYSTEM_WIDE_OPERATION_ID",
                                     "nullable": false
                                 }
@@ -413,7 +436,7 @@ export const MAPPED_SUPERCLASS = [
                     "ownerEntity": null,
                     "nonArrayType": "number",
                     "primitive": "number",
-                    "index": 3
+                    "index": 4
                 }
             ],
             "methodSignatures": [],
@@ -427,7 +450,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "Stageable",
-            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
+            "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [],
@@ -509,7 +532,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ChildRepoRow",
-        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ChildRepoRow.ts",
+        "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/traditional/childreporow.ts",
         "parentClassName": "RepositoryEntity",
         "location": "../repository/RepositoryEntity",
         "isSuperclass": true,
@@ -571,7 +594,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "RepositoryEntity",
-            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
+            "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/repository/repositoryentity.ts",
             "parentClassName": "Stageable",
             "location": "../infrastructure/Stageable",
             "isSuperclass": true,
@@ -888,6 +911,29 @@ export const MAPPED_SUPERCLASS = [
                                 "name": "Column",
                                 "values": [
                                     {
+                                        "name": "AGE_SUITABILITY",
+                                        "nullable": false
+                                    }
+                                ]
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": false,
+                        "name": "ageSuitability",
+                        "type": "number",
+                        "ownerEntity": null,
+                        "nonArrayType": "number",
+                        "primitive": "number",
+                        "index": 3
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Column",
+                                "values": [
+                                    {
                                         "name": "SYSTEM_WIDE_OPERATION_ID",
                                         "nullable": false
                                     }
@@ -903,7 +949,7 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "number",
                         "primitive": "number",
-                        "index": 3
+                        "index": 4
                     }
                 ],
                 "methodSignatures": [],
@@ -917,7 +963,7 @@ export const MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "Stageable",
-                "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
+                "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
                 "parentClassName": null,
                 "isSuperclass": true,
                 "ids": [],
@@ -1001,7 +1047,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ChildRow",
-        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ChildRow.ts",
+        "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/traditional/childrow.ts",
         "parentClassName": "Stageable",
         "location": "../infrastructure/Stageable",
         "isSuperclass": true,
@@ -1063,7 +1109,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "Stageable",
-            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
+            "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [],
@@ -1145,7 +1191,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ImmutableRepoRow",
-        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ImmutableRepoRow.ts",
+        "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/traditional/immutablereporow.ts",
         "parentClassName": "RepositoryEntity",
         "location": "../repository/RepositoryEntity",
         "isSuperclass": true,
@@ -1261,7 +1307,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "RepositoryEntity",
-            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
+            "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/repository/repositoryentity.ts",
             "parentClassName": "Stageable",
             "location": "../infrastructure/Stageable",
             "isSuperclass": true,
@@ -1578,6 +1624,29 @@ export const MAPPED_SUPERCLASS = [
                                 "name": "Column",
                                 "values": [
                                     {
+                                        "name": "AGE_SUITABILITY",
+                                        "nullable": false
+                                    }
+                                ]
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": false,
+                        "name": "ageSuitability",
+                        "type": "number",
+                        "ownerEntity": null,
+                        "nonArrayType": "number",
+                        "primitive": "number",
+                        "index": 3
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Column",
+                                "values": [
+                                    {
                                         "name": "SYSTEM_WIDE_OPERATION_ID",
                                         "nullable": false
                                     }
@@ -1593,7 +1662,7 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "number",
                         "primitive": "number",
-                        "index": 3
+                        "index": 4
                     }
                 ],
                 "methodSignatures": [],
@@ -1607,7 +1676,7 @@ export const MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "Stageable",
-                "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
+                "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
                 "parentClassName": null,
                 "isSuperclass": true,
                 "ids": [],
@@ -1691,7 +1760,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ImmutableRow",
-        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ImmutableRow.ts",
+        "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/traditional/immutablerow.ts",
         "parentClassName": "Stageable",
         "location": "../infrastructure/Stageable",
         "isSuperclass": true,
@@ -1805,12 +1874,16 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 0,
                                 "isGenerated": true,
+                                "manyRelationColumns": [],
                                 "name": "ID",
                                 "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "sinceVersion": null,
@@ -1822,12 +1895,16 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 1,
                                 "isGenerated": false,
+                                "manyRelationColumns": [],
                                 "name": "UNIQUE_IDENTIFIER",
                                 "notNull": true,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "sinceVersion": null,
@@ -1838,12 +1915,16 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 2,
                                 "isGenerated": false,
+                                "manyRelationColumns": [],
                                 "name": "FIRST_NAME",
                                 "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "sinceVersion": null,
@@ -1854,12 +1935,16 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 3,
                                 "isGenerated": false,
+                                "manyRelationColumns": [],
                                 "name": "LAST_NAME",
                                 "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "sinceVersion": null,
@@ -1870,12 +1955,16 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 4,
                                 "isGenerated": false,
+                                "manyRelationColumns": [],
                                 "name": "MIDDLE_NAME",
                                 "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "sinceVersion": null,
@@ -1886,12 +1975,16 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 5,
                                 "isGenerated": false,
+                                "manyRelationColumns": [],
                                 "name": "PHONE",
                                 "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "sinceVersion": null,
@@ -1904,12 +1997,16 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 0,
                                 "isGenerated": true,
+                                "manyRelationColumns": [],
                                 "name": "ID",
                                 "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "sinceVersion": null,
@@ -1917,6 +2014,7 @@ export const MAPPED_SUPERCLASS = [
                                 "idIndex": 0
                             }
                         ],
+                        "idColumnMap": null,
                         "id": null,
                         "index": 2,
                         "isLocal": true,
@@ -1928,7 +2026,8 @@ export const MAPPED_SUPERCLASS = [
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "entity": null,
@@ -1943,7 +2042,8 @@ export const MAPPED_SUPERCLASS = [
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "entity": null,
@@ -1958,7 +2058,8 @@ export const MAPPED_SUPERCLASS = [
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "entity": null,
@@ -1973,7 +2074,8 @@ export const MAPPED_SUPERCLASS = [
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "entity": null,
@@ -1988,7 +2090,8 @@ export const MAPPED_SUPERCLASS = [
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "entity": null,
@@ -2003,7 +2106,8 @@ export const MAPPED_SUPERCLASS = [
                                 "propertyColumns": [
                                     {
                                         "column": null,
-                                        "property": null
+                                        "property": null,
+                                        "sinceVersion": null
                                     }
                                 ],
                                 "entity": null,
@@ -2128,7 +2232,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "Stageable",
-            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
+            "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [],
@@ -2210,7 +2314,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "MutableRepoRow",
-        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/MutableRepoRow.ts",
+        "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/traditional/mutablereporow.ts",
         "parentClassName": "ImmutableRepoRow",
         "location": "./ImmutableRepoRow",
         "isSuperclass": true,
@@ -2301,7 +2405,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "ImmutableRepoRow",
-            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ImmutableRepoRow.ts",
+            "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/traditional/immutablereporow.ts",
             "parentClassName": "RepositoryEntity",
             "location": "../repository/RepositoryEntity",
             "isSuperclass": true,
@@ -2417,7 +2521,7 @@ export const MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "RepositoryEntity",
-                "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
+                "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/repository/repositoryentity.ts",
                 "parentClassName": "Stageable",
                 "location": "../infrastructure/Stageable",
                 "isSuperclass": true,
@@ -2734,6 +2838,29 @@ export const MAPPED_SUPERCLASS = [
                                     "name": "Column",
                                     "values": [
                                         {
+                                            "name": "AGE_SUITABILITY",
+                                            "nullable": false
+                                        }
+                                    ]
+                                }
+                            ],
+                            "isGenerated": false,
+                            "isId": false,
+                            "isMappedSuperclass": false,
+                            "isTransient": false,
+                            "name": "ageSuitability",
+                            "type": "number",
+                            "ownerEntity": null,
+                            "nonArrayType": "number",
+                            "primitive": "number",
+                            "index": 3
+                        },
+                        {
+                            "decorators": [
+                                {
+                                    "name": "Column",
+                                    "values": [
+                                        {
                                             "name": "SYSTEM_WIDE_OPERATION_ID",
                                             "nullable": false
                                         }
@@ -2749,7 +2876,7 @@ export const MAPPED_SUPERCLASS = [
                             "ownerEntity": null,
                             "nonArrayType": "number",
                             "primitive": "number",
-                            "index": 3
+                            "index": 4
                         }
                     ],
                     "methodSignatures": [],
@@ -2763,7 +2890,7 @@ export const MAPPED_SUPERCLASS = [
                 "implementedInterfaceNames": [],
                 "parentEntity": {
                     "type": "Stageable",
-                    "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
+                    "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
                     "parentClassName": null,
                     "isSuperclass": true,
                     "ids": [],
@@ -2849,7 +2976,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "MutableRow",
-        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/MutableRow.ts",
+        "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/traditional/mutablerow.ts",
         "parentClassName": "ImmutableRow",
         "location": "./ImmutableRow",
         "isSuperclass": true,
@@ -2940,7 +3067,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "ImmutableRow",
-            "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ImmutableRow.ts",
+            "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/traditional/immutablerow.ts",
             "parentClassName": "Stageable",
             "location": "../infrastructure/Stageable",
             "isSuperclass": true,
@@ -3054,12 +3181,16 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 0,
                                     "isGenerated": true,
+                                    "manyRelationColumns": [],
                                     "name": "ID",
                                     "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "sinceVersion": null,
@@ -3071,12 +3202,16 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 1,
                                     "isGenerated": false,
+                                    "manyRelationColumns": [],
                                     "name": "UNIQUE_IDENTIFIER",
                                     "notNull": true,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "sinceVersion": null,
@@ -3087,12 +3222,16 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 2,
                                     "isGenerated": false,
+                                    "manyRelationColumns": [],
                                     "name": "FIRST_NAME",
                                     "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "sinceVersion": null,
@@ -3103,12 +3242,16 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 3,
                                     "isGenerated": false,
+                                    "manyRelationColumns": [],
                                     "name": "LAST_NAME",
                                     "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "sinceVersion": null,
@@ -3119,12 +3262,16 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 4,
                                     "isGenerated": false,
+                                    "manyRelationColumns": [],
                                     "name": "MIDDLE_NAME",
                                     "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "sinceVersion": null,
@@ -3135,12 +3282,16 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 5,
                                     "isGenerated": false,
+                                    "manyRelationColumns": [],
                                     "name": "PHONE",
                                     "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "sinceVersion": null,
@@ -3153,12 +3304,16 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 0,
                                     "isGenerated": true,
+                                    "manyRelationColumns": [],
                                     "name": "ID",
                                     "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "sinceVersion": null,
@@ -3166,6 +3321,7 @@ export const MAPPED_SUPERCLASS = [
                                     "idIndex": 0
                                 }
                             ],
+                            "idColumnMap": null,
                             "id": null,
                             "index": 2,
                             "isLocal": true,
@@ -3177,7 +3333,8 @@ export const MAPPED_SUPERCLASS = [
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "entity": null,
@@ -3192,7 +3349,8 @@ export const MAPPED_SUPERCLASS = [
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "entity": null,
@@ -3207,7 +3365,8 @@ export const MAPPED_SUPERCLASS = [
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "entity": null,
@@ -3222,7 +3381,8 @@ export const MAPPED_SUPERCLASS = [
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "entity": null,
@@ -3237,7 +3397,8 @@ export const MAPPED_SUPERCLASS = [
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "entity": null,
@@ -3252,7 +3413,8 @@ export const MAPPED_SUPERCLASS = [
                                     "propertyColumns": [
                                         {
                                             "column": null,
-                                            "property": null
+                                            "property": null,
+                                            "sinceVersion": null
                                         }
                                     ],
                                     "entity": null,
@@ -3377,7 +3539,7 @@ export const MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "Stageable",
-                "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/infrastructure/Stageable.ts",
+                "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/infrastructure/stageable.ts",
                 "parentClassName": null,
                 "isSuperclass": true,
                 "ids": [],
@@ -3461,7 +3623,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ReferenceRow",
-        "path": "/media/artem/E4D01D0CD01CE718/dac/airport/schemas/holding-pattern/src/ddl/traditional/ReferenceRow.ts",
+        "path": "c:/users/papa/vc/ts/airport/schemas/holding-pattern/src/ddl/traditional/referencerow.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],

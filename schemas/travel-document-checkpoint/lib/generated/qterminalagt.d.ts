@@ -34,7 +34,7 @@ export interface TerminalAgtEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface TerminalAgtGraph extends IEntitySelectProperties, TerminalAgtEOptionalId, IEntityCascadeGraph {
+export interface TerminalAgtGraph extends TerminalAgtEOptionalId, IEntityCascadeGraph {
     password?: string | IQStringField;
     terminal?: TerminalGraph;
     agt?: AgtGraph;
