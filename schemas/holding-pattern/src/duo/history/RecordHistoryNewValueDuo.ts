@@ -31,7 +31,7 @@ export class RecordHistoryNewValueDuo
 		dbColumn: DbColumn,
 		newValue: any
 	): IRecordHistoryNewValue {
-		const recordHistoryNewValue = new RecordHistoryNewValue()
+		const recordHistoryNewValue: IRecordHistoryNewValue = new RecordHistoryNewValue()
 
 		recordHistoryNewValue.columnIndex   = dbColumn.index
 		recordHistoryNewValue.recordHistory = recordHistory

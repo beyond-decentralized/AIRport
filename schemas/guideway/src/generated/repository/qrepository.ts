@@ -109,7 +109,7 @@ export interface RepositoryEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepositoryGraph
-	extends IEntitySelectProperties, RepositoryEOptionalId, IEntityCascadeGraph {
+	extends RepositoryEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

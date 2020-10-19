@@ -105,7 +105,7 @@ export interface ServerSyncLogEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ServerSyncLogGraph
-	extends IEntitySelectProperties, ServerSyncLogEOptionalId, IEntityCascadeGraph {
+	extends ServerSyncLogEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

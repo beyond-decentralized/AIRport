@@ -83,7 +83,7 @@ export interface RepoTransBlockResponseStageEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepoTransBlockResponseStageGraph
-	extends IEntitySelectProperties, RepoTransBlockResponseStageEOptionalId, IEntityCascadeGraph {
+	extends RepoTransBlockResponseStageEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

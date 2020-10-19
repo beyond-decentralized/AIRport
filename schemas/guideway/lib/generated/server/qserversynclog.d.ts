@@ -39,7 +39,7 @@ export interface ServerSyncLogEUpdateProperties extends IEntityUpdateProperties 
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ServerSyncLogGraph extends IEntitySelectProperties, ServerSyncLogEOptionalId, IEntityCascadeGraph {
+export interface ServerSyncLogGraph extends ServerSyncLogEOptionalId, IEntityCascadeGraph {
     type?: number | IQNumberField;
     startDatetime?: Date | IQDateField;
     endDatetime?: Date | IQDateField;

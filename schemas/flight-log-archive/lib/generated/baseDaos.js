@@ -16,18 +16,18 @@ export class BaseDailySyncLogDao extends SQDIDao {
 }
 export class BaseLogDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(2);
-    }
-    constructor() {
-        super(2);
-    }
-}
-export class BaseMonthlySyncLogDao extends SQDIDao {
-    static diSet() {
         return duoDiSet(1);
     }
     constructor() {
         super(1);
+    }
+}
+export class BaseMonthlySyncLogDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(2);
+    }
+    constructor() {
+        super(2);
     }
 }
 //# sourceMappingURL=baseDaos.js.map

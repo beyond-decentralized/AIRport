@@ -38,7 +38,7 @@ export interface MissingRecordEUpdateProperties extends IEntityUpdateProperties 
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MissingRecordGraph extends IEntitySelectProperties, MissingRecordEOptionalId, IEntityCascadeGraph {
+export interface MissingRecordGraph extends MissingRecordEOptionalId, IEntityCascadeGraph {
     actorRecordId?: number | IQNumberField;
     status?: number | IQNumberField;
     schemaVersion?: SchemaVersionGraph;

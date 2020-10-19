@@ -32,7 +32,7 @@ export interface SecurityAnswerEUpdateProperties extends IEntityUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SecurityAnswerGraph extends IEntitySelectProperties, SecurityAnswerEOptionalId, IEntityCascadeGraph {
+export interface SecurityAnswerGraph extends SecurityAnswerEOptionalId, IEntityCascadeGraph {
     answer?: string | IQStringField;
     user?: UserGraph;
     securityQuestion?: SecurityQuestionGraph;

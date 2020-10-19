@@ -32,7 +32,7 @@ export interface UserRepositoryEUpdateProperties extends IEntityUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface UserRepositoryGraph extends IEntitySelectProperties, UserRepositoryEOptionalId, IEntityCascadeGraph {
+export interface UserRepositoryGraph extends UserRepositoryEOptionalId, IEntityCascadeGraph {
     permission?: number | IQNumberField;
     repository?: RepositoryGraph;
     user?: UserGraph;

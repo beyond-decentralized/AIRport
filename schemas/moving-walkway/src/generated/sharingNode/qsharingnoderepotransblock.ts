@@ -107,7 +107,7 @@ export interface SharingNodeRepoTransBlockEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SharingNodeRepoTransBlockGraph
-	extends IEntitySelectProperties, SharingNodeRepoTransBlockEOptionalId, IEntityCascadeGraph {
+	extends SharingNodeRepoTransBlockEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

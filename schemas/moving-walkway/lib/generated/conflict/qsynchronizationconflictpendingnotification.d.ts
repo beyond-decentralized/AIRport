@@ -32,7 +32,7 @@ export interface SynchronizationConflictPendingNotificationEUpdateProperties ext
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SynchronizationConflictPendingNotificationGraph extends IEntitySelectProperties, SynchronizationConflictPendingNotificationEOptionalId, IEntityCascadeGraph {
+export interface SynchronizationConflictPendingNotificationGraph extends SynchronizationConflictPendingNotificationEOptionalId, IEntityCascadeGraph {
     acknowledged?: boolean | IQBooleanField;
     synchronizationConflict?: SynchronizationConflictGraph;
     actor?: ActorGraph;

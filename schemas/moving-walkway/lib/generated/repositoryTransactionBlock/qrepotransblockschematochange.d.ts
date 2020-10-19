@@ -32,7 +32,7 @@ export interface RepoTransBlockSchemaToChangeEUpdateProperties extends IEntityUp
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepoTransBlockSchemaToChangeGraph extends IEntitySelectProperties, RepoTransBlockSchemaToChangeEOptionalId, IEntityCascadeGraph {
+export interface RepoTransBlockSchemaToChangeGraph extends RepoTransBlockSchemaToChangeEOptionalId, IEntityCascadeGraph {
     status?: number | IQNumberField;
     repositoryTransactionBlock?: RepositoryTransactionBlockGraph;
     schema?: SchemaGraph;

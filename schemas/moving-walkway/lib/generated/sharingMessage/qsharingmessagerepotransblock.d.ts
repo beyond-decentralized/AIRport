@@ -30,7 +30,7 @@ export interface SharingMessageRepoTransBlockEUpdateProperties extends IEntityUp
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SharingMessageRepoTransBlockGraph extends IEntitySelectProperties, SharingMessageRepoTransBlockEOptionalId, IEntityCascadeGraph {
+export interface SharingMessageRepoTransBlockGraph extends SharingMessageRepoTransBlockEOptionalId, IEntityCascadeGraph {
     sharingMessage?: SharingMessageGraph;
     repositoryTransactionBlock?: RepositoryTransactionBlockGraph;
 }

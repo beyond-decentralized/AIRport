@@ -79,7 +79,7 @@ export interface LogEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface LogGraph
-	extends IEntitySelectProperties, LogEOptionalId, IEntityCascadeGraph {
+	extends LogEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

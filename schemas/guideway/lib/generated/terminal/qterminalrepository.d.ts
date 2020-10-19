@@ -32,7 +32,7 @@ export interface TerminalRepositoryEUpdateProperties extends IEntityUpdateProper
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface TerminalRepositoryGraph extends IEntitySelectProperties, TerminalRepositoryEOptionalId, IEntityCascadeGraph {
+export interface TerminalRepositoryGraph extends TerminalRepositoryEOptionalId, IEntityCascadeGraph {
     permission?: number | IQNumberField;
     terminal?: TerminalGraph;
     repository?: RepositoryGraph;

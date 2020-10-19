@@ -107,7 +107,7 @@ export interface DailyTerminalSyncLogEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface DailyTerminalSyncLogGraph
-	extends IEntitySelectProperties, DailyTerminalSyncLogEOptionalId, IEntityCascadeGraph {
+	extends DailyTerminalSyncLogEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

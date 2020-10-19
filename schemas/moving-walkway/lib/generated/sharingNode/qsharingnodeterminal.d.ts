@@ -36,7 +36,7 @@ export interface SharingNodeTerminalEUpdateProperties extends IEntityUpdatePrope
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SharingNodeTerminalGraph extends IEntitySelectProperties, SharingNodeTerminalEOptionalId, IEntityCascadeGraph {
+export interface SharingNodeTerminalGraph extends SharingNodeTerminalEOptionalId, IEntityCascadeGraph {
     agtTerminalId?: number | IQNumberField;
     agtTerminalPassword?: string | IQStringField;
     terminalSyncStatus?: number | IQNumberField;

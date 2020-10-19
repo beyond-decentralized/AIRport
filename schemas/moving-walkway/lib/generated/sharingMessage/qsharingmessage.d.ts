@@ -36,7 +36,7 @@ export interface SharingMessageEUpdateProperties extends IEntityUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SharingMessageGraph extends IEntitySelectProperties, SharingMessageEOptionalId, IEntityCascadeGraph {
+export interface SharingMessageGraph extends SharingMessageEOptionalId, IEntityCascadeGraph {
     origin?: number | IQNumberField;
     agtSharingMessageId?: number | IQNumberField;
     syncTimestamp?: Date | IQDateField;

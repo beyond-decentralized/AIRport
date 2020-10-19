@@ -47,7 +47,7 @@ export interface RepositoryTransactionBlockEUpdateProperties extends IEntityUpda
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryTransactionBlockGraph extends IEntitySelectProperties, RepositoryTransactionBlockEOptionalId, IEntityCascadeGraph {
+export interface RepositoryTransactionBlockGraph extends RepositoryTransactionBlockEOptionalId, IEntityCascadeGraph {
     sourceId?: number | IQNumberField;
     hash?: string | IQStringField;
     syncOutcomeType?: number | IQNumberField;

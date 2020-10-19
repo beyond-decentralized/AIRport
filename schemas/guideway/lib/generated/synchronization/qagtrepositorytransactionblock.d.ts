@@ -45,7 +45,7 @@ export interface AgtRepositoryTransactionBlockEUpdateProperties extends IEntityU
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface AgtRepositoryTransactionBlockGraph extends IEntitySelectProperties, AgtRepositoryTransactionBlockEOptionalId, IEntityCascadeGraph {
+export interface AgtRepositoryTransactionBlockGraph extends AgtRepositoryTransactionBlockEOptionalId, IEntityCascadeGraph {
     archivingStatus?: number | IQNumberField;
     addDatetime?: number | IQNumberField;
     tmRepositoryTransactionBlockId?: number | IQNumberField;

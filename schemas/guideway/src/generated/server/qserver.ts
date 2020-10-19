@@ -94,7 +94,7 @@ export interface ServerEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ServerGraph
-	extends IEntitySelectProperties, ServerEOptionalId, IEntityCascadeGraph {
+	extends ServerEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

@@ -8,6 +8,7 @@ export * from './missingRecord/MissingRecordStatus';
 export * from './repositoryTransactionBlock/RepositoryTransactionBlock';
 export * from './repositoryTransactionBlock/RepositoryTransactionHistoryUpdateStage';
 export * from './repositoryTransactionBlock/RepoTransBlockResponseStage';
+export * from './repositoryTransactionBlock/RepoTransBlockSchemaToChange';
 export * from './sharingMessage/SharingMessage';
 export * from './sharingMessage/SharingMessageRepoTransBlock';
 export * from './sharingNode/SharingNode';
@@ -20,4 +21,5 @@ export * from './values/SchemaChangeStatus';
 export * from './values/SharingMechanism';
 export * from './values/SharingNodeProtocol';
 export * from './values/TransmissionStatus';
+export * from './RecordUpdateStage';
 //# sourceMappingURL=ddl.js.map

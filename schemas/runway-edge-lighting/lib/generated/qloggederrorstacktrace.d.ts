@@ -28,7 +28,7 @@ export interface LoggedErrorStackTraceEUpdateProperties extends IEntityUpdatePro
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface LoggedErrorStackTraceGraph extends IEntitySelectProperties, LoggedErrorStackTraceEOptionalId, IEntityCascadeGraph {
+export interface LoggedErrorStackTraceGraph extends LoggedErrorStackTraceEOptionalId, IEntityCascadeGraph {
     stackHash?: string | IQStringField;
     stack?: string | IQStringField;
 }

@@ -104,7 +104,7 @@ export interface DailyArchiveEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface DailyArchiveGraph
-	extends IEntitySelectProperties, DailyArchiveEOptionalId, IEntityCascadeGraph {
+	extends DailyArchiveEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

@@ -96,7 +96,7 @@ export interface DailyArchiveLogEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface DailyArchiveLogGraph
-	extends IEntitySelectProperties, DailyArchiveLogEOptionalId, IEntityCascadeGraph {
+	extends DailyArchiveLogEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

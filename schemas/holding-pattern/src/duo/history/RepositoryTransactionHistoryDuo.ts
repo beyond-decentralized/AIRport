@@ -54,7 +54,7 @@ export class RepositoryTransactionHistoryDuo
 		repositoryId: RepositoryId,
 		actor: IActor
 	): IRepositoryTransactionHistory {
-		let transaction = new RepositoryTransactionHistory()
+		let transaction: IRepositoryTransactionHistory = new RepositoryTransactionHistory()
 
 		let saveTimestamp = new Date()
 
@@ -135,7 +135,7 @@ export class RepositoryTransactionHistoryDuo
 		repositoryTransactionHistory.operationHistory.push(operationHistory)
 
 		repositoryTransactionHistory
-			.transactionHistory.allOperationHistory.push(operationHistory)
+			.transactionHistory.allOperationHistory.push(<any>operationHistory)
 
 		return operationHistory
 	}

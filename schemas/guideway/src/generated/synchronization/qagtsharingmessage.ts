@@ -108,7 +108,7 @@ export interface AgtSharingMessageEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface AgtSharingMessageGraph
-	extends IEntitySelectProperties, AgtSharingMessageEOptionalId, IEntityCascadeGraph {
+	extends AgtSharingMessageEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

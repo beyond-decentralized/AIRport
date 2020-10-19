@@ -34,7 +34,7 @@ export interface MonthlyTerminalSyncLogEUpdateProperties extends IEntityUpdatePr
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MonthlyTerminalSyncLogGraph extends IEntitySelectProperties, MonthlyTerminalSyncLogEOptionalId, IEntityCascadeGraph {
+export interface MonthlyTerminalSyncLogGraph extends MonthlyTerminalSyncLogEOptionalId, IEntityCascadeGraph {
     allAcknowledged?: boolean | IQBooleanField;
     dailySyncStatuses?: string | IQStringField;
     monthlyArchiveLog?: MonthlyArchiveLogGraph;

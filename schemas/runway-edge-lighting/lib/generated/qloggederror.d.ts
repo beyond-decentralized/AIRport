@@ -29,7 +29,7 @@ export interface LoggedErrorEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface LoggedErrorGraph extends IEntitySelectProperties, LoggedErrorEOptionalId, IEntityCascadeGraph {
+export interface LoggedErrorGraph extends LoggedErrorEOptionalId, IEntityCascadeGraph {
     logEntry?: LogEntryGraph;
     stackTrace?: LoggedErrorStackTraceGraph;
 }

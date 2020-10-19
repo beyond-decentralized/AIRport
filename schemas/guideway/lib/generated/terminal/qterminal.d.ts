@@ -41,7 +41,7 @@ export interface TerminalEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface TerminalGraph extends IEntitySelectProperties, TerminalEOptionalId, IEntityCascadeGraph {
+export interface TerminalGraph extends TerminalEOptionalId, IEntityCascadeGraph {
     name?: string | IQStringField;
     secondId?: number | IQNumberField;
     password?: string | IQStringField;

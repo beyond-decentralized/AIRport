@@ -38,7 +38,7 @@ export interface UserEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface UserGraph extends IEntitySelectProperties, UserEOptionalId, IEntityCascadeGraph {
+export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
     hash?: string | IQStringField;
     email?: string | IQStringField;
     isInvitation?: boolean | IQBooleanField;

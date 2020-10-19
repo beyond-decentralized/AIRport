@@ -33,7 +33,7 @@ export interface AgtSharingMessageEUpdateProperties extends IEntityUpdatePropert
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface AgtSharingMessageGraph extends IEntitySelectProperties, AgtSharingMessageEOptionalId, IEntityCascadeGraph {
+export interface AgtSharingMessageGraph extends AgtSharingMessageEOptionalId, IEntityCascadeGraph {
     tmSharingMessageId?: number | IQNumberField;
     acknowledged?: number | IQNumberField;
     terminal?: TerminalGraph;

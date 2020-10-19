@@ -107,7 +107,7 @@ export interface SynchronizationConflictPendingNotificationEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SynchronizationConflictPendingNotificationGraph
-	extends IEntitySelectProperties, SynchronizationConflictPendingNotificationEOptionalId, IEntityCascadeGraph {
+	extends SynchronizationConflictPendingNotificationEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

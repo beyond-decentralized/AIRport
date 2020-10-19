@@ -31,7 +31,7 @@ export interface LogEntryValueEUpdateProperties extends IEntityUpdateProperties 
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface LogEntryValueGraph extends IEntitySelectProperties, LogEntryValueEOptionalId, IEntityCascadeGraph {
+export interface LogEntryValueGraph extends LogEntryValueEOptionalId, IEntityCascadeGraph {
     position?: number | IQNumberField;
     value?: any | IQUntypedField;
     logEntry?: LogEntryGraph;

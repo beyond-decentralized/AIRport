@@ -85,7 +85,7 @@ export interface DailySyncLogEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface DailySyncLogGraph
-	extends IEntitySelectProperties, DailySyncLogEOptionalId, IEntityCascadeGraph {
+	extends DailySyncLogEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

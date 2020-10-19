@@ -109,7 +109,7 @@ export interface MonthlyTerminalSyncLogEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface MonthlyTerminalSyncLogGraph
-	extends IEntitySelectProperties, MonthlyTerminalSyncLogEOptionalId, IEntityCascadeGraph {
+	extends MonthlyTerminalSyncLogEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

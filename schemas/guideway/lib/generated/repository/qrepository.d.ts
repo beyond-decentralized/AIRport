@@ -34,7 +34,7 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryGraph extends IEntitySelectProperties, RepositoryEOptionalId, IEntityCascadeGraph {
+export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGraph {
     lastUpdateTime?: Date | IQDateField;
     name?: string | IQStringField;
     status?: number | IQNumberField;

@@ -118,7 +118,7 @@ export interface SynchronizationConflictEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SynchronizationConflictGraph
-	extends IEntitySelectProperties, SynchronizationConflictEOptionalId, IEntityCascadeGraph {
+	extends SynchronizationConflictEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

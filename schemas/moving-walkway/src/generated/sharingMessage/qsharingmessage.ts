@@ -111,7 +111,7 @@ export interface SharingMessageEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SharingMessageGraph
-	extends IEntitySelectProperties, SharingMessageEOptionalId, IEntityCascadeGraph {
+	extends SharingMessageEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

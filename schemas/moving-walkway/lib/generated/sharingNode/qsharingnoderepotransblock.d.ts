@@ -32,7 +32,7 @@ export interface SharingNodeRepoTransBlockEUpdateProperties extends IEntityUpdat
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SharingNodeRepoTransBlockGraph extends IEntitySelectProperties, SharingNodeRepoTransBlockEOptionalId, IEntityCascadeGraph {
+export interface SharingNodeRepoTransBlockGraph extends SharingNodeRepoTransBlockEOptionalId, IEntityCascadeGraph {
     syncStatus?: number | IQNumberField;
     sharingNode?: SharingNodeGraph;
     repositoryTransactionBlock?: RepositoryTransactionBlockGraph;

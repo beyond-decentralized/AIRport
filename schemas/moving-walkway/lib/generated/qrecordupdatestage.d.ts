@@ -40,7 +40,7 @@ export interface RecordUpdateStageEUpdateProperties extends IEntityUpdatePropert
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RecordUpdateStageGraph extends IEntitySelectProperties, RecordUpdateStageEOptionalId, IEntityCascadeGraph {
+export interface RecordUpdateStageGraph extends RecordUpdateStageEOptionalId, IEntityCascadeGraph {
     actorRecordId?: number | IQNumberField;
     updatedValue?: any | IQUntypedField;
     schemaVersion?: SchemaVersionGraph;

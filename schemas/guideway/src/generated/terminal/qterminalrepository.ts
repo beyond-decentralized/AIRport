@@ -107,7 +107,7 @@ export interface TerminalRepositoryEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface TerminalRepositoryGraph
-	extends IEntitySelectProperties, TerminalRepositoryEOptionalId, IEntityCascadeGraph {
+	extends TerminalRepositoryEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

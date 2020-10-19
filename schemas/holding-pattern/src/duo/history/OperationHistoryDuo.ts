@@ -84,7 +84,7 @@ export class OperationHistoryDuo
 		operationHistory.recordHistory.push(recordHistory)
 
 		operationHistory.repositoryTransactionHistory
-			.transactionHistory.allRecordHistory.push(recordHistory)
+			.transactionHistory.allRecordHistory.push(<any>recordHistory)
 
 		return recordHistory
 	}

@@ -69,7 +69,7 @@ export class RecordHistoryDuo
 
 
 		recordHistory.operationHistory.repositoryTransactionHistory
-			.transactionHistory.allRecordHistoryNewValues.push(recordHistoryNewValue)
+			.transactionHistory.allRecordHistoryNewValues.push(<any>recordHistoryNewValue)
 
 		return recordHistoryNewValue
 	}
@@ -86,7 +86,7 @@ export class RecordHistoryDuo
 
 
 		recordHistory.operationHistory.repositoryTransactionHistory
-			.transactionHistory.allRecordHistoryOldValues.push(recordHistoryOldValue)
+			.transactionHistory.allRecordHistoryOldValues.push(<any>recordHistoryOldValue)
 
 		return recordHistoryOldValue
 	}

@@ -107,7 +107,7 @@ export interface RepoTransBlockSchemaToChangeEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepoTransBlockSchemaToChangeGraph
-	extends IEntitySelectProperties, RepoTransBlockSchemaToChangeEOptionalId, IEntityCascadeGraph {
+	extends RepoTransBlockSchemaToChangeEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

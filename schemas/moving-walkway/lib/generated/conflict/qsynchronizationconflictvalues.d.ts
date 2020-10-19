@@ -28,7 +28,7 @@ export interface SynchronizationConflictValuesEUpdateProperties extends IEntityU
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SynchronizationConflictValuesGraph extends IEntitySelectProperties, SynchronizationConflictValuesEOptionalId, IEntityCascadeGraph {
+export interface SynchronizationConflictValuesGraph extends SynchronizationConflictValuesEOptionalId, IEntityCascadeGraph {
     synchronizationConflict?: SynchronizationConflictGraph;
 }
 /**

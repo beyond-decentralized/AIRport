@@ -111,7 +111,7 @@ export interface SharingNodeTerminalEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SharingNodeTerminalGraph
-	extends IEntitySelectProperties, SharingNodeTerminalEOptionalId, IEntityCascadeGraph {
+	extends SharingNodeTerminalEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

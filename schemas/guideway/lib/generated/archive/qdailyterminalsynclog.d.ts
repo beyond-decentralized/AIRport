@@ -32,7 +32,7 @@ export interface DailyTerminalSyncLogEUpdateProperties extends IEntityUpdateProp
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface DailyTerminalSyncLogGraph extends IEntitySelectProperties, DailyTerminalSyncLogEOptionalId, IEntityCascadeGraph {
+export interface DailyTerminalSyncLogGraph extends DailyTerminalSyncLogEOptionalId, IEntityCascadeGraph {
     acknowledged?: number | IQNumberField;
     dailyArchiveLog?: DailyArchiveLogGraph;
     terminal?: TerminalGraph;

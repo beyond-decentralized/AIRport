@@ -83,7 +83,7 @@ export interface ArchiveEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ArchiveGraph
-	extends IEntitySelectProperties, ArchiveEOptionalId, IEntityCascadeGraph {
+	extends ArchiveEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

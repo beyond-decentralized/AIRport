@@ -110,11 +110,11 @@ export class BaseLogDao
 	implements IBaseLogDao {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(2)
+		super(1)
 	}
 }
 
@@ -128,10 +128,10 @@ export class BaseMonthlySyncLogDao
 	implements IBaseMonthlySyncLogDao {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }

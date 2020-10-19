@@ -83,7 +83,7 @@ export interface SecurityQuestionEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SecurityQuestionGraph
-	extends IEntitySelectProperties, SecurityQuestionEOptionalId, IEntityCascadeGraph {
+	extends SecurityQuestionEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

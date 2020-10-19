@@ -30,7 +30,7 @@ export interface DailyArchiveEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface DailyArchiveGraph extends IEntitySelectProperties, DailyArchiveEOptionalId, IEntityCascadeGraph {
+export interface DailyArchiveGraph extends DailyArchiveEOptionalId, IEntityCascadeGraph {
     repositoryData?: string | IQStringField;
     dailyArchiveLog?: DailyArchiveLogGraph;
     repository?: RepositoryGraph;

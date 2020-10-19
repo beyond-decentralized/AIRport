@@ -139,7 +139,7 @@ export interface RecordUpdateStageEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RecordUpdateStageGraph
-	extends IEntitySelectProperties, RecordUpdateStageEOptionalId, IEntityCascadeGraph {
+	extends RecordUpdateStageEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

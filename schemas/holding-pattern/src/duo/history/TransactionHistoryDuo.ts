@@ -49,14 +49,14 @@ export class TransactionHistoryDuo
 		actor: IActor,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo
 	): IRepositoryTransactionHistory {
-		let repoTransHistory = transactionHistory.repoTransHistoryMap[repositoryId]
+		let repoTransHistory: IRepositoryTransactionHistory = transactionHistory.repoTransHistoryMap[repositoryId]
 
 		if (!repoTransHistory) {
 			repoTransHistory = repoTransHistoryDuo.getNewRecord(
 				repositoryId, actor)
 
 			transactionHistory.repositoryTransactionHistories.push(repoTransHistory)
-			transactionHistory.repoTransHistoryMap[repositoryId] = repoTransHistory
+			transactionHistory.repoTransHistoryMap[repositoryId] = <any>repoTransHistory
 		}
 
 		return repoTransHistory

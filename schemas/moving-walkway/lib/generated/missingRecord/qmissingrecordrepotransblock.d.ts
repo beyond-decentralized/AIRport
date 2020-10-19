@@ -28,7 +28,7 @@ export interface MissingRecordRepoTransBlockEUpdateProperties extends IEntityUpd
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MissingRecordRepoTransBlockGraph extends IEntitySelectProperties, MissingRecordRepoTransBlockEOptionalId, IEntityCascadeGraph {
+export interface MissingRecordRepoTransBlockGraph extends MissingRecordRepoTransBlockEOptionalId, IEntityCascadeGraph {
     missingRecord?: MissingRecordGraph;
     repositoryTransactionBlock?: RepositoryTransactionBlockGraph;
 }

@@ -30,7 +30,7 @@ export interface RepositoryArchiveEUpdateProperties extends IEntityUpdatePropert
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryArchiveGraph extends IEntitySelectProperties, RepositoryArchiveEOptionalId, IEntityCascadeGraph {
+export interface RepositoryArchiveGraph extends RepositoryArchiveEOptionalId, IEntityCascadeGraph {
     repository?: RepositoryGraph;
     archive?: ArchiveGraph;
 }

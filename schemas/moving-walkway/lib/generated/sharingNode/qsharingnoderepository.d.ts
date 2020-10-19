@@ -36,7 +36,7 @@ export interface SharingNodeRepositoryEUpdateProperties extends IEntityUpdatePro
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SharingNodeRepositoryGraph extends IEntitySelectProperties, SharingNodeRepositoryEOptionalId, IEntityCascadeGraph {
+export interface SharingNodeRepositoryGraph extends SharingNodeRepositoryEOptionalId, IEntityCascadeGraph {
     agtRepositoryId?: number | IQNumberField;
     advisedSyncPriority?: number | IQNumberField;
     repositorySyncStatus?: number | IQNumberField;

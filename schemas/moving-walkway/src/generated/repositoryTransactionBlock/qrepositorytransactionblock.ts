@@ -166,7 +166,7 @@ export interface RepositoryTransactionBlockEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepositoryTransactionBlockGraph
-	extends IEntitySelectProperties, RepositoryTransactionBlockEOptionalId, IEntityCascadeGraph {
+	extends RepositoryTransactionBlockEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

@@ -129,7 +129,7 @@ export interface MissingRecordEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface MissingRecordGraph
-	extends IEntitySelectProperties, MissingRecordEOptionalId, IEntityCascadeGraph {
+	extends MissingRecordEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

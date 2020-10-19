@@ -98,7 +98,7 @@ export interface MonthlyArchiveLogEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface MonthlyArchiveLogGraph
-	extends IEntitySelectProperties, MonthlyArchiveLogEOptionalId, IEntityCascadeGraph {
+	extends MonthlyArchiveLogEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

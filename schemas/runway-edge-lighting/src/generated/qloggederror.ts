@@ -104,7 +104,7 @@ export interface LoggedErrorEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface LoggedErrorGraph
-	extends IEntitySelectProperties, LoggedErrorEOptionalId, IEntityCascadeGraph {
+	extends LoggedErrorEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

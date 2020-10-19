@@ -147,7 +147,7 @@ export interface AgtRepositoryTransactionBlockEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface AgtRepositoryTransactionBlockGraph
-	extends IEntitySelectProperties, AgtRepositoryTransactionBlockEOptionalId, IEntityCascadeGraph {
+	extends AgtRepositoryTransactionBlockEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

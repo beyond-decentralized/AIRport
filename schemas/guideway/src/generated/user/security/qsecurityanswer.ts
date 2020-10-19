@@ -107,7 +107,7 @@ export interface SecurityAnswerEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SecurityAnswerGraph
-	extends IEntitySelectProperties, SecurityAnswerEOptionalId, IEntityCascadeGraph {
+	extends SecurityAnswerEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

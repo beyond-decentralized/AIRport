@@ -30,7 +30,7 @@ export interface SyncLogEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SyncLogGraph extends IEntitySelectProperties, SyncLogEOptionalId, IEntityCascadeGraph {
+export interface SyncLogGraph extends SyncLogEOptionalId, IEntityCascadeGraph {
     sharingMessage?: AgtSharingMessageGraph;
     repositoryTransactionBlock?: AgtRepositoryTransactionBlockGraph;
 }

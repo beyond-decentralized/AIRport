@@ -35,7 +35,7 @@ export interface SynchronizationConflictEUpdateProperties extends IEntityUpdateP
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SynchronizationConflictGraph extends IEntitySelectProperties, SynchronizationConflictEOptionalId, IEntityCascadeGraph {
+export interface SynchronizationConflictGraph extends SynchronizationConflictEOptionalId, IEntityCascadeGraph {
     type?: number | IQNumberField;
     repository?: RepositoryGraph;
     overwrittenRecordHistory?: RecordHistoryGraph;

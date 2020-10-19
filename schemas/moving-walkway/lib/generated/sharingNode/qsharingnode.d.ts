@@ -38,7 +38,7 @@ export interface SharingNodeEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SharingNodeGraph extends IEntitySelectProperties, SharingNodeEOptionalId, IEntityCascadeGraph {
+export interface SharingNodeGraph extends SharingNodeEOptionalId, IEntityCascadeGraph {
     sharingMechanism?: number | IQNumberField;
     isActive?: boolean | IQBooleanField;
     syncFrequency?: number | IQNumberField;

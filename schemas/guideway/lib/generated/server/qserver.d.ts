@@ -28,7 +28,7 @@ export interface ServerEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ServerGraph extends IEntitySelectProperties, ServerEOptionalId, IEntityCascadeGraph {
+export interface ServerGraph extends ServerEOptionalId, IEntityCascadeGraph {
     serverType?: number | IQNumberField;
     serverSyncLogs?: ServerSyncLogGraph[];
 }

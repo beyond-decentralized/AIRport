@@ -32,7 +32,7 @@ export interface MonthlyArchiveLogEUpdateProperties extends IEntityUpdatePropert
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface MonthlyArchiveLogGraph extends IEntitySelectProperties, MonthlyArchiveLogEOptionalId, IEntityCascadeGraph {
+export interface MonthlyArchiveLogGraph extends MonthlyArchiveLogEOptionalId, IEntityCascadeGraph {
     numberOfChanges?: number | IQNumberField;
     daysWithChanges?: any | IQUntypedField;
     repository?: RepositoryGraph;

@@ -16,18 +16,18 @@ export class BaseDailySyncLogDuo extends SQDIDuo {
 }
 export class BaseLogDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(2);
-    }
-    constructor() {
-        super(2);
-    }
-}
-export class BaseMonthlySyncLogDuo extends SQDIDuo {
-    static diSet() {
         return duoDiSet(1);
     }
     constructor() {
         super(1);
+    }
+}
+export class BaseMonthlySyncLogDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(2);
+    }
+    constructor() {
+        super(2);
     }
 }
 //# sourceMappingURL=baseDuos.js.map
