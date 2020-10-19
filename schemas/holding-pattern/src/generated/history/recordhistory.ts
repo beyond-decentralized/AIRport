@@ -37,7 +37,7 @@ export interface IRecordHistory {
 	oldValues?: IRecordHistoryOldValue[];
 
 	// Transient Properties
-	tableColumnMap?: ISyncColumnMap;
+	tableColumnMap?: SyncColumnMap;
 
 	// Public Methods
 	

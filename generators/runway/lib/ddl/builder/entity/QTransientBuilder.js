@@ -16,14 +16,15 @@ export class QTransientBuilder {
                 addImportForType(prop.ownerEntity, type, this.parentBuilder.fileBuilder);
             }
         }
-        let type = prop.type;
-        if (prop.isMap && type.indexOf(']: ') > -1) {
-            type = type.replace(/\]\: (?!.*\]\: )/, "]: I");
-        }
-        else {
-            type = prop.primitive ? `${type}` : `I${type}`;
-        }
-        return `${prop.name}?: ${type};`;
+        // let type = prop.type;
+        // if(prop.isMap && type.indexOf(']: ') > -1) {
+        // 		type = type.replace(/\]\: (?!.*\]\: )/, "]: I");
+        // } else {
+        // 	type = prop.primitive ? `${type}` : `I${type}`
+        // }
+        //
+        // return `${prop.name}?: ${type};`;
+        return `${prop.name}?: ${prop.type};`;
     }
 }
 //# sourceMappingURL=QTransientBuilder.js.map
