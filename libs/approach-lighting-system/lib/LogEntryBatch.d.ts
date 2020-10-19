@@ -12,3 +12,4 @@ export declare class LogEntryBatch implements ILogEntryBatch {
     logEntries: ILogEntry[];
     logEntryValues: ILogEntryValue[];
 }
+//# sourceMappingURL=LogEntryBatch.d.ts.map

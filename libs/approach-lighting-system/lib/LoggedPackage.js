@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const runway_edge_lighting_1 = require("@airport/runway-edge-lighting");
-const Constants_1 = require("./Constants");
-const Logged_1 = require("./Logged");
-const Logger_1 = require("./Logger");
+import { LogLevel } from '@airport/runway-edge-lighting';
+import { APPROACH_LIGHTING_SYSTEM_LOGGER } from './Constants';
+import { Logged } from './Logged';
+import { Logger } from './Logger';
 var log;
-class LoggedPackage extends Logged_1.Logged {
-    constructor(packageName, level = runway_edge_lighting_1.LogLevel.INFO) {
+export class LoggedPackage extends Logged {
+    constructor(packageName, level = LogLevel.INFO) {
         super(level);
         this.loggerMap = new Map();
         this.package = {
@@ -15,7 +13,7 @@ class LoggedPackage extends Logged_1.Logged {
             applicationPackages: []
         };
         setTimeout(() => {
-            log = Constants_1.APPROACH_LIGHTING_SYSTEM_LOGGER.add('LoggedPackage');
+            log = APPROACH_LIGHTING_SYSTEM_LOGGER.add('LoggedPackage');
         });
         // loggedApplication.addPackage(this);
     }
@@ -40,10 +38,9 @@ class LoggedPackage extends Logged_1.Logged {
         if (this.loggerMap.get(packagedUnitName)) {
             log.throw('Logger {1} already exists in package {2}', packagedUnitName, this.package.name);
         }
-        const logger = new Logger_1.Logger(this, packagedUnitName, this.level);
+        const logger = new Logger(this, packagedUnitName, this.level);
         this.loggerMap.set(packagedUnitName, logger);
         return logger;
     }
 }
-exports.LoggedPackage = LoggedPackage;
 //# sourceMappingURL=LoggedPackage.js.map

@@ -8,6 +8,7 @@ export * from './google/drive/GoogleDriveModel';
 export * from './google/realtime/DocumentHandle';
 export * from './google/realtime/GoogleRealtime';
 export * from './google/realtime/GoogleRealtimeAdaptor';
+export * from './google/realtime/GoogleRealtimeModel';
 export * from './google/sheets/GoogleSheets';
 export * from './google/GoogleApi';
 export * from './google/GoogleSharedChangeList';

@@ -1,12 +1,7 @@
-"use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(require("./Constants"));
-__export(require("./LogEntryBatch"));
-__export(require("./Logged"));
-__export(require("./LoggedApplication"));
-__export(require("./LoggedPackage"));
-__export(require("./Logger"));
+export * from './Constants';
+export * from './LogEntryBatch';
+export * from './Logged';
+export * from './LoggedApplication';
+export * from './LoggedPackage';
+export * from './Logger';
 //# sourceMappingURL=index.js.map

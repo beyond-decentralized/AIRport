@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const runway_edge_lighting_1 = require("@airport/runway-edge-lighting");
-const Constants_1 = require("./Constants");
-const Logged_1 = require("./Logged");
+import { LogLevel } from '@airport/runway-edge-lighting';
+import { APPROACH_LIGHTING_SYSTEM_LOGGER } from './Constants';
+import { Logged } from './Logged';
 var log;
 const debugTraceApiErrorMessage = `Invalid Logger.debug|trace call,
 				call does not adhere to to the API:
@@ -18,8 +16,8 @@ const debugTraceApiErrorMessage = `Invalid Logger.debug|trace call,
 		...values: LogEntryValueValue[]
 	): string;
 					`;
-class Logger extends Logged_1.Logged {
-    constructor(loggedPackage, name, level = runway_edge_lighting_1.LogLevel.INFO) {
+export class Logger extends Logged {
+    constructor(loggedPackage, name, level = LogLevel.INFO) {
         super(level);
         this.loggedPackage = loggedPackage;
         this.unit = {
@@ -29,7 +27,7 @@ class Logger extends Logged_1.Logged {
         };
         loggedPackage.addLogger(this);
         setTimeout(() => {
-            log = Constants_1.APPROACH_LIGHTING_SYSTEM_LOGGER.add('Logger');
+            log = APPROACH_LIGHTING_SYSTEM_LOGGER.add('Logger');
         });
     }
     safeThrow(message) {
@@ -43,31 +41,31 @@ class Logger extends Logged_1.Logged {
         return this.fatal(message);
     }
     fatal(message, ...values) {
-        return this.log(runway_edge_lighting_1.LogLevel.FATAL, message, ...values);
+        return this.log(LogLevel.FATAL, message, ...values);
     }
     safeError(message) {
         return this.error(message);
     }
     error(message, ...values) {
-        return this.log(runway_edge_lighting_1.LogLevel.ERROR, message, ...values);
+        return this.log(LogLevel.ERROR, message, ...values);
     }
     safeWarn(message) {
         return this.warn(message);
     }
     warn(message, ...values) {
-        return this.log(runway_edge_lighting_1.LogLevel.WARNING, message, ...values);
+        return this.log(LogLevel.WARNING, message, ...values);
     }
     safeInfo(message) {
         return this.info(message);
     }
     info(message, ...values) {
-        return this.log(runway_edge_lighting_1.LogLevel.INFO, message, ...values);
+        return this.log(LogLevel.INFO, message, ...values);
     }
     debug(callbackOrMessage, ...values) {
-        return this.debugOrTrace(runway_edge_lighting_1.LogLevel.DEBUG, callbackOrMessage, values);
+        return this.debugOrTrace(LogLevel.DEBUG, callbackOrMessage, values);
     }
     trace(callbackOrMessage, ...values) {
-        return this.debugOrTrace(runway_edge_lighting_1.LogLevel.TRACE, callbackOrMessage, values);
+        return this.debugOrTrace(LogLevel.TRACE, callbackOrMessage, values);
     }
     debugOrTrace(atLevel, callbackOrMessage, values) {
         if (this.level < atLevel) {
@@ -103,7 +101,7 @@ class Logger extends Logged_1.Logged {
         else {
             message = callbackOrMessage;
         }
-        this.log(runway_edge_lighting_1.LogLevel.TRACE, message, ...values);
+        this.log(LogLevel.TRACE, message, ...values);
     }
     log(level, message, ...values) {
         const now = new Date();
@@ -141,22 +139,21 @@ ${parameters}
     }
     getLevelInfo(level) {
         switch (level) {
-            case runway_edge_lighting_1.LogLevel.DEBUG:
+            case LogLevel.DEBUG:
                 return [console.debug, 'DEBUG: '];
-            case runway_edge_lighting_1.LogLevel.ERROR:
+            case LogLevel.ERROR:
                 return [console.error, 'FATAL: '];
-            case runway_edge_lighting_1.LogLevel.FATAL:
+            case LogLevel.FATAL:
                 return [console.error, 'ERROR: '];
-            case runway_edge_lighting_1.LogLevel.INFO:
+            case LogLevel.INFO:
                 return [console.info, 'INFO:  '];
-            case runway_edge_lighting_1.LogLevel.TRACE:
+            case LogLevel.TRACE:
                 return [console.trace, 'TRACE: '];
-            case runway_edge_lighting_1.LogLevel.WARNING:
+            case LogLevel.WARNING:
                 return [console.warn, 'WARN:  '];
             default:
                 this.throw('Unexpected LogLevel ${1}', level);
         }
     }
 }
-exports.Logger = Logger;
 //# sourceMappingURL=Logger.js.map

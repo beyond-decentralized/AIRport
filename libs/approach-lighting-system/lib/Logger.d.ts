@@ -15,9 +15,15 @@ export interface ILogger extends ILogged {
     warn(message: LogEntryTypeText, ...values: LogEntryValueValue[]): string;
     safeInfo(message: LogEntryTypeText): string;
     info(message: LogEntryTypeText, ...values: LogEntryValueValue[]): string;
-    debug(callback: () => LogEntryTypeText | [LogEntryTypeText, LogEntryValueValue | LogEntryValueValue[]]): string;
+    debug(callback: () => LogEntryTypeText | [
+        LogEntryTypeText,
+        LogEntryValueValue | LogEntryValueValue[]
+    ]): string;
     debug(message: LogEntryTypeText, ...values: LogEntryValueValue[]): string;
-    trace(callback: () => LogEntryTypeText | [LogEntryTypeText, LogEntryValueValue | LogEntryValueValue[]]): string;
+    trace(callback: () => LogEntryTypeText | [
+        LogEntryTypeText,
+        LogEntryValueValue | LogEntryValueValue[]
+    ]): string;
     trace(message: LogEntryTypeText, ...values: LogEntryValueValue[]): string;
 }
 export declare class Logger extends Logged implements ILogger {
@@ -34,11 +40,18 @@ export declare class Logger extends Logged implements ILogger {
     warn(message: LogEntryTypeText, ...values: LogEntryValueValue[]): string;
     safeInfo(message: LogEntryTypeText): string;
     info(message: LogEntryTypeText, ...values: LogEntryValueValue[]): string;
-    debug(callback: () => LogEntryTypeText | [LogEntryTypeText, LogEntryValueValue | LogEntryValueValue[]]): string;
+    debug(callback: () => LogEntryTypeText | [
+        LogEntryTypeText,
+        LogEntryValueValue | LogEntryValueValue[]
+    ]): string;
     debug(message: LogEntryTypeText, ...values: LogEntryValueValue[]): string;
-    trace(callback: () => LogEntryTypeText | [LogEntryTypeText, LogEntryValueValue | LogEntryValueValue[]]): string;
+    trace(callback: () => LogEntryTypeText | [
+        LogEntryTypeText,
+        LogEntryValueValue | LogEntryValueValue[]
+    ]): string;
     trace(message: LogEntryTypeText, ...values: LogEntryValueValue[]): string;
     private debugOrTrace;
     private log;
     private getLevelInfo;
 }
+//# sourceMappingURL=Logger.d.ts.map

@@ -8,3 +8,4 @@ export declare abstract class Logged implements ILogged {
     get level(): SetLogLevel;
     set level(newLevel: SetLogLevel);
 }
+//# sourceMappingURL=Logged.d.ts.map

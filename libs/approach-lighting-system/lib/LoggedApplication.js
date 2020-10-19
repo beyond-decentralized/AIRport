@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const runway_edge_lighting_1 = require("@airport/runway-edge-lighting");
-const Logged_1 = require("./Logged");
-class LoggedApplication extends Logged_1.Logged {
-    constructor(applicationName, level = runway_edge_lighting_1.LogLevel.INFO) {
+import { LogLevel } from '@airport/runway-edge-lighting';
+import { Logged } from './Logged';
+export class LoggedApplication extends Logged {
+    constructor(applicationName, level = LogLevel.INFO) {
         super(level);
         this.packageMap = new Map();
         this.application = {
@@ -26,5 +24,4 @@ class LoggedApplication extends Logged_1.Logged {
         // loggedPackage.level = this.level;
     }
 }
-exports.LoggedApplication = LoggedApplication;
 //# sourceMappingURL=LoggedApplication.js.map

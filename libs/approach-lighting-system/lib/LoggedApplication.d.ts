@@ -15,3 +15,4 @@ export declare class LoggedApplication extends Logged implements ILoggedApplicat
     set level(newLevel: SetLogLevel);
     addPackage(loggedPackage: ILoggedPackage): void;
 }
+//# sourceMappingURL=LoggedApplication.d.ts.map

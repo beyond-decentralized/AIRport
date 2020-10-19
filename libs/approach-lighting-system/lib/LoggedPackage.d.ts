@@ -19,3 +19,4 @@ export declare class LoggedPackage extends Logged implements ILoggedPackage {
     addLogger(logger: ILogger): void;
     add(packagedUnitName: PackagedUnitName): ILogger;
 }
+//# sourceMappingURL=LoggedPackage.d.ts.map

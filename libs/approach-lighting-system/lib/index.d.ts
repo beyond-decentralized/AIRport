@@ -4,3 +4,4 @@ export * from './Logged';
 export * from './LoggedApplication';
 export * from './LoggedPackage';
 export * from './Logger';
+//# sourceMappingURL=index.d.ts.map
