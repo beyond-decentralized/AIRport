@@ -1,19 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ground_control_1 = require("@airport/ground-control");
-const fuel_hydrant_system_1 = require("@airport/fuel-hydrant-system");
-const sqlite_1 = require("@airport/sqlite");
-class WebSqlDriver extends sqlite_1.SqLiteDriver {
+import { INVALID_TABLE_NAME, QueryType, StoreType } from '@airport/ground-control';
+import { SQLDialect } from '@airport/fuel-hydrant-system';
+import { SqLiteDriver } from '@airport/sqlite';
+export class WebSqlDriver extends SqLiteDriver {
     constructor() {
         super();
         this.currentStatementId = 0;
         this.keepAlive = false;
         this.keepAliveCount = 0;
         this.pendingStatements = [];
-        this.type = ground_control_1.StoreType.SQLITE_CORDOVA;
+        this.type = StoreType.SQLITE_CORDOVA;
     }
     getDialect() {
-        return fuel_hydrant_system_1.SQLDialect.SQLITE_WEBSQL;
+        return SQLDialect.SQLITE_WEBSQL;
     }
     getBackupLocation(dbFlag) {
         switch (dbFlag) {
@@ -56,7 +54,7 @@ class WebSqlDriver extends sqlite_1.SqLiteDriver {
     }
     async rollback() {
         if (this.transaction) {
-            this.transaction.executeSql('SELECT count(*) FROM ' + ground_control_1.INVALID_TABLE_NAME, []);
+            this.transaction.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, []);
         }
         await this.commit();
     }
@@ -128,9 +126,9 @@ class WebSqlDriver extends sqlite_1.SqLiteDriver {
     }
     getReturnValue(queryType, response) {
         switch (queryType) {
-            case ground_control_1.QueryType.MUTATE:
+            case QueryType.MUTATE:
                 return response.rowsAffected;
-            case ground_control_1.QueryType.SELECT:
+            case QueryType.SELECT:
                 return response.rows;
             default:
                 return null;
@@ -140,7 +138,6 @@ class WebSqlDriver extends sqlite_1.SqLiteDriver {
 WebSqlDriver.BACKUP_LOCAL = 2;
 WebSqlDriver.BACKUP_LIBRARY = 1;
 WebSqlDriver.BACKUP_DOCUMENTS = 0;
-exports.WebSqlDriver = WebSqlDriver;
 /*
 function runSqlSeries(
     tx,

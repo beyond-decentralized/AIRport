@@ -93,4 +93,5 @@ export declare class AirportDatabase implements IAirportDatabase {
         (...args: any[]): RawUpdate<IEUP, IQE>;
     }): Promise<number>;
 }
+export declare function injectAirportDatabase(): void;
 //# sourceMappingURL=AirportDatabase.d.ts.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"LogEntryBatch.d.ts","sourceRoot":"","sources":["../src/LogEntryBatch.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,SAAS,EACT,cAAc,EACd,MAAM,+BAA+B,CAAC;AAEvC;;;;;;GAMG;AACH,MAAM,WAAW,cAAc;CAE9B;AAED,qBAAa,aACZ,YAAW,cAAc;IAEzB,UAAU,EAAE,SAAS,EAAE,CAAC;IACxB,cAAc,EAAE,cAAc,EAAE,CAAC;CAEjC"}

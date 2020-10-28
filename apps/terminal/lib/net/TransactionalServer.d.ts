@@ -48,4 +48,5 @@ export declare class TransactionalServer implements ITransactionalServer {
     private getActor;
     private wrapInTransaction;
 }
+export declare function injectTransactionalServer(): void;
 //# sourceMappingURL=TransactionalServer.d.ts.map

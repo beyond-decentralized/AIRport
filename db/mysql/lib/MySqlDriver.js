@@ -2,6 +2,7 @@ import { DI } from '@airport/di';
 import { SqlDriver } from '@airport/fuel-hydrant-system';
 import { QueryType, STORE_DRIVER } from '@airport/ground-control';
 import { transactional } from '@airport/tower';
+import * as mysql from 'mysql2';
 import { DDLManager } from './DDLManager';
 /**
  * Created by Papa on 10/16/2020.
@@ -11,16 +12,24 @@ export class MySqlDriver extends SqlDriver {
         throw new Error('Method not implemented.');
     }
     initialize(dbName) {
-        throw new Error('Method not implemented.');
+        this.pool = mysql.createPool({
+            host: 'localhost',
+            user: 'root',
+            database: dbName,
+            waitForConnections: true,
+            connectionLimit: 10,
+            queueLimit: 0
+        });
+        return null;
     }
-    transact(keepAlive) {
-        throw new Error('Method not implemented.');
+    async transact(keepAlive) {
+        await this.pool.execute('START TRANSACTION');
     }
-    commit() {
-        throw new Error('Method not implemented.');
+    async commit() {
+        await this.pool.execute('COMMIT');
     }
-    rollback() {
-        throw new Error('Method not implemented.');
+    async rollback() {
+        await this.pool.execute('ROLLBACK');
     }
     isValueValid(value, sqlDataType) {
         throw new Error('Method not implemented.');

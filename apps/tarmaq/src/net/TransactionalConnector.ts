@@ -189,3 +189,7 @@ export class TransactionalConnector
 }
 
 DI.set(TRANS_CONNECTOR, TransactionalConnector)
+
+export function injectTransactionalConnector(): void {
+	console.log("Injecting TransactionalConnector")
+}

@@ -81,4 +81,7 @@ export class TransactionalConnector {
     }
 }
 DI.set(TRANS_CONNECTOR, TransactionalConnector);
+export function injectTransactionalConnector() {
+    console.log("Injecting TransactionalConnector");
+}
 //# sourceMappingURL=TransactionalConnector.js.map

@@ -6,7 +6,10 @@ import {
 	STORE_DRIVER
 }                      from '@airport/ground-control'
 import {transactional} from '@airport/tower'
+import {Pool}          from 'mysql2'
+import * as mysql      from 'mysql2'
 import {DDLManager}    from './DDLManager'
+
 
 /**
  * Created by Papa on 10/16/2020.
@@ -15,29 +18,41 @@ import {DDLManager}    from './DDLManager'
 export class MySqlDriver
 	extends SqlDriver {
 
+	private pool: Pool
+
 	query(
 		queryType: QueryType,
 		query: string,
 		params: any,
 		saveTransaction?: boolean
 	): Promise<any> {
+
 		throw new Error('Method not implemented.')
 	}
 
 	initialize(dbName: string): Promise<any> {
-		throw new Error('Method not implemented.')
+		this.pool = mysql.createPool({
+			host: 'localhost',
+			user: 'root',
+			database: dbName,
+			waitForConnections: true,
+			connectionLimit: 10,
+			queueLimit: 0
+		});
+
+		return null;
 	}
 
-	transact(keepAlive?: boolean): Promise<void> {
-		throw new Error('Method not implemented.')
+	async transact(keepAlive?: boolean): Promise<void> {
+		await this.pool.execute('START TRANSACTION')
 	}
 
-	commit(): Promise<void> {
-		throw new Error('Method not implemented.')
+	async commit(): Promise<void> {
+		await this.pool.execute('COMMIT')
 	}
 
-	rollback(): Promise<void> {
-		throw new Error('Method not implemented.')
+	async rollback(): Promise<void> {
+		await this.pool.execute('ROLLBACK')
 	}
 
 	isValueValid(

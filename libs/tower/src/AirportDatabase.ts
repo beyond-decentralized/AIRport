@@ -307,3 +307,7 @@ export class AirportDatabase
 }
 
 DI.set(AIR_DB, AirportDatabase)
+
+export function injectAirportDatabase(): void {
+	console.log('Injecting AirportDatabase')
+}
