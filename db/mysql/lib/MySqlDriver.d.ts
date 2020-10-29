@@ -1,5 +1,5 @@
 import { SqlDriver } from '@airport/fuel-hydrant-system';
-import { QueryType, SQLDataType } from '@airport/ground-control';
+import { ITransaction, QueryType, SQLDataType } from '@airport/ground-control';
 /**
  * Created by Papa on 10/16/2020.
  */
@@ -7,9 +7,7 @@ export declare class MySqlDriver extends SqlDriver {
     private pool;
     query(queryType: QueryType, query: string, params: any, saveTransaction?: boolean): Promise<any>;
     initialize(dbName: string): Promise<any>;
-    transact(keepAlive?: boolean): Promise<void>;
-    commit(): Promise<void>;
-    rollback(): Promise<void>;
+    transact(keepAlive?: boolean): Promise<ITransaction>;
     isValueValid(value: any, sqlDataType: SQLDataType): boolean;
     doesTableExist(schemaName: string, tableName: string): Promise<boolean>;
     dropTable(schemaName: string, tableName: string): Promise<boolean>;

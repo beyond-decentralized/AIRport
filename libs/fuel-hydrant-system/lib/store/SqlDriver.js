@@ -17,9 +17,6 @@ export class SqlDriver {
     supportsLocalTransactions() {
         return true;
     }
-    async saveTransaction(transaction) {
-        (await container(this).get(ACTIVE_QUERIES)).markQueriesToRerun(transaction.schemaMap);
-    }
     async insertValues(portableQuery) {
         const splitValues = this.splitValues(portableQuery.jsonQuery.V);
         const [airDb, schemaUtils, metadataUtils] = await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS);

@@ -1,42 +1,22 @@
 import {IObservable}   from '@airport/observe'
-import {DbColumn}      from '../..'
-import {SQLDataType}   from '../core/field/JSONClause'
 import {PortableQuery} from '../query/PortableQuery'
+import {
+	InternalFragments,
+	IStoreOperator
+}                      from './IStoreOperator'
+import {ITransaction}  from './ITransaction'
 import {StoreType}     from './storeInfo'
 
 /**
  * Created by Papa on 6/10/2016.
  */
 
-export enum QueryType {
-	DDL,
-	SELECT,
-	MUTATE
-}
-
-export interface ATransactionHistory {
-
-}
-
-export interface InternalSetFragment {
-	column: DbColumn;
-	value: any;
-}
-
-export interface InternalFragments {
-	SELECT?: DbColumn[];
-	SET?: InternalSetFragment[];
-}
-
 export const INVALID_TABLE_NAME = 'A0ZA2vKHIAeI9506rYzCSFKYcSbSuLy5sRieHPnd2NevufFEx9CxuZsAdXieZBbRj5mPYypr3TGYwb6limMcTTWHOnsk7F6991890'
 
-export interface IStoreDriver {
+export interface IStoreDriver
+	extends IStoreOperator {
 
 	type: StoreType;
-
-	deleteWhere(
-		portableQuery: PortableQuery,
-	): Promise<number>;
 
 	doesTableExist(
 		schemaName: string,
@@ -48,41 +28,8 @@ export interface IStoreDriver {
 		tableName: string
 	): Promise<boolean>
 
-	find<E, EntityArray extends Array<E>>(
-		portableQuery: PortableQuery,
-		internalFragments: InternalFragments,
-		cachedSqlQueryId?: number,
-	): Promise<EntityArray>;
-
-	findOne<E>(
-		portableQuery: PortableQuery,
-		internalFragments: InternalFragments,
-		cachedSqlQueryId?: number,
-	): Promise<E>;
-
-	findNative(
-		sqlQuery: string,
-		parameters: any[]
-	): Promise<any[]>;
-
 	initialize(
 		dbName: string
-	): Promise<any>;
-
-	insertValues(
-		portableQuery: PortableQuery,
-		cachedSqlQueryId?: number,
-	): Promise<number>;
-
-	query(
-		queryType: QueryType,
-		query: string,
-		params,
-		saveTransaction?: boolean
-	): Promise<any>;
-
-	saveTransaction(
-		transaction: ATransactionHistory
 	): Promise<any>;
 
 	search<E, EntityArray extends Array<E>>(
@@ -97,22 +44,8 @@ export interface IStoreDriver {
 		cachedSqlQueryId?: number,
 	): IObservable<E>;
 
-	updateWhere(
-		portableQuery: PortableQuery,
-		internalFragments: InternalFragments
-	): Promise<number>;
-
 	transact(
 		keepAlive?: boolean
-	): Promise<void>;
-
-	commit(): Promise<void>;
-
-	rollback(): Promise<void>;
-
-	isValueValid(
-		value: any,
-		sqlDataType: SQLDataType
-	): boolean
+	): Promise<ITransaction>;
 
 }

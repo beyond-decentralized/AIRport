@@ -9,6 +9,7 @@ import {container, DI}                  from '@airport/di'
 import {
 	InternalFragments,
 	IStoreDriver,
+	ITransaction,
 	JsonDelete,
 	JsonEntityQuery,
 	JsonFieldQuery,
@@ -21,7 +22,7 @@ import {
 	SQLDataType,
 	StoreType,
 	SyncSchemaMap
-}                            from '@airport/ground-control'
+} from '@airport/ground-control'
 import {ITransactionHistory} from '@airport/holding-pattern'
 import {
 	IObservable,
@@ -61,15 +62,7 @@ export abstract class SqlDriver
 		dbName: string
 	): Promise<any>;
 
-	async abstract transact(keepAlive?: boolean): Promise<void>;
-
-	async abstract commit(): Promise<void>;
-
-	async abstract rollback(): Promise<void>;
-
-	async saveTransaction(transaction: ITransactionHistory): Promise<any> {
-		(await container(this).get(ACTIVE_QUERIES)).markQueriesToRerun(transaction.schemaMap)
-	}
+	async abstract transact(keepAlive?: boolean): Promise<ITransaction>;
 
 	async insertValues(
 		portableQuery: PortableQuery,

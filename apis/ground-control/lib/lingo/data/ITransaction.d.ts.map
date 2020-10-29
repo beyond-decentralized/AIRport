@@ -1,0 +1,1 @@
+{"version":3,"file":"ITransaction.d.ts","sourceRoot":"","sources":["../../../src/lingo/data/ITransaction.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,mBAAmB,EACnB,cAAc,EACd,MAAM,kBAAkB,CAAA;AAEzB,MAAM,WAAW,YAChB,SAAQ,cAAc;IAEtB,eAAe,CACd,WAAW,EAAE,mBAAmB,GAC9B,OAAO,CAAC,GAAG,CAAC,CAAC;IAEhB,MAAM,IAAI,OAAO,CAAC,IAAI,CAAC,CAAC;IAExB,QAAQ,IAAI,OAAO,CAAC,IAAI,CAAC,CAAC;CAE1B"}

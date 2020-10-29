@@ -1,15 +1,19 @@
-import {DI}            from '@airport/di'
-import {SqlDriver}     from '@airport/fuel-hydrant-system'
+import {DI}               from '@airport/di'
+import {SqlDriver}        from '@airport/fuel-hydrant-system'
 import {
+	ITransaction,
 	QueryType,
 	SQLDataType,
 	STORE_DRIVER
-}                      from '@airport/ground-control'
-import {transactional} from '@airport/tower'
-import {Pool}          from 'mysql2'
-import * as mysql      from 'mysql2'
-import {DDLManager}    from './DDLManager'
-
+}                         from '@airport/ground-control'
+import {transactional}    from '@airport/tower'
+import * as mysql         from 'mysql2/promise'
+import {
+	Connection,
+	Pool
+}                         from 'mysql2/promise'
+import {DDLManager}       from './DDLManager'
+import {MySqlTransaction} from './MySqlTransaction'
 
 /**
  * Created by Papa on 10/16/2020.
@@ -38,21 +42,15 @@ export class MySqlDriver
 			waitForConnections: true,
 			connectionLimit: 10,
 			queueLimit: 0
-		});
+		})
 
-		return null;
+		return null
 	}
 
-	async transact(keepAlive?: boolean): Promise<void> {
-		await this.pool.execute('START TRANSACTION')
-	}
-
-	async commit(): Promise<void> {
-		await this.pool.execute('COMMIT')
-	}
-
-	async rollback(): Promise<void> {
-		await this.pool.execute('ROLLBACK')
+	async transact(keepAlive?: boolean): Promise<ITransaction> {
+		const connection: Connection = await this.pool.getConnection()
+		await connection.beginTransaction()
+		return new MySqlTransaction(this, this.pool, connection)
 	}
 
 	isValueValid(

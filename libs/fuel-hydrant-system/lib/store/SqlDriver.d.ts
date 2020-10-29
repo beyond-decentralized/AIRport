@@ -1,6 +1,5 @@
 import { IAirportDatabase, ISchemaUtils } from '@airport/air-control';
-import { InternalFragments, IStoreDriver, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
-import { ITransactionHistory } from '@airport/holding-pattern';
+import { InternalFragments, IStoreDriver, ITransaction, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
 /**
@@ -11,10 +10,7 @@ export declare abstract class SqlDriver implements IStoreDriver {
     type: StoreType;
     supportsLocalTransactions(): boolean;
     abstract initialize(dbName: string): Promise<any>;
-    abstract transact(keepAlive?: boolean): Promise<void>;
-    abstract commit(): Promise<void>;
-    abstract rollback(): Promise<void>;
-    saveTransaction(transaction: ITransactionHistory): Promise<any>;
+    abstract transact(keepAlive?: boolean): Promise<ITransaction>;
     insertValues(portableQuery: PortableQuery): Promise<number>;
     private splitValues;
     deleteWhere(portableQuery: PortableQuery): Promise<number>;

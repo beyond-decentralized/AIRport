@@ -2,8 +2,9 @@ import { DI } from '@airport/di';
 import { SqlDriver } from '@airport/fuel-hydrant-system';
 import { QueryType, STORE_DRIVER } from '@airport/ground-control';
 import { transactional } from '@airport/tower';
-import * as mysql from 'mysql2';
+import * as mysql from 'mysql2/promise';
 import { DDLManager } from './DDLManager';
+import { MySqlTransaction } from './MySqlTransaction';
 /**
  * Created by Papa on 10/16/2020.
  */
@@ -23,13 +24,9 @@ export class MySqlDriver extends SqlDriver {
         return null;
     }
     async transact(keepAlive) {
-        await this.pool.execute('START TRANSACTION');
-    }
-    async commit() {
-        await this.pool.execute('COMMIT');
-    }
-    async rollback() {
-        await this.pool.execute('ROLLBACK');
+        const connection = await this.pool.getConnection();
+        await connection.beginTransaction();
+        return new MySqlTransaction(this, this.pool, connection);
     }
     isValueValid(value, sqlDataType) {
         throw new Error('Method not implemented.');
