@@ -1,11 +1,16 @@
 import {IQEntityInternal}        from '@airport/air-control'
-import {container, DI}                      from '@airport/di'
+import {
+	container,
+	DI
+}                                from '@airport/di'
 import {
 	ACTIVE_QUERIES,
 	ID_GENERATOR,
 	IIdGenerator
 }                                from '@airport/fuel-hydrant-system'
 import {
+	IStoreDriver,
+	ITransaction,
 	STORE_DRIVER,
 	StoreType,
 	SyncSchemaMap
@@ -27,7 +32,6 @@ export class TransactionManager
 	implements ITransactionManager {
 
 	// Keyed by repository index
-	currentTransHistory: ITransactionHistory
 	storeType: StoreType
 	transactionIndexQueue: string[]   = []
 	transactionInProgress: string     = null
@@ -49,46 +53,55 @@ export class TransactionManager
 
 	async transact(
 		credentials: ICredentials
-	): Promise<void> {
+	): Promise<ITransaction> {
 		const [storeDriver, transHistoryDuo] = await container(this).get(
 			STORE_DRIVER, TRANS_HISTORY_DUO
 		)
 
-		if (credentials.domainAndPort === this.transactionInProgress
-			|| this.transactionIndexQueue.filter(
-				transIndex =>
-					transIndex === credentials.domainAndPort
-			).length) {
-			// Either just continue using the current transaction
-			// or return (domain shouldn't be initiating multiple transactions
-			// at the same time
-			return
+		if (!storeDriver.isServer()) {
+			if (credentials.domainAndPort === this.transactionInProgress
+				|| this.transactionIndexQueue.filter(
+					transIndex =>
+						transIndex === credentials.domainAndPort
+				).length) {
+				// Either just continue using the current transaction
+				// or return (domain shouldn't be initiating multiple transactions
+				// at the same time
+				return
+			}
+			this.transactionIndexQueue.push(credentials.domainAndPort)
 		}
-		this.transactionIndexQueue.push(credentials.domainAndPort)
 
-		while (!this.canRunTransaction(credentials.domainAndPort)) {
+
+		while (!this.canRunTransaction(credentials.domainAndPort, storeDriver)) {
 			await this.wait(this.yieldToRunningTransaction)
 		}
-		this.transactionIndexQueue = this.transactionIndexQueue.filter(
-			transIndex =>
-				transIndex !== credentials.domainAndPort
-		)
-		this.transactionInProgress = credentials.domainAndPort
-		let fieldMap               = new SyncSchemaMap()
+		if (!storeDriver.isServer()) {
+			this.transactionIndexQueue = this.transactionIndexQueue.filter(
+				transIndex =>
+					transIndex !== credentials.domainAndPort
+			)
+			this.transactionInProgress = credentials.domainAndPort
+		}
+		let fieldMap = new SyncSchemaMap()
 
-		this.currentTransHistory = transHistoryDuo.getNewRecord()
+		const transaction        = await storeDriver.transact()
+		transaction.transHistory = transHistoryDuo.getNewRecord()
 
-		await storeDriver.transact()
+		transaction.credentials = credentials
+
+		return transaction
 	}
 
 	async rollback(
-		credentials: ICredentials
+		transaction: ITransaction
 	): Promise<void> {
-		if (this.transactionInProgress !== credentials.domainAndPort) {
+		const storeDriver = await container(this).get(STORE_DRIVER)
+		if (!storeDriver.isServer() && this.transactionInProgress !== transaction.credentials.domainAndPort) {
 			let foundTransactionInQueue = false
 			this.transactionIndexQueue.filter(
 				transIndex => {
-					if (transIndex === credentials.domainAndPort) {
+					if (transIndex === transaction.credentials.domainAndPort) {
 						foundTransactionInQueue = true
 						return false
 					}
@@ -96,37 +109,36 @@ export class TransactionManager
 				})
 			if (!foundTransactionInQueue) {
 				throw new Error(
-					`Could not find transaction '${credentials.domainAndPort}' is not found`)
+					`Could not find transaction '${transaction.credentials.domainAndPort}' is not found`)
 			}
 			return
 		}
 		try {
-			await (await container(this).get(STORE_DRIVER)).rollback()
+			await transaction.rollback()
 		} finally {
 			this.clearTransaction()
 		}
 	}
 
 	async commit(
-		credentials: ICredentials
+		transaction: ITransaction
 	): Promise<void> {
 		const [activeQueries, idGenerator, storeDriver] = await container(this).get(
 			ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER
 		)
 
-		if (this.transactionInProgress !== credentials.domainAndPort) {
+		if (!storeDriver.isServer() && this.transactionInProgress !== transaction.credentials.domainAndPort) {
 			throw new Error(
-				`Cannot commit inactive transaction '${credentials.domainAndPort}'.`)
+				`Cannot commit inactive transaction '${transaction.credentials.domainAndPort}'.`)
 		}
-		let transaction = this.currentTransHistory
 
 		try {
-			await this.saveRepositoryHistory(transaction, idGenerator)
+			await this.saveRepositoryHistory(transaction.transHistory, idGenerator)
 
-			await storeDriver.saveTransaction(transaction)
+			await transaction.saveTransaction(transaction.transHistory)
 
 			activeQueries.rerunQueries()
-			await storeDriver.commit()
+			await transaction.commit()
 		} finally {
 			this.clearTransaction()
 		}
@@ -153,7 +165,6 @@ export class TransactionManager
 
 
 	private clearTransaction() {
-		this.currentTransHistory   = null
 		this.transactionInProgress = null
 		if (this.transactionIndexQueue.length) {
 			this.transactionInProgress = this.transactionIndexQueue.shift()
@@ -238,8 +249,12 @@ export class TransactionManager
 	}
 
 	private canRunTransaction(
-		domainAndPort: string
+		domainAndPort: string,
+		storeDriver: IStoreDriver
 	): boolean {
+		if (storeDriver.isServer()) {
+			return storeDriver.numFreeConnections() > 0
+		}
 		if (this.transactionInProgress) {
 			return false
 		}

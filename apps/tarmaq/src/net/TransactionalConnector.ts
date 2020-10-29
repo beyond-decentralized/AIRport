@@ -40,30 +40,6 @@ export class TransactionalConnector
 			})
 	}
 
-	async transact(): Promise<void> {
-		const transServer = await container(this).get(TRANS_SERVER)
-
-		return await transServer.transact({
-			domainAndPort: 'test'
-		})
-	}
-
-	async rollback(): Promise<void> {
-		const transServer = await container(this).get(TRANS_SERVER)
-
-		return await transServer.rollback({
-			domainAndPort: 'test'
-		})
-	}
-
-	async commit(): Promise<void> {
-		const transServer = await container(this).get(TRANS_SERVER)
-
-		return await transServer.commit({
-			domainAndPort: 'test'
-		})
-	}
-
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,

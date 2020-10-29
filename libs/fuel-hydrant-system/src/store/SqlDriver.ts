@@ -5,7 +5,7 @@ import {
 	Q_METADATA_UTILS,
 	SCHEMA_UTILS
 }                            from '@airport/air-control'
-import {container, DI}                  from '@airport/di'
+import {container}                  from '@airport/di'
 import {
 	InternalFragments,
 	IStoreDriver,
@@ -23,7 +23,6 @@ import {
 	StoreType,
 	SyncSchemaMap
 } from '@airport/ground-control'
-import {ITransactionHistory} from '@airport/holding-pattern'
 import {
 	IObservable,
 	Subject
@@ -302,7 +301,12 @@ export abstract class SqlDriver
 		query: string,
 		params: any,
 		saveTransaction?: boolean
-	): Promise<any>;
+	): Promise<any>
+
+	abstract numFreeConnections(): number
+
+	abstract isServer(): boolean
+
 
 	protected abstract getDialect(): SQLDialect;
 

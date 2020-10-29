@@ -5,9 +5,10 @@ import { SQLWhereBase } from './SQLWhereBase';
  */
 export var SQLDialect;
 (function (SQLDialect) {
-    SQLDialect[SQLDialect["SQLITE_SQLJS"] = 0] = "SQLITE_SQLJS";
-    SQLDialect[SQLDialect["SQLITE_WEBSQL"] = 1] = "SQLITE_WEBSQL";
-    SQLDialect[SQLDialect["ORACLE"] = 2] = "ORACLE";
+    SQLDialect[SQLDialect["MYSQL"] = 0] = "MYSQL";
+    SQLDialect[SQLDialect["SQLITE_SQLJS"] = 1] = "SQLITE_SQLJS";
+    SQLDialect[SQLDialect["SQLITE_WEBSQL"] = 2] = "SQLITE_WEBSQL";
+    SQLDialect[SQLDialect["ORACLE"] = 3] = "ORACLE";
 })(SQLDialect || (SQLDialect = {}));
 export class EntityDefaults {
     constructor() {

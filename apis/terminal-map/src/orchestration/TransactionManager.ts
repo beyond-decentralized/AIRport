@@ -1,10 +1,11 @@
-import {StoreType}           from "@airport/ground-control";
+import {
+	ITransaction,
+	StoreType
+} from '@airport/ground-control'
 import {ITransactionHistory} from "@airport/holding-pattern";
 import {ICredentials}        from './Credentials'
 
 export interface ITransactionManager {
-
-	currentTransHistory: ITransactionHistory;
 
 	storeType: StoreType;
 
@@ -16,14 +17,14 @@ export interface ITransactionManager {
 
 	transact(
 		credentials: ICredentials
-	): Promise<void>;
+	): Promise<ITransaction>;
 
 	rollback(
-		credentials: ICredentials
+		transaction: ITransaction
 	): Promise<void>;
 
 	commit(
-		credentials: ICredentials
+		transaction: ITransaction
 	): Promise<void>;
 
 	// saveRepositoryHistory(

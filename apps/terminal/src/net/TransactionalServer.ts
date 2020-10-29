@@ -1,8 +1,9 @@
 import {container, DI}          from '@airport/di'
 import {
+	ITransaction,
 	JsonInsertValues,
 	PortableQuery
-}                    from '@airport/ground-control'
+} from '@airport/ground-control'
 import {IActor}      from '@airport/holding-pattern'
 import {IObservable} from '@airport/observe'
 import {
@@ -64,7 +65,7 @@ export class TransactionalServer
 
 	async transact(
 		credentials: ICredentials
-	): Promise<void> {
+	): Promise<ITransaction> {
 		const transManager = await container(this).get(TRANSACTION_MANAGER)
 
 		return await transManager.transact(credentials)
@@ -74,21 +75,21 @@ export class TransactionalServer
 	}
 
 	async rollback(
-		credentials: ICredentials
+		transaction: ITransaction
 	): Promise<void> {
 		const transManager = await container(this).get(TRANSACTION_MANAGER)
 
-		return await transManager.rollback(credentials)
+		return await transManager.rollback(transaction)
 		// await this.transactionManager.rollback(credentials)
 		// this.currentTransactionIndex = null
 	}
 
 	async commit(
-		credentials: ICredentials
+		transaction: ITransaction
 	): Promise<void> {
 		const transManager = await container(this).get(TRANSACTION_MANAGER)
 
-		return await transManager.commit(credentials)
+		return await transManager.commit(transaction)
 		// await this.transactionManager.commit(credentials)
 		// this.currentTransactionIndex = null
 	}
@@ -237,25 +238,26 @@ export class TransactionalServer
 		const transManager = await container(this).get(TRANSACTION_MANAGER)
 
 		let transact = false
+		let transaction: ITransaction
 		if (transManager.transactionInProgress) {
 			if (credentials.domainAndPort !== transManager.transactionInProgress) {
 				throw new Error(`${operationName}: domain: ${credentials.domainAndPort} 
 				does not have an active transaction.`)
 			}
 		} else {
-			await this.transact(credentials)
+			transaction = await this.transact(credentials)
 			transact = true
 		}
 
 		try {
 			const returnValue = await callback()
 			if (transact) {
-				await this.commit(credentials)
+				await this.commit(transaction)
 			}
 			return returnValue
 		} catch (error) {
 			// if (attachToTransaction) {
-			await this.rollback(credentials)
+			await this.rollback(transaction)
 			// }
 			throw error
 		}

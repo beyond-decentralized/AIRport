@@ -15,5 +15,7 @@ export interface IStoreDriver extends IStoreOperator {
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, cachedSqlQueryId?: number): IObservable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, cachedSqlQueryId?: number): IObservable<E>;
     transact(keepAlive?: boolean): Promise<ITransaction>;
+    numFreeConnections(): number;
+    isServer(): boolean;
 }
 //# sourceMappingURL=StoreDriver.d.ts.map

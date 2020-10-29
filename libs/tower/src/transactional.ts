@@ -5,6 +5,10 @@ import {TRANS_CONNECTOR} from '@airport/ground-control'
  * Created by Papa on 4/3/2019.
  */
 
+/*
+
+Removed in favor of transactionality behind complex queries and complex save queries
+
 var transactionInProgress = false
 
 export async function transact(): Promise<void> {
@@ -37,11 +41,10 @@ export async function rollback(): Promise<void> {
 	}
 }
 
-/**
- * One transaction execution to one at a time, so a way to track existing
- * transactional context is required.  Zone.js can be used as a thread local context for
- * that.
- */
+// *
+//  * One transaction execution to one at a time, so a way to track existing
+//  * transactional context is required.  Zone.js can be used as a thread local context for
+//  * that.
 export async function transactional<T>(
 	callback: () => Promise<T>,
 	keepAlive?: boolean
@@ -77,3 +80,4 @@ export async function transactional<T>(
 	}
 
 }
+*/

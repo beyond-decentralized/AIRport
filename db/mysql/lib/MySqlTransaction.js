@@ -1,31 +1,13 @@
-export class MySqlTransaction {
+import { MySqlDriver } from './MySqlDriver';
+export class MySqlTransaction extends MySqlDriver {
     constructor(driver, pool, connection) {
+        super();
         this.driver = driver;
-        this.pool = pool;
         this.connection = connection;
-    }
-    deleteWhere(portableQuery) {
-        throw new Error('Method not implemented.');
-    }
-    find(portableQuery, internalFragments, cachedSqlQueryId) {
-        throw new Error('Method not implemented.');
-    }
-    findOne(portableQuery, internalFragments, cachedSqlQueryId) {
-        throw new Error('Method not implemented.');
-    }
-    findNative(sqlQuery, parameters) {
-        throw new Error('Method not implemented.');
-    }
-    insertValues(portableQuery, cachedSqlQueryId) {
-        throw new Error('Method not implemented.');
-    }
-    query(queryType, query, params, saveTransaction) {
-        throw new Error('Method not implemented.');
+        this.pool = pool;
+        this.queryApi = connection;
     }
     saveTransaction(transaction) {
-        throw new Error('Method not implemented.');
-    }
-    updateWhere(portableQuery, internalFragments) {
         throw new Error('Method not implemented.');
     }
     async commit() {
@@ -35,9 +17,6 @@ export class MySqlTransaction {
     async rollback() {
         await this.connection.rollback();
         this.pool.releaseConnection(this.connection);
-    }
-    isValueValid(value, sqlDataType) {
-        throw new Error('Method not implemented.');
     }
 }
 //# sourceMappingURL=MySqlTransaction.js.map

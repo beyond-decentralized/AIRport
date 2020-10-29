@@ -22,6 +22,7 @@ export class SqlJsDriver extends SqLiteDriver {
     async transact() {
         this._db.exec('BEGIN TRANSACTION;');
         this.currentTransaction = true;
+        return null;
     }
     async commit() {
         try {

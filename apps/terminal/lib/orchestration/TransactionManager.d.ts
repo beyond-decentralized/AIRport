@@ -1,9 +1,7 @@
-import { StoreType } from '@airport/ground-control';
-import { ITransactionHistory } from '@airport/holding-pattern';
+import { ITransaction, StoreType } from '@airport/ground-control';
 import { ICredentials, ITransactionManager } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export declare class TransactionManager extends AbstractMutationManager implements ITransactionManager {
-    currentTransHistory: ITransactionHistory;
     storeType: StoreType;
     transactionIndexQueue: string[];
     transactionInProgress: string;
@@ -13,9 +11,9 @@ export declare class TransactionManager extends AbstractMutationManager implemen
      * @returns {Promise<void>}
      */
     init(dbName: string): Promise<void>;
-    transact(credentials: ICredentials): Promise<void>;
-    rollback(credentials: ICredentials): Promise<void>;
-    commit(credentials: ICredentials): Promise<void>;
+    transact(credentials: ICredentials): Promise<ITransaction>;
+    rollback(transaction: ITransaction): Promise<void>;
+    commit(transaction: ITransaction): Promise<void>;
     private clearTransaction;
     private saveRepositoryHistory;
     private wait;

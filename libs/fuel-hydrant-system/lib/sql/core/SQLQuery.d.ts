@@ -5,9 +5,10 @@ import { SQLWhereBase } from './SQLWhereBase';
  * Created by Papa on 8/20/2016.
  */
 export declare enum SQLDialect {
-    SQLITE_SQLJS = 0,
-    SQLITE_WEBSQL = 1,
-    ORACLE = 2
+    MYSQL = 0,
+    SQLITE_SQLJS = 1,
+    SQLITE_WEBSQL = 2,
+    ORACLE = 3
 }
 export declare class EntityDefaults {
     map: {

@@ -1,12 +1,12 @@
 import { SQLDialect } from '@airport/fuel-hydrant-system';
-import { QueryType } from '@airport/ground-control';
+import { ITransaction, QueryType } from '@airport/ground-control';
 import { SqLiteDriver } from '@airport/sqlite';
 export declare class SqlJsDriver extends SqLiteDriver {
     private _db;
     private currentTransaction;
     constructor();
     initialize(): Promise<any>;
-    transact(): Promise<void>;
+    transact(): Promise<ITransaction>;
     commit(): Promise<void>;
     rollback(): Promise<void>;
     query(queryType: QueryType, query: string, params?: any[], saveTransaction?: boolean): Promise<any>;

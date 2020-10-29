@@ -15,15 +15,6 @@ export interface ITransactionalConnector {
 		distributionStrategy: DistributionStrategy
 	): Promise<number>
 
-	transact(
-	): Promise<void>
-
-	rollback(
-	): Promise<void>
-
-	commit(
-	): Promise<void>
-
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,

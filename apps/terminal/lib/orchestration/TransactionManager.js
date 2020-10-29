@@ -23,56 +23,62 @@ export class TransactionManager extends AbstractMutationManager {
     }
     async transact(credentials) {
         const [storeDriver, transHistoryDuo] = await container(this).get(STORE_DRIVER, TRANS_HISTORY_DUO);
-        if (credentials.domainAndPort === this.transactionInProgress
-            || this.transactionIndexQueue.filter(transIndex => transIndex === credentials.domainAndPort).length) {
-            // Either just continue using the current transaction
-            // or return (domain shouldn't be initiating multiple transactions
-            // at the same time
-            return;
+        if (!storeDriver.isServer()) {
+            if (credentials.domainAndPort === this.transactionInProgress
+                || this.transactionIndexQueue.filter(transIndex => transIndex === credentials.domainAndPort).length) {
+                // Either just continue using the current transaction
+                // or return (domain shouldn't be initiating multiple transactions
+                // at the same time
+                return;
+            }
+            this.transactionIndexQueue.push(credentials.domainAndPort);
         }
-        this.transactionIndexQueue.push(credentials.domainAndPort);
-        while (!this.canRunTransaction(credentials.domainAndPort)) {
+        while (!this.canRunTransaction(credentials.domainAndPort, storeDriver)) {
             await this.wait(this.yieldToRunningTransaction);
         }
-        this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== credentials.domainAndPort);
-        this.transactionInProgress = credentials.domainAndPort;
+        if (!storeDriver.isServer()) {
+            this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== credentials.domainAndPort);
+            this.transactionInProgress = credentials.domainAndPort;
+        }
         let fieldMap = new SyncSchemaMap();
-        this.currentTransHistory = transHistoryDuo.getNewRecord();
-        await storeDriver.transact();
+        const transaction = await storeDriver.transact();
+        transaction.transHistory = transHistoryDuo.getNewRecord();
+        transaction.credentials = credentials;
+        return transaction;
     }
-    async rollback(credentials) {
-        if (this.transactionInProgress !== credentials.domainAndPort) {
+    async rollback(transaction) {
+        const storeDriver = await container(this).get(STORE_DRIVER);
+        if (!storeDriver.isServer() && this.transactionInProgress !== transaction.credentials.domainAndPort) {
             let foundTransactionInQueue = false;
             this.transactionIndexQueue.filter(transIndex => {
-                if (transIndex === credentials.domainAndPort) {
+                if (transIndex === transaction.credentials.domainAndPort) {
                     foundTransactionInQueue = true;
                     return false;
                 }
                 return true;
             });
             if (!foundTransactionInQueue) {
-                throw new Error(`Could not find transaction '${credentials.domainAndPort}' is not found`);
+                throw new Error(`Could not find transaction '${transaction.credentials.domainAndPort}' is not found`);
             }
             return;
         }
         try {
-            await (await container(this).get(STORE_DRIVER)).rollback();
+            await transaction.rollback();
         }
         finally {
             this.clearTransaction();
         }
     }
-    async commit(credentials) {
+    async commit(transaction) {
         const [activeQueries, idGenerator, storeDriver] = await container(this).get(ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER);
-        if (this.transactionInProgress !== credentials.domainAndPort) {
-            throw new Error(`Cannot commit inactive transaction '${credentials.domainAndPort}'.`);
+        if (!storeDriver.isServer() && this.transactionInProgress !== transaction.credentials.domainAndPort) {
+            throw new Error(`Cannot commit inactive transaction '${transaction.credentials.domainAndPort}'.`);
         }
-        let transaction = this.currentTransHistory;
         try {
-            await this.saveRepositoryHistory(transaction, idGenerator);
-            await storeDriver.saveTransaction(transaction);
+            await this.saveRepositoryHistory(transaction.transHistory, idGenerator);
+            await transaction.saveTransaction(transaction.transHistory);
             activeQueries.rerunQueries();
-            await storeDriver.commit();
+            await transaction.commit();
         }
         finally {
             this.clearTransaction();
@@ -96,7 +102,6 @@ export class TransactionManager extends AbstractMutationManager {
     // [transaction]);
     // this.queries.markQueriesToRerun(transaction.transactionHistory.schemaMap); } }
     clearTransaction() {
-        this.currentTransHistory = null;
         this.transactionInProgress = null;
         if (this.transactionIndexQueue.length) {
             this.transactionInProgress = this.transactionIndexQueue.shift();
@@ -148,7 +153,10 @@ export class TransactionManager extends AbstractMutationManager {
             }
         });
     }
-    canRunTransaction(domainAndPort) {
+    canRunTransaction(domainAndPort, storeDriver) {
+        if (storeDriver.isServer()) {
+            return storeDriver.numFreeConnections() > 0;
+        }
         if (this.transactionInProgress) {
             return false;
         }

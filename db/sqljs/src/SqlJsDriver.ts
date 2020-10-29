@@ -2,9 +2,10 @@
 // import {Database}      from 'sql.js'
 import {SQLDialect}   from '@airport/fuel-hydrant-system'
 import {
+	ITransaction,
 	QueryType,
 	StoreType
-}                     from '@airport/ground-control'
+} from '@airport/ground-control'
 import {SqLiteDriver} from '@airport/sqlite'
 
 declare function require(moduleName: string): any;
@@ -40,9 +41,11 @@ export class SqlJsDriver
 		}
 	}
 
-	async transact(): Promise<void> {
+	async transact(): Promise<ITransaction> {
 		this._db.exec('BEGIN TRANSACTION;')
 		this.currentTransaction = true
+
+		return null
 	}
 
 	async commit(): Promise<void> {

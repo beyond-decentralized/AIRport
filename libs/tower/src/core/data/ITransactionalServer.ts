@@ -19,18 +19,6 @@ export interface ITransactionalServer {
 		credentials: ICredentials
 	): Promise<number>
 
-	transact(
-		credentials: ICredentials
-	): Promise<void>
-
-	rollback(
-		credentials: ICredentials
-	): Promise<void>
-
-	commit(
-		credentials: ICredentials
-	): Promise<void>
-
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,

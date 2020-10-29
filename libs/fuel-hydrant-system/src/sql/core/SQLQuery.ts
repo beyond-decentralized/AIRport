@@ -25,6 +25,7 @@ import {SQLWhereBase} from './SQLWhereBase'
  */
 
 export enum SQLDialect {
+	MYSQL,
 	SQLITE_SQLJS,
 	SQLITE_WEBSQL,
 	ORACLE

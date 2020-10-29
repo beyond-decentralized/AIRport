@@ -38,15 +38,15 @@ export class TransactionalServer {
         // await this.transactionManager.transact(credentials)
         // this.currentTransactionIndex = this.lastTransactionIndex
     }
-    async rollback(credentials) {
+    async rollback(transaction) {
         const transManager = await container(this).get(TRANSACTION_MANAGER);
-        return await transManager.rollback(credentials);
+        return await transManager.rollback(transaction);
         // await this.transactionManager.rollback(credentials)
         // this.currentTransactionIndex = null
     }
-    async commit(credentials) {
+    async commit(transaction) {
         const transManager = await container(this).get(TRANSACTION_MANAGER);
-        return await transManager.commit(credentials);
+        return await transManager.commit(transaction);
         // await this.transactionManager.commit(credentials)
         // this.currentTransactionIndex = null
     }
@@ -114,6 +114,7 @@ export class TransactionalServer {
     async wrapInTransaction(callback, operationName, credentials) {
         const transManager = await container(this).get(TRANSACTION_MANAGER);
         let transact = false;
+        let transaction;
         if (transManager.transactionInProgress) {
             if (credentials.domainAndPort !== transManager.transactionInProgress) {
                 throw new Error(`${operationName}: domain: ${credentials.domainAndPort} 
@@ -121,19 +122,19 @@ export class TransactionalServer {
             }
         }
         else {
-            await this.transact(credentials);
+            transaction = await this.transact(credentials);
             transact = true;
         }
         try {
             const returnValue = await callback();
             if (transact) {
-                await this.commit(credentials);
+                await this.commit(transaction);
             }
             return returnValue;
         }
         catch (error) {
             // if (attachToTransaction) {
-            await this.rollback(credentials);
+            await this.rollback(transaction);
             // }
             throw error;
         }

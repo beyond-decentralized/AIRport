@@ -27,6 +27,8 @@ export declare abstract class SqlDriver implements IStoreDriver {
     abstract doesTableExist(schemaName: string, tableName: string): Promise<boolean>;
     abstract dropTable(schemaName: string, tableName: string): Promise<boolean>;
     abstract query(queryType: QueryType, query: string, params: any, saveTransaction?: boolean): Promise<any>;
+    abstract numFreeConnections(): number;
+    abstract isServer(): boolean;
     protected abstract getDialect(): SQLDialect;
 }
 //# sourceMappingURL=SqlDriver.d.ts.map

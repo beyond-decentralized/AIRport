@@ -48,4 +48,8 @@ export interface IStoreDriver
 		keepAlive?: boolean
 	): Promise<ITransaction>;
 
+	numFreeConnections(): number
+
+	isServer(): boolean
+
 }

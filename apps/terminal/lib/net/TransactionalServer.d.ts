@@ -1,4 +1,4 @@
-import { PortableQuery } from '@airport/ground-control';
+import { ITransaction, PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { IObservable } from '@airport/observe';
 import { DistributionStrategy, ICredentials, PlatformType } from '@airport/terminal-map';
@@ -33,9 +33,9 @@ export interface InternalPortableQuery extends PortableQuery {
 export declare class TransactionalServer implements ITransactionalServer {
     tempActor: IActor;
     init(): Promise<void>;
-    transact(credentials: ICredentials): Promise<void>;
-    rollback(credentials: ICredentials): Promise<void>;
-    commit(credentials: ICredentials): Promise<void>;
+    transact(credentials: ICredentials): Promise<ITransaction>;
+    rollback(transaction: ITransaction): Promise<void>;
+    commit(transaction: ITransaction): Promise<void>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<IObservable<EntityArray>>;

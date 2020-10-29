@@ -1,16 +1,18 @@
 import { DI } from '@airport/di';
-import { SqlDriver } from '@airport/fuel-hydrant-system';
+import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
 import { QueryType, STORE_DRIVER } from '@airport/ground-control';
 import { transactional } from '@airport/tower';
 import * as mysql from 'mysql2/promise';
 import { DDLManager } from './DDLManager';
 import { MySqlTransaction } from './MySqlTransaction';
-/**
- * Created by Papa on 10/16/2020.
- */
 export class MySqlDriver extends SqlDriver {
-    query(queryType, query, params, saveTransaction) {
-        throw new Error('Method not implemented.');
+    async query(queryType, query, params, saveTransaction) {
+        return await this.doQuery(queryType, query, params, this.queryApi, saveTransaction);
+    }
+    async doQuery(queryType, query, params, connection, saveTransaction) {
+        let nativeParameters = params.map((value) => this.convertValueIn(value));
+        const results = await connection.query(query, nativeParameters);
+        return results[0];
     }
     initialize(dbName) {
         this.pool = mysql.createPool({
@@ -21,7 +23,14 @@ export class MySqlDriver extends SqlDriver {
             connectionLimit: 10,
             queueLimit: 0
         });
+        this.queryApi = this.pool;
         return null;
+    }
+    numFreeConnections() {
+        return this.pool._freeConnections.length;
+    }
+    isServer() {
+        return true;
     }
     async transact(keepAlive) {
         const connection = await this.pool.getConnection();
@@ -32,20 +41,19 @@ export class MySqlDriver extends SqlDriver {
         throw new Error('Method not implemented.');
     }
     async doesTableExist(schemaName, tableName) {
-        const matchingTableNames = await this.findNative(
+        const result = await this.findNative(
         // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
-        `select * from information_schema.TABLES
+        `select count(1) from information_schema.TABLES
 where TABLE_SCHEMA = '${schemaName}'
 and TABLE_NAME = '${tableName}';`, []);
-        return matchingTableNames.length === 1;
+        return result == 1;
     }
     async dropTable(schemaName, tableName) {
-        const matchingTableNames = await this.findNative(`DROP TABLE '${schemaName}.${tableName}'`, []);
-        return matchingTableNames.length === 1;
+        await this.findNative(`DROP TABLE '${schemaName}'.'${tableName}'`, []);
+        return true;
     }
     async findNative(sqlQuery, parameters) {
-        let nativeParameters = parameters.map((value) => this.convertValueIn(value));
-        return await this.query(QueryType.SELECT, sqlQuery, nativeParameters);
+        return await this.query(QueryType.SELECT, sqlQuery, parameters);
     }
     async initAllTables() {
         let createOperations;
@@ -66,7 +74,7 @@ and TABLE_NAME = '${tableName}';`, []);
         }
     }
     getDialect() {
-        throw new Error('Method not implemented.');
+        return SQLDialect.MYSQL;
     }
     async executeNative(sql, parameters) {
         return await this.query(QueryType.MUTATE, sql, parameters);
@@ -74,7 +82,7 @@ and TABLE_NAME = '${tableName}';`, []);
     convertValueIn(value) {
         switch (typeof value) {
             case 'boolean':
-                return value ? 1 : 0;
+            // return value ? 1 : 0
             case 'number':
             case 'string':
                 return value;
@@ -85,7 +93,8 @@ and TABLE_NAME = '${tableName}';`, []);
                     return null;
                 }
                 else if (value instanceof Date) {
-                    return value.getTime();
+                    // return value.getTime()
+                    return value;
                 }
                 else {
                     throw new Error(`Unexpected non-date object ${value}`);
