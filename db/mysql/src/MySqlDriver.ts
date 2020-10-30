@@ -1,29 +1,28 @@
-import {DI}               from '@airport/di'
+import {DI}            from '@airport/di'
 import {
 	SQLDialect,
 	SqlDriver
-} from '@airport/fuel-hydrant-system'
+}                      from '@airport/fuel-hydrant-system'
 import {
 	ITransaction,
 	QueryType,
 	SQLDataType,
 	STORE_DRIVER
-}                         from '@airport/ground-control'
-import {transactional}    from '@airport/tower'
+}                      from '@airport/ground-control'
+import {transactional} from '@airport/tower'
 import {
 	FieldPacket,
 	OkPacket,
 	QueryOptions,
 	ResultSetHeader,
 	RowDataPacket
-} from 'mysql2'
-import * as mysql         from 'mysql2/promise'
+}                      from 'mysql2'
+import * as mysql      from 'mysql2/promise'
 import {
 	Connection,
 	Pool
-}                         from 'mysql2/promise'
-import {DDLManager}       from './DDLManager'
-import {MySqlTransaction} from './MySqlTransaction'
+}                      from 'mysql2/promise'
+import {DDLManager}    from './DDLManager'
 
 /**
  * Created by Papa on 10/16/2020.
@@ -33,37 +32,35 @@ export interface IQueryApi {
 	query<T extends RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader>(
 		sql: string
 	): Promise<[T, FieldPacket[]]>;
+
 	query<T extends RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader>(
 		sql: string,
 		values: any | any[] | { [param: string]: any }
 	): Promise<[T, FieldPacket[]]>;
+
 	query<T extends RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader>(
 		options: QueryOptions
 	): Promise<[T, FieldPacket[]]>;
+
 	query<T extends RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader>(
 		options: QueryOptions,
 		values: any | any[] | { [param: string]: any }
 	): Promise<[T, FieldPacket[]]>;
 
-	execute<
-		T extends RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader
-		>(
+	execute<T extends RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader>(
 		sql: string
 	): Promise<[T, FieldPacket[]]>;
-	execute<
-		T extends RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader
-		>(
+
+	execute<T extends RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader>(
 		sql: string,
 		values: any | any[] | { [param: string]: any }
 	): Promise<[T, FieldPacket[]]>;
-	execute<
-		T extends RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader
-		>(
+
+	execute<T extends RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader>(
 		options: QueryOptions
 	): Promise<[T, FieldPacket[]]>;
-	execute<
-		T extends RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader
-		>(
+
+	execute<T extends RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader>(
 		options: QueryOptions,
 		values: any | any[] | { [param: string]: any }
 	): Promise<[T, FieldPacket[]]>;
@@ -92,14 +89,14 @@ export class MySqlDriver
 		saveTransaction?: boolean
 	): Promise<any> {
 		let nativeParameters = params.map((value) => this.convertValueIn(value))
-		const results = await connection.query(query, nativeParameters)
+		const results        = await connection.query(query, nativeParameters)
 
 		return results[0]
 	}
 
 
 	initialize(dbName: string): Promise<any> {
-		this.pool = mysql.createPool({
+		this.pool     = mysql.createPool({
 			host: 'localhost',
 			user: 'root',
 			database: dbName,
@@ -123,7 +120,8 @@ export class MySqlDriver
 	async transact(keepAlive?: boolean): Promise<ITransaction> {
 		const connection: Connection = await this.pool.getConnection()
 		await connection.beginTransaction()
-		return new MySqlTransaction(this, this.pool, connection)
+		const transactionModule = await import('./MySqlTransaction')
+		return new transactionModule.MySqlTransaction(this, this.pool, connection)
 	}
 
 	isValueValid(
@@ -206,7 +204,7 @@ and TABLE_NAME = '${tableName}';`,
 	): any {
 		switch (typeof value) {
 			case 'boolean':
-				// return value ? 1 : 0
+			// return value ? 1 : 0
 			case 'number':
 			case 'string':
 				return value
