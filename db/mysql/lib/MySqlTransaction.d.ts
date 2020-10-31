@@ -1,12 +1,15 @@
-import { ATransactionHistory, ITransaction } from '@airport/ground-control';
+import { ITransaction } from '@airport/ground-control';
+import { ITransactionHistory } from '@airport/holding-pattern';
+import { ICredentials } from '@airport/terminal-map';
 import { Connection, Pool } from 'mysql2/promise';
 import { MySqlDriver } from './MySqlDriver';
 export declare class MySqlTransaction extends MySqlDriver implements ITransaction {
     private driver;
     private connection;
-    transHisto: any;
+    credentials: ICredentials;
+    transHistory: ITransactionHistory;
     constructor(driver: MySqlDriver, pool: Pool, connection: Connection);
-    saveTransaction(transaction: ATransactionHistory): Promise<any>;
+    saveTransaction(transaction: ITransactionHistory): Promise<any>;
     commit(): Promise<void>;
     rollback(): Promise<void>;
 }

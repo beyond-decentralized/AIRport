@@ -4,7 +4,6 @@ import { QueryType, STORE_DRIVER } from '@airport/ground-control';
 import { transactional } from '@airport/tower';
 import * as mysql from 'mysql2/promise';
 import { DDLManager } from './DDLManager';
-import { MySqlTransaction } from './MySqlTransaction';
 export class MySqlDriver extends SqlDriver {
     async query(queryType, query, params, saveTransaction) {
         return await this.doQuery(queryType, query, params, this.queryApi, saveTransaction);
@@ -35,7 +34,8 @@ export class MySqlDriver extends SqlDriver {
     async transact(keepAlive) {
         const connection = await this.pool.getConnection();
         await connection.beginTransaction();
-        return new MySqlTransaction(this, this.pool, connection);
+        const transactionModule = await import('./MySqlTransaction');
+        return new transactionModule.MySqlTransaction(this, this.pool, connection);
     }
     isValueValid(value, sqlDataType) {
         throw new Error('Method not implemented.');

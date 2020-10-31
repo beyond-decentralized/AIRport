@@ -2,12 +2,12 @@ import {
 	ATransactionHistory,
 	ITransaction
 }                            from '@airport/ground-control'
+import {ITransactionHistory} from '@airport/holding-pattern'
 import {ICredentials}        from '@airport/terminal-map'
 import {
 	Connection,
 	Pool
 }                            from 'mysql2/promise'
-import {ITransactionHistory} from '../../../schemas/holding-pattern/src'
 import {MySqlDriver}         from './MySqlDriver'
 
 export class MySqlTransaction
@@ -27,7 +27,7 @@ export class MySqlTransaction
 		this.queryApi = connection
 	}
 
-	saveTransaction(transaction: ATransactionHistory): Promise<any> {
+	saveTransaction(transaction: ITransactionHistory): Promise<any> {
 		throw new Error('Method not implemented.')
 	}
 
