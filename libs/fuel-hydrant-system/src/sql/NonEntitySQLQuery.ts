@@ -430,7 +430,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		if (!parentTree) {
 			switch (currentRelation.rt) {
 				case JSONRelationType.ENTITY_ROOT:
-					fromFragment += `${schemaUtils.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias}`
+					fromFragment += `${this.storeDriver.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias}`
 					break
 				case JSONRelationType.SUB_QUERY_ROOT:
 					let viewRelation                           = <JSONViewJoinRelation>currentRelation
@@ -476,7 +476,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					let joinRelation = <JSONJoinRelation>currentRelation
 					joinOnClause     = this.getWHEREFragment(joinRelation.jwc, '\t',
 						airDb, schemaUtils, metadataUtils)
-					fromFragment += `\t${joinTypeString} ${schemaUtils.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias} ON\n${joinOnClause}`
+					fromFragment += `\t${joinTypeString} ${this.storeDriver.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias} ON\n${joinOnClause}`
 					break
 				case JSONRelationType.ENTITY_SCHEMA_RELATION:
 					fromFragment += this.getEntitySchemaRelationFromJoin(

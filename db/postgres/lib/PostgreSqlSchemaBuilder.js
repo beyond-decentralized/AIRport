@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { getSchemaName, getSequenceName, getTableName, QueryType, SQLDataType, STORE_DRIVER } from '@airport/ground-control';
+import { getSchemaName, getSequenceName, QueryType, SQLDataType, STORE_DRIVER } from '@airport/ground-control';
 import { SCHEMA_BUILDER, SqlSchemaBuilder } from '@airport/landing';
 export class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
     async createSchema(jsonSchema, storeDriver) {
@@ -49,7 +49,7 @@ export class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
             if (!jsonColumn.isGenerated) {
                 continue;
             }
-            const prefixedTableName = getTableName(jsonSchema, jsonEntity);
+            const prefixedTableName = storeDriver.getTableName(jsonSchema, jsonEntity);
             const sequenceName = getSequenceName(prefixedTableName, jsonColumn.name);
             let incrementBy = jsonColumn.allocationSize;
             if (!incrementBy) {

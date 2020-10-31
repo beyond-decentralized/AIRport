@@ -1,5 +1,5 @@
 import { IAirportDatabase, ISchemaUtils } from '@airport/air-control';
-import { InternalFragments, IStoreDriver, ITransaction, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
+import { DbEntity, DomainName, InternalFragments, IStoreDriver, ITransaction, PortableQuery, QueryType, SchemaName, SchemaStatus, SQLDataType, StoreType } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
 /**
@@ -9,6 +9,20 @@ export declare abstract class SqlDriver implements IStoreDriver {
     protected maxValues: number;
     type: StoreType;
     supportsLocalTransactions(): boolean;
+    getEntityTableName(dbEntity: DbEntity): string;
+    getTableName(schema: {
+        domain: DomainName | {
+            name: DomainName;
+        };
+        name: SchemaName;
+        status?: SchemaStatus;
+    }, table: {
+        name: string;
+        tableConfig?: {
+            name?: string;
+        };
+    }): string;
+    abstract composeTableName(schemaName: string, tableName: string): string;
     abstract initialize(dbName: string): Promise<any>;
     abstract transact(keepAlive?: boolean): Promise<ITransaction>;
     insertValues(portableQuery: PortableQuery): Promise<number>;

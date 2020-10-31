@@ -49,7 +49,8 @@ export class SQLUpdate
 		if (internalFragments.SET) {
 			setFragment += internalFragments.SET.map(
 				internalSetFragment => `
-	${internalSetFragment.column.name} = ${internalSetFragment.value}`).join('')
+	${internalSetFragment.column.name} = ${internalSetFragment.value}`)
+				.join('')
 		}
 		let whereFragment = ''
 		let jsonQuery     = this.jsonUpdate
@@ -60,7 +61,7 @@ export class SQLUpdate
 ${whereFragment}`
 			// Always replace the root entity alias reference with the table name
 			let tableAlias = QRelation.getAlias(this.jsonUpdate.U)
-			let tableName  = schemaUtils.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity)
+			let tableName  = this.storeDriver.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity)
 			whereFragment  = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
 		}
 

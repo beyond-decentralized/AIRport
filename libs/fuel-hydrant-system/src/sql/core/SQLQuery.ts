@@ -164,7 +164,8 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
 		let onClause = allJoinOnColumns.map(
 			joinOnColumn =>
 				` ${parentAlias}.${joinOnColumn.leftColumn} = ${currentAlias}.${joinOnColumn.rightColumn}`
-		).join('\n\t\t\tAND')
+		)
+			.join('\n\t\t\tAND')
 		if (entityRelation.jwc) {
 			const whereClause       = this.getWHEREFragment(
 				entityRelation.jwc, '\t\t',
@@ -173,7 +174,7 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
 			onClause                = `${onClause}
 			${joinWhereOperator} ${whereClause}`
 		}
-		const tableName    = schemaUtils.getTableName(rightDbEntity)
+		const tableName    = this.storeDriver.getTableName(rightDbEntity)
 		const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`
 
 		return fromFragment

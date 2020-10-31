@@ -132,6 +132,13 @@ export class MySqlDriver
 		throw new Error('Method not implemented.')
 	}
 
+	composeTableName(
+		schemaName: string,
+		tableName: string
+	): string {
+		return `${schemaName}.${tableName}`
+	}
+
 	async doesTableExist(
 		schemaName: string,
 		tableName: string

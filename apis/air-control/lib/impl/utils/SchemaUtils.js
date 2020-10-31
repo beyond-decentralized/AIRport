@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { CascadeType, CRUDOperation, EntityRelationType, getTableName, repositoryEntity } from '@airport/ground-control';
+import { CascadeType, CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/ground-control';
 import { convertToY, isY, markAsStub } from '../..';
 import { SCHEMA_UTILS } from '../../tokens';
 import { valuesEqual } from '../Utils';
@@ -322,9 +322,6 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
             selectClause,
             systemWideOperationIdColumn
         };
-    }
-    getTableName(dbEntity) {
-        return getTableName(dbEntity.schemaVersion.schema, dbEntity);
     }
     addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause) {
         if (this.isManyRelationColumn(dbColumn)) {

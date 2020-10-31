@@ -64,31 +64,6 @@ export function getSchemaName({
 	return `${domainPrefix}__${schemaPrefix}`
 }
 
-export function getTableName(
-	schema: {
-		domain: DomainName | {
-			name: DomainName
-		}; name: SchemaName; status?: SchemaStatus;
-	},
-	table: {
-		name: string, tableConfig?: {
-			name?: string
-		}
-	}
-) {
-	let theTableName = table.name
-	if (table.tableConfig && table.tableConfig.name) {
-		theTableName = table.tableConfig.name
-	}
-	let schemaName
-	if (schema.status || schema.status === 0) {
-		schemaName = schema.name
-	} else {
-		schemaName = getSchemaName(schema)
-	}
-	return `${schemaName}__${theTableName}`
-}
-
 export function getSequenceName(
 	prefixedTableName: string,
 	columnName: ColumnName

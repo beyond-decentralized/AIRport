@@ -20,7 +20,7 @@ WHERE
 ${whereFragment}`;
             // Always replace the root entity alias reference with the table name
             let tableAlias = QRelation.getAlias(this.jsonDelete.DF);
-            let tableName = schemaUtils.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
+            let tableName = this.storeDriver.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
             whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName);
         }
         return `DELETE

@@ -123,7 +123,8 @@ export class DatabaseManager {
             await this.initTerminal(domainName);
         }
         if (schemas && schemas.length) {
-            await this.initFeatureSchemas(schemas);
+            // FIXME: add ability to build feature schemas in the future
+            await this.initFeatureSchemas(schemas, false);
         }
         server.tempActor = null;
         /*
@@ -150,7 +151,7 @@ export class DatabaseManager {
                 await dbFacade.init(storeType)
                 */
     }
-    async initFeatureSchemas(schemas) {
+    async initFeatureSchemas(schemas, buildSchemas) {
         const schemaDao = await container(this).get(SCHEMA_DAO);
         const schemaNames = [];
         for (const jsonSchema of schemas) {
@@ -167,7 +168,7 @@ export class DatabaseManager {
         }
         if (schemasToInitialize.length) {
             const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
-            await schemaInitializer.initialize(schemas);
+            await schemaInitializer.initialize(schemas, buildSchemas);
         }
     }
     async initTerminal(domainName) {

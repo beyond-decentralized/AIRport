@@ -10,6 +10,13 @@ import {DDLManager}    from 'src/DDLManager'
 export abstract class PostgreSqlDriver
 	extends SqlDriver {
 
+	composeTableName(
+		schemaName: string,
+		tableName: string
+	): string {
+		return `${schemaName}.${tableName}`
+	}
+
 	async doesTableExist(
 		schemaName: string,
 		tableName: string

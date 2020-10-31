@@ -2,7 +2,6 @@ import {IAirportDatabase} from '@airport/air-control'
 import {ISequence}        from '@airport/airport-code'
 import {container}        from '@airport/di'
 import {
-	getTableName,
 	IStoreDriver,
 	JsonSchema,
 	JsonSchemaColumn,
@@ -54,7 +53,7 @@ export abstract class SqlSchemaBuilder
 
 		const createTableSuffix = this.getCreateTableSuffix(jsonSchema, jsonEntity)
 
-		const tableName = getTableName(jsonSchema, jsonEntity)
+		const tableName = storeDriver.getTableName(jsonSchema, jsonEntity)
 
 		let primaryKeySubStatement = ``
 		if (primaryKeyColumnNames.length) {

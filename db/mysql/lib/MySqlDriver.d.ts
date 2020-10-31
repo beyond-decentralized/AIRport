@@ -33,6 +33,7 @@ export declare class MySqlDriver extends SqlDriver {
     isServer(): boolean;
     transact(keepAlive?: boolean): Promise<ITransaction>;
     isValueValid(value: any, sqlDataType: SQLDataType): boolean;
+    composeTableName(schemaName: string, tableName: string): string;
     doesTableExist(schemaName: string, tableName: string): Promise<boolean>;
     dropTable(schemaName: string, tableName: string): Promise<boolean>;
     findNative(sqlQuery: string, parameters: any[]): Promise<any>;

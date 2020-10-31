@@ -170,8 +170,4 @@ export interface ISchemaUtils {
 		errorPrefix: string
 	): RepositorySheetSelectInfo;
 
-	getTableName(
-		dbEntity: DbEntity
-	): string;
-
 }

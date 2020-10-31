@@ -6,6 +6,9 @@ import { DDLManager } from 'src/DDLManager';
  * Created by Papa on 11/27/2016.
  */
 export class PostgreSqlDriver extends SqlDriver {
+    composeTableName(schemaName, tableName) {
+        return `${schemaName}.${tableName}`;
+    }
     async doesTableExist(schemaName, tableName) {
         throw new Error(`Not implemented`);
     }

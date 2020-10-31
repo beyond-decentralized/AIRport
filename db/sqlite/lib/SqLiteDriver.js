@@ -8,6 +8,9 @@ export class SqLiteDriver extends SqlDriver {
         super();
         this.maxValues = 999;
     }
+    composeTableName(schemaName, tableName) {
+        return `${schemaName}__${tableName}`;
+    }
     async doesTableExist(schemaName, tableName) {
         const matchingTableNames = await this.findNative(
         // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,

@@ -16,6 +16,13 @@ export abstract class SqLiteDriver
 		this.maxValues = 999
 	}
 
+	composeTableName(
+		schemaName: string,
+		tableName: string
+	): string {
+		return `${schemaName}__${tableName}`
+	}
+
 	async doesTableExist(
 		schemaName: string,
 		tableName: string

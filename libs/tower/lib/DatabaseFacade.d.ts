@@ -40,9 +40,9 @@ export declare class DatabaseFacade extends OperationManager implements IDatabas
     updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(dbEntity: DbEntity, rawUpdate: RawUpdate<IEUP, IQE> | {
         (...args: any[]): RawUpdate<IEUP, IQE>;
     }): Promise<number>;
-    private ensureId;
     getOriginalRecord(dbEntity: DbEntity, entity: any, updateCache: IUpdateCache): Promise<any>;
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;
+    private ensureId;
 }
 export declare class FunctionWrapper<QF extends Function> implements IFunctionWrapper<any> {
     constructor(queryFunction: QF);

@@ -1,5 +1,5 @@
 import { container } from '@airport/di';
-import { getTableName, QueryType, STORE_DRIVER, } from '@airport/ground-control';
+import { QueryType, STORE_DRIVER, } from '@airport/ground-control';
 export class SqlSchemaBuilder {
     async build(jsonSchema) {
         const storeDriver = await container(this).get(STORE_DRIVER);
@@ -18,7 +18,7 @@ export class SqlSchemaBuilder {
             return columnDdl;
         });
         const createTableSuffix = this.getCreateTableSuffix(jsonSchema, jsonEntity);
-        const tableName = getTableName(jsonSchema, jsonEntity);
+        const tableName = storeDriver.getTableName(jsonSchema, jsonEntity);
         let primaryKeySubStatement = ``;
         if (primaryKeyColumnNames.length) {
             primaryKeySubStatement = this.getPrimaryKeyStatement(primaryKeyColumnNames);

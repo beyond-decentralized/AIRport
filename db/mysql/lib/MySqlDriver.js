@@ -41,6 +41,9 @@ export class MySqlDriver extends SqlDriver {
     isValueValid(value, sqlDataType) {
         throw new Error('Method not implemented.');
     }
+    composeTableName(schemaName, tableName) {
+        return `${schemaName}.${tableName}`;
+    }
     async doesTableExist(schemaName, tableName) {
         const result = await this.findNative(
         // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,

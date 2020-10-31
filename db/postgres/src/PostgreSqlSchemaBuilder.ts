@@ -3,7 +3,6 @@ import {container, DI}               from '@airport/di'
 import {
 	getSchemaName,
 	getSequenceName,
-	getTableName,
 	IStoreDriver,
 	JsonSchema,
 	JsonSchemaColumn,
@@ -88,7 +87,7 @@ export class PostgreSqlSchemaBuilder
 			if (!jsonColumn.isGenerated) {
 				continue
 			}
-			const prefixedTableName = getTableName(jsonSchema, jsonEntity)
+			const prefixedTableName = storeDriver.getTableName(jsonSchema, jsonEntity)
 			const sequenceName      = getSequenceName(prefixedTableName, jsonColumn.name)
 			let incrementBy         = jsonColumn.allocationSize
 			if (!incrementBy) {

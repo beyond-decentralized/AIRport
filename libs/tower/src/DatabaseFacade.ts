@@ -2,25 +2,17 @@ import {
 	AIR_DB,
 	DB_FACADE,
 	Delete,
-	EntityQuery,
 	FIELD_UTILS,
-	IAirportDatabase,
 	IDatabaseFacade,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	IFieldUtils,
 	IFunctionWrapper,
 	IQEntity,
-	IQueryFacade,
-	IQueryUtils,
-	ISchemaUtils,
 	IUpdateCache,
-	MappedEntityArray,
 	Q_METADATA_UTILS,
 	QUERY_FACADE,
 	QUERY_UTILS,
 	RawDelete,
-	RawEntityQuery,
 	RawInsertColumnValues,
 	RawInsertValues,
 	RawUpdate,
@@ -29,21 +21,23 @@ import {
 	UPDATE_CACHE,
 	UpdateColumns,
 	UpdateProperties,
-	UpdateRecord,
 }                          from '@airport/air-control'
-import {container, DI}                from '@airport/di'
+import {
+	container,
+	DI
+}                          from '@airport/di'
 import {
 	CascadeOverwrite,
 	DbEntity,
-	ITransactionalConnector,
-	QueryResultType,
 	TRANS_CONNECTOR
 }                          from '@airport/ground-control'
 import {
 	DistributionStrategy,
 	PlatformType
 }                          from '@airport/terminal-map'
+import {transactional}     from './transactional'
 import {OperationManager,} from './OperationManager'
+
 // import {transactional}     from './transactional'
 
 /**
@@ -96,7 +90,8 @@ export class DatabaseFacade
 		platformConfig: string                     = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
 	): Promise<number> {
-		const transConnector = await container(this).get(TRANS_CONNECTOR)
+		const transConnector = await container(this)
+			.get(TRANS_CONNECTOR)
 
 		return await transConnector.addRepository(
 			name, url, platform, platformConfig, distributionStrategy)
@@ -112,11 +107,12 @@ export class DatabaseFacade
 		}
 		const [airDb, fieldUtils, metadataUtils, queryFacade,
 			      queryUtils, schemaUtils, transConnector,
-			      updateCache] = await container(this).get(
-			AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
-			QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR,
-			UPDATE_CACHE
-		)
+			      updateCache] = await container(this)
+			.get(
+				AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
+				QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR,
+				UPDATE_CACHE
+			)
 
 		return await transactional(async () =>
 			await this.performCreate(dbEntity, entity, [],
@@ -129,18 +125,19 @@ export class DatabaseFacade
 	async bulkCreate<E, EntityCascadeGraph>(
 		dbEntity: DbEntity,
 		entities: E[],
-		checkIfProcessed: boolean          = true,
-		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph  = CascadeOverwrite.DEFAULT,
+		checkIfProcessed: boolean                               = true,
+		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT,
 	): Promise<number> {
 		if (!entities || !entities.length) {
 			return 0
 		}
 		const [airDb, fieldUtils, metadataUtils, queryFacade,
 			      queryUtils, schemaUtils, transConnector,
-			      updateCache] = await container(this).get(
-			AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
-			QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
-		)
+			      updateCache] = await container(this)
+			.get(
+				AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
+				QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
+			)
 
 		return await transactional(async () =>
 			await this.performBulkCreate(dbEntity, entities, [],
@@ -162,9 +159,10 @@ export class DatabaseFacade
 		if (rawInsertColumnValues instanceof Function) {
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
-		const [fieldUtils, queryUtils] = await container(this).get(
-			FIELD_UTILS, QUERY_UTILS
-		)
+		const [fieldUtils, queryUtils] = await container(this)
+			.get(
+				FIELD_UTILS, QUERY_UTILS
+			)
 
 		let numInsertedRows = await this.internalInsertColumnValues(
 			dbEntity, rawInsertColumnValues, queryUtils, fieldUtils)
@@ -182,9 +180,10 @@ export class DatabaseFacade
 		if (rawInsertValues instanceof Function) {
 			rawInsertValues = rawInsertValues()
 		}
-		const [fieldUtils, queryUtils] = await container(this).get(
-			FIELD_UTILS, QUERY_UTILS
-		)
+		const [fieldUtils, queryUtils] = await container(this)
+			.get(
+				FIELD_UTILS, QUERY_UTILS
+			)
 
 		return await transactional(async () =>
 			await this.internalInsertValues(
@@ -205,9 +204,10 @@ export class DatabaseFacade
 		if (rawInsertColumnValues instanceof Function) {
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
-		const [fieldUtils, queryUtils] = await container(this).get(
-			FIELD_UTILS, QUERY_UTILS
-		)
+		const [fieldUtils, queryUtils] = await container(this)
+			.get(
+				FIELD_UTILS, QUERY_UTILS
+			)
 
 		return await this.internalInsertColumnValuesGenerateIds(
 			dbEntity, rawInsertColumnValues, queryUtils, fieldUtils)
@@ -226,9 +226,10 @@ export class DatabaseFacade
 			rawInsertValues = rawInsertValues()
 		}
 		const [fieldUtils, queryFacade, queryUtils, transConnector
-		      ] = await container(this).get(
-			FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR
-		)
+		      ] = await container(this)
+			.get(
+				FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR
+			)
 
 		return await transactional(async () =>
 			await this.internalInsertValuesGetIds(
@@ -246,9 +247,10 @@ export class DatabaseFacade
 			return 0
 		}
 		const [airDb, fieldUtils, queryFacade, queryUtils,
-			      schemaUtils, transConnector] = await container(this).get(
-			AIR_DB, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS,
-			SCHEMA_UTILS, TRANS_CONNECTOR)
+			      schemaUtils, transConnector] = await container(this)
+			.get(
+				AIR_DB, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS,
+				SCHEMA_UTILS, TRANS_CONNECTOR)
 
 		return await transactional(async () =>
 			await this.performDelete(dbEntity, entity,
@@ -273,8 +275,9 @@ export class DatabaseFacade
 		let deleteWhere: Delete<IQE> = new Delete(rawDelete)
 
 		const [fieldUtils, queryFacade, queryUtils,
-			      transConnector] = await container(this).get(
-			FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR)
+			      transConnector] = await container(this)
+			.get(
+				FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR)
 
 		return await transactional(async () =>
 			await this.internalDeleteWhere(dbEntity, deleteWhere,
@@ -296,10 +299,11 @@ export class DatabaseFacade
 		}
 		const [airDb, fieldUtils, metadataUtils, queryFacade,
 			      queryUtils, schemaUtils, transConnector,
-			      updateCache] = await container(this).get(
-			AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
-			QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
-		)
+			      updateCache] = await container(this)
+			.get(
+				AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
+				QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
+			)
 
 		let emptyIdCount    = 0
 		let nonEmptyIdCount = 0
@@ -339,10 +343,11 @@ export class DatabaseFacade
 		}
 		const [airDb, fieldUtils, metadataUtils, queryFacade,
 			      queryUtils, schemaUtils, transConnector,
-			      updateCache] = await container(this).get(
-			AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
-			QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
-		)
+			      updateCache] = await container(this)
+			.get(
+				AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
+				QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
+			)
 
 		return await transactional(async () =>
 			await this.performUpdate(dbEntity, entity, [],
@@ -371,8 +376,9 @@ export class DatabaseFacade
 			rawUpdate = rawUpdate()
 		}
 		const [fieldUtils, queryFacade, queryUtils,
-			      transConnector] = await container(this).get(
-			FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR)
+			      transConnector] = await container(this)
+			.get(
+				FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR)
 
 		let update: UpdateColumns<any, IQE> = new UpdateColumns(rawUpdate)
 
@@ -394,8 +400,9 @@ export class DatabaseFacade
 			rawUpdate = rawUpdate()
 		}
 		const [fieldUtils, queryFacade, queryUtils,
-			      transConnector] = await container(this).get(
-			FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR)
+			      transConnector] = await container(this)
+			.get(
+				FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR)
 
 		let update: UpdateProperties<any, IQE> = new UpdateProperties(rawUpdate)
 
@@ -404,11 +411,6 @@ export class DatabaseFacade
 				fieldUtils, queryFacade, queryUtils, transConnector)
 		)
 	}
-
-	private ensureId<E>(entity: E) {
-		throw new Error(`Not Implemented`)
-	}
-
 
 	async getOriginalRecord(
 		dbEntity: DbEntity,
@@ -424,6 +426,12 @@ export class DatabaseFacade
 		}
 
 		return originalRecord
+	}
+
+	prepare<QF extends Function>(
+		queryFunction: QF
+	): IFunctionWrapper<QF> {
+		return <IFunctionWrapper<QF>><any>new FunctionWrapper<QF>(queryFunction)
 	}
 
 	/*
@@ -452,10 +460,8 @@ export class DatabaseFacade
 	}
 */
 
-	prepare<QF extends Function>(
-		queryFunction: QF
-	): IFunctionWrapper<QF> {
-		return <IFunctionWrapper<QF>><any>new FunctionWrapper<QF>(queryFunction)
+	private ensureId<E>(entity: E) {
+		throw new Error(`Not Implemented`)
 	}
 
 }

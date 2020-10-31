@@ -2,6 +2,7 @@ import { AIR_DB, DB_FACADE, Delete, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
 import { container, DI } from '@airport/di';
 import { CascadeOverwrite, TRANS_CONNECTOR } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
+import { transactional } from './transactional';
 import { OperationManager, } from './OperationManager';
 // import {transactional}     from './transactional'
 /**
@@ -41,21 +42,24 @@ export class DatabaseFacade extends OperationManager {
     }
      */
     async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH) {
-        const transConnector = await container(this).get(TRANS_CONNECTOR);
+        const transConnector = await container(this)
+            .get(TRANS_CONNECTOR);
         return await transConnector.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
     async create(dbEntity, entity, cascadeGraph) {
         if (!entity) {
             return 0;
         }
-        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await container(this).get(AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE);
+        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await container(this)
+            .get(AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE);
         return await transactional(async () => await this.performCreate(dbEntity, entity, [], airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, null, cascadeGraph));
     }
     async bulkCreate(dbEntity, entities, checkIfProcessed = true, cascadeOverwrite = CascadeOverwrite.DEFAULT) {
         if (!entities || !entities.length) {
             return 0;
         }
-        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await container(this).get(AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE);
+        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await container(this)
+            .get(AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE);
         return await transactional(async () => await this.performBulkCreate(dbEntity, entities, [], airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, checkIfProcessed, cascadeOverwrite));
     }
     async insertColumnValues(dbEntity, rawInsertColumnValues) {
@@ -65,7 +69,8 @@ export class DatabaseFacade extends OperationManager {
         if (rawInsertColumnValues instanceof Function) {
             rawInsertColumnValues = rawInsertColumnValues();
         }
-        const [fieldUtils, queryUtils] = await container(this).get(FIELD_UTILS, QUERY_UTILS);
+        const [fieldUtils, queryUtils] = await container(this)
+            .get(FIELD_UTILS, QUERY_UTILS);
         let numInsertedRows = await this.internalInsertColumnValues(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils);
         return numInsertedRows;
     }
@@ -76,7 +81,8 @@ export class DatabaseFacade extends OperationManager {
         if (rawInsertValues instanceof Function) {
             rawInsertValues = rawInsertValues();
         }
-        const [fieldUtils, queryUtils] = await container(this).get(FIELD_UTILS, QUERY_UTILS);
+        const [fieldUtils, queryUtils] = await container(this)
+            .get(FIELD_UTILS, QUERY_UTILS);
         return await transactional(async () => await this.internalInsertValues(dbEntity, rawInsertValues, queryUtils, fieldUtils));
     }
     async insertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues) {
@@ -86,7 +92,8 @@ export class DatabaseFacade extends OperationManager {
         if (rawInsertColumnValues instanceof Function) {
             rawInsertColumnValues = rawInsertColumnValues();
         }
-        const [fieldUtils, queryUtils] = await container(this).get(FIELD_UTILS, QUERY_UTILS);
+        const [fieldUtils, queryUtils] = await container(this)
+            .get(FIELD_UTILS, QUERY_UTILS);
         return await this.internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils);
     }
     async insertValuesGenerateIds(dbEntity, rawInsertValues) {
@@ -96,14 +103,16 @@ export class DatabaseFacade extends OperationManager {
         if (rawInsertValues instanceof Function) {
             rawInsertValues = rawInsertValues();
         }
-        const [fieldUtils, queryFacade, queryUtils, transConnector] = await container(this).get(FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR);
+        const [fieldUtils, queryFacade, queryUtils, transConnector] = await container(this)
+            .get(FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR);
         return await transactional(async () => await this.internalInsertValuesGetIds(dbEntity, rawInsertValues, fieldUtils, queryFacade, queryUtils, transConnector));
     }
     async delete(dbEntity, entity) {
         if (!entity) {
             return 0;
         }
-        const [airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector] = await container(this).get(AIR_DB, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR);
+        const [airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector] = await container(this)
+            .get(AIR_DB, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR);
         return await transactional(async () => await this.performDelete(dbEntity, entity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector));
     }
     async deleteWhere(dbEntity, rawDelete) {
@@ -114,7 +123,8 @@ export class DatabaseFacade extends OperationManager {
             rawDelete = rawDelete();
         }
         let deleteWhere = new Delete(rawDelete);
-        const [fieldUtils, queryFacade, queryUtils, transConnector] = await container(this).get(FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR);
+        const [fieldUtils, queryFacade, queryUtils, transConnector] = await container(this)
+            .get(FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR);
         return await transactional(async () => await this.internalDeleteWhere(dbEntity, deleteWhere, fieldUtils, queryFacade, queryUtils, transConnector));
     }
     async save(dbEntity, entity, cascadeGraph) {
@@ -125,7 +135,8 @@ export class DatabaseFacade extends OperationManager {
             throw new Error(`@Id is not defined for entity: '${dbEntity.name}'.
 			Cannot call save(entity) on entities with no ids.`);
         }
-        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await container(this).get(AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE);
+        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await container(this)
+            .get(AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE);
         let emptyIdCount = 0;
         let nonEmptyIdCount = 0;
         for (const dbColumn of dbEntity.idColumns) {
@@ -151,7 +162,8 @@ export class DatabaseFacade extends OperationManager {
         if (!entity) {
             return 0;
         }
-        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await container(this).get(AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE);
+        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await container(this)
+            .get(AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE);
         return await transactional(async () => await this.performUpdate(dbEntity, entity, [], airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache));
     }
     /**
@@ -167,7 +179,8 @@ export class DatabaseFacade extends OperationManager {
         if (rawUpdate instanceof Function) {
             rawUpdate = rawUpdate();
         }
-        const [fieldUtils, queryFacade, queryUtils, transConnector] = await container(this).get(FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR);
+        const [fieldUtils, queryFacade, queryUtils, transConnector] = await container(this)
+            .get(FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR);
         let update = new UpdateColumns(rawUpdate);
         return await this.internalUpdateColumnsWhere(dbEntity, update, fieldUtils, queryFacade, queryUtils, transConnector);
     }
@@ -178,12 +191,10 @@ export class DatabaseFacade extends OperationManager {
         if (rawUpdate instanceof Function) {
             rawUpdate = rawUpdate();
         }
-        const [fieldUtils, queryFacade, queryUtils, transConnector] = await container(this).get(FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR);
+        const [fieldUtils, queryFacade, queryUtils, transConnector] = await container(this)
+            .get(FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR);
         let update = new UpdateProperties(rawUpdate);
         return await transactional(async () => await this.internalUpdateWhere(dbEntity, update, fieldUtils, queryFacade, queryUtils, transConnector));
-    }
-    ensureId(entity) {
-        throw new Error(`Not Implemented`);
     }
     async getOriginalRecord(dbEntity, entity, updateCache) {
         const originalRecord = updateCache.getEntityUpdateCache(entity);
@@ -193,6 +204,9 @@ export class DatabaseFacade extends OperationManager {
 			original record?`);
         }
         return originalRecord;
+    }
+    prepare(queryFunction) {
+        return new FunctionWrapper(queryFunction);
     }
     /*
     async getOriginalValues(
@@ -219,8 +233,8 @@ export class DatabaseFacade extends OperationManager {
             fieldUtils, queryUtils, schemaUtils, transConnector, updateCache)
     }
 */
-    prepare(queryFunction) {
-        return new FunctionWrapper(queryFunction);
+    ensureId(entity) {
+        throw new Error(`Not Implemented`);
     }
 }
 DI.set(DB_FACADE, DatabaseFacade);

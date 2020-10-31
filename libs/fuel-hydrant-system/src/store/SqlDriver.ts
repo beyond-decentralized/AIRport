@@ -7,6 +7,9 @@ import {
 }                            from '@airport/air-control'
 import {container}                  from '@airport/di'
 import {
+	DbEntity,
+	DomainName,
+	getSchemaName,
 	InternalFragments,
 	IStoreDriver,
 	ITransaction,
@@ -19,6 +22,8 @@ import {
 	PortableQuery,
 	QueryResultType,
 	QueryType,
+	SchemaName,
+	SchemaStatus,
 	SQLDataType,
 	StoreType,
 	SyncSchemaMap
@@ -56,6 +61,42 @@ export abstract class SqlDriver
 	supportsLocalTransactions(): boolean {
 		return true
 	}
+
+	getEntityTableName(
+		dbEntity: DbEntity
+	): string {
+		return this.getTableName(dbEntity.schemaVersion.schema, dbEntity)
+	}
+
+	getTableName(
+		schema: {
+			domain: DomainName | {
+				name: DomainName
+			}; name: SchemaName; status?: SchemaStatus;
+		},
+		table: {
+			name: string, tableConfig?: {
+				name?: string
+			}
+		}
+	): string {
+		let theTableName = table.name
+		if (table.tableConfig && table.tableConfig.name) {
+			theTableName = table.tableConfig.name
+		}
+		let schemaName
+		if (schema.status || schema.status === 0) {
+			schemaName = schema.name
+		} else {
+			schemaName = getSchemaName(schema)
+		}
+		return this.composeTableName(schemaName, theTableName)
+	}
+
+	abstract composeTableName(
+		schemaName: string,
+		tableName: string
+	): string;
 
 	async abstract initialize(
 		dbName: string

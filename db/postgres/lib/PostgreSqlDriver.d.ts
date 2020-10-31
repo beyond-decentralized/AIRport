@@ -4,6 +4,7 @@ import { SqlDriver } from '@airport/fuel-hydrant-system';
  * Created by Papa on 11/27/2016.
  */
 export declare abstract class PostgreSqlDriver extends SqlDriver {
+    composeTableName(schemaName: string, tableName: string): string;
     doesTableExist(schemaName: string, tableName: string): Promise<boolean>;
     findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
     protected executeNative(sql: string, parameters: any[]): Promise<number>;

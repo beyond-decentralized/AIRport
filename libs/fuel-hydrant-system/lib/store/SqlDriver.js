@@ -1,6 +1,6 @@
 import { AIR_DB, Q_METADATA_UTILS, SCHEMA_UTILS } from '@airport/air-control';
 import { container } from '@airport/di';
-import { QueryResultType, SyncSchemaMap } from '@airport/ground-control';
+import { getSchemaName, QueryResultType, SyncSchemaMap } from '@airport/ground-control';
 import { Subject } from '@airport/observe';
 import { ACTIVE_QUERIES } from '../tokens';
 import { SQLDelete } from '../sql/core/SQLDelete';
@@ -16,6 +16,23 @@ import { TreeSQLQuery } from '../sql/TreeSQLQuery';
 export class SqlDriver {
     supportsLocalTransactions() {
         return true;
+    }
+    getEntityTableName(dbEntity) {
+        return this.getTableName(dbEntity.schemaVersion.schema, dbEntity);
+    }
+    getTableName(schema, table) {
+        let theTableName = table.name;
+        if (table.tableConfig && table.tableConfig.name) {
+            theTableName = table.tableConfig.name;
+        }
+        let schemaName;
+        if (schema.status || schema.status === 0) {
+            schemaName = schema.name;
+        }
+        else {
+            schemaName = getSchemaName(schema);
+        }
+        return this.composeTableName(schemaName, theTableName);
     }
     async insertValues(portableQuery) {
         const splitValues = this.splitValues(portableQuery.jsonQuery.V);

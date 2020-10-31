@@ -184,7 +184,8 @@ export class DatabaseManager
 		}
 
 		if (schemas && schemas.length) {
-			await this.initFeatureSchemas(schemas)
+			// FIXME: add ability to build feature schemas in the future
+			await this.initFeatureSchemas(schemas, false)
 		}
 
 		(server as any).tempActor = null
@@ -215,7 +216,8 @@ export class DatabaseManager
 	}
 
 	private async initFeatureSchemas(
-		schemas: JsonSchema[]
+		schemas: JsonSchema[],
+		buildSchemas: boolean
 	) {
 		const schemaDao = await container(this).get(SCHEMA_DAO)
 
@@ -237,7 +239,7 @@ export class DatabaseManager
 
 		if (schemasToInitialize.length) {
 			const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER)
-			await schemaInitializer.initialize(schemas)
+			await schemaInitializer.initialize(schemas, buildSchemas)
 		}
 	}
 

@@ -501,12 +501,6 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 		}
 	}
 
-	getTableName(
-		dbEntity: DbEntity
-	): string {
-		return getTableName(dbEntity.schemaVersion.schema, dbEntity)
-	}
-
 	private addColumnToSheetSelect(
 		dbColumn: DbColumn,
 		qEntity: IQEntity,

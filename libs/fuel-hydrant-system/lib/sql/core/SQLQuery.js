@@ -74,14 +74,15 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
                 rightColumn: referencedColumnName
             });
         }
-        let onClause = allJoinOnColumns.map(joinOnColumn => ` ${parentAlias}.${joinOnColumn.leftColumn} = ${currentAlias}.${joinOnColumn.rightColumn}`).join('\n\t\t\tAND');
+        let onClause = allJoinOnColumns.map(joinOnColumn => ` ${parentAlias}.${joinOnColumn.leftColumn} = ${currentAlias}.${joinOnColumn.rightColumn}`)
+            .join('\n\t\t\tAND');
         if (entityRelation.jwc) {
             const whereClause = this.getWHEREFragment(entityRelation.jwc, '\t\t', airDb, schemaUtils, metadataUtils);
             const joinWhereOperator = entityRelation.wjto === SqlOperator.AND ? 'AND' : 'OR';
             onClause = `${onClause}
 			${joinWhereOperator} ${whereClause}`;
         }
-        const tableName = schemaUtils.getTableName(rightDbEntity);
+        const tableName = this.storeDriver.getTableName(rightDbEntity);
         const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`;
         return fromFragment;
     }

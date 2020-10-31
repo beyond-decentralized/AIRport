@@ -1,6 +1,14 @@
 import {IObservable}   from '@airport/observe'
 import {PortableQuery} from '../query/PortableQuery'
 import {
+	DomainName,
+	SchemaName
+}                      from '../schema/Schema'
+import {
+	DbEntity
+}                      from '../schema/Entity'
+import {SchemaStatus}  from '../schema/SchemaStatus'
+import {
 	InternalFragments,
 	IStoreOperator
 }                      from './IStoreOperator'
@@ -27,6 +35,23 @@ export interface IStoreDriver
 		schemaName: string,
 		tableName: string
 	): Promise<boolean>
+
+	getEntityTableName(
+		dbEntity: DbEntity
+	): string
+
+	getTableName(
+		schema: {
+			domain: DomainName | {
+				name: DomainName
+			}; name: SchemaName; status?: SchemaStatus;
+		},
+		table: {
+			name: string, tableConfig?: {
+				name?: string
+			}
+		}
+	): string;
 
 	initialize(
 		dbName: string
