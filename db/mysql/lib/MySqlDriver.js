@@ -15,12 +15,13 @@ export class MySqlDriver extends SqlDriver {
     }
     initialize(dbName) {
         this.pool = mysql.createPool({
-            host: 'localhost',
-            user: 'root',
-            database: dbName,
-            waitForConnections: true,
             connectionLimit: 10,
-            queueLimit: 0
+            database: 'votecube',
+            host: 'localhost',
+            password: 'admin',
+            queueLimit: 0,
+            user: 'root',
+            waitForConnections: true,
         });
         this.queryApi = this.pool;
         return null;

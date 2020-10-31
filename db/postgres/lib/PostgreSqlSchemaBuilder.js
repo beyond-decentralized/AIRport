@@ -1,7 +1,6 @@
 import { container, DI } from '@airport/di';
 import { getSchemaName, getSequenceName, getTableName, QueryType, SQLDataType, STORE_DRIVER } from '@airport/ground-control';
-import { SCHEMA_BUILDER } from '../../tokens';
-import { SqlSchemaBuilder } from '../SqlSchemaBuilder';
+import { SCHEMA_BUILDER, SqlSchemaBuilder } from '@airport/landing';
 export class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
     async createSchema(jsonSchema, storeDriver) {
         const schemaName = getSchemaName(jsonSchema);

@@ -12,8 +12,7 @@ import {
 	SQLDataType,
 	STORE_DRIVER
 }                         from '@airport/ground-control'
-import {SCHEMA_BUILDER}   from '../../tokens'
-import {SqlSchemaBuilder} from '../SqlSchemaBuilder'
+import {SCHEMA_BUILDER, SqlSchemaBuilder} from '@airport/landing'
 
 export class PostgreSqlSchemaBuilder
 	extends SqlSchemaBuilder {

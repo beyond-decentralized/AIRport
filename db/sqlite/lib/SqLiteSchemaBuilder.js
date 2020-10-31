@@ -2,8 +2,7 @@ import { AIR_DB } from '@airport/air-control';
 import { SEQUENCE_DAO } from '@airport/airport-code';
 import { container, DI } from '@airport/di';
 import { getSchemaName, SQLDataType } from '@airport/ground-control';
-import { SCHEMA_BUILDER } from '../../tokens';
-import { SqlSchemaBuilder } from '../SqlSchemaBuilder';
+import { SCHEMA_BUILDER, SqlSchemaBuilder } from '@airport/landing';
 export class SqLiteSchemaBuilder extends SqlSchemaBuilder {
     async createSchema(jsonSchema) {
         // Nothing to do

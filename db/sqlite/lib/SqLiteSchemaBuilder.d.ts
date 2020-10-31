@@ -1,7 +1,7 @@
 import { IAirportDatabase } from '@airport/air-control';
 import { ISequence } from '@airport/airport-code';
 import { DbSchema, JsonSchema, JsonSchemaColumn, JsonSchemaEntity } from '@airport/ground-control';
-import { SqlSchemaBuilder } from '../SqlSchemaBuilder';
+import { SqlSchemaBuilder } from '@airport/landing';
 export declare class SqLiteSchemaBuilder extends SqlSchemaBuilder {
     createSchema(jsonSchema: JsonSchema): Promise<void>;
     getColumnSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity, jsonColumn: JsonSchemaColumn): string;

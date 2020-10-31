@@ -1,6 +1,6 @@
 import { ISequence } from '@airport/airport-code';
 import { IStoreDriver, JsonSchema, JsonSchemaColumn, JsonSchemaEntity } from '@airport/ground-control';
-import { SqlSchemaBuilder } from '../SqlSchemaBuilder';
+import { SqlSchemaBuilder } from '@airport/landing';
 export declare class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
     createSchema(jsonSchema: JsonSchema, storeDriver: IStoreDriver): Promise<void>;
     getColumnSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity, jsonColumn: JsonSchemaColumn): string;

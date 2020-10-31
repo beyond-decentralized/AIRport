@@ -5,6 +5,7 @@ import {DATABASE_MANAGER} from '@airport/terminal'
 
 export *    from './DDLManager'
 export *    from './MySqlDriver'
+export *    from './MySqlSchemaBuilder'
 export *    from './MySqlSequenceGenerator'
 
 export async function startDb(

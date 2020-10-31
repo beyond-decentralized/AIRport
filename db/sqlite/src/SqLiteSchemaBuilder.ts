@@ -19,8 +19,7 @@ import {
 	JsonSchemaEntity,
 	SQLDataType
 }                         from '@airport/ground-control'
-import {SCHEMA_BUILDER}   from '../../tokens'
-import {SqlSchemaBuilder} from '../SqlSchemaBuilder'
+import {SCHEMA_BUILDER, SqlSchemaBuilder} from '@airport/landing'
 
 export class SqLiteSchemaBuilder
 	extends SqlSchemaBuilder {
