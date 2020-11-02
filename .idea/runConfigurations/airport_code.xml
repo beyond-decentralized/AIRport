@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="airport-code" type="NodeJSConfigurationType" node-parameters="--experimental-specifier-resolution=node" path-to-js-file="node_modules/@airport/runway/lib/index.js" working-dir="$PROJECT_DIR$/schemas/airport-code">
+    <method v="2" />
+  </configuration>
+</component>

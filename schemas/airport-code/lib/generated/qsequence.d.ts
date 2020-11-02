@@ -32,7 +32,7 @@ export interface SequenceEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface SequenceGraph extends IEntitySelectProperties, SequenceEOptionalId, IEntityCascadeGraph {
+export interface SequenceGraph extends SequenceEOptionalId, IEntityCascadeGraph {
     incrementBy?: number | IQNumberField;
     currentValue?: number | IQNumberField;
 }

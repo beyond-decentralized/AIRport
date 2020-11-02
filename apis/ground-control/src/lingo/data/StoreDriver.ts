@@ -1,18 +1,15 @@
 import {IObservable}   from '@airport/observe'
 import {PortableQuery} from '../query/PortableQuery'
+import {DbEntity}      from '../schema/Entity'
 import {
 	DomainName,
 	SchemaName
 }                      from '../schema/Schema'
-import {
-	DbEntity
-}                      from '../schema/Entity'
 import {SchemaStatus}  from '../schema/SchemaStatus'
 import {
 	InternalFragments,
 	IStoreOperator
 }                      from './IStoreOperator'
-import {ITransaction}  from './ITransaction'
 import {StoreType}     from './storeInfo'
 
 /**
@@ -70,8 +67,12 @@ export interface IStoreDriver
 	): IObservable<E>;
 
 	transact(
-		keepAlive?: boolean
-	): Promise<ITransaction>;
+		transactionalCallback: {
+			(
+				transaction: IStoreDriver
+			): Promise<void>
+		}
+	): Promise<void>
 
 	numFreeConnections(): number
 

@@ -1,9 +1,9 @@
 import {
+	IStoreDriver,
 	ITransaction,
 	StoreType
-} from '@airport/ground-control'
-import {ITransactionHistory} from "@airport/holding-pattern";
-import {ICredentials}        from './Credentials'
+}                     from '@airport/ground-control'
+import {ICredentials} from './Credentials'
 
 export interface ITransactionManager {
 
@@ -16,16 +16,24 @@ export interface ITransactionManager {
 	): Promise<void>;
 
 	transact(
-		credentials: ICredentials
-	): Promise<ITransaction>;
-
-	rollback(
-		transaction: ITransaction
+		credentials: ICredentials,
+		callback: {
+			(
+				transaction: IStoreDriver
+			): Promise<void>
+		}
 	): Promise<void>;
 
-	commit(
-		transaction: ITransaction
-	): Promise<void>;
+	// NOTE: Removed commit and rollback in favor of a callback solution.
+	// This is the lowest common denominator that includes the WebSQL requirement
+	// to finish the transaction before the thread goes to sleep.
+	// rollback(
+	// 	transaction: ITransaction
+	// ): Promise<void>;
+	//
+	// commit(
+	// 	transaction: ITransaction
+	// ): Promise<void>;
 
 	// saveRepositoryHistory(
 	// 	transaction: ITransactionHistory

@@ -16,18 +16,18 @@ export class BaseSequenceDao extends SQDIDao {
 }
 export class BaseSystemWideOperationIdDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(2);
-    }
-    constructor() {
-        super(2);
-    }
-}
-export class BaseTerminalRunDao extends SQDIDao {
-    static diSet() {
         return duoDiSet(1);
     }
     constructor() {
         super(1);
+    }
+}
+export class BaseTerminalRunDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(2);
+    }
+    constructor() {
+        super(2);
     }
 }
 //# sourceMappingURL=baseDaos.js.map

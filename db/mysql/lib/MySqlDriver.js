@@ -32,7 +32,7 @@ export class MySqlDriver extends SqlDriver {
     isServer() {
         return true;
     }
-    async transact(keepAlive) {
+    async transact(transactionalCallback) {
         const connection = await this.pool.getConnection();
         await connection.beginTransaction();
         const transactionModule = await import('./MySqlTransaction');

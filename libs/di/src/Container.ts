@@ -176,7 +176,14 @@ export interface IChildContainer
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]>
 
 	get(
-		...tokens: IDiToken<any>[]
+		...tokens: Array<IDiToken<any>>
+	): Promise<any[]>
+
+	eventuallyGet<A>(
+		token: IDiToken<A>
+	): Promise<A>
+	eventuallyGet(
+		...tokens: Array<IDiToken<any>>
 	): Promise<any[]>
 
 	getSync<A>(
@@ -345,7 +352,7 @@ export interface IChildContainer
 	): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]
 
 	getSync(
-		...tokens: IDiToken<any>[]
+		...tokens: Array<IDiToken<any>>
 	): any
 
 }
@@ -374,7 +381,6 @@ export interface IRootContainer
 
 }
 
-
 const classes: any[]    = []
 let numPendingInits     = 0
 const theObjects: any[] = []
@@ -399,7 +405,6 @@ export class ChildContainer
 	// classes: any[]  = []
 	// numPendingInits = 0
 	// theObjects: any[]  = []
-
 
 	constructor(
 		public context: IContext
@@ -558,13 +563,31 @@ export class ChildContainer
 		tokenO: IDiToken<O>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]>
 	get(
-		...tokens: IDiToken<any>[]
+		...tokens: Array<IDiToken<any>>
 	): Promise<any[]> {
 		return new Promise((
 			resolve,
 			reject
 		) => {
 			this.doGet(
+				tokens,
+				resolve,
+				reject
+			)
+		})
+	}
+
+	eventuallyGet<A>(
+		token: IDiToken<A>
+	): Promise<A>
+	eventuallyGet(
+		...tokens: Array<IDiToken<any>>
+	): Promise<any[]> {
+		return new Promise((
+			resolve,
+			reject
+		) => {
+			this.doEventuallyGet(
 				tokens,
 				resolve,
 				reject
@@ -723,7 +746,7 @@ export class ChildContainer
 		tokenO: IDiToken<O>
 	): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]
 	getSync(
-		...tokens: IDiToken<any>[]
+		...tokens: Array<IDiToken<any>>
 	): any {
 		const {
 			      firstDiNotSetClass,
@@ -746,8 +769,36 @@ export class ChildContainer
 		}
 	}
 
+	private doEventuallyGet(
+		tokens: Array<IDiToken<any>>,
+		successCallback,
+		errorCallback,
+	) {
+		let {
+			      firstDiNotSetClass,
+			      firstMissingClassToken,
+			      objects
+		      } = this.doGetCore(tokens)
+
+		if (firstMissingClassToken || firstDiNotSetClass) {
+			setTimeout(() => {
+				this.doEventuallyGet(
+					tokens,
+					successCallback,
+					errorCallback,
+				)
+			}, 100)
+		} else {
+			if (objects.length > 1) {
+				successCallback(objects)
+			} else {
+				successCallback(objects[0])
+			}
+		}
+	}
+
 	private doGet(
-		tokens: IDiToken<any>[],
+		tokens: Array<IDiToken<any>>,
 		successCallback,
 		errorCallback,
 	) {
@@ -782,7 +833,7 @@ export class ChildContainer
 	}
 
 	private doGetCore(
-		tokens: IDiToken<any>[]
+		tokens: Array<IDiToken<any>>
 	): {
 		firstDiNotSetClass;
 		firstMissingClassToken;
@@ -861,7 +912,8 @@ export class RootContainer
 		this.childContainers.delete(container)
 
 		if (container.context.name) {
-			this.uiContainerMap.get(container.context.name).delete(container)
+			this.uiContainerMap.get(container.context.name)
+				.delete(container)
 		}
 	}
 

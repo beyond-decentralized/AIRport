@@ -16,13 +16,14 @@ import {
 	QueryOptions,
 	ResultSetHeader,
 	RowDataPacket
-}                      from 'mysql2'
-import * as mysql      from 'mysql2/promise'
+}                         from 'mysql2'
+import * as mysql         from 'mysql2/promise'
 import {
 	Connection,
 	Pool
-}                      from 'mysql2/promise'
-import {DDLManager}    from './DDLManager'
+}                         from 'mysql2/promise'
+import {MySqlTransaction} from 'src/MySqlTransaction'
+import {DDLManager}       from './DDLManager'
 
 /**
  * Created by Papa on 10/16/2020.
@@ -118,7 +119,9 @@ export class MySqlDriver
 		return true
 	}
 
-	async transact(keepAlive?: boolean): Promise<ITransaction> {
+	async transact(
+		transactionalCallback: { async(transaction: MySqlTransaction): Promise<void> }
+	): Promise<ITransaction> {
 		const connection: Connection = await this.pool.getConnection()
 		await connection.beginTransaction()
 		const transactionModule = await import('./MySqlTransaction')

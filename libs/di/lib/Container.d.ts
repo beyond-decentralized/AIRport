@@ -17,7 +17,9 @@ export interface IChildContainer extends IContainer {
     get<A, B, C, D, E, F, G, H, I, J, K, L, M>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M]>;
     get<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>, tokenN: IDiToken<N>): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N]>;
     get<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>, tokenN: IDiToken<N>, tokenO: IDiToken<O>): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]>;
-    get(...tokens: IDiToken<any>[]): Promise<any[]>;
+    get(...tokens: Array<IDiToken<any>>): Promise<any[]>;
+    eventuallyGet<A>(token: IDiToken<A>): Promise<A>;
+    eventuallyGet(...tokens: Array<IDiToken<any>>): Promise<any[]>;
     getSync<A>(tokenA: IDiToken<A>): A;
     getSync<A, B>(tokenA: IDiToken<A>, tokenB: IDiToken<B>): [A, B];
     getSync<A, B, C>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>): [A, B, C];
@@ -33,7 +35,7 @@ export interface IChildContainer extends IContainer {
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>): [A, B, C, D, E, F, G, H, I, J, K, L, M];
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>, tokenN: IDiToken<N>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N];
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>, tokenN: IDiToken<N>, tokenO: IDiToken<O>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O];
-    getSync(...tokens: IDiToken<any>[]): any;
+    getSync(...tokens: Array<IDiToken<any>>): any;
 }
 export interface IContainer {
     set<I>(token: IDiToken<I>, clazz: new () => I): void;
@@ -64,6 +66,7 @@ export declare class ChildContainer extends Container implements IChildContainer
     get<A, B, C, D, E, F, G, H, I, J, K, L, M>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M]>;
     get<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>, tokenN: IDiToken<N>): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N]>;
     get<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>, tokenN: IDiToken<N>, tokenO: IDiToken<O>): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]>;
+    eventuallyGet<A>(token: IDiToken<A>): Promise<A>;
     getSync<A>(tokenA: IDiToken<A>): A;
     getSync<A, B>(tokenA: IDiToken<A>, tokenB: IDiToken<B>): [A, B];
     getSync<A, B, C>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>): [A, B, C];
@@ -79,6 +82,7 @@ export declare class ChildContainer extends Container implements IChildContainer
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>): [A, B, C, D, E, F, G, H, I, J, K, L, M];
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>, tokenN: IDiToken<N>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N];
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>, tokenN: IDiToken<N>, tokenO: IDiToken<O>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O];
+    private doEventuallyGet;
     private doGet;
     private doGetCore;
 }

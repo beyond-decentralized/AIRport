@@ -8,26 +8,26 @@ export class SQDIDuo extends Duo {
 }
 export class BaseLogEntryDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(1);
-    }
-    constructor() {
-        super(1);
-    }
-}
-export class BaseLogEntryTypeDuo extends SQDIDuo {
-    static diSet() {
         return duoDiSet(2);
     }
     constructor() {
         super(2);
     }
 }
-export class BaseLogEntryValueDuo extends SQDIDuo {
+export class BaseLogEntryTypeDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(0);
     }
     constructor() {
         super(0);
+    }
+}
+export class BaseLogEntryValueDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(1);
+    }
+    constructor() {
+        super(1);
     }
 }
 export class BaseLoggedErrorDuo extends SQDIDuo {

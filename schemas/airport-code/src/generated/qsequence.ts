@@ -89,7 +89,7 @@ export interface SequenceEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SequenceGraph
-	extends IEntitySelectProperties, SequenceEOptionalId, IEntityCascadeGraph {
+	extends SequenceEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

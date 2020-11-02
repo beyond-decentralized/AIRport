@@ -2,7 +2,6 @@ import { AIR_DB, Q_METADATA_UTILS, SCHEMA_UTILS } from '@airport/air-control';
 import { container } from '@airport/di';
 import { getSchemaName, QueryResultType, SyncSchemaMap } from '@airport/ground-control';
 import { Subject } from '@airport/observe';
-import { ACTIVE_QUERIES } from '../tokens';
 import { SQLDelete } from '../sql/core/SQLDelete';
 import { SQLInsertValues } from '../sql/core/SQLInsertValues';
 import { SQLUpdate } from '../sql/core/SQLUpdate';
@@ -10,6 +9,7 @@ import { EntitySQLQuery } from '../sql/EntitySQLQuery';
 import { FieldSQLQuery } from '../sql/FieldSQLQuery';
 import { SheetSQLQuery } from '../sql/SheetSQLQuery';
 import { TreeSQLQuery } from '../sql/TreeSQLQuery';
+import { ACTIVE_QUERIES } from '../tokens';
 /**
  * Created by Papa on 9/9/2016.
  */
@@ -36,7 +36,8 @@ export class SqlDriver {
     }
     async insertValues(portableQuery) {
         const splitValues = this.splitValues(portableQuery.jsonQuery.V);
-        const [airDb, schemaUtils, metadataUtils] = await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS);
+        const [airDb, schemaUtils, metadataUtils] = await container(this)
+            .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS);
         let numVals = 0;
         for (const V of splitValues) {
             let sqlInsertValues = new SQLInsertValues(airDb, {
@@ -49,22 +50,9 @@ export class SqlDriver {
         }
         return numVals;
     }
-    splitValues(values) {
-        const valuesInRow = values[0].length;
-        const numValues = values.length * valuesInRow;
-        if (numValues <= this.maxValues) {
-            return [values];
-        }
-        let numRowsPerBatch = Math.floor(this.maxValues / valuesInRow);
-        const splitValues = [];
-        for (let i = 0; i < values.length; i += numRowsPerBatch) {
-            const aSplitValues = values.slice(i, i + numRowsPerBatch);
-            splitValues.push(aSplitValues);
-        }
-        return splitValues;
-    }
     async deleteWhere(portableQuery) {
-        const [airDb, schemaUtils, metadataUtils, activeQueries] = await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS, ACTIVE_QUERIES);
+        const [airDb, schemaUtils, metadataUtils, activeQueries] = await container(this)
+            .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS, ACTIVE_QUERIES);
         let fieldMap = new SyncSchemaMap();
         let sqlDelete = new SQLDelete(airDb, portableQuery.jsonQuery, this.getDialect(), this);
         let sql = sqlDelete.toSQL(airDb, schemaUtils, metadataUtils);
@@ -74,14 +62,16 @@ export class SqlDriver {
         return numberOfAffectedRecords;
     }
     async updateWhere(portableQuery, internalFragments) {
-        const [airDb, schemaUtils, metadataUtils] = await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS);
+        const [airDb, schemaUtils, metadataUtils] = await container(this)
+            .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS);
         let sqlUpdate = new SQLUpdate(airDb, portableQuery.jsonQuery, this.getDialect(), this);
         let sql = sqlUpdate.toSQL(internalFragments, airDb, schemaUtils, metadataUtils);
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap);
         return await this.executeNative(sql, parameters);
     }
     async find(portableQuery, internalFragments, cachedSqlQueryId) {
-        const [airDb, schemaUtils, metadataUtils] = await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS);
+        const [airDb, schemaUtils, metadataUtils] = await container(this)
+            .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS);
         const sqlQuery = this.getSQLQuery(portableQuery, airDb, schemaUtils);
         const sql = sqlQuery.toSQL(internalFragments, airDb, schemaUtils, metadataUtils);
         const parameters = sqlQuery.getParameters(portableQuery.parameterMap);
@@ -127,7 +117,9 @@ export class SqlDriver {
     search(portableQuery, internalFragments, cachedSqlQueryId) {
         let resultsSubject = new Subject(() => {
             if (resultsSubject.subscriptions.length < 1) {
-                container(this).get(ACTIVE_QUERIES).then(activeQueries => 
+                container(this)
+                    .get(ACTIVE_QUERIES)
+                    .then(activeQueries => 
                 // Remove the query for the list of cached queries, that are checked every
                 // time a mutation operation is run
                 activeQueries.remove(portableQuery));
@@ -136,7 +128,8 @@ export class SqlDriver {
         let cachedSqlQuery = {
             resultsSubject: resultsSubject,
             runQuery: () => {
-                this.find(portableQuery, internalFragments).then((results) => {
+                this.find(portableQuery, internalFragments)
+                    .then((results) => {
                     // FIXME: convert to MappedEntityArray if needed
                     resultsSubject.next(results);
                 });
@@ -149,7 +142,9 @@ export class SqlDriver {
     searchOne(portableQuery, internalFragments, cachedSqlQueryId) {
         let resultsSubject = new Subject(() => {
             if (resultsSubject.subscriptions.length < 1) {
-                container(this).get(ACTIVE_QUERIES).then(activeQueries => 
+                container(this)
+                    .get(ACTIVE_QUERIES)
+                    .then(activeQueries => 
                 // Remove the query for the list of cached queries, that are checked every
                 // time a mutation operation is run
                 activeQueries.remove(portableQuery));
@@ -158,7 +153,8 @@ export class SqlDriver {
         let cachedSqlQuery = {
             resultsSubject: resultsSubject,
             runQuery: () => {
-                this.findOne(portableQuery, internalFragments).then((result) => {
+                this.findOne(portableQuery, internalFragments)
+                    .then((result) => {
                     resultsSubject.next(result);
                 });
             }
@@ -169,6 +165,20 @@ export class SqlDriver {
     }
     warn(message) {
         console.log(message);
+    }
+    splitValues(values) {
+        const valuesInRow = values[0].length;
+        const numValues = values.length * valuesInRow;
+        if (numValues <= this.maxValues) {
+            return [values];
+        }
+        let numRowsPerBatch = Math.floor(this.maxValues / valuesInRow);
+        const splitValues = [];
+        for (let i = 0; i < values.length; i += numRowsPerBatch) {
+            const aSplitValues = values.slice(i, i + numRowsPerBatch);
+            splitValues.push(aSplitValues);
+        }
+        return splitValues;
     }
 }
 //# sourceMappingURL=SqlDriver.js.map

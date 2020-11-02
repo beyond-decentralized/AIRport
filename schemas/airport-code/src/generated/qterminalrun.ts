@@ -85,7 +85,7 @@ export interface TerminalRunEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface TerminalRunGraph
-	extends IEntitySelectProperties, TerminalRunEOptionalId, IEntityCascadeGraph {
+	extends TerminalRunEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties

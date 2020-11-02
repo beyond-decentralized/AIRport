@@ -28,7 +28,7 @@ export function diSet(dbEntityId) {
 export function duoDiSet(dbEntityId) {
     return ddS(Q.__dbSchema__, dbEntityId);
 }
-DI.db().get(AIR_DB).then((airDb) => {
+DI.db().eventuallyGet(AIR_DB).then((airDb) => {
     airDb.QM[getSchemaName(Q_SCHEMA)] = Q;
 });
 //# sourceMappingURL=qSchema.js.map

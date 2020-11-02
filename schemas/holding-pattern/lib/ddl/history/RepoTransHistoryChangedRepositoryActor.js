@@ -5,8 +5,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Entity, GeneratedValue, Id } from '@airport/air-control';
-import { Column, DbNumber, JoinColumn, ManyToOne } from '@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators';
-import { Table } from '@airport/air-control/lib/impl/core/entity/metadata/EntityDecorators';
+import { Column, DbNumber, JoinColumn, ManyToOne } from '@airport/air-control';
+import { Table } from '@airport/air-control';
 let RepoTransHistoryChangedRepositoryActor = class RepoTransHistoryChangedRepositoryActor {
 };
 __decorate([

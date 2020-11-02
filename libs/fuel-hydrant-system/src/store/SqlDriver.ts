@@ -4,15 +4,14 @@ import {
 	ISchemaUtils,
 	Q_METADATA_UTILS,
 	SCHEMA_UTILS
-}                            from '@airport/air-control'
-import {container}                  from '@airport/di'
+}                        from '@airport/air-control'
+import {container}       from '@airport/di'
 import {
 	DbEntity,
 	DomainName,
 	getSchemaName,
 	InternalFragments,
 	IStoreDriver,
-	ITransaction,
 	JsonDelete,
 	JsonEntityQuery,
 	JsonFieldQuery,
@@ -27,24 +26,24 @@ import {
 	SQLDataType,
 	StoreType,
 	SyncSchemaMap
-} from '@airport/ground-control'
+}                        from '@airport/ground-control'
 import {
 	IObservable,
 	Subject
-}                            from '@airport/observe'
-import {ACTIVE_QUERIES}      from '../tokens'
-import {SQLDelete}           from '../sql/core/SQLDelete'
-import {SQLInsertValues}     from '../sql/core/SQLInsertValues'
+}                        from '@airport/observe'
+import {SQLDelete}       from '../sql/core/SQLDelete'
+import {SQLInsertValues} from '../sql/core/SQLInsertValues'
 import {
 	SQLDialect,
 	SQLQuery
-}                            from '../sql/core/SQLQuery'
-import {SQLUpdate}           from '../sql/core/SQLUpdate'
-import {EntitySQLQuery}      from '../sql/EntitySQLQuery'
-import {FieldSQLQuery}       from '../sql/FieldSQLQuery'
-import {SheetSQLQuery}       from '../sql/SheetSQLQuery'
-import {TreeSQLQuery}        from '../sql/TreeSQLQuery'
-import {CachedSQLQuery}      from './ActiveQueries'
+}                        from '../sql/core/SQLQuery'
+import {SQLUpdate}       from '../sql/core/SQLUpdate'
+import {EntitySQLQuery}  from '../sql/EntitySQLQuery'
+import {FieldSQLQuery}   from '../sql/FieldSQLQuery'
+import {SheetSQLQuery}   from '../sql/SheetSQLQuery'
+import {TreeSQLQuery}    from '../sql/TreeSQLQuery'
+import {ACTIVE_QUERIES}  from '../tokens'
+import {CachedSQLQuery}  from './ActiveQueries'
 
 /**
  * Created by Papa on 9/9/2016.
@@ -53,10 +52,10 @@ import {CachedSQLQuery}      from './ActiveQueries'
 export abstract class SqlDriver
 	implements IStoreDriver {
 
-	// protected airDb: IAirportDatabase
-	protected maxValues: number
 	// public queries: ActiveQueries
 	public type: StoreType
+	// protected airDb: IAirportDatabase
+	protected maxValues: number
 
 	supportsLocalTransactions(): boolean {
 		return true
@@ -102,7 +101,9 @@ export abstract class SqlDriver
 		dbName: string
 	): Promise<any>;
 
-	async abstract transact(keepAlive?: boolean): Promise<ITransaction>;
+	async abstract transact(
+		callback: { async(): Promise<void> }
+	): Promise<void>;
 
 	async insertValues(
 		portableQuery: PortableQuery,
@@ -111,7 +112,8 @@ export abstract class SqlDriver
 		const splitValues = this.splitValues((portableQuery.jsonQuery as JsonInsertValues).V)
 
 		const [airDb, schemaUtils, metadataUtils] =
-			      await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
+			      await container(this)
+				      .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
 
 		let numVals = 0
 		for (const V of splitValues) {
@@ -130,32 +132,12 @@ export abstract class SqlDriver
 		return numVals
 	}
 
-	private splitValues(
-		values: any[][]
-	): any[][][] {
-		const valuesInRow = values[0].length
-		const numValues   = values.length * valuesInRow
-
-		if (numValues <= this.maxValues) {
-			return [values]
-		}
-
-		let numRowsPerBatch = Math.floor(this.maxValues / valuesInRow)
-
-		const splitValues = []
-		for (let i = 0; i < values.length; i += numRowsPerBatch) {
-			const aSplitValues = values.slice(i, i + numRowsPerBatch)
-			splitValues.push(aSplitValues)
-		}
-
-		return splitValues
-	}
-
 	async deleteWhere(
 		portableQuery: PortableQuery,
 	): Promise<number> {
 		const [airDb, schemaUtils, metadataUtils, activeQueries] =
-			      await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS, ACTIVE_QUERIES)
+			      await container(this)
+				      .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS, ACTIVE_QUERIES)
 
 		let fieldMap                = new SyncSchemaMap()
 		let sqlDelete               = new SQLDelete(airDb,
@@ -173,7 +155,8 @@ export abstract class SqlDriver
 		internalFragments: InternalFragments
 	): Promise<number> {
 		const [airDb, schemaUtils, metadataUtils] =
-			      await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
+			      await container(this)
+				      .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
 
 		let sqlUpdate  = new SQLUpdate(airDb,
 			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(), this)
@@ -183,18 +166,14 @@ export abstract class SqlDriver
 		return await this.executeNative(sql, parameters)
 	}
 
-	protected abstract async executeNative(
-		sql: string,
-		parameters: any[]
-	): Promise<number>;
-
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
 		const [airDb, schemaUtils, metadataUtils] =
-			      await container(this).get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
+			      await container(this)
+				      .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
 
 		const sqlQuery   = this.getSQLQuery(portableQuery, airDb, schemaUtils)
 		const sql        = sqlQuery.toSQL(internalFragments, airDb, schemaUtils, metadataUtils)
@@ -271,21 +250,24 @@ export abstract class SqlDriver
 	): IObservable<EntityArray> {
 		let resultsSubject                 = new Subject<EntityArray>(() => {
 			if (resultsSubject.subscriptions.length < 1) {
-				container(this).get(ACTIVE_QUERIES).then(
-					activeQueries =>
-						// Remove the query for the list of cached queries, that are checked every
-						// time a mutation operation is run
-						activeQueries.remove(portableQuery)
-				)
+				container(this)
+					.get(ACTIVE_QUERIES)
+					.then(
+						activeQueries =>
+							// Remove the query for the list of cached queries, that are checked every
+							// time a mutation operation is run
+							activeQueries.remove(portableQuery)
+					)
 			}
 		})
 		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any>{
 			resultsSubject: resultsSubject,
 			runQuery: () => {
-				this.find(portableQuery, internalFragments).then((results: E[]) => {
-					// FIXME: convert to MappedEntityArray if needed
-					resultsSubject.next(<EntityArray>results)
-				})
+				this.find(portableQuery, internalFragments)
+					.then((results: E[]) => {
+						// FIXME: convert to MappedEntityArray if needed
+						resultsSubject.next(<EntityArray>results)
+					})
 			}
 		}
 		// this.queries.add(portableQuery, cachedSqlQuery);
@@ -301,20 +283,23 @@ export abstract class SqlDriver
 	): IObservable<E> {
 		let resultsSubject                 = new Subject<E>(() => {
 			if (resultsSubject.subscriptions.length < 1) {
-				container(this).get(ACTIVE_QUERIES).then(
-					activeQueries =>
-						// Remove the query for the list of cached queries, that are checked every
-						// time a mutation operation is run
-						activeQueries.remove(portableQuery)
-				)
+				container(this)
+					.get(ACTIVE_QUERIES)
+					.then(
+						activeQueries =>
+							// Remove the query for the list of cached queries, that are checked every
+							// time a mutation operation is run
+							activeQueries.remove(portableQuery)
+					)
 			}
 		})
 		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any>{
 			resultsSubject: resultsSubject,
 			runQuery: () => {
-				this.findOne(portableQuery, internalFragments).then((result: E) => {
-					resultsSubject.next(result)
-				})
+				this.findOne(portableQuery, internalFragments)
+					.then((result: E) => {
+						resultsSubject.next(result)
+					})
 			}
 		}
 		// this.queries.add(portableQuery, cachedSqlQuery);
@@ -348,7 +333,32 @@ export abstract class SqlDriver
 
 	abstract isServer(): boolean
 
+	protected abstract async executeNative(
+		sql: string,
+		parameters: any[]
+	): Promise<number>;
 
 	protected abstract getDialect(): SQLDialect;
+
+	private splitValues(
+		values: any[][]
+	): any[][][] {
+		const valuesInRow = values[0].length
+		const numValues   = values.length * valuesInRow
+
+		if (numValues <= this.maxValues) {
+			return [values]
+		}
+
+		let numRowsPerBatch = Math.floor(this.maxValues / valuesInRow)
+
+		const splitValues = []
+		for (let i = 0; i < values.length; i += numRowsPerBatch) {
+			const aSplitValues = values.slice(i, i + numRowsPerBatch)
+			splitValues.push(aSplitValues)
+		}
+
+		return splitValues
+	}
 
 }

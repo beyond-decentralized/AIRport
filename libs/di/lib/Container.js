@@ -22,6 +22,11 @@ export class ChildContainer extends Container {
             this.doGet(tokens, resolve, reject);
         });
     }
+    eventuallyGet(...tokens) {
+        return new Promise((resolve, reject) => {
+            this.doEventuallyGet(tokens, resolve, reject);
+        });
+    }
     getSync(...tokens) {
         const { firstDiNotSetClass, firstMissingClassToken, objects } = this.doGetCore(tokens);
         if (firstMissingClassToken) {
@@ -37,6 +42,22 @@ export class ChildContainer extends Container {
         }
         else {
             return objects[0];
+        }
+    }
+    doEventuallyGet(tokens, successCallback, errorCallback) {
+        let { firstDiNotSetClass, firstMissingClassToken, objects } = this.doGetCore(tokens);
+        if (firstMissingClassToken || firstDiNotSetClass) {
+            setTimeout(() => {
+                this.doEventuallyGet(tokens, successCallback, errorCallback);
+            }, 100);
+        }
+        else {
+            if (objects.length > 1) {
+                successCallback(objects);
+            }
+            else {
+                successCallback(objects[0]);
+            }
         }
     }
     doGet(tokens, successCallback, errorCallback) {
@@ -118,7 +139,8 @@ export class RootContainer extends Container {
     remove(container) {
         this.childContainers.delete(container);
         if (container.context.name) {
-            this.uiContainerMap.get(container.context.name).delete(container);
+            this.uiContainerMap.get(container.context.name)
+                .delete(container);
         }
     }
     addContainer(context) {

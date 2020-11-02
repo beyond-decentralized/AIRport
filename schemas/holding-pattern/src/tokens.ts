@@ -1,4 +1,4 @@
-import {system}                          from '@airport/di'
+import {system}                           from '@airport/di'
 import {IRecordHistoryNewValueDao}        from './dao/history/RecordHistoryNewValueDao'
 import {IRecordHistoryOldValueDao}        from './dao/history/RecordHistoryOldValueDao'
 import {IRepositoryTransactionHistoryDao} from './dao/history/RepositoryTransactionHistoryDao'
@@ -12,17 +12,18 @@ import {IRecordHistoryOldValueDuo}        from './duo/history/RecordHistoryOldVa
 import {IRepositoryTransactionHistoryDuo} from './duo/history/RepositoryTransactionHistoryDuo'
 import {ITransactionHistoryDuo}           from './duo/history/TransactionHistoryDuo'
 
-const groundControl = system('airport').lib('holding-pattern')
+export const holdingPattern = system('airport')
+	.lib('holding-pattern')
 
-export const ACTOR_DAO              = groundControl.token<IActorDao>()
-export const OPER_HISTORY_DUO       = groundControl.token<IOperationHistoryDuo>()
-export const REC_HISTORY_DUO        = groundControl.token<IRecordHistoryDuo>()
-export const REC_HIST_NEW_VALUE_DAO = groundControl.token<IRecordHistoryNewValueDao>()
-export const REC_HIST_NEW_VALUE_DUO = groundControl.token<IRecordHistoryNewValueDuo>()
-export const REC_HIST_OLD_VALUE_DAO = groundControl.token<IRecordHistoryOldValueDao>()
-export const REC_HIST_OLD_VALUE_DUO = groundControl.token<IRecordHistoryOldValueDuo>()
-export const REPO_ACTOR_DAO         = groundControl.token<IRepositoryActorDao>()
-export const REPOSITORY_DAO         = groundControl.token<IRepositoryDao>()
-export const REPO_TRANS_HISTORY_DAO = groundControl.token<IRepositoryTransactionHistoryDao>()
-export const REPO_TRANS_HISTORY_DUO = groundControl.token<IRepositoryTransactionHistoryDuo>()
-export const TRANS_HISTORY_DUO      = groundControl.token<ITransactionHistoryDuo>()
+export const ACTOR_DAO              = holdingPattern.token<IActorDao>()
+export const OPER_HISTORY_DUO       = holdingPattern.token<IOperationHistoryDuo>()
+export const REC_HISTORY_DUO        = holdingPattern.token<IRecordHistoryDuo>()
+export const REC_HIST_NEW_VALUE_DAO = holdingPattern.token<IRecordHistoryNewValueDao>()
+export const REC_HIST_NEW_VALUE_DUO = holdingPattern.token<IRecordHistoryNewValueDuo>()
+export const REC_HIST_OLD_VALUE_DAO = holdingPattern.token<IRecordHistoryOldValueDao>()
+export const REC_HIST_OLD_VALUE_DUO = holdingPattern.token<IRecordHistoryOldValueDuo>()
+export const REPO_ACTOR_DAO         = holdingPattern.token<IRepositoryActorDao>()
+export const REPOSITORY_DAO         = holdingPattern.token<IRepositoryDao>()
+export const REPO_TRANS_HISTORY_DAO = holdingPattern.token<IRepositoryTransactionHistoryDao>()
+export const REPO_TRANS_HISTORY_DUO = holdingPattern.token<IRepositoryTransactionHistoryDuo>()
+export const TRANS_HISTORY_DUO      = holdingPattern.token<ITransactionHistoryDuo>()

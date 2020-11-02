@@ -44,7 +44,8 @@ export class TransactionManager
 	async init(
 		dbName: string
 	): Promise<void> {
-		const storeDriver = await container(this).get(STORE_DRIVER)
+		const storeDriver = await container(this)
+			.get(STORE_DRIVER)
 
 		return await storeDriver.initialize(dbName)
 		// await this.dataStore.initialize(dbName)
@@ -52,11 +53,17 @@ export class TransactionManager
 	}
 
 	async transact(
-		credentials: ICredentials
-	): Promise<ITransaction> {
-		const [storeDriver, transHistoryDuo] = await container(this).get(
-			STORE_DRIVER, TRANS_HISTORY_DUO
-		)
+		credentials: ICredentials,
+		transactionalCallback: {
+			(
+				transaction: IStoreDriver
+			): Promise<void>
+		}
+	): Promise<void> {
+		const [storeDriver, transHistoryDuo] = await container(this)
+			.get(
+				STORE_DRIVER, TRANS_HISTORY_DUO
+			)
 
 		if (!storeDriver.isServer()) {
 			if (credentials.domainAndPort === this.transactionInProgress
@@ -72,7 +79,6 @@ export class TransactionManager
 			this.transactionIndexQueue.push(credentials.domainAndPort)
 		}
 
-
 		while (!this.canRunTransaction(credentials.domainAndPort, storeDriver)) {
 			await this.wait(this.yieldToRunningTransaction)
 		}
@@ -85,18 +91,28 @@ export class TransactionManager
 		}
 		let fieldMap = new SyncSchemaMap()
 
-		const transaction        = await storeDriver.transact()
-		transaction.transHistory = transHistoryDuo.getNewRecord()
+		const transaction = await storeDriver.transact(async (
+			transaction: ITransaction
+		) => {
+			transaction.transHistory = transHistoryDuo.getNewRecord()
 
-		transaction.credentials = credentials
+			transaction.credentials = credentials
+			try {
+				await transactionalCallback(transaction)
+				transaction.commit()
+			} catch (e) {
+				transaction.rollback()
+			}
+		}
+	)
 
-		return transaction
 	}
 
-	async rollback(
+	private async rollback(
 		transaction: ITransaction
 	): Promise<void> {
-		const storeDriver = await container(this).get(STORE_DRIVER)
+		const storeDriver = await container(this)
+			.get(STORE_DRIVER)
 		if (!storeDriver.isServer() && this.transactionInProgress !== transaction.credentials.domainAndPort) {
 			let foundTransactionInQueue = false
 			this.transactionIndexQueue.filter(
@@ -120,12 +136,13 @@ export class TransactionManager
 		}
 	}
 
-	async commit(
+	private async commit(
 		transaction: ITransaction
 	): Promise<void> {
-		const [activeQueries, idGenerator, storeDriver] = await container(this).get(
-			ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER
-		)
+		const [activeQueries, idGenerator, storeDriver] = await container(this)
+			.get(
+				ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER
+			)
 
 		if (!storeDriver.isServer() && this.transactionInProgress !== transaction.credentials.domainAndPort) {
 			throw new Error(
@@ -162,7 +179,6 @@ export class TransactionManager
 	// 		await this.offlineDeltaStore.markChangesAsSynced(transaction.repository,
 	// [transaction]);
 	// this.queries.markQueriesToRerun(transaction.transactionHistory.schemaMap); } }
-
 
 	private clearTransaction() {
 		this.transactionInProgress = null
@@ -227,10 +243,8 @@ export class TransactionManager
 			await this.doInsertValues(Q.RecordHistoryOldValue, transaction.allRecordHistoryOldValues)
 		}
 
-
 		return true
 	}
-
 
 	private async wait(timeoutMillis: number
 	) {

@@ -8,26 +8,26 @@ export class SQDIDao extends Dao {
 }
 export class BaseLogEntryDao extends SQDIDao {
     static diSet() {
-        return duoDiSet(1);
-    }
-    constructor() {
-        super(1);
-    }
-}
-export class BaseLogEntryTypeDao extends SQDIDao {
-    static diSet() {
         return duoDiSet(2);
     }
     constructor() {
         super(2);
     }
 }
-export class BaseLogEntryValueDao extends SQDIDao {
+export class BaseLogEntryTypeDao extends SQDIDao {
     static diSet() {
         return duoDiSet(0);
     }
     constructor() {
         super(0);
+    }
+}
+export class BaseLogEntryValueDao extends SQDIDao {
+    static diSet() {
+        return duoDiSet(1);
+    }
+    constructor() {
+        super(1);
     }
 }
 export class BaseLoggedErrorDao extends SQDIDao {

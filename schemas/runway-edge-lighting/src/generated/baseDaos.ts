@@ -118,11 +118,11 @@ export class BaseLogEntryDao
 	implements IBaseLogEntryDao {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }
 
@@ -136,11 +136,11 @@ export class BaseLogEntryTypeDao
 	implements IBaseLogEntryTypeDao {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(2)
+		super(0)
 	}
 }
 
@@ -154,11 +154,11 @@ export class BaseLogEntryValueDao
 	implements IBaseLogEntryValueDao {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(0)
+		super(1)
 	}
 }
 

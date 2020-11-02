@@ -16,13 +16,15 @@ export class TransactionManager extends AbstractMutationManager {
      * @returns {Promise<void>}
      */
     async init(dbName) {
-        const storeDriver = await container(this).get(STORE_DRIVER);
+        const storeDriver = await container(this)
+            .get(STORE_DRIVER);
         return await storeDriver.initialize(dbName);
         // await this.dataStore.initialize(dbName)
         // await this.repositoryManager.initialize();
     }
-    async transact(credentials) {
-        const [storeDriver, transHistoryDuo] = await container(this).get(STORE_DRIVER, TRANS_HISTORY_DUO);
+    async transact(credentials, transactionalCallback) {
+        const [storeDriver, transHistoryDuo] = await container(this)
+            .get(STORE_DRIVER, TRANS_HISTORY_DUO);
         if (!storeDriver.isServer()) {
             if (credentials.domainAndPort === this.transactionInProgress
                 || this.transactionIndexQueue.filter(transIndex => transIndex === credentials.domainAndPort).length) {
@@ -41,13 +43,21 @@ export class TransactionManager extends AbstractMutationManager {
             this.transactionInProgress = credentials.domainAndPort;
         }
         let fieldMap = new SyncSchemaMap();
-        const transaction = await storeDriver.transact();
-        transaction.transHistory = transHistoryDuo.getNewRecord();
-        transaction.credentials = credentials;
-        return transaction;
+        const transaction = await storeDriver.transact(async (transaction) => {
+            transaction.transHistory = transHistoryDuo.getNewRecord();
+            transaction.credentials = credentials;
+            try {
+                await transactionalCallback(transaction);
+                transaction.commit();
+            }
+            catch (e) {
+                transaction.rollback();
+            }
+        });
     }
     async rollback(transaction) {
-        const storeDriver = await container(this).get(STORE_DRIVER);
+        const storeDriver = await container(this)
+            .get(STORE_DRIVER);
         if (!storeDriver.isServer() && this.transactionInProgress !== transaction.credentials.domainAndPort) {
             let foundTransactionInQueue = false;
             this.transactionIndexQueue.filter(transIndex => {
@@ -70,7 +80,8 @@ export class TransactionManager extends AbstractMutationManager {
         }
     }
     async commit(transaction) {
-        const [activeQueries, idGenerator, storeDriver] = await container(this).get(ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER);
+        const [activeQueries, idGenerator, storeDriver] = await container(this)
+            .get(ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER);
         if (!storeDriver.isServer() && this.transactionInProgress !== transaction.credentials.domainAndPort) {
             throw new Error(`Cannot commit inactive transaction '${transaction.credentials.domainAndPort}'.`);
         }

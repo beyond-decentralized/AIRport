@@ -8,8 +8,8 @@ import {
 	DbNumber,
 	JoinColumn,
 	ManyToOne
-}                                             from '@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators'
-import {Table}                                from '@airport/air-control/lib/impl/core/entity/metadata/EntityDecorators'
+}                                             from '@airport/air-control'
+import {Table}                                from '@airport/air-control'
 import {Actor}                                from '../infrastructure/Actor'
 import {Repository}                           from '../repository/Repository'
 import {RepositoryTransactionHistory}         from './RepositoryTransactionHistory'
