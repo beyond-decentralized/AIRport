@@ -6,11 +6,11 @@ import {
 import {
 	ACTIVE_QUERIES,
 	ID_GENERATOR,
-	IIdGenerator
+	IIdGenerator,
+	ITransaction
 }                                from '@airport/fuel-hydrant-system'
 import {
 	IStoreDriver,
-	ITransaction,
 	STORE_DRIVER,
 	StoreType,
 	SyncSchemaMap
@@ -91,20 +91,20 @@ export class TransactionManager
 		}
 		let fieldMap = new SyncSchemaMap()
 
-		const transaction = await storeDriver.transact(async (
+		await storeDriver.transact(async (
 			transaction: ITransaction
-		) => {
-			transaction.transHistory = transHistoryDuo.getNewRecord()
+			) => {
+				transaction.transHistory = transHistoryDuo.getNewRecord()
 
-			transaction.credentials = credentials
-			try {
-				await transactionalCallback(transaction)
-				transaction.commit()
-			} catch (e) {
-				transaction.rollback()
+				transaction.credentials = credentials
+				try {
+					await transactionalCallback(transaction)
+					transaction.commit()
+				} catch (e) {
+					transaction.rollback()
+				}
 			}
-		}
-	)
+		)
 
 	}
 

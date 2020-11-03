@@ -1,8 +1,8 @@
 import { SqlDriver } from '@airport/fuel-hydrant-system';
-import { ITransaction, QueryType, SQLDataType } from '@airport/ground-control';
+import { QueryType, SQLDataType } from '@airport/ground-control';
+import { ITransaction } from '@airport/tower';
 import { FieldPacket, OkPacket, QueryOptions, ResultSetHeader, RowDataPacket } from 'mysql2';
 import { Pool } from 'mysql2/promise';
-import { MySqlTransaction } from 'src/MySqlTransaction';
 /**
  * Created by Papa on 10/16/2020.
  */
@@ -33,8 +33,8 @@ export declare class MySqlDriver extends SqlDriver {
     numFreeConnections(): number;
     isServer(): boolean;
     transact(transactionalCallback: {
-        async(transaction: MySqlTransaction): Promise<void>;
-    }): Promise<ITransaction>;
+        (transaction: ITransaction): Promise<void>;
+    }): Promise<void>;
     isValueValid(value: any, sqlDataType: SQLDataType): boolean;
     composeTableName(schemaName: string, tableName: string): string;
     doesTableExist(schemaName: string, tableName: string): Promise<boolean>;

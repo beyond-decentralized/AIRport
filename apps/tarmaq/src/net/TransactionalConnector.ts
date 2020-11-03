@@ -7,7 +7,10 @@ import {
 	TRANS_CONNECTOR
 }                     from '@airport/ground-control'
 import {IObservable}  from '@airport/observe'
-import {TRANS_SERVER} from '@airport/tower'
+import {
+	ITransaction,
+	TRANS_SERVER
+} from '@airport/tower'
 
 export class TransactionalConnector
 	implements ITransactionalConnector {
@@ -102,7 +105,7 @@ export class TransactionalConnector
 
 	async insertValues(
 		portableQuery: PortableQuery,
-		transactionIndex?: number,
+		transaction: ITransaction,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number> {
 		const transServer = await container(this).get(TRANS_SERVER)

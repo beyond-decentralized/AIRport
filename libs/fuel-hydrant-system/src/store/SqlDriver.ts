@@ -31,6 +31,7 @@ import {
 	IObservable,
 	Subject
 }                        from '@airport/observe'
+import {ITransaction}    from '@airport/tower'
 import {SQLDelete}       from '../sql/core/SQLDelete'
 import {SQLInsertValues} from '../sql/core/SQLInsertValues'
 import {
@@ -102,7 +103,11 @@ export abstract class SqlDriver
 	): Promise<any>;
 
 	async abstract transact(
-		callback: { async(): Promise<void> }
+		callback: {
+			(
+				transaction: ITransaction
+			): Promise<void>
+		}
 	): Promise<void>;
 
 	async insertValues(

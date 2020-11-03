@@ -1,7 +1,4 @@
-import {
-	ATransactionHistory,
-	ITransaction
-}                            from '@airport/ground-control'
+import {ITransaction}        from '@airport/tower'
 import {ITransactionHistory} from '@airport/holding-pattern'
 import {ICredentials}        from '@airport/terminal-map'
 import {

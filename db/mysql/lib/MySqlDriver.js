@@ -27,7 +27,9 @@ export class MySqlDriver extends SqlDriver {
         return null;
     }
     numFreeConnections() {
-        return this.pool._freeConnections.length;
+        return this.pool._freeConnections
+            ? this.pool._freeConnections.length
+            : this.pool.pool._freeConnections.length;
     }
     isServer() {
         return true;
@@ -36,7 +38,8 @@ export class MySqlDriver extends SqlDriver {
         const connection = await this.pool.getConnection();
         await connection.beginTransaction();
         const transactionModule = await import('./MySqlTransaction');
-        return new transactionModule.MySqlTransaction(this, this.pool, connection);
+        const transaction = new transactionModule.MySqlTransaction(this, this.pool, connection);
+        await transactionalCallback(transaction);
     }
     isValueValid(value, sqlDataType) {
         throw new Error('Method not implemented.');

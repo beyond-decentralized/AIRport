@@ -1,7 +1,7 @@
 import { AIR_DB } from '@airport/air-control';
 import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI } from '@airport/di';
-import { ChangeType, repositoryEntity, STORE_DRIVER } from '@airport/ground-control';
+import { ChangeType, repositoryEntity, } from '@airport/ground-control';
 import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO } from '@airport/holding-pattern';
 import { DistributionStrategy, PlatformType, TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { HISTORY_MANAGER, INSERT_MANAGER, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER } from '../tokens';
@@ -9,15 +9,15 @@ export class InsertManager {
     // get currentTransHistory(): ITransactionHistory {
     // 	return this.transManager.currentTransHistory
     // }
-    async insertValues(portableQuery, actor, ensureGeneratedValues) {
-        return await this.internalInsertValues(portableQuery, actor, false, ensureGeneratedValues);
+    async insertValues(portableQuery, actor, transaction, ensureGeneratedValues) {
+        return await this.internalInsertValues(portableQuery, actor, transaction, ensureGeneratedValues);
     }
-    async insertValuesGetIds(portableQuery, actor) {
-        return await this.internalInsertValues(portableQuery, actor, true);
+    async insertValuesGetIds(portableQuery, actor, transaction) {
+        return await this.internalInsertValues(portableQuery, actor, transaction);
     }
-    async internalInsertValues(portableQuery, actor, getIds = false, ensureGeneratedValues = true) {
+    async internalInsertValues(portableQuery, actor, transaction, getIds = false, ensureGeneratedValues = true) {
         // TODO: remove unused dependencies after testing
-        const [airDb, storeDriver, sequenceGenerator, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transactionManager] = await container(this).get(AIR_DB, STORE_DRIVER, SEQUENCE_GENERATOR, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO, TRANSACTION_MANAGER);
+        const [airDb, sequenceGenerator, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transactionManager] = await container(this).get(AIR_DB, SEQUENCE_GENERATOR, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO, TRANSACTION_MANAGER);
         const dbEntity = airDb.schemas[portableQuery.schemaIndex]
             .currentVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error inserting into '${dbEntity.name}'.'
@@ -51,9 +51,9 @@ appears more than once in the Columns clause`);
             ids = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator);
         }
         if (!dbEntity.isLocal) {
-            await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transactionManager);
+            await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transaction);
         }
-        const numberOfInsertedRecords = await storeDriver.insertValues(portableQuery);
+        const numberOfInsertedRecords = await transaction.insertValues(portableQuery);
         return getIds ? ids : numberOfInsertedRecords;
     }
     async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH) {
@@ -307,7 +307,7 @@ and cannot have NULL values for non-draft records.`);
      * @param {PortableQuery} portableQuery
      * @returns {Promise<void>}
      */
-    async addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, histManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoManager, repoTransHistoryDuo, transManager) {
+    async addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, histManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoManager, repoTransHistoryDuo, transaction) {
         const jsonInsertValues = portableQuery.jsonQuery;
         let operationsByRepo = [];
         let repoTransHistories = [];
@@ -338,7 +338,7 @@ and cannot have NULL values for non-draft records.`);
             let repoTransHistory = repoTransHistories[repositoryId];
             if (!repoTransHistory) {
                 repoTransHistory = await histManager
-                    .getNewRepoTransHistory(transManager.currentTransHistory, repositoryId, actor);
+                    .getNewRepoTransHistory(transaction.transHistory, repositoryId, actor);
             }
             let operationHistory = operationsByRepo[repositoryId];
             if (!operationHistory) {

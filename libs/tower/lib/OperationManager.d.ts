@@ -1,5 +1,6 @@
 import { Delete, EntityIdData, IAirportDatabase, IEntityUpdateColumns, IEntityUpdateProperties, IFieldUtils, IQEntity, IQMetadataUtils, IQueryFacade, IQueryUtils, ISchemaUtils, IUpdateCache, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties } from '@airport/air-control';
 import { CascadeOverwrite, DbColumn, DbEntity, DbProperty, DbRelation, ITransactionalConnector } from '@airport/ground-control';
+import { ITransaction } from '@airport/fuel-hydrant-system';
 /**
  * Created by Papa on 11/15/2016.
  */
@@ -48,7 +49,7 @@ export declare abstract class OperationManager implements IOperationManager {
     protected performUpdate<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, updatedEntityMap: {
         [entityId: string]: any;
     }[][], airDb: IAirportDatabase, fieldUtils: IFieldUtils, metadataUtils: IQMetadataUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, schemaUtils: ISchemaUtils, transConnector: ITransactionalConnector, updateCache: IUpdateCache, originalValue?: E, cascadeOverwrite?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
-    protected internalInsertValuesGetIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number[] | string[] | number[][] | string[][]>;
+    protected internalInsertValuesGetIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertValues: RawInsertValues<IQE>, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector, transaction: ITransaction): Promise<number[] | string[] | number[][] | string[][]>;
     protected abstract getOriginalRecord(dbEntity: DbEntity, idKey: string, updateCache: IUpdateCache): Promise<any>;
     protected internalUpdateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(dbEntity: DbEntity, updateColumns: UpdateColumns<IEUC, IQE>, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number>;
     protected internalUpdateWhere<E, IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(dbEntity: DbEntity, update: UpdateProperties<IEUP, IQE>, fieldUtils: IFieldUtils, queryFacade: IQueryFacade, queryUtils: IQueryUtils, transConnector: ITransactionalConnector): Promise<number>;

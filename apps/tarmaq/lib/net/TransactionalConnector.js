@@ -36,7 +36,7 @@ export class TransactionalConnector {
             domainAndPort: 'test'
         }, cachedSqlQueryId);
     }
-    async insertValues(portableQuery, transactionIndex, ensureGeneratedValues // For internal use only
+    async insertValues(portableQuery, transaction, ensureGeneratedValues // For internal use only
     ) {
         const transServer = await container(this).get(TRANS_SERVER);
         return await transServer.insertValues(portableQuery, {

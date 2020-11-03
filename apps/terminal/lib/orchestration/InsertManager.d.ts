@@ -1,15 +1,16 @@
 import { DbColumn, DbEntity, JsonInsertValues, PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
+import { ITransaction } from '@airport/tower';
 export declare type RecordId = number;
 export interface IInsertManager {
-    insertValues(portableQuery: PortableQuery, actor: IActor, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, actor: IActor): Promise<RecordId[] | RecordId[][]>;
+    insertValues(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, ensureGeneratedValues?: boolean): Promise<number>;
+    insertValuesGetIds(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction): Promise<RecordId[] | RecordId[][]>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy): Promise<number>;
 }
 export declare class InsertManager implements IInsertManager {
-    insertValues(portableQuery: PortableQuery, actor: IActor, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, actor: IActor): Promise<RecordId[] | RecordId[][]>;
+    insertValues(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, ensureGeneratedValues?: boolean): Promise<number>;
+    insertValuesGetIds(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction): Promise<RecordId[] | RecordId[][]>;
     private internalInsertValues;
     addRepository(name: string, url?: string, platform?: PlatformType, platformConfig?: string, distributionStrategy?: DistributionStrategy): Promise<number>;
     private ensureGeneratedValues;

@@ -31,7 +31,6 @@ export * from './sql/SqlFunctionField';
 export * from './sql/TreeSQLQuery';
 export * from './store/ActiveQueries';
 export * from './store/IdGenerator';
-export * from './store/ITransaction';
 export * from './store/RecordState';
 export * from './store/SqlDriver';
 export * from './validation/Validator';

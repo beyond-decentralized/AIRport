@@ -43,7 +43,7 @@ export class TransactionManager extends AbstractMutationManager {
             this.transactionInProgress = credentials.domainAndPort;
         }
         let fieldMap = new SyncSchemaMap();
-        const transaction = await storeDriver.transact(async (transaction) => {
+        await storeDriver.transact(async (transaction) => {
             transaction.transHistory = transHistoryDuo.getNewRecord();
             transaction.credentials = credentials;
             try {

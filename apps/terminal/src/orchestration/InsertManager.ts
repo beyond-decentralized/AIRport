@@ -3,8 +3,8 @@ import {
 	getSysWideOpId,
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
-}                           from '@airport/check-in'
-import {container, DI}                 from '@airport/di'
+}                      from '@airport/check-in'
+import {container, DI} from '@airport/di'
 import {
 	ChangeType,
 	DbColumn,
@@ -12,8 +12,7 @@ import {
 	JsonInsertValues,
 	PortableQuery,
 	repositoryEntity,
-	STORE_DRIVER
-}                           from '@airport/ground-control'
+}                      from '@airport/ground-control'
 import {
 	IActor,
 	IOperationHistory,
@@ -34,6 +33,7 @@ import {
 	PlatformType,
 	TRANSACTION_MANAGER
 }                           from '@airport/terminal-map'
+import {ITransaction}       from '@airport/tower'
 import {IRepositoryManager} from '../core/repository/RepositoryManager'
 import {
 	HISTORY_MANAGER,
@@ -50,12 +50,14 @@ export interface IInsertManager {
 	insertValues(
 		portableQuery: PortableQuery,
 		actor: IActor,
+		transaction: ITransaction,
 		ensureGeneratedValues?: boolean
 	): Promise<number>;
 
 	insertValuesGetIds(
 		portableQuery: PortableQuery,
 		actor: IActor,
+		transaction: ITransaction,
 	): Promise<RecordId[] | RecordId[][]>;
 
 	addRepository(
@@ -83,30 +85,32 @@ export class InsertManager
 	async insertValues(
 		portableQuery: PortableQuery,
 		actor: IActor,
+		transaction: ITransaction,
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
 		return <number>await this.internalInsertValues(
-			portableQuery, actor, false, ensureGeneratedValues)
+			portableQuery, actor, transaction, ensureGeneratedValues)
 	}
 
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
-		actor: IActor
+		actor: IActor,
+		transaction: ITransaction
 	): Promise<RecordId[] | RecordId[][]> {
 		return <RecordId[] | RecordId[][]>await this.internalInsertValues(
-			portableQuery, actor, true)
+			portableQuery, actor, transaction)
 	}
 
 	private async internalInsertValues(
 		portableQuery: PortableQuery,
 		actor: IActor,
+		transaction: ITransaction,
 		getIds: boolean                = false,
 		ensureGeneratedValues: boolean = true
 	): Promise<number | RecordId[] | RecordId[][]> {
 		// TODO: remove unused dependencies after testing
 		const [
 			      airDb,
-			      storeDriver,
 			      sequenceGenerator,
 			      historyManager,
 			      offlineDataStore,
@@ -116,7 +120,7 @@ export class InsertManager
 			      repositoryManager,
 			      repoTransHistoryDuo,
 			      transactionManager
-		      ] = await container(this).get(AIR_DB, STORE_DRIVER,
+		      ] = await container(this).get(AIR_DB,
 			SEQUENCE_GENERATOR, HISTORY_MANAGER,
 			OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
 			REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER,
@@ -177,10 +181,10 @@ appears more than once in the Columns clause`)
 				dbEntity, portableQuery, actor, systemWideOperationId,
 				historyManager, operHistoryDuo, recHistoryDuo,
 				recHistoryNewValueDuo, repositoryManager,
-				repoTransHistoryDuo, transactionManager)
+				repoTransHistoryDuo, transaction)
 		}
 
-		const numberOfInsertedRecords = await storeDriver.insertValues(portableQuery)
+		const numberOfInsertedRecords = await transaction.insertValues(portableQuery)
 
 		return getIds ? ids : numberOfInsertedRecords
 	}
@@ -527,7 +531,7 @@ and cannot have NULL values for non-draft records.`)
 		recHistoryNewValueDuo: IRecordHistoryNewValueDuo,
 		repoManager: IRepositoryManager,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
-		transManager: ITransactionManager
+		transaction: ITransaction
 	): Promise<void> {
 		const jsonInsertValues = <JsonInsertValues>portableQuery.jsonQuery
 
@@ -563,7 +567,7 @@ and cannot have NULL values for non-draft records.`)
 			let repoTransHistory = repoTransHistories[repositoryId]
 			if (!repoTransHistory) {
 				repoTransHistory = await histManager
-					.getNewRepoTransHistory(transManager.currentTransHistory, repositoryId, actor)
+					.getNewRepoTransHistory(transaction.transHistory, repositoryId, actor)
 			}
 
 			let operationHistory = operationsByRepo[repositoryId]

@@ -1,7 +1,10 @@
-import {IObservable}          from "@airport/observe";
-import {PortableQuery}        from "../query/PortableQuery";
-import {DistributionStrategy} from './DistributionStrategy'
-import {PlatformType}         from './PatformType'
+import {
+	DistributionStrategy,
+	PlatformType,
+	PortableQuery
+}                     from '@airport/ground-control'
+import {IObservable}  from '@airport/observe'
+import {ITransaction} from './ITransaction'
 
 export interface ITransactionalConnector {
 
@@ -37,23 +40,23 @@ export interface ITransactionalConnector {
 
 	insertValues(
 		portableQuery: PortableQuery,
-		transactionIndex?: number,
+		transaction: ITransaction,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number>
 
 	insertValuesGetIds(
 		portableQuery: PortableQuery,
-		transactionIndex?: number,
+		transaction: ITransaction,
 	): Promise<number[] | string[] | number[][] | string[][]>
 
 	updateValues(
 		portableQuery: PortableQuery,
-		transactionIndex?: number,
+		transaction: ITransaction,
 	): Promise<number>
 
 	deleteWhere(
 		portableQuery: PortableQuery,
-		transactionIndex?: number,
+		transaction: ITransaction,
 	): Promise<number>
 
 }

@@ -42,7 +42,8 @@ import {
 	PortableQuery,
 	SQLDataType,
 	TRANS_CONNECTOR
-}           from '@airport/ground-control'
+}                     from '@airport/ground-control'
+import {ITransaction} from '@airport/fuel-hydrant-system'
 
 /**
  * Created by Papa on 11/15/2016.
@@ -261,7 +262,8 @@ export abstract class OperationManager
 		fieldUtils: IFieldUtils,
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector
+		transConnector: ITransactionalConnector,
+		transaction: ITransaction
 	): Promise<number[] | string[] | number[][] | string[][]> {
 
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
@@ -269,7 +271,7 @@ export abstract class OperationManager
 		const portableQuery: PortableQuery = queryFacade.getPortableQuery(
 			dbEntity, insertValues, null, queryUtils, fieldUtils)
 
-		return await transConnector.insertValuesGetIds(portableQuery)
+		return await transConnector.insertValuesGetIds(portableQuery, transaction)
 	}
 
 	protected abstract async getOriginalRecord(
@@ -417,6 +419,7 @@ export abstract class OperationManager
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
 		transConnector: ITransactionalConnector,
+		transaction: ITransaction, //
 		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph,
 		ensureGeneratedValues?: boolean
 	): Promise<ResultWithCascade> {

@@ -33,7 +33,6 @@ export declare class SchemaUtils implements ISchemaUtils {
         (dbColumn: DbColumn, propertyNameChains: string[][]): void | boolean;
     }): void;
     getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity, setClause: any, errorPrefix: string): RepositorySheetSelectInfo;
-    getTableName(dbEntity: DbEntity): string;
     private addColumnToSheetSelect;
     private handleNoId;
 }

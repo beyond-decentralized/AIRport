@@ -4,26 +4,27 @@ import {
 	SqlDriver
 }                      from '@airport/fuel-hydrant-system'
 import {
-	ITransaction,
 	QueryType,
 	SQLDataType,
 	STORE_DRIVER
 }                      from '@airport/ground-control'
-import {transactional} from '@airport/tower'
+import {
+	ITransaction,
+	transactional
+} from '@airport/tower'
 import {
 	FieldPacket,
 	OkPacket,
 	QueryOptions,
 	ResultSetHeader,
 	RowDataPacket
-}                         from 'mysql2'
-import * as mysql         from 'mysql2/promise'
+}                      from 'mysql2'
+import * as mysql      from 'mysql2/promise'
 import {
 	Connection,
 	Pool
-}                         from 'mysql2/promise'
-import {MySqlTransaction} from 'src/MySqlTransaction'
-import {DDLManager}       from './DDLManager'
+}                      from 'mysql2/promise'
+import {DDLManager}    from './DDLManager'
 
 /**
  * Created by Papa on 10/16/2020.
@@ -112,7 +113,9 @@ export class MySqlDriver
 	}
 
 	numFreeConnections(): number {
-		return (<any>this.pool)._freeConnections.length
+		return (<any>this.pool)._freeConnections
+			? (<any>this.pool)._freeConnections.length
+			: (<any>this.pool).pool._freeConnections.length
 	}
 
 	isServer(): boolean {
@@ -120,12 +123,17 @@ export class MySqlDriver
 	}
 
 	async transact(
-		transactionalCallback: { async(transaction: MySqlTransaction): Promise<void> }
-	): Promise<ITransaction> {
+		transactionalCallback: {
+			(
+				transaction: ITransaction
+			): Promise<void>
+		}
+	): Promise<void> {
 		const connection: Connection = await this.pool.getConnection()
 		await connection.beginTransaction()
 		const transactionModule = await import('./MySqlTransaction')
-		return new transactionModule.MySqlTransaction(this, this.pool, connection)
+		const transaction = new transactionModule.MySqlTransaction(this, this.pool, connection)
+		await transactionalCallback(transaction)
 	}
 
 	isValueValid(

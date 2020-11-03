@@ -63,6 +63,5 @@ export interface ISchemaUtils {
         (dbColumn: DbColumn, propertyNameChains: string[][]): void | boolean;
     }): void;
     getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity, setClause: any, errorPrefix: string): RepositorySheetSelectInfo;
-    getTableName(dbEntity: DbEntity): string;
 }
 //# sourceMappingURL=SchemaUtils.d.ts.map

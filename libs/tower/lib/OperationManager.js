@@ -76,10 +76,10 @@ export class OperationManager {
         await this.cascadeOnPersist(result.cascadeRecords, dbEntity, updatedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache, cascadeOverwrite);
         return result.numberOfAffectedRecords;
     }
-    async internalInsertValuesGetIds(dbEntity, rawInsertValues, fieldUtils, queryFacade, queryUtils, transConnector) {
+    async internalInsertValuesGetIds(dbEntity, rawInsertValues, fieldUtils, queryFacade, queryUtils, transConnector, transaction) {
         const insertValues = new InsertValues(rawInsertValues);
         const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null, queryUtils, fieldUtils);
-        return await transConnector.insertValuesGetIds(portableQuery);
+        return await transConnector.insertValuesGetIds(portableQuery, transaction);
     }
     /*
     protected abstract async getOriginalValues(
@@ -161,7 +161,8 @@ export class OperationManager {
         let portableQuery = queryFacade.getPortableQuery(dbEntity, aDelete, null, queryUtils, fieldUtils);
         return await transConnector.deleteWhere(portableQuery);
     }
-    async internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, cascadeOverwrite, ensureGeneratedValues) {
+    async internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transConnector, transaction, //
+    cascadeOverwrite, ensureGeneratedValues) {
         const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         let rawInsert = {
             insertInto: qEntity,

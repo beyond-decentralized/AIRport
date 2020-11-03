@@ -1,6 +1,7 @@
 import { IAirportDatabase, ISchemaUtils } from '@airport/air-control';
 import { DbEntity, DomainName, InternalFragments, IStoreDriver, PortableQuery, QueryType, SchemaName, SchemaStatus, SQLDataType, StoreType } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
+import { ITransaction } from '@airport/tower';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
 /**
  * Created by Papa on 9/9/2016.
@@ -25,7 +26,7 @@ export declare abstract class SqlDriver implements IStoreDriver {
     abstract composeTableName(schemaName: string, tableName: string): string;
     abstract initialize(dbName: string): Promise<any>;
     abstract transact(callback: {
-        async(): Promise<void>;
+        (transaction: ITransaction): Promise<void>;
     }): Promise<void>;
     insertValues(portableQuery: PortableQuery): Promise<number>;
     deleteWhere(portableQuery: PortableQuery): Promise<number>;

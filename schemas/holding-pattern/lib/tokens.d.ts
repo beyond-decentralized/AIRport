@@ -10,6 +10,7 @@ import { IRecordHistoryNewValueDuo } from './duo/history/RecordHistoryNewValueDu
 import { IRecordHistoryOldValueDuo } from './duo/history/RecordHistoryOldValueDuo';
 import { IRepositoryTransactionHistoryDuo } from './duo/history/RepositoryTransactionHistoryDuo';
 import { ITransactionHistoryDuo } from './duo/history/TransactionHistoryDuo';
+export declare const holdingPattern: import("@airport/di").ILibrary;
 export declare const ACTOR_DAO: import("@airport/di").IDiToken<IActorDao>;
 export declare const OPER_HISTORY_DUO: import("@airport/di").IDiToken<IOperationHistoryDuo>;
 export declare const REC_HISTORY_DUO: import("@airport/di").IDiToken<IRecordHistoryDuo>;
