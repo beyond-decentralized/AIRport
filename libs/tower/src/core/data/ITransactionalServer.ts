@@ -5,6 +5,7 @@ import {
 }                     from '@airport/ground-control'
 import {IObservable}  from '@airport/observe'
 import {ICredentials} from '@airport/terminal-map'
+import {ITransaction} from '../../ITransaction'
 
 export interface ITransactionalServer {
 
@@ -45,27 +46,23 @@ export interface ITransactionalServer {
 
 	insertValues(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
-		transactionIndex?: number,
+		transaction: ITransaction,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number>
 
 	insertValuesGetIds(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
-		transactionIndex?: number,
+		transaction: ITransaction,
 	): Promise<number[] | string[] | number[][] | string[][]>
 
 	updateValues(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
-		transactionIndex?: number,
+		transaction: ITransaction,
 	): Promise<number>
 
 	deleteWhere(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
-		transactionIndex?: number
+		transaction: ITransaction
 	): Promise<number>
 
 }

@@ -6,8 +6,7 @@ import {
 import {
 	ACTIVE_QUERIES,
 	ID_GENERATOR,
-	IIdGenerator,
-	ITransaction
+	IIdGenerator
 }                                from '@airport/fuel-hydrant-system'
 import {
 	IStoreDriver,
@@ -25,6 +24,7 @@ import {
 	ITransactionManager,
 	TRANSACTION_MANAGER
 }                                from '@airport/terminal-map'
+import {ITransaction}            from '@airport/tower'
 import {AbstractMutationManager} from './AbstractMutationManager'
 
 export class TransactionManager
@@ -150,7 +150,7 @@ export class TransactionManager
 		}
 
 		try {
-			await this.saveRepositoryHistory(transaction.transHistory, idGenerator)
+			await this.saveRepositoryHistory(transaction, idGenerator)
 
 			await transaction.saveTransaction(transaction.transHistory)
 
@@ -188,59 +188,60 @@ export class TransactionManager
 	}
 
 	private async saveRepositoryHistory(
-		transaction: ITransactionHistory,
+		transaction: ITransaction,
 		idGenerator: IIdGenerator
 	): Promise<boolean> {
-		if (!transaction.allRecordHistory.length) {
+		let transactionHistory = transaction.transHistory
+		if (!transactionHistory.allRecordHistory.length) {
 			return false
 		}
-		let schemaMap = transaction.schemaMap
+		let schemaMap = transactionHistory.schemaMap
 
 		const transHistoryIds = await idGenerator.generateTransactionHistoryIds(
-			transaction.repositoryTransactionHistories.length,
-			transaction.allOperationHistory.length,
-			transaction.allRecordHistory.length
+			transactionHistory.repositoryTransactionHistories.length,
+			transactionHistory.allOperationHistory.length,
+			transactionHistory.allRecordHistory.length
 		)
 
 		schemaMap.ensureEntity((<IQEntityInternal><any>Q.TransactionHistory).__driver__.dbEntity, true)
-		transaction.id = transHistoryIds.transactionHistoryId
-		await this.doInsertValues(Q.TransactionHistory, [transaction])
+		transactionHistory.id = transHistoryIds.transactionHistoryId
+		await this.doInsertValues(transaction, Q.TransactionHistory, [transaction])
 
 		schemaMap.ensureEntity((<IQEntityInternal><any>Q.RepositoryTransactionHistory).__driver__.dbEntity, true)
-		transaction.repositoryTransactionHistories.forEach((
+		transactionHistory.repositoryTransactionHistories.forEach((
 			repositoryTransactionHistory,
 			index
 		) => {
 			repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index]
 		})
-		await this.doInsertValues(Q.RepositoryTransactionHistory, transaction.repositoryTransactionHistories)
+		await this.doInsertValues(transaction, Q.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories)
 
 		schemaMap.ensureEntity((<IQEntityInternal><any>Q.OperationHistory).__driver__.dbEntity, true)
-		transaction.allOperationHistory.forEach((
+		transactionHistory.allOperationHistory.forEach((
 			operationHistory,
 			index
 		) => {
 			operationHistory.id = transHistoryIds.operationHistoryIds[index]
 		})
-		await this.doInsertValues(Q.OperationHistory, transaction.allOperationHistory)
+		await this.doInsertValues(transaction, Q.OperationHistory, transactionHistory.allOperationHistory)
 
 		schemaMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistory).__driver__.dbEntity, true)
-		transaction.allRecordHistory.forEach((
+		transactionHistory.allRecordHistory.forEach((
 			recordHistory,
 			index
 		) => {
 			recordHistory.id = transHistoryIds.recordHistoryIds[index]
 		})
-		await this.doInsertValues((<IQEntityInternal><any>Q.RecordHistory), transaction.allRecordHistory)
+		await this.doInsertValues(transaction, (<IQEntityInternal><any>Q.RecordHistory), transactionHistory.allRecordHistory)
 
-		if (transaction.allRecordHistoryNewValues.length) {
+		if (transactionHistory.allRecordHistoryNewValues.length) {
 			schemaMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryNewValue).__driver__.dbEntity, true)
-			await this.doInsertValues(Q.RecordHistoryNewValue, transaction.allRecordHistoryNewValues)
+			await this.doInsertValues(transaction, Q.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues)
 		}
 
-		if (transaction.allRecordHistoryOldValues.length) {
+		if (transactionHistory.allRecordHistoryOldValues.length) {
 			schemaMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryOldValue).__driver__.dbEntity, true)
-			await this.doInsertValues(Q.RecordHistoryOldValue, transaction.allRecordHistoryOldValues)
+			await this.doInsertValues(transaction, Q.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues)
 		}
 
 		return true

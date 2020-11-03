@@ -1,10 +1,11 @@
 import { PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
+import { ITransaction } from '@airport/tower';
 export interface IDeleteManager {
-    deleteWhere(portableQuery: PortableQuery, actor: IActor): Promise<number>;
+    deleteWhere(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction): Promise<number>;
 }
 export declare class DeleteManager implements IDeleteManager {
-    deleteWhere(portableQuery: PortableQuery, actor: IActor): Promise<number>;
+    deleteWhere(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction): Promise<number>;
     private recordRepositoryIds;
     private columnProcessed;
     private recordTreeToDelete;

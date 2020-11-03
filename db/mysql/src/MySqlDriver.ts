@@ -113,9 +113,7 @@ export class MySqlDriver
 	}
 
 	numFreeConnections(): number {
-		return (<any>this.pool)._freeConnections
-			? (<any>this.pool)._freeConnections.length
-			: (<any>this.pool).pool._freeConnections.length
+		return (<any>this.pool).pool._freeConnections.length
 	}
 
 	isServer(): boolean {

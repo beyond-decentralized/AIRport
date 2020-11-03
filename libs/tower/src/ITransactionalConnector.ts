@@ -37,7 +37,7 @@ export interface ITransactionalConnector {
 		portableQuery: PortableQuery,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<E>>
-
+/* FIXME: need to add top level save api here
 	insertValues(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
@@ -58,5 +58,5 @@ export interface ITransactionalConnector {
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
 	): Promise<number>
-
+*/
 }

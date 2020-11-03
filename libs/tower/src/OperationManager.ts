@@ -25,7 +25,7 @@ import {
 	UpdateRecord,
 	valuesEqual
 }           from '@airport/air-control'
-import {container, DI} from '@airport/di'
+import {container} from '@airport/di'
 import {
 	CascadeOverwrite,
 	CascadeType,
@@ -37,13 +37,13 @@ import {
 	ensureChildArray,
 	ensureChildMap,
 	EntityRelationType,
-	ITransactionalConnector,
 	JSONValueOperation,
 	PortableQuery,
-	SQLDataType,
-	TRANS_CONNECTOR
-}                     from '@airport/ground-control'
-import {ITransaction} from '@airport/fuel-hydrant-system'
+	SQLDataType
+}                             from '@airport/ground-control'
+import {TRANS_SERVER}         from './tokens'
+import {ITransactionalServer} from './core/data/ITransactionalServer'
+import {ITransaction}         from './ITransaction'
 
 /**
  * Created by Papa on 11/15/2016.
@@ -106,7 +106,8 @@ export abstract class OperationManager
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
+		transaction: ITransaction,
+		transactionalServer: ITransactionalServer,
 		updateCache: IUpdateCache,
 		idData?: EntityIdData,
 		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
@@ -114,11 +115,11 @@ export abstract class OperationManager
 		let result = await this.internalCreate(dbEntity, [entity],
 			createdEntityMap, !idData,
 			airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils,
-			transConnector, cascadeOverwrite)
+			transaction, transactionalServer, cascadeOverwrite)
 
 		await this.cascadeOnPersist(result.cascadeRecords, dbEntity,
 			createdEntityMap, airDb, fieldUtils, metadataUtils,
-			queryFacade, queryUtils, schemaUtils, transConnector,
+			queryFacade, queryUtils, schemaUtils, transaction, transactionalServer,
 			updateCache, cascadeOverwrite)
 
 		return result.numberOfAffectedRecords
@@ -140,7 +141,8 @@ export abstract class OperationManager
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
+		transaction: ITransaction,
+		transactionalServer: ITransactionalServer,
 		updateCache: IUpdateCache,
 		checkIfProcessed: boolean                               = true,
 		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT,
@@ -149,10 +151,10 @@ export abstract class OperationManager
 		let result = await this.internalCreate(dbEntity, entities,
 			createdEntityMap, checkIfProcessed,
 			airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils,
-			transConnector, cascadeOverwrite, ensureGeneratedValues)
+			transaction, transactionalServer, cascadeOverwrite, ensureGeneratedValues)
 		await this.cascadeOnPersist(result.cascadeRecords, dbEntity,
 			createdEntityMap, airDb, fieldUtils, metadataUtils,
-			queryFacade, queryUtils, schemaUtils, transConnector,
+			queryFacade, queryUtils, schemaUtils, transaction, transactionalServer,
 			updateCache, cascadeOverwrite)
 
 		return result.numberOfAffectedRecords
@@ -162,16 +164,17 @@ export abstract class OperationManager
 		dbEntity: DbEntity,
 		rawInsertColumnValues: RawInsertColumnValues<IQE>,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		transaction: ITransaction
 	): Promise<number> {
-		const [transConnector, queryFacade] = await container(this).get(TRANS_CONNECTOR, QUERY_FACADE)
+		const [transactionalServer, queryFacade] = await container(this).get(TRANS_SERVER, QUERY_FACADE)
 
 		const insertColumnValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
 
 		const portableQuery: PortableQuery = queryFacade.getPortableQuery(
 			dbEntity, insertColumnValues, null, queryUtils, fieldUtils)
 
-		return await transConnector.insertValues(portableQuery)
+		return await transactionalServer.insertValues(portableQuery, transaction)
 	}
 
 	protected async internalInsertValues<IQE extends IQEntity>(
@@ -179,32 +182,34 @@ export abstract class OperationManager
 		rawInsertValues: RawInsertValues<IQE>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
+		transaction: ITransaction,
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
-		const [transConnector, queryFacade] = await container(this).get(TRANS_CONNECTOR, QUERY_FACADE)
+		const [transactionalServer, queryFacade] = await container(this).get(TRANS_SERVER, QUERY_FACADE)
 
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 
 		const portableQuery: PortableQuery = queryFacade.getPortableQuery(
 			dbEntity, insertValues, null, queryUtils, fieldUtils)
 
-		return await transConnector.insertValues(portableQuery, undefined, ensureGeneratedValues)
+		return await transactionalServer.insertValues(portableQuery, transaction, ensureGeneratedValues)
 	}
 
 	protected async internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(
 		dbEntity: DbEntity,
 		rawInsertColumnValues: RawInsertColumnValues<IQE>,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		transaction: ITransaction
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const [transConnector, queryFacade] = await container(this).get(TRANS_CONNECTOR, QUERY_FACADE)
+		const [transactionalServer, queryFacade] = await container(this).get(TRANS_SERVER, QUERY_FACADE)
 
 		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
 
 		const portableQuery: PortableQuery = queryFacade.getPortableQuery(
 			dbEntity, insertValues, null, queryUtils, fieldUtils)
 
-		return await transConnector.insertValuesGetIds(portableQuery)
+		return await transactionalServer.insertValuesGetIds(portableQuery, transaction)
 	}
 
 	/**
@@ -223,7 +228,8 @@ export abstract class OperationManager
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
+		transaction: ITransaction,
+		transactionalServer: ITransactionalServer,
 		updateCache: IUpdateCache,
 		originalValue?: E,
 		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
@@ -247,10 +253,10 @@ export abstract class OperationManager
 		let result = await this.internalUpdate(
 			dbEntity, entity, originalValue, airDb,
 			fieldUtils, queryFacade, queryUtils,
-			schemaUtils, transConnector, updateCache, cascadeOverwrite)
+			schemaUtils, transaction, transactionalServer, updateCache, cascadeOverwrite)
 		await this.cascadeOnPersist(result.cascadeRecords, dbEntity,
 			updatedEntityMap, airDb, fieldUtils, metadataUtils,
-			queryFacade, queryUtils, schemaUtils, transConnector,
+			queryFacade, queryUtils, schemaUtils, transaction, transactionalServer,
 			updateCache, cascadeOverwrite)
 
 		return result.numberOfAffectedRecords
@@ -262,8 +268,8 @@ export abstract class OperationManager
 		fieldUtils: IFieldUtils,
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector,
-		transaction: ITransaction
+		transaction: ITransaction,
+		transactionalServer: ITransactionalServer
 	): Promise<number[] | string[] | number[][] | string[][]> {
 
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
@@ -271,7 +277,7 @@ export abstract class OperationManager
 		const portableQuery: PortableQuery = queryFacade.getPortableQuery(
 			dbEntity, insertValues, null, queryUtils, fieldUtils)
 
-		return await transConnector.insertValuesGetIds(portableQuery, transaction)
+		return await transactionalServer.insertValuesGetIds(portableQuery, transaction)
 	}
 
 	protected abstract async getOriginalRecord(
@@ -289,7 +295,7 @@ export abstract class OperationManager
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
+		transactionalServer: ITransactionalServer,
 		updateCache: IUpdateCache
 	): Promise<MappedEntityArray<any>>;
 */
@@ -347,12 +353,13 @@ export abstract class OperationManager
 		fieldUtils: IFieldUtils,
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector
+		transaction: ITransaction,
+		transactionalServer: ITransactionalServer
 	): Promise<number> {
 		const portableQuery: PortableQuery = queryFacade.getPortableQuery(
 			dbEntity, updateColumns, null, queryUtils, fieldUtils)
 
-		return await transConnector.updateValues(portableQuery)
+		return await transactionalServer.updateValues(portableQuery, transaction)
 	}
 
 	protected async internalUpdateWhere<E, IEUP extends IEntityUpdateProperties,
@@ -362,12 +369,13 @@ export abstract class OperationManager
 		fieldUtils: IFieldUtils,
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector
+		transaction: ITransaction,
+		transactionalServer: ITransactionalServer
 	): Promise<number> {
 		const portableQuery: PortableQuery = queryFacade.getPortableQuery(
 			dbEntity, update, null, queryUtils, fieldUtils)
 
-		return await transConnector.updateValues(portableQuery)
+		return await transactionalServer.updateValues(portableQuery, transaction)
 	}
 
 	/**
@@ -383,11 +391,12 @@ export abstract class OperationManager
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector
+		transaction: ITransaction,
+		transactionalServer: ITransactionalServer
 	): Promise<number> {
 		return await this.internalDelete(
 			dbEntity, entity, airDb, fieldUtils,
-			queryFacade, queryUtils, schemaUtils, transConnector)
+			queryFacade, queryUtils, schemaUtils, transaction, transactionalServer)
 
 		// Delete cascading is done on the server - there is no new information
 		// to pull for this from the client
@@ -399,12 +408,13 @@ export abstract class OperationManager
 		fieldUtils: IFieldUtils,
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
-		transConnector: ITransactionalConnector
+		transaction: ITransaction,
+		transactionalServer: ITransactionalServer
 	): Promise<number> {
 		let portableQuery: PortableQuery = queryFacade.getPortableQuery(
 			dbEntity, aDelete, null, queryUtils, fieldUtils)
 
-		return await transConnector.deleteWhere(portableQuery)
+		return await transactionalServer.deleteWhere(portableQuery, transaction)
 	}
 
 	private async internalCreate<E, EntityCascadeGraph>(
@@ -418,8 +428,8 @@ export abstract class OperationManager
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		transaction: ITransaction, //
+		transaction: ITransaction,
+		transactionalServer: ITransactionalServer,
 		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph,
 		ensureGeneratedValues?: boolean
 	): Promise<ResultWithCascade> {
@@ -536,7 +546,7 @@ export abstract class OperationManager
 			if (generatedColumns.length && ensureGeneratedValues) {
 				const idsAndGeneratedValues = await this.internalInsertValuesGetIds(
 					dbEntity, rawInsert, fieldUtils, queryFacade, queryUtils,
-					transConnector)
+					transaction, transactionalServer)
 				for (let i = 0; i < entities.length; i++) {
 					for (const generatedColumn of generatedColumns) {
 						// Return index for generated column values is: DbColumn.index
@@ -548,7 +558,7 @@ export abstract class OperationManager
 			} else {
 				numberOfAffectedRecords = await
 					this.internalInsertValues(
-						dbEntity, rawInsert, queryUtils, fieldUtils, ensureGeneratedValues)
+						dbEntity, rawInsert, queryUtils, fieldUtils, transaction, ensureGeneratedValues)
 			}
 		}
 
@@ -631,7 +641,8 @@ export abstract class OperationManager
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
+		transaction: ITransaction,
+		transactionalServer: ITransactionalServer,
 		updateCache: IUpdateCache,
 		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph = CascadeOverwrite.DEFAULT
 	): Promise<void> {
@@ -682,7 +693,7 @@ export abstract class OperationManager
 				// const originalValues = await this.getOriginalValues(
 				// 	entitiesWithIds, dbEntity, airDb, fieldUtils,
 				// 	queryFacade, queryUtils, schemaUtils,
-				// 	transConnector, updateCache)
+				// 	transactionalServer, updateCache)
 				// for (const idKey in originalValues.dataMap) {
 				// 	entitiesWithIdMap[idKey].originalValue = originalValues.dataMap[idKey]
 				// }
@@ -701,13 +712,13 @@ export abstract class OperationManager
 						await
 							this.performCreate(dbEntity, entityToOperateOn.newValue,
 								alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils,
-								queryFacade, queryUtils, schemaUtils, transConnector,
+								queryFacade, queryUtils, schemaUtils, transaction, transactionalServer,
 								updateCache, entityToOperateOn.idData, cascadeOverwrite)
 					} else {
 						await
 							this.performUpdate(dbEntity, entityToOperateOn.newValue,
 								alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils,
-								queryFacade, queryUtils, schemaUtils, transConnector,
+								queryFacade, queryUtils, schemaUtils, transaction, transactionalServer,
 								updateCache, entityToOperateOn.originalValue, cascadeOverwrite)
 					}
 				}
@@ -717,7 +728,7 @@ export abstract class OperationManager
 				await
 					this.performCreate(dbEntity, entityToCreate,
 						alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils,
-						queryFacade, queryUtils, schemaUtils, transConnector,
+						queryFacade, queryUtils, schemaUtils, transaction, transactionalServer,
 						updateCache, entityToCreate.idData, cascadeOverwrite)
 			}
 		}
@@ -740,7 +751,8 @@ export abstract class OperationManager
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
+		transaction: ITransaction,
+		transactionalServer: ITransactionalServer,
 		updateCache: IUpdateCache,
 		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph
 	): Promise<ResultWithCascade> {
@@ -827,7 +839,7 @@ export abstract class OperationManager
 
 			numberOfAffectedRecords = await this.internalUpdateWhere(
 				dbEntity, update, fieldUtils, queryFacade, queryUtils,
-				transConnector)
+				transaction, transactionalServer)
 		}
 		return {
 			recordChanged: !!numUpdates,
@@ -988,7 +1000,8 @@ export abstract class OperationManager
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector
+		transaction: ITransaction,
+		transactionalServer: ITransactionalServer
 	): Promise<number> {
 
 		const qEntity                                =
@@ -1076,7 +1089,7 @@ export abstract class OperationManager
 		}
 		let deleteWhere: Delete<any>  = new Delete(rawDelete)
 		return await this.internalDeleteWhere(dbEntity, deleteWhere,
-			fieldUtils, queryFacade, queryUtils, transConnector)
+			fieldUtils, queryFacade, queryUtils, transaction, transactionalServer)
 	}
 
 }

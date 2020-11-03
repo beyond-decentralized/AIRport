@@ -11,11 +11,11 @@ export interface IInsertManager {
 export declare class InsertManager implements IInsertManager {
     insertValues(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction): Promise<RecordId[] | RecordId[][]>;
-    private internalInsertValues;
     addRepository(name: string, url?: string, platform?: PlatformType, platformConfig?: string, distributionStrategy?: DistributionStrategy): Promise<number>;
+    verifyNoGeneratedColumns(dbEntity: DbEntity, jsonInsertValues: JsonInsertValues, errorPrefix: string): DbColumn[];
+    private internalInsertValues;
     private ensureGeneratedValues;
     private ensureRepositoryEntityIdValues;
-    verifyNoGeneratedColumns(dbEntity: DbEntity, jsonInsertValues: JsonInsertValues, errorPrefix: string): DbColumn[];
     /**
      *
      * All repository records must have ids when inserted.  Currently AP doesn't support

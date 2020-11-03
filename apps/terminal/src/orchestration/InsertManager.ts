@@ -3,8 +3,11 @@ import {
 	getSysWideOpId,
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
-}                      from '@airport/check-in'
-import {container, DI} from '@airport/di'
+}                           from '@airport/check-in'
+import {
+	container,
+	DI
+}                           from '@airport/di'
 import {
 	ChangeType,
 	DbColumn,
@@ -12,7 +15,7 @@ import {
 	JsonInsertValues,
 	PortableQuery,
 	repositoryEntity,
-}                      from '@airport/ground-control'
+}                           from '@airport/ground-control'
 import {
 	IActor,
 	IOperationHistory,
@@ -29,7 +32,6 @@ import {
 }                           from '@airport/holding-pattern'
 import {
 	DistributionStrategy,
-	ITransactionManager,
 	PlatformType,
 	TRANSACTION_MANAGER
 }                           from '@airport/terminal-map'
@@ -101,6 +103,44 @@ export class InsertManager
 			portableQuery, actor, transaction)
 	}
 
+	async addRepository(
+		name: string,
+		url: string                                = null,
+		platform: PlatformType                     = PlatformType.GOOGLE_DOCS,
+		platformConfig: string                     = null,
+		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
+	): Promise<number> {
+		const [repoManager, transManager] = await container(this)
+			.get(
+				REPOSITORY_MANAGER, TRANSACTION_MANAGER)
+
+		const repository = await repoManager.createRepository(
+			name, distributionStrategy, transManager.storeType,
+			platform, platformConfig, 'id')
+
+		return repository.id
+	}
+
+	verifyNoGeneratedColumns(
+		dbEntity: DbEntity,
+		jsonInsertValues: JsonInsertValues,
+		errorPrefix: string
+	): DbColumn[] {
+		for (let i = 0; i < jsonInsertValues.C.length; i++) {
+			const columnIndex = jsonInsertValues.C[i]
+
+			const dbColumn = dbEntity.columns[columnIndex]
+
+			if (dbColumn.isGenerated) {
+				throw new Error(errorPrefix +
+					`You cannot explicitly insert into a @GeneratedValue column '${dbColumn.name}'`)
+			}
+		}
+
+		return dbEntity.columns.filter(
+			dbColumn => dbColumn.isGenerated)
+	}
+
 	private async internalInsertValues(
 		portableQuery: PortableQuery,
 		actor: IActor,
@@ -118,13 +158,13 @@ export class InsertManager
 			      recHistoryDuo,
 			      recHistoryNewValueDuo,
 			      repositoryManager,
-			      repoTransHistoryDuo,
-			      transactionManager
-		      ] = await container(this).get(AIR_DB,
-			SEQUENCE_GENERATOR, HISTORY_MANAGER,
-			OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
-			REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER,
-			REPO_TRANS_HISTORY_DUO, TRANSACTION_MANAGER)
+			      repoTransHistoryDuo
+		      ] = await container(this)
+			.get(AIR_DB,
+				SEQUENCE_GENERATOR, HISTORY_MANAGER,
+				OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
+				REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER,
+				REPO_TRANS_HISTORY_DUO)
 
 		const dbEntity = airDb.schemas[portableQuery.schemaIndex]
 			.currentVersion.entities[portableQuery.tableIndex]
@@ -175,7 +215,6 @@ appears more than once in the Columns clause`)
 				sequenceGenerator)
 		}
 
-
 		if (!dbEntity.isLocal) {
 			await this.addInsertHistory(
 				dbEntity, portableQuery, actor, systemWideOperationId,
@@ -187,23 +226,6 @@ appears more than once in the Columns clause`)
 		const numberOfInsertedRecords = await transaction.insertValues(portableQuery)
 
 		return getIds ? ids : numberOfInsertedRecords
-	}
-
-	async addRepository(
-		name: string,
-		url: string                                = null,
-		platform: PlatformType                     = PlatformType.GOOGLE_DOCS,
-		platformConfig: string                     = null,
-		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
-	): Promise<number> {
-		const [repoManager, transManager] = await container(this).get(
-			REPOSITORY_MANAGER, TRANSACTION_MANAGER)
-
-		const repository = await repoManager.createRepository(
-			name, distributionStrategy, transManager.storeType,
-			platform, platformConfig, 'id')
-
-		return repository.id
 	}
 
 	private async ensureGeneratedValues(
@@ -228,7 +250,7 @@ appears more than once in the Columns clause`)
 		let sysWideOperationIdColumn: DbColumn
 
 		if (!dbEntity.isLocal) {
-			actorIdColumn = columnsToPopulate.actorIdColumn
+			actorIdColumn            = columnsToPopulate.actorIdColumn
 			sysWideOperationIdColumn = columnsToPopulate.sysWideOperationIdColumn
 		}
 
@@ -252,7 +274,7 @@ appears more than once in the Columns clause`)
 			if (matchingColumns.length < 1) {
 				// Actor Id cannot be in the insert statement
 				if (idColumn.id === actorIdColumn.id) {
-					isActorIdColumn = true
+					isActorIdColumn        = true
 					inStatementColumnIndex = jsonInsertValues.C.length
 					jsonInsertValues.C.push(actorIdColumn.index)
 				} else {
@@ -487,26 +509,6 @@ and cannot have NULL values for non-draft records.`)
 			actorIdColumn,
 			sysWideOperationIdColumn
 		}
-	}
-
-	verifyNoGeneratedColumns(
-		dbEntity: DbEntity,
-		jsonInsertValues: JsonInsertValues,
-		errorPrefix: string
-	): DbColumn[] {
-		for (let i = 0; i < jsonInsertValues.C.length; i++) {
-			const columnIndex = jsonInsertValues.C[i]
-
-			const dbColumn = dbEntity.columns[columnIndex]
-
-			if (dbColumn.isGenerated) {
-				throw new Error(errorPrefix +
-					`You cannot explicitly insert into a @GeneratedValue column '${dbColumn.name}'`)
-			}
-		}
-
-		return dbEntity.columns.filter(
-			dbColumn => dbColumn.isGenerated)
 	}
 
 	/**

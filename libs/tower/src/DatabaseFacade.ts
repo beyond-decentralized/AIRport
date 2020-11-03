@@ -29,14 +29,15 @@ import {
 import {
 	CascadeOverwrite,
 	DbEntity,
-	TRANS_CONNECTOR
 }                          from '@airport/ground-control'
 import {
 	DistributionStrategy,
 	PlatformType
 }                          from '@airport/terminal-map'
-import {transactional}     from './transactional'
+import {TRANS_SERVER}      from './tokens'
+import {ITransaction}      from './ITransaction'
 import {OperationManager,} from './OperationManager'
+import {transactional}     from './transactional'
 
 // import {transactional}     from './transactional'
 
@@ -90,11 +91,20 @@ export class DatabaseFacade
 		platformConfig: string                     = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
 	): Promise<number> {
-		const transConnector = await container(this)
-			.get(TRANS_CONNECTOR)
+		const transactionalServer = await container(this)
+			.get(TRANS_SERVER)
 
-		return await transConnector.addRepository(
-			name, url, platform, platformConfig, distributionStrategy)
+		let numRecordsCreated = 0
+
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			// TODO: figure out how addRepository will work
+			numRecordsCreated = await transactionalServer.addRepository(
+				name, url, platform, platformConfig, distributionStrategy, null)
+		})
+
+		return numRecordsCreated
 	}
 
 	async create<E, EntityCascadeGraph>(
@@ -106,20 +116,26 @@ export class DatabaseFacade
 			return 0
 		}
 		const [airDb, fieldUtils, metadataUtils, queryFacade,
-			      queryUtils, schemaUtils, transConnector,
+			      queryUtils, schemaUtils, transactionalServer,
 			      updateCache] = await container(this)
 			.get(
 				AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
-				QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR,
+				QUERY_UTILS, SCHEMA_UTILS, TRANS_SERVER,
 				UPDATE_CACHE
 			)
 
-		return await transactional(async () =>
-			await this.performCreate(dbEntity, entity, [],
+		let numRecordsCreated = 0
+
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numRecordsCreated = await this.performCreate(dbEntity, entity, [],
 				airDb, fieldUtils, metadataUtils, queryFacade,
-				queryUtils, schemaUtils, transConnector, updateCache,
+				queryUtils, schemaUtils, transaction, transactionalServer, updateCache,
 				null, cascadeGraph)
-		)
+		})
+
+		return numRecordsCreated
 	}
 
 	async bulkCreate<E, EntityCascadeGraph>(
@@ -132,19 +148,25 @@ export class DatabaseFacade
 			return 0
 		}
 		const [airDb, fieldUtils, metadataUtils, queryFacade,
-			      queryUtils, schemaUtils, transConnector,
+			      queryUtils, schemaUtils, transactionalServer,
 			      updateCache] = await container(this)
 			.get(
 				AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
-				QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
+				QUERY_UTILS, SCHEMA_UTILS, TRANS_SERVER, UPDATE_CACHE
 			)
 
-		return await transactional(async () =>
-			await this.performBulkCreate(dbEntity, entities, [],
+		let numRecordsCreated = 0
+
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numRecordsCreated = await this.performBulkCreate(dbEntity, entities, [],
 				airDb, fieldUtils, metadataUtils,
-				queryFacade, queryUtils, schemaUtils, transConnector,
+				queryFacade, queryUtils, schemaUtils, transaction, transactionalServer,
 				updateCache, checkIfProcessed, cascadeOverwrite)
-		)
+		})
+
+		return numRecordsCreated
 	}
 
 	async insertColumnValues<IQE extends IQEntity>(
@@ -164,10 +186,15 @@ export class DatabaseFacade
 				FIELD_UTILS, QUERY_UTILS
 			)
 
-		let numInsertedRows = await this.internalInsertColumnValues(
-			dbEntity, rawInsertColumnValues, queryUtils, fieldUtils)
+		let numInsertedRecords = 0
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numInsertedRecords = await this.internalInsertColumnValues(
+				dbEntity, rawInsertColumnValues, queryUtils, fieldUtils, transaction)
+		})
 
-		return numInsertedRows
+		return numInsertedRecords
 	}
 
 	async insertValues<IQE extends IQEntity>(
@@ -185,11 +212,16 @@ export class DatabaseFacade
 				FIELD_UTILS, QUERY_UTILS
 			)
 
-		return await transactional(async () =>
-			await this.internalInsertValues(
+		let numInsertedRecords = 0
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numInsertedRecords = await this.internalInsertValues(
 				dbEntity, rawInsertValues as RawInsertValues<IQE>,
-				queryUtils, fieldUtils)
-		)
+				queryUtils, fieldUtils, transaction)
+		})
+
+		return numInsertedRecords
 	}
 
 	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
@@ -209,8 +241,13 @@ export class DatabaseFacade
 				FIELD_UTILS, QUERY_UTILS
 			)
 
-		return await this.internalInsertColumnValuesGenerateIds(
-			dbEntity, rawInsertColumnValues, queryUtils, fieldUtils)
+		let recordIdentifiers
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			recordIdentifiers = await this.internalInsertColumnValuesGenerateIds(
+				dbEntity, rawInsertColumnValues, queryUtils, fieldUtils, transaction)
+		})
 	}
 
 	async insertValuesGenerateIds<IQE extends IQEntity>(
@@ -225,18 +262,22 @@ export class DatabaseFacade
 		if (rawInsertValues instanceof Function) {
 			rawInsertValues = rawInsertValues()
 		}
-		const [fieldUtils, queryFacade, queryUtils, transConnector
+		const [fieldUtils, queryFacade, queryUtils, transactionalServer
 		      ] = await container(this)
 			.get(
-				FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR
+				FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_SERVER
 			)
 
-		return await transactional(async () =>
-			await this.internalInsertValuesGetIds(
+		let recordIdentifiers
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			recordIdentifiers = await this.internalInsertValuesGetIds(
 				dbEntity, rawInsertValues as RawInsertValues<IQE>,
-				fieldUtils, queryFacade, queryUtils, transConnector)
-		)
+				fieldUtils, queryFacade, queryUtils, transaction, transactionalServer)
+		})
 
+		return recordIdentifiers
 	}
 
 	async delete<E>(
@@ -247,16 +288,20 @@ export class DatabaseFacade
 			return 0
 		}
 		const [airDb, fieldUtils, queryFacade, queryUtils,
-			      schemaUtils, transConnector] = await container(this)
+			      schemaUtils, transactionalServer] = await container(this)
 			.get(
 				AIR_DB, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS,
-				SCHEMA_UTILS, TRANS_CONNECTOR)
+				SCHEMA_UTILS, TRANS_SERVER)
 
-		return await transactional(async () =>
-			await this.performDelete(dbEntity, entity,
+		let numDeletedRecords = 0
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numDeletedRecords = await this.performDelete(dbEntity, entity,
 				airDb, fieldUtils, queryFacade, queryUtils,
-				schemaUtils, transConnector)
-		)
+				schemaUtils, transaction, transactionalServer)
+		})
+		return numDeletedRecords
 	}
 
 	async deleteWhere<IQE extends IQEntity>(
@@ -275,14 +320,18 @@ export class DatabaseFacade
 		let deleteWhere: Delete<IQE> = new Delete(rawDelete)
 
 		const [fieldUtils, queryFacade, queryUtils,
-			      transConnector] = await container(this)
+			      transactionalServer] = await container(this)
 			.get(
-				FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR)
+				FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_SERVER)
 
-		return await transactional(async () =>
-			await this.internalDeleteWhere(dbEntity, deleteWhere,
-				fieldUtils, queryFacade, queryUtils, transConnector)
-		)
+		let numDeletedRecords = 0
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numDeletedRecords = await this.internalDeleteWhere(dbEntity, deleteWhere,
+				fieldUtils, queryFacade, queryUtils, transaction, transactionalServer)
+		})
+		return numDeletedRecords
 	}
 
 	async save<E, EntityCascadeGraph>(
@@ -298,11 +347,11 @@ export class DatabaseFacade
 			Cannot call save(entity) on entities with no ids.`)
 		}
 		const [airDb, fieldUtils, metadataUtils, queryFacade,
-			      queryUtils, schemaUtils, transConnector,
+			      queryUtils, schemaUtils, transactionalServer,
 			      updateCache] = await container(this)
 			.get(
 				AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
-				QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
+				QUERY_UTILS, SCHEMA_UTILS, TRANS_SERVER, UPDATE_CACHE
 			)
 
 		let emptyIdCount    = 0
@@ -315,22 +364,27 @@ export class DatabaseFacade
 			schemaUtils.isIdEmpty(idValue) ? emptyIdCount++ : nonEmptyIdCount++
 		}
 
-		return await transactional(async () => {
+		let numSavedRecords = 0
+		await transactional(async (
+			transaction: ITransaction
+		) => {
 			if (emptyIdCount && nonEmptyIdCount) {
 				throw new Error(`Cannot call save(entity) for instance of '${dbEntity.name}' which has
 			${nonEmptyIdCount} @Id values specified and ${emptyIdCount} @Id values not specified.
 			Please make sure that the entity instance either has all @Id values specified (to be
 			updated) or non of @Id values specified (to be created).`)
 			} else if (emptyIdCount) {
-				return await this.performCreate(dbEntity, entity, [],
+				numSavedRecords = await this.performCreate(dbEntity, entity, [],
 					airDb, fieldUtils, metadataUtils, queryFacade,
-					queryUtils, schemaUtils, transConnector, updateCache)
+					queryUtils, schemaUtils, transaction, transactionalServer, updateCache)
 			} else {
-				return await this.performUpdate(dbEntity, entity, [],
+				numSavedRecords = await this.performUpdate(dbEntity, entity, [],
 					airDb, fieldUtils, metadataUtils, queryFacade,
-					queryUtils, schemaUtils, transConnector, updateCache)
+					queryUtils, schemaUtils, transaction, transactionalServer, updateCache)
 			}
 		})
+
+		return numSavedRecords
 	}
 
 	async update<E, EntityCascadeGraph>(
@@ -342,18 +396,23 @@ export class DatabaseFacade
 			return 0
 		}
 		const [airDb, fieldUtils, metadataUtils, queryFacade,
-			      queryUtils, schemaUtils, transConnector,
+			      queryUtils, schemaUtils, transactionalServer,
 			      updateCache] = await container(this)
 			.get(
 				AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
-				QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
+				QUERY_UTILS, SCHEMA_UTILS, TRANS_SERVER, UPDATE_CACHE
 			)
 
-		return await transactional(async () =>
-			await this.performUpdate(dbEntity, entity, [],
+		let numUpdatedRecords = 0
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numUpdatedRecords = await this.performUpdate(dbEntity, entity, [],
 				airDb, fieldUtils, metadataUtils, queryFacade,
-				queryUtils, schemaUtils, transConnector, updateCache)
-		)
+				queryUtils, schemaUtils, transaction, transactionalServer, updateCache)
+		})
+
+		return numUpdatedRecords
 	}
 
 	/**
@@ -376,14 +435,20 @@ export class DatabaseFacade
 			rawUpdate = rawUpdate()
 		}
 		const [fieldUtils, queryFacade, queryUtils,
-			      transConnector] = await container(this)
+			      transactionalServer] = await container(this)
 			.get(
-				FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR)
+				FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_SERVER)
 
 		let update: UpdateColumns<any, IQE> = new UpdateColumns(rawUpdate)
 
-		return await this.internalUpdateColumnsWhere(dbEntity, update,
-			fieldUtils, queryFacade, queryUtils, transConnector)
+		let numUpdatedRecords = 0
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numUpdatedRecords = await this.internalUpdateColumnsWhere(dbEntity, update,
+				fieldUtils, queryFacade, queryUtils, transaction, transactionalServer)
+		})
+		return numUpdatedRecords
 	}
 
 	async updateWhere<IEUP extends IEntityUpdateProperties,
@@ -400,16 +465,20 @@ export class DatabaseFacade
 			rawUpdate = rawUpdate()
 		}
 		const [fieldUtils, queryFacade, queryUtils,
-			      transConnector] = await container(this)
+			      transactionalServer] = await container(this)
 			.get(
-				FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_CONNECTOR)
+				FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, TRANS_SERVER)
 
 		let update: UpdateProperties<any, IQE> = new UpdateProperties(rawUpdate)
 
-		return await transactional(async () =>
-			await this.internalUpdateWhere(dbEntity, update,
-				fieldUtils, queryFacade, queryUtils, transConnector)
-		)
+		let numUpdatedRecords = 0
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numUpdatedRecords = await this.internalUpdateWhere(dbEntity, update,
+					fieldUtils, queryFacade, queryUtils, transaction, transactionalServer)
+		})
+		return numUpdatedRecords
 	}
 
 	async getOriginalRecord(
@@ -443,7 +512,7 @@ export class DatabaseFacade
 		queryFacade: IQueryFacade,
 		queryUtils: IQueryUtils,
 		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
+		transactionalServer: ITransactionalConnector,
 		updateCache: IUpdateCache
 	): Promise<MappedEntityArray<any>> {
 		const qEntity                         = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
@@ -456,7 +525,7 @@ export class DatabaseFacade
 
 		return await queryFacade.find<any, MappedEntityArray<any>>(
 			dbEntity, entityQuery, QueryResultType.MAPPED_ENTITY_TREE,
-			fieldUtils, queryUtils, schemaUtils, transConnector, updateCache)
+			fieldUtils, queryUtils, schemaUtils, transactionalServer, updateCache)
 	}
 */
 

@@ -1,8 +1,8 @@
-import { ITransaction, PortableQuery } from '@airport/ground-control';
+import { PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { IObservable } from '@airport/observe';
 import { DistributionStrategy, ICredentials, PlatformType } from '@airport/terminal-map';
-import { ITransactionalServer } from '@airport/tower';
+import { ITransaction, ITransactionalServer } from '@airport/tower';
 export interface InternalPortableQuery extends PortableQuery {
     domainAndPort: string;
 }
@@ -33,20 +33,16 @@ export interface InternalPortableQuery extends PortableQuery {
 export declare class TransactionalServer implements ITransactionalServer {
     tempActor: IActor;
     init(): Promise<void>;
-    transact(credentials: ICredentials): Promise<ITransaction>;
-    rollback(transaction: ITransaction): Promise<void>;
-    commit(transaction: ITransaction): Promise<void>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<IObservable<EntityArray>>;
     searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<IObservable<E>>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, credentials: ICredentials): Promise<number>;
-    insertValues(portableQuery: PortableQuery, credentials: ICredentials, transactionIndex?: number, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, credentials: ICredentials, transactionIndex?: number): Promise<number[] | string[] | number[][] | string[][]>;
-    updateValues(portableQuery: PortableQuery, credentials: ICredentials, transactionIndex?: number): Promise<number>;
-    deleteWhere(portableQuery: PortableQuery, credentials: ICredentials, transactionIndex?: number): Promise<number>;
+    insertValues(portableQuery: PortableQuery, transaction: ITransaction, ensureGeneratedValues?: boolean): Promise<number>;
+    insertValuesGetIds(portableQuery: PortableQuery, transaction: ITransaction): Promise<number[] | string[] | number[][] | string[][]>;
+    updateValues(portableQuery: PortableQuery, transaction: ITransaction): Promise<number>;
+    deleteWhere(portableQuery: PortableQuery, transaction: ITransaction): Promise<number>;
     private getActor;
-    private wrapInTransaction;
 }
 export declare function injectTransactionalServer(): void;
 //# sourceMappingURL=TransactionalServer.d.ts.map

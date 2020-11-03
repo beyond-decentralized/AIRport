@@ -1,14 +1,14 @@
 import { AIR_DB, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, SheetQuery } from '@airport/air-control';
 import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI } from '@airport/di';
-import { ChangeType, ensureChildArray, ensureChildMap, QueryResultType, repositoryEntity, STORE_DRIVER, } from '@airport/ground-control';
+import { ChangeType, ensureChildArray, ensureChildMap, QueryResultType, repositoryEntity, } from '@airport/ground-control';
 import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO } from '@airport/holding-pattern';
-import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { HISTORY_MANAGER, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER, UPDATE_MANAGER } from '../tokens';
 export class UpdateManager {
-    async updateValues(portableQuery, actor) {
+    async updateValues(portableQuery, actor, transaction) {
         // TODO: remove unused dependencies after testing
-        const [airDb, fieldUtils, historyManager, offlineDataStore, operHistoryDuo, queryUtils, recHistoryDuo, recHistoryNewValueDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, schemaUtils, sequenceGenerator, storeDriver, transactionManager] = await container(this).get(AIR_DB, FIELD_UTILS, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, QUERY_UTILS, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO, SCHEMA_UTILS, SEQUENCE_GENERATOR, STORE_DRIVER, TRANSACTION_MANAGER);
+        const [airDb, fieldUtils, historyManager, offlineDataStore, operHistoryDuo, queryUtils, recHistoryDuo, recHistoryNewValueDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, schemaUtils, sequenceGenerator] = await container(this)
+            .get(AIR_DB, FIELD_UTILS, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, QUERY_UTILS, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO, SCHEMA_UTILS, SEQUENCE_GENERATOR);
         const dbEntity = airDb.schemas[portableQuery.schemaIndex]
             .currentVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error updating '${dbEntity.name}'
@@ -22,20 +22,20 @@ export class UpdateManager {
         if (!dbEntity.isLocal) {
             systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator);
             [recordHistoryMap, repositorySheetSelectInfo]
-                = await this.addUpdateHistory(dbEntity, portableQuery, actor, systemWideOperationId, errorPrefix, airDb, fieldUtils, historyManager, operHistoryDuo, queryUtils, recHistoryDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, schemaUtils, storeDriver, transactionManager);
+                = await this.addUpdateHistory(dbEntity, portableQuery, actor, systemWideOperationId, errorPrefix, airDb, fieldUtils, historyManager, operHistoryDuo, queryUtils, recHistoryDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, schemaUtils, transaction);
             internalFragments.SET.push({
                 column: repositorySheetSelectInfo.systemWideOperationIdColumn,
                 value: systemWideOperationId
             });
         }
-        const numUpdatedRows = await storeDriver
+        const numUpdatedRows = await transaction
             .updateWhere(portableQuery, internalFragments);
         if (!dbEntity.isLocal) {
-            await this.addNewValueHistory(portableQuery.jsonQuery, dbEntity, recordHistoryMap, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, airDb, recHistoryDuo, recHistoryNewValueDuo, fieldUtils, queryUtils, storeDriver);
+            await this.addNewValueHistory(portableQuery.jsonQuery, dbEntity, recordHistoryMap, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, airDb, recHistoryDuo, recHistoryNewValueDuo, fieldUtils, queryUtils, transaction);
         }
         return numUpdatedRows;
     }
-    async addUpdateHistory(dbEntity, portableQuery, actor, systemWideOperationId, errorPrefix, airDb, fieldUtils, histManager, operHistoryDuo, queryUtils, recHistoryDuo, recHistoryOldValueDuo, repoManager, repoTransHistoryDuo, schemaUtils, storeDriver, transManager) {
+    async addUpdateHistory(dbEntity, portableQuery, actor, systemWideOperationId, errorPrefix, airDb, fieldUtils, histManager, operHistoryDuo, queryUtils, recHistoryDuo, recHistoryOldValueDuo, repoManager, repoTransHistoryDuo, schemaUtils, transaction) {
         if (!dbEntity.isRepositoryEntity) {
             throw new Error(errorPrefix +
                 `Cannot add update history for a non-RepositoryEntity`);
@@ -58,7 +58,7 @@ export class UpdateManager {
             queryResultType: QueryResultType.SHEET,
             parameterMap: portableQuery.parameterMap,
         };
-        const recordsToUpdate = await storeDriver.find(portableSelect, {});
+        const recordsToUpdate = await transaction.find(portableSelect, {});
         const { recordsByRepositoryId, repositoryIdSet } = this.groupRecordsByRepository(recordsToUpdate, getSheetSelectFromSetClauseResult);
         const repositoryIds = Array.from(repositoryIdSet);
         // const repositories: MappedEntityArray<IRepository> =
@@ -68,7 +68,7 @@ export class UpdateManager {
             // const repository                         = repositories.get(repositoryId)
             const recordHistoryMapForRepository = {};
             recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository;
-            const repoTransHistory = await histManager.getNewRepoTransHistory(transManager.currentTransHistory, repositoryId, actor);
+            const repoTransHistory = await histManager.getNewRepoTransHistory(transaction.transHistory, repositoryId, actor);
             const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.UPDATE_ROWS, dbEntity, operHistoryDuo);
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
             for (const recordToUpdate of recordsForRepositoryId) {
@@ -98,7 +98,7 @@ export class UpdateManager {
         }
         return [recordHistoryMapByRecordId, getSheetSelectFromSetClauseResult];
     }
-    async addNewValueHistory(jsonUpdate, dbEntity, recordHistoryMapByRecordId, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, airDb, recHistoryDuo, recHistoryNewValueDuo, fieldUtils, queryUtils, storeDriver) {
+    async addNewValueHistory(jsonUpdate, dbEntity, recordHistoryMapByRecordId, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, airDb, recHistoryDuo, recHistoryNewValueDuo, fieldUtils, queryUtils, transaction) {
         const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         const sheetQuery = new SheetQuery({
             from: [
@@ -108,12 +108,13 @@ export class UpdateManager {
             where: qEntity[repositoryEntity.systemWideOperationId]
                 .equals(systemWideOperationId)
         });
-        const queryFacade = await container(this).get(QUERY_FACADE);
+        const queryFacade = await container(this)
+            .get(QUERY_FACADE);
         let portableSelect = queryFacade.getPortableQuery(dbEntity, sheetQuery, QueryResultType.SHEET, queryUtils, fieldUtils);
         const internalFragments = {
             SELECT: repositorySheetSelectInfo.selectClause.map(field => field.dbColumn)
         };
-        const updatedRecords = await storeDriver.find(portableSelect, internalFragments);
+        const updatedRecords = await transaction.find(portableSelect, internalFragments);
         const { recordsByRepositoryId, repositoryIdSet } = this.groupRecordsByRepository(updatedRecords, repositorySheetSelectInfo);
         for (const repositoryId of repositoryIdSet) {
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];

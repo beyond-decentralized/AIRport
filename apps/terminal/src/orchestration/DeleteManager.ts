@@ -11,7 +11,10 @@ import {
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
 }                        from '@airport/check-in'
-import {container, DI}              from '@airport/di'
+import {
+	container,
+	DI
+}                        from '@airport/di'
 import {
 	CascadeType,
 	ChangeType,
@@ -26,8 +29,7 @@ import {
 	JsonEntityQuery,
 	PortableQuery,
 	QueryResultType,
-	SchemaIndex,
-	STORE_DRIVER
+	SchemaIndex
 }                        from '@airport/ground-control'
 import {
 	IActor,
@@ -42,10 +44,7 @@ import {
 	RepositoryEntity,
 	RepositoryId
 }                        from '@airport/holding-pattern'
-import {
-	ITransactionManager,
-	TRANSACTION_MANAGER
-}                        from '@airport/terminal-map'
+import {ITransaction}    from '@airport/tower'
 import {
 	DELETE_MANAGER,
 	HISTORY_MANAGER,
@@ -59,6 +58,7 @@ export interface IDeleteManager {
 	deleteWhere(
 		portableQuery: PortableQuery,
 		actor: IActor,
+		transaction: ITransaction,
 	): Promise<number>;
 
 }
@@ -72,6 +72,7 @@ export class DeleteManager
 	async deleteWhere(
 		portableQuery: PortableQuery,
 		actor: IActor,
+		transaction: ITransaction,
 	): Promise<number> {
 		const [
 			      airDb,
@@ -84,20 +85,18 @@ export class DeleteManager
 			      repositoryManager,
 			      repoTransHistoryDuo,
 			      schemaUtils,
-			      sequenceGenerator,
-			      storeDriver,
-			      transManager
-		      ] = await container(this).get(AIR_DB, HISTORY_MANAGER,
-			OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
-			REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER,
-			REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO,
-			SCHEMA_UTILS, SEQUENCE_GENERATOR, STORE_DRIVER,
-			TRANSACTION_MANAGER)
+			      sequenceGenerator
+		      ] = await container(this)
+			.get(AIR_DB, HISTORY_MANAGER,
+				OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
+				REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER,
+				REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO,
+				SCHEMA_UTILS, SEQUENCE_GENERATOR)
 
 		const dbEntity = airDb
 			.schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex]
 
-		const deleteCommand = storeDriver.deleteWhere(portableQuery)
+		const deleteCommand = transaction.deleteWhere(portableQuery)
 		if (dbEntity.isLocal) {
 			return await deleteCommand
 		}
@@ -118,7 +117,7 @@ export class DeleteManager
 			parameterMap: portableQuery.parameterMap,
 			// values: portableQuery.values,
 		}
-		const treesToDelete                    = await storeDriver
+		const treesToDelete                    = await transaction
 			.find<any, Array<any>>(portableSelect, {})
 
 		const recordsToDelete: RecordsToDelete = new Map()
@@ -131,7 +130,7 @@ export class DeleteManager
 		await this.recordTreeToDelete(recordsToDelete, actor,
 			airDb, historyManager, operHistoryDuo, recHistoryDuo,
 			recHistoryOldValueDuo, repoTransHistoryDuo, schemaUtils,
-			sequenceGenerator, transManager)
+			sequenceGenerator, transaction)
 
 		return await deleteCommand
 	}
@@ -152,7 +151,6 @@ export class DeleteManager
 			      = ensureChildJsMap(recordsToDeleteForSchema, dbEntity.index)
 		const recordsToDeleteForRepository
 			      = ensureChildArray(recordsToDeleteForTable, repositoryId)
-
 
 		const recordToDelete = {}
 		// FIXME: implement
@@ -249,7 +247,7 @@ export class DeleteManager
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
 		schemaUtils: ISchemaUtils,
 		sequenceGenerator: ISequenceGenerator,
-		transManager: ITransactionManager
+		transaction: ITransaction
 	): Promise<void> {
 		let systemWideOperationId
 		for (const [schemaIndex, schemaRecordsToDelete] of recordsToDelete) {
@@ -262,14 +260,13 @@ export class DeleteManager
 
 				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
 					const repoTransHistory = await historyManager.getNewRepoTransHistory(
-						transManager.currentTransHistory, repositoryId, actor
+						transaction.transHistory, repositoryId, actor
 					)
 
 					const operationHistory = repoTransHistoryDuo.startOperation(
 						repoTransHistory, systemWideOperationId,
 						ChangeType.DELETE_ROWS, dbEntity,
 						operHistoryDuo)
-
 
 					for (const recordToDelete of entityRecordsToDeleteForRepo) {
 						const recordHistory = operHistoryDuo.startRecordHistory(

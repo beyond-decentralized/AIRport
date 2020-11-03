@@ -1,6 +1,5 @@
 import {
 	IStoreDriver,
-	ITransaction,
 	StoreType
 }                     from '@airport/ground-control'
 import {ICredentials} from './Credentials'

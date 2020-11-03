@@ -86,7 +86,7 @@ export class TransactionManager extends AbstractMutationManager {
             throw new Error(`Cannot commit inactive transaction '${transaction.credentials.domainAndPort}'.`);
         }
         try {
-            await this.saveRepositoryHistory(transaction.transHistory, idGenerator);
+            await this.saveRepositoryHistory(transaction, idGenerator);
             await transaction.saveTransaction(transaction.transHistory);
             activeQueries.rerunQueries();
             await transaction.commit();
@@ -119,36 +119,37 @@ export class TransactionManager extends AbstractMutationManager {
         }
     }
     async saveRepositoryHistory(transaction, idGenerator) {
-        if (!transaction.allRecordHistory.length) {
+        let transactionHistory = transaction.transHistory;
+        if (!transactionHistory.allRecordHistory.length) {
             return false;
         }
-        let schemaMap = transaction.schemaMap;
-        const transHistoryIds = await idGenerator.generateTransactionHistoryIds(transaction.repositoryTransactionHistories.length, transaction.allOperationHistory.length, transaction.allRecordHistory.length);
+        let schemaMap = transactionHistory.schemaMap;
+        const transHistoryIds = await idGenerator.generateTransactionHistoryIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
         schemaMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true);
-        transaction.id = transHistoryIds.transactionHistoryId;
-        await this.doInsertValues(Q.TransactionHistory, [transaction]);
+        transactionHistory.id = transHistoryIds.transactionHistoryId;
+        await this.doInsertValues(transaction, Q.TransactionHistory, [transaction]);
         schemaMap.ensureEntity(Q.RepositoryTransactionHistory.__driver__.dbEntity, true);
-        transaction.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
+        transactionHistory.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
             repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index];
         });
-        await this.doInsertValues(Q.RepositoryTransactionHistory, transaction.repositoryTransactionHistories);
+        await this.doInsertValues(transaction, Q.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories);
         schemaMap.ensureEntity(Q.OperationHistory.__driver__.dbEntity, true);
-        transaction.allOperationHistory.forEach((operationHistory, index) => {
+        transactionHistory.allOperationHistory.forEach((operationHistory, index) => {
             operationHistory.id = transHistoryIds.operationHistoryIds[index];
         });
-        await this.doInsertValues(Q.OperationHistory, transaction.allOperationHistory);
+        await this.doInsertValues(transaction, Q.OperationHistory, transactionHistory.allOperationHistory);
         schemaMap.ensureEntity(Q.RecordHistory.__driver__.dbEntity, true);
-        transaction.allRecordHistory.forEach((recordHistory, index) => {
+        transactionHistory.allRecordHistory.forEach((recordHistory, index) => {
             recordHistory.id = transHistoryIds.recordHistoryIds[index];
         });
-        await this.doInsertValues(Q.RecordHistory, transaction.allRecordHistory);
-        if (transaction.allRecordHistoryNewValues.length) {
+        await this.doInsertValues(transaction, Q.RecordHistory, transactionHistory.allRecordHistory);
+        if (transactionHistory.allRecordHistoryNewValues.length) {
             schemaMap.ensureEntity(Q.RecordHistoryNewValue.__driver__.dbEntity, true);
-            await this.doInsertValues(Q.RecordHistoryNewValue, transaction.allRecordHistoryNewValues);
+            await this.doInsertValues(transaction, Q.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues);
         }
-        if (transaction.allRecordHistoryOldValues.length) {
+        if (transactionHistory.allRecordHistoryOldValues.length) {
             schemaMap.ensureEntity(Q.RecordHistoryOldValue.__driver__.dbEntity, true);
-            await this.doInsertValues(Q.RecordHistoryOldValue, transaction.allRecordHistoryOldValues);
+            await this.doInsertValues(transaction, Q.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues);
         }
         return true;
     }

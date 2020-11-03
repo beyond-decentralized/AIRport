@@ -15,20 +15,21 @@ import {
 	getSysWideOpId,
 	SEQUENCE_GENERATOR
 }                           from '@airport/check-in'
-import {container, DI}                 from '@airport/di'
+import {
+	container,
+	DI
+}                           from '@airport/di'
 import {
 	ChangeType,
 	DbEntity,
 	ensureChildArray,
 	ensureChildMap,
 	InternalFragments,
-	IStoreDriver,
 	JsonSheetQuery,
 	JsonUpdate,
 	PortableQuery,
 	QueryResultType,
 	repositoryEntity,
-	STORE_DRIVER,
 }                           from '@airport/ground-control'
 import {
 	IActor,
@@ -46,10 +47,7 @@ import {
 	RepositoryEntity_SystemWideOperationId,
 	SystemWideOperationId
 }                           from '@airport/holding-pattern'
-import {
-	ITransactionManager,
-	TRANSACTION_MANAGER
-}                           from '@airport/terminal-map'
+import {ITransaction}       from '@airport/tower'
 import {IRepositoryManager} from '../core/repository/RepositoryManager'
 import {
 	HISTORY_MANAGER,
@@ -64,6 +62,7 @@ export interface IUpdateManager {
 	updateValues(
 		portableQuery: PortableQuery,
 		actor: IActor,
+		transaction: ITransaction,
 	): Promise<number>;
 
 }
@@ -82,6 +81,7 @@ export class UpdateManager
 	async updateValues(
 		portableQuery: PortableQuery,
 		actor: IActor,
+		transaction: ITransaction,
 	): Promise<number> {
 		// TODO: remove unused dependencies after testing
 		const [airDb,
@@ -96,19 +96,16 @@ export class UpdateManager
 			      repositoryManager,
 			      repoTransHistoryDuo,
 			      schemaUtils,
-			      sequenceGenerator,
-			      storeDriver,
-			      transactionManager] = await container(this).get(AIR_DB,
-			FIELD_UTILS, HISTORY_MANAGER, OFFLINE_DELTA_STORE,
-			OPER_HISTORY_DUO, QUERY_UTILS, REC_HISTORY_DUO,
-			REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO,
-			REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO,
-			SCHEMA_UTILS, SEQUENCE_GENERATOR,
-			STORE_DRIVER, TRANSACTION_MANAGER)
+			      sequenceGenerator] = await container(this)
+			.get(AIR_DB,
+				FIELD_UTILS, HISTORY_MANAGER, OFFLINE_DELTA_STORE,
+				OPER_HISTORY_DUO, QUERY_UTILS, REC_HISTORY_DUO,
+				REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO,
+				REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO,
+				SCHEMA_UTILS, SEQUENCE_GENERATOR)
 
 		const dbEntity = airDb.schemas[portableQuery.schemaIndex]
 			.currentVersion.entities[portableQuery.tableIndex]
-
 
 		const errorPrefix = `Error updating '${dbEntity.name}'
 `
@@ -131,7 +128,7 @@ export class UpdateManager
 				airDb, fieldUtils, historyManager, operHistoryDuo,
 				queryUtils, recHistoryDuo, recHistoryOldValueDuo,
 				repositoryManager, repoTransHistoryDuo, schemaUtils,
-				storeDriver, transactionManager)
+				transaction)
 
 			internalFragments.SET.push({
 				column: repositorySheetSelectInfo.systemWideOperationIdColumn,
@@ -139,7 +136,7 @@ export class UpdateManager
 			})
 		}
 
-		const numUpdatedRows = await storeDriver
+		const numUpdatedRows = await transaction
 			.updateWhere(portableQuery, internalFragments)
 
 		if (!dbEntity.isLocal) {
@@ -148,7 +145,7 @@ export class UpdateManager
 				recordHistoryMap, systemWideOperationId,
 				repositorySheetSelectInfo, errorPrefix,
 				airDb, recHistoryDuo, recHistoryNewValueDuo,
-				fieldUtils, queryUtils, storeDriver)
+				fieldUtils, queryUtils, transaction)
 		}
 
 		return numUpdatedRows
@@ -170,8 +167,7 @@ export class UpdateManager
 		repoManager: IRepositoryManager,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
 		schemaUtils: ISchemaUtils,
-		storeDriver: IStoreDriver,
-		transManager: ITransactionManager
+		transaction: ITransaction
 	): Promise<[
 		RecordHistoryMap,
 		RepositorySheetSelectInfo
@@ -205,7 +201,7 @@ export class UpdateManager
 			parameterMap: portableQuery.parameterMap,
 			// values: portableQuery.values,
 		}
-		const recordsToUpdate               = await storeDriver.find<any, Array<any>>(
+		const recordsToUpdate               = await transaction.find<any, Array<any>>(
 			portableSelect, {})
 
 		const {
@@ -225,7 +221,7 @@ export class UpdateManager
 			const recordHistoryMapForRepository      = {}
 			recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository
 			const repoTransHistory                   = await histManager.getNewRepoTransHistory(
-				transManager.currentTransHistory, repositoryId, actor
+				transaction.transHistory, repositoryId, actor
 			)
 			const operationHistory                   = repoTransHistoryDuo.startOperation(
 				repoTransHistory, systemWideOperationId, ChangeType.UPDATE_ROWS,
@@ -280,7 +276,7 @@ export class UpdateManager
 		recHistoryNewValueDuo: IRecordHistoryNewValueDuo,
 		fieldUtils: IFieldUtils,
 		queryUtils: IQueryUtils,
-		storeDriver: IStoreDriver
+		transaction: ITransaction
 	): Promise<void> {
 		const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
 
@@ -293,7 +289,8 @@ export class UpdateManager
 				.equals(systemWideOperationId)
 		})
 
-		const queryFacade  = await container(this).get(QUERY_FACADE)
+		const queryFacade  = await container(this)
+			.get(QUERY_FACADE)
 		let portableSelect = queryFacade.getPortableQuery(
 			dbEntity, sheetQuery, QueryResultType.SHEET, queryUtils, fieldUtils)
 
@@ -302,7 +299,7 @@ export class UpdateManager
 				field => field.dbColumn)
 		}
 
-		const updatedRecords = await storeDriver.find<any, Array<any>>(
+		const updatedRecords = await transaction.find<any, Array<any>>(
 			portableSelect, internalFragments)
 
 		const {

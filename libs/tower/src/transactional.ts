@@ -1,9 +1,6 @@
 import {DI}                  from '@airport/di'
-import {
-	IStoreDriver,
-	ITransaction,
-}                            from '@airport/ground-control'
 import {TRANSACTION_MANAGER} from '@airport/terminal-map'
+import {ITransaction}        from './ITransaction'
 
 /**
  * Created by Papa on 4/3/2019.
@@ -43,7 +40,7 @@ import {TRANSACTION_MANAGER} from '@airport/terminal-map'
 export async function transactional<T>(
 	callback: {
 		(
-			transaction: IStoreDriver
+			transaction: ITransaction
 		): Promise<void>
 	}
 ): Promise<void> {

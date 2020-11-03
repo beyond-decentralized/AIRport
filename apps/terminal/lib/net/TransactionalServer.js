@@ -31,25 +31,6 @@ export class TransactionalServer {
         const transManager = await container(this).get(TRANSACTION_MANAGER);
         return await transManager.init('airport');
     }
-    async transact(credentials) {
-        const transManager = await container(this).get(TRANSACTION_MANAGER);
-        return await transManager.transact(credentials);
-        // this.lastTransactionIndex++
-        // await this.transactionManager.transact(credentials)
-        // this.currentTransactionIndex = this.lastTransactionIndex
-    }
-    async rollback(transaction) {
-        const transManager = await container(this).get(TRANSACTION_MANAGER);
-        return await transManager.rollback(transaction);
-        // await this.transactionManager.rollback(credentials)
-        // this.currentTransactionIndex = null
-    }
-    async commit(transaction) {
-        const transManager = await container(this).get(TRANSACTION_MANAGER);
-        return await transManager.commit(transaction);
-        // await this.transactionManager.commit(credentials)
-        // this.currentTransactionIndex = null
-    }
     async find(portableQuery, credentials, cachedSqlQueryId) {
         const queryManager = await container(this).get(QUERY_MANAGER);
         return await queryManager.find(portableQuery, cachedSqlQueryId);
@@ -70,7 +51,7 @@ export class TransactionalServer {
         const insertManager = await container(this).get(INSERT_MANAGER);
         return await insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
-    async insertValues(portableQuery, credentials, transactionIndex, ensureGeneratedValues // for internal use only
+    async insertValues(portableQuery, transaction, ensureGeneratedValues // for internal use only
     ) {
         const values = portableQuery.jsonQuery.V;
         if (!values.length) {
@@ -88,56 +69,28 @@ export class TransactionalServer {
         }
         const insertManager = await container(this).get(INSERT_MANAGER);
         const actor = await this.getActor(portableQuery);
-        return await this.wrapInTransaction(async () => await insertManager.insertValues(portableQuery, actor, ensureGeneratedValues), 'INSERT', credentials);
+        return await insertManager.insertValues(portableQuery, actor, transaction, ensureGeneratedValues);
     }
-    async insertValuesGetIds(portableQuery, credentials, transactionIndex) {
+    async insertValuesGetIds(portableQuery, transaction) {
         const insertManager = await container(this).get(INSERT_MANAGER);
         const actor = await this.getActor(portableQuery);
-        return await this.wrapInTransaction(async () => await insertManager.insertValuesGetIds(portableQuery, actor), 'INSERT GET IDS', credentials);
+        return await insertManager.insertValuesGetIds(portableQuery, actor, transaction);
     }
-    async updateValues(portableQuery, credentials, transactionIndex) {
+    async updateValues(portableQuery, transaction) {
         const updateManager = await container(this).get(UPDATE_MANAGER);
         const actor = await this.getActor(portableQuery);
-        return await this.wrapInTransaction(async () => await updateManager.updateValues(portableQuery, actor), 'UPDATE', credentials);
+        return await updateManager.updateValues(portableQuery, actor, transaction);
     }
-    async deleteWhere(portableQuery, credentials, transactionIndex) {
+    async deleteWhere(portableQuery, transaction) {
         const deleteManager = await container(this).get(DELETE_MANAGER);
         const actor = await this.getActor(portableQuery);
-        return await this.wrapInTransaction(async () => await deleteManager.deleteWhere(portableQuery, actor), 'DELETE', credentials);
+        return await deleteManager.deleteWhere(portableQuery, actor, transaction);
     }
     async getActor(portableQuery) {
         if (this.tempActor) {
             return this.tempActor;
         }
         throw new Error(`Not Implemented`);
-    }
-    async wrapInTransaction(callback, operationName, credentials) {
-        const transManager = await container(this).get(TRANSACTION_MANAGER);
-        let transact = false;
-        let transaction;
-        if (transManager.transactionInProgress) {
-            if (credentials.domainAndPort !== transManager.transactionInProgress) {
-                throw new Error(`${operationName}: domain: ${credentials.domainAndPort} 
-				does not have an active transaction.`);
-            }
-        }
-        else {
-            transaction = await this.transact(credentials);
-            transact = true;
-        }
-        try {
-            const returnValue = await callback();
-            if (transact) {
-                await this.commit(transaction);
-            }
-            return returnValue;
-        }
-        catch (error) {
-            // if (attachToTransaction) {
-            await this.rollback(transaction);
-            // }
-            throw error;
-        }
     }
 }
 DI.set(TRANS_SERVER, TransactionalServer);

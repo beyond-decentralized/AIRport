@@ -15,9 +15,27 @@ export class InsertManager {
     async insertValuesGetIds(portableQuery, actor, transaction) {
         return await this.internalInsertValues(portableQuery, actor, transaction);
     }
+    async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH) {
+        const [repoManager, transManager] = await container(this)
+            .get(REPOSITORY_MANAGER, TRANSACTION_MANAGER);
+        const repository = await repoManager.createRepository(name, distributionStrategy, transManager.storeType, platform, platformConfig, 'id');
+        return repository.id;
+    }
+    verifyNoGeneratedColumns(dbEntity, jsonInsertValues, errorPrefix) {
+        for (let i = 0; i < jsonInsertValues.C.length; i++) {
+            const columnIndex = jsonInsertValues.C[i];
+            const dbColumn = dbEntity.columns[columnIndex];
+            if (dbColumn.isGenerated) {
+                throw new Error(errorPrefix +
+                    `You cannot explicitly insert into a @GeneratedValue column '${dbColumn.name}'`);
+            }
+        }
+        return dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
+    }
     async internalInsertValues(portableQuery, actor, transaction, getIds = false, ensureGeneratedValues = true) {
         // TODO: remove unused dependencies after testing
-        const [airDb, sequenceGenerator, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transactionManager] = await container(this).get(AIR_DB, SEQUENCE_GENERATOR, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO, TRANSACTION_MANAGER);
+        const [airDb, sequenceGenerator, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo] = await container(this)
+            .get(AIR_DB, SEQUENCE_GENERATOR, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO);
         const dbEntity = airDb.schemas[portableQuery.schemaIndex]
             .currentVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error inserting into '${dbEntity.name}'.'
@@ -55,11 +73,6 @@ appears more than once in the Columns clause`);
         }
         const numberOfInsertedRecords = await transaction.insertValues(portableQuery);
         return getIds ? ids : numberOfInsertedRecords;
-    }
-    async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH) {
-        const [repoManager, transManager] = await container(this).get(REPOSITORY_MANAGER, TRANSACTION_MANAGER);
-        const repository = await repoManager.createRepository(name, distributionStrategy, transManager.storeType, platform, platformConfig, 'id');
-        return repository.id;
     }
     async ensureGeneratedValues(dbEntity, jsonInsertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator) {
         const values = jsonInsertValues.V;
@@ -284,17 +297,6 @@ and cannot have NULL values for non-draft records.`);
             actorIdColumn,
             sysWideOperationIdColumn
         };
-    }
-    verifyNoGeneratedColumns(dbEntity, jsonInsertValues, errorPrefix) {
-        for (let i = 0; i < jsonInsertValues.C.length; i++) {
-            const columnIndex = jsonInsertValues.C[i];
-            const dbColumn = dbEntity.columns[columnIndex];
-            if (dbColumn.isGenerated) {
-                throw new Error(errorPrefix +
-                    `You cannot explicitly insert into a @GeneratedValue column '${dbColumn.name}'`);
-            }
-        }
-        return dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
     }
     /**
      *

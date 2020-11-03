@@ -1,6 +1,5 @@
 import { FIELD_UTILS, InsertValues, QUERY_UTILS, SCHEMA_UTILS } from '@airport/air-control';
 import { container } from '@airport/di';
-import { STORE_DRIVER } from '@airport/ground-control';
 export class AbstractMutationManager {
     getPortableQuery(schemaIndex, tableIndex, query, queryResultType, queryUtils, fieldUtils) {
         return {
@@ -11,8 +10,8 @@ export class AbstractMutationManager {
             queryResultType
         };
     }
-    async doInsertValues(q, entities) {
-        const [fieldUtils, queryUtils, schemaUtils, storeDriver] = await container(this).get(FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS, STORE_DRIVER);
+    async doInsertValues(transaction, q, entities) {
+        const [fieldUtils, queryUtils, schemaUtils] = await container(this).get(FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS);
         const dbEntity = q.__driver__.dbEntity;
         const columnIndexes = [];
         const columnValueLookups = [];
@@ -70,7 +69,7 @@ export class AbstractMutationManager {
         };
         let insertValues = new InsertValues(rawInsertValues, columnIndexes);
         let portableQuery = this.getPortableQuery(dbEntity.schemaVersion.schema.index, dbEntity.index, insertValues, null, queryUtils, fieldUtils);
-        return await storeDriver.insertValues(portableQuery);
+        return await transaction.insertValues(portableQuery);
     }
 }
 //# sourceMappingURL=AbstractMutationManager.js.map

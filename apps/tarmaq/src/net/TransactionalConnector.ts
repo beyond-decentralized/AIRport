@@ -103,6 +103,7 @@ export class TransactionalConnector
 		)
 	}
 
+	/* FIXME: need to add top level .save call here
 	async insertValues(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
@@ -115,14 +116,14 @@ export class TransactionalConnector
 			{
 				domainAndPort: 'test'
 			},
-			transactionIndex,
+			transaction,
 			ensureGeneratedValues
 		)
 	}
 
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
-		transactionIndex?: number,
+		transaction: ITransaction,
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		const transServer = await container(this).get(TRANS_SERVER)
 
@@ -131,13 +132,13 @@ export class TransactionalConnector
 			{
 				domainAndPort: 'test'
 			},
-			transactionIndex
+			transaction
 		)
 	}
 
 	async updateValues(
 		portableQuery: PortableQuery,
-		transactionIndex?: number,
+		transaction: ITransaction,
 	): Promise<number> {
 		const transServer = await container(this).get(TRANS_SERVER)
 
@@ -146,13 +147,13 @@ export class TransactionalConnector
 			{
 				domainAndPort: 'test'
 			},
-			transactionIndex
+			transaction
 		)
 	}
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
-		transactionIndex?: number,
+		transaction: ITransaction,
 	): Promise<number> {
 		const transServer = await container(this).get(TRANS_SERVER)
 
@@ -161,9 +162,10 @@ export class TransactionalConnector
 			{
 				domainAndPort: 'test'
 			},
-			transactionIndex
+			transaction
 		)
 	}
+	*/
 
 }
 

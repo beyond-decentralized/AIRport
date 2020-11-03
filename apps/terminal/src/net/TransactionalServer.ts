@@ -1,6 +1,5 @@
 import {container, DI}          from '@airport/di'
 import {
-	ITransaction,
 	JsonInsertValues,
 	PortableQuery
 } from '@airport/ground-control'
@@ -13,6 +12,7 @@ import {
 	TRANSACTION_MANAGER
 }                    from '@airport/terminal-map'
 import {
+	ITransaction,
 	ITransactionalServer,
 	TRANS_SERVER
 }                    from '@airport/tower'
@@ -61,37 +61,6 @@ export class TransactionalServer
 		const transManager = await container(this).get(TRANSACTION_MANAGER)
 
 		return await transManager.init('airport')
-	}
-
-	async transact(
-		credentials: ICredentials
-	): Promise<ITransaction> {
-		const transManager = await container(this).get(TRANSACTION_MANAGER)
-
-		return await transManager.transact(credentials)
-		// this.lastTransactionIndex++
-		// await this.transactionManager.transact(credentials)
-		// this.currentTransactionIndex = this.lastTransactionIndex
-	}
-
-	async rollback(
-		transaction: ITransaction
-	): Promise<void> {
-		const transManager = await container(this).get(TRANSACTION_MANAGER)
-
-		return await transManager.rollback(transaction)
-		// await this.transactionManager.rollback(credentials)
-		// this.currentTransactionIndex = null
-	}
-
-	async commit(
-		transaction: ITransaction
-	): Promise<void> {
-		const transManager = await container(this).get(TRANSACTION_MANAGER)
-
-		return await transManager.commit(transaction)
-		// await this.transactionManager.commit(credentials)
-		// this.currentTransactionIndex = null
 	}
 
 	async find<E, EntityArray extends Array<E>>(
@@ -150,8 +119,7 @@ export class TransactionalServer
 
 	async insertValues(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
-		transactionIndex?: number,
+		transaction: ITransaction,
 		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
 		const values = (portableQuery.jsonQuery as JsonInsertValues).V
@@ -175,48 +143,39 @@ export class TransactionalServer
 		const insertManager = await container(this).get(INSERT_MANAGER)
 
 		const actor = await this.getActor(portableQuery)
-		return await this.wrapInTransaction(async () =>
-				await insertManager.insertValues(portableQuery, actor, ensureGeneratedValues)
-			, 'INSERT', credentials)
+		return await insertManager.insertValues(portableQuery, actor,
+			transaction, ensureGeneratedValues)
 	}
 
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
-		transactionIndex?: number,
+		transaction: ITransaction,
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		const insertManager = await container(this).get(INSERT_MANAGER)
 
 		const actor = await this.getActor(portableQuery)
-		return await this.wrapInTransaction<number[] | string[] | number[][] | string[][]>(async () =>
-				await insertManager.insertValuesGetIds(portableQuery, actor)
-			, 'INSERT GET IDS', credentials)
+
+		return await insertManager.insertValuesGetIds(portableQuery, actor, transaction)
 	}
 
 	async updateValues(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
-		transactionIndex?: number,
+		transaction: ITransaction,
 	): Promise<number> {
 		const updateManager = await container(this).get(UPDATE_MANAGER)
 
 		const actor = await this.getActor(portableQuery)
-		return await this.wrapInTransaction(async () =>
-				await updateManager.updateValues(portableQuery, actor)
-			, 'UPDATE', credentials)
+		return await updateManager.updateValues(portableQuery, actor, transaction)
 	}
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
-		transactionIndex?: number,
+		transaction: ITransaction,
 	): Promise<number> {
 		const deleteManager = await container(this).get(DELETE_MANAGER)
 
 		const actor = await this.getActor(portableQuery)
-		return await this.wrapInTransaction(async () =>
-				await deleteManager.deleteWhere(portableQuery, actor)
-			, 'DELETE', credentials)
+		return await deleteManager.deleteWhere(portableQuery, actor, transaction)
 	}
 
 
@@ -228,39 +187,6 @@ export class TransactionalServer
 		}
 
 		throw new Error(`Not Implemented`)
-	}
-
-	private async wrapInTransaction<T>(
-		callback: { (): Promise<T> },
-		operationName: string,
-		credentials: ICredentials
-	): Promise<T> {
-		const transManager = await container(this).get(TRANSACTION_MANAGER)
-
-		let transact = false
-		let transaction: ITransaction
-		if (transManager.transactionInProgress) {
-			if (credentials.domainAndPort !== transManager.transactionInProgress) {
-				throw new Error(`${operationName}: domain: ${credentials.domainAndPort} 
-				does not have an active transaction.`)
-			}
-		} else {
-			transaction = await this.transact(credentials)
-			transact = true
-		}
-
-		try {
-			const returnValue = await callback()
-			if (transact) {
-				await this.commit(transaction)
-			}
-			return returnValue
-		} catch (error) {
-			// if (attachToTransaction) {
-			await this.rollback(transaction)
-			// }
-			throw error
-		}
 	}
 
 }

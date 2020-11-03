@@ -1,6 +1,5 @@
 import { DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
-import { ITransaction } from '@airport/tower';
 export declare class TransactionalConnector implements ITransactionalConnector {
     dbName: string;
     serverUrl: string;
@@ -10,10 +9,6 @@ export declare class TransactionalConnector implements ITransactionalConnector {
     findOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<IObservable<EntityArray>>;
     searchOne<E>(portableQuery: PortableQuery, cachedSqlQueryId?: number): Promise<IObservable<E>>;
-    insertValues(portableQuery: PortableQuery, transaction: ITransaction, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, transactionIndex?: number): Promise<number[] | string[] | number[][] | string[][]>;
-    updateValues(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
-    deleteWhere(portableQuery: PortableQuery, transactionIndex?: number): Promise<number>;
 }
 export declare function injectTransactionalConnector(): void;
 //# sourceMappingURL=TransactionalConnector.d.ts.map

@@ -36,31 +36,6 @@ export class TransactionalConnector {
             domainAndPort: 'test'
         }, cachedSqlQueryId);
     }
-    async insertValues(portableQuery, transaction, ensureGeneratedValues // For internal use only
-    ) {
-        const transServer = await container(this).get(TRANS_SERVER);
-        return await transServer.insertValues(portableQuery, {
-            domainAndPort: 'test'
-        }, transactionIndex, ensureGeneratedValues);
-    }
-    async insertValuesGetIds(portableQuery, transactionIndex) {
-        const transServer = await container(this).get(TRANS_SERVER);
-        return await transServer.insertValuesGetIds(portableQuery, {
-            domainAndPort: 'test'
-        }, transactionIndex);
-    }
-    async updateValues(portableQuery, transactionIndex) {
-        const transServer = await container(this).get(TRANS_SERVER);
-        return await transServer.updateValues(portableQuery, {
-            domainAndPort: 'test'
-        }, transactionIndex);
-    }
-    async deleteWhere(portableQuery, transactionIndex) {
-        const transServer = await container(this).get(TRANS_SERVER);
-        return await transServer.deleteWhere(portableQuery, {
-            domainAndPort: 'test'
-        }, transactionIndex);
-    }
 }
 DI.set(TRANS_CONNECTOR, TransactionalConnector);
 export function injectTransactionalConnector() {

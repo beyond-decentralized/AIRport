@@ -27,9 +27,7 @@ export class MySqlDriver extends SqlDriver {
         return null;
     }
     numFreeConnections() {
-        return this.pool._freeConnections
-            ? this.pool._freeConnections.length
-            : this.pool.pool._freeConnections.length;
+        return this.pool.pool._freeConnections.length;
     }
     isServer() {
         return true;

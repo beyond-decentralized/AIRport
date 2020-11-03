@@ -9,15 +9,16 @@ import {
 	QUERY_UTILS,
 	RawInsertValues,
 	SCHEMA_UTILS
-}           from '@airport/air-control'
-import {container, DI} from '@airport/di'
+}                     from '@airport/air-control'
+import {container}    from '@airport/di'
 import {
 	DbColumn,
 	JsonQuery,
 	PortableQuery,
 	QueryResultType,
 	STORE_DRIVER
-}           from '@airport/ground-control'
+}                     from '@airport/ground-control'
+import {ITransaction} from '@airport/tower'
 
 export class AbstractMutationManager {
 
@@ -39,12 +40,13 @@ export class AbstractMutationManager {
 	}
 
 	protected async doInsertValues<IQE extends IQEntity>(
+		transaction: ITransaction,
 		q: IQEntity,
 		entities: any[]
 	): Promise<number> {
-		const [fieldUtils, queryUtils, schemaUtils, storeDriver
+		const [fieldUtils, queryUtils, schemaUtils
 		      ] = await container(this).get(
-			FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS, STORE_DRIVER)
+			FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS)
 
 		const dbEntity                  = (q as IQEntityInternal).__driver__.dbEntity
 		const columnIndexes: number[]   = []
@@ -110,7 +112,7 @@ export class AbstractMutationManager {
 			dbEntity.schemaVersion.schema.index, dbEntity.index,
 			insertValues, null, queryUtils, fieldUtils)
 
-		return await storeDriver.insertValues(portableQuery)
+		return await transaction.insertValues(portableQuery)
 	}
 
 }
