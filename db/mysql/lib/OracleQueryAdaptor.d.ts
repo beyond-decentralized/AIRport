@@ -1,6 +1,6 @@
 import { Parameter } from '@airport/air-control';
 import { SQLDataType } from '@airport/ground-control';
-import { ISQLFunctionAdaptor, ISQLQueryAdaptor, ISqlValueProvider } from './SQLQueryAdaptor';
+import { ISQLFunctionAdaptor, ISQLQueryAdaptor, ISqlValueProvider } from '@airport/fuel-hydrant-system';
 /**
  * Created by Papa on 8/27/2016.
  */

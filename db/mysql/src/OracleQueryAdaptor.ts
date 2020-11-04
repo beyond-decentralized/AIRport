@@ -4,7 +4,7 @@ import {
 	ISQLFunctionAdaptor,
 	ISQLQueryAdaptor,
 	ISqlValueProvider
-}                    from './SQLQueryAdaptor'
+}                    from '@airport/fuel-hydrant-system'
 
 /**
  * Created by Papa on 8/27/2016.

@@ -38,14 +38,16 @@ export interface IStoreDriver
 	): string
 
 	getTableName(
-		schema: {
-			domain: DomainName | {
-				name: DomainName
-			}; name: SchemaName; status?: SchemaStatus;
-		},
 		table: {
 			name: string, tableConfig?: {
 				name?: string
+			},
+			schemaVersion: {
+				schema: {
+					domain: DomainName | {
+						name: DomainName
+					}; name: SchemaName; status?: SchemaStatus;
+				}
 			}
 		}
 	): string;

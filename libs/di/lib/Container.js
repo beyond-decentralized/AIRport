@@ -103,7 +103,7 @@ export class ChildContainer extends Container {
                     return;
                 }
                 object = new clazz();
-                object.container = this;
+                object.__container__ = this;
                 theObjects[token.sequence] = object;
             }
             return object;

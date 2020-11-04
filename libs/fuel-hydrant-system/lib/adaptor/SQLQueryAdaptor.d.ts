@@ -1,6 +1,5 @@
 import { IAirportDatabase, IQEntityInternal, IQMetadataUtils, ISchemaUtils, Parameter } from '@airport/air-control';
 import { JSONClauseField, JSONClauseObject, JSONSqlFunctionCall, SQLDataType } from '@airport/ground-control';
-import { SQLDialect } from '../sql/core/SQLQuery';
 /**
  * Created by Papa on 8/27/2016.
  */
@@ -30,20 +29,17 @@ export interface ISqlValueProvider {
 export interface ISQLFunctionAdaptor {
     getFunctionCalls(clause: JSONClauseObject, innerValue: string, qEntityMapByAlias: {
         [alias: string]: IQEntityInternal;
-    }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
+    }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils, sqlValueProvider: ISqlValueProvider): string;
     getFunctionCall(jsonFunctionCall: JSONSqlFunctionCall, value: string, qEntityMapByAlias: {
         [entityName: string]: IQEntityInternal;
-    }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
+    }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils, sqlValueProvider: ISqlValueProvider): string;
 }
-export declare function getSQLAdaptor(sqlValueProvider: ISqlValueProvider, sqlDialect: SQLDialect): ISQLQueryAdaptor;
 export declare abstract class AbstractFunctionAdaptor implements ISQLFunctionAdaptor {
-    protected sqlValueProvider: ISqlValueProvider;
-    constructor(sqlValueProvider: ISqlValueProvider);
     getFunctionCalls(clause: JSONClauseObject, innerValue: string, qEntityMapByAlias: {
         [alias: string]: IQEntityInternal;
-    }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
+    }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils, sqlValueProvider: ISqlValueProvider): string;
     abstract getFunctionCall(jsonFunctionCall: JSONSqlFunctionCall, value: string, qEntityMapByAlias: {
         [entityName: string]: IQEntityInternal;
-    }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
+    }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils, sqlValueProvider: ISqlValueProvider): string;
 }
 //# sourceMappingURL=SQLQueryAdaptor.d.ts.map

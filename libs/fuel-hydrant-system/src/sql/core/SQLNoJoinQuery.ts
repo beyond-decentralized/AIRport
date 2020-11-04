@@ -43,7 +43,7 @@ export abstract class SQLNoJoinQuery
 
 		const firstDbEntity: DbEntity = airDb.schemas[fromRelation.si]
 			.currentVersion.entities[fromRelation.ti]
-		let tableName                 = this.storeDriver.getTableName(firstDbEntity)
+		let tableName                 = this.storeDriver.getEntityTableName(firstDbEntity)
 		if (fromRelation.si !== this.dbEntity.schemaVersion.schema.index
 			|| fromRelation.ti !== this.dbEntity.index) {
 			throw new Error(`Unexpected table in UPDATE/DELETE clause: 

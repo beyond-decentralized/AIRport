@@ -26,5 +26,4 @@ export declare class QValidator implements IValidator {
     addSubQueryAlias(subQueryAlias: string): void;
     validateAliasedFieldAccess(fieldAlias: string): void;
 }
-export declare function getValidator(dbEntity: DbEntity): IValidator;
 //# sourceMappingURL=Validator.d.ts.map

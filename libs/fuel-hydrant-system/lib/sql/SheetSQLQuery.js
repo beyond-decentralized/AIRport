@@ -1,4 +1,6 @@
+import { DI } from '@airport/di';
 import { JSONClauseObjectType, QueryResultType } from '@airport/ground-control';
+import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../tokens';
 import { ExactOrderByParser } from '../orderBy/ExactOrderByParser';
 import { ClauseType } from './core/SQLWhereBase';
 import { NonEntitySQLQuery } from './NonEntitySQLQuery';
@@ -11,7 +13,8 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery';
 export class SheetSQLQuery extends NonEntitySQLQuery {
     constructor(jsonQuery, dialect, storeDriver) {
         super(jsonQuery, dialect, QueryResultType.SHEET, storeDriver);
-        this.orderByParser = new ExactOrderByParser(this.validator);
+        const validator = DI.db().getSync(Q_VALIDATOR);
+        this.orderByParser = new ExactOrderByParser(validator);
     }
     getSELECTFragment(nested, selectClauseFragment, internalFragments, airDb, schemaUtils, metadataUtils) {
         if (!selectClauseFragment) {
@@ -56,15 +59,16 @@ export class SheetSQLQuery extends NonEntitySQLQuery {
         return parsedResults;
     }
     parseQueryResult(selectClauseFragment, resultRow, nextFieldIndex, internalFragments) {
+        const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR);
         const resultsFromSelect = selectClauseFragment.map((field) => {
-            let propertyValue = this.sqlAdaptor.getResultCellValue(resultRow, field.fa, nextFieldIndex[0], field.dt, null);
+            let propertyValue = sqlAdaptor.getResultCellValue(resultRow, field.fa, nextFieldIndex[0], field.dt, null);
             nextFieldIndex[0]++;
             return propertyValue;
         });
         const selectClause = internalFragments.SELECT;
         if (selectClause && selectClause.length) {
             for (const dbColumn of selectClause) {
-                let propertyValue = this.sqlAdaptor.getResultCellValue(resultRow, dbColumn.name, nextFieldIndex[0], dbColumn.type, null);
+                let propertyValue = sqlAdaptor.getResultCellValue(resultRow, dbColumn.name, nextFieldIndex[0], dbColumn.type, null);
                 resultsFromSelect.push(propertyValue);
                 nextFieldIndex[0]++;
             }

@@ -82,7 +82,7 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
             onClause = `${onClause}
 			${joinWhereOperator} ${whereClause}`;
         }
-        const tableName = this.storeDriver.getTableName(rightDbEntity);
+        const tableName = this.storeDriver.getEntityTableName(rightDbEntity);
         const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`;
         return fromFragment;
     }

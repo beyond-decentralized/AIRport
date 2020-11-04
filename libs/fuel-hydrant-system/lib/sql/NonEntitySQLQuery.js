@@ -1,5 +1,7 @@
 import { JoinTreeNode, QBooleanField, QDateField, QNumberField, QRelation, QStringField, QTree, QUntypedField, } from '@airport/air-control';
+import { DI } from '@airport/di';
 import { JoinType, JSONClauseObjectType, JSONRelationType, SortOrder, SQLDataType } from '@airport/ground-control';
+import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../tokens';
 import { SQLQuery } from './core/SQLQuery';
 import { SqlFunctionField } from './SqlFunctionField';
 /**
@@ -15,6 +17,7 @@ export class NonEntitySQLQuery extends SQLQuery {
         }
     }
     toSQL(internalFragments, airDb, schemaUtils, metadataUtils) {
+        const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR);
         let jsonQuery = this.jsonQuery;
         let joinNodeMap = {};
         this.joinTrees = this.buildFromJoinTree(jsonQuery.F, joinNodeMap, airDb, schemaUtils);
@@ -46,11 +49,11 @@ ORDER BY
         }
         let offsetFragment = '';
         if (jsonQuery.O) {
-            offsetFragment = this.sqlAdaptor.getOffsetFragment(jsonQuery.O);
+            offsetFragment = sqlAdaptor.getOffsetFragment(jsonQuery.O);
         }
         let limitFragment = '';
         if (jsonQuery.L) {
-            offsetFragment = this.sqlAdaptor.getLimitFragment(jsonQuery.L);
+            offsetFragment = sqlAdaptor.getLimitFragment(jsonQuery.L);
         }
         return `SELECT${selectFragment}
 FROM
@@ -71,6 +74,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         }
     }
     buildFromJoinTree(joinRelations, joinNodeMap, airDb, schemaUtils) {
+        const validator = DI.db().getSync(Q_VALIDATOR);
         let jsonTrees = [];
         let jsonTree;
         // For entity queries it is possible to have a query with no from clause, in this case
@@ -87,7 +91,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                 throw new Error(`First table in FROM clause cannot be joined`);
         }
         let alias = QRelation.getAlias(firstRelation);
-        this.validator.validateReadFromEntity(firstRelation);
+        validator.validateReadFromEntity(firstRelation);
         let firstEntity = QRelation.createRelatedQEntity(firstRelation, airDb, schemaUtils);
         this.qEntityMapByAlias[alias] = firstEntity;
         jsonTree = new JoinTreeNode(firstRelation, [], null);
@@ -99,7 +103,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             if (!joinRelation.jt) {
                 throw new Error(`Table ${i + 1} in FROM clause is missing joinType`);
             }
-            this.validator.validateReadFromEntity(joinRelation);
+            validator.validateReadFromEntity(joinRelation);
             alias = QRelation.getAlias(joinRelation);
             switch (joinRelation.rt) {
                 case JSONRelationType.SUB_QUERY_ROOT:
@@ -146,7 +150,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             let leftNode = joinNodeMap[parentAlias];
             let rightNode = new JoinTreeNode(joinRelation, [], leftNode);
             leftNode.addChildNode(rightNode);
-            this.validator.validateReadFromEntity(joinRelation);
+            validator.validateReadFromEntity(joinRelation);
             this.qEntityMapByAlias[alias] = rightEntity;
             if (!rightEntity) {
                 throw new Error(`Could not find entity ${joinRelation.ti} for table ${i + 1} in FROM clause`);
@@ -258,7 +262,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         if (!parentTree) {
             switch (currentRelation.rt) {
                 case JSONRelationType.ENTITY_ROOT:
-                    fromFragment += `${this.storeDriver.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias}`;
+                    fromFragment += `${this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity)} ${currentAlias}`;
                     break;
                 case JSONRelationType.SUB_QUERY_ROOT:
                     let viewRelation = currentRelation;
@@ -298,7 +302,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                 case JSONRelationType.ENTITY_JOIN_ON:
                     let joinRelation = currentRelation;
                     joinOnClause = this.getWHEREFragment(joinRelation.jwc, '\t', airDb, schemaUtils, metadataUtils);
-                    fromFragment += `\t${joinTypeString} ${this.storeDriver.getTableName(qEntity.__driver__.dbEntity)} ${currentAlias} ON\n${joinOnClause}`;
+                    fromFragment += `\t${joinTypeString} ${this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity)} ${currentAlias} ON\n${joinOnClause}`;
                     break;
                 case JSONRelationType.ENTITY_SCHEMA_RELATION:
                     fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, airDb, schemaUtils, metadataUtils);
@@ -323,14 +327,16 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         return fromFragment;
     }
     getGroupByFragment(groupBy) {
+        const validator = DI.db().getSync(Q_VALIDATOR);
         return groupBy.map((groupByField) => {
-            this.validator.validateAliasedFieldAccess(groupByField.fa);
+            validator.validateAliasedFieldAccess(groupByField.fa);
             return `${groupByField.fa}`;
         }).join(', ');
     }
     getOrderByFragment(orderBy) {
+        const validator = DI.db().getSync(Q_VALIDATOR);
         return orderBy.map((orderByField) => {
-            this.validator.validateAliasedFieldAccess(orderByField.fa);
+            validator.validateAliasedFieldAccess(orderByField.fa);
             switch (orderByField.so) {
                 case SortOrder.ASCENDING:
                     return `${orderByField.fa} ASC`;

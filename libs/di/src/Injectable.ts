@@ -5,22 +5,22 @@ import {
 
 export interface IInjectable {
 
-	container?: IChildContainer
+	__container__?: IChildContainer
 
 }
 
 export function container(
 	injectable: any
 ): IChildContainer {
-	const container = (injectable as IInjectable).container
+	const iocContainer = (injectable as IInjectable).__container__
 
-	if (!container) {
+	if (!iocContainer) {
 		throw new Error('"container" is not set on injectable object.')
 	}
-	if (!(container instanceof Container)) {
+	if (!(iocContainer instanceof Container)) {
 		throw new Error('"container" property of injectable is not an' +
 			'instance of @airport/di Container')
 	}
 
-	return container
+	return iocContainer
 }

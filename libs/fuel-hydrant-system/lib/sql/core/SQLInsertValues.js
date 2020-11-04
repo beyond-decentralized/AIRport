@@ -1,3 +1,5 @@
+import { DI } from '@airport/di';
+import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../../tokens';
 import { SQLNoJoinQuery } from './SQLNoJoinQuery';
 import { ClauseType } from './SQLWhereBase';
 /**
@@ -12,10 +14,11 @@ export class SQLInsertValues extends SQLNoJoinQuery {
         this.jsonInsertValues = jsonInsertValues;
     }
     toSQL(airDb, schemaUtils, metadataUtils) {
+        const validator = DI.db().getSync(Q_VALIDATOR);
         if (!this.jsonInsertValues.II) {
             throw new Error(`Expecting exactly one table in INSERT INTO clause`);
         }
-        this.validator.validateInsertQEntity(this.dbEntity);
+        validator.validateInsertQEntity(this.dbEntity);
         let tableFragment = this.getTableFragment(this.jsonInsertValues.II, airDb, schemaUtils);
         let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C);
         let valuesFragment = this.getValuesFragment(this.jsonInsertValues.V, airDb, schemaUtils, metadataUtils);
@@ -33,11 +36,12 @@ ${valuesFragment}
         return `( ${columnNames.join(', \n')} )`;
     }
     getValuesFragment(valuesClauseFragment, airDb, schemaUtils, metadataUtils) {
+        const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR);
         let allValuesFragment = valuesClauseFragment.map((valuesArray) => {
             let valuesFragment = valuesArray.map((value) => {
                 if (value === null || ['number', 'string'].indexOf(typeof value) > -1) {
                     this.parameterReferences.push(value);
-                    return this.sqlAdaptor.getParameterReference(this.parameterReferences, value);
+                    return sqlAdaptor.getParameterReference(this.parameterReferences, value);
                 }
                 else {
                     const fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);

@@ -3,6 +3,7 @@ import {
 	IQMetadataUtils,
 	ISchemaUtils
 }                           from '@airport/air-control'
+import {DI}                 from '@airport/di'
 import {
 	InternalFragments,
 	IStoreDriver,
@@ -11,6 +12,10 @@ import {
 	JsonFieldQuery,
 	QueryResultType
 }                           from '@airport/ground-control'
+import {
+	Q_VALIDATOR,
+	SQL_QUERY_ADAPTOR
+}                           from '../tokens'
 import {ExactOrderByParser} from '../orderBy/ExactOrderByParser'
 import {SQLDialect}         from './core/SQLQuery'
 import {ClauseType}         from './core/SQLWhereBase'
@@ -29,7 +34,10 @@ export class FieldSQLQuery
 		storeDriver: IStoreDriver
 	) {
 		super(jsonQuery, dialect, QueryResultType.FIELD, storeDriver)
-		this.orderByParser = new ExactOrderByParser(this.validator)
+
+		const validator = DI.db().getSync(Q_VALIDATOR)
+
+		this.orderByParser = new ExactOrderByParser(validator)
 	}
 
 	protected getSELECTFragment(
@@ -86,8 +94,10 @@ export class FieldSQLQuery
 		resultRow: any,
 		nextFieldIndex: number[],
 	): any {
+		const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR)
+
 		let field         = <JSONClauseField>selectClauseFragment
-		let propertyValue = this.sqlAdaptor.getResultCellValue(resultRow, field.fa, nextFieldIndex[0], field.dt, null)
+		let propertyValue = sqlAdaptor.getResultCellValue(resultRow, field.fa, nextFieldIndex[0], field.dt, null)
 		nextFieldIndex[0]++
 
 		return propertyValue

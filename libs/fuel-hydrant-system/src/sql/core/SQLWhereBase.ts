@@ -5,7 +5,10 @@ import {
 	ISchemaUtils,
 	JSONLogicalOperation,
 	Parameter,
-}                      from '@airport/air-control'
+} from '@airport/air-control'
+import {
+	DI
+} from '@airport/di'
 import {
 	ColumnIndex,
 	DbColumn,
@@ -25,16 +28,14 @@ import {
 	SchemaVersionId,
 	SqlOperator,
 	TableIndex
-}                      from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
-	getSQLAdaptor,
-	ISQLQueryAdaptor,
+	Q_VALIDATOR,
+	SQL_QUERY_ADAPTOR
+} from '../../tokens'
+import {
 	ISqlValueProvider
-}                      from '../../adaptor/SQLQueryAdaptor'
-import {
-	getValidator,
-	IValidator
-}                      from '../../validation/Validator'
+} from '../../adaptor/SQLQueryAdaptor'
 import {FieldSQLQuery} from '../FieldSQLQuery'
 import {TreeSQLQuery}  from '../TreeSQLQuery'
 import {SQLDialect}    from './SQLQuery'
@@ -58,8 +59,6 @@ export abstract class SQLWhereBase
 	protected fieldMap: SchemaMap                                                   = new SchemaMap()
 	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal }        = {}
 	protected jsonRelationMapByAlias: { [entityAlias: string]: JSONEntityRelation } = {}
-	protected sqlAdaptor: ISQLQueryAdaptor
-	protected validator: IValidator
 	protected parameterReferences: (string | number)[]                              = []
 
 	constructor(
@@ -67,14 +66,14 @@ export abstract class SQLWhereBase
 		protected dialect: SQLDialect,
 		protected storeDriver: IStoreDriver
 	) {
-		this.sqlAdaptor = getSQLAdaptor(this, dialect)
-		this.validator  = getValidator(dbEntity)
 	}
 
 	getParameters(
 		parameterMap: { [alias: string]: Parameter } //,
 		// valuesArray: (boolean | Date | number | string)[] = null
 	): any[] {
+		const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR)
+
 		// let populatedParameterMap: {[parameterAlias: string]: boolean} = {};
 		return this.parameterReferences
 		/*
@@ -94,12 +93,12 @@ export abstract class SQLWhereBase
 						// if (!valuesArray) {
 						return parameterReference
 						// } else if (typeof parameterReference === 'number') {
-						// 	return this.sqlAdaptor.getValue(valuesArray[parameterReference])
+						// 	return sqlAdaptor.getValue(valuesArray[parameterReference])
 						// }
 					}
 					throw new Error(`No parameter found for alias '${parameterReference}'`)
 				}
-				return this.sqlAdaptor.getParameterValue(parameter)
+				return sqlAdaptor.getParameterValue(parameter)
 			})
 	}
 
@@ -234,20 +233,22 @@ export abstract class SQLWhereBase
 		schemaUtils: ISchemaUtils,
 		metadataUtils: IQMetadataUtils
 	): string {
+		const [sqlAdaptor, validator] = DI.db().getSync(SQL_QUERY_ADAPTOR, Q_VALIDATOR)
+
 		let aValue = aField.v
 		if (this.isParameterReference(aValue)) {
 			let stringValue = <string>aValue
 			this.parameterReferences.push(stringValue)
-			aValue = this.sqlAdaptor.getParameterReference(this.parameterReferences, stringValue)
+			aValue = sqlAdaptor.getParameterReference(this.parameterReferences, stringValue)
 		} else {
 			aValue = this.getFieldValue(
 				<any>aValue, ClauseType.FUNCTION_CALL, defaultCallback,
 				airDb, schemaUtils, metadataUtils)
 		}
-		aValue = this.sqlAdaptor.getFunctionAdaptor().getFunctionCalls(
+		aValue = sqlAdaptor.getFunctionAdaptor().getFunctionCalls(
 			aField, aValue, this.qEntityMapByAlias,
-			airDb, schemaUtils, metadataUtils)
-		this.validator.addFunctionAlias(aField.fa)
+			airDb, schemaUtils, metadataUtils, this)
+		validator.addFunctionAlias(aField.fa)
 
 		return aValue
 	}
@@ -260,6 +261,8 @@ export abstract class SQLWhereBase
 		schemaUtils: ISchemaUtils,
 		metadataUtils: IQMetadataUtils
 	): string {
+		const validator = DI.db().getSync(Q_VALIDATOR)
+
 		let columnName
 		if (!clauseField) {
 			throw new Error(`Missing Clause Field definition`)
@@ -274,6 +277,7 @@ export abstract class SQLWhereBase
 		if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot && clauseField.ot !== 0) {
 			throw new Error(`Object Type is not defined in JSONClauseField`)
 		}
+
 		const aField = <JSONClauseField>clauseField
 		let qEntity: IQEntityInternal
 		switch (clauseField.ot) {
@@ -294,7 +298,7 @@ export abstract class SQLWhereBase
 				return `EXISTS(${mappedSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`
 			case <any>JSONClauseObjectType.FIELD:
 				qEntity = this.qEntityMapByAlias[aField.ta]
-				this.validator.validateReadQEntityProperty(
+				validator.validateReadQEntityProperty(
 					aField.si, aField.ti, aField.ci)
 				columnName = this.getEntityPropertyColumnName(
 					qEntity, aField.ci, metadataUtils)
@@ -310,11 +314,11 @@ export abstract class SQLWhereBase
 				let fieldSqlQuery                            = new FieldSQLQueryClass(
 					jsonFieldSqlSubQuery, this.dialect, this.storeDriver)
 				fieldSqlQuery.addQEntityMapByAlias(this.qEntityMapByAlias)
-				this.validator.addSubQueryAlias(aField.fa)
+				validator.addSubQueryAlias(aField.fa)
 				return `(${fieldSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`
 			case JSONClauseObjectType.MANY_TO_ONE_RELATION:
 				qEntity = this.qEntityMapByAlias[aField.ta]
-				this.validator.validateReadQEntityManyToOneRelation(
+				validator.validateReadQEntityManyToOneRelation(
 					aField.si, aField.ti, aField.ci)
 				columnName = this.getEntityManyToOneColumnName(
 					qEntity, aField.ci, metadataUtils)
@@ -366,10 +370,12 @@ export abstract class SQLWhereBase
 		schemaUtils: ISchemaUtils,
 		metadataUtils: IQMetadataUtils
 	): string {
+		const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR)
+
 		let selectSqlFragment = `${value.ta}.${columnName}`
-		selectSqlFragment     = this.sqlAdaptor.getFunctionAdaptor()
+		selectSqlFragment     = sqlAdaptor.getFunctionAdaptor()
 			.getFunctionCalls(value, selectSqlFragment, this.qEntityMapByAlias,
-				airDb, schemaUtils, metadataUtils)
+				airDb, schemaUtils, metadataUtils, this)
 
 		return selectSqlFragment
 	}

@@ -1,5 +1,7 @@
 import { AliasCache } from '@airport/air-control';
+import { DI } from '@airport/di';
 import { JSONClauseObjectType, QueryResultType } from '@airport/ground-control';
+import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../tokens';
 import { MappedOrderByParser } from '../orderBy/MappedOrderByParser';
 import { TreeQueryResultParser } from '../result/TreeQueryResultParser';
 import { ClauseType } from './core/SQLWhereBase';
@@ -11,8 +13,9 @@ import { SqlFunctionField } from './SqlFunctionField';
 export class TreeSQLQuery extends NonEntitySQLQuery {
     constructor(jsonQuery, dialect, storeDriver) {
         super(jsonQuery, dialect, QueryResultType.TREE, storeDriver);
+        const validator = DI.db().getSync(Q_VALIDATOR);
         this.queryParser = new TreeQueryResultParser();
-        this.orderByParser = new MappedOrderByParser(this.validator);
+        this.orderByParser = new MappedOrderByParser(validator);
     }
     getSELECTFragment(nested, selectClauseFragment, internalFragments, airDb, schemaUtils, metadataUtils) {
         const distinctClause = selectClauseFragment;
@@ -85,6 +88,7 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
         return parsedResults;
     }
     parseQueryResult(selectClauseFragment, resultRow, nextFieldIndex, aliasCache, entityAlias) {
+        const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR);
         // Return blanks, primitives and Dates directly
         if (!resultRow || !(resultRow instanceof Object) || resultRow instanceof Date) {
             return resultRow;
@@ -108,7 +112,7 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
                 this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, propertyName, childResultObject);
             }
             else {
-                let propertyValue = this.sqlAdaptor.getResultCellValue(resultRow, jsonClauseField.fa, nextFieldIndex[0], dataType, null);
+                let propertyValue = sqlAdaptor.getResultCellValue(resultRow, jsonClauseField.fa, nextFieldIndex[0], dataType, null);
                 this.queryParser.addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue);
             }
             nextFieldIndex[0]++;

@@ -11,10 +11,6 @@ import {
 	JSONSqlFunctionCall,
 	SQLDataType
 }                           from '@airport/ground-control'
-import {SQLDialect}         from '../sql/core/SQLQuery'
-import {OracleQueryAdaptor} from './OracleQueryAdaptor'
-import {SqlJsQueryAdaptor}  from './SqlJsQueryAdaptor'
-import {WebSqlQueryAdaptor} from './WebSqlQueryAdaptor'
 
 declare function require(moduleName: string): any;
 
@@ -87,7 +83,8 @@ export interface ISQLFunctionAdaptor {
 		qEntityMapByAlias: { [alias: string]: IQEntityInternal },
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		metadataUtils: IQMetadataUtils,
+		sqlValueProvider: ISqlValueProvider
 	): string;
 
 	getFunctionCall(
@@ -96,37 +93,14 @@ export interface ISQLFunctionAdaptor {
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		metadataUtils: IQMetadataUtils,
+		sqlValueProvider: ISqlValueProvider
 	): string;
-
-}
-
-export function getSQLAdaptor(
-	sqlValueProvider: ISqlValueProvider,
-	sqlDialect: SQLDialect
-): ISQLQueryAdaptor {
-
-	switch (sqlDialect) {
-		case SQLDialect.ORACLE:
-			let OracleQueryAdaptorClass: typeof OracleQueryAdaptor = require('./OracleQueryAdaptor').OracleQueryAdaptor
-			return new OracleQueryAdaptorClass(sqlValueProvider)
-		case SQLDialect.SQLITE_SQLJS:
-			let SqlJsQueryAdaptorClass: typeof SqlJsQueryAdaptor = require('./SqlJsQueryAdaptor').SqlJsQueryAdaptor
-			return new SqlJsQueryAdaptorClass(sqlValueProvider)
-		case SQLDialect.SQLITE_WEBSQL:
-			let WebSqlQueryAdaptorClass: typeof WebSqlQueryAdaptor = require('./WebSqlQueryAdaptor').WebSqlQueryAdaptor
-			return new WebSqlQueryAdaptorClass(sqlValueProvider)
-		default:
-			throw new Error(`Unknown SQL Dialect ${sqlDialect}`)
-	}
 
 }
 
 export abstract class AbstractFunctionAdaptor
 	implements ISQLFunctionAdaptor {
-
-	constructor(protected sqlValueProvider: ISqlValueProvider) {
-	}
 
 	getFunctionCalls(
 		clause: JSONClauseObject,
@@ -134,12 +108,13 @@ export abstract class AbstractFunctionAdaptor
 		qEntityMapByAlias: { [alias: string]: IQEntityInternal },
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		metadataUtils: IQMetadataUtils,
+		sqlValueProvider: ISqlValueProvider
 	): string {
 		clause.af.forEach((appliedFunction) => {
 			innerValue = this.getFunctionCall(
 				appliedFunction, innerValue, qEntityMapByAlias,
-				airDb, schemaUtils, metadataUtils)
+				airDb, schemaUtils, metadataUtils, sqlValueProvider)
 		})
 
 		return innerValue
@@ -151,7 +126,8 @@ export abstract class AbstractFunctionAdaptor
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		metadataUtils: IQMetadataUtils,
+		sqlValueProvider: ISqlValueProvider
 	): string;
 
 }

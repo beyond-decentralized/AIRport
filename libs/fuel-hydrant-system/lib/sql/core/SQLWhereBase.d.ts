@@ -1,7 +1,6 @@
 import { IAirportDatabase, IQEntityInternal, IQMetadataUtils, ISchemaUtils, Parameter } from '@airport/air-control';
 import { ColumnIndex, DbColumn, DbEntity, IStoreDriver, JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONEntityRelation, JsonFieldQuery, SchemaMap, SchemaVersionId, SqlOperator, TableIndex } from '@airport/ground-control';
-import { ISQLQueryAdaptor, ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor';
-import { IValidator } from '../../validation/Validator';
+import { ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor';
 import { SQLDialect } from './SQLQuery';
 /**
  * Created by Papa on 10/2/2016.
@@ -23,8 +22,6 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected jsonRelationMapByAlias: {
         [entityAlias: string]: JSONEntityRelation;
     };
-    protected sqlAdaptor: ISQLQueryAdaptor;
-    protected validator: IValidator;
     protected parameterReferences: (string | number)[];
     constructor(dbEntity: DbEntity, dialect: SQLDialect, storeDriver: IStoreDriver);
     getParameters(parameterMap: {

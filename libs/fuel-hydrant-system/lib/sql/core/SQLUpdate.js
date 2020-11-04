@@ -1,5 +1,7 @@
 import { QRelation } from '@airport/air-control';
+import { DI } from '@airport/di';
 import { JSONClauseObjectType } from '@airport/ground-control';
+import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../../tokens';
 import { SQLNoJoinQuery } from './SQLNoJoinQuery';
 import { ClauseType } from './SQLWhereBase';
 /**
@@ -30,7 +32,7 @@ export class SQLUpdate extends SQLNoJoinQuery {
 ${whereFragment}`;
             // Always replace the root entity alias reference with the table name
             let tableAlias = QRelation.getAlias(this.jsonUpdate.U);
-            let tableName = this.storeDriver.getTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
+            let tableName = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
             whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName);
         }
         return `UPDATE
@@ -40,6 +42,7 @@ ${setFragment}
 ${whereFragment}`;
     }
     getSetFragment(setClauseFragment, airDb, schemaUtils, metadataUtils) {
+        const validator = DI.db().getSync(Q_VALIDATOR);
         let setFragments = [];
         for (let columnName in setClauseFragment) {
             let value = setClauseFragment[columnName];
@@ -47,16 +50,17 @@ ${whereFragment}`;
             if (value === undefined) {
                 continue;
             }
-            this.validator.validateUpdateColumn(this.dbEntity.columnMap[columnName]);
+            validator.validateUpdateColumn(this.dbEntity.columnMap[columnName]);
             this.addSetFragment(columnName, value, setFragments, airDb, schemaUtils, metadataUtils);
         }
         return setFragments.join(', \n');
     }
     addSetFragment(columnName, value, setFragments, airDb, schemaUtils, metadataUtils) {
+        const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR);
         let fieldValue;
         if (typeof value === 'number') {
             this.parameterReferences.push(value);
-            fieldValue = this.sqlAdaptor.getParameterReference(this.parameterReferences, value);
+            fieldValue = sqlAdaptor.getParameterReference(this.parameterReferences, value);
         }
         else {
             fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);

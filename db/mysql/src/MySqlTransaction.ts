@@ -1,3 +1,4 @@
+import {IInjectable}         from '@airport/di'
 import {ITransaction}        from '@airport/tower'
 import {ITransactionHistory} from '@airport/holding-pattern'
 import {ICredentials}        from '@airport/terminal-map'
@@ -21,7 +22,8 @@ export class MySqlTransaction
 	) {
 		super()
 		this.pool     = pool
-		this.queryApi = connection
+		this.queryApi = connection;
+		(<IInjectable>this).__container__ = (<IInjectable>driver).__container__
 	}
 
 	saveTransaction(transaction: ITransactionHistory): Promise<any> {

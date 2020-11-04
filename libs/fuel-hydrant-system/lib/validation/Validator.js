@@ -1,3 +1,5 @@
+import { DI } from '@airport/di';
+import { Q_VALIDATOR } from '../tokens';
 export class QValidator {
     validateInsertQEntity(dbEntity) {
     }
@@ -20,8 +22,5 @@ export class QValidator {
     validateAliasedFieldAccess(fieldAlias) {
     }
 }
-const VALIDATOR = new QValidator();
-export function getValidator(dbEntity) {
-    return VALIDATOR;
-}
+DI.set(Q_VALIDATOR, QValidator);
 //# sourceMappingURL=Validator.js.map

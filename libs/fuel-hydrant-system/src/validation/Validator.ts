@@ -1,3 +1,4 @@
+import {DI}          from '@airport/di'
 import {
 	ColumnIndex,
 	DbColumn,
@@ -5,7 +6,8 @@ import {
 	JSONRelation,
 	SchemaIndex,
 	TableIndex
-} from '@airport/ground-control'
+}                    from '@airport/ground-control'
+import {Q_VALIDATOR} from '../tokens'
 
 /**
  * Created by Papa on 11/1/2016.
@@ -103,10 +105,4 @@ export class QValidator implements IValidator {
 
 }
 
-const VALIDATOR = new QValidator();
-
-export function getValidator(
-	dbEntity: DbEntity,
-): IValidator {
-	return VALIDATOR;
-}
+DI.set(Q_VALIDATOR, QValidator)

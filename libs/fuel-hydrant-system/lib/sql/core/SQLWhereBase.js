@@ -1,6 +1,6 @@
+import { DI } from '@airport/di';
 import { JSONClauseObjectType, OperationCategory, SchemaMap, SqlOperator } from '@airport/ground-control';
-import { getSQLAdaptor } from '../../adaptor/SQLQueryAdaptor';
-import { getValidator } from '../../validation/Validator';
+import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../../tokens';
 /**
  * Created by Papa on 10/2/2016.
  */
@@ -20,12 +20,11 @@ export class SQLWhereBase {
         this.qEntityMapByAlias = {};
         this.jsonRelationMapByAlias = {};
         this.parameterReferences = [];
-        this.sqlAdaptor = getSQLAdaptor(this, dialect);
-        this.validator = getValidator(dbEntity);
     }
     getParameters(parameterMap //,
     // valuesArray: (boolean | Date | number | string)[] = null
     ) {
+        const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR);
         // let populatedParameterMap: {[parameterAlias: string]: boolean} = {};
         return this.parameterReferences
             /*
@@ -45,12 +44,12 @@ export class SQLWhereBase {
                     // if (!valuesArray) {
                     return parameterReference;
                     // } else if (typeof parameterReference === 'number') {
-                    // 	return this.sqlAdaptor.getValue(valuesArray[parameterReference])
+                    // 	return sqlAdaptor.getValue(valuesArray[parameterReference])
                     // }
                 }
                 throw new Error(`No parameter found for alias '${parameterReference}'`);
             }
-            return this.sqlAdaptor.getParameterValue(parameter);
+            return sqlAdaptor.getParameterValue(parameter);
         });
     }
     getWHEREFragment(operation, nestingPrefix, airDb, schemaUtils, metadataUtils) {
@@ -124,20 +123,22 @@ export class SQLWhereBase {
         return this.getFieldValue(rawValue, ClauseType.FUNCTION_CALL, null, airDb, schemaUtils, metadataUtils);
     }
     getFieldFunctionValue(aField, defaultCallback, airDb, schemaUtils, metadataUtils) {
+        const [sqlAdaptor, validator] = DI.db().getSync(SQL_QUERY_ADAPTOR, Q_VALIDATOR);
         let aValue = aField.v;
         if (this.isParameterReference(aValue)) {
             let stringValue = aValue;
             this.parameterReferences.push(stringValue);
-            aValue = this.sqlAdaptor.getParameterReference(this.parameterReferences, stringValue);
+            aValue = sqlAdaptor.getParameterReference(this.parameterReferences, stringValue);
         }
         else {
             aValue = this.getFieldValue(aValue, ClauseType.FUNCTION_CALL, defaultCallback, airDb, schemaUtils, metadataUtils);
         }
-        aValue = this.sqlAdaptor.getFunctionAdaptor().getFunctionCalls(aField, aValue, this.qEntityMapByAlias, airDb, schemaUtils, metadataUtils);
-        this.validator.addFunctionAlias(aField.fa);
+        aValue = sqlAdaptor.getFunctionAdaptor().getFunctionCalls(aField, aValue, this.qEntityMapByAlias, airDb, schemaUtils, metadataUtils, this);
+        validator.addFunctionAlias(aField.fa);
         return aValue;
     }
     getFieldValue(clauseField, clauseType, defaultCallback, airDb, schemaUtils, metadataUtils) {
+        const validator = DI.db().getSync(Q_VALIDATOR);
         let columnName;
         if (!clauseField) {
             throw new Error(`Missing Clause Field definition`);
@@ -166,7 +167,7 @@ export class SQLWhereBase {
                 return `EXISTS(${mappedSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`;
             case JSONClauseObjectType.FIELD:
                 qEntity = this.qEntityMapByAlias[aField.ta];
-                this.validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
+                validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityPropertyColumnName(qEntity, aField.ci, metadataUtils);
                 this.addField(aField.si, aField.ti, aField.ci);
                 return this.getComplexColumnFragment(aField, columnName, airDb, schemaUtils, metadataUtils);
@@ -178,11 +179,11 @@ export class SQLWhereBase {
                 let FieldSQLQueryClass = require('../FieldSQLQuery').FieldSQLQuery;
                 let fieldSqlQuery = new FieldSQLQueryClass(jsonFieldSqlSubQuery, this.dialect, this.storeDriver);
                 fieldSqlQuery.addQEntityMapByAlias(this.qEntityMapByAlias);
-                this.validator.addSubQueryAlias(aField.fa);
+                validator.addSubQueryAlias(aField.fa);
                 return `(${fieldSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`;
             case JSONClauseObjectType.MANY_TO_ONE_RELATION:
                 qEntity = this.qEntityMapByAlias[aField.ta];
-                this.validator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);
+                validator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, metadataUtils);
                 this.addField(aField.si, aField.ti, aField.ci);
                 return this.getComplexColumnFragment(aField, columnName, airDb, schemaUtils, metadataUtils);
@@ -217,9 +218,10 @@ export class SQLWhereBase {
         return `${tableAlias}.${columnName}`;
     }
     getComplexColumnFragment(value, columnName, airDb, schemaUtils, metadataUtils) {
+        const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR);
         let selectSqlFragment = `${value.ta}.${columnName}`;
-        selectSqlFragment = this.sqlAdaptor.getFunctionAdaptor()
-            .getFunctionCalls(value, selectSqlFragment, this.qEntityMapByAlias, airDb, schemaUtils, metadataUtils);
+        selectSqlFragment = sqlAdaptor.getFunctionAdaptor()
+            .getFunctionCalls(value, selectSqlFragment, this.qEntityMapByAlias, airDb, schemaUtils, metadataUtils, this);
         return selectSqlFragment;
     }
     getEntityManyToOneColumnName(qEntity, columnIndex, metadataUtils) {

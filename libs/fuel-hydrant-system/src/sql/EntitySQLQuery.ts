@@ -15,7 +15,8 @@ import {
 	QRelation,
 	ReferencedColumnData,
 	Y
-}                             from '@airport/air-control'
+}           from '@airport/air-control'
+import {DI} from '@airport/di'
 import {
 	DbColumn,
 	DbEntity,
@@ -29,6 +30,10 @@ import {
 	JSONRelationType,
 	QueryResultType
 }                             from '@airport/ground-control'
+import {
+	Q_VALIDATOR,
+	SQL_QUERY_ADAPTOR
+}                             from '../tokens'
 import {IEntityOrderByParser} from '../orderBy/AbstractEntityOrderByParser'
 import {EntityOrderByParser}  from '../orderBy/EntityOrderByParser'
 import {
@@ -67,12 +72,15 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		protected graphQueryConfiguration?: GraphQueryConfiguration
 	) {
 		super(jsonQuery, dbEntity, dialect, queryResultType, storeDriver)
+
+		const validator = DI.db().getSync(Q_VALIDATOR)
+
 		if (graphQueryConfiguration && this.graphQueryConfiguration.strict !== undefined) {
 			throw new Error(`"strict" configuration is not yet implemented for 
 			QueryResultType.ENTITY_GRAPH`)
 		}
 		this.finalSelectTree = this.setupSelectFields(this.jsonQuery.S, dbEntity, schemaUtils)
-		this.orderByParser   = new EntityOrderByParser(this.finalSelectTree, this.validator, jsonQuery.OB)
+		this.orderByParser   = new EntityOrderByParser(this.finalSelectTree, validator, jsonQuery.OB)
 	}
 
 	toSQL(
@@ -303,6 +311,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils
 	): any {
+		const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR)
+
 		// Return blanks, primitives and Dates directly
 		if (!resultRow || !(resultRow instanceof Object) || resultRow instanceof Date) {
 			return resultRow
@@ -322,7 +332,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				const defaultValue = this.entityDefaults.getForAlias(entityAlias)[propertyName]
 
 				const dbColumn      = dbProperty.propertyColumns[0].column
-				const propertyValue = this.sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextFieldIndex[0], dbColumn.type, defaultValue)
+				const propertyValue = sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextFieldIndex[0], dbColumn.type, defaultValue)
 				if (this.queryParser.addProperty(entityAlias, resultObject, dbColumn.type, propertyName, propertyValue)) {
 					numNonNullColumns++
 				}
@@ -342,7 +352,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 								propertyNameChains: string[][],
 							) => {
 								const columnAlias = this.columnAliases.getFollowingAlias()
-								let value         = this.sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextFieldIndex[0], dbColumn.type, null)
+								let value         = sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextFieldIndex[0], dbColumn.type, null)
 								relationInfos.push({
 									propertyNameChains: propertyNameChains,
 									sqlDataType: dbColumn.type,
@@ -530,7 +540,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		let currentRelation = currentTree.jsonRelation
 		let currentAlias    = QRelation.getAlias(currentRelation)
 		let qEntity         = this.qEntityMapByAlias[currentAlias]
-		let tableName       = this.storeDriver.getTableName(qEntity.__driver__.dbEntity)
+		let tableName       = this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity)
 
 		if (!parentTree) {
 			fromFragment += `${tableName} ${currentAlias}`

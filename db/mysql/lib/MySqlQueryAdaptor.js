@@ -1,12 +1,12 @@
+import { DI } from '@airport/di';
 import { SQLDataType, SqlFunction } from '@airport/ground-control';
-import { AbstractFunctionAdaptor } from './SQLQueryAdaptor';
+import { AbstractFunctionAdaptor, SQL_QUERY_ADAPTOR } from '@airport/fuel-hydrant-system';
 /**
  * Created by Papa on 8/27/2016.
  */
-export class SqLiteQueryAdaptor {
-    constructor(sqlValueProvider) {
-        this.sqlValueProvider = sqlValueProvider;
-        this.functionAdaptor = new SqlLiteFunctionAdaptor(sqlValueProvider);
+export class MySqlQueryAdaptor {
+    constructor() {
+        this.functionAdaptor = new MySqlFunctionAdaptor();
     }
     getParameterReference(parameterReferences, newReference) {
         return '?';
@@ -17,6 +17,9 @@ export class SqLiteQueryAdaptor {
     }
     getResultArray(rawResponse) {
         return rawResponse.res.rows;
+    }
+    getResultCellRawValue(resultRow, columnName, index, dataType, defaultValue) {
+        return resultRow[columnName];
     }
     getResultCellValue(resultRow, columnName, index, dataType, defaultValue) {
         let value = this.getResultCellRawValue(resultRow, columnName, index, dataType, defaultValue);
@@ -72,12 +75,8 @@ LIMIT
         }
     }
 }
-export class SqlLiteFunctionAdaptor extends AbstractFunctionAdaptor {
-    constructor(sqlValueProvider) {
-        super(sqlValueProvider);
-        this.sqlValueProvider = sqlValueProvider;
-    }
-    getFunctionCall(jsonFunctionCall, value, qEntityMapByAlias, airDb, schemaUtils, metadataUtils) {
+export class MySqlFunctionAdaptor extends AbstractFunctionAdaptor {
+    getFunctionCall(jsonFunctionCall, value, qEntityMapByAlias, airDb, schemaUtils, metadataUtils, sqlValueProvider) {
         let param2;
         switch (jsonFunctionCall.ft) {
             case SqlFunction.ABS:
@@ -97,13 +96,13 @@ export class SqlLiteFunctionAdaptor extends AbstractFunctionAdaptor {
             case SqlFunction.LCASE:
                 return `LOWER(${value})`;
             case SqlFunction.MID:
-                let start = this.sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
-                let length = this.sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[1], airDb, schemaUtils, metadataUtils);
+                let start = sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
+                let length = sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[1], airDb, schemaUtils, metadataUtils);
                 return `SUBSTR(${value}, ${start}, ${length})`;
             case SqlFunction.LEN:
                 return `LENGTH(${value})`;
             case SqlFunction.ROUND:
-                let digits = this.sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
+                let digits = sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
                 return `ROUND(${value}, ${digits})`;
             case SqlFunction.NOW:
                 return `DATE('now')`;
@@ -111,14 +110,14 @@ export class SqlLiteFunctionAdaptor extends AbstractFunctionAdaptor {
                 let formatCall = `FORMAT('${value}', `;
                 for (let i = 0; i < jsonFunctionCall.p.length; i++) {
                     let formatParam = jsonFunctionCall.p[i];
-                    formatParam = this.sqlValueProvider.getFunctionCallValue(formatParam, airDb, schemaUtils, metadataUtils);
+                    formatParam = sqlValueProvider.getFunctionCallValue(formatParam, airDb, schemaUtils, metadataUtils);
                     formatCall = `${formatCall}, ${formatParam}`;
                 }
                 formatCall += ')';
                 return formatCall;
             case SqlFunction.REPLACE:
-                let param1 = this.sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
-                param2 = this.sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[1], airDb, schemaUtils, metadataUtils);
+                let param1 = sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
+                param2 = sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[1], airDb, schemaUtils, metadataUtils);
                 return `REPLACE('${value}', ${param1}, ${param2})`;
             case SqlFunction.TRIM:
                 return `TRIM(${value})`;
@@ -127,20 +126,20 @@ export class SqlLiteFunctionAdaptor extends AbstractFunctionAdaptor {
             case SqlFunction.EXISTS:
                 throw new Error(`Invalid placement of an exists function`);
             case SqlFunction.DIVIDE:
-                param2 = this.sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
+                param2 = sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
                 return `${value} / ${param2}`;
             case SqlFunction.MINUS:
-                param2 = this.sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
+                param2 = sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
                 return `${value} - ${param2}`;
             case SqlFunction.MULTIPLY:
-                param2 = this.sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
+                param2 = sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
                 return `${value} * ${param2}`;
             case SqlFunction.PLUS:
-                param2 = this.sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
+                param2 = sqlValueProvider.getFunctionCallValue(jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils);
                 return `${value} + ${param2}`;
             case SqlFunction.CONCATENATE:
                 return jsonFunctionCall.p.reduce((acc, val) => {
-                    let primitiveValue = this.toString(this.sqlValueProvider.getFunctionCallValue(val, airDb, schemaUtils, metadataUtils));
+                    let primitiveValue = this.toString(sqlValueProvider.getFunctionCallValue(val, airDb, schemaUtils, metadataUtils));
                     return acc + val;
                 }, this.toString(value));
             case SqlFunction.COALESCE:
@@ -171,4 +170,5 @@ export class SqlLiteFunctionAdaptor extends AbstractFunctionAdaptor {
         }
     }
 }
-//# sourceMappingURL=SqLiteQueryAdaptor.js.map
+DI.set(SQL_QUERY_ADAPTOR, MySqlQueryAdaptor);
+//# sourceMappingURL=MySqlQueryAdaptor.js.map

@@ -1,4 +1,4 @@
-import { SqLiteQueryAdaptor } from "./SqLiteQueryAdaptor";
+import { SqLiteQueryAdaptor } from "@airport/sqlite";
 import { SQLDataType } from "@airport/ground-control";
 /**
  * Created by Papa on 2/8/2017.

@@ -1,1 +1,0 @@
-{"version":3,"file":"SqlJsQueryAdaptor.js","sourceRoot":"","sources":["../../src/adaptor/SqlJsQueryAdaptor.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,kBAAkB,EAAC,MAAM,sBAAsB,CAAC;AAExD;;GAEG;AAEH,MAAM,OAAO,iBAAkB,SAAQ,kBAAkB;IAExD,qBAAqB,CACpB,SAAc,EACd,UAAkB,EAClB,KAAa,EACb,QAAqB,EACrB,YAAiB;QAEjB,OAAO,SAAS,CAAC,KAAK,CAAC,CAAC;IACzB,CAAC;CACD"}

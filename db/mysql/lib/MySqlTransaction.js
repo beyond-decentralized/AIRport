@@ -6,6 +6,7 @@ export class MySqlTransaction extends MySqlDriver {
         this.connection = connection;
         this.pool = pool;
         this.queryApi = connection;
+        this.__container__ = driver.__container__;
     }
     saveTransaction(transaction) {
         throw new Error('Method not implemented.');
