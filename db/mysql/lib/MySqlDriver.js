@@ -5,6 +5,10 @@ import { transactional } from '@airport/tower';
 import * as mysql from 'mysql2/promise';
 import { DDLManager } from './DDLManager';
 export class MySqlDriver extends SqlDriver {
+    constructor() {
+        super(...arguments);
+        this.maxValues = 1000000;
+    }
     async query(queryType, query, params, saveTransaction) {
         return await this.doQuery(queryType, query, params, this.queryApi, saveTransaction);
     }
@@ -19,15 +23,12 @@ export class MySqlDriver extends SqlDriver {
             database: 'votecube',
             host: 'localhost',
             password: 'admin',
-            queueLimit: 0,
+            queueLimit: 1000,
             user: 'root',
             waitForConnections: true,
         });
         this.queryApi = this.pool;
         return null;
-    }
-    numFreeConnections() {
-        return this.pool.pool._freeConnections.length;
     }
     isServer() {
         return true;

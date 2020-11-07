@@ -1,5 +1,8 @@
 import { isStub, markAsStub } from '@airport/air-control';
 import { QueryResultType } from '@airport/ground-control';
+/**
+ * Created by Papa on 10/16/2016.
+ */
 export class GraphQueryConfiguration {
     constructor() {
         // This is for conflicts on OneToMany references
@@ -11,15 +14,17 @@ export class GraphQueryConfiguration {
         //failOnManyToOneConflicts: boolean = true;
     }
 }
-export function getObjectResultParser(queryResultType, config, rootDbEntity) {
+export async function getObjectResultParser(queryResultType, config, rootDbEntity) {
     switch (queryResultType) {
         case QueryResultType.ENTITY_GRAPH:
         case QueryResultType.MAPPED_ENTITY_GRAPH:
-            let EntityGraphResultParserClass = require('./EntityGraphResultParser').EntityGraphResultParser;
+            const entityGraphResultParserModule = await import('./EntityGraphResultParser');
+            let EntityGraphResultParserClass = entityGraphResultParserModule.EntityGraphResultParser;
             return new EntityGraphResultParserClass(config, rootDbEntity);
         case QueryResultType.ENTITY_TREE:
         case QueryResultType.MAPPED_ENTITY_TREE:
-            let EntityTreeResultParserClass = require('./EntityTreeResultParser').EntityTreeResultParser;
+            const entityTreeResultParserModule = await import('./EntityTreeResultParser');
+            let EntityTreeResultParserClass = entityTreeResultParserModule.EntityTreeResultParser;
             return new EntityTreeResultParserClass();
         default:
             throw new Error(`ObjectQueryParser not supported for QueryResultType: ${queryResultType}`);

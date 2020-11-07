@@ -14,12 +14,13 @@ export class SQLInsertValues extends SQLNoJoinQuery {
         this.jsonInsertValues = jsonInsertValues;
     }
     toSQL(airDb, schemaUtils, metadataUtils) {
-        const validator = DI.db().getSync(Q_VALIDATOR);
+        const validator = DI.db()
+            .getSync(Q_VALIDATOR);
         if (!this.jsonInsertValues.II) {
             throw new Error(`Expecting exactly one table in INSERT INTO clause`);
         }
         validator.validateInsertQEntity(this.dbEntity);
-        let tableFragment = this.getTableFragment(this.jsonInsertValues.II, airDb, schemaUtils);
+        let tableFragment = this.getTableFragment(this.jsonInsertValues.II, airDb, schemaUtils, false);
         let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C);
         let valuesFragment = this.getValuesFragment(this.jsonInsertValues.V, airDb, schemaUtils, metadataUtils);
         return `INSERT INTO
@@ -36,7 +37,8 @@ ${valuesFragment}
         return `( ${columnNames.join(', \n')} )`;
     }
     getValuesFragment(valuesClauseFragment, airDb, schemaUtils, metadataUtils) {
-        const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR);
+        const sqlAdaptor = DI.db()
+            .getSync(SQL_QUERY_ADAPTOR);
         let allValuesFragment = valuesClauseFragment.map((valuesArray) => {
             let valuesFragment = valuesArray.map((value) => {
                 if (value === null || ['number', 'string'].indexOf(typeof value) > -1) {

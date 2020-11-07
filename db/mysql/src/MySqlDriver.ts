@@ -1,30 +1,30 @@
-import {DI}            from '@airport/di'
+import {DI}         from '@airport/di'
 import {
 	SQLDialect,
 	SqlDriver
-}                      from '@airport/fuel-hydrant-system'
+}                   from '@airport/fuel-hydrant-system'
 import {
 	QueryType,
 	SQLDataType,
 	STORE_DRIVER
-}                      from '@airport/ground-control'
+}                   from '@airport/ground-control'
 import {
 	ITransaction,
 	transactional
-} from '@airport/tower'
+}                   from '@airport/tower'
 import {
 	FieldPacket,
 	OkPacket,
 	QueryOptions,
 	ResultSetHeader,
 	RowDataPacket
-}                      from 'mysql2'
-import * as mysql      from 'mysql2/promise'
+}                   from 'mysql2'
+import * as mysql   from 'mysql2/promise'
 import {
 	Connection,
 	Pool
-}                      from 'mysql2/promise'
-import {DDLManager}    from './DDLManager'
+}                   from 'mysql2/promise'
+import {DDLManager} from './DDLManager'
 
 /**
  * Created by Papa on 10/16/2020.
@@ -73,6 +73,7 @@ export class MySqlDriver
 
 	protected pool: Pool
 	protected queryApi: IQueryApi
+	protected maxValues = 1000000
 
 	async query(
 		queryType: QueryType,
@@ -96,24 +97,19 @@ export class MySqlDriver
 		return results[0]
 	}
 
-
 	initialize(dbName: string): Promise<any> {
 		this.pool     = mysql.createPool({
 			connectionLimit: 10,
 			database: 'votecube',
 			host: 'localhost',
 			password: 'admin',
-			queueLimit: 0,
+			queueLimit: 1000,
 			user: 'root',
 			waitForConnections: true,
 		})
 		this.queryApi = this.pool
 
 		return null
-	}
-
-	numFreeConnections(): number {
-		return (<any>this.pool).pool._freeConnections.length
 	}
 
 	isServer(): boolean {
@@ -130,7 +126,7 @@ export class MySqlDriver
 		const connection: Connection = await this.pool.getConnection()
 		await connection.beginTransaction()
 		const transactionModule = await import('./MySqlTransaction')
-		const transaction = new transactionModule.MySqlTransaction(this, this.pool, connection)
+		const transaction       = new transactionModule.MySqlTransaction(this, this.pool, connection)
 		await transactionalCallback(transaction)
 	}
 

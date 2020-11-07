@@ -167,7 +167,7 @@ export class TransactionManager extends AbstractMutationManager {
     }
     canRunTransaction(domainAndPort, storeDriver) {
         if (storeDriver.isServer()) {
-            return storeDriver.numFreeConnections() > 0;
+            return true;
         }
         if (this.transactionInProgress) {
             return false;

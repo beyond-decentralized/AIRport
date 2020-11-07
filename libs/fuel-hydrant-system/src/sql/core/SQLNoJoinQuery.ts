@@ -32,7 +32,8 @@ export abstract class SQLNoJoinQuery
 	protected getTableFragment(
 		fromRelation: JSONEntityRelation,
 		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		schemaUtils: ISchemaUtils,
+		addAs: boolean = true
 	): string {
 		if (!fromRelation) {
 			throw new Error(`Expecting exactly one table in UPDATE/DELETE clause`)
@@ -55,7 +56,10 @@ export abstract class SQLNoJoinQuery
 
 		const tableAlias                   = QRelation.getAlias(fromRelation)
 		this.qEntityMapByAlias[tableAlias] = firstQEntity as IQEntityInternal
-		const fromFragment                 = `\t${tableName} AS ${tableAlias}`
+		let fromFragment                 = `\t${tableName}`;
+		if(addAs) {
+			fromFragment += ` AS ${tableAlias}`
+		}
 
 		return fromFragment
 	}

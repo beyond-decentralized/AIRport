@@ -76,8 +76,6 @@ export interface IStoreDriver
 		}
 	): Promise<void>
 
-	numFreeConnections(): number
-
 	isServer(): boolean
 
 }

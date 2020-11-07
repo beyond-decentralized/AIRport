@@ -90,14 +90,14 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	 * @param results
 	 * @returns {any[]}
 	 */
-	abstract parseQueryResults(
+	abstract async parseQueryResults(
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		results: any[],
 		internalFragments: InternalFragments,
 		queryResultType: QueryResultType,
 		bridgedQueryConfiguration?: any
-	): any[];
+	): Promise<any[]>;
 
 	protected abstract buildFromJoinTree(
 		joinRelations: (JSONEntityRelation | JSONRelation) [],

@@ -32,12 +32,12 @@ export class MySqlTransaction
 
 	async commit(): Promise<void> {
 		await this.connection.commit();
-		(<any>this.pool).pool.releaseConnection(this.connection)
+		(<any>this.pool).pool.releaseConnection(this.connection.connection)
 	}
 
 	async rollback(): Promise<void> {
 		await this.connection.rollback();
-		(<any>this.pool).pool.releaseConnection(this.connection)
+		(<any>this.pool).pool.releaseConnection(this.connection.connection)
 	}
 
 }

@@ -87,12 +87,12 @@ export class SheetSQLQuery
 		return selectSqlFragment
 	}
 
-	parseQueryResults(
+	async parseQueryResults(
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		results: any[],
 		internalFragments: InternalFragments
-	): any[] {
+	): Promise<any[]> {
 		let parsedResults: any[] = []
 		if (!results || !results.length) {
 			return parsedResults

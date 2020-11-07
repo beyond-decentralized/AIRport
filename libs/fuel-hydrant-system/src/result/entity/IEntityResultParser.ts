@@ -18,8 +18,6 @@ import {EntityTreeResultParser}  from './EntityTreeResultParser'
  * Created by Papa on 10/16/2016.
  */
 
-declare function require(moduleName: string): any;
-
 export class GraphQueryConfiguration {
 	// This is for conflicts on OneToMany references
 	strict: boolean = true
@@ -123,19 +121,22 @@ export interface IEntityResultParser {
 
 }
 
-export function getObjectResultParser(
+export async function getObjectResultParser(
 	queryResultType: QueryResultType,
 	config?: GraphQueryConfiguration,
 	rootDbEntity?: DbEntity,
-): IEntityResultParser {
+): Promise<IEntityResultParser> {
 	switch (queryResultType) {
 		case QueryResultType.ENTITY_GRAPH:
 		case QueryResultType.MAPPED_ENTITY_GRAPH:
-			let EntityGraphResultParserClass: typeof EntityGraphResultParser = require('./EntityGraphResultParser').EntityGraphResultParser
+			const entityGraphResultParserModule                              = await import('./EntityGraphResultParser')
+			let EntityGraphResultParserClass: typeof EntityGraphResultParser = entityGraphResultParserModule.EntityGraphResultParser
 			return new EntityGraphResultParserClass(config, rootDbEntity)
 		case QueryResultType.ENTITY_TREE:
 		case QueryResultType.MAPPED_ENTITY_TREE:
-			let EntityTreeResultParserClass: typeof EntityTreeResultParser = require('./EntityTreeResultParser').EntityTreeResultParser
+
+			const entityTreeResultParserModule                             = await import('./EntityTreeResultParser')
+			let EntityTreeResultParserClass: typeof EntityTreeResultParser = entityTreeResultParserModule.EntityTreeResultParser
 			return new EntityTreeResultParserClass()
 		default:
 			throw new Error(

@@ -27,10 +27,10 @@ export interface IQueryApi {
 export declare class MySqlDriver extends SqlDriver {
     protected pool: Pool;
     protected queryApi: IQueryApi;
+    protected maxValues: number;
     query(queryType: QueryType, query: string, params: any, saveTransaction?: boolean): Promise<any>;
     doQuery(queryType: QueryType, query: string, params: any, connection: IQueryApi, saveTransaction?: boolean): Promise<any>;
     initialize(dbName: string): Promise<any>;
-    numFreeConnections(): number;
     isServer(): boolean;
     transact(transactionalCallback: {
         (transaction: ITransaction): Promise<void>;

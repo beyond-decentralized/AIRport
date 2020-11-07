@@ -268,7 +268,7 @@ export class TransactionManager
 		storeDriver: IStoreDriver
 	): boolean {
 		if (storeDriver.isServer()) {
-			return storeDriver.numFreeConnections() > 0
+			return true
 		}
 		if (this.transactionInProgress) {
 			return false

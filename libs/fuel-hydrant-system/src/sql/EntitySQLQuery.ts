@@ -127,12 +127,12 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 	 * @param results
 	 * @returns {any[]}
 	 */
-	parseQueryResults(
+	async parseQueryResults(
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		results: any[]
-	): any[] {
-		this.queryParser         = getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity)
+	): Promise<any[]> {
+		this.queryParser         = await getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity)
 		let parsedResults: any[] = []
 		if (!results || !results.length) {
 			return parsedResults

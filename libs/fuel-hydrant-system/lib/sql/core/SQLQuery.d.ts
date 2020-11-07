@@ -42,7 +42,7 @@ export declare abstract class SQLQuery<JQ extends JsonQuery> extends SQLWhereBas
      * @param results
      * @returns {any[]}
      */
-    abstract parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[], internalFragments: InternalFragments, queryResultType: QueryResultType, bridgedQueryConfiguration?: any): any[];
+    abstract parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[], internalFragments: InternalFragments, queryResultType: QueryResultType, bridgedQueryConfiguration?: any): Promise<any[]>;
     protected abstract buildFromJoinTree(joinRelations: (JSONEntityRelation | JSONRelation)[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
     }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, schemaIndex?: number, tableIndex?: number): JoinTreeNode | JoinTreeNode[];

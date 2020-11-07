@@ -185,7 +185,7 @@ export abstract class SqlDriver
 		const parameters = sqlQuery.getParameters(portableQuery.parameterMap)
 
 		let results = await this.findNative(sql, parameters)
-		results     = sqlQuery.parseQueryResults(
+		results     = await sqlQuery.parseQueryResults(
 			airDb, schemaUtils, results, internalFragments, portableQuery.queryResultType)
 
 		// FIXME: convert to MappedEntityArray if needed
@@ -333,8 +333,6 @@ export abstract class SqlDriver
 		params: any,
 		saveTransaction?: boolean
 	): Promise<any>
-
-	abstract numFreeConnections(): number
 
 	abstract isServer(): boolean
 

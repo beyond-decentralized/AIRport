@@ -59,8 +59,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(airDb, schemaUtils, results) {
-        this.queryParser = getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity);
+    async parseQueryResults(airDb, schemaUtils, results) {
+        this.queryParser = await getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity);
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;

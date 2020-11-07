@@ -27,6 +27,7 @@ export class MySqlQueryAdaptor
 
 	private functionAdaptor: ISQLFunctionAdaptor
 
+
 	constructor() {
 		this.functionAdaptor = new MySqlFunctionAdaptor()
 	}

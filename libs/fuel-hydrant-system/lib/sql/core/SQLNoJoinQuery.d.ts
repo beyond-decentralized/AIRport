@@ -7,6 +7,6 @@ import { SQLWhereBase } from './SQLWhereBase';
  */
 export declare abstract class SQLNoJoinQuery extends SQLWhereBase {
     constructor(dbEntity: DbEntity, dialect: SQLDialect, storeDriver: IStoreDriver);
-    protected getTableFragment(fromRelation: JSONEntityRelation, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): string;
+    protected getTableFragment(fromRelation: JSONEntityRelation, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, addAs?: boolean): string;
 }
 //# sourceMappingURL=SQLNoJoinQuery.d.ts.map

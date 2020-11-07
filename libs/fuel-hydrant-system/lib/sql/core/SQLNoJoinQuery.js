@@ -7,7 +7,7 @@ export class SQLNoJoinQuery extends SQLWhereBase {
     constructor(dbEntity, dialect, storeDriver) {
         super(dbEntity, dialect, storeDriver);
     }
-    getTableFragment(fromRelation, airDb, schemaUtils) {
+    getTableFragment(fromRelation, airDb, schemaUtils, addAs = true) {
         if (!fromRelation) {
             throw new Error(`Expecting exactly one table in UPDATE/DELETE clause`);
         }
@@ -26,7 +26,10 @@ export class SQLNoJoinQuery extends SQLWhereBase {
         const firstQEntity = new QEntity(firstDbEntity);
         const tableAlias = QRelation.getAlias(fromRelation);
         this.qEntityMapByAlias[tableAlias] = firstQEntity;
-        const fromFragment = `\t${tableName} AS ${tableAlias}`;
+        let fromFragment = `\t${tableName}`;
+        if (addAs) {
+            fromFragment += ` AS ${tableAlias}`;
+        }
         return fromFragment;
     }
 }

@@ -11,7 +11,7 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery';
 export declare class SheetSQLQuery extends NonEntitySQLQuery<JsonSheetQuery> {
     constructor(jsonQuery: JsonSheetQuery, dialect: SQLDialect, storeDriver: IStoreDriver);
     protected getSELECTFragment(nested: boolean, selectClauseFragment: any, internalFragments: InternalFragments, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
-    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[], internalFragments: InternalFragments): any[];
+    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[], internalFragments: InternalFragments): Promise<any[]>;
     protected parseQueryResult(selectClauseFragment: any, resultRow: any, nextFieldIndex: number[], internalFragments: InternalFragments): any;
 }
 //# sourceMappingURL=SheetSQLQuery.d.ts.map

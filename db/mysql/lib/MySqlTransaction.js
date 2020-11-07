@@ -13,11 +13,11 @@ export class MySqlTransaction extends MySqlDriver {
     }
     async commit() {
         await this.connection.commit();
-        this.pool.pool.releaseConnection(this.connection);
+        this.pool.pool.releaseConnection(this.connection.connection);
     }
     async rollback() {
         await this.connection.rollback();
-        this.pool.pool.releaseConnection(this.connection);
+        this.pool.pool.releaseConnection(this.connection.connection);
     }
 }
 //# sourceMappingURL=MySqlTransaction.js.map

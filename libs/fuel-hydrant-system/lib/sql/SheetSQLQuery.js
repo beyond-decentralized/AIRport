@@ -45,7 +45,7 @@ export class SheetSQLQuery extends NonEntitySQLQuery {
         }
         return selectSqlFragment;
     }
-    parseQueryResults(airDb, schemaUtils, results, internalFragments) {
+    async parseQueryResults(airDb, schemaUtils, results, internalFragments) {
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;

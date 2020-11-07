@@ -30,7 +30,7 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): any[];
+    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): Promise<any[]>;
     protected buildFromJoinTree(joinRelations: JSONEntityRelation[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
     }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): JoinTreeNode;

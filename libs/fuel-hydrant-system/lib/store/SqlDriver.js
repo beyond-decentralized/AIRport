@@ -76,7 +76,7 @@ export class SqlDriver {
         const sql = sqlQuery.toSQL(internalFragments, airDb, schemaUtils, metadataUtils);
         const parameters = sqlQuery.getParameters(portableQuery.parameterMap);
         let results = await this.findNative(sql, parameters);
-        results = sqlQuery.parseQueryResults(airDb, schemaUtils, results, internalFragments, portableQuery.queryResultType);
+        results = await sqlQuery.parseQueryResults(airDb, schemaUtils, results, internalFragments, portableQuery.queryResultType);
         // FIXME: convert to MappedEntityArray if needed
         return results;
     }

@@ -113,11 +113,11 @@ export class TreeSQLQuery
 	 * @param results
 	 * @returns {any[]}
 	 */
-	parseQueryResults(
+	async parseQueryResults(
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils,
 		results: any[]
-	): any[] {
+	): Promise<any[]> {
 		let parsedResults: any[] = []
 		if (!results || !results.length) {
 			return parsedResults

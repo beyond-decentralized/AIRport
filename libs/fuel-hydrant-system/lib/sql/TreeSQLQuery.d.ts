@@ -17,7 +17,7 @@ export declare class TreeSQLQuery extends NonEntitySQLQuery<JsonTreeQuery> {
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): any[];
+    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): Promise<any[]>;
     protected parseQueryResult(selectClauseFragment: any, resultRow: any, nextFieldIndex: number[], aliasCache: AliasCache, entityAlias: string): any;
 }
 //# sourceMappingURL=TreeSQLQuery.d.ts.map

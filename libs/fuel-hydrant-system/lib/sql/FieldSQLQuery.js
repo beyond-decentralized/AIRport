@@ -29,7 +29,7 @@ export class FieldSQLQuery extends NonEntitySQLQuery {
         let selectSqlFragment = this.getFieldSelectFragment(field, ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++, airDb, schemaUtils, metadataUtils);
         return selectSqlFragment;
     }
-    parseQueryResults(airDb, schemaUtils, results) {
+    async parseQueryResults(airDb, schemaUtils, results) {
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;

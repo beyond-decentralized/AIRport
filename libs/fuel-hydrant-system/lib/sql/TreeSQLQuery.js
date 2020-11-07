@@ -66,7 +66,7 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(airDb, schemaUtils, results) {
+    async parseQueryResults(airDb, schemaUtils, results) {
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;

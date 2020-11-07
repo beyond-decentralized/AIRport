@@ -8,7 +8,7 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery';
 export declare class FieldSQLQuery extends NonEntitySQLQuery<JsonFieldQuery> {
     constructor(jsonQuery: JsonFieldQuery, dialect: SQLDialect, storeDriver: IStoreDriver);
     protected getSELECTFragment(nested: boolean, selectClauseFragment: any, internalFragments: InternalFragments, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
-    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): any[];
+    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): Promise<any[]>;
     protected parseQueryResult(selectClauseFragment: any, resultRow: any, nextFieldIndex: number[]): any;
 }
 //# sourceMappingURL=FieldSQLQuery.d.ts.map
