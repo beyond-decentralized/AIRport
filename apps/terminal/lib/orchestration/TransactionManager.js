@@ -51,6 +51,7 @@ export class TransactionManager extends AbstractMutationManager {
                 transaction.commit();
             }
             catch (e) {
+                console.error(e);
                 transaction.rollback();
             }
         });
@@ -161,6 +162,7 @@ export class TransactionManager extends AbstractMutationManager {
                 }, timeoutMillis);
             }
             catch (error) {
+                console.error(error);
                 reject(error);
             }
         });

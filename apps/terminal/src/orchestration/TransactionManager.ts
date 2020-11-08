@@ -101,6 +101,7 @@ export class TransactionManager
 					await transactionalCallback(transaction)
 					transaction.commit()
 				} catch (e) {
+					console.error(e)
 					transaction.rollback()
 				}
 			}
@@ -258,6 +259,7 @@ export class TransactionManager
 					resolve()
 				}, timeoutMillis)
 			} catch (error) {
+				console.error(error)
 				reject(error)
 			}
 		})

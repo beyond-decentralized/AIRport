@@ -92,6 +92,8 @@ export class MySqlDriver
 		saveTransaction?: boolean
 	): Promise<any> {
 		let nativeParameters = params.map((value) => this.convertValueIn(value))
+		console.log(query)
+		console.log(nativeParameters)
 		const results        = await connection.query(query, nativeParameters)
 
 		return results[0]
@@ -150,13 +152,13 @@ export class MySqlDriver
 	): Promise<boolean> {
 		const result = await this.findNative(
 			// ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
-			`select count(1) from information_schema.TABLES
+			`select count(1) as count from information_schema.TABLES
 where TABLE_SCHEMA = '${schemaName}'
 and TABLE_NAME = '${tableName}';`,
 			[]
 		)
 
-		return result == 1
+		return result[0].count == 1
 	}
 
 	async dropTable(

@@ -117,7 +117,7 @@ export class DatabaseManager {
         */
         const server = await container(this).get(TRANS_SERVER);
         server.tempActor = new Actor();
-        const hydrate = await storeDriver.doesTableExist('air__territory', 'PACKAGES');
+        const hydrate = await storeDriver.doesTableExist('air___airport__territory', 'packages');
         await this.installAirportSchema(hydrate);
         if (!hydrate) {
             await this.initTerminal(domainName);
@@ -126,7 +126,7 @@ export class DatabaseManager {
             // FIXME: add ability to build feature schemas in the future
             await this.initFeatureSchemas(schemas, false);
         }
-        server.tempActor = null;
+        // (server as any).tempActor = null
         /*
                 throw new Error(`Implement!`)
                 let dbFacade: IDatabaseFacade = this.databaseMap[terminalName]

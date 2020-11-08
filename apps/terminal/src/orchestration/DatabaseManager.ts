@@ -175,7 +175,7 @@ export class DatabaseManager
 		const server              = await container(this).get(TRANS_SERVER);
 		(server as any).tempActor = new Actor()
 
-		const hydrate = await storeDriver.doesTableExist('air__territory', 'PACKAGES')
+		const hydrate = await storeDriver.doesTableExist('air___airport__territory', 'packages')
 
 		await this.installAirportSchema(hydrate)
 
@@ -188,7 +188,7 @@ export class DatabaseManager
 			await this.initFeatureSchemas(schemas, false)
 		}
 
-		(server as any).tempActor = null
+		// (server as any).tempActor = null
 
 		/*
 				throw new Error(`Implement!`)

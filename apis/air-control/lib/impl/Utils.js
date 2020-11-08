@@ -25,7 +25,7 @@ export function valuesEqual(value1, value2, checkChildObjects = false) {
             let checkedKeys = {};
             for (let key in value1) {
                 checkedKeys[key] = true;
-                if (!this.valuesEqual(value1[key], value2[key], checkChildObjects)) {
+                if (!valuesEqual(value1[key], value2[key], checkChildObjects)) {
                     return false;
                 }
             }
