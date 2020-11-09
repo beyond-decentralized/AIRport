@@ -14,16 +14,19 @@ export interface IStoreDriver extends IStoreOperator {
     doesTableExist(schemaName: string, tableName: string): Promise<boolean>;
     dropTable(schemaName: string, tableName: string): Promise<boolean>;
     getEntityTableName(dbEntity: DbEntity): string;
-    getTableName(schema: {
-        domain: DomainName | {
-            name: DomainName;
-        };
-        name: SchemaName;
-        status?: SchemaStatus;
-    }, table: {
+    getTableName(table: {
         name: string;
         tableConfig?: {
             name?: string;
+        };
+        schemaVersion: {
+            schema: {
+                domain: DomainName | {
+                    name: DomainName;
+                };
+                name: SchemaName;
+                status?: SchemaStatus;
+            };
         };
     }): string;
     initialize(dbName: string): Promise<any>;
@@ -32,7 +35,6 @@ export interface IStoreDriver extends IStoreOperator {
     transact(transactionalCallback: {
         (transaction: IStoreDriver): Promise<void>;
     }): Promise<void>;
-    numFreeConnections(): number;
     isServer(): boolean;
 }
 //# sourceMappingURL=StoreDriver.d.ts.map

@@ -18,7 +18,6 @@ export * from './lingo/data/sync/TransactionType';
 export * from './lingo/data/ChangeType';
 export * from './lingo/data/DistributionStrategy';
 export * from './lingo/data/IStoreOperator';
-export * from './lingo/data/ITransactionalConnector';
 export * from './lingo/data/PatformType';
 export * from './lingo/data/StoreDriver';
 export * from './lingo/data/storeInfo';

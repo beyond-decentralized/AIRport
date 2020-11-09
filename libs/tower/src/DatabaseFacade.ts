@@ -21,23 +21,27 @@ import {
 	UPDATE_CACHE,
 	UpdateColumns,
 	UpdateProperties,
-}                          from '@airport/air-control'
+}                         from '@airport/air-control'
 import {
 	container,
 	DI
-}                          from '@airport/di'
+}                         from '@airport/di'
 import {
 	CascadeOverwrite,
 	DbEntity,
-}                          from '@airport/ground-control'
+}                         from '@airport/ground-control'
 import {
 	DistributionStrategy,
 	PlatformType
-}                          from '@airport/terminal-map'
-import {TRANS_SERVER}      from './tokens'
-import {ITransaction}      from './ITransaction'
-import {OperationManager,} from './OperationManager'
-import {transactional}     from './transactional'
+}                         from '@airport/terminal-map'
+import {
+	IBulkCreateContext,
+	IocContext
+}                         from './Context'
+import {ITransaction}     from './ITransaction'
+import {OperationManager} from './OperationManager'
+import {TRANS_SERVER}     from './tokens'
+import {transactional}    from './transactional'
 
 // import {transactional}     from './transactional'
 
@@ -147,23 +151,23 @@ export class DatabaseFacade
 		if (!entities || !entities.length) {
 			return 0
 		}
-		const [airDb, fieldUtils, metadataUtils, queryFacade,
-			      queryUtils, schemaUtils, transactionalServer,
-			      updateCache] = await container(this)
-			.get(
-				AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
-				QUERY_UTILS, SCHEMA_UTILS, TRANS_SERVER, UPDATE_CACHE
-			)
+		const ctx: IBulkCreateContext<E, EntityCascadeGraph> = {
+			checkIfProcessed,
+			cascadeOverwrite,
+			dbEntity,
+			entities,
+			ioc: new IocContext()
+		}
+
+		await ctx.ioc.init()
 
 		let numRecordsCreated = 0
 
 		await transactional(async (
 			transaction: ITransaction
 		) => {
-			numRecordsCreated = await this.performBulkCreate(dbEntity, entities, [],
-				airDb, fieldUtils, metadataUtils,
-				queryFacade, queryUtils, schemaUtils, transaction, transactionalServer,
-				updateCache, checkIfProcessed, cascadeOverwrite)
+			numRecordsCreated = await this.performBulkCreate([],
+				transaction, ctx)
 		})
 
 		return numRecordsCreated
@@ -191,7 +195,8 @@ export class DatabaseFacade
 			transaction: ITransaction
 		) => {
 			numInsertedRecords = await this.internalInsertColumnValues(
-				dbEntity, rawInsertColumnValues, queryUtils, fieldUtils, transaction)
+				dbEntity, <RawInsertColumnValues<IQE>>rawInsertColumnValues,
+				queryUtils, fieldUtils, transaction)
 		})
 
 		return numInsertedRecords
@@ -476,7 +481,7 @@ export class DatabaseFacade
 			transaction: ITransaction
 		) => {
 			numUpdatedRecords = await this.internalUpdateWhere(dbEntity, update,
-					fieldUtils, queryFacade, queryUtils, transaction, transactionalServer)
+				fieldUtils, queryFacade, queryUtils, transaction, transactionalServer)
 		})
 		return numUpdatedRecords
 	}

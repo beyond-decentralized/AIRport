@@ -2,8 +2,9 @@ import { AIR_DB, DB_FACADE, Delete, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
 import { container, DI } from '@airport/di';
 import { CascadeOverwrite, } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
+import { IocContext } from './Context';
+import { OperationManager } from './OperationManager';
 import { TRANS_SERVER } from './tokens';
-import { OperationManager, } from './OperationManager';
 import { transactional } from './transactional';
 // import {transactional}     from './transactional'
 /**
@@ -68,11 +69,17 @@ export class DatabaseFacade extends OperationManager {
         if (!entities || !entities.length) {
             return 0;
         }
-        const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transactionalServer, updateCache] = await container(this)
-            .get(AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_SERVER, UPDATE_CACHE);
+        const ctx = {
+            checkIfProcessed,
+            cascadeOverwrite,
+            dbEntity,
+            entities,
+            ioc: new IocContext()
+        };
+        await ctx.ioc.init();
         let numRecordsCreated = 0;
         await transactional(async (transaction) => {
-            numRecordsCreated = await this.performBulkCreate(dbEntity, entities, [], airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, checkIfProcessed, cascadeOverwrite);
+            numRecordsCreated = await this.performBulkCreate([], transaction, ctx);
         });
         return numRecordsCreated;
     }

@@ -18,9 +18,14 @@ export class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performCreate(dbEntity, entity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, idData, cascadeOverwrite = CascadeOverwrite.DEFAULT) {
-        let result = await this.internalCreate(dbEntity, [entity], createdEntityMap, !idData, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, cascadeOverwrite);
-        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, cascadeOverwrite);
+    async performCreate(createdEntityMap, transaction, ctx, idData) {
+        // TODO: add code to populate CREATED_AT (and save for update in performUpdate)
+        // also add code populate user info (USER_ACCOUNT_ID for now, eventually the actor)
+        const lastCheckIfProcessed = ctx.checkIfProcessed;
+        ctx.checkIfProcessed = !idData;
+        let result = await this.internalCreate(createdEntityMap, transaction, ctx, !idData);
+        await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity, createdEntityMap, transaction, ctx);
+        ctx.checkIfProcessed = lastCheckIfProcessed;
         return result.numberOfAffectedRecords;
     }
     /**
@@ -29,10 +34,10 @@ export class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performBulkCreate(dbEntity, entities, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, checkIfProcessed = true, cascadeOverwrite = CascadeOverwrite.DEFAULT, ensureGeneratedValues = true // For internal use only
+    async performBulkCreate(createdEntityMap, transaction, ctx, ensureGeneratedValues = true // For internal use only
     ) {
-        let result = await this.internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, cascadeOverwrite, ensureGeneratedValues);
-        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, createdEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, cascadeOverwrite);
+        let result = await this.internalCreate(createdEntityMap, transaction, ctx, ensureGeneratedValues);
+        await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity, createdEntityMap, transaction, ctx);
         return result.numberOfAffectedRecords;
     }
     async internalInsertColumnValues(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils, transaction) {
@@ -41,10 +46,10 @@ export class OperationManager {
         const portableQuery = queryFacade.getPortableQuery(dbEntity, insertColumnValues, null, queryUtils, fieldUtils);
         return await transactionalServer.insertValues(portableQuery, transaction);
     }
-    async internalInsertValues(dbEntity, rawInsertValues, queryUtils, fieldUtils, transaction, ensureGeneratedValues) {
+    async internalInsertValues(rawInsertValues, transaction, ctx, ensureGeneratedValues) {
         const [transactionalServer, queryFacade] = await container(this).get(TRANS_SERVER, QUERY_FACADE);
         const insertValues = new InsertValues(rawInsertValues);
-        const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null, queryUtils, fieldUtils);
+        const portableQuery = queryFacade.getPortableQuery(ctx.dbEntity, insertValues, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils);
         return await transactionalServer.insertValues(portableQuery, transaction, ensureGeneratedValues);
     }
     async internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils, transaction) {
@@ -59,28 +64,28 @@ export class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performUpdate(dbEntity, entity, updatedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, originalValue, cascadeOverwrite = CascadeOverwrite.DEFAULT) {
+    async performUpdate(updatedEntityMap, transaction, ctx, originalValue) {
         if (!originalValue) {
-            let [isProcessed, entityIdData] = this.isProcessed(entity, updatedEntityMap, dbEntity, schemaUtils);
+            let [isProcessed, entityIdData] = this.isProcessed(ctx.entities[0], updatedEntityMap, ctx.dbEntity, ctx.ioc.schemaUtils);
             if (isProcessed === true) {
                 return 0;
             }
             if (!entityIdData.idKey) {
-                throw new Error(`Cannot update ${dbEntity.name}, not all @Id(s) are set.`);
+                throw new Error(`Cannot update ${ctx.dbEntity.name}, not all @Id(s) are set.`);
             }
-            originalValue = await this.getOriginalRecord(dbEntity, entityIdData.idKey, updateCache);
+            originalValue = await this.getOriginalRecord(ctx.dbEntity, entityIdData.idKey, ctx.ioc.updateCache);
             // if (!originalValue) {
             // 	throw new Error(`Cannot update ${dbEntity.name}, entity not found.`)
             // }
         }
-        let result = await this.internalUpdate(dbEntity, entity, originalValue, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, cascadeOverwrite);
-        await this.cascadeOnPersist(result.cascadeRecords, dbEntity, updatedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, cascadeOverwrite);
+        let result = await this.internalUpdate(originalValue, transaction, ctx);
+        await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity, updatedEntityMap, transaction, ctx);
         return result.numberOfAffectedRecords;
     }
-    async internalInsertValuesGetIds(dbEntity, rawInsertValues, fieldUtils, queryFacade, queryUtils, transaction, transactionalServer) {
+    async internalInsertValuesGetIds(rawInsertValues, transaction, ctx) {
         const insertValues = new InsertValues(rawInsertValues);
-        const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null, queryUtils, fieldUtils);
-        return await transactionalServer.insertValuesGetIds(portableQuery, transaction);
+        const portableQuery = ctx.ioc.queryFacade.getPortableQuery(ctx.dbEntity, insertValues, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils);
+        return await ctx.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction);
     }
     /*
     protected abstract async getOriginalValues(
@@ -140,33 +145,33 @@ export class OperationManager {
         return idsWhereClause
     }
 */
-    async internalUpdateColumnsWhere(dbEntity, updateColumns, fieldUtils, queryFacade, queryUtils, transaction, transactionalServer) {
-        const portableQuery = queryFacade.getPortableQuery(dbEntity, updateColumns, null, queryUtils, fieldUtils);
-        return await transactionalServer.updateValues(portableQuery, transaction);
+    async internalUpdateColumnsWhere(updateColumns, transaction, ctx) {
+        const portableQuery = ctx.ioc.queryFacade.getPortableQuery(ctx.dbEntity, updateColumns, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils);
+        return await ctx.ioc.transactionalServer.updateValues(portableQuery, transaction);
     }
-    async internalUpdateWhere(dbEntity, update, fieldUtils, queryFacade, queryUtils, transaction, transactionalServer) {
-        const portableQuery = queryFacade.getPortableQuery(dbEntity, update, null, queryUtils, fieldUtils);
-        return await transactionalServer.updateValues(portableQuery, transaction);
+    async internalUpdateWhere(update, transaction, ctx) {
+        const portableQuery = ctx.ioc.queryFacade.getPortableQuery(ctx.dbEntity, update, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils);
+        return await ctx.ioc.transactionalServer.updateValues(portableQuery, transaction);
     }
     /**
      * Transactional context must have been started by the time this method is called.
      * @param qEntity
      * @param entity
      */
-    async performDelete(dbEntity, entity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer) {
-        return await this.internalDelete(dbEntity, entity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer);
+    async performDelete(transaction, ctx) {
+        return await this.internalDelete(transaction, ctx);
         // Delete cascading is done on the server - there is no new information
         // to pull for this from the client
     }
-    async internalDeleteWhere(dbEntity, aDelete, fieldUtils, queryFacade, queryUtils, transaction, transactionalServer) {
-        let portableQuery = queryFacade.getPortableQuery(dbEntity, aDelete, null, queryUtils, fieldUtils);
-        return await transactionalServer.deleteWhere(portableQuery, transaction);
+    async internalDeleteWhere(aDelete, transaction, ctx) {
+        let portableQuery = ctx.ioc.queryFacade.getPortableQuery(ctx.dbEntity, aDelete, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils);
+        return await ctx.ioc.transactionalServer.deleteWhere(portableQuery, transaction);
     }
-    async internalCreate(dbEntity, entities, createdEntityMap, checkIfProcessed, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, cascadeOverwrite, ensureGeneratedValues) {
-        const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
+    async internalCreate(createdEntityMap, transaction, ctx, ensureGeneratedValues) {
+        const qEntity = ctx.ioc.airDb.qSchemas[ctx.dbEntity.schemaVersion.schema.index][ctx.dbEntity.name];
         let rawInsert = {
             insertInto: qEntity,
-            columns: metadataUtils.getAllNonGeneratedColumns(qEntity),
+            columns: ctx.ioc.metadataUtils.getAllNonGeneratedColumns(qEntity),
             values: []
         };
         let columnIndexesInValues = [];
@@ -174,13 +179,13 @@ export class OperationManager {
             columnIndexesInValues[qField.dbColumn.index] = index;
         });
         let cascadeRecords = [];
-        for (const entity of entities) {
-            if (checkIfProcessed && this.isProcessed(entity, createdEntityMap, dbEntity, schemaUtils)[0] === true) {
+        for (const entity of ctx.entities) {
+            if (ctx.checkIfProcessed && this.isProcessed(entity, createdEntityMap, ctx.dbEntity, ctx.ioc.schemaUtils)[0] === true) {
                 continue;
             }
             let foundValues = [];
             let valuesFragment = [];
-            for (const dbProperty of dbEntity.properties) {
+            for (const dbProperty of ctx.dbEntity.properties) {
                 let newValue = entity[dbProperty.name];
                 if (newValue === undefined) {
                     newValue = null;
@@ -191,15 +196,15 @@ export class OperationManager {
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
                             this.assertManyToOneNotArray(newValue);
-                            schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, propertyNameChains) => {
+                            ctx.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, propertyNameChains) => {
                                 if (dbProperty.isId) {
-                                    if (schemaUtils.isIdEmpty(columnValue)) {
-                                        throw new Error(`non-@GeneratedValue() @Id() ${dbEntity.name}.${dbProperty.name} 
+                                    if (ctx.ioc.schemaUtils.isIdEmpty(columnValue)) {
+                                        throw new Error(`non-@GeneratedValue() @Id() ${ctx.dbEntity.name}.${dbProperty.name} 
 											must have a value for 'create' operations.`);
                                     }
                                 }
-                                if (schemaUtils.isRepositoryId(dbColumn.name)) {
-                                    if (schemaUtils.isEmpty(columnValue)) {
+                                if (ctx.ioc.schemaUtils.isRepositoryId(dbColumn.name)) {
+                                    if (ctx.ioc.schemaUtils.isEmpty(columnValue)) {
                                         throw new Error(`Repository Id must be specified on an insert`);
                                     }
                                 }
@@ -216,15 +221,15 @@ export class OperationManager {
                             // to be done
                             continue;
                         case EntityRelationType.ONE_TO_MANY:
-                            this.checkCascade(newValue, cascadeOverwrite, dbProperty, dbRelation, schemaUtils, CRUDOperation.CREATE, cascadeRecords);
+                            this.checkCascade(newValue, ctx.cascadeOverwrite, dbProperty, dbRelation, ctx.ioc.schemaUtils, CRUDOperation.CREATE, cascadeRecords);
                             break;
                     }
                 }
                 else {
                     let column = dbProperty.propertyColumns[0].column;
                     this.ensureNonRelationalValue(dbProperty, column, newValue);
-                    if (schemaUtils.isRepositoryId(column.name)
-                        && schemaUtils.isEmpty(newValue)) {
+                    if (ctx.ioc.schemaUtils.isRepositoryId(column.name)
+                        && ctx.ioc.schemaUtils.isEmpty(newValue)) {
                         throw new Error(`Repository Id must be specified on an insert`);
                     }
                     let addValue = true;
@@ -232,14 +237,14 @@ export class OperationManager {
                         // Allowing negative integers for temporary identification
                         // within the circular dependency management lookup
                         if (!dbProperty.isId || newValue >= 0) {
-                            throw new Error(`@GeneratedValue() "${dbEntity.name}.${dbProperty.name}" 
+                            throw new Error(`@GeneratedValue() "${ctx.dbEntity.name}.${dbProperty.name}" 
 							cannot have a value for 'create' operations.`);
                         }
                         addValue = false;
                     }
                     if (dbProperty.isId) {
-                        if (!column.isGenerated && schemaUtils.isIdEmpty(newValue)) {
-                            throw new Error(`non-@GeneratedValue() @Id() "${dbEntity.name}.${dbProperty.name}" 
+                        if (!column.isGenerated && ctx.ioc.schemaUtils.isIdEmpty(newValue)) {
+                            throw new Error(`non-@GeneratedValue() @Id() "${ctx.dbEntity.name}.${dbProperty.name}" 
 							must have a value for 'create' operations.`);
                         }
                     }
@@ -253,20 +258,20 @@ export class OperationManager {
         }
         let numberOfAffectedRecords = 0;
         if (rawInsert.values.length) {
-            const generatedColumns = dbEntity.columns.filter(column => column.isGenerated);
+            const generatedColumns = ctx.dbEntity.columns.filter(column => column.isGenerated);
             if (generatedColumns.length && ensureGeneratedValues) {
-                const idsAndGeneratedValues = await this.internalInsertValuesGetIds(dbEntity, rawInsert, fieldUtils, queryFacade, queryUtils, transaction, transactionalServer);
-                for (let i = 0; i < entities.length; i++) {
+                const idsAndGeneratedValues = await this.internalInsertValuesGetIds(rawInsert, transaction, ctx);
+                for (let i = 0; i < ctx.entities.length; i++) {
                     for (const generatedColumn of generatedColumns) {
                         // Return index for generated column values is: DbColumn.index
-                        entities[i][generatedColumn.propertyColumns[0].property.name]
+                        ctx.entities[i][generatedColumn.propertyColumns[0].property.name]
                             = idsAndGeneratedValues[i][generatedColumn.index];
                     }
                 }
                 numberOfAffectedRecords = idsAndGeneratedValues.length;
             }
             else {
-                numberOfAffectedRecords = await this.internalInsertValues(dbEntity, rawInsert, queryUtils, fieldUtils, transaction, ensureGeneratedValues);
+                numberOfAffectedRecords = await this.internalInsertValues(rawInsert, transaction, ctx, ensureGeneratedValues);
             }
         }
         return {
@@ -319,11 +324,13 @@ export class OperationManager {
         }
         return true;
     }
-    async cascadeOnPersist(cascadeRecords, parentDbEntity, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, cascadeOverwrite = CascadeOverwrite.DEFAULT) {
+    async cascadeOnPersist(cascadeRecords, parentDbEntity, alreadyModifiedEntityMap, transaction, ctx) {
         if (!cascadeRecords.length
-            || cascadeOverwrite === CascadeOverwrite.NEVER) {
+            || ctx.cascadeOverwrite === CascadeOverwrite.NEVER) {
             return;
         }
+        const previousDbEntity = ctx.dbEntity;
+        const previousEntities = ctx.entities;
         for (const cascadeRecord of cascadeRecords) {
             if (!cascadeRecord.relation.oneToManyElems) {
                 continue;
@@ -340,9 +347,10 @@ export class OperationManager {
             // const entitiesWithIdMap: { [idKey: string]: UpdateRecord } = {}
             const entitiesWithoutIds = [];
             const dbEntity = cascadeRecord.relation.relationEntity;
+            ctx.dbEntity = dbEntity;
             if (cascadeRecord.manyEntities) {
                 for (const manyEntity of cascadeRecord.manyEntities) {
-                    const [isProcessed, entityIdData] = this.isProcessed(manyEntity, alreadyModifiedEntityMap, dbEntity, schemaUtils);
+                    const [isProcessed, entityIdData] = this.isProcessed(manyEntity, alreadyModifiedEntityMap, dbEntity, ctx.ioc.schemaUtils);
                     if (isProcessed === true) {
                         return;
                     }
@@ -372,7 +380,8 @@ export class OperationManager {
                 // }
                 for (let i = 0; i < entitiesWithIds.length; i++) {
                     let entityToOperateOn = entitiesWithIds[i];
-                    let originalValue = updateCache.getEntityUpdateCache(entityToOperateOn);
+                    ctx.entities = [entityToOperateOn.newValue];
+                    let originalValue = ctx.ioc.updateCache.getEntityUpdateCache(entityToOperateOn);
                     if (!originalValue) {
                         if (entityToOperateOn.idData.idColumnValueData.length == 1) {
                             // Entity with a single Id always has the @Id generated
@@ -382,18 +391,22 @@ export class OperationManager {
                         // Don't know if the entity has been deleted or is a brand new one, create it
                         // TODO: figure out if the entity has been deleted and if it has, throw an
                         // exception?
-                        await this.performCreate(dbEntity, entityToOperateOn.newValue, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, entityToOperateOn.idData, cascadeOverwrite);
+                        await this.performCreate(alreadyModifiedEntityMap, transaction, ctx, entityToOperateOn.idData);
                     }
                     else {
-                        await this.performUpdate(dbEntity, entityToOperateOn.newValue, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, entityToOperateOn.originalValue, cascadeOverwrite);
+                        ctx.entities = [entityToOperateOn.newValue];
+                        await this.performUpdate(alreadyModifiedEntityMap, transaction, ctx, entityToOperateOn.originalValue);
                     }
                 }
             }
             for (let i = 0; i < entitiesWithoutIds.length; i++) {
                 let entityToCreate = entitiesWithoutIds[i];
-                await this.performCreate(dbEntity, entityToCreate, alreadyModifiedEntityMap, airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, entityToCreate.idData, cascadeOverwrite);
+                ctx.entities = [entityToCreate];
+                await this.performCreate(alreadyModifiedEntityMap, transaction, ctx, entityToCreate.idData);
             }
         }
+        ctx.dbEntity = previousDbEntity;
+        ctx.entities = previousEntities;
     }
     /**
      * On an update operation, can a nested create contain an update?
@@ -403,14 +416,15 @@ export class OperationManager {
      *  ManyToOne:
      *    Cascades do not travel across ManyToOne
      */
-    async internalUpdate(dbEntity, entity, originalEntity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer, updateCache, cascadeOverwrite) {
-        const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
+    async internalUpdate(originalEntity, transaction, ctx) {
+        const qEntity = ctx.ioc.airDb.qSchemas[ctx.dbEntity.schemaVersion.schema.index][ctx.dbEntity.name];
         const cascadeRecords = [];
         const setFragment = {};
         const idWhereFragments = [];
         let numUpdates = 0;
         const valuesMapByColumn = [];
-        for (const dbProperty of dbEntity.properties) {
+        const entity = ctx.entities[0];
+        for (const dbProperty of ctx.dbEntity.properties) {
             const updatedValue = entity[dbProperty.name];
             if (!dbProperty.relation || !dbProperty.relation.length) {
                 const dbColumn = dbProperty.propertyColumns[0].column;
@@ -436,7 +450,7 @@ export class OperationManager {
             switch (dbRelation.relationType) {
                 case EntityRelationType.MANY_TO_ONE:
                     this.assertManyToOneNotArray(updatedValue);
-                    schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, value, propertyNameChains) => {
+                    ctx.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, value, propertyNameChains) => {
                         if (this.columnProcessed(dbProperty, valuesMapByColumn, dbColumn, value)) {
                             return;
                         }
@@ -459,7 +473,7 @@ export class OperationManager {
                     // be done
                     continue;
                 case EntityRelationType.ONE_TO_MANY:
-                    this.checkCascade(updatedValue, cascadeOverwrite, dbProperty, dbRelation, schemaUtils, CRUDOperation.UPDATE, cascadeRecords);
+                    this.checkCascade(updatedValue, ctx.cascadeOverwrite, dbProperty, dbRelation, ctx.ioc.schemaUtils, CRUDOperation.UPDATE, cascadeRecords);
                     break;
             }
         }
@@ -478,7 +492,7 @@ export class OperationManager {
                 where: whereFragment
             };
             let update = new UpdateProperties(rawUpdate);
-            numberOfAffectedRecords = await this.internalUpdateWhere(dbEntity, update, fieldUtils, queryFacade, queryUtils, transaction, transactionalServer);
+            numberOfAffectedRecords = await this.internalUpdateWhere(update, transaction, ctx);
         }
         return {
             recordChanged: !!numUpdates,
@@ -594,8 +608,10 @@ export class OperationManager {
         // The Update operation for this entity was already recorded, nothing to do
         return [true, null];
     }
-    async internalDelete(dbEntity, entity, airDb, fieldUtils, queryFacade, queryUtils, schemaUtils, transaction, transactionalServer) {
-        const qEntity = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
+    async internalDelete(transaction, ctx) {
+        const dbEntity = ctx.dbEntity;
+        const entity = ctx.entities[0];
+        const qEntity = ctx.ioc.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         const idWhereFragments = [];
         const valuesMapByColumn = [];
         for (let propertyName in entity) {
@@ -630,9 +646,9 @@ export class OperationManager {
             switch (dbRelation.relationType) {
                 case EntityRelationType.MANY_TO_ONE:
                     this.assertManyToOneNotArray(deletedValue);
-                    schemaUtils.forEachColumnOfRelation(dbRelation, dbEntity, (dbColumn, value, propertyNameChains) => {
+                    ctx.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, dbEntity, (dbColumn, value, propertyNameChains) => {
                         if (dbProperty.isId && valuesMapByColumn[dbColumn.index] === undefined) {
-                            if (schemaUtils.isIdEmpty(value)) {
+                            if (ctx.ioc.schemaUtils.isIdEmpty(value)) {
                                 throw new Error(`Required Id value is missing in:
 								'${dbEntity.name}.${propertyNameChains.join('.')}'`);
                             }
@@ -670,7 +686,7 @@ export class OperationManager {
             where: idWhereClause
         };
         let deleteWhere = new Delete(rawDelete);
-        return await this.internalDeleteWhere(dbEntity, deleteWhere, fieldUtils, queryFacade, queryUtils, transaction, transactionalServer);
+        return await this.internalDeleteWhere(deleteWhere, transaction, ctx);
     }
 }
 //# sourceMappingURL=OperationManager.js.map
