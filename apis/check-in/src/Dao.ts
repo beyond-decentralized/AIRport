@@ -10,7 +10,8 @@ import {
 	IQEntity,
 	OperationName,
 	QSchema
-} from '@airport/air-control'
+}                             from '@airport/air-control'
+import {IContext}             from '@airport/di'
 import {
 	CascadeOverwrite,
 	EntityId as DbEntityId
@@ -52,25 +53,29 @@ export abstract class Dao<Entity,
 	async bulkCreate(
 		entities: EntityCreate[],
 		checkIfProcessed: boolean          = true,
+		ctx?: IContext,
 		operationName?: OperationName
 	): Promise<number> {
 		const result = await this.db.bulkCreate(entities,
-			checkIfProcessed, operationName)
+			checkIfProcessed, ctx, operationName)
 
 		return result
 	}
 
-	async count(): Promise<number> {
+	async count(
+		ctx?: IContext
+	): Promise<number> {
 		throw new Error(`Not Implemented`)
 	}
 
 	async create<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entityInfo: EntityInfo,
+		ctx?: IContext,
 		operationName?: OperationName
 	): Promise<number> {
 		if (entityInfo instanceof Array) {
 			return await this.db.bulkCreate(entityInfo,
-				true, operationName)
+				true, ctx, operationName)
 		} else {
 			const result = await this.db.create(<EntityCreate>entityInfo, operationName)
 
@@ -80,25 +85,32 @@ export abstract class Dao<Entity,
 
 	async delete(
 		entityIdInfo: EntityId | EntityId[],
+		ctx?: IContext,
 		operationName?: OperationName
 	): Promise<number> {
 		if (entityIdInfo instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
-			return await this.db.delete(entityIdInfo, operationName)
+			return await this.db.delete(entityIdInfo, ctx, operationName)
 		}
 	}
 
-	async deleteAll(): Promise<number> {
+	async deleteAll(
+		ctx?: IContext
+	): Promise<number> {
 		throw new Error(`Not Implemented`)
 	}
 
-	exists(entityId: EntityId): Promise<boolean> {
+	exists(
+		entityId: EntityId,
+		ctx?: IContext
+	): Promise<boolean> {
 		throw new Error(`Not Implemented`)
 	}
 
 	async findAll(
 		entityIds?: EntityId[],
+		ctx?: IContext,
 		cacheForUpdate: boolean = false
 	): Promise<Entity[]> {
 		if (entityIds) {
@@ -107,11 +119,12 @@ export abstract class Dao<Entity,
 		return await this.db.find.graph({
 			select: <any>{},
 			from: [this.db.from],
-		})
+		}, ctx)
 	}
 
 	async findAllAsTrees(
 		entityIds?: EntityId[],
+		ctx?: IContext,
 		cacheForUpdate: boolean = false
 	): Promise<Entity[]> {
 		if (entityIds) {
@@ -120,11 +133,12 @@ export abstract class Dao<Entity,
 		return await this.db.find.tree({
 			select: <any>{},
 			from: [this.db.from],
-		})
+		}, ctx)
 	}
 
 	findById(
 		entityId: EntityId,
+		ctx?: IContext,
 		cacheForUpdate: boolean = false
 	): Promise<Entity> {
 		throw new Error(`Not implemented`)
@@ -132,12 +146,13 @@ export abstract class Dao<Entity,
 
 	async save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entity: EntityInfo,
+		ctx?: IContext,
 		operationName?: OperationName
 	): Promise<number> {
 		if (entity instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
-			const result = await this.db.save(<EntityCreate>entity, operationName)
+			const result = await this.db.save(<EntityCreate>entity, ctx, operationName)
 
 			return result
 		}
@@ -145,12 +160,13 @@ export abstract class Dao<Entity,
 
 	async update(
 		entityInfo: EntityCreate | EntityCreate[],
+		ctx?: IContext,
 		operationName?: OperationName
 	): Promise<number> {
 		if (entityInfo instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
-			return await this.db.update(entityInfo, operationName)
+			return await this.db.update(entityInfo, ctx, operationName)
 		}
 	}
 

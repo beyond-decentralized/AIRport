@@ -1,4 +1,4 @@
-import {CascadeOverwrite}      from '@airport/ground-control'
+import {IContext}              from '@airport/di'
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
@@ -35,10 +35,13 @@ export interface IDao<Entity,
 	bulkCreate(
 		entities: EntityCreate[],
 		checkIfProcessed?: boolean,
-		operationName?: OperationName
+		ctx?: IContext,
+		operationName?: OperationName,
 	): Promise<number>;
 
-	count(): Promise<number>;
+	count(
+		ctx?: IContext
+	): Promise<number>;
 
 	/**
 	 * Does not cascade?
@@ -47,28 +50,38 @@ export interface IDao<Entity,
 	 */
 	create<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entityInfo: EntityInfo,
-		operationName?: OperationName
+		ctx?: IContext,
+		operationName?: OperationName,
 	): Promise<number>;
 
 	delete(
 		entityIdInfo: EntityId | EntityId[],
-		operationName?: OperationName
+		ctx?: IContext,
+		operationName?: OperationName,
 	): Promise<number>;
 
-	deleteAll(): Promise<number>;
+	deleteAll(
+		ctx?: IContext
+	): Promise<number>;
 
-	exists(entityId: EntityId): Promise<boolean>;
+	exists(
+		entityId: EntityId,
+		ctx?: IContext
+	): Promise<boolean>;
 
 	findAll(
-		entityIds?: EntityId[]
+		entityIds?: EntityId[],
+		ctx?: IContext
 	): Promise<Entity[]>;
 
 	findAllAsTrees(
-		entityIds?: EntityId[]
+		entityIds?: EntityId[],
+		ctx?: IContext
 	): Promise<Entity[]>;
 
 	findById(
-		entityId: EntityId
+		entityId: EntityId,
+		ctx?: IContext
 	): Promise<Entity>;
 
 	/**
@@ -81,7 +94,8 @@ export interface IDao<Entity,
 	 */
 	save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entityInfo: EntityInfo,
-		operationName?: OperationName
+		ctx?: IContext,
+		operationName?: OperationName,
 	): Promise<number>;
 
 	/**
@@ -91,7 +105,8 @@ export interface IDao<Entity,
 	 */
 	update(
 		entityInfo: EntityCreate | EntityCreate[],
-		operationName?: OperationName
+		ctx?: IContext,
+		operationName?: OperationName,
 	): Promise<number>;
 
 }

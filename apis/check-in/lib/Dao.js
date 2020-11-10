@@ -8,72 +8,72 @@ export class Dao {
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
         this.db = new EntityDatabaseFacade(dbEntity, Q);
     }
-    async bulkCreate(entities, checkIfProcessed = true, operationName) {
-        const result = await this.db.bulkCreate(entities, checkIfProcessed, operationName);
+    async bulkCreate(entities, checkIfProcessed = true, ctx, operationName) {
+        const result = await this.db.bulkCreate(entities, checkIfProcessed, ctx, operationName);
         return result;
     }
-    async count() {
+    async count(ctx) {
         throw new Error(`Not Implemented`);
     }
-    async create(entityInfo, operationName) {
+    async create(entityInfo, ctx, operationName) {
         if (entityInfo instanceof Array) {
-            return await this.db.bulkCreate(entityInfo, true, operationName);
+            return await this.db.bulkCreate(entityInfo, true, ctx, operationName);
         }
         else {
             const result = await this.db.create(entityInfo, operationName);
             return result;
         }
     }
-    async delete(entityIdInfo, operationName) {
+    async delete(entityIdInfo, ctx, operationName) {
         if (entityIdInfo instanceof Array) {
             throw new Error(`Not Implemented`);
         }
         else {
-            return await this.db.delete(entityIdInfo, operationName);
+            return await this.db.delete(entityIdInfo, ctx, operationName);
         }
     }
-    async deleteAll() {
+    async deleteAll(ctx) {
         throw new Error(`Not Implemented`);
     }
-    exists(entityId) {
+    exists(entityId, ctx) {
         throw new Error(`Not Implemented`);
     }
-    async findAll(entityIds, cacheForUpdate = false) {
+    async findAll(entityIds, ctx, cacheForUpdate = false) {
         if (entityIds) {
             throw new Error(`Not implemented`);
         }
         return await this.db.find.graph({
             select: {},
             from: [this.db.from],
-        });
+        }, ctx);
     }
-    async findAllAsTrees(entityIds, cacheForUpdate = false) {
+    async findAllAsTrees(entityIds, ctx, cacheForUpdate = false) {
         if (entityIds) {
             throw new Error(`Not implemented`);
         }
         return await this.db.find.tree({
             select: {},
             from: [this.db.from],
-        });
+        }, ctx);
     }
-    findById(entityId, cacheForUpdate = false) {
+    findById(entityId, ctx, cacheForUpdate = false) {
         throw new Error(`Not implemented`);
     }
-    async save(entity, operationName) {
+    async save(entity, ctx, operationName) {
         if (entity instanceof Array) {
             throw new Error(`Not Implemented`);
         }
         else {
-            const result = await this.db.save(entity, operationName);
+            const result = await this.db.save(entity, ctx, operationName);
             return result;
         }
     }
-    async update(entityInfo, operationName) {
+    async update(entityInfo, ctx, operationName) {
         if (entityInfo instanceof Array) {
             throw new Error(`Not Implemented`);
         }
         else {
-            return await this.db.update(entityInfo, operationName);
+            return await this.db.update(entityInfo, ctx, operationName);
         }
     }
 }
