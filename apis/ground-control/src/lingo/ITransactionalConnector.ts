@@ -1,10 +1,13 @@
 import {
-	DistributionStrategy,
-	PlatformType,
+	DistributionStrategy
+}                    from './data/DistributionStrategy'
+import {
+	PlatformType
+}                    from './data/PatformType'
+import {
 	PortableQuery
-}                     from '@airport/ground-control'
-import {IObservable}  from '@airport/observe'
-import {ITransaction} from './ITransaction'
+}                    from './query/PortableQuery'
+import {IObservable} from '@airport/observe'
 
 export interface ITransactionalConnector {
 

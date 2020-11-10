@@ -274,7 +274,7 @@ export class DatabaseFacade extends OperationManager {
         queryFacade: IQueryFacade,
         queryUtils: IQueryUtils,
         schemaUtils: ISchemaUtils,
-        transactionalServer: ITransactionalConnector,
+        transactionalServer: ITransactionalServer,
         updateCache: IUpdateCache
     ): Promise<MappedEntityArray<any>> {
         const qEntity                         = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]

@@ -1,8 +1,12 @@
 export interface IContext {
+	startedAt?: Date
+	[propertyName: string]: any;
+}
 
+export interface IInjectionContext
+	extends IContext {
 	name: string
 	type: ContextType
-
 }
 
 export enum ContextType {
@@ -11,7 +15,7 @@ export enum ContextType {
 }
 
 export class Context
-	implements IContext {
+	implements IInjectionContext {
 
 	constructor(
 		public name: string,

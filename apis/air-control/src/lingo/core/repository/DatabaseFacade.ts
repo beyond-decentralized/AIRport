@@ -5,19 +5,23 @@ import {
 	PlatformType,
 	PortableQuery,
 	QueryResultType
-}                        from '@airport/ground-control'
-import {IObservable}     from '@airport/observe'
-import {OperationName}   from '../../query/Dao'
-import {IAbstractQuery}  from '../../query/facade/AbstractQuery'
-import {RawDelete}       from '../../query/facade/Delete'
+}                                from '@airport/ground-control'
+import {IObservable}             from '@airport/observe'
+import {
+	IEntityContext,
+	IEntityOperationContext
+} from '../../..'
+import {OperationName}           from '../../query/Dao'
+import {IAbstractQuery}          from '../../query/facade/AbstractQuery'
+import {RawDelete}               from '../../query/facade/Delete'
 import {
 	RawInsertColumnValues,
 	RawInsertValues
-}                        from '../../query/facade/InsertValues'
+}                                from '../../query/facade/InsertValues'
 import {
 	RawUpdate,
 	RawUpdateColumns
-}                        from '../../query/facade/Update'
+}                                from '../../query/facade/Update'
 import {IFieldUtils}     from '../../utils/FieldUtils'
 import {IQueryUtils}     from '../../utils/QueryUtils'
 import {
@@ -68,7 +72,8 @@ export interface IDatabaseFacade {
 	/*
 		cacheForUpdate(
 			cacheForUpdate: UpdateCacheType,
-			dbEntity: DbEntity,
+			// dbEntity: DbEntity,
+			ctx: IEntityContext,
 			...entities: any[]
 		): void;
 		*/
@@ -79,6 +84,7 @@ export interface IDatabaseFacade {
 		platform: PlatformType,
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
+		ctx: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -88,8 +94,8 @@ export interface IDatabaseFacade {
 	 * @return Number of records created (1 or 0)
 	 */
 	create<E, EntityCascadeGraph>(
-		dbEntity: DbEntity,
 		entity: E,
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -100,8 +106,8 @@ export interface IDatabaseFacade {
 	 * @return Number of records created
 	 */
 	bulkCreate<E, EntityCascadeGraph>(
-		dbEntity: DbEntity,
 		entities: E[],
+		ctx: IEntityContext,
 		checkIfProcessed: boolean, // defaults to true
 		operationName?: OperationName,
 		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
@@ -109,31 +115,31 @@ export interface IDatabaseFacade {
 	): Promise<number>;
 
 	insertColumnValues<IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
+		ctx: IEntityContext
 	): Promise<number>;
 
 	insertValues<IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
+		ctx: IEntityContext
 	): Promise<number>;
 
 	insertColumnValuesGenerateIds<IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
+		ctx: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	insertValuesGenerateIds<IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
+		ctx: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	/**
@@ -143,8 +149,8 @@ export interface IDatabaseFacade {
 	 * @return Number of records deleted (1 or 0)
 	 */
 	delete<E>(
-		dbEntity: DbEntity,
 		entity: E,
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -155,10 +161,10 @@ export interface IDatabaseFacade {
 	 * @return Number of records deleted
 	 */
 	deleteWhere<IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
+		ctx: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -168,8 +174,8 @@ export interface IDatabaseFacade {
 	 * @return Number of records saved (1 or 0)
 	 */
 	save<E, EntityCascadeGraph>(
-		dbEntity: DbEntity,
 		entity: E,
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -182,6 +188,7 @@ export interface IDatabaseFacade {
 	update<E, EntityCascadeGraph>(
 		dbEntity: DbEntity,
 		entity: E,
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -192,11 +199,11 @@ export interface IDatabaseFacade {
 	 * @return Number of records updated
 	 */
 	updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawUpdateColumns: RawUpdateColumns<IEUC, IQE>
 			| {
 			(...args: any[]): RawUpdateColumns<IEUC, IQE>
 		},
+		ctx: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -206,10 +213,10 @@ export interface IDatabaseFacade {
 	 * @return Number of records updated
 	 */
 	updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},
+		ctx: IEntityContext
 	): Promise<number>;
 
 	prepare<QF extends Function>(
@@ -223,50 +230,30 @@ export interface IQueryFacade {
 	// init(): Promise<void>;
 
 	find<E, EntityArray extends Array<E>>(
-		dbEntity: DbEntity,
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		fieldUtils: IFieldUtils,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache,
+		ctx: IEntityOperationContext,
 		cacheForUpdate?: UpdateCacheType
 	): Promise<EntityArray>;
 
 	findOne<E>(
-		dbEntity: DbEntity,
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		fieldUtils: IFieldUtils,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache,
+		ctx: IEntityOperationContext,
 		cacheForUpdate?: UpdateCacheType,
 	): Promise<E>;
 
 	search<E, EntityArray extends Array<E>>(
-		dbEntity: DbEntity,
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		fieldUtils: IFieldUtils,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache,
+		ctx: IEntityOperationContext,
 		cacheForUpdate?: UpdateCacheType,
 	): Promise<IObservable<EntityArray>>;
 
 	searchOne<E>(
-		dbEntity: DbEntity,
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		fieldUtils: IFieldUtils,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache,
+		ctx: IEntityOperationContext,
 		cacheForUpdate?: UpdateCacheType,
 	): Promise<IObservable<E>>;
 

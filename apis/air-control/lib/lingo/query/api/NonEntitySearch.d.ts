@@ -1,3 +1,4 @@
+import { IContext } from '@airport/di';
 import { IObservable } from '@airport/observe';
 import { IQOrderableField } from '../../core/field/Field';
 import { RawFieldQuery } from '../facade/FieldQuery';
@@ -13,18 +14,18 @@ export interface INonEntitySearch extends ILookup {
      */
     tree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
         (...args: any[]): RawTreeQuery<any>;
-    }): IObservable<ITE[]>;
+    }, ctx?: IContext): IObservable<ITE[]>;
     /**
      * Returns an Observable for a list of flat sheets/tables of values.
      */
     sheet(rawSheetQuery: RawSheetQuery | {
         (...args: any[]): RawSheetQuery;
-    }): IObservable<any[][]>;
+    }, ctx?: IContext): IObservable<any[][]>;
     /**
      * Returns an Observable for a list of a single value.
      */
     field<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<any>;
-    }): IObservable<any[]>;
+    }, ctx?: IContext): IObservable<any[]>;
 }
 //# sourceMappingURL=NonEntitySearch.d.ts.map

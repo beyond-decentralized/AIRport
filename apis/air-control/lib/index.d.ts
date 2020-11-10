@@ -58,6 +58,7 @@ export * from './impl/utils/QueryUtils';
 export * from './impl/utils/SchemaUtils';
 export * from './impl/Constants';
 export * from './impl/Utils';
+export * from './lingo/core/data/EntityContext';
 export * from './lingo/core/data/UpdateCache';
 export * from './lingo/core/data/UpdateCacheType';
 export * from './lingo/core/entity/metadata/ColumnDecorators';

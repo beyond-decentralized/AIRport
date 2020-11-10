@@ -1,5 +1,6 @@
+import { IContext } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
-import { UpdateCacheType } from '../../..';
+import { UpdateCacheType } from '../../../lingo/core/data/UpdateCacheType';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
 import { IEntityFindOne } from '../../../lingo/query/api/EntityFindOne';
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery';
@@ -7,7 +8,7 @@ import { EntityLookup } from './EntityLookup';
 export interface IEntityFindOneInternal<Entity, IESP extends IEntitySelectProperties> extends IEntityFindOne<Entity, IESP> {
     findOne(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType): Promise<Entity>;
+    }, queryResultType: QueryResultType, ctx: IContext): Promise<Entity>;
 }
 /**
  * Created by Papa on 11/12/2016.
@@ -15,13 +16,13 @@ export interface IEntityFindOneInternal<Entity, IESP extends IEntitySelectProper
 export declare class EntityFindOne<Entity, IESP extends IEntitySelectProperties> extends EntityLookup<EntityFindOne<Entity, IESP>, EntityFindOne<Entity, IESP>, IESP> implements IEntityFindOneInternal<Entity, IESP> {
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }): Promise<Entity>;
+    }, ctx?: IContext): Promise<Entity>;
     tree(rawTreeQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }): Promise<Entity>;
+    }, ctx?: IContext): Promise<Entity>;
     findOne(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType): Promise<Entity>;
+    }, queryResultType: QueryResultType, ctx?: IContext): Promise<Entity>;
     map(isMapped?: boolean): EntityFindOne<Entity, IESP>;
     noCache(): EntityFindOne<Entity, IESP>;
     cache(cacheForUpdate?: UpdateCacheType): EntityFindOne<Entity, IESP>;

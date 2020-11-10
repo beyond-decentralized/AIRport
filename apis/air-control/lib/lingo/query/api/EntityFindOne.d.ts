@@ -1,3 +1,4 @@
+import { IContext } from '@airport/di';
 import { IEntitySelectProperties } from '../../core/entity/Entity';
 import { RawEntityQuery } from '../facade/EntityQuery';
 import { IEntityLookup } from './EntityLookup';
@@ -10,12 +11,12 @@ export interface IEntityFindOne<Entity, IESP extends IEntitySelectProperties> ex
      */
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }): Promise<Entity>;
+    }, ctx?: IContext): Promise<Entity>;
     /**
      * Returns a Promise for a non-interlinked entity tree.
      */
     tree(rawTreeQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }): Promise<Entity>;
+    }, ctx?: IContext): Promise<Entity>;
 }
 //# sourceMappingURL=EntityFindOne.d.ts.map

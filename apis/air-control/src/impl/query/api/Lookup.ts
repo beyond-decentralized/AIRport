@@ -1,13 +1,16 @@
-import {DI}              from '@airport/di'
 import {
-	DbEntity,
+	DI,
+	IContext,
+}                                from '@airport/di'
+import {
 	QueryResultType,
 	TRANS_CONNECTOR
-}                        from '@airport/ground-control'
-import {UpdateCacheType} from '../../../lingo/core/data/UpdateCacheType'
-import {ILookup}         from '../../../lingo/query/api/Lookup'
-import {IAbstractQuery}  from '../../../lingo/query/facade/AbstractQuery'
-import {RawQuery,}       from '../../../lingo/query/facade/Query'
+}                                from '@airport/ground-control'
+import {IEntityOperationContext} from '../../../lingo/core/data/EntityContext'
+import {UpdateCacheType}         from '../../../lingo/core/data/UpdateCacheType'
+import {ILookup}                 from '../../../lingo/query/api/Lookup'
+import {IAbstractQuery}          from '../../../lingo/query/facade/AbstractQuery'
+import {RawQuery,}               from '../../../lingo/query/facade/Query'
 import {
 	ENTITY_UTILS,
 	FIELD_UTILS,
@@ -16,7 +19,7 @@ import {
 	QUERY_UTILS,
 	SCHEMA_UTILS,
 	UPDATE_CACHE
-}                        from '../../../tokens'
+}                                from '../../../tokens'
 
 export class LookupProxy
 	implements ILookup {
@@ -27,7 +30,7 @@ export class LookupProxy
 		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
-		dbEntity?: DbEntity,
+		ctx: IEntityOperationContext,
 		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any> {
@@ -36,7 +39,13 @@ export class LookupProxy
 			.then(
 				lookup => lookup.lookup(
 					rawQuery, queryResultType, search, one,
-					QueryClass, dbEntity, cacheForUpdate, mapResults))
+					QueryClass, ctx, cacheForUpdate, mapResults))
+	}
+
+	protected ensureContext(
+		ctx?: IContext
+	): IContext {
+		return doEnsureContext(ctx)
 	}
 }
 
@@ -49,7 +58,7 @@ export class Lookup
 		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
-		dbEntity?: DbEntity,
+		ctx: IEntityOperationContext,
 		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any> {
@@ -85,10 +94,22 @@ export class Lookup
 			}
 		}
 
-		return await queryMethod.call(queryFacade, dbEntity, query,
-			this.getQueryResultType(queryResultType, mapResults), fieldUtils,
-			queryUtils, schemaUtils, transConnector, updateCache,
-			cacheForUpdate)
+		ctx.entityUtils    = entityUtils
+		ctx.fieldUtils     = fieldUtils
+		ctx.queryFacade    = queryFacade
+		ctx.queryUtils     = queryUtils
+		ctx.schemaUtils    = schemaUtils
+		ctx.transConnector = transConnector
+		ctx.updateCache    = updateCache
+
+		return await queryMethod.call(query, this.getQueryResultType(queryResultType, mapResults),
+			ctx, cacheForUpdate)
+	}
+
+	protected ensureContext(
+		ctx?: IContext
+	): IContext {
+		return doEnsureContext(ctx)
 	}
 
 	private getQueryResultType(
@@ -111,6 +132,20 @@ export class Lookup
 		}
 	}
 
+}
+
+function doEnsureContext(
+	ctx?: IContext
+): IContext {
+	if (!ctx) {
+		ctx = {}
+	}
+
+	if (!ctx.startedAt) {
+		ctx.startedAt = new Date()
+	}
+
+	return ctx
 }
 
 DI.set(LOOKUP, Lookup)

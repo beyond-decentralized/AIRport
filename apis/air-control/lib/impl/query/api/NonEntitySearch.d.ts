@@ -1,3 +1,4 @@
+import { IContext } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
 import { IQOrderableField } from '../../../lingo/core/field/Field';
@@ -14,15 +15,15 @@ import { Lookup } from './Lookup';
 export declare class NonEntitySearch extends Lookup implements INonEntitySearch {
     tree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
         (...args: any[]): RawTreeQuery<any>;
-    }): IObservable<ITE[]>;
+    }, ctx?: IContext): IObservable<ITE[]>;
     sheet(rawSheetQuery: RawSheetQuery | {
         (...args: any[]): RawSheetQuery;
-    }): IObservable<any[][]>;
+    }, ctx?: IContext): IObservable<any[][]>;
     field<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<any>;
-    }): IObservable<any[]>;
+    }, ctx?: IContext): IObservable<any[]>;
     search<IQF extends IQOrderableField<IQF>>(rawNonEntityQuery: RawNonEntityQuery | {
         (...args: any[]): RawNonEntityQuery;
-    }, queryResultType: QueryResultType, QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery): Promise<IObservable<any[]>>;
+    }, queryResultType: QueryResultType, QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery, ctx: IContext): Promise<IObservable<any[]>>;
 }
 //# sourceMappingURL=NonEntitySearch.d.ts.map

@@ -1,14 +1,14 @@
 import {
 	Context,
 	ContextType,
-	IContext
+	IInjectionContext
 }                 from './Context'
 import {IDiToken} from './Token'
 
 export interface IChildContainer
 	extends IContainer {
 
-	context: IContext
+	context: IInjectionContext
 
 	get<A>(
 		tokenA: IDiToken<A>
@@ -407,7 +407,7 @@ export class ChildContainer
 	// theObjects: any[]  = []
 
 	constructor(
-		public context: IContext
+		public context: IInjectionContext
 	) {
 		super()
 	}
@@ -918,7 +918,7 @@ export class RootContainer
 	}
 
 	private addContainer(
-		context: IContext
+		context: IInjectionContext
 	): IChildContainer {
 		const childContainer = new ChildContainer(context)
 

@@ -8,7 +8,6 @@ import {
 }                     from '@airport/ground-control'
 import {IObservable}  from '@airport/observe'
 import {
-	ITransaction,
 	TRANS_SERVER
 } from '@airport/tower'
 

@@ -1,5 +1,7 @@
+import {IContext}                from '@airport/di'
 import {QueryResultType}         from '@airport/ground-control'
-import {UpdateCacheType}         from '../../..'
+import {IEntityContext}          from '../../../lingo/core/data/EntityContext'
+import {UpdateCacheType}         from '../../../lingo/core/data/UpdateCacheType'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
 import {IEntityFind}             from '../../../lingo/query/api/EntityFind'
 import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
@@ -26,23 +28,27 @@ export class EntityFind<Entity, EntityArray extends Array<Entity>, IESP extends 
 	implements IEntityFindInternal<Entity, EntityArray, IESP> {
 
 	graph(
-		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
+		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		ctx?: IContext
 	): Promise<EntityArray> {
-		return this.find(rawGraphQuery, QueryResultType.ENTITY_GRAPH)
+		return this.find(rawGraphQuery, QueryResultType.ENTITY_GRAPH, ctx)
 	}
 
 	tree(
-		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
+		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		ctx?: IContext
 	): Promise<EntityArray> {
-		return this.find(rawTreeQuery, QueryResultType.ENTITY_TREE)
+		return this.find(rawTreeQuery, QueryResultType.ENTITY_TREE, ctx)
 	}
 
 	find(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		queryResultType: QueryResultType
+		queryResultType: QueryResultType,
+		ctx?: IContext
 	): Promise<EntityArray> {
 		return this.entityLookup(rawEntityQuery, queryResultType,
-			false, false)
+			false, false,
+			this.ensureContext(ctx) as IEntityContext)
 	}
 
 	map(

@@ -16,8 +16,9 @@ export class EntityLookup extends LookupProxy {
     setCache(ChildClass, cacheForUpdate = UpdateCacheType.ALL_QUERY_ENTITIES) {
         return new ChildClass(this.dbEntity, cacheForUpdate, this.mapResults);
     }
-    entityLookup(rawEntityQuery, queryResultType, search, one) {
-        return this.lookup(rawEntityQuery, queryResultType, search, one, null, this.dbEntity, this.cacheForUpdate, this.mapResults);
+    entityLookup(rawEntityQuery, queryResultType, search, one, ctx) {
+        ctx.dbEntity = this.dbEntity;
+        return this.lookup(rawEntityQuery, queryResultType, search, one, null, ctx, this.cacheForUpdate, this.mapResults);
     }
 }
 EntityLookup.cacheForUpdate = UpdateCacheType.NONE;

@@ -1,7 +1,7 @@
-import { IContext } from './Context';
+import { IInjectionContext } from './Context';
 import { IDiToken } from './Token';
 export interface IChildContainer extends IContainer {
-    context: IContext;
+    context: IInjectionContext;
     get<A>(tokenA: IDiToken<A>): Promise<A>;
     get<A, B>(tokenA: IDiToken<A>, tokenB: IDiToken<B>): Promise<[A, B]>;
     get<A, B, C>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>): Promise<[A, B, C]>;
@@ -49,8 +49,8 @@ export declare class Container implements IContainer {
     set<I>(token: IDiToken<I>, clazz: new () => I): void;
 }
 export declare class ChildContainer extends Container implements IChildContainer {
-    context: IContext;
-    constructor(context: IContext);
+    context: IInjectionContext;
+    constructor(context: IInjectionContext);
     get<A>(tokenA: IDiToken<A>): Promise<A>;
     get<A, B>(tokenA: IDiToken<A>, tokenB: IDiToken<B>): Promise<[A, B]>;
     get<A, B, C>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>): Promise<[A, B, C]>;

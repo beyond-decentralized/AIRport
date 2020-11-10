@@ -1,8 +1,12 @@
 import {
 	DbEntity,
 	QueryResultType
-}                          from '@airport/ground-control'
-import {UpdateCacheType}   from '../../core/data/UpdateCacheType'
+}                        from '@airport/ground-control'
+import {
+	IEntityContext,
+	IEntityOperationContext
+}                        from '../../..'
+import {UpdateCacheType} from '../../core/data/UpdateCacheType'
 import {IAbstractQuery}    from '../facade/AbstractQuery'
 import {RawNonEntityQuery} from '../facade/NonEntityQuery'
 import {RawQuery}          from '../facade/Query'
@@ -15,7 +19,7 @@ export interface ILookup {
 		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => IAbstractQuery,
-		dbEntity?: DbEntity,
+		ctx: IEntityOperationContext,
 		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any>

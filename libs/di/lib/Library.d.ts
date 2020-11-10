@@ -4,7 +4,7 @@ export interface ILibrary {
     name: string;
     system: ISystem;
     tokens: IDiToken<any>[];
-    token<T = GenericDependencyInjectionError>(): IDiToken<T>;
+    token<T = GenericDependencyInjectionError>(name?: string): IDiToken<T>;
 }
 export declare class Library implements ILibrary {
     name: string;

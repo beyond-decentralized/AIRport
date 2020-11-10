@@ -25,9 +25,10 @@ export class EntityDatabaseFacade {
     // 	const dbFacade = await DI.get(DB_FACADE)
     // 	return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity,
     // ...entities) }
-    async create(entity, operationName) {
+    async create(entity, ctx, operationName) {
         const dbFacade = await DI.db().get(DB_FACADE);
-        return await dbFacade.create(this.dbEntity, entity, operationName);
+        ctx.dbEntity = this.dbEntity;
+        return await dbFacade.create(entity, ctx, operationName);
     }
     async bulkCreate(entities, checkIfProcessed = true, operationName) {
         const dbFacade = await DI.db().get(DB_FACADE);
@@ -62,8 +63,9 @@ export class EntityDatabaseFacade {
         return await dbFacade.updateWhere(this.dbEntity, rawUpdate);
     }
     // NOTE: Delete cascading is done on the server, no input is needed
-    async delete(entity, operationName) {
+    async delete(entity, ctx, operationName) {
         const dbFacade = await DI.db().get(DB_FACADE);
+        ctx.dbEntity = this.dbEntity;
         return await dbFacade.delete(this.dbEntity, entity, operationName);
     }
     async deleteWhere(rawDelete) {

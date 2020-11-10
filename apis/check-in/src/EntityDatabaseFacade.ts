@@ -6,6 +6,7 @@ import {
 	EntitySearchOne,
 	IDuo,
 	IEntityCascadeGraph,
+	IEntityContext,
 	IEntityCreateProperties,
 	IEntityDatabaseFacade,
 	IEntityFind,
@@ -24,7 +25,7 @@ import {
 	RawInsertColumnValues,
 	RawInsertValues,
 	RawUpdate
-}            from '@airport/air-control'
+} from '@airport/air-control'
 import {DI}  from '@airport/di'
 import {
 	CascadeOverwrite,
@@ -90,10 +91,12 @@ export class EntityDatabaseFacade<Entity,
 
 	async create(
 		entity: EntityCreate,
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
 		const dbFacade = await DI.db().get(DB_FACADE)
-		return await dbFacade.create(this.dbEntity, entity, operationName)
+		ctx.dbEntity = this.dbEntity
+		return await dbFacade.create(entity, ctx, operationName)
 	}
 
 	async bulkCreate(
@@ -169,9 +172,11 @@ export class EntityDatabaseFacade<Entity,
 	// NOTE: Delete cascading is done on the server, no input is needed
 	async delete(
 		entity: EntityId,
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
 		const dbFacade = await DI.db().get(DB_FACADE)
+		ctx.dbEntity = this.dbEntity
 		return await dbFacade.delete(this.dbEntity, entity, operationName)
 	}
 

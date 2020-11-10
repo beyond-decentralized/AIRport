@@ -1,16 +1,15 @@
 import { IAirportDatabase, IFieldUtils, IQMetadataUtils, IQueryFacade, IQueryUtils, ISchemaUtils, IUpdateCache } from '@airport/air-control';
+import { IContext } from '@airport/di';
 import { CascadeOverwrite, DbEntity } from '@airport/ground-control';
 import { ITransactionalServer } from './core/data/ITransactionalServer';
-export interface IBulkCreateContext<E, EntityCascadeGraph> extends IContext<E, EntityCascadeGraph> {
-}
-export interface IContext<E, EntityCascadeGraph> {
+export interface IOperationContext<E, EntityCascadeGraph> extends IContext {
     cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph;
     checkIfProcessed: boolean;
     dbEntity: DbEntity;
     entities: E[];
-    ioc: IIocContext;
+    ioc: IIocOperationContext;
 }
-export interface IIocContext {
+export interface IIocOperationContext {
     airDb: IAirportDatabase;
     fieldUtils: IFieldUtils;
     metadataUtils: IQMetadataUtils;
@@ -21,7 +20,7 @@ export interface IIocContext {
     updateCache: IUpdateCache;
     init(): Promise<void>;
 }
-export declare class IocContext implements IIocContext {
+export declare class IocContext implements IIocOperationContext {
     airDb: IAirportDatabase;
     fieldUtils: IFieldUtils;
     metadataUtils: IQMetadataUtils;

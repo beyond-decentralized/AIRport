@@ -43,7 +43,7 @@ import {
 }                     from '@airport/ground-control'
 import {
 	IBulkCreateContext,
-	IContext
+	IOperationContext
 }                     from './Context'
 import {TRANS_SERVER} from './tokens'
 import {ITransactionalServer} from './core/data/ITransactionalServer'
@@ -103,7 +103,7 @@ export abstract class OperationManager
 	protected async performCreate<E, EntityCascadeGraph>(
 		createdEntityMap: { [entityId: string]: any }[][],
 		transaction: ITransaction,
-		ctx: IContext<E, EntityCascadeGraph>,
+		ctx: IOperationContext<E, EntityCascadeGraph>,
 		idData?: EntityIdData,
 	): Promise<number> {
 		// TODO: add code to populate CREATED_AT (and save for update in performUpdate)
@@ -160,7 +160,7 @@ export abstract class OperationManager
 	protected async internalInsertValues<E, EntityCascadeGraph, IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE>,
 		transaction: ITransaction,
-		ctx: IContext<E, EntityCascadeGraph>,
+		ctx: IOperationContext<E, EntityCascadeGraph>,
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
 		const [transactionalServer, queryFacade] = await container(this).get(TRANS_SERVER, QUERY_FACADE)
@@ -199,7 +199,7 @@ export abstract class OperationManager
 	protected async performUpdate<E, EntityCascadeGraph>(
 		updatedEntityMap: { [entityId: string]: any } [][],
 		transaction: ITransaction,
-		ctx: IContext<E, EntityCascadeGraph>,
+		ctx: IOperationContext<E, EntityCascadeGraph>,
 		originalValue?: E,
 	): Promise<number> {
 		if (!originalValue) {
@@ -229,7 +229,7 @@ export abstract class OperationManager
 	protected async internalInsertValuesGetIds<E, EntityCascadeGraph, IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE>,
 		transaction: ITransaction,
-		ctx: IContext<E, EntityCascadeGraph>
+		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number[] | string[] | number[][] | string[][]> {
 
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
@@ -310,7 +310,7 @@ export abstract class OperationManager
 		IQE extends IQEntity>(
 		updateColumns: UpdateColumns<IEUC, IQE>,
 		transaction: ITransaction,
-		ctx: IContext<E, EntityCascadeGraph>
+		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
 		const portableQuery: PortableQuery = ctx.ioc.queryFacade.getPortableQuery(
 			ctx.dbEntity, updateColumns, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils)
@@ -322,7 +322,7 @@ export abstract class OperationManager
 		IQE extends IQEntity>(
 		update: UpdateProperties<IEUP, IQE>,
 		transaction: ITransaction,
-		ctx: IContext<E, EntityCascadeGraph>
+		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
 		const portableQuery: PortableQuery = ctx.ioc.queryFacade.getPortableQuery(
 			ctx.dbEntity, update, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils)
@@ -337,7 +337,7 @@ export abstract class OperationManager
 	 */
 	protected async performDelete<E, EntityCascadeGraph>(
 		transaction: ITransaction,
-		ctx: IContext<E, EntityCascadeGraph>
+		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
 		return await this.internalDelete(transaction, ctx)
 
@@ -348,7 +348,7 @@ export abstract class OperationManager
 	protected async internalDeleteWhere<E, EntityCascadeGraph, IQE extends IQEntity>(
 		aDelete: Delete<IQE>,
 		transaction: ITransaction,
-		ctx: IContext<E, EntityCascadeGraph>
+		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
 		let portableQuery: PortableQuery = ctx.ioc.queryFacade.getPortableQuery(
 			ctx.dbEntity, aDelete, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils)
@@ -565,7 +565,7 @@ export abstract class OperationManager
 		parentDbEntity: DbEntity,
 		alreadyModifiedEntityMap: { [idKey: string]: any }[][],
 		transaction: ITransaction,
-		ctx: IContext<E, EntityCascadeGraph>
+		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<void> {
 		if (!cascadeRecords.length
 			|| ctx.cascadeOverwrite === CascadeOverwrite.NEVER) {
@@ -666,7 +666,7 @@ export abstract class OperationManager
 	private async internalUpdate<E, EntityCascadeGraph>(
 		originalEntity: E,
 		transaction: ITransaction,
-		ctx: IContext<E, EntityCascadeGraph>
+		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<ResultWithCascade> {
 		const qEntity                                =
 			      ctx.ioc.airDb.qSchemas[ctx.dbEntity.schemaVersion.schema.index][ctx.dbEntity.name]
@@ -905,7 +905,7 @@ export abstract class OperationManager
 
 	private async internalDelete<E, EntityCascadeGraph>(
 		transaction: ITransaction,
-		ctx: IContext<E, EntityCascadeGraph>
+		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
 
 		const dbEntity = ctx.dbEntity

@@ -1,3 +1,4 @@
+import {IContext}                from '@airport/di'
 import {IObservable}             from '@airport/observe'
 import {IEntitySelectProperties} from '../../core/entity/Entity'
 import {RawEntityQuery}          from '../facade/EntityQuery'
@@ -13,14 +14,16 @@ export interface IEntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 	 * Returns an Observable of a fully interlinked entity graph.
 	 */
 	graph(
-		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
+		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		ctx?: IContext
 	): IObservable<Entity>;
 
 	/**
 	 * Returns an Observable of a non-interlinked entity ITreeEntity.
 	 */
 	tree(
-		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
+		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		ctx?: IContext
 	): IObservable<Entity>;
 
 }

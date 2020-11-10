@@ -1,3 +1,4 @@
+import { IContext } from '@airport/di';
 import { IQOrderableField } from '../../core/field/Field';
 import { RawFieldQuery } from '../facade/FieldQuery';
 import { RawSheetQuery } from '../facade/SheetQuery';
@@ -12,18 +13,18 @@ export interface INonEntityFindOne extends ILookup {
      */
     tree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
         (...args: any[]): RawTreeQuery<any>;
-    }): Promise<ITE>;
+    }, ctx?: IContext): Promise<ITE>;
     /**
      * Returns a Promise for a flat sheet/table of RawInsertValues.
      */
     sheet(rawSheetQuery: RawSheetQuery | {
         (...args: any[]): RawSheetQuery;
-    }): Promise<any[]>;
+    }, ctx?: IContext): Promise<any[]>;
     /**
      * Returns a Promise for a single value.
      */
     field<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<any>;
-    }): Promise<any>;
+    }, ctx?: IContext): Promise<any>;
 }
 //# sourceMappingURL=NonEntityFindOne.d.ts.map

@@ -1,4 +1,5 @@
 import {DbEntity}          from '@airport/ground-control'
+import {IEntityContext}    from '../../..'
 import {IEntityFind}       from '../../query/api/EntityFind'
 import {IEntityFindOne}    from '../../query/api/EntityFindOne'
 import {IEntitySearch}     from '../../query/api/EntitySearch'
@@ -89,6 +90,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	create(
 		entity: EntityCreateProperties,
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -100,28 +102,37 @@ export interface IEntityDatabaseFacade<Entity,
 	bulkCreate(
 		entities: EntityCreateProperties[],
 		checkIfProcessed: boolean, // defaults to true
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
 	insertColumnValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
-		}): Promise<number>;
+		},
+		ctx: IEntityContext
+	): Promise<number>;
 
 	insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
-		}): Promise<number>;
+		},
+		ctx: IEntityContext
+	): Promise<number>;
 
 	insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
-		}): Promise<number[] | string[] | number[][] | string[][]>;
+		},
+		ctx: IEntityContext
+	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
-		}): Promise<number[] | string[] | number[][] | string[][]>;
+		},
+		ctx: IEntityContext
+	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	/**
 	 * Creates the provided entity in the db. As part of that attempts to
@@ -131,6 +142,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	update(
 		entity: EntityCreateProperties, // @Id fields must be populated
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -142,7 +154,8 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	updateColumnsWhere(
 		rawUpdateColumns: RawUpdateColumns<EntityUpdateColumns, IQ>
-			| { (...args: any[]): RawUpdateColumns<EntityUpdateColumns, IQ> }
+			| { (...args: any[]): RawUpdateColumns<EntityUpdateColumns, IQ> },
+		ctx: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -152,7 +165,8 @@ export interface IEntityDatabaseFacade<Entity,
 	 * @return Number of records updated
 	 */
 	updateWhere(
-		rawUpdateProperties: RawUpdate<EntityUpdateProperties, IQ> | { (...args: any[]): RawUpdate<EntityUpdateProperties, IQ> }
+		rawUpdateProperties: RawUpdate<EntityUpdateProperties, IQ> | { (...args: any[]): RawUpdate<EntityUpdateProperties, IQ> },
+		ctx: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -164,6 +178,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	delete(
 		entity: EntityId,
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -173,7 +188,8 @@ export interface IEntityDatabaseFacade<Entity,
 	 * @return Number of records deleted
 	 */
 	deleteWhere(
-		rawDelete: RawDelete<IQ> | { (...args: any[]): RawDelete<IQ> }
+		rawDelete: RawDelete<IQ> | { (...args: any[]): RawDelete<IQ> },
+		ctx: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -185,6 +201,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	save(
 		entity: EntityCreateProperties,
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 

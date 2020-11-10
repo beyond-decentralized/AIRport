@@ -1,4 +1,4 @@
-import { IDuo, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, OperationName, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-control';
+import { IDuo, IEntityCascadeGraph, IEntityContext, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, OperationName, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-control';
 import { DbEntity } from '@airport/ground-control';
 /**
  * Created by Papa on 12/11/2016.
@@ -13,7 +13,7 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     searchOne: IEntitySearchOne<Entity, EntitySelect>;
     constructor(dbEntity: DbEntity, Q: QSchema);
     get from(): IQ;
-    create(entity: EntityCreate, operationName?: OperationName): Promise<number>;
+    create(entity: EntityCreate, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
     bulkCreate(entities: EntityCreate[], checkIfProcessed?: boolean, operationName?: OperationName): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
@@ -34,7 +34,7 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     updateWhere(rawUpdate: RawUpdate<EntityUpdateProperties, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateProperties, IQ>;
     }): Promise<number>;
-    delete(entity: EntityId, operationName?: OperationName): Promise<number>;
+    delete(entity: EntityId, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
     deleteWhere(rawDelete: RawDelete<IQ> | {
         (...args: any[]): RawDelete<IQ>;
     }): Promise<number>;

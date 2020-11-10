@@ -4,14 +4,14 @@ import { EntityLookup } from './EntityLookup';
  * Created by Papa on 11/12/2016.
  */
 export class EntityFind extends EntityLookup {
-    graph(rawGraphQuery) {
-        return this.find(rawGraphQuery, QueryResultType.ENTITY_GRAPH);
+    graph(rawGraphQuery, ctx) {
+        return this.find(rawGraphQuery, QueryResultType.ENTITY_GRAPH, ctx);
     }
-    tree(rawTreeQuery) {
-        return this.find(rawTreeQuery, QueryResultType.ENTITY_TREE);
+    tree(rawTreeQuery, ctx) {
+        return this.find(rawTreeQuery, QueryResultType.ENTITY_TREE, ctx);
     }
-    find(rawEntityQuery, queryResultType) {
-        return this.entityLookup(rawEntityQuery, queryResultType, false, false);
+    find(rawEntityQuery, queryResultType, ctx) {
+        return this.entityLookup(rawEntityQuery, queryResultType, false, false, this.ensureContext(ctx));
     }
     map(isMapped) {
         return this.setMap(EntityFind, isMapped);

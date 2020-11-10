@@ -1,9 +1,11 @@
+import {IContext}                from '@airport/di'
 import {QueryResultType}         from '@airport/ground-control'
 import {
 	IObservable,
 	Observable
 }                                from '@airport/observe'
-import {UpdateCacheType}         from '../../..'
+import {IEntityContext}          from '../../../lingo/core/data/EntityContext'
+import {UpdateCacheType}         from '../../../lingo/core/data/UpdateCacheType'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
 import {IEntitySearch}           from '../../../lingo/query/api/EntitySearch'
 import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
@@ -16,7 +18,8 @@ export interface IEntitySearchInternal<Entity, EntityArray extends Array<Entity>
 
 	search(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		queryResultType: QueryResultType
+		queryResultType: QueryResultType,
+		ctx?: IContext
 	): Promise<IObservable<EntityArray>>
 
 }
@@ -30,23 +33,26 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 	implements IEntitySearchInternal<Entity, EntityArray, IESP> {
 
 	graph(
-		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
+		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		ctx?: IContext
 	): IObservable<EntityArray> {
-		return Observable.from(this.search(rawGraphQuery, QueryResultType.ENTITY_TREE))
+		return Observable.from(this.search(rawGraphQuery, QueryResultType.ENTITY_TREE, ctx))
 	}
 
 	tree(
-		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
+		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		ctx?: IContext
 	): IObservable<EntityArray> {
-		return Observable.from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE))
+		return Observable.from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, ctx))
 	}
 
 	search(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		queryResultType: QueryResultType
+		queryResultType: QueryResultType,
+		ctx?: IContext
 	): Promise<IObservable<EntityArray>> {
 		return this.entityLookup(rawEntityQuery, queryResultType,
-			true, false)
+			true, false, this.ensureContext(ctx) as IEntityContext)
 	}
 
 	map(

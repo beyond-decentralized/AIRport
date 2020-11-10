@@ -11,7 +11,9 @@ export interface ILibrary {
 	system: ISystem
 	tokens: IDiToken<any>[]
 
-	token<T = GenericDependencyInjectionError>(): IDiToken<T>
+	token<T = GenericDependencyInjectionError>(
+		name?: string
+	): IDiToken<T>
 
 }
 

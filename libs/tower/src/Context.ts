@@ -14,7 +14,10 @@ import {
 	SCHEMA_UTILS,
 	UPDATE_CACHE,
 }                             from '@airport/air-control'
-import {DI}                   from '@airport/di'
+import {
+	DI,
+	IContext
+}                             from '@airport/di'
 import {
 	CascadeOverwrite,
 	DbEntity
@@ -22,19 +25,16 @@ import {
 import {ITransactionalServer} from './core/data/ITransactionalServer'
 import {TRANS_SERVER}         from './tokens'
 
-export interface IBulkCreateContext<E, EntityCascadeGraph>
-	extends IContext<E, EntityCascadeGraph> {
-}
-
-export interface IContext<E, EntityCascadeGraph> {
+export interface IOperationContext<E, EntityCascadeGraph>
+	extends IContext {
 	cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph,
 	checkIfProcessed: boolean
 	dbEntity: DbEntity
 	entities: E[]
-	ioc: IIocContext
+	ioc: IIocOperationContext
 }
 
-export interface IIocContext {
+export interface IIocOperationContext {
 
 	airDb: IAirportDatabase
 	fieldUtils: IFieldUtils
@@ -50,7 +50,7 @@ export interface IIocContext {
 }
 
 export class IocContext
-	implements IIocContext {
+	implements IIocOperationContext {
 
 	airDb: IAirportDatabase
 	fieldUtils: IFieldUtils

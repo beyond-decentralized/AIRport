@@ -1,5 +1,6 @@
+import { IContext } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
-import { UpdateCacheType } from '../../..';
+import { UpdateCacheType } from '../../../lingo/core/data/UpdateCacheType';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
 import { IEntityFind } from '../../../lingo/query/api/EntityFind';
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery';
@@ -16,13 +17,13 @@ export interface IEntityFindInternal<Entity, EntityArray extends Array<Entity>, 
 export declare class EntityFind<Entity, EntityArray extends Array<Entity>, IESP extends IEntitySelectProperties> extends EntityLookup<EntityFind<Entity, Array<Entity>, IESP>, EntityFind<Entity, MappedEntityArray<Entity>, IESP>, IESP> implements IEntityFindInternal<Entity, EntityArray, IESP> {
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }): Promise<EntityArray>;
+    }, ctx?: IContext): Promise<EntityArray>;
     tree(rawTreeQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }): Promise<EntityArray>;
+    }, ctx?: IContext): Promise<EntityArray>;
     find(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType): Promise<EntityArray>;
+    }, queryResultType: QueryResultType, ctx?: IContext): Promise<EntityArray>;
     map(isMapped?: boolean): EntityFind<Entity, MappedEntityArray<Entity>, IESP>;
     noCache(): EntityFind<Entity, Entity[], IESP>;
     cache(cacheForUpdate?: UpdateCacheType): EntityFind<Entity, Entity[], IESP>;

@@ -1,8 +1,7 @@
+import {IContext}                from '@airport/di'
 import {QueryResultType}         from '@airport/ground-control'
-import {
-	MappedEntityArray,
-	UpdateCacheType
-}                                from '../../..'
+import {IEntityContext}          from '../../../lingo/core/data/EntityContext'
+import {UpdateCacheType}         from '../../../lingo/core/data/UpdateCacheType'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
 import {IEntityFindOne}          from '../../../lingo/query/api/EntityFindOne'
 import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
@@ -13,7 +12,8 @@ export interface IEntityFindOneInternal<Entity, IESP extends IEntitySelectProper
 
 	findOne(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		queryResultType: QueryResultType
+		queryResultType: QueryResultType,
+		ctx: IContext
 	): Promise<Entity>
 
 }
@@ -27,23 +27,26 @@ export class EntityFindOne<Entity, IESP extends IEntitySelectProperties>
 	implements IEntityFindOneInternal<Entity, IESP> {
 
 	graph(
-		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> }
+		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		ctx?: IContext
 	): Promise<Entity> {
-		return this.findOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH)
+		return this.findOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, ctx)
 	}
 
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		ctx?: IContext
 	): Promise<Entity> {
-		return this.findOne(rawTreeQuery, QueryResultType.ENTITY_TREE)
+		return this.findOne(rawTreeQuery, QueryResultType.ENTITY_TREE, ctx)
 	}
 
 	findOne(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		queryResultType: QueryResultType
+		queryResultType: QueryResultType,
+		ctx?: IContext
 	): Promise<Entity> {
 		return this.entityLookup(rawEntityQuery, queryResultType,
-			false, true)
+			false, true, this.ensureContext(ctx) as IEntityContext)
 	}
 
 	map(

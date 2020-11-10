@@ -1,3 +1,4 @@
+import { IContext } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
 import { IQOrderableField } from '../../../lingo/core/field/Field';
 import { INonEntityFind } from '../../../lingo/query/api/NonEntityFind';
@@ -13,15 +14,15 @@ import { Lookup } from './Lookup';
 export declare class NonEntityFind extends Lookup implements INonEntityFind {
     field<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<any>;
-    }): Promise<any[]>;
+    }, ctx?: IContext): Promise<any[]>;
     sheet(rawSheetQuery: RawSheetQuery | {
         (...args: any[]): RawSheetQuery;
-    }, cursorSize?: number | ((data: any[]) => void), callback?: (data: any[][]) => void): Promise<any[][]>;
+    }, cursorSize?: number | ((data: any[]) => void), callback?: (data: any[][]) => void, ctx?: IContext): Promise<any[][]>;
     tree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
         (...args: any[]): RawTreeQuery<any>;
-    }): Promise<ITE[]>;
+    }, ctx?: IContext): Promise<ITE[]>;
     find<IQF extends IQOrderableField<IQF>>(rawNonEntityQuery: RawNonEntityQuery | {
         (...args: any[]): RawNonEntityQuery;
-    }, queryResultType: QueryResultType, QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery): Promise<any[]>;
+    }, queryResultType: QueryResultType, QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery, ctx: IContext): Promise<any[]>;
 }
 //# sourceMappingURL=NonEntityFind.d.ts.map
