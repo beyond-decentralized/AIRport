@@ -1,6 +1,8 @@
 import {
+	doEnsureContext,
 	IDao,
 	IEntityCascadeGraph,
+	IEntityContext,
 	IEntityCreateProperties,
 	IEntityDatabaseFacade,
 	IEntityIdProperties,
@@ -10,10 +12,9 @@ import {
 	IQEntity,
 	OperationName,
 	QSchema
-}                             from '@airport/air-control'
+} from '@airport/air-control'
 import {IContext}             from '@airport/di'
 import {
-	CascadeOverwrite,
 	EntityId as DbEntityId
 }                             from '@airport/ground-control'
 import {EntityDatabaseFacade} from './EntityDatabaseFacade'
@@ -57,7 +58,7 @@ export abstract class Dao<Entity,
 		operationName?: OperationName
 	): Promise<number> {
 		const result = await this.db.bulkCreate(entities,
-			checkIfProcessed, ctx, operationName)
+			checkIfProcessed, this.ensureContext(ctx), operationName)
 
 		return result
 	}
@@ -75,9 +76,10 @@ export abstract class Dao<Entity,
 	): Promise<number> {
 		if (entityInfo instanceof Array) {
 			return await this.db.bulkCreate(entityInfo,
-				true, ctx, operationName)
+				true, this.ensureContext(ctx), operationName)
 		} else {
-			const result = await this.db.create(<EntityCreate>entityInfo, operationName)
+			const result = await this.db.create(<EntityCreate>entityInfo,
+				this.ensureContext(ctx), operationName)
 
 			return result
 		}
@@ -91,7 +93,8 @@ export abstract class Dao<Entity,
 		if (entityIdInfo instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
-			return await this.db.delete(entityIdInfo, ctx, operationName)
+			return await this.db.delete(entityIdInfo,
+				this.ensureContext(ctx), operationName)
 		}
 	}
 
@@ -152,7 +155,8 @@ export abstract class Dao<Entity,
 		if (entity instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
-			const result = await this.db.save(<EntityCreate>entity, ctx, operationName)
+			const result = await this.db.save(<EntityCreate>entity,
+				this.ensureContext(ctx), operationName)
 
 			return result
 		}
@@ -166,8 +170,13 @@ export abstract class Dao<Entity,
 		if (entityInfo instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
-			return await this.db.update(entityInfo, ctx, operationName)
+			return await this.db.update(entityInfo, this.ensureContext(ctx), operationName)
 		}
 	}
 
+	private ensureContext(
+		ctx: IContext
+	): IEntityContext {
+		return doEnsureContext(ctx) as IEntityContext
+	}
 }

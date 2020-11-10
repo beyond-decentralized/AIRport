@@ -1,41 +1,35 @@
 import {
 	DbEntity,
 	DistributionStrategy,
-	ITransactionalConnector,
 	PlatformType,
 	PortableQuery,
 	QueryResultType
-}                                from '@airport/ground-control'
-import {IObservable}             from '@airport/observe'
+}                        from '@airport/ground-control'
+import {IObservable}     from '@airport/observe'
 import {
 	IEntityContext,
 	IEntityOperationContext
-} from '../../..'
-import {OperationName}           from '../../query/Dao'
-import {IAbstractQuery}          from '../../query/facade/AbstractQuery'
-import {RawDelete}               from '../../query/facade/Delete'
+}                        from '../../../lingo/core/data/EntityContext'
+import {OperationName}   from '../../query/Dao'
+import {IAbstractQuery}  from '../../query/facade/AbstractQuery'
+import {RawDelete}       from '../../query/facade/Delete'
 import {
 	RawInsertColumnValues,
 	RawInsertValues
-}                                from '../../query/facade/InsertValues'
+}                        from '../../query/facade/InsertValues'
 import {
 	RawUpdate,
 	RawUpdateColumns
-}                                from '../../query/facade/Update'
+}                        from '../../query/facade/Update'
 import {IFieldUtils}     from '../../utils/FieldUtils'
 import {IQueryUtils}     from '../../utils/QueryUtils'
-import {
-	EntityIdData,
-	ISchemaUtils
-}                        from '../../utils/SchemaUtils'
-import {IUpdateCache}    from '../data/UpdateCache'
+import {EntityIdData}    from '../../utils/SchemaUtils'
 import {UpdateCacheType} from '../data/UpdateCacheType'
 import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
 }                        from '../entity/Entity'
-
 
 export interface UpdateRecord {
 	newValue: any,
@@ -186,7 +180,6 @@ export interface IDatabaseFacade {
 	 * @return Number of records updated (1 or 0)
 	 */
 	update<E, EntityCascadeGraph>(
-		dbEntity: DbEntity,
 		entity: E,
 		ctx: IEntityContext,
 		operationName?: OperationName

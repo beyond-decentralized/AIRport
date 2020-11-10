@@ -70,7 +70,7 @@ export class Lookup {
         }
     }
 }
-function doEnsureContext(ctx) {
+export function doEnsureContext(ctx) {
     if (!ctx) {
         ctx = {};
     }

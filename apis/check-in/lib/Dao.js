@@ -1,3 +1,4 @@
+import { doEnsureContext } from '@airport/air-control';
 import { EntityDatabaseFacade } from './EntityDatabaseFacade';
 /**
  * Created by Papa on 8/26/2017.
@@ -9,7 +10,7 @@ export class Dao {
         this.db = new EntityDatabaseFacade(dbEntity, Q);
     }
     async bulkCreate(entities, checkIfProcessed = true, ctx, operationName) {
-        const result = await this.db.bulkCreate(entities, checkIfProcessed, ctx, operationName);
+        const result = await this.db.bulkCreate(entities, checkIfProcessed, this.ensureContext(ctx), operationName);
         return result;
     }
     async count(ctx) {
@@ -17,10 +18,10 @@ export class Dao {
     }
     async create(entityInfo, ctx, operationName) {
         if (entityInfo instanceof Array) {
-            return await this.db.bulkCreate(entityInfo, true, ctx, operationName);
+            return await this.db.bulkCreate(entityInfo, true, this.ensureContext(ctx), operationName);
         }
         else {
-            const result = await this.db.create(entityInfo, operationName);
+            const result = await this.db.create(entityInfo, this.ensureContext(ctx), operationName);
             return result;
         }
     }
@@ -29,7 +30,7 @@ export class Dao {
             throw new Error(`Not Implemented`);
         }
         else {
-            return await this.db.delete(entityIdInfo, ctx, operationName);
+            return await this.db.delete(entityIdInfo, this.ensureContext(ctx), operationName);
         }
     }
     async deleteAll(ctx) {
@@ -64,7 +65,7 @@ export class Dao {
             throw new Error(`Not Implemented`);
         }
         else {
-            const result = await this.db.save(entity, ctx, operationName);
+            const result = await this.db.save(entity, this.ensureContext(ctx), operationName);
             return result;
         }
     }
@@ -73,8 +74,11 @@ export class Dao {
             throw new Error(`Not Implemented`);
         }
         else {
-            return await this.db.update(entityInfo, ctx, operationName);
+            return await this.db.update(entityInfo, this.ensureContext(ctx), operationName);
         }
+    }
+    ensureContext(ctx) {
+        return doEnsureContext(ctx);
     }
 }
 //# sourceMappingURL=Dao.js.map

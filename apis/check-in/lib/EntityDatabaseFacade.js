@@ -26,55 +26,77 @@ export class EntityDatabaseFacade {
     // 	return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity,
     // ...entities) }
     async create(entity, ctx, operationName) {
-        const dbFacade = await DI.db().get(DB_FACADE);
+        const dbFacade = await DI.db()
+            .get(DB_FACADE);
         ctx.dbEntity = this.dbEntity;
         return await dbFacade.create(entity, ctx, operationName);
     }
-    async bulkCreate(entities, checkIfProcessed = true, operationName) {
-        const dbFacade = await DI.db().get(DB_FACADE);
-        return await dbFacade.bulkCreate(this.dbEntity, entities, checkIfProcessed, operationName);
+    async bulkCreate(entities, checkIfProcessed = true, ctx, operationName) {
+        const dbFacade = await DI.db()
+            .get(DB_FACADE);
+        ctx.dbEntity = this.dbEntity;
+        return await dbFacade.bulkCreate(entities, ctx, checkIfProcessed, operationName);
     }
-    async insertColumnValues(rawInsertColumnValues) {
-        const dbFacade = await DI.db().get(DB_FACADE);
-        return await dbFacade.insertColumnValues(this.dbEntity, rawInsertColumnValues);
+    async insertColumnValues(rawInsertColumnValues, ctx) {
+        const dbFacade = await DI.db()
+            .get(DB_FACADE);
+        ctx.dbEntity = this.dbEntity;
+        return await dbFacade.insertColumnValues(rawInsertColumnValues, ctx);
     }
-    async insertValues(rawInsertValues) {
-        const dbFacade = await DI.db().get(DB_FACADE);
-        return await dbFacade.insertValues(this.dbEntity, rawInsertValues);
+    async insertValues(rawInsertValues, ctx) {
+        const dbFacade = await DI.db()
+            .get(DB_FACADE);
+        ctx.dbEntity = this.dbEntity;
+        return await dbFacade.insertValues(rawInsertValues, ctx);
     }
-    async insertColumnValuesGenerateIds(rawInsertColumnValues) {
-        const dbFacade = await DI.db().get(DB_FACADE);
-        return await dbFacade.insertColumnValuesGenerateIds(this.dbEntity, rawInsertColumnValues);
+    async insertColumnValuesGenerateIds(rawInsertColumnValues, ctx) {
+        const dbFacade = await DI.db()
+            .get(DB_FACADE);
+        ctx.dbEntity = this.dbEntity;
+        return await dbFacade.insertColumnValuesGenerateIds(rawInsertColumnValues, ctx);
     }
-    async insertValuesGenerateIds(rawInsertValues) {
-        const dbFacade = await DI.db().get(DB_FACADE);
-        return await dbFacade.insertValuesGenerateIds(this.dbEntity, rawInsertValues);
+    async insertValuesGenerateIds(rawInsertValues, ctx) {
+        const dbFacade = await DI.db()
+            .get(DB_FACADE);
+        ctx.dbEntity = this.dbEntity;
+        return await dbFacade.insertValuesGenerateIds(rawInsertValues, ctx);
     }
-    async update(entity, operationName) {
-        const dbFacade = await DI.db().get(DB_FACADE);
-        return await dbFacade.update(this.dbEntity, entity, operationName);
+    async update(entity, ctx, operationName) {
+        const dbFacade = await DI.db()
+            .get(DB_FACADE);
+        ctx.dbEntity = this.dbEntity;
+        return await dbFacade.update(entity, ctx, operationName);
     }
-    async updateColumnsWhere(rawUpdateColumns) {
-        const dbFacade = await DI.db().get(DB_FACADE);
-        return await dbFacade.updateColumnsWhere(this.dbEntity, rawUpdateColumns);
+    async updateColumnsWhere(rawUpdateColumns, ctx) {
+        const dbFacade = await DI.db()
+            .get(DB_FACADE);
+        ctx.dbEntity = this.dbEntity;
+        return await dbFacade.updateColumnsWhere(rawUpdateColumns, ctx);
     }
-    async updateWhere(rawUpdate) {
-        const dbFacade = await DI.db().get(DB_FACADE);
-        return await dbFacade.updateWhere(this.dbEntity, rawUpdate);
+    async updateWhere(rawUpdate, ctx) {
+        const dbFacade = await DI.db()
+            .get(DB_FACADE);
+        ctx.dbEntity = this.dbEntity;
+        return await dbFacade.updateWhere(rawUpdate, ctx);
     }
     // NOTE: Delete cascading is done on the server, no input is needed
     async delete(entity, ctx, operationName) {
-        const dbFacade = await DI.db().get(DB_FACADE);
+        const dbFacade = await DI.db()
+            .get(DB_FACADE);
         ctx.dbEntity = this.dbEntity;
-        return await dbFacade.delete(this.dbEntity, entity, operationName);
+        return await dbFacade.delete(entity, ctx, operationName);
     }
-    async deleteWhere(rawDelete) {
-        const dbFacade = await DI.db().get(DB_FACADE);
-        return await dbFacade.deleteWhere(this.dbEntity, rawDelete);
+    async deleteWhere(rawDelete, ctx) {
+        const dbFacade = await DI.db()
+            .get(DB_FACADE);
+        ctx.dbEntity = this.dbEntity;
+        return await dbFacade.deleteWhere(rawDelete, ctx);
     }
-    async save(entity, operationName) {
-        const dbFacade = await DI.db().get(DB_FACADE);
-        return await dbFacade.save(this.dbEntity, entity, operationName);
+    async save(entity, ctx, operationName) {
+        const dbFacade = await DI.db()
+            .get(DB_FACADE);
+        ctx.dbEntity = this.dbEntity;
+        return await dbFacade.save(entity, ctx, operationName);
     }
 }
 //# sourceMappingURL=EntityDatabaseFacade.js.map

@@ -1,6 +1,6 @@
 import { DbEntity, DistributionStrategy, PlatformType, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
-import { IEntityContext, IEntityOperationContext } from '../../..';
+import { IEntityContext, IEntityOperationContext } from '../../../lingo/core/data/EntityContext';
 import { OperationName } from '../../query/Dao';
 import { IAbstractQuery } from '../../query/facade/AbstractQuery';
 import { RawDelete } from '../../query/facade/Delete';
@@ -93,7 +93,7 @@ export interface IDatabaseFacade {
      *
      * @return Number of records updated (1 or 0)
      */
-    update<E, EntityCascadeGraph>(dbEntity: DbEntity, entity: E, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
+    update<E, EntityCascadeGraph>(entity: E, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.

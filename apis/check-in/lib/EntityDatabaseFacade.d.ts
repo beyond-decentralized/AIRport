@@ -14,30 +14,30 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     constructor(dbEntity: DbEntity, Q: QSchema);
     get from(): IQ;
     create(entity: EntityCreate, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
-    bulkCreate(entities: EntityCreate[], checkIfProcessed?: boolean, operationName?: OperationName): Promise<number>;
+    bulkCreate(entities: EntityCreate[], checkIfProcessed: boolean, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }): Promise<number>;
+    }, ctx: IEntityContext): Promise<number>;
     insertValues<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }): Promise<number>;
+    }, ctx: IEntityContext): Promise<number>;
     insertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }): Promise<number[] | string[] | number[][] | string[][]>;
+    }, ctx: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
     insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }): Promise<number[] | string[] | number[][] | string[][]>;
-    update(entity: EntityCreate, operationName?: OperationName): Promise<number>;
+    }, ctx: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
+    update(entity: EntityCreate, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
     updateColumnsWhere(rawUpdateColumns: RawUpdate<EntityUpdateColumns, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateColumns, IQ>;
-    }): Promise<number>;
+    }, ctx: IEntityContext): Promise<number>;
     updateWhere(rawUpdate: RawUpdate<EntityUpdateProperties, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateProperties, IQ>;
-    }): Promise<number>;
+    }, ctx: IEntityContext): Promise<number>;
     delete(entity: EntityId, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
     deleteWhere(rawDelete: RawDelete<IQ> | {
         (...args: any[]): RawDelete<IQ>;
-    }): Promise<number>;
-    save(entity: EntityCreate, operationName?: OperationName): Promise<number>;
+    }, ctx: IEntityContext): Promise<number>;
+    save(entity: EntityCreate, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
 }
 //# sourceMappingURL=EntityDatabaseFacade.d.ts.map

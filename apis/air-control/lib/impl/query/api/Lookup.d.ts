@@ -18,4 +18,5 @@ export declare class Lookup implements ILookup {
     protected ensureContext(ctx?: IContext): IContext;
     private getQueryResultType;
 }
+export declare function doEnsureContext(ctx?: IContext): IContext;
 //# sourceMappingURL=Lookup.d.ts.map

@@ -134,7 +134,7 @@ export class Lookup
 
 }
 
-function doEnsureContext(
+export function doEnsureContext(
 	ctx?: IContext
 ): IContext {
 	if (!ctx) {

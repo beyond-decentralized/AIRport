@@ -18,5 +18,6 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     findById(entityId: EntityId, ctx?: IContext, cacheForUpdate?: boolean): Promise<Entity>;
     save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, ctx?: IContext, operationName?: OperationName): Promise<number>;
     update(entityInfo: EntityCreate | EntityCreate[], ctx?: IContext, operationName?: OperationName): Promise<number>;
+    private ensureContext;
 }
 //# sourceMappingURL=Dao.d.ts.map
