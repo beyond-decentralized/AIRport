@@ -1,15 +1,11 @@
 import {
-	DbEntity,
 	DistributionStrategy,
 	PlatformType,
 	PortableQuery,
 	QueryResultType
 }                        from '@airport/ground-control'
 import {IObservable}     from '@airport/observe'
-import {
-	IEntityContext,
-	IEntityOperationContext
-}                        from '../../../lingo/core/data/EntityContext'
+import {IEntityContext}  from '../../../lingo/core/data/EntityContext'
 import {OperationName}   from '../../query/Dao'
 import {IAbstractQuery}  from '../../query/facade/AbstractQuery'
 import {RawDelete}       from '../../query/facade/Delete'
@@ -21,8 +17,6 @@ import {
 	RawUpdate,
 	RawUpdateColumns
 }                        from '../../query/facade/Update'
-import {IFieldUtils}     from '../../utils/FieldUtils'
-import {IQueryUtils}     from '../../utils/QueryUtils'
 import {EntityIdData}    from '../../utils/SchemaUtils'
 import {UpdateCacheType} from '../data/UpdateCacheType'
 import {
@@ -225,37 +219,35 @@ export interface IQueryFacade {
 	find<E, EntityArray extends Array<E>>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IEntityOperationContext,
+		ctx: IEntityContext,
 		cacheForUpdate?: UpdateCacheType
 	): Promise<EntityArray>;
 
 	findOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IEntityOperationContext,
+		ctx: IEntityContext,
 		cacheForUpdate?: UpdateCacheType,
 	): Promise<E>;
 
 	search<E, EntityArray extends Array<E>>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IEntityOperationContext,
+		ctx: IEntityContext,
 		cacheForUpdate?: UpdateCacheType,
 	): Promise<IObservable<EntityArray>>;
 
 	searchOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IEntityOperationContext,
+		ctx: IEntityContext,
 		cacheForUpdate?: UpdateCacheType,
 	): Promise<IObservable<E>>;
 
 	getPortableQuery<E>(
-		dbEntity: DbEntity,
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		ctx: IEntityContext
 	): PortableQuery;
 
 }

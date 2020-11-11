@@ -3,19 +3,22 @@ import {
 	RepoTransBlockSyncOutcomeType,
 	TmRepositoryTransactionBlockId
 }                                            from '@airport/arrivals-n-departures'
-import {container, DI}                                  from '@airport/di'
-import {REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO} from '../../tokens'
+import {
+	container,
+	DI
+}                                            from '@airport/di'
 import {
 	BaseRepoTransBlockResponseStageDao,
 	Q,
 	QRepoTransBlockResponseStage
 }                                            from '../../generated/generated'
+import {REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO} from '../../tokens'
 
 export type RepoTransBlockResponseStageValues = [
 	TmRepositoryTransactionBlockId,
 	// AgtSyncRecordId,
 	RepoTransBlockSyncOutcomeType
-	];
+];
 
 export interface IRepoTransBlockResponseStageDao {
 
@@ -40,10 +43,11 @@ export class RepoTransBlockResponseStageDao
 
 		let smrs: QRepoTransBlockResponseStage
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this)
+			.get(AIR_DB)
 
 		return await
-			airDb.insertValues(dbEntity, {
+			airDb.insertValues({
 				insertInto: smrs = Q.RepoTransBlockResponseStage,
 				columns: [
 					smrs.id,
@@ -51,6 +55,8 @@ export class RepoTransBlockResponseStageDao
 					smrs.syncOutcomeType
 				],
 				values
+			}, {
+				dbEntity
 			})
 	}
 

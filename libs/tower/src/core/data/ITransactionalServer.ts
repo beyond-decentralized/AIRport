@@ -2,10 +2,11 @@ import {
 	DistributionStrategy,
 	PlatformType,
 	PortableQuery
-}                     from '@airport/ground-control'
-import {IObservable}  from '@airport/observe'
-import {ICredentials} from '@airport/terminal-map'
-import {ITransaction} from '../../ITransaction'
+}                          from '@airport/ground-control'
+import {IObservable}       from '@airport/observe'
+import {ICredentials}      from '@airport/terminal-map'
+import {ITransaction}      from '../../ITransaction'
+import {IOperationContext} from '../../OperationContext'
 
 export interface ITransactionalServer {
 
@@ -17,7 +18,8 @@ export interface ITransactionalServer {
 		platform: PlatformType,
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
-		credentials: ICredentials
+		credentials: ICredentials,
+		ctx: IOperationContext<any, any>
 	): Promise<number>
 
 	find<E, EntityArray extends Array<E>>(
@@ -47,22 +49,26 @@ export interface ITransactionalServer {
 	insertValues(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
+		ctx: IOperationContext<any, any>,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number>
 
 	insertValuesGetIds(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
+		ctx: IOperationContext<any, any>
 	): Promise<number[] | string[] | number[][] | string[][]>
 
 	updateValues(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
+		ctx: IOperationContext<any, any>
 	): Promise<number>
 
 	deleteWhere(
 		portableQuery: PortableQuery,
-		transaction: ITransaction
+		transaction: ITransaction,
+		ctx: IOperationContext<any, any>
 	): Promise<number>
 
 }

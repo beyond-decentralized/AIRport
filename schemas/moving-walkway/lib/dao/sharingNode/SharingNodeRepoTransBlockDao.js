@@ -1,10 +1,8 @@
-import { and, field } from '@airport/air-control';
-import { AIR_DB } from '@airport/air-control';
+import { AIR_DB, and, field } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { ensureChildJsMap } from '@airport/ground-control';
-import { ensureChildArray } from '@airport/ground-control';
-import { SHARING_NODE_REPO_TRANS_BLOCK_DAO } from '../../tokens';
+import { ensureChildArray, ensureChildJsMap } from '@airport/ground-control';
 import { BaseSharingNodeRepoTransBlockDao, Q, } from '../../generated/generated';
+import { SHARING_NODE_REPO_TRANS_BLOCK_DAO } from '../../tokens';
 export class SharingNodeRepoTransBlockDao extends BaseSharingNodeRepoTransBlockDao {
     async findMapBySharingNodeIdWhereSharingNodeIdInAndRepoTransBlockIdIn(sharingNodeIds, repoTransBlockIds) {
         const mapBySharingNodeId = new Map();
@@ -51,9 +49,10 @@ export class SharingNodeRepoTransBlockDao extends BaseSharingNodeRepoTransBlockD
     }
     async insertValues(values) {
         const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this)
+            .get(AIR_DB);
         let snrtb;
-        return await airDb.insertValues(dbEntity, {
+        return await airDb.insertValues({
             insertInto: snrtb = Q.SharingNodeRepoTransBlock,
             columns: [
                 snrtb.sharingNode.id,
@@ -64,13 +63,16 @@ export class SharingNodeRepoTransBlockDao extends BaseSharingNodeRepoTransBlockD
                 snrtb.syncStatus
             ],
             values
+        }, {
+            dbEntity
         });
     }
     async getForSharingNodeIdsAndBlockStatus(sharingNodeIds, syncStatus) {
         const repoTransBlocksBySharingNodeId = new Map();
         const repositoryTransactionBlockIds = new Set();
         let snrtb;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this)
+            .get(AIR_DB);
         const records = await airDb.find.sheet({
             from: [
                 snrtb = Q.SharingNodeRepoTransBlock,

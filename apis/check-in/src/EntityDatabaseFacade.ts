@@ -4,6 +4,7 @@ import {
 	EntityFindOne,
 	EntitySearch,
 	EntitySearchOne,
+	IDatabaseFacade,
 	IDuo,
 	IEntityCascadeGraph,
 	IEntityContext,
@@ -88,84 +89,91 @@ export class EntityDatabaseFacade<Entity,
 
 	async create(
 		entity: EntityCreate,
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
-		const dbFacade = await DI.db()
-			.get(DB_FACADE)
-		ctx.dbEntity   = this.dbEntity
-		return await dbFacade.create(entity, ctx, operationName)
+		return await this.withDbEntity(ctx, async (
+			databaseFacade: IDatabaseFacade
+		) => {
+			return await databaseFacade.create(entity, ctx, operationName)
+		})
 	}
 
 	async bulkCreate(
 		entities: EntityCreate[],
 		checkIfProcessed: boolean = true,
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
-		const dbFacade = await DI.db()
-			.get(DB_FACADE)
-		ctx.dbEntity   = this.dbEntity
-		return await dbFacade.bulkCreate(entities, ctx, checkIfProcessed, operationName)
+		return await this.withDbEntity(ctx, async (
+			databaseFacade: IDatabaseFacade
+		) => {
+			return await databaseFacade.bulkCreate(entities, ctx, checkIfProcessed, operationName)
+		})
 	}
 
 	async insertColumnValues<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 	): Promise<number> {
-		const dbFacade = await DI.db()
-			.get(DB_FACADE)
-		ctx.dbEntity   = this.dbEntity
-		return await dbFacade.insertColumnValues(rawInsertColumnValues, ctx)
+		return await this.withDbEntity(ctx, async (
+			databaseFacade: IDatabaseFacade
+		) => {
+			return await databaseFacade.insertColumnValues(rawInsertColumnValues, ctx)
+		})
 	}
 
 	async insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},
-		ctx: IEntityContext
+		ctx?: IEntityContext
 	): Promise<number> {
-		const dbFacade = await DI.db()
-			.get(DB_FACADE)
-		ctx.dbEntity   = this.dbEntity
-		return await dbFacade.insertValues(rawInsertValues, ctx)
+		return await this.withDbEntity(ctx, async (
+			databaseFacade: IDatabaseFacade
+		) => {
+			return await databaseFacade.insertValues(rawInsertValues, ctx)
+		})
 	}
 
 	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const dbFacade = await DI.db()
-			.get(DB_FACADE)
-		ctx.dbEntity   = this.dbEntity
-		return await dbFacade.insertColumnValuesGenerateIds(rawInsertColumnValues, ctx)
+		return await this.withDbEntity(ctx, async (
+			databaseFacade: IDatabaseFacade
+		) => {
+			return await databaseFacade.insertColumnValuesGenerateIds(rawInsertColumnValues, ctx)
+		})
 	}
 
 	async insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},
-		ctx: IEntityContext
+		ctx?: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const dbFacade = await DI.db()
-			.get(DB_FACADE)
-		ctx.dbEntity   = this.dbEntity
-		return await dbFacade.insertValuesGenerateIds(rawInsertValues, ctx)
+		return await this.withDbEntity(ctx, async (
+			databaseFacade: IDatabaseFacade
+		) => {
+			return await databaseFacade.insertValuesGenerateIds(rawInsertValues, ctx)
+		})
 	}
 
 	async update(
 		entity: EntityCreate,
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
-		const dbFacade = await DI.db()
-			.get(DB_FACADE)
-		ctx.dbEntity   = this.dbEntity
-		return await dbFacade.update(entity, ctx, operationName)
+		return await this.withDbEntity(ctx, async (
+			databaseFacade: IDatabaseFacade
+		) => {
+			return await databaseFacade.update(entity, ctx, operationName)
+		})
 	}
 
 	async updateColumnsWhere(
@@ -173,12 +181,13 @@ export class EntityDatabaseFacade<Entity,
 			(...args: any[])
 				: RawUpdate<EntityUpdateColumns, IQ>
 		},
-		ctx: IEntityContext
+		ctx?: IEntityContext
 	): Promise<number> {
-		const dbFacade = await DI.db()
-			.get(DB_FACADE)
-		ctx.dbEntity   = this.dbEntity
-		return await dbFacade.updateColumnsWhere(rawUpdateColumns, ctx)
+		return await this.withDbEntity(ctx, async (
+			databaseFacade: IDatabaseFacade
+		) => {
+			return await databaseFacade.updateColumnsWhere(rawUpdateColumns, ctx)
+		})
 	}
 
 	async updateWhere(
@@ -186,45 +195,69 @@ export class EntityDatabaseFacade<Entity,
 			(...args: any[])
 				: RawUpdate<EntityUpdateProperties, IQ>
 		},
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 	): Promise<number> {
-		const dbFacade = await DI.db()
-			.get(DB_FACADE)
-		ctx.dbEntity   = this.dbEntity
-		return await dbFacade.updateWhere(rawUpdate, ctx)
+		return await this.withDbEntity(ctx, async (
+			databaseFacade: IDatabaseFacade
+		) => {
+			return await databaseFacade.updateWhere(rawUpdate, ctx)
+		})
 	}
 
 	// NOTE: Delete cascading is done on the server, no input is needed
 	async delete(
 		entity: EntityId,
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
-		const dbFacade = await DI.db()
-			.get(DB_FACADE)
-		ctx.dbEntity   = this.dbEntity
-		return await dbFacade.delete(entity, ctx, operationName)
+		return await this.withDbEntity(ctx, async (
+			databaseFacade: IDatabaseFacade
+		) => {
+			return await databaseFacade.delete(entity, ctx, operationName)
+		})
 	}
 
 	async deleteWhere(
 		rawDelete: RawDelete<IQ> | { (...args: any[]): RawDelete<IQ> },
-		ctx: IEntityContext
+		ctx?: IEntityContext
 	): Promise<number> {
-		const dbFacade = await DI.db()
-			.get(DB_FACADE)
-		ctx.dbEntity   = this.dbEntity
-		return await dbFacade.deleteWhere(rawDelete, ctx)
+		return await this.withDbEntity(ctx, async (
+			databaseFacade: IDatabaseFacade
+		) => {
+			return await databaseFacade.deleteWhere(rawDelete, ctx)
+		})
 	}
 
 	async save(
 		entity: EntityCreate,
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
-		const dbFacade = await DI.db()
+		return await this.withDbEntity(ctx, async (
+			databaseFacade: IDatabaseFacade
+		) => {
+			return await databaseFacade.save(entity, ctx, operationName)
+		})
+	}
+
+	private async withDbEntity<R>(
+		ctx: IEntityContext,
+		callback: {
+			(
+				databaseFacade: IDatabaseFacade
+			): Promise<R>
+		}
+	): Promise<R> {
+		const databaseFacade = await DI.db()
 			.get(DB_FACADE)
-		ctx.dbEntity   = this.dbEntity
-		return await dbFacade.save(entity, ctx, operationName)
+		const previousEntity = ctx.dbEntity
+		ctx.dbEntity         = this.dbEntity
+		try {
+
+			return await callback(databaseFacade)
+		} finally {
+			ctx.dbEntity = previousEntity
+		}
 	}
 
 }

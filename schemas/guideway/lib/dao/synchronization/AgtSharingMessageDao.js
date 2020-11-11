@@ -2,15 +2,16 @@ import { AIR_DB, and } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { AgtSharingMessageAcknowledged } from '../../ddl/ddl';
-import { AGT_SHARING_MESSAGE_DAO } from '../../tokens';
 import { BaseAgtSharingMessageDao, Q } from '../../generated/generated';
+import { AGT_SHARING_MESSAGE_DAO } from '../../tokens';
 export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
     async insertValues(values) {
         const sharingMessageIdsByTerminalId = new Map();
         const dbEntity = Q.db.currentVersion.entityMapByName.AgtSharingMessage;
         let asm;
-        const airDb = await container(this).get(AIR_DB);
-        const sharingMessageIds = await airDb.insertValuesGenerateIds(dbEntity, {
+        const airDb = await container(this)
+            .get(AIR_DB);
+        const sharingMessageIds = await airDb.insertValuesGenerateIds({
             insertInto: asm = Q.AgtSharingMessage,
             columns: [
                 asm.terminal.id,
@@ -18,6 +19,8 @@ export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
                 asm.acknowledged,
             ],
             values
+        }, {
+            dbEntity
         });
         for (let i = 0; i < sharingMessageIds.length; i++) {
             const insertedRecord = values[i];
@@ -28,7 +31,8 @@ export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
     async findNotSyncedByIdIn(agtSharingMessageIds) {
         const resultMapByTerminalId = new Map();
         let asm;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this)
+            .get(AIR_DB);
         const dbSyncLogs = await airDb.find.sheet({
             from: [
                 asm = Q.AgtSharingMessage
@@ -64,7 +68,8 @@ export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
     async findIdMapByTerminalIdAndTmSharingMessageId(terminalIds, tmSharingMessageIds) {
         const idMapByTerminalIdAndTmSharingMessageId = new Map();
         let asm;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this)
+            .get(AIR_DB);
         const sharingMessages = await airDb.find.sheet({
             from: [
                 asm = Q.AgtSharingMessage

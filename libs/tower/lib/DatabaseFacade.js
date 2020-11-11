@@ -1,11 +1,9 @@
 import { DB_FACADE, Delete, UpdateColumns, UpdateProperties, } from '@airport/air-control';
-import { container, DI } from '@airport/di';
+import { DI } from '@airport/di';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
-import { IocContext } from './Context';
+import { IocOperationContext } from './OperationContext';
 import { OperationManager } from './OperationManager';
-import { TRANS_SERVER } from './tokens';
 import { transactional } from './transactional';
-// import {transactional}     from './transactional'
 /**
  * Created by Papa on 5/23/2016.
  */
@@ -42,13 +40,12 @@ export class DatabaseFacade extends OperationManager {
         this.updateCache.dropCache()
     }
      */
-    async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH) {
-        const transactionalServer = await container(this)
-            .get(TRANS_SERVER);
+    async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH, ctx) {
+        await this.ensureIocContext(ctx);
         let numRecordsCreated = 0;
         await transactional(async (transaction) => {
             // TODO: figure out how addRepository will work
-            numRecordsCreated = await transactionalServer.addRepository(name, url, platform, platformConfig, distributionStrategy, null);
+            numRecordsCreated = await ctx.ioc.transactionalServer.addRepository(name, url, platform, platformConfig, distributionStrategy, null, ctx);
         });
         return numRecordsCreated;
     }
@@ -87,7 +84,7 @@ export class DatabaseFacade extends OperationManager {
         await this.ensureIocContext(ctx);
         let numInsertedRecords = 0;
         await transactional(async (transaction) => {
-            numInsertedRecords = await this.internalInsertColumnValues(ctx.dbEntity, rawInsertColumnValues, ctx.ioc.queryUtils, ctx.ioc.fieldUtils, transaction);
+            numInsertedRecords = await this.internalInsertColumnValues(rawInsertColumnValues, transaction, ctx);
         });
         return numInsertedRecords;
     }
@@ -115,7 +112,7 @@ export class DatabaseFacade extends OperationManager {
         await this.ensureIocContext(ctx);
         let recordIdentifiers;
         await transactional(async (transaction) => {
-            recordIdentifiers = await this.internalInsertColumnValuesGenerateIds(ctx.dbEntity, rawInsertColumnValues, ctx.ioc.queryUtils, ctx.ioc.fieldUtils, transaction);
+            recordIdentifiers = await this.internalInsertColumnValuesGenerateIds(rawInsertColumnValues, transaction, ctx);
         });
     }
     async insertValuesGenerateIds(rawInsertValues, ctx) {
@@ -278,10 +275,7 @@ export class DatabaseFacade extends OperationManager {
         throw new Error(`Not Implemented`);
     }
     async ensureIocContext(ctx) {
-        if (!ctx.ioc) {
-            ctx.ioc = new IocContext();
-            await ctx.ioc.init();
-        }
+        await IocOperationContext.ensure(ctx);
     }
 }
 DI.set(DB_FACADE, DatabaseFacade);

@@ -1,7 +1,7 @@
 import { CRUDOperation, DbColumn, DbEntity, DbRelation, SchemaIndex, TableIndex } from '@airport/ground-control';
 import { IAirportDatabase } from '../../lingo/AirportDatabase';
 import { IEntityIdProperties, IQEntity } from '../../lingo/core/entity/Entity';
-import { RepositorySheetSelectInfo, IdKeysByIdColumnIndex, ISchemaUtils } from '../../lingo/utils/SchemaUtils';
+import { IdKeysByIdColumnIndex, ISchemaUtils, RepositorySheetSelectInfo } from '../../lingo/utils/SchemaUtils';
 import { QEntityConstructor } from '../core/entity/Entity';
 export declare class SchemaUtils implements ISchemaUtils {
     static TEMP_ID: number;
@@ -23,8 +23,6 @@ export declare class SchemaUtils implements ISchemaUtils {
         (relationColumn: DbColumn, value: any, propertyNameChains: string[][]): void;
     }): IdKeysByIdColumnIndex;
     getColumnPropertyNameChainsAndValue(dbEntity: DbEntity, dbColumn: DbColumn, entityObject: any, forIdKey?: boolean): [string[][], any];
-    private getColumnValuesAndPaths;
-    private getColumnPaths;
     addRelationToEntitySelectClause(dbRelation: DbRelation, selectClause: any, allowDefaults?: boolean): void;
     forEachColumnOfRelation(dbRelation: DbRelation, entity: any, callback: {
         (dbColumn: DbColumn, value: any, propertyNameChains: string[][]): void | boolean;
@@ -33,6 +31,8 @@ export declare class SchemaUtils implements ISchemaUtils {
         (dbColumn: DbColumn, propertyNameChains: string[][]): void | boolean;
     }): void;
     getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity, setClause: any, errorPrefix: string): RepositorySheetSelectInfo;
+    private getColumnValuesAndPaths;
+    private getColumnPaths;
     private addColumnToSheetSelect;
     private handleNoId;
 }

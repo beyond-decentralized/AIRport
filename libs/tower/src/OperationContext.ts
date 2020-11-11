@@ -13,16 +13,15 @@ import {
 	QUERY_UTILS,
 	SCHEMA_UTILS,
 	UPDATE_CACHE,
-}                             from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	DI,
 	IContext
 }                             from '@airport/di'
 import {
 	CascadeOverwrite,
-	DbEntity,
-	ITransactionalConnector
-} from '@airport/ground-control'
+	DbEntity
+}                             from '@airport/ground-control'
 import {ITransactionalServer} from './core/data/ITransactionalServer'
 import {TRANS_SERVER}         from './tokens'
 
@@ -49,8 +48,17 @@ export interface IIocOperationContext {
 
 }
 
-export class IocContext
+export class IocOperationContext
 	implements IIocOperationContext {
+
+	static async ensure(
+		ctx: IOperationContext<any, any>
+	): Promise<void>  {
+		if (!ctx.ioc) {
+			ctx.ioc = new IocOperationContext()
+			await ctx.ioc.init()
+		}
+	}
 
 	airDb: IAirportDatabase
 	fieldUtils: IFieldUtils

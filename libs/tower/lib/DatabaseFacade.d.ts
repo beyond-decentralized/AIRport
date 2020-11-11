@@ -1,14 +1,14 @@
 import { IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, IUpdateCache, OperationName, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
 import { CascadeOverwrite, DbEntity } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
-import { IOperationContext } from './Context';
+import { IOperationContext } from './OperationContext';
 import { OperationManager } from './OperationManager';
 /**
  * Created by Papa on 5/23/2016.
  */
 export declare class DatabaseFacade extends OperationManager implements IDatabaseFacade {
     name: string;
-    addRepository(name: string, url?: string, platform?: PlatformType, platformConfig?: string, distributionStrategy?: DistributionStrategy): Promise<number>;
+    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, ctx: IOperationContext<any, any>): Promise<number>;
     create<E, EntityCascadeGraph>(entity: E, ctx: IOperationContext<E, EntityCascadeGraph>, cascadeGraph?: CascadeOverwrite | EntityCascadeGraph): Promise<number>;
     bulkCreate<E, EntityCascadeGraph>(entities: E[], ctx: IOperationContext<E, EntityCascadeGraph>, checkIfProcessed?: boolean, operationName?: OperationName, ensureGeneratedValues?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {

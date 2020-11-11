@@ -8,23 +8,26 @@ import {
 	TerminalId,
 	TmSharingMessageId,
 }                                from '@airport/arrivals-n-departures'
-import {container, DI}                      from '@airport/di'
+import {
+	container,
+	DI
+}                                from '@airport/di'
 import {ensureChildJsMap}        from '@airport/ground-control'
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtSharingMessageAcknowledged
 }                                from '../../ddl/ddl'
-import {AGT_SHARING_MESSAGE_DAO} from '../../tokens'
 import {
 	BaseAgtSharingMessageDao,
 	IBaseAgtSharingMessageDao,
 	Q,
 	QAgtSharingMessage
 }                                from '../../generated/generated'
+import {AGT_SHARING_MESSAGE_DAO} from '../../tokens'
 
 export type InsertAgtSharingMessage = [
 	TerminalId, TmSharingMessageId, AgtSharingMessageAcknowledged
-	]
+]
 
 export interface IAgtSharingMessageDao
 	extends IBaseAgtSharingMessageDao {
@@ -60,9 +63,10 @@ export class AgtSharingMessageDao
 		const dbEntity = Q.db.currentVersion.entityMapByName.AgtSharingMessage
 		let asm: QAgtSharingMessage
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this)
+			.get(AIR_DB)
 
-		const sharingMessageIds = <number[]>await airDb.insertValuesGenerateIds(dbEntity, {
+		const sharingMessageIds = <number[]>await airDb.insertValuesGenerateIds({
 			insertInto: asm = Q.AgtSharingMessage,
 			columns: [
 				asm.terminal.id,
@@ -70,6 +74,8 @@ export class AgtSharingMessageDao
 				asm.acknowledged,
 			],
 			values
+		}, {
+			dbEntity
 		})
 
 		for (let i = 0; i < sharingMessageIds.length; i++) {
@@ -88,7 +94,8 @@ export class AgtSharingMessageDao
 
 		let asm: QAgtSharingMessage
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this)
+			.get(AIR_DB)
 
 		const dbSyncLogs =
 			      await airDb.find.sheet({
@@ -132,7 +139,6 @@ export class AgtSharingMessageDao
 				acknowledged: AgtSharingMessageAcknowledged.ACKNOWLEDGED
 			},
 			where: asm.id.in(agtSharingMessageIds)
-
 		})
 	}
 
@@ -146,7 +152,8 @@ export class AgtSharingMessageDao
 
 		let asm: QAgtSharingMessage
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this)
+			.get(AIR_DB)
 
 		const sharingMessages = await airDb.find.sheet({
 			from: [

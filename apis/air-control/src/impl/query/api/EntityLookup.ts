@@ -1,12 +1,9 @@
 import {
 	DbEntity,
 	QueryResultType
-}                        from '@airport/ground-control'
-import {
-	IEntityContext,
-	IEntityOperationContext
-}                        from '../../../lingo/core/data/EntityContext'
-import {UpdateCacheType} from '../../../lingo/core/data/UpdateCacheType'
+}                                from '@airport/ground-control'
+import {IEntityContext}          from '../../../lingo/core/data/EntityContext'
+import {UpdateCacheType}         from '../../../lingo/core/data/UpdateCacheType'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
 import {IEntityLookup}           from '../../../lingo/query/api/EntityLookup'
 import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
@@ -60,7 +57,6 @@ export abstract class EntityLookup<Child, MappedChild,
 	static cacheForUpdate = UpdateCacheType.NONE
 	static mapResults     = false
 
-
 	constructor(
 		protected dbEntity: DbEntity,
 		protected cacheForUpdate = EntityLookup.cacheForUpdate,
@@ -72,7 +68,6 @@ export abstract class EntityLookup<Child, MappedChild,
 	abstract map(
 		isMapped?: boolean
 	): MappedChild
-
 
 	abstract noCache(): Child
 
@@ -124,8 +119,7 @@ export abstract class EntityLookup<Child, MappedChild,
 	): Promise<any> {
 		ctx.dbEntity = this.dbEntity
 		return this.lookup(rawEntityQuery, queryResultType,
-			search, one, null,
-			ctx as IEntityOperationContext, this.cacheForUpdate, this.mapResults)
+			search, one, null, ctx, this.cacheForUpdate, this.mapResults)
 	}
 
 	/*

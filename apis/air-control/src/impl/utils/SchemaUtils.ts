@@ -7,17 +7,10 @@ import {
 	DbProperty,
 	DbRelation,
 	EntityRelationType,
-	getTableName,
 	repositoryEntity,
 	SchemaIndex,
 	TableIndex
 }                           from '@airport/ground-control'
-import {
-	convertToY,
-	isY,
-	markAsStub
-} from '../..'
-import {SCHEMA_UTILS}       from '../../tokens'
 import {
 	IAirportDatabase,
 	QSchemaInternal
@@ -28,13 +21,18 @@ import {
 }                           from '../../lingo/core/entity/Entity'
 import {IQFieldInternal}    from '../../lingo/core/field/Field'
 import {
-	RepositorySheetSelectInfo,
+	convertToY,
+	isY
+}                           from '../../lingo/query/facade/Query'
+import {
 	IdKeysByIdColumnIndex,
-	ISchemaUtils
+	ISchemaUtils,
+	RepositorySheetSelectInfo
 }                           from '../../lingo/utils/SchemaUtils'
+import {SCHEMA_UTILS}       from '../../tokens'
 import {QEntityConstructor} from '../core/entity/Entity'
+import {markAsStub}         from '../core/entity/EntityState'
 import {valuesEqual}        from '../Utils'
-
 
 interface ColumnValueForPath {
 	value: any,
@@ -230,100 +228,6 @@ export class SchemaUtils
 		return [propertyNameChains, value]
 	}
 
-	private getColumnValuesAndPaths(
-		dbColumn: DbColumn,
-		relationObject: any,
-		breadCrumb: string[],
-		forIdKey: boolean = false,
-		// noIdValueCallback: {
-		// 	(
-		// 		relationColumn: DbColumn,
-		// 		value: any,
-		// 		propertyNameChains: string[][],
-		// 	): void;
-		// }
-	): ColumnValueForPath[] {
-		if (this.isManyRelationColumn(dbColumn)) {
-			let columnValuesAndPaths = []
-			// If a column is part of a relation, it would be on the Many Side
-			for (const dbRelationColumn of dbColumn.manyRelationColumns) {
-				const dbProperty         = dbRelationColumn.manyRelation.property
-				const relationBreadCrumb = [...breadCrumb]
-				const propertyName       = dbProperty.name
-				relationBreadCrumb.push(propertyName)
-				const value = relationObject[propertyName]
-				if (!value) {
-					if (forIdKey
-					// && this.handleNoId(dbColumn, dbProperty, relationBreadCrumb, value,
-					// noIdValueCallback)
-					) {
-						throw new Error(`Cannot retrieve composite Id value, value chain '${relationBreadCrumb.join('.')}' is : ${value}.`)
-						// return null;
-					}
-					columnValuesAndPaths.push({
-						path: relationBreadCrumb,
-						value
-					})
-				} else {
-					const otherEntityColumn      = dbRelationColumn.oneColumn
-					const relationValuesAndPaths = this.getColumnValuesAndPaths(otherEntityColumn, value, relationBreadCrumb, forIdKey)
-					columnValuesAndPaths         = columnValuesAndPaths.concat(relationValuesAndPaths)
-				}
-			}
-			return columnValuesAndPaths
-		} else {
-			// If a column is not a part of (a) relation(s) then it is associated
-			// to only one property
-			const dbProperty         = dbColumn.propertyColumns[0].property
-			const propertyBreadCrumb = [...breadCrumb]
-			const propertyName       = dbProperty.name
-			propertyBreadCrumb.push(propertyName)
-			let value = relationObject[propertyName]
-			if (forIdKey && this.isIdEmpty(value)) {
-				if (dbColumn.isGenerated) {
-					value                        = --SchemaUtils.TEMP_ID
-					relationObject[propertyName] = value
-				} else {
-					// if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value,
-					// noValueCallback)) { return null; }
-					throw new Error(`Cannot retrieve composite Id value, value chain '${propertyBreadCrumb.join('.')}' is : ${value}.`)
-				}
-			}
-			return [{
-				path: propertyBreadCrumb,
-				value
-			}]
-		}
-	}
-
-	private getColumnPaths(
-		dbColumn: DbColumn,
-		breadCrumb: string[],
-	): string[][] {
-		let columnValuesAndPaths = []
-
-		if (this.isManyRelationColumn(dbColumn)) {
-			// If a column is part of a relation, it would be on the Many Side
-			for (const dbRelationColumn of dbColumn.manyRelationColumns) {
-				const dbProperty         = dbRelationColumn.manyRelation.property
-				const relationBreadCrumb = [...breadCrumb]
-				relationBreadCrumb.push(dbProperty.name)
-				const otherEntityColumn      = dbRelationColumn.oneColumn
-				const relationValuesAndPaths = this.getColumnPaths(otherEntityColumn, relationBreadCrumb)
-				columnValuesAndPaths         = columnValuesAndPaths.concat(relationValuesAndPaths)
-			}
-		} else {
-			// If a column is not a part of (a) relation(s) then it is associated
-			// to only one property
-			const dbProperty         = dbColumn.propertyColumns[0].property
-			const propertyBreadCrumb = [...breadCrumb]
-			propertyBreadCrumb.push(dbProperty.name)
-			columnValuesAndPaths.push(propertyBreadCrumb)
-		}
-
-		return columnValuesAndPaths
-	}
-
 	addRelationToEntitySelectClause(
 		dbRelation: DbRelation,
 		selectClause: any,
@@ -499,6 +403,100 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 			selectClause,
 			systemWideOperationIdColumn
 		}
+	}
+
+	private getColumnValuesAndPaths(
+		dbColumn: DbColumn,
+		relationObject: any,
+		breadCrumb: string[],
+		forIdKey: boolean = false,
+		// noIdValueCallback: {
+		// 	(
+		// 		relationColumn: DbColumn,
+		// 		value: any,
+		// 		propertyNameChains: string[][],
+		// 	): void;
+		// }
+	): ColumnValueForPath[] {
+		if (this.isManyRelationColumn(dbColumn)) {
+			let columnValuesAndPaths = []
+			// If a column is part of a relation, it would be on the Many Side
+			for (const dbRelationColumn of dbColumn.manyRelationColumns) {
+				const dbProperty         = dbRelationColumn.manyRelation.property
+				const relationBreadCrumb = [...breadCrumb]
+				const propertyName       = dbProperty.name
+				relationBreadCrumb.push(propertyName)
+				const value = relationObject[propertyName]
+				if (!value) {
+					if (forIdKey
+						// && this.handleNoId(dbColumn, dbProperty, relationBreadCrumb, value,
+						// noIdValueCallback)
+					) {
+						throw new Error(`Cannot retrieve composite Id value, value chain '${relationBreadCrumb.join('.')}' is : ${value}.`)
+						// return null;
+					}
+					columnValuesAndPaths.push({
+						path: relationBreadCrumb,
+						value
+					})
+				} else {
+					const otherEntityColumn      = dbRelationColumn.oneColumn
+					const relationValuesAndPaths = this.getColumnValuesAndPaths(otherEntityColumn, value, relationBreadCrumb, forIdKey)
+					columnValuesAndPaths         = columnValuesAndPaths.concat(relationValuesAndPaths)
+				}
+			}
+			return columnValuesAndPaths
+		} else {
+			// If a column is not a part of (a) relation(s) then it is associated
+			// to only one property
+			const dbProperty         = dbColumn.propertyColumns[0].property
+			const propertyBreadCrumb = [...breadCrumb]
+			const propertyName       = dbProperty.name
+			propertyBreadCrumb.push(propertyName)
+			let value = relationObject[propertyName]
+			if (forIdKey && this.isIdEmpty(value)) {
+				if (dbColumn.isGenerated) {
+					value                        = --SchemaUtils.TEMP_ID
+					relationObject[propertyName] = value
+				} else {
+					// if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value,
+					// noValueCallback)) { return null; }
+					throw new Error(`Cannot retrieve composite Id value, value chain '${propertyBreadCrumb.join('.')}' is : ${value}.`)
+				}
+			}
+			return [{
+				path: propertyBreadCrumb,
+				value
+			}]
+		}
+	}
+
+	private getColumnPaths(
+		dbColumn: DbColumn,
+		breadCrumb: string[],
+	): string[][] {
+		let columnValuesAndPaths = []
+
+		if (this.isManyRelationColumn(dbColumn)) {
+			// If a column is part of a relation, it would be on the Many Side
+			for (const dbRelationColumn of dbColumn.manyRelationColumns) {
+				const dbProperty         = dbRelationColumn.manyRelation.property
+				const relationBreadCrumb = [...breadCrumb]
+				relationBreadCrumb.push(dbProperty.name)
+				const otherEntityColumn      = dbRelationColumn.oneColumn
+				const relationValuesAndPaths = this.getColumnPaths(otherEntityColumn, relationBreadCrumb)
+				columnValuesAndPaths         = columnValuesAndPaths.concat(relationValuesAndPaths)
+			}
+		} else {
+			// If a column is not a part of (a) relation(s) then it is associated
+			// to only one property
+			const dbProperty         = dbColumn.propertyColumns[0].property
+			const propertyBreadCrumb = [...breadCrumb]
+			propertyBreadCrumb.push(dbProperty.name)
+			columnValuesAndPaths.push(propertyBreadCrumb)
+		}
+
+		return columnValuesAndPaths
 	}
 
 	private addColumnToSheetSelect(

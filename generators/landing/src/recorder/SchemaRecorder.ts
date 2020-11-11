@@ -94,29 +94,19 @@ export class SchemaRecorder
 		schemaPropertyColumnDao: ISchemaPropertyColumnDao,
 		schemaRelationColumnDao: ISchemaRelationColumnDao,
 	) {
-		await domainDao.bulkCreate(ddlObjects.domains, CascadeOverwrite.NEVER,
-			false)
-		await schemaDao.bulkCreate(ddlObjects.schemas, CascadeOverwrite.NEVER,
-			false)
-		await schemaVersionDao.bulkCreate(ddlObjects.schemaVersions,
-			CascadeOverwrite.NEVER, false)
+		await domainDao.bulkCreate(ddlObjects.domains, false)
+		await schemaDao.bulkCreate(ddlObjects.schemas, false)
+		await schemaVersionDao.bulkCreate(ddlObjects.schemaVersions, false)
 		await schemaReferenceDao.bulkCreate(
-			ddlObjects.schemaReferences as SchemaReferenceECreateProperties[],
-			CascadeOverwrite.NEVER, false)
-		await schemaEntityDao.bulkCreate(ddlObjects.entities,
-			CascadeOverwrite.NEVER, false)
-		await schemaPropertyDao.bulkCreate(ddlObjects.properties,
-			CascadeOverwrite.NEVER, false)
-		await schemaRelationDao.bulkCreate(ddlObjects.relations,
-			CascadeOverwrite.NEVER, false)
-		await schemaColumnDao.bulkCreate(ddlObjects.columns,
-			CascadeOverwrite.NEVER, false)
+			ddlObjects.schemaReferences as SchemaReferenceECreateProperties[], false)
+		await schemaEntityDao.bulkCreate(ddlObjects.entities, false)
+		await schemaPropertyDao.bulkCreate(ddlObjects.properties, false)
+		await schemaRelationDao.bulkCreate(ddlObjects.relations, false)
+		await schemaColumnDao.bulkCreate(ddlObjects.columns, false)
 		await schemaPropertyColumnDao.bulkCreate(
-			ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[],
-			CascadeOverwrite.NEVER, false)
+			ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[], false)
 		await schemaRelationColumnDao.bulkCreate(
-			ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[],
-			CascadeOverwrite.NEVER, false)
+			ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[], false)
 	}
 
 	private setDefaultVersioning(
@@ -190,11 +180,13 @@ export class SchemaRecorder
 
 	private async bulkCreate(
 		airDb: IAirportDatabase,
-		dao: IDao<any, any, any, any, any, any, any>,
+		dao: IDao<any, any, any, any, any, any, any, any>,
 		entities: any[]
 	) {
-		await airDb.bulkCreate(dao.db.dbEntity, entities,
-			false, CascadeOverwrite.NEVER, false)
+		await airDb.bulkCreate(entities,
+			false, {
+				dbEntity: dao.db.dbEntity
+			}, "SchemaRecorder.bulkCreate", false)
 	}
 
 }

@@ -8,7 +8,7 @@ export class DailyArchiveDao extends BaseDailyArchiveDao {
         const airDb = await container(this).get(AIR_DB);
         const dbEntity = Q.db.currentVersion.entityMapByName.DailyArchive;
         let da;
-        await airDb.insertValues(dbEntity, {
+        await airDb.insertValues({
             insertInto: da = Q.DailyArchive,
             columns: [
                 da.repository.id,
@@ -16,6 +16,8 @@ export class DailyArchiveDao extends BaseDailyArchiveDao {
                 da.repositoryData
             ],
             values
+        }, {
+            dbEntity
         });
     }
     async findForRepositoryIdsOnDates(repositoryIds, dates) {

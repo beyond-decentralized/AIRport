@@ -26,77 +26,77 @@ export class EntityDatabaseFacade {
     // 	return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity,
     // ...entities) }
     async create(entity, ctx, operationName) {
-        const dbFacade = await DI.db()
-            .get(DB_FACADE);
-        ctx.dbEntity = this.dbEntity;
-        return await dbFacade.create(entity, ctx, operationName);
+        return await this.withDbEntity(ctx, async (databaseFacade) => {
+            return await databaseFacade.create(entity, ctx, operationName);
+        });
     }
     async bulkCreate(entities, checkIfProcessed = true, ctx, operationName) {
-        const dbFacade = await DI.db()
-            .get(DB_FACADE);
-        ctx.dbEntity = this.dbEntity;
-        return await dbFacade.bulkCreate(entities, ctx, checkIfProcessed, operationName);
+        return await this.withDbEntity(ctx, async (databaseFacade) => {
+            return await databaseFacade.bulkCreate(entities, ctx, checkIfProcessed, operationName);
+        });
     }
     async insertColumnValues(rawInsertColumnValues, ctx) {
-        const dbFacade = await DI.db()
-            .get(DB_FACADE);
-        ctx.dbEntity = this.dbEntity;
-        return await dbFacade.insertColumnValues(rawInsertColumnValues, ctx);
+        return await this.withDbEntity(ctx, async (databaseFacade) => {
+            return await databaseFacade.insertColumnValues(rawInsertColumnValues, ctx);
+        });
     }
     async insertValues(rawInsertValues, ctx) {
-        const dbFacade = await DI.db()
-            .get(DB_FACADE);
-        ctx.dbEntity = this.dbEntity;
-        return await dbFacade.insertValues(rawInsertValues, ctx);
+        return await this.withDbEntity(ctx, async (databaseFacade) => {
+            return await databaseFacade.insertValues(rawInsertValues, ctx);
+        });
     }
     async insertColumnValuesGenerateIds(rawInsertColumnValues, ctx) {
-        const dbFacade = await DI.db()
-            .get(DB_FACADE);
-        ctx.dbEntity = this.dbEntity;
-        return await dbFacade.insertColumnValuesGenerateIds(rawInsertColumnValues, ctx);
+        return await this.withDbEntity(ctx, async (databaseFacade) => {
+            return await databaseFacade.insertColumnValuesGenerateIds(rawInsertColumnValues, ctx);
+        });
     }
     async insertValuesGenerateIds(rawInsertValues, ctx) {
-        const dbFacade = await DI.db()
-            .get(DB_FACADE);
-        ctx.dbEntity = this.dbEntity;
-        return await dbFacade.insertValuesGenerateIds(rawInsertValues, ctx);
+        return await this.withDbEntity(ctx, async (databaseFacade) => {
+            return await databaseFacade.insertValuesGenerateIds(rawInsertValues, ctx);
+        });
     }
     async update(entity, ctx, operationName) {
-        const dbFacade = await DI.db()
-            .get(DB_FACADE);
-        ctx.dbEntity = this.dbEntity;
-        return await dbFacade.update(entity, ctx, operationName);
+        return await this.withDbEntity(ctx, async (databaseFacade) => {
+            return await databaseFacade.update(entity, ctx, operationName);
+        });
     }
     async updateColumnsWhere(rawUpdateColumns, ctx) {
-        const dbFacade = await DI.db()
-            .get(DB_FACADE);
-        ctx.dbEntity = this.dbEntity;
-        return await dbFacade.updateColumnsWhere(rawUpdateColumns, ctx);
+        return await this.withDbEntity(ctx, async (databaseFacade) => {
+            return await databaseFacade.updateColumnsWhere(rawUpdateColumns, ctx);
+        });
     }
     async updateWhere(rawUpdate, ctx) {
-        const dbFacade = await DI.db()
-            .get(DB_FACADE);
-        ctx.dbEntity = this.dbEntity;
-        return await dbFacade.updateWhere(rawUpdate, ctx);
+        return await this.withDbEntity(ctx, async (databaseFacade) => {
+            return await databaseFacade.updateWhere(rawUpdate, ctx);
+        });
     }
     // NOTE: Delete cascading is done on the server, no input is needed
     async delete(entity, ctx, operationName) {
-        const dbFacade = await DI.db()
-            .get(DB_FACADE);
-        ctx.dbEntity = this.dbEntity;
-        return await dbFacade.delete(entity, ctx, operationName);
+        return await this.withDbEntity(ctx, async (databaseFacade) => {
+            return await databaseFacade.delete(entity, ctx, operationName);
+        });
     }
     async deleteWhere(rawDelete, ctx) {
-        const dbFacade = await DI.db()
-            .get(DB_FACADE);
-        ctx.dbEntity = this.dbEntity;
-        return await dbFacade.deleteWhere(rawDelete, ctx);
+        return await this.withDbEntity(ctx, async (databaseFacade) => {
+            return await databaseFacade.deleteWhere(rawDelete, ctx);
+        });
     }
     async save(entity, ctx, operationName) {
-        const dbFacade = await DI.db()
+        return await this.withDbEntity(ctx, async (databaseFacade) => {
+            return await databaseFacade.save(entity, ctx, operationName);
+        });
+    }
+    async withDbEntity(ctx, callback) {
+        const databaseFacade = await DI.db()
             .get(DB_FACADE);
+        const previousEntity = ctx.dbEntity;
         ctx.dbEntity = this.dbEntity;
-        return await dbFacade.save(entity, ctx, operationName);
+        try {
+            return await callback(databaseFacade);
+        }
+        finally {
+            ctx.dbEntity = previousEntity;
+        }
     }
 }
 //# sourceMappingURL=EntityDatabaseFacade.js.map

@@ -5,7 +5,3 @@ export interface IEntityContext
 	extends IContext {
 	dbEntity: DbEntity
 }
-
-export interface IEntityOperationContext
-	extends IEntityContext {
-}

@@ -1,7 +1,7 @@
-import { Delete, EntityIdData, IEntityUpdateColumns, IEntityUpdateProperties, IFieldUtils, IQEntity, IQueryUtils, IUpdateCache, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties } from '@airport/air-control';
+import { Delete, EntityIdData, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUpdateCache, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties } from '@airport/air-control';
 import { DbColumn, DbEntity, DbProperty, DbRelation } from '@airport/ground-control';
-import { IOperationContext } from './Context';
 import { ITransaction } from './ITransaction';
+import { IOperationContext } from './OperationContext';
 /**
  * Created by Papa on 11/15/2016.
  */
@@ -38,9 +38,9 @@ export declare abstract class OperationManager implements IOperationManager {
     protected performBulkCreate<E, EntityCascadeGraph>(entities: E[], createdEntityMap: {
         [entityId: string]: any;
     }[][], transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, ensureGeneratedValues?: boolean): Promise<number>;
-    protected internalInsertColumnValues<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, transaction: ITransaction): Promise<number>;
+    protected internalInsertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE>, transaction: ITransaction, ctx: IOperationContext<any, any>): Promise<number>;
     protected internalInsertValues<E, EntityCascadeGraph, IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE>, transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, ensureGeneratedValues?: boolean): Promise<number>;
-    protected internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(dbEntity: DbEntity, rawInsertColumnValues: RawInsertColumnValues<IQE>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, transaction: ITransaction): Promise<number[] | string[] | number[][] | string[][]>;
+    protected internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE>, transaction: ITransaction, ctx: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
     /**
      * Transactional context must have been started by the time this method is called.
      *

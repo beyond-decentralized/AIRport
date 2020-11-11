@@ -1,6 +1,5 @@
 import { AIR_DB } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { CascadeOverwrite } from '@airport/ground-control';
 import { DOMAIN_DAO } from '@airport/territory';
 import { transactional } from '@airport/tower';
 import { SCHEMA_COLUMN_DAO, SCHEMA_DAO, SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO, SCHEMA_RELATION_DAO, SCHEMA_VERSION_DAO } from '@airport/traffic-pattern';
@@ -20,16 +19,16 @@ export class SchemaRecorder {
         });
     }
     async normalRecord(ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao) {
-        await domainDao.bulkCreate(ddlObjects.domains, CascadeOverwrite.NEVER, false);
-        await schemaDao.bulkCreate(ddlObjects.schemas, CascadeOverwrite.NEVER, false);
-        await schemaVersionDao.bulkCreate(ddlObjects.schemaVersions, CascadeOverwrite.NEVER, false);
-        await schemaReferenceDao.bulkCreate(ddlObjects.schemaReferences, CascadeOverwrite.NEVER, false);
-        await schemaEntityDao.bulkCreate(ddlObjects.entities, CascadeOverwrite.NEVER, false);
-        await schemaPropertyDao.bulkCreate(ddlObjects.properties, CascadeOverwrite.NEVER, false);
-        await schemaRelationDao.bulkCreate(ddlObjects.relations, CascadeOverwrite.NEVER, false);
-        await schemaColumnDao.bulkCreate(ddlObjects.columns, CascadeOverwrite.NEVER, false);
-        await schemaPropertyColumnDao.bulkCreate(ddlObjects.propertyColumns, CascadeOverwrite.NEVER, false);
-        await schemaRelationColumnDao.bulkCreate(ddlObjects.relationColumns, CascadeOverwrite.NEVER, false);
+        await domainDao.bulkCreate(ddlObjects.domains, false);
+        await schemaDao.bulkCreate(ddlObjects.schemas, false);
+        await schemaVersionDao.bulkCreate(ddlObjects.schemaVersions, false);
+        await schemaReferenceDao.bulkCreate(ddlObjects.schemaReferences, false);
+        await schemaEntityDao.bulkCreate(ddlObjects.entities, false);
+        await schemaPropertyDao.bulkCreate(ddlObjects.properties, false);
+        await schemaRelationDao.bulkCreate(ddlObjects.relations, false);
+        await schemaColumnDao.bulkCreate(ddlObjects.columns, false);
+        await schemaPropertyColumnDao.bulkCreate(ddlObjects.propertyColumns, false);
+        await schemaRelationColumnDao.bulkCreate(ddlObjects.relationColumns, false);
     }
     setDefaultVersioning(ddlObjects) {
         for (const schemaReference of ddlObjects.schemaReferences) {
@@ -81,7 +80,9 @@ export class SchemaRecorder {
         await this.bulkCreate(airDb, schemaRelationColumnDao, ddlObjects.relationColumns);
     }
     async bulkCreate(airDb, dao, entities) {
-        await airDb.bulkCreate(dao.db.dbEntity, entities, false, CascadeOverwrite.NEVER, false);
+        await airDb.bulkCreate(entities, false, {
+            dbEntity: dao.db.dbEntity
+        }, "SchemaRecorder.bulkCreate", false);
     }
 }
 DI.set(SCHEMA_RECORDER, SchemaRecorder);

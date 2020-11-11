@@ -47,11 +47,11 @@ export class TransactionalServer {
         const queryManager = await container(this).get(QUERY_MANAGER);
         return await queryManager.searchOne(portableQuery);
     }
-    async addRepository(name, url, platform, platformConfig, distributionStrategy, credentials) {
+    async addRepository(name, url, platform, platformConfig, distributionStrategy, credentials, ctx) {
         const insertManager = await container(this).get(INSERT_MANAGER);
         return await insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
-    async insertValues(portableQuery, transaction, ensureGeneratedValues // for internal use only
+    async insertValues(portableQuery, transaction, ctx, ensureGeneratedValues // for internal use only
     ) {
         const values = portableQuery.jsonQuery.V;
         if (!values.length) {
@@ -71,17 +71,17 @@ export class TransactionalServer {
         const actor = await this.getActor(portableQuery);
         return await insertManager.insertValues(portableQuery, actor, transaction, ensureGeneratedValues);
     }
-    async insertValuesGetIds(portableQuery, transaction) {
+    async insertValuesGetIds(portableQuery, transaction, ctx) {
         const insertManager = await container(this).get(INSERT_MANAGER);
         const actor = await this.getActor(portableQuery);
         return await insertManager.insertValuesGetIds(portableQuery, actor, transaction);
     }
-    async updateValues(portableQuery, transaction) {
+    async updateValues(portableQuery, transaction, ctx) {
         const updateManager = await container(this).get(UPDATE_MANAGER);
         const actor = await this.getActor(portableQuery);
-        return await updateManager.updateValues(portableQuery, actor, transaction);
+        return await updateManager.updateValues(portableQuery, actor, transaction, ctx);
     }
-    async deleteWhere(portableQuery, transaction) {
+    async deleteWhere(portableQuery, transaction, ctx) {
         const deleteManager = await container(this).get(DELETE_MANAGER);
         const actor = await this.getActor(portableQuery);
         return await deleteManager.deleteWhere(portableQuery, actor, transaction);

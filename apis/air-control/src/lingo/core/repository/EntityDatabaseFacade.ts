@@ -90,7 +90,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	create(
 		entity: EntityCreateProperties,
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -102,7 +102,7 @@ export interface IEntityDatabaseFacade<Entity,
 	bulkCreate(
 		entities: EntityCreateProperties[],
 		checkIfProcessed: boolean, // defaults to true
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -110,28 +110,28 @@ export interface IEntityDatabaseFacade<Entity,
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IEntityContext
+		ctx?: IEntityContext
 	): Promise<number>;
 
 	insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},
-		ctx: IEntityContext
+		ctx?: IEntityContext
 	): Promise<number>;
 
 	insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IEntityContext
+		ctx?: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},
-		ctx: IEntityContext
+		ctx?: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	/**
@@ -142,7 +142,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	update(
 		entity: EntityCreateProperties, // @Id fields must be populated
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -155,7 +155,7 @@ export interface IEntityDatabaseFacade<Entity,
 	updateColumnsWhere(
 		rawUpdateColumns: RawUpdateColumns<EntityUpdateColumns, IQ>
 			| { (...args: any[]): RawUpdateColumns<EntityUpdateColumns, IQ> },
-		ctx: IEntityContext
+		ctx?: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -166,7 +166,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	updateWhere(
 		rawUpdateProperties: RawUpdate<EntityUpdateProperties, IQ> | { (...args: any[]): RawUpdate<EntityUpdateProperties, IQ> },
-		ctx: IEntityContext
+		ctx?: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -178,7 +178,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	delete(
 		entity: EntityId,
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -189,7 +189,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	deleteWhere(
 		rawDelete: RawDelete<IQ> | { (...args: any[]): RawDelete<IQ> },
-		ctx: IEntityContext
+		ctx?: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -201,7 +201,7 @@ export interface IEntityDatabaseFacade<Entity,
 	 */
 	save(
 		entity: EntityCreateProperties,
-		ctx: IEntityContext,
+		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 

@@ -1,18 +1,14 @@
 import {
 	AbstractQuery,
 	IAbstractQuery,
-	IFieldUtils,
+	IocQueryContext,
+	IQueryContext,
 	IQueryFacade,
-	IQueryUtils,
-	ISchemaUtils,
-	IUpdateCache,
 	QUERY_FACADE,
 	UpdateCacheType
-}           from '@airport/air-control'
+} from '@airport/air-control'
 import {DI} from '@airport/di'
 import {
-	DbEntity,
-	ITransactionalConnector,
 	JsonQuery,
 	PortableQuery,
 	QueryResultType,
@@ -26,113 +22,100 @@ export class QueryFacade
 	implements IQueryFacade {
 
 	async find<E, EntityArray extends Array<E>>(
-		dbEntity: DbEntity,
 		query: AbstractQuery,
 		queryResultType: QueryResultType,
-		fieldUtils: IFieldUtils,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache,
+		ctx: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<EntityArray> {
-		const result = await transConnector.find<E, EntityArray>(
-			this.getPortableQuery(
-				dbEntity, query, queryResultType, queryUtils, fieldUtils))
-		updateCache.addToCache(
-			schemaUtils, cacheForUpdate, dbEntity, ...result)
+		await this.ensureIocContext(ctx)
+		const result = await ctx.ioc.transactionalConnector.find<E, EntityArray>(
+			this.getPortableQuery(query, queryResultType, ctx))
+		ctx.ioc.updateCache.addToCache(
+			ctx.ioc.schemaUtils, cacheForUpdate, ctx.dbEntity, ...result)
 
 		return result
 	}
 
 	async findOne<E>(
-		dbEntity: DbEntity,
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		fieldUtils: IFieldUtils,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache,
+		ctx: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<E> {
-		const result = await transConnector.findOne<E>(this.getPortableQuery(
-			dbEntity, query, queryResultType, queryUtils, fieldUtils))
-		updateCache.addToCache(
-			schemaUtils, cacheForUpdate, dbEntity, result)
+		await this.ensureIocContext(ctx)
+		const result = await ctx.ioc.transactionalConnector.findOne<E>(this.getPortableQuery(
+			query, queryResultType, ctx))
+		ctx.ioc.updateCache.addToCache(
+			ctx.ioc.schemaUtils, cacheForUpdate, ctx.dbEntity, result)
 
 		return result
 	}
 
 	getPortableQuery<E>(
-		dbEntity: DbEntity,
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		ctx: IQueryContext<E>
 	): PortableQuery {
 		return {
-			jsonQuery: <JsonQuery>query.toJSON(queryUtils, fieldUtils),
+			jsonQuery: <JsonQuery>query.toJSON(ctx.ioc.queryUtils, ctx.ioc.fieldUtils),
 			parameterMap: query.getParameters(),
 			queryResultType,
-			schemaIndex: dbEntity.schemaVersion.schema.index,
-			tableIndex: dbEntity.index,
+			schemaIndex: ctx.dbEntity.schemaVersion.schema.index,
+			tableIndex: ctx.dbEntity.index,
 			// values: query.values
 		}
 	}
 
 	async search<E, EntityArray extends Array<E>>(
-		dbEntity: DbEntity,
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		fieldUtils: IFieldUtils,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache,
+		ctx: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<IObservable<EntityArray>> {
-		let observable = await transConnector.search(this.getPortableQuery(
-			dbEntity, query, queryResultType, queryUtils, fieldUtils))
+		await this.ensureIocContext(ctx)
+		let observable = await ctx.ioc.transactionalConnector.search(this.getPortableQuery(
+			query, queryResultType, ctx))
 
 		observable = observable.pipe(
-					map(
-						results => {
-							updateCache.addToCache(
-								schemaUtils, cacheForUpdate, dbEntity, ...results)
+			map(
+				results => {
+					ctx.ioc.updateCache.addToCache(
+						ctx.ioc.schemaUtils, cacheForUpdate, ctx.dbEntity, ...results)
 
-							return results
-						})
-				) as IObservable<EntityArray>
+					return results
+				})
+		) as IObservable<EntityArray>
 
 		return observable as IObservable<EntityArray>
 	}
 
 	async searchOne<E>(
-		dbEntity: DbEntity,
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		fieldUtils: IFieldUtils,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transConnector: ITransactionalConnector,
-		updateCache: IUpdateCache,
+		ctx: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<IObservable<E>> {
-		let observable = await transConnector.searchOne(this.getPortableQuery(
-			dbEntity, query, queryResultType, queryUtils, fieldUtils))
+		await this.ensureIocContext(ctx)
+		let observable = await ctx.ioc.transactionalConnector.searchOne(this.getPortableQuery(
+			query, queryResultType, ctx))
 
 		observable = observable.pipe(
 			map(
 				result => {
-					updateCache.addToCache(
-						schemaUtils, cacheForUpdate, dbEntity, result)
+					ctx.ioc.updateCache.addToCache(
+						ctx.ioc.schemaUtils, cacheForUpdate, ctx.dbEntity, result)
 
 					return result
 				})
 		)
 
 		return observable as IObservable<E>
+	}
+
+	private async ensureIocContext<E>(
+		ctx: IQueryContext<E>
+	): Promise<void> {
+		await IocQueryContext.ensure(ctx)
 	}
 
 }

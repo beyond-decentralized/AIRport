@@ -58,7 +58,7 @@ export class SharingMessageResponseStageDao
 
 		let smrs: QSharingMessageResponseStage;
 
-		return await this.airDb.db.insertValues(dbEntity, {
+		return await this.airDb.db.insertValues({
 			insertInto: smrs = Q.SharingMessageResponseStage,
 			columns: [
 				smrs.id,
@@ -67,6 +67,8 @@ export class SharingMessageResponseStageDao
 				smrs.syncTimestamp
 			],
 			values
+		}, {
+			dbEntity
 		});
 	}
 

@@ -10,13 +10,15 @@ import {
 	AgtSharingMessageId,
 	TerminalId,
 }                     from '@airport/arrivals-n-departures'
-import {container, DI}           from '@airport/di'
+import {
+	container,
+	DI
+}                     from '@airport/di'
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtRepositoryTransactionBlockId,
 	AgtSharingMessageAcknowledged
 }                     from '../../ddl/ddl'
-import {SYNC_LOG_DAO} from '../../tokens'
 import {
 	BaseSyncLogDao,
 	IBaseSyncLogDao,
@@ -25,6 +27,7 @@ import {
 	QAgtSharingMessage,
 	QSyncLog
 }                     from '../../generated/generated'
+import {SYNC_LOG_DAO} from '../../tokens'
 
 export type SyncedTerminalRepository = [TerminalId, AgtRepositoryId];
 export type TerminalSyncStatus = [TerminalId, AgtRepositoryId, AgtSharingMessageAcknowledged];
@@ -33,7 +36,7 @@ export type InsertSyncLog = [
 	AgtRepositoryTransactionBlockId,
 	// AgtAgtRepositoryTransactionBlockAddDatetime,
 	AgtSharingMessageId
-	];
+];
 
 export interface ISyncLogDao
 	extends IBaseSyncLogDao {
@@ -66,9 +69,10 @@ export class SyncLogDao
 		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog
 		let sl: QSyncLog
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this)
+			.get(AIR_DB)
 
-		await airDb.insertValues(dbEntity, {
+		await airDb.insertValues({
 			insertInto: sl = Q.SyncLog,
 			columns: [
 				sl.repositoryTransactionBlock.id,
@@ -76,6 +80,8 @@ export class SyncLogDao
 				sl.sharingMessage.id,
 			],
 			values
+		}, {
+			dbEntity
 		})
 	}
 
@@ -154,7 +160,8 @@ export class SyncLogDao
 			]
 		})
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this)
+			.get(AIR_DB)
 
 		return <TerminalSyncStatus[]>await airDb.find.sheet({
 			from: [

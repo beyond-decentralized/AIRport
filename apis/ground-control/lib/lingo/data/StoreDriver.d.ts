@@ -14,19 +14,16 @@ export interface IStoreDriver extends IStoreOperator {
     doesTableExist(schemaName: string, tableName: string): Promise<boolean>;
     dropTable(schemaName: string, tableName: string): Promise<boolean>;
     getEntityTableName(dbEntity: DbEntity): string;
-    getTableName(table: {
+    getTableName(schema: {
+        domain: DomainName | {
+            name: DomainName;
+        };
+        name: SchemaName;
+        status?: SchemaStatus;
+    }, table: {
         name: string;
         tableConfig?: {
             name?: string;
-        };
-        schemaVersion: {
-            schema: {
-                domain: DomainName | {
-                    name: DomainName;
-                };
-                name: SchemaName;
-                status?: SchemaStatus;
-            };
         };
     }): string;
     initialize(dbName: string): Promise<any>;

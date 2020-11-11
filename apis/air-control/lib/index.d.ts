@@ -50,6 +50,7 @@ export * from './impl/query/facade/SheetQuery';
 export * from './impl/query/facade/TreeQuery';
 export * from './impl/query/facade/UpdateColumns';
 export * from './impl/query/facade/UpdateProperties';
+export * from './impl/query/QueryContext';
 export * from './impl/utils/EntityUtils';
 export * from './impl/utils/FieldUtils';
 export * from './impl/utils/QMetadataUtils';

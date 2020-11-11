@@ -1,18 +1,15 @@
-import {IContext}          from '@airport/di'
-import {QueryResultType}  from '@airport/ground-control'
-import {
-	IEntityOperationContext
-}                         from '../../../lingo/core/data/EntityContext'
-import {IQOrderableField} from '../../../lingo/core/field/Field'
-import {INonEntityFind}    from '../../../lingo/query/api/NonEntityFind'
-import {RawFieldQuery}     from '../../../lingo/query/facade/FieldQuery'
-import {RawNonEntityQuery} from '../../../lingo/query/facade/NonEntityQuery'
-import {RawSheetQuery}     from '../../../lingo/query/facade/SheetQuery'
+import {IContext}             from '@airport/di'
+import {QueryResultType}      from '@airport/ground-control'
+import {IQOrderableField}     from '../../../lingo/core/field/Field'
+import {INonEntityFind}       from '../../../lingo/query/api/NonEntityFind'
+import {RawFieldQuery}        from '../../../lingo/query/facade/FieldQuery'
+import {RawNonEntityQuery}    from '../../../lingo/query/facade/NonEntityQuery'
+import {RawSheetQuery}        from '../../../lingo/query/facade/SheetQuery'
 import {
 	ITreeEntity,
 	RawTreeQuery
-}                          from '../../../lingo/query/facade/TreeQuery'
-import {FieldQuery}        from '../facade/FieldQuery'
+}                             from '../../../lingo/query/facade/TreeQuery'
+import {FieldQuery}           from '../facade/FieldQuery'
 import {DistinguishableQuery} from '../facade/NonEntityQuery'
 import {SheetQuery}           from '../facade/SheetQuery'
 import {TreeQuery}            from '../facade/TreeQuery'
@@ -63,7 +60,7 @@ export class NonEntityFind
 		ctx: IContext
 	): Promise<any[]> {
 		return this.lookup(rawNonEntityQuery, queryResultType,
-			false, false, QueryClass, this.ensureContext(ctx) as IEntityOperationContext)
+			false, false, QueryClass, this.ensureContext(ctx))
 	}
 
 }

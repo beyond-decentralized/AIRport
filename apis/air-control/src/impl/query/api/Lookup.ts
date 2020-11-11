@@ -1,25 +1,18 @@
 import {
 	DI,
 	IContext,
-}                                from '@airport/di'
+}                        from '@airport/di'
+import {QueryResultType} from '@airport/ground-control'
+import {IEntityContext}  from '../../../lingo/core/data/EntityContext'
+import {UpdateCacheType} from '../../../lingo/core/data/UpdateCacheType'
+import {ILookup}         from '../../../lingo/query/api/Lookup'
+import {IAbstractQuery}  from '../../../lingo/query/facade/AbstractQuery'
+import {RawQuery,}       from '../../../lingo/query/facade/Query'
+import {LOOKUP}          from '../../../tokens'
 import {
-	QueryResultType,
-	TRANS_CONNECTOR
-}                                from '@airport/ground-control'
-import {IEntityOperationContext} from '../../../lingo/core/data/EntityContext'
-import {UpdateCacheType}         from '../../../lingo/core/data/UpdateCacheType'
-import {ILookup}                 from '../../../lingo/query/api/Lookup'
-import {IAbstractQuery}          from '../../../lingo/query/facade/AbstractQuery'
-import {RawQuery,}               from '../../../lingo/query/facade/Query'
-import {
-	ENTITY_UTILS,
-	FIELD_UTILS,
-	LOOKUP,
-	QUERY_FACADE,
-	QUERY_UTILS,
-	SCHEMA_UTILS,
-	UPDATE_CACHE
-}                                from '../../../tokens'
+	IocQueryContext,
+	IQueryContext
+}                        from '../QueryContext'
 
 export class LookupProxy
 	implements ILookup {
@@ -30,7 +23,7 @@ export class LookupProxy
 		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
-		ctx: IEntityOperationContext,
+		ctx: IEntityContext,
 		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any> {
@@ -58,58 +51,42 @@ export class Lookup
 		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
-		ctx: IEntityOperationContext,
+		ctx: IQueryContext<any>,
 		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any> {
-		const [
-			      entityUtils, fieldUtils, queryFacade, queryUtils,
-			      schemaUtils, transConnector, updateCache
-		      ] = await DI.db()
-			.get(
-				ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS,
-				SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
-			)
+		await IocQueryContext.ensure(ctx)
 		let query: IAbstractQuery
-
 		if (QueryClass) {
-			const rawNonEntityQuery = entityUtils.getQuery(rawQuery)
+			const rawNonEntityQuery = ctx.ioc.entityUtils.getQuery(rawQuery)
 			query                   = new QueryClass(rawNonEntityQuery)
 		} else {
-			query           = entityUtils.getEntityQuery(rawQuery)
+			query           = ctx.ioc.entityUtils.getEntityQuery(rawQuery)
 			queryResultType = this.getQueryResultType(queryResultType, mapResults)
 		}
 		let queryMethod
 		if (search) {
 			if (one) {
-				queryMethod = queryFacade.searchOne
+				queryMethod = ctx.ioc.queryFacade.searchOne
 			} else {
-				queryMethod = queryFacade.search
+				queryMethod = ctx.ioc.queryFacade.search
 			}
 		} else {
 			if (one) {
-				queryMethod = queryFacade.findOne
+				queryMethod = ctx.ioc.queryFacade.findOne
 			} else {
-				queryMethod = queryFacade.find
+				queryMethod = ctx.ioc.queryFacade.find
 			}
 		}
-
-		ctx.entityUtils    = entityUtils
-		ctx.fieldUtils     = fieldUtils
-		ctx.queryFacade    = queryFacade
-		ctx.queryUtils     = queryUtils
-		ctx.schemaUtils    = schemaUtils
-		ctx.transConnector = transConnector
-		ctx.updateCache    = updateCache
 
 		return await queryMethod.call(query, this.getQueryResultType(queryResultType, mapResults),
 			ctx, cacheForUpdate)
 	}
 
-	protected ensureContext(
+	protected ensureContext<C extends IContext>(
 		ctx?: IContext
-	): IContext {
-		return doEnsureContext(ctx)
+	): C {
+		return doEnsureContext(ctx) as C
 	}
 
 	private getQueryResultType(

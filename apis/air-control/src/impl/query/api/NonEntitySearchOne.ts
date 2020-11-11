@@ -1,24 +1,23 @@
-import {IContext}                from '@airport/di'
-import {QueryResultType}         from '@airport/ground-control'
+import {IContext}             from '@airport/di'
+import {QueryResultType}      from '@airport/ground-control'
 import {
 	IObservable,
 	Observable
-}                                from '@airport/observe'
-import {IEntityOperationContext} from '../../../lingo/core/data/EntityContext'
-import {IQOrderableField}        from '../../../lingo/core/field/Field'
-import {INonEntitySearchOne}     from '../../../lingo/query/api/NonEntitySearchOne'
-import {RawFieldQuery}           from '../../../lingo/query/facade/FieldQuery'
-import {RawNonEntityQuery}       from '../../../lingo/query/facade/NonEntityQuery'
-import {RawSheetQuery}           from '../../../lingo/query/facade/SheetQuery'
+}                             from '@airport/observe'
+import {IQOrderableField}     from '../../../lingo/core/field/Field'
+import {INonEntitySearchOne}  from '../../../lingo/query/api/NonEntitySearchOne'
+import {RawFieldQuery}        from '../../../lingo/query/facade/FieldQuery'
+import {RawNonEntityQuery}    from '../../../lingo/query/facade/NonEntityQuery'
+import {RawSheetQuery}        from '../../../lingo/query/facade/SheetQuery'
 import {
 	ITreeEntity,
 	RawTreeQuery
-}                                from '../../../lingo/query/facade/TreeQuery'
-import {FieldQuery}              from '../facade/FieldQuery'
-import {DistinguishableQuery}    from '../facade/NonEntityQuery'
-import {SheetQuery}              from '../facade/SheetQuery'
-import {TreeQuery}               from '../facade/TreeQuery'
-import {Lookup}                  from './Lookup'
+}                             from '../../../lingo/query/facade/TreeQuery'
+import {FieldQuery}           from '../facade/FieldQuery'
+import {DistinguishableQuery} from '../facade/NonEntityQuery'
+import {SheetQuery}           from '../facade/SheetQuery'
+import {TreeQuery}            from '../facade/TreeQuery'
+import {Lookup}               from './Lookup'
 
 /**
  * Created by Papa on 11/12/2016.
@@ -59,7 +58,7 @@ export class NonEntitySearchOne
 		ctx: IContext
 	): Promise<IObservable<any[]>> {
 		return this.lookup(rawNonEntityQuery, queryResultType,
-			true, true, QueryClass, this.ensureContext(ctx) as IEntityOperationContext)
+			true, true, QueryClass, this.ensureContext(ctx))
 	}
 
 }

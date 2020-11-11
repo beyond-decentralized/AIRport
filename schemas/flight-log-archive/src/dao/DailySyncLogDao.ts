@@ -3,7 +3,10 @@ import {
 	and,
 	distinct
 }                            from '@airport/air-control'
-import {container, DI}                  from '@airport/di'
+import {
+	container,
+	DI
+}                            from '@airport/di'
 import {
 	DailySyncLogDatabaseId,
 	DailySyncLogDateNumber,
@@ -11,10 +14,10 @@ import {
 	DailySyncLogSynced,
 	DailySyncLogValues
 }                            from '../ddl/DailySyncLog'
-import {DAILY_SYNC_LOG_DAO}  from '../tokens'
 import {BaseDailySyncLogDao} from '../generated/baseDaos'
 import {QDailySyncLog}       from '../generated/qdailysynclog'
 import {Q}                   from '../generated/qSchema'
+import {DAILY_SYNC_LOG_DAO}  from '../tokens'
 
 export type DailyToMonthlyResult = [
 	DailySyncLogDatabaseId,
@@ -61,7 +64,7 @@ export class DailySyncLogDao
 
 		const airDb = await container(this).get(AIR_DB)
 
-		await airDb.insertValues(dbEntity, {
+		await airDb.insertValues({
 			insertInto: dsl = Q.DailySyncLog,
 			columns: [
 				dsl.databaseId,
@@ -70,6 +73,8 @@ export class DailySyncLogDao
 				dsl.date
 			],
 			values
+		}, {
+			dbEntity
 		})
 	}
 

@@ -1,17 +1,21 @@
 import {
+	AIR_DB,
 	and,
 	field
 }                                          from '@airport/air-control'
-import {AIR_DB}                            from '@airport/air-control'
 import {
 	SharingNodeRepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
 }                                          from '@airport/arrivals-n-departures'
-import {container, DI}                                from '@airport/di'
-import {ensureChildJsMap}                  from '@airport/ground-control'
-import {ensureChildArray}                  from '@airport/ground-control'
+import {
+	container,
+	DI
+}                                          from '@airport/di'
+import {
+	ensureChildArray,
+	ensureChildJsMap
+}                                          from '@airport/ground-control'
 import {SharingNodeId}                     from '../../ddl/ddl'
-import {SHARING_NODE_REPO_TRANS_BLOCK_DAO} from '../../tokens'
 import {
 	BaseSharingNodeRepoTransBlockDao,
 	IBaseSharingNodeRepoTransBlockDao,
@@ -20,6 +24,7 @@ import {
 	QSharingNodeRepoTransBlock,
 	QSharingNodeRepoTransBlockStage,
 }                                          from '../../generated/generated'
+import {SHARING_NODE_REPO_TRANS_BLOCK_DAO} from '../../tokens'
 
 export type SharingNodeRepoTransBlockValues = [
 	SharingNodeId,
@@ -28,8 +33,7 @@ export type SharingNodeRepoTransBlockValues = [
 	// RepoTransBlockSyncOutcomeType,
 	// DataOrigin,
 	SharingNodeRepoTransBlockSyncStatus
-	];
-
+];
 
 export interface RepoTransBlocksForSharingNodes {
 	repositoryTransactionBlockIds: Set<TmRepositoryTransactionBlockId>;
@@ -145,10 +149,11 @@ export class SharingNodeRepoTransBlockDao
 	): Promise<number> {
 		const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this)
+			.get(AIR_DB)
 
 		let snrtb: QSharingNodeRepoTransBlock
-		return await airDb.insertValues(dbEntity, {
+		return await airDb.insertValues({
 			insertInto: snrtb = Q.SharingNodeRepoTransBlock,
 			columns: [
 				snrtb.sharingNode.id,
@@ -159,6 +164,8 @@ export class SharingNodeRepoTransBlockDao
 				snrtb.syncStatus
 			],
 			values
+		}, {
+			dbEntity
 		})
 
 	}
@@ -173,22 +180,22 @@ export class SharingNodeRepoTransBlockDao
 
 		let snrtb: QSharingNodeRepoTransBlock
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this)
+			.get(AIR_DB)
 
 		const records = await airDb.find.sheet({
-			      from: [
-				      snrtb = Q.SharingNodeRepoTransBlock,
-			      ],
-			      select: [
-				      snrtb.sharingNode.id,
-				      snrtb.repositoryTransactionBlock.id
-			      ],
-			      where: and(
-				      snrtb.syncStatus.equals(syncStatus),
-				      snrtb.sharingNode.id.in(sharingNodeIds)
-			      )
-		      })
-
+			from: [
+				snrtb = Q.SharingNodeRepoTransBlock,
+			],
+			select: [
+				snrtb.sharingNode.id,
+				snrtb.repositoryTransactionBlock.id
+			],
+			where: and(
+				snrtb.syncStatus.equals(syncStatus),
+				snrtb.sharingNode.id.in(sharingNodeIds)
+			)
+		})
 
 		for (const record of records) {
 			const sharingNodeRepoTransBlockId = record[1]

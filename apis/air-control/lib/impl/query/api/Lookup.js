@@ -1,6 +1,7 @@
 import { DI, } from '@airport/di';
-import { QueryResultType, TRANS_CONNECTOR } from '@airport/ground-control';
-import { ENTITY_UTILS, FIELD_UTILS, LOOKUP, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, UPDATE_CACHE } from '../../../tokens';
+import { QueryResultType } from '@airport/ground-control';
+import { LOOKUP } from '../../../tokens';
+import { IocQueryContext } from '../QueryContext';
 export class LookupProxy {
     lookup(rawQuery, queryResultType, search, one, QueryClass, ctx, cacheForUpdate, mapResults) {
         return DI.db()
@@ -13,41 +14,33 @@ export class LookupProxy {
 }
 export class Lookup {
     async lookup(rawQuery, queryResultType, search, one, QueryClass, ctx, cacheForUpdate, mapResults) {
-        const [entityUtils, fieldUtils, queryFacade, queryUtils, schemaUtils, transConnector, updateCache] = await DI.db()
-            .get(ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE);
+        await IocQueryContext.ensure(ctx);
         let query;
         if (QueryClass) {
-            const rawNonEntityQuery = entityUtils.getQuery(rawQuery);
+            const rawNonEntityQuery = ctx.ioc.entityUtils.getQuery(rawQuery);
             query = new QueryClass(rawNonEntityQuery);
         }
         else {
-            query = entityUtils.getEntityQuery(rawQuery);
+            query = ctx.ioc.entityUtils.getEntityQuery(rawQuery);
             queryResultType = this.getQueryResultType(queryResultType, mapResults);
         }
         let queryMethod;
         if (search) {
             if (one) {
-                queryMethod = queryFacade.searchOne;
+                queryMethod = ctx.ioc.queryFacade.searchOne;
             }
             else {
-                queryMethod = queryFacade.search;
+                queryMethod = ctx.ioc.queryFacade.search;
             }
         }
         else {
             if (one) {
-                queryMethod = queryFacade.findOne;
+                queryMethod = ctx.ioc.queryFacade.findOne;
             }
             else {
-                queryMethod = queryFacade.find;
+                queryMethod = ctx.ioc.queryFacade.find;
             }
         }
-        ctx.entityUtils = entityUtils;
-        ctx.fieldUtils = fieldUtils;
-        ctx.queryFacade = queryFacade;
-        ctx.queryUtils = queryUtils;
-        ctx.schemaUtils = schemaUtils;
-        ctx.transConnector = transConnector;
-        ctx.updateCache = updateCache;
         return await queryMethod.call(query, this.getQueryResultType(queryResultType, mapResults), ctx, cacheForUpdate);
     }
     ensureContext(ctx) {

@@ -1,7 +1,13 @@
 import { AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, UPDATE_CACHE, } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { TRANS_SERVER } from './tokens';
-export class IocContext {
+export class IocOperationContext {
+    static async ensure(ctx) {
+        if (!ctx.ioc) {
+            ctx.ioc = new IocOperationContext();
+            await ctx.ioc.init();
+        }
+    }
     async init() {
         const [airDb, fieldUtils, metadataUtils, queryFacade, queryUtils, schemaUtils, transactionalServer, updateCache] = await DI.db()
             .get(AIR_DB, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANS_SERVER, UPDATE_CACHE);
@@ -15,4 +21,4 @@ export class IocContext {
         this.updateCache = updateCache;
     }
 }
-//# sourceMappingURL=Context.js.map
+//# sourceMappingURL=OperationContext.js.map

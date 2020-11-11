@@ -1,14 +1,15 @@
 import { AIR_DB, and, max, min, tree } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { AgtSharingMessageAcknowledged } from '../../ddl/ddl';
-import { SYNC_LOG_DAO } from '../../tokens';
 import { BaseSyncLogDao, Q } from '../../generated/generated';
+import { SYNC_LOG_DAO } from '../../tokens';
 export class SyncLogDao extends BaseSyncLogDao {
     async insertValues(values) {
         const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
         let sl;
-        const airDb = await container(this).get(AIR_DB);
-        await airDb.insertValues(dbEntity, {
+        const airDb = await container(this)
+            .get(AIR_DB);
+        await airDb.insertValues({
             insertInto: sl = Q.SyncLog,
             columns: [
                 sl.repositoryTransactionBlock.id,
@@ -16,6 +17,8 @@ export class SyncLogDao extends BaseSyncLogDao {
                 sl.sharingMessage.id,
             ],
             values
+        }, {
+            dbEntity
         });
     }
     async selectSyncedTerminalRepositories(fromDateInclusive, toDateExlusive, repositoryIds) {
@@ -69,7 +72,8 @@ export class SyncLogDao extends BaseSyncLogDao {
                 sm.terminal.id.asc(),
             ]
         });
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this)
+            .get(AIR_DB);
         return await airDb.find.sheet({
             from: [
                 smrtb

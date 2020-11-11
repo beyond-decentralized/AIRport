@@ -1,24 +1,24 @@
-import {OperationName}      from './query/Dao'
 import {
-	CascadeOverwrite,
 	DbEntity,
 	DbSchema,
 	DistributionStrategy,
 	PlatformType
-}                           from '@airport/ground-control'
-import {QEntityConstructor} from '../impl/core/entity/Entity'
-import {QRelation}          from '../impl/core/entity/Relation'
+}                              from '@airport/ground-control'
+import {QEntityConstructor}    from '../impl/core/entity/Entity'
+import {QRelation}             from '../impl/core/entity/Relation'
+import {IEntityContext}        from './core/data/EntityContext'
 import {
 	EntityConstructor,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-}                           from './core/entity/Entity'
+}                              from './core/entity/Entity'
 import {FunctionsAndOperators} from './core/FunctionsAndOperators'
 import {INonEntityFind}        from './query/api/NonEntityFind'
 import {INonEntityFindOne}     from './query/api/NonEntityFindOne'
 import {INonEntitySearch}      from './query/api/NonEntitySearch'
 import {INonEntitySearchOne}   from './query/api/NonEntitySearchOne'
+import {OperationName}         from './query/Dao'
 import {RawDelete}             from './query/facade/Delete'
 import {
 	RawInsertColumnValues,
@@ -79,6 +79,7 @@ export interface IAirportDatabase
 		platform: PlatformType,
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
+		ctx: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -88,8 +89,8 @@ export interface IAirportDatabase
 	 * @return Number of records created (1 or 0)
 	 */
 	create<E>(
-		dbEntity: DbEntity,
 		entity: E,
+		ctx: IEntityContext,
 		operationName?: OperationName,
 	): Promise<number>;
 
@@ -100,40 +101,40 @@ export interface IAirportDatabase
 	 * @return Number of records created
 	 */
 	bulkCreate<E>(
-		dbEntity: DbEntity,
 		entities: E[],
 		checkIfProcessed: boolean, // defaults to true
+		ctx: IEntityContext,
 		operationName?: OperationName,
 		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
 	                                  // creation
 	): Promise<number>;
 
 	insertColumnValues<IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
+		ctx: IEntityContext
 	): Promise<number>;
 
 	insertValues<IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
+		ctx: IEntityContext
 	): Promise<number>;
 
 	insertColumnValuesGenerateIds<IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
+		ctx: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	insertValuesGenerateIds<IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
+		ctx: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	/**
@@ -143,8 +144,8 @@ export interface IAirportDatabase
 	 * @return Number of records deleted (1 or 0)
 	 */
 	delete<E>(
-		dbEntity: DbEntity,
 		entity: E,
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -155,10 +156,10 @@ export interface IAirportDatabase
 	 * @return Number of records deleted
 	 */
 	deleteWhere<IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
+		ctx: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -168,8 +169,8 @@ export interface IAirportDatabase
 	 * @return Number of records saved (1 or 0)
 	 */
 	save<E>(
-		dbEntity: DbEntity,
 		entity: E,
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -180,8 +181,8 @@ export interface IAirportDatabase
 	 * @return Number of records updated (1 or 0)
 	 */
 	update<E>(
-		dbEntity: DbEntity,
 		entity: E,
+		ctx: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -192,11 +193,11 @@ export interface IAirportDatabase
 	 * @return Number of records updated
 	 */
 	updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawUpdateColumns: RawUpdateColumns<IEUC, IQE>
 			| {
 			(...args: any[]): RawUpdateColumns<IEUC, IQE>
 		},
+		ctx: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -206,19 +207,19 @@ export interface IAirportDatabase
 	 * @return Number of records updated
 	 */
 	updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},
+		ctx: IEntityContext
 	): Promise<number>;
 
 }
 
 export interface QSchema {
-	[name: string]: any;
-
 	domain: string;
 	name: string;
+
+	[name: string]: any;
 }
 
 export interface QSchemaInternal

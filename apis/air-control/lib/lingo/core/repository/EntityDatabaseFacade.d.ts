@@ -48,26 +48,26 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records created (1 or 0)
      */
-    create(entity: EntityCreateProperties, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
+    create(entity: EntityCreateProperties, ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
     /**
      * Creates the provided entities in the db.
      *
      * @return Number of records created
      */
     bulkCreate(entities: EntityCreateProperties[], checkIfProcessed: boolean, // defaults to true
-    ctx: IEntityContext, operationName?: OperationName): Promise<number>;
+    ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }, ctx: IEntityContext): Promise<number>;
+    }, ctx?: IEntityContext): Promise<number>;
     insertValues<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }, ctx: IEntityContext): Promise<number>;
+    }, ctx?: IEntityContext): Promise<number>;
     insertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }, ctx: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
+    }, ctx?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
     insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }, ctx: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
+    }, ctx?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
     /**
      * Creates the provided entity in the db. As part of that attempts to
      * update only the changed fields.
@@ -75,7 +75,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      * @return Number of records updated (1 or 0)
      */
     update(entity: EntityCreateProperties, // @Id fields must be populated
-    ctx: IEntityContext, operationName?: OperationName): Promise<number>;
+    ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
     /**
      * Updates this entity type based on an UPDATE WHERE Query,
      * with a column based set clause.
@@ -84,7 +84,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      */
     updateColumnsWhere(rawUpdateColumns: RawUpdateColumns<EntityUpdateColumns, IQ> | {
         (...args: any[]): RawUpdateColumns<EntityUpdateColumns, IQ>;
-    }, ctx: IEntityContext): Promise<number>;
+    }, ctx?: IEntityContext): Promise<number>;
     /**
      * Updates this entity type based on an UPDATE WHERE Query (),
      * with a property based set clause.
@@ -93,7 +93,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      */
     updateWhere(rawUpdateProperties: RawUpdate<EntityUpdateProperties, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateProperties, IQ>;
-    }, ctx: IEntityContext): Promise<number>;
+    }, ctx?: IEntityContext): Promise<number>;
     /**
      * Deletes the provided entity in the db.
      *
@@ -101,7 +101,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records deleted (1 or 0)
      */
-    delete(entity: EntityId, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
+    delete(entity: EntityId, ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
     /**
      * Deletes this entity type based on an DELETE WHERE Query.
      *
@@ -109,7 +109,7 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      */
     deleteWhere(rawDelete: RawDelete<IQ> | {
         (...args: any[]): RawDelete<IQ>;
-    }, ctx: IEntityContext): Promise<number>;
+    }, ctx?: IEntityContext): Promise<number>;
     /**
      * Creates or Updates the provided entity in the db.  Uses the DB
      * UpdateProperties Context to determine if the entity needs to be updated.
@@ -117,6 +117,6 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @return Number of records saved (1 or 0)
      */
-    save(entity: EntityCreateProperties, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
+    save(entity: EntityCreateProperties, ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
 }
 //# sourceMappingURL=EntityDatabaseFacade.d.ts.map

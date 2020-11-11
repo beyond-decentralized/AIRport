@@ -2,21 +2,15 @@ import {
 	and,
 	Delete,
 	EntityIdData,
-	IAirportDatabase,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	IFieldUtils,
 	InsertColumnValues,
 	InsertValues,
 	IQEntity,
-	IQMetadataUtils,
 	IQOperableFieldInternal,
-	IQueryFacade,
-	IQueryUtils,
 	ISchemaUtils,
 	isStub,
 	IUpdateCache,
-	QUERY_FACADE,
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
@@ -24,8 +18,7 @@ import {
 	UpdateProperties,
 	UpdateRecord,
 	valuesEqual
-}           from '@airport/air-control'
-import {container} from '@airport/di'
+}                          from '@airport/air-control'
 import {
 	CascadeOverwrite,
 	CascadeType,
@@ -40,13 +33,9 @@ import {
 	JSONValueOperation,
 	PortableQuery,
 	SQLDataType
-}                     from '@airport/ground-control'
-import {
-	IOperationContext
-}                     from './Context'
-import {TRANS_SERVER} from './tokens'
-import {ITransactionalServer} from './core/data/ITransactionalServer'
-import {ITransaction}         from './ITransaction'
+}                          from '@airport/ground-control'
+import {ITransaction}      from './ITransaction'
+import {IOperationContext} from './OperationContext'
 
 /**
  * Created by Papa on 11/15/2016.
@@ -109,8 +98,8 @@ export abstract class OperationManager
 		// TODO: add code to populate CREATED_AT (and save for update in performUpdate)
 		// also add code populate user info (USER_ACCOUNT_ID for now, eventually the actor)
 		const lastCheckIfProcessed = ctx.checkIfProcessed
-		ctx.checkIfProcessed = !idData
-		let result = await this.internalCreate([entity], createdEntityMap, transaction, ctx, !idData)
+		ctx.checkIfProcessed       = !idData
+		let result                 = await this.internalCreate([entity], createdEntityMap, transaction, ctx, !idData)
 
 		await this.cascadeOnPersist(result.cascadeRecords,
 			ctx.dbEntity, createdEntityMap, transaction, ctx)
@@ -131,7 +120,7 @@ export abstract class OperationManager
 		createdEntityMap: { [entityId: string]: any }[][],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>,
-		ensureGeneratedValues: boolean                          = true // For internal use only
+		ensureGeneratedValues: boolean = true // For internal use only
 	): Promise<number> {
 		let result = await this.internalCreate(entities, createdEntityMap,
 			transaction, ctx, ensureGeneratedValues)
@@ -142,20 +131,16 @@ export abstract class OperationManager
 	}
 
 	protected async internalInsertColumnValues<IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawInsertColumnValues: RawInsertColumnValues<IQE>,
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils,
-		transaction: ITransaction
+		transaction: ITransaction,
+		ctx: IOperationContext<any, any>
 	): Promise<number> {
-		const [transactionalServer, queryFacade] = await container(this).get(TRANS_SERVER, QUERY_FACADE)
-
 		const insertColumnValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
 
-		const portableQuery: PortableQuery = queryFacade.getPortableQuery(
-			dbEntity, insertColumnValues, null, queryUtils, fieldUtils)
+		const portableQuery: PortableQuery = ctx.ioc.queryFacade.getPortableQuery(
+			insertColumnValues, null, ctx)
 
-		return await transactionalServer.insertValues(portableQuery, transaction)
+		return await ctx.ioc.transactionalServer.insertValues(portableQuery, transaction, ctx)
 	}
 
 	protected async internalInsertValues<E, EntityCascadeGraph, IQE extends IQEntity>(
@@ -164,31 +149,26 @@ export abstract class OperationManager
 		ctx: IOperationContext<E, EntityCascadeGraph>,
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
-		const [transactionalServer, queryFacade] = await container(this).get(TRANS_SERVER, QUERY_FACADE)
-
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 
-		const portableQuery: PortableQuery = queryFacade.getPortableQuery(
-			ctx.dbEntity, insertValues, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils)
+		const portableQuery: PortableQuery = ctx.queryFacade.getPortableQuery(
+			insertValues, null, ctx)
 
-		return await transactionalServer.insertValues(portableQuery, transaction, ensureGeneratedValues)
+		return await ctx.ioc.transactionalServer.insertValues(portableQuery, transaction, ctx, ensureGeneratedValues)
 	}
 
 	protected async internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(
-		dbEntity: DbEntity,
 		rawInsertColumnValues: RawInsertColumnValues<IQE>,
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils,
-		transaction: ITransaction
+		transaction: ITransaction,
+		ctx: IOperationContext<any, any>
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const [transactionalServer, queryFacade] = await container(this).get(TRANS_SERVER, QUERY_FACADE)
 
 		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
 
-		const portableQuery: PortableQuery = queryFacade.getPortableQuery(
-			dbEntity, insertValues, null, queryUtils, fieldUtils)
+		const portableQuery: PortableQuery = ctx.ioc.queryFacade.getPortableQuery(
+			insertValues, null, ctx)
 
-		return await transactionalServer.insertValuesGetIds(portableQuery, transaction)
+		return await ctx.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction, ctx)
 	}
 
 	/**
@@ -237,9 +217,9 @@ export abstract class OperationManager
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 
 		const portableQuery: PortableQuery = ctx.ioc.queryFacade.getPortableQuery(
-			ctx.dbEntity, insertValues, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils)
+			insertValues, null, ctx)
 
-		return await ctx.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction)
+		return await ctx.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction, ctx)
 	}
 
 	protected abstract async getOriginalRecord(
@@ -315,9 +295,9 @@ export abstract class OperationManager
 		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
 		const portableQuery: PortableQuery = ctx.ioc.queryFacade.getPortableQuery(
-			ctx.dbEntity, updateColumns, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils)
+			updateColumns, null, ctx)
 
-		return await ctx.ioc.transactionalServer.updateValues(portableQuery, transaction)
+		return await ctx.ioc.transactionalServer.updateValues(portableQuery, transaction, ctx)
 	}
 
 	protected async internalUpdateWhere<E, EntityCascadeGraph, IEUP extends IEntityUpdateProperties,
@@ -327,9 +307,9 @@ export abstract class OperationManager
 		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
 		const portableQuery: PortableQuery = ctx.ioc.queryFacade.getPortableQuery(
-			ctx.dbEntity, update, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils)
+			update, null, ctx)
 
-		return await ctx.ioc.transactionalServer.updateValues(portableQuery, transaction)
+		return await ctx.ioc.transactionalServer.updateValues(portableQuery, transaction, ctx)
 	}
 
 	/**
@@ -354,9 +334,9 @@ export abstract class OperationManager
 		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
 		let portableQuery: PortableQuery = ctx.ioc.queryFacade.getPortableQuery(
-			ctx.dbEntity, aDelete, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils)
+			aDelete, null, ctx)
 
-		return await ctx.ioc.transactionalServer.deleteWhere(portableQuery, transaction)
+		return await ctx.ioc.transactionalServer.deleteWhere(portableQuery, transaction, ctx)
 	}
 
 	private async internalCreate<E, EntityCascadeGraph>(
@@ -472,7 +452,6 @@ export abstract class OperationManager
 		}
 
 		let numberOfAffectedRecords = 0
-
 
 		if (rawInsert.values.length) {
 			const generatedColumns = ctx.dbEntity.columns.filter(
@@ -593,7 +572,7 @@ export abstract class OperationManager
 			// const entitiesWithIdMap: { [idKey: string]: UpdateRecord } = {}
 			const entitiesWithoutIds: any[]       = []
 			const dbEntity                        = cascadeRecord.relation.relationEntity
-			ctx.dbEntity = dbEntity
+			ctx.dbEntity                          = dbEntity
 			if (cascadeRecord.manyEntities) {
 				for (const manyEntity of cascadeRecord.manyEntities) {
 					const [isProcessed, entityIdData] = this.isProcessed(manyEntity,
@@ -641,14 +620,14 @@ export abstract class OperationManager
 								transaction, ctx, entityToOperateOn.idData)
 					} else {
 						await this.performUpdate(entityToOperateOn.newValue, alreadyModifiedEntityMap, transaction,
-								ctx, entityToOperateOn.originalValue)
+							ctx, entityToOperateOn.originalValue)
 					}
 				}
 			}
 			for (let i = 0; i < entitiesWithoutIds.length; i++) {
 				let entityToCreate = entitiesWithoutIds[i]
 				await this.performCreate(entityToCreate, alreadyModifiedEntityMap, transaction,
-						ctx, entityToCreate.idData)
+					ctx, entityToCreate.idData)
 			}
 		}
 		ctx.dbEntity = previousDbEntity
@@ -910,7 +889,7 @@ export abstract class OperationManager
 		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
 
-		const dbEntity = ctx.dbEntity
+		const dbEntity                               = ctx.dbEntity
 		const qEntity                                =
 			      ctx.ioc.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
 		const idWhereFragments: JSONValueOperation[] = []

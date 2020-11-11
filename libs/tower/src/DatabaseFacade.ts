@@ -16,10 +16,7 @@ import {
 	UpdateColumns,
 	UpdateProperties,
 }                         from '@airport/air-control'
-import {
-	container,
-	DI
-}                         from '@airport/di'
+import {DI}               from '@airport/di'
 import {
 	CascadeOverwrite,
 	DbEntity,
@@ -28,16 +25,13 @@ import {
 	DistributionStrategy,
 	PlatformType
 }                         from '@airport/terminal-map'
-import {
-	IocContext,
-	IOperationContext
-}                         from './Context'
 import {ITransaction}     from './ITransaction'
+import {
+	IocOperationContext,
+	IOperationContext
+}                         from './OperationContext'
 import {OperationManager} from './OperationManager'
-import {TRANS_SERVER}     from './tokens'
 import {transactional}    from './transactional'
-
-// import {transactional}     from './transactional'
 
 /**
  * Created by Papa on 5/23/2016.
@@ -88,9 +82,9 @@ export class DatabaseFacade
 		platform: PlatformType                     = PlatformType.GOOGLE_DOCS,
 		platformConfig: string                     = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
+		ctx: IOperationContext<any, any>
 	): Promise<number> {
-		const transactionalServer = await container(this)
-			.get(TRANS_SERVER)
+		await this.ensureIocContext(ctx)
 
 		let numRecordsCreated = 0
 
@@ -98,8 +92,8 @@ export class DatabaseFacade
 			transaction: ITransaction
 		) => {
 			// TODO: figure out how addRepository will work
-			numRecordsCreated = await transactionalServer.addRepository(
-				name, url, platform, platformConfig, distributionStrategy, null)
+			numRecordsCreated = await ctx.ioc.transactionalServer.addRepository(
+				name, url, platform, platformConfig, distributionStrategy, null, ctx)
 		})
 
 		return numRecordsCreated
@@ -171,8 +165,8 @@ export class DatabaseFacade
 			transaction: ITransaction
 		) => {
 			numInsertedRecords = await this.internalInsertColumnValues(
-				ctx.dbEntity, <RawInsertColumnValues<IQE>>rawInsertColumnValues,
-				ctx.ioc.queryUtils, ctx.ioc.fieldUtils, transaction)
+				<RawInsertColumnValues<IQE>>rawInsertColumnValues,
+				transaction, ctx)
 		})
 
 		return numInsertedRecords
@@ -219,8 +213,7 @@ export class DatabaseFacade
 			transaction: ITransaction
 		) => {
 			recordIdentifiers = await this.internalInsertColumnValuesGenerateIds(
-				ctx.dbEntity, rawInsertColumnValues as RawInsertColumnValues<IQE>,
-				ctx.ioc.queryUtils, ctx.ioc.fieldUtils, transaction)
+				rawInsertColumnValues as RawInsertColumnValues<IQE>, transaction, ctx)
 		})
 	}
 
@@ -466,10 +459,7 @@ export class DatabaseFacade
 	private async ensureIocContext(
 		ctx: IOperationContext<any, any>
 	): Promise<void> {
-		if (!ctx.ioc) {
-			ctx.ioc = new IocContext()
-			await ctx.ioc.init()
-		}
+		await IocOperationContext.ensure(ctx)
 	}
 
 }

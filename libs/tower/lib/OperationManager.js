@@ -1,7 +1,5 @@
-import { and, Delete, InsertColumnValues, InsertValues, isStub, QUERY_FACADE, UpdateProperties, valuesEqual } from '@airport/air-control';
-import { container } from '@airport/di';
+import { and, Delete, InsertColumnValues, InsertValues, isStub, UpdateProperties, valuesEqual } from '@airport/air-control';
 import { CascadeOverwrite, CascadeType, CRUDOperation, ensureChildArray, ensureChildMap, EntityRelationType, SQLDataType } from '@airport/ground-control';
-import { TRANS_SERVER } from './tokens';
 export class OperationManager {
     // higherOrderOpsYieldLength: number = 100
     // transactionInProgress: boolean    = false
@@ -40,23 +38,20 @@ export class OperationManager {
         await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity, createdEntityMap, transaction, ctx);
         return result.numberOfAffectedRecords;
     }
-    async internalInsertColumnValues(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils, transaction) {
-        const [transactionalServer, queryFacade] = await container(this).get(TRANS_SERVER, QUERY_FACADE);
+    async internalInsertColumnValues(rawInsertColumnValues, transaction, ctx) {
         const insertColumnValues = new InsertColumnValues(rawInsertColumnValues);
-        const portableQuery = queryFacade.getPortableQuery(dbEntity, insertColumnValues, null, queryUtils, fieldUtils);
-        return await transactionalServer.insertValues(portableQuery, transaction);
+        const portableQuery = ctx.ioc.queryFacade.getPortableQuery(insertColumnValues, null, ctx);
+        return await ctx.ioc.transactionalServer.insertValues(portableQuery, transaction, ctx);
     }
     async internalInsertValues(rawInsertValues, transaction, ctx, ensureGeneratedValues) {
-        const [transactionalServer, queryFacade] = await container(this).get(TRANS_SERVER, QUERY_FACADE);
         const insertValues = new InsertValues(rawInsertValues);
-        const portableQuery = queryFacade.getPortableQuery(ctx.dbEntity, insertValues, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils);
-        return await transactionalServer.insertValues(portableQuery, transaction, ensureGeneratedValues);
+        const portableQuery = ctx.queryFacade.getPortableQuery(insertValues, null, ctx);
+        return await ctx.ioc.transactionalServer.insertValues(portableQuery, transaction, ctx, ensureGeneratedValues);
     }
-    async internalInsertColumnValuesGenerateIds(dbEntity, rawInsertColumnValues, queryUtils, fieldUtils, transaction) {
-        const [transactionalServer, queryFacade] = await container(this).get(TRANS_SERVER, QUERY_FACADE);
+    async internalInsertColumnValuesGenerateIds(rawInsertColumnValues, transaction, ctx) {
         const insertValues = new InsertColumnValues(rawInsertColumnValues);
-        const portableQuery = queryFacade.getPortableQuery(dbEntity, insertValues, null, queryUtils, fieldUtils);
-        return await transactionalServer.insertValuesGetIds(portableQuery, transaction);
+        const portableQuery = ctx.ioc.queryFacade.getPortableQuery(insertValues, null, ctx);
+        return await ctx.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction, ctx);
     }
     /**
      * Transactional context must have been started by the time this method is called.
@@ -84,8 +79,8 @@ export class OperationManager {
     }
     async internalInsertValuesGetIds(rawInsertValues, transaction, ctx) {
         const insertValues = new InsertValues(rawInsertValues);
-        const portableQuery = ctx.ioc.queryFacade.getPortableQuery(ctx.dbEntity, insertValues, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils);
-        return await ctx.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction);
+        const portableQuery = ctx.ioc.queryFacade.getPortableQuery(insertValues, null, ctx);
+        return await ctx.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction, ctx);
     }
     /*
     protected abstract async getOriginalValues(
@@ -146,12 +141,12 @@ export class OperationManager {
     }
 */
     async internalUpdateColumnsWhere(updateColumns, transaction, ctx) {
-        const portableQuery = ctx.ioc.queryFacade.getPortableQuery(ctx.dbEntity, updateColumns, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils);
-        return await ctx.ioc.transactionalServer.updateValues(portableQuery, transaction);
+        const portableQuery = ctx.ioc.queryFacade.getPortableQuery(updateColumns, null, ctx);
+        return await ctx.ioc.transactionalServer.updateValues(portableQuery, transaction, ctx);
     }
     async internalUpdateWhere(update, transaction, ctx) {
-        const portableQuery = ctx.ioc.queryFacade.getPortableQuery(ctx.dbEntity, update, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils);
-        return await ctx.ioc.transactionalServer.updateValues(portableQuery, transaction);
+        const portableQuery = ctx.ioc.queryFacade.getPortableQuery(update, null, ctx);
+        return await ctx.ioc.transactionalServer.updateValues(portableQuery, transaction, ctx);
     }
     /**
      * Transactional context must have been started by the time this method is called.
@@ -164,8 +159,8 @@ export class OperationManager {
         // to pull for this from the client
     }
     async internalDeleteWhere(aDelete, transaction, ctx) {
-        let portableQuery = ctx.ioc.queryFacade.getPortableQuery(ctx.dbEntity, aDelete, null, ctx.ioc.queryUtils, ctx.ioc.fieldUtils);
-        return await ctx.ioc.transactionalServer.deleteWhere(portableQuery, transaction);
+        let portableQuery = ctx.ioc.queryFacade.getPortableQuery(aDelete, null, ctx);
+        return await ctx.ioc.transactionalServer.deleteWhere(portableQuery, transaction, ctx);
     }
     async internalCreate(entities, createdEntityMap, transaction, ctx, ensureGeneratedValues) {
         const qEntity = ctx.ioc.airDb.qSchemas[ctx.dbEntity.schemaVersion.schema.index][ctx.dbEntity.name];

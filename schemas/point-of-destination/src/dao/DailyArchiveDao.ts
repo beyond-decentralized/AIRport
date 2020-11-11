@@ -43,7 +43,7 @@ export class DailyArchiveDao
 
 		const dbEntity = Q.db.currentVersion.entityMapByName.DailyArchive
 		let da: QDailyArchive
-		await airDb.insertValues(dbEntity, {
+		await airDb.insertValues({
 			insertInto: da = Q.DailyArchive,
 			columns: [
 				da.repository.id,
@@ -51,6 +51,8 @@ export class DailyArchiveDao
 				da.repositoryData
 			],
 			values
+		}, {
+			dbEntity
 		})
 	}
 
