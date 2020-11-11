@@ -20,8 +20,9 @@ import {
 }                             from '@airport/di'
 import {
 	CascadeOverwrite,
-	DbEntity
-}                             from '@airport/ground-control'
+	DbEntity,
+	ITransactionalConnector
+} from '@airport/ground-control'
 import {ITransactionalServer} from './core/data/ITransactionalServer'
 import {TRANS_SERVER}         from './tokens'
 
@@ -30,7 +31,6 @@ export interface IOperationContext<E, EntityCascadeGraph>
 	cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph,
 	checkIfProcessed: boolean
 	dbEntity: DbEntity
-	entities: E[]
 	ioc: IIocOperationContext
 }
 

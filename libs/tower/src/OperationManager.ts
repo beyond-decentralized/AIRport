@@ -42,7 +42,6 @@ import {
 	SQLDataType
 }                     from '@airport/ground-control'
 import {
-	IBulkCreateContext,
 	IOperationContext
 }                     from './Context'
 import {TRANS_SERVER} from './tokens'
@@ -101,6 +100,7 @@ export abstract class OperationManager
 	 * @param entity
 	 */
 	protected async performCreate<E, EntityCascadeGraph>(
+		entity: E,
 		createdEntityMap: { [entityId: string]: any }[][],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>,
@@ -110,7 +110,7 @@ export abstract class OperationManager
 		// also add code populate user info (USER_ACCOUNT_ID for now, eventually the actor)
 		const lastCheckIfProcessed = ctx.checkIfProcessed
 		ctx.checkIfProcessed = !idData
-		let result = await this.internalCreate(createdEntityMap, transaction, ctx, !idData)
+		let result = await this.internalCreate([entity], createdEntityMap, transaction, ctx, !idData)
 
 		await this.cascadeOnPersist(result.cascadeRecords,
 			ctx.dbEntity, createdEntityMap, transaction, ctx)
@@ -127,12 +127,13 @@ export abstract class OperationManager
 	 * @param entity
 	 */
 	protected async performBulkCreate<E, EntityCascadeGraph>(
+		entities: E[],
 		createdEntityMap: { [entityId: string]: any }[][],
 		transaction: ITransaction,
-		ctx: IBulkCreateContext<E, EntityCascadeGraph>,
+		ctx: IOperationContext<E, EntityCascadeGraph>,
 		ensureGeneratedValues: boolean                          = true // For internal use only
 	): Promise<number> {
-		let result = await this.internalCreate(createdEntityMap,
+		let result = await this.internalCreate(entities, createdEntityMap,
 			transaction, ctx, ensureGeneratedValues)
 		await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity,
 			createdEntityMap, transaction, ctx)
@@ -197,6 +198,7 @@ export abstract class OperationManager
 	 * @param entity
 	 */
 	protected async performUpdate<E, EntityCascadeGraph>(
+		entity: E,
 		updatedEntityMap: { [entityId: string]: any } [][],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>,
@@ -204,7 +206,7 @@ export abstract class OperationManager
 	): Promise<number> {
 		if (!originalValue) {
 			let [isProcessed, entityIdData] = this.isProcessed(
-				ctx.entities[0], updatedEntityMap, ctx.dbEntity, ctx.ioc.schemaUtils)
+				entity, updatedEntityMap, ctx.dbEntity, ctx.ioc.schemaUtils)
 			if (isProcessed === true) {
 				return 0
 			}
@@ -218,7 +220,7 @@ export abstract class OperationManager
 			// 	throw new Error(`Cannot update ${dbEntity.name}, entity not found.`)
 			// }
 		}
-		let result = await this.internalUpdate(
+		let result = await this.internalUpdate(entity,
 			originalValue, transaction, ctx)
 		await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity,
 			updatedEntityMap, transaction, ctx)
@@ -336,10 +338,11 @@ export abstract class OperationManager
 	 * @param entity
 	 */
 	protected async performDelete<E, EntityCascadeGraph>(
+		entity: E,
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
-		return await this.internalDelete(transaction, ctx)
+		return await this.internalDelete(entity, transaction, ctx)
 
 		// Delete cascading is done on the server - there is no new information
 		// to pull for this from the client
@@ -357,9 +360,10 @@ export abstract class OperationManager
 	}
 
 	private async internalCreate<E, EntityCascadeGraph>(
+		entities: E[],
 		createdEntityMap: { [entityId: string]: any }[][],
 		transaction: ITransaction,
-		ctx: IBulkCreateContext<E, EntityCascadeGraph>,
+		ctx: IOperationContext<E, EntityCascadeGraph>,
 		ensureGeneratedValues?: boolean
 	): Promise<ResultWithCascade> {
 		const qEntity = ctx.ioc.airDb.qSchemas
@@ -381,7 +385,7 @@ export abstract class OperationManager
 
 		let cascadeRecords: CascadeRecord[] = []
 
-		for (const entity of ctx.entities) {
+		for (const entity of entities) {
 			if (ctx.checkIfProcessed && this.isProcessed(
 				entity, createdEntityMap, ctx.dbEntity, ctx.ioc.schemaUtils)[0] === true) {
 				continue
@@ -476,10 +480,10 @@ export abstract class OperationManager
 			if (generatedColumns.length && ensureGeneratedValues) {
 				const idsAndGeneratedValues = await this.internalInsertValuesGetIds(
 					rawInsert, transaction, ctx)
-				for (let i = 0; i < ctx.entities.length; i++) {
+				for (let i = 0; i < entities.length; i++) {
 					for (const generatedColumn of generatedColumns) {
 						// Return index for generated column values is: DbColumn.index
-						ctx.entities[i][generatedColumn.propertyColumns[0].property.name]
+						entities[i][generatedColumn.propertyColumns[0].property.name]
 							= idsAndGeneratedValues[i][generatedColumn.index]
 					}
 				}
@@ -572,7 +576,6 @@ export abstract class OperationManager
 			return
 		}
 		const previousDbEntity = ctx.dbEntity
-		const previousEntities = ctx.entities
 		for (const cascadeRecord of cascadeRecords) {
 			if (!cascadeRecord.relation.oneToManyElems) {
 				continue
@@ -623,7 +626,6 @@ export abstract class OperationManager
 				// }
 				for (let i = 0; i < entitiesWithIds.length; i++) {
 					let entityToOperateOn = entitiesWithIds[i]
-					ctx.entities = [entityToOperateOn.newValue]
 					let originalValue     = ctx.ioc.updateCache.getEntityUpdateCache(entityToOperateOn)
 					if (!originalValue) {
 						if (entityToOperateOn.idData.idColumnValueData.length == 1) {
@@ -635,24 +637,21 @@ export abstract class OperationManager
 						// TODO: figure out if the entity has been deleted and if it has, throw an
 						// exception?
 						await
-							this.performCreate(alreadyModifiedEntityMap,
+							this.performCreate(entityToOperateOn.newValue, alreadyModifiedEntityMap,
 								transaction, ctx, entityToOperateOn.idData)
 					} else {
-						ctx.entities = [entityToOperateOn.newValue]
-						await this.performUpdate(alreadyModifiedEntityMap, transaction,
+						await this.performUpdate(entityToOperateOn.newValue, alreadyModifiedEntityMap, transaction,
 								ctx, entityToOperateOn.originalValue)
 					}
 				}
 			}
 			for (let i = 0; i < entitiesWithoutIds.length; i++) {
 				let entityToCreate = entitiesWithoutIds[i]
-						ctx.entities = [entityToCreate]
-				await this.performCreate(alreadyModifiedEntityMap, transaction,
+				await this.performCreate(entityToCreate, alreadyModifiedEntityMap, transaction,
 						ctx, entityToCreate.idData)
 			}
 		}
 		ctx.dbEntity = previousDbEntity
-		ctx.entities = previousEntities
 	}
 
 	/**
@@ -664,6 +663,7 @@ export abstract class OperationManager
 	 *    Cascades do not travel across ManyToOne
 	 */
 	private async internalUpdate<E, EntityCascadeGraph>(
+		entity: E,
 		originalEntity: E,
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>
@@ -676,7 +676,6 @@ export abstract class OperationManager
 		let numUpdates                               = 0
 		const valuesMapByColumn: any[]               = []
 
-		const entity = ctx.entities[0]
 		for (const dbProperty of ctx.dbEntity.properties) {
 			const updatedValue = entity[dbProperty.name]
 			if (!dbProperty.relation || !dbProperty.relation.length) {
@@ -811,14 +810,16 @@ export abstract class OperationManager
 		}
 	}
 
-	private assertManyToOneNotArray(relationValue: any
+	private assertManyToOneNotArray(
+		relationValue: any
 	): void {
 		if (relationValue instanceof Array) {
 			throw new Error(`@ManyToOne relation cannot be an array`)
 		}
 	}
 
-	private assertOneToManyIsArray(relationValue: any
+	private assertOneToManyIsArray(
+		relationValue: any
 	): void {
 		if (relationValue !== null
 			&& relationValue !== undefined
@@ -904,12 +905,12 @@ export abstract class OperationManager
 	}
 
 	private async internalDelete<E, EntityCascadeGraph>(
+		entity: E,
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
 
 		const dbEntity = ctx.dbEntity
-		const entity = ctx.entities[0]
 		const qEntity                                =
 			      ctx.ioc.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
 		const idWhereFragments: JSONValueOperation[] = []

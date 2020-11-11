@@ -6,7 +6,6 @@ export interface IOperationContext<E, EntityCascadeGraph> extends IContext {
     cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph;
     checkIfProcessed: boolean;
     dbEntity: DbEntity;
-    entities: E[];
     ioc: IIocOperationContext;
 }
 export interface IIocOperationContext {

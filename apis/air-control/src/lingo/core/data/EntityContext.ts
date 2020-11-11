@@ -1,24 +1,5 @@
-import {IContext} from '@airport/di'
-import {
-	DbEntity,
-	ITransactionalConnector
-}                 from '@airport/ground-control'
-import {
-	IEntityUtils
-}                 from '../../utils/EntityUtils'
-import {
-	IFieldUtils
-}                 from '../../utils/FieldUtils'
-import {
-	IQueryUtils,
-}                 from '../../utils/QueryUtils'
-import {
-	ISchemaUtils
-}                 from '../../utils/SchemaUtils'
-import {
-	IQueryFacade
-}                 from '../repository/DatabaseFacade'
-import {IUpdateCache} from './UpdateCache'
+import {IContext}             from '@airport/di'
+import {DbEntity}             from '@airport/ground-control'
 
 export interface IEntityContext
 	extends IContext {
@@ -27,11 +8,4 @@ export interface IEntityContext
 
 export interface IEntityOperationContext
 	extends IEntityContext {
-	entityUtils: IEntityUtils
-	fieldUtils: IFieldUtils
-	queryFacade: IQueryFacade
-	queryUtils: IQueryUtils
-	schemaUtils: ISchemaUtils
-	transConnector: ITransactionalConnector
-	updateCache: IUpdateCache
 }

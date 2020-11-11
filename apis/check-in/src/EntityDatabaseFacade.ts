@@ -125,7 +125,7 @@ export class EntityDatabaseFacade<Entity,
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},
-		ctx: IEntityContext,
+		ctx: IEntityContext
 	): Promise<number> {
 		const dbFacade = await DI.db()
 			.get(DB_FACADE)
