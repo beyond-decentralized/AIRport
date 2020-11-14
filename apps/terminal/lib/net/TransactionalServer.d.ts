@@ -2,8 +2,7 @@ import { PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { IObservable } from '@airport/observe';
 import { DistributionStrategy, ICredentials, PlatformType } from '@airport/terminal-map';
-import { ITransaction, ITransactionalServer } from '@airport/tower';
-import { IOperationContext } from '@airport/tower/lib/Context';
+import { IOperationContext, ITransaction, ITransactionalServer } from '@airport/tower';
 export interface InternalPortableQuery extends PortableQuery {
     domainAndPort: string;
 }

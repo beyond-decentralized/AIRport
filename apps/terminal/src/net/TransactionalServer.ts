@@ -1,8 +1,11 @@
-import {container, DI}          from '@airport/di'
+import {
+	container,
+	DI
+}                    from '@airport/di'
 import {
 	JsonInsertValues,
 	PortableQuery
-} from '@airport/ground-control'
+}                    from '@airport/ground-control'
 import {IActor}      from '@airport/holding-pattern'
 import {IObservable} from '@airport/observe'
 import {
@@ -10,19 +13,19 @@ import {
 	ICredentials,
 	PlatformType,
 	TRANSACTION_MANAGER
-}                          from '@airport/terminal-map'
+}                    from '@airport/terminal-map'
 import {
+	IOperationContext,
 	ITransaction,
 	ITransactionalServer,
 	TRANS_SERVER
-}                          from '@airport/tower'
-import {IOperationContext} from '@airport/tower/lib/Context'
+}                    from '@airport/tower'
 import {
 	DELETE_MANAGER,
 	INSERT_MANAGER,
 	QUERY_MANAGER,
 	UPDATE_MANAGER
-}                          from '../tokens'
+}                    from '../tokens'
 
 export interface InternalPortableQuery
 	extends PortableQuery {
@@ -200,5 +203,5 @@ export class TransactionalServer
 DI.set(TRANS_SERVER, TransactionalServer)
 
 export function injectTransactionalServer(): void {
-	console.log("Injecting TransactionalServer")
+	console.log('Injecting TransactionalServer')
 }

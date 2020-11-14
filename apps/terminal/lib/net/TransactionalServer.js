@@ -95,6 +95,6 @@ export class TransactionalServer {
 }
 DI.set(TRANS_SERVER, TransactionalServer);
 export function injectTransactionalServer() {
-    console.log("Injecting TransactionalServer");
+    console.log('Injecting TransactionalServer');
 }
 //# sourceMappingURL=TransactionalServer.js.map

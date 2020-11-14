@@ -1,14 +1,10 @@
 import {
-	AIR_DB,
-	FIELD_UTILS,
 	IAirportDatabase,
 	IFieldUtils,
 	IQueryUtils,
 	ISchemaUtils,
 	QUERY_FACADE,
-	QUERY_UTILS,
 	RepositorySheetSelectInfo,
-	SCHEMA_UTILS,
 	SheetQuery
 }                           from '@airport/air-control'
 import {
@@ -47,8 +43,10 @@ import {
 	RepositoryEntity_SystemWideOperationId,
 	SystemWideOperationId
 }                           from '@airport/holding-pattern'
-import {ITransaction}       from '@airport/tower'
-import {IOperationContext}  from '@airport/tower/lib/Context'
+import {
+	IOperationContext,
+	ITransaction
+}                           from '@airport/tower'
 import {IRepositoryManager} from '../core/repository/RepositoryManager'
 import {
 	HISTORY_MANAGER,
@@ -140,7 +138,7 @@ export class UpdateManager
 
 		if (!dbEntity.isLocal) {
 			const previousDbEntity = ctx.dbEntity
-			ctx.dbEntity = dbEntity
+			ctx.dbEntity           = dbEntity
 			await this.addNewValueHistory(
 				<JsonUpdate<any>>portableQuery.jsonQuery,
 				recordHistoryMap, systemWideOperationId,
