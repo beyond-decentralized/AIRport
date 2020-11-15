@@ -1,7 +1,6 @@
 import { DI, } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
-import { LOOKUP } from '../../../tokens';
-import { IocQueryContext } from '../QueryContext';
+import { LOOKUP, QUERY_CONTEXT_LOADER } from '../../../tokens';
 export class LookupProxy {
     lookup(rawQuery, queryResultType, search, one, QueryClass, ctx, cacheForUpdate, mapResults) {
         return DI.db()
@@ -14,7 +13,8 @@ export class LookupProxy {
 }
 export class Lookup {
     async lookup(rawQuery, queryResultType, search, one, QueryClass, ctx, cacheForUpdate, mapResults) {
-        await IocQueryContext.ensure(ctx);
+        const queryContextLoader = await DI.db().get(QUERY_CONTEXT_LOADER);
+        await queryContextLoader.ensure(ctx);
         let query;
         if (QueryClass) {
             const rawNonEntityQuery = ctx.ioc.entityUtils.getQuery(rawQuery);
@@ -41,7 +41,7 @@ export class Lookup {
                 queryMethod = ctx.ioc.queryFacade.find;
             }
         }
-        return await queryMethod.call(query, this.getQueryResultType(queryResultType, mapResults), ctx, cacheForUpdate);
+        return await queryMethod.call(ctx.ioc.queryFacade, query, this.getQueryResultType(queryResultType, mapResults), ctx, cacheForUpdate);
     }
     ensureContext(ctx) {
         return doEnsureContext(ctx);

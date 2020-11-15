@@ -93,7 +93,8 @@ export class EntityDatabaseFacade<Entity,
 		operationName?: OperationName
 	): Promise<number> {
 		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade
+			databaseFacade: IDatabaseFacade,
+			ctx: IEntityContext
 		) => {
 			return await databaseFacade.create(entity, ctx, operationName)
 		})
@@ -106,7 +107,8 @@ export class EntityDatabaseFacade<Entity,
 		operationName?: OperationName
 	): Promise<number> {
 		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade
+			databaseFacade: IDatabaseFacade,
+			ctx: IEntityContext
 		) => {
 			return await databaseFacade.bulkCreate(entities, ctx, checkIfProcessed, operationName)
 		})
@@ -119,7 +121,8 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext,
 	): Promise<number> {
 		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade
+			databaseFacade: IDatabaseFacade,
+			ctx: IEntityContext
 		) => {
 			return await databaseFacade.insertColumnValues(rawInsertColumnValues, ctx)
 		})
@@ -132,7 +135,8 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext
 	): Promise<number> {
 		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade
+			databaseFacade: IDatabaseFacade,
+			ctx: IEntityContext
 		) => {
 			return await databaseFacade.insertValues(rawInsertValues, ctx)
 		})
@@ -145,7 +149,8 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext,
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade
+			databaseFacade: IDatabaseFacade,
+			ctx: IEntityContext
 		) => {
 			return await databaseFacade.insertColumnValuesGenerateIds(rawInsertColumnValues, ctx)
 		})
@@ -158,7 +163,8 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade
+			databaseFacade: IDatabaseFacade,
+			ctx: IEntityContext
 		) => {
 			return await databaseFacade.insertValuesGenerateIds(rawInsertValues, ctx)
 		})
@@ -170,7 +176,8 @@ export class EntityDatabaseFacade<Entity,
 		operationName?: OperationName
 	): Promise<number> {
 		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade
+			databaseFacade: IDatabaseFacade,
+			ctx: IEntityContext
 		) => {
 			return await databaseFacade.update(entity, ctx, operationName)
 		})
@@ -184,7 +191,8 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext
 	): Promise<number> {
 		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade
+			databaseFacade: IDatabaseFacade,
+			ctx: IEntityContext
 		) => {
 			return await databaseFacade.updateColumnsWhere(rawUpdateColumns, ctx)
 		})
@@ -198,7 +206,8 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext,
 	): Promise<number> {
 		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade
+			databaseFacade: IDatabaseFacade,
+			ctx: IEntityContext
 		) => {
 			return await databaseFacade.updateWhere(rawUpdate, ctx)
 		})
@@ -211,7 +220,8 @@ export class EntityDatabaseFacade<Entity,
 		operationName?: OperationName
 	): Promise<number> {
 		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade
+			databaseFacade: IDatabaseFacade,
+			ctx: IEntityContext
 		) => {
 			return await databaseFacade.delete(entity, ctx, operationName)
 		})
@@ -222,7 +232,8 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext
 	): Promise<number> {
 		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade
+			databaseFacade: IDatabaseFacade,
+			ctx: IEntityContext
 		) => {
 			return await databaseFacade.deleteWhere(rawDelete, ctx)
 		})
@@ -234,7 +245,8 @@ export class EntityDatabaseFacade<Entity,
 		operationName?: OperationName
 	): Promise<number> {
 		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade
+			databaseFacade: IDatabaseFacade,
+			ctx: IEntityContext
 		) => {
 			return await databaseFacade.save(entity, ctx, operationName)
 		})
@@ -244,17 +256,24 @@ export class EntityDatabaseFacade<Entity,
 		ctx: IEntityContext,
 		callback: {
 			(
-				databaseFacade: IDatabaseFacade
+				databaseFacade: IDatabaseFacade,
+				ctx: IEntityContext
 			): Promise<R>
 		}
 	): Promise<R> {
+		if (!ctx) {
+			ctx = {} as any
+		}
+		if (!ctx.startedAt) {
+			ctx.startedAt = new Date()
+		}
 		const databaseFacade = await DI.db()
 			.get(DB_FACADE)
 		const previousEntity = ctx.dbEntity
 		ctx.dbEntity         = this.dbEntity
 		try {
 
-			return await callback(databaseFacade)
+			return await callback(databaseFacade, ctx)
 		} finally {
 			ctx.dbEntity = previousEntity
 		}

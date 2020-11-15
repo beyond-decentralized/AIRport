@@ -8,11 +8,11 @@ import {UpdateCacheType} from '../../../lingo/core/data/UpdateCacheType'
 import {ILookup}         from '../../../lingo/query/api/Lookup'
 import {IAbstractQuery}  from '../../../lingo/query/facade/AbstractQuery'
 import {RawQuery,}       from '../../../lingo/query/facade/Query'
-import {LOOKUP}          from '../../../tokens'
 import {
-	IocQueryContext,
-	IQueryContext
-}                        from '../QueryContext'
+	LOOKUP,
+	QUERY_CONTEXT_LOADER
+}                        from '../../../tokens'
+import {IQueryContext}   from '../QueryContext'
 
 export class LookupProxy
 	implements ILookup {
@@ -55,7 +55,8 @@ export class Lookup
 		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any> {
-		await IocQueryContext.ensure(ctx)
+		const queryContextLoader = await DI.db().get(QUERY_CONTEXT_LOADER)
+		await queryContextLoader.ensure(ctx)
 		let query: IAbstractQuery
 		if (QueryClass) {
 			const rawNonEntityQuery = ctx.ioc.entityUtils.getQuery(rawQuery)
@@ -79,8 +80,8 @@ export class Lookup
 			}
 		}
 
-		return await queryMethod.call(query, this.getQueryResultType(queryResultType, mapResults),
-			ctx, cacheForUpdate)
+		return await queryMethod.call(ctx.ioc.queryFacade, query,
+			this.getQueryResultType(queryResultType, mapResults), ctx, cacheForUpdate)
 	}
 
 	protected ensureContext<C extends IContext>(

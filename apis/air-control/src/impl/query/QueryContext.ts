@@ -18,6 +18,7 @@ import {
 	AIR_DB,
 	ENTITY_UTILS,
 	FIELD_UTILS,
+	QUERY_CONTEXT_LOADER,
 	QUERY_FACADE,
 	QUERY_UTILS,
 	SCHEMA_UTILS,
@@ -49,15 +50,6 @@ export interface IIocQueryContext {
 export class IocQueryContext
 	implements IIocQueryContext {
 
-	static async ensure<E>(
-		ctx: IQueryContext<E>
-	): Promise<void>  {
-		if (!ctx.ioc) {
-			ctx.ioc = new IocQueryContext()
-			await ctx.ioc.init()
-		}
-	}
-
 	airDb: IAirportDatabase
 	entityUtils: IEntityUtils
 	fieldUtils: IFieldUtils
@@ -86,3 +78,27 @@ export class IocQueryContext
 	}
 
 }
+
+export interface IQueryContextLoader {
+
+	ensure<E>(
+		ctx: IQueryContext<E>
+	): Promise<void>
+
+}
+
+export class QueryContextLoader
+	implements IQueryContextLoader {
+
+	async ensure<E>(
+		ctx: IQueryContext<E>
+	): Promise<void> {
+		if (!ctx.ioc) {
+			ctx.ioc = new IocQueryContext()
+			await ctx.ioc.init()
+		}
+	}
+
+}
+
+DI.set(QUERY_CONTEXT_LOADER, QueryContextLoader)

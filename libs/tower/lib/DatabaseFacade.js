@@ -1,8 +1,8 @@
 import { DB_FACADE, Delete, UpdateColumns, UpdateProperties, } from '@airport/air-control';
-import { DI } from '@airport/di';
+import { container, DI } from '@airport/di';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
-import { IocOperationContext } from './OperationContext';
 import { OperationManager } from './OperationManager';
+import { OPERATION_CONTEXT_LOADER } from './tokens';
 import { transactional } from './transactional';
 /**
  * Created by Papa on 5/23/2016.
@@ -275,7 +275,9 @@ export class DatabaseFacade extends OperationManager {
         throw new Error(`Not Implemented`);
     }
     async ensureIocContext(ctx) {
-        await IocOperationContext.ensure(ctx);
+        const operationContextLoader = await container(this)
+            .get(OPERATION_CONTEXT_LOADER);
+        await operationContextLoader.ensure(ctx);
     }
 }
 DI.set(DB_FACADE, DatabaseFacade);

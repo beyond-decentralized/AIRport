@@ -1,5 +1,5 @@
-import { IocQueryContext, QUERY_FACADE, UpdateCacheType } from '@airport/air-control';
-import { DI } from '@airport/di';
+import { QUERY_CONTEXT_LOADER, QUERY_FACADE, UpdateCacheType } from '@airport/air-control';
+import { container, DI } from '@airport/di';
 import { map } from '@airport/observe';
 export class QueryFacade {
     async find(query, queryResultType, ctx, cacheForUpdate = UpdateCacheType.NONE) {
@@ -42,7 +42,9 @@ export class QueryFacade {
         return observable;
     }
     async ensureIocContext(ctx) {
-        await IocQueryContext.ensure(ctx);
+        const queryContextLoader = await container(this)
+            .get(QUERY_CONTEXT_LOADER);
+        await queryContextLoader.ensure(ctx);
     }
 }
 DI.set(QUERY_FACADE, QueryFacade);

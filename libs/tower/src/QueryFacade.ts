@@ -1,22 +1,25 @@
 import {
 	AbstractQuery,
 	IAbstractQuery,
-	IocQueryContext,
 	IQueryContext,
 	IQueryFacade,
+	QUERY_CONTEXT_LOADER,
 	QUERY_FACADE,
 	UpdateCacheType
 } from '@airport/air-control'
-import {DI} from '@airport/di'
+import {
+	container,
+	DI
+} from '@airport/di'
 import {
 	JsonQuery,
 	PortableQuery,
 	QueryResultType,
-}           from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	IObservable,
 	map
-}           from '@airport/observe'
+} from '@airport/observe'
 
 export class QueryFacade
 	implements IQueryFacade {
@@ -115,7 +118,9 @@ export class QueryFacade
 	private async ensureIocContext<E>(
 		ctx: IQueryContext<E>
 	): Promise<void> {
-		await IocQueryContext.ensure(ctx)
+		const queryContextLoader = await container(this)
+			.get(QUERY_CONTEXT_LOADER)
+		await queryContextLoader.ensure(ctx)
 	}
 
 }

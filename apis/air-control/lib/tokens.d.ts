@@ -1,3 +1,4 @@
+import { IQueryContextLoader } from './impl/query/QueryContext';
 import { IAirportDatabase } from './lingo/AirportDatabase';
 import { IUpdateCache } from './lingo/core/data/UpdateCache';
 import { IDatabaseFacade, IQueryFacade } from './lingo/core/repository/DatabaseFacade';
@@ -13,6 +14,7 @@ export declare const LOOKUP: import("@airport/di").IDiToken<ILookup>;
 export declare const ENTITY_UTILS: import("@airport/di").IDiToken<IEntityUtils>;
 export declare const FIELD_UTILS: import("@airport/di").IDiToken<IFieldUtils>;
 export declare const Q_METADATA_UTILS: import("@airport/di").IDiToken<IQMetadataUtils>;
+export declare const QUERY_CONTEXT_LOADER: import("@airport/di").IDiToken<IQueryContextLoader>;
 export declare const QUERY_FACADE: import("@airport/di").IDiToken<IQueryFacade>;
 export declare const QUERY_UTILS: import("@airport/di").IDiToken<IQueryUtils>;
 export declare const SCHEMA_UTILS: import("@airport/di").IDiToken<ISchemaUtils>;

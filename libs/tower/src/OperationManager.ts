@@ -95,8 +95,6 @@ export abstract class OperationManager
 		ctx: IOperationContext<E, EntityCascadeGraph>,
 		idData?: EntityIdData,
 	): Promise<number> {
-		// TODO: add code to populate CREATED_AT (and save for update in performUpdate)
-		// also add code populate user info (USER_ACCOUNT_ID for now, eventually the actor)
 		const lastCheckIfProcessed = ctx.checkIfProcessed
 		ctx.checkIfProcessed       = !idData
 		let result                 = await this.internalCreate([entity], createdEntityMap, transaction, ctx, !idData)

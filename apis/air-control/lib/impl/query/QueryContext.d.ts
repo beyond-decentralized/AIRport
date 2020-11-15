@@ -24,7 +24,6 @@ export interface IIocQueryContext {
     init(): Promise<void>;
 }
 export declare class IocQueryContext implements IIocQueryContext {
-    static ensure<E>(ctx: IQueryContext<E>): Promise<void>;
     airDb: IAirportDatabase;
     entityUtils: IEntityUtils;
     fieldUtils: IFieldUtils;
@@ -34,5 +33,11 @@ export declare class IocQueryContext implements IIocQueryContext {
     transactionalConnector: ITransactionalConnector;
     updateCache: IUpdateCache;
     init(): Promise<void>;
+}
+export interface IQueryContextLoader {
+    ensure<E>(ctx: IQueryContext<E>): Promise<void>;
+}
+export declare class QueryContextLoader implements IQueryContextLoader {
+    ensure<E>(ctx: IQueryContext<E>): Promise<void>;
 }
 //# sourceMappingURL=QueryContext.d.ts.map

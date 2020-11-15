@@ -15,23 +15,27 @@ import {
 	RawUpdateColumns,
 	UpdateColumns,
 	UpdateProperties,
-}                         from '@airport/air-control'
-import {DI}               from '@airport/di'
+}                                 from '@airport/air-control'
+import {
+	container,
+	DI
+}                                 from '@airport/di'
 import {
 	CascadeOverwrite,
 	DbEntity,
-}                         from '@airport/ground-control'
+}                                 from '@airport/ground-control'
 import {
 	DistributionStrategy,
 	PlatformType
-}                         from '@airport/terminal-map'
-import {ITransaction}     from './ITransaction'
+}                                 from '@airport/terminal-map'
+import {ITransaction}             from './ITransaction'
 import {
 	IocOperationContext,
 	IOperationContext
-}                         from './OperationContext'
-import {OperationManager} from './OperationManager'
-import {transactional}    from './transactional'
+}                                 from './OperationContext'
+import {OperationManager}         from './OperationManager'
+import {OPERATION_CONTEXT_LOADER} from './tokens'
+import {transactional}            from './transactional'
 
 /**
  * Created by Papa on 5/23/2016.
@@ -85,7 +89,6 @@ export class DatabaseFacade
 		ctx: IOperationContext<any, any>
 	): Promise<number> {
 		await this.ensureIocContext(ctx)
-
 		let numRecordsCreated = 0
 
 		await transactional(async (
@@ -459,7 +462,9 @@ export class DatabaseFacade
 	private async ensureIocContext(
 		ctx: IOperationContext<any, any>
 	): Promise<void> {
-		await IocOperationContext.ensure(ctx)
+		const operationContextLoader = await container(this)
+			.get(OPERATION_CONTEXT_LOADER)
+		await operationContextLoader.ensure(ctx)
 	}
 
 }

@@ -20,7 +20,6 @@ export interface IIocOperationContext {
     init(): Promise<void>;
 }
 export declare class IocOperationContext implements IIocOperationContext {
-    static ensure(ctx: IOperationContext<any, any>): Promise<void>;
     airDb: IAirportDatabase;
     fieldUtils: IFieldUtils;
     metadataUtils: IQMetadataUtils;
@@ -30,5 +29,11 @@ export declare class IocOperationContext implements IIocOperationContext {
     transactionalServer: ITransactionalServer;
     updateCache: IUpdateCache;
     init(): Promise<void>;
+}
+export interface IOperationContextLoader {
+    ensure(ctx: IOperationContext<any, any>): Promise<void>;
+}
+export declare class OperationContextLoader implements IOperationContextLoader {
+    ensure(ctx: IOperationContext<any, any>): Promise<void>;
 }
 //# sourceMappingURL=OperationContext.d.ts.map

@@ -13,7 +13,7 @@ import {
 	QUERY_UTILS,
 	SCHEMA_UTILS,
 	UPDATE_CACHE,
-} from '@airport/air-control'
+}                             from '@airport/air-control'
 import {
 	DI,
 	IContext
@@ -23,7 +23,10 @@ import {
 	DbEntity
 }                             from '@airport/ground-control'
 import {ITransactionalServer} from './core/data/ITransactionalServer'
-import {TRANS_SERVER}         from './tokens'
+import {
+	OPERATION_CONTEXT_LOADER,
+	TRANS_SERVER
+}                             from './tokens'
 
 export interface IOperationContext<E, EntityCascadeGraph>
 	extends IContext {
@@ -50,15 +53,6 @@ export interface IIocOperationContext {
 
 export class IocOperationContext
 	implements IIocOperationContext {
-
-	static async ensure(
-		ctx: IOperationContext<any, any>
-	): Promise<void>  {
-		if (!ctx.ioc) {
-			ctx.ioc = new IocOperationContext()
-			await ctx.ioc.init()
-		}
-	}
 
 	airDb: IAirportDatabase
 	fieldUtils: IFieldUtils
@@ -88,3 +82,25 @@ export class IocOperationContext
 	}
 
 }
+
+export interface IOperationContextLoader {
+	ensure(
+		ctx: IOperationContext<any, any>
+	): Promise<void>
+}
+
+export class OperationContextLoader
+	implements IOperationContextLoader {
+
+	async ensure(
+		ctx: IOperationContext<any, any>
+	): Promise<void> {
+		if (!ctx.ioc) {
+			ctx.ioc = new IocOperationContext()
+			await ctx.ioc.init()
+		}
+	}
+
+}
+
+DI.set(OPERATION_CONTEXT_LOADER, OperationContextLoader)
