@@ -28,6 +28,29 @@ export function markAsStub<T>(
 	return entity;
 }
 
+export const OPERATION_UNIQUE_ID_FIELD = '__UID__'
+export type OperationUniqueId = number
+export interface IOperationUniqueIdSequence {
+	sequence: number
+}
+export function getOperationUniqueIdSeq(): IOperationUniqueIdSequence {
+	return {
+		sequence: 0
+	}
+}
+// TODO: wire in in the client to mark all sent objects (used for de-duplication on server side).
+export function uniquelyIdentify<T>(
+	entity: T,
+	operationUniqueIdSeq: IOperationUniqueIdSequence
+): void {
+	entity[OPERATION_UNIQUE_ID_FIELD] = operationUniqueIdSeq.sequence++
+}
+export function getOperationUniqueId<T>(
+	entity: T
+): void {
+	return entity[OPERATION_UNIQUE_ID_FIELD]
+}
+
 export function isNew(
 	entity
 ): boolean {

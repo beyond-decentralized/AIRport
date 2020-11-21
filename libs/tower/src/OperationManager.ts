@@ -2,6 +2,7 @@ import {
 	and,
 	Delete,
 	EntityIdData,
+	getOperationUniqueId,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	InsertColumnValues,
@@ -11,6 +12,7 @@ import {
 	ISchemaUtils,
 	isStub,
 	IUpdateCache,
+	OperationUniqueId,
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
@@ -27,8 +29,6 @@ import {
 	DbEntity,
 	DbProperty,
 	DbRelation,
-	ensureChildArray,
-	ensureChildMap,
 	EntityRelationType,
 	JSONValueOperation,
 	PortableQuery,
@@ -90,17 +90,17 @@ export abstract class OperationManager
 	 */
 	protected async performCreate<E, EntityCascadeGraph>(
 		entity: E,
-		createdEntityMap: { [entityId: string]: any }[][],
+		operatedOnEntityIndicator: OperationUniqueId[],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>,
 		idData?: EntityIdData,
 	): Promise<number> {
 		const lastCheckIfProcessed = ctx.checkIfProcessed
 		ctx.checkIfProcessed       = !idData
-		let result                 = await this.internalCreate([entity], createdEntityMap, transaction, ctx, !idData)
+		let result                 = await this.internalCreate([entity], operatedOnEntityIndicator, transaction, ctx, !idData)
 
 		await this.cascadeOnPersist(result.cascadeRecords,
-			ctx.dbEntity, createdEntityMap, transaction, ctx)
+			ctx.dbEntity, operatedOnEntityIndicator, transaction, ctx)
 
 		ctx.checkIfProcessed = lastCheckIfProcessed
 
@@ -115,15 +115,15 @@ export abstract class OperationManager
 	 */
 	protected async performBulkCreate<E, EntityCascadeGraph>(
 		entities: E[],
-		createdEntityMap: { [entityId: string]: any }[][],
+		operatedOnEntityIndicator: OperationUniqueId[],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>,
 		ensureGeneratedValues: boolean = true // For internal use only
 	): Promise<number> {
-		let result = await this.internalCreate(entities, createdEntityMap,
+		let result = await this.internalCreate(entities, operatedOnEntityIndicator,
 			transaction, ctx, ensureGeneratedValues)
 		await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity,
-			createdEntityMap, transaction, ctx)
+			operatedOnEntityIndicator, transaction, ctx)
 
 		return result.numberOfAffectedRecords
 	}
@@ -177,14 +177,14 @@ export abstract class OperationManager
 	 */
 	protected async performUpdate<E, EntityCascadeGraph>(
 		entity: E,
-		updatedEntityMap: { [entityId: string]: any } [][],
+		operatedOnEntityIndicator: OperationUniqueId[],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>,
 		originalValue?: E,
 	): Promise<number> {
 		if (!originalValue) {
 			let [isProcessed, entityIdData] = this.isProcessed(
-				entity, updatedEntityMap, ctx.dbEntity, ctx.ioc.schemaUtils)
+				entity, operatedOnEntityIndicator, ctx.dbEntity, ctx.ioc.schemaUtils)
 			if (isProcessed === true) {
 				return 0
 			}
@@ -198,10 +198,11 @@ export abstract class OperationManager
 			// 	throw new Error(`Cannot update ${dbEntity.name}, entity not found.`)
 			// }
 		}
+		this.markAsProcessed(entity, operatedOnEntityIndicator)
 		let result = await this.internalUpdate(entity,
 			originalValue, transaction, ctx)
 		await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity,
-			updatedEntityMap, transaction, ctx)
+			operatedOnEntityIndicator, transaction, ctx)
 
 		return result.numberOfAffectedRecords
 	}
@@ -339,7 +340,7 @@ export abstract class OperationManager
 
 	private async internalCreate<E, EntityCascadeGraph>(
 		entities: E[],
-		createdEntityMap: { [entityId: string]: any }[][],
+		operatedOnEntityIndicator: OperationUniqueId[],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>,
 		ensureGeneratedValues?: boolean
@@ -365,9 +366,10 @@ export abstract class OperationManager
 
 		for (const entity of entities) {
 			if (ctx.checkIfProcessed && this.isProcessed(
-				entity, createdEntityMap, ctx.dbEntity, ctx.ioc.schemaUtils)[0] === true) {
+				entity, operatedOnEntityIndicator, ctx.dbEntity, ctx.ioc.schemaUtils)[0] === true) {
 				continue
 			}
+			this.markAsProcessed(entity, operatedOnEntityIndicator)
 			let foundValues         = []
 			let valuesFragment: any = []
 
@@ -544,7 +546,7 @@ export abstract class OperationManager
 	private async cascadeOnPersist<E, EntityCascadeGraph>(
 		cascadeRecords: CascadeRecord[],
 		parentDbEntity: DbEntity,
-		alreadyModifiedEntityMap: { [idKey: string]: any }[][],
+		operatedOnEntityIndicator: OperationUniqueId[],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<void> {
@@ -574,7 +576,7 @@ export abstract class OperationManager
 			if (cascadeRecord.manyEntities) {
 				for (const manyEntity of cascadeRecord.manyEntities) {
 					const [isProcessed, entityIdData] = this.isProcessed(manyEntity,
-						alreadyModifiedEntityMap, dbEntity, ctx.ioc.schemaUtils)
+						operatedOnEntityIndicator, dbEntity, ctx.ioc.schemaUtils)
 					if (isProcessed === true) {
 						return
 					}
@@ -585,7 +587,6 @@ export abstract class OperationManager
 					}
 					if (entityIdData.idKey) {
 						entitiesWithIds.push(record)
-						// entitiesWithIdMap[entityIdData.idKey] = record
 					} else {
 						entitiesWithoutIds.push(record)
 					}
@@ -614,17 +615,17 @@ export abstract class OperationManager
 						// TODO: figure out if the entity has been deleted and if it has, throw an
 						// exception?
 						await
-							this.performCreate(entityToOperateOn.newValue, alreadyModifiedEntityMap,
+							this.performCreate(entityToOperateOn.newValue, operatedOnEntityIndicator,
 								transaction, ctx, entityToOperateOn.idData)
 					} else {
-						await this.performUpdate(entityToOperateOn.newValue, alreadyModifiedEntityMap, transaction,
+						await this.performUpdate(entityToOperateOn.newValue, operatedOnEntityIndicator, transaction,
 							ctx, entityToOperateOn.originalValue)
 					}
 				}
 			}
 			for (let i = 0; i < entitiesWithoutIds.length; i++) {
 				let entityToCreate = entitiesWithoutIds[i]
-				await this.performCreate(entityToCreate, alreadyModifiedEntityMap, transaction,
+				await this.performCreate(entityToCreate, operatedOnEntityIndicator, transaction,
 					ctx, entityToCreate.idData)
 			}
 		}
@@ -805,10 +806,28 @@ export abstract class OperationManager
 		}
 	}
 
+	private markAsProcessed<E>(
+		entity: E,
+		operatedOnEntityIndicator: OperationUniqueId[]
+	): void {
+		const operationUniqueId                      = getOperationUniqueId(entity)
+		operatedOnEntityIndicator[operationUniqueId] = true
+	}
+
+	/**
+	 * TODO: the client should identify all entities (makes sense since it has an interlinked
+	 * graph before serialization) and they all should come in marked already.  Then its a
+	 * matter of checking those markings on the server.
+	 * @param entity
+	 * @param operatedOnEntityMap
+	 * @param dbEntity
+	 * @param schemaUtils
+	 * @private
+	 */
 	private isProcessed<E>(
 		entity: E,
 		// This is a per-operation map (for a single update or create or delete with cascades)
-		operatedOnEntityMap: { [entityId: string]: any }[][],
+		operatedOnEntityIndicator: OperationUniqueId[],
 		dbEntity: DbEntity,
 		schemaUtils: ISchemaUtils
 	): [boolean, EntityIdData] {
@@ -827,6 +846,9 @@ export abstract class OperationManager
 			idKey: null
 		}
 
+		const operationUniqueId = getOperationUniqueId(entity)
+		const entityOperatedOn  = operatedOnEntityIndicator[operationUniqueId]
+
 		// Attempt to get the id, allowing for non-ided entities,
 		// fail if (part of) an id is empty.
 		const idKey        = schemaUtils.getIdKey(entity, dbEntity,
@@ -843,22 +865,16 @@ export abstract class OperationManager
 			})
 		entityIdData.idKey = idKey
 		if (!idKey) {
-			return [false, entityIdData]
+			return [entityOperatedOn, entityIdData]
 		}
 
-		const mapForSchema            = ensureChildArray(
-			operatedOnEntityMap, dbEntity.schemaVersion.schema.index)
-		const mapForEntityType        = ensureChildMap(mapForSchema, dbEntity.index)
-		const alreadyOperatedOnEntity = mapForEntityType[idKey]
-
-		if (!alreadyOperatedOnEntity) {
-			mapForEntityType[idKey] = entity
-			return [false, entityIdData]
+		if (!entityOperatedOn) {
+			return [entityOperatedOn, entityIdData]
 		}
 
-		if (alreadyOperatedOnEntity === entity) {
+		if (entityOperatedOn) {
 			// The Update operation for this entity was already recorded, nothing to do
-			return [true, null]
+			return [entityOperatedOn, null]
 		}
 
 		// If it's new entity, not in cache
@@ -878,7 +894,7 @@ export abstract class OperationManager
 		}
 
 		// The Update operation for this entity was already recorded, nothing to do
-		return [true, null]
+		return [entityOperatedOn, null]
 	}
 
 	private async internalDelete<E, EntityCascadeGraph>(

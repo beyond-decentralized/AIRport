@@ -1,4 +1,4 @@
-import { Delete, EntityIdData, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUpdateCache, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties } from '@airport/air-control';
+import { Delete, EntityIdData, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUpdateCache, OperationUniqueId, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties } from '@airport/air-control';
 import { DbColumn, DbEntity, DbProperty, DbRelation } from '@airport/ground-control';
 import { ITransaction } from './ITransaction';
 import { IOperationContext } from './OperationContext';
@@ -26,18 +26,14 @@ export declare abstract class OperationManager implements IOperationManager {
      * @param qEntity
      * @param entity
      */
-    protected performCreate<E, EntityCascadeGraph>(entity: E, createdEntityMap: {
-        [entityId: string]: any;
-    }[][], transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, idData?: EntityIdData): Promise<number>;
+    protected performCreate<E, EntityCascadeGraph>(entity: E, operatedOnEntityIndicator: OperationUniqueId[], transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, idData?: EntityIdData): Promise<number>;
     /**
      * Transactional context must have been started by the time this method is called.
      *
      * @param qEntity
      * @param entity
      */
-    protected performBulkCreate<E, EntityCascadeGraph>(entities: E[], createdEntityMap: {
-        [entityId: string]: any;
-    }[][], transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, ensureGeneratedValues?: boolean): Promise<number>;
+    protected performBulkCreate<E, EntityCascadeGraph>(entities: E[], operatedOnEntityIndicator: OperationUniqueId[], transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, ensureGeneratedValues?: boolean): Promise<number>;
     protected internalInsertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE>, transaction: ITransaction, ctx: IOperationContext<any, any>): Promise<number>;
     protected internalInsertValues<E, EntityCascadeGraph, IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE>, transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, ensureGeneratedValues?: boolean): Promise<number>;
     protected internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE>, transaction: ITransaction, ctx: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
@@ -47,9 +43,7 @@ export declare abstract class OperationManager implements IOperationManager {
      * @param qEntity
      * @param entity
      */
-    protected performUpdate<E, EntityCascadeGraph>(entity: E, updatedEntityMap: {
-        [entityId: string]: any;
-    }[][], transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, originalValue?: E): Promise<number>;
+    protected performUpdate<E, EntityCascadeGraph>(entity: E, operatedOnEntityIndicator: OperationUniqueId[], transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, originalValue?: E): Promise<number>;
     protected internalInsertValuesGetIds<E, EntityCascadeGraph, IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE>, transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>): Promise<number[] | string[] | number[][] | string[][]>;
     protected abstract getOriginalRecord(dbEntity: DbEntity, idKey: string, updateCache: IUpdateCache): Promise<any>;
     protected internalUpdateColumnsWhere<E, EntityCascadeGraph, IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(updateColumns: UpdateColumns<IEUC, IQE>, transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
@@ -78,6 +72,17 @@ export declare abstract class OperationManager implements IOperationManager {
     private assertRelationValueIsAnObject;
     private assertManyToOneNotArray;
     private assertOneToManyIsArray;
+    private markAsProcessed;
+    /**
+     * TODO: the client should identify all entities (makes sense since it has an interlinked
+     * graph before serialization) and they all should come in marked already.  Then its a
+     * matter of checking those markings on the server.
+     * @param entity
+     * @param operatedOnEntityMap
+     * @param dbEntity
+     * @param schemaUtils
+     * @private
+     */
     private isProcessed;
     private internalDelete;
 }

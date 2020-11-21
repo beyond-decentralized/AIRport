@@ -15,6 +15,19 @@ export function markAsStub(entity) {
     entity.__state__ = EntityState.STUB;
     return entity;
 }
+export const OPERATION_UNIQUE_ID_FIELD = '__UID__';
+export function getOperationUniqueIdSeq() {
+    return {
+        sequence: 0
+    };
+}
+// TODO: wire in in the client to mark all sent objects (used for de-duplication on server side).
+export function uniquelyIdentify(entity, operationUniqueIdSeq) {
+    entity[OPERATION_UNIQUE_ID_FIELD] = operationUniqueIdSeq.sequence++;
+}
+export function getOperationUniqueId(entity) {
+    return entity[OPERATION_UNIQUE_ID_FIELD];
+}
 export function isNew(entity) {
     return getEntityState(entity) === EntityState.NEW;
 }

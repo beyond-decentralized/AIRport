@@ -1,5 +1,5 @@
-import { and, Delete, InsertColumnValues, InsertValues, isStub, UpdateProperties, valuesEqual } from '@airport/air-control';
-import { CascadeOverwrite, CascadeType, CRUDOperation, ensureChildArray, ensureChildMap, EntityRelationType, SQLDataType } from '@airport/ground-control';
+import { and, Delete, getOperationUniqueId, InsertColumnValues, InsertValues, isStub, UpdateProperties, valuesEqual } from '@airport/air-control';
+import { CascadeOverwrite, CascadeType, CRUDOperation, EntityRelationType, SQLDataType } from '@airport/ground-control';
 export class OperationManager {
     // higherOrderOpsYieldLength: number = 100
     // transactionInProgress: boolean    = false
@@ -16,11 +16,11 @@ export class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performCreate(entity, createdEntityMap, transaction, ctx, idData) {
+    async performCreate(entity, operatedOnEntityIndicator, transaction, ctx, idData) {
         const lastCheckIfProcessed = ctx.checkIfProcessed;
         ctx.checkIfProcessed = !idData;
-        let result = await this.internalCreate([entity], createdEntityMap, transaction, ctx, !idData);
-        await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity, createdEntityMap, transaction, ctx);
+        let result = await this.internalCreate([entity], operatedOnEntityIndicator, transaction, ctx, !idData);
+        await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity, operatedOnEntityIndicator, transaction, ctx);
         ctx.checkIfProcessed = lastCheckIfProcessed;
         return result.numberOfAffectedRecords;
     }
@@ -30,10 +30,10 @@ export class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performBulkCreate(entities, createdEntityMap, transaction, ctx, ensureGeneratedValues = true // For internal use only
+    async performBulkCreate(entities, operatedOnEntityIndicator, transaction, ctx, ensureGeneratedValues = true // For internal use only
     ) {
-        let result = await this.internalCreate(entities, createdEntityMap, transaction, ctx, ensureGeneratedValues);
-        await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity, createdEntityMap, transaction, ctx);
+        let result = await this.internalCreate(entities, operatedOnEntityIndicator, transaction, ctx, ensureGeneratedValues);
+        await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity, operatedOnEntityIndicator, transaction, ctx);
         return result.numberOfAffectedRecords;
     }
     async internalInsertColumnValues(rawInsertColumnValues, transaction, ctx) {
@@ -57,9 +57,9 @@ export class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performUpdate(entity, updatedEntityMap, transaction, ctx, originalValue) {
+    async performUpdate(entity, operatedOnEntityIndicator, transaction, ctx, originalValue) {
         if (!originalValue) {
-            let [isProcessed, entityIdData] = this.isProcessed(entity, updatedEntityMap, ctx.dbEntity, ctx.ioc.schemaUtils);
+            let [isProcessed, entityIdData] = this.isProcessed(entity, operatedOnEntityIndicator, ctx.dbEntity, ctx.ioc.schemaUtils);
             if (isProcessed === true) {
                 return 0;
             }
@@ -71,8 +71,9 @@ export class OperationManager {
             // 	throw new Error(`Cannot update ${dbEntity.name}, entity not found.`)
             // }
         }
+        this.markAsProcessed(entity, operatedOnEntityIndicator);
         let result = await this.internalUpdate(entity, originalValue, transaction, ctx);
-        await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity, updatedEntityMap, transaction, ctx);
+        await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity, operatedOnEntityIndicator, transaction, ctx);
         return result.numberOfAffectedRecords;
     }
     async internalInsertValuesGetIds(rawInsertValues, transaction, ctx) {
@@ -160,7 +161,7 @@ export class OperationManager {
         let portableQuery = ctx.ioc.queryFacade.getPortableQuery(aDelete, null, ctx);
         return await ctx.ioc.transactionalServer.deleteWhere(portableQuery, transaction, ctx);
     }
-    async internalCreate(entities, createdEntityMap, transaction, ctx, ensureGeneratedValues) {
+    async internalCreate(entities, operatedOnEntityIndicator, transaction, ctx, ensureGeneratedValues) {
         const qEntity = ctx.ioc.airDb.qSchemas[ctx.dbEntity.schemaVersion.schema.index][ctx.dbEntity.name];
         let rawInsert = {
             insertInto: qEntity,
@@ -173,9 +174,10 @@ export class OperationManager {
         });
         let cascadeRecords = [];
         for (const entity of entities) {
-            if (ctx.checkIfProcessed && this.isProcessed(entity, createdEntityMap, ctx.dbEntity, ctx.ioc.schemaUtils)[0] === true) {
+            if (ctx.checkIfProcessed && this.isProcessed(entity, operatedOnEntityIndicator, ctx.dbEntity, ctx.ioc.schemaUtils)[0] === true) {
                 continue;
             }
+            this.markAsProcessed(entity, operatedOnEntityIndicator);
             let foundValues = [];
             let valuesFragment = [];
             for (const dbProperty of ctx.dbEntity.properties) {
@@ -317,7 +319,7 @@ export class OperationManager {
         }
         return true;
     }
-    async cascadeOnPersist(cascadeRecords, parentDbEntity, alreadyModifiedEntityMap, transaction, ctx) {
+    async cascadeOnPersist(cascadeRecords, parentDbEntity, operatedOnEntityIndicator, transaction, ctx) {
         if (!cascadeRecords.length
             || ctx.cascadeOverwrite === CascadeOverwrite.NEVER) {
             return;
@@ -342,7 +344,7 @@ export class OperationManager {
             ctx.dbEntity = dbEntity;
             if (cascadeRecord.manyEntities) {
                 for (const manyEntity of cascadeRecord.manyEntities) {
-                    const [isProcessed, entityIdData] = this.isProcessed(manyEntity, alreadyModifiedEntityMap, dbEntity, ctx.ioc.schemaUtils);
+                    const [isProcessed, entityIdData] = this.isProcessed(manyEntity, operatedOnEntityIndicator, dbEntity, ctx.ioc.schemaUtils);
                     if (isProcessed === true) {
                         return;
                     }
@@ -353,7 +355,6 @@ export class OperationManager {
                     };
                     if (entityIdData.idKey) {
                         entitiesWithIds.push(record);
-                        // entitiesWithIdMap[entityIdData.idKey] = record
                     }
                     else {
                         entitiesWithoutIds.push(record);
@@ -382,16 +383,16 @@ export class OperationManager {
                         // Don't know if the entity has been deleted or is a brand new one, create it
                         // TODO: figure out if the entity has been deleted and if it has, throw an
                         // exception?
-                        await this.performCreate(entityToOperateOn.newValue, alreadyModifiedEntityMap, transaction, ctx, entityToOperateOn.idData);
+                        await this.performCreate(entityToOperateOn.newValue, operatedOnEntityIndicator, transaction, ctx, entityToOperateOn.idData);
                     }
                     else {
-                        await this.performUpdate(entityToOperateOn.newValue, alreadyModifiedEntityMap, transaction, ctx, entityToOperateOn.originalValue);
+                        await this.performUpdate(entityToOperateOn.newValue, operatedOnEntityIndicator, transaction, ctx, entityToOperateOn.originalValue);
                     }
                 }
             }
             for (let i = 0; i < entitiesWithoutIds.length; i++) {
                 let entityToCreate = entitiesWithoutIds[i];
-                await this.performCreate(entityToCreate, alreadyModifiedEntityMap, transaction, ctx, entityToCreate.idData);
+                await this.performCreate(entityToCreate, operatedOnEntityIndicator, transaction, ctx, entityToCreate.idData);
             }
         }
         ctx.dbEntity = previousDbEntity;
@@ -540,9 +541,23 @@ export class OperationManager {
             throw new Error(`@OneToMany relation must be an array`);
         }
     }
+    markAsProcessed(entity, operatedOnEntityIndicator) {
+        const operationUniqueId = getOperationUniqueId(entity);
+        operatedOnEntityIndicator[operationUniqueId] = true;
+    }
+    /**
+     * TODO: the client should identify all entities (makes sense since it has an interlinked
+     * graph before serialization) and they all should come in marked already.  Then its a
+     * matter of checking those markings on the server.
+     * @param entity
+     * @param operatedOnEntityMap
+     * @param dbEntity
+     * @param schemaUtils
+     * @private
+     */
     isProcessed(entity, 
     // This is a per-operation map (for a single update or create or delete with cascades)
-    operatedOnEntityMap, dbEntity, schemaUtils) {
+    operatedOnEntityIndicator, dbEntity, schemaUtils) {
         if (isStub(entity)) {
             return [true, null];
         }
@@ -554,6 +569,8 @@ export class OperationManager {
             idColumnValueData: [],
             idKey: null
         };
+        const operationUniqueId = getOperationUniqueId(entity);
+        const entityOperatedOn = operatedOnEntityIndicator[operationUniqueId];
         // Attempt to get the id, allowing for non-ided entities,
         // fail if (part of) an id is empty.
         const idKey = schemaUtils.getIdKey(entity, dbEntity, false, (idColumn, idValue, propertyNameChains) => {
@@ -565,18 +582,14 @@ export class OperationManager {
         });
         entityIdData.idKey = idKey;
         if (!idKey) {
-            return [false, entityIdData];
+            return [entityOperatedOn, entityIdData];
         }
-        const mapForSchema = ensureChildArray(operatedOnEntityMap, dbEntity.schemaVersion.schema.index);
-        const mapForEntityType = ensureChildMap(mapForSchema, dbEntity.index);
-        const alreadyOperatedOnEntity = mapForEntityType[idKey];
-        if (!alreadyOperatedOnEntity) {
-            mapForEntityType[idKey] = entity;
-            return [false, entityIdData];
+        if (!entityOperatedOn) {
+            return [entityOperatedOn, entityIdData];
         }
-        if (alreadyOperatedOnEntity === entity) {
+        if (entityOperatedOn) {
             // The Update operation for this entity was already recorded, nothing to do
-            return [true, null];
+            return [entityOperatedOn, null];
         }
         // If it's new entity, not in cache
         let hasNonIdProperties = false;
@@ -593,7 +606,7 @@ export class OperationManager {
 				with @Id(s) value '${entityIdData.idKey}' during mutation operation`);
         }
         // The Update operation for this entity was already recorded, nothing to do
-        return [true, null];
+        return [entityOperatedOn, null];
     }
     async internalDelete(entity, transaction, ctx) {
         const dbEntity = ctx.dbEntity;
