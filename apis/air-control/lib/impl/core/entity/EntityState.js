@@ -18,7 +18,7 @@ export function markAsStub(entity) {
 export const OPERATION_UNIQUE_ID_FIELD = '__UID__';
 export function getOperationUniqueIdSeq() {
     return {
-        sequence: 0
+        sequence: 1
     };
 }
 // TODO: wire in in the client to mark all sent objects (used for de-duplication on server side).

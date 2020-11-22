@@ -1,4 +1,4 @@
-import { DB_FACADE, EntityFind, EntityFindOne, EntitySearch, EntitySearchOne } from '@airport/air-control';
+import { DB_FACADE, EntityFind, EntityFindOne, EntitySearch, EntitySearchOne, getOperationUniqueId, getOperationUniqueIdSeq, uniquelyIdentify } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { Duo } from './Duo';
 /**
@@ -26,11 +26,15 @@ export class EntityDatabaseFacade {
     // 	return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity,
     // ...entities) }
     async create(entity, ctx, operationName) {
+        this.identifyObjects(entity);
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
             return await databaseFacade.create(entity, ctx, operationName);
         });
     }
     async bulkCreate(entities, checkIfProcessed = true, ctx, operationName) {
+        for (const entity of entities) {
+            this.identifyObjects(entity);
+        }
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
             return await databaseFacade.bulkCreate(entities, ctx, checkIfProcessed, operationName);
         });
@@ -56,6 +60,7 @@ export class EntityDatabaseFacade {
         });
     }
     async update(entity, ctx, operationName) {
+        this.identifyObjects(entity);
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
             return await databaseFacade.update(entity, ctx, operationName);
         });
@@ -72,6 +77,7 @@ export class EntityDatabaseFacade {
     }
     // NOTE: Delete cascading is done on the server, no input is needed
     async delete(entity, ctx, operationName) {
+        this.identifyObjects(entity);
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
             return await databaseFacade.delete(entity, ctx, operationName);
         });
@@ -103,6 +109,20 @@ export class EntityDatabaseFacade {
         finally {
             ctx.dbEntity = previousEntity;
         }
+    }
+    identifyObjects(entity, operationUniqueIdSeq = getOperationUniqueIdSeq()) {
+        const operationUniqueId = getOperationUniqueId(entity);
+        if (operationUniqueId) {
+            return;
+        }
+        uniquelyIdentify(entity, operationUniqueIdSeq);
+        Object.keys(entity)
+            .forEach(propertyKey => {
+            const property = entity[propertyKey];
+            if (property instanceof Object) {
+                this.identifyObjects(property, operationUniqueIdSeq);
+            }
+        });
     }
 }
 //# sourceMappingURL=EntityDatabaseFacade.js.map

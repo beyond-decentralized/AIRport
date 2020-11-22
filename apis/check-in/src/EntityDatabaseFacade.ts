@@ -4,6 +4,8 @@ import {
 	EntityFindOne,
 	EntitySearch,
 	EntitySearchOne,
+	getOperationUniqueId,
+	getOperationUniqueIdSeq,
 	IDatabaseFacade,
 	IDuo,
 	IEntityCascadeGraph,
@@ -25,11 +27,15 @@ import {
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
-	RawUpdate
-}                 from '@airport/air-control'
-import {DI}       from '@airport/di'
-import {DbEntity} from '@airport/ground-control'
-import {Duo}      from './Duo'
+	RawUpdate,
+	uniquelyIdentify
+} from '@airport/air-control'
+import {DI}  from '@airport/di'
+import {
+	DbEntity,
+	entity
+}            from '@airport/ground-control'
+import {Duo} from './Duo'
 
 /**
  * Created by Papa on 12/11/2016.
@@ -92,6 +98,7 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
+		this.identifyObjects(entity)
 		return await this.withDbEntity(ctx, async (
 			databaseFacade: IDatabaseFacade,
 			ctx: IEntityContext
@@ -106,6 +113,9 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
+		for (const entity of entities) {
+			this.identifyObjects(entity)
+		}
 		return await this.withDbEntity(ctx, async (
 			databaseFacade: IDatabaseFacade,
 			ctx: IEntityContext
@@ -175,6 +185,7 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
+		this.identifyObjects(entity)
 		return await this.withDbEntity(ctx, async (
 			databaseFacade: IDatabaseFacade,
 			ctx: IEntityContext
@@ -219,6 +230,7 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
+		this.identifyObjects(entity)
 		return await this.withDbEntity(ctx, async (
 			databaseFacade: IDatabaseFacade,
 			ctx: IEntityContext
@@ -277,6 +289,26 @@ export class EntityDatabaseFacade<Entity,
 		} finally {
 			ctx.dbEntity = previousEntity
 		}
+	}
+
+	private identifyObjects<T>(
+		entity: T,
+		operationUniqueIdSeq = getOperationUniqueIdSeq()
+	): void {
+		const operationUniqueId = getOperationUniqueId(entity)
+		if (operationUniqueId) {
+			return
+		}
+
+		uniquelyIdentify(entity, operationUniqueIdSeq)
+
+		Object.keys(entity)
+			.forEach(propertyKey => {
+				const property = entity[propertyKey]
+				if (property instanceof Object) {
+					this.identifyObjects(property, operationUniqueIdSeq)
+				}
+			})
 	}
 
 }

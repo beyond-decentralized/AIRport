@@ -35,7 +35,7 @@ export interface IOperationUniqueIdSequence {
 }
 export function getOperationUniqueIdSeq(): IOperationUniqueIdSequence {
 	return {
-		sequence: 0
+		sequence: 1
 	}
 }
 // TODO: wire in in the client to mark all sent objects (used for de-duplication on server side).
