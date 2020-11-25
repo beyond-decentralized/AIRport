@@ -32,8 +32,7 @@ import {
 } from '@airport/air-control'
 import {DI}  from '@airport/di'
 import {
-	DbEntity,
-	entity
+	DbEntity
 }            from '@airport/ground-control'
 import {Duo} from './Duo'
 
@@ -305,7 +304,13 @@ export class EntityDatabaseFacade<Entity,
 		Object.keys(entity)
 			.forEach(propertyKey => {
 				const property = entity[propertyKey]
-				if (property instanceof Object) {
+				if (property instanceof Array) {
+					for (const propertyValue of property) {
+						if (propertyValue instanceof Object) {
+							this.identifyObjects(propertyValue, operationUniqueIdSeq)
+						}
+					}
+				} else if (property instanceof Object) {
 					this.identifyObjects(property, operationUniqueIdSeq)
 				}
 			})

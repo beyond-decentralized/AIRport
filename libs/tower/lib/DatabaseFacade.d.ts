@@ -41,7 +41,7 @@ export declare class DatabaseFacade extends OperationManager implements IDatabas
     updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(rawUpdate: RawUpdate<IEUP, IQE> | {
         (...args: any[]): RawUpdate<IEUP, IQE>;
     }, ctx: IOperationContext<any, any>): Promise<number>;
-    getOriginalRecord(dbEntity: DbEntity, entity: any, updateCache: IUpdateCache): Promise<any>;
+    getOriginalRecord<T>(dbEntity: DbEntity, entity: T, updateCache: IUpdateCache): Promise<any>;
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;
     private ensureId;
     private ensureIocContext;

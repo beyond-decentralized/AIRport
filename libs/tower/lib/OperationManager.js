@@ -43,7 +43,7 @@ export class OperationManager {
     }
     async internalInsertValues(rawInsertValues, transaction, ctx, ensureGeneratedValues) {
         const insertValues = new InsertValues(rawInsertValues);
-        const portableQuery = ctx.queryFacade.getPortableQuery(insertValues, null, ctx);
+        const portableQuery = ctx.ioc.queryFacade.getPortableQuery(insertValues, null, ctx);
         return await ctx.ioc.transactionalServer.insertValues(portableQuery, transaction, ctx, ensureGeneratedValues);
     }
     async internalInsertColumnValuesGenerateIds(rawInsertColumnValues, transaction, ctx) {
@@ -66,7 +66,7 @@ export class OperationManager {
             if (!entityIdData.idKey) {
                 throw new Error(`Cannot update ${ctx.dbEntity.name}, not all @Id(s) are set.`);
             }
-            originalValue = await this.getOriginalRecord(ctx.dbEntity, entityIdData.idKey, ctx.ioc.updateCache);
+            originalValue = await this.getOriginalRecord(ctx.dbEntity, entity, ctx.ioc.updateCache);
             // if (!originalValue) {
             // 	throw new Error(`Cannot update ${dbEntity.name}, entity not found.`)
             // }

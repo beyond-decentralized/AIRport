@@ -45,7 +45,7 @@ export declare abstract class OperationManager implements IOperationManager {
      */
     protected performUpdate<E, EntityCascadeGraph>(entity: E, operatedOnEntityIndicator: OperationUniqueId[], transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, originalValue?: E): Promise<number>;
     protected internalInsertValuesGetIds<E, EntityCascadeGraph, IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE>, transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>): Promise<number[] | string[] | number[][] | string[][]>;
-    protected abstract getOriginalRecord(dbEntity: DbEntity, idKey: string, updateCache: IUpdateCache): Promise<any>;
+    protected abstract getOriginalRecord<T>(dbEntity: DbEntity, entity: T, updateCache: IUpdateCache): Promise<any>;
     protected internalUpdateColumnsWhere<E, EntityCascadeGraph, IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(updateColumns: UpdateColumns<IEUC, IQE>, transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
     protected internalUpdateWhere<E, EntityCascadeGraph, IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(update: UpdateProperties<IEUP, IQE>, transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
     /**

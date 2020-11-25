@@ -189,7 +189,8 @@ export class SchemaUtils
 		for (const dbColumn of dbEntity.idColumns) {
 
 			const [propertyNameChains, idValue] =
-				      this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, true)
+				      this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn,
+					      entityObject, true, failOnNoId)
 
 			idValueCallback && idValueCallback(dbColumn, idValue, propertyNameChains)
 
@@ -204,10 +205,11 @@ export class SchemaUtils
 		dbEntity: DbEntity,
 		dbColumn: DbColumn,
 		entityObject: any,
-		forIdKey = false
+		forIdKey                           = false,
+		generateNegativeIdsForMissing = true
 	): [string[][], any] {
 		const columnValuesAndPaths           = this.getColumnValuesAndPaths(
-			dbColumn, entityObject, [], forIdKey)
+			dbColumn, entityObject, [], forIdKey, generateNegativeIdsForMissing)
 		const firstColumnValueAndPath        = columnValuesAndPaths[0]
 		const propertyNameChains: string[][] = [firstColumnValueAndPath.path]
 		const value                          = firstColumnValueAndPath.value
@@ -409,7 +411,8 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 		dbColumn: DbColumn,
 		relationObject: any,
 		breadCrumb: string[],
-		forIdKey: boolean = false,
+		forIdKey: boolean                           = false,
+		generateNegativeIdsForMissing: boolean = true
 		// noIdValueCallback: {
 		// 	(
 		// 		relationColumn: DbColumn,
@@ -456,7 +459,11 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 			let value = relationObject[propertyName]
 			if (forIdKey && this.isIdEmpty(value)) {
 				if (dbColumn.isGenerated) {
-					value                        = --SchemaUtils.TEMP_ID
+					if (generateNegativeIdsForMissing) {
+						value = --SchemaUtils.TEMP_ID
+					} else {
+						value = null
+					}
 					relationObject[propertyName] = value
 				} else {
 					// if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value,

@@ -149,7 +149,7 @@ export abstract class OperationManager
 	): Promise<number> {
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 
-		const portableQuery: PortableQuery = ctx.queryFacade.getPortableQuery(
+		const portableQuery: PortableQuery = ctx.ioc.queryFacade.getPortableQuery(
 			insertValues, null, ctx)
 
 		return await ctx.ioc.transactionalServer.insertValues(portableQuery, transaction, ctx, ensureGeneratedValues)
@@ -193,7 +193,7 @@ export abstract class OperationManager
 					`Cannot update ${ctx.dbEntity.name}, not all @Id(s) are set.`)
 			}
 			originalValue = await this.getOriginalRecord(
-				ctx.dbEntity, entityIdData.idKey, ctx.ioc.updateCache)
+				ctx.dbEntity, entity, ctx.ioc.updateCache)
 			// if (!originalValue) {
 			// 	throw new Error(`Cannot update ${dbEntity.name}, entity not found.`)
 			// }
@@ -221,9 +221,9 @@ export abstract class OperationManager
 		return await ctx.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction, ctx)
 	}
 
-	protected abstract async getOriginalRecord(
+	protected abstract async getOriginalRecord<T>(
 		dbEntity: DbEntity,
-		idKey: string,
+		entity: T,
 		updateCache: IUpdateCache
 	): Promise<any>;
 

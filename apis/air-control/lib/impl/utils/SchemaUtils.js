@@ -87,15 +87,15 @@ export class SchemaUtils {
             mapByIdColumnName: {}
         };
         for (const dbColumn of dbEntity.idColumns) {
-            const [propertyNameChains, idValue] = this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, true);
+            const [propertyNameChains, idValue] = this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, true, failOnNoId);
             idValueCallback && idValueCallback(dbColumn, idValue, propertyNameChains);
             idKeys.arrayByIdColumnIndex.push(idValue);
             idKeys.mapByIdColumnName[dbColumn.name] = idValue;
         }
         return idKeys;
     }
-    getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, forIdKey = false) {
-        const columnValuesAndPaths = this.getColumnValuesAndPaths(dbColumn, entityObject, [], forIdKey);
+    getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, forIdKey = false, generateNegativeIdsForMissing = true) {
+        const columnValuesAndPaths = this.getColumnValuesAndPaths(dbColumn, entityObject, [], forIdKey, generateNegativeIdsForMissing);
         const firstColumnValueAndPath = columnValuesAndPaths[0];
         const propertyNameChains = [firstColumnValueAndPath.path];
         const value = firstColumnValueAndPath.value;
@@ -245,7 +245,15 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
             systemWideOperationIdColumn
         };
     }
-    getColumnValuesAndPaths(dbColumn, relationObject, breadCrumb, forIdKey = false) {
+    getColumnValuesAndPaths(dbColumn, relationObject, breadCrumb, forIdKey = false, generateNegativeIdsForMissing = true
+    // noIdValueCallback: {
+    // 	(
+    // 		relationColumn: DbColumn,
+    // 		value: any,
+    // 		propertyNameChains: string[][],
+    // 	): void;
+    // }
+    ) {
         if (this.isManyRelationColumn(dbColumn)) {
             let columnValuesAndPaths = [];
             // If a column is part of a relation, it would be on the Many Side
@@ -286,7 +294,12 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
             let value = relationObject[propertyName];
             if (forIdKey && this.isIdEmpty(value)) {
                 if (dbColumn.isGenerated) {
-                    value = --SchemaUtils.TEMP_ID;
+                    if (generateNegativeIdsForMissing) {
+                        value = --SchemaUtils.TEMP_ID;
+                    }
+                    else {
+                        value = null;
+                    }
                     relationObject[propertyName] = value;
                 }
                 else {

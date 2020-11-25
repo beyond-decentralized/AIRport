@@ -407,9 +407,9 @@ export class DatabaseFacade
 		return numUpdatedRecords
 	}
 
-	async getOriginalRecord(
+	async getOriginalRecord<T>(
 		dbEntity: DbEntity,
-		entity: any,
+		entity: T,
 		updateCache: IUpdateCache
 	): Promise<any> {
 		const originalRecord = updateCache.getEntityUpdateCache(entity)

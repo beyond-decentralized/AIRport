@@ -22,7 +22,7 @@ export declare class SchemaUtils implements ISchemaUtils {
     getIdKeyInfo(entityObject: IEntityIdProperties, dbEntity: DbEntity, failOnNoId?: boolean, idValueCallback?: {
         (relationColumn: DbColumn, value: any, propertyNameChains: string[][]): void;
     }): IdKeysByIdColumnIndex;
-    getColumnPropertyNameChainsAndValue(dbEntity: DbEntity, dbColumn: DbColumn, entityObject: any, forIdKey?: boolean): [string[][], any];
+    getColumnPropertyNameChainsAndValue(dbEntity: DbEntity, dbColumn: DbColumn, entityObject: any, forIdKey?: boolean, generateNegativeIdsForMissing?: boolean): [string[][], any];
     addRelationToEntitySelectClause(dbRelation: DbRelation, selectClause: any, allowDefaults?: boolean): void;
     forEachColumnOfRelation(dbRelation: DbRelation, entity: any, callback: {
         (dbColumn: DbColumn, value: any, propertyNameChains: string[][]): void | boolean;
