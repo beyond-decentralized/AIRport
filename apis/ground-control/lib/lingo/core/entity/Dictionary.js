@@ -87,7 +87,6 @@ export var property;
  */
 export var onetomany;
 (function (onetomany) {
-    onetomany.CASCADE = 'cascade';
     onetomany.MAPPED_BY = 'mappedBy';
 })(onetomany || (onetomany = {}));
 /**

@@ -5,7 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { DbNumber, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
-import { CascadeType, } from "@airport/ground-control";
 let SynchronizationConflict = class SynchronizationConflict {
 };
 __decorate([
@@ -26,7 +25,7 @@ __decorate([
     JoinColumn({ name: "OVERWRITING_RECORD_HISTORY_ID", referencedColumnName: "ID" })
 ], SynchronizationConflict.prototype, "overwritingRecordHistory", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: "SYNCHRONIZATION_CONFLICT_ID" })
+    OneToMany({ mappedBy: "SYNCHRONIZATION_CONFLICT_ID" })
 ], SynchronizationConflict.prototype, "values", void 0);
 __decorate([
     DbNumber()

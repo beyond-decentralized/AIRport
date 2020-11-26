@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { CascadeOverwrite, ensureChildArray, ensureChildJsSet } from '@airport/ground-control';
+import { ensureChildArray, ensureChildJsSet } from '@airport/ground-control';
 import { ACTOR_DAO, REPOSITORY_DAO } from '@airport/holding-pattern';
 import { DataOrigin, REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, SHARING_NODE_REPOSITORY_DAO } from '@airport/moving-walkway';
 import { SCHEMA_DAO } from '@airport/traffic-pattern';
@@ -157,7 +157,7 @@ export class SyncOutRepositoryTransactionBlockCreator {
             const repoTransBlockData = repoTransBlockDataByRepoId.get(repositoryId);
             repositoryTransactionBlock.contents = JSON.stringify(repoTransBlockData);
         }
-        await (await repositoryTransactionBlockDao).bulkCreate(repositoryTransactionBlocks, CascadeOverwrite.DEFAULT, false);
+        await (await repositoryTransactionBlockDao).bulkCreate(repositoryTransactionBlocks, false);
     }
     async setRepositoryTransactionBlockBlockIds(repoTransHistoryUpdateStageValuesByBlock, repoTransHistoryUpdateStageValues, repositoryTransactionHistoryUpdateStageDao) {
         for (const [repositoryTransactionBlock, repoTransHistoryUpdateStageValuesForBlock] of repoTransHistoryUpdateStageValuesByBlock) {

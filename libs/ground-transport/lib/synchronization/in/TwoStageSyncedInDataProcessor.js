@@ -1,6 +1,6 @@
 import { RepoTransBlockSyncOutcomeType } from '@airport/arrivals-n-departures';
 import { container, DI } from '@airport/di';
-import { CascadeOverwrite, ensureChildArray, TransactionType } from '@airport/ground-control';
+import { ensureChildArray, TransactionType } from '@airport/ground-control';
 import { REPO_ACTOR_DAO, REPO_TRANS_HISTORY_DUO, RepositoryTransactionType } from '@airport/holding-pattern';
 import { REPO_TRANS_BLOCK_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO } from '@airport/moving-walkway';
 import { TRANSACTION_MANAGER } from '@airport/terminal-map';
@@ -71,8 +71,8 @@ export class TwoStageSyncedInDataProcessor {
                 });
             });
         }
-        await repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, CascadeOverwrite.DEFAULT, false);
-        await repoTransBlockRepoTransHistoryDao.bulkCreate(repoTransBlockRepoTransHistories, CascadeOverwrite.DEFAULT, false);
+        await repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false);
+        await repoTransBlockRepoTransHistoryDao.bulkCreate(repoTransBlockRepoTransHistories, false);
         return repoTransHistoryMapByRepositoryId;
     }
     async getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById, repositoryTransactionBlockDao, repositoryTransactionHistoryDuo) {
@@ -125,8 +125,8 @@ export class TwoStageSyncedInDataProcessor {
                 }
             }
         }
-        await synchronizationConflictDao.bulkCreate(allSyncConflicts, CascadeOverwrite.DEFAULT, false);
-        await synchronizationConflictPendingNotificationDao.bulkCreate(syncConflictPendingNotifications, CascadeOverwrite.DEFAULT, false);
+        await synchronizationConflictDao.bulkCreate(allSyncConflicts, false);
+        await synchronizationConflictPendingNotificationDao.bulkCreate(syncConflictPendingNotifications, false);
         await stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap);
     }
 }

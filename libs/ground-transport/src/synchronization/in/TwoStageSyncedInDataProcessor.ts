@@ -5,7 +5,6 @@ import {
 }                                     from '@airport/arrivals-n-departures'
 import {container, DI}                           from '@airport/di'
 import {
-	CascadeOverwrite,
 	ensureChildArray,
 	SchemaVersionId,
 	TransactionType
@@ -195,11 +194,10 @@ export class TwoStageSyncedInDataProcessor
 		}
 
 		await repositoryTransactionBlockDao.bulkCreate(
-			repositoryTransactionBlocks, CascadeOverwrite.DEFAULT,
-			false)
+			repositoryTransactionBlocks, false)
 
 		await repoTransBlockRepoTransHistoryDao.bulkCreate(
-			repoTransBlockRepoTransHistories, CascadeOverwrite.DEFAULT, false)
+			repoTransBlockRepoTransHistories, false)
 
 		return repoTransHistoryMapByRepositoryId
 	}
@@ -288,11 +286,9 @@ export class TwoStageSyncedInDataProcessor
 			}
 		}
 
-		await synchronizationConflictDao.bulkCreate(allSyncConflicts,
-			CascadeOverwrite.DEFAULT, false)
+		await synchronizationConflictDao.bulkCreate(allSyncConflicts, false)
 		await synchronizationConflictPendingNotificationDao.bulkCreate(
-			syncConflictPendingNotifications, CascadeOverwrite.DEFAULT,
-			false)
+			syncConflictPendingNotifications, false)
 
 		await stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap)
 	}

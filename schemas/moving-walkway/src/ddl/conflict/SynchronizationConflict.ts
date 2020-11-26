@@ -9,9 +9,6 @@ import {
 	Table
 }                                      from "@airport/air-control";
 import {
-	CascadeType,
-}                                      from "@airport/ground-control";
-import {
 	IRecordHistory,
 	IRepository
 }                                      from "@airport/holding-pattern";
@@ -41,7 +38,7 @@ export class SynchronizationConflict {
 	@JoinColumn({name: "OVERWRITING_RECORD_HISTORY_ID", referencedColumnName: "ID"})
 	overwritingRecordHistory: IRecordHistory;
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: "SYNCHRONIZATION_CONFLICT_ID"})
+	@OneToMany({mappedBy: "SYNCHRONIZATION_CONFLICT_ID"})
 	values: SynchronizationConflictValues[];
 
 	@DbNumber()

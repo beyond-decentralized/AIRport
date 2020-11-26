@@ -1,6 +1,6 @@
 import { MessageFromTMContentType } from '@airport/arrivals-n-departures';
 import { container, DI } from '@airport/di';
-import { CascadeOverwrite, ensureChildArray } from '@airport/ground-control';
+import { ensureChildArray } from '@airport/ground-control';
 import { REPO_TRANS_HISTORY_DAO } from '@airport/holding-pattern';
 import { REPO_TRANS_BLOCK_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO } from '@airport/moving-walkway';
 import { transactional } from '@airport/tower';
@@ -47,8 +47,8 @@ export class SyncOutSerializer {
             repositoryTransactionBlocks.push(repositoryTransactionBlock);
         }
         await transactional(async () => {
-            await repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, CascadeOverwrite.DEFAULT, false);
-            await repoTransBlockRepoTransHistoryDao.bulkCreate(allTransLogRepoTransHistories, CascadeOverwrite.DEFAULT, false);
+            await repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, false);
+            await repoTransBlockRepoTransHistoryDao.bulkCreate(allTransLogRepoTransHistories, false);
             const sharingMessages = [];
             const sharingMessageRepoTransBlocks = [];
             for (const [sharingNodeId, repositoryMapById] of repoMapBySharingNodeAndRepoIds) {
@@ -86,11 +86,11 @@ export class SyncOutSerializer {
                     sharingMessageRepoTransBlocks.push(sharingMessageRepoTransBlock);
                 }
             }
-            await sharingMessageDao.bulkCreate(sharingMessages, CascadeOverwrite.DEFAULT, false);
+            await sharingMessageDao.bulkCreate(sharingMessages, false);
             for (const sharingMessage of sharingMessages) {
                 messageMap.get(sharingMessage.sharingNode.id)[2] = sharingMessage.id;
             }
-            await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, CascadeOverwrite.DEFAULT, false);
+            await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false);
         });
         // await this.repositoryTransactionHistoryDao.updateSyncStatusHistory(
         // 	SyncStatus.SYNCHRONIZING, Array.from(repoTransHistoryIds)

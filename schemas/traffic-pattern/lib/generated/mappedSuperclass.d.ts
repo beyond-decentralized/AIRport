@@ -501,7 +501,6 @@ export declare const MAPPED_SUPERCLASS: {
                                         Json?: undefined;
                                         TableConfiguration?: undefined;
                                         Transient?: undefined;
-                                        CascadeType?: undefined;
                                         EntityId?: undefined;
                                         EntityIsLocal?: undefined;
                                         EntityIsRepositoryEntity?: undefined;
@@ -887,15 +886,10 @@ export declare const MAPPED_SUPERCLASS: {
                                         Table: any;
                                         TableConfiguration: any;
                                         Transient: any;
-                                        CascadeType: {
+                                        EntityId: {
                                             fileImports: any;
                                             isLocal: boolean;
                                             objectMapByAsName: {
-                                                CascadeType: {
-                                                    asName: string;
-                                                    moduleImport: any;
-                                                    sourceName: string;
-                                                };
                                                 EntityId: {
                                                     asName: string;
                                                     moduleImport: any;
@@ -924,7 +918,6 @@ export declare const MAPPED_SUPERCLASS: {
                                             };
                                             path: string;
                                         };
-                                        EntityId: any;
                                         EntityIsLocal: any;
                                         EntityIsRepositoryEntity: any;
                                         EntityName: any;
@@ -1559,7 +1552,6 @@ export declare const MAPPED_SUPERCLASS: {
                                     decorators: {
                                         name: string;
                                         values: {
-                                            cascade: string;
                                             mappedBy: string;
                                         }[];
                                     }[];
@@ -2029,7 +2021,6 @@ export declare const MAPPED_SUPERCLASS: {
                                         Json?: undefined;
                                         TableConfiguration?: undefined;
                                         Transient?: undefined;
-                                        CascadeType?: undefined;
                                         EntityId?: undefined;
                                         EntityIsLocal?: undefined;
                                         EntityIsRepositoryEntity?: undefined;

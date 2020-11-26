@@ -1,5 +1,4 @@
 import { container, DI } from '@airport/di';
-import { CascadeOverwrite } from '@airport/ground-control';
 import { MISSING_RECORD_REPO_TRANS_BLOCK_DAO, REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO, SchemaChangeStatus, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO } from '@airport/moving-walkway';
 import { SYNC_IN_ACTOR_CHECKER, SYNC_IN_CHECKER, SYNC_IN_DATA_CHECKER, SYNC_IN_REPO_CHECKER, SYNC_IN_REPO_TRANS_BLOCK_CREATOR, SYNC_IN_SCHEMA_CHECKER } from '../../../tokens';
 export class SyncInChecker {
@@ -178,12 +177,11 @@ export class SyncInChecker {
         // ...sharingMessagesWithIncompatibleSchemas, ...sharingMessagesToBeUpgraded,
         // ...sharingMessagesWithIncompatibleData,
         // ...sharingMessagesWithCompatibleSchemasAndData ]; await
-        // this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate,
-        // CascadeOverwrite.DEFAULT, false);
+        // this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false);
         // const m: MissingRecordRepoTransBlock;
         // if (missingRecordRepoTransBlocks.length) {
         // 	await this.missingRecordRepoTransBlockDao.bulkCreate(
-        // 		missingRecordRepoTransBlocks, CascadeOverwrite.DEFAULT, false);
+        // 		missingRecordRepoTransBlocks, false);
         // }
         // Record all schemas to change per sharing message with incompatible schemas
         const repoTransBlockSchemasToChange = [];
@@ -208,7 +206,7 @@ export class SyncInChecker {
                 });
             }
         }
-        await repoTransBlockSchemasToChangeDao.bulkCreate(repoTransBlockSchemasToChange, CascadeOverwrite.DEFAULT, false);
+        await repoTransBlockSchemasToChangeDao.bulkCreate(repoTransBlockSchemasToChange, false);
         return sharingMessagesWithCompatibleSchemasAndData;
     }
     findMatchingSchema(schemaMap, schema) {

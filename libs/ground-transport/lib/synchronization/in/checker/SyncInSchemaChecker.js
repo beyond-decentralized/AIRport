@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { CascadeOverwrite, ensureChildJsMap, SchemaStatus } from '@airport/ground-control';
+import { ensureChildJsMap, SchemaStatus } from '@airport/ground-control';
 import { TERMINAL_STORE } from '@airport/terminal-map';
 import { DOMAIN_DAO } from '@airport/territory';
 import { SCHEMA_DAO, SCHEMA_VERSION_DAO } from '@airport/traffic-pattern';
@@ -228,8 +228,8 @@ export class SyncInSchemaChecker {
                 newlyNeededSchemas.push(schema);
             }
         }
-        await (await domainDao).bulkCreate(Array.from(missingDomainMap.values()), CascadeOverwrite.DEFAULT, false);
-        await (await schemaDao).bulkCreate(newlyNeededSchemas, CascadeOverwrite.DEFAULT, false);
+        await (await domainDao).bulkCreate(Array.from(missingDomainMap.values()), false);
+        await (await schemaDao).bulkCreate(newlyNeededSchemas, false);
         return schemaWithChangesMap;
     }
     /*

@@ -7,8 +7,10 @@ import {
 	SyncNotificationMessageToTM,
 	TmSharingMessageId
 }                                 from '@airport/arrivals-n-departures'
-import {container, DI}                       from '@airport/di'
-import {CascadeOverwrite}         from '@airport/ground-control'
+import {
+	container,
+	DI
+}                                 from '@airport/di'
 import {
 	DataOrigin,
 	ISharingMessage,
@@ -86,8 +88,9 @@ export class SynchronizationInManager
 		// TODO: is syncInChecker needed (what was the reason for original injection)?
 		const [sharingMessageDao, syncInChecker,
 			      syncLogMessageProcessor, twoStageSyncedInDataProcessor
-		      ] = await container(this).get(SHARING_MESSAGE_DAO, SYNC_IN_CHECKER,
-			SYNC_LOG_MESSAGE_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
+		      ] = await container(this)
+			.get(SHARING_MESSAGE_DAO, SYNC_IN_CHECKER,
+				SYNC_LOG_MESSAGE_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
 
 		const syncTimestamp                      = new Date()
 		const allSyncLogMessages: ISyncLogToTM[] = []
@@ -183,15 +186,11 @@ export class SynchronizationInManager
 		}
 
 		await transactional(async () => {
-			await sharingMessageDao.bulkCreate(
-				sharingMessages, CascadeOverwrite.DEFAULT,
-				false)
-
+			await sharingMessageDao.bulkCreate(sharingMessages, false)
 
 			// These messages are responses to already sent messages
 			// no need to check for existence of repositories
 			await syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages)
-
 
 			await twoStageSyncedInDataProcessor.syncDataMessages(allDataMessages)
 		})

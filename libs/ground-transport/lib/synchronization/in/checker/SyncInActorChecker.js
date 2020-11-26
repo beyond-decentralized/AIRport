@@ -1,11 +1,12 @@
 import { container, DI } from '@airport/di';
-import { CascadeOverwrite, ensureChildJsMap } from '@airport/ground-control';
+import { ensureChildJsMap } from '@airport/ground-control';
 import { ACTOR_DAO } from '@airport/holding-pattern';
 import { TERMINAL_DAO } from '@airport/travel-document-checkpoint';
 import { SYNC_IN_ACTOR_CHECKER } from '../../../tokens';
 export class SyncInActorChecker {
     async ensureActorsAndGetAsMaps(dataMessages, actorMap, actorMapById, userCheckResults, terminalCheckResults, dataMessagesWithInvalidData) {
-        const [actorDao, terminalDao] = await container(this).get(ACTOR_DAO, TERMINAL_DAO);
+        const [actorDao, terminalDao] = await container(this)
+            .get(ACTOR_DAO, TERMINAL_DAO);
         const actorRandomIdSet = new Set();
         const userUniqueIdsSet = new Set();
         const terminalNameSet = new Set();
@@ -34,14 +35,15 @@ export class SyncInActorChecker {
             const terminal = message.data.terminal;
             const terminalId = terminalMapByGlobalIds
                 .get(terminal.owner.uniqueId)
-                .get(terminal.name).get(terminal.secondId).id;
+                .get(terminal.name)
+                .get(terminal.secondId).id;
             terminalIdSet.add(terminalId);
         }
         // NOTE: remote actors should not contain terminal info, it should be populated here
         // this is because a given RTB is always generated in one and only one terminal
         await actorDao.findMapsWithDetailsByGlobalIds(Array.from(actorRandomIdSet), Array.from(userUniqueIdsSet), Array.from(terminalIdSet), actorMap, actorMapById);
         const newActors = this.getNewActors(consistentMessages, actorMap);
-        await actorDao.bulkCreate(newActors, CascadeOverwrite.DEFAULT, false);
+        await actorDao.bulkCreate(newActors, false);
         for (const newActor of newActors) {
             actorMapById.set(newActor.id, newActor);
         }
@@ -163,7 +165,8 @@ export class SyncInActorChecker {
         return newActors;
     }
     addActorToMap(actor, actorMap) {
-        ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(actorMap, actor.randomId), actor.user.uniqueId), actor.terminal.name), actor.terminal.secondId).set(actor.terminal.owner.uniqueId, actor);
+        ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(actorMap, actor.randomId), actor.user.uniqueId), actor.terminal.name), actor.terminal.secondId)
+            .set(actor.terminal.owner.uniqueId, actor);
     }
 }
 DI.set(SYNC_IN_ACTOR_CHECKER, SyncInActorChecker);

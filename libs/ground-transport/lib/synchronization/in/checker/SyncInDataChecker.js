@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { CascadeOverwrite, ChangeType, ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
+import { ChangeType, ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
 import { REPO_TRANS_HISTORY_DAO } from '@airport/holding-pattern';
 import { MISSING_RECORD_DAO, MISSING_RECORD_REPO_TRANS_BLOCK_DAO, MissingRecordStatus, REPO_TRANS_BLOCK_DAO, SHARING_MESSAGE_DAO } from '@airport/moving-walkway';
 import { TERMINAL_STORE } from '@airport/terminal-map';
@@ -129,7 +129,7 @@ export class SyncInDataChecker {
             }
         }
         if (missingRecords.length) {
-            await missingRecordDao.bulkCreate(missingRecords, CascadeOverwrite.DEFAULT, false);
+            await missingRecordDao.bulkCreate(missingRecords, false);
         }
         return {
             compatibleDataMessageFlags,

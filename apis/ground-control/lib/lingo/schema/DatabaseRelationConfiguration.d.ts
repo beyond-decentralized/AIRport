@@ -20,24 +20,10 @@ export interface DatabaseForeignKey {
      */
     name?: string;
 }
-export declare enum CascadeType {
-    NONE = 0,
-    ALL = 1,
-    CREATE = 2,
-    PERSIST = 3,
-    REMOVE = 4,
-    UPDATE = 5
-}
-export declare enum CascadeOverwrite {
-    ALWAYS = 0,
-    DEFAULT = 1,
-    NEVER = 2
-}
 /**
  * One-To-Many relation configuration
  */
 export interface DatabaseOneToManyElements {
-    cascade?: CascadeType;
     mappedBy?: string;
 }
 /**

@@ -173,7 +173,6 @@ export const SCHEMA = {
 							"index": 2,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "recordHistory"
 							},
 							"relationType": 0,
@@ -187,7 +186,6 @@ export const SCHEMA = {
 							"index": 3,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "recordHistory"
 							},
 							"relationType": 0,
@@ -450,7 +448,6 @@ export const SCHEMA = {
 							"index": 0,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "application"
 							},
 							"relationType": 0,
@@ -464,7 +461,6 @@ export const SCHEMA = {
 							"index": 1,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "application"
 							},
 							"relationType": 0,
@@ -860,7 +856,6 @@ export const SCHEMA = {
 							"index": 1,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "repository"
 							},
 							"relationType": 0,
@@ -874,7 +869,6 @@ export const SCHEMA = {
 							"index": 2,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "repository"
 							},
 							"relationType": 0,
@@ -888,7 +882,6 @@ export const SCHEMA = {
 							"index": 3,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "repository"
 							},
 							"relationType": 0,
@@ -1203,7 +1196,6 @@ export const SCHEMA = {
 							"index": 2,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "actor"
 							},
 							"relationType": 0,
@@ -1217,7 +1209,6 @@ export const SCHEMA = {
 							"index": 3,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "ACTOR_ID"
 							},
 							"relationType": 0,
@@ -2041,7 +2032,6 @@ export const SCHEMA = {
 							"index": 4,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "repositoryTransactionHistory"
 							},
 							"relationType": 0,
@@ -2266,7 +2256,6 @@ export const SCHEMA = {
 							"index": 2,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "operationHistory"
 							},
 							"relationType": 0,

@@ -1,9 +1,6 @@
 /**
  * Created by papa on 7/12/17.
  */
-import {CascadeType} from '@airport/ground-control'
-
-
 export interface IDbConfig {
 	name: string;
 	currentVersion: string;
@@ -53,7 +50,6 @@ export interface IDbColumn
 
 export interface IDbRelation
 	extends IDbObject {
-	cascade: CascadeType;
 	columns?: IDbRelationColumn[];
 	foreignKey?: string;
 	mappedBy?: string;

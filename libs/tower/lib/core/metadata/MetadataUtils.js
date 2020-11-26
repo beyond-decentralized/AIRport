@@ -32,8 +32,7 @@ export class MetadataUtils {
     }
 
     static doCascade(
-        dbRelation: DbRelation,
-        crudOperation: CRUDOperation
+        dbRelation: DbRelation
     ): boolean {
         if (dbRelation.relationType !== EntityRelationType.ONE_TO_MANY) {
             return false;
@@ -43,18 +42,7 @@ export class MetadataUtils {
             return false;
         }
 
-        const cascade: any = dbRelation.oneToManyElems.cascade;
-
-        switch (crudOperation) {
-            case CRUDOperation.CREATE:
-            case CRUDOperation.UPDATE:
-                return cascade === CascadeType.ALL || cascade === CascadeType.PERSIST;
-            case CRUDOperation.DELETE:
-                return cascade === CascadeType.ALL || cascade === CascadeType.REMOVE;
-            default:
-                throw new Error(
-                `Unsupported CRUDOperation '${crudOperation}' for cascade check.`)
-        }
+        return true
     }
 
 }

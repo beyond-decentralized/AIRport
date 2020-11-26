@@ -1,6 +1,5 @@
 import {DI}                 from '@airport/di'
 import {
-	CascadeType,
 	CRUDOperation,
 	DbColumn,
 	DbEntity,
@@ -70,19 +69,11 @@ export class SchemaUtils
 			return false
 		}
 
-		const cascade: any = dbRelation.oneToManyElems.cascade
-
 		switch (crudOperation) {
 			case CRUDOperation.CREATE:
-				return cascade === CascadeType.ALL
-					|| cascade === CascadeType.PERSIST
-					|| cascade === CascadeType.CREATE
 			case CRUDOperation.UPDATE:
-				return cascade === CascadeType.ALL
-					|| cascade === CascadeType.PERSIST
-					|| cascade === CascadeType.UPDATE
 			case CRUDOperation.DELETE:
-				return cascade === CascadeType.ALL || cascade === CascadeType.REMOVE
+				return true
 			default:
 				throw new Error(`Unsupported CRUDOperation '${crudOperation}' for cascade check.`)
 		}

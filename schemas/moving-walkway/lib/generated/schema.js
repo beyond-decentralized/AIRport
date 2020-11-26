@@ -295,7 +295,6 @@ export const SCHEMA = {
                             "index": 3,
                             "isId": false,
                             "oneToManyElems": {
-                                "cascade": 1,
                                 "mappedBy": "SYNCHRONIZATION_CONFLICT_ID"
                             },
                             "relationType": 0,

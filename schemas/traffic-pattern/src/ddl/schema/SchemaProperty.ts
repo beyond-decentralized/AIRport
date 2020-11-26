@@ -4,20 +4,18 @@ import {
 	DbNumber,
 	DbString,
 	Entity,
-	GeneratedValue,
 	Id,
 	JoinColumn,
 	ManyToOne,
 	OneToMany,
 	Table
-} from '@airport/air-control'
+}                              from '@airport/air-control'
 import {
-	CascadeType,
 	PropertyId,
 	PropertyIndex,
 	PropertyIsId,
 	PropertyName
-} from '@airport/ground-control'
+}                              from '@airport/ground-control'
 import {SchemaEntity}          from './SchemaEntity'
 import {SchemaPropertyColumn}  from './SchemaPropertyColumn'
 import {SchemaRelation}        from './SchemaRelation'
@@ -52,10 +50,10 @@ export class SchemaProperty
 	)
 	entity: SchemaEntity
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'property'})
+	@OneToMany({mappedBy: 'property'})
 	propertyColumns: SchemaPropertyColumn[] = []
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'property'})
+	@OneToMany({mappedBy: 'property'})
 	relation: SchemaRelation[] = []
 
 }

@@ -14,7 +14,6 @@ import {
 	Transient
 } from '@airport/air-control'
 import {
-	CascadeType,
 	EntityId,
 	EntityIsLocal,
 	EntityIsRepositoryEntity,
@@ -92,10 +91,10 @@ export class SchemaEntity
 	// ) => mto.idIndex.isNotNull())
 	// idColumns: ISchemaColumn[];
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entity'})
+	@OneToMany({mappedBy: 'entity'})
 	operations?: SchemaOperation[] = []
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entity'})
+	@OneToMany({mappedBy: 'entity'})
 	properties: SchemaProperty[] = []
 
 	@OneToMany({mappedBy: 'entity'})

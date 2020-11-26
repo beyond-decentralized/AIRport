@@ -92,9 +92,9 @@ export interface TransientDecorator {
  */
 export interface ManyToOneElements
 	extends DatabaseOneToManyElements {
-	// Not implementing cascade on ManyToOne
+	// Cascade isn't implemented - the object graph to cascade is explicitly specified
 	// cascade?:CascadeType;
-	// Fetch isn't implemented - all objects are explicitly retrieved
+	// Fetch isn't implemented - the object graph to retrieve is also explicitly specified
 	// fetch?: FetchType;
 
 	// Whether the association is optional. If set to false then a non-null relationship

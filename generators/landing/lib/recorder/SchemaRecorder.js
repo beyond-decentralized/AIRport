@@ -6,7 +6,8 @@ import { SCHEMA_COLUMN_DAO, SCHEMA_DAO, SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUM
 import { SCHEMA_RECORDER } from '../tokens';
 export class SchemaRecorder {
     async record(ddlObjects, normalOperation) {
-        const [airDb, domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaVersionDao] = await container(this).get(AIR_DB, DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO, SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO, SCHEMA_RELATION_DAO, SCHEMA_VERSION_DAO);
+        const [airDb, domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaVersionDao] = await container(this)
+            .get(AIR_DB, DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO, SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO, SCHEMA_RELATION_DAO, SCHEMA_VERSION_DAO);
         await transactional(async () => {
             // FIXME: add support for real schema versioning
             this.setDefaultVersioning(ddlObjects);
@@ -82,7 +83,7 @@ export class SchemaRecorder {
     async bulkCreate(airDb, dao, entities) {
         await airDb.bulkCreate(entities, false, {
             dbEntity: dao.db.dbEntity
-        }, "SchemaRecorder.bulkCreate", false);
+        }, 'SchemaRecorder.bulkCreate', false);
     }
 }
 DI.set(SCHEMA_RECORDER, SchemaRecorder);

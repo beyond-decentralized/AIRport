@@ -1,6 +1,6 @@
 import { RepoTransBlockSyncOutcomeType } from '@airport/arrivals-n-departures';
 import { container, DI } from '@airport/di';
-import { CascadeOverwrite, TransactionType } from '@airport/ground-control';
+import { TransactionType } from '@airport/ground-control';
 import { RepositoryTransactionType } from '@airport/holding-pattern';
 import { MISSING_RECORD_REPO_TRANS_BLOCK_DAO, REPO_TRANS_BLOCK_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO } from '@airport/moving-walkway';
 import { stringify } from 'zipson/lib';
@@ -20,7 +20,7 @@ export class SyncInRepositoryTransactionBlockCreator {
         allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksWithInvalidData);
         const repoTransBlocksWithValidDataAndSchemas = this.createRepositoryTransactionBlocks(dataMessagesWithCompatibleSchemasAndData, RepoTransBlockSyncOutcomeType.SYNC_TO_TM_SUCCESSFUL);
         allRepositoryTransactionBlocks = allRepositoryTransactionBlocks.concat(repoTransBlocksWithValidDataAndSchemas);
-        await repositoryTransactionBlockDao.bulkCreate(allRepositoryTransactionBlocks, CascadeOverwrite.DEFAULT, false);
+        await repositoryTransactionBlockDao.bulkCreate(allRepositoryTransactionBlocks, false);
         let allDataToTM = [];
         allDataToTM = allDataToTM.concat(dataMessagesWithIncompatibleSchemas);
         allDataToTM = allDataToTM.concat(dataMessagesWithIncompatibleData);
@@ -52,7 +52,7 @@ export class SyncInRepositoryTransactionBlockCreator {
                 .dataMessage.repositoryTransactionBlock
         }));
         if (missingRecordRepoTransBlocks.length) {
-            await missingRecordRepoTransBlockDao.bulkCreate(missingRecordRepoTransBlocks, CascadeOverwrite.DEFAULT, false);
+            await missingRecordRepoTransBlockDao.bulkCreate(missingRecordRepoTransBlocks, false);
         }
     }
     async createSharingMessageRepoTransBlocks(allDataToTM, sharingMessageRepoTransBlockDao) {
@@ -60,7 +60,7 @@ export class SyncInRepositoryTransactionBlockCreator {
             sharingMessage: dataToTM.sharingMessage,
             repositoryTransactionBlock: dataToTM.repositoryTransactionBlock
         }));
-        await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, CascadeOverwrite.DEFAULT, false);
+        await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false);
     }
     async recordSharingMessageToHistoryRecords(sharingMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessages, actorMapById, repositoryTransactionBlockDao, sharingMessageRepoTransBlockDao, transactionManager) {
         const repoTransHistoryMapByRepositoryId = await this.getRepoTransHistoryMapByRepoId(dataMessages, existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById);
@@ -105,11 +105,10 @@ export class SyncInRepositoryTransactionBlockCreator {
                 });
             });
         }
-        await repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, CascadeOverwrite.DEFAULT, false);
-        await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, CascadeOverwrite.DEFAULT, false);
+        await repositoryTransactionBlockDao.bulkCreate(repositoryTransactionBlocks, false);
+        await sharingMessageRepoTransBlockDao.bulkCreate(sharingMessageRepoTransBlocks, false);
         // await this.repoTransBlockRepoTransHistoryDao.bulkCreate(
-        // 	repoTransBlockRepoTransHistories, CascadeOverwrite.DEFAULT,
-        // 	false);
+        // 	repoTransBlockRepoTransHistories, false);
         return repoTransHistoryMapByRepositoryId;
     }
     createSharingNodeRepoTransBlocks(allDataToTM) {

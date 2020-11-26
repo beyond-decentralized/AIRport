@@ -49,37 +49,11 @@ export interface DatabaseForeignKey {
 	// value?: ConstraintMode;  // default: ConstraintMode.CONSTRAINT
 }
 
-export enum CascadeType {
-	NONE, // Do not cascade
-	ALL, //Cascade all operations
-	// Cascade detach is not implemented because there is no session
-	// DETACH,
-	// Cascade merge is not implemented because there is no session
-	// MERGE,
-	CREATE, // New to Airport
-	PERSIST, // Cascade on create and update operations
-	// Cascade refresh is not implemented because there is no session
-	// REFRESH,
-	REMOVE, // Cascade on remove operation - implemented in software for Repo Entities
-	UPDATE // New to Airport
-}
-
-export enum CascadeOverwrite {
-	// Always cascade
-	ALWAYS,
-	// Follow the default entity configuration rules
-	DEFAULT,
-	// Never cascade
-	NEVER
-}
-
 
 /**
  * One-To-Many relation configuration
  */
 export interface DatabaseOneToManyElements {
-	// Cacade current operation onto objects on the Many side of the relation
-	cascade?: CascadeType;
 	// Name of the property on the Many side of the relation
 	mappedBy?: string;
 }

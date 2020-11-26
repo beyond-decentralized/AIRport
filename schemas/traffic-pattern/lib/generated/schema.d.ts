@@ -82,20 +82,6 @@ export declare const SCHEMA: {
                 isId: boolean;
                 oneToManyElems: {
                     mappedBy: string;
-                    cascade?: undefined;
-                };
-                relationType: number;
-                propertyRef: {
-                    index: number;
-                };
-                relationTableIndex: number;
-                sinceVersion: number;
-            } | {
-                index: number;
-                isId: boolean;
-                oneToManyElems: {
-                    cascade: number;
-                    mappedBy: string;
                 };
                 relationType: number;
                 propertyRef: {

@@ -1,6 +1,5 @@
 import { Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { CascadeOverwrite } from '@airport/ground-control';
 import { USER_DAO } from '@airport/travel-document-checkpoint';
 import { SYNC_IN_USER_CHECKER } from '../../../tokens';
 export class SyncInUserChecker {
@@ -78,7 +77,7 @@ export class SyncInUserChecker {
             }
         }
         if (newUsers.length) {
-            await userDao.bulkCreate(newUsers, CascadeOverwrite.DEFAULT, false);
+            await userDao.bulkCreate(newUsers, false);
             for (const newUser of newUsers) {
                 userMapById.set(newUser.id, newUser);
             }

@@ -10,7 +10,6 @@ import {
 	SequenceGenerator,
 	Table,
 }                                               from '@airport/air-control'
-import {CascadeType,}                           from '@airport/ground-control'
 import {Actor}                                  from '../infrastructure/Actor'
 import {Repository}                             from '../repository/Repository'
 import {OperationHistory}                       from './OperationHistory'
@@ -76,7 +75,7 @@ export class RepositoryTransactionHistory {
 	})
 	blockId: RepositoryTransactionHistoryBlockId
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'repositoryTransactionHistory'})
+	@OneToMany({mappedBy: 'repositoryTransactionHistory'})
 	operationHistory: OperationHistory[] = []
 
 

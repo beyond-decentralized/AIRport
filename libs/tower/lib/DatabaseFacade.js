@@ -49,7 +49,7 @@ export class DatabaseFacade extends OperationManager {
         });
         return numRecordsCreated;
     }
-    async create(entity, ctx, cascadeGraph) {
+    async create(entity, ctx) {
         if (!entity) {
             return 0;
         }

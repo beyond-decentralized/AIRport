@@ -11,9 +11,6 @@ import {
 	Table
 }                     from "@airport/air-control";
 import {
-	CascadeType
-}                     from "@airport/ground-control";
-import {
 	Actor
 } from '../infrastructure/Actor'
 import {
@@ -91,13 +88,13 @@ export class Repository {
 	lastSyncedTransaction: IRepositoryTransactionHistory;
 */
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'repository'})
+	@OneToMany({mappedBy: 'repository'})
 	repositoryActors: RepositoryActor[] = [];
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'repository'})
+	@OneToMany({mappedBy: 'repository'})
 	repositoryApplications: RepositoryApplication[] = [];
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'repository'})
+	@OneToMany({mappedBy: 'repository'})
 	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];
 
 	@Column({name: "SYNC_PRIORITY", nullable: false})

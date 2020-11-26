@@ -3,11 +3,11 @@ import {
 	TerminalName,
 	TerminalSecondId
 }                              from '@airport/arrivals-n-departures'
-import {container, DI}                    from '@airport/di'
 import {
-	CascadeOverwrite,
-	ensureChildJsMap
-}                              from '@airport/ground-control'
+	container,
+	DI
+}                              from '@airport/di'
+import {ensureChildJsMap}      from '@airport/ground-control'
 import {
 	ACTOR_DAO,
 	ActorId,
@@ -60,7 +60,8 @@ export class SyncInActorChecker
 		terminalCheckResults: TerminalCheckResults,
 		dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<ActorCheckResults> {
-		const [actorDao, terminalDao] = await container(this).get(ACTOR_DAO, TERMINAL_DAO)
+		const [actorDao, terminalDao] = await container(this)
+			.get(ACTOR_DAO, TERMINAL_DAO)
 
 		const actorRandomIdSet: Set<ActorRandomId>       = new Set()
 		const userUniqueIdsSet: Set<UserUniqueId>        = new Set()
@@ -99,7 +100,8 @@ export class SyncInActorChecker
 			const terminal   = message.data.terminal
 			const terminalId = terminalMapByGlobalIds
 				.get(terminal.owner.uniqueId)
-				.get(terminal.name).get(terminal.secondId).id
+				.get(terminal.name)
+				.get(terminal.secondId).id
 			terminalIdSet.add(terminalId)
 		}
 
@@ -114,8 +116,7 @@ export class SyncInActorChecker
 			actorMapById)
 
 		const newActors: IActor[] = this.getNewActors(consistentMessages, actorMap)
-		await actorDao.bulkCreate(newActors,
-			CascadeOverwrite.DEFAULT, false)
+		await actorDao.bulkCreate(newActors, false)
 
 		for (const newActor of newActors) {
 			actorMapById.set(newActor.id, newActor)
@@ -272,7 +273,8 @@ export class SyncInActorChecker
 					ensureChildJsMap(actorMap, actor.randomId),
 					actor.user.uniqueId),
 				actor.terminal.name),
-			actor.terminal.secondId).set(actor.terminal.owner.uniqueId, actor)
+			actor.terminal.secondId)
+			.set(actor.terminal.owner.uniqueId, actor)
 	}
 
 }

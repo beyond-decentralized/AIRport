@@ -5,7 +5,6 @@ import {
 }                     from '@airport/arrivals-n-departures'
 import {container, DI}           from '@airport/di'
 import {
-	CascadeOverwrite,
 	DomainName,
 	SchemaIndex,
 	SchemaName,
@@ -340,14 +339,13 @@ export class SyncInChecker
 		// ...sharingMessagesWithIncompatibleSchemas, ...sharingMessagesToBeUpgraded,
 		// ...sharingMessagesWithIncompatibleData,
 		// ...sharingMessagesWithCompatibleSchemasAndData ]; await
-		// this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate,
-		// CascadeOverwrite.DEFAULT, false);
+		// this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false);
 
 		// const m: MissingRecordRepoTransBlock;
 
 		// if (missingRecordRepoTransBlocks.length) {
 		// 	await this.missingRecordRepoTransBlockDao.bulkCreate(
-		// 		missingRecordRepoTransBlocks, CascadeOverwrite.DEFAULT, false);
+		// 		missingRecordRepoTransBlocks, false);
 		// }
 
 
@@ -377,7 +375,7 @@ export class SyncInChecker
 			}
 		}
 		await repoTransBlockSchemasToChangeDao.bulkCreate(
-			repoTransBlockSchemasToChange, CascadeOverwrite.DEFAULT, false)
+			repoTransBlockSchemasToChange, false)
 
 		return sharingMessagesWithCompatibleSchemasAndData
 	}

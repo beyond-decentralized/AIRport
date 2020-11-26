@@ -8,7 +8,6 @@ import {
 }                            from '@airport/arrivals-n-departures'
 import {container, DI}                  from '@airport/di'
 import {
-	CascadeOverwrite,
 	ensureChildArray
 }                            from '@airport/ground-control'
 import {
@@ -113,10 +112,9 @@ export class SyncOutSerializer
 		}
 
 		await transactional(async () => {
-			await repoTransBlockDao.bulkCreate(repositoryTransactionBlocks,
-				CascadeOverwrite.DEFAULT, false)
+			await repoTransBlockDao.bulkCreate(repositoryTransactionBlocks, false)
 			await repoTransBlockRepoTransHistoryDao.bulkCreate(
-				allTransLogRepoTransHistories, CascadeOverwrite.DEFAULT, false)
+				allTransLogRepoTransHistories, false)
 
 			const sharingMessages: ISharingMessage[]                             = []
 			const sharingMessageRepoTransBlocks: ISharingMessageRepoTransBlock[] = []
@@ -164,14 +162,14 @@ export class SyncOutSerializer
 			}
 
 			await sharingMessageDao.bulkCreate(sharingMessages,
-				CascadeOverwrite.DEFAULT, false)
+				false)
 
 			for (const sharingMessage of sharingMessages) {
 				messageMap.get(sharingMessage.sharingNode.id)[2] = sharingMessage.id
 			}
 
 			await sharingMessageRepoTransBlockDao.bulkCreate(
-				sharingMessageRepoTransBlocks, CascadeOverwrite.DEFAULT,
+				sharingMessageRepoTransBlocks,
 				false
 			)
 		})

@@ -91,7 +91,6 @@ export namespace property {
  * OneToMany configuration keys.
  */
 export namespace onetomany {
-	export const CASCADE   = 'cascade'
 	export const MAPPED_BY = 'mappedBy'
 }
 

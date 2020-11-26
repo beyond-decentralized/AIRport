@@ -1,5 +1,4 @@
 import {
-	CascadeType,
 	ColumnIndex,
 	DatabaseOneToManyElements,
 	DbEntity,
@@ -304,28 +303,7 @@ export class JsonSchemaBuilder {
 			return elems
 		}
 		return {
-			cascade: this.deserializeCascadeType(elems.cascade),
 			mappedBy: elems.mappedBy
-		}
-	}
-
-	private deserializeCascadeType(
-		cascadeType
-	): CascadeType {
-		if (!cascadeType) {
-			return cascadeType
-		}
-		switch (cascadeType) {
-			case 'CascadeType.NONE':
-				return CascadeType.NONE
-			case 'CascadeType.ALL':
-				return CascadeType.ALL
-			case 'CascadeType.PERSIST':
-				return CascadeType.PERSIST
-			case 'CascadeType.REMOVE':
-				return CascadeType.REMOVE
-			default:
-				throw new Error(`Unknown CascadeType: ${cascadeType}.`)
 		}
 	}
 

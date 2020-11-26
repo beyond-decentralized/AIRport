@@ -21,6 +21,5 @@ export declare class JsonSchemaBuilder {
     private getPropertiesAndRelations;
     private buildColumnRelations;
     private prepOneToManyElems;
-    private deserializeCascadeType;
 }
 //# sourceMappingURL=JsonSchemaBuilder.d.ts.map

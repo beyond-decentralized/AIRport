@@ -1,9 +1,9 @@
 import { IAirportDatabase, IFieldUtils, IQMetadataUtils, IQueryFacade, IQueryUtils, ISchemaUtils, IUpdateCache } from '@airport/air-control';
 import { IContext } from '@airport/di';
-import { CascadeOverwrite, DbEntity } from '@airport/ground-control';
+import { DbEntity } from '@airport/ground-control';
 import { ITransactionalServer } from './core/data/ITransactionalServer';
 export interface IOperationContext<E, EntityCascadeGraph> extends IContext {
-    cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph;
+    entityCascadeGraph: EntityCascadeGraph;
     checkIfProcessed: boolean;
     dbEntity: DbEntity;
     ioc: IIocOperationContext;

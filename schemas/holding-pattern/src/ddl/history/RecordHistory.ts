@@ -12,7 +12,6 @@ import {
 	Transient
 } from '@airport/air-control'
 import {
-	CascadeType,
 	SyncColumnMap
 } from '@airport/ground-control'
 import {
@@ -63,11 +62,11 @@ export class RecordHistory {
 	operationHistory: OperationHistory
 
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'recordHistory'})
+	@OneToMany({mappedBy: 'recordHistory'})
 	newValues: RecordHistoryNewValue[] = []
 
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'recordHistory'})
+	@OneToMany({mappedBy: 'recordHistory'})
 	oldValues: RecordHistoryOldValue[] = []
 
 	@Transient()

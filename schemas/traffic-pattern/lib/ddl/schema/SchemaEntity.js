@@ -5,7 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, DbBoolean, DbNumber, DbString, Entity, Id, JoinColumn, Json, ManyToOne, OneToMany, Table, Transient } from '@airport/air-control';
-import { CascadeType } from '@airport/ground-control';
 import { VersionedSchemaObject } from './VersionedSchemaObject';
 let SchemaEntity = class SchemaEntity extends VersionedSchemaObject {
     constructor() {
@@ -67,10 +66,10 @@ __decorate([
     OneToMany({ mappedBy: 'entity' })
 ], SchemaEntity.prototype, "columns", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'entity' })
+    OneToMany({ mappedBy: 'entity' })
 ], SchemaEntity.prototype, "operations", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'entity' })
+    OneToMany({ mappedBy: 'entity' })
 ], SchemaEntity.prototype, "properties", void 0);
 __decorate([
     OneToMany({ mappedBy: 'entity' })

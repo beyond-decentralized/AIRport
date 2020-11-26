@@ -22,8 +22,6 @@ import {
 	valuesEqual
 }                          from '@airport/air-control'
 import {
-	CascadeOverwrite,
-	CascadeType,
 	CRUDOperation,
 	DbColumn,
 	DbEntity,
@@ -90,7 +88,7 @@ export abstract class OperationManager
 	 */
 	protected async performCreate<E, EntityCascadeGraph>(
 		entity: E,
-		operatedOnEntityIndicator: OperationUniqueId[],
+		operatedOnEntityIndicator: boolean[],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>,
 		idData?: EntityIdData,
@@ -115,7 +113,7 @@ export abstract class OperationManager
 	 */
 	protected async performBulkCreate<E, EntityCascadeGraph>(
 		entities: E[],
-		operatedOnEntityIndicator: OperationUniqueId[],
+		operatedOnEntityIndicator: boolean[],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>,
 		ensureGeneratedValues: boolean = true // For internal use only
@@ -177,7 +175,7 @@ export abstract class OperationManager
 	 */
 	protected async performUpdate<E, EntityCascadeGraph>(
 		entity: E,
-		operatedOnEntityIndicator: OperationUniqueId[],
+		operatedOnEntityIndicator: boolean[],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>,
 		originalValue?: E,
@@ -340,7 +338,7 @@ export abstract class OperationManager
 
 	private async internalCreate<E, EntityCascadeGraph>(
 		entities: E[],
-		operatedOnEntityIndicator: OperationUniqueId[],
+		operatedOnEntityIndicator: boolean[],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>,
 		ensureGeneratedValues?: boolean
@@ -414,7 +412,7 @@ export abstract class OperationManager
 							// to be done
 							continue
 						case EntityRelationType.ONE_TO_MANY:
-							this.checkCascade(newValue, ctx.cascadeOverwrite, dbProperty,
+							this.checkCascade(newValue, dbProperty,
 								dbRelation, ctx.ioc.schemaUtils, CRUDOperation.CREATE, cascadeRecords)
 							break
 					}
@@ -482,7 +480,6 @@ export abstract class OperationManager
 
 	private checkCascade<EntityCascadeGraph>(
 		value: any,
-		cascadeOverwrite: CascadeOverwrite | EntityCascadeGraph,
 		dbProperty: DbProperty,
 		dbRelation: DbRelation,
 		schemaUtils: ISchemaUtils,
@@ -491,21 +488,8 @@ export abstract class OperationManager
 	): boolean {
 		this.assertOneToManyIsArray(value)
 
-		if (cascadeOverwrite instanceof Object) {
-			if (!cascadeOverwrite[dbProperty.name]) {
-				return false
-			}
-		} else {
-			switch (cascadeOverwrite) {
-				case CascadeOverwrite.NEVER:
-					return false
-				// If no overwrite was provided
-				case CascadeOverwrite.DEFAULT:
-					if (!schemaUtils.doCascade(dbRelation, crudOperation)) {
-						return false
-					}
-					break
-			}
+		if (!schemaUtils.doCascade(dbRelation, crudOperation)) {
+			return false
 		}
 
 		cascadeRecords.push({
@@ -546,12 +530,11 @@ export abstract class OperationManager
 	private async cascadeOnPersist<E, EntityCascadeGraph>(
 		cascadeRecords: CascadeRecord[],
 		parentDbEntity: DbEntity,
-		operatedOnEntityIndicator: OperationUniqueId[],
+		operatedOnEntityIndicator: boolean[],
 		transaction: ITransaction,
 		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<void> {
-		if (!cascadeRecords.length
-			|| ctx.cascadeOverwrite === CascadeOverwrite.NEVER) {
+		if (!cascadeRecords.length) {
 			return
 		}
 		const previousDbEntity = ctx.dbEntity
@@ -560,14 +543,6 @@ export abstract class OperationManager
 				continue
 			}
 
-			switch (cascadeRecord.relation.oneToManyElems.cascade) {
-				case CascadeType.ALL:
-				case CascadeType.PERSIST:
-					break
-				// Do not cascade if its for REMOVE only
-				default:
-					continue
-			}
 			const entitiesWithIds: UpdateRecord[] = []
 			// const entitiesWithIdMap: { [idKey: string]: UpdateRecord } = {}
 			const entitiesWithoutIds: any[]       = []
@@ -705,7 +680,7 @@ export abstract class OperationManager
 					// be done
 					continue
 				case EntityRelationType.ONE_TO_MANY:
-					this.checkCascade(updatedValue, ctx.cascadeOverwrite, dbProperty,
+					this.checkCascade(updatedValue, dbProperty,
 						dbRelation, ctx.ioc.schemaUtils, CRUDOperation.UPDATE, cascadeRecords)
 					break
 			}
@@ -808,7 +783,7 @@ export abstract class OperationManager
 
 	private markAsProcessed<E>(
 		entity: E,
-		operatedOnEntityIndicator: OperationUniqueId[]
+		operatedOnEntityIndicator: boolean[]
 	): void {
 		const operationUniqueId                      = getOperationUniqueId(entity)
 		operatedOnEntityIndicator[operationUniqueId] = true
@@ -827,7 +802,7 @@ export abstract class OperationManager
 	private isProcessed<E>(
 		entity: E,
 		// This is a per-operation map (for a single update or create or delete with cascades)
-		operatedOnEntityIndicator: OperationUniqueId[],
+		operatedOnEntityIndicator: boolean[],
 		dbEntity: DbEntity,
 		schemaUtils: ISchemaUtils
 	): [boolean, EntityIdData] {
@@ -847,7 +822,7 @@ export abstract class OperationManager
 		}
 
 		const operationUniqueId = getOperationUniqueId(entity)
-		const entityOperatedOn  = operatedOnEntityIndicator[operationUniqueId]
+		const entityOperatedOn  = !!operatedOnEntityIndicator[operationUniqueId]
 
 		// Attempt to get the id, allowing for non-ided entities,
 		// fail if (part of) an id is empty.
@@ -872,29 +847,29 @@ export abstract class OperationManager
 			return [entityOperatedOn, entityIdData]
 		}
 
-		if (entityOperatedOn) {
-			// The Update operation for this entity was already recorded, nothing to do
+		// if (entityOperatedOn) {
+		// 	// The Update operation for this entity was already recorded, nothing to do
 			return [entityOperatedOn, null]
-		}
+		// }
 
-		// If it's new entity, not in cache
-		let hasNonIdProperties = false
-		for (let propertyName in entity) {
-			if (!dbEntity.idColumnMap[propertyName]
-				&& entity.hasOwnProperty(propertyName)) {
-				hasNonIdProperties = true
-				break
-			}
-		}
-		// If there is at least one non-id property set, then it's not an id-stub
-		if (hasNonIdProperties) {
-			throw new Error(
-				`More than one non-id-stub instance of '${dbEntity.name}' 
-				with @Id(s) value '${entityIdData.idKey}' during mutation operation`)
-		}
-
-		// The Update operation for this entity was already recorded, nothing to do
-		return [entityOperatedOn, null]
+		// // If it's new entity, not in cache
+		// let hasNonIdProperties = false
+		// for (let propertyName in entity) {
+		// 	if (!dbEntity.idColumnMap[propertyName]
+		// 		&& entity.hasOwnProperty(propertyName)) {
+		// 		hasNonIdProperties = true
+		// 		break
+		// 	}
+		// }
+		// // If there is at least one non-id property set, then it's not an id-stub
+		// if (hasNonIdProperties) {
+		// 	throw new Error(
+		// 		`More than one non-id-stub instance of '${dbEntity.name}'
+		// 		with @Id(s) value '${entityIdData.idKey}' during mutation operation`)
+		// }
+		//
+		// // The Update operation for this entity was already recorded, nothing to do
+		// return [entityOperatedOn, null]
 	}
 
 	private async internalDelete<E, EntityCascadeGraph>(

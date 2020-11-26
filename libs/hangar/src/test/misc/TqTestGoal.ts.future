@@ -2,7 +2,6 @@ import {ITqTestTask} from "./TqTestTask";
 import {Entity} from "../../../../air-control/src/impl/core/entity/metadata/EntityDecorators";
 import {dbConst} from "../../config/Constants";
 import {Id, OneToMany} from "../../../../air-control/spec/impl/ColumnDecorators";
-import {CascadeType} from "tiql";
 import {
 	ISingleIdRepositoryEntity,
 	SingleIdRepositoryEntity
@@ -36,7 +35,7 @@ export class TqTestGoal
 
 	dueDate: Date;
 
-	@OneToMany({mappedBy: 'goal', cascade: CascadeType.ALL})
+	@OneToMany({mappedBy: 'goal'})
 	tasks?: ITqTestTask[];
 
 }

@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { CascadeType, CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/ground-control';
+import { CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/ground-control';
 import { convertToY, isY } from '../../lingo/query/facade/Query';
 import { SCHEMA_UTILS } from '../../tokens';
 import { markAsStub } from '../core/entity/EntityState';
@@ -18,18 +18,11 @@ export class SchemaUtils {
         if (!dbRelation.oneToManyElems) {
             return false;
         }
-        const cascade = dbRelation.oneToManyElems.cascade;
         switch (crudOperation) {
             case CRUDOperation.CREATE:
-                return cascade === CascadeType.ALL
-                    || cascade === CascadeType.PERSIST
-                    || cascade === CascadeType.CREATE;
             case CRUDOperation.UPDATE:
-                return cascade === CascadeType.ALL
-                    || cascade === CascadeType.PERSIST
-                    || cascade === CascadeType.UPDATE;
             case CRUDOperation.DELETE:
-                return cascade === CascadeType.ALL || cascade === CascadeType.REMOVE;
+                return true;
             default:
                 throw new Error(`Unsupported CRUDOperation '${crudOperation}' for cascade check.`);
         }

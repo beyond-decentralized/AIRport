@@ -5,7 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, DbNumber, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, SequenceGenerator, Table } from '@airport/air-control';
-import { CascadeType } from '@airport/ground-control';
 /**
  * Marks a group of mutation history changes.
  */
@@ -42,7 +41,7 @@ __decorate([
     JoinColumn({ name: 'ENTITY_ID', referencedColumnName: 'ID', nullable: false })
 ], OperationHistory.prototype, "entity", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'operationHistory' })
+    OneToMany({ mappedBy: 'operationHistory' })
 ], OperationHistory.prototype, "recordHistory", void 0);
 OperationHistory = __decorate([
     Entity(),

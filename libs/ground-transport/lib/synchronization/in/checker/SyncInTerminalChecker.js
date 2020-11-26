@@ -1,10 +1,11 @@
 import { container, DI } from '@airport/di';
-import { CascadeOverwrite, ensureChildJsMap } from '@airport/ground-control';
+import { ensureChildJsMap } from '@airport/ground-control';
 import { TERMINAL_DAO } from '@airport/travel-document-checkpoint';
 import { SYNC_IN_TERMINAL_CHECKER } from '../../../tokens';
 export class SyncInTerminalChecker {
     async ensureTerminalsAndGetAsMaps(dataMessages, localTerminal, userCheckResults) {
-        const terminalDao = await container(this).get(TERMINAL_DAO);
+        const terminalDao = await container(this)
+            .get(TERMINAL_DAO);
         const remoteTerminalMapByUniqueIds = new Map();
         const terminalNameSet = new Set();
         const terminalSecondIdSet = new Set();
@@ -82,7 +83,7 @@ export class SyncInTerminalChecker {
             }
         }
         if (newTerminals.length) {
-            await terminalDao.bulkCreate(newTerminals, CascadeOverwrite.DEFAULT, false);
+            await terminalDao.bulkCreate(newTerminals, false);
         }
     }
 }

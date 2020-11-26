@@ -5,7 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, DbNumber, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, SequenceGenerator, Table, Transient } from '@airport/air-control';
-import { CascadeType } from '@airport/ground-control';
 let RecordHistory = class RecordHistory {
     constructor() {
         this.newValues = [];
@@ -33,10 +32,10 @@ __decorate([
     })
 ], RecordHistory.prototype, "operationHistory", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'recordHistory' })
+    OneToMany({ mappedBy: 'recordHistory' })
 ], RecordHistory.prototype, "newValues", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'recordHistory' })
+    OneToMany({ mappedBy: 'recordHistory' })
 ], RecordHistory.prototype, "oldValues", void 0);
 __decorate([
     Transient()

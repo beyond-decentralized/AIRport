@@ -2,11 +2,11 @@ import {
 	TerminalName,
 	TerminalSecondId
 }                                 from '@airport/arrivals-n-departures'
-import {container, DI}                       from '@airport/di'
 import {
-	CascadeOverwrite,
-	ensureChildJsMap
-}                                 from '@airport/ground-control'
+	container,
+	DI
+}                                 from '@airport/di'
+import {ensureChildJsMap}         from '@airport/ground-control'
 import {
 	ITerminal,
 	ITerminalDao,
@@ -37,7 +37,8 @@ export class SyncInTerminalChecker
 		localTerminal: ITerminal,
 		userCheckResults: UserCheckResults
 	): Promise<TerminalCheckResults> {
-		const terminalDao = await container(this).get(TERMINAL_DAO)
+		const terminalDao = await container(this)
+			.get(TERMINAL_DAO)
 
 		const remoteTerminalMapByUniqueIds: Map<UserUniqueId,
 			Map<TerminalName, Map<TerminalSecondId, ITerminal>>> = new Map()
@@ -58,7 +59,6 @@ export class SyncInTerminalChecker
 				terminalNameSet, terminalSecondIdSet, ownerIdSet,
 				remoteTerminalMapByUniqueIds, mapByMessageIndex)
 		})
-
 
 		const terminalMapByIds = await terminalDao.findMapByIds(
 			Array.from(ownerIdSet),
@@ -172,8 +172,7 @@ export class SyncInTerminalChecker
 		}
 
 		if (newTerminals.length) {
-			await terminalDao.bulkCreate(newTerminals,
-				CascadeOverwrite.DEFAULT, false)
+			await terminalDao.bulkCreate(newTerminals, false)
 		}
 	}
 

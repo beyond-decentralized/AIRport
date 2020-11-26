@@ -1,4 +1,4 @@
-import { CascadeType, EntityRelationType, getSqlDataType } from '@airport/ground-control';
+import { EntityRelationType, getSqlDataType } from '@airport/ground-control';
 import { SSchemaBuilder } from './SSchemaBuilder';
 export class JsonSchemaBuilder {
     // schemaVarName = 'SCHEMA'
@@ -210,26 +210,8 @@ export class JsonSchemaBuilder {
             return elems;
         }
         return {
-            cascade: this.deserializeCascadeType(elems.cascade),
             mappedBy: elems.mappedBy
         };
-    }
-    deserializeCascadeType(cascadeType) {
-        if (!cascadeType) {
-            return cascadeType;
-        }
-        switch (cascadeType) {
-            case 'CascadeType.NONE':
-                return CascadeType.NONE;
-            case 'CascadeType.ALL':
-                return CascadeType.ALL;
-            case 'CascadeType.PERSIST':
-                return CascadeType.PERSIST;
-            case 'CascadeType.REMOVE':
-                return CascadeType.REMOVE;
-            default:
-                throw new Error(`Unknown CascadeType: ${cascadeType}.`);
-        }
     }
 }
 //# sourceMappingURL=JsonSchemaBuilder.js.map

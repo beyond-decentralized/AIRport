@@ -1,5 +1,5 @@
 import { and, Delete, getOperationUniqueId, InsertColumnValues, InsertValues, isStub, UpdateProperties, valuesEqual } from '@airport/air-control';
-import { CascadeOverwrite, CascadeType, CRUDOperation, EntityRelationType, SQLDataType } from '@airport/ground-control';
+import { CRUDOperation, EntityRelationType, SQLDataType } from '@airport/ground-control';
 export class OperationManager {
     // higherOrderOpsYieldLength: number = 100
     // transactionInProgress: boolean    = false
@@ -216,7 +216,7 @@ export class OperationManager {
                             // to be done
                             continue;
                         case EntityRelationType.ONE_TO_MANY:
-                            this.checkCascade(newValue, ctx.cascadeOverwrite, dbProperty, dbRelation, ctx.ioc.schemaUtils, CRUDOperation.CREATE, cascadeRecords);
+                            this.checkCascade(newValue, dbProperty, dbRelation, ctx.ioc.schemaUtils, CRUDOperation.CREATE, cascadeRecords);
                             break;
                     }
                 }
@@ -274,24 +274,10 @@ export class OperationManager {
             numberOfAffectedRecords,
         };
     }
-    checkCascade(value, cascadeOverwrite, dbProperty, dbRelation, schemaUtils, crudOperation, cascadeRecords) {
+    checkCascade(value, dbProperty, dbRelation, schemaUtils, crudOperation, cascadeRecords) {
         this.assertOneToManyIsArray(value);
-        if (cascadeOverwrite instanceof Object) {
-            if (!cascadeOverwrite[dbProperty.name]) {
-                return false;
-            }
-        }
-        else {
-            switch (cascadeOverwrite) {
-                case CascadeOverwrite.NEVER:
-                    return false;
-                // If no overwrite was provided
-                case CascadeOverwrite.DEFAULT:
-                    if (!schemaUtils.doCascade(dbRelation, crudOperation)) {
-                        return false;
-                    }
-                    break;
-            }
+        if (!schemaUtils.doCascade(dbRelation, crudOperation)) {
+            return false;
         }
         cascadeRecords.push({
             relation: dbRelation,
@@ -320,22 +306,13 @@ export class OperationManager {
         return true;
     }
     async cascadeOnPersist(cascadeRecords, parentDbEntity, operatedOnEntityIndicator, transaction, ctx) {
-        if (!cascadeRecords.length
-            || ctx.cascadeOverwrite === CascadeOverwrite.NEVER) {
+        if (!cascadeRecords.length) {
             return;
         }
         const previousDbEntity = ctx.dbEntity;
         for (const cascadeRecord of cascadeRecords) {
             if (!cascadeRecord.relation.oneToManyElems) {
                 continue;
-            }
-            switch (cascadeRecord.relation.oneToManyElems.cascade) {
-                case CascadeType.ALL:
-                case CascadeType.PERSIST:
-                    break;
-                // Do not cascade if its for REMOVE only
-                default:
-                    continue;
             }
             const entitiesWithIds = [];
             // const entitiesWithIdMap: { [idKey: string]: UpdateRecord } = {}
@@ -461,7 +438,7 @@ export class OperationManager {
                     // be done
                     continue;
                 case EntityRelationType.ONE_TO_MANY:
-                    this.checkCascade(updatedValue, ctx.cascadeOverwrite, dbProperty, dbRelation, ctx.ioc.schemaUtils, CRUDOperation.UPDATE, cascadeRecords);
+                    this.checkCascade(updatedValue, dbProperty, dbRelation, ctx.ioc.schemaUtils, CRUDOperation.UPDATE, cascadeRecords);
                     break;
             }
         }
@@ -570,7 +547,7 @@ export class OperationManager {
             idKey: null
         };
         const operationUniqueId = getOperationUniqueId(entity);
-        const entityOperatedOn = operatedOnEntityIndicator[operationUniqueId];
+        const entityOperatedOn = !!operatedOnEntityIndicator[operationUniqueId];
         // Attempt to get the id, allowing for non-ided entities,
         // fail if (part of) an id is empty.
         const idKey = schemaUtils.getIdKey(entity, dbEntity, false, (idColumn, idValue, propertyNameChains) => {
@@ -587,26 +564,28 @@ export class OperationManager {
         if (!entityOperatedOn) {
             return [entityOperatedOn, entityIdData];
         }
-        if (entityOperatedOn) {
-            // The Update operation for this entity was already recorded, nothing to do
-            return [entityOperatedOn, null];
-        }
-        // If it's new entity, not in cache
-        let hasNonIdProperties = false;
-        for (let propertyName in entity) {
-            if (!dbEntity.idColumnMap[propertyName]
-                && entity.hasOwnProperty(propertyName)) {
-                hasNonIdProperties = true;
-                break;
-            }
-        }
-        // If there is at least one non-id property set, then it's not an id-stub
-        if (hasNonIdProperties) {
-            throw new Error(`More than one non-id-stub instance of '${dbEntity.name}' 
-				with @Id(s) value '${entityIdData.idKey}' during mutation operation`);
-        }
-        // The Update operation for this entity was already recorded, nothing to do
+        // if (entityOperatedOn) {
+        // 	// The Update operation for this entity was already recorded, nothing to do
         return [entityOperatedOn, null];
+        // }
+        // // If it's new entity, not in cache
+        // let hasNonIdProperties = false
+        // for (let propertyName in entity) {
+        // 	if (!dbEntity.idColumnMap[propertyName]
+        // 		&& entity.hasOwnProperty(propertyName)) {
+        // 		hasNonIdProperties = true
+        // 		break
+        // 	}
+        // }
+        // // If there is at least one non-id property set, then it's not an id-stub
+        // if (hasNonIdProperties) {
+        // 	throw new Error(
+        // 		`More than one non-id-stub instance of '${dbEntity.name}'
+        // 		with @Id(s) value '${entityIdData.idKey}' during mutation operation`)
+        // }
+        //
+        // // The Update operation for this entity was already recorded, nothing to do
+        // return [entityOperatedOn, null]
     }
     async internalDelete(entity, transaction, ctx) {
         const dbEntity = ctx.dbEntity;

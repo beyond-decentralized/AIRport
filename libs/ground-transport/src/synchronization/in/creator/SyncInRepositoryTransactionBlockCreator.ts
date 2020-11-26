@@ -1,7 +1,6 @@
 import {RepoTransBlockSyncOutcomeType}    from '@airport/arrivals-n-departures'
 import {container, DI}                               from '@airport/di'
 import {
-	CascadeOverwrite,
 	TransactionType
 }                                         from '@airport/ground-control'
 import {
@@ -118,8 +117,7 @@ export class SyncInRepositoryTransactionBlockCreator
 		)
 
 		await repositoryTransactionBlockDao.bulkCreate(
-			allRepositoryTransactionBlocks, CascadeOverwrite.DEFAULT,
-			false)
+			allRepositoryTransactionBlocks, false)
 
 
 		let allDataToTM: IDataToTM[] = []
@@ -168,8 +166,7 @@ export class SyncInRepositoryTransactionBlockCreator
 			}))
 		if (missingRecordRepoTransBlocks.length) {
 			await missingRecordRepoTransBlockDao.bulkCreate(
-				missingRecordRepoTransBlocks, CascadeOverwrite.DEFAULT,
-				false)
+				missingRecordRepoTransBlocks, false)
 		}
 	}
 
@@ -184,8 +181,7 @@ export class SyncInRepositoryTransactionBlockCreator
 				repositoryTransactionBlock: dataToTM.repositoryTransactionBlock
 			})) as SharingMessageRepoTransBlockECreateProperties[]
 		await sharingMessageRepoTransBlockDao.bulkCreate(
-			sharingMessageRepoTransBlocks, CascadeOverwrite.DEFAULT,
-			false)
+			sharingMessageRepoTransBlocks, false)
 	}
 
 	private async recordSharingMessageToHistoryRecords(
@@ -253,14 +249,11 @@ export class SyncInRepositoryTransactionBlockCreator
 		}
 
 		await repositoryTransactionBlockDao.bulkCreate(
-			repositoryTransactionBlocks, CascadeOverwrite.DEFAULT,
-			false)
+			repositoryTransactionBlocks, false)
 		await sharingMessageRepoTransBlockDao.bulkCreate(
-			sharingMessageRepoTransBlocks, CascadeOverwrite.DEFAULT,
-			false)
+			sharingMessageRepoTransBlocks, false)
 		// await this.repoTransBlockRepoTransHistoryDao.bulkCreate(
-		// 	repoTransBlockRepoTransHistories, CascadeOverwrite.DEFAULT,
-		// 	false);
+		// 	repoTransBlockRepoTransHistories, false);
 
 		return repoTransHistoryMapByRepositoryId
 	}

@@ -1194,15 +1194,10 @@ export const MAPPED_SUPERCLASS = [
 													"Table": null,
 													"TableConfiguration": null,
 													"Transient": null,
-													"CascadeType": {
+													"EntityId": {
 														"fileImports": null,
 														"isLocal": false,
 														"objectMapByAsName": {
-															"CascadeType": {
-																"asName": "CascadeType",
-																"moduleImport": null,
-																"sourceName": "CascadeType"
-															},
 															"EntityId": {
 																"asName": "EntityId",
 																"moduleImport": null,
@@ -1231,7 +1226,6 @@ export const MAPPED_SUPERCLASS = [
 														},
 														"path": "@airport/ground-control"
 													},
-													"EntityId": null,
 													"EntityIsLocal": null,
 													"EntityIsRepositoryEntity": null,
 													"EntityName": null,
@@ -2335,7 +2329,6 @@ export const MAPPED_SUPERCLASS = [
 															"name": "OneToMany",
 															"values": [
 																{
-																	"cascade": "CascadeType.ALL",
 																	"mappedBy": "entity"
 																}
 															]
@@ -2691,7 +2684,6 @@ export const MAPPED_SUPERCLASS = [
 															"name": "OneToMany",
 															"values": [
 																{
-																	"cascade": "CascadeType.ALL",
 																	"mappedBy": "entity"
 																}
 															]

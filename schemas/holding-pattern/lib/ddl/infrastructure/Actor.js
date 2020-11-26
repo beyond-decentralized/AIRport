@@ -5,7 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, DbNumber, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany } from '@airport/air-control';
-import { CascadeType } from '@airport/ground-control';
 let Actor = class Actor {
     constructor() {
         this.actorApplications = [];
@@ -31,10 +30,10 @@ __decorate([
     DbNumber()
 ], Actor.prototype, "randomId", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'actor' })
+    OneToMany({ mappedBy: 'actor' })
 ], Actor.prototype, "actorApplications", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'ACTOR_ID' })
+    OneToMany({ mappedBy: 'ACTOR_ID' })
 ], Actor.prototype, "repositoryActor", void 0);
 Actor = __decorate([
     Entity()

@@ -8,7 +8,6 @@ import {
 	ManyToOne,
 	OneToMany
 }                         from '@airport/air-control'
-import {CascadeType}      from '@airport/ground-control'
 import {
 	Terminal,
 	User
@@ -41,10 +40,10 @@ export class Actor {
 	@DbNumber()
 	randomId: ActorRandomId
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'actor'})
+	@OneToMany({mappedBy: 'actor'})
 	actorApplications: ActorApplication[] = []
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'ACTOR_ID'})
+	@OneToMany({mappedBy: 'ACTOR_ID'})
 	repositoryActor: RepositoryActor[]
 
 }

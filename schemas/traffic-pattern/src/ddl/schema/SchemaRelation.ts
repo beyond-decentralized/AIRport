@@ -3,10 +3,8 @@ import {
 	DbNumber,
 	Entity,
 	ForeignKey,
-	GeneratedValue,
 	Id,
 	JoinColumn,
-	JoinColumns,
 	Json,
 	ManyToOne,
 	ManyToOneElements,
@@ -15,11 +13,10 @@ import {
 	Table
 }                              from '@airport/air-control'
 import {
-	CascadeType,
 	EntityRelationType,
 	RelationId,
 	RelationIndex,
-} from '@airport/ground-control'
+}                              from '@airport/ground-control'
 import {SchemaEntity}          from './SchemaEntity'
 import {SchemaProperty}        from './SchemaProperty'
 import {SchemaRelationColumn}  from './SchemaRelationColumn'
@@ -80,10 +77,10 @@ export class SchemaRelation
 	@JoinColumn({name: 'RELATION_SCHEMA_TABLE_ID', referencedColumnName: 'ID', nullable: false})
 	relationEntity: SchemaEntity
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'manyRelation'})
+	@OneToMany({mappedBy: 'manyRelation'})
 	manyRelationColumns: SchemaRelationColumn[] = []
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'oneRelation'})
+	@OneToMany({mappedBy: 'oneRelation'})
 	oneRelationColumns?: SchemaRelationColumn[] = []
 
 }

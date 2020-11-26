@@ -5,7 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
-import { CascadeType } from "@airport/ground-control";
 let Repository = class Repository {
     constructor() {
         /*
@@ -53,13 +52,13 @@ __decorate([
     Column({ name: "PLATFORM_CONFIG", nullable: false })
 ], Repository.prototype, "platformConfig", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'repository' })
+    OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryActors", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'repository' })
+    OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryApplications", void 0);
 __decorate([
-    OneToMany({ cascade: CascadeType.ALL, mappedBy: 'repository' })
+    OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
 __decorate([
     Column({ name: "SYNC_PRIORITY", nullable: false }),

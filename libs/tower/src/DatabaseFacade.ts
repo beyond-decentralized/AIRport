@@ -20,19 +20,13 @@ import {
 	container,
 	DI
 }                                 from '@airport/di'
-import {
-	CascadeOverwrite,
-	DbEntity,
-}                                 from '@airport/ground-control'
+import {DbEntity,}                from '@airport/ground-control'
 import {
 	DistributionStrategy,
 	PlatformType
 }                                 from '@airport/terminal-map'
 import {ITransaction}             from './ITransaction'
-import {
-	IocOperationContext,
-	IOperationContext
-}                                 from './OperationContext'
+import {IOperationContext}        from './OperationContext'
 import {OperationManager}         from './OperationManager'
 import {OPERATION_CONTEXT_LOADER} from './tokens'
 import {transactional}            from './transactional'
@@ -104,8 +98,7 @@ export class DatabaseFacade
 
 	async create<E, EntityCascadeGraph>(
 		entity: E,
-		ctx: IOperationContext<E, EntityCascadeGraph>,
-		cascadeGraph?: CascadeOverwrite | EntityCascadeGraph
+		ctx: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
 		if (!entity) {
 			return 0

@@ -70,12 +70,13 @@ export class SchemaRelationResolver {
             relationEntityNameSet[aRelation.entityName] = true;
             switch (aRelation.relationType) {
                 case EntityRelationType.ONE_TO_MANY:
-                    if (aRelation.oneToMany && aRelation.oneToMany.cascade
-                        && anEntity.isLocal && !relationEntityIsLocal) {
-                        throw new Error(`@OneToMany Relation '${anEntity.name}.${aProperty.name}' is on a Local entity and is cascading 
-						into a repository entity '${aRelation.entityName}'.
-						Cascading from Local entities to Repository entities is not currently supported.`);
-                    }
+                    /*					if (aRelation.oneToMany && aRelation.oneToMany.cascade
+                                            && anEntity.isLocal && !relationEntityIsLocal) {
+                                            throw new Error(
+                                                `@OneToMany Relation '${anEntity.name}.${aProperty.name}' is on a Local entity and is cascading
+                                            into a repository entity '${aRelation.entityName}'.
+                                            Cascading from Local entities to Repository entities is not currently supported.`)
+                                        }*/
                     if (crossSchema && !aRelation.sRelationColumns.length) {
                         throw new Error(`@OneToMany Relation '${anEntity.name}.${aProperty.name}' is a cross-schema @OneToMany association.
 						@OneToMany associations are not allowed across schemas (without @JoinColumn(s)).`);

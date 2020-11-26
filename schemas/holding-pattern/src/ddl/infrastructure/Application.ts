@@ -7,7 +7,6 @@ import {
 	Id,
 	OneToMany
 }                              from '@airport/air-control'
-import {CascadeType}           from '@airport/ground-control'
 import {RepositoryApplication} from '../repository/RepositoryApplication'
 import {ActorApplication}      from './ActorApplication'
 
@@ -30,10 +29,10 @@ export class Application {
 	@DbNumber()
 	port: ApplicationPort
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'application'})
+	@OneToMany({mappedBy: 'application'})
 	actorApplications: ActorApplication[] = []
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'application'})
+	@OneToMany({mappedBy: 'application'})
 	repositoryApplications: RepositoryApplication[] = []
 
 }

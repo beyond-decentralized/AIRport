@@ -830,7 +830,6 @@
 							"index": 6,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "manyRelation"
 							},
 							"relationType": 0,
@@ -844,7 +843,6 @@
 							"index": 7,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "oneRelation"
 							},
 							"relationType": 0,
@@ -1155,7 +1153,6 @@
 							"index": 4,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "property"
 							},
 							"relationType": 0,
@@ -1169,7 +1166,6 @@
 							"index": 5,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "property"
 							},
 							"relationType": 0,
@@ -2514,7 +2510,6 @@
 							"index": 5,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "entity"
 							},
 							"relationType": 0,
@@ -2528,7 +2523,6 @@
 							"index": 6,
 							"isId": false,
 							"oneToManyElems": {
-								"cascade": 1,
 								"mappedBy": "entity"
 							},
 							"relationType": 0,

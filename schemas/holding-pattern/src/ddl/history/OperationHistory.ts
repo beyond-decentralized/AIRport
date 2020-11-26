@@ -10,16 +10,9 @@ import {
 	SequenceGenerator,
 	Table
 }                                     from '@airport/air-control'
-import {
-	CascadeType,
-	ChangeType
-}                                     from '@airport/ground-control'
-import {
-	ISchemaEntity
-}                                     from '@airport/traffic-pattern'
-import {
-	SystemWideOperationId
-}                                     from '../common'
+import {ChangeType}                   from '@airport/ground-control'
+import {ISchemaEntity}                from '@airport/traffic-pattern'
+import {SystemWideOperationId}        from '../common'
 import {RecordHistory}                from './RecordHistory'
 import {RepositoryTransactionHistory} from './RepositoryTransactionHistory'
 
@@ -66,7 +59,7 @@ export class OperationHistory {
 	@JoinColumn({name: 'ENTITY_ID', referencedColumnName: 'ID', nullable: false})
 	entity: ISchemaEntity
 
-	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'operationHistory'})
+	@OneToMany({mappedBy: 'operationHistory'})
 	recordHistory: RecordHistory[] = []
 
 }

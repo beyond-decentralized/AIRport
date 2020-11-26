@@ -1,7 +1,7 @@
 import { AIR_DB, SCHEMA_UTILS, valuesEqual, Y } from '@airport/air-control';
 import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI } from '@airport/di';
-import { CascadeType, ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType } from '@airport/ground-control';
+import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType } from '@airport/ground-control';
 import { OPER_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO } from '@airport/holding-pattern';
 import { DELETE_MANAGER, HISTORY_MANAGER, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER } from '../tokens';
 export class DeleteManager {
@@ -63,17 +63,12 @@ export class DeleteManager {
                         if (!dbRelation.oneToManyElems) {
                             continue;
                         }
-                        switch (dbRelation.oneToManyElems.cascade) {
-                            case CascadeType.ALL:
-                            case CascadeType.REMOVE:
-                                let childTrees = treeToDelete[dbRelation.property.name];
-                                if (childTrees && childTrees.length) {
-                                    const childDbEntity = dbRelation.relationEntity;
-                                    childTrees.forEach(childTree => {
-                                        this.recordRepositoryIds(childTree, childDbEntity, recordsToDelete, repositoryIdSet, schemaUtils);
-                                    });
-                                }
-                                break;
+                        let childTrees = treeToDelete[dbRelation.property.name];
+                        if (childTrees && childTrees.length) {
+                            const childDbEntity = dbRelation.relationEntity;
+                            childTrees.forEach(childTree => {
+                                this.recordRepositoryIds(childTree, childDbEntity, recordsToDelete, repositoryIdSet, schemaUtils);
+                            });
                         }
                         break;
                     default:
@@ -162,13 +157,6 @@ export class DeleteManager {
                     case EntityRelationType.ONE_TO_MANY:
                         if (!dbRelation.oneToManyElems) {
                             continue;
-                        }
-                        switch (dbRelation.oneToManyElems.cascade) {
-                            case CascadeType.ALL:
-                            case CascadeType.REMOVE:
-                                break;
-                            default:
-                                continue;
                         }
                         const subTree = {};
                         selectClause[dbProperty.name] = subTree;

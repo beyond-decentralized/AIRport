@@ -1,6 +1,5 @@
 import { MessageToTMContentType } from '@airport/arrivals-n-departures';
 import { container, DI } from '@airport/di';
-import { CascadeOverwrite } from '@airport/ground-control';
 import { DataOrigin, SHARING_MESSAGE_DAO } from '@airport/moving-walkway';
 import { transactional } from '@airport/tower';
 import { parse } from 'zipson/lib';
@@ -22,7 +21,8 @@ export class SynchronizationInManager {
      */
     async receiveMessages(sharingNodes, incomingMessages, sharingNodeTerminalMap) {
         // TODO: is syncInChecker needed (what was the reason for original injection)?
-        const [sharingMessageDao, syncInChecker, syncLogMessageProcessor, twoStageSyncedInDataProcessor] = await container(this).get(SHARING_MESSAGE_DAO, SYNC_IN_CHECKER, SYNC_LOG_MESSAGE_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR);
+        const [sharingMessageDao, syncInChecker, syncLogMessageProcessor, twoStageSyncedInDataProcessor] = await container(this)
+            .get(SHARING_MESSAGE_DAO, SYNC_IN_CHECKER, SYNC_LOG_MESSAGE_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR);
         const syncTimestamp = new Date();
         const allSyncLogMessages = [];
         const allDataMessages = [];
@@ -103,7 +103,7 @@ export class SynchronizationInManager {
             }
         }
         await transactional(async () => {
-            await sharingMessageDao.bulkCreate(sharingMessages, CascadeOverwrite.DEFAULT, false);
+            await sharingMessageDao.bulkCreate(sharingMessages, false);
             // These messages are responses to already sent messages
             // no need to check for existence of repositories
             await syncLogMessageProcessor.recordSyncLogMessages(allSyncLogMessages);
