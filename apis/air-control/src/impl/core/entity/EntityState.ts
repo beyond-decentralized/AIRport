@@ -47,7 +47,7 @@ export function uniquelyIdentify<T>(
 }
 export function getOperationUniqueId<T>(
 	entity: T
-): void {
+): number {
 	return entity[OPERATION_UNIQUE_ID_FIELD]
 }
 

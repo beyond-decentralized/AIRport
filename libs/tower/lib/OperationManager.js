@@ -357,7 +357,7 @@ export class OperationManager {
                         entitiesWithIds.push(record);
                     }
                     else {
-                        entitiesWithoutIds.push(record);
+                        entitiesWithoutIds.push(manyEntity);
                     }
                 }
             }
@@ -373,7 +373,7 @@ export class OperationManager {
                 // }
                 for (let i = 0; i < entitiesWithIds.length; i++) {
                     let entityToOperateOn = entitiesWithIds[i];
-                    let originalValue = ctx.ioc.updateCache.getEntityUpdateCache(entityToOperateOn);
+                    let originalValue = ctx.ioc.updateCache.getEntityUpdateCache(entityToOperateOn.originalValue);
                     if (!originalValue) {
                         if (entityToOperateOn.idData.idColumnValueData.length == 1) {
                             // Entity with a single Id always has the @Id generated

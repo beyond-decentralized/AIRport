@@ -588,7 +588,7 @@ export abstract class OperationManager
 					if (entityIdData.idKey) {
 						entitiesWithIds.push(record)
 					} else {
-						entitiesWithoutIds.push(record)
+						entitiesWithoutIds.push(manyEntity)
 					}
 				}
 			}
@@ -604,7 +604,7 @@ export abstract class OperationManager
 				// }
 				for (let i = 0; i < entitiesWithIds.length; i++) {
 					let entityToOperateOn = entitiesWithIds[i]
-					let originalValue     = ctx.ioc.updateCache.getEntityUpdateCache(entityToOperateOn)
+					let originalValue     = ctx.ioc.updateCache.getEntityUpdateCache(entityToOperateOn.originalValue)
 					if (!originalValue) {
 						if (entityToOperateOn.idData.idColumnValueData.length == 1) {
 							// Entity with a single Id always has the @Id generated

@@ -16,7 +16,7 @@ export interface IOperationUniqueIdSequence {
 }
 export declare function getOperationUniqueIdSeq(): IOperationUniqueIdSequence;
 export declare function uniquelyIdentify<T>(entity: T, operationUniqueIdSeq: IOperationUniqueIdSequence): void;
-export declare function getOperationUniqueId<T>(entity: T): void;
+export declare function getOperationUniqueId<T>(entity: T): number;
 export declare function isNew(entity: any): boolean;
 export declare function markAsNew<T>(entity: T): T;
 export declare function isExisting(entity: any): boolean;
