@@ -61,7 +61,7 @@ export declare class QEntityDriver implements IQEntityDriver {
     getEntityRelationJson(jsonRelation: JSONEntityRelation): JSONEntityRelation;
     getRootRelationJson(jsonRelation: JSONRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONJoinRelation;
     getQ(): IQEntityInternal;
-    join<IF extends IFrom>(right: IF, joinType: JoinType, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): IJoinFields<IF>;
+    join<IF extends IFrom>(right: IF, joinType: JoinType): IJoinFields<IF>;
     isRootEntity(): boolean;
     getRootJoinEntity(): IQEntityInternal;
 }

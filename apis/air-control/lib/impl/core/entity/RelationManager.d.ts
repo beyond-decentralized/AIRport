@@ -3,6 +3,11 @@ import { IAirportDatabase } from '../../../lingo/AirportDatabase';
 import { IQEntityDriver, IQEntityInternal } from '../../../lingo/core/entity/Entity';
 import { ISchemaUtils } from '../../../lingo/utils/SchemaUtils';
 export interface IRelationManager {
+    getPositionAlias(rootEntityPrefix: string, fromClausePosition: number[]): string;
+    getAlias(jsonRelation: JSONRelation): string;
+    getParentAlias(jsonRelation: JSONRelation): string;
+    createRelatedQEntity<IQ extends IQEntityInternal>(joinRelation: JSONRelation, context: IRelationManagerContext): IQ;
+    getNextChildJoinPosition(joinParentDriver: IQEntityDriver): number[];
 }
 export interface IRelationManagerContext {
     ioc: {

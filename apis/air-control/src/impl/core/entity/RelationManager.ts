@@ -13,6 +13,28 @@ import {RELATION_MANAGER} from '../../../tokens'
 
 export interface IRelationManager {
 
+	getPositionAlias(
+		rootEntityPrefix: string,
+		fromClausePosition: number[]
+	): string
+
+	getAlias(
+		jsonRelation: JSONRelation
+	): string
+
+	getParentAlias(
+		jsonRelation: JSONRelation
+	): string
+
+	createRelatedQEntity<IQ extends IQEntityInternal>(
+		joinRelation: JSONRelation,
+		context: IRelationManagerContext,
+	): IQ
+
+	getNextChildJoinPosition(
+		joinParentDriver: IQEntityDriver
+	): number[]
+
 }
 
 export interface IRelationManagerContext {
@@ -28,7 +50,7 @@ export class RelationManager
 	getPositionAlias(
 		rootEntityPrefix: string,
 		fromClausePosition: number[]
-	) {
+	): string {
 		return `${rootEntityPrefix}_${fromClausePosition.join('_')}`
 	}
 

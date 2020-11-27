@@ -124,6 +124,6 @@ export interface IQEntityDriver {
     getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation;
     getRootJoinEntity(): IQEntityInternal;
     isRootEntity(): boolean;
-    join<IF extends IFrom>(right: IF, joinType: JoinType, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): IJoinFields<IF>;
+    join<IF extends IFrom>(right: IF, joinType: JoinType): IJoinFields<IF>;
 }
 //# sourceMappingURL=Entity.d.ts.map

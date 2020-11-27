@@ -1,8 +1,9 @@
+import { DI } from '@airport/di';
 import { JoinType, JSONRelationType } from '@airport/ground-control';
+import { AIR_DB, RELATION_MANAGER, SCHEMA_UTILS } from '../../../tokens';
 import { TreeQuery } from '../../query/facade/TreeQuery';
 import { extend } from '../../utils/qSchemaBuilderUtils';
 import { JoinFields } from '../Joins';
-import { QRelation } from './Relation';
 export function QEntity(dbEntity, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
     this.__driver__ = new QDriver(dbEntity, fromClausePosition, dbRelation, joinType, this);
 }
@@ -120,11 +121,12 @@ export class QEntityDriver {
     getQ() {
         return this.qEntity;
     }
-    join(right, joinType, airDb, schemaUtils) {
+    join(right, joinType) {
+        const [airDb, schemaUtils, relationManager] = DI.db().getSync(AIR_DB, SCHEMA_UTILS, RELATION_MANAGER);
         let joinChild = right
             .__driver__.getInstance(airDb, schemaUtils);
         joinChild.__driver__.currentChildIndex = 0;
-        let nextChildPosition = QRelation.getNextChildJoinPosition(this);
+        let nextChildPosition = relationManager.getNextChildJoinPosition(this);
         joinChild.__driver__.fromClausePosition = nextChildPosition;
         joinChild.__driver__.joinType = joinType;
         joinChild.__driver__.parentJoinEntity = this.qEntity;

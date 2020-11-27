@@ -1,3 +1,4 @@
+import {DI} from '@airport/di'
 import {
 	DbEntity,
 	DbRelation,
@@ -8,7 +9,7 @@ import {
 	JSONRelation,
 	JSONRelationType,
 	JSONViewJoinRelation
-}                                from '@airport/ground-control'
+}           from '@airport/ground-control'
 import {IAirportDatabase}        from '../../../lingo/AirportDatabase'
 import {IFieldColumnAliases}     from '../../../lingo/core/entity/Aliases'
 import {
@@ -31,8 +32,13 @@ import {IEntityDatabaseFacade}   from '../../../lingo/core/repository/EntityData
 import {RawTreeQuery}            from '../../../lingo/query/facade/TreeQuery'
 import {IFieldUtils}             from '../../../lingo/utils/FieldUtils'
 import {IQueryUtils}             from '../../../lingo/utils/QueryUtils'
-import {ISchemaUtils}            from '../../../lingo/utils/SchemaUtils'
-import {TreeQuery}               from '../../query/facade/TreeQuery'
+import {ISchemaUtils} from '../../../lingo/utils/SchemaUtils'
+import {
+	AIR_DB,
+	RELATION_MANAGER,
+	SCHEMA_UTILS
+} from '../../../tokens'
+import {TreeQuery}    from '../../query/facade/TreeQuery'
 import {extend}                  from '../../utils/qSchemaBuilderUtils'
 import {JoinFields}              from '../Joins'
 import {FieldColumnAliases}      from './Aliases'
@@ -256,13 +262,12 @@ export class QEntityDriver
 	join<IF extends IFrom>(
 		right: IF,
 		joinType: JoinType,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
 	): IJoinFields<IF> {
+		const [airDb, schemaUtils, relationManager] = DI.db().getSync(AIR_DB, SCHEMA_UTILS, RELATION_MANAGER)
 		let joinChild: IQEntityInternal         = (<IQEntityInternal><any>right)
 			.__driver__.getInstance(airDb, schemaUtils)
 		joinChild.__driver__.currentChildIndex  = 0
-		let nextChildPosition                   = QRelation.getNextChildJoinPosition(this)
+		let nextChildPosition                   = relationManager.getNextChildJoinPosition(this)
 		joinChild.__driver__.fromClausePosition = nextChildPosition
 		joinChild.__driver__.joinType           = joinType
 		joinChild.__driver__.parentJoinEntity   = this.qEntity

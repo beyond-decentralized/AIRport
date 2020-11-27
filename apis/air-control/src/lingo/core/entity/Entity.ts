@@ -207,8 +207,6 @@ export interface IQEntityDriver {
 	join<IF extends IFrom>(
 		right: IF,
 		joinType: JoinType,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
 	): IJoinFields<IF>;
 
 	//getEntityRelationMap(): { [propertyName: string]: IQInternalRelation<any> };
