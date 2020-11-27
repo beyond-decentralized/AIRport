@@ -6,9 +6,9 @@ export class Library {
         this.system = system;
         this.tokens = [];
     }
-    token() {
+    token(name) {
         diTokenSeq++;
-        const diToken = new DiToken(this, diTokenSeq);
+        const diToken = new DiToken(this, name, diTokenSeq);
         this.tokens.push(diToken);
         return diToken;
     }

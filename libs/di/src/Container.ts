@@ -808,14 +808,9 @@ export class ChildContainer
 			      objects
 		      } = this.doGetCore(tokens)
 
-		if (firstMissingClassToken) {
-			const message = 'Dependency Injection could not find class for token: '
-				+ firstMissingClassToken
-			console.log(message)
-			errorCallback(message)
-		} else if (firstDiNotSetClass) {
-			// console.log('Dependency Injection is not ready for class: '
-			// 	+ firstDiNotSetClass.name + '. Delaying injection by 100ms')
+		if (firstDiNotSetClass) {
+			console.log(`Dependency Injection is not ready for token ${firstMissingClassToken.getPath()}
+			, class: ${firstDiNotSetClass.name}. Delaying injection by 100ms`)
 			setTimeout(() => {
 				this.doGet(
 					tokens,
@@ -823,6 +818,11 @@ export class ChildContainer
 					errorCallback,
 				)
 			}, 100)
+		} else if (firstMissingClassToken) {
+			const message = 'Dependency Injection could not find class for token: '
+				+ firstMissingClassToken.getPath()
+			console.log(message)
+			errorCallback(message)
 		} else {
 			if (objects.length > 1) {
 				successCallback(objects)
@@ -836,7 +836,7 @@ export class ChildContainer
 		tokens: Array<IDiToken<any>>
 	): {
 		firstDiNotSetClass;
-		firstMissingClassToken;
+		firstMissingClassToken: IDiToken<any>;
 		objects;
 	} {
 		let firstMissingClassToken
@@ -854,6 +854,7 @@ export class ChildContainer
 						return
 					}
 					if (clazz.diSet && !clazz.diSet()) {
+						firstMissingClassToken = token
 						firstDiNotSetClass = clazz
 						return
 					}

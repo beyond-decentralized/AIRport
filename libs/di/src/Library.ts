@@ -12,7 +12,7 @@ export interface ILibrary {
 	tokens: IDiToken<any>[]
 
 	token<T = GenericDependencyInjectionError>(
-		name?: string
+		name: string
 	): IDiToken<T>
 
 }
@@ -30,11 +30,14 @@ export class Library
 	) {
 	}
 
-	token<T = GenericDependencyInjectionError>(): IDiToken<T> {
+	token<T = GenericDependencyInjectionError>(
+		name: string
+	): IDiToken<T> {
 		diTokenSeq++
 
 		const diToken = new DiToken(
 			this,
+			name,
 			diTokenSeq
 		)
 

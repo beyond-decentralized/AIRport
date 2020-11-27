@@ -1,8 +1,13 @@
 import {ILibrary} from './Library'
 
+export type IDiTokenName = string
+
 export interface IDiToken<Injectable> {
 	library: ILibrary
+	name: string
 	sequence: number
+
+	getPath(): string
 }
 
 export class DiToken<Injectable>
@@ -10,8 +15,13 @@ export class DiToken<Injectable>
 
 	constructor(
 		public library: ILibrary,
-		public sequence: number
+		public name: string,
+		public sequence: number,
 	) {
+	}
+
+	getPath(): string {
+		return this.library.system.name + ':' + this.library.name + ':' + this.name
 	}
 
 }

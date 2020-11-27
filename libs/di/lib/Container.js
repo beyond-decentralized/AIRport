@@ -62,18 +62,18 @@ export class ChildContainer extends Container {
     }
     doGet(tokens, successCallback, errorCallback) {
         const { firstDiNotSetClass, firstMissingClassToken, objects } = this.doGetCore(tokens);
-        if (firstMissingClassToken) {
-            const message = 'Dependency Injection could not find class for token: '
-                + firstMissingClassToken;
-            console.log(message);
-            errorCallback(message);
-        }
-        else if (firstDiNotSetClass) {
-            // console.log('Dependency Injection is not ready for class: '
-            // 	+ firstDiNotSetClass.name + '. Delaying injection by 100ms')
+        if (firstDiNotSetClass) {
+            console.log(`Dependency Injection is not ready for token ${firstMissingClassToken.getPath()}
+			, class: ${firstDiNotSetClass.name}. Delaying injection by 100ms`);
             setTimeout(() => {
                 this.doGet(tokens, successCallback, errorCallback);
             }, 100);
+        }
+        else if (firstMissingClassToken) {
+            const message = 'Dependency Injection could not find class for token: '
+                + firstMissingClassToken.getPath();
+            console.log(message);
+            errorCallback(message);
         }
         else {
             if (objects.length > 1) {
@@ -99,6 +99,7 @@ export class ChildContainer extends Container {
                     return;
                 }
                 if (clazz.diSet && !clazz.diSet()) {
+                    firstMissingClassToken = token;
                     firstDiNotSetClass = clazz;
                     return;
                 }

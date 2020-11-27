@@ -5,6 +5,6 @@ import {ILogEntryValueDao} from './dao/LogEntryValueDao'
 
 const runwayEdgeLighting = system('airport').lib('runway-edge-lighting')
 
-export const LOG_ENTRY_DAO       = runwayEdgeLighting.token<ILogEntryDao>()
-export const LOG_ENTRY_TYPE_DAO  = runwayEdgeLighting.token<ILogEntryTypeDao>()
-export const LOG_ENTRY_VALUE_DAO = runwayEdgeLighting.token<ILogEntryValueDao>()
+export const LOG_ENTRY_DAO       = runwayEdgeLighting.token<ILogEntryDao>('ILogEntryDao')
+export const LOG_ENTRY_TYPE_DAO  = runwayEdgeLighting.token<ILogEntryTypeDao>('ILogEntryTypeDao')
+export const LOG_ENTRY_VALUE_DAO = runwayEdgeLighting.token<ILogEntryValueDao>('ILogEntryValueDao')

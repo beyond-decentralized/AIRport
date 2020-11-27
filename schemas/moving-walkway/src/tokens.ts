@@ -20,33 +20,33 @@ import {IRepositoryTransactionBlockDuo}     from "./duo/repositoryTransactionBlo
 
 const movingWalkway = system('airport').lib('moving-walkway')
 
-export const MISSING_RECORD_DAO      = movingWalkway.token<IMissingRecordDao>();
+export const MISSING_RECORD_DAO      = movingWalkway.token<IMissingRecordDao>('IMissingRecordDao');
 export const MISSING_RECORD_REPO_TRANS_BLOCK_DAO
-                                     = movingWalkway.token<IMissingRecordRepoTransBlockDao>();
-export const RECORD_UPDATE_STAGE_DAO = movingWalkway.token<IRecordUpdateStageDao>();
+                                     = movingWalkway.token<IMissingRecordRepoTransBlockDao>('IMissingRecordRepoTransBlockDao');
+export const RECORD_UPDATE_STAGE_DAO = movingWalkway.token<IRecordUpdateStageDao>('IRecordUpdateStageDao');
 export const REPO_TRANS_BLOCK_DAO
-	                                                = movingWalkway.token<IRepositoryTransactionBlockDao>();
+	                                                = movingWalkway.token<IRepositoryTransactionBlockDao>('IRepositoryTransactionBlockDao');
 export const REPO_TRANS_BLOCK_DUO
-	                                                = movingWalkway.token<IRepositoryTransactionBlockDuo>();
+	                                                = movingWalkway.token<IRepositoryTransactionBlockDuo>('IRepositoryTransactionBlockDuo');
 export const REPO_TRANS_HISTORY_UPDATE_STAGE_DAO
-	                                                = movingWalkway.token<IRepositoryTransactionHistoryUpdateStageDao>();
+	                                                = movingWalkway.token<IRepositoryTransactionHistoryUpdateStageDao>('IRepositoryTransactionHistoryUpdateStageDao');
 export const REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO
-	                                                = movingWalkway.token<IRepoTransBlockResponseStageDao>();
-export const SHARING_MESSAGE_DAO                  = movingWalkway.token<ISharingMessageDao>();
-export const SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO = movingWalkway.token<ISharingMessageRepoTransBlockDao>();
+	                                                = movingWalkway.token<IRepoTransBlockResponseStageDao>('IRepoTransBlockResponseStageDao');
+export const SHARING_MESSAGE_DAO                  = movingWalkway.token<ISharingMessageDao>('ISharingMessageDao');
+export const SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO = movingWalkway.token<ISharingMessageRepoTransBlockDao>('ISharingMessageRepoTransBlockDao');
 // export const SharingMessageResponseStageDaoToken
-// 	= movingWalkway.token<ISharingMessageResponseStageDao>();
+// 	= movingWalkway.token<ISharingMessageResponseStageDao>('ISharingMessageResponseStageDao');
 export const REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO
-	                                             = movingWalkway.token<IRepoTransBlockSchemaToChangeDao>();
-export const SHARING_NODE_DAO                  = movingWalkway.token<ISharingNodeDao>();
-export const SHARING_NODE_TERMINAL_DAO         = movingWalkway.token<ISharingNodeTerminalDao>();
-export const SHARING_NODE_REPOSITORY_DAO       = movingWalkway.token<ISharingNodeRepositoryDao>();
-export const SHARING_NODE_REPO_TRANS_BLOCK_DAO = movingWalkway.token<ISharingNodeRepoTransBlockDao>();
+	                                             = movingWalkway.token<IRepoTransBlockSchemaToChangeDao>('IRepoTransBlockSchemaToChangeDao');
+export const SHARING_NODE_DAO                  = movingWalkway.token<ISharingNodeDao>('ISharingNodeDao');
+export const SHARING_NODE_TERMINAL_DAO         = movingWalkway.token<ISharingNodeTerminalDao>('ISharingNodeTerminalDao');
+export const SHARING_NODE_REPOSITORY_DAO       = movingWalkway.token<ISharingNodeRepositoryDao>('ISharingNodeRepositoryDao');
+export const SHARING_NODE_REPO_TRANS_BLOCK_DAO = movingWalkway.token<ISharingNodeRepoTransBlockDao>('ISharingNodeRepoTransBlockDao');
 export const SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO
-	                                             = movingWalkway.token<ISharingNodeRepoTransBlockStageDao>();
+	                                             = movingWalkway.token<ISharingNodeRepoTransBlockStageDao>('ISharingNodeRepoTransBlockStageDao');
 export const SYNC_CONFLICT_DAO
-	                                             = movingWalkway.token<ISynchronizationConflictDao>();
+	                                             = movingWalkway.token<ISynchronizationConflictDao>('ISynchronizationConflictDao');
 export const SYNC_CONFLICT_PENDING_NOTIFICATION_DAO
-	                                             = movingWalkway.token<ISynchronizationConflictPendingNotificationDao>();
+	                                             = movingWalkway.token<ISynchronizationConflictPendingNotificationDao>('ISynchronizationConflictPendingNotificationDao');
 export const SYNC_CONFLICT_VALUES_DAO
 	= movingWalkway.token<ISynchronizationConflictValuesDao>();

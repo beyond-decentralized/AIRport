@@ -8,9 +8,9 @@ import {ISchemaInitializer} from './SchemaInitializer'
 
 const landing = system('airport').lib('landing')
 
-export const SCHEMA_BUILDER     = landing.token<ISchemaBuilder>()
-export const SCHEMA_CHECKER     = landing.token<ISchemaChecker>()
-export const SCHEMA_COMPOSER    = landing.token<ISchemaComposer>()
-export const SCHEMA_INITIALIZER = landing.token<ISchemaInitializer>()
-export const SCHEMA_LOCATOR     = landing.token<ISchemaLocator>()
-export const SCHEMA_RECORDER    = landing.token<ISchemaRecorder>()
+export const SCHEMA_BUILDER     = landing.token<ISchemaBuilder>('ISchemaBuilder')
+export const SCHEMA_CHECKER     = landing.token<ISchemaChecker>('ISchemaChecker')
+export const SCHEMA_COMPOSER    = landing.token<ISchemaComposer>('ISchemaComposer')
+export const SCHEMA_INITIALIZER = landing.token<ISchemaInitializer>('ISchemaInitializer')
+export const SCHEMA_LOCATOR     = landing.token<ISchemaLocator>('ISchemaLocator')
+export const SCHEMA_RECORDER    = landing.token<ISchemaRecorder>('ISchemaRecorder')
