@@ -477,7 +477,7 @@ export abstract class OperationManager
 			numberOfAffectedRecords,
 		}
 	}
-
+/*
 	private checkCascade<EntityCascadeGraph>(
 		value: any,
 		dbProperty: DbProperty,
@@ -499,13 +499,14 @@ export abstract class OperationManager
 
 		return true
 	}
-
+*/
 	/*
 	 Values for the same column could be repeated in different places in the object graph.
 	 For example, if the same column is mapped to two different @ManyToOne relations.
 	 In this case, when persisting an entity we need to make sure that all values for the
 	 entity in question are being persisted.
 	 */
+	/*
 	private columnProcessed(
 		dbProperty: DbProperty,
 		foundValues: any[],
@@ -526,6 +527,7 @@ export abstract class OperationManager
 		}
 		return true
 	}
+	 */
 
 	private async cascadeOnPersist<E, EntityCascadeGraph>(
 		cascadeRecords: CascadeRecord[],
@@ -750,6 +752,7 @@ export abstract class OperationManager
 		}
 	}
 
+	/*
 	private assertRelationValueIsAnObject(
 		relationValue: any,
 		dbProperty: DbProperty,
@@ -780,6 +783,7 @@ export abstract class OperationManager
 			throw new Error(`@OneToMany relation must be an array`)
 		}
 	}
+	 */
 
 	private markAsProcessed<E>(
 		entity: E,

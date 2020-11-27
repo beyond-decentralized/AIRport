@@ -1,14 +1,25 @@
-import { getOperationUniqueId, isStub } from '@airport/air-control';
+import { getOperationUniqueId, isStub, valuesEqual } from '@airport/air-control';
+import { DI } from '@airport/di';
 import { EntityRelationType } from '@airport/ground-control';
-export class DependencyGraph {
-    getEntitiesToPersist(entities, ctx, operatedOnEntityIndicator) {
+import { DEPENDENCY_GRAPH_RESOLVER } from './tokens';
+export class DependencyGraphResolver {
+    getEntitiesToPersist(entities, ctx, operatedOnEntityIndicator, fromDependency) {
+        const dependencyGraphNode = {
+            dependsOn: fromDependency ? [fromDependency] : [],
+            entities: []
+        };
         for (const entity of entities) {
             const operationUniqueId = getOperationUniqueId(entity);
             const entityOperatedOn = !!operatedOnEntityIndicator[operationUniqueId];
             operatedOnEntityIndicator[operationUniqueId] = true;
-            if (isStub(entity)) {
-            }
+            // NOTE: Values should always be in only one place, rest should be stubs
+            // with possible child objects (in case an object has to be in multiple
+            // places in a graph)
+            let foundValues = [];
+            let entityIsStub = isStub(entity);
+            dependencyGraphNode.entities.push(entity);
             for (const dbProperty of ctx.dbEntity.properties) {
+                let childEntities;
                 let propertyValue = entity[dbProperty.name];
                 if (propertyValue === undefined) {
                     propertyValue = null;
@@ -40,16 +51,23 @@ export class DependencyGraph {
                                 valuesFragment[columnIndexesInValues[dbColumn.index]]
                                     = columnValue === undefined ? null : columnValue;
                             }, false);
-                            // Cascading on manyToOne is not currently implemented, nothing else needs
-                            // to be done
-                            continue;
+                            childEntities = [propertyValue];
+                            break;
                         case EntityRelationType.ONE_TO_MANY:
-                            this.checkCascade(newValue, dbProperty, dbRelation, ctx.ioc.schemaUtils, CRUDOperation.CREATE, cascadeRecords);
+                            this.assertOneToManyIsArray(propertyValue);
+                            childEntities = propertyValue;
                             break;
                     }
-                }
-            }
-        }
+                    if (childEntities) {
+                        const dbEntity = dbRelation.relationEntity;
+                        const previousDbEntity = dbEntity;
+                        ctx.dbEntity = dbEntity;
+                        const childDependencyGraph = this.getEntitiesToPersist(childEntities, ctx, operatedOnEntityIndicator);
+                        ctx.dbEntity = previousDbEntity;
+                    }
+                } // if relation
+            } // for properties
+        } // for entities
         return [];
     }
     assertRelationValueIsAnObject(relationValue, dbProperty) {
@@ -71,5 +89,26 @@ export class DependencyGraph {
             throw new Error(`@OneToMany relation must be an array`);
         }
     }
+    /*
+     Values for the same column could be repeated in different places in the object graph.
+     For example, if the same column is mapped to two different @ManyToOne relations.
+     In this case, when persisting an entity we need to make sure that all values for the
+     entity in question are being persisted.
+     */
+    columnProcessed(dbProperty, foundValues, dbColumn, value) {
+        // if (value === undefined) {
+        // 	throw new Error(`Values cannot be undefined, please use null.`);
+        // }
+        if (foundValues[dbColumn.index] === undefined) {
+            foundValues[dbColumn.index] = value;
+            return false;
+        }
+        if (!valuesEqual(foundValues[dbColumn.index], value)) {
+            throw new Error(`Found value mismatch in '${dbProperty.entity.name}.${dbProperty.name}'
+			(column: '${dbColumn.name}'): ${foundValues[dbColumn.index]} !== ${value}`);
+        }
+        return true;
+    }
 }
-//# sourceMappingURL=DependencyGraph.js.map
+DI.set(DEPENDENCY_GRAPH_RESOLVER, DependencyGraphResolver);
+//# sourceMappingURL=DependencyGraphResolver.js.map

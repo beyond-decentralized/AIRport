@@ -56,8 +56,6 @@ export declare abstract class OperationManager implements IOperationManager {
     protected performDelete<E, EntityCascadeGraph>(entity: E, transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
     protected internalDeleteWhere<E, EntityCascadeGraph, IQE extends IQEntity>(aDelete: Delete<IQE>, transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
     private internalCreate;
-    private checkCascade;
-    private columnProcessed;
     private cascadeOnPersist;
     /**
      * On an update operation, can a nested create contain an update?
@@ -69,9 +67,6 @@ export declare abstract class OperationManager implements IOperationManager {
      */
     private internalUpdate;
     private ensureNonRelationalValue;
-    private assertRelationValueIsAnObject;
-    private assertManyToOneNotArray;
-    private assertOneToManyIsArray;
     private markAsProcessed;
     /**
      * TODO: the client should identify all entities (makes sense since it has an interlinked

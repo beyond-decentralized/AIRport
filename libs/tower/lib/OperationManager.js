@@ -274,37 +274,57 @@ export class OperationManager {
             numberOfAffectedRecords,
         };
     }
-    checkCascade(value, dbProperty, dbRelation, schemaUtils, crudOperation, cascadeRecords) {
-        this.assertOneToManyIsArray(value);
-        if (!schemaUtils.doCascade(dbRelation, crudOperation)) {
-            return false;
+    /*
+        private checkCascade<EntityCascadeGraph>(
+            value: any,
+            dbProperty: DbProperty,
+            dbRelation: DbRelation,
+            schemaUtils: ISchemaUtils,
+            crudOperation: CRUDOperation,
+            cascadeRecords: CascadeRecord[]
+        ): boolean {
+            this.assertOneToManyIsArray(value)
+    
+            if (!schemaUtils.doCascade(dbRelation, crudOperation)) {
+                return false
+            }
+    
+            cascadeRecords.push({
+                relation: dbRelation,
+                manyEntities: value,
+            })
+    
+            return true
         }
-        cascadeRecords.push({
-            relation: dbRelation,
-            manyEntities: value,
-        });
-        return true;
-    }
+    */
     /*
      Values for the same column could be repeated in different places in the object graph.
      For example, if the same column is mapped to two different @ManyToOne relations.
      In this case, when persisting an entity we need to make sure that all values for the
      entity in question are being persisted.
      */
-    columnProcessed(dbProperty, foundValues, dbColumn, value) {
+    /*
+    private columnProcessed(
+        dbProperty: DbProperty,
+        foundValues: any[],
+        dbColumn: DbColumn,
+        value: any,
+    ): boolean {
         // if (value === undefined) {
         // 	throw new Error(`Values cannot be undefined, please use null.`);
         // }
         if (foundValues[dbColumn.index] === undefined) {
-            foundValues[dbColumn.index] = value;
-            return false;
+            foundValues[dbColumn.index] = value
+            return false
         }
         if (!valuesEqual(foundValues[dbColumn.index], value)) {
-            throw new Error(`Found value mismatch in '${dbProperty.entity.name}.${dbProperty.name}'
-			(column: '${dbColumn.name}'): ${foundValues[dbColumn.index]} !== ${value}`);
+            throw new Error(
+                `Found value mismatch in '${dbProperty.entity.name}.${dbProperty.name}'
+            (column: '${dbColumn.name}'): ${foundValues[dbColumn.index]} !== ${value}`)
         }
-        return true;
+        return true
     }
+     */
     async cascadeOnPersist(cascadeRecords, parentDbEntity, operatedOnEntityIndicator, transaction, ctx) {
         if (!cascadeRecords.length) {
             return;
@@ -499,25 +519,38 @@ export class OperationManager {
                 break;
         }
     }
-    assertRelationValueIsAnObject(relationValue, dbProperty) {
+    /*
+    private assertRelationValueIsAnObject(
+        relationValue: any,
+        dbProperty: DbProperty,
+    ): void {
         if (relationValue !== null && relationValue !== undefined &&
-            (typeof relationValue != 'object' || relationValue instanceof Date)) {
-            throw new Error(`Unexpected value in relation property: ${dbProperty.name}, 
-				of entity ${dbProperty.entity.name}`);
+            (typeof relationValue != 'object' || relationValue instanceof Date)
+        ) {
+            throw new Error(
+                `Unexpected value in relation property: ${dbProperty.name},
+                of entity ${dbProperty.entity.name}`)
         }
     }
-    assertManyToOneNotArray(relationValue) {
+
+    private assertManyToOneNotArray(
+        relationValue: any
+    ): void {
         if (relationValue instanceof Array) {
-            throw new Error(`@ManyToOne relation cannot be an array`);
+            throw new Error(`@ManyToOne relation cannot be an array`)
         }
     }
-    assertOneToManyIsArray(relationValue) {
+
+    private assertOneToManyIsArray(
+        relationValue: any
+    ): void {
         if (relationValue !== null
             && relationValue !== undefined
             && !(relationValue instanceof Array)) {
-            throw new Error(`@OneToMany relation must be an array`);
+            throw new Error(`@OneToMany relation must be an array`)
         }
     }
+     */
     markAsProcessed(entity, operatedOnEntityIndicator) {
         const operationUniqueId = getOperationUniqueId(entity);
         operatedOnEntityIndicator[operationUniqueId] = true;
