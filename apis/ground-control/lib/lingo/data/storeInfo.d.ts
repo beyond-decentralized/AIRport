@@ -1,8 +1,10 @@
 export declare enum StoreType {
-    REMOTE = 0,
+    COCKROACHDB = 0,
     MYSQL = 1,
-    SQLITE_CORDOVA = 2,
-    SQLJS = 3
+    POSTGRESQL = 2,
+    REMOTE = 3,
+    SQLITE_CORDOVA = 4,
+    SQLJS = 5
 }
 export interface StoreShareInfo {
     name: string;

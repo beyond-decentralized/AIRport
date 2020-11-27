@@ -28,54 +28,6 @@ export function QRelation(
 	this.parentQ    = parentQ
 }
 
-QRelation.getPositionAlias = function (
-	rootEntityPrefix: string,
-	fromClausePosition: number[]
-) {
-	return `${rootEntityPrefix}_${fromClausePosition.join('_')}`
-}
-
-QRelation.getAlias = function (
-	jsonRelation: JSONRelation
-): string {
-	return this.getPositionAlias(jsonRelation.rep, jsonRelation.fcp)
-}
-
-QRelation.getParentAlias = function (
-	jsonRelation: JSONRelation
-): string {
-	let fromClausePosition = jsonRelation.fcp
-	if (fromClausePosition.length === 0) {
-		throw new Error(`Cannot find alias of a parent entity for the root entity`)
-	}
-	return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1))
-}
-
-QRelation.createRelatedQEntity = function <IQ extends IQEntityInternal>(
-	joinRelation: JSONRelation,
-	airDb: IAirportDatabase,
-	schemaUtils: ISchemaUtils
-): IQ {
-	const dbEntity         = schemaUtils.getDbEntity(
-		joinRelation.si, joinRelation.ti, airDb)
-	let QEntityConstructor = schemaUtils.getQEntityConstructor(
-		dbEntity, airDb)
-	return new QEntityConstructor<IQ>(
-		dbEntity,
-		joinRelation.fcp,
-		dbEntity.relations[(<JSONEntityRelation>joinRelation).ri],
-		joinRelation.jt)
-}
-
-QRelation.getNextChildJoinPosition = function (
-	joinParentDriver: IQEntityDriver
-): number[] {
-	let nextChildJoinPosition = joinParentDriver.fromClausePosition.slice()
-	nextChildJoinPosition.push(++joinParentDriver.currentChildIndex)
-
-	return nextChildJoinPosition
-}
-
 QRelation.prototype.innerJoin = function <IQ extends IQEntityInternal>(): IQ {
 	return this.getNewQEntity(JoinType.INNER_JOIN)
 }

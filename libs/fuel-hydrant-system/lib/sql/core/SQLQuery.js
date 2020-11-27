@@ -6,9 +6,8 @@ import { SQLWhereBase } from './SQLWhereBase';
 export var SQLDialect;
 (function (SQLDialect) {
     SQLDialect[SQLDialect["MYSQL"] = 0] = "MYSQL";
-    SQLDialect[SQLDialect["SQLITE_SQLJS"] = 1] = "SQLITE_SQLJS";
-    SQLDialect[SQLDialect["SQLITE_WEBSQL"] = 2] = "SQLITE_WEBSQL";
-    SQLDialect[SQLDialect["ORACLE"] = 3] = "ORACLE";
+    SQLDialect[SQLDialect["POSTGRESQL"] = 1] = "POSTGRESQL";
+    SQLDialect[SQLDialect["SQLITE"] = 2] = "SQLITE";
 })(SQLDialect || (SQLDialect = {}));
 export class EntityDefaults {
     constructor() {
@@ -36,7 +35,7 @@ export class SQLQuery extends SQLWhereBase {
     getFieldMap() {
         return this.fieldMap;
     }
-    getEntitySchemaRelationFromJoin(leftQEntity, rightQEntity, entityRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, airDb, schemaUtils, metadataUtils) {
+    getEntitySchemaRelationFromJoin(leftQEntity, rightQEntity, entityRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, context) {
         const allJoinOnColumns = [];
         const leftDbEntity = leftQEntity.__driver__.dbEntity;
         const rightDbEntity = rightQEntity.__driver__.dbEntity;
@@ -77,12 +76,12 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
         let onClause = allJoinOnColumns.map(joinOnColumn => ` ${parentAlias}.${joinOnColumn.leftColumn} = ${currentAlias}.${joinOnColumn.rightColumn}`)
             .join('\n\t\t\tAND');
         if (entityRelation.jwc) {
-            const whereClause = this.getWHEREFragment(entityRelation.jwc, '\t\t', airDb, schemaUtils, metadataUtils);
+            const whereClause = this.getWHEREFragment(entityRelation.jwc, '\t\t', context);
             const joinWhereOperator = entityRelation.wjto === SqlOperator.AND ? 'AND' : 'OR';
             onClause = `${onClause}
 			${joinWhereOperator} ${whereClause}`;
         }
-        const tableName = this.storeDriver.getEntityTableName(rightDbEntity);
+        const tableName = this.storeDriver.getEntityTableName(rightDbEntity, context);
         const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`;
         return fromFragment;
     }

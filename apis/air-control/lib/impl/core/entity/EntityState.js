@@ -4,7 +4,6 @@ export var EntityState;
     EntityState[EntityState["STUB"] = 1] = "STUB";
     EntityState[EntityState["EXISTING"] = 2] = "EXISTING";
 })(EntityState || (EntityState = {}));
-;
 export function getEntityState(entity) {
     return entity.__state__;
 }
@@ -25,21 +24,15 @@ export function getOperationUniqueIdSeq() {
 export function uniquelyIdentify(entity, operationUniqueIdSeq) {
     entity[OPERATION_UNIQUE_ID_FIELD] = operationUniqueIdSeq.sequence++;
 }
-export function getOperationUniqueId(entity) {
-    return entity[OPERATION_UNIQUE_ID_FIELD];
-}
-export function isNew(entity) {
-    return getEntityState(entity) === EntityState.NEW;
-}
-export function markAsNew(entity) {
-    entity.__state__ = EntityState.NEW;
-    return entity;
-}
-export function isExisting(entity) {
-    return getEntityState(entity) === EntityState.EXISTING;
-}
-export function markAsExisting(entity) {
-    entity.__state__ = EntityState.EXISTING;
-    return entity;
+export function getOperationUniqueId(entity, throwIfNotFound = true) {
+    const operationUniqueId = entity[OPERATION_UNIQUE_ID_FIELD];
+    if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
+        if (throwIfNotFound) {
+            throw new Error(`Could not find "${OPERATION_UNIQUE_ID_FIELD}" property on DTO:
+			
+			${JSON.stringify(entity)}`);
+        }
+    }
+    return operationUniqueId;
 }
 //# sourceMappingURL=EntityState.js.map

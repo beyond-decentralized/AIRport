@@ -8,29 +8,6 @@ export function QRelation(dbRelation, parentQ) {
     this.dbRelation = dbRelation;
     this.parentQ = parentQ;
 }
-QRelation.getPositionAlias = function (rootEntityPrefix, fromClausePosition) {
-    return `${rootEntityPrefix}_${fromClausePosition.join('_')}`;
-};
-QRelation.getAlias = function (jsonRelation) {
-    return this.getPositionAlias(jsonRelation.rep, jsonRelation.fcp);
-};
-QRelation.getParentAlias = function (jsonRelation) {
-    let fromClausePosition = jsonRelation.fcp;
-    if (fromClausePosition.length === 0) {
-        throw new Error(`Cannot find alias of a parent entity for the root entity`);
-    }
-    return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1));
-};
-QRelation.createRelatedQEntity = function (joinRelation, airDb, schemaUtils) {
-    const dbEntity = schemaUtils.getDbEntity(joinRelation.si, joinRelation.ti, airDb);
-    let QEntityConstructor = schemaUtils.getQEntityConstructor(dbEntity, airDb);
-    return new QEntityConstructor(dbEntity, joinRelation.fcp, dbEntity.relations[joinRelation.ri], joinRelation.jt);
-};
-QRelation.getNextChildJoinPosition = function (joinParentDriver) {
-    let nextChildJoinPosition = joinParentDriver.fromClausePosition.slice();
-    nextChildJoinPosition.push(++joinParentDriver.currentChildIndex);
-    return nextChildJoinPosition;
-};
 QRelation.prototype.innerJoin = function () {
     return this.getNewQEntity(JoinType.INNER_JOIN);
 };

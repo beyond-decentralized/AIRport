@@ -2,7 +2,7 @@ import { DI } from '@airport/di';
 import { CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/ground-control';
 import { convertToY, isY } from '../../lingo/query/facade/Query';
 import { SCHEMA_UTILS } from '../../tokens';
-import { markAsStub } from '../core/entity/EntityState';
+import { markAsStub } from 'src/impl/core/entity/EntityStateManager';
 import { valuesEqual } from '../Utils';
 export class SchemaUtils {
     getDbEntity(schemaIndex, tableIndex, airDb) {

@@ -1,18 +1,14 @@
 import {
-	IAirportDatabase,
 	IQEntityInternal,
-	IQMetadataUtils,
-	ISchemaUtils,
 	Parameter
-}                           from '@airport/air-control'
+}                          from '@airport/air-control'
 import {
 	JSONClauseField,
 	JSONClauseObject,
 	JSONSqlFunctionCall,
 	SQLDataType
-}                           from '@airport/ground-control'
-
-declare function require(moduleName: string): any;
+}                          from '@airport/ground-control'
+import {IOperationContext} from '@airport/tower'
 
 /**
  * Created by Papa on 8/27/2016.
@@ -60,17 +56,13 @@ export interface ISqlValueProvider {
 
 	getFunctionCallValue(
 		rawValue: any,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string;
 
 	getFieldFunctionValue(
 		aField: JSONClauseField,
 		defaultCallback: () => string,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string;
 
 }
@@ -81,20 +73,16 @@ export interface ISQLFunctionAdaptor {
 		clause: JSONClauseObject,
 		innerValue: string,
 		qEntityMapByAlias: { [alias: string]: IQEntityInternal },
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils,
-		sqlValueProvider: ISqlValueProvider
+		sqlValueProvider: ISqlValueProvider,
+		context: IOperationContext<any, any>,
 	): string;
 
 	getFunctionCall(
 		jsonFunctionCall: JSONSqlFunctionCall,
 		value: string,
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils,
-		sqlValueProvider: ISqlValueProvider
+		sqlValueProvider: ISqlValueProvider,
+		context: IOperationContext<any, any>,
 	): string;
 
 }
@@ -106,15 +94,12 @@ export abstract class AbstractFunctionAdaptor
 		clause: JSONClauseObject,
 		innerValue: string,
 		qEntityMapByAlias: { [alias: string]: IQEntityInternal },
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils,
-		sqlValueProvider: ISqlValueProvider
+		sqlValueProvider: ISqlValueProvider,
+		context: IOperationContext<any, any>,
 	): string {
 		clause.af.forEach((appliedFunction) => {
 			innerValue = this.getFunctionCall(
-				appliedFunction, innerValue, qEntityMapByAlias,
-				airDb, schemaUtils, metadataUtils, sqlValueProvider)
+				appliedFunction, innerValue, qEntityMapByAlias, sqlValueProvider, context)
 		})
 
 		return innerValue
@@ -124,10 +109,8 @@ export abstract class AbstractFunctionAdaptor
 		jsonFunctionCall: JSONSqlFunctionCall,
 		value: string,
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils,
-		sqlValueProvider: ISqlValueProvider
+		sqlValueProvider: ISqlValueProvider,
+		context: IOperationContext<any, any>,
 	): string;
 
 }

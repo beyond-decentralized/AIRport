@@ -5,14 +5,15 @@ import {
 	ISchemaUtils,
 	QEntity,
 	QRelation
-}                     from '@airport/air-control'
+}                          from '@airport/air-control'
 import {
 	DbEntity,
 	IStoreDriver,
 	JSONEntityRelation
-}                     from '@airport/ground-control'
-import {SQLDialect}   from './SQLQuery'
-import {SQLWhereBase} from './SQLWhereBase'
+}                          from '@airport/ground-control'
+import {IOperationContext} from '@airport/tower'
+import {SQLDialect}        from './SQLQuery'
+import {SQLWhereBase}      from './SQLWhereBase'
 
 /**
  * Created by Papa on 10/2/2016.
@@ -31,8 +32,7 @@ export abstract class SQLNoJoinQuery
 
 	protected getTableFragment(
 		fromRelation: JSONEntityRelation,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
+		context: IOperationContext<any, any>,
 		addAs: boolean = true
 	): string {
 		if (!fromRelation) {
@@ -42,9 +42,9 @@ export abstract class SQLNoJoinQuery
 			throw new Error(`Table in UPDATE/DELETE clause cannot be joined`)
 		}
 
-		const firstDbEntity: DbEntity = airDb.schemas[fromRelation.si]
+		const firstDbEntity: DbEntity = context.ioc.airDb.schemas[fromRelation.si]
 			.currentVersion.entities[fromRelation.ti]
-		let tableName                 = this.storeDriver.getEntityTableName(firstDbEntity)
+		let tableName                 = this.storeDriver.getEntityTableName(firstDbEntity, context)
 		if (fromRelation.si !== this.dbEntity.schemaVersion.schema.index
 			|| fromRelation.ti !== this.dbEntity.index) {
 			throw new Error(`Unexpected table in UPDATE/DELETE clause: 

@@ -2,20 +2,21 @@ import {
 	IAirportDatabase,
 	IQMetadataUtils,
 	ISchemaUtils
-}                       from '@airport/air-control'
-import {DI}             from '@airport/di'
+}                          from '@airport/air-control'
+import {DI}                from '@airport/di'
 import {
 	DbEntity,
 	IStoreDriver,
 	JsonInsertValues
-}                       from '@airport/ground-control'
+}                          from '@airport/ground-control'
+import {IOperationContext} from '@airport/tower'
 import {
 	Q_VALIDATOR,
 	SQL_QUERY_ADAPTOR
-}                       from '../../tokens'
-import {SQLNoJoinQuery} from './SQLNoJoinQuery'
-import {SQLDialect}     from './SQLQuery'
-import {ClauseType}     from './SQLWhereBase'
+}                          from '../../tokens'
+import {SQLNoJoinQuery}    from './SQLNoJoinQuery'
+import {SQLDialect}        from './SQLQuery'
+import {ClauseType}        from './SQLWhereBase'
 
 /**
  * Created by Papa on 11/17/2016.
@@ -25,21 +26,19 @@ export class SQLInsertValues
 	extends SQLNoJoinQuery {
 
 	constructor(
-		airportDb: IAirportDatabase,
 		public jsonInsertValues: JsonInsertValues,
 		dialect: SQLDialect,
-		storeDriver: IStoreDriver
+		storeDriver: IStoreDriver,
+		context: IOperationContext<any, any>,
 		// repository?: IRepository
 	) {
-		super(airportDb.schemas[jsonInsertValues.II.si]
+		super(context.ioc.airDb.schemas[jsonInsertValues.II.si]
 				.currentVersion.entities[jsonInsertValues.II.ti], dialect,
 			storeDriver)
 	}
 
 	toSQL(
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string {
 		const validator = DI.db()
 			.getSync(Q_VALIDATOR)
@@ -48,11 +47,10 @@ export class SQLInsertValues
 		}
 		validator.validateInsertQEntity(this.dbEntity)
 		let tableFragment   = this.getTableFragment(
-			this.jsonInsertValues.II, airDb, schemaUtils, false)
+			this.jsonInsertValues.II, context, false)
 		let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C)
 		let valuesFragment  = this.getValuesFragment(
-			this.jsonInsertValues.V,
-			airDb, schemaUtils, metadataUtils)
+			this.jsonInsertValues.V, context)
 
 		return `INSERT INTO
 ${tableFragment} ${columnsFragment}
@@ -76,9 +74,7 @@ ${valuesFragment}
 
 	protected getValuesFragment(
 		valuesClauseFragment: any[][],
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string {
 		const sqlAdaptor = DI.db()
 			.getSync(SQL_QUERY_ADAPTOR)
@@ -90,8 +86,7 @@ ${valuesFragment}
 					return sqlAdaptor.getParameterReference(this.parameterReferences, value)
 				} else {
 					const fieldValue = this.getFieldValue(
-						value, ClauseType.WHERE_CLAUSE, null,
-						airDb, schemaUtils, metadataUtils)
+						value, ClauseType.WHERE_CLAUSE, null, context)
 					return `\n${fieldValue}\n`
 				}
 			})

@@ -52,7 +52,7 @@ export class SQLWhereBase {
             return sqlAdaptor.getParameterValue(parameter);
         });
     }
-    getWHEREFragment(operation, nestingPrefix, airDb, schemaUtils, metadataUtils) {
+    getWHEREFragment(operation, nestingPrefix, context) {
         let whereFragment = '';
         if (!operation) {
             throw new Error(`An operation is missing in WHERE or HAVING clause`);
@@ -60,27 +60,27 @@ export class SQLWhereBase {
         nestingPrefix = `${nestingPrefix}\t`;
         switch (operation.c) {
             case OperationCategory.LOGICAL:
-                return this.getLogicalWhereFragment(operation, nestingPrefix, airDb, schemaUtils, metadataUtils);
+                return this.getLogicalWhereFragment(operation, nestingPrefix, context);
             case OperationCategory.BOOLEAN:
             case OperationCategory.DATE:
             case OperationCategory.NUMBER:
             case OperationCategory.STRING:
             case OperationCategory.UNTYPED:
                 let valueOperation = operation;
-                let lValueSql = this.getFieldValue(valueOperation.l, ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
-                let rValueSql = this.getFieldValue(valueOperation.r, ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
+                let lValueSql = this.getFieldValue(valueOperation.l, ClauseType.WHERE_CLAUSE, null, context);
+                let rValueSql = this.getFieldValue(valueOperation.r, ClauseType.WHERE_CLAUSE, null, context);
                 let rValueWithOperator = this.applyOperator(valueOperation.o, rValueSql);
                 whereFragment += `${lValueSql}${rValueWithOperator}`;
                 break;
             case OperationCategory.FUNCTION:
                 let functionOperation = operation;
-                whereFragment = this.getFieldValue(functionOperation.ob, ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
+                whereFragment = this.getFieldValue(functionOperation.ob, ClauseType.WHERE_CLAUSE, null, context);
                 // exists function and maybe others
                 break;
         }
         return whereFragment;
     }
-    getLogicalWhereFragment(operation, nestingPrefix, airDb, schemaUtils, metadataUtils) {
+    getLogicalWhereFragment(operation, nestingPrefix, context) {
         let operator;
         switch (operation.o) {
             case SqlOperator.AND:
@@ -90,7 +90,7 @@ export class SQLWhereBase {
                 operator = 'OR';
                 break;
             case SqlOperator.NOT:
-                const whereFragment = this.getWHEREFragment(operation.v, nestingPrefix, airDb, schemaUtils, metadataUtils);
+                const whereFragment = this.getWHEREFragment(operation.v, nestingPrefix, context);
                 return ` NOT (${whereFragment})`;
             default:
                 throw new Error(`Unknown logical operator: ${operation.o}`);
@@ -101,7 +101,7 @@ export class SQLWhereBase {
 				in the WHERE Clause.`);
         }
         let whereFragment = childOperations.map((childOperation) => {
-            return this.getWHEREFragment(childOperation, nestingPrefix, airDb, schemaUtils, metadataUtils);
+            return this.getWHEREFragment(childOperation, nestingPrefix, context);
         }).join(`\n${nestingPrefix}${operator} `);
         return `( ${whereFragment} )`;
     }
@@ -119,10 +119,10 @@ export class SQLWhereBase {
     warn(warning) {
         console.log(warning);
     }
-    getFunctionCallValue(rawValue, airDb, schemaUtils, metadataUtils) {
-        return this.getFieldValue(rawValue, ClauseType.FUNCTION_CALL, null, airDb, schemaUtils, metadataUtils);
+    getFunctionCallValue(rawValue, context) {
+        return this.getFieldValue(rawValue, ClauseType.FUNCTION_CALL, null, context);
     }
-    getFieldFunctionValue(aField, defaultCallback, airDb, schemaUtils, metadataUtils) {
+    getFieldFunctionValue(aField, defaultCallback, context) {
         const [sqlAdaptor, validator] = DI.db().getSync(SQL_QUERY_ADAPTOR, Q_VALIDATOR);
         let aValue = aField.v;
         if (this.isParameterReference(aValue)) {
@@ -131,13 +131,13 @@ export class SQLWhereBase {
             aValue = sqlAdaptor.getParameterReference(this.parameterReferences, stringValue);
         }
         else {
-            aValue = this.getFieldValue(aValue, ClauseType.FUNCTION_CALL, defaultCallback, airDb, schemaUtils, metadataUtils);
+            aValue = this.getFieldValue(aValue, ClauseType.FUNCTION_CALL, defaultCallback, context);
         }
-        aValue = sqlAdaptor.getFunctionAdaptor().getFunctionCalls(aField, aValue, this.qEntityMapByAlias, airDb, schemaUtils, metadataUtils, this);
+        aValue = sqlAdaptor.getFunctionAdaptor().getFunctionCalls(aField, aValue, this.qEntityMapByAlias, this, context);
         validator.addFunctionAlias(aField.fa);
         return aValue;
     }
-    getFieldValue(clauseField, clauseType, defaultCallback, airDb, schemaUtils, metadataUtils) {
+    getFieldValue(clauseField, clauseType, defaultCallback, context) {
         const validator = DI.db().getSync(Q_VALIDATOR);
         let columnName;
         if (!clauseField) {
@@ -145,7 +145,7 @@ export class SQLWhereBase {
         }
         if (clauseField instanceof Array) {
             return clauseField
-                .map((clauseFieldMember) => this.getFieldValue(clauseFieldMember, clauseType, defaultCallback, airDb, schemaUtils, metadataUtils))
+                .map((clauseFieldMember) => this.getFieldValue(clauseFieldMember, clauseType, defaultCallback, context))
                 .join(', ');
         }
         if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot && clauseField.ot !== 0) {
@@ -155,7 +155,7 @@ export class SQLWhereBase {
         let qEntity;
         switch (clauseField.ot) {
             case JSONClauseObjectType.FIELD_FUNCTION:
-                return this.getFieldFunctionValue(aField, defaultCallback, airDb, schemaUtils, metadataUtils);
+                return this.getFieldFunctionValue(aField, defaultCallback, context);
             case JSONClauseObjectType.DISTINCT_FUNCTION:
                 throw new Error(`Distinct function cannot be nested.`);
             case JSONClauseObjectType.EXISTS_FUNCTION:
@@ -164,7 +164,7 @@ export class SQLWhereBase {
                 }
                 let TreeSQLQueryClass = require('../TreeSQLQuery').TreeSQLQuery;
                 let mappedSqlQuery = new TreeSQLQueryClass(aField.v, this.dialect, this.storeDriver);
-                return `EXISTS(${mappedSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`;
+                return `EXISTS(${mappedSqlQuery.toSQL({}, context)})`;
             case JSONClauseObjectType.FIELD:
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);

@@ -1,10 +1,7 @@
 import {
-	IAirportDatabase,
 	IQEntityInternal,
-	IQMetadataUtils,
-	ISchemaUtils,
 	JoinTreeNode
-}                     from '@airport/air-control'
+}                          from '@airport/air-control'
 import {
 	DbEntity,
 	DbRelationColumn,
@@ -17,8 +14,9 @@ import {
 	QueryResultType,
 	SchemaMap,
 	SqlOperator
-}                     from '@airport/ground-control'
-import {SQLWhereBase} from './SQLWhereBase'
+}                          from '@airport/ground-control'
+import {IOperationContext} from '@airport/tower'
+import {SQLWhereBase}      from './SQLWhereBase'
 
 /**
  * Created by Papa on 8/20/2016.
@@ -26,9 +24,8 @@ import {SQLWhereBase} from './SQLWhereBase'
 
 export enum SQLDialect {
 	MYSQL,
-	SQLITE_SQLJS,
-	SQLITE_WEBSQL,
-	ORACLE
+	POSTGRESQL,
+	SQLITE,
 }
 
 export class EntityDefaults {
@@ -73,9 +70,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 
 	abstract toSQL(
 		internalFragments: InternalFragments,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string;
 
 	/**
@@ -91,19 +86,17 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	 * @returns {any[]}
 	 */
 	abstract async parseQueryResults(
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
 		results: any[],
 		internalFragments: InternalFragments,
 		queryResultType: QueryResultType,
+		context: IOperationContext<any, any>,
 		bridgedQueryConfiguration?: any
 	): Promise<any[]>;
 
 	protected abstract buildFromJoinTree(
 		joinRelations: (JSONEntityRelation | JSONRelation) [],
 		joinNodeMap: { [alias: string]: JoinTreeNode },
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
+		context: IOperationContext<any, any>,
 		schemaIndex?: number,
 		tableIndex?: number
 	): JoinTreeNode | JoinTreeNode[];
@@ -117,9 +110,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		parentAlias: string,
 		joinTypeString: string,
 		errorPrefix: string,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string {
 		const allJoinOnColumns: JoinOnColumns[] = []
 
@@ -169,12 +160,12 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
 		if (entityRelation.jwc) {
 			const whereClause       = this.getWHEREFragment(
 				entityRelation.jwc, '\t\t',
-				airDb, schemaUtils, metadataUtils)
+				context)
 			const joinWhereOperator = entityRelation.wjto === SqlOperator.AND ? 'AND' : 'OR'
 			onClause                = `${onClause}
 			${joinWhereOperator} ${whereClause}`
 		}
-		const tableName    = this.storeDriver.getEntityTableName(rightDbEntity)
+		const tableName    = this.storeDriver.getEntityTableName(rightDbEntity, context)
 		const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`
 
 		return fromFragment

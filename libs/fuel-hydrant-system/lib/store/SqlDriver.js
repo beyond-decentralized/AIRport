@@ -1,4 +1,3 @@
-import { AIR_DB, Q_METADATA_UTILS, SCHEMA_UTILS } from '@airport/air-control';
 import { container } from '@airport/di';
 import { getSchemaName, QueryResultType, SyncSchemaMap } from '@airport/ground-control';
 import { Subject } from '@airport/observe';
@@ -14,13 +13,13 @@ import { ACTIVE_QUERIES } from '../tokens';
  * Created by Papa on 9/9/2016.
  */
 export class SqlDriver {
-    supportsLocalTransactions() {
+    supportsLocalTransactions(context) {
         return true;
     }
-    getEntityTableName(dbEntity) {
-        return this.getTableName(dbEntity.schemaVersion.schema, dbEntity);
+    getEntityTableName(dbEntity, context) {
+        return this.getTableName(dbEntity.schemaVersion.schema, dbEntity, context);
     }
-    getTableName(schema, table) {
+    getTableName(schema, table, context) {
         let theTableName = table.name;
         if (table.tableConfig && table.tableConfig.name) {
             theTableName = table.tableConfig.name;
@@ -32,57 +31,50 @@ export class SqlDriver {
         else {
             schemaName = getSchemaName(schema);
         }
-        return this.composeTableName(schemaName, theTableName);
+        return this.composeTableName(schemaName, theTableName, context);
     }
-    async insertValues(portableQuery) {
-        const splitValues = this.splitValues(portableQuery.jsonQuery.V);
-        const [airDb, schemaUtils, metadataUtils] = await container(this)
-            .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS);
+    async insertValues(portableQuery, context, cachedSqlQueryId) {
+        const splitValues = this.splitValues(portableQuery.jsonQuery.V, context);
         let numVals = 0;
         for (const V of splitValues) {
-            let sqlInsertValues = new SQLInsertValues(airDb, {
+            let sqlInsertValues = new SQLInsertValues({
                 ...portableQuery.jsonQuery,
                 V
-            }, this.getDialect(), this);
-            let sql = sqlInsertValues.toSQL(airDb, schemaUtils, metadataUtils);
+            }, this.getDialect(context), this, context ``);
+            let sql = sqlInsertValues.toSQL(context);
             let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap);
-            numVals += await this.executeNative(sql, parameters);
+            numVals += await this.executeNative(sql, parameters, context);
         }
         return numVals;
     }
-    async deleteWhere(portableQuery) {
-        const [airDb, schemaUtils, metadataUtils, activeQueries] = await container(this)
-            .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS, ACTIVE_QUERIES);
+    async deleteWhere(portableQuery, context) {
+        const activeQueries = await container(this).get(ACTIVE_QUERIES);
         let fieldMap = new SyncSchemaMap();
-        let sqlDelete = new SQLDelete(airDb, portableQuery.jsonQuery, this.getDialect(), this);
-        let sql = sqlDelete.toSQL(airDb, schemaUtils, metadataUtils);
-        let parameters = sqlDelete.getParameters(portableQuery.parameterMap);
-        let numberOfAffectedRecords = await this.executeNative(sql, parameters);
+        let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), this);
+        let sql = sqlDelete.toSQL(context);
+        let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
+        let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
         activeQueries.markQueriesToRerun(fieldMap);
         return numberOfAffectedRecords;
     }
-    async updateWhere(portableQuery, internalFragments) {
-        const [airDb, schemaUtils, metadataUtils] = await container(this)
-            .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS);
-        let sqlUpdate = new SQLUpdate(airDb, portableQuery.jsonQuery, this.getDialect(), this);
+    async updateWhere(portableQuery, internalFragments, context) {
+        let sqlUpdate = new SQLUpdate(airDb, portableQuery.jsonQuery, this.getDialect(context), this);
         let sql = sqlUpdate.toSQL(internalFragments, airDb, schemaUtils, metadataUtils);
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap);
-        return await this.executeNative(sql, parameters);
+        return await this.executeNative(sql, parameters, context);
     }
-    async find(portableQuery, internalFragments, cachedSqlQueryId) {
-        const [airDb, schemaUtils, metadataUtils] = await container(this)
-            .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS);
-        const sqlQuery = this.getSQLQuery(portableQuery, airDb, schemaUtils);
-        const sql = sqlQuery.toSQL(internalFragments, airDb, schemaUtils, metadataUtils);
-        const parameters = sqlQuery.getParameters(portableQuery.parameterMap);
-        let results = await this.findNative(sql, parameters);
-        results = await sqlQuery.parseQueryResults(airDb, schemaUtils, results, internalFragments, portableQuery.queryResultType);
+    async find(portableQuery, internalFragments, context, cachedSqlQueryId) {
+        const sqlQuery = this.getSQLQuery(portableQuery, context);
+        const sql = sqlQuery.toSQL(internalFragments, context);
+        const parameters = sqlQuery.getParameters(portableQuery.parameterMap, context);
+        let results = await this.findNative(sql, parameters, context);
+        results = await sqlQuery.parseQueryResults(results, internalFragments, portableQuery.queryResultType, context);
         // FIXME: convert to MappedEntityArray if needed
         return results;
     }
-    getSQLQuery(portableQuery, airDb, schemaUtils) {
+    getSQLQuery(portableQuery, context) {
         let jsonQuery = portableQuery.jsonQuery;
-        let dialect = this.getDialect();
+        let dialect = this.getDialect(context);
         let resultType = portableQuery.queryResultType;
         const QueryResType = QueryResultType;
         switch (resultType) {
@@ -90,9 +82,9 @@ export class SqlDriver {
             case QueryResType.ENTITY_TREE:
             case QueryResType.MAPPED_ENTITY_GRAPH:
             case QueryResType.MAPPED_ENTITY_TREE:
-                const dbEntity = airDb.schemas[portableQuery.schemaIndex]
+                const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
                     .currentVersion.entities[portableQuery.tableIndex];
-                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, schemaUtils, this);
+                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, context.ioc.schemaUtils, this);
             case QueryResType.FIELD:
                 return new FieldSQLQuery(jsonQuery, dialect, this);
             case QueryResType.SHEET:
@@ -104,8 +96,8 @@ export class SqlDriver {
                 throw new Error(`Unknown QueryResultType: ${resultType}`);
         }
     }
-    async findOne(portableQuery, internalFragments, cachedSqlQueryId) {
-        let results = await this.find(portableQuery, internalFragments);
+    async findOne(portableQuery, internalFragments, context, cachedSqlQueryId) {
+        let results = await this.find(portableQuery, internalFragments, context);
         if (results.length > 1) {
             throw new Error(`Expecting a single result, got ${results.length}`);
         }
@@ -114,7 +106,7 @@ export class SqlDriver {
         }
         return null;
     }
-    search(portableQuery, internalFragments, cachedSqlQueryId) {
+    search(portableQuery, internalFragments, context, cachedSqlQueryId) {
         let resultsSubject = new Subject(() => {
             if (resultsSubject.subscriptions.length < 1) {
                 container(this)
@@ -128,7 +120,7 @@ export class SqlDriver {
         let cachedSqlQuery = {
             resultsSubject: resultsSubject,
             runQuery: () => {
-                this.find(portableQuery, internalFragments)
+                this.find(portableQuery, internalFragments, context)
                     .then((results) => {
                     // FIXME: convert to MappedEntityArray if needed
                     resultsSubject.next(results);
@@ -139,7 +131,7 @@ export class SqlDriver {
         cachedSqlQuery.runQuery();
         return resultsSubject;
     }
-    searchOne(portableQuery, internalFragments, cachedSqlQueryId) {
+    searchOne(portableQuery, internalFragments, context, cachedSqlQueryId) {
         let resultsSubject = new Subject(() => {
             if (resultsSubject.subscriptions.length < 1) {
                 container(this)
@@ -153,7 +145,7 @@ export class SqlDriver {
         let cachedSqlQuery = {
             resultsSubject: resultsSubject,
             runQuery: () => {
-                this.findOne(portableQuery, internalFragments)
+                this.findOne(portableQuery, internalFragments, context)
                     .then((result) => {
                     resultsSubject.next(result);
                 });
@@ -166,7 +158,7 @@ export class SqlDriver {
     warn(message) {
         console.log(message);
     }
-    splitValues(values) {
+    splitValues(values, context) {
         const valuesInRow = values[0].length;
         const numValues = values.length * valuesInRow;
         if (numValues <= this.maxValues) {

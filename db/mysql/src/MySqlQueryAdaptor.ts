@@ -10,14 +10,15 @@ import {
 	JSONSqlFunctionCall,
 	SQLDataType,
 	SqlFunction
-}           from '@airport/ground-control'
+}                          from '@airport/ground-control'
 import {
 	AbstractFunctionAdaptor,
 	ISQLFunctionAdaptor,
 	ISQLQueryAdaptor,
 	ISqlValueProvider,
 	SQL_QUERY_ADAPTOR
-} from '@airport/fuel-hydrant-system'
+}                          from '@airport/fuel-hydrant-system'
+import {IOperationContext} from '@airport/tower'
 
 /**
  * Created by Papa on 8/27/2016.
@@ -133,10 +134,8 @@ export class MySqlFunctionAdaptor
 		jsonFunctionCall: JSONSqlFunctionCall,
 		value: string,
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils,
-		sqlValueProvider: ISqlValueProvider
+		sqlValueProvider: ISqlValueProvider,
+		context: IOperationContext<any, any>,
 	): string {
 		let param2
 		switch (jsonFunctionCall.ft) {
@@ -158,15 +157,15 @@ export class MySqlFunctionAdaptor
 				return `LOWER(${value})`
 			case SqlFunction.MID:
 				let start  = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils)
+					jsonFunctionCall.p[0], context)
 				let length = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[1], airDb, schemaUtils, metadataUtils)
+					jsonFunctionCall.p[1], context)
 				return `SUBSTR(${value}, ${start}, ${length})`
 			case SqlFunction.LEN:
 				return `LENGTH(${value})`
 			case SqlFunction.ROUND:
 				let digits = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils)
+					jsonFunctionCall.p[0], context)
 				return `ROUND(${value}, ${digits})`
 			case SqlFunction.NOW:
 				return `DATE('now')`
@@ -175,16 +174,16 @@ export class MySqlFunctionAdaptor
 				for (let i = 0; i < jsonFunctionCall.p.length; i++) {
 					let formatParam = jsonFunctionCall.p[i]
 					formatParam     = sqlValueProvider.getFunctionCallValue(
-						formatParam, airDb, schemaUtils, metadataUtils)
+						formatParam, context)
 					formatCall      = `${formatCall}, ${formatParam}`
 				}
 				formatCall += ')'
 				return formatCall
 			case SqlFunction.REPLACE:
 				let param1 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils)
+					jsonFunctionCall.p[0], context)
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[1], airDb, schemaUtils, metadataUtils)
+					jsonFunctionCall.p[1], context)
 				return `REPLACE('${value}', ${param1}, ${param2})`
 			case SqlFunction.TRIM:
 				return `TRIM(${value})`
@@ -194,19 +193,19 @@ export class MySqlFunctionAdaptor
 				throw new Error(`Invalid placement of an exists function`)
 			case SqlFunction.DIVIDE:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils)
+					jsonFunctionCall.p[0], context)
 				return `${value} / ${param2}`
 			case SqlFunction.MINUS:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils)
+					jsonFunctionCall.p[0], context)
 				return `${value} - ${param2}`
 			case SqlFunction.MULTIPLY:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils)
+					jsonFunctionCall.p[0], context)
 				return `${value} * ${param2}`
 			case SqlFunction.PLUS:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], airDb, schemaUtils, metadataUtils)
+					jsonFunctionCall.p[0], context)
 				return `${value} + ${param2}`
 			case SqlFunction.CONCATENATE:
 				return jsonFunctionCall.p.reduce((
@@ -215,7 +214,7 @@ export class MySqlFunctionAdaptor
 				) => {
 					let primitiveValue = this.toString(
 						sqlValueProvider.getFunctionCallValue(
-							val, airDb, schemaUtils, metadataUtils))
+							val, context))
 					return acc + val
 				}, this.toString(value))
 			case SqlFunction.COALESCE:

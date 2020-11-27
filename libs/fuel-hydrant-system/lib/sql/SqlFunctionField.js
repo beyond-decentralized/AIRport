@@ -3,8 +3,8 @@ export class SqlFunctionField {
         this.jsonClauseField = jsonClauseField;
         // Test
     }
-    getValue(sqlValueProvider, airDb, schemaUtils, metadataUtils) {
-        return sqlValueProvider.getFieldFunctionValue(this.jsonClauseField, null, airDb, schemaUtils, metadataUtils);
+    getValue(sqlValueProvider, context) {
+        return sqlValueProvider.getFieldFunctionValue(this.jsonClauseField, null, context);
     }
 }
 //# sourceMappingURL=SqlFunctionField.js.map

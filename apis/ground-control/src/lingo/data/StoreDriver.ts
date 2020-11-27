@@ -1,3 +1,4 @@
+import {IContext}      from '@airport/di'
 import {IObservable}   from '@airport/observe'
 import {PortableQuery} from '../query/PortableQuery'
 import {DbEntity}      from '../schema/Entity'
@@ -25,16 +26,19 @@ export interface IStoreDriver
 
 	doesTableExist(
 		schemaName: string,
-		tableName: string
+		tableName: string,
+		ctx: IContext,
 	): Promise<boolean>
 
 	dropTable(
 		schemaName: string,
-		tableName: string
+		tableName: string,
+		ctx: IContext,
 	): Promise<boolean>
 
 	getEntityTableName(
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		ctx: IContext,
 	): string
 
 	getTableName(
@@ -47,22 +51,26 @@ export interface IStoreDriver
 			name: string, tableConfig?: {
 				name?: string
 			}
-		}
+		},
+		ctx: IContext,
 	): string;
 
 	initialize(
-		dbName: string
+		dbName: string,
+		ctx: IContext,
 	): Promise<any>;
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
+		ctx: IContext,
 		cachedSqlQueryId?: number,
 	): IObservable<EntityArray>;
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
+		ctx: IContext,
 		cachedSqlQueryId?: number,
 	): IObservable<E>;
 
@@ -71,9 +79,12 @@ export interface IStoreDriver
 			(
 				transaction: IStoreDriver
 			): Promise<void>
-		}
+		},
+		ctx: IContext,
 	): Promise<void>
 
-	isServer(): boolean
+	isServer(
+		ctx: IContext,
+	): boolean
 
 }

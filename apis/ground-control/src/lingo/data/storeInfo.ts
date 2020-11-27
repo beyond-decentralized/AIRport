@@ -1,6 +1,8 @@
 export enum StoreType {
-	REMOTE,
+	COCKROACHDB,
 	MYSQL,
+	POSTGRESQL,
+	REMOTE,
 	SQLITE_CORDOVA,
 	SQLJS,
 }

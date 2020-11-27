@@ -28,17 +28,18 @@ import {
 	SchemaVersionId,
 	SqlOperator,
 	TableIndex
-} from '@airport/ground-control'
+}                          from '@airport/ground-control'
+import {IOperationContext} from '@airport/tower'
 import {
 	Q_VALIDATOR,
 	SQL_QUERY_ADAPTOR
-} from '../../tokens'
+}                          from '../../tokens'
 import {
 	ISqlValueProvider
-} from '../../adaptor/SQLQueryAdaptor'
-import {FieldSQLQuery} from '../FieldSQLQuery'
-import {TreeSQLQuery}  from '../TreeSQLQuery'
-import {SQLDialect}    from './SQLQuery'
+}                          from '../../adaptor/SQLQueryAdaptor'
+import {FieldSQLQuery}     from '../FieldSQLQuery'
+import {TreeSQLQuery}      from '../TreeSQLQuery'
+import {SQLDialect}        from './SQLQuery'
 
 declare function require(moduleName: string): any;
 
@@ -105,9 +106,7 @@ export abstract class SQLWhereBase
 	protected getWHEREFragment(
 		operation: JSONBaseOperation,
 		nestingPrefix: string,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string {
 		let whereFragment = ''
 		if (!operation) {
@@ -118,8 +117,7 @@ export abstract class SQLWhereBase
 		switch (operation.c) {
 			case OperationCategory.LOGICAL:
 				return this.getLogicalWhereFragment(
-					<JSONLogicalOperation>operation, nestingPrefix,
-					airDb, schemaUtils, metadataUtils)
+					<JSONLogicalOperation>operation, nestingPrefix, context)
 			case OperationCategory.BOOLEAN:
 			case OperationCategory.DATE:
 			case OperationCategory.NUMBER:
@@ -127,19 +125,16 @@ export abstract class SQLWhereBase
 			case OperationCategory.UNTYPED:
 				let valueOperation     = <JSONValueOperation>operation
 				let lValueSql          = this.getFieldValue(
-					valueOperation.l, ClauseType.WHERE_CLAUSE, null,
-					airDb, schemaUtils, metadataUtils)
+					valueOperation.l, ClauseType.WHERE_CLAUSE, null, context)
 				let rValueSql          = this.getFieldValue(
-					valueOperation.r, ClauseType.WHERE_CLAUSE, null,
-					airDb, schemaUtils, metadataUtils)
+					valueOperation.r, ClauseType.WHERE_CLAUSE, null, context)
 				let rValueWithOperator = this.applyOperator(valueOperation.o, rValueSql)
 				whereFragment += `${lValueSql}${rValueWithOperator}`
 				break
 			case OperationCategory.FUNCTION:
 				let functionOperation = <JSONFunctionOperation><any>operation
 				whereFragment         = this.getFieldValue(
-					functionOperation.ob, ClauseType.WHERE_CLAUSE, null,
-					airDb, schemaUtils, metadataUtils)
+					functionOperation.ob, ClauseType.WHERE_CLAUSE, null, context)
 				// exists function and maybe others
 				break
 		}
@@ -150,9 +145,7 @@ export abstract class SQLWhereBase
 	private getLogicalWhereFragment(
 		operation: JSONLogicalOperation,
 		nestingPrefix: string,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	) {
 		let operator
 		switch (operation.o) {
@@ -164,8 +157,7 @@ export abstract class SQLWhereBase
 				break
 			case SqlOperator.NOT:
 				const whereFragment = this.getWHEREFragment(
-					<JSONBaseOperation>operation.v, nestingPrefix,
-					airDb, schemaUtils, metadataUtils)
+					<JSONBaseOperation>operation.v, nestingPrefix, context)
 				return ` NOT (${whereFragment})`
 			default:
 				throw new Error(`Unknown logical operator: ${operation.o}`)
@@ -178,8 +170,7 @@ export abstract class SQLWhereBase
 		}
 		let whereFragment = childOperations.map((childOperation) => {
 			return this.getWHEREFragment(
-				childOperation, nestingPrefix,
-				airDb, schemaUtils, metadataUtils)
+				childOperation, nestingPrefix, context)
 		}).join(`\n${nestingPrefix}${operator} `)
 
 		return `( ${whereFragment} )`
@@ -216,22 +207,17 @@ export abstract class SQLWhereBase
 
 	getFunctionCallValue(
 		rawValue: any,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string {
 		return this.getFieldValue(
-			<JSONClauseField>rawValue, ClauseType.FUNCTION_CALL,
-			null, airDb, schemaUtils, metadataUtils
+			<JSONClauseField>rawValue, ClauseType.FUNCTION_CALL, null, context
 		)
 	}
 
 	getFieldFunctionValue(
 		aField: JSONClauseField,
 		defaultCallback: () => string,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string {
 		const [sqlAdaptor, validator] = DI.db().getSync(SQL_QUERY_ADAPTOR, Q_VALIDATOR)
 
@@ -242,12 +228,10 @@ export abstract class SQLWhereBase
 			aValue = sqlAdaptor.getParameterReference(this.parameterReferences, stringValue)
 		} else {
 			aValue = this.getFieldValue(
-				<any>aValue, ClauseType.FUNCTION_CALL, defaultCallback,
-				airDb, schemaUtils, metadataUtils)
+				<any>aValue, ClauseType.FUNCTION_CALL, defaultCallback, context)
 		}
 		aValue = sqlAdaptor.getFunctionAdaptor().getFunctionCalls(
-			aField, aValue, this.qEntityMapByAlias,
-			airDb, schemaUtils, metadataUtils, this)
+			aField, aValue, this.qEntityMapByAlias, this, context)
 		validator.addFunctionAlias(aField.fa)
 
 		return aValue
@@ -257,9 +241,7 @@ export abstract class SQLWhereBase
 		clauseField: JSONClauseObject | JSONClauseField [] | JsonFieldQuery,
 		clauseType: ClauseType,
 		defaultCallback: () => string,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string {
 		const validator = DI.db().getSync(Q_VALIDATOR)
 
@@ -270,8 +252,7 @@ export abstract class SQLWhereBase
 		if (clauseField instanceof Array) {
 			return clauseField
 				.map((clauseFieldMember) => this.getFieldValue(
-					clauseFieldMember, clauseType, defaultCallback,
-					airDb, schemaUtils, metadataUtils))
+					clauseFieldMember, clauseType, defaultCallback, context))
 				.join(', ')
 		}
 		if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot && clauseField.ot !== 0) {
@@ -283,8 +264,7 @@ export abstract class SQLWhereBase
 		switch (clauseField.ot) {
 			case JSONClauseObjectType.FIELD_FUNCTION:
 				return this.getFieldFunctionValue(
-					aField, defaultCallback,
-					airDb, schemaUtils, metadataUtils)
+					aField, defaultCallback, context)
 			case JSONClauseObjectType.DISTINCT_FUNCTION:
 				throw new Error(`Distinct function cannot be nested.`)
 			case JSONClauseObjectType.EXISTS_FUNCTION:
@@ -295,7 +275,7 @@ export abstract class SQLWhereBase
 				let TreeSQLQueryClass: typeof TreeSQLQuery = require('../TreeSQLQuery').TreeSQLQuery
 				let mappedSqlQuery                         = new TreeSQLQueryClass(
 					<JsonTreeQuery>aField.v, this.dialect, this.storeDriver)
-				return `EXISTS(${mappedSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`
+				return `EXISTS(${mappedSqlQuery.toSQL({}, context)})`
 			case <any>JSONClauseObjectType.FIELD:
 				qEntity = this.qEntityMapByAlias[aField.ta]
 				validator.validateReadQEntityProperty(

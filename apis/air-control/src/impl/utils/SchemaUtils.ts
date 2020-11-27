@@ -30,7 +30,7 @@ import {
 }                           from '../../lingo/utils/SchemaUtils'
 import {SCHEMA_UTILS}       from '../../tokens'
 import {QEntityConstructor} from '../core/entity/Entity'
-import {markAsStub}         from '../core/entity/EntityState'
+import {markAsStub}         from 'src/impl/core/entity/EntityStateManager'
 import {valuesEqual}        from '../Utils'
 
 interface ColumnValueForPath {

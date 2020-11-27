@@ -7,16 +7,16 @@ export class SQLNoJoinQuery extends SQLWhereBase {
     constructor(dbEntity, dialect, storeDriver) {
         super(dbEntity, dialect, storeDriver);
     }
-    getTableFragment(fromRelation, airDb, schemaUtils, addAs = true) {
+    getTableFragment(fromRelation, context, addAs = true) {
         if (!fromRelation) {
             throw new Error(`Expecting exactly one table in UPDATE/DELETE clause`);
         }
         if (fromRelation.ri || fromRelation.jt) {
             throw new Error(`Table in UPDATE/DELETE clause cannot be joined`);
         }
-        const firstDbEntity = airDb.schemas[fromRelation.si]
+        const firstDbEntity = context.ioc.airDb.schemas[fromRelation.si]
             .currentVersion.entities[fromRelation.ti];
-        let tableName = this.storeDriver.getEntityTableName(firstDbEntity);
+        let tableName = this.storeDriver.getEntityTableName(firstDbEntity, context);
         if (fromRelation.si !== this.dbEntity.schemaVersion.schema.index
             || fromRelation.ti !== this.dbEntity.index) {
             throw new Error(`Unexpected table in UPDATE/DELETE clause: 

@@ -1,6 +1,7 @@
-import {SQLDataType}         from '../core/field/JSONClause'
-import {PortableQuery}       from '../query/PortableQuery'
-import {DbColumn}            from '../schema/Property'
+import {IContext}      from '@airport/di'
+import {SQLDataType}   from '../core/field/JSONClause'
+import {PortableQuery} from '../query/PortableQuery'
+import {DbColumn}      from '../schema/Property'
 
 export enum QueryType {
 	DDL,
@@ -26,27 +27,32 @@ export interface IStoreOperator {
 
 	deleteWhere(
 		portableQuery: PortableQuery,
+		ctx: IContext,
 	): Promise<number>;
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
+		ctx: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray>;
 
 	findOne<E>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
+		ctx: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<E>;
 
 	findNative(
 		sqlQuery: string,
-		parameters: any[]
+		parameters: any[],
+		ctx: IContext,
 	): Promise<any[]>;
 
 	insertValues(
 		portableQuery: PortableQuery,
+		ctx: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<number>;
 
@@ -54,17 +60,20 @@ export interface IStoreOperator {
 		queryType: QueryType,
 		query: string,
 		params,
+		ctx: IContext,
 		saveTransaction?: boolean
 	): Promise<any>;
 
 	updateWhere(
 		portableQuery: PortableQuery,
-		internalFragments: InternalFragments
+		internalFragments: InternalFragments,
+		ctx: IContext,
 	): Promise<number>;
 
 	isValueValid(
 		value: any,
-		sqlDataType: SQLDataType
+		sqlDataType: SQLDataType,
+		ctx: IContext,
 	): boolean
 
 }

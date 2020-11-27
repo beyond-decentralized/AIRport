@@ -31,7 +31,10 @@ import {
 	IObservable,
 	Subject
 }                        from '@airport/observe'
-import {ITransaction}    from '@airport/tower'
+import {
+	IOperationContext,
+	ITransaction
+}                        from '@airport/tower'
 import {SQLDelete}       from '../sql/core/SQLDelete'
 import {SQLInsertValues} from '../sql/core/SQLInsertValues'
 import {
@@ -58,14 +61,17 @@ export abstract class SqlDriver
 	// protected airDb: IAirportDatabase
 	protected maxValues: number
 
-	supportsLocalTransactions(): boolean {
+	supportsLocalTransactions(
+		context: IOperationContext<any, any>,
+	): boolean {
 		return true
 	}
 
 	getEntityTableName(
-		dbEntity: DbEntity
+		dbEntity: DbEntity,
+		context: IOperationContext<any, any>,
 	): string {
-		return this.getTableName(dbEntity.schemaVersion.schema, dbEntity)
+		return this.getTableName(dbEntity.schemaVersion.schema, dbEntity, context)
 	}
 
 	getTableName(
@@ -78,7 +84,8 @@ export abstract class SqlDriver
 			name: string, tableConfig?: {
 				name?: string
 			}
-		}
+		},
+		context: IOperationContext<any, any>,
 	): string {
 		let theTableName = table.name
 		if (table.tableConfig && table.tableConfig.name) {
@@ -90,16 +97,18 @@ export abstract class SqlDriver
 		} else {
 			schemaName = getSchemaName(schema)
 		}
-		return this.composeTableName(schemaName, theTableName)
+		return this.composeTableName(schemaName, theTableName, context)
 	}
 
 	abstract composeTableName(
 		schemaName: string,
-		tableName: string
+		tableName: string,
+		context: IOperationContext<any, any>,
 	): string;
 
 	async abstract initialize(
-		dbName: string
+		dbName: string,
+		context: IOperationContext<any, any>,
 	): Promise<any>;
 
 	async abstract transact(
@@ -107,31 +116,29 @@ export abstract class SqlDriver
 			(
 				transaction: ITransaction
 			): Promise<void>
-		}
+		},
+		context: IOperationContext<any, any>,
 	): Promise<void>;
 
 	async insertValues(
 		portableQuery: PortableQuery,
+		context: IOperationContext<any, any>,
+		cachedSqlQueryId?: number,
 		// repository?: IRepository
 	): Promise<number> {
-		const splitValues = this.splitValues((portableQuery.jsonQuery as JsonInsertValues).V)
-
-		const [airDb, schemaUtils, metadataUtils] =
-			      await container(this)
-				      .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
+		const splitValues = this.splitValues((portableQuery.jsonQuery as JsonInsertValues).V, context)
 
 		let numVals = 0
 		for (const V of splitValues) {
 
-			let sqlInsertValues = new SQLInsertValues(airDb,
-				<JsonInsertValues>{
+			let sqlInsertValues = new SQLInsertValues(<JsonInsertValues>{
 					...portableQuery.jsonQuery,
 					V
-				}, this.getDialect(), this)
-			let sql             = sqlInsertValues.toSQL(airDb, schemaUtils, metadataUtils)
+				}, this.getDialect(context), this, context``)
+			let sql             = sqlInsertValues.toSQL(context)
 			let parameters      = sqlInsertValues.getParameters(portableQuery.parameterMap)
 
-			numVals += await this.executeNative(sql, parameters)
+			numVals += await this.executeNative(sql, parameters, context)
 		}
 
 		return numVals
@@ -139,17 +146,16 @@ export abstract class SqlDriver
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
+		context: IOperationContext<any, any>,
 	): Promise<number> {
-		const [airDb, schemaUtils, metadataUtils, activeQueries] =
-			      await container(this)
-				      .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS, ACTIVE_QUERIES)
+		const activeQueries = await container(this).get(ACTIVE_QUERIES)
 
 		let fieldMap                = new SyncSchemaMap()
-		let sqlDelete               = new SQLDelete(airDb,
-			<JsonDelete>portableQuery.jsonQuery, this.getDialect(), this)
-		let sql                     = sqlDelete.toSQL(airDb, schemaUtils, metadataUtils)
-		let parameters              = sqlDelete.getParameters(portableQuery.parameterMap)
-		let numberOfAffectedRecords = await this.executeNative(sql, parameters)
+		let sqlDelete               = new SQLDelete(
+			<JsonDelete>portableQuery.jsonQuery, this.getDialect(context), this)
+		let sql                     = sqlDelete.toSQL(context)
+		let parameters              = sqlDelete.getParameters(portableQuery.parameterMap, context)
+		let numberOfAffectedRecords = await this.executeNative(sql, parameters, context)
 		activeQueries.markQueriesToRerun(fieldMap)
 
 		return numberOfAffectedRecords
@@ -157,36 +163,30 @@ export abstract class SqlDriver
 
 	async updateWhere(
 		portableQuery: PortableQuery,
-		internalFragments: InternalFragments
+		internalFragments: InternalFragments,
+		context: IOperationContext<any, any>,
 	): Promise<number> {
-		const [airDb, schemaUtils, metadataUtils] =
-			      await container(this)
-				      .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
-
 		let sqlUpdate  = new SQLUpdate(airDb,
-			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(), this)
+			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(context), this)
 		let sql        = sqlUpdate.toSQL(internalFragments, airDb, schemaUtils, metadataUtils)
 		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap)
 
-		return await this.executeNative(sql, parameters)
+		return await this.executeNative(sql, parameters, context)
 	}
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
+		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		const [airDb, schemaUtils, metadataUtils] =
-			      await container(this)
-				      .get(AIR_DB, SCHEMA_UTILS, Q_METADATA_UTILS)
+		const sqlQuery   = this.getSQLQuery(portableQuery, context)
+		const sql        = sqlQuery.toSQL(internalFragments, context)
+		const parameters = sqlQuery.getParameters(portableQuery.parameterMap, context)
 
-		const sqlQuery   = this.getSQLQuery(portableQuery, airDb, schemaUtils)
-		const sql        = sqlQuery.toSQL(internalFragments, airDb, schemaUtils, metadataUtils)
-		const parameters = sqlQuery.getParameters(portableQuery.parameterMap)
-
-		let results = await this.findNative(sql, parameters)
+		let results = await this.findNative(sql, parameters, context)
 		results     = await sqlQuery.parseQueryResults(
-			airDb, schemaUtils, results, internalFragments, portableQuery.queryResultType)
+			results, internalFragments, portableQuery.queryResultType, context)
 
 		// FIXME: convert to MappedEntityArray if needed
 		return <EntityArray>results
@@ -194,11 +194,10 @@ export abstract class SqlDriver
 
 	getSQLQuery(
 		portableQuery: PortableQuery,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): SQLQuery<any> {
 		let jsonQuery      = portableQuery.jsonQuery
-		let dialect        = this.getDialect()
+		let dialect        = this.getDialect(context)
 		let resultType     = portableQuery.queryResultType
 		const QueryResType = QueryResultType
 		switch (resultType) {
@@ -206,10 +205,10 @@ export abstract class SqlDriver
 			case QueryResType.ENTITY_TREE:
 			case QueryResType.MAPPED_ENTITY_GRAPH:
 			case QueryResType.MAPPED_ENTITY_TREE:
-				const dbEntity = airDb.schemas[portableQuery.schemaIndex]
+				const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
 					.currentVersion.entities[portableQuery.tableIndex]
 				return new EntitySQLQuery(<JsonEntityQuery<any>>jsonQuery,
-					dbEntity, dialect, resultType, schemaUtils, this)
+					dbEntity, dialect, resultType, context.ioc.schemaUtils, this)
 			case QueryResType.FIELD:
 				return new FieldSQLQuery(<JsonFieldQuery>jsonQuery, dialect, this)
 			case QueryResType.SHEET:
@@ -224,20 +223,23 @@ export abstract class SqlDriver
 
 	abstract isValueValid(
 		value: any,
-		sqlDataType: SQLDataType
+		sqlDataType: SQLDataType,
+		context: IOperationContext<any, any>,
 	): boolean
 
 	abstract async findNative(
 		sqlQuery: string,
-		parameters: any[]
+		parameters: any[],
+		context: IOperationContext<any, any>,
 	): Promise<any[]>;
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
+		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		let results = await this.find(portableQuery, internalFragments)
+		let results = await this.find(portableQuery, internalFragments, context)
 
 		if (results.length > 1) {
 			throw new Error(`Expecting a single result, got ${results.length}`)
@@ -251,6 +253,7 @@ export abstract class SqlDriver
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
+		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
 	): IObservable<EntityArray> {
 		let resultsSubject                 = new Subject<EntityArray>(() => {
@@ -268,7 +271,7 @@ export abstract class SqlDriver
 		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any>{
 			resultsSubject: resultsSubject,
 			runQuery: () => {
-				this.find(portableQuery, internalFragments)
+				this.find(portableQuery, internalFragments, context)
 					.then((results: E[]) => {
 						// FIXME: convert to MappedEntityArray if needed
 						resultsSubject.next(<EntityArray>results)
@@ -284,6 +287,7 @@ export abstract class SqlDriver
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
+		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
 	): IObservable<E> {
 		let resultsSubject                 = new Subject<E>(() => {
@@ -301,7 +305,7 @@ export abstract class SqlDriver
 		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any>{
 			resultsSubject: resultsSubject,
 			runQuery: () => {
-				this.findOne(portableQuery, internalFragments)
+				this.findOne(portableQuery, internalFragments, context)
 					.then((result: E) => {
 						resultsSubject.next(result)
 					})
@@ -319,32 +323,41 @@ export abstract class SqlDriver
 
 	abstract doesTableExist(
 		schemaName: string,
-		tableName: string
+		tableName: string,
+		context: IOperationContext<any, any>,
 	): Promise<boolean>
 
 	abstract dropTable(
 		schemaName: string,
-		tableName: string
+		tableName: string,
+		context: IOperationContext<any, any>,
 	): Promise<boolean>
 
 	abstract query(
 		queryType: QueryType,
 		query: string,
 		params: any,
+		context: IOperationContext<any, any>,
 		saveTransaction?: boolean
 	): Promise<any>
 
-	abstract isServer(): boolean
+	abstract isServer(
+		context: IOperationContext<any, any>,
+	): boolean
 
 	protected abstract async executeNative(
 		sql: string,
-		parameters: any[]
+		parameters: any[],
+		context: IOperationContext<any, any>,
 	): Promise<number>;
 
-	protected abstract getDialect(): SQLDialect;
+	protected abstract getDialect(
+		context: IOperationContext<any, any>,
+	): SQLDialect;
 
-	private splitValues(
-		values: any[][]
+	protected splitValues(
+		values: any[][],
+		context: IOperationContext<any, any>,
 	): any[][][] {
 		const valuesInRow = values[0].length
 		const numValues   = values.length * valuesInRow
