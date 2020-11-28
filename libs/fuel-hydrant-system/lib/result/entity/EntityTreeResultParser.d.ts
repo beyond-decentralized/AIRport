@@ -1,5 +1,6 @@
-import { IAirportDatabase, ISchemaUtils, ReferencedColumnData } from '@airport/air-control';
+import { ReferencedColumnData } from '@airport/air-control';
 import { DbEntity } from '@airport/ground-control';
+import { IOperationContext } from '@airport/tower';
 import { TreeResultParser } from '../TreeResultParser';
 import { IEntityResultParser } from './IEntityResultParser';
 /**
@@ -23,16 +24,16 @@ export declare class EntityTreeResultParser extends TreeResultParser implements 
     currentObjectOneToManys: {
         [propertyName: string]: any[];
     };
-    addEntity(entityAlias: string, dbEntity: DbEntity, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): any;
-    bufferManyToOneStub(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, relationInfos: ReferencedColumnData[], schemaUtils: ISchemaUtils): void;
-    private addManyToOneReference;
+    addEntity(entityAlias: string, dbEntity: DbEntity, context: IOperationContext<any, any>): any;
+    bufferManyToOneStub(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, relationInfos: ReferencedColumnData[], context: IOperationContext<any, any>): void;
     bufferBlankManyToOneStub(entityAlias: string, resultObject: any, propertyName: string): void;
-    bufferManyToOneObject(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, childResultObject: any): void;
+    bufferManyToOneObject(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, childResultObject: any, context: IOperationContext<any, any>): void;
     bufferBlankManyToOneObject(entityAlias: string, resultObject: any, propertyName: string): void;
     bufferOneToManyStub(otmDbEntity: DbEntity, otmPropertyName: string): void;
-    bufferOneToManyCollection(entityAlias: string, resultObject: any, otmDbEntity: DbEntity, propertyName: string, relationDbEntity: DbEntity, childResultObject: any): void;
-    bufferBlankOneToMany(entityAlias: string, resultObject: any, otmEntityName: string, propertyName: string, relationDbEntity: DbEntity): void;
-    flushEntity(entityAlias: string, dbEntity: DbEntity, selectClauseFragment: any, entityId: any, resultObject: any): any;
-    bridge(parsedResults: any[], selectClauseFragment: any): any[];
+    bufferOneToManyCollection(entityAlias: string, resultObject: any, otmDbEntity: DbEntity, propertyName: string, relationDbEntity: DbEntity, childResultObject: any, context: IOperationContext<any, any>): void;
+    bufferBlankOneToMany(entityAlias: string, resultObject: any, otmEntityName: string, propertyName: string, relationDbEntity: DbEntity, context: IOperationContext<any, any>): void;
+    flushEntity(entityAlias: string, dbEntity: DbEntity, selectClauseFragment: any, entityId: any, resultObject: any, context: IOperationContext<any, any>): any;
+    bridge(parsedResults: any[], selectClauseFragment: any, context: IOperationContext<any, any>): any[];
+    private addManyToOneReference;
 }
 //# sourceMappingURL=EntityTreeResultParser.d.ts.map

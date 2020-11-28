@@ -1,5 +1,5 @@
 import { IQEntityInternal, JoinTreeNode } from '@airport/air-control';
-import { DbEntity, InternalFragments, IStoreDriver, JSONEntityRelation, JsonQuery, JSONRelation, QueryResultType, SchemaMap } from '@airport/ground-control';
+import { DbEntity, InternalFragments, JSONEntityRelation, JsonQuery, JSONRelation, QueryResultType, SchemaMap } from '@airport/ground-control';
 import { IOperationContext } from '@airport/tower';
 import { SQLWhereBase } from './SQLWhereBase';
 /**
@@ -27,7 +27,7 @@ export declare abstract class SQLQuery<JQ extends JsonQuery> extends SQLWhereBas
     protected jsonQuery: JQ;
     protected queryResultType: QueryResultType;
     protected entityDefaults: EntityDefaults;
-    constructor(jsonQuery: JQ, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, storeDriver: IStoreDriver);
+    constructor(jsonQuery: JQ, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, context: IOperationContext<any, any>);
     getFieldMap(): SchemaMap;
     abstract toSQL(internalFragments: InternalFragments, context: IOperationContext<any, any>): string;
     /**

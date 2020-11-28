@@ -1,17 +1,17 @@
 import {
 	ISequence,
 	SEQUENCE_DAO
-}                      from '@airport/airport-code'
+}                  from '@airport/airport-code'
 import {
 	ISequenceGenerator,
 	setSeqGen
-}                      from '@airport/check-in'
+}                  from '@airport/check-in'
 import {container} from '@airport/di'
 import {
 	DbColumn,
 	DbEntity,
 	ensureChildArray
-}                      from '@airport/ground-control'
+}                  from '@airport/ground-control'
 
 /**
  * Assumptions: 7/4/2019
@@ -69,7 +69,8 @@ export abstract class SequenceGenerator
 	async init(
 		sequences?: ISequence[]
 	): Promise<void> {
-		const sequenceDao = await container(this).get(SEQUENCE_DAO)
+		const sequenceDao = await container(this)
+			.get(SEQUENCE_DAO)
 		if (!sequences) {
 			sequences = await sequenceDao.findAll()
 		}
@@ -105,6 +106,8 @@ export abstract class SequenceGenerator
 		}
 	}
 
+	protected abstract async nativeGenerate(): Promise<number>;
+
 	/**
 	 * Keeping return value as number[][] in case we ever revert back
 	 * to SequenceBlock-like solution
@@ -117,7 +120,8 @@ export abstract class SequenceGenerator
 	): Promise<number[][]> {
 		const sequentialNumbers: number[][] = []
 
-		const sequenceDao = await container(this).get(SEQUENCE_DAO)
+		const sequenceDao = await container(this)
+			.get(SEQUENCE_DAO)
 
 		for (let i = 0; i < dbColumns.length; i++) {
 			const dbColumn = dbColumns[i]
@@ -162,8 +166,6 @@ export abstract class SequenceGenerator
 
 		return sequentialNumbers
 	}
-
-	protected abstract async nativeGenerate(): Promise<number>;
 
 	private async waitForPreviousGeneration(): Promise<any> {
 		return new Promise(

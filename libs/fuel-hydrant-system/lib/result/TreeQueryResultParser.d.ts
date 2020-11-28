@@ -1,4 +1,4 @@
-import { TreeResultParser } from "./TreeResultParser";
+import { TreeResultParser } from './TreeResultParser';
 /**
  * Created by Papa on 11/8/2016.
  */

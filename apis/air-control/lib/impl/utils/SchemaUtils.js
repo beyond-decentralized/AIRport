@@ -1,8 +1,7 @@
 import { DI } from '@airport/di';
 import { CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/ground-control';
 import { convertToY, isY } from '../../lingo/query/facade/Query';
-import { SCHEMA_UTILS } from '../../tokens';
-import { markAsStub } from 'src/impl/core/entity/EntityStateManager';
+import { ENTITY_STATE_MANAGER, SCHEMA_UTILS } from '../../tokens';
 import { valuesEqual } from '../Utils';
 export class SchemaUtils {
     getDbEntity(schemaIndex, tableIndex, airDb) {
@@ -104,6 +103,7 @@ export class SchemaUtils {
         return [propertyNameChains, value];
     }
     addRelationToEntitySelectClause(dbRelation, selectClause, allowDefaults = false) {
+        const entityStateManager = DI.db().getSync(ENTITY_STATE_MANAGER);
         this.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
             let convertTo = true;
             let propertySelectClause = selectClause;
@@ -112,7 +112,7 @@ export class SchemaUtils {
                 let propertyObject = propertySelectClause[propertyNameLink];
                 if (!propertyObject) {
                     propertyObject = {};
-                    markAsStub(propertyObject);
+                    entityStateManager.markAsStub(propertyObject);
                     propertySelectClause[propertyNameLink] = propertyObject;
                 }
                 else {

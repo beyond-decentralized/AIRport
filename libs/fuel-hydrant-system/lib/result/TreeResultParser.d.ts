@@ -22,9 +22,9 @@ export declare class TreeResultParser extends AbstractObjectResultParser {
         [propertyName: string]: any[];
     };
     addProperty(entityAlias: string, resultObject: any, dataType: SQLDataType, propertyName: string, propertyValue: any): boolean;
+    flushRow(): void;
     protected isDifferentOrDoesntExist(entityAlias: string, resultObject: any, propertyName: string): boolean;
     protected addOneToManyCollection(entityAlias: string, resultObject: any, propertyName: string): void;
     protected mergeEntity(entityAlias: string, resultObject: any): any;
-    flushRow(): void;
 }
 //# sourceMappingURL=TreeResultParser.d.ts.map

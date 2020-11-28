@@ -42,7 +42,6 @@ import {TreeQuery}    from '../../query/facade/TreeQuery'
 import {extend}                  from '../../utils/qSchemaBuilderUtils'
 import {JoinFields}              from '../Joins'
 import {FieldColumnAliases}      from './Aliases'
-import {QRelation}               from './Relation'
 
 /**
  * Created by Papa on 4/21/2016.

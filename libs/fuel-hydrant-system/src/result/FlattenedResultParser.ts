@@ -1,16 +1,16 @@
 import {
-	ISchemaUtils,
 	objectExists,
 	ReferencedColumnData
-} from '@airport/air-control'
+}                          from '@airport/air-control'
 import {
 	DbEntity,
 	SQLDataType
-} from '@airport/ground-control'
+}                          from '@airport/ground-control'
+import {IOperationContext} from '@airport/tower'
 import {
 	AbstractObjectResultParser,
 	IEntityResultParser
-} from './entity/IEntityResultParser'
+}                          from './entity/IEntityResultParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -25,6 +25,7 @@ export class FlattenedResultParser
 	addEntity(
 		entityAlias: string,
 		dbEntity: DbEntity,
+		context: IOperationContext<any, any>,
 	): any {
 		return this.currentResultRow
 	}
@@ -47,9 +48,9 @@ export class FlattenedResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		relationInfos: ReferencedColumnData[],
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): void {
-		this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils)
+		this.addManyToOneStub(resultObject, propertyName, relationInfos, context)
 	}
 
 	bufferBlankManyToOneStub(
@@ -69,7 +70,8 @@ export class FlattenedResultParser
 		resultObject: any,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		childResultObject: any
+		childResultObject: any,
+		context: IOperationContext<any, any>,
 	): any {
 		// Nothing to do, we are working with a flat result array
 	}
@@ -95,7 +97,8 @@ export class FlattenedResultParser
 		otmDbEntity: DbEntity,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		childResultObject: any
+		childResultObject: any,
+		context: IOperationContext<any, any>,
 	): void {
 		// Nothing to do, we are working with a flat result array
 	}
@@ -106,6 +109,7 @@ export class FlattenedResultParser
 		otmEntityName: string,
 		propertyName: string,
 		relationDbEntity: DbEntity,
+		context: IOperationContext<any, any>,
 	): void {
 		// Nothing to do, we are working with a flat result array
 	}
@@ -115,7 +119,8 @@ export class FlattenedResultParser
 		dbEntity: DbEntity,
 		selectClauseFragment: any,
 		entityId: any,
-		resultObject: any
+		resultObject: any,
+		context: IOperationContext<any, any>,
 	): any {
 		// Nothing to do, we are working with a flat result array
 		return resultObject
@@ -127,7 +132,8 @@ export class FlattenedResultParser
 
 	bridge(
 		parsedResults: any[],
-		selectClauseFragment: any
+		selectClauseFragment: any,
+		context: IOperationContext<any, any>,
 	): any[] {
 		// No bridging needed for ENTITY_FLATTENED Object queries
 		return parsedResults

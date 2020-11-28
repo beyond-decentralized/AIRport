@@ -1,15 +1,15 @@
-import { JoinTreeNode, QBooleanField, QDateField, QNumberField, QRelation, QStringField, QTree, QUntypedField, } from '@airport/air-control';
+import { JoinTreeNode, QBooleanField, QDateField, QNumberField, QStringField, QTree, QUntypedField, } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { JoinType, JSONClauseObjectType, JSONRelationType, SortOrder, SQLDataType } from '@airport/ground-control';
-import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../tokens';
+import { Q_VALIDATOR, SQL_QUERY_ADAPTOR, SUB_STATEMENT_SQL_GENERATOR } from '../tokens';
 import { SQLQuery } from './core/SQLQuery';
 import { SqlFunctionField } from './SqlFunctionField';
 /**
  * Created by Papa on 10/28/2016.
  */
 export class NonEntitySQLQuery extends SQLQuery {
-    constructor(jsonQuery, dialect, queryResultType, storeDriver) {
-        super(jsonQuery, null, dialect, queryResultType, storeDriver);
+    constructor(jsonQuery, dialect, queryResultType, context) {
+        super(jsonQuery, null, dialect, queryResultType, context);
     }
     addQEntityMapByAlias(sourceMap) {
         for (let alias in sourceMap) {
@@ -17,7 +17,8 @@ export class NonEntitySQLQuery extends SQLQuery {
         }
     }
     toSQL(internalFragments, context) {
-        const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR);
+        const sqlAdaptor = DI.db()
+            .getSync(SQL_QUERY_ADAPTOR);
         let jsonQuery = this.jsonQuery;
         let joinNodeMap = {};
         this.joinTrees = this.buildFromJoinTree(jsonQuery.F, joinNodeMap, context);
@@ -59,22 +60,9 @@ ORDER BY
 FROM
 ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragment}${offsetFragment}${limitFragment}`;
     }
-    getFieldSelectFragment(value, clauseType, nestedObjectCallBack, fieldIndex, airDb, schemaUtils, metadataUtils) {
-        let columnSelectSqlFragment = this.getFieldValue(value, clauseType, 
-        // Nested object processing
-        nestedObjectCallBack, airDb, schemaUtils, metadataUtils);
-        if (value.fa !== undefined) {
-            columnSelectSqlFragment += ` as ${value.fa}`;
-        }
-        if (fieldIndex === 0) {
-            return `\n\t${columnSelectSqlFragment}`;
-        }
-        else {
-            return `\n\t, ${columnSelectSqlFragment}`;
-        }
-    }
     buildFromJoinTree(joinRelations, joinNodeMap, context) {
-        const validator = DI.db().getSync(Q_VALIDATOR);
+        const validator = DI.db()
+            .getSync(Q_VALIDATOR);
         let jsonTrees = [];
         let jsonTree;
         // For entity queries it is possible to have a query with no from clause, in this case
@@ -90,9 +78,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             default:
                 throw new Error(`First table in FROM clause cannot be joined`);
         }
-        let alias = QRelation.getAlias(firstRelation);
+        let alias = context.ioc.relationManager.getAlias(firstRelation);
         validator.validateReadFromEntity(firstRelation);
-        let firstEntity = QRelation.createRelatedQEntity(firstRelation, context);
+        let firstEntity = context.ioc.relationManager.createRelatedQEntity(firstRelation, context);
         this.qEntityMapByAlias[alias] = firstEntity;
         jsonTree = new JoinTreeNode(firstRelation, [], null);
         jsonTrees.push(jsonTree);
@@ -104,7 +92,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                 throw new Error(`Table ${i + 1} in FROM clause is missing joinType`);
             }
             validator.validateReadFromEntity(joinRelation);
-            alias = QRelation.getAlias(joinRelation);
+            alias = context.ioc.relationManager.getAlias(joinRelation);
             switch (joinRelation.rt) {
                 case JSONRelationType.SUB_QUERY_ROOT:
                     let view = this.addFieldsToView(joinRelation, alias, context);
@@ -112,7 +100,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     continue;
                 case JSONRelationType.ENTITY_ROOT:
                     // Non-Joined table
-                    let nonJoinedEntity = QRelation.createRelatedQEntity(joinRelation, context);
+                    let nonJoinedEntity = context.ioc.relationManager.createRelatedQEntity(joinRelation, context);
                     this.qEntityMapByAlias[alias] = nonJoinedEntity;
                     let anotherTree = new JoinTreeNode(joinRelation, [], null);
                     if (joinNodeMap[alias]) {
@@ -125,7 +113,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     if (!joinRelation.ri) {
                         throw new Error(`Table ${i + 1} in FROM clause is missing relationPropertyName`);
                     }
-                    rightEntity = QRelation.createRelatedQEntity(joinRelation, context);
+                    rightEntity = context.ioc.relationManager.createRelatedQEntity(joinRelation, context);
                     break;
                 case JSONRelationType.SUB_QUERY_JOIN_ON:
                     if (!joinRelation.jwc) {
@@ -137,12 +125,12 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     if (!joinRelation.jwc) {
                         this.warn(`Table ${i + 1} in FROM clause is missing joinWhereClause`);
                     }
-                    rightEntity = QRelation.createRelatedQEntity(joinRelation, context);
+                    rightEntity = context.ioc.relationManager.createRelatedQEntity(joinRelation, context);
                     break;
                 default:
                     throw new Error(`Unknown JSONRelationType ${joinRelation.rt}`);
             }
-            let parentAlias = QRelation.getParentAlias(joinRelation);
+            let parentAlias = context.ioc.relationManager.getParentAlias(joinRelation);
             if (!joinNodeMap[parentAlias]) {
                 throw new Error(`Missing parent entity for alias ${parentAlias}, on table ${i + 1} in FROM clause. 
 					NOTE: sub-queries in FROM clause cannot reference parent FROM tables.`);
@@ -251,24 +239,39 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         }
         return hasDistinctClause;
     }
+    getFieldSelectFragment(value, clauseType, nestedObjectCallBack, fieldIndex, context) {
+        let columnSelectSqlFragment = this.getFieldValue(value, clauseType, 
+        // Nested object processing
+        nestedObjectCallBack, context);
+        if (value.fa !== undefined) {
+            columnSelectSqlFragment += ` as ${value.fa}`;
+        }
+        if (fieldIndex === 0) {
+            return `\n\t${columnSelectSqlFragment}`;
+        }
+        else {
+            return `\n\t, ${columnSelectSqlFragment}`;
+        }
+    }
     getFROMFragments(joinTrees, context) {
-        return joinTrees.map(joinTree => this.getFROMFragment(null, joinTree, context)).join('\n');
+        return joinTrees.map(joinTree => this.getFROMFragment(null, joinTree, context))
+            .join('\n');
     }
     getFROMFragment(parentTree, currentTree, context) {
+        const subStatementSqlGenerator = DI.db()
+            .getSync(SUB_STATEMENT_SQL_GENERATOR);
         let fromFragment = '\t';
         let currentRelation = currentTree.jsonRelation;
-        let currentAlias = QRelation.getAlias(currentRelation);
+        let currentAlias = context.ioc.relationManager.getAlias(currentRelation);
         let qEntity = this.qEntityMapByAlias[currentAlias];
         if (!parentTree) {
             switch (currentRelation.rt) {
                 case JSONRelationType.ENTITY_ROOT:
-                    fromFragment += `${this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context)} ${currentAlias}`;
+                    fromFragment += `${context.ioc.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context)} ${currentAlias}`;
                     break;
                 case JSONRelationType.SUB_QUERY_ROOT:
                     let viewRelation = currentRelation;
-                    let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
-                    let subQuery = new TreeSQLQueryClass(viewRelation.sq, this.dialect, this.storeDriver);
-                    const subQuerySql = subQuery.toSQL({}, context);
+                    let subQuerySql = subStatementSqlGenerator.getTreeQuerySql(viewRelation.sq, this.dialect, context);
                     fromFragment += `(${subQuerySql}) ${currentAlias}`;
                     break;
                 default:
@@ -277,7 +280,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         }
         else {
             let parentRelation = parentTree.jsonRelation;
-            let parentAlias = QRelation.getAlias(parentRelation);
+            let parentAlias = context.ioc.relationManager.getAlias(parentRelation);
             let leftEntity = this.qEntityMapByAlias[parentAlias];
             let rightEntity = this.qEntityMapByAlias[currentAlias];
             let joinTypeString;
@@ -302,17 +305,15 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                 case JSONRelationType.ENTITY_JOIN_ON:
                     let joinRelation = currentRelation;
                     joinOnClause = this.getWHEREFragment(joinRelation.jwc, '\t', context);
-                    fromFragment += `\t${joinTypeString} ${this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context)} ${currentAlias} ON\n${joinOnClause}`;
+                    fromFragment += `\t${joinTypeString} ${context.ioc.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context)} ${currentAlias} ON\n${joinOnClause}`;
                     break;
                 case JSONRelationType.ENTITY_SCHEMA_RELATION:
                     fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, context);
                     break;
                 case JSONRelationType.SUB_QUERY_JOIN_ON:
                     let viewJoinRelation = currentRelation;
-                    let TreeSQLQueryClass = require('./TreeSQLQuery').TreeSQLQuery;
-                    let mappedSqlQuery = new TreeSQLQueryClass(viewJoinRelation.sq, this.dialect, this.storeDriver);
+                    const mappedSql = subStatementSqlGenerator.getTreeQuerySql(viewJoinRelation.sq, this.dialect, context);
                     joinOnClause = this.getWHEREFragment(viewJoinRelation.jwc, '\t', context);
-                    const mappedSql = mappedSqlQuery.toSQL({}, context);
                     fromFragment += `${joinTypeString} (${mappedSql}) ${currentAlias} ON\n${joinOnClause}`;
                     break;
                 default:
@@ -327,14 +328,17 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         return fromFragment;
     }
     getGroupByFragment(groupBy) {
-        const validator = DI.db().getSync(Q_VALIDATOR);
+        const validator = DI.db()
+            .getSync(Q_VALIDATOR);
         return groupBy.map((groupByField) => {
             validator.validateAliasedFieldAccess(groupByField.fa);
             return `${groupByField.fa}`;
-        }).join(', ');
+        })
+            .join(', ');
     }
     getOrderByFragment(orderBy) {
-        const validator = DI.db().getSync(Q_VALIDATOR);
+        const validator = DI.db()
+            .getSync(Q_VALIDATOR);
         return orderBy.map((orderByField) => {
             validator.validateAliasedFieldAccess(orderByField.fa);
             switch (orderByField.so) {
@@ -343,7 +347,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                 case SortOrder.DESCENDING:
                     return `${orderByField.fa} DESC`;
             }
-        }).join(', ');
+        })
+            .join(', ');
     }
 }
 //# sourceMappingURL=NonEntitySQLQuery.js.map

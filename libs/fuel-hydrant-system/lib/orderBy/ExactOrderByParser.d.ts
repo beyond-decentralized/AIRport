@@ -1,6 +1,6 @@
-import { JSONFieldInOrderBy } from "@airport/ground-control";
+import { JSONFieldInOrderBy } from '@airport/ground-control';
 import { IValidator } from '../validation/Validator';
-import { INonEntityOrderByParser } from "./AbstractEntityOrderByParser";
+import { INonEntityOrderByParser } from './AbstractEntityOrderByParser';
 /**
  * Created by Papa on 10/16/2016.
  */

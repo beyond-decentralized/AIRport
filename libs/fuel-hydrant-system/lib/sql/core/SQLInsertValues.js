@@ -6,9 +6,9 @@ import { ClauseType } from './SQLWhereBase';
  * Created by Papa on 11/17/2016.
  */
 export class SQLInsertValues extends SQLNoJoinQuery {
-    constructor(jsonInsertValues, dialect, storeDriver, context) {
+    constructor(jsonInsertValues, dialect, context) {
         super(context.ioc.airDb.schemas[jsonInsertValues.II.si]
-            .currentVersion.entities[jsonInsertValues.II.ti], dialect, storeDriver);
+            .currentVersion.entities[jsonInsertValues.II.ti], dialect, context);
         this.jsonInsertValues = jsonInsertValues;
     }
     toSQL(context) {

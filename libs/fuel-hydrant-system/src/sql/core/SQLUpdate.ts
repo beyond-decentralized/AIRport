@@ -1,25 +1,21 @@
 import {
-	IAirportDatabase,
 	IEntityUpdateProperties,
-	IQMetadataUtils,
-	ISchemaUtils,
-	ManyToOneColumnMapping,
-	QRelation
-}                       from '@airport/air-control'
-import {DI}             from '@airport/di'
+	ManyToOneColumnMapping
+}                          from '@airport/air-control'
+import {DI}                from '@airport/di'
 import {
 	InternalFragments,
-	IStoreDriver,
 	JSONClauseObjectType,
 	JsonUpdate
-}                       from '@airport/ground-control'
+}                          from '@airport/ground-control'
+import {IOperationContext} from '@airport/tower'
 import {
 	Q_VALIDATOR,
 	SQL_QUERY_ADAPTOR
-}                       from '../../tokens'
-import {SQLNoJoinQuery} from './SQLNoJoinQuery'
-import {SQLDialect}     from './SQLQuery'
-import {ClauseType}     from './SQLWhereBase'
+}                          from '../../tokens'
+import {SQLNoJoinQuery}    from './SQLNoJoinQuery'
+import {SQLDialect}        from './SQLQuery'
+import {ClauseType}        from './SQLWhereBase'
 
 /**
  * Created by Papa on 10/2/2016.
@@ -29,28 +25,23 @@ export class SQLUpdate
 	extends SQLNoJoinQuery {
 
 	constructor(
-		airportDb: IAirportDatabase,
 		public jsonUpdate: JsonUpdate<IEntityUpdateProperties>,
 		dialect: SQLDialect,
-		storeDriver: IStoreDriver
+		context: IOperationContext<any, any>,
 	) {
-		super(airportDb.schemas[jsonUpdate.U.si]
-			.currentVersion.entities[jsonUpdate.U.ti], dialect, storeDriver)
+		super(context.ioc.airDb.schemas[jsonUpdate.U.si]
+			.currentVersion.entities[jsonUpdate.U.ti], dialect, context)
 	}
 
 	toSQL(
 		internalFragments: InternalFragments,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string {
 		if (!this.jsonUpdate.U) {
 			throw new Error(`Expecting exactly one table in UPDATE clause`)
 		}
-		let updateFragment = this.getTableFragment(
-			this.jsonUpdate.U, airDb, schemaUtils)
-		let setFragment    = this.getSetFragment(this.jsonUpdate.S,
-			airDb, schemaUtils, metadataUtils)
+		let updateFragment = this.getTableFragment(this.jsonUpdate.U, context)
+		let setFragment    = this.getSetFragment(this.jsonUpdate.S, context)
 		if (internalFragments.SET) {
 			setFragment += internalFragments.SET.map(
 				internalSetFragment => `
@@ -61,12 +52,12 @@ export class SQLUpdate
 		let jsonQuery     = this.jsonUpdate
 		if (jsonQuery.W) {
 			whereFragment  = this.getWHEREFragment(jsonQuery.W, '',
-				airDb, schemaUtils, metadataUtils)
+				context)
 			whereFragment  = `WHERE
 ${whereFragment}`
 			// Always replace the root entity alias reference with the table name
-			let tableAlias = QRelation.getAlias(this.jsonUpdate.U)
-			let tableName  = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity)
+			let tableAlias = context.ioc.relationManager.getAlias(this.jsonUpdate.U)
+			let tableName  = context.ioc.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
 			whereFragment  = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
 		}
 
@@ -79,11 +70,10 @@ ${whereFragment}`
 
 	protected getSetFragment(
 		setClauseFragment: IEntityUpdateProperties,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string {
-		const validator = DI.db().getSync(Q_VALIDATOR)
+		const validator = DI.db()
+			.getSync(Q_VALIDATOR)
 
 		let setFragments = []
 		for (let columnName in setClauseFragment) {
@@ -94,7 +84,7 @@ ${whereFragment}`
 			}
 			validator.validateUpdateColumn(this.dbEntity.columnMap[columnName])
 			this.addSetFragment(columnName, value, setFragments,
-				airDb, schemaUtils, metadataUtils)
+				context)
 		}
 
 		return setFragments.join(', \n')
@@ -104,11 +94,10 @@ ${whereFragment}`
 		columnName: string,
 		value: any,
 		setFragments: any[],
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	) {
-		const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR)
+		const sqlAdaptor = DI.db()
+			.getSync(SQL_QUERY_ADAPTOR)
 
 		let fieldValue
 		if (typeof value === 'number') {
@@ -116,7 +105,7 @@ ${whereFragment}`
 			fieldValue = sqlAdaptor.getParameterReference(this.parameterReferences, value)
 		} else {
 			fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE,
-				null, airDb, schemaUtils, metadataUtils)
+				null, context)
 		}
 		setFragments.push(`\t${columnName} = ${fieldValue}`)
 	}

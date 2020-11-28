@@ -1,4 +1,4 @@
-import { SortOrder } from "@airport/ground-control";
+import { SortOrder } from '@airport/ground-control';
 /**
  * Created by Papa on 10/16/2016.
  */
@@ -18,7 +18,8 @@ export class ExactOrderByParser {
                 case SortOrder.DESCENDING:
                     return `${orderByField.fa} DESC`;
             }
-        }).join(', ');
+        })
+            .join(', ');
     }
 }
 //# sourceMappingURL=ExactOrderByParser.js.map

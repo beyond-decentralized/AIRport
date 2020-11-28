@@ -28,9 +28,11 @@ import {
 	ISchemaUtils,
 	RepositorySheetSelectInfo
 }                           from '../../lingo/utils/SchemaUtils'
-import {SCHEMA_UTILS}       from '../../tokens'
+import {
+	ENTITY_STATE_MANAGER,
+	SCHEMA_UTILS
+} from '../../tokens'
 import {QEntityConstructor} from '../core/entity/Entity'
-import {markAsStub}         from 'src/impl/core/entity/EntityStateManager'
 import {valuesEqual}        from '../Utils'
 
 interface ColumnValueForPath {
@@ -226,6 +228,7 @@ export class SchemaUtils
 		selectClause: any,
 		allowDefaults: boolean = false,
 	): void {
+		const entityStateManager = DI.db().getSync(ENTITY_STATE_MANAGER)
 		this.forEachColumnTypeOfRelation(
 			dbRelation,
 			(
@@ -242,7 +245,7 @@ export class SchemaUtils
 					let propertyObject = propertySelectClause[propertyNameLink]
 					if (!propertyObject) {
 						propertyObject = {}
-						markAsStub(propertyObject)
+						entityStateManager.markAsStub(propertyObject)
 						propertySelectClause[propertyNameLink] = propertyObject
 					} else {
 						if (index < firstPropertyNameChain.length - 1) {

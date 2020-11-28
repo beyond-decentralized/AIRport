@@ -1,5 +1,8 @@
 import {SEQUENCE_GENERATOR} from '@airport/check-in'
-import {container, DI}                 from '@airport/di'
+import {
+	container,
+	DI
+}                           from '@airport/di'
 import {
 	DbColumn,
 	DbEntity
@@ -16,7 +19,6 @@ import {ID_GENERATOR}       from '../tokens'
 export type NumRepositoryTransHistories = number
 export type NumOperationTransHistories = number
 export type NumRecordHistories = number
-
 
 export interface TransactionHistoryIds {
 
@@ -49,7 +51,8 @@ export class IdGenerator
 	private transactionHistoryIdColumns: DbColumn[] = []
 
 	async init(): Promise<void> {
-		(await container(this).get(SEQUENCE_GENERATOR)).init()
+		(await container(this)
+			.get(SEQUENCE_GENERATOR)).init()
 
 		const transHistoryDbEntity     =
 			      this.getHoldingPatternDbEntity('TransactionHistory')
@@ -80,7 +83,8 @@ export class IdGenerator
 		numRecordHistories: NumRecordHistories
 	): Promise<TransactionHistoryIds> {
 
-		const generatedSequenceNumbers = await (await container(this).get(SEQUENCE_GENERATOR))
+		const generatedSequenceNumbers = await (await container(this)
+			.get(SEQUENCE_GENERATOR))
 			.generateSequenceNumbers(
 				this.transactionHistoryIdColumns,
 				[
@@ -108,7 +112,6 @@ export class IdGenerator
 	): DbEntity {
 		return Q.db.currentVersion.entityMapByName[holdingPatternEntityName]
 	}
-
 
 }
 

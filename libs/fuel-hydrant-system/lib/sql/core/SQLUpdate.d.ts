@@ -1,5 +1,6 @@
-import { IAirportDatabase, IEntityUpdateProperties, IQMetadataUtils, ISchemaUtils } from '@airport/air-control';
-import { InternalFragments, IStoreDriver, JsonUpdate } from '@airport/ground-control';
+import { IEntityUpdateProperties } from '@airport/air-control';
+import { InternalFragments, JsonUpdate } from '@airport/ground-control';
+import { IOperationContext } from '@airport/tower';
 import { SQLNoJoinQuery } from './SQLNoJoinQuery';
 import { SQLDialect } from './SQLQuery';
 /**
@@ -7,9 +8,9 @@ import { SQLDialect } from './SQLQuery';
  */
 export declare class SQLUpdate extends SQLNoJoinQuery {
     jsonUpdate: JsonUpdate<IEntityUpdateProperties>;
-    constructor(airportDb: IAirportDatabase, jsonUpdate: JsonUpdate<IEntityUpdateProperties>, dialect: SQLDialect, storeDriver: IStoreDriver);
-    toSQL(internalFragments: InternalFragments, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
-    protected getSetFragment(setClauseFragment: IEntityUpdateProperties, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
+    constructor(jsonUpdate: JsonUpdate<IEntityUpdateProperties>, dialect: SQLDialect, context: IOperationContext<any, any>);
+    toSQL(internalFragments: InternalFragments, context: IOperationContext<any, any>): string;
+    protected getSetFragment(setClauseFragment: IEntityUpdateProperties, context: IOperationContext<any, any>): string;
     private addSetFragment;
     private isManyToOneRelation;
     private addManyToOneMappings;

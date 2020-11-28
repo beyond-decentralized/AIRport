@@ -1,12 +1,6 @@
-import {
-	IAirportDatabase,
-	IQMetadataUtils,
-	ISchemaUtils
-}                          from '@airport/air-control'
 import {DI}                from '@airport/di'
 import {
 	DbEntity,
-	IStoreDriver,
 	JsonInsertValues
 }                          from '@airport/ground-control'
 import {IOperationContext} from '@airport/tower'
@@ -28,13 +22,12 @@ export class SQLInsertValues
 	constructor(
 		public jsonInsertValues: JsonInsertValues,
 		dialect: SQLDialect,
-		storeDriver: IStoreDriver,
 		context: IOperationContext<any, any>,
 		// repository?: IRepository
 	) {
 		super(context.ioc.airDb.schemas[jsonInsertValues.II.si]
 				.currentVersion.entities[jsonInsertValues.II.ti], dialect,
-			storeDriver)
+			context)
 	}
 
 	toSQL(

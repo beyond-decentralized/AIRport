@@ -27,6 +27,7 @@ export declare abstract class SequenceGenerator implements ISequenceGenerator {
     init(sequences?: ISequence[]): Promise<void>;
     tempInit(sequences?: ISequence[]): Promise<void>;
     generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
+    protected abstract nativeGenerate(): Promise<number>;
     /**
      * Keeping return value as number[][] in case we ever revert back
      * to SequenceBlock-like solution
@@ -34,7 +35,6 @@ export declare abstract class SequenceGenerator implements ISequenceGenerator {
      * @param numSequencesNeeded
      */
     private doGenerateSequenceNumbers;
-    protected abstract nativeGenerate(): Promise<number>;
     private waitForPreviousGeneration;
     private isDoneGeneratingSeqNums;
     private addSequences;

@@ -1,17 +1,18 @@
-import {TreeResultParser} from "./TreeResultParser";
+import {TreeResultParser} from './TreeResultParser'
 
 /**
  * Created by Papa on 11/8/2016.
  */
-export class TreeQueryResultParser extends TreeResultParser {
+export class TreeQueryResultParser
+	extends TreeResultParser {
 
 	addEntity(
 		entityAlias: string
 	): any {
-		let resultObject = {};
-		this.currentRowObjectMap[entityAlias] = resultObject;
+		let resultObject                      = {}
+		this.currentRowObjectMap[entityAlias] = resultObject
 
-		return resultObject;
+		return resultObject
 	}
 
 	bufferOneToManyCollection(
@@ -20,16 +21,15 @@ export class TreeQueryResultParser extends TreeResultParser {
 		propertyName: string,
 		childResultObject: any
 	): void {
-		resultObject[propertyName] = [childResultObject];
-		this.addOneToManyCollection(entityAlias, resultObject, propertyName);
+		resultObject[propertyName] = [childResultObject]
+		this.addOneToManyCollection(entityAlias, resultObject, propertyName)
 	}
 
 	flushEntity(
 		entityAlias: string,
 		resultObject: any
 	): any {
-		return this.mergeEntity(entityAlias, resultObject);
+		return this.mergeEntity(entityAlias, resultObject)
 	}
-
 
 }

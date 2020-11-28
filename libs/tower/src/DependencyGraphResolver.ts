@@ -1,7 +1,5 @@
 import {
-	getOperationUniqueId,
 	IEntityCascadeGraph,
-	isStub,
 	valuesEqual
 }                                  from '@airport/air-control'
 import {DI}                        from '@airport/di'
@@ -39,15 +37,16 @@ export class DependencyGraphResolver
 		}
 
 		for (const entity of entities) {
-			const operationUniqueId                      = getOperationUniqueId(entity)
-			const entityOperatedOn                       = !!operatedOnEntityIndicator[operationUniqueId]
-			operatedOnEntityIndicator[operationUniqueId] = true
+			const operationUniqueId = ctx.ioc.entityStateManager.getOperationUniqueId(entity)
+			const entityOperatedOn  = !!operatedOnEntityIndicator[operationUniqueId]
+			operatedOnEntityIndicator[operationUniqueId]
+			                        = true
 			// NOTE: Values should always be in only one place, rest should be stubs
 			// with possible child objects (in case an object has to be in multiple
 			// places in a graph)
 			let foundValues = []
 
-			let entityIsStub = isStub(entity)
+			let entityIsStub = ctx.ioc.entityStateManager.isStub(entity)
 
 			dependencyGraphNode.entities.push(entity)
 

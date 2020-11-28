@@ -2,7 +2,6 @@ import {
 	and,
 	Delete,
 	EntityIdData,
-	getOperationUniqueId,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	InsertColumnValues,
@@ -10,9 +9,7 @@ import {
 	IQEntity,
 	IQOperableFieldInternal,
 	ISchemaUtils,
-	isStub,
 	IUpdateCache,
-	OperationUniqueId,
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
@@ -477,35 +474,37 @@ export abstract class OperationManager
 			numberOfAffectedRecords,
 		}
 	}
-/*
-	private checkCascade<EntityCascadeGraph>(
-		value: any,
-		dbProperty: DbProperty,
-		dbRelation: DbRelation,
-		schemaUtils: ISchemaUtils,
-		crudOperation: CRUDOperation,
-		cascadeRecords: CascadeRecord[]
-	): boolean {
-		this.assertOneToManyIsArray(value)
 
-		if (!schemaUtils.doCascade(dbRelation, crudOperation)) {
-			return false
+	/*
+		private checkCascade<EntityCascadeGraph>(
+			value: any,
+			dbProperty: DbProperty,
+			dbRelation: DbRelation,
+			schemaUtils: ISchemaUtils,
+			crudOperation: CRUDOperation,
+			cascadeRecords: CascadeRecord[]
+		): boolean {
+			this.assertOneToManyIsArray(value)
+
+			if (!schemaUtils.doCascade(dbRelation, crudOperation)) {
+				return false
+			}
+
+			cascadeRecords.push({
+				relation: dbRelation,
+				manyEntities: value,
+			})
+
+			return true
 		}
-
-		cascadeRecords.push({
-			relation: dbRelation,
-			manyEntities: value,
-		})
-
-		return true
-	}
-*/
+	*/
 	/*
 	 Values for the same column could be repeated in different places in the object graph.
 	 For example, if the same column is mapped to two different @ManyToOne relations.
 	 In this case, when persisting an entity we need to make sure that all values for the
 	 entity in question are being persisted.
 	 */
+
 	/*
 	private columnProcessed(
 		dbProperty: DbProperty,
@@ -853,7 +852,7 @@ export abstract class OperationManager
 
 		// if (entityOperatedOn) {
 		// 	// The Update operation for this entity was already recorded, nothing to do
-			return [entityOperatedOn, null]
+		return [entityOperatedOn, null]
 		// }
 
 		// // If it's new entity, not in cache

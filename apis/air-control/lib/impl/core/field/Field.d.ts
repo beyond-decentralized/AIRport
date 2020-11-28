@@ -1,4 +1,4 @@
-import { DbColumn, DbProperty, JSONClauseField, JSONClauseObjectType, JSONSqlFunctionCall } from '@airport/ground-control';
+import { DbColumn, DbProperty, JSONClauseField, JSONClauseObjectType, JsonFieldQuery, JSONSqlFunctionCall } from '@airport/ground-control';
 import { IFieldColumnAliases } from '../../../lingo/core/entity/Aliases';
 import { IQEntityInternal } from '../../../lingo/core/entity/Entity';
 import { IQFieldInternal, IQOrderableField } from '../../../lingo/core/field/Field';
@@ -23,8 +23,9 @@ export declare abstract class QField<IQF extends IQOrderableField<IQF>> implemen
     constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal, objectType: JSONClauseObjectType);
     /**
      protected getFieldKey() {
+        const relationManager = DI.db().getSync(RELATION_MANAGER)
         let rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.parentQ.getRootJoinEntity());
-        let key = `${QRelation.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
+        let key = `${relationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
         return key;
     }
      */
@@ -36,8 +37,8 @@ export declare abstract class QField<IQF extends IQOrderableField<IQF>> implemen
     toJSON(columnAliases: IFieldColumnAliases<IQF>, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
     operableFunctionToJson(functionObject: IQFunction<any>, columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
     protected copyFunctions<QF extends QField<IQF>>(field: QF): QF;
-    private appliedFunctionsToJson;
-    private functionCallToJson;
-    private valueToJSON;
+    protected appliedFunctionsToJson(appliedFunctions: JSONSqlFunctionCall[], columnAliases: IFieldColumnAliases<IQF>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONSqlFunctionCall[];
+    protected functionCallToJson(functionCall: JSONSqlFunctionCall, columnAliases: IFieldColumnAliases<IQF>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONSqlFunctionCall;
+    protected valueToJSON(functionObject: IQFunction<any> | QField<any>, columnAliases: IFieldColumnAliases<IQF>, forSelectClause: boolean, fromFunctionObject: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): string | JSONClauseField | JsonFieldQuery;
 }
 //# sourceMappingURL=Field.d.ts.map

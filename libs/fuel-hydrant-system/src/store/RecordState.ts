@@ -1,4 +1,4 @@
-import { ChangeRecord } from "@airport/terminal-map";
+import {ChangeRecord} from '@airport/terminal-map'
 
 /**
  * Created by Papa on 6/28/2016.
@@ -11,12 +11,13 @@ export interface IRecordStateData {
 	original: { [fieldName: string]: any };
 }
 
-export class RecordStateData implements IRecordStateData {
+export class RecordStateData
+	implements IRecordStateData {
 
-	accessed: { [fieldName: string]: boolean } = {};
-	current: { [fieldName: string]: any } = {};
-	initialized: { [fieldName: string]: boolean } = {};
-	original: { [fieldName: string]: any } = {};
+	accessed: { [fieldName: string]: boolean }    = {}
+	current: { [fieldName: string]: any }         = {}
+	initialized: { [fieldName: string]: boolean } = {}
+	original: { [fieldName: string]: any }        = {}
 
 }
 
@@ -43,33 +44,33 @@ export interface IRecordState {
 	toJSON(): any;
 }
 
-export class RecordState implements IRecordState {
+export class RecordState
+	implements IRecordState {
 
-	currentState: CurrentState;
-	data = new RecordStateData();
-	initialized = false;
-	isDirty = false;
-	proxied = false;
-
+	currentState: CurrentState
+	data        = new RecordStateData()
+	initialized = false
+	isDirty     = false
+	proxied     = false
 
 	create(): void {
-		this.currentState = CurrentState.CREATED;
+		this.currentState = CurrentState.CREATED
 	}
 
 	delete(): void {
-		this.currentState = CurrentState.DELETED;
+		this.currentState = CurrentState.DELETED
 	}
 
 	getChangeRecord(): ChangeRecord {
-		return null;
+		return null
 	}
 
 	toJSON(): any {
 		// TODO: implement
-		return null;
+		return null
 	}
 
 	update(): void {
-		this.currentState = CurrentState.UPDATED;
+		this.currentState = CurrentState.UPDATED
 	}
 }

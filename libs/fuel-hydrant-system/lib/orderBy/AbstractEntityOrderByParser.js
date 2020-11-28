@@ -13,7 +13,8 @@ export class AbstractEntityOrderByParser {
                 case SortOrder.DESCENDING:
                     return `${orderByField.fa} DESC`;
             }
-        }).join(', ');
+        })
+            .join(', ');
     }
 }
 //# sourceMappingURL=AbstractEntityOrderByParser.js.map

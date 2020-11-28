@@ -1,10 +1,3 @@
-import {
-	AIR_DB,
-	IAirportDatabase,
-	ISchemaUtils,
-	Q_METADATA_UTILS,
-	SCHEMA_UTILS
-}                        from '@airport/air-control'
 import {container}       from '@airport/di'
 import {
 	DbEntity,
@@ -132,11 +125,11 @@ export abstract class SqlDriver
 		for (const V of splitValues) {
 
 			let sqlInsertValues = new SQLInsertValues(<JsonInsertValues>{
-					...portableQuery.jsonQuery,
-					V
-				}, this.getDialect(context), this, context``)
+				...portableQuery.jsonQuery,
+				V
+			}, this.getDialect(context), context)
 			let sql             = sqlInsertValues.toSQL(context)
-			let parameters      = sqlInsertValues.getParameters(portableQuery.parameterMap)
+			let parameters      = sqlInsertValues.getParameters(portableQuery.parameterMap, context)
 
 			numVals += await this.executeNative(sql, parameters, context)
 		}
@@ -148,11 +141,12 @@ export abstract class SqlDriver
 		portableQuery: PortableQuery,
 		context: IOperationContext<any, any>,
 	): Promise<number> {
-		const activeQueries = await container(this).get(ACTIVE_QUERIES)
+		const activeQueries = await container(this)
+			.get(ACTIVE_QUERIES)
 
 		let fieldMap                = new SyncSchemaMap()
 		let sqlDelete               = new SQLDelete(
-			<JsonDelete>portableQuery.jsonQuery, this.getDialect(context), this)
+			<JsonDelete>portableQuery.jsonQuery, this.getDialect(context), context)
 		let sql                     = sqlDelete.toSQL(context)
 		let parameters              = sqlDelete.getParameters(portableQuery.parameterMap, context)
 		let numberOfAffectedRecords = await this.executeNative(sql, parameters, context)
@@ -166,10 +160,10 @@ export abstract class SqlDriver
 		internalFragments: InternalFragments,
 		context: IOperationContext<any, any>,
 	): Promise<number> {
-		let sqlUpdate  = new SQLUpdate(airDb,
-			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(context), this)
-		let sql        = sqlUpdate.toSQL(internalFragments, airDb, schemaUtils, metadataUtils)
-		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap)
+		let sqlUpdate  = new SQLUpdate(
+			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(context), context)
+		let sql        = sqlUpdate.toSQL(internalFragments, context)
+		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context)
 
 		return await this.executeNative(sql, parameters, context)
 	}
@@ -208,13 +202,13 @@ export abstract class SqlDriver
 				const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
 					.currentVersion.entities[portableQuery.tableIndex]
 				return new EntitySQLQuery(<JsonEntityQuery<any>>jsonQuery,
-					dbEntity, dialect, resultType, context.ioc.schemaUtils, this)
+					dbEntity, dialect, resultType, context)
 			case QueryResType.FIELD:
-				return new FieldSQLQuery(<JsonFieldQuery>jsonQuery, dialect, this)
+				return new FieldSQLQuery(<JsonFieldQuery>jsonQuery, dialect, context)
 			case QueryResType.SHEET:
-				return new SheetSQLQuery(<JsonSheetQuery>jsonQuery, dialect, this)
+				return new SheetSQLQuery(<JsonSheetQuery>jsonQuery, dialect, context)
 			case QueryResType.TREE:
-				return new TreeSQLQuery(<JsonSheetQuery>jsonQuery, dialect, this)
+				return new TreeSQLQuery(<JsonSheetQuery>jsonQuery, dialect, context)
 			case QueryResType.RAW:
 			default:
 				throw new Error(`Unknown QueryResultType: ${resultType}`)

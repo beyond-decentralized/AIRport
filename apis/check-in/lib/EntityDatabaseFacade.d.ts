@@ -1,4 +1,4 @@
-import { IDuo, IEntityCascadeGraph, IEntityContext, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, OperationName, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-control';
+import { IDatabaseFacade, IDuo, IEntityCascadeGraph, IEntityContext, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IOperationUniqueIdSequence, IQEntity, MappedEntityArray, OperationName, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-control';
 import { DbEntity } from '@airport/ground-control';
 /**
  * Created by Papa on 12/11/2016.
@@ -39,7 +39,9 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
         (...args: any[]): RawDelete<IQ>;
     }, ctx?: IEntityContext): Promise<number>;
     save(entity: EntityCreate, ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
-    private withDbEntity;
-    private identifyObjects;
+    protected withDbEntity<R>(ctx: IEntityContext, callback: {
+        (databaseFacade: IDatabaseFacade, ctx: IEntityContext): Promise<R>;
+    }): Promise<R>;
+    protected identifyObjects<T>(entity: T, ctx: IEntityContext, operationUniqueIdSeq?: IOperationUniqueIdSequence): void;
 }
 //# sourceMappingURL=EntityDatabaseFacade.d.ts.map

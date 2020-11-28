@@ -1,4 +1,3 @@
-import { QRelation } from '@airport/air-control';
 import { SortOrder } from '@airport/ground-control';
 import { AbstractEntityOrderByParser } from './AbstractEntityOrderByParser';
 /**
@@ -32,7 +31,7 @@ export class EntityOrderByParser extends AbstractEntityOrderByParser {
      * @param qEntityMapByAlias
      * @returns {string}
      */
-    getOrderByFragment(joinTree, qEntityMapByAlias, airDb) {
+    getOrderByFragment(joinTree, qEntityMapByAlias, context) {
         let orderByFragments = [];
         let orderBy = [];
         if (this.orderBy) {
@@ -47,7 +46,7 @@ export class EntityOrderByParser extends AbstractEntityOrderByParser {
         // Perform breadth-first select clause traversal
         while ((currentSelectFragment = selectFragmentQueue.shift())
             && (currentJoinNode = joinNodeQueue.shift())) {
-            const tableAlias = QRelation.getAlias(currentJoinNode.jsonRelation);
+            const tableAlias = context.ioc.relationManager.getAlias(currentJoinNode.jsonRelation);
             const dbEntity = qEntityMapByAlias[tableAlias].__driver__.dbEntity;
             const currentEntityOrderBy = [];
             let parentNodeFound;
@@ -55,7 +54,7 @@ export class EntityOrderByParser extends AbstractEntityOrderByParser {
                 if (parentNodeFound) {
                     return true;
                 }
-                const orderByDbEntity = airDb.schemas[orderByField.si]
+                const orderByDbEntity = context.ioc.airDb.schemas[orderByField.si]
                     .currentVersion.entities[orderByField.ti];
                 const dbColumn = orderByDbEntity.columns[orderByField.ci];
                 if (this.isForParentNode(currentJoinNode, orderByField)) {

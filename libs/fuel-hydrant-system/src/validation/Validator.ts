@@ -15,7 +15,9 @@ import {Q_VALIDATOR} from '../tokens'
 
 export interface IValidator {
 
-	validateReadFromEntity(relation: JSONRelation): void;
+	validateReadFromEntity(
+		relation: JSONRelation
+	): void;
 
 	validateReadProperty(
 		dbColumn: DbColumn,
@@ -53,7 +55,8 @@ export interface IValidator {
 	validateAliasedFieldAccess(fieldAlias: string): void;
 }
 
-export class QValidator implements IValidator {
+export class QValidator
+	implements IValidator {
 
 	validateInsertQEntity(
 		dbEntity: DbEntity
@@ -73,7 +76,6 @@ export class QValidator implements IValidator {
 		dbEntity: DbEntity,
 	): void {
 	}
-
 
 	validateUpdateColumn(
 		dbColumn: DbColumn,

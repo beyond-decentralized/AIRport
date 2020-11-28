@@ -1,4 +1,3 @@
-import { QRelation } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { JSONClauseObjectType } from '@airport/ground-control';
 import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../../tokens';
@@ -8,17 +7,17 @@ import { ClauseType } from './SQLWhereBase';
  * Created by Papa on 10/2/2016.
  */
 export class SQLUpdate extends SQLNoJoinQuery {
-    constructor(airportDb, jsonUpdate, dialect, storeDriver) {
-        super(airportDb.schemas[jsonUpdate.U.si]
-            .currentVersion.entities[jsonUpdate.U.ti], dialect, storeDriver);
+    constructor(jsonUpdate, dialect, context) {
+        super(context.ioc.airDb.schemas[jsonUpdate.U.si]
+            .currentVersion.entities[jsonUpdate.U.ti], dialect, context);
         this.jsonUpdate = jsonUpdate;
     }
-    toSQL(internalFragments, airDb, schemaUtils, metadataUtils) {
+    toSQL(internalFragments, context) {
         if (!this.jsonUpdate.U) {
             throw new Error(`Expecting exactly one table in UPDATE clause`);
         }
-        let updateFragment = this.getTableFragment(this.jsonUpdate.U, airDb, schemaUtils);
-        let setFragment = this.getSetFragment(this.jsonUpdate.S, airDb, schemaUtils, metadataUtils);
+        let updateFragment = this.getTableFragment(this.jsonUpdate.U, context);
+        let setFragment = this.getSetFragment(this.jsonUpdate.S, context);
         if (internalFragments.SET) {
             setFragment += internalFragments.SET.map(internalSetFragment => `
 	${internalSetFragment.column.name} = ${internalSetFragment.value}`)
@@ -27,12 +26,12 @@ export class SQLUpdate extends SQLNoJoinQuery {
         let whereFragment = '';
         let jsonQuery = this.jsonUpdate;
         if (jsonQuery.W) {
-            whereFragment = this.getWHEREFragment(jsonQuery.W, '', airDb, schemaUtils, metadataUtils);
+            whereFragment = this.getWHEREFragment(jsonQuery.W, '', context);
             whereFragment = `WHERE
 ${whereFragment}`;
             // Always replace the root entity alias reference with the table name
-            let tableAlias = QRelation.getAlias(this.jsonUpdate.U);
-            let tableName = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity);
+            let tableAlias = context.ioc.relationManager.getAlias(this.jsonUpdate.U);
+            let tableName = context.ioc.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context);
             whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName);
         }
         return `UPDATE
@@ -41,8 +40,9 @@ SET
 ${setFragment}
 ${whereFragment}`;
     }
-    getSetFragment(setClauseFragment, airDb, schemaUtils, metadataUtils) {
-        const validator = DI.db().getSync(Q_VALIDATOR);
+    getSetFragment(setClauseFragment, context) {
+        const validator = DI.db()
+            .getSync(Q_VALIDATOR);
         let setFragments = [];
         for (let columnName in setClauseFragment) {
             let value = setClauseFragment[columnName];
@@ -51,19 +51,20 @@ ${whereFragment}`;
                 continue;
             }
             validator.validateUpdateColumn(this.dbEntity.columnMap[columnName]);
-            this.addSetFragment(columnName, value, setFragments, airDb, schemaUtils, metadataUtils);
+            this.addSetFragment(columnName, value, setFragments, context);
         }
         return setFragments.join(', \n');
     }
-    addSetFragment(columnName, value, setFragments, airDb, schemaUtils, metadataUtils) {
-        const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR);
+    addSetFragment(columnName, value, setFragments, context) {
+        const sqlAdaptor = DI.db()
+            .getSync(SQL_QUERY_ADAPTOR);
         let fieldValue;
         if (typeof value === 'number') {
             this.parameterReferences.push(value);
             fieldValue = sqlAdaptor.getParameterReference(this.parameterReferences, value);
         }
         else {
-            fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE, null, airDb, schemaUtils, metadataUtils);
+            fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE, null, context);
         }
         setFragments.push(`\t${columnName} = ${fieldValue}`);
     }

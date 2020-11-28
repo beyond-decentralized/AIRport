@@ -1,5 +1,4 @@
 import {
-	ISchemaUtils,
 	MappedEntityArray,
 	newMappedEntityArray
 }                               from '@airport/air-control'
@@ -8,6 +7,7 @@ import {
 	ensureChildArray,
 	ensureChildMap
 }                               from '@airport/ground-control'
+import {IOperationContext}      from '@airport/tower'
 import {ManyToOneStubReference} from './GraphMtoMapper'
 
 /**
@@ -45,7 +45,7 @@ export class GraphOtmMapper {
 		mtoStubReference: ManyToOneStubReference,
 		mtoEntityId: string | number,
 		dbEntity: DbEntity,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): void {
 		// If the @OneToMany({ mappedBy: ... }) is missing, there is nothing to map to
 		if (!mtoStubReference.otmEntityField) {
@@ -67,7 +67,7 @@ export class GraphOtmMapper {
 		}
 		let mtoCollection: MappedEntityArray<any> = mapForOtmEntity[mtoStubReference.otmEntityField]
 		if (!mtoCollection) {
-			mtoCollection = newMappedEntityArray<any>(schemaUtils, dbEntity)
+			mtoCollection = newMappedEntityArray<any>(context.ioc.schemaUtils, dbEntity)
 			mapForOtmEntity[mtoStubReference.otmEntityField]
 			              = mtoCollection
 		}

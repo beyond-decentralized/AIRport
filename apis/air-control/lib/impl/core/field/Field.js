@@ -1,5 +1,6 @@
+import { DI } from '@airport/di';
 import { JSONClauseObjectType, SortOrder } from '@airport/ground-control';
-import { QRelation } from '../entity/Relation';
+import { RELATION_MANAGER } from '../../../tokens';
 import { FieldInOrderBy } from './FieldInOrderBy';
 /**
  * Created by Papa on 4/21/2016.
@@ -14,8 +15,9 @@ export class QField {
     }
     /**
      protected getFieldKey() {
+        const relationManager = DI.db().getSync(RELATION_MANAGER)
         let rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.parentQ.getRootJoinEntity());
-        let key = `${QRelation.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
+        let key = `${relationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
         return key;
     }
      */
@@ -36,6 +38,7 @@ export class QField {
         return appliedField;
     }
     toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
+        const relationManager = DI.db().getSync(RELATION_MANAGER);
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
@@ -54,7 +57,7 @@ export class QField {
             fa: alias,
             pi: this.dbProperty.index,
             ci: this.dbColumn.index,
-            ta: QRelation.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
+            ta: relationManager.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
             ot: this.objectType,
             dt: this.dbColumn.type
         };

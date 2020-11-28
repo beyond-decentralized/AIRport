@@ -12,7 +12,7 @@ export class GraphOtmMapper {
         // [] OtM reference Entity Index
         this.otmEntityReferenceMap = [];
     }
-    addMtoReference(mtoStubReference, mtoEntityId, dbEntity, schemaUtils) {
+    addMtoReference(mtoStubReference, mtoEntityId, dbEntity, context) {
         // If the @OneToMany({ mappedBy: ... }) is missing, there is nothing to map to
         if (!mtoStubReference.otmEntityField) {
             return;
@@ -27,7 +27,7 @@ export class GraphOtmMapper {
         }
         let mtoCollection = mapForOtmEntity[mtoStubReference.otmEntityField];
         if (!mtoCollection) {
-            mtoCollection = newMappedEntityArray(schemaUtils, dbEntity);
+            mtoCollection = newMappedEntityArray(context.ioc.schemaUtils, dbEntity);
             mapForOtmEntity[mtoStubReference.otmEntityField]
                 = mtoCollection;
         }

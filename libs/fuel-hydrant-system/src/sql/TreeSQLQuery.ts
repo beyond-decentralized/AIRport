@@ -1,24 +1,19 @@
-import {
-	AliasCache,
-	IAirportDatabase,
-	IQMetadataUtils,
-	ISchemaUtils
-}                            from '@airport/air-control'
-import {DI}                  from '@airport/di'
+import {AliasCache}            from '@airport/air-control'
+import {DI}                    from '@airport/di'
 import {
 	InternalFragments,
-	IStoreDriver,
 	JSONClauseField,
 	JSONClauseObjectType,
 	JsonTreeQuery,
 	QueryResultType
-}                            from '@airport/ground-control'
+}                              from '@airport/ground-control'
+import {IOperationContext}     from '@airport/tower'
+import {MappedOrderByParser}   from '../orderBy/MappedOrderByParser'
+import {TreeQueryResultParser} from '../result/TreeQueryResultParser'
 import {
 	Q_VALIDATOR,
 	SQL_QUERY_ADAPTOR
-}                            from '../tokens'
-import {MappedOrderByParser} from '../orderBy/MappedOrderByParser'
-import {TreeQueryResultParser} from '../result/TreeQueryResultParser'
+}                              from '../tokens'
 import {SQLDialect}            from './core/SQLQuery'
 import {ClauseType}            from './core/SQLWhereBase'
 import {NonEntitySQLQuery}     from './NonEntitySQLQuery'
@@ -35,23 +30,57 @@ export class TreeSQLQuery
 	constructor(
 		jsonQuery: JsonTreeQuery,
 		dialect: SQLDialect,
-		storeDriver: IStoreDriver
+		context: IOperationContext<any, any>,
 	) {
-		super(jsonQuery, dialect, QueryResultType.TREE, storeDriver)
+		super(jsonQuery, dialect, QueryResultType.TREE, context)
 
-		const validator = DI.db().getSync(Q_VALIDATOR)
+		const validator = DI.db()
+			.getSync(Q_VALIDATOR)
 
 		this.queryParser   = new TreeQueryResultParser()
 		this.orderByParser = new MappedOrderByParser(validator)
+	}
+
+	/**
+	 * Entities get merged if they are right next to each other in the result set.  If they
+	 * are not, they are treated as separate entities - hence, your sort order matters.
+	 *
+	 * @param results
+	 * @returns {any[]}
+	 */
+	async parseQueryResults(
+		results: any[],
+		internalFragments: InternalFragments,
+		queryResultType: QueryResultType,
+		context: IOperationContext<any, any>,
+		bridgedQueryConfiguration?: any
+	): Promise<any[]> {
+		let parsedResults: any[] = []
+		if (!results || !results.length) {
+			return parsedResults
+		}
+		parsedResults = []
+		let lastResult
+		results.forEach((result) => {
+			let aliasCache   = new AliasCache()
+			let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0], aliasCache, aliasCache.getFollowingAlias())
+			if (!lastResult) {
+				parsedResults.push(parsedResult)
+			} else if (lastResult !== parsedResult) {
+				lastResult = parsedResult
+				parsedResults.push(parsedResult)
+			}
+			this.queryParser.flushRow()
+		})
+
+		return parsedResults
 	}
 
 	protected getSELECTFragment(
 		nested: boolean,
 		selectClauseFragment: any,
 		internalFragments: InternalFragments,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string {
 		const distinctClause = <JSONClauseField>selectClauseFragment
 		if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
@@ -60,8 +89,7 @@ export class TreeSQLQuery
 					`Cannot have DISTINCT specified in a nested select clause`)
 			}
 			const distinctSelect = this.getSELECTFragment(
-				nested, distinctClause.af[0].p[0], internalFragments,
-				airDb, schemaUtils, metadataUtils)
+				nested, distinctClause.af[0].p[0], internalFragments, context)
 			return `DISTINCT ${distinctSelect}`
 		}
 
@@ -92,51 +120,16 @@ export class TreeSQLQuery
 				continue
 			}
 			if (value instanceof SqlFunctionField) {
-				selectSqlFragment += value.getValue(
-					this, airDb, schemaUtils, metadataUtils)
+				selectSqlFragment += value.getValue(this, context)
 				continue
 			}
 			selectSqlFragment += this.getFieldSelectFragment(
 				value, ClauseType.MAPPED_SELECT_CLAUSE, () => {
-					return this.getSELECTFragment(true, value, internalFragments,
-						airDb, schemaUtils, metadataUtils)
-				}, fieldIndex++, airDb, schemaUtils, metadataUtils)
+					return this.getSELECTFragment(true, value, internalFragments, context)
+				}, fieldIndex++, context)
 		}
 
 		return selectSqlFragment
-	}
-
-	/**
-	 * Entities get merged if they are right next to each other in the result set.  If they
-	 * are not, they are treated as separate entities - hence, your sort order matters.
-	 *
-	 * @param results
-	 * @returns {any[]}
-	 */
-	async parseQueryResults(
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		results: any[]
-	): Promise<any[]> {
-		let parsedResults: any[] = []
-		if (!results || !results.length) {
-			return parsedResults
-		}
-		parsedResults = []
-		let lastResult
-		results.forEach((result) => {
-			let aliasCache   = new AliasCache()
-			let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0], aliasCache, aliasCache.getFollowingAlias())
-			if (!lastResult) {
-				parsedResults.push(parsedResult)
-			} else if (lastResult !== parsedResult) {
-				lastResult = parsedResult
-				parsedResults.push(parsedResult)
-			}
-			this.queryParser.flushRow()
-		})
-
-		return parsedResults
 	}
 
 	protected parseQueryResult(
@@ -146,7 +139,8 @@ export class TreeSQLQuery
 		aliasCache: AliasCache,
 		entityAlias: string
 	): any {
-		const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR)
+		const sqlAdaptor = DI.db()
+			.getSync(SQL_QUERY_ADAPTOR)
 
 		// Return blanks, primitives and Dates directly
 		if (!resultRow || !(resultRow instanceof Object) || resultRow instanceof Date) {

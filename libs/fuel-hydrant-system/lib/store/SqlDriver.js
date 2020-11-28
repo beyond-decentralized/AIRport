@@ -40,17 +40,18 @@ export class SqlDriver {
             let sqlInsertValues = new SQLInsertValues({
                 ...portableQuery.jsonQuery,
                 V
-            }, this.getDialect(context), this, context ``);
+            }, this.getDialect(context), context);
             let sql = sqlInsertValues.toSQL(context);
-            let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap);
+            let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
             numVals += await this.executeNative(sql, parameters, context);
         }
         return numVals;
     }
     async deleteWhere(portableQuery, context) {
-        const activeQueries = await container(this).get(ACTIVE_QUERIES);
+        const activeQueries = await container(this)
+            .get(ACTIVE_QUERIES);
         let fieldMap = new SyncSchemaMap();
-        let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), this);
+        let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), context);
         let sql = sqlDelete.toSQL(context);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
@@ -58,9 +59,9 @@ export class SqlDriver {
         return numberOfAffectedRecords;
     }
     async updateWhere(portableQuery, internalFragments, context) {
-        let sqlUpdate = new SQLUpdate(airDb, portableQuery.jsonQuery, this.getDialect(context), this);
-        let sql = sqlUpdate.toSQL(internalFragments, airDb, schemaUtils, metadataUtils);
-        let parameters = sqlUpdate.getParameters(portableQuery.parameterMap);
+        let sqlUpdate = new SQLUpdate(portableQuery.jsonQuery, this.getDialect(context), context);
+        let sql = sqlUpdate.toSQL(internalFragments, context);
+        let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
         return await this.executeNative(sql, parameters, context);
     }
     async find(portableQuery, internalFragments, context, cachedSqlQueryId) {
@@ -84,13 +85,13 @@ export class SqlDriver {
             case QueryResType.MAPPED_ENTITY_TREE:
                 const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
                     .currentVersion.entities[portableQuery.tableIndex];
-                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, context.ioc.schemaUtils, this);
+                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, context);
             case QueryResType.FIELD:
-                return new FieldSQLQuery(jsonQuery, dialect, this);
+                return new FieldSQLQuery(jsonQuery, dialect, context);
             case QueryResType.SHEET:
-                return new SheetSQLQuery(jsonQuery, dialect, this);
+                return new SheetSQLQuery(jsonQuery, dialect, context);
             case QueryResType.TREE:
-                return new TreeSQLQuery(jsonQuery, dialect, this);
+                return new TreeSQLQuery(jsonQuery, dialect, context);
             case QueryResType.RAW:
             default:
                 throw new Error(`Unknown QueryResultType: ${resultType}`);

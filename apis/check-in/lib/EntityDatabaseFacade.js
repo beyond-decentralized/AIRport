@@ -1,4 +1,4 @@
-import { DB_FACADE, EntityFind, EntityFindOne, EntitySearch, EntitySearchOne, getOperationUniqueId, getOperationUniqueIdSeq, uniquelyIdentify } from '@airport/air-control';
+import { DB_FACADE, ENTITY_STATE_MANAGER, EntityFind, EntityFindOne, EntitySearch, EntitySearchOne } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { Duo } from './Duo';
 /**
@@ -26,14 +26,14 @@ export class EntityDatabaseFacade {
     // 	return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity,
     // ...entities) }
     async create(entity, ctx, operationName) {
-        this.identifyObjects(entity);
+        this.identifyObjects(entity, ctx);
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
             return await databaseFacade.create(entity, ctx, operationName);
         });
     }
     async bulkCreate(entities, checkIfProcessed = true, ctx, operationName) {
         for (const entity of entities) {
-            this.identifyObjects(entity);
+            this.identifyObjects(entity, ctx);
         }
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
             return await databaseFacade.bulkCreate(entities, ctx, checkIfProcessed, operationName);
@@ -60,7 +60,7 @@ export class EntityDatabaseFacade {
         });
     }
     async update(entity, ctx, operationName) {
-        this.identifyObjects(entity);
+        this.identifyObjects(entity, ctx);
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
             return await databaseFacade.update(entity, ctx, operationName);
         });
@@ -77,7 +77,7 @@ export class EntityDatabaseFacade {
     }
     // NOTE: Delete cascading is done on the server, no input is needed
     async delete(entity, ctx, operationName) {
-        this.identifyObjects(entity);
+        this.identifyObjects(entity, ctx);
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
             return await databaseFacade.delete(entity, ctx, operationName);
         });
@@ -110,24 +110,29 @@ export class EntityDatabaseFacade {
             ctx.dbEntity = previousEntity;
         }
     }
-    identifyObjects(entity, operationUniqueIdSeq = getOperationUniqueIdSeq()) {
-        const operationUniqueId = getOperationUniqueId(entity);
+    identifyObjects(entity, ctx, operationUniqueIdSeq) {
+        const entityStateManager = DI.db()
+            .getSync(ENTITY_STATE_MANAGER);
+        if (!operationUniqueIdSeq) {
+            operationUniqueIdSeq = entityStateManager.getOperationUniqueIdSeq();
+        }
+        const operationUniqueId = entityStateManager.getOperationUniqueId(entity);
         if (operationUniqueId) {
             return;
         }
-        uniquelyIdentify(entity, operationUniqueIdSeq);
+        entityStateManager.uniquelyIdentify(entity, operationUniqueIdSeq);
         Object.keys(entity)
             .forEach(propertyKey => {
             const property = entity[propertyKey];
             if (property instanceof Array) {
                 for (const propertyValue of property) {
                     if (propertyValue instanceof Object) {
-                        this.identifyObjects(propertyValue, operationUniqueIdSeq);
+                        this.identifyObjects(propertyValue, ctx, operationUniqueIdSeq);
                     }
                 }
             }
             else if (property instanceof Object) {
-                this.identifyObjects(property, operationUniqueIdSeq);
+                this.identifyObjects(property, ctx, operationUniqueIdSeq);
             }
         });
     }

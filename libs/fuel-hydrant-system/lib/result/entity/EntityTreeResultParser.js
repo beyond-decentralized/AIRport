@@ -16,32 +16,23 @@ export class EntityTreeResultParser extends TreeResultParser {
         this.lastRowObjectMap = {};
         this.currentObjectOneToManys = {};
     }
-    addEntity(entityAlias, dbEntity, airDb, schemaUtils) {
-        let resultObject = schemaUtils.getNewEntity(dbEntity, airDb);
+    addEntity(entityAlias, dbEntity, context) {
+        let resultObject = context.ioc.schemaUtils.getNewEntity(dbEntity, context.ioc.airDb);
         this.currentRowObjectMap[entityAlias] = resultObject;
         if (this.objectEqualityMap[entityAlias] !== undefined) {
             this.objectEqualityMap[entityAlias] = true;
         }
         return resultObject;
     }
-    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, schemaUtils) {
-        this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils);
+    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, context) {
+        this.addManyToOneStub(resultObject, propertyName, relationInfos, context);
         this.addManyToOneReference(entityAlias, resultObject, propertyName);
-    }
-    addManyToOneReference(entityAlias, resultObject, propertyName) {
-        if (this.isDifferentOrDoesntExist(entityAlias, resultObject, propertyName)) {
-            return;
-        }
-        // Both last and current objects must exist here
-        let lastMtoStub = this.lastRowObjectMap[entityAlias][propertyName];
-        let currentMtoStub = resultObject[propertyName];
-        this.objectEqualityMap[entityAlias] = valuesEqual(lastMtoStub, currentMtoStub, true);
     }
     bufferBlankManyToOneStub(entityAlias, resultObject, propertyName) {
         resultObject[propertyName] = null;
         this.addManyToOneReference(entityAlias, resultObject, propertyName);
     }
-    bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject) {
+    bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, context) {
         resultObject[propertyName] = childResultObject;
         if (this.isDifferentOrDoesntExist(entityAlias, resultObject, propertyName)) {
             return;
@@ -58,20 +49,29 @@ export class EntityTreeResultParser extends TreeResultParser {
     bufferOneToManyStub(otmDbEntity, otmPropertyName) {
         throw new Error(`@OneToMany stubs not allowed in QueryResultType.HIERARCHICAL`);
     }
-    bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject) {
+    bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject, context) {
         resultObject[propertyName] = [childResultObject];
         this.addOneToManyCollection(entityAlias, resultObject, propertyName);
     }
-    bufferBlankOneToMany(entityAlias, resultObject, otmEntityName, propertyName, relationDbEntity) {
+    bufferBlankOneToMany(entityAlias, resultObject, otmEntityName, propertyName, relationDbEntity, context) {
         resultObject[propertyName] = [];
         this.addOneToManyCollection(entityAlias, resultObject, propertyName);
     }
-    flushEntity(entityAlias, dbEntity, selectClauseFragment, entityId, resultObject) {
+    flushEntity(entityAlias, dbEntity, selectClauseFragment, entityId, resultObject, context) {
         return this.mergeEntity(entityAlias, resultObject);
     }
-    bridge(parsedResults, selectClauseFragment) {
+    bridge(parsedResults, selectClauseFragment, context) {
         // Nothing to be done, hierarchical queries are not bridged
         return parsedResults;
+    }
+    addManyToOneReference(entityAlias, resultObject, propertyName) {
+        if (this.isDifferentOrDoesntExist(entityAlias, resultObject, propertyName)) {
+            return;
+        }
+        // Both last and current objects must exist here
+        let lastMtoStub = this.lastRowObjectMap[entityAlias][propertyName];
+        let currentMtoStub = resultObject[propertyName];
+        this.objectEqualityMap[entityAlias] = valuesEqual(lastMtoStub, currentMtoStub, true);
     }
 }
 //# sourceMappingURL=EntityTreeResultParser.js.map

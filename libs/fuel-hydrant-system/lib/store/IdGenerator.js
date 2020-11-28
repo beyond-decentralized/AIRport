@@ -10,7 +10,8 @@ export class IdGenerator {
         this.transactionHistoryIdColumns = [];
     }
     async init() {
-        (await container(this).get(SEQUENCE_GENERATOR)).init();
+        (await container(this)
+            .get(SEQUENCE_GENERATOR)).init();
         const transHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
         const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
         const operationHistoryDbEntity = this.getHoldingPatternDbEntity('OperationHistory');
@@ -21,7 +22,8 @@ export class IdGenerator {
         this.transactionHistoryIdColumns.push(recordHistoryDbEntity.idColumns[0]);
     }
     async generateTransactionHistoryIds(numRepositoryTransHistories, numOperationTransHistories, numRecordHistories) {
-        const generatedSequenceNumbers = await (await container(this).get(SEQUENCE_GENERATOR))
+        const generatedSequenceNumbers = await (await container(this)
+            .get(SEQUENCE_GENERATOR))
             .generateSequenceNumbers(this.transactionHistoryIdColumns, [
             1,
             numRepositoryTransHistories,

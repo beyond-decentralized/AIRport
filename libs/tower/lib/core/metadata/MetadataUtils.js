@@ -11,14 +11,6 @@ export class MetadataUtils {
         return columnName === repositoryEntity.FOREIGN_KEY;
     }
 
-    static isStubObject(entity: any): boolean {
-        return entity.__isStub__;
-    }
-
-    static setIsStubObject(entity: any): void {
-        entity.__isStub__ = true;
-    }
-
     static isEmpty(
         value: any
     ) {

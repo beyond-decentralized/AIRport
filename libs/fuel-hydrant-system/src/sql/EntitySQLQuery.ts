@@ -1,46 +1,40 @@
 import {
 	AliasCache,
 	EntityState,
-	IAirportDatabase,
 	IEntitySelectProperties,
-	IQMetadataUtils,
-	ISchemaUtils,
 	isID,
 	isN,
-	isStub,
 	isY,
 	JoinTreeNode,
-	markAsStub,
 	objectExists,
-	QRelation,
 	ReferencedColumnData,
 	Y
-}           from '@airport/air-control'
-import {DI} from '@airport/di'
+}                             from '@airport/air-control'
+import {DI}                   from '@airport/di'
 import {
 	DbColumn,
 	DbEntity,
 	DbProperty,
 	EntityRelationType,
 	InternalFragments,
-	IStoreDriver,
 	JoinType,
 	JsonEntityQuery,
 	JSONEntityRelation,
 	JSONRelationType,
 	QueryResultType
 }                             from '@airport/ground-control'
-import {
-	Q_VALIDATOR,
-	SQL_QUERY_ADAPTOR
-}                             from '../tokens'
+import {IOperationContext}    from '@airport/tower'
 import {IEntityOrderByParser} from '../orderBy/AbstractEntityOrderByParser'
 import {EntityOrderByParser}  from '../orderBy/EntityOrderByParser'
 import {
-	getObjectResultParser,
 	GraphQueryConfiguration,
 	IEntityResultParser
 }                             from '../result/entity/IEntityResultParser'
+import {
+	OBJECT_RESULT_PARSER_FACTORY,
+	Q_VALIDATOR,
+	SQL_QUERY_ADAPTOR
+}                             from '../tokens'
 import {
 	SQLDialect,
 	SQLQuery
@@ -56,8 +50,8 @@ import {
 export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 	extends SQLQuery<JsonEntityQuery<IEP>> {
 
-	protected finalSelectTree: any
 	orderByParser: IEntityOrderByParser
+	protected finalSelectTree: any
 	protected joinTree: JoinTreeNode
 	private queryParser: IEntityResultParser
 	private columnAliases = new AliasCache()
@@ -67,46 +61,44 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
 		queryResultType: QueryResultType,
-		schemaUtils: ISchemaUtils,
-		storeDriver: IStoreDriver,
+		context: IOperationContext<any, any>,
 		protected graphQueryConfiguration?: GraphQueryConfiguration
 	) {
-		super(jsonQuery, dbEntity, dialect, queryResultType, storeDriver)
+		super(jsonQuery, dbEntity, dialect, queryResultType, context)
 
-		const validator = DI.db().getSync(Q_VALIDATOR)
+		const validator = DI.db()
+			.getSync(Q_VALIDATOR)
 
 		if (graphQueryConfiguration && this.graphQueryConfiguration.strict !== undefined) {
 			throw new Error(`"strict" configuration is not yet implemented for 
 			QueryResultType.ENTITY_GRAPH`)
 		}
-		this.finalSelectTree = this.setupSelectFields(this.jsonQuery.S, dbEntity, schemaUtils)
+		this.finalSelectTree = this.setupSelectFields(this.jsonQuery.S, dbEntity, context)
 		this.orderByParser   = new EntityOrderByParser(this.finalSelectTree, validator, jsonQuery.OB)
 	}
 
 	toSQL(
 		internalFragments: InternalFragments,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string {
 		let joinNodeMap: { [alias: string]: JoinTreeNode } = {}
 
-		this.joinTree = this.buildFromJoinTree(this.jsonQuery.F, joinNodeMap, airDb, schemaUtils)
+		this.joinTree = this.buildFromJoinTree(this.jsonQuery.F, joinNodeMap, context)
 
-		let selectFragment = this.getSELECTFragment(this.dbEntity, this.finalSelectTree, this.joinTree)
-		let fromFragment   = this.getFROMFragment(null, this.joinTree, airDb, schemaUtils, metadataUtils)
+		let selectFragment = this.getSELECTFragment(this.dbEntity, this.finalSelectTree, this.joinTree, context)
+		let fromFragment   = this.getFROMFragment(null, this.joinTree, context)
 		let whereFragment  = ''
 		let jsonQuery      = this.jsonQuery
 		if (jsonQuery.W) {
 			whereFragment = `
 WHERE
-${this.getWHEREFragment(jsonQuery.W, '', airDb, schemaUtils, metadataUtils)}`
+${this.getWHEREFragment(jsonQuery.W, '', context)}`
 		}
 		let orderByFragment = ''
 		if (jsonQuery.OB && jsonQuery.OB.length) {
 			orderByFragment = `
 ORDER BY
-${this.orderByParser.getOrderByFragment(this.joinTree, this.qEntityMapByAlias, airDb)}`
+${this.orderByParser.getOrderByFragment(this.joinTree, this.qEntityMapByAlias, context)}`
 		}
 
 		return `SELECT
@@ -128,12 +120,17 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 	 * @returns {any[]}
 	 */
 	async parseQueryResults(
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		results: any[]
+		results: any[],
+		internalFragments: InternalFragments,
+		queryResultType: QueryResultType,
+		context: IOperationContext<any, any>,
+		bridgedQueryConfiguration?: any
 	): Promise<any[]> {
-		this.queryParser         = await getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity)
-		let parsedResults: any[] = []
+		const objectResultParserFactory = await DI.db()
+			.get(OBJECT_RESULT_PARSER_FACTORY)
+		this.queryParser                = objectResultParserFactory.getObjectResultParser(
+			this.queryResultType, this.graphQueryConfiguration, this.dbEntity)
+		let parsedResults: any[]        = []
 		if (!results || !results.length) {
 			return parsedResults
 		}
@@ -141,9 +138,9 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		let lastResult
 		for (let i = 0; i < results.length; i++) {
 			let result      = results[i]
-			let entityAlias = QRelation.getAlias(this.joinTree.jsonRelation)
+			let entityAlias = context.ioc.relationManager.getAlias(this.joinTree.jsonRelation)
 			this.columnAliases.reset()
-			let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, [0], airDb, schemaUtils)
+			let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, [0], context)
 			if (!lastResult) {
 				parsedResults.push(parsedResult)
 			} else if (lastResult !== parsedResult) {
@@ -153,14 +150,13 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			this.queryParser.flushRow()
 		}
 
-		return this.queryParser.bridge(parsedResults, this.jsonQuery.S, schemaUtils)
+		return this.queryParser.bridge(parsedResults, this.jsonQuery.S, context)
 	}
 
 	protected buildFromJoinTree(
 		joinRelations: JSONEntityRelation[],
 		joinNodeMap: { [alias: string]: JoinTreeNode },
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): JoinTreeNode {
 		let jsonTree: JoinTreeNode
 		// For entity queries it is possible to have a query with no from clause, in this case
@@ -197,8 +193,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		// 	throw new Error(`First table in FROM clause cannot be joined`)
 		// }
 
-		let alias                          = QRelation.getAlias(firstRelation)
-		let firstEntity                    = QRelation.createRelatedQEntity(firstRelation, airDb, schemaUtils)
+		let alias                          = context.ioc.relationManager.getAlias(firstRelation)
+		let firstEntity                    = context.ioc.relationManager.createRelatedQEntity(firstRelation, context)
 		this.qEntityMapByAlias[alias]      = firstEntity
 		this.jsonRelationMapByAlias[alias] = firstRelation
 		// In entity queries the first entity must always be the same as the query entity
@@ -231,7 +227,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				throw new Error(`Table ${i + 1} in FROM clause is missing 
 				relationPropertyName`)
 			}
-			let parentAlias = QRelation.getParentAlias(joinRelation)
+			let parentAlias = context.ioc.relationManager.getParentAlias(joinRelation)
 			if (!joinNodeMap[parentAlias]) {
 				throw new Error(`Missing parent entity for alias ${parentAlias}, 
 				on table ${i + 1} in FROM clause`)
@@ -240,8 +236,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			let rightNode = new JoinTreeNode(joinRelation, [], leftNode)
 			leftNode.addChildNode(rightNode)
 
-			alias                              = QRelation.getAlias(joinRelation)
-			let rightEntity                    = QRelation.createRelatedQEntity(joinRelation, airDb, schemaUtils)
+			alias                              = context.ioc.relationManager.getAlias(joinRelation)
+			let rightEntity                    = context.ioc.relationManager.createRelatedQEntity(joinRelation, context)
 			this.qEntityMapByAlias[alias]      = rightEntity
 			this.jsonRelationMapByAlias[alias] = firstRelation
 			if (!rightEntity) {
@@ -257,61 +253,16 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		return jsonTree
 	}
 
-	private getSELECTFragment(
-		dbEntity: DbEntity,
-		selectClauseFragment: any,
-		joinTree: JoinTreeNode,
-		parentProperty?: DbProperty
-	): string[] {
-		const tableAlias       = QRelation.getAlias(joinTree.jsonRelation)
-		let selectSqlFragments = []
-
-		let isStubProperty = isStub(selectClauseFragment)
-
-		const defaults = this.entityDefaults.getForAlias(tableAlias)
-		for (let propertyName in selectClauseFragment) {
-			if (propertyName === '__state__') {
-				continue
-			}
-			const value = selectClauseFragment[propertyName]
-			if (!isY(value)) {
-				defaults[propertyName] = value
-			}
-			const dbProperty = dbEntity.propertyMap[propertyName]
-			if (dbProperty.relation && dbProperty.relation.length) {
-				const dbRelation = dbProperty.relation[0]
-				if (isStub(selectClauseFragment[propertyName])) {
-					for (const relationColumn of dbRelation.manyRelationColumns) {
-						const dbColumn = relationColumn.manyColumn
-						this.addFieldFromColumn(dbColumn)
-						const columnSelect = this.getSimpleColumnFragment(tableAlias, dbColumn.name)
-						selectSqlFragments.push(`${columnSelect} ${this.columnAliases.getFollowingAlias()}`)
-					}
-				} else {
-					const subSelectFragments = this.getSELECTFragment(dbRelation.relationEntity, selectClauseFragment[propertyName], joinTree.getEntityRelationChildNode(dbRelation), dbProperty)
-					selectSqlFragments       = selectSqlFragments.concat(subSelectFragments)
-				}
-			} else {
-				const dbColumn = dbProperty.propertyColumns[0].column
-				this.addFieldFromColumn(dbColumn)
-				const columnSelect = this.getSimpleColumnFragment(tableAlias, dbColumn.name)
-				selectSqlFragments.push(`${columnSelect} ${this.columnAliases.getFollowingAlias()}`)
-			}
-		}
-
-		return selectSqlFragments
-	}
-
 	protected parseQueryResult(
 		selectClauseFragment: any,
 		entityAlias: string,
 		currentJoinNode: JoinTreeNode,
 		resultRow: any,
 		nextFieldIndex: number[],
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): any {
-		const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR)
+		const sqlAdaptor = DI.db()
+			.getSync(SQL_QUERY_ADAPTOR)
 
 		// Return blanks, primitives and Dates directly
 		if (!resultRow || !(resultRow instanceof Object) || resultRow instanceof Date) {
@@ -323,7 +274,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		let qEntity    = this.qEntityMapByAlias[entityAlias]
 		const dbEntity = qEntity.__driver__.dbEntity
 
-		let resultObject = this.queryParser.addEntity(entityAlias, dbEntity, airDb, schemaUtils)
+		let resultObject = this.queryParser.addEntity(entityAlias, dbEntity, context)
 
 		for (let propertyName in selectClauseFragment) {
 			const dbProperty = dbEntity.propertyMap[propertyName]
@@ -347,7 +298,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 						case EntityRelationType.MANY_TO_ONE:
 							let haveRelationValues                    = true
 							let relationInfos: ReferencedColumnData[] = []
-							schemaUtils.forEachColumnTypeOfRelation(dbRelation, (
+							context.ioc.schemaUtils.forEachColumnTypeOfRelation(dbRelation, (
 								dbColumn: DbColumn,
 								propertyNameChains: string[][],
 							) => {
@@ -364,7 +315,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 								}
 							})
 							if (haveRelationValues) {
-								this.queryParser.bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, childDbEntity, relationInfos, schemaUtils)
+								this.queryParser.bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, childDbEntity, relationInfos, context)
 							} else {
 								this.queryParser.bufferBlankManyToOneStub(entityAlias, resultObject, propertyName, relationInfos)
 							}
@@ -379,24 +330,24 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 					nextFieldIndex[0]++
 				} else {
 					const childJoinNode    = currentJoinNode.getEntityRelationChildNode(dbRelation)
-					const childEntityAlias = QRelation.getAlias(childJoinNode.jsonRelation)
+					const childEntityAlias = context.ioc.relationManager.getAlias(childJoinNode.jsonRelation)
 					const relationQEntity  = this.qEntityMapByAlias[childEntityAlias]
 					const relationDbEntity = relationQEntity.__driver__.dbEntity
 
-					let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextFieldIndex, airDb, schemaUtils)
+					let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextFieldIndex, context)
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
 							if (childResultObject) {
-								this.queryParser.bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, schemaUtils)
+								this.queryParser.bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, context)
 							} else {
 								this.queryParser.bufferBlankManyToOneObject(entityAlias, resultObject, propertyName)
 							}
 							break
 						case EntityRelationType.ONE_TO_MANY:
 							if (childResultObject) {
-								this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, dbEntity, propertyName, relationDbEntity, childResultObject, schemaUtils)
+								this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, dbEntity, propertyName, relationDbEntity, childResultObject, context)
 							} else {
-								this.queryParser.bufferBlankOneToMany(entityAlias, resultObject, dbEntity.name, propertyName, relationDbEntity, schemaUtils)
+								this.queryParser.bufferBlankOneToMany(entityAlias, resultObject, dbEntity.name, propertyName, relationDbEntity, context)
 							}
 							break
 						default:
@@ -411,9 +362,9 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			return null
 		}
 
-		let idValue = schemaUtils.getIdKey(resultObject, dbEntity)
+		let idValue = context.ioc.schemaUtils.getIdKey(resultObject, dbEntity)
 
-		return this.queryParser.flushEntity(entityAlias, dbEntity, selectClauseFragment, idValue, resultObject, schemaUtils)
+		return this.queryParser.flushEntity(entityAlias, dbEntity, selectClauseFragment, idValue, resultObject, context)
 	}
 
 	/**
@@ -435,10 +386,10 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 	 * @param {DbEntity} dbEntity
 	 * @returns {any}
 	 */
-	private setupSelectFields(
+	protected setupSelectFields(
 		selectClauseFragment: any,
 		dbEntity: DbEntity,
-		schemaUtils: ISchemaUtils,
+		context: IOperationContext<any, any>,
 		parentDbProperty?: DbProperty
 	): any {
 		let retrieveAllOwnFields: boolean = true
@@ -480,7 +431,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			// Need to differentiate between properties that contain only
 			// foreign key ids and properties
 			if (dbProperty.relation && dbProperty.relation.length) {
-				selectFragment[propertyName] = this.setupSelectFields(value, dbProperty.relation[0].relationEntity, schemaUtils, dbProperty)
+				selectFragment[propertyName] = this.setupSelectFields(value, dbProperty.relation[0].relationEntity, context, dbProperty)
 				// } else {
 				// 	//  At least one non-relational field is in the original select clause
 				// 	retrieveAllOwnFields = false
@@ -504,7 +455,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 						break
 					case EntityRelationType.MANY_TO_ONE:
 						const manyToOneRelation = {}
-						markAsStub(manyToOneRelation)
+						context.ioc.entityStateManager.markAsStub(manyToOneRelation)
 						selectFragment[dbProperty.name] = manyToOneRelation
 						// schemaUtils.addRelationToEntitySelectClause(dbRelation, selectFragment,
 						// allowDefaults)
@@ -529,24 +480,70 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		return selectFragment
 	}
 
+	private getSELECTFragment(
+		dbEntity: DbEntity,
+		selectClauseFragment: any,
+		joinTree: JoinTreeNode,
+		context: IOperationContext<any, any>,
+		parentProperty?: DbProperty,
+	): string[] {
+		const tableAlias       = context.ioc.relationManager.getAlias(joinTree.jsonRelation)
+		let selectSqlFragments = []
+
+		let isStubProperty = context.ioc.entityStateManager.isStub(selectClauseFragment)
+
+		const defaults = this.entityDefaults.getForAlias(tableAlias)
+		for (let propertyName in selectClauseFragment) {
+			if (propertyName === '__state__') {
+				continue
+			}
+			const value = selectClauseFragment[propertyName]
+			if (!isY(value)) {
+				defaults[propertyName] = value
+			}
+			const dbProperty = dbEntity.propertyMap[propertyName]
+			if (dbProperty.relation && dbProperty.relation.length) {
+				const dbRelation = dbProperty.relation[0]
+				if (context.ioc.entityStateManager.isStub(selectClauseFragment[propertyName])) {
+					for (const relationColumn of dbRelation.manyRelationColumns) {
+						const dbColumn = relationColumn.manyColumn
+						this.addFieldFromColumn(dbColumn)
+						const columnSelect = this.getSimpleColumnFragment(tableAlias, dbColumn.name)
+						selectSqlFragments.push(`${columnSelect} ${this.columnAliases.getFollowingAlias()}`)
+					}
+				} else {
+					const subSelectFragments = this.getSELECTFragment(dbRelation.relationEntity,
+						selectClauseFragment[propertyName], joinTree.getEntityRelationChildNode(dbRelation),
+						context, dbProperty)
+					selectSqlFragments       = selectSqlFragments.concat(subSelectFragments)
+				}
+			} else {
+				const dbColumn = dbProperty.propertyColumns[0].column
+				this.addFieldFromColumn(dbColumn)
+				const columnSelect = this.getSimpleColumnFragment(tableAlias, dbColumn.name)
+				selectSqlFragments.push(`${columnSelect} ${this.columnAliases.getFollowingAlias()}`)
+			}
+		}
+
+		return selectSqlFragments
+	}
+
 	private getFROMFragment(
 		parentTree: JoinTreeNode,
 		currentTree: JoinTreeNode,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils,
-		metadataUtils: IQMetadataUtils
+		context: IOperationContext<any, any>,
 	): string {
 		let fromFragment    = '\t'
 		let currentRelation = currentTree.jsonRelation
-		let currentAlias    = QRelation.getAlias(currentRelation)
+		let currentAlias    = context.ioc.relationManager.getAlias(currentRelation)
 		let qEntity         = this.qEntityMapByAlias[currentAlias]
-		let tableName       = this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity)
+		let tableName       = context.ioc.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context)
 
 		if (!parentTree) {
 			fromFragment += `${tableName} ${currentAlias}`
 		} else {
 			let parentRelation = parentTree.jsonRelation
-			let parentAlias    = QRelation.getAlias(parentRelation)
+			let parentAlias    = context.ioc.relationManager.getAlias(parentRelation)
 			let leftEntity     = this.qEntityMapByAlias[parentAlias]
 
 			let rightEntity = this.qEntityMapByAlias[currentAlias]
@@ -570,7 +567,9 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			let errorPrefix = 'Error building FROM: '
 			switch (currentRelation.rt) {
 				case JSONRelationType.ENTITY_SCHEMA_RELATION:
-					fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, <JSONEntityRelation>currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, airDb, schemaUtils, metadataUtils)
+					fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity,
+						<JSONEntityRelation>currentRelation, parentRelation, currentAlias, parentAlias,
+						joinTypeString, errorPrefix, context)
 					break
 				default:
 					throw new Error(`Only Entity schema relations are allowed in Entity query FROM clause.`)
@@ -578,7 +577,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		}
 		for (let i = 0; i < currentTree.childNodes.length; i++) {
 			let childTreeNode = currentTree.childNodes[i]
-			fromFragment += this.getFROMFragment(currentTree, childTreeNode, airDb, schemaUtils, metadataUtils)
+			fromFragment += this.getFROMFragment(currentTree, childTreeNode, context)
 		}
 
 		return fromFragment

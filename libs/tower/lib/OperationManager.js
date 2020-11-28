@@ -1,4 +1,4 @@
-import { and, Delete, getOperationUniqueId, InsertColumnValues, InsertValues, isStub, UpdateProperties, valuesEqual } from '@airport/air-control';
+import { and, Delete, InsertColumnValues, InsertValues, UpdateProperties, valuesEqual } from '@airport/air-control';
 import { CRUDOperation, EntityRelationType, SQLDataType } from '@airport/ground-control';
 export class OperationManager {
     // higherOrderOpsYieldLength: number = 100
@@ -284,16 +284,16 @@ export class OperationManager {
             cascadeRecords: CascadeRecord[]
         ): boolean {
             this.assertOneToManyIsArray(value)
-    
+
             if (!schemaUtils.doCascade(dbRelation, crudOperation)) {
                 return false
             }
-    
+
             cascadeRecords.push({
                 relation: dbRelation,
                 manyEntities: value,
             })
-    
+
             return true
         }
     */

@@ -1,5 +1,6 @@
-import { IAirportDatabase, IEntitySelectProperties, IQMetadataUtils, ISchemaUtils, JoinTreeNode } from '@airport/air-control';
-import { DbEntity, InternalFragments, IStoreDriver, JsonEntityQuery, JSONEntityRelation, QueryResultType } from '@airport/ground-control';
+import { IEntitySelectProperties, JoinTreeNode } from '@airport/air-control';
+import { DbEntity, DbProperty, InternalFragments, JsonEntityQuery, JSONEntityRelation, QueryResultType } from '@airport/ground-control';
+import { IOperationContext } from '@airport/tower';
 import { IEntityOrderByParser } from '../orderBy/AbstractEntityOrderByParser';
 import { GraphQueryConfiguration } from '../result/entity/IEntityResultParser';
 import { SQLDialect, SQLQuery } from './core/SQLQuery';
@@ -11,13 +12,13 @@ import { SQLDialect, SQLQuery } from './core/SQLQuery';
  */
 export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends SQLQuery<JsonEntityQuery<IEP>> {
     protected graphQueryConfiguration?: GraphQueryConfiguration;
-    protected finalSelectTree: any;
     orderByParser: IEntityOrderByParser;
+    protected finalSelectTree: any;
     protected joinTree: JoinTreeNode;
     private queryParser;
     private columnAliases;
-    constructor(jsonQuery: JsonEntityQuery<IEP>, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, schemaUtils: ISchemaUtils, storeDriver: IStoreDriver, graphQueryConfiguration?: GraphQueryConfiguration);
-    toSQL(internalFragments: InternalFragments, airDb: IAirportDatabase, schemaUtils: ISchemaUtils, metadataUtils: IQMetadataUtils): string;
+    constructor(jsonQuery: JsonEntityQuery<IEP>, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, context: IOperationContext<any, any>, graphQueryConfiguration?: GraphQueryConfiguration);
+    toSQL(internalFragments: InternalFragments, context: IOperationContext<any, any>): string;
     /**
      * If bridging is not applied:
      *
@@ -30,12 +31,11 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(airDb: IAirportDatabase, schemaUtils: ISchemaUtils, results: any[]): Promise<any[]>;
+    parseQueryResults(results: any[], internalFragments: InternalFragments, queryResultType: QueryResultType, context: IOperationContext<any, any>, bridgedQueryConfiguration?: any): Promise<any[]>;
     protected buildFromJoinTree(joinRelations: JSONEntityRelation[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
-    }, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): JoinTreeNode;
-    private getSELECTFragment;
-    protected parseQueryResult(selectClauseFragment: any, entityAlias: string, currentJoinNode: JoinTreeNode, resultRow: any, nextFieldIndex: number[], airDb: IAirportDatabase, schemaUtils: ISchemaUtils): any;
+    }, context: IOperationContext<any, any>): JoinTreeNode;
+    protected parseQueryResult(selectClauseFragment: any, entityAlias: string, currentJoinNode: JoinTreeNode, resultRow: any, nextFieldIndex: number[], context: IOperationContext<any, any>): any;
     /**
      * Verify that the entity select clause is valid (has ids) and fill in clauses
      * that are blank (defined as {}).
@@ -55,7 +55,8 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
      * @param {DbEntity} dbEntity
      * @returns {any}
      */
-    private setupSelectFields;
+    protected setupSelectFields(selectClauseFragment: any, dbEntity: DbEntity, context: IOperationContext<any, any>, parentDbProperty?: DbProperty): any;
+    private getSELECTFragment;
     private getFROMFragment;
 }
 //# sourceMappingURL=EntitySQLQuery.d.ts.map

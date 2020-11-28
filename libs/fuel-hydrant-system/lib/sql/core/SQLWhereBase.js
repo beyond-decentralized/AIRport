@@ -1,6 +1,6 @@
 import { DI } from '@airport/di';
 import { JSONClauseObjectType, OperationCategory, SchemaMap, SqlOperator } from '@airport/ground-control';
-import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../../tokens';
+import { Q_VALIDATOR, SQL_QUERY_ADAPTOR, SUB_STATEMENT_SQL_GENERATOR } from '../../tokens';
 /**
  * Created by Papa on 10/2/2016.
  */
@@ -12,19 +12,19 @@ export var ClauseType;
     ClauseType[ClauseType["FUNCTION_CALL"] = 3] = "FUNCTION_CALL";
 })(ClauseType || (ClauseType = {}));
 export class SQLWhereBase {
-    constructor(dbEntity, dialect, storeDriver) {
+    constructor(dbEntity, dialect, context) {
         this.dbEntity = dbEntity;
         this.dialect = dialect;
-        this.storeDriver = storeDriver;
+        this.context = context;
         this.fieldMap = new SchemaMap();
         this.qEntityMapByAlias = {};
         this.jsonRelationMapByAlias = {};
         this.parameterReferences = [];
     }
-    getParameters(parameterMap //,
-    // valuesArray: (boolean | Date | number | string)[] = null
-    ) {
-        const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR);
+    getParameters(parameterMap, //,
+    context) {
+        const sqlAdaptor = DI.db()
+            .getSync(SQL_QUERY_ADAPTOR);
         // let populatedParameterMap: {[parameterAlias: string]: boolean} = {};
         return this.parameterReferences
             /*
@@ -51,6 +51,111 @@ export class SQLWhereBase {
             }
             return sqlAdaptor.getParameterValue(parameter);
         });
+    }
+    getFunctionCallValue(rawValue, context) {
+        return this.getFieldValue(rawValue, ClauseType.FUNCTION_CALL, null, context);
+    }
+    getFieldFunctionValue(aField, defaultCallback, context) {
+        const [sqlAdaptor, validator] = DI.db()
+            .getSync(SQL_QUERY_ADAPTOR, Q_VALIDATOR);
+        let aValue = aField.v;
+        if (this.isParameterReference(aValue)) {
+            let stringValue = aValue;
+            this.parameterReferences.push(stringValue);
+            aValue = sqlAdaptor.getParameterReference(this.parameterReferences, stringValue);
+        }
+        else {
+            aValue = this.getFieldValue(aValue, ClauseType.FUNCTION_CALL, defaultCallback, context);
+        }
+        aValue = sqlAdaptor.getFunctionAdaptor()
+            .getFunctionCalls(aField, aValue, this.qEntityMapByAlias, this, context);
+        validator.addFunctionAlias(aField.fa);
+        return aValue;
+    }
+    getFieldValue(clauseField, clauseType, defaultCallback, context) {
+        const [validator, subStatementSqlGenerator] = DI.db()
+            .getSync(Q_VALIDATOR, SUB_STATEMENT_SQL_GENERATOR);
+        let columnName;
+        if (!clauseField) {
+            throw new Error(`Missing Clause Field definition`);
+        }
+        if (clauseField instanceof Array) {
+            return clauseField
+                .map((clauseFieldMember) => this.getFieldValue(clauseFieldMember, clauseType, defaultCallback, context))
+                .join(', ');
+        }
+        if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot && clauseField.ot !== 0) {
+            throw new Error(`Object Type is not defined in JSONClauseField`);
+        }
+        const aField = clauseField;
+        let qEntity;
+        let subQuery;
+        switch (clauseField.ot) {
+            case JSONClauseObjectType.FIELD_FUNCTION:
+                return this.getFieldFunctionValue(aField, defaultCallback, context);
+            case JSONClauseObjectType.DISTINCT_FUNCTION:
+                throw new Error(`Distinct function cannot be nested.`);
+            case JSONClauseObjectType.EXISTS_FUNCTION:
+                if (clauseType !== ClauseType.WHERE_CLAUSE) {
+                    throw new Error(`Exists can only be used as a top function in a WHERE clause.`);
+                }
+                subQuery = subStatementSqlGenerator.getTreeQuerySql(aField.v, this.dialect, context);
+                return `EXISTS(${subQuery})`;
+            case JSONClauseObjectType.FIELD:
+                qEntity = this.qEntityMapByAlias[aField.ta];
+                validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
+                columnName = this.getEntityPropertyColumnName(qEntity, aField.ci, context);
+                this.addField(aField.si, aField.ti, aField.ci);
+                return this.getComplexColumnFragment(aField, columnName, context);
+            case JSONClauseObjectType.FIELD_QUERY:
+                let jsonFieldSqlSubQuery = aField.fsq;
+                if (aField.S) {
+                    jsonFieldSqlSubQuery = aField;
+                }
+                subQuery = subStatementSqlGenerator.getFieldQuerySql(jsonFieldSqlSubQuery, this.dialect, this.qEntityMapByAlias, context);
+                validator.addSubQueryAlias(aField.fa);
+                return `(${subQuery})`;
+            case JSONClauseObjectType.MANY_TO_ONE_RELATION:
+                qEntity = this.qEntityMapByAlias[aField.ta];
+                validator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);
+                columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, context);
+                this.addField(aField.si, aField.ti, aField.ci);
+                return this.getComplexColumnFragment(aField, columnName, context);
+            // must be a nested object
+            default:
+                if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE) {
+                    `Nested objects only allowed in the mapped SELECT clause.`;
+                }
+                return defaultCallback();
+        }
+    }
+    applyOperator(operator, rValue) {
+        switch (operator) {
+            case SqlOperator.EQUALS:
+                return ` = ${rValue}`;
+            case SqlOperator.GREATER_THAN:
+                return ` > ${rValue}`;
+            case SqlOperator.GREATER_THAN_OR_EQUALS:
+                return ` >= ${rValue}`;
+            case SqlOperator.IS_NOT_NULL:
+                return ` IS NOT NULL`;
+            case SqlOperator.IS_NULL:
+                return ` IS NULL`;
+            case SqlOperator.IN:
+                return ` IN (${rValue})`;
+            case SqlOperator.LESS_THAN:
+                return ` < ${rValue}`;
+            case SqlOperator.LESS_THAN_OR_EQUALS:
+                return ` <= ${rValue}`;
+            case SqlOperator.NOT_EQUALS:
+                return ` != ${rValue}`;
+            case SqlOperator.NOT_IN:
+                return ` NOT IN (${rValue})`;
+            case SqlOperator.LIKE:
+                return ` LIKE ${rValue}`;
+            default:
+                throw new Error(`Unsupported operator ${operator}`);
+        }
     }
     getWHEREFragment(operation, nestingPrefix, context) {
         let whereFragment = '';
@@ -80,6 +185,35 @@ export class SQLWhereBase {
         }
         return whereFragment;
     }
+    getEntityPropertyColumnName(qEntity, columnIndex, context) {
+        const dbEntity = context.ioc.metadataUtils.getDbEntity(qEntity);
+        return dbEntity.columns[columnIndex].name;
+    }
+    addFieldFromColumn(dbColumn) {
+        const dbEntity = dbColumn.propertyColumns[0].property.entity;
+        this.addField(dbEntity.schemaVersion.id, dbEntity.index, dbColumn.index);
+    }
+    addField(schemaVersionId, tableIndex, columnIndex) {
+        this.fieldMap.ensure(schemaVersionId, tableIndex)
+            .ensure(columnIndex);
+    }
+    warn(warning) {
+        console.log(warning);
+    }
+    getSimpleColumnFragment(tableAlias, columnName) {
+        return `${tableAlias}.${columnName}`;
+    }
+    getComplexColumnFragment(value, columnName, context) {
+        const sqlAdaptor = DI.db()
+            .getSync(SQL_QUERY_ADAPTOR);
+        let selectSqlFragment = `${value.ta}.${columnName}`;
+        selectSqlFragment = sqlAdaptor.getFunctionAdaptor()
+            .getFunctionCalls(value, selectSqlFragment, this.qEntityMapByAlias, this, context);
+        return selectSqlFragment;
+    }
+    getEntityManyToOneColumnName(qEntity, columnIndex, context) {
+        return this.getEntityPropertyColumnName(qEntity, columnIndex, context);
+    }
     getLogicalWhereFragment(operation, nestingPrefix, context) {
         let operator;
         switch (operation.o) {
@@ -102,98 +236,9 @@ export class SQLWhereBase {
         }
         let whereFragment = childOperations.map((childOperation) => {
             return this.getWHEREFragment(childOperation, nestingPrefix, context);
-        }).join(`\n${nestingPrefix}${operator} `);
+        })
+            .join(`\n${nestingPrefix}${operator} `);
         return `( ${whereFragment} )`;
-    }
-    getEntityPropertyColumnName(qEntity, columnIndex, metadataUtils) {
-        const dbEntity = metadataUtils.getDbEntity(qEntity);
-        return dbEntity.columns[columnIndex].name;
-    }
-    addFieldFromColumn(dbColumn) {
-        const dbEntity = dbColumn.propertyColumns[0].property.entity;
-        this.addField(dbEntity.schemaVersion.id, dbEntity.index, dbColumn.index);
-    }
-    addField(schemaVersionId, tableIndex, columnIndex) {
-        this.fieldMap.ensure(schemaVersionId, tableIndex).ensure(columnIndex);
-    }
-    warn(warning) {
-        console.log(warning);
-    }
-    getFunctionCallValue(rawValue, context) {
-        return this.getFieldValue(rawValue, ClauseType.FUNCTION_CALL, null, context);
-    }
-    getFieldFunctionValue(aField, defaultCallback, context) {
-        const [sqlAdaptor, validator] = DI.db().getSync(SQL_QUERY_ADAPTOR, Q_VALIDATOR);
-        let aValue = aField.v;
-        if (this.isParameterReference(aValue)) {
-            let stringValue = aValue;
-            this.parameterReferences.push(stringValue);
-            aValue = sqlAdaptor.getParameterReference(this.parameterReferences, stringValue);
-        }
-        else {
-            aValue = this.getFieldValue(aValue, ClauseType.FUNCTION_CALL, defaultCallback, context);
-        }
-        aValue = sqlAdaptor.getFunctionAdaptor().getFunctionCalls(aField, aValue, this.qEntityMapByAlias, this, context);
-        validator.addFunctionAlias(aField.fa);
-        return aValue;
-    }
-    getFieldValue(clauseField, clauseType, defaultCallback, context) {
-        const validator = DI.db().getSync(Q_VALIDATOR);
-        let columnName;
-        if (!clauseField) {
-            throw new Error(`Missing Clause Field definition`);
-        }
-        if (clauseField instanceof Array) {
-            return clauseField
-                .map((clauseFieldMember) => this.getFieldValue(clauseFieldMember, clauseType, defaultCallback, context))
-                .join(', ');
-        }
-        if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot && clauseField.ot !== 0) {
-            throw new Error(`Object Type is not defined in JSONClauseField`);
-        }
-        const aField = clauseField;
-        let qEntity;
-        switch (clauseField.ot) {
-            case JSONClauseObjectType.FIELD_FUNCTION:
-                return this.getFieldFunctionValue(aField, defaultCallback, context);
-            case JSONClauseObjectType.DISTINCT_FUNCTION:
-                throw new Error(`Distinct function cannot be nested.`);
-            case JSONClauseObjectType.EXISTS_FUNCTION:
-                if (clauseType !== ClauseType.WHERE_CLAUSE) {
-                    throw new Error(`Exists can only be used as a top function in a WHERE clause.`);
-                }
-                let TreeSQLQueryClass = require('../TreeSQLQuery').TreeSQLQuery;
-                let mappedSqlQuery = new TreeSQLQueryClass(aField.v, this.dialect, this.storeDriver);
-                return `EXISTS(${mappedSqlQuery.toSQL({}, context)})`;
-            case JSONClauseObjectType.FIELD:
-                qEntity = this.qEntityMapByAlias[aField.ta];
-                validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
-                columnName = this.getEntityPropertyColumnName(qEntity, aField.ci, metadataUtils);
-                this.addField(aField.si, aField.ti, aField.ci);
-                return this.getComplexColumnFragment(aField, columnName, airDb, schemaUtils, metadataUtils);
-            case JSONClauseObjectType.FIELD_QUERY:
-                let jsonFieldSqlSubQuery = aField.fsq;
-                if (aField.S) {
-                    jsonFieldSqlSubQuery = aField;
-                }
-                let FieldSQLQueryClass = require('../FieldSQLQuery').FieldSQLQuery;
-                let fieldSqlQuery = new FieldSQLQueryClass(jsonFieldSqlSubQuery, this.dialect, this.storeDriver);
-                fieldSqlQuery.addQEntityMapByAlias(this.qEntityMapByAlias);
-                validator.addSubQueryAlias(aField.fa);
-                return `(${fieldSqlQuery.toSQL({}, airDb, schemaUtils, metadataUtils)})`;
-            case JSONClauseObjectType.MANY_TO_ONE_RELATION:
-                qEntity = this.qEntityMapByAlias[aField.ta];
-                validator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);
-                columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, metadataUtils);
-                this.addField(aField.si, aField.ti, aField.ci);
-                return this.getComplexColumnFragment(aField, columnName, airDb, schemaUtils, metadataUtils);
-            // must be a nested object
-            default:
-                if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE) {
-                    `Nested objects only allowed in the mapped SELECT clause.`;
-                }
-                return defaultCallback();
-        }
     }
     isParameterReference(value) {
         if (value === null) {
@@ -213,47 +258,6 @@ export class SQLWhereBase {
             throw new Error(`Unexpected date instance, expecting parameter alias.`);
         }
         return false;
-    }
-    getSimpleColumnFragment(tableAlias, columnName) {
-        return `${tableAlias}.${columnName}`;
-    }
-    getComplexColumnFragment(value, columnName, airDb, schemaUtils, metadataUtils) {
-        const sqlAdaptor = DI.db().getSync(SQL_QUERY_ADAPTOR);
-        let selectSqlFragment = `${value.ta}.${columnName}`;
-        selectSqlFragment = sqlAdaptor.getFunctionAdaptor()
-            .getFunctionCalls(value, selectSqlFragment, this.qEntityMapByAlias, airDb, schemaUtils, metadataUtils, this);
-        return selectSqlFragment;
-    }
-    getEntityManyToOneColumnName(qEntity, columnIndex, metadataUtils) {
-        return this.getEntityPropertyColumnName(qEntity, columnIndex, metadataUtils);
-    }
-    applyOperator(operator, rValue) {
-        switch (operator) {
-            case SqlOperator.EQUALS:
-                return ` = ${rValue}`;
-            case SqlOperator.GREATER_THAN:
-                return ` > ${rValue}`;
-            case SqlOperator.GREATER_THAN_OR_EQUALS:
-                return ` >= ${rValue}`;
-            case SqlOperator.IS_NOT_NULL:
-                return ` IS NOT NULL`;
-            case SqlOperator.IS_NULL:
-                return ` IS NULL`;
-            case SqlOperator.IN:
-                return ` IN (${rValue})`;
-            case SqlOperator.LESS_THAN:
-                return ` < ${rValue}`;
-            case SqlOperator.LESS_THAN_OR_EQUALS:
-                return ` <= ${rValue}`;
-            case SqlOperator.NOT_EQUALS:
-                return ` != ${rValue}`;
-            case SqlOperator.NOT_IN:
-                return ` NOT IN (${rValue})`;
-            case SqlOperator.LIKE:
-                return ` LIKE ${rValue}`;
-            default:
-                throw new Error(`Unsupported operator ${operator}`);
-        }
     }
 }
 //# sourceMappingURL=SQLWhereBase.js.map

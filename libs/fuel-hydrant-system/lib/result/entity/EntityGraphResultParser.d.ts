@@ -1,5 +1,6 @@
-import { IAirportDatabase, ISchemaUtils, ReferencedColumnData } from '@airport/air-control';
+import { ReferencedColumnData } from '@airport/air-control';
 import { DbEntity, SQLDataType } from '@airport/ground-control';
+import { IOperationContext } from '@airport/tower';
 import { GraphMtoMapper, ManyToOneStubReference } from './GraphMtoMapper';
 import { GraphOtmMapper, OneToManyStubReference } from './GraphOtmMapper';
 import { AbstractObjectResultParser, GraphQueryConfiguration, IEntityResultParser } from './IEntityResultParser';
@@ -22,18 +23,20 @@ export declare class EntityGraphResultParser extends AbstractObjectResultParser 
     mtoStubBuffer: ManyToOneStubReference[];
     currentResultRow: any[];
     constructor(config: GraphQueryConfiguration, rootDbEntity: DbEntity);
-    addEntity(entityAlias: string, dbEntity: DbEntity, airDb: IAirportDatabase, schemaUtils: ISchemaUtils): any;
+    addEntity(entityAlias: string, dbEntity: DbEntity, context: IOperationContext<any, any>): any;
     addProperty(entityAlias: string, resultObject: any, dataType: SQLDataType, propertyName: string, propertyValue: any): boolean;
-    bufferManyToOneStub(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, relationInfos: ReferencedColumnData[], schemaUtils: ISchemaUtils): void;
+    bufferManyToOneStub(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, relationInfos: ReferencedColumnData[], context: IOperationContext<any, any>): void;
     bufferBlankManyToOneStub(entityAlias: string, resultObject: any, propertyName: string): void;
-    bufferManyToOneObject(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, childResultObject: any, schemaUtils: ISchemaUtils): any;
-    private bufferManyToOne;
+    bufferManyToOneObject(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, childResultObject: any, context: IOperationContext<any, any>): any;
     bufferBlankManyToOneObject(entityAlias: string, resultObject: any, propertyName: string): void;
     bufferOneToManyStub(otmDbEntity: DbEntity, otmPropertyName: string): void;
-    bufferOneToManyCollection(entityAlias: string, resultObject: any, otmDbEntity: DbEntity, propertyName: string, relationDbEntity: DbEntity, childResultObject: any, schemaUtils: ISchemaUtils): void;
-    bufferBlankOneToMany(entityAlias: string, resultObject: any, otmEntityName: string, propertyName: string, relationDbEntity: DbEntity, schemaUtils: ISchemaUtils): void;
+    bufferOneToManyCollection(entityAlias: string, resultObject: any, otmDbEntity: DbEntity, propertyName: string, relationDbEntity: DbEntity, childResultObject: any, context: IOperationContext<any, any>): void;
+    bufferBlankOneToMany(entityAlias: string, resultObject: any, otmEntityName: string, propertyName: string, relationDbEntity: DbEntity, context: IOperationContext<any, any>): void;
+    flushEntity(entityAlias: string, dbEntity: DbEntity, selectClauseFragment: any, entityIdValue: string, resultObject: any, context: IOperationContext<any, any>): any;
+    flushRow(): void;
+    bridge(parsedResults: any[], selectClauseFragment: any, context: IOperationContext<any, any>): any[];
+    private bufferManyToOne;
     private bufferOneToMany;
-    flushEntity(entityAlias: string, dbEntity: DbEntity, selectClauseFragment: any, entityIdValue: string, resultObject: any, schemaUtils: ISchemaUtils): any;
     private getEntityToFlush;
     /**
      * Merge entities with of the same class and with the same Id
@@ -48,7 +51,5 @@ export declare class EntityGraphResultParser extends AbstractObjectResultParser 
      */
     private mergeEntities;
     private flushRelationStubBuffers;
-    flushRow(): void;
-    bridge(parsedResults: any[], selectClauseFragment: any, schemaUtils: ISchemaUtils): any[];
 }
 //# sourceMappingURL=EntityGraphResultParser.d.ts.map

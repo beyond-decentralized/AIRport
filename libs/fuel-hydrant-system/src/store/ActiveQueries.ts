@@ -4,8 +4,8 @@ import {
 	SyncSchemaMap
 }                       from '@airport/ground-control'
 import {ISubject}       from '@airport/observe'
-import {ACTIVE_QUERIES} from '../tokens'
 import {SQLQuery}       from '../sql/core/SQLQuery'
+import {ACTIVE_QUERIES} from '../tokens'
 
 /**
  * Created by shamsutdinov.artem on 8/8/2016.

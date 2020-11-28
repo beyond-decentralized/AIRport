@@ -1,10 +1,9 @@
 import {
-	IAirportDatabase,
-	ISchemaUtils,
 	ReferencedColumnData,
 	valuesEqual
 }                            from '@airport/air-control'
 import {DbEntity}            from '@airport/ground-control'
+import {IOperationContext}   from '@airport/tower'
 import {TreeResultParser}    from '../TreeResultParser'
 import {IEntityResultParser} from './IEntityResultParser'
 
@@ -31,10 +30,10 @@ export class EntityTreeResultParser
 	addEntity(
 		entityAlias: string,
 		dbEntity: DbEntity,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): any {
-		let resultObject                      = schemaUtils.getNewEntity(dbEntity, airDb)
+		let resultObject                      = context.ioc.schemaUtils.getNewEntity(
+			dbEntity, context.ioc.airDb)
 		this.currentRowObjectMap[entityAlias] = resultObject
 		if (this.objectEqualityMap[entityAlias] !== undefined) {
 			this.objectEqualityMap[entityAlias] = true
@@ -50,25 +49,10 @@ export class EntityTreeResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		relationInfos: ReferencedColumnData[],
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): void {
-		this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils)
+		this.addManyToOneStub(resultObject, propertyName, relationInfos, context)
 		this.addManyToOneReference(entityAlias, resultObject, propertyName)
-	}
-
-	private addManyToOneReference(
-		entityAlias: string,
-		resultObject: any,
-		propertyName: string
-	): void {
-		if (this.isDifferentOrDoesntExist(entityAlias, resultObject, propertyName)) {
-			return
-		}
-		// Both last and current objects must exist here
-		let lastMtoStub = this.lastRowObjectMap[entityAlias][propertyName]
-
-		let currentMtoStub                  = resultObject[propertyName]
-		this.objectEqualityMap[entityAlias] = valuesEqual(lastMtoStub, currentMtoStub, true)
 	}
 
 	bufferBlankManyToOneStub(
@@ -86,7 +70,8 @@ export class EntityTreeResultParser
 		resultObject: any,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		childResultObject: any
+		childResultObject: any,
+		context: IOperationContext<any, any>,
 	): void {
 		resultObject[propertyName] = childResultObject
 		if (this.isDifferentOrDoesntExist(entityAlias, resultObject, propertyName)) {
@@ -121,7 +106,8 @@ export class EntityTreeResultParser
 		otmDbEntity: DbEntity,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		childResultObject: any
+		childResultObject: any,
+		context: IOperationContext<any, any>,
 	): void {
 		resultObject[propertyName] = [childResultObject]
 		this.addOneToManyCollection(entityAlias, resultObject, propertyName)
@@ -133,6 +119,7 @@ export class EntityTreeResultParser
 		otmEntityName: string,
 		propertyName: string,
 		relationDbEntity: DbEntity,
+		context: IOperationContext<any, any>,
 	): void {
 		resultObject[propertyName] = []
 		this.addOneToManyCollection(entityAlias, resultObject, propertyName)
@@ -143,17 +130,34 @@ export class EntityTreeResultParser
 		dbEntity: DbEntity,
 		selectClauseFragment: any,
 		entityId: any,
-		resultObject: any
+		resultObject: any,
+		context: IOperationContext<any, any>,
 	): any {
 		return this.mergeEntity(entityAlias, resultObject)
 	}
 
 	bridge(
 		parsedResults: any[],
-		selectClauseFragment: any
+		selectClauseFragment: any,
+		context: IOperationContext<any, any>,
 	): any[] {
 		// Nothing to be done, hierarchical queries are not bridged
 		return parsedResults
+	}
+
+	private addManyToOneReference(
+		entityAlias: string,
+		resultObject: any,
+		propertyName: string
+	): void {
+		if (this.isDifferentOrDoesntExist(entityAlias, resultObject, propertyName)) {
+			return
+		}
+		// Both last and current objects must exist here
+		let lastMtoStub = this.lastRowObjectMap[entityAlias][propertyName]
+
+		let currentMtoStub                  = resultObject[propertyName]
+		this.objectEqualityMap[entityAlias] = valuesEqual(lastMtoStub, currentMtoStub, true)
 	}
 
 }

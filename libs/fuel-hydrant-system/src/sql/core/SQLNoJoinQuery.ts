@@ -1,14 +1,10 @@
 import {
-	IAirportDatabase,
 	IQEntity,
 	IQEntityInternal,
-	ISchemaUtils,
-	QEntity,
-	QRelation
+	QEntity
 }                          from '@airport/air-control'
 import {
 	DbEntity,
-	IStoreDriver,
 	JSONEntityRelation
 }                          from '@airport/ground-control'
 import {IOperationContext} from '@airport/tower'
@@ -25,9 +21,9 @@ export abstract class SQLNoJoinQuery
 	constructor(
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
-		storeDriver: IStoreDriver
+		context: IOperationContext<any, any>,
 	) {
-		super(dbEntity, dialect, storeDriver)
+		super(dbEntity, dialect, context)
 	}
 
 	protected getTableFragment(
@@ -44,7 +40,7 @@ export abstract class SQLNoJoinQuery
 
 		const firstDbEntity: DbEntity = context.ioc.airDb.schemas[fromRelation.si]
 			.currentVersion.entities[fromRelation.ti]
-		let tableName                 = this.storeDriver.getEntityTableName(firstDbEntity, context)
+		let tableName                 = context.ioc.storeDriver.getEntityTableName(firstDbEntity, context)
 		if (fromRelation.si !== this.dbEntity.schemaVersion.schema.index
 			|| fromRelation.ti !== this.dbEntity.index) {
 			throw new Error(`Unexpected table in UPDATE/DELETE clause: 
@@ -54,10 +50,10 @@ export abstract class SQLNoJoinQuery
 
 		const firstQEntity: IQEntity = new QEntity(firstDbEntity)
 
-		const tableAlias                   = QRelation.getAlias(fromRelation)
+		const tableAlias                   = context.ioc.relationManager.getAlias(fromRelation)
 		this.qEntityMapByAlias[tableAlias] = firstQEntity as IQEntityInternal
-		let fromFragment                 = `\t${tableName}`;
-		if(addAs) {
+		let fromFragment                   = `\t${tableName}`
+		if (addAs) {
 			fromFragment += ` AS ${tableAlias}`
 		}
 

@@ -19,6 +19,7 @@ export * from './sql/core/SQLNoJoinQuery';
 export * from './sql/core/SQLQuery';
 export * from './sql/core/SQLUpdate';
 export * from './sql/core/SQLWhereBase';
+export * from './sql/core/SubStatementSqlGenerator';
 export * from './sql/EntitySQLQuery';
 export * from './sql/FieldSQLQuery';
 export * from './sql/NonEntitySQLQuery';

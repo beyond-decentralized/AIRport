@@ -1,5 +1,3 @@
-import { isStub, markAsStub } from '@airport/air-control';
-import { QueryResultType } from '@airport/ground-control';
 /**
  * Created by Papa on 10/16/2016.
  */
@@ -14,30 +12,14 @@ export class GraphQueryConfiguration {
         //failOnManyToOneConflicts: boolean = true;
     }
 }
-export async function getObjectResultParser(queryResultType, config, rootDbEntity) {
-    switch (queryResultType) {
-        case QueryResultType.ENTITY_GRAPH:
-        case QueryResultType.MAPPED_ENTITY_GRAPH:
-            const entityGraphResultParserModule = await import('./EntityGraphResultParser');
-            let EntityGraphResultParserClass = entityGraphResultParserModule.EntityGraphResultParser;
-            return new EntityGraphResultParserClass(config, rootDbEntity);
-        case QueryResultType.ENTITY_TREE:
-        case QueryResultType.MAPPED_ENTITY_TREE:
-            const entityTreeResultParserModule = await import('./EntityTreeResultParser');
-            let EntityTreeResultParserClass = entityTreeResultParserModule.EntityTreeResultParser;
-            return new EntityTreeResultParserClass();
-        default:
-            throw new Error(`ObjectQueryParser not supported for QueryResultType: ${queryResultType}`);
-    }
-}
 export class AbstractObjectResultParser {
-    addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils) {
+    addManyToOneStub(resultObject, propertyName, relationInfos, context) {
         let manyToOneStub = {};
-        isStub(manyToOneStub);
+        context.ioc.entityStateManager.isStub(manyToOneStub);
         resultObject[propertyName] = manyToOneStub;
         let haveAllIds = true;
         relationInfos.forEach((relationInfo) => {
-            if (schemaUtils.isIdEmpty(relationInfo.value)) {
+            if (context.ioc.schemaUtils.isIdEmpty(relationInfo.value)) {
                 haveAllIds = false;
                 return;
             }
@@ -49,7 +31,7 @@ export class AbstractObjectResultParser {
                 // If there is no object in context, create one
                 if (!currentObject) {
                     currentObject = {};
-                    markAsStub(currentObject);
+                    context.ioc.entityStateManager.markAsStub(currentObject);
                     lastObject[propertyNameChain[currentIndex - 1]] = currentObject;
                 }
                 // If it's not a leaf (more objects in the chain exist)

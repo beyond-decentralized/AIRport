@@ -8,22 +8,22 @@ export class FlattenedResultParser extends AbstractObjectResultParser {
         super(...arguments);
         this.currentResultRow = [];
     }
-    addEntity(entityAlias, dbEntity) {
+    addEntity(entityAlias, dbEntity, context) {
         return this.currentResultRow;
     }
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject.push(propertyValue);
         return objectExists(propertyValue);
     }
-    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, schemaUtils) {
-        this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils);
+    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, context) {
+        this.addManyToOneStub(resultObject, propertyName, relationInfos, context);
     }
     bufferBlankManyToOneStub(entityAlias, resultObject, propertyName, relationInfos) {
         relationInfos.forEach((relationInfo) => {
             resultObject.push(null);
         });
     }
-    bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject) {
+    bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, context) {
         // Nothing to do, we are working with a flat result array
     }
     bufferBlankManyToOneObject(entityAlias, resultObject, propertyName) {
@@ -32,20 +32,20 @@ export class FlattenedResultParser extends AbstractObjectResultParser {
     bufferOneToManyStub(otmDbEntity, otmPropertyName) {
         throw new Error(`@OneToMany stubs not allowed in QueryResultType.PLAIN`);
     }
-    bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject) {
+    bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject, context) {
         // Nothing to do, we are working with a flat result array
     }
-    bufferBlankOneToMany(entityAlias, resultObject, otmEntityName, propertyName, relationDbEntity) {
+    bufferBlankOneToMany(entityAlias, resultObject, otmEntityName, propertyName, relationDbEntity, context) {
         // Nothing to do, we are working with a flat result array
     }
-    flushEntity(entityAlias, dbEntity, selectClauseFragment, entityId, resultObject) {
+    flushEntity(entityAlias, dbEntity, selectClauseFragment, entityId, resultObject, context) {
         // Nothing to do, we are working with a flat result array
         return resultObject;
     }
     flushRow() {
         this.currentResultRow = [];
     }
-    bridge(parsedResults, selectClauseFragment) {
+    bridge(parsedResults, selectClauseFragment, context) {
         // No bridging needed for ENTITY_FLATTENED Object queries
         return parsedResults;
     }

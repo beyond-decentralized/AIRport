@@ -25,7 +25,7 @@ export class CockroachdbDriver extends SqlDriver {
         throw error;
     }
     getDialect(context) {
-        return SQLDialect.SQLITE_WEBSQL;
+        return SQLDialect.POSTGRESQL;
     }
 }
 //# sourceMappingURL=CockroachDbDriver.js.map

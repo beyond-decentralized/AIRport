@@ -3,7 +3,6 @@ import {
 	SqlDriver
 } from '@airport/fuel-hydrant-system'
 import {
-	INVALID_TABLE_NAME,
 	QueryType,
 	StoreType
 } from '@airport/ground-control'
@@ -67,6 +66,6 @@ export class CockroachdbDriver
 	protected getDialect(
 		context: IOperationContext<any, any>,
 	): SQLDialect {
-		return SQLDialect.SQLITE_WEBSQL
+		return SQLDialect.POSTGRESQL
 	}
 }

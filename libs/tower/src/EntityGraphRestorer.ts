@@ -1,7 +1,8 @@
 import {
-	getOperationUniqueId,
-	isStub
-} from '@airport/air-control'
+	ENTITY_STATE_MANAGER,
+	IEntityStateManager
+}           from '@airport/air-control'
+import {DI} from '@airport/di'
 
 export interface IEntityGraphRestore {
 
@@ -16,20 +17,22 @@ export class EntityGraphRestorer
 		if (!(root instanceof Array)) {
 			root = [root]
 		}
+		const entityStateManager = DI.db().getSync(ENTITY_STATE_MANAGER)
 		const entitiesByOperationIndex = []
-		this.linkEntityGraph(root, entitiesByOperationIndex)
-		this.linkEntityGraph(root, entitiesByOperationIndex, false)
+		this.linkEntityGraph(root, entitiesByOperationIndex, entityStateManager)
+		this.linkEntityGraph(root, entitiesByOperationIndex, entityStateManager, false)
 	}
 
 	protected linkEntityGraph(
 		currentEntities: any[],
 		entitiesByOperationIndex: any[],
+		entityStateManager: IEntityStateManager,
 		checkForDuplicates: boolean = true
 	) {
 		for (const currentEntity of currentEntities) {
-			const operationUniqueId     = getOperationUniqueId(currentEntity)
+			const operationUniqueId     = entityStateManager.getOperationUniqueId(currentEntity)
 			const previouslyFoundEntity = entitiesByOperationIndex[operationUniqueId]
-			let entityIsStub            = isStub(currentEntity)
+			let entityIsStub            = entityStateManager.isStub(currentEntity)
 
 			if (previouslyFoundEntity && entityIsStub) {
 

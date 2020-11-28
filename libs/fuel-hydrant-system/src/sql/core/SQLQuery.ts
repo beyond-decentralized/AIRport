@@ -7,7 +7,6 @@ import {
 	DbRelationColumn,
 	EntityRelationType,
 	InternalFragments,
-	IStoreDriver,
 	JSONEntityRelation,
 	JsonQuery,
 	JSONRelation,
@@ -59,9 +58,9 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
 		protected queryResultType: QueryResultType,
-		storeDriver: IStoreDriver
+		context: IOperationContext<any, any>,
 	) {
-		super(dbEntity, dialect, storeDriver)
+		super(dbEntity, dialect, context)
 	}
 
 	getFieldMap(): SchemaMap {
@@ -165,7 +164,7 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
 			onClause                = `${onClause}
 			${joinWhereOperator} ${whereClause}`
 		}
-		const tableName    = this.storeDriver.getEntityTableName(rightDbEntity, context)
+		const tableName    = context.ioc.storeDriver.getEntityTableName(rightDbEntity, context)
 		const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`
 
 		return fromFragment

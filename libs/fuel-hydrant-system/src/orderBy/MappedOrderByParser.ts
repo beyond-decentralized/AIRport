@@ -73,7 +73,6 @@ export class MappedOrderByParser
 				currentSelectFragmentFieldSet[field.fa] = true
 			}
 
-
 			let currentEntityOrderBy: JSONFieldInOrderBy[] = []
 
 			// First add the fields specified in the query Order By clause for this entity, in the

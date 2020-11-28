@@ -35,6 +35,10 @@ export class TreeResultParser extends AbstractObjectResultParser {
         }
         return true;
     }
+    flushRow() {
+        this.lastRowObjectMap = this.currentRowObjectMap;
+        this.currentRowObjectMap = {};
+    }
     isDifferentOrDoesntExist(entityAlias, resultObject, propertyName) {
         // If we already know that this is a new facade, no need to keep on checking
         if (!this.objectEqualityMap[entityAlias]) {
@@ -119,10 +123,6 @@ export class TreeResultParser extends AbstractObjectResultParser {
             }
         }
         return resultObject;
-    }
-    flushRow() {
-        this.lastRowObjectMap = this.currentRowObjectMap;
-        this.currentRowObjectMap = {};
     }
 }
 //# sourceMappingURL=TreeResultParser.js.map

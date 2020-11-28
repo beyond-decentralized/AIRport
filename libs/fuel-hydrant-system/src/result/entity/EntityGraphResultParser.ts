@@ -1,30 +1,29 @@
 import {
-	IAirportDatabase,
-	ISchemaUtils,
 	newMappedEntityArray,
 	objectExists,
 	ReferencedColumnData
-} from '@airport/air-control'
+}                          from '@airport/air-control'
 import {
 	DbEntity,
 	ensureChildArray,
 	ensureChildMap,
 	EntityRelationType,
 	SQLDataType
-} from '@airport/ground-control'
+}                          from '@airport/ground-control'
+import {IOperationContext} from '@airport/tower'
 import {
 	GraphMtoMapper,
 	ManyToOneStubReference
-} from './GraphMtoMapper'
+}                          from './GraphMtoMapper'
 import {
 	GraphOtmMapper,
 	OneToManyStubReference
-} from './GraphOtmMapper'
+}                          from './GraphOtmMapper'
 import {
 	AbstractObjectResultParser,
 	GraphQueryConfiguration,
 	IEntityResultParser
-} from './IEntityResultParser'
+}                          from './IEntityResultParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -63,10 +62,9 @@ export class EntityGraphResultParser
 	addEntity(
 		entityAlias: string,
 		dbEntity: DbEntity,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): any {
-		return schemaUtils.getNewEntity(dbEntity, airDb)
+		return context.ioc.schemaUtils.getNewEntity(dbEntity, context.ioc.airDb)
 	}
 
 	addProperty(
@@ -87,12 +85,12 @@ export class EntityGraphResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		relationInfos: ReferencedColumnData[],
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): void {
 		const oneToManyStubAdded = this.addManyToOneStub(
-			resultObject, propertyName, relationInfos, schemaUtils)
+			resultObject, propertyName, relationInfos, context)
 		if (oneToManyStubAdded) {
-			const relatedEntityId = schemaUtils.getIdKey(resultObject[propertyName], relationDbEntity)
+			const relatedEntityId = context.ioc.schemaUtils.getIdKey(resultObject[propertyName], relationDbEntity)
 			this.bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId)
 		}
 	}
@@ -113,11 +111,94 @@ export class EntityGraphResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		childResultObject: any,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): any {
 		resultObject[propertyName] = childResultObject
-		const relatedEntityId      = schemaUtils.getIdKey(resultObject[propertyName], relationDbEntity)
+		const relatedEntityId      = context.ioc.schemaUtils.getIdKey(resultObject[propertyName], relationDbEntity)
 		this.bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId)
+	}
+
+	bufferBlankManyToOneObject(
+		entityAlias: string,
+		resultObject: any,
+		propertyName: string,
+	): void {
+		resultObject[propertyName] = null
+		// Nothing to do for bridged parser - bridging will map blanks, where possible
+	}
+
+	bufferOneToManyStub(
+		otmDbEntity: DbEntity,
+		otmPropertyName: string
+	): void {
+		this.bufferOneToMany(otmDbEntity, otmPropertyName)
+	}
+
+	bufferOneToManyCollection(
+		entityAlias: string,
+		resultObject: any,
+		otmDbEntity: DbEntity,
+		propertyName: string,
+		relationDbEntity: DbEntity,
+		childResultObject: any,
+		context: IOperationContext<any, any>,
+	): void {
+		this.bufferOneToMany(otmDbEntity, propertyName)
+		let childResultsArray = newMappedEntityArray(context.ioc.schemaUtils, relationDbEntity)
+		childResultsArray.put(childResultObject)
+		resultObject[propertyName] = childResultsArray
+	}
+
+	bufferBlankOneToMany(
+		entityAlias: string,
+		resultObject: any,
+		otmEntityName: string,
+		propertyName: string,
+		relationDbEntity: DbEntity,
+		context: IOperationContext<any, any>,
+	): void {
+		resultObject[propertyName] = newMappedEntityArray<any>(context.ioc.schemaUtils, relationDbEntity)
+	}
+
+	flushEntity(
+		entityAlias: string,
+		dbEntity: DbEntity,
+		selectClauseFragment: any,
+		entityIdValue: string,
+		resultObject: any,
+		context: IOperationContext<any, any>,
+	): any {
+		if (!entityIdValue) {
+			throw new Error(`No Id provided for entity 
+			'${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'`)
+		}
+		let currentEntity = this.getEntityToFlush(
+			dbEntity, selectClauseFragment, entityIdValue, resultObject, context)
+		this.flushRelationStubBuffers(
+			entityIdValue, currentEntity, dbEntity, context)
+
+		return currentEntity
+	}
+
+	flushRow(): void {
+		// Nothing to do, bridged queries don't rely on rows changing
+	}
+
+	bridge(
+		parsedResults: any[],
+		selectClauseFragment: any,
+		context: IOperationContext<any, any>,
+	): any[] {
+		this.mtoMapper.populateMtos(this.entityMapBySchemaAndTableIndexes)
+		this.otmMapper.populateOtms(this.entityMapBySchemaAndTableIndexes, !this.config || this.config.mapped)
+
+		// merge any out of order entity references (there shouldn't be any)
+		let resultMEA = newMappedEntityArray(context.ioc.schemaUtils, this.rootDbEntity)
+		resultMEA.putAll(parsedResults)
+		if (!this.config || this.config.mapped) {
+			return resultMEA
+		}
+		return resultMEA.toArray()
 	}
 
 	private bufferManyToOne(
@@ -151,48 +232,6 @@ export class EntityGraphResultParser
 		})
 	}
 
-	bufferBlankManyToOneObject(
-		entityAlias: string,
-		resultObject: any,
-		propertyName: string,
-	): void {
-		resultObject[propertyName] = null
-		// Nothing to do for bridged parser - bridging will map blanks, where possible
-	}
-
-	bufferOneToManyStub(
-		otmDbEntity: DbEntity,
-		otmPropertyName: string
-	): void {
-		this.bufferOneToMany(otmDbEntity, otmPropertyName)
-	}
-
-	bufferOneToManyCollection(
-		entityAlias: string,
-		resultObject: any,
-		otmDbEntity: DbEntity,
-		propertyName: string,
-		relationDbEntity: DbEntity,
-		childResultObject: any,
-		schemaUtils: ISchemaUtils
-	): void {
-		this.bufferOneToMany(otmDbEntity, propertyName)
-		let childResultsArray = newMappedEntityArray(schemaUtils, relationDbEntity)
-		childResultsArray.put(childResultObject)
-		resultObject[propertyName] = childResultsArray
-	}
-
-	bufferBlankOneToMany(
-		entityAlias: string,
-		resultObject: any,
-		otmEntityName: string,
-		propertyName: string,
-		relationDbEntity: DbEntity,
-		schemaUtils: ISchemaUtils
-	): void {
-		resultObject[propertyName] = newMappedEntityArray<any>(schemaUtils, relationDbEntity)
-	}
-
 	private bufferOneToMany(
 		otmDbEntity: DbEntity,
 		otmPropertyName: string
@@ -204,32 +243,12 @@ export class EntityGraphResultParser
 		})
 	}
 
-	flushEntity(
-		entityAlias: string,
-		dbEntity: DbEntity,
-		selectClauseFragment: any,
-		entityIdValue: string,
-		resultObject: any,
-		schemaUtils: ISchemaUtils
-	): any {
-		if (!entityIdValue) {
-			throw new Error(`No Id provided for entity 
-			'${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'`)
-		}
-		let currentEntity = this.getEntityToFlush(
-			dbEntity, selectClauseFragment, entityIdValue, resultObject, schemaUtils)
-		this.flushRelationStubBuffers(
-			entityIdValue, currentEntity, dbEntity, schemaUtils)
-
-		return currentEntity
-	}
-
 	private getEntityToFlush(
 		dbEntity: DbEntity,
 		selectClauseFragment: any,
 		idValue: string,
 		resultObject: any,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): any {
 		if (!idValue) {
 			throw new Error(`Entity ID not specified for entity 
@@ -244,7 +263,7 @@ export class EntityGraphResultParser
 
 		let existingEntity        = entityMapForName[idValue]
 		let currentEntity         = this.mergeEntities(
-			existingEntity, resultObject, dbEntity, selectClauseFragment, schemaUtils)
+			existingEntity, resultObject, dbEntity, selectClauseFragment, context)
 		entityMapForName[idValue] = currentEntity
 
 		return currentEntity
@@ -267,12 +286,12 @@ export class EntityGraphResultParser
 		target: any,
 		dbEntity: DbEntity,
 		selectClauseFragment: any,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): any {
 		if (!source || target === source) {
 			return target
 		}
-		const id = schemaUtils.getIdKey(target, dbEntity)
+		const id = context.ioc.schemaUtils.getIdKey(target, dbEntity)
 
 		for (let propertyName in selectClauseFragment) {
 			if (selectClauseFragment[propertyName] === undefined) {
@@ -282,7 +301,7 @@ export class EntityGraphResultParser
 			// Merge properties (conflicts detected at query parsing time):
 			if (!dbProperty.relation || !dbProperty.relation.length) {
 				// If source property doesn't exist
-				if (schemaUtils.isEmpty(source[propertyName])) {
+				if (context.ioc.schemaUtils.isEmpty(source[propertyName])) {
 					// set the source property to value of target
 					source[propertyName] = target[propertyName]
 				}
@@ -336,7 +355,7 @@ export class EntityGraphResultParser
 							const sourceSet: { [id: string]: any } = {}
 							if (sourceArray) {
 								sourceArray.forEach((sourceChild) => {
-									const sourceChildIdValue      = schemaUtils.getIdKey(sourceChild, childDbEntity)
+									const sourceChildIdValue      = context.ioc.schemaUtils.getIdKey(sourceChild, childDbEntity)
 									sourceSet[sourceChildIdValue] = sourceChild
 								})
 							} else {
@@ -345,7 +364,7 @@ export class EntityGraphResultParser
 							}
 							if (targetArray) {
 								targetArray.forEach((targetChild) => {
-									const targetChildIdValue = schemaUtils.getIdKey(targetChild, childDbEntity)
+									const targetChildIdValue = context.ioc.schemaUtils.getIdKey(targetChild, childDbEntity)
 									if (this.config && this.config.strict && !sourceSet[targetChildIdValue]) {
 										throw new Error(`One-to-Many child arrays don't match for 
 										'${dbEntity.name}.${dbProperty.name}', Id: ${id}`)
@@ -375,7 +394,7 @@ export class EntityGraphResultParser
 		entityIdValue: string,
 		currentEntity: any,
 		dbEntity: DbEntity,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): void {
 		let otmStubBuffer  = this.otmStubBuffer
 		this.otmStubBuffer = []
@@ -388,31 +407,10 @@ export class EntityGraphResultParser
 		mtoStubBuffer.forEach((mtoStub) => {
 			mtoStub.mtoParentObject = currentEntity
 			this.otmMapper.addMtoReference(
-				mtoStub, entityIdValue, dbEntity, schemaUtils)
+				mtoStub, entityIdValue, dbEntity, context)
 			this.mtoMapper.addMtoReference(mtoStub, entityIdValue)
 		})
 
-	}
-
-	flushRow(): void {
-		// Nothing to do, bridged queries don't rely on rows changing
-	}
-
-	bridge(
-		parsedResults: any[],
-		selectClauseFragment: any,
-		schemaUtils: ISchemaUtils
-	): any[] {
-		this.mtoMapper.populateMtos(this.entityMapBySchemaAndTableIndexes)
-		this.otmMapper.populateOtms(this.entityMapBySchemaAndTableIndexes, !this.config || this.config.mapped)
-
-		// merge any out of order entity references (there shouldn't be any)
-		let resultMEA = newMappedEntityArray(schemaUtils, this.rootDbEntity)
-		resultMEA.putAll(parsedResults)
-		if (!this.config || this.config.mapped) {
-			return resultMEA
-		}
-		return resultMEA.toArray()
 	}
 
 }

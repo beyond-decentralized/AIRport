@@ -1,5 +1,6 @@
-import { IAirportDatabase, IQEntityInternal, JoinTreeNode } from '@airport/air-control';
+import { IQEntityInternal, JoinTreeNode } from '@airport/air-control';
 import { JSONEntityFieldInOrderBy, JSONFieldInOrderBy } from '@airport/ground-control';
+import { IOperationContext } from '@airport/tower';
 import { IValidator } from '../validation/Validator';
 /**
  * Created by Papa on 10/16/2016.
@@ -7,7 +8,7 @@ import { IValidator } from '../validation/Validator';
 export interface IEntityOrderByParser {
     getOrderByFragment(joinTree: JoinTreeNode, qEntityMapByAlias: {
         [entityAlias: string]: IQEntityInternal;
-    }, airDb: IAirportDatabase): string;
+    }, context: IOperationContext<any, any>): string;
 }
 export interface INonEntityOrderByParser {
     getOrderByFragment(rootSelectClauseFragment: any, originalOrderBy: JSONFieldInOrderBy[]): string;

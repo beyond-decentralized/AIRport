@@ -28,12 +28,12 @@ export class EntityStateManager {
         }
         return operationUniqueId;
     }
-    getEntityState(entity) {
-        return entity.__state__;
-    }
     markAsStub(entity) {
         entity.__state__ = EntityState.STUB;
         return entity;
+    }
+    getEntityState(entity) {
+        return entity.__state__;
     }
 }
 EntityStateManager.OPERATION_UNIQUE_ID_FIELD = '__UID__';

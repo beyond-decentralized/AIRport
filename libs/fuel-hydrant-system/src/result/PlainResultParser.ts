@@ -1,17 +1,16 @@
 import {
-	IAirportDatabase,
-	ISchemaUtils,
 	objectExists,
 	ReferencedColumnData
-} from '@airport/air-control'
+}                          from '@airport/air-control'
 import {
 	DbEntity,
 	SQLDataType
-} from '@airport/ground-control'
+}                          from '@airport/ground-control'
+import {IOperationContext} from '@airport/tower'
 import {
 	AbstractObjectResultParser,
 	IEntityResultParser
-} from './entity/IEntityResultParser'
+}                          from './entity/IEntityResultParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -28,10 +27,9 @@ export class PlainResultParser
 	addEntity(
 		entityAlias: string,
 		dbEntity: DbEntity,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): any {
-		return schemaUtils.getNewEntity(dbEntity, airDb)
+		return context.ioc.schemaUtils.getNewEntity(dbEntity, context.ioc.airDb)
 	}
 
 	addProperty(
@@ -52,10 +50,10 @@ export class PlainResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		relationInfos: ReferencedColumnData[],
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): void {
 		this.addManyToOneStub(
-			resultObject, propertyName, relationInfos, schemaUtils)
+			resultObject, propertyName, relationInfos, context)
 	}
 
 	bufferManyToOneObject(
@@ -64,7 +62,8 @@ export class PlainResultParser
 		resultObject: any,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		childResultObject: any
+		childResultObject: any,
+		context: IOperationContext<any, any>,
 	): any {
 		resultObject[propertyName] = childResultObject
 	}
@@ -101,7 +100,8 @@ export class PlainResultParser
 		otmDbEntity: DbEntity,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		childResultObject: any
+		childResultObject: any,
+		context: IOperationContext<any, any>,
 	): void {
 		resultObject[propertyName] = [childResultObject]
 	}
@@ -112,6 +112,7 @@ export class PlainResultParser
 		otmEntityName: string,
 		propertyName: string,
 		relationDbEntity: DbEntity,
+		context: IOperationContext<any, any>,
 	): void {
 		resultObject[propertyName] = []
 	}
@@ -121,7 +122,8 @@ export class PlainResultParser
 		dbEntity: DbEntity,
 		selectClauseFragment: any,
 		entityId: any,
-		resultObject: any
+		resultObject: any,
+		context: IOperationContext<any, any>,
 	): any {
 		// Nothing to be done, plain objects don't need to be flushed since they don't relate
 		// do any other rows
@@ -135,7 +137,8 @@ export class PlainResultParser
 
 	bridge(
 		parsedResults: any[],
-		selectClauseFragment: any
+		selectClauseFragment: any,
+		context: IOperationContext<any, any>,
 	): any[] {
 		// Nothing to be done, plain queries are not bridged
 		return parsedResults

@@ -1,18 +1,12 @@
 import {
-	IAirportDatabase,
-	ISchemaUtils,
-	isStub,
 	MappedEntityArray,
-	markAsStub,
 	ReferencedColumnData
-}                                from '@airport/air-control'
+}                          from '@airport/air-control'
 import {
 	DbEntity,
-	QueryResultType,
 	SQLDataType
-}                                from '@airport/ground-control'
-import {EntityGraphResultParser} from './EntityGraphResultParser'
-import {EntityTreeResultParser}  from './EntityTreeResultParser'
+}                          from '@airport/ground-control'
+import {IOperationContext} from '@airport/tower'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -33,8 +27,7 @@ export interface IEntityResultParser {
 	addEntity(
 		entityAlias: string,
 		dbEntity: DbEntity,
-		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): any;
 
 	addProperty(
@@ -52,7 +45,7 @@ export interface IEntityResultParser {
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		relationInfos: ReferencedColumnData[],
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): void;
 
 	bufferBlankManyToOneStub(
@@ -69,7 +62,7 @@ export interface IEntityResultParser {
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		relatedEntityId: any,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): void;
 
 	bufferBlankManyToOneObject(
@@ -90,7 +83,7 @@ export interface IEntityResultParser {
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		childResultObject: any,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): void;
 
 	bufferBlankOneToMany(
@@ -99,7 +92,7 @@ export interface IEntityResultParser {
 		otmEntityName: string,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): void;
 
 	flushEntity(
@@ -108,7 +101,7 @@ export interface IEntityResultParser {
 		selectClauseFragment: any,
 		idValue: any,
 		resultObject: any,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): any;
 
 	flushRow(): void;
@@ -116,32 +109,9 @@ export interface IEntityResultParser {
 	bridge(
 		parsedResults: any[],
 		selectClauseFragment: any,
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): any[] | MappedEntityArray<any>;
 
-}
-
-export async function getObjectResultParser(
-	queryResultType: QueryResultType,
-	config?: GraphQueryConfiguration,
-	rootDbEntity?: DbEntity,
-): Promise<IEntityResultParser> {
-	switch (queryResultType) {
-		case QueryResultType.ENTITY_GRAPH:
-		case QueryResultType.MAPPED_ENTITY_GRAPH:
-			const entityGraphResultParserModule                              = await import('./EntityGraphResultParser')
-			let EntityGraphResultParserClass: typeof EntityGraphResultParser = entityGraphResultParserModule.EntityGraphResultParser
-			return new EntityGraphResultParserClass(config, rootDbEntity)
-		case QueryResultType.ENTITY_TREE:
-		case QueryResultType.MAPPED_ENTITY_TREE:
-
-			const entityTreeResultParserModule                             = await import('./EntityTreeResultParser')
-			let EntityTreeResultParserClass: typeof EntityTreeResultParser = entityTreeResultParserModule.EntityTreeResultParser
-			return new EntityTreeResultParserClass()
-		default:
-			throw new Error(
-				`ObjectQueryParser not supported for QueryResultType: ${queryResultType}`)
-	}
 }
 
 export abstract class AbstractObjectResultParser {
@@ -150,14 +120,14 @@ export abstract class AbstractObjectResultParser {
 		resultObject: any,
 		propertyName: string,
 		relationInfos: ReferencedColumnData[],
-		schemaUtils: ISchemaUtils
+		context: IOperationContext<any, any>,
 	): boolean {
 		let manyToOneStub = {}
-		isStub(manyToOneStub)
+		context.ioc.entityStateManager.isStub(manyToOneStub)
 		resultObject[propertyName] = manyToOneStub
 		let haveAllIds             = true
 		relationInfos.forEach((relationInfo) => {
-			if (schemaUtils.isIdEmpty(relationInfo.value)) {
+			if (context.ioc.schemaUtils.isIdEmpty(relationInfo.value)) {
 				haveAllIds = false
 				return
 			}
@@ -169,7 +139,7 @@ export abstract class AbstractObjectResultParser {
 				// If there is no object in context, create one
 				if (!currentObject) {
 					currentObject = {}
-					markAsStub(currentObject)
+					context.ioc.entityStateManager.markAsStub(currentObject)
 					lastObject[propertyNameChain[currentIndex - 1]] = currentObject
 				}
 				// If it's not a leaf (more objects in the chain exist)

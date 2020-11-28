@@ -1,11 +1,11 @@
-import { QEntity, QRelation } from '@airport/air-control';
+import { QEntity } from '@airport/air-control';
 import { SQLWhereBase } from './SQLWhereBase';
 /**
  * Created by Papa on 10/2/2016.
  */
 export class SQLNoJoinQuery extends SQLWhereBase {
-    constructor(dbEntity, dialect, storeDriver) {
-        super(dbEntity, dialect, storeDriver);
+    constructor(dbEntity, dialect, context) {
+        super(dbEntity, dialect, context);
     }
     getTableFragment(fromRelation, context, addAs = true) {
         if (!fromRelation) {
@@ -16,7 +16,7 @@ export class SQLNoJoinQuery extends SQLWhereBase {
         }
         const firstDbEntity = context.ioc.airDb.schemas[fromRelation.si]
             .currentVersion.entities[fromRelation.ti];
-        let tableName = this.storeDriver.getEntityTableName(firstDbEntity, context);
+        let tableName = context.ioc.storeDriver.getEntityTableName(firstDbEntity, context);
         if (fromRelation.si !== this.dbEntity.schemaVersion.schema.index
             || fromRelation.ti !== this.dbEntity.index) {
             throw new Error(`Unexpected table in UPDATE/DELETE clause: 
@@ -24,7 +24,7 @@ export class SQLNoJoinQuery extends SQLWhereBase {
 			expecting: '${this.dbEntity.schemaVersion.schema.name}.${this.dbEntity.name}'`);
         }
         const firstQEntity = new QEntity(firstDbEntity);
-        const tableAlias = QRelation.getAlias(fromRelation);
+        const tableAlias = context.ioc.relationManager.getAlias(fromRelation);
         this.qEntityMapByAlias[tableAlias] = firstQEntity;
         let fromFragment = `\t${tableName}`;
         if (addAs) {

@@ -1,4 +1,4 @@
-import { getOperationUniqueId, isStub, valuesEqual } from '@airport/air-control';
+import { valuesEqual } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { EntityRelationType } from '@airport/ground-control';
 import { DEPENDENCY_GRAPH_RESOLVER } from './tokens';
@@ -9,14 +9,15 @@ export class DependencyGraphResolver {
             entities: []
         };
         for (const entity of entities) {
-            const operationUniqueId = getOperationUniqueId(entity);
+            const operationUniqueId = ctx.ioc.entityStateManager.getOperationUniqueId(entity);
             const entityOperatedOn = !!operatedOnEntityIndicator[operationUniqueId];
-            operatedOnEntityIndicator[operationUniqueId] = true;
+            operatedOnEntityIndicator[operationUniqueId]
+                = true;
             // NOTE: Values should always be in only one place, rest should be stubs
             // with possible child objects (in case an object has to be in multiple
             // places in a graph)
             let foundValues = [];
-            let entityIsStub = isStub(entity);
+            let entityIsStub = ctx.ioc.entityStateManager.isStub(entity);
             dependencyGraphNode.entities.push(entity);
             for (const dbProperty of ctx.dbEntity.properties) {
                 let childEntities;

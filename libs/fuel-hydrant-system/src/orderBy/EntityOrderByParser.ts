@@ -1,19 +1,18 @@
 import {
-	IAirportDatabase,
 	IQEntityInternal,
-	JoinTreeNode,
-	QRelation
-} from '@airport/air-control'
+	JoinTreeNode
+}                          from '@airport/air-control'
 import {
 	DbEntity,
 	JSONEntityFieldInOrderBy,
 	JSONFieldInOrderBy,
 	SortOrder
-} from '@airport/ground-control'
+}                          from '@airport/ground-control'
+import {IOperationContext} from '@airport/tower'
 import {
 	AbstractEntityOrderByParser,
 	IEntityOrderByParser
-} from './AbstractEntityOrderByParser'
+}                          from './AbstractEntityOrderByParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -53,7 +52,7 @@ export class EntityOrderByParser
 	getOrderByFragment(
 		joinTree: JoinTreeNode,
 		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
-		airDb: IAirportDatabase
+		context: IOperationContext<any, any>,
 	): string {
 		let orderByFragments: string[]          = []
 		let orderBy: JSONEntityFieldInOrderBy[] = []
@@ -73,7 +72,7 @@ export class EntityOrderByParser
 			(currentSelectFragment = selectFragmentQueue.shift())
 			&& (currentJoinNode = joinNodeQueue.shift())) {
 
-			const tableAlias         = QRelation.getAlias(currentJoinNode.jsonRelation)
+			const tableAlias         = context.ioc.relationManager.getAlias(currentJoinNode.jsonRelation)
 			const dbEntity: DbEntity = qEntityMapByAlias[tableAlias].__driver__.dbEntity
 
 			const currentEntityOrderBy = []
@@ -84,7 +83,7 @@ export class EntityOrderByParser
 					return true
 				}
 
-				const orderByDbEntity: DbEntity = airDb.schemas[orderByField.si]
+				const orderByDbEntity: DbEntity = context.ioc.airDb.schemas[orderByField.si]
 					.currentVersion.entities[orderByField.ti]
 				const dbColumn                  = orderByDbEntity.columns[orderByField.ci]
 				if (this.isForParentNode(currentJoinNode, orderByField)) {
@@ -117,21 +116,21 @@ export class EntityOrderByParser
 						}
 					}
 
-					if(!currentJoinNode.childNodes.length) {
+					if (!currentJoinNode.childNodes.length) {
 						continue
 					}
 
 					const dbRelation = dbProperty.relation[0]
-					const dbEntity = dbRelation.relationEntity
+					const dbEntity   = dbRelation.relationEntity
 
 					const matchingNodes = currentJoinNode.childNodes.filter(childNode => {
 						const jsonRelation = childNode.jsonRelation
-						 return jsonRelation.si === dbEntity.schemaVersion.id
-							 && jsonRelation.ti === dbEntity.index
+						return jsonRelation.si === dbEntity.schemaVersion.id
+							&& jsonRelation.ti === dbEntity.index
 					})
 
-					if(!matchingNodes.length) {
-						return;
+					if (!matchingNodes.length) {
+						return
 					}
 
 					selectFragmentQueue.push(this.rootSelectClauseFragment[propertyName])

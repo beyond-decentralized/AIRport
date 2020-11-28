@@ -46,6 +46,11 @@ export class TreeResultParser
 		return true
 	}
 
+	flushRow(): void {
+		this.lastRowObjectMap    = this.currentRowObjectMap
+		this.currentRowObjectMap = {}
+	}
+
 	protected isDifferentOrDoesntExist(
 		entityAlias: string,
 		resultObject: any,
@@ -153,11 +158,6 @@ export class TreeResultParser
 		}
 
 		return resultObject
-	}
-
-	flushRow(): void {
-		this.lastRowObjectMap    = this.currentRowObjectMap
-		this.currentRowObjectMap = {}
 	}
 
 }

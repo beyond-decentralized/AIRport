@@ -8,17 +8,17 @@ import { AbstractObjectResultParser } from './entity/IEntityResultParser';
  * graph (just for that row).
  */
 export class PlainResultParser extends AbstractObjectResultParser {
-    addEntity(entityAlias, dbEntity, airDb, schemaUtils) {
-        return schemaUtils.getNewEntity(dbEntity, airDb);
+    addEntity(entityAlias, dbEntity, context) {
+        return context.ioc.schemaUtils.getNewEntity(dbEntity, context.ioc.airDb);
     }
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject[propertyName] = propertyValue;
         return objectExists(propertyValue);
     }
-    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, schemaUtils) {
-        this.addManyToOneStub(resultObject, propertyName, relationInfos, schemaUtils);
+    bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, context) {
+        this.addManyToOneStub(resultObject, propertyName, relationInfos, context);
     }
-    bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject) {
+    bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, context) {
         resultObject[propertyName] = childResultObject;
     }
     bufferBlankManyToOneStub(entityAlias, resultObject, propertyName, relationInfos) {
@@ -32,13 +32,13 @@ export class PlainResultParser extends AbstractObjectResultParser {
     bufferOneToManyStub(otmDbEntity, otmPropertyName) {
         throw new Error(`@OneToMany stubs not allowed in QueryResultType.PLAIN`);
     }
-    bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject) {
+    bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject, context) {
         resultObject[propertyName] = [childResultObject];
     }
-    bufferBlankOneToMany(entityAlias, resultObject, otmEntityName, propertyName, relationDbEntity) {
+    bufferBlankOneToMany(entityAlias, resultObject, otmEntityName, propertyName, relationDbEntity, context) {
         resultObject[propertyName] = [];
     }
-    flushEntity(entityAlias, dbEntity, selectClauseFragment, entityId, resultObject) {
+    flushEntity(entityAlias, dbEntity, selectClauseFragment, entityId, resultObject, context) {
         // Nothing to be done, plain objects don't need to be flushed since they don't relate
         // do any other rows
         return resultObject;
@@ -47,7 +47,7 @@ export class PlainResultParser extends AbstractObjectResultParser {
         // Nothing to be done, plain rows don't need to be flushed since they don't relate do
         // any other rows
     }
-    bridge(parsedResults, selectClauseFragment) {
+    bridge(parsedResults, selectClauseFragment, context) {
         // Nothing to be done, plain queries are not bridged
         return parsedResults;
     }

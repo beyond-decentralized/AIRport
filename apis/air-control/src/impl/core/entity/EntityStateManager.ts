@@ -17,6 +17,26 @@ export interface IOperationUniqueIdSequence {
 
 export interface IEntityStateManager {
 
+	isStub<T>(
+		entity: T
+	): boolean
+
+	getOperationUniqueIdSeq(): IOperationUniqueIdSequence
+
+	uniquelyIdentify<T>(
+		entity: T,
+		operationUniqueIdSeq: IOperationUniqueIdSequence
+	): void
+
+	getOperationUniqueId<T>(
+		entity: T,
+		throwIfNotFound?: boolean
+	): number
+
+	markAsStub<T>(
+		entity: T
+	): T
+
 }
 
 export class EntityStateManager
@@ -24,8 +44,8 @@ export class EntityStateManager
 	static OPERATION_UNIQUE_ID_FIELD = '__UID__'
 	static STATE_FIELD               = '__state__'
 
-	isStub(
-		entity
+	isStub<T>(
+		entity: T
 	): boolean {
 		return this.getEntityState(entity) === EntityState.STUB
 	}
@@ -60,18 +80,18 @@ export class EntityStateManager
 		return operationUniqueId
 	}
 
-	protected getEntityState(
-		entity
-	): EntityState {
-		return (<EntityWithState>entity).__state__
-	}
-
-	protected markAsStub<T>(
+	markAsStub<T>(
 		entity: T
 	): T {
 		(<EntityWithState><any>entity).__state__ = EntityState.STUB
 
 		return entity
+	}
+
+	protected getEntityState(
+		entity
+	): EntityState {
+		return (<EntityWithState>entity).__state__
 	}
 }
 

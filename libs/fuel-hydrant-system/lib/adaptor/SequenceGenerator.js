@@ -42,7 +42,8 @@ export class SequenceGenerator {
         return generatedColumns.every(dbColumn => !!tableSequences[dbColumn.index]);
     }
     async init(sequences) {
-        const sequenceDao = await container(this).get(SEQUENCE_DAO);
+        const sequenceDao = await container(this)
+            .get(SEQUENCE_DAO);
         if (!sequences) {
             sequences = await sequenceDao.findAll();
         }
@@ -75,7 +76,8 @@ export class SequenceGenerator {
      */
     async doGenerateSequenceNumbers(dbColumns, numSequencesNeeded) {
         const sequentialNumbers = [];
-        const sequenceDao = await container(this).get(SEQUENCE_DAO);
+        const sequenceDao = await container(this)
+            .get(SEQUENCE_DAO);
         for (let i = 0; i < dbColumns.length; i++) {
             const dbColumn = dbColumns[i];
             let numColumnSequencesNeeded = numSequencesNeeded[i];

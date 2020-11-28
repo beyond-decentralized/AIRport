@@ -1,20 +1,14 @@
 import {DI}               from '@airport/di'
 import {
 	DbRelation,
-	JoinType,
-	JSONEntityRelation,
-	JSONRelation
+	JoinType
 }                         from '@airport/ground-control'
+import {IQEntityInternal} from '../../../lingo/core/entity/Entity'
 import {
 	AIR_DB,
+	RELATION_MANAGER,
 	SCHEMA_UTILS
 } from '../../../tokens'
-import {IAirportDatabase} from '../../../lingo/AirportDatabase'
-import {
-	IQEntityDriver,
-	IQEntityInternal
-}                         from '../../../lingo/core/entity/Entity'
-import {ISchemaUtils}     from '../../../lingo/utils/SchemaUtils'
 
 /**
  * Created by Papa on 4/26/2016.
@@ -37,14 +31,16 @@ QRelation.prototype.leftJoin = function <IQ extends IQEntityInternal>(): IQ {
 }
 
 QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinType: JoinType): IQ {
+	const [airDb, relationManager, schemaUtils] = DI.db()
+		.getSync(AIR_DB, RELATION_MANAGER, SCHEMA_UTILS)
 	const dbEntity = this.dbRelation.property.entity
 
-	const qEntityConstructor = DI.db().getSync(SCHEMA_UTILS).getQEntityConstructor(
-		this.dbRelation.relationEntity, DI.db().getSync(AIR_DB))
+	const qEntityConstructor = schemaUtils.getQEntityConstructor(
+			this.dbRelation.relationEntity, airDb)
 
 	let newQEntity: IQEntityInternal       = new qEntityConstructor(
 		dbEntity,
-		QRelation.getNextChildJoinPosition(this.parentQ.__driver__),
+		relationManager.getNextChildJoinPosition(this.parentQ.__driver__),
 		this.dbRelation,
 		joinType
 	)

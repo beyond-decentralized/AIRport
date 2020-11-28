@@ -1,14 +1,14 @@
 import {
-	IAirportDatabase,
 	IQEntityInternal,
 	JoinTreeNode
-}                   from '@airport/air-control'
+}                          from '@airport/air-control'
 import {
 	JSONEntityFieldInOrderBy,
 	JSONFieldInOrderBy,
 	SortOrder
-}                   from '@airport/ground-control'
-import {IValidator} from '../validation/Validator'
+}                          from '@airport/ground-control'
+import {IOperationContext} from '@airport/tower'
+import {IValidator}        from '../validation/Validator'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -18,7 +18,7 @@ export interface IEntityOrderByParser {
 	getOrderByFragment(
 		joinTree: JoinTreeNode,
 		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
-		airDb: IAirportDatabase
+		context: IOperationContext<any, any>,
 	): string;
 
 }
@@ -51,7 +51,8 @@ export abstract class AbstractEntityOrderByParser {
 				case SortOrder.DESCENDING:
 					return `${orderByField.fa} DESC`
 			}
-		}).join(', ')
+		})
+			.join(', ')
 	}
 
 }

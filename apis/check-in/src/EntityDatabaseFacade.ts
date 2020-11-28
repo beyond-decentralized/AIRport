@@ -1,11 +1,10 @@
 import {
 	DB_FACADE,
+	ENTITY_STATE_MANAGER,
 	EntityFind,
 	EntityFindOne,
 	EntitySearch,
 	EntitySearchOne,
-	getOperationUniqueId,
-	getOperationUniqueIdSeq,
 	IDatabaseFacade,
 	IDuo,
 	IEntityCascadeGraph,
@@ -20,6 +19,7 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
+	IOperationUniqueIdSequence,
 	IQEntity,
 	MappedEntityArray,
 	OperationName,
@@ -27,14 +27,11 @@ import {
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
-	RawUpdate,
-	uniquelyIdentify
-} from '@airport/air-control'
-import {DI}  from '@airport/di'
-import {
-	DbEntity
-}            from '@airport/ground-control'
-import {Duo} from './Duo'
+	RawUpdate
+}                 from '@airport/air-control'
+import {DI}       from '@airport/di'
+import {DbEntity} from '@airport/ground-control'
+import {Duo}      from './Duo'
 
 /**
  * Created by Papa on 12/11/2016.
@@ -97,7 +94,7 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
-		this.identifyObjects(entity)
+		this.identifyObjects(entity, ctx)
 		return await this.withDbEntity(ctx, async (
 			databaseFacade: IDatabaseFacade,
 			ctx: IEntityContext
@@ -113,7 +110,7 @@ export class EntityDatabaseFacade<Entity,
 		operationName?: OperationName
 	): Promise<number> {
 		for (const entity of entities) {
-			this.identifyObjects(entity)
+			this.identifyObjects(entity, ctx)
 		}
 		return await this.withDbEntity(ctx, async (
 			databaseFacade: IDatabaseFacade,
@@ -184,7 +181,7 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
-		this.identifyObjects(entity)
+		this.identifyObjects(entity, ctx)
 		return await this.withDbEntity(ctx, async (
 			databaseFacade: IDatabaseFacade,
 			ctx: IEntityContext
@@ -229,7 +226,7 @@ export class EntityDatabaseFacade<Entity,
 		ctx?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number> {
-		this.identifyObjects(entity)
+		this.identifyObjects(entity, ctx)
 		return await this.withDbEntity(ctx, async (
 			databaseFacade: IDatabaseFacade,
 			ctx: IEntityContext
@@ -263,7 +260,7 @@ export class EntityDatabaseFacade<Entity,
 		})
 	}
 
-	private async withDbEntity<R>(
+	protected async withDbEntity<R>(
 		ctx: IEntityContext,
 		callback: {
 			(
@@ -290,16 +287,23 @@ export class EntityDatabaseFacade<Entity,
 		}
 	}
 
-	private identifyObjects<T>(
+	protected identifyObjects<T>(
 		entity: T,
-		operationUniqueIdSeq = getOperationUniqueIdSeq()
+		ctx: IEntityContext,
+		operationUniqueIdSeq?: IOperationUniqueIdSequence,
 	): void {
-		const operationUniqueId = getOperationUniqueId(entity)
+		const entityStateManager = DI.db()
+			.getSync(ENTITY_STATE_MANAGER)
+
+		if (!operationUniqueIdSeq) {
+			operationUniqueIdSeq = entityStateManager.getOperationUniqueIdSeq()
+		}
+		const operationUniqueId = entityStateManager.getOperationUniqueId(entity)
 		if (operationUniqueId) {
 			return
 		}
 
-		uniquelyIdentify(entity, operationUniqueIdSeq)
+		entityStateManager.uniquelyIdentify(entity, operationUniqueIdSeq)
 
 		Object.keys(entity)
 			.forEach(propertyKey => {
@@ -307,11 +311,11 @@ export class EntityDatabaseFacade<Entity,
 				if (property instanceof Array) {
 					for (const propertyValue of property) {
 						if (propertyValue instanceof Object) {
-							this.identifyObjects(propertyValue, operationUniqueIdSeq)
+							this.identifyObjects(propertyValue, ctx, operationUniqueIdSeq)
 						}
 					}
 				} else if (property instanceof Object) {
-					this.identifyObjects(property, operationUniqueIdSeq)
+					this.identifyObjects(property, ctx, operationUniqueIdSeq)
 				}
 			})
 	}
