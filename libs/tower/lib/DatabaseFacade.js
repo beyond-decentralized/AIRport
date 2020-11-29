@@ -1,7 +1,7 @@
 import { DB_FACADE, Delete, UpdateColumns, UpdateProperties, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
-import { OperationManager } from './OperationManager';
+import { OperationManager } from 'src/processing/OperationManager';
 import { OPERATION_CONTEXT_LOADER } from './tokens';
 import { transactional } from './transactional';
 /**

@@ -1,8 +1,8 @@
 import { IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, IUpdateCache, OperationName, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
 import { DbEntity } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
-import { IOperationContext } from './OperationContext';
-import { OperationManager } from './OperationManager';
+import { IOperationContext } from 'src/processing/OperationContext';
+import { OperationManager } from 'src/processing/OperationManager';
 /**
  * Created by Papa on 5/23/2016.
  */

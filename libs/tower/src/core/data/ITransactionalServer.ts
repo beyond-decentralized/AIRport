@@ -6,7 +6,7 @@ import {
 import {IObservable}       from '@airport/observe'
 import {ICredentials}      from '@airport/terminal-map'
 import {ITransaction}      from '../../ITransaction'
-import {IOperationContext} from '../../OperationContext'
+import {IOperationContext} from 'src/processing/OperationContext'
 
 export interface ITransactionalServer {
 

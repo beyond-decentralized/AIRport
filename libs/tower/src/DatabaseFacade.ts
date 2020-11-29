@@ -26,8 +26,8 @@ import {
 	PlatformType
 }                                 from '@airport/terminal-map'
 import {ITransaction}             from './ITransaction'
-import {IOperationContext}        from './OperationContext'
-import {OperationManager}         from './OperationManager'
+import {IOperationContext}        from 'src/processing/OperationContext'
+import {OperationManager}         from 'src/processing/OperationManager'
 import {OPERATION_CONTEXT_LOADER} from './tokens'
 import {transactional}            from './transactional'
 
