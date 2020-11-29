@@ -9,7 +9,7 @@ export interface EntityWithState {
     __state__: EntityState;
 }
 export interface IOperationUniqueIdSequence {
-    sequence: number;
+    sequence: OperationUniqueId;
 }
 export interface IEntityStateManager {
     isStub<T>(entity: T): boolean;
@@ -20,6 +20,7 @@ export interface IEntityStateManager {
     markForDeletion<T>(entity: T): void;
     markToCreate<T>(entity: T): void;
     markToUpdate<T>(entity: T): void;
+    getEntityState(entity: any): EntityState;
 }
 export declare class EntityStateManager implements IEntityStateManager {
     static OPERATION_UNIQUE_ID_FIELD: string;
@@ -32,6 +33,6 @@ export declare class EntityStateManager implements IEntityStateManager {
     markForDeletion<T>(entity: T): void;
     markToCreate<T>(entity: T): void;
     markToUpdate<T>(entity: T): void;
-    protected getEntityState(entity: any): EntityState;
+    getEntityState(entity: any): EntityState;
 }
 //# sourceMappingURL=EntityStateManager.d.ts.map

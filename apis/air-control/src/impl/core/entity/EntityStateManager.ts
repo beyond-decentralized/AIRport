@@ -15,7 +15,7 @@ export interface EntityWithState {
 }
 
 export interface IOperationUniqueIdSequence {
-	sequence: number
+	sequence: OperationUniqueId
 }
 
 export interface IEntityStateManager {
@@ -51,6 +51,10 @@ export interface IEntityStateManager {
 	markToUpdate<T>(
 		entity: T
 	): void
+
+	getEntityState(
+		entity
+	): EntityState
 
 }
 
@@ -119,7 +123,7 @@ export class EntityStateManager
 		(<EntityWithState><any>entity).__state__ = EntityState.UPDATE
 	}
 
-	protected getEntityState(
+	getEntityState(
 		entity
 	): EntityState {
 		return (<EntityWithState>entity).__state__
