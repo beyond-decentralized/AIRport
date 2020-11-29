@@ -9,8 +9,6 @@ import { OperationManager } from './OperationManager';
 export declare class DatabaseFacade extends OperationManager implements IDatabaseFacade {
     name: string;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, ctx: IOperationContext<any, any>): Promise<number>;
-    create<E, EntityCascadeGraph>(entity: E, ctx: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
-    bulkCreate<E, EntityCascadeGraph>(entities: E[], ctx: IOperationContext<E, EntityCascadeGraph>, checkIfProcessed?: boolean, operationName?: OperationName, ensureGeneratedValues?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx: IOperationContext<any, any>): Promise<number>;
@@ -23,12 +21,10 @@ export declare class DatabaseFacade extends OperationManager implements IDatabas
     insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, ctx: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
-    delete<E>(entity: E, ctx: IOperationContext<any, any>): Promise<number>;
     deleteWhere<IQE extends IQEntity>(rawDelete: RawDelete<IQE> | {
         (...args: any[]): RawDelete<IQE>;
     }, ctx: IOperationContext<any, any>): Promise<number>;
     save<E, EntityCascadeGraph>(entity: E, ctx: IOperationContext<any, any>, operationName?: OperationName): Promise<number>;
-    update<E, EntityCascadeGraph>(entity: E, ctx: IOperationContext<E, EntityCascadeGraph>, cascadeGraph?: EntityCascadeGraph): Promise<number>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.

@@ -2,7 +2,10 @@ import { DI } from '@airport/di';
 import { ENTITY_STATE_MANAGER } from '../../../tokens';
 export var EntityState;
 (function (EntityState) {
+    EntityState[EntityState["CREATE"] = 0] = "CREATE";
+    EntityState[EntityState["DELETE"] = 1] = "DELETE";
     EntityState[EntityState["STUB"] = 1] = "STUB";
+    EntityState[EntityState["UPDATE"] = 2] = "UPDATE";
 })(EntityState || (EntityState = {}));
 export class EntityStateManager {
     isStub(entity) {
@@ -30,7 +33,15 @@ export class EntityStateManager {
     }
     markAsStub(entity) {
         entity.__state__ = EntityState.STUB;
-        return entity;
+    }
+    markForDeletion(entity) {
+        entity.__state__ = EntityState.DELETE;
+    }
+    markToCreate(entity) {
+        entity.__state__ = EntityState.CREATE;
+    }
+    markToUpdate(entity) {
+        entity.__state__ = EntityState.UPDATE;
     }
     getEntityState(entity) {
         return entity.__state__;

@@ -35,21 +35,6 @@ export interface IDatabaseFacade {
      * @param {Entity} entities
      */
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, ctx: IEntityContext): Promise<number>;
-    /**
-     * Creates an entity - internal API.  Use the API provided by the
-     * IEntityDatabaseFacade.
-     *
-     * @return Number of records created (1 or 0)
-     */
-    create<E, EntityCascadeGraph>(entity: E, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
-    /**
-     * Creates an entity - internal API.  Use the API provided by the
-     * IEntityDatabaseFacade.
-     *
-     * @return Number of records created
-     */
-    bulkCreate<E, EntityCascadeGraph>(entities: E[], ctx: IEntityContext, checkIfProcessed: boolean, // defaults to true
-    operationName?: OperationName, ensureGeneratedValues?: boolean): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx: IEntityContext): Promise<number>;
@@ -62,13 +47,6 @@ export interface IDatabaseFacade {
     insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, ctx: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
-    /**
-     * Deletes an entity - internal API.  Use the API provided by the
-     * IEntityDatabaseFacade.
-     *
-     * @return Number of records deleted (1 or 0)
-     */
-    delete<E>(entity: E, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
     /**
      * Creates an entity with a where clause - internal API.  Use the
      *  API provided by the IEntityDatabaseFacade.
@@ -85,13 +63,6 @@ export interface IDatabaseFacade {
      * @return Number of records saved (1 or 0)
      */
     save<E, EntityCascadeGraph>(entity: E, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
-    /**
-     * Updates an entity - internal API.  Use the API provided by the
-     * IEntityDatabaseFacade.
-     *
-     * @return Number of records updated (1 or 0)
-     */
-    update<E, EntityCascadeGraph>(entity: E, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.

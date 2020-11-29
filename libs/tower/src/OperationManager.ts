@@ -77,52 +77,6 @@ export abstract class OperationManager
 		console.log(message)
 	}
 
-	/**
-	 * Transactional context must have been started by the time this method is called.
-	 *
-	 * @param qEntity
-	 * @param entity
-	 */
-	protected async performCreate<E, EntityCascadeGraph>(
-		entity: E,
-		operatedOnEntityIndicator: boolean[],
-		transaction: ITransaction,
-		ctx: IOperationContext<E, EntityCascadeGraph>,
-		idData?: EntityIdData,
-	): Promise<number> {
-		const lastCheckIfProcessed = ctx.checkIfProcessed
-		ctx.checkIfProcessed       = !idData
-		let result                 = await this.internalCreate([entity], operatedOnEntityIndicator, transaction, ctx, !idData)
-
-		await this.cascadeOnPersist(result.cascadeRecords,
-			ctx.dbEntity, operatedOnEntityIndicator, transaction, ctx)
-
-		ctx.checkIfProcessed = lastCheckIfProcessed
-
-		return result.numberOfAffectedRecords
-	}
-
-	/**
-	 * Transactional context must have been started by the time this method is called.
-	 *
-	 * @param qEntity
-	 * @param entity
-	 */
-	protected async performBulkCreate<E, EntityCascadeGraph>(
-		entities: E[],
-		operatedOnEntityIndicator: boolean[],
-		transaction: ITransaction,
-		ctx: IOperationContext<E, EntityCascadeGraph>,
-		ensureGeneratedValues: boolean = true // For internal use only
-	): Promise<number> {
-		let result = await this.internalCreate(entities, operatedOnEntityIndicator,
-			transaction, ctx, ensureGeneratedValues)
-		await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity,
-			operatedOnEntityIndicator, transaction, ctx)
-
-		return result.numberOfAffectedRecords
-	}
-
 	protected async internalInsertColumnValues<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE>,
 		transaction: ITransaction,

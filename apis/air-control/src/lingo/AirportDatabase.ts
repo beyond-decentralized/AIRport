@@ -1,5 +1,4 @@
 import {
-	DbEntity,
 	DbSchema,
 	DistributionStrategy,
 	PlatformType
@@ -79,75 +78,36 @@ export interface IAirportDatabase
 		platform: PlatformType,
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
-		ctx: IEntityContext
-	): Promise<number>;
-
-	/**
-	 * Creates an entity - internal API.  Use the API provided by the
-	 * IEntityDatabaseFacade.
-	 *
-	 * @return Number of records created (1 or 0)
-	 */
-	create<E>(
-		entity: E,
-		ctx: IEntityContext,
-		operationName?: OperationName,
-	): Promise<number>;
-
-	/**
-	 * Creates an entity - internal API.  Use the API provided by the
-	 * IEntityDatabaseFacade.
-	 *
-	 * @return Number of records created
-	 */
-	bulkCreate<E>(
-		entities: E[],
-		checkIfProcessed: boolean, // defaults to true
-		ctx: IEntityContext,
-		operationName?: OperationName,
-		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
-	                                  // creation
+		context?: IEntityContext
 	): Promise<number>;
 
 	insertColumnValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number>;
 
 	insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number>;
 
 	insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
-
-	/**
-	 * Deletes an entity - internal API.  Use the API provided by the
-	 * IEntityDatabaseFacade.
-	 *
-	 * @return Number of records deleted (1 or 0)
-	 */
-	delete<E>(
-		entity: E,
-		ctx: IEntityContext,
-		operationName?: OperationName
-	): Promise<number>;
 
 	/**
 	 * Creates an entity with a where clause - internal API.  Use the
@@ -159,7 +119,7 @@ export interface IAirportDatabase
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -170,19 +130,7 @@ export interface IAirportDatabase
 	 */
 	save<E>(
 		entity: E,
-		ctx: IEntityContext,
-		operationName?: OperationName
-	): Promise<number>;
-
-	/**
-	 * Updates an entity - internal API.  Use the API provided by the
-	 * IEntityDatabaseFacade.
-	 *
-	 * @return Number of records updated (1 or 0)
-	 */
-	update<E>(
-		entity: E,
-		ctx: IEntityContext,
+		context?: IEntityContext,
 		operationName?: OperationName
 	): Promise<number>;
 
@@ -197,7 +145,7 @@ export interface IAirportDatabase
 			| {
 			(...args: any[]): RawUpdateColumns<IEUC, IQE>
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number>;
 
 	/**
@@ -210,7 +158,7 @@ export interface IAirportDatabase
 		rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number>;
 
 }

@@ -4,7 +4,10 @@ import {ENTITY_STATE_MANAGER} from '../../../tokens'
 export type OperationUniqueId = number
 
 export enum EntityState {
+	CREATE,
+	DELETE,
 	STUB = 1,
+	UPDATE
 }
 
 export interface EntityWithState {
@@ -35,7 +38,19 @@ export interface IEntityStateManager {
 
 	markAsStub<T>(
 		entity: T
-	): T
+	): void
+
+	markForDeletion<T>(
+		entity: T
+	): void
+
+	markToCreate<T>(
+		entity: T
+	): void
+
+	markToUpdate<T>(
+		entity: T
+	): void
 
 }
 
@@ -82,10 +97,26 @@ export class EntityStateManager
 
 	markAsStub<T>(
 		entity: T
-	): T {
+	): void {
 		(<EntityWithState><any>entity).__state__ = EntityState.STUB
+	}
 
-		return entity
+	markForDeletion<T>(
+		entity: T
+	): void {
+		(<EntityWithState><any>entity).__state__ = EntityState.DELETE
+	}
+
+	markToCreate<T>(
+		entity: T
+	): void {
+		(<EntityWithState><any>entity).__state__ = EntityState.CREATE
+	}
+
+	markToUpdate<T>(
+		entity: T
+	): void {
+		(<EntityWithState><any>entity).__state__ = EntityState.UPDATE
 	}
 
 	protected getEntityState(

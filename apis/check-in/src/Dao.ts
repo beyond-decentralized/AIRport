@@ -1,5 +1,6 @@
 import {
 	doEnsureContext,
+	ENTITY_STATE_MANAGER,
 	IDao,
 	IEntityCascadeGraph,
 	IEntityContext,
@@ -13,11 +14,12 @@ import {
 	OperationName,
 	QSchema
 } from '@airport/air-control'
-import {IContext}             from '@airport/di'
 import {
-	EntityId as DbEntityId
-}                             from '@airport/ground-control'
-import {EntityDatabaseFacade} from './EntityDatabaseFacade'
+	DI,
+	IContext
+} from '@airport/di'
+import {EntityId as DbEntityId} from '@airport/ground-control'
+import {EntityDatabaseFacade}   from './EntityDatabaseFacade'
 
 /**
  * Created by Papa on 8/26/2017.
@@ -51,69 +53,22 @@ export abstract class Dao<Entity,
 			dbEntity, Q)
 	}
 
-	async bulkCreate(
-		entities: EntityCreate[],
-		checkIfProcessed: boolean          = true,
-		ctx?: IContext,
-		operationName?: OperationName
-	): Promise<number> {
-		const result = await this.db.bulkCreate(entities,
-			checkIfProcessed, this.ensureContext(ctx), operationName)
-
-		return result
-	}
-
 	async count(
-		ctx?: IContext
-	): Promise<number> {
-		throw new Error(`Not Implemented`)
-	}
-
-	async create<EntityInfo extends EntityCreate | EntityCreate[]>(
-		entityInfo: EntityInfo,
-		ctx?: IContext,
-		operationName?: OperationName
-	): Promise<number> {
-		if (entityInfo instanceof Array) {
-			return await this.db.bulkCreate(entityInfo,
-				true, this.ensureContext(ctx), operationName)
-		} else {
-			const result = await this.db.create(<EntityCreate>entityInfo,
-				this.ensureContext(ctx), operationName)
-
-			return result
-		}
-	}
-
-	async delete(
-		entityIdInfo: EntityId | EntityId[],
-		ctx?: IContext,
-		operationName?: OperationName
-	): Promise<number> {
-		if (entityIdInfo instanceof Array) {
-			throw new Error(`Not Implemented`)
-		} else {
-			return await this.db.delete(entityIdInfo,
-				this.ensureContext(ctx), operationName)
-		}
-	}
-
-	async deleteAll(
-		ctx?: IContext
+		context?: IContext
 	): Promise<number> {
 		throw new Error(`Not Implemented`)
 	}
 
 	exists(
 		entityId: EntityId,
-		ctx?: IContext
+		context?: IContext
 	): Promise<boolean> {
 		throw new Error(`Not Implemented`)
 	}
 
 	async findAll(
 		entityIds?: EntityId[],
-		ctx?: IContext,
+		context?: IContext,
 		cacheForUpdate: boolean = false
 	): Promise<Entity[]> {
 		if (entityIds) {
@@ -122,12 +77,12 @@ export abstract class Dao<Entity,
 		return await this.db.find.graph({
 			select: <any>{},
 			from: [this.db.from],
-		}, ctx)
+		}, context)
 	}
 
 	async findAllAsTrees(
 		entityIds?: EntityId[],
-		ctx?: IContext,
+		context?: IContext,
 		cacheForUpdate: boolean = false
 	): Promise<Entity[]> {
 		if (entityIds) {
@@ -136,12 +91,12 @@ export abstract class Dao<Entity,
 		return await this.db.find.tree({
 			select: <any>{},
 			from: [this.db.from],
-		}, ctx)
+		}, context)
 	}
 
 	findById(
 		entityId: EntityId,
-		ctx?: IContext,
+		context?: IContext,
 		cacheForUpdate: boolean = false
 	): Promise<Entity> {
 		throw new Error(`Not implemented`)
@@ -149,34 +104,36 @@ export abstract class Dao<Entity,
 
 	async save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entity: EntityInfo,
-		ctx?: IContext,
+		context?: IContext,
 		operationName?: OperationName
 	): Promise<number> {
 		if (entity instanceof Array) {
 			throw new Error(`Not Implemented`)
 		} else {
 			const result = await this.db.save(<EntityCreate>entity,
-				this.ensureContext(ctx), operationName)
+				this.ensureContext(context), operationName)
 
 			return result
 		}
 	}
 
-	async update(
-		entityInfo: EntityCreate | EntityCreate[],
-		ctx?: IContext,
-		operationName?: OperationName
-	): Promise<number> {
-		if (entityInfo instanceof Array) {
-			throw new Error(`Not Implemented`)
+	markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(
+		entityIdInfo: EntityInfo,
+		context?: IContext,
+	): void {
+		const entityStateManager = DI.db().getSync(ENTITY_STATE_MANAGER)
+		if (entityIdInfo instanceof Array) {
+			for(const anEntity of entityIdInfo) {
+				entityStateManager.markForDeletion(anEntity)
+			}
 		} else {
-			return await this.db.update(entityInfo, this.ensureContext(ctx), operationName)
+			entityStateManager.markForDeletion(entityIdInfo)
 		}
 	}
 
 	private ensureContext(
-		ctx: IContext
+		context: IContext
 	): IEntityContext {
-		return doEnsureContext(ctx) as IEntityContext
+		return doEnsureContext(context) as IEntityContext
 	}
 }

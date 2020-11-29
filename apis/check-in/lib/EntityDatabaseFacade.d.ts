@@ -13,8 +13,6 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     searchOne: IEntitySearchOne<Entity, EntitySelect>;
     constructor(dbEntity: DbEntity, Q: QSchema);
     get from(): IQ;
-    create(entity: EntityCreate, ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
-    bulkCreate(entities: EntityCreate[], checkIfProcessed?: boolean, ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx?: IEntityContext): Promise<number>;
@@ -27,14 +25,12 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, ctx?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
-    update(entity: EntityCreate, ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
     updateColumnsWhere(rawUpdateColumns: RawUpdate<EntityUpdateColumns, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateColumns, IQ>;
     }, ctx?: IEntityContext): Promise<number>;
     updateWhere(rawUpdate: RawUpdate<EntityUpdateProperties, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateProperties, IQ>;
     }, ctx?: IEntityContext): Promise<number>;
-    delete(entity: EntityId, ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
     deleteWhere(rawDelete: RawDelete<IQ> | {
         (...args: any[]): RawDelete<IQ>;
     }, ctx?: IEntityContext): Promise<number>;

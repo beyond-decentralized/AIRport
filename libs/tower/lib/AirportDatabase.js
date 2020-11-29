@@ -58,66 +58,30 @@ export class AirportDatabase {
             return database
         }
     */
-    async addRepository(name, url, platform, platformConfig, distributionStrategy, ctx) {
+    async addRepository(name, url, platform, platformConfig, distributionStrategy, context) {
         const dbFacade = await container(this)
             .get(DB_FACADE);
-        return await dbFacade.addRepository(name, url, platform, platformConfig, distributionStrategy, ctx);
+        return await dbFacade.addRepository(name, url, platform, platformConfig, distributionStrategy, context);
     }
-    /**
-     * Creates an entity - internal API.  Use the API provided by the
-     * IEntityDatabaseFacade.
-     *
-     * @return Number of records created (1 or 0)
-     */
-    async create(entity, ctx, operationName) {
+    async insertColumnValues(rawInsertValues, context) {
         const dbFacade = await container(this)
             .get(DB_FACADE);
-        return await dbFacade.create(entity, ctx, operationName);
+        return await dbFacade.insertColumnValues(rawInsertValues, context);
     }
-    /**
-     * Creates an entity - internal API.  Use the API provided by the
-     * IEntityDatabaseFacade.
-     *
-     * @return Number of records created
-     */
-    async bulkCreate(entities, checkIfProcessed, // defaults to true
-    ctx, operationName, ensureGeneratedValues // for internal use only, needed at initial schema
-    // creation
-    ) {
+    async insertValues(rawInsertValues, context) {
         const dbFacade = await container(this)
             .get(DB_FACADE);
-        return await dbFacade.bulkCreate(entities, ctx, checkIfProcessed, operationName, ensureGeneratedValues);
+        return await dbFacade.insertValues(rawInsertValues, context);
     }
-    async insertColumnValues(rawInsertValues, ctx) {
+    async insertColumnValuesGenerateIds(rawInsertValues, context) {
         const dbFacade = await container(this)
             .get(DB_FACADE);
-        return await dbFacade.insertColumnValues(rawInsertValues, ctx);
+        return await dbFacade.insertColumnValuesGenerateIds(rawInsertValues, context);
     }
-    async insertValues(rawInsertValues, ctx) {
+    async insertValuesGenerateIds(rawInsertValues, context) {
         const dbFacade = await container(this)
             .get(DB_FACADE);
-        return await dbFacade.insertValues(rawInsertValues, ctx);
-    }
-    async insertColumnValuesGenerateIds(rawInsertValues, ctx) {
-        const dbFacade = await container(this)
-            .get(DB_FACADE);
-        return await dbFacade.insertColumnValuesGenerateIds(rawInsertValues, ctx);
-    }
-    async insertValuesGenerateIds(rawInsertValues, ctx) {
-        const dbFacade = await container(this)
-            .get(DB_FACADE);
-        return await dbFacade.insertValuesGenerateIds(rawInsertValues, ctx);
-    }
-    /**
-     * Deletes an entity - internal API.  Use the API provided by the
-     * IEntityDatabaseFacade.
-     *
-     * @return Number of records deleted (1 or 0)
-     */
-    async delete(entity, ctx, operationName) {
-        const dbFacade = await container(this)
-            .get(DB_FACADE);
-        return await dbFacade.delete(entity, ctx);
+        return await dbFacade.insertValuesGenerateIds(rawInsertValues, context);
     }
     /**
      * Creates an entity with a where clause - internal API.  Use the
@@ -125,10 +89,10 @@ export class AirportDatabase {
      *
      * @return Number of records deleted
      */
-    async deleteWhere(rawDelete, ctx) {
+    async deleteWhere(rawDelete, context) {
         const dbFacade = await container(this)
             .get(DB_FACADE);
-        return await dbFacade.deleteWhere(rawDelete, ctx);
+        return await dbFacade.deleteWhere(rawDelete, context);
     }
     /**
      * Ether creates or updates an entity - internal API.  Use the
@@ -136,21 +100,10 @@ export class AirportDatabase {
      *
      * @return Number of records saved (1 or 0)
      */
-    async save(entity, ctx, operationName) {
+    async save(entity, context, operationName) {
         const dbFacade = await container(this)
             .get(DB_FACADE);
-        return await dbFacade.save(entity, ctx);
-    }
-    /**
-     * Updates an entity - internal API.  Use the API provided by the
-     * IEntityDatabaseFacade.
-     *
-     * @return Number of records updated (1 or 0)
-     */
-    async update(entity, ctx, operationName) {
-        const dbFacade = await container(this)
-            .get(DB_FACADE);
-        return await dbFacade.update(entity, ctx);
+        return await dbFacade.save(entity, context);
     }
     /**
      * Updates an entity with a where clause, using a column based set clause
@@ -158,10 +111,10 @@ export class AirportDatabase {
      *
      * @return Number of records updated
      */
-    async updateColumnsWhere(rawUpdateColumns, ctx) {
+    async updateColumnsWhere(rawUpdateColumns, context) {
         const dbFacade = await container(this)
             .get(DB_FACADE);
-        return await dbFacade.updateColumnsWhere(rawUpdateColumns, ctx);
+        return await dbFacade.updateColumnsWhere(rawUpdateColumns, context);
     }
     /**
      * Updates an entity with a where clause, using a property based set clause
@@ -169,10 +122,10 @@ export class AirportDatabase {
      *
      * @return Number of records updated
      */
-    async updateWhere(rawUpdate, ctx) {
+    async updateWhere(rawUpdate, context) {
         const dbFacade = await container(this)
             .get(DB_FACADE);
-        return await dbFacade.updateWhere(rawUpdate, ctx);
+        return await dbFacade.updateWhere(rawUpdate, context);
     }
 }
 DI.set(AIR_DB, AirportDatabase);

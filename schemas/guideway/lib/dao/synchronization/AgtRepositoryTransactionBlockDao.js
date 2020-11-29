@@ -40,7 +40,7 @@ export class AgtRepositoryTransactionBlockDao extends BaseAgtRepositoryTransacti
         let rtb;
         const airDb = await container(this).get(AIR_DB);
         return await airDb
-            .insertValuesGenerateIds(dbEntity, {
+            .insertValuesGenerateIds({
             insertInto: rtb = Q.AgtRepositoryTransactionBlock,
             columns: [
                 rtb.repository.id,

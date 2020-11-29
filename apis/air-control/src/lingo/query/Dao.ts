@@ -32,56 +32,28 @@ export interface IDao<Entity,
 	// 	...entities: Entity[]
 	// );
 
-	bulkCreate(
-		entities: EntityCreate[],
-		checkIfProcessed?: boolean,
-		ctx?: IContext,
-		operationName?: OperationName,
-	): Promise<number>;
-
 	count(
-		ctx?: IContext
-	): Promise<number>;
-
-	/**
-	 * Does not cascade?
-	 * @param {EntityCreate[] | EntityCreate} entityInfo
-	 * @returns {Promise<number>}
-	 */
-	create<EntityInfo extends EntityCreate | EntityCreate[]>(
-		entityInfo: EntityInfo,
-		ctx?: IContext,
-		operationName?: OperationName,
-	): Promise<number>;
-
-	delete(
-		entityIdInfo: EntityId | EntityId[],
-		ctx?: IContext,
-		operationName?: OperationName,
-	): Promise<number>;
-
-	deleteAll(
-		ctx?: IContext
+		context?: IContext
 	): Promise<number>;
 
 	exists(
 		entityId: EntityId,
-		ctx?: IContext
+		context?: IContext
 	): Promise<boolean>;
 
 	findAll(
 		entityIds?: EntityId[],
-		ctx?: IContext
+		context?: IContext
 	): Promise<Entity[]>;
 
 	findAllAsTrees(
 		entityIds?: EntityId[],
-		ctx?: IContext
+		context?: IContext
 	): Promise<Entity[]>;
 
 	findById(
 		entityId: EntityId,
-		ctx?: IContext
+		context?: IContext
 	): Promise<Entity>;
 
 	/**
@@ -94,19 +66,13 @@ export interface IDao<Entity,
 	 */
 	save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entityInfo: EntityInfo,
-		ctx?: IContext,
+		context?: IContext,
 		operationName?: OperationName,
 	): Promise<number>;
 
-	/**
-	 * Does not cascade?
-	 * @param {EntityCreate[] | EntityCreate} entityInfo
-	 * @returns {Promise<number>}
-	 */
-	update(
-		entityInfo: EntityCreate | EntityCreate[],
-		ctx?: IContext,
-		operationName?: OperationName,
-	): Promise<number>;
+	markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(
+		entityIdInfo: EntityInfo,
+		context?: IContext,
+	): void;
 
 }

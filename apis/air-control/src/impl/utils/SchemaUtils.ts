@@ -31,7 +31,7 @@ import {
 import {
 	ENTITY_STATE_MANAGER,
 	SCHEMA_UTILS
-} from '../../tokens'
+}                           from '../../tokens'
 import {QEntityConstructor} from '../core/entity/Entity'
 import {valuesEqual}        from '../Utils'
 
@@ -198,7 +198,7 @@ export class SchemaUtils
 		dbEntity: DbEntity,
 		dbColumn: DbColumn,
 		entityObject: any,
-		forIdKey                           = false,
+		forIdKey                      = false,
 		generateNegativeIdsForMissing = true
 	): [string[][], any] {
 		const columnValuesAndPaths           = this.getColumnValuesAndPaths(
@@ -405,7 +405,7 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 		dbColumn: DbColumn,
 		relationObject: any,
 		breadCrumb: string[],
-		forIdKey: boolean                           = false,
+		forIdKey: boolean                      = false,
 		generateNegativeIdsForMissing: boolean = true
 		// noIdValueCallback: {
 		// 	(

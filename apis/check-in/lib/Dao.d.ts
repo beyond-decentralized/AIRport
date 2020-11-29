@@ -7,17 +7,13 @@ import { EntityId as DbEntityId } from '@airport/ground-control';
 export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, QE extends IQEntity> implements IDao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE> {
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE>;
     constructor(dbEntityId: DbEntityId, Q: QSchema);
-    bulkCreate(entities: EntityCreate[], checkIfProcessed?: boolean, ctx?: IContext, operationName?: OperationName): Promise<number>;
-    count(ctx?: IContext): Promise<number>;
-    create<EntityInfo extends EntityCreate | EntityCreate[]>(entityInfo: EntityInfo, ctx?: IContext, operationName?: OperationName): Promise<number>;
-    delete(entityIdInfo: EntityId | EntityId[], ctx?: IContext, operationName?: OperationName): Promise<number>;
-    deleteAll(ctx?: IContext): Promise<number>;
-    exists(entityId: EntityId, ctx?: IContext): Promise<boolean>;
-    findAll(entityIds?: EntityId[], ctx?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
-    findAllAsTrees(entityIds?: EntityId[], ctx?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
-    findById(entityId: EntityId, ctx?: IContext, cacheForUpdate?: boolean): Promise<Entity>;
-    save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, ctx?: IContext, operationName?: OperationName): Promise<number>;
-    update(entityInfo: EntityCreate | EntityCreate[], ctx?: IContext, operationName?: OperationName): Promise<number>;
+    count(context?: IContext): Promise<number>;
+    exists(entityId: EntityId, context?: IContext): Promise<boolean>;
+    findAll(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
+    findAllAsTrees(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
+    findById(entityId: EntityId, context?: IContext, cacheForUpdate?: boolean): Promise<Entity>;
+    save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, context?: IContext, operationName?: OperationName): Promise<number>;
+    markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(entityIdInfo: EntityInfo, context?: IContext): void;
     private ensureContext;
 }
 //# sourceMappingURL=Dao.d.ts.map

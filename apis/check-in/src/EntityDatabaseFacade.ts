@@ -89,37 +89,6 @@ export class EntityDatabaseFacade<Entity,
 	// 	return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity,
 	// ...entities) }
 
-	async create(
-		entity: EntityCreate,
-		ctx?: IEntityContext,
-		operationName?: OperationName
-	): Promise<number> {
-		this.identifyObjects(entity, ctx)
-		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade,
-			ctx: IEntityContext
-		) => {
-			return await databaseFacade.create(entity, ctx, operationName)
-		})
-	}
-
-	async bulkCreate(
-		entities: EntityCreate[],
-		checkIfProcessed: boolean = true,
-		ctx?: IEntityContext,
-		operationName?: OperationName
-	): Promise<number> {
-		for (const entity of entities) {
-			this.identifyObjects(entity, ctx)
-		}
-		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade,
-			ctx: IEntityContext
-		) => {
-			return await databaseFacade.bulkCreate(entities, ctx, checkIfProcessed, operationName)
-		})
-	}
-
 	async insertColumnValues<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
@@ -176,20 +145,6 @@ export class EntityDatabaseFacade<Entity,
 		})
 	}
 
-	async update(
-		entity: EntityCreate,
-		ctx?: IEntityContext,
-		operationName?: OperationName
-	): Promise<number> {
-		this.identifyObjects(entity, ctx)
-		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade,
-			ctx: IEntityContext
-		) => {
-			return await databaseFacade.update(entity, ctx, operationName)
-		})
-	}
-
 	async updateColumnsWhere(
 		rawUpdateColumns: RawUpdate<EntityUpdateColumns, IQ> | {
 			(...args: any[])
@@ -217,21 +172,6 @@ export class EntityDatabaseFacade<Entity,
 			ctx: IEntityContext
 		) => {
 			return await databaseFacade.updateWhere(rawUpdate, ctx)
-		})
-	}
-
-	// NOTE: Delete cascading is done on the server, no input is needed
-	async delete(
-		entity: EntityId,
-		ctx?: IEntityContext,
-		operationName?: OperationName
-	): Promise<number> {
-		this.identifyObjects(entity, ctx)
-		return await this.withDbEntity(ctx, async (
-			databaseFacade: IDatabaseFacade,
-			ctx: IEntityContext
-		) => {
-			return await databaseFacade.delete(entity, ctx, operationName)
 		})
 	}
 

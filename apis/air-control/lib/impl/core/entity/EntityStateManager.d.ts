@@ -1,6 +1,9 @@
 export declare type OperationUniqueId = number;
 export declare enum EntityState {
-    STUB = 1
+    CREATE = 0,
+    DELETE = 1,
+    STUB = 1,
+    UPDATE = 2
 }
 export interface EntityWithState {
     __state__: EntityState;
@@ -13,7 +16,10 @@ export interface IEntityStateManager {
     getOperationUniqueIdSeq(): IOperationUniqueIdSequence;
     uniquelyIdentify<T>(entity: T, operationUniqueIdSeq: IOperationUniqueIdSequence): void;
     getOperationUniqueId<T>(entity: T, throwIfNotFound?: boolean): number;
-    markAsStub<T>(entity: T): T;
+    markAsStub<T>(entity: T): void;
+    markForDeletion<T>(entity: T): void;
+    markToCreate<T>(entity: T): void;
+    markToUpdate<T>(entity: T): void;
 }
 export declare class EntityStateManager implements IEntityStateManager {
     static OPERATION_UNIQUE_ID_FIELD: string;
@@ -22,7 +28,10 @@ export declare class EntityStateManager implements IEntityStateManager {
     getOperationUniqueIdSeq(): IOperationUniqueIdSequence;
     uniquelyIdentify<T>(entity: T, operationUniqueIdSeq: IOperationUniqueIdSequence): void;
     getOperationUniqueId<T>(entity: T, throwIfNotFound?: boolean): number;
-    markAsStub<T>(entity: T): T;
+    markAsStub<T>(entity: T): void;
+    markForDeletion<T>(entity: T): void;
+    markToCreate<T>(entity: T): void;
+    markToUpdate<T>(entity: T): void;
     protected getEntityState(entity: any): EntityState;
 }
 //# sourceMappingURL=EntityStateManager.d.ts.map

@@ -1,5 +1,4 @@
 import { DbEntity } from '@airport/ground-control';
-import { IEntityContext } from '../../..';
 import { IEntityFind } from '../../query/api/EntityFind';
 import { IEntityFindOne } from '../../query/api/EntityFindOne';
 import { IEntitySearch } from '../../query/api/EntitySearch';
@@ -10,6 +9,7 @@ import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
 import { RawUpdate, RawUpdateColumns } from '../../query/facade/Update';
 import { MappedEntityArray } from '../../query/MappedEntityArray';
+import { IEntityContext } from '../data/EntityContext';
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../entity/Entity';
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -43,19 +43,6 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @param {Entity} entities
      */
-    /**
-     * Creates the provided entity in the db.
-     *
-     * @return Number of records created (1 or 0)
-     */
-    create(entity: EntityCreateProperties, ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
-    /**
-     * Creates the provided entities in the db.
-     *
-     * @return Number of records created
-     */
-    bulkCreate(entities: EntityCreateProperties[], checkIfProcessed: boolean, // defaults to true
-    ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx?: IEntityContext): Promise<number>;
@@ -68,14 +55,6 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
     insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, ctx?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
-    /**
-     * Creates the provided entity in the db. As part of that attempts to
-     * update only the changed fields.
-     *
-     * @return Number of records updated (1 or 0)
-     */
-    update(entity: EntityCreateProperties, // @Id fields must be populated
-    ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
     /**
      * Updates this entity type based on an UPDATE WHERE Query,
      * with a column based set clause.
@@ -94,14 +73,6 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
     updateWhere(rawUpdateProperties: RawUpdate<EntityUpdateProperties, IQ> | {
         (...args: any[]): RawUpdate<EntityUpdateProperties, IQ>;
     }, ctx?: IEntityContext): Promise<number>;
-    /**
-     * Deletes the provided entity in the db.
-     *
-     * NOTE: Delete cascading is done on the server, no input is needed
-     *
-     * @return Number of records deleted (1 or 0)
-     */
-    delete(entity: EntityId, ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
     /**
      * Deletes this entity type based on an DELETE WHERE Query.
      *

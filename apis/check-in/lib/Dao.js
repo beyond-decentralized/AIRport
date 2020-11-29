@@ -1,4 +1,5 @@
-import { doEnsureContext } from '@airport/air-control';
+import { doEnsureContext, ENTITY_STATE_MANAGER } from '@airport/air-control';
+import { DI } from '@airport/di';
 import { EntityDatabaseFacade } from './EntityDatabaseFacade';
 /**
  * Created by Papa on 8/26/2017.
@@ -9,76 +10,55 @@ export class Dao {
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
         this.db = new EntityDatabaseFacade(dbEntity, Q);
     }
-    async bulkCreate(entities, checkIfProcessed = true, ctx, operationName) {
-        const result = await this.db.bulkCreate(entities, checkIfProcessed, this.ensureContext(ctx), operationName);
-        return result;
-    }
-    async count(ctx) {
+    async count(context) {
         throw new Error(`Not Implemented`);
     }
-    async create(entityInfo, ctx, operationName) {
-        if (entityInfo instanceof Array) {
-            return await this.db.bulkCreate(entityInfo, true, this.ensureContext(ctx), operationName);
-        }
-        else {
-            const result = await this.db.create(entityInfo, this.ensureContext(ctx), operationName);
-            return result;
-        }
-    }
-    async delete(entityIdInfo, ctx, operationName) {
-        if (entityIdInfo instanceof Array) {
-            throw new Error(`Not Implemented`);
-        }
-        else {
-            return await this.db.delete(entityIdInfo, this.ensureContext(ctx), operationName);
-        }
-    }
-    async deleteAll(ctx) {
+    exists(entityId, context) {
         throw new Error(`Not Implemented`);
     }
-    exists(entityId, ctx) {
-        throw new Error(`Not Implemented`);
-    }
-    async findAll(entityIds, ctx, cacheForUpdate = false) {
+    async findAll(entityIds, context, cacheForUpdate = false) {
         if (entityIds) {
             throw new Error(`Not implemented`);
         }
         return await this.db.find.graph({
             select: {},
             from: [this.db.from],
-        }, ctx);
+        }, context);
     }
-    async findAllAsTrees(entityIds, ctx, cacheForUpdate = false) {
+    async findAllAsTrees(entityIds, context, cacheForUpdate = false) {
         if (entityIds) {
             throw new Error(`Not implemented`);
         }
         return await this.db.find.tree({
             select: {},
             from: [this.db.from],
-        }, ctx);
+        }, context);
     }
-    findById(entityId, ctx, cacheForUpdate = false) {
+    findById(entityId, context, cacheForUpdate = false) {
         throw new Error(`Not implemented`);
     }
-    async save(entity, ctx, operationName) {
+    async save(entity, context, operationName) {
         if (entity instanceof Array) {
             throw new Error(`Not Implemented`);
         }
         else {
-            const result = await this.db.save(entity, this.ensureContext(ctx), operationName);
+            const result = await this.db.save(entity, this.ensureContext(context), operationName);
             return result;
         }
     }
-    async update(entityInfo, ctx, operationName) {
-        if (entityInfo instanceof Array) {
-            throw new Error(`Not Implemented`);
+    markForDeletion(entityIdInfo, context) {
+        const entityStateManager = DI.db().getSync(ENTITY_STATE_MANAGER);
+        if (entityIdInfo instanceof Array) {
+            for (const anEntity of entityIdInfo) {
+                entityStateManager.markForDeletion(anEntity);
+            }
         }
         else {
-            return await this.db.update(entityInfo, this.ensureContext(ctx), operationName);
+            entityStateManager.markForDeletion(entityIdInfo);
         }
     }
-    ensureContext(ctx) {
-        return doEnsureContext(ctx);
+    ensureContext(context) {
+        return doEnsureContext(context);
     }
 }
 //# sourceMappingURL=Dao.js.map

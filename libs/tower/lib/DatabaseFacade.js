@@ -49,31 +49,6 @@ export class DatabaseFacade extends OperationManager {
         });
         return numRecordsCreated;
     }
-    async create(entity, ctx) {
-        if (!entity) {
-            return 0;
-        }
-        await this.ensureIocContext(ctx);
-        let numRecordsCreated = 0;
-        await transactional(async (transaction) => {
-            numRecordsCreated = await this.performCreate(entity, [], transaction, ctx);
-        });
-        return numRecordsCreated;
-    }
-    async bulkCreate(entities, ctx, checkIfProcessed = true, operationName, ensureGeneratedValues // for internal use only, needed at initial schema
-    // creation
-    ) {
-        if (!entities || !entities.length) {
-            return 0;
-        }
-        await this.ensureIocContext(ctx);
-        ctx.checkIfProcessed = checkIfProcessed;
-        let numRecordsCreated = 0;
-        await transactional(async (transaction) => {
-            numRecordsCreated = await this.performBulkCreate(entities, [], transaction, ctx, ensureGeneratedValues);
-        });
-        return numRecordsCreated;
-    }
     async insertColumnValues(rawInsertColumnValues, ctx) {
         if (!rawInsertColumnValues) {
             return 0;
@@ -129,17 +104,6 @@ export class DatabaseFacade extends OperationManager {
         });
         return recordIdentifiers;
     }
-    async delete(entity, ctx) {
-        if (!entity) {
-            return 0;
-        }
-        await this.ensureIocContext(ctx);
-        let numDeletedRecords = 0;
-        await transactional(async (transaction) => {
-            numDeletedRecords = await this.performDelete(entity, transaction, ctx);
-        });
-        return numDeletedRecords;
-    }
     async deleteWhere(rawDelete, ctx) {
         if (!rawDelete) {
             return 0;
@@ -186,17 +150,6 @@ export class DatabaseFacade extends OperationManager {
             }
         });
         return numSavedRecords;
-    }
-    async update(entity, ctx, cascadeGraph) {
-        if (!entity) {
-            return 0;
-        }
-        await this.ensureIocContext(ctx);
-        let numUpdatedRecords = 0;
-        await transactional(async (transaction) => {
-            numUpdatedRecords = await this.performUpdate(entity, [], transaction, ctx);
-        });
-        return numUpdatedRecords;
     }
     /**
      * Updates an entity with a where clause, using a column based set clause

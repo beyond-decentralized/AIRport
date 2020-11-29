@@ -121,116 +121,61 @@ export class AirportDatabase
 		platform: PlatformType,
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number> {
 		const dbFacade = await container(this)
 			.get(DB_FACADE)
 
 		return await dbFacade.addRepository(name, url, platform,
-			platformConfig, distributionStrategy, ctx)
-	}
-
-	/**
-	 * Creates an entity - internal API.  Use the API provided by the
-	 * IEntityDatabaseFacade.
-	 *
-	 * @return Number of records created (1 or 0)
-	 */
-	async create<E>(
-		entity: E,
-		ctx: IEntityContext,
-		operationName?: OperationName
-	): Promise<number> {
-		const dbFacade = await container(this)
-			.get(DB_FACADE)
-
-		return await dbFacade.create(entity, ctx, operationName)
-	}
-
-	/**
-	 * Creates an entity - internal API.  Use the API provided by the
-	 * IEntityDatabaseFacade.
-	 *
-	 * @return Number of records created
-	 */
-	async bulkCreate<E>(
-		entities: E[],
-		checkIfProcessed: boolean, // defaults to true
-		ctx: IEntityContext,
-		operationName?: OperationName,
-		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
-	                                  // creation
-	): Promise<number> {
-		const dbFacade = await container(this)
-			.get(DB_FACADE)
-
-		return await dbFacade.bulkCreate(entities, ctx, checkIfProcessed,
-			operationName, ensureGeneratedValues)
+			platformConfig, distributionStrategy, context)
 	}
 
 	async insertColumnValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number> {
 		const dbFacade = await container(this)
 			.get(DB_FACADE)
 
-		return await dbFacade.insertColumnValues(rawInsertValues, ctx)
+		return await dbFacade.insertColumnValues(rawInsertValues, context)
 	}
 
 	async insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number> {
 		const dbFacade = await container(this)
 			.get(DB_FACADE)
 
-		return await dbFacade.insertValues(rawInsertValues, ctx)
+		return await dbFacade.insertValues(rawInsertValues, context)
 	}
 
 	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		const dbFacade = await container(this)
 			.get(DB_FACADE)
 
-		return await dbFacade.insertColumnValuesGenerateIds(rawInsertValues, ctx)
+		return await dbFacade.insertColumnValuesGenerateIds(rawInsertValues, context)
 	}
 
 	async insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		const dbFacade = await container(this)
 			.get(DB_FACADE)
 
-		return await dbFacade.insertValuesGenerateIds(rawInsertValues, ctx)
-	}
-
-	/**
-	 * Deletes an entity - internal API.  Use the API provided by the
-	 * IEntityDatabaseFacade.
-	 *
-	 * @return Number of records deleted (1 or 0)
-	 */
-	async delete<E>(
-		entity: E,
-		ctx: IEntityContext,
-		operationName?: OperationName,
-	): Promise<number> {
-		const dbFacade = await container(this)
-			.get(DB_FACADE)
-
-		return await dbFacade.delete(entity, ctx)
+		return await dbFacade.insertValuesGenerateIds(rawInsertValues, context)
 	}
 
 	/**
@@ -243,12 +188,12 @@ export class AirportDatabase
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number> {
 		const dbFacade = await container(this)
 			.get(DB_FACADE)
 
-		return await dbFacade.deleteWhere(rawDelete, ctx)
+		return await dbFacade.deleteWhere(rawDelete, context)
 	}
 
 	/**
@@ -259,30 +204,13 @@ export class AirportDatabase
 	 */
 	async save<E>(
 		entity: E,
-		ctx: IEntityContext,
+		context?: IEntityContext,
 		operationName?: OperationName,
 	): Promise<number> {
 		const dbFacade = await container(this)
 			.get(DB_FACADE)
 
-		return await dbFacade.save(entity, ctx)
-	}
-
-	/**
-	 * Updates an entity - internal API.  Use the API provided by the
-	 * IEntityDatabaseFacade.
-	 *
-	 * @return Number of records updated (1 or 0)
-	 */
-	async update<E>(
-		entity: E,
-		ctx: IEntityContext,
-		operationName?: OperationName,
-	): Promise<number> {
-		const dbFacade = await container(this)
-			.get(DB_FACADE)
-
-		return await dbFacade.update(entity, ctx)
+		return await dbFacade.save(entity, context)
 	}
 
 	/**
@@ -296,12 +224,12 @@ export class AirportDatabase
 			| {
 			(...args: any[]): RawUpdateColumns<IEUC, IQE>
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number> {
 		const dbFacade = await container(this)
 			.get(DB_FACADE)
 
-		return await dbFacade.updateColumnsWhere(rawUpdateColumns, ctx)
+		return await dbFacade.updateColumnsWhere(rawUpdateColumns, context)
 	}
 
 	/**
@@ -314,12 +242,12 @@ export class AirportDatabase
 		rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},
-		ctx: IEntityContext
+		context?: IEntityContext
 	): Promise<number> {
 		const dbFacade = await container(this)
 			.get(DB_FACADE)
 
-		return await dbFacade.updateWhere(rawUpdate, ctx)
+		return await dbFacade.updateWhere(rawUpdate, context)
 	}
 }
 

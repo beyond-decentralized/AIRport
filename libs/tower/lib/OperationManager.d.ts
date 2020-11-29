@@ -1,4 +1,4 @@
-import { Delete, EntityIdData, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUpdateCache, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties } from '@airport/air-control';
+import { Delete, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUpdateCache, RawInsertColumnValues, RawInsertValues, UpdateColumns, UpdateProperties } from '@airport/air-control';
 import { DbColumn, DbEntity, DbProperty, DbRelation } from '@airport/ground-control';
 import { ITransaction } from './ITransaction';
 import { IOperationContext } from './OperationContext';
@@ -20,20 +20,6 @@ export interface IOperationManager {
 export declare abstract class OperationManager implements IOperationManager {
     throwUnexpectedProperty(dbProperty: DbProperty, dbColumn: DbColumn, value: any): void;
     protected warn(message: string): void;
-    /**
-     * Transactional context must have been started by the time this method is called.
-     *
-     * @param qEntity
-     * @param entity
-     */
-    protected performCreate<E, EntityCascadeGraph>(entity: E, operatedOnEntityIndicator: boolean[], transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, idData?: EntityIdData): Promise<number>;
-    /**
-     * Transactional context must have been started by the time this method is called.
-     *
-     * @param qEntity
-     * @param entity
-     */
-    protected performBulkCreate<E, EntityCascadeGraph>(entities: E[], operatedOnEntityIndicator: boolean[], transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, ensureGeneratedValues?: boolean): Promise<number>;
     protected internalInsertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE>, transaction: ITransaction, ctx: IOperationContext<any, any>): Promise<number>;
     protected internalInsertValues<E, EntityCascadeGraph, IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE>, transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, ensureGeneratedValues?: boolean): Promise<number>;
     protected internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE>, transaction: ITransaction, ctx: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;

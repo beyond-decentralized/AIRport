@@ -96,53 +96,6 @@ export class DatabaseFacade
 		return numRecordsCreated
 	}
 
-	async create<E, EntityCascadeGraph>(
-		entity: E,
-		ctx: IOperationContext<E, EntityCascadeGraph>
-	): Promise<number> {
-		if (!entity) {
-			return 0
-		}
-		await this.ensureIocContext(ctx)
-
-		let numRecordsCreated = 0
-
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			numRecordsCreated = await this.performCreate(
-				entity, [], transaction, ctx)
-		})
-
-		return numRecordsCreated
-	}
-
-	async bulkCreate<E, EntityCascadeGraph>(
-		entities: E[],
-		ctx: IOperationContext<E, EntityCascadeGraph>,
-		checkIfProcessed: boolean = true,
-		operationName?: OperationName,
-		ensureGeneratedValues?: boolean // for internal use only, needed at initial schema
-	                                  // creation
-	): Promise<number> {
-		if (!entities || !entities.length) {
-			return 0
-		}
-		await this.ensureIocContext(ctx)
-		ctx.checkIfProcessed = checkIfProcessed
-
-		let numRecordsCreated = 0
-
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			numRecordsCreated = await this.performBulkCreate(
-				entities, [], transaction, ctx, ensureGeneratedValues)
-		})
-
-		return numRecordsCreated
-	}
-
 	async insertColumnValues<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
@@ -237,24 +190,6 @@ export class DatabaseFacade
 		return recordIdentifiers
 	}
 
-	async delete<E>(
-		entity: E,
-		ctx: IOperationContext<any, any>
-	): Promise<number> {
-		if (!entity) {
-			return 0
-		}
-		await this.ensureIocContext(ctx)
-		let numDeletedRecords = 0
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			numDeletedRecords = await this.performDelete(entity,
-				transaction, ctx)
-		})
-		return numDeletedRecords
-	}
-
 	async deleteWhere<IQE extends IQEntity>(
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
@@ -321,26 +256,6 @@ export class DatabaseFacade
 		})
 
 		return numSavedRecords
-	}
-
-	async update<E, EntityCascadeGraph>(
-		entity: E,
-		ctx: IOperationContext<E, EntityCascadeGraph>,
-		cascadeGraph?: EntityCascadeGraph
-	): Promise<number> {
-		if (!entity) {
-			return 0
-		}
-		await this.ensureIocContext(ctx)
-		let numUpdatedRecords = 0
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			numUpdatedRecords = await this.performUpdate(
-				entity, [], transaction, ctx)
-		})
-
-		return numUpdatedRecords
 	}
 
 	/**

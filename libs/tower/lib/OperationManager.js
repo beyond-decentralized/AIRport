@@ -10,32 +10,6 @@ export class OperationManager {
     warn(message) {
         console.log(message);
     }
-    /**
-     * Transactional context must have been started by the time this method is called.
-     *
-     * @param qEntity
-     * @param entity
-     */
-    async performCreate(entity, operatedOnEntityIndicator, transaction, ctx, idData) {
-        const lastCheckIfProcessed = ctx.checkIfProcessed;
-        ctx.checkIfProcessed = !idData;
-        let result = await this.internalCreate([entity], operatedOnEntityIndicator, transaction, ctx, !idData);
-        await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity, operatedOnEntityIndicator, transaction, ctx);
-        ctx.checkIfProcessed = lastCheckIfProcessed;
-        return result.numberOfAffectedRecords;
-    }
-    /**
-     * Transactional context must have been started by the time this method is called.
-     *
-     * @param qEntity
-     * @param entity
-     */
-    async performBulkCreate(entities, operatedOnEntityIndicator, transaction, ctx, ensureGeneratedValues = true // For internal use only
-    ) {
-        let result = await this.internalCreate(entities, operatedOnEntityIndicator, transaction, ctx, ensureGeneratedValues);
-        await this.cascadeOnPersist(result.cascadeRecords, ctx.dbEntity, operatedOnEntityIndicator, transaction, ctx);
-        return result.numberOfAffectedRecords;
-    }
     async internalInsertColumnValues(rawInsertColumnValues, transaction, ctx) {
         const insertColumnValues = new InsertColumnValues(rawInsertColumnValues);
         const portableQuery = ctx.ioc.queryFacade.getPortableQuery(insertColumnValues, null, ctx);

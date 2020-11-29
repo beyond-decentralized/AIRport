@@ -25,20 +25,6 @@ export class EntityDatabaseFacade {
     // 	const dbFacade = await DI.get(DB_FACADE)
     // 	return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity,
     // ...entities) }
-    async create(entity, ctx, operationName) {
-        this.identifyObjects(entity, ctx);
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.create(entity, ctx, operationName);
-        });
-    }
-    async bulkCreate(entities, checkIfProcessed = true, ctx, operationName) {
-        for (const entity of entities) {
-            this.identifyObjects(entity, ctx);
-        }
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.bulkCreate(entities, ctx, checkIfProcessed, operationName);
-        });
-    }
     async insertColumnValues(rawInsertColumnValues, ctx) {
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
             return await databaseFacade.insertColumnValues(rawInsertColumnValues, ctx);
@@ -59,12 +45,6 @@ export class EntityDatabaseFacade {
             return await databaseFacade.insertValuesGenerateIds(rawInsertValues, ctx);
         });
     }
-    async update(entity, ctx, operationName) {
-        this.identifyObjects(entity, ctx);
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.update(entity, ctx, operationName);
-        });
-    }
     async updateColumnsWhere(rawUpdateColumns, ctx) {
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
             return await databaseFacade.updateColumnsWhere(rawUpdateColumns, ctx);
@@ -73,13 +53,6 @@ export class EntityDatabaseFacade {
     async updateWhere(rawUpdate, ctx) {
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
             return await databaseFacade.updateWhere(rawUpdate, ctx);
-        });
-    }
-    // NOTE: Delete cascading is done on the server, no input is needed
-    async delete(entity, ctx, operationName) {
-        this.identifyObjects(entity, ctx);
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.delete(entity, ctx, operationName);
         });
     }
     async deleteWhere(rawDelete, ctx) {
