@@ -85,18 +85,25 @@ for ${dbEntity.name}.${dbProperty.name}`);
                     } // switch dbRelation.relationType
                     const previousDbEntity = context.dbEntity;
                     context.dbEntity = dbRelation.relationEntity;
+                    let propertyCopyValue;
                     if (propertyValue) {
-                        propertyValue = this.linkEntityGraph(relatedEntities, entitiesByOperationIndex, context);
+                        propertyCopyValue = this.linkEntityGraph(relatedEntities, entitiesByOperationIndex, context);
                         if (isManyToOne) {
-                            propertyValue = propertyValue[0];
+                            propertyCopyValue = propertyCopyValue[0];
                             if (isParentId) {
-                                if (!context.ioc.entityStateManager.isParentId(propertyValue)) {
+                                if (!context.ioc.entityStateManager.isParentId(propertyCopyValue)) {
                                     throw new Error(`Parent Ids may only contain @ManyToOne relations
 that are themselves Parent Ids.`);
                                 }
                             }
+                        } // if (isManyToOne
+                        else {
+                            if (propertyValue) {
+                                propertyCopyValue = propertyValue.concat(propertyCopyValue);
+                            }
                         }
-                    }
+                    } // if (propertyValue
+                    propertyValue = propertyCopyValue;
                     context.dbEntity = previousDbEntity;
                 } // if (dbProperty.relation
                 else {
