@@ -1,4 +1,3 @@
-import { EntityState } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { EntityRelationType, SQLDataType } from '@airport/ground-control';
 import { STRUCTURAL_ENTITY_VALIDATOR } from '../tokens';
@@ -9,23 +8,12 @@ export class StructuralEntityValidator {
             throw new Error(`Cannot run 'save' for entity '${dbEntity.name}' with no @Id(s).
 					Please use non-entity operations (like 'insert' or 'updateWhere') instead.`);
         }
-        let isCreate, isDelete, isUpdate, isStub;
         for (const entity of entities) {
-            const entityState = context.ioc.entityStateManager.getEntityState(entity);
-            switch (entityState) {
-                case EntityState.CREATE:
-                    isCreate = true;
-                    break;
-                case EntityState.DELETE:
-                    isDelete = true;
-                    break;
-                case EntityState.UPDATE:
-                    isUpdate = true;
-                    break;
-                case EntityState.STUB:
-                    isStub = true;
-                default:
-                    throw new Error(`Unexpected entity state for ${dbEntity.name}: ${entityState}`);
+            const [isCreate, isDelete, isParentId, isUpdate, isStub] = context.ioc.entityStateManager
+                .getEntityStateTypeAsFlags(entity, dbEntity);
+            if (isParentId) {
+                // No processing is needed (already covered by id check
+                continue;
             }
             const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity);
             const entityOperatedOn = !!operatedOnEntityIndicator[operationUniqueId];
@@ -40,20 +28,14 @@ export class StructuralEntityValidator {
                     entity[dbProperty.name] = propertyValue;
                 }
                 /*
-                 * A passed in graph has either entities to be saved or
-                 * entity stubs that are needed structurally to get to
-                 * other entities.
-                 *
                  * It is possible for the @Id's of an entity to be in
                  * a @ManyToOne, so we need to check
                  */
                 if (dbProperty.relation && dbProperty.relation.length) {
                     const dbRelation = dbProperty.relation[0];
                     let relatedEntities = propertyValue;
-                    this.assertRelationValueIsAnObject(propertyValue, dbProperty);
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            this.assertManyToOneNotArray(propertyValue, dbProperty);
                             relatedEntities = [propertyValue];
                             // Id columns are for the parent (currently processed) entity and must be
                             // checked as part of this entity
@@ -74,7 +56,7 @@ export class StructuralEntityValidator {
                             }
                             break;
                         case EntityRelationType.ONE_TO_MANY:
-                            this.assertOneToManyIsArray(propertyValue, dbProperty);
+                            // nothing to do
                             break;
                         default:
                             throw new Error(`Unexpected relation type ${dbRelation.relationType}
@@ -152,27 +134,6 @@ must always have a value for all entity operations.`);
     throwUnexpectedProperty(dbProperty, dbColumn, value) {
         throw new Error(`Unexpected property value '${value.toString()}' in property '${dbProperty.entity.name}.${dbProperty.name}'
 		(column: '${dbColumn.name}').`);
-    }
-    assertRelationValueIsAnObject(relationValue, dbProperty) {
-        if (relationValue !== null && relationValue !== undefined &&
-            (typeof relationValue != 'object' || relationValue instanceof Date)) {
-            throw new Error(`Unexpected value in relation property: ${dbProperty.name}, 
-				of entity ${dbProperty.entity.name}`);
-        }
-    }
-    assertManyToOneNotArray(relationValue, dbProperty) {
-        if (relationValue instanceof Array) {
-            throw new Error(`@ManyToOne relation cannot be an array. Relation property: ${dbProperty.name}, 
-of entity ${dbProperty.entity.name}`);
-        }
-    }
-    assertOneToManyIsArray(relationValue, dbProperty) {
-        if (relationValue !== null
-            && relationValue !== undefined
-            && !(relationValue instanceof Array)) {
-            throw new Error(`@OneToMany relation must be an array. Relation property: ${dbProperty.name}, 
-of entity ${dbProperty.entity.name}\``);
-        }
     }
 }
 DI.set(STRUCTURAL_ENTITY_VALIDATOR, StructuralEntityValidator);

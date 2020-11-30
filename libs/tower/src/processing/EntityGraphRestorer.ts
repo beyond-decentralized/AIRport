@@ -1,11 +1,17 @@
-import {IOperationContext} from './OperationContext'
+import {DI}                    from '@airport/di'
+import {
+	DbProperty,
+	EntityRelationType
+}                              from '@airport/ground-control'
+import {ENTITY_GRAPH_RESTORER} from '../tokens'
+import {IOperationContext}     from './OperationContext'
 
 export interface IEntityGraphRestorer {
 
 	restoreEntityGraph<T>(
 		root: T | T[],
 		context: IOperationContext<any, any>
-	): void
+	): T | T[]
 
 }
 
@@ -15,35 +21,163 @@ export class EntityGraphRestorer
 	restoreEntityGraph<T>(
 		root: T | T[],
 		context: IOperationContext<any, any>
-	): void {
+	): T | T[] {
 		if (!(root instanceof Array)) {
 			root = [root]
 		}
 		const entitiesByOperationIndex = []
-		this.linkEntityGraph(root, entitiesByOperationIndex, context)
-		// On the second path there should not be any duplicates, why?
-		this.linkEntityGraph(root, entitiesByOperationIndex, context, false)
+		const rootCopy                 =
+			      this.linkEntityGraph(root, entitiesByOperationIndex, context)
+
+		for (let i = 1; i < entitiesByOperationIndex.length; i++) {
+			const entity = entitiesByOperationIndex[i]
+			if (!entity) {
+				throw new Error(`Missing entity for
+"${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${i}`)
+			}
+		}
+
+		return rootCopy
 	}
 
-	protected linkEntityGraph(
-		currentEntities: any[],
+	protected linkEntityGraph<T>(
+		currentEntities: T[],
 		entitiesByOperationIndex: any[],
-		context: IOperationContext<any, any>,
-		checkForDuplicates: boolean = true
-	) {
-		for (const currentEntity of currentEntities) {
-			const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(currentEntity)
-			if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
-				throw `Entity `
+		context: IOperationContext<any, any>
+	): T[] {
+		const dbEntity     = context.dbEntity
+		const results: T[] = []
+		for (const entity of currentEntities) {
+			if (!entity) {
+				throw `Null root entities @OneToMany arrays with null entities are not allowed`
 			}
+			const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity)
+			if (!operationUniqueId || typeof operationUniqueId !== 'number'
+				|| operationUniqueId < 1) {
+				throw `Invalid entity Unique Id Field
+"${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}.`
+			}
+
+			/*
+			 * A passed in graph has either entities to be saved or
+			 * entity stubs that are needed structurally to get to
+			 * other entities.
+			 */
+			const [isCreate, isDelete, isParentId, isUpdate, isStub] = context.ioc.entityStateManager
+				.getEntityStateTypeAsFlags(entity, dbEntity)
+
 			const previouslyFoundEntity = entitiesByOperationIndex[operationUniqueId]
-			let entityIsStub            = context.ioc.entityStateManager.isStub(currentEntity)
 
-			if (previouslyFoundEntity && entityIsStub) {
+			let entityCopy
+			if (previouslyFoundEntity) {
+				if (!context.ioc.entityStateManager.isStub(previouslyFoundEntity)) {
+					if (!isStub) {
+						throw new Error(`More than 1 non-Stub object found in input
+for "${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}`)
+					}
+				} else {
+					if (!isStub) {
+						context.ioc.entityStateManager.copyEntityState(entity, previouslyFoundEntity)
+					}
+				}
+				entityCopy = previouslyFoundEntity
+			} else {
+				entityCopy                                  = {}
+				entitiesByOperationIndex[operationUniqueId] = entityCopy
 			}
 
-			if (checkForDuplicates && entitiesByOperationIndex[operationUniqueId]) {
-			}
+			for (const dbProperty of dbEntity.properties) {
+				let propertyValue: any = entity[dbProperty.name]
+				if (propertyValue === undefined) {
+					continue
+				}
+				if (dbProperty.relation && dbProperty.relation.length) {
+					const dbRelation    = dbProperty.relation[0]
+					let relatedEntities = propertyValue
+					let isManyToOne     = false
+					this.assertRelationValueIsAnObject(propertyValue, dbProperty)
+					switch (dbRelation.relationType) {
+						case EntityRelationType.MANY_TO_ONE:
+							isManyToOne = true
+							this.assertManyToOneNotArray(propertyValue, dbProperty)
+							relatedEntities = [propertyValue]
+							break
+						case EntityRelationType.ONE_TO_MANY:
+							this.assertOneToManyIsArray(propertyValue, dbProperty)
+							if (isParentId) {
+								throw new Error(`Parent Ids may not contain any @OneToMany relations`)
+							}
+							break
+						default:
+							throw new Error(`Unexpected relation type ${dbRelation.relationType}
+for ${dbEntity.name}.${dbProperty.name}`)
+					} // switch dbRelation.relationType
+					const previousDbEntity = context.dbEntity
+					context.dbEntity       = dbRelation.relationEntity
+					if (propertyValue) {
+						propertyValue = this.linkEntityGraph(relatedEntities, entitiesByOperationIndex, context)
+						if (isManyToOne) {
+							propertyValue = propertyValue[0]
+							if (isParentId) {
+								if (!context.ioc.entityStateManager.isParentId(propertyValue)) {
+									throw new Error(`Parent Ids may only contain @ManyToOne relations
+that are themselves Parent Ids.`)
+								}
+							}
+						}
+					}
+					context.dbEntity = previousDbEntity
+				} // if (dbProperty.relation
+				else {
+					if ((isDelete || isParentId || isStub) && !dbProperty.isId) {
+						// TODO: can a ParentId comprise of fields that are not part of it's own Id
+						// but are a part of Parent's Id?
+						throw new Error(`Deletes, ParentIds and Stubs may only contain @Id properties or relations.`)
+					}
+				} // else (dbProperty.relation
+				entityCopy[dbProperty.name] = propertyValue
+			} // for (const dbProperty
+			results.push(entityCopy)
+		} // for (const entity
+
+		return results
+	}
+
+	protected assertRelationValueIsAnObject(
+		relationValue: any,
+		dbProperty: DbProperty,
+	): void {
+		if (relationValue !== null && relationValue !== undefined &&
+			(typeof relationValue != 'object' || relationValue instanceof Date)
+		) {
+			throw new Error(
+				`Unexpected value in relation property: ${dbProperty.name}, 
+				of entity ${dbProperty.entity.name}`)
+		}
+	}
+
+	protected assertManyToOneNotArray(
+		relationValue: any,
+		dbProperty: DbProperty,
+	): void {
+		if (relationValue instanceof Array) {
+			throw new Error(`@ManyToOne relation cannot be an array. Relation property: ${dbProperty.name}, 
+of entity ${dbProperty.entity.name}`)
+		}
+	}
+
+	protected assertOneToManyIsArray(
+		relationValue: any,
+		dbProperty: DbProperty,
+	): void {
+		if (relationValue !== null
+			&& relationValue !== undefined
+			&& !(relationValue instanceof Array)
+		) {
+			throw new Error(`@OneToMany relation must be an array. Relation property: ${dbProperty.name}, 
+of entity ${dbProperty.entity.name}\``)
 		}
 	}
 }
+
+DI.set(ENTITY_GRAPH_RESTORER, EntityGraphRestorer)

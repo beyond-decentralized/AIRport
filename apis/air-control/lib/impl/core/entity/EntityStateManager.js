@@ -2,14 +2,18 @@ import { DI } from '@airport/di';
 import { ENTITY_STATE_MANAGER } from '../../../tokens';
 export var EntityState;
 (function (EntityState) {
-    EntityState[EntityState["CREATE"] = 0] = "CREATE";
-    EntityState[EntityState["DELETE"] = 1] = "DELETE";
-    EntityState[EntityState["STUB"] = 1] = "STUB";
-    EntityState[EntityState["UPDATE"] = 2] = "UPDATE";
+    EntityState[EntityState["CREATE"] = 1] = "CREATE";
+    EntityState[EntityState["DELETE"] = 2] = "DELETE";
+    EntityState[EntityState["PARENT_ID"] = 3] = "PARENT_ID";
+    EntityState[EntityState["STUB"] = 4] = "STUB";
+    EntityState[EntityState["UPDATE"] = 5] = "UPDATE";
 })(EntityState || (EntityState = {}));
 export class EntityStateManager {
     isStub(entity) {
         return this.getEntityState(entity) === EntityState.STUB;
+    }
+    isParentId(entity) {
+        return this.getEntityState(entity) === EntityState.PARENT_ID;
     }
     getOperationUniqueIdSeq() {
         return {
@@ -45,6 +49,43 @@ export class EntityStateManager {
     }
     getEntityState(entity) {
         return entity.__state__;
+    }
+    copyEntityState(fromEntity, toEntity) {
+        toEntity.__state__ = fromEntity.__state__;
+    }
+    getUniqueIdFieldName() {
+        return EntityStateManager.OPERATION_UNIQUE_ID_FIELD;
+    }
+    getStateFieldName() {
+        return EntityStateManager.STATE_FIELD;
+    }
+    getEntityStateTypeAsFlags(entity, dbEntity) {
+        let isCreate, isDelete, isParentId, isUpdate, isStub;
+        const entityState = this.getEntityState(entity);
+        switch (entityState) {
+            case EntityState.CREATE:
+                isCreate = true;
+                break;
+            case EntityState.DELETE:
+                isDelete = true;
+                break;
+            case EntityState.PARENT_ID:
+                isUpdate = true;
+                break;
+            case EntityState.UPDATE:
+                isParentId = true;
+                break;
+            case EntityState.UPDATE:
+                isUpdate = true;
+                break;
+            case EntityState.STUB:
+                isStub = true;
+                break;
+            default:
+                throw new Error(`Unexpected entity state
+"${this.getStateFieldName()}" for ${dbEntity.name}: ${entityState}`);
+        }
+        return [isCreate, isDelete, isUpdate, isStub];
     }
 }
 EntityStateManager.OPERATION_UNIQUE_ID_FIELD = '__UID__';

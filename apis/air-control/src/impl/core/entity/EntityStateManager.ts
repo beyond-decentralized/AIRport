@@ -1,13 +1,15 @@
 import {DI}                   from '@airport/di'
+import {DbEntity}             from '@airport/ground-control'
 import {ENTITY_STATE_MANAGER} from '../../../tokens'
 
 export type OperationUniqueId = number
 
 export enum EntityState {
-	CREATE,
-	DELETE,
-	STUB = 1,
-	UPDATE
+	CREATE    = 1,
+	DELETE    = 2,
+	PARENT_ID = 3,
+	STUB      = 4,
+	UPDATE    = 5
 }
 
 export interface EntityWithState {
@@ -21,6 +23,10 @@ export interface IOperationUniqueIdSequence {
 export interface IEntityStateManager {
 
 	isStub<T>(
+		entity: T
+	): boolean
+
+	isParentId<T>(
 		entity: T
 	): boolean
 
@@ -52,9 +58,23 @@ export interface IEntityStateManager {
 		entity: T
 	): void
 
-	getEntityState(
-		entity
+	getEntityState<T>(
+		entity: T
 	): EntityState
+
+	copyEntityState<T>(
+		fromEntity: T,
+		toEntity: T
+	): void
+
+	getUniqueIdFieldName(): string
+
+	getStateFieldName(): string
+
+	getEntityStateTypeAsFlags<T>(
+		entity: T,
+		dbEntity: DbEntity
+	): [boolean, boolean, boolean, boolean]
 
 }
 
@@ -67,6 +87,12 @@ export class EntityStateManager
 		entity: T
 	): boolean {
 		return this.getEntityState(entity) === EntityState.STUB
+	}
+
+	isParentId<T>(
+		entity: T
+	): boolean {
+		return this.getEntityState(entity) === EntityState.PARENT_ID
 	}
 
 	getOperationUniqueIdSeq(): IOperationUniqueIdSequence {
@@ -123,11 +149,60 @@ export class EntityStateManager
 		(<EntityWithState><any>entity).__state__ = EntityState.UPDATE
 	}
 
-	getEntityState(
-		entity
+	getEntityState<T>(
+		entity: T
 	): EntityState {
-		return (<EntityWithState>entity).__state__
+		return (<EntityWithState><any>entity).__state__
 	}
+
+	copyEntityState<T>(
+		fromEntity: T,
+		toEntity: T
+	): void {
+		(<EntityWithState><any>toEntity).__state__ = (<EntityWithState><any>fromEntity).__state__
+	}
+
+	getUniqueIdFieldName(): string {
+		return EntityStateManager.OPERATION_UNIQUE_ID_FIELD
+	}
+
+	getStateFieldName(): string {
+		return EntityStateManager.STATE_FIELD
+	}
+
+	getEntityStateTypeAsFlags<T>(
+		entity: T,
+		dbEntity: DbEntity
+	): [boolean, boolean, boolean, boolean] {
+		let isCreate, isDelete, isParentId, isUpdate, isStub
+		const entityState = this.getEntityState(entity)
+		switch (entityState) {
+			case EntityState.CREATE:
+				isCreate = true
+				break
+			case EntityState.DELETE:
+				isDelete = true
+				break
+			case EntityState.PARENT_ID:
+				isUpdate = true
+				break
+			case EntityState.UPDATE:
+				isParentId = true
+				break
+			case EntityState.UPDATE:
+				isUpdate = true
+				break
+			case EntityState.STUB:
+				isStub = true
+				break
+			default:
+				throw new Error(`Unexpected entity state
+"${this.getStateFieldName()}" for ${dbEntity.name}: ${entityState}`)
+		}
+
+		return [isCreate, isDelete, isUpdate, isStub]
+	}
+
 }
 
 DI.set(ENTITY_STATE_MANAGER, EntityStateManager)

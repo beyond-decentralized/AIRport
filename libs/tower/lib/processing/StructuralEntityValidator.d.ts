@@ -8,8 +8,5 @@ export declare class StructuralEntityValidator {
     protected ensureIdValue(dbEntity: DbEntity, dbProperty: DbProperty, dbColumn: DbColumn, isCreate: boolean, isIdColumnEmpty: boolean): void;
     protected ensureNonRelationalValue(dbProperty: DbProperty, dbColumn: DbColumn, value: any): void;
     protected throwUnexpectedProperty(dbProperty: DbProperty, dbColumn: DbColumn, value: any): void;
-    protected assertRelationValueIsAnObject(relationValue: any, dbProperty: DbProperty): void;
-    protected assertManyToOneNotArray(relationValue: any, dbProperty: DbProperty): void;
-    protected assertOneToManyIsArray(relationValue: any, dbProperty: DbProperty): void;
 }
 //# sourceMappingURL=StructuralEntityValidator.d.ts.map
