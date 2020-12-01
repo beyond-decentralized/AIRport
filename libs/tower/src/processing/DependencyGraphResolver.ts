@@ -8,9 +8,9 @@ import {
 	DbProperty,
 	EntityRelationType
 }                                  from '@airport/ground-control'
+import {DEPENDENCY_GRAPH_RESOLVER} from '../tokens'
 import {IDependencyGraphNode}      from './DependencyGraphNode'
 import {IOperationContext}         from './OperationContext'
-import {DEPENDENCY_GRAPH_RESOLVER} from '../tokens'
 
 export interface IDependencyGraphResolver {
 
@@ -27,7 +27,7 @@ export class DependencyGraphResolver
 
 	getEntitiesToPersist<E>(
 		entities: E[],
-		ctx: IOperationContext<E, IEntityCascadeGraph>,
+		context: IOperationContext<E, IEntityCascadeGraph>,
 		operatedOnEntityIndicator: boolean[],
 		fromDependency?: IDependencyGraphNode<any>
 	): IDependencyGraphNode<any>[] {
@@ -35,9 +35,10 @@ export class DependencyGraphResolver
 			dependsOn: fromDependency ? [fromDependency] : [],
 			entities: []
 		}
+		const dbEntity     = context.dbEntity
 
 		for (const entity of entities) {
-			const operationUniqueId = ctx.ioc.entityStateManager.getOperationUniqueId(entity)
+			const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity)
 			const entityOperatedOn  = !!operatedOnEntityIndicator[operationUniqueId]
 			operatedOnEntityIndicator[operationUniqueId]
 			                        = true
@@ -46,11 +47,17 @@ export class DependencyGraphResolver
 			// places in a graph)
 			let foundValues = []
 
-			let entityIsStub = ctx.ioc.entityStateManager.isStub(entity)
+			/*
+			 * A passed in graph has either entities to be saved or
+			 * entity stubs that are needed structurally to get to
+			 * other entities.
+			 */
+			const [isCreate, isDelete, isParentId, isUpdate, isStub] = context.ioc.entityStateManager
+				.getEntityStateTypeAsFlags(entity, dbEntity)
 
 			dependencyGraphNode.entities.push(entity)
 
-			for (const dbProperty of ctx.dbEntity.properties) {
+			for (const dbProperty of context.dbEntity.properties) {
 				let childEntities
 				let propertyValue: any = entity[dbProperty.name]
 				if (propertyValue === undefined) {
@@ -62,20 +69,20 @@ export class DependencyGraphResolver
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
 							this.assertManyToOneNotArray(propertyValue)
-							ctx.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (
+							context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (
 								dbColumn: DbColumn,
 								columnValue: any,
 								propertyNameChains: string[][],
 							) => {
 								if (dbProperty.isId) {
-									if (ctx.ioc.schemaUtils.isIdEmpty(columnValue)) {
+									if (context.ioc.schemaUtils.isIdEmpty(columnValue)) {
 										throw new Error(
-											`non-@GeneratedValue() @Id() ${ctx.dbEntity.name}.${dbProperty.name} 
+											`non-@GeneratedValue() @Id() ${context.dbEntity.name}.${dbProperty.name} 
 											must have a value for 'create' operations.`)
 									}
 								}
-								if (ctx.ioc.schemaUtils.isRepositoryId(dbColumn.name)) {
-									if (ctx.ioc.schemaUtils.isEmpty(columnValue)) {
+								if (context.ioc.schemaUtils.isRepositoryId(dbColumn.name)) {
+									if (context.ioc.schemaUtils.isEmpty(columnValue)) {
 										throw new Error(`Repository Id must be specified on an insert`)
 									}
 								}
@@ -98,9 +105,9 @@ export class DependencyGraphResolver
 					if (childEntities) {
 						const dbEntity             = dbRelation.relationEntity
 						const previousDbEntity     = dbEntity
-						ctx.dbEntity               = dbEntity
-						const childDependencyGraph = this.getEntitiesToPersist(childEntities, ctx, operatedOnEntityIndicator)
-						ctx.dbEntity               = previousDbEntity
+						context.dbEntity               = dbEntity
+						const childDependencyGraph = this.getEntitiesToPersist(childEntities, context, operatedOnEntityIndicator)
+						context.dbEntity               = previousDbEntity
 					}
 				} // if relation
 			} // for properties
