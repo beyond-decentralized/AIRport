@@ -85,7 +85,7 @@ export class EntityStateManager {
                 throw new Error(`Unexpected entity state
 "${this.getStateFieldName()}" for ${dbEntity.name}: ${entityState}`);
         }
-        return [isCreate, isDelete, isUpdate, isStub];
+        return [isCreate, isDelete, isParentId, isUpdate, isStub];
     }
 }
 EntityStateManager.OPERATION_UNIQUE_ID_FIELD = '__UID__';

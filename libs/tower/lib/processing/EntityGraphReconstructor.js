@@ -1,11 +1,11 @@
 import { DI } from '@airport/di';
 import { EntityRelationType } from '@airport/ground-control';
-import { ENTITY_GRAPH_RESTORER } from '../tokens';
+import { ENTITY_GRAPH_RECONSTRUCTOR } from '../tokens';
 /**
  * Takes a serialized object tree and reconstructs a (potentially)
  * interlinked object graph.
  */
-export class EntityGraphRestorer {
+export class EntityGraphReconstructor {
     restoreEntityGraph(root, context) {
         if (!(root instanceof Array)) {
             root = [root];
@@ -145,5 +145,5 @@ of entity ${dbProperty.entity.name}\``);
         }
     }
 }
-DI.set(ENTITY_GRAPH_RESTORER, EntityGraphRestorer);
-//# sourceMappingURL=EntityGraphRestorer.js.map
+DI.set(ENTITY_GRAPH_RECONSTRUCTOR, EntityGraphReconstructor);
+//# sourceMappingURL=EntityGraphReconstructor.js.map

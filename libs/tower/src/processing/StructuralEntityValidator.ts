@@ -105,6 +105,13 @@ for ${dbEntity.name}.${dbProperty.name}`)
 					if (dbProperty.isId) {
 						const isIdColumnEmpty = context.ioc.schemaUtils.isIdEmpty(propertyValue)
 						this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty)
+					} else {
+						if (isStub || isParentId || isDelete) {
+							if (propertyValue !== undefined) {
+								throw new Error(`Unexpected non-@Id value Stub|ParentId|Deleted record.
+Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`)
+							}
+						}
 					}
 					this.ensureNonRelationalValue(dbProperty, dbColumn, propertyValue)
 				} // else (dbProperty.relation

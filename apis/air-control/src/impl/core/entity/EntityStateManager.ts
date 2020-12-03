@@ -74,7 +74,7 @@ export interface IEntityStateManager {
 	getEntityStateTypeAsFlags<T>(
 		entity: T,
 		dbEntity: DbEntity
-	): [boolean, boolean, boolean, boolean]
+	): [boolean, boolean, boolean, boolean, boolean]
 
 }
 
@@ -173,7 +173,7 @@ export class EntityStateManager
 	getEntityStateTypeAsFlags<T>(
 		entity: T,
 		dbEntity: DbEntity
-	): [boolean, boolean, boolean, boolean] {
+	): [boolean, boolean, boolean, boolean, boolean] {
 		let isCreate, isDelete, isParentId, isUpdate, isStub
 		const entityState = this.getEntityState(entity)
 		switch (entityState) {
@@ -200,7 +200,7 @@ export class EntityStateManager
 "${this.getStateFieldName()}" for ${dbEntity.name}: ${entityState}`)
 		}
 
-		return [isCreate, isDelete, isUpdate, isStub]
+		return [isCreate, isDelete, isParentId, isUpdate, isStub]
 	}
 
 }

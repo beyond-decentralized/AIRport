@@ -1,15 +1,13 @@
 import { IEntityCascadeGraph } from '@airport/air-control';
-import { DbColumn, DbProperty } from '@airport/ground-control';
-import { IDependencyGraphNode } from './DependencyGraphNode';
+import { IDependencyGraphNode, IOperationNode } from './DependencyGraphNode';
 import { IOperationContext } from './OperationContext';
 export interface IDependencyGraphResolver {
-    getEntitiesToPersist<E>(entities: E[], ctx: IOperationContext<E, IEntityCascadeGraph>, operatedOnEntityIndicator: boolean[]): IDependencyGraphNode<any>[];
+    getOperationsInOrder<E>(entities: E[], context: IOperationContext<E, IEntityCascadeGraph>): IOperationNode<E>[];
 }
 export declare class DependencyGraphResolver implements IDependencyGraphResolver {
-    getEntitiesToPersist<E>(entities: E[], context: IOperationContext<E, IEntityCascadeGraph>, operatedOnEntityIndicator: boolean[], fromDependency?: IDependencyGraphNode<any>): IDependencyGraphNode<any>[];
-    protected assertRelationValueIsAnObject(relationValue: any, dbProperty: DbProperty): void;
-    protected assertManyToOneNotArray(relationValue: any): void;
-    protected assertOneToManyIsArray(relationValue: any): void;
-    protected columnProcessed(dbProperty: DbProperty, foundValues: any[], dbColumn: DbColumn, value: any): boolean;
+    getOperationsInOrder<E>(entities: E[], context: IOperationContext<E, IEntityCascadeGraph>): IOperationNode<E>[];
+    protected orderEntitiesToPersist<E>(unorderedDependencies: IDependencyGraphNode<any>[], context: IOperationContext<E, IEntityCascadeGraph>): IDependencyGraphNode<any>[];
+    protected optimizeEntitiesToPersist<E>(orderedDependencies: IDependencyGraphNode<any>[], context: IOperationContext<E, IEntityCascadeGraph>): IOperationNode<E>[];
+    protected getEntitiesToPersist<E>(entities: E[], operatedOnEntities: IDependencyGraphNode<any>[], context: IOperationContext<E, IEntityCascadeGraph>, dependsOn?: IDependencyGraphNode<any>, dependency?: IDependencyGraphNode<any>, deleteByCascade?: boolean): IDependencyGraphNode<any>[];
 }
 //# sourceMappingURL=DependencyGraphResolver.d.ts.map

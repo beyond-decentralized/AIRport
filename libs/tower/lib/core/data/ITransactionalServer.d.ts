@@ -2,7 +2,7 @@ import { DistributionStrategy, PlatformType, PortableQuery } from '@airport/grou
 import { IObservable } from '@airport/observe';
 import { ICredentials } from '@airport/terminal-map';
 import { ITransaction } from '../../ITransaction';
-import { IOperationContext } from 'src/processing/OperationContext';
+import { IOperationContext } from '../../processing/OperationContext';
 export interface ITransactionalServer {
     init(): Promise<void>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, credentials: ICredentials, ctx: IOperationContext<any, any>): Promise<number>;

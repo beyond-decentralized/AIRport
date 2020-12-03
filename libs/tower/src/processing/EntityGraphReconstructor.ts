@@ -2,11 +2,11 @@ import {DI}                    from '@airport/di'
 import {
 	DbProperty,
 	EntityRelationType
-}                              from '@airport/ground-control'
-import {ENTITY_GRAPH_RESTORER} from '../tokens'
-import {IOperationContext}     from './OperationContext'
+}                                   from '@airport/ground-control'
+import {ENTITY_GRAPH_RECONSTRUCTOR} from '../tokens'
+import {IOperationContext}          from './OperationContext'
 
-export interface IEntityGraphRestorer {
+export interface IEntityGraphReconstructor {
 
 	restoreEntityGraph<T>(
 		root: T | T[],
@@ -15,8 +15,12 @@ export interface IEntityGraphRestorer {
 
 }
 
-export class EntityGraphRestorer
-	implements IEntityGraphRestorer {
+/**
+ * Takes a serialized object tree and reconstructs a (potentially)
+ * interlinked object graph.
+ */
+export class EntityGraphReconstructor
+	implements IEntityGraphReconstructor {
 
 	restoreEntityGraph<T>(
 		root: T | T[],
@@ -187,4 +191,4 @@ of entity ${dbProperty.entity.name}\``)
 	}
 }
 
-DI.set(ENTITY_GRAPH_RESTORER, EntityGraphRestorer)
+DI.set(ENTITY_GRAPH_RECONSTRUCTOR, EntityGraphReconstructor)

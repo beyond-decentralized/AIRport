@@ -1,177 +1,227 @@
-import {
-	IEntityCascadeGraph,
-	valuesEqual
-}                                  from '@airport/air-control'
+import {IEntityCascadeGraph}       from '@airport/air-control'
 import {DI}                        from '@airport/di'
-import {
-	DbColumn,
-	DbProperty,
-	EntityRelationType
-}                                  from '@airport/ground-control'
+import {EntityRelationType}        from '@airport/ground-control'
 import {DEPENDENCY_GRAPH_RESOLVER} from '../tokens'
-import {IDependencyGraphNode}      from './DependencyGraphNode'
+import {
+	IDependencyGraphNode,
+	IOperationNode
+}                                  from './DependencyGraphNode'
 import {IOperationContext}         from './OperationContext'
 
 export interface IDependencyGraphResolver {
 
-	getEntitiesToPersist<E>(
+	getOperationsInOrder<E>(
 		entities: E[],
-		ctx: IOperationContext<E, IEntityCascadeGraph>,
-		operatedOnEntityIndicator: boolean[]
-	): IDependencyGraphNode<any>[]
+		context: IOperationContext<E, IEntityCascadeGraph>,
+	): IOperationNode<E>[]
 
 }
 
+/*
+ * Takes a (potentially) interconnected entity graph and returns
+ * an array of entities to be operated on, in a order that is valid
+ * for insertion (with all needed new ids being inserted in an order
+ * that will work).
+ */
 export class DependencyGraphResolver
 	implements IDependencyGraphResolver {
 
-	getEntitiesToPersist<E>(
+	getOperationsInOrder<E>(
 		entities: E[],
 		context: IOperationContext<E, IEntityCascadeGraph>,
-		operatedOnEntityIndicator: boolean[],
-		fromDependency?: IDependencyGraphNode<any>
+	): IOperationNode<E>[] {
+		const unorderedDependencies = this.getEntitiesToPersist(
+			entities, [], context)
+		const orderedDependencies   = this.orderEntitiesToPersist(
+			unorderedDependencies, context)
+
+		return this.optimizeEntitiesToPersist(orderedDependencies, context)
+	}
+
+	protected orderEntitiesToPersist<E>(
+		unorderedDependencies: IDependencyGraphNode<any>[],
+		context: IOperationContext<E, IEntityCascadeGraph>,
 	): IDependencyGraphNode<any>[] {
-		const dependencyGraphNode: IDependencyGraphNode<E> = {
-			dependsOn: fromDependency ? [fromDependency] : [],
-			entities: []
+		let orderedNodes: IDependencyGraphNode<any>[]   = []
+		let processedNodes: IDependencyGraphNode<any>[] = []
+		while (orderedNodes.length < unorderedDependencies.length) {
+			NODE_LOOP:
+				for (const node of unorderedDependencies) {
+					for (const dependency of node.dependsOn) {
+						const dependencyUid = context.ioc.entityStateManager
+							.getOperationUniqueId(dependency.entity)
+						// If a dependency is not yet processed (and is possibly has
+						// other dependencies of it's own)
+						if (!processedNodes[dependencyUid]) {
+							continue NODE_LOOP
+						}
+					}
+					const entityUid           = context.ioc.entityStateManager
+						.getOperationUniqueId(node.entity)
+					processedNodes[entityUid] = node
+					orderedNodes.push(node)
+				}
 		}
-		const dbEntity     = context.dbEntity
+		return orderedNodes
+	}
+
+	// Group alike operations together, where possible
+	protected optimizeEntitiesToPersist<E>(
+		orderedDependencies: IDependencyGraphNode<any>[],
+		context: IOperationContext<E, IEntityCascadeGraph>,
+	): IOperationNode<E>[] {
+		let numProcessedNodes                           = 0
+		let processedNodes: IDependencyGraphNode<any>[] = []
+		// TODO: for each node traverse its dependencies
+		// if it has dependencies that haven't been processed yet
+		// then it can't be combined with an earlier alike operation on the same
+		// entity
+		while (numProcessedNodes < orderedDependencies.length) {
+			NODE_LOOP:
+				for (const node of orderedDependencies) {
+					for (const dependency of node.dependsOn) {
+						const dependencyUid = context.ioc.entityStateManager
+							.getOperationUniqueId(dependency.entity)
+						// If a dependency is not yet processed (and is possibly has
+						// other dependencies of it's own)
+						if (!processedNodes[dependencyUid]) {
+							continue NODE_LOOP
+						}
+					}
+					const entityUid           = context.ioc.entityStateManager
+						.getOperationUniqueId(node.entity)
+					processedNodes[entityUid] = node
+					orderedNodes.push(node)
+				}
+		}
+		return null
+	}
+
+	protected getEntitiesToPersist<E>(
+		entities: E[],
+		operatedOnEntities: IDependencyGraphNode<any>[],
+		context: IOperationContext<E, IEntityCascadeGraph>,
+		dependsOn?: IDependencyGraphNode<any>,
+		dependency?: IDependencyGraphNode<any>,
+		deleteByCascade = false,
+	): IDependencyGraphNode<any>[] {
+		let allProcessedNodes: IDependencyGraphNode<any>[] = []
+		const dbEntity                                     = context.dbEntity
 
 		for (const entity of entities) {
-			const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity)
-			const entityOperatedOn  = !!operatedOnEntityIndicator[operationUniqueId]
-			operatedOnEntityIndicator[operationUniqueId]
-			                        = true
-			// NOTE: Values should always be in only one place, rest should be stubs
-			// with possible child objects (in case an object has to be in multiple
-			// places in a graph)
-			let foundValues = []
-
 			/*
 			 * A passed in graph has either entities to be saved or
 			 * entity stubs that are needed structurally to get to
-			 * other entities.
+			 * other entities (or parentIds in case part of an id
+			 * actually resides in a nested object that that object
+			 * has no associated operations or child entities of
+			 * it's own).
 			 */
 			const [isCreate, isDelete, isParentId, isUpdate, isStub] = context.ioc.entityStateManager
 				.getEntityStateTypeAsFlags(entity, dbEntity)
 
-			dependencyGraphNode.entities.push(entity)
+			if (isParentId) {
+				// No processing is needed
+				continue
+			}
+
+			const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity)
+			if (deleteByCascade && (!isDelete || !isStub)) {
+				throw new Error(`Cannot do a Create or Update operation on an entity that will be
+deleted by cascading rules.  Entity: ${dbEntity.name}.
+Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`)
+			}
+
+			let dependencyGraphNode: IDependencyGraphNode<E> = operatedOnEntities[operationUniqueId]
+			if (dependencyGraphNode) {
+				if (dependsOn) {
+					dependencyGraphNode.dependsOn.push(dependsOn)
+				}
+				if (dependency) {
+					dependency.dependsOn.push(dependencyGraphNode)
+				}
+				continue
+			} else if (!isStub && !deleteByCascade) {
+				dependencyGraphNode = {
+					dbEntity,
+					dependsOn: dependsOn && !isDelete ? [dependsOn] : [],
+					entity,
+					isCreate,
+					isDelete
+				}
+				if (dependency) {
+					dependency.dependsOn.push(dependencyGraphNode)
+				}
+				allProcessedNodes.push(dependencyGraphNode)
+			}
 
 			for (const dbProperty of context.dbEntity.properties) {
 				let childEntities
 				let propertyValue: any = entity[dbProperty.name]
-				if (propertyValue === undefined) {
-					propertyValue = null
+				if (propertyValue === null) {
+					continue
 				}
 				if (dbProperty.relation && dbProperty.relation.length) {
-					const dbRelation = dbProperty.relation[0]
-					this.assertRelationValueIsAnObject(propertyValue, dbProperty)
+					let fromDependencyForChild: IDependencyGraphNode<E> = null
+					let childIsDependency                               = false
+					let childDeleteByCascade                            = deleteByCascade || isDelete
+					const dbRelation                                    = dbProperty.relation[0]
 					switch (dbRelation.relationType) {
+						// Relation is an entity that this entity depends on
 						case EntityRelationType.MANY_TO_ONE:
-							this.assertManyToOneNotArray(propertyValue)
-							context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (
-								dbColumn: DbColumn,
-								columnValue: any,
-								propertyNameChains: string[][],
-							) => {
-								if (dbProperty.isId) {
-									if (context.ioc.schemaUtils.isIdEmpty(columnValue)) {
-										throw new Error(
-											`non-@GeneratedValue() @Id() ${context.dbEntity.name}.${dbProperty.name} 
-											must have a value for 'create' operations.`)
+							childDeleteByCascade = false
+							const [isChildCreate, isChildDelete, isChildParentId, isChildUpdate, isChildStub]
+							                     = context.ioc.entityStateManager
+								.getEntityStateTypeAsFlags(entity, dbEntity)
+							if (isChildParentId) {
+								continue
+							}
+							if (isChildDelete) {
+								if (!isDelete) {
+									throw new Error(`Cannot delete an entity without removing all references to it.
+								Found a reference in ${dbEntity.name}.${dbProperty.name}.
+								Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`)
+								} else {
+									// Prune this entry
+									if (!deleteByCascade) {
+										if (dependency) {
+											dependency.dependsOn.pop()
+										}
+										allProcessedNodes.pop()
 									}
+									deleteByCascade = true
 								}
-								if (context.ioc.schemaUtils.isRepositoryId(dbColumn.name)) {
-									if (context.ioc.schemaUtils.isEmpty(columnValue)) {
-										throw new Error(`Repository Id must be specified on an insert`)
-									}
-								}
-								this.columnProcessed(dbProperty, foundValues, dbColumn, columnValue)
-								if (dbColumn.isGenerated && dbProperty.isId && columnValue < 0) {
-									// Do not insert negative integers for temporary identification
-									// within the circular dependency management lookup
-									return
-								}
-								valuesFragment[columnIndexesInValues[dbColumn.index]]
-									= columnValue === undefined ? null : columnValue
-							}, false)
+							}
+							if (isChildCreate) {
+								childIsDependency = true
+							}
 							childEntities = [propertyValue]
 							break
+						// Relation is an array of entities that depend in this entity
 						case EntityRelationType.ONE_TO_MANY:
-							this.assertOneToManyIsArray(propertyValue)
+							if (isCreate) {
+								fromDependencyForChild = dependencyGraphNode
+							}
+							// Nested deletions wil be automatically pruned in recursive calls
 							childEntities = propertyValue
 							break
 					}
 					if (childEntities) {
-						const dbEntity             = dbRelation.relationEntity
-						const previousDbEntity     = dbEntity
-						context.dbEntity               = dbEntity
-						const childDependencyGraph = this.getEntitiesToPersist(childEntities, context, operatedOnEntityIndicator)
-						context.dbEntity               = previousDbEntity
+						const dbEntity                   = dbRelation.relationEntity
+						const previousDbEntity           = dbEntity
+						context.dbEntity                 = dbEntity
+						const childDependencyLinkedNodes = this.getEntitiesToPersist(
+							childEntities, operatedOnEntities, context, fromDependencyForChild,
+							!isStub && !isDelete && childIsDependency ? dependencyGraphNode : null,
+							childDeleteByCascade)
+						allProcessedNodes                = allProcessedNodes.concat(childDependencyLinkedNodes)
+						context.dbEntity                 = previousDbEntity
 					}
 				} // if relation
 			} // for properties
 		} // for entities
 
-		return []
-	}
-
-	protected assertRelationValueIsAnObject(
-		relationValue: any,
-		dbProperty: DbProperty,
-	): void {
-		if (relationValue !== null && relationValue !== undefined &&
-			(typeof relationValue != 'object' || relationValue instanceof Date)
-		) {
-			throw new Error(
-				`Unexpected value in relation property: ${dbProperty.name}, 
-				of entity ${dbProperty.entity.name}`)
-		}
-	}
-
-	protected assertManyToOneNotArray(
-		relationValue: any
-	): void {
-		if (relationValue instanceof Array) {
-			throw new Error(`@ManyToOne relation cannot be an array`)
-		}
-	}
-
-	protected assertOneToManyIsArray(
-		relationValue: any
-	): void {
-		if (relationValue !== null
-			&& relationValue !== undefined
-			&& !(relationValue instanceof Array)) {
-			throw new Error(`@OneToMany relation must be an array`)
-		}
-	}
-
-	/*
-	 Values for the same column could be repeated in different places in the object graph.
-	 For example, if the same column is mapped to two different @ManyToOne relations.
-	 In this case, when persisting an entity we need to make sure that all values for the
-	 entity in question are being persisted.
-	 */
-	protected columnProcessed(
-		dbProperty: DbProperty,
-		foundValues: any[],
-		dbColumn: DbColumn,
-		value: any,
-	): boolean {
-		// if (value === undefined) {
-		// 	throw new Error(`Values cannot be undefined, please use null.`);
-		// }
-		if (foundValues[dbColumn.index] === undefined) {
-			foundValues[dbColumn.index] = value
-			return false
-		}
-		if (!valuesEqual(foundValues[dbColumn.index], value)) {
-			throw new Error(
-				`Found value mismatch in '${dbProperty.entity.name}.${dbProperty.name}'
-			(column: '${dbColumn.name}'): ${foundValues[dbColumn.index]} !== ${value}`)
-		}
-		return true
+		return allProcessedNodes
 	}
 
 }

@@ -27,7 +27,7 @@ export interface IEntityStateManager {
     copyEntityState<T>(fromEntity: T, toEntity: T): void;
     getUniqueIdFieldName(): string;
     getStateFieldName(): string;
-    getEntityStateTypeAsFlags<T>(entity: T, dbEntity: DbEntity): [boolean, boolean, boolean, boolean];
+    getEntityStateTypeAsFlags<T>(entity: T, dbEntity: DbEntity): [boolean, boolean, boolean, boolean, boolean];
 }
 export declare class EntityStateManager implements IEntityStateManager {
     static OPERATION_UNIQUE_ID_FIELD: string;
@@ -45,6 +45,6 @@ export declare class EntityStateManager implements IEntityStateManager {
     copyEntityState<T>(fromEntity: T, toEntity: T): void;
     getUniqueIdFieldName(): string;
     getStateFieldName(): string;
-    getEntityStateTypeAsFlags<T>(entity: T, dbEntity: DbEntity): [boolean, boolean, boolean, boolean];
+    getEntityStateTypeAsFlags<T>(entity: T, dbEntity: DbEntity): [boolean, boolean, boolean, boolean, boolean];
 }
 //# sourceMappingURL=EntityStateManager.d.ts.map
