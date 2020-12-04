@@ -29,7 +29,6 @@ import {
 	DI
 } from '@airport/di'
 import {
-	DbEntity,
 	DbSchema,
 	DistributionStrategy,
 	PlatformType

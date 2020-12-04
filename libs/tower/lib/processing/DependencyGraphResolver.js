@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { EntityRelationType } from '@airport/ground-control';
+import { ensureChildArray, EntityRelationType } from '@airport/ground-control';
 import { DEPENDENCY_GRAPH_RESOLVER } from '../tokens';
 /*
  * Takes a (potentially) interconnected entity graph and returns
@@ -11,7 +11,7 @@ export class DependencyGraphResolver {
     getOperationsInOrder(entities, context) {
         const unorderedDependencies = this.getEntitiesToPersist(entities, [], context);
         const orderedDependencies = this.orderEntitiesToPersist(unorderedDependencies, context);
-        return this.optimizeEntitiesToPersist(orderedDependencies, context);
+        return this.optimizePersistOperations(orderedDependencies, context);
     }
     orderEntitiesToPersist(unorderedDependencies, context) {
         let orderedNodes = [];
@@ -36,31 +36,69 @@ export class DependencyGraphResolver {
         return orderedNodes;
     }
     // Group alike operations together, where possible
-    optimizeEntitiesToPersist(orderedDependencies, context) {
-        let numProcessedNodes = 0;
+    optimizePersistOperations(orderedDependencies, context) {
+        let operationNodes = [];
         let processedNodes = [];
-        // TODO: for each node traverse its dependencies
-        // if it has dependencies that haven't been processed yet
-        // then it can't be combined with an earlier alike operation on the same
-        // entity
-        while (numProcessedNodes < orderedDependencies.length) {
-            NODE_LOOP: for (const node of orderedDependencies) {
-                for (const dependency of node.dependsOn) {
-                    const dependencyUid = context.ioc.entityStateManager
-                        .getOperationUniqueId(dependency.entity);
-                    // If a dependency is not yet processed (and is possibly has
-                    // other dependencies of it's own)
-                    if (!processedNodes[dependencyUid]) {
-                        continue NODE_LOOP;
-                    }
-                }
-                const entityUid = context.ioc.entityStateManager
-                    .getOperationUniqueId(node.entity);
-                processedNodes[entityUid] = node;
-                orderedNodes.push(node);
+        let operationsBySchemaIndex = [];
+        for (const node of orderedDependencies) {
+            const dbEntity = node.dbEntity;
+            const schemaOperationNodes = ensureChildArray(operationsBySchemaIndex, dbEntity.schemaVersion.schema.index);
+            let entityOperations = schemaOperationNodes[dbEntity.index];
+            if (!entityOperations) {
+                entityOperations = {
+                    create: [],
+                    delete: [],
+                    update: []
+                };
+                schemaOperationNodes[dbEntity.index] = entityOperations;
             }
+            let operations = [];
+            if (node.isCreate) {
+                operations = entityOperations.create;
+            }
+            else if (node.isDelete) {
+                operations = entityOperations.delete;
+            }
+            else {
+                operations = entityOperations.update;
+            }
+            let operation;
+            if (!operations.length) {
+                operation = {
+                    dbEntity,
+                    entities: []
+                };
+                operations.push(operation);
+                operationNodes.push(operation);
+            }
+            else {
+                operation = operations[operations.length - 1];
+            }
+            // For each node traverse its dependencies
+            // if it has dependencies that haven't been processed yet
+            // then it can't be combined with an earlier alike operation
+            // on the same entity
+            let canBeCombined = true;
+            for (const dependency of node.dependsOn) {
+                const dependencyUid = context.ioc.entityStateManager
+                    .getOperationUniqueId(dependency.entity);
+                const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(dependency.entity);
+                if (!processedNodes[dependencyUid]) {
+                    canBeCombined = false;
+                    break;
+                }
+            }
+            if (!canBeCombined && operation.entities.length) {
+                operation = {
+                    dbEntity,
+                    entities: []
+                };
+                operations.push(operation);
+                operationNodes.push(operation);
+            }
+            operation.entities.push(node.entity);
         }
-        return null;
+        return operationNodes;
     }
     getEntitiesToPersist(entities, operatedOnEntities, context, dependsOn, dependency, deleteByCascade = false) {
         let allProcessedNodes = [];

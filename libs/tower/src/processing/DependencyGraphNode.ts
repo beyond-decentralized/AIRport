@@ -11,6 +11,4 @@ export interface IDependencyGraphNode<E> {
 export interface IOperationNode<E> {
 	dbEntity: DbEntity
 	entities: E[]
-	isCreate: boolean
-	isDelete: boolean
 }

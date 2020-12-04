@@ -7,7 +7,7 @@ export interface IDependencyGraphResolver {
 export declare class DependencyGraphResolver implements IDependencyGraphResolver {
     getOperationsInOrder<E>(entities: E[], context: IOperationContext<E, IEntityCascadeGraph>): IOperationNode<E>[];
     protected orderEntitiesToPersist<E>(unorderedDependencies: IDependencyGraphNode<any>[], context: IOperationContext<E, IEntityCascadeGraph>): IDependencyGraphNode<any>[];
-    protected optimizeEntitiesToPersist<E>(orderedDependencies: IDependencyGraphNode<any>[], context: IOperationContext<E, IEntityCascadeGraph>): IOperationNode<E>[];
+    protected optimizePersistOperations<E>(orderedDependencies: IDependencyGraphNode<any>[], context: IOperationContext<E, IEntityCascadeGraph>): IOperationNode<E>[];
     protected getEntitiesToPersist<E>(entities: E[], operatedOnEntities: IDependencyGraphNode<any>[], context: IOperationContext<E, IEntityCascadeGraph>, dependsOn?: IDependencyGraphNode<any>, dependency?: IDependencyGraphNode<any>, deleteByCascade?: boolean): IDependencyGraphNode<any>[];
 }
 //# sourceMappingURL=DependencyGraphResolver.d.ts.map
