@@ -21,7 +21,7 @@ export class CascadeGraphVerifier
 		if (!(root instanceof Array)) {
 			root = [root]
 		}
-		// validate the rules specified in the graph
+		// TODO: validate the rules specified in the graph
 
 		return root
 	}
