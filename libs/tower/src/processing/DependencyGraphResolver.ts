@@ -47,104 +47,6 @@ export class DependencyGraphResolver
 		return this.optimizePersistOperations(orderedDependencies, context)
 	}
 
-	protected orderEntitiesToPersist<E>(
-		unorderedDependencies: IDependencyGraphNode<any>[],
-		context: IOperationContext<E, IEntityCascadeGraph>,
-	): IDependencyGraphNode<any>[] {
-		let orderedNodes: IDependencyGraphNode<any>[]   = []
-		let processedNodes: IDependencyGraphNode<any>[] = []
-		while (orderedNodes.length < unorderedDependencies.length) {
-			NODE_LOOP:
-				for (const node of unorderedDependencies) {
-					for (const dependency of node.dependsOn) {
-						const dependencyUid = context.ioc.entityStateManager
-							.getOperationUniqueId(dependency.entity)
-						// If a dependency is not yet processed (and is possibly has
-						// other dependencies of it's own)
-						if (!processedNodes[dependencyUid]) {
-							continue NODE_LOOP
-						}
-					}
-					const entityUid           = context.ioc.entityStateManager
-						.getOperationUniqueId(node.entity)
-					processedNodes[entityUid] = node
-					orderedNodes.push(node)
-				}
-		}
-		return orderedNodes
-	}
-
-	// Group alike operations together, where possible
-	protected optimizePersistOperations<E>(
-		orderedDependencies: IDependencyGraphNode<any>[],
-		context: IOperationContext<E, IEntityCascadeGraph>,
-	): IOperationNode<E>[] {
-		let operationNodes: IOperationNode<any>[]             = []
-		let processedNodes: IDependencyGraphNode<any>[]       = []
-		let operationsBySchemaIndex: IOperationsForEntity[][] = []
-
-		for (const node of orderedDependencies) {
-			const dbEntity             = node.dbEntity
-			const schemaOperationNodes = ensureChildArray(operationsBySchemaIndex,
-				dbEntity.schemaVersion.schema.index)
-
-			let entityOperations = schemaOperationNodes[dbEntity.index]
-			if (!entityOperations) {
-				entityOperations                     = {
-					create: [],
-					delete: [],
-					update: []
-				}
-				schemaOperationNodes[dbEntity.index] = entityOperations
-			}
-			let operations: IOperationNode<any>[] = []
-			if (node.isCreate) {
-				operations = entityOperations.create
-			} else if (node.isDelete) {
-				operations = entityOperations.delete
-			} else {
-				operations = entityOperations.update
-			}
-			let operation: IOperationNode<any>
-			if (!operations.length) {
-				operation = {
-					dbEntity,
-					entities: []
-				}
-				operations.push(operation)
-				operationNodes.push(operation)
-			} else {
-				operation = operations[operations.length - 1]
-			}
-
-			// For each node traverse its dependencies
-			// if it has dependencies that haven't been processed yet
-			// then it can't be combined with an earlier alike operation
-			// on the same entity
-			let canBeCombined = true
-			for (const dependency of node.dependsOn) {
-				const dependencyUid     = context.ioc.entityStateManager
-					.getOperationUniqueId(dependency.entity)
-				const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(dependency.entity)
-				if (!processedNodes[dependencyUid]) {
-					canBeCombined = false
-					break
-				}
-			}
-			if (!canBeCombined && operation.entities.length) {
-				operation = {
-					dbEntity,
-					entities: []
-				}
-				operations.push(operation)
-				operationNodes.push(operation)
-			}
-			operation.entities.push(node.entity)
-		}
-
-		return operationNodes
-	}
-
 	protected getEntitiesToPersist<E>(
 		entities: E[],
 		operatedOnEntities: IDependencyGraphNode<any>[],
@@ -270,6 +172,104 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 		} // for entities
 
 		return allProcessedNodes
+	}
+
+	protected orderEntitiesToPersist<E>(
+		unorderedDependencies: IDependencyGraphNode<any>[],
+		context: IOperationContext<E, IEntityCascadeGraph>,
+	): IDependencyGraphNode<any>[] {
+		let orderedNodes: IDependencyGraphNode<any>[]   = []
+		let processedNodes: IDependencyGraphNode<any>[] = []
+		while (orderedNodes.length < unorderedDependencies.length) {
+			NODE_LOOP:
+				for (const node of unorderedDependencies) {
+					for (const dependency of node.dependsOn) {
+						const dependencyUid = context.ioc.entityStateManager
+							.getOperationUniqueId(dependency.entity)
+						// If a dependency is not yet processed (and is possibly has
+						// other dependencies of it's own)
+						if (!processedNodes[dependencyUid]) {
+							continue NODE_LOOP
+						}
+					}
+					const entityUid           = context.ioc.entityStateManager
+						.getOperationUniqueId(node.entity)
+					processedNodes[entityUid] = node
+					orderedNodes.push(node)
+				}
+		}
+		return orderedNodes
+	}
+
+	// Group alike operations together, where possible
+	protected optimizePersistOperations<E>(
+		orderedDependencies: IDependencyGraphNode<any>[],
+		context: IOperationContext<E, IEntityCascadeGraph>,
+	): IOperationNode<E>[] {
+		let operationNodes: IOperationNode<any>[]             = []
+		let processedNodes: IDependencyGraphNode<any>[]       = []
+		let operationsBySchemaIndex: IOperationsForEntity[][] = []
+
+		for (const node of orderedDependencies) {
+			const dbEntity             = node.dbEntity
+			const schemaOperationNodes = ensureChildArray(operationsBySchemaIndex,
+				dbEntity.schemaVersion.schema.index)
+
+			let entityOperations = schemaOperationNodes[dbEntity.index]
+			if (!entityOperations) {
+				entityOperations                     = {
+					create: [],
+					delete: [],
+					update: []
+				}
+				schemaOperationNodes[dbEntity.index] = entityOperations
+			}
+			let operations: IOperationNode<any>[] = []
+			if (node.isCreate) {
+				operations = entityOperations.create
+			} else if (node.isDelete) {
+				operations = entityOperations.delete
+			} else {
+				operations = entityOperations.update
+			}
+			let operation: IOperationNode<any>
+			if (!operations.length) {
+				operation = {
+					dbEntity,
+					entities: []
+				}
+				operations.push(operation)
+				operationNodes.push(operation)
+			} else {
+				operation = operations[operations.length - 1]
+			}
+
+			// For each node traverse its dependencies
+			// if it has dependencies that haven't been processed yet
+			// then it can't be combined with an earlier alike operation
+			// on the same entity
+			let canBeCombined = true
+			for (const dependency of node.dependsOn) {
+				const dependencyUid     = context.ioc.entityStateManager
+					.getOperationUniqueId(dependency.entity)
+				const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(dependency.entity)
+				if (!processedNodes[dependencyUid]) {
+					canBeCombined = false
+					break
+				}
+			}
+			if (!canBeCombined && operation.entities.length) {
+				operation = {
+					dbEntity,
+					entities: []
+				}
+				operations.push(operation)
+				operationNodes.push(operation)
+			}
+			operation.entities.push(node.entity)
+		}
+
+		return operationNodes
 	}
 
 }
