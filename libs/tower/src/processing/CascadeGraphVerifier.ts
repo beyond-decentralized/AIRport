@@ -21,8 +21,9 @@ export class CascadeGraphVerifier
 		if (!(root instanceof Array)) {
 			root = [root]
 		}
-		throw new Error('Not implemented')
-		// return root
+		// validate the rules specified in the graph
+
+		return root
 	}
 }
 

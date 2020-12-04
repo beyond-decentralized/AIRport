@@ -27,13 +27,13 @@ export interface IStoreOperator {
 
 	deleteWhere(
 		portableQuery: PortableQuery,
-		ctx: IContext,
+		context: IContext,
 	): Promise<number>;
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		ctx: IContext,
+		context: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray>;
 
@@ -47,12 +47,12 @@ export interface IStoreOperator {
 	findNative(
 		sqlQuery: string,
 		parameters: any[],
-		ctx: IContext,
+		context: IContext,
 	): Promise<any[]>;
 
 	insertValues(
 		portableQuery: PortableQuery,
-		ctx: IContext,
+		context: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<number>;
 
@@ -60,20 +60,20 @@ export interface IStoreOperator {
 		queryType: QueryType,
 		query: string,
 		params,
-		ctx: IContext,
+		context: IContext,
 		saveTransaction?: boolean
 	): Promise<any>;
 
 	updateWhere(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		ctx: IContext,
+		context: IContext,
 	): Promise<number>;
 
 	isValueValid(
 		value: any,
 		sqlDataType: SQLDataType,
-		ctx: IContext,
+		context: IContext,
 	): boolean
 
 }

@@ -15,17 +15,17 @@ export interface IStructuralEntityValidator {
 		entities: E[],
 		operatedOnEntityIndicator: boolean[],
 		context: IOperationContext<E, EntityCascadeGraph>,
-	): Promise<void>
+	): void
 
 }
 
 export class StructuralEntityValidator {
 
-	async validate<E, EntityCascadeGraph>(
+	validate<E, EntityCascadeGraph>(
 		entities: E[],
 		operatedOnEntityIndicator: boolean[],
 		context: IOperationContext<E, EntityCascadeGraph>,
-	): Promise<void> {
+	): void {
 		const dbEntity = context.dbEntity
 
 		if (!dbEntity.idColumns.length) {

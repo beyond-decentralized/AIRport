@@ -1,8 +1,4 @@
 import {
-	IAirportDatabase,
-	IFieldUtils,
-	IQueryUtils,
-	ISchemaUtils,
 	QUERY_FACADE,
 	RepositorySheetSelectInfo,
 	SheetQuery
@@ -82,7 +78,7 @@ export class UpdateManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number> {
 		// TODO: remove unused dependencies after testing
 		const [
@@ -101,7 +97,7 @@ export class UpdateManager
 				REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO,
 				SEQUENCE_GENERATOR)
 
-		const dbEntity = ctx.ioc.airDb.schemas[portableQuery.schemaIndex]
+		const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
 			.currentVersion.entities[portableQuery.tableIndex]
 
 		const errorPrefix = `Error updating '${dbEntity.name}'
@@ -116,16 +112,14 @@ export class UpdateManager
 		let systemWideOperationId: SystemWideOperationId
 		if (!dbEntity.isLocal) {
 
-			systemWideOperationId = await getSysWideOpId(ctx.ioc.airDb, sequenceGenerator);
+			systemWideOperationId = await getSysWideOpId(context.ioc.airDb, sequenceGenerator);
 
 			[recordHistoryMap, repositorySheetSelectInfo]
 				= await this.addUpdateHistory(
 				dbEntity, portableQuery, actor,
 				systemWideOperationId, errorPrefix,
-				ctx.ioc.airDb, ctx.ioc.fieldUtils, historyManager, operHistoryDuo,
-				ctx.ioc.queryUtils, recHistoryDuo, recHistoryOldValueDuo,
-				repositoryManager, repoTransHistoryDuo, ctx.ioc.schemaUtils,
-				transaction)
+				historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo,
+				repositoryManager, repoTransHistoryDuo, transaction, context)
 
 			internalFragments.SET.push({
 				column: repositorySheetSelectInfo.systemWideOperationIdColumn,
@@ -134,18 +128,18 @@ export class UpdateManager
 		}
 
 		const numUpdatedRows = await transaction
-			.updateWhere(portableQuery, internalFragments)
+			.updateWhere(portableQuery, internalFragments, context)
 
 		if (!dbEntity.isLocal) {
-			const previousDbEntity = ctx.dbEntity
-			ctx.dbEntity           = dbEntity
+			const previousDbEntity = context.dbEntity
+			context.dbEntity       = dbEntity
 			await this.addNewValueHistory(
 				<JsonUpdate<any>>portableQuery.jsonQuery,
 				recordHistoryMap, systemWideOperationId,
 				repositorySheetSelectInfo, errorPrefix,
 				recHistoryDuo, recHistoryNewValueDuo,
-				transaction, ctx)
-			ctx.dbEntity = previousDbEntity
+				transaction, context)
+			context.dbEntity = previousDbEntity
 		}
 
 		return numUpdatedRows
@@ -157,17 +151,14 @@ export class UpdateManager
 		actor: IActor,
 		systemWideOperationId: SystemWideOperationId,
 		errorPrefix: string,
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
 		histManager: IHistoryManager,
 		operHistoryDuo: IOperationHistoryDuo,
-		queryUtils: IQueryUtils,
 		recHistoryDuo: IRecordHistoryDuo,
 		recHistoryOldValueDuo: IRecordHistoryOldValueDuo,
 		repoManager: IRepositoryManager,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
-		schemaUtils: ISchemaUtils,
-		transaction: ITransaction
+		transaction: ITransaction,
+		context: IOperationContext
 	): Promise<[
 		RecordHistoryMap,
 		RepositorySheetSelectInfo
@@ -177,16 +168,17 @@ export class UpdateManager
 				`Cannot add update history for a non-RepositoryEntity`)
 		}
 
-		const qEntity                           = airDb
+		const qEntity                           = context.ioc.airDb
 			.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
 		const jsonUpdate: JsonUpdate<any>       = <JsonUpdate<any>>portableQuery.jsonQuery
-		const getSheetSelectFromSetClauseResult = schemaUtils.getSheetSelectFromSetClause(
+		const getSheetSelectFromSetClauseResult = context.ioc.schemaUtils.getSheetSelectFromSetClause(
 			dbEntity, qEntity, jsonUpdate.S, errorPrefix)
 
 		const sheetQuery = new SheetQuery(null)
 
 		const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(
-			getSheetSelectFromSetClauseResult.selectClause, queryUtils, fieldUtils)
+			getSheetSelectFromSetClauseResult.selectClause, context.ioc.queryUtils,
+			context.ioc.fieldUtils)
 
 		const jsonSelect: JsonSheetQuery    = {
 			S: jsonSelectClause,
@@ -202,7 +194,7 @@ export class UpdateManager
 			// values: portableQuery.values,
 		}
 		const recordsToUpdate               = await transaction.find<any, Array<any>>(
-			portableSelect, {})
+			portableSelect, {}, context)
 
 		const {
 			      recordsByRepositoryId,
@@ -273,10 +265,10 @@ export class UpdateManager
 		recHistoryDuo: IRecordHistoryDuo,
 		recHistoryNewValueDuo: IRecordHistoryNewValueDuo,
 		transaction: ITransaction,
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<void> {
-		const qEntity = ctx.ioc.airDb.qSchemas
-			[ctx.dbEntity.schemaVersion.schema.index][ctx.dbEntity.name]
+		const qEntity = context.ioc.airDb.qSchemas
+			[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
 
 		const sheetQuery = new SheetQuery({
 			from: [
@@ -290,7 +282,7 @@ export class UpdateManager
 		const queryFacade  = await container(this)
 			.get(QUERY_FACADE)
 		let portableSelect = queryFacade.getPortableQuery(
-			sheetQuery, QueryResultType.SHEET, ctx)
+			sheetQuery, QueryResultType.SHEET, context)
 
 		const internalFragments: InternalFragments = {
 			SELECT: repositorySheetSelectInfo.selectClause.map(
@@ -298,7 +290,7 @@ export class UpdateManager
 		}
 
 		const updatedRecords = await transaction.find<any, Array<any>>(
-			portableSelect, internalFragments)
+			portableSelect, internalFragments, context)
 
 		const {
 			      recordsByRepositoryId,
@@ -325,7 +317,7 @@ may only be created as a draft record.`)
 				const recordHistory = recordHistoryMapByRecordId
 					[repositoryId][actorId][actorRecordId]
 				for (const columnName in jsonUpdate.S) {
-					const dbColumn = ctx.dbEntity.columnMap[columnName]
+					const dbColumn = context.dbEntity.columnMap[columnName]
 					const value    = updatedRecord[dbColumn.index]
 
 					if (value === undefined) {

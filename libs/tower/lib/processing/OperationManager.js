@@ -36,7 +36,7 @@ export class OperationManager {
         const entityGraph = context.ioc.entityGraphReconstructor
             .restoreEntityGraph(verifiedTree, context);
         context.ioc.structuralEntityValidator.validate(entityGraph, [], context);
-        context.ioc.dependencyGraphResolver.getOperationsInOrder(entityGraph, context);
+        const operations = context.ioc.dependencyGraphResolver.getOperationsInOrder(entityGraph, context);
     }
     /**
      * Transactional context must have been started by the time this method is called.

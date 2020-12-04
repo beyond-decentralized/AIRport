@@ -2,7 +2,7 @@ import { DI } from '@airport/di';
 import { EntityRelationType, SQLDataType } from '@airport/ground-control';
 import { STRUCTURAL_ENTITY_VALIDATOR } from '../tokens';
 export class StructuralEntityValidator {
-    async validate(entities, operatedOnEntityIndicator, context) {
+    validate(entities, operatedOnEntityIndicator, context) {
         const dbEntity = context.dbEntity;
         if (!dbEntity.idColumns.length) {
             throw new Error(`Cannot run 'save' for entity '${dbEntity.name}' with no @Id(s).
