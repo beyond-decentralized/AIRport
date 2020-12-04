@@ -1,30 +1,30 @@
 import { IDatabaseFacade, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, IUpdateCache, OperationName, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
 import { DbEntity } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
-import { IOperationContext } from 'src/processing/OperationContext';
-import { OperationManager } from 'src/processing/OperationManager';
+import { IOperationContext } from './processing/OperationContext';
+import { OperationManager } from './processing/OperationManager';
 /**
  * Created by Papa on 5/23/2016.
  */
 export declare class DatabaseFacade extends OperationManager implements IDatabaseFacade {
     name: string;
-    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, ctx: IOperationContext<any, any>): Promise<number>;
+    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context: IOperationContext<any, any>): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }, ctx: IOperationContext<any, any>): Promise<number>;
+    }, context: IOperationContext<any, any>): Promise<number>;
     insertValues<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }, ctx: IOperationContext<any, any>): Promise<number>;
+    }, context: IOperationContext<any, any>): Promise<number>;
     insertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }, ctx: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
+    }, context: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
     insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }, ctx: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
+    }, context: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
     deleteWhere<IQE extends IQEntity>(rawDelete: RawDelete<IQE> | {
         (...args: any[]): RawDelete<IQE>;
-    }, ctx: IOperationContext<any, any>): Promise<number>;
-    save<E, EntityCascadeGraph>(entity: E, ctx: IOperationContext<any, any>, operationName?: OperationName): Promise<number>;
+    }, context: IOperationContext<any, any>): Promise<number>;
+    save<E, EntityCascadeGraph>(entity: E, context: IOperationContext<any, any>, operationName?: OperationName): Promise<number>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.
@@ -33,10 +33,10 @@ export declare class DatabaseFacade extends OperationManager implements IDatabas
      */
     updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(rawUpdate: RawUpdateColumns<IEUC, IQE> | {
         (...args: any[]): RawUpdateColumns<IEUC, IQE>;
-    }, ctx: IOperationContext<any, any>): Promise<number>;
+    }, context: IOperationContext<any, any>): Promise<number>;
     updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(rawUpdate: RawUpdate<IEUP, IQE> | {
         (...args: any[]): RawUpdate<IEUP, IQE>;
-    }, ctx: IOperationContext<any, any>): Promise<number>;
+    }, context: IOperationContext<any, any>): Promise<number>;
     getOriginalRecord<T>(dbEntity: DbEntity, entity: T, updateCache: IUpdateCache): Promise<any>;
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;
     private ensureId;

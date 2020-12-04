@@ -44,7 +44,9 @@ export class DependencyGraphResolver
 		const orderedDependencies   = this.orderEntitiesToPersist(
 			unorderedDependencies, context)
 
-		return this.optimizePersistOperations(orderedDependencies, context)
+		const operationNodes = this.optimizePersistOperations(orderedDependencies, context)
+
+		return this.ensureUpdatesAreGroupedCorrectly(operationNodes, context)
 	}
 
 	protected getEntitiesToPersist<E>(
@@ -236,7 +238,9 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 			if (!operations.length) {
 				operation = {
 					dbEntity,
-					entities: []
+					entities: [],
+					isCreate: node.isCreate,
+					isDelete: node.isDelete,
 				}
 				operations.push(operation)
 				operationNodes.push(operation)
@@ -261,7 +265,9 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 			if (!canBeCombined && operation.entities.length) {
 				operation = {
 					dbEntity,
-					entities: []
+					entities: [],
+					isCreate: node.isCreate,
+					isDelete: node.isDelete,
 				}
 				operations.push(operation)
 				operationNodes.push(operation)
@@ -272,6 +278,17 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 		return operationNodes
 	}
 
+	/**
+	 *
+	 * @param operationNodes
+	 * @param context
+	 */
+	ensureUpdatesAreGroupedCorrectly<E>(
+		operationNodes: IOperationNode<E>[],
+		context
+	): IOperationNode<E>[] {
+		throw new Error('Not Implemented.')
+	}
 }
 
 DI.set(DEPENDENCY_GRAPH_RESOLVER, DependencyGraphResolver)

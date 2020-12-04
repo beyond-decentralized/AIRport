@@ -11,7 +11,8 @@ export class DependencyGraphResolver {
     getOperationsInOrder(entities, context) {
         const unorderedDependencies = this.getEntitiesToPersist(entities, [], context);
         const orderedDependencies = this.orderEntitiesToPersist(unorderedDependencies, context);
-        return this.optimizePersistOperations(orderedDependencies, context);
+        const operationNodes = this.optimizePersistOperations(orderedDependencies, context);
+        return this.ensureUpdatesAreGroupedCorrectly(operationNodes, context);
     }
     getEntitiesToPersist(entities, operatedOnEntities, context, dependsOn, dependency, deleteByCascade = false) {
         let allProcessedNodes = [];
@@ -177,7 +178,9 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
             if (!operations.length) {
                 operation = {
                     dbEntity,
-                    entities: []
+                    entities: [],
+                    isCreate: node.isCreate,
+                    isDelete: node.isDelete,
                 };
                 operations.push(operation);
                 operationNodes.push(operation);
@@ -202,7 +205,9 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
             if (!canBeCombined && operation.entities.length) {
                 operation = {
                     dbEntity,
-                    entities: []
+                    entities: [],
+                    isCreate: node.isCreate,
+                    isDelete: node.isDelete,
                 };
                 operations.push(operation);
                 operationNodes.push(operation);
@@ -210,6 +215,14 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
             operation.entities.push(node.entity);
         }
         return operationNodes;
+    }
+    /**
+     *
+     * @param operationNodes
+     * @param context
+     */
+    ensureUpdatesAreGroupedCorrectly(operationNodes, context) {
+        throw new Error('Not Implemented.');
     }
 }
 DI.set(DEPENDENCY_GRAPH_RESOLVER, DependencyGraphResolver);

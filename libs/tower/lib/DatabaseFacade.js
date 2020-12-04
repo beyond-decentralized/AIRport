@@ -1,7 +1,7 @@
 import { DB_FACADE, Delete, UpdateColumns, UpdateProperties, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
-import { OperationManager } from 'src/processing/OperationManager';
+import { OperationManager } from './processing/OperationManager';
 import { OPERATION_CONTEXT_LOADER } from './tokens';
 import { transactional } from './transactional';
 /**
@@ -40,114 +40,93 @@ export class DatabaseFacade extends OperationManager {
         this.updateCache.dropCache()
     }
      */
-    async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH, ctx) {
-        await this.ensureIocContext(ctx);
+    async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH, context) {
+        await this.ensureIocContext(context);
         let numRecordsCreated = 0;
         await transactional(async (transaction) => {
             // TODO: figure out how addRepository will work
-            numRecordsCreated = await ctx.ioc.transactionalServer.addRepository(name, url, platform, platformConfig, distributionStrategy, null, ctx);
+            numRecordsCreated = await context.ioc.transactionalServer.addRepository(name, url, platform, platformConfig, distributionStrategy, null, context);
         });
         return numRecordsCreated;
     }
-    async insertColumnValues(rawInsertColumnValues, ctx) {
+    async insertColumnValues(rawInsertColumnValues, context) {
         if (!rawInsertColumnValues) {
             return 0;
         }
         if (rawInsertColumnValues instanceof Function) {
             rawInsertColumnValues = rawInsertColumnValues();
         }
-        await this.ensureIocContext(ctx);
+        await this.ensureIocContext(context);
         let numInsertedRecords = 0;
         await transactional(async (transaction) => {
-            numInsertedRecords = await this.internalInsertColumnValues(rawInsertColumnValues, transaction, ctx);
+            numInsertedRecords = await this.internalInsertColumnValues(rawInsertColumnValues, transaction, context);
         });
         return numInsertedRecords;
     }
-    async insertValues(rawInsertValues, ctx) {
+    async insertValues(rawInsertValues, context) {
         if (!rawInsertValues) {
             return 0;
         }
         if (rawInsertValues instanceof Function) {
             rawInsertValues = rawInsertValues();
         }
-        await this.ensureIocContext(ctx);
+        await this.ensureIocContext(context);
         let numInsertedRecords = 0;
         await transactional(async (transaction) => {
-            numInsertedRecords = await this.internalInsertValues(rawInsertValues, transaction, ctx);
+            numInsertedRecords = await this.internalInsertValues(rawInsertValues, transaction, context);
         });
         return numInsertedRecords;
     }
-    async insertColumnValuesGenerateIds(rawInsertColumnValues, ctx) {
+    async insertColumnValuesGenerateIds(rawInsertColumnValues, context) {
         if (!rawInsertColumnValues) {
             return [];
         }
         if (rawInsertColumnValues instanceof Function) {
             rawInsertColumnValues = rawInsertColumnValues();
         }
-        await this.ensureIocContext(ctx);
+        await this.ensureIocContext(context);
         let recordIdentifiers;
         await transactional(async (transaction) => {
-            recordIdentifiers = await this.internalInsertColumnValuesGenerateIds(rawInsertColumnValues, transaction, ctx);
+            recordIdentifiers = await this.internalInsertColumnValuesGenerateIds(rawInsertColumnValues, transaction, context);
         });
     }
-    async insertValuesGenerateIds(rawInsertValues, ctx) {
+    async insertValuesGenerateIds(rawInsertValues, context) {
         if (!rawInsertValues) {
             return [];
         }
         if (rawInsertValues instanceof Function) {
             rawInsertValues = rawInsertValues();
         }
-        await this.ensureIocContext(ctx);
+        await this.ensureIocContext(context);
         let recordIdentifiers;
         await transactional(async (transaction) => {
-            recordIdentifiers = await this.internalInsertValuesGetIds(rawInsertValues, transaction, ctx);
+            recordIdentifiers = await this.internalInsertValuesGetIds(rawInsertValues, transaction, context);
         });
         return recordIdentifiers;
     }
-    async deleteWhere(rawDelete, ctx) {
+    async deleteWhere(rawDelete, context) {
         if (!rawDelete) {
             return 0;
         }
         if (rawDelete instanceof Function) {
             rawDelete = rawDelete();
         }
-        await this.ensureIocContext(ctx);
+        await this.ensureIocContext(context);
         let deleteWhere = new Delete(rawDelete);
         let numDeletedRecords = 0;
         await transactional(async (transaction) => {
-            numDeletedRecords = await this.internalDeleteWhere(deleteWhere, transaction, ctx);
+            numDeletedRecords = await this.internalDeleteWhere(deleteWhere, transaction, context);
         });
         return numDeletedRecords;
     }
-    async save(entity, ctx, operationName) {
+    async save(entity, context, operationName) {
         if (!entity) {
             return 0;
         }
-        if (!ctx.dbEntity.idColumns.length) {
-            throw new Error(`@Id is not defined for entity: '${ctx.dbEntity.name}'.
-			Cannot call save(entity) on entities with no ids.`);
-        }
-        await this.ensureIocContext(ctx);
-        let emptyIdCount = 0;
-        let nonEmptyIdCount = 0;
-        for (const dbColumn of ctx.dbEntity.idColumns) {
-            const [propertyNameChains, idValue] = ctx.ioc.schemaUtils.getColumnPropertyNameChainsAndValue(ctx.dbEntity, dbColumn, entity);
-            ctx.ioc.schemaUtils.isIdEmpty(idValue) ? emptyIdCount++ : nonEmptyIdCount++;
-        }
+        await this.ensureIocContext(context);
         let numSavedRecords = 0;
         await transactional(async (transaction) => {
-            if (emptyIdCount && nonEmptyIdCount) {
-                throw new Error(`Cannot call save(entity) for instance of '${ctx.dbEntity.name}' which has
-			${nonEmptyIdCount} @Id values specified and ${emptyIdCount} @Id values not specified.
-			Please make sure that the entity instance either has all @Id values specified (to be
-			updated) or non of @Id values specified (to be created).`);
-            }
-            else if (emptyIdCount) {
-                numSavedRecords = await this.performCreate(entity, [], transaction, ctx);
-            }
-            else {
-                numSavedRecords = await this.performUpdate(entity, [], transaction, ctx);
-            }
+            numSavedRecords = await this.performSave(entity, transaction, context);
         });
         return numSavedRecords;
     }
@@ -157,33 +136,33 @@ export class DatabaseFacade extends OperationManager {
      *
      * @return Number of records updated
      */
-    async updateColumnsWhere(rawUpdate, ctx) {
+    async updateColumnsWhere(rawUpdate, context) {
         if (!rawUpdate) {
             return 0;
         }
         if (rawUpdate instanceof Function) {
             rawUpdate = rawUpdate();
         }
-        await this.ensureIocContext(ctx);
+        await this.ensureIocContext(context);
         let update = new UpdateColumns(rawUpdate);
         let numUpdatedRecords = 0;
         await transactional(async (transaction) => {
-            numUpdatedRecords = await this.internalUpdateColumnsWhere(update, transaction, ctx);
+            numUpdatedRecords = await this.internalUpdateColumnsWhere(update, transaction, context);
         });
         return numUpdatedRecords;
     }
-    async updateWhere(rawUpdate, ctx) {
+    async updateWhere(rawUpdate, context) {
         if (!rawUpdate) {
             return 0;
         }
         if (rawUpdate instanceof Function) {
             rawUpdate = rawUpdate();
         }
-        await this.ensureIocContext(ctx);
+        await this.ensureIocContext(context);
         let update = new UpdateProperties(rawUpdate);
         let numUpdatedRecords = 0;
         await transactional(async (transaction) => {
-            numUpdatedRecords = await this.internalUpdateWhere(update, transaction, ctx);
+            numUpdatedRecords = await this.internalUpdateWhere(update, transaction, context);
         });
         return numUpdatedRecords;
     }
@@ -227,10 +206,10 @@ export class DatabaseFacade extends OperationManager {
     ensureId(entity) {
         throw new Error(`Not Implemented`);
     }
-    async ensureIocContext(ctx) {
+    async ensureIocContext(context) {
         const operationContextLoader = await container(this)
             .get(OPERATION_CONTEXT_LOADER);
-        await operationContextLoader.ensure(ctx);
+        await operationContextLoader.ensure(context);
     }
 }
 DI.set(DB_FACADE, DatabaseFacade);

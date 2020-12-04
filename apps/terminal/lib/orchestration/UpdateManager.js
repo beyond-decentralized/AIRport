@@ -21,8 +21,14 @@ export class UpdateManager {
         let systemWideOperationId;
         if (!dbEntity.isLocal) {
             systemWideOperationId = await getSysWideOpId(context.ioc.airDb, sequenceGenerator);
+            // TODO: For entity queries an additional query really shouldn't be needed
+            // Specifically for entity queries, we got the new values, just record them
+            // This will require an additional operation on the first update
+            // where the original values of the record are saved
+            // This eats up more disk space but saves on operations that need
+            // to be performed (one less query)
             [recordHistoryMap, repositorySheetSelectInfo]
-                = await this.addUpdateHistory(dbEntity, portableQuery, actor, systemWideOperationId, errorPrefix, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, transaction, context);
+                = await this.addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, transaction, context);
             internalFragments.SET.push({
                 column: repositorySheetSelectInfo.systemWideOperationIdColumn,
                 value: systemWideOperationId
@@ -33,20 +39,23 @@ export class UpdateManager {
         if (!dbEntity.isLocal) {
             const previousDbEntity = context.dbEntity;
             context.dbEntity = dbEntity;
+            // TODO: Entity based updates already have all of the new values being
+            // updated, detect the type of update and if entity just pull out
+            // the new values from them
             await this.addNewValueHistory(portableQuery.jsonQuery, recordHistoryMap, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, recHistoryDuo, recHistoryNewValueDuo, transaction, context);
             context.dbEntity = previousDbEntity;
         }
         return numUpdatedRows;
     }
-    async addUpdateHistory(dbEntity, portableQuery, actor, systemWideOperationId, errorPrefix, histManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoManager, repoTransHistoryDuo, transaction, context) {
-        if (!dbEntity.isRepositoryEntity) {
+    async addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, histManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoManager, repoTransHistoryDuo, transaction, context) {
+        if (!context.dbEntity.isRepositoryEntity) {
             throw new Error(errorPrefix +
                 `Cannot add update history for a non-RepositoryEntity`);
         }
         const qEntity = context.ioc.airDb
-            .qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
+            .qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name];
         const jsonUpdate = portableQuery.jsonQuery;
-        const getSheetSelectFromSetClauseResult = context.ioc.schemaUtils.getSheetSelectFromSetClause(dbEntity, qEntity, jsonUpdate.S, errorPrefix);
+        const getSheetSelectFromSetClauseResult = context.ioc.schemaUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, jsonUpdate.S, errorPrefix);
         const sheetQuery = new SheetQuery(null);
         const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(getSheetSelectFromSetClauseResult.selectClause, context.ioc.queryUtils, context.ioc.fieldUtils);
         const jsonSelect = {
@@ -72,7 +81,7 @@ export class UpdateManager {
             const recordHistoryMapForRepository = {};
             recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository;
             const repoTransHistory = await histManager.getNewRepoTransHistory(transaction.transHistory, repositoryId, actor);
-            const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.UPDATE_ROWS, dbEntity, operHistoryDuo);
+            const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.UPDATE_ROWS, context.dbEntity, operHistoryDuo);
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
             for (const recordToUpdate of recordsForRepositoryId) {
                 const actorId = recordToUpdate[getSheetSelectFromSetClauseResult.actorIdColumnIndex];

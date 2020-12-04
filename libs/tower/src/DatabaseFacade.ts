@@ -26,8 +26,8 @@ import {
 	PlatformType
 }                                 from '@airport/terminal-map'
 import {ITransaction}             from './ITransaction'
-import {IOperationContext}        from 'src/processing/OperationContext'
-import {OperationManager}         from 'src/processing/OperationManager'
+import {IOperationContext}        from './processing/OperationContext'
+import {OperationManager}         from './processing/OperationManager'
 import {OPERATION_CONTEXT_LOADER} from './tokens'
 import {transactional}            from './transactional'
 
@@ -80,17 +80,17 @@ export class DatabaseFacade
 		platform: PlatformType                     = PlatformType.GOOGLE_DOCS,
 		platformConfig: string                     = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number> {
-		await this.ensureIocContext(ctx)
+		await this.ensureIocContext(context)
 		let numRecordsCreated = 0
 
 		await transactional(async (
 			transaction: ITransaction
 		) => {
 			// TODO: figure out how addRepository will work
-			numRecordsCreated = await ctx.ioc.transactionalServer.addRepository(
-				name, url, platform, platformConfig, distributionStrategy, null, ctx)
+			numRecordsCreated = await context.ioc.transactionalServer.addRepository(
+				name, url, platform, platformConfig, distributionStrategy, null, context)
 		})
 
 		return numRecordsCreated
@@ -100,7 +100,7 @@ export class DatabaseFacade
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number> {
 		if (!rawInsertColumnValues) {
 			return 0
@@ -108,14 +108,14 @@ export class DatabaseFacade
 		if (rawInsertColumnValues instanceof Function) {
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
-		await this.ensureIocContext(ctx)
+		await this.ensureIocContext(context)
 		let numInsertedRecords = 0
 		await transactional(async (
 			transaction: ITransaction
 		) => {
 			numInsertedRecords = await this.internalInsertColumnValues(
 				<RawInsertColumnValues<IQE>>rawInsertColumnValues,
-				transaction, ctx)
+				transaction, context)
 		})
 
 		return numInsertedRecords
@@ -123,7 +123,7 @@ export class DatabaseFacade
 
 	async insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> },
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number> {
 		if (!rawInsertValues) {
 			return 0
@@ -131,14 +131,14 @@ export class DatabaseFacade
 		if (rawInsertValues instanceof Function) {
 			rawInsertValues = rawInsertValues()
 		}
-		await this.ensureIocContext(ctx)
+		await this.ensureIocContext(context)
 		let numInsertedRecords = 0
 		await transactional(async (
 			transaction: ITransaction
 		) => {
 			numInsertedRecords = await this.internalInsertValues(
 				rawInsertValues as RawInsertValues<IQE>,
-				transaction, ctx)
+				transaction, context)
 		})
 
 		return numInsertedRecords
@@ -148,7 +148,7 @@ export class DatabaseFacade
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		if (!rawInsertColumnValues) {
 			return []
@@ -156,13 +156,13 @@ export class DatabaseFacade
 		if (rawInsertColumnValues instanceof Function) {
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
-		await this.ensureIocContext(ctx)
+		await this.ensureIocContext(context)
 		let recordIdentifiers
 		await transactional(async (
 			transaction: ITransaction
 		) => {
 			recordIdentifiers = await this.internalInsertColumnValuesGenerateIds(
-				rawInsertColumnValues as RawInsertColumnValues<IQE>, transaction, ctx)
+				rawInsertColumnValues as RawInsertColumnValues<IQE>, transaction, context)
 		})
 	}
 
@@ -170,7 +170,7 @@ export class DatabaseFacade
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		if (!rawInsertValues) {
 			return []
@@ -178,13 +178,13 @@ export class DatabaseFacade
 		if (rawInsertValues instanceof Function) {
 			rawInsertValues = rawInsertValues()
 		}
-		await this.ensureIocContext(ctx)
+		await this.ensureIocContext(context)
 		let recordIdentifiers
 		await transactional(async (
 			transaction: ITransaction
 		) => {
 			recordIdentifiers = await this.internalInsertValuesGetIds(
-				rawInsertValues as RawInsertValues<IQE>, transaction, ctx)
+				rawInsertValues as RawInsertValues<IQE>, transaction, context)
 		})
 
 		return recordIdentifiers
@@ -194,7 +194,7 @@ export class DatabaseFacade
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number> {
 		if (!rawDelete) {
 			return 0
@@ -202,57 +202,34 @@ export class DatabaseFacade
 		if (rawDelete instanceof Function) {
 			rawDelete = rawDelete()
 		}
-		await this.ensureIocContext(ctx)
+		await this.ensureIocContext(context)
 		let deleteWhere: Delete<IQE> = new Delete(rawDelete)
 		let numDeletedRecords        = 0
 		await transactional(async (
 			transaction: ITransaction
 		) => {
 			numDeletedRecords = await this.internalDeleteWhere(deleteWhere,
-				transaction, ctx)
+				transaction, context)
 		})
 		return numDeletedRecords
 	}
 
 	async save<E, EntityCascadeGraph>(
 		entity: E,
-		ctx: IOperationContext<any, any>,
+		context: IOperationContext<any, any>,
 		operationName?: OperationName
 	): Promise<number> {
 		if (!entity) {
 			return 0
 		}
-		if (!ctx.dbEntity.idColumns.length) {
-			throw new Error(`@Id is not defined for entity: '${ctx.dbEntity.name}'.
-			Cannot call save(entity) on entities with no ids.`)
-		}
-		await this.ensureIocContext(ctx)
-		let emptyIdCount    = 0
-		let nonEmptyIdCount = 0
-		for (const dbColumn of ctx.dbEntity.idColumns) {
-
-			const [propertyNameChains, idValue] =
-				      ctx.ioc.schemaUtils.getColumnPropertyNameChainsAndValue(ctx.dbEntity, dbColumn, entity)
-
-			ctx.ioc.schemaUtils.isIdEmpty(idValue) ? emptyIdCount++ : nonEmptyIdCount++
-		}
+		await this.ensureIocContext(context)
 
 		let numSavedRecords = 0
 		await transactional(async (
 			transaction: ITransaction
 		) => {
-			if (emptyIdCount && nonEmptyIdCount) {
-				throw new Error(`Cannot call save(entity) for instance of '${ctx.dbEntity.name}' which has
-			${nonEmptyIdCount} @Id values specified and ${emptyIdCount} @Id values not specified.
-			Please make sure that the entity instance either has all @Id values specified (to be
-			updated) or non of @Id values specified (to be created).`)
-			} else if (emptyIdCount) {
-				numSavedRecords = await this.performCreate(
-					entity, [], transaction, ctx)
-			} else {
-				numSavedRecords = await this.performUpdate(
-					entity, [], transaction, ctx)
-			}
+			numSavedRecords = await this.performSave(
+				entity, transaction, context)
 		})
 
 		return numSavedRecords
@@ -269,7 +246,7 @@ export class DatabaseFacade
 			| {
 			(...args: any[]): RawUpdateColumns<IEUC, IQE>
 		},
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number> {
 		if (!rawUpdate) {
 			return 0
@@ -277,7 +254,7 @@ export class DatabaseFacade
 		if (rawUpdate instanceof Function) {
 			rawUpdate = rawUpdate()
 		}
-		await this.ensureIocContext(ctx)
+		await this.ensureIocContext(context)
 
 		let update: UpdateColumns<any, IQE> = new UpdateColumns(rawUpdate)
 		let numUpdatedRecords               = 0
@@ -285,7 +262,7 @@ export class DatabaseFacade
 			transaction: ITransaction
 		) => {
 			numUpdatedRecords = await this.internalUpdateColumnsWhere(
-				update, transaction, ctx)
+				update, transaction, context)
 		})
 		return numUpdatedRecords
 	}
@@ -295,7 +272,7 @@ export class DatabaseFacade
 		rawUpdate: RawUpdate<IEUP, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number> {
 		if (!rawUpdate) {
 			return 0
@@ -303,14 +280,14 @@ export class DatabaseFacade
 		if (rawUpdate instanceof Function) {
 			rawUpdate = rawUpdate()
 		}
-		await this.ensureIocContext(ctx)
+		await this.ensureIocContext(context)
 		let update: UpdateProperties<any, IQE> = new UpdateProperties(rawUpdate)
 		let numUpdatedRecords                  = 0
 		await transactional(async (
 			transaction: ITransaction
 		) => {
 			numUpdatedRecords = await this.internalUpdateWhere(
-				update, transaction, ctx)
+				update, transaction, context)
 		})
 		return numUpdatedRecords
 	}
@@ -368,11 +345,11 @@ export class DatabaseFacade
 	}
 
 	private async ensureIocContext(
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<void> {
 		const operationContextLoader = await container(this)
 			.get(OPERATION_CONTEXT_LOADER)
-		await operationContextLoader.ensure(ctx)
+		await operationContextLoader.ensure(context)
 	}
 
 }

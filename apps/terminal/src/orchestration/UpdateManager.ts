@@ -13,7 +13,6 @@ import {
 }                           from '@airport/di'
 import {
 	ChangeType,
-	DbEntity,
 	ensureChildArray,
 	ensureChildMap,
 	InternalFragments,
@@ -114,10 +113,15 @@ export class UpdateManager
 
 			systemWideOperationId = await getSysWideOpId(context.ioc.airDb, sequenceGenerator);
 
+			// TODO: For entity queries an additional query really shouldn't be needed
+			// Specifically for entity queries, we got the new values, just record them
+			// This will require an additional operation on the first update
+			// where the original values of the record are saved
+			// This eats up more disk space but saves on operations that need
+			// to be performed (one less query)
 			[recordHistoryMap, repositorySheetSelectInfo]
 				= await this.addUpdateHistory(
-				dbEntity, portableQuery, actor,
-				systemWideOperationId, errorPrefix,
+				portableQuery, actor, systemWideOperationId, errorPrefix,
 				historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo,
 				repositoryManager, repoTransHistoryDuo, transaction, context)
 
@@ -133,6 +137,9 @@ export class UpdateManager
 		if (!dbEntity.isLocal) {
 			const previousDbEntity = context.dbEntity
 			context.dbEntity       = dbEntity
+			// TODO: Entity based updates already have all of the new values being
+			// updated, detect the type of update and if entity just pull out
+			// the new values from them
 			await this.addNewValueHistory(
 				<JsonUpdate<any>>portableQuery.jsonQuery,
 				recordHistoryMap, systemWideOperationId,
@@ -145,8 +152,7 @@ export class UpdateManager
 		return numUpdatedRows
 	}
 
-	private async addUpdateHistory(
-		dbEntity: DbEntity,
+	private async addUpdateHistory<E, EntityCascadeGraph>(
 		portableQuery: PortableQuery,
 		actor: IActor,
 		systemWideOperationId: SystemWideOperationId,
@@ -158,21 +164,21 @@ export class UpdateManager
 		repoManager: IRepositoryManager,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
 		transaction: ITransaction,
-		context: IOperationContext
+		context: IOperationContext<E, EntityCascadeGraph>
 	): Promise<[
 		RecordHistoryMap,
 		RepositorySheetSelectInfo
 	]> {
-		if (!dbEntity.isRepositoryEntity) {
+		if (!context.dbEntity.isRepositoryEntity) {
 			throw new Error(errorPrefix +
 				`Cannot add update history for a non-RepositoryEntity`)
 		}
 
 		const qEntity                           = context.ioc.airDb
-			.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
+			.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
 		const jsonUpdate: JsonUpdate<any>       = <JsonUpdate<any>>portableQuery.jsonQuery
 		const getSheetSelectFromSetClauseResult = context.ioc.schemaUtils.getSheetSelectFromSetClause(
-			dbEntity, qEntity, jsonUpdate.S, errorPrefix)
+			context.dbEntity, qEntity, jsonUpdate.S, errorPrefix)
 
 		const sheetQuery = new SheetQuery(null)
 
@@ -217,7 +223,7 @@ export class UpdateManager
 			)
 			const operationHistory                   = repoTransHistoryDuo.startOperation(
 				repoTransHistory, systemWideOperationId, ChangeType.UPDATE_ROWS,
-				dbEntity, operHistoryDuo)
+				context.dbEntity, operHistoryDuo)
 
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
 			for (const recordToUpdate of recordsForRepositoryId) {
