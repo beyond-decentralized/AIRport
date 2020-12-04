@@ -1,12 +1,15 @@
 import { AIR_DB, ENTITY_STATE_MANAGER, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, RELATION_MANAGER, SCHEMA_UTILS, UPDATE_CACHE, } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { STORE_DRIVER } from '@airport/ground-control';
-import { OPERATION_CONTEXT_LOADER, TRANS_SERVER } from '../tokens';
+import { CASCADE_GRAPH_VERIFIER, DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR, OPERATION_CONTEXT_LOADER, STRUCTURAL_ENTITY_VALIDATOR, TRANS_SERVER } from '../tokens';
 export class IocOperationContext {
     async init() {
-        const [airDb, entityStateManager, fieldUtils, metadataUtils, queryFacade, queryUtils, relationManager, schemaUtils, storeDriver, transactionalServer, updateCache] = await DI.db()
-            .get(AIR_DB, ENTITY_STATE_MANAGER, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, RELATION_MANAGER, SCHEMA_UTILS, STORE_DRIVER, TRANS_SERVER, UPDATE_CACHE);
+        const [airDb, cascadeGraphVerifier, dependencyGraphResolver, entityGraphReconstructor, entityStateManager, fieldUtils, metadataUtils, queryFacade, queryUtils, relationManager, schemaUtils, storeDriver, structuralEntityValidator, transactionalServer, updateCache] = await DI.db()
+            .get(AIR_DB, CASCADE_GRAPH_VERIFIER, DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR, ENTITY_STATE_MANAGER, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, RELATION_MANAGER, SCHEMA_UTILS, STORE_DRIVER, STRUCTURAL_ENTITY_VALIDATOR, TRANS_SERVER, UPDATE_CACHE);
         this.airDb = airDb;
+        this.cascadeGraphVerifier = cascadeGraphVerifier;
+        this.dependencyGraphResolver = dependencyGraphResolver;
+        this.entityGraphReconstructor = entityGraphReconstructor;
         this.entityStateManager = entityStateManager;
         this.fieldUtils = fieldUtils;
         this.metadataUtils = metadataUtils;
@@ -15,6 +18,7 @@ export class IocOperationContext {
         this.relationManager = relationManager;
         this.schemaUtils = schemaUtils;
         this.storeDriver = storeDriver;
+        this.structuralEntityValidator = structuralEntityValidator;
         this.transactionalServer = transactionalServer;
         this.updateCache = updateCache;
     }

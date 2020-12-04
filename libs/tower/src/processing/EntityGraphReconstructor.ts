@@ -1,4 +1,4 @@
-import {DI}                    from '@airport/di'
+import {DI}                         from '@airport/di'
 import {
 	DbProperty,
 	EntityRelationType
@@ -9,9 +9,9 @@ import {IOperationContext}          from './OperationContext'
 export interface IEntityGraphReconstructor {
 
 	restoreEntityGraph<T>(
-		root: T | T[],
+		root: T[],
 		context: IOperationContext<any, any>
-	): T | T[]
+	): T[]
 
 }
 
@@ -23,12 +23,9 @@ export class EntityGraphReconstructor
 	implements IEntityGraphReconstructor {
 
 	restoreEntityGraph<T>(
-		root: T | T[],
+		root: T[],
 		context: IOperationContext<any, any>
-	): T | T[] {
-		if (!(root instanceof Array)) {
-			root = [root]
-		}
+	): T[] {
 		const entitiesByOperationIndex = []
 		const rootCopy                 =
 			      this.linkEntityGraph(root, entitiesByOperationIndex, context)
@@ -86,8 +83,13 @@ for "${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqu
 				}
 				entityCopy = previouslyFoundEntity
 			} else {
-				entityCopy                                  = {}
-				entitiesByOperationIndex[operationUniqueId] = entityCopy
+				entityCopy = {}
+				entityCopy[context.ioc.entityStateManager.getUniqueIdFieldName()]
+				           = operationUniqueId
+				entityCopy[context.ioc.entityStateManager.getStateFieldName()]
+				           = context.ioc.entityStateManager.getEntityState(entity)
+				entitiesByOperationIndex[operationUniqueId]
+				           = entityCopy
 			}
 
 			for (const dbProperty of dbEntity.properties) {
@@ -136,7 +138,7 @@ that are themselves Parent Ids.`)
 							}
 						}
 					} // if (propertyValue
-					propertyValue = propertyCopyValue
+					propertyValue    = propertyCopyValue
 					context.dbEntity = previousDbEntity
 				} // if (dbProperty.relation
 				else {

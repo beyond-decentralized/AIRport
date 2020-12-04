@@ -31,6 +31,19 @@ export class OperationManager {
      * @param qEntity
      * @param entity
      */
+    async performSave(entities, transaction, context) {
+        const verifiedTree = context.ioc.cascadeGraphVerifier.verify(entities, context);
+        const entityGraph = context.ioc.entityGraphReconstructor
+            .restoreEntityGraph(verifiedTree, context);
+        context.ioc.structuralEntityValidator.validate(entityGraph, [], context);
+        context.ioc.dependencyGraphResolver.getOperationsInOrder(entityGraph, context);
+    }
+    /**
+     * Transactional context must have been started by the time this method is called.
+     *
+     * @param qEntity
+     * @param entity
+     */
     async performUpdate(entity, operatedOnEntityIndicator, transaction, ctx, originalValue) {
         if (!originalValue) {
             let [isProcessed, entityIdData] = this.isProcessed(entity, operatedOnEntityIndicator, ctx.dbEntity, ctx.ioc.schemaUtils);

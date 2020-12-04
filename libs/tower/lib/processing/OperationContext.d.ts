@@ -2,6 +2,10 @@ import { IAirportDatabase, IEntityStateManager, IFieldUtils, IQMetadataUtils, IQ
 import { IContext } from '@airport/di';
 import { DbEntity, IStoreDriver } from '@airport/ground-control';
 import { ITransactionalServer } from '../core/data/ITransactionalServer';
+import { ICascadeGraphVerifier } from './CascadeGraphVerifier';
+import { IDependencyGraphResolver } from './DependencyGraphResolver';
+import { IEntityGraphReconstructor } from './EntityGraphReconstructor';
+import { IStructuralEntityValidator } from './StructuralEntityValidator';
 export interface IOperationContext<E, EntityCascadeGraph> extends IContext {
     entityCascadeGraph: EntityCascadeGraph;
     checkIfProcessed: boolean;
@@ -10,6 +14,9 @@ export interface IOperationContext<E, EntityCascadeGraph> extends IContext {
 }
 export interface IIocOperationContext {
     airDb: IAirportDatabase;
+    cascadeGraphVerifier: ICascadeGraphVerifier;
+    dependencyGraphResolver: IDependencyGraphResolver;
+    entityGraphReconstructor: IEntityGraphReconstructor;
     entityStateManager: IEntityStateManager;
     fieldUtils: IFieldUtils;
     metadataUtils: IQMetadataUtils;
@@ -18,12 +25,16 @@ export interface IIocOperationContext {
     relationManager: IRelationManager;
     schemaUtils: ISchemaUtils;
     storeDriver: IStoreDriver;
+    structuralEntityValidator: IStructuralEntityValidator;
     transactionalServer: ITransactionalServer;
     updateCache: IUpdateCache;
     init(): Promise<void>;
 }
 export declare class IocOperationContext implements IIocOperationContext {
     airDb: IAirportDatabase;
+    cascadeGraphVerifier: ICascadeGraphVerifier;
+    dependencyGraphResolver: IDependencyGraphResolver;
+    entityGraphReconstructor: IEntityGraphReconstructor;
     entityStateManager: IEntityStateManager;
     fieldUtils: IFieldUtils;
     metadataUtils: IQMetadataUtils;
@@ -32,6 +43,7 @@ export declare class IocOperationContext implements IIocOperationContext {
     relationManager: IRelationManager;
     schemaUtils: ISchemaUtils;
     storeDriver: IStoreDriver;
+    structuralEntityValidator: IStructuralEntityValidator;
     transactionalServer: ITransactionalServer;
     updateCache: IUpdateCache;
     init(): Promise<void>;

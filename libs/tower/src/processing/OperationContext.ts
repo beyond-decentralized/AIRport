@@ -17,21 +17,29 @@ import {
 	RELATION_MANAGER,
 	SCHEMA_UTILS,
 	UPDATE_CACHE,
-}                             from '@airport/air-control'
+}                                   from '@airport/air-control'
 import {
 	DI,
 	IContext
-}                             from '@airport/di'
+}                                   from '@airport/di'
 import {
 	DbEntity,
 	IStoreDriver,
 	STORE_DRIVER
-}                             from '@airport/ground-control'
-import {ITransactionalServer} from '../core/data/ITransactionalServer'
+}                                   from '@airport/ground-control'
+import {ITransactionalServer}       from '../core/data/ITransactionalServer'
 import {
+	CASCADE_GRAPH_VERIFIER,
+	DEPENDENCY_GRAPH_RESOLVER,
+	ENTITY_GRAPH_RECONSTRUCTOR,
 	OPERATION_CONTEXT_LOADER,
+	STRUCTURAL_ENTITY_VALIDATOR,
 	TRANS_SERVER
-}                             from '../tokens'
+}                                   from '../tokens'
+import {ICascadeGraphVerifier}      from './CascadeGraphVerifier'
+import {IDependencyGraphResolver}   from './DependencyGraphResolver'
+import {IEntityGraphReconstructor}  from './EntityGraphReconstructor'
+import {IStructuralEntityValidator} from './StructuralEntityValidator'
 
 export interface IOperationContext<E, EntityCascadeGraph>
 	extends IContext {
@@ -44,6 +52,9 @@ export interface IOperationContext<E, EntityCascadeGraph>
 export interface IIocOperationContext {
 
 	airDb: IAirportDatabase
+	cascadeGraphVerifier: ICascadeGraphVerifier
+	dependencyGraphResolver: IDependencyGraphResolver
+	entityGraphReconstructor: IEntityGraphReconstructor
 	entityStateManager: IEntityStateManager
 	fieldUtils: IFieldUtils
 	metadataUtils: IQMetadataUtils
@@ -52,6 +63,7 @@ export interface IIocOperationContext {
 	relationManager: IRelationManager
 	schemaUtils: ISchemaUtils
 	storeDriver: IStoreDriver
+	structuralEntityValidator: IStructuralEntityValidator
 	transactionalServer: ITransactionalServer
 	updateCache: IUpdateCache
 
@@ -63,6 +75,9 @@ export class IocOperationContext
 	implements IIocOperationContext {
 
 	airDb: IAirportDatabase
+	cascadeGraphVerifier: ICascadeGraphVerifier
+	dependencyGraphResolver: IDependencyGraphResolver
+	entityGraphReconstructor: IEntityGraphReconstructor
 	entityStateManager: IEntityStateManager
 	fieldUtils: IFieldUtils
 	metadataUtils: IQMetadataUtils
@@ -71,28 +86,36 @@ export class IocOperationContext
 	relationManager: IRelationManager
 	schemaUtils: ISchemaUtils
 	storeDriver: IStoreDriver
+	structuralEntityValidator: IStructuralEntityValidator
 	transactionalServer: ITransactionalServer
 	updateCache: IUpdateCache
 
 	async init(): Promise<void> {
-		const [airDb, entityStateManager, fieldUtils, metadataUtils, queryFacade,
-			      queryUtils, relationManager, schemaUtils, storeDriver, transactionalServer,
-			      updateCache]     = await DI.db()
+		const [airDb, cascadeGraphVerifier, dependencyGraphResolver, entityGraphReconstructor,
+			      entityStateManager, fieldUtils, metadataUtils, queryFacade, queryUtils,
+			      relationManager, schemaUtils, storeDriver, structuralEntityValidator,
+			      transactionalServer, updateCache]
+			                             = await DI.db()
 			.get(
-				AIR_DB, ENTITY_STATE_MANAGER, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE,
-				QUERY_UTILS, RELATION_MANAGER, SCHEMA_UTILS, STORE_DRIVER, TRANS_SERVER, UPDATE_CACHE
+				AIR_DB, CASCADE_GRAPH_VERIFIER, DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR, ENTITY_STATE_MANAGER,
+				FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, RELATION_MANAGER, SCHEMA_UTILS,
+				STORE_DRIVER, STRUCTURAL_ENTITY_VALIDATOR, TRANS_SERVER, UPDATE_CACHE
 			)
-		this.airDb               = airDb
-		this.entityStateManager  = entityStateManager
-		this.fieldUtils          = fieldUtils
-		this.metadataUtils       = metadataUtils
-		this.queryFacade         = queryFacade
-		this.queryUtils          = queryUtils
-		this.relationManager     = relationManager
-		this.schemaUtils         = schemaUtils
-		this.storeDriver         = storeDriver
-		this.transactionalServer = transactionalServer
-		this.updateCache         = updateCache
+		this.airDb                     = airDb
+		this.cascadeGraphVerifier      = cascadeGraphVerifier
+		this.dependencyGraphResolver   = dependencyGraphResolver
+		this.entityGraphReconstructor  = entityGraphReconstructor
+		this.entityStateManager        = entityStateManager
+		this.fieldUtils                = fieldUtils
+		this.metadataUtils             = metadataUtils
+		this.queryFacade               = queryFacade
+		this.queryUtils                = queryUtils
+		this.relationManager           = relationManager
+		this.schemaUtils               = schemaUtils
+		this.storeDriver               = storeDriver
+		this.structuralEntityValidator = structuralEntityValidator
+		this.transactionalServer       = transactionalServer
+		this.updateCache               = updateCache
 	}
 
 }

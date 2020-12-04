@@ -29,6 +29,13 @@ export declare abstract class OperationManager implements IOperationManager {
      * @param qEntity
      * @param entity
      */
+    protected performSave<E, EntityCascadeGraph>(entities: E | E[], transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
+    /**
+     * Transactional context must have been started by the time this method is called.
+     *
+     * @param qEntity
+     * @param entity
+     */
     protected performUpdate<E, EntityCascadeGraph>(entity: E, operatedOnEntityIndicator: boolean[], transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>, originalValue?: E): Promise<number>;
     protected internalInsertValuesGetIds<E, EntityCascadeGraph, IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE>, transaction: ITransaction, ctx: IOperationContext<E, EntityCascadeGraph>): Promise<number[] | string[] | number[][] | string[][]>;
     protected abstract getOriginalRecord<T>(dbEntity: DbEntity, entity: T, updateCache: IUpdateCache): Promise<any>;

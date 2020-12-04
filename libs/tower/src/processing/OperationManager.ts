@@ -35,7 +35,6 @@ import {IOperationContext} from './OperationContext'
 /**
  * Created by Papa on 11/15/2016.
  */
-
 export interface ResultWithCascade {
 	recordChanged?: boolean;
 	numberOfAffectedRecords: number;
@@ -116,6 +115,25 @@ export abstract class OperationManager
 			insertValues, null, ctx)
 
 		return await ctx.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction, ctx)
+	}
+
+	/**
+	 * Transactional context must have been started by the time this method is called.
+	 *
+	 * @param qEntity
+	 * @param entity
+	 */
+	protected async performSave<E, EntityCascadeGraph>(
+		entities: E | E[],
+		transaction: ITransaction,
+		context: IOperationContext<E, EntityCascadeGraph>,
+	): Promise<number> {
+		const verifiedTree = context.ioc.cascadeGraphVerifier.verify(entities, context)
+		const entityGraph  = context.ioc.entityGraphReconstructor
+			.restoreEntityGraph(verifiedTree, context)
+		context.ioc.structuralEntityValidator.validate(entityGraph, [], context)
+		context.ioc.dependencyGraphResolver.getOperationsInOrder(entityGraph, context)
+
 	}
 
 	/**

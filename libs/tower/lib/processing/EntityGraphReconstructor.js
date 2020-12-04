@@ -7,9 +7,6 @@ import { ENTITY_GRAPH_RECONSTRUCTOR } from '../tokens';
  */
 export class EntityGraphReconstructor {
     restoreEntityGraph(root, context) {
-        if (!(root instanceof Array)) {
-            root = [root];
-        }
         const entitiesByOperationIndex = [];
         const rootCopy = this.linkEntityGraph(root, entitiesByOperationIndex, context);
         for (let i = 1; i < entitiesByOperationIndex.length; i++) {
@@ -59,7 +56,12 @@ for "${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqu
             }
             else {
                 entityCopy = {};
-                entitiesByOperationIndex[operationUniqueId] = entityCopy;
+                entityCopy[context.ioc.entityStateManager.getUniqueIdFieldName()]
+                    = operationUniqueId;
+                entityCopy[context.ioc.entityStateManager.getStateFieldName()]
+                    = context.ioc.entityStateManager.getEntityState(entity);
+                entitiesByOperationIndex[operationUniqueId]
+                    = entityCopy;
             }
             for (const dbProperty of dbEntity.properties) {
                 let propertyValue = entity[dbProperty.name];
