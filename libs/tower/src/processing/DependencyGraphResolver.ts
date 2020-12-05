@@ -287,7 +287,10 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 		operationNodes: IOperationNode<E>[],
 		context
 	): IOperationNode<E>[] {
-		throw new Error('Not Implemented.')
+		// TODO: group related updates ONLY if all updates field values are
+		// the same
+		// throw new Error('Not Implemented.')
+		return operationNodes
 	}
 }
 

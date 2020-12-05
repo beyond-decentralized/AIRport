@@ -222,7 +222,10 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
      * @param context
      */
     ensureUpdatesAreGroupedCorrectly(operationNodes, context) {
-        throw new Error('Not Implemented.');
+        // TODO: group related updates ONLY if all updates field values are
+        // the same
+        // throw new Error('Not Implemented.')
+        return operationNodes;
     }
 }
 DI.set(DEPENDENCY_GRAPH_RESOLVER, DependencyGraphResolver);

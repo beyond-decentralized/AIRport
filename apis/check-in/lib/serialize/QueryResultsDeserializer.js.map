@@ -1,0 +1,1 @@
+{"version":3,"file":"QueryResultsDeserializer.js","sourceRoot":"","sources":["../../src/serialize/QueryResultsDeserializer.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,EAAE,EAAC,MAA8B,aAAa,CAAA;AACtD,OAAO,EAAC,0BAA0B,EAAC,MAAM,WAAW,CAAA;AAcpD,MAAM,OAAO,wBAAwB;IAGpC,WAAW,CACV,MAAS;QAET,OAAO,IAAI,CAAA;IACZ,CAAC;CAED;AAED,EAAE,CAAC,GAAG,CAAC,0BAA0B,EAAE,wBAAwB,CAAC,CAAA"}
