@@ -28,27 +28,33 @@ import { DELETE_MANAGER, INSERT_MANAGER, QUERY_MANAGER, UPDATE_MANAGER } from '.
  */
 export class TransactionalServer {
     async init() {
-        const transManager = await container(this).get(TRANSACTION_MANAGER);
+        const transManager = await container(this)
+            .get(TRANSACTION_MANAGER);
         return await transManager.init('airport');
     }
-    async find(portableQuery, credentials, cachedSqlQueryId) {
-        const queryManager = await container(this).get(QUERY_MANAGER);
-        return await queryManager.find(portableQuery, cachedSqlQueryId);
+    async find(portableQuery, credentials, context, cachedSqlQueryId) {
+        const queryManager = await container(this)
+            .get(QUERY_MANAGER);
+        return await queryManager.find(portableQuery, context, cachedSqlQueryId);
     }
-    async findOne(portableQuery, credentials, cachedSqlQueryId) {
-        const queryManager = await container(this).get(QUERY_MANAGER);
-        return await queryManager.findOne(portableQuery, cachedSqlQueryId);
+    async findOne(portableQuery, credentials, context, cachedSqlQueryId) {
+        const queryManager = await container(this)
+            .get(QUERY_MANAGER);
+        return await queryManager.findOne(portableQuery, context, cachedSqlQueryId);
     }
-    async search(portableQuery, credentials, cachedSqlQueryId) {
-        const queryManager = await container(this).get(QUERY_MANAGER);
-        return await queryManager.search(portableQuery);
+    async search(portableQuery, credentials, context, cachedSqlQueryId) {
+        const queryManager = await container(this)
+            .get(QUERY_MANAGER);
+        return await queryManager.search(portableQuery, context);
     }
-    async searchOne(portableQuery, credentials, cachedSqlQueryId) {
-        const queryManager = await container(this).get(QUERY_MANAGER);
-        return await queryManager.searchOne(portableQuery);
+    async searchOne(portableQuery, credentials, context, cachedSqlQueryId) {
+        const queryManager = await container(this)
+            .get(QUERY_MANAGER);
+        return await queryManager.searchOne(portableQuery, context);
     }
     async addRepository(name, url, platform, platformConfig, distributionStrategy, credentials, ctx) {
-        const insertManager = await container(this).get(INSERT_MANAGER);
+        const insertManager = await container(this)
+            .get(INSERT_MANAGER);
         return await insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy);
     }
     async insertValues(portableQuery, transaction, ctx, ensureGeneratedValues // for internal use only
@@ -67,22 +73,26 @@ export class TransactionalServer {
                 return 0;
             }
         }
-        const insertManager = await container(this).get(INSERT_MANAGER);
+        const insertManager = await container(this)
+            .get(INSERT_MANAGER);
         const actor = await this.getActor(portableQuery);
         return await insertManager.insertValues(portableQuery, actor, transaction, ensureGeneratedValues);
     }
     async insertValuesGetIds(portableQuery, transaction, ctx) {
-        const insertManager = await container(this).get(INSERT_MANAGER);
+        const insertManager = await container(this)
+            .get(INSERT_MANAGER);
         const actor = await this.getActor(portableQuery);
         return await insertManager.insertValuesGetIds(portableQuery, actor, transaction);
     }
     async updateValues(portableQuery, transaction, ctx) {
-        const updateManager = await container(this).get(UPDATE_MANAGER);
+        const updateManager = await container(this)
+            .get(UPDATE_MANAGER);
         const actor = await this.getActor(portableQuery);
         return await updateManager.updateValues(portableQuery, actor, transaction, ctx);
     }
     async deleteWhere(portableQuery, transaction, ctx) {
-        const deleteManager = await container(this).get(DELETE_MANAGER);
+        const deleteManager = await container(this)
+            .get(DELETE_MANAGER);
         const actor = await this.getActor(portableQuery);
         return await deleteManager.deleteWhere(portableQuery, actor, transaction);
     }

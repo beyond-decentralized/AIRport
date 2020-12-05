@@ -5,8 +5,11 @@ export var EntityState;
     EntityState[EntityState["CREATE"] = 1] = "CREATE";
     EntityState[EntityState["DELETE"] = 2] = "DELETE";
     EntityState[EntityState["PARENT_ID"] = 3] = "PARENT_ID";
-    EntityState[EntityState["STUB"] = 4] = "STUB";
-    EntityState[EntityState["UPDATE"] = 5] = "UPDATE";
+    EntityState[EntityState["RESULT"] = 4] = "RESULT";
+    EntityState[EntityState["RESULT_DATE"] = 5] = "RESULT_DATE";
+    EntityState[EntityState["RESULT_JSON"] = 6] = "RESULT_JSON";
+    EntityState[EntityState["STUB"] = 7] = "STUB";
+    EntityState[EntityState["UPDATE"] = 8] = "UPDATE";
 })(EntityState || (EntityState = {}));
 export class EntityStateManager {
     isStub(entity) {

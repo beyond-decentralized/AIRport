@@ -2,49 +2,51 @@ import { QUERY_CONTEXT_LOADER, QUERY_FACADE, UpdateCacheType } from '@airport/ai
 import { container, DI } from '@airport/di';
 import { map } from '@airport/observe';
 export class QueryFacade {
-    async find(query, queryResultType, ctx, cacheForUpdate = UpdateCacheType.NONE) {
-        await this.ensureIocContext(ctx);
-        const result = await ctx.ioc.transactionalConnector.find(this.getPortableQuery(query, queryResultType, ctx));
-        ctx.ioc.updateCache.addToCache(ctx.ioc.schemaUtils, cacheForUpdate, ctx.dbEntity, ...result);
+    async find(query, queryResultType, context, cacheForUpdate = UpdateCacheType.NONE) {
+        await this.ensureIocContext(context);
+        const result = await context.ioc.transactionalConnector.find(this.getPortableQuery(query, queryResultType, context));
+        // TODO: restore and property maintain update cache, when needed
+        // context.ioc.updateCache.addToCache(
+        // 	context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...result)
         return result;
     }
-    async findOne(query, queryResultType, ctx, cacheForUpdate = UpdateCacheType.NONE) {
-        await this.ensureIocContext(ctx);
-        const result = await ctx.ioc.transactionalConnector.findOne(this.getPortableQuery(query, queryResultType, ctx));
-        ctx.ioc.updateCache.addToCache(ctx.ioc.schemaUtils, cacheForUpdate, ctx.dbEntity, result);
+    async findOne(query, queryResultType, context, cacheForUpdate = UpdateCacheType.NONE) {
+        await this.ensureIocContext(context);
+        const result = await context.ioc.transactionalConnector.findOne(this.getPortableQuery(query, queryResultType, context));
+        context.ioc.updateCache.addToCache(context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result);
         return result;
     }
-    getPortableQuery(query, queryResultType, ctx) {
+    getPortableQuery(query, queryResultType, context) {
         return {
-            jsonQuery: query.toJSON(ctx.ioc.queryUtils, ctx.ioc.fieldUtils),
+            jsonQuery: query.toJSON(context.ioc.queryUtils, context.ioc.fieldUtils),
             parameterMap: query.getParameters(),
             queryResultType,
-            schemaIndex: ctx.dbEntity.schemaVersion.schema.index,
-            tableIndex: ctx.dbEntity.index,
+            schemaIndex: context.dbEntity.schemaVersion.schema.index,
+            tableIndex: context.dbEntity.index,
         };
     }
-    async search(query, queryResultType, ctx, cacheForUpdate = UpdateCacheType.NONE) {
-        await this.ensureIocContext(ctx);
-        let observable = await ctx.ioc.transactionalConnector.search(this.getPortableQuery(query, queryResultType, ctx));
+    async search(query, queryResultType, context, cacheForUpdate = UpdateCacheType.NONE) {
+        await this.ensureIocContext(context);
+        let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(query, queryResultType, context));
         observable = observable.pipe(map(results => {
-            ctx.ioc.updateCache.addToCache(ctx.ioc.schemaUtils, cacheForUpdate, ctx.dbEntity, ...results);
+            context.ioc.updateCache.addToCache(context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...results);
             return results;
         }));
         return observable;
     }
-    async searchOne(query, queryResultType, ctx, cacheForUpdate = UpdateCacheType.NONE) {
-        await this.ensureIocContext(ctx);
-        let observable = await ctx.ioc.transactionalConnector.searchOne(this.getPortableQuery(query, queryResultType, ctx));
+    async searchOne(query, queryResultType, context, cacheForUpdate = UpdateCacheType.NONE) {
+        await this.ensureIocContext(context);
+        let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(query, queryResultType, context));
         observable = observable.pipe(map(result => {
-            ctx.ioc.updateCache.addToCache(ctx.ioc.schemaUtils, cacheForUpdate, ctx.dbEntity, result);
+            context.ioc.updateCache.addToCache(context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result);
             return result;
         }));
         return observable;
     }
-    async ensureIocContext(ctx) {
+    async ensureIocContext(context) {
         const queryContextLoader = await container(this)
             .get(QUERY_CONTEXT_LOADER);
-        await queryContextLoader.ensure(ctx);
+        await queryContextLoader.ensure(context);
     }
 }
 DI.set(QUERY_FACADE, QueryFacade);

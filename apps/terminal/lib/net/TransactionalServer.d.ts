@@ -1,3 +1,4 @@
+import { IContext } from '@airport/di';
 import { PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { IObservable } from '@airport/observe';
@@ -33,10 +34,10 @@ export interface InternalPortableQuery extends PortableQuery {
 export declare class TransactionalServer implements ITransactionalServer {
     tempActor: IActor;
     init(): Promise<void>;
-    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<EntityArray>;
-    findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<E>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<IObservable<EntityArray>>;
-    searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, cachedSqlQueryId?: number): Promise<IObservable<E>>;
+    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<EntityArray>;
+    findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<E>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<IObservable<EntityArray>>;
+    searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<IObservable<E>>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, credentials: ICredentials, ctx: IOperationContext<any, any>): Promise<number>;
     insertValues(portableQuery: PortableQuery, transaction: ITransaction, ctx: IOperationContext<any, any>, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, transaction: ITransaction, ctx: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;

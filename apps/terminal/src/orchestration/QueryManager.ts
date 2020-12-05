@@ -1,4 +1,8 @@
-import {container, DI}            from '@airport/di'
+import {
+	container,
+	DI,
+	IContext
+}                      from '@airport/di'
 import {
 	PortableQuery,
 	STORE_DRIVER
@@ -8,23 +12,26 @@ import {QUERY_MANAGER} from '../tokens'
 
 export interface IQueryManager {
 
-
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
+		context: IContext,
 		cachedSqlQueryId?: number
 	): Promise<EntityArray>;
 
 	findOne<E>(
 		portableQuery: PortableQuery,
+		context: IContext,
 		cachedSqlQueryId?: number
 	): Promise<E>;
 
 	search<E, EntityArray extends Array<E>>(
-		portableQuery: PortableQuery
+		portableQuery: PortableQuery,
+		context: IContext,
 	): Promise<IObservable<EntityArray>>;
 
 	searchOne<E>(
-		portableQuery: PortableQuery
+		portableQuery: PortableQuery,
+		context: IContext,
 	): Promise<IObservable<E>>;
 
 }
@@ -34,38 +41,46 @@ export class QueryManager
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
+		context: IContext,
 		cachedSqlQueryId?: number
 	): Promise<EntityArray> {
-		const storeDriver = await container(this).get(STORE_DRIVER)
+		const storeDriver = await container(this)
+			.get(STORE_DRIVER)
 
-		return await storeDriver.find<E, EntityArray>(portableQuery, {}, cachedSqlQueryId)
+		return await storeDriver.find<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
 	}
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
+		context: IContext,
 		cachedSqlQueryId?: number
 	): Promise<E> {
-		const storeDriver = await container(this).get(STORE_DRIVER)
+		const storeDriver = await container(this)
+			.get(STORE_DRIVER)
 
-		return await storeDriver.findOne<E>(portableQuery, {}, cachedSqlQueryId)
+		return await storeDriver.findOne<E>(portableQuery, {}, context, cachedSqlQueryId)
 	}
 
 	async search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
+		context: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<EntityArray>> {
-		const storeDriver = await container(this).get(STORE_DRIVER)
+		const storeDriver = await container(this)
+			.get(STORE_DRIVER)
 
-		return await storeDriver.search<E, EntityArray>(portableQuery, {}, cachedSqlQueryId)
+		return await storeDriver.search<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
 	}
 
 	async searchOne<E>(
 		portableQuery: PortableQuery,
+		context: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<E>> {
-		const storeDriver = await container(this).get(STORE_DRIVER)
+		const storeDriver = await container(this)
+			.get(STORE_DRIVER)
 
-		return await storeDriver.searchOne<E>(portableQuery, {}, cachedSqlQueryId)
+		return await storeDriver.searchOne<E>(portableQuery, {}, context, cachedSqlQueryId)
 	}
 
 }

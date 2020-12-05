@@ -1,3 +1,4 @@
+import {IContext}          from '@airport/di'
 import {
 	DistributionStrategy,
 	PlatformType,
@@ -19,56 +20,60 @@ export interface ITransactionalServer {
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
 		credentials: ICredentials,
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number>
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
+		context: IContext,
 		cachedSqlQueryId?: number
 	): Promise<EntityArray>
 
 	findOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
+		context: IContext,
 		cachedSqlQueryId?: number
 	): Promise<E>
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
+		context: IContext,
 		cachedSqlQueryId?: number
 	): Promise<IObservable<EntityArray>>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
+		context: IContext,
 		cachedSqlQueryId?: number
 	): Promise<IObservable<E>>
 
 	insertValues(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
-		ctx: IOperationContext<any, any>,
+		context: IOperationContext<any, any>,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number>
 
 	insertValuesGetIds(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number[] | string[] | number[][] | string[][]>
 
 	updateValues(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number>
 
 	deleteWhere(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number>
 
 }

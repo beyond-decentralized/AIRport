@@ -27,14 +27,15 @@ export class QueryFacade
 	async find<E, EntityArray extends Array<E>>(
 		query: AbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IQueryContext<E>,
+		context: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<EntityArray> {
-		await this.ensureIocContext(ctx)
-		const result = await ctx.ioc.transactionalConnector.find<E, EntityArray>(
-			this.getPortableQuery(query, queryResultType, ctx))
-		ctx.ioc.updateCache.addToCache(
-			ctx.ioc.schemaUtils, cacheForUpdate, ctx.dbEntity, ...result)
+		await this.ensureIocContext(context)
+		const result = await context.ioc.transactionalConnector.find<E, EntityArray>(
+			this.getPortableQuery(query, queryResultType, context))
+		// TODO: restore and property maintain update cache, when needed
+		// context.ioc.updateCache.addToCache(
+		// 	context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...result)
 
 		return result
 	}
@@ -42,14 +43,14 @@ export class QueryFacade
 	async findOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IQueryContext<E>,
+		context: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<E> {
-		await this.ensureIocContext(ctx)
-		const result = await ctx.ioc.transactionalConnector.findOne<E>(this.getPortableQuery(
-			query, queryResultType, ctx))
-		ctx.ioc.updateCache.addToCache(
-			ctx.ioc.schemaUtils, cacheForUpdate, ctx.dbEntity, result)
+		await this.ensureIocContext(context)
+		const result = await context.ioc.transactionalConnector.findOne<E>(this.getPortableQuery(
+			query, queryResultType, context))
+		context.ioc.updateCache.addToCache(
+			context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result)
 
 		return result
 	}
@@ -57,14 +58,14 @@ export class QueryFacade
 	getPortableQuery<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IQueryContext<E>
+		context: IQueryContext<E>
 	): PortableQuery {
 		return {
-			jsonQuery: <JsonQuery>query.toJSON(ctx.ioc.queryUtils, ctx.ioc.fieldUtils),
+			jsonQuery: <JsonQuery>query.toJSON(context.ioc.queryUtils, context.ioc.fieldUtils),
 			parameterMap: query.getParameters(),
 			queryResultType,
-			schemaIndex: ctx.dbEntity.schemaVersion.schema.index,
-			tableIndex: ctx.dbEntity.index,
+			schemaIndex: context.dbEntity.schemaVersion.schema.index,
+			tableIndex: context.dbEntity.index,
 			// values: query.values
 		}
 	}
@@ -72,18 +73,18 @@ export class QueryFacade
 	async search<E, EntityArray extends Array<E>>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IQueryContext<E>,
+		context: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<IObservable<EntityArray>> {
-		await this.ensureIocContext(ctx)
-		let observable = await ctx.ioc.transactionalConnector.search(this.getPortableQuery(
-			query, queryResultType, ctx))
+		await this.ensureIocContext(context)
+		let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(
+			query, queryResultType, context))
 
 		observable = observable.pipe(
 			map(
 				results => {
-					ctx.ioc.updateCache.addToCache(
-						ctx.ioc.schemaUtils, cacheForUpdate, ctx.dbEntity, ...results)
+					context.ioc.updateCache.addToCache(
+						context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...results)
 
 					return results
 				})
@@ -95,18 +96,18 @@ export class QueryFacade
 	async searchOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IQueryContext<E>,
+		context: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<IObservable<E>> {
-		await this.ensureIocContext(ctx)
-		let observable = await ctx.ioc.transactionalConnector.searchOne(this.getPortableQuery(
-			query, queryResultType, ctx))
+		await this.ensureIocContext(context)
+		let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(
+			query, queryResultType, context))
 
 		observable = observable.pipe(
 			map(
 				result => {
-					ctx.ioc.updateCache.addToCache(
-						ctx.ioc.schemaUtils, cacheForUpdate, ctx.dbEntity, result)
+					context.ioc.updateCache.addToCache(
+						context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result)
 
 					return result
 				})
@@ -116,11 +117,11 @@ export class QueryFacade
 	}
 
 	private async ensureIocContext<E>(
-		ctx: IQueryContext<E>
+		context: IQueryContext<E>
 	): Promise<void> {
 		const queryContextLoader = await container(this)
 			.get(QUERY_CONTEXT_LOADER)
-		await queryContextLoader.ensure(ctx)
+		await queryContextLoader.ensure(context)
 	}
 
 }

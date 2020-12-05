@@ -4,8 +4,11 @@ export declare enum EntityState {
     CREATE = 1,
     DELETE = 2,
     PARENT_ID = 3,
-    STUB = 4,
-    UPDATE = 5
+    RESULT = 4,
+    RESULT_DATE = 5,
+    RESULT_JSON = 6,
+    STUB = 7,
+    UPDATE = 8
 }
 export interface EntityWithState {
     __state__: EntityState;
