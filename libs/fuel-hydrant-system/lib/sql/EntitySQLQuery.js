@@ -60,7 +60,6 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
      * @returns {any[]}
      */
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
-        console.log('sdfasd');
         const objectResultParserFactory = await DI.db()
             .get(OBJECT_RESULT_PARSER_FACTORY);
         this.queryParser = objectResultParserFactory.getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity);

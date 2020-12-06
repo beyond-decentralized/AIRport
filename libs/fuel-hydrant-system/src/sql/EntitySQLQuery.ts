@@ -126,7 +126,6 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		context: IOperationContext<any, any>,
 		bridgedQueryConfiguration?: any
 	): Promise<any[]> {
-		console.log('sdfasd');
 		const objectResultParserFactory = await DI.db()
 			.get(OBJECT_RESULT_PARSER_FACTORY)
 		this.queryParser                = objectResultParserFactory.getObjectResultParser(
