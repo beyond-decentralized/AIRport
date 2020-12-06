@@ -1,3 +1,6 @@
+export * from './serialize/OperationSerializer';
+export * from './serialize/QueryResultsDeserializer';
+export * from './serialize/QueryResultsSerializer';
 export * from './Dao';
 export * from './DaoDecorators';
 export * from './tokens';
