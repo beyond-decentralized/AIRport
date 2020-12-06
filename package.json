@@ -30,7 +30,7 @@
     "nyc": "^12.0.2",
     "sql.js": "^0.5.0",
     "ts-node": "^8.6.2",
-    "typescript": "3.8.2"
+    "typescript": "4.1.2"
   },
   "bugs": {
     "url": "https://bitbucket.org/autonomousinterdependentrepo/airport/issues"
