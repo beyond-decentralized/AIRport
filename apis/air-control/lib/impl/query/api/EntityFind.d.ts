@@ -17,13 +17,13 @@ export interface IEntityFindInternal<Entity, EntityArray extends Array<Entity>, 
 export declare class EntityFind<Entity, EntityArray extends Array<Entity>, IESP extends IEntitySelectProperties> extends EntityLookup<EntityFind<Entity, Array<Entity>, IESP>, EntityFind<Entity, MappedEntityArray<Entity>, IESP>, IESP> implements IEntityFindInternal<Entity, EntityArray, IESP> {
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, ctx?: IContext): Promise<EntityArray>;
+    }, context?: IContext): Promise<EntityArray>;
     tree(rawTreeQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, ctx?: IContext): Promise<EntityArray>;
+    }, context?: IContext): Promise<EntityArray>;
     find(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType, ctx?: IContext): Promise<EntityArray>;
+    }, queryResultType: QueryResultType, context?: IContext): Promise<EntityArray>;
     map(isMapped?: boolean): EntityFind<Entity, MappedEntityArray<Entity>, IESP>;
     noCache(): EntityFind<Entity, Entity[], IESP>;
     cache(cacheForUpdate?: UpdateCacheType): EntityFind<Entity, Entity[], IESP>;

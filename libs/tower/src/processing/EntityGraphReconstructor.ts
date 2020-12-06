@@ -64,7 +64,11 @@ export class EntityGraphReconstructor
 			 * entity stubs that are needed structurally to get to
 			 * other entities.
 			 */
-			const [isCreate, isDelete, isParentId, isUpdate, isStub] = context.ioc.entityStateManager
+			const {
+				      isDelete,
+				      isParentId,
+				      isStub
+			      } = context.ioc.entityStateManager
 				.getEntityStateTypeAsFlags(entity, dbEntity)
 
 			const previouslyFoundEntity = entitiesByOperationIndex[operationUniqueId]

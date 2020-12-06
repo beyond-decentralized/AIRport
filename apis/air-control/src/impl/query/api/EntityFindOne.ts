@@ -13,7 +13,7 @@ export interface IEntityFindOneInternal<Entity, IESP extends IEntitySelectProper
 	findOne(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
-		ctx: IContext
+		context: IContext
 	): Promise<Entity>
 
 }
@@ -28,25 +28,25 @@ export class EntityFindOne<Entity, IESP extends IEntitySelectProperties>
 
 	graph(
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<Entity> {
-		return this.findOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, ctx)
+		return this.findOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context)
 	}
 
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<Entity> {
-		return this.findOne(rawTreeQuery, QueryResultType.ENTITY_TREE, ctx)
+		return this.findOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context)
 	}
 
 	findOne(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
-		ctx?: IContext
+		context?: IContext
 	): Promise<Entity> {
 		return this.entityLookup(rawEntityQuery, queryResultType,
-			false, true, this.ensureContext(ctx) as IEntityContext)
+			false, true, this.ensureContext(context) as IEntityContext)
 	}
 
 	map(

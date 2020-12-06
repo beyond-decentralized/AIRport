@@ -9,7 +9,7 @@ import { EntityLookup } from './EntityLookup';
 export interface IEntitySearchOneInternal<Entity, IESP extends IEntitySelectProperties> extends IEntitySearchOne<Entity, IESP> {
     searchOne(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType, ctx?: IContext): Promise<IObservable<Entity>>;
+    }, queryResultType: QueryResultType, context?: IContext): Promise<IObservable<Entity>>;
 }
 /**
  * Created by Papa on 11/12/2016.
@@ -17,13 +17,13 @@ export interface IEntitySearchOneInternal<Entity, IESP extends IEntitySelectProp
 export declare class EntitySearchOne<Entity, IESP extends IEntitySelectProperties> extends EntityLookup<EntitySearchOne<Entity, IESP>, EntitySearchOne<Entity, IESP>, IESP> implements IEntitySearchOneInternal<Entity, IESP> {
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, ctx?: IContext): IObservable<Entity>;
+    }, context?: IContext): IObservable<Entity>;
     tree(rawTreeQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, ctx?: IContext): IObservable<Entity>;
+    }, context?: IContext): IObservable<Entity>;
     searchOne(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType, ctx?: IContext): Promise<IObservable<Entity>>;
+    }, queryResultType: QueryResultType, context?: IContext): Promise<IObservable<Entity>>;
     map(isMapped?: boolean): EntitySearchOne<Entity, IESP>;
     noCache(): EntitySearchOne<Entity, IESP>;
     cache(cacheForUpdate?: UpdateCacheType): EntitySearchOne<Entity, IESP>;

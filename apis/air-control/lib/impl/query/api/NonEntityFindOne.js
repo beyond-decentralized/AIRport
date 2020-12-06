@@ -7,17 +7,17 @@ import { Lookup } from './Lookup';
  * Created by Papa on 11/12/2016.
  */
 export class NonEntityFindOne extends Lookup {
-    field(rawFieldQuery, ctx) {
-        return this.findOne(rawFieldQuery, QueryResultType.FIELD, FieldQuery, ctx);
+    field(rawFieldQuery, context) {
+        return this.findOne(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context);
     }
-    sheet(rawSheetQuery, ctx) {
-        return this.findOne(rawSheetQuery, QueryResultType.SHEET, SheetQuery, ctx);
+    sheet(rawSheetQuery, context) {
+        return this.findOne(rawSheetQuery, QueryResultType.SHEET, SheetQuery, context);
     }
-    tree(rawTreeQuery, ctx) {
-        return this.findOne(rawTreeQuery, QueryResultType.TREE, TreeQuery, ctx);
+    tree(rawTreeQuery, context) {
+        return this.findOne(rawTreeQuery, QueryResultType.TREE, TreeQuery, context);
     }
-    findOne(rawNonEntityQuery, queryResultType, QueryClass, ctx) {
-        return this.lookup(rawNonEntityQuery, queryResultType, false, true, QueryClass, this.ensureContext(ctx));
+    findOne(rawNonEntityQuery, queryResultType, QueryClass, context) {
+        return this.lookup(rawNonEntityQuery, queryResultType, false, true, QueryClass, this.ensureContext(context));
     }
 }
 //# sourceMappingURL=NonEntityFindOne.js.map

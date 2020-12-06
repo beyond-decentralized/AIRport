@@ -124,7 +124,7 @@ export class TransactionalServer
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
 		credentials: ICredentials,
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number> {
 		const insertManager = await container(this)
 			.get(INSERT_MANAGER)
@@ -136,7 +136,7 @@ export class TransactionalServer
 	async insertValues(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
-		ctx: IOperationContext<any, any>,
+		context: IOperationContext<any, any>,
 		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
 		const values = (portableQuery.jsonQuery as JsonInsertValues).V
@@ -168,7 +168,7 @@ export class TransactionalServer
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		const insertManager = await container(this)
 			.get(INSERT_MANAGER)
@@ -181,19 +181,19 @@ export class TransactionalServer
 	async updateValues(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number> {
 		const updateManager = await container(this)
 			.get(UPDATE_MANAGER)
 
 		const actor = await this.getActor(portableQuery)
-		return await updateManager.updateValues(portableQuery, actor, transaction, ctx)
+		return await updateManager.updateValues(portableQuery, actor, transaction, context)
 	}
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
-		ctx: IOperationContext<any, any>
+		context: IOperationContext<any, any>
 	): Promise<number> {
 		const deleteManager = await container(this)
 			.get(DELETE_MANAGER)

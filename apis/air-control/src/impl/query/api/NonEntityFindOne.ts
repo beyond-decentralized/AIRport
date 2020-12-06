@@ -25,33 +25,33 @@ export class NonEntityFindOne
 
 	field<IQF extends IQOrderableField<IQF>>(
 		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<any[]> {
-		return this.findOne(rawFieldQuery, QueryResultType.FIELD, FieldQuery, ctx)
+		return this.findOne(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context)
 	}
 
 	sheet(
 		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
-		ctx?: IContext
+		context?: IContext
 	): Promise<any> {
-		return this.findOne(rawSheetQuery, QueryResultType.SHEET, SheetQuery, ctx)
+		return this.findOne(rawSheetQuery, QueryResultType.SHEET, SheetQuery, context)
 	}
 
 	tree<ITE extends ITreeEntity>(
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<ITE> {
-		return this.findOne(rawTreeQuery, QueryResultType.TREE, TreeQuery, ctx)
+		return this.findOne(rawTreeQuery, QueryResultType.TREE, TreeQuery, context)
 	}
 
 	findOne<IQF extends IQOrderableField<IQF>>(
 		rawNonEntityQuery: RawNonEntityQuery | { (...args: any[]): RawNonEntityQuery },
 		queryResultType: QueryResultType,
 		QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery,
-		ctx: IContext
+		context: IContext
 	): Promise<any> {
 		return this.lookup(rawNonEntityQuery, queryResultType,
-			false, true, QueryClass, this.ensureContext(ctx))
+			false, true, QueryClass, this.ensureContext(context))
 	}
 
 }

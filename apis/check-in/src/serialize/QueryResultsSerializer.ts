@@ -1,18 +1,11 @@
 import {
 	EntityState,
 	IEntityStateManager
-}                             from '@airport/air-control'
-import {DI}                   from '@airport/di'
-import {OPERATION_SERIALIZER} from '../tokens'
+}                                 from '@airport/air-control'
+import {DI}                       from '@airport/di'
+import {QUERY_RESULTS_SERIALIZER} from '../tokens'
 
-/**
- * A simple operation serializer that is not aware
- * of the schema and only supports create operations
- * (good enough for now, to be expanded on later).
- * Also, ids are currently assumed to always
- * be represented by the "id" property.
- */
-export interface IOperationSerializer {
+export interface IQueryResultsSerializer {
 
 	serialize<E, T = E | E[]>(
 		entity: T,
@@ -27,10 +20,10 @@ interface ISerializableOperation {
 	stubLookupTable: any[]
 }
 
-export class OperationSerializer
-	implements IOperationSerializer {
+export class QueryResultsSerializer
+	implements IQueryResultsSerializer {
 
-	serialize<E, T = E | E[]>(
+	serialize<E, EntityCascadeGraph, T = E | E[]>(
 		entity: T,
 		entityStateManager: IEntityStateManager,
 	): T {
@@ -73,12 +66,7 @@ export class OperationSerializer
 		let entityCopy: any                                   = {}
 		operation.lookupTable[operationUniqueId]              = entity
 		entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
-
-		let entityState = EntityState.STUB
-		if (entity['id']) {
-			entityState = EntityState.CREATE
-		}
-		entityCopy[entityStateManager.getStateFieldName()] = entityState
+		entityCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT
 
 		for (const propertyName in entity) {
 			const property = entity[propertyName]
@@ -88,7 +76,10 @@ export class OperationSerializer
 					propertyCopy = property.map(aProperty => this.doSerialize(
 						aProperty, operation, entityStateManager))
 				} else if (property instanceof Date) {
-					propertyCopy = property.toISOString()
+					propertyCopy = {
+						value: property.toISOString()
+					}
+					propertyCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT_DATE
 				} else {
 					propertyCopy = this.doSerialize(property, operation, entityStateManager)
 				}
@@ -103,4 +94,4 @@ export class OperationSerializer
 
 }
 
-DI.set(OPERATION_SERIALIZER, OperationSerializer)
+DI.set(QUERY_RESULTS_SERIALIZER, QueryResultsSerializer)

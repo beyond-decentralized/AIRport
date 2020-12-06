@@ -69,7 +69,12 @@ export class DependencyGraphResolver
 			 * has no associated operations or child entities of
 			 * it's own).
 			 */
-			const [isCreate, isDelete, isParentId, isUpdate, isStub] = context.ioc.entityStateManager
+			const {
+				      isCreate,
+				      isDelete,
+				      isParentId,
+				      isStub
+			      } = context.ioc.entityStateManager
 				.getEntityStateTypeAsFlags(entity, dbEntity)
 
 			if (isParentId) {
@@ -122,13 +127,12 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 						// Relation is an entity that this entity depends on
 						case EntityRelationType.MANY_TO_ONE:
 							childDeleteByCascade = false
-							const [isChildCreate, isChildDelete, isChildParentId, isChildUpdate, isChildStub]
-							                     = context.ioc.entityStateManager
+							const childState     = context.ioc.entityStateManager
 								.getEntityStateTypeAsFlags(entity, dbEntity)
-							if (isChildParentId) {
+							if (childState.isParentId) {
 								continue
 							}
-							if (isChildDelete) {
+							if (childState.isDelete) {
 								if (!isDelete) {
 									throw new Error(`Cannot delete an entity without removing all references to it.
 								Found a reference in ${dbEntity.name}.${dbProperty.name}.
@@ -144,7 +148,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 									deleteByCascade = true
 								}
 							}
-							if (isChildCreate) {
+							if (childState.isCreate) {
 								childIsDependency = true
 							}
 							childEntities = [propertyValue]

@@ -28,7 +28,6 @@ export interface IIocOperationContext {
     structuralEntityValidator: IStructuralEntityValidator;
     transactionalServer: ITransactionalServer;
     updateCache: IUpdateCache;
-    init(): Promise<void>;
 }
 export declare class IocOperationContext implements IIocOperationContext {
     airDb: IAirportDatabase;
@@ -46,12 +45,13 @@ export declare class IocOperationContext implements IIocOperationContext {
     structuralEntityValidator: IStructuralEntityValidator;
     transactionalServer: ITransactionalServer;
     updateCache: IUpdateCache;
-    init(): Promise<void>;
+    static init(context: IIocOperationContext): Promise<void>;
+    static ensure(context: IIocOperationContext): Promise<void>;
 }
 export interface IOperationContextLoader {
-    ensure(ctx: IOperationContext<any, any>): Promise<void>;
+    ensure(context: IOperationContext<any, any>): Promise<void>;
 }
 export declare class OperationContextLoader implements IOperationContextLoader {
-    ensure(ctx: IOperationContext<any, any>): Promise<void>;
+    ensure(context: IOperationContext<any, any>): Promise<void>;
 }
 //# sourceMappingURL=OperationContext.d.ts.map

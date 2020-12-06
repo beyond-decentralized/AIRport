@@ -8,7 +8,7 @@ import { EntityLookup } from './EntityLookup';
 export interface IEntityFindOneInternal<Entity, IESP extends IEntitySelectProperties> extends IEntityFindOne<Entity, IESP> {
     findOne(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType, ctx: IContext): Promise<Entity>;
+    }, queryResultType: QueryResultType, context: IContext): Promise<Entity>;
 }
 /**
  * Created by Papa on 11/12/2016.
@@ -16,13 +16,13 @@ export interface IEntityFindOneInternal<Entity, IESP extends IEntitySelectProper
 export declare class EntityFindOne<Entity, IESP extends IEntitySelectProperties> extends EntityLookup<EntityFindOne<Entity, IESP>, EntityFindOne<Entity, IESP>, IESP> implements IEntityFindOneInternal<Entity, IESP> {
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, ctx?: IContext): Promise<Entity>;
+    }, context?: IContext): Promise<Entity>;
     tree(rawTreeQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, ctx?: IContext): Promise<Entity>;
+    }, context?: IContext): Promise<Entity>;
     findOne(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType, ctx?: IContext): Promise<Entity>;
+    }, queryResultType: QueryResultType, context?: IContext): Promise<Entity>;
     map(isMapped?: boolean): EntityFindOne<Entity, IESP>;
     noCache(): EntityFindOne<Entity, IESP>;
     cache(cacheForUpdate?: UpdateCacheType): EntityFindOne<Entity, IESP>;

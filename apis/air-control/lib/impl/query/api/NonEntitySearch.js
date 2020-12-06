@@ -8,17 +8,17 @@ import { Lookup } from './Lookup';
  * Created by Papa on 11/12/2016.
  */
 export class NonEntitySearch extends Lookup {
-    tree(rawTreeQuery, ctx) {
-        return Observable.from(this.search(rawTreeQuery, QueryResultType.TREE, TreeQuery, ctx));
+    tree(rawTreeQuery, context) {
+        return Observable.from(this.search(rawTreeQuery, QueryResultType.TREE, TreeQuery, context));
     }
-    sheet(rawSheetQuery, ctx) {
-        return Observable.from(this.search(rawSheetQuery, QueryResultType.SHEET, SheetQuery, ctx));
+    sheet(rawSheetQuery, context) {
+        return Observable.from(this.search(rawSheetQuery, QueryResultType.SHEET, SheetQuery, context));
     }
-    field(rawFieldQuery, ctx) {
-        return Observable.from(this.search(rawFieldQuery, QueryResultType.FIELD, FieldQuery, ctx));
+    field(rawFieldQuery, context) {
+        return Observable.from(this.search(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context));
     }
-    search(rawNonEntityQuery, queryResultType, QueryClass, ctx) {
-        return this.lookup(rawNonEntityQuery, queryResultType, true, false, QueryClass, this.ensureContext(ctx));
+    search(rawNonEntityQuery, queryResultType, QueryClass, context) {
+        return this.lookup(rawNonEntityQuery, queryResultType, true, false, QueryClass, this.ensureContext(context));
     }
 }
 //# sourceMappingURL=NonEntitySearch.js.map

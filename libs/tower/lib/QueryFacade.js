@@ -4,7 +4,7 @@ import { map } from '@airport/observe';
 export class QueryFacade {
     async find(query, queryResultType, context, cacheForUpdate = UpdateCacheType.NONE) {
         await this.ensureIocContext(context);
-        const result = await context.ioc.transactionalConnector.find(this.getPortableQuery(query, queryResultType, context));
+        const result = await context.ioc.transactionalConnector.find(this.getPortableQuery(query, queryResultType, context), context);
         // TODO: restore and property maintain update cache, when needed
         // context.ioc.updateCache.addToCache(
         // 	context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...result)
@@ -12,7 +12,7 @@ export class QueryFacade {
     }
     async findOne(query, queryResultType, context, cacheForUpdate = UpdateCacheType.NONE) {
         await this.ensureIocContext(context);
-        const result = await context.ioc.transactionalConnector.findOne(this.getPortableQuery(query, queryResultType, context));
+        const result = await context.ioc.transactionalConnector.findOne(this.getPortableQuery(query, queryResultType, context), context);
         context.ioc.updateCache.addToCache(context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result);
         return result;
     }
@@ -27,7 +27,7 @@ export class QueryFacade {
     }
     async search(query, queryResultType, context, cacheForUpdate = UpdateCacheType.NONE) {
         await this.ensureIocContext(context);
-        let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(query, queryResultType, context));
+        let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(query, queryResultType, context), context);
         observable = observable.pipe(map(results => {
             context.ioc.updateCache.addToCache(context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...results);
             return results;
@@ -36,7 +36,7 @@ export class QueryFacade {
     }
     async searchOne(query, queryResultType, context, cacheForUpdate = UpdateCacheType.NONE) {
         await this.ensureIocContext(context);
-        let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(query, queryResultType, context));
+        let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(query, queryResultType, context), context);
         observable = observable.pipe(map(result => {
             context.ioc.updateCache.addToCache(context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result);
             return result;

@@ -8,7 +8,7 @@ import { LookupProxy } from './Lookup';
 export interface IEntityLookupInternal<Child, MappedChild, IESP extends IEntitySelectProperties> extends IEntityLookup<Child, MappedChild> {
     entityLookup(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType, search: boolean, one: boolean, ctx: IEntityContext): Promise<any>;
+    }, queryResultType: QueryResultType, search: boolean, one: boolean, context: IEntityContext): Promise<any>;
     setMap(MappedChildClass: new (dbEntity: DbEntity, cacheForUpdate: UpdateCacheType, mapResults: boolean) => MappedChild, isMapped: boolean): MappedChild;
     setNoCache(ChildClass: new (dbEntity: DbEntity, cacheForUpdate: UpdateCacheType, mapResults: boolean) => Child): Child;
     setCache(ChildClass: new (dbEntity: DbEntity, cacheForUpdate: UpdateCacheType, mapResults: boolean) => Child, cacheForUpdate: UpdateCacheType): Child;
@@ -28,6 +28,6 @@ export declare abstract class EntityLookup<Child, MappedChild, IESP extends IEnt
     setCache(ChildClass: new (dbEntity: DbEntity, cacheForUpdate: UpdateCacheType, mapResults: boolean) => Child, cacheForUpdate?: UpdateCacheType): Child;
     entityLookup(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType, search: boolean, one: boolean, ctx: IEntityContext): Promise<any>;
+    }, queryResultType: QueryResultType, search: boolean, one: boolean, context: IEntityContext): Promise<any>;
 }
 //# sourceMappingURL=EntityLookup.d.ts.map

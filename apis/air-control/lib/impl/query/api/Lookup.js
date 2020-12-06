@@ -2,49 +2,49 @@ import { DI, } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
 import { LOOKUP, QUERY_CONTEXT_LOADER } from '../../../tokens';
 export class LookupProxy {
-    lookup(rawQuery, queryResultType, search, one, QueryClass, ctx, cacheForUpdate, mapResults) {
+    lookup(rawQuery, queryResultType, search, one, QueryClass, context, cacheForUpdate, mapResults) {
         return DI.db()
             .get(LOOKUP)
-            .then(lookup => lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, ctx, cacheForUpdate, mapResults));
+            .then(lookup => lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, context, cacheForUpdate, mapResults));
     }
-    ensureContext(ctx) {
-        return doEnsureContext(ctx);
+    ensureContext(context) {
+        return doEnsureContext(context);
     }
 }
 export class Lookup {
-    async lookup(rawQuery, queryResultType, search, one, QueryClass, ctx, cacheForUpdate, mapResults) {
+    async lookup(rawQuery, queryResultType, search, one, QueryClass, context, cacheForUpdate, mapResults) {
         const queryContextLoader = await DI.db().get(QUERY_CONTEXT_LOADER);
-        await queryContextLoader.ensure(ctx);
+        await queryContextLoader.ensure(context);
         let query;
         if (QueryClass) {
-            const rawNonEntityQuery = ctx.ioc.entityUtils.getQuery(rawQuery);
+            const rawNonEntityQuery = context.ioc.entityUtils.getQuery(rawQuery);
             query = new QueryClass(rawNonEntityQuery);
         }
         else {
-            query = ctx.ioc.entityUtils.getEntityQuery(rawQuery);
+            query = context.ioc.entityUtils.getEntityQuery(rawQuery);
             queryResultType = this.getQueryResultType(queryResultType, mapResults);
         }
         let queryMethod;
         if (search) {
             if (one) {
-                queryMethod = ctx.ioc.queryFacade.searchOne;
+                queryMethod = context.ioc.queryFacade.searchOne;
             }
             else {
-                queryMethod = ctx.ioc.queryFacade.search;
+                queryMethod = context.ioc.queryFacade.search;
             }
         }
         else {
             if (one) {
-                queryMethod = ctx.ioc.queryFacade.findOne;
+                queryMethod = context.ioc.queryFacade.findOne;
             }
             else {
-                queryMethod = ctx.ioc.queryFacade.find;
+                queryMethod = context.ioc.queryFacade.find;
             }
         }
-        return await queryMethod.call(ctx.ioc.queryFacade, query, this.getQueryResultType(queryResultType, mapResults), ctx, cacheForUpdate);
+        return await queryMethod.call(context.ioc.queryFacade, query, this.getQueryResultType(queryResultType, mapResults), context, cacheForUpdate);
     }
-    ensureContext(ctx) {
-        return doEnsureContext(ctx);
+    ensureContext(context) {
+        return doEnsureContext(context);
     }
     getQueryResultType(baseQueryResultType, mapResults) {
         switch (baseQueryResultType) {
@@ -63,14 +63,14 @@ export class Lookup {
         }
     }
 }
-export function doEnsureContext(ctx) {
-    if (!ctx) {
-        ctx = {};
+export function doEnsureContext(context) {
+    if (!context) {
+        context = {};
     }
-    if (!ctx.startedAt) {
-        ctx.startedAt = new Date();
+    if (!context.startedAt) {
+        context.startedAt = new Date();
     }
-    return ctx;
+    return context;
 }
 DI.set(LOOKUP, Lookup);
 //# sourceMappingURL=Lookup.js.map

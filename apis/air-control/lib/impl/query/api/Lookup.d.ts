@@ -9,15 +9,15 @@ import { IQueryContext } from '../QueryContext';
 export declare class LookupProxy implements ILookup {
     lookup(rawQuery: RawQuery | {
         (...args: any[]): RawQuery;
-    }, queryResultType: QueryResultType, search: boolean, one: boolean, QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType, mapResults?: boolean): Promise<any>;
-    protected ensureContext(ctx?: IContext): IContext;
+    }, queryResultType: QueryResultType, search: boolean, one: boolean, QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery, context: IEntityContext, cacheForUpdate?: UpdateCacheType, mapResults?: boolean): Promise<any>;
+    protected ensureContext(context?: IContext): IContext;
 }
 export declare class Lookup implements ILookup {
     lookup(rawQuery: RawQuery | {
         (...args: any[]): RawQuery;
-    }, queryResultType: QueryResultType, search: boolean, one: boolean, QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery, ctx: IQueryContext<any>, cacheForUpdate?: UpdateCacheType, mapResults?: boolean): Promise<any>;
-    protected ensureContext<C extends IContext>(ctx?: IContext): C;
+    }, queryResultType: QueryResultType, search: boolean, one: boolean, QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery, context: IQueryContext<any>, cacheForUpdate?: UpdateCacheType, mapResults?: boolean): Promise<any>;
+    protected ensureContext<C extends IContext>(context?: IContext): C;
     private getQueryResultType;
 }
-export declare function doEnsureContext(ctx?: IContext): IContext;
+export declare function doEnsureContext(context?: IContext): IContext;
 //# sourceMappingURL=Lookup.d.ts.map

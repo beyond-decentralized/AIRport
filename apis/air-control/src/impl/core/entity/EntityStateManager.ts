@@ -23,6 +23,17 @@ export interface IOperationUniqueIdSequence {
 	sequence: OperationUniqueId
 }
 
+export interface IEntityStateAsFlags {
+	isCreate: boolean
+	isDelete: boolean
+	isParentId: boolean
+	isResult: boolean
+	isResultDate: boolean
+	isResultJson: boolean
+	isStub: boolean
+	isUpdate: boolean
+}
+
 export interface IEntityStateManager {
 
 	isStub<T>(
@@ -77,7 +88,7 @@ export interface IEntityStateManager {
 	getEntityStateTypeAsFlags<T>(
 		entity: T,
 		dbEntity: DbEntity
-	): [boolean, boolean, boolean, boolean, boolean]
+	): IEntityStateAsFlags
 
 }
 
@@ -176,8 +187,8 @@ export class EntityStateManager
 	getEntityStateTypeAsFlags<T>(
 		entity: T,
 		dbEntity: DbEntity
-	): [boolean, boolean, boolean, boolean, boolean] {
-		let isCreate, isDelete, isParentId, isUpdate, isStub
+	): IEntityStateAsFlags {
+		let isCreate, isDelete, isParentId, isResult, isResultDate, isResultJson, isStub, isUpdate
 		const entityState = this.getEntityState(entity)
 		switch (entityState) {
 			case EntityState.CREATE:
@@ -189,21 +200,36 @@ export class EntityStateManager
 			case EntityState.PARENT_ID:
 				isUpdate = true
 				break
-			case EntityState.UPDATE:
-				isParentId = true
+			case EntityState.RESULT:
+				isResult = true
 				break
-			case EntityState.UPDATE:
-				isUpdate = true
+			case EntityState.RESULT_DATE:
+				isResultDate = true
+				break
+			case EntityState.RESULT_JSON:
+				isResultJson = true
 				break
 			case EntityState.STUB:
 				isStub = true
+				break
+			case EntityState.UPDATE:
+				isParentId = true
 				break
 			default:
 				throw new Error(`Unexpected entity state
 "${this.getStateFieldName()}" for ${dbEntity.name}: ${entityState}`)
 		}
 
-		return [isCreate, isDelete, isParentId, isUpdate, isStub]
+		return {
+			isCreate,
+			isDelete,
+			isParentId,
+			isResult,
+			isResultDate,
+			isResultJson,
+			isStub,
+			isUpdate,
+		}
 	}
 
 }

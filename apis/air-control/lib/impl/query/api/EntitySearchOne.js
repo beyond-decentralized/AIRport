@@ -5,14 +5,14 @@ import { EntityLookup } from './EntityLookup';
  * Created by Papa on 11/12/2016.
  */
 export class EntitySearchOne extends EntityLookup {
-    graph(rawGraphQuery, ctx) {
-        return Observable.from(this.searchOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, ctx));
+    graph(rawGraphQuery, context) {
+        return Observable.from(this.searchOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context));
     }
-    tree(rawTreeQuery, ctx) {
-        return Observable.from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, ctx));
+    tree(rawTreeQuery, context) {
+        return Observable.from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
     }
-    searchOne(rawEntityQuery, queryResultType, ctx) {
-        return this.entityLookup(rawEntityQuery, queryResultType, true, true, this.ensureContext(ctx));
+    searchOne(rawEntityQuery, queryResultType, context) {
+        return this.entityLookup(rawEntityQuery, queryResultType, true, true, this.ensureContext(context));
     }
     map(isMapped) {
         return this.setMap(EntitySearchOne, isMapped);

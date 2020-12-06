@@ -10,7 +10,7 @@ import { EntityLookup } from './EntityLookup';
 export interface IEntitySearchInternal<Entity, EntityArray extends Array<Entity>, IESP extends IEntitySelectProperties> extends IEntitySearch<Entity, EntityArray, IESP> {
     search(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType, ctx?: IContext): Promise<IObservable<EntityArray>>;
+    }, queryResultType: QueryResultType, context?: IContext): Promise<IObservable<EntityArray>>;
 }
 /**
  * Created by Papa on 11/12/2016.
@@ -18,13 +18,13 @@ export interface IEntitySearchInternal<Entity, EntityArray extends Array<Entity>
 export declare class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extends IEntitySelectProperties> extends EntityLookup<EntitySearch<Entity, Array<Entity>, IESP>, EntitySearch<Entity, MappedEntityArray<Entity>, IESP>, IESP> implements IEntitySearchInternal<Entity, EntityArray, IESP> {
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, ctx?: IContext): IObservable<EntityArray>;
+    }, context?: IContext): IObservable<EntityArray>;
     tree(rawTreeQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, ctx?: IContext): IObservable<EntityArray>;
+    }, context?: IContext): IObservable<EntityArray>;
     search(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType, ctx?: IContext): Promise<IObservable<EntityArray>>;
+    }, queryResultType: QueryResultType, context?: IContext): Promise<IObservable<EntityArray>>;
     map(isMapped?: boolean): EntitySearch<Entity, MappedEntityArray<Entity>, IESP>;
     noCache(): EntitySearch<Entity, Entity[], IESP>;
     cache(cacheForUpdate?: UpdateCacheType): EntitySearch<Entity, Entity[], IESP>;

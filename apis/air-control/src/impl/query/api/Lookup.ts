@@ -23,7 +23,7 @@ export class LookupProxy
 		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
-		ctx: IEntityContext,
+		context: IEntityContext,
 		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any> {
@@ -32,13 +32,13 @@ export class LookupProxy
 			.then(
 				lookup => lookup.lookup(
 					rawQuery, queryResultType, search, one,
-					QueryClass, ctx, cacheForUpdate, mapResults))
+					QueryClass, context, cacheForUpdate, mapResults))
 	}
 
 	protected ensureContext(
-		ctx?: IContext
+		context?: IContext
 	): IContext {
-		return doEnsureContext(ctx)
+		return doEnsureContext(context)
 	}
 }
 
@@ -51,43 +51,43 @@ export class Lookup
 		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
-		ctx: IQueryContext<any>,
+		context: IQueryContext<any>,
 		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any> {
 		const queryContextLoader = await DI.db().get(QUERY_CONTEXT_LOADER)
-		await queryContextLoader.ensure(ctx)
+		await queryContextLoader.ensure(context)
 		let query: IAbstractQuery
 		if (QueryClass) {
-			const rawNonEntityQuery = ctx.ioc.entityUtils.getQuery(rawQuery)
+			const rawNonEntityQuery = context.ioc.entityUtils.getQuery(rawQuery)
 			query                   = new QueryClass(rawNonEntityQuery)
 		} else {
-			query           = ctx.ioc.entityUtils.getEntityQuery(rawQuery)
+			query           = context.ioc.entityUtils.getEntityQuery(rawQuery)
 			queryResultType = this.getQueryResultType(queryResultType, mapResults)
 		}
 		let queryMethod
 		if (search) {
 			if (one) {
-				queryMethod = ctx.ioc.queryFacade.searchOne
+				queryMethod = context.ioc.queryFacade.searchOne
 			} else {
-				queryMethod = ctx.ioc.queryFacade.search
+				queryMethod = context.ioc.queryFacade.search
 			}
 		} else {
 			if (one) {
-				queryMethod = ctx.ioc.queryFacade.findOne
+				queryMethod = context.ioc.queryFacade.findOne
 			} else {
-				queryMethod = ctx.ioc.queryFacade.find
+				queryMethod = context.ioc.queryFacade.find
 			}
 		}
 
-		return await queryMethod.call(ctx.ioc.queryFacade, query,
-			this.getQueryResultType(queryResultType, mapResults), ctx, cacheForUpdate)
+		return await queryMethod.call(context.ioc.queryFacade, query,
+			this.getQueryResultType(queryResultType, mapResults), context, cacheForUpdate)
 	}
 
 	protected ensureContext<C extends IContext>(
-		ctx?: IContext
+		context?: IContext
 	): C {
-		return doEnsureContext(ctx) as C
+		return doEnsureContext(context) as C
 	}
 
 	private getQueryResultType(
@@ -113,17 +113,17 @@ export class Lookup
 }
 
 export function doEnsureContext(
-	ctx?: IContext
+	context?: IContext
 ): IContext {
-	if (!ctx) {
-		ctx = {}
+	if (!context) {
+		context = {}
 	}
 
-	if (!ctx.startedAt) {
-		ctx.startedAt = new Date()
+	if (!context.startedAt) {
+		context.startedAt = new Date()
 	}
 
-	return ctx
+	return context
 }
 
 DI.set(LOOKUP, Lookup)

@@ -45,5 +45,7 @@ export declare abstract class SqlDriver implements IStoreDriver {
     protected abstract executeNative(sql: string, parameters: any[], context: IOperationContext<any, any>): Promise<number>;
     protected abstract getDialect(context: IOperationContext<any, any>): SQLDialect;
     protected splitValues(values: any[][], context: IOperationContext<any, any>): any[][][];
+    protected ensureContext(context: IOperationContext<any, any>): Promise<IOperationContext<any, any>>;
+    protected ensureIocContext(context: IOperationContext<any, any>): Promise<void>;
 }
 //# sourceMappingURL=SqlDriver.d.ts.map

@@ -63,7 +63,7 @@ export class EntityStateManager {
         return EntityStateManager.STATE_FIELD;
     }
     getEntityStateTypeAsFlags(entity, dbEntity) {
-        let isCreate, isDelete, isParentId, isUpdate, isStub;
+        let isCreate, isDelete, isParentId, isResult, isResultDate, isResultJson, isStub, isUpdate;
         const entityState = this.getEntityState(entity);
         switch (entityState) {
             case EntityState.CREATE:
@@ -75,20 +75,35 @@ export class EntityStateManager {
             case EntityState.PARENT_ID:
                 isUpdate = true;
                 break;
-            case EntityState.UPDATE:
-                isParentId = true;
+            case EntityState.RESULT:
+                isResult = true;
                 break;
-            case EntityState.UPDATE:
-                isUpdate = true;
+            case EntityState.RESULT_DATE:
+                isResultDate = true;
+                break;
+            case EntityState.RESULT_JSON:
+                isResultJson = true;
                 break;
             case EntityState.STUB:
                 isStub = true;
+                break;
+            case EntityState.UPDATE:
+                isParentId = true;
                 break;
             default:
                 throw new Error(`Unexpected entity state
 "${this.getStateFieldName()}" for ${dbEntity.name}: ${entityState}`);
         }
-        return [isCreate, isDelete, isParentId, isUpdate, isStub];
+        return {
+            isCreate,
+            isDelete,
+            isParentId,
+            isResult,
+            isResultDate,
+            isResultJson,
+            isStub,
+            isUpdate,
+        };
     }
 }
 EntityStateManager.OPERATION_UNIQUE_ID_FIELD = '__UID__';

@@ -1,7 +1,7 @@
 import { EntityState } from '@airport/air-control';
 import { DI } from '@airport/di';
-import { OPERATION_SERIALIZER } from '../tokens';
-export class OperationSerializer {
+import { QUERY_RESULTS_SERIALIZER } from '../tokens';
+export class QueryResultsSerializer {
     serialize(entity, entityStateManager) {
         const operation = {
             lookupTable: [],
@@ -34,11 +34,7 @@ export class OperationSerializer {
         let entityCopy = {};
         operation.lookupTable[operationUniqueId] = entity;
         entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
-        let entityState = EntityState.STUB;
-        if (entity['id']) {
-            entityState = EntityState.CREATE;
-        }
-        entityCopy[entityStateManager.getStateFieldName()] = entityState;
+        entityCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT;
         for (const propertyName in entity) {
             const property = entity[propertyName];
             let propertyCopy;
@@ -47,7 +43,10 @@ export class OperationSerializer {
                     propertyCopy = property.map(aProperty => this.doSerialize(aProperty, operation, entityStateManager));
                 }
                 else if (property instanceof Date) {
-                    propertyCopy = property.toISOString();
+                    propertyCopy = {
+                        value: property.toISOString()
+                    };
+                    propertyCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT_DATE;
                 }
                 else {
                     propertyCopy = this.doSerialize(property, operation, entityStateManager);
@@ -61,5 +60,5 @@ export class OperationSerializer {
         return entityCopy;
     }
 }
-DI.set(OPERATION_SERIALIZER, OperationSerializer);
-//# sourceMappingURL=OperationSerializer.js.map
+DI.set(QUERY_RESULTS_SERIALIZER, QueryResultsSerializer);
+//# sourceMappingURL=QueryResultsSerializer.js.map

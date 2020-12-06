@@ -1,13 +1,8 @@
-import {
-	DistributionStrategy
-}                    from './data/DistributionStrategy'
-import {
-	PlatformType
-}                    from './data/PatformType'
-import {
-	PortableQuery
-}                    from './query/PortableQuery'
-import {IObservable} from '@airport/observe'
+import {IContext}             from '@airport/di'
+import {IObservable}          from '@airport/observe'
+import {DistributionStrategy} from './data/DistributionStrategy'
+import {PlatformType}         from './data/PatformType'
+import {PortableQuery}        from './query/PortableQuery'
 
 export interface ITransactionalConnector {
 
@@ -18,48 +13,59 @@ export interface ITransactionalConnector {
 		url: string,
 		platform: PlatformType,
 		platformConfig: string,
-		distributionStrategy: DistributionStrategy
+		distributionStrategy: DistributionStrategy,
+		context: IContext,
 	): Promise<number>
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
+		context: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray>
 
 	findOne<E>(
 		portableQuery: PortableQuery,
+		context: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<E>
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
+		context: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<EntityArray>>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
+		context: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<E>>
-/* FIXME: need to add top level save api here
-	insertValues(
-		portableQuery: PortableQuery,
-		transaction: ITransaction,
-		ensureGeneratedValues?: boolean // For internal use only
+
+	save<E, T = E | E[]>(
+		entity: T,
+		context: IContext,
 	): Promise<number>
 
-	insertValuesGetIds(
-		portableQuery: PortableQuery,
-		transaction: ITransaction,
-	): Promise<number[] | string[] | number[][] | string[][]>
+	/* FIXME: need to add top level save api here
+		insertValues(
+			portableQuery: PortableQuery,
+			transaction: ITransaction,
+			ensureGeneratedValues?: boolean // For internal use only
+		): Promise<number>
 
-	updateValues(
-		portableQuery: PortableQuery,
-		transaction: ITransaction,
-	): Promise<number>
+		insertValuesGetIds(
+			portableQuery: PortableQuery,
+			transaction: ITransaction,
+		): Promise<number[] | string[] | number[][] | string[][]>
 
-	deleteWhere(
-		portableQuery: PortableQuery,
-		transaction: ITransaction,
-	): Promise<number>
-*/
+		updateValues(
+			portableQuery: PortableQuery,
+			transaction: ITransaction,
+		): Promise<number>
+
+		deleteWhere(
+			portableQuery: PortableQuery,
+			transaction: ITransaction,
+		): Promise<number>
+	*/
 }

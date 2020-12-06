@@ -29,26 +29,26 @@ export class EntityFind<Entity, EntityArray extends Array<Entity>, IESP extends 
 
 	graph(
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<EntityArray> {
-		return this.find(rawGraphQuery, QueryResultType.ENTITY_GRAPH, ctx)
+		return this.find(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context)
 	}
 
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<EntityArray> {
-		return this.find(rawTreeQuery, QueryResultType.ENTITY_TREE, ctx)
+		return this.find(rawTreeQuery, QueryResultType.ENTITY_TREE, context)
 	}
 
 	find(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
-		ctx?: IContext
+		context?: IContext
 	): Promise<EntityArray> {
 		return this.entityLookup(rawEntityQuery, queryResultType,
 			false, false,
-			this.ensureContext(ctx) as IEntityContext)
+			this.ensureContext(context) as IEntityContext)
 	}
 
 	map(

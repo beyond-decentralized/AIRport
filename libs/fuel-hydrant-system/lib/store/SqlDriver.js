@@ -1,6 +1,8 @@
+import { doEnsureContext } from '@airport/air-control';
 import { container } from '@airport/di';
 import { getSchemaName, QueryResultType, SyncSchemaMap } from '@airport/ground-control';
 import { Subject } from '@airport/observe';
+import { OPERATION_CONTEXT_LOADER } from '@airport/tower';
 import { SQLDelete } from '../sql/core/SQLDelete';
 import { SQLInsertValues } from '../sql/core/SQLInsertValues';
 import { SQLUpdate } from '../sql/core/SQLUpdate';
@@ -65,6 +67,7 @@ export class SqlDriver {
         return await this.executeNative(sql, parameters, context);
     }
     async find(portableQuery, internalFragments, context, cachedSqlQueryId) {
+        context = await this.ensureContext(context);
         const sqlQuery = this.getSQLQuery(portableQuery, context);
         const sql = sqlQuery.toSQL(internalFragments, context);
         const parameters = sqlQuery.getParameters(portableQuery.parameterMap, context);
@@ -172,6 +175,16 @@ export class SqlDriver {
             splitValues.push(aSplitValues);
         }
         return splitValues;
+    }
+    async ensureContext(context) {
+        context = doEnsureContext(context);
+        await this.ensureIocContext(context);
+        return context;
+    }
+    async ensureIocContext(context) {
+        const operationContextLoader = await container(this)
+            .get(OPERATION_CONTEXT_LOADER);
+        await operationContextLoader.ensure(context);
     }
 }
 //# sourceMappingURL=SqlDriver.js.map

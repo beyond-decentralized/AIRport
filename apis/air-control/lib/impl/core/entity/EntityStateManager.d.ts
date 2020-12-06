@@ -16,6 +16,16 @@ export interface EntityWithState {
 export interface IOperationUniqueIdSequence {
     sequence: OperationUniqueId;
 }
+export interface IEntityStateAsFlags {
+    isCreate: boolean;
+    isDelete: boolean;
+    isParentId: boolean;
+    isResult: boolean;
+    isResultDate: boolean;
+    isResultJson: boolean;
+    isStub: boolean;
+    isUpdate: boolean;
+}
 export interface IEntityStateManager {
     isStub<T>(entity: T): boolean;
     isParentId<T>(entity: T): boolean;
@@ -30,7 +40,7 @@ export interface IEntityStateManager {
     copyEntityState<T>(fromEntity: T, toEntity: T): void;
     getUniqueIdFieldName(): string;
     getStateFieldName(): string;
-    getEntityStateTypeAsFlags<T>(entity: T, dbEntity: DbEntity): [boolean, boolean, boolean, boolean, boolean];
+    getEntityStateTypeAsFlags<T>(entity: T, dbEntity: DbEntity): IEntityStateAsFlags;
 }
 export declare class EntityStateManager implements IEntityStateManager {
     static OPERATION_UNIQUE_ID_FIELD: string;
@@ -48,6 +58,6 @@ export declare class EntityStateManager implements IEntityStateManager {
     copyEntityState<T>(fromEntity: T, toEntity: T): void;
     getUniqueIdFieldName(): string;
     getStateFieldName(): string;
-    getEntityStateTypeAsFlags<T>(entity: T, dbEntity: DbEntity): [boolean, boolean, boolean, boolean, boolean];
+    getEntityStateTypeAsFlags<T>(entity: T, dbEntity: DbEntity): IEntityStateAsFlags;
 }
 //# sourceMappingURL=EntityStateManager.d.ts.map

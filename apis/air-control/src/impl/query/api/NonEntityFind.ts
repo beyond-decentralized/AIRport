@@ -24,9 +24,9 @@ export class NonEntityFind
 
 	field<IQF extends IQOrderableField<IQF>>(
 		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<any[]> {
-		return this.find(rawFieldQuery, QueryResultType.FIELD, FieldQuery, ctx)
+		return this.find(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context)
 	}
 
 	sheet(
@@ -37,30 +37,30 @@ export class NonEntityFind
 		callback?: (
 			data: any[][]
 		) => void,
-		ctx?: IContext
+		context?: IContext
 	): Promise<any[][]> {
 		if (cursorSize || callback) {
 			throw new Error(`Implement!`)
 		}
 
-		return this.find(rawSheetQuery, QueryResultType.SHEET, SheetQuery, ctx)
+		return this.find(rawSheetQuery, QueryResultType.SHEET, SheetQuery, context)
 	}
 
 	tree<ITE extends ITreeEntity>(
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<ITE[]> {
-		return this.find(rawTreeQuery, QueryResultType.TREE, TreeQuery, ctx)
+		return this.find(rawTreeQuery, QueryResultType.TREE, TreeQuery, context)
 	}
 
 	find<IQF extends IQOrderableField<IQF>>(
 		rawNonEntityQuery: RawNonEntityQuery | { (...args: any[]): RawNonEntityQuery },
 		queryResultType: QueryResultType,
 		QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery,
-		ctx: IContext
+		context: IContext
 	): Promise<any[]> {
 		return this.lookup(rawNonEntityQuery, queryResultType,
-			false, false, QueryClass, this.ensureContext(ctx))
+			false, false, QueryClass, this.ensureContext(context))
 	}
 
 }

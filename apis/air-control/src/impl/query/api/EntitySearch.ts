@@ -19,7 +19,7 @@ export interface IEntitySearchInternal<Entity, EntityArray extends Array<Entity>
 	search(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
-		ctx?: IContext
+		context?: IContext
 	): Promise<IObservable<EntityArray>>
 
 }
@@ -34,25 +34,25 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 
 	graph(
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		ctx?: IContext
+		context?: IContext
 	): IObservable<EntityArray> {
-		return Observable.from(this.search(rawGraphQuery, QueryResultType.ENTITY_TREE, ctx))
+		return Observable.from(this.search(rawGraphQuery, QueryResultType.ENTITY_TREE, context))
 	}
 
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		ctx?: IContext
+		context?: IContext
 	): IObservable<EntityArray> {
-		return Observable.from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, ctx))
+		return Observable.from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context))
 	}
 
 	search(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
-		ctx?: IContext
+		context?: IContext
 	): Promise<IObservable<EntityArray>> {
 		return this.entityLookup(rawEntityQuery, queryResultType,
-			true, false, this.ensureContext(ctx) as IEntityContext)
+			true, false, this.ensureContext(context) as IEntityContext)
 	}
 
 	map(

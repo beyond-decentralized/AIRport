@@ -1,3 +1,4 @@
+import {doEnsureContext} from '@airport/air-control'
 import {container}       from '@airport/di'
 import {
 	DbEntity,
@@ -26,7 +27,8 @@ import {
 }                        from '@airport/observe'
 import {
 	IOperationContext,
-	ITransaction
+	ITransaction,
+	OPERATION_CONTEXT_LOADER
 }                        from '@airport/tower'
 import {SQLDelete}       from '../sql/core/SQLDelete'
 import {SQLInsertValues} from '../sql/core/SQLInsertValues'
@@ -174,6 +176,7 @@ export abstract class SqlDriver
 		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
+		context = await this.ensureContext(context)
 		const sqlQuery   = this.getSQLQuery(portableQuery, context)
 		const sql        = sqlQuery.toSQL(internalFragments, context)
 		const parameters = sqlQuery.getParameters(portableQuery.parameterMap, context)
@@ -369,6 +372,23 @@ export abstract class SqlDriver
 		}
 
 		return splitValues
+	}
+
+	protected async ensureContext(
+		context: IOperationContext<any, any>
+	): Promise<IOperationContext<any, any>> {
+		context = <IOperationContext<any, any>>doEnsureContext(context)
+		await this.ensureIocContext(context)
+
+		return context
+	}
+
+	protected async ensureIocContext(
+		context: IOperationContext<any, any>
+	): Promise<void> {
+		const operationContextLoader = await container(this)
+			.get(OPERATION_CONTEXT_LOADER)
+		await operationContextLoader.ensure(context)
 	}
 
 }

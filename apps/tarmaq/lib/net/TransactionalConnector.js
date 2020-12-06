@@ -6,39 +6,42 @@ export class TransactionalConnector {
         const transServer = await container(this).get(TRANS_SERVER);
         await transServer.init();
     }
-    async addRepository(name, url, platform, platformConfig, distributionStrategy) {
+    async addRepository(name, url, platform, platformConfig, distributionStrategy, context) {
         const transServer = await container(this).get(TRANS_SERVER);
         return await transServer.addRepository(name, url, platform, platformConfig, distributionStrategy, {
             domainAndPort: 'test'
-        });
+        }, context);
     }
-    async find(portableQuery, cachedSqlQueryId) {
+    async find(portableQuery, context, cachedSqlQueryId) {
         const transServer = await container(this).get(TRANS_SERVER);
         return await transServer.find(portableQuery, {
             domainAndPort: 'test'
-        }, cachedSqlQueryId);
+        }, context, cachedSqlQueryId);
     }
-    async findOne(portableQuery, cachedSqlQueryId) {
+    async findOne(portableQuery, context, cachedSqlQueryId) {
         const transServer = await container(this).get(TRANS_SERVER);
         return await transServer.findOne(portableQuery, {
             domainAndPort: 'test'
-        }, cachedSqlQueryId);
+        }, context, cachedSqlQueryId);
     }
-    async search(portableQuery, cachedSqlQueryId) {
+    async search(portableQuery, context, cachedSqlQueryId) {
         const transServer = await container(this).get(TRANS_SERVER);
         return await transServer.search(portableQuery, {
             domainAndPort: 'test'
-        }, cachedSqlQueryId);
+        }, context, cachedSqlQueryId);
     }
-    async searchOne(portableQuery, cachedSqlQueryId) {
+    async searchOne(portableQuery, context, cachedSqlQueryId) {
         const transServer = await container(this).get(TRANS_SERVER);
         return await transServer.searchOne(portableQuery, {
             domainAndPort: 'test'
-        }, cachedSqlQueryId);
+        }, context, cachedSqlQueryId);
+    }
+    save(entity, context) {
+        throw new Error(`Not Implemented`);
     }
 }
 DI.set(TRANS_CONNECTOR, TransactionalConnector);
 export function injectTransactionalConnector() {
-    console.log("Injecting TransactionalConnector");
+    console.log('Injecting TransactionalConnector');
 }
 //# sourceMappingURL=TransactionalConnector.js.map

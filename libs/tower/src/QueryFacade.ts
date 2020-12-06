@@ -32,7 +32,7 @@ export class QueryFacade
 	): Promise<EntityArray> {
 		await this.ensureIocContext(context)
 		const result = await context.ioc.transactionalConnector.find<E, EntityArray>(
-			this.getPortableQuery(query, queryResultType, context))
+			this.getPortableQuery(query, queryResultType, context), context)
 		// TODO: restore and property maintain update cache, when needed
 		// context.ioc.updateCache.addToCache(
 		// 	context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...result)
@@ -48,7 +48,7 @@ export class QueryFacade
 	): Promise<E> {
 		await this.ensureIocContext(context)
 		const result = await context.ioc.transactionalConnector.findOne<E>(this.getPortableQuery(
-			query, queryResultType, context))
+			query, queryResultType, context), context)
 		context.ioc.updateCache.addToCache(
 			context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result)
 
@@ -78,7 +78,7 @@ export class QueryFacade
 	): Promise<IObservable<EntityArray>> {
 		await this.ensureIocContext(context)
 		let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(
-			query, queryResultType, context))
+			query, queryResultType, context), context)
 
 		observable = observable.pipe(
 			map(
@@ -101,7 +101,7 @@ export class QueryFacade
 	): Promise<IObservable<E>> {
 		await this.ensureIocContext(context)
 		let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(
-			query, queryResultType, context))
+			query, queryResultType, context), context)
 
 		observable = observable.pipe(
 			map(

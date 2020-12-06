@@ -35,8 +35,12 @@ export class StructuralEntityValidator {
 		}
 
 		for (const entity of entities) {
-			const [isCreate, isDelete, isParentId, isUpdate, isStub] = context.ioc.entityStateManager
-				.getEntityStateTypeAsFlags(entity, dbEntity)
+			const {
+				      isCreate,
+				      isDelete,
+				      isParentId,
+				      isStub
+			      } = context.ioc.entityStateManager.getEntityStateTypeAsFlags(entity, dbEntity)
 
 			if (isParentId) {
 				// No processing is needed (already covered by id check

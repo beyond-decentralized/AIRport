@@ -15,15 +15,15 @@ import { Lookup } from './Lookup';
 export declare class NonEntitySearch extends Lookup implements INonEntitySearch {
     tree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
         (...args: any[]): RawTreeQuery<any>;
-    }, ctx?: IContext): IObservable<ITE[]>;
+    }, context?: IContext): IObservable<ITE[]>;
     sheet(rawSheetQuery: RawSheetQuery | {
         (...args: any[]): RawSheetQuery;
-    }, ctx?: IContext): IObservable<any[][]>;
+    }, context?: IContext): IObservable<any[][]>;
     field<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<any>;
-    }, ctx?: IContext): IObservable<any[]>;
+    }, context?: IContext): IObservable<any[]>;
     search<IQF extends IQOrderableField<IQF>>(rawNonEntityQuery: RawNonEntityQuery | {
         (...args: any[]): RawNonEntityQuery;
-    }, queryResultType: QueryResultType, QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery, ctx: IContext): Promise<IObservable<any[]>>;
+    }, queryResultType: QueryResultType, QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery, context: IContext): Promise<IObservable<any[]>>;
 }
 //# sourceMappingURL=NonEntitySearch.d.ts.map

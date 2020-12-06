@@ -38,11 +38,11 @@ export declare class TransactionalServer implements ITransactionalServer {
     findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<IObservable<EntityArray>>;
     searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<IObservable<E>>;
-    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, credentials: ICredentials, ctx: IOperationContext<any, any>): Promise<number>;
-    insertValues(portableQuery: PortableQuery, transaction: ITransaction, ctx: IOperationContext<any, any>, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, transaction: ITransaction, ctx: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
-    updateValues(portableQuery: PortableQuery, transaction: ITransaction, ctx: IOperationContext<any, any>): Promise<number>;
-    deleteWhere(portableQuery: PortableQuery, transaction: ITransaction, ctx: IOperationContext<any, any>): Promise<number>;
+    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, credentials: ICredentials, context: IOperationContext<any, any>): Promise<number>;
+    insertValues(portableQuery: PortableQuery, transaction: ITransaction, context: IOperationContext<any, any>, ensureGeneratedValues?: boolean): Promise<number>;
+    insertValuesGetIds(portableQuery: PortableQuery, transaction: ITransaction, context: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
+    updateValues(portableQuery: PortableQuery, transaction: ITransaction, context: IOperationContext<any, any>): Promise<number>;
+    deleteWhere(portableQuery: PortableQuery, transaction: ITransaction, context: IOperationContext<any, any>): Promise<number>;
     private getActor;
 }
 export declare function injectTransactionalServer(): void;

@@ -18,7 +18,7 @@ export interface IEntityLookupInternal<Child, MappedChild,
 		queryResultType: QueryResultType,
 		search: boolean,
 		one: boolean,
-		ctx: IEntityContext
+		context: IEntityContext
 	): Promise<any>
 
 	setMap(
@@ -115,11 +115,11 @@ export abstract class EntityLookup<Child, MappedChild,
 		queryResultType: QueryResultType,
 		search: boolean,
 		one: boolean,
-		ctx: IEntityContext
+		context: IEntityContext
 	): Promise<any> {
-		ctx.dbEntity = this.dbEntity
+		context.dbEntity = this.dbEntity
 		return this.lookup(rawEntityQuery, queryResultType,
-			search, one, null, ctx, this.cacheForUpdate, this.mapResults)
+			search, one, null, context, this.cacheForUpdate, this.mapResults)
 	}
 
 	/*
