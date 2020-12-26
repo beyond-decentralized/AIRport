@@ -94,6 +94,27 @@
       "projectFolder": "db/websql",
       "shouldPublish": true
     },
+    // "highway" folder (alphabetical order)
+    {
+      "packageName": "@airport/hw-control",
+      "projectFolder": "highway/control",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/hw-flow",
+      "projectFolder": "highway/flow",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/hw-scylladb",
+      "projectFolder": "highway/scylladb",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/hw-vespa",
+      "projectFolder": "highway/vespa",
+      "shouldPublish": true
+    },
     // "libs" folder (alphabetical order)
     {
       "packageName": "@airport/approach-lighting-system",

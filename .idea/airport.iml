@@ -100,6 +100,19 @@
       <excludeFolder url="file://$MODULE_DIR$/generators/takeoff/.rush" />
       <excludeFolder url="file://$MODULE_DIR$/generators/takeoff/lib" />
     </content>
+    <content url="file://$MODULE_DIR$/highway/control">
+      <excludeFolder url="file://$MODULE_DIR$/highway/control/.rush" />
+      <excludeFolder url="file://$MODULE_DIR$/highway/control/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/highway/flow" />
+    <content url="file://$MODULE_DIR$/highway/scylladb">
+      <excludeFolder url="file://$MODULE_DIR$/highway/scylladb/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/highway/scylladb/.rush" />
+    </content>
+    <content url="file://$MODULE_DIR$/highway/vespa">
+      <excludeFolder url="file://$MODULE_DIR$/highway/vespa/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/highway/vespa/.rush" />
+    </content>
     <content url="file://$MODULE_DIR$/libs/approach-lighting-system">
       <excludeFolder url="file://$MODULE_DIR$/libs/approach-lighting-system/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/libs/approach-lighting-system/.rush" />

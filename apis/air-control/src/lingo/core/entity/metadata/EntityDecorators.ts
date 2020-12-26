@@ -1,15 +1,14 @@
 import {
 	DatabaseIndexConfiguration,
 	DatabaseObjectConfiguration
-}                       from "@airport/ground-control";
-import {ClassDecorator} from '../../metadata/decorators';
-
+}                       from '@airport/ground-control'
+import {ClassDecorator} from '../../metadata/decorators'
 
 /**
  * Marks an object as an ORM entity.
  */
 export interface EntityDecorator {
-	(): ClassDecorator;
+	(): ClassDecorator
 }
 
 export interface IndexConfiguration
@@ -27,12 +26,12 @@ export interface TableConfiguration
  * Marks an object as a SQL table.
  */
 export interface TableDecorator {
-	(tableConfiguration?: TableConfiguration): ClassDecorator;
+	(tableConfiguration?: TableConfiguration): ClassDecorator
 }
 
 /**
  * Marks an object as a superclass of ORM entities.
  */
 export interface MappedSuperclassDecorator {
-	(): ClassDecorator;
+	(): ClassDecorator
 }

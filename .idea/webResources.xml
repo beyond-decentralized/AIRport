@@ -149,6 +149,34 @@
           </resourceRoots>
         </entryData>
       </entry>
+      <entry url="file://$PROJECT_DIR$/highway/control">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/highway/control/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/highway/flow">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/highway/flow/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/highway/scylladb">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/highway/scylladb/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+      <entry url="file://$PROJECT_DIR$/highway/vespa">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/highway/vespa/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
       <entry url="file://$PROJECT_DIR$/libs/approach-lighting-system">
         <entryData>
           <resourceRoots>

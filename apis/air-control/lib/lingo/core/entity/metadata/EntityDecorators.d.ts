@@ -1,4 +1,4 @@
-import { DatabaseIndexConfiguration, DatabaseObjectConfiguration } from "@airport/ground-control";
+import { DatabaseIndexConfiguration, DatabaseObjectConfiguration } from '@airport/ground-control';
 import { ClassDecorator } from '../../metadata/decorators';
 /**
  * Marks an object as an ORM entity.

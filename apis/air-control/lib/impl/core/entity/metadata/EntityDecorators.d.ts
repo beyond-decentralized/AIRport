@@ -1,4 +1,4 @@
-import { EntityDecorator, MappedSuperclassDecorator, TableDecorator } from "../../../../lingo/core/entity/metadata/EntityDecorators";
+import { EntityDecorator, MappedSuperclassDecorator, TableDecorator } from '../../../../lingo/core/entity/metadata/EntityDecorators';
 /**
  * Created by Papa on 8/20/2016.
  */

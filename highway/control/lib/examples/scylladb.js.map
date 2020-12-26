@@ -1,0 +1,1 @@
+{"version":3,"file":"scylladb.js","sourceRoot":"","sources":["../../src/examples/scylladb.ts"],"names":[],"mappings":";;;;;;AAAA,OAAO,EAAC,QAAQ,EAAC,MAAM,6BAA6B,CAAA;AAEpD,MAAM,OAAO,MAAM;IASlB;QACC,IAAI,CAAC,IAAI,GAAG,EAAE,CAAA;IACf,CAAC;CAED;AARA;IAHC,QAAQ,CAAS;QACjB,IAAI,EAAE,OAAO;KACb,CAAC;oCACU"}

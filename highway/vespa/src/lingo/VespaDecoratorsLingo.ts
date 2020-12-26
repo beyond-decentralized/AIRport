@@ -1,0 +1,44 @@
+import {
+	ClassDecorator,
+	PropertyDecorator
+} from '@airport/air-control'
+
+export interface VespaIndexing {
+	attribute?: boolean,
+	index?: boolean,
+	summary?: boolean
+}
+
+export interface VespaFieldsetConfiguration<VespaEntity> {
+	fields: Partial<VespaEntity>
+}
+
+export interface VespaEntityDecorator {
+	(): ClassDecorator
+}
+
+export interface VespaDefault {
+	(): ClassDecorator
+}
+
+export interface VespaAttributeConfiguration {
+	/**
+	 * Create a B-tree index with B-tree posting lists for the attribute.
+	 * This speeds up search in the attribute.
+	 */
+	fastSearch?: boolean
+	/**
+	 * If searchable-copies < redundancy, use fast-access to load the
+	 * attribute in memory on all nodes with a document replica. Use this
+	 * for fast access when doing partial updates and when used in a
+	 * selection expression for garbage collection. If
+	 * searchable-copies == redundancy (default), this property is a no-op.
+	 */
+	fastAccess?: boolean
+}
+
+export interface VespaAttributeDecorator {
+	(
+		attributeConfiguration: VespaAttributeConfiguration
+	): PropertyDecorator
+}
