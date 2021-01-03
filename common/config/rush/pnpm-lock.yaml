@@ -43,6 +43,8 @@ dependencies:
   '@rush-temp/holding-pattern': 'file:projects/holding-pattern.tgz'
   '@rush-temp/hw-control': 'file:projects/hw-control.tgz'
   '@rush-temp/hw-flow': 'file:projects/hw-flow.tgz'
+  '@rush-temp/hw-scylladb': 'file:projects/hw-scylladb.tgz'
+  '@rush-temp/hw-vespa': 'file:projects/hw-vespa.tgz'
   '@rush-temp/jet-bridge': 'file:projects/jet-bridge.tgz'
   '@rush-temp/landing': 'file:projects/landing.tgz'
   '@rush-temp/mono-rail': 'file:projects/mono-rail.tgz'
@@ -63,6 +65,7 @@ dependencies:
   '@rush-temp/terminal': 'file:projects/terminal.tgz'
   '@rush-temp/terminal-map': 'file:projects/terminal-map.tgz'
   '@rush-temp/territory': 'file:projects/territory.tgz'
+  '@rush-temp/tools': 'file:projects/tools.tgz'
   '@rush-temp/tower': 'file:projects/tower.tgz'
   '@rush-temp/traffic-pattern': 'file:projects/traffic-pattern.tgz'
   '@rush-temp/travel-document-checkpoint': 'file:projects/travel-document-checkpoint.tgz'
@@ -95,6 +98,7 @@ dependencies:
   mysql2: 2.1.0
   nodejs-mobile-cordova: 0.3.5
   nodemon: 2.0.6
+  prettier: 2.2.1
   protractor: 5.4.4
   reflect-metadata: 0.1.13
   rxjs: 6.5.5
@@ -8431,6 +8435,13 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
+  /prettier/2.2.1:
+    dev: false
+    engines:
+      node: '>=10.13.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
   /process-nextick-args/2.0.1:
     dev: false
     resolution:
@@ -11702,7 +11713,7 @@ packages:
     dev: false
     name: '@rush-temp/hw-control'
     resolution:
-      integrity: sha512-ZaPHV43ip7+oM8NdzPYLTqBzk65F+HOjjmRdjlEjuTjRYr6Rf+pyCz7JdrYHLpboVuCXz5s9ZsajDL6o7iK2pw==
+      integrity: sha512-X77BDvZQpKSoXc+VIx6FiNdv9XAKox8sSaake7OCF1uHojSJUQDBeX4EMeixWw8b/ABer8ZkHfij89MpUfFzhw==
       tarball: 'file:projects/hw-control.tgz'
     version: 0.0.0
   'file:projects/hw-flow.tgz':
@@ -11727,6 +11738,20 @@ packages:
     resolution:
       integrity: sha512-IYkTH+rRNZINg1m7+4h1hXHSc3icBVrX6NSZEp6S/KBNLbX4FHGng7zItIjF3TI14E+KroRI9BhuvmzBk2PM9w==
       tarball: 'file:projects/hw-flow.tgz'
+    version: 0.0.0
+  'file:projects/hw-scylladb.tgz':
+    dev: false
+    name: '@rush-temp/hw-scylladb'
+    resolution:
+      integrity: sha512-t6KKxOnX6MAPD+Vndm2RP3l9KiAVKx0H2j9SPzKiEia0EjCBN7TofV1Gv7l49H+FvdNthjYzZT82fPkIJ5EFfQ==
+      tarball: 'file:projects/hw-scylladb.tgz'
+    version: 0.0.0
+  'file:projects/hw-vespa.tgz':
+    dev: false
+    name: '@rush-temp/hw-vespa'
+    resolution:
+      integrity: sha512-tGLOmbIoLL7VDY0UvM5x8a5dBJAmxaIcyOxkhJXQfw4R74pR9WuOaJWEUNVJX1CsQhykFpgJQ3dQlndbXNJb7w==
+      tarball: 'file:projects/hw-vespa.tgz'
     version: 0.0.0
   'file:projects/jet-bridge.tgz':
     dependencies:
@@ -11892,6 +11917,15 @@ packages:
       integrity: sha512-ojKV6qsV1WbEJ+co0Fzzx0kmGVJRO0ifSQifia1xvV2nofFmRMegP3aPOf8Nwn66xPl/VBHywAtjScO29cgi6g==
       tarball: 'file:projects/territory.tgz'
     version: 0.0.0
+  'file:projects/tools.tgz':
+    dependencies:
+      prettier: 2.2.1
+    dev: false
+    name: '@rush-temp/tools'
+    resolution:
+      integrity: sha512-Uj52uM5EllzvIkysyAt941GjdKWqq0a+Gt6ok3qdexpZx18MSlId7nPWt5APUOsPmoLjA6ar4C0urGPnQVtygg==
+      tarball: 'file:projects/tools.tgz'
+    version: 0.0.0
   'file:projects/tower.tgz':
     dev: false
     name: '@rush-temp/tower'
@@ -11966,6 +12000,8 @@ specifiers:
   '@rush-temp/holding-pattern': 'file:./projects/holding-pattern.tgz'
   '@rush-temp/hw-control': 'file:./projects/hw-control.tgz'
   '@rush-temp/hw-flow': 'file:./projects/hw-flow.tgz'
+  '@rush-temp/hw-scylladb': 'file:./projects/hw-scylladb.tgz'
+  '@rush-temp/hw-vespa': 'file:./projects/hw-vespa.tgz'
   '@rush-temp/jet-bridge': 'file:./projects/jet-bridge.tgz'
   '@rush-temp/landing': 'file:./projects/landing.tgz'
   '@rush-temp/mono-rail': 'file:./projects/mono-rail.tgz'
@@ -11986,6 +12022,7 @@ specifiers:
   '@rush-temp/terminal': 'file:./projects/terminal.tgz'
   '@rush-temp/terminal-map': 'file:./projects/terminal-map.tgz'
   '@rush-temp/territory': 'file:./projects/territory.tgz'
+  '@rush-temp/tools': 'file:./projects/tools.tgz'
   '@rush-temp/tower': 'file:./projects/tower.tgz'
   '@rush-temp/traffic-pattern': 'file:./projects/traffic-pattern.tgz'
   '@rush-temp/travel-document-checkpoint': 'file:./projects/travel-document-checkpoint.tgz'
@@ -12018,6 +12055,7 @@ specifiers:
   mysql2: ^2.1.0
   nodejs-mobile-cordova: ^0.3.5
   nodemon: ^2.0.6
+  prettier: ^2.2.1
   protractor: ~5.4.0
   reflect-metadata: ^0.1.13
   rxjs: ~6.5.1

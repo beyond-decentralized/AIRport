@@ -4,7 +4,6 @@
   "pnpmVersion": "5.9.3",
   "nodeSupportedVersionRange": ">=14.0.0 <15.0.0",
   "projectFolderMinDepth": 1,
-
   "projects": [
     // "apis" folder (alphabetical order)
     {
@@ -56,6 +55,12 @@
     {
       "packageName": "@airport/terminal",
       "projectFolder": "apps/terminal",
+      "shouldPublish": true
+    },
+    // "common" folder (alphabetical order)
+    {
+      "packageName": "@airport/tools",
+      "projectFolder": "common/tools",
       "shouldPublish": true
     },
     // "db" folder (alphabetical order)

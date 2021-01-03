@@ -87,7 +87,7 @@ export abstract class AliasMap<T, A>
 }
 
 export class EntityAliases
-	extends AliasMap<IQEntityInternal, string>
+	extends AliasMap<IQEntityInternal<any>, string>
 	implements IEntityAliases {
 
 	private parameterAliases;
@@ -111,7 +111,7 @@ export class EntityAliases
 	}
 
 	getExistingAlias(
-		entity: IQEntityInternal
+		entity: IQEntityInternal<any>
 	): string {
 		if (!this.hasAliasFor(entity)) {
 			throw new Error(`No alias found for entity ${entity.__driver__.dbEntity.name}`);

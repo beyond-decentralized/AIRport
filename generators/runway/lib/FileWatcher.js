@@ -14,6 +14,7 @@ import { QSchemaBuilder } from './ddl/builder/QSchemaBuilder';
 import { JsonSchemaBuilder } from './ddl/builder/schema/JsonSchemaBuilder';
 import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
 import { generateDefinitions } from './FileProcessor';
+import { EntityMappingBuilder } from './ddl/builder/EntityMappingBuilder';
 AirportDatabase.bogus = 'loaded for schema generation';
 /**
  * Created by Papa on 3/30/2016.
@@ -37,7 +38,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
             return tsc.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
         },
         getCurrentDirectory: () => process.cwd(),
-        getDefaultLibFileName: (options) => tsc.getDefaultLibFilePath(options)
+        getDefaultLibFileName: (options) => tsc.getDefaultLibFilePath(options),
     };
     // Create the language service files
     const services = tsc.createLanguageService(servicesHost, tsc.createDocumentRegistry());
@@ -67,6 +68,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
         const generatedDirPath = pathBuilder.workingDirPath + '/' + pathBuilder.generatedDirPath;
         const schemaPath = generatedDirPath + '/schema.json';
         const schemaSourcePath = generatedDirPath + '/schema.ts';
+        const entityMappingsPath = generatedDirPath + '/entityMappings.ts';
         if (!fs.existsSync(generatedDirPath)) {
             fs.mkdirSync(generatedDirPath);
         }
@@ -87,6 +89,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
         const qSchemaBuilder = new QSchemaBuilder(pathBuilder, configuration);
         const daoBuilder = new DaoBuilder(pathBuilder);
         const duoBuilder = new DuoBuilder(pathBuilder);
+        const entityMappingBuilder = new EntityMappingBuilder(entityMappingsPath, pathBuilder);
         for (const entityName in entityMapByName) {
             const entity = entityMapByName[entityName];
             const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, false);
@@ -106,6 +109,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
             }
             daoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
             duoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
+            entityMappingBuilder.addEntity(tableIndex, entityName, entity.path);
             const qGenerationPath = pathBuilder.setupFileForGeneration(entity.path);
             const generationPath = pathBuilder.setupFileForGeneration(entity.path, false);
             const qEntitySourceString = qEntityFileBuilder.build();
@@ -114,6 +118,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
             fs.writeFileSync(generationPath, entityInterfaceSourceString);
         }
         fs.writeFileSync(daoBuilder.daoListingFilePath, daoBuilder.build());
+        fs.writeFileSync(entityMappingBuilder.entityMappingsPath, entityMappingBuilder.build(configuration.airport.domain, configuration.airport.schema));
         fs.writeFileSync(duoBuilder.daoListingFilePath, duoBuilder.build());
         fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build(configuration.airport.domain, indexedSchema.schema.name));
         fs.writeFileSync(entityInterfaceListingBuilder.generatedListingFilePath, entityInterfaceListingBuilder.build());

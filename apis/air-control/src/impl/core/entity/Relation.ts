@@ -16,21 +16,21 @@ import {
 
 export function QRelation(
 	dbRelation: DbRelation,
-	parentQ: IQEntityInternal
+	parentQ: IQEntityInternal<any>
 ) {
 	this.dbRelation = dbRelation
 	this.parentQ    = parentQ
 }
 
-QRelation.prototype.innerJoin = function <IQ extends IQEntityInternal>(): IQ {
+QRelation.prototype.innerJoin = function <IQ extends IQEntityInternal<any>>(): IQ {
 	return this.getNewQEntity(JoinType.INNER_JOIN)
 }
 
-QRelation.prototype.leftJoin = function <IQ extends IQEntityInternal>(): IQ {
+QRelation.prototype.leftJoin = function <IQ extends IQEntityInternal<any>>(): IQ {
 	return this.getNewQEntity(JoinType.LEFT_JOIN)
 }
 
-QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinType: JoinType): IQ {
+QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal<any>>(joinType: JoinType): IQ {
 	const [airDb, relationManager, schemaUtils] = DI.db()
 		.getSync(AIR_DB, RELATION_MANAGER, SCHEMA_UTILS)
 	const dbEntity = this.dbRelation.property.entity
@@ -38,7 +38,7 @@ QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinT
 	const qEntityConstructor = schemaUtils.getQEntityConstructor(
 			this.dbRelation.relationEntity, airDb)
 
-	let newQEntity: IQEntityInternal       = new qEntityConstructor(
+	let newQEntity: IQEntityInternal<any>       = new qEntityConstructor(
 		dbEntity,
 		relationManager.getNextChildJoinPosition(this.parentQ.__driver__),
 		this.dbRelation,

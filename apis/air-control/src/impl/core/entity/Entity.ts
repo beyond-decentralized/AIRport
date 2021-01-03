@@ -47,13 +47,13 @@ import {FieldColumnAliases}      from './Aliases'
  * Created by Papa on 4/21/2016.
  */
 
-export interface IQEntityInternalConstructor {
+export interface IQEntityInternalConstructor<T> {
 
 	entityConstructor: { new(...args: any[]): any };
 	schemaHash: string;
 	entityIndex: number;
 
-	new<IQE extends IQEntityInternal>(...args: any[]): IQE;
+	new<IQE extends IQEntityInternal<T>>(...args: any[]): IQE;
 
 }
 
@@ -64,29 +64,29 @@ export declare namespace QEntity {
 	): IEntityDatabaseFacade<IEntity, IEntitySelectProperties,
 		IEntityCreateProperties, IEntityUpdateProperties,
 		IEntityUpdateColumns, IEntityIdProperties,
-		IEntityCascadeGraph, IQEntity>;
+		IEntityCascadeGraph, IQEntity<IEntity>>;
 
 }
 
-export interface QEntityConstructor {
+export interface QEntityConstructor<IEntity> {
 
-	new<IQE extends IQEntityInternal>(
+	new<IQE extends IQEntityInternal<IEntity>>(
 		dbEntity: DbEntity,
 		fromClausePosition?: number[],
 		dbRelation?: DbRelation,
 		joinType?: JoinType,
-		QDriver?: { new(...args: any[]): IQEntityDriver }
+		QDriver?: { new(...args: any[]): IQEntityDriver<IEntity> }
 	): IQE;
 
 }
 
 
-export function QEntity(
+export function QEntity<IEntity>(
 	dbEntity: DbEntity,
 	fromClausePosition: number[]                     = [],
 	dbRelation                                       = null,
 	joinType: JoinType                               = null,
-	QDriver: { new(...args: any[]): IQEntityDriver } = QEntityDriver
+	QDriver: { new(...args: any[]): IQEntityDriver<IEntity> } = QEntityDriver
 ) {
 	this.__driver__ = new QDriver(dbEntity, fromClausePosition, dbRelation, joinType, this)
 }
@@ -107,8 +107,8 @@ QEntity.prototype.rightJoin = function <IF extends IFrom>(right: IF): IJoinField
 	return this.__driver__.join(right, JoinType.RIGHT_JOIN)
 }
 
-export class QEntityDriver
-	implements IQEntityDriver {
+export class QEntityDriver<IEntity>
+	implements IQEntityDriver<IEntity> {
 
 	entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> } = {}
 	entityRelations: IQInternalRelation<any>[]                                                            = []
@@ -118,7 +118,7 @@ export class QEntityDriver
 	relations: IQInternalRelation<any>[]                                                                  = []
 	currentChildIndex                                                                                     = -1
 	joinWhereClause: JSONBaseOperation
-	parentJoinEntity: IQEntityInternal
+	parentJoinEntity: IQEntityInternal<any>
 	private entityRelationMap: { [propertyName: string]: IQInternalRelation<any> }
 	private oneToManyConfigMap: { [name: string]: OneToManyElements }
 
@@ -128,14 +128,14 @@ export class QEntityDriver
 		public fromClausePosition: number[] = [],
 		public dbRelation: DbRelation       = null,
 		public joinType: JoinType           = null,
-		private qEntity: IQEntityInternal
+		private qEntity: IQEntityInternal<IEntity>
 	) {
 	}
 
 	getInstance(
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils
-	): IQEntityInternal {
+	): IQEntityInternal<IEntity> {
 		const qEntityConstructor = schemaUtils
 			.getQEntityConstructor(this.dbEntity, airDb)
 
@@ -254,7 +254,7 @@ export class QEntityDriver
 	}
 
 
-	getQ(): IQEntityInternal {
+	getQ(): IQEntityInternal<IEntity> {
 		return this.qEntity
 	}
 
@@ -263,7 +263,7 @@ export class QEntityDriver
 		joinType: JoinType,
 	): IJoinFields<IF> {
 		const [airDb, schemaUtils, relationManager] = DI.db().getSync(AIR_DB, SCHEMA_UTILS, RELATION_MANAGER)
-		let joinChild: IQEntityInternal         = (<IQEntityInternal><any>right)
+		let joinChild: IQEntityInternal<any>         = (<IQEntityInternal<any>><any>right)
 			.__driver__.getInstance(airDb, schemaUtils)
 		joinChild.__driver__.currentChildIndex  = 0
 		let nextChildPosition                   = relationManager.getNextChildJoinPosition(this)
@@ -278,8 +278,8 @@ export class QEntityDriver
 		return !this.parentJoinEntity
 	}
 
-	getRootJoinEntity(): IQEntityInternal {
-		let rootEntity: IQEntityInternal = this.qEntity
+	getRootJoinEntity(): IQEntityInternal<any> {
+		let rootEntity: IQEntityInternal<any> = this.qEntity
 		while (rootEntity.__driver__.parentJoinEntity) {
 			rootEntity = rootEntity.__driver__.parentJoinEntity
 		}
@@ -329,25 +329,25 @@ export function QTree(
 
 extend(QEntity, QTree, {})
 
-export interface IQTreeDriver
-	extends IQEntityDriver {
+export interface IQTreeDriver<T>
+	extends IQEntityDriver<T> {
 
 	subQuery: RawTreeQuery<any>;
 
 }
 
-export class QTreeDriver
-	extends QEntityDriver
-	implements IQTreeDriver {
+export class QTreeDriver<IEntity>
+	extends QEntityDriver<IEntity>
+	implements IQTreeDriver<IEntity> {
 
 	subQuery: RawTreeQuery<any>
 
 	getInstance(
 		airDb: IAirportDatabase,
 		schemaUtils: ISchemaUtils
-	): IQEntityInternal {
+	): IQEntityInternal<IEntity> {
 		let instance = super.getInstance(airDb, schemaUtils);
-		(<IQTreeDriver>instance.__driver__)
+		(<IQTreeDriver<IEntity>>instance.__driver__)
 			.subQuery  = this.subQuery
 
 		return instance

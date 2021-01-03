@@ -34,14 +34,14 @@ export class QBooleanField
 	constructor(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
-		q: IQEntityInternal,
+		q: IQEntityInternal<any>,
 		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
 	) {
 		super(dbColumn, dbProperty, q, objectType, new BooleanOperation())
 	}
 
 	getInstance(
-		qEntity: IQEntityInternal = this.q
+		qEntity: IQEntityInternal<any> = this.q
 	): QBooleanField {
 		return this.copyFunctions(
 			new QBooleanField(this.dbColumn, this.dbProperty, qEntity, this.objectType))

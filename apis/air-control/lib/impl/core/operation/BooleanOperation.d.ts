@@ -5,7 +5,7 @@ import { ValueOperation } from "./Operation";
 /**
  * Created by Papa on 6/20/2016.
  */
-export declare class BooleanOperation<IQ extends IQEntityInternal> extends ValueOperation<boolean, JSONRawBooleanOperation, IQBooleanField> implements IBooleanOperation {
+export declare class BooleanOperation<IQ extends IQEntityInternal<any>> extends ValueOperation<boolean, JSONRawBooleanOperation, IQBooleanField> implements IBooleanOperation {
     constructor();
 }
 //# sourceMappingURL=BooleanOperation.d.ts.map

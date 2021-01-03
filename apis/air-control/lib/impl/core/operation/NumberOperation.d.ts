@@ -5,7 +5,7 @@ import { ValueOperation } from "./Operation";
 /**
  * Created by Papa on 6/20/2016.
  */
-export declare class NumberOperation<IQ extends IQEntityInternal> extends ValueOperation<number, JSONRawNumberOperation, IQNumberField> implements INumberOperation {
+export declare class NumberOperation<IQ extends IQEntityInternal<any>> extends ValueOperation<number, JSONRawNumberOperation, IQNumberField> implements INumberOperation {
     constructor();
 }
 //# sourceMappingURL=NumberOperation.d.ts.map

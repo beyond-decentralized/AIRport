@@ -13,8 +13,8 @@ import { QOperableField } from './OperableField';
 export interface IQUntypedEntityField extends IQUntypedField {
 }
 export declare class QUntypedField extends QOperableField<number | string, JSONRawUntypedOperation, IUntypedOperation, IQUntypedField> implements IQUntypedField {
-    constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal, objectType?: JSONClauseObjectType);
-    getInstance(qEntity?: IQEntityInternal): QUntypedField;
+    constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal<any>, objectType?: JSONClauseObjectType);
+    getInstance(qEntity?: IQEntityInternal<any>): QUntypedField;
     like(value: string | IQUntypedField | RawFieldQuery<IQUntypedField> | {
         (...args: any[]): RawFieldQuery<IQUntypedField>;
     }): JSONRawUntypedOperation;

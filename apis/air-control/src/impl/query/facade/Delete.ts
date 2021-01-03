@@ -19,7 +19,7 @@ import {AbstractQuery} from './AbstractQuery'
  * Created by Papa on 10/2/2016.
  */
 
-export class Delete<IQE extends IQEntity>
+export class Delete<IQE extends IQEntity<any>>
 	extends AbstractQuery {
 
 	constructor(
@@ -33,7 +33,7 @@ export class Delete<IQE extends IQEntity>
 		fieldUtils: IFieldUtils
 	): JsonDelete {
 		return {
-			DF: <JSONEntityRelation>(<IQEntityInternal><any>this.rawDelete.deleteFrom)
+			DF: <JSONEntityRelation>(<IQEntityInternal<any>><any>this.rawDelete.deleteFrom)
 				.__driver__.getRelationJson(
 					this.columnAliases, queryUtils, fieldUtils),
 			W: queryUtils.whereClauseToJSON(this.rawDelete.where, this.columnAliases, fieldUtils)

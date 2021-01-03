@@ -1,19 +1,19 @@
-export const Vespa = function () {
+export const VespaEntity = function () {
     return function (constructor) {
         // TODO: add runtime logic
     };
 };
-export function Fieldset(vespaEntityClass, fieldsetConfiguration) {
+export function VespaFieldset(vespaEntityClass, fieldsetConfiguration) {
     return function (constructor) {
         // TODO: add runtime logic
     };
 }
-export const Default = function () {
+export const VespaDefault = function () {
     return function (constructor) {
         // TODO: add runtime logic
     };
 };
-export const Attribute = function (attributeConfiguration) {
+export const VespaAttribute = function (attributeConfiguration) {
     return function (constructor) {
         // TODO: add runtime logic
     };
@@ -23,18 +23,4 @@ export function VespaIndex(indexing) {
         // TODO: add runtime logic
     };
 }
-export const vespa = {
-    Attribute: Attribute,
-    Default: Default,
-    Entity: Vespa,
-    Fieldset: Fieldset,
-    Indexing: VespaIndex,
-    type: {
-        bitmap: 1,
-        document: 1,
-        int: 1,
-        long: 1,
-        string: 1,
-    }
-};
 //# sourceMappingURL=VespaDecoratorsImpl.js.map

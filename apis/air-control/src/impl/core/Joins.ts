@@ -44,16 +44,16 @@ export function tree<IME extends ITreeEntity>(
 function convertMappedEntitySelect<IME extends ITreeEntity>(
 	customEntity: IME,
 	queryDefinition: RawTreeQuery<IME>,
-	view: IQTree,
+	view: IQTree<IME>,
 	selectProxy: any,
 	fieldPrefix: string
-): IQTree {
+): IQTree<IME> {
 	let fieldIndex = 0;
 	for (let property in customEntity) {
 		let alias      = `${fieldPrefix}${++fieldIndex}`;
 		let value: any = customEntity[property];
 		if (value instanceof QField) {
-			let field             = value.getInstance(view as IQEntityInternal);
+			let field             = value.getInstance(view as IQEntityInternal<IME>);
 			field.alias           = alias;
 			(field as any).q               = view;
 			selectProxy[property] = field;
@@ -101,7 +101,7 @@ export class JoinFields<IF extends IFrom> implements IJoinFields<IF> {
 	}
 
 	on(joinOperation: JoinOperation<IF>): IF {
-		let joinChild: IQEntityInternal      = <IQEntityInternal><any>this.joinTo;
+		let joinChild: IQEntityInternal<any>      = <IQEntityInternal<any>><any>this.joinTo;
 		joinChild.__driver__.joinWhereClause = joinOperation(this.joinTo);
 
 		return this.joinTo;

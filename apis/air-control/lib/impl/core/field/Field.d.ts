@@ -15,12 +15,12 @@ import { IAppliable } from './Appliable';
 export declare abstract class QField<IQF extends IQOrderableField<IQF>> implements IQFieldInternal<IQF>, IAppliable<JSONClauseField, IQF> {
     dbColumn: DbColumn;
     dbProperty: DbProperty;
-    q: IQEntityInternal;
+    q: IQEntityInternal<any>;
     objectType: JSONClauseObjectType;
     alias: string;
     __appliedFunctions__: JSONSqlFunctionCall[];
     __fieldSubQuery__: RawFieldQuery<IQF>;
-    constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal, objectType: JSONClauseObjectType);
+    constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal<any>, objectType: JSONClauseObjectType);
     /**
      protected getFieldKey() {
         const relationManager = DI.db().getSync(RELATION_MANAGER)
@@ -31,7 +31,7 @@ export declare abstract class QField<IQF extends IQOrderableField<IQF>> implemen
      */
     asc(): IFieldInOrderBy<IQF>;
     desc(): IFieldInOrderBy<IQF>;
-    abstract getInstance(qEntity?: IQEntityInternal): QField<IQF>;
+    abstract getInstance(qEntity?: IQEntityInternal<any>): QField<IQF>;
     applySqlFunction(sqlFunctionCall: JSONSqlFunctionCall): IQF;
     addSubQuery(subQuery: RawFieldQuery<IQF>): IQF;
     toJSON(columnAliases: IFieldColumnAliases<IQF>, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;

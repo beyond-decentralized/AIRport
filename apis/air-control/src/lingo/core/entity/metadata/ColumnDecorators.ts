@@ -159,7 +159,7 @@ export interface SequenceGeneratorDecorator {
 /**
  * Function used to add a clause to a Join
  */
-export interface AddToJoinFunction<QOtm extends IQEntity, QMto extends IQEntity> {
+export interface AddToJoinFunction<QOtm extends IQEntity<any>, QMto extends IQEntity<any>> {
 	(
 		otm: QOtm, // One-to-Many IQEntity
 		mto: QMto, // Many-to-One IQEntity
@@ -180,7 +180,7 @@ export interface AddToJoinFunction<QOtm extends IQEntity, QMto extends IQEntity>
 /**
  * Defines a sub-query that can be joined to
  */
-export interface SubQueryDecorator<QOtm extends IQEntity, QMto extends IQEntity> {
+export interface SubQueryDecorator<QOtm extends IQEntity<any>, QMto extends IQEntity<any>> {
 	(
 		addToJoinFunction: AddToJoinFunction<QOtm, QMto>, // Function to add to the join
 	): PropertyDecorator;

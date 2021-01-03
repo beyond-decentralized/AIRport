@@ -26,13 +26,13 @@ export interface IRelationManager {
 		jsonRelation: JSONRelation
 	): string
 
-	createRelatedQEntity<IQ extends IQEntityInternal>(
+	createRelatedQEntity<IQ extends IQEntityInternal<any>>(
 		joinRelation: JSONRelation,
 		context: IRelationManagerContext,
 	): IQ
 
 	getNextChildJoinPosition(
-		joinParentDriver: IQEntityDriver
+		joinParentDriver: IQEntityDriver<any>
 	): number[]
 
 }
@@ -70,7 +70,7 @@ export class RelationManager
 		return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1))
 	}
 
-	createRelatedQEntity<IQ extends IQEntityInternal>(
+	createRelatedQEntity<IQ extends IQEntityInternal<any>>(
 		joinRelation: JSONRelation,
 		context: IRelationManagerContext,
 	): IQ {
@@ -86,7 +86,7 @@ export class RelationManager
 	}
 
 	getNextChildJoinPosition(
-		joinParentDriver: IQEntityDriver
+		joinParentDriver: IQEntityDriver<any>
 	): number[] {
 		let nextChildJoinPosition = joinParentDriver.fromClausePosition.slice()
 		nextChildJoinPosition.push(++joinParentDriver.currentChildIndex)

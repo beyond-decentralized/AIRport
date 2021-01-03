@@ -15,7 +15,8 @@ export interface Configuration {
 		node_modulesLinks?: {
 			pathToProject: string,
 			// pathsToReferencedSchemas: { [projectName: string]: string }
-		}
+		},
+		schema: string
 	}
 
 }

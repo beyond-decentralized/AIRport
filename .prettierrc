@@ -1,0 +1,19 @@
+{
+  "insertPragma": true,
+  "newline-before-return": true,
+  "no-duplicate-variable": [true, "check-parameters"],
+  "no-var-keyword": true,
+  "parser": "typescript",
+  "printWidth": 80,
+  "requirePragma": true,
+  "semi": true,
+  "singleQuote": true,
+  "svelteSortOrder" : "styles-scripts-markup",
+  "svelteStrictMode": true,
+  "svelteBracketNewLine": true,
+  "svelteAllowShorthand": false,
+  "svelteIndentScriptAndStyle": false,
+  "tabs": true,
+  "tabWidth": 2,
+  "trailingComma": "es5"
+}

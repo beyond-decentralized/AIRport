@@ -34,13 +34,13 @@ export class QNumberField
 	constructor(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
-		q: IQEntityInternal,
+		q: IQEntityInternal<any>,
 		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
 	) {
 		super(dbColumn, dbProperty, q, objectType, new NumberOperation())
 	}
 
-	getInstance(qEntity: IQEntityInternal = this.q): QNumberField {
+	getInstance(qEntity: IQEntityInternal<any> = this.q): QNumberField {
 		return this.copyFunctions(
 			new QNumberField(this.dbColumn, this.dbProperty, qEntity, this.objectType))
 	}

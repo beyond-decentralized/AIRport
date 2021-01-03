@@ -6,35 +6,42 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Y } from '@airport/air-control';
 import { Document } from '@airport/hw-control';
-import { vespa } from './impl/VespaDecoratorsImpl';
+import { vespa } from './impl/AccessPoint';
 export class Factor {
 }
-let Thread = class Thread {
+export class Thread {
+}
+let VespaThread = class VespaThread {
+    constructor() {
+        this.name = vespa.type.string(Thread, {
+            name: '',
+        });
+    }
 };
 __decorate([
     Document({
-        test: 'hello'
+        test: 'hello',
     })
-], Thread.prototype, "data", void 0);
+], VespaThread.prototype, "data", void 0);
 __decorate([
     vespa.Attribute({
-        fastSearch: true
+        fastSearch: true,
     }),
     vespa.Indexing({
-        index: Y
+        index: Y,
     })
-], Thread.prototype, "name", void 0);
-Thread = __decorate([
+], VespaThread.prototype, "name", void 0);
+VespaThread = __decorate([
     vespa.Entity()
-], Thread);
+], VespaThread);
 let Default = class Default {
 };
 Default = __decorate([
     vespa.Default(),
     vespa.Fieldset(Thread, {
         fields: {
-            name: Y
-        }
+            name: Y,
+        },
     })
 ], Default);
 //# sourceMappingURL=example.js.map

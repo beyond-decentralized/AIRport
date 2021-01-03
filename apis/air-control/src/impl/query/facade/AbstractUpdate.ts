@@ -16,7 +16,7 @@ import {
 import {AbstractRawUpdate} from '../../../lingo/query/facade/Update'
 import {AbstractQuery}     from './AbstractQuery'
 
-export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractRawUpdate<IQE>>
+export abstract class AbstractUpdate<IQE extends IQEntity<any>, ARE extends AbstractRawUpdate<IQE>>
 	extends AbstractQuery {
 
 	protected constructor(
@@ -30,7 +30,7 @@ export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractR
 		fieldUtils: IFieldUtils
 	): JsonUpdate<JsonEntityUpdateColumns> {
 		return {
-			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.update)
+			U: <JSONEntityRelation>(<IQEntityInternal<any>><any>this.rawUpdate.update)
 				.__driver__.getRelationJson(
 					this.columnAliases, queryUtils, fieldUtils),
 			S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils),

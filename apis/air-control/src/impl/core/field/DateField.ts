@@ -34,13 +34,13 @@ export class QDateField
 	constructor(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
-		q: IQEntityInternal,
+		q: IQEntityInternal<any>,
 		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
 	) {
 		super(dbColumn, dbProperty, q, objectType, new DateOperation())
 	}
 
-	getInstance(qEntity: IQEntityInternal = this.q): QDateField {
+	getInstance(qEntity: IQEntityInternal<any> = this.q): QDateField {
 		return this.copyFunctions(
 			new QDateField(this.dbColumn, this.dbProperty, qEntity, this.objectType))
 	}

@@ -1,7 +1,8 @@
-import { FunctionsAndOperators, IAirportDatabase, IDatabaseFacade, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, IQEntity, OperationName, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
+import { FunctionsAndOperators, IAirportDatabase, IDatabaseFacade, IEntityAccumulator, IEntityContext, IEntityRecord, IEntityUpdateColumns, IEntityUpdateProperties, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, IQEntity, OperationName, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
 import { DbSchema, DistributionStrategy, PlatformType } from '@airport/ground-control';
 export declare class AirportDatabase implements IAirportDatabase {
     db: IDatabaseFacade;
+    entityMap: Map<any, IEntityRecord>;
     F: FunctionsAndOperators;
     functions: FunctionsAndOperators;
     S: DbSchema[];
@@ -16,6 +17,7 @@ export declare class AirportDatabase implements IAirportDatabase {
     search: INonEntitySearch;
     searchOne: INonEntitySearchOne;
     constructor();
+    getAccumulator(schemaDomain: string, schemaName: string): IEntityAccumulator;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context?: IEntityContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;

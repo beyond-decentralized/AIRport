@@ -8,7 +8,7 @@ import {
  * A concrete ORM relation, limited to INNER and LEFT joins since
  * ORM based queries always return trees.
  */
-export interface IQRelation<IQ extends IQEntity> {
+export interface IQRelation<IQ extends IQEntity<any>> {
 	// Inner join on this Many-To-One or One-To-Many relation
 	innerJoin(): IQ;
 
@@ -22,11 +22,11 @@ export interface IQRelation<IQ extends IQEntity> {
 	 */
 }
 
-export interface IQInternalRelation<IQ extends IQEntity>
+export interface IQInternalRelation<IQ extends IQEntity<any>>
 	extends IQRelation<IQ> {
 
 	dbRelation: DbRelation;
-	parentQ: IQEntityInternal;
+	parentQ: IQEntityInternal<any>;
 
 }
 

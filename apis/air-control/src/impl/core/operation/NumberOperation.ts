@@ -11,7 +11,7 @@ import {ValueOperation}    from "./Operation";
  * Created by Papa on 6/20/2016.
  */
 
-export class NumberOperation<IQ extends IQEntityInternal>
+export class NumberOperation<IQ extends IQEntityInternal<any>>
 	extends ValueOperation<number, JSONRawNumberOperation, IQNumberField> implements INumberOperation {
 
 	constructor() {

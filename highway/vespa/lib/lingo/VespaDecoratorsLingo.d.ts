@@ -10,7 +10,7 @@ export interface VespaFieldsetConfiguration<VespaEntity> {
 export interface VespaEntityDecorator {
     (): ClassDecorator;
 }
-export interface VespaDefault {
+export interface VespaDefaultDecorator {
     (): ClassDecorator;
 }
 export interface VespaAttributeConfiguration {

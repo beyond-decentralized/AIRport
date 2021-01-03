@@ -19,6 +19,6 @@ export interface IQFieldInternal<IQF extends IQOrderableField<IQF>> extends IQOr
     dbColumn: DbColumn;
     dbProperty: DbProperty;
     objectType: JSONClauseObjectType;
-    q: IQEntityInternal;
+    q: IQEntityInternal<any>;
 }
 //# sourceMappingURL=Field.d.ts.map

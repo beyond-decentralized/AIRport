@@ -4,7 +4,7 @@ import { IQEntity } from '../../core/entity/Entity';
 /**
  * DELETE statements are user-defined in this format.
  */
-export interface RawDelete<IQE extends IQEntity> {
+export interface RawDelete<IQE extends IQEntity<any>> {
 	deleteFrom: IQE;
 	where?: JSONBaseOperation;
 }

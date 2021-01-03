@@ -2,19 +2,19 @@ import {ClassDecorator} from '@airport/air-control'
 import {
 	VespaAttributeConfiguration,
 	VespaAttributeDecorator,
-	VespaDefault,
+	VespaDefaultDecorator,
 	VespaEntityDecorator,
 	VespaFieldsetConfiguration,
 	VespaIndexing
 }                       from '../lingo/VespaDecoratorsLingo'
 
-export const Vespa: VespaEntityDecorator = function () {
+export const VespaEntity: VespaEntityDecorator = function () {
 	return function (constructor: { new(): Object }) {
 		// TODO: add runtime logic
 	}
 }
 
-export function Fieldset<VespaEntity>(
+export function VespaFieldset<VespaEntity>(
 	vespaEntityClass: { new(...args: any[]): VespaEntity },
 	fieldsetConfiguration?: VespaFieldsetConfiguration<VespaEntity>
 ): ClassDecorator {
@@ -23,13 +23,13 @@ export function Fieldset<VespaEntity>(
 	}
 }
 
-export const Default: VespaDefault = function () {
+export const VespaDefault: VespaDefaultDecorator = function () {
 	return function (constructor: { new(): Object }) {
 		// TODO: add runtime logic
 	}
 }
 
-export const Attribute: VespaAttributeDecorator = function (
+export const VespaAttribute: VespaAttributeDecorator = function (
 	attributeConfiguration: VespaAttributeConfiguration
 ) {
 	return function (constructor: { new(): Object }) {
@@ -45,17 +45,4 @@ export function VespaIndex(
 	}
 }
 
-export const vespa = {
-	Attribute: Attribute,
-	Default: Default,
-	Entity: Vespa,
-	Fieldset: Fieldset,
-	Indexing: VespaIndex,
-	type: {
-		bitmap: 1,
-		document: 1,
-		int: 1,
-		long: 1,
-		string: 1,
-	}
-}
+

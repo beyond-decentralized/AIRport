@@ -17,7 +17,7 @@ export interface VespaEntityDecorator {
 	(): ClassDecorator
 }
 
-export interface VespaDefault {
+export interface VespaDefaultDecorator {
 	(): ClassDecorator
 }
 

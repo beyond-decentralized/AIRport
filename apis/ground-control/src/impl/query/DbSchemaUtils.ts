@@ -1,72 +1,74 @@
-import {ColumnName}   from '../../lingo/schema/Property'
-import {
-	DomainName,
-	SchemaName
-}                     from '../../lingo/schema/Schema'
-import {SchemaStatus} from '../../lingo/schema/SchemaStatus'
+import { ColumnName } from '../../lingo/schema/Property';
 
 export function getSchemaName({
-	                              domain, name
+                                domain, name,
                               }): string {
-	if (domain.name) {
-		domain = domain.name
-	}
+  if (domain.name) {
+    domain = domain.name;
+  }
 
-	if (domain.indexOf('_') > -1) {
-		throw new Error('Domain Name cannot contain "_" in it.')
-	}
+  return getSchemaNameFromDomainAndName(domain, name);
+}
 
-	const domainPrefix = domain
-		.replace(/\./g, '_')
-		.replace(/-/g, '_')
+export function getSchemaNameFromDomainAndName(
+  domainName,
+  schemaName,
+): string {
+  if (domainName.indexOf('_') > -1) {
+    throw new Error('Domain Name cannot contain "_" in it.');
+  }
 
-	if (domainPrefix.endsWith('_')) {
-		throw new Error('Domain Name cannot end with "." or "-"')
-	}
+  const domainPrefix = domainName
+    .replace(/\./g, '_')
+    .replace(/-/g, '_');
 
-	if (domainPrefix.indexOf('__') > -1) {
-		throw new Error('Domain Name cannot have combination of two "." or "-" right next to each other.')
-	}
+  if (domainPrefix.endsWith('_')) {
+    throw new Error('Domain Name cannot end with "." or "-"');
+  }
 
-	if (name.indexOf('_') > -1) {
-		throw new Error('Schema Name cannot contain "_" in it.')
-	}
+  if (domainPrefix.indexOf('__') > -1) {
+    throw new Error('Domain Name cannot have combination of two "." or "-" right next to each other.');
+  }
 
-	if (name.indexOf('@') !== name.lastIndexOf('@')) {
-		throw new Error('Schema Name cannot have more than one "@" in it.')
-	}
+  if (schemaName.indexOf('_') > -1) {
+    throw new Error('Schema Name cannot contain "_" in it.');
+  }
 
-	if (name.indexOf('@') > 0) {
-		throw new Error('Schema Name cannot contain "@" after the first character in it.')
-	}
+  if (schemaName.indexOf('@') !== schemaName.lastIndexOf('@')) {
+    throw new Error('Schema Name cannot have more than one "@" in it.');
+  }
 
-	if (name.indexOf('/') !== name.lastIndexOf('/')) {
-		throw new Error('Schema Name cannot have more than one "/" in it.')
-	}
+  if (schemaName.indexOf('@') > 0) {
+    throw new Error('Schema Name cannot contain "@" after the first character in it.');
+  }
 
-	const schemaPrefix = name
-		.replace(/@/g, '_')
-		.replace(/\//g, '__')
-		.replace(/-/g, '_')
+  if (schemaName.indexOf('/') !== schemaName.lastIndexOf('/')) {
+    throw new Error('Schema Name cannot have more than one "/" in it.');
+  }
+
+  const schemaPrefix = schemaName
+    .replace(/@/g, '_')
+    .replace(/\//g, '__')
+    .replace(/-/g, '_');
 
 
-	if (schemaPrefix.endsWith('_')) {
-		throw new Error('Schema Name cannot end with "/" or "."')
-	}
+  if (schemaPrefix.endsWith('_')) {
+    throw new Error('Schema Name cannot end with "/" or "."');
+  }
 
-	if ((name.indexOf('/') > -1
-		&& schemaPrefix.indexOf('__') !== schemaPrefix.lastIndexOf('__'))
-		|| (name.indexOf('/') == -1
-			&& schemaPrefix.indexOf('__') > -1)) {
-		throw new Error('Schema Name cannot have combination of two "@", "/" or "-" right next to each other.')
-	}
+  if ((schemaName.indexOf('/') > -1
+    && schemaPrefix.indexOf('__') !== schemaPrefix.lastIndexOf('__'))
+    || (schemaName.indexOf('/') == -1
+      && schemaPrefix.indexOf('__') > -1)) {
+    throw new Error('Schema Name cannot have combination of two "@", "/" or "-" right next to each other.');
+  }
 
-	return `${domainPrefix}__${schemaPrefix}`
+  return `${domainPrefix}__${schemaPrefix}`;
 }
 
 export function getSequenceName(
-	prefixedTableName: string,
-	columnName: ColumnName
+  prefixedTableName: string,
+  columnName: ColumnName,
 ): string {
-	return `${prefixedTableName}_${columnName}__SEQUENCE`
+  return `${prefixedTableName}_${columnName}__SEQUENCE`;
 }

@@ -1,11 +1,31 @@
-import { AIR_DB, DB_FACADE, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne } from '@airport/air-control';
-import { container, DI } from '@airport/di';
+import { AIR_DB, DB_FACADE, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, } from '@airport/air-control';
+import { container, DI, } from '@airport/di';
+class EntityAccumulator {
+    constructor(schemaDomain, schemaName, entityMap) {
+        this.schemaDomain = schemaDomain;
+        this.schemaName = schemaName;
+        this.entityMap = entityMap;
+    }
+    add(clazz, index) {
+        this.entityMap.set(clazz, {
+            entity: {
+                index,
+                name: clazz.name,
+            },
+            schema: {
+                domain: this.schemaDomain,
+                name: this.schemaName,
+            },
+        });
+    }
+}
 export class AirportDatabase {
     // private databaseMap: { [databaseName: string]: IDatabaseFacade } = {}
     // private dbNames: string[]                                        = []
     // private dbNameSet: { [databaseName: string]: boolean }           = {}
     // private currentDbName = dbConst.DEFAULT_DB
     constructor() {
+        this.entityMap = new Map();
         this.schemas = [];
         this.qSchemas = [];
         this.QM = {};
@@ -17,47 +37,50 @@ export class AirportDatabase {
         this.searchOne = new NonEntitySearchOne();
     }
     /*
-        registerDatabase(
-            facade: IDatabaseFacade
-        ) {
-            if (!this.dbNameSet[facade.name]) {
-                this.dbNames.push(facade.name)
-            }
-            this.databaseMap[facade.name] = facade
-            this.dbNameSet[facade.name]   = true
+      registerDatabase(
+        facade: IDatabaseFacade
+      ) {
+        if (!this.dbNameSet[facade.name]) {
+          this.dbNames.push(facade.name)
         }
-
-        async registerQSchemas(
-            qSchemas: QSchema[]
-        ) {
-            for (const qSchema of qSchemas) {
-                const schemaName    = getSchemaName(qSchema)
-                this.QM[schemaName] = qSchema
-            }
+        this.databaseMap[facade.name] = facade
+        this.dbNameSet[facade.name]   = true
+      }
+  
+      async registerQSchemas(
+        qSchemas: QSchema[]
+      ) {
+        for (const qSchema of qSchemas) {
+          const schemaName    = getSchemaName(qSchema)
+          this.QM[schemaName] = qSchema
         }
-
-        setCurrentDb(
-            dbName: string = dbConst.DEFAULT_DB
-        ): void {
-            this.currentDbName = dbName
+      }
+  
+      setCurrentDb(
+        dbName: string = dbConst.DEFAULT_DB
+      ): void {
+        this.currentDbName = dbName
+      }
+  
+      getDbNames(): string[] {
+        return this.dbNames
+      }
+  
+      getDbNameSet(): { [databaseName: string]: boolean } {
+        return this.dbNameSet
+      }
+  
+      get db(): IDatabaseFacade {
+        let database = this.databaseMap[this.currentDbName]
+        if (!database) {
+          throw new Error(`Did not find database '${this.currentDbName}'`)
         }
-
-        getDbNames(): string[] {
-            return this.dbNames
-        }
-
-        getDbNameSet(): { [databaseName: string]: boolean } {
-            return this.dbNameSet
-        }
-
-        get db(): IDatabaseFacade {
-            let database = this.databaseMap[this.currentDbName]
-            if (!database) {
-                throw new Error(`Did not find database '${this.currentDbName}'`)
-            }
-            return database
-        }
+        return database
+      }
     */
+    getAccumulator(schemaDomain, schemaName) {
+        return new EntityAccumulator(schemaDomain, schemaName, this.entityMap);
+    }
     async addRepository(name, url, platform, platformConfig, distributionStrategy, context) {
         const dbFacade = await container(this)
             .get(DB_FACADE);

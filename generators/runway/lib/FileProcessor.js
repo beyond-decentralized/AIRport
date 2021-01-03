@@ -40,7 +40,7 @@ function visit(node) {
     }
     // Do not process files outside of the project (possible with MS Rush setup)
     if (path.indexOf(process.cwd() + '/src') > -1
-        || path.indexOf(process.cwd() + '\src') > -1) {
+        && path.indexOf(process.cwd() + '\\src') > -1) {
         return;
     }
     // if (path.indexOf(globalThis.configuration.airport.node_modulesLinks.pathToProject) == -1) {

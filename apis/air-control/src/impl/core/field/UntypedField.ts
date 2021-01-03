@@ -36,13 +36,13 @@ export class QUntypedField
 	constructor(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
-		q: IQEntityInternal,
+		q: IQEntityInternal<any>,
 		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
 	) {
 		super(dbColumn, dbProperty, q, objectType, new UntypedOperation())
 	}
 
-	getInstance(qEntity: IQEntityInternal = this.q): QUntypedField {
+	getInstance(qEntity: IQEntityInternal<any> = this.q): QUntypedField {
 		return this.copyFunctions(
 			new QUntypedField(this.dbColumn, this.dbProperty, qEntity, this.objectType))
 	}

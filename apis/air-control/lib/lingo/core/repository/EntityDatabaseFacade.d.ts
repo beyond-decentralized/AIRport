@@ -14,25 +14,25 @@ import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEnt
 /**
  * Facade for all DB operations related to a particular Entity.
  */
-export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelectProperties, EntityCreateProperties extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQ extends IQEntity> {
+export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySelectProperties, EntityCreateProperties extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQ extends IQEntity<IEntity>> {
     dbEntity: DbEntity;
-    duo: IDuo<Entity, EntitySelect, EntityCreateProperties, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>;
+    duo: IDuo<IEntity, EntitySelect, EntityCreateProperties, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>;
     /**
      * The Promise based API for all Entity 'find' (find many) queries.
      */
-    find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
+    find: IEntityFind<IEntity, Array<IEntity> | MappedEntityArray<IEntity>, EntitySelect>;
     /**
      * The Promise based API for all Entity 'findOne' queries.
      */
-    findOne: IEntityFindOne<Entity, EntitySelect>;
+    findOne: IEntityFindOne<IEntity, EntitySelect>;
     /**
      * The Observable based API for all Entity 'searchOne' (searchOne many) queries.
      */
-    search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
+    search: IEntitySearch<IEntity, Array<IEntity> | MappedEntityArray<IEntity>, EntitySelect>;
     /**
      * The Observable based API for all Entity 'searchOne' queries.
      */
-    searchOne: IEntitySearchOne<Entity, EntitySelect>;
+    searchOne: IEntitySearchOne<IEntity, EntitySelect>;
     /**
      * Creates a new instance of the Query Entity for this entity type.
      */
@@ -43,16 +43,16 @@ export interface IEntityDatabaseFacade<Entity, EntitySelect extends IEntitySelec
      *
      * @param {Entity} entities
      */
-    insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
+    insertColumnValues<IQE extends IQEntity<IEntity>>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx?: IEntityContext): Promise<number>;
-    insertValues<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
+    insertValues<IQE extends IQEntity<IEntity>>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, ctx?: IEntityContext): Promise<number>;
-    insertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
+    insertColumnValuesGenerateIds<IQE extends IQEntity<IEntity>>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
-    insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
+    insertValuesGenerateIds<IQE extends IQEntity<IEntity>>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, ctx?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
     /**

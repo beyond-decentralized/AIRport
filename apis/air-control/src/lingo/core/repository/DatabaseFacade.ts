@@ -75,28 +75,28 @@ export interface IDatabaseFacade {
 		ctx: IEntityContext
 	): Promise<number>;
 
-	insertColumnValues<IQE extends IQEntity>(
+	insertColumnValues<IQE extends IQEntity<any>>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
 		ctx: IEntityContext
 	): Promise<number>;
 
-	insertValues<IQE extends IQEntity>(
+	insertValues<IQE extends IQEntity<any>>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
 		ctx: IEntityContext
 	): Promise<number>;
 
-	insertColumnValuesGenerateIds<IQE extends IQEntity>(
+	insertColumnValuesGenerateIds<IQE extends IQEntity<any>>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
 		ctx: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
-	insertValuesGenerateIds<IQE extends IQEntity>(
+	insertValuesGenerateIds<IQE extends IQEntity<any>>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
@@ -109,7 +109,7 @@ export interface IDatabaseFacade {
 	 *
 	 * @return Number of records deleted
 	 */
-	deleteWhere<IQE extends IQEntity>(
+	deleteWhere<IQE extends IQEntity<any>>(
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
@@ -134,7 +134,7 @@ export interface IDatabaseFacade {
 	 *
 	 * @return Number of records updated
 	 */
-	updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(
+	updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity<any>>(
 		rawUpdateColumns: RawUpdateColumns<IEUC, IQE>
 			| {
 			(...args: any[]): RawUpdateColumns<IEUC, IQE>
@@ -148,7 +148,7 @@ export interface IDatabaseFacade {
 	 *
 	 * @return Number of records updated
 	 */
-	updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(
+	updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity<any>>(
 		rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},

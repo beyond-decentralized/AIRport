@@ -7,7 +7,7 @@ import { AbstractQuery } from './AbstractQuery';
 /**
  * Created by Papa on 11/17/2016.
  */
-export declare abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends AbstractRawInsertValues<IQE>> extends AbstractQuery {
+export declare abstract class AbstractInsertValues<IQE extends IQEntity<any>, ARIV extends AbstractRawInsertValues<IQE>> extends AbstractQuery {
     rawInsertValues: ARIV;
     columnIndexes?: number[];
     constructor(rawInsertValues: ARIV, columnIndexes?: number[]);

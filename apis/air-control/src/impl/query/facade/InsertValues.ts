@@ -18,14 +18,14 @@ import {AbstractInsertValues}    from './AbstractInsertValues'
  */
 
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
-export class InsertValues<IQE extends IQEntity>
+export class InsertValues<IQE extends IQEntity<any>>
 	extends AbstractInsertValues<IQE, RawInsertValues<IQE>> {
 
 	toJSON(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): JsonInsertValues {
-		const driver = (<IQEntityInternal><any>this.rawInsertValues.insertInto)
+		const driver = (<IQEntityInternal<any>><any>this.rawInsertValues.insertInto)
 	.__driver__
 		const insertInto            = driver.getRelationJson(
 					this.columnAliases, queryUtils, fieldUtils)

@@ -94,18 +94,18 @@ export interface IEntityRelationFrom {
 /**
  * A concrete Generated Query Entity.
  */
-export interface IQEntity {
+export interface IQEntity<IEntity> {
     fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     innerJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     rightJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
 }
-export interface IQTree extends IQEntity {
+export interface IQTree<IEntity> extends IQEntity<IEntity> {
 }
-export interface IQEntityInternal extends IQEntity {
-    __driver__: IQEntityDriver;
+export interface IQEntityInternal<IEntity> extends IQEntity<IEntity> {
+    __driver__: IQEntityDriver<IEntity>;
 }
-export interface IQEntityDriver {
+export interface IQEntityDriver<IEntity> {
     allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
     currentChildIndex: number;
     dbEntity: DbEntity;
@@ -118,11 +118,11 @@ export interface IQEntityDriver {
     idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
     joinType: JoinType;
     joinWhereClause: JSONBaseOperation;
-    parentJoinEntity: IQEntityInternal;
+    parentJoinEntity: IQEntityInternal<IEntity>;
     relations: IQInternalRelation<any>[];
-    getInstance(airDb: IAirportDatabase, schemaUtils: ISchemaUtils): IQEntityInternal;
+    getInstance(airDb: IAirportDatabase, schemaUtils: ISchemaUtils): IQEntityInternal<IEntity>;
     getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation;
-    getRootJoinEntity(): IQEntityInternal;
+    getRootJoinEntity(): IQEntityInternal<any>;
     isRootEntity(): boolean;
     join<IF extends IFrom>(right: IF, joinType: JoinType): IJoinFields<IF>;
 }

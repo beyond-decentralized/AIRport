@@ -17,13 +17,13 @@ export declare abstract class AliasMap<T, A> implements IAliasMap<T, A> {
     abstract getExistingAlias(object: T): A;
     hasAliasFor(object: T): boolean;
 }
-export declare class EntityAliases extends AliasMap<IQEntityInternal, string> implements IEntityAliases {
+export declare class EntityAliases extends AliasMap<IQEntityInternal<any>, string> implements IEntityAliases {
     private columnAliasCache;
     private parameterAliases;
     constructor(entityAliasCache?: AliasCache, columnAliasCache?: AliasCache, parameterAliasCache?: AliasCache);
     getParams(): IParameterAliases;
     getNewFieldColumnAliases(): IFieldColumnAliases<any>;
-    getExistingAlias(entity: IQEntityInternal): string;
+    getExistingAlias(entity: IQEntityInternal<any>): string;
     getOnlyAlias(): string;
 }
 export declare class ParameterAliases extends AliasMap<IQFunction<any>, Parameter> implements IParameterAliases {

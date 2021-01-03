@@ -13,25 +13,25 @@ export class QMetadataUtils
 	implements IQMetadataUtils {
 
 	getAllColumns(
-		qEntity: IQEntityInternal
+		qEntity: IQEntityInternal<any>
 	): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[] {
 		return qEntity.__driver__.allColumns
 	}
 
 	getAllNonGeneratedColumns(
-		qEntity: IQEntityInternal
+		qEntity: IQEntityInternal<any>
 	): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[] {
 		return this.getAllColumns(qEntity).filter(qField => !qField.dbColumn.isGenerated)
 	}
 
-	getDbEntity<IQE extends IQEntityInternal>(
+	getDbEntity<IQE extends IQEntityInternal<any>>(
 		qEntity: IQE
 	): DbEntity {
 		return qEntity.__driver__.dbEntity
 	}
 
 	getNewEntity(
-		qEntity: IQEntityInternal,
+		qEntity: IQEntityInternal<any>,
 		airDb: IAirportDatabase
 	): any {
 		const dbEntity          = qEntity.__driver__.dbEntity

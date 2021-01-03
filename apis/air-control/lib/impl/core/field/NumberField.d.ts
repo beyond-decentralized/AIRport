@@ -14,8 +14,8 @@ import { QOperableField } from './OperableField';
 export interface IQNumberEntityField extends IQNumberField {
 }
 export declare class QNumberField extends QOperableField<number, JSONRawNumberOperation, INumberOperation, IQNumberField> implements IQNumberField {
-    constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal, objectType?: JSONClauseObjectType);
-    getInstance(qEntity?: IQEntityInternal): QNumberField;
+    constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal<any>, objectType?: JSONClauseObjectType);
+    getInstance(qEntity?: IQEntityInternal<any>): QNumberField;
 }
 export declare class QNumberFunction extends QNumberField implements IQFunction<number | RawFieldQuery<any>> {
     value: number | RawFieldQuery<IQNumberField>;

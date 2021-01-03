@@ -1,0 +1,5 @@
+# Ignore artifacts:
+.rush
+common
+lib
+node_modules

@@ -60,7 +60,7 @@ export function extend(
 export function getColumnQField(
 	entity: DbEntity,
 	property: DbProperty,
-	q: IQEntityInternal,
+	q: IQEntityInternal<any>,
 	column: DbColumn
 ): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField {
 	switch (column.type) {
@@ -81,7 +81,7 @@ export function getColumnQField(
 export function getQRelation(
 	entity: DbEntity,
 	property: DbProperty,
-	q: IQEntityInternal,
+	q: IQEntityInternal<any>,
 	allQSchemas: QSchema[]
 ): IQRelation<typeof q> {
 	const relation = property.relation[0]
@@ -144,7 +144,7 @@ export function getQEntityConstructor(
 export function addColumnQField(
 	entity: DbEntity,
 	property: DbProperty,
-	q: IQEntityInternal,
+	q: IQEntityInternal<any>,
 	column: DbColumn
 ): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField {
 	const qFieldOrRelation = getColumnQField(entity, property, q, column)
@@ -163,7 +163,7 @@ export function getQEntityIdRelationConstructor(): typeof QRelation {
 	function QEntityIdRelation(
 		entity: DbEntity,
 		relation: DbRelation,
-		qEntity: IQEntityInternal
+		qEntity: IQEntityInternal<any>
 	) {
 		(<any>QEntityIdRelation).base.constructor.call(this, relation, qEntity)
 
@@ -202,7 +202,7 @@ export function getQEntityIdRelationConstructor(): typeof QRelation {
 export function getQEntityIdFields(
 	addToObject,
 	relationEntity: DbEntity,
-	qEntity: IQEntity,
+	qEntity: IQEntity<any>,
 	parentProperty: DbProperty,
 	relationColumnMap?: Map<DbColumn, DbColumn>
 ) {
@@ -243,7 +243,7 @@ export function getQEntityIdFields(
 		} else {
 			const originalColumn = relationColumnMap.get(property.propertyColumns[0].column)
 			qFieldOrRelation     = getColumnQField(relationEntity,
-				parentProperty, qEntity as IQEntityInternal, originalColumn)
+				parentProperty, qEntity as IQEntityInternal<any>, originalColumn)
 		}
 		addToObject[property.name] = qFieldOrRelation
 	})

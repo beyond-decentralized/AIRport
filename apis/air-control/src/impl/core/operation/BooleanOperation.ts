@@ -11,7 +11,7 @@ import {ValueOperation}     from "./Operation";
  * Created by Papa on 6/20/2016.
  */
 
-export class BooleanOperation<IQ extends IQEntityInternal>
+export class BooleanOperation<IQ extends IQEntityInternal<any>>
 	extends ValueOperation<boolean, JSONRawBooleanOperation, IQBooleanField> implements IBooleanOperation {
 
 	constructor() {

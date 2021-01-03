@@ -9,7 +9,7 @@ import {QRelation}        from './Relation'
 
 export function QOneToManyRelation(
 	dbRelation: DbRelation,
-	parentQ: IQEntityInternal,
+	parentQ: IQEntityInternal<any>,
 ) {
 	(<any>QOneToManyRelation).base.constructor.call(this, dbRelation, parentQ)
 }
