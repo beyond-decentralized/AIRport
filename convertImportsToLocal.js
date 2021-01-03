@@ -7,6 +7,7 @@ const undesiredReferencePaths = [
     '../apis',
     '../apps',
     '../generators',
+    '../highway',
     '../libs',
     '../schemas'
 ];
