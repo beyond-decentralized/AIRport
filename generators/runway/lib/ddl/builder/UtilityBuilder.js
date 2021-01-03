@@ -67,7 +67,7 @@ export class SQDI${this.classSuffix}<Entity,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	IQE extends IQEntity>
+	IQE extends IQEntity<Entity>>
 	extends ${this.classSuffix}<Entity,
 		EntitySelect,
 		EntityCreate,

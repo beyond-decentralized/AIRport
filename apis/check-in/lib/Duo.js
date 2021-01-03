@@ -1,4 +1,4 @@
-import { Y } from '@airport/air-control';
+import { Y, } from '@airport/air-control';
 import { EntityRelationType } from '@airport/ground-control';
 /**
  * Created by Papa on 8/26/2017.
@@ -65,6 +65,6 @@ export function getAllFieldsSelect(dbEntity) {
     throw new Error(`Not implemented`);
 }
 export const DUO = {
-    getAllFieldsSelect: getAllFieldsSelect
+    getAllFieldsSelect: getAllFieldsSelect,
 };
 //# sourceMappingURL=Duo.js.map

@@ -1,4 +1,4 @@
-import { doEnsureContext, ENTITY_STATE_MANAGER } from '@airport/air-control';
+import { doEnsureContext, ENTITY_STATE_MANAGER, } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { EntityDatabaseFacade } from './EntityDatabaseFacade';
 /**
