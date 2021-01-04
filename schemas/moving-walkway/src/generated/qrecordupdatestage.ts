@@ -30,6 +30,7 @@ import {
 	QSchemaVersion,
 	QSchemaVersionQId,
 	QSchemaVersionQRelation,
+	SchemaVersion,
 	SchemaEntityGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
@@ -38,6 +39,7 @@ import {
 	QSchemaEntity,
 	QSchemaEntityQId,
 	QSchemaEntityQRelation,
+	SchemaEntity,
 	SchemaColumnGraph,
 	SchemaColumnEId,
 	SchemaColumnEOptionalId,
@@ -46,6 +48,7 @@ import {
 	QSchemaColumn,
 	QSchemaColumnQId,
 	QSchemaColumnQRelation,
+	SchemaColumn,
 } from '@airport/traffic-pattern';
 import {
 	RepositoryGraph,
@@ -56,6 +59,7 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
+	Repository,
 	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -64,7 +68,11 @@ import {
 	QActor,
 	QActorQId,
 	QActorQRelation,
+	Actor,
 } from '@airport/holding-pattern';
+import {
+	RecordUpdateStage,
+} from '../ddl/RecordUpdateStage';
 
 
 declare function require(moduleName: string): any;
@@ -195,7 +203,7 @@ extends RecordUpdateStageEId, RecordUpdateStageEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRecordUpdateStage extends IQEntity
+export interface QRecordUpdateStage extends IQEntity<RecordUpdateStage>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -230,6 +238,6 @@ export interface QRecordUpdateStageQId
 
 // Entity Relation Interface
 export interface QRecordUpdateStageQRelation
-	extends IQRelation<QRecordUpdateStage>, QRecordUpdateStageQId {
+	extends IQRelation<RecordUpdateStage, QRecordUpdateStage>, QRecordUpdateStageQId {
 }
 

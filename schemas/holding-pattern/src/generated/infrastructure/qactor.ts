@@ -30,6 +30,7 @@ import {
 	QUser,
 	QUserQId,
 	QUserQRelation,
+	User,
 	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -38,6 +39,7 @@ import {
 	QTerminal,
 	QTerminalQId,
 	QTerminalQRelation,
+	Terminal,
 } from '@airport/travel-document-checkpoint';
 import {
 	ActorApplicationGraph,
@@ -50,6 +52,9 @@ import {
 	QActorApplicationQRelation,
 } from './qactorapplication';
 import {
+	ActorApplication,
+} from '../../ddl/infrastructure/ActorApplication';
+import {
 	RepositoryActorGraph,
 	RepositoryActorEId,
 	RepositoryActorEOptionalId,
@@ -59,6 +64,12 @@ import {
 	QRepositoryActorQId,
 	QRepositoryActorQRelation,
 } from '../repository/qrepositoryactor';
+import {
+	RepositoryActor,
+} from '../../ddl/repository/RepositoryActor';
+import {
+	Actor,
+} from '../../ddl/infrastructure/Actor';
 
 
 declare function require(moduleName: string): any;
@@ -177,7 +188,7 @@ extends ActorEId, ActorEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QActor extends IQEntity
+export interface QActor extends IQEntity<Actor>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -190,8 +201,8 @@ export interface QActor extends IQEntity
 	// Non-Id Relations
 	user: QUserQRelation;
 	terminal: QTerminalQRelation;
-	actorApplications: IQOneToManyRelation<QActorApplication>;
-	repositoryActor: IQOneToManyRelation<QRepositoryActor>;
+	actorApplications: IQOneToManyRelation<ActorApplication, QActorApplication>;
+	repositoryActor: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
 
 }
 
@@ -210,6 +221,6 @@ export interface QActorQId
 
 // Entity Relation Interface
 export interface QActorQRelation
-	extends IQRelation<QActor>, QActorQId {
+	extends IQRelation<Actor, QActor>, QActorQId {
 }
 

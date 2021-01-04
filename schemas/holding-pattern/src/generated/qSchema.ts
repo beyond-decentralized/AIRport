@@ -68,25 +68,16 @@ export interface LocalQSchema extends AirportQSchema {
 	Actor: QActor;
 	ActorApplication: QActorApplication;
 	Application: QApplication;
-	ChildRepoRow: QChildRepoRow;
-	ChildRow: QChildRow;
-	ImmutableRepoRow: QImmutableRepoRow;
-	ImmutableRow: QImmutableRow;
-	MutableRepoRow: QMutableRepoRow;
-	MutableRow: QMutableRow;
 	OperationHistory: QOperationHistory;
 	RecordHistory: QRecordHistory;
 	RecordHistoryNewValue: QRecordHistoryNewValue;
 	RecordHistoryOldValue: QRecordHistoryOldValue;
-	ReferenceRow: QReferenceRow;
 	RepoTransHistoryChangedRepositoryActor: QRepoTransHistoryChangedRepositoryActor;
 	Repository: QRepository;
 	RepositoryActor: QRepositoryActor;
 	RepositoryApplication: QRepositoryApplication;
-	RepositoryEntity: QRepositoryEntity;
 	RepositorySchema: QRepositorySchema;
 	RepositoryTransactionHistory: QRepositoryTransactionHistory;
-	Stageable: QStageable;
 	TransactionHistory: QTransactionHistory;
 
 }

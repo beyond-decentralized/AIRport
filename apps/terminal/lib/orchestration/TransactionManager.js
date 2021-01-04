@@ -1,7 +1,7 @@
 import { container, DI } from '@airport/di';
 import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system';
 import { STORE_DRIVER, SyncSchemaMap } from '@airport/ground-control';
-import { Q, TRANS_HISTORY_DUO } from '@airport/holding-pattern';
+import { Q, TRANS_HISTORY_DUO, } from '@airport/holding-pattern';
 import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export class TransactionManager extends AbstractMutationManager {
@@ -15,17 +15,17 @@ export class TransactionManager extends AbstractMutationManager {
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
      */
-    async init(dbName) {
+    async init(dbName, context) {
         const storeDriver = await container(this)
             .get(STORE_DRIVER);
-        return await storeDriver.initialize(dbName);
+        return await storeDriver.initialize(dbName, context);
         // await this.dataStore.initialize(dbName)
         // await this.repositoryManager.initialize();
     }
-    async transact(credentials, transactionalCallback) {
+    async transact(credentials, transactionalCallback, context) {
         const [storeDriver, transHistoryDuo] = await container(this)
             .get(STORE_DRIVER, TRANS_HISTORY_DUO);
-        if (!storeDriver.isServer()) {
+        if (!storeDriver.isServer(context)) {
             if (credentials.domainAndPort === this.transactionInProgress
                 || this.transactionIndexQueue.filter(transIndex => transIndex === credentials.domainAndPort).length) {
                 // Either just continue using the current transaction
@@ -35,10 +35,10 @@ export class TransactionManager extends AbstractMutationManager {
             }
             this.transactionIndexQueue.push(credentials.domainAndPort);
         }
-        while (!this.canRunTransaction(credentials.domainAndPort, storeDriver)) {
+        while (!this.canRunTransaction(credentials.domainAndPort, storeDriver, context)) {
             await this.wait(this.yieldToRunningTransaction);
         }
-        if (!storeDriver.isServer()) {
+        if (!storeDriver.isServer(context)) {
             this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== credentials.domainAndPort);
             this.transactionInProgress = credentials.domainAndPort;
         }
@@ -54,12 +54,12 @@ export class TransactionManager extends AbstractMutationManager {
                 console.error(e);
                 transaction.rollback();
             }
-        });
+        }, context);
     }
-    async rollback(transaction) {
+    async rollback(transaction, context) {
         const storeDriver = await container(this)
             .get(STORE_DRIVER);
-        if (!storeDriver.isServer() && this.transactionInProgress !== transaction.credentials.domainAndPort) {
+        if (!storeDriver.isServer(context) && this.transactionInProgress !== transaction.credentials.domainAndPort) {
             let foundTransactionInQueue = false;
             this.transactionIndexQueue.filter(transIndex => {
                 if (transIndex === transaction.credentials.domainAndPort) {
@@ -80,14 +80,15 @@ export class TransactionManager extends AbstractMutationManager {
             this.clearTransaction();
         }
     }
-    async commit(transaction) {
+    async commit(transaction, context) {
         const [activeQueries, idGenerator, storeDriver] = await container(this)
             .get(ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER);
-        if (!storeDriver.isServer() && this.transactionInProgress !== transaction.credentials.domainAndPort) {
+        if (!storeDriver.isServer(context)
+            && this.transactionInProgress !== transaction.credentials.domainAndPort) {
             throw new Error(`Cannot commit inactive transaction '${transaction.credentials.domainAndPort}'.`);
         }
         try {
-            await this.saveRepositoryHistory(transaction, idGenerator);
+            await this.saveRepositoryHistory(transaction, idGenerator, context);
             await transaction.saveTransaction(transaction.transHistory);
             activeQueries.rerunQueries();
             await transaction.commit();
@@ -119,7 +120,7 @@ export class TransactionManager extends AbstractMutationManager {
             this.transactionInProgress = this.transactionIndexQueue.shift();
         }
     }
-    async saveRepositoryHistory(transaction, idGenerator) {
+    async saveRepositoryHistory(transaction, idGenerator, context) {
         let transactionHistory = transaction.transHistory;
         if (!transactionHistory.allRecordHistory.length) {
             return false;
@@ -128,29 +129,29 @@ export class TransactionManager extends AbstractMutationManager {
         const transHistoryIds = await idGenerator.generateTransactionHistoryIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
         schemaMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true);
         transactionHistory.id = transHistoryIds.transactionHistoryId;
-        await this.doInsertValues(transaction, Q.TransactionHistory, [transaction]);
+        await this.doInsertValues(transaction, Q.TransactionHistory, [transaction], context);
         schemaMap.ensureEntity(Q.RepositoryTransactionHistory.__driver__.dbEntity, true);
         transactionHistory.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
             repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index];
         });
-        await this.doInsertValues(transaction, Q.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories);
+        await this.doInsertValues(transaction, Q.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories, context);
         schemaMap.ensureEntity(Q.OperationHistory.__driver__.dbEntity, true);
         transactionHistory.allOperationHistory.forEach((operationHistory, index) => {
             operationHistory.id = transHistoryIds.operationHistoryIds[index];
         });
-        await this.doInsertValues(transaction, Q.OperationHistory, transactionHistory.allOperationHistory);
+        await this.doInsertValues(transaction, Q.OperationHistory, transactionHistory.allOperationHistory, context);
         schemaMap.ensureEntity(Q.RecordHistory.__driver__.dbEntity, true);
         transactionHistory.allRecordHistory.forEach((recordHistory, index) => {
             recordHistory.id = transHistoryIds.recordHistoryIds[index];
         });
-        await this.doInsertValues(transaction, Q.RecordHistory, transactionHistory.allRecordHistory);
+        await this.doInsertValues(transaction, Q.RecordHistory, transactionHistory.allRecordHistory, context);
         if (transactionHistory.allRecordHistoryNewValues.length) {
             schemaMap.ensureEntity(Q.RecordHistoryNewValue.__driver__.dbEntity, true);
-            await this.doInsertValues(transaction, Q.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues);
+            await this.doInsertValues(transaction, Q.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues, context);
         }
         if (transactionHistory.allRecordHistoryOldValues.length) {
             schemaMap.ensureEntity(Q.RecordHistoryOldValue.__driver__.dbEntity, true);
-            await this.doInsertValues(transaction, Q.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues);
+            await this.doInsertValues(transaction, Q.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues, context);
         }
         return true;
     }
@@ -167,8 +168,8 @@ export class TransactionManager extends AbstractMutationManager {
             }
         });
     }
-    canRunTransaction(domainAndPort, storeDriver) {
-        if (storeDriver.isServer()) {
+    canRunTransaction(domainAndPort, storeDriver, context) {
+        if (storeDriver.isServer(context)) {
             return true;
         }
         if (this.transactionInProgress) {

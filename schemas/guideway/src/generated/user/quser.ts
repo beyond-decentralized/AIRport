@@ -32,6 +32,9 @@ import {
 	QSecurityAnswerQRelation,
 } from './security/qsecurityanswer';
 import {
+	SecurityAnswer,
+} from '../../ddl/user/security/SecurityAnswer';
+import {
 	UserRepositoryGraph,
 	UserRepositoryEId,
 	UserRepositoryEOptionalId,
@@ -41,6 +44,9 @@ import {
 	QUserRepositoryQId,
 	QUserRepositoryQRelation,
 } from './quserrepository';
+import {
+	UserRepository,
+} from '../../ddl/user/UserRepository';
 import {
 	TerminalGraph,
 	TerminalEId,
@@ -52,6 +58,9 @@ import {
 	QTerminalQRelation,
 } from '../terminal/qterminal';
 import {
+	Terminal,
+} from '../../ddl/terminal/Terminal';
+import {
 	AgtRepositoryTransactionBlockGraph,
 	AgtRepositoryTransactionBlockEId,
 	AgtRepositoryTransactionBlockEOptionalId,
@@ -61,6 +70,12 @@ import {
 	QAgtRepositoryTransactionBlockQId,
 	QAgtRepositoryTransactionBlockQRelation,
 } from '../synchronization/qagtrepositorytransactionblock';
+import {
+	AgtRepositoryTransactionBlock,
+} from '../../ddl/synchronization/AgtRepositoryTransactionBlock';
+import {
+	User,
+} from '../../ddl/user/User';
 
 
 declare function require(moduleName: string): any;
@@ -183,7 +198,7 @@ extends UserEId, UserEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QUser extends IQEntity
+export interface QUser extends IQEntity<User>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -196,10 +211,10 @@ export interface QUser extends IQEntity
 	isInvitation: IQBooleanField;
 
 	// Non-Id Relations
-	securityAnswers: IQOneToManyRelation<QSecurityAnswer>;
-	userRepositories: IQOneToManyRelation<QUserRepository>;
-	terminals: IQOneToManyRelation<QTerminal>;
-	repositoryTransactionBlocks: IQOneToManyRelation<QAgtRepositoryTransactionBlock>;
+	securityAnswers: IQOneToManyRelation<SecurityAnswer, QSecurityAnswer>;
+	userRepositories: IQOneToManyRelation<UserRepository, QUserRepository>;
+	terminals: IQOneToManyRelation<Terminal, QTerminal>;
+	repositoryTransactionBlocks: IQOneToManyRelation<AgtRepositoryTransactionBlock, QAgtRepositoryTransactionBlock>;
 
 }
 
@@ -218,6 +233,6 @@ export interface QUserQId
 
 // Entity Relation Interface
 export interface QUserQRelation
-	extends IQRelation<QUser>, QUserQId {
+	extends IQRelation<User, QUser>, QUserQId {
 }
 

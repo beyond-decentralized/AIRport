@@ -27,10 +27,10 @@ import { DELETE_MANAGER, INSERT_MANAGER, QUERY_MANAGER, UPDATE_MANAGER } from '.
  *
  */
 export class TransactionalServer {
-    async init() {
+    async init(context = {}) {
         const transManager = await container(this)
             .get(TRANSACTION_MANAGER);
-        return await transManager.init('airport');
+        return await transManager.init('airport', context);
     }
     async find(portableQuery, credentials, context, cachedSqlQueryId) {
         const queryManager = await container(this)
@@ -76,13 +76,13 @@ export class TransactionalServer {
         const insertManager = await container(this)
             .get(INSERT_MANAGER);
         const actor = await this.getActor(portableQuery);
-        return await insertManager.insertValues(portableQuery, actor, transaction, ensureGeneratedValues);
+        return await insertManager.insertValues(portableQuery, actor, transaction, context, ensureGeneratedValues);
     }
     async insertValuesGetIds(portableQuery, transaction, context) {
         const insertManager = await container(this)
             .get(INSERT_MANAGER);
         const actor = await this.getActor(portableQuery);
-        return await insertManager.insertValuesGetIds(portableQuery, actor, transaction);
+        return await insertManager.insertValuesGetIds(portableQuery, actor, transaction, context);
     }
     async updateValues(portableQuery, transaction, context) {
         const updateManager = await container(this)

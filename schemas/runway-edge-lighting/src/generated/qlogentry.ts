@@ -32,6 +32,9 @@ import {
 	QLogEntryTypeQRelation,
 } from './qlogentrytype';
 import {
+	LogEntryType,
+} from '../ddl/LogEntryType';
+import {
 	LogEntryValueGraph,
 	LogEntryValueEId,
 	LogEntryValueEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QLogEntryValueQId,
 	QLogEntryValueQRelation,
 } from './qlogentryvalue';
+import {
+	LogEntryValue,
+} from '../ddl/LogEntryValue';
+import {
+	LogEntry,
+} from '../ddl/LogEntry';
 
 
 declare function require(moduleName: string): any;
@@ -153,7 +162,7 @@ extends LogEntryEId, LogEntryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLogEntry extends IQEntity
+export interface QLogEntry extends IQEntity<LogEntry>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -165,7 +174,7 @@ export interface QLogEntry extends IQEntity
 
 	// Non-Id Relations
 	type: QLogEntryTypeQRelation;
-	values: IQOneToManyRelation<QLogEntryValue>;
+	values: IQOneToManyRelation<LogEntryValue, QLogEntryValue>;
 
 }
 
@@ -184,6 +193,6 @@ export interface QLogEntryQId
 
 // Entity Relation Interface
 export interface QLogEntryQRelation
-	extends IQRelation<QLogEntry>, QLogEntryQId {
+	extends IQRelation<LogEntry, QLogEntry>, QLogEntryQId {
 }
 

@@ -21,7 +21,7 @@ export interface ISubStatementSqlGenerator {
 	getFieldQuerySql(
 		jsonFieldSqlSubQuery: JsonFieldQuery,
 		dialect: SQLDialect,
-		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
+		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> },
 		context: IOperationContext<any, any>,
 	): string
 
@@ -44,7 +44,7 @@ export class SubStatementSqlGenerator
 	getFieldQuerySql(
 		jsonFieldSqlSubQuery: JsonFieldQuery,
 		dialect: SQLDialect,
-		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
+		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> },
 		context: IOperationContext<any, any>,
 	): string {
 		let fieldSqlQuery = new FieldSQLQuery(

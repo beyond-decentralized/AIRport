@@ -65,7 +65,7 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 	}
 
 	addQEntityMapByAlias(
-		sourceMap: { [entityAlias: string]: IQEntityInternal }
+		sourceMap: { [entityAlias: string]: IQEntityInternal<any> }
 	) {
 		for (let alias in sourceMap) {
 			this.qEntityMapByAlias[alias] = sourceMap[alias]
@@ -173,7 +173,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 				case JSONRelationType.SUB_QUERY_ROOT:
 					let view                      = this.addFieldsToView(
 						<JSONViewJoinRelation>joinRelation, alias, context)
-					this.qEntityMapByAlias[alias] = view as IQEntityInternal
+					this.qEntityMapByAlias[alias] = view as IQEntityInternal<any>
 					continue
 				case JSONRelationType.ENTITY_ROOT:
 					// Non-Joined table
@@ -241,7 +241,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		viewJoinRelation: JSONViewJoinRelation,
 		viewAlias: string,
 		context: IOperationContext<any, any>,
-	): IQTree {
+	): IQTree<any> {
 		let view = new QTree(viewJoinRelation.fcp, null)
 		this.addFieldsToViewForSelect(
 			view, viewAlias, viewJoinRelation.sq.S, 'f',
@@ -257,7 +257,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 	 * @param fieldPrefix
 	 */
 	addFieldsToViewForSelect(
-		view: IQTree,
+		view: IQTree<any>,
 		viewAlias: string,
 		select: any,
 		fieldPrefix: string,
@@ -293,7 +293,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 	}
 
 	addFieldToViewForSelect(
-		view: IQTree,
+		view: IQTree<any>,
 		viewAlias: string,
 		fieldPrefix: string,
 		fieldJson: JSONClauseField,
@@ -318,23 +318,23 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 				switch (fieldJson.dt) {
 					case SQLDataType.BOOLEAN:
 						view[alias] = new QBooleanField(dbColumn, dbProperty,
-							view as IQEntityInternal)
+							view as IQEntityInternal<any>)
 						break
 					case SQLDataType.DATE:
 						view[alias] = new QDateField(dbColumn, dbProperty,
-							view as IQEntityInternal)
+							view as IQEntityInternal<any>)
 						break
 					case SQLDataType.NUMBER:
 						view[alias] = new QNumberField(dbColumn, dbProperty,
-							view as IQEntityInternal)
+							view as IQEntityInternal<any>)
 						break
 					case SQLDataType.STRING:
 						view[alias] = new QStringField(dbColumn, dbProperty,
-							view as IQEntityInternal)
+							view as IQEntityInternal<any>)
 						break
 					case SQLDataType.ANY:
 						view[alias] = new QUntypedField(dbColumn, dbProperty,
-							view as IQEntityInternal)
+							view as IQEntityInternal<any>)
 						break
 					default:
 						throw new Error(`Unknown SQLDataType: ${fieldJson.dt}.`)

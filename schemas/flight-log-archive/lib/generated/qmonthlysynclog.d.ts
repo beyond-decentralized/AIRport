@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { MonthlySyncLog } from '../ddl/MonthlySyncLog';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -52,7 +53,7 @@ export interface MonthlySyncLogECreateColumns extends MonthlySyncLogEId, Monthly
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMonthlySyncLog extends IQEntity {
+export interface QMonthlySyncLog extends IQEntity<MonthlySyncLog> {
     databaseId: IQNumberField;
     month: IQDateField;
     repositoryId: IQNumberField;
@@ -63,6 +64,6 @@ export interface QMonthlySyncLogQId {
     month: IQDateField;
     repositoryId: IQNumberField;
 }
-export interface QMonthlySyncLogQRelation extends IQRelation<QMonthlySyncLog>, QMonthlySyncLogQId {
+export interface QMonthlySyncLogQRelation extends IQRelation<MonthlySyncLog, QMonthlySyncLog>, QMonthlySyncLogQId {
 }
 //# sourceMappingURL=qmonthlysynclog.d.ts.map

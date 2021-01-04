@@ -48,10 +48,10 @@ export abstract class SQLNoJoinQuery
 			expecting: '${this.dbEntity.schemaVersion.schema.name}.${this.dbEntity.name}'`)
 		}
 
-		const firstQEntity: IQEntity = new QEntity(firstDbEntity)
+		const firstQEntity: IQEntity<any> = new QEntity(firstDbEntity)
 
 		const tableAlias                   = context.ioc.relationManager.getAlias(fromRelation)
-		this.qEntityMapByAlias[tableAlias] = firstQEntity as IQEntityInternal
+		this.qEntityMapByAlias[tableAlias] = firstQEntity as IQEntityInternal<any>
 		let fromFragment                   = `\t${tableName}`
 		if (addAs) {
 			fromFragment += ` AS ${tableAlias}`

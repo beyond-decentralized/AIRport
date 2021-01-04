@@ -32,6 +32,9 @@ import {
 	QSchemaQRelation,
 } from './qschema';
 import {
+	Schema,
+} from '../../ddl/schema/Schema';
+import {
 	SchemaEntityGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
@@ -42,6 +45,9 @@ import {
 	QSchemaEntityQRelation,
 } from './qschemaentity';
 import {
+	SchemaEntity,
+} from '../../ddl/schema/SchemaEntity';
+import {
 	SchemaReferenceGraph,
 	SchemaReferenceEId,
 	SchemaReferenceEOptionalId,
@@ -51,6 +57,12 @@ import {
 	QSchemaReferenceQId,
 	QSchemaReferenceQRelation,
 } from './qschemareference';
+import {
+	SchemaReference,
+} from '../../ddl/schema/SchemaReference';
+import {
+	SchemaVersion,
+} from '../../ddl/schema/SchemaVersion';
 
 
 declare function require(moduleName: string): any;
@@ -183,7 +195,7 @@ extends SchemaVersionEId, SchemaVersionEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaVersion extends IQEntity
+export interface QSchemaVersion extends IQEntity<SchemaVersion>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -199,9 +211,9 @@ export interface QSchemaVersion extends IQEntity
 
 	// Non-Id Relations
 	schema: QSchemaQRelation;
-	entities: IQOneToManyRelation<QSchemaEntity>;
-	references: IQOneToManyRelation<QSchemaReference>;
-	referencedBy: IQOneToManyRelation<QSchemaReference>;
+	entities: IQOneToManyRelation<SchemaEntity, QSchemaEntity>;
+	references: IQOneToManyRelation<SchemaReference, QSchemaReference>;
+	referencedBy: IQOneToManyRelation<SchemaReference, QSchemaReference>;
 
 }
 
@@ -220,6 +232,6 @@ export interface QSchemaVersionQId
 
 // Entity Relation Interface
 export interface QSchemaVersionQRelation
-	extends IQRelation<QSchemaVersion>, QSchemaVersionQId {
+	extends IQRelation<SchemaVersion, QSchemaVersion>, QSchemaVersionQId {
 }
 

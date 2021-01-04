@@ -32,6 +32,9 @@ import {
 	QTerminalRepositoryQRelation,
 } from '../terminal/qterminalrepository';
 import {
+	TerminalRepository,
+} from '../../ddl/terminal/TerminalRepository';
+import {
 	AgtRepositoryTransactionBlockGraph,
 	AgtRepositoryTransactionBlockEId,
 	AgtRepositoryTransactionBlockEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QAgtRepositoryTransactionBlockQId,
 	QAgtRepositoryTransactionBlockQRelation,
 } from '../synchronization/qagtrepositorytransactionblock';
+import {
+	AgtRepositoryTransactionBlock,
+} from '../../ddl/synchronization/AgtRepositoryTransactionBlock';
+import {
+	Repository,
+} from '../../ddl/repository/Repository';
 
 
 declare function require(moduleName: string): any;
@@ -159,7 +168,7 @@ extends RepositoryEId, RepositoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepository extends IQEntity
+export interface QRepository extends IQEntity<Repository>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -172,8 +181,8 @@ export interface QRepository extends IQEntity
 	status: IQNumberField;
 
 	// Non-Id Relations
-	terminalRepositories: IQOneToManyRelation<QTerminalRepository>;
-	repositoryTransactionBlocks: IQOneToManyRelation<QAgtRepositoryTransactionBlock>;
+	terminalRepositories: IQOneToManyRelation<TerminalRepository, QTerminalRepository>;
+	repositoryTransactionBlocks: IQOneToManyRelation<AgtRepositoryTransactionBlock, QAgtRepositoryTransactionBlock>;
 
 }
 
@@ -192,6 +201,6 @@ export interface QRepositoryQId
 
 // Entity Relation Interface
 export interface QRepositoryQRelation
-	extends IQRelation<QRepository>, QRepositoryQId {
+	extends IQRelation<Repository, QRepository>, QRepositoryQId {
 }
 

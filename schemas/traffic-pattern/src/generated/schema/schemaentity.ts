@@ -5,23 +5,17 @@ import {
 	TableConfiguration,
 } from '@airport/air-control';
 import {
-	SchemaColumn,
-} from '../../ddl/schema/SchemaColumn';
+	ISchemaColumn,
+} from './schemacolumn';
 import {
-	SchemaProperty,
-} from '../../ddl/schema/SchemaProperty';
+	ISchemaProperty,
+} from './schemaproperty';
 import {
 	ISchemaVersion,
 } from './schemaversion';
 import {
-	ISchemaColumn,
-} from './schemacolumn';
-import {
 	ISchemaOperation,
 } from './schemaoperation';
-import {
-	ISchemaProperty,
-} from './schemaproperty';
 import {
 	ISchemaRelation,
 } from './schemarelation';
@@ -55,10 +49,10 @@ export interface ISchemaEntity extends IVersionedSchemaObject {
 	relationReferences?: ISchemaRelation[];
 
 	// Transient Properties
-	columnMap?: { [name: string]: SchemaColumn; };
-	idColumns?: SchemaColumn[];
-	idColumnMap?: { [name: string]: SchemaColumn; };
-	propertyMap?: { [name: string]: SchemaProperty; };
+	columnMap?: { [name: string]: ISchemaColumn; };
+	idColumns?: ISchemaColumn[];
+	idColumnMap?: { [name: string]: ISchemaColumn; };
+	propertyMap?: { [name: string]: ISchemaProperty; };
 
 	// Public Methods
 	

@@ -166,7 +166,7 @@ export class AirportDatabase
       platformConfig, distributionStrategy, context);
   }
 
-  async insertColumnValues<IQE extends IQEntity>(
+  async insertColumnValues<IQE extends IQEntity<any>>(
     rawInsertValues: RawInsertColumnValues<IQE> | {
       (...args: any[]): RawInsertColumnValues<IQE>
     },
@@ -178,7 +178,7 @@ export class AirportDatabase
     return await dbFacade.insertColumnValues(rawInsertValues, context);
   }
 
-  async insertValues<IQE extends IQEntity>(
+  async insertValues<IQE extends IQEntity<any>>(
     rawInsertValues: RawInsertValues<IQE> | {
       (...args: any[]): RawInsertValues<IQE>
     },
@@ -190,7 +190,7 @@ export class AirportDatabase
     return await dbFacade.insertValues(rawInsertValues, context);
   }
 
-  async insertColumnValuesGenerateIds<IQE extends IQEntity>(
+  async insertColumnValuesGenerateIds<IQE extends IQEntity<any>>(
     rawInsertValues: RawInsertColumnValues<IQE> | {
       (...args: any[]): RawInsertColumnValues<IQE>
     },
@@ -202,7 +202,7 @@ export class AirportDatabase
     return await dbFacade.insertColumnValuesGenerateIds(rawInsertValues, context);
   }
 
-  async insertValuesGenerateIds<IQE extends IQEntity>(
+  async insertValuesGenerateIds<IQE extends IQEntity<any>>(
     rawInsertValues: RawInsertValues<IQE> | {
       (...args: any[]): RawInsertValues<IQE>
     },
@@ -220,7 +220,7 @@ export class AirportDatabase
    *
    * @return Number of records deleted
    */
-  async deleteWhere<IQE extends IQEntity>(
+  async deleteWhere<IQE extends IQEntity<any>>(
     rawDelete: RawDelete<IQE> | {
       (...args: any[]): RawDelete<IQE>
     },
@@ -255,7 +255,7 @@ export class AirportDatabase
    *
    * @return Number of records updated
    */
-  async updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(
+  async updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity<any>>(
     rawUpdateColumns: RawUpdateColumns<IEUC, IQE>
       | {
       (...args: any[]): RawUpdateColumns<IEUC, IQE>
@@ -274,7 +274,7 @@ export class AirportDatabase
    *
    * @return Number of records updated
    */
-  async updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(
+  async updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity<any>>(
     rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
       (...args: any[]): RawUpdate<IEUP, IQE>
     },

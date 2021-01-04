@@ -2,6 +2,7 @@ import { IQNumberField, IQStringField } from '@airport/air-control';
 import { VersionedSchemaObjectGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { Operation_Rule } from '@airport/ground-control';
 import { SchemaEntityGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
+import { SchemaOperation } from '../../ddl/schema/SchemaOperation';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -66,7 +67,7 @@ export interface SchemaOperationECreateColumns extends SchemaOperationEId, Schem
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaOperation extends QVersionedSchemaObject {
+export interface QSchemaOperation extends QVersionedSchemaObject<SchemaOperation> {
     id: IQNumberField;
     type: IQNumberField;
     name: IQStringField;
@@ -76,6 +77,6 @@ export interface QSchemaOperation extends QVersionedSchemaObject {
 export interface QSchemaOperationQId extends QVersionedSchemaObjectQId {
     id: IQNumberField;
 }
-export interface QSchemaOperationQRelation extends QVersionedSchemaObjectQRelation<QSchemaOperation>, QSchemaOperationQId {
+export interface QSchemaOperationQRelation extends QVersionedSchemaObjectQRelation<SchemaOperation, QSchemaOperation>, QSchemaOperationQId {
 }
 //# sourceMappingURL=qschemaoperation.d.ts.map

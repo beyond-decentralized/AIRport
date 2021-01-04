@@ -1,4 +1,4 @@
-import {DI}                  from '@airport/di'
+import { DI, IContext } from '@airport/di';
 import {TRANSACTION_MANAGER} from '@airport/terminal-map'
 import {ITransaction}        from './ITransaction'
 
@@ -42,11 +42,12 @@ export async function transactional<T>(
 		(
 			transaction: ITransaction
 		): Promise<void>
-	}
+	},
+	context: IContext = {},
 ): Promise<void> {
 	const transactionManager = await DI.db()
 		.get(TRANSACTION_MANAGER)
 	await transactionManager.transact({
 		domainAndPort: 'any'
-	}, callback)
+	}, callback, context)
 }

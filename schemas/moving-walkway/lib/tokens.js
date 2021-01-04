@@ -19,5 +19,5 @@ export const SHARING_NODE_REPO_TRANS_BLOCK_DAO = movingWalkway.token('ISharingNo
 export const SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO = movingWalkway.token('ISharingNodeRepoTransBlockStageDao');
 export const SYNC_CONFLICT_DAO = movingWalkway.token('ISynchronizationConflictDao');
 export const SYNC_CONFLICT_PENDING_NOTIFICATION_DAO = movingWalkway.token('ISynchronizationConflictPendingNotificationDao');
-export const SYNC_CONFLICT_VALUES_DAO = movingWalkway.token();
+export const SYNC_CONFLICT_VALUES_DAO = movingWalkway.token('ISynchronizationConflictValuesDao');
 //# sourceMappingURL=tokens.js.map

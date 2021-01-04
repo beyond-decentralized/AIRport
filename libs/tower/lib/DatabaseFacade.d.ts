@@ -9,19 +9,19 @@ import { OperationManager } from './processing/OperationManager';
 export declare class DatabaseFacade extends OperationManager implements IDatabaseFacade {
     name: string;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context: IOperationContext<any, any>): Promise<number>;
-    insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
+    insertColumnValues<IQE extends IQEntity<any>>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, context: IOperationContext<any, any>): Promise<number>;
-    insertValues<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
+    insertValues<IQE extends IQEntity<any>>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, context: IOperationContext<any, any>): Promise<number>;
-    insertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
+    insertColumnValuesGenerateIds<IQE extends IQEntity<any>>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, context: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
-    insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
+    insertValuesGenerateIds<IQE extends IQEntity<any>>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, context: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
-    deleteWhere<IQE extends IQEntity>(rawDelete: RawDelete<IQE> | {
+    deleteWhere<IQE extends IQEntity<any>>(rawDelete: RawDelete<IQE> | {
         (...args: any[]): RawDelete<IQE>;
     }, context: IOperationContext<any, any>): Promise<number>;
     save<E, EntityCascadeGraph>(entity: E, context: IOperationContext<any, any>, operationName?: OperationName): Promise<number>;
@@ -31,10 +31,10 @@ export declare class DatabaseFacade extends OperationManager implements IDatabas
      *
      * @return Number of records updated
      */
-    updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(rawUpdate: RawUpdateColumns<IEUC, IQE> | {
+    updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity<any>>(rawUpdate: RawUpdateColumns<IEUC, IQE> | {
         (...args: any[]): RawUpdateColumns<IEUC, IQE>;
     }, context: IOperationContext<any, any>): Promise<number>;
-    updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(rawUpdate: RawUpdate<IEUP, IQE> | {
+    updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity<any>>(rawUpdate: RawUpdate<IEUP, IQE> | {
         (...args: any[]): RawUpdate<IEUP, IQE>;
     }, context: IOperationContext<any, any>): Promise<number>;
     getOriginalRecord<T>(dbEntity: DbEntity, entity: T, updateCache: IUpdateCache): Promise<any>;

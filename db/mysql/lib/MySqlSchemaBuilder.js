@@ -1,13 +1,13 @@
 import { AIR_DB } from '@airport/air-control';
 import { SEQUENCE_DAO } from '@airport/airport-code';
-import { container, DI } from '@airport/di';
+import { container, DI, } from '@airport/di';
 import { getSchemaName, QueryType, SQLDataType } from '@airport/ground-control';
 import { SCHEMA_BUILDER, SqlSchemaBuilder } from '@airport/landing';
 export class MySqlSchemaBuilder extends SqlSchemaBuilder {
-    async createSchema(jsonSchema, storeDriver) {
+    async createSchema(jsonSchema, storeDriver, context) {
         const schemaName = getSchemaName(jsonSchema);
         const createSchemaStatement = `CREATE SCHEMA ${schemaName}`;
-        await storeDriver.query(QueryType.DDL, createSchemaStatement, [], false);
+        await storeDriver.query(QueryType.DDL, createSchemaStatement, [], context, false);
     }
     getColumnSuffix(jsonSchema, jsonEntity, jsonColumn) {
         let primaryKeySuffix = '';
@@ -46,7 +46,7 @@ export class MySqlSchemaBuilder extends SqlSchemaBuilder {
     getCreateTableSuffix(jsonSchema, jsonEntity) {
         return ``;
     }
-    async buildAllSequences(jsonSchemas) {
+    async buildAllSequences(jsonSchemas, context) {
         console.log('buildAllSequences');
         let [airDb, sequenceDao] = await container(this).get(AIR_DB, SEQUENCE_DAO);
         let allSequences = [];
@@ -56,10 +56,10 @@ export class MySqlSchemaBuilder extends SqlSchemaBuilder {
                 allSequences = allSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity));
             }
         }
-        await sequenceDao.bulkCreate(allSequences);
+        await sequenceDao.save(allSequences);
         return allSequences;
     }
-    stageSequences(jsonSchemas, airDb) {
+    stageSequences(jsonSchemas, airDb, context) {
         console.log('stageSequences');
         let stagedSequences = [];
         for (const jsonSchema of jsonSchemas) {

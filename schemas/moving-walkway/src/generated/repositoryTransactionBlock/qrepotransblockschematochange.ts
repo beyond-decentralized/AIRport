@@ -32,6 +32,9 @@ import {
 	QRepositoryTransactionBlockQRelation,
 } from './qrepositorytransactionblock';
 import {
+	RepositoryTransactionBlock,
+} from '../../ddl/repositoryTransactionBlock/RepositoryTransactionBlock';
+import {
 	SchemaGraph,
 	SchemaEId,
 	SchemaEOptionalId,
@@ -40,7 +43,11 @@ import {
 	QSchema,
 	QSchemaQId,
 	QSchemaQRelation,
+	Schema,
 } from '@airport/traffic-pattern';
+import {
+	RepoTransBlockSchemaToChange,
+} from '../../ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange';
 
 
 declare function require(moduleName: string): any;
@@ -153,7 +160,7 @@ extends RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepoTransBlockSchemaToChange extends IQEntity
+export interface QRepoTransBlockSchemaToChange extends IQEntity<RepoTransBlockSchemaToChange>
 {
 	// Id Fields
 
@@ -184,6 +191,6 @@ export interface QRepoTransBlockSchemaToChangeQId
 
 // Entity Relation Interface
 export interface QRepoTransBlockSchemaToChangeQRelation
-	extends IQRelation<QRepoTransBlockSchemaToChange>, QRepoTransBlockSchemaToChangeQId {
+	extends IQRelation<RepoTransBlockSchemaToChange, QRepoTransBlockSchemaToChange>, QRepoTransBlockSchemaToChangeQId {
 }
 

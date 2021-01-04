@@ -1,11 +1,9 @@
 import { IVersionedSchemaObject } from './versionedschemaobject';
 import { TableConfiguration } from '@airport/air-control';
-import { SchemaColumn } from '../../ddl/schema/SchemaColumn';
-import { SchemaProperty } from '../../ddl/schema/SchemaProperty';
-import { ISchemaVersion } from './schemaversion';
 import { ISchemaColumn } from './schemacolumn';
-import { ISchemaOperation } from './schemaoperation';
 import { ISchemaProperty } from './schemaproperty';
+import { ISchemaVersion } from './schemaversion';
+import { ISchemaOperation } from './schemaoperation';
 import { ISchemaRelation } from './schemarelation';
 export interface ISchemaEntity extends IVersionedSchemaObject {
     id: number;
@@ -21,14 +19,14 @@ export interface ISchemaEntity extends IVersionedSchemaObject {
     relations?: ISchemaRelation[];
     relationReferences?: ISchemaRelation[];
     columnMap?: {
-        [name: string]: SchemaColumn;
+        [name: string]: ISchemaColumn;
     };
-    idColumns?: SchemaColumn[];
+    idColumns?: ISchemaColumn[];
     idColumnMap?: {
-        [name: string]: SchemaColumn;
+        [name: string]: ISchemaColumn;
     };
     propertyMap?: {
-        [name: string]: SchemaProperty;
+        [name: string]: ISchemaProperty;
     };
 }
 //# sourceMappingURL=schemaentity.d.ts.map

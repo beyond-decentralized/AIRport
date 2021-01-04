@@ -1,6 +1,9 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { SharingMessageGraph, SharingMessageESelect, QSharingMessage } from '../sharingmessage/qsharingmessage';
+import { SharingMessageGraph, SharingMessageESelect, QSharingMessage } from '../sharingMessage/qsharingmessage';
+import { SharingMessage } from '../../ddl/sharingMessage/SharingMessage';
 import { SharingNodeRepoTransBlockGraph, SharingNodeRepoTransBlockESelect, QSharingNodeRepoTransBlock } from './qsharingnoderepotransblock';
+import { SharingNodeRepoTransBlock } from '../../ddl/sharingNode/SharingNodeRepoTransBlock';
+import { SharingNode } from '../../ddl/sharingNode/SharingNode';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -70,19 +73,19 @@ export interface SharingNodeECreateColumns extends SharingNodeEId, SharingNodeEU
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingNode extends IQEntity {
+export interface QSharingNode extends IQEntity<SharingNode> {
     id: IQNumberField;
     sharingMechanism: IQNumberField;
     isActive: IQBooleanField;
     syncFrequency: IQNumberField;
     connectionProtocol: IQNumberField;
     connectionUrl: IQStringField;
-    messages: IQOneToManyRelation<QSharingMessage>;
-    sharingNodeRepoTransBlocks: IQOneToManyRelation<QSharingNodeRepoTransBlock>;
+    messages: IQOneToManyRelation<SharingMessage, QSharingMessage>;
+    sharingNodeRepoTransBlocks: IQOneToManyRelation<SharingNodeRepoTransBlock, QSharingNodeRepoTransBlock>;
 }
 export interface QSharingNodeQId {
     id: IQNumberField;
 }
-export interface QSharingNodeQRelation extends IQRelation<QSharingNode>, QSharingNodeQId {
+export interface QSharingNodeQRelation extends IQRelation<SharingNode, QSharingNode>, QSharingNodeQId {
 }
 //# sourceMappingURL=qsharingnode.d.ts.map

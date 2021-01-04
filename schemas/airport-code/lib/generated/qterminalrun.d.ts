@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { TerminalRun } from '../ddl/TerminalRun';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -52,7 +53,7 @@ export interface TerminalRunECreateColumns extends TerminalRunEId, TerminalRunEU
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTerminalRun extends IQEntity {
+export interface QTerminalRun extends IQEntity<TerminalRun> {
     id: IQNumberField;
     createTimestamp: IQNumberField;
     randomNumber: IQNumberField;
@@ -60,6 +61,6 @@ export interface QTerminalRun extends IQEntity {
 export interface QTerminalRunQId {
     id: IQNumberField;
 }
-export interface QTerminalRunQRelation extends IQRelation<QTerminalRun>, QTerminalRunQId {
+export interface QTerminalRunQRelation extends IQRelation<TerminalRun, QTerminalRun>, QTerminalRunQId {
 }
 //# sourceMappingURL=qterminalrun.d.ts.map

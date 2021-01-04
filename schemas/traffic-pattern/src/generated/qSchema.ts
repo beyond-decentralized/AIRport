@@ -51,7 +51,6 @@ export interface LocalQSchema extends AirportQSchema {
 	SchemaRelation: QSchemaRelation;
 	SchemaRelationColumn: QSchemaRelationColumn;
 	SchemaVersion: QSchemaVersion;
-	VersionedSchemaObject: QVersionedSchemaObject;
 
 }
 

@@ -264,6 +264,30 @@ export declare const MAPPED_SUPERCLASS: {
                                 };
                                 path: string;
                             };
+                            ISchemaEntity: {
+                                fileImports: any;
+                                isLocal: boolean;
+                                objectMapByAsName: {
+                                    ISchemaEntity: {
+                                        asName: string;
+                                        moduleImport: any;
+                                        sourceName: string;
+                                    };
+                                };
+                                path: string;
+                            };
+                            ISchemaReference: {
+                                fileImports: any;
+                                isLocal: boolean;
+                                objectMapByAsName: {
+                                    ISchemaReference: {
+                                        asName: string;
+                                        moduleImport: any;
+                                        sourceName: string;
+                                    };
+                                };
+                                path: string;
+                            };
                         };
                         importMapByModulePath: {
                             "@airport/air-control": any;
@@ -271,6 +295,8 @@ export declare const MAPPED_SUPERCLASS: {
                             "./Schema": any;
                             "./SchemaEntity": any;
                             "./SchemaReference": any;
+                            "../../generated/schema/schemaentity": any;
+                            "../../generated/schema/schemareference": any;
                         };
                     };
                     properties: ({
@@ -511,6 +537,8 @@ export declare const MAPPED_SUPERCLASS: {
                                         SchemaProperty?: undefined;
                                         SchemaRelation?: undefined;
                                         VersionedSchemaObject?: undefined;
+                                        ISchemaColumn?: undefined;
+                                        ISchemaProperty?: undefined;
                                         SchemaReferenceIndex?: undefined;
                                     };
                                     importMapByModulePath: {
@@ -523,6 +551,8 @@ export declare const MAPPED_SUPERCLASS: {
                                         "./SchemaProperty"?: undefined;
                                         "./SchemaRelation"?: undefined;
                                         "./VersionedSchemaObject"?: undefined;
+                                        "../../generated/schema/schemacolumn"?: undefined;
+                                        "../../generated/schema/schemaproperty"?: undefined;
                                     };
                                 };
                                 properties: ({
@@ -994,6 +1024,30 @@ export declare const MAPPED_SUPERCLASS: {
                                             };
                                             path: string;
                                         };
+                                        ISchemaColumn: {
+                                            fileImports: any;
+                                            isLocal: boolean;
+                                            objectMapByAsName: {
+                                                ISchemaColumn: {
+                                                    asName: string;
+                                                    moduleImport: any;
+                                                    sourceName: string;
+                                                };
+                                            };
+                                            path: string;
+                                        };
+                                        ISchemaProperty: {
+                                            fileImports: any;
+                                            isLocal: boolean;
+                                            objectMapByAsName: {
+                                                ISchemaProperty: {
+                                                    asName: string;
+                                                    moduleImport: any;
+                                                    sourceName: string;
+                                                };
+                                            };
+                                            path: string;
+                                        };
                                         SchemaIndex?: undefined;
                                         SchemaName?: undefined;
                                         SchemaScope?: undefined;
@@ -1010,6 +1064,8 @@ export declare const MAPPED_SUPERCLASS: {
                                         "./SchemaRelation": any;
                                         "./SchemaVersion": any;
                                         "./VersionedSchemaObject": any;
+                                        "../../generated/schema/schemacolumn": any;
+                                        "../../generated/schema/schemaproperty": any;
                                         "@airport/territory"?: undefined;
                                     };
                                 };
@@ -2030,6 +2086,8 @@ export declare const MAPPED_SUPERCLASS: {
                                         SchemaOperation?: undefined;
                                         SchemaProperty?: undefined;
                                         SchemaRelation?: undefined;
+                                        ISchemaColumn?: undefined;
+                                        ISchemaProperty?: undefined;
                                     };
                                     importMapByModulePath: {
                                         "@airport/air-control": any;
@@ -2041,6 +2099,8 @@ export declare const MAPPED_SUPERCLASS: {
                                         "./SchemaOperation"?: undefined;
                                         "./SchemaProperty"?: undefined;
                                         "./SchemaRelation"?: undefined;
+                                        "../../generated/schema/schemacolumn"?: undefined;
+                                        "../../generated/schema/schemaproperty"?: undefined;
                                     };
                                 };
                                 properties: ({

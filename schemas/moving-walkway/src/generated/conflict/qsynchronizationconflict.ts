@@ -30,6 +30,7 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
+	Repository,
 	RecordHistoryGraph,
 	RecordHistoryEId,
 	RecordHistoryEOptionalId,
@@ -38,6 +39,7 @@ import {
 	QRecordHistory,
 	QRecordHistoryQId,
 	QRecordHistoryQRelation,
+	RecordHistory,
 } from '@airport/holding-pattern';
 import {
 	SynchronizationConflictValuesGraph,
@@ -49,6 +51,12 @@ import {
 	QSynchronizationConflictValuesQId,
 	QSynchronizationConflictValuesQRelation,
 } from './qsynchronizationconflictvalues';
+import {
+	SynchronizationConflictValues,
+} from '../../ddl/conflict/SynchronizationConflictValues';
+import {
+	SynchronizationConflict,
+} from '../../ddl/conflict/SynchronizationConflict';
 
 
 declare function require(moduleName: string): any;
@@ -169,7 +177,7 @@ extends SynchronizationConflictEId, SynchronizationConflictEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSynchronizationConflict extends IQEntity
+export interface QSynchronizationConflict extends IQEntity<SynchronizationConflict>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -183,7 +191,7 @@ export interface QSynchronizationConflict extends IQEntity
 	repository: QRepositoryQRelation;
 	overwrittenRecordHistory: QRecordHistoryQRelation;
 	overwritingRecordHistory: QRecordHistoryQRelation;
-	values: IQOneToManyRelation<QSynchronizationConflictValues>;
+	values: IQOneToManyRelation<SynchronizationConflictValues, QSynchronizationConflictValues>;
 
 }
 
@@ -202,6 +210,6 @@ export interface QSynchronizationConflictQId
 
 // Entity Relation Interface
 export interface QSynchronizationConflictQRelation
-	extends IQRelation<QSynchronizationConflict>, QSynchronizationConflictQId {
+	extends IQRelation<SynchronizationConflict, QSynchronizationConflict>, QSynchronizationConflictQId {
 }
 

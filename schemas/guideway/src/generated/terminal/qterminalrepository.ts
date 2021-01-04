@@ -32,6 +32,9 @@ import {
 	QTerminalQRelation,
 } from './qterminal';
 import {
+	Terminal,
+} from '../../ddl/terminal/Terminal';
+import {
 	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QRepositoryQId,
 	QRepositoryQRelation,
 } from '../repository/qrepository';
+import {
+	Repository,
+} from '../../ddl/repository/Repository';
+import {
+	TerminalRepository,
+} from '../../ddl/terminal/TerminalRepository';
 
 
 declare function require(moduleName: string): any;
@@ -153,7 +162,7 @@ extends TerminalRepositoryEId, TerminalRepositoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTerminalRepository extends IQEntity
+export interface QTerminalRepository extends IQEntity<TerminalRepository>
 {
 	// Id Fields
 
@@ -184,6 +193,6 @@ export interface QTerminalRepositoryQId
 
 // Entity Relation Interface
 export interface QTerminalRepositoryQRelation
-	extends IQRelation<QTerminalRepository>, QTerminalRepositoryQId {
+	extends IQRelation<TerminalRepository, QTerminalRepository>, QTerminalRepositoryQId {
 }
 

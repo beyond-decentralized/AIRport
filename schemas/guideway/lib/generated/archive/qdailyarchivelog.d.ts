@@ -1,5 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '../repository/qrepository';
+import { DailyArchiveLog } from '../../ddl/archive/DailyArchiveLog';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -53,7 +54,7 @@ export interface DailyArchiveLogECreateColumns extends DailyArchiveLogEId, Daily
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDailyArchiveLog extends IQEntity {
+export interface QDailyArchiveLog extends IQEntity<DailyArchiveLog> {
     dateNumber: IQNumberField;
     repository: QRepositoryQRelation;
     numberOfChanges: IQNumberField;
@@ -62,6 +63,6 @@ export interface QDailyArchiveLogQId {
     dateNumber: IQNumberField;
     repository: QRepositoryQId;
 }
-export interface QDailyArchiveLogQRelation extends IQRelation<QDailyArchiveLog>, QDailyArchiveLogQId {
+export interface QDailyArchiveLogQRelation extends IQRelation<DailyArchiveLog, QDailyArchiveLog>, QDailyArchiveLogQId {
 }
 //# sourceMappingURL=qdailyarchivelog.d.ts.map

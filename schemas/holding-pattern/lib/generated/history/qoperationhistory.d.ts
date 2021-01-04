@@ -2,6 +2,8 @@ import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntity
 import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEOptionalId, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistoryQId, QRepositoryTransactionHistoryQRelation } from './qrepositorytransactionhistory';
 import { SchemaEntityGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
 import { RecordHistoryGraph, RecordHistoryESelect, QRecordHistory } from './qrecordhistory';
+import { RecordHistory } from '../../ddl/history/RecordHistory';
+import { OperationHistory } from '../../ddl/history/OperationHistory';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -69,19 +71,19 @@ export interface OperationHistoryECreateColumns extends OperationHistoryEId, Ope
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QOperationHistory extends IQEntity {
+export interface QOperationHistory extends IQEntity<OperationHistory> {
     id: IQNumberField;
     repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
     orderNumber: IQNumberField;
     changeType: IQNumberField;
     systemWideOperationId: IQNumberField;
     entity: QSchemaEntityQRelation;
-    recordHistory: IQOneToManyRelation<QRecordHistory>;
+    recordHistory: IQOneToManyRelation<RecordHistory, QRecordHistory>;
 }
 export interface QOperationHistoryQId {
     id: IQNumberField;
     repositoryTransactionHistory: QRepositoryTransactionHistoryQId;
 }
-export interface QOperationHistoryQRelation extends IQRelation<QOperationHistory>, QOperationHistoryQId {
+export interface QOperationHistoryQRelation extends IQRelation<OperationHistory, QOperationHistory>, QOperationHistoryQId {
 }
 //# sourceMappingURL=qoperationhistory.d.ts.map

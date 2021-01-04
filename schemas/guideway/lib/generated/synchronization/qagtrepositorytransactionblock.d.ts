@@ -1,9 +1,12 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
 import { TerminalRepositoryGraph, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
+import { TerminalRepository } from '../../ddl/terminal/TerminalRepository';
 import { TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
 import { ServerGraph, ServerEOptionalId, ServerESelect, QServerQRelation } from '../server/qserver';
 import { SyncLogGraph, SyncLogESelect, QSyncLog } from './qsynclog';
+import { SyncLog } from '../../ddl/synchronization/SyncLog';
+import { AgtRepositoryTransactionBlock } from '../../ddl/synchronization/AgtRepositoryTransactionBlock';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -81,21 +84,21 @@ export interface AgtRepositoryTransactionBlockECreateColumns extends AgtReposito
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QAgtRepositoryTransactionBlock extends IQEntity {
+export interface QAgtRepositoryTransactionBlock extends IQEntity<AgtRepositoryTransactionBlock> {
     id: IQNumberField;
     archivingStatus: IQNumberField;
     addDatetime: IQNumberField;
     tmRepositoryTransactionBlockId: IQNumberField;
     contents: IQStringField;
     repository: QRepositoryQRelation;
-    terminalRepositories: IQOneToManyRelation<QTerminalRepository>;
+    terminalRepositories: IQOneToManyRelation<TerminalRepository, QTerminalRepository>;
     terminal: QTerminalQRelation;
     archivingServer: QServerQRelation;
-    syncLogs: IQOneToManyRelation<QSyncLog>;
+    syncLogs: IQOneToManyRelation<SyncLog, QSyncLog>;
 }
 export interface QAgtRepositoryTransactionBlockQId {
     id: IQNumberField;
 }
-export interface QAgtRepositoryTransactionBlockQRelation extends IQRelation<QAgtRepositoryTransactionBlock>, QAgtRepositoryTransactionBlockQId {
+export interface QAgtRepositoryTransactionBlockQRelation extends IQRelation<AgtRepositoryTransactionBlock, QAgtRepositoryTransactionBlock>, QAgtRepositoryTransactionBlockQId {
 }
 //# sourceMappingURL=qagtrepositorytransactionblock.d.ts.map

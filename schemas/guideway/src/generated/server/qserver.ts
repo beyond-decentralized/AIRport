@@ -31,6 +31,12 @@ import {
 	QServerSyncLogQId,
 	QServerSyncLogQRelation,
 } from './qserversynclog';
+import {
+	ServerSyncLog,
+} from '../../ddl/server/ServerSyncLog';
+import {
+	Server,
+} from '../../ddl/server/Server';
 
 
 declare function require(moduleName: string): any;
@@ -139,7 +145,7 @@ extends ServerEId, ServerEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QServer extends IQEntity
+export interface QServer extends IQEntity<Server>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -150,7 +156,7 @@ export interface QServer extends IQEntity
 	serverType: IQNumberField;
 
 	// Non-Id Relations
-	serverSyncLogs: IQOneToManyRelation<QServerSyncLog>;
+	serverSyncLogs: IQOneToManyRelation<ServerSyncLog, QServerSyncLog>;
 
 }
 
@@ -169,6 +175,6 @@ export interface QServerQId
 
 // Entity Relation Interface
 export interface QServerQRelation
-	extends IQRelation<QServer>, QServerQId {
+	extends IQRelation<Server, QServer>, QServerQId {
 }
 

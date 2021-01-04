@@ -32,6 +32,9 @@ import {
 	QActorQRelation,
 } from '../infrastructure/qactor';
 import {
+	Actor,
+} from '../../ddl/infrastructure/Actor';
+import {
 	RepositoryActorGraph,
 	RepositoryActorEId,
 	RepositoryActorEOptionalId,
@@ -41,6 +44,9 @@ import {
 	QRepositoryActorQId,
 	QRepositoryActorQRelation,
 } from './qrepositoryactor';
+import {
+	RepositoryActor,
+} from '../../ddl/repository/RepositoryActor';
 import {
 	RepositoryApplicationGraph,
 	RepositoryApplicationEId,
@@ -52,6 +58,9 @@ import {
 	QRepositoryApplicationQRelation,
 } from './qrepositoryapplication';
 import {
+	RepositoryApplication,
+} from '../../ddl/repository/RepositoryApplication';
+import {
 	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
@@ -61,6 +70,12 @@ import {
 	QRepositoryTransactionHistoryQId,
 	QRepositoryTransactionHistoryQRelation,
 } from '../history/qrepositorytransactionhistory';
+import {
+	RepositoryTransactionHistory,
+} from '../../ddl/history/RepositoryTransactionHistory';
+import {
+	Repository,
+} from '../../ddl/repository/Repository';
 
 
 declare function require(moduleName: string): any;
@@ -197,7 +212,7 @@ extends RepositoryEId, RepositoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepository extends IQEntity
+export interface QRepository extends IQEntity<Repository>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -214,9 +229,9 @@ export interface QRepository extends IQEntity
 
 	// Non-Id Relations
 	ownerActor: QActorQRelation;
-	repositoryActors: IQOneToManyRelation<QRepositoryActor>;
-	repositoryApplications: IQOneToManyRelation<QRepositoryApplication>;
-	repositoryTransactionHistory: IQOneToManyRelation<QRepositoryTransactionHistory>;
+	repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
+	repositoryApplications: IQOneToManyRelation<RepositoryApplication, QRepositoryApplication>;
+	repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
 
 }
 
@@ -235,6 +250,6 @@ export interface QRepositoryQId
 
 // Entity Relation Interface
 export interface QRepositoryQRelation
-	extends IQRelation<QRepository>, QRepositoryQId {
+	extends IQRelation<Repository, QRepository>, QRepositoryQId {
 }
 

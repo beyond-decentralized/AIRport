@@ -1,6 +1,9 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { UserTerminalGraph, UserTerminalESelect, QUserTerminal } from './quserterminal';
+import { UserTerminal } from '../ddl/UserTerminal';
 import { UserTerminalAgtGraph, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
+import { UserTerminalAgt } from '../ddl/UserTerminalAgt';
+import { User } from '../ddl/User';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -70,19 +73,19 @@ export interface UserECreateColumns extends UserEId, UserEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QUser extends IQEntity {
+export interface QUser extends IQEntity<User> {
     id: IQNumberField;
     uniqueId: IQStringField;
     firstName: IQStringField;
     lastName: IQStringField;
     middleName: IQStringField;
     phone: IQStringField;
-    userTerminal: IQOneToManyRelation<QUserTerminal>;
-    userTerminalAgts: IQOneToManyRelation<QUserTerminalAgt>;
+    userTerminal: IQOneToManyRelation<UserTerminal, QUserTerminal>;
+    userTerminalAgts: IQOneToManyRelation<UserTerminalAgt, QUserTerminalAgt>;
 }
 export interface QUserQId {
     id: IQNumberField;
 }
-export interface QUserQRelation extends IQRelation<QUser>, QUserQId {
+export interface QUserQRelation extends IQRelation<User, QUser>, QUserQId {
 }
 //# sourceMappingURL=quser.d.ts.map

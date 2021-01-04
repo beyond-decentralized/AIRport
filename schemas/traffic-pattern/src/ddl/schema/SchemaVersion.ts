@@ -22,6 +22,8 @@ import {
 import {Schema}          from './Schema'
 import {SchemaEntity}    from './SchemaEntity'
 import {SchemaReference} from './SchemaReference'
+import { ISchemaEntity } from '../../generated/schema/schemaentity';
+import { ISchemaReference } from '../../generated/schema/schemareference';
 
 
 @Entity()
@@ -67,12 +69,12 @@ export class SchemaVersion {
 	referencedBy: SchemaReference[] = []
 
 	@Transient()
-	entityMapByName?: { [entityName: string]: SchemaEntity } = {}
+	entityMapByName?: { [entityName: string]: ISchemaEntity } = {}
 
 	@Transient()
-	referencesMapByName?: { [schemaName: string]: SchemaReference } = {}
+	referencesMapByName?: { [schemaName: string]: ISchemaReference } = {}
 
 	@Transient()
-	referencedByMapByName?: { [schemaName: string]: SchemaReference } = {}
+	referencedByMapByName?: { [schemaName: string]: ISchemaReference } = {}
 
 }

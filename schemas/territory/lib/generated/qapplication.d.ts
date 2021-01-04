@@ -1,6 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { DomainGraph, DomainEOptionalId, DomainESelect, QDomainQRelation } from './qdomain';
 import { ApplicationPackageGraph, ApplicationPackageESelect, QApplicationPackage } from './qapplicationpackage';
+import { ApplicationPackage } from '../ddl/ApplicationPackage';
+import { Application } from '../ddl/Application';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -56,15 +58,15 @@ export interface ApplicationECreateColumns extends ApplicationEId, ApplicationEU
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplication extends IQEntity {
+export interface QApplication extends IQEntity<Application> {
     id: IQNumberField;
     name: IQStringField;
     domain: QDomainQRelation;
-    applicationPackages: IQOneToManyRelation<QApplicationPackage>;
+    applicationPackages: IQOneToManyRelation<ApplicationPackage, QApplicationPackage>;
 }
 export interface QApplicationQId {
     id: IQNumberField;
 }
-export interface QApplicationQRelation extends IQRelation<QApplication>, QApplicationQId {
+export interface QApplicationQRelation extends IQRelation<Application, QApplication>, QApplicationQId {
 }
 //# sourceMappingURL=qapplication.d.ts.map

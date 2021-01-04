@@ -43,7 +43,7 @@ export interface RepoQueryData {
 }
 
 export interface EntityRepoQueryData {
-	qEntity: IQEntityInternal,
+	qEntity: IQEntityInternal<any>,
 	idProperty: string;
 }
 
@@ -81,20 +81,20 @@ export interface IRepositoryManager {
 
 	getDeltaStore(repository: IRepository): IDeltaStore;
 
-	ensureRepositoryScopeOnInsertValues<IQE extends IQEntityInternal>(
+	ensureRepositoryScopeOnInsertValues<IQE extends IQEntityInternal<any>>(
 		repository: IRepository,
 		rawInsertValues: RawInsertValues<IQE>
 	): RawInsertValues<IQE>;
 
-	ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal>(
-		qEntity: IQEntityInternal,
+	ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal<any>>(
+		qEntity: IQEntityInternal<any>,
 		repository: IRepository,
 		rawUpdate: RawUpdate<IEUP, IQE>
 	): RawUpdate<IEUP, IQE>;
 
 	getOnlyRepositoryInDatabase(): IRepository;
 
-	ensureRepositoryScopeOnDeleteWhere<IQE extends IQEntityInternal>(
+	ensureRepositoryScopeOnDeleteWhere<IQE extends IQEntityInternal<any>>(
 		qEntity: IQE,
 		repository: IRepository,
 		rawDelete: RawDelete<IQE>
@@ -256,7 +256,7 @@ export class RepositoryManager
 			url: null,
 		}
 		const repositoryDao = await container(this).get(REPOSITORY_DAO)
-		await repositoryDao.create(repository)
+		await repositoryDao.save(repository)
 		this.repositories.push(repository)
 
 		return repository
@@ -286,7 +286,7 @@ export class RepositoryManager
 		return this.repositories[0]
 	}
 
-	ensureRepositoryScopeOnInsertValues<IQE extends IQEntityInternal>(
+	ensureRepositoryScopeOnInsertValues<IQE extends IQEntityInternal<any>>(
 		repository: IRepository,
 		rawInsertValues: RawInsertValues<IQE>
 	): RawInsertValues<IQE> {
@@ -319,8 +319,8 @@ export class RepositoryManager
 		}
 	}
 
-	ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal>(
-		qEntity: IQEntityInternal,
+	ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal<any>>(
+		qEntity: IQEntityInternal<any>,
 		repository: IRepository,
 		rawUpdate: RawUpdate<IEUP, IQE>
 	): RawUpdate<IEUP, IQE> {
@@ -330,11 +330,11 @@ export class RepositoryManager
 		return {
 			update: rawUpdate.update,
 			set: rawUpdate.set,
-			where: and(rawUpdate.where, (<QRepositoryEntity><any>qEntity).repository.id.equals(repository.id))
+			where: and(rawUpdate.where, (<QRepositoryEntity<any>><any>qEntity).repository.id.equals(repository.id))
 		}
 	}
 
-	ensureRepositoryScopeOnDeleteWhere<IQE extends IQEntityInternal>(
+	ensureRepositoryScopeOnDeleteWhere<IQE extends IQEntityInternal<any>>(
 		qEntity: IQE,
 		repository: IRepository,
 		rawDelete: RawDelete<IQE>
@@ -344,7 +344,7 @@ export class RepositoryManager
 		}
 		return {
 			deleteFrom: rawDelete.deleteFrom,
-			where: and(rawDelete.where, (<QRepositoryEntity><any>qEntity).repository.id.equals(repository.id))
+			where: and(rawDelete.where, (<QRepositoryEntity<any>><any>qEntity).repository.id.equals(repository.id))
 		}
 	}
 

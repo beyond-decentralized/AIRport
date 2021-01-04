@@ -1,6 +1,9 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { TerminalRepositoryGraph, TerminalRepositoryESelect, QTerminalRepository } from '../terminal/qterminalrepository';
+import { TerminalRepository } from '../../ddl/terminal/TerminalRepository';
 import { AgtRepositoryTransactionBlockGraph, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
+import { AgtRepositoryTransactionBlock } from '../../ddl/synchronization/AgtRepositoryTransactionBlock';
+import { Repository } from '../../ddl/repository/Repository';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -62,17 +65,17 @@ export interface RepositoryECreateColumns extends RepositoryEId, RepositoryEUpda
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepository extends IQEntity {
+export interface QRepository extends IQEntity<Repository> {
     id: IQNumberField;
     lastUpdateTime: IQDateField;
     name: IQStringField;
     status: IQNumberField;
-    terminalRepositories: IQOneToManyRelation<QTerminalRepository>;
-    repositoryTransactionBlocks: IQOneToManyRelation<QAgtRepositoryTransactionBlock>;
+    terminalRepositories: IQOneToManyRelation<TerminalRepository, QTerminalRepository>;
+    repositoryTransactionBlocks: IQOneToManyRelation<AgtRepositoryTransactionBlock, QAgtRepositoryTransactionBlock>;
 }
 export interface QRepositoryQId {
     id: IQNumberField;
 }
-export interface QRepositoryQRelation extends IQRelation<QRepository>, QRepositoryQId {
+export interface QRepositoryQRelation extends IQRelation<Repository, QRepository>, QRepositoryQId {
 }
 //# sourceMappingURL=qrepository.d.ts.map

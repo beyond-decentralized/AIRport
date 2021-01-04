@@ -32,6 +32,9 @@ import {
 	QAgtSharingMessageQRelation,
 } from './qagtsharingmessage';
 import {
+	AgtSharingMessage,
+} from '../../ddl/synchronization/AgtSharingMessage';
+import {
 	AgtRepositoryTransactionBlockGraph,
 	AgtRepositoryTransactionBlockEId,
 	AgtRepositoryTransactionBlockEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QAgtRepositoryTransactionBlockQId,
 	QAgtRepositoryTransactionBlockQRelation,
 } from './qagtrepositorytransactionblock';
+import {
+	AgtRepositoryTransactionBlock,
+} from '../../ddl/synchronization/AgtRepositoryTransactionBlock';
+import {
+	SyncLog,
+} from '../../ddl/synchronization/SyncLog';
 
 
 declare function require(moduleName: string): any;
@@ -149,7 +158,7 @@ extends SyncLogEId, SyncLogEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSyncLog extends IQEntity
+export interface QSyncLog extends IQEntity<SyncLog>
 {
 	// Id Fields
 
@@ -179,6 +188,6 @@ export interface QSyncLogQId
 
 // Entity Relation Interface
 export interface QSyncLogQRelation
-	extends IQRelation<QSyncLog>, QSyncLogQId {
+	extends IQRelation<SyncLog, QSyncLog>, QSyncLogQId {
 }
 

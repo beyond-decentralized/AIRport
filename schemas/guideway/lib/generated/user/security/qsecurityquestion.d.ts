@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { SecurityQuestion } from '../../../ddl/user/security/SecurityQuestion';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -48,13 +49,13 @@ export interface SecurityQuestionECreateColumns extends SecurityQuestionEId, Sec
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSecurityQuestion extends IQEntity {
+export interface QSecurityQuestion extends IQEntity<SecurityQuestion> {
     id: IQNumberField;
     question: IQStringField;
 }
 export interface QSecurityQuestionQId {
     id: IQNumberField;
 }
-export interface QSecurityQuestionQRelation extends IQRelation<QSecurityQuestion>, QSecurityQuestionQId {
+export interface QSecurityQuestionQRelation extends IQRelation<SecurityQuestion, QSecurityQuestion>, QSecurityQuestionQId {
 }
 //# sourceMappingURL=qsecurityquestion.d.ts.map

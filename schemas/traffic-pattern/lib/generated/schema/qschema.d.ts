@@ -1,6 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { DomainGraph, DomainEOptionalId, DomainESelect, QDomainQRelation } from '@airport/territory';
 import { SchemaVersionGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersion, QSchemaVersionQRelation } from './qschemaversion';
+import { SchemaVersion } from '../../ddl/schema/SchemaVersion';
+import { Schema } from '../../ddl/schema/Schema';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -68,18 +70,18 @@ export interface SchemaECreateColumns extends SchemaEId, SchemaEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchema extends IQEntity {
+export interface QSchema extends IQEntity<Schema> {
     index: IQNumberField;
     scope: IQStringField;
     name: IQStringField;
     status: IQNumberField;
     domain: QDomainQRelation;
-    versions: IQOneToManyRelation<QSchemaVersion>;
+    versions: IQOneToManyRelation<SchemaVersion, QSchemaVersion>;
     currentVersion: QSchemaVersionQRelation;
 }
 export interface QSchemaQId {
     index: IQNumberField;
 }
-export interface QSchemaQRelation extends IQRelation<QSchema>, QSchemaQId {
+export interface QSchemaQRelation extends IQRelation<Schema, QSchema>, QSchemaQId {
 }
 //# sourceMappingURL=qschema.d.ts.map

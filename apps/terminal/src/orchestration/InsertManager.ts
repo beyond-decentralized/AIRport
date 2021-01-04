@@ -6,8 +6,8 @@ import {
 }                           from '@airport/check-in'
 import {
 	container,
-	DI
-}                           from '@airport/di'
+	DI, IContext,
+} from '@airport/di';
 import {
 	ChangeType,
 	DbColumn,
@@ -53,6 +53,7 @@ export interface IInsertManager {
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
+		context: IContext,
 		ensureGeneratedValues?: boolean
 	): Promise<number>;
 
@@ -60,6 +61,7 @@ export interface IInsertManager {
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
+		context: IContext,
 	): Promise<RecordId[] | RecordId[][]>;
 
 	addRepository(
@@ -88,19 +90,21 @@ export class InsertManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
+		context: IContext,
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
 		return <number>await this.internalInsertValues(
-			portableQuery, actor, transaction, ensureGeneratedValues)
+			portableQuery, actor, transaction, context, ensureGeneratedValues)
 	}
 
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
 		actor: IActor,
-		transaction: ITransaction
+		transaction: ITransaction,
+		context: IContext,
 	): Promise<RecordId[] | RecordId[][]> {
 		return <RecordId[] | RecordId[][]>await this.internalInsertValues(
-			portableQuery, actor, transaction)
+			portableQuery, actor, transaction, context)
 	}
 
 	async addRepository(
@@ -145,6 +149,7 @@ export class InsertManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
+		context: IContext,
 		getIds: boolean                = false,
 		ensureGeneratedValues: boolean = true
 	): Promise<number | RecordId[] | RecordId[][]> {
@@ -223,7 +228,8 @@ appears more than once in the Columns clause`)
 				repoTransHistoryDuo, transaction)
 		}
 
-		const numberOfInsertedRecords = await transaction.insertValues(portableQuery)
+		const numberOfInsertedRecords = await transaction.insertValues(
+			portableQuery, context)
 
 		return getIds ? ids : numberOfInsertedRecords
 	}

@@ -1,5 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '../repository/qrepository';
+import { MonthlyArchiveLog } from '../../ddl/archive/MonthlyArchiveLog';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -57,7 +58,7 @@ export interface MonthlyArchiveLogECreateColumns extends MonthlyArchiveLogEId, M
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMonthlyArchiveLog extends IQEntity {
+export interface QMonthlyArchiveLog extends IQEntity<MonthlyArchiveLog> {
     monthNumber: IQNumberField;
     repository: QRepositoryQRelation;
     numberOfChanges: IQNumberField;
@@ -67,6 +68,6 @@ export interface QMonthlyArchiveLogQId {
     monthNumber: IQNumberField;
     repository: QRepositoryQId;
 }
-export interface QMonthlyArchiveLogQRelation extends IQRelation<QMonthlyArchiveLog>, QMonthlyArchiveLogQId {
+export interface QMonthlyArchiveLogQRelation extends IQRelation<MonthlyArchiveLog, QMonthlyArchiveLog>, QMonthlyArchiveLogQId {
 }
 //# sourceMappingURL=qmonthlyarchivelog.d.ts.map

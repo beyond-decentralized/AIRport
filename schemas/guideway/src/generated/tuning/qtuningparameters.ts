@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	TuningParameters,
+} from '../../ddl/tuning/TuningParameters';
 
 
 declare function require(moduleName: string): any;
@@ -131,7 +134,7 @@ extends TuningParametersEId, TuningParametersEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTuningParameters extends IQEntity
+export interface QTuningParameters extends IQEntity<TuningParameters>
 {
 	// Id Fields
 	serverType: IQStringField;
@@ -164,6 +167,6 @@ export interface QTuningParametersQId
 
 // Entity Relation Interface
 export interface QTuningParametersQRelation
-	extends IQRelation<QTuningParameters>, QTuningParametersQId {
+	extends IQRelation<TuningParameters, QTuningParameters>, QTuningParametersQId {
 }
 

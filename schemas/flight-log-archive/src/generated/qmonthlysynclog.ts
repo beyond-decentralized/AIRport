@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	MonthlySyncLog,
+} from '../ddl/MonthlySyncLog';
 
 
 declare function require(moduleName: string): any;
@@ -131,7 +134,7 @@ extends MonthlySyncLogEId, MonthlySyncLogEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMonthlySyncLog extends IQEntity
+export interface QMonthlySyncLog extends IQEntity<MonthlySyncLog>
 {
 	// Id Fields
 	databaseId: IQNumberField;
@@ -164,6 +167,6 @@ export interface QMonthlySyncLogQId
 
 // Entity Relation Interface
 export interface QMonthlySyncLogQRelation
-	extends IQRelation<QMonthlySyncLog>, QMonthlySyncLogQId {
+	extends IQRelation<MonthlySyncLog, QMonthlySyncLog>, QMonthlySyncLogQId {
 }
 

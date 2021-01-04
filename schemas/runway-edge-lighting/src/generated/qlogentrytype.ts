@@ -30,6 +30,7 @@ import {
 	QApplicationPackage,
 	QApplicationPackageQId,
 	QApplicationPackageQRelation,
+	ApplicationPackage,
 	PackagedUnitGraph,
 	PackagedUnitEId,
 	PackagedUnitEOptionalId,
@@ -38,6 +39,7 @@ import {
 	QPackagedUnit,
 	QPackagedUnitQId,
 	QPackagedUnitQRelation,
+	PackagedUnit,
 } from '@airport/territory';
 import {
 	LogEntryGraph,
@@ -49,6 +51,12 @@ import {
 	QLogEntryQId,
 	QLogEntryQRelation,
 } from './qlogentry';
+import {
+	LogEntry,
+} from '../ddl/LogEntry';
+import {
+	LogEntryType,
+} from '../ddl/LogEntryType';
 
 
 declare function require(moduleName: string): any;
@@ -169,7 +177,7 @@ extends LogEntryTypeEId, LogEntryTypeEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLogEntryType extends IQEntity
+export interface QLogEntryType extends IQEntity<LogEntryType>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -183,7 +191,7 @@ export interface QLogEntryType extends IQEntity
 	// Non-Id Relations
 	applicationPackage: QApplicationPackageQRelation;
 	packagedUnit: QPackagedUnitQRelation;
-	logEntries: IQOneToManyRelation<QLogEntry>;
+	logEntries: IQOneToManyRelation<LogEntry, QLogEntry>;
 
 }
 
@@ -202,6 +210,6 @@ export interface QLogEntryTypeQId
 
 // Entity Relation Interface
 export interface QLogEntryTypeQRelation
-	extends IQRelation<QLogEntryType>, QLogEntryTypeQId {
+	extends IQRelation<LogEntryType, QLogEntryType>, QLogEntryTypeQId {
 }
 

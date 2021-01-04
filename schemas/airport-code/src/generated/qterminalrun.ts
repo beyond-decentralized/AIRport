@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	TerminalRun,
+} from '../ddl/TerminalRun';
 
 
 declare function require(moduleName: string): any;
@@ -131,7 +134,7 @@ extends TerminalRunEId, TerminalRunEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTerminalRun extends IQEntity
+export interface QTerminalRun extends IQEntity<TerminalRun>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -161,6 +164,6 @@ export interface QTerminalRunQId
 
 // Entity Relation Interface
 export interface QTerminalRunQRelation
-	extends IQRelation<QTerminalRun>, QTerminalRunQId {
+	extends IQRelation<TerminalRun, QTerminalRun>, QTerminalRunQId {
 }
 

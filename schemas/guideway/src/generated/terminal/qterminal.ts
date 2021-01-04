@@ -32,6 +32,9 @@ import {
 	QUserQRelation,
 } from '../user/quser';
 import {
+	User,
+} from '../../ddl/user/User';
+import {
 	TerminalRepositoryGraph,
 	TerminalRepositoryEId,
 	TerminalRepositoryEOptionalId,
@@ -42,6 +45,9 @@ import {
 	QTerminalRepositoryQRelation,
 } from './qterminalrepository';
 import {
+	TerminalRepository,
+} from '../../ddl/terminal/TerminalRepository';
+import {
 	AgtSharingMessageGraph,
 	AgtSharingMessageEId,
 	AgtSharingMessageEOptionalId,
@@ -51,6 +57,12 @@ import {
 	QAgtSharingMessageQId,
 	QAgtSharingMessageQRelation,
 } from '../synchronization/qagtsharingmessage';
+import {
+	AgtSharingMessage,
+} from '../../ddl/synchronization/AgtSharingMessage';
+import {
+	Terminal,
+} from '../../ddl/terminal/Terminal';
 
 
 declare function require(moduleName: string): any;
@@ -181,7 +193,7 @@ extends TerminalEId, TerminalEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTerminal extends IQEntity
+export interface QTerminal extends IQEntity<Terminal>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -197,8 +209,8 @@ export interface QTerminal extends IQEntity
 
 	// Non-Id Relations
 	user: QUserQRelation;
-	terminalRepositories: IQOneToManyRelation<QTerminalRepository>;
-	sharingMessages: IQOneToManyRelation<QAgtSharingMessage>;
+	terminalRepositories: IQOneToManyRelation<TerminalRepository, QTerminalRepository>;
+	sharingMessages: IQOneToManyRelation<AgtSharingMessage, QAgtSharingMessage>;
 
 }
 
@@ -217,6 +229,6 @@ export interface QTerminalQId
 
 // Entity Relation Interface
 export interface QTerminalQRelation
-	extends IQRelation<QTerminal>, QTerminalQId {
+	extends IQRelation<Terminal, QTerminal>, QTerminalQId {
 }
 

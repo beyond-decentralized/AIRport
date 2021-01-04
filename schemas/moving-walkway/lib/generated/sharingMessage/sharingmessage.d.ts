@@ -1,4 +1,4 @@
-import { ISharingNode } from '../sharingnode/sharingnode';
+import { ISharingNode } from '../sharingNode/sharingnode';
 import { ISharingMessageRepoTransBlock } from './sharingmessagerepotransblock';
 export interface ISharingMessage {
     id: number;

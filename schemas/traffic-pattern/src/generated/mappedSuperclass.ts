@@ -1,7 +1,7 @@
 export const MAPPED_SUPERCLASS = [
 	{
 		"type": "VersionedSchemaObject",
-		"path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/versionedschemaobject.ts",
+		"path": "/e/code/airport/schemas/traffic-pattern/src/ddl/schema/VersionedSchemaObject.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
@@ -89,7 +89,7 @@ export const MAPPED_SUPERCLASS = [
 					"nonArrayType": "SchemaVersion",
 					"entity": {
 						"type": "SchemaVersion",
-						"path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schemaversion.ts",
+						"path": "/e/code/airport/schemas/traffic-pattern/src/ddl/schema/SchemaVersion.ts",
 						"parentClassName": null,
 						"isSuperclass": false,
 						"ids": [
@@ -297,6 +297,30 @@ export const MAPPED_SUPERCLASS = [
 											}
 										},
 										"path": "./SchemaReference"
+									},
+									"ISchemaEntity": {
+										"fileImports": null,
+										"isLocal": true,
+										"objectMapByAsName": {
+											"ISchemaEntity": {
+												"asName": "ISchemaEntity",
+												"moduleImport": null,
+												"sourceName": "ISchemaEntity"
+											}
+										},
+										"path": "../../generated/schema/schemaentity"
+									},
+									"ISchemaReference": {
+										"fileImports": null,
+										"isLocal": true,
+										"objectMapByAsName": {
+											"ISchemaReference": {
+												"asName": "ISchemaReference",
+												"moduleImport": null,
+												"sourceName": "ISchemaReference"
+											}
+										},
+										"path": "../../generated/schema/schemareference"
 									}
 								},
 								"importMapByModulePath": {
@@ -304,7 +328,9 @@ export const MAPPED_SUPERCLASS = [
 									"@airport/ground-control": null,
 									"./Schema": null,
 									"./SchemaEntity": null,
-									"./SchemaReference": null
+									"./SchemaReference": null,
+									"../../generated/schema/schemaentity": null,
+									"../../generated/schema/schemareference": null
 								}
 							},
 							"properties": [
@@ -500,7 +526,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "Schema",
 									"entity": {
 										"type": "Schema",
-										"path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schema.ts",
+										"path": "/e/code/airport/schemas/traffic-pattern/src/ddl/schema/Schema.ts",
 										"parentClassName": null,
 										"isSuperclass": false,
 										"ids": [
@@ -1059,7 +1085,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "SchemaEntity",
 									"entity": {
 										"type": "SchemaEntity",
-										"path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schemaentity.ts",
+										"path": "/e/code/airport/schemas/traffic-pattern/src/ddl/schema/SchemaEntity.ts",
 										"parentClassName": "VersionedSchemaObject",
 										"location": "./VersionedSchemaObject",
 										"isSuperclass": false,
@@ -1301,6 +1327,30 @@ export const MAPPED_SUPERCLASS = [
 															}
 														},
 														"path": "./VersionedSchemaObject"
+													},
+													"ISchemaColumn": {
+														"fileImports": null,
+														"isLocal": true,
+														"objectMapByAsName": {
+															"ISchemaColumn": {
+																"asName": "ISchemaColumn",
+																"moduleImport": null,
+																"sourceName": "ISchemaColumn"
+															}
+														},
+														"path": "../../generated/schema/schemacolumn"
+													},
+													"ISchemaProperty": {
+														"fileImports": null,
+														"isLocal": true,
+														"objectMapByAsName": {
+															"ISchemaProperty": {
+																"asName": "ISchemaProperty",
+																"moduleImport": null,
+																"sourceName": "ISchemaProperty"
+															}
+														},
+														"path": "../../generated/schema/schemaproperty"
 													}
 												},
 												"importMapByModulePath": {
@@ -1311,7 +1361,9 @@ export const MAPPED_SUPERCLASS = [
 													"./SchemaProperty": null,
 													"./SchemaRelation": null,
 													"./SchemaVersion": null,
-													"./VersionedSchemaObject": null
+													"./VersionedSchemaObject": null,
+													"../../generated/schema/schemacolumn": null,
+													"../../generated/schema/schemaproperty": null
 												}
 											},
 											"properties": [
@@ -1522,7 +1574,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "SchemaColumn",
 													"entity": {
 														"type": "SchemaColumn",
-														"path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schemacolumn.ts",
+														"path": "/e/code/airport/schemas/traffic-pattern/src/ddl/schema/SchemaColumn.ts",
 														"parentClassName": "VersionedSchemaObject",
 														"location": "./VersionedSchemaObject",
 														"isSuperclass": false,
@@ -2011,7 +2063,7 @@ export const MAPPED_SUPERCLASS = [
 																	"nonArrayType": "SchemaPropertyColumn",
 																	"entity": {
 																		"type": "SchemaPropertyColumn",
-																		"path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schemapropertycolumn.ts",
+																		"path": "/e/code/airport/schemas/traffic-pattern/src/ddl/schema/SchemaPropertyColumn.ts",
 																		"parentClassName": "VersionedSchemaObject",
 																		"location": "./VersionedSchemaObject",
 																		"isSuperclass": false,
@@ -2345,7 +2397,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "SchemaOperation",
 													"entity": {
 														"type": "SchemaOperation",
-														"path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schemaoperation.ts",
+														"path": "/e/code/airport/schemas/traffic-pattern/src/ddl/schema/SchemaOperation.ts",
 														"parentClassName": "VersionedSchemaObject",
 														"location": "./VersionedSchemaObject",
 														"isSuperclass": false,
@@ -2759,11 +2811,11 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": true,
 													"name": "columnMap",
-													"type": "{ [name: string]: SchemaColumn; }",
+													"type": "{ [name: string]: ISchemaColumn; }",
 													"ownerEntity": null,
-													"nonArrayType": "{ [name: string]: SchemaColumn; }",
+													"nonArrayType": "{ [name: string]: ISchemaColumn; }",
 													"isMap": true,
-													"mapValueType": "SchemaColumn",
+													"mapValueType": "ISchemaColumn",
 													"mapValueIsPrimitive": false,
 													"mapKeyName": "name",
 													"mapKeyType": "string"
@@ -2780,10 +2832,10 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": true,
 													"name": "idColumns",
-													"type": "SchemaColumn[]",
+													"type": "ISchemaColumn[]",
 													"ownerEntity": null,
 													"isArray": true,
-													"nonArrayType": "SchemaColumn"
+													"nonArrayType": "ISchemaColumn"
 												},
 												{
 													"decorators": [
@@ -2797,11 +2849,11 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": true,
 													"name": "idColumnMap",
-													"type": "{ [name: string]: SchemaColumn; }",
+													"type": "{ [name: string]: ISchemaColumn; }",
 													"ownerEntity": null,
-													"nonArrayType": "{ [name: string]: SchemaColumn; }",
+													"nonArrayType": "{ [name: string]: ISchemaColumn; }",
 													"isMap": true,
-													"mapValueType": "SchemaColumn",
+													"mapValueType": "ISchemaColumn",
 													"mapValueIsPrimitive": false,
 													"mapKeyName": "name",
 													"mapKeyType": "string"
@@ -2818,11 +2870,11 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": true,
 													"name": "propertyMap",
-													"type": "{ [name: string]: SchemaProperty; }",
+													"type": "{ [name: string]: ISchemaProperty; }",
 													"ownerEntity": null,
-													"nonArrayType": "{ [name: string]: SchemaProperty; }",
+													"nonArrayType": "{ [name: string]: ISchemaProperty; }",
 													"isMap": true,
-													"mapValueType": "SchemaProperty",
+													"mapValueType": "ISchemaProperty",
 													"mapValueIsPrimitive": false,
 													"mapKeyName": "name",
 													"mapKeyType": "string"
@@ -2863,7 +2915,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "SchemaReference",
 									"entity": {
 										"type": "SchemaReference",
-										"path": "c:/users/papa/vc/ts/airport/schemas/traffic-pattern/src/ddl/schema/schemareference.ts",
+										"path": "/e/code/airport/schemas/traffic-pattern/src/ddl/schema/SchemaReference.ts",
 										"parentClassName": "VersionedSchemaObject",
 										"location": "./VersionedSchemaObject",
 										"isSuperclass": false,
@@ -3189,11 +3241,11 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": true,
 									"name": "entityMapByName",
-									"type": "{ [entityName: string]: SchemaEntity; }",
+									"type": "{ [entityName: string]: ISchemaEntity; }",
 									"ownerEntity": null,
-									"nonArrayType": "{ [entityName: string]: SchemaEntity; }",
+									"nonArrayType": "{ [entityName: string]: ISchemaEntity; }",
 									"isMap": true,
-									"mapValueType": "SchemaEntity",
+									"mapValueType": "ISchemaEntity",
 									"mapValueIsPrimitive": false,
 									"mapKeyName": "entityName",
 									"mapKeyType": "string"
@@ -3210,11 +3262,11 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": true,
 									"name": "referencesMapByName",
-									"type": "{ [schemaName: string]: SchemaReference; }",
+									"type": "{ [schemaName: string]: ISchemaReference; }",
 									"ownerEntity": null,
-									"nonArrayType": "{ [schemaName: string]: SchemaReference; }",
+									"nonArrayType": "{ [schemaName: string]: ISchemaReference; }",
 									"isMap": true,
-									"mapValueType": "SchemaReference",
+									"mapValueType": "ISchemaReference",
 									"mapValueIsPrimitive": false,
 									"mapKeyName": "schemaName",
 									"mapKeyType": "string"
@@ -3231,11 +3283,11 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": true,
 									"name": "referencedByMapByName",
-									"type": "{ [schemaName: string]: SchemaReference; }",
+									"type": "{ [schemaName: string]: ISchemaReference; }",
 									"ownerEntity": null,
-									"nonArrayType": "{ [schemaName: string]: SchemaReference; }",
+									"nonArrayType": "{ [schemaName: string]: ISchemaReference; }",
 									"isMap": true,
-									"mapValueType": "SchemaReference",
+									"mapValueType": "ISchemaReference",
 									"mapValueIsPrimitive": false,
 									"mapKeyName": "schemaName",
 									"mapKeyType": "string"

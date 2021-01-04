@@ -32,6 +32,9 @@ import {
 	QActorQRelation,
 } from './qactor';
 import {
+	Actor,
+} from '../../ddl/infrastructure/Actor';
+import {
 	ApplicationGraph,
 	ApplicationEId,
 	ApplicationEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QApplicationQId,
 	QApplicationQRelation,
 } from './qapplication';
+import {
+	Application,
+} from '../../ddl/infrastructure/Application';
+import {
+	ActorApplication,
+} from '../../ddl/infrastructure/ActorApplication';
 
 
 declare function require(moduleName: string): any;
@@ -151,7 +160,7 @@ extends ActorApplicationEId, ActorApplicationEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QActorApplication extends IQEntity
+export interface QActorApplication extends IQEntity<ActorApplication>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -182,6 +191,6 @@ export interface QActorApplicationQId
 
 // Entity Relation Interface
 export interface QActorApplicationQRelation
-	extends IQRelation<QActorApplication>, QActorApplicationQId {
+	extends IQRelation<ActorApplication, QActorApplication>, QActorApplicationQId {
 }
 

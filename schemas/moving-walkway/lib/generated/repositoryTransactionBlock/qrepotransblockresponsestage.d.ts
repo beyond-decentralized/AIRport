@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { RepoTransBlockResponseStage } from '../../ddl/repositoryTransactionBlock/RepoTransBlockResponseStage';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -48,13 +49,13 @@ export interface RepoTransBlockResponseStageECreateColumns extends RepoTransBloc
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepoTransBlockResponseStage extends IQEntity {
+export interface QRepoTransBlockResponseStage extends IQEntity<RepoTransBlockResponseStage> {
     id: IQNumberField;
     syncOutcomeType: IQNumberField;
 }
 export interface QRepoTransBlockResponseStageQId {
     id: IQNumberField;
 }
-export interface QRepoTransBlockResponseStageQRelation extends IQRelation<QRepoTransBlockResponseStage>, QRepoTransBlockResponseStageQId {
+export interface QRepoTransBlockResponseStageQRelation extends IQRelation<RepoTransBlockResponseStage, QRepoTransBlockResponseStage>, QRepoTransBlockResponseStageQId {
 }
 //# sourceMappingURL=qrepotransblockresponsestage.d.ts.map

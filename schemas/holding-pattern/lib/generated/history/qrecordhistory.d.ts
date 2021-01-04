@@ -2,7 +2,10 @@ import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntity
 import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
 import { OperationHistoryGraph, OperationHistoryEOptionalId, OperationHistoryESelect, QOperationHistoryQRelation } from './qoperationhistory';
 import { RecordHistoryNewValueGraph, RecordHistoryNewValueESelect, QRecordHistoryNewValue } from './qrecordhistorynewvalue';
+import { RecordHistoryNewValue } from '../../ddl/history/RecordHistoryNewValue';
 import { RecordHistoryOldValueGraph, RecordHistoryOldValueESelect, QRecordHistoryOldValue } from './qrecordhistoryoldvalue';
+import { RecordHistoryOldValue } from '../../ddl/history/RecordHistoryOldValue';
+import { RecordHistory } from '../../ddl/history/RecordHistory';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -64,17 +67,17 @@ export interface RecordHistoryECreateColumns extends RecordHistoryEId, RecordHis
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRecordHistory extends IQEntity {
+export interface QRecordHistory extends IQEntity<RecordHistory> {
     id: IQNumberField;
     actorRecordId: IQNumberField;
     actor: QActorQRelation;
     operationHistory: QOperationHistoryQRelation;
-    newValues: IQOneToManyRelation<QRecordHistoryNewValue>;
-    oldValues: IQOneToManyRelation<QRecordHistoryOldValue>;
+    newValues: IQOneToManyRelation<RecordHistoryNewValue, QRecordHistoryNewValue>;
+    oldValues: IQOneToManyRelation<RecordHistoryOldValue, QRecordHistoryOldValue>;
 }
 export interface QRecordHistoryQId {
     id: IQNumberField;
 }
-export interface QRecordHistoryQRelation extends IQRelation<QRecordHistory>, QRecordHistoryQId {
+export interface QRecordHistoryQRelation extends IQRelation<RecordHistory, QRecordHistory>, QRecordHistoryQId {
 }
 //# sourceMappingURL=qrecordhistory.d.ts.map

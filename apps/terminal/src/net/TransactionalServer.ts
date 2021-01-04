@@ -62,11 +62,13 @@ export class TransactionalServer
 
 	tempActor: IActor
 
-	async init(): Promise<void> {
+	async init(
+		context: IContext = {}
+	): Promise<void> {
 		const transManager = await container(this)
 			.get(TRANSACTION_MANAGER)
 
-		return await transManager.init('airport')
+		return await transManager.init('airport', context)
 	}
 
 	async find<E, EntityArray extends Array<E>>(
@@ -162,7 +164,7 @@ export class TransactionalServer
 
 		const actor = await this.getActor(portableQuery)
 		return await insertManager.insertValues(portableQuery, actor,
-			transaction, ensureGeneratedValues)
+			transaction, context, ensureGeneratedValues)
 	}
 
 	async insertValuesGetIds(
@@ -175,7 +177,8 @@ export class TransactionalServer
 
 		const actor = await this.getActor(portableQuery)
 
-		return await insertManager.insertValuesGetIds(portableQuery, actor, transaction)
+		return await insertManager.insertValuesGetIds(portableQuery, actor,
+			transaction, context)
 	}
 
 	async updateValues(

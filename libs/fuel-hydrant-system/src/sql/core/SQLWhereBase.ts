@@ -47,7 +47,7 @@ export abstract class SQLWhereBase
 	implements ISqlValueProvider {
 
 	protected fieldMap: SchemaMap                                                   = new SchemaMap()
-	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal }        = {}
+	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> }        = {}
 	protected jsonRelationMapByAlias: { [entityAlias: string]: JSONEntityRelation } = {}
 	protected parameterReferences: (string | number)[]                              = []
 
@@ -152,7 +152,7 @@ export abstract class SQLWhereBase
 		}
 
 		const aField = <JSONClauseField>clauseField
-		let qEntity: IQEntityInternal
+		let qEntity: IQEntityInternal<any>
 		let subQuery: string
 		switch (clauseField.ot) {
 			case JSONClauseObjectType.FIELD_FUNCTION:
@@ -272,7 +272,7 @@ export abstract class SQLWhereBase
 	}
 
 	protected getEntityPropertyColumnName(
-		qEntity: IQEntityInternal,
+		qEntity: IQEntityInternal<any>,
 		columnIndex: number,
 		context: IOperationContext<any, any>,
 	): string {
@@ -325,7 +325,7 @@ export abstract class SQLWhereBase
 	}
 
 	protected getEntityManyToOneColumnName(
-		qEntity: IQEntityInternal,
+		qEntity: IQEntityInternal<any>,
 		columnIndex: number,
 		context: IOperationContext<any, any>,
 	): string {

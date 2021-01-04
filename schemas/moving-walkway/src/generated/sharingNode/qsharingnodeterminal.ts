@@ -32,6 +32,9 @@ import {
 	QSharingNodeQRelation,
 } from './qsharingnode';
 import {
+	SharingNode,
+} from '../../ddl/sharingNode/SharingNode';
+import {
 	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -40,7 +43,11 @@ import {
 	QTerminal,
 	QTerminalQId,
 	QTerminalQRelation,
+	Terminal,
 } from '@airport/travel-document-checkpoint';
+import {
+	SharingNodeTerminal,
+} from '../../ddl/sharingNode/SharingNodeTerminal';
 
 
 declare function require(moduleName: string): any;
@@ -161,7 +168,7 @@ extends SharingNodeTerminalEId, SharingNodeTerminalEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingNodeTerminal extends IQEntity
+export interface QSharingNodeTerminal extends IQEntity<SharingNodeTerminal>
 {
 	// Id Fields
 
@@ -194,6 +201,6 @@ export interface QSharingNodeTerminalQId
 
 // Entity Relation Interface
 export interface QSharingNodeTerminalQRelation
-	extends IQRelation<QSharingNodeTerminal>, QSharingNodeTerminalQId {
+	extends IQRelation<SharingNodeTerminal, QSharingNodeTerminal>, QSharingNodeTerminalQId {
 }
 

@@ -13,8 +13,8 @@ import {
 }                        from '@airport/check-in'
 import {
 	container,
-	DI
-}                        from '@airport/di'
+	DI, IContext,
+} from '@airport/di';
 import {
 	ChangeType,
 	DbColumn,
@@ -58,6 +58,7 @@ export interface IDeleteManager {
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
+		context?: IContext,
 	): Promise<number>;
 
 }
@@ -72,6 +73,7 @@ export class DeleteManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
+		context: IContext = {},
 	): Promise<number> {
 		const [
 			      airDb,
@@ -95,7 +97,7 @@ export class DeleteManager
 		const dbEntity = airDb
 			.schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex]
 
-		const deleteCommand = transaction.deleteWhere(portableQuery)
+		const deleteCommand = transaction.deleteWhere(portableQuery, context)
 		if (dbEntity.isLocal) {
 			return await deleteCommand
 		}
@@ -117,7 +119,7 @@ export class DeleteManager
 			// values: portableQuery.values,
 		}
 		const treesToDelete                    = await transaction
-			.find<any, Array<any>>(portableSelect, {})
+			.find<any, Array<any>>(portableSelect, {}, context)
 
 		const recordsToDelete: RecordsToDelete = new Map()
 		const repositoryIdSet                  = new Set<number>()

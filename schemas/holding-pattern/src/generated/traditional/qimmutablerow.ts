@@ -40,7 +40,11 @@ import {
 	QUser,
 	QUserQId,
 	QUserQRelation,
+	User,
 } from '@airport/travel-document-checkpoint';
+import {
+	ImmutableRow,
+} from '../../ddl/traditional/ImmutableRow';
 
 
 declare function require(moduleName: string): any;
@@ -147,7 +151,7 @@ extends ImmutableRowEId, ImmutableRowEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QImmutableRow extends QStageable
+export interface QImmutableRow<T> extends QStageable<T>
 {
 	// Id Fields
 
@@ -174,7 +178,7 @@ export interface QImmutableRowQId extends QStageableQId
 }
 
 // Entity Relation Interface
-export interface QImmutableRowQRelation<SubType extends IQEntity>
-	extends QStageableQRelation<SubType>, QImmutableRowQId {
+export interface QImmutableRowQRelation<SubType, SubQType extends IQEntity<SubType>>
+	extends QStageableQRelation<SubType, SubQType>, QImmutableRowQId {
 }
 

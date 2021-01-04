@@ -9,9 +9,9 @@ import {
 export interface ITerminalRunDao
 	extends IBaseTerminalRunDao {
 
-	create<EntityInfo extends TerminalRunECreateProperties[] | TerminalRunECreateProperties>(
-		entityInfo: EntityInfo
-	): Promise<number>
+	// create<EntityInfo extends TerminalRunECreateProperties[] | TerminalRunECreateProperties>(
+	// 	entityInfo: EntityInfo
+	// ): Promise<number>
 
 }
 

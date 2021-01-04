@@ -72,7 +72,7 @@ export interface ISQLFunctionAdaptor {
 	getFunctionCalls(
 		clause: JSONClauseObject,
 		innerValue: string,
-		qEntityMapByAlias: { [alias: string]: IQEntityInternal },
+		qEntityMapByAlias: { [alias: string]: IQEntityInternal<any> },
 		sqlValueProvider: ISqlValueProvider,
 		context: IOperationContext<any, any>,
 	): string;
@@ -80,7 +80,7 @@ export interface ISQLFunctionAdaptor {
 	getFunctionCall(
 		jsonFunctionCall: JSONSqlFunctionCall,
 		value: string,
-		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
+		qEntityMapByAlias: { [entityName: string]: IQEntityInternal<any> },
 		sqlValueProvider: ISqlValueProvider,
 		context: IOperationContext<any, any>,
 	): string;
@@ -93,7 +93,7 @@ export abstract class AbstractFunctionAdaptor
 	getFunctionCalls(
 		clause: JSONClauseObject,
 		innerValue: string,
-		qEntityMapByAlias: { [alias: string]: IQEntityInternal },
+		qEntityMapByAlias: { [alias: string]: IQEntityInternal<any> },
 		sqlValueProvider: ISqlValueProvider,
 		context: IOperationContext<any, any>,
 	): string {
@@ -108,7 +108,7 @@ export abstract class AbstractFunctionAdaptor
 	abstract getFunctionCall(
 		jsonFunctionCall: JSONSqlFunctionCall,
 		value: string,
-		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
+		qEntityMapByAlias: { [entityName: string]: IQEntityInternal<any> },
 		sqlValueProvider: ISqlValueProvider,
 		context: IOperationContext<any, any>,
 	): string;

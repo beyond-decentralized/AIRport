@@ -18,7 +18,7 @@ import {
 } from './qSchema'
 import {
 	IMissingRecord
-} from './missingrecord/missingrecord'
+} from './missingRecord/missingrecord'
 import {
 	MissingRecordESelect,
 	MissingRecordECreateColumns,
@@ -28,10 +28,10 @@ import {
 	MissingRecordEId,
 	MissingRecordGraph,
 	QMissingRecord
-} from './missingrecord/qmissingrecord'
+} from './missingRecord/qmissingrecord'
 import {
 	IMissingRecordRepoTransBlock
-} from './missingrecord/missingrecordrepotransblock'
+} from './missingRecord/missingrecordrepotransblock'
 import {
 	MissingRecordRepoTransBlockESelect,
 	MissingRecordRepoTransBlockECreateColumns,
@@ -41,7 +41,7 @@ import {
 	MissingRecordRepoTransBlockEId,
 	MissingRecordRepoTransBlockGraph,
 	QMissingRecordRepoTransBlock
-} from './missingrecord/qmissingrecordrepotransblock'
+} from './missingRecord/qmissingrecordrepotransblock'
 import {
 	IRecordUpdateStage
 } from './recordupdatestage'
@@ -57,7 +57,7 @@ import {
 } from './qrecordupdatestage'
 import {
 	IRepoTransBlockResponseStage
-} from './repositorytransactionblock/repotransblockresponsestage'
+} from './repositoryTransactionBlock/repotransblockresponsestage'
 import {
 	RepoTransBlockResponseStageESelect,
 	RepoTransBlockResponseStageECreateColumns,
@@ -67,10 +67,10 @@ import {
 	RepoTransBlockResponseStageEId,
 	RepoTransBlockResponseStageGraph,
 	QRepoTransBlockResponseStage
-} from './repositorytransactionblock/qrepotransblockresponsestage'
+} from './repositoryTransactionBlock/qrepotransblockresponsestage'
 import {
 	IRepoTransBlockSchemaToChange
-} from './repositorytransactionblock/repotransblockschematochange'
+} from './repositoryTransactionBlock/repotransblockschematochange'
 import {
 	RepoTransBlockSchemaToChangeESelect,
 	RepoTransBlockSchemaToChangeECreateColumns,
@@ -80,10 +80,10 @@ import {
 	RepoTransBlockSchemaToChangeEId,
 	RepoTransBlockSchemaToChangeGraph,
 	QRepoTransBlockSchemaToChange
-} from './repositorytransactionblock/qrepotransblockschematochange'
+} from './repositoryTransactionBlock/qrepotransblockschematochange'
 import {
 	IRepositoryTransactionBlock
-} from './repositorytransactionblock/repositorytransactionblock'
+} from './repositoryTransactionBlock/repositorytransactionblock'
 import {
 	RepositoryTransactionBlockESelect,
 	RepositoryTransactionBlockECreateColumns,
@@ -93,10 +93,10 @@ import {
 	RepositoryTransactionBlockEId,
 	RepositoryTransactionBlockGraph,
 	QRepositoryTransactionBlock
-} from './repositorytransactionblock/qrepositorytransactionblock'
+} from './repositoryTransactionBlock/qrepositorytransactionblock'
 import {
 	IRepositoryTransactionHistoryUpdateStage
-} from './repositorytransactionblock/repositorytransactionhistoryupdatestage'
+} from './repositoryTransactionBlock/repositorytransactionhistoryupdatestage'
 import {
 	RepositoryTransactionHistoryUpdateStageESelect,
 	RepositoryTransactionHistoryUpdateStageECreateColumns,
@@ -106,10 +106,10 @@ import {
 	RepositoryTransactionHistoryUpdateStageEId,
 	RepositoryTransactionHistoryUpdateStageGraph,
 	QRepositoryTransactionHistoryUpdateStage
-} from './repositorytransactionblock/qrepositorytransactionhistoryupdatestage'
+} from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage'
 import {
 	ISharingMessage
-} from './sharingmessage/sharingmessage'
+} from './sharingMessage/sharingmessage'
 import {
 	SharingMessageESelect,
 	SharingMessageECreateColumns,
@@ -119,10 +119,10 @@ import {
 	SharingMessageEId,
 	SharingMessageGraph,
 	QSharingMessage
-} from './sharingmessage/qsharingmessage'
+} from './sharingMessage/qsharingmessage'
 import {
 	ISharingMessageRepoTransBlock
-} from './sharingmessage/sharingmessagerepotransblock'
+} from './sharingMessage/sharingmessagerepotransblock'
 import {
 	SharingMessageRepoTransBlockESelect,
 	SharingMessageRepoTransBlockECreateColumns,
@@ -132,10 +132,10 @@ import {
 	SharingMessageRepoTransBlockEId,
 	SharingMessageRepoTransBlockGraph,
 	QSharingMessageRepoTransBlock
-} from './sharingmessage/qsharingmessagerepotransblock'
+} from './sharingMessage/qsharingmessagerepotransblock'
 import {
 	ISharingNode
-} from './sharingnode/sharingnode'
+} from './sharingNode/sharingnode'
 import {
 	SharingNodeESelect,
 	SharingNodeECreateColumns,
@@ -145,10 +145,10 @@ import {
 	SharingNodeEId,
 	SharingNodeGraph,
 	QSharingNode
-} from './sharingnode/qsharingnode'
+} from './sharingNode/qsharingnode'
 import {
 	ISharingNodeRepoTransBlock
-} from './sharingnode/sharingnoderepotransblock'
+} from './sharingNode/sharingnoderepotransblock'
 import {
 	SharingNodeRepoTransBlockESelect,
 	SharingNodeRepoTransBlockECreateColumns,
@@ -158,10 +158,10 @@ import {
 	SharingNodeRepoTransBlockEId,
 	SharingNodeRepoTransBlockGraph,
 	QSharingNodeRepoTransBlock
-} from './sharingnode/qsharingnoderepotransblock'
+} from './sharingNode/qsharingnoderepotransblock'
 import {
 	ISharingNodeRepoTransBlockStage
-} from './sharingnode/sharingnoderepotransblockstage'
+} from './sharingNode/sharingnoderepotransblockstage'
 import {
 	SharingNodeRepoTransBlockStageESelect,
 	SharingNodeRepoTransBlockStageECreateColumns,
@@ -171,10 +171,10 @@ import {
 	SharingNodeRepoTransBlockStageEId,
 	SharingNodeRepoTransBlockStageGraph,
 	QSharingNodeRepoTransBlockStage
-} from './sharingnode/qsharingnoderepotransblockstage'
+} from './sharingNode/qsharingnoderepotransblockstage'
 import {
 	ISharingNodeRepository
-} from './sharingnode/sharingnoderepository'
+} from './sharingNode/sharingnoderepository'
 import {
 	SharingNodeRepositoryESelect,
 	SharingNodeRepositoryECreateColumns,
@@ -184,10 +184,10 @@ import {
 	SharingNodeRepositoryEId,
 	SharingNodeRepositoryGraph,
 	QSharingNodeRepository
-} from './sharingnode/qsharingnoderepository'
+} from './sharingNode/qsharingnoderepository'
 import {
 	ISharingNodeTerminal
-} from './sharingnode/sharingnodeterminal'
+} from './sharingNode/sharingnodeterminal'
 import {
 	SharingNodeTerminalESelect,
 	SharingNodeTerminalECreateColumns,
@@ -197,7 +197,7 @@ import {
 	SharingNodeTerminalEId,
 	SharingNodeTerminalGraph,
 	QSharingNodeTerminal
-} from './sharingnode/qsharingnodeterminal'
+} from './sharingNode/qsharingnodeterminal'
 import {
 	ISynchronizationConflict
 } from './conflict/synchronizationconflict'
@@ -247,7 +247,7 @@ export class SQDIDuo<Entity,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	IQE extends IQEntity>
+	IQE extends IQEntity<Entity>>
 	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,
@@ -274,11 +274,11 @@ export class BaseMissingRecordDuo
 	implements IBaseMissingRecordDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(3)
+		super(4)
 	}
 }
 
@@ -292,11 +292,11 @@ export class BaseMissingRecordRepoTransBlockDuo
 	implements IBaseMissingRecordRepoTransBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(11)
 	}
 	
 	constructor() {
-		super(10)
+		super(11)
 	}
 }
 
@@ -310,11 +310,11 @@ export class BaseRecordUpdateStageDuo
 	implements IBaseRecordUpdateStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(16)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(16)
+		super(0)
 	}
 }
 
@@ -328,11 +328,11 @@ export class BaseRepoTransBlockResponseStageDuo
 	implements IBaseRepoTransBlockResponseStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(12)
+		return duoDiSet(13)
 	}
 	
 	constructor() {
-		super(12)
+		super(13)
 	}
 }
 
@@ -346,11 +346,11 @@ export class BaseRepoTransBlockSchemaToChangeDuo
 	implements IBaseRepoTransBlockSchemaToChangeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(8)
+		super(9)
 	}
 }
 
@@ -364,11 +364,11 @@ export class BaseRepositoryTransactionBlockDuo
 	implements IBaseRepositoryTransactionBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(9)
+		super(10)
 	}
 }
 
@@ -382,11 +382,11 @@ export class BaseRepositoryTransactionHistoryUpdateStageDuo
 	implements IBaseRepositoryTransactionHistoryUpdateStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(11)
+		return duoDiSet(12)
 	}
 	
 	constructor() {
-		super(11)
+		super(12)
 	}
 }
 
@@ -400,11 +400,11 @@ export class BaseSharingMessageDuo
 	implements IBaseSharingMessageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(6)
+		super(7)
 	}
 }
 
@@ -418,11 +418,11 @@ export class BaseSharingMessageRepoTransBlockDuo
 	implements IBaseSharingMessageRepoTransBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(7)
+		super(8)
 	}
 }
 
@@ -436,11 +436,11 @@ export class BaseSharingNodeDuo
 	implements IBaseSharingNodeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(5)
+		super(6)
 	}
 }
 
@@ -454,11 +454,11 @@ export class BaseSharingNodeRepoTransBlockDuo
 	implements IBaseSharingNodeRepoTransBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(4)
+		super(5)
 	}
 }
 
@@ -472,11 +472,11 @@ export class BaseSharingNodeRepoTransBlockStageDuo
 	implements IBaseSharingNodeRepoTransBlockStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(15)
+		return duoDiSet(16)
 	}
 	
 	constructor() {
-		super(15)
+		super(16)
 	}
 }
 
@@ -490,11 +490,11 @@ export class BaseSharingNodeRepositoryDuo
 	implements IBaseSharingNodeRepositoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(14)
+		return duoDiSet(15)
 	}
 	
 	constructor() {
-		super(14)
+		super(15)
 	}
 }
 
@@ -508,11 +508,11 @@ export class BaseSharingNodeTerminalDuo
 	implements IBaseSharingNodeTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(13)
+		return duoDiSet(14)
 	}
 	
 	constructor() {
-		super(13)
+		super(14)
 	}
 }
 
@@ -526,11 +526,11 @@ export class BaseSynchronizationConflictDuo
 	implements IBaseSynchronizationConflictDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }
 
@@ -544,11 +544,11 @@ export class BaseSynchronizationConflictPendingNotificationDuo
 	implements IBaseSynchronizationConflictPendingNotificationDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(2)
+		super(3)
 	}
 }
 
@@ -562,10 +562,10 @@ export class BaseSynchronizationConflictValuesDuo
 	implements IBaseSynchronizationConflictValuesDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(0)
+		super(1)
 	}
 }

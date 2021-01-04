@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	SystemWideOperationId,
+} from '../ddl/SystemWideOperationId';
 
 
 declare function require(moduleName: string): any;
@@ -123,7 +126,7 @@ extends SystemWideOperationIdEId, SystemWideOperationIdEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSystemWideOperationId extends IQEntity
+export interface QSystemWideOperationId extends IQEntity<SystemWideOperationId>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -151,6 +154,6 @@ export interface QSystemWideOperationIdQId
 
 // Entity Relation Interface
 export interface QSystemWideOperationIdQRelation
-	extends IQRelation<QSystemWideOperationId>, QSystemWideOperationIdQId {
+	extends IQRelation<SystemWideOperationId, QSystemWideOperationId>, QSystemWideOperationIdQId {
 }
 

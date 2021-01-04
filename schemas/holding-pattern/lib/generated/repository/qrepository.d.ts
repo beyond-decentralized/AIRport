@@ -1,8 +1,12 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
 import { RepositoryActorGraph, RepositoryActorESelect, QRepositoryActor } from './qrepositoryactor';
+import { RepositoryActor } from '../../ddl/repository/RepositoryActor';
 import { RepositoryApplicationGraph, RepositoryApplicationESelect, QRepositoryApplication } from './qrepositoryapplication';
+import { RepositoryApplication } from '../../ddl/repository/RepositoryApplication';
 import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
+import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransactionHistory';
+import { Repository } from '../../ddl/repository/Repository';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -82,7 +86,7 @@ export interface RepositoryECreateColumns extends RepositoryEId, RepositoryEUpda
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepository extends IQEntity {
+export interface QRepository extends IQEntity<Repository> {
     id: IQNumberField;
     orderedId: IQNumberField;
     randomId: IQNumberField;
@@ -91,13 +95,13 @@ export interface QRepository extends IQEntity {
     platformConfig: IQStringField;
     syncPriority: IQNumberField;
     ownerActor: QActorQRelation;
-    repositoryActors: IQOneToManyRelation<QRepositoryActor>;
-    repositoryApplications: IQOneToManyRelation<QRepositoryApplication>;
-    repositoryTransactionHistory: IQOneToManyRelation<QRepositoryTransactionHistory>;
+    repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
+    repositoryApplications: IQOneToManyRelation<RepositoryApplication, QRepositoryApplication>;
+    repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
 }
 export interface QRepositoryQId {
     id: IQNumberField;
 }
-export interface QRepositoryQRelation extends IQRelation<QRepository>, QRepositoryQId {
+export interface QRepositoryQRelation extends IQRelation<Repository, QRepository>, QRepositoryQId {
 }
 //# sourceMappingURL=qrepository.d.ts.map

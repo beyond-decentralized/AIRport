@@ -1,8 +1,13 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { SecurityAnswerGraph, SecurityAnswerESelect, QSecurityAnswer } from './security/qsecurityanswer';
+import { SecurityAnswer } from '../../ddl/user/security/SecurityAnswer';
 import { UserRepositoryGraph, UserRepositoryESelect, QUserRepository } from './quserrepository';
+import { UserRepository } from '../../ddl/user/UserRepository';
 import { TerminalGraph, TerminalESelect, QTerminal } from '../terminal/qterminal';
+import { Terminal } from '../../ddl/terminal/Terminal';
 import { AgtRepositoryTransactionBlockGraph, AgtRepositoryTransactionBlockESelect, QAgtRepositoryTransactionBlock } from '../synchronization/qagtrepositorytransactionblock';
+import { AgtRepositoryTransactionBlock } from '../../ddl/synchronization/AgtRepositoryTransactionBlock';
+import { User } from '../../ddl/user/User';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -68,19 +73,19 @@ export interface UserECreateColumns extends UserEId, UserEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QUser extends IQEntity {
+export interface QUser extends IQEntity<User> {
     id: IQNumberField;
     hash: IQStringField;
     email: IQStringField;
     isInvitation: IQBooleanField;
-    securityAnswers: IQOneToManyRelation<QSecurityAnswer>;
-    userRepositories: IQOneToManyRelation<QUserRepository>;
-    terminals: IQOneToManyRelation<QTerminal>;
-    repositoryTransactionBlocks: IQOneToManyRelation<QAgtRepositoryTransactionBlock>;
+    securityAnswers: IQOneToManyRelation<SecurityAnswer, QSecurityAnswer>;
+    userRepositories: IQOneToManyRelation<UserRepository, QUserRepository>;
+    terminals: IQOneToManyRelation<Terminal, QTerminal>;
+    repositoryTransactionBlocks: IQOneToManyRelation<AgtRepositoryTransactionBlock, QAgtRepositoryTransactionBlock>;
 }
 export interface QUserQId {
     id: IQNumberField;
 }
-export interface QUserQRelation extends IQRelation<QUser>, QUserQId {
+export interface QUserQRelation extends IQRelation<User, QUser>, QUserQId {
 }
 //# sourceMappingURL=quser.d.ts.map

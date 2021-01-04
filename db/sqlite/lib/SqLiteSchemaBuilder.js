@@ -1,10 +1,10 @@
-import { AIR_DB } from '@airport/air-control';
-import { SEQUENCE_DAO } from '@airport/airport-code';
-import { container, DI } from '@airport/di';
-import { getSchemaName, SQLDataType } from '@airport/ground-control';
+import { AIR_DB, } from '@airport/air-control';
+import { SEQUENCE_DAO, } from '@airport/airport-code';
+import { container, DI, } from '@airport/di';
+import { getSchemaName, SQLDataType, } from '@airport/ground-control';
 import { SCHEMA_BUILDER, SqlSchemaBuilder } from '@airport/landing';
 export class SqLiteSchemaBuilder extends SqlSchemaBuilder {
-    async createSchema(jsonSchema) {
+    async createSchema(jsonSchema, storeDriver, context) {
         // Nothing to do
     }
     getColumnSuffix(jsonSchema, jsonEntity, jsonColumn) {
@@ -52,7 +52,7 @@ export class SqLiteSchemaBuilder extends SqlSchemaBuilder {
                 allSequences = allSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity));
             }
         }
-        await sequenceDao.bulkCreate(allSequences);
+        await sequenceDao.save(allSequences);
         return allSequences;
     }
     stageSequences(jsonSchemas, airDb) {
@@ -81,7 +81,7 @@ export class SqLiteSchemaBuilder extends SqlSchemaBuilder {
                 tableIndex: jsonEntity.index,
                 columnIndex: jsonColumn.index,
                 incrementBy,
-                currentValue: 0
+                currentValue: 0,
             });
         }
         return sequences;

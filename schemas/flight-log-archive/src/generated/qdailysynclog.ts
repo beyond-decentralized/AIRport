@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	DailySyncLog,
+} from '../ddl/DailySyncLog';
 
 
 declare function require(moduleName: string): any;
@@ -127,7 +130,7 @@ extends DailySyncLogEId, DailySyncLogEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDailySyncLog extends IQEntity
+export interface QDailySyncLog extends IQEntity<DailySyncLog>
 {
 	// Id Fields
 	databaseId: IQNumberField;
@@ -159,6 +162,6 @@ export interface QDailySyncLogQId
 
 // Entity Relation Interface
 export interface QDailySyncLogQRelation
-	extends IQRelation<QDailySyncLog>, QDailySyncLogQId {
+	extends IQRelation<DailySyncLog, QDailySyncLog>, QDailySyncLogQId {
 }
 

@@ -1,6 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { UserGraph, UserEId, UserEOptionalId, UserESelect, QUserQId, QUserQRelation } from '../quser';
 import { SecurityQuestionGraph, SecurityQuestionEId, SecurityQuestionEOptionalId, SecurityQuestionESelect, QSecurityQuestionQId, QSecurityQuestionQRelation } from './qsecurityquestion';
+import { SecurityAnswer } from '../../../ddl/user/security/SecurityAnswer';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -56,7 +57,7 @@ export interface SecurityAnswerECreateColumns extends SecurityAnswerEId, Securit
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSecurityAnswer extends IQEntity {
+export interface QSecurityAnswer extends IQEntity<SecurityAnswer> {
     user: QUserQRelation;
     securityQuestion: QSecurityQuestionQRelation;
     answer: IQStringField;
@@ -65,6 +66,6 @@ export interface QSecurityAnswerQId {
     user: QUserQId;
     securityQuestion: QSecurityQuestionQId;
 }
-export interface QSecurityAnswerQRelation extends IQRelation<QSecurityAnswer>, QSecurityAnswerQId {
+export interface QSecurityAnswerQRelation extends IQRelation<SecurityAnswer, QSecurityAnswer>, QSecurityAnswerQId {
 }
 //# sourceMappingURL=qsecurityanswer.d.ts.map

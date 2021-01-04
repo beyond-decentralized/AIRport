@@ -42,6 +42,9 @@ import {
 	QSchemaEntityQRelation,
 } from './qschemaentity';
 import {
+	SchemaEntity,
+} from '../../ddl/schema/SchemaEntity';
+import {
 	SchemaPropertyColumnGraph,
 	SchemaPropertyColumnEId,
 	SchemaPropertyColumnEOptionalId,
@@ -52,6 +55,9 @@ import {
 	QSchemaPropertyColumnQRelation,
 } from './qschemapropertycolumn';
 import {
+	SchemaPropertyColumn,
+} from '../../ddl/schema/SchemaPropertyColumn';
+import {
 	SchemaRelationColumnGraph,
 	SchemaRelationColumnEId,
 	SchemaRelationColumnEOptionalId,
@@ -61,6 +67,12 @@ import {
 	QSchemaRelationColumnQId,
 	QSchemaRelationColumnQRelation,
 } from './qschemarelationcolumn';
+import {
+	SchemaRelationColumn,
+} from '../../ddl/schema/SchemaRelationColumn';
+import {
+	SchemaColumn,
+} from '../../ddl/schema/SchemaColumn';
 
 
 declare function require(moduleName: string): any;
@@ -204,7 +216,7 @@ extends SchemaColumnEId, SchemaColumnEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaColumn extends QVersionedSchemaObject
+export interface QSchemaColumn extends QVersionedSchemaObject<SchemaColumn>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -222,9 +234,9 @@ export interface QSchemaColumn extends QVersionedSchemaObject
 
 	// Non-Id Relations
 	entity: QSchemaEntityQRelation;
-	propertyColumns: IQOneToManyRelation<QSchemaPropertyColumn>;
-	manyRelationColumns: IQOneToManyRelation<QSchemaRelationColumn>;
-	oneRelationColumns: IQOneToManyRelation<QSchemaRelationColumn>;
+	propertyColumns: IQOneToManyRelation<SchemaPropertyColumn, QSchemaPropertyColumn>;
+	manyRelationColumns: IQOneToManyRelation<SchemaRelationColumn, QSchemaRelationColumn>;
+	oneRelationColumns: IQOneToManyRelation<SchemaRelationColumn, QSchemaRelationColumn>;
 
 }
 
@@ -243,6 +255,6 @@ export interface QSchemaColumnQId extends QVersionedSchemaObjectQId
 
 // Entity Relation Interface
 export interface QSchemaColumnQRelation
-	extends QVersionedSchemaObjectQRelation<QSchemaColumn>, QSchemaColumnQId {
+	extends QVersionedSchemaObjectQRelation<SchemaColumn, QSchemaColumn>, QSchemaColumnQId {
 }
 

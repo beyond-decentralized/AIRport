@@ -1,6 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from './qrepository';
 import { ArchiveGraph, ArchiveEId, ArchiveEOptionalId, ArchiveESelect, QArchiveQId, QArchiveQRelation } from './qarchive';
+import { RepositoryArchive } from '../../ddl/repository/RepositoryArchive';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -52,7 +53,7 @@ export interface RepositoryArchiveECreateColumns extends RepositoryArchiveEId, R
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryArchive extends IQEntity {
+export interface QRepositoryArchive extends IQEntity<RepositoryArchive> {
     repository: QRepositoryQRelation;
     archive: QArchiveQRelation;
 }
@@ -60,6 +61,6 @@ export interface QRepositoryArchiveQId {
     repository: QRepositoryQId;
     archive: QArchiveQId;
 }
-export interface QRepositoryArchiveQRelation extends IQRelation<QRepositoryArchive>, QRepositoryArchiveQId {
+export interface QRepositoryArchiveQRelation extends IQRelation<RepositoryArchive, QRepositoryArchive>, QRepositoryArchiveQId {
 }
 //# sourceMappingURL=qrepositoryarchive.d.ts.map

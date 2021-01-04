@@ -30,6 +30,7 @@ import {
 	QTerminal,
 	QTerminalQId,
 	QTerminalQRelation,
+	Terminal,
 } from '@airport/travel-document-checkpoint';
 import {
 	RepositoryGraph,
@@ -40,6 +41,7 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
+	Repository,
 	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
@@ -48,6 +50,7 @@ import {
 	QRepositoryTransactionHistory,
 	QRepositoryTransactionHistoryQId,
 	QRepositoryTransactionHistoryQRelation,
+	RepositoryTransactionHistory,
 } from '@airport/holding-pattern';
 import {
 	SharingNodeRepoTransBlockGraph,
@@ -58,7 +61,10 @@ import {
 	QSharingNodeRepoTransBlock,
 	QSharingNodeRepoTransBlockQId,
 	QSharingNodeRepoTransBlockQRelation,
-} from '../sharingnode/qsharingnoderepotransblock';
+} from '../sharingNode/qsharingnoderepotransblock';
+import {
+	SharingNodeRepoTransBlock,
+} from '../../ddl/sharingNode/SharingNodeRepoTransBlock';
 import {
 	SharingMessageRepoTransBlockGraph,
 	SharingMessageRepoTransBlockEId,
@@ -68,7 +74,10 @@ import {
 	QSharingMessageRepoTransBlock,
 	QSharingMessageRepoTransBlockQId,
 	QSharingMessageRepoTransBlockQRelation,
-} from '../sharingmessage/qsharingmessagerepotransblock';
+} from '../sharingMessage/qsharingmessagerepotransblock';
+import {
+	SharingMessageRepoTransBlock,
+} from '../../ddl/sharingMessage/SharingMessageRepoTransBlock';
 import {
 	MissingRecordRepoTransBlockGraph,
 	MissingRecordRepoTransBlockEId,
@@ -78,7 +87,10 @@ import {
 	QMissingRecordRepoTransBlock,
 	QMissingRecordRepoTransBlockQId,
 	QMissingRecordRepoTransBlockQRelation,
-} from '../missingrecord/qmissingrecordrepotransblock';
+} from '../missingRecord/qmissingrecordrepotransblock';
+import {
+	MissingRecordRepoTransBlock,
+} from '../../ddl/missingRecord/MissingRecordRepoTransBlock';
 import {
 	RepoTransBlockSchemaToChangeGraph,
 	RepoTransBlockSchemaToChangeEId,
@@ -89,6 +101,12 @@ import {
 	QRepoTransBlockSchemaToChangeQId,
 	QRepoTransBlockSchemaToChangeQRelation,
 } from './qrepotransblockschematochange';
+import {
+	RepoTransBlockSchemaToChange,
+} from '../../ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange';
+import {
+	RepositoryTransactionBlock,
+} from '../../ddl/repositoryTransactionBlock/RepositoryTransactionBlock';
 
 
 declare function require(moduleName: string): any;
@@ -225,7 +243,7 @@ extends RepositoryTransactionBlockEId, RepositoryTransactionBlockEUpdateColumns 
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryTransactionBlock extends IQEntity
+export interface QRepositoryTransactionBlock extends IQEntity<RepositoryTransactionBlock>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -241,11 +259,11 @@ export interface QRepositoryTransactionBlock extends IQEntity
 	// Non-Id Relations
 	source: QTerminalQRelation;
 	repository: QRepositoryQRelation;
-	repositoryTransactionHistory: IQOneToManyRelation<QRepositoryTransactionHistory>;
-	sharingNodeRepoTransBlocks: IQOneToManyRelation<QSharingNodeRepoTransBlock>;
-	sharingMessageRepoTransBlocks: IQOneToManyRelation<QSharingMessageRepoTransBlock>;
-	missingRecordRepoTransBlocks: IQOneToManyRelation<QMissingRecordRepoTransBlock>;
-	repoTransBlockSchemasToChange: IQOneToManyRelation<QRepoTransBlockSchemaToChange>;
+	repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
+	sharingNodeRepoTransBlocks: IQOneToManyRelation<SharingNodeRepoTransBlock, QSharingNodeRepoTransBlock>;
+	sharingMessageRepoTransBlocks: IQOneToManyRelation<SharingMessageRepoTransBlock, QSharingMessageRepoTransBlock>;
+	missingRecordRepoTransBlocks: IQOneToManyRelation<MissingRecordRepoTransBlock, QMissingRecordRepoTransBlock>;
+	repoTransBlockSchemasToChange: IQOneToManyRelation<RepoTransBlockSchemaToChange, QRepoTransBlockSchemaToChange>;
 
 }
 
@@ -264,6 +282,6 @@ export interface QRepositoryTransactionBlockQId
 
 // Entity Relation Interface
 export interface QRepositoryTransactionBlockQRelation
-	extends IQRelation<QRepositoryTransactionBlock>, QRepositoryTransactionBlockQId {
+	extends IQRelation<RepositoryTransactionBlock, QRepositoryTransactionBlock>, QRepositoryTransactionBlockQId {
 }
 

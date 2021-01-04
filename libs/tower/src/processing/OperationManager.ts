@@ -36,7 +36,7 @@ export interface IOperationManager {
 export abstract class OperationManager
 	implements IOperationManager {
 
-	protected abstract async getOriginalRecord<T>(
+	protected abstract getOriginalRecord<T>(
 		dbEntity: DbEntity,
 		entity: T,
 		updateCache: IUpdateCache
@@ -333,7 +333,7 @@ export abstract class OperationManager
 		return await this.internalDeleteWhere(deleteWhere, transaction, context)
 	}
 
-	protected async internalInsertColumnValues<IQE extends IQEntity>(
+	protected async internalInsertColumnValues<IQE extends IQEntity<any>>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE>,
 		transaction: ITransaction,
 		context: IOperationContext<any, any>
@@ -346,7 +346,7 @@ export abstract class OperationManager
 		return await context.ioc.transactionalServer.insertValues(portableQuery, transaction, context)
 	}
 
-	protected async internalInsertValues<E, EntityCascadeGraph, IQE extends IQEntity>(
+	protected async internalInsertValues<E, EntityCascadeGraph, IQE extends IQEntity<any>>(
 		rawInsertValues: RawInsertValues<IQE>,
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>,
@@ -360,7 +360,7 @@ export abstract class OperationManager
 		return await context.ioc.transactionalServer.insertValues(portableQuery, transaction, context, ensureGeneratedValues)
 	}
 
-	protected async internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(
+	protected async internalInsertColumnValuesGenerateIds<IQE extends IQEntity<any>>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE>,
 		transaction: ITransaction,
 		context: IOperationContext<any, any>
@@ -374,7 +374,7 @@ export abstract class OperationManager
 		return await context.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction, context)
 	}
 
-	protected async internalInsertValuesGetIds<E, EntityCascadeGraph, IQE extends IQEntity>(
+	protected async internalInsertValuesGetIds<E, EntityCascadeGraph, IQE extends IQEntity<any>>(
 		rawInsertValues: RawInsertValues<IQE>,
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>
@@ -389,7 +389,7 @@ export abstract class OperationManager
 	}
 
 	protected async internalUpdateColumnsWhere<E, EntityCascadeGraph, IEUC extends IEntityUpdateColumns,
-		IQE extends IQEntity>(
+		IQE extends IQEntity<any>>(
 		updateColumns: UpdateColumns<IEUC, IQE>,
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>
@@ -401,7 +401,7 @@ export abstract class OperationManager
 	}
 
 	protected async internalUpdateWhere<E, EntityCascadeGraph, IEUP extends IEntityUpdateProperties,
-		IQE extends IQEntity>(
+		IQE extends IQEntity<any>>(
 		update: UpdateProperties<IEUP, IQE>,
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>
@@ -412,7 +412,7 @@ export abstract class OperationManager
 		return await context.ioc.transactionalServer.updateValues(portableQuery, transaction, context)
 	}
 
-	protected async internalDeleteWhere<E, EntityCascadeGraph, IQE extends IQEntity>(
+	protected async internalDeleteWhere<E, EntityCascadeGraph, IQE extends IQEntity<any>>(
 		aDelete: Delete<IQE>,
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>

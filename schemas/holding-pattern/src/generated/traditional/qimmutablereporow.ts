@@ -31,6 +31,9 @@ import {
 	QRepositoryEntityQRelation,
 	QRepositoryEntity,
 } from '../repository/qrepositoryentity';
+import {
+	ImmutableRepoRow,
+} from '../../ddl/traditional/ImmutableRepoRow';
 
 
 declare function require(moduleName: string): any;
@@ -134,7 +137,7 @@ extends ImmutableRepoRowEId, ImmutableRepoRowEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QImmutableRepoRow extends QRepositoryEntity
+export interface QImmutableRepoRow<T> extends QRepositoryEntity<T>
 {
 	// Id Fields
 
@@ -160,7 +163,7 @@ export interface QImmutableRepoRowQId extends QRepositoryEntityQId
 }
 
 // Entity Relation Interface
-export interface QImmutableRepoRowQRelation<SubType extends IQEntity>
-	extends QRepositoryEntityQRelation<SubType>, QImmutableRepoRowQId {
+export interface QImmutableRepoRowQRelation<SubType, SubQType extends IQEntity<SubType>>
+	extends QRepositoryEntityQRelation<SubType, SubQType>, QImmutableRepoRowQId {
 }
 

@@ -1,4 +1,4 @@
-import { FIELD_UTILS, InsertValues, QUERY_UTILS, SCHEMA_UTILS } from '@airport/air-control';
+import { FIELD_UTILS, InsertValues, QUERY_UTILS, SCHEMA_UTILS, } from '@airport/air-control';
 import { container } from '@airport/di';
 export class AbstractMutationManager {
     getPortableQuery(schemaIndex, tableIndex, query, queryResultType, queryUtils, fieldUtils) {
@@ -7,11 +7,11 @@ export class AbstractMutationManager {
             tableIndex,
             jsonQuery: query.toJSON(queryUtils, fieldUtils),
             parameterMap: query.getParameters(),
-            queryResultType
+            queryResultType,
         };
     }
-    async doInsertValues(transaction, q, entities) {
-        const [fieldUtils, queryUtils, schemaUtils] = await container(this).get(FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS);
+    async doInsertValues(transaction, q, entities, context) {
+        const [fieldUtils, queryUtils, schemaUtils,] = await container(this).get(FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS);
         const dbEntity = q.__driver__.dbEntity;
         const columnIndexes = [];
         const columnValueLookups = [];
@@ -33,7 +33,7 @@ export class AbstractMutationManager {
                         const propertyName = firstPropertyNameChain[i];
                         const nextColumnValueLookup = {
                             name: propertyName,
-                            nested: null
+                            nested: null,
                         };
                         columnValueLookup.nested = nextColumnValueLookup;
                         columnValueLookup = nextColumnValueLookup;
@@ -69,7 +69,7 @@ export class AbstractMutationManager {
         };
         let insertValues = new InsertValues(rawInsertValues, columnIndexes);
         let portableQuery = this.getPortableQuery(dbEntity.schemaVersion.schema.index, dbEntity.index, insertValues, null, queryUtils, fieldUtils);
-        return await transaction.insertValues(portableQuery);
+        return await transaction.insertValues(portableQuery, context);
     }
 }
 //# sourceMappingURL=AbstractMutationManager.js.map

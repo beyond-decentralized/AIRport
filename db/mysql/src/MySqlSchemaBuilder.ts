@@ -9,8 +9,8 @@ import {
 }                         from '@airport/airport-code'
 import {
 	container,
-	DI
-}                         from '@airport/di'
+	DI, IContext,
+} from '@airport/di';
 import {
 	DbSchema,
 	getSchemaName,
@@ -28,12 +28,14 @@ export class MySqlSchemaBuilder
 
 	async createSchema(
 		jsonSchema: JsonSchema,
-		storeDriver: IStoreDriver
+		storeDriver: IStoreDriver,
+		context: IContext,
 	): Promise<void> {
 		const schemaName            = getSchemaName(jsonSchema)
 		const createSchemaStatement = `CREATE SCHEMA ${schemaName}`
 
-		await storeDriver.query(QueryType.DDL, createSchemaStatement, [], false)
+		await storeDriver.query(QueryType.DDL, createSchemaStatement, [],
+			context, false)
 	}
 
 	getColumnSuffix(
@@ -86,7 +88,8 @@ export class MySqlSchemaBuilder
 	}
 
 	async buildAllSequences(
-		jsonSchemas: JsonSchema[]
+		jsonSchemas: JsonSchema[],
+		context: IContext,
 	): Promise<ISequence[]> {
 		console.log('buildAllSequences')
 
@@ -100,14 +103,15 @@ export class MySqlSchemaBuilder
 			}
 		}
 
-		await sequenceDao.bulkCreate(allSequences)
+		await sequenceDao.save(allSequences)
 
 		return allSequences
 	}
 
 	stageSequences(
 		jsonSchemas: JsonSchema[],
-		airDb: IAirportDatabase
+		airDb: IAirportDatabase,
+		context: IContext,
 	): ISequence[] {
 		console.log('stageSequences')
 

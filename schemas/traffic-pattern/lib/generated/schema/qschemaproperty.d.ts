@@ -2,7 +2,10 @@ import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField } fro
 import { VersionedSchemaObjectGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { SchemaEntityGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
 import { SchemaPropertyColumnGraph, SchemaPropertyColumnESelect, QSchemaPropertyColumn } from './qschemapropertycolumn';
+import { SchemaPropertyColumn } from '../../ddl/schema/SchemaPropertyColumn';
 import { SchemaRelationGraph, SchemaRelationESelect, QSchemaRelation } from './qschemarelation';
+import { SchemaRelation } from '../../ddl/schema/SchemaRelation';
+import { SchemaProperty } from '../../ddl/schema/SchemaProperty';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -71,18 +74,18 @@ export interface SchemaPropertyECreateColumns extends SchemaPropertyEId, SchemaP
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaProperty extends QVersionedSchemaObject {
+export interface QSchemaProperty extends QVersionedSchemaObject<SchemaProperty> {
     id: IQNumberField;
     index: IQNumberField;
     name: IQStringField;
     isId: IQBooleanField;
     entity: QSchemaEntityQRelation;
-    propertyColumns: IQOneToManyRelation<QSchemaPropertyColumn>;
-    relation: IQOneToManyRelation<QSchemaRelation>;
+    propertyColumns: IQOneToManyRelation<SchemaPropertyColumn, QSchemaPropertyColumn>;
+    relation: IQOneToManyRelation<SchemaRelation, QSchemaRelation>;
 }
 export interface QSchemaPropertyQId extends QVersionedSchemaObjectQId {
     id: IQNumberField;
 }
-export interface QSchemaPropertyQRelation extends QVersionedSchemaObjectQRelation<QSchemaProperty>, QSchemaPropertyQId {
+export interface QSchemaPropertyQRelation extends QVersionedSchemaObjectQRelation<SchemaProperty, QSchemaProperty>, QSchemaPropertyQId {
 }
 //# sourceMappingURL=qschemaproperty.d.ts.map

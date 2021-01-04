@@ -1,6 +1,7 @@
 import { IQNumberField } from '@airport/air-control';
 import { VersionedSchemaObjectGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { SchemaVersionGraph, SchemaVersionEId, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQId, QSchemaVersionQRelation } from './qschemaversion';
+import { SchemaReference } from '../../ddl/schema/SchemaReference';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -59,7 +60,7 @@ export interface SchemaReferenceECreateColumns extends SchemaReferenceEId, Schem
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaReference extends QVersionedSchemaObject {
+export interface QSchemaReference extends QVersionedSchemaObject<SchemaReference> {
     ownSchemaVersion: QSchemaVersionQRelation;
     referencedSchemaVersion: QSchemaVersionQRelation;
     index: IQNumberField;
@@ -68,6 +69,6 @@ export interface QSchemaReferenceQId extends QVersionedSchemaObjectQId {
     ownSchemaVersion: QSchemaVersionQId;
     referencedSchemaVersion: QSchemaVersionQId;
 }
-export interface QSchemaReferenceQRelation extends QVersionedSchemaObjectQRelation<QSchemaReference>, QSchemaReferenceQId {
+export interface QSchemaReferenceQRelation extends QVersionedSchemaObjectQRelation<SchemaReference, QSchemaReference>, QSchemaReferenceQId {
 }
 //# sourceMappingURL=qschemareference.d.ts.map

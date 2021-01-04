@@ -42,6 +42,9 @@ import {
 	QSchemaColumnQRelation,
 } from './qschemacolumn';
 import {
+	SchemaColumn,
+} from '../../ddl/schema/SchemaColumn';
+import {
 	SchemaRelationGraph,
 	SchemaRelationEId,
 	SchemaRelationEOptionalId,
@@ -51,6 +54,12 @@ import {
 	QSchemaRelationQId,
 	QSchemaRelationQRelation,
 } from './qschemarelation';
+import {
+	SchemaRelation,
+} from '../../ddl/schema/SchemaRelation';
+import {
+	SchemaRelationColumn,
+} from '../../ddl/schema/SchemaRelationColumn';
 
 
 declare function require(moduleName: string): any;
@@ -176,7 +185,7 @@ extends SchemaRelationColumnEId, SchemaRelationColumnEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaRelationColumn extends QVersionedSchemaObject
+export interface QSchemaRelationColumn extends QVersionedSchemaObject<SchemaRelationColumn>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -209,6 +218,6 @@ export interface QSchemaRelationColumnQId extends QVersionedSchemaObjectQId
 
 // Entity Relation Interface
 export interface QSchemaRelationColumnQRelation
-	extends QVersionedSchemaObjectQRelation<QSchemaRelationColumn>, QSchemaRelationColumnQId {
+	extends QVersionedSchemaObjectQRelation<SchemaRelationColumn, QSchemaRelationColumn>, QSchemaRelationColumnQId {
 }
 

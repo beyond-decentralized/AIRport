@@ -32,6 +32,9 @@ import {
 	QRepositoryQRelation,
 } from './qrepository';
 import {
+	Repository,
+} from '../../ddl/repository/Repository';
+import {
 	ApplicationGraph,
 	ApplicationEId,
 	ApplicationEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QApplicationQId,
 	QApplicationQRelation,
 } from '../infrastructure/qapplication';
+import {
+	Application,
+} from '../../ddl/infrastructure/Application';
+import {
+	RepositoryApplication,
+} from '../../ddl/repository/RepositoryApplication';
 
 
 declare function require(moduleName: string): any;
@@ -151,7 +160,7 @@ extends RepositoryApplicationEId, RepositoryApplicationEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryApplication extends IQEntity
+export interface QRepositoryApplication extends IQEntity<RepositoryApplication>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -182,6 +191,6 @@ export interface QRepositoryApplicationQId
 
 // Entity Relation Interface
 export interface QRepositoryApplicationQRelation
-	extends IQRelation<QRepositoryApplication>, QRepositoryApplicationQId {
+	extends IQRelation<RepositoryApplication, QRepositoryApplication>, QRepositoryApplicationQId {
 }
 

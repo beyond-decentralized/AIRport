@@ -32,6 +32,9 @@ import {
 	QUserQRelation,
 } from '../quser';
 import {
+	User,
+} from '../../../ddl/user/User';
+import {
 	SecurityQuestionGraph,
 	SecurityQuestionEId,
 	SecurityQuestionEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QSecurityQuestionQId,
 	QSecurityQuestionQRelation,
 } from './qsecurityquestion';
+import {
+	SecurityQuestion,
+} from '../../../ddl/user/security/SecurityQuestion';
+import {
+	SecurityAnswer,
+} from '../../../ddl/user/security/SecurityAnswer';
 
 
 declare function require(moduleName: string): any;
@@ -153,7 +162,7 @@ extends SecurityAnswerEId, SecurityAnswerEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSecurityAnswer extends IQEntity
+export interface QSecurityAnswer extends IQEntity<SecurityAnswer>
 {
 	// Id Fields
 
@@ -184,6 +193,6 @@ export interface QSecurityAnswerQId
 
 // Entity Relation Interface
 export interface QSecurityAnswerQRelation
-	extends IQRelation<QSecurityAnswer>, QSecurityAnswerQId {
+	extends IQRelation<SecurityAnswer, QSecurityAnswer>, QSecurityAnswerQId {
 }
 

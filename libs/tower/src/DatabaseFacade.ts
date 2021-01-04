@@ -96,7 +96,7 @@ export class DatabaseFacade
 		return numRecordsCreated
 	}
 
-	async insertColumnValues<IQE extends IQEntity>(
+	async insertColumnValues<IQE extends IQEntity<any>>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
@@ -121,7 +121,7 @@ export class DatabaseFacade
 		return numInsertedRecords
 	}
 
-	async insertValues<IQE extends IQEntity>(
+	async insertValues<IQE extends IQEntity<any>>(
 		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> },
 		context: IOperationContext<any, any>
 	): Promise<number> {
@@ -144,7 +144,7 @@ export class DatabaseFacade
 		return numInsertedRecords
 	}
 
-	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
+	async insertColumnValuesGenerateIds<IQE extends IQEntity<any>>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
@@ -166,7 +166,7 @@ export class DatabaseFacade
 		})
 	}
 
-	async insertValuesGenerateIds<IQE extends IQEntity>(
+	async insertValuesGenerateIds<IQE extends IQEntity<any>>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},
@@ -190,7 +190,7 @@ export class DatabaseFacade
 		return recordIdentifiers
 	}
 
-	async deleteWhere<IQE extends IQEntity>(
+	async deleteWhere<IQE extends IQEntity<any>>(
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
@@ -241,7 +241,7 @@ export class DatabaseFacade
 	 *
 	 * @return Number of records updated
 	 */
-	async updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(
+	async updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity<any>>(
 		rawUpdate: RawUpdateColumns<IEUC, IQE>
 			| {
 			(...args: any[]): RawUpdateColumns<IEUC, IQE>
@@ -268,7 +268,7 @@ export class DatabaseFacade
 	}
 
 	async updateWhere<IEUP extends IEntityUpdateProperties,
-		IQE extends IQEntity>(
+		IQE extends IQEntity<any>>(
 		rawUpdate: RawUpdate<IEUP, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},

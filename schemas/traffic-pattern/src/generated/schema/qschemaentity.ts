@@ -43,6 +43,9 @@ import {
 	QSchemaVersionQRelation,
 } from './qschemaversion';
 import {
+	SchemaVersion,
+} from '../../ddl/schema/SchemaVersion';
+import {
 	SchemaColumnGraph,
 	SchemaColumnEId,
 	SchemaColumnEOptionalId,
@@ -52,6 +55,9 @@ import {
 	QSchemaColumnQId,
 	QSchemaColumnQRelation,
 } from './qschemacolumn';
+import {
+	SchemaColumn,
+} from '../../ddl/schema/SchemaColumn';
 import {
 	SchemaOperationGraph,
 	SchemaOperationEId,
@@ -63,6 +69,9 @@ import {
 	QSchemaOperationQRelation,
 } from './qschemaoperation';
 import {
+	SchemaOperation,
+} from '../../ddl/schema/SchemaOperation';
+import {
 	SchemaPropertyGraph,
 	SchemaPropertyEId,
 	SchemaPropertyEOptionalId,
@@ -73,6 +82,9 @@ import {
 	QSchemaPropertyQRelation,
 } from './qschemaproperty';
 import {
+	SchemaProperty,
+} from '../../ddl/schema/SchemaProperty';
+import {
 	SchemaRelationGraph,
 	SchemaRelationEId,
 	SchemaRelationEOptionalId,
@@ -82,6 +94,12 @@ import {
 	QSchemaRelationQId,
 	QSchemaRelationQRelation,
 } from './qschemarelation';
+import {
+	SchemaRelation,
+} from '../../ddl/schema/SchemaRelation';
+import {
+	SchemaEntity,
+} from '../../ddl/schema/SchemaEntity';
 
 
 declare function require(moduleName: string): any;
@@ -221,7 +239,7 @@ extends SchemaEntityEId, SchemaEntityEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaEntity extends QVersionedSchemaObject
+export interface QSchemaEntity extends QVersionedSchemaObject<SchemaEntity>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -237,11 +255,11 @@ export interface QSchemaEntity extends QVersionedSchemaObject
 
 	// Non-Id Relations
 	schemaVersion: QSchemaVersionQRelation;
-	columns: IQOneToManyRelation<QSchemaColumn>;
-	operations: IQOneToManyRelation<QSchemaOperation>;
-	properties: IQOneToManyRelation<QSchemaProperty>;
-	relations: IQOneToManyRelation<QSchemaRelation>;
-	relationReferences: IQOneToManyRelation<QSchemaRelation>;
+	columns: IQOneToManyRelation<SchemaColumn, QSchemaColumn>;
+	operations: IQOneToManyRelation<SchemaOperation, QSchemaOperation>;
+	properties: IQOneToManyRelation<SchemaProperty, QSchemaProperty>;
+	relations: IQOneToManyRelation<SchemaRelation, QSchemaRelation>;
+	relationReferences: IQOneToManyRelation<SchemaRelation, QSchemaRelation>;
 
 }
 
@@ -260,6 +278,6 @@ export interface QSchemaEntityQId extends QVersionedSchemaObjectQId
 
 // Entity Relation Interface
 export interface QSchemaEntityQRelation
-	extends QVersionedSchemaObjectQRelation<QSchemaEntity>, QSchemaEntityQId {
+	extends QVersionedSchemaObjectQRelation<SchemaEntity, QSchemaEntity>, QSchemaEntityQId {
 }
 

@@ -16,7 +16,7 @@ export async function startDb(
 ) {
 	await DI.db().get(AIR_DB)
 	const dbManager = await DI.db().get(DATABASE_MANAGER)
-	await dbManager.init(domainName, ...schemas)
+	await dbManager.init(domainName, {}, ...schemas)
 }
 
 export async function closeDb() {

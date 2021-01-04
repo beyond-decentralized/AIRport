@@ -9,10 +9,10 @@ export class MySqlDriver extends SqlDriver {
         super(...arguments);
         this.maxValues = 1000000;
     }
-    async query(queryType, query, params, saveTransaction) {
-        return await this.doQuery(queryType, query, params, this.queryApi, saveTransaction);
+    async query(queryType, query, params, context, saveTransaction) {
+        return await this.doQuery(queryType, query, params, this.queryApi, context, saveTransaction);
     }
-    async doQuery(queryType, query, params, connection, saveTransaction) {
+    async doQuery(queryType, query, params, connection, context, saveTransaction) {
         let nativeParameters = params.map((value) => this.convertValueIn(value));
         console.log(query);
         console.log(nativeParameters);
@@ -48,28 +48,28 @@ export class MySqlDriver extends SqlDriver {
     composeTableName(schemaName, tableName) {
         return `${schemaName}.${tableName}`;
     }
-    async doesTableExist(schemaName, tableName) {
+    async doesTableExist(schemaName, tableName, context) {
         const result = await this.findNative(
         // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
         `select count(1) as count from information_schema.TABLES
 where TABLE_SCHEMA = '${schemaName}'
-and TABLE_NAME = '${tableName}';`, []);
+and TABLE_NAME = '${tableName}';`, [], context);
         return result[0].count == 1;
     }
-    async dropTable(schemaName, tableName) {
-        await this.findNative(`DROP TABLE '${schemaName}'.'${tableName}'`, []);
+    async dropTable(schemaName, tableName, context) {
+        await this.findNative(`DROP TABLE '${schemaName}'.'${tableName}'`, [], context);
         return true;
     }
-    async findNative(sqlQuery, parameters) {
-        return await this.query(QueryType.SELECT, sqlQuery, parameters);
+    async findNative(sqlQuery, parameters, context) {
+        return await this.query(QueryType.SELECT, sqlQuery, parameters, context);
     }
-    async initAllTables() {
+    async initAllTables(context) {
         let createOperations;
         let createQueries = [];
         let createSql = DDLManager.getCreateDDL();
         await transactional(async () => {
             for (const createSqlStatement of createSql) {
-                const createTablePromise = this.query(QueryType.DDL, createSqlStatement, [], false);
+                const createTablePromise = this.query(QueryType.DDL, createSqlStatement, [], context, false);
                 createQueries.push(createTablePromise);
             }
             await this.initTables(createQueries);
@@ -84,8 +84,8 @@ and TABLE_NAME = '${tableName}';`, []);
     getDialect() {
         return SQLDialect.MYSQL;
     }
-    async executeNative(sql, parameters) {
-        return await this.query(QueryType.MUTATE, sql, parameters);
+    async executeNative(sql, parameters, context) {
+        return await this.query(QueryType.MUTATE, sql, parameters, context);
     }
     convertValueIn(value) {
         switch (typeof value) {

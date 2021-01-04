@@ -1,5 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ApplicationPackageGraph, ApplicationPackageESelect, QApplicationPackage } from './qapplicationpackage';
+import { ApplicationPackage } from '../ddl/ApplicationPackage';
+import { Package } from '../ddl/Package';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -51,14 +53,14 @@ export interface PackageECreateColumns extends PackageEId, PackageEUpdateColumns
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QPackage extends IQEntity {
+export interface QPackage extends IQEntity<Package> {
     id: IQNumberField;
     name: IQStringField;
-    applicationPackages: IQOneToManyRelation<QApplicationPackage>;
+    applicationPackages: IQOneToManyRelation<ApplicationPackage, QApplicationPackage>;
 }
 export interface QPackageQId {
     id: IQNumberField;
 }
-export interface QPackageQRelation extends IQRelation<QPackage>, QPackageQId {
+export interface QPackageQRelation extends IQRelation<Package, QPackage>, QPackageQId {
 }
 //# sourceMappingURL=qpackage.d.ts.map

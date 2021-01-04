@@ -32,6 +32,9 @@ import {
 	QSharingNodeQRelation,
 } from './qsharingnode';
 import {
+	SharingNode,
+} from '../../ddl/sharingNode/SharingNode';
+import {
 	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -40,7 +43,11 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
+	Repository,
 } from '@airport/holding-pattern';
+import {
+	SharingNodeRepository,
+} from '../../ddl/sharingNode/SharingNodeRepository';
 
 
 declare function require(moduleName: string): any;
@@ -161,7 +168,7 @@ extends SharingNodeRepositoryEId, SharingNodeRepositoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingNodeRepository extends IQEntity
+export interface QSharingNodeRepository extends IQEntity<SharingNodeRepository>
 {
 	// Id Fields
 
@@ -194,6 +201,6 @@ export interface QSharingNodeRepositoryQId
 
 // Entity Relation Interface
 export interface QSharingNodeRepositoryQRelation
-	extends IQRelation<QSharingNodeRepository>, QSharingNodeRepositoryQId {
+	extends IQRelation<SharingNodeRepository, QSharingNodeRepository>, QSharingNodeRepositoryQId {
 }
 

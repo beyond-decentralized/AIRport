@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	Archive,
+} from '../../ddl/repository/Archive';
 
 
 declare function require(moduleName: string): any;
@@ -127,7 +130,7 @@ extends ArchiveEId, ArchiveEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QArchive extends IQEntity
+export interface QArchive extends IQEntity<Archive>
 {
 	// Id Fields
 	id: IQStringField;
@@ -156,6 +159,6 @@ export interface QArchiveQId
 
 // Entity Relation Interface
 export interface QArchiveQRelation
-	extends IQRelation<QArchive>, QArchiveQId {
+	extends IQRelation<Archive, QArchive>, QArchiveQId {
 }
 

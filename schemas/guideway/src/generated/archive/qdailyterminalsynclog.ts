@@ -32,6 +32,9 @@ import {
 	QDailyArchiveLogQRelation,
 } from './qdailyarchivelog';
 import {
+	DailyArchiveLog,
+} from '../../ddl/archive/DailyArchiveLog';
+import {
 	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QTerminalQId,
 	QTerminalQRelation,
 } from '../terminal/qterminal';
+import {
+	Terminal,
+} from '../../ddl/terminal/Terminal';
+import {
+	DailyTerminalSyncLog,
+} from '../../ddl/archive/DailyTerminalSyncLog';
 
 
 declare function require(moduleName: string): any;
@@ -153,7 +162,7 @@ extends DailyTerminalSyncLogEId, DailyTerminalSyncLogEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDailyTerminalSyncLog extends IQEntity
+export interface QDailyTerminalSyncLog extends IQEntity<DailyTerminalSyncLog>
 {
 	// Id Fields
 
@@ -184,6 +193,6 @@ export interface QDailyTerminalSyncLogQId
 
 // Entity Relation Interface
 export interface QDailyTerminalSyncLogQRelation
-	extends IQRelation<QDailyTerminalSyncLog>, QDailyTerminalSyncLogQId {
+	extends IQRelation<DailyTerminalSyncLog, QDailyTerminalSyncLog>, QDailyTerminalSyncLogQId {
 }
 

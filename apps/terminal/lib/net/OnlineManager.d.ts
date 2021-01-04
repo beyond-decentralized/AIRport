@@ -1,14 +1,15 @@
+import { IContext } from '@airport/di';
 import { IRepository, IRepositoryTransactionHistoryDao } from '@airport/holding-pattern';
 import { IRepositoryManager } from '../core/repository/RepositoryManager';
 import { IOfflineDeltaStore } from '../data/OfflineDeltaStore';
 export interface IOnlineManager {
-    goOffline(): Promise<void>;
-    goOnline(): Promise<void>;
-    isOnline(): boolean;
+    goOffline(context?: IContext): Promise<void>;
+    goOnline(context?: IContext): Promise<void>;
+    isOnline(context?: IContext): boolean;
 }
 export declare class OnlineManager implements IOnlineManager {
-    goOffline(): Promise<void>;
     private online;
+    goOffline(context?: IContext): Promise<void>;
     /**
      There are tree update states:
      LOCAL            0
@@ -41,8 +42,8 @@ export declare class OnlineManager implements IOnlineManager {
      Finally, always flip update state to LOCAL
      * @returns {Promise<void>}
      */
-    goOnline(): Promise<void>;
+    goOnline(context?: IContext): Promise<void>;
     repositoryGoOnline(repository: IRepository, offlineDeltaStore: IOfflineDeltaStore, repositoryManager: IRepositoryManager, repoTransHistoryDao: IRepositoryTransactionHistoryDao): Promise<void>;
-    isOnline(): boolean;
+    isOnline(context?: IContext): boolean;
 }
 //# sourceMappingURL=OnlineManager.d.ts.map

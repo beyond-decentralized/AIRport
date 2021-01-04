@@ -30,7 +30,10 @@ import {
 	QSharingNode,
 	QSharingNodeQId,
 	QSharingNodeQRelation,
-} from '../sharingnode/qsharingnode';
+} from '../sharingNode/qsharingnode';
+import {
+	SharingNode,
+} from '../../ddl/sharingNode/SharingNode';
 import {
 	SharingMessageRepoTransBlockGraph,
 	SharingMessageRepoTransBlockEId,
@@ -41,6 +44,12 @@ import {
 	QSharingMessageRepoTransBlockQId,
 	QSharingMessageRepoTransBlockQRelation,
 } from './qsharingmessagerepotransblock';
+import {
+	SharingMessageRepoTransBlock,
+} from '../../ddl/sharingMessage/SharingMessageRepoTransBlock';
+import {
+	SharingMessage,
+} from '../../ddl/sharingMessage/SharingMessage';
 
 
 declare function require(moduleName: string): any;
@@ -161,7 +170,7 @@ extends SharingMessageEId, SharingMessageEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingMessage extends IQEntity
+export interface QSharingMessage extends IQEntity<SharingMessage>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -175,7 +184,7 @@ export interface QSharingMessage extends IQEntity
 	syncTimestamp: IQDateField;
 
 	// Non-Id Relations
-	sharingMessageRepoTransBlocks: IQOneToManyRelation<QSharingMessageRepoTransBlock>;
+	sharingMessageRepoTransBlocks: IQOneToManyRelation<SharingMessageRepoTransBlock, QSharingMessageRepoTransBlock>;
 
 }
 
@@ -195,6 +204,6 @@ export interface QSharingMessageQId
 
 // Entity Relation Interface
 export interface QSharingMessageQRelation
-	extends IQRelation<QSharingMessage>, QSharingMessageQId {
+	extends IQRelation<SharingMessage, QSharingMessage>, QSharingMessageQId {
 }
 

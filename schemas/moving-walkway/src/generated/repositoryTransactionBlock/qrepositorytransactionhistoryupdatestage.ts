@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	RepositoryTransactionHistoryUpdateStage,
+} from '../../ddl/repositoryTransactionBlock/RepositoryTransactionHistoryUpdateStage';
 
 
 declare function require(moduleName: string): any;
@@ -127,7 +130,7 @@ extends RepositoryTransactionHistoryUpdateStageEId, RepositoryTransactionHistory
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryTransactionHistoryUpdateStage extends IQEntity
+export interface QRepositoryTransactionHistoryUpdateStage extends IQEntity<RepositoryTransactionHistoryUpdateStage>
 {
 	// Id Fields
 	repositoryTransactionHistoryId: IQNumberField;
@@ -156,6 +159,6 @@ export interface QRepositoryTransactionHistoryUpdateStageQId
 
 // Entity Relation Interface
 export interface QRepositoryTransactionHistoryUpdateStageQRelation
-	extends IQRelation<QRepositoryTransactionHistoryUpdateStage>, QRepositoryTransactionHistoryUpdateStageQId {
+	extends IQRelation<RepositoryTransactionHistoryUpdateStage, QRepositoryTransactionHistoryUpdateStage>, QRepositoryTransactionHistoryUpdateStageQId {
 }
 

@@ -1,6 +1,6 @@
 import { DI } from '@airport/di';
 import { SQLDataType, SqlFunction } from '@airport/ground-control';
-import { AbstractFunctionAdaptor, SQL_QUERY_ADAPTOR } from '@airport/fuel-hydrant-system';
+import { AbstractFunctionAdaptor, SQL_QUERY_ADAPTOR, } from '@airport/fuel-hydrant-system';
 /**
  * Created by Papa on 8/27/2016.
  */
@@ -17,9 +17,6 @@ export class MySqlQueryAdaptor {
     }
     getResultArray(rawResponse) {
         return rawResponse.res.rows;
-    }
-    getResultCellRawValue(resultRow, columnName, index, dataType, defaultValue) {
-        return resultRow[columnName];
     }
     getResultCellValue(resultRow, columnName, index, dataType, defaultValue) {
         let value = this.getResultCellRawValue(resultRow, columnName, index, dataType, defaultValue);
@@ -73,6 +70,9 @@ LIMIT
             default:
                 throw new Error(`Unexpected type of parameter '${typeof value}.'`);
         }
+    }
+    getResultCellRawValue(resultRow, columnName, index, dataType, defaultValue) {
+        return resultRow[columnName];
     }
 }
 export class MySqlFunctionAdaptor extends AbstractFunctionAdaptor {

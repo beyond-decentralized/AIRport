@@ -49,4 +49,4 @@ export const SYNC_CONFLICT_DAO
 export const SYNC_CONFLICT_PENDING_NOTIFICATION_DAO
 	                                             = movingWalkway.token<ISynchronizationConflictPendingNotificationDao>('ISynchronizationConflictPendingNotificationDao');
 export const SYNC_CONFLICT_VALUES_DAO
-	= movingWalkway.token<ISynchronizationConflictValuesDao>();
+	= movingWalkway.token<ISynchronizationConflictValuesDao>('ISynchronizationConflictValuesDao');

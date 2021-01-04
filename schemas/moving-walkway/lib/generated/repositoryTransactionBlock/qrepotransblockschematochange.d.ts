@@ -1,6 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryTransactionBlockGraph, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from './qrepositorytransactionblock';
 import { SchemaGraph, SchemaEId, SchemaEOptionalId, SchemaESelect, QSchemaQId, QSchemaQRelation } from '@airport/traffic-pattern';
+import { RepoTransBlockSchemaToChange } from '../../ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -56,7 +57,7 @@ export interface RepoTransBlockSchemaToChangeECreateColumns extends RepoTransBlo
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepoTransBlockSchemaToChange extends IQEntity {
+export interface QRepoTransBlockSchemaToChange extends IQEntity<RepoTransBlockSchemaToChange> {
     repositoryTransactionBlock: QRepositoryTransactionBlockQRelation;
     schema: QSchemaQRelation;
     status: IQNumberField;
@@ -65,6 +66,6 @@ export interface QRepoTransBlockSchemaToChangeQId {
     repositoryTransactionBlock: QRepositoryTransactionBlockQId;
     schema: QSchemaQId;
 }
-export interface QRepoTransBlockSchemaToChangeQRelation extends IQRelation<QRepoTransBlockSchemaToChange>, QRepoTransBlockSchemaToChangeQId {
+export interface QRepoTransBlockSchemaToChangeQRelation extends IQRelation<RepoTransBlockSchemaToChange, QRepoTransBlockSchemaToChange>, QRepoTransBlockSchemaToChangeQId {
 }
 //# sourceMappingURL=qrepotransblockschematochange.d.ts.map

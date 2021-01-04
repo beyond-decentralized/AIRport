@@ -30,6 +30,7 @@ import {
 	QDailyArchiveLog,
 	QDailyArchiveLogQId,
 	QDailyArchiveLogQRelation,
+	DailyArchiveLog,
 	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -38,7 +39,11 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
+	Repository,
 } from '@airport/guideway';
+import {
+	DailyArchive,
+} from '../ddl/DailyArchive';
 
 
 declare function require(moduleName: string): any;
@@ -150,7 +155,7 @@ extends DailyArchiveEId, DailyArchiveEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDailyArchive extends IQEntity
+export interface QDailyArchive extends IQEntity<DailyArchive>
 {
 	// Id Fields
 
@@ -180,6 +185,6 @@ export interface QDailyArchiveQId
 
 // Entity Relation Interface
 export interface QDailyArchiveQRelation
-	extends IQRelation<QDailyArchive>, QDailyArchiveQId {
+	extends IQRelation<DailyArchive, QDailyArchive>, QDailyArchiveQId {
 }
 

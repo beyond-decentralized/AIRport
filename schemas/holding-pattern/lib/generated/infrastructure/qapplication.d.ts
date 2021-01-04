@@ -1,6 +1,9 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ActorApplicationGraph, ActorApplicationESelect, QActorApplication } from './qactorapplication';
+import { ActorApplication } from '../../ddl/infrastructure/ActorApplication';
 import { RepositoryApplicationGraph, RepositoryApplicationESelect, QRepositoryApplication } from '../repository/qrepositoryapplication';
+import { RepositoryApplication } from '../../ddl/repository/RepositoryApplication';
+import { Application } from '../../ddl/infrastructure/Application';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -58,16 +61,16 @@ export interface ApplicationECreateColumns extends ApplicationEId, ApplicationEU
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplication extends IQEntity {
+export interface QApplication extends IQEntity<Application> {
     id: IQNumberField;
     host: IQStringField;
     port: IQNumberField;
-    actorApplications: IQOneToManyRelation<QActorApplication>;
-    repositoryApplications: IQOneToManyRelation<QRepositoryApplication>;
+    actorApplications: IQOneToManyRelation<ActorApplication, QActorApplication>;
+    repositoryApplications: IQOneToManyRelation<RepositoryApplication, QRepositoryApplication>;
 }
 export interface QApplicationQId {
     id: IQNumberField;
 }
-export interface QApplicationQRelation extends IQRelation<QApplication>, QApplicationQId {
+export interface QApplicationQRelation extends IQRelation<Application, QApplication>, QApplicationQId {
 }
 //# sourceMappingURL=qapplication.d.ts.map

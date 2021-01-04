@@ -7,9 +7,10 @@ export class QSchemaBuilder {
         this.ddlPathMapByEntityName = {};
         this.generatedFilePaths = [];
         this.generatedPathMapByEntityName = {};
+        this.mappedSuperclassSet = {};
         this.qSchemaFilePath = pathBuilder.fullGeneratedDirPath + '/qSchema.ts';
     }
-    addFileNameAndPaths(entityName, fullDdlPath, fullGenerationPath) {
+    addFileNameAndPaths(entityName, fullDdlPath, fullGenerationPath, isMappedSuperclass) {
         const ddlRelativePath = resolveRelativePath(this.qSchemaFilePath, fullDdlPath)
             .replace('.ts', '');
         this.ddlPathMapByEntityName[entityName] = ddlRelativePath;
@@ -19,11 +20,14 @@ export class QSchemaBuilder {
         this.generatedPathMapByEntityName[entityName]
             = this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath);
         this.entityNames.push(entityName);
+        this.mappedSuperclassSet[entityName] = isMappedSuperclass;
     }
     build(domainName, schemaName) {
         this.entityNames.sort();
         this.generatedFilePaths.sort();
-        const qApiDefinitions = this.entityNames.map(entityName => `${entityName}: Q${entityName};`).join('\n\t');
+        const qApiDefinitions = this.entityNames
+            .filter(entityName => !this.mappedSuperclassSet[entityName])
+            .map(entityName => `${entityName}: Q${entityName};`).join('\n\t');
         // TODO: enable DUO and DAO injections into QSchema, if needed
         // const duoDefinitions = this.entityNames.map(
         // 	entityName => `${entityName}: IBase${entityName}Duo;`

@@ -1,6 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { SharingNodeGraph, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from './qsharingnode';
-import { RepositoryTransactionBlockGraph, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from '../repositorytransactionblock/qrepositorytransactionblock';
+import { RepositoryTransactionBlockGraph, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from '../repositoryTransactionBlock/qrepositorytransactionblock';
+import { SharingNodeRepoTransBlock } from '../../ddl/sharingNode/SharingNodeRepoTransBlock';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -56,7 +57,7 @@ export interface SharingNodeRepoTransBlockECreateColumns extends SharingNodeRepo
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingNodeRepoTransBlock extends IQEntity {
+export interface QSharingNodeRepoTransBlock extends IQEntity<SharingNodeRepoTransBlock> {
     sharingNode: QSharingNodeQRelation;
     repositoryTransactionBlock: QRepositoryTransactionBlockQRelation;
     syncStatus: IQNumberField;
@@ -65,6 +66,6 @@ export interface QSharingNodeRepoTransBlockQId {
     sharingNode: QSharingNodeQId;
     repositoryTransactionBlock: QRepositoryTransactionBlockQId;
 }
-export interface QSharingNodeRepoTransBlockQRelation extends IQRelation<QSharingNodeRepoTransBlock>, QSharingNodeRepoTransBlockQId {
+export interface QSharingNodeRepoTransBlockQRelation extends IQRelation<SharingNodeRepoTransBlock, QSharingNodeRepoTransBlock>, QSharingNodeRepoTransBlockQId {
 }
 //# sourceMappingURL=qsharingnoderepotransblock.d.ts.map

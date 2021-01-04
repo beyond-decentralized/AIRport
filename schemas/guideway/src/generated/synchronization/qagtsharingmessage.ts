@@ -32,6 +32,9 @@ import {
 	QTerminalQRelation,
 } from '../terminal/qterminal';
 import {
+	Terminal,
+} from '../../ddl/terminal/Terminal';
+import {
 	SyncLogGraph,
 	SyncLogEId,
 	SyncLogEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QSyncLogQId,
 	QSyncLogQRelation,
 } from './qsynclog';
+import {
+	SyncLog,
+} from '../../ddl/synchronization/SyncLog';
+import {
+	AgtSharingMessage,
+} from '../../ddl/synchronization/AgtSharingMessage';
 
 
 declare function require(moduleName: string): any;
@@ -157,7 +166,7 @@ extends AgtSharingMessageEId, AgtSharingMessageEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QAgtSharingMessage extends IQEntity
+export interface QAgtSharingMessage extends IQEntity<AgtSharingMessage>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -170,7 +179,7 @@ export interface QAgtSharingMessage extends IQEntity
 
 	// Non-Id Relations
 	terminal: QTerminalQRelation;
-	syncLogs: IQOneToManyRelation<QSyncLog>;
+	syncLogs: IQOneToManyRelation<SyncLog, QSyncLog>;
 
 }
 
@@ -189,6 +198,6 @@ export interface QAgtSharingMessageQId
 
 // Entity Relation Interface
 export interface QAgtSharingMessageQRelation
-	extends IQRelation<QAgtSharingMessage>, QAgtSharingMessageQId {
+	extends IQRelation<AgtSharingMessage, QAgtSharingMessage>, QAgtSharingMessageQId {
 }
 

@@ -31,6 +31,12 @@ import {
 	QRepositoryQId,
 	QRepositoryQRelation,
 } from './qrepository';
+import {
+	Repository,
+} from '../../ddl/repository/Repository';
+import {
+	RepositorySchema,
+} from '../../ddl/repository/RepositorySchema';
 
 
 declare function require(moduleName: string): any;
@@ -141,7 +147,7 @@ extends RepositorySchemaEId, RepositorySchemaEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositorySchema extends IQEntity
+export interface QRepositorySchema extends IQEntity<RepositorySchema>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -172,6 +178,6 @@ export interface QRepositorySchemaQId
 
 // Entity Relation Interface
 export interface QRepositorySchemaQRelation
-	extends IQRelation<QRepositorySchema>, QRepositorySchemaQId {
+	extends IQRelation<RepositorySchema, QRepositorySchema>, QRepositorySchemaQId {
 }
 

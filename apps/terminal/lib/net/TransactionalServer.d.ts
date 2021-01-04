@@ -33,7 +33,7 @@ export interface InternalPortableQuery extends PortableQuery {
  */
 export declare class TransactionalServer implements ITransactionalServer {
     tempActor: IActor;
-    init(): Promise<void>;
+    init(context?: IContext): Promise<void>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<IObservable<EntityArray>>;

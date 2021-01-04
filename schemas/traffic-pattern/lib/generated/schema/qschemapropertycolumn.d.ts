@@ -2,6 +2,7 @@ import { IQNumberField } from '@airport/air-control';
 import { VersionedSchemaObjectGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { SchemaColumnGraph, SchemaColumnEId, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQId, QSchemaColumnQRelation } from './qschemacolumn';
 import { SchemaPropertyGraph, SchemaPropertyEId, SchemaPropertyEOptionalId, SchemaPropertyESelect, QSchemaPropertyQId, QSchemaPropertyQRelation } from './qschemaproperty';
+import { SchemaPropertyColumn } from '../../ddl/schema/SchemaPropertyColumn';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -56,7 +57,7 @@ export interface SchemaPropertyColumnECreateColumns extends SchemaPropertyColumn
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaPropertyColumn extends QVersionedSchemaObject {
+export interface QSchemaPropertyColumn extends QVersionedSchemaObject<SchemaPropertyColumn> {
     column: QSchemaColumnQRelation;
     property: QSchemaPropertyQRelation;
 }
@@ -64,6 +65,6 @@ export interface QSchemaPropertyColumnQId extends QVersionedSchemaObjectQId {
     column: QSchemaColumnQId;
     property: QSchemaPropertyQId;
 }
-export interface QSchemaPropertyColumnQRelation extends QVersionedSchemaObjectQRelation<QSchemaPropertyColumn>, QSchemaPropertyColumnQId {
+export interface QSchemaPropertyColumnQRelation extends QVersionedSchemaObjectQRelation<SchemaPropertyColumn, QSchemaPropertyColumn>, QSchemaPropertyColumnQId {
 }
 //# sourceMappingURL=qschemapropertycolumn.d.ts.map

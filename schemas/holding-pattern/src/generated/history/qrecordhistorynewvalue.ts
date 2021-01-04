@@ -31,6 +31,12 @@ import {
 	QRecordHistoryQId,
 	QRecordHistoryQRelation,
 } from './qrecordhistory';
+import {
+	RecordHistory,
+} from '../../ddl/history/RecordHistory';
+import {
+	RecordHistoryNewValue,
+} from '../../ddl/history/RecordHistoryNewValue';
 
 
 declare function require(moduleName: string): any;
@@ -141,7 +147,7 @@ extends RecordHistoryNewValueEId, RecordHistoryNewValueEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRecordHistoryNewValue extends IQEntity
+export interface QRecordHistoryNewValue extends IQEntity<RecordHistoryNewValue>
 {
 	// Id Fields
 	columnIndex: IQNumberField;
@@ -172,6 +178,6 @@ export interface QRecordHistoryNewValueQId
 
 // Entity Relation Interface
 export interface QRecordHistoryNewValueQRelation
-	extends IQRelation<QRecordHistoryNewValue>, QRecordHistoryNewValueQId {
+	extends IQRelation<RecordHistoryNewValue, QRecordHistoryNewValue>, QRecordHistoryNewValueQId {
 }
 

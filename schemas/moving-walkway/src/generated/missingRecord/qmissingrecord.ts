@@ -30,6 +30,7 @@ import {
 	QSchemaVersion,
 	QSchemaVersionQId,
 	QSchemaVersionQRelation,
+	SchemaVersion,
 	SchemaEntityGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
@@ -38,6 +39,7 @@ import {
 	QSchemaEntity,
 	QSchemaEntityQId,
 	QSchemaEntityQRelation,
+	SchemaEntity,
 } from '@airport/traffic-pattern';
 import {
 	RepositoryGraph,
@@ -48,6 +50,7 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
+	Repository,
 	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -56,7 +59,11 @@ import {
 	QActor,
 	QActorQId,
 	QActorQRelation,
+	Actor,
 } from '@airport/holding-pattern';
+import {
+	MissingRecord,
+} from '../../ddl/missingRecord/MissingRecord';
 
 
 declare function require(moduleName: string): any;
@@ -183,7 +190,7 @@ extends MissingRecordEId, MissingRecordEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMissingRecord extends IQEntity
+export interface QMissingRecord extends IQEntity<MissingRecord>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -217,6 +224,6 @@ export interface QMissingRecordQId
 
 // Entity Relation Interface
 export interface QMissingRecordQRelation
-	extends IQRelation<QMissingRecord>, QMissingRecordQId {
+	extends IQRelation<MissingRecord, QMissingRecord>, QMissingRecordQId {
 }
 

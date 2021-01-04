@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	RepoTransBlockResponseStage,
+} from '../../ddl/repositoryTransactionBlock/RepoTransBlockResponseStage';
 
 
 declare function require(moduleName: string): any;
@@ -127,7 +130,7 @@ extends RepoTransBlockResponseStageEId, RepoTransBlockResponseStageEUpdateColumn
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepoTransBlockResponseStage extends IQEntity
+export interface QRepoTransBlockResponseStage extends IQEntity<RepoTransBlockResponseStage>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -156,6 +159,6 @@ export interface QRepoTransBlockResponseStageQId
 
 // Entity Relation Interface
 export interface QRepoTransBlockResponseStageQRelation
-	extends IQRelation<QRepoTransBlockResponseStage>, QRepoTransBlockResponseStageQId {
+	extends IQRelation<RepoTransBlockResponseStage, QRepoTransBlockResponseStage>, QRepoTransBlockResponseStageQId {
 }
 

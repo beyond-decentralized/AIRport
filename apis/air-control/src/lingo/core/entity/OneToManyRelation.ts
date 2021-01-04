@@ -4,6 +4,6 @@ import { IQRelation } from './Relation';
 /**
  * A concrete One-To-Many relation.
  */
-export interface IQOneToManyRelation<IQ extends IQEntity<any>>
-	extends IQRelation<IQ> {
+export interface IQOneToManyRelation<Entity, IQ extends IQEntity<Entity>>
+	extends IQRelation<Entity, IQ> {
 }

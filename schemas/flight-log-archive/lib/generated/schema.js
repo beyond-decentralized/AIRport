@@ -103,20 +103,6 @@ export const SCHEMA = {
                     }
                 },
                 {
-                    "columns": [],
-                    "idColumnRefs": [],
-                    "index": 1,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "Log",
-                    "properties": [],
-                    "relations": [],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "indexes": []
-                    }
-                },
-                {
                     "columns": [
                         {
                             "index": 0,
@@ -186,7 +172,7 @@ export const SCHEMA = {
                             "index": 2
                         }
                     ],
-                    "index": 2,
+                    "index": 1,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "MonthlySyncLog",
@@ -232,6 +218,20 @@ export const SCHEMA = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "MONTHLY_SYNC_LOG",
+                        "indexes": []
+                    }
+                },
+                {
+                    "columns": [],
+                    "idColumnRefs": [],
+                    "index": 2,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "Log",
+                    "properties": [],
+                    "relations": [],
+                    "sinceVersion": 1,
+                    "tableConfig": {
                         "indexes": []
                     }
                 }

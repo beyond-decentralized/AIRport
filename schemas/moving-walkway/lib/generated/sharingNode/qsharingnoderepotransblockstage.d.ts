@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { SharingNodeRepoTransBlockStage } from '../../ddl/sharingNode/SharingNodeRepoTransBlockStage';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -50,7 +51,7 @@ export interface SharingNodeRepoTransBlockStageECreateColumns extends SharingNod
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingNodeRepoTransBlockStage extends IQEntity {
+export interface QSharingNodeRepoTransBlockStage extends IQEntity<SharingNodeRepoTransBlockStage> {
     sharingNodeId: IQNumberField;
     repositoryTransactionBlockId: IQNumberField;
     syncStatus: IQNumberField;
@@ -59,6 +60,6 @@ export interface QSharingNodeRepoTransBlockStageQId {
     sharingNodeId: IQNumberField;
     repositoryTransactionBlockId: IQNumberField;
 }
-export interface QSharingNodeRepoTransBlockStageQRelation extends IQRelation<QSharingNodeRepoTransBlockStage>, QSharingNodeRepoTransBlockStageQId {
+export interface QSharingNodeRepoTransBlockStageQRelation extends IQRelation<SharingNodeRepoTransBlockStage, QSharingNodeRepoTransBlockStage>, QSharingNodeRepoTransBlockStageQId {
 }
 //# sourceMappingURL=qsharingnoderepotransblockstage.d.ts.map

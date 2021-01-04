@@ -84,7 +84,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	 * @param results
 	 * @returns {any[]}
 	 */
-	abstract async parseQueryResults(
+	abstract parseQueryResults(
 		results: any[],
 		internalFragments: InternalFragments,
 		queryResultType: QueryResultType,
@@ -101,8 +101,8 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	): JoinTreeNode | JoinTreeNode[];
 
 	protected getEntitySchemaRelationFromJoin(
-		leftQEntity: IQEntityInternal,
-		rightQEntity: IQEntityInternal,
+		leftQEntity: IQEntityInternal<any>,
+		rightQEntity: IQEntityInternal<any>,
 		entityRelation: JSONEntityRelation,
 		parentRelation: JSONRelation,
 		currentAlias: string,

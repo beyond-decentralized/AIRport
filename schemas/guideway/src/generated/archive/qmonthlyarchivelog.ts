@@ -31,6 +31,12 @@ import {
 	QRepositoryQId,
 	QRepositoryQRelation,
 } from '../repository/qrepository';
+import {
+	Repository,
+} from '../../ddl/repository/Repository';
+import {
+	MonthlyArchiveLog,
+} from '../../ddl/archive/MonthlyArchiveLog';
 
 
 declare function require(moduleName: string): any;
@@ -145,7 +151,7 @@ extends MonthlyArchiveLogEId, MonthlyArchiveLogEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMonthlyArchiveLog extends IQEntity
+export interface QMonthlyArchiveLog extends IQEntity<MonthlyArchiveLog>
 {
 	// Id Fields
 	monthNumber: IQNumberField;
@@ -177,6 +183,6 @@ export interface QMonthlyArchiveLogQId
 
 // Entity Relation Interface
 export interface QMonthlyArchiveLogQRelation
-	extends IQRelation<QMonthlyArchiveLog>, QMonthlyArchiveLogQId {
+	extends IQRelation<MonthlyArchiveLog, QMonthlyArchiveLog>, QMonthlyArchiveLogQId {
 }
 

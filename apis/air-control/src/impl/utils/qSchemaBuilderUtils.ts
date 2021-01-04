@@ -83,7 +83,7 @@ export function getQRelation(
 	property: DbProperty,
 	q: IQEntityInternal<any>,
 	allQSchemas: QSchema[]
-): IQRelation<typeof q> {
+): IQRelation<any, typeof q> {
 	const relation = property.relation[0]
 	switch (relation.relationType) {
 		case EntityRelationType.MANY_TO_ONE:

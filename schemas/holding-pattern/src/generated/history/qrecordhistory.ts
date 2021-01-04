@@ -32,6 +32,9 @@ import {
 	QActorQRelation,
 } from '../infrastructure/qactor';
 import {
+	Actor,
+} from '../../ddl/infrastructure/Actor';
+import {
 	OperationHistoryGraph,
 	OperationHistoryEId,
 	OperationHistoryEOptionalId,
@@ -41,6 +44,9 @@ import {
 	QOperationHistoryQId,
 	QOperationHistoryQRelation,
 } from './qoperationhistory';
+import {
+	OperationHistory,
+} from '../../ddl/history/OperationHistory';
 import {
 	RecordHistoryNewValueGraph,
 	RecordHistoryNewValueEId,
@@ -52,6 +58,9 @@ import {
 	QRecordHistoryNewValueQRelation,
 } from './qrecordhistorynewvalue';
 import {
+	RecordHistoryNewValue,
+} from '../../ddl/history/RecordHistoryNewValue';
+import {
 	RecordHistoryOldValueGraph,
 	RecordHistoryOldValueEId,
 	RecordHistoryOldValueEOptionalId,
@@ -61,6 +70,12 @@ import {
 	QRecordHistoryOldValueQId,
 	QRecordHistoryOldValueQRelation,
 } from './qrecordhistoryoldvalue';
+import {
+	RecordHistoryOldValue,
+} from '../../ddl/history/RecordHistoryOldValue';
+import {
+	RecordHistory,
+} from '../../ddl/history/RecordHistory';
 
 
 declare function require(moduleName: string): any;
@@ -179,7 +194,7 @@ extends RecordHistoryEId, RecordHistoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRecordHistory extends IQEntity
+export interface QRecordHistory extends IQEntity<RecordHistory>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -192,8 +207,8 @@ export interface QRecordHistory extends IQEntity
 	// Non-Id Relations
 	actor: QActorQRelation;
 	operationHistory: QOperationHistoryQRelation;
-	newValues: IQOneToManyRelation<QRecordHistoryNewValue>;
-	oldValues: IQOneToManyRelation<QRecordHistoryOldValue>;
+	newValues: IQOneToManyRelation<RecordHistoryNewValue, QRecordHistoryNewValue>;
+	oldValues: IQOneToManyRelation<RecordHistoryOldValue, QRecordHistoryOldValue>;
 
 }
 
@@ -212,6 +227,6 @@ export interface QRecordHistoryQId
 
 // Entity Relation Interface
 export interface QRecordHistoryQRelation
-	extends IQRelation<QRecordHistory>, QRecordHistoryQId {
+	extends IQRelation<RecordHistory, QRecordHistory>, QRecordHistoryQId {
 }
 

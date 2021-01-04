@@ -31,6 +31,12 @@ import {
 	QSchemaVersionQId,
 	QSchemaVersionQRelation,
 } from './qschemaversion';
+import {
+	SchemaVersion,
+} from '../../ddl/schema/SchemaVersion';
+import {
+	VersionedSchemaObject,
+} from '../../ddl/schema/VersionedSchemaObject';
 
 
 declare function require(moduleName: string): any;
@@ -140,7 +146,7 @@ extends VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QVersionedSchemaObject extends IQEntity
+export interface QVersionedSchemaObject<T> extends IQEntity<T>
 {
 	// Id Fields
 
@@ -168,7 +174,7 @@ export interface QVersionedSchemaObjectQId
 }
 
 // Entity Relation Interface
-export interface QVersionedSchemaObjectQRelation<SubType extends IQEntity>
-	extends IQRelation<SubType>, QVersionedSchemaObjectQId {
+export interface QVersionedSchemaObjectQRelation<SubType, SubQType extends IQEntity<SubType>>
+	extends IQRelation<SubType, SubQType>, QVersionedSchemaObjectQId {
 }
 

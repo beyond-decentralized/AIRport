@@ -11,17 +11,17 @@ export declare class MySqlQueryAdaptor implements ISQLQueryAdaptor {
     getParameterReference(parameterReferences: (number | string)[], newReference: number | string): string;
     dateToDbQuery(date: Date): string;
     getResultArray(rawResponse: any): any[];
-    protected getResultCellRawValue(resultRow: any, columnName: string, index: number, dataType: SQLDataType, defaultValue: any): any;
     getResultCellValue(resultRow: any, columnName: string, index: number, dataType: SQLDataType, defaultValue: any): any;
     getFunctionAdaptor(): ISQLFunctionAdaptor;
     getOffsetFragment(offset: number): string;
     getLimitFragment(limit: number): string;
     getParameterValue(parameter: Parameter): any;
     getValue(value: any): any;
+    protected getResultCellRawValue(resultRow: any, columnName: string, index: number, dataType: SQLDataType, defaultValue: any): any;
 }
 export declare class MySqlFunctionAdaptor extends AbstractFunctionAdaptor {
     getFunctionCall(jsonFunctionCall: JSONSqlFunctionCall, value: string, qEntityMapByAlias: {
-        [entityName: string]: IQEntityInternal;
+        [entityName: string]: IQEntityInternal<any>;
     }, sqlValueProvider: ISqlValueProvider, context: IOperationContext<any, any>): string;
     toString(val: any): string;
 }

@@ -31,6 +31,12 @@ import {
 	QLogEntryQId,
 	QLogEntryQRelation,
 } from './qlogentry';
+import {
+	LogEntry,
+} from '../ddl/LogEntry';
+import {
+	LogEntryValue,
+} from '../ddl/LogEntryValue';
 
 
 declare function require(moduleName: string): any;
@@ -145,7 +151,7 @@ extends LogEntryValueEId, LogEntryValueEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLogEntryValue extends IQEntity
+export interface QLogEntryValue extends IQEntity<LogEntryValue>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -176,6 +182,6 @@ export interface QLogEntryValueQId
 
 // Entity Relation Interface
 export interface QLogEntryValueQRelation
-	extends IQRelation<QLogEntryValue>, QLogEntryValueQId {
+	extends IQRelation<LogEntryValue, QLogEntryValue>, QLogEntryValueQId {
 }
 

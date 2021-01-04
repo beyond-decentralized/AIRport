@@ -32,6 +32,9 @@ import {
 	QRepositoryTransactionHistoryQRelation,
 } from './qrepositorytransactionhistory';
 import {
+	RepositoryTransactionHistory,
+} from '../../ddl/history/RepositoryTransactionHistory';
+import {
 	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -42,6 +45,9 @@ import {
 	QRepositoryQRelation,
 } from '../repository/qrepository';
 import {
+	Repository,
+} from '../../ddl/repository/Repository';
+import {
 	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -51,6 +57,12 @@ import {
 	QActorQId,
 	QActorQRelation,
 } from '../infrastructure/qactor';
+import {
+	Actor,
+} from '../../ddl/infrastructure/Actor';
+import {
+	RepoTransHistoryChangedRepositoryActor,
+} from '../../ddl/history/RepoTransHistoryChangedRepositoryActor';
 
 
 declare function require(moduleName: string): any;
@@ -169,7 +181,7 @@ extends RepoTransHistoryChangedRepositoryActorEId, RepoTransHistoryChangedReposi
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepoTransHistoryChangedRepositoryActor extends IQEntity
+export interface QRepoTransHistoryChangedRepositoryActor extends IQEntity<RepoTransHistoryChangedRepositoryActor>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -201,6 +213,6 @@ export interface QRepoTransHistoryChangedRepositoryActorQId
 
 // Entity Relation Interface
 export interface QRepoTransHistoryChangedRepositoryActorQRelation
-	extends IQRelation<QRepoTransHistoryChangedRepositoryActor>, QRepoTransHistoryChangedRepositoryActorQId {
+	extends IQRelation<RepoTransHistoryChangedRepositoryActor, QRepoTransHistoryChangedRepositoryActor>, QRepoTransHistoryChangedRepositoryActorQId {
 }
 

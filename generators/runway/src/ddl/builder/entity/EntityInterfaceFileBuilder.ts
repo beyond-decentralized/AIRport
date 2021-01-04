@@ -29,10 +29,11 @@ export class EntityInterfaceFileBuilder
 		pathBuilder: PathBuilder,
 		entityMapByName: { [entityName: string]: EntityCandidate },
 		configuration: Configuration,
-		sIndexedEntity: SIndexedEntity
+		sIndexedEntity: SIndexedEntity,
 	) {
 		super(entity, fullGenerationPath, pathBuilder, configuration);
-		this.qEntityBuilder         = new QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName, sIndexedEntity)
+		this.qEntityBuilder         = new QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath,
+			this, entityMapByName, sIndexedEntity)
 		this.entityInterfaceBuilder = new IEntityInterfaceBuilder(entity, this.qEntityBuilder)
 
 		// let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);

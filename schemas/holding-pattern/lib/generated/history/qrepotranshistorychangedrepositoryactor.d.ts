@@ -2,6 +2,7 @@ import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntity
 import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryEOptionalId, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistoryQRelation } from './qrepositorytransactionhistory';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
 import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
+import { RepoTransHistoryChangedRepositoryActor } from '../../ddl/history/RepoTransHistoryChangedRepositoryActor';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -63,7 +64,7 @@ export interface RepoTransHistoryChangedRepositoryActorECreateColumns extends Re
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepoTransHistoryChangedRepositoryActor extends IQEntity {
+export interface QRepoTransHistoryChangedRepositoryActor extends IQEntity<RepoTransHistoryChangedRepositoryActor> {
     id: IQNumberField;
     referenceType: IQNumberField;
     repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
@@ -73,6 +74,6 @@ export interface QRepoTransHistoryChangedRepositoryActor extends IQEntity {
 export interface QRepoTransHistoryChangedRepositoryActorQId {
     id: IQNumberField;
 }
-export interface QRepoTransHistoryChangedRepositoryActorQRelation extends IQRelation<QRepoTransHistoryChangedRepositoryActor>, QRepoTransHistoryChangedRepositoryActorQId {
+export interface QRepoTransHistoryChangedRepositoryActorQRelation extends IQRelation<RepoTransHistoryChangedRepositoryActor, QRepoTransHistoryChangedRepositoryActor>, QRepoTransHistoryChangedRepositoryActorQId {
 }
 //# sourceMappingURL=qrepotranshistorychangedrepositoryactor.d.ts.map

@@ -1,6 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '../repository/qrepository';
 import { UserGraph, UserEId, UserEOptionalId, UserESelect, QUserQId, QUserQRelation } from './quser';
+import { UserRepository } from '../../ddl/user/UserRepository';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -56,7 +57,7 @@ export interface UserRepositoryECreateColumns extends UserRepositoryEId, UserRep
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QUserRepository extends IQEntity {
+export interface QUserRepository extends IQEntity<UserRepository> {
     repository: QRepositoryQRelation;
     user: QUserQRelation;
     permission: IQNumberField;
@@ -65,6 +66,6 @@ export interface QUserRepositoryQId {
     repository: QRepositoryQId;
     user: QUserQId;
 }
-export interface QUserRepositoryQRelation extends IQRelation<QUserRepository>, QUserRepositoryQId {
+export interface QUserRepositoryQRelation extends IQRelation<UserRepository, QUserRepository>, QUserRepositoryQId {
 }
 //# sourceMappingURL=quserrepository.d.ts.map

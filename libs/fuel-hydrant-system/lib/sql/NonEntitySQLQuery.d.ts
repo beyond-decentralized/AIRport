@@ -12,21 +12,21 @@ export declare abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
     protected orderByParser: INonEntityOrderByParser;
     constructor(jsonQuery: JNEQ, dialect: SQLDialect, queryResultType: QueryResultType, context: IOperationContext<any, any>);
     addQEntityMapByAlias(sourceMap: {
-        [entityAlias: string]: IQEntityInternal;
+        [entityAlias: string]: IQEntityInternal<any>;
     }): void;
     toSQL(internalFragments: InternalFragments, context: IOperationContext<any, any>): string;
     buildFromJoinTree(joinRelations: JSONRelation[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
     }, context: IOperationContext<any, any>): JoinTreeNode[];
-    addFieldsToView(viewJoinRelation: JSONViewJoinRelation, viewAlias: string, context: IOperationContext<any, any>): IQTree;
+    addFieldsToView(viewJoinRelation: JSONViewJoinRelation, viewAlias: string, context: IOperationContext<any, any>): IQTree<any>;
     /**
      * Just build the shell fields for the external API of the view, don't do anything else.
      * @param view
      * @param select
      * @param fieldPrefix
      */
-    addFieldsToViewForSelect(view: IQTree, viewAlias: string, select: any, fieldPrefix: string, forFieldQueryAlias: string, context: IOperationContext<any, any>): void;
-    addFieldToViewForSelect(view: IQTree, viewAlias: string, fieldPrefix: string, fieldJson: JSONClauseField, alias: string, forFieldQueryAlias: string, context: IOperationContext<any, any>): boolean;
+    addFieldsToViewForSelect(view: IQTree<any>, viewAlias: string, select: any, fieldPrefix: string, forFieldQueryAlias: string, context: IOperationContext<any, any>): void;
+    addFieldToViewForSelect(view: IQTree<any>, viewAlias: string, fieldPrefix: string, fieldJson: JSONClauseField, alias: string, forFieldQueryAlias: string, context: IOperationContext<any, any>): boolean;
     protected abstract getSELECTFragment(nested: boolean, selectClauseFragment: any, internalFragments: InternalFragments, context: IOperationContext<any, any>): string;
     protected getFieldSelectFragment(value: JSONClauseField, clauseType: ClauseType, nestedObjectCallBack: {
         (): string;

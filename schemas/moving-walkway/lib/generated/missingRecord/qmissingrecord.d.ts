@@ -1,6 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { SchemaVersionGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, SchemaEntityGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
+import { MissingRecord } from '../../ddl/missingRecord/MissingRecord';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -70,7 +71,7 @@ export interface MissingRecordECreateColumns extends MissingRecordEId, MissingRe
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMissingRecord extends IQEntity {
+export interface QMissingRecord extends IQEntity<MissingRecord> {
     id: IQNumberField;
     actorRecordId: IQNumberField;
     status: IQNumberField;
@@ -82,6 +83,6 @@ export interface QMissingRecord extends IQEntity {
 export interface QMissingRecordQId {
     id: IQNumberField;
 }
-export interface QMissingRecordQRelation extends IQRelation<QMissingRecord>, QMissingRecordQId {
+export interface QMissingRecordQRelation extends IQRelation<MissingRecord, QMissingRecord>, QMissingRecordQId {
 }
 //# sourceMappingURL=qmissingrecord.d.ts.map

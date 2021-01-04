@@ -32,6 +32,9 @@ import {
 	QSharingMessageQRelation,
 } from './qsharingmessage';
 import {
+	SharingMessage,
+} from '../../ddl/sharingMessage/SharingMessage';
+import {
 	RepositoryTransactionBlockGraph,
 	RepositoryTransactionBlockEId,
 	RepositoryTransactionBlockEOptionalId,
@@ -40,7 +43,13 @@ import {
 	QRepositoryTransactionBlock,
 	QRepositoryTransactionBlockQId,
 	QRepositoryTransactionBlockQRelation,
-} from '../repositorytransactionblock/qrepositorytransactionblock';
+} from '../repositoryTransactionBlock/qrepositorytransactionblock';
+import {
+	RepositoryTransactionBlock,
+} from '../../ddl/repositoryTransactionBlock/RepositoryTransactionBlock';
+import {
+	SharingMessageRepoTransBlock,
+} from '../../ddl/sharingMessage/SharingMessageRepoTransBlock';
 
 
 declare function require(moduleName: string): any;
@@ -149,7 +158,7 @@ extends SharingMessageRepoTransBlockEId, SharingMessageRepoTransBlockEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingMessageRepoTransBlock extends IQEntity
+export interface QSharingMessageRepoTransBlock extends IQEntity<SharingMessageRepoTransBlock>
 {
 	// Id Fields
 
@@ -179,6 +188,6 @@ export interface QSharingMessageRepoTransBlockQId
 
 // Entity Relation Interface
 export interface QSharingMessageRepoTransBlockQRelation
-	extends IQRelation<QSharingMessageRepoTransBlock>, QSharingMessageRepoTransBlockQId {
+	extends IQRelation<SharingMessageRepoTransBlock, QSharingMessageRepoTransBlock>, QSharingMessageRepoTransBlockQId {
 }
 

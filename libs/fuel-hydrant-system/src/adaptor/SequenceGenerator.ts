@@ -106,7 +106,7 @@ export abstract class SequenceGenerator
 		}
 	}
 
-	protected abstract async nativeGenerate(): Promise<number>;
+	protected abstract nativeGenerate(): Promise<number>;
 
 	/**
 	 * Keeping return value as number[][] in case we ever revert back
@@ -175,7 +175,7 @@ export abstract class SequenceGenerator
 	}
 
 	private isDoneGeneratingSeqNums(
-		resolve: () => void
+		resolve: (...args: any[]) => void
 	) {
 		if (this.generatingSequenceNumbers) {
 			setTimeout(() => {

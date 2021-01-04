@@ -32,6 +32,9 @@ import {
 	QRepositoryTransactionHistoryQRelation,
 } from './qrepositorytransactionhistory';
 import {
+	RepositoryTransactionHistory,
+} from '../../ddl/history/RepositoryTransactionHistory';
+import {
 	SchemaEntityGraph,
 	SchemaEntityEId,
 	SchemaEntityEOptionalId,
@@ -40,6 +43,7 @@ import {
 	QSchemaEntity,
 	QSchemaEntityQId,
 	QSchemaEntityQRelation,
+	SchemaEntity,
 } from '@airport/traffic-pattern';
 import {
 	RecordHistoryGraph,
@@ -51,6 +55,12 @@ import {
 	QRecordHistoryQId,
 	QRecordHistoryQRelation,
 } from './qrecordhistory';
+import {
+	RecordHistory,
+} from '../../ddl/history/RecordHistory';
+import {
+	OperationHistory,
+} from '../../ddl/history/OperationHistory';
 
 
 declare function require(moduleName: string): any;
@@ -175,7 +185,7 @@ extends OperationHistoryEId, OperationHistoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QOperationHistory extends IQEntity
+export interface QOperationHistory extends IQEntity<OperationHistory>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -190,7 +200,7 @@ export interface QOperationHistory extends IQEntity
 
 	// Non-Id Relations
 	entity: QSchemaEntityQRelation;
-	recordHistory: IQOneToManyRelation<QRecordHistory>;
+	recordHistory: IQOneToManyRelation<RecordHistory, QRecordHistory>;
 
 }
 
@@ -210,6 +220,6 @@ export interface QOperationHistoryQId
 
 // Entity Relation Interface
 export interface QOperationHistoryQRelation
-	extends IQRelation<QOperationHistory>, QOperationHistoryQId {
+	extends IQRelation<OperationHistory, QOperationHistory>, QOperationHistoryQId {
 }
 

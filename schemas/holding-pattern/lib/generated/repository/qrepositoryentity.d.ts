@@ -61,7 +61,7 @@ export interface RepositoryEntityECreateColumns extends RepositoryEntityEId, Rep
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryEntity extends QStageable {
+export interface QRepositoryEntity<T> extends QStageable<T> {
     actorRecordId: IQNumberField;
     repository: QRepositoryQRelation;
     actor: QActorQRelation;
@@ -73,6 +73,6 @@ export interface QRepositoryEntityQId extends QStageableQId {
     repository: QRepositoryQId;
     actor: QActorQId;
 }
-export interface QRepositoryEntityQRelation<SubType extends IQEntity> extends QStageableQRelation<SubType>, QRepositoryEntityQId {
+export interface QRepositoryEntityQRelation<SubType, SubQType extends IQEntity<SubType>> extends QStageableQRelation<SubType, SubQType>, QRepositoryEntityQId {
 }
 //# sourceMappingURL=qrepositoryentity.d.ts.map

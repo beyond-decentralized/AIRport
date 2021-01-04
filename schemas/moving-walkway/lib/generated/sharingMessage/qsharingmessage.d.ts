@@ -1,6 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
-import { SharingNodeGraph, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from '../sharingnode/qsharingnode';
+import { SharingNodeGraph, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from '../sharingNode/qsharingnode';
 import { SharingMessageRepoTransBlockGraph, SharingMessageRepoTransBlockESelect, QSharingMessageRepoTransBlock } from './qsharingmessagerepotransblock';
+import { SharingMessageRepoTransBlock } from '../../ddl/sharingMessage/SharingMessageRepoTransBlock';
+import { SharingMessage } from '../../ddl/sharingMessage/SharingMessage';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -64,18 +66,18 @@ export interface SharingMessageECreateColumns extends SharingMessageEId, Sharing
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingMessage extends IQEntity {
+export interface QSharingMessage extends IQEntity<SharingMessage> {
     id: IQNumberField;
     sharingNode: QSharingNodeQRelation;
     origin: IQNumberField;
     agtSharingMessageId: IQNumberField;
     syncTimestamp: IQDateField;
-    sharingMessageRepoTransBlocks: IQOneToManyRelation<QSharingMessageRepoTransBlock>;
+    sharingMessageRepoTransBlocks: IQOneToManyRelation<SharingMessageRepoTransBlock, QSharingMessageRepoTransBlock>;
 }
 export interface QSharingMessageQId {
     id: IQNumberField;
     sharingNode: QSharingNodeQId;
 }
-export interface QSharingMessageQRelation extends IQRelation<QSharingMessage>, QSharingMessageQId {
+export interface QSharingMessageQRelation extends IQRelation<SharingMessage, QSharingMessage>, QSharingMessageQId {
 }
 //# sourceMappingURL=qsharingmessage.d.ts.map

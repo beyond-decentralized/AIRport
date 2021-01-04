@@ -42,13 +42,13 @@ export declare class QEntityDriver<IEntity> implements IQEntityDriver<IEntity> {
     entityFieldMap: {
         [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any>;
     };
-    entityRelations: IQInternalRelation<any>[];
+    entityRelations: IQInternalRelation<any, any>[];
     entityRelationMapByIndex: {
-        [relationPropertyIndex: number]: IQInternalRelation<any>;
+        [relationPropertyIndex: number]: IQInternalRelation<any, any>;
     };
     idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
     allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
-    relations: IQInternalRelation<any>[];
+    relations: IQInternalRelation<any, any>[];
     currentChildIndex: number;
     joinWhereClause: JSONBaseOperation;
     parentJoinEntity: IQEntityInternal<any>;

@@ -1,6 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
 import { SharingMessageGraph, SharingMessageEId, SharingMessageEOptionalId, SharingMessageESelect, QSharingMessageQId, QSharingMessageQRelation } from './qsharingmessage';
-import { RepositoryTransactionBlockGraph, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from '../repositorytransactionblock/qrepositorytransactionblock';
+import { RepositoryTransactionBlockGraph, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from '../repositoryTransactionBlock/qrepositorytransactionblock';
+import { SharingMessageRepoTransBlock } from '../../ddl/sharingMessage/SharingMessageRepoTransBlock';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -52,7 +53,7 @@ export interface SharingMessageRepoTransBlockECreateColumns extends SharingMessa
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingMessageRepoTransBlock extends IQEntity {
+export interface QSharingMessageRepoTransBlock extends IQEntity<SharingMessageRepoTransBlock> {
     sharingMessage: QSharingMessageQRelation;
     repositoryTransactionBlock: QRepositoryTransactionBlockQRelation;
 }
@@ -60,6 +61,6 @@ export interface QSharingMessageRepoTransBlockQId {
     sharingMessage: QSharingMessageQId;
     repositoryTransactionBlock: QRepositoryTransactionBlockQId;
 }
-export interface QSharingMessageRepoTransBlockQRelation extends IQRelation<QSharingMessageRepoTransBlock>, QSharingMessageRepoTransBlockQId {
+export interface QSharingMessageRepoTransBlockQRelation extends IQRelation<SharingMessageRepoTransBlock, QSharingMessageRepoTransBlock>, QSharingMessageRepoTransBlockQId {
 }
 //# sourceMappingURL=qsharingmessagerepotransblock.d.ts.map

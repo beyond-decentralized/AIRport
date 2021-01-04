@@ -17,7 +17,7 @@ export class QRelationBuilder {
         type = `Q${entityType}`
             + (this.buildRelationInstance ? 'QRelation' : 'QId');
         if (this.entityProperty.isArray) {
-            type = `IQOneToManyRelation<Q${entityType}>`;
+            type = `IQOneToManyRelation<${entityType}, Q${entityType}>`;
         }
         return `${this.entityProperty.name}: ${type};`;
     }

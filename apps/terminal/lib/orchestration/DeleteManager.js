@@ -1,16 +1,16 @@
 import { AIR_DB, SCHEMA_UTILS, valuesEqual, Y } from '@airport/air-control';
 import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
-import { container, DI } from '@airport/di';
+import { container, DI, } from '@airport/di';
 import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType } from '@airport/ground-control';
 import { OPER_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO } from '@airport/holding-pattern';
 import { DELETE_MANAGER, HISTORY_MANAGER, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER } from '../tokens';
 export class DeleteManager {
-    async deleteWhere(portableQuery, actor, transaction) {
+    async deleteWhere(portableQuery, actor, transaction, context = {}) {
         const [airDb, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoManager, repositoryManager, repoTransHistoryDuo, schemaUtils, sequenceGenerator] = await container(this)
             .get(AIR_DB, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO, SCHEMA_UTILS, SEQUENCE_GENERATOR);
         const dbEntity = airDb
             .schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex];
-        const deleteCommand = transaction.deleteWhere(portableQuery);
+        const deleteCommand = transaction.deleteWhere(portableQuery, context);
         if (dbEntity.isLocal) {
             return await deleteCommand;
         }
@@ -29,7 +29,7 @@ export class DeleteManager {
             parameterMap: portableQuery.parameterMap,
         };
         const treesToDelete = await transaction
-            .find(portableSelect, {});
+            .find(portableSelect, {}, context);
         const recordsToDelete = new Map();
         const repositoryIdSet = new Set();
         for (const treeToDelete of treesToDelete) {

@@ -1,4 +1,4 @@
-import { resolveRelativeEntityPath, resolveRelativePath } from '../../../resolve/pathResolver';
+import { resolveRelativeEntityPath, resolveRelativePath, } from '../../../resolve/pathResolver';
 import { FileBuilder } from './FileBuilder';
 import { IQEntityInterfaceBuilder } from './IQEntityInterfaceBuilder';
 import { QEntityBuilder } from './QEntityBuilder';
@@ -8,8 +8,10 @@ import { QEntityRelationBuilder } from './QEntityRelationBuilder';
  * Created by Papa on 4/26/2016.
  */
 export class QEntityFileBuilder extends FileBuilder {
-    constructor(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, sIndexedEntity) {
+    constructor(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, sIndexedEntity, entityPath) {
         super(entity, fullGenerationPath, pathBuilder, configuration);
+        this.entityMapByName = entityMapByName;
+        this.entityPath = entityPath;
         this.importMap = {};
         this.qEntityBuilder = new QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName, sIndexedEntity);
         this.qEntityIdBuilder = new QEntityIdBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName);
@@ -106,6 +108,13 @@ ${addEntityCommand}`;
             }
             type = type.replace('[]', '');
             let qType = 'Q' + type;
+            let relationEntityPath;
+            if (property.fromProject) {
+                relationEntityPath = property.fromProject;
+            }
+            else {
+                relationEntityPath = resolveRelativePath(this.fullGenerationPath, this.entityMapByName[type].path);
+            }
             this.addImport([
                 // 'I' + type,
                 type + 'Graph',
@@ -117,11 +126,14 @@ ${addEntityCommand}`;
                 qType + 'QId',
                 qType + 'QRelation'
             ], qEntityRelativePath);
+            this.addImport([type], relationEntityPath, false);
         });
     }
     addImports() {
         this.addRelationImports(this.qEntityBuilder.idRelationBuilders);
         this.addRelationImports(this.qEntityBuilder.nonIdRelationBuilders);
+        const entityImportRelativePath = resolveRelativePath(this.fullGenerationPath, this.entityPath).replace('.ts', '');
+        this.addImport([this.entity.docEntry.name], entityImportRelativePath, false);
     }
 }
 //# sourceMappingURL=QEntityFileBuilder.js.map

@@ -13,6 +13,8 @@ import { QRelationBuilder } from './QRelationBuilder';
  * Created by Papa on 4/26/2016.
  */
 export declare class QEntityFileBuilder extends FileBuilder implements IBuilder {
+    private entityMapByName;
+    private entityPath;
     qEntityBuilder: QEntityBuilder;
     qEntityIdBuilder: QEntityIdBuilder;
     qEntityRelationBuilder: QEntityRelationBuilder;
@@ -24,7 +26,7 @@ export declare class QEntityFileBuilder extends FileBuilder implements IBuilder 
     };
     constructor(entity: EntityCandidate, fullGenerationPath: string, pathBuilder: PathBuilder, entityMapByName: {
         [entityName: string]: EntityCandidate;
-    }, configuration: Configuration, sIndexedEntity: SIndexedEntity);
+    }, configuration: Configuration, sIndexedEntity: SIndexedEntity, entityPath: string);
     build(): string;
     addRelationImports(relationBuilders: QRelationBuilder[]): void;
     protected addImports(): void;

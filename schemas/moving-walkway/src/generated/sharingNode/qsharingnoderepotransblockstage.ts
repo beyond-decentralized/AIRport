@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	SharingNodeRepoTransBlockStage,
+} from '../../ddl/sharingNode/SharingNodeRepoTransBlockStage';
 
 
 declare function require(moduleName: string): any;
@@ -129,7 +132,7 @@ extends SharingNodeRepoTransBlockStageEId, SharingNodeRepoTransBlockStageEUpdate
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingNodeRepoTransBlockStage extends IQEntity
+export interface QSharingNodeRepoTransBlockStage extends IQEntity<SharingNodeRepoTransBlockStage>
 {
 	// Id Fields
 	sharingNodeId: IQNumberField;
@@ -160,6 +163,6 @@ export interface QSharingNodeRepoTransBlockStageQId
 
 // Entity Relation Interface
 export interface QSharingNodeRepoTransBlockStageQRelation
-	extends IQRelation<QSharingNodeRepoTransBlockStage>, QSharingNodeRepoTransBlockStageQId {
+	extends IQRelation<SharingNodeRepoTransBlockStage, QSharingNodeRepoTransBlockStage>, QSharingNodeRepoTransBlockStageQId {
 }
 

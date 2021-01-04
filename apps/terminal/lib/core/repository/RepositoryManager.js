@@ -117,7 +117,7 @@ export class RepositoryManager {
             url: null,
         };
         const repositoryDao = await container(this).get(REPOSITORY_DAO);
-        await repositoryDao.create(repository);
+        await repositoryDao.save(repository);
         this.repositories.push(repository);
         return repository;
     }

@@ -45,11 +45,11 @@ export interface StageableECreateColumns extends StageableEId, StageableEUpdateC
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QStageable extends IQEntity {
+export interface QStageable<T> extends IQEntity<T> {
     draft: IQBooleanField;
 }
 export interface QStageableQId {
 }
-export interface QStageableQRelation<SubType extends IQEntity> extends IQRelation<SubType>, QStageableQId {
+export interface QStageableQRelation<SubType, SubQType extends IQEntity<SubType>> extends IQRelation<SubType, SubQType>, QStageableQId {
 }
 //# sourceMappingURL=qstageable.d.ts.map

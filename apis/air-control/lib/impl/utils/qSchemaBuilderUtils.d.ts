@@ -17,7 +17,7 @@ import { QRelation } from '../core/entity/Relation';
  */
 export declare function extend(base: any, sub: any, methods: any): any;
 export declare function getColumnQField(entity: DbEntity, property: DbProperty, q: IQEntityInternal<any>, column: DbColumn): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField;
-export declare function getQRelation(entity: DbEntity, property: DbProperty, q: IQEntityInternal<any>, allQSchemas: QSchema[]): IQRelation<typeof q>;
+export declare function getQRelation(entity: DbEntity, property: DbProperty, q: IQEntityInternal<any>, allQSchemas: QSchema[]): IQRelation<any, typeof q>;
 export declare function getQEntityConstructor(allQSchemas: QSchema[]): typeof QEntity;
 export declare function addColumnQField(entity: DbEntity, property: DbProperty, q: IQEntityInternal<any>, column: DbColumn): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField;
 export declare function getQEntityIdRelationConstructor(): typeof QRelation;

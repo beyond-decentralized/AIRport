@@ -32,6 +32,9 @@ import {
 	QLogEntryQRelation,
 } from './qlogentry';
 import {
+	LogEntry,
+} from '../ddl/LogEntry';
+import {
 	LoggedErrorStackTraceGraph,
 	LoggedErrorStackTraceEId,
 	LoggedErrorStackTraceEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QLoggedErrorStackTraceQId,
 	QLoggedErrorStackTraceQRelation,
 } from './qloggederrorstacktrace';
+import {
+	LoggedErrorStackTrace,
+} from '../ddl/LoggedErrorStackTrace';
+import {
+	LoggedError,
+} from '../ddl/LoggedError';
 
 
 declare function require(moduleName: string): any;
@@ -149,7 +158,7 @@ extends LoggedErrorEId, LoggedErrorEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLoggedError extends IQEntity
+export interface QLoggedError extends IQEntity<LoggedError>
 {
 	// Id Fields
 
@@ -178,6 +187,6 @@ export interface QLoggedErrorQId
 
 // Entity Relation Interface
 export interface QLoggedErrorQRelation
-	extends IQRelation<QLoggedError>, QLoggedErrorQId {
+	extends IQRelation<LoggedError, QLoggedError>, QLoggedErrorQId {
 }
 

@@ -1,6 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
 import { SchemaVersionGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, SchemaEntityGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation, SchemaColumnGraph, SchemaColumnEOptionalId, SchemaColumnESelect, QSchemaColumnQRelation } from '@airport/traffic-pattern';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
+import { RecordUpdateStage } from '../ddl/RecordUpdateStage';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -74,7 +75,7 @@ export interface RecordUpdateStageECreateColumns extends RecordUpdateStageEId, R
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRecordUpdateStage extends IQEntity {
+export interface QRecordUpdateStage extends IQEntity<RecordUpdateStage> {
     id: IQNumberField;
     actorRecordId: IQNumberField;
     updatedValue: IQUntypedField;
@@ -87,6 +88,6 @@ export interface QRecordUpdateStage extends IQEntity {
 export interface QRecordUpdateStageQId {
     id: IQNumberField;
 }
-export interface QRecordUpdateStageQRelation extends IQRelation<QRecordUpdateStage>, QRecordUpdateStageQId {
+export interface QRecordUpdateStageQRelation extends IQRelation<RecordUpdateStage, QRecordUpdateStage>, QRecordUpdateStageQId {
 }
 //# sourceMappingURL=qrecordupdatestage.d.ts.map

@@ -1,8 +1,8 @@
 import { AIR_DB } from '@airport/air-control';
 import { DI } from '@airport/di';
-import { Sequence } from '../ddl/sequence';
-import { SystemWideOperationId } from '../ddl/systemwideoperationid';
-import { TerminalRun } from '../ddl/terminalrun';
+import { Sequence } from '../ddl/Sequence';
+import { SystemWideOperationId } from '../ddl/SystemWideOperationId';
+import { TerminalRun } from '../ddl/TerminalRun';
 
 DI.db().get(AIR_DB).then(airDb => {
   const accumulator = airDb.getAccumulator('air', 'airport-code');

@@ -111,15 +111,15 @@ export class QEntityDriver<IEntity>
 	implements IQEntityDriver<IEntity> {
 
 	entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> } = {}
-	entityRelations: IQInternalRelation<any>[]                                                            = []
-	entityRelationMapByIndex: { [relationPropertyIndex: number]: IQInternalRelation<any> }
+	entityRelations: IQInternalRelation<any, any>[]                                                            = []
+	entityRelationMapByIndex: { [relationPropertyIndex: number]: IQInternalRelation<any, any> }
 	idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]                                = []
 	allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]                               = []
-	relations: IQInternalRelation<any>[]                                                                  = []
+	relations: IQInternalRelation<any, any>[]                                                                  = []
 	currentChildIndex                                                                                     = -1
 	joinWhereClause: JSONBaseOperation
 	parentJoinEntity: IQEntityInternal<any>
-	private entityRelationMap: { [propertyName: string]: IQInternalRelation<any> }
+	private entityRelationMap: { [propertyName: string]: IQInternalRelation<any, any> }
 	private oneToManyConfigMap: { [name: string]: OneToManyElements }
 
 

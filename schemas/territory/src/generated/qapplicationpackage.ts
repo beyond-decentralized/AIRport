@@ -32,6 +32,9 @@ import {
 	QApplicationQRelation,
 } from './qapplication';
 import {
+	Application,
+} from '../ddl/Application';
+import {
 	PackageGraph,
 	PackageEId,
 	PackageEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QPackageQId,
 	QPackageQRelation,
 } from './qpackage';
+import {
+	Package,
+} from '../ddl/Package';
+import {
+	ApplicationPackage,
+} from '../ddl/ApplicationPackage';
 
 
 declare function require(moduleName: string): any;
@@ -151,7 +160,7 @@ extends ApplicationPackageEId, ApplicationPackageEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplicationPackage extends IQEntity
+export interface QApplicationPackage extends IQEntity<ApplicationPackage>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -181,6 +190,6 @@ export interface QApplicationPackageQId
 
 // Entity Relation Interface
 export interface QApplicationPackageQRelation
-	extends IQRelation<QApplicationPackage>, QApplicationPackageQId {
+	extends IQRelation<ApplicationPackage, QApplicationPackage>, QApplicationPackageQId {
 }
 

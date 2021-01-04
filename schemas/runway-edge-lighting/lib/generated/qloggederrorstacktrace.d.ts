@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { LoggedErrorStackTrace } from '../ddl/LoggedErrorStackTrace';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -52,7 +53,7 @@ export interface LoggedErrorStackTraceECreateColumns extends LoggedErrorStackTra
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLoggedErrorStackTrace extends IQEntity {
+export interface QLoggedErrorStackTrace extends IQEntity<LoggedErrorStackTrace> {
     id: IQNumberField;
     stackHash: IQStringField;
     stack: IQStringField;
@@ -60,6 +61,6 @@ export interface QLoggedErrorStackTrace extends IQEntity {
 export interface QLoggedErrorStackTraceQId {
     id: IQNumberField;
 }
-export interface QLoggedErrorStackTraceQRelation extends IQRelation<QLoggedErrorStackTrace>, QLoggedErrorStackTraceQId {
+export interface QLoggedErrorStackTraceQRelation extends IQRelation<LoggedErrorStackTrace, QLoggedErrorStackTrace>, QLoggedErrorStackTraceQId {
 }
 //# sourceMappingURL=qloggederrorstacktrace.d.ts.map

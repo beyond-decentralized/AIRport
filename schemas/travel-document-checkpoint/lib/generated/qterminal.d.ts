@@ -1,8 +1,12 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from './quser';
 import { TerminalAgtGraph, TerminalAgtESelect, QTerminalAgt } from './qterminalagt';
+import { TerminalAgt } from '../ddl/TerminalAgt';
 import { UserTerminalGraph, UserTerminalESelect, QUserTerminal } from './quserterminal';
+import { UserTerminal } from '../ddl/UserTerminal';
 import { UserTerminalAgtGraph, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
+import { UserTerminalAgt } from '../ddl/UserTerminalAgt';
+import { Terminal } from '../ddl/Terminal';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -70,19 +74,19 @@ export interface TerminalECreateColumns extends TerminalEId, TerminalEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTerminal extends IQEntity {
+export interface QTerminal extends IQEntity<Terminal> {
     id: IQNumberField;
     name: IQStringField;
     secondId: IQNumberField;
     isLocal: IQBooleanField;
     owner: QUserQRelation;
-    terminalAgts: IQOneToManyRelation<QTerminalAgt>;
-    userTerminal: IQOneToManyRelation<QUserTerminal>;
-    userTerminalAgt: IQOneToManyRelation<QUserTerminalAgt>;
+    terminalAgts: IQOneToManyRelation<TerminalAgt, QTerminalAgt>;
+    userTerminal: IQOneToManyRelation<UserTerminal, QUserTerminal>;
+    userTerminalAgt: IQOneToManyRelation<UserTerminalAgt, QUserTerminalAgt>;
 }
 export interface QTerminalQId {
     id: IQNumberField;
 }
-export interface QTerminalQRelation extends IQRelation<QTerminal>, QTerminalQId {
+export interface QTerminalQRelation extends IQRelation<Terminal, QTerminal>, QTerminalQId {
 }
 //# sourceMappingURL=qterminal.d.ts.map

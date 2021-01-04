@@ -1,20 +1,24 @@
 import {IAirportDatabase} from '@airport/air-control'
 import {ISequence}        from '@airport/airport-code'
 import {JsonSchema}       from '@airport/ground-control'
+import { IContext } from '@airport/di';
 
 export interface ISchemaBuilder {
 
 	build(
-		jsonSchema: JsonSchema
+		jsonSchema: JsonSchema,
+		context: IContext,
 	): Promise<void>
 
 	buildAllSequences(
-		jsonSchemas: JsonSchema[]
+		jsonSchemas: JsonSchema[],
+		context: IContext,
 	): Promise<ISequence[]>
 
 	stageSequences(
 		jsonSchemas: JsonSchema[],
-		airDb: IAirportDatabase
+		airDb: IAirportDatabase,
+		context: IContext,
 	): ISequence[]
 
 }

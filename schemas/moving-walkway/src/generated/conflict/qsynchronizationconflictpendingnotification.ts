@@ -32,6 +32,9 @@ import {
 	QSynchronizationConflictQRelation,
 } from './qsynchronizationconflict';
 import {
+	SynchronizationConflict,
+} from '../../ddl/conflict/SynchronizationConflict';
+import {
 	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -40,7 +43,11 @@ import {
 	QActor,
 	QActorQId,
 	QActorQRelation,
+	Actor,
 } from '@airport/holding-pattern';
+import {
+	SynchronizationConflictPendingNotification,
+} from '../../ddl/conflict/SynchronizationConflictPendingNotification';
 
 
 declare function require(moduleName: string): any;
@@ -153,7 +160,7 @@ extends SynchronizationConflictPendingNotificationEId, SynchronizationConflictPe
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSynchronizationConflictPendingNotification extends IQEntity
+export interface QSynchronizationConflictPendingNotification extends IQEntity<SynchronizationConflictPendingNotification>
 {
 	// Id Fields
 
@@ -184,6 +191,6 @@ export interface QSynchronizationConflictPendingNotificationQId
 
 // Entity Relation Interface
 export interface QSynchronizationConflictPendingNotificationQRelation
-	extends IQRelation<QSynchronizationConflictPendingNotification>, QSynchronizationConflictPendingNotificationQId {
+	extends IQRelation<SynchronizationConflictPendingNotification, QSynchronizationConflictPendingNotification>, QSynchronizationConflictPendingNotificationQId {
 }
 

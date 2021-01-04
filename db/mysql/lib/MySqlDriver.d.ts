@@ -1,6 +1,6 @@
 import { SqlDriver } from '@airport/fuel-hydrant-system';
 import { QueryType, SQLDataType } from '@airport/ground-control';
-import { ITransaction } from '@airport/tower';
+import { IOperationContext, ITransaction } from '@airport/tower';
 import { FieldPacket, OkPacket, QueryOptions, ResultSetHeader, RowDataPacket } from 'mysql2';
 import { Pool } from 'mysql2/promise';
 /**
@@ -28,8 +28,8 @@ export declare class MySqlDriver extends SqlDriver {
     protected pool: Pool;
     protected queryApi: IQueryApi;
     protected maxValues: number;
-    query(queryType: QueryType, query: string, params: any, saveTransaction?: boolean): Promise<any>;
-    doQuery(queryType: QueryType, query: string, params: any, connection: IQueryApi, saveTransaction?: boolean): Promise<any>;
+    query(queryType: QueryType, query: string, params: any, context: IOperationContext<any, any>, saveTransaction?: boolean): Promise<any>;
+    doQuery(queryType: QueryType, query: string, params: any, connection: IQueryApi, context: IOperationContext<any, any>, saveTransaction?: boolean): Promise<any>;
     initialize(dbName: string): Promise<any>;
     isServer(): boolean;
     transact(transactionalCallback: {
@@ -37,13 +37,13 @@ export declare class MySqlDriver extends SqlDriver {
     }): Promise<void>;
     isValueValid(value: any, sqlDataType: SQLDataType): boolean;
     composeTableName(schemaName: string, tableName: string): string;
-    doesTableExist(schemaName: string, tableName: string): Promise<boolean>;
-    dropTable(schemaName: string, tableName: string): Promise<boolean>;
-    findNative(sqlQuery: string, parameters: any[]): Promise<any>;
-    initAllTables(): Promise<any>;
+    doesTableExist(schemaName: string, tableName: string, context: IOperationContext<any, any>): Promise<boolean>;
+    dropTable(schemaName: string, tableName: string, context: IOperationContext<any, any>): Promise<boolean>;
+    findNative(sqlQuery: string, parameters: any[], context: IOperationContext<any, any>): Promise<any>;
+    initAllTables(context: IOperationContext<any, any>): Promise<any>;
     initTables(createQueries: Promise<any>[]): Promise<void>;
     protected getDialect(): import('@airport/fuel-hydrant-system').SQLDialect;
-    protected executeNative(sql: string, parameters: any[]): Promise<number>;
+    protected executeNative(sql: string, parameters: any[], context: IOperationContext<any, any>): Promise<number>;
     protected convertValueIn(value: any): any;
 }
 //# sourceMappingURL=MySqlDriver.d.ts.map

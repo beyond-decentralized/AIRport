@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { SystemWideOperationId } from '../ddl/SystemWideOperationId';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -44,12 +45,12 @@ export interface SystemWideOperationIdECreateColumns extends SystemWideOperation
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSystemWideOperationId extends IQEntity {
+export interface QSystemWideOperationId extends IQEntity<SystemWideOperationId> {
     id: IQNumberField;
 }
 export interface QSystemWideOperationIdQId {
     id: IQNumberField;
 }
-export interface QSystemWideOperationIdQRelation extends IQRelation<QSystemWideOperationId>, QSystemWideOperationIdQId {
+export interface QSystemWideOperationIdQRelation extends IQRelation<SystemWideOperationId, QSystemWideOperationId>, QSystemWideOperationIdQId {
 }
 //# sourceMappingURL=qsystemwideoperationid.d.ts.map

@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	Stageable,
+} from '../../ddl/infrastructure/Stageable';
 
 
 declare function require(moduleName: string): any;
@@ -124,7 +127,7 @@ extends StageableEId, StageableEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QStageable extends IQEntity
+export interface QStageable<T> extends IQEntity<T>
 {
 	// Id Fields
 
@@ -150,7 +153,7 @@ export interface QStageableQId
 }
 
 // Entity Relation Interface
-export interface QStageableQRelation<SubType extends IQEntity>
-	extends IQRelation<SubType>, QStageableQId {
+export interface QStageableQRelation<SubType, SubQType extends IQEntity<SubType>>
+	extends IQRelation<SubType, SubQType>, QStageableQId {
 }
 

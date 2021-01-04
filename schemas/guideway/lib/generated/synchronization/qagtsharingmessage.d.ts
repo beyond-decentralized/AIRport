@@ -1,6 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
 import { SyncLogGraph, SyncLogESelect, QSyncLog } from './qsynclog';
+import { SyncLog } from '../../ddl/synchronization/SyncLog';
+import { AgtSharingMessage } from '../../ddl/synchronization/AgtSharingMessage';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -60,16 +62,16 @@ export interface AgtSharingMessageECreateColumns extends AgtSharingMessageEId, A
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QAgtSharingMessage extends IQEntity {
+export interface QAgtSharingMessage extends IQEntity<AgtSharingMessage> {
     id: IQNumberField;
     tmSharingMessageId: IQNumberField;
     acknowledged: IQNumberField;
     terminal: QTerminalQRelation;
-    syncLogs: IQOneToManyRelation<QSyncLog>;
+    syncLogs: IQOneToManyRelation<SyncLog, QSyncLog>;
 }
 export interface QAgtSharingMessageQId {
     id: IQNumberField;
 }
-export interface QAgtSharingMessageQRelation extends IQRelation<QAgtSharingMessage>, QAgtSharingMessageQId {
+export interface QAgtSharingMessageQRelation extends IQRelation<AgtSharingMessage, QAgtSharingMessage>, QAgtSharingMessageQId {
 }
 //# sourceMappingURL=qagtsharingmessage.d.ts.map

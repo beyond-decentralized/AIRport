@@ -1,5 +1,5 @@
 import { IMissingRecord } from './missingrecord';
-import { IRepositoryTransactionBlock } from '../repositorytransactionblock/repositorytransactionblock';
+import { IRepositoryTransactionBlock } from '../repositoryTransactionBlock/repositorytransactionblock';
 export interface IMissingRecordRepoTransBlock {
     missingRecord?: IMissingRecord;
     repositoryTransactionBlock?: IRepositoryTransactionBlock;

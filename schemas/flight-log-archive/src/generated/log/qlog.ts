@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	Log,
+} from '../../ddl/log/Log';
 
 
 declare function require(moduleName: string): any;
@@ -121,7 +124,7 @@ extends LogEId, LogEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLog extends IQEntity
+export interface QLog extends IQEntity<Log>
 {
 	// Id Fields
 
@@ -147,6 +150,6 @@ export interface QLogQId
 
 // Entity Relation Interface
 export interface QLogQRelation
-	extends IQRelation<QLog>, QLogQId {
+	extends IQRelation<Log, QLog>, QLogQId {
 }
 

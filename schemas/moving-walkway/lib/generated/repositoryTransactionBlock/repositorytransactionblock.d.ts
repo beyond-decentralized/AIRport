@@ -1,8 +1,8 @@
 import { ITerminal } from '@airport/travel-document-checkpoint';
 import { IRepository, IRepositoryTransactionHistory } from '@airport/holding-pattern';
-import { ISharingNodeRepoTransBlock } from '../sharingnode/sharingnoderepotransblock';
-import { ISharingMessageRepoTransBlock } from '../sharingmessage/sharingmessagerepotransblock';
-import { IMissingRecordRepoTransBlock } from '../missingrecord/missingrecordrepotransblock';
+import { ISharingNodeRepoTransBlock } from '../sharingNode/sharingnoderepotransblock';
+import { ISharingMessageRepoTransBlock } from '../sharingMessage/sharingmessagerepotransblock';
+import { IMissingRecordRepoTransBlock } from '../missingRecord/missingrecordrepotransblock';
 import { IRepoTransBlockSchemaToChange } from './repotransblockschematochange';
 export interface IRepositoryTransactionBlock {
     id: number;

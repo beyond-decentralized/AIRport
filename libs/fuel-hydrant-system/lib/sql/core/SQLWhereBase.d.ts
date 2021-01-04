@@ -18,7 +18,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected context: IOperationContext<any, any>;
     protected fieldMap: SchemaMap;
     protected qEntityMapByAlias: {
-        [entityAlias: string]: IQEntityInternal;
+        [entityAlias: string]: IQEntityInternal<any>;
     };
     protected jsonRelationMapByAlias: {
         [entityAlias: string]: JSONEntityRelation;
@@ -34,13 +34,13 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     getFieldValue(clauseField: JSONClauseObject | JSONClauseField[] | JsonFieldQuery, clauseType: ClauseType, defaultCallback: () => string, context: IOperationContext<any, any>): string;
     applyOperator(operator: SqlOperator, rValue: string): string;
     protected getWHEREFragment(operation: JSONBaseOperation, nestingPrefix: string, context: IOperationContext<any, any>): string;
-    protected getEntityPropertyColumnName(qEntity: IQEntityInternal, columnIndex: number, context: IOperationContext<any, any>): string;
+    protected getEntityPropertyColumnName(qEntity: IQEntityInternal<any>, columnIndex: number, context: IOperationContext<any, any>): string;
     protected addFieldFromColumn(dbColumn: DbColumn): void;
     protected addField(schemaVersionId: SchemaVersionId, tableIndex: TableIndex, columnIndex: ColumnIndex): void;
     protected warn(warning: string): void;
     protected getSimpleColumnFragment(tableAlias: string, columnName: string): string;
     protected getComplexColumnFragment(value: JSONClauseField, columnName: string, context: IOperationContext<any, any>): string;
-    protected getEntityManyToOneColumnName(qEntity: IQEntityInternal, columnIndex: number, context: IOperationContext<any, any>): string;
+    protected getEntityManyToOneColumnName(qEntity: IQEntityInternal<any>, columnIndex: number, context: IOperationContext<any, any>): string;
     protected getLogicalWhereFragment(operation: JSONLogicalOperation, nestingPrefix: string, context: IOperationContext<any, any>): string;
     protected isParameterReference(value: any): boolean;
 }

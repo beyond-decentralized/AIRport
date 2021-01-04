@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	SecurityQuestion,
+} from '../../../ddl/user/security/SecurityQuestion';
 
 
 declare function require(moduleName: string): any;
@@ -127,7 +130,7 @@ extends SecurityQuestionEId, SecurityQuestionEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSecurityQuestion extends IQEntity
+export interface QSecurityQuestion extends IQEntity<SecurityQuestion>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -156,6 +159,6 @@ export interface QSecurityQuestionQId
 
 // Entity Relation Interface
 export interface QSecurityQuestionQRelation
-	extends IQRelation<QSecurityQuestion>, QSecurityQuestionQId {
+	extends IQRelation<SecurityQuestion, QSecurityQuestion>, QSecurityQuestionQId {
 }
 

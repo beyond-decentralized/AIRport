@@ -113,13 +113,13 @@ export interface IQEntityDriver<IEntity> {
     entityFieldMap: {
         [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any>;
     };
-    entityRelations: IQInternalRelation<any>[];
+    entityRelations: IQInternalRelation<any, any>[];
     fromClausePosition: number[];
     idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
     joinType: JoinType;
     joinWhereClause: JSONBaseOperation;
     parentJoinEntity: IQEntityInternal<IEntity>;
-    relations: IQInternalRelation<any>[];
+    relations: IQInternalRelation<any, any>[];
     getInstance(airDb: IAirportDatabase, schemaUtils: ISchemaUtils): IQEntityInternal<IEntity>;
     getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation;
     getRootJoinEntity(): IQEntityInternal<any>;

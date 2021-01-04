@@ -32,6 +32,9 @@ import {
 	QMissingRecordQRelation,
 } from './qmissingrecord';
 import {
+	MissingRecord,
+} from '../../ddl/missingRecord/MissingRecord';
+import {
 	RepositoryTransactionBlockGraph,
 	RepositoryTransactionBlockEId,
 	RepositoryTransactionBlockEOptionalId,
@@ -40,7 +43,13 @@ import {
 	QRepositoryTransactionBlock,
 	QRepositoryTransactionBlockQId,
 	QRepositoryTransactionBlockQRelation,
-} from '../repositorytransactionblock/qrepositorytransactionblock';
+} from '../repositoryTransactionBlock/qrepositorytransactionblock';
+import {
+	RepositoryTransactionBlock,
+} from '../../ddl/repositoryTransactionBlock/RepositoryTransactionBlock';
+import {
+	MissingRecordRepoTransBlock,
+} from '../../ddl/missingRecord/MissingRecordRepoTransBlock';
 
 
 declare function require(moduleName: string): any;
@@ -149,7 +158,7 @@ extends MissingRecordRepoTransBlockEId, MissingRecordRepoTransBlockEUpdateColumn
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMissingRecordRepoTransBlock extends IQEntity
+export interface QMissingRecordRepoTransBlock extends IQEntity<MissingRecordRepoTransBlock>
 {
 	// Id Fields
 
@@ -177,6 +186,6 @@ export interface QMissingRecordRepoTransBlockQId
 
 // Entity Relation Interface
 export interface QMissingRecordRepoTransBlockQRelation
-	extends IQRelation<QMissingRecordRepoTransBlock>, QMissingRecordRepoTransBlockQId {
+	extends IQRelation<MissingRecordRepoTransBlock, QMissingRecordRepoTransBlock>, QMissingRecordRepoTransBlockQId {
 }
 

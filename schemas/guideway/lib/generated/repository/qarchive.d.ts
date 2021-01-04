@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { Archive } from '../../ddl/repository/Archive';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -48,13 +49,13 @@ export interface ArchiveECreateColumns extends ArchiveEId, ArchiveEUpdateColumns
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QArchive extends IQEntity {
+export interface QArchive extends IQEntity<Archive> {
     id: IQStringField;
     location: IQStringField;
 }
 export interface QArchiveQId {
     id: IQStringField;
 }
-export interface QArchiveQRelation extends IQRelation<QArchive>, QArchiveQId {
+export interface QArchiveQRelation extends IQRelation<Archive, QArchive>, QArchiveQId {
 }
 //# sourceMappingURL=qarchive.d.ts.map

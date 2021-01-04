@@ -273,7 +273,7 @@ export class SQDIDao<Entity,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	IQE extends IQEntity>
+	IQE extends IQEntity<Entity>>
 	extends Dao<Entity,
 		EntitySelect,
 		EntityCreate,

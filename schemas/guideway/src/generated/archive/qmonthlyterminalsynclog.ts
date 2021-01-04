@@ -32,6 +32,9 @@ import {
 	QMonthlyArchiveLogQRelation,
 } from './qmonthlyarchivelog';
 import {
+	MonthlyArchiveLog,
+} from '../../ddl/archive/MonthlyArchiveLog';
+import {
 	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QTerminalQId,
 	QTerminalQRelation,
 } from '../terminal/qterminal';
+import {
+	Terminal,
+} from '../../ddl/terminal/Terminal';
+import {
+	MonthlyTerminalSyncLog,
+} from '../../ddl/archive/MonthlyTerminalSyncLog';
 
 
 declare function require(moduleName: string): any;
@@ -157,7 +166,7 @@ extends MonthlyTerminalSyncLogEId, MonthlyTerminalSyncLogEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMonthlyTerminalSyncLog extends IQEntity
+export interface QMonthlyTerminalSyncLog extends IQEntity<MonthlyTerminalSyncLog>
 {
 	// Id Fields
 
@@ -189,6 +198,6 @@ export interface QMonthlyTerminalSyncLogQId
 
 // Entity Relation Interface
 export interface QMonthlyTerminalSyncLogQRelation
-	extends IQRelation<QMonthlyTerminalSyncLog>, QMonthlyTerminalSyncLogQId {
+	extends IQRelation<MonthlyTerminalSyncLog, QMonthlyTerminalSyncLog>, QMonthlyTerminalSyncLogQId {
 }
 

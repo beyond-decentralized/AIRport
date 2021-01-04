@@ -27,12 +27,12 @@ export declare abstract class OperationManager implements IOperationManager {
      */
     protected internalUpdate<E, EntityCascadeGraph>(entity: E, originalEntity: E, transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
     protected internalDelete<E, EntityCascadeGraph>(entity: E, transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
-    protected internalInsertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE>, transaction: ITransaction, context: IOperationContext<any, any>): Promise<number>;
-    protected internalInsertValues<E, EntityCascadeGraph, IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE>, transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>, ensureGeneratedValues?: boolean): Promise<number>;
-    protected internalInsertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE>, transaction: ITransaction, context: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
-    protected internalInsertValuesGetIds<E, EntityCascadeGraph, IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE>, transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>): Promise<number[] | string[] | number[][] | string[][]>;
-    protected internalUpdateColumnsWhere<E, EntityCascadeGraph, IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(updateColumns: UpdateColumns<IEUC, IQE>, transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
-    protected internalUpdateWhere<E, EntityCascadeGraph, IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(update: UpdateProperties<IEUP, IQE>, transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
-    protected internalDeleteWhere<E, EntityCascadeGraph, IQE extends IQEntity>(aDelete: Delete<IQE>, transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
+    protected internalInsertColumnValues<IQE extends IQEntity<any>>(rawInsertColumnValues: RawInsertColumnValues<IQE>, transaction: ITransaction, context: IOperationContext<any, any>): Promise<number>;
+    protected internalInsertValues<E, EntityCascadeGraph, IQE extends IQEntity<any>>(rawInsertValues: RawInsertValues<IQE>, transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>, ensureGeneratedValues?: boolean): Promise<number>;
+    protected internalInsertColumnValuesGenerateIds<IQE extends IQEntity<any>>(rawInsertColumnValues: RawInsertColumnValues<IQE>, transaction: ITransaction, context: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
+    protected internalInsertValuesGetIds<E, EntityCascadeGraph, IQE extends IQEntity<any>>(rawInsertValues: RawInsertValues<IQE>, transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>): Promise<number[] | string[] | number[][] | string[][]>;
+    protected internalUpdateColumnsWhere<E, EntityCascadeGraph, IEUC extends IEntityUpdateColumns, IQE extends IQEntity<any>>(updateColumns: UpdateColumns<IEUC, IQE>, transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
+    protected internalUpdateWhere<E, EntityCascadeGraph, IEUP extends IEntityUpdateProperties, IQE extends IQEntity<any>>(update: UpdateProperties<IEUP, IQE>, transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
+    protected internalDeleteWhere<E, EntityCascadeGraph, IQE extends IQEntity<any>>(aDelete: Delete<IQE>, transaction: ITransaction, context: IOperationContext<E, EntityCascadeGraph>): Promise<number>;
 }
 //# sourceMappingURL=OperationManager.d.ts.map

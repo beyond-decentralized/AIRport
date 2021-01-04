@@ -1,6 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { DailyArchiveLogGraph, DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation } from './qdailyarchivelog';
 import { TerminalGraph, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '../terminal/qterminal';
+import { DailyTerminalSyncLog } from '../../ddl/archive/DailyTerminalSyncLog';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -56,7 +57,7 @@ export interface DailyTerminalSyncLogECreateColumns extends DailyTerminalSyncLog
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDailyTerminalSyncLog extends IQEntity {
+export interface QDailyTerminalSyncLog extends IQEntity<DailyTerminalSyncLog> {
     dailyArchiveLog: QDailyArchiveLogQRelation;
     terminal: QTerminalQRelation;
     acknowledged: IQNumberField;
@@ -65,6 +66,6 @@ export interface QDailyTerminalSyncLogQId {
     dailyArchiveLog: QDailyArchiveLogQId;
     terminal: QTerminalQId;
 }
-export interface QDailyTerminalSyncLogQRelation extends IQRelation<QDailyTerminalSyncLog>, QDailyTerminalSyncLogQId {
+export interface QDailyTerminalSyncLogQRelation extends IQRelation<DailyTerminalSyncLog, QDailyTerminalSyncLog>, QDailyTerminalSyncLogQId {
 }
 //# sourceMappingURL=qdailyterminalsynclog.d.ts.map

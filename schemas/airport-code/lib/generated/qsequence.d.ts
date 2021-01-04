@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { Sequence } from '../ddl/Sequence';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -56,7 +57,7 @@ export interface SequenceECreateColumns extends SequenceEId, SequenceEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSequence extends IQEntity {
+export interface QSequence extends IQEntity<Sequence> {
     schemaIndex: IQNumberField;
     tableIndex: IQNumberField;
     columnIndex: IQNumberField;
@@ -68,6 +69,6 @@ export interface QSequenceQId {
     tableIndex: IQNumberField;
     columnIndex: IQNumberField;
 }
-export interface QSequenceQRelation extends IQRelation<QSequence>, QSequenceQId {
+export interface QSequenceQRelation extends IQRelation<Sequence, QSequence>, QSequenceQId {
 }
 //# sourceMappingURL=qsequence.d.ts.map

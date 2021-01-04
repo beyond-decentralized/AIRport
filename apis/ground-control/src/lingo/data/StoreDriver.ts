@@ -27,18 +27,18 @@ export interface IStoreDriver
 	doesTableExist(
 		schemaName: string,
 		tableName: string,
-		ctx: IContext,
+		context: IContext,
 	): Promise<boolean>
 
 	dropTable(
 		schemaName: string,
 		tableName: string,
-		ctx: IContext,
+		context: IContext,
 	): Promise<boolean>
 
 	getEntityTableName(
 		dbEntity: DbEntity,
-		ctx: IContext,
+		context: IContext,
 	): string
 
 	getTableName(
@@ -52,25 +52,25 @@ export interface IStoreDriver
 				name?: string
 			}
 		},
-		ctx: IContext,
+		context: IContext,
 	): string;
 
 	initialize(
 		dbName: string,
-		ctx: IContext,
+		context: IContext,
 	): Promise<any>;
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		ctx: IContext,
+		context: IContext,
 		cachedSqlQueryId?: number,
 	): IObservable<EntityArray>;
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		ctx: IContext,
+		context: IContext,
 		cachedSqlQueryId?: number,
 	): IObservable<E>;
 
@@ -80,11 +80,11 @@ export interface IStoreDriver
 				transaction: IStoreDriver
 			): Promise<void>
 		},
-		ctx: IContext,
+		context: IContext,
 	): Promise<void>
 
 	isServer(
-		ctx: IContext,
+		context: IContext,
 	): boolean
 
 }

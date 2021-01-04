@@ -3,7 +3,7 @@ import {
 	IAirportDatabase
 }                           from '@airport/air-control'
 import {SEQUENCE_GENERATOR} from '@airport/check-in'
-import {container, DI}                 from '@airport/di'
+import { container, DI, IContext } from '@airport/di';
 import {
 	DbSchema,
 	JsonSchema
@@ -29,10 +29,14 @@ export interface ISchemaInitializer {
 
 	initialize(
 		jsonSchemas: JsonSchema[],
+		context: IContext,
 		normalOperation?: boolean
 	): Promise<void>
 
-	hydrate(jsonSchemas: JsonSchema[]): Promise<void>
+	hydrate(
+		jsonSchemas: JsonSchema[],
+		context: IContext,
+	): Promise<void>
 
 }
 
@@ -41,6 +45,7 @@ export class SchemaInitializer
 
 	async initialize(
 		jsonSchemas: JsonSchema[],
+		context: IContext,
 		normalOperation: boolean = true
 	): Promise<void> {
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
@@ -82,7 +87,7 @@ export class SchemaInitializer
 		}
 
 		for (const jsonSchema of schemasWithValidDependencies) {
-			await schemaBuilder.build(jsonSchema)
+			await schemaBuilder.build(jsonSchema, context)
 		}
 
 		const ddlObjects = schemaComposer.compose(
@@ -100,7 +105,7 @@ export class SchemaInitializer
 		this.setAirDbSchemas(airDb, ddlObjects)
 
 		const newSequences = await schemaBuilder.buildAllSequences(
-			schemasWithValidDependencies)
+			schemasWithValidDependencies, context)
 
 		await sequenceGenerator.init(newSequences)
 
@@ -115,7 +120,10 @@ export class SchemaInitializer
 		}
 	}
 
-	async hydrate(jsonSchemas: JsonSchema[]): Promise<void> {
+	async hydrate(
+		jsonSchemas: JsonSchema[],
+		context: IContext,
+	): Promise<void> {
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			      queryObjectInitializer, schemaBuilder, schemaChecker, schemaComposer,
 			      schemaLocator, schemaRecorder, sequenceGenerator, terminalStore]
@@ -137,7 +145,7 @@ export class SchemaInitializer
 		this.setAirDbSchemas(airDb, tempDdlObjects)
 
 		const newSequences = await schemaBuilder.stageSequences(
-			jsonSchemas, airDb)
+			jsonSchemas, airDb, context)
 
 		await sequenceGenerator.tempInit(newSequences)
 

@@ -31,6 +31,12 @@ import {
 	QRepositoryQId,
 	QRepositoryQRelation,
 } from '../repository/qrepository';
+import {
+	Repository,
+} from '../../ddl/repository/Repository';
+import {
+	DailyArchiveLog,
+} from '../../ddl/archive/DailyArchiveLog';
 
 
 declare function require(moduleName: string): any;
@@ -141,7 +147,7 @@ extends DailyArchiveLogEId, DailyArchiveLogEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDailyArchiveLog extends IQEntity
+export interface QDailyArchiveLog extends IQEntity<DailyArchiveLog>
 {
 	// Id Fields
 	dateNumber: IQNumberField;
@@ -172,6 +178,6 @@ export interface QDailyArchiveLogQId
 
 // Entity Relation Interface
 export interface QDailyArchiveLogQRelation
-	extends IQRelation<QDailyArchiveLog>, QDailyArchiveLogQId {
+	extends IQRelation<DailyArchiveLog, QDailyArchiveLog>, QDailyArchiveLogQId {
 }
 

@@ -1,18 +1,12 @@
 import {
-	SchemaEntity,
-} from '../../ddl/schema/SchemaEntity';
-import {
-	SchemaReference,
-} from '../../ddl/schema/SchemaReference';
-import {
-	ISchema,
-} from './schema';
-import {
 	ISchemaEntity,
 } from './schemaentity';
 import {
 	ISchemaReference,
 } from './schemareference';
+import {
+	ISchema,
+} from './schema';
 
 
 
@@ -41,9 +35,9 @@ export interface ISchemaVersion {
 	referencedBy?: ISchemaReference[];
 
 	// Transient Properties
-	entityMapByName?: { [entityName: string]: SchemaEntity; };
-	referencesMapByName?: { [schemaName: string]: SchemaReference; };
-	referencedByMapByName?: { [schemaName: string]: SchemaReference; };
+	entityMapByName?: { [entityName: string]: ISchemaEntity; };
+	referencesMapByName?: { [schemaName: string]: ISchemaReference; };
+	referencedByMapByName?: { [schemaName: string]: ISchemaReference; };
 
 	// Public Methods
 	

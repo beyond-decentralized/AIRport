@@ -101,12 +101,12 @@ export abstract class SqlDriver
 		context: IOperationContext<any, any>,
 	): string;
 
-	async abstract initialize(
+	abstract initialize(
 		dbName: string,
 		context: IOperationContext<any, any>,
 	): Promise<any>;
 
-	async abstract transact(
+	abstract transact(
 		callback: {
 			(
 				transaction: ITransaction
@@ -224,7 +224,7 @@ export abstract class SqlDriver
 		context: IOperationContext<any, any>,
 	): boolean
 
-	abstract async findNative(
+	abstract findNative(
 		sqlQuery: string,
 		parameters: any[],
 		context: IOperationContext<any, any>,
@@ -342,7 +342,7 @@ export abstract class SqlDriver
 		context: IOperationContext<any, any>,
 	): boolean
 
-	protected abstract async executeNative(
+	protected abstract executeNative(
 		sql: string,
 		parameters: any[],
 		context: IOperationContext<any, any>,

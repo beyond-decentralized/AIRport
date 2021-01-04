@@ -3,6 +3,7 @@ import {
 	StoreType
 }                     from '@airport/ground-control'
 import {ICredentials} from './Credentials'
+import { IContext } from '@airport/di';
 
 export interface ITransactionManager {
 
@@ -11,7 +12,8 @@ export interface ITransactionManager {
 	transactionInProgress: string;
 
 	init(
-		dbName: string
+		dbName: string,
+		context: IContext,
 	): Promise<void>;
 
 	transact(
@@ -20,7 +22,8 @@ export interface ITransactionManager {
 			(
 				transaction: IStoreDriver
 			): Promise<void>
-		}
+		},
+		context: IContext,
 	): Promise<void>;
 
 	// NOTE: Removed commit and rollback in favor of a callback solution.

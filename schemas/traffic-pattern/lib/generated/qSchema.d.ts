@@ -10,7 +10,6 @@ import { QSchemaReference } from './schema/qschemareference';
 import { QSchemaRelation } from './schema/qschemarelation';
 import { QSchemaRelationColumn } from './schema/qschemarelationcolumn';
 import { QSchemaVersion } from './schema/qschemaversion';
-import { QVersionedSchemaObject } from './schema/qversionedschemaobject';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
     Schema: QSchema;
@@ -23,7 +22,6 @@ export interface LocalQSchema extends AirportQSchema {
     SchemaRelation: QSchemaRelation;
     SchemaRelationColumn: QSchemaRelationColumn;
     SchemaVersion: QSchemaVersion;
-    VersionedSchemaObject: QVersionedSchemaObject;
 }
 export declare const Q_SCHEMA: LocalQSchema;
 export declare const Q: LocalQSchema;

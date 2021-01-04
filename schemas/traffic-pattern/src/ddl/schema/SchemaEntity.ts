@@ -26,6 +26,8 @@ import {SchemaProperty}        from './SchemaProperty'
 import {SchemaRelation}        from './SchemaRelation'
 import {SchemaVersion}         from './SchemaVersion'
 import {VersionedSchemaObject} from './VersionedSchemaObject'
+import { ISchemaColumn } from '../../generated/schema/schemacolumn';
+import { ISchemaProperty } from '../../generated/schema/schemaproperty';
 
 @Entity()
 @Table({
@@ -104,15 +106,15 @@ export class SchemaEntity
 	relationReferences: SchemaRelation[] = []
 
 	@Transient()
-	columnMap?: { [name: string]: SchemaColumn } = {}
+	columnMap?: { [name: string]: ISchemaColumn } = {}
 
 	@Transient()
-	idColumns: SchemaColumn[] = []
+	idColumns: ISchemaColumn[] = []
 
 	@Transient()
-	idColumnMap?: { [name: string]: SchemaColumn } = {}
+	idColumnMap?: { [name: string]: ISchemaColumn } = {}
 
 	@Transient()
-	propertyMap: { [name: string]: SchemaProperty } = {}
+	propertyMap: { [name: string]: ISchemaProperty } = {}
 
 }

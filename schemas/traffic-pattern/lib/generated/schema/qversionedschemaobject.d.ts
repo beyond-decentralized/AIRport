@@ -52,13 +52,13 @@ export interface VersionedSchemaObjectECreateColumns extends VersionedSchemaObje
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QVersionedSchemaObject extends IQEntity {
+export interface QVersionedSchemaObject<T> extends IQEntity<T> {
     deprecatedSinceVersion: QSchemaVersionQRelation;
     removedInVersion: QSchemaVersionQRelation;
     sinceVersion: QSchemaVersionQRelation;
 }
 export interface QVersionedSchemaObjectQId {
 }
-export interface QVersionedSchemaObjectQRelation<SubType extends IQEntity> extends IQRelation<SubType>, QVersionedSchemaObjectQId {
+export interface QVersionedSchemaObjectQRelation<SubType, SubQType extends IQEntity<SubType>> extends IQRelation<SubType, SubQType>, QVersionedSchemaObjectQId {
 }
 //# sourceMappingURL=qversionedschemaobject.d.ts.map

@@ -2,8 +2,11 @@ import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntity
 import { TransactionHistoryGraph, TransactionHistoryEOptionalId, TransactionHistoryESelect, QTransactionHistoryQRelation } from './qtransactionhistory';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
 import { RepoTransHistoryChangedRepositoryActorGraph, RepoTransHistoryChangedRepositoryActorESelect, QRepoTransHistoryChangedRepositoryActor } from './qrepotranshistorychangedrepositoryactor';
+import { RepoTransHistoryChangedRepositoryActor } from '../../ddl/history/RepoTransHistoryChangedRepositoryActor';
 import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
 import { OperationHistoryGraph, OperationHistoryESelect, QOperationHistory } from './qoperationhistory';
+import { OperationHistory } from '../../ddl/history/OperationHistory';
+import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransactionHistory';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -81,7 +84,7 @@ export interface RepositoryTransactionHistoryECreateColumns extends RepositoryTr
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryTransactionHistory extends IQEntity {
+export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransactionHistory> {
     id: IQNumberField;
     remoteId: IQNumberField;
     saveTimestamp: IQDateField;
@@ -89,13 +92,13 @@ export interface QRepositoryTransactionHistory extends IQEntity {
     blockId: IQNumberField;
     transactionHistory: QTransactionHistoryQRelation;
     repository: QRepositoryQRelation;
-    changedRepositoryActors: IQOneToManyRelation<QRepoTransHistoryChangedRepositoryActor>;
+    changedRepositoryActors: IQOneToManyRelation<RepoTransHistoryChangedRepositoryActor, QRepoTransHistoryChangedRepositoryActor>;
     actor: QActorQRelation;
-    operationHistory: IQOneToManyRelation<QOperationHistory>;
+    operationHistory: IQOneToManyRelation<OperationHistory, QOperationHistory>;
 }
 export interface QRepositoryTransactionHistoryQId {
     id: IQNumberField;
 }
-export interface QRepositoryTransactionHistoryQRelation extends IQRelation<QRepositoryTransactionHistory>, QRepositoryTransactionHistoryQId {
+export interface QRepositoryTransactionHistoryQRelation extends IQRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>, QRepositoryTransactionHistoryQId {
 }
 //# sourceMappingURL=qrepositorytransactionhistory.d.ts.map

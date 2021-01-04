@@ -1,7 +1,10 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation, TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
 import { ActorApplicationGraph, ActorApplicationESelect, QActorApplication } from './qactorapplication';
+import { ActorApplication } from '../../ddl/infrastructure/ActorApplication';
 import { RepositoryActorGraph, RepositoryActorESelect, QRepositoryActor } from '../repository/qrepositoryactor';
+import { RepositoryActor } from '../../ddl/repository/RepositoryActor';
+import { Actor } from '../../ddl/infrastructure/Actor';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -63,17 +66,17 @@ export interface ActorECreateColumns extends ActorEId, ActorEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QActor extends IQEntity {
+export interface QActor extends IQEntity<Actor> {
     id: IQNumberField;
     randomId: IQNumberField;
     user: QUserQRelation;
     terminal: QTerminalQRelation;
-    actorApplications: IQOneToManyRelation<QActorApplication>;
-    repositoryActor: IQOneToManyRelation<QRepositoryActor>;
+    actorApplications: IQOneToManyRelation<ActorApplication, QActorApplication>;
+    repositoryActor: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
 }
 export interface QActorQId {
     id: IQNumberField;
 }
-export interface QActorQRelation extends IQRelation<QActor>, QActorQId {
+export interface QActorQRelation extends IQRelation<Actor, QActor>, QActorQId {
 }
 //# sourceMappingURL=qactor.d.ts.map

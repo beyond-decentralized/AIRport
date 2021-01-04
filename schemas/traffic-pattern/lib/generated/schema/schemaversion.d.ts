@@ -1,8 +1,6 @@
-import { SchemaEntity } from '../../ddl/schema/SchemaEntity';
-import { SchemaReference } from '../../ddl/schema/SchemaReference';
-import { ISchema } from './schema';
 import { ISchemaEntity } from './schemaentity';
 import { ISchemaReference } from './schemareference';
+import { ISchema } from './schema';
 export interface ISchemaVersion {
     id: number;
     integerVersion?: number;
@@ -15,13 +13,13 @@ export interface ISchemaVersion {
     references?: ISchemaReference[];
     referencedBy?: ISchemaReference[];
     entityMapByName?: {
-        [entityName: string]: SchemaEntity;
+        [entityName: string]: ISchemaEntity;
     };
     referencesMapByName?: {
-        [schemaName: string]: SchemaReference;
+        [schemaName: string]: ISchemaReference;
     };
     referencedByMapByName?: {
-        [schemaName: string]: SchemaReference;
+        [schemaName: string]: ISchemaReference;
     };
 }
 //# sourceMappingURL=schemaversion.d.ts.map

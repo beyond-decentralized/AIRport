@@ -1,6 +1,6 @@
 import {
 	ISharingMessage,
-} from '../sharingmessage/sharingmessage';
+} from '../sharingMessage/sharingmessage';
 import {
 	ISharingNodeRepoTransBlock,
 } from './sharingnoderepotransblock';

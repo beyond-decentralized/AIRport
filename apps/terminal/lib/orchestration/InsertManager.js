@@ -1,6 +1,6 @@
 import { AIR_DB } from '@airport/air-control';
 import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
-import { container, DI } from '@airport/di';
+import { container, DI, } from '@airport/di';
 import { ChangeType, repositoryEntity, } from '@airport/ground-control';
 import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO } from '@airport/holding-pattern';
 import { DistributionStrategy, PlatformType, TRANSACTION_MANAGER } from '@airport/terminal-map';
@@ -9,11 +9,11 @@ export class InsertManager {
     // get currentTransHistory(): ITransactionHistory {
     // 	return this.transManager.currentTransHistory
     // }
-    async insertValues(portableQuery, actor, transaction, ensureGeneratedValues) {
-        return await this.internalInsertValues(portableQuery, actor, transaction, ensureGeneratedValues);
+    async insertValues(portableQuery, actor, transaction, context, ensureGeneratedValues) {
+        return await this.internalInsertValues(portableQuery, actor, transaction, context, ensureGeneratedValues);
     }
-    async insertValuesGetIds(portableQuery, actor, transaction) {
-        return await this.internalInsertValues(portableQuery, actor, transaction);
+    async insertValuesGetIds(portableQuery, actor, transaction, context) {
+        return await this.internalInsertValues(portableQuery, actor, transaction, context);
     }
     async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH) {
         const [repoManager, transManager] = await container(this)
@@ -32,7 +32,7 @@ export class InsertManager {
         }
         return dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
     }
-    async internalInsertValues(portableQuery, actor, transaction, getIds = false, ensureGeneratedValues = true) {
+    async internalInsertValues(portableQuery, actor, transaction, context, getIds = false, ensureGeneratedValues = true) {
         // TODO: remove unused dependencies after testing
         const [airDb, sequenceGenerator, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo] = await container(this)
             .get(AIR_DB, SEQUENCE_GENERATOR, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO);
@@ -71,7 +71,7 @@ appears more than once in the Columns clause`);
         if (!dbEntity.isLocal) {
             await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transaction);
         }
-        const numberOfInsertedRecords = await transaction.insertValues(portableQuery);
+        const numberOfInsertedRecords = await transaction.insertValues(portableQuery, context);
         return getIds ? ids : numberOfInsertedRecords;
     }
     async ensureGeneratedValues(dbEntity, jsonInsertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator) {

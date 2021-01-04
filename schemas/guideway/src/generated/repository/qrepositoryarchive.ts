@@ -32,6 +32,9 @@ import {
 	QRepositoryQRelation,
 } from './qrepository';
 import {
+	Repository,
+} from '../../ddl/repository/Repository';
+import {
 	ArchiveGraph,
 	ArchiveEId,
 	ArchiveEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QArchiveQId,
 	QArchiveQRelation,
 } from './qarchive';
+import {
+	Archive,
+} from '../../ddl/repository/Archive';
+import {
+	RepositoryArchive,
+} from '../../ddl/repository/RepositoryArchive';
 
 
 declare function require(moduleName: string): any;
@@ -149,7 +158,7 @@ extends RepositoryArchiveEId, RepositoryArchiveEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryArchive extends IQEntity
+export interface QRepositoryArchive extends IQEntity<RepositoryArchive>
 {
 	// Id Fields
 
@@ -179,6 +188,6 @@ export interface QRepositoryArchiveQId
 
 // Entity Relation Interface
 export interface QRepositoryArchiveQRelation
-	extends IQRelation<QRepositoryArchive>, QRepositoryArchiveQId {
+	extends IQRelation<RepositoryArchive, QRepositoryArchive>, QRepositoryArchiveQId {
 }
 

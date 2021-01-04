@@ -7,13 +7,13 @@ import {
 } from '@airport/holding-pattern';
 import {
 	ISharingNodeRepoTransBlock,
-} from '../sharingnode/sharingnoderepotransblock';
+} from '../sharingNode/sharingnoderepotransblock';
 import {
 	ISharingMessageRepoTransBlock,
-} from '../sharingmessage/sharingmessagerepotransblock';
+} from '../sharingMessage/sharingmessagerepotransblock';
 import {
 	IMissingRecordRepoTransBlock,
-} from '../missingrecord/missingrecordrepotransblock';
+} from '../missingRecord/missingrecordrepotransblock';
 import {
 	IRepoTransBlockSchemaToChange,
 } from './repotransblockschematochange';

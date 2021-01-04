@@ -31,6 +31,12 @@ import {
 	QPackageQId,
 	QPackageQRelation,
 } from './qpackage';
+import {
+	Package,
+} from '../ddl/Package';
+import {
+	PackagedUnit,
+} from '../ddl/PackagedUnit';
 
 
 declare function require(moduleName: string): any;
@@ -141,7 +147,7 @@ extends PackagedUnitEId, PackagedUnitEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QPackagedUnit extends IQEntity
+export interface QPackagedUnit extends IQEntity<PackagedUnit>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -171,6 +177,6 @@ export interface QPackagedUnitQId
 
 // Entity Relation Interface
 export interface QPackagedUnitQRelation
-	extends IQRelation<QPackagedUnit>, QPackagedUnitQId {
+	extends IQRelation<PackagedUnit, QPackagedUnit>, QPackagedUnitQId {
 }
 

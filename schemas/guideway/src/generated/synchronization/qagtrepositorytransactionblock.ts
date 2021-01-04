@@ -32,6 +32,9 @@ import {
 	QRepositoryQRelation,
 } from '../repository/qrepository';
 import {
+	Repository,
+} from '../../ddl/repository/Repository';
+import {
 	TerminalRepositoryGraph,
 	TerminalRepositoryEId,
 	TerminalRepositoryEOptionalId,
@@ -41,6 +44,9 @@ import {
 	QTerminalRepositoryQId,
 	QTerminalRepositoryQRelation,
 } from '../terminal/qterminalrepository';
+import {
+	TerminalRepository,
+} from '../../ddl/terminal/TerminalRepository';
 import {
 	TerminalGraph,
 	TerminalEId,
@@ -52,6 +58,9 @@ import {
 	QTerminalQRelation,
 } from '../terminal/qterminal';
 import {
+	Terminal,
+} from '../../ddl/terminal/Terminal';
+import {
 	ServerGraph,
 	ServerEId,
 	ServerEOptionalId,
@@ -62,6 +71,9 @@ import {
 	QServerQRelation,
 } from '../server/qserver';
 import {
+	Server,
+} from '../../ddl/server/Server';
+import {
 	SyncLogGraph,
 	SyncLogEId,
 	SyncLogEOptionalId,
@@ -71,6 +83,12 @@ import {
 	QSyncLogQId,
 	QSyncLogQRelation,
 } from './qsynclog';
+import {
+	SyncLog,
+} from '../../ddl/synchronization/SyncLog';
+import {
+	AgtRepositoryTransactionBlock,
+} from '../../ddl/synchronization/AgtRepositoryTransactionBlock';
 
 
 declare function require(moduleName: string): any;
@@ -205,7 +223,7 @@ extends AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockEUpdateCo
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QAgtRepositoryTransactionBlock extends IQEntity
+export interface QAgtRepositoryTransactionBlock extends IQEntity<AgtRepositoryTransactionBlock>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -220,10 +238,10 @@ export interface QAgtRepositoryTransactionBlock extends IQEntity
 
 	// Non-Id Relations
 	repository: QRepositoryQRelation;
-	terminalRepositories: IQOneToManyRelation<QTerminalRepository>;
+	terminalRepositories: IQOneToManyRelation<TerminalRepository, QTerminalRepository>;
 	terminal: QTerminalQRelation;
 	archivingServer: QServerQRelation;
-	syncLogs: IQOneToManyRelation<QSyncLog>;
+	syncLogs: IQOneToManyRelation<SyncLog, QSyncLog>;
 
 }
 
@@ -242,6 +260,6 @@ export interface QAgtRepositoryTransactionBlockQId
 
 // Entity Relation Interface
 export interface QAgtRepositoryTransactionBlockQRelation
-	extends IQRelation<QAgtRepositoryTransactionBlock>, QAgtRepositoryTransactionBlockQId {
+	extends IQRelation<AgtRepositoryTransactionBlock, QAgtRepositoryTransactionBlock>, QAgtRepositoryTransactionBlockQId {
 }
 

@@ -2,6 +2,8 @@ import { SchemaVersionId, SchemaVersionInteger, SchemaVersionMajor, SchemaVersio
 import { Schema } from './Schema';
 import { SchemaEntity } from './SchemaEntity';
 import { SchemaReference } from './SchemaReference';
+import { ISchemaEntity } from '../../generated/schema/schemaentity';
+import { ISchemaReference } from '../../generated/schema/schemareference';
 export declare class SchemaVersion {
     id: SchemaVersionId;
     integerVersion: SchemaVersionInteger;
@@ -14,13 +16,13 @@ export declare class SchemaVersion {
     references: SchemaReference[];
     referencedBy: SchemaReference[];
     entityMapByName?: {
-        [entityName: string]: SchemaEntity;
+        [entityName: string]: ISchemaEntity;
     };
     referencesMapByName?: {
-        [schemaName: string]: SchemaReference;
+        [schemaName: string]: ISchemaReference;
     };
     referencedByMapByName?: {
-        [schemaName: string]: SchemaReference;
+        [schemaName: string]: ISchemaReference;
     };
 }
 //# sourceMappingURL=SchemaVersion.d.ts.map

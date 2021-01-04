@@ -3,6 +3,8 @@ import { VersionedSchemaObjectGraph, VersionedSchemaObjectEId, VersionedSchemaOb
 import { SchemaPropertyGraph, SchemaPropertyEOptionalId, SchemaPropertyESelect, QSchemaPropertyQRelation } from './qschemaproperty';
 import { SchemaEntityGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
 import { SchemaRelationColumnGraph, SchemaRelationColumnESelect, QSchemaRelationColumn } from './qschemarelationcolumn';
+import { SchemaRelationColumn } from '../../ddl/schema/SchemaRelationColumn';
+import { SchemaRelation } from '../../ddl/schema/SchemaRelation';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -91,7 +93,7 @@ export interface SchemaRelationECreateColumns extends SchemaRelationEId, SchemaR
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaRelation extends QVersionedSchemaObject {
+export interface QSchemaRelation extends QVersionedSchemaObject<SchemaRelation> {
     id: IQNumberField;
     index: IQNumberField;
     foreignKey: IQStringField;
@@ -102,12 +104,12 @@ export interface QSchemaRelation extends QVersionedSchemaObject {
     property: QSchemaPropertyQRelation;
     entity: QSchemaEntityQRelation;
     relationEntity: QSchemaEntityQRelation;
-    manyRelationColumns: IQOneToManyRelation<QSchemaRelationColumn>;
-    oneRelationColumns: IQOneToManyRelation<QSchemaRelationColumn>;
+    manyRelationColumns: IQOneToManyRelation<SchemaRelationColumn, QSchemaRelationColumn>;
+    oneRelationColumns: IQOneToManyRelation<SchemaRelationColumn, QSchemaRelationColumn>;
 }
 export interface QSchemaRelationQId extends QVersionedSchemaObjectQId {
     id: IQNumberField;
 }
-export interface QSchemaRelationQRelation extends QVersionedSchemaObjectQRelation<QSchemaRelation>, QSchemaRelationQId {
+export interface QSchemaRelationQRelation extends QVersionedSchemaObjectQRelation<SchemaRelation, QSchemaRelation>, QSchemaRelationQId {
 }
 //# sourceMappingURL=qschemarelation.d.ts.map

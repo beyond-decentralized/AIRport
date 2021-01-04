@@ -1,6 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { SharingNodeGraph, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from './qsharingnode';
 import { TerminalGraph, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from '@airport/travel-document-checkpoint';
+import { SharingNodeTerminal } from '../../ddl/sharingNode/SharingNodeTerminal';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -64,7 +65,7 @@ export interface SharingNodeTerminalECreateColumns extends SharingNodeTerminalEI
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSharingNodeTerminal extends IQEntity {
+export interface QSharingNodeTerminal extends IQEntity<SharingNodeTerminal> {
     sharingNode: QSharingNodeQRelation;
     terminal: QTerminalQRelation;
     agtTerminalId: IQNumberField;
@@ -75,6 +76,6 @@ export interface QSharingNodeTerminalQId {
     sharingNode: QSharingNodeQId;
     terminal: QTerminalQId;
 }
-export interface QSharingNodeTerminalQRelation extends IQRelation<QSharingNodeTerminal>, QSharingNodeTerminalQId {
+export interface QSharingNodeTerminalQRelation extends IQRelation<SharingNodeTerminal, QSharingNodeTerminal>, QSharingNodeTerminalQId {
 }
 //# sourceMappingURL=qsharingnodeterminal.d.ts.map

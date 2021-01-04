@@ -31,6 +31,9 @@ import {
 	QRepositoryEntityQRelation,
 	QRepositoryEntity,
 } from '../repository/qrepositoryentity';
+import {
+	ChildRepoRow,
+} from '../../ddl/traditional/ChildRepoRow';
 
 
 declare function require(moduleName: string): any;
@@ -131,7 +134,7 @@ extends ChildRepoRowEId, ChildRepoRowEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QChildRepoRow extends QRepositoryEntity
+export interface QChildRepoRow<T> extends QRepositoryEntity<T>
 {
 	// Id Fields
 
@@ -156,7 +159,7 @@ export interface QChildRepoRowQId extends QRepositoryEntityQId
 }
 
 // Entity Relation Interface
-export interface QChildRepoRowQRelation<SubType extends IQEntity>
-	extends QRepositoryEntityQRelation<SubType>, QChildRepoRowQId {
+export interface QChildRepoRowQRelation<SubType, SubQType extends IQEntity<SubType>>
+	extends QRepositoryEntityQRelation<SubType, SubQType>, QChildRepoRowQId {
 }
 

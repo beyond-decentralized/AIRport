@@ -148,7 +148,7 @@ export async function watchFiles(
       const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, false);
       const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
       const qEntityFileBuilder = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
-        entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
+        entityMapByName, configuration, indexedSchema.entityMapByName[entityName], entity.path);
       const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder,
         entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
 
@@ -157,7 +157,8 @@ export async function watchFiles(
       }
       entityInterfaceListingBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
       entityQInterfaceListingBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath);
-      qSchemaBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath);
+      qSchemaBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath,
+        entity.docEntry.isMappedSuperclass);
 
       const sIndexedEntity = indexedSchema.entityMapByName[entityName];
 

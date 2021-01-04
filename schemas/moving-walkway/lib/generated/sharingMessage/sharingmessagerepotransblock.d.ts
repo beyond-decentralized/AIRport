@@ -1,5 +1,5 @@
 import { ISharingMessage } from './sharingmessage';
-import { IRepositoryTransactionBlock } from '../repositorytransactionblock/repositorytransactionblock';
+import { IRepositoryTransactionBlock } from '../repositoryTransactionBlock/repositorytransactionblock';
 export interface ISharingMessageRepoTransBlock {
     sharingMessage: ISharingMessage;
     repositoryTransactionBlock: IRepositoryTransactionBlock;

@@ -32,11 +32,11 @@ import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 //  * One transaction execution to one at a time, so a way to track existing
 //  * transactional context is required.  Zone.js can be used as a thread local context for
 //  * that.
-export async function transactional(callback) {
+export async function transactional(callback, context = {}) {
     const transactionManager = await DI.db()
         .get(TRANSACTION_MANAGER);
     await transactionManager.transact({
         domainAndPort: 'any'
-    }, callback);
+    }, callback, context);
 }
 //# sourceMappingURL=transactional.js.map

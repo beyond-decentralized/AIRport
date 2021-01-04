@@ -5,7 +5,7 @@ import { ICredentials } from '@airport/terminal-map';
 import { ITransaction } from '../../ITransaction';
 import { IOperationContext } from '../../processing/OperationContext';
 export interface ITransactionalServer {
-    init(): Promise<void>;
+    init(context?: IContext): Promise<void>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, credentials: ICredentials, context: IOperationContext<any, any>): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<E>;

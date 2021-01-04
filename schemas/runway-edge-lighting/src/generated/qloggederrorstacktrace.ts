@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	LoggedErrorStackTrace,
+} from '../ddl/LoggedErrorStackTrace';
 
 
 declare function require(moduleName: string): any;
@@ -131,7 +134,7 @@ extends LoggedErrorStackTraceEId, LoggedErrorStackTraceEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLoggedErrorStackTrace extends IQEntity
+export interface QLoggedErrorStackTrace extends IQEntity<LoggedErrorStackTrace>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -161,6 +164,6 @@ export interface QLoggedErrorStackTraceQId
 
 // Entity Relation Interface
 export interface QLoggedErrorStackTraceQRelation
-	extends IQRelation<QLoggedErrorStackTrace>, QLoggedErrorStackTraceQId {
+	extends IQRelation<LoggedErrorStackTrace, QLoggedErrorStackTrace>, QLoggedErrorStackTraceQId {
 }
 

@@ -32,6 +32,9 @@ import {
 	QUserQRelation,
 } from './quser';
 import {
+	User,
+} from '../ddl/User';
+import {
 	TerminalAgtGraph,
 	TerminalAgtEId,
 	TerminalAgtEOptionalId,
@@ -41,6 +44,9 @@ import {
 	QTerminalAgtQId,
 	QTerminalAgtQRelation,
 } from './qterminalagt';
+import {
+	TerminalAgt,
+} from '../ddl/TerminalAgt';
 import {
 	UserTerminalGraph,
 	UserTerminalEId,
@@ -52,6 +58,9 @@ import {
 	QUserTerminalQRelation,
 } from './quserterminal';
 import {
+	UserTerminal,
+} from '../ddl/UserTerminal';
+import {
 	UserTerminalAgtGraph,
 	UserTerminalAgtEId,
 	UserTerminalAgtEOptionalId,
@@ -61,6 +70,12 @@ import {
 	QUserTerminalAgtQId,
 	QUserTerminalAgtQRelation,
 } from './quserterminalagt';
+import {
+	UserTerminalAgt,
+} from '../ddl/UserTerminalAgt';
+import {
+	Terminal,
+} from '../ddl/Terminal';
 
 
 declare function require(moduleName: string): any;
@@ -185,7 +200,7 @@ extends TerminalEId, TerminalEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTerminal extends IQEntity
+export interface QTerminal extends IQEntity<Terminal>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -199,9 +214,9 @@ export interface QTerminal extends IQEntity
 
 	// Non-Id Relations
 	owner: QUserQRelation;
-	terminalAgts: IQOneToManyRelation<QTerminalAgt>;
-	userTerminal: IQOneToManyRelation<QUserTerminal>;
-	userTerminalAgt: IQOneToManyRelation<QUserTerminalAgt>;
+	terminalAgts: IQOneToManyRelation<TerminalAgt, QTerminalAgt>;
+	userTerminal: IQOneToManyRelation<UserTerminal, QUserTerminal>;
+	userTerminalAgt: IQOneToManyRelation<UserTerminalAgt, QUserTerminalAgt>;
 
 }
 
@@ -220,6 +235,6 @@ export interface QTerminalQId
 
 // Entity Relation Interface
 export interface QTerminalQRelation
-	extends IQRelation<QTerminal>, QTerminalQId {
+	extends IQRelation<Terminal, QTerminal>, QTerminalQId {
 }
 

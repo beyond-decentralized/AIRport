@@ -32,6 +32,9 @@ import {
 	QRepositoryQRelation,
 } from '../repository/qrepository';
 import {
+	Repository,
+} from '../../ddl/repository/Repository';
+import {
 	UserGraph,
 	UserEId,
 	UserEOptionalId,
@@ -41,6 +44,12 @@ import {
 	QUserQId,
 	QUserQRelation,
 } from './quser';
+import {
+	User,
+} from '../../ddl/user/User';
+import {
+	UserRepository,
+} from '../../ddl/user/UserRepository';
 
 
 declare function require(moduleName: string): any;
@@ -153,7 +162,7 @@ extends UserRepositoryEId, UserRepositoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QUserRepository extends IQEntity
+export interface QUserRepository extends IQEntity<UserRepository>
 {
 	// Id Fields
 
@@ -184,6 +193,6 @@ export interface QUserRepositoryQId
 
 // Entity Relation Interface
 export interface QUserRepositoryQRelation
-	extends IQRelation<QUserRepository>, QUserRepositoryQId {
+	extends IQRelation<UserRepository, QUserRepository>, QUserRepositoryQId {
 }
 

@@ -12,20 +12,20 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { QMissingRecord } from './missingrecord/qmissingrecord';
-import { QMissingRecordRepoTransBlock } from './missingrecord/qmissingrecordrepotransblock';
+import { QMissingRecord } from './missingRecord/qmissingrecord';
+import { QMissingRecordRepoTransBlock } from './missingRecord/qmissingrecordrepotransblock';
 import { QRecordUpdateStage } from './qrecordupdatestage';
-import { QRepoTransBlockResponseStage } from './repositorytransactionblock/qrepotransblockresponsestage';
-import { QRepoTransBlockSchemaToChange } from './repositorytransactionblock/qrepotransblockschematochange';
-import { QRepositoryTransactionBlock } from './repositorytransactionblock/qrepositorytransactionblock';
-import { QRepositoryTransactionHistoryUpdateStage } from './repositorytransactionblock/qrepositorytransactionhistoryupdatestage';
-import { QSharingMessage } from './sharingmessage/qsharingmessage';
-import { QSharingMessageRepoTransBlock } from './sharingmessage/qsharingmessagerepotransblock';
-import { QSharingNode } from './sharingnode/qsharingnode';
-import { QSharingNodeRepoTransBlock } from './sharingnode/qsharingnoderepotransblock';
-import { QSharingNodeRepoTransBlockStage } from './sharingnode/qsharingnoderepotransblockstage';
-import { QSharingNodeRepository } from './sharingnode/qsharingnoderepository';
-import { QSharingNodeTerminal } from './sharingnode/qsharingnodeterminal';
+import { QRepoTransBlockResponseStage } from './repositoryTransactionBlock/qrepotransblockresponsestage';
+import { QRepoTransBlockSchemaToChange } from './repositoryTransactionBlock/qrepotransblockschematochange';
+import { QRepositoryTransactionBlock } from './repositoryTransactionBlock/qrepositorytransactionblock';
+import { QRepositoryTransactionHistoryUpdateStage } from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage';
+import { QSharingMessage } from './sharingMessage/qsharingmessage';
+import { QSharingMessageRepoTransBlock } from './sharingMessage/qsharingmessagerepotransblock';
+import { QSharingNode } from './sharingNode/qsharingnode';
+import { QSharingNodeRepoTransBlock } from './sharingNode/qsharingnoderepotransblock';
+import { QSharingNodeRepoTransBlockStage } from './sharingNode/qsharingnoderepotransblockstage';
+import { QSharingNodeRepository } from './sharingNode/qsharingnoderepository';
+import { QSharingNodeTerminal } from './sharingNode/qsharingnodeterminal';
 import { QSynchronizationConflict } from './conflict/qsynchronizationconflict';
 import { QSynchronizationConflictPendingNotification } from './conflict/qsynchronizationconflictpendingnotification';
 import { QSynchronizationConflictValues } from './conflict/qsynchronizationconflictvalues';

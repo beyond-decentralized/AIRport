@@ -9,8 +9,9 @@ export declare class QSchemaBuilder implements IBuilder {
     private ddlPathMapByEntityName;
     private generatedFilePaths;
     private generatedPathMapByEntityName;
+    private mappedSuperclassSet;
     constructor(pathBuilder: PathBuilder, configuration: Configuration);
-    addFileNameAndPaths(entityName: string, fullDdlPath: string, fullGenerationPath: string): void;
+    addFileNameAndPaths(entityName: string, fullDdlPath: string, fullGenerationPath: string, isMappedSuperclass: boolean): void;
     build(domainName: string, schemaName: string): string;
 }
 //# sourceMappingURL=QSchemaBuilder.d.ts.map

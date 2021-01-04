@@ -1,7 +1,10 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from '../user/quser';
 import { TerminalRepositoryGraph, TerminalRepositoryESelect, QTerminalRepository } from './qterminalrepository';
+import { TerminalRepository } from '../../ddl/terminal/TerminalRepository';
 import { AgtSharingMessageGraph, AgtSharingMessageESelect, QAgtSharingMessage } from '../synchronization/qagtsharingmessage';
+import { AgtSharingMessage } from '../../ddl/synchronization/AgtSharingMessage';
+import { Terminal } from '../../ddl/terminal/Terminal';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -75,7 +78,7 @@ export interface TerminalECreateColumns extends TerminalEId, TerminalEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTerminal extends IQEntity {
+export interface QTerminal extends IQEntity<Terminal> {
     id: IQNumberField;
     name: IQStringField;
     secondId: IQNumberField;
@@ -83,12 +86,12 @@ export interface QTerminal extends IQEntity {
     lastPollConnectionDatetime: IQNumberField;
     lastSseConnectionDatetime: IQNumberField;
     user: QUserQRelation;
-    terminalRepositories: IQOneToManyRelation<QTerminalRepository>;
-    sharingMessages: IQOneToManyRelation<QAgtSharingMessage>;
+    terminalRepositories: IQOneToManyRelation<TerminalRepository, QTerminalRepository>;
+    sharingMessages: IQOneToManyRelation<AgtSharingMessage, QAgtSharingMessage>;
 }
 export interface QTerminalQId {
     id: IQNumberField;
 }
-export interface QTerminalQRelation extends IQRelation<QTerminal>, QTerminalQId {
+export interface QTerminalQRelation extends IQRelation<Terminal, QTerminal>, QTerminalQId {
 }
 //# sourceMappingURL=qterminal.d.ts.map

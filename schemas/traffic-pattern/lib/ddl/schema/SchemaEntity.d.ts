@@ -6,6 +6,8 @@ import { SchemaProperty } from './SchemaProperty';
 import { SchemaRelation } from './SchemaRelation';
 import { SchemaVersion } from './SchemaVersion';
 import { VersionedSchemaObject } from './VersionedSchemaObject';
+import { ISchemaColumn } from '../../generated/schema/schemacolumn';
+import { ISchemaProperty } from '../../generated/schema/schemaproperty';
 export declare class SchemaEntity extends VersionedSchemaObject {
     id: EntityId;
     index: TableIndex;
@@ -20,14 +22,14 @@ export declare class SchemaEntity extends VersionedSchemaObject {
     relations: SchemaRelation[];
     relationReferences: SchemaRelation[];
     columnMap?: {
-        [name: string]: SchemaColumn;
+        [name: string]: ISchemaColumn;
     };
-    idColumns: SchemaColumn[];
+    idColumns: ISchemaColumn[];
     idColumnMap?: {
-        [name: string]: SchemaColumn;
+        [name: string]: ISchemaColumn;
     };
     propertyMap: {
-        [name: string]: SchemaProperty;
+        [name: string]: ISchemaProperty;
     };
 }
 //# sourceMappingURL=SchemaEntity.d.ts.map

@@ -11,7 +11,9 @@ import {IOperationContext} from '../../processing/OperationContext'
 
 export interface ITransactionalServer {
 
-	init(): Promise<void>
+	init(
+		context?: IContext,
+	): Promise<void>
 
 	addRepository(
 		name: string,

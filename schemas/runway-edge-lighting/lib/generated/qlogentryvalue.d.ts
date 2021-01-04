@@ -1,5 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
 import { LogEntryGraph, LogEntryEOptionalId, LogEntryESelect, QLogEntryQRelation } from './qlogentry';
+import { LogEntryValue } from '../ddl/LogEntryValue';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -57,7 +58,7 @@ export interface LogEntryValueECreateColumns extends LogEntryValueEId, LogEntryV
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLogEntryValue extends IQEntity {
+export interface QLogEntryValue extends IQEntity<LogEntryValue> {
     id: IQNumberField;
     position: IQNumberField;
     value: IQUntypedField;
@@ -66,6 +67,6 @@ export interface QLogEntryValue extends IQEntity {
 export interface QLogEntryValueQId {
     id: IQNumberField;
 }
-export interface QLogEntryValueQRelation extends IQRelation<QLogEntryValue>, QLogEntryValueQId {
+export interface QLogEntryValueQRelation extends IQRelation<LogEntryValue, QLogEntryValue>, QLogEntryValueQId {
 }
 //# sourceMappingURL=qlogentryvalue.d.ts.map

@@ -2,6 +2,8 @@ import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntity
 import { TerminalGraph, TerminalEId, TerminalEOptionalId, TerminalESelect, QTerminalQId, QTerminalQRelation } from './qterminal';
 import { AgtGraph, AgtEId, AgtEOptionalId, AgtESelect, QAgtQId, QAgtQRelation } from './qagt';
 import { UserTerminalAgtGraph, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
+import { UserTerminalAgt } from '../ddl/UserTerminalAgt';
+import { TerminalAgt } from '../ddl/TerminalAgt';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -59,16 +61,16 @@ export interface TerminalAgtECreateColumns extends TerminalAgtEId, TerminalAgtEU
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTerminalAgt extends IQEntity {
+export interface QTerminalAgt extends IQEntity<TerminalAgt> {
     terminal: QTerminalQRelation;
     agt: QAgtQRelation;
     password: IQStringField;
-    userTerminalAgts: IQOneToManyRelation<QUserTerminalAgt>;
+    userTerminalAgts: IQOneToManyRelation<UserTerminalAgt, QUserTerminalAgt>;
 }
 export interface QTerminalAgtQId {
     terminal: QTerminalQId;
     agt: QAgtQId;
 }
-export interface QTerminalAgtQRelation extends IQRelation<QTerminalAgt>, QTerminalAgtQId {
+export interface QTerminalAgtQRelation extends IQRelation<TerminalAgt, QTerminalAgt>, QTerminalAgtQId {
 }
 //# sourceMappingURL=qterminalagt.d.ts.map

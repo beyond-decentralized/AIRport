@@ -32,6 +32,9 @@ import {
 	QUserQRelation,
 } from './quser';
 import {
+	User,
+} from '../ddl/User';
+import {
 	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -41,6 +44,9 @@ import {
 	QTerminalQId,
 	QTerminalQRelation,
 } from './qterminal';
+import {
+	Terminal,
+} from '../ddl/Terminal';
 import {
 	AgtGraph,
 	AgtEId,
@@ -52,6 +58,9 @@ import {
 	QAgtQRelation,
 } from './qagt';
 import {
+	Agt,
+} from '../ddl/Agt';
+import {
 	TerminalAgtGraph,
 	TerminalAgtEId,
 	TerminalAgtEOptionalId,
@@ -61,6 +70,12 @@ import {
 	QTerminalAgtQId,
 	QTerminalAgtQRelation,
 } from './qterminalagt';
+import {
+	TerminalAgt,
+} from '../ddl/TerminalAgt';
+import {
+	UserTerminalAgt,
+} from '../ddl/UserTerminalAgt';
 
 
 declare function require(moduleName: string): any;
@@ -183,7 +198,7 @@ extends UserTerminalAgtEId, UserTerminalAgtEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QUserTerminalAgt extends IQEntity
+export interface QUserTerminalAgt extends IQEntity<UserTerminalAgt>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -218,6 +233,6 @@ export interface QUserTerminalAgtQId
 
 // Entity Relation Interface
 export interface QUserTerminalAgtQRelation
-	extends IQRelation<QUserTerminalAgt>, QUserTerminalAgtQId {
+	extends IQRelation<UserTerminalAgt, QUserTerminalAgt>, QUserTerminalAgtQId {
 }
 

@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { DailySyncLog } from '../ddl/DailySyncLog';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -48,7 +49,7 @@ export interface DailySyncLogECreateColumns extends DailySyncLogEId, DailySyncLo
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDailySyncLog extends IQEntity {
+export interface QDailySyncLog extends IQEntity<DailySyncLog> {
     databaseId: IQNumberField;
     date: IQNumberField;
     repositoryId: IQNumberField;
@@ -58,6 +59,6 @@ export interface QDailySyncLogQId {
     date: IQNumberField;
     repositoryId: IQNumberField;
 }
-export interface QDailySyncLogQRelation extends IQRelation<QDailySyncLog>, QDailySyncLogQId {
+export interface QDailySyncLogQRelation extends IQRelation<DailySyncLog, QDailySyncLog>, QDailySyncLogQId {
 }
 //# sourceMappingURL=qdailysynclog.d.ts.map

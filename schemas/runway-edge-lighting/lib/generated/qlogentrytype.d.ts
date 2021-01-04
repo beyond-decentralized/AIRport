@@ -1,6 +1,8 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ApplicationPackageGraph, ApplicationPackageEOptionalId, ApplicationPackageESelect, QApplicationPackageQRelation, PackagedUnitGraph, PackagedUnitEOptionalId, PackagedUnitESelect, QPackagedUnitQRelation } from '@airport/territory';
 import { LogEntryGraph, LogEntryESelect, QLogEntry } from './qlogentry';
+import { LogEntry } from '../ddl/LogEntry';
+import { LogEntryType } from '../ddl/LogEntryType';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -64,17 +66,17 @@ export interface LogEntryTypeECreateColumns extends LogEntryTypeEId, LogEntryTyp
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLogEntryType extends IQEntity {
+export interface QLogEntryType extends IQEntity<LogEntryType> {
     id: IQNumberField;
     level: IQNumberField;
     text: IQStringField;
     applicationPackage: QApplicationPackageQRelation;
     packagedUnit: QPackagedUnitQRelation;
-    logEntries: IQOneToManyRelation<QLogEntry>;
+    logEntries: IQOneToManyRelation<LogEntry, QLogEntry>;
 }
 export interface QLogEntryTypeQId {
     id: IQNumberField;
 }
-export interface QLogEntryTypeQRelation extends IQRelation<QLogEntryType>, QLogEntryTypeQId {
+export interface QLogEntryTypeQRelation extends IQRelation<LogEntryType, QLogEntryType>, QLogEntryTypeQId {
 }
 //# sourceMappingURL=qlogentrytype.d.ts.map

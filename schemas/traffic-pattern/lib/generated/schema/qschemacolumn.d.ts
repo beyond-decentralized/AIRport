@@ -2,7 +2,10 @@ import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField } fro
 import { VersionedSchemaObjectGraph, VersionedSchemaObjectEId, VersionedSchemaObjectEUpdateColumns, VersionedSchemaObjectEUpdateProperties, VersionedSchemaObjectESelect, QVersionedSchemaObjectQId, QVersionedSchemaObjectQRelation, QVersionedSchemaObject } from './qversionedschemaobject';
 import { SchemaEntityGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from './qschemaentity';
 import { SchemaPropertyColumnGraph, SchemaPropertyColumnESelect, QSchemaPropertyColumn } from './qschemapropertycolumn';
+import { SchemaPropertyColumn } from '../../ddl/schema/SchemaPropertyColumn';
 import { SchemaRelationColumnGraph, SchemaRelationColumnESelect, QSchemaRelationColumn } from './qschemarelationcolumn';
+import { SchemaRelationColumn } from '../../ddl/schema/SchemaRelationColumn';
+import { SchemaColumn } from '../../ddl/schema/SchemaColumn';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -89,7 +92,7 @@ export interface SchemaColumnECreateColumns extends SchemaColumnEId, SchemaColum
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchemaColumn extends QVersionedSchemaObject {
+export interface QSchemaColumn extends QVersionedSchemaObject<SchemaColumn> {
     id: IQNumberField;
     index: IQNumberField;
     idIndex: IQNumberField;
@@ -99,13 +102,13 @@ export interface QSchemaColumn extends QVersionedSchemaObject {
     notNull: IQBooleanField;
     type: IQNumberField;
     entity: QSchemaEntityQRelation;
-    propertyColumns: IQOneToManyRelation<QSchemaPropertyColumn>;
-    manyRelationColumns: IQOneToManyRelation<QSchemaRelationColumn>;
-    oneRelationColumns: IQOneToManyRelation<QSchemaRelationColumn>;
+    propertyColumns: IQOneToManyRelation<SchemaPropertyColumn, QSchemaPropertyColumn>;
+    manyRelationColumns: IQOneToManyRelation<SchemaRelationColumn, QSchemaRelationColumn>;
+    oneRelationColumns: IQOneToManyRelation<SchemaRelationColumn, QSchemaRelationColumn>;
 }
 export interface QSchemaColumnQId extends QVersionedSchemaObjectQId {
     id: IQNumberField;
 }
-export interface QSchemaColumnQRelation extends QVersionedSchemaObjectQRelation<QSchemaColumn>, QSchemaColumnQId {
+export interface QSchemaColumnQRelation extends QVersionedSchemaObjectQRelation<SchemaColumn, QSchemaColumn>, QSchemaColumnQId {
 }
 //# sourceMappingURL=qschemacolumn.d.ts.map

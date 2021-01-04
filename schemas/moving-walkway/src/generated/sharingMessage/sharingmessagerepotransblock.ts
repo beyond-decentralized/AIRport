@@ -3,7 +3,7 @@ import {
 } from './sharingmessage';
 import {
 	IRepositoryTransactionBlock,
-} from '../repositorytransactionblock/repositorytransactionblock';
+} from '../repositoryTransactionBlock/repositorytransactionblock';
 
 
 

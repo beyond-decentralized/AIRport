@@ -21,6 +21,9 @@ import {
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
+import {
+	Sequence,
+} from '../ddl/Sequence';
 
 
 declare function require(moduleName: string): any;
@@ -135,7 +138,7 @@ extends SequenceEId, SequenceEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSequence extends IQEntity
+export interface QSequence extends IQEntity<Sequence>
 {
 	// Id Fields
 	schemaIndex: IQNumberField;
@@ -169,6 +172,6 @@ export interface QSequenceQId
 
 // Entity Relation Interface
 export interface QSequenceQRelation
-	extends IQRelation<QSequence>, QSequenceQId {
+	extends IQRelation<Sequence, QSequence>, QSequenceQId {
 }
 

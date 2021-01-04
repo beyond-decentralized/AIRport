@@ -168,13 +168,13 @@ export interface IQEntityDriver<IEntity> {
 	dbEntity: DbEntity;
 	dbRelation: DbRelation;
 	entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> };
-	entityRelations: IQInternalRelation<any>[];
+	entityRelations: IQInternalRelation<any, any>[];
 	fromClausePosition: number[];
 	idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
 	joinType: JoinType;
 	joinWhereClause: JSONBaseOperation;
 	parentJoinEntity: IQEntityInternal<IEntity>;
-	relations: IQInternalRelation<any>[];
+	relations: IQInternalRelation<any, any>[];
 
 	/*
 	addEntityField<IQF extends IQOperableFieldInternal<any, JSONBaseOperation, any, any>>(

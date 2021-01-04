@@ -23,18 +23,20 @@ export class QEntityRelationBuilder
 		})
 
 		let genericType       = ''
-		let parentEntityQType = `IQRelation<${qName}>`
+		let entity = this.entity.docEntry.name
+		let parentEntityQType = `IQRelation<${entity}, ${qName}>`
 		if (isMappedSuperclass) {
-			genericType       = '<SubType extends IQEntity>'
-			parentEntityQType = `IQRelation<SubType>`
+			genericType       = '<SubType, SubQType extends IQEntity<SubType>>'
+			parentEntityQType = `IQRelation<SubType, SubQType>`
 		}
 
 		if (this.entity.parentEntity) {
 			let iqEntity = qName
 			if (isMappedSuperclass) {
-				iqEntity = 'SubType'
+				iqEntity = 'SubQType'
+				entity = 'SubType'
 			}
-			parentEntityQType = `Q${this.entity.parentEntity.type}QRelation<${iqEntity}>`
+			parentEntityQType = `Q${this.entity.parentEntity.type}QRelation<${entity}, ${iqEntity}>`
 		}
 
 		const classSource = `// Entity Relation Interface

@@ -30,6 +30,7 @@ import {
 	QDomain,
 	QDomainQId,
 	QDomainQRelation,
+	Domain,
 } from '@airport/territory';
 import {
 	SchemaVersionGraph,
@@ -41,6 +42,12 @@ import {
 	QSchemaVersionQId,
 	QSchemaVersionQRelation,
 } from './qschemaversion';
+import {
+	SchemaVersion,
+} from '../../ddl/schema/SchemaVersion';
+import {
+	Schema,
+} from '../../ddl/schema/Schema';
 
 
 declare function require(moduleName: string): any;
@@ -165,7 +172,7 @@ extends SchemaEId, SchemaEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSchema extends IQEntity
+export interface QSchema extends IQEntity<Schema>
 {
 	// Id Fields
 	index: IQNumberField;
@@ -179,7 +186,7 @@ export interface QSchema extends IQEntity
 
 	// Non-Id Relations
 	domain: QDomainQRelation;
-	versions: IQOneToManyRelation<QSchemaVersion>;
+	versions: IQOneToManyRelation<SchemaVersion, QSchemaVersion>;
 	currentVersion: QSchemaVersionQRelation;
 
 }
@@ -199,6 +206,6 @@ export interface QSchemaQId
 
 // Entity Relation Interface
 export interface QSchemaQRelation
-	extends IQRelation<QSchema>, QSchemaQId {
+	extends IQRelation<Schema, QSchema>, QSchemaQId {
 }
 

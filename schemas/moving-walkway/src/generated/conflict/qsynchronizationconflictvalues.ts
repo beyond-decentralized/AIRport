@@ -31,6 +31,12 @@ import {
 	QSynchronizationConflictQId,
 	QSynchronizationConflictQRelation,
 } from './qsynchronizationconflict';
+import {
+	SynchronizationConflict,
+} from '../../ddl/conflict/SynchronizationConflict';
+import {
+	SynchronizationConflictValues,
+} from '../../ddl/conflict/SynchronizationConflictValues';
 
 
 declare function require(moduleName: string): any;
@@ -137,7 +143,7 @@ extends SynchronizationConflictValuesEId, SynchronizationConflictValuesEUpdateCo
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSynchronizationConflictValues extends IQEntity
+export interface QSynchronizationConflictValues extends IQEntity<SynchronizationConflictValues>
 {
 	// Id Fields
 	columnIndex: IQNumberField;
@@ -167,6 +173,6 @@ export interface QSynchronizationConflictValuesQId
 
 // Entity Relation Interface
 export interface QSynchronizationConflictValuesQRelation
-	extends IQRelation<QSynchronizationConflictValues>, QSynchronizationConflictValuesQId {
+	extends IQRelation<SynchronizationConflictValues, QSynchronizationConflictValues>, QSynchronizationConflictValuesQId {
 }
 
