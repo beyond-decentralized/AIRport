@@ -85,7 +85,7 @@ export abstract class SqlSchemaBuilder
     //
   }
 
-  async abstract buildAllSequences(
+  abstract buildAllSequences(
     jsonSchemas: JsonSchema[],
     context: IContext,
   ): Promise<ISequence[]>
