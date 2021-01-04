@@ -5,7 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Y } from '@airport/air-control';
-import { Document } from '@airport/hw-control';
 import { vespa } from './impl/AccessPoint';
 export class Factor {
 }
@@ -13,16 +12,12 @@ export class Thread {
 }
 let VespaThread = class VespaThread {
     constructor() {
-        this.name = vespa.type.string(Thread, {
-            name: '',
+        this.data = vespa.type.document(Thread, {
+            data: Y
         });
+        this.name = vespa.type.string(Thread, (q) => q.name);
     }
 };
-__decorate([
-    Document({
-        test: 'hello',
-    })
-], VespaThread.prototype, "data", void 0);
 __decorate([
     vespa.Attribute({
         fastSearch: true,

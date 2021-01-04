@@ -1,5 +1,4 @@
 import { Y } from '@airport/air-control';
-import { Document } from '@airport/hw-control';
 import { vespa } from './impl/AccessPoint';
 
 export class Factor {
@@ -9,16 +8,15 @@ export class Factor {
 
 export class Thread {
   data: string;
-  name: string
+  name: string;
 }
 
 @vespa.Entity()
 class VespaThread {
 
-  @Document<Thread>({
-    test: 'hello',
-  })
-  data: string;
+  data = vespa.type.document(Thread, {
+    data: Y
+  });
 
   @vespa.Attribute({
     fastSearch: true,
@@ -26,9 +24,7 @@ class VespaThread {
   @vespa.Indexing({
     index: Y,
   })
-  name = vespa.type.string(Thread, {
-    name: '',
-  });
+  name = vespa.type.string(Thread, (q: QThread) => q.name);
 
 }
 
