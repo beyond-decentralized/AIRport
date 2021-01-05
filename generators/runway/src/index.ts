@@ -10,18 +10,21 @@ const configuration = readConfiguration(process.cwd(), process.argv)
 globalThis.configuration = configuration
 
 const ddlDirPath    = process.cwd() + '/' + configuration.airport.ddlDir
-let sourceFilePaths = findAllDdlFilePaths(ddlDirPath)
+let sourceFilePaths = findAllSourceFilePaths(ddlDirPath)
 
 if (configuration.airport.daoDir) {
 	const daoDirPath         = process.cwd() + '/' + configuration.airport.daoDir
-	const daoSourceFilePaths = findAllDdlFilePaths(daoDirPath)
+	const daoSourceFilePaths = findAllSourceFilePaths(daoDirPath)
 	sourceFilePaths          = [...daoSourceFilePaths, ...sourceFilePaths]
 }
 
 
-function findAllDdlFilePaths(
+function findAllSourceFilePaths(
 	dirPath: string,
 ): string[] {
+	if (!fs.existsSync(dirPath)){
+		fs.mkdirSync(dirPath);
+	}
 	const allFileNames       = fs.readdirSync(dirPath)
 	const containedFilePaths = allFileNames.map(
 		fileName => {
@@ -41,7 +44,7 @@ function findAllDdlFilePaths(
 		}
 	)
 	for (const subDirPath of subDirectoryPaths) {
-		sourceFilePaths = sourceFilePaths.concat(findAllDdlFilePaths(subDirPath))
+		sourceFilePaths = sourceFilePaths.concat(findAllSourceFilePaths(subDirPath))
 	}
 
 	return sourceFilePaths
