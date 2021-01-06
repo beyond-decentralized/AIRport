@@ -5,6 +5,7 @@
     "@airport/di": "0.0.1",
     "@airport/fuel-hydrant-system": "0.0.1",
     "@airport/ground-control": "0.0.1",
+    "@airport/landing": "0.0.1",
     "@airport/sequence": "0.0.1",
     "@airport/takeoff": "0.0.1",
     "@airport/tarmaq": "0.0.1",

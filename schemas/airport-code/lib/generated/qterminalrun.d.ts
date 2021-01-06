@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { TerminalRun } from '../ddl/TerminalRun';
+import { TerminalRun } from '../ddl/terminalrun';
 /**
  * SELECT - All fields and relations (optional).
  */

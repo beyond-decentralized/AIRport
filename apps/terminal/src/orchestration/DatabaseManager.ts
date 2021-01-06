@@ -203,7 +203,7 @@ export class DatabaseManager
 		const server              = await container(this).get(TRANS_SERVER);
 		(server as any).tempActor = new Actor();
 
-		await this.installAirportSchema(false, true, context);
+		await this.installAirportSchema(true, false, context);
 
 		const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
 		await schemaInitializer.stage(schemas, context);

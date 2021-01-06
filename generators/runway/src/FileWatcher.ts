@@ -2,17 +2,13 @@ import { AIR_DB }                       from '@airport/air-control';
 import { SEQUENCE_GENERATOR }           from '@airport/check-in';
 import { DI }                           from '@airport/di';
 import {
-	SQLDialect,
-	SqlDriver
-}                                       from '@airport/fuel-hydrant-system';
-import {
 	DbSchema,
 	EntityId,
 	JsonOperation,
 	JsonSchema,
 	STORE_DRIVER,
 }                                       from '@airport/ground-control';
-import { SequenceGenerator }            from '@airport/sequence';
+import { SCHEMA_BUILDER }               from '@airport/landing';
 import { injectTransactionalConnector } from '@airport/tarmaq';
 import {
 	DATABASE_MANAGER,
@@ -20,9 +16,7 @@ import {
 }                                       from '@airport/terminal';
 import {
 	AirportDatabase,
-	injectAirportDatabase,
-	IOperationContext,
-	ITransaction
+	injectAirportDatabase
 }                                       from '@airport/tower';
 import * as fs                          from 'fs';
 import * as ts                          from 'typescript';
@@ -35,17 +29,20 @@ import { DaoBuilder }                   from './ddl/builder/DaoBuilder';
 import { DuoBuilder }                   from './ddl/builder/DuoBuilder';
 import { EntityInterfaceFileBuilder }   from './ddl/builder/entity/EntityInterfaceFileBuilder';
 import { QEntityFileBuilder }           from './ddl/builder/entity/QEntityFileBuilder';
-import { EntityMappingBuilder }         from './ddl/builder/EntityMappingBuilder';
-import { GeneratedFileListingBuilder }  from './ddl/builder/GeneratedFileListingBuilder';
-import { GeneratedSummaryBuilder }      from './ddl/builder/GeneratedSummaryBuilder';
-import { PathBuilder }                  from './ddl/builder/PathBuilder';
-import { QSchemaBuilder }               from './ddl/builder/QSchemaBuilder';
-import { JsonSchemaBuilder }            from './ddl/builder/schema/JsonSchemaBuilder';
-import { MappedSuperclassBuilder }      from './ddl/builder/superclass/MappedSuperclassBuilder';
-import { Configuration }                from './ddl/options/Options';
-import { EntityCandidate }              from './ddl/parser/EntityCandidate';
-import { QQueryPreparationField }       from './execute/QueryPreparationField';
-import { generateDefinitions }          from './FileProcessor';
+import { EntityMappingBuilder }        from './ddl/builder/EntityMappingBuilder';
+import { GeneratedFileListingBuilder } from './ddl/builder/GeneratedFileListingBuilder';
+import { GeneratedSummaryBuilder }     from './ddl/builder/GeneratedSummaryBuilder';
+import { PathBuilder }                 from './ddl/builder/PathBuilder';
+import { QSchemaBuilder }              from './ddl/builder/QSchemaBuilder';
+import { JsonSchemaBuilder }           from './ddl/builder/schema/JsonSchemaBuilder';
+import { MappedSuperclassBuilder }     from './ddl/builder/superclass/MappedSuperclassBuilder';
+import { Configuration }               from './ddl/options/Options';
+import { EntityCandidate }             from './ddl/parser/EntityCandidate';
+import { QQueryPreparationField }      from './execute/QueryPreparationField';
+import { generateDefinitions }         from './FileProcessor';
+import { NoOpSchemaBuilder }           from './stubs/NoOpSchemaBuilder';
+import { NoOpSequenceGenerator }       from './stubs/NoOpSequenceGenerator';
+import { NoOpSqlDriver }               from './stubs/NoOpSqlDriver';
 
 (AirportDatabase as any).bogus = 'loaded for schema generation';
 
@@ -252,6 +249,7 @@ export async function watchFiles(
 		schema: JsonSchema
 	) {
 		DI.set(SEQUENCE_GENERATOR, NoOpSequenceGenerator);
+		DI.set(SCHEMA_BUILDER, NoOpSchemaBuilder);
 		DI.set(STORE_DRIVER, NoOpSqlDriver);
 		injectAirportDatabase();
 		injectTransactionalServer();
@@ -260,99 +258,6 @@ export async function watchFiles(
 		await DI.db().get(AIR_DB);
 		const dbManager = await DI.db().get(DATABASE_MANAGER);
 		await dbManager.initNoDb(schema.domain, {}, ...[schema]);
-	}
-
-	class NoOpSequenceGenerator
-		extends SequenceGenerator {
-
-		protected nativeGenerate(): Promise<number> {
-			throw new Error('Method not implemented.');
-		}
-
-	}
-
-	class NoOpSqlDriver
-		extends SqlDriver {
-		composeTableName(
-			schemaName: string,
-			tableName: string,
-			context: IOperationContext<any, any>
-		): string {
-			return '';
-		}
-
-		doesTableExist(
-			schemaName: string,
-			tableName: string,
-			context: IOperationContext<any, any>
-		): Promise<boolean> {
-			return Promise.resolve(false);
-		}
-
-		dropTable(
-			schemaName: string,
-			tableName: string,
-			context: IOperationContext<any, any>
-		): Promise<boolean> {
-			return Promise.resolve(false);
-		}
-
-		findNative(
-			sqlQuery: string,
-			parameters: any[],
-			context: IOperationContext<any, any>
-		): Promise<any[]> {
-			return Promise.resolve([]);
-		}
-
-		initialize(
-			dbName: string,
-			context: IOperationContext<any, any>
-		): Promise<any> {
-			return Promise.resolve(undefined);
-		}
-
-		isServer(context: IOperationContext<any, any>): boolean {
-			return false;
-		}
-
-		isValueValid(
-			value: any,
-			sqlDataType,
-			context: IOperationContext<any, any>
-		): boolean {
-			return false;
-		}
-
-		query(
-			queryType,
-			query: string,
-			params: any,
-			context: IOperationContext<any, any>,
-			saveTransaction?: boolean
-		): Promise<any> {
-			return Promise.resolve(undefined);
-		}
-
-		transact(
-			callback: { (transaction: ITransaction): Promise<void> },
-			context: IOperationContext<any, any>
-		): Promise<void> {
-			return Promise.resolve(undefined);
-		}
-
-		protected executeNative(
-			sql: string,
-			parameters: any[],
-			context: IOperationContext<any, any>
-		): Promise<number> {
-			return Promise.resolve(0);
-		}
-
-		protected getDialect(context: IOperationContext<any, any>): SQLDialect {
-			return undefined;
-		}
-
 	}
 
 	function emitFile(

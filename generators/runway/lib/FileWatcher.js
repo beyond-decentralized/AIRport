@@ -1,9 +1,8 @@
 import { AIR_DB } from '@airport/air-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { DI } from '@airport/di';
-import { SqlDriver } from '@airport/fuel-hydrant-system';
 import { STORE_DRIVER, } from '@airport/ground-control';
-import { SequenceGenerator } from '@airport/sequence';
+import { SCHEMA_BUILDER } from '@airport/landing';
 import { injectTransactionalConnector } from '@airport/tarmaq';
 import { DATABASE_MANAGER, injectTransactionalServer } from '@airport/terminal';
 import { AirportDatabase, injectAirportDatabase } from '@airport/tower';
@@ -24,6 +23,9 @@ import { JsonSchemaBuilder } from './ddl/builder/schema/JsonSchemaBuilder';
 import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
 import { QQueryPreparationField } from './execute/QueryPreparationField';
 import { generateDefinitions } from './FileProcessor';
+import { NoOpSchemaBuilder } from './stubs/NoOpSchemaBuilder';
+import { NoOpSequenceGenerator } from './stubs/NoOpSequenceGenerator';
+import { NoOpSqlDriver } from './stubs/NoOpSqlDriver';
 AirportDatabase.bogus = 'loaded for schema generation';
 /**
  * Created by Papa on 3/30/2016.
@@ -154,6 +156,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
     }
     async function initTempDatabase(schema) {
         DI.set(SEQUENCE_GENERATOR, NoOpSequenceGenerator);
+        DI.set(SCHEMA_BUILDER, NoOpSchemaBuilder);
         DI.set(STORE_DRIVER, NoOpSqlDriver);
         injectAirportDatabase();
         injectTransactionalServer();
@@ -161,46 +164,6 @@ export async function watchFiles(configuration, options, rootFileNames) {
         await DI.db().get(AIR_DB);
         const dbManager = await DI.db().get(DATABASE_MANAGER);
         await dbManager.initNoDb(schema.domain, {}, ...[schema]);
-    }
-    class NoOpSequenceGenerator extends SequenceGenerator {
-        nativeGenerate() {
-            throw new Error('Method not implemented.');
-        }
-    }
-    class NoOpSqlDriver extends SqlDriver {
-        composeTableName(schemaName, tableName, context) {
-            return '';
-        }
-        doesTableExist(schemaName, tableName, context) {
-            return Promise.resolve(false);
-        }
-        dropTable(schemaName, tableName, context) {
-            return Promise.resolve(false);
-        }
-        findNative(sqlQuery, parameters, context) {
-            return Promise.resolve([]);
-        }
-        initialize(dbName, context) {
-            return Promise.resolve(undefined);
-        }
-        isServer(context) {
-            return false;
-        }
-        isValueValid(value, sqlDataType, context) {
-            return false;
-        }
-        query(queryType, query, params, context, saveTransaction) {
-            return Promise.resolve(undefined);
-        }
-        transact(callback, context) {
-            return Promise.resolve(undefined);
-        }
-        executeNative(sql, parameters, context) {
-            return Promise.resolve(0);
-        }
-        getDialect(context) {
-            return undefined;
-        }
     }
     function emitFile(fileName) {
         let output = services.getEmitOutput(fileName);

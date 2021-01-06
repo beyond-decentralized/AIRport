@@ -2,10 +2,9 @@
  * Created by papa on 1/5/21.
  */
 
-export class QQueryPreparationField
-	extends Proxy<any> {
+export class QQueryPreparationField {
 	constructor() {
-		super({}, {
+		return new Proxy(this, {
 			apply: function(
 				target,
 				thisArg,
