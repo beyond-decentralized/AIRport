@@ -1,33 +1,16 @@
 import {
-	IQEntityInternal,
-	IEntityIdProperties,
 	IEntityCascadeGraph,
+	IEntityIdProperties,
+	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
-	IQBooleanField,
-	IQDateField,
-	IQNumberField,
-	IQOneToManyRelation,
-	IQStringField,
-	IQUntypedField,
 	IQEntity,
+	IQNumberField,
 	IQRelation,
-	RawDelete,
-	RawUpdate,
-} from '@airport/air-control';
-import {
-	Sequence,
-} from '../ddl/Sequence';
-
+}                    from '@airport/air-control';
+import { Sequence, } from '../ddl/Sequence';
 
 declare function require(moduleName: string): any;
-
 
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
@@ -37,14 +20,15 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface SequenceESelect
-    extends IEntitySelectProperties, SequenceEOptionalId {
+	extends IEntitySelectProperties,
+	        SequenceEOptionalId {
 	// Non-Id Properties
 	incrementBy?: number | IQNumberField;
 	currentValue?: number | IQNumberField;
 
-	// Id Relations - full property interfaces
+	// Id Relations - faereull property interfaces
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 
 }
 
@@ -52,7 +36,7 @@ export interface SequenceESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface SequenceEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 	schemaIndex: number | IQNumberField;
 	tableIndex: number | IQNumberField;
@@ -92,7 +76,8 @@ export interface SequenceEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SequenceGraph
-	extends SequenceEOptionalId, IEntityCascadeGraph {
+	extends SequenceEOptionalId,
+	        IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
@@ -118,18 +103,17 @@ export interface SequenceEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SequenceECreateProperties
-extends Partial<SequenceEId>, SequenceEUpdateProperties {
+	extends Partial<SequenceEId>,
+	        SequenceEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface SequenceECreateColumns
-extends SequenceEId, SequenceEUpdateColumns {
+	extends SequenceEId,
+	        SequenceEUpdateColumns {
 }
-
-
-
 
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
@@ -138,8 +122,8 @@ extends SequenceEId, SequenceEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSequence extends IQEntity<Sequence>
-{
+export interface QSequence
+	extends IQEntity<Sequence> {
 	// Id Fields
 	schemaIndex: IQNumberField;
 	tableIndex: IQNumberField;
@@ -155,11 +139,9 @@ export interface QSequence extends IQEntity<Sequence>
 
 }
 
-
 // Entity Id Interface
-export interface QSequenceQId
-{
-	
+export interface QSequenceQId {
+
 	// Id Fields
 	schemaIndex: IQNumberField;
 	tableIndex: IQNumberField;
@@ -167,11 +149,11 @@ export interface QSequenceQId
 
 	// Id Relations
 
-
 }
 
 // Entity Relation Interface
 export interface QSequenceQRelation
-	extends IQRelation<Sequence, QSequence>, QSequenceQId {
+	extends IQRelation<Sequence, QSequence>,
+	        QSequenceQId {
 }
 

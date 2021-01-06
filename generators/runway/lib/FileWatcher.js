@@ -1,20 +1,29 @@
-import { AirportDatabase } from '@airport/tower';
+import { AIR_DB } from '@airport/air-control';
+import { SEQUENCE_GENERATOR } from '@airport/check-in';
+import { DI } from '@airport/di';
+import { SqlDriver } from '@airport/fuel-hydrant-system';
+import { STORE_DRIVER, } from '@airport/ground-control';
+import { SequenceGenerator } from '@airport/sequence';
+import { injectTransactionalConnector } from '@airport/tarmaq';
+import { DATABASE_MANAGER, injectTransactionalServer } from '@airport/terminal';
+import { AirportDatabase, injectAirportDatabase } from '@airport/tower';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import tsc from 'typescript';
-import { entityOperationMap } from './dao/parser/OperationGenerator';
+import { entityOperationMap, entityOperationPaths } from './dao/parser/OperationGenerator';
 import { DaoBuilder } from './ddl/builder/DaoBuilder';
 import { DuoBuilder } from './ddl/builder/DuoBuilder';
 import { EntityInterfaceFileBuilder } from './ddl/builder/entity/EntityInterfaceFileBuilder';
 import { QEntityFileBuilder } from './ddl/builder/entity/QEntityFileBuilder';
+import { EntityMappingBuilder } from './ddl/builder/EntityMappingBuilder';
 import { GeneratedFileListingBuilder } from './ddl/builder/GeneratedFileListingBuilder';
 import { GeneratedSummaryBuilder } from './ddl/builder/GeneratedSummaryBuilder';
 import { PathBuilder } from './ddl/builder/PathBuilder';
 import { QSchemaBuilder } from './ddl/builder/QSchemaBuilder';
 import { JsonSchemaBuilder } from './ddl/builder/schema/JsonSchemaBuilder';
 import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
+import { QQueryPreparationField } from './execute/QueryPreparationField';
 import { generateDefinitions } from './FileProcessor';
-import { EntityMappingBuilder } from './ddl/builder/EntityMappingBuilder';
 AirportDatabase.bogus = 'loaded for schema generation';
 /**
  * Created by Papa on 3/30/2016.
@@ -77,11 +86,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
             schemaString = fs.readFileSync(schemaPath, 'utf8');
         }
         const schemaBuilder = new JsonSchemaBuilder(configuration, entityMapByName, schemaString);
-        const [schemaJsonString, indexedSchema] = schemaBuilder.build(configuration.airport.domain, schemaMapByProjectName, entityOperationMap);
-        const schemaSourceString = `export const SCHEMA = `
-            + schemaJsonString + ';';
-        fs.writeFileSync(schemaPath, schemaJsonString);
-        fs.writeFileSync(schemaSourcePath, schemaSourceString);
+        const [jsonSchema, indexedSchema] = schemaBuilder.build(configuration.airport.domain, schemaMapByProjectName, entityOperationMap);
         const entityFileReference = {};
         const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder);
         const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
@@ -127,6 +132,75 @@ export async function watchFiles(configuration, options, rootFileNames) {
         const mappedSuperclassBuilder = new MappedSuperclassBuilder(configuration, entityMapByName);
         const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
         fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
+        addOperations(jsonSchema, schemaPath, schemaSourcePath).then();
+    }
+    async function addOperations(jsonSchema, schemaPath, schemaSourcePath) {
+        await initTempDatabase(jsonSchema);
+        for (const entityName in entityOperationMap) {
+            const operations = entityOperationMap[entityName];
+            const path = entityOperationPaths[entityName];
+            const objects = await import(path);
+            const dao = new objects[entityName];
+            for (const operationName in operations) {
+                dao[dao](...new QQueryPreparationField());
+            }
+            // TODO: execute all DAO @PreparedQuery methods and generate the queries
+        }
+        const schemaJsonString = JSON.stringify(jsonSchema, null, '\t');
+        const schemaSourceString = `export const SCHEMA = `
+            + schemaJsonString + ';';
+        fs.writeFileSync(schemaPath, schemaJsonString);
+        fs.writeFileSync(schemaSourcePath, schemaSourceString);
+    }
+    async function initTempDatabase(schema) {
+        DI.set(SEQUENCE_GENERATOR, NoOpSequenceGenerator);
+        DI.set(STORE_DRIVER, NoOpSqlDriver);
+        injectAirportDatabase();
+        injectTransactionalServer();
+        injectTransactionalConnector();
+        await DI.db().get(AIR_DB);
+        const dbManager = await DI.db().get(DATABASE_MANAGER);
+        await dbManager.initNoDb(schema.domain, {}, ...[schema]);
+    }
+    class NoOpSequenceGenerator extends SequenceGenerator {
+        nativeGenerate() {
+            throw new Error('Method not implemented.');
+        }
+    }
+    class NoOpSqlDriver extends SqlDriver {
+        composeTableName(schemaName, tableName, context) {
+            return '';
+        }
+        doesTableExist(schemaName, tableName, context) {
+            return Promise.resolve(false);
+        }
+        dropTable(schemaName, tableName, context) {
+            return Promise.resolve(false);
+        }
+        findNative(sqlQuery, parameters, context) {
+            return Promise.resolve([]);
+        }
+        initialize(dbName, context) {
+            return Promise.resolve(undefined);
+        }
+        isServer(context) {
+            return false;
+        }
+        isValueValid(value, sqlDataType, context) {
+            return false;
+        }
+        query(queryType, query, params, context, saveTransaction) {
+            return Promise.resolve(undefined);
+        }
+        transact(callback, context) {
+            return Promise.resolve(undefined);
+        }
+        executeNative(sql, parameters, context) {
+            return Promise.resolve(0);
+        }
+        getDialect(context) {
+            return undefined;
+        }
     }
     function emitFile(fileName) {
         let output = services.getEmitOutput(fileName);

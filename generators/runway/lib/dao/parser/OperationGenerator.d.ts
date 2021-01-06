@@ -5,5 +5,8 @@ export declare const entityOperationMap: {
         [operationName: string]: JsonOperation;
     };
 };
+export declare const entityOperationPaths: {
+    [entityName: string]: string;
+};
 export declare function visitDaoFile(node: ts.Node, path: string): void;
 //# sourceMappingURL=OperationGenerator.d.ts.map

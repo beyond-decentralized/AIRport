@@ -1,6 +1,7 @@
 import { OperationType } from '@airport/ground-control';
 import tsc from 'typescript';
 export const entityOperationMap = {};
+export const entityOperationPaths = {};
 // let currentFileImports
 const daoFileMap = {};
 const daoMap = {};
@@ -38,6 +39,7 @@ export function visitDaoFile(node, path) {
     daoMap[daoName] = true;
     const entityName = daoName.substr(0, daoName.length - 3);
     entityOperationMap[entityName] = serializeClass(symbol, daoName, entityName);
+    entityOperationPaths[entityName] = path;
 }
 /** Serialize a class symbol information */
 function serializeClass(symbol, daoName, entityName) {
@@ -47,68 +49,81 @@ function serializeClass(symbol, daoName, entityName) {
             return;
         }
         switch (member.valueDeclaration.kind) {
+            case tsc.SyntaxKind.MethodDeclaration:
+                console.log(`Method: ${memberName}`);
+                serializeMethod(symbol, daoName, entityName, memberName, member, daoOperations);
+                break;
             case tsc.SyntaxKind.PropertyDeclaration:
                 console.log(`Property: ${memberName}`);
+                serializeProperty(symbol, daoName, entityName, memberName, member, daoOperations);
                 break;
             default:
-                return;
+                break;
         }
-        const expression = member.valueDeclaration.initializer;
-        if (expression.kind !== tsc.SyntaxKind.PropertyAccessExpression) {
+    });
+    return daoOperations;
+}
+function serializeMethod(symbol, daoName, entityName, memberName, member, daoOperations) {
+    member.valueDeclaration.decorators.forEach(decorator => {
+        // decorator.expression.kind = 196 CallExpression
+        // decorator.expression.expression.kind = 75 Identifier
+        if (decorator.expression.expression.escapedText !== 'PreparedQuery') {
             return;
         }
-        if (expression.expression.kind !== tsc.SyntaxKind.ThisKeyword) {
+        const preparedQuery = {
+            type: OperationType.QUERY,
+            query: undefined
+        };
+        daoOperations[memberName] = preparedQuery;
+    });
+}
+function serializeProperty(symbol, daoName, entityName, memberName, member, daoOperations) {
+    const expression = member.valueDeclaration.initializer;
+    if (expression.kind !== tsc.SyntaxKind.PropertyAccessExpression) {
+        return;
+    }
+    if (expression.expression.kind !== tsc.SyntaxKind.ThisKeyword) {
+        return;
+    }
+    member.valueDeclaration.decorators.forEach(decorator => {
+        // decorator.expression.kind = 196 CallExpression
+        // decorator.expression.expression.kind = 75 Identifier
+        if (decorator.expression.expression.escapedText !== 'Persist') {
             return;
         }
-        member.valueDeclaration.decorators.forEach(decorator => {
-            // decorator.expression.kind = 196 CallExpression
-            // decorator.expression.expression.kind = 75 Identifier
-            if (decorator.expression.expression.escapedText !== 'Persist') {
-                return;
-            }
-            const typeArguments = decorator.expression.typeArguments;
-            if (!typeArguments || typeArguments[0].typeName.escapedText !== `${entityName}Graph`) {
-                throw new Error(`@Persist decorator in "${daoName}" must be passed a generic parameter "${entityName}Graph":
+        const typeArguments = decorator.expression.typeArguments;
+        if (!typeArguments || typeArguments[0].typeName.escapedText !== `${entityName}Graph`) {
+            throw new Error(`@Persist decorator in "${daoName}" must be passed a generic parameter "${entityName}Graph":
 				@Persist<${entityName}Graph>({
 					...
 				})
 				${memberName} = ...
 				`);
-            }
-            let type;
-            switch (expression.name.escapedText) {
-                case 'create':
-                    type = OperationType.CREATE;
-                    break;
-                case 'delete':
-                    type = OperationType.DELETE;
-                    break;
-                case 'save':
-                    type = OperationType.SAVE;
-                    break;
-                case 'update':
-                    type = OperationType.UPDATE;
-                    break;
-                default:
-                    throw new Error(`Unsupported operation in "${daoName}": "this.${expression.name.escapedText}".
+        }
+        let type;
+        switch (expression.name.escapedText) {
+            case 'delete':
+                type = OperationType.DELETE;
+                break;
+            case 'save':
+                type = OperationType.SAVE;
+                break;
+            default:
+                throw new Error(`Unsupported operation in "${daoName}": "this.${expression.name.escapedText}".
 							Expecting one of the following:
 							
-							${memberName} = this.create
 							${memberName} = this.delete
 							${memberName} = this.save
-							${memberName} = this.update
 							`);
-            }
-            // decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
-            const rules = decorator.expression.arguments[0];
-            const operationRule = {
-                type
-            };
-            serializeRules(rules, operationRule);
-            daoOperations[memberName] = operationRule;
-        });
+        }
+        // decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
+        const rules = decorator.expression.arguments[0];
+        const operationRule = {
+            type
+        };
+        serializeRules(rules, operationRule);
+        daoOperations[memberName] = operationRule;
     });
-    return daoOperations;
 }
 function serializeRules(objectLiteralExpression, parentRule) {
     parentRule.subRules = {};

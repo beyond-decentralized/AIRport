@@ -14,20 +14,20 @@ import {
 	SchemaIndex,
 	SchemaReferenceByIndex,
 	TableIndex
-}                        from '@airport/ground-control'
-import {Configuration}   from '../../options/Options'
-import {EntityCandidate} from '../../parser/EntityCandidate'
-import {SIndexedEntity}  from './SEntity'
-import {SRelation}       from './SProperty'
+}                          from '@airport/ground-control';
+import { Configuration }   from '../../options/Options';
+import { EntityCandidate } from '../../parser/EntityCandidate';
+import { SIndexedEntity }  from './SEntity';
+import { SRelation }       from './SProperty';
 import {
 	SIndexedSchema,
 	SSchemaReference
-}                        from './SSchema'
-import {SSchemaBuilder}  from './SSchemaBuilder'
+}                          from './SSchema';
+import { SSchemaBuilder }  from './SSchemaBuilder';
 
 export class JsonSchemaBuilder {
 
-	existingSchema: JsonSchema
+	existingSchema: JsonSchema;
 
 	// schemaVarName = 'SCHEMA'
 
@@ -55,7 +55,7 @@ export class JsonSchemaBuilder {
 			// existingSchemaString = existingSchemaString.substring(indexOfAssignment + 9,
 			// existingSchemaString.length - 1)
 
-			this.existingSchema = JSON.parse(existingSchemaString)
+			this.existingSchema = JSON.parse(existingSchemaString);
 		}
 	}
 
@@ -63,26 +63,24 @@ export class JsonSchemaBuilder {
 		domain: string,
 		schemaMapByProjectName: { [projectName: string]: DbSchema },
 		entityOperationMap: { [entityName: string]: { [operationName: string]: JsonOperation } }
-	): [string, SIndexedSchema] {
-		const sSchemaBuilder = new SSchemaBuilder(this.config, this.entityMapByName)
+	): [JsonSchema, SIndexedSchema] {
+		const sSchemaBuilder = new SSchemaBuilder(this.config, this.entityMapByName);
 
-		const sIndexedSchema = sSchemaBuilder.build(schemaMapByProjectName)
+		const sIndexedSchema = sSchemaBuilder.build(schemaMapByProjectName);
 
-		const jsonSchema = this.convertSIndexedSchemaToJsonSchema(domain, sIndexedSchema)
+		const jsonSchema = this.convertSIndexedSchemaToJsonSchema(domain, sIndexedSchema);
 
 		jsonSchema.versions[jsonSchema.versions.length - 1].entities.forEach(jsonEntity => {
-			let entityOperations = entityOperationMap[jsonEntity.name]
+			let entityOperations = entityOperationMap[jsonEntity.name];
 			if (!entityOperations) {
-				return
+				return;
 			}
-			jsonEntity.operations = entityOperations
-		})
+			jsonEntity.operations = entityOperations;
+		});
 
 		// TODO: reset table and column and relation indexes based on existing schema
 
-		const schemaString = JSON.stringify(jsonSchema, null, '\t')
-
-		return [schemaString, sIndexedSchema]
+		return [jsonSchema, sIndexedSchema];
 	}
 
 	private convertSIndexedSchemaToJsonSchema(
@@ -91,7 +89,7 @@ export class JsonSchemaBuilder {
 	): JsonSchema {
 		const jsonEntities: JsonSchemaEntity[] = sIndexedSchema.entities.map(
 			sIndexedEntity => {
-				const sEntity                     = sIndexedEntity.entity
+				const sEntity                     = sIndexedEntity.entity;
 				const columns: JsonSchemaColumn[] = sIndexedEntity.columns.map(
 					sColumn => ({
 						allocationSize: sColumn.allocationSize,
@@ -107,15 +105,15 @@ export class JsonSchemaBuilder {
 							})),
 						sinceVersion: 1,
 						type: getSqlDataType(sColumn.type),
-					}))
+					}));
 				columns.sort((
 					a,
 					b
 					) =>
 						a.index < b.index ? -1 : 1
-				)
+				);
 
-				const [properties, relations] = this.getPropertiesAndRelations(sIndexedSchema, sIndexedEntity, columns)
+				const [properties, relations] = this.getPropertiesAndRelations(sIndexedSchema, sIndexedEntity, columns);
 
 				return {
 					columns,
@@ -128,8 +126,8 @@ export class JsonSchemaBuilder {
 					relations: relations,
 					sinceVersion: 1,
 					tableConfig: sEntity.table,
-				}
-			})
+				};
+			});
 
 		// FIXME: add schema versioning support
 		return {
@@ -156,7 +154,7 @@ export class JsonSchemaBuilder {
 				})),
 				versionString: '1.0.0'
 			}]
-		}
+		};
 	}
 
 	private getIdColumnReferences(
@@ -165,7 +163,7 @@ export class JsonSchemaBuilder {
 		return sIndexedEntity.idColumns.map(
 			sColumn => ({
 				index: sColumn.index
-			}))
+			}));
 	}
 
 	private getPropertiesAndRelations(
@@ -173,42 +171,42 @@ export class JsonSchemaBuilder {
 		sIndexedEntity: SIndexedEntity,
 		columns: JsonSchemaColumn[],
 	): [JsonSchemaProperty[], JsonSchemaRelation[]] {
-		const relations  = []
+		const relations  = [];
 		const properties = sIndexedEntity.entity.properties.map((
 			sProperty,
 			index
 		) => {
-			let columnRef
-			let relationRef
+			let columnRef;
+			let relationRef;
 
-			const sRelation = sProperty.relation
+			const sRelation = sProperty.relation;
 			if (!sRelation) {
-				const sColumn = sProperty.columns[0]
+				const sColumn = sProperty.columns[0];
 				columnRef     = {
 					index: sColumn.index
-				}
+				};
 
 			} else {
-				let relationTableSchemaIndex: number
-				let relationSchemaIndex: SchemaIndex
-				let relationTableIndex: TableIndex
-				let relatedIndexedEntity: SIndexedEntity | DbEntity
+				let relationTableSchemaIndex: number;
+				let relationSchemaIndex: SchemaIndex;
+				let relationTableIndex: TableIndex;
+				let relatedIndexedEntity: SIndexedEntity | DbEntity;
 				if (sRelation.referencedSchemaIndex || sRelation.referencedSchemaIndex === 0) {
-					relationTableSchemaIndex = sRelation.referencedSchemaIndex
-					const relatedDbSchema    = sIndexedSchema.schema.referencedSchemas[sRelation.referencedSchemaIndex]
-					relationSchemaIndex      = relatedDbSchema.index
+					relationTableSchemaIndex = sRelation.referencedSchemaIndex;
+					const relatedDbSchema    = sIndexedSchema.schema.referencedSchemas[sRelation.referencedSchemaIndex];
+					relationSchemaIndex      = relatedDbSchema.index;
 					relatedIndexedEntity     = relatedDbSchema.dbSchema
-						.currentVersion.entityMapByName[sRelation.entityName]
-					relationTableIndex       = relatedIndexedEntity.index
+						.currentVersion.entityMapByName[sRelation.entityName];
+					relationTableIndex       = relatedIndexedEntity.index;
 				} else {
-					relatedIndexedEntity = sIndexedSchema.entityMapByName[sRelation.entityName]
-					relationSchemaIndex  = null
-					relationTableIndex   = relatedIndexedEntity.entity.tableIndex
+					relatedIndexedEntity = sIndexedSchema.entityMapByName[sRelation.entityName];
+					relationSchemaIndex  = null;
+					relationTableIndex   = relatedIndexedEntity.entity.tableIndex;
 				}
 
 				this.buildColumnRelations(
 					sIndexedEntity, sRelation, relatedIndexedEntity,
-					relationSchemaIndex, relationTableIndex, columns)
+					relationSchemaIndex, relationTableIndex, columns);
 
 				const relation: JsonSchemaRelation = {
 					// addToJoinFunction: sRelation.addToJoinFunction,
@@ -226,11 +224,11 @@ export class JsonSchemaBuilder {
 					relationTableIndex,
 					relationTableSchemaIndex,
 					sinceVersion: 1
-				}
-				relations[sRelation.index]         = relation
+				};
+				relations[sRelation.index]         = relation;
 				relationRef                        = {
 					index: sRelation.index
-				}
+				};
 			}
 
 			return {
@@ -240,10 +238,10 @@ export class JsonSchemaBuilder {
 				name: sProperty.name,
 				relationRef,
 				sinceVersion: 1
-			}
-		})
+			};
+		});
 
-		return [properties, relations]
+		return [properties, relations];
 	}
 
 	private buildColumnRelations(
@@ -256,33 +254,33 @@ export class JsonSchemaBuilder {
 	): void {
 		switch (sRelation.relationType) {
 			case EntityRelationType.MANY_TO_ONE:
-				break
+				break;
 			case EntityRelationType.ONE_TO_MANY:
 				// Currently only need to build manyRelationColumnRefs for ManyToOne relations.
-				return
+				return;
 			default:
-				throw new Error(`Unknown relation type: ${sRelation.relationType}.`)
+				throw new Error(`Unknown relation type: ${sRelation.relationType}.`);
 		}
 		sRelation.sRelationColumns.map(
 			sRelationColumn => {
 				if (!sRelationColumn.manyToOne) {
-					return
+					return;
 				}
-				let ownColumnIndex
+				let ownColumnIndex;
 				// if (sRelationColumn.ownColumnIdIndex) {
 				// 	ownColumnIndex = sIndexedEntity.idColumns[sRelationColumn.ownColumnIdIndex].index
 				// } else {
-				ownColumnIndex = sIndexedEntity.columnMap[sRelationColumn.ownColumnReference].index
+				ownColumnIndex = sIndexedEntity.columnMap[sRelationColumn.ownColumnReference].index;
 				// }
-				let relationColumnIndex
+				let relationColumnIndex;
 				// if (sRelationColumn.relationColumnIdIndex
 				// 	|| sRelationColumn.relationColumnIdIndex == 0) {
 				// 	relationColumnIndex =
 				// relatedIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex].index } else {
-				relationColumnIndex = relatedIndexedEntity.columnMap[sRelationColumn.relationColumnReference].index
+				relationColumnIndex = relatedIndexedEntity.columnMap[sRelationColumn.relationColumnReference].index;
 				// }
 
-				const column = columns[ownColumnIndex]
+				const column = columns[ownColumnIndex];
 
 				column.manyRelationColumnRefs.push({
 					manyRelationIndex: sRelation.index,
@@ -291,20 +289,20 @@ export class JsonSchemaBuilder {
 					oneRelationIndex: sRelationColumn.oneSideRelationIndex,
 					oneColumnIndex: relationColumnIndex,
 					sinceVersion: 1
-				})
+				});
 
-			})
+			});
 	}
 
 	private prepOneToManyElems(
 		elems: DatabaseOneToManyElements
 	): DatabaseOneToManyElements {
 		if (!elems) {
-			return elems
+			return elems;
 		}
 		return {
 			mappedBy: elems.mappedBy
-		}
+		};
 	}
 
 }

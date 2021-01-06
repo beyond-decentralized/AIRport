@@ -4,22 +4,29 @@
  * objects).  That in turn defines exactly which objects are
  * created/updated/deleted by an operation.
  */
+import { JsonQuery } from '../query/facade/Query';
 import { DbEntity } from './Entity';
 export declare type Operation_Id = number;
 export declare type Operation_Name = string;
 export declare type Operation_Rule = string;
 export declare type Operation_Type = number;
 export declare enum OperationType {
-    CREATE = 0,
-    DELETE = 1,
-    SAVE = 2,
-    UPDATE = 3
+    DELETE = 0,
+    QUERY = 1,
+    SAVE = 2
 }
 export interface JsonOperations {
     [operationName: string]: JsonOperation;
 }
-export interface JsonOperation extends JsonOperationRule {
+export interface JsonOperation {
     type: OperationType;
+}
+export interface JsonPreparedQuery {
+    type: OperationType.QUERY;
+    query: JsonQuery;
+}
+export interface JsonPersistRule extends JsonOperation, JsonOperationRule {
+    type: OperationType.DELETE | OperationType.SAVE;
 }
 export interface JsonOperationRule {
     anyValue?: boolean;

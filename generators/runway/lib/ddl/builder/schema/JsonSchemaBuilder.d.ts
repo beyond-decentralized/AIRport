@@ -15,7 +15,7 @@ export declare class JsonSchemaBuilder {
         [entityName: string]: {
             [operationName: string]: JsonOperation;
         };
-    }): [string, SIndexedSchema];
+    }): [JsonSchema, SIndexedSchema];
     private convertSIndexedSchemaToJsonSchema;
     private getIdColumnReferences;
     private getPropertiesAndRelations;

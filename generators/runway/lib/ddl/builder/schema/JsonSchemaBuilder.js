@@ -38,8 +38,7 @@ export class JsonSchemaBuilder {
             jsonEntity.operations = entityOperations;
         });
         // TODO: reset table and column and relation indexes based on existing schema
-        const schemaString = JSON.stringify(jsonSchema, null, '\t');
-        return [schemaString, sIndexedSchema];
+        return [jsonSchema, sIndexedSchema];
     }
     convertSIndexedSchemaToJsonSchema(domain, sIndexedSchema) {
         const jsonEntities = sIndexedSchema.entities.map(sIndexedEntity => {

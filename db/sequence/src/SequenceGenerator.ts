@@ -1,17 +1,17 @@
 import {
 	ISequence,
 	SEQUENCE_DAO
-}                      from '@airport/airport-code'
+}                    from '@airport/airport-code';
 import {
 	ISequenceGenerator,
 	setSeqGen
-}                      from '@airport/check-in'
-import {container, DI} from '@airport/di'
+}                    from '@airport/check-in';
+import { container } from '@airport/di';
 import {
 	DbColumn,
 	DbEntity,
 	ensureChildArray
-}                      from '@airport/ground-control'
+}                    from '@airport/ground-control';
 
 /**
  * Assumptions: 7/4/2019
@@ -34,58 +34,58 @@ import {
 export abstract class SequenceGenerator
 	implements ISequenceGenerator {
 
-	private sequences: ISequence[][][]   = []
-	private sequenceBlocks: number[][][] = []
+	private sequences: ISequence[][][]   = [];
+	private sequenceBlocks: number[][][] = [];
 
-	private generatingSequenceNumbers = false
+	private generatingSequenceNumbers = false;
 
 	exists(
 		dbEntity: DbEntity
 	): boolean {
 		const generatedColumns = dbEntity.columns.filter(
-			dbColumn => dbColumn.isGenerated)
+			dbColumn => dbColumn.isGenerated);
 
 		if (!generatedColumns.length) {
-			return true
+			return true;
 		}
 
-		const schemaSequences = this.sequences[dbEntity.schemaVersion.schema.index]
+		const schemaSequences = this.sequences[dbEntity.schemaVersion.schema.index];
 
 		if (!schemaSequences) {
-			return false
+			return false;
 		}
 
-		const tableSequences = schemaSequences[dbEntity.index]
+		const tableSequences = schemaSequences[dbEntity.index];
 
 		if (!tableSequences) {
-			return false
+			return false;
 		}
 
 		return generatedColumns.every(
 			dbColumn =>
-				!!tableSequences[dbColumn.index])
+				!!tableSequences[dbColumn.index]);
 	}
 
 	async init(
 		sequences?: ISequence[]
 	): Promise<void> {
-		const sequenceDao = await container(this).get(SEQUENCE_DAO)
+		const sequenceDao = await container(this).get(SEQUENCE_DAO);
 		if (!sequences) {
-			sequences = await sequenceDao.findAll()
+			sequences = await sequenceDao.findAll();
 		}
-		this.addSequences(sequences)
+		this.addSequences(sequences);
 
-		await sequenceDao.incrementCurrentValues()
+		await sequenceDao.incrementCurrentValues();
 
-		setSeqGen(this)
+		setSeqGen(this);
 	}
 
 	async tempInit(
 		sequences?: ISequence[]
 	): Promise<void> {
-		this.addSequences(sequences)
+		this.addSequences(sequences);
 
-		setSeqGen(this)
+		setSeqGen(this);
 	}
 
 	async generateSequenceNumbers(
@@ -93,17 +93,19 @@ export abstract class SequenceGenerator
 		numSequencesNeeded: number[]
 	): Promise<number[][]> {
 		if (!dbColumns.length) {
-			return []
+			return [];
 		}
-		await this.waitForPreviousGeneration()
-		this.generatingSequenceNumbers = true
+		await this.waitForPreviousGeneration();
+		this.generatingSequenceNumbers = true;
 
 		try {
-			return await this.doGenerateSequenceNumbers(dbColumns, numSequencesNeeded)
+			return await this.doGenerateSequenceNumbers(dbColumns, numSequencesNeeded);
 		} finally {
-			this.generatingSequenceNumbers = false
+			this.generatingSequenceNumbers = false;
 		}
 	}
+
+	protected abstract nativeGenerate(): Promise<number>;
 
 	/**
 	 * Keeping return value as number[][] in case we ever revert back
@@ -115,61 +117,59 @@ export abstract class SequenceGenerator
 		dbColumns: DbColumn[],
 		numSequencesNeeded: number[]
 	): Promise<number[][]> {
-		const sequentialNumbers: number[][] = []
+		const sequentialNumbers: number[][] = [];
 
-		const sequenceDao = await container(this).get(SEQUENCE_DAO)
+		const sequenceDao = await container(this).get(SEQUENCE_DAO);
 
 		for (let i = 0; i < dbColumns.length; i++) {
-			const dbColumn = dbColumns[i]
+			const dbColumn = dbColumns[i];
 
-			let numColumnSequencesNeeded = numSequencesNeeded[i]
-			const columnNumbers          = ensureChildArray(sequentialNumbers, i)
+			let numColumnSequencesNeeded = numSequencesNeeded[i];
+			const columnNumbers          = ensureChildArray(sequentialNumbers, i);
 
-			const dbEntity = dbColumn.propertyColumns[0].property.entity
-			const schema   = dbEntity.schemaVersion.schema
+			const dbEntity = dbColumn.propertyColumns[0].property.entity;
+			const schema   = dbEntity.schemaVersion.schema;
 
 			let sequenceBlock = this.sequenceBlocks[schema.index]
-				[dbEntity.index][dbColumn.index]
+				[dbEntity.index][dbColumn.index];
 
 			const sequence = this.sequences[schema.index]
-				[dbEntity.index][dbColumn.index]
+				[dbEntity.index][dbColumn.index];
 
 			while (numColumnSequencesNeeded && sequenceBlock) {
-				columnNumbers.push(sequence.currentValue - sequenceBlock + 1)
-				numColumnSequencesNeeded--
-				sequenceBlock--
+				columnNumbers.push(sequence.currentValue - sequenceBlock + 1);
+				numColumnSequencesNeeded--;
+				sequenceBlock--;
 			}
 
 			if (numColumnSequencesNeeded) {
-				const numNewSequencesNeeded = sequence.incrementBy + numColumnSequencesNeeded
+				const numNewSequencesNeeded = sequence.incrementBy + numColumnSequencesNeeded;
 
-				const newSequence = {...sequence}
-				newSequence.currentValue += numNewSequencesNeeded
-				await sequenceDao.save(newSequence)
-				this.sequences[schema.index][dbEntity.index][dbColumn.index] = newSequence
+				const newSequence = { ...sequence };
+				newSequence.currentValue += numNewSequencesNeeded;
+				await sequenceDao.save(newSequence);
+				this.sequences[schema.index][dbEntity.index][dbColumn.index] = newSequence;
 
-				sequenceBlock = numNewSequencesNeeded
+				sequenceBlock = numNewSequencesNeeded;
 				while (numColumnSequencesNeeded) {
-					columnNumbers.push(sequence.currentValue - sequenceBlock + 1)
-					numColumnSequencesNeeded--
-					sequenceBlock--
+					columnNumbers.push(sequence.currentValue - sequenceBlock + 1);
+					numColumnSequencesNeeded--;
+					sequenceBlock--;
 				}
 
 				this.sequenceBlocks[schema.index]
-					[dbEntity.index][dbColumn.index] = sequenceBlock
+					[dbEntity.index][dbColumn.index] = sequenceBlock;
 			}
 		}
 
-		return sequentialNumbers
+		return sequentialNumbers;
 	}
-
-	protected abstract async nativeGenerate(): Promise<number>;
 
 	private async waitForPreviousGeneration(): Promise<void> {
 		return new Promise(
 			resolve => {
-				this.isDoneGeneratingSeqNums(resolve)
-			})
+				this.isDoneGeneratingSeqNums(resolve);
+			});
 	}
 
 	private isDoneGeneratingSeqNums(
@@ -177,10 +177,10 @@ export abstract class SequenceGenerator
 	) {
 		if (this.generatingSequenceNumbers) {
 			setTimeout(() => {
-				this.isDoneGeneratingSeqNums(resolve)
-			}, 20)
+				this.isDoneGeneratingSeqNums(resolve);
+			}, 20);
 		} else {
-			resolve()
+			resolve();
 		}
 	}
 
@@ -190,11 +190,11 @@ export abstract class SequenceGenerator
 		for (const sequence of sequences) {
 			ensureChildArray(
 				ensureChildArray(this.sequences, sequence.schemaIndex),
-				sequence.tableIndex)[sequence.columnIndex] = sequence
-			sequence.currentValue += sequence.incrementBy
+				sequence.tableIndex)[sequence.columnIndex] = sequence;
+			sequence.currentValue += sequence.incrementBy;
 			ensureChildArray(
 				ensureChildArray(this.sequenceBlocks, sequence.schemaIndex),
-				sequence.tableIndex)[sequence.columnIndex] = sequence.incrementBy
+				sequence.tableIndex)[sequence.columnIndex] = sequence.incrementBy;
 		}
 	}
 
