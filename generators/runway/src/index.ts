@@ -46,6 +46,8 @@ function findAllSourceFilePaths(
 		sourceFilePaths = sourceFilePaths.concat(findAllSourceFilePaths(subDirPath));
 	}
 
+	sourceFilePaths = sourceFilePaths.map(sourceFilePath => fs.realpathSync.native(sourceFilePath))
+
 	return sourceFilePaths;
 }
 

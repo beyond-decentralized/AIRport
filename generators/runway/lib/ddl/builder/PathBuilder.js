@@ -2,6 +2,7 @@
  * Created by Papa on 4/28/2016.
  */
 import * as fs from 'fs';
+import path from 'path';
 import { normalizePath } from '../../resolve/pathResolver';
 export class PathBuilder {
     constructor(configuration) {
@@ -13,23 +14,34 @@ export class PathBuilder {
         this.fullGeneratedDirPath = this.workingDirPath + '/' + this.generatedDirPath;
         this.usePathCache = configuration.airport.cacheGeneratedPaths ? true : false;
     }
-    getOutDirPrefix(fullGenerationPath) {
-        let numDirsOut = fullGenerationPath.split('/').length
-            - this.workingDirPath.split('/').length
-            - this.configuration.airport.generatedDir.split('/').length
-            - 1;
-        let outDirPrefix = '..';
-        for (let i = 0; i < numDirsOut; i++) {
-            outDirPrefix += '/..';
-        }
-        return outDirPrefix;
-    }
+    // getOutDirPrefix(fullGenerationPath: string): string {
+    // 	let numDirsOut = fullGenerationPath.split('/').length
+    // 		- this.workingDirPath.split('/').length
+    // 		- this.configuration.airport.generatedDir.split('/').length
+    // 		- 1
+    //
+    // 	let outDirPrefix = '..'
+    // 	for (let i = 0; i < numDirsOut; i++) {
+    // 		outDirPrefix += '/..'
+    // 	}
+    //
+    // 	return outDirPrefix
+    // }
     prefixQToFileName(sourceRelativePath) {
-        let pathFragments = sourceRelativePath.split('/');
+        let pathFragments;
+        if (sourceRelativePath.indexOf(path.sep) > -1) {
+            pathFragments = sourceRelativePath.split(path.sep);
+        }
+        else if (sourceRelativePath.indexOf(path.posix.sep) > -1) {
+            pathFragments = sourceRelativePath.split(path.posix.sep);
+        }
+        else {
+            pathFragments = [sourceRelativePath];
+        }
         let fileName = pathFragments[pathFragments.length - 1];
         fileName = 'q' + fileName;
         pathFragments[pathFragments.length - 1] = fileName;
-        sourceRelativePath = pathFragments.join('/');
+        sourceRelativePath = pathFragments.join(path.posix.sep);
         return sourceRelativePath;
     }
     getFullPathToGeneratedSource(//

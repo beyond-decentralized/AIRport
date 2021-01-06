@@ -19,6 +19,7 @@ import {
 	injectAirportDatabase
 }                                       from '@airport/tower';
 import * as fs                          from 'fs';
+import path                             from 'path';
 import * as ts                          from 'typescript';
 import tsc                              from 'typescript';
 import {
@@ -29,20 +30,20 @@ import { DaoBuilder }                   from './ddl/builder/DaoBuilder';
 import { DuoBuilder }                   from './ddl/builder/DuoBuilder';
 import { EntityInterfaceFileBuilder }   from './ddl/builder/entity/EntityInterfaceFileBuilder';
 import { QEntityFileBuilder }           from './ddl/builder/entity/QEntityFileBuilder';
-import { EntityMappingBuilder }        from './ddl/builder/EntityMappingBuilder';
-import { GeneratedFileListingBuilder } from './ddl/builder/GeneratedFileListingBuilder';
-import { GeneratedSummaryBuilder }     from './ddl/builder/GeneratedSummaryBuilder';
-import { PathBuilder }                 from './ddl/builder/PathBuilder';
-import { QSchemaBuilder }              from './ddl/builder/QSchemaBuilder';
-import { JsonSchemaBuilder }           from './ddl/builder/schema/JsonSchemaBuilder';
-import { MappedSuperclassBuilder }     from './ddl/builder/superclass/MappedSuperclassBuilder';
-import { Configuration }               from './ddl/options/Options';
-import { EntityCandidate }             from './ddl/parser/EntityCandidate';
-import { QQueryPreparationField }      from './execute/QueryPreparationField';
-import { generateDefinitions }         from './FileProcessor';
-import { NoOpSchemaBuilder }           from './stubs/NoOpSchemaBuilder';
-import { NoOpSequenceGenerator }       from './stubs/NoOpSequenceGenerator';
-import { NoOpSqlDriver }               from './stubs/NoOpSqlDriver';
+import { EntityMappingBuilder }         from './ddl/builder/EntityMappingBuilder';
+import { GeneratedFileListingBuilder }  from './ddl/builder/GeneratedFileListingBuilder';
+import { GeneratedSummaryBuilder }      from './ddl/builder/GeneratedSummaryBuilder';
+import { PathBuilder }                  from './ddl/builder/PathBuilder';
+import { QSchemaBuilder }               from './ddl/builder/QSchemaBuilder';
+import { JsonSchemaBuilder }            from './ddl/builder/schema/JsonSchemaBuilder';
+import { MappedSuperclassBuilder }      from './ddl/builder/superclass/MappedSuperclassBuilder';
+import { Configuration }                from './ddl/options/Options';
+import { EntityCandidate }              from './ddl/parser/EntityCandidate';
+import { QQueryPreparationField }       from './execute/QueryPreparationField';
+import { generateDefinitions }          from './FileProcessor';
+import { NoOpSchemaBuilder }            from './stubs/NoOpSchemaBuilder';
+import { NoOpSequenceGenerator }        from './stubs/NoOpSequenceGenerator';
+import { NoOpSqlDriver }                from './stubs/NoOpSqlDriver';
 
 (AirportDatabase as any).bogus = 'loaded for schema generation';
 
@@ -217,24 +218,38 @@ export async function watchFiles(
 		schemaPath: string,
 		schemaSourcePath: string
 	) {
-		// await initTempDatabase(jsonSchema);
-		//
-		// for (const entityName in entityOperationMap) {
-		// 	const operations: { [operationName: string]: JsonOperation; }
-		// 		         = entityOperationMap[entityName];
-		// 	const path = entityOperationPaths[entityName];
-		//
-		// 	const objects = await import(path);
-		//
-		// 	const dao = new objects[entityName];
-		//
-		// 	for (const operationName in operations) {
-		// 		dao[dao](...(new QQueryPreparationField() as Array<any>));
-		// 	}
-		//
-		// 	// TODO: execute all DAO @PreparedQuery methods and generate the queries
-		//
-		// }
+		await initTempDatabase(jsonSchema);
+
+		for (const entityName in entityOperationMap) {
+			// const operations: { [operationName: string]: JsonOperation; }
+			// 	             = entityOperationMap[entityName];
+			// const fullPath = entityOperationPaths[entityName];
+			//
+			// const relativePath       = path.relative(process.cwd(), fullPath);
+			// const relativeImportPath = relativePath.split(path.sep)
+			// 	.join(path.posix.sep)
+			// 	.replace('src/', '../../../../dobecause/schemas/logos/src/')
+			// 	.replace('.ts', '');
+			// let normalizedPath       = path.normalize(fullPath);
+			// normalizedPath           = normalizedPath.split(path.sep).join(path.posix.sep);
+			// if (normalizedPath.indexOf(':') === 1) {
+			// 	normalizedPath = normalizedPath.substr(2);
+			// }
+			// if (!normalizedPath.startsWith('/')) {
+			// 	normalizedPath = '/' + normalizedPath;
+			// }
+			// normalizedPath = normalizedPath.replace('.ts', '');
+			// const objects  = await import(normalizedPath);
+			//
+			// const dao = new objects[entityName];
+			//
+			// for (const operationName in operations) {
+			// 	dao[dao](...(new QQueryPreparationField() as Array<any>));
+			// }
+
+			// TODO: execute all DAO @PreparedQuery methods and generate the queries
+
+		}
 
 		const schemaJsonString = JSON.stringify(jsonSchema, null, '\t');
 

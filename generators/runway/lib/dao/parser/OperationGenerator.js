@@ -64,6 +64,9 @@ function serializeClass(symbol, daoName, entityName) {
     return daoOperations;
 }
 function serializeMethod(symbol, daoName, entityName, memberName, member, daoOperations) {
+    if (!member.valueDeclaration.decorators) {
+        return;
+    }
     member.valueDeclaration.decorators.forEach(decorator => {
         // decorator.expression.kind = 196 CallExpression
         // decorator.expression.expression.kind = 75 Identifier

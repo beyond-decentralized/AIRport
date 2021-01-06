@@ -1,8 +1,9 @@
-import * as fs from "fs";
+import * as fs from 'fs';
+import path from 'path';
 /**
  * Created by Papa on 4/24/2016.
  */
-import { parseFlags } from "./parser";
+import { parseFlags } from './parser';
 export function readConfiguration(projectPath, programArguments) {
     let flags = parseFlags(programArguments);
     let configFilePath = projectPath + '/' + flags.optionsFilePath;
@@ -24,16 +25,22 @@ function verifyConfiguration(options) {
 		(as HTTL Domain URL or 'private') in package.json.  
 		It is: ${options.airport.domain}`);
     }
-    options.airport.ddlDir = 'src/ddl';
-    // if (!options.airport.ddlDir) {
-    // 	throw new Error(
-    // 	`"airport.ddlDir" configuration property must be specified in package.json.`);
-    // }
-    options.airport.generatedDir = 'src/generated';
-    // if (!options.airport.generatedDir) {
-    // 	throw new Error(
-    // 	`"airport.generatedDir" configuration property must be specified in package.json.`);
-    // }
+    if (!options.airport.ddlDir) {
+        options.airport.ddlDir = 'src/ddl';
+        // 	throw new Error(
+        // 	`"airport.ddlDir" configuration property must be specified in package.json.`);
+    }
+    options.airport.ddlDir = path.normalize(options.airport.ddlDir);
+    if (!options.airport.generatedDir) {
+        options.airport.generatedDir = 'src/generated';
+        // 	throw new Error(
+        // 	`"airport.generatedDir" configuration property must be specified in package.json.`);
+    }
+    options.airport.generatedDir = path.normalize(options.airport.generatedDir);
+    if (!options.airport.daoDir) {
+        options.airport.daoDir = 'src/dao';
+    }
+    options.airport.daoDir = path.normalize(options.airport.daoDir);
     if (!options.airport.cacheGeneratedPaths && options.airport.cacheGeneratedPaths !== false) {
         options.airport.cacheGeneratedPaths = false;
     }

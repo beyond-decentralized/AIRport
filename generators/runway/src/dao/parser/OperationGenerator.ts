@@ -111,6 +111,9 @@ function serializeMethod(
 	member,
 	daoOperations: { [operationName: string]: JsonOperation }
 ) {
+	if (!member.valueDeclaration.decorators) {
+		return;
+	}
 	member.valueDeclaration.decorators.forEach(decorator => {
 		// decorator.expression.kind = 196 CallExpression
 		// decorator.expression.expression.kind = 75 Identifier

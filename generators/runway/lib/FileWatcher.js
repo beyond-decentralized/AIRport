@@ -136,24 +136,35 @@ export async function watchFiles(configuration, options, rootFileNames) {
         addOperations(jsonSchema, schemaPath, schemaSourcePath).then();
     }
     async function addOperations(jsonSchema, schemaPath, schemaSourcePath) {
-        // await initTempDatabase(jsonSchema);
-        //
-        // for (const entityName in entityOperationMap) {
-        // 	const operations: { [operationName: string]: JsonOperation; }
-        // 		         = entityOperationMap[entityName];
-        // 	const path = entityOperationPaths[entityName];
-        //
-        // 	const objects = await import(path);
-        //
-        // 	const dao = new objects[entityName];
-        //
-        // 	for (const operationName in operations) {
-        // 		dao[dao](...(new QQueryPreparationField() as Array<any>));
-        // 	}
-        //
-        // 	// TODO: execute all DAO @PreparedQuery methods and generate the queries
-        //
-        // }
+        await initTempDatabase(jsonSchema);
+        for (const entityName in entityOperationMap) {
+            // const operations: { [operationName: string]: JsonOperation; }
+            // 	             = entityOperationMap[entityName];
+            // const fullPath = entityOperationPaths[entityName];
+            //
+            // const relativePath       = path.relative(process.cwd(), fullPath);
+            // const relativeImportPath = relativePath.split(path.sep)
+            // 	.join(path.posix.sep)
+            // 	.replace('src/', '../../../../dobecause/schemas/logos/src/')
+            // 	.replace('.ts', '');
+            // let normalizedPath       = path.normalize(fullPath);
+            // normalizedPath           = normalizedPath.split(path.sep).join(path.posix.sep);
+            // if (normalizedPath.indexOf(':') === 1) {
+            // 	normalizedPath = normalizedPath.substr(2);
+            // }
+            // if (!normalizedPath.startsWith('/')) {
+            // 	normalizedPath = '/' + normalizedPath;
+            // }
+            // normalizedPath = normalizedPath.replace('.ts', '');
+            // const objects  = await import(normalizedPath);
+            //
+            // const dao = new objects[entityName];
+            //
+            // for (const operationName in operations) {
+            // 	dao[dao](...(new QQueryPreparationField() as Array<any>));
+            // }
+            // TODO: execute all DAO @PreparedQuery methods and generate the queries
+        }
         const schemaJsonString = JSON.stringify(jsonSchema, null, '\t');
         const schemaSourceString = `export const SCHEMA = `
             + schemaJsonString + ';';

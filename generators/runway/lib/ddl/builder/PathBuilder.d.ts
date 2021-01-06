@@ -13,7 +13,6 @@ export declare class PathBuilder {
     workingDirPath: string;
     usePathCache: boolean;
     constructor(configuration: Configuration);
-    getOutDirPrefix(fullGenerationPath: string): string;
     prefixQToFileName(sourceRelativePath: string): string;
     getFullPathToGeneratedSource(//
     sourcePath: string, prefixQ?: boolean): string;
