@@ -217,24 +217,24 @@ export async function watchFiles(
 		schemaPath: string,
 		schemaSourcePath: string
 	) {
-		await initTempDatabase(jsonSchema);
-
-		for (const entityName in entityOperationMap) {
-			const operations: { [operationName: string]: JsonOperation; }
-				         = entityOperationMap[entityName];
-			const path = entityOperationPaths[entityName];
-
-			const objects = await import(path);
-
-			const dao = new objects[entityName];
-
-			for (const operationName in operations) {
-				dao[dao](...(new QQueryPreparationField() as Array<any>));
-			}
-
-			// TODO: execute all DAO @PreparedQuery methods and generate the queries
-
-		}
+		// await initTempDatabase(jsonSchema);
+		//
+		// for (const entityName in entityOperationMap) {
+		// 	const operations: { [operationName: string]: JsonOperation; }
+		// 		         = entityOperationMap[entityName];
+		// 	const path = entityOperationPaths[entityName];
+		//
+		// 	const objects = await import(path);
+		//
+		// 	const dao = new objects[entityName];
+		//
+		// 	for (const operationName in operations) {
+		// 		dao[dao](...(new QQueryPreparationField() as Array<any>));
+		// 	}
+		//
+		// 	// TODO: execute all DAO @PreparedQuery methods and generate the queries
+		//
+		// }
 
 		const schemaJsonString = JSON.stringify(jsonSchema, null, '\t');
 

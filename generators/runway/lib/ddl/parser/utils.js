@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import tsc from 'typescript';
 export function isDecoratedAsEntity(decorators) {
     if (!decorators || !decorators.length) {
@@ -38,7 +39,7 @@ export function getClassPath(sourceFile) {
     if (!sourceFile || sourceFile.kind !== tsc.SyntaxKind.SourceFile) {
         return null;
     }
-    return sourceFile.path;
+    return fs.realpathSync.native(sourceFile.path);
 }
 export function getImplementedInterfaces(classSymbol) {
     let valueDeclaration = classSymbol.valueDeclaration;

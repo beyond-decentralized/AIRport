@@ -9,7 +9,7 @@ import { AirportDatabase, injectAirportDatabase } from '@airport/tower';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import tsc from 'typescript';
-import { entityOperationMap, entityOperationPaths } from './dao/parser/OperationGenerator';
+import { entityOperationMap } from './dao/parser/OperationGenerator';
 import { DaoBuilder } from './ddl/builder/DaoBuilder';
 import { DuoBuilder } from './ddl/builder/DuoBuilder';
 import { EntityInterfaceFileBuilder } from './ddl/builder/entity/EntityInterfaceFileBuilder';
@@ -21,7 +21,6 @@ import { PathBuilder } from './ddl/builder/PathBuilder';
 import { QSchemaBuilder } from './ddl/builder/QSchemaBuilder';
 import { JsonSchemaBuilder } from './ddl/builder/schema/JsonSchemaBuilder';
 import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
-import { QQueryPreparationField } from './execute/QueryPreparationField';
 import { generateDefinitions } from './FileProcessor';
 import { NoOpSchemaBuilder } from './stubs/NoOpSchemaBuilder';
 import { NoOpSequenceGenerator } from './stubs/NoOpSequenceGenerator';
@@ -137,17 +136,24 @@ export async function watchFiles(configuration, options, rootFileNames) {
         addOperations(jsonSchema, schemaPath, schemaSourcePath).then();
     }
     async function addOperations(jsonSchema, schemaPath, schemaSourcePath) {
-        await initTempDatabase(jsonSchema);
-        for (const entityName in entityOperationMap) {
-            const operations = entityOperationMap[entityName];
-            const path = entityOperationPaths[entityName];
-            const objects = await import(path);
-            const dao = new objects[entityName];
-            for (const operationName in operations) {
-                dao[dao](...new QQueryPreparationField());
-            }
-            // TODO: execute all DAO @PreparedQuery methods and generate the queries
-        }
+        // await initTempDatabase(jsonSchema);
+        //
+        // for (const entityName in entityOperationMap) {
+        // 	const operations: { [operationName: string]: JsonOperation; }
+        // 		         = entityOperationMap[entityName];
+        // 	const path = entityOperationPaths[entityName];
+        //
+        // 	const objects = await import(path);
+        //
+        // 	const dao = new objects[entityName];
+        //
+        // 	for (const operationName in operations) {
+        // 		dao[dao](...(new QQueryPreparationField() as Array<any>));
+        // 	}
+        //
+        // 	// TODO: execute all DAO @PreparedQuery methods and generate the queries
+        //
+        // }
         const schemaJsonString = JSON.stringify(jsonSchema, null, '\t');
         const schemaSourceString = `export const SCHEMA = `
             + schemaJsonString + ';';
