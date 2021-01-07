@@ -3,27 +3,28 @@ import {
 	PlatformType,
 	PortableQuery,
 	QueryResultType
-}                        from '@airport/ground-control'
-import {IObservable}     from '@airport/observe'
-import {IEntityContext}  from '../../../lingo/core/data/EntityContext'
-import {OperationName}   from '../../query/Dao'
-import {IAbstractQuery}  from '../../query/facade/AbstractQuery'
-import {RawDelete}       from '../../query/facade/Delete'
+}                          from '@airport/ground-control';
+import { IObservable }     from '@airport/observe';
+import { OperationName }   from '../../query/Dao';
+import { IAbstractQuery }  from '../../query/facade/AbstractQuery';
+import { RawDelete }       from '../../query/facade/Delete';
 import {
 	RawInsertColumnValues,
 	RawInsertValues
-}                        from '../../query/facade/InsertValues'
+}                          from '../../query/facade/InsertValues';
 import {
 	RawUpdate,
 	RawUpdateColumns
-}                        from '../../query/facade/Update'
-import {EntityIdData}    from '../../utils/SchemaUtils'
-import {UpdateCacheType} from '../data/UpdateCacheType'
+}                          from '../../query/facade/Update';
+import { IQueryContext }   from '../../query/QueryContext';
+import { EntityIdData }    from '../../utils/SchemaUtils';
+import { IEntityContext }  from '../data/EntityContext';
+import { UpdateCacheType } from '../data/UpdateCacheType';
 import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-}                        from '../entity/Entity'
+}                          from '../entity/Entity';
 
 export interface UpdateRecord {
 	newValue: any,
@@ -162,6 +163,10 @@ export interface IDatabaseFacade {
 }
 
 export interface IQueryFacade {
+
+	ensureIocContext<E>(
+		context: IQueryContext<E>
+	): Promise<void>
 
 	// init(): Promise<void>;
 

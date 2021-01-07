@@ -1,13 +1,13 @@
-import {IAirportDatabase}         from '@airport/air-control'
+import { IAirportDatabase }         from '@airport/air-control';
 import {
 	container,
 	DI
-}                                 from '@airport/di'
+}                                   from '@airport/di';
 import {
 	ITerminalStore,
 	TERMINAL_STORE
-}                                 from '@airport/terminal-map'
-import {IDomain}                  from '@airport/territory'
+}                                   from '@airport/terminal-map';
+import { IDomain }                  from '@airport/territory';
 import {
 	ISchema,
 	ISchemaColumn,
@@ -18,15 +18,15 @@ import {
 	ISchemaRelation,
 	ISchemaRelationColumn,
 	ISchemaVersion
-}                                 from '@airport/traffic-pattern'
-import {IDdlObjectLinker}         from './DdlObjectLinker'
-import {IQueryEntityClassCreator} from './QueryEntityClassCreator'
+}                                   from '@airport/traffic-pattern';
+import { IDdlObjectLinker }         from './DdlObjectLinker';
+import { IQueryEntityClassCreator } from './QueryEntityClassCreator';
 import {
 	DDL_OBJECT_LINKER,
 	DDL_OBJECT_RETRIEVER,
 	QUERY_ENTITY_CLASS_CREATOR,
 	QUERY_OBJECT_INITIALIZER
-}                                 from './tokens'
+}                                   from './tokens';
 
 export interface IQueryObjectInitializer {
 
@@ -66,22 +66,6 @@ export interface DdlObjects {
 export class QueryObjectInitializer
 	implements IQueryObjectInitializer {
 
-	async initialize(
-		airDb: IAirportDatabase
-	): Promise<DdlObjects> {
-		const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
-			      terminalStore] = await container(this).get(
-			DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
-			QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE)
-
-		const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects()
-
-		this.generateQObjectsAndPopulateStore(ddlObjects, airDb,
-			ddlObjectLinker, queryEntityClassCreator, terminalStore)
-
-		return ddlObjects
-	}
-
 	generateQObjectsAndPopulateStore(
 		ddlObjects: DdlObjects,
 		airDb: IAirportDatabase,
@@ -89,25 +73,63 @@ export class QueryObjectInitializer
 		queryEntityClassCreator: IQueryEntityClassCreator,
 		terminalStore: ITerminalStore
 	): void {
-		ddlObjectLinker.link(ddlObjects, terminalStore)
+		ddlObjectLinker.link(ddlObjects, terminalStore);
+		queryEntityClassCreator.createAll(ddlObjects.schemas, airDb);
+		const lastTerminalState = terminalStore.getTerminalState();
 
-		queryEntityClassCreator.createAll(ddlObjects.schemas, airDb)
+		const existingDomainMap = {};
+		for (const domain of lastTerminalState.domains) {
+			existingDomainMap[domain.name] = domain;
+		}
+		for (const domain of ddlObjects.domains) {
+			delete existingDomainMap[domain.name];
+		}
+		const unmodifiedDomains: IDomain[] = [];
+		for (const domainName in existingDomainMap) {
+			unmodifiedDomains.push(existingDomainMap[domainName]);
+		}
 
-		const lastTerminalState = terminalStore.getTerminalState()
+		const existingSchemaMap = {};
+		for (const schema of lastTerminalState.schemas) {
+			existingSchemaMap[schema.name] = schema;
+		}
+		for (const schema of ddlObjects.schemas) {
+			delete existingSchemaMap[schema.name];
+		}
+		const unmodifiedSchemas: ISchema[] = [];
+		for (const schemaName in existingSchemaMap) {
+			unmodifiedSchemas.push(existingSchemaMap[schemaName]);
+		}
 
 		terminalStore.state.next({
 			...lastTerminalState,
 			domains: [
-				...lastTerminalState.domains,
+				...unmodifiedDomains,
 				...ddlObjects.domains
 			],
 			schemas: [
-				...lastTerminalState.schemas,
+				...unmodifiedSchemas,
 				...ddlObjects.schemas
 			]
-		})
+		});
+	}
+
+	async initialize(
+		airDb: IAirportDatabase
+	): Promise<DdlObjects> {
+		const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
+			      terminalStore] = await container(this).get(
+			DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
+			QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE);
+
+		const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects();
+
+		this.generateQObjectsAndPopulateStore(ddlObjects, airDb,
+			ddlObjectLinker, queryEntityClassCreator, terminalStore);
+
+		return ddlObjects;
 	}
 
 }
 
-DI.set(QUERY_OBJECT_INITIALIZER, QueryObjectInitializer)
+DI.set(QUERY_OBJECT_INITIALIZER, QueryObjectInitializer);

@@ -6,20 +6,20 @@ import {
 	QUERY_CONTEXT_LOADER,
 	QUERY_FACADE,
 	UpdateCacheType
-} from '@airport/air-control'
+} from '@airport/air-control';
 import {
 	container,
 	DI
-} from '@airport/di'
+} from '@airport/di';
 import {
 	JsonQuery,
 	PortableQuery,
 	QueryResultType,
-} from '@airport/ground-control'
+} from '@airport/ground-control';
 import {
 	IObservable,
 	map
-} from '@airport/observe'
+} from '@airport/observe';
 
 export class QueryFacade
 	implements IQueryFacade {
@@ -30,14 +30,14 @@ export class QueryFacade
 		context: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<EntityArray> {
-		await this.ensureIocContext(context)
+		await this.ensureIocContext(context);
 		const result = await context.ioc.transactionalConnector.find<E, EntityArray>(
-			this.getPortableQuery(query, queryResultType, context), context)
+			this.getPortableQuery(query, queryResultType, context), context);
 		// TODO: restore and property maintain update cache, when needed
 		// context.ioc.updateCache.addToCache(
 		// 	context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...result)
 
-		return result
+		return result;
 	}
 
 	async findOne<E>(
@@ -46,13 +46,13 @@ export class QueryFacade
 		context: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<E> {
-		await this.ensureIocContext(context)
+		await this.ensureIocContext(context);
 		const result = await context.ioc.transactionalConnector.findOne<E>(this.getPortableQuery(
-			query, queryResultType, context), context)
+			query, queryResultType, context), context);
 		context.ioc.updateCache.addToCache(
-			context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result)
+			context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result);
 
-		return result
+		return result;
 	}
 
 	getPortableQuery<E>(
@@ -67,7 +67,7 @@ export class QueryFacade
 			schemaIndex: context.dbEntity.schemaVersion.schema.index,
 			tableIndex: context.dbEntity.index,
 			// values: query.values
-		}
+		};
 	}
 
 	async search<E, EntityArray extends Array<E>>(
@@ -76,21 +76,21 @@ export class QueryFacade
 		context: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<IObservable<EntityArray>> {
-		await this.ensureIocContext(context)
+		await this.ensureIocContext(context);
 		let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(
-			query, queryResultType, context), context)
+			query, queryResultType, context), context);
 
 		observable = observable.pipe(
 			map(
 				results => {
 					context.ioc.updateCache.addToCache(
-						context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...results)
+						context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...results);
 
-					return results
+					return results;
 				})
-		) as IObservable<EntityArray>
+		) as IObservable<EntityArray>;
 
-		return observable as IObservable<EntityArray>
+		return observable as IObservable<EntityArray>;
 	}
 
 	async searchOne<E>(
@@ -99,31 +99,31 @@ export class QueryFacade
 		context: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
 	): Promise<IObservable<E>> {
-		await this.ensureIocContext(context)
+		await this.ensureIocContext(context);
 		let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(
-			query, queryResultType, context), context)
+			query, queryResultType, context), context);
 
 		observable = observable.pipe(
 			map(
 				result => {
 					context.ioc.updateCache.addToCache(
-						context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result)
+						context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result);
 
-					return result
+					return result;
 				})
-		)
+		);
 
-		return observable as IObservable<E>
+		return observable as IObservable<E>;
 	}
 
-	private async ensureIocContext<E>(
+	async ensureIocContext<E>(
 		context: IQueryContext<E>
 	): Promise<void> {
 		const queryContextLoader = await container(this)
-			.get(QUERY_CONTEXT_LOADER)
-		await queryContextLoader.ensure(context)
+			.get(QUERY_CONTEXT_LOADER);
+		await queryContextLoader.ensure(context);
 	}
 
 }
 
-DI.set(QUERY_FACADE, QueryFacade)
+DI.set(QUERY_FACADE, QueryFacade);

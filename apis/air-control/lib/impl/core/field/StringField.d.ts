@@ -20,12 +20,17 @@ export declare class QStringField extends QOperableField<string, JSONRawStringOp
         (...args: any[]): RawFieldQuery<IQStringField>;
     }): JSONRawStringOperation;
 }
-export declare class QStringFunction extends QStringField implements IQFunction<string | RawFieldQuery<any>> {
-    value: string | RawFieldQuery<any>;
-    private isQueryParameter;
+export declare class QStringFunction<T extends string | string[] = string> extends QStringField implements IQFunction<T | RawFieldQuery<any>> {
+    value: T | RawFieldQuery<any>;
+    protected isQueryParameter: boolean;
     parameterAlias: string;
-    constructor(value: string | RawFieldQuery<any>, isQueryParameter?: boolean);
+    constructor(value: T | RawFieldQuery<any>, isQueryParameter?: boolean);
     getInstance(): QStringFunction;
     toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
+}
+export declare class QStringArrayFunction extends QStringFunction<string[]> {
+    value: string[] | RawFieldQuery<any>;
+    constructor(value: string[] | RawFieldQuery<any>, isQueryParameter?: boolean);
+    getInstance(): QStringFunction<any>;
 }
 //# sourceMappingURL=StringField.d.ts.map

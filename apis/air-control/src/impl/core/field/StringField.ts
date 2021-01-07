@@ -4,25 +4,24 @@ import {
 	JSONClauseField,
 	JSONClauseObjectType,
 	SQLDataType
-}                           from '@airport/ground-control'
-import {IQEntityInternal}   from '../../../lingo/core/entity/Entity'
-import {IQFunction}         from '../../../lingo/core/field/Functions'
-import {IQStringField}      from '../../../lingo/core/field/StringField'
+}                             from '@airport/ground-control';
+import { IQEntityInternal }   from '../../../lingo/core/entity/Entity';
+import { IQFunction }         from '../../../lingo/core/field/Functions';
+import { IQStringField }      from '../../../lingo/core/field/StringField';
 import {
 	IStringOperation,
 	JSONRawStringOperation
-}                           from '../../../lingo/core/operation/StringOperation'
-import {RawFieldQuery}      from '../../../lingo/query/facade/FieldQuery'
-import {IFieldUtils}        from '../../../lingo/utils/FieldUtils'
-import {IQueryUtils}        from '../../../lingo/utils/QueryUtils'
-import {FieldColumnAliases} from '../entity/Aliases'
-import {StringOperation}    from '../operation/StringOperation'
-import {QOperableField}     from './OperableField'
+}                             from '../../../lingo/core/operation/StringOperation';
+import { RawFieldQuery }      from '../../../lingo/query/facade/FieldQuery';
+import { IFieldUtils }        from '../../../lingo/utils/FieldUtils';
+import { IQueryUtils }        from '../../../lingo/utils/QueryUtils';
+import { FieldColumnAliases } from '../entity/Aliases';
+import { StringOperation }    from '../operation/StringOperation';
+import { QOperableField }     from './OperableField';
 
 /**
  * Created by Papa on 8/11/2016.
  */
-
 
 export interface IQStringEntityField
 	extends IQStringField {
@@ -38,40 +37,40 @@ export class QStringField
 		q: IQEntityInternal<any>,
 		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
 	) {
-		super(dbColumn, dbProperty, q, objectType, new StringOperation())
+		super(dbColumn, dbProperty, q, objectType, new StringOperation());
 	}
 
 	getInstance(qEntity: IQEntityInternal<any> = this.q): QStringField {
 		return this.copyFunctions(
-			new QStringField(this.dbColumn, this.dbProperty, qEntity, this.objectType))
+			new QStringField(this.dbColumn, this.dbProperty, qEntity, this.objectType));
 	}
 
 	like(
 		value: string | IQStringField | RawFieldQuery<IQStringField> | { (...args: any[]): RawFieldQuery<IQStringField> }
 	): JSONRawStringOperation {
 		if (value instanceof Function) {
-			value = value()
+			value = value();
 		}
-		return this.operation.like(<any>this, value)
+		return this.operation.like(<any>this, value);
 	}
 
 }
 
-export class QStringFunction
+export class QStringFunction<T extends string | string[] = string>
 	extends QStringField
-	implements IQFunction<string | RawFieldQuery<any>> {
+	implements IQFunction<T | RawFieldQuery<any>> {
 
-	parameterAlias: string
+	parameterAlias: string;
 
 	constructor(
-		public value: string | RawFieldQuery<any>,
-		private isQueryParameter: boolean = false
+		public value: T | RawFieldQuery<any>,
+		protected isQueryParameter: boolean = false
 	) {
-		super(<any>{type: SQLDataType.STRING}, null, null, JSONClauseObjectType.FIELD_FUNCTION)
+		super(<any>{ type: SQLDataType.STRING }, null, null, JSONClauseObjectType.FIELD_FUNCTION);
 	}
 
 	getInstance(): QStringFunction {
-		return this.copyFunctions(new QStringFunction(this.value))
+		return this.copyFunctions(new QStringFunction(this.value as string, this.isQueryParameter));
 	}
 
 	toJSON(
@@ -81,12 +80,29 @@ export class QStringFunction
 		fieldUtils: IFieldUtils
 	): JSONClauseField {
 		let json = this.operableFunctionToJson(
-			this, columnAliases, forSelectClause, queryUtils, fieldUtils)
+			this, columnAliases, forSelectClause, queryUtils, fieldUtils);
 
 		if (this.isQueryParameter) {
-			this.parameterAlias = <string>json.v
+			this.parameterAlias = <string>json.v;
 		}
 
-		return json
+		return json;
 	}
+}
+
+export class QStringArrayFunction
+	extends QStringFunction<string[]> {
+
+	constructor(
+		public value: string[] | RawFieldQuery<any>,
+		isQueryParameter?: boolean
+	) {
+		super(value, isQueryParameter);
+	}
+
+	getInstance(): QStringFunction<any> {
+		return this.copyFunctions(new QStringArrayFunction(this.value as string[],
+			this.isQueryParameter));
+	}
+
 }

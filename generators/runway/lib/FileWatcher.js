@@ -1,15 +1,9 @@
-import { AIR_DB } from '@airport/air-control';
-import { SEQUENCE_GENERATOR } from '@airport/check-in';
-import { DI } from '@airport/di';
-import { STORE_DRIVER, } from '@airport/ground-control';
-import { SCHEMA_BUILDER } from '@airport/landing';
-import { injectTransactionalConnector } from '@airport/tarmaq';
-import { DATABASE_MANAGER, injectTransactionalServer } from '@airport/terminal';
-import { AirportDatabase, injectAirportDatabase } from '@airport/tower';
+import { AirportDatabase } from '@airport/tower';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import tsc from 'typescript';
 import { entityOperationMap } from './dao/parser/OperationGenerator';
+import { SchemaQueryGenerator } from './dao/parser/SchemaQueryGenerator';
 import { DaoBuilder } from './ddl/builder/DaoBuilder';
 import { DuoBuilder } from './ddl/builder/DuoBuilder';
 import { EntityInterfaceFileBuilder } from './ddl/builder/entity/EntityInterfaceFileBuilder';
@@ -22,13 +16,11 @@ import { QSchemaBuilder } from './ddl/builder/QSchemaBuilder';
 import { JsonSchemaBuilder } from './ddl/builder/schema/JsonSchemaBuilder';
 import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
 import { generateDefinitions } from './FileProcessor';
-import { NoOpSchemaBuilder } from './stubs/NoOpSchemaBuilder';
-import { NoOpSequenceGenerator } from './stubs/NoOpSequenceGenerator';
-import { NoOpSqlDriver } from './stubs/NoOpSqlDriver';
 AirportDatabase.bogus = 'loaded for schema generation';
 /**
  * Created by Papa on 3/30/2016.
  */
+const schemaQueryGenerator = new SchemaQueryGenerator();
 export async function watchFiles(configuration, options, rootFileNames) {
     const files = {};
     const pathBuilder = new PathBuilder(configuration);
@@ -133,54 +125,16 @@ export async function watchFiles(configuration, options, rootFileNames) {
         const mappedSuperclassBuilder = new MappedSuperclassBuilder(configuration, entityMapByName);
         const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
         fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
-        addOperations(jsonSchema, schemaPath, schemaSourcePath).then();
+        addOperations(jsonSchema, schemaPath, schemaSourcePath, schemaBuilder).then();
     }
-    async function addOperations(jsonSchema, schemaPath, schemaSourcePath) {
-        await initTempDatabase(jsonSchema);
-        for (const entityName in entityOperationMap) {
-            // const operations: { [operationName: string]: JsonOperation; }
-            // 	             = entityOperationMap[entityName];
-            // const fullPath = entityOperationPaths[entityName];
-            //
-            // const relativePath       = path.relative(process.cwd(), fullPath);
-            // const relativeImportPath = relativePath.split(path.sep)
-            // 	.join(path.posix.sep)
-            // 	.replace('src/', '../../../../dobecause/schemas/logos/src/')
-            // 	.replace('.ts', '');
-            // let normalizedPath       = path.normalize(fullPath);
-            // normalizedPath           = normalizedPath.split(path.sep).join(path.posix.sep);
-            // if (normalizedPath.indexOf(':') === 1) {
-            // 	normalizedPath = normalizedPath.substr(2);
-            // }
-            // if (!normalizedPath.startsWith('/')) {
-            // 	normalizedPath = '/' + normalizedPath;
-            // }
-            // normalizedPath = normalizedPath.replace('.ts', '');
-            // const objects  = await import(normalizedPath);
-            //
-            // const dao = new objects[entityName];
-            //
-            // for (const operationName in operations) {
-            // 	dao[dao](...(new QQueryPreparationField() as Array<any>));
-            // }
-            // TODO: execute all DAO @PreparedQuery methods and generate the queries
-        }
+    async function addOperations(jsonSchema, schemaPath, schemaSourcePath, schemaBuilder) {
+        await schemaQueryGenerator.processQueries(entityOperationMap, jsonSchema);
+        schemaBuilder.addOperations(jsonSchema, entityOperationMap);
         const schemaJsonString = JSON.stringify(jsonSchema, null, '\t');
         const schemaSourceString = `export const SCHEMA = `
             + schemaJsonString + ';';
         fs.writeFileSync(schemaPath, schemaJsonString);
         fs.writeFileSync(schemaSourcePath, schemaSourceString);
-    }
-    async function initTempDatabase(schema) {
-        DI.set(SEQUENCE_GENERATOR, NoOpSequenceGenerator);
-        DI.set(SCHEMA_BUILDER, NoOpSchemaBuilder);
-        DI.set(STORE_DRIVER, NoOpSqlDriver);
-        injectAirportDatabase();
-        injectTransactionalServer();
-        injectTransactionalConnector();
-        await DI.db().get(AIR_DB);
-        const dbManager = await DI.db().get(DATABASE_MANAGER);
-        await dbManager.initNoDb(schema.domain, {}, ...[schema]);
     }
     function emitFile(fileName) {
         let output = services.getEmitOutput(fileName);

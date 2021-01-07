@@ -19,6 +19,8 @@ export declare abstract class QField<IQF extends IQOrderableField<IQF>> implemen
     objectType: JSONClauseObjectType;
     alias: string;
     __appliedFunctions__: JSONSqlFunctionCall[];
+    applySqlFunction(sqlFunctionCall: JSONSqlFunctionCall): IQF;
+    toJSON(columnAliases: IFieldColumnAliases<IQF>, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
     __fieldSubQuery__: RawFieldQuery<IQF>;
     constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal<any>, objectType: JSONClauseObjectType);
     /**
@@ -32,9 +34,7 @@ export declare abstract class QField<IQF extends IQOrderableField<IQF>> implemen
     asc(): IFieldInOrderBy<IQF>;
     desc(): IFieldInOrderBy<IQF>;
     abstract getInstance(qEntity?: IQEntityInternal<any>): QField<IQF>;
-    applySqlFunction(sqlFunctionCall: JSONSqlFunctionCall): IQF;
     addSubQuery(subQuery: RawFieldQuery<IQF>): IQF;
-    toJSON(columnAliases: IFieldColumnAliases<IQF>, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
     operableFunctionToJson(functionObject: IQFunction<any>, columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
     protected copyFunctions<QF extends QField<IQF>>(field: QF): QF;
     protected appliedFunctionsToJson(appliedFunctions: JSONSqlFunctionCall[], columnAliases: IFieldColumnAliases<IQF>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONSqlFunctionCall[];

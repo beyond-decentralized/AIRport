@@ -1,6 +1,6 @@
 import { DI } from '@airport/di';
-import { SQLDataType, SqlFunction } from '@airport/ground-control';
 import { AbstractFunctionAdaptor, SQL_QUERY_ADAPTOR, } from '@airport/fuel-hydrant-system';
+import { SQLDataType, SqlFunction } from '@airport/ground-control';
 /**
  * Created by Papa on 8/27/2016.
  */
@@ -55,7 +55,7 @@ LIMIT
     getParameterValue(parameter) {
         return this.getValue(parameter.value);
     }
-    getValue(value) {
+    getValue(value, allowArrays = true) {
         switch (typeof value) {
             case 'boolean':
                 return value ? '1' : '0';
@@ -65,6 +65,9 @@ LIMIT
             case 'object':
                 if (value instanceof Date) {
                     return value.getTime();
+                }
+                else if (value instanceof Array) {
+                    return value.map(aValue => this.getValue(aValue, false));
                 }
                 throw new Error(`Unexpected object as a parameter.`);
             default:

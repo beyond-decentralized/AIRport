@@ -7,6 +7,6 @@ export declare class QueryFacade implements IQueryFacade {
     getPortableQuery<E>(query: IAbstractQuery, queryResultType: QueryResultType, context: IQueryContext<E>): PortableQuery;
     search<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, context: IQueryContext<E>, cacheForUpdate?: UpdateCacheType): Promise<IObservable<EntityArray>>;
     searchOne<E>(query: IAbstractQuery, queryResultType: QueryResultType, context: IQueryContext<E>, cacheForUpdate?: UpdateCacheType): Promise<IObservable<E>>;
-    private ensureIocContext;
+    ensureIocContext<E>(context: IQueryContext<E>): Promise<void>;
 }
 //# sourceMappingURL=QueryFacade.d.ts.map

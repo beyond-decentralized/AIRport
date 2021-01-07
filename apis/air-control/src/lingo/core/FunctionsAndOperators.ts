@@ -26,8 +26,18 @@ import {
 	ucaseFunction,
 	unionAllFunction,
 	unionFunction,
-} from "./field/Functions";
-import { andOperator, notOperator, orOperator } from "./operation/LogicalOperation";
+} from './field/Functions';
+import {
+	boolFunction,
+	dateFunction,
+	numFunction,
+	strFunction
+} from './field/WrapperFunctions';
+import {
+	andOperator,
+	notOperator,
+	orOperator
+} from './operation/LogicalOperation';
 
 export interface FunctionsAndOperators {
 	abs: absFunction;
@@ -57,7 +67,14 @@ export interface FunctionsAndOperators {
 	unionAll: unionAllFunction;
 	intersect: intersectFunction;
 	minus: minusFunction;
+	// logical operators
 	and: andOperator;
 	not: notOperator;
 	or: orOperator;
+	// wraper functions
+	bool: boolFunction;
+	date: dateFunction;
+	num: numFunction;
+	str: strFunction;
+	wrapPrimitive: { (value: any): any };
 }

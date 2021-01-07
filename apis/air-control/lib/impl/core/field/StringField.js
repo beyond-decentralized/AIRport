@@ -22,7 +22,7 @@ export class QStringFunction extends QStringField {
         this.isQueryParameter = isQueryParameter;
     }
     getInstance() {
-        return this.copyFunctions(new QStringFunction(this.value));
+        return this.copyFunctions(new QStringFunction(this.value, this.isQueryParameter));
     }
     toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
         let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils);
@@ -30,6 +30,15 @@ export class QStringFunction extends QStringField {
             this.parameterAlias = json.v;
         }
         return json;
+    }
+}
+export class QStringArrayFunction extends QStringFunction {
+    constructor(value, isQueryParameter) {
+        super(value, isQueryParameter);
+        this.value = value;
+    }
+    getInstance() {
+        return this.copyFunctions(new QStringArrayFunction(this.value, this.isQueryParameter));
     }
 }
 //# sourceMappingURL=StringField.js.map

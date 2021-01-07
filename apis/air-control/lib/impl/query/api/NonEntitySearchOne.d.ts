@@ -13,15 +13,15 @@ import { Lookup } from './Lookup';
  * Created by Papa on 11/12/2016.
  */
 export declare class NonEntitySearchOne extends Lookup implements INonEntitySearchOne {
-    tree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
-        (...args: any[]): RawTreeQuery<any>;
-    }, context?: IContext): IObservable<ITE>;
-    sheet(rawSheetQuery: RawSheetQuery | {
-        (...args: any[]): RawSheetQuery;
-    }, context?: IContext): IObservable<any[]>;
     field<IQF extends IQOrderableField<IQF>>(rawFieldQuery: RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<any>;
     }, context?: IContext): IObservable<any>;
+    sheet(rawSheetQuery: RawSheetQuery | {
+        (...args: any[]): RawSheetQuery;
+    }, context?: IContext): IObservable<any[]>;
+    tree<ITE extends ITreeEntity>(rawTreeQuery: RawTreeQuery<ITE> | {
+        (...args: any[]): RawTreeQuery<any>;
+    }, context?: IContext): IObservable<ITE>;
     searchOne<IQF extends IQOrderableField<IQF>>(rawNonEntityQuery: RawNonEntityQuery | {
         (...args: any[]): RawNonEntityQuery;
     }, queryResultType: QueryResultType, QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery, context: IContext): Promise<IObservable<any[]>>;

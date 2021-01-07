@@ -11,7 +11,7 @@ import { IQUntypedField } from './UntypedField';
 /**
  * Created by Papa on 10/18/2016.
  */
-export interface IQFunction<V extends boolean | Date | number | string | RawFieldQuery<any>> {
+export interface IQFunction<V extends boolean | Date | Date[] | number | number[] | string | string[] | RawFieldQuery<any>> {
     parameterAlias: string;
     value: V;
 }

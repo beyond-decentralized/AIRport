@@ -17,12 +17,17 @@ export declare class QNumberField extends QOperableField<number, JSONRawNumberOp
     constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal<any>, objectType?: JSONClauseObjectType);
     getInstance(qEntity?: IQEntityInternal<any>): QNumberField;
 }
-export declare class QNumberFunction extends QNumberField implements IQFunction<number | RawFieldQuery<any>> {
-    value: number | RawFieldQuery<IQNumberField>;
-    private isQueryParameter;
+export declare class QNumberFunction<T extends number | number[] = number> extends QNumberField implements IQFunction<T | RawFieldQuery<any>> {
+    value: T | RawFieldQuery<IQNumberField>;
+    protected isQueryParameter: boolean;
     parameterAlias: string;
-    constructor(value: number | RawFieldQuery<IQNumberField>, isQueryParameter?: boolean);
+    constructor(value: T | RawFieldQuery<IQNumberField>, isQueryParameter?: boolean);
     getInstance(): QNumberFunction;
     toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
+}
+export declare class QNumberArrayFunction extends QNumberFunction<number[]> {
+    value: number[] | RawFieldQuery<any>;
+    constructor(value: number[] | RawFieldQuery<any>, isQueryParameter?: boolean);
+    getInstance(): QNumberFunction<any>;
 }
 //# sourceMappingURL=NumberField.d.ts.map

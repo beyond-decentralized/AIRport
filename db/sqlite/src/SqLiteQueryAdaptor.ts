@@ -1,19 +1,19 @@
 import {
 	IQEntityInternal,
 	Parameter
-}                          from '@airport/air-control'
+}                            from '@airport/air-control';
 import {
 	AbstractFunctionAdaptor,
 	ISQLFunctionAdaptor,
 	ISQLQueryAdaptor,
 	ISqlValueProvider
-}                          from '@airport/fuel-hydrant-system'
+}                            from '@airport/fuel-hydrant-system';
 import {
 	JSONSqlFunctionCall,
 	SQLDataType,
 	SqlFunction
-}                          from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
+}                            from '@airport/ground-control';
+import { IOperationContext } from '@airport/tower';
 
 /**
  * Created by Papa on 8/27/2016.
@@ -21,27 +21,27 @@ import {IOperationContext} from '@airport/tower'
 export abstract class SqLiteQueryAdaptor
 	implements ISQLQueryAdaptor {
 
-	private functionAdaptor: ISQLFunctionAdaptor
+	private functionAdaptor: ISQLFunctionAdaptor;
 
 	constructor() {
-		this.functionAdaptor = new SqlLiteFunctionAdaptor()
+		this.functionAdaptor = new SqlLiteFunctionAdaptor();
 	}
 
 	getParameterReference(
 		parameterReferences: (number | string)[],
 		newReference: number | string
 	): string {
-		return '?'
+		return '?';
 	}
 
 	dateToDbQuery(date: Date): string {
-		let milliseconds = date.getTime()
+		let milliseconds = date.getTime();
 
-		return '' + milliseconds
+		return '' + milliseconds;
 	}
 
 	getResultArray(rawResponse: any): any[] {
-		return rawResponse.res.rows
+		return rawResponse.res.rows;
 	}
 
 	getResultCellValue(
@@ -51,61 +51,66 @@ export abstract class SqLiteQueryAdaptor
 		dataType: SQLDataType,
 		defaultValue: any
 	): any {
-		let value = this.getResultCellRawValue(resultRow, columnName, index, dataType, defaultValue)
+		let value = this.getResultCellRawValue(resultRow, columnName, index, dataType, defaultValue);
 		switch (dataType) {
 			case SQLDataType.BOOLEAN:
 				if (value !== null) {
-					return !!value
+					return !!value;
 				}
-				break
+				break;
 			case SQLDataType.DATE:
 				if (value !== null) {
-					return new Date(value)
+					return new Date(value);
 				}
-				break
+				break;
 			case SQLDataType.JSON:
 				if (value !== null) {
-					return JSON.parse(value)
+					return JSON.parse(value);
 				}
-				break
+				break;
 		}
-		return value
+		return value;
 	}
 
 	getFunctionAdaptor(): ISQLFunctionAdaptor {
-		return this.functionAdaptor
+		return this.functionAdaptor;
 	}
 
 	getOffsetFragment(offset: number): string {
 		return `
 OFFSET
-	${offset}`
+	${offset}`;
 	}
 
 	getLimitFragment(limit: number): string {
 		return `
 LIMIT
-	${limit}`
+	${limit}`;
 	}
 
 	getParameterValue(parameter: Parameter): any {
-		return this.getValue(parameter.value)
+		return this.getValue(parameter.value);
 	}
 
-	getValue(value: any): any {
+	getValue(
+		value: any,
+		allowArrays: boolean = true
+	): any {
 		switch (typeof value) {
 			case 'boolean':
-				return value ? '1' : '0'
+				return value ? '1' : '0';
 			case 'number':
 			case 'string':
-				return value
+				return value;
 			case 'object':
 				if (value instanceof Date) {
-					return value.getTime()
+					return value.getTime();
+				} else if (value instanceof Array) {
+					return value.map(aValue => this.getValue(aValue, false));
 				}
-				throw new Error(`Unexpected object as a parameter.`)
+				throw new Error(`Unexpected object as a parameter.`);
 			default:
-				throw new Error(`Unexpected type of parameter '${typeof value}.'`)
+				throw new Error(`Unexpected type of parameter '${typeof value}.'`);
 		}
 	}
 
@@ -129,76 +134,76 @@ export class SqlLiteFunctionAdaptor
 		sqlValueProvider: ISqlValueProvider,
 		context: IOperationContext<any, any>,
 	): string {
-		let param2
+		let param2;
 		switch (jsonFunctionCall.ft) {
 			case SqlFunction.ABS:
-				return `ABS(${value})`
+				return `ABS(${value})`;
 			case SqlFunction.AVG:
-				return `AVG(${value})`
+				return `AVG(${value})`;
 			case SqlFunction.COUNT:
-				return `COUNT(${value})`
+				return `COUNT(${value})`;
 			case SqlFunction.MAX:
-				return `MAX(${value})`
+				return `MAX(${value})`;
 			case SqlFunction.MIN:
-				return `MIN(${value})`
+				return `MIN(${value})`;
 			case SqlFunction.SUM:
-				return `SUM(${value})`
+				return `SUM(${value})`;
 			case SqlFunction.UCASE:
-				return `UPPER(${value})`
+				return `UPPER(${value})`;
 			case SqlFunction.LCASE:
-				return `LOWER(${value})`
+				return `LOWER(${value})`;
 			case SqlFunction.MID:
 				let start  = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context)
+					jsonFunctionCall.p[0], context);
 				let length = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[1], context)
-				return `SUBSTR(${value}, ${start}, ${length})`
+					jsonFunctionCall.p[1], context);
+				return `SUBSTR(${value}, ${start}, ${length})`;
 			case SqlFunction.LEN:
-				return `LENGTH(${value})`
+				return `LENGTH(${value})`;
 			case SqlFunction.ROUND:
 				let digits = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context)
-				return `ROUND(${value}, ${digits})`
+					jsonFunctionCall.p[0], context);
+				return `ROUND(${value}, ${digits})`;
 			case SqlFunction.NOW:
-				return `DATE('now')`
+				return `DATE('now')`;
 			case SqlFunction.FORMAT:
-				let formatCall = `FORMAT('${value}', `
+				let formatCall = `FORMAT('${value}', `;
 				for (let i = 0; i < jsonFunctionCall.p.length; i++) {
-					let formatParam = jsonFunctionCall.p[i]
+					let formatParam = jsonFunctionCall.p[i];
 					formatParam     = sqlValueProvider.getFunctionCallValue(
-						formatParam, context)
-					formatCall      = `${formatCall}, ${formatParam}`
+						formatParam, context);
+					formatCall      = `${formatCall}, ${formatParam}`;
 				}
-				formatCall += ')'
-				return formatCall
+				formatCall += ')';
+				return formatCall;
 			case SqlFunction.REPLACE:
 				let param1 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context)
+					jsonFunctionCall.p[0], context);
 				param2     = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[1], context)
-				return `REPLACE('${value}', ${param1}, ${param2})`
+					jsonFunctionCall.p[1], context);
+				return `REPLACE('${value}', ${param1}, ${param2})`;
 			case SqlFunction.TRIM:
-				return `TRIM(${value})`
+				return `TRIM(${value})`;
 			case SqlFunction.DISTINCT:
-				throw new Error(`Invalid placement of a distinct function`)
+				throw new Error(`Invalid placement of a distinct function`);
 			case SqlFunction.EXISTS:
-				throw new Error(`Invalid placement of an exists function`)
+				throw new Error(`Invalid placement of an exists function`);
 			case SqlFunction.DIVIDE:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context)
-				return `${value} / ${param2}`
+					jsonFunctionCall.p[0], context);
+				return `${value} / ${param2}`;
 			case SqlFunction.MINUS:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context)
-				return `${value} - ${param2}`
+					jsonFunctionCall.p[0], context);
+				return `${value} - ${param2}`;
 			case SqlFunction.MULTIPLY:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context)
-				return `${value} * ${param2}`
+					jsonFunctionCall.p[0], context);
+				return `${value} * ${param2}`;
 			case SqlFunction.PLUS:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context)
-				return `${value} + ${param2}`
+					jsonFunctionCall.p[0], context);
+				return `${value} + ${param2}`;
 			case SqlFunction.CONCATENATE:
 				return jsonFunctionCall.p.reduce((
 					acc,
@@ -206,35 +211,35 @@ export class SqlLiteFunctionAdaptor
 				) => {
 					let primitiveValue = this.toString(
 						sqlValueProvider.getFunctionCallValue(
-							val, context))
-					return acc + val
-				}, this.toString(value))
+							val, context));
+					return acc + val;
+				}, this.toString(value));
 			case SqlFunction.COALESCE:
-				throw new Error('Not Implemented')
+				throw new Error('Not Implemented');
 			default:
-				throw new Error(`Unknown function type: ${jsonFunctionCall.ft}`)
+				throw new Error(`Unknown function type: ${jsonFunctionCall.ft}`);
 		}
 	}
 
 	toString(val): string {
 		switch (typeof val) {
 			case 'string':
-				return val
+				return val;
 			case 'boolean':
 			case 'number':
-				return val.toString()
+				return val.toString();
 			case 'undefined':
-				return 'null'
+				return 'null';
 			case 'object':
 				if (val === null) {
-					return 'null'
+					return 'null';
 				}
 				if (val instanceof Date) {
-					return val.toJSON()
+					return val.toJSON();
 				}
-				throw new Error(`Unsupported value for conversion to string.`)
+				throw new Error(`Unsupported value for conversion to string.`);
 			default:
-				throw new Error(`Unsupported value for conversion to string.`)
+				throw new Error(`Unsupported value for conversion to string.`);
 		}
 	}
 }

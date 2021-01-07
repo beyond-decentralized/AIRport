@@ -1,19 +1,19 @@
+import { DI }               from '@airport/di';
 import {
-	DI,
-	IContext
-}                         from '@airport/di'
-import {
-	DbEntity,
 	ITransactionalConnector,
 	TRANS_CONNECTOR
-}                         from '@airport/ground-control'
-import {IAirportDatabase} from '../../lingo/AirportDatabase'
-import {IUpdateCache}     from '../../lingo/core/data/UpdateCache'
-import {IQueryFacade}     from '../../lingo/core/repository/DatabaseFacade'
-import {IEntityUtils}     from '../../lingo/utils/EntityUtils'
-import {IFieldUtils}      from '../../lingo/utils/FieldUtils'
-import {IQueryUtils}      from '../../lingo/utils/QueryUtils'
-import {ISchemaUtils}     from '../../lingo/utils/SchemaUtils'
+}                           from '@airport/ground-control';
+import { IAirportDatabase } from '../../lingo/AirportDatabase';
+import { IUpdateCache }     from '../../lingo/core/data/UpdateCache';
+import { IQueryFacade }     from '../../lingo/core/repository/DatabaseFacade';
+import {
+	IIocQueryContext,
+	IQueryContext
+}                           from '../../lingo/query/QueryContext';
+import { IEntityUtils }     from '../../lingo/utils/EntityUtils';
+import { IFieldUtils }      from '../../lingo/utils/FieldUtils';
+import { IQueryUtils }      from '../../lingo/utils/QueryUtils';
+import { ISchemaUtils }     from '../../lingo/utils/SchemaUtils';
 import {
 	AIR_DB,
 	ENTITY_UTILS,
@@ -23,41 +23,14 @@ import {
 	QUERY_UTILS,
 	SCHEMA_UTILS,
 	UPDATE_CACHE
-}                         from '../../tokens'
-
-export interface IQueryContext<E>
-	extends IContext {
-	checkIfProcessed: boolean
-	dbEntity: DbEntity
-	ioc: IIocQueryContext
-}
-
-export interface IIocQueryContext {
-
-	airDb: IAirportDatabase
-	entityUtils: IEntityUtils
-	fieldUtils: IFieldUtils
-	queryFacade: IQueryFacade
-	queryUtils: IQueryUtils
-	schemaUtils: ISchemaUtils
-	transactionalConnector: ITransactionalConnector
-	updateCache: IUpdateCache
-
-	init(): Promise<void>
-
-}
+}                           from '../../tokens';
 
 export class IocQueryContext
 	implements IIocQueryContext {
 
-	airDb: IAirportDatabase
-	entityUtils: IEntityUtils
-	fieldUtils: IFieldUtils
-	queryFacade: IQueryFacade
-	queryUtils: IQueryUtils
-	schemaUtils: ISchemaUtils
-	transactionalConnector: ITransactionalConnector
-	updateCache: IUpdateCache
+	airDb: IAirportDatabase;
+	entityUtils: IEntityUtils;
+	fieldUtils: IFieldUtils;
 
 	async init(): Promise<void> {
 		const [airDb, entityUtils, fieldUtils, queryFacade,
@@ -66,16 +39,22 @@ export class IocQueryContext
 			.get(
 				AIR_DB, ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE,
 				QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
-			)
-		this.airDb                  = airDb
-		this.entityUtils            = entityUtils
-		this.fieldUtils             = fieldUtils
-		this.queryFacade            = queryFacade
-		this.queryUtils             = queryUtils
-		this.schemaUtils            = schemaUtils
-		this.transactionalConnector = transactionalConnector
-		this.updateCache            = updateCache
+			);
+		this.airDb                  = airDb;
+		this.entityUtils            = entityUtils;
+		this.fieldUtils             = fieldUtils;
+		this.queryFacade            = queryFacade;
+		this.queryUtils             = queryUtils;
+		this.schemaUtils            = schemaUtils;
+		this.transactionalConnector = transactionalConnector;
+		this.updateCache            = updateCache;
 	}
+
+	queryFacade: IQueryFacade;
+	queryUtils: IQueryUtils;
+	schemaUtils: ISchemaUtils;
+	transactionalConnector: ITransactionalConnector;
+	updateCache: IUpdateCache;
 
 }
 
@@ -94,11 +73,11 @@ export class QueryContextLoader
 		ctx: IQueryContext<E>
 	): Promise<void> {
 		if (!ctx.ioc) {
-			ctx.ioc = new IocQueryContext()
-			await ctx.ioc.init()
+			ctx.ioc = new IocQueryContext();
+			await ctx.ioc.init();
 		}
 	}
 
 }
 
-DI.set(QUERY_CONTEXT_LOADER, QueryContextLoader)
+DI.set(QUERY_CONTEXT_LOADER, QueryContextLoader);

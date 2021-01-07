@@ -1,6 +1,6 @@
 import { IQEntityInternal, Parameter } from '@airport/air-control';
-import { JSONSqlFunctionCall, SQLDataType } from '@airport/ground-control';
 import { AbstractFunctionAdaptor, ISQLFunctionAdaptor, ISQLQueryAdaptor, ISqlValueProvider } from '@airport/fuel-hydrant-system';
+import { JSONSqlFunctionCall, SQLDataType } from '@airport/ground-control';
 import { IOperationContext } from '@airport/tower';
 /**
  * Created by Papa on 8/27/2016.
@@ -16,7 +16,7 @@ export declare class MySqlQueryAdaptor implements ISQLQueryAdaptor {
     getOffsetFragment(offset: number): string;
     getLimitFragment(limit: number): string;
     getParameterValue(parameter: Parameter): any;
-    getValue(value: any): any;
+    getValue(value: any, allowArrays?: boolean): any;
     protected getResultCellRawValue(resultRow: any, columnName: string, index: number, dataType: SQLDataType, defaultValue: any): any;
 }
 export declare class MySqlFunctionAdaptor extends AbstractFunctionAdaptor {

@@ -20,7 +20,8 @@ export class EntityMappingBuilder {
             imports.push(`import { ${entityMapping.entityName} } from '${entityImportRelativePath}';`);
             return `  accumulator.add(${entityMapping.entityName}, ${entityMapping.entityIndex});`;
         }).join('\n');
-        return `import { AIR_DB } from '@airport/air-control';
+        return `/* eslint-disable */
+import { AIR_DB } from '@airport/air-control';
 import { DI } from '@airport/di';
 ${imports.join('\n')}
 

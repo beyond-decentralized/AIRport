@@ -4,20 +4,20 @@ import {
 	JSONClauseField,
 	JSONClauseObjectType,
 	SQLDataType
-}                           from '@airport/ground-control'
-import {IQEntityInternal}   from '../../../lingo/core/entity/Entity'
-import {IQFunction}         from '../../../lingo/core/field/Functions'
-import {IQNumberField}      from '../../../lingo/core/field/NumberField'
+}                             from '@airport/ground-control';
+import { IQEntityInternal }   from '../../../lingo/core/entity/Entity';
+import { IQFunction }         from '../../../lingo/core/field/Functions';
+import { IQNumberField }      from '../../../lingo/core/field/NumberField';
 import {
 	INumberOperation,
 	JSONRawNumberOperation
-}                           from '../../../lingo/core/operation/NumberOperation'
-import {RawFieldQuery}      from '../../../lingo/query/facade/FieldQuery'
-import {IFieldUtils}        from '../../../lingo/utils/FieldUtils'
-import {IQueryUtils}        from '../../../lingo/utils/QueryUtils'
-import {FieldColumnAliases} from '../entity/Aliases'
-import {NumberOperation}    from '../operation/NumberOperation'
-import {QOperableField}     from './OperableField'
+}                             from '../../../lingo/core/operation/NumberOperation';
+import { RawFieldQuery }      from '../../../lingo/query/facade/FieldQuery';
+import { IFieldUtils }        from '../../../lingo/utils/FieldUtils';
+import { IQueryUtils }        from '../../../lingo/utils/QueryUtils';
+import { FieldColumnAliases } from '../entity/Aliases';
+import { NumberOperation }    from '../operation/NumberOperation';
+import { QOperableField }     from './OperableField';
 
 /**
  * Created by Papa on 8/11/2016.
@@ -37,31 +37,31 @@ export class QNumberField
 		q: IQEntityInternal<any>,
 		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
 	) {
-		super(dbColumn, dbProperty, q, objectType, new NumberOperation())
+		super(dbColumn, dbProperty, q, objectType, new NumberOperation());
 	}
 
 	getInstance(qEntity: IQEntityInternal<any> = this.q): QNumberField {
 		return this.copyFunctions(
-			new QNumberField(this.dbColumn, this.dbProperty, qEntity, this.objectType))
+			new QNumberField(this.dbColumn, this.dbProperty, qEntity, this.objectType));
 	}
 
 }
 
-export class QNumberFunction
+export class QNumberFunction<T extends number | number[] = number>
 	extends QNumberField
-	implements IQFunction<number | RawFieldQuery<any>> {
+	implements IQFunction<T | RawFieldQuery<any>> {
 
-	parameterAlias: string
+	parameterAlias: string;
 
 	constructor(
-		public value: number | RawFieldQuery<IQNumberField>,
-		private isQueryParameter: boolean = false
+		public value: T | RawFieldQuery<IQNumberField>,
+		protected isQueryParameter: boolean = false
 	) {
-		super(<any>{type: SQLDataType.NUMBER}, null, null, JSONClauseObjectType.FIELD_FUNCTION)
+		super(<any>{ type: SQLDataType.NUMBER }, null, null, JSONClauseObjectType.FIELD_FUNCTION);
 	}
 
 	getInstance(): QNumberFunction {
-		return this.copyFunctions(new QNumberFunction(this.value))
+		return this.copyFunctions(new QNumberFunction(this.value as number, this.isQueryParameter));
 	}
 
 	toJSON(
@@ -71,12 +71,29 @@ export class QNumberFunction
 		fieldUtils: IFieldUtils
 	): JSONClauseField {
 		let json = this.operableFunctionToJson(
-			this, columnAliases, forSelectClause, queryUtils, fieldUtils)
+			this, columnAliases, forSelectClause, queryUtils, fieldUtils);
 
 		if (this.isQueryParameter) {
-			this.parameterAlias = <string>json.v
+			this.parameterAlias = <string>json.v;
 		}
 
-		return json
+		return json;
 	}
+}
+
+export class QNumberArrayFunction
+	extends QNumberFunction<number[]> {
+
+	constructor(
+		public value: number[] | RawFieldQuery<any>,
+		isQueryParameter?: boolean
+	) {
+		super(value, isQueryParameter);
+	}
+
+	getInstance(): QNumberFunction<any> {
+		return this.copyFunctions(new QNumberArrayFunction(this.value as number[],
+			this.isQueryParameter));
+	}
+
 }

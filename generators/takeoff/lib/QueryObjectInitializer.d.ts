@@ -25,7 +25,7 @@ export interface DdlObjects {
     schemaVersions: ISchemaVersion[];
 }
 export declare class QueryObjectInitializer implements IQueryObjectInitializer {
-    initialize(airDb: IAirportDatabase): Promise<DdlObjects>;
     generateQObjectsAndPopulateStore(ddlObjects: DdlObjects, airDb: IAirportDatabase, ddlObjectLinker: IDdlObjectLinker, queryEntityClassCreator: IQueryEntityClassCreator, terminalStore: ITerminalStore): void;
+    initialize(airDb: IAirportDatabase): Promise<DdlObjects>;
 }
 //# sourceMappingURL=QueryObjectInitializer.d.ts.map

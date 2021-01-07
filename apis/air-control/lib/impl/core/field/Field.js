@@ -13,28 +13,9 @@ export class QField {
         this.objectType = objectType;
         this.__appliedFunctions__ = [];
     }
-    /**
-     protected getFieldKey() {
-        const relationManager = DI.db().getSync(RELATION_MANAGER)
-        let rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.parentQ.getRootJoinEntity());
-        let key = `${relationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
-        return key;
-    }
-     */
-    asc() {
-        return new FieldInOrderBy(this, SortOrder.ASCENDING);
-    }
-    desc() {
-        return new FieldInOrderBy(this, SortOrder.DESCENDING);
-    }
     applySqlFunction(sqlFunctionCall) {
         let appliedField = this.getInstance();
         appliedField.__appliedFunctions__.push(sqlFunctionCall);
-        return appliedField;
-    }
-    addSubQuery(subQuery) {
-        let appliedField = this.getInstance();
-        appliedField.__fieldSubQuery__ = subQuery;
         return appliedField;
     }
     toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
@@ -66,6 +47,25 @@ export class QField {
             jsonField.ot = JSONClauseObjectType.FIELD_QUERY;
         }
         return jsonField;
+    }
+    /**
+     protected getFieldKey() {
+        const relationManager = DI.db().getSync(RELATION_MANAGER)
+        let rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.parentQ.getRootJoinEntity());
+        let key = `${relationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
+        return key;
+    }
+     */
+    asc() {
+        return new FieldInOrderBy(this, SortOrder.ASCENDING);
+    }
+    desc() {
+        return new FieldInOrderBy(this, SortOrder.DESCENDING);
+    }
+    addSubQuery(subQuery) {
+        let appliedField = this.getInstance();
+        appliedField.__fieldSubQuery__ = subQuery;
+        return appliedField;
     }
     operableFunctionToJson(functionObject, columnAliases, forSelectClause, queryUtils, fieldUtils) {
         let alias;
@@ -118,8 +118,30 @@ export class QField {
             case 'string':
                 return columnAliases.entityAliases.getParams()
                     .getNextAlias(functionObject);
+            case 'object':
+                if (value instanceof Date) {
+                    return columnAliases.entityAliases.getParams()
+                        .getNextAlias(functionObject);
+                }
+                else if (value instanceof Array) {
+                    return columnAliases.entityAliases.getParams()
+                        .getNextAlias(functionObject);
+                }
+                else if (value === null) {
+                    return columnAliases.entityAliases.getParams()
+                        .getNextAlias(functionObject);
+                }
+                else {
+                    throw new Error(`Unexpected query parameter type allowed types are:
+boolean | Date | Date[] | number | number[] | string | string[]
+`);
+                }
             case 'undefined':
                 throw new Error(`Undefined is not allowed as a query parameter`);
+            default:
+                throw new Error(`Unexpected query parameter type allowed types are:
+boolean | Date | Date[] | number | number[] | string | string[]
+`);
         }
         // TODO: this never gets called, is this needed?
         /*

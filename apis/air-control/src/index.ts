@@ -114,6 +114,7 @@ export * from './lingo/query/facade/Update';
 export * from './lingo/query/Dao';
 export * from './lingo/query/Duo';
 export * from './lingo/query/MappedEntityArray';
+export * from './lingo/query/QueryContext';
 export * from './lingo/utils/EntityUtils';
 export * from './lingo/utils/FieldUtils';
 export * from './lingo/utils/QMetadataUtils';

@@ -16,7 +16,7 @@ export class QNumberFunction extends QNumberField {
         this.isQueryParameter = isQueryParameter;
     }
     getInstance() {
-        return this.copyFunctions(new QNumberFunction(this.value));
+        return this.copyFunctions(new QNumberFunction(this.value, this.isQueryParameter));
     }
     toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
         let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils);
@@ -24,6 +24,15 @@ export class QNumberFunction extends QNumberField {
             this.parameterAlias = json.v;
         }
         return json;
+    }
+}
+export class QNumberArrayFunction extends QNumberFunction {
+    constructor(value, isQueryParameter) {
+        super(value, isQueryParameter);
+        this.value = value;
+    }
+    getInstance() {
+        return this.copyFunctions(new QNumberArrayFunction(this.value, this.isQueryParameter));
     }
 }
 //# sourceMappingURL=NumberField.js.map

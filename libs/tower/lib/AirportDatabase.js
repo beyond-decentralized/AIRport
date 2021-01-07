@@ -1,4 +1,4 @@
-import { AIR_DB, DB_FACADE, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, } from '@airport/air-control';
+import { abs, add, AIR_DB, and, avg, bool, concat, count, date, DB_FACADE, distinct, divide, exists, format, intersect, lcase, len, max, mid, min, minus, modulus, multiply, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, not, now, num, or, replace, round, str, subtract, sum, trim, ucase, union, unionAll, wrapPrimitive, } from '@airport/air-control';
 import { container, DI, } from '@airport/di';
 class EntityAccumulator {
     constructor(schemaDomain, schemaName, entityMap) {
@@ -26,6 +26,45 @@ export class AirportDatabase {
     // private currentDbName = dbConst.DEFAULT_DB
     constructor() {
         this.entityMap = new Map();
+        this.functions = {
+            abs,
+            avg,
+            count,
+            max,
+            min,
+            sum,
+            ucase,
+            lcase,
+            mid,
+            len,
+            round,
+            now,
+            format,
+            replace,
+            trim,
+            distinct,
+            exists,
+            divide,
+            subtract,
+            modulus,
+            multiply,
+            add,
+            concat,
+            union,
+            unionAll,
+            intersect,
+            minus,
+            // logical operators
+            and,
+            not,
+            or,
+            // primitive wrappers
+            bool,
+            date,
+            num,
+            str,
+            wrapPrimitive,
+        };
         this.schemas = [];
         this.qSchemas = [];
         this.QM = {};
@@ -37,46 +76,46 @@ export class AirportDatabase {
         this.searchOne = new NonEntitySearchOne();
     }
     /*
-      registerDatabase(
-        facade: IDatabaseFacade
-      ) {
-        if (!this.dbNameSet[facade.name]) {
-          this.dbNames.push(facade.name)
+        registerDatabase(
+            facade: IDatabaseFacade
+        ) {
+            if (!this.dbNameSet[facade.name]) {
+                this.dbNames.push(facade.name)
+            }
+            this.databaseMap[facade.name] = facade
+            this.dbNameSet[facade.name]   = true
         }
-        this.databaseMap[facade.name] = facade
-        this.dbNameSet[facade.name]   = true
-      }
-  
-      async registerQSchemas(
-        qSchemas: QSchema[]
-      ) {
-        for (const qSchema of qSchemas) {
-          const schemaName    = getSchemaName(qSchema)
-          this.QM[schemaName] = qSchema
+
+        async registerQSchemas(
+            qSchemas: QSchema[]
+        ) {
+            for (const qSchema of qSchemas) {
+                const schemaName    = getSchemaName(qSchema)
+                this.QM[schemaName] = qSchema
+            }
         }
-      }
-  
-      setCurrentDb(
-        dbName: string = dbConst.DEFAULT_DB
-      ): void {
-        this.currentDbName = dbName
-      }
-  
-      getDbNames(): string[] {
-        return this.dbNames
-      }
-  
-      getDbNameSet(): { [databaseName: string]: boolean } {
-        return this.dbNameSet
-      }
-  
-      get db(): IDatabaseFacade {
-        let database = this.databaseMap[this.currentDbName]
-        if (!database) {
-          throw new Error(`Did not find database '${this.currentDbName}'`)
+
+        setCurrentDb(
+            dbName: string = dbConst.DEFAULT_DB
+        ): void {
+            this.currentDbName = dbName
         }
-        return database
-      }
+
+        getDbNames(): string[] {
+            return this.dbNames
+        }
+
+        getDbNameSet(): { [databaseName: string]: boolean } {
+            return this.dbNameSet
+        }
+
+        get db(): IDatabaseFacade {
+            let database = this.databaseMap[this.currentDbName]
+            if (!database) {
+                throw new Error(`Did not find database '${this.currentDbName}'`)
+            }
+            return database
+        }
     */
     getAccumulator(schemaDomain, schemaName) {
         return new EntityAccumulator(schemaDomain, schemaName, this.entityMap);
@@ -153,6 +192,6 @@ export class AirportDatabase {
 }
 DI.set(AIR_DB, AirportDatabase);
 export function injectAirportDatabase() {
-    console.log('Injecting AirportDatabase');
+    // console.log('Injecting AirportDatabase');
 }
 //# sourceMappingURL=AirportDatabase.js.map

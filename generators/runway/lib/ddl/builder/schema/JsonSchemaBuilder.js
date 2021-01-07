@@ -30,6 +30,10 @@ export class JsonSchemaBuilder {
         const sSchemaBuilder = new SSchemaBuilder(this.config, this.entityMapByName);
         const sIndexedSchema = sSchemaBuilder.build(schemaMapByProjectName);
         const jsonSchema = this.convertSIndexedSchemaToJsonSchema(domain, sIndexedSchema);
+        // TODO: reset table and column and relation indexes based on existing schema
+        return [jsonSchema, sIndexedSchema];
+    }
+    addOperations(jsonSchema, entityOperationMap) {
         jsonSchema.versions[jsonSchema.versions.length - 1].entities.forEach(jsonEntity => {
             let entityOperations = entityOperationMap[jsonEntity.name];
             if (!entityOperations) {
@@ -37,8 +41,6 @@ export class JsonSchemaBuilder {
             }
             jsonEntity.operations = entityOperations;
         });
-        // TODO: reset table and column and relation indexes based on existing schema
-        return [jsonSchema, sIndexedSchema];
     }
     convertSIndexedSchemaToJsonSchema(domain, sIndexedSchema) {
         const jsonEntities = sIndexedSchema.entities.map(sIndexedEntity => {

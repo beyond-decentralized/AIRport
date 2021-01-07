@@ -1,32 +1,32 @@
-import {IQueryContext} from '@airport/air-control'
+import { IQueryContext } from '@airport/air-control';
 import {
 	container,
 	DI,
 	IContext
-}                      from '@airport/di'
+}                        from '@airport/di';
 import {
 	DistributionStrategy,
 	ITransactionalConnector,
 	PlatformType,
 	PortableQuery,
 	TRANS_CONNECTOR
-}                      from '@airport/ground-control'
-import {IObservable}   from '@airport/observe'
+}                        from '@airport/ground-control';
+import { IObservable }   from '@airport/observe';
 import {
 	IOperationContext,
 	TRANS_SERVER
-}                      from '@airport/tower'
+}                        from '@airport/tower';
 
 export class TransactionalConnector
 	implements ITransactionalConnector {
 
-	dbName: string
-	serverUrl: string
+	dbName: string;
+	serverUrl: string;
 
 	async init(): Promise<void> {
-		const transServer = await container(this).get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER);
 
-		await transServer.init()
+		await transServer.init();
 	}
 
 	async addRepository(
@@ -37,7 +37,7 @@ export class TransactionalConnector
 		distributionStrategy: DistributionStrategy,
 		context: IOperationContext<any, any>
 	): Promise<number> {
-		const transServer = await container(this).get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER);
 
 		return await transServer.addRepository(
 			name,
@@ -49,7 +49,7 @@ export class TransactionalConnector
 				domainAndPort: 'test'
 			},
 			context
-		)
+		);
 	}
 
 	async find<E, EntityArray extends Array<E>>(
@@ -57,7 +57,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		const transServer = await container(this).get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER);
 
 		return await transServer.find(
 			portableQuery,
@@ -66,7 +66,7 @@ export class TransactionalConnector
 			},
 			context,
 			cachedSqlQueryId
-		)
+		);
 	}
 
 	async findOne<E>(
@@ -74,7 +74,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		const transServer = await container(this).get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER);
 
 		return await transServer.findOne(
 			portableQuery,
@@ -83,7 +83,7 @@ export class TransactionalConnector
 			},
 			context,
 			cachedSqlQueryId
-		)
+		);
 	}
 
 	async search<E, EntityArray extends Array<E>>(
@@ -91,7 +91,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<EntityArray>> {
-		const transServer = await container(this).get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER);
 
 		return await transServer.search(
 			portableQuery,
@@ -100,7 +100,7 @@ export class TransactionalConnector
 			},
 			context,
 			cachedSqlQueryId
-		)
+		);
 	}
 
 	async searchOne<E>(
@@ -108,7 +108,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<E>> {
-		const transServer = await container(this).get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANS_SERVER);
 
 		return await transServer.searchOne(
 			portableQuery,
@@ -117,14 +117,14 @@ export class TransactionalConnector
 			},
 			context,
 			cachedSqlQueryId
-		)
+		);
 	}
 
 	save<E, T = E | E[]>(
 		entity: T,
 		context: IContext,
 	): Promise<number> {
-		throw new Error(`Not Implemented`)
+		throw new Error(`Not Implemented`);
 	}
 
 	/* FIXME: need to add top level .save call here
@@ -193,8 +193,8 @@ export class TransactionalConnector
 
 }
 
-DI.set(TRANS_CONNECTOR, TransactionalConnector)
+DI.set(TRANS_CONNECTOR, TransactionalConnector);
 
 export function injectTransactionalConnector(): void {
-	console.log('Injecting TransactionalConnector')
+	// console.log('Injecting TransactionalConnector')
 }

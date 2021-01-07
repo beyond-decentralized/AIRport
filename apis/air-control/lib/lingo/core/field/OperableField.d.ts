@@ -1,4 +1,4 @@
-import { JSONBaseOperation } from "@airport/ground-control";
+import { JSONBaseOperation } from '@airport/ground-control';
 import { RawFieldQuery } from '../../query/facade/FieldQuery';
 import { IOperation, IValueOperation, JSONRawValueOperation } from '../operation/Operation';
 import { IQFieldInternal, IQOrderableField } from './Field';

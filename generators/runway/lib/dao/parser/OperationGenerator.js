@@ -21,23 +21,55 @@ export function visitDaoFile(node, path) {
     // 	fileImportsMapByFilePath[path] = fileImports
     // }
     // currentFileImports = fileImports
-    // This is a top level class, get its symbol
-    let symbol = globalThis.checker
-        .getSymbolAtLocation(node.name);
     if (node.kind !== tsc.SyntaxKind.ClassDeclaration) {
         return;
+    }
+    const classNode = node;
+    // This is a top level class, get its symbol
+    let symbol = globalThis.checker
+        .getSymbolAtLocation(classNode.name);
+    let daoName = classNode.name.escapedText;
+    let entityName;
+    let extendedBaseClass;
+    let implementedDaoInterfaces = [];
+    let interfaceName;
+    for (const heritageClause of classNode.heritageClauses) {
+        switch (heritageClause.token) {
+            case tsc.SyntaxKind.ExtendsKeyword: {
+                extendedBaseClass = heritageClause.types[0].expression.escapedText;
+                if (!extendedBaseClass.startsWith('Base') || !extendedBaseClass.endsWith('Dao')) {
+                    throw new Error(`Dao ${daoName} must extends the Base{EntityName}Dao class.`);
+                }
+                entityName = extendedBaseClass.substring(4, extendedBaseClass.length - 3);
+                break;
+            }
+            case tsc.SyntaxKind.ImplementsKeyword: {
+                interfaceName = heritageClause.types[0].expression.escapedText;
+                if (interfaceName.startsWith('I') && interfaceName.endsWith('Dao')) {
+                    implementedDaoInterfaces.push(interfaceName);
+                }
+                break;
+            }
+        }
+    }
+    if (!entityName) {
+        throw new Error(`The '${daoName}' Dao must extend the Base{EntityName}Dao class.`);
+    }
+    if (!implementedDaoInterfaces.length) {
+        throw new Error(`The '${daoName}' Dao must implement the 'I${entityName}Dao' interface.`);
+    }
+    if (!implementedDaoInterfaces.filter(interfaceName => interfaceName === `I${entityName}Dao`).length) {
+        throw new Error(`The '${daoName}' Dao must implement the 'I${entityName}Dao' interface.`);
     }
     if (file.hasDao) {
         throw new Error(`Cannot declare more than one DAO per file
 	(or have multiple class definitions per file).`);
     }
     file.hasDao = true;
-    let daoName = node.name.escapedText;
     if (daoMap[daoName]) {
-        throw new Error(`Cannot declare multiple DAOs with the same name.`);
+        throw new Error(`Cannot declare multiple DAOs for the same entity ${entityName}.`);
     }
     daoMap[daoName] = true;
-    const entityName = daoName.substr(0, daoName.length - 3);
     entityOperationMap[entityName] = serializeClass(symbol, daoName, entityName);
     entityOperationPaths[entityName] = path;
 }
@@ -304,7 +336,6 @@ function serializeSave(daoName, daoOperations, decorator, entityName, memberName
     daoOperations[memberName] = operationRule;
 }
 function serializeQuery(daoName, daoOperations, decorator, decoratorName, entityName, memberName, type) {
-    const typeArguments = decorator.expression.typeArguments;
     const expression = decorator.expression.arguments[0];
     if (expression.kind !== tsc.SyntaxKind.ArrowFunction) {
         throwInvalidQuery(daoName, decoratorName, memberName, `decorator callback (for this query) can only be an arrow function
@@ -331,10 +362,7 @@ function serializeQuery(daoName, daoOperations, decorator, decoratorName, entity
         return 0;
     });
     const inputs = queryInputs.map((input, index) => {
-        let clazz;
         let name = input.escapedName;
-        let type;
-        let parameterType;
         if (!input.valueDeclaration.type) {
             throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is of an unknown kind and is not a boolean|Date|number|string|LocalQSchema|QObject
 							
@@ -342,79 +370,25 @@ function serializeQuery(daoName, daoOperations, decorator, decoratorName, entity
 							
 							`);
         }
-        switch (input.valueDeclaration.type.kind) {
-            case tsc.SyntaxKind.BooleanKeyword: {
-                clazz = 'boolean';
-                type = QueryInputKind.PARAMETER;
-                parameterType = QueryParameterType.BOOLEAN;
-                break;
-            }
-            case tsc.SyntaxKind.NumberKeyword: {
-                clazz = 'number';
-                type = QueryInputKind.PARAMETER;
-                parameterType = QueryParameterType.NUMBER;
-                break;
-            }
-            case tsc.SyntaxKind.StringKeyword: {
-                clazz = 'string';
-                type = QueryInputKind.PARAMETER;
-                parameterType = QueryParameterType.STRING;
-                break;
-            }
-            case tsc.SyntaxKind.TypeReference: {
-                clazz = input.valueDeclaration.type.typeName.escapedText;
-                if (clazz === 'Date') {
-                    type = QueryInputKind.PARAMETER;
-                    parameterType = QueryParameterType.DATE;
-                }
-                else if (clazz === 'LocalQSchema') {
-                    type = QueryInputKind.Q;
-                }
-                else {
-                    type = QueryInputKind.QENTITY;
-                    if (!clazz.startsWith('Q')) {
-                        throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is a non Date|LocalQSchema class and does not start with a Q
-							(it should be a Query Object from the (generated directory or other project)
-							
-							${name}: ${clazz}
-							
-							`);
-                    }
-                }
-                break;
-            }
-            case tsc.SyntaxKind.Parameter:
-            default: {
-                throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is of an unknown kind and is not a boolean|Date|number|string|LocalQSchema|QObject
-							
-							${name}: ?
-							
-							`);
-                break;
-            }
-        }
-        switch (type) {
+        const typeInfo = getTypeInfo(input.valueDeclaration.type, daoName, decoratorName, memberName, index, name);
+        switch (typeInfo.type) {
             case QueryInputKind.PARAMETER:
                 return {
-                    clazz,
+                    ...typeInfo,
                     name,
-                    parameterType,
-                    type
                 };
             case QueryInputKind.Q:
                 return {
-                    clazz,
+                    ...typeInfo,
                     name,
-                    type
                 };
             case QueryInputKind.QENTITY:
                 return {
-                    clazz,
+                    ...typeInfo,
                     name,
-                    type
                 };
             default:
-                throw new Error('Unsupported QueryInputKind in QueryInput.type: ' + type);
+                throw new Error('Unsupported QueryInputKind in QueryInput.type: ' + typeInfo.type);
         }
     });
     let stage = QueryInputKind.PARAMETER;
@@ -505,7 +479,8 @@ Query must be in the following format:
   ${memberName}
   
 Where: 
-  paramA-N  are any number of parameters of types (boolean, Date, number, string)
+  paramA-N  are any number of parameters of types (
+                boolean, Date, Date[], number, number[], string, string[])
   Q         is the reference to the schema's QLocalSchema object (in generated folder)
   alias1-N  are any number of entity aliases for QObjects (in generated folder or in other schemas)
 
@@ -538,6 +513,83 @@ function forEach(collection, callback) {
     else {
         for (let memberName in collection) {
             callback(memberName, collection[memberName]);
+        }
+    }
+}
+function getTypeInfo(typeRef, daoName, decoratorName, memberName, index, name, allowArrays = true) {
+    let returnType = {
+        clazz: null,
+        isArray: false,
+        parameterType: null,
+        type: null
+    };
+    switch (typeRef.kind) {
+        case tsc.SyntaxKind.BooleanKeyword: {
+            returnType.clazz = 'boolean';
+            returnType.type = QueryInputKind.PARAMETER;
+            returnType.parameterType = QueryParameterType.BOOLEAN;
+            break;
+        }
+        case tsc.SyntaxKind.NumberKeyword: {
+            returnType.clazz = 'number';
+            returnType.type = QueryInputKind.PARAMETER;
+            returnType.parameterType = QueryParameterType.NUMBER;
+            break;
+        }
+        case tsc.SyntaxKind.StringKeyword: {
+            returnType.clazz = 'string';
+            returnType.type = QueryInputKind.PARAMETER;
+            returnType.parameterType = QueryParameterType.STRING;
+            break;
+        }
+        case tsc.SyntaxKind.TypeReference: {
+            getTypeReferenceInfo(typeRef, daoName, decoratorName, memberName, index, name, returnType);
+            break;
+        }
+        case tsc.SyntaxKind.ArrayType: {
+            if (!allowArrays) {
+                throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} contains a 2 dimensional array which are not supported
+							
+							${name}: ?
+							
+							`);
+            }
+            returnType = getTypeInfo(typeRef.elementType, daoName, decoratorName, memberName, index, name, false);
+            returnType.isArray = true;
+            break;
+        }
+        case tsc.SyntaxKind.Parameter:
+        default: {
+            throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is of an unknown kind and is not a
+
+  boolean | Date | Date[] | number | number[] | string | string[] | LocalQSchema | QObject
+							
+							${name}: ?
+							
+							`);
+            break;
+        }
+    }
+    return returnType;
+}
+function getTypeReferenceInfo(typeRef, daoName, decoratorName, memberName, index, name, typeInfo) {
+    typeInfo.clazz = typeRef.typeName.escapedText;
+    if (typeInfo.clazz === 'Date') {
+        typeInfo.type = QueryInputKind.PARAMETER;
+        typeInfo.parameterType = QueryParameterType.DATE;
+    }
+    else if (typeInfo.clazz === 'LocalQSchema') {
+        typeInfo.type = QueryInputKind.Q;
+    }
+    else {
+        typeInfo.type = QueryInputKind.QENTITY;
+        if (!typeInfo.clazz.startsWith('Q')) {
+            throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is a non Date|LocalQSchema class and does not start with a Q
+							(it should be a Query Object from the (generated directory or other project)
+							
+							${name}: ${typeInfo.clazz}
+							
+							`);
         }
     }
 }

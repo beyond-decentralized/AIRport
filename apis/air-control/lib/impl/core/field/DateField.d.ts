@@ -17,12 +17,17 @@ export declare class QDateField extends QOperableField<Date, JSONRawDateOperatio
     constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal<any>, objectType?: JSONClauseObjectType);
     getInstance(qEntity?: IQEntityInternal<any>): QDateField;
 }
-export declare class QDateFunction extends QDateField implements IQFunction<Date | RawFieldQuery<any>> {
-    value: Date | RawFieldQuery<QDateField>;
-    private isQueryParameter;
+export declare class QDateFunction<T extends Date | Date[] = Date> extends QDateField implements IQFunction<T | RawFieldQuery<any>> {
+    value: T | RawFieldQuery<QDateField>;
+    protected isQueryParameter: boolean;
     parameterAlias: string;
-    constructor(value: Date | RawFieldQuery<QDateField>, isQueryParameter?: boolean);
+    constructor(value: T | RawFieldQuery<QDateField>, isQueryParameter?: boolean);
     getInstance(): QDateFunction;
     toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
+}
+export declare class QDateArrayFunction extends QDateFunction<Date[]> {
+    value: Date[] | RawFieldQuery<any>;
+    constructor(value: Date[] | RawFieldQuery<any>, isQueryParameter?: boolean);
+    getInstance(): QDateFunction<any>;
 }
 //# sourceMappingURL=DateField.d.ts.map

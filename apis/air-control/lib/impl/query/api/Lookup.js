@@ -2,16 +2,19 @@ import { DI, } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
 import { LOOKUP, QUERY_CONTEXT_LOADER } from '../../../tokens';
 export class LookupProxy {
+    ensureContext(context) {
+        return doEnsureContext(context);
+    }
     lookup(rawQuery, queryResultType, search, one, QueryClass, context, cacheForUpdate, mapResults) {
         return DI.db()
             .get(LOOKUP)
             .then(lookup => lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, context, cacheForUpdate, mapResults));
     }
+}
+export class Lookup {
     ensureContext(context) {
         return doEnsureContext(context);
     }
-}
-export class Lookup {
     async lookup(rawQuery, queryResultType, search, one, QueryClass, context, cacheForUpdate, mapResults) {
         const queryContextLoader = await DI.db().get(QUERY_CONTEXT_LOADER);
         await queryContextLoader.ensure(context);
@@ -42,9 +45,6 @@ export class Lookup {
             }
         }
         return await queryMethod.call(context.ioc.queryFacade, query, this.getQueryResultType(queryResultType, mapResults), context, cacheForUpdate);
-    }
-    ensureContext(context) {
-        return doEnsureContext(context);
     }
     getQueryResultType(baseQueryResultType, mapResults) {
         switch (baseQueryResultType) {

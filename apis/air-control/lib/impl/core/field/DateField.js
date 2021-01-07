@@ -16,7 +16,7 @@ export class QDateFunction extends QDateField {
         this.isQueryParameter = isQueryParameter;
     }
     getInstance() {
-        return this.copyFunctions(new QDateFunction(this.value));
+        return this.copyFunctions(new QDateFunction(this.value, this.isQueryParameter));
     }
     toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
         let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils);
@@ -24,6 +24,15 @@ export class QDateFunction extends QDateField {
             this.parameterAlias = json.v;
         }
         return json;
+    }
+}
+export class QDateArrayFunction extends QDateFunction {
+    constructor(value, isQueryParameter) {
+        super(value, isQueryParameter);
+        this.value = value;
+    }
+    getInstance() {
+        return this.copyFunctions(new QDateArrayFunction(this.value, this.isQueryParameter));
     }
 }
 //# sourceMappingURL=DateField.js.map

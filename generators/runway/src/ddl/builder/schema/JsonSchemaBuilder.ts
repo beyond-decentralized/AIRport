@@ -70,6 +70,15 @@ export class JsonSchemaBuilder {
 
 		const jsonSchema = this.convertSIndexedSchemaToJsonSchema(domain, sIndexedSchema);
 
+		// TODO: reset table and column and relation indexes based on existing schema
+
+		return [jsonSchema, sIndexedSchema];
+	}
+
+	addOperations(
+		jsonSchema: JsonSchema,
+		entityOperationMap: { [entityName: string]: { [operationName: string]: JsonOperation } }
+	) {
 		jsonSchema.versions[jsonSchema.versions.length - 1].entities.forEach(jsonEntity => {
 			let entityOperations = entityOperationMap[jsonEntity.name];
 			if (!entityOperations) {
@@ -77,10 +86,6 @@ export class JsonSchemaBuilder {
 			}
 			jsonEntity.operations = entityOperations;
 		});
-
-		// TODO: reset table and column and relation indexes based on existing schema
-
-		return [jsonSchema, sIndexedSchema];
 	}
 
 	private convertSIndexedSchemaToJsonSchema(

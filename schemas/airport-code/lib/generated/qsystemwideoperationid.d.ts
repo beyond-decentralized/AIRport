@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { SystemWideOperationId } from '../ddl/systemwideoperationid';
+import { SystemWideOperationId } from '../ddl/SystemWideOperationId';
 /**
  * SELECT - All fields and relations (optional).
  */

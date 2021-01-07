@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
-import { Sequence } from '../ddl/sequence';
+import { Sequence } from '../ddl/Sequence';
 /**
  * SELECT - All fields and relations (optional).
  */

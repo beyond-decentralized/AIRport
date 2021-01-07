@@ -1,5 +1,6 @@
-import { absFunction, addFunction, avgFunction, concatenateFunction, countFunction, distinctFunction, divideFunction, existsFunction, formatFunction, intersectFunction, lcaseFunction, lenFunction, maxFunction, midFunction, minFunction, minusFunction, modulusFunction, multiplyFunction, nowFunction, replaceFunction, roundFunction, subtractFunction, sumFunction, trimFunction, ucaseFunction, unionAllFunction, unionFunction } from "./field/Functions";
-import { andOperator, notOperator, orOperator } from "./operation/LogicalOperation";
+import { absFunction, addFunction, avgFunction, concatenateFunction, countFunction, distinctFunction, divideFunction, existsFunction, formatFunction, intersectFunction, lcaseFunction, lenFunction, maxFunction, midFunction, minFunction, minusFunction, modulusFunction, multiplyFunction, nowFunction, replaceFunction, roundFunction, subtractFunction, sumFunction, trimFunction, ucaseFunction, unionAllFunction, unionFunction } from './field/Functions';
+import { boolFunction, dateFunction, numFunction, strFunction } from './field/WrapperFunctions';
+import { andOperator, notOperator, orOperator } from './operation/LogicalOperation';
 export interface FunctionsAndOperators {
     abs: absFunction;
     avg: avgFunction;
@@ -31,5 +32,12 @@ export interface FunctionsAndOperators {
     and: andOperator;
     not: notOperator;
     or: orOperator;
+    bool: boolFunction;
+    date: dateFunction;
+    num: numFunction;
+    str: strFunction;
+    wrapPrimitive: {
+        (value: any): any;
+    };
 }
 //# sourceMappingURL=FunctionsAndOperators.d.ts.map

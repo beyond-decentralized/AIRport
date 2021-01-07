@@ -4,7 +4,7 @@
  * objects).  That in turn defines exactly which objects are
  * created/updated/deleted by an operation.
  */
-import { JsonQuery } from '../query/facade/Query';
+import { ISchemaQuery } from '../query/PortableQuery';
 import { DbEntity } from './Entity';
 export declare type Operation_Id = number;
 export declare type Operation_Name = string;
@@ -45,16 +45,17 @@ export interface QueryInput {
     type: QueryInputKind;
 }
 export interface QueryParameter extends QueryInput {
+    isArray: boolean;
     parameterType: QueryParameterType;
     type: QueryInputKind.PARAMETER;
 }
 export interface QueryInputQEntity extends QueryInput {
     type: QueryInputKind.QENTITY;
 }
-export interface JsonFormattedQuery {
+export interface JsonFormattedQuery extends JsonOperation {
     inputs: QueryInput[];
+    query: ISchemaQuery;
     type: OperationType.FIND_GRAPH | OperationType.FIND_TREE | OperationType.FIND_ONE_GRAPH | OperationType.FIND_ONE_TREE | OperationType.SEARCH_GRAPH | OperationType.SEARCH_TREE | OperationType.SEARCH_ONE_GRAPH | OperationType.SEARCH_ONE_TREE;
-    query: JsonQuery;
 }
 export interface JsonPersistRule extends JsonOperation, JsonOperationRule {
     type: OperationType.DELETE | OperationType.SAVE;

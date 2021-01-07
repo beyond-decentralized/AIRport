@@ -1,9 +1,10 @@
-import {QueryResultType}   from '@airport/ground-control'
-import {IEntityContext,}   from '../../core/data/EntityContext'
-import {UpdateCacheType}   from '../../core/data/UpdateCacheType'
-import {IAbstractQuery}    from '../facade/AbstractQuery'
-import {RawNonEntityQuery} from '../facade/NonEntityQuery'
-import {RawQuery}          from '../facade/Query'
+import { IContext }          from '@airport/di';
+import { QueryResultType }   from '@airport/ground-control';
+import { IEntityContext, }   from '../../core/data/EntityContext';
+import { UpdateCacheType }   from '../../core/data/UpdateCacheType';
+import { IAbstractQuery }    from '../facade/AbstractQuery';
+import { RawNonEntityQuery } from '../facade/NonEntityQuery';
+import { RawQuery }          from '../facade/Query';
 
 export interface ILookup {
 
@@ -17,5 +18,9 @@ export interface ILookup {
 		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any>
+
+	ensureContext<C extends IContext = IContext>(
+		context?: C
+	): C
 
 }

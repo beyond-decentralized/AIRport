@@ -2,31 +2,31 @@ import {
 	container,
 	DI,
 	IContext
-}                    from '@airport/di'
+}                      from '@airport/di';
 import {
 	JsonInsertValues,
 	PortableQuery
-}                    from '@airport/ground-control'
-import {IActor}      from '@airport/holding-pattern'
-import {IObservable} from '@airport/observe'
+}                      from '@airport/ground-control';
+import { IActor }      from '@airport/holding-pattern';
+import { IObservable } from '@airport/observe';
 import {
 	DistributionStrategy,
 	ICredentials,
 	PlatformType,
 	TRANSACTION_MANAGER
-}                    from '@airport/terminal-map'
+}                      from '@airport/terminal-map';
 import {
 	IOperationContext,
 	ITransaction,
 	ITransactionalServer,
 	TRANS_SERVER
-}                    from '@airport/tower'
+}                      from '@airport/tower';
 import {
 	DELETE_MANAGER,
 	INSERT_MANAGER,
 	QUERY_MANAGER,
 	UPDATE_MANAGER
-}                    from '../tokens'
+}                      from '../tokens';
 
 export interface InternalPortableQuery
 	extends PortableQuery {
@@ -60,15 +60,15 @@ export interface InternalPortableQuery
 export class TransactionalServer
 	implements ITransactionalServer {
 
-	tempActor: IActor
+	tempActor: IActor;
 
 	async init(
 		context: IContext = {}
 	): Promise<void> {
 		const transManager = await container(this)
-			.get(TRANSACTION_MANAGER)
+			.get(TRANSACTION_MANAGER);
 
-		return await transManager.init('airport', context)
+		return await transManager.init('airport', context);
 	}
 
 	async find<E, EntityArray extends Array<E>>(
@@ -78,9 +78,9 @@ export class TransactionalServer
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
 		const queryManager = await container(this)
-			.get(QUERY_MANAGER)
+			.get(QUERY_MANAGER);
 
-		return await queryManager.find<E, EntityArray>(portableQuery, context, cachedSqlQueryId)
+		return await queryManager.find<E, EntityArray>(portableQuery, context, cachedSqlQueryId);
 	}
 
 	async findOne<E>(
@@ -90,9 +90,9 @@ export class TransactionalServer
 		cachedSqlQueryId?: number,
 	): Promise<E> {
 		const queryManager = await container(this)
-			.get(QUERY_MANAGER)
+			.get(QUERY_MANAGER);
 
-		return await queryManager.findOne<E>(portableQuery, context, cachedSqlQueryId)
+		return await queryManager.findOne<E>(portableQuery, context, cachedSqlQueryId);
 	}
 
 	async search<E, EntityArray extends Array<E>>(
@@ -102,9 +102,9 @@ export class TransactionalServer
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<EntityArray>> {
 		const queryManager = await container(this)
-			.get(QUERY_MANAGER)
+			.get(QUERY_MANAGER);
 
-		return await queryManager.search<E, EntityArray>(portableQuery, context)
+		return await queryManager.search<E, EntityArray>(portableQuery, context);
 	}
 
 	async searchOne<E>(
@@ -114,9 +114,9 @@ export class TransactionalServer
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<E>> {
 		const queryManager = await container(this)
-			.get(QUERY_MANAGER)
+			.get(QUERY_MANAGER);
 
-		return await queryManager.searchOne<E>(portableQuery, context)
+		return await queryManager.searchOne<E>(portableQuery, context);
 	}
 
 	async addRepository(
@@ -129,10 +129,10 @@ export class TransactionalServer
 		context: IOperationContext<any, any>
 	): Promise<number> {
 		const insertManager = await container(this)
-			.get(INSERT_MANAGER)
+			.get(INSERT_MANAGER);
 
 		return await insertManager.addRepository(name, url, platform,
-			platformConfig, distributionStrategy)
+			platformConfig, distributionStrategy);
 	}
 
 	async insertValues(
@@ -141,30 +141,30 @@ export class TransactionalServer
 		context: IOperationContext<any, any>,
 		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
-		const values = (portableQuery.jsonQuery as JsonInsertValues).V
+		const values = (portableQuery.jsonQuery as JsonInsertValues).V;
 		if (!values.length) {
-			return 0
+			return 0;
 		}
-		const firstValuesRow = values[0]
+		const firstValuesRow = values[0];
 
 		if (!firstValuesRow || !firstValuesRow.length) {
-			return 0
+			return 0;
 		}
 
-		const numValuesInRow = firstValuesRow.length
+		const numValuesInRow = firstValuesRow.length;
 
 		for (let valuesRow of values) {
 			if (valuesRow.length !== numValuesInRow) {
-				return 0
+				return 0;
 			}
 		}
 
 		const insertManager = await container(this)
-			.get(INSERT_MANAGER)
+			.get(INSERT_MANAGER);
 
-		const actor = await this.getActor(portableQuery)
+		const actor = await this.getActor(portableQuery);
 		return await insertManager.insertValues(portableQuery, actor,
-			transaction, context, ensureGeneratedValues)
+			transaction, context, ensureGeneratedValues);
 	}
 
 	async insertValuesGetIds(
@@ -173,12 +173,12 @@ export class TransactionalServer
 		context: IOperationContext<any, any>
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		const insertManager = await container(this)
-			.get(INSERT_MANAGER)
+			.get(INSERT_MANAGER);
 
-		const actor = await this.getActor(portableQuery)
+		const actor = await this.getActor(portableQuery);
 
 		return await insertManager.insertValuesGetIds(portableQuery, actor,
-			transaction, context)
+			transaction, context);
 	}
 
 	async updateValues(
@@ -187,10 +187,10 @@ export class TransactionalServer
 		context: IOperationContext<any, any>
 	): Promise<number> {
 		const updateManager = await container(this)
-			.get(UPDATE_MANAGER)
+			.get(UPDATE_MANAGER);
 
-		const actor = await this.getActor(portableQuery)
-		return await updateManager.updateValues(portableQuery, actor, transaction, context)
+		const actor = await this.getActor(portableQuery);
+		return await updateManager.updateValues(portableQuery, actor, transaction, context);
 	}
 
 	async deleteWhere(
@@ -199,26 +199,26 @@ export class TransactionalServer
 		context: IOperationContext<any, any>
 	): Promise<number> {
 		const deleteManager = await container(this)
-			.get(DELETE_MANAGER)
+			.get(DELETE_MANAGER);
 
-		const actor = await this.getActor(portableQuery)
-		return await deleteManager.deleteWhere(portableQuery, actor, transaction)
+		const actor = await this.getActor(portableQuery);
+		return await deleteManager.deleteWhere(portableQuery, actor, transaction);
 	}
 
 	private async getActor(
 		portableQuery: PortableQuery
 	): Promise<IActor> {
 		if (this.tempActor) {
-			return this.tempActor
+			return this.tempActor;
 		}
 
-		throw new Error(`Not Implemented`)
+		throw new Error(`Not Implemented`);
 	}
 
 }
 
-DI.set(TRANS_SERVER, TransactionalServer)
+DI.set(TRANS_SERVER, TransactionalServer);
 
 export function injectTransactionalServer(): void {
-	console.log('Injecting TransactionalServer')
+	// console.log('Injecting TransactionalServer')
 }

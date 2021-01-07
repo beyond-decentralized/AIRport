@@ -2,25 +2,25 @@ import {
 	JSONBaseOperation,
 	OperationCategory,
 	SqlOperator
-}                          from '@airport/ground-control'
-import {RawFieldQuery}     from '../../query/facade/FieldQuery'
-import {RawNonEntityQuery} from '../../query/facade/NonEntityQuery'
+}                            from '@airport/ground-control';
+import { RawFieldQuery }     from '../../query/facade/FieldQuery';
+import { RawNonEntityQuery } from '../../query/facade/NonEntityQuery';
 import {
 	ITreeEntity,
 	RawTreeQuery
-}                          from '../../query/facade/TreeQuery'
-import {IQBooleanField}    from './BooleanField'
-import {IQDateField}       from './DateField'
-import {IQNumberField}     from './NumberField'
-import {IQOperableField}   from './OperableField'
-import {IQStringField}     from './StringField'
-import {IQUntypedField}    from './UntypedField'
-
+}                            from '../../query/facade/TreeQuery';
+import { IQBooleanField }    from './BooleanField';
+import { IQDateField }       from './DateField';
+import { IQNumberField }     from './NumberField';
+import { IQOperableField }   from './OperableField';
+import { IQStringField }     from './StringField';
+import { IQUntypedField }    from './UntypedField';
 
 /**
  * Created by Papa on 10/18/2016.
  */
-export interface IQFunction<V extends boolean | Date | number | string | RawFieldQuery<any>> {
+export interface IQFunction<V extends boolean | Date | Date[] | number | number[]
+	| string | string[] | RawFieldQuery<any>> {
 	parameterAlias: string;
 	value: V;
 }
@@ -160,7 +160,6 @@ export interface roundFunction {
 export interface nowFunction {
 	(): IQDateField;
 }
-
 
 /**
  * FORMAT('', 1, ...)
@@ -326,7 +325,6 @@ export interface intersectFunction {
 		...rawQueries: RawNonEntityQuery[]
 	): RawNonEntityQuery;
 }
-
 
 /**
  * A

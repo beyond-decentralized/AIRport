@@ -9,7 +9,8 @@ export class UtilityBuilder extends ImplementationFileBuilder {
         this.entityNames.sort();
         const baseClassDefinitions = this.buildBaseClassDefinitions();
         const imports = this.buildImports();
-        return `${imports}
+        return `/* eslint-disable */
+${imports}
 
 // Schema Q object Dependency Injection readiness detection ${this.classSuffix}
 export class SQDI${this.classSuffix}<Entity,

@@ -1,21 +1,27 @@
 import {
 	DI,
 	IContext,
-}                        from '@airport/di'
-import {QueryResultType} from '@airport/ground-control'
-import {IEntityContext}  from '../../../lingo/core/data/EntityContext'
-import {UpdateCacheType} from '../../../lingo/core/data/UpdateCacheType'
-import {ILookup}         from '../../../lingo/query/api/Lookup'
-import {IAbstractQuery}  from '../../../lingo/query/facade/AbstractQuery'
-import {RawQuery,}       from '../../../lingo/query/facade/Query'
+}                          from '@airport/di';
+import { QueryResultType } from '@airport/ground-control';
+import { IEntityContext }  from '../../../lingo/core/data/EntityContext';
+import { UpdateCacheType } from '../../../lingo/core/data/UpdateCacheType';
+import { ILookup }         from '../../../lingo/query/api/Lookup';
+import { IAbstractQuery }  from '../../../lingo/query/facade/AbstractQuery';
+import { RawQuery, }       from '../../../lingo/query/facade/Query';
+import { IQueryContext }   from '../../../lingo/query/QueryContext';
 import {
 	LOOKUP,
 	QUERY_CONTEXT_LOADER
-}                        from '../../../tokens'
-import {IQueryContext}   from '../QueryContext'
+}                          from '../../../tokens';
 
 export class LookupProxy
 	implements ILookup {
+
+	ensureContext<C extends IContext = IContext>(
+		context?: C
+	): C {
+		return doEnsureContext<C>(context);
+	}
 
 	lookup(
 		rawQuery: RawQuery | { (...args: any[]): RawQuery },
@@ -32,18 +38,18 @@ export class LookupProxy
 			.then(
 				lookup => lookup.lookup(
 					rawQuery, queryResultType, search, one,
-					QueryClass, context, cacheForUpdate, mapResults))
-	}
-
-	protected ensureContext(
-		context?: IContext
-	): IContext {
-		return doEnsureContext(context)
+					QueryClass, context, cacheForUpdate, mapResults));
 	}
 }
 
 export class Lookup
 	implements ILookup {
+
+	ensureContext<C extends IContext = IContext>(
+		context?: C
+	): C {
+		return doEnsureContext(context) as C;
+	}
 
 	async lookup(
 		rawQuery: RawQuery | { (...args: any[]): RawQuery },
@@ -55,39 +61,33 @@ export class Lookup
 		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any> {
-		const queryContextLoader = await DI.db().get(QUERY_CONTEXT_LOADER)
-		await queryContextLoader.ensure(context)
-		let query: IAbstractQuery
+		const queryContextLoader = await DI.db().get(QUERY_CONTEXT_LOADER);
+		await queryContextLoader.ensure(context);
+		let query: IAbstractQuery;
 		if (QueryClass) {
-			const rawNonEntityQuery = context.ioc.entityUtils.getQuery(rawQuery)
-			query                   = new QueryClass(rawNonEntityQuery)
+			const rawNonEntityQuery = context.ioc.entityUtils.getQuery(rawQuery);
+			query                   = new QueryClass(rawNonEntityQuery);
 		} else {
-			query           = context.ioc.entityUtils.getEntityQuery(rawQuery)
-			queryResultType = this.getQueryResultType(queryResultType, mapResults)
+			query           = context.ioc.entityUtils.getEntityQuery(rawQuery);
+			queryResultType = this.getQueryResultType(queryResultType, mapResults);
 		}
-		let queryMethod
+		let queryMethod;
 		if (search) {
 			if (one) {
-				queryMethod = context.ioc.queryFacade.searchOne
+				queryMethod = context.ioc.queryFacade.searchOne;
 			} else {
-				queryMethod = context.ioc.queryFacade.search
+				queryMethod = context.ioc.queryFacade.search;
 			}
 		} else {
 			if (one) {
-				queryMethod = context.ioc.queryFacade.findOne
+				queryMethod = context.ioc.queryFacade.findOne;
 			} else {
-				queryMethod = context.ioc.queryFacade.find
+				queryMethod = context.ioc.queryFacade.find;
 			}
 		}
 
 		return await queryMethod.call(context.ioc.queryFacade, query,
-			this.getQueryResultType(queryResultType, mapResults), context, cacheForUpdate)
-	}
-
-	protected ensureContext<C extends IContext>(
-		context?: IContext
-	): C {
-		return doEnsureContext(context) as C
+			this.getQueryResultType(queryResultType, mapResults), context, cacheForUpdate);
 	}
 
 	private getQueryResultType(
@@ -97,33 +97,33 @@ export class Lookup
 		switch (baseQueryResultType) {
 			case QueryResultType.ENTITY_GRAPH:
 				if (mapResults) {
-					return QueryResultType.MAPPED_ENTITY_GRAPH
+					return QueryResultType.MAPPED_ENTITY_GRAPH;
 				}
-				return QueryResultType.ENTITY_GRAPH
+				return QueryResultType.ENTITY_GRAPH;
 			case QueryResultType.ENTITY_TREE:
 				if (mapResults) {
-					return QueryResultType.MAPPED_ENTITY_TREE
+					return QueryResultType.MAPPED_ENTITY_TREE;
 				}
-				return QueryResultType.ENTITY_TREE
+				return QueryResultType.ENTITY_TREE;
 			default:
-				throw new Error(`Unexpected Base Query ResultType: '${baseQueryResultType}'.`)
+				throw new Error(`Unexpected Base Query ResultType: '${baseQueryResultType}'.`);
 		}
 	}
 
 }
 
-export function doEnsureContext(
-	context?: IContext
-): IContext {
+export function doEnsureContext<C extends IContext = IContext>(
+	context?: C
+): C {
 	if (!context) {
-		context = {}
+		context = {} as any;
 	}
 
 	if (!context.startedAt) {
-		context.startedAt = new Date()
+		context.startedAt = new Date();
 	}
 
-	return context
+	return context;
 }
 
-DI.set(LOOKUP, Lookup)
+DI.set(LOOKUP, Lookup);

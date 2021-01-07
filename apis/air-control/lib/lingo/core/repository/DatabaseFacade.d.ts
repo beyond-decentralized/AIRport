@@ -1,12 +1,13 @@
 import { DistributionStrategy, PlatformType, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { IObservable } from '@airport/observe';
-import { IEntityContext } from '../../../lingo/core/data/EntityContext';
 import { OperationName } from '../../query/Dao';
 import { IAbstractQuery } from '../../query/facade/AbstractQuery';
 import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
 import { RawUpdate, RawUpdateColumns } from '../../query/facade/Update';
+import { IQueryContext } from '../../query/QueryContext';
 import { EntityIdData } from '../../utils/SchemaUtils';
+import { IEntityContext } from '../data/EntityContext';
 import { UpdateCacheType } from '../data/UpdateCacheType';
 import { IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../entity/Entity';
 export interface UpdateRecord {
@@ -84,6 +85,7 @@ export interface IDatabaseFacade {
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;
 }
 export interface IQueryFacade {
+    ensureIocContext<E>(context: IQueryContext<E>): Promise<void>;
     find<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<EntityArray>;
     findOne<E>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<E>;
     search<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<IObservable<EntityArray>>;

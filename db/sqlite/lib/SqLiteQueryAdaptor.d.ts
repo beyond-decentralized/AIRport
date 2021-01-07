@@ -16,7 +16,7 @@ export declare abstract class SqLiteQueryAdaptor implements ISQLQueryAdaptor {
     getOffsetFragment(offset: number): string;
     getLimitFragment(limit: number): string;
     getParameterValue(parameter: Parameter): any;
-    getValue(value: any): any;
+    getValue(value: any, allowArrays?: boolean): any;
     protected abstract getResultCellRawValue(resultRow: any, columnName: string, index: number, dataType: SQLDataType, defaultValue: any): any;
 }
 export declare class SqlLiteFunctionAdaptor extends AbstractFunctionAdaptor {
