@@ -14,8 +14,15 @@ export type Operation_Type = number
 
 export enum OperationType {
 	DELETE,
-	QUERY,
-	SAVE
+	FIND_ONE_GRAPH,
+	FIND_ONE_TREE,
+	FIND_GRAPH,
+	FIND_TREE,
+	SAVE,
+	SEARCH_ONE_GRAPH,
+	SEARCH_ONE_TREE,
+	SEARCH_GRAPH,
+	SEARCH_TREE
 }
 
 export interface JsonOperations {
@@ -26,8 +33,11 @@ export interface JsonOperation {
 	type: OperationType
 }
 
-export interface JsonPreparedQuery {
-	type: OperationType.QUERY
+export interface JsonFormattedQuery {
+	type: OperationType.FIND_GRAPH | OperationType.FIND_TREE
+		| OperationType.FIND_ONE_GRAPH | OperationType.FIND_ONE_TREE
+		| OperationType.SEARCH_GRAPH | OperationType.SEARCH_TREE
+		| OperationType.SEARCH_ONE_GRAPH | OperationType.SEARCH_ONE_TREE
 	query: JsonQuery
 }
 

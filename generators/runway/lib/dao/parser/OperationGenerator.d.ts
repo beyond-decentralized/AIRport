@@ -1,5 +1,8 @@
-import { JsonOperation } from '@airport/ground-control';
+import { JsonFormattedQuery, JsonOperation } from '@airport/ground-control';
 import * as ts from 'typescript';
+export interface JsonFormattedQueryWithExpression extends JsonFormattedQuery {
+    expression: ts.FunctionExpression;
+}
 export declare const entityOperationMap: {
     [entityName: string]: {
         [operationName: string]: JsonOperation;

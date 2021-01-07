@@ -10,8 +10,8 @@ import {
     AgtSyncRecordAddDatetime
     TmSharingMessageId
 }                                            from "@airport/arrivals-n-departures";
-import {Inject}                              from "typedi/decorators/Inject";
-import {Service}                             from "typedi/decorators/Service";
+import {Inject}                              from "typedi/query/Inject";
+import {Service}                             from "typedi/query/Service";
 import {
     BaseSharingMessageResponseStageDao,
     Q,

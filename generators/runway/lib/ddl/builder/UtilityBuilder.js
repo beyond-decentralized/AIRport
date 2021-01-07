@@ -7,57 +7,9 @@ export class UtilityBuilder extends ImplementationFileBuilder {
     }
     build() {
         this.entityNames.sort();
-        const baseClassDefinitions = this.entityNames.map(entityName => `
-export interface IBase${entityName}${this.classSuffix}
-  extends I${this.classSuffix}<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}> {
-}
-
-export class Base${entityName}${this.classSuffix}
-  extends SQDI${this.classSuffix}<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}>
-	implements IBase${entityName}${this.classSuffix} {
-
-	static diSet(): boolean {
-		return ${this.diSet}(${this.entityIdMapByName[entityName]})
-	}
-	
-	constructor() {
-		super(${this.entityIdMapByName[entityName]})
-	}
-}
-`).join('\n');
-        const imports = this.entityNames.map(entityName => `import {
-	I${entityName}
-} from '${this.generatedPathMapByEntityName[entityName]}'
-import {
-	${entityName}ESelect,
-	${entityName}ECreateColumns,
-	${entityName}ECreateProperties,
-	${entityName}EUpdateColumns,
-	${entityName}EUpdateProperties,
-	${entityName}EId,
-	${entityName}Graph,
-	Q${entityName}
-} from '${this.pathBuilder.prefixQToFileName(this.generatedPathMapByEntityName[entityName])}'`).join('\n');
-        return `import {
-	I${this.classSuffix},
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { ${this.classSuffix} } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	${this.diSet}
-} from './qSchema'
-${imports}
-
+        const baseClassDefinitions = this.buildBaseClassDefinitions();
+        const imports = this.buildImports();
+        return `${imports}
 
 // Schema Q object Dependency Injection readiness detection ${this.classSuffix}
 export class SQDI${this.classSuffix}<Entity,
@@ -85,6 +37,69 @@ export class SQDI${this.classSuffix}<Entity,
 }
 
 ${baseClassDefinitions}`;
+    }
+    addImports() {
+        this.entityNames.forEach(entityName => {
+            this.addImport([
+                `I${entityName}`
+            ], `${this.generatedPathMapByEntityName[entityName]}`);
+            this.addImport([
+                `${entityName}ESelect`,
+                `${entityName}ECreateColumns`,
+                `${entityName}ECreateProperties`,
+                `${entityName}EUpdateColumns`,
+                `${entityName}EUpdateProperties`,
+                `${entityName}EId`,
+                `${entityName}Graph`,
+                `Q${entityName}`
+            ], `${this.pathBuilder.prefixQToFileName(this.generatedPathMapByEntityName[entityName])}`);
+        });
+        this.addImport([
+            `I${this.classSuffix}`,
+            'IEntityCascadeGraph',
+            'IEntityCreateProperties',
+            'IEntityIdProperties',
+            'IEntitySelectProperties',
+            'IEntityUpdateColumns',
+            'IEntityUpdateProperties',
+            'IQEntity'
+        ], '@airport/air-control');
+        this.addImport([
+            `${this.classSuffix}`
+        ], '@airport/check-in');
+        this.addImport([
+            {
+                asName: 'DbEntityId',
+                sourceName: 'EntityId'
+            }
+        ], '@airport/ground-control');
+        this.addImport([
+            'Q',
+            `${this.diSet}`
+        ], './qSchema', false);
+    }
+    buildBaseClassDefinitions() {
+        return this.entityNames.map(entityName => `
+export interface IBase${entityName}${this.classSuffix}
+  extends I${this.classSuffix}<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}> {
+}
+
+export class Base${entityName}${this.classSuffix}
+  extends SQDI${this.classSuffix}<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}>
+	implements IBase${entityName}${this.classSuffix} {${this.buildStaticProperties(entityName)}
+
+	static diSet(): boolean {
+		return ${this.diSet}(${this.entityIdMapByName[entityName]})
+	}
+	
+	constructor() {
+		super(${this.entityIdMapByName[entityName]})
+	}
+}
+`).join('\n');
+    }
+    buildStaticProperties(entityName) {
+        return '';
     }
 }
 //# sourceMappingURL=UtilityBuilder.js.map

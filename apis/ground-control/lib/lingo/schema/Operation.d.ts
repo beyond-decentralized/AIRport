@@ -12,8 +12,15 @@ export declare type Operation_Rule = string;
 export declare type Operation_Type = number;
 export declare enum OperationType {
     DELETE = 0,
-    QUERY = 1,
-    SAVE = 2
+    FIND_ONE_GRAPH = 1,
+    FIND_ONE_TREE = 2,
+    FIND_GRAPH = 3,
+    FIND_TREE = 4,
+    SAVE = 5,
+    SEARCH_ONE_GRAPH = 6,
+    SEARCH_ONE_TREE = 7,
+    SEARCH_GRAPH = 8,
+    SEARCH_TREE = 9
 }
 export interface JsonOperations {
     [operationName: string]: JsonOperation;
@@ -21,8 +28,8 @@ export interface JsonOperations {
 export interface JsonOperation {
     type: OperationType;
 }
-export interface JsonPreparedQuery {
-    type: OperationType.QUERY;
+export interface JsonFormattedQuery {
+    type: OperationType.FIND_GRAPH | OperationType.FIND_TREE | OperationType.FIND_ONE_GRAPH | OperationType.FIND_ONE_TREE | OperationType.SEARCH_GRAPH | OperationType.SEARCH_TREE | OperationType.SEARCH_ONE_GRAPH | OperationType.SEARCH_ONE_TREE;
     query: JsonQuery;
 }
 export interface JsonPersistRule extends JsonOperation, JsonOperationRule {

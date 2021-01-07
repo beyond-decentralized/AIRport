@@ -1,1 +1,1 @@
-{"version":3,"file":"PreparedQuery.d.ts","sourceRoot":"","sources":["../../../src/lingo/query/PreparedQuery.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,6BAA6B,CAAC;AAE9D,MAAM,WAAW,sBAAsB;IACtC,IAAI,eAAe,CAAC;CACpB"}
+{"version":3,"file":"PreparedQuery.d.ts","sourceRoot":"","sources":["../../../src/lingo/query/PreparedQuery.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,6BAA6B,CAAC;AAE9D,MAAM,WAAW,sBAAsB;IACtC,CACC,QAAQ,EAAE,CAAC,GAAG,IAAI,EAAE,GAAG,EAAE,KAAK,GAAG,GAC/B,eAAe,CAAC;CACnB"}

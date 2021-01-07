@@ -1,13 +1,18 @@
 import {
+	JsonFormattedQuery,
 	JsonOperation,
 	JsonOperationRule,
 	JsonPersistRule,
-	JsonPreparedQuery,
 	OperationType
 }                  from '@airport/ground-control';
 import * as ts     from 'typescript';
 import tsc         from 'typescript';
 import { DaoFile } from '../../ddl/parser/FileImports';
+
+export interface JsonFormattedQueryWithExpression
+	extends JsonFormattedQuery {
+	expression: ts.FunctionExpression
+}
 
 export const entityOperationMap: {
 	[entityName: string]: {
@@ -87,12 +92,10 @@ function serializeClass(
 			return;
 		}
 		switch (member.valueDeclaration.kind) {
-			case tsc.SyntaxKind.MethodDeclaration:
-				console.log(`Method: ${memberName}`);
-				serializeMethod(symbol, daoName, entityName, memberName, member, daoOperations);
-				break;
+			// case tsc.SyntaxKind.MethodDeclaration:
+			// 	serializeMethod(symbol, daoName, entityName, memberName, member, daoOperations);
+			// 	break;
 			case tsc.SyntaxKind.PropertyDeclaration:
-				console.log(`Property: ${memberName}`);
 				serializeProperty(symbol, daoName, entityName, memberName, member, daoOperations);
 				break;
 			default:
@@ -117,14 +120,6 @@ function serializeMethod(
 	member.valueDeclaration.decorators.forEach(decorator => {
 		// decorator.expression.kind = 196 CallExpression
 		// decorator.expression.expression.kind = 75 Identifier
-		if (decorator.expression.expression.escapedText !== 'PreparedQuery') {
-			return;
-		}
-		const preparedQuery: JsonPreparedQuery = {
-			type: OperationType.QUERY,
-			query: undefined
-		};
-		daoOperations[memberName]              = preparedQuery;
 	});
 }
 
@@ -137,63 +132,167 @@ function serializeProperty(
 	daoOperations: { [operationName: string]: JsonOperation }
 ) {
 
-	const expression: ts.PropertyAccessExpression = member.valueDeclaration.initializer;
-	if (expression.kind !== tsc.SyntaxKind.PropertyAccessExpression) {
-		return;
-	}
-	if (expression.expression.kind !== tsc.SyntaxKind.ThisKeyword) {
-		return;
-	}
+	// Property assignment does not appear to be needed by the Typescript
+	// compiler in order for the class to adhere to the interface
+	// const expression: ts.PropertyAccessExpression = member.valueDeclaration.initializer;
+	// if (expression.kind !== tsc.SyntaxKind.PropertyAccessExpression) {
+	// 	return;
+	// }
+	// if (expression.expression.kind !== tsc.SyntaxKind.ThisKeyword) {
+	// 	return;
+	// }
+
+	let operationFound = null;
 
 	member.valueDeclaration.decorators.forEach(decorator => {
 		// decorator.expression.kind = 196 CallExpression
 		// decorator.expression.expression.kind = 75 Identifier
-		if (decorator.expression.expression.escapedText !== 'Persist') {
-			return;
+		let decoratorNameExpression = decorator.expression.expression;
+		const decoratorNameParts    = [];
+		while (decoratorNameExpression) {
+			if (decoratorNameExpression.escapedText) {
+				decoratorNameParts.unshift(decoratorNameExpression.escapedText);
+			} else if (decoratorNameExpression.name) {
+				decoratorNameParts.unshift(decoratorNameExpression.name.escapedText);
+			}
+			decoratorNameExpression = decoratorNameExpression.expression;
 		}
-
-		const typeArguments = decorator.expression.typeArguments;
-
-		if (!typeArguments || typeArguments[0].typeName.escapedText !== `${entityName}Graph`) {
-			throw new Error(`@Persist decorator in "${daoName}" must be passed a generic parameter "${entityName}Graph":
-				@Persist<${entityName}Graph>({
-					...
-				})
-				${memberName} = ...
-				`);
+		const decoratorName = decoratorNameParts.join('.');
+		if (decoratorNameParts.length !== 2 && decoratorNameParts.length !== 3) {
+			throwUnsupportedDecorator(daoName, decoratorName);
 		}
-
-		let type: OperationType;
-		switch (expression.name.escapedText) {
-			case 'delete':
-				type = OperationType.DELETE;
+		if (decoratorNameParts[0] !== daoName) {
+			throwUnsupportedDecorator(daoName, decoratorName);
+		}
+		switch (decoratorNameParts[1]) {
+			case 'Delete':
+			case 'Save':
+				if (decoratorNameParts.length !== 2) {
+					throwUnsupportedDecorator(daoName, decoratorName);
+				}
+				if (operationFound) {
+					throwMultipleOperationDecorators(daoName, operationFound, decoratorName);
+				}
+				operationFound = decoratorName;
 				break;
-			case 'save':
-				type = OperationType.SAVE;
+			case 'Find':
+			case 'FindOne':
+			case 'Search':
+			case 'SearchOne':
+				if (decoratorNameParts.length !== 3) {
+					throwUnsupportedDecorator(daoName, decoratorName);
+				}
+				switch (decoratorNameParts[2]) {
+					case 'Graph':
+					case 'Tree':
+						break;
+					default:
+						throwUnsupportedDecorator(daoName, decoratorName);
+				}
+				if (operationFound) {
+					throwMultipleOperationDecorators(daoName, operationFound, decoratorName);
+				}
+				operationFound = decoratorName;
 				break;
 			default:
-				throw new Error(`Unsupported operation in "${daoName}": "this.${expression.name.escapedText}".
-							Expecting one of the following:
-							
-							${memberName} = this.delete
-							${memberName} = this.save
-							`);
+
 		}
-
-		// decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
-		const rules: ts.ObjectLiteralExpression = decorator.expression.arguments[0];
-		const operationRule: JsonPersistRule    = {
-			type
-		};
-		serializeRules(rules, operationRule);
-
-		daoOperations[memberName] = operationRule;
+		switch (decoratorNameParts[1]) {
+			case 'Delete':
+				serializeDelete(daoName, daoOperations, decorator, entityName, memberName);
+				break;
+			case 'Save':
+				serializeSave(daoName, daoOperations, decorator, entityName, memberName);
+				break;
+			case 'Find':
+				switch (decoratorNameParts[2]) {
+					case 'Graph':
+						serializeQuery(daoName, daoOperations, decorator, decoratorName,
+							entityName, memberName, OperationType.FIND_GRAPH);
+						break;
+					case 'Tree':
+						serializeQuery(daoName, daoOperations, decorator, decoratorName,
+							entityName, memberName, OperationType.FIND_TREE);
+						break;
+				}
+				break;
+			case 'FindOne':
+				switch (decoratorNameParts[2]) {
+					case 'Graph':
+						serializeQuery(daoName, daoOperations, decorator, decoratorName,
+							entityName, memberName, OperationType.FIND_ONE_GRAPH);
+						break;
+					case 'Tree':
+						serializeQuery(daoName, daoOperations, decorator, decoratorName,
+							entityName, memberName, OperationType.FIND_ONE_TREE);
+						break;
+				}
+				break;
+			case 'Search':
+				switch (decoratorNameParts[2]) {
+					case 'Graph':
+						serializeQuery(daoName, daoOperations, decorator, decoratorName,
+							entityName, memberName, OperationType.SEARCH_GRAPH);
+						break;
+					case 'Tree':
+						serializeQuery(daoName, daoOperations, decorator, decoratorName,
+							entityName, memberName, OperationType.SEARCH_TREE);
+						break;
+				}
+				break;
+			case 'SearchOne':
+				switch (decoratorNameParts[2]) {
+					case 'Graph':
+						serializeQuery(daoName, daoOperations, decorator, decoratorName,
+							entityName, memberName, OperationType.SEARCH_ONE_GRAPH);
+						break;
+					case 'Tree':
+						serializeQuery(daoName, daoOperations, decorator, decoratorName,
+							entityName, memberName, OperationType.SEARCH_ONE_TREE);
+						break;
+				}
+				break;
+		}
 	});
+}
+
+function throwUnsupportedDecorator(
+	daoName: string,
+	decoratorName: string
+): void {
+	throw new Error(`In ${daoName}:
+Unexpected decorator:
+  @${decoratorName}
+Following decorators are currently supported for ${daoName}:
+  @${daoName}.Delete
+  @${daoName}.Find.Graph
+  @${daoName}.Find.Tree
+  @${daoName}.FindOne.Graph
+  @${daoName}.FindOne.Tree
+  @${daoName}.Save
+  @${daoName}.Search.Graph
+  @${daoName}.Search.Tree
+  @${daoName}.SearchOne.Graph
+  @${daoName}.SearchOne.Tree
+`);
+}
+
+function throwMultipleOperationDecorators(
+	daoName: string,
+	decoratorName1: string,
+	decoratorName2: string
+): void {
+	throw new Error(`In ${daoName}:
+More than one operation decorator found on the same property:
+  @${decoratorName1}
+  @${decoratorName2}
+Only one operation is supported per property.
+`);
 }
 
 function serializeRules(
 	objectLiteralExpression: ts.ObjectLiteralExpression,
-	parentRule: JsonPersistRule
+	parentRule: JsonOperationRule
 ) {
 	parentRule.subRules = {};
 	objectLiteralExpression.properties.forEach((
@@ -271,6 +370,134 @@ function serializeRule(
 	}
 
 	return rule;
+}
+
+function serializeSave(
+	daoName: string,
+	daoOperations: { [operationName: string]: JsonOperation },
+	decorator,
+	entityName: string,
+	memberName: string,
+) {
+	const typeArguments = decorator.expression.typeArguments;
+
+	// if (!typeArguments || typeArguments[0].typeName.escapedText !== `${entityName}Graph`) {
+	// 	throw new Error(`@Persist decorator in "${daoName}" must be passed a generic parameter "${entityName}Graph":
+	// 			@Persist<${entityName}Graph>({
+	// 				...
+	// 			})
+	// 			${memberName} = ...
+	// 			`);
+	// }
+
+	// decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
+	const rules: ts.ObjectLiteralExpression = decorator.expression.arguments[0];
+	const operationRule: JsonPersistRule    = {
+		type: OperationType.SAVE
+	};
+	serializeRules(rules, operationRule);
+
+	daoOperations[memberName] = operationRule;
+}
+
+function serializeQuery(
+	daoName: string,
+	daoOperations: { [operationName: string]: JsonOperation },
+	decorator,
+	decoratorName,
+	entityName: string,
+	memberName: string,
+	type: OperationType.FIND_GRAPH | OperationType.FIND_TREE
+		| OperationType.FIND_ONE_GRAPH | OperationType.FIND_ONE_TREE
+		| OperationType.SEARCH_GRAPH | OperationType.SEARCH_TREE
+		| OperationType.SEARCH_ONE_GRAPH | OperationType.SEARCH_ONE_TREE
+) {
+	const typeArguments = decorator.expression.typeArguments;
+
+	const expression: ts.FunctionExpression = decorator.expression.arguments[0];
+
+	if (!expression) {
+		throw new Error(`In ${daoName}:
+No callback provided for:
+  @${decoratorName}(...)
+  ${memberName}
+A callback must be provided in the following format:
+  @${decoratorName}((
+    paramA: boolean,
+    paramB: Date,
+    paramC: number,
+    paramD: string,
+    ...
+    Q: QLocalSchema,
+    alias1: QEntity1,
+    alias2: QEntity1,
+    ...
+  ) => ({
+    select: {
+      propertyA: Y,
+      ...
+      relationA: {
+        ...
+      },
+      ...
+    },
+    from: [
+      alias1 = Q.Entity1,
+      alias2 = alias1.relationA.innerJoin()
+      ...
+    ],
+    where?: and(
+      alias1.propertyA.equals(paramA),
+      alias1.propertyB.notEquals(paramB),
+      alias1.propertyC.greaterThan(paramC),
+      alias1.propertyD.like(paramD),
+      ...
+      ),
+    orderBy?: [alias.propertyA, ...],
+    limit?: 123,
+    offset?: 456
+      
+  }))
+  ${memberName}
+  
+Where: 
+  paramA-N  are any number of parameters of types (boolean, Date, number, string)
+  Q         is the reference to the schema's QLocalSchema object (in generated folder)
+  alias1-N  are any number of entity aliases for QObjects (in generated folder or in other schemas)
+
+The body of the function should only contain the query definition and no other
+statements.
+`);
+	}
+
+	const callbackParameters = expression.locals;
+
+	const operationRule: JsonFormattedQueryWithExpression = {
+		expression,
+		query: null,
+		type
+	};
+
+	daoOperations[memberName] = operationRule;
+}
+
+function serializeDelete(
+	daoName: string,
+	daoOperations: { [operationName: string]: JsonOperation },
+	decorator,
+	entityName: string,
+	memberName: string,
+) {
+	// const typeArguments = decorator.expression.typeArguments;
+
+	// decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
+	const rules: ts.ObjectLiteralExpression = decorator.expression.arguments[0];
+	const operationRule: JsonPersistRule    = {
+		type: OperationType.DELETE
+	};
+	serializeRules(rules, operationRule);
+
+	daoOperations[memberName] = operationRule;
 }
 
 function getNumericFunctionCallArgument(

@@ -1,7 +1,8 @@
 import { resolveRelativePath } from '../../resolve/pathResolver';
-export class ImplementationFileBuilder {
+import { FileBuilder } from './entity/FileBuilder';
+export class ImplementationFileBuilder extends FileBuilder {
     constructor(fileName, pathBuilder) {
-        this.pathBuilder = pathBuilder;
+        super(null, null, pathBuilder, null);
         this.entityIdMapByName = {};
         this.entityNames = [];
         this.ddlPathMapByEntityName = {};

@@ -1,80 +1,28 @@
-import {ImplementationFileBuilder} from './ImplementationFileBuilder'
-import {PathBuilder}               from './PathBuilder'
+import { ImplementationFileBuilder } from './ImplementationFileBuilder';
+import { PathBuilder }               from './PathBuilder';
 
-export class UtilityBuilder
+export abstract class UtilityBuilder
 	extends ImplementationFileBuilder {
 
-	private diSet
+	private diSet;
 
 	constructor(
 		pathBuilder: PathBuilder,
 		private classSuffix: string,
 		needsQEntity: boolean
 	) {
-		super('base' + classSuffix + 's', pathBuilder)
+		super('base' + classSuffix + 's', pathBuilder);
 
-		this.diSet = needsQEntity ? 'diSet' : 'duoDiSet'
+		this.diSet = needsQEntity ? 'diSet' : 'duoDiSet';
 	}
 
 	build(): string {
-		this.entityNames.sort()
+		this.entityNames.sort();
+		const baseClassDefinitions = this.buildBaseClassDefinitions();
 
-		const baseClassDefinitions = this.entityNames.map(
-			entityName => `
-export interface IBase${entityName}${this.classSuffix}
-  extends I${this.classSuffix}<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}> {
-}
+		const imports = this.buildImports();
 
-export class Base${entityName}${this.classSuffix}
-  extends SQDI${this.classSuffix}<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}>
-	implements IBase${entityName}${this.classSuffix} {
-
-	static diSet(): boolean {
-		return ${this.diSet}(${this.entityIdMapByName[entityName]})
-	}
-	
-	constructor() {
-		super(${this.entityIdMapByName[entityName]})
-	}
-}
-`).join('\n')
-		const imports        = this.entityNames.map(
-			entityName =>
-				`import {
-	I${entityName}
-} from '${this.generatedPathMapByEntityName[entityName]}'
-import {
-	${entityName}ESelect,
-	${entityName}ECreateColumns,
-	${entityName}ECreateProperties,
-	${entityName}EUpdateColumns,
-	${entityName}EUpdateProperties,
-	${entityName}EId,
-	${entityName}Graph,
-	Q${entityName}
-} from '${this.pathBuilder.prefixQToFileName(this.generatedPathMapByEntityName[entityName])}'`
-		).join('\n')
-
-		return `import {
-	I${this.classSuffix},
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { ${this.classSuffix} } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	${this.diSet}
-} from './qSchema'
-${imports}
-
+		return `${imports}
 
 // Schema Q object Dependency Injection readiness detection ${this.classSuffix}
 export class SQDI${this.classSuffix}<Entity,
@@ -101,7 +49,78 @@ export class SQDI${this.classSuffix}<Entity,
 	}
 }
 
-${baseClassDefinitions}`
+${baseClassDefinitions}`;
+	}
+
+	protected addImports() {
+		this.entityNames.forEach(
+			entityName => {
+				this.addImport([
+					`I${entityName}`
+				], `${this.generatedPathMapByEntityName[entityName]}`);
+				this.addImport([
+					`${entityName}ESelect`,
+					`${entityName}ECreateColumns`,
+					`${entityName}ECreateProperties`,
+					`${entityName}EUpdateColumns`,
+					`${entityName}EUpdateProperties`,
+					`${entityName}EId`,
+					`${entityName}Graph`,
+					`Q${entityName}`
+				], `${this.pathBuilder.prefixQToFileName(this.generatedPathMapByEntityName[entityName])}`);
+			});
+
+		this.addImport([
+			`I${this.classSuffix}`,
+			'IEntityCascadeGraph',
+			'IEntityCreateProperties',
+			'IEntityIdProperties',
+			'IEntitySelectProperties',
+			'IEntityUpdateColumns',
+			'IEntityUpdateProperties',
+			'IQEntity'
+		], '@airport/air-control');
+		this.addImport([
+			`${this.classSuffix}`
+		], '@airport/check-in');
+		this.addImport([
+			{
+				asName: 'DbEntityId',
+				sourceName: 'EntityId'
+			}
+		], '@airport/ground-control');
+		this.addImport([
+			'Q',
+			`${this.diSet}`
+		], './qSchema', false);
+	}
+
+	protected buildBaseClassDefinitions(): string {
+		return this.entityNames.map(
+			entityName => `
+export interface IBase${entityName}${this.classSuffix}
+  extends I${this.classSuffix}<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}> {
+}
+
+export class Base${entityName}${this.classSuffix}
+  extends SQDI${this.classSuffix}<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}>
+	implements IBase${entityName}${this.classSuffix} {${this.buildStaticProperties(entityName)}
+
+	static diSet(): boolean {
+		return ${this.diSet}(${this.entityIdMapByName[entityName]})
+	}
+	
+	constructor() {
+		super(${this.entityIdMapByName[entityName]})
+	}
+}
+`).join('\n');
+	}
+
+	protected buildStaticProperties(
+		entityName: string
+	): string {
+		return '';
 	}
 
 }

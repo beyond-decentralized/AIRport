@@ -9,4 +9,4 @@ export declare class TerminalRun {
     createTimestamp: TerminalRunCreateTimestamp;
     randomNumber: TerminalRunRandomNumber;
 }
-//# sourceMappingURL=terminalrun.d.ts.map
+//# sourceMappingURL=TerminalRun.d.ts.map

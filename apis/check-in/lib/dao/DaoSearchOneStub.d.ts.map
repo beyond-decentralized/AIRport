@@ -1,0 +1,1 @@
+{"version":3,"file":"DaoSearchOneStub.d.ts","sourceRoot":"","sources":["../../src/dao/DaoSearchOneStub.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,MAAM,kBAAkB,CAAC;AAE/C,qBAAa,gBAAgB,CAAC,OAAO;IACpC,KAAK,CACJ,GAAG,IAAI,EAAE,GAAG,EAAE,GACZ,WAAW,CAAC,OAAO,CAAC;IAMvB,IAAI,CACH,GAAG,IAAI,EAAE,GAAG,EAAE,GACZ,WAAW,CAAC,OAAO,CAAC;CAKvB"}

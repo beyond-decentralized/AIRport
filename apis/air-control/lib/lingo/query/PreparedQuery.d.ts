@@ -1,5 +1,5 @@
 import { MethodDecorator } from '../core/metadata/decorators';
 export interface PreparedQueryDecorator {
-    (): MethodDecorator;
+    (callback: (...args: any[]) => any): MethodDecorator;
 }
 //# sourceMappingURL=PreparedQuery.d.ts.map
