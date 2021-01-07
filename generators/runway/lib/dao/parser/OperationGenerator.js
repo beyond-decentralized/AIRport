@@ -306,6 +306,16 @@ function serializeSave(daoName, daoOperations, decorator, entityName, memberName
 function serializeQuery(daoName, daoOperations, decorator, decoratorName, entityName, memberName, type) {
     const typeArguments = decorator.expression.typeArguments;
     const expression = decorator.expression.arguments[0];
+    if (expression.kind !== tsc.SyntaxKind.ArrowFunction) {
+        throwInvalidQuery(daoName, decoratorName, memberName, `decorator callback (for this query) can only be an arrow function
+			(
+				...
+			) => ({
+			  ...
+			}),
+			it cannot be a regular (old style) function callback.
+							`);
+    }
     if (!expression) {
         throwInvalidQuery(daoName, decoratorName, memberName, 'No callback input parameter provided');
     }
@@ -433,6 +443,14 @@ function serializeQuery(daoName, daoOperations, decorator, decoratorName, entity
             }
         }
     });
+    if (expression.body.kind !== tsc.SyntaxKind.ParenthesizedExpression) {
+        throwInvalidQuery(daoName, decoratorName, memberName, `decorator callback body (for this query) can only be a parenthesized expression 
+			({
+			  ...
+			}),
+			it cannot be a block.
+							`);
+    }
     const operationRule = {
         expression,
         inputs,
