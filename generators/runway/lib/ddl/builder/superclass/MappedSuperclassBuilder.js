@@ -13,7 +13,8 @@ export class MappedSuperclassBuilder {
                 mappedSuperclasses.push(entity);
             }
         }
-        return `export const ${this.mappedSuperclassVarName} = `
+        return `/* eslint-disable */
+export const ${this.mappedSuperclassVarName} = `
             + JSON.stringify(mappedSuperclasses, null, '\t') + ';';
     }
     buildEntity(entityCandidate) {
