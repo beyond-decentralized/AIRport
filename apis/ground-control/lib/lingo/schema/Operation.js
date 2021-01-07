@@ -11,4 +11,17 @@ export var OperationType;
     OperationType[OperationType["SEARCH_GRAPH"] = 8] = "SEARCH_GRAPH";
     OperationType[OperationType["SEARCH_TREE"] = 9] = "SEARCH_TREE";
 })(OperationType || (OperationType = {}));
+export var QueryInputKind;
+(function (QueryInputKind) {
+    QueryInputKind[QueryInputKind["PARAMETER"] = 0] = "PARAMETER";
+    QueryInputKind[QueryInputKind["Q"] = 1] = "Q";
+    QueryInputKind[QueryInputKind["QENTITY"] = 2] = "QENTITY";
+})(QueryInputKind || (QueryInputKind = {}));
+export var QueryParameterType;
+(function (QueryParameterType) {
+    QueryParameterType[QueryParameterType["BOOLEAN"] = 0] = "BOOLEAN";
+    QueryParameterType[QueryParameterType["DATE"] = 1] = "DATE";
+    QueryParameterType[QueryParameterType["NUMBER"] = 2] = "NUMBER";
+    QueryParameterType[QueryParameterType["STRING"] = 3] = "STRING";
+})(QueryParameterType || (QueryParameterType = {}));
 //# sourceMappingURL=Operation.js.map

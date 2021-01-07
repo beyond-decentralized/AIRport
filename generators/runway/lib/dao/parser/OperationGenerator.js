@@ -1,4 +1,4 @@
-import { OperationType } from '@airport/ground-control';
+import { OperationType, QueryInputKind, QueryParameterType } from '@airport/ground-control';
 import tsc from 'typescript';
 export const entityOperationMap = {};
 export const entityOperationPaths = {};
@@ -307,11 +307,147 @@ function serializeQuery(daoName, daoOperations, decorator, decoratorName, entity
     const typeArguments = decorator.expression.typeArguments;
     const expression = decorator.expression.arguments[0];
     if (!expression) {
-        throw new Error(`In ${daoName}:
-No callback provided for:
+        throwInvalidQuery(daoName, decoratorName, memberName, 'No callback input parameter provided');
+    }
+    const queryInputs = [];
+    expression.locals.forEach(value => queryInputs.push(value));
+    queryInputs.sort((a, b) => {
+        if (a.valueDeclaration.pos < b.valueDeclaration.pos) {
+            return -1;
+        }
+        if (a.valueDeclaration.pos > b.valueDeclaration.pos) {
+            return 1;
+        }
+        return 0;
+    });
+    const inputs = queryInputs.map((input, index) => {
+        let clazz;
+        let name = input.escapedName;
+        let type;
+        let parameterType;
+        if (!input.valueDeclaration.type) {
+            throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is of an unknown kind and is not a boolean|Date|number|string|LocalQSchema|QObject
+							
+							${name}: ?
+							
+							`);
+        }
+        switch (input.valueDeclaration.type.kind) {
+            case tsc.SyntaxKind.BooleanKeyword: {
+                clazz = 'boolean';
+                type = QueryInputKind.PARAMETER;
+                parameterType = QueryParameterType.BOOLEAN;
+                break;
+            }
+            case tsc.SyntaxKind.NumberKeyword: {
+                clazz = 'number';
+                type = QueryInputKind.PARAMETER;
+                parameterType = QueryParameterType.NUMBER;
+                break;
+            }
+            case tsc.SyntaxKind.StringKeyword: {
+                clazz = 'string';
+                type = QueryInputKind.PARAMETER;
+                parameterType = QueryParameterType.STRING;
+                break;
+            }
+            case tsc.SyntaxKind.TypeReference: {
+                clazz = input.valueDeclaration.type.typeName.escapedText;
+                if (clazz === 'Date') {
+                    type = QueryInputKind.PARAMETER;
+                    parameterType = QueryParameterType.DATE;
+                }
+                else if (clazz === 'LocalQSchema') {
+                    type = QueryInputKind.Q;
+                }
+                else {
+                    type = QueryInputKind.QENTITY;
+                    if (!clazz.startsWith('Q')) {
+                        throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is a non Date|LocalQSchema class and does not start with a Q
+							(it should be a Query Object from the (generated directory or other project)
+							
+							${name}: ${clazz}
+							
+							`);
+                    }
+                }
+                break;
+            }
+            case tsc.SyntaxKind.Parameter:
+            default: {
+                throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is of an unknown kind and is not a boolean|Date|number|string|LocalQSchema|QObject
+							
+							${name}: ?
+							
+							`);
+                break;
+            }
+        }
+        switch (type) {
+            case QueryInputKind.PARAMETER:
+                return {
+                    clazz,
+                    name,
+                    parameterType,
+                    type
+                };
+            case QueryInputKind.Q:
+                return {
+                    clazz,
+                    name,
+                    type
+                };
+            case QueryInputKind.QENTITY:
+                return {
+                    clazz,
+                    name,
+                    type
+                };
+            default:
+                throw new Error('Unsupported QueryInputKind in QueryInput.type: ' + type);
+        }
+    });
+    let stage = QueryInputKind.PARAMETER;
+    inputs.forEach((queryInput, index) => {
+        if (queryInput.type === stage) {
+            return;
+        }
+        switch (stage) {
+            case QueryInputKind.PARAMETER: {
+                if (queryInput.type !== QueryInputKind.Q) {
+                    throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is of unexpected kind
+							
+							${queryInput.name}: ${queryInput.clazz}
+							
+							`);
+                }
+                stage = QueryInputKind.QENTITY;
+                break;
+            }
+            default: {
+                throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is of unexpected kind
+							
+							${queryInput.name}: ${queryInput.clazz}
+							
+							`);
+            }
+        }
+    });
+    const operationRule = {
+        expression,
+        inputs,
+        query: null,
+        type
+    };
+    daoOperations[memberName] = operationRule;
+}
+function throwInvalidQuery(daoName, decoratorName, memberName, message) {
+    throw new Error(`In ${daoName}:
+${message}
+For:
   @${decoratorName}(...)
   ${memberName}
-A callback must be provided in the following format:
+Query must be in the following format:
   @${decoratorName}((
     paramA: boolean,
     paramB: Date,
@@ -358,14 +494,6 @@ Where:
 The body of the function should only contain the query definition and no other
 statements.
 `);
-    }
-    const callbackParameters = expression.locals;
-    const operationRule = {
-        expression,
-        query: null,
-        type
-    };
-    daoOperations[memberName] = operationRule;
 }
 function serializeDelete(daoName, daoOperations, decorator, entityName, memberName) {
     // const typeArguments = decorator.expression.typeArguments;

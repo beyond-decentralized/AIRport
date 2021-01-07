@@ -33,7 +33,38 @@ export interface JsonOperation {
 	type: OperationType
 }
 
+export enum QueryInputKind {
+	PARAMETER,
+	Q,
+	QENTITY
+}
+
+export enum QueryParameterType {
+	BOOLEAN,
+	DATE,
+	NUMBER,
+	STRING
+}
+
+export interface QueryInput {
+	clazz?: string
+	name: string
+	type: QueryInputKind
+}
+
+export interface QueryParameter
+	extends QueryInput {
+	parameterType: QueryParameterType
+	type: QueryInputKind.PARAMETER
+}
+
+export interface QueryInputQEntity
+	extends QueryInput {
+	type: QueryInputKind.QENTITY
+}
+
 export interface JsonFormattedQuery {
+	inputs: QueryInput[]
 	type: OperationType.FIND_GRAPH | OperationType.FIND_TREE
 		| OperationType.FIND_ONE_GRAPH | OperationType.FIND_ONE_TREE
 		| OperationType.SEARCH_GRAPH | OperationType.SEARCH_TREE

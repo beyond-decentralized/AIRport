@@ -28,7 +28,31 @@ export interface JsonOperations {
 export interface JsonOperation {
     type: OperationType;
 }
+export declare enum QueryInputKind {
+    PARAMETER = 0,
+    Q = 1,
+    QENTITY = 2
+}
+export declare enum QueryParameterType {
+    BOOLEAN = 0,
+    DATE = 1,
+    NUMBER = 2,
+    STRING = 3
+}
+export interface QueryInput {
+    clazz?: string;
+    name: string;
+    type: QueryInputKind;
+}
+export interface QueryParameter extends QueryInput {
+    parameterType: QueryParameterType;
+    type: QueryInputKind.PARAMETER;
+}
+export interface QueryInputQEntity extends QueryInput {
+    type: QueryInputKind.QENTITY;
+}
 export interface JsonFormattedQuery {
+    inputs: QueryInput[];
     type: OperationType.FIND_GRAPH | OperationType.FIND_TREE | OperationType.FIND_ONE_GRAPH | OperationType.FIND_ONE_TREE | OperationType.SEARCH_GRAPH | OperationType.SEARCH_TREE | OperationType.SEARCH_ONE_GRAPH | OperationType.SEARCH_ONE_TREE;
     query: JsonQuery;
 }
