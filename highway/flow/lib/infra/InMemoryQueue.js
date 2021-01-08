@@ -1,16 +1,6 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
+import { container } from '@airport/di';
 import { Message, MessageAttributes } from '@node-ts/bus-messages';
-import { LOGGER_SYMBOLS } from '@node-ts/logger-core';
-import { EventEmitter } from 'events';
-import { inject, injectable } from 'inversify';
+import { EVENT_FACTORY, HANDLER_REGISTRY } from '../tokens';
 export const RETRY_LIMIT = 10;
 /**
  * How long to wait for the next message
@@ -23,13 +13,16 @@ export const RECEIVE_TIMEOUT_MS = 1000;
  * There are however legitimate uses for in-memory queues such as decoupling of non-mission
  * critical code inside of larger applications; so use at your own discresion.
  */
-let MemoryQueue = class MemoryQueue {
-    constructor(logger, handlerRegistry) {
-        this.logger = logger;
-        this.handlerRegistry = handlerRegistry;
+export class MemoryQueue {
+    constructor(
+    // @inject(LOGGER_SYMBOLS.Logger) private readonly logger: Logger,
+    // @inject(BUS_SYMBOLS.HandlerRegistry)
+    // private readonly handlerRegistry: HandlerRegistry
+    ) {
         this.queue = [];
-        this.queuePushed = new EventEmitter();
+        // private queuePushed: EventEmitter                            = new EventEmitter();
         this.deadLetterQueue = [];
+        this.logger = console;
     }
     /**
      * Gets the queue depth, which is the number of messages both queued and in flight
@@ -62,7 +55,8 @@ let MemoryQueue = class MemoryQueue {
     }
     async initialize() {
         this.messagesWithHandlers = {};
-        this.handlerRegistry.messageSubscriptions
+        const handlerRegistry = await container(this).get(HANDLER_REGISTRY);
+        handlerRegistry.messageSubscriptions
             .filter(subscription => !!subscription.messageType)
             .map(subscription => subscription.messageType)
             .map(ctor => new ctor().$name)
@@ -76,14 +70,15 @@ let MemoryQueue = class MemoryQueue {
             depth: this.depth,
             numberMessagesVisible: this.numberMessagesVisible
         });
+        const eventFactory = await container(this).get(EVENT_FACTORY);
         return new Promise(resolve => {
             const onMessageEmitted = () => {
                 unsubscribeEmitter();
                 clearTimeout(timeoutToken);
                 resolve(getNextMessage());
             };
-            this.queuePushed.on('pushed', onMessageEmitted);
-            const unsubscribeEmitter = () => this.queuePushed.off('pushed', onMessageEmitted);
+            eventFactory.on('pushed', onMessageEmitted);
+            const unsubscribeEmitter = () => eventFactory.off('pushed', onMessageEmitted);
             // Immediately returns the next available message, or undefined if none are available
             const getNextMessage = () => {
                 const availableMessages = this.queue.filter(m => !m.raw.inFlight);
@@ -97,7 +92,7 @@ let MemoryQueue = class MemoryQueue {
             };
             const timeoutToken = setTimeout(() => {
                 unsubscribeEmitter();
-                resolve();
+                resolve(null);
             }, RECEIVE_TIMEOUT_MS);
             const nextMessage = getNextMessage();
             if (nextMessage) {
@@ -126,9 +121,11 @@ let MemoryQueue = class MemoryQueue {
         const isBusMessage = message instanceof Message;
         if (!isBusMessage || this.messagesWithHandlers[message.$name]) {
             const transportMessage = toTransportMessage(message, messageOptions, false);
-            this.queue.push(transportMessage);
-            this.queuePushed.emit('pushed');
-            this.logger.debug('Added message to queue', { message, queueSize: this.queue.length });
+            container(this).get(EVENT_FACTORY).then(eventFactory => {
+                this.queue.push(transportMessage);
+                eventFactory.emit('pushed');
+                this.logger.debug('Added message to queue', { message, queueSize: this.queue.length });
+            });
         }
         else {
             this.logger.warn('Message was not sent as it has no registered handlers', { message });
@@ -144,13 +141,7 @@ let MemoryQueue = class MemoryQueue {
         });
         await this.deleteMessage(message);
     }
-};
-MemoryQueue = __decorate([
-    injectable(),
-    __param(0, inject(LOGGER_SYMBOLS.Logger)),
-    __param(1, inject(BUS_SYMBOLS.HandlerRegistry))
-], MemoryQueue);
-export { MemoryQueue };
+}
 export const toTransportMessage = (message, messageAttributes, isProcessing) => {
     return {
         id: undefined,

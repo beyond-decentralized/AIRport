@@ -51,6 +51,9 @@ export declare class Container implements IContainer {
 export declare class ChildContainer extends Container implements IChildContainer {
     context: IInjectionContext;
     constructor(context: IInjectionContext);
+    private doEventuallyGet;
+    private doGet;
+    private doGetCore;
     get<A>(tokenA: IDiToken<A>): Promise<A>;
     get<A, B>(tokenA: IDiToken<A>, tokenB: IDiToken<B>): Promise<[A, B]>;
     get<A, B, C>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>): Promise<[A, B, C]>;
@@ -82,16 +85,13 @@ export declare class ChildContainer extends Container implements IChildContainer
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>): [A, B, C, D, E, F, G, H, I, J, K, L, M];
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>, tokenN: IDiToken<N>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N];
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(tokenA: IDiToken<A>, tokenB: IDiToken<B>, tokenC: IDiToken<C>, tokenD: IDiToken<D>, tokenE: IDiToken<E>, tokenF: IDiToken<F>, tokenG: IDiToken<G>, tokenH: IDiToken<H>, tokenI: IDiToken<I>, tokenJ: IDiToken<J>, tokenK: IDiToken<K>, tokenL: IDiToken<L>, tokenM: IDiToken<M>, tokenN: IDiToken<N>, tokenO: IDiToken<O>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O];
-    private doEventuallyGet;
-    private doGet;
-    private doGetCore;
 }
 export declare class RootContainer extends Container implements IRootContainer {
     childContainers: Set<IContainer>;
     uiContainerMap: Map<string, Set<IContainer>>;
     db(): IChildContainer;
-    ui(componentName: string): IChildContainer;
     remove(container: IChildContainer): void;
+    ui(componentName: string): IChildContainer;
     private addContainer;
 }
 export declare const DI: IRootContainer;

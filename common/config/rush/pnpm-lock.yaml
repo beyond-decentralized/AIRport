@@ -1719,6 +1719,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-yV1nWZPlMFpoXyoknm4S56y2nlTAuFYaJuQtYRAOU7xA/FJ9RY0Xm7QOkaYMMmr8ESdHIuUb6oQgR/0+2NqlyA==
+  /@types/node/14.14.20:
+    dev: false
+    resolution:
+      integrity: sha512-Y93R97Ouif9JEOWPIUyU+eyIdyRqQR0I8Ez1dzku4hDx34NWh4HbtIc3WNzwB1Y9ULvNGeu5B8h8bVL5cAk4/A==
   /@types/node/8.10.59:
     dev: false
     resolution:
@@ -11740,6 +11744,7 @@ packages:
       '@node-ts/code-standards': 0.0.10
       '@node-ts/logger-core': 0.1.1_inversify@5.0.5
       '@node-ts/logger-winston': 0.1.1_9495349bb32fe837366e84721b0ccbd1
+      '@types/node': 14.14.20
       '@types/uuid': 8.3.0
       inversify: 5.0.5
       nodemon: 2.0.6
@@ -11752,7 +11757,7 @@ packages:
     dev: false
     name: '@rush-temp/hw-flow'
     resolution:
-      integrity: sha512-GRGX1mzJESvYjnAmDp1EhSiBZFI8Xn1XoTZKbgVC8NaqzD8+SipCy0OMr/Sc2qxBDt8LF1ikO/uQGqv0rWr/ew==
+      integrity: sha512-jyAkpCLweSVGO/Cyv7c7PrUOl3NAS8c2IChfB93QdpyIx3Rcax0dYhKuOGuFgk21uVvvN7F2j+nhI4Ao9OCtDQ==
       tarball: 'file:projects/hw-flow.tgz'
     version: 0.0.0
   'file:projects/hw-scylladb.tgz':

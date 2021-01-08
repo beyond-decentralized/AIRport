@@ -1,24 +1,19 @@
+import { container } from '@airport/di';
 import {
-	HandlerRegistry,
 	MessageType,
 	Transport,
 	TransportMessage
-}                       from '@node-ts/bus-core';
+}                    from '@node-ts/bus-core';
 import {
 	Command,
 	Event,
 	Message,
 	MessageAttributes
-}                       from '@node-ts/bus-messages';
+}                    from '@node-ts/bus-messages';
 import {
-	Logger,
-	LOGGER_SYMBOLS
-}                       from '@node-ts/logger-core';
-import { EventEmitter } from 'events';
-import {
-	inject,
-	injectable
-}                       from 'inversify';
+	EVENT_FACTORY,
+	HANDLER_REGISTRY
+}                    from '../tokens';
 
 export const RETRY_LIMIT = 10;
 
@@ -51,19 +46,19 @@ export interface InMemoryMessage {
  * There are however legitimate uses for in-memory queues such as decoupling of non-mission
  * critical code inside of larger applications; so use at your own discresion.
  */
-@injectable()
 export class MemoryQueue
 	implements Transport<InMemoryMessage> {
 
 	private queue: TransportMessage<InMemoryMessage>[]           = [];
-	private queuePushed: EventEmitter                            = new EventEmitter();
+	// private queuePushed: EventEmitter                            = new EventEmitter();
 	private deadLetterQueue: TransportMessage<InMemoryMessage>[] = [];
 	private messagesWithHandlers: { [key: string]: {} };
+	private logger                                               = console;
 
 	constructor(
-		@inject(LOGGER_SYMBOLS.Logger) private readonly logger: Logger,
-		@inject(BUS_SYMBOLS.HandlerRegistry)
-		private readonly handlerRegistry: HandlerRegistry
+		// @inject(LOGGER_SYMBOLS.Logger) private readonly logger: Logger,
+		// @inject(BUS_SYMBOLS.HandlerRegistry)
+		// private readonly handlerRegistry: HandlerRegistry
 	) {
 	}
 
@@ -104,7 +99,8 @@ export class MemoryQueue
 
 	async initialize(): Promise<void> {
 		this.messagesWithHandlers = {};
-		this.handlerRegistry.messageSubscriptions
+		const handlerRegistry     = await container(this).get(HANDLER_REGISTRY);
+		handlerRegistry.messageSubscriptions
 			.filter(subscription => !!subscription.messageType)
 			.map(subscription => subscription.messageType!)
 			.map(ctor => new ctor().$name)
@@ -123,14 +119,15 @@ export class MemoryQueue
 			depth: this.depth,
 			numberMessagesVisible: this.numberMessagesVisible
 		});
+		const eventFactory = await container(this).get(EVENT_FACTORY);
 		return new Promise<TransportMessage<InMemoryMessage> | undefined>(resolve => {
 			const onMessageEmitted = () => {
 				unsubscribeEmitter();
 				clearTimeout(timeoutToken);
 				resolve(getNextMessage());
 			};
-			this.queuePushed.on('pushed', onMessageEmitted);
-			const unsubscribeEmitter = () => this.queuePushed.off('pushed', onMessageEmitted);
+			eventFactory.on('pushed', onMessageEmitted);
+			const unsubscribeEmitter = () => eventFactory.off('pushed', onMessageEmitted);
 
 			// Immediately returns the next available message, or undefined if none are available
 			const getNextMessage = () => {
@@ -147,7 +144,7 @@ export class MemoryQueue
 
 			const timeoutToken = setTimeout(() => {
 				unsubscribeEmitter();
-				resolve();
+				resolve(null);
 			}, RECEIVE_TIMEOUT_MS);
 
 			const nextMessage = getNextMessage();
@@ -186,9 +183,11 @@ export class MemoryQueue
 		const isBusMessage = message instanceof Message;
 		if (!isBusMessage || this.messagesWithHandlers[(message as Message).$name]) {
 			const transportMessage = toTransportMessage(message, messageOptions, false);
-			this.queue.push(transportMessage);
-			this.queuePushed.emit('pushed');
-			this.logger.debug('Added message to queue', { message, queueSize: this.queue.length });
+			container(this).get(EVENT_FACTORY).then(eventFactory => {
+				this.queue.push(transportMessage);
+				eventFactory.emit('pushed');
+				this.logger.debug('Added message to queue', { message, queueSize: this.queue.length });
+			});
 		} else {
 			this.logger.warn('Message was not sent as it has no registered handlers', { message });
 		}

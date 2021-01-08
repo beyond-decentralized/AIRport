@@ -36,7 +36,8 @@ export class ServiceBus {
     async publish(event, messageOptions = new MessageAttributes()) {
         this.logger.debug('publish', { event });
         const transportOptions = this.prepareTransportOptions(messageOptions);
-        await Promise.all(container(this).getSync(BUS_HOOKS).publish.map(callback => callback(event, messageOptions)));
+        const busHooks = await container(this).get(BUS_HOOKS);
+        await Promise.all(busHooks.publish.map(callback => callback(event, messageOptions)));
         return this.transport.publish(event, transportOptions);
     }
     get runningParallelWorkerCount() {
@@ -45,7 +46,8 @@ export class ServiceBus {
     async send(command, messageOptions = new MessageAttributes()) {
         this.logger.debug('send', { command });
         const transportOptions = this.prepareTransportOptions(messageOptions);
-        await Promise.all(container(this).getSync(BUS_HOOKS).send.map(callback => callback(command, messageOptions)));
+        const busHooks = await container(this).get(BUS_HOOKS);
+        await Promise.all(busHooks.send.map(callback => callback(command, messageOptions)));
         return this.transport.send(command, transportOptions);
     }
     async start() {

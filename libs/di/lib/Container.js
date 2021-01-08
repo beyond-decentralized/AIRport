@@ -17,33 +17,6 @@ export class ChildContainer extends Container {
         super();
         this.context = context;
     }
-    get(...tokens) {
-        return new Promise((resolve, reject) => {
-            this.doGet(tokens, resolve, reject);
-        });
-    }
-    eventuallyGet(...tokens) {
-        return new Promise((resolve, reject) => {
-            this.doEventuallyGet(tokens, resolve, reject);
-        });
-    }
-    getSync(...tokens) {
-        const { firstDiNotSetClass, firstMissingClassToken, objects } = this.doGetCore(tokens);
-        if (firstMissingClassToken) {
-            throw new Error('Dependency Injection could not find class for token: '
-                + firstMissingClassToken);
-        }
-        else if (firstDiNotSetClass) {
-            throw new Error('Dependency Injection is not ready for class: '
-                + firstDiNotSetClass.name);
-        }
-        if (objects.length > 1) {
-            return objects;
-        }
-        else {
-            return objects[0];
-        }
-    }
     doEventuallyGet(tokens, successCallback, errorCallback) {
         let { firstDiNotSetClass, firstMissingClassToken, objects } = this.doGetCore(tokens);
         if (firstMissingClassToken || firstDiNotSetClass) {
@@ -69,7 +42,21 @@ export class ChildContainer extends Container {
                 this.doGet(tokens, successCallback, errorCallback);
             }, 100);
         }
-        else if (firstMissingClassToken) {
+        else if (objects.filter(object => !object.__initialized__).length) {
+            const notInitializedObjectIndexes = objects.map((object, index) => object.__initialized__ ? -1 : index)
+                .filter(index => index !== -1);
+            const objectPaths = [];
+            for (const index of notInitializedObjectIndexes) {
+                objectPaths.push(tokens[index].getPath());
+            }
+            console.log(`Dependency Injection is not ready for tokens:
+				 ${objectPaths.join('\n')}
+			, these classes are not yet initialized, delaying injection by 100ms`);
+            setTimeout(() => {
+                this.doGet(tokens, successCallback, errorCallback);
+            }, 100);
+        }
+        if (firstMissingClassToken) {
             const message = 'Dependency Injection could not find class for token: '
                 + firstMissingClassToken.getPath();
             console.log(message);
@@ -106,6 +93,12 @@ export class ChildContainer extends Container {
                 object = new clazz();
                 object.__container__ = this;
                 theObjects[token.sequence] = object;
+                if (object.init) {
+                    object.init().then(_ => object.__initialized__ = true);
+                }
+                else {
+                    object.__initialized__ = true;
+                }
             }
             return object;
         });
@@ -114,6 +107,33 @@ export class ChildContainer extends Container {
             firstMissingClassToken,
             objects
         };
+    }
+    get(...tokens) {
+        return new Promise((resolve, reject) => {
+            this.doGet(tokens, resolve, reject);
+        });
+    }
+    eventuallyGet(...tokens) {
+        return new Promise((resolve, reject) => {
+            this.doEventuallyGet(tokens, resolve, reject);
+        });
+    }
+    getSync(...tokens) {
+        const { firstDiNotSetClass, firstMissingClassToken, objects } = this.doGetCore(tokens);
+        if (firstMissingClassToken) {
+            throw new Error('Dependency Injection could not find class for token: '
+                + firstMissingClassToken);
+        }
+        else if (firstDiNotSetClass) {
+            throw new Error('Dependency Injection is not ready for class: '
+                + firstDiNotSetClass.name);
+        }
+        if (objects.length > 1) {
+            return objects;
+        }
+        else {
+            return objects[0];
+        }
     }
 }
 export class RootContainer extends Container {
@@ -126,6 +146,13 @@ export class RootContainer extends Container {
         const context = new Context(null, ContextType.DB);
         return this.addContainer(context);
     }
+    remove(container) {
+        this.childContainers.delete(container);
+        if (container.context.name) {
+            this.uiContainerMap.get(container.context.name)
+                .delete(container);
+        }
+    }
     ui(componentName) {
         const context = new Context(componentName, ContextType.UI);
         const container = this.addContainer(context);
@@ -136,13 +163,6 @@ export class RootContainer extends Container {
         }
         matchingUiContainerSet.add(container);
         return container;
-    }
-    remove(container) {
-        this.childContainers.delete(container);
-        if (container.context.name) {
-            this.uiContainerMap.get(container.context.name)
-                .delete(container);
-        }
     }
     addContainer(context) {
         const childContainer = new ChildContainer(context);

@@ -1,6 +1,5 @@
-import { HandlerRegistry, MessageType, Transport, TransportMessage } from '@node-ts/bus-core';
+import { MessageType, Transport, TransportMessage } from '@node-ts/bus-core';
 import { Command, Event, MessageAttributes } from '@node-ts/bus-messages';
-import { Logger } from '@node-ts/logger-core';
 export declare const RETRY_LIMIT = 10;
 /**
  * How long to wait for the next message
@@ -28,13 +27,11 @@ export interface InMemoryMessage {
  * critical code inside of larger applications; so use at your own discresion.
  */
 export declare class MemoryQueue implements Transport<InMemoryMessage> {
-    private readonly logger;
-    private readonly handlerRegistry;
     private queue;
-    private queuePushed;
     private deadLetterQueue;
     private messagesWithHandlers;
-    constructor(logger: Logger, handlerRegistry: HandlerRegistry);
+    private logger;
+    constructor();
     /**
      * Gets the queue depth, which is the number of messages both queued and in flight
      */

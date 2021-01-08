@@ -2,8 +2,8 @@ import {
 	Context,
 	ContextType,
 	IInjectionContext
-}                 from './Context'
-import {IDiToken} from './Token'
+}                   from './Context';
+import { IDiToken } from './Token';
 
 export interface IChildContainer
 	extends IContainer {
@@ -182,6 +182,7 @@ export interface IChildContainer
 	eventuallyGet<A>(
 		token: IDiToken<A>
 	): Promise<A>
+
 	eventuallyGet(
 		...tokens: Array<IDiToken<any>>
 	): Promise<any[]>
@@ -381,9 +382,9 @@ export interface IRootContainer
 
 }
 
-const classes: any[]    = []
-let numPendingInits     = 0
-const theObjects: any[] = []
+const classes: any[]    = [];
+let numPendingInits     = 0;
+const theObjects: any[] = [];
 
 export class Container
 	implements IContainer {
@@ -392,8 +393,8 @@ export class Container
 		token: IDiToken<I>,
 		clazz: new() => I
 	): void {
-		classes[token.sequence]    = clazz
-		theObjects[token.sequence] = null
+		classes[token.sequence]    = clazz;
+		theObjects[token.sequence] = null;
 	}
 
 }
@@ -409,16 +410,148 @@ export class ChildContainer
 	constructor(
 		public context: IInjectionContext
 	) {
-		super()
+		super();
+	}
+
+	private doEventuallyGet(
+		tokens: Array<IDiToken<any>>,
+		successCallback,
+		errorCallback,
+	) {
+		let {
+			    firstDiNotSetClass,
+			    firstMissingClassToken,
+			    objects
+		    } = this.doGetCore(tokens);
+
+		if (firstMissingClassToken || firstDiNotSetClass) {
+			setTimeout(() => {
+				this.doEventuallyGet(
+					tokens,
+					successCallback,
+					errorCallback,
+				);
+			}, 100);
+		} else {
+			if (objects.length > 1) {
+				successCallback(objects);
+			} else {
+				successCallback(objects[0]);
+			}
+		}
+	}
+
+	private doGet(
+		tokens: Array<IDiToken<any>>,
+		successCallback,
+		errorCallback,
+	) {
+		const {
+			      firstDiNotSetClass,
+			      firstMissingClassToken,
+			      objects
+		      } = this.doGetCore(tokens);
+
+		if (firstDiNotSetClass) {
+			console.log(`Dependency Injection is not ready for token ${firstMissingClassToken.getPath()}
+			, class: ${firstDiNotSetClass.name}. Delaying injection by 100ms`);
+			setTimeout(() => {
+				this.doGet(
+					tokens,
+					successCallback,
+					errorCallback,
+				);
+			}, 100);
+		} else if (objects.filter(object => !object.__initialized__).length) {
+			const notInitializedObjectIndexes = objects.map((
+				object,
+				index
+			) => object.__initialized__ ? -1 : index)
+				.filter(index => index !== -1);
+			const objectPaths                 = [];
+			for (const index of notInitializedObjectIndexes) {
+				objectPaths.push(tokens[index].getPath());
+			}
+			console.log(`Dependency Injection is not ready for tokens:
+				 ${objectPaths.join('\n')}
+			, these classes are not yet initialized, delaying injection by 100ms`);
+			setTimeout(() => {
+				this.doGet(
+					tokens,
+					successCallback,
+					errorCallback,
+				);
+			}, 100);
+		}
+		if (firstMissingClassToken) {
+			const message = 'Dependency Injection could not find class for token: '
+				+ firstMissingClassToken.getPath();
+			console.log(message);
+			errorCallback(message);
+		} else {
+			if (objects.length > 1) {
+				successCallback(objects);
+			} else {
+				successCallback(objects[0]);
+			}
+		}
+	}
+
+	private doGetCore(
+		tokens: Array<IDiToken<any>>
+	): {
+		firstDiNotSetClass;
+		firstMissingClassToken: IDiToken<any>;
+		objects;
+	} {
+		let firstMissingClassToken;
+		let firstDiNotSetClass;
+		const objects = tokens.map(
+			token => {
+				if (firstMissingClassToken || firstDiNotSetClass) {
+					return;
+				}
+				let object = theObjects[token.sequence];
+				if (!object) {
+					const clazz = classes[token.sequence];
+					if (!clazz) {
+						firstMissingClassToken = token;
+						return;
+					}
+					if (clazz.diSet && !clazz.diSet()) {
+						firstMissingClassToken = token;
+						firstDiNotSetClass     = clazz;
+						return;
+					}
+					object                     = new clazz();
+					object.__container__       = this;
+					theObjects[token.sequence] = object;
+
+					if (object.init) {
+						object.init().then(_ => object.__initialized__ = true);
+					} else {
+						object.__initialized__ = true;
+					}
+				}
+				return object;
+			});
+
+		return {
+			firstDiNotSetClass,
+			firstMissingClassToken,
+			objects
+		};
 	}
 
 	get<A>(
 		tokenA: IDiToken<A>
 	): Promise<A>
+
 	get<A, B>(
 		tokenA: IDiToken<A>,
 		tokenB: IDiToken<B>
 	): Promise<[A, B]>
+
 	get<A, B, C>(
 		tokenA: IDiToken<A>,
 		tokenB: IDiToken<B>,
@@ -573,8 +706,8 @@ export class ChildContainer
 				tokens,
 				resolve,
 				reject
-			)
-		})
+			);
+		});
 	}
 
 	eventuallyGet<A>(
@@ -591,8 +724,8 @@ export class ChildContainer
 				tokens,
 				resolve,
 				reject
-			)
-		})
+			);
+		});
 	}
 
 	getSync<A>(
@@ -752,124 +885,20 @@ export class ChildContainer
 			      firstDiNotSetClass,
 			      firstMissingClassToken,
 			      objects
-		      } = this.doGetCore(tokens)
+		      } = this.doGetCore(tokens);
 
 		if (firstMissingClassToken) {
 			throw new Error('Dependency Injection could not find class for token: '
-				+ firstMissingClassToken)
+				+ firstMissingClassToken);
 		} else if (firstDiNotSetClass) {
 			throw new Error('Dependency Injection is not ready for class: '
-				+ firstDiNotSetClass.name)
+				+ firstDiNotSetClass.name);
 		}
 
 		if (objects.length > 1) {
-			return objects
+			return objects;
 		} else {
-			return objects[0]
-		}
-	}
-
-	private doEventuallyGet(
-		tokens: Array<IDiToken<any>>,
-		successCallback,
-		errorCallback,
-	) {
-		let {
-			      firstDiNotSetClass,
-			      firstMissingClassToken,
-			      objects
-		      } = this.doGetCore(tokens)
-
-		if (firstMissingClassToken || firstDiNotSetClass) {
-			setTimeout(() => {
-				this.doEventuallyGet(
-					tokens,
-					successCallback,
-					errorCallback,
-				)
-			}, 100)
-		} else {
-			if (objects.length > 1) {
-				successCallback(objects)
-			} else {
-				successCallback(objects[0])
-			}
-		}
-	}
-
-	private doGet(
-		tokens: Array<IDiToken<any>>,
-		successCallback,
-		errorCallback,
-	) {
-		const {
-			      firstDiNotSetClass,
-			      firstMissingClassToken,
-			      objects
-		      } = this.doGetCore(tokens)
-
-		if (firstDiNotSetClass) {
-			console.log(`Dependency Injection is not ready for token ${firstMissingClassToken.getPath()}
-			, class: ${firstDiNotSetClass.name}. Delaying injection by 100ms`)
-			setTimeout(() => {
-				this.doGet(
-					tokens,
-					successCallback,
-					errorCallback,
-				)
-			}, 100)
-		} else if (firstMissingClassToken) {
-			const message = 'Dependency Injection could not find class for token: '
-				+ firstMissingClassToken.getPath()
-			console.log(message)
-			errorCallback(message)
-		} else {
-			if (objects.length > 1) {
-				successCallback(objects)
-			} else {
-				successCallback(objects[0])
-			}
-		}
-	}
-
-	private doGetCore(
-		tokens: Array<IDiToken<any>>
-	): {
-		firstDiNotSetClass;
-		firstMissingClassToken: IDiToken<any>;
-		objects;
-	} {
-		let firstMissingClassToken
-		let firstDiNotSetClass
-		const objects = tokens.map(
-			token => {
-				if (firstMissingClassToken || firstDiNotSetClass) {
-					return
-				}
-				let object = theObjects[token.sequence]
-				if (!object) {
-					const clazz = classes[token.sequence]
-					if (!clazz) {
-						firstMissingClassToken = token
-						return
-					}
-					if (clazz.diSet && !clazz.diSet()) {
-						firstMissingClassToken = token
-						firstDiNotSetClass = clazz
-						return
-					}
-					object                     = new clazz()
-					object.__container__           = this
-					theObjects[token.sequence] = object
-				}
-
-				return object
-			})
-
-		return {
-			firstDiNotSetClass,
-			firstMissingClassToken,
-			objects
+			return objects[0];
 		}
 	}
 
@@ -879,55 +908,55 @@ export class RootContainer
 	extends Container
 	implements IRootContainer {
 
-	childContainers: Set<IContainer>             = new Set<IContainer>()
-	uiContainerMap: Map<string, Set<IContainer>> = new Map<string, Set<IContainer>>()
+	childContainers: Set<IContainer>             = new Set<IContainer>();
+	uiContainerMap: Map<string, Set<IContainer>> = new Map<string, Set<IContainer>>();
 
 	db(): IChildContainer {
-		const context = new Context(null, ContextType.DB)
+		const context = new Context(null, ContextType.DB);
 
-		return this.addContainer(context)
-	}
-
-	ui(
-		componentName: string
-	): IChildContainer {
-		const context = new Context(componentName, ContextType.UI)
-
-		const container = this.addContainer(context)
-
-		let matchingUiContainerSet = this.uiContainerMap.get(componentName)
-
-		if (!matchingUiContainerSet) {
-			matchingUiContainerSet = new Set<IContainer>()
-			this.uiContainerMap.set(componentName, matchingUiContainerSet)
-		}
-
-		matchingUiContainerSet.add(container)
-
-		return container
+		return this.addContainer(context);
 	}
 
 	remove(
 		container: IChildContainer
 	): void {
-		this.childContainers.delete(container)
+		this.childContainers.delete(container);
 
 		if (container.context.name) {
 			this.uiContainerMap.get(container.context.name)
-				.delete(container)
+				.delete(container);
 		}
+	}
+
+	ui(
+		componentName: string
+	): IChildContainer {
+		const context = new Context(componentName, ContextType.UI);
+
+		const container = this.addContainer(context);
+
+		let matchingUiContainerSet = this.uiContainerMap.get(componentName);
+
+		if (!matchingUiContainerSet) {
+			matchingUiContainerSet = new Set<IContainer>();
+			this.uiContainerMap.set(componentName, matchingUiContainerSet);
+		}
+
+		matchingUiContainerSet.add(container);
+
+		return container;
 	}
 
 	private addContainer(
 		context: IInjectionContext
 	): IChildContainer {
-		const childContainer = new ChildContainer(context)
+		const childContainer = new ChildContainer(context);
 
-		this.childContainers.add(childContainer)
+		this.childContainers.add(childContainer);
 
-		return childContainer
+		return childContainer;
 	}
 
 }
 
-export const DI: IRootContainer = new RootContainer()
+export const DI: IRootContainer = new RootContainer();
