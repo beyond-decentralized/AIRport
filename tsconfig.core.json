@@ -8,6 +8,7 @@
     "experimentalDecorators": true,
     "module": "ES2020",
     "moduleResolution": "node",
+    "newLine": "lf",
     "noImplicitAny": false,
     "removeComments": false,
     "sourceMap": true,
