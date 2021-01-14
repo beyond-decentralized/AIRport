@@ -6,4 +6,4 @@ export function getReadWsHandler(config) {
 export async function schemaQueryWsHandler(request, config = {}, context) {
     return null;
 }
-//# sourceMappingURL=SchemaQueryWs.js.map
+//# sourceMappingURL=QueryWs.js.map

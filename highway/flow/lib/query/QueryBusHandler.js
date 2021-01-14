@@ -5,13 +5,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { HandlesMessage } from '@node-ts/bus-core';
-import { SchemaQueryCmd } from './SchemaQueryCmd';
-let SchemaQueryBusHandler = class SchemaQueryBusHandler {
+import { QueryCmd } from './QueryCmd';
+let QueryBusHandler = class QueryBusHandler {
     async handle(command) {
     }
 };
-SchemaQueryBusHandler = __decorate([
-    HandlesMessage(SchemaQueryCmd)
-], SchemaQueryBusHandler);
-export { SchemaQueryBusHandler };
-//# sourceMappingURL=SchemaQueryBusHandler.js.map
+QueryBusHandler = __decorate([
+    HandlesMessage(QueryCmd)
+], QueryBusHandler);
+export { QueryBusHandler };
+//# sourceMappingURL=QueryBusHandler.js.map
