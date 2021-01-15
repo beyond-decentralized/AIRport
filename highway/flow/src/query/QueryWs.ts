@@ -1,12 +1,19 @@
+export enum QueryType {
+	PREPARED,
+	DYNAMIC
+}
+
 export interface IQueryRequest {
 	name: string
 	parameters: {
 		[parameterName: string]: string
-	}
+	},
+	type: QueryType
 }
 
 export interface IQueryResponse {
-	results: any
+	error?: string,
+	result?: any
 }
 
 export interface IQueryConfig {
@@ -40,5 +47,17 @@ export async function queryWsHandler(
 	config: IQueryConfig = {},
 	context: IQueryContext
 ): Promise<IQueryResponse> {
-	return null;
+	switch (request.type) {
+		case QueryType.DYNAMIC:
+			return {
+				error: `Dynamic queries are not (yet) supported by Highway.`
+			};
+		case QueryType.PREPARED:
+			// TODO: implement
+			return null;
+		default:
+			return {
+				error: `Unknown Query type: ${request.type}`
+			};
+	}
 }
