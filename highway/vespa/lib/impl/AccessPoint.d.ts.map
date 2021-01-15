@@ -1,1 +1,1 @@
-{"version":3,"file":"AccessPoint.d.ts","sourceRoot":"","sources":["../../src/impl/AccessPoint.ts"],"names":[],"mappings":"AAAA,OAAO,EAAgC,aAAa,EAAe,UAAU,EAAE,MAAM,uBAAuB,CAAC;AAC7G,OAAO,EACL,oBAAoB,EACpB,sBAAsB,EACtB,iBAAiB,EACjB,kBAAkB,EAClB,oBAAoB,EACrB,MAAM,sBAAsB,CAAC;AAE9B,eAAO,MAAM,KAAK;;;;;;;;;;;;;CAajB,CAAC"}
+{"version":3,"file":"AccessPoint.d.ts","sourceRoot":"","sources":["../../src/impl/AccessPoint.ts"],"names":[],"mappings":"AAAA,OAAO,EAIN,QAAQ,EACR,KAAK,EACL,MAA8B,uBAAuB,CAAC;AACvD,OAAO,EAAE,aAAa,EAAG,MAAM,sBAAsB,CAAC;AAEtD,eAAO,MAAM,KAAK;;;;;;;CAOjB,CAAC"}

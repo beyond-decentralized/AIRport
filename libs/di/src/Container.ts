@@ -528,7 +528,10 @@ export class ChildContainer
 					theObjects[token.sequence] = object;
 
 					if (object.init) {
-						object.init().then(_ => object.__initialized__ = true);
+						object.init().then(_ => {
+							object.__initialized__ = true;
+							console.log(`${token.getPath()} initialized.`);
+						});
 					} else {
 						object.__initialized__ = true;
 					}

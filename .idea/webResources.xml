@@ -156,6 +156,13 @@
           </resourceRoots>
         </entryData>
       </entry>
+      <entry url="file://$PROJECT_DIR$/highway/driveway">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/highway/driveway/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
       <entry url="file://$PROJECT_DIR$/highway/flow">
         <entryData>
           <resourceRoots>

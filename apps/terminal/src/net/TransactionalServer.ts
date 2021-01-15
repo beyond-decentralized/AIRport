@@ -68,7 +68,7 @@ export class TransactionalServer
 		const transManager = await container(this)
 			.get(TRANSACTION_MANAGER);
 
-		return await transManager.init('airport', context);
+		return await transManager.initialize('airport', context);
 	}
 
 	async find<E, EntityArray extends Array<E>>(

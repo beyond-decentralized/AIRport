@@ -10,7 +10,7 @@ export * from './MySqlTransaction';
 export async function startDb(domainName, ...schemas) {
     await DI.db().get(AIR_DB);
     const dbManager = await DI.db().get(DATABASE_MANAGER);
-    await dbManager.init(domainName, {}, ...schemas);
+    await dbManager.initWithDb(domainName, {}, ...schemas);
 }
 export async function closeDb() {
 }

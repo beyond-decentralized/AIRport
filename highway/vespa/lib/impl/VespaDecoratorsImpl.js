@@ -1,24 +1,24 @@
-export const VespaEntity = function () {
+export const Document = function () {
     return function (constructor) {
         // TODO: add runtime logic
     };
 };
-export function VespaFieldset(vespaEntityClass, fieldsetConfiguration) {
+export function Fieldset(vespaEntityClass, fieldsetConfiguration) {
     return function (constructor) {
         // TODO: add runtime logic
     };
 }
-export const VespaDefault = function () {
+export const Default = function () {
     return function (constructor) {
         // TODO: add runtime logic
     };
 };
-export const VespaAttribute = function (attributeConfiguration) {
+export const Attribute = function (attributeConfiguration) {
     return function (constructor) {
         // TODO: add runtime logic
     };
 };
-export function VespaIndex(indexing) {
+export function Index(indexing) {
     return function (constructor) {
         // TODO: add runtime logic
     };

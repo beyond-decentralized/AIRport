@@ -1,10 +1,10 @@
 import { ClassDecorator } from '@airport/air-control';
-import { VespaAttributeDecorator, VespaDefaultDecorator, VespaEntityDecorator, VespaFieldsetConfiguration, VespaIndexing } from '../lingo/VespaDecoratorsLingo';
-export declare const VespaEntity: VespaEntityDecorator;
-export declare function VespaFieldset<VespaEntity>(vespaEntityClass: {
+import { VespaAttributeDecorator, VespaDefaultDecorator, VespaDocumentDecorator, VespaFieldsetConfiguration, VespaIndexing } from '../lingo/VespaDecoratorsLingo';
+export declare const Document: VespaDocumentDecorator;
+export declare function Fieldset<VespaEntity>(vespaEntityClass: {
     new (...args: any[]): VespaEntity;
 }, fieldsetConfiguration?: VespaFieldsetConfiguration<VespaEntity>): ClassDecorator;
-export declare const VespaDefault: VespaDefaultDecorator;
-export declare const VespaAttribute: VespaAttributeDecorator;
-export declare function VespaIndex(indexing: VespaIndexing): PropertyDecorator;
+export declare const Default: VespaDefaultDecorator;
+export declare const Attribute: VespaAttributeDecorator;
+export declare function Index(indexing: VespaIndexing): PropertyDecorator;
 //# sourceMappingURL=VespaDecoratorsImpl.d.ts.map

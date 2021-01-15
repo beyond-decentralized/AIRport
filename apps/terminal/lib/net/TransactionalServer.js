@@ -30,7 +30,7 @@ export class TransactionalServer {
     async init(context = {}) {
         const transManager = await container(this)
             .get(TRANSACTION_MANAGER);
-        return await transManager.init('airport', context);
+        return await transManager.initialize('airport', context);
     }
     async find(portableQuery, credentials, context, cachedSqlQueryId) {
         const queryManager = await container(this)

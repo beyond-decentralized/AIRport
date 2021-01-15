@@ -76,7 +76,7 @@ export class SchemaInitializer
 
 		this.setAirDbSchemas(airDb, ddlObjects);
 
-		await sequenceGenerator.init();
+		await sequenceGenerator.initialize();
 	}
 
 	async initialize(
@@ -143,7 +143,7 @@ export class SchemaInitializer
 		const newSequences = await schemaBuilder.buildAllSequences(
 			schemasWithValidDependencies, context);
 
-		await sequenceGenerator.init(newSequences);
+		await sequenceGenerator.initialize(newSequences);
 
 		if (!normalOperation) {
 			await schemaRecorder.record(ddlObjects, normalOperation);
@@ -176,7 +176,7 @@ export class SchemaInitializer
 		const newSequences = await schemaBuilder.stageSequences(
 			jsonSchemas, airDb, context);
 
-		await sequenceGenerator.tempInit(newSequences);
+		await sequenceGenerator.tempInitialize(newSequences);
 
 		return [airDb, queryObjectInitializer, sequenceGenerator];
 	}

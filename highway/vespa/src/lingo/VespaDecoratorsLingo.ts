@@ -1,7 +1,7 @@
 import {
 	ClassDecorator,
 	PropertyDecorator
-} from '@airport/air-control'
+} from '@airport/air-control';
 
 export interface VespaIndexing {
 	attribute?: boolean,
@@ -13,7 +13,7 @@ export interface VespaFieldsetConfiguration<VespaEntity> {
 	fields: Partial<VespaEntity>
 }
 
-export interface VespaEntityDecorator {
+export interface VespaDocumentDecorator {
 	(): ClassDecorator
 }
 

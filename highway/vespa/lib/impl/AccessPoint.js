@@ -1,17 +1,11 @@
-import { VespaAttribute, VespaDefault, VespaFieldset, VespaEntity, VespaIndex } from './VespaDecoratorsImpl';
-import { VespaFieldTypeBitmap, VespaFieldTypeDocument, VespaFieldTypeInt, VespaFieldTypeLong, VespaFieldTypeString, } from './VespaFunctionsImpl';
+import { Attribute, Default, Document, Fieldset, Index } from './VespaDecoratorsImpl';
+import { DocumentField, } from './VespaFunctionsImpl';
 export const vespa = {
-    Attribute: VespaAttribute,
-    Default: VespaDefault,
-    Entity: VespaEntity,
-    Fieldset: VespaFieldset,
-    Indexing: VespaIndex,
-    type: {
-        bitmap: VespaFieldTypeBitmap,
-        document: VespaFieldTypeDocument,
-        int: VespaFieldTypeInt,
-        long: VespaFieldTypeLong,
-        string: VespaFieldTypeString,
-    },
+    Attribute: Attribute,
+    Default: Default,
+    Document: Document,
+    Fieldset: Fieldset,
+    Indexing: Index,
+    Join: DocumentField,
 };
 //# sourceMappingURL=AccessPoint.js.map

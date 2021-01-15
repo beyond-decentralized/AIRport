@@ -49,7 +49,7 @@ export interface IDatabaseManager {
 
 	isInitialized(): boolean;
 
-	init(
+	initWithDb(
 		domainName: string,
 		context: IContext,
 		...schemas: JsonSchema[]
@@ -71,7 +71,26 @@ export class DatabaseManager
 	// constructor() {
 	// }
 
-	async init(
+	async initNoDb(
+		domainName: string,
+		context: IContext,
+		...schemas: JsonSchema[]
+	): Promise<void> {
+		this.airDb = await container(this).get(AIR_DB);
+
+		const connector = await container(this).get(TRANS_CONNECTOR);
+		await connector.init();
+
+		const server              = await container(this).get(TRANS_SERVER);
+		(server as any).tempActor = new Actor();
+
+		await this.installAirportSchema(true, false, context);
+
+		const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
+		await schemaInitializer.stage(schemas, context);
+	}
+
+	async initWithDb(
 		domainName: string,
 		context: IContext,
 		...schemas: JsonSchema[]
@@ -152,7 +171,7 @@ export class DatabaseManager
 		const hydrate = await storeDriver.doesTableExist('air___airport__territory',
 			'packages', context);
 
-		await this.installAirportSchema(hydrate, false, context);
+		await this.installAirportSchema(false, hydrate, context);
 
 		if (!hydrate) {
 			await this.initTerminal(domainName);
@@ -188,25 +207,6 @@ export class DatabaseManager
 					})
 				await dbFacade.init(storeType)
 				*/
-	}
-
-	async initNoDb(
-		domainName: string,
-		context: IContext,
-		...schemas: JsonSchema[]
-	): Promise<void> {
-		this.airDb = await container(this).get(AIR_DB);
-
-		const connector = await container(this).get(TRANS_CONNECTOR);
-		await connector.init();
-
-		const server              = await container(this).get(TRANS_SERVER);
-		(server as any).tempActor = new Actor();
-
-		await this.installAirportSchema(true, false, context);
-
-		const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
-		await schemaInitializer.stage(schemas, context);
 	}
 
 	/*

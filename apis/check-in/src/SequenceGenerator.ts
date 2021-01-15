@@ -1,14 +1,14 @@
 import {
 	IAirportDatabase,
 	QSchemaInternal
-} from '@airport/air-control'
+} from '@airport/air-control';
 import {
 	DbColumn,
 	DbEntity,
 	DbSchema,
 	DbSequence,
 	repositoryEntity
-} from '@airport/ground-control'
+} from '@airport/ground-control';
 
 /**
  * Sequence generator is needed at Airport initialization time. A Dao
@@ -26,11 +26,11 @@ export interface ISequenceGenerator {
 		numSequencesNeeded: number[]
 	): Promise<number[][]>
 
-	init(
+	initialize(
 		sequences?: DbSequence[]
 	): Promise<void>
 
-	tempInit(
+	tempInitialize(
 		sequences?: DbSequence[]
 	): Promise<void>
 
@@ -39,10 +39,10 @@ export interface ISequenceGenerator {
 export function setSeqGen(
 	sequenceGenerator: ISequenceGenerator
 ) {
-	SEQ_GEN = sequenceGenerator
+	SEQ_GEN = sequenceGenerator;
 }
 
-var SEQ_GEN: ISequenceGenerator
+var SEQ_GEN: ISequenceGenerator;
 
 export function diSet(
 	dbSchema: DbSchema,
@@ -50,21 +50,20 @@ export function diSet(
 ): boolean {
 	if (!SEQ_GEN
 		|| !dbSchema) {
-		return false
+		return false;
 	}
 
-	const dbEntity = dbSchema.currentVersion.entities[dbEntityId]
+	const dbEntity = dbSchema.currentVersion.entities[dbEntityId];
 
-	return SEQ_GEN.exists(dbEntity)
+	return SEQ_GEN.exists(dbEntity);
 }
 
 export function duoDiSet(
 	dbSchema: DbSchema,
 	dbEntityId: number
 ): boolean {
-	return dbSchema && dbSchema.currentVersion.entities[dbEntityId] as any as boolean
+	return dbSchema && dbSchema.currentVersion.entities[dbEntityId] as any as boolean;
 }
-
 
 export async function getSysWideOpId(
 	airDb: IAirportDatabase,
@@ -73,11 +72,11 @@ export async function getSysWideOpId(
 	const sysWideOpIdGeneratedColumn
 		      = (airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA] as QSchemaInternal)
 		.__dbSchema__.currentVersion
-		.entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID']
+		.entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
 
 	const generatedNumWrapper = await sequenceGenerator
 		.generateSequenceNumbers(
-			[sysWideOpIdGeneratedColumn], [1])
+			[sysWideOpIdGeneratedColumn], [1]);
 
-	return generatedNumWrapper[0][0]
+	return generatedNumWrapper[0][0];
 }

@@ -15,7 +15,7 @@ export class TransactionManager extends AbstractMutationManager {
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
      */
-    async init(dbName, context) {
+    async initialize(dbName, context) {
         const storeDriver = await container(this)
             .get(STORE_DRIVER);
         return await storeDriver.initialize(dbName, context);

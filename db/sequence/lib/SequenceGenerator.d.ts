@@ -24,8 +24,8 @@ export declare abstract class SequenceGenerator implements ISequenceGenerator {
     private sequenceBlocks;
     private generatingSequenceNumbers;
     exists(dbEntity: DbEntity): boolean;
-    init(sequences?: ISequence[]): Promise<void>;
-    tempInit(sequences?: ISequence[]): Promise<void>;
+    initialize(sequences?: ISequence[]): Promise<void>;
+    tempInitialize(sequences?: ISequence[]): Promise<void>;
     generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
     protected abstract nativeGenerate(): Promise<number>;
     /**

@@ -1,9 +1,9 @@
+import { IContext }     from '@airport/di';
 import {
 	IStoreDriver,
 	StoreType
-}                     from '@airport/ground-control'
-import {ICredentials} from './Credentials'
-import { IContext } from '@airport/di';
+}                       from '@airport/ground-control';
+import { ICredentials } from './Credentials';
 
 export interface ITransactionManager {
 
@@ -11,7 +11,7 @@ export interface ITransactionManager {
 
 	transactionInProgress: string;
 
-	init(
+	initialize(
 		dbName: string,
 		context: IContext,
 	): Promise<void>;

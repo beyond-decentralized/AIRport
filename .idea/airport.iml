@@ -104,6 +104,7 @@
       <excludeFolder url="file://$MODULE_DIR$/highway/control/.rush" />
       <excludeFolder url="file://$MODULE_DIR$/highway/control/lib" />
     </content>
+    <content url="file://$MODULE_DIR$/highway/driveway" />
     <content url="file://$MODULE_DIR$/highway/flow" />
     <content url="file://$MODULE_DIR$/highway/scylladb">
       <excludeFolder url="file://$MODULE_DIR$/highway/scylladb/lib" />

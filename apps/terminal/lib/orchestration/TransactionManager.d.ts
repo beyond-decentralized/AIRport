@@ -11,7 +11,7 @@ export declare class TransactionManager extends AbstractMutationManager implemen
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
      */
-    init(dbName: string, context: IContext): Promise<void>;
+    initialize(dbName: string, context: IContext): Promise<void>;
     transact(credentials: ICredentials, transactionalCallback: {
         (transaction: IStoreDriver): Promise<void>;
     }, context: IContext): Promise<void>;

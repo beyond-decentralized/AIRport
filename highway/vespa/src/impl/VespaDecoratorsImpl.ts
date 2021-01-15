@@ -1,48 +1,48 @@
-import {ClassDecorator} from '@airport/air-control'
+import { ClassDecorator } from '@airport/air-control';
 import {
 	VespaAttributeConfiguration,
 	VespaAttributeDecorator,
 	VespaDefaultDecorator,
-	VespaEntityDecorator,
+	VespaDocumentDecorator,
 	VespaFieldsetConfiguration,
 	VespaIndexing
-}                       from '../lingo/VespaDecoratorsLingo'
+}                         from '../lingo/VespaDecoratorsLingo';
 
-export const VespaEntity: VespaEntityDecorator = function () {
-	return function (constructor: { new(): Object }) {
+export const Document: VespaDocumentDecorator = function() {
+	return function(constructor: { new(): Object }) {
 		// TODO: add runtime logic
-	}
-}
+	};
+};
 
-export function VespaFieldset<VespaEntity>(
+export function Fieldset<VespaEntity>(
 	vespaEntityClass: { new(...args: any[]): VespaEntity },
 	fieldsetConfiguration?: VespaFieldsetConfiguration<VespaEntity>
 ): ClassDecorator {
-	return function (constructor: { new(): Object }) {
+	return function(constructor: { new(): Object }) {
 		// TODO: add runtime logic
-	}
+	};
 }
 
-export const VespaDefault: VespaDefaultDecorator = function () {
-	return function (constructor: { new(): Object }) {
+export const Default: VespaDefaultDecorator = function() {
+	return function(constructor: { new(): Object }) {
 		// TODO: add runtime logic
-	}
-}
+	};
+};
 
-export const VespaAttribute: VespaAttributeDecorator = function (
+export const Attribute: VespaAttributeDecorator = function(
 	attributeConfiguration: VespaAttributeConfiguration
 ) {
-	return function (constructor: { new(): Object }) {
+	return function(constructor: { new(): Object }) {
 		// TODO: add runtime logic
-	}
-}
+	};
+};
 
-export function VespaIndex(
+export function Index(
 	indexing: VespaIndexing
 ): PropertyDecorator {
-	return function (constructor: { new(): Object }) {
+	return function(constructor: { new(): Object }) {
 		// TODO: add runtime logic
-	}
+	};
 }
 
 

@@ -1,63 +1,44 @@
-export enum QueryType {
-	PREPARED,
-	DYNAMIC
-}
+import { DI } from '@airport/di';
+import {
+	QUERY_VALIDATOR,
+	QUERY_WEB_SERVICE
+}             from '../tokens';
+import {
+	IQueryConfig,
+	IQueryContext,
+	IQueryRequest,
+	IQueryResponse
+}             from './Query';
 
-export interface IQueryRequest {
-	name: string
-	parameters: {
-		[parameterName: string]: string
-	},
-	type: QueryType
-}
+export interface IQueryWebService {
 
-export interface IQueryResponse {
-	error?: string,
-	result?: any
-}
-
-export interface IQueryConfig {
-
-}
-
-export interface IQueryContext {
-	ioc
-}
-
-export type IQueryHandlerCallback = {
-	(
+	handle(
 		request: IQueryRequest,
+		config: IQueryConfig,
 		context: IQueryContext
 	): Promise<IQueryResponse>;
-};
 
-export function getQueryWsHandler(
-	config: IQueryConfig
-): IQueryHandlerCallback {
-	return async (
+}
+
+export class QueryWebService
+	implements IQueryWebService {
+
+	async handle(
 		request: IQueryRequest,
+		config: IQueryConfig = {},
 		context: IQueryContext
-	) => {
-		return await queryWsHandler(request, config, context);
-	};
+	): Promise<IQueryResponse> {
+		const queryValidator = await DI.db().get(QUERY_VALIDATOR);
+		try {
+			queryValidator.validate(request);
+		} catch (e) {
+			return {
+				error: e.message
+			};
+		}
+	}
+
+	// Look up the query mapping: should it be directed to Vespa, ScyllaDb or CockroachDbco
 }
 
-export async function queryWsHandler(
-	request: IQueryRequest,
-	config: IQueryConfig = {},
-	context: IQueryContext
-): Promise<IQueryResponse> {
-	switch (request.type) {
-		case QueryType.DYNAMIC:
-			return {
-				error: `Dynamic queries are not (yet) supported by Highway.`
-			};
-		case QueryType.PREPARED:
-			// TODO: implement
-			return null;
-		default:
-			return {
-				error: `Unknown Query type: ${request.type}`
-			};
-	}
-}
+DI.set(QUERY_WEB_SERVICE, QueryWebService);

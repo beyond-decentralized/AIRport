@@ -12,22 +12,24 @@ export class Thread {
 }
 let VespaThread = class VespaThread {
     constructor() {
-        this.data = vespa.type.document(Thread, {
+        this.data = vespa.Join(Thread, {
             data: Y
         });
-        this.name = vespa.type.string(Thread, (q) => q.name);
+        this.name = Q.Thread.name;
     }
 };
 __decorate([
-    vespa.Attribute({
-        fastSearch: true,
-    }),
+    vespa.Indexing({
+        index: Y,
+    })
+], VespaThread.prototype, "data", void 0);
+__decorate([
     vespa.Indexing({
         index: Y,
     })
 ], VespaThread.prototype, "name", void 0);
 VespaThread = __decorate([
-    vespa.Entity()
+    vespa.Document()
 ], VespaThread);
 let Default = class Default {
 };

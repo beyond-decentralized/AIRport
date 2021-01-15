@@ -41,7 +41,7 @@ export class SequenceGenerator {
         }
         return generatedColumns.every(dbColumn => !!tableSequences[dbColumn.index]);
     }
-    async init(sequences) {
+    async initialize(sequences) {
         const sequenceDao = await container(this).get(SEQUENCE_DAO);
         if (!sequences) {
             sequences = await sequenceDao.findAll();
@@ -50,7 +50,7 @@ export class SequenceGenerator {
         await sequenceDao.incrementCurrentValues();
         setSeqGen(this);
     }
-    async tempInit(sequences) {
+    async tempInitialize(sequences) {
         this.addSequences(sequences);
         setSeqGen(this);
     }

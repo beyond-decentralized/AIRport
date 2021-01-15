@@ -7,7 +7,7 @@ export interface VespaIndexing {
 export interface VespaFieldsetConfiguration<VespaEntity> {
     fields: Partial<VespaEntity>;
 }
-export interface VespaEntityDecorator {
+export interface VespaDocumentDecorator {
     (): ClassDecorator;
 }
 export interface VespaDefaultDecorator {
