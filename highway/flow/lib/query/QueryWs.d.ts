@@ -1,15 +1,20 @@
-export interface ISchemaQueryRequest {
+export interface IQueryRequest {
+    name: string;
+    parameters: {
+        [parameterName: string]: string;
+    };
 }
-export interface ISchemaQueryResponse {
+export interface IQueryResponse {
+    results: any;
 }
-export interface ISchemaQueryConfig {
+export interface IQueryConfig {
 }
-export interface ISchemaQueryContext {
+export interface IQueryContext {
     ioc: any;
 }
-export declare type ISchemaQueryHandlerCallback = {
-    (request: ISchemaQueryRequest, context: ISchemaQueryContext): Promise<ISchemaQueryResponse>;
+export declare type IQueryHandlerCallback = {
+    (request: IQueryRequest, context: IQueryContext): Promise<IQueryResponse>;
 };
-export declare function getReadWsHandler(config: ISchemaQueryConfig): ISchemaQueryHandlerCallback;
-export declare function schemaQueryWsHandler(request: ISchemaQueryRequest, config: ISchemaQueryConfig, context: ISchemaQueryContext): Promise<ISchemaQueryResponse>;
+export declare function getQueryWsHandler(config: IQueryConfig): IQueryHandlerCallback;
+export declare function queryWsHandler(request: IQueryRequest, config: IQueryConfig, context: IQueryContext): Promise<IQueryResponse>;
 //# sourceMappingURL=QueryWs.d.ts.map

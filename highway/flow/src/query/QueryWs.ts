@@ -1,41 +1,44 @@
-export interface ISchemaQueryRequest {
+export interface IQueryRequest {
+	name: string
+	parameters: {
+		[parameterName: string]: string
+	}
+}
+
+export interface IQueryResponse {
+	results: any
+}
+
+export interface IQueryConfig {
 
 }
 
-export interface ISchemaQueryResponse {
-
-}
-
-export interface ISchemaQueryConfig {
-
-}
-
-export interface ISchemaQueryContext {
+export interface IQueryContext {
 	ioc
 }
 
-export type ISchemaQueryHandlerCallback = {
+export type IQueryHandlerCallback = {
 	(
-		request: ISchemaQueryRequest,
-		context: ISchemaQueryContext
-	): Promise<ISchemaQueryResponse>;
+		request: IQueryRequest,
+		context: IQueryContext
+	): Promise<IQueryResponse>;
 };
 
-export function getReadWsHandler(
-	config: ISchemaQueryConfig
-): ISchemaQueryHandlerCallback {
+export function getQueryWsHandler(
+	config: IQueryConfig
+): IQueryHandlerCallback {
 	return async (
-		request: ISchemaQueryRequest,
-		context: ISchemaQueryContext
+		request: IQueryRequest,
+		context: IQueryContext
 	) => {
-		return await schemaQueryWsHandler(request, config, context);
+		return await queryWsHandler(request, config, context);
 	};
 }
 
-export async function schemaQueryWsHandler(
-	request: ISchemaQueryRequest,
-	config: ISchemaQueryConfig = {},
-	context: ISchemaQueryContext
-): Promise<ISchemaQueryResponse> {
+export async function queryWsHandler(
+	request: IQueryRequest,
+	config: IQueryConfig = {},
+	context: IQueryContext
+): Promise<IQueryResponse> {
 	return null;
 }
