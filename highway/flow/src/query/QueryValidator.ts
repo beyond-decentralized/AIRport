@@ -25,7 +25,6 @@ export class QueryValidator
 			default:
 				throw new Error(`Unknown Query type: ${request.type}`);
 		}
-
 	}
 }
 
