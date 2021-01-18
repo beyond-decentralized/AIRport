@@ -1,1 +1,6 @@
-export const store = new VespaSchemaStore();
+import {
+	IVespaSchemaStore,
+	VespaSchemaStore
+} from './VespaSchemaStore';
+
+export const store: IVespaSchemaStore = new VespaSchemaStore();

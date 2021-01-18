@@ -1,2 +1,3 @@
-export declare const store: any;
+import { IVespaSchemaStore } from './VespaSchemaStore';
+export declare const store: IVespaSchemaStore;
 //# sourceMappingURL=store.d.ts.map
