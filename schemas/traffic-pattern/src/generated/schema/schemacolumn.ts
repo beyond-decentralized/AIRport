@@ -31,6 +31,8 @@ export interface ISchemaColumn extends IVersionedSchemaObject {
 	allocationSize?: number;
 	name?: string;
 	notNull?: boolean;
+	precision?: number;
+	scale?: number;
 	type?: number;
 
 	// Non-Id Relations

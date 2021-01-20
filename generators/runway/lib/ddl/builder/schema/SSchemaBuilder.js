@@ -1,6 +1,6 @@
 import { EntityRelationType, file, property, repositoryEntity, } from '@airport/ground-control';
-import { globalCandidateRegistry } from '../../parser/EntityDefinitionGenerator';
 import { canBeInterface, getImplNameFromInterfaceName } from '../../../resolve/pathResolver';
+import { globalCandidateRegistry } from '../../parser/EntityDefinitionGenerator';
 import { SchemaRelationResolver } from './SchemaRelationResolver';
 import { buildIndexedSSchema } from './SSchema';
 export class SSchemaBuilder {
@@ -48,6 +48,35 @@ export class SSchemaBuilder {
         const indexedSchema = buildIndexedSSchema(schema, referencedSchemasByProjectName);
         new SchemaRelationResolver().resolveAllRelationLinks(indexedSchema);
         return indexedSchema;
+    }
+    getIdColumnIndex(entity, columnName) {
+        if (!entity.isRepositoryEntity) {
+            return entity.numIdColumns++;
+        }
+        entity.numIdColumns = 3;
+        switch (columnName) {
+            case 'REPOSITORY_ID':
+                return 0;
+            case 'ACTOR_ID':
+                return 1;
+            case 'ACTOR_RECORD_ID':
+                return 2;
+            default:
+                throw new Error(`Repository Entity @Id columns must be 
+				'REPOSITORY_ID', 'ACTOR_ID' and 'ACTOR_RECORD_ID'`);
+        }
+    }
+    getColumnIndex(entity, idIndex) {
+        if (!entity.isRepositoryEntity) {
+            return entity.numColumns++;
+        }
+        if (!entity.numColumns) {
+            entity.numColumns = 3;
+        }
+        if (idIndex !== undefined) {
+            return idIndex;
+        }
+        return entity.numColumns++;
     }
     buildEntity(entityCandidate, tableIndex, referencedSchemasByProjectName) {
         let foundEntityDecorator = false;
@@ -414,6 +443,8 @@ export class SSchemaBuilder {
         let columnName;
         let notNull = false;
         let columnDefined = false;
+        let precision = null;
+        let scale = null;
         for (const decorator of aProperty.decorators) {
             switch (decorator.name) {
                 case property.COLUMN:
@@ -427,6 +458,12 @@ export class SSchemaBuilder {
                         columnName = columnDecoratorDefs.name;
                         if (columnDecoratorDefs.nullable === false) {
                             notNull = true;
+                        }
+                        if (columnDecoratorDefs.precision) {
+                            precision = columnDecoratorDefs.precision;
+                        }
+                        if (columnDecoratorDefs.scale) {
+                            scale = columnDecoratorDefs.scale;
                         }
                     }
                     else {
@@ -464,7 +501,9 @@ export class SSchemaBuilder {
             isGenerated: aProperty.isGenerated,
             name: columnName,
             notNull,
+            precision,
             propertyRefs: [propertyIndex],
+            scale,
             type: aProperty.primitive
         };
         primitiveColumnMapByName[columnName] = column;
@@ -565,35 +604,6 @@ export class SSchemaBuilder {
             sRelationColumn,
             column
         ];
-    }
-    getIdColumnIndex(entity, columnName) {
-        if (!entity.isRepositoryEntity) {
-            return entity.numIdColumns++;
-        }
-        entity.numIdColumns = 3;
-        switch (columnName) {
-            case 'REPOSITORY_ID':
-                return 0;
-            case 'ACTOR_ID':
-                return 1;
-            case 'ACTOR_RECORD_ID':
-                return 2;
-            default:
-                throw new Error(`Repository Entity @Id columns must be 
-				'REPOSITORY_ID', 'ACTOR_ID' and 'ACTOR_RECORD_ID'`);
-        }
-    }
-    getColumnIndex(entity, idIndex) {
-        if (!entity.isRepositoryEntity) {
-            return entity.numColumns++;
-        }
-        if (!entity.numColumns) {
-            entity.numColumns = 3;
-        }
-        if (idIndex !== undefined) {
-            return idIndex;
-        }
-        return entity.numColumns++;
     }
 }
 export function entityExtendsRepositoryEntity(//

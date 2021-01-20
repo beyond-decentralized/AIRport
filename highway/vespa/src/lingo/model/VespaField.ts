@@ -1,21 +1,29 @@
+import {
+	DbColumn,
+	DbProperty
+}                                      from '@airport/ground-control';
+import { VespaAttributeConfiguration } from '../VespaDecoratorsLingo';
+
 export interface IVespaIndexing {
 
-	attribute?: boolean,
-	index?: boolean,
-	summary?: boolean
+	attribute?: boolean;
+	index?: boolean;
+	summary?: boolean;
 
 }
 
 export interface IVespaField {
 
-	indexing: IVespaIndexing;
+	attribute?: VespaAttributeConfiguration;
+	indexing?: IVespaIndexing;
 	name: string;
 
 }
 
-export interface IVespaFieldWithProperty
+export interface IVespaFieldWithDbInfo
 	extends IVespaField {
 
-	property: any
+	dbColumn: DbColumn
+	dbProperty: DbProperty
 
 }

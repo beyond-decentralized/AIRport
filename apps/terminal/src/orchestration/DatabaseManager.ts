@@ -56,7 +56,6 @@ export interface IDatabaseManager {
 	): Promise<void>;
 
 	initNoDb(
-		domainName: string,
 		context: IContext,
 		...schemas: JsonSchema[]
 	): Promise<void>
@@ -72,7 +71,6 @@ export class DatabaseManager
 	// }
 
 	async initNoDb(
-		domainName: string,
 		context: IContext,
 		...schemas: JsonSchema[]
 	): Promise<void> {

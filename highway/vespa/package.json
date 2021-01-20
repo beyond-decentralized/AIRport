@@ -4,7 +4,8 @@
     "@airport/di": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/hw-control": "0.0.1",
-    "@airport/observe": "0.0.1"
+    "@airport/observe": "0.0.1",
+    "@types/node": "^14.11.10"
   },
   "main": "lib/index.js",
   "name": "@airport/hw-vespa",

@@ -192,6 +192,11 @@
       "projectFolder": "generators/takeoff",
       "shouldPublish": true
     },
+    {
+      "packageName": "@airport/taxiway",
+      "projectFolder": "generators/taxiway",
+      "shouldPublish": true
+    },
     // "schemas" folder (alphabetical order),
     {
       "packageName": "@airport/airport-code",

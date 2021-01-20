@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { AIR_DB } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { VersionedSchemaObject } from '../ddl/schema/VersionedSchemaObject';

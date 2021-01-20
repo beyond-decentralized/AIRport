@@ -2,11 +2,11 @@ import {
 	DatabaseForeignKey,
 	DatabaseOneToManyElements,
 	JSONBaseOperation
-}                              from '@airport/ground-control'
-import {IAirportDatabase}      from '../../../AirportDatabase'
-import {FunctionsAndOperators} from '../../FunctionsAndOperators'
-import {PropertyDecorator}     from '../../metadata/decorators'
-import {IQEntity}              from '../Entity'
+}                                from '@airport/ground-control';
+import { IAirportDatabase }      from '../../../AirportDatabase';
+import { FunctionsAndOperators } from '../../FunctionsAndOperators';
+import { PropertyDecorator }     from '../../metadata/decorators';
+import { IQEntity }              from '../Entity';
 
 /**
  * Marks an object property as the ID column in a SQL table.
@@ -24,6 +24,10 @@ export interface ColumnConfiguration {
 	name: string;
 	// (Optional) Whether the terminal column is nullable.
 	nullable?: boolean;
+	// The precision of a decimal (total digits)
+	precision?: number;
+	// The scale of a decimal (digits after the floating point)
+	scale?: number;
 }
 
 export enum ConstraintMode {
@@ -175,7 +179,6 @@ export interface AddToJoinFunction<QOtm extends IQEntity<any>, QMto extends IQEn
 // { ( addToJoinFunction: AddToJoinFunction<QOtm, QMto>, // Function to add to the join
 // joinFunctionWithOperator?: andOperator | orOperator // How to add the function to the
 // join ): PropertyDecorator; }
-
 
 /**
  * Defines a sub-query that can be joined to

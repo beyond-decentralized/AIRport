@@ -95,6 +95,86 @@ export declare const SCHEMA: {
                 name: string;
                 indexes: any[];
             };
+            operations: {};
+        } | {
+            columns: ({
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: {
+                    manyRelationIndex: number;
+                    oneSchemaIndex: any;
+                    oneTableIndex: number;
+                    oneColumnIndex: number;
+                    sinceVersion: number;
+                }[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: number;
+            } | {
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: {
+                    manyRelationIndex: number;
+                    oneSchemaIndex: any;
+                    oneTableIndex: number;
+                    oneRelationIndex: number;
+                    oneColumnIndex: number;
+                    sinceVersion: number;
+                }[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: number;
+            })[];
+            idColumnRefs: {
+                index: number;
+            }[];
+            index: number;
+            isLocal: boolean;
+            isRepositoryEntity: boolean;
+            name: string;
+            properties: ({
+                index: number;
+                isId: boolean;
+                name: string;
+                relationRef: {
+                    index: number;
+                };
+                sinceVersion: number;
+                columnRef?: undefined;
+            } | {
+                columnRef: {
+                    index: number;
+                };
+                index: number;
+                isId: boolean;
+                name: string;
+                sinceVersion: number;
+                relationRef?: undefined;
+            })[];
+            relations: {
+                index: number;
+                isId: boolean;
+                relationType: number;
+                propertyRef: {
+                    index: number;
+                };
+                relationTableIndex: number;
+                sinceVersion: number;
+            }[];
+            sinceVersion: number;
+            tableConfig: {
+                name: string;
+                indexes: any[];
+            };
+            operations?: undefined;
         } | {
             columns: ({
                 allocationSize: number;
@@ -182,6 +262,7 @@ export declare const SCHEMA: {
                 name: string;
                 indexes: any[];
             };
+            operations: {};
         } | {
             columns: {
                 index: number;
@@ -268,6 +349,7 @@ export declare const SCHEMA: {
                 name: string;
                 indexes: any[];
             };
+            operations: {};
         })[];
         integerVersion: number;
         referencedSchemas: {

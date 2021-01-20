@@ -96,21 +96,30 @@ export class JsonSchemaBuilder {
 			sIndexedEntity => {
 				const sEntity                     = sIndexedEntity.entity;
 				const columns: JsonSchemaColumn[] = sIndexedEntity.columns.map(
-					sColumn => ({
-						allocationSize: sColumn.allocationSize,
-						columnDefinition: sColumn.columnDefinition,
-						index: sColumn.index,
-						isGenerated: sColumn.isGenerated === undefined ? false : sColumn.isGenerated,
-						manyRelationColumnRefs: [],
-						name: sColumn.name,
-						notNull: sColumn.notNull,
-						propertyRefs: sColumn.propertyRefs.map(
-							index => ({
-								index
-							})),
-						sinceVersion: 1,
-						type: getSqlDataType(sColumn.type),
-					}));
+					sColumn => {
+						const jsonColumn: JsonSchemaColumn = {
+							allocationSize: sColumn.allocationSize,
+							// columnDefinition: sColumn.columnDefinition,
+							index: sColumn.index,
+							isGenerated: sColumn.isGenerated === undefined ? false : sColumn.isGenerated,
+							manyRelationColumnRefs: [],
+							name: sColumn.name,
+							notNull: sColumn.notNull,
+							propertyRefs: sColumn.propertyRefs.map(
+								index => ({
+									index
+								})),
+							sinceVersion: 1,
+							type: getSqlDataType(sColumn.type),
+						};
+						if (sColumn.precision) {
+							jsonColumn.precision = sColumn.precision;
+						}
+						if (sColumn.scale) {
+							jsonColumn.scale = sColumn.scale;
+						}
+						return jsonColumn;
+					});
 				columns.sort((
 					a,
 					b

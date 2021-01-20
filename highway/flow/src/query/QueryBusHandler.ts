@@ -7,4 +7,5 @@ export class QueryBusHandler {
 	async handle(command: QueryCmd): Promise<void> {
 
 	}
+
 }

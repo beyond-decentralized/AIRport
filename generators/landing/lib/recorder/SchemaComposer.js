@@ -36,6 +36,14 @@ export class SchemaComposer {
             schemaVersions: newSchemaVersions
         };
     }
+    getExistingLatestSchemaVersion(referencedSchemaName, terminalStore) {
+        const referencedSchemaVersion = terminalStore
+            .getLatestSchemaVersionMapBySchemaName().get(referencedSchemaName);
+        if (!referencedSchemaVersion) {
+            throw new Error(`Cannot find schema "${referencedSchemaName}".`);
+        }
+        return referencedSchemaVersion;
+    }
     composeDomains(domainNameSet, ddlObjectRetriever, terminalStore) {
         const allDomains = [];
         const existingDomains = terminalStore.getDomains();
@@ -86,6 +94,7 @@ export class SchemaComposer {
                 domain,
                 index: ++ddlObjectRetriever.lastIds.schemas,
                 name: schemaName,
+                packageName: jsonSchema.name,
                 scope: 'public',
                 status: SchemaStatus.CURRENT,
             };
@@ -322,7 +331,9 @@ export class SchemaComposer {
                         name: jsonColumn.name,
                         notNull: jsonColumn.notNull,
                         oneRelationColumns: [],
+                        precision: jsonColumn.precision,
                         propertyColumns: [],
+                        scale: jsonColumn.scale,
                         type: jsonColumn.type,
                     };
                     columnsForTable[index] = column;
@@ -426,14 +437,6 @@ export class SchemaComposer {
             });
         }
         return newRelationColumns;
-    }
-    getExistingLatestSchemaVersion(referencedSchemaName, terminalStore) {
-        const referencedSchemaVersion = terminalStore
-            .getLatestSchemaVersionMapBySchemaName().get(referencedSchemaName);
-        if (!referencedSchemaVersion) {
-            throw new Error(`Cannot find schema "${referencedSchemaName}".`);
-        }
-        return referencedSchemaVersion;
     }
 }
 DI.set(SCHEMA_COMPOSER, SchemaComposer);

@@ -1,18 +1,11 @@
 import { AIR_DB, LimitedEntityQuery, LOOKUP, QBooleanFunction, QDateArrayFunction, QDateFunction, QNumberArrayFunction, QNumberFunction, QStringArrayFunction, QStringFunction, QUERY_FACADE, Y } from '@airport/air-control';
-import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { DI } from '@airport/di';
-import { getSchemaName, OperationType, QueryInputKind, QueryParameterType, QueryResultType, STORE_DRIVER } from '@airport/ground-control';
-import { SCHEMA_BUILDER, SCHEMA_INITIALIZER } from '@airport/landing';
-import { injectTransactionalConnector } from '@airport/tarmaq';
-import { DATABASE_MANAGER, injectTransactionalServer } from '@airport/terminal';
-import { injectAirportDatabase } from '@airport/tower';
+import { getSchemaName, OperationType, QueryInputKind, QueryParameterType, QueryResultType } from '@airport/ground-control';
+import { TempDatabase } from '@airport/taxiway';
 import tsc from 'typescript';
-import { NoOpSchemaBuilder } from '../../stubs/NoOpSchemaBuilder';
-import { NoOpSequenceGenerator } from '../../stubs/NoOpSequenceGenerator';
-import { NoOpSqlDriver } from '../../stubs/NoOpSqlDriver';
 export class SchemaQueryGenerator {
     constructor() {
-        this.tempDbInitialized = false;
+        this.tempDatabase = new TempDatabase();
     }
     async processQueries(entityOperationMap, jsonSchema) {
         if (!this.haveQueries(entityOperationMap)) {
@@ -68,21 +61,7 @@ export class SchemaQueryGenerator {
         return false;
     }
     async initTempDatabase(schema) {
-        if (this.tempDbInitialized) {
-            const schemaInitializer = await DI.db().get(SCHEMA_INITIALIZER);
-            await schemaInitializer.stage([schema], {});
-            return;
-        }
-        DI.set(SEQUENCE_GENERATOR, NoOpSequenceGenerator);
-        DI.set(SCHEMA_BUILDER, NoOpSchemaBuilder);
-        DI.set(STORE_DRIVER, NoOpSqlDriver);
-        injectAirportDatabase();
-        injectTransactionalServer();
-        injectTransactionalConnector();
-        await DI.db().get(AIR_DB);
-        const dbManager = await DI.db().get(DATABASE_MANAGER);
-        await dbManager.initNoDb(schema.domain, {}, ...[schema]);
-        this.tempDbInitialized = true;
+        await this.tempDatabase.initialize([schema]);
     }
     async getSchemaQuery(queryDefinition, entityName, jsonSchema) {
         const queryTypescript = queryDefinition.expression.getText();

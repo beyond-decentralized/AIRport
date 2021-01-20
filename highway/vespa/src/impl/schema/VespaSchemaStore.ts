@@ -1,4 +1,4 @@
-import { IVespaDocument } from '../lingo/model/VespaDocument';
+import { IVespaDocument } from '../../lingo/model/VespaDocument';
 
 export interface IVespaSchemaStore {
 

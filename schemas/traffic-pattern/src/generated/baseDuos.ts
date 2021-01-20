@@ -1,24 +1,7 @@
+/* eslint-disable */
 import {
-	IDuo,
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { Duo } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	duoDiSet
-} from './qSchema'
-import {
-	ISchema
-} from './schema/schema'
+	ISchema,
+} from './schema/schema';
 import {
 	SchemaESelect,
 	SchemaECreateColumns,
@@ -27,11 +10,11 @@ import {
 	SchemaEUpdateProperties,
 	SchemaEId,
 	SchemaGraph,
-	QSchema
-} from './schema/qschema'
+	QSchema,
+} from './schema/qschema';
 import {
-	ISchemaColumn
-} from './schema/schemacolumn'
+	ISchemaColumn,
+} from './schema/schemacolumn';
 import {
 	SchemaColumnESelect,
 	SchemaColumnECreateColumns,
@@ -40,11 +23,11 @@ import {
 	SchemaColumnEUpdateProperties,
 	SchemaColumnEId,
 	SchemaColumnGraph,
-	QSchemaColumn
-} from './schema/qschemacolumn'
+	QSchemaColumn,
+} from './schema/qschemacolumn';
 import {
-	ISchemaEntity
-} from './schema/schemaentity'
+	ISchemaEntity,
+} from './schema/schemaentity';
 import {
 	SchemaEntityESelect,
 	SchemaEntityECreateColumns,
@@ -53,11 +36,11 @@ import {
 	SchemaEntityEUpdateProperties,
 	SchemaEntityEId,
 	SchemaEntityGraph,
-	QSchemaEntity
-} from './schema/qschemaentity'
+	QSchemaEntity,
+} from './schema/qschemaentity';
 import {
-	ISchemaOperation
-} from './schema/schemaoperation'
+	ISchemaOperation,
+} from './schema/schemaoperation';
 import {
 	SchemaOperationESelect,
 	SchemaOperationECreateColumns,
@@ -66,11 +49,11 @@ import {
 	SchemaOperationEUpdateProperties,
 	SchemaOperationEId,
 	SchemaOperationGraph,
-	QSchemaOperation
-} from './schema/qschemaoperation'
+	QSchemaOperation,
+} from './schema/qschemaoperation';
 import {
-	ISchemaProperty
-} from './schema/schemaproperty'
+	ISchemaProperty,
+} from './schema/schemaproperty';
 import {
 	SchemaPropertyESelect,
 	SchemaPropertyECreateColumns,
@@ -79,11 +62,11 @@ import {
 	SchemaPropertyEUpdateProperties,
 	SchemaPropertyEId,
 	SchemaPropertyGraph,
-	QSchemaProperty
-} from './schema/qschemaproperty'
+	QSchemaProperty,
+} from './schema/qschemaproperty';
 import {
-	ISchemaPropertyColumn
-} from './schema/schemapropertycolumn'
+	ISchemaPropertyColumn,
+} from './schema/schemapropertycolumn';
 import {
 	SchemaPropertyColumnESelect,
 	SchemaPropertyColumnECreateColumns,
@@ -92,11 +75,11 @@ import {
 	SchemaPropertyColumnEUpdateProperties,
 	SchemaPropertyColumnEId,
 	SchemaPropertyColumnGraph,
-	QSchemaPropertyColumn
-} from './schema/qschemapropertycolumn'
+	QSchemaPropertyColumn,
+} from './schema/qschemapropertycolumn';
 import {
-	ISchemaReference
-} from './schema/schemareference'
+	ISchemaReference,
+} from './schema/schemareference';
 import {
 	SchemaReferenceESelect,
 	SchemaReferenceECreateColumns,
@@ -105,11 +88,11 @@ import {
 	SchemaReferenceEUpdateProperties,
 	SchemaReferenceEId,
 	SchemaReferenceGraph,
-	QSchemaReference
-} from './schema/qschemareference'
+	QSchemaReference,
+} from './schema/qschemareference';
 import {
-	ISchemaRelation
-} from './schema/schemarelation'
+	ISchemaRelation,
+} from './schema/schemarelation';
 import {
 	SchemaRelationESelect,
 	SchemaRelationECreateColumns,
@@ -118,11 +101,11 @@ import {
 	SchemaRelationEUpdateProperties,
 	SchemaRelationEId,
 	SchemaRelationGraph,
-	QSchemaRelation
-} from './schema/qschemarelation'
+	QSchemaRelation,
+} from './schema/qschemarelation';
 import {
-	ISchemaRelationColumn
-} from './schema/schemarelationcolumn'
+	ISchemaRelationColumn,
+} from './schema/schemarelationcolumn';
 import {
 	SchemaRelationColumnESelect,
 	SchemaRelationColumnECreateColumns,
@@ -131,11 +114,11 @@ import {
 	SchemaRelationColumnEUpdateProperties,
 	SchemaRelationColumnEId,
 	SchemaRelationColumnGraph,
-	QSchemaRelationColumn
-} from './schema/qschemarelationcolumn'
+	QSchemaRelationColumn,
+} from './schema/qschemarelationcolumn';
 import {
-	ISchemaVersion
-} from './schema/schemaversion'
+	ISchemaVersion,
+} from './schema/schemaversion';
 import {
 	SchemaVersionESelect,
 	SchemaVersionECreateColumns,
@@ -144,8 +127,28 @@ import {
 	SchemaVersionEUpdateProperties,
 	SchemaVersionEId,
 	SchemaVersionGraph,
-	QSchemaVersion
-} from './schema/qschemaversion'
+	QSchemaVersion,
+} from './schema/qschemaversion';
+import {
+	IDuo,
+	IEntityCascadeGraph,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+} from '@airport/air-control';
+import {
+	Duo,
+} from '@airport/check-in';
+import {
+	EntityId as DbEntityId,
+} from '@airport/ground-control';
+import {
+	Q,
+	duoDiSet,
+} from './qSchema';
 
 
 // Schema Q object Dependency Injection readiness detection Duo

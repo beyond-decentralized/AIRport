@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "lib/",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": [
+    "lib",
+    "node_modules"
+  ],
+  "extends": "../../tsconfig.core.json"
+}

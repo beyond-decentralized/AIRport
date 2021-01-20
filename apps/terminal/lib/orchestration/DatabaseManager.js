@@ -10,7 +10,7 @@ import { DATABASE_MANAGER } from '../tokens';
 export class DatabaseManager {
     // constructor() {
     // }
-    async initNoDb(domainName, context, ...schemas) {
+    async initNoDb(context, ...schemas) {
         this.airDb = await container(this).get(AIR_DB);
         const connector = await container(this).get(TRANS_CONNECTOR);
         await connector.init();

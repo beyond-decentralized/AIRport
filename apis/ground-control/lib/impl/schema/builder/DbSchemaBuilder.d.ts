@@ -3,9 +3,23 @@ import { ILinkingDictionary } from '../../../lingo/schema/builder/LinkingDiction
 import { DbSchema, JsonSchema } from '../../../lingo/schema/Schema';
 export declare class DbSchemaBuilder implements IDbSchemaBuilder {
     buildDbSchemaWithoutReferences(jsonSchema: JsonSchema, allSchemas: DbSchema[], dictionary: ILinkingDictionary): DbSchema;
+    /**
+     *
+     * @param {{[p: string]: DbSchema}} schemaMap
+     * @param {{[p: string]: JsonSchema}} jsonSchemaMap
+     * @param {ILinkingDictionary} dictionary
+     */
+    linkDbSchemasByReferences(schemaMap: {
+        [domain: string]: {
+            [name: string]: DbSchema;
+        };
+    }, jsonSchemaMap: {
+        [domain: string]: {
+            [name: string]: JsonSchema;
+        };
+    }, dictionary: ILinkingDictionary, failOnMissingMappings?: boolean): void;
     private buildDbEntity;
     private buildDbRelation;
-    private buildDbColumn;
     /**
      * Schema loading process at runtime:
      *
@@ -23,20 +37,6 @@ export declare class DbSchemaBuilder implements IDbSchemaBuilder {
      *
      * Load provided schemas
      */
-    /**
-     *
-     * @param {{[p: string]: DbSchema}} schemaMap
-     * @param {{[p: string]: JsonSchema}} jsonSchemaMap
-     * @param {ILinkingDictionary} dictionary
-     */
-    linkDbSchemasByReferences(schemaMap: {
-        [domain: string]: {
-            [name: string]: DbSchema;
-        };
-    }, jsonSchemaMap: {
-        [domain: string]: {
-            [name: string]: JsonSchema;
-        };
-    }, dictionary: ILinkingDictionary, failOnMissingMappings?: boolean): void;
+    private buildDbColumn;
 }
 //# sourceMappingURL=DbSchemaBuilder.d.ts.map

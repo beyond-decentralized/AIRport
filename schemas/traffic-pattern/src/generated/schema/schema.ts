@@ -21,6 +21,7 @@ export interface ISchema {
 	// Non-Id Properties
 	scope?: string;
 	name?: string;
+	packageName?: string;
 	status?: number;
 
 	// Non-Id Relations

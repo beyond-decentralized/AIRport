@@ -28,6 +28,10 @@ __decorate([
     DbString()
 ], Schema.prototype, "name", void 0);
 __decorate([
+    Column({ name: 'PACKAGE_NAME', nullable: false }),
+    DbString()
+], Schema.prototype, "packageName", void 0);
+__decorate([
     Column({ name: 'STATUS', nullable: false }),
     DbNumber()
 ], Schema.prototype, "status", void 0);

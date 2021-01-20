@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const MAPPED_SUPERCLASS = [
 	{
 		"type": "VersionedSchemaObject",
@@ -645,10 +646,15 @@ export const MAPPED_SUPERCLASS = [
 													"ManyToOne": null,
 													"OneToMany": null,
 													"Table": null,
-													"SchemaIndex": {
+													"PackageName": {
 														"fileImports": null,
 														"isLocal": false,
 														"objectMapByAsName": {
+															"PackageName": {
+																"asName": "PackageName",
+																"moduleImport": null,
+																"sourceName": "PackageName"
+															},
 															"SchemaIndex": {
 																"asName": "SchemaIndex",
 																"moduleImport": null,
@@ -672,6 +678,7 @@ export const MAPPED_SUPERCLASS = [
 														},
 														"path": "@airport/ground-control"
 													},
+													"SchemaIndex": null,
 													"SchemaName": null,
 													"SchemaScope": null,
 													"SchemaStatus": null,
@@ -978,6 +985,33 @@ export const MAPPED_SUPERCLASS = [
 															"name": "Column",
 															"values": [
 																{
+																	"name": "PACKAGE_NAME",
+																	"nullable": false
+																}
+															]
+														},
+														{
+															"name": "DbString",
+															"values": []
+														}
+													],
+													"isGenerated": false,
+													"isId": false,
+													"isMappedSuperclass": false,
+													"isTransient": false,
+													"name": "packageName",
+													"type": "PackageName",
+													"ownerEntity": null,
+													"nonArrayType": "PackageName",
+													"primitive": "string",
+													"index": 4
+												},
+												{
+													"decorators": [
+														{
+															"name": "Column",
+															"values": [
+																{
 																	"name": "STATUS",
 																	"nullable": false
 																}
@@ -997,7 +1031,7 @@ export const MAPPED_SUPERCLASS = [
 													"ownerEntity": null,
 													"nonArrayType": "SchemaStatus",
 													"primitive": "number",
-													"index": 4
+													"index": 5
 												},
 												{
 													"decorators": [
@@ -1020,7 +1054,7 @@ export const MAPPED_SUPERCLASS = [
 													"isArray": true,
 													"nonArrayType": "SchemaVersion",
 													"entity": null,
-													"index": 5
+													"index": 6
 												},
 												{
 													"decorators": [
@@ -1048,7 +1082,7 @@ export const MAPPED_SUPERCLASS = [
 													"ownerEntity": null,
 													"nonArrayType": "SchemaVersion",
 													"entity": null,
-													"index": 6
+													"index": 7
 												}
 											],
 											"methodSignatures": [],
@@ -1715,6 +1749,16 @@ export const MAPPED_SUPERCLASS = [
 																				"moduleImport": null,
 																				"sourceName": "ColumnNotNull"
 																			},
+																			"ColumnPrecision": {
+																				"asName": "ColumnPrecision",
+																				"moduleImport": null,
+																				"sourceName": "ColumnPrecision"
+																			},
+																			"ColumnScale": {
+																				"asName": "ColumnScale",
+																				"moduleImport": null,
+																				"sourceName": "ColumnScale"
+																			},
 																			"IdColumnOnlyIndex": {
 																				"asName": "IdColumnOnlyIndex",
 																				"moduleImport": null,
@@ -1741,6 +1785,8 @@ export const MAPPED_SUPERCLASS = [
 																	"ColumnIndex": null,
 																	"ColumnName": null,
 																	"ColumnNotNull": null,
+																	"ColumnPrecision": null,
+																	"ColumnScale": null,
 																	"IdColumnOnlyIndex": null,
 																	"SchemaColumnAllocationSize": null,
 																	"SchemaColumnIsGenerated": null,
@@ -1992,6 +2038,58 @@ export const MAPPED_SUPERCLASS = [
 																			"name": "Column",
 																			"values": [
 																				{
+																					"name": "PRECISION"
+																				}
+																			]
+																		},
+																		{
+																			"name": "DbNumber",
+																			"values": []
+																		}
+																	],
+																	"isGenerated": false,
+																	"isId": false,
+																	"isMappedSuperclass": false,
+																	"isTransient": false,
+																	"name": "precision",
+																	"type": "ColumnPrecision",
+																	"ownerEntity": null,
+																	"nonArrayType": "ColumnPrecision",
+																	"primitive": "number",
+																	"index": 7
+																},
+																{
+																	"decorators": [
+																		{
+																			"name": "Column",
+																			"values": [
+																				{
+																					"name": "SCALE"
+																				}
+																			]
+																		},
+																		{
+																			"name": "DbNumber",
+																			"values": []
+																		}
+																	],
+																	"isGenerated": false,
+																	"isId": false,
+																	"isMappedSuperclass": false,
+																	"isTransient": false,
+																	"name": "scale",
+																	"type": "ColumnScale",
+																	"ownerEntity": null,
+																	"nonArrayType": "ColumnScale",
+																	"primitive": "number",
+																	"index": 8
+																},
+																{
+																	"decorators": [
+																		{
+																			"name": "Column",
+																			"values": [
+																				{
 																					"name": "TYPE",
 																					"nullable": false
 																				}
@@ -2011,7 +2109,7 @@ export const MAPPED_SUPERCLASS = [
 																	"ownerEntity": null,
 																	"nonArrayType": "SQLDataType",
 																	"primitive": "number",
-																	"index": 7
+																	"index": 9
 																},
 																{
 																	"decorators": [
@@ -2039,7 +2137,7 @@ export const MAPPED_SUPERCLASS = [
 																	"ownerEntity": null,
 																	"nonArrayType": "SchemaEntity",
 																	"entity": null,
-																	"index": 8
+																	"index": 10
 																},
 																{
 																	"decorators": [
@@ -2313,7 +2411,7 @@ export const MAPPED_SUPERCLASS = [
 																		"implementedInterfaceNames": [],
 																		"parentEntity": null
 																	},
-																	"index": 9
+																	"index": 11
 																},
 																{
 																	"decorators": [
@@ -2336,7 +2434,7 @@ export const MAPPED_SUPERCLASS = [
 																	"isArray": true,
 																	"nonArrayType": "SchemaRelationColumn",
 																	"entity": null,
-																	"index": 10
+																	"index": 12
 																},
 																{
 																	"decorators": [
@@ -2359,7 +2457,7 @@ export const MAPPED_SUPERCLASS = [
 																	"isArray": true,
 																	"nonArrayType": "SchemaRelationColumn",
 																	"entity": null,
-																	"index": 11
+																	"index": 13
 																}
 															],
 															"methodSignatures": [],

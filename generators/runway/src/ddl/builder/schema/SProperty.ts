@@ -6,7 +6,7 @@ import {
 	EntityRelationType,
 	PropertyIndex,
 	SchemaReferenceByIndex
-} from '@airport/ground-control'
+} from '@airport/ground-control';
 
 /**
  * A property of an object in a schema.
@@ -111,7 +111,8 @@ export interface SRelation {
 /**
  * A column in a schema table.
  */
-export interface SColumn extends SchemaReferenceByIndex<ColumnIndex> {
+export interface SColumn
+	extends SchemaReferenceByIndex<ColumnIndex> {
 
 	/**
 	 * How many ids to allocate for a sequence at a time.
@@ -145,10 +146,16 @@ export interface SColumn extends SchemaReferenceByIndex<ColumnIndex> {
 
 	notNull: boolean;
 
+	// The precision of a decimal (total digits)
+	precision?: number;
+
 	/**
 	 * Properties that are mapped to this column.
 	 */
 	propertyRefs: PropertyIndex[];
+
+	// The scale of a decimal (digits after the floating point)
+	scale?: number;
 
 	/**
 	 * Columns related to this one (needed for type assignment only).

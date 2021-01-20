@@ -1,5 +1,10 @@
-import { ClassDecorator }                from '@airport/air-control';
-import { IVespaDocumentWithConstructor } from '../lingo/model/VespaDocument';
+import { ClassDecorator }        from '@airport/air-control';
+import {
+	IVespaDocument,
+	IVespaDocumentWithConstructor
+}                                from '../lingo/model/VespaDocument';
+import { IVespaFieldWithDbInfo } from '../lingo/model/VespaField';
+import { IVespaFieldset }        from '../lingo/model/VespaFieldset';
 import {
 	VespaAttributeConfiguration,
 	VespaAttributeDecorator,
@@ -7,16 +12,14 @@ import {
 	VespaDocumentDecorator,
 	VespaFieldsetConfiguration,
 	VespaIndexing
-}                                        from '../lingo/VespaDecoratorsLingo';
-import { store }                         from './store';
+}                                from '../lingo/VespaDecoratorsLingo';
+import { store }                 from './schema/store';
+import { IVespaSchemaStore }     from './schema/VespaSchemaStore';
 
 export const Document: VespaDocumentDecorator = function() {
 	return function(constructor: { new(): Object }) {
-		store.documentMap[constructor.name] = {
-			classConstructor: constructor,
-			fieldsetMap: {},
-			name: constructor.name
-		} as IVespaDocumentWithConstructor;
+		const vespaDocument            = ensureDocument(constructor.name, store);
+		vespaDocument.classConstructor = constructor;
 	};
 };
 
@@ -40,35 +43,40 @@ Please make sure that a class with a @vespa.Document decorator is defined
 above the @vespa.Fieldset that references it.
 `);
 		}
-		relatedDocument.fieldsetMap[constructor.name] = {
-			fields: fieldsetConfiguration.fields as any,
-			isDefault: false,
-			name: constructor.name,
-		};
-
-		(constructor as any).fieldset = relatedDocument.fieldsetMap[constructor.name];
+		const fieldset = ensureFieldset(
+			vespaEntityClass.name,
+			constructor.name,
+			store
+		);
+		if ((constructor as any).isDefault) {
+			fieldset.isDefault = true;
+		}
+		(constructor as any).fieldset = fieldset;
+		fieldset.fieldMap             = fieldsetConfiguration.fields as any;
 	};
 }
 
 export const Default: VespaDefaultDecorator = function() {
 	return function(constructor: { new(): Object }) {
 		const fieldset = (constructor as any).fieldset;
-		if (!fieldset) {
-			throw new Error(`@vespa.Default() decorator can only be specified
-if the @vespa.Fieldset(...) as already been specified on the same class.
-Please specify the @vespa.Fieldset(...) decorator on this class above
-the @vespa.Default() decorator.
-`);
+		if (fieldset) {
+			fieldset.isDefault = true;
+		} else {
+			(constructor as any).isDefault = true;
 		}
-		fieldset.isDefault = true;
 	};
 };
 
 export const Attribute: VespaAttributeDecorator = function(
 	attributeConfiguration: VespaAttributeConfiguration
 ) {
-	return function(constructor: { new(): Object }) {
-		// TODO: add runtime logic
+	return function(
+		target: Object,
+		propertyKey: string
+	) {
+		const vespaDocument = ensureDocument(target, store);
+		const field         = ensureField(vespaDocument, propertyKey);
+		field.attribute     = attributeConfiguration;
 	};
 };
 
@@ -79,14 +87,67 @@ export function Index(
 		target: Object,
 		propertyKey: string
 	) {
-		// TODO: add runtime logic
-		if(!(target as any).prototype || !(target as any).prototype.name) {
-
-		}
-		const className     = (target as any).prototype.name;
-		const vespaDocument = store.documentMap[className];
-
+		const vespaDocument = ensureDocument(target, store);
+		const field         = ensureField(vespaDocument, propertyKey);
+		field.indexing      = indexing;
 	};
 }
 
+function ensureDocument(
+	name: string | any,
+	store: IVespaSchemaStore
+): IVespaDocumentWithConstructor {
+	if (typeof name === 'string') {
+		// The name of the class is passed in
+	} else if (name.constructor) {
+		name = name.constructor.name;
+	} else {
+		throw new Error(`Either class name or the class prototype
+		must be passed in to ensureDocument.`);
+	}
+	let vespaDocument = store.documentMap[name];
+	if (!vespaDocument) {
+		vespaDocument           = {
+			fieldMap: {},
+			fieldsetMap: {},
+			name
+		};
+		store.documentMap[name] = vespaDocument;
+	}
 
+	return vespaDocument as IVespaDocumentWithConstructor;
+}
+
+function ensureField(
+	document: IVespaDocument,
+	name: string
+): IVespaFieldWithDbInfo {
+	let field = document.fieldMap[name];
+	if (!field) {
+		field                   = {
+			name,
+		};
+		document.fieldMap[name] = field;
+	}
+
+	return field as IVespaFieldWithDbInfo;
+}
+
+function ensureFieldset(
+	documentName: string,
+	name: string,
+	store: IVespaSchemaStore
+): IVespaFieldset {
+	const vespaDocument = ensureDocument(documentName, store);
+	let fieldset        = vespaDocument.fieldsetMap[name];
+	if (!fieldset) {
+		fieldset                        = {
+			fieldMap: {},
+			isDefault: false,
+			name
+		};
+		vespaDocument.fieldsetMap[name] = fieldset;
+	}
+
+	return fieldset;
+}

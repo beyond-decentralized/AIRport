@@ -149,6 +149,13 @@
           </resourceRoots>
         </entryData>
       </entry>
+      <entry url="file://$PROJECT_DIR$/generators/taxiway">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/generators/taxiway/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
       <entry url="file://$PROJECT_DIR$/highway/control">
         <entryData>
           <resourceRoots>

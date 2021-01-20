@@ -469,10 +469,15 @@ export declare const MAPPED_SUPERCLASS: {
                                         ManyToOne: any;
                                         OneToMany: any;
                                         Table: any;
-                                        SchemaIndex: {
+                                        PackageName: {
                                             fileImports: any;
                                             isLocal: boolean;
                                             objectMapByAsName: {
+                                                PackageName: {
+                                                    asName: string;
+                                                    moduleImport: any;
+                                                    sourceName: string;
+                                                };
                                                 SchemaIndex: {
                                                     asName: string;
                                                     moduleImport: any;
@@ -496,6 +501,7 @@ export declare const MAPPED_SUPERCLASS: {
                                             };
                                             path: string;
                                         };
+                                        SchemaIndex: any;
                                         SchemaName: any;
                                         SchemaScope: any;
                                         SchemaStatus: any;
@@ -1048,6 +1054,7 @@ export declare const MAPPED_SUPERCLASS: {
                                             };
                                             path: string;
                                         };
+                                        PackageName?: undefined;
                                         SchemaIndex?: undefined;
                                         SchemaName?: undefined;
                                         SchemaScope?: undefined;
@@ -1265,6 +1272,16 @@ export declare const MAPPED_SUPERCLASS: {
                                                                 moduleImport: any;
                                                                 sourceName: string;
                                                             };
+                                                            ColumnPrecision: {
+                                                                asName: string;
+                                                                moduleImport: any;
+                                                                sourceName: string;
+                                                            };
+                                                            ColumnScale: {
+                                                                asName: string;
+                                                                moduleImport: any;
+                                                                sourceName: string;
+                                                            };
                                                             IdColumnOnlyIndex: {
                                                                 asName: string;
                                                                 moduleImport: any;
@@ -1291,6 +1308,8 @@ export declare const MAPPED_SUPERCLASS: {
                                                     ColumnIndex: any;
                                                     ColumnName: any;
                                                     ColumnNotNull: any;
+                                                    ColumnPrecision: any;
+                                                    ColumnScale: any;
                                                     IdColumnOnlyIndex: any;
                                                     SchemaColumnAllocationSize: any;
                                                     SchemaColumnIsGenerated: any;
@@ -1785,6 +1804,8 @@ export declare const MAPPED_SUPERCLASS: {
                                                     ColumnIndex?: undefined;
                                                     ColumnName?: undefined;
                                                     ColumnNotNull?: undefined;
+                                                    ColumnPrecision?: undefined;
+                                                    ColumnScale?: undefined;
                                                     IdColumnOnlyIndex?: undefined;
                                                     SchemaColumnAllocationSize?: undefined;
                                                     SchemaColumnIsGenerated?: undefined;
@@ -2068,6 +2089,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         };
                                         DbString?: undefined;
                                         OneToMany?: undefined;
+                                        PackageName?: undefined;
                                         SchemaIndex?: undefined;
                                         SchemaName?: undefined;
                                         SchemaScope?: undefined;

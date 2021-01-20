@@ -8,6 +8,7 @@ export interface ISchemaComposer {
 }
 export declare class SchemaComposer implements ISchemaComposer {
     compose(jsonSchemas: JsonSchema[], ddlObjectRetriever: IDdlObjectRetriever, schemaLocator: ISchemaLocator, terminalStore: ITerminalStore): DdlObjects;
+    getExistingLatestSchemaVersion(referencedSchemaName: SchemaName, terminalStore: ITerminalStore): ISchemaVersion;
     private composeDomains;
     private composeSchemas;
     private composeSchemaVersions;
@@ -17,6 +18,5 @@ export declare class SchemaComposer implements ISchemaComposer {
     private composeSchemaRelations;
     private composeSchemaColumns;
     private composeSchemaRelationColumns;
-    getExistingLatestSchemaVersion(referencedSchemaName: SchemaName, terminalStore: ITerminalStore): ISchemaVersion;
 }
 //# sourceMappingURL=SchemaComposer.d.ts.map

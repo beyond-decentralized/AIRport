@@ -5,6 +5,8 @@ export declare type ColumnId = number;
 export declare type ColumnIndex = number;
 export declare type ColumnName = string;
 export declare type ColumnNotNull = boolean;
+export declare type ColumnPrecision = string;
+export declare type ColumnScale = string;
 export declare type PropertyId = number;
 export declare type PropertyIndex = number;
 export declare type PropertyIsId = boolean;
@@ -75,10 +77,12 @@ export interface JsonSchemaColumn extends SchemaReferenceByIndex<ColumnIndex>, J
      */
     name: ColumnName;
     notNull: ColumnNotNull;
+    precision?: number;
     /**
      * Properties that are mapped to this column.
      */
     propertyRefs: PropertyReference[];
+    scale?: number;
     /**
      * Type of the column.
      */
@@ -105,6 +109,7 @@ export interface DbColumn extends SchemaReferenceByIndex<ColumnIndex>, DatabaseO
      * In which OneToMany relations is this column present.
      */
     oneRelationColumns: DbRelationColumn[];
+    precision?: number;
     /**
      * In which properties is this column present.
      */
@@ -112,6 +117,7 @@ export interface DbColumn extends SchemaReferenceByIndex<ColumnIndex>, DatabaseO
     propertyColumnMap: {
         [propertyIndex: number]: DbPropertyColumn;
     };
+    scale?: number;
     type: SQLDataType;
 }
 export interface SchemaReferenceByIndex<ID extends number> {

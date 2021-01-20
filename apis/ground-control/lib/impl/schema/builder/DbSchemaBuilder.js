@@ -52,195 +52,6 @@ export class DbSchemaBuilder {
         }
         return dbSchema;
     }
-    buildDbEntity(jsonSchema, jsonEntity, dictionary, referencedSchemas, schemaVersion) {
-        const columnMap = {};
-        const columns = [];
-        const idColumns = [];
-        const idColumnMap = {};
-        const propertyMap = {};
-        const properties = [];
-        const relations = [];
-        const dbEntity = {
-            columnMap,
-            columns,
-            idColumns,
-            idColumnMap,
-            id: null,
-            index: jsonEntity.index,
-            isLocal: jsonEntity.isLocal,
-            isRepositoryEntity: jsonEntity.isRepositoryEntity,
-            name: jsonEntity.name,
-            propertyMap,
-            properties,
-            relationReferences: [],
-            relations,
-            schemaVersion,
-            sinceVersion: schemaVersion,
-            tableConfig: jsonEntity.tableConfig
-        };
-        jsonEntity.properties.forEach((jsonProperty, index) => {
-            const property = {
-                propertyColumns: [],
-                entity: dbEntity,
-                id: null,
-                index: jsonProperty.index,
-                isId: jsonProperty.isId,
-                name: jsonProperty.name,
-                relation: null,
-                sinceVersion: schemaVersion
-            };
-            propertyMap[jsonProperty.name] = property;
-            properties[index] = property;
-        });
-        jsonEntity.properties.sort((a, b) => a.index < b.index ? -1 : 1);
-        properties.sort((a, b) => a.index < b.index ? -1 : 1);
-        jsonEntity.relations.forEach((jsonRelation, index) => {
-            const dbProperty = properties[jsonRelation.propertyRef.index];
-            const dbRelation = this.buildDbRelation(jsonRelation, dbProperty, schemaVersion);
-            relations[index] = dbRelation;
-        });
-        relations.sort((a, b) => a.index < b.index ? -1 : 1);
-        jsonEntity.columns.forEach((jsonColumn, index) => {
-            const dbColumn = this.buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas, schemaVersion, dbEntity);
-            columnMap[jsonColumn.name] = dbColumn;
-            columns[index] = dbColumn;
-        });
-        jsonEntity.idColumnRefs.forEach((idColumnRef, index) => {
-            idColumns[index] = columns[idColumnRef.index];
-        });
-        columns.sort((a, b) => a.index < b.index ? -1 : 1);
-        return dbEntity;
-    }
-    buildDbRelation(jsonRelation, dbProperty, schemaVersion) {
-        const dbRelation = {
-            entity: undefined,
-            foreignKey: jsonRelation.foreignKey,
-            isId: dbProperty.isId,
-            // isRepositoryJoin: jsonRelation.isRepositoryJoin,
-            manyToOneElems: jsonRelation.manyToOneElems,
-            oneToManyElems: jsonRelation.oneToManyElems,
-            relationType: jsonRelation.relationType,
-            id: null,
-            index: jsonRelation.index,
-            property: dbProperty,
-            manyRelationColumns: [],
-            oneRelationColumns: [],
-            relationEntity: null,
-            sinceVersion: schemaVersion
-            // addToJoinFunction: jsonRelation.addToJoinFunction,
-            // joinFunctionWithOperator: jsonRelation.joinFunctionWithOperator,
-        };
-        // if (dbRelation.addToJoinFunction) {
-        // 	dbRelation.whereJoinTable = {
-        // 		addToJoinFunction: new Function('return ' + dbRelation.addToJoinFunction)(),
-        // 		joinFunctionWithOperator:
-        // 			dbRelation.joinFunctionWithOperator === SqlOperator.AND ? and : or,
-        // 	}
-        // }
-        dbProperty.relation = [dbRelation];
-        return dbRelation;
-    }
-    buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas, schemaVersion, entity) {
-        const dbColumn = {
-            entity,
-            id: null,
-            index: jsonColumn.index,
-            isGenerated: !!jsonColumn.isGenerated,
-            manyRelationColumns: [],
-            name: jsonColumn.name,
-            notNull: jsonColumn.notNull,
-            oneRelationColumns: [],
-            propertyColumnMap: {},
-            propertyColumns: null,
-            sinceVersion: schemaVersion,
-            type: jsonColumn.type
-        };
-        const propertyColumns = jsonColumn.propertyRefs.map(propertyColumnRef => {
-            const propertyIndex = propertyColumnRef.index;
-            const property = properties[propertyIndex];
-            return {
-                column: dbColumn,
-                property,
-                sinceVersion: schemaVersion,
-            };
-        });
-        dbColumn.propertyColumns = propertyColumns;
-        jsonColumn.manyRelationColumnRefs.map(relationColumnRef => {
-            const manySchemaReferenceIndex = jsonSchema.index;
-            let manySchema;
-            if (manySchemaReferenceIndex === null) {
-                manySchema = jsonSchema;
-            }
-            else {
-                manySchema = referencedSchemas[manySchemaReferenceIndex];
-            }
-            const manyTableIndex = jsonEntity.index;
-            const manyRelationIndex = relationColumnRef.manyRelationIndex;
-            const manyColumnIndex = dbColumn.index;
-            const oneSchemaReferenceIndex = relationColumnRef.oneSchemaIndex;
-            let oneSchema;
-            if (oneSchemaReferenceIndex === null) {
-                oneSchema = jsonSchema;
-            }
-            else {
-                oneSchema = referencedSchemas[oneSchemaReferenceIndex];
-            }
-            if (!oneSchema) {
-                // FIXME: figure out if not having references to nested schemas is OK
-                return;
-            }
-            const oneTableIndex = relationColumnRef.oneTableIndex;
-            const oneRelationIndex = relationColumnRef.oneRelationIndex;
-            const oneColumnIndex = relationColumnRef.oneColumnIndex;
-            const manyRelationColumnMap = ensureChildMap(ensureChildMap(ensureChildMap(ensureChildMap(dictionary.dbColumnRelationMapByManySide, manySchema.name), manyTableIndex), manyRelationIndex), manySchema.domain);
-            manyRelationColumnMap[manyColumnIndex] = {
-                domain: oneSchema.domain,
-                schemaName: oneSchema.name,
-                entityIndex: oneTableIndex,
-                relationIndex: oneRelationIndex,
-                columnIndex: oneColumnIndex,
-            };
-        });
-        for (const dbPropertyColumn of propertyColumns) {
-            const property = dbPropertyColumn.property;
-            // if (property.relation) {
-            // 	dbColumn.relation = property.relation[0];
-            // }
-            if (property.isId) {
-                let idIndex;
-                jsonEntity.idColumnRefs.some((idColumnRef, index) => {
-                    if (idColumnRef.index == jsonColumn.index) {
-                        idIndex = index;
-                        return true;
-                    }
-                });
-                if (!idIndex && idIndex !== 0) {
-                    throw new Error(`Could not find column "${jsonColumn.name}" 
-					in @Id column references of entity "${jsonEntity.name}".`);
-                }
-                dbColumn.idIndex = idIndex;
-            }
-            property.propertyColumns.push(dbPropertyColumn);
-        }
-        return dbColumn;
-    }
-    /**
-     * Schema loading process at runtime:
-     *
-     * First the build-in schema's run:
-     *
-     * 1) Traffic Pattern
-     * 2) Holding Pattern
-     *
-     * Then the schema for the application being loaded is run, in order of the dependency
-     * graph:
-     *
-     * 3) App schema grand-dependency
-     * 4) App schema dependency
-     * 5) Application schema
-     *
-     * Load provided schemas
-     */
     /**
      *
      * @param {{[p: string]: DbSchema}} schemaMap
@@ -366,6 +177,197 @@ export class DbSchemaBuilder {
                 }
             }
         }
+    }
+    buildDbEntity(jsonSchema, jsonEntity, dictionary, referencedSchemas, schemaVersion) {
+        const columnMap = {};
+        const columns = [];
+        const idColumns = [];
+        const idColumnMap = {};
+        const propertyMap = {};
+        const properties = [];
+        const relations = [];
+        const dbEntity = {
+            columnMap,
+            columns,
+            idColumns,
+            idColumnMap,
+            id: null,
+            index: jsonEntity.index,
+            isLocal: jsonEntity.isLocal,
+            isRepositoryEntity: jsonEntity.isRepositoryEntity,
+            name: jsonEntity.name,
+            propertyMap,
+            properties,
+            relationReferences: [],
+            relations,
+            schemaVersion,
+            sinceVersion: schemaVersion,
+            tableConfig: jsonEntity.tableConfig
+        };
+        jsonEntity.properties.forEach((jsonProperty, index) => {
+            const property = {
+                propertyColumns: [],
+                entity: dbEntity,
+                id: null,
+                index: jsonProperty.index,
+                isId: jsonProperty.isId,
+                name: jsonProperty.name,
+                relation: null,
+                sinceVersion: schemaVersion
+            };
+            propertyMap[jsonProperty.name] = property;
+            properties[index] = property;
+        });
+        jsonEntity.properties.sort((a, b) => a.index < b.index ? -1 : 1);
+        properties.sort((a, b) => a.index < b.index ? -1 : 1);
+        jsonEntity.relations.forEach((jsonRelation, index) => {
+            const dbProperty = properties[jsonRelation.propertyRef.index];
+            const dbRelation = this.buildDbRelation(jsonRelation, dbProperty, schemaVersion);
+            relations[index] = dbRelation;
+        });
+        relations.sort((a, b) => a.index < b.index ? -1 : 1);
+        jsonEntity.columns.forEach((jsonColumn, index) => {
+            const dbColumn = this.buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas, schemaVersion, dbEntity);
+            columnMap[jsonColumn.name] = dbColumn;
+            columns[index] = dbColumn;
+        });
+        jsonEntity.idColumnRefs.forEach((idColumnRef, index) => {
+            idColumns[index] = columns[idColumnRef.index];
+        });
+        columns.sort((a, b) => a.index < b.index ? -1 : 1);
+        return dbEntity;
+    }
+    buildDbRelation(jsonRelation, dbProperty, schemaVersion) {
+        const dbRelation = {
+            entity: undefined,
+            foreignKey: jsonRelation.foreignKey,
+            isId: dbProperty.isId,
+            // isRepositoryJoin: jsonRelation.isRepositoryJoin,
+            manyToOneElems: jsonRelation.manyToOneElems,
+            oneToManyElems: jsonRelation.oneToManyElems,
+            relationType: jsonRelation.relationType,
+            id: null,
+            index: jsonRelation.index,
+            property: dbProperty,
+            manyRelationColumns: [],
+            oneRelationColumns: [],
+            relationEntity: null,
+            sinceVersion: schemaVersion
+            // addToJoinFunction: jsonRelation.addToJoinFunction,
+            // joinFunctionWithOperator: jsonRelation.joinFunctionWithOperator,
+        };
+        // if (dbRelation.addToJoinFunction) {
+        // 	dbRelation.whereJoinTable = {
+        // 		addToJoinFunction: new Function('return ' + dbRelation.addToJoinFunction)(),
+        // 		joinFunctionWithOperator:
+        // 			dbRelation.joinFunctionWithOperator === SqlOperator.AND ? and : or,
+        // 	}
+        // }
+        dbProperty.relation = [dbRelation];
+        return dbRelation;
+    }
+    /**
+     * Schema loading process at runtime:
+     *
+     * First the build-in schema's run:
+     *
+     * 1) Traffic Pattern
+     * 2) Holding Pattern
+     *
+     * Then the schema for the application being loaded is run, in order of the dependency
+     * graph:
+     *
+     * 3) App schema grand-dependency
+     * 4) App schema dependency
+     * 5) Application schema
+     *
+     * Load provided schemas
+     */
+    buildDbColumn(jsonSchema, jsonEntity, jsonColumn, properties, dictionary, referencedSchemas, schemaVersion, entity) {
+        const dbColumn = {
+            entity,
+            id: null,
+            index: jsonColumn.index,
+            isGenerated: !!jsonColumn.isGenerated,
+            manyRelationColumns: [],
+            name: jsonColumn.name,
+            notNull: jsonColumn.notNull,
+            oneRelationColumns: [],
+            precision: jsonColumn.precision,
+            propertyColumnMap: {},
+            propertyColumns: null,
+            scale: jsonColumn.scale,
+            sinceVersion: schemaVersion,
+            type: jsonColumn.type
+        };
+        const propertyColumns = jsonColumn.propertyRefs.map(propertyColumnRef => {
+            const propertyIndex = propertyColumnRef.index;
+            const property = properties[propertyIndex];
+            return {
+                column: dbColumn,
+                property,
+                sinceVersion: schemaVersion,
+            };
+        });
+        dbColumn.propertyColumns = propertyColumns;
+        jsonColumn.manyRelationColumnRefs.map(relationColumnRef => {
+            const manySchemaReferenceIndex = jsonSchema.index;
+            let manySchema;
+            if (manySchemaReferenceIndex === null) {
+                manySchema = jsonSchema;
+            }
+            else {
+                manySchema = referencedSchemas[manySchemaReferenceIndex];
+            }
+            const manyTableIndex = jsonEntity.index;
+            const manyRelationIndex = relationColumnRef.manyRelationIndex;
+            const manyColumnIndex = dbColumn.index;
+            const oneSchemaReferenceIndex = relationColumnRef.oneSchemaIndex;
+            let oneSchema;
+            if (oneSchemaReferenceIndex === null) {
+                oneSchema = jsonSchema;
+            }
+            else {
+                oneSchema = referencedSchemas[oneSchemaReferenceIndex];
+            }
+            if (!oneSchema) {
+                // FIXME: figure out if not having references to nested schemas is OK
+                return;
+            }
+            const oneTableIndex = relationColumnRef.oneTableIndex;
+            const oneRelationIndex = relationColumnRef.oneRelationIndex;
+            const oneColumnIndex = relationColumnRef.oneColumnIndex;
+            const manyRelationColumnMap = ensureChildMap(ensureChildMap(ensureChildMap(ensureChildMap(dictionary.dbColumnRelationMapByManySide, manySchema.name), manyTableIndex), manyRelationIndex), manySchema.domain);
+            manyRelationColumnMap[manyColumnIndex] = {
+                domain: oneSchema.domain,
+                schemaName: oneSchema.name,
+                entityIndex: oneTableIndex,
+                relationIndex: oneRelationIndex,
+                columnIndex: oneColumnIndex,
+            };
+        });
+        for (const dbPropertyColumn of propertyColumns) {
+            const property = dbPropertyColumn.property;
+            // if (property.relation) {
+            // 	dbColumn.relation = property.relation[0];
+            // }
+            if (property.isId) {
+                let idIndex;
+                jsonEntity.idColumnRefs.some((idColumnRef, index) => {
+                    if (idColumnRef.index == jsonColumn.index) {
+                        idIndex = index;
+                        return true;
+                    }
+                });
+                if (!idIndex && idIndex !== 0) {
+                    throw new Error(`Could not find column "${jsonColumn.name}" 
+					in @Id column references of entity "${jsonEntity.name}".`);
+                }
+                dbColumn.idIndex = idIndex;
+            }
+            property.propertyColumns.push(dbPropertyColumn);
+        }
+        return dbColumn;
     }
 }
 //# sourceMappingURL=DbSchemaBuilder.js.map

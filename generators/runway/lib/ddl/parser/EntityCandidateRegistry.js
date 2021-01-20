@@ -1,5 +1,4 @@
-import { DbSchemaBuilder } from '@airport/ground-control';
-import * as fs from 'fs';
+import { SchemaLoader } from '@airport/taxiway/lib/SchemaLoader';
 import { canBeInterface, getImplNameFromInterfaceName } from '../../resolve/pathResolver';
 import { EntityCandidate, Interface } from './EntityCandidate';
 import { globalCandidateInheritanceMap } from './EntityDefinitionGenerator';
@@ -12,14 +11,9 @@ export class EntityCandidateRegistry {
         this.enumMap = enumMap;
         this.entityCandidateMap = new Map();
         this.allInterfacesMap = new Map();
-        this.dbSchemaBuilder = new DbSchemaBuilder();
-        this.allSchemas = [];
         this.schemaMap = {};
         this.mappedSuperClassMap = {};
-        this.dictionary = {
-            dbColumnRelationMapByManySide: {},
-            dbColumnRelationMapByOneSide: {}
-        };
+        this.schemaLoader = new SchemaLoader();
     }
     addCandidate(candidate) {
         let matchesExisting = this.matchToExistingEntity(candidate);
@@ -237,38 +231,24 @@ export class EntityCandidateRegistry {
             property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, projectSchema, property);
             return projectSchema;
         }
-        // const pathsToReferencedSchemas =
-        // this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas let
-        // relatedSchemaProject if (pathsToReferencedSchemas &&
-        // pathsToReferencedSchemas[projectName]) { let referencedSchemaRelativePath =
-        // '../../' + pathsToReferencedSchemas[projectName] for (let i = 0; i < 10; i++) {
-        // referencedSchemaRelativePath = '../' + referencedSchemaRelativePath let
-        // pathToSchema             =
-        // getFullPathFromRelativePath(referencedSchemaRelativePath, __filename) if
-        // (fs.existsSync(pathToSchema) && fs.lstatSync(pathToSchema).isDirectory()) {
-        // relatedSchemaProject = require(pathToSchema) break } } } else {
-        // relatedSchemaProject = require(process.cwd() + '/node_modules/' + projectName) }
-        let relatedSchemaJson;
-        try {
-            relatedSchemaJson = fs.readFileSync(process.cwd() + '/node_modules/' + projectName + '/src/generated/schema.json');
-        }
-        catch (e) {
-            return null;
-        }
-        // if (!relatedSchemaProject) {
-        // 	throw new Error(`Could not find related schema project '${projectName}'`)
-        // }
-        // if (!relatedSchemaProject.SCHEMA) {
-        // 	throw new Error(`Could not find related schema in project '${projectName}'`)
-        // }
-        if (!relatedSchemaJson) {
-            return null;
-        }
-        const relatedSchema = JSON.parse(relatedSchemaJson);
-        const dbSchema = this.dbSchemaBuilder.buildDbSchemaWithoutReferences(relatedSchema, this.allSchemas, this.dictionary);
+        const dbSchema = this.schemaLoader.getReferencedSchema(projectName);
         this.schemaMap[projectName] = dbSchema;
         property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, dbSchema, property);
         return dbSchema;
+    }
+    getProjectReferenceFromPath(path) {
+        const pathFragments = path.split('/');
+        if (path.indexOf('@') === 0) {
+            return pathFragments[0] + '/' + pathFragments[1];
+        }
+        return pathFragments[0];
+    }
+    matchToExistingEntity(entityCandidate) {
+        let existingCandidate = this.entityCandidateMap.get(entityCandidate.type);
+        if (!existingCandidate) {
+            return false;
+        }
+        return true;
     }
     getMappedSuperclassFromProject(fileImports, type) {
         const moduleImport = fileImports.importMapByObjectAsName[type];
@@ -352,20 +332,6 @@ export class EntityCandidateRegistry {
         }
         let implementedEntity = anInterface.implementedBySet.values().next().value;
         property.entity = implementedEntity;
-    }
-    getProjectReferenceFromPath(path) {
-        const pathFragments = path.split('/');
-        if (path.indexOf('@') === 0) {
-            return pathFragments[0] + '/' + pathFragments[1];
-        }
-        return pathFragments[0];
-    }
-    matchToExistingEntity(entityCandidate) {
-        let existingCandidate = this.entityCandidateMap.get(entityCandidate.type);
-        if (!existingCandidate) {
-            return false;
-        }
-        return true;
     }
 }
 //# sourceMappingURL=EntityCandidateRegistry.js.map

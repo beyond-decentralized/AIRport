@@ -34,11 +34,11 @@ VespaThread = __decorate([
 let Default = class Default {
 };
 Default = __decorate([
-    vespa.Default(),
     vespa.Fieldset(Thread, {
         fields: {
             name: Y,
         },
-    })
+    }),
+    vespa.Default()
 ], Default);
 //# sourceMappingURL=example.js.map

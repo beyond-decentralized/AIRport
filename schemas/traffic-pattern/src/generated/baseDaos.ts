@@ -1,24 +1,7 @@
+/* eslint-disable */
 import {
-	IDao,
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { Dao } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	duoDiSet
-} from './qSchema'
-import {
-	ISchema
-} from './schema/schema'
+	ISchema,
+} from './schema/schema';
 import {
 	SchemaESelect,
 	SchemaECreateColumns,
@@ -27,11 +10,11 @@ import {
 	SchemaEUpdateProperties,
 	SchemaEId,
 	SchemaGraph,
-	QSchema
-} from './schema/qschema'
+	QSchema,
+} from './schema/qschema';
 import {
-	ISchemaColumn
-} from './schema/schemacolumn'
+	ISchemaColumn,
+} from './schema/schemacolumn';
 import {
 	SchemaColumnESelect,
 	SchemaColumnECreateColumns,
@@ -40,11 +23,11 @@ import {
 	SchemaColumnEUpdateProperties,
 	SchemaColumnEId,
 	SchemaColumnGraph,
-	QSchemaColumn
-} from './schema/qschemacolumn'
+	QSchemaColumn,
+} from './schema/qschemacolumn';
 import {
-	ISchemaEntity
-} from './schema/schemaentity'
+	ISchemaEntity,
+} from './schema/schemaentity';
 import {
 	SchemaEntityESelect,
 	SchemaEntityECreateColumns,
@@ -53,11 +36,11 @@ import {
 	SchemaEntityEUpdateProperties,
 	SchemaEntityEId,
 	SchemaEntityGraph,
-	QSchemaEntity
-} from './schema/qschemaentity'
+	QSchemaEntity,
+} from './schema/qschemaentity';
 import {
-	ISchemaOperation
-} from './schema/schemaoperation'
+	ISchemaOperation,
+} from './schema/schemaoperation';
 import {
 	SchemaOperationESelect,
 	SchemaOperationECreateColumns,
@@ -66,11 +49,11 @@ import {
 	SchemaOperationEUpdateProperties,
 	SchemaOperationEId,
 	SchemaOperationGraph,
-	QSchemaOperation
-} from './schema/qschemaoperation'
+	QSchemaOperation,
+} from './schema/qschemaoperation';
 import {
-	ISchemaProperty
-} from './schema/schemaproperty'
+	ISchemaProperty,
+} from './schema/schemaproperty';
 import {
 	SchemaPropertyESelect,
 	SchemaPropertyECreateColumns,
@@ -79,11 +62,11 @@ import {
 	SchemaPropertyEUpdateProperties,
 	SchemaPropertyEId,
 	SchemaPropertyGraph,
-	QSchemaProperty
-} from './schema/qschemaproperty'
+	QSchemaProperty,
+} from './schema/qschemaproperty';
 import {
-	ISchemaPropertyColumn
-} from './schema/schemapropertycolumn'
+	ISchemaPropertyColumn,
+} from './schema/schemapropertycolumn';
 import {
 	SchemaPropertyColumnESelect,
 	SchemaPropertyColumnECreateColumns,
@@ -92,11 +75,11 @@ import {
 	SchemaPropertyColumnEUpdateProperties,
 	SchemaPropertyColumnEId,
 	SchemaPropertyColumnGraph,
-	QSchemaPropertyColumn
-} from './schema/qschemapropertycolumn'
+	QSchemaPropertyColumn,
+} from './schema/qschemapropertycolumn';
 import {
-	ISchemaReference
-} from './schema/schemareference'
+	ISchemaReference,
+} from './schema/schemareference';
 import {
 	SchemaReferenceESelect,
 	SchemaReferenceECreateColumns,
@@ -105,11 +88,11 @@ import {
 	SchemaReferenceEUpdateProperties,
 	SchemaReferenceEId,
 	SchemaReferenceGraph,
-	QSchemaReference
-} from './schema/qschemareference'
+	QSchemaReference,
+} from './schema/qschemareference';
 import {
-	ISchemaRelation
-} from './schema/schemarelation'
+	ISchemaRelation,
+} from './schema/schemarelation';
 import {
 	SchemaRelationESelect,
 	SchemaRelationECreateColumns,
@@ -118,11 +101,11 @@ import {
 	SchemaRelationEUpdateProperties,
 	SchemaRelationEId,
 	SchemaRelationGraph,
-	QSchemaRelation
-} from './schema/qschemarelation'
+	QSchemaRelation,
+} from './schema/qschemarelation';
 import {
-	ISchemaRelationColumn
-} from './schema/schemarelationcolumn'
+	ISchemaRelationColumn,
+} from './schema/schemarelationcolumn';
 import {
 	SchemaRelationColumnESelect,
 	SchemaRelationColumnECreateColumns,
@@ -131,11 +114,11 @@ import {
 	SchemaRelationColumnEUpdateProperties,
 	SchemaRelationColumnEId,
 	SchemaRelationColumnGraph,
-	QSchemaRelationColumn
-} from './schema/qschemarelationcolumn'
+	QSchemaRelationColumn,
+} from './schema/qschemarelationcolumn';
 import {
-	ISchemaVersion
-} from './schema/schemaversion'
+	ISchemaVersion,
+} from './schema/schemaversion';
 import {
 	SchemaVersionESelect,
 	SchemaVersionECreateColumns,
@@ -144,8 +127,29 @@ import {
 	SchemaVersionEUpdateProperties,
 	SchemaVersionEId,
 	SchemaVersionGraph,
-	QSchemaVersion
-} from './schema/qschemaversion'
+	QSchemaVersion,
+} from './schema/qschemaversion';
+import {
+	IDao,
+	IEntityCascadeGraph,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+} from '@airport/air-control';
+import {
+	Dao,
+	DaoQueryDecorators,
+} from '@airport/check-in';
+import {
+	EntityId as DbEntityId,
+} from '@airport/ground-control';
+import {
+	Q,
+	duoDiSet,
+} from './qSchema';
 
 
 // Schema Q object Dependency Injection readiness detection Dao
@@ -181,6 +185,11 @@ export interface IBaseSchemaDao
 export class BaseSchemaDao
   extends SQDIDao<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, SchemaGraph, QSchema>
 	implements IBaseSchemaDao {
+	
+	static Find      = new DaoQueryDecorators<SchemaESelect>();
+  static FindOne   = new DaoQueryDecorators<SchemaESelect>();
+  static Search    = new DaoQueryDecorators<SchemaESelect>();
+  static SearchOne = new DaoQueryDecorators<SchemaESelect>();
 
 	static diSet(): boolean {
 		return duoDiSet(9)
@@ -199,6 +208,11 @@ export interface IBaseSchemaColumnDao
 export class BaseSchemaColumnDao
   extends SQDIDao<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, SchemaColumnGraph, QSchemaColumn>
 	implements IBaseSchemaColumnDao {
+	
+	static Find      = new DaoQueryDecorators<SchemaColumnESelect>();
+  static FindOne   = new DaoQueryDecorators<SchemaColumnESelect>();
+  static Search    = new DaoQueryDecorators<SchemaColumnESelect>();
+  static SearchOne = new DaoQueryDecorators<SchemaColumnESelect>();
 
 	static diSet(): boolean {
 		return duoDiSet(4)
@@ -217,6 +231,11 @@ export interface IBaseSchemaEntityDao
 export class BaseSchemaEntityDao
   extends SQDIDao<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityGraph, QSchemaEntity>
 	implements IBaseSchemaEntityDao {
+	
+	static Find      = new DaoQueryDecorators<SchemaEntityESelect>();
+  static FindOne   = new DaoQueryDecorators<SchemaEntityESelect>();
+  static Search    = new DaoQueryDecorators<SchemaEntityESelect>();
+  static SearchOne = new DaoQueryDecorators<SchemaEntityESelect>();
 
 	static diSet(): boolean {
 		return duoDiSet(6)
@@ -235,6 +254,11 @@ export interface IBaseSchemaOperationDao
 export class BaseSchemaOperationDao
   extends SQDIDao<ISchemaOperation, SchemaOperationESelect, SchemaOperationECreateProperties, SchemaOperationEUpdateColumns, SchemaOperationEUpdateProperties, SchemaOperationEId, SchemaOperationGraph, QSchemaOperation>
 	implements IBaseSchemaOperationDao {
+	
+	static Find      = new DaoQueryDecorators<SchemaOperationESelect>();
+  static FindOne   = new DaoQueryDecorators<SchemaOperationESelect>();
+  static Search    = new DaoQueryDecorators<SchemaOperationESelect>();
+  static SearchOne = new DaoQueryDecorators<SchemaOperationESelect>();
 
 	static diSet(): boolean {
 		return duoDiSet(5)
@@ -253,6 +277,11 @@ export interface IBaseSchemaPropertyDao
 export class BaseSchemaPropertyDao
   extends SQDIDao<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, SchemaPropertyGraph, QSchemaProperty>
 	implements IBaseSchemaPropertyDao {
+	
+	static Find      = new DaoQueryDecorators<SchemaPropertyESelect>();
+  static FindOne   = new DaoQueryDecorators<SchemaPropertyESelect>();
+  static Search    = new DaoQueryDecorators<SchemaPropertyESelect>();
+  static SearchOne = new DaoQueryDecorators<SchemaPropertyESelect>();
 
 	static diSet(): boolean {
 		return duoDiSet(2)
@@ -271,6 +300,11 @@ export interface IBaseSchemaPropertyColumnDao
 export class BaseSchemaPropertyColumnDao
   extends SQDIDao<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, SchemaPropertyColumnGraph, QSchemaPropertyColumn>
 	implements IBaseSchemaPropertyColumnDao {
+	
+	static Find      = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
+  static FindOne   = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
+  static Search    = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
+  static SearchOne = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
 
 	static diSet(): boolean {
 		return duoDiSet(3)
@@ -289,6 +323,11 @@ export interface IBaseSchemaReferenceDao
 export class BaseSchemaReferenceDao
   extends SQDIDao<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, SchemaReferenceGraph, QSchemaReference>
 	implements IBaseSchemaReferenceDao {
+	
+	static Find      = new DaoQueryDecorators<SchemaReferenceESelect>();
+  static FindOne   = new DaoQueryDecorators<SchemaReferenceESelect>();
+  static Search    = new DaoQueryDecorators<SchemaReferenceESelect>();
+  static SearchOne = new DaoQueryDecorators<SchemaReferenceESelect>();
 
 	static diSet(): boolean {
 		return duoDiSet(7)
@@ -307,6 +346,11 @@ export interface IBaseSchemaRelationDao
 export class BaseSchemaRelationDao
   extends SQDIDao<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, SchemaRelationGraph, QSchemaRelation>
 	implements IBaseSchemaRelationDao {
+	
+	static Find      = new DaoQueryDecorators<SchemaRelationESelect>();
+  static FindOne   = new DaoQueryDecorators<SchemaRelationESelect>();
+  static Search    = new DaoQueryDecorators<SchemaRelationESelect>();
+  static SearchOne = new DaoQueryDecorators<SchemaRelationESelect>();
 
 	static diSet(): boolean {
 		return duoDiSet(1)
@@ -325,6 +369,11 @@ export interface IBaseSchemaRelationColumnDao
 export class BaseSchemaRelationColumnDao
   extends SQDIDao<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, SchemaRelationColumnGraph, QSchemaRelationColumn>
 	implements IBaseSchemaRelationColumnDao {
+	
+	static Find      = new DaoQueryDecorators<SchemaRelationColumnESelect>();
+  static FindOne   = new DaoQueryDecorators<SchemaRelationColumnESelect>();
+  static Search    = new DaoQueryDecorators<SchemaRelationColumnESelect>();
+  static SearchOne = new DaoQueryDecorators<SchemaRelationColumnESelect>();
 
 	static diSet(): boolean {
 		return duoDiSet(0)
@@ -343,6 +392,11 @@ export interface IBaseSchemaVersionDao
 export class BaseSchemaVersionDao
   extends SQDIDao<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, SchemaVersionGraph, QSchemaVersion>
 	implements IBaseSchemaVersionDao {
+	
+	static Find      = new DaoQueryDecorators<SchemaVersionESelect>();
+  static FindOne   = new DaoQueryDecorators<SchemaVersionESelect>();
+  static Search    = new DaoQueryDecorators<SchemaVersionESelect>();
+  static SearchOne = new DaoQueryDecorators<SchemaVersionESelect>();
 
 	static diSet(): boolean {
 		return duoDiSet(8)

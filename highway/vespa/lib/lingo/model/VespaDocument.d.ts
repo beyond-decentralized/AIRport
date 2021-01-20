@@ -1,7 +1,7 @@
 import { IVespaField } from './VespaField';
 import { IVespaFieldset } from './VespaFieldset';
 export interface IVespaDocument {
-    fields: {
+    fieldMap: {
         [fieldname: string]: IVespaField;
     };
     fieldsetMap: {

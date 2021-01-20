@@ -1,4 +1,4 @@
-import {DI}              from '@airport/di'
+import { DI }              from '@airport/di';
 import {
 	DomainName,
 	ensureChildArray,
@@ -7,13 +7,13 @@ import {
 	JsonSchema,
 	SchemaName,
 	SchemaStatus
-}                        from '@airport/ground-control'
+}                          from '@airport/ground-control';
 import {
 	DdlObjects,
 	IDdlObjectRetriever
-}                        from '@airport/takeoff'
-import {ITerminalStore}  from '@airport/terminal-map'
-import {IDomain}         from '@airport/territory'
+}                          from '@airport/takeoff';
+import { ITerminalStore }  from '@airport/terminal-map';
+import { IDomain }         from '@airport/territory';
 import {
 	ISchema,
 	ISchemaColumn,
@@ -24,9 +24,9 @@ import {
 	ISchemaRelation,
 	ISchemaRelationColumn,
 	ISchemaVersion
-}                        from '@airport/traffic-pattern'
-import {SCHEMA_COMPOSER} from '../tokens'
-import {ISchemaLocator}  from '../locator/SchemaLocator'
+}                          from '@airport/traffic-pattern';
+import { ISchemaLocator }  from '../locator/SchemaLocator';
+import { SCHEMA_COMPOSER } from '../tokens';
 
 export interface ISchemaComposer {
 
@@ -48,67 +48,67 @@ export class SchemaComposer
 		schemaLocator: ISchemaLocator,
 		terminalStore: ITerminalStore
 	): DdlObjects {
-		const domainSet: Set<DomainName>                       = new Set()
-		const jsonSchemaMapByName: Map<SchemaName, JsonSchema> = new Map()
+		const domainSet: Set<DomainName>                       = new Set();
+		const jsonSchemaMapByName: Map<SchemaName, JsonSchema> = new Map();
 
 		for (const jsonSchema of jsonSchemas) {
-			domainSet.add(jsonSchema.domain)
-			jsonSchemaMapByName.set(getSchemaName(jsonSchema), jsonSchema)
+			domainSet.add(jsonSchema.domain);
+			jsonSchemaMapByName.set(getSchemaName(jsonSchema), jsonSchema);
 		}
 
-		const allSchemaVersionsByIds = [...terminalStore.getAllSchemaVersionsByIds()]
+		const allSchemaVersionsByIds = [...terminalStore.getAllSchemaVersionsByIds()];
 
 		const {
 			      domainMapByName,
 			      allDomains,
 			      newDomains
 		      } = this.composeDomains(domainSet,
-			ddlObjectRetriever, terminalStore)
+			ddlObjectRetriever, terminalStore);
 		const {
 			      allSchemas,
 			      newSchemaMapByName,
 			      newSchemas
 		      } = this.composeSchemas(domainMapByName, jsonSchemaMapByName,
-			ddlObjectRetriever, terminalStore)
+			ddlObjectRetriever, terminalStore);
 		const {
 			      newLatestSchemaVersions,
 			      newSchemaVersionMapBySchemaName,
 			      newSchemaVersions
 		      } = this.composeSchemaVersions(
-			jsonSchemaMapByName, newSchemaMapByName, ddlObjectRetriever)
+			jsonSchemaMapByName, newSchemaMapByName, ddlObjectRetriever);
 		const {
 			      newSchemaReferenceMap,
 			      newSchemaReferences
 		      } = this.composeSchemaReferences(jsonSchemaMapByName,
-			newSchemaVersionMapBySchemaName, schemaLocator, terminalStore)
+			newSchemaVersionMapBySchemaName, schemaLocator, terminalStore);
 		const {
 			      newEntitiesMapBySchemaName,
 			      newEntities
 		      } = this.composeSchemaEntities(jsonSchemaMapByName,
-			newSchemaVersionMapBySchemaName, ddlObjectRetriever)
+			newSchemaVersionMapBySchemaName, ddlObjectRetriever);
 		const {
 			      newProperties,
 			      newPropertiesMap
 		      } = this.composeSchemaProperties(
-			jsonSchemaMapByName, newEntitiesMapBySchemaName, ddlObjectRetriever)
+			jsonSchemaMapByName, newEntitiesMapBySchemaName, ddlObjectRetriever);
 		const {
 			      newRelations,
 			      newRelationsMap
 		      } = this.composeSchemaRelations(
 			jsonSchemaMapByName, newEntitiesMapBySchemaName, newPropertiesMap,
-			newSchemaReferenceMap, ddlObjectRetriever, terminalStore)
+			newSchemaReferenceMap, ddlObjectRetriever, terminalStore);
 		const {
 			      newColumns,
 			      newColumnsMap,
 			      newPropertyColumns
 		      } = this.composeSchemaColumns(
 			jsonSchemaMapByName, newEntitiesMapBySchemaName,
-			newPropertiesMap, ddlObjectRetriever)
+			newPropertiesMap, ddlObjectRetriever);
 
 		const newRelationColumns = this.composeSchemaRelationColumns(
 			jsonSchemaMapByName, newSchemaVersionMapBySchemaName,
 			newSchemaReferenceMap, newRelationsMap,
-			newColumnsMap, ddlObjectRetriever, terminalStore)
+			newColumnsMap, ddlObjectRetriever, terminalStore);
 
 		return {
 			allDomains,
@@ -125,7 +125,20 @@ export class SchemaComposer
 			schemaReferences: newSchemaReferences,
 			schemas: newSchemas,
 			schemaVersions: newSchemaVersions
+		};
+	}
+
+	getExistingLatestSchemaVersion(
+		referencedSchemaName: SchemaName,
+		terminalStore: ITerminalStore
+	): ISchemaVersion {
+		const referencedSchemaVersion = terminalStore
+			.getLatestSchemaVersionMapBySchemaName().get(referencedSchemaName);
+		if (!referencedSchemaVersion) {
+			throw new Error(`Cannot find schema "${referencedSchemaName}".`);
 		}
+
+		return referencedSchemaVersion;
 	}
 
 	private composeDomains(
@@ -137,31 +150,31 @@ export class SchemaComposer
 		allDomains: IDomain[],
 		newDomains: IDomain[]
 	} {
-		const allDomains: IDomain[] = []
-		const existingDomains       = terminalStore.getDomains()
+		const allDomains: IDomain[] = [];
+		const existingDomains       = terminalStore.getDomains();
 
-		const domainMapByName: Map<DomainName, IDomain> = new Map()
+		const domainMapByName: Map<DomainName, IDomain> = new Map();
 		for (const domain of existingDomains) {
 			if (domainNameSet.has(domain.name)) {
-				domainMapByName.set(domain.name, domain)
+				domainMapByName.set(domain.name, domain);
 			}
 		}
 
-		const newDomains: IDomain[] = []
+		const newDomains: IDomain[] = [];
 		for (const domainName of domainNameSet) {
-			const existingDomain = domainMapByName.get(domainName)
+			const existingDomain = domainMapByName.get(domainName);
 			if (existingDomain) {
-				allDomains.push(existingDomain)
+				allDomains.push(existingDomain);
 				// continue
 			} else {
 				const domain: IDomain = {
 					id: ++ddlObjectRetriever.lastIds.domains,
 					name: domainName,
 					schemas: []
-				}
-				domainMapByName.set(domain.name, domain)
-				allDomains.push(domain)
-				newDomains.push(domain)
+				};
+				domainMapByName.set(domain.name, domain);
+				allDomains.push(domain);
+				newDomains.push(domain);
 			}
 		}
 
@@ -169,7 +182,7 @@ export class SchemaComposer
 			allDomains,
 			domainMapByName,
 			newDomains
-		}
+		};
 	}
 
 	private composeSchemas(
@@ -182,36 +195,37 @@ export class SchemaComposer
 		newSchemaMapByName: Map<SchemaName, ISchema>,
 		newSchemas: ISchema[]
 	} {
-		const schemaMapByName: Map<SchemaName, ISchema>    = new Map()
-		const newSchemaMapByName: Map<SchemaName, ISchema> = new Map()
-		const allSchemas                                   = terminalStore.getSchemas()
+		const schemaMapByName: Map<SchemaName, ISchema>    = new Map();
+		const newSchemaMapByName: Map<SchemaName, ISchema> = new Map();
+		const allSchemas                                   = terminalStore.getSchemas();
 		for (const schema of allSchemas) {
-			schemaMapByName.set(schema.name, schema)
+			schemaMapByName.set(schema.name, schema);
 		}
 
-		const newSchemas: ISchema[] = []
+		const newSchemas: ISchema[] = [];
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
 			if (schemaMapByName.has(schemaName)) {
-				continue
+				continue;
 			}
-			const domain          = domainMapByName.get(jsonSchema.domain)
+			const domain          = domainMapByName.get(jsonSchema.domain);
 			const schema: ISchema = {
 				domain,
 				index: ++ddlObjectRetriever.lastIds.schemas,
 				name: schemaName,
+				packageName: jsonSchema.name,
 				scope: 'public',
 				status: SchemaStatus.CURRENT,
-			}
-			allSchemas.push(schema)
-			newSchemas.push(schema)
-			newSchemaMapByName.set(schema.name, schema)
+			};
+			allSchemas.push(schema);
+			newSchemas.push(schema);
+			newSchemaMapByName.set(schema.name, schema);
 		}
 
 		return {
 			allSchemas,
 			newSchemaMapByName,
 			newSchemas
-		}
+		};
 	}
 
 	private composeSchemaVersions(
@@ -224,16 +238,16 @@ export class SchemaComposer
 		newSchemaVersions: ISchemaVersion[]
 	} {
 		// Schema versions are guaranteed to be new
-		const newSchemaVersions: ISchemaVersion[]                              = []
-		const newSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion> = new Map()
-		const newLatestSchemaVersions: ISchemaVersion[]                        = []
+		const newSchemaVersions: ISchemaVersion[]                              = [];
+		const newSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion> = new Map();
+		const newLatestSchemaVersions: ISchemaVersion[]                        = [];
 
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
-			const schema = newSchemaMapByName.get(schemaName)
-			let newSchemaVersion: ISchemaVersion
+			const schema = newSchemaMapByName.get(schemaName);
+			let newSchemaVersion: ISchemaVersion;
 			for (const schemaVersion of jsonSchema.versions) {
-				const versionParts = schemaVersion.versionString.split('.')
-				newSchemaVersion   = {
+				const versionParts    = schemaVersion.versionString.split('.');
+				newSchemaVersion      = {
 					id: ++ddlObjectRetriever.lastIds.schemaVersions,
 					integerVersion: schemaVersion.integerVersion,
 					versionString: schemaVersion.versionString,
@@ -247,21 +261,21 @@ export class SchemaComposer
 					// entityMapByName: {},
 					// referencesMapByName: {},
 					// referencedByMapByName: {},
-				}
+				};
 				// needed for normalOperation only
-				schema.currentVersion                  = newSchemaVersion
+				schema.currentVersion = newSchemaVersion;
 				// schema.versions                        = [newSchemaVersion]
-				newSchemaVersions.push(newSchemaVersion)
+				newSchemaVersions.push(newSchemaVersion);
 			}
-			newLatestSchemaVersions.push(newSchemaVersion)
-			newSchemaVersionMapBySchemaName.set(schemaName, newSchemaVersion)
+			newLatestSchemaVersions.push(newSchemaVersion);
+			newSchemaVersionMapBySchemaName.set(schemaName, newSchemaVersion);
 		}
 
 		return {
 			newLatestSchemaVersions,
 			newSchemaVersionMapBySchemaName,
 			newSchemaVersions
-		}
+		};
 	}
 
 	private composeSchemaReferences(
@@ -273,43 +287,43 @@ export class SchemaComposer
 		newSchemaReferenceMap: Map<SchemaName, ISchemaReference[]>,
 		newSchemaReferences: ISchemaReference[]
 	} {
-		const newSchemaReferenceMap: Map<SchemaName, ISchemaReference[]> = new Map()
+		const newSchemaReferenceMap: Map<SchemaName, ISchemaReference[]> = new Map();
 
-		const newSchemaReferences: ISchemaReference[] = []
+		const newSchemaReferences: ISchemaReference[] = [];
 		for (const [schemaName, ownSchemaVersion] of newSchemaVersionMapBySchemaName) {
-			const schema     = ownSchemaVersion.schema
-			const jsonSchema = jsonSchemaMapByName.get(schema.name)
+			const schema     = ownSchemaVersion.schema;
+			const jsonSchema = jsonSchemaMapByName.get(schema.name);
 			const lastJsonSchemaVersion
-			                 = jsonSchema.versions[jsonSchema.versions.length - 1]
+			                 = jsonSchema.versions[jsonSchema.versions.length - 1];
 			const schemaReferences: ISchemaReference[]
-			                 = ensureChildArray(newSchemaReferenceMap, schemaName)
+			                 = ensureChildArray(newSchemaReferenceMap, schemaName);
 
 			for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
-				const referencedSchemaName  = getSchemaName(jsonReferencedSchema)
-				let referencedSchemaVersion = newSchemaVersionMapBySchemaName.get(referencedSchemaName)
+				const referencedSchemaName  = getSchemaName(jsonReferencedSchema);
+				let referencedSchemaVersion = newSchemaVersionMapBySchemaName.get(referencedSchemaName);
 				if (!referencedSchemaVersion) {
 					referencedSchemaVersion = schemaLocator.locateLatestSchemaVersionBySchemaName(
-						referencedSchemaName, terminalStore)
+						referencedSchemaName, terminalStore);
 					if (!referencedSchemaVersion) {
 						throw new Error(`Could not locate schema:
 						${referencedSchemaName}
-						in either existing schemas or schemas being currently processed`)
+						in either existing schemas or schemas being currently processed`);
 					}
 				}
 				const schemaReference: ISchemaReference = {
 					index: jsonReferencedSchema.index,
 					ownSchemaVersion,
 					referencedSchemaVersion
-				}
-				newSchemaReferences.push(schemaReference)
-				schemaReferences.push(schemaReference)
+				};
+				newSchemaReferences.push(schemaReference);
+				schemaReferences.push(schemaReference);
 			}
 		}
 
 		return {
 			newSchemaReferenceMap,
 			newSchemaReferences
-		}
+		};
 	}
 
 	private composeSchemaEntities(
@@ -320,16 +334,16 @@ export class SchemaComposer
 		newEntitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]>,
 		newEntities: ISchemaEntity[]
 	} {
-		const newEntitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]> = new Map()
+		const newEntitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]> = new Map();
 
-		const newEntities: ISchemaEntity[] = []
+		const newEntities: ISchemaEntity[] = [];
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
-			let index                                = 0
+			let index                                = 0;
 			// TODO: verify that jsonSchema.versions is always ordered ascending
-			const currentSchemaVersion               = jsonSchema.versions[jsonSchema.versions.length - 1]
-			const jsonEntities                       = currentSchemaVersion.entities
-			const newSchemaEntities: ISchemaEntity[] = []
-			const schemaVersion                      = newSchemaVersionMapBySchemaName.get(schemaName)
+			const currentSchemaVersion               = jsonSchema.versions[jsonSchema.versions.length - 1];
+			const jsonEntities                       = currentSchemaVersion.entities;
+			const newSchemaEntities: ISchemaEntity[] = [];
+			const schemaVersion                      = newSchemaVersionMapBySchemaName.get(schemaName);
 			for (const jsonEntity of jsonEntities) {
 				const entity: ISchemaEntity = {
 					id: ++ddlObjectRetriever.lastIds.entities,
@@ -346,19 +360,19 @@ export class SchemaComposer
 					// relations: [],
 					// properties: [],
 					// propertyMap: {}
-				}
+				};
 				// schemaVersion.entities.push(entity)
-				newSchemaEntities.push(entity)
-				newEntities.push(entity)
+				newSchemaEntities.push(entity);
+				newEntities.push(entity);
 			}
-			newEntitiesMapBySchemaName.set(schemaName, newSchemaEntities)
-			schemaVersion.entities = newSchemaEntities
+			newEntitiesMapBySchemaName.set(schemaName, newSchemaEntities);
+			schemaVersion.entities = newSchemaEntities;
 		}
 
 		return {
 			newEntitiesMapBySchemaName,
 			newEntities
-		}
+		};
 	}
 
 	private composeSchemaProperties(
@@ -369,25 +383,25 @@ export class SchemaComposer
 		newProperties: ISchemaProperty[],
 		newPropertiesMap: Map<SchemaName, ISchemaProperty[][]>
 	} {
-		const newProperties: ISchemaProperty[]                       = []
-		const newPropertiesMap: Map<SchemaName, ISchemaProperty[][]> = new Map()
+		const newProperties: ISchemaProperty[]                       = [];
+		const newPropertiesMap: Map<SchemaName, ISchemaProperty[][]> = new Map();
 
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
-			const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1]
-			const jsonEntities         = currentSchemaVersion.entities
-			const entities             = newEntitiesMapBySchemaName.get(schemaName)
+			const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
+			const jsonEntities         = currentSchemaVersion.entities;
+			const entities             = newEntitiesMapBySchemaName.get(schemaName);
 			const propertiesByEntityIndex
-			                           = ensureChildArray(newPropertiesMap, schemaName)
+			                           = ensureChildArray(newPropertiesMap, schemaName);
 			jsonEntities.forEach((
 				jsonEntity,
 				tableIndex
 			) => {
-				const entity = entities[tableIndex]
+				const entity = entities[tableIndex];
 				const propertiesForEntity
-				             = []
+				             = [];
 				propertiesByEntityIndex[tableIndex]
-				             = propertiesForEntity
-				let index    = 0
+				             = propertiesForEntity;
+				let index    = 0;
 
 				for (const jsonProperty of jsonEntity.properties) {
 					const property: ISchemaProperty = {
@@ -397,20 +411,20 @@ export class SchemaComposer
 						name: jsonProperty.name,
 						isId: jsonProperty.isId,
 						// propertyColumns: []
-					}
+					};
 					// entity.properties.push(property)
 					// entity.propertyMap[property.name] = property
-					propertiesForEntity[index] = property
-					index++
-					newProperties.push(property)
+					propertiesForEntity[index] = property;
+					index++;
+					newProperties.push(property);
 				}
-			})
+			});
 		}
 
 		return {
 			newProperties,
 			newPropertiesMap
-		}
+		};
 	}
 
 	private composeSchemaRelations(
@@ -424,51 +438,51 @@ export class SchemaComposer
 		newRelations: ISchemaRelation[],
 		newRelationsMap: Map<SchemaName, ISchemaRelation[][]>
 	} {
-		const newRelations: ISchemaRelation[]                       = []
-		const newRelationsMap: Map<SchemaName, ISchemaRelation[][]> = new Map()
+		const newRelations: ISchemaRelation[]                       = [];
+		const newRelationsMap: Map<SchemaName, ISchemaRelation[][]> = new Map();
 
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
-			const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1]
-			const jsonEntities         = currentSchemaVersion.entities
-			const entitiesForSchema    = newEntitiesMapBySchemaName.get(schemaName)
+			const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
+			const jsonEntities         = currentSchemaVersion.entities;
+			const entitiesForSchema    = newEntitiesMapBySchemaName.get(schemaName);
 			const propertiesByEntityIndex
-			                           = newPropertiesMap.get(schemaName)
+			                           = newPropertiesMap.get(schemaName);
 			const relationsByEntityIndex
-			                           = ensureChildArray(newRelationsMap, schemaName)
-			const referencesForSchema  = newSchemaReferenceMap.get(schemaName)
+			                           = ensureChildArray(newRelationsMap, schemaName);
+			const referencesForSchema  = newSchemaReferenceMap.get(schemaName);
 
 			jsonEntities.forEach((
 				jsonEntity,
 				tableIndex
 			) => {
 				const propertiesForEntity
-					           = propertiesByEntityIndex[tableIndex]
+					           = propertiesByEntityIndex[tableIndex];
 				const relationsForEntity
-					           = []
+					           = [];
 				relationsByEntityIndex[tableIndex]
-					           = relationsForEntity
-				const entity = entitiesForSchema[tableIndex]
-				let index    = 0
+					           = relationsForEntity;
+				const entity = entitiesForSchema[tableIndex];
+				let index    = 0;
 
-				const relations: ISchemaRelation[] = []
+				const relations: ISchemaRelation[] = [];
 				for (const jsonRelation of jsonEntity.relations) {
-					const property = propertiesForEntity[jsonRelation.propertyRef.index]
+					const property = propertiesForEntity[jsonRelation.propertyRef.index];
 
-					let referencedSchemaName = schemaName
+					let referencedSchemaName = schemaName;
 					if (jsonRelation.relationTableSchemaIndex
 						|| jsonRelation.relationTableSchemaIndex === 0) {
-						const schemaReference = referencesForSchema[jsonRelation.relationTableSchemaIndex]
-						referencedSchemaName  = schemaReference.referencedSchemaVersion.schema.name
+						const schemaReference = referencesForSchema[jsonRelation.relationTableSchemaIndex];
+						referencedSchemaName  = schemaReference.referencedSchemaVersion.schema.name;
 					}
 
-					let entitiesArray = newEntitiesMapBySchemaName.get(referencedSchemaName)
+					let entitiesArray = newEntitiesMapBySchemaName.get(referencedSchemaName);
 
-					if(!entitiesArray) {
+					if (!entitiesArray) {
 						entitiesArray = this.getExistingLatestSchemaVersion(
-							referencedSchemaName, terminalStore).entities
+							referencedSchemaName, terminalStore).entities;
 					}
 
-					const relationEntity = entitiesArray[jsonRelation.relationTableIndex]
+					const relationEntity = entitiesArray[jsonRelation.relationTableIndex];
 
 					const relation: ISchemaRelation = {
 						entity,
@@ -483,21 +497,21 @@ export class SchemaComposer
 						relationType: jsonRelation.relationType,
 						// oneRelationColumns: [],
 						// manyRelationColumns: []
-					}
+					};
 					// property.relation               = [relation]
 					// relationEntity.relations.push(relation)
-					relationsForEntity[index] = relation
-					index++
-					relations.push(relation)
-					newRelations.push(relation)
+					relationsForEntity[index] = relation;
+					index++;
+					relations.push(relation);
+					newRelations.push(relation);
 				}
-			})
+			});
 		}
 
 		return {
 			newRelations,
 			newRelationsMap
-		}
+		};
 	}
 
 	private composeSchemaColumns(
@@ -510,40 +524,40 @@ export class SchemaComposer
 		newColumnsMap: Map<SchemaName, ISchemaColumn[][]>,
 		newPropertyColumns: ISchemaPropertyColumn[]
 	} {
-		const newColumnsMap: Map<SchemaName, ISchemaColumn[][]> = new Map()
+		const newColumnsMap: Map<SchemaName, ISchemaColumn[][]> = new Map();
 
-		const newColumns: ISchemaColumn[]                 = []
-		const newPropertyColumns: ISchemaPropertyColumn[] = []
+		const newColumns: ISchemaColumn[]                 = [];
+		const newPropertyColumns: ISchemaPropertyColumn[] = [];
 
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
-			const columnsByTable: ISchemaColumn[][] = []
-			newColumnsMap.set(schemaName, columnsByTable)
-			const entitiesForSchema    = newEntitiesMapBySchemaName.get(schemaName)
-			const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1]
-			const jsonEntities         = currentSchemaVersion.entities
-			const propertiesForSchema  = newPropertiesMap.get(schemaName)
+			const columnsByTable: ISchemaColumn[][] = [];
+			newColumnsMap.set(schemaName, columnsByTable);
+			const entitiesForSchema    = newEntitiesMapBySchemaName.get(schemaName);
+			const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
+			const jsonEntities         = currentSchemaVersion.entities;
+			const propertiesForSchema  = newPropertiesMap.get(schemaName);
 
 			jsonEntities.forEach((
 				jsonEntity,
 				tableIndex
 			) => {
-				const entity                               = entitiesForSchema[tableIndex]
-				const columnsForTable: ISchemaColumn[]     = []
-				columnsByTable[tableIndex]                 = columnsForTable
-				const idColumnIndexes: IdColumnOnlyIndex[] = []
+				const entity                               = entitiesForSchema[tableIndex];
+				const columnsForTable: ISchemaColumn[]     = [];
+				columnsByTable[tableIndex]                 = columnsForTable;
+				const idColumnIndexes: IdColumnOnlyIndex[] = [];
 				jsonEntity.idColumnRefs.forEach((
 					idColumnRef,
 					idColumnIndex
 				) => {
-					idColumnIndexes[idColumnRef.index] = idColumnIndex
-				})
-				const propertiesForEntity = propertiesForSchema[tableIndex]
+					idColumnIndexes[idColumnRef.index] = idColumnIndex;
+				});
+				const propertiesForEntity = propertiesForSchema[tableIndex];
 
 				jsonEntity.columns.forEach((
 					jsonColumn,
 					index
 				) => {
-					const idColumndIndex        = idColumnIndexes[index]
+					const idColumndIndex        = idColumnIndexes[index];
 					const column: ISchemaColumn = {
 						allocationSize: jsonColumn.allocationSize,
 						entity,
@@ -555,14 +569,16 @@ export class SchemaComposer
 						name: jsonColumn.name,
 						notNull: jsonColumn.notNull,
 						oneRelationColumns: [],
+						precision: jsonColumn.precision,
 						propertyColumns: [],
+						scale: jsonColumn.scale,
 						type: jsonColumn.type,
 						// propertyColumns: [],
 						// oneRelationColumns: [],
 						// manyRelationColumns: []
-					}
-					columnsForTable[index]      = column
-					newColumns.push(column)
+					};
+					columnsForTable[index]      = column;
+					newColumns.push(column);
 					// entity.columns.push(column)
 					// entity.columnMap[column.name] = column
 
@@ -574,24 +590,24 @@ export class SchemaComposer
 					jsonColumn.propertyRefs.forEach((
 						propertyReference
 					) => {
-						const property                              = propertiesForEntity[propertyReference.index]
+						const property                              = propertiesForEntity[propertyReference.index];
 						const propertyColumn: ISchemaPropertyColumn = {
 							column,
 							property
-						}
-						newPropertyColumns.push(propertyColumn)
+						};
+						newPropertyColumns.push(propertyColumn);
 						// column.propertyColumns.push(propertyColumn)
 						// property.propertyColumns.push(propertyColumn)
-					})
-				})
-			})
+					});
+				});
+			});
 		}
 
 		return {
 			newColumns,
 			newColumnsMap,
 			newPropertyColumns
-		}
+		};
 	}
 
 	private composeSchemaRelationColumns(
@@ -603,69 +619,69 @@ export class SchemaComposer
 		ddlObjectRetriever: IDdlObjectRetriever,
 		terminalStore: ITerminalStore
 	): ISchemaRelationColumn[] {
-		const newRelationColumns: ISchemaRelationColumn[] = []
+		const newRelationColumns: ISchemaRelationColumn[] = [];
 
 		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
-			const currentSchemaVersion      = jsonSchema.versions[jsonSchema.versions.length - 1]
-			const jsonEntities              = currentSchemaVersion.entities
-			const columnsForSchema          = newColumnsMap.get(schemaName)
-			const relationsForSchema        = newRelationsMap.get(schemaName)
-			const schemaReferencesForSchema = newSchemaReferenceMap.get(schemaName)
+			const currentSchemaVersion      = jsonSchema.versions[jsonSchema.versions.length - 1];
+			const jsonEntities              = currentSchemaVersion.entities;
+			const columnsForSchema          = newColumnsMap.get(schemaName);
+			const relationsForSchema        = newRelationsMap.get(schemaName);
+			const schemaReferencesForSchema = newSchemaReferenceMap.get(schemaName);
 
 			jsonEntities.forEach((
 				jsonEntity,
 				tableIndex
 			) => {
-				const columnsForEntity   = columnsForSchema[tableIndex]
-				const relationsForEntity = relationsForSchema[tableIndex]
+				const columnsForEntity   = columnsForSchema[tableIndex];
+				const relationsForEntity = relationsForSchema[tableIndex];
 
 				jsonEntity.columns.forEach((
 					jsonColumn,
 					index
 				) => {
-					const manyColumn                               = columnsForEntity[index]
-					const relationColumns: ISchemaRelationColumn[] = []
+					const manyColumn                               = columnsForEntity[index];
+					const relationColumns: ISchemaRelationColumn[] = [];
 
 					jsonColumn.manyRelationColumnRefs.forEach((
 						jsonRelationColumn
 					) => {
-						const manyRelation = relationsForEntity[jsonRelationColumn.manyRelationIndex]
+						const manyRelation = relationsForEntity[jsonRelationColumn.manyRelationIndex];
 						// if (!manyRelation.manyRelationColumns) {
 						// 	manyRelation.manyRelationColumns = []
 						// }
-						let oneRelationSchemaVersion: ISchemaVersion
+						let oneRelationSchemaVersion: ISchemaVersion;
 
 						if (jsonRelationColumn.oneSchemaIndex
 							|| jsonRelationColumn.oneSchemaIndex === 0) {
-							const schemaReference    = schemaReferencesForSchema[jsonRelationColumn.oneSchemaIndex]
-							oneRelationSchemaVersion = schemaReference.referencedSchemaVersion
+							const schemaReference    = schemaReferencesForSchema[jsonRelationColumn.oneSchemaIndex];
+							oneRelationSchemaVersion = schemaReference.referencedSchemaVersion;
 						} else {
-							oneRelationSchemaVersion = newSchemaVersionMapBySchemaName.get(schemaName)
+							oneRelationSchemaVersion = newSchemaVersionMapBySchemaName.get(schemaName);
 						}
-						const referencedSchemaName = oneRelationSchemaVersion.schema.name
+						const referencedSchemaName        = oneRelationSchemaVersion.schema.name;
 						const oneTableColumnsMapForSchema =
-							      newColumnsMap.get(referencedSchemaName)
+							      newColumnsMap.get(referencedSchemaName);
 
-						let oneTableColumns
-						let oneTableRelations
-						if(oneTableColumnsMapForSchema) {
-							oneTableColumns = oneTableColumnsMapForSchema[jsonRelationColumn.oneTableIndex]
+						let oneTableColumns;
+						let oneTableRelations;
+						if (oneTableColumnsMapForSchema) {
+							oneTableColumns   = oneTableColumnsMapForSchema[jsonRelationColumn.oneTableIndex];
 							oneTableRelations = newRelationsMap.get(oneRelationSchemaVersion.schema.name)
-								[jsonRelationColumn.oneTableIndex]
+								[jsonRelationColumn.oneTableIndex];
 						} else {
 							const entitiesArray = this.getExistingLatestSchemaVersion(
-								referencedSchemaName, terminalStore).entities
-							const entity = entitiesArray[jsonRelationColumn.oneTableIndex]
-							oneTableColumns = entity.columns
-							oneTableRelations = entity.relations
+								referencedSchemaName, terminalStore).entities;
+							const entity        = entitiesArray[jsonRelationColumn.oneTableIndex];
+							oneTableColumns     = entity.columns;
+							oneTableRelations   = entity.relations;
 						}
 
-						const oneColumn     = oneTableColumns[jsonRelationColumn.oneColumnIndex]
+						const oneColumn = oneTableColumns[jsonRelationColumn.oneColumnIndex];
 						// if (!jsonRelationColumn.oneSchemaIndex
 						// 	&& !oneColumn.oneRelationColumns) {
 						// 	oneColumn.oneRelationColumns = []
 						// }
-						const oneRelation     = oneTableRelations[jsonRelationColumn.oneRelationIndex]
+						const oneRelation = oneTableRelations[jsonRelationColumn.oneRelationIndex];
 						// if (!jsonRelationColumn.oneSchemaIndex
 						// 	&& !oneRelation.oneRelationColumns) {
 						// 	oneRelation.oneRelationColumns = []
@@ -679,37 +695,23 @@ export class SchemaComposer
 							oneRelation,
 							// FIXME: figure out how to many OneToMany-only relations
 							parentRelation: manyRelation
-						}
+						};
 						// manyRelation.manyRelationColumns.push(relationColumn)
 						// if (!jsonRelationColumn.oneSchemaIndex) {
 						// 	oneColumn.oneRelationColumns.push(relationColumn)
 						// 	oneRelation.oneRelationColumns.push(relationColumn)
 						// }
-						relationColumns.push(relationColumn)
-						newRelationColumns.push(relationColumn)
-					})
-					manyColumn.manyRelationColumns = [] // relationColumns
-				})
-			})
+						relationColumns.push(relationColumn);
+						newRelationColumns.push(relationColumn);
+					});
+					manyColumn.manyRelationColumns = []; // relationColumns
+				});
+			});
 		}
 
-		return newRelationColumns
+		return newRelationColumns;
 	}
-
-	getExistingLatestSchemaVersion(
-		referencedSchemaName: SchemaName,
-		terminalStore: ITerminalStore
-	): ISchemaVersion {
-		const referencedSchemaVersion = terminalStore
-			.getLatestSchemaVersionMapBySchemaName().get(referencedSchemaName)
-		if(!referencedSchemaVersion) {
-			throw new Error(`Cannot find schema "${referencedSchemaName}".`);
-		}
-
-		return referencedSchemaVersion
-	}
-
 
 }
 
-DI.set(SCHEMA_COMPOSER, SchemaComposer)
+DI.set(SCHEMA_COMPOSER, SchemaComposer);

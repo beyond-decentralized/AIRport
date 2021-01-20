@@ -13,6 +13,8 @@ export declare class SSchemaBuilder {
     build(schemaMapByProjectName: {
         [projectName: string]: DbSchema;
     }): SIndexedSchema;
+    getIdColumnIndex(entity: SEntity, columnName: string): number;
+    getColumnIndex(entity: SEntity, idIndex: number | undefined): number;
     private buildEntity;
     private buildColumnsWithParentEntities;
     private buildColumns;
@@ -40,8 +42,6 @@ export declare class SSchemaBuilder {
      * @returns {SColumn}
      */
     private processRelationColumn;
-    getIdColumnIndex(entity: SEntity, columnName: string): number;
-    getColumnIndex(entity: SEntity, idIndex: number | undefined): number;
 }
 export declare function entityExtendsRepositoryEntity(//
 entityCandidate: EntityCandidate): [boolean, boolean];

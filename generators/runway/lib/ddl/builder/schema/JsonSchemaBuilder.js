@@ -45,20 +45,29 @@ export class JsonSchemaBuilder {
     convertSIndexedSchemaToJsonSchema(domain, sIndexedSchema) {
         const jsonEntities = sIndexedSchema.entities.map(sIndexedEntity => {
             const sEntity = sIndexedEntity.entity;
-            const columns = sIndexedEntity.columns.map(sColumn => ({
-                allocationSize: sColumn.allocationSize,
-                columnDefinition: sColumn.columnDefinition,
-                index: sColumn.index,
-                isGenerated: sColumn.isGenerated === undefined ? false : sColumn.isGenerated,
-                manyRelationColumnRefs: [],
-                name: sColumn.name,
-                notNull: sColumn.notNull,
-                propertyRefs: sColumn.propertyRefs.map(index => ({
-                    index
-                })),
-                sinceVersion: 1,
-                type: getSqlDataType(sColumn.type),
-            }));
+            const columns = sIndexedEntity.columns.map(sColumn => {
+                const jsonColumn = {
+                    allocationSize: sColumn.allocationSize,
+                    // columnDefinition: sColumn.columnDefinition,
+                    index: sColumn.index,
+                    isGenerated: sColumn.isGenerated === undefined ? false : sColumn.isGenerated,
+                    manyRelationColumnRefs: [],
+                    name: sColumn.name,
+                    notNull: sColumn.notNull,
+                    propertyRefs: sColumn.propertyRefs.map(index => ({
+                        index
+                    })),
+                    sinceVersion: 1,
+                    type: getSqlDataType(sColumn.type),
+                };
+                if (sColumn.precision) {
+                    jsonColumn.precision = sColumn.precision;
+                }
+                if (sColumn.scale) {
+                    jsonColumn.scale = sColumn.scale;
+                }
+                return jsonColumn;
+            });
             columns.sort((a, b) => a.index < b.index ? -1 : 1);
             const [properties, relations] = this.getPropertiesAndRelations(sIndexedSchema, sIndexedEntity, columns);
             return {

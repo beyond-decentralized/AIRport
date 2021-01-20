@@ -15,6 +15,8 @@ export interface IdDecorator {
 export interface ColumnConfiguration {
     name: string;
     nullable?: boolean;
+    precision?: number;
+    scale?: number;
 }
 export declare enum ConstraintMode {
     CONSTRAINT = 0,

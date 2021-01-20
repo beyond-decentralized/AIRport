@@ -1,5 +1,5 @@
 export interface IVespaFieldset {
-    fields: {
+    fieldMap: {
         [fieldName: string]: boolean;
     };
     isDefault: boolean;

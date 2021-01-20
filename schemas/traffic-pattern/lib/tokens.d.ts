@@ -1,4 +1,3 @@
-import { NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos } from './dao/dao';
 import { ISchemaColumnDao } from './dao/SchemaColumnDao';
 import { ISchemaDao } from './dao/SchemaDao';
 import { ISchemaEntityDao } from './dao/SchemaEntityDao';
@@ -8,11 +7,7 @@ import { ISchemaReferenceDao } from './dao/SchemaReferenceDao';
 import { ISchemaRelationColumnDao } from './dao/SchemaRelationColumnDao';
 import { ISchemaRelationDao } from './dao/SchemaRelationDao';
 import { ISchemaVersionDao } from './dao/SchemaVersionDao';
-import { NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Duos } from './duo/duo';
 import { ISchemaVersionDuo } from './duo/SchemaVersionDuo';
-export declare const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA = "NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA";
-export declare const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS: import("@airport/di").IDiToken<NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos>;
-export declare const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DUOS: import("@airport/di").IDiToken<NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Duos>;
 export declare const SCHEMA_COLUMN_DAO: import("@airport/di").IDiToken<ISchemaColumnDao>;
 export declare const SCHEMA_DAO: import("@airport/di").IDiToken<ISchemaDao>;
 export declare const SCHEMA_ENTITY_DAO: import("@airport/di").IDiToken<ISchemaEntityDao>;

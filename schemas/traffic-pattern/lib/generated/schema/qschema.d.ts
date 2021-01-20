@@ -9,6 +9,7 @@ import { Schema } from '../../ddl/schema/Schema';
 export interface SchemaESelect extends IEntitySelectProperties, SchemaEOptionalId {
     scope?: string | IQStringField;
     name?: string | IQStringField;
+    packageName?: string | IQStringField;
     status?: number | IQNumberField;
     domain?: DomainESelect;
     versions?: SchemaVersionESelect;
@@ -32,6 +33,7 @@ export interface SchemaEOptionalId {
 export interface SchemaEUpdateProperties extends IEntityUpdateProperties {
     scope?: string | IQStringField;
     name?: string | IQStringField;
+    packageName?: string | IQStringField;
     status?: number | IQNumberField;
     domain?: DomainEOptionalId;
     currentVersion?: SchemaVersionEOptionalId;
@@ -42,6 +44,7 @@ export interface SchemaEUpdateProperties extends IEntityUpdateProperties {
 export interface SchemaGraph extends SchemaEOptionalId, IEntityCascadeGraph {
     scope?: string | IQStringField;
     name?: string | IQStringField;
+    packageName?: string | IQStringField;
     status?: number | IQNumberField;
     domain?: DomainGraph;
     versions?: SchemaVersionGraph[];
@@ -53,6 +56,7 @@ export interface SchemaGraph extends SchemaEOptionalId, IEntityCascadeGraph {
 export interface SchemaEUpdateColumns extends IEntityUpdateColumns {
     SCOPE?: string | IQStringField;
     SCHEMA_NAME?: string | IQStringField;
+    PACKAGE_NAME?: string | IQStringField;
     STATUS?: number | IQNumberField;
     DOMAIN_ID?: number | IQNumberField;
     CURRENT_VERSION_ID?: number | IQNumberField;
@@ -74,6 +78,7 @@ export interface QSchema extends IQEntity<Schema> {
     index: IQNumberField;
     scope: IQStringField;
     name: IQStringField;
+    packageName: IQStringField;
     status: IQNumberField;
     domain: QDomainQRelation;
     versions: IQOneToManyRelation<SchemaVersion, QSchemaVersion>;

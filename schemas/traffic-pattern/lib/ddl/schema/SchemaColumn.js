@@ -43,6 +43,14 @@ __decorate([
     DbBoolean()
 ], SchemaColumn.prototype, "notNull", void 0);
 __decorate([
+    Column({ name: 'PRECISION' }),
+    DbNumber()
+], SchemaColumn.prototype, "precision", void 0);
+__decorate([
+    Column({ name: 'SCALE' }),
+    DbNumber()
+], SchemaColumn.prototype, "scale", void 0);
+__decorate([
     Column({ name: 'TYPE', nullable: false }),
     DbNumber()
 ], SchemaColumn.prototype, "type", void 0);

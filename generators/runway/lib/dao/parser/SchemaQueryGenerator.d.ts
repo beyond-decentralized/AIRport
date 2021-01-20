@@ -1,6 +1,6 @@
 import { JsonOperation, JsonSchema } from '@airport/ground-control';
 export declare class SchemaQueryGenerator {
-    private tempDbInitialized;
+    private tempDatabase;
     processQueries(entityOperationMap: {
         [entityName: string]: {
             [operationName: string]: JsonOperation;

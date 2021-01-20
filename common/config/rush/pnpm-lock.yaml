@@ -63,6 +63,7 @@ dependencies:
   '@rush-temp/sqljs': 'file:projects/sqljs.tgz'
   '@rush-temp/takeoff': 'file:projects/takeoff.tgz'
   '@rush-temp/tarmaq': 'file:projects/tarmaq.tgz'
+  '@rush-temp/taxiway': 'file:projects/taxiway.tgz'
   '@rush-temp/terminal': 'file:projects/terminal.tgz'
   '@rush-temp/terminal-map': 'file:projects/terminal-map.tgz'
   '@rush-temp/territory': 'file:projects/territory.tgz'
@@ -11779,10 +11780,12 @@ packages:
       tarball: 'file:projects/hw-scylladb.tgz'
     version: 0.0.0
   'file:projects/hw-vespa.tgz':
+    dependencies:
+      '@types/node': 14.14.20
     dev: false
     name: '@rush-temp/hw-vespa'
     resolution:
-      integrity: sha512-tGLOmbIoLL7VDY0UvM5x8a5dBJAmxaIcyOxkhJXQfw4R74pR9WuOaJWEUNVJX1CsQhykFpgJQ3dQlndbXNJb7w==
+      integrity: sha512-5q4ZHa7yb35O4ysI6DBL6A1RXdP36F6R8W8scfMg6QEPGryv3M/0fKH0PIj9znE9ibPycdTQFKh3WVCh2T8T9A==
       tarball: 'file:projects/hw-vespa.tgz'
     version: 0.0.0
   'file:projects/jet-bridge.tgz':
@@ -11879,7 +11882,7 @@ packages:
     dev: false
     name: '@rush-temp/runway'
     resolution:
-      integrity: sha512-uXXNGdgJPbbivEPRecYjdjzOFm11mb2wNCw/H8ke5Af9iVbewDbXCktCcwdOPLp5ywZGC2S4qbXxsslQR/FEig==
+      integrity: sha512-uh1sfeEf7FcFZrM5kj3AUktxrxrKfcDks4G9nZy+Y/9umAn0Vmv6NoNhU8Cbh/TAHxHszaGsnNCXBl1d9trASw==
       tarball: 'file:projects/runway.tgz'
     version: 0.0.0
   'file:projects/security-check.tgz':
@@ -11925,6 +11928,16 @@ packages:
     resolution:
       integrity: sha512-Ma3TycL9F/rD0VHCKhOHhhlXhnGZ2CUccYQxqJjZiNLPmG1p0ABRNLHRetNVhLl3leQ0zYtps8VZoR4oZtBxEA==
       tarball: 'file:projects/tarmaq.tgz'
+    version: 0.0.0
+  'file:projects/taxiway.tgz':
+    dependencies:
+      '@types/node': 14.14.20
+      typescript: 4.1.2
+    dev: false
+    name: '@rush-temp/taxiway'
+    resolution:
+      integrity: sha512-De3Bbj7u6vRjWhqWQHPHBKewsgIjbC0VnpnJyc/F05MotH2yPlHmY29vZ8aMWx5vrRwBjzzGdxdHljwLY6Bpmg==
+      tarball: 'file:projects/taxiway.tgz'
     version: 0.0.0
   'file:projects/terminal-map.tgz':
     dev: false
@@ -12052,6 +12065,7 @@ specifiers:
   '@rush-temp/sqljs': 'file:./projects/sqljs.tgz'
   '@rush-temp/takeoff': 'file:./projects/takeoff.tgz'
   '@rush-temp/tarmaq': 'file:./projects/tarmaq.tgz'
+  '@rush-temp/taxiway': 'file:./projects/taxiway.tgz'
   '@rush-temp/terminal': 'file:./projects/terminal.tgz'
   '@rush-temp/terminal-map': 'file:./projects/terminal-map.tgz'
   '@rush-temp/territory': 'file:./projects/territory.tgz'

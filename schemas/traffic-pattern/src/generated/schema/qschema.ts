@@ -65,6 +65,7 @@ export interface SchemaESelect
 	// Non-Id Properties
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
+	packageName?: string | IQStringField;
 	status?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
@@ -107,6 +108,7 @@ export interface SchemaEUpdateProperties
 	// Non-Id Properties
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
+	packageName?: string | IQStringField;
 	status?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -125,6 +127,7 @@ export interface SchemaGraph
 	// Non-Id Properties
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
+	packageName?: string | IQStringField;
 	status?: number | IQNumberField;
 
 	// Relations
@@ -142,6 +145,7 @@ export interface SchemaEUpdateColumns
 	// Non-Id Columns
 	SCOPE?: string | IQStringField;
 	SCHEMA_NAME?: string | IQStringField;
+	PACKAGE_NAME?: string | IQStringField;
 	STATUS?: number | IQNumberField;
 	DOMAIN_ID?: number | IQNumberField;
 	CURRENT_VERSION_ID?: number | IQNumberField;
@@ -182,6 +186,7 @@ export interface QSchema extends IQEntity<Schema>
 	// Non-Id Fields
 	scope: IQStringField;
 	name: IQStringField;
+	packageName: IQStringField;
 	status: IQNumberField;
 
 	// Non-Id Relations

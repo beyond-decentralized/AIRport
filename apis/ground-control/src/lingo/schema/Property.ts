@@ -7,17 +7,19 @@ import {
 	EntityRelationType,
 	JsonDatabaseObject,
 	SQLDataType
-}                    from '../../index'
+}                      from '../../index';
 import {
 	DbEntity,
 	TableIndex
-}                    from './Entity'
-import {SchemaIndex} from './Schema'
+}                      from './Entity';
+import { SchemaIndex } from './Schema';
 
 export type ColumnId = number;
 export type ColumnIndex = number;
 export type ColumnName = string;
 export type ColumnNotNull = boolean;
+export type ColumnPrecision = string;
+export type ColumnScale = string;
 // export type ColumnDefinition = string;
 export type PropertyId = number;
 export type PropertyIndex = number;
@@ -74,9 +76,9 @@ export interface DbProperty
 
 export class DbPropertyColumn {
 
-	column: DbColumn
-	property: DbProperty
-	sinceVersion: DbSchemaVersion
+	column: DbColumn;
+	property: DbProperty;
+	sinceVersion: DbSchemaVersion;
 
 }
 
@@ -99,12 +101,10 @@ export interface JsonSchemaColumn
 	 */
 	isGenerated?: SchemaColumnIsGenerated;
 
-
 	/**
 	 * How many ids to allocate at a time
 	 */
 	allocationSize?: SchemaColumnAllocationSize;
-
 
 	/**
 	 * One-to-Many relations that are mapped to this column.
@@ -118,10 +118,16 @@ export interface JsonSchemaColumn
 
 	notNull: ColumnNotNull
 
+	// The precision of a decimal (total digits)
+	precision?: number;
+
 	/**
 	 * Properties that are mapped to this column.
 	 */
 	propertyRefs: PropertyReference[];
+
+	// The scale of a decimal (digits after the floating point)
+	scale?: number;
 
 	/**
 	 * Type of the column.
@@ -165,12 +171,17 @@ export interface DbColumn
 	 */
 	oneRelationColumns: DbRelationColumn[]
 
+	// The precision of a decimal (total digits)
+	precision?: number;
 	/**
 	 * In which properties is this column present.
 	 */
 	propertyColumns: DbPropertyColumn[]
 
 	propertyColumnMap: { [propertyIndex: number]: DbPropertyColumn }
+
+	// The scale of a decimal (digits after the floating point)
+	scale?: number;
 
 	type: SQLDataType
 

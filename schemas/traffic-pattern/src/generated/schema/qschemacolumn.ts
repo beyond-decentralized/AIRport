@@ -94,6 +94,8 @@ export interface SchemaColumnESelect
 	allocationSize?: number | IQNumberField;
 	name?: string | IQStringField;
 	notNull?: boolean | IQBooleanField;
+	precision?: number | IQNumberField;
+	scale?: number | IQNumberField;
 	type?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
@@ -141,6 +143,8 @@ export interface SchemaColumnEUpdateProperties
 	allocationSize?: number | IQNumberField;
 	name?: string | IQStringField;
 	notNull?: boolean | IQBooleanField;
+	precision?: number | IQNumberField;
+	scale?: number | IQNumberField;
 	type?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -162,6 +166,8 @@ export interface SchemaColumnGraph
 	allocationSize?: number | IQNumberField;
 	name?: string | IQStringField;
 	notNull?: boolean | IQBooleanField;
+	precision?: number | IQNumberField;
+	scale?: number | IQNumberField;
 	type?: number | IQNumberField;
 
 	// Relations
@@ -187,6 +193,8 @@ export interface SchemaColumnEUpdateColumns
 	ALLOCATION_SIZE?: number | IQNumberField;
 	NAME?: string | IQStringField;
 	NOT_NULL?: boolean | IQBooleanField;
+	PRECISION?: number | IQNumberField;
+	SCALE?: number | IQNumberField;
 	TYPE?: number | IQNumberField;
 	SCHEMA_ENTITY_ID?: number | IQNumberField;
 
@@ -230,6 +238,8 @@ export interface QSchemaColumn extends QVersionedSchemaObject<SchemaColumn>
 	allocationSize: IQNumberField;
 	name: IQStringField;
 	notNull: IQBooleanField;
+	precision: IQNumberField;
+	scale: IQNumberField;
 	type: IQNumberField;
 
 	// Non-Id Relations

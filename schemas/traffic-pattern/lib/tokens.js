@@ -1,8 +1,5 @@
 import { system } from '@airport/di';
 const trafficPattern = system('airport').lib('traffic-pattern');
-export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA = 'NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_QSCHEMA';
-export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DAOS = trafficPattern.token('NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Daos');
-export const NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_DUOS = trafficPattern.token('NPMJS_ORG___AIRPORT_TRAFFIC_PATTERN_Duos');
 export const SCHEMA_COLUMN_DAO = trafficPattern.token('ISchemaColumnDao');
 export const SCHEMA_DAO = trafficPattern.token('ISchemaDao');
 export const SCHEMA_ENTITY_DAO = trafficPattern.token('ISchemaEntityDao');

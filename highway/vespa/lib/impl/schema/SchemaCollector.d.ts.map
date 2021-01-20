@@ -1,0 +1,1 @@
+{"version":3,"file":"SchemaCollector.d.ts","sourceRoot":"","sources":["../../../src/impl/schema/SchemaCollector.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,gBAAgB;IAEhC,OAAO,IAAI,OAAO,CAAC,MAAM,EAAE,CAAC,CAAA;CAC5B;AAED,qBAAa,eACZ,YAAW,gBAAgB;IAErB,OAAO,IAAI,OAAO,CAAC,MAAM,EAAE,CAAC;CAGlC"}

@@ -1,5 +1,5 @@
-import { Duo } from '@airport/check-in';
-import { Q, duoDiSet } from './qSchema';
+import { Duo, } from '@airport/check-in';
+import { Q, duoDiSet, } from './qSchema';
 // Schema Q object Dependency Injection readiness detection Duo
 export class SQDIDuo extends Duo {
     constructor(dbEntityId) {
