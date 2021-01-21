@@ -1,1 +1,0 @@
-{"version":3,"file":"VespaSchemaStore.d.ts","sourceRoot":"","sources":["../../src/impl/VespaSchemaStore.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,MAAM,8BAA8B,CAAC;AAE9D,MAAM,WAAW,iBAAiB;IAEjC,WAAW,EAAE;QACZ,CAAC,YAAY,EAAE,MAAM,GAAG,cAAc,CAAA;KACtC,CAAA;CAED;AAED,qBAAa,gBAAgB;IAE5B,WAAW,EAAE;QACZ,CAAC,YAAY,EAAE,MAAM,GAAG,cAAc,CAAA;KACtC,CAAM;CAEP"}

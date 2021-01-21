@@ -1,9 +1,9 @@
 import {
 	DbEntity,
 	JsonSchemaEntity
-}                               from './Entity'
-import {SchemaReferenceByIndex} from './Property'
-import {SchemaStatus}           from './SchemaStatus'
+}                                 from './Entity';
+import { SchemaReferenceByIndex } from './Property';
+import { SchemaStatus }           from './SchemaStatus';
 
 export type ApplicationId = number;
 export type ApplicationName = string;
@@ -87,6 +87,12 @@ export interface JsonSchema
 	 * Name of the schema (npm package name).
 	 */
 	name: JsonSchemaName;
+
+	/**
+	 * Name of the npm package for this schema
+	 */
+	packageName: PackageName;
+
 	/**
 	 * Versions by integer version
 	 */
@@ -109,6 +115,8 @@ export interface DbSchema
 	domain: DbDomain;
 
 	name: SchemaName;
+
+	packageName: PackageName;
 
 	scope: SchemaScope;
 

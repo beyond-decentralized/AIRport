@@ -93,6 +93,21 @@ export function Index(
 	};
 }
 
+export function ensureField(
+	document: IVespaDocument,
+	name: string
+): IVespaFieldWithDbInfo {
+	let field = document.fieldMap[name];
+	if (!field) {
+		field                   = {
+			name,
+		};
+		document.fieldMap[name] = field;
+	}
+
+	return field as IVespaFieldWithDbInfo;
+}
+
 function ensureDocument(
 	name: string | any,
 	store: IVespaSchemaStore
@@ -116,21 +131,6 @@ function ensureDocument(
 	}
 
 	return vespaDocument as IVespaDocumentWithConstructor;
-}
-
-function ensureField(
-	document: IVespaDocument,
-	name: string
-): IVespaFieldWithDbInfo {
-	let field = document.fieldMap[name];
-	if (!field) {
-		field                   = {
-			name,
-		};
-		document.fieldMap[name] = field;
-	}
-
-	return field as IVespaFieldWithDbInfo;
 }
 
 function ensureFieldset(

@@ -66,6 +66,7 @@ export class DbSchemaBuilder
 			domain: dbDomain,
 			index: allSchemas.length,
 			name: jsonSchema.name,
+			packageName: jsonSchema.packageName,
 			scope: null,
 			sinceVersion: dbSchemaVersion,
 			status: SchemaStatus.CURRENT,

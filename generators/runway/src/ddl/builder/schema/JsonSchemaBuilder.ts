@@ -148,6 +148,7 @@ export class JsonSchemaBuilder {
 			domain,
 			index: null,
 			name: sIndexedSchema.schema.name,
+			packageName: sIndexedSchema.schema.name,
 			sinceVersion: 1,
 			versions: [{
 				entities: jsonEntities,
@@ -158,6 +159,7 @@ export class JsonSchemaBuilder {
 					domain: sSchemaReference.dbSchema.domain.name,
 					index: sSchemaReference.index,
 					name: sSchemaReference.dbSchema.name,
+					packageName: sSchemaReference.dbSchema.packageName,
 					sinceVersion: 1,
 					versions: [{
 						entities: null,

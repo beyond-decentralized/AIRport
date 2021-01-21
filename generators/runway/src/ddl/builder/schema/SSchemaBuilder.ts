@@ -66,6 +66,7 @@ export class SSchemaBuilder {
 		const schema: SSchema = {
 			domain: this.config.airport.domain,
 			entities: [],
+			packageName: this.config.name,
 			name: this.config.name,
 			referencedSchemas,
 		};

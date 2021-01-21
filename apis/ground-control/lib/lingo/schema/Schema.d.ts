@@ -58,6 +58,10 @@ export interface JsonSchema extends SchemaReferenceByIndex<SchemaIndex>, JsonDat
      */
     name: JsonSchemaName;
     /**
+     * Name of the npm package for this schema
+     */
+    packageName: PackageName;
+    /**
      * Versions by integer version
      */
     versions: JsonSchemaVersion[];
@@ -72,6 +76,7 @@ export interface DbSchema extends SchemaReferenceByIndex<SchemaIndex>, DatabaseO
      */
     domain: DbDomain;
     name: SchemaName;
+    packageName: PackageName;
     scope: SchemaScope;
     status: SchemaStatus;
     /**

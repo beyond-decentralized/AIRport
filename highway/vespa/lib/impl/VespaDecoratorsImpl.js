@@ -55,6 +55,16 @@ export function Index(indexing) {
         field.indexing = indexing;
     };
 }
+export function ensureField(document, name) {
+    let field = document.fieldMap[name];
+    if (!field) {
+        field = {
+            name,
+        };
+        document.fieldMap[name] = field;
+    }
+    return field;
+}
 function ensureDocument(name, store) {
     if (typeof name === 'string') {
         // The name of the class is passed in
@@ -76,16 +86,6 @@ function ensureDocument(name, store) {
         store.documentMap[name] = vespaDocument;
     }
     return vespaDocument;
-}
-function ensureField(document, name) {
-    let field = document.fieldMap[name];
-    if (!field) {
-        field = {
-            name,
-        };
-        document.fieldMap[name] = field;
-    }
-    return field;
 }
 function ensureFieldset(documentName, name, store) {
     const vespaDocument = ensureDocument(documentName, store);

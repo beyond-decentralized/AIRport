@@ -26,7 +26,7 @@ export class VespaSchemaGenerator {
         for (const documentName in store.documentMap) {
             const document = store.documentMap[documentName];
             const searchDefinition = this.generateSearchDefinition(document);
-            fs.writeFileSync(applicationPath + '/' + document.name + '.sd', searchDefinition);
+            fs.writeFileSync(searchDefinitionsPath + '/' + document.name + '.sd', searchDefinition);
         }
     }
     generateDeploymentXml() {
@@ -71,7 +71,7 @@ export class VespaSchemaGenerator {
 </services>`;
     }
     generateSearchDefinition(document) {
-        let fields = '';
+        let fields = [];
         for (const fieldName in document.fieldMap) {
             const field = document.fieldMap[fieldName];
             let indexing = '';
@@ -86,14 +86,11 @@ export class VespaSchemaGenerator {
             }
             let attribute = '';
             let fieldType = this.getFieldType(field, document);
-            fields += `
-		field ${fieldName} type ${fieldType} {
-			${indexing}
-			${attribute}
-		}
-			`;
+            fields.push(`    field ${fieldName} type ${fieldType} {
+			${indexing}${attribute}
+		}`);
         }
-        let fieldsets = '';
+        let fieldsets = [];
         for (const fieldsetName in document.fieldsetMap) {
             const fieldset = document.fieldsetMap[fieldsetName];
             let fieldsetFields = [];
@@ -102,17 +99,17 @@ export class VespaSchemaGenerator {
                     fieldsetFields.push(fieldsetField);
                 }
             }
-            fieldsets += `
-	fieldset ${fieldset.isDefault ? 'default' : fieldsetName} {
+            fieldsets.push(`	fieldset ${fieldset.isDefault ? 'default' : fieldsetName} {
 		fields: ${fieldsetFields.join(', ')}
-	}
-	`;
+	}`);
         }
         return `search ${document.name} {
 	document ${document.name} {
-		${fields}
+	
+${fields.join('\n')}
 	}
-	${fieldsets}
+
+${fieldsets.join('\n')}
 }`;
     }
     getFieldType(field, document) {

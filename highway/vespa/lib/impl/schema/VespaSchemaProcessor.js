@@ -1,4 +1,5 @@
 import { QOperableField } from '@airport/air-control';
+import { ensureField } from '../VespaDecoratorsImpl';
 export class VespaSchemaProcessor {
     async process(store) {
         for (const documentName in store.documentMap) {
@@ -21,10 +22,9 @@ export class VespaSchemaProcessor {
 					must be mapped to a Relational Entity property or a Join based on
 					relational entities.`);
                 }
-                const field = document.fieldMap[propertyName];
+                let field = document.fieldMap[propertyName];
                 if (!field) {
-                    throw new Error(`No field named ${propertyName} found in
-			@vespa.Document() ${documentName}`);
+                    field = ensureField(document, propertyName);
                 }
                 field.dbProperty = property.dbProperty;
                 if (!field.dbProperty) {

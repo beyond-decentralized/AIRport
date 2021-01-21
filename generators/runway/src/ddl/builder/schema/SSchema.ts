@@ -1,5 +1,8 @@
-import { DbSchema }                from "@airport/ground-control";
-import { SEntity, SIndexedEntity } from "./SEntity";
+import { DbSchema } from '@airport/ground-control';
+import {
+	SEntity,
+	SIndexedEntity
+}                   from './SEntity';
 
 /**
  * A schema.
@@ -14,6 +17,8 @@ export interface SSchema {
 	 * Name of the schema.
 	 */
 	name: string;
+
+	packageName: string;
 
 	referencedSchemas: SSchemaReference[];
 
@@ -48,7 +53,6 @@ export interface SIndexedSchema {
 
 	referencedSchemasByName: { [projectName: string]: SSchemaReference };
 
-
 }
 
 export function buildIndexedSSchema(
@@ -63,25 +67,25 @@ export function buildIndexedSSchema(
 	};
 
 	for (const entity of schema.entities) {
-		const columnMap = {};
+		const columnMap   = {};
 		const propertyMap = {};
 		const relationMap = {};
-		const columns = [];
-		const idColumns = [];
-		const relations = [];
+		const columns     = [];
+		const idColumns   = [];
+		const relations   = [];
 		for (const property of entity.properties) {
 			propertyMap[property.name] = property;
 			if (property.columns) {
 				for (const column of property.columns) {
 					columnMap[column.name] = column;
-					columns[column.index] = column;
+					columns[column.index]  = column;
 					if (column.idIndex || column.idIndex === 0) {
 						idColumns[column.idIndex] = column;
 					}
 				}
 			}
 			if (property.relation) {
-				relationMap[property.name] = property.relation;
+				relationMap[property.name]         = property.relation;
 				relations[property.relation.index] = property.relation;
 			}
 		}
@@ -96,7 +100,7 @@ export function buildIndexedSSchema(
 			relations,
 		};
 
-		idx.entities[entity.tableIndex] = indexedEntity;
+		idx.entities[entity.tableIndex]  = indexedEntity;
 		idx.entityMapByName[entity.name] = indexedEntity;
 	}
 

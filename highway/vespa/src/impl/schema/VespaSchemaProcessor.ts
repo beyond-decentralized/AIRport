@@ -1,6 +1,7 @@
 import { QOperableField }                from '@airport/air-control';
 import { IVespaDocumentWithConstructor } from '../../lingo/model/VespaDocument';
 import { IVespaFieldWithDbInfo }         from '../../lingo/model/VespaField';
+import { ensureField }                   from '../VespaDecoratorsImpl';
 import { IVespaSchemaStore }             from './VespaSchemaStore';
 
 export interface IVespaSchemaProcessor {
@@ -41,10 +42,9 @@ export class VespaSchemaProcessor
 					must be mapped to a Relational Entity property or a Join based on
 					relational entities.`);
 				}
-				const field: IVespaFieldWithDbInfo = document.fieldMap[propertyName] as any;
+				let field: IVespaFieldWithDbInfo = document.fieldMap[propertyName] as any;
 				if (!field) {
-					throw new Error(`No field named ${propertyName} found in
-			@vespa.Document() ${documentName}`);
+					field = ensureField(document, propertyName);
 				}
 				field.dbProperty = property.dbProperty;
 				if (!field.dbProperty) {

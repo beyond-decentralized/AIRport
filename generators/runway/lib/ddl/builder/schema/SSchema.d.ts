@@ -1,5 +1,5 @@
-import { DbSchema } from "@airport/ground-control";
-import { SEntity, SIndexedEntity } from "./SEntity";
+import { DbSchema } from '@airport/ground-control';
+import { SEntity, SIndexedEntity } from './SEntity';
 /**
  * A schema.
  */
@@ -10,6 +10,7 @@ export interface SSchema {
      * Name of the schema.
      */
     name: string;
+    packageName: string;
     referencedSchemas: SSchemaReference[];
 }
 export interface SSchemaReference {
