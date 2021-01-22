@@ -24,6 +24,6 @@ export declare class NonEntitySearch extends Lookup implements INonEntitySearch 
     }, context?: IContext): IObservable<ITE[]>;
     search<IQF extends IQOrderableField<IQF>>(rawNonEntityQuery: RawNonEntityQuery | {
         (...args: any[]): RawNonEntityQuery;
-    }, queryResultType: QueryResultType, QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery, context: IContext): Promise<IObservable<any[]>>;
+    }, queryResultType: QueryResultType, QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery, context: IContext): Promise<any[]>;
 }
 //# sourceMappingURL=NonEntitySearch.d.ts.map

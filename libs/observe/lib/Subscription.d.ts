@@ -1,29 +1,7 @@
-import { Observable } from './Observable';
-export interface ISubscription {
-    unsubscribe(): void;
+import { Subscription as IRxSubscription } from 'rxjs';
+export interface ISubscription extends IRxSubscription {
     closed: boolean;
+    unsubscribe(): void;
 }
-export declare class Subscription implements ISubscription {
-    private observable;
-    onNext: {
-        (value: any): void;
-    };
-    onError?: {
-        (error: any): void;
-    };
-    onComplete?: Function;
-    onUnsubscribe?: {
-        (value: any): void;
-    };
-    private _closed;
-    constructor(observable: Observable<any>, onNext: {
-        (value: any): void;
-    }, onError?: {
-        (error: any): void;
-    }, onComplete?: Function, onUnsubscribe?: {
-        (value: any): void;
-    });
-    unsubscribe(onUnsubscribe?: () => void): void;
-    get closed(): boolean;
-}
+export declare const Subscription: typeof IRxSubscription;
 //# sourceMappingURL=Subscription.d.ts.map

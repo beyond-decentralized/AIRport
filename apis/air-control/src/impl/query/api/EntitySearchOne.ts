@@ -2,7 +2,7 @@ import {IContext}                from '@airport/di'
 import {QueryResultType}         from '@airport/ground-control'
 import {
 	IObservable,
-	Observable
+	from
 }                                from '@airport/observe'
 import {IEntityContext}          from '../../../lingo/core/data/EntityContext'
 import {UpdateCacheType}         from '../../../lingo/core/data/UpdateCacheType'
@@ -18,7 +18,7 @@ export interface IEntitySearchOneInternal<Entity, IESP extends IEntitySelectProp
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
 		context?: IContext
-	): Promise<IObservable<Entity>>
+	): Promise<Entity>
 
 }
 
@@ -34,21 +34,21 @@ export class EntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		context?: IContext
 	): IObservable<Entity> {
-		return Observable.from(this.searchOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context))
+		return from(this.searchOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context))
 	}
 
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		context?: IContext
 	): IObservable<Entity> {
-		return Observable.from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context))
+		return from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context))
 	}
 
 	searchOne(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
 		context?: IContext
-	): Promise<IObservable<Entity>> {
+	): Promise<Entity> {
 		return this.entityLookup(rawEntityQuery, queryResultType,
 			true, true, this.ensureContext(context) as IEntityContext)
 	}

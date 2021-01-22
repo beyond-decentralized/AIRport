@@ -1,12 +1,15 @@
-import {IObservable} from '../Observable'
+import { OperatorFunction } from 'rxjs';
+// import { IObservable }      from '../Observable';
 
-export interface IOperator<T, R> {
+export interface IOperator<T, R>
+	extends OperatorFunction<any, any> {
 
-	exec(
-		observable: IObservable<T>
-	): R
+	// exec(
+	// 	observable: IObservable<T>
+	// ): R
 }
 
+/*
 export abstract class Operator<T, R>
 	implements IOperator<T, R> {
 
@@ -15,3 +18,4 @@ export abstract class Operator<T, R>
 	): R
 
 }
+ */

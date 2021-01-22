@@ -1,12 +1,31 @@
-import { Observable } from './Observable';
-export class Subject extends Observable {
+import SubjectFile from 'rxjs/dist/esm/internal/Subject';
+const RxSubject = SubjectFile.Subject;
+export const Subject = RxSubject;
+// export class Subject<V>
+// 	extends RxSubject<V>
+// 	implements ISubject<V> {
+//
+// }
+/*
+export class Subject<V>
+    extends Observable<V>
+    implements ISubject<V> {
+
+
     // complete(): void {
     // }
-    error(errorValue) {
-        this.exec(errorValue, 'onError');
+
+    error(errorValue: any): void {
+        this.exec(errorValue, 'onError')
     }
-    next(value) {
-        this.exec(value, 'onNext');
+
+    next(value: V): void {
+        this.exec(value, 'onNext')
     }
+
+    // start(subscription: ISubscription): void {
+    // }
+
 }
+*/
 //# sourceMappingURL=Subject.js.map

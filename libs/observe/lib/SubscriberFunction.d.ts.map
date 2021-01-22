@@ -1,1 +1,1 @@
-{"version":3,"file":"SubscriberFunction.d.ts","sourceRoot":"","sources":["../src/SubscriberFunction.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,YAAY,EAAC,MAAc,gBAAgB,CAAA;AACnD,OAAO,EAAC,oBAAoB,EAAC,MAAM,wBAAwB,CAAA;AAE3D,MAAM,WAAW,kBAAkB,CAAC,CAAC;IACpC,CACC,QAAQ,EAAE,oBAAoB,CAAC,CAAC,CAAC,GAC/B;QAAE,IAAI,IAAI,CAAA;KAAE,GAAG,YAAY,CAAA;CAC9B"}
+{"version":3,"file":"SubscriberFunction.d.ts","sourceRoot":"","sources":["../src/SubscriberFunction.ts"],"names":[],"mappings":""}

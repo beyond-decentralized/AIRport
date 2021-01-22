@@ -18,7 +18,7 @@ export interface RawQuery {
 
 export interface RawLimitedQuery {
 	limit: number;
-	offset: number;
+	offset?: number;
 }
 
 /**

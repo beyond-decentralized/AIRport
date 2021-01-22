@@ -66,7 +66,7 @@ export abstract class SequenceGenerator
 				!!tableSequences[dbColumn.index])
 	}
 
-	async init(
+	async initialize(
 		sequences?: ISequence[]
 	): Promise<void> {
 		const sequenceDao = await container(this)
@@ -81,7 +81,7 @@ export abstract class SequenceGenerator
 		setSeqGen(this)
 	}
 
-	async tempInit(
+	async tempInitialize(
 		sequences?: ISequence[]
 	): Promise<void> {
 		this.addSequences(sequences)

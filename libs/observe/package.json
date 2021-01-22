@@ -1,4 +1,7 @@
 {
+  "dependencies": {
+    "rxjs": "^7.0.0-beta.10"
+  },
   "main": "lib/index.js",
   "name": "@airport/observe",
   "type": "module",

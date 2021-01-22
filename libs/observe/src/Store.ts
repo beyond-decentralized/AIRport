@@ -1,14 +1,15 @@
 import {BehaviorSubject} from './BehaviorSubject'
 
-export class Store<V>
-	extends BehaviorSubject<V> {
+export const Store = BehaviorSubject;
+// export class Store<V>
+// 	extends BehaviorSubject<V> {
 
-	constructor(value: V) {
-		super(value)
-	}
+	// constructor(value: V) {
+	// 	super(value)
+	// }
+	//
+	// next(value: V): void {
+	// 	this.forceExec(value, 'onNext')
+	// }
 
-	next(value: V): void {
-		this.forceExec(value, 'onNext')
-	}
-
-}
+// }

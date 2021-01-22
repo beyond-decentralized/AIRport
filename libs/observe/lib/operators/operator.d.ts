@@ -1,8 +1,4 @@
-import { IObservable } from '../Observable';
-export interface IOperator<T, R> {
-    exec(observable: IObservable<T>): R;
-}
-export declare abstract class Operator<T, R> implements IOperator<T, R> {
-    abstract exec(observable: IObservable<T>): R;
+import { OperatorFunction } from 'rxjs';
+export interface IOperator<T, R> extends OperatorFunction<any, any> {
 }
 //# sourceMappingURL=operator.d.ts.map

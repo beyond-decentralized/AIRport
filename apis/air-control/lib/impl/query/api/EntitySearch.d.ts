@@ -10,7 +10,7 @@ import { EntityLookup } from './EntityLookup';
 export interface IEntitySearchInternal<Entity, EntityArray extends Array<Entity>, IESP extends IEntitySelectProperties> extends IEntitySearch<Entity, EntityArray, IESP> {
     search(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType, context?: IContext): Promise<IObservable<EntityArray>>;
+    }, queryResultType: QueryResultType, context?: IContext): Promise<EntityArray>;
 }
 /**
  * Created by Papa on 11/12/2016.
@@ -24,7 +24,7 @@ export declare class EntitySearch<Entity, EntityArray extends Array<Entity>, IES
     }, context?: IContext): IObservable<EntityArray>;
     search(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, queryResultType: QueryResultType, context?: IContext): Promise<IObservable<EntityArray>>;
+    }, queryResultType: QueryResultType, context?: IContext): Promise<EntityArray>;
     map(isMapped?: boolean): EntitySearch<Entity, MappedEntityArray<Entity>, IESP>;
     noCache(): EntitySearch<Entity, Entity[], IESP>;
     cache(cacheForUpdate?: UpdateCacheType): EntitySearch<Entity, Entity[], IESP>;

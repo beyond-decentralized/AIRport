@@ -11,7 +11,7 @@ export class IdGenerator {
     }
     async init() {
         (await container(this)
-            .get(SEQUENCE_GENERATOR)).init();
+            .get(SEQUENCE_GENERATOR)).initialize();
         const transHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
         const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
         const operationHistoryDbEntity = this.getHoldingPatternDbEntity('OperationHistory');

@@ -2,7 +2,7 @@ import { IContext }             from '@airport/di';
 import { QueryResultType }      from '@airport/ground-control';
 import {
 	IObservable,
-	Observable
+	from
 }                               from '@airport/observe';
 import { IQOrderableField }     from '../../../lingo/core/field/Field';
 import { INonEntitySearchOne }  from '../../../lingo/query/api/NonEntitySearchOne';
@@ -32,7 +32,7 @@ export class NonEntitySearchOne
 		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> },
 		context?: IContext
 	): IObservable<any> {
-		return Observable.from(this.searchOne(
+		return from(this.searchOne(
 			rawFieldQuery, QueryResultType.FIELD, FieldQuery, context));
 	}
 
@@ -40,7 +40,7 @@ export class NonEntitySearchOne
 		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
 		context?: IContext
 	): IObservable<any[]> {
-		return Observable.from(this.searchOne(
+		return from(this.searchOne(
 			rawSheetQuery, QueryResultType.SHEET, SheetQuery, context));
 	}
 
@@ -48,7 +48,7 @@ export class NonEntitySearchOne
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> },
 		context?: IContext
 	): IObservable<ITE> {
-		return Observable.from(this.searchOne(
+		return from(this.searchOne(
 			rawTreeQuery, QueryResultType.TREE, TreeQuery, context));
 	}
 
@@ -57,7 +57,7 @@ export class NonEntitySearchOne
 		queryResultType: QueryResultType,
 		QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery,
 		context: IContext
-	): Promise<IObservable<any[]>> {
+	): Promise<any> {
 		return this.lookup(rawNonEntityQuery, queryResultType,
 			true, true, QueryClass,
 			this.ensureContext(context as IQueryContext<any>));

@@ -1,10 +1,13 @@
 import { BehaviorSubject } from './BehaviorSubject';
-export class Store extends BehaviorSubject {
-    constructor(value) {
-        super(value);
-    }
-    next(value) {
-        this.forceExec(value, 'onNext');
-    }
-}
+export const Store = BehaviorSubject;
+// export class Store<V>
+// 	extends BehaviorSubject<V> {
+// constructor(value: V) {
+// 	super(value)
+// }
+//
+// next(value: V): void {
+// 	this.forceExec(value, 'onNext')
+// }
+// }
 //# sourceMappingURL=Store.js.map

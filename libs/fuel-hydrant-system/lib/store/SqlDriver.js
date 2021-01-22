@@ -111,16 +111,21 @@ export class SqlDriver {
         return null;
     }
     search(portableQuery, internalFragments, context, cachedSqlQueryId) {
-        let resultsSubject = new Subject(() => {
-            if (resultsSubject.subscriptions.length < 1) {
-                container(this)
-                    .get(ACTIVE_QUERIES)
-                    .then(activeQueries => 
-                // Remove the query for the list of cached queries, that are checked every
-                // time a mutation operation is run
-                activeQueries.remove(portableQuery));
-            }
-        });
+        let resultsSubject = new Subject();
+        // TODO: Remove the query for the list of cached queries, that are checked every
+        //    time a mutation operation is run
+        // let resultsSubject                 = new Subject<EntityArray>(() => {
+        // 	if (resultsSubject.subscriptions.length < 1) {
+        // 		container(this)
+        // 			.get(ACTIVE_QUERIES)
+        // 			.then(
+        // 				activeQueries =>
+        // 					// Remove the query for the list of cached queries, that are checked every
+        // 					// time a mutation operation is run
+        // 					activeQueries.remove(portableQuery)
+        // 			)
+        // 	}
+        // })
         let cachedSqlQuery = {
             resultsSubject: resultsSubject,
             runQuery: () => {
@@ -136,16 +141,21 @@ export class SqlDriver {
         return resultsSubject;
     }
     searchOne(portableQuery, internalFragments, context, cachedSqlQueryId) {
-        let resultsSubject = new Subject(() => {
-            if (resultsSubject.subscriptions.length < 1) {
-                container(this)
-                    .get(ACTIVE_QUERIES)
-                    .then(activeQueries => 
-                // Remove the query for the list of cached queries, that are checked every
-                // time a mutation operation is run
-                activeQueries.remove(portableQuery));
-            }
-        });
+        let resultsSubject = new Subject();
+        // TODO: Remove the query for the list of cached queries, that are checked every
+        //       time a mutation operation is run
+        // let resultsSubject                 = new Subject<E>(() => {
+        // 	if (resultsSubject.subscriptions.length < 1) {
+        // 		container(this)
+        // 			.get(ACTIVE_QUERIES)
+        // 			.then(
+        // 				activeQueries =>
+        // 					// Remove the query for the list of cached queries, that are checked every
+        // 					// time a mutation operation is run
+        // 					activeQueries.remove(portableQuery)
+        // 			);
+        // 	}
+        // });
         let cachedSqlQuery = {
             resultsSubject: resultsSubject,
             runQuery: () => {

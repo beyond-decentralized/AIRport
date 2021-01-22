@@ -1,12 +1,12 @@
 import {
 	IEntitySelectProperties,
-	RawEntityQuery
+	RawLimitedEntityQuery
 } from '@airport/air-control';
 
 export class DaoQueryDecorators<EntitySelect extends IEntitySelectProperties> {
 
 	Graph(
-		callback: (...args: any[]) => RawEntityQuery<EntitySelect>
+		callback: (...args: any[]) => RawLimitedEntityQuery<EntitySelect>
 	): PropertyDecorator {
 		return function(
 			target: any,
@@ -17,7 +17,7 @@ export class DaoQueryDecorators<EntitySelect extends IEntitySelectProperties> {
 	}
 
 	Tree(
-		callback: { (...args: any[]): RawEntityQuery<IEntitySelectProperties> },
+		callback: { (...args: any[]): RawLimitedEntityQuery<IEntitySelectProperties> },
 	): PropertyDecorator {
 		return function(
 			target: any,

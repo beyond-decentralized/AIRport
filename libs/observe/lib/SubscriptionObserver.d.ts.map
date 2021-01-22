@@ -1,1 +1,1 @@
-{"version":3,"file":"SubscriptionObserver.d.ts","sourceRoot":"","sources":["../src/SubscriptionObserver.ts"],"names":[],"mappings":"AAAA;;;GAGG;AACH,MAAM,WAAW,oBAAoB,CAAC,CAAC;IAGtC,IAAI,CAAC,KAAK,EAAE,CAAC,GAAG,IAAI,CAAC;IAGrB,KAAK,CAAC,UAAU,KAAA,GAAG,IAAI,CAAC;IAGxB,QAAQ,IAAI,IAAI,CAAC;IAGjB,MAAM,EAAE,OAAO,CAAC;CAEhB"}
+{"version":3,"file":"SubscriptionObserver.d.ts","sourceRoot":"","sources":["../src/SubscriptionObserver.ts"],"names":[],"mappings":"AAAA;;;GAGG"}

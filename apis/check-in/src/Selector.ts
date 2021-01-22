@@ -2,7 +2,7 @@ import {
 	distinctUntilChanged,
 	IObservable,
 	map,
-	Observable
+	from
 } from '@airport/observe'
 
 /**
@@ -96,7 +96,8 @@ export function createSelector<V, SV>(
 
 	let sourceObservable
 	if (inputSelectors.length > 1) {
-		sourceObservable = Observable.from(...inputSelectors.map(
+		// TODO: check if this will work
+		sourceObservable = from(inputSelectors.map(
 			selector => selector.observable))
 	} else {
 		sourceObservable = inputSelectors[0].observable

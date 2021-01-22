@@ -1,13 +1,71 @@
-import {IOperator} from './operators/operator'
-import {
-	ISubscription,
-	Subscription
-}                  from './Subscription'
+import { Observable as RxObservable } from 'rxjs';
+import ObservableFile                 from 'rxjs/dist/esm/internal/Observable';
+import { IObserver }                  from './Observer';
+import { IOperator }                  from './operators/operator';
+import { ISubscription }              from './Subscription';
+
+const RxObservableImpl: typeof RxObservable = ObservableFile.Observable;
 
 /**
  * An Observable represents a sequence of values which may be observed.
  */
-export interface IObservable<T> {
+export interface IObservable<T>
+	extends RxObservable<T> {
+
+	pipe(): RxObservable<T>;
+
+	// pipe<A>(op1: OperatorFunction<T, A>): Observable<A>;
+	// pipe<A, B>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>): Observable<B>;
+	// pipe<A, B, C>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>): Observable<C>;
+	// pipe<A, B, C, D>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>): Observable<D>;
+	// pipe<A, B, C, D, E>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>): Observable<E>;
+	// pipe<A, B, C, D, E, F>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>): Observable<F>;
+	// pipe<A, B, C, D, E, F, G>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>): Observable<G>;
+	// pipe<A, B, C, D, E, F, G, H>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>): Observable<H>;
+	// pipe<A, B, C, D, E, F, G, H, I>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>, op9: OperatorFunction<H, I>): Observable<I>;
+	// pipe<A, B, C, D, E, F, G, H, I>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>, op9: OperatorFunction<H, I>, ...operations: OperatorFunction<any, any>[]): Observable<unknown>;
+
+	pipe<T2, T3, T4, T5, T6, T7, T8, R>(
+		operator1: IOperator<T, T2>,
+		operator2: IOperator<T2, T3>,
+		operator3: IOperator<T3, T4>,
+		operator4: IOperator<T4, T5>,
+		operator5: IOperator<T5, T6>,
+		operator6: IOperator<T6, T7>,
+		operator7: IOperator<T7, T8>,
+		operator8: IOperator<T8, R>,
+		...operators: IOperator<any, any>[]
+	): IObservable<unknown>
+
+	pipe<T2, T3, T4, T5, T6, T7, T8, R>(
+		operator1: IOperator<T, T2>,
+		operator2: IOperator<T2, T3>,
+		operator3: IOperator<T3, T4>,
+		operator4: IOperator<T4, T5>,
+		operator5: IOperator<T5, T6>,
+		operator6: IOperator<T6, T7>,
+		operator7: IOperator<T7, T8>,
+		operator8: IOperator<T8, R>
+	): IObservable<R>
+
+	pipe<T2, T3, T4, T5, T6, T7, R>(
+		operator1: IOperator<T, T2>,
+		operator2: IOperator<T2, T3>,
+		operator3: IOperator<T3, T4>,
+		operator4: IOperator<T4, T5>,
+		operator5: IOperator<T5, T6>,
+		operator6: IOperator<T6, T7>,
+		operator7: IOperator<T7, R>
+	): IObservable<R>
+
+	pipe<T2, T3, T4, T5, T6, R>(
+		operator1: IOperator<T, T2>,
+		operator2: IOperator<T2, T3>,
+		operator3: IOperator<T3, T4>,
+		operator4: IOperator<T4, T5>,
+		operator5: IOperator<T5, T6>,
+		operator6: IOperator<T6, R>
+	): IObservable<R>
 
 	pipe<T2, T3, T4, T5, R>(
 		operator1: IOperator<T, T2>,
@@ -43,30 +101,62 @@ export interface IObservable<T> {
 	// subscribe(observer: IObserver<V>): ISubscription
 
 	// Subscribes to the sequence with callbacks
-	subscribe(
-		onNext: { (value: T): void },
-		onError?: Function,
-		onComplete?: Function
-	): ISubscription
+	// subscribe(
+	// 	onNext: { (value: T): void },
+	// 	onError?: Function,
+	// 	onComplete?: Function
+	// ): ISubscription
 
-	exec(
-		value: T,
-		callbackName: 'onError' | 'onNext',
-		context: any
-	): void
+	subscribe(observer?: Partial<IObserver<T>>): ISubscription;
+
+	/** @deprecated Use an observer instead of a complete callback */
+	subscribe(
+		next: null | undefined,
+		error: null | undefined,
+		complete: () => void
+	): ISubscription;
+
+	/** @deprecated Use an observer instead of an error callback */
+	subscribe(
+		next: null | undefined,
+		error: (error: any) => void,
+		complete?: () => void
+	): ISubscription;
+
+	/** @deprecated Use an observer instead of a complete callback */
+	subscribe(
+		next: (value: T) => void,
+		error: null | undefined,
+		complete: () => void
+	): ISubscription;
+
+	subscribe(
+		next?: (value: T) => void,
+		error?: (error: any) => void,
+		complete?: () => void
+	): ISubscription;
+
+	// exec(
+	// 	value: T,
+	// 	callbackName: 'onError' | 'onNext',
+	// 	context: any
+	// ): void
 
 	// stop(): void
 
-	upstream: IObservable<any>[]
-	downstream: IObservable<any>[]
-
-	currentValue: T
-	// lastValue: V
-
-	up$LastVal
+	// upstream: IObservable<any>[]
+	// downstream: IObservable<any>[]
+	//
+	// currentValue: T
+	// // lastValue: V
+	//
+	// up$LastVal
 
 }
 
+export const Observable = RxObservableImpl;
+
+/*
 export class Observable<T>
 	implements IObservable<T> {
 
@@ -167,15 +257,13 @@ export class Observable<T>
 		}
 
 		// this.lastValue = this.currentValue
-		/*
-		const theValue    = this.currentValue
-		this.currentValue = undefined
-		this.valueFromUpstream()
-
-		if (this.currentValue === undefined) {
-			this.currentValue = theValue
-		}
-		*/
+		// const theValue    = this.currentValue
+		// this.currentValue = undefined
+		// this.valueFromUpstream()
+		//
+		// if (this.currentValue === undefined) {
+		// 	this.currentValue = theValue
+		// }
 
 		if (this.upstream.length) {
 			throw new Error('Cannot set value on a derived Observable')
@@ -268,3 +356,4 @@ export class Observable<T>
 	}
 
 }
+*/

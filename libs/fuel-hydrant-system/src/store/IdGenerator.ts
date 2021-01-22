@@ -52,7 +52,7 @@ export class IdGenerator
 
 	async init(): Promise<void> {
 		(await container(this)
-			.get(SEQUENCE_GENERATOR)).init()
+			.get(SEQUENCE_GENERATOR)).initialize()
 
 		const transHistoryDbEntity     =
 			      this.getHoldingPatternDbEntity('TransactionHistory')

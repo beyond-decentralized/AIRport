@@ -20,16 +20,16 @@ export interface ITerminalStore {
 }
 export declare class TerminalStore implements ITerminalStore {
     state: Store<ITerminalState>;
-    getTerminalState: IMemoizedSelector<any, any>;
-    getDomains: IMemoizedSelector<any, any>;
-    getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<string, Map<string, ISchemaVersion>>, any>;
-    getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<string, ISchemaVersion>, any>;
-    getAllSchemaVersionsByIds: IMemoizedSelector<ISchemaVersion[], any>;
-    getLatestSchemaVersionsBySchemaIndexes: IMemoizedSelector<ISchemaVersion[], any>;
-    getSchemas: IMemoizedSelector<any, any>;
+    getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
+    getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
+    getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<string, Map<string, ISchemaVersion>>, ITerminalState>;
+    getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<string, ISchemaVersion>, ITerminalState>;
+    getAllSchemaVersionsByIds: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
+    getLatestSchemaVersionsBySchemaIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
+    getSchemas: IMemoizedSelector<ISchema[], ITerminalState>;
     tearDown(): void;
-    getAllEntities: IMemoizedSelector<ISchemaEntity[], any>;
-    getAllColumns: IMemoizedSelector<ISchemaColumn[], any>;
-    getAllRelations: IMemoizedSelector<ISchemaRelation[], any>;
+    getAllEntities: IMemoizedSelector<ISchemaEntity[], ITerminalState>;
+    getAllColumns: IMemoizedSelector<ISchemaColumn[], ITerminalState>;
+    getAllRelations: IMemoizedSelector<ISchemaRelation[], ITerminalState>;
 }
 //# sourceMappingURL=TerminalStore.d.ts.map

@@ -1,9 +1,5 @@
-import { IObservable, Observable } from './Observable';
-import { IObserver } from './Observer';
-export interface ISubject<V> extends IObservable<V>, IObserver<V> {
+import { Subject as IRxSubject } from 'rxjs';
+export interface ISubject<V> extends IRxSubject<V> {
 }
-export declare class Subject<V> extends Observable<V> implements ISubject<V> {
-    error(errorValue: any): void;
-    next(value: V): void;
-}
+export declare const Subject: typeof IRxSubject;
 //# sourceMappingURL=Subject.d.ts.map

@@ -1,15 +1,29 @@
-import {Observable} from './Observable'
+// import {Observable} from './Observable'
+import SubscriptionFile from 'rxjs/dist/esm/internal/Subscription';
+import { Subscription as IRxSubscription } from 'rxjs';
 
-export interface ISubscription {
+const RxSubscription: typeof IRxSubscription = SubscriptionFile.Subscription;
 
-	// Cancels the subscription
-	unsubscribe(): void
+export interface ISubscription
+	extends IRxSubscription {
 
 	// A boolean value indicating whether the subscription is closed
 	closed: boolean
 
+	// Cancels the subscription
+	unsubscribe(): void
+
 }
 
+export const Subscription = RxSubscription;
+
+// export class Subscription
+// 	extends RxSubscription
+// 	implements ISubscription {
+//
+// }
+
+/*
 export class Subscription
 	implements ISubscription {
 
@@ -46,3 +60,4 @@ export class Subscription
 	}
 
 }
+ */

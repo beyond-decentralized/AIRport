@@ -1,7 +1,3 @@
-import { IObservable } from '../Observable';
-import { IOperator, Operator } from './operator';
-export declare function distinctUntilChanged<T>(): IOperator<T, T>;
-export declare class DistinctUntilChangedOperator<T> extends Operator<T, T> {
-    exec(source: IObservable<T>): T;
-}
+import { distinctUntilChanged as IRxDistinctUntilChanged } from 'rxjs/operators';
+export declare const distinctUntilChanged: typeof IRxDistinctUntilChanged;
 //# sourceMappingURL=distinctUntilChanged.d.ts.map

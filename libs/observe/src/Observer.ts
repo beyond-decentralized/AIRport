@@ -4,9 +4,11 @@
  *
  * All methods are optional.
  */
-import {ISubscription} from './Subscription'
+// import {ISubscription} from './Subscription'
+import { Observer } from 'rxjs';
 
-export interface IObserver<V> {
+export interface IObserver<V>
+	extends Observer<V> {
 
 	// Receives the subscription object when `subscribe` is called
 	// start(
@@ -24,6 +26,6 @@ export interface IObserver<V> {
 	): void;
 
 	// Receives a completion notification
-	// complete(): void;
+	complete(): void;
 
 }
