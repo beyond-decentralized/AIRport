@@ -12,6 +12,11 @@ export class Dao {
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
         this.db = new EntityDatabaseFacade(dbEntity, Q);
     }
+    static BaseSave(config) {
+        return function (target, propertyKey) {
+            // No runtime logic required.
+        };
+    }
     async count(context) {
         throw new Error(`Not Implemented`);
     }

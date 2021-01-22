@@ -61,6 +61,29 @@ export class VespaSchemaProcessor
 					is not backed a by a specific column`);
 				}
 			}
+			let foundDefaultFieldset = false;
+			for (const fieldsetName in document.fieldsetMap) {
+				const fieldset = document.fieldsetMap[fieldsetName];
+				if (fieldset.isDefault) {
+					if (foundDefaultFieldset) {
+						throw new Error(`More than one						
+			@vespa.Default()
+			@vespa.Fieldset(...)
+	is found for 
+			@vespa.Document() ${documentName}
+	There must be exactly 1 (one) default fieldset for a given Vespa document.`);
+					}
+					foundDefaultFieldset = true;
+				}
+			}
+			if (!foundDefaultFieldset) {
+				throw new Error(`No						
+			@vespa.Default()
+			@vespa.Fieldset(...)
+	is found for 
+			@vespa.Document() ${documentName}
+	There must be exactly 1 (one) default fieldset for a given Vespa document.`);
+			}
 		}
 	}
 

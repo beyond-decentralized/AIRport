@@ -23,9 +23,14 @@ export class DaoBuilder
 		return `
 	
 	static Find      = new DaoQueryDecorators<${entityName}ESelect>();
-  static FindOne   = new DaoQueryDecorators<${entityName}ESelect>();
-  static Search    = new DaoQueryDecorators<${entityName}ESelect>();
-  static SearchOne = new DaoQueryDecorators<${entityName}ESelect>();`;
+	static FindOne   = new DaoQueryDecorators<${entityName}ESelect>();
+	static Search    = new DaoQueryDecorators<${entityName}ESelect>();
+	static SearchOne = new DaoQueryDecorators<${entityName}ESelect>();
+	static Save(
+		config: ${entityName}ESelect
+	): PropertyDecorator {
+		return Dao.BaseSave<${entityName}ESelect>(config);
+  }`;
 	}
 
 }

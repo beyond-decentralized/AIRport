@@ -37,6 +37,17 @@ export abstract class Dao<Entity,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId,
 		EntityCascadeGraph, QE> {
 
+	static BaseSave<EntitySelect extends IEntitySelectProperties>(
+		config: EntitySelect
+	): PropertyDecorator {
+		return function(
+			target: any,
+			propertyKey: string
+		) {
+			// No runtime logic required.
+		};
+	}
+
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId,
 		EntityCascadeGraph, QE>;

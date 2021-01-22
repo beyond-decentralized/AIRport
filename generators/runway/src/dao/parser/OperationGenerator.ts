@@ -204,7 +204,7 @@ function serializeProperty(
 			throwUnsupportedDecorator(daoName, decoratorName);
 		}
 		switch (decoratorNameParts[1]) {
-			case 'Delete':
+			// case 'Delete':
 			case 'Save':
 				if (decoratorNameParts.length !== 2) {
 					throwUnsupportedDecorator(daoName, decoratorName);
@@ -237,9 +237,9 @@ function serializeProperty(
 
 		}
 		switch (decoratorNameParts[1]) {
-			case 'Delete':
-				serializeDelete(daoName, daoOperations, decorator, entityName, memberName);
-				break;
+			// case 'Delete':
+			// 	serializeDelete(daoName, daoOperations, decorator, entityName, memberName);
+			// 	break;
 			case 'Save':
 				serializeSave(daoName, daoOperations, decorator, entityName, memberName);
 				break;

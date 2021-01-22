@@ -133,7 +133,7 @@ export class SchemaQueryGenerator {
 		const queryTypescript    = queryDefinition.expression.getText();
 		let queryJavascript      = tsc.transpile(queryTypescript);
 		const functionStartRegex = /\(\s*function \s*\(\s*[\w,\s]*\)\s*\{\s*/;
-		const functionEndRegex   = /\s*\}\s*\);\s$/;
+		const functionEndRegex   = /\s*\}\);\s*$/;
 		queryJavascript          = queryJavascript.replace(functionStartRegex, '');
 		queryJavascript          = queryJavascript.replace(functionEndRegex, '');
 

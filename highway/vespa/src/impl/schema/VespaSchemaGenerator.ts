@@ -61,7 +61,8 @@ export class VespaSchemaGenerator
 	}
 
 	private generateHostsXml(): string {
-		return `<hosts>
+		return `<?xml version="1.0" encoding="utf-8" ?>
+<hosts>
 	<host name='localhost'>
 		<alias>node1</alias>
 	</host>
@@ -71,23 +72,28 @@ export class VespaSchemaGenerator
 	private generateServicesXml(
 		store: IVespaSchemaStore
 	): string {
-		let documents = ``;
+		let documents = [];
 		for (const documentName in store.documentMap) {
 			const document = store.documentMap[documentName];
-			documents += `
-			<document mode='index' type='${document.name}'></document>
-			`;
+			documents.push(`<document mode='index' type='${document.name}'></document>`);
 		}
 		return `<services version='1.0'>
+	<admin version='2.0'>
+		<adminserver hostalias='node1' />
+		<configservers>
+			<configserver hostalias='node1' />
+		</configservers>
+	</admin>
 	<container id='default' version='1.0'>
 		<document-api/>
 		<nodes>
 			<node hostalias='node1'/>
 		</nodes>
+		<search />
 	</container>
 	<content id='content' version='1.0'>
 		<documents>
-			${documents}
+			${documents.join('\n\t\t\t')}
 		</documents>
 		<nodes>
 			<node hostalias='node1' distribution-key='0'/>
