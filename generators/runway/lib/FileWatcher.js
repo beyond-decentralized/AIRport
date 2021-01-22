@@ -134,7 +134,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
         const schemaSourceString = `export const SCHEMA = `
             + schemaJsonString + ';';
         fs.writeFileSync(schemaPath, schemaJsonString);
-        fs.writeFileSync(schemaSourcePath, schemaSourceString);
+        fs.writeFileSync(schemaSourcePath, '/* eslint-disable */\n' + schemaSourceString);
     }
     function emitFile(fileName) {
         let output = services.getEmitOutput(fileName);

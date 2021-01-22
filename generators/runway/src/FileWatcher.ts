@@ -210,7 +210,7 @@ export async function watchFiles(
 			+ schemaJsonString + ';';
 
 		fs.writeFileSync(schemaPath, schemaJsonString);
-		fs.writeFileSync(schemaSourcePath, schemaSourceString);
+		fs.writeFileSync(schemaSourcePath, '/* eslint-disable */\n' + schemaSourceString);
 	}
 
 	function emitFile(
