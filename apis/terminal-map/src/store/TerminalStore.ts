@@ -11,9 +11,8 @@ import {
 	SchemaName
 }                       from '@airport/ground-control'
 import {
-	BehaviorSubject,
-	Store
-}                       from '@airport/observe'
+	BehaviorSubject
+}                       from 'rxjs'
 import {IDomain}        from '@airport/territory'
 import {
 	ISchema,
@@ -56,7 +55,7 @@ export interface ITerminalStore {
 export class TerminalStore
 	implements ITerminalStore {
 
-	state = new Store<ITerminalState>({
+	state = new BehaviorSubject<ITerminalState>({
 		domains: [], nodesBySyncFrequency: new Map(), schemas: [], terminal: null,
 	})
 

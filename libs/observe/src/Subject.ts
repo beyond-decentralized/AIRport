@@ -1,7 +1,7 @@
-import SubjectFile from 'rxjs/dist/esm/internal/Subject';
+// import SubjectFile from 'rxjs/dist/esm/internal/Subject';
 import { Subject as IRxSubject } from 'rxjs';
 
-const RxSubject: typeof IRxSubject = SubjectFile.Subject;
+// const RxSubject: typeof IRxSubject = SubjectFile.Subject;
 // import {
 // 	IObservable,
 // }                  from './Observable'
@@ -14,7 +14,7 @@ export interface ISubject<V>
 		IRxSubject<V> {
 }
 
-export const Subject = RxSubject;
+// export const Subject = RxSubject;
 // export class Subject<V>
 // 	extends RxSubject<V>
 // 	implements ISubject<V> {

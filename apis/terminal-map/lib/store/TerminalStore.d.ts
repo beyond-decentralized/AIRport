@@ -1,6 +1,6 @@
 import { IMemoizedSelector } from '@airport/check-in';
 import { DomainName, JsonSchemaName, SchemaName } from '@airport/ground-control';
-import { BehaviorSubject, Store } from '@airport/observe';
+import { BehaviorSubject } from 'rxjs';
 import { IDomain } from '@airport/territory';
 import { ISchema, ISchemaColumn, ISchemaEntity, ISchemaRelation, ISchemaVersion } from '@airport/traffic-pattern';
 import { ITerminalState } from './TerminalState';
@@ -19,7 +19,7 @@ export interface ITerminalStore {
     tearDown(): any;
 }
 export declare class TerminalStore implements ITerminalStore {
-    state: Store<ITerminalState>;
+    state: BehaviorSubject<ITerminalState>;
     getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
     getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<string, Map<string, ISchemaVersion>>, ITerminalState>;

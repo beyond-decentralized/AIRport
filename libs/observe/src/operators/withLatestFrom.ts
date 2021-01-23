@@ -1,9 +1,9 @@
-import withLatestFromFile from 'rxjs/dist/esm/internal/operators/withLatestFrom';
-import {withLatestFrom as IRxWithLatestFrom}   from 'rxjs/operators';
-
-const rxWithLatestFrom: typeof IRxWithLatestFrom = withLatestFromFile.withLatestFrom;
-
-export const withLatestFrom = rxWithLatestFrom;
+// import withLatestFromFile from 'rxjs/dist/esm/internal/operators/withLatestFrom';
+// import {withLatestFrom as IRxWithLatestFrom}   from 'rxjs/operators';
+//
+// const rxWithLatestFrom: typeof IRxWithLatestFrom = withLatestFromFile.withLatestFrom;
+//
+// export const withLatestFrom = rxWithLatestFrom;
 // import {IObservable} from '../Observable'
 //
 // export function withLatestFrom<V1, V2, R>(

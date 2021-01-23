@@ -1,7 +1,5 @@
-// import {Observable} from './Observable'
-import SubscriptionFile from 'rxjs/dist/esm/internal/Subscription';
-const RxSubscription = SubscriptionFile.Subscription;
-export const Subscription = RxSubscription;
+export {};
+// export const Subscription = RxSubscription;
 // export class Subscription
 // 	extends RxSubscription
 // 	implements ISubscription {

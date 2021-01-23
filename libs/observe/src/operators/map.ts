@@ -1,9 +1,9 @@
-import mapFile from 'rxjs/dist/esm/internal/operators/map';
-import { map as IRxMap } from 'rxjs/operators';
-
-const rxMap: typeof IRxMap = mapFile.map
-
-export const map = rxMap;
+// import mapFile from 'rxjs/dist/esm/internal/operators/map';
+// import { map as IRxMap } from 'rxjs/operators';
+//
+// const rxMap: typeof IRxMap = mapFile.map
+//
+// export const map = rxMap;
 
 
 // import {IObservable} from '../Observable'

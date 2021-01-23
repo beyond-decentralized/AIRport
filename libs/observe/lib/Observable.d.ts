@@ -26,5 +26,4 @@ export interface IObservable<T> extends RxObservable<T> {
     subscribe(next: (value: T) => void, error: null | undefined, complete: () => void): ISubscription;
     subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): ISubscription;
 }
-export declare const Observable: typeof RxObservable;
 //# sourceMappingURL=Observable.d.ts.map

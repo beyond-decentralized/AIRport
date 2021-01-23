@@ -1,6 +1,9 @@
-import combineLatestWithFile from 'rxjs/dist/esm/internal/operators/combineLatestWith';
-const rxCombineLatestWith = combineLatestWithFile.combineLatestWith;
-export const combineLatestWith = rxCombineLatestWith;
+// import combineLatestWithFile from 'rxjs/dist/esm/internal/operators/combineLatestWith';
+// import {combineLatestWith as IRxCombineLatestWith}   from 'rxjs/operators';
+//
+// const rxCombineLatestWith: typeof IRxCombineLatestWith = combineLatestWithFile.combineLatestWith;
+//
+// export const combineLatestWith = rxCombineLatestWith;
 // export const combineLatestWith: rxCombineLatestWith = rxCombineLatestWith;
 // import {
 // 	IObservable

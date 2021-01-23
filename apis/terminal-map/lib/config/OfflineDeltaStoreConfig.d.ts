@@ -1,6 +1,6 @@
-import { IDeltaStoreConfig } from "./DeltaStoreConfig";
-import { StoreType } from "./storeInfo";
-import { SharingPlatformSetupInfo } from "../SharingAdaptor";
+import { StoreType } from '@airport/ground-control';
+import { SharingPlatformSetupInfo } from '../SharingAdaptor';
+import { IDeltaStoreConfig } from './DeltaStoreConfig';
 /**
  * Created by Papa on 9/24/2016.
  */

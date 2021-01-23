@@ -1,6 +1,5 @@
-import ObservableFile from 'rxjs/dist/esm/internal/Observable';
-const RxObservableImpl = ObservableFile.Observable;
-export const Observable = RxObservableImpl;
+export {};
+// export const Observable = RxObservableImpl;
 /*
 export class Observable<T>
     implements IObservable<T> {

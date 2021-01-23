@@ -1,8 +1,8 @@
 import { doEnsureContext } from '@airport/air-control';
 import { container } from '@airport/di';
 import { getSchemaName, QueryResultType, SyncSchemaMap } from '@airport/ground-control';
-import { Subject } from '@airport/observe';
 import { OPERATION_CONTEXT_LOADER } from '@airport/tower';
+import { Subject } from 'rxjs';
 import { SQLDelete } from '../sql/core/SQLDelete';
 import { SQLInsertValues } from '../sql/core/SQLInsertValues';
 import { SQLUpdate } from '../sql/core/SQLUpdate';

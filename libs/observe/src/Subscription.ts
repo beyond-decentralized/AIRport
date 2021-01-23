@@ -1,8 +1,8 @@
 // import {Observable} from './Observable'
-import SubscriptionFile from 'rxjs/dist/esm/internal/Subscription';
+// import SubscriptionFile from 'rxjs/dist/esm/internal/Subscription';
 import { Subscription as IRxSubscription } from 'rxjs';
 
-const RxSubscription: typeof IRxSubscription = SubscriptionFile.Subscription;
+// const RxSubscription: typeof IRxSubscription = SubscriptionFile.Subscription;
 
 export interface ISubscription
 	extends IRxSubscription {
@@ -15,7 +15,7 @@ export interface ISubscription
 
 }
 
-export const Subscription = RxSubscription;
+// export const Subscription = RxSubscription;
 
 // export class Subscription
 // 	extends RxSubscription

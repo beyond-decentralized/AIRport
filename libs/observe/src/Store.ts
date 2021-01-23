@@ -1,6 +1,6 @@
-import {BehaviorSubject} from './BehaviorSubject'
-
-export const Store = BehaviorSubject;
+// import {BehaviorSubject} from './BehaviorSubject'
+//
+// export const Store = BehaviorSubject;
 // export class Store<V>
 // 	extends BehaviorSubject<V> {
 

@@ -1,11 +1,11 @@
 import { createRootSelector, createSelector } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
-import { Store } from '@airport/observe';
+import { BehaviorSubject } from 'rxjs';
 import { TERMINAL_STORE } from '../tokens';
 export class TerminalStore {
     constructor() {
-        this.state = new Store({
+        this.state = new BehaviorSubject({
             domains: [], nodesBySyncFrequency: new Map(), schemas: [], terminal: null,
         });
         this.getTerminalState = createRootSelector(this.state);

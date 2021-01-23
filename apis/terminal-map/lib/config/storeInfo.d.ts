@@ -1,8 +1,4 @@
-export declare enum StoreType {
-    SQLITE_CORDOVA = 0,
-    SQLJS = 1,
-    REMOTE = 2
-}
+import { StoreType } from '@airport/ground-control';
 export interface StoreShareInfo {
     name: string;
 }

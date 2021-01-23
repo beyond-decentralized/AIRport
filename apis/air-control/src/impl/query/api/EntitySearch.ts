@@ -1,9 +1,11 @@
 import {IContext}                from '@airport/di'
 import {QueryResultType}         from '@airport/ground-control'
 import {
-	IObservable,
-	from
+	IObservable
 }                                from '@airport/observe'
+import {
+	from
+} from 'rxjs';
 import {IEntityContext}          from '../../../lingo/core/data/EntityContext'
 import {UpdateCacheType}         from '../../../lingo/core/data/UpdateCacheType'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'

@@ -6,8 +6,8 @@ import { ChangeError, ChangeListShareInfo, ChangeRecord, ChangeRecordIterator, S
 export declare class StubChangeList implements SharedChangeList {
     shareInfo: ChangeListShareInfo;
     private platformInfo;
-    _errorSubject: Subject<ChangeError>;
-    _changesAddedRemotelySubject: Subject<ChangeRecordIterator>;
+    _errorSubject: any;
+    _changesAddedRemotelySubject: any;
     constructor(shareInfo: ChangeListShareInfo, platformInfo: SharingPlatformSetupInfo);
     loadFromRecord(changeRecord: ChangeRecord): Promise<ChangeRecordIterator>;
     addChanges(changeRecords: ChangeRecord[]): Promise<void>;

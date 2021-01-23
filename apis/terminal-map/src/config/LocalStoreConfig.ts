@@ -1,9 +1,9 @@
+import { StoreType } from '@airport/ground-control';
 import {
 	IdGeneration,
 	store,
-	StoreSetupInfo,
-	StoreType
-} from './storeInfo'
+	StoreSetupInfo
+}                    from './storeInfo';
 
 /**
  * Created by Papa on 5/28/2016.
@@ -20,7 +20,7 @@ export interface ILocalStoreConfig {
 export class CommonLocalStoreConfig
 	implements ILocalStoreConfig {
 
-	setupInfo: StoreSetupInfo
+	setupInfo: StoreSetupInfo;
 
 	constructor(
 		localStoreName: string,
@@ -32,7 +32,7 @@ export class CommonLocalStoreConfig
 			name: localStoreName,
 			type: type,
 			idGeneration: idGeneration
-		}
+		};
 	}
 }
 
@@ -41,29 +41,29 @@ export function createLocalStoreConfig(
 	config: JsonLocalStoreConfig
 ): ILocalStoreConfig {
 	if (!config.type && config.type !== 0) {
-		throw new Error(`Local Store Type is not specified`)
+		throw new Error(`Local Store Type is not specified`);
 	}
 	if (!config.idGeneration && config.idGeneration !== 0) {
-		throw new Error(`Id Generation startegy is not specified`)
+		throw new Error(`Id Generation startegy is not specified`);
 	}
 
-	let type: StoreType
+	let type: StoreType;
 
 	if (typeof config.type === 'string') {
-		type = store.type.getValue(<string>config.type)
+		type = store.type.getValue(<string>config.type);
 	} else {
 		// Verify the type
-		store.type.getName(<StoreType>config.type)
-		type = <StoreType>config.type
+		store.type.getName(<StoreType>config.type);
+		type = <StoreType>config.type;
 	}
 
 	switch (type) {
 		case StoreType.SQLITE_CORDOVA:
-			return new SqLiteCordovaLocalStoreConfig(localStoreName, <StoreType>config.type, config.idGeneration)
+			return new SqLiteCordovaLocalStoreConfig(localStoreName, <StoreType>config.type, config.idGeneration);
 		case StoreType.SQLJS:
-			return new SqlJsCordovaLocalStoreConfig(localStoreName, <StoreType>config.type, config.idGeneration)
+			return new SqlJsCordovaLocalStoreConfig(localStoreName, <StoreType>config.type, config.idGeneration);
 		default:
-			throw new Error(`Unsupported LocalStoreType: ${type}`)
+			throw new Error(`Unsupported LocalStoreType: ${type}`);
 	}
 }
 

@@ -1,4 +1,5 @@
-import { store, StoreType } from './storeInfo';
+import { StoreType } from '@airport/ground-control';
+import { store } from './storeInfo';
 export class CommonLocalStoreConfig {
     constructor(localStoreName, type, idGeneration) {
         this.setupInfo = {

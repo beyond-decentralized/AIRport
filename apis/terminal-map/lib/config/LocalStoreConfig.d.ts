@@ -1,4 +1,5 @@
-import { IdGeneration, StoreSetupInfo, StoreType } from './storeInfo';
+import { StoreType } from '@airport/ground-control';
+import { IdGeneration, StoreSetupInfo } from './storeInfo';
 /**
  * Created by Papa on 5/28/2016.
  */

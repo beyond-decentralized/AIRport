@@ -1,5 +1,5 @@
 import { QueryResultType } from '@airport/ground-control';
-import { from } from '@airport/observe';
+import { from } from 'rxjs';
 import { FieldQuery } from '../facade/FieldQuery';
 import { SheetQuery } from '../facade/SheetQuery';
 import { TreeQuery } from '../facade/TreeQuery';

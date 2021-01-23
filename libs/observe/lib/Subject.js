@@ -1,6 +1,5 @@
-import SubjectFile from 'rxjs/dist/esm/internal/Subject';
-const RxSubject = SubjectFile.Subject;
-export const Subject = RxSubject;
+export {};
+// export const Subject = RxSubject;
 // export class Subject<V>
 // 	extends RxSubject<V>
 // 	implements ISubject<V> {

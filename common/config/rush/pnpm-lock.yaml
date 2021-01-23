@@ -11653,10 +11653,12 @@ packages:
     resolution:
       integrity: sha512-GkPiJL8jifSrKReKaTZ5jkhrMEgXbXYC+IPo1iquBjayRa0q86w3Dipjn8b415jpitMExe9lV8iTsv8tk3DGag==
   'file:projects/air-control.tgz':
+    dependencies:
+      rxjs: 7.0.0-beta.10
     dev: false
     name: '@rush-temp/air-control'
     resolution:
-      integrity: sha512-BO2cNFFu2ETFrdKC+yMoTGOobl3LdrC5SLrMJk52KSPrxWASchsAvPKKSqM4W4oduMSyRmUD1woiSi5e5Q9yjA==
+      integrity: sha512-Yr0f+RNCmeVwwM1ChCB0TJf5r2uueeeAOHDOYj/iiGVw6YmQb5kg4+qWOkFE1ICtK6CEvLzqOdgMF++tEsH2VA==
       tarball: 'file:projects/air-control.tgz'
     version: 0.0.0
   'file:projects/airdb.tgz_6bb071789035dbb53b131cf2ad63510b':
@@ -11789,11 +11791,12 @@ packages:
     version: 0.0.0
   'file:projects/fuel-hydrant-system.tgz':
     dependencies:
+      rxjs: 7.0.0-beta.10
       sql.js: 0.5.0
     dev: false
     name: '@rush-temp/fuel-hydrant-system'
     resolution:
-      integrity: sha512-J7q9O8AY3IBFACPDe1eSqMg/pWrCP37b29ASX3Q/WiyAfDj26moyfcjGSxhFZoCZBtbZF7aycEW0CCA/WkBrlg==
+      integrity: sha512-KFNEDeMlI0j5SdRTzUBrV55EpxatniXMbBBgW9aMEazsjozBMZ1tLn1cnzogy+nS0V8zWiaaGkDoWPDl8+Z79w==
       tarball: 'file:projects/fuel-hydrant-system.tgz'
     version: 0.0.0
   'file:projects/ground-control.tgz':
@@ -11807,11 +11810,12 @@ packages:
     dependencies:
       '@types/gapi': 0.0.35
       '@types/google-drive-realtime-api': 0.0.33
+      rxjs: 7.0.0-beta.10
       zipson: 0.2.12
     dev: false
     name: '@rush-temp/ground-transport'
     resolution:
-      integrity: sha512-wN0lay5etfwZ4DNWmW7yUIiH7p55RKcWkSMSMUHr0ZYRh5y0FNg1mcxhLcbR/qEBCpwh5BL2+i6lWKqsb8ZoFg==
+      integrity: sha512-u657fy5BdU7HoE/5Mk7wGB21CO3iSMSiv/uZkqc3h9nrxGetKISbKiY+V+OOg8rH+H3fSYTLswizWV/au89utQ==
       tarball: 'file:projects/ground-transport.tgz'
     version: 0.0.0
   'file:projects/guideway.tgz':
@@ -11978,11 +11982,12 @@ packages:
   'file:projects/runway.tgz':
     dependencies:
       '@types/node': 14.11.10
+      rxjs: 7.0.0-beta.10
       typescript: 4.1.2
     dev: false
     name: '@rush-temp/runway'
     resolution:
-      integrity: sha512-uh1sfeEf7FcFZrM5kj3AUktxrxrKfcDks4G9nZy+Y/9umAn0Vmv6NoNhU8Cbh/TAHxHszaGsnNCXBl1d9trASw==
+      integrity: sha512-3BVg2guGWmsSCsUsprGZ7ZUpxW3Kc0EDz/7Ymq9RGKjqfKgfeN3lsWM3n+AB+f0iy/F7vmGwCCByJFyoMxwjJw==
       tarball: 'file:projects/runway.tgz'
     version: 0.0.0
   'file:projects/security-check.tgz':
@@ -12040,10 +12045,12 @@ packages:
       tarball: 'file:projects/taxiway.tgz'
     version: 0.0.0
   'file:projects/terminal-map.tgz':
+    dependencies:
+      rxjs: 7.0.0-beta.10
     dev: false
     name: '@rush-temp/terminal-map'
     resolution:
-      integrity: sha512-sSfhhyXYLZ+OYkRTOFfBstIEwVbay33RjxJ2ORdUx19KxUYTla+gYCMUxtYgiBH/fTsbA0GEw3ryXm+HdbQ6gg==
+      integrity: sha512-cER+wJbPY+4jR/zrx+C7DGOSpvLHu39oEiQ3SJWZigVhZGP18pA36GpmVbj0M0bwIutY+DWVbbvOiMb6GQpLKA==
       tarball: 'file:projects/terminal-map.tgz'
     version: 0.0.0
   'file:projects/terminal.tgz':
@@ -12072,10 +12079,12 @@ packages:
       tarball: 'file:projects/tools.tgz'
     version: 0.0.0
   'file:projects/tower.tgz':
+    dependencies:
+      rxjs: 7.0.0-beta.10
     dev: false
     name: '@rush-temp/tower'
     resolution:
-      integrity: sha512-An/8FWT/Le0FuNMA/BtShK76stPLNDKBUdQWJZu/J/DpOEaBigL5wvo7PFHoEcIkxaUnihLK9U3Gullw8mTTbA==
+      integrity: sha512-pcqRcYkCkO32U3DEBihMYh/JW2vEebqelrLExkeHYQO3LIY2txtzCtDYhaY2yGg8ofw1Gf82uPG/nDideapPow==
       tarball: 'file:projects/tower.tgz'
     version: 0.0.0
   'file:projects/traffic-pattern.tgz':

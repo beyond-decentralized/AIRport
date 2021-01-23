@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { StoreType } from '@airport/terminal-map';
+import { StoreType } from '@airport/ground-control';
 import { OFFLINE_DELTA_STORE } from '../tokens';
 export function getOfflineDeltaStore(localStore) {
     switch (localStore.type) {

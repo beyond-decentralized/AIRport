@@ -1,10 +1,10 @@
 import { Observable as RxObservable } from 'rxjs';
-import ObservableFile                 from 'rxjs/dist/esm/internal/Observable';
+// import ObservableFile                 from 'rxjs/dist/esm/internal/Observable';
 import { IObserver }                  from './Observer';
 import { IOperator }                  from './operators/operator';
 import { ISubscription }              from './Subscription';
 
-const RxObservableImpl: typeof RxObservable = ObservableFile.Observable;
+// const RxObservableImpl: typeof RxObservable = ObservableFile.Observable;
 
 /**
  * An Observable represents a sequence of values which may be observed.
@@ -154,7 +154,7 @@ export interface IObservable<T>
 
 }
 
-export const Observable = RxObservableImpl;
+// export const Observable = RxObservableImpl;
 
 /*
 export class Observable<T>
