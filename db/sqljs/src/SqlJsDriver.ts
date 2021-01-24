@@ -1,12 +1,15 @@
 // FIXME: add support, in future, if needed
 // import {Database}      from 'sql.js'
-import {SQLDialect}   from '@airport/fuel-hydrant-system'
+import {SQLDialect}     from '@airport/fuel-hydrant-system'
 import {
-	ITransaction,
 	QueryType,
 	StoreType
-} from '@airport/ground-control'
-import {SqLiteDriver} from '@airport/sqlite'
+}                       from '@airport/ground-control'
+import {SqLiteDriver}   from '@airport/sqlite'
+import {
+	IOperationContext,
+	ITransaction
+} from '@airport/tower';
 
 declare function require(moduleName: string): any;
 
@@ -30,6 +33,12 @@ export class SqlJsDriver
 		this.type = StoreType.SQLJS
 	}
 
+	isServer(
+		context: IOperationContext<any, any>,
+	): boolean {
+		return false
+	}
+
 	async initialize(): Promise<any> {
 		if (typeof SQL !== 'undefined') {
 			this._db = new SQL.Database()
@@ -41,9 +50,17 @@ export class SqlJsDriver
 		}
 	}
 
-	async transact(): Promise<ITransaction> {
+	async transact(
+		callback: {
+			(
+				transaction: ITransaction
+			): Promise<void>
+		},
+		context: IOperationContext<any, any>,
+		): Promise<void> {
 		this._db.exec('BEGIN TRANSACTION;')
 		this.currentTransaction = true
+		// TODO implement
 
 		return null
 	}
@@ -106,7 +123,7 @@ export class SqlJsDriver
 	}
 
 	protected getDialect(): SQLDialect {
-		return SQLDialect.SQLITE_SQLJS
+		return SQLDialect.SQLITE
 	}
 
 	private getReturnValue(

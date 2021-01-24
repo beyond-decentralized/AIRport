@@ -25,4 +25,4 @@ TerminalRun = __decorate([
     Table({ name: 'TERMINAL_RUNS' })
 ], TerminalRun);
 export { TerminalRun };
-//# sourceMappingURL=TerminalRun.js.map
+//# sourceMappingURL=terminalrun.js.map

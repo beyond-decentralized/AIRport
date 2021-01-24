@@ -8,6 +8,9 @@ export class SqlJsDriver extends SqLiteDriver {
         super();
         this.type = StoreType.SQLJS;
     }
+    isServer(context) {
+        return false;
+    }
     async initialize() {
         if (typeof SQL !== 'undefined') {
             this._db = new SQL.Database();
@@ -19,9 +22,10 @@ export class SqlJsDriver extends SqLiteDriver {
             throw new Error('Not implemented');
         }
     }
-    async transact() {
+    async transact(callback, context) {
         this._db.exec('BEGIN TRANSACTION;');
         this.currentTransaction = true;
+        // TODO implement
         return null;
     }
     async commit() {
@@ -73,7 +77,7 @@ export class SqlJsDriver extends SqLiteDriver {
         throw error;
     }
     getDialect() {
-        return SQLDialect.SQLITE_SQLJS;
+        return SQLDialect.SQLITE;
     }
     getReturnValue(queryType, response) {
         switch (queryType) {

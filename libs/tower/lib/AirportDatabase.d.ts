@@ -5,6 +5,7 @@ export declare class AirportDatabase implements IAirportDatabase {
     entityMap: Map<any, IEntityRecord>;
     F: FunctionsAndOperators;
     functions: FunctionsAndOperators;
+    rx: any;
     S: DbSchema[];
     schemas: DbSchema[];
     qSchemas: QSchema[];

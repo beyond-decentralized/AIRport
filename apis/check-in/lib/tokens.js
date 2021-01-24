@@ -4,5 +4,5 @@ const checkIn = system('airport')
 export const QUERY_RESULTS_DESERIALIZER = checkIn.token('IQueryResultsDeserializer');
 export const QUERY_RESULTS_SERIALIZER = checkIn.token('IQueryResultsSerializer');
 export const OPERATION_SERIALIZER = checkIn.token('IOperationSerializer');
-export const SEQUENCE_GENERATOR = checkIn.token('ISequenceGenerator');
+export const SELECTOR_MANAGER = checkIn.token('ISelectorManager');
 //# sourceMappingURL=tokens.js.map

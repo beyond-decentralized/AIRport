@@ -1,18 +1,14 @@
-import {IContext}                from '@airport/di'
-import {QueryResultType}         from '@airport/ground-control'
-import {
-	IObservable
-}                                from '@airport/observe'
-import {
-	from
-} from 'rxjs';
-import {IEntityContext}          from '../../../lingo/core/data/EntityContext'
-import {UpdateCacheType}         from '../../../lingo/core/data/UpdateCacheType'
-import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
-import {IEntitySearch}           from '../../../lingo/query/api/EntitySearch'
-import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
-import {MappedEntityArray}       from '../../../lingo/query/MappedEntityArray'
-import {EntityLookup}            from './EntityLookup'
+import { IContext }                from '@airport/di';
+import { QueryResultType }         from '@airport/ground-control';
+import { IObservable }             from '@airport/observe';
+import { from }                    from 'rxjs';
+import { IEntityContext }          from '../../../lingo/core/data/EntityContext';
+import { UpdateCacheType }         from '../../../lingo/core/data/UpdateCacheType';
+import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
+import { IEntitySearch }           from '../../../lingo/query/api/EntitySearch';
+import { RawEntityQuery }          from '../../../lingo/query/facade/EntityQuery';
+import { MappedEntityArray }       from '../../../lingo/query/MappedEntityArray';
+import { EntityLookup }            from './EntityLookup';
 
 export interface IEntitySearchInternal<Entity, EntityArray extends Array<Entity>,
 	IESP extends IEntitySelectProperties>
@@ -38,14 +34,14 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		context?: IContext
 	): IObservable<EntityArray> {
-		return from(this.search(rawGraphQuery, QueryResultType.ENTITY_TREE, context))
+		return from(this.search(rawGraphQuery, QueryResultType.ENTITY_TREE, context));
 	}
 
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		context?: IContext
 	): IObservable<EntityArray> {
-		return from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context))
+		return from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
 	}
 
 	search(
@@ -54,23 +50,23 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 		context?: IContext
 	): Promise<EntityArray> {
 		return this.entityLookup(rawEntityQuery, queryResultType,
-			true, false, this.ensureContext(context) as IEntityContext)
+			true, false, this.ensureContext(context) as IEntityContext);
 	}
 
 	map(
 		isMapped?: boolean
 	): EntitySearch<Entity, MappedEntityArray<Entity>, IESP> {
-		return this.setMap(EntitySearch, isMapped)
+		return this.setMap(EntitySearch, isMapped);
 	}
 
 	noCache(): EntitySearch<Entity, Entity[], IESP> {
-		return this.setNoCache(EntitySearch)
+		return this.setNoCache(EntitySearch);
 	}
 
 	cache(
 		cacheForUpdate?: UpdateCacheType
 	): EntitySearch<Entity, Entity[], IESP> {
-		return this.setCache(EntitySearch, cacheForUpdate)
+		return this.setCache(EntitySearch, cacheForUpdate);
 	}
 
 }

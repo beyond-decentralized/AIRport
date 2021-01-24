@@ -1,8 +1,9 @@
 import {
 	QueryType,
 	SQLDataType
-}                  from '@airport/ground-control'
-import {SqlDriver} from '@airport/fuel-hydrant-system'
+}                            from '@airport/ground-control'
+import {SqlDriver}           from '@airport/fuel-hydrant-system'
+import { IOperationContext } from '@airport/tower';
 
 /**
  * Created by Papa on 11/27/2016.
@@ -25,7 +26,8 @@ export abstract class SqLiteDriver
 
 	async doesTableExist(
 		schemaName: string,
-		tableName: string
+		tableName: string,
+		context: IOperationContext<any, any>,
 	): Promise<boolean> {
 		const matchingTableNames = await this.findNative(
 			// ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
@@ -36,7 +38,7 @@ from
 WHERE
 	type = 'table'
 	AND tbl_name = '${schemaName}__${tableName}'`,
-			[]
+			[], context
 		)
 
 		return matchingTableNames.length === 1
@@ -44,11 +46,12 @@ WHERE
 
 	async dropTable(
 		schemaName: string,
-		tableName: string
+		tableName: string,
+		context: IOperationContext<any, any>,
 	): Promise<boolean> {
 		const matchingTableNames = await this.findNative(
 			`DROP TABLE '${schemaName}__${tableName}'`,
-			[]
+			[], context
 		)
 
 		return matchingTableNames.length === 1
@@ -56,17 +59,19 @@ WHERE
 
 	async findNative(
 		sqlQuery: string,
-		parameters: any[]
+		parameters: any[],
+		context: IOperationContext<any, any>,
 	): Promise<any[]> {
 		let nativeParameters = parameters.map((value) => this.convertValueIn(value))
-		return await this.query(QueryType.SELECT, sqlQuery, nativeParameters)
+		return await this.query(QueryType.SELECT, sqlQuery, nativeParameters, context)
 	}
 
 	protected async executeNative(
 		sql: string,
-		parameters: any[]
+		parameters: any[],
+		context: IOperationContext<any, any>,
 	): Promise<number> {
-		return await this.query(QueryType.MUTATE, sql, parameters)
+		return await this.query(QueryType.MUTATE, sql, parameters, context)
 	}
 
 
@@ -105,10 +110,11 @@ WHERE
 		return false
 	}
 
-	abstract async query(
+	abstract query(
 		queryType: QueryType,
 		query: string,
 		params,
+		context: IOperationContext<any, any>,
 		saveTransaction?: boolean
 	): Promise<any>;
 

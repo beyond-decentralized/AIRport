@@ -1,9 +1,6 @@
-import {
-	distinctUntilChanged,
-	IObservable,
-	map,
-	from
-} from '@airport/observe'
+import { DI }               from '@airport/di';
+import { IObservable, }     from '@airport/observe';
+import { SELECTOR_MANAGER } from './tokens';
 
 /**
  *
@@ -34,107 +31,190 @@ export interface IMemoizedSelector<V, SV>
 	observable: IObservable<V>;
 }
 
-export function createSelector<V1, V, SV>(
-	selector1: IMemoizedSelector<V1, SV>,
-	callback: (
-		value1: V1
-	) => V
-): IMemoizedSelector<V, SV>
-export function createSelector<V1, V2, V, SV>(
-	selector1: IMemoizedSelector<V1, SV>,
-	selector2: IMemoizedSelector<V2, SV>,
-	callback: (
-		value1: V1,
-		value2: V2
-	) => V
-): IMemoizedSelector<V, SV>
-export function createSelector<V1, V2, V3, V, SV>(
-	selector1: IMemoizedSelector<V1, SV>,
-	selector2: IMemoizedSelector<V2, SV>,
-	selector3: IMemoizedSelector<V3, SV>,
-	callback: (
-		value1: V1,
-		value2: V2,
-		value3: V3,
-	) => V
-): IMemoizedSelector<V, SV>
-export function createSelector<V1, V2, V3, V4, V, SV>(
-	selector1: IMemoizedSelector<V1, SV>,
-	selector2: IMemoizedSelector<V2, SV>,
-	selector3: IMemoizedSelector<V3, SV>,
-	selector4: IMemoizedSelector<V4, SV>,
-	callback: (
-		value1: V1,
-		value2: V2,
-		value3: V3,
-		value4: V4,
-	) => V
-): IMemoizedSelector<V, SV>
-export function createSelector<V1, V2, V3, V4, V5, V, SV>(
-	selector1: IMemoizedSelector<V1, SV>,
-	selector2: IMemoizedSelector<V2, SV>,
-	selector3: IMemoizedSelector<V3, SV>,
-	selector4: IMemoizedSelector<V4, SV>,
-	selector5: IMemoizedSelector<V5, SV>,
-	callback: (
-		value1: V1,
-		value2: V2,
-		value3: V3,
-		value4: V4,
-		value5: V5,
-	) => V
-): IMemoizedSelector<V, SV>
-export function createSelector<V, SV>(
-	...args: any[]
-) {
-	if (args.length < 2 || args.length > 6) {
-		throw new Error(`Invalid createSelector call, Expecting 1 to 5 selectors and a callback.`)
-	}
+export interface ISelectorManager {
+	createSelector<V1, V, SV>(
+		selector1: IMemoizedSelector<V1, SV>,
+		callback: (
+			value1: V1
+		) => V
+	): IMemoizedSelector<V, SV>
 
-	const inputSelectors: IMemoizedSelector<any, SV>[] = args.slice(0, args.length - 1)
-	const callback                                     = args[args.length - 1]
+	createSelector<V1, V2, V, SV>(
+		selector1: IMemoizedSelector<V1, SV>,
+		selector2: IMemoizedSelector<V2, SV>,
+		callback: (
+			value1: V1,
+			value2: V2
+		) => V
+	): IMemoizedSelector<V, SV>
 
-	let sourceObservable
-	if (inputSelectors.length > 1) {
-		// TODO: check if this will work
-		sourceObservable = from(inputSelectors.map(
-			selector => selector.observable))
-	} else {
-		sourceObservable = inputSelectors[0].observable
-	}
-	let observable = sourceObservable.pipe(
-		// share() TODO: implement once RxJs support is added
-		distinctUntilChanged(),
-		map(
-			value => callback(value))
+	createSelector<V1, V2, V3, V, SV>(
+		selector1: IMemoizedSelector<V1, SV>,
+		selector2: IMemoizedSelector<V2, SV>,
+		selector3: IMemoizedSelector<V3, SV>,
+		callback: (
+			value1: V1,
+			value2: V2,
+			value3: V3,
+		) => V
+	): IMemoizedSelector<V, SV>
+
+	createSelector<V1, V2, V3, V4, V, SV>(
+		selector1: IMemoizedSelector<V1, SV>,
+		selector2: IMemoizedSelector<V2, SV>,
+		selector3: IMemoizedSelector<V3, SV>,
+		selector4: IMemoizedSelector<V4, SV>,
+		callback: (
+			value1: V1,
+			value2: V2,
+			value3: V3,
+			value4: V4,
+		) => V
+	): IMemoizedSelector<V, SV>
+
+	createSelector<V1, V2, V3, V4, V5, V, SV>(
+		selector1: IMemoizedSelector<V1, SV>,
+		selector2: IMemoizedSelector<V2, SV>,
+		selector3: IMemoizedSelector<V3, SV>,
+		selector4: IMemoizedSelector<V4, SV>,
+		selector5: IMemoizedSelector<V5, SV>,
+		callback: (
+			value1: V1,
+			value2: V2,
+			value3: V3,
+			value4: V4,
+			value5: V5,
+		) => V
+	): IMemoizedSelector<V, SV>
+
+	createSelector<V, SV>(
+		...args: any[]
 	)
-
-	return getSelector(observable)
 }
 
-export function createRootSelector<SV>(
-	stateObservable: IObservable<SV>
-): IMemoizedSelector<SV, SV> {
-	return getSelector(stateObservable)
-}
+export class SelectorManager
+	implements ISelectorManager {
 
-function getSelector<SV>(
-	observable: IObservable<SV>
-) {
-	let selector = <IMemoizedSelector<SV, SV>>(function (
-		// otherStateObservable?: Observable<SV>
+	distinctUntilChanged;
+	from;
+	map;
+
+	async init(): Promise<void> {
+		const {distinctUntilChanged, map} = await import('rxjs/operators');
+		const {from} = await import('rxjs');
+		this.distinctUntilChanged = distinctUntilChanged;
+		this.from = from;
+		this.map = map;
+	}
+
+	createSelector<V1, V, SV>(
+		selector1: IMemoizedSelector<V1, SV>,
+		callback: (
+			value1: V1
+		) => V
+	): IMemoizedSelector<V, SV>
+	createSelector<V1, V2, V, SV>(
+		selector1: IMemoizedSelector<V1, SV>,
+		selector2: IMemoizedSelector<V2, SV>,
+		callback: (
+			value1: V1,
+			value2: V2
+		) => V
+	): IMemoizedSelector<V, SV>
+	createSelector<V1, V2, V3, V, SV>(
+		selector1: IMemoizedSelector<V1, SV>,
+		selector2: IMemoizedSelector<V2, SV>,
+		selector3: IMemoizedSelector<V3, SV>,
+		callback: (
+			value1: V1,
+			value2: V2,
+			value3: V3,
+		) => V
+	): IMemoizedSelector<V, SV>
+	createSelector<V1, V2, V3, V4, V, SV>(
+		selector1: IMemoizedSelector<V1, SV>,
+		selector2: IMemoizedSelector<V2, SV>,
+		selector3: IMemoizedSelector<V3, SV>,
+		selector4: IMemoizedSelector<V4, SV>,
+		callback: (
+			value1: V1,
+			value2: V2,
+			value3: V3,
+			value4: V4,
+		) => V
+	): IMemoizedSelector<V, SV>
+	createSelector<V1, V2, V3, V4, V5, V, SV>(
+		selector1: IMemoizedSelector<V1, SV>,
+		selector2: IMemoizedSelector<V2, SV>,
+		selector3: IMemoizedSelector<V3, SV>,
+		selector4: IMemoizedSelector<V4, SV>,
+		selector5: IMemoizedSelector<V5, SV>,
+		callback: (
+			value1: V1,
+			value2: V2,
+			value3: V3,
+			value4: V4,
+			value5: V5,
+		) => V
+	): IMemoizedSelector<V, SV>
+	createSelector<V, SV>(
+		...args: any[]
 	) {
-		let currentValue
+		if (args.length < 2 || args.length > 6) {
+			throw new Error(`Invalid createSelector call, Expecting 1 to 5 selectors and a callback.`);
+		}
 
-		observable.subscribe(
-			value =>
-				currentValue = value
-		).unsubscribe()
+		const inputSelectors: IMemoizedSelector<any, SV>[] = args.slice(0, args.length - 1);
+		const callback                                     = args[args.length - 1];
 
-		return currentValue
-	})
+		let sourceObservable;
+		if (inputSelectors.length > 1) {
+			// TODO: check if this will work
+			sourceObservable = this.from(inputSelectors.map(
+				selector => selector.observable));
+		} else {
+			sourceObservable = inputSelectors[0].observable;
+		}
+		let observable = sourceObservable.pipe(
+			// share() TODO: implement once RxJs support is added
+			this.distinctUntilChanged(),
+			this.map(
+				value => callback(value))
+		);
 
-	selector.observable = observable
+		return this.getSelector(observable);
+	}
 
-	return selector
+	createRootSelector<SV>(
+		stateObservable: IObservable<SV>
+	): IMemoizedSelector<SV, SV> {
+		return this.getSelector(stateObservable);
+	}
+
+	private getSelector<SV>(
+		observable: IObservable<SV>
+	) {
+		let selector = <IMemoizedSelector<SV, SV>>(function(
+			// otherStateObservable?: Observable<SV>
+		) {
+			let currentValue;
+
+			observable.subscribe(
+				value =>
+					currentValue = value
+			).unsubscribe();
+
+			return currentValue;
+		});
+
+		selector.observable = observable;
+
+		return selector;
+	}
+
 }
+
+DI.set(SELECTOR_MANAGER, SelectorManager);
+
+
+

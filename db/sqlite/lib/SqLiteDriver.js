@@ -11,7 +11,7 @@ export class SqLiteDriver extends SqlDriver {
     composeTableName(schemaName, tableName) {
         return `${schemaName}__${tableName}`;
     }
-    async doesTableExist(schemaName, tableName) {
+    async doesTableExist(schemaName, tableName, context) {
         const matchingTableNames = await this.findNative(
         // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
         `SELECT
@@ -20,19 +20,19 @@ from
 	sqlite_master
 WHERE
 	type = 'table'
-	AND tbl_name = '${schemaName}__${tableName}'`, []);
+	AND tbl_name = '${schemaName}__${tableName}'`, [], context);
         return matchingTableNames.length === 1;
     }
-    async dropTable(schemaName, tableName) {
-        const matchingTableNames = await this.findNative(`DROP TABLE '${schemaName}__${tableName}'`, []);
+    async dropTable(schemaName, tableName, context) {
+        const matchingTableNames = await this.findNative(`DROP TABLE '${schemaName}__${tableName}'`, [], context);
         return matchingTableNames.length === 1;
     }
-    async findNative(sqlQuery, parameters) {
+    async findNative(sqlQuery, parameters, context) {
         let nativeParameters = parameters.map((value) => this.convertValueIn(value));
-        return await this.query(QueryType.SELECT, sqlQuery, nativeParameters);
+        return await this.query(QueryType.SELECT, sqlQuery, nativeParameters, context);
     }
-    async executeNative(sql, parameters) {
-        return await this.query(QueryType.MUTATE, sql, parameters);
+    async executeNative(sql, parameters, context) {
+        return await this.query(QueryType.MUTATE, sql, parameters, context);
     }
     convertValueIn(value) {
         switch (typeof value) {
