@@ -1,5 +1,5 @@
 // import SubjectFile from 'rxjs/dist/esm/internal/Subject';
-import { Subject as IRxSubject } from 'rxjs';
+import type { Subject as IRxSubject } from 'rxjs';
 
 // const RxSubject: typeof IRxSubject = SubjectFile.Subject;
 // import {

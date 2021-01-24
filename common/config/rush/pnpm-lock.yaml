@@ -34,6 +34,7 @@ dependencies:
   '@rush-temp/blueprint': 'file:projects/blueprint.tgz'
   '@rush-temp/check-in': 'file:projects/check-in.tgz'
   '@rush-temp/cockroachdb': 'file:projects/cockroachdb.tgz'
+  '@rush-temp/config': 'file:projects/config.tgz'
   '@rush-temp/di': 'file:projects/di.tgz'
   '@rush-temp/flight-log-archive': 'file:projects/flight-log-archive.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:projects/fuel-hydrant-system.tgz'
@@ -11775,6 +11776,13 @@ packages:
       integrity: sha512-fohFLRK0OShQY/OxmbiSgrSWOsBvdMz35FkyjoJi+6IOUvkvn4v5a7wVVz3TPn1uOS4DmzVTzwgyQ0/Zev3FzA==
       tarball: 'file:projects/cockroachdb.tgz'
     version: 0.0.0
+  'file:projects/config.tgz':
+    dev: false
+    name: '@rush-temp/config'
+    resolution:
+      integrity: sha512-8So3LgeYHF0UcgpG4swUlZich4ha6otKiMi4MrZVqoGMfrypZSoaDdhJPqi4Wxb6eFBW04qMBVdtQyA6Y4LUHw==
+      tarball: 'file:projects/config.tgz'
+    version: 0.0.0
   'file:projects/di.tgz':
     dependencies:
       tslint: 5.20.1
@@ -11802,10 +11810,12 @@ packages:
       tarball: 'file:projects/fuel-hydrant-system.tgz'
     version: 0.0.0
   'file:projects/ground-control.tgz':
+    dependencies:
+      rxjs: 7.0.0-beta.10
     dev: false
     name: '@rush-temp/ground-control'
     resolution:
-      integrity: sha512-zCERAbKOdSD4UAd6VT9P9gzpt0CmzJPCe5n0ejO7Tk2bxu2JwQSE7+sQSkziRyVLMJb/79aOEPvQmbK51g6VxQ==
+      integrity: sha512-hGbLFC9plL96OLPCuwu8u3hgRDJ3RZ+WpI7gP+JlRGffiOw1j/08DaoXRGHmwY6qK9ralwEYKaWB21+axeFEag==
       tarball: 'file:projects/ground-control.tgz'
     version: 0.0.0
   'file:projects/ground-transport.tgz':
@@ -12147,6 +12157,7 @@ specifiers:
   '@rush-temp/blueprint': 'file:./projects/blueprint.tgz'
   '@rush-temp/check-in': 'file:./projects/check-in.tgz'
   '@rush-temp/cockroachdb': 'file:./projects/cockroachdb.tgz'
+  '@rush-temp/config': 'file:./projects/config.tgz'
   '@rush-temp/di': 'file:./projects/di.tgz'
   '@rush-temp/flight-log-archive': 'file:./projects/flight-log-archive.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:./projects/fuel-hydrant-system.tgz'

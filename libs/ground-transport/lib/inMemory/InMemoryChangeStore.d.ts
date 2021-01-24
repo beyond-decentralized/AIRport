@@ -1,17 +1,17 @@
-import { Subject } from '@airport/observe';
+import type { ISubject } from '@airport/observe';
 import { ChangeListShareInfo, ChangeRecord } from '@airport/terminal-map';
 /**
  * Created by Papa on 12/14/2016.
  */
 export declare class InMemoryChangeStore {
-    private changeListMap;
     _changesAddedSubjectMap: {
-        [name: string]: Subject<ChangeRecord[]>;
+        [name: string]: ISubject<ChangeRecord[]>;
     };
+    private changeListMap;
     addChangeList(changeListName: string): void;
     addChanges(changeListName: string, changeRecords: ChangeRecord[]): Promise<void>;
     getChangeListInfos(): ChangeListShareInfo[];
     getAllChanges(changeListName: string): ChangeRecord[];
-    getChangesAddedSubject(changeListName: string): Subject<ChangeRecord[]>;
+    getChangesAddedSubject(changeListName: string): ISubject<ChangeRecord[]>;
 }
 //# sourceMappingURL=InMemoryChangeStore.d.ts.map

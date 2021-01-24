@@ -1,6 +1,3 @@
-/**
- * Created by Papa on 1/10/2016.
- */
 import { ISubject } from '@airport/observe';
 import { ChangeError, ChangeRecord, ChangeRecordIterator, GoogleChangeListShareInfo, SharedChangeList, SharingPlatformSetupInfo } from '@airport/terminal-map';
 import { DocumentHandle } from './realtime/DocumentHandle';

@@ -1,4 +1,5 @@
 import { DI }               from '@airport/di';
+import { RXJS }             from '@airport/ground-control';
 import { IObservable, }     from '@airport/observe';
 import { SELECTOR_MANAGER } from './tokens';
 
@@ -90,22 +91,15 @@ export interface ISelectorManager {
 	createSelector<V, SV>(
 		...args: any[]
 	)
+
+	createRootSelector<SV>(
+		stateObservable: IObservable<SV>
+	): IMemoizedSelector<SV, SV>
+
 }
 
 export class SelectorManager
 	implements ISelectorManager {
-
-	distinctUntilChanged;
-	from;
-	map;
-
-	async init(): Promise<void> {
-		const {distinctUntilChanged, map} = await import('rxjs/operators');
-		const {from} = await import('rxjs');
-		this.distinctUntilChanged = distinctUntilChanged;
-		this.from = from;
-		this.map = map;
-	}
 
 	createSelector<V1, V, SV>(
 		selector1: IMemoizedSelector<V1, SV>,
@@ -167,18 +161,20 @@ export class SelectorManager
 		const inputSelectors: IMemoizedSelector<any, SV>[] = args.slice(0, args.length - 1);
 		const callback                                     = args[args.length - 1];
 
+		let rxjs = DI.db().getSync(RXJS);
+
 		let sourceObservable;
 		if (inputSelectors.length > 1) {
 			// TODO: check if this will work
-			sourceObservable = this.from(inputSelectors.map(
+			sourceObservable = rxjs.from(inputSelectors.map(
 				selector => selector.observable));
 		} else {
 			sourceObservable = inputSelectors[0].observable;
 		}
 		let observable = sourceObservable.pipe(
 			// share() TODO: implement once RxJs support is added
-			this.distinctUntilChanged(),
-			this.map(
+			rxjs.distinctUntilChanged(),
+			rxjs.map(
 				value => callback(value))
 		);
 

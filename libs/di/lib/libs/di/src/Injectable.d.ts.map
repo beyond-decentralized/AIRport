@@ -1,0 +1,1 @@
+{"version":3,"file":"Injectable.d.ts","sourceRoot":"","sources":["../../../../src/Injectable.ts"],"names":[],"mappings":"AAAA,OAAO,EAEN,eAAe,EACf,MAAM,aAAa,CAAC;AAErB,MAAM,WAAW,WAAW;IAE3B,aAAa,CAAC,EAAE,eAAe,CAAA;IAC/B,eAAe,CAAC,EAAE,OAAO,CAAA;CAEzB;AAED,MAAM,WAAW,cAAc;IAC9B,IAAI,IAAI,OAAO,CAAC,IAAI,CAAC,CAAC;CACtB;AAED,wBAAgB,SAAS,CACxB,UAAU,EAAE,GAAG,GACb,eAAe,CAYjB"}

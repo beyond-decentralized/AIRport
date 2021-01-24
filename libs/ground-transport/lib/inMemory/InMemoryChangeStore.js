@@ -1,11 +1,12 @@
-import { Subject } from '@airport/observe';
+import { DI } from '@airport/di';
+import { RXJS } from '@airport/ground-control';
 /**
  * Created by Papa on 12/14/2016.
  */
 export class InMemoryChangeStore {
     constructor() {
-        this.changeListMap = {};
         this._changesAddedSubjectMap = {};
+        this.changeListMap = {};
     }
     addChangeList(changeListName) {
         if (this.changeListMap[changeListName]) {
@@ -36,7 +37,7 @@ export class InMemoryChangeStore {
     getChangesAddedSubject(changeListName) {
         let changesAddedSubject = this._changesAddedSubjectMap[changeListName];
         if (!changesAddedSubject) {
-            changesAddedSubject = new Subject();
+            changesAddedSubject = new (DI.db().getSync(RXJS).Subject)();
             this._changesAddedSubjectMap[changeListName] = changesAddedSubject;
         }
         return changesAddedSubject;

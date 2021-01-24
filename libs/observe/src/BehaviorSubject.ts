@@ -1,24 +1,30 @@
 // import behaviorSubjectFile from 'rxjs/dist/esm/internal/BehaviorSubject'
-// import {BehaviorSubject as IRxBehaviorSubject}   from 'rxjs';
+import type { BehaviorSubject as IRxBehaviorSubject } from 'rxjs';
 //
 // const RxBehaviorSubject: typeof IRxBehaviorSubject = behaviorSubjectFile.BehaviorSubject;
 //
 // export const BehaviorSubject = RxBehaviorSubject;
+
+export interface IBehaviorSubject<V>
+	extends IRxBehaviorSubject<V> {
+
+}
+
 // export class BehaviorSubject<V> {
 
-	// constructor(
-	// 	value: V
-	// ) {
-	// 	super()
-	// 	this.currentValue = value
-	// }
-	//
-	// next(value: V): void {
-	// 	this.currentValue = value
-	// 	this.exec(value, 'onNext')
-	// }
-	//
-	// clear(): void {
-	// }
+// constructor(
+// 	value: V
+// ) {
+// 	super()
+// 	this.currentValue = value
+// }
+//
+// next(value: V): void {
+// 	this.currentValue = value
+// 	this.exec(value, 'onNext')
+// }
+//
+// clear(): void {
+// }
 
 // }

@@ -22,6 +22,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/config",
+      "projectFolder": "apis/config",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/ground-control",
       "projectFolder": "apis/ground-control",
       "shouldPublish": true

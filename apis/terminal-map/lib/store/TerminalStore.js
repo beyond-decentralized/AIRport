@@ -1,18 +1,16 @@
-import { createRootSelector, createSelector } from '@airport/check-in';
+import { SELECTOR_MANAGER } from '@airport/check-in';
 import { DI } from '@airport/di';
-import { ensureChildJsMap } from '@airport/ground-control';
-import { BehaviorSubject } from 'rxjs';
+import { ensureChildJsMap, RXJS } from '@airport/ground-control';
 import { TERMINAL_STORE } from '../tokens';
 export class TerminalStore {
-    constructor() {
-        this.state = new BehaviorSubject({
+    async init() {
+        const [rxjs, selectorManager] = await DI.db().get(RXJS, SELECTOR_MANAGER);
+        this.state = new rxjs.BehaviorSubject({
             domains: [], nodesBySyncFrequency: new Map(), schemas: [], terminal: null,
         });
-        this.getTerminalState = createRootSelector(this.state);
-        this.getDomains = createSelector(this.getTerminalState, terminal => terminal.domains);
-        // getNodesBySyncFrequency = createSelector(this.getTerminalState,
-        // 	terminal => terminal.nodesBySyncFrequency)
-        this.getLatestSchemaVersionMapByNames = createSelector(this.getDomains, domains => {
+        this.getTerminalState = selectorManager.createRootSelector(this.state);
+        this.getDomains = selectorManager.createSelector(this.getTerminalState, terminal => terminal.domains);
+        this.getLatestSchemaVersionMapByNames = selectorManager.createSelector(this.getDomains, domains => {
             const latestSchemaVersionMapByNames = new Map();
             for (const domain of domains) {
                 const mapForDomain = ensureChildJsMap(latestSchemaVersionMapByNames, domain.name);
@@ -22,7 +20,7 @@ export class TerminalStore {
             }
             return latestSchemaVersionMapByNames;
         });
-        this.getLatestSchemaVersionMapBySchemaName = createSelector(this.getLatestSchemaVersionMapByNames, (latestSchemaVersionMapByNames) => {
+        this.getLatestSchemaVersionMapBySchemaName = selectorManager.createSelector(this.getLatestSchemaVersionMapByNames, (latestSchemaVersionMapByNames) => {
             const latestSchemaVersionMapBySchemaName = new Map();
             for (const schemaVersionsForDomainName of latestSchemaVersionMapByNames.values()) {
                 for (const schemaVersion of schemaVersionsForDomainName.values()) {
@@ -31,7 +29,9 @@ export class TerminalStore {
             }
             return latestSchemaVersionMapBySchemaName;
         });
-        this.getAllSchemaVersionsByIds = createSelector(this.getDomains, domains => {
+        // getNodesBySyncFrequency = createSelector(this.getTerminalState,
+        // 	terminal => terminal.nodesBySyncFrequency)
+        this.getAllSchemaVersionsByIds = selectorManager.createSelector(this.getDomains, domains => {
             const allSchemaVersionsByIds = [];
             for (const domain of domains) {
                 for (const schema of domain.schemas) {
@@ -42,7 +42,7 @@ export class TerminalStore {
             }
             return allSchemaVersionsByIds;
         });
-        this.getLatestSchemaVersionsBySchemaIndexes = createSelector(this.getDomains, domains => {
+        this.getLatestSchemaVersionsBySchemaIndexes = selectorManager.createSelector(this.getDomains, domains => {
             const latestSchemaVersionsBySchemaIndexes = [];
             for (const domain of domains) {
                 for (const schema of domain.schemas) {
@@ -51,8 +51,8 @@ export class TerminalStore {
             }
             return latestSchemaVersionsBySchemaIndexes;
         });
-        this.getSchemas = createSelector(this.getTerminalState, terminal => terminal.schemas);
-        this.getAllEntities = createSelector(this.getLatestSchemaVersionsBySchemaIndexes, latestSchemaVersionsBySchemaIndexes => {
+        this.getSchemas = selectorManager.createSelector(this.getTerminalState, terminal => terminal.schemas);
+        this.getAllEntities = selectorManager.createSelector(this.getLatestSchemaVersionsBySchemaIndexes, latestSchemaVersionsBySchemaIndexes => {
             const allEntities = [];
             for (const latestSchemaVersion of latestSchemaVersionsBySchemaIndexes) {
                 if (!latestSchemaVersion) {
@@ -64,7 +64,7 @@ export class TerminalStore {
             }
             return allEntities;
         });
-        this.getAllColumns = createSelector(this.getAllEntities, allEntities => {
+        this.getAllColumns = selectorManager.createSelector(this.getAllEntities, allEntities => {
             const allColumns = [];
             for (const entity of allEntities) {
                 if (!entity) {
@@ -76,7 +76,7 @@ export class TerminalStore {
             }
             return allColumns;
         });
-        this.getAllRelations = createSelector(this.getAllEntities, allEntities => {
+        this.getAllRelations = selectorManager.createSelector(this.getAllEntities, allEntities => {
             const allRelations = [];
             for (const entity of allEntities) {
                 if (!entity) {

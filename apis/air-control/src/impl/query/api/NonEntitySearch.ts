@@ -1,7 +1,12 @@
-import { IContext }             from '@airport/di';
-import { QueryResultType }      from '@airport/ground-control';
+import {
+	DI,
+	IContext
+} from '@airport/di';
+import {
+	QueryResultType,
+	RXJS
+} from '@airport/ground-control';
 import { IObservable, }         from '@airport/observe';
-import { from }                 from 'rxjs';
 import { IQOrderableField }     from '../../../lingo/core/field/Field';
 import { INonEntitySearch }     from '../../../lingo/query/api/NonEntitySearch';
 import { RawFieldQuery }        from '../../../lingo/query/facade/FieldQuery';
@@ -29,7 +34,7 @@ export class NonEntitySearch
 		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> },
 		context?: IContext
 	): IObservable<any[]> {
-		return from(this.search(
+		return DI.db().getSync(RXJS).from(this.search(
 			rawFieldQuery, QueryResultType.FIELD, FieldQuery, context));
 	}
 
@@ -37,7 +42,7 @@ export class NonEntitySearch
 		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
 		context?: IContext
 	): IObservable<any[][]> {
-		return from(this.search(
+		return DI.db().getSync(RXJS).from(this.search(
 			rawSheetQuery, QueryResultType.SHEET, SheetQuery, context));
 	}
 
@@ -45,7 +50,7 @@ export class NonEntitySearch
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> },
 		context?: IContext
 	): IObservable<ITE[]> {
-		return from(this.search(
+		return DI.db().getSync(RXJS).from(this.search(
 			rawTreeQuery, QueryResultType.TREE, TreeQuery, context));
 	}
 

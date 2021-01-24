@@ -1,4 +1,5 @@
-import {Subject}             from '@airport/observe'
+import { DI }                from '@airport/di';
+import { RXJS }              from '@airport/ground-control';
 import {
 	ArrayChangeRecordIterator,
 	ChangeError,
@@ -8,6 +9,7 @@ import {
 	SharedChangeList,
 	SharingPlatformSetupInfo
 }                            from "@airport/terminal-map";
+import type { ISubject } from '@airport/observe';
 import {InMemoryChangeStore} from "./InMemoryChangeStore";
 
 /**
@@ -15,8 +17,8 @@ import {InMemoryChangeStore} from "./InMemoryChangeStore";
  */
 export class InMemoryChangeList implements SharedChangeList {
 
-	private _errorSubject = new Subject<ChangeError>();
-	private _changesAddedRemotelySubject = new Subject<ChangeRecordIterator>();
+	private _errorSubject = new (DI.db().getSync(RXJS).Subject)<ChangeError>();
+	private _changesAddedRemotelySubject = new (DI.db().getSync(RXJS).Subject)<ChangeRecordIterator>();
 
 	constructor(
 		public shareInfo: ChangeListShareInfo,
@@ -52,11 +54,11 @@ export class InMemoryChangeList implements SharedChangeList {
 		await this.changeStore.addChanges(this.shareInfo.name, changeRecords);
 	}
 
-	errorSubject(): Subject<ChangeError> {
+	errorSubject(): ISubject<ChangeError> {
 		return this._errorSubject;
 	}
 
-	changesAddedRemotelySubject(): Subject<ChangeRecordIterator> {
+	changesAddedRemotelySubject(): ISubject<ChangeRecordIterator> {
 		return this._changesAddedRemotelySubject;
 	}
 

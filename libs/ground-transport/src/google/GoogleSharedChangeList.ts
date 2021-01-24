@@ -1,10 +1,9 @@
 /**
  * Created by Papa on 1/10/2016.
  */
-import {
-	ISubject,
-	Subject
-}                       from '@airport/observe'
+import { DI }             from '@airport/di';
+import { RXJS }           from '@airport/ground-control';
+import { ISubject }       from '@airport/observe';
 import {
 	ArrayChangeRecordIterator,
 	ChangeError,
@@ -13,10 +12,11 @@ import {
 	GoogleChangeListShareInfo,
 	SharedChangeList,
 	SharingPlatformSetupInfo
-}                       from '@airport/terminal-map';
-import {DocumentHandle} from './realtime/DocumentHandle';
+}                         from '@airport/terminal-map';
+import { DocumentHandle } from './realtime/DocumentHandle';
 
-export class GoogleSharedChangeList implements SharedChangeList {
+export class GoogleSharedChangeList
+	implements SharedChangeList {
 
 	constructor(
 		public platformInfo: SharingPlatformSetupInfo,
@@ -55,7 +55,7 @@ export class GoogleSharedChangeList implements SharedChangeList {
 	}
 
 	errorSubject(): ISubject<ChangeError> {
-		let errorSubject = new Subject<ChangeError>();
+		let errorSubject = new DI.db().getSync(RXJS).Subject<ChangeError>();
 
 		this.handle.otherChangesSubject.subscribe((otherChange) => {
 			errorSubject.next({

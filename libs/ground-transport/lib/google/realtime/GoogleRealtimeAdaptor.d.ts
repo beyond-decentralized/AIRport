@@ -31,10 +31,10 @@ export declare class GoogleRealtimeAdaptor {
     constructor(googleRealtime: GoogleRealtime);
     startTest(): DocumentHandle;
     startNewShare(fileId: string): Promise<DocumentHandle>;
+    openShare(fileId: string): Promise<DocumentHandle>;
     private createDocumentHandle;
     private subscribeToChangesAddedByOthers;
     private subscribeToCleanupByOwner;
     private subscribeToUnexpectedModifications;
-    openShare(fileId: string): Promise<DocumentHandle>;
 }
 //# sourceMappingURL=GoogleRealtimeAdaptor.d.ts.map

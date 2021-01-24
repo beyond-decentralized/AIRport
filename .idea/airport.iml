@@ -16,6 +16,10 @@
       <excludeFolder url="file://$MODULE_DIR$/apis/check-in/.rush" />
       <excludeFolder url="file://$MODULE_DIR$/apis/check-in/lib" />
     </content>
+    <content url="file://$MODULE_DIR$/apis/config">
+      <excludeFolder url="file://$MODULE_DIR$/apis/config/.rush" />
+      <excludeFolder url="file://$MODULE_DIR$/apis/config/lib" />
+    </content>
     <content url="file://$MODULE_DIR$/apis/ground-control">
       <excludeFolder url="file://$MODULE_DIR$/apis/ground-control/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/apis/ground-control/.rush" />

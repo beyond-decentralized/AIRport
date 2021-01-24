@@ -1,10 +1,10 @@
 {
+  "devDependencies": {
+    "tslint": "^5.14.0"
+  },
   "main": "lib/index.js",
   "name": "@airport/di",
   "type": "module",
   "typings": "lib/index",
-  "version": "0.0.1",
-  "devDependencies": {
-    "tslint": "^5.14.0"
-  }
+  "version": "0.0.1"
 }

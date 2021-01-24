@@ -4,7 +4,7 @@
 // export * from './operators/withLatestFrom'
 // export * from './operators/from'
 export * from './operators/operator'
-// export * from './BehaviorSubject'
+export * from './BehaviorSubject'
 export * from './Observable'
 export * from './Observer'
 // export * from './Store'

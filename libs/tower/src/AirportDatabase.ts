@@ -146,8 +146,6 @@ export class AirportDatabase
 		wrapPrimitive,
 	};
 
-	rx: IRxJs;
-
 	S: DbSchema[];
 	schemas: DbSchema[] = [];
 

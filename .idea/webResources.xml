@@ -23,6 +23,13 @@
           </resourceRoots>
         </entryData>
       </entry>
+      <entry url="file://$PROJECT_DIR$/apis/config">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/apis/config/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
       <entry url="file://$PROJECT_DIR$/apis/ground-control">
         <entryData>
           <resourceRoots>

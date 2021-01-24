@@ -1,7 +1,12 @@
-import { IContext }                from '@airport/di';
-import { QueryResultType }         from '@airport/ground-control';
+import {
+	DI,
+	IContext
+} from '@airport/di';
+import {
+	QueryResultType,
+	RXJS
+} from '@airport/ground-control';
 import { IObservable }             from '@airport/observe';
-import { from }                    from 'rxjs';
 import { IEntityContext }          from '../../../lingo/core/data/EntityContext';
 import { UpdateCacheType }         from '../../../lingo/core/data/UpdateCacheType';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
@@ -34,14 +39,14 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		context?: IContext
 	): IObservable<EntityArray> {
-		return from(this.search(rawGraphQuery, QueryResultType.ENTITY_TREE, context));
+		return DI.db().getSync(RXJS).from(this.search(rawGraphQuery, QueryResultType.ENTITY_TREE, context));
 	}
 
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		context?: IContext
 	): IObservable<EntityArray> {
-		return from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
+		return DI.db().getSync(RXJS).from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
 	}
 
 	search(

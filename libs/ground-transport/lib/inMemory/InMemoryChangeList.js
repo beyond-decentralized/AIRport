@@ -1,4 +1,5 @@
-import { Subject } from '@airport/observe';
+import { DI } from '@airport/di';
+import { RXJS } from '@airport/ground-control';
 import { ArrayChangeRecordIterator } from "@airport/terminal-map";
 /**
  * Created by Papa on 11/26/2016.
@@ -8,8 +9,8 @@ export class InMemoryChangeList {
         this.shareInfo = shareInfo;
         this.platformInfo = platformInfo;
         this.changeStore = changeStore;
-        this._errorSubject = new Subject();
-        this._changesAddedRemotelySubject = new Subject();
+        this._errorSubject = new (DI.db().getSync(RXJS).Subject)();
+        this._changesAddedRemotelySubject = new (DI.db().getSync(RXJS).Subject)();
         changeStore.getChangesAddedSubject(this.shareInfo.name).subscribe((changeRecords) => {
             let remotelyAddedChanges = changeRecords.filter(changeRecord => changeRecord[platformInfo.dbIdField] !== shareInfo.dbId);
             if (remotelyAddedChanges.length) {
