@@ -1,12 +1,12 @@
 import {
 	DI,
 	IContext
-} from '@airport/di';
+}                               from '@airport/di';
+import { QueryResultType }      from '@airport/ground-control';
 import {
-	QueryResultType,
+	IObservable,
 	RXJS
-} from '@airport/ground-control';
-import { IObservable, }         from '@airport/observe';
+}                               from '@airport/observe';
 import { IQOrderableField }     from '../../../lingo/core/field/Field';
 import { INonEntitySearchOne }  from '../../../lingo/query/api/NonEntitySearchOne';
 import { RawFieldQuery }        from '../../../lingo/query/facade/FieldQuery';

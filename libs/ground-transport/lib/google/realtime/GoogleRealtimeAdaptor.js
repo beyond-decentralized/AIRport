@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { RXJS } from '@airport/ground-control';
+import { RXJS } from '@airport/observe';
 import { DocumentHandle } from './DocumentHandle';
 /**
  * Created by Papa on 1/7/2016.
@@ -80,10 +80,10 @@ export class GoogleRealtimeAdaptor {
         return new DocumentHandle(document, changeList, valuesAddedSubject, valuesArchivedSubject, otherChangesSubject);
     }
     subscribeToChangesAddedByOthers(document) {
-        let valuesAddedSubject = new DI.db().getSync(RXJS).Subject();
+        let valuesAddedSubject = new (DI.db().getSync(RXJS).Subject)();
         let changeList = this.googleRealtime.getChangeList(document);
         this.googleRealtime.subscribeToValuesAdded(changeList, valuesAddedSubject);
-        let changesAddedSubject = new DI.db().getSync(RXJS).Subject();
+        let changesAddedSubject = new (DI.db().getSync(RXJS).Subject)();
         valuesAddedSubject.subscribe((event) => {
             console.log('Changes by others.  BaseModelEvent Type: ' + event.type);
             if (event.isLocal) {
@@ -102,10 +102,10 @@ export class GoogleRealtimeAdaptor {
         return changesAddedSubject;
     }
     subscribeToCleanupByOwner(document, iAmTheOwner) {
-        let valuesRemovedSubject = new DI.db().getSync(RXJS).Subject();
+        let valuesRemovedSubject = new (DI.db().getSync(RXJS).Subject)();
         let changeList = this.googleRealtime.getChangeList(document);
         this.googleRealtime.subscribeToValuesRemoved(changeList, valuesRemovedSubject);
-        let changesRemovedSubject = new DI.db().getSync(RXJS).Subject();
+        let changesRemovedSubject = new (DI.db().getSync(RXJS).Subject)();
         valuesRemovedSubject.subscribe((event) => {
             console.log('Clean-up by owner.  BaseModelEvent Type: ' + event.type);
             if (event.isLocal) {

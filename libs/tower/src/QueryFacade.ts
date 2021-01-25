@@ -18,7 +18,7 @@ import {
 } from '@airport/ground-control';
 import {
 	IObservable,
-	map
+	RXJS
 } from '@airport/observe';
 
 export class QueryFacade
@@ -80,8 +80,10 @@ export class QueryFacade
 		let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(
 			query, queryResultType, context), context);
 
+		const rxjs = await DI.db().get(RXJS);
+
 		observable = observable.pipe(
-			map(
+			rxjs.map(
 				results => {
 					context.ioc.updateCache.addToCache(
 						context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...results);
@@ -103,8 +105,10 @@ export class QueryFacade
 		let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(
 			query, queryResultType, context), context);
 
+		const rxjs = await DI.db().get(RXJS);
+
 		observable = observable.pipe(
-			map(
+			rxjs.map(
 				result => {
 					context.ioc.updateCache.addToCache(
 						context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result);

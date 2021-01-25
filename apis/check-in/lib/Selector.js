@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { RXJS } from '@airport/ground-control';
+import { RXJS } from '@airport/observe';
 import { SELECTOR_MANAGER } from './tokens';
 export class SelectorManager {
     createSelector(...args) {

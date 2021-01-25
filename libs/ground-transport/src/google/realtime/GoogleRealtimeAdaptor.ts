@@ -1,6 +1,5 @@
 import { DI }             from '@airport/di';
-import { RXJS }           from '@airport/ground-control';
-import { ISubject }      from '@airport/observe';
+import { ISubject, RXJS }      from '@airport/observe';
 import {
 	ChangeRecord,
 	ChangeRecordIterator
@@ -131,11 +130,11 @@ export class GoogleRealtimeAdaptor {
 	private subscribeToChangesAddedByOthers(
 		document: gapi.drive.realtime.Document
 	): ISubject<GoogleChangeRecordIterator> {
-		let valuesAddedSubject = new DI.db().getSync(RXJS).Subject<gapi.drive.realtime.ValuesAddedEvent<ChangeRecord>>();
+		let valuesAddedSubject = new (DI.db().getSync(RXJS).Subject)<gapi.drive.realtime.ValuesAddedEvent<ChangeRecord>>();
 		let changeList         = this.googleRealtime.getChangeList(document);
 		this.googleRealtime.subscribeToValuesAdded(changeList, valuesAddedSubject);
 
-		let changesAddedSubject = new DI.db().getSync(RXJS).Subject<GoogleChangeRecordIterator>();
+		let changesAddedSubject = new (DI.db().getSync(RXJS).Subject)<GoogleChangeRecordIterator>();
 
 		valuesAddedSubject.subscribe((event: gapi.drive.realtime.ValuesAddedEvent<ChangeRecord>) => {
 			console.log('Changes by others.  BaseModelEvent Type: ' + event.type);
@@ -164,12 +163,12 @@ export class GoogleRealtimeAdaptor {
 	private subscribeToCleanupByOwner(
 		document: gapi.drive.realtime.Document,
 		iAmTheOwner: boolean
-	): Subject<GoogleChangeRecordIterator> {
-		let valuesRemovedSubject = new DI.db().getSync(RXJS).Subject<gapi.drive.realtime.ValuesRemovedEvent<ChangeRecord>>();
+	): ISubject<GoogleChangeRecordIterator> {
+		let valuesRemovedSubject = new (DI.db().getSync(RXJS).Subject)<gapi.drive.realtime.ValuesRemovedEvent<ChangeRecord>>();
 		let changeList           = this.googleRealtime.getChangeList(document);
 		this.googleRealtime.subscribeToValuesRemoved(changeList, valuesRemovedSubject);
 
-		let changesRemovedSubject = new DI.db().getSync(RXJS).Subject<GoogleChangeRecordIterator>();
+		let changesRemovedSubject = new (DI.db().getSync(RXJS).Subject)<GoogleChangeRecordIterator>();
 
 		valuesRemovedSubject.subscribe((event: gapi.drive.realtime.ValuesRemovedEvent<ChangeRecord>) => {
 			console.log('Clean-up by owner.  BaseModelEvent Type: ' + event.type);
@@ -204,7 +203,7 @@ export class GoogleRealtimeAdaptor {
 	private subscribeToUnexpectedModifications(
 		changeList: gapi.drive.realtime.CollaborativeList<ChangeRecord>,
 		document: gapi.drive.realtime.Document
-	): Subject<GoogleRealtimeAdaptorException> {
+	): ISubject<GoogleRealtimeAdaptorException> {
 		let valuesRemovedSubject = new (DI.db().getSync(RXJS).Subject)<gapi.drive.realtime.ObjectChangedEvent>();
 		this.googleRealtime.subscribeToAnyObjectChanged(document, valuesRemovedSubject);
 

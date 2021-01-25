@@ -1,6 +1,7 @@
 import { SELECTOR_MANAGER } from '@airport/check-in';
 import { DI } from '@airport/di';
-import { ensureChildJsMap, RXJS } from '@airport/ground-control';
+import { ensureChildJsMap } from '@airport/ground-control';
+import { RXJS } from '@airport/observe';
 import { TERMINAL_STORE } from '../tokens';
 export class TerminalStore {
     async init() {

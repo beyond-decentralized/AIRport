@@ -1,6 +1,8 @@
 import { DI }               from '@airport/di';
-import { RXJS }             from '@airport/ground-control';
-import { IObservable, }     from '@airport/observe';
+import {
+	IObservable,
+	RXJS
+}                           from '@airport/observe';
 import { SELECTOR_MANAGER } from './tokens';
 
 /**

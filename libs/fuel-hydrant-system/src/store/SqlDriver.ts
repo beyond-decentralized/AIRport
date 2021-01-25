@@ -1,5 +1,8 @@
 import { doEnsureContext } from '@airport/air-control';
-import { container }       from '@airport/di';
+import {
+	container,
+	DI
+}                          from '@airport/di';
 import {
 	DbEntity,
 	DomainName,
@@ -21,13 +24,15 @@ import {
 	StoreType,
 	SyncSchemaMap
 }                          from '@airport/ground-control';
-import { IObservable, }    from '@airport/observe';
+import {
+	IObservable,
+	RXJS,
+}                          from '@airport/observe';
 import {
 	IOperationContext,
 	ITransaction,
 	OPERATION_CONTEXT_LOADER
 }                          from '@airport/tower';
-import { Subject }         from 'rxjs';
 import { SQLDelete }       from '../sql/core/SQLDelete';
 import { SQLInsertValues } from '../sql/core/SQLInsertValues';
 import {
@@ -251,7 +256,7 @@ export abstract class SqlDriver
 		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
 	): IObservable<EntityArray> {
-		let resultsSubject = new Subject<EntityArray>();
+		let resultsSubject = new (DI.db().getSync(RXJS).Subject)<EntityArray>();
 
 		// TODO: Remove the query for the list of cached queries, that are checked every
 		//    time a mutation operation is run
@@ -290,7 +295,7 @@ export abstract class SqlDriver
 		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
 	): IObservable<E> {
-		let resultsSubject = new Subject<E>();
+		let resultsSubject = new (DI.db().getSync(RXJS).Subject)<E>();
 		// TODO: Remove the query for the list of cached queries, that are checked every
 		//       time a mutation operation is run
 		// let resultsSubject                 = new Subject<E>(() => {

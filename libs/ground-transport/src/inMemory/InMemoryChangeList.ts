@@ -1,5 +1,6 @@
-import { DI }                from '@airport/di';
-import { RXJS }              from '@airport/ground-control';
+import { DI }                  from '@airport/di';
+import type { ISubject }       from '@airport/observe';
+import { RXJS }                from '@airport/observe';
 import {
 	ArrayChangeRecordIterator,
 	ChangeError,
@@ -8,16 +9,16 @@ import {
 	ChangeRecordIterator,
 	SharedChangeList,
 	SharingPlatformSetupInfo
-}                            from "@airport/terminal-map";
-import type { ISubject } from '@airport/observe';
-import {InMemoryChangeStore} from "./InMemoryChangeStore";
+}                              from '@airport/terminal-map';
+import { InMemoryChangeStore } from './InMemoryChangeStore';
 
 /**
  * Created by Papa on 11/26/2016.
  */
-export class InMemoryChangeList implements SharedChangeList {
+export class InMemoryChangeList
+	implements SharedChangeList {
 
-	private _errorSubject = new (DI.db().getSync(RXJS).Subject)<ChangeError>();
+	private _errorSubject                = new (DI.db().getSync(RXJS).Subject)<ChangeError>();
 	private _changesAddedRemotelySubject = new (DI.db().getSync(RXJS).Subject)<ChangeRecordIterator>();
 
 	constructor(

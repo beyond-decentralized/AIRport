@@ -2,8 +2,7 @@
  * Created by Papa on 1/10/2016.
  */
 import { DI }             from '@airport/di';
-import { RXJS }           from '@airport/ground-control';
-import { ISubject }       from '@airport/observe';
+import { ISubject, RXJS }       from '@airport/observe';
 import {
 	ArrayChangeRecordIterator,
 	ChangeError,
@@ -55,7 +54,7 @@ export class GoogleSharedChangeList
 	}
 
 	errorSubject(): ISubject<ChangeError> {
-		let errorSubject = new DI.db().getSync(RXJS).Subject<ChangeError>();
+		let errorSubject = new (DI.db().getSync(RXJS).Subject)<ChangeError>();
 
 		this.handle.otherChangesSubject.subscribe((otherChange) => {
 			errorSubject.next({

@@ -1,12 +1,12 @@
 import {
 	DI,
 	IContext
-} from '@airport/di';
+}                                  from '@airport/di';
+import { QueryResultType }         from '@airport/ground-control';
 import {
-	QueryResultType,
+	IObservable,
 	RXJS
-} from '@airport/ground-control';
-import { IObservable }             from '@airport/observe';
+}                                  from '@airport/observe';
 import { IEntityContext }          from '../../../lingo/core/data/EntityContext';
 import { UpdateCacheType }         from '../../../lingo/core/data/UpdateCacheType';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';

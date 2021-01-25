@@ -1,24 +1,21 @@
-import { CONFIG }                from '../../apis/config';
+import { CONFIG }                from '@airport/config';
 import { DI }                    from '@airport/di';
-import type {
-	IBehaviorSubject,
-	ISubject
-}                                from 'lib';
 import type { from as IRxFrom, } from 'rxjs';
 import type {
 	distinctUntilChanged as IRxDistinctUntilChanged,
 	map as IRxMap
 }                                from 'rxjs/operators';
-
-import { RXJS }                  from '../../../apis/ground-control/src/tokens';
+import { IBehaviorSubject }      from './BehaviorSubject';
+import { ISubject }              from './Subject';
+import { RXJS }                  from './tokens';
 
 export interface IRxJs {
 
-	BehaviorSubject: { new <T>(value: T): IBehaviorSubject<T> }
+	BehaviorSubject: { new<T>(value: T): IBehaviorSubject<T> }
 	distinctUntilChanged: typeof IRxDistinctUntilChanged
 	from: typeof IRxFrom
 	map: typeof IRxMap
-	Subject: { new <T>(): ISubject<T> }
+	Subject: { new<T>(): ISubject<T> }
 
 }
 

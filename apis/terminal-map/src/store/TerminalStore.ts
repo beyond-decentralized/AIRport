@@ -1,30 +1,30 @@
 import {
 	IMemoizedSelector,
 	SELECTOR_MANAGER
-}                                                     from '@airport/check-in';
-import { DI }                                         from '@airport/di';
+}                                from '@airport/check-in';
+import { DI }                    from '@airport/di';
 import {
 	DomainName,
 	ensureChildJsMap,
 	JsonSchemaName,
-	RXJS,
 	SchemaName
-}                                                     from '@airport/ground-control';
-import { IDomain }                                    from '@airport/territory';
+}                                from '@airport/ground-control';
+import type { IBehaviorSubject } from '@airport/observe';
+import { RXJS }                  from '@airport/observe';
+import { IDomain }               from '@airport/territory';
 import {
 	ISchema,
 	ISchemaColumn,
 	ISchemaEntity,
 	ISchemaRelation,
 	ISchemaVersion
-}                                                     from '@airport/traffic-pattern';
-import type { BehaviorSubject as IRxBehaviorSubject } from 'rxjs';
-import { TERMINAL_STORE }                             from '../tokens';
-import { ITerminalState }                             from './TerminalState';
+}                                from '@airport/traffic-pattern';
+import { TERMINAL_STORE }        from '../tokens';
+import { ITerminalState }        from './TerminalState';
 
 export interface ITerminalStore {
 
-	state: IRxBehaviorSubject<ITerminalState>
+	state: IBehaviorSubject<ITerminalState>
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>
 
@@ -52,27 +52,27 @@ export interface ITerminalStore {
 export class TerminalStore
 	implements ITerminalStore {
 
-	state: IRxBehaviorSubject<ITerminalState>
+	state: IBehaviorSubject<ITerminalState>;
 
-	getDomains: IMemoizedSelector<IDomain[], ITerminalState>
+	getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
 
-	getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>
+	getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>;
 
-	getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<SchemaName, ISchemaVersion>, ITerminalState>
+	getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<SchemaName, ISchemaVersion>, ITerminalState>;
 
-	getAllSchemaVersionsByIds: IMemoizedSelector<ISchemaVersion[], ITerminalState>
+	getAllSchemaVersionsByIds: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
 
-	getLatestSchemaVersionsBySchemaIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>
+	getLatestSchemaVersionsBySchemaIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
 
-	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>
+	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
 
-	getSchemas: IMemoizedSelector<ISchema[], ITerminalState>
+	getSchemas: IMemoizedSelector<ISchema[], ITerminalState>;
 
-	getAllColumns: IMemoizedSelector<ISchemaColumn[], ITerminalState>
+	getAllColumns: IMemoizedSelector<ISchemaColumn[], ITerminalState>;
 
-	getAllEntities: IMemoizedSelector<ISchemaEntity[], ITerminalState>
+	getAllEntities: IMemoizedSelector<ISchemaEntity[], ITerminalState>;
 
-	getAllRelations: IMemoizedSelector<ISchemaRelation[], ITerminalState>
+	getAllRelations: IMemoizedSelector<ISchemaRelation[], ITerminalState>;
 
 	async init(): Promise<void> {
 		const [rxjs, selectorManager] = await DI.db().get(RXJS, SELECTOR_MANAGER);

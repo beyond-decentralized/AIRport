@@ -1,6 +1,6 @@
 import { QUERY_CONTEXT_LOADER, QUERY_FACADE, UpdateCacheType } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { map } from '@airport/observe';
+import { RXJS } from '@airport/observe';
 export class QueryFacade {
     async find(query, queryResultType, context, cacheForUpdate = UpdateCacheType.NONE) {
         await this.ensureIocContext(context);
@@ -28,7 +28,8 @@ export class QueryFacade {
     async search(query, queryResultType, context, cacheForUpdate = UpdateCacheType.NONE) {
         await this.ensureIocContext(context);
         let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(query, queryResultType, context), context);
-        observable = observable.pipe(map(results => {
+        const rxjs = await DI.db().get(RXJS);
+        observable = observable.pipe(rxjs.map(results => {
             context.ioc.updateCache.addToCache(context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...results);
             return results;
         }));
@@ -37,7 +38,8 @@ export class QueryFacade {
     async searchOne(query, queryResultType, context, cacheForUpdate = UpdateCacheType.NONE) {
         await this.ensureIocContext(context);
         let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(query, queryResultType, context), context);
-        observable = observable.pipe(map(result => {
+        const rxjs = await DI.db().get(RXJS);
+        observable = observable.pipe(rxjs.map(result => {
             context.ioc.updateCache.addToCache(context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result);
             return result;
         }));

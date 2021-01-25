@@ -2,7 +2,7 @@
  * Created by Papa on 1/10/2016.
  */
 import { DI } from '@airport/di';
-import { RXJS } from '@airport/ground-control';
+import { RXJS } from '@airport/observe';
 import { ArrayChangeRecordIterator } from '@airport/terminal-map';
 export class GoogleSharedChangeList {
     constructor(platformInfo, shareInfo, handle) {
@@ -30,7 +30,7 @@ export class GoogleSharedChangeList {
         await this.handle.addChangeRecords(changeRecords);
     }
     errorSubject() {
-        let errorSubject = new DI.db().getSync(RXJS).Subject();
+        let errorSubject = new (DI.db().getSync(RXJS).Subject)();
         this.handle.otherChangesSubject.subscribe((otherChange) => {
             errorSubject.next({
                 fatal: true,

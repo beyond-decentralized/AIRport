@@ -1,6 +1,6 @@
-import { ChangeError, ChangeListShareInfo, ChangeRecord, ChangeRecordIterator, SharedChangeList, SharingPlatformSetupInfo } from "@airport/terminal-map";
 import type { ISubject } from '@airport/observe';
-import { InMemoryChangeStore } from "./InMemoryChangeStore";
+import { ChangeError, ChangeListShareInfo, ChangeRecord, ChangeRecordIterator, SharedChangeList, SharingPlatformSetupInfo } from '@airport/terminal-map';
+import { InMemoryChangeStore } from './InMemoryChangeStore';
 /**
  * Created by Papa on 11/26/2016.
  */

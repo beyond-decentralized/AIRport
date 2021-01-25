@@ -1,5 +1,6 @@
 import { DI } from '@airport/di';
-import { QueryResultType, RXJS } from '@airport/ground-control';
+import { QueryResultType } from '@airport/ground-control';
+import { RXJS } from '@airport/observe';
 import { EntityLookup } from './EntityLookup';
 /**
  * Created by Papa on 11/12/2016.

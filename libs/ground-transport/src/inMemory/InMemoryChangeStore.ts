@@ -1,6 +1,6 @@
 import { DI }            from '@airport/di';
-import { RXJS }          from '@airport/ground-control';
 import type { ISubject } from '@airport/observe';
+import { RXJS }          from '@airport/observe';
 import {
 	ChangeListShareInfo,
 	ChangeRecord
@@ -13,7 +13,7 @@ import {
 export class InMemoryChangeStore {
 
 	_changesAddedSubjectMap: { [name: string]: ISubject<ChangeRecord[]> } = {};
-	private changeListMap: { [name: string]: ChangeRecord[] } = {};
+	private changeListMap: { [name: string]: ChangeRecord[] }             = {};
 
 	addChangeList(
 		changeListName: string

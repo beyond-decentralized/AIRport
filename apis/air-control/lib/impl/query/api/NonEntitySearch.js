@@ -1,5 +1,6 @@
 import { DI } from '@airport/di';
-import { QueryResultType, RXJS } from '@airport/ground-control';
+import { QueryResultType } from '@airport/ground-control';
+import { RXJS } from '@airport/observe';
 import { FieldQuery } from '../facade/FieldQuery';
 import { SheetQuery } from '../facade/SheetQuery';
 import { TreeQuery } from '../facade/TreeQuery';

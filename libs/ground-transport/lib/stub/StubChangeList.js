@@ -1,6 +1,6 @@
 import { DI } from '@airport/di';
-import { RXJS } from '@airport/ground-control';
-import { ArrayChangeRecordIterator } from "@airport/terminal-map";
+import { RXJS } from '@airport/observe';
+import { ArrayChangeRecordIterator } from '@airport/terminal-map';
 /**
  * Created by Papa on 12/14/2016.
  */

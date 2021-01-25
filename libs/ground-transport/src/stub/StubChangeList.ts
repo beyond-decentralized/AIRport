@@ -1,6 +1,6 @@
-import { DI }                       from '@airport/di';
-import { RXJS }                     from '@airport/ground-control';
-import type {ISubject} from '@airport/observe'
+import { DI }            from '@airport/di';
+import type { ISubject } from '@airport/observe';
+import { RXJS }          from '@airport/observe';
 import {
 	ArrayChangeRecordIterator,
 	ChangeError,
@@ -9,14 +9,15 @@ import {
 	ChangeRecordIterator,
 	SharedChangeList,
 	SharingPlatformSetupInfo
-}                                   from "@airport/terminal-map";
+}                        from '@airport/terminal-map';
 
 /**
  * Created by Papa on 12/14/2016.
  */
-export class StubChangeList implements SharedChangeList {
+export class StubChangeList
+	implements SharedChangeList {
 
-	_errorSubject = new (DI.db().getSync(RXJS).Subject)<ChangeError>();
+	_errorSubject                = new (DI.db().getSync(RXJS).Subject)<ChangeError>();
 	_changesAddedRemotelySubject = new (DI.db().getSync(RXJS).Subject)<ChangeRecordIterator>();
 
 	constructor(
