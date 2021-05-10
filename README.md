@@ -8,7 +8,7 @@ database (such as WebSql or SqLite).
 
 Each repository is completely autonomous and can be added to a host relational database and/or removed from it,
 at any time, without affecting other repositories.  Repositories can have references to each other thus depending
-on data that other repository contains, but must be able to be used without referenced repositories (thus being
+on data that other repository contains, but must be usable without referenced repositories (thus being
 both interdependent and autonomous).
 
 Initial airport deployments will have server components to enable communication between mobile devices.
