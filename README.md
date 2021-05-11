@@ -1,5 +1,7 @@
 # airport
 
+Work in progress - actively seeking contributors
+
 Airport is a reference implementation of [Autonomous Interdependent Repositories](https://patents.google.com/patent/US10902016B2).
 
 Provides a net-like relational database of repositories.  A repository is a virtual database with it's own transaction log.
