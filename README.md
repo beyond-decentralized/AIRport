@@ -243,7 +243,7 @@ export interface IParentDao
     ): Promise<void>
 
     findByValue(
-  	  parentValue: IParent_Value,
+      parentValue: IParent_Value,
       context?: IExampleContext
     ): Promise<IParent[]>
 
