@@ -95,8 +95,10 @@ All schema projects share a common directory structure.
 * src/types - **work in progress** all entity fields get unique types that
   can then be referenced in the code (and searched for to trace the usage
   of specific fields)
-* src/generated - generated code goes here
-* src/dao - Data Access Objects go here
+* src/generated - generated code goes here (for queries, mutations and DAOs)
+* src/dao - **work in progress** automatically generated Data Access Objects stubs
+* (which extend common functionality defined in generated folder) go here
+* tokens.ts - **work in progress** automatically generated Dependency Injection tokens for all DAO objects.
 * index.ts - **work in progress** is automatically maintained
 
 #### Code generation
@@ -107,7 +109,15 @@ in the src/generated directory.  Most of the API's using these
 are abstracted away by the DAO (Data Access Objects) that are used to contain
 all query/mutation/access rule logic.
 
-####
+#### Configuration file generation
+
+DAO logic is mostly meant to be defined inside TypeScript decorators, those in 
+turn are pre-processed and (along with entity definitions) are placed inside
+a configuration JSON file.  This is the file that is read by the database
+instance on the device when a schema is first installed (or is being upgraded).
+Of course it is possible to write custom queries as well, though at the
+cost of having to include quite a bit of framework code in your application
+3rd party bundles.
 
 ### Entity Definitions
 
