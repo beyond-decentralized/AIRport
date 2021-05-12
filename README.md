@@ -193,19 +193,18 @@ import {
   IExampleContext
 }                         from '../types/types'
 
-export class ParentDao
-	extends BaseParentDao
-	implements IParentDao {
-
-	@Persist<ParentGraph>({
-          key: Y,
-          value: null || RULES.anyString(), 
-          children: [{ 
-          	key: Y, 
-            value: null || 'Child_' + RULES.anyString() 
-          } || null, ANOTHER(0, 3)]
-	})
-	create
+export class ParentDao 
+       extends BaseParentDao 
+       implements IParentDao {
+    @Persist<ParentGraph>({
+      key: Y,
+      value: null || RULES.anyString(), 
+      children: [{ 
+      	key: Y, 
+        value: null || 'Child_' + RULES.anyString() 
+      } || null, ANOTHER(0, 3)]
+    })
+    create
   
     @Find<IParent>((parentValue) => ({
       select: {
