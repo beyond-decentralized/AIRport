@@ -47,3 +47,107 @@ applications however may request the user to load additional repositories from t
 airport aims to provide zero code deployments where a thin shim is provided for the framework and TypeScript interfaces are used to defined
 the query+mutation API against the schemas used by the application.  The rest is defined in the schema configuration file, which is
 loaded into the device's airport database directly.
+
+## Technical details
+
+### On the stack dependency injection
+
+Since airport instances will be running on mobile devices, it has its own
+"on the stack" Dependency Injection (DI for short) framework that allows it
+to easily upgrade framework versions of code "on-the-fly", without requiring 
+application restarts or interruptions in service.  Thus, dependency injection
+is done "on the stack" (in the methods of the framework objects and not
+in the constructors of these objects).  The idea is that during an upgrade,
+all in progress requests are allowed to complete while all pending requests
+are halted (via async functions) at the very start.  Once all requests have
+cleared an upgrade takes place (within the libs\di library, just replacing
+old references to objects with new ones), then the remaining requests are resumed.
+This works well since every operation in airport is "top-level transactional".
+
+### Transactionality
+
+For a number of reasons (primarily WebSql transactional limitations) all
+transactions in airport must be sent over to the database in one shot.
+That means that an entire object graph is sent it and is processed
+according to the rules of a particular operation *(more on this later)*.
+
+### Convention over configuration
+
+airport is an opinionated framework that assumes "convention over configuration"
+for the following things:
+
+#### Separate schema project
+
+Each schema is defined in its own project.  The reason - schemas should be reusable
+across applications.  Someone might find reuse even for most trivial of projects that
+you think won't be needed ever again.  The guiding assumption is that it is certainly
+better to have fewer schemas (globally) and multiple applications reusing (parts of)
+the same schemas.
+
+#### Schema project directory structure
+
+All schema projects share a common directory structure.
+
+* src - all source lives under this folder
+* lib - all compiled JavaScript lives under this folder
+
+* src/ddl - all entities (annotated with JPA-like decorators) live here
+* src/types - **work in progress** all entity fields get unique types that
+  can then be referenced in the code (and searched for to trace the usage
+  of specific fields)
+* src/generated - generated code goes here
+* src/dao - Data Access Objects go here
+* index.ts - **work in progress** is automatically maintained
+
+#### Code generation
+
+In order for the GraphQL like language to work (and for additional type safety)
+airport (actually the generators/runway library) generates a number of objects
+in the src/generated directory.  Most of the API's using these
+are abstracted away by the DAO (Data Access Objects) that are used to contain
+all query/mutation/access rule logic.
+
+####
+
+### Entity Definitions
+
+Entity definitions stick as much as possible to Java's JPA
+syntax.  There are a few notable departures:
+
+* airport does not have the concept of a session,
+  hence nothing related to JPA sessions is present
+* airport explicitly specifies all persist and delete
+  cascading via GraphQL like syntax (with Firebase security
+  rule flavoring), so cascade rules are specific
+  to each mutation operation and are defined there.
+* Syntax is in valid TypeScript 
+
+```typescript
+@Entity()
+export class Parent {
+
+    @Id()
+    @GeneratedValue()
+    key: number;
+
+    value: string;
+
+    @OneToMany({cascade: CascadeType.DELETE, mappedBy: 'parent'})
+    children: Child[];
+}
+
+@Entity()
+export class Child {
+
+    @Id()
+    @GeneratedValue()
+    key: number;
+
+    value: string;
+
+    @ManyToOne()
+    parent: Parent;
+}
+```
+
+...
