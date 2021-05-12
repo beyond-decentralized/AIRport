@@ -237,11 +237,10 @@ format (along with the schema definition).
 ```typescript
 export interface IParentDao
 	extends IBaseParentDao {
-
-	create(
-		parent: IParent | IParent[],
-		context?: IExampleContext
-	): Promise<void>
+    create(
+      parent: IParent | IParent[],
+      context?: IExampleContext
+    ): Promise<void>
 
     findByValue(
   	  parentValue: IParent_Value,
