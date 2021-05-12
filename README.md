@@ -235,8 +235,8 @@ Typescript compiler and extracts the rules from the @Persist and
 format (along with the schema definition).
 
 ```typescript
-export interface IParentDao
-	extends IBaseParentDao {
+export interface IParentDao 
+       extends IBaseParentDao {
     create(
       parent: IParent | IParent[],
       context?: IExampleContext
