@@ -5,8 +5,10 @@ Work in progress - actively seeking contributors
 Airport is a reference implementation of [Autonomous Interdependent Repositories](https://patents.google.com/patent/US10902016B2).
 
 Provides a net-like relational database of repositories.  A repository is a virtual database with it's own transaction log.
-It has globally unique identifier that helps to distiguish it from other repositories in the same relational
+It has globally unique identifier that helps to distinguish it from other repositories in the same relational
 database (such as WebSql or SqLite).
+
+![AIR across devices](/presentations/images/AIR-across-devices.jpg)
 
 Each repository is completely autonomous and can be added to a host relational database and/or removed from it,
 at any time, without affecting other repositories.  Repositories can have references to each other thus depending
@@ -18,18 +20,20 @@ In it's final form airport could be used directly between devices to communicate
 changes in the state of repositories shared between their members (based on some form of 
 [mobile device-to-device Web Access](https://patents.google.com/patent/WO2019036410A1)).
 
+![Repository sharing](/presentations/images/Figure-02.jpg)
+
 ## API
 
 airport uses a combination of existing technologies for it's APIs
 
 * For defining entities it uses JPA like annotations (though without much of the complexity since it assumes some best practices and is sessionless).
 * For querying it uses a TypeScript compliant GraphQL like syntax (based on auto-generated query objects)
-* It enforces the DAO pattern where all of the query and mutation operations must be defined
+* It enforces the DAO pattern where all of query and mutation operations must be defined
 * For mutations it uses a combination of Firebase Access rules and GraphQL like syntax to defined what can be updated in a given operation
 
 ## Device-central database
 
-airport is desided for a single database per device.  Multiple applicaion schemas are installed into that database and allow for
+airport is designed for a single database per device.  Multiple applicaion schemas are installed into that database and allow for
 relations across schemas.  This can be done by installing the airport app or completely in-browser by using a wrapper tab
 with WebSql database and applications being loaded into an IFrame.   The idea is for multiple applications to collaborate
 and re-use data.  The two key points here are:
