@@ -20,7 +20,7 @@ In it's final form airport could be used directly between devices to communicate
 changes in the state of repositories shared between their members (based on some form of 
 [mobile device-to-device Web Access](https://patents.google.com/patent/WO2019036410A1)).
 
-![Repository sharing](/presentations/images/Figure02.jpg)
+![Repository sharing](/presentations/images/Figure02.png)
 
 ## API
 
