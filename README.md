@@ -146,7 +146,7 @@ export class Parent {
 
     value: string;
 
-    @OneToMany({cascade: CascadeType.DELETE, mappedBy: 'parent'})
+    @OneToMany({mappedBy: 'parent'})
     children: Child[];
 }
 
