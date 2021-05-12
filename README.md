@@ -197,12 +197,12 @@ export class ParentDao
 	implements IParentDao {
 
 	@Persist<ParentGraph>({
-      key: Y,
-      value: null || RULES.anyString(), 
-      children: [{ 
-      	key: Y,
-        value: null || 'Child_' + RULES.anyString() 
-      } || null, ANOTHER(0, 3)]
+          key: Y,
+          value: null || RULES.anyString(), 
+          children: [{ 
+          	key: Y, 
+            value: null || 'Child_' + RULES.anyString() 
+          } || null, ANOTHER(0, 3)]
 	})
 	create = this.save
 
