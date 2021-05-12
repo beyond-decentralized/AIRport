@@ -184,6 +184,7 @@ import {
   BaseParentDao,
   IBaseParentDao,
   ParentGraph,
+  Q
 }                         from '../generated/generated'
 import {PARENT_DAO}       from '../tokens'
 import {
@@ -204,7 +205,18 @@ export class ParentDao
             value: null || 'Child_' + RULES.anyString() 
           } || null, ANOTHER(0, 3)]
 	})
-	create = this.save
+	create
+  
+    @Find<IParent>((parentValue) => ({
+      select: {
+      	children: {}
+      },
+      from: [
+        p = Q.Parent
+      ],
+      where: p.value.like(parentValue)
+    }))
+    findByValue
 
 }
 DI.set(PARENT_DAO, ParentDao)
@@ -218,7 +230,10 @@ You can now run the @airport/runway generator again to populate the
 DAO interfaces (and rules.json file which is passed to the AIR databases
 and contains the necessary declarative logic, without having to run any
 external executables in the database, thus making the rules secure
-to add to the db)
+to add to the db).  @airport/runway parses the Dao files using the
+Typescript compiler and extracts the rules from the @Persist and
+@Query decorators and composes the same rules in declarative JSON 
+format (along with the schema definition).
 
 ```typescript
 export interface IParentDao
@@ -228,6 +243,11 @@ export interface IParentDao
 		parent: IParent | IParent[],
 		context?: IExampleContext
 	): Promise<void>
+
+    findByValue(
+  	  parentValue: IParent_Value,
+      context?: IExampleContext
+    ): Promise<IParent[]>
 
 }
 ```
