@@ -276,4 +276,34 @@ export const CHILD_DAO = schema.token<IChildDao>('IChildDao')
 export const PARENT_DAO = schema.token<IParentDao>('IParentDao')
 ```
 
+## Directory Structure
+Internal directory structure of the AIRport meta-repository.
+
+[apis](/apis)
+Various internal and external APIs used by for AIRport entity definitions,
+query and persistence definitions and various communication modules.
+
+[apps](/apps)
+Applications needed for AIRport to work (such us a mobile app and a sync
+server).
+
+[db](/db)
+Database adapter implementations.
+
+[generators](/generators)
+Various code generators needed for AIRport projects to work.
+
+[highway](/highway)
+Large server implementation (in the process of being moved to its own project).
+
+[libs](/libs)
+Various internal/external libraries.
+
+[presentations](/presentations)
+Material for past and future presentations made on Autonomous Interdepedent
+Repositories and AIRport.
+
+[schemas](/schemas)
+Internal database schemas needed for AIRport to operate.
+
 ...
