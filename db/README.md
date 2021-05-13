@@ -20,5 +20,5 @@ don't support sequences natively and also for in-memory caching).
 [sqljs](./sqljs)
 **work in progress** (based on sqlite)
 
-[websql](/websql)
+[websql](./websql)
 **work in progress**  (based on sqlite)
