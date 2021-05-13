@@ -1,6 +1,6 @@
 # AIRport - Autonomous Interdependent Repository port
 
-Work in progress - actively seeking funding and contributors.
+Work in progress - actively seeking funding and contributors <artem.v.shamsutdinov@dataindepedence.net>.
 
 AIRport is a reference implementation of [Autonomous Interdependent Repositories](https://patents.google.com/patent/US10902016B2).
 
