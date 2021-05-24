@@ -27,9 +27,9 @@ export class DaoBuilder
 	static Search    = new DaoQueryDecorators<${entityName}ESelect>();
 	static SearchOne = new DaoQueryDecorators<${entityName}ESelect>();
 	static Save(
-		config: ${entityName}ESelect
+		config: ${entityName}Graph
 	): PropertyDecorator {
-		return Dao.BaseSave<${entityName}ESelect>(config);
+		return Dao.BaseSave<${entityName}Graph>(config);
   }`;
 	}
 

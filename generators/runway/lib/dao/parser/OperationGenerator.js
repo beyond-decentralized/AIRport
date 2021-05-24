@@ -446,7 +446,7 @@ Query must be in the following format:
     paramC: number,
     paramD: string,
     ...
-    Q: QLocalSchema,
+    Q: LocalQSchema,
     alias1: QEntity1,
     alias2: QEntity1,
     ...

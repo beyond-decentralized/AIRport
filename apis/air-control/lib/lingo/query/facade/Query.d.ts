@@ -1,4 +1,4 @@
-import { JSONBaseOperation, JsonQuery } from "@airport/ground-control";
+import { JSONBaseOperation, JsonQuery } from '@airport/ground-control';
 import { IFieldUtils, IQueryUtils } from '../../..';
 import { IEntityRelationFrom, IFrom } from '../../core/entity/Entity';
 import { IFieldInOrderBy } from '../../core/field/FieldInOrderBy';
@@ -12,7 +12,7 @@ export interface RawQuery {
     where?: JSONBaseOperation;
 }
 export interface RawLimitedQuery {
-    limit: number;
+    limit?: number;
     offset?: number;
 }
 /**
@@ -23,10 +23,34 @@ export interface IQuery {
 }
 export declare function ANOTHER(a: number, b?: number): any;
 export declare const Y: any;
+export declare const YES: any;
 export declare function convertToY(object: any): void;
 export declare function isY(object: any): boolean;
 export declare const N: any;
+export declare const NO: any;
 export declare function isN(object: any): boolean;
+export declare const I: any;
+export declare const INSERT: any;
+export declare function isInsert(object: any): boolean;
+export declare const IN: any;
+export declare const INSERT_OR_NULL: any;
+export declare function isInsertOrNull(object: any): boolean;
+export declare const U: any;
+export declare const UPDATE: any;
+export declare function isUpdate(object: any): boolean;
+export declare const IU: any;
+export declare const INSERT_OR_UPDATE: any;
+export declare function isInsertOrUpdate(object: any): boolean;
+export declare const UN: any;
+export declare const UPDATE_OR_NULL: any;
+export declare function isUpdateOrNull(object: any): boolean;
+export declare const IUN: any;
+export declare const INSERT_OR_UPDATE_OR_NULL: any;
+export declare function isInsertOrUpdateOrNull(object: any): boolean;
+export declare const A: any;
+export declare const ALL: any;
+export declare const UPSERT: any;
+export declare const isUpsert: typeof isInsertOrUpdateOrNull;
 export declare const ID: any;
 export declare function convertToID(object: any): void;
 export declare function isID(object: any): boolean;

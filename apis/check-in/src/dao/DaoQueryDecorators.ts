@@ -17,7 +17,7 @@ export class DaoQueryDecorators<EntitySelect extends IEntitySelectProperties> {
 	}
 
 	Tree(
-		callback: { (...args: any[]): RawLimitedEntityQuery<IEntitySelectProperties> },
+		callback: { (...args: any[]): RawLimitedEntityQuery<EntitySelect> },
 	): PropertyDecorator {
 		return function(
 			target: any,
