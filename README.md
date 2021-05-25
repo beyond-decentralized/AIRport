@@ -306,4 +306,9 @@ Repositories and AIRport.
 [schemas](/schemas)
 Internal database schemas needed for AIRport to operate.
 
-...
+## License
+AIRport is distributed under the terms of both the MIT license and the Apache License (Version 2.0).
+
+See [LICENSE-APACHE](LICENSE-APACHE), [LICENSE-MIT](LICENSE-MIT)
+
+## ...
