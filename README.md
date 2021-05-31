@@ -2,55 +2,133 @@
 
 ![AIRport - winged DApps](/presentations/images/logo/AIRPort_logo_with_slogan_1.0.png)
 
-![AIR across devices](/presentations/images/AIR-across-devices.jpg)
+* Allows the Application End Users to seamlessly share the data only with
+  selected Users.
+* Lowers the barrier to entry for new Apps as they can reuse existing schemas
+  or write add-on functionality to existing Apps.
+* Lowers the barrier to entry by providing exiting data to new Apps.
+* Allows hybrid applications where part of the data is centralized (for
+  large scale sharing) and part is in private Repositories.
+* WIP: Minimal code application library, all CRUD logic is installed via
+declarative JSON config into the database itself.
+* PLANNED: Automatic schema upgrades with enforced backward compatibility 
 
-Provides a net-like relational database of repositories.  A repository is a virtual database with it's own transaction log.
-It has globally unique identifier that helps to distinguish it from other repositories in the same relational
-database (such as WebSql, or SqLite in a Cordova based App).
+- The problem:
 
-![AIRport as Cordova application](/presentations/images/AIRport-in-Cordova.png)
+Distributed Applications (DApps) lack an easy-to-use database layer.
 
-Each repository is completely autonomous and can be added to a host relational database and/or removed from it,
-at any time, without affecting other repositories.  Repositories can have references to each other thus depending
-on data that other repository contains, but must be usable without referenced repositories (thus being
-both interdependent and autonomous).
+- Our solution:
 
-Initial AIRport deployments will have server components to enable communication between mobile devices.
-In it's final form AIRport could be used directly between devices to communicate
-changes in the state of repositories shared between their members (based on some form of 
-[mobile device-to-device Web Access](https://patents.google.com/patent/WO2019036410A1)).
+AIRport provides a net-like relational database of Repositories.  Repositories
+are virtual databases, each with its own transaction log.  Each Repository has
+a globally unique identifier that allows to distinguish it from other
+repositories in the same relational database (such as WebSql, or SqLite in
+a Cordova based App). For two Users to share a Repository it must be present
+on their devices, and the schemas used by that repository must be installed
+in AIRport databases on those devices.
 
-![Autonomous Interdependent Repository sharing](/presentations/images/Figure02.png)
+![AIR reposiories](presentations/images/AIRport_diagram_2.png)
+
+Each device/phone contains a single AIRport database that is shared by all
+applications on that device.  The composition of the applications on each
+device can be different.  The composition of the schemas installed in each
+AIRport database on each device can be different as well.  Each database
+contains only the Repositories the user of that device decides to keep on it.
+
+![AIR across devices](presentations/images/AIRport_diagram_1.png)
+
+    For example in an event tracking App data for each event is a separate Repository.
+    Other Applications can build upon this App's schema and provide functionality
+    (such as  event specific chat and voting systems) in their own schemas. Using all
+    of these Apps the users add data to the same Repositories (for the the same
+    events).  Thus Repositories for events span schemas of all the Apps that together
+    provide better functionality than each one separately.  AIRport enables synergies
+    between Apps where "the whole is greater than the sum its parts" thus reducing the
+    overall costs.
+
+Each repository is completely autonomous and can be added to a host relational
+database and/or removed from it, at any time, without affecting other
+repositories.  Repositories can have references to each other thus depending
+on data that other repository contains, but must be usable without referenced
+repositories (thus being both interdependent and autonomous).
+
+## Blockchain based
+
+AIRport Repositories have blockchain based transaction log storage to enable
+communication between devices. AIRport is fully functional off-line, commits 
+are made locally and are added to the "longest chain" once device is back on-line.
+Each Repository transaction log is a separate chain and itself can consist of 
+sub-chains if devices go out of sync. Thus, the Repository transaction log is a
+Directed Acyclic Graph with each commit being a separate block and all 
+sub-chains are resolved to the "longest chain" via timestamp based conflict
+resolution mechanism. 
+
+    For examle if Alice modifies record 1 while being offline and Charlie
+    modifies the same record also offline but at a later time then both
+    with be notified of the conflict and automatic conflict resolution
+    will pick the latest column values while allowing for manual confict
+    resolution.
+
+Based on my current limited understanding of blockchains:
+
+A Repository chain can be integrated with IPFS since it supports DAG
+datastructure and is storage centric.  Integrations with other chains
+are possible: A Repository chain can be tied to the chains of the
+individual chains of creators/participators in the Repository.  In
+turn, those can be integrated into any 3.0 blockchain.
+
+## Installation process
+
+The process of installing AIRport is:
+
+*  User navigates to a consumer Application that uses AIRport and creates
+   a Repository
+*  Application prompts the user to install AIRport database App (if not
+   installed already)
+*  User installs AIRport App
+*  The consumer application creates the private Repository and prompts
+   to add other participating users
+*  Creating user shares the Repository, and the App notifies new users
+
+![AIRport as Cordova application](presentations/images/AIRport-in-Cordova.png)
 
 ## API
 
-AIRport uses a combination of existing technologies for it's APIs
+AIRport offers refined, high productivity developer APIS:
 
-* For defining entities it uses JPA like annotations (though without much of the complexity since it assumes some best practices and is sessionless).
-* For querying it uses a TypeScript compliant GraphQL like syntax (based on auto-generated query objects)
-* It enforces the DAO pattern where all of query and mutation operations must be defined
-* For mutations it uses a combination of Firebase Access rules and GraphQL like syntax to defined what can be updated in a given operation
+* Simplified JPA annotations (no session concept, easier relations)
+* GraphQL like query API
+* GraphQL/Firebase like hybrid solution for mutation & access rules
+* Automatic schema generation and installation
+* WIP: Automatic interface and DAO stub generation
 
-## Device-central database
+## Application collaboration
 
-AIRport is designed for a single database per device.  Multiple applicaion schemas are installed into that database and allow for
-relations across schemas.  This can be done by installing the AIRport app or completely in-browser by using a wrapper tab
-with WebSql database and applications being loaded into an IFrame.   The idea is for multiple applications to collaborate
+Core to AIRport is the idea is for multiple applications to collaborate 
 and re-use data.  The two key points here are:
 
-* User is in control of their data they allow applications to access their data (usually only a part of their data).
-* Applications are in control of sharing schemas with other applications - they can allow or deny access to their schemas.
+* User is in control of their data they allow applications to access 
+  their data (usually only a part of their data).
+* Applications are in control of sharing schemas with other applications
+- they can allow or deny access to their schemas.
 
-This the applications only interact with the device-local database, making AIRport fully operational in offline-mode.  The
-database is in charge of maintaining the repositories contained in it.  It may occasionally prompt the user to purge
-infrequently used repositories (or may do so automatically if not configured), leaving them only in the cloud backup.  The
-applications however may request the user to load additional repositories from the cloud, for processing.
+This the applications only interact with the device-local database, making AIRport
+fully operational in offline-mode.  The database is in charge of maintaining the
+repositories contained in it.  It may occasionally prompt the user to purge
+infrequently used repositories (or may do so automatically if not configured),
+leaving them only in the cloud backup.  The applications however may request the
+user to load additional repositories from the cloud, for processing.
 
 ## Zero app code deployment
 
-AIRport aims to provide zero code deployments where a thin shim is provided for the framework and TypeScript interfaces are used to defined
-the query+mutation API against the schemas used by the application.  The rest is defined in the schema configuration file, which is
-loaded into the device's AIRport database directly.
+AIRport aims to provide zero code deployments where a thin shim is provided
+for the framework and TypeScript interfaces are used to define the
+query+mutation API against the schemas used by the application.  The rest 
+is defined in the schema configuration file, which is loaded into the 
+device's AIRport database directly.  The config file is generated from
+the annotated Entities and the DAO code, which itself relies on
+auto-generated TIQL (Typescript Instrumented Query Language ) objects
+and interfaces as well as core framework code and generated Base DAO objects.
 
 ## Technical details
 
