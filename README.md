@@ -1,6 +1,6 @@
 # AIRport - Autonomous Interdependent Repository port
 
-![AIRport: winged APapps](/presentations/images/logo/AIRport_log_with_slogan_1.0.png)
+![AIRport: winged APapps](/presentations/images/logo/AIRport_logo_with_slogan_1.0.png)
 
 ![AIR across devices](/presentations/images/AIR-across-devices.jpg)
 
