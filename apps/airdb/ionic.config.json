@@ -1,8 +1,0 @@
-{
-  "name": "airdb",
-  "integrations": {
-    "capacitor": {},
-    "cordova": {}
-  },
-  "type": "angular"
-}
