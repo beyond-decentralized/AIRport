@@ -35,3 +35,7 @@ Schema for recording AIRport schemas themselves.
 **Needs revisiting** AIRport side (not sharing server side) schema for
 keeping track which sharing server is used for which repositories and by
 which users.
+
+[vasi](./vasi)
+**Pending** "vási"/βάση is "basis" in Greek.  This schema is intended
+to have basic utility tables used in application schemas. 

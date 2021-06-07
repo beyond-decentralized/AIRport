@@ -43,11 +43,6 @@
     },
     // "apps" folder (alphabetical order)
     {
-      "packageName": "@airport/airdb",
-      "projectFolder": "apps/airdb",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/automated-guideway-transit",
       "projectFolder": "apps/automated-guideway-transit",
       "shouldPublish": true
@@ -251,6 +246,11 @@
     {
       "packageName": "@airport/traffic-pattern",
       "projectFolder": "schemas/traffic-pattern",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/vasi",
+      "projectFolder": "schemas/vasi",
       "shouldPublish": true
     }
   ]

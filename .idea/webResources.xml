@@ -345,6 +345,13 @@
           </resourceRoots>
         </entryData>
       </entry>
+      <entry url="file://$PROJECT_DIR$/schemas/vasi">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/schemas/vasi/src" />
+          </resourceRoots>
+        </entryData>
+      </entry>
     </contentEntries>
   </component>
 </project>
