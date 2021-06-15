@@ -19,7 +19,7 @@ Distributed Applications (DApps) lack an easy-to-use database layer.
 
 - Our solution:
 
-AIRport provides a net-like relational database of Repositories.  Repositories
+AIRport a decentralized relational database of Repositories.  Repositories
 are virtual databases, each with its own transaction log.  Each Repository has
 a globally unique identifier that allows to distinguish it from other
 repositories in the same relational database (such as WebSql, or SqLite in
