@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"name": "✨ airport",
+			"path": "."
+		},
+		{
+			"name": "⛓@airport/air-control",
+			"path": "apis\\air-control"
+		},
+		{
+			"name": "⛀@airport/websql",
+			"path": "db\\websql"
+		},
+		{
+			"name": "@airport/runway",
+			"path": "generators\\runway"
+		},
+		{
+			"name": "📓@airport/approach-lighting-system",
+			"path": "libs\\approach-lighting-system"
+		},
+		{
+			"name": "⚼@airport/airport-code",
+			"path": "schemas\\airport-code"
+		}
+	],
+	"settings": {}
+}

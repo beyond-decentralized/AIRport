@@ -2,7 +2,7 @@
   // NOTE: Comments are allowed in all Rush config files :-)
   "rushVersion": "5.34.4",
   "pnpmVersion": "5.9.3",
-  "nodeSupportedVersionRange": ">=14.0.0 <15.0.0",
+  "nodeSupportedVersionRange": ">=16.0.0 <17.0.0",
   "projectFolderMinDepth": 1,
   "projects": [
     // "apis" folder (alphabetical order)
@@ -42,11 +42,6 @@
       "shouldPublish": true
     },
     // "apps" folder (alphabetical order)
-    {
-      "packageName": "@airport/airdb",
-      "projectFolder": "apps/airdb",
-      "shouldPublish": true
-    },
     {
       "packageName": "@airport/automated-guideway-transit",
       "projectFolder": "apps/automated-guideway-transit",
@@ -251,6 +246,11 @@
     {
       "packageName": "@airport/traffic-pattern",
       "projectFolder": "schemas/traffic-pattern",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/vasi",
+      "projectFolder": "schemas/vasi",
       "shouldPublish": true
     }
   ]
