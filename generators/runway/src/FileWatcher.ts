@@ -67,7 +67,7 @@ export async function watchFiles(
 	const services = tsc.createLanguageService(servicesHost, tsc.createDocumentRegistry());
 
 	// First time around, process all files
-	processFiles(rootFileNames, options, configuration);
+	await processFiles(rootFileNames, options, configuration);
 
 	// Now let's watch the files
 	rootFileNames.forEach(
@@ -89,19 +89,19 @@ export async function watchFiles(
 
 					// process file
 					processFiles(
-						[fileName], options, configuration);
+						[fileName], options, configuration).then();
 				});
 		});
 
-	function processFiles(
+	async function processFiles(
 		rootFileNames: string[],
 		options: ts.CompilerOptions,
 		configuration: Configuration,
-	): void {
+	): Promise<void> {
 		options.target                                                    = tsc.ScriptTarget.ES5;
 		const schemaMapByProjectName: { [projectName: string]: DbSchema } = {};
 		let entityMapByName                                               =
-			    generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
+			    await generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
 		emitFiles(entityMapByName, configuration, schemaMapByProjectName);
 	}
 

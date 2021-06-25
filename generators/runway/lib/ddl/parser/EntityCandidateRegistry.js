@@ -24,7 +24,7 @@ export class EntityCandidateRegistry {
             candidate = this.entityCandidateMap.get(candidate.type);
         }
     }
-    matchVerifiedEntities(//
+    async matchVerifiedEntities(//
     targetCandidateRegistry //
     ) {
         let entityMapByName = {};
@@ -48,7 +48,7 @@ export class EntityCandidateRegistry {
             if (targetCandidate.parentEntity) {
                 continue;
             }
-            targetCandidate.parentEntity = this.getMappedSuperclassFromProject(targetCandidate.docEntry.fileImports, targetCandidate.parentClassName);
+            targetCandidate.parentEntity = await this.getMappedSuperclassFromProject(targetCandidate.docEntry.fileImports, targetCandidate.parentClassName);
         }
         let entityInterfaceMap = {};
         for (let className in entityMapByName) {
@@ -250,7 +250,7 @@ export class EntityCandidateRegistry {
         }
         return true;
     }
-    getMappedSuperclassFromProject(fileImports, type) {
+    async getMappedSuperclassFromProject(fileImports, type) {
         const moduleImport = fileImports.importMapByObjectAsName[type];
         if (!moduleImport || moduleImport.isLocal) {
             return null;
@@ -273,7 +273,8 @@ export class EntityCandidateRegistry {
         // fs.lstatSync(pathToMappedSuperclasses).isDirectory()) {
         // relatedMappedSuperclassesProject = require(pathToMappedSuperclasses) break } } }
         // else {
-        relatedMappedSuperclassesProject = require(process.cwd() + '/node_modules/' + projectName);
+        console.log('file://' + process.cwd() + '/node_modules/' + projectName + '/lib/index.js');
+        relatedMappedSuperclassesProject = await import('file://' + process.cwd() + '/node_modules/' + projectName + '/lib/index.js');
         // }
         if (!relatedMappedSuperclassesProject) {
             throw new Error(`Could not find related schema project '${projectName}'`);

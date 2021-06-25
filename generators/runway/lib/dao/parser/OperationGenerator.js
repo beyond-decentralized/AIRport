@@ -113,6 +113,22 @@ function serializeProperty(symbol, daoName, entityName, memberName, member, daoO
     // 	return;
     // }
     let operationFound = null;
+    if (!member.valueDeclaration.decorators) {
+        throw new Error(`${daoName}.${memberName} is not decorated.  Every DAO
+			member property must be decorated with a supported decorator.
+Following decorators are currently supported for ${daoName}:
+  @${daoName}.Delete
+  @${daoName}.Find.Graph
+  @${daoName}.Find.Tree
+  @${daoName}.FindOne.Graph
+  @${daoName}.FindOne.Tree
+  @${daoName}.Save
+  @${daoName}.Search.Graph
+  @${daoName}.Search.Tree
+  @${daoName}.SearchOne.Graph
+  @${daoName}.SearchOne.Tree
+			`);
+    }
     member.valueDeclaration.decorators.forEach(decorator => {
         // decorator.expression.kind = 196 CallExpression
         // decorator.expression.expression.kind = 75 Identifier
@@ -221,6 +237,7 @@ function throwUnsupportedDecorator(daoName, decoratorName) {
 Unexpected decorator:
   @${decoratorName}
 Following decorators are currently supported for ${daoName}:
+
   @${daoName}.Delete
   @${daoName}.Find.Graph
   @${daoName}.Find.Tree

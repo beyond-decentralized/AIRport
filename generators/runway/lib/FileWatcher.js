@@ -45,7 +45,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
     // Create the language service files
     const services = tsc.createLanguageService(servicesHost, tsc.createDocumentRegistry());
     // First time around, process all files
-    processFiles(rootFileNames, options, configuration);
+    await processFiles(rootFileNames, options, configuration);
     // Now let's watch the files
     rootFileNames.forEach(fileName => {
         // Add a watch on the file to handle next change
@@ -57,13 +57,13 @@ export async function watchFiles(configuration, options, rootFileNames) {
             // Update the version to signal a change in the file
             files[fileName].version++;
             // process file
-            processFiles([fileName], options, configuration);
+            processFiles([fileName], options, configuration).then();
         });
     });
-    function processFiles(rootFileNames, options, configuration) {
+    async function processFiles(rootFileNames, options, configuration) {
         options.target = tsc.ScriptTarget.ES5;
         const schemaMapByProjectName = {};
-        let entityMapByName = generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
+        let entityMapByName = await generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
         emitFiles(entityMapByName, configuration, schemaMapByProjectName);
     }
     function emitFiles(entityMapByName, configuration, schemaMapByProjectName) {

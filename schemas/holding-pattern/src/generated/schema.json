@@ -2,6 +2,7 @@
 	"domain": "air",
 	"index": null,
 	"name": "@airport/holding-pattern",
+	"packageName": "@airport/holding-pattern",
 	"sinceVersion": 1,
 	"versions": [
 		{
@@ -896,7 +897,8 @@
 					"tableConfig": {
 						"name": "REPOSITORY",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -1027,7 +1029,8 @@
 					"tableConfig": {
 						"name": "REPOSITORY_ACTORS",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -1222,7 +1225,8 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -1531,7 +1535,8 @@
 							"COLUMN_INDEX"
 						],
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -1648,7 +1653,8 @@
 							"COLUMN_INDEX"
 						],
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -2046,7 +2052,8 @@
 					"tableConfig": {
 						"name": "REPOSITORY_TRANSACTION_HISTORY",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -2405,6 +2412,7 @@
 					"domain": "air",
 					"index": 1,
 					"name": "@airport/traffic-pattern",
+					"packageName": "@airport/traffic-pattern",
 					"sinceVersion": 1,
 					"versions": [
 						{

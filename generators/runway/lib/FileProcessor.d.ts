@@ -5,7 +5,7 @@ import { EntityCandidate } from './ddl/parser/EntityCandidate';
 /** Generate documention for all classes in a set of .ts files */
 export declare function generateDefinitions(fileNames: string[], options: ts.CompilerOptions, configuration: Configuration, schemaMapByProjectName: {
     [projectName: string]: DbSchema;
-}): {
+}): Promise<{
     [entityName: string]: EntityCandidate;
-};
+}>;
 //# sourceMappingURL=FileProcessor.d.ts.map

@@ -23,9 +23,9 @@ export declare class EntityCandidateRegistry {
     constructor(enumMap?: Map<string, string>);
     addCandidate(candidate: EntityCandidate): void;
     matchVerifiedEntities(//
-    targetCandidateRegistry?: EntityCandidateRegistry): {
+    targetCandidateRegistry?: EntityCandidateRegistry): Promise<{
         [entityName: string]: EntityCandidate;
-    };
+    }>;
     classifyEntityProperties(entityInterfaceMap: {
         [interfaceName: string]: Interface;
     }): Set<EntityCandidate>;

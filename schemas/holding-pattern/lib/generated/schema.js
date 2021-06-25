@@ -1,7 +1,9 @@
+/* eslint-disable */
 export const SCHEMA = {
     "domain": "air",
     "index": null,
     "name": "@airport/holding-pattern",
+    "packageName": "@airport/holding-pattern",
     "sinceVersion": 1,
     "versions": [
         {
@@ -896,7 +898,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "REPOSITORY",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -1027,7 +1030,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "REPOSITORY_ACTORS",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -1222,7 +1226,8 @@ export const SCHEMA = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -1531,7 +1536,8 @@ export const SCHEMA = {
                             "COLUMN_INDEX"
                         ],
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -1648,7 +1654,8 @@ export const SCHEMA = {
                             "COLUMN_INDEX"
                         ],
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -2046,7 +2053,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "REPOSITORY_TRANSACTION_HISTORY",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -2405,6 +2413,7 @@ export const SCHEMA = {
                     "domain": "air",
                     "index": 1,
                     "name": "@airport/traffic-pattern",
+                    "packageName": "@airport/traffic-pattern",
                     "sinceVersion": 1,
                     "versions": [
                         {

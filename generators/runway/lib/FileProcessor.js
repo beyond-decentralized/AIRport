@@ -6,7 +6,7 @@ import tsc from 'typescript';
 const enumMap = new Map();
 globalThis.enumMap = enumMap;
 /** Generate documention for all classes in a set of .ts files */
-export function generateDefinitions(fileNames, options, configuration, schemaMapByProjectName) {
+export async function generateDefinitions(fileNames, options, configuration, schemaMapByProjectName) {
     // Build a program using the set of root file names in fileNames
     let program = tsc.createProgram(fileNames, options);
     globalThis.checker = program.getTypeChecker();
@@ -24,7 +24,7 @@ export function generateDefinitions(fileNames, options, configuration, schemaMap
     }
     // print out the doc
     // fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
-    return globalCandidateRegistry
+    return await globalCandidateRegistry
         .matchVerifiedEntities(globalThis.processedCandidateRegistry);
 }
 /** visit nodes finding exported classes */

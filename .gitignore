@@ -1,4 +1,4 @@
-.idea/workspace.xml
+adf.idea/workspace.xml
 .idea/shelf/**
 
 npm-debug.log
@@ -15,4 +15,6 @@ node_modules
 # Ignore Microsoft Rush temp files
 .rush/
 
+# Ignore VsCode History plugin directory
+.history/
 

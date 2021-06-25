@@ -1,31 +1,31 @@
 import {
 	DbEntity,
 	DbSchema
-}                                        from '@airport/ground-control';
+} from '@airport/ground-control';
 import {
 	ISchemaLoader,
 	SchemaLoader
-}                                        from '@airport/taxiway/lib/SchemaLoader';
+} from '@airport/taxiway/lib/SchemaLoader';
 import {
 	canBeInterface,
 	getImplNameFromInterfaceName
-}                                        from '../../resolve/pathResolver';
-import { Configuration }                 from '../options/Options';
+} from '../../resolve/pathResolver';
+import { Configuration } from '../options/Options';
 import {
 	EntityReference,
 	PropertyDocEntry
-}                                        from './DocEntry';
+} from './DocEntry';
 import {
 	EntityCandidate,
 	Interface
-}                                        from './EntityCandidate';
+} from './EntityCandidate';
 import { globalCandidateInheritanceMap } from './EntityDefinitionGenerator';
-import { FileImports }                   from './FileImports';
+import { FileImports } from './FileImports';
 import {
 	endsWith,
 	isPrimitive,
 	startsWith
-}                                        from './utils';
+} from './utils';
 
 /**
  * Created by Papa on 3/27/2016.
@@ -33,13 +33,13 @@ import {
 export class EntityCandidateRegistry {
 
 	entityCandidateMap: Map<string, EntityCandidate> = new Map<string, EntityCandidate>();
-	allInterfacesMap: Map<string, Interface[]>       = new Map<string, Interface[]>();
+	allInterfacesMap: Map<string, Interface[]> = new Map<string, Interface[]>();
 	configuration: Configuration;
-	schemaMap: { [projectName: string]: DbSchema }   = {};
+	schemaMap: { [projectName: string]: DbSchema } = {};
 	mappedSuperClassMap: {
 		[projectName: string]: { [mappedSuperClassName: string]: EntityCandidate }
-	}                                                = {};
-	schemaLoader: ISchemaLoader                      = new SchemaLoader();
+	} = {};
+	schemaLoader: ISchemaLoader = new SchemaLoader();
 
 	constructor(
 		private enumMap?: Map<string, string>
@@ -55,9 +55,9 @@ export class EntityCandidateRegistry {
 		}
 	}
 
-	matchVerifiedEntities( //
+	async matchVerifiedEntities( //
 		targetCandidateRegistry?: EntityCandidateRegistry //
-	): { [entityName: string]: EntityCandidate } {
+	): Promise<{ [entityName: string]: EntityCandidate }> {
 		let entityMapByName: { [entityName: string]: EntityCandidate } = {};
 
 		for (let targetCandidate of targetCandidateRegistry.entityCandidateMap.values()) {
@@ -81,7 +81,7 @@ export class EntityCandidateRegistry {
 				continue;
 			}
 
-			targetCandidate.parentEntity = this.getMappedSuperclassFromProject(
+			targetCandidate.parentEntity = await this.getMappedSuperclassFromProject(
 				targetCandidate.docEntry.fileImports, targetCandidate.parentClassName);
 		}
 
@@ -125,7 +125,7 @@ export class EntityCandidateRegistry {
 				let type = property.type;
 				if (endsWith(type, '[]')) {
 					property.isArray = true;
-					type             = type.substr(0, type.length - 2);
+					type = type.substr(0, type.length - 2);
 				} else if (startsWith(type, 'Array<')) {
 					type = type.substr(6, type.length - 1);
 				}
@@ -203,21 +203,21 @@ export class EntityCandidateRegistry {
 						throw new Error(
 							`Non @Transient properties cannot be object maps.`);
 					}
-					property.isMap                 = true;
-					const objectMapValueFragment   = objectMapFragments[objectMapFragments.length - 1];
-					property.mapValueType          = objectMapValueFragment
+					property.isMap = true;
+					const objectMapValueFragment = objectMapFragments[objectMapFragments.length - 1];
+					property.mapValueType = objectMapValueFragment
 						.replace('}', '')
 						.replace(';', '')
 						.trim();
-					type                           = property.mapValueType;
-					property.mapValueIsPrimitive   = isPrimitive(type);
+					type = property.mapValueType;
+					property.mapValueIsPrimitive = isPrimitive(type);
 					const objectMapKeyNameFragment = objectMapFragments[0];
-					property.mapKeyName            = objectMapKeyNameFragment
+					property.mapKeyName = objectMapKeyNameFragment
 						.replace('{', '')
 						.replace('[', '')
 						.trim();
 					const objectMapKeyTypeFragment = objectMapFragments[1];
-					property.mapKeyType            = objectMapKeyTypeFragment
+					property.mapKeyType = objectMapKeyTypeFragment
 						.replace(']', '')
 						.trim();
 				}
@@ -234,7 +234,7 @@ export class EntityCandidateRegistry {
 				}
 				const moduleImport = fileImports.importMapByObjectAsName[type];
 				if (moduleImport && !moduleImport.isLocal) {
-					const projectName    = this.getProjectReferenceFromPath(moduleImport.path);
+					const projectName = this.getProjectReferenceFromPath(moduleImport.path);
 					property.fromProject = projectName;
 					if (!this.getReferencedSchema(projectName, property)) {
 						throw new Error(`
@@ -255,11 +255,11 @@ export class EntityCandidateRegistry {
 					} else {
 						if (canBeInterface(type)) {
 							const entityType = getImplNameFromInterfaceName(type);
-							verifiedEntity   = this.entityCandidateMap.get(entityType);
+							verifiedEntity = this.entityCandidateMap.get(entityType);
 							if (verifiedEntity) {
-								const externalInterface          = new Interface(null, type);
+								const externalInterface = new Interface(null, type);
 								externalInterface.implementation = verifiedEntity;
-								entityInterfaceMap[type]         = externalInterface;
+								entityInterfaceMap[type] = externalInterface;
 								this.registerInterface(externalInterface, property);
 								property.entity = verifiedEntity;
 							} else {
@@ -290,7 +290,7 @@ export class EntityCandidateRegistry {
 		}
 		const dbSchema = this.schemaLoader.getReferencedSchema(projectName);
 
-		this.schemaMap[projectName]  = dbSchema;
+		this.schemaMap[projectName] = dbSchema;
 		property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, dbSchema, property);
 
 		return dbSchema;
@@ -316,15 +316,15 @@ export class EntityCandidateRegistry {
 		return true;
 	}
 
-	private getMappedSuperclassFromProject(
+	private async getMappedSuperclassFromProject(
 		fileImports: FileImports,
 		type: string
-	): EntityCandidate {
+	): Promise<EntityCandidate> {
 		const moduleImport = fileImports.importMapByObjectAsName[type];
 		if (!moduleImport || moduleImport.isLocal) {
 			return null;
 		}
-		const projectName               = this.getProjectReferenceFromPath(moduleImport.path);
+		const projectName = this.getProjectReferenceFromPath(moduleImport.path);
 		const projectMappedSuperclasses = this.mappedSuperClassMap[projectName];
 		if (projectMappedSuperclasses) {
 			return projectMappedSuperclasses[type];
@@ -342,7 +342,7 @@ export class EntityCandidateRegistry {
 		// fs.lstatSync(pathToMappedSuperclasses).isDirectory()) {
 		// relatedMappedSuperclassesProject = require(pathToMappedSuperclasses) break } } }
 		// else {
-		relatedMappedSuperclassesProject = require(process.cwd() + '/node_modules/' + projectName);
+		relatedMappedSuperclassesProject = await import('file://' + process.cwd() + '/node_modules/' + projectName + '/lib/index.js');
 		// }
 		if (!relatedMappedSuperclassesProject) {
 			throw new Error(`Could not find related schema project '${projectName}'`);
@@ -353,7 +353,7 @@ export class EntityCandidateRegistry {
 		}
 		const mappedSuperClassMapForProject: { [mappedSuperclasName: string]: EntityCandidate } = {};
 		for (const mappedSuperclass of relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
-			const entityCandidate                                = this.deserializeEntityCandidate(mappedSuperclass);
+			const entityCandidate = this.deserializeEntityCandidate(mappedSuperclass);
 			mappedSuperClassMapForProject[mappedSuperclass.type] = entityCandidate;
 		}
 		this.mappedSuperClassMap[projectName] = mappedSuperClassMapForProject;
@@ -381,12 +381,12 @@ export class EntityCandidateRegistry {
 		dbSchema: DbSchema,
 		property: PropertyDocEntry,
 	): DbEntity {
-		const type              = property.nonArrayType;
+		const type = property.nonArrayType;
 		let otherSchemaDbEntity = dbSchema.currentVersion.entityMapByName[type];
 		if (!otherSchemaDbEntity) {
 			if (canBeInterface(type)) {
 				const relatedImplementationName = getImplNameFromInterfaceName(type);
-				otherSchemaDbEntity             = dbSchema.currentVersion.entityMapByName[relatedImplementationName];
+				otherSchemaDbEntity = dbSchema.currentVersion.entityMapByName[relatedImplementationName];
 				if (!otherSchemaDbEntity) {
 					throw new Error(`Could not find entity '${relatedImplementationName}' 
 					(from interface ${type}) in project '${projectName}'`);
@@ -416,7 +416,7 @@ export class EntityCandidateRegistry {
 			implemented by one entity.`);
 		}
 		let implementedEntity = anInterface.implementedBySet.values().next().value;
-		property.entity       = implementedEntity;
+		property.entity = implementedEntity;
 	}
 
 }

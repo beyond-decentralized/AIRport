@@ -15,12 +15,12 @@ const enumMap: Map<string, string> = new Map<string, string>()
 globalThis.enumMap                 = enumMap
 
 /** Generate documention for all classes in a set of .ts files */
-export function generateDefinitions(
+export async function generateDefinitions(
 	fileNames: string[],
 	options: ts.CompilerOptions,
 	configuration: Configuration,
 	schemaMapByProjectName: { [projectName: string]: DbSchema }
-): { [entityName: string]: EntityCandidate } {
+): Promise<{ [entityName: string]: EntityCandidate }> {
 	// Build a program using the set of root file names in fileNames
 	let program        = tsc.createProgram(fileNames, options)
 	globalThis.checker = program.getTypeChecker()
@@ -44,7 +44,7 @@ export function generateDefinitions(
 	// print out the doc
 	// fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
 
-	return globalCandidateRegistry
+	return await globalCandidateRegistry
 		.matchVerifiedEntities(globalThis.processedCandidateRegistry)
 }
 

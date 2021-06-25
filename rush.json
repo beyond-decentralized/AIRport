@@ -57,6 +57,11 @@
       "projectFolder": "apps/terminal",
       "shouldPublish": true
     },
+    {
+      "packageName": "@airport/todo",
+      "projectFolder": "apps/todo",
+      "shouldPublish": true
+    },
     // "common" folder (alphabetical order)
     {
       "packageName": "@airport/tools",
@@ -226,6 +231,11 @@
     {
       "packageName": "@airport/moving-walkway",
       "projectFolder": "schemas/moving-walkway",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/na-kano",
+      "projectFolder": "schemas/na-kano",
       "shouldPublish": true
     },
     {
