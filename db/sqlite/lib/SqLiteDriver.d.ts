@@ -15,5 +15,6 @@ export declare abstract class SqLiteDriver extends SqlDriver {
     isValueValid(value: any, sqlDataType: SQLDataType): boolean;
     abstract query(queryType: QueryType, query: string, params: any, context: IOperationContext<any, any>, saveTransaction?: boolean): Promise<any>;
     initTables(createQueries: Promise<any>[]): Promise<void>;
+    isServer(): boolean;
 }
 //# sourceMappingURL=SqLiteDriver.d.ts.map

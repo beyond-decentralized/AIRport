@@ -1,17 +1,26 @@
 import {
 	ISequence,
 	SEQUENCE_DAO
-}                      from '@airport/airport-code'
+} from '@airport/airport-code'
 import {
 	ISequenceGenerator,
+	SEQUENCE_GENERATOR,
 	setSeqGen
-}                      from '@airport/check-in'
-import {container, DI} from '@airport/di'
+} from '@airport/check-in'
+import { container, DI } from '@airport/di'
 import {
 	DbColumn,
 	DbEntity,
+	DbSequence,
 	ensureChildArray
-}                      from '@airport/ground-control'
+} from '@airport/ground-control'
+
+export interface SqLiteSequence
+	extends DbSequence {
+
+	currentValue: number
+
+}
 
 /**
  * Assumptions: 7/4/2019
@@ -34,7 +43,7 @@ import {
 export class SqLiteSequenceGenerator
 	implements ISequenceGenerator {
 
-	private sequences: ISequence[][][]   = []
+	private sequences: SqLiteSequence[][][] = []
 	private sequenceBlocks: number[][][] = []
 
 	private generatingSequenceNumbers = false
@@ -66,8 +75,8 @@ export class SqLiteSequenceGenerator
 				!!tableSequences[dbColumn.index])
 	}
 
-	async init(
-		sequences?: ISequence[]
+	async initialize(
+		sequences?: DbSequence[]
 	): Promise<void> {
 		const sequenceDao = await container(this).get(SEQUENCE_DAO)
 		if (!sequences) {
@@ -123,16 +132,16 @@ export class SqLiteSequenceGenerator
 			const dbColumn = dbColumns[i]
 
 			let numColumnSequencesNeeded = numSequencesNeeded[i]
-			const columnNumbers          = ensureChildArray(sequentialNumbers, i)
+			const columnNumbers = ensureChildArray(sequentialNumbers, i)
 
 			const dbEntity = dbColumn.propertyColumns[0].property.entity
-			const schema   = dbEntity.schemaVersion.schema
+			const schema = dbEntity.schemaVersion.schema
 
 			let sequenceBlock = this.sequenceBlocks[schema.index]
-				[dbEntity.index][dbColumn.index]
+			[dbEntity.index][dbColumn.index]
 
 			const sequence = this.sequences[schema.index]
-				[dbEntity.index][dbColumn.index]
+			[dbEntity.index][dbColumn.index]
 
 			while (numColumnSequencesNeeded && sequenceBlock) {
 				columnNumbers.push(sequence.currentValue - sequenceBlock + 1)
@@ -143,7 +152,7 @@ export class SqLiteSequenceGenerator
 			if (numColumnSequencesNeeded) {
 				const numNewSequencesNeeded = sequence.incrementBy + numColumnSequencesNeeded
 
-				const newSequence = {...sequence}
+				const newSequence = { ...sequence }
 				newSequence.currentValue += numNewSequencesNeeded
 				await sequenceDao.save(newSequence)
 				this.sequences[schema.index][dbEntity.index][dbColumn.index] = newSequence
@@ -156,7 +165,7 @@ export class SqLiteSequenceGenerator
 				}
 
 				this.sequenceBlocks[schema.index]
-					[dbEntity.index][dbColumn.index] = sequenceBlock
+				[dbEntity.index][dbColumn.index] = sequenceBlock
 			}
 		}
 
@@ -183,7 +192,7 @@ export class SqLiteSequenceGenerator
 	}
 
 	private addSequences(
-		sequences: ISequence[]
+		sequences: DbSequence[]
 	): void {
 		for (const sequence of sequences) {
 			ensureChildArray(
@@ -197,3 +206,5 @@ export class SqLiteSequenceGenerator
 	}
 
 }
+
+DI.set(SEQUENCE_GENERATOR, SqLiteSequenceGenerator)

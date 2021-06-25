@@ -11,7 +11,7 @@ export class WebSqlDriver extends SqLiteDriver {
         this.type = StoreType.SQLITE_CORDOVA;
     }
     getDialect() {
-        return SQLDialect.SQLITE_WEBSQL;
+        return SQLDialect.SQLITE;
     }
     getBackupLocation(dbFlag) {
         switch (dbFlag) {
@@ -25,7 +25,7 @@ export class WebSqlDriver extends SqLiteDriver {
                 throw Error('Invalid backup flag: ' + dbFlag);
         }
     }
-    async initialize(dbName) {
+    async initialize(dbName, context) {
         let dbOptions = {
             name: dbName,
             backupFlag: WebSqlDriver.BACKUP_LOCAL,
@@ -44,13 +44,8 @@ export class WebSqlDriver extends SqLiteDriver {
             this._db = win.openDatabase(dbOptions.name, '1.0', 'terminal', 5 * 1024 * 1024);
         }
     }
-    async transact(keepAlive = true) {
-        return new Promise((resolve) => {
-            if (!this.transaction) {
-                this.keepAlive = keepAlive;
-            }
-            resolve();
-        });
+    async transact(callback, context) {
+        throw new Error('not implemented');
     }
     async rollback() {
         if (this.transaction) {
@@ -63,7 +58,7 @@ export class WebSqlDriver extends SqLiteDriver {
         this.keepAliveCount = 0;
         this.transaction = null;
     }
-    async query(queryType, query, params = [], saveTransaction = false) {
+    async query(queryType, query, params = [], context, saveTransaction = false) {
         return new Promise((resolve, reject) => {
             let id = ++this.currentStatementId;
             this.pendingStatements.push({

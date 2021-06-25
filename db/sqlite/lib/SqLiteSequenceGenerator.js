@@ -1,6 +1,6 @@
 import { SEQUENCE_DAO } from '@airport/airport-code';
-import { setSeqGen } from '@airport/check-in';
-import { container } from '@airport/di';
+import { SEQUENCE_GENERATOR, setSeqGen } from '@airport/check-in';
+import { container, DI } from '@airport/di';
 import { ensureChildArray } from '@airport/ground-control';
 /**
  * Assumptions: 7/4/2019
@@ -41,7 +41,7 @@ export class SqLiteSequenceGenerator {
         }
         return generatedColumns.every(dbColumn => !!tableSequences[dbColumn.index]);
     }
-    async init(sequences) {
+    async initialize(sequences) {
         const sequenceDao = await container(this).get(SEQUENCE_DAO);
         if (!sequences) {
             sequences = await sequenceDao.findAll();
@@ -129,4 +129,5 @@ export class SqLiteSequenceGenerator {
         }
     }
 }
+DI.set(SEQUENCE_GENERATOR, SqLiteSequenceGenerator);
 //# sourceMappingURL=SqLiteSequenceGenerator.js.map

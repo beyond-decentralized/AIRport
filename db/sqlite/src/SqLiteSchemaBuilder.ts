@@ -129,7 +129,7 @@ export class SqLiteSchemaBuilder
       }
       let incrementBy = jsonColumn.allocationSize;
       if (!incrementBy) {
-        incrementBy = 10000;
+        incrementBy = 100;
       }
 
       sequences.push({

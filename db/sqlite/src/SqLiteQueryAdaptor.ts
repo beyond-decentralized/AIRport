@@ -130,7 +130,7 @@ export class SqlLiteFunctionAdaptor
 	getFunctionCall(
 		jsonFunctionCall: JSONSqlFunctionCall,
 		value: string,
-		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
+		qEntityMapByAlias: { [entityName: string]: IQEntityInternal<any> },
 		sqlValueProvider: ISqlValueProvider,
 		context: IOperationContext<any, any>,
 	): string {

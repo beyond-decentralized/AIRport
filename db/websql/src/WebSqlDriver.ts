@@ -2,9 +2,13 @@ import {
 	INVALID_TABLE_NAME,
 	QueryType,
 	StoreType
-}                     from '@airport/ground-control'
-import {SQLDialect}   from '@airport/fuel-hydrant-system'
-import {SqLiteDriver} from '@airport/sqlite'
+} from '@airport/ground-control'
+import { SQLDialect } from '@airport/fuel-hydrant-system'
+import { SqLiteDriver } from '@airport/sqlite'
+import {
+	IOperationContext,
+	ITransaction
+} from '@airport/tower'
 
 /**
  * Created by Papa on 8/30/2016.
@@ -21,15 +25,15 @@ export interface PendingStatement {
 export class WebSqlDriver
 	extends SqLiteDriver {
 
-	static BACKUP_LOCAL     = 2
-	static BACKUP_LIBRARY   = 1
+	static BACKUP_LOCAL = 2
+	static BACKUP_LIBRARY = 1
 	static BACKUP_DOCUMENTS = 0
 
 	private _db: any
 
-	private currentStatementId                    = 0
-	private keepAlive                     = false
-	private keepAliveCount                = 0
+	private currentStatementId = 0
+	private keepAlive = false
+	private keepAliveCount = 0
 	private transaction
 	private pendingStatements: PendingStatement[] = []
 
@@ -39,7 +43,7 @@ export class WebSqlDriver
 	}
 
 	protected getDialect(): SQLDialect {
-		return SQLDialect.SQLITE_WEBSQL
+		return SQLDialect.SQLITE
 	}
 
 	private getBackupLocation(dbFlag: number): number {
@@ -56,7 +60,8 @@ export class WebSqlDriver
 	}
 
 	async initialize(
-		dbName: string
+		dbName: string,
+		context: IOperationContext<any, any>,
 	): Promise<any> {
 		let dbOptions: any = {
 			name: dbName,
@@ -66,10 +71,10 @@ export class WebSqlDriver
 
 		let win: any = window
 		if (win.sqlitePlugin) {
-			let location                 = this.getBackupLocation(dbOptions.backupFlag)
-			dbOptions.location           = location
+			let location = this.getBackupLocation(dbOptions.backupFlag)
+			dbOptions.location = location
 			dbOptions.createFromLocation = dbOptions.existingDatabase ? 1 : 0
-			this._db                     = win.sqlitePlugin.openDatabase(dbOptions)
+			this._db = win.sqlitePlugin.openDatabase(dbOptions)
 		} else {
 			// console.warn('Storage: SQLite plugin not installed, falling back to WebSQL. Make
 			// sure to install cordova-sqlite-storage in production!')
@@ -78,16 +83,14 @@ export class WebSqlDriver
 	}
 
 	async transact(
-		keepAlive: boolean = true
+		callback: {
+			(
+				transaction: ITransaction
+			): Promise<void>
+		},
+		context: IOperationContext<any, any>,
 	): Promise<void> {
-		return new Promise((
-			resolve
-		) => {
-			if (!this.transaction) {
-				this.keepAlive = keepAlive
-			}
-			resolve()
-		})
+		throw new Error('not implemented')
 	}
 
 	async rollback(): Promise<void> {
@@ -98,7 +101,7 @@ export class WebSqlDriver
 	}
 
 	async commit(): Promise<void> {
-		this.keepAlive   = false
+		this.keepAlive = false
 		this.keepAliveCount = 0
 		this.transaction = null
 	}
@@ -106,7 +109,8 @@ export class WebSqlDriver
 	async query(
 		queryType: QueryType,
 		query: string,
-		params                   = [],
+		params = [],
+		context: IOperationContext<any, any>,
 		saveTransaction: boolean = false
 	): Promise<any> {
 		return new Promise((
@@ -125,9 +129,9 @@ export class WebSqlDriver
 			try {
 				if (!this.transaction) {
 					this._db.transaction((tx) => {
-							this.transaction = tx
-							this.executePendingStatements(tx)
-						},
+						this.transaction = tx
+						this.executePendingStatements(tx)
+					},
 						(err) => {
 							reject(err)
 						},
@@ -160,7 +164,7 @@ export class WebSqlDriver
 
 			console.log(statement.query)
 			console.log(statement.params)
-			if(this.keepAlive) {
+			if (this.keepAlive) {
 				this.keepAliveCount = 100
 			}
 			tx.executeSql(statement.query, statement.params,

@@ -74,7 +74,7 @@ export class SqLiteSchemaBuilder extends SqlSchemaBuilder {
             }
             let incrementBy = jsonColumn.allocationSize;
             if (!incrementBy) {
-                incrementBy = 10000;
+                incrementBy = 100;
             }
             sequences.push({
                 schemaIndex: dbSchema.index,

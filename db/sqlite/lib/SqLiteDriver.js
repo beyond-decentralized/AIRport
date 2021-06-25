@@ -1,4 +1,4 @@
-import { QueryType, SQLDataType } from '@airport/ground-control';
+import { QueryType } from '@airport/ground-control';
 import { SqlDriver } from '@airport/fuel-hydrant-system';
 /**
  * Created by Papa on 11/27/2016.
@@ -58,17 +58,21 @@ WHERE
         }
     }
     isValueValid(value, sqlDataType) {
-        switch (sqlDataType) {
-            case SQLDataType.DATE:
-            case SQLDataType.NUMBER:
-        }
-        return false;
+        throw new Error('Method not implemented.');
+        // switch (sqlDataType) {
+        // 	case SQLDataType.DATE:
+        // 	case SQLDataType.NUMBER:
+        // }
+        // return false
     }
     async initTables(createQueries) {
         for (let i = 0; i < createQueries.length; i++) {
             let currentQuery = createQueries[i];
             await currentQuery;
         }
+    }
+    isServer() {
+        return false;
     }
 }
 //# sourceMappingURL=SqLiteDriver.js.map

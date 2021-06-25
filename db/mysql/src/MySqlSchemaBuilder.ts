@@ -137,7 +137,7 @@ export class MySqlSchemaBuilder
 			}
 			let incrementBy = jsonColumn.allocationSize
 			if (!incrementBy) {
-				incrementBy = 10000
+				incrementBy = 1000
 			}
 
 			sequences.push({

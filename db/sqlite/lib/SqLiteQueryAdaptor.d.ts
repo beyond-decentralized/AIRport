@@ -21,7 +21,7 @@ export declare abstract class SqLiteQueryAdaptor implements ISQLQueryAdaptor {
 }
 export declare class SqlLiteFunctionAdaptor extends AbstractFunctionAdaptor {
     getFunctionCall(jsonFunctionCall: JSONSqlFunctionCall, value: string, qEntityMapByAlias: {
-        [entityName: string]: IQEntityInternal;
+        [entityName: string]: IQEntityInternal<any>;
     }, sqlValueProvider: ISqlValueProvider, context: IOperationContext<any, any>): string;
     toString(val: any): string;
 }

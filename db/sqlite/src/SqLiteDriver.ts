@@ -103,11 +103,12 @@ WHERE
 		value: any,
 		sqlDataType: SQLDataType
 	): boolean {
-		switch (sqlDataType) {
-			case SQLDataType.DATE:
-			case SQLDataType.NUMBER:
-		}
-		return false
+		throw new Error('Method not implemented.');
+		// switch (sqlDataType) {
+		// 	case SQLDataType.DATE:
+		// 	case SQLDataType.NUMBER:
+		// }
+		// return false
 	}
 
 	abstract query(
@@ -125,6 +126,10 @@ WHERE
 			let currentQuery = createQueries[i]
 			await currentQuery
 		}
+	}
+
+	isServer(): boolean {
+	  return false;
 	}
 
 }

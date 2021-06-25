@@ -1,6 +1,9 @@
 import { ISequence } from '@airport/airport-code';
 import { ISequenceGenerator } from '@airport/check-in';
-import { DbColumn, DbEntity } from '@airport/ground-control';
+import { DbColumn, DbEntity, DbSequence } from '@airport/ground-control';
+export interface SqLiteSequence extends DbSequence {
+    currentValue: number;
+}
 /**
  * Assumptions: 7/4/2019
  *
@@ -24,7 +27,7 @@ export declare class SqLiteSequenceGenerator implements ISequenceGenerator {
     private sequenceBlocks;
     private generatingSequenceNumbers;
     exists(dbEntity: DbEntity): boolean;
-    init(sequences?: ISequence[]): Promise<void>;
+    initialize(sequences?: DbSequence[]): Promise<void>;
     tempInit(sequences?: ISequence[]): Promise<void>;
     generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
     /**
