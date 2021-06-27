@@ -120,6 +120,48 @@ export class TransactionalConnector
 		);
 	}
 
+	/**
+	 * This is a TIQL Insert statement coming from the client.
+	 * It will have an id of the operation to be invoked, as
+	 * well as the parameters for this specific operation.
+	 * The operation will then be looked up from the schema,
+	 * parsed, cached (if appropriate) and executed.
+	 * 
+	 * NOTE: some of these operations will be internal 
+	 * 
+	 * In a client Dao this will look like:
+	 * 
+	 * @Prepared()
+	 * @Insert(...)
+	 * 
+	 */
+	insert(
+		// todo define parameters
+	) {
+		// TODO: implement
+		throw new Error(`TODO: implement`)
+	}
+
+	/**
+	 * @Update(...)
+	 */
+	update(
+		// todo define parameters
+	) {
+		// TODO: implement
+		throw new Error(`TODO: implement`)
+	}
+
+	/**
+	 * @Delete(...)
+	 */
+	delete(
+		// todo define parameters
+	) {
+		// TODO: implement
+		throw new Error(`TODO: implement`)
+	}
+
 	save<E, T = E | E[]>(
 		entity: T,
 		context: IContext,
