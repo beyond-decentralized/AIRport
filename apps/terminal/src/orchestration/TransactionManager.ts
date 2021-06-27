@@ -1,20 +1,20 @@
-import { IQEntityInternal }        from '@airport/air-control';
+import { IQEntityInternal } from '@airport/air-control';
 import {
 	container,
 	DI,
 	IContext
-}                                  from '@airport/di';
+} from '@airport/di';
 import {
 	ACTIVE_QUERIES,
 	ID_GENERATOR,
 	IIdGenerator
-}                                  from '@airport/fuel-hydrant-system';
+} from '@airport/fuel-hydrant-system';
 import {
 	IStoreDriver,
 	STORE_DRIVER,
 	StoreType,
 	SyncSchemaMap
-}                                  from '@airport/ground-control';
+} from '@airport/ground-control';
 import {
 	OperationHistory,
 	Q,
@@ -24,13 +24,13 @@ import {
 	RepositoryTransactionHistory,
 	TRANS_HISTORY_DUO,
 	TransactionHistory,
-}                                  from '@airport/holding-pattern';
+} from '@airport/holding-pattern';
 import {
 	ICredentials,
 	ITransactionManager,
 	TRANSACTION_MANAGER
-}                                  from '@airport/terminal-map';
-import { ITransaction }            from '@airport/tower';
+} from '@airport/terminal-map';
+import { ITransaction } from '@airport/tower';
 import { AbstractMutationManager } from './AbstractMutationManager';
 
 export class TransactionManager
@@ -39,8 +39,8 @@ export class TransactionManager
 
 	// Keyed by repository index
 	storeType: StoreType;
-	transactionIndexQueue: string[]   = [];
-	transactionInProgress: string     = null;
+	transactionIndexQueue: string[] = [];
+	transactionInProgress: string = null;
 	yieldToRunningTransaction: number = 200;
 
 	/**
@@ -99,22 +99,35 @@ export class TransactionManager
 		}
 		let fieldMap = new SyncSchemaMap();
 
-		await storeDriver.transact(async (
-			transaction: ITransaction,
+		if (storeDriver.isServer()) {
+			await storeDriver.transact(async (
+				transaction: ITransaction,
 			) => {
 				transaction.transHistory = transHistoryDuo.getNewRecord();
-
 				transaction.credentials = credentials;
 				try {
 					await transactionalCallback(transaction);
-					transaction.commit();
+					await this.commit(transaction, context);
 				} catch (e) {
 					console.error(e);
-					transaction.rollback();
+					await this.rollback(transaction, context);
 				}
-			},
-			context,
-		);
+			}, context);
+		} else {
+			storeDriver.transact((
+				transaction: ITransaction,
+			) => {
+				transaction.transHistory = transHistoryDuo.getNewRecord();
+				transaction.credentials = credentials;
+				try {
+					transactionalCallback(transaction);
+					this.commit(transaction, context);
+				} catch (e) {
+					console.error(e);
+					this.rollback(transaction, context);
+				}
+			}, context);
+		}
 
 	}
 
@@ -141,7 +154,11 @@ export class TransactionManager
 			return;
 		}
 		try {
-			await transaction.rollback();
+			if (storeDriver.isServer()) {
+				await transaction.rollback();
+			} else {
+				transaction.rollback();
+			}
 		} finally {
 			this.clearTransaction();
 		}
@@ -163,6 +180,11 @@ export class TransactionManager
 		}
 
 		try {
+			if (storeDriver.isServer()) {
+				await transaction.rollback();
+			} else {
+				transaction.rollback();
+			}
 			await this.saveRepositoryHistory(transaction, idGenerator, context);
 
 			await transaction.saveTransaction(transaction.transHistory);

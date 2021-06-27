@@ -56,73 +56,6 @@ export class MySqlDriver
   protected queryApi: IQueryApi;
   protected maxValues = 1000000;
 
-  async query(
-    queryType: QueryType,
-    query: string,
-    params: any,
-    context: IOperationContext<any, any>,
-    saveTransaction?: boolean,
-  ): Promise<any> {
-    return await this.doQuery(queryType, query, params, this.queryApi, context,
-      saveTransaction);
-  }
-
-  async doQuery(
-    queryType: QueryType,
-    query: string,
-    params: any,
-    connection: IQueryApi,
-    context: IOperationContext<any, any>,
-    saveTransaction?: boolean,
-  ): Promise<any> {
-    let nativeParameters = params.map((value) => this.convertValueIn(value));
-    console.log(query);
-    console.log(nativeParameters);
-    const results = await connection.query(query, nativeParameters);
-
-    return results[0];
-  }
-
-  initialize(dbName: string): Promise<any> {
-    this.pool = mysql.createPool({
-      connectionLimit: 10,
-      database: 'votecube',
-      host: 'localhost',
-      password: 'admin',
-      queueLimit: 1000,
-      user: 'root',
-      waitForConnections: true,
-    });
-    this.queryApi = this.pool;
-
-    return null;
-  }
-
-  isServer(): boolean {
-    return true;
-  }
-
-  async transact(
-    transactionalCallback: {
-      (
-        transaction: ITransaction,
-      ): Promise<void>
-    },
-  ): Promise<void> {
-    const connection: Connection = await this.pool.getConnection();
-    await connection.beginTransaction();
-    const transactionModule = await import('./MySqlTransaction');
-    const transaction = new transactionModule.MySqlTransaction(this, this.pool, connection);
-    await transactionalCallback(transaction);
-  }
-
-  isValueValid(
-    value: any,
-    sqlDataType: SQLDataType,
-  ): boolean {
-    throw new Error('Method not implemented.');
-  }
-
   composeTableName(
     schemaName: string,
     tableName: string,
@@ -169,36 +102,6 @@ and TABLE_NAME = '${tableName}';`,
     return await this.query(QueryType.SELECT, sqlQuery, parameters, context);
   }
 
-  async initAllTables(
-    context: IOperationContext<any, any>,
-  ): Promise<any> {
-    let createOperations;
-    let createQueries: Promise<any>[] = [];
-    let createSql = DDLManager.getCreateDDL();
-    await transactional(async () => {
-      for (const createSqlStatement of createSql) {
-        const createTablePromise = this.query(QueryType.DDL, createSqlStatement,
-          [], context, false);
-        createQueries.push(createTablePromise);
-      }
-
-      await this.initTables(createQueries);
-    });
-  }
-
-  async initTables(
-    createQueries: Promise<any>[],
-  ): Promise<void> {
-    for (let i = 0; i < createQueries.length; i++) {
-      let currentQuery = createQueries[i];
-      await currentQuery;
-    }
-  }
-
-  protected getDialect(): import('@airport/fuel-hydrant-system').SQLDialect {
-    return SQLDialect.MYSQL;
-  }
-
   protected async executeNative(
     sql: string,
     parameters: any[],
@@ -230,6 +133,103 @@ and TABLE_NAME = '${tableName}';`,
       default:
         throw new Error(`Unexpected typeof value: ${typeof value}`);
     }
+  }
+
+  isValueValid(
+    value: any,
+    sqlDataType: SQLDataType,
+  ): boolean {
+    throw new Error('Method not implemented.');
+  }
+
+  async query(
+    queryType: QueryType,
+    query: string,
+    params: any,
+    context: IOperationContext<any, any>,
+    saveTransaction?: boolean,
+  ): Promise<any> {
+    return await this.doQuery(queryType, query, params, this.queryApi, context,
+      saveTransaction);
+  }
+
+  async doQuery(
+    queryType: QueryType,
+    query: string,
+    params: any,
+    connection: IQueryApi,
+    context: IOperationContext<any, any>,
+    saveTransaction?: boolean,
+  ): Promise<any> {
+    let nativeParameters = params.map((value) => this.convertValueIn(value));
+    console.log(query);
+    console.log(nativeParameters);
+    const results = await connection.query(query, nativeParameters);
+
+    return results[0];
+  }
+
+  initialize(dbName: string): Promise<any> {
+    this.pool = mysql.createPool({
+      connectionLimit: 10,
+      database: 'votecube',
+      host: 'localhost',
+      password: 'admin',
+      queueLimit: 1000,
+      user: 'root',
+      waitForConnections: true,
+    });
+    this.queryApi = this.pool;
+
+    return null;
+  }
+
+  async transact(
+    transactionalCallback: {
+      (
+        transaction: ITransaction,
+      ): Promise<void>
+    },
+  ): Promise<void> {
+    const connection: Connection = await this.pool.getConnection();
+    await connection.beginTransaction();
+    const transactionModule = await import('./MySqlTransaction');
+    const transaction = new transactionModule.MySqlTransaction(this, this.pool, connection);
+    await transactionalCallback(transaction);
+  }
+
+  async initAllTables(
+    context: IOperationContext<any, any>,
+  ): Promise<any> {
+    let createOperations;
+    let createQueries: Promise<any>[] = [];
+    let createSql = DDLManager.getCreateDDL();
+    await transactional(async () => {
+      for (const createSqlStatement of createSql) {
+        const createTablePromise = this.query(QueryType.DDL, createSqlStatement,
+          [], context, false);
+        createQueries.push(createTablePromise);
+      }
+
+      await this.initTables(createQueries);
+    });
+  }
+
+  async initTables(
+    createQueries: Promise<any>[],
+  ): Promise<void> {
+    for (let i = 0; i < createQueries.length; i++) {
+      let currentQuery = createQueries[i];
+      await currentQuery;
+    }
+  }
+
+  protected getDialect(): import('@airport/fuel-hydrant-system').SQLDialect {
+    return SQLDialect.MYSQL;
+  }
+
+  isServer(): boolean {
+    return true;
   }
 
 }

@@ -1,17 +1,19 @@
 import {
 	ISequence,
+	ISequenceDao,
 	SEQUENCE_DAO
-}                  from '@airport/airport-code'
+} from '@airport/airport-code'
 import {
+	IIdGeneratorContext,
 	ISequenceGenerator,
 	setSeqGen
-}                  from '@airport/check-in'
-import {container} from '@airport/di'
+} from '@airport/check-in'
+import { container } from '@airport/di'
 import {
 	DbColumn,
 	DbEntity,
 	ensureChildArray
-}                  from '@airport/ground-control'
+} from '@airport/ground-control'
 
 /**
  * Assumptions: 7/4/2019
@@ -31,10 +33,17 @@ import {
  * Sequence-only solution
  *
  */
+export interface ISequenceGeneratorContext
+	extends IIdGeneratorContext {
+	di: {
+		sequenceGenerator: ISequenceGenerator,
+		sequenceDao: ISequenceDao
+	}
+}
 export abstract class SequenceGenerator
 	implements ISequenceGenerator {
 
-	private sequences: ISequence[][][]   = []
+	private sequences: ISequence[][][] = []
 	private sequenceBlocks: number[][][] = []
 
 	private generatingSequenceNumbers = false
@@ -91,7 +100,8 @@ export abstract class SequenceGenerator
 
 	async generateSequenceNumbers(
 		dbColumns: DbColumn[],
-		numSequencesNeeded: number[]
+		numSequencesNeeded: number[],
+		context: ISequenceGeneratorContext
 	): Promise<number[][]> {
 		if (!dbColumns.length) {
 			return []
@@ -127,16 +137,16 @@ export abstract class SequenceGenerator
 			const dbColumn = dbColumns[i]
 
 			let numColumnSequencesNeeded = numSequencesNeeded[i]
-			const columnNumbers          = ensureChildArray(sequentialNumbers, i)
+			const columnNumbers = ensureChildArray(sequentialNumbers, i)
 
 			const dbEntity = dbColumn.propertyColumns[0].property.entity
-			const schema   = dbEntity.schemaVersion.schema
+			const schema = dbEntity.schemaVersion.schema
 
 			let sequenceBlock = this.sequenceBlocks[schema.index]
-				[dbEntity.index][dbColumn.index]
+			[dbEntity.index][dbColumn.index]
 
 			const sequence = this.sequences[schema.index]
-				[dbEntity.index][dbColumn.index]
+			[dbEntity.index][dbColumn.index]
 
 			while (numColumnSequencesNeeded && sequenceBlock) {
 				columnNumbers.push(sequence.currentValue - sequenceBlock + 1)
@@ -147,7 +157,7 @@ export abstract class SequenceGenerator
 			if (numColumnSequencesNeeded) {
 				const numNewSequencesNeeded = sequence.incrementBy + numColumnSequencesNeeded
 
-				const newSequence = {...sequence}
+				const newSequence = { ...sequence }
 				newSequence.currentValue += numNewSequencesNeeded
 				await sequenceDao.save(newSequence)
 				this.sequences[schema.index][dbEntity.index][dbColumn.index] = newSequence
@@ -160,7 +170,7 @@ export abstract class SequenceGenerator
 				}
 
 				this.sequenceBlocks[schema.index]
-					[dbEntity.index][dbColumn.index] = sequenceBlock
+				[dbEntity.index][dbColumn.index] = sequenceBlock
 			}
 		}
 

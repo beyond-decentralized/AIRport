@@ -1,5 +1,17 @@
 {
     "search.exclude": {
         "**/lib": true
+    },
+    "files.exclude": {
+        ".github": true,
+        ".history": true,
+        ".vscode": true,
+        "**/.idea": true,
+        "**/.rush": true,
+        "**/lib": true,
+        "**/node_modules": true,
+        "**/README.md": true,
+        "**/tsconfig.json": true,
+        "common": true
     }
 }

@@ -43,18 +43,20 @@ export class TransactionManager extends AbstractMutationManager {
             this.transactionInProgress = credentials.domainAndPort;
         }
         let fieldMap = new SyncSchemaMap();
-        await storeDriver.transact(async (transaction) => {
-            transaction.transHistory = transHistoryDuo.getNewRecord();
-            transaction.credentials = credentials;
-            try {
-                await transactionalCallback(transaction);
-                transaction.commit();
-            }
-            catch (e) {
-                console.error(e);
-                transaction.rollback();
-            }
-        }, context);
+        if (storeDriver.isServer()) {
+            await storeDriver.transact(async (transaction) => {
+                transaction.transHistory = transHistoryDuo.getNewRecord();
+                transaction.credentials = credentials;
+                try {
+                    await transactionalCallback(transaction);
+                    transaction.commit();
+                }
+                catch (e) {
+                    console.error(e);
+                    transaction.rollback();
+                }
+            }, context);
+        }
     }
     async rollback(transaction, context) {
         const storeDriver = await container(this)

@@ -1,20 +1,21 @@
-import {SEQUENCE_GENERATOR} from '@airport/check-in'
+import { ISequenceGenerator, SEQUENCE_GENERATOR } from '@airport/check-in'
 import {
 	container,
-	DI
-}                           from '@airport/di'
+	DI,
+	IContext
+} from '@airport/di'
 import {
 	DbColumn,
 	DbEntity
-}                           from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	OperationHistoryId,
 	Q,
 	RecordHistoryId,
 	RepositoryTransactionHistoryId,
 	TransactionHistoryId
-}                           from '@airport/holding-pattern'
-import {ID_GENERATOR}       from '../tokens'
+} from '@airport/holding-pattern'
+import { ID_GENERATOR } from '../tokens'
 
 export type NumRepositoryTransHistories = number
 export type NumOperationTransHistories = number
@@ -36,9 +37,18 @@ export interface IIdGenerator {
 	generateTransactionHistoryIds(
 		numRepositoryTransHistories: NumRepositoryTransHistories,
 		numOperationTransHistories: NumOperationTransHistories,
-		numRecordHistories: NumRecordHistories
+		numRecordHistories: NumRecordHistories,
+		context: IIdGeneratorContext
 	): Promise<TransactionHistoryIds>;
 
+}
+
+export interface IIdGeneratorContext
+	extends IContext {
+	di: {
+		sequenceGenerator: ISequenceGenerator,
+	}
+	isServer: boolean
 }
 
 /**
@@ -54,14 +64,14 @@ export class IdGenerator
 		(await container(this)
 			.get(SEQUENCE_GENERATOR)).initialize()
 
-		const transHistoryDbEntity     =
-			      this.getHoldingPatternDbEntity('TransactionHistory')
+		const transHistoryDbEntity =
+			this.getHoldingPatternDbEntity('TransactionHistory')
 		const repoTransHistoryDbEntity =
-			      this.getHoldingPatternDbEntity('RepositoryTransactionHistory')
+			this.getHoldingPatternDbEntity('RepositoryTransactionHistory')
 		const operationHistoryDbEntity =
-			      this.getHoldingPatternDbEntity('OperationHistory')
-		const recordHistoryDbEntity    =
-			      this.getHoldingPatternDbEntity('RecordHistory')
+			this.getHoldingPatternDbEntity('OperationHistory')
+		const recordHistoryDbEntity =
+			this.getHoldingPatternDbEntity('RecordHistory')
 
 		this.transactionHistoryIdColumns.push(
 			transHistoryDbEntity.idColumns[0]
@@ -80,19 +90,23 @@ export class IdGenerator
 	async generateTransactionHistoryIds(
 		numRepositoryTransHistories: NumRepositoryTransHistories,
 		numOperationTransHistories: NumOperationTransHistories,
-		numRecordHistories: NumRecordHistories
+		numRecordHistories: NumRecordHistories,
+		context: IIdGeneratorContext
 	): Promise<TransactionHistoryIds> {
 
-		const generatedSequenceNumbers = await (await container(this)
-			.get(SEQUENCE_GENERATOR))
-			.generateSequenceNumbers(
-				this.transactionHistoryIdColumns,
-				[
-					1,
-					numRepositoryTransHistories,
-					numOperationTransHistories,
-					numRecordHistories
-				])
+		const sequenceGenerator = context.di.sequenceGenerator
+
+		let generatedSequenceNumbers: any = sequenceGenerator.generateSequenceNumbers(
+			this.transactionHistoryIdColumns,
+			[
+				1,
+				numRepositoryTransHistories,
+				numOperationTransHistories,
+				numRecordHistories
+			], context);
+		if (context.isServer) {
+			generatedSequenceNumbers = await generatedSequenceNumbers;
+		}
 
 		return {
 			operationHistoryIds: generatedSequenceNumbers[2],

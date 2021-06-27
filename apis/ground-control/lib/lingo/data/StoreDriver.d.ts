@@ -31,8 +31,8 @@ export interface IStoreDriver extends IStoreOperator {
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): IObservable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): IObservable<E>;
     transact(transactionalCallback: {
-        (transaction: IStoreDriver): Promise<void>;
+        (transaction: IStoreDriver): Promise<void> | void;
     }, context: IContext): Promise<void>;
-    isServer(context: IContext): boolean;
+    isServer(context?: IContext): boolean;
 }
 //# sourceMappingURL=StoreDriver.d.ts.map

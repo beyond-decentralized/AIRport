@@ -1,8 +1,8 @@
 import {
 	QueryType,
 	SQLDataType
-}                            from '@airport/ground-control'
-import {SqlDriver}           from '@airport/fuel-hydrant-system'
+} from '@airport/ground-control'
+import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
 import { IOperationContext } from '@airport/tower';
 
 /**
@@ -74,7 +74,6 @@ WHERE
 		return await this.query(QueryType.MUTATE, sql, parameters, context)
 	}
 
-
 	protected convertValueIn(
 		value: any
 	): number | string {
@@ -128,8 +127,12 @@ WHERE
 		}
 	}
 
+	protected getDialect(): import('@airport/fuel-hydrant-system').SQLDialect {
+		return SQLDialect.SQLITE;
+	}
+
 	isServer(): boolean {
-	  return false;
+		return false;
 	}
 
 }

@@ -1,5 +1,5 @@
 import { QueryType } from '@airport/ground-control';
-import { SqlDriver } from '@airport/fuel-hydrant-system';
+import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
 /**
  * Created by Papa on 11/27/2016.
  */
@@ -70,6 +70,9 @@ WHERE
             let currentQuery = createQueries[i];
             await currentQuery;
         }
+    }
+    getDialect() {
+        return SQLDialect.SQLITE;
     }
     isServer() {
         return false;

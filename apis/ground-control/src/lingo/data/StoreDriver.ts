@@ -78,13 +78,13 @@ export interface IStoreDriver
 		transactionalCallback: {
 			(
 				transaction: IStoreDriver
-			): Promise<void>
+			): Promise<void> | void
 		},
 		context: IContext,
 	): Promise<void>
 
 	isServer(
-		context: IContext,
+		context?: IContext,
 	): boolean
 
 }
