@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and,
 	max,
 	tree,
@@ -107,7 +107,7 @@ export class SchemaDao
 	}
 
 	async findMaxIndex(): Promise<SchemaIndex> {
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const s = Q.Schema
 		return await airDb.findOne.field({
@@ -122,7 +122,7 @@ export class SchemaDao
 		schemaDomainNames: DomainName[],
 		schemaNames: SchemaName[]
 	): Promise<Map<DomainName, Map<SchemaName, ISchema>>> {
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const maxVersionedMapBySchemaAndDomainNames: Map<DomainName, Map<SchemaName, ISchema>>
 			      = new Map()

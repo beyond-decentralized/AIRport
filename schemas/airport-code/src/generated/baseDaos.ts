@@ -1,24 +1,7 @@
+/* eslint-disable */
 import {
-	IDao,
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { Dao } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	duoDiSet
-} from './qSchema'
-import {
-	ISequence
-} from './sequence'
+	ISequence,
+} from './sequence';
 import {
 	SequenceESelect,
 	SequenceECreateColumns,
@@ -27,11 +10,11 @@ import {
 	SequenceEUpdateProperties,
 	SequenceEId,
 	SequenceGraph,
-	QSequence
-} from './qsequence'
+	QSequence,
+} from './qsequence';
 import {
-	ISystemWideOperationId
-} from './systemwideoperationid'
+	ISystemWideOperationId,
+} from './systemwideoperationid';
 import {
 	SystemWideOperationIdESelect,
 	SystemWideOperationIdECreateColumns,
@@ -40,11 +23,11 @@ import {
 	SystemWideOperationIdEUpdateProperties,
 	SystemWideOperationIdEId,
 	SystemWideOperationIdGraph,
-	QSystemWideOperationId
-} from './qsystemwideoperationid'
+	QSystemWideOperationId,
+} from './qsystemwideoperationid';
 import {
-	ITerminalRun
-} from './terminalrun'
+	ITerminalRun,
+} from './terminalrun';
 import {
 	TerminalRunESelect,
 	TerminalRunECreateColumns,
@@ -53,8 +36,29 @@ import {
 	TerminalRunEUpdateProperties,
 	TerminalRunEId,
 	TerminalRunGraph,
-	QTerminalRun
-} from './qterminalrun'
+	QTerminalRun,
+} from './qterminalrun';
+import {
+	IDao,
+	IEntityCascadeGraph,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+} from '@airport/air-control';
+import {
+	Dao,
+	DaoQueryDecorators,
+} from '@airport/check-in';
+import {
+	EntityId as DbEntityId,
+} from '@airport/ground-control';
+import {
+	Q,
+	duoDiSet,
+} from './qSchema';
 
 
 // Schema Q object Dependency Injection readiness detection Dao
@@ -90,6 +94,16 @@ export interface IBaseSequenceDao
 export class BaseSequenceDao
   extends SQDIDao<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence>
 	implements IBaseSequenceDao {
+	
+	static Find      = new DaoQueryDecorators<SequenceESelect>();
+	static FindOne   = new DaoQueryDecorators<SequenceESelect>();
+	static Search    = new DaoQueryDecorators<SequenceESelect>();
+	static SearchOne = new DaoQueryDecorators<SequenceESelect>();
+	static Save(
+		config: SequenceGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SequenceGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(0)
@@ -108,6 +122,16 @@ export interface IBaseSystemWideOperationIdDao
 export class BaseSystemWideOperationIdDao
   extends SQDIDao<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId>
 	implements IBaseSystemWideOperationIdDao {
+	
+	static Find      = new DaoQueryDecorators<SystemWideOperationIdESelect>();
+	static FindOne   = new DaoQueryDecorators<SystemWideOperationIdESelect>();
+	static Search    = new DaoQueryDecorators<SystemWideOperationIdESelect>();
+	static SearchOne = new DaoQueryDecorators<SystemWideOperationIdESelect>();
+	static Save(
+		config: SystemWideOperationIdGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SystemWideOperationIdGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(1)
@@ -126,6 +150,16 @@ export interface IBaseTerminalRunDao
 export class BaseTerminalRunDao
   extends SQDIDao<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun>
 	implements IBaseTerminalRunDao {
+	
+	static Find      = new DaoQueryDecorators<TerminalRunESelect>();
+	static FindOne   = new DaoQueryDecorators<TerminalRunESelect>();
+	static Search    = new DaoQueryDecorators<TerminalRunESelect>();
+	static SearchOne = new DaoQueryDecorators<TerminalRunESelect>();
+	static Save(
+		config: TerminalRunGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<TerminalRunGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(2)

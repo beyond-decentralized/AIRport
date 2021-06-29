@@ -1,4 +1,4 @@
-import { DB_FACADE, Delete, UpdateColumns, UpdateProperties, } from '@airport/air-control';
+import { DATABASE_FACADE, Delete, UpdateColumns, UpdateProperties, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 import { OperationManager } from './processing/OperationManager';
@@ -212,7 +212,7 @@ export class DatabaseFacade extends OperationManager {
         await operationContextLoader.ensure(context);
     }
 }
-DI.set(DB_FACADE, DatabaseFacade);
+DI.set(DATABASE_FACADE, DatabaseFacade);
 export class FunctionWrapper {
     constructor(queryFunction) {
         throw new Error('Not Implemented');

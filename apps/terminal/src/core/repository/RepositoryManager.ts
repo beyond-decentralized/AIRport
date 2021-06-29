@@ -1,6 +1,6 @@
 import {
 	and,
-	DB_FACADE,
+	DATABASE_FACADE,
 	IEntityUpdateProperties,
 	IQEntityInternal,
 	IQOperableFieldInternal,
@@ -8,31 +8,31 @@ import {
 	RawDelete,
 	RawInsertValues,
 	RawUpdate,
-}                           from '@airport/air-control'
-import {container, DI}                 from '@airport/di'
-import {StoreType}          from '@airport/ground-control'
+} from '@airport/air-control'
+import { container, DI } from '@airport/di'
+import { StoreType } from '@airport/ground-control'
 import {
 	IActor,
 	IRepository,
 	IRepositoryTransactionHistory,
 	QRepositoryEntity,
 	REPOSITORY_DAO
-}                           from '@airport/holding-pattern'
+} from '@airport/holding-pattern'
 import {
 	DeltaStoreConfig,
 	DistributionStrategy,
 	JsonDeltaStoreConfig,
 	PlatformType,
 	REPOSITORY_FIELD,
-}                           from '@airport/terminal-map'
-import {ITerminal}          from '@airport/travel-document-checkpoint'
+} from '@airport/terminal-map'
+import { ITerminal } from '@airport/travel-document-checkpoint'
 import {
 	DeltaStore,
 	getSharingAdaptor,
 	IDeltaStore
-}                           from '../../data/DeltaStore'
-import {REPOSITORY_MANAGER} from '../../tokens'
-import {UpdateState}        from '../UpdateState'
+} from '../../data/DeltaStore'
+import { REPOSITORY_MANAGER } from '../../tokens'
+import { UpdateState } from '../UpdateState'
 
 /**
  * Created by Papa on 2/12/2017.
@@ -165,7 +165,7 @@ export class RepositoryManager
 
 	setUpdateStateForAll(updateState: UpdateState): void {
 		for (let repositoryId in this.deltaStore) {
-			let deltaStore         = this.deltaStore[repositoryId]
+			let deltaStore = this.deltaStore[repositoryId]
 			deltaStore.updateState = updateState
 		}
 	}
@@ -174,7 +174,7 @@ export class RepositoryManager
 		repository: IRepository,
 		updateState: UpdateState
 	): void {
-		let deltaStore         = this.deltaStore[repository.id]
+		let deltaStore = this.deltaStore[repository.id]
 		deltaStore.updateState = updateState
 	}
 
@@ -184,10 +184,10 @@ export class RepositoryManager
 
 	private async ensureRepositoryRecords(): Promise<void> {
 		const repositoryDao = await container(this).get(REPOSITORY_DAO)
-				// TODO: verify that we want to get ALL of the repositories
+		// TODO: verify that we want to get ALL of the repositories
 		this.repositories = await repositoryDao.db.find.tree({
-					select: {}
-				})
+			select: {}
+		})
 
 		/*
 						if (!this.repositories.length) {
@@ -207,7 +207,7 @@ export class RepositoryManager
 		// TODO: revisit configuration (instead of hard-coding
 		// let sharingAdaptor                             =
 		// getSharingAdaptor(repository.platform)
-		let sharingAdaptor                             = getSharingAdaptor(PlatformType.OFFLINE)
+		let sharingAdaptor = getSharingAdaptor(PlatformType.OFFLINE)
 		let jsonDeltaStoreConfig: JsonDeltaStoreConfig = {
 			changeList: {
 				// distributionStrategy: repository.distributionStrategy
@@ -223,15 +223,16 @@ export class RepositoryManager
 		}
 
 		if (repository.platformConfig) {
-			let platformConfig   = JSON.parse(repository.platformConfig)
-			jsonDeltaStoreConfig = <any>{...jsonDeltaStoreConfig, ...platformConfig}
+			let platformConfig = JSON.parse(repository.platformConfig)
+			jsonDeltaStoreConfig = <any>{ ...jsonDeltaStoreConfig, ...platformConfig }
 		}
 		let deltaStoreConfig = new DeltaStoreConfig(jsonDeltaStoreConfig)
-		let deltaStore       = new DeltaStore(deltaStoreConfig, sharingAdaptor)
+		let deltaStore = new DeltaStore(deltaStoreConfig, sharingAdaptor)
 
-		const dbFacade                                         = await container(this).get(DB_FACADE)
+		const dbFacade = await container(this)
+			.get(DATABASE_FACADE)
 		deltaStore.config.changeListConfig.changeListInfo.dbId = dbFacade.name
-		this.deltaStore[repository.id]                         = deltaStore
+		this.deltaStore[repository.id] = deltaStore
 
 		return deltaStore
 	}
@@ -242,7 +243,7 @@ export class RepositoryManager
 		platformType: PlatformType,
 		platformConfig: any,
 	): Promise<IRepository> {
-		const repository    = {
+		const repository = {
 			distributionStrategy: distributionStrategy,
 			id: null,
 			lastSyncedTransaction: null,
@@ -309,7 +310,7 @@ export class RepositoryManager
 
 		let values = rawInsertValues.values.slice()
 		for (let i = 0; i < values.length; i++) {
-			let row   = values[i].slice()
+			let row = values[i].slice()
 			values[i] = row
 			row.push(repository.id)
 		}

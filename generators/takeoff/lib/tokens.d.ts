@@ -3,7 +3,7 @@ import { IDdlObjectLinker } from './DdlObjectLinker';
 import { IDdlObjectRetriever } from './DdlObjectRetriever';
 import { IQueryEntityClassCreator } from './QueryEntityClassCreator';
 import { IQueryObjectInitializer } from './QueryObjectInitializer';
-export declare const AIR_DB_POPULATOR: import("@airport/di").IDiToken<IAirportDatabasePopulator>;
+export declare const AIRPORT_DATABASE_POPULATOR: import("@airport/di").IDiToken<IAirportDatabasePopulator>;
 export declare const DDL_OBJECT_LINKER: import("@airport/di").IDiToken<IDdlObjectLinker>;
 export declare const DDL_OBJECT_RETRIEVER: import("@airport/di").IDiToken<IDdlObjectRetriever>;
 export declare const QUERY_ENTITY_CLASS_CREATOR: import("@airport/di").IDiToken<IQueryEntityClassCreator>;

@@ -1,4 +1,4 @@
-import {DI} from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	DbEntity,
 	DbRelation,
@@ -9,9 +9,9 @@ import {
 	JSONRelation,
 	JSONRelationType,
 	JSONViewJoinRelation
-}           from '@airport/ground-control'
-import {IAirportDatabase}        from '../../../lingo/AirportDatabase'
-import {IFieldColumnAliases}     from '../../../lingo/core/entity/Aliases'
+} from '@airport/ground-control'
+import { IAirportDatabase } from '../../../lingo/AirportDatabase'
+import { IFieldColumnAliases } from '../../../lingo/core/entity/Aliases'
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
@@ -23,25 +23,25 @@ import {
 	IQEntity,
 	IQEntityDriver,
 	IQEntityInternal
-}                                from '../../../lingo/core/entity/Entity'
-import {IJoinFields}             from '../../../lingo/core/entity/Joins'
-import {OneToManyElements}       from '../../../lingo/core/entity/metadata/ColumnDecorators'
-import {IQInternalRelation}      from '../../../lingo/core/entity/Relation'
-import {IQOperableFieldInternal} from '../../../lingo/core/field/OperableField'
-import {IEntityDatabaseFacade}   from '../../../lingo/core/repository/EntityDatabaseFacade'
-import {RawTreeQuery}            from '../../../lingo/query/facade/TreeQuery'
-import {IFieldUtils}             from '../../../lingo/utils/FieldUtils'
-import {IQueryUtils}             from '../../../lingo/utils/QueryUtils'
-import {ISchemaUtils} from '../../../lingo/utils/SchemaUtils'
+} from '../../../lingo/core/entity/Entity'
+import { IJoinFields } from '../../../lingo/core/entity/Joins'
+import { OneToManyElements } from '../../../lingo/core/entity/metadata/ColumnDecorators'
+import { IQInternalRelation } from '../../../lingo/core/entity/Relation'
+import { IQOperableFieldInternal } from '../../../lingo/core/field/OperableField'
+import { IEntityDatabaseFacade } from '../../../lingo/core/repository/EntityDatabaseFacade'
+import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery'
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
+import { ISchemaUtils } from '../../../lingo/utils/SchemaUtils'
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	RELATION_MANAGER,
 	SCHEMA_UTILS
 } from '../../../tokens'
-import {TreeQuery}    from '../../query/facade/TreeQuery'
-import {extend}                  from '../../utils/qSchemaBuilderUtils'
-import {JoinFields}              from '../Joins'
-import {FieldColumnAliases}      from './Aliases'
+import { TreeQuery } from '../../query/facade/TreeQuery'
+import { extend } from '../../utils/qSchemaBuilderUtils'
+import { JoinFields } from '../Joins'
+import { FieldColumnAliases } from './Aliases'
 
 /**
  * Created by Papa on 4/21/2016.
@@ -53,7 +53,7 @@ export interface IQEntityInternalConstructor<T> {
 	schemaHash: string;
 	entityIndex: number;
 
-	new<IQE extends IQEntityInternal<T>>(...args: any[]): IQE;
+	new <IQE extends IQEntityInternal<T>>(...args: any[]): IQE;
 
 }
 
@@ -70,7 +70,7 @@ export declare namespace QEntity {
 
 export interface QEntityConstructor<IEntity> {
 
-	new<IQE extends IQEntityInternal<IEntity>>(
+	new <IQE extends IQEntityInternal<IEntity>>(
 		dbEntity: DbEntity,
 		fromClausePosition?: number[],
 		dbRelation?: DbRelation,
@@ -83,9 +83,9 @@ export interface QEntityConstructor<IEntity> {
 
 export function QEntity<IEntity>(
 	dbEntity: DbEntity,
-	fromClausePosition: number[]                     = [],
-	dbRelation                                       = null,
-	joinType: JoinType                               = null,
+	fromClausePosition: number[] = [],
+	dbRelation = null,
+	joinType: JoinType = null,
 	QDriver: { new(...args: any[]): IQEntityDriver<IEntity> } = QEntityDriver
 ) {
 	this.__driver__ = new QDriver(dbEntity, fromClausePosition, dbRelation, joinType, this)
@@ -111,12 +111,12 @@ export class QEntityDriver<IEntity>
 	implements IQEntityDriver<IEntity> {
 
 	entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> } = {}
-	entityRelations: IQInternalRelation<any, any>[]                                                            = []
+	entityRelations: IQInternalRelation<any, any>[] = []
 	entityRelationMapByIndex: { [relationPropertyIndex: number]: IQInternalRelation<any, any> }
-	idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]                                = []
-	allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]                               = []
-	relations: IQInternalRelation<any, any>[]                                                                  = []
-	currentChildIndex                                                                                     = -1
+	idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[] = []
+	allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[] = []
+	relations: IQInternalRelation<any, any>[] = []
+	currentChildIndex = -1
 	joinWhereClause: JSONBaseOperation
 	parentJoinEntity: IQEntityInternal<any>
 	private entityRelationMap: { [propertyName: string]: IQInternalRelation<any, any> }
@@ -126,8 +126,8 @@ export class QEntityDriver<IEntity>
 	constructor(
 		public dbEntity: DbEntity,
 		public fromClausePosition: number[] = [],
-		public dbRelation: DbRelation       = null,
-		public joinType: JoinType           = null,
+		public dbRelation: DbRelation = null,
+		public joinType: JoinType = null,
 		private qEntity: IQEntityInternal<IEntity>
 	) {
 	}
@@ -142,9 +142,9 @@ export class QEntityDriver<IEntity>
 		let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType)
 
 		instance.__driver__.currentChildIndex = this.currentChildIndex
-		instance.__driver__.joinWhereClause   = this.joinWhereClause
-		instance.__driver__.entityFieldMap    = this.entityFieldMap
-		instance.__driver__.entityRelations   = this.entityRelations
+		instance.__driver__.joinWhereClause = this.joinWhereClause
+		instance.__driver__.entityFieldMap = this.entityFieldMap
+		instance.__driver__.entityRelations = this.entityRelations
 
 		return instance
 	}
@@ -201,7 +201,7 @@ export class QEntityDriver<IEntity>
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): JSONJoinRelation {
-		jsonRelation.rt  = JSONRelationType.ENTITY_JOIN_ON
+		jsonRelation.rt = JSONRelationType.ENTITY_JOIN_ON
 		jsonRelation.jwc = queryUtils.whereClauseToJSON(
 			this.joinWhereClause, columnAliases, fieldUtils)
 
@@ -262,14 +262,15 @@ export class QEntityDriver<IEntity>
 		right: IF,
 		joinType: JoinType,
 	): IJoinFields<IF> {
-		const [airDb, schemaUtils, relationManager] = DI.db().getSync(AIR_DB, SCHEMA_UTILS, RELATION_MANAGER)
-		let joinChild: IQEntityInternal<any>         = (<IQEntityInternal<any>><any>right)
+		const [airDb, schemaUtils, relationManager] = DI.db().getSync(
+			AIRPORT_DATABASE, SCHEMA_UTILS, RELATION_MANAGER)
+		let joinChild: IQEntityInternal<any> = (<IQEntityInternal<any>><any>right)
 			.__driver__.getInstance(airDb, schemaUtils)
-		joinChild.__driver__.currentChildIndex  = 0
-		let nextChildPosition                   = relationManager.getNextChildJoinPosition(this)
+		joinChild.__driver__.currentChildIndex = 0
+		let nextChildPosition = relationManager.getNextChildJoinPosition(this)
 		joinChild.__driver__.fromClausePosition = nextChildPosition
-		joinChild.__driver__.joinType           = joinType
-		joinChild.__driver__.parentJoinEntity   = this.qEntity
+		joinChild.__driver__.joinType = joinType
+		joinChild.__driver__.parentJoinEntity = this.qEntity
 
 		return new JoinFields<IF>(<any>joinChild)
 	}
@@ -348,7 +349,7 @@ export class QTreeDriver<IEntity>
 	): IQEntityInternal<IEntity> {
 		let instance = super.getInstance(airDb, schemaUtils);
 		(<IQTreeDriver<IEntity>>instance.__driver__)
-			.subQuery  = this.subQuery
+			.subQuery = this.subQuery
 
 		return instance
 	}
@@ -363,7 +364,7 @@ export class QTreeDriver<IEntity>
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): JSONViewJoinRelation {
-		jsonRelation    = <JSONViewJoinRelation>super.getJoinRelationJson(
+		jsonRelation = <JSONViewJoinRelation>super.getJoinRelationJson(
 			jsonRelation, columnAliases, queryUtils, fieldUtils)
 		jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON
 		jsonRelation.sq = new TreeQuery(this.subQuery, columnAliases.entityAliases)
@@ -378,7 +379,7 @@ export class QTreeDriver<IEntity>
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): JSONViewJoinRelation {
-		jsonRelation    = <JSONViewJoinRelation>super.getJoinRelationJson(
+		jsonRelation = <JSONViewJoinRelation>super.getJoinRelationJson(
 			jsonRelation, columnAliases, queryUtils, fieldUtils)
 		jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT
 		jsonRelation.sq = new TreeQuery(this.subQuery, columnAliases.entityAliases)

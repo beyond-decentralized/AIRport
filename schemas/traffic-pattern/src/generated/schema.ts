@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const SCHEMA = {
 	"domain": "air",
 	"index": null,

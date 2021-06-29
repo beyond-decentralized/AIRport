@@ -1,5 +1,5 @@
 import {
-  DB_FACADE,
+  DATABASE_FACADE,
   ENTITY_STATE_MANAGER,
   EntityFind,
   EntityFindOne,
@@ -85,7 +85,7 @@ export class EntityDatabaseFacade<Entity,
   // 	updateCacheType: UpdateCacheType,
   // 	...entities: Entity[]
   // ): Promise<void> {
-  // 	const dbFacade = await DI.get(DB_FACADE)
+  // 	const dbFacade = await DI.get(DATABASE_FACADE)
   // 	return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity,
   // ...entities) }
 
@@ -216,7 +216,7 @@ export class EntityDatabaseFacade<Entity,
       ctx.startedAt = new Date();
     }
     const databaseFacade = await DI.db()
-      .get(DB_FACADE);
+      .get(DATABASE_FACADE);
     const previousEntity = ctx.dbEntity;
     ctx.dbEntity = this.dbEntity;
     try {

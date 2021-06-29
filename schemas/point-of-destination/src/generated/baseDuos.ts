@@ -1,24 +1,7 @@
+/* eslint-disable */
 import {
-	IDuo,
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { Duo } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	duoDiSet
-} from './qSchema'
-import {
-	IDailyArchive
-} from './dailyarchive'
+	IDailyArchive,
+} from './dailyarchive';
 import {
 	DailyArchiveESelect,
 	DailyArchiveECreateColumns,
@@ -27,8 +10,28 @@ import {
 	DailyArchiveEUpdateProperties,
 	DailyArchiveEId,
 	DailyArchiveGraph,
-	QDailyArchive
-} from './qdailyarchive'
+	QDailyArchive,
+} from './qdailyarchive';
+import {
+	IDuo,
+	IEntityCascadeGraph,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+} from '@airport/air-control';
+import {
+	Duo,
+} from '@airport/check-in';
+import {
+	EntityId as DbEntityId,
+} from '@airport/ground-control';
+import {
+	Q,
+	duoDiSet,
+} from './qSchema';
 
 
 // Schema Q object Dependency Injection readiness detection Duo

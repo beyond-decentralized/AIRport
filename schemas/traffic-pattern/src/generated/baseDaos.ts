@@ -187,9 +187,14 @@ export class BaseSchemaDao
 	implements IBaseSchemaDao {
 	
 	static Find      = new DaoQueryDecorators<SchemaESelect>();
-  static FindOne   = new DaoQueryDecorators<SchemaESelect>();
-  static Search    = new DaoQueryDecorators<SchemaESelect>();
-  static SearchOne = new DaoQueryDecorators<SchemaESelect>();
+	static FindOne   = new DaoQueryDecorators<SchemaESelect>();
+	static Search    = new DaoQueryDecorators<SchemaESelect>();
+	static SearchOne = new DaoQueryDecorators<SchemaESelect>();
+	static Save(
+		config: SchemaGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SchemaGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(9)
@@ -210,9 +215,14 @@ export class BaseSchemaColumnDao
 	implements IBaseSchemaColumnDao {
 	
 	static Find      = new DaoQueryDecorators<SchemaColumnESelect>();
-  static FindOne   = new DaoQueryDecorators<SchemaColumnESelect>();
-  static Search    = new DaoQueryDecorators<SchemaColumnESelect>();
-  static SearchOne = new DaoQueryDecorators<SchemaColumnESelect>();
+	static FindOne   = new DaoQueryDecorators<SchemaColumnESelect>();
+	static Search    = new DaoQueryDecorators<SchemaColumnESelect>();
+	static SearchOne = new DaoQueryDecorators<SchemaColumnESelect>();
+	static Save(
+		config: SchemaColumnGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SchemaColumnGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(4)
@@ -233,9 +243,14 @@ export class BaseSchemaEntityDao
 	implements IBaseSchemaEntityDao {
 	
 	static Find      = new DaoQueryDecorators<SchemaEntityESelect>();
-  static FindOne   = new DaoQueryDecorators<SchemaEntityESelect>();
-  static Search    = new DaoQueryDecorators<SchemaEntityESelect>();
-  static SearchOne = new DaoQueryDecorators<SchemaEntityESelect>();
+	static FindOne   = new DaoQueryDecorators<SchemaEntityESelect>();
+	static Search    = new DaoQueryDecorators<SchemaEntityESelect>();
+	static SearchOne = new DaoQueryDecorators<SchemaEntityESelect>();
+	static Save(
+		config: SchemaEntityGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SchemaEntityGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(6)
@@ -256,9 +271,14 @@ export class BaseSchemaOperationDao
 	implements IBaseSchemaOperationDao {
 	
 	static Find      = new DaoQueryDecorators<SchemaOperationESelect>();
-  static FindOne   = new DaoQueryDecorators<SchemaOperationESelect>();
-  static Search    = new DaoQueryDecorators<SchemaOperationESelect>();
-  static SearchOne = new DaoQueryDecorators<SchemaOperationESelect>();
+	static FindOne   = new DaoQueryDecorators<SchemaOperationESelect>();
+	static Search    = new DaoQueryDecorators<SchemaOperationESelect>();
+	static SearchOne = new DaoQueryDecorators<SchemaOperationESelect>();
+	static Save(
+		config: SchemaOperationGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SchemaOperationGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(5)
@@ -279,9 +299,14 @@ export class BaseSchemaPropertyDao
 	implements IBaseSchemaPropertyDao {
 	
 	static Find      = new DaoQueryDecorators<SchemaPropertyESelect>();
-  static FindOne   = new DaoQueryDecorators<SchemaPropertyESelect>();
-  static Search    = new DaoQueryDecorators<SchemaPropertyESelect>();
-  static SearchOne = new DaoQueryDecorators<SchemaPropertyESelect>();
+	static FindOne   = new DaoQueryDecorators<SchemaPropertyESelect>();
+	static Search    = new DaoQueryDecorators<SchemaPropertyESelect>();
+	static SearchOne = new DaoQueryDecorators<SchemaPropertyESelect>();
+	static Save(
+		config: SchemaPropertyGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SchemaPropertyGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(2)
@@ -302,9 +327,14 @@ export class BaseSchemaPropertyColumnDao
 	implements IBaseSchemaPropertyColumnDao {
 	
 	static Find      = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
-  static FindOne   = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
-  static Search    = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
-  static SearchOne = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
+	static FindOne   = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
+	static Search    = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
+	static SearchOne = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
+	static Save(
+		config: SchemaPropertyColumnGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SchemaPropertyColumnGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(3)
@@ -325,9 +355,14 @@ export class BaseSchemaReferenceDao
 	implements IBaseSchemaReferenceDao {
 	
 	static Find      = new DaoQueryDecorators<SchemaReferenceESelect>();
-  static FindOne   = new DaoQueryDecorators<SchemaReferenceESelect>();
-  static Search    = new DaoQueryDecorators<SchemaReferenceESelect>();
-  static SearchOne = new DaoQueryDecorators<SchemaReferenceESelect>();
+	static FindOne   = new DaoQueryDecorators<SchemaReferenceESelect>();
+	static Search    = new DaoQueryDecorators<SchemaReferenceESelect>();
+	static SearchOne = new DaoQueryDecorators<SchemaReferenceESelect>();
+	static Save(
+		config: SchemaReferenceGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SchemaReferenceGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(7)
@@ -348,9 +383,14 @@ export class BaseSchemaRelationDao
 	implements IBaseSchemaRelationDao {
 	
 	static Find      = new DaoQueryDecorators<SchemaRelationESelect>();
-  static FindOne   = new DaoQueryDecorators<SchemaRelationESelect>();
-  static Search    = new DaoQueryDecorators<SchemaRelationESelect>();
-  static SearchOne = new DaoQueryDecorators<SchemaRelationESelect>();
+	static FindOne   = new DaoQueryDecorators<SchemaRelationESelect>();
+	static Search    = new DaoQueryDecorators<SchemaRelationESelect>();
+	static SearchOne = new DaoQueryDecorators<SchemaRelationESelect>();
+	static Save(
+		config: SchemaRelationGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SchemaRelationGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(1)
@@ -371,9 +411,14 @@ export class BaseSchemaRelationColumnDao
 	implements IBaseSchemaRelationColumnDao {
 	
 	static Find      = new DaoQueryDecorators<SchemaRelationColumnESelect>();
-  static FindOne   = new DaoQueryDecorators<SchemaRelationColumnESelect>();
-  static Search    = new DaoQueryDecorators<SchemaRelationColumnESelect>();
-  static SearchOne = new DaoQueryDecorators<SchemaRelationColumnESelect>();
+	static FindOne   = new DaoQueryDecorators<SchemaRelationColumnESelect>();
+	static Search    = new DaoQueryDecorators<SchemaRelationColumnESelect>();
+	static SearchOne = new DaoQueryDecorators<SchemaRelationColumnESelect>();
+	static Save(
+		config: SchemaRelationColumnGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SchemaRelationColumnGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(0)
@@ -394,9 +439,14 @@ export class BaseSchemaVersionDao
 	implements IBaseSchemaVersionDao {
 	
 	static Find      = new DaoQueryDecorators<SchemaVersionESelect>();
-  static FindOne   = new DaoQueryDecorators<SchemaVersionESelect>();
-  static Search    = new DaoQueryDecorators<SchemaVersionESelect>();
-  static SearchOne = new DaoQueryDecorators<SchemaVersionESelect>();
+	static FindOne   = new DaoQueryDecorators<SchemaVersionESelect>();
+	static Search    = new DaoQueryDecorators<SchemaVersionESelect>();
+	static SearchOne = new DaoQueryDecorators<SchemaVersionESelect>();
+	static Save(
+		config: SchemaVersionGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SchemaVersionGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(8)

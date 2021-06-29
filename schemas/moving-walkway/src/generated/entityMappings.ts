@@ -1,4 +1,4 @@
-import { AIR_DB } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { RecordUpdateStage } from '../ddl/RecordUpdateStage';
 import { SynchronizationConflictValues } from '../ddl/conflict/SynchronizationConflictValues';
@@ -18,7 +18,7 @@ import { SharingNodeTerminal } from '../ddl/sharingNode/SharingNodeTerminal';
 import { SharingNodeRepository } from '../ddl/sharingNode/SharingNodeRepository';
 import { SharingNodeRepoTransBlockStage } from '../ddl/sharingNode/SharingNodeRepoTransBlockStage';
 
-DI.db().get(AIR_DB).then(airDb => {
+DI.db().get(AIRPORT_DATABASE).then(airDb => {
   const accumulator = airDb.getAccumulator('air', 'moving-walkway');
   accumulator.add(RecordUpdateStage, 0);
   accumulator.add(SynchronizationConflictValues, 1);

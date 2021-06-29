@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	QSchema as AirportQSchema
 }                      from '@airport/air-control'
 import {
@@ -52,7 +52,7 @@ export function duoDiSet(
 	return ddS(Q.__dbSchema__, dbEntityId)
 }
 
-DI.db().eventuallyGet(AIR_DB).then((
+DI.db().eventuallyGet(AIRPORT_DATABASE).then((
 	airDb
 ) => {
 	airDb.QM[getSchemaName(Q_SCHEMA)] = Q

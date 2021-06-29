@@ -48,11 +48,11 @@ export class EntityMappingBuilder {
 				return `  accumulator.add(${entityMapping.entityName}, ${entityMapping.entityIndex});`;
 			}).join('\n');
 		return `/* eslint-disable */
-import { AIR_DB } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { DI } from '@airport/di';
 ${imports.join('\n')}
 
-DI.db().get(AIR_DB).then(airDb => {
+DI.db().get(AIRPORT_DATABASE).then(airDb => {
   const accumulator = airDb.getAccumulator('${schemaDomain}', '${schemaName}');
 ${entityDefinitions}
 });

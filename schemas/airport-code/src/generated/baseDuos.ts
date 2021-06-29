@@ -1,24 +1,7 @@
+/* eslint-disable */
 import {
-	IDuo,
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { Duo } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	duoDiSet
-} from './qSchema'
-import {
-	ISequence
-} from './sequence'
+	ISequence,
+} from './sequence';
 import {
 	SequenceESelect,
 	SequenceECreateColumns,
@@ -27,11 +10,11 @@ import {
 	SequenceEUpdateProperties,
 	SequenceEId,
 	SequenceGraph,
-	QSequence
-} from './qsequence'
+	QSequence,
+} from './qsequence';
 import {
-	ISystemWideOperationId
-} from './systemwideoperationid'
+	ISystemWideOperationId,
+} from './systemwideoperationid';
 import {
 	SystemWideOperationIdESelect,
 	SystemWideOperationIdECreateColumns,
@@ -40,11 +23,11 @@ import {
 	SystemWideOperationIdEUpdateProperties,
 	SystemWideOperationIdEId,
 	SystemWideOperationIdGraph,
-	QSystemWideOperationId
-} from './qsystemwideoperationid'
+	QSystemWideOperationId,
+} from './qsystemwideoperationid';
 import {
-	ITerminalRun
-} from './terminalrun'
+	ITerminalRun,
+} from './terminalrun';
 import {
 	TerminalRunESelect,
 	TerminalRunECreateColumns,
@@ -53,8 +36,28 @@ import {
 	TerminalRunEUpdateProperties,
 	TerminalRunEId,
 	TerminalRunGraph,
-	QTerminalRun
-} from './qterminalrun'
+	QTerminalRun,
+} from './qterminalrun';
+import {
+	IDuo,
+	IEntityCascadeGraph,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+} from '@airport/air-control';
+import {
+	Duo,
+} from '@airport/check-in';
+import {
+	EntityId as DbEntityId,
+} from '@airport/ground-control';
+import {
+	Q,
+	duoDiSet,
+} from './qSchema';
 
 
 // Schema Q object Dependency Injection readiness detection Duo

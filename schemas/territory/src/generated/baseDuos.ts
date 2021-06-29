@@ -1,24 +1,7 @@
+/* eslint-disable */
 import {
-	IDuo,
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { Duo } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	duoDiSet
-} from './qSchema'
-import {
-	IApplication
-} from './application'
+	IApplication,
+} from './application';
 import {
 	ApplicationESelect,
 	ApplicationECreateColumns,
@@ -27,11 +10,11 @@ import {
 	ApplicationEUpdateProperties,
 	ApplicationEId,
 	ApplicationGraph,
-	QApplication
-} from './qapplication'
+	QApplication,
+} from './qapplication';
 import {
-	IApplicationPackage
-} from './applicationpackage'
+	IApplicationPackage,
+} from './applicationpackage';
 import {
 	ApplicationPackageESelect,
 	ApplicationPackageECreateColumns,
@@ -40,11 +23,11 @@ import {
 	ApplicationPackageEUpdateProperties,
 	ApplicationPackageEId,
 	ApplicationPackageGraph,
-	QApplicationPackage
-} from './qapplicationpackage'
+	QApplicationPackage,
+} from './qapplicationpackage';
 import {
-	IDomain
-} from './domain'
+	IDomain,
+} from './domain';
 import {
 	DomainESelect,
 	DomainECreateColumns,
@@ -53,11 +36,11 @@ import {
 	DomainEUpdateProperties,
 	DomainEId,
 	DomainGraph,
-	QDomain
-} from './qdomain'
+	QDomain,
+} from './qdomain';
 import {
-	IPackage
-} from './package'
+	IPackage,
+} from './package';
 import {
 	PackageESelect,
 	PackageECreateColumns,
@@ -66,11 +49,11 @@ import {
 	PackageEUpdateProperties,
 	PackageEId,
 	PackageGraph,
-	QPackage
-} from './qpackage'
+	QPackage,
+} from './qpackage';
 import {
-	IPackagedUnit
-} from './packagedunit'
+	IPackagedUnit,
+} from './packagedunit';
 import {
 	PackagedUnitESelect,
 	PackagedUnitECreateColumns,
@@ -79,8 +62,28 @@ import {
 	PackagedUnitEUpdateProperties,
 	PackagedUnitEId,
 	PackagedUnitGraph,
-	QPackagedUnit
-} from './qpackagedunit'
+	QPackagedUnit,
+} from './qpackagedunit';
+import {
+	IDuo,
+	IEntityCascadeGraph,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+} from '@airport/air-control';
+import {
+	Duo,
+} from '@airport/check-in';
+import {
+	EntityId as DbEntityId,
+} from '@airport/ground-control';
+import {
+	Q,
+	duoDiSet,
+} from './qSchema';
 
 
 // Schema Q object Dependency Injection readiness detection Duo

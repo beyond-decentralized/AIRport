@@ -19,7 +19,7 @@ import {
 	IOperationContext,
 	ITransaction,
 	ITransactionalServer,
-	TRANS_SERVER
+	TRANSACTIONAL_SERVER
 }                      from '@airport/tower';
 import {
 	DELETE_MANAGER,
@@ -163,6 +163,7 @@ export class TransactionalServer
 			.get(INSERT_MANAGER);
 
 		const actor = await this.getActor(portableQuery);
+		
 		return await insertManager.insertValues(portableQuery, actor,
 			transaction, context, ensureGeneratedValues);
 	}
@@ -217,7 +218,7 @@ export class TransactionalServer
 
 }
 
-DI.set(TRANS_SERVER, TransactionalServer);
+DI.set(TRANSACTIONAL_SERVER, TransactionalServer);
 
 export function injectTransactionalServer(): void {
 	// console.log('Injecting TransactionalServer')

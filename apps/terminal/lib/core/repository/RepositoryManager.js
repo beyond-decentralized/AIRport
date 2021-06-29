@@ -1,4 +1,4 @@
-import { and, DB_FACADE, } from '@airport/air-control';
+import { and, DATABASE_FACADE, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { StoreType } from '@airport/ground-control';
 import { REPOSITORY_DAO } from '@airport/holding-pattern';
@@ -97,7 +97,8 @@ export class RepositoryManager {
         }
         let deltaStoreConfig = new DeltaStoreConfig(jsonDeltaStoreConfig);
         let deltaStore = new DeltaStore(deltaStoreConfig, sharingAdaptor);
-        const dbFacade = await container(this).get(DB_FACADE);
+        const dbFacade = await container(this)
+            .get(DATABASE_FACADE);
         deltaStore.config.changeListConfig.changeListInfo.dbId = dbFacade.name;
         this.deltaStore[repository.id] = deltaStore;
         return deltaStore;

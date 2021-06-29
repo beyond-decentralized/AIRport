@@ -1,4 +1,4 @@
-import {AIR_DB}              from '@airport/air-control'
+import {AIRPORT_DATABASE}              from '@airport/air-control'
 import {TmSharingMessageId}  from '@airport/arrivals-n-departures'
 import {container, DI}                  from '@airport/di'
 import {ensureChildArray}    from '@airport/ground-control'
@@ -99,7 +99,7 @@ export class SharingMessageDao
 		const sharingMessageIdsBySharingNodeId: Map<SharingNodeId, TmSharingMessageId[]>
 			      = new Map()
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		let sm: QSharingMessage
 		const data = await airDb.find.sheet({

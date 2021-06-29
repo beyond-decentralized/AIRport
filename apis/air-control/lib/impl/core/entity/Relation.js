@@ -1,6 +1,6 @@
 import { DI } from '@airport/di';
 import { JoinType } from '@airport/ground-control';
-import { AIR_DB, RELATION_MANAGER, SCHEMA_UTILS } from '../../../tokens';
+import { AIRPORT_DATABASE, RELATION_MANAGER, SCHEMA_UTILS } from '../../../tokens';
 /**
  * Created by Papa on 4/26/2016.
  */
@@ -16,7 +16,7 @@ QRelation.prototype.leftJoin = function () {
 };
 QRelation.prototype.getNewQEntity = function (joinType) {
     const [airDb, relationManager, schemaUtils] = DI.db()
-        .getSync(AIR_DB, RELATION_MANAGER, SCHEMA_UTILS);
+        .getSync(AIRPORT_DATABASE, RELATION_MANAGER, SCHEMA_UTILS);
     const dbEntity = this.dbRelation.property.entity;
     const qEntityConstructor = schemaUtils.getQEntityConstructor(this.dbRelation.relationEntity, airDb);
     let newQEntity = new qEntityConstructor(dbEntity, relationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType);

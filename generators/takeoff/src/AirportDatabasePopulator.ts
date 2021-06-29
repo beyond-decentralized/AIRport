@@ -1,9 +1,5 @@
-import {
-	AIR_DB,
-	IAirportDatabase
-}                         from '@airport/air-control'
 import {DI}               from '@airport/di'
-import {AIR_DB_POPULATOR} from './tokens'
+import {AIRPORT_DATABASE_POPULATOR} from './tokens'
 
 export interface IAirportDatabasePopulator {
 
@@ -24,4 +20,4 @@ export class AirportDatabasePopulator
 
 }
 
-DI.set(AIR_DB_POPULATOR, AirportDatabasePopulator)
+DI.set(AIRPORT_DATABASE_POPULATOR, AirportDatabasePopulator)

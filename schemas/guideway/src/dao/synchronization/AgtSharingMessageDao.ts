@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and
 }                                from '@airport/air-control'
 import {
@@ -64,7 +64,7 @@ export class AgtSharingMessageDao
 		let asm: QAgtSharingMessage
 
 		const airDb = await container(this)
-			.get(AIR_DB)
+			.get(AIRPORT_DATABASE)
 
 		const sharingMessageIds = <number[]>await airDb.insertValuesGenerateIds({
 			insertInto: asm = Q.AgtSharingMessage,
@@ -95,7 +95,7 @@ export class AgtSharingMessageDao
 		let asm: QAgtSharingMessage
 
 		const airDb = await container(this)
-			.get(AIR_DB)
+			.get(AIRPORT_DATABASE)
 
 		const dbSyncLogs =
 			      await airDb.find.sheet({
@@ -153,7 +153,7 @@ export class AgtSharingMessageDao
 		let asm: QAgtSharingMessage
 
 		const airDb = await container(this)
-			.get(AIR_DB)
+			.get(AIRPORT_DATABASE)
 
 		const sharingMessages = await airDb.find.sheet({
 			from: [

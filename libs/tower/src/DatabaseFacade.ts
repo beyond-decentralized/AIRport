@@ -1,5 +1,5 @@
 import {
-	DB_FACADE,
+	DATABASE_FACADE,
 	Delete,
 	IDatabaseFacade,
 	IEntityUpdateColumns,
@@ -354,7 +354,7 @@ export class DatabaseFacade
 
 }
 
-DI.set(DB_FACADE, DatabaseFacade)
+DI.set(DATABASE_FACADE, DatabaseFacade)
 
 export class FunctionWrapper<QF extends Function>
 	implements IFunctionWrapper<any> {

@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and,
 	distinct,
 	IQMetadataUtils,
@@ -154,7 +154,7 @@ export class SharingNodeRepositoryDao
 		const sharingNodeIdMapByRepositoryId
 			      : Map<RepositoryId, Set<SharingNodeId>> = new Map()
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		let snr: QSharingNodeRepository = Q.SharingNodeRepository
 		let r: QRepository

@@ -423,6 +423,7 @@ export const SCHEMA = {
 					"domain": "air",
 					"index": 0,
 					"name": "@airport/holding-pattern",
+					"packageName": "@airport/holding-pattern",
 					"sinceVersion": 1,
 					"versions": [
 						{

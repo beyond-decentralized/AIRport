@@ -1,24 +1,7 @@
+/* eslint-disable */
 import {
-	IDuo,
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { Duo } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	duoDiSet
-} from './qSchema'
-import {
-	IDailySyncLog
-} from './dailysynclog'
+	IDailySyncLog,
+} from './dailysynclog';
 import {
 	DailySyncLogESelect,
 	DailySyncLogECreateColumns,
@@ -27,11 +10,11 @@ import {
 	DailySyncLogEUpdateProperties,
 	DailySyncLogEId,
 	DailySyncLogGraph,
-	QDailySyncLog
-} from './qdailysynclog'
+	QDailySyncLog,
+} from './qdailysynclog';
 import {
-	ILog
-} from './log/log'
+	ILog,
+} from './log/log';
 import {
 	LogESelect,
 	LogECreateColumns,
@@ -40,11 +23,11 @@ import {
 	LogEUpdateProperties,
 	LogEId,
 	LogGraph,
-	QLog
-} from './log/qlog'
+	QLog,
+} from './log/qlog';
 import {
-	IMonthlySyncLog
-} from './monthlysynclog'
+	IMonthlySyncLog,
+} from './monthlysynclog';
 import {
 	MonthlySyncLogESelect,
 	MonthlySyncLogECreateColumns,
@@ -53,8 +36,28 @@ import {
 	MonthlySyncLogEUpdateProperties,
 	MonthlySyncLogEId,
 	MonthlySyncLogGraph,
-	QMonthlySyncLog
-} from './qmonthlysynclog'
+	QMonthlySyncLog,
+} from './qmonthlysynclog';
+import {
+	IDuo,
+	IEntityCascadeGraph,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+} from '@airport/air-control';
+import {
+	Duo,
+} from '@airport/check-in';
+import {
+	EntityId as DbEntityId,
+} from '@airport/ground-control';
+import {
+	Q,
+	duoDiSet,
+} from './qSchema';
 
 
 // Schema Q object Dependency Injection readiness detection Duo
@@ -110,11 +113,11 @@ export class BaseLogDuo
 	implements IBaseLogDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(2)
+		super(1)
 	}
 }
 
@@ -128,10 +131,10 @@ export class BaseMonthlySyncLogDuo
 	implements IBaseMonthlySyncLogDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }

@@ -9,5 +9,5 @@ export declare const DEPENDENCY_GRAPH_RESOLVER: import("@airport/di").IDiToken<I
 export declare const ENTITY_GRAPH_RECONSTRUCTOR: import("@airport/di").IDiToken<IEntityGraphReconstructor>;
 export declare const OPERATION_CONTEXT_LOADER: import("@airport/di").IDiToken<IOperationContextLoader>;
 export declare const STRUCTURAL_ENTITY_VALIDATOR: import("@airport/di").IDiToken<IStructuralEntityValidator>;
-export declare const TRANS_SERVER: import("@airport/di").IDiToken<ITransactionalServer>;
+export declare const TRANSACTIONAL_SERVER: import("@airport/di").IDiToken<ITransactionalServer>;
 //# sourceMappingURL=tokens.d.ts.map

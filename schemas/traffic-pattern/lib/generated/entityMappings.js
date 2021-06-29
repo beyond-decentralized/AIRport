@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { AIR_DB } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { VersionedSchemaObject } from '../ddl/schema/VersionedSchemaObject';
 import { SchemaRelationColumn } from '../ddl/schema/SchemaRelationColumn';
@@ -12,7 +12,7 @@ import { SchemaEntity } from '../ddl/schema/SchemaEntity';
 import { SchemaReference } from '../ddl/schema/SchemaReference';
 import { SchemaVersion } from '../ddl/schema/SchemaVersion';
 import { Schema } from '../ddl/schema/Schema';
-DI.db().get(AIR_DB).then(airDb => {
+DI.db().get(AIRPORT_DATABASE).then(airDb => {
     const accumulator = airDb.getAccumulator('air', 'traffic-pattern');
     accumulator.add(VersionedSchemaObject, undefined);
     accumulator.add(SchemaRelationColumn, 0);

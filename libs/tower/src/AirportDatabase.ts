@@ -1,14 +1,14 @@
 import {
 	abs,
 	add,
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and,
 	avg,
 	bool,
 	concat,
 	count,
 	date,
-	DB_FACADE,
+	DATABASE_FACADE,
 	distinct,
 	divide,
 	exists,
@@ -234,7 +234,7 @@ export class AirportDatabase
 		context?: IEntityContext,
 	): Promise<number> {
 		const dbFacade = await container(this)
-			.get(DB_FACADE);
+			.get(DATABASE_FACADE);
 
 		return await dbFacade.addRepository(name, url, platform,
 			platformConfig, distributionStrategy, context);
@@ -247,7 +247,7 @@ export class AirportDatabase
 		context?: IEntityContext,
 	): Promise<number> {
 		const dbFacade = await container(this)
-			.get(DB_FACADE);
+			.get(DATABASE_FACADE);
 
 		return await dbFacade.insertColumnValues(rawInsertValues, context);
 	}
@@ -259,7 +259,7 @@ export class AirportDatabase
 		context?: IEntityContext,
 	): Promise<number> {
 		const dbFacade = await container(this)
-			.get(DB_FACADE);
+			.get(DATABASE_FACADE);
 
 		return await dbFacade.insertValues(rawInsertValues, context);
 	}
@@ -271,7 +271,7 @@ export class AirportDatabase
 		context?: IEntityContext,
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		const dbFacade = await container(this)
-			.get(DB_FACADE);
+			.get(DATABASE_FACADE);
 
 		return await dbFacade.insertColumnValuesGenerateIds(rawInsertValues, context);
 	}
@@ -283,7 +283,7 @@ export class AirportDatabase
 		context?: IEntityContext,
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		const dbFacade = await container(this)
-			.get(DB_FACADE);
+			.get(DATABASE_FACADE);
 
 		return await dbFacade.insertValuesGenerateIds(rawInsertValues, context);
 	}
@@ -301,7 +301,7 @@ export class AirportDatabase
 		context?: IEntityContext,
 	): Promise<number> {
 		const dbFacade = await container(this)
-			.get(DB_FACADE);
+			.get(DATABASE_FACADE);
 
 		return await dbFacade.deleteWhere(rawDelete, context);
 	}
@@ -318,7 +318,7 @@ export class AirportDatabase
 		operationName?: OperationName,
 	): Promise<number> {
 		const dbFacade = await container(this)
-			.get(DB_FACADE);
+			.get(DATABASE_FACADE);
 
 		return await dbFacade.save(entity, context);
 	}
@@ -337,7 +337,7 @@ export class AirportDatabase
 		context?: IEntityContext,
 	): Promise<number> {
 		const dbFacade = await container(this)
-			.get(DB_FACADE);
+			.get(DATABASE_FACADE);
 
 		return await dbFacade.updateColumnsWhere(rawUpdateColumns, context);
 	}
@@ -355,13 +355,13 @@ export class AirportDatabase
 		context?: IEntityContext,
 	): Promise<number> {
 		const dbFacade = await container(this)
-			.get(DB_FACADE);
+			.get(DATABASE_FACADE);
 
 		return await dbFacade.updateWhere(rawUpdate, context);
 	}
 }
 
-DI.set(AIR_DB, AirportDatabase);
+DI.set(AIRPORT_DATABASE, AirportDatabase);
 
 export function injectAirportDatabase(): void {
 	// console.log('Injecting AirportDatabase');

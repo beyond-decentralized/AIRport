@@ -1,29 +1,32 @@
-import { AIR_DB, } from '@airport/air-control';
+import { AIRPORT_DATABASE, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { getSchemaName, STORE_DRIVER, TRANS_CONNECTOR, } from '@airport/ground-control';
+import { getSchemaName, STORE_DRIVER, TRANSACTIONAL_CONNECTOR, } from '@airport/ground-control';
 import { Actor, ACTOR_DAO, } from '@airport/holding-pattern';
 import { SCHEMA_INITIALIZER } from '@airport/landing';
-import { TRANS_SERVER, transactional, } from '@airport/tower';
+import { TRANSACTIONAL_SERVER, transactional, } from '@airport/tower';
 import { SCHEMA_DAO } from '@airport/traffic-pattern';
 import { Terminal, TERMINAL_DAO, User, USER_DAO, } from '@airport/travel-document-checkpoint';
 import { DATABASE_MANAGER } from '../tokens';
 export class DatabaseManager {
+    constructor() {
+        this.initialized = false;
+    }
     // constructor() {
     // }
     async initNoDb(context, ...schemas) {
-        this.airDb = await container(this).get(AIR_DB);
-        const connector = await container(this).get(TRANS_CONNECTOR);
+        await container(this).get(AIRPORT_DATABASE);
+        const connector = await container(this).get(TRANSACTIONAL_CONNECTOR);
         await connector.init();
-        const server = await container(this).get(TRANS_SERVER);
+        const server = await container(this).get(TRANSACTIONAL_SERVER);
         server.tempActor = new Actor();
         await this.installAirportSchema(true, false, context);
         const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
         await schemaInitializer.stage(schemas, context);
+        this.initialized = true;
     }
     async initWithDb(domainName, context, ...schemas) {
-        const airDb = await container(this).get(AIR_DB);
-        this.airDb = airDb;
-        const connector = await container(this).get(TRANS_CONNECTOR);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
+        const connector = await container(this).get(TRANSACTIONAL_CONNECTOR);
         await connector.init();
         const storeDriver = await container(this).get(STORE_DRIVER);
         /*
@@ -88,7 +91,7 @@ export class DatabaseManager {
                 await storeDriver.dropTable('votecube_com__ecclesia', 'VOTE_FACTORS')
                 await storeDriver.dropTable('votecube_com__ecclesia', 'VOTE_FACTOR_TYPES')
         */
-        const server = await container(this).get(TRANS_SERVER);
+        const server = await container(this).get(TRANSACTIONAL_SERVER);
         server.tempActor = new Actor();
         const hydrate = await storeDriver.doesTableExist('air___airport__territory', 'packages', context);
         await this.installAirportSchema(false, hydrate, context);
@@ -123,6 +126,7 @@ export class DatabaseManager {
                     })
                 await dbFacade.init(storeType)
                 */
+        this.initialized = true;
     }
     /*
         async ensureInitialized(
@@ -141,7 +145,7 @@ export class DatabaseManager {
         async initializeAll(
             defaultStoreType: StoreType
         ): Promise<void> {
-            AIR_DB
+            AIRPORT_DATABASE
             throw new Error(`Implement!`)
                     const db = TQ.db(dbConst.DEFAULT_DB);
                     if (!TQ.isInitialized(dbConst.DEFAULT_DB)) {
@@ -159,7 +163,7 @@ export class DatabaseManager {
     }
 */
     isInitialized() {
-        return !!this.airDb;
+        return this.initialized;
     }
     async initFeatureSchemas(schemas, context, buildSchemas) {
         const schemaDao = await container(this).get(SCHEMA_DAO);

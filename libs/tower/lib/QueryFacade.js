@@ -23,6 +23,7 @@ export class QueryFacade {
             queryResultType,
             schemaIndex: context.dbEntity.schemaVersion.schema.index,
             tableIndex: context.dbEntity.index,
+            // values: query.values
         };
     }
     async search(query, queryResultType, context, cacheForUpdate = UpdateCacheType.NONE) {

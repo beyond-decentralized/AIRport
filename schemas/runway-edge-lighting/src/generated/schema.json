@@ -2,6 +2,7 @@
 	"domain": "air",
 	"index": null,
 	"name": "@airport/runway-edge-lighting",
+	"packageName": "@airport/runway-edge-lighting",
 	"sinceVersion": 1,
 	"versions": [
 		{
@@ -201,7 +202,8 @@
 					"tableConfig": {
 						"name": "LOG_ENTRIES",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -334,7 +336,8 @@
 					"tableConfig": {
 						"name": "LOG_ENTRY_VALUES",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -465,7 +468,8 @@
 					"tableConfig": {
 						"name": "LOG_ENTRY",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -668,6 +672,7 @@
 					"domain": "air",
 					"index": 0,
 					"name": "@airport/territory",
+					"packageName": "@airport/territory",
 					"sinceVersion": 1,
 					"versions": [
 						{

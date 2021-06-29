@@ -2,6 +2,7 @@
 	"domain": "air",
 	"index": null,
 	"name": "@airport/airport-code",
+	"packageName": "@airport/airport-code",
 	"sinceVersion": 1,
 	"versions": [
 		{
@@ -146,7 +147,8 @@
 					"tableConfig": {
 						"name": "SEQUENCES",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -280,7 +282,8 @@
 					"tableConfig": {
 						"name": "TERMINAL_RUNS",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				}
 			],
 			"integerVersion": 1,

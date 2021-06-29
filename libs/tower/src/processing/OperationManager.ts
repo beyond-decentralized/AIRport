@@ -14,16 +14,16 @@ import {
 	UpdateColumns,
 	UpdateProperties,
 	valuesEqual
-}                          from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	DbColumn,
 	DbEntity,
 	EntityRelationType,
 	JSONValueOperation,
 	PortableQuery
-}                          from '@airport/ground-control'
-import {ITransaction}      from '../ITransaction'
-import {IOperationContext} from './OperationContext'
+} from '@airport/ground-control'
+import { ITransaction } from '../ITransaction'
+import { IOperationContext } from './OperationContext'
 
 /**
  * Created by Papa on 11/15/2016.
@@ -53,24 +53,29 @@ export abstract class OperationManager
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>,
 	): Promise<number> {
-		const verifiedTree = context.ioc.cascadeGraphVerifier.verify(entities, context)
-		const entityGraph  = context.ioc.entityGraphReconstructor
+		const verifiedTree = context.ioc.cascadeGraphVerifier
+		.verify(entities, context)
+		const entityGraph = context.ioc.entityGraphReconstructor
 			.restoreEntityGraph(verifiedTree, context)
 		context.ioc.structuralEntityValidator.validate(entityGraph, [], context)
-		const operations         = context.ioc.dependencyGraphResolver.getOperationsInOrder(entityGraph, context)
+		const operations = context.ioc.dependencyGraphResolver
+		.getOperationsInOrder(entityGraph, context)
 		let totalNumberOfChanges = 0
-		const rootDbEntity       = context.dbEntity
+		const rootDbEntity = context.dbEntity
 		for (const operation of operations) {
 			context.dbEntity = operation.dbEntity
 			if (operation.isCreate) {
-				totalNumberOfChanges += await this.internalCreate(operation.entities, transaction, context)
+				totalNumberOfChanges += await this.internalCreate(
+					operation.entities, transaction, context)
 			} else if (operation.isDelete) {
 				// TODO: add support for multiple records
-				totalNumberOfChanges += await this.internalDelete(operation.entities, transaction, context)
+				totalNumberOfChanges += await this.internalDelete(
+					operation.entities, transaction, context)
 			} else {
 				// TODO: re-think though how change detection will work
 				// TODO: add support for multiple records
-				totalNumberOfChanges += await this.internalUpdate(operation.entities, null, transaction, context)
+				totalNumberOfChanges += await this.internalUpdate(
+					operation.entities, null, transaction, context)
 			}
 		}
 		context.dbEntity = rootDbEntity
@@ -85,14 +90,14 @@ export abstract class OperationManager
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
 		const qEntity = context.ioc.airDb.qSchemas
-			[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
+		[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
 
 		let rawInsert: RawInsertValues<any> = {
 			insertInto: qEntity,
 			columns: context.ioc.metadataUtils.getAllNonGeneratedColumns(qEntity),
 			values: []
 		}
-		let columnIndexesInValues           = []
+		let columnIndexesInValues = []
 
 		rawInsert.columns.forEach((
 			qField: IQOperableFieldInternal<any, any, any, any>,
@@ -182,21 +187,22 @@ export abstract class OperationManager
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
-		const qEntity                                =
-			      context.ioc.airDb.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
-		const setFragment: any                       = {}
+		const qEntity =
+			context.ioc.airDb.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
+		const setFragment: any = {}
 		const idWhereFragments: JSONValueOperation[] = []
-		let numUpdates                               = 0
+		let numUpdates = 0
 
 		for (const dbProperty of context.dbEntity.properties) {
 			const updatedValue = entity[dbProperty.name]
 			if (!dbProperty.relation || !dbProperty.relation.length) {
-				const dbColumn      = dbProperty.propertyColumns[0].column
+				const dbColumn = dbProperty.propertyColumns[0].column
 				const originalValue = originalEntity[dbColumn.name]
 				if (dbProperty.isId) {
 					// For an id property, the value is guaranteed to be the same (and not empty) -
 					// cannot entity-update id fields
-					idWhereFragments.push((<any>qEntity)[dbProperty.name].equals(updatedValue))
+					idWhereFragments.push((<any>qEntity)[dbProperty.name]
+						.equals(updatedValue))
 				} else if (!valuesEqual(originalValue, updatedValue)) {
 					setFragment[dbColumn.name] = updatedValue
 					numUpdates++
@@ -243,15 +249,16 @@ export abstract class OperationManager
 			} else {
 				whereFragment = idWhereFragments[0]
 			}
-			let rawUpdate                          = {
+			let rawUpdate = {
 				update: qEntity,
 				set: setFragment,
 				where: whereFragment
 			}
 			let update: UpdateProperties<any, any> =
-				    new UpdateProperties(rawUpdate)
+				new UpdateProperties(rawUpdate)
 
-			numberOfAffectedRecords = await this.internalUpdateWhere(update, transaction, context)
+			numberOfAffectedRecords = await this.internalUpdateWhere(
+				update, transaction, context)
 		}
 
 		return numberOfAffectedRecords
@@ -263,11 +270,12 @@ export abstract class OperationManager
 		context: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
 
-		const dbEntity                               = context.dbEntity
-		const qEntity                                =
-			      context.ioc.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
+		const dbEntity = context.dbEntity
+		const qEntity =
+			context.ioc.airDb.qSchemas
+			[dbEntity.schemaVersion.schema.index][dbEntity.name]
 		const idWhereFragments: JSONValueOperation[] = []
-		const valuesMapByColumn: any[]               = []
+		const valuesMapByColumn: any[] = []
 		for (let propertyName in entity) {
 			if (!entity.hasOwnProperty(propertyName)) {
 				continue
@@ -329,7 +337,7 @@ export abstract class OperationManager
 			deleteFrom: qEntity,
 			where: idWhereClause
 		}
-		let deleteWhere: Delete<any>  = new Delete(rawDelete)
+		let deleteWhere: Delete<any> = new Delete(rawDelete)
 		return await this.internalDeleteWhere(deleteWhere, transaction, context)
 	}
 
@@ -343,7 +351,8 @@ export abstract class OperationManager
 		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
 			insertColumnValues, null, context)
 
-		return await context.ioc.transactionalServer.insertValues(portableQuery, transaction, context)
+		return await context.ioc.transactionalServer.insertValues(
+			portableQuery, transaction, context)
 	}
 
 	protected async internalInsertValues<E, EntityCascadeGraph, IQE extends IQEntity<any>>(
@@ -357,7 +366,8 @@ export abstract class OperationManager
 		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
 			insertValues, null, context)
 
-		return await context.ioc.transactionalServer.insertValues(portableQuery, transaction, context, ensureGeneratedValues)
+		return await context.ioc.transactionalServer.insertValues(
+			portableQuery, transaction, context, ensureGeneratedValues)
 	}
 
 	protected async internalInsertColumnValuesGenerateIds<IQE extends IQEntity<any>>(
@@ -385,31 +395,34 @@ export abstract class OperationManager
 		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
 			insertValues, null, context)
 
-		return await context.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction, context)
+		return await context.ioc.transactionalServer.insertValuesGetIds(
+			portableQuery, transaction, context)
 	}
 
 	protected async internalUpdateColumnsWhere<E, EntityCascadeGraph, IEUC extends IEntityUpdateColumns,
 		IQE extends IQEntity<any>>(
-		updateColumns: UpdateColumns<IEUC, IQE>,
-		transaction: ITransaction,
-		context: IOperationContext<E, EntityCascadeGraph>
-	): Promise<number> {
+			updateColumns: UpdateColumns<IEUC, IQE>,
+			transaction: ITransaction,
+			context: IOperationContext<E, EntityCascadeGraph>
+		): Promise<number> {
 		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
 			updateColumns, null, context)
 
-		return await context.ioc.transactionalServer.updateValues(portableQuery, transaction, context)
+		return await context.ioc.transactionalServer.updateValues(
+			portableQuery, transaction, context)
 	}
 
 	protected async internalUpdateWhere<E, EntityCascadeGraph, IEUP extends IEntityUpdateProperties,
 		IQE extends IQEntity<any>>(
-		update: UpdateProperties<IEUP, IQE>,
-		transaction: ITransaction,
-		context: IOperationContext<E, EntityCascadeGraph>
-	): Promise<number> {
+			update: UpdateProperties<IEUP, IQE>,
+			transaction: ITransaction,
+			context: IOperationContext<E, EntityCascadeGraph>
+		): Promise<number> {
 		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
 			update, null, context)
 
-		return await context.ioc.transactionalServer.updateValues(portableQuery, transaction, context)
+		return await context.ioc.transactionalServer.updateValues(
+			portableQuery, transaction, context)
 	}
 
 	protected async internalDeleteWhere<E, EntityCascadeGraph, IQE extends IQEntity<any>>(
@@ -420,7 +433,8 @@ export abstract class OperationManager
 		let portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
 			aDelete, null, context)
 
-		return await context.ioc.transactionalServer.deleteWhere(portableQuery, transaction, context)
+		return await context.ioc.transactionalServer.deleteWhere(
+			portableQuery, transaction, context)
 	}
 
 }

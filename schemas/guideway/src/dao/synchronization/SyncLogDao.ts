@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and,
 	max,
 	min,
@@ -70,7 +70,7 @@ export class SyncLogDao
 		let sl: QSyncLog
 
 		const airDb = await container(this)
-			.get(AIR_DB)
+			.get(AIRPORT_DATABASE)
 
 		await airDb.insertValues({
 			insertInto: sl = Q.SyncLog,
@@ -161,7 +161,7 @@ export class SyncLogDao
 		})
 
 		const airDb = await container(this)
-			.get(AIR_DB)
+			.get(AIRPORT_DATABASE)
 
 		return <TerminalSyncStatus[]>await airDb.find.sheet({
 			from: [

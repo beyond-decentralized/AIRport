@@ -1,4 +1,4 @@
-import { AIR_DB, and, Y } from '@airport/air-control';
+import { AIRPORT_DATABASE, and, Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { REPOSITORY_DAO } from '../../tokens';
@@ -124,7 +124,7 @@ export class RepositoryDao extends BaseRepositoryDao {
         let od;
         let odu;
         let ou;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         const resultRows = await airDb.find.sheet({
             from: [
                 r = Q.Repository,

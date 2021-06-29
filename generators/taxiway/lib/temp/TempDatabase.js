@@ -1,4 +1,4 @@
-import { AIR_DB } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { STORE_DRIVER } from '@airport/ground-control';
@@ -25,7 +25,7 @@ export class TempDatabase {
         injectAirportDatabase();
         injectTransactionalServer();
         injectTransactionalConnector();
-        await DI.db().get(AIR_DB);
+        await DI.db().get(AIRPORT_DATABASE);
         const dbManager = await DI.db().get(DATABASE_MANAGER);
         await dbManager.initNoDb({}, ...schemas);
         this.tempDbInitialized = true;

@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and,
 	Y
 }                                            from '@airport/air-control'
@@ -75,7 +75,7 @@ export class TerminalDao
 
 		let t: QTerminal
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const results = await airDb.find.sheet({
 			from: [
@@ -103,7 +103,7 @@ export class TerminalDao
 		// Superset of all of repository ids received for all of the above terminals
 		repositoryIds: AgtRepositoryId[],
 	): Promise<Map<TerminalId, AgtRepositoryId>> {
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const resultMapByTerminalId: Map<TerminalId, AgtRepositoryId> = new Map()
 

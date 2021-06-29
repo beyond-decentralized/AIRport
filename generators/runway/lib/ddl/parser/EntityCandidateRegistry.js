@@ -273,7 +273,6 @@ export class EntityCandidateRegistry {
         // fs.lstatSync(pathToMappedSuperclasses).isDirectory()) {
         // relatedMappedSuperclassesProject = require(pathToMappedSuperclasses) break } } }
         // else {
-        console.log('file://' + process.cwd() + '/node_modules/' + projectName + '/lib/index.js');
         relatedMappedSuperclassesProject = await import('file://' + process.cwd() + '/node_modules/' + projectName + '/lib/index.js');
         // }
         if (!relatedMappedSuperclassesProject) {

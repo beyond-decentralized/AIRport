@@ -2,6 +2,7 @@
 	"domain": "air",
 	"index": null,
 	"name": "@airport/territory",
+	"packageName": "@airport/territory",
 	"sinceVersion": 1,
 	"versions": [
 		{
@@ -94,7 +95,8 @@
 					"tableConfig": {
 						"name": "PACKAGES",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -223,7 +225,8 @@
 					"tableConfig": {
 						"name": "APPLICATION_PACKAGES",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -313,7 +316,8 @@
 					"tableConfig": {
 						"name": "DOMAINS",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -445,7 +449,8 @@
 					"tableConfig": {
 						"name": "APPLICATIONS",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -554,7 +559,8 @@
 					"tableConfig": {
 						"name": "PACKAGED_UNITS",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				}
 			],
 			"integerVersion": 1,

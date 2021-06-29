@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and,
 	distinct,
 	exists,
@@ -153,7 +153,7 @@ export class AgtRepositoryTransactionBlockDao
 
 		let rtb: QAgtRepositoryTransactionBlock
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const records = await airDb.find.sheet({
 			from: [
@@ -185,7 +185,7 @@ export class AgtRepositoryTransactionBlockDao
 		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeAgtRepositoryTransactionBlock
 		let rtb: QAgtRepositoryTransactionBlock
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		return <AgtRepositoryTransactionBlockId[]>await airDb
 			.insertValuesGenerateIds({
@@ -215,7 +215,7 @@ export class AgtRepositoryTransactionBlockDao
 		// TODO: once CockroachDb supports optimized (non-nested loop) correlated
 		// query, test against NOT EXISTS and see which is faster
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const rtbsToSend = await airDb.find.tree({
 			from: [
@@ -283,7 +283,7 @@ export class AgtRepositoryTransactionBlockDao
 		// TODO: test performance on CockroachDb vs TiDB for NOT EXISTS vs
 		// NOT IN vs EXCEPT
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		await airDb.find.sheet({
 			from: [
@@ -370,7 +370,7 @@ export class AgtRepositoryTransactionBlockDao
 
 		let rtb: QAgtRepositoryTransactionBlock
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const rtbsToArchive = await airDb.find.sheet({
 			from: [
@@ -425,7 +425,7 @@ export class AgtRepositoryTransactionBlockDao
 	): Promise<void> {
 		let rtb: QAgtRepositoryTransactionBlock
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		await airDb.find.sheet({
 			from: [

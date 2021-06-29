@@ -1,4 +1,4 @@
-import { AIR_DB } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { container } from '@airport/di';
 import { getSchemaName, QueryType } from '@airport/ground-control';
 import { SqlSchemaBuilder } from '@airport/landing';
@@ -15,7 +15,7 @@ export class NoOpSchemaBuilder extends SqlSchemaBuilder {
         return ``;
     }
     async buildAllSequences(jsonSchemas, context) {
-        let airDb = await container(this).get(AIR_DB);
+        let airDb = await container(this).get(AIRPORT_DATABASE);
         let allSequences = [];
         for (const jsonSchema of jsonSchemas) {
             const qSchema = airDb.QM[getSchemaName(jsonSchema)];

@@ -1,7 +1,7 @@
 import { DI }               from '@airport/di';
 import {
 	ITransactionalConnector,
-	TRANS_CONNECTOR
+	TRANSACTIONAL_CONNECTOR
 }                           from '@airport/ground-control';
 import { IAirportDatabase } from '../../lingo/AirportDatabase';
 import { IUpdateCache }     from '../../lingo/core/data/UpdateCache';
@@ -15,7 +15,7 @@ import { IFieldUtils }      from '../../lingo/utils/FieldUtils';
 import { IQueryUtils }      from '../../lingo/utils/QueryUtils';
 import { ISchemaUtils }     from '../../lingo/utils/SchemaUtils';
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	ENTITY_UTILS,
 	FIELD_UTILS,
 	QUERY_CONTEXT_LOADER,
@@ -37,8 +37,8 @@ export class IocQueryContext
 			      queryUtils, schemaUtils, transactionalConnector,
 			      updateCache]        = await DI.db()
 			.get(
-				AIR_DB, ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE,
-				QUERY_UTILS, SCHEMA_UTILS, TRANS_CONNECTOR, UPDATE_CACHE
+				AIRPORT_DATABASE, ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE,
+				QUERY_UTILS, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR, UPDATE_CACHE
 			);
 		this.airDb                  = airDb;
 		this.entityUtils            = entityUtils;

@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and
 }                              from '@airport/air-control'
 import {container, DI}                    from '@airport/di'
@@ -45,7 +45,7 @@ export class MonthlySyncLogDao
 	): Promise<void> {
 		let dsl: QMonthlySyncLog
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		await airDb.find.sheet({
 			from: [

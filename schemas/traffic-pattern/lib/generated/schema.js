@@ -2,6 +2,7 @@ export const SCHEMA = {
     "domain": "air",
     "index": null,
     "name": "@airport/traffic-pattern",
+    "packageName": "@airport/traffic-pattern",
     "sinceVersion": 1,
     "versions": [
         {

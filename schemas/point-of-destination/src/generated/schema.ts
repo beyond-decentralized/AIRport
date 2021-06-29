@@ -1,7 +1,9 @@
+/* eslint-disable */
 export const SCHEMA = {
 	"domain": "air",
 	"index": null,
 	"name": "@airport/point-of-destination",
+	"packageName": "@airport/point-of-destination",
 	"sinceVersion": 1,
 	"versions": [
 		{
@@ -146,7 +148,8 @@ export const SCHEMA = {
 					"tableConfig": {
 						"name": "DAILY_ARCHIVES",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				}
 			],
 			"integerVersion": 1,
@@ -155,6 +158,7 @@ export const SCHEMA = {
 					"domain": "air",
 					"index": 0,
 					"name": "@airport/guideway",
+					"packageName": "@airport/guideway",
 					"sinceVersion": 1,
 					"versions": [
 						{

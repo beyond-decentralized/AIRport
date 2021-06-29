@@ -126,6 +126,12 @@ export class SchemaComposer {
                     minorVersion: parseInt(versionParts[1]),
                     patchVersion: parseInt(versionParts[2]),
                     schema,
+                    // entities: [],
+                    // references: [],
+                    // referencedBy: [],
+                    // entityMapByName: {},
+                    // referencesMapByName: {},
+                    // referencedByMapByName: {},
                 };
                 // needed for normalOperation only
                 schema.currentVersion = newSchemaVersion;
@@ -193,6 +199,13 @@ export class SchemaComposer {
                     isRepositoryEntity: jsonEntity.isRepositoryEntity,
                     name: jsonEntity.name,
                     tableConfig: jsonEntity.tableConfig,
+                    // columns: [],
+                    // columnMap: {},
+                    // idColumns: [],
+                    // idColumnMap: {},
+                    // relations: [],
+                    // properties: [],
+                    // propertyMap: {}
                 };
                 // schemaVersion.entities.push(entity)
                 newSchemaEntities.push(entity);
@@ -227,6 +240,7 @@ export class SchemaComposer {
                         entity,
                         name: jsonProperty.name,
                         isId: jsonProperty.isId,
+                        // propertyColumns: []
                     };
                     // entity.properties.push(property)
                     // entity.propertyMap[property.name] = property
@@ -283,6 +297,8 @@ export class SchemaComposer {
                         oneToManyElems: jsonRelation.oneToManyElems,
                         relationEntity,
                         relationType: jsonRelation.relationType,
+                        // oneRelationColumns: [],
+                        // manyRelationColumns: []
                     };
                     // property.relation               = [relation]
                     // relationEntity.relations.push(relation)
@@ -335,6 +351,9 @@ export class SchemaComposer {
                         propertyColumns: [],
                         scale: jsonColumn.scale,
                         type: jsonColumn.type,
+                        // propertyColumns: [],
+                        // oneRelationColumns: [],
+                        // manyRelationColumns: []
                     };
                     columnsForTable[index] = column;
                     newColumns.push(column);

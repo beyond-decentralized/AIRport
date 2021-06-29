@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and,
 	field
 }                                          from '@airport/air-control'
@@ -150,7 +150,7 @@ export class SharingNodeRepoTransBlockDao
 		const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock
 
 		const airDb = await container(this)
-			.get(AIR_DB)
+			.get(AIRPORT_DATABASE)
 
 		let snrtb: QSharingNodeRepoTransBlock
 		return await airDb.insertValues({
@@ -181,7 +181,7 @@ export class SharingNodeRepoTransBlockDao
 		let snrtb: QSharingNodeRepoTransBlock
 
 		const airDb = await container(this)
-			.get(AIR_DB)
+			.get(AIRPORT_DATABASE)
 
 		const records = await airDb.find.sheet({
 			from: [

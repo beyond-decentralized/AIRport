@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { AIR_DB } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { Address } from '../ddl/Address';
 import { Immutable } from '../ddl/attributes/Immutable';
@@ -11,7 +11,7 @@ import { AgeSuitable } from '../ddl/attributes/AgeSuitable';
 import { Mutable } from '../ddl/attributes/Mutable';
 import { MutableWithActor } from '../ddl/attributes/MutableWithActor';
 
-DI.db().get(AIR_DB).then(airDb => {
+DI.db().get(AIRPORT_DATABASE).then(airDb => {
   const accumulator = airDb.getAccumulator('air', 'vasi');
   accumulator.add(Address, 0);
   accumulator.add(Immutable, undefined);

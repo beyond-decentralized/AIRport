@@ -1,4 +1,4 @@
-import { DB_FACADE, ENTITY_STATE_MANAGER, EntityFind, EntityFindOne, EntitySearch, EntitySearchOne, } from '@airport/air-control';
+import { DATABASE_FACADE, ENTITY_STATE_MANAGER, EntityFind, EntityFindOne, EntitySearch, EntitySearchOne, } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { Duo } from './Duo';
 /**
@@ -22,7 +22,7 @@ export class EntityDatabaseFacade {
     // 	updateCacheType: UpdateCacheType,
     // 	...entities: Entity[]
     // ): Promise<void> {
-    // 	const dbFacade = await DI.get(DB_FACADE)
+    // 	const dbFacade = await DI.get(DATABASE_FACADE)
     // 	return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity,
     // ...entities) }
     async insertColumnValues(rawInsertColumnValues, ctx) {
@@ -73,7 +73,7 @@ export class EntityDatabaseFacade {
             ctx.startedAt = new Date();
         }
         const databaseFacade = await DI.db()
-            .get(DB_FACADE);
+            .get(DATABASE_FACADE);
         const previousEntity = ctx.dbEntity;
         ctx.dbEntity = this.dbEntity;
         try {

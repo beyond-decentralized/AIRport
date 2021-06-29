@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	IAirportDatabase,
 	ISchemaUtils,
 	SCHEMA_UTILS,
@@ -88,7 +88,7 @@ export class DeleteManager
 			      schemaUtils,
 			      sequenceGenerator
 		      ] = await container(this)
-			.get(AIR_DB, HISTORY_MANAGER,
+			.get(AIRPORT_DATABASE, HISTORY_MANAGER,
 				OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
 				REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER,
 				REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO,

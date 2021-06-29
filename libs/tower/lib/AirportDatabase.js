@@ -1,4 +1,4 @@
-import { abs, add, AIR_DB, and, avg, bool, concat, count, date, DB_FACADE, distinct, divide, exists, format, intersect, lcase, len, max, mid, min, minus, modulus, multiply, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, not, now, num, or, replace, round, str, subtract, sum, trim, ucase, union, unionAll, wrapPrimitive, } from '@airport/air-control';
+import { abs, add, AIRPORT_DATABASE, and, avg, bool, concat, count, date, DATABASE_FACADE, distinct, divide, exists, format, intersect, lcase, len, max, mid, min, minus, modulus, multiply, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, not, now, num, or, replace, round, str, subtract, sum, trim, ucase, union, unionAll, wrapPrimitive, } from '@airport/air-control';
 import { container, DI, } from '@airport/di';
 class EntityAccumulator {
     constructor(schemaDomain, schemaName, entityMap) {
@@ -122,27 +122,27 @@ export class AirportDatabase {
     }
     async addRepository(name, url, platform, platformConfig, distributionStrategy, context) {
         const dbFacade = await container(this)
-            .get(DB_FACADE);
+            .get(DATABASE_FACADE);
         return await dbFacade.addRepository(name, url, platform, platformConfig, distributionStrategy, context);
     }
     async insertColumnValues(rawInsertValues, context) {
         const dbFacade = await container(this)
-            .get(DB_FACADE);
+            .get(DATABASE_FACADE);
         return await dbFacade.insertColumnValues(rawInsertValues, context);
     }
     async insertValues(rawInsertValues, context) {
         const dbFacade = await container(this)
-            .get(DB_FACADE);
+            .get(DATABASE_FACADE);
         return await dbFacade.insertValues(rawInsertValues, context);
     }
     async insertColumnValuesGenerateIds(rawInsertValues, context) {
         const dbFacade = await container(this)
-            .get(DB_FACADE);
+            .get(DATABASE_FACADE);
         return await dbFacade.insertColumnValuesGenerateIds(rawInsertValues, context);
     }
     async insertValuesGenerateIds(rawInsertValues, context) {
         const dbFacade = await container(this)
-            .get(DB_FACADE);
+            .get(DATABASE_FACADE);
         return await dbFacade.insertValuesGenerateIds(rawInsertValues, context);
     }
     /**
@@ -153,7 +153,7 @@ export class AirportDatabase {
      */
     async deleteWhere(rawDelete, context) {
         const dbFacade = await container(this)
-            .get(DB_FACADE);
+            .get(DATABASE_FACADE);
         return await dbFacade.deleteWhere(rawDelete, context);
     }
     /**
@@ -164,7 +164,7 @@ export class AirportDatabase {
      */
     async save(entity, context, operationName) {
         const dbFacade = await container(this)
-            .get(DB_FACADE);
+            .get(DATABASE_FACADE);
         return await dbFacade.save(entity, context);
     }
     /**
@@ -175,7 +175,7 @@ export class AirportDatabase {
      */
     async updateColumnsWhere(rawUpdateColumns, context) {
         const dbFacade = await container(this)
-            .get(DB_FACADE);
+            .get(DATABASE_FACADE);
         return await dbFacade.updateColumnsWhere(rawUpdateColumns, context);
     }
     /**
@@ -186,11 +186,11 @@ export class AirportDatabase {
      */
     async updateWhere(rawUpdate, context) {
         const dbFacade = await container(this)
-            .get(DB_FACADE);
+            .get(DATABASE_FACADE);
         return await dbFacade.updateWhere(rawUpdate, context);
     }
 }
-DI.set(AIR_DB, AirportDatabase);
+DI.set(AIRPORT_DATABASE, AirportDatabase);
 export function injectAirportDatabase() {
     // console.log('Injecting AirportDatabase');
 }

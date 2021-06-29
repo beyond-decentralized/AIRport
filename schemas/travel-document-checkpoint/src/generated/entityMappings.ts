@@ -1,4 +1,5 @@
-import { AIR_DB } from '@airport/air-control';
+/* eslint-disable */
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { UserTerminal } from '../ddl/UserTerminal';
 import { UserTerminalAgt } from '../ddl/UserTerminalAgt';
@@ -7,7 +8,7 @@ import { Terminal } from '../ddl/Terminal';
 import { TerminalAgt } from '../ddl/TerminalAgt';
 import { Agt } from '../ddl/Agt';
 
-DI.db().get(AIR_DB).then(airDb => {
+DI.db().get(AIRPORT_DATABASE).then(airDb => {
   const accumulator = airDb.getAccumulator('air', 'travel-document-checkpoint');
   accumulator.add(UserTerminal, 0);
   accumulator.add(UserTerminalAgt, 1);

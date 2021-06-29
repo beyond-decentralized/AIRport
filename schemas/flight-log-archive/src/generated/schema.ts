@@ -1,7 +1,9 @@
+/* eslint-disable */
 export const SCHEMA = {
 	"domain": "air",
 	"index": null,
 	"name": "@airport/flight-log-archive",
+	"packageName": "@airport/flight-log-archive",
 	"sinceVersion": 1,
 	"versions": [
 		{
@@ -100,6 +102,21 @@ export const SCHEMA = {
 					"tableConfig": {
 						"name": "DAILY_SYNC_LOG",
 						"indexes": []
+					},
+					"operations": {}
+				},
+				{
+					"columns": [],
+					"idColumnRefs": [],
+					"index": 1,
+					"isLocal": true,
+					"isRepositoryEntity": false,
+					"name": "Log",
+					"properties": [],
+					"relations": [],
+					"sinceVersion": 1,
+					"tableConfig": {
+						"indexes": []
 					}
 				},
 				{
@@ -172,7 +189,7 @@ export const SCHEMA = {
 							"index": 2
 						}
 					],
-					"index": 1,
+					"index": 2,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "MonthlySyncLog",
@@ -219,21 +236,8 @@ export const SCHEMA = {
 					"tableConfig": {
 						"name": "MONTHLY_SYNC_LOG",
 						"indexes": []
-					}
-				},
-				{
-					"columns": [],
-					"idColumnRefs": [],
-					"index": 2,
-					"isLocal": true,
-					"isRepositoryEntity": false,
-					"name": "Log",
-					"properties": [],
-					"relations": [],
-					"sinceVersion": 1,
-					"tableConfig": {
-						"indexes": []
-					}
+					},
+					"operations": {}
 				}
 			],
 			"integerVersion": 1,

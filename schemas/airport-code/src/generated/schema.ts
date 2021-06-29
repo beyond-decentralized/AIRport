@@ -1,7 +1,9 @@
+/* eslint-disable */
 export const SCHEMA = {
 	"domain": "air",
 	"index": null,
 	"name": "@airport/airport-code",
+	"packageName": "@airport/airport-code",
 	"sinceVersion": 1,
 	"versions": [
 		{
@@ -146,7 +148,8 @@ export const SCHEMA = {
 					"tableConfig": {
 						"name": "SEQUENCES",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -280,7 +283,8 @@ export const SCHEMA = {
 					"tableConfig": {
 						"name": "TERMINAL_RUNS",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				}
 			],
 			"integerVersion": 1,

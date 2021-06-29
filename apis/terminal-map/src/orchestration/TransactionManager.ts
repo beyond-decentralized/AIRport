@@ -1,8 +1,8 @@
-import { IContext }     from '@airport/di';
+import { IContext } from '@airport/di';
 import {
 	IStoreDriver,
 	StoreType
-}                       from '@airport/ground-control';
+} from '@airport/ground-control';
 import { ICredentials } from './Credentials';
 
 export interface ITransactionManager {
@@ -16,12 +16,16 @@ export interface ITransactionManager {
 		context: IContext,
 	): Promise<void>;
 
+	isServer(
+		contex?: IContext
+	): boolean;
+
 	transact(
 		credentials: ICredentials,
 		callback: {
 			(
 				transaction: IStoreDriver
-			): Promise<void>
+			): Promise<void> | void
 		},
 		context: IContext,
 	): Promise<void>;

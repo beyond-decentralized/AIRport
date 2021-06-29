@@ -9,12 +9,12 @@ import {
 	ITransactionalConnector,
 	PlatformType,
 	PortableQuery,
-	TRANS_CONNECTOR
+	TRANSACTIONAL_CONNECTOR
 }                        from '@airport/ground-control';
 import { IObservable }   from '@airport/observe';
 import {
 	IOperationContext,
-	TRANS_SERVER
+	TRANSACTIONAL_SERVER
 }                        from '@airport/tower';
 
 export class TransactionalConnector
@@ -24,7 +24,7 @@ export class TransactionalConnector
 	serverUrl: string;
 
 	async init(): Promise<void> {
-		const transServer = await container(this).get(TRANS_SERVER);
+		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		await transServer.init();
 	}
@@ -37,7 +37,7 @@ export class TransactionalConnector
 		distributionStrategy: DistributionStrategy,
 		context: IOperationContext<any, any>
 	): Promise<number> {
-		const transServer = await container(this).get(TRANS_SERVER);
+		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		return await transServer.addRepository(
 			name,
@@ -57,7 +57,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		const transServer = await container(this).get(TRANS_SERVER);
+		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		return await transServer.find(
 			portableQuery,
@@ -74,7 +74,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		const transServer = await container(this).get(TRANS_SERVER);
+		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		return await transServer.findOne(
 			portableQuery,
@@ -91,7 +91,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<EntityArray>> {
-		const transServer = await container(this).get(TRANS_SERVER);
+		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		return await transServer.search(
 			portableQuery,
@@ -108,7 +108,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<IObservable<E>> {
-		const transServer = await container(this).get(TRANS_SERVER);
+		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		return await transServer.searchOne(
 			portableQuery,
@@ -175,7 +175,7 @@ export class TransactionalConnector
 		transaction: ITransaction,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number> {
-		const transServer = await container(this).get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
 		return await transServer.insertValues(
 			portableQuery,
@@ -191,7 +191,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const transServer = await container(this).get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
 		return await transServer.insertValuesGetIds(
 			portableQuery,
@@ -206,7 +206,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
 	): Promise<number> {
-		const transServer = await container(this).get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
 		return await transServer.updateValues(
 			portableQuery,
@@ -221,7 +221,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		transaction: ITransaction,
 	): Promise<number> {
-		const transServer = await container(this).get(TRANS_SERVER)
+		const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
 		return await transServer.deleteWhere(
 			portableQuery,
@@ -235,7 +235,7 @@ export class TransactionalConnector
 
 }
 
-DI.set(TRANS_CONNECTOR, TransactionalConnector);
+DI.set(TRANSACTIONAL_CONNECTOR, TransactionalConnector);
 
 export function injectTransactionalConnector(): void {
 	// console.log('Injecting TransactionalConnector')

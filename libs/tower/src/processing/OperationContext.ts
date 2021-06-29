@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	ENTITY_STATE_MANAGER,
 	FIELD_UTILS,
 	IAirportDatabase,
@@ -34,7 +34,7 @@ import {
 	ENTITY_GRAPH_RECONSTRUCTOR,
 	OPERATION_CONTEXT_LOADER,
 	STRUCTURAL_ENTITY_VALIDATOR,
-	TRANS_SERVER
+	TRANSACTIONAL_SERVER
 }                                   from '../tokens'
 import {ICascadeGraphVerifier}      from './CascadeGraphVerifier'
 import {IDependencyGraphResolver}   from './DependencyGraphResolver'
@@ -97,9 +97,9 @@ export class IocOperationContext
 			      transactionalServer, updateCache]
 			                                = await DI.db()
 			.get(
-				AIR_DB, CASCADE_GRAPH_VERIFIER, DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR, ENTITY_STATE_MANAGER,
+				AIRPORT_DATABASE, CASCADE_GRAPH_VERIFIER, DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR, ENTITY_STATE_MANAGER,
 				FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UTILS, RELATION_MANAGER, SCHEMA_UTILS,
-				STORE_DRIVER, STRUCTURAL_ENTITY_VALIDATOR, TRANS_SERVER, UPDATE_CACHE
+				STORE_DRIVER, STRUCTURAL_ENTITY_VALIDATOR, TRANSACTIONAL_SERVER, UPDATE_CACHE
 			)
 		context.airDb                     = airDb
 		context.cascadeGraphVerifier      = cascadeGraphVerifier

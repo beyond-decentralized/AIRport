@@ -2,7 +2,7 @@ import {
 	and,
 	or
 }                           from '@airport/air-control'
-import {AIR_DB}             from '@airport/air-control'
+import {AIRPORT_DATABASE}             from '@airport/air-control'
 import {container, DI}                 from '@airport/di'
 import {
 	JSONBaseOperation,
@@ -85,7 +85,7 @@ export class MissingRecordDao
 
 		const currentSchemaVersionMapById: { [schemaVersionId: number]: ISchemaVersion } = {}
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		for (const schema of airDb.schemas) {
 			const schemaVersion                           = schema.currentVersion

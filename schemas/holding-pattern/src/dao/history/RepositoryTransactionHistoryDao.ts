@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and,
 	distinct,
 	IQNumberField,
@@ -375,7 +375,7 @@ export class RepositoryTransactionHistoryDao
 			))
 		}
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const records = await airDb.find.sheet({
 			from: [

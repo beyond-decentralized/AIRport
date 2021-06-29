@@ -1,4 +1,4 @@
-import {AIR_DB}                from '@airport/air-control'
+import {AIRPORT_DATABASE}                from '@airport/air-control'
 import {
 	container,
 	DI
@@ -31,7 +31,7 @@ export class DailyArchiveLogDao
 		let dal: QDailyArchiveLog
 
 		const airDb = await container(this)
-			.get(AIR_DB)
+			.get(AIRPORT_DATABASE)
 
 		return await airDb.insertValues({
 			insertInto: dal = Q.DailyArchiveLog,

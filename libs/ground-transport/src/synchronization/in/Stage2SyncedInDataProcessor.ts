@@ -1,8 +1,8 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and,
 	compareNumbers,
-	DB_FACADE,
+	DATABASE_FACADE,
 	IAirportDatabase,
 	IDatabaseFacade,
 	or
@@ -71,7 +71,7 @@ export class Stage2SyncedInDataProcessor
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>
 	): Promise<void> {
 		const [airDb, dbFacade, recordUpdateStageDao] = await container(this).get(
-			AIR_DB, DB_FACADE, RECORD_UPDATE_STAGE_DAO)
+			AIRPORT_DATABASE, DATABASE_FACADE, RECORD_UPDATE_STAGE_DAO)
 
 		await this.performCreates(stage1Result.recordCreations,
 			schemasBySchemaVersionIdMap, airDb, dbFacade)

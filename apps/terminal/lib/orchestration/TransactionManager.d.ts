@@ -12,8 +12,9 @@ export declare class TransactionManager extends AbstractMutationManager implemen
      * @returns {Promise<void>}
      */
     initialize(dbName: string, context: IContext): Promise<void>;
+    isServer(context?: IContext): boolean;
     transact(credentials: ICredentials, transactionalCallback: {
-        (transaction: IStoreDriver): Promise<void>;
+        (transaction: IStoreDriver): Promise<void> | void;
     }, context: IContext): Promise<void>;
     private rollback;
     private commit;

@@ -23,7 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	Sequence,
-} from '../ddl/sequence';
+} from '../ddl/Sequence';
 
 
 declare function require(moduleName: string): any;

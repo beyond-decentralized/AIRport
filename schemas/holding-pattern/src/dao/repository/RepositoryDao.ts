@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and,
 	IQNumberField,
 	MappedEntityArray,
@@ -231,7 +231,7 @@ export class RepositoryDao
 		let odu: QUser
 		let ou: QUser
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const resultRows = await airDb.find.sheet({
 			from: [

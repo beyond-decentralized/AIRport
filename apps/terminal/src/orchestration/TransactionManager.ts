@@ -59,12 +59,18 @@ export class TransactionManager
 		// await this.repositoryManager.initialize();
 	}
 
+	isServer(
+		context?: IContext
+	) {
+		return container(this).getSync(STORE_DRIVER).isServer(context);
+	}
+
 	async transact(
 		credentials: ICredentials,
 		transactionalCallback: {
 			(
 				transaction: IStoreDriver,
-			): Promise<void>
+			): Promise<void> | void
 		},
 		context: IContext,
 	): Promise<void> {
@@ -73,7 +79,9 @@ export class TransactionManager
 				STORE_DRIVER, TRANS_HISTORY_DUO,
 			);
 
-		if (!storeDriver.isServer(context)) {
+		const isServer = storeDriver.isServer(context)
+
+		if (!isServer) {
 			if (credentials.domainAndPort === this.transactionInProgress
 				|| this.transactionIndexQueue.filter(
 					transIndex =>

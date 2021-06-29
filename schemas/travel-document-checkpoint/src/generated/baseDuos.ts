@@ -1,24 +1,7 @@
+/* eslint-disable */
 import {
-	IDuo,
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { Duo } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	duoDiSet
-} from './qSchema'
-import {
-	IAgt
-} from './agt'
+	IAgt,
+} from './agt';
 import {
 	AgtESelect,
 	AgtECreateColumns,
@@ -27,11 +10,11 @@ import {
 	AgtEUpdateProperties,
 	AgtEId,
 	AgtGraph,
-	QAgt
-} from './qagt'
+	QAgt,
+} from './qagt';
 import {
-	ITerminal
-} from './terminal'
+	ITerminal,
+} from './terminal';
 import {
 	TerminalESelect,
 	TerminalECreateColumns,
@@ -40,11 +23,11 @@ import {
 	TerminalEUpdateProperties,
 	TerminalEId,
 	TerminalGraph,
-	QTerminal
-} from './qterminal'
+	QTerminal,
+} from './qterminal';
 import {
-	ITerminalAgt
-} from './terminalagt'
+	ITerminalAgt,
+} from './terminalagt';
 import {
 	TerminalAgtESelect,
 	TerminalAgtECreateColumns,
@@ -53,11 +36,11 @@ import {
 	TerminalAgtEUpdateProperties,
 	TerminalAgtEId,
 	TerminalAgtGraph,
-	QTerminalAgt
-} from './qterminalagt'
+	QTerminalAgt,
+} from './qterminalagt';
 import {
-	IUser
-} from './user'
+	IUser,
+} from './user';
 import {
 	UserESelect,
 	UserECreateColumns,
@@ -66,11 +49,11 @@ import {
 	UserEUpdateProperties,
 	UserEId,
 	UserGraph,
-	QUser
-} from './quser'
+	QUser,
+} from './quser';
 import {
-	IUserTerminal
-} from './userterminal'
+	IUserTerminal,
+} from './userterminal';
 import {
 	UserTerminalESelect,
 	UserTerminalECreateColumns,
@@ -79,11 +62,11 @@ import {
 	UserTerminalEUpdateProperties,
 	UserTerminalEId,
 	UserTerminalGraph,
-	QUserTerminal
-} from './quserterminal'
+	QUserTerminal,
+} from './quserterminal';
 import {
-	IUserTerminalAgt
-} from './userterminalagt'
+	IUserTerminalAgt,
+} from './userterminalagt';
 import {
 	UserTerminalAgtESelect,
 	UserTerminalAgtECreateColumns,
@@ -92,8 +75,28 @@ import {
 	UserTerminalAgtEUpdateProperties,
 	UserTerminalAgtEId,
 	UserTerminalAgtGraph,
-	QUserTerminalAgt
-} from './quserterminalagt'
+	QUserTerminalAgt,
+} from './quserterminalagt';
+import {
+	IDuo,
+	IEntityCascadeGraph,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+} from '@airport/air-control';
+import {
+	Duo,
+} from '@airport/check-in';
+import {
+	EntityId as DbEntityId,
+} from '@airport/ground-control';
+import {
+	Q,
+	duoDiSet,
+} from './qSchema';
 
 
 // Schema Q object Dependency Injection readiness detection Duo

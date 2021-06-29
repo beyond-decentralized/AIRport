@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	IAirportDatabase,
 	QSchemaInternal
 }                         from '@airport/air-control'
@@ -93,7 +93,7 @@ export class MySqlSchemaBuilder
 	): Promise<ISequence[]> {
 		console.log('buildAllSequences')
 
-		let [airDb, sequenceDao] = await container(this).get(AIR_DB, SEQUENCE_DAO)
+		let [airDb, sequenceDao] = await container(this).get(AIRPORT_DATABASE, SEQUENCE_DAO)
 
 		let allSequences: ISequence[] = []
 		for (const jsonSchema of jsonSchemas) {

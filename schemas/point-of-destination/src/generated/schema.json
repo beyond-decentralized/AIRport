@@ -2,6 +2,7 @@
 	"domain": "air",
 	"index": null,
 	"name": "@airport/point-of-destination",
+	"packageName": "@airport/point-of-destination",
 	"sinceVersion": 1,
 	"versions": [
 		{
@@ -146,7 +147,8 @@
 					"tableConfig": {
 						"name": "DAILY_ARCHIVES",
 						"indexes": []
-					}
+					},
+					"operations": {}
 				}
 			],
 			"integerVersion": 1,
@@ -155,6 +157,7 @@
 					"domain": "air",
 					"index": 0,
 					"name": "@airport/guideway",
+					"packageName": "@airport/guideway",
 					"sinceVersion": 1,
 					"versions": [
 						{

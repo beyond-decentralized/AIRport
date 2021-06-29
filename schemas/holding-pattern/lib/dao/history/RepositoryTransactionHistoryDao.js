@@ -1,4 +1,4 @@
-import { AIR_DB, and, distinct, or, Y } from '@airport/air-control';
+import { AIRPORT_DATABASE, and, distinct, or, Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet, TransactionType } from '@airport/ground-control';
 import { OPER_HISTORY_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DAO, } from '../../tokens';
@@ -169,7 +169,7 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
             }
             idsFragments.push(and(rth.repository.id.equals(repositoryId), oh.changeType.equals(ChangeType.INSERT_VALUES), or(...tableFragments)));
         }
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         const records = await airDb.find.sheet({
             from: [
                 rth,

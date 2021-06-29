@@ -8,11 +8,13 @@ export class OperationManager {
      * @param entity
      */
     async performSave(entities, transaction, context) {
-        const verifiedTree = context.ioc.cascadeGraphVerifier.verify(entities, context);
+        const verifiedTree = context.ioc.cascadeGraphVerifier
+            .verify(entities, context);
         const entityGraph = context.ioc.entityGraphReconstructor
             .restoreEntityGraph(verifiedTree, context);
         context.ioc.structuralEntityValidator.validate(entityGraph, [], context);
-        const operations = context.ioc.dependencyGraphResolver.getOperationsInOrder(entityGraph, context);
+        const operations = context.ioc.dependencyGraphResolver
+            .getOperationsInOrder(entityGraph, context);
         let totalNumberOfChanges = 0;
         const rootDbEntity = context.dbEntity;
         for (const operation of operations) {
@@ -120,7 +122,8 @@ export class OperationManager {
                 if (dbProperty.isId) {
                     // For an id property, the value is guaranteed to be the same (and not empty) -
                     // cannot entity-update id fields
-                    idWhereFragments.push(qEntity[dbProperty.name].equals(updatedValue));
+                    idWhereFragments.push(qEntity[dbProperty.name]
+                        .equals(updatedValue));
                 }
                 else if (!valuesEqual(originalValue, updatedValue)) {
                     setFragment[dbColumn.name] = updatedValue;

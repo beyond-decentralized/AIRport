@@ -23,7 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	SystemWideOperationId,
-} from '../ddl/systemwideoperationid';
+} from '../ddl/SystemWideOperationId';
 
 
 declare function require(moduleName: string): any;

@@ -1,7 +1,9 @@
+/* eslint-disable */
 export const SCHEMA = {
 	"domain": "air",
 	"index": null,
 	"name": "@airport/travel-document-checkpoint",
+	"packageName": "@airport/travel-document-checkpoint",
 	"sinceVersion": 1,
 	"versions": [
 		{
@@ -560,7 +562,8 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -780,7 +783,8 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [

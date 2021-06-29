@@ -1,4 +1,4 @@
-import {AIR_DB}             from '@airport/air-control'
+import {AIRPORT_DATABASE}             from '@airport/air-control'
 import {
 	getSysWideOpId,
 	ISequenceGenerator,
@@ -165,7 +165,7 @@ export class InsertManager
 			      repositoryManager,
 			      repoTransHistoryDuo
 		      ] = await container(this)
-			.get(AIR_DB,
+			.get(AIRPORT_DATABASE,
 				SEQUENCE_GENERATOR, HISTORY_MANAGER,
 				OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
 				REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER,

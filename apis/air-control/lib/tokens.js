@@ -1,8 +1,8 @@
 import { system } from '@airport/di';
 const airControl = system('airport')
     .lib('air-control');
-export const AIR_DB = airControl.token('IAirportDatabase');
-export const DB_FACADE = airControl.token('IDatabaseFacade');
+export const AIRPORT_DATABASE = airControl.token('IAirportDatabase');
+export const DATABASE_FACADE = airControl.token('IDatabaseFacade');
 export const LOOKUP = airControl.token('ILookup');
 export const ENTITY_STATE_MANAGER = airControl.token('IEntityStateManager');
 export const ENTITY_UTILS = airControl.token('IEntityUtils');

@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	IAirportDatabase
 }                         from '@airport/air-control';
 import {
@@ -87,7 +87,7 @@ export class SchemaInitializer
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			      queryObjectInitializer, schemaBuilder, schemaChecker, schemaComposer,
 			      schemaLocator, schemaRecorder, sequenceGenerator, terminalStore]
-			      = await container(this).get(AIR_DB, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
+			      = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
 			QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER,
 			SCHEMA_CHECKER, SCHEMA_COMPOSER, SCHEMA_LOCATOR, SCHEMA_RECORDER,
 			SEQUENCE_GENERATOR, TERMINAL_STORE);
@@ -157,7 +157,7 @@ export class SchemaInitializer
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			      queryObjectInitializer, schemaBuilder, schemaComposer,
 			      schemaLocator, sequenceGenerator, terminalStore]
-			      = await container(this).get(AIR_DB, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
+			      = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
 			QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER,
 			SCHEMA_COMPOSER, SCHEMA_LOCATOR, SEQUENCE_GENERATOR, TERMINAL_STORE);
 

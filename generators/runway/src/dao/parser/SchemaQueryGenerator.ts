@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	IAirportDatabase,
 	IQFunction,
 	IQOperableField,
@@ -137,7 +137,7 @@ export class SchemaQueryGenerator {
 		queryJavascript          = queryJavascript.replace(functionStartRegex, '');
 		queryJavascript          = queryJavascript.replace(functionEndRegex, '');
 
-		const airDb = await DI.db().get(AIR_DB);
+		const airDb = await DI.db().get(AIRPORT_DATABASE);
 		for (const functionName in airDb.functions) {
 			const regex     = new RegExp(`\\s*${functionName}\\(`);
 			queryJavascript = queryJavascript

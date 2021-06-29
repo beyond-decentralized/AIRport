@@ -1,4 +1,4 @@
-import {AIR_DB}                                  from '@airport/air-control'
+import {AIRPORT_DATABASE}                                  from '@airport/air-control'
 import {
 	SharingNodeRepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
@@ -44,7 +44,7 @@ export class SharingNodeRepoTransBlockStageDao
 		const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlockStage
 
 		const airDb = await container(this)
-			.get(AIR_DB)
+			.get(AIRPORT_DATABASE)
 
 		let snrtbs: QSharingNodeRepoTransBlockStage
 		return await airDb.insertValues({

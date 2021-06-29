@@ -1,6 +1,6 @@
 import { container, DI } from '@airport/di';
 import { TRANSACTION_MANAGER } from '@airport/terminal-map';
-import { TRANS_SERVER } from '@airport/tower';
+import { TRANSACTIONAL_SERVER } from '@airport/tower';
 import { DELETE_MANAGER, INSERT_MANAGER, QUERY_MANAGER, UPDATE_MANAGER } from '../tokens';
 /**
  * Keeps track of transactions, per client and validates that a given
@@ -103,7 +103,7 @@ export class TransactionalServer {
         throw new Error(`Not Implemented`);
     }
 }
-DI.set(TRANS_SERVER, TransactionalServer);
+DI.set(TRANSACTIONAL_SERVER, TransactionalServer);
 export function injectTransactionalServer() {
     // console.log('Injecting TransactionalServer')
 }

@@ -1,24 +1,7 @@
+/* eslint-disable */
 import {
-	IDao,
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { Dao } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	duoDiSet
-} from './qSchema'
-import {
-	IDailyArchive
-} from './dailyarchive'
+	IDailyArchive,
+} from './dailyarchive';
 import {
 	DailyArchiveESelect,
 	DailyArchiveECreateColumns,
@@ -27,8 +10,29 @@ import {
 	DailyArchiveEUpdateProperties,
 	DailyArchiveEId,
 	DailyArchiveGraph,
-	QDailyArchive
-} from './qdailyarchive'
+	QDailyArchive,
+} from './qdailyarchive';
+import {
+	IDao,
+	IEntityCascadeGraph,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+} from '@airport/air-control';
+import {
+	Dao,
+	DaoQueryDecorators,
+} from '@airport/check-in';
+import {
+	EntityId as DbEntityId,
+} from '@airport/ground-control';
+import {
+	Q,
+	duoDiSet,
+} from './qSchema';
 
 
 // Schema Q object Dependency Injection readiness detection Dao
@@ -64,6 +68,16 @@ export interface IBaseDailyArchiveDao
 export class BaseDailyArchiveDao
   extends SQDIDao<IDailyArchive, DailyArchiveESelect, DailyArchiveECreateProperties, DailyArchiveEUpdateColumns, DailyArchiveEUpdateProperties, DailyArchiveEId, DailyArchiveGraph, QDailyArchive>
 	implements IBaseDailyArchiveDao {
+	
+	static Find      = new DaoQueryDecorators<DailyArchiveESelect>();
+	static FindOne   = new DaoQueryDecorators<DailyArchiveESelect>();
+	static Search    = new DaoQueryDecorators<DailyArchiveESelect>();
+	static SearchOne = new DaoQueryDecorators<DailyArchiveESelect>();
+	static Save(
+		config: DailyArchiveGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<DailyArchiveGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(0)

@@ -23,7 +23,7 @@ import {
 } from '@airport/air-control';
 import {
 	TerminalRun,
-} from '../ddl/terminalrun';
+} from '../ddl/TerminalRun';
 
 
 declare function require(moduleName: string): any;

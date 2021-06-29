@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { AIR_DB_POPULATOR } from './tokens';
+import { AIRPORT_DATABASE_POPULATOR } from './tokens';
 // TODO: probably not needed, included schema source populates itself
 // May be needed to populate schemas from the database
 export class AirportDatabasePopulator {
@@ -9,5 +9,5 @@ export class AirportDatabasePopulator {
         // this.airDb.qSchemas
     }
 }
-DI.set(AIR_DB_POPULATOR, AirportDatabasePopulator);
+DI.set(AIRPORT_DATABASE_POPULATOR, AirportDatabasePopulator);
 //# sourceMappingURL=AirportDatabasePopulator.js.map

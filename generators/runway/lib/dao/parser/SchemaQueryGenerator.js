@@ -1,4 +1,4 @@
-import { AIR_DB, LimitedEntityQuery, LOOKUP, QBooleanFunction, QDateArrayFunction, QDateFunction, QNumberArrayFunction, QNumberFunction, QStringArrayFunction, QStringFunction, QUERY_FACADE, Y } from '@airport/air-control';
+import { AIRPORT_DATABASE, LimitedEntityQuery, LOOKUP, QBooleanFunction, QDateArrayFunction, QDateFunction, QNumberArrayFunction, QNumberFunction, QStringArrayFunction, QStringFunction, QUERY_FACADE, Y } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { getSchemaName, OperationType, QueryInputKind, QueryParameterType, QueryResultType } from '@airport/ground-control';
 import { TempDatabase } from '@airport/taxiway';
@@ -70,7 +70,7 @@ export class SchemaQueryGenerator {
         const functionEndRegex = /\s*\}\);\s*$/;
         queryJavascript = queryJavascript.replace(functionStartRegex, '');
         queryJavascript = queryJavascript.replace(functionEndRegex, '');
-        const airDb = await DI.db().get(AIR_DB);
+        const airDb = await DI.db().get(AIRPORT_DATABASE);
         for (const functionName in airDb.functions) {
             const regex = new RegExp(`\\s*${functionName}\\(`);
             queryJavascript = queryJavascript

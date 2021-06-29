@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	IAirportDatabase,
 	QSchemaInternal
 }                           from '@airport/air-control';
@@ -52,7 +52,7 @@ export class NoOpSchemaBuilder
 		jsonSchemas: JsonSchema[],
 		context: IContext,
 	): Promise<any[]> {
-		let airDb = await container(this).get(AIR_DB);
+		let airDb = await container(this).get(AIRPORT_DATABASE);
 
 		let allSequences: any[] = [];
 		for (const jsonSchema of jsonSchemas) {

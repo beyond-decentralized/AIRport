@@ -5,7 +5,7 @@ import {
 }                         from '@airport/ground-control'
 import {IQEntityInternal} from '../../../lingo/core/entity/Entity'
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	RELATION_MANAGER,
 	SCHEMA_UTILS
 } from '../../../tokens'
@@ -32,7 +32,7 @@ QRelation.prototype.leftJoin = function <IQ extends IQEntityInternal<any>>(): IQ
 
 QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal<any>>(joinType: JoinType): IQ {
 	const [airDb, relationManager, schemaUtils] = DI.db()
-		.getSync(AIR_DB, RELATION_MANAGER, SCHEMA_UTILS)
+		.getSync(AIRPORT_DATABASE, RELATION_MANAGER, SCHEMA_UTILS)
 	const dbEntity = this.dbRelation.property.entity
 
 	const qEntityConstructor = schemaUtils.getQEntityConstructor(

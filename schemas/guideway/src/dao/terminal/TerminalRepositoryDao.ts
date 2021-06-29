@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and
 }                                     from '@airport/air-control'
 import {
@@ -37,7 +37,7 @@ export class TerminalRepositoryDao
 
 		let tr: QTerminalRepository
 
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const results = await airDb.find.sheet({
 			from: [

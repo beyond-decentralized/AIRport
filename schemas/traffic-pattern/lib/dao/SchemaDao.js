@@ -1,4 +1,4 @@
-import { AIR_DB, and, max, tree, Y } from '@airport/air-control';
+import { AIRPORT_DATABASE, and, max, tree, Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { SCHEMA_DAO } from '../tokens';
@@ -45,7 +45,7 @@ export class SchemaDao extends BaseSchemaDao {
         return schemaMapByIndex;
     }
     async findMaxIndex() {
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         const s = Q.Schema;
         return await airDb.findOne.field({
             select: max(s.index),
@@ -55,7 +55,7 @@ export class SchemaDao extends BaseSchemaDao {
         });
     }
     async findMaxVersionedMapBySchemaAndDomainNames(schemaDomainNames, schemaNames) {
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         const maxVersionedMapBySchemaAndDomainNames = new Map();
         let sv;
         let s;

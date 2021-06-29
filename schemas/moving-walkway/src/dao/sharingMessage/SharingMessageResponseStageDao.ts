@@ -3,7 +3,7 @@ import {
 	IUtils,
 	UTILS
 }                                            from "@airport/air-control";
-import {AIR_DB}                from "@airport/air-control/lib/InjectionTokens";
+import {AIRPORT_DATABASE}                from "@airport/air-control/lib/InjectionTokens";
 import {IAirportDatabase}                    from "@airport/air-control/lib/lingo/AirportDatabase";
 import {
 	AgtTerminalSyncLogId,
@@ -43,7 +43,7 @@ export class SharingMessageResponseStageDao
 	implements ISharingMessageResponseStageDao {
 
 	constructor(
-		@Inject(AIR_DB)
+		@Inject(AIRPORT_DATABASE)
 		private airDb: IAirportDatabase,
 		@Inject(UTILS)
 			utils: IUtils

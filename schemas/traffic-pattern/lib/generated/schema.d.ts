@@ -2,6 +2,7 @@ export declare const SCHEMA: {
     domain: string;
     index: any;
     name: string;
+    packageName: string;
     sinceVersion: number;
     versions: {
         entities: ({

@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and,
 	JSONLogicalOperation,
 	or
@@ -39,7 +39,7 @@ export class DailyArchiveDao
 	async addRecords(
 		values: DailyArchiveValues[]
 	): Promise<void> {
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const dbEntity = Q.db.currentVersion.entityMapByName.DailyArchive
 		let da: QDailyArchive
@@ -60,7 +60,7 @@ export class DailyArchiveDao
 		repositoryIds: DailyArchiveRepositoryId[],
 		dates: DailyArchiveDate[][],
 	): Promise<FlatDailyArchive[]> {
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const whereClauseFragments: JSONLogicalOperation[] = []
 		let i                                              = -1

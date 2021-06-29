@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	IAirportDatabase,
 	IDao
 }                        from '@airport/air-control'
@@ -59,7 +59,7 @@ export class SchemaRecorder
 			      schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao,
 			      schemaVersionDao] = await container(this)
 			.get(
-				AIR_DB, DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO,
+				AIRPORT_DATABASE, DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO,
 				SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_PROPERTY_DAO,
 				SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO,
 				SCHEMA_RELATION_DAO, SCHEMA_VERSION_DAO

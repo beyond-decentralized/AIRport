@@ -1,5 +1,5 @@
 import {
-	AIR_DB,
+	AIRPORT_DATABASE,
 	and,
 	field,
 	or
@@ -97,7 +97,7 @@ export class RecordUpdateStageDao
 		idMap: Map<RepositoryId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
 	): Promise<void> {
-		const airDb = await container(this).get(AIR_DB)
+		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const dbEntity = airDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
 		const qEntity  = airDb.qSchemas[schemaIndex][dbEntity.name]

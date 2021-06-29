@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { AIR_DB } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { RecordHistory } from '../ddl/history/RecordHistory';
 import { ActorApplication } from '../ddl/infrastructure/ActorApplication';
@@ -24,7 +24,7 @@ import { ImmutableRow } from '../ddl/traditional/ImmutableRow';
 import { MutableRepoRow } from '../ddl/traditional/MutableRepoRow';
 import { MutableRow } from '../ddl/traditional/MutableRow';
 import { ReferenceRow } from '../ddl/traditional/ReferenceRow';
-DI.db().get(AIR_DB).then(airDb => {
+DI.db().get(AIRPORT_DATABASE).then(airDb => {
     const accumulator = airDb.getAccumulator('air', 'holding-pattern');
     accumulator.add(RecordHistory, 0);
     accumulator.add(ActorApplication, 1);
