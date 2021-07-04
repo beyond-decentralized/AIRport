@@ -121,17 +121,25 @@ infrequently used repositories (or may do so automatically if not configured),
 leaving them only in the cloud backup.  The applications however may request the
 user to load additional repositories from the cloud, for processing.
 
-## Zero app code deployment
+## Autopilot deployment
 
-AIRport aims to provide zero code deployments where a thin shim is provided
-for the framework and TypeScript interfaces are used to define the
-query+mutation API against the schemas used by the application.  The rest 
+AIRport providea "autopilot" deployments where CRUD code is
+pre-processed by "@airport/runway" at build time and resides on the
+AIRport server, not in the client-side library:
+
+
+![Autopilot Flow](presentations/images/Autopilot-Flow.png)
+
+"@airport/runway" generates TypeScript interfaces which are used to define
+the CRUD and Enitty API of the underlying schema.  The actual CRUD logic 
 is defined in the schema configuration file, which is loaded into the 
 device's AIRport database directly.  The config file is generated from
 the annotated/decorator Entities and the DAO decorators that contain the
-query logic.
+CRUD logic.  In "autopilot" mode only the dependency injection tokens are
+included from the schema project (along with the "@airport/di",
+"@airport/autopilot" and "@airport/pressurization" libraries).
 
-![AIRport as Cordova application](presentations/images/Zero-Code-Configuration.png)
+
 
 ## Technical details
 
