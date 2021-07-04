@@ -172,8 +172,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/observe",
-      "projectFolder": "libs/observe",
+      "packageName": "@airport/pressurization",
+      "projectFolder": "libs/pressurization",
       "shouldPublish": true
     },
     {

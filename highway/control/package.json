@@ -3,7 +3,7 @@
     "@airport/air-control": "0.0.1",
     "@airport/di": "0.0.1",
     "@airport/ground-control": "0.0.1",
-    "@airport/observe": "0.0.1"
+    "rxjs": "^7.1.0"
   },
   "main": "lib/index.js",
   "name": "@airport/hw-control",
