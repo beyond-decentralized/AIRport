@@ -6,11 +6,12 @@ export class Library {
         this.system = system;
         this.tokens = [];
     }
-    token(name) {
+    token(name, autopilot = false) {
         diTokenSeq++;
-        const diToken = new DiToken(this, name, diTokenSeq);
+        const diToken = new DiToken(this, name, diTokenSeq, autopilot);
         this.tokens.push(diToken);
         return diToken;
     }
 }
+export const AUTOPILOT = true;
 //# sourceMappingURL=Library.js.map

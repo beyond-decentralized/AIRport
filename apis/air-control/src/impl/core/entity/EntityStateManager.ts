@@ -92,6 +92,63 @@ export interface IEntityStateManager {
 
 }
 
+export function markAsStub<T>(
+	entity: T
+) {
+	DI.db().getSync(ENTITY_STATE_MANAGER).markAsStub(entity);	
+}
+
+export function markForDeletion<T>(
+	entity: T
+) {
+	DI.db().getSync(ENTITY_STATE_MANAGER).markForDeletion(entity);	
+}
+
+export function markToCreate<T>(
+	entity: T
+) {
+	DI.db().getSync(ENTITY_STATE_MANAGER).markToCreate(entity);	
+}
+
+export function markToUpdate<T>(
+	entity: T
+) {
+	DI.db().getSync(ENTITY_STATE_MANAGER).markToUpdate(entity);	
+}
+
+export function getEntityState<T>(
+	entity: T
+) {
+	DI.db().getSync(ENTITY_STATE_MANAGER).getEntityState(entity);	
+}
+
+export function copyEntityState<T>(
+	entity: T,
+	entity2: T
+) {
+	DI.db().getSync(ENTITY_STATE_MANAGER).copyEntityState(entity, entity2);	
+}
+
+export function getEntityStateTypeAsFlags<T>(
+	entity: T,
+	dbEntity: DbEntity
+) {
+	DI.db().getSync(ENTITY_STATE_MANAGER).getEntityStateTypeAsFlags(entity, dbEntity);	
+}
+
+export function isStub<T>(
+	entity: T
+) {
+	DI.db().getSync(ENTITY_STATE_MANAGER).isStub(entity);	
+}
+
+export function isParentId<T>(
+	entity: T,
+		dbEntity: DbEntity
+) {
+	DI.db().getSync(ENTITY_STATE_MANAGER).isParentId(entity);	
+}
+
 export class EntityStateManager
 	implements IEntityStateManager {
 	static OPERATION_UNIQUE_ID_FIELD = '__UID__'

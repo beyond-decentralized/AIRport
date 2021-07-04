@@ -6,10 +6,11 @@ import { DaoStub } from './DaoStub';
  * Created by Papa on 8/26/2017.
  */
 export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, QE extends IQEntity<Entity>> implements IDao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE> {
+    private internal;
     static BaseSave<EntitySelect extends IEntitySelectProperties>(config: EntitySelect): PropertyDecorator;
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE>;
     stub: DaoStub<Entity, EntityCreate>;
-    constructor(dbEntityId: DbEntityId, Q: QSchema);
+    constructor(dbEntityId: DbEntityId, Q: QSchema, internal?: boolean);
     count(context?: IContext): Promise<number>;
     exists(entityId: EntityId, context?: IContext): Promise<boolean>;
     findAll(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;

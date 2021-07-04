@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "tslint": "^5.14.0"
+  },
+  "main": "lib/index.js",
+  "name": "@airport/autopilot",
+  "type": "module",
+  "typings": "lib/index",
+  "version": "0.0.1"
+}

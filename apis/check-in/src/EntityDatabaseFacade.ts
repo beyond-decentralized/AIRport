@@ -31,7 +31,6 @@ import {
 } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { DbEntity } from '@airport/ground-control';
-import { Duo } from './Duo';
 
 /**
  * Created by Papa on 12/11/2016.
@@ -50,9 +49,6 @@ export class EntityDatabaseFacade<Entity,
     EntityUpdateProperties, EntityId,
     EntityCascadeGraph, IQ> {
 
-  duo: IDuo<Entity, EntitySelect, EntityCreate,
-    EntityUpdateColumns, EntityUpdateProperties, EntityId,
-    EntityCascadeGraph, IQ>;
 
   find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
 
@@ -66,7 +62,6 @@ export class EntityDatabaseFacade<Entity,
     public dbEntity: DbEntity,
     private Q: QSchema,
   ) {
-    this.duo = new Duo(dbEntity);
     this.find = new EntityFind<Entity, Array<Entity>, EntitySelect>(
       this.dbEntity);
     this.findOne = new EntityFindOne<Entity, EntitySelect>(

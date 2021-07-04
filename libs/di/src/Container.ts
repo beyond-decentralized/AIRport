@@ -1,8 +1,9 @@
+import { getAutopilotDao } from '@airport/autopilot';
 import {
 	Context,
 	ContextType,
 	IInjectionContext
-}                   from './Context';
+} from './Context';
 import { IDiToken } from './Token';
 
 export interface IChildContainer
@@ -362,7 +363,7 @@ export interface IContainer {
 
 	set<I>(
 		token: IDiToken<I>,
-		clazz: new() => I
+		clazz: new () => I
 	): void
 
 }
@@ -382,8 +383,8 @@ export interface IRootContainer
 
 }
 
-const classes: any[]    = [];
-let numPendingInits     = 0;
+const classes: any[] = [];
+let numPendingInits = 0;
 const theObjects: any[] = [];
 
 export class Container
@@ -391,9 +392,9 @@ export class Container
 
 	set<I>(
 		token: IDiToken<I>,
-		clazz: new() => I
+		clazz: new () => I
 	): void {
-		classes[token.sequence]    = clazz;
+		classes[token.sequence] = clazz;
 		theObjects[token.sequence] = null;
 	}
 
@@ -419,10 +420,10 @@ export class ChildContainer
 		errorCallback,
 	) {
 		let {
-			    firstDiNotSetClass,
-			    firstMissingClassToken,
-			    objects
-		    } = this.doGetCore(tokens);
+			firstDiNotSetClass,
+			firstMissingClassToken,
+			objects
+		} = this.doGetCore(tokens);
 
 		if (firstMissingClassToken || firstDiNotSetClass) {
 			setTimeout(() => {
@@ -447,10 +448,10 @@ export class ChildContainer
 		errorCallback,
 	) {
 		const {
-			      firstDiNotSetClass,
-			      firstMissingClassToken,
-			      objects
-		      } = this.doGetCore(tokens);
+			firstDiNotSetClass,
+			firstMissingClassToken,
+			objects
+		} = this.doGetCore(tokens);
 
 		if (firstDiNotSetClass) {
 			console.log(`Dependency Injection is not ready for token ${firstMissingClassToken.getPath()}
@@ -468,7 +469,7 @@ export class ChildContainer
 				index
 			) => object.__initialized__ ? -1 : index)
 				.filter(index => index !== -1);
-			const objectPaths                 = [];
+			const objectPaths = [];
 			for (const index of notInitializedObjectIndexes) {
 				objectPaths.push(tokens[index].getPath());
 			}
@@ -513,21 +514,25 @@ export class ChildContainer
 				}
 				let object = theObjects[token.sequence];
 				if (!object) {
-					const clazz = classes[token.sequence];
-					if (!clazz) {
-						firstMissingClassToken = token;
-						return;
+					if (!token.autopilot) {
+						const clazz = classes[token.sequence];
+						if (!clazz) {
+							firstMissingClassToken = token;
+							return;
+						}
+						if (clazz.diSet && !clazz.diSet()) {
+							firstMissingClassToken = token;
+							firstDiNotSetClass = clazz;
+							return;
+						}
+						object = new clazz();
+					} else {
+						object = getAutopilotDao();
 					}
-					if (clazz.diSet && !clazz.diSet()) {
-						firstMissingClassToken = token;
-						firstDiNotSetClass     = clazz;
-						return;
-					}
-					object                     = new clazz();
-					object.__container__       = this;
+					object.__container__ = this;
 					theObjects[token.sequence] = object;
 
-					if (object.init) {
+					if (!token.autopilot && object.init) {
 						object.init().then(_ => {
 							object.__initialized__ = true;
 							console.log(`${token.getPath()} initialized.`);
@@ -885,10 +890,10 @@ export class ChildContainer
 		...tokens: Array<IDiToken<any>>
 	): any {
 		const {
-			      firstDiNotSetClass,
-			      firstMissingClassToken,
-			      objects
-		      } = this.doGetCore(tokens);
+			firstDiNotSetClass,
+			firstMissingClassToken,
+			objects
+		} = this.doGetCore(tokens);
 
 		if (firstMissingClassToken) {
 			throw new Error('Dependency Injection could not find class for token: '
@@ -911,13 +916,16 @@ export class RootContainer
 	extends Container
 	implements IRootContainer {
 
-	childContainers: Set<IContainer>             = new Set<IContainer>();
+	childContainers: Set<IContainer> = new Set<IContainer>();
 	uiContainerMap: Map<string, Set<IContainer>> = new Map<string, Set<IContainer>>();
+	dbContainer: IChildContainer
 
 	db(): IChildContainer {
-		const context = new Context(null, ContextType.DB);
+		if (!this.dbContainer) {
+			this.dbContainer = new ChildContainer(new Context(null, ContextType.DB));
+		}
 
-		return this.addContainer(context);
+		return this.dbContainer;
 	}
 
 	remove(
@@ -962,4 +970,333 @@ export class RootContainer
 
 }
 
+export class InversionOfControl {
+
+	get<A>(
+		tokenA: IDiToken<A>
+	): Promise<A>
+
+	get<A, B>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>
+	): Promise<[A, B]>
+
+	get<A, B, C>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>
+	): Promise<[A, B, C]>
+	get<A, B, C, D>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>
+	): Promise<[A, B, C, D]>
+	get<A, B, C, D, E>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>
+	): Promise<[A, B, C, D, E]>
+	get<A, B, C, D, E, F>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>
+	): Promise<[A, B, C, D, E, F]>
+	get<A, B, C, D, E, F, G>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>
+	): Promise<[A, B, C, D, E, F, G]>
+	get<A, B, C, D, E, F, G, H>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>
+	): Promise<[A, B, C, D, E, F, G, H]>
+	get<A, B, C, D, E, F, G, H, I>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>
+	): Promise<[A, B, C, D, E, F, G, H, I]>
+	get<A, B, C, D, E, F, G, H, I, J>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>,
+		tokenJ: IDiToken<J>
+	): Promise<[A, B, C, D, E, F, G, H, I, J]>
+	get<A, B, C, D, E, F, G, H, I, J, K>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>,
+		tokenJ: IDiToken<J>,
+		tokenK: IDiToken<K>
+	): Promise<[A, B, C, D, E, F, G, H, I, J, K]>
+	get<A, B, C, D, E, F, G, H, I, J, K, L>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>,
+		tokenJ: IDiToken<J>,
+		tokenK: IDiToken<K>,
+		tokenL: IDiToken<L>
+	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L]>
+	get<A, B, C, D, E, F, G, H, I, J, K, L, M>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>,
+		tokenJ: IDiToken<J>,
+		tokenK: IDiToken<K>,
+		tokenL: IDiToken<L>,
+		tokenM: IDiToken<M>
+	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M]>
+	get<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>,
+		tokenJ: IDiToken<J>,
+		tokenK: IDiToken<K>,
+		tokenL: IDiToken<L>,
+		tokenM: IDiToken<M>,
+		tokenN: IDiToken<N>
+	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N]>
+	get<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>,
+		tokenJ: IDiToken<J>,
+		tokenK: IDiToken<K>,
+		tokenL: IDiToken<L>,
+		tokenM: IDiToken<M>,
+		tokenN: IDiToken<N>,
+		tokenO: IDiToken<O>
+	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]>
+	async get(
+		...tokens: Array<IDiToken<any>>
+	): Promise<any[]> {
+		return await DI.db().get(...tokens);
+	}
+
+	eventuallyGet<A>(
+		token: IDiToken<A>
+	): Promise<A>
+	async eventuallyGet(
+		...tokens: Array<IDiToken<any>>
+	): Promise<any[]> {
+		return await DI.db().eventuallyGet(...tokens);
+	}
+
+	getSync<A>(
+		tokenA: IDiToken<A>
+	): A
+	getSync<A, B>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>
+	): [A, B]
+	getSync<A, B, C>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>
+	): [A, B, C]
+	getSync<A, B, C, D>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>
+	): [A, B, C, D]
+	getSync<A, B, C, D, E>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>
+	): [A, B, C, D, E]
+	getSync<A, B, C, D, E, F>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>
+	): [A, B, C, D, E, F]
+	getSync<A, B, C, D, E, F, G>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>
+	): [A, B, C, D, E, F, G]
+	getSync<A, B, C, D, E, F, G, H>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>
+	): [A, B, C, D, E, F, G, H]
+	getSync<A, B, C, D, E, F, G, H, I>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>
+	): [A, B, C, D, E, F, G, H, I]
+	getSync<A, B, C, D, E, F, G, H, I, J>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>,
+		tokenJ: IDiToken<J>
+	): [A, B, C, D, E, F, G, H, I, J]
+	getSync<A, B, C, D, E, F, G, H, I, J, K>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>,
+		tokenJ: IDiToken<J>,
+		tokenK: IDiToken<K>
+	): [A, B, C, D, E, F, G, H, I, J, K]
+	getSync<A, B, C, D, E, F, G, H, I, J, K, L>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>,
+		tokenJ: IDiToken<J>,
+		tokenK: IDiToken<K>,
+		tokenL: IDiToken<L>
+	): [A, B, C, D, E, F, G, H, I, J, K, L]
+	getSync<A, B, C, D, E, F, G, H, I, J, K, L, M>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>,
+		tokenJ: IDiToken<J>,
+		tokenK: IDiToken<K>,
+		tokenL: IDiToken<L>,
+		tokenM: IDiToken<M>
+	): [A, B, C, D, E, F, G, H, I, J, K, L, M]
+	getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>,
+		tokenJ: IDiToken<J>,
+		tokenK: IDiToken<K>,
+		tokenL: IDiToken<L>,
+		tokenM: IDiToken<M>,
+		tokenN: IDiToken<N>
+	): [A, B, C, D, E, F, G, H, I, J, K, L, M, N]
+	getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(
+		tokenA: IDiToken<A>,
+		tokenB: IDiToken<B>,
+		tokenC: IDiToken<C>,
+		tokenD: IDiToken<D>,
+		tokenE: IDiToken<E>,
+		tokenF: IDiToken<F>,
+		tokenG: IDiToken<G>,
+		tokenH: IDiToken<H>,
+		tokenI: IDiToken<I>,
+		tokenJ: IDiToken<J>,
+		tokenK: IDiToken<K>,
+		tokenL: IDiToken<L>,
+		tokenM: IDiToken<M>,
+		tokenN: IDiToken<N>,
+		tokenO: IDiToken<O>
+	): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]
+	getSync(
+		...tokens: Array<IDiToken<any>>
+	): any {
+		return DI.db().getSync(...tokens);
+	}
+
+}
+
 export const DI: IRootContainer = new RootContainer();
+
+export const IOC: InversionOfControl = new InversionOfControl();

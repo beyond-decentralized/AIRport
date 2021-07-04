@@ -42,6 +42,15 @@ export interface IEntityStateManager {
     getStateFieldName(): string;
     getEntityStateTypeAsFlags<T>(entity: T, dbEntity: DbEntity): IEntityStateAsFlags;
 }
+export declare function markAsStub<T>(entity: T): void;
+export declare function markForDeletion<T>(entity: T): void;
+export declare function markToCreate<T>(entity: T): void;
+export declare function markToUpdate<T>(entity: T): void;
+export declare function getEntityState<T>(entity: T): void;
+export declare function copyEntityState<T>(entity: T, entity2: T): void;
+export declare function getEntityStateTypeAsFlags<T>(entity: T, dbEntity: DbEntity): void;
+export declare function isStub<T>(entity: T): void;
+export declare function isParentId<T>(entity: T, dbEntity: DbEntity): void;
 export declare class EntityStateManager implements IEntityStateManager {
     static OPERATION_UNIQUE_ID_FIELD: string;
     static STATE_FIELD: string;

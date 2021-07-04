@@ -4,13 +4,15 @@ export interface IDiToken<Injectable> {
     library: ILibrary;
     name: string;
     sequence: number;
+    autopilot: boolean;
     getPath(): string;
 }
 export declare class DiToken<Injectable> implements IDiToken<Injectable> {
     library: ILibrary;
     name: string;
     sequence: number;
-    constructor(library: ILibrary, name: string, sequence: number);
+    autopilot: boolean;
+    constructor(library: ILibrary, name: string, sequence: number, autopilot?: boolean);
     getPath(): string;
 }
 export interface GenericDependencyInjectionError {

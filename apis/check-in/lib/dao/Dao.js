@@ -6,7 +6,8 @@ import { DaoStub } from './DaoStub';
  * Created by Papa on 8/26/2017.
  */
 export class Dao {
-    constructor(dbEntityId, Q) {
+    constructor(dbEntityId, Q, internal = false) {
+        this.internal = internal;
         this.stub = new DaoStub();
         const dbEntity = Q.__dbSchema__.currentVersion.entities[dbEntityId];
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies

@@ -72,7 +72,6 @@ export abstract class OperationManager
 				totalNumberOfChanges += await this.internalDelete(
 					operation.entities, transaction, context)
 			} else {
-				// TODO: re-think though how change detection will work
 				// TODO: add support for multiple records
 				totalNumberOfChanges += await this.internalUpdate(
 					operation.entities, null, transaction, context)

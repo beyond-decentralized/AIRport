@@ -11,6 +11,33 @@ export var EntityState;
     EntityState[EntityState["STUB"] = 7] = "STUB";
     EntityState[EntityState["UPDATE"] = 8] = "UPDATE";
 })(EntityState || (EntityState = {}));
+export function markAsStub(entity) {
+    DI.db().getSync(ENTITY_STATE_MANAGER).markAsStub(entity);
+}
+export function markForDeletion(entity) {
+    DI.db().getSync(ENTITY_STATE_MANAGER).markForDeletion(entity);
+}
+export function markToCreate(entity) {
+    DI.db().getSync(ENTITY_STATE_MANAGER).markToCreate(entity);
+}
+export function markToUpdate(entity) {
+    DI.db().getSync(ENTITY_STATE_MANAGER).markToUpdate(entity);
+}
+export function getEntityState(entity) {
+    DI.db().getSync(ENTITY_STATE_MANAGER).getEntityState(entity);
+}
+export function copyEntityState(entity, entity2) {
+    DI.db().getSync(ENTITY_STATE_MANAGER).copyEntityState(entity, entity2);
+}
+export function getEntityStateTypeAsFlags(entity, dbEntity) {
+    DI.db().getSync(ENTITY_STATE_MANAGER).getEntityStateTypeAsFlags(entity, dbEntity);
+}
+export function isStub(entity) {
+    DI.db().getSync(ENTITY_STATE_MANAGER).isStub(entity);
+}
+export function isParentId(entity, dbEntity) {
+    DI.db().getSync(ENTITY_STATE_MANAGER).isParentId(entity);
+}
 export class EntityStateManager {
     isStub(entity) {
         return this.getEntityState(entity) === EntityState.STUB;

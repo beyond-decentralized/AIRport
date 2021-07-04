@@ -137,6 +137,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/autopilot",
+      "projectFolder": "libs/autopilot",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/blueprint",
       "projectFolder": "libs/blueprint",
       "shouldPublish": true

@@ -1,3 +1,4 @@
+import { getAutopilotDao } from '@airport/autopilot';
 import { Context, ContextType } from './Context';
 const classes = [];
 let numPendingInits = 0;
@@ -80,20 +81,25 @@ export class ChildContainer extends Container {
             }
             let object = theObjects[token.sequence];
             if (!object) {
-                const clazz = classes[token.sequence];
-                if (!clazz) {
-                    firstMissingClassToken = token;
-                    return;
+                if (!token.autopilot) {
+                    const clazz = classes[token.sequence];
+                    if (!clazz) {
+                        firstMissingClassToken = token;
+                        return;
+                    }
+                    if (clazz.diSet && !clazz.diSet()) {
+                        firstMissingClassToken = token;
+                        firstDiNotSetClass = clazz;
+                        return;
+                    }
+                    object = new clazz();
                 }
-                if (clazz.diSet && !clazz.diSet()) {
-                    firstMissingClassToken = token;
-                    firstDiNotSetClass = clazz;
-                    return;
+                else {
+                    object = getAutopilotDao();
                 }
-                object = new clazz();
                 object.__container__ = this;
                 theObjects[token.sequence] = object;
-                if (object.init) {
+                if (!token.autopilot && object.init) {
                     object.init().then(_ => {
                         object.__initialized__ = true;
                         console.log(`${token.getPath()} initialized.`);
@@ -146,8 +152,10 @@ export class RootContainer extends Container {
         this.uiContainerMap = new Map();
     }
     db() {
-        const context = new Context(null, ContextType.DB);
-        return this.addContainer(context);
+        if (!this.dbContainer) {
+            this.dbContainer = new ChildContainer(new Context(null, ContextType.DB));
+        }
+        return this.dbContainer;
     }
     remove(container) {
         this.childContainers.delete(container);
@@ -173,5 +181,17 @@ export class RootContainer extends Container {
         return childContainer;
     }
 }
+export class InversionOfControl {
+    async get(...tokens) {
+        return await DI.db().get(...tokens);
+    }
+    async eventuallyGet(...tokens) {
+        return await DI.db().eventuallyGet(...tokens);
+    }
+    getSync(...tokens) {
+        return DI.db().getSync(...tokens);
+    }
+}
 export const DI = new RootContainer();
+export const IOC = new InversionOfControl();
 //# sourceMappingURL=Container.js.map

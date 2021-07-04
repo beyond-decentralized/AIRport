@@ -1,6 +1,5 @@
 import { DATABASE_FACADE, ENTITY_STATE_MANAGER, EntityFind, EntityFindOne, EntitySearch, EntitySearchOne, } from '@airport/air-control';
 import { DI } from '@airport/di';
-import { Duo } from './Duo';
 /**
  * Created by Papa on 12/11/2016.
  */
@@ -8,7 +7,6 @@ export class EntityDatabaseFacade {
     constructor(dbEntity, Q) {
         this.dbEntity = dbEntity;
         this.Q = Q;
-        this.duo = new Duo(dbEntity);
         this.find = new EntityFind(this.dbEntity);
         this.findOne = new EntityFindOne(this.dbEntity);
         this.search = new EntitySearch(this.dbEntity);

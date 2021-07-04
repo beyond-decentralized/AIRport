@@ -6,6 +6,7 @@ export interface IDiToken<Injectable> {
 	library: ILibrary
 	name: string
 	sequence: number
+	autopilot: boolean
 
 	getPath(): string
 }
@@ -17,6 +18,7 @@ export class DiToken<Injectable>
 		public library: ILibrary,
 		public name: string,
 		public sequence: number,
+		public autopilot = false
 	) {
 	}
 

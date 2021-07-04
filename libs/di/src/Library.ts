@@ -12,7 +12,8 @@ export interface ILibrary {
 	tokens: IDiToken<any>[]
 
 	token<T = GenericDependencyInjectionError>(
-		name: string
+		name: string,
+		autopilot?: boolean
 	): IDiToken<T>
 
 }
@@ -31,14 +32,16 @@ export class Library
 	}
 
 	token<T = GenericDependencyInjectionError>(
-		name: string
+		name: string,
+		autopilot = false
 	): IDiToken<T> {
 		diTokenSeq++
 
 		const diToken = new DiToken(
 			this,
 			name,
-			diTokenSeq
+			diTokenSeq,
+			autopilot
 		)
 
 		this.tokens.push(diToken)
@@ -48,3 +51,5 @@ export class Library
 	}
 
 }
+
+export const AUTOPILOT = true;

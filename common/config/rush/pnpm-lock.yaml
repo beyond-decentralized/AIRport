@@ -11,6 +11,7 @@ dependencies:
   '@rush-temp/approach-lighting-system': 'file:projects/approach-lighting-system.tgz'
   '@rush-temp/arrivals-n-departures': 'file:projects/arrivals-n-departures.tgz'
   '@rush-temp/automated-guideway-transit': 'file:projects/automated-guideway-transit.tgz'
+  '@rush-temp/autopilot': 'file:projects/autopilot.tgz_typescript@4.1.2'
   '@rush-temp/blueprint': 'file:projects/blueprint.tgz_typescript@4.1.2'
   '@rush-temp/check-in': 'file:projects/check-in.tgz'
   '@rush-temp/cockroachdb': 'file:projects/cockroachdb.tgz'
@@ -32,6 +33,7 @@ dependencies:
   '@rush-temp/mono-rail': 'file:projects/mono-rail.tgz'
   '@rush-temp/moving-walkway': 'file:projects/moving-walkway.tgz'
   '@rush-temp/mysql': 'file:projects/mysql.tgz'
+  '@rush-temp/na-kano': 'file:projects/na-kano.tgz'
   '@rush-temp/observe': 'file:projects/observe.tgz'
   '@rush-temp/point-of-destination': 'file:projects/point-of-destination.tgz'
   '@rush-temp/postgres': 'file:projects/postgres.tgz'
@@ -48,10 +50,12 @@ dependencies:
   '@rush-temp/terminal': 'file:projects/terminal.tgz'
   '@rush-temp/terminal-map': 'file:projects/terminal-map.tgz'
   '@rush-temp/territory': 'file:projects/territory.tgz'
+  '@rush-temp/todo': 'file:projects/todo.tgz'
   '@rush-temp/tools': 'file:projects/tools.tgz'
   '@rush-temp/tower': 'file:projects/tower.tgz'
   '@rush-temp/traffic-pattern': 'file:projects/traffic-pattern.tgz'
   '@rush-temp/travel-document-checkpoint': 'file:projects/travel-document-checkpoint.tgz'
+  '@rush-temp/vasi': 'file:projects/vasi.tgz'
   '@rush-temp/websql': 'file:projects/websql.tgz'
   '@types/gapi': 0.0.35
   '@types/google-drive-realtime-api': 0.0.33
@@ -5901,6 +5905,18 @@ packages:
       integrity: sha512-/Y8npDAw0p6WESme91Go11OeRl15ypoTTFzX9UiFprneeYGKjpgjdMbrettAsT0WOQThWEB7rf9Pep2q+QxqJw==
       tarball: 'file:projects/automated-guideway-transit.tgz'
     version: 0.0.0
+  'file:projects/autopilot.tgz_typescript@4.1.2':
+    dependencies:
+      tslint: 5.20.1_typescript@4.1.2
+    dev: false
+    id: 'file:projects/autopilot.tgz'
+    name: '@rush-temp/autopilot'
+    peerDependencies:
+      typescript: '*'
+    resolution:
+      integrity: sha512-bYHUPAQN91PRwJ7pHLHiVqh65TDhBmRWlG7uqxSPZycdFnrCtN7J7xDnI2nH788mOE1HzBbe01aOmQ4rvalKmw==
+      tarball: 'file:projects/autopilot.tgz'
+    version: 0.0.0
   'file:projects/blueprint.tgz_typescript@4.1.2':
     dependencies:
       tslint: 5.20.1_typescript@4.1.2
@@ -5945,7 +5961,7 @@ packages:
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-TZt23YRxYfrkqWGEYgDT1xheyXngodPHa9hIi2UY9U3dUyAUyhT5ImzCuQroL+Sg1fLVsR7LIQMzkkRGEi3hKw==
+      integrity: sha512-TWZb5dn63hhkKrkBHMhY/eu5ccf+9/cFqUtHThCpRxb7jW3rp0N4/jHMLU+W3z6mcmFu/Wv8pkSl0NwmIcxGpg==
       tarball: 'file:projects/di.tgz'
     version: 0.0.0
   'file:projects/flight-log-archive.tgz':
@@ -6108,6 +6124,13 @@ packages:
       integrity: sha512-t2JFc+bee1LkGUmVYxwqT90l6Dv4TXRnsT8NBdLbvUM3LdEDEkI5eCMgqpbdDeU6hbmKOyDnPeIDq6pdNJj5JQ==
       tarball: 'file:projects/mysql.tgz'
     version: 0.0.0
+  'file:projects/na-kano.tgz':
+    dev: false
+    name: '@rush-temp/na-kano'
+    resolution:
+      integrity: sha512-FJYWttlnpRZi1SjCDic2Bolrsm4nYEqARQnacJj7Kv75BNpJgpXd/1tDXhdCirpuooDZyClCqs36EAzcA8UDHg==
+      tarball: 'file:projects/na-kano.tgz'
+    version: 0.0.0
   'file:projects/observe.tgz':
     dependencies:
       rxjs: 7.0.0-beta.10
@@ -6237,6 +6260,13 @@ packages:
       integrity: sha512-ojKV6qsV1WbEJ+co0Fzzx0kmGVJRO0ifSQifia1xvV2nofFmRMegP3aPOf8Nwn66xPl/VBHywAtjScO29cgi6g==
       tarball: 'file:projects/territory.tgz'
     version: 0.0.0
+  'file:projects/todo.tgz':
+    dev: false
+    name: '@rush-temp/todo'
+    resolution:
+      integrity: sha512-1Jf44sQv5ntQoshh8C1wed68/iqhmWmazeUGdlzDbf8UeHX6y5si48IggvMn/VPbT2hgC7bm4Mz5Ux1QBM2PJA==
+      tarball: 'file:projects/todo.tgz'
+    version: 0.0.0
   'file:projects/tools.tgz':
     dependencies:
       prettier: 2.2.1
@@ -6269,6 +6299,13 @@ packages:
       integrity: sha512-3kEefmEi8+XJKKmdRAWU8l6auFsRrEzP90z8QigGxtA4rl7XWjGzWCmxW/uIStRBRHCQx1hus3Bwc5L7TFutaA==
       tarball: 'file:projects/travel-document-checkpoint.tgz'
     version: 0.0.0
+  'file:projects/vasi.tgz':
+    dev: false
+    name: '@rush-temp/vasi'
+    resolution:
+      integrity: sha512-xonl9qqYggc/ONGP0X2AYxM792xd5WmvJ6Dl2EpksXWgqk46j+NFcBx9CPpNdjjKjDURyyzDygacmDGUi+C87Q==
+      tarball: 'file:projects/vasi.tgz'
+    version: 0.0.0
   'file:projects/websql.tgz':
     dev: false
     name: '@rush-temp/websql'
@@ -6290,6 +6327,7 @@ specifiers:
   '@rush-temp/approach-lighting-system': 'file:./projects/approach-lighting-system.tgz'
   '@rush-temp/arrivals-n-departures': 'file:./projects/arrivals-n-departures.tgz'
   '@rush-temp/automated-guideway-transit': 'file:./projects/automated-guideway-transit.tgz'
+  '@rush-temp/autopilot': 'file:./projects/autopilot.tgz'
   '@rush-temp/blueprint': 'file:./projects/blueprint.tgz'
   '@rush-temp/check-in': 'file:./projects/check-in.tgz'
   '@rush-temp/cockroachdb': 'file:./projects/cockroachdb.tgz'
@@ -6311,6 +6349,7 @@ specifiers:
   '@rush-temp/mono-rail': 'file:./projects/mono-rail.tgz'
   '@rush-temp/moving-walkway': 'file:./projects/moving-walkway.tgz'
   '@rush-temp/mysql': 'file:./projects/mysql.tgz'
+  '@rush-temp/na-kano': 'file:./projects/na-kano.tgz'
   '@rush-temp/observe': 'file:./projects/observe.tgz'
   '@rush-temp/point-of-destination': 'file:./projects/point-of-destination.tgz'
   '@rush-temp/postgres': 'file:./projects/postgres.tgz'
@@ -6327,10 +6366,12 @@ specifiers:
   '@rush-temp/terminal': 'file:./projects/terminal.tgz'
   '@rush-temp/terminal-map': 'file:./projects/terminal-map.tgz'
   '@rush-temp/territory': 'file:./projects/territory.tgz'
+  '@rush-temp/todo': 'file:./projects/todo.tgz'
   '@rush-temp/tools': 'file:./projects/tools.tgz'
   '@rush-temp/tower': 'file:./projects/tower.tgz'
   '@rush-temp/traffic-pattern': 'file:./projects/traffic-pattern.tgz'
   '@rush-temp/travel-document-checkpoint': 'file:./projects/travel-document-checkpoint.tgz'
+  '@rush-temp/vasi': 'file:./projects/vasi.tgz'
   '@rush-temp/websql': 'file:./projects/websql.tgz'
   '@types/gapi': ^0.0.35
   '@types/google-drive-realtime-api': ^0.0.33

@@ -128,9 +128,10 @@ for the framework and TypeScript interfaces are used to define the
 query+mutation API against the schemas used by the application.  The rest 
 is defined in the schema configuration file, which is loaded into the 
 device's AIRport database directly.  The config file is generated from
-the annotated Entities and the DAO code, which itself relies on
-auto-generated TIQL (Typescript Instrumented Query Language ) objects
-and interfaces as well as core framework code and generated Base DAO objects.
+the annotated/decorator Entities and the DAO decorators that contain the
+query logic.
+
+![AIRport as Cordova application](presentations/images/Zero-Code-Configuration.png)
 
 ## Technical details
 
