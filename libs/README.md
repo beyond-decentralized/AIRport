@@ -2,10 +2,15 @@
 Various internal/external facing libraries.
 
 [approach-lighting-system](./approach-lighting-system)
-**work in progress** Internal logging system.
+**work in progress**
+Internal logging system.
+
+[autopilot](./autopilot)
+**work in progress**
+A thin shim to make decorator based DAO calls work without client side code.
 
 [blueprint](./blueprint)
-aggregation of core [schemas](../schemas) needed for AIRport to operate
+Aggregation of core [schemas](../schemas) needed for AIRport to operate.
 
 [di](./di)
 "On the stack" dependency injection library.  Still needs additional
@@ -20,22 +25,23 @@ Cross device/database repository sharing engine.
 
 [hangar](./hangar)
 **work in progress, waiting for general code operability to be ready**
-integration tests
+Integration tests.
 
 [jet-bridge](./jet-bridge)
-**work in progress** Application to AIRport adapter
+**work in progress**
+Application to AIRport adapter.
 
 [mono-rail](./mono-rail)
-**Future project** High efficiency transport module (more efficient than highway)
+**Future project**
+High efficiency transport module (more efficient than highway).
 
-[observe](./observe)
-**obsoleted by [rxjs 7.0](https://rxjs.dev)** Observables, no longer
-needed since rxjs 7.0 is small enough (and getting smaller) and hopefully
-it's stack traces make a little bit more sense than before.
+[pressurization](./pressurization)
+**work in progress**
+Client-server (de)serialization.
 
 [ramp](./ramp)
-**can't remember original purpose** probably a more lightweight version
-of [jet-bridge](./jet-bridge)
+**can't remember original purpose** 
+Probably a more lightweight version of [jet-bridge](./jet-bridge).
 
 [tower](./tower)
 AIRport database control center.
