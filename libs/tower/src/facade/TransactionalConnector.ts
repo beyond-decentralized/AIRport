@@ -13,9 +13,17 @@ import {
 }                        from '@airport/ground-control';
 import { Observable }   from 'rxjs';
 import {
-	IOperationContext,
 	TRANSACTIONAL_SERVER
-}                        from '@airport/tower';
+}                        from '../tokens';
+import {
+	IOperationContext
+} from '../processing/OperationContext';
+
+var isServer = false;
+
+export function setIsServer(): void {
+	isServer = true;
+}
 
 export class TransactionalConnector
 	implements ITransactionalConnector {
@@ -24,6 +32,10 @@ export class TransactionalConnector
 	serverUrl: string;
 
 	async init(): Promise<void> {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
+
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		await transServer.init();
@@ -37,6 +49,10 @@ export class TransactionalConnector
 		distributionStrategy: DistributionStrategy,
 		context: IOperationContext<any, any>
 	): Promise<number> {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
+
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		return await transServer.addRepository(
@@ -57,6 +73,10 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
+
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		return await transServer.find(
@@ -74,6 +94,10 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
+
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		return await transServer.findOne(
@@ -91,6 +115,10 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<Observable<EntityArray>> {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
+
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		return await transServer.search(
@@ -108,6 +136,10 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<Observable<E>> {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
+
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		return await transServer.searchOne(
@@ -138,6 +170,9 @@ export class TransactionalConnector
 	insert(
 		// todo define parameters
 	) {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
 		// TODO: implement
 		throw new Error(`TODO: implement`)
 	}
@@ -148,6 +183,9 @@ export class TransactionalConnector
 	update(
 		// todo define parameters
 	) {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
 		// TODO: implement
 		throw new Error(`TODO: implement`)
 	}
@@ -158,6 +196,9 @@ export class TransactionalConnector
 	delete(
 		// todo define parameters
 	) {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
 		// TODO: implement
 		throw new Error(`TODO: implement`)
 	}
@@ -166,6 +207,9 @@ export class TransactionalConnector
 		entity: T,
 		context: IContext,
 	): Promise<number> {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
 		throw new Error(`Not Implemented`);
 	}
 

@@ -4,9 +4,9 @@ import {
 	PlatformType,
 	PortableQuery
 }                          from '@airport/ground-control'
-import {IObservable}       from '@airport/observe'
+import {Observable}       from 'rxjs'
 import {ICredentials}      from '@airport/terminal-map'
-import {ITransaction}      from '../../ITransaction'
+import {ITransaction}      from '../../transaction/ITransaction'
 import {IOperationContext} from '../../processing/OperationContext'
 
 export interface ITransactionalServer {
@@ -44,14 +44,14 @@ export interface ITransactionalServer {
 		credentials: ICredentials,
 		context: IContext,
 		cachedSqlQueryId?: number
-	): Promise<IObservable<EntityArray>>
+	): Promise<Observable<EntityArray>>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		context: IContext,
 		cachedSqlQueryId?: number
-	): Promise<IObservable<E>>
+	): Promise<Observable<E>>
 
 	insertValues(
 		portableQuery: PortableQuery,

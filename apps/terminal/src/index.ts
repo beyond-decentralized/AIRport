@@ -1,3 +1,4 @@
+
 export * from './core/repository/RepositoryManager'
 export * from './core/UpdateState'
 export * from './data/DeltaStore'
@@ -17,3 +18,7 @@ export * from './shared/DateUtils'
 export * from './shared/PlatformUtils'
 // export * from './Constants'
 export * from './tokens'
+
+import {setIsServer} from '@airport/tower';
+
+setIsServer();

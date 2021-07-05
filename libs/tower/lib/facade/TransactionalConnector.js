@@ -1,9 +1,16 @@
 import { container, DI } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
-import { TRANSACTIONAL_SERVER } from '@airport/tower';
+import { TRANSACTIONAL_SERVER } from '../tokens';
+var isServer = false;
+export function setIsServer() {
+    isServer = true;
+}
 export class TransactionalConnector {
     async init() {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
         await transServer.init();
     }
     async addRepository(name, url, platform, platformConfig, distributionStrategy, context) {

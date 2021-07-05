@@ -2,7 +2,8 @@ import { IQueryContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
 import { DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery } from '@airport/ground-control';
 import { Observable } from 'rxjs';
-import { IOperationContext } from '@airport/tower';
+import { IOperationContext } from '../processing/OperationContext';
+export declare function setIsServer(): void;
 export declare class TransactionalConnector implements ITransactionalConnector {
     dbName: string;
     serverUrl: string;

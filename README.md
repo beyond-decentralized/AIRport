@@ -121,9 +121,9 @@ infrequently used repositories (or may do so automatically if not configured),
 leaving them only in the cloud backup.  The applications however may request the
 user to load additional repositories from the cloud, for processing.
 
-## Autopilot deployment
+## Autopilot client for Apps
 
-AIRport providea "autopilot" deployments where CRUD code is
+AIRport provides "autopilot" client for Apps where CRUD code is
 pre-processed by "@airport/runway" at build time and resides on the
 AIRport server, not in the client-side library:
 
