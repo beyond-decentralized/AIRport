@@ -1,5 +1,5 @@
 import {IContext}             from '@airport/di'
-import {IObservable}          from '@airport/observe'
+import {Observable}          from 'rxjs'
 import {DistributionStrategy} from './data/DistributionStrategy'
 import {PlatformType}         from './data/PatformType'
 import {PortableQuery}        from './query/PortableQuery'
@@ -33,13 +33,13 @@ export interface ITransactionalConnector {
 		portableQuery: PortableQuery,
 		context: IContext,
 		cachedSqlQueryId?: number,
-	): Promise<IObservable<EntityArray>>
+	): Promise<Observable<EntityArray>>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		context: IContext,
 		cachedSqlQueryId?: number,
-	): Promise<IObservable<E>>
+	): Promise<Observable<E>>
 
 	save<E, T = E | E[]>(
 		entity: T,

@@ -1,5 +1,6 @@
 import { DI } from '@airport/di';
-import { RXJS } from '@airport/observe';
+import { from } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { SELECTOR_MANAGER } from './tokens';
 export class SelectorManager {
     createSelector(...args) {
@@ -8,18 +9,17 @@ export class SelectorManager {
         }
         const inputSelectors = args.slice(0, args.length - 1);
         const callback = args[args.length - 1];
-        let rxjs = DI.db().getSync(RXJS);
         let sourceObservable;
         if (inputSelectors.length > 1) {
             // TODO: check if this will work
-            sourceObservable = rxjs.from(inputSelectors.map(selector => selector.observable));
+            sourceObservable = from(inputSelectors.map(selector => selector.observable));
         }
         else {
             sourceObservable = inputSelectors[0].observable;
         }
         let observable = sourceObservable.pipe(
         // share() TODO: implement once RxJs support is added
-        rxjs.distinctUntilChanged(), rxjs.map(value => callback(value)));
+        distinctUntilChanged(), map(value => callback(value)));
         return this.getSelector(observable);
     }
     createRootSelector(stateObservable) {

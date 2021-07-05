@@ -11,7 +11,7 @@ import {
 	PortableQuery,
 	TRANSACTIONAL_CONNECTOR
 }                        from '@airport/ground-control';
-import { IObservable }   from '@airport/observe';
+import { Observable }   from 'rxjs';
 import {
 	IOperationContext,
 	TRANSACTIONAL_SERVER
@@ -90,7 +90,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
-	): Promise<IObservable<EntityArray>> {
+	): Promise<Observable<EntityArray>> {
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		return await transServer.search(
@@ -107,7 +107,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
-	): Promise<IObservable<E>> {
+	): Promise<Observable<E>> {
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
 		return await transServer.searchOne(

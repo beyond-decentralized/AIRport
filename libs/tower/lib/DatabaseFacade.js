@@ -3,7 +3,7 @@ import { container, DI } from '@airport/di';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 import { OperationManager } from './processing/OperationManager';
 import { OPERATION_CONTEXT_LOADER } from './tokens';
-import { transactional } from './transactional';
+import { transactional } from '../transaction/transactional';
 /**
  * Created by Papa on 5/23/2016.
  */

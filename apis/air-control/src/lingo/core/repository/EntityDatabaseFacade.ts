@@ -154,7 +154,6 @@ export interface IEntityDatabaseFacade<IEntity,
 	save(
 		entity: EntityCreateProperties,
 		ctx?: IEntityContext,
-		operationName?: OperationName
 	): Promise<number>;
 
 }

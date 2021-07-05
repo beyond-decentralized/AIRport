@@ -1,4 +1,4 @@
-import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, OperationName, QSchema } from '@airport/air-control';
+import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, QSchema } from '@airport/air-control';
 import { IContext } from '@airport/di';
 import { EntityId as DbEntityId } from '@airport/ground-control';
 import { DaoStub } from './DaoStub';
@@ -16,7 +16,7 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     findAll(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
     findAllAsTrees(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
     findById(entityId: EntityId, context?: IContext, cacheForUpdate?: boolean): Promise<Entity>;
-    save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, context?: IContext, operationName?: OperationName): Promise<number>;
+    save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, context?: IContext): Promise<number>;
     markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(entityIdInfo: EntityInfo, context?: IContext): void;
     private ensureContext;
 }

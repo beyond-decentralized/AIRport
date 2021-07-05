@@ -1,12 +1,12 @@
 import { SELECTOR_MANAGER } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
-import { RXJS } from '@airport/observe';
+import { BehaviorSubject } from 'rxjs';
 import { TERMINAL_STORE } from '../tokens';
 export class TerminalStore {
     async init() {
-        const [rxjs, selectorManager] = await DI.db().get(RXJS, SELECTOR_MANAGER);
-        this.state = new rxjs.BehaviorSubject({
+        const selectorManager = await DI.db().get(SELECTOR_MANAGER);
+        this.state = new BehaviorSubject({
             domains: [], nodesBySyncFrequency: new Map(), schemas: [], terminal: null,
         });
         this.getTerminalState = selectorManager.createRootSelector(this.state);

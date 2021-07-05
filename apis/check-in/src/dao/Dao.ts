@@ -120,13 +120,12 @@ export abstract class Dao<Entity,
 	async save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entity: EntityInfo,
 		context?: IContext,
-		operationName?: OperationName,
 	): Promise<number> {
 		if (entity instanceof Array) {
 			throw new Error(`Not Implemented`);
 		} else {
 			const result = await this.db.save(<EntityCreate>entity,
-				this.ensureContext(context), operationName);
+				this.ensureContext(context));
 
 			return result;
 		}

@@ -1,6 +1,6 @@
-import { IObservable } from '@airport/observe';
+import { Observable } from 'rxjs';
 export declare class DaoSearchOneStub<IEntity> {
-    Graph(...args: any[]): IObservable<IEntity>;
-    Tree(...args: any[]): IObservable<IEntity>;
+    Graph(...args: any[]): Observable<IEntity>;
+    Tree(...args: any[]): Observable<IEntity>;
 }
 //# sourceMappingURL=DaoSearchOneStub.d.ts.map

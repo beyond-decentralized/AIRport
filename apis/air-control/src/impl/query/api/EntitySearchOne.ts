@@ -4,9 +4,9 @@ import {
 }                                  from '@airport/di';
 import { QueryResultType }         from '@airport/ground-control';
 import {
-	IObservable,
-	RXJS
-}                                  from '@airport/observe';
+	Observable,
+	from
+}                                  from 'rxjs';
 import { IEntityContext }          from '../../../lingo/core/data/EntityContext';
 import { UpdateCacheType }         from '../../../lingo/core/data/UpdateCacheType';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
@@ -36,15 +36,15 @@ export class EntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 	graph(
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		context?: IContext
-	): IObservable<Entity> {
-		return DI.db().getSync(RXJS).from(this.searchOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context));
+	): Observable<Entity> {
+		return from(this.searchOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context));
 	}
 
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		context?: IContext
-	): IObservable<Entity> {
-		return DI.db().getSync(RXJS).from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
+	): Observable<Entity> {
+		return from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
 	}
 
 	searchOne(

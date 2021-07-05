@@ -1,8 +1,12 @@
-import { DI }               from '@airport/di';
+import { DI } from '@airport/di';
 import {
-	IObservable,
-	RXJS
-}                           from '@airport/observe';
+	Observable,
+	from
+} from 'rxjs';
+import {
+	distinctUntilChanged,
+	map
+} from 'rxjs/operators'
 import { SELECTOR_MANAGER } from './tokens';
 
 /**
@@ -31,7 +35,7 @@ export interface IMemoizedSelector<V, SV>
 		// stateObservable?: Observable<SV>
 	): V;
 
-	observable: IObservable<V>;
+	observable: Observable<V>;
 }
 
 export interface ISelectorManager {
@@ -95,7 +99,7 @@ export interface ISelectorManager {
 	)
 
 	createRootSelector<SV>(
-		stateObservable: IObservable<SV>
+		stateObservable: Observable<SV>
 	): IMemoizedSelector<SV, SV>
 
 }
@@ -161,22 +165,20 @@ export class SelectorManager
 		}
 
 		const inputSelectors: IMemoizedSelector<any, SV>[] = args.slice(0, args.length - 1);
-		const callback                                     = args[args.length - 1];
-
-		let rxjs = DI.db().getSync(RXJS);
+		const callback = args[args.length - 1];
 
 		let sourceObservable;
 		if (inputSelectors.length > 1) {
 			// TODO: check if this will work
-			sourceObservable = rxjs.from(inputSelectors.map(
+			sourceObservable = from(inputSelectors.map(
 				selector => selector.observable));
 		} else {
 			sourceObservable = inputSelectors[0].observable;
 		}
 		let observable = sourceObservable.pipe(
 			// share() TODO: implement once RxJs support is added
-			rxjs.distinctUntilChanged(),
-			rxjs.map(
+			distinctUntilChanged(),
+			map(
 				value => callback(value))
 		);
 
@@ -184,15 +186,15 @@ export class SelectorManager
 	}
 
 	createRootSelector<SV>(
-		stateObservable: IObservable<SV>
+		stateObservable: Observable<SV>
 	): IMemoizedSelector<SV, SV> {
 		return this.getSelector(stateObservable);
 	}
 
 	private getSelector<SV>(
-		observable: IObservable<SV>
+		observable: Observable<SV>
 	) {
-		let selector = <IMemoizedSelector<SV, SV>>(function(
+		let selector = <IMemoizedSelector<SV, SV>>(function (
 			// otherStateObservable?: Observable<SV>
 		) {
 			let currentValue;

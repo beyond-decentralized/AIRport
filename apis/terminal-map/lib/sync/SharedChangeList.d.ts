@@ -1,4 +1,4 @@
-import { ISubject } from '@airport/observe';
+import { Subject } from 'rxjs';
 import { ChangeListShareInfo } from '../SharingAdaptor';
 import { ChangeError, ChangeRecord, ChangeRecordIterator } from './ChangeModel';
 /**
@@ -8,7 +8,7 @@ export interface SharedChangeList {
     shareInfo: ChangeListShareInfo;
     loadFromRecord(changeRecord: ChangeRecord): Promise<ChangeRecordIterator>;
     addChanges(changeRecords: ChangeRecord[]): Promise<void>;
-    errorSubject(): ISubject<ChangeError>;
-    changesAddedRemotelySubject(): ISubject<ChangeRecordIterator>;
+    errorSubject(): Subject<ChangeError>;
+    changesAddedRemotelySubject(): Subject<ChangeRecordIterator>;
 }
 //# sourceMappingURL=SharedChangeList.d.ts.map

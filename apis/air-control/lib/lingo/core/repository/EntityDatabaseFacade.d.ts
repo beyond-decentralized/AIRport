@@ -3,7 +3,6 @@ import { IEntityFind } from '../../query/api/EntityFind';
 import { IEntityFindOne } from '../../query/api/EntityFindOne';
 import { IEntitySearch } from '../../query/api/EntitySearch';
 import { IEntitySearchOne } from '../../query/api/EntitySearchOne';
-import { OperationName } from '../../query/Dao';
 import { IDuo } from '../../query/Duo';
 import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
@@ -88,6 +87,6 @@ export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySele
      *
      * @return Number of records saved (1 or 0)
      */
-    save(entity: EntityCreateProperties, ctx?: IEntityContext, operationName?: OperationName): Promise<number>;
+    save(entity: EntityCreateProperties, ctx?: IEntityContext): Promise<number>;
 }
 //# sourceMappingURL=EntityDatabaseFacade.d.ts.map

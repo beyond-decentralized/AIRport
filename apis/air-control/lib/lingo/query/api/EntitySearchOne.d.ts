@@ -1,5 +1,5 @@
 import { IContext } from '@airport/di';
-import { IObservable } from '@airport/observe';
+import { Observable } from 'rxjs';
 import { IEntitySelectProperties } from '../../core/entity/Entity';
 import { RawEntityQuery } from '../facade/EntityQuery';
 import { IEntityLookup } from './EntityLookup';
@@ -12,12 +12,12 @@ export interface IEntitySearchOne<Entity, IESP extends IEntitySelectProperties> 
      */
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, ctx?: IContext): IObservable<Entity>;
+    }, ctx?: IContext): Observable<Entity>;
     /**
      * Returns an Observable of a non-interlinked entity ITreeEntity.
      */
     tree(rawTreeQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, ctx?: IContext): IObservable<Entity>;
+    }, ctx?: IContext): Observable<Entity>;
 }
 //# sourceMappingURL=EntitySearchOne.d.ts.map

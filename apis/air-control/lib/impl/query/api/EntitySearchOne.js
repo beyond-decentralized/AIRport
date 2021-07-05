@@ -1,16 +1,15 @@
-import { DI } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
-import { RXJS } from '@airport/observe';
+import { from } from 'rxjs';
 import { EntityLookup } from './EntityLookup';
 /**
  * Created by Papa on 11/12/2016.
  */
 export class EntitySearchOne extends EntityLookup {
     graph(rawGraphQuery, context) {
-        return DI.db().getSync(RXJS).from(this.searchOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context));
+        return from(this.searchOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context));
     }
     tree(rawTreeQuery, context) {
-        return DI.db().getSync(RXJS).from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
+        return from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
     }
     searchOne(rawEntityQuery, queryResultType, context) {
         return this.entityLookup(rawEntityQuery, queryResultType, true, true, this.ensureContext(context));

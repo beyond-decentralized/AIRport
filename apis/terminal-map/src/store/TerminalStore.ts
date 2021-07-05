@@ -9,8 +9,7 @@ import {
 	JsonSchemaName,
 	SchemaName
 }                                from '@airport/ground-control';
-import type { IBehaviorSubject } from '@airport/observe';
-import { RXJS }                  from '@airport/observe';
+import { BehaviorSubject } from 'rxjs';
 import { IDomain }               from '@airport/territory';
 import {
 	ISchema,
@@ -24,7 +23,7 @@ import { ITerminalState }        from './TerminalState';
 
 export interface ITerminalStore {
 
-	state: IBehaviorSubject<ITerminalState>
+	state: BehaviorSubject<ITerminalState>
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>
 
@@ -52,7 +51,7 @@ export interface ITerminalStore {
 export class TerminalStore
 	implements ITerminalStore {
 
-	state: IBehaviorSubject<ITerminalState>;
+	state: BehaviorSubject<ITerminalState>;
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
 
@@ -75,8 +74,8 @@ export class TerminalStore
 	getAllRelations: IMemoizedSelector<ISchemaRelation[], ITerminalState>;
 
 	async init(): Promise<void> {
-		const [rxjs, selectorManager] = await DI.db().get(RXJS, SELECTOR_MANAGER);
-		this.state                    = new rxjs.BehaviorSubject<ITerminalState>({
+		const selectorManager = await DI.db().get(SELECTOR_MANAGER);
+		this.state                    = new BehaviorSubject<ITerminalState>({
 			domains: [], nodesBySyncFrequency: new Map(), schemas: [], terminal: null,
 		});
 

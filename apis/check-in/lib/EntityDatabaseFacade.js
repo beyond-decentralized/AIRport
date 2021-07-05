@@ -58,9 +58,9 @@ export class EntityDatabaseFacade {
             return await databaseFacade.deleteWhere(rawDelete, ctx);
         });
     }
-    async save(entity, ctx, operationName) {
+    async save(entity, ctx) {
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.save(entity, ctx, operationName);
+            return await databaseFacade.save(entity, ctx);
         });
     }
     async withDbEntity(ctx, callback) {

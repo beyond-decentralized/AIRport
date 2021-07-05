@@ -17,10 +17,10 @@ export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, Enti
      * state flag.  Cascades.
      *
      * @param {EntityCreate[] | EntityCreate} entityInfo
-     * @param cascadeGraph
+     * @param context
      * @returns {Promise<number>}
      */
-    save<EntityInfo extends EntityCreate | EntityCreate[]>(entityInfo: EntityInfo, context?: IContext, operationName?: OperationName): Promise<number>;
+    save<EntityInfo extends EntityCreate | EntityCreate[]>(entityInfo: EntityInfo, context?: IContext): Promise<number>;
     markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(entityIdInfo: EntityInfo, context?: IContext): void;
 }
 //# sourceMappingURL=Dao.d.ts.map

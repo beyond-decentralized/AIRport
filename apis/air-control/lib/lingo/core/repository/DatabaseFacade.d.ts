@@ -1,6 +1,5 @@
 import { DistributionStrategy, PlatformType, PortableQuery, QueryResultType } from '@airport/ground-control';
-import { IObservable } from '@airport/observe';
-import { OperationName } from '../../query/Dao';
+import { Observable } from 'rxjs';
 import { IAbstractQuery } from '../../query/facade/AbstractQuery';
 import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
@@ -63,7 +62,7 @@ export interface IDatabaseFacade {
      *
      * @return Number of records saved (1 or 0)
      */
-    save<E, EntityCascadeGraph>(entity: E, ctx: IEntityContext, operationName?: OperationName): Promise<number>;
+    save<E, EntityCascadeGraph>(entity: E, ctx: IEntityContext): Promise<number>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.
@@ -88,8 +87,8 @@ export interface IQueryFacade {
     ensureIocContext<E>(context: IQueryContext<E>): Promise<void>;
     find<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<EntityArray>;
     findOne<E>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<E>;
-    search<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<IObservable<EntityArray>>;
-    searchOne<E>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<IObservable<E>>;
+    search<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<Observable<EntityArray>>;
+    searchOne<E>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<Observable<E>>;
     getPortableQuery<E>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext): PortableQuery;
 }
 //# sourceMappingURL=DatabaseFacade.d.ts.map

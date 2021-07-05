@@ -1,7 +1,7 @@
 import { IQueryContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
 import { DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery } from '@airport/ground-control';
-import { IObservable } from '@airport/observe';
+import { Observable } from 'rxjs';
 import { IOperationContext } from '@airport/tower';
 export declare class TransactionalConnector implements ITransactionalConnector {
     dbName: string;
@@ -10,8 +10,8 @@ export declare class TransactionalConnector implements ITransactionalConnector {
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context: IOperationContext<any, any>): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<E>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<IObservable<EntityArray>>;
-    searchOne<E>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<IObservable<E>>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<Observable<EntityArray>>;
+    searchOne<E>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<Observable<E>>;
     /**
      * This is a TIQL Insert statement coming from the client.
      * It will have an id of the operation to be invoked, as

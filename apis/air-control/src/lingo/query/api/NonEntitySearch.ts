@@ -1,5 +1,5 @@
 import {IContext}         from '@airport/di'
-import {IObservable}      from '@airport/observe'
+import {Observable}      from 'rxjs'
 import {IQOrderableField} from '../../core/field/Field'
 import {RawFieldQuery}    from '../facade/FieldQuery'
 import {RawSheetQuery}    from '../facade/SheetQuery'
@@ -21,7 +21,7 @@ export interface INonEntitySearch
 	tree<ITE extends ITreeEntity>(
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> },
 		ctx?: IContext
-	): IObservable<ITE[]>;
+	): Observable<ITE[]>;
 
 	/**
 	 * Returns an Observable for a list of flat sheets/tables of values.
@@ -29,7 +29,7 @@ export interface INonEntitySearch
 	sheet(
 		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
 		ctx?: IContext
-	): IObservable<any[][]>;
+	): Observable<any[][]>;
 
 	/**
 	 * Returns an Observable for a list of a single value.
@@ -37,6 +37,6 @@ export interface INonEntitySearch
 	field<IQF extends IQOrderableField<IQF>>(
 		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> },
 		ctx?: IContext
-	): IObservable<any[]>;
+	): Observable<any[]>;
 
 }

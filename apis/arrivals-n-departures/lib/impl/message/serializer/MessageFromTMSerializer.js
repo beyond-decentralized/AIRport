@@ -37,6 +37,7 @@ export class MessageFromTMSerializer {
                     dataTransferMFTM.tmSharingMessageId,
                     serializedRepositoryUpdateRequests,
                     dataTransferMFTM.terminalSyncAcks,
+                    // serializedSyncsToVerify
                 ];
             }
             default: {

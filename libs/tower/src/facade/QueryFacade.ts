@@ -17,9 +17,11 @@ import {
 	QueryResultType,
 } from '@airport/ground-control';
 import {
-	IObservable,
-	RXJS
-} from '@airport/observe';
+	Observable,
+} from 'rxjs';
+import {
+	map
+} from 'rxjs/operators';
 
 export class QueryFacade
 	implements IQueryFacade {
@@ -75,24 +77,19 @@ export class QueryFacade
 		queryResultType: QueryResultType,
 		context: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
-	): Promise<IObservable<EntityArray>> {
+	): Promise<Observable<EntityArray>> {
 		await this.ensureIocContext(context);
 		let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(
 			query, queryResultType, context), context);
 
-		const rxjs = await DI.db().get(RXJS);
+		observable = observable.pipe(map((results: any[]) => {
+			context.ioc.updateCache.addToCache(
+				context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...results);
 
-		observable = observable.pipe(
-			rxjs.map(
-				results => {
-					context.ioc.updateCache.addToCache(
-						context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...results);
+			return results;
+		})) as Observable<EntityArray>;
 
-					return results;
-				})
-		) as IObservable<EntityArray>;
-
-		return observable as IObservable<EntityArray>;
+		return observable as Observable<EntityArray>;
 	}
 
 	async searchOne<E>(
@@ -100,15 +97,13 @@ export class QueryFacade
 		queryResultType: QueryResultType,
 		context: IQueryContext<E>,
 		cacheForUpdate = UpdateCacheType.NONE,
-	): Promise<IObservable<E>> {
+	): Promise<Observable<E>> {
 		await this.ensureIocContext(context);
 		let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(
 			query, queryResultType, context), context);
 
-		const rxjs = await DI.db().get(RXJS);
-
 		observable = observable.pipe(
-			rxjs.map(
+			map(
 				result => {
 					context.ioc.updateCache.addToCache(
 						context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result);
@@ -117,7 +112,7 @@ export class QueryFacade
 				})
 		);
 
-		return observable as IObservable<E>;
+		return observable as Observable<E>;
 	}
 
 	async ensureIocContext<E>(

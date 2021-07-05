@@ -45,12 +45,12 @@ export class Dao {
     findById(entityId, context, cacheForUpdate = false) {
         throw new Error(`Not implemented`);
     }
-    async save(entity, context, operationName) {
+    async save(entity, context) {
         if (entity instanceof Array) {
             throw new Error(`Not Implemented`);
         }
         else {
-            const result = await this.db.save(entity, this.ensureContext(context), operationName);
+            const result = await this.db.save(entity, this.ensureContext(context));
             return result;
         }
     }

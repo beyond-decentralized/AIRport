@@ -1,5 +1,5 @@
 import { IContext } from '@airport/di';
-import { IObservable } from '@airport/observe';
+import { Observable } from 'rxjs';
 import { PortableQuery } from '../query/PortableQuery';
 import { DbEntity } from '../schema/Entity';
 import { DomainName, SchemaName } from '../schema/Schema';
@@ -28,8 +28,8 @@ export interface IStoreDriver extends IStoreOperator {
         };
     }, context: IContext): string;
     initialize(dbName: string, context: IContext): Promise<any>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): IObservable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): IObservable<E>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<EntityArray>;
+    searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<E>;
     transact(transactionalCallback: {
         (transaction: IStoreDriver): Promise<void> | void;
     }, context: IContext): Promise<void>;

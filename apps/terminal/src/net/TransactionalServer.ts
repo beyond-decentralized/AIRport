@@ -8,7 +8,7 @@ import {
 	PortableQuery
 }                      from '@airport/ground-control';
 import { IActor }      from '@airport/holding-pattern';
-import { IObservable } from '@airport/observe';
+import { Observable } from 'rxjs';
 import {
 	DistributionStrategy,
 	ICredentials,
@@ -71,6 +71,22 @@ export class TransactionalServer
 		return await transManager.initialize('airport', context);
 	}
 
+	async addRepository(
+		name: string,
+		url: string,
+		platform: PlatformType,
+		platformConfig: string,
+		distributionStrategy: DistributionStrategy,
+		credentials: ICredentials,
+		context: IOperationContext<any, any>
+	): Promise<number> {
+		const insertManager = await container(this)
+			.get(INSERT_MANAGER);
+
+		return await insertManager.addRepository(name, url, platform,
+			platformConfig, distributionStrategy);
+	}
+
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
@@ -100,7 +116,7 @@ export class TransactionalServer
 		credentials: ICredentials,
 		context: IContext,
 		cachedSqlQueryId?: number,
-	): Promise<IObservable<EntityArray>> {
+	): Promise<Observable<EntityArray>> {
 		const queryManager = await container(this)
 			.get(QUERY_MANAGER);
 
@@ -112,27 +128,11 @@ export class TransactionalServer
 		credentials: ICredentials,
 		context: IContext,
 		cachedSqlQueryId?: number,
-	): Promise<IObservable<E>> {
+	): Promise<Observable<E>> {
 		const queryManager = await container(this)
 			.get(QUERY_MANAGER);
 
 		return await queryManager.searchOne<E>(portableQuery, context);
-	}
-
-	async addRepository(
-		name: string,
-		url: string,
-		platform: PlatformType,
-		platformConfig: string,
-		distributionStrategy: DistributionStrategy,
-		credentials: ICredentials,
-		context: IOperationContext<any, any>
-	): Promise<number> {
-		const insertManager = await container(this)
-			.get(INSERT_MANAGER);
-
-		return await insertManager.addRepository(name, url, platform,
-			platformConfig, distributionStrategy);
 	}
 
 	async insertValues(

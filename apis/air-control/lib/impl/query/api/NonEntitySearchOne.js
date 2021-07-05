@@ -1,6 +1,5 @@
-import { DI } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
-import { RXJS } from '@airport/observe';
+import { from } from 'rxjs';
 import { FieldQuery } from '../facade/FieldQuery';
 import { SheetQuery } from '../facade/SheetQuery';
 import { TreeQuery } from '../facade/TreeQuery';
@@ -10,13 +9,13 @@ import { Lookup } from './Lookup';
  */
 export class NonEntitySearchOne extends Lookup {
     field(rawFieldQuery, context) {
-        return DI.db().getSync(RXJS).from(this.searchOne(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context));
+        return from(this.searchOne(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context));
     }
     sheet(rawSheetQuery, context) {
-        return DI.db().getSync(RXJS).from(this.searchOne(rawSheetQuery, QueryResultType.SHEET, SheetQuery, context));
+        return from(this.searchOne(rawSheetQuery, QueryResultType.SHEET, SheetQuery, context));
     }
     tree(rawTreeQuery, context) {
-        return DI.db().getSync(RXJS).from(this.searchOne(rawTreeQuery, QueryResultType.TREE, TreeQuery, context));
+        return from(this.searchOne(rawTreeQuery, QueryResultType.TREE, TreeQuery, context));
     }
     searchOne(rawNonEntityQuery, queryResultType, QueryClass, context) {
         return this.lookup(rawNonEntityQuery, queryResultType, true, true, QueryClass, this.ensureContext(context));

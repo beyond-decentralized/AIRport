@@ -49,6 +49,9 @@ export class EntityDatabaseFacade<Entity,
     EntityUpdateProperties, EntityId,
     EntityCascadeGraph, IQ> {
 
+  duo: IDuo<Entity, EntitySelect, EntityCreate,
+      EntityUpdateColumns, EntityUpdateProperties, EntityId,
+      EntityCascadeGraph, IQ>;
 
   find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
 
@@ -185,13 +188,12 @@ export class EntityDatabaseFacade<Entity,
   async save(
     entity: EntityCreate,
     ctx?: IEntityContext,
-    operationName?: OperationName,
   ): Promise<number> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
-      return await databaseFacade.save(entity, ctx, operationName);
+      return await databaseFacade.save(entity, ctx);
     });
   }
 

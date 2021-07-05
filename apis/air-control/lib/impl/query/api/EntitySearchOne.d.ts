@@ -1,6 +1,6 @@
 import { IContext } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
-import { IObservable } from '@airport/observe';
+import { Observable } from 'rxjs';
 import { UpdateCacheType } from '../../../lingo/core/data/UpdateCacheType';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
 import { IEntitySearchOne } from '../../../lingo/query/api/EntitySearchOne';
@@ -17,10 +17,10 @@ export interface IEntitySearchOneInternal<Entity, IESP extends IEntitySelectProp
 export declare class EntitySearchOne<Entity, IESP extends IEntitySelectProperties> extends EntityLookup<EntitySearchOne<Entity, IESP>, EntitySearchOne<Entity, IESP>, IESP> implements IEntitySearchOneInternal<Entity, IESP> {
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, context?: IContext): IObservable<Entity>;
+    }, context?: IContext): Observable<Entity>;
     tree(rawTreeQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
-    }, context?: IContext): IObservable<Entity>;
+    }, context?: IContext): Observable<Entity>;
     searchOne(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
     }, queryResultType: QueryResultType, context?: IContext): Promise<Entity>;

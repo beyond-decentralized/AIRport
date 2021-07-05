@@ -61,13 +61,12 @@ export interface IDao<Entity,
 	 * state flag.  Cascades.
 	 *
 	 * @param {EntityCreate[] | EntityCreate} entityInfo
-	 * @param cascadeGraph
+	 * @param context
 	 * @returns {Promise<number>}
 	 */
 	save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entityInfo: EntityInfo,
 		context?: IContext,
-		operationName?: OperationName,
 	): Promise<number>;
 
 	markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(

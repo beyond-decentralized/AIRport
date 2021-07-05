@@ -86,7 +86,7 @@ export async function getSysWideOpId(
 
 	const generatedNumWrapper = await sequenceGenerator
 		.generateSequenceNumbers(
-			[sysWideOpIdGeneratedColumn], [1]);
+			[sysWideOpIdGeneratedColumn], [1], null);
 
 	return generatedNumWrapper[0][0];
 }

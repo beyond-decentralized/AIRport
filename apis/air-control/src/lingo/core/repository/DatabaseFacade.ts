@@ -4,7 +4,7 @@ import {
 	PortableQuery,
 	QueryResultType
 }                          from '@airport/ground-control';
-import { IObservable }     from '@airport/observe';
+import { Observable }     from 'rxjs';
 import { OperationName }   from '../../query/Dao';
 import { IAbstractQuery }  from '../../query/facade/AbstractQuery';
 import { RawDelete }       from '../../query/facade/Delete';
@@ -126,7 +126,6 @@ export interface IDatabaseFacade {
 	save<E, EntityCascadeGraph>(
 		entity: E,
 		ctx: IEntityContext,
-		operationName?: OperationName
 	): Promise<number>;
 
 	/**
@@ -189,14 +188,14 @@ export interface IQueryFacade {
 		queryResultType: QueryResultType,
 		ctx: IEntityContext,
 		cacheForUpdate?: UpdateCacheType,
-	): Promise<IObservable<EntityArray>>;
+	): Promise<Observable<EntityArray>>;
 
 	searchOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
 		ctx: IEntityContext,
 		cacheForUpdate?: UpdateCacheType,
-	): Promise<IObservable<E>>;
+	): Promise<Observable<E>>;
 
 	getPortableQuery<E>(
 		query: IAbstractQuery,

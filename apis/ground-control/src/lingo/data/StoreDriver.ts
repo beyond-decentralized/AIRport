@@ -1,5 +1,5 @@
 import {IContext}      from '@airport/di'
-import {IObservable}   from '@airport/observe'
+import {Observable}   from 'rxjs'
 import {PortableQuery} from '../query/PortableQuery'
 import {DbEntity}      from '../schema/Entity'
 import {
@@ -65,14 +65,14 @@ export interface IStoreDriver
 		internalFragments: InternalFragments,
 		context: IContext,
 		cachedSqlQueryId?: number,
-	): IObservable<EntityArray>;
+	): Observable<EntityArray>;
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
 		context: IContext,
 		cachedSqlQueryId?: number,
-	): IObservable<E>;
+	): Observable<E>;
 
 	transact(
 		transactionalCallback: {
