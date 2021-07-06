@@ -2,7 +2,6 @@ export * from './impl/core/entity/metadata/ColumnDecorators';
 export * from './impl/core/entity/metadata/EntityDecorators';
 export * from './impl/core/entity/Aliases';
 export * from './impl/core/entity/Entity';
-export * from './impl/core/entity/EntityStateManager';
 export * from './impl/core/entity/JoinTreeNode';
 export * from './impl/core/entity/OneToManyRelation';
 export * from './impl/core/entity/Relation';

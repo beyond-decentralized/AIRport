@@ -1,6 +1,6 @@
 import {DI}                   from '@airport/di'
 import {DbEntity}             from '@airport/ground-control'
-import {ENTITY_STATE_MANAGER} from '../../../tokens'
+import {ENTITY_STATE_MANAGER} from './tokens'
 
 export type OperationUniqueId = number
 

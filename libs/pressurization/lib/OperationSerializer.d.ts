@@ -1,4 +1,4 @@
-import { IEntityStateManager } from '@airport/air-control';
+import { IEntityStateManager } from './EntityStateManager';
 /**
  * A simple operation serializer that is not aware
  * of the schema and only supports create operations

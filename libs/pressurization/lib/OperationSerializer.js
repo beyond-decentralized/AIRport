@@ -1,6 +1,6 @@
-import { EntityState } from '@airport/air-control';
 import { DI } from '@airport/di';
-import { OPERATION_SERIALIZER } from '../tokens';
+import { EntityState } from './EntityStateManager';
+import { OPERATION_SERIALIZER } from './tokens';
 export class OperationSerializer {
     serialize(entity, entityStateManager) {
         const operation = {

@@ -4,7 +4,6 @@ const airControl = system('airport')
 export const AIRPORT_DATABASE = airControl.token('IAirportDatabase');
 export const DATABASE_FACADE = airControl.token('IDatabaseFacade');
 export const LOOKUP = airControl.token('ILookup');
-export const ENTITY_STATE_MANAGER = airControl.token('IEntityStateManager');
 export const ENTITY_UTILS = airControl.token('IEntityUtils');
 export const FIELD_UTILS = airControl.token('IFieldUtils');
 export const Q_METADATA_UTILS = airControl.token('IQMetadataUtils');

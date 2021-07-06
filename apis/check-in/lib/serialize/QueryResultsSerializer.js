@@ -1,5 +1,5 @@
-import { EntityState } from '@airport/air-control';
 import { DI } from '@airport/di';
+import { EntityState } from '@airport/pressurization';
 import { QUERY_RESULTS_SERIALIZER } from '../tokens';
 export class QueryResultsSerializer {
     serialize(entity, entityStateManager) {

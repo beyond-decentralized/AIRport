@@ -11,6 +11,9 @@ import {
 	TableIndex
 }                           from '@airport/ground-control'
 import {
+	ENTITY_STATE_MANAGER
+} from '@airport/pressurization'
+import {
 	IAirportDatabase,
 	QSchemaInternal
 }                           from '../../lingo/AirportDatabase'
@@ -29,7 +32,6 @@ import {
 	RepositorySheetSelectInfo
 }                           from '../../lingo/utils/SchemaUtils'
 import {
-	ENTITY_STATE_MANAGER,
 	SCHEMA_UTILS
 }                           from '../../tokens'
 import {QEntityConstructor} from '../core/entity/Entity'

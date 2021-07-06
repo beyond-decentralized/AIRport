@@ -1,5 +1,4 @@
 import { system } from '@airport/di'
-import { IEntityStateManager } from './impl/core/entity/EntityStateManager'
 import { IRelationManager } from './impl/core/entity/RelationManager'
 import { IQueryContextLoader } from './impl/query/QueryContext'
 import { IAirportDatabase } from './lingo/AirportDatabase'
@@ -21,7 +20,6 @@ const airControl = system('airport')
 export const AIRPORT_DATABASE = airControl.token<IAirportDatabase>('IAirportDatabase')
 export const DATABASE_FACADE = airControl.token<IDatabaseFacade>('IDatabaseFacade')
 export const LOOKUP = airControl.token<ILookup>('ILookup')
-export const ENTITY_STATE_MANAGER = airControl.token<IEntityStateManager>('IEntityStateManager')
 export const ENTITY_UTILS = airControl.token<IEntityUtils>('IEntityUtils')
 export const FIELD_UTILS = airControl.token<IFieldUtils>('IFieldUtils')
 export const Q_METADATA_UTILS = airControl.token<IQMetadataUtils>('IQMetadataUtils')

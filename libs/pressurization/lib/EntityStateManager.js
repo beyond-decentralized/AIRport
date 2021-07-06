@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { ENTITY_STATE_MANAGER } from '../../../tokens';
+import { ENTITY_STATE_MANAGER } from './tokens';
 export var EntityState;
 (function (EntityState) {
     EntityState[EntityState["CREATE"] = 1] = "CREATE";

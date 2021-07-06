@@ -1,9 +1,9 @@
+import {DI}                         from '@airport/di'
 import {
 	EntityState,
 	IEntityStateManager
-}                                   from '@airport/air-control'
-import {DI}                         from '@airport/di'
-import {QUERY_RESULTS_DESERIALIZER} from '../tokens'
+}                                   from './EntityStateManager'
+import {QUERY_RESULTS_DESERIALIZER} from './tokens'
 
 /**
  * Deserializer for query results coming back from the server

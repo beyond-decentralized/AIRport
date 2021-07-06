@@ -1,8 +1,8 @@
+import {DI}                       from '@airport/di'
 import {
 	EntityState,
 	IEntityStateManager
-}                                 from '@airport/air-control'
-import {DI}                       from '@airport/di'
+}                                 from '@airport/pressurization'
 import {QUERY_RESULTS_SERIALIZER} from '../tokens'
 
 export interface IQueryResultsSerializer {

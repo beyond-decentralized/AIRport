@@ -1,5 +1,3 @@
-export * from './serialize/OperationSerializer';
-export * from './serialize/QueryResultsDeserializer';
 export * from './serialize/QueryResultsSerializer';
 export * from './dao/Dao';
 export * from './dao/DaoDecorators';

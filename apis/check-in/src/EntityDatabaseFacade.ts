@@ -1,6 +1,5 @@
 import {
   DATABASE_FACADE,
-  ENTITY_STATE_MANAGER,
   EntityFind,
   EntityFindOne,
   EntitySearch,
@@ -19,7 +18,6 @@ import {
   IEntitySelectProperties,
   IEntityUpdateColumns,
   IEntityUpdateProperties,
-  IOperationUniqueIdSequence,
   IQEntity,
   MappedEntityArray,
   OperationName,
@@ -29,6 +27,10 @@ import {
   RawInsertValues,
   RawUpdate,
 } from '@airport/air-control';
+import {
+  ENTITY_STATE_MANAGER,
+  IOperationUniqueIdSequence
+} from '@airport/pressurization';
 import { DI } from '@airport/di';
 import { DbEntity } from '@airport/ground-control';
 
@@ -45,13 +47,13 @@ export class EntityDatabaseFacade<Entity,
   EntityCascadeGraph extends IEntityCascadeGraph,
   IQ extends IQEntity<Entity>>
   implements IEntityDatabaseFacade<Entity, EntitySelect,
-    EntityCreate, EntityUpdateColumns,
-    EntityUpdateProperties, EntityId,
-    EntityCascadeGraph, IQ> {
+  EntityCreate, EntityUpdateColumns,
+  EntityUpdateProperties, EntityId,
+  EntityCascadeGraph, IQ> {
 
   duo: IDuo<Entity, EntitySelect, EntityCreate,
-      EntityUpdateColumns, EntityUpdateProperties, EntityId,
-      EntityCascadeGraph, IQ>;
+    EntityUpdateColumns, EntityUpdateProperties, EntityId,
+    EntityCascadeGraph, IQ>;
 
   find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
 

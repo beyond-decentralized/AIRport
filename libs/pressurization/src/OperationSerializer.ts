@@ -1,9 +1,9 @@
+import {DI}                   from '@airport/di'
 import {
 	EntityState,
 	IEntityStateManager
-}                             from '@airport/air-control'
-import {DI}                   from '@airport/di'
-import {OPERATION_SERIALIZER} from '../tokens'
+}                             from './EntityStateManager'
+import {OPERATION_SERIALIZER} from './tokens'
 
 /**
  * A simple operation serializer that is not aware

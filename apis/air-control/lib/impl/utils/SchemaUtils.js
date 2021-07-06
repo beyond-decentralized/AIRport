@@ -1,7 +1,8 @@
 import { DI } from '@airport/di';
 import { CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/ground-control';
+import { ENTITY_STATE_MANAGER } from '@airport/pressurization';
 import { convertToY, isY } from '../../lingo/query/facade/Query';
-import { ENTITY_STATE_MANAGER, SCHEMA_UTILS } from '../../tokens';
+import { SCHEMA_UTILS } from '../../tokens';
 import { valuesEqual } from '../Utils';
 export class SchemaUtils {
     getDbEntity(schemaIndex, tableIndex, airDb) {

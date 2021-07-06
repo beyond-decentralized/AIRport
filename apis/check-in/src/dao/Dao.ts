@@ -1,6 +1,5 @@
 import {
 	doEnsureContext,
-	ENTITY_STATE_MANAGER,
 	IDao,
 	IEntityCascadeGraph,
 	IEntityContext,
@@ -19,6 +18,7 @@ import {
 	IContext
 }                                 from '@airport/di';
 import { EntityId as DbEntityId } from '@airport/ground-control';
+import { ENTITY_STATE_MANAGER } from '@airport/pressurization';
 import { EntityDatabaseFacade }   from '../EntityDatabaseFacade';
 import { DaoStub }                from './DaoStub';
 

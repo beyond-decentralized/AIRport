@@ -1,4 +1,3 @@
-import { IEntityStateManager } from './impl/core/entity/EntityStateManager';
 import { IRelationManager } from './impl/core/entity/RelationManager';
 import { IQueryContextLoader } from './impl/query/QueryContext';
 import { IAirportDatabase } from './lingo/AirportDatabase';
@@ -13,7 +12,6 @@ import { ISchemaUtils } from './lingo/utils/SchemaUtils';
 export declare const AIRPORT_DATABASE: import("@airport/di").IDiToken<IAirportDatabase>;
 export declare const DATABASE_FACADE: import("@airport/di").IDiToken<IDatabaseFacade>;
 export declare const LOOKUP: import("@airport/di").IDiToken<ILookup>;
-export declare const ENTITY_STATE_MANAGER: import("@airport/di").IDiToken<IEntityStateManager>;
 export declare const ENTITY_UTILS: import("@airport/di").IDiToken<IEntityUtils>;
 export declare const FIELD_UTILS: import("@airport/di").IDiToken<IFieldUtils>;
 export declare const Q_METADATA_UTILS: import("@airport/di").IDiToken<IQMetadataUtils>;
