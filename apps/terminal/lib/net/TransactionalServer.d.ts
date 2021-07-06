@@ -1,9 +1,10 @@
 import { IContext } from '@airport/di';
 import { PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
-import { IObservable } from '@airport/observe';
 import { DistributionStrategy, ICredentials, PlatformType } from '@airport/terminal-map';
-import { IOperationContext, ITransaction, ITransactionalServer } from '@airport/tower';
+import { ITransactionalServer } from '@airport/tower';
+import { Observable } from 'rxjs';
+import { IOperationContext } from '../processing/OperationContext';
 export interface InternalPortableQuery extends PortableQuery {
     domainAndPort: string;
 }
@@ -34,16 +35,18 @@ export interface InternalPortableQuery extends PortableQuery {
 export declare class TransactionalServer implements ITransactionalServer {
     tempActor: IActor;
     init(context?: IContext): Promise<void>;
-    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<EntityArray>;
-    findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<E>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<IObservable<EntityArray>>;
-    searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, cachedSqlQueryId?: number): Promise<IObservable<E>>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, credentials: ICredentials, context: IOperationContext<any, any>): Promise<number>;
-    insertValues(portableQuery: PortableQuery, transaction: ITransaction, context: IOperationContext<any, any>, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, transaction: ITransaction, context: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
-    updateValues(portableQuery: PortableQuery, transaction: ITransaction, context: IOperationContext<any, any>): Promise<number>;
-    deleteWhere(portableQuery: PortableQuery, transaction: ITransaction, context: IOperationContext<any, any>): Promise<number>;
+    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Promise<EntityArray>;
+    findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Promise<E>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Promise<Observable<EntityArray>>;
+    searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Promise<Observable<E>>;
+    save<E>(entity: E, credentials: ICredentials, context: IOperationContext<any, any>): Promise<number>;
+    insertValues(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, ensureGeneratedValues?: boolean): Promise<number>;
+    insertValuesGetIds(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
+    updateValues(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>): Promise<number>;
+    deleteWhere(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>): Promise<number>;
     private getActor;
+    private ensureIocContext;
 }
 export declare function injectTransactionalServer(): void;
 //# sourceMappingURL=TransactionalServer.d.ts.map

@@ -1,28 +1,23 @@
 import {
 	and,
 	Delete,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	InsertColumnValues,
 	InsertValues,
-	IQEntity,
 	IQOperableFieldInternal,
-	IUpdateCache,
 	RawDelete,
-	RawInsertColumnValues,
 	RawInsertValues,
-	UpdateColumns,
 	UpdateProperties,
 	valuesEqual
 } from '@airport/air-control'
+import { DI } from '@airport/di'
 import {
 	DbColumn,
-	DbEntity,
 	EntityRelationType,
 	JSONValueOperation,
 	PortableQuery
 } from '@airport/ground-control'
-import { ITransaction } from '../ITransaction'
+import { IActor } from '../../../../schemas/holding-pattern/lib'
+import { OPERATION_MANAGER } from '../tokens'
+import { ITransaction } from '../transaction/ITransaction'
 import { IOperationContext } from './OperationContext'
 
 /**
@@ -31,16 +26,17 @@ import { IOperationContext } from './OperationContext'
 
 export interface IOperationManager {
 
+	performSave<E, EntityCascadeGraph>(
+		entities: E | E[],
+		actor: IActor,
+		transaction: ITransaction,
+		context: IOperationContext<E, EntityCascadeGraph>,
+	): Promise<number>
+
 }
 
-export abstract class OperationManager
+export class OperationManager
 	implements IOperationManager {
-
-	protected abstract getOriginalRecord<T>(
-		dbEntity: DbEntity,
-		entity: T,
-		updateCache: IUpdateCache
-	): Promise<any>;
 
 	/**
 	 * Transactional context must have been started by the time this method is called.
@@ -48,33 +44,34 @@ export abstract class OperationManager
 	 * @param qEntity
 	 * @param entity
 	 */
-	protected async performSave<E, EntityCascadeGraph>(
+	async performSave<E, EntityCascadeGraph>(
 		entities: E | E[],
+		actor: IActor,
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>,
 	): Promise<number> {
 		const verifiedTree = context.ioc.cascadeGraphVerifier
-		.verify(entities, context)
+			.verify(entities, context)
 		const entityGraph = context.ioc.entityGraphReconstructor
 			.restoreEntityGraph(verifiedTree, context)
 		context.ioc.structuralEntityValidator.validate(entityGraph, [], context)
 		const operations = context.ioc.dependencyGraphResolver
-		.getOperationsInOrder(entityGraph, context)
+			.getOperationsInOrder(entityGraph, context)
 		let totalNumberOfChanges = 0
 		const rootDbEntity = context.dbEntity
 		for (const operation of operations) {
 			context.dbEntity = operation.dbEntity
 			if (operation.isCreate) {
 				totalNumberOfChanges += await this.internalCreate(
-					operation.entities, transaction, context)
+					operation.entities, actor, transaction, context)
 			} else if (operation.isDelete) {
 				// TODO: add support for multiple records
 				totalNumberOfChanges += await this.internalDelete(
-					operation.entities, transaction, context)
+					operation.entities, actor, transaction, context)
 			} else {
 				// TODO: add support for multiple records
 				totalNumberOfChanges += await this.internalUpdate(
-					operation.entities, null, transaction, context)
+					operation.entities, null, actor, transaction, context)
 			}
 		}
 		context.dbEntity = rootDbEntity
@@ -84,6 +81,7 @@ export abstract class OperationManager
 
 	protected async internalCreate<E, EntityCascadeGraph>(
 		entities: E[],
+		actor: IActor,
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>,
 		ensureGeneratedValues?: boolean
@@ -146,14 +144,17 @@ export abstract class OperationManager
 			rawInsert.values.push(valuesFragment)
 		}
 
+		const insertValues: InsertValues<any> = new InsertValues(rawInsert)
 		let numberOfAffectedRecords = 0
 
 		if (rawInsert.values.length) {
 			const generatedColumns = context.dbEntity.columns.filter(
 				column => column.isGenerated)
 			if (generatedColumns.length && ensureGeneratedValues) {
-				const idsAndGeneratedValues = await this.internalInsertValuesGetIds(
-					rawInsert, transaction, context)
+				const portableQuery: PortableQuery = context.ioc.queryFacade
+					.getPortableQuery(insertValues, null, context)
+				const idsAndGeneratedValues = await context.ioc.insertManager
+					.insertValuesGetIds(portableQuery, actor, transaction, context);
 				for (let i = 0; i < entities.length; i++) {
 					for (const generatedColumn of generatedColumns) {
 						// Return index for generated column values is: DbColumn.index
@@ -163,9 +164,10 @@ export abstract class OperationManager
 				}
 				numberOfAffectedRecords = idsAndGeneratedValues.length
 			} else {
-				numberOfAffectedRecords = await
-					this.internalInsertValues(
-						rawInsert, transaction, context, ensureGeneratedValues)
+				const portableQuery: PortableQuery = context.ioc.queryFacade
+					.getPortableQuery(insertValues, null, context)
+				numberOfAffectedRecords = await context.ioc.insertManager.insertValues(
+					portableQuery, actor, transaction, context, ensureGeneratedValues);
 			}
 		}
 
@@ -183,6 +185,7 @@ export abstract class OperationManager
 	protected async internalUpdate<E, EntityCascadeGraph>(
 		entity: E,
 		originalEntity: E,
+		actor: IActor,
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
@@ -248,16 +251,18 @@ export abstract class OperationManager
 			} else {
 				whereFragment = idWhereFragments[0]
 			}
-			let rawUpdate = {
+			const rawUpdate = {
 				update: qEntity,
 				set: setFragment,
 				where: whereFragment
 			}
-			let update: UpdateProperties<any, any> =
-				new UpdateProperties(rawUpdate)
+			const update: UpdateProperties<any, any> = new UpdateProperties(rawUpdate)
+			const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
+				update, null, context)
 
-			numberOfAffectedRecords = await this.internalUpdateWhere(
-				update, transaction, context)
+			numberOfAffectedRecords = await context.ioc.updateManager.updateValues(
+				portableQuery, actor, transaction, context);
+
 		}
 
 		return numberOfAffectedRecords
@@ -265,6 +270,7 @@ export abstract class OperationManager
 
 	protected async internalDelete<E, EntityCascadeGraph>(
 		entity: E,
+		actor: IActor,
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>
 	): Promise<number> {
@@ -337,103 +343,11 @@ export abstract class OperationManager
 			where: idWhereClause
 		}
 		let deleteWhere: Delete<any> = new Delete(rawDelete)
-		return await this.internalDeleteWhere(deleteWhere, transaction, context)
-	}
-
-	protected async internalInsertColumnValues<IQE extends IQEntity<any>>(
-		rawInsertColumnValues: RawInsertColumnValues<IQE>,
-		transaction: ITransaction,
-		context: IOperationContext<any, any>
-	): Promise<number> {
-		const insertColumnValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
-
-		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			insertColumnValues, null, context)
-
-		return await context.ioc.transactionalServer.insertValues(
-			portableQuery, transaction, context)
-	}
-
-	protected async internalInsertValues<E, EntityCascadeGraph, IQE extends IQEntity<any>>(
-		rawInsertValues: RawInsertValues<IQE>,
-		transaction: ITransaction,
-		context: IOperationContext<E, EntityCascadeGraph>,
-		ensureGeneratedValues?: boolean
-	): Promise<number> {
-		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
-
-		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			insertValues, null, context)
-
-		return await context.ioc.transactionalServer.insertValues(
-			portableQuery, transaction, context, ensureGeneratedValues)
-	}
-
-	protected async internalInsertColumnValuesGenerateIds<IQE extends IQEntity<any>>(
-		rawInsertColumnValues: RawInsertColumnValues<IQE>,
-		transaction: ITransaction,
-		context: IOperationContext<any, any>
-	): Promise<number[] | string[] | number[][] | string[][]> {
-
-		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
-
-		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			insertValues, null, context)
-
-		return await context.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction, context)
-	}
-
-	protected async internalInsertValuesGetIds<E, EntityCascadeGraph, IQE extends IQEntity<any>>(
-		rawInsertValues: RawInsertValues<IQE>,
-		transaction: ITransaction,
-		context: IOperationContext<E, EntityCascadeGraph>
-	): Promise<number[] | string[] | number[][] | string[][]> {
-
-		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
-
-		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			insertValues, null, context)
-
-		return await context.ioc.transactionalServer.insertValuesGetIds(
-			portableQuery, transaction, context)
-	}
-
-	protected async internalUpdateColumnsWhere<E, EntityCascadeGraph, IEUC extends IEntityUpdateColumns,
-		IQE extends IQEntity<any>>(
-			updateColumns: UpdateColumns<IEUC, IQE>,
-			transaction: ITransaction,
-			context: IOperationContext<E, EntityCascadeGraph>
-		): Promise<number> {
-		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			updateColumns, null, context)
-
-		return await context.ioc.transactionalServer.updateValues(
-			portableQuery, transaction, context)
-	}
-
-	protected async internalUpdateWhere<E, EntityCascadeGraph, IEUP extends IEntityUpdateProperties,
-		IQE extends IQEntity<any>>(
-			update: UpdateProperties<IEUP, IQE>,
-			transaction: ITransaction,
-			context: IOperationContext<E, EntityCascadeGraph>
-		): Promise<number> {
-		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			update, null, context)
-
-		return await context.ioc.transactionalServer.updateValues(
-			portableQuery, transaction, context)
-	}
-
-	protected async internalDeleteWhere<E, EntityCascadeGraph, IQE extends IQEntity<any>>(
-		aDelete: Delete<IQE>,
-		transaction: ITransaction,
-		context: IOperationContext<E, EntityCascadeGraph>
-	): Promise<number> {
 		let portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			aDelete, null, context)
-
-		return await context.ioc.transactionalServer.deleteWhere(
-			portableQuery, transaction, context)
+			deleteWhere, null, context)
+		return await context.ioc.deleteManager.deleteWhere(portableQuery, actor,
+			transaction, context)
 	}
 
 }
+DI.set(OPERATION_MANAGER, OperationManager)

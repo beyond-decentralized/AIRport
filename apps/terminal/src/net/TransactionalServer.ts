@@ -8,7 +8,6 @@ import {
 	PortableQuery
 }                      from '@airport/ground-control';
 import { IActor }      from '@airport/holding-pattern';
-import { Observable } from 'rxjs';
 import {
 	DistributionStrategy,
 	ICredentials,
@@ -16,17 +15,16 @@ import {
 	TRANSACTION_MANAGER
 }                      from '@airport/terminal-map';
 import {
-	IOperationContext,
-	ITransaction,
 	ITransactionalServer,
 	TRANSACTIONAL_SERVER
 }                      from '@airport/tower';
+import { Observable } from 'rxjs';
+import { IOperationContext } from '../processing/OperationContext';
 import {
-	DELETE_MANAGER,
-	INSERT_MANAGER,
-	QUERY_MANAGER,
-	UPDATE_MANAGER
+	OPERATION_CONTEXT_LOADER
 }                      from '../tokens';
+import { ITransaction } from '../transaction/ITransaction';
+import { transactional } from '../transaction/transactional';
 
 export interface InternalPortableQuery
 	extends PortableQuery {
@@ -80,64 +78,89 @@ export class TransactionalServer
 		credentials: ICredentials,
 		context: IOperationContext<any, any>
 	): Promise<number> {
-		const insertManager = await container(this)
-			.get(INSERT_MANAGER);
+		await this.ensureIocContext(context)
 
-		return await insertManager.addRepository(name, url, platform,
+		const actor = await this.getActor(credentials);
+
+		// FIXME: check actor
+
+		return await context.ioc.insertManager.addRepository(name, url, platform,
 			platformConfig, distributionStrategy);
 	}
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IContext,
+		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		const queryManager = await container(this)
-			.get(QUERY_MANAGER);
+		await this.ensureIocContext(context)
 
-		return await queryManager.find<E, EntityArray>(portableQuery, context, cachedSqlQueryId);
+		return await context.ioc.queryManager.find<E, EntityArray>(
+			portableQuery, context, cachedSqlQueryId);
 	}
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IContext,
+		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		const queryManager = await container(this)
-			.get(QUERY_MANAGER);
+		await this.ensureIocContext(context)
 
-		return await queryManager.findOne<E>(portableQuery, context, cachedSqlQueryId);
+		return await context.ioc.queryManager.findOne<E>(
+			portableQuery, context, cachedSqlQueryId);
 	}
 
 	async search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IContext,
+		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
 	): Promise<Observable<EntityArray>> {
-		const queryManager = await container(this)
-			.get(QUERY_MANAGER);
+		await this.ensureIocContext(context)
 
-		return await queryManager.search<E, EntityArray>(portableQuery, context);
+		return await context.ioc.queryManager.search<E, EntityArray>(
+			portableQuery, context);
 	}
 
 	async searchOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IContext,
+		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
 	): Promise<Observable<E>> {
-		const queryManager = await container(this)
-			.get(QUERY_MANAGER);
+		await this.ensureIocContext(context)
 
-		return await queryManager.searchOne<E>(portableQuery, context);
+		return await context.ioc.queryManager.searchOne<E>(portableQuery, context);
+	}
+
+	async save<E>(
+		entity: E,
+		credentials: ICredentials,
+		context: IOperationContext<any, any>,
+	): Promise<number> {
+		if (!entity) {
+			return 0
+		}
+		await this.ensureIocContext(context)
+
+		const actor = await this.getActor(credentials);
+
+		let numSavedRecords = 0
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numSavedRecords = await context.ioc.operationManager.performSave(
+				entity, actor, transaction, context)
+		})
+
+		return numSavedRecords
 	}
 
 	async insertValues(
 		portableQuery: PortableQuery,
-		transaction: ITransaction,
+		credentials: ICredentials,
 		context: IOperationContext<any, any>,
 		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
@@ -159,61 +182,89 @@ export class TransactionalServer
 			}
 		}
 
-		const insertManager = await container(this)
-			.get(INSERT_MANAGER);
-
-		const actor = await this.getActor(portableQuery);
+		const actor = await this.getActor(credentials);
 		
-		return await insertManager.insertValues(portableQuery, actor,
-			transaction, context, ensureGeneratedValues);
+		let numInsertedRecords
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numInsertedRecords = await context.ioc.insertManager.insertValues(
+				portableQuery, actor, transaction, context, ensureGeneratedValues);
+		})
+
+		return numInsertedRecords
 	}
 
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
-		transaction: ITransaction,
+		credentials: ICredentials,
 		context: IOperationContext<any, any>
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const insertManager = await container(this)
-			.get(INSERT_MANAGER);
+		const actor = await this.getActor(credentials);
+		
+		let numInsertedRecords
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numInsertedRecords = await context.ioc.insertManager.insertValuesGetIds(
+				portableQuery, actor, transaction, context);
+		})
 
-		const actor = await this.getActor(portableQuery);
-
-		return await insertManager.insertValuesGetIds(portableQuery, actor,
-			transaction, context);
+		return numInsertedRecords
 	}
 
 	async updateValues(
 		portableQuery: PortableQuery,
-		transaction: ITransaction,
+		credentials: ICredentials,
 		context: IOperationContext<any, any>
 	): Promise<number> {
-		const updateManager = await container(this)
-			.get(UPDATE_MANAGER);
+		const actor = await this.getActor(credentials);
 
-		const actor = await this.getActor(portableQuery);
-		return await updateManager.updateValues(portableQuery, actor, transaction, context);
+		let numUpdatedRecords
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numUpdatedRecords = await context.ioc.updateManager.updateValues(
+				portableQuery, actor, transaction, context);
+		})
+
+		return numUpdatedRecords
 	}
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
-		transaction: ITransaction,
+		credentials: ICredentials,
 		context: IOperationContext<any, any>
 	): Promise<number> {
-		const deleteManager = await container(this)
-			.get(DELETE_MANAGER);
+		const actor = await this.getActor(credentials);
 
-		const actor = await this.getActor(portableQuery);
-		return await deleteManager.deleteWhere(portableQuery, actor, transaction);
+		let numDeletedRecords
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			numDeletedRecords = await context.ioc.deleteManager.deleteWhere(
+				portableQuery, actor, transaction, context);
+		})
+
+		return numDeletedRecords
 	}
 
 	private async getActor(
-		portableQuery: PortableQuery
+		credentials: ICredentials,
 	): Promise<IActor> {
 		if (this.tempActor) {
 			return this.tempActor;
 		}
 
 		throw new Error(`Not Implemented`);
+	}
+
+	private async ensureIocContext(
+		context: IOperationContext<any, any>
+	): Promise<void> {
+		const operationContextLoader = await container(this)
+			.get(OPERATION_CONTEXT_LOADER)
+		await operationContextLoader.ensure(context)
 	}
 
 }

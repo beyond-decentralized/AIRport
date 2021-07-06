@@ -7,37 +7,52 @@ export function setIsServer() {
 }
 export class TransactionalConnector {
     async init() {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         if (!isServer) {
             throw new Error('Not implemented');
         }
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         await transServer.init();
     }
     async addRepository(name, url, platform, platformConfig, distributionStrategy, context) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.addRepository(name, url, platform, platformConfig, distributionStrategy, {
             domainAndPort: 'test'
         }, context);
     }
     async find(portableQuery, context, cachedSqlQueryId) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.find(portableQuery, {
             domainAndPort: 'test'
         }, context, cachedSqlQueryId);
     }
     async findOne(portableQuery, context, cachedSqlQueryId) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.findOne(portableQuery, {
             domainAndPort: 'test'
         }, context, cachedSqlQueryId);
     }
     async search(portableQuery, context, cachedSqlQueryId) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.search(portableQuery, {
             domainAndPort: 'test'
         }, context, cachedSqlQueryId);
     }
     async searchOne(portableQuery, context, cachedSqlQueryId) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.searchOne(portableQuery, {
             domainAndPort: 'test'
@@ -61,6 +76,9 @@ export class TransactionalConnector {
     insert(
     // todo define parameters
     ) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
         // TODO: implement
         throw new Error(`TODO: implement`);
     }
@@ -70,6 +88,9 @@ export class TransactionalConnector {
     update(
     // todo define parameters
     ) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
         // TODO: implement
         throw new Error(`TODO: implement`);
     }
@@ -79,10 +100,16 @@ export class TransactionalConnector {
     delete(
     // todo define parameters
     ) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
         // TODO: implement
         throw new Error(`TODO: implement`);
     }
     save(entity, context) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
         throw new Error(`Not Implemented`);
     }
 }

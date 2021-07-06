@@ -6,8 +6,6 @@ import {
 }                          from '@airport/ground-control'
 import {Observable}       from 'rxjs'
 import {ICredentials}      from '@airport/terminal-map'
-import {ITransaction}      from '../../transaction/ITransaction'
-import {IOperationContext} from '../../processing/OperationContext'
 
 export interface ITransactionalServer {
 
@@ -22,7 +20,7 @@ export interface ITransactionalServer {
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
 		credentials: ICredentials,
-		context: IOperationContext<any, any>
+		context: IContext
 	): Promise<number>
 
 	find<E, EntityArray extends Array<E>>(
@@ -53,29 +51,35 @@ export interface ITransactionalServer {
 		cachedSqlQueryId?: number
 	): Promise<Observable<E>>
 
+	save<E>(
+		entity: E,
+		credentials: ICredentials,
+		context: IContext,
+	): Promise<number>
+
 	insertValues(
 		portableQuery: PortableQuery,
-		transaction: ITransaction,
-		context: IOperationContext<any, any>,
+		credentials: ICredentials,
+		context: IContext,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number>
 
 	insertValuesGetIds(
 		portableQuery: PortableQuery,
-		transaction: ITransaction,
-		context: IOperationContext<any, any>
+		credentials: ICredentials,
+		context: IContext
 	): Promise<number[] | string[] | number[][] | string[][]>
 
 	updateValues(
 		portableQuery: PortableQuery,
-		transaction: ITransaction,
-		context: IOperationContext<any, any>
+		credentials: ICredentials,
+		context: IContext
 	): Promise<number>
 
 	deleteWhere(
 		portableQuery: PortableQuery,
-		transaction: ITransaction,
-		context: IOperationContext<any, any>
+		credentials: ICredentials,
+		context: IContext
 	): Promise<number>
 
 }

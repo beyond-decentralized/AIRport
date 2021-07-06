@@ -1,5 +1,7 @@
-import { and, Delete, InsertColumnValues, InsertValues, UpdateProperties, valuesEqual } from '@airport/air-control';
+import { and, Delete, InsertValues, UpdateProperties, valuesEqual } from '@airport/air-control';
+import { DI } from '@airport/di';
 import { EntityRelationType } from '@airport/ground-control';
+import { OPERATION_MANAGER } from '../tokens';
 export class OperationManager {
     /**
      * Transactional context must have been started by the time this method is called.
@@ -7,7 +9,7 @@ export class OperationManager {
      * @param qEntity
      * @param entity
      */
-    async performSave(entities, transaction, context) {
+    async performSave(entities, actor, transaction, context) {
         const verifiedTree = context.ioc.cascadeGraphVerifier
             .verify(entities, context);
         const entityGraph = context.ioc.entityGraphReconstructor
@@ -20,21 +22,21 @@ export class OperationManager {
         for (const operation of operations) {
             context.dbEntity = operation.dbEntity;
             if (operation.isCreate) {
-                totalNumberOfChanges += await this.internalCreate(operation.entities, transaction, context);
+                totalNumberOfChanges += await this.internalCreate(operation.entities, actor, transaction, context);
             }
             else if (operation.isDelete) {
                 // TODO: add support for multiple records
-                totalNumberOfChanges += await this.internalDelete(operation.entities, transaction, context);
+                totalNumberOfChanges += await this.internalDelete(operation.entities, actor, transaction, context);
             }
             else {
                 // TODO: add support for multiple records
-                totalNumberOfChanges += await this.internalUpdate(operation.entities, null, transaction, context);
+                totalNumberOfChanges += await this.internalUpdate(operation.entities, null, actor, transaction, context);
             }
         }
         context.dbEntity = rootDbEntity;
         return totalNumberOfChanges;
     }
-    async internalCreate(entities, transaction, context, ensureGeneratedValues) {
+    async internalCreate(entities, actor, transaction, context, ensureGeneratedValues) {
         const qEntity = context.ioc.airDb.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name];
         let rawInsert = {
             insertInto: qEntity,
@@ -80,11 +82,15 @@ export class OperationManager {
             }
             rawInsert.values.push(valuesFragment);
         }
+        const insertValues = new InsertValues(rawInsert);
         let numberOfAffectedRecords = 0;
         if (rawInsert.values.length) {
             const generatedColumns = context.dbEntity.columns.filter(column => column.isGenerated);
             if (generatedColumns.length && ensureGeneratedValues) {
-                const idsAndGeneratedValues = await this.internalInsertValuesGetIds(rawInsert, transaction, context);
+                const portableQuery = context.ioc.queryFacade
+                    .getPortableQuery(insertValues, null, context);
+                const idsAndGeneratedValues = await context.ioc.insertManager
+                    .insertValuesGetIds(portableQuery, actor, transaction, context);
                 for (let i = 0; i < entities.length; i++) {
                     for (const generatedColumn of generatedColumns) {
                         // Return index for generated column values is: DbColumn.index
@@ -95,7 +101,9 @@ export class OperationManager {
                 numberOfAffectedRecords = idsAndGeneratedValues.length;
             }
             else {
-                numberOfAffectedRecords = await this.internalInsertValues(rawInsert, transaction, context, ensureGeneratedValues);
+                const portableQuery = context.ioc.queryFacade
+                    .getPortableQuery(insertValues, null, context);
+                numberOfAffectedRecords = await context.ioc.insertManager.insertValues(portableQuery, actor, transaction, context, ensureGeneratedValues);
             }
         }
         return numberOfAffectedRecords;
@@ -108,7 +116,7 @@ export class OperationManager {
      *  ManyToOne:
      *    Cascades do not travel across ManyToOne
      */
-    async internalUpdate(entity, originalEntity, transaction, context) {
+    async internalUpdate(entity, originalEntity, actor, transaction, context) {
         const qEntity = context.ioc.airDb.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name];
         const setFragment = {};
         const idWhereFragments = [];
@@ -167,17 +175,18 @@ export class OperationManager {
             else {
                 whereFragment = idWhereFragments[0];
             }
-            let rawUpdate = {
+            const rawUpdate = {
                 update: qEntity,
                 set: setFragment,
                 where: whereFragment
             };
-            let update = new UpdateProperties(rawUpdate);
-            numberOfAffectedRecords = await this.internalUpdateWhere(update, transaction, context);
+            const update = new UpdateProperties(rawUpdate);
+            const portableQuery = context.ioc.queryFacade.getPortableQuery(update, null, context);
+            numberOfAffectedRecords = await context.ioc.updateManager.updateValues(portableQuery, actor, transaction, context);
         }
         return numberOfAffectedRecords;
     }
-    async internalDelete(entity, transaction, context) {
+    async internalDelete(entity, actor, transaction, context) {
         const dbEntity = context.dbEntity;
         const qEntity = context.ioc.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
         const idWhereFragments = [];
@@ -238,39 +247,9 @@ export class OperationManager {
             where: idWhereClause
         };
         let deleteWhere = new Delete(rawDelete);
-        return await this.internalDeleteWhere(deleteWhere, transaction, context);
-    }
-    async internalInsertColumnValues(rawInsertColumnValues, transaction, context) {
-        const insertColumnValues = new InsertColumnValues(rawInsertColumnValues);
-        const portableQuery = context.ioc.queryFacade.getPortableQuery(insertColumnValues, null, context);
-        return await context.ioc.transactionalServer.insertValues(portableQuery, transaction, context);
-    }
-    async internalInsertValues(rawInsertValues, transaction, context, ensureGeneratedValues) {
-        const insertValues = new InsertValues(rawInsertValues);
-        const portableQuery = context.ioc.queryFacade.getPortableQuery(insertValues, null, context);
-        return await context.ioc.transactionalServer.insertValues(portableQuery, transaction, context, ensureGeneratedValues);
-    }
-    async internalInsertColumnValuesGenerateIds(rawInsertColumnValues, transaction, context) {
-        const insertValues = new InsertColumnValues(rawInsertColumnValues);
-        const portableQuery = context.ioc.queryFacade.getPortableQuery(insertValues, null, context);
-        return await context.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction, context);
-    }
-    async internalInsertValuesGetIds(rawInsertValues, transaction, context) {
-        const insertValues = new InsertValues(rawInsertValues);
-        const portableQuery = context.ioc.queryFacade.getPortableQuery(insertValues, null, context);
-        return await context.ioc.transactionalServer.insertValuesGetIds(portableQuery, transaction, context);
-    }
-    async internalUpdateColumnsWhere(updateColumns, transaction, context) {
-        const portableQuery = context.ioc.queryFacade.getPortableQuery(updateColumns, null, context);
-        return await context.ioc.transactionalServer.updateValues(portableQuery, transaction, context);
-    }
-    async internalUpdateWhere(update, transaction, context) {
-        const portableQuery = context.ioc.queryFacade.getPortableQuery(update, null, context);
-        return await context.ioc.transactionalServer.updateValues(portableQuery, transaction, context);
-    }
-    async internalDeleteWhere(aDelete, transaction, context) {
-        let portableQuery = context.ioc.queryFacade.getPortableQuery(aDelete, null, context);
-        return await context.ioc.transactionalServer.deleteWhere(portableQuery, transaction, context);
+        let portableQuery = context.ioc.queryFacade.getPortableQuery(deleteWhere, null, context);
+        return await context.ioc.deleteManager.deleteWhere(portableQuery, actor, transaction, context);
     }
 }
+DI.set(OPERATION_MANAGER, OperationManager);
 //# sourceMappingURL=OperationManager.js.map

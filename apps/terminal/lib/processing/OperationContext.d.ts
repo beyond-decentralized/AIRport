@@ -1,10 +1,16 @@
-import { IAirportDatabase, IEntityStateManager, IFieldUtils, IQMetadataUtils, IQueryFacade, IQueryUtils, IRelationManager, ISchemaUtils, IUpdateCache } from '@airport/air-control';
+import { IAirportDatabase, IFieldUtils, IQMetadataUtils, IQueryFacade, IQueryUtils, IRelationManager, ISchemaUtils } from '@airport/air-control';
 import { IContext } from '@airport/di';
 import { DbEntity, IStoreDriver } from '@airport/ground-control';
-import { ITransactionalServer } from '../core/data/ITransactionalServer';
+import { IEntityStateManager } from '@airport/pressurization';
+import { ITransactionalServer } from '@airport/tower';
+import { IDeleteManager } from '../orchestration/DeleteManager';
+import { IInsertManager } from '../orchestration/InsertManager';
+import { IQueryManager } from '../orchestration/QueryManager';
+import { IUpdateManager } from '../orchestration/UpdateManager';
 import { ICascadeGraphVerifier } from './CascadeGraphVerifier';
 import { IDependencyGraphResolver } from './DependencyGraphResolver';
 import { IEntityGraphReconstructor } from './EntityGraphReconstructor';
+import { IOperationManager } from './OperationManager';
 import { IStructuralEntityValidator } from './StructuralEntityValidator';
 export interface IOperationContext<E, EntityCascadeGraph> extends IContext {
     entityCascadeGraph: EntityCascadeGraph;
@@ -15,36 +21,44 @@ export interface IOperationContext<E, EntityCascadeGraph> extends IContext {
 export interface IIocOperationContext {
     airDb: IAirportDatabase;
     cascadeGraphVerifier: ICascadeGraphVerifier;
+    deleteManager: IDeleteManager;
     dependencyGraphResolver: IDependencyGraphResolver;
     entityGraphReconstructor: IEntityGraphReconstructor;
     entityStateManager: IEntityStateManager;
     fieldUtils: IFieldUtils;
+    insertManager: IInsertManager;
     metadataUtils: IQMetadataUtils;
+    operationManager: IOperationManager;
     queryFacade: IQueryFacade;
+    queryManager: IQueryManager;
     queryUtils: IQueryUtils;
     relationManager: IRelationManager;
     schemaUtils: ISchemaUtils;
     storeDriver: IStoreDriver;
     structuralEntityValidator: IStructuralEntityValidator;
     transactionalServer: ITransactionalServer;
-    updateCache: IUpdateCache;
+    updateManager: IUpdateManager;
 }
 export declare class IocOperationContext implements IIocOperationContext {
     airDb: IAirportDatabase;
     cascadeGraphVerifier: ICascadeGraphVerifier;
+    deleteManager: IDeleteManager;
     dependencyGraphResolver: IDependencyGraphResolver;
     entityGraphReconstructor: IEntityGraphReconstructor;
     entityStateManager: IEntityStateManager;
     fieldUtils: IFieldUtils;
+    insertManager: IInsertManager;
     metadataUtils: IQMetadataUtils;
+    operationManager: IOperationManager;
     queryFacade: IQueryFacade;
+    queryManager: IQueryManager;
     queryUtils: IQueryUtils;
     relationManager: IRelationManager;
     schemaUtils: ISchemaUtils;
     storeDriver: IStoreDriver;
     structuralEntityValidator: IStructuralEntityValidator;
     transactionalServer: ITransactionalServer;
-    updateCache: IUpdateCache;
+    updateManager: IUpdateManager;
     static init(context: IIocOperationContext): Promise<void>;
     static ensure(context: IIocOperationContext): Promise<void>;
 }
