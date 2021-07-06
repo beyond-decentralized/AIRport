@@ -15,7 +15,7 @@ declarative JSON config into the database itself.
 
 - The problem:
 
-Distributed Applications (DApps) lack an easy-to-use database layer.
+Decentralized Applications (DApps) lack an easy-to-use database layer.
 
 - Our solution:
 
