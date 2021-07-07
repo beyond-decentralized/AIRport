@@ -4,6 +4,7 @@
     "@airport/check-in": "0.0.1",
     "@airport/di": "0.0.1",
     "@airport/ground-control": "0.0.1",
+    "@airport/holding-pattern": "0.0.1",
     "@airport/moving-walkway": "0.0.1",
     "@airport/territory": "0.0.1",
     "@airport/traffic-pattern": "0.0.1",

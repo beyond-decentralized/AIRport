@@ -2,13 +2,12 @@ import { IQueryContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
 import { DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery } from '@airport/ground-control';
 import { Observable } from 'rxjs';
-import { IOperationContext } from '../processing/OperationContext';
 export declare function setIsServer(): void;
 export declare class TransactionalConnector implements ITransactionalConnector {
     dbName: string;
     serverUrl: string;
     init(): Promise<void>;
-    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context: IOperationContext<any, any>): Promise<number>;
+    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<Observable<EntityArray>>;
@@ -38,6 +37,10 @@ export declare class TransactionalConnector implements ITransactionalConnector {
      */
     delete(): void;
     save<E, T = E | E[]>(entity: T, context: IContext): Promise<number>;
+    insertValues(portableQuery: PortableQuery, context: IContext, ensureGeneratedValues?: boolean): Promise<number>;
+    insertValuesGetIds(portableQuery: PortableQuery, context: IContext): Promise<number[] | string[] | number[][] | string[][]>;
+    updateValues(portableQuery: PortableQuery, context: IContext): Promise<number>;
+    deleteWhere(portableQuery: PortableQuery, context: IContext): Promise<number>;
 }
 export declare function injectTransactionalConnector(): void;
 //# sourceMappingURL=TransactionalConnector.d.ts.map

@@ -1,5 +1,5 @@
 import { DbEntity, JsonInsertValues } from '@airport/ground-control';
-import { IOperationContext } from '@airport/tower';
+import { IFuelHydrantContext } from '../../FuelHydrantContext';
 import { SQLNoJoinQuery } from './SQLNoJoinQuery';
 import { SQLDialect } from './SQLQuery';
 /**
@@ -7,9 +7,9 @@ import { SQLDialect } from './SQLQuery';
  */
 export declare class SQLInsertValues extends SQLNoJoinQuery {
     jsonInsertValues: JsonInsertValues;
-    constructor(jsonInsertValues: JsonInsertValues, dialect: SQLDialect, context: IOperationContext<any, any>);
-    toSQL(context: IOperationContext<any, any>): string;
+    constructor(jsonInsertValues: JsonInsertValues, dialect: SQLDialect, context: IFuelHydrantContext);
+    toSQL(context: IFuelHydrantContext): string;
     protected getColumnsFragment(dbEntity: DbEntity, columns: number[]): string;
-    protected getValuesFragment(valuesClauseFragment: any[][], context: IOperationContext<any, any>): string;
+    protected getValuesFragment(valuesClauseFragment: any[][], context: IFuelHydrantContext): string;
 }
 //# sourceMappingURL=SQLInsertValues.d.ts.map

@@ -3,7 +3,7 @@ import {
 	PortableQuery,
 	SyncSchemaMap
 }                       from '@airport/ground-control'
-import {ISubject}       from '@airport/observe'
+import {Subject}       from 'rxjs'
 import {SQLQuery}       from '../sql/core/SQLQuery'
 import {ACTIVE_QUERIES} from '../tokens'
 
@@ -80,7 +80,7 @@ DI.set(ACTIVE_QUERIES, ActiveQueries)
 export interface CachedSQLQuery {
 	parameters: any[],
 	portableQuery: PortableQuery,
-	resultsSubject: ISubject<any>,
+	resultsSubject: Subject<any>,
 	rerun: boolean;
 	runQuery: Function,
 	sqlQuery: SQLQuery<any>,

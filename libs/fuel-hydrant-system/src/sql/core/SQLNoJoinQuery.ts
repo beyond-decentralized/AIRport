@@ -7,7 +7,7 @@ import {
 	DbEntity,
 	JSONEntityRelation
 }                          from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
+import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {SQLDialect}        from './SQLQuery'
 import {SQLWhereBase}      from './SQLWhereBase'
 
@@ -21,14 +21,14 @@ export abstract class SQLNoJoinQuery
 	constructor(
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	) {
 		super(dbEntity, dialect, context)
 	}
 
 	protected getTableFragment(
 		fromRelation: JSONEntityRelation,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		addAs: boolean = true
 	): string {
 		if (!fromRelation) {

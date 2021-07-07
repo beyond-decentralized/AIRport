@@ -21,15 +21,17 @@ export class IdGenerator {
         this.transactionHistoryIdColumns.push(operationHistoryDbEntity.idColumns[0]);
         this.transactionHistoryIdColumns.push(recordHistoryDbEntity.idColumns[0]);
     }
-    async generateTransactionHistoryIds(numRepositoryTransHistories, numOperationTransHistories, numRecordHistories) {
-        const generatedSequenceNumbers = await (await container(this)
-            .get(SEQUENCE_GENERATOR))
-            .generateSequenceNumbers(this.transactionHistoryIdColumns, [
+    async generateTransactionHistoryIds(numRepositoryTransHistories, numOperationTransHistories, numRecordHistories, context) {
+        const sequenceGenerator = context.di.sequenceGenerator;
+        let generatedSequenceNumbers = sequenceGenerator.generateSequenceNumbers(this.transactionHistoryIdColumns, [
             1,
             numRepositoryTransHistories,
             numOperationTransHistories,
             numRecordHistories
-        ]);
+        ], context);
+        if (context.isServer) {
+            generatedSequenceNumbers = await generatedSequenceNumbers;
+        }
         return {
             operationHistoryIds: generatedSequenceNumbers[2],
             recordHistoryIds: generatedSequenceNumbers[3],

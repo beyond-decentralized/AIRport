@@ -15,9 +15,6 @@ import { Observable }   from 'rxjs';
 import {
 	TRANSACTIONAL_SERVER
 }                        from '../tokens';
-import {
-	IOperationContext
-} from '../processing/OperationContext';
 
 var isServer = false;
 
@@ -47,7 +44,7 @@ export class TransactionalConnector
 		platform: PlatformType,
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
-		context: IOperationContext<any, any>
+		context: IContext
 	): Promise<number> {
 		if(!isServer) {
 			throw new Error('Not implemented');
@@ -203,79 +200,72 @@ export class TransactionalConnector
 		throw new Error(`TODO: implement`)
 	}
 
-	save<E, T = E | E[]>(
+	async save<E, T = E | E[]>(
 		entity: T,
 		context: IContext,
 	): Promise<number> {
 		if(!isServer) {
 			throw new Error('Not implemented');
 		}
-		throw new Error(`Not Implemented`);
+
+		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+
+		return await transServer.save(entity, null, context);
 	}
 
-	/* FIXME: need to add top level .save call here
 	async insertValues(
 		portableQuery: PortableQuery,
-		transaction: ITransaction,
+		context: IContext,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number> {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
+
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
 		return await transServer.insertValues(
-			portableQuery,
-			{
-				domainAndPort: 'test'
-			},
-			transaction,
-			ensureGeneratedValues
-		)
+			portableQuery, null, context, ensureGeneratedValues)
 	}
 
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
-		transaction: ITransaction,
+		context: IContext,
 	): Promise<number[] | string[] | number[][] | string[][]> {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
+
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-		return await transServer.insertValuesGetIds(
-			portableQuery,
-			{
-				domainAndPort: 'test'
-			},
-			transaction
-		)
+		return await transServer.insertValuesGetIds(portableQuery, null, context)
 	}
 
 	async updateValues(
 		portableQuery: PortableQuery,
-		transaction: ITransaction,
+		context: IContext,
 	): Promise<number> {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
+
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-		return await transServer.updateValues(
-			portableQuery,
-			{
-				domainAndPort: 'test'
-			},
-			transaction
-		)
+		return await transServer.updateValues(portableQuery, null, context)
 	}
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
-		transaction: ITransaction,
+		context: IContext,
 	): Promise<number> {
+		if(!isServer) {
+			throw new Error('Not implemented');
+		}
+
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-		return await transServer.deleteWhere(
-			portableQuery,
-			{
-				domainAndPort: 'test'
-			},
-			transaction
-		)
+		return await transServer.deleteWhere(portableQuery, null, context)
 	}
-	*/
 
 }
 

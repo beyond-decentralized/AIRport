@@ -2,24 +2,6 @@ import { SEQUENCE_DAO } from '@airport/airport-code';
 import { setSeqGen } from '@airport/check-in';
 import { container } from '@airport/di';
 import { ensureChildArray } from '@airport/ground-control';
-/**
- * Assumptions: 7/4/2019
- *
- * 1. Only a single process will be inserting records at any given point in time
- * a)  This means that the service worker running the the background will only
- * receive and temporarily store data (in IndexedDb, but won't be inserting
- * proper relational records)
- * b)  This also means that web-workers won't be doing parallel inserts
- *
- * In general, this is consistent with SqLites policy of only one modifying
- * operation at a time (while possibly multiple read ops)
- *
- *
- * With these assumptions in place, it is safe to synchronize sequence retrieval
- * in-memory.   Hence, SequenceBlocks are retired in favor of a simpler
- * Sequence-only solution
- *
- */
 export class SequenceGenerator {
     constructor() {
         this.sequences = [];
@@ -55,7 +37,7 @@ export class SequenceGenerator {
         this.addSequences(sequences);
         setSeqGen(this);
     }
-    async generateSequenceNumbers(dbColumns, numSequencesNeeded) {
+    async generateSequenceNumbers(dbColumns, numSequencesNeeded, context) {
         if (!dbColumns.length) {
             return [];
         }

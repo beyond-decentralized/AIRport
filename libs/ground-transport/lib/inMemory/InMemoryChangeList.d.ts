@@ -1,4 +1,4 @@
-import type { ISubject } from '@airport/observe';
+import { Subject } from 'rxjs';
 import { ChangeError, ChangeListShareInfo, ChangeRecord, ChangeRecordIterator, SharedChangeList, SharingPlatformSetupInfo } from '@airport/terminal-map';
 import { InMemoryChangeStore } from './InMemoryChangeStore';
 /**
@@ -13,7 +13,7 @@ export declare class InMemoryChangeList implements SharedChangeList {
     constructor(shareInfo: ChangeListShareInfo, platformInfo: SharingPlatformSetupInfo, changeStore: InMemoryChangeStore);
     loadFromRecord(changeRecord: ChangeRecord): Promise<ChangeRecordIterator>;
     addChanges(changeRecords: ChangeRecord[]): Promise<void>;
-    errorSubject(): ISubject<ChangeError>;
-    changesAddedRemotelySubject(): ISubject<ChangeRecordIterator>;
+    errorSubject(): Subject<ChangeError>;
+    changesAddedRemotelySubject(): Subject<ChangeRecordIterator>;
 }
 //# sourceMappingURL=InMemoryChangeList.d.ts.map

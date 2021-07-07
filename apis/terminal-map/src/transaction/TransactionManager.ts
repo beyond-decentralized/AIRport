@@ -3,7 +3,7 @@ import {
 	IStoreDriver,
 	StoreType
 } from '@airport/ground-control';
-import { ICredentials } from './Credentials';
+import { ICredentials } from '../Credentials';
 
 export interface ITransactionManager {
 

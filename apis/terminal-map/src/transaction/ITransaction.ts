@@ -1,6 +1,6 @@
-import {IStoreDriver}        from '@airport/ground-control'
+import { IStoreDriver } from '@airport/ground-control'
 import {ITransactionHistory} from '@airport/holding-pattern'
-import {ICredentials}        from '@airport/terminal-map'
+import { ICredentials } from '../Credentials'
 
 export interface ITransaction
 extends IStoreDriver {

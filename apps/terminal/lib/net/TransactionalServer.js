@@ -37,7 +37,12 @@ export class TransactionalServer {
         await this.ensureIocContext(context);
         const actor = await this.getActor(credentials);
         // FIXME: check actor
-        return await context.ioc.insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy);
+        let numRecordsCreated = 0;
+        await transactional(async (transaction) => {
+            // TODO: figure out how addRepository will work
+            numRecordsCreated = await context.ioc.insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy);
+        });
+        return numRecordsCreated;
     }
     async find(portableQuery, credentials, context, cachedSqlQueryId) {
         await this.ensureIocContext(context);

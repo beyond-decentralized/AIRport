@@ -6,7 +6,7 @@ import {
 	DbEntity,
 	SQLDataType
 }                          from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
+import { IFuelHydrantContext } from '../../FuelHydrantContext'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -27,7 +27,7 @@ export interface IEntityResultParser {
 	addEntity(
 		entityAlias: string,
 		dbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any;
 
 	addProperty(
@@ -45,7 +45,7 @@ export interface IEntityResultParser {
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		relationInfos: ReferencedColumnData[],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void;
 
 	bufferBlankManyToOneStub(
@@ -62,7 +62,7 @@ export interface IEntityResultParser {
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		relatedEntityId: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void;
 
 	bufferBlankManyToOneObject(
@@ -83,7 +83,7 @@ export interface IEntityResultParser {
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		childResultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void;
 
 	bufferBlankOneToMany(
@@ -92,7 +92,7 @@ export interface IEntityResultParser {
 		otmEntityName: string,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void;
 
 	flushEntity(
@@ -101,7 +101,7 @@ export interface IEntityResultParser {
 		selectClauseFragment: any,
 		idValue: any,
 		resultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any;
 
 	flushRow(): void;
@@ -109,7 +109,7 @@ export interface IEntityResultParser {
 	bridge(
 		parsedResults: any[],
 		selectClauseFragment: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any[] | MappedEntityArray<any>;
 
 }
@@ -120,7 +120,7 @@ export abstract class AbstractObjectResultParser {
 		resultObject: any,
 		propertyName: string,
 		relationInfos: ReferencedColumnData[],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): boolean {
 		let manyToOneStub = {}
 		context.ioc.entityStateManager.isStub(manyToOneStub)

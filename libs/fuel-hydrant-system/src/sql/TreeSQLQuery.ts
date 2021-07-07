@@ -7,7 +7,7 @@ import {
 	JsonTreeQuery,
 	QueryResultType
 }                              from '@airport/ground-control'
-import {IOperationContext}     from '@airport/tower'
+import { IFuelHydrantContext } from '../FuelHydrantContext'
 import {MappedOrderByParser}   from '../orderBy/MappedOrderByParser'
 import {TreeQueryResultParser} from '../result/TreeQueryResultParser'
 import {
@@ -30,7 +30,7 @@ export class TreeSQLQuery
 	constructor(
 		jsonQuery: JsonTreeQuery,
 		dialect: SQLDialect,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	) {
 		super(jsonQuery, dialect, QueryResultType.TREE, context)
 
@@ -52,7 +52,7 @@ export class TreeSQLQuery
 		results: any[],
 		internalFragments: InternalFragments,
 		queryResultType: QueryResultType,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		bridgedQueryConfiguration?: any
 	): Promise<any[]> {
 		let parsedResults: any[] = []
@@ -80,7 +80,7 @@ export class TreeSQLQuery
 		nested: boolean,
 		selectClauseFragment: any,
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		const distinctClause = <JSONClauseField>selectClauseFragment
 		if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {

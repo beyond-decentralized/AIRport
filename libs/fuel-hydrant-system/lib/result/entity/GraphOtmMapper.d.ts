@@ -1,6 +1,6 @@
 import { MappedEntityArray } from '@airport/air-control';
 import { DbEntity } from '@airport/ground-control';
-import { IOperationContext } from '@airport/tower';
+import { IFuelHydrantContext } from '../../FuelHydrantContext';
 import { ManyToOneStubReference } from './GraphMtoMapper';
 /**
  * Created by Papa on 10/15/2016.
@@ -19,7 +19,7 @@ export declare class GraphOtmMapper {
     otmEntityReferenceMap: {
         [otmEntityId: string]: any;
     }[][];
-    addMtoReference(mtoStubReference: ManyToOneStubReference, mtoEntityId: string | number, dbEntity: DbEntity, context: IOperationContext<any, any>): void;
+    addMtoReference(mtoStubReference: ManyToOneStubReference, mtoEntityId: string | number, dbEntity: DbEntity, context: IFuelHydrantContext): void;
     addOtmReference(otmStubReference: OneToManyStubReference, otmEntityIdValue: string): void;
     populateOtms(entityMap: {
         [entityId: string]: any;

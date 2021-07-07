@@ -7,7 +7,7 @@ import {
 	ensureChildArray,
 	ensureChildMap
 }                               from '@airport/ground-control'
-import {IOperationContext}      from '@airport/tower'
+import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {ManyToOneStubReference} from './GraphMtoMapper'
 
 /**
@@ -45,7 +45,7 @@ export class GraphOtmMapper {
 		mtoStubReference: ManyToOneStubReference,
 		mtoEntityId: string | number,
 		dbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		// If the @OneToMany({ mappedBy: ... }) is missing, there is nothing to map to
 		if (!mtoStubReference.otmEntityField) {

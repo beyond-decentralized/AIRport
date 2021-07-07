@@ -1,6 +1,6 @@
 import { IEntitySelectProperties, JoinTreeNode } from '@airport/air-control';
 import { DbEntity, DbProperty, InternalFragments, JsonEntityQuery, JSONEntityRelation, QueryResultType } from '@airport/ground-control';
-import { IOperationContext } from '@airport/tower';
+import { IFuelHydrantContext } from '../FuelHydrantContext';
 import { IEntityOrderByParser } from '../orderBy/AbstractEntityOrderByParser';
 import { GraphQueryConfiguration } from '../result/entity/IEntityResultParser';
 import { SQLDialect, SQLQuery } from './core/SQLQuery';
@@ -17,8 +17,8 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
     protected joinTree: JoinTreeNode;
     private queryParser;
     private columnAliases;
-    constructor(jsonQuery: JsonEntityQuery<IEP>, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, context: IOperationContext<any, any>, graphQueryConfiguration?: GraphQueryConfiguration);
-    toSQL(internalFragments: InternalFragments, context: IOperationContext<any, any>): string;
+    constructor(jsonQuery: JsonEntityQuery<IEP>, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, context: IFuelHydrantContext, graphQueryConfiguration?: GraphQueryConfiguration);
+    toSQL(internalFragments: InternalFragments, context: IFuelHydrantContext): string;
     /**
      * If bridging is not applied:
      *
@@ -31,11 +31,11 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
      * @param results
      * @returns {any[]}
      */
-    parseQueryResults(results: any[], internalFragments: InternalFragments, queryResultType: QueryResultType, context: IOperationContext<any, any>, bridgedQueryConfiguration?: any): Promise<any[]>;
+    parseQueryResults(results: any[], internalFragments: InternalFragments, queryResultType: QueryResultType, context: IFuelHydrantContext, bridgedQueryConfiguration?: any): Promise<any[]>;
     protected buildFromJoinTree(joinRelations: JSONEntityRelation[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
-    }, context: IOperationContext<any, any>): JoinTreeNode;
-    protected parseQueryResult(selectClauseFragment: any, entityAlias: string, currentJoinNode: JoinTreeNode, resultRow: any, nextFieldIndex: number[], context: IOperationContext<any, any>): any;
+    }, context: IFuelHydrantContext): JoinTreeNode;
+    protected parseQueryResult(selectClauseFragment: any, entityAlias: string, currentJoinNode: JoinTreeNode, resultRow: any, nextFieldIndex: number[], context: IFuelHydrantContext): any;
     /**
      * Verify that the entity select clause is valid (has ids) and fill in clauses
      * that are blank (defined as {}).
@@ -55,7 +55,7 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
      * @param {DbEntity} dbEntity
      * @returns {any}
      */
-    protected setupSelectFields(selectClauseFragment: any, dbEntity: DbEntity, context: IOperationContext<any, any>, parentDbProperty?: DbProperty): any;
+    protected setupSelectFields(selectClauseFragment: any, dbEntity: DbEntity, context: IFuelHydrantContext, parentDbProperty?: DbProperty): any;
     private getSELECTFragment;
     private getFROMFragment;
 }

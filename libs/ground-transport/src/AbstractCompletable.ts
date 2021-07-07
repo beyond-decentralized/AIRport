@@ -1,4 +1,4 @@
-import {ISubscription} from '@airport/observe'
+import {Subscription} from 'rxjs'
 
 export interface IAbstractCompletable {
 
@@ -12,7 +12,7 @@ export interface IAbstractCompletable {
 export abstract class AbstractCompletable
 	implements IAbstractCompletable {
 
-	private subsriptions: ISubscription[] = []
+	private subsriptions: Subscription[] = []
 
 	abstract initialize(): Promise<void>;
 
@@ -22,7 +22,7 @@ export abstract class AbstractCompletable
 			subscription => subscription.unsubscribe())
 	}
 
-	protected record(subscription: ISubscription): void {
+	protected record(subscription: Subscription): void {
 		this.subsriptions.push(subscription)
 	}
 

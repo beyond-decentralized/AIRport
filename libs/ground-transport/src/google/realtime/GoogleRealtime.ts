@@ -2,7 +2,7 @@
  * Created by Papa on 1/6/2016.
  */
 
-import {ISubject}     from '@airport/observe'
+import {Subject}     from 'rxjs'
 import {ChangeRecord} from "@airport/terminal-map";
 import {GoogleDrive}  from '../drive/GoogleDrive';
 import {
@@ -71,7 +71,7 @@ export class GoogleRealtime {
 
 	subscribeToValuesAdded(
 		list: gapi.drive.realtime.CollaborativeList<ChangeRecord>,
-		subject: ISubject<gapi.drive.realtime.BaseModelEvent>
+		subject: Subject<gapi.drive.realtime.BaseModelEvent>
 	): void {
 		list.addEventListener(gapi.drive.realtime.EventType.VALUES_ADDED, (event: gapi.drive.realtime.BaseModelEvent) => {
 			subject.next(event);
@@ -80,7 +80,7 @@ export class GoogleRealtime {
 
 	subscribeToValuesRemoved(
 		list: gapi.drive.realtime.CollaborativeList<ChangeRecord>,
-		subject: ISubject<gapi.drive.realtime.BaseModelEvent>
+		subject: Subject<gapi.drive.realtime.BaseModelEvent>
 	): void {
 		list.addEventListener(gapi.drive.realtime.EventType.VALUES_REMOVED, (event) => {
 			subject.next(event);
@@ -89,7 +89,7 @@ export class GoogleRealtime {
 
 	subscribeToAnyObjectChanged(
 		document: gapi.drive.realtime.Document,
-		subject: ISubject<gapi.drive.realtime.BaseModelEvent>
+		subject: Subject<gapi.drive.realtime.BaseModelEvent>
 	): void {
 		document.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType.OBJECT_CHANGED, (event) => {
 			subject.next(event);

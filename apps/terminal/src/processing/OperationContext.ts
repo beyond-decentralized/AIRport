@@ -165,12 +165,6 @@ export class IocOperationContext
 
 }
 
-export interface IOperationContextLoader {
-	ensure(
-		context: IOperationContext<any, any>
-	): Promise<void>
-}
-
 export class OperationContextLoader
 	implements IOperationContextLoader {
 

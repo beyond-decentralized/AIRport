@@ -14,7 +14,7 @@ import {
 	SchemaMap,
 	SqlOperator
 }                          from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
+import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {SQLWhereBase}      from './SQLWhereBase'
 
 /**
@@ -58,7 +58,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
 		protected queryResultType: QueryResultType,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	) {
 		super(dbEntity, dialect, context)
 	}
@@ -69,7 +69,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 
 	abstract toSQL(
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string;
 
 	/**
@@ -88,14 +88,14 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		results: any[],
 		internalFragments: InternalFragments,
 		queryResultType: QueryResultType,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		bridgedQueryConfiguration?: any
 	): Promise<any[]>;
 
 	protected abstract buildFromJoinTree(
 		joinRelations: (JSONEntityRelation | JSONRelation) [],
 		joinNodeMap: { [alias: string]: JoinTreeNode },
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		schemaIndex?: number,
 		tableIndex?: number
 	): JoinTreeNode | JoinTreeNode[];
@@ -109,7 +109,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		parentAlias: string,
 		joinTypeString: string,
 		errorPrefix: string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		const allJoinOnColumns: JoinOnColumns[] = []
 

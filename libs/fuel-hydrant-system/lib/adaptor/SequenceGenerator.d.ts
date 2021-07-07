@@ -1,5 +1,5 @@
-import { ISequence } from '@airport/airport-code';
-import { ISequenceGenerator } from '@airport/check-in';
+import { ISequence, ISequenceDao } from '@airport/airport-code';
+import { IIdGeneratorContext, ISequenceGenerator } from '@airport/check-in';
 import { DbColumn, DbEntity } from '@airport/ground-control';
 /**
  * Assumptions: 7/4/2019
@@ -19,6 +19,12 @@ import { DbColumn, DbEntity } from '@airport/ground-control';
  * Sequence-only solution
  *
  */
+export interface ISequenceGeneratorContext extends IIdGeneratorContext {
+    di: {
+        sequenceGenerator: ISequenceGenerator;
+        sequenceDao: ISequenceDao;
+    };
+}
 export declare abstract class SequenceGenerator implements ISequenceGenerator {
     private sequences;
     private sequenceBlocks;
@@ -26,7 +32,7 @@ export declare abstract class SequenceGenerator implements ISequenceGenerator {
     exists(dbEntity: DbEntity): boolean;
     initialize(sequences?: ISequence[]): Promise<void>;
     tempInitialize(sequences?: ISequence[]): Promise<void>;
-    generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
+    generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[], context: ISequenceGeneratorContext): Promise<number[][]>;
     protected abstract nativeGenerate(): Promise<number>;
     /**
      * Keeping return value as number[][] in case we ever revert back

@@ -6,7 +6,7 @@ import {
 	DbEntity,
 	SQLDataType
 }                          from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
+import { IFuelHydrantContext } from '../FuelHydrantContext'
 import {
 	AbstractObjectResultParser,
 	IEntityResultParser
@@ -27,7 +27,7 @@ export class PlainResultParser
 	addEntity(
 		entityAlias: string,
 		dbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		return context.ioc.schemaUtils.getNewEntity(dbEntity, context.ioc.airDb)
 	}
@@ -50,7 +50,7 @@ export class PlainResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		relationInfos: ReferencedColumnData[],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		this.addManyToOneStub(
 			resultObject, propertyName, relationInfos, context)
@@ -63,7 +63,7 @@ export class PlainResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		childResultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		resultObject[propertyName] = childResultObject
 	}
@@ -101,7 +101,7 @@ export class PlainResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		childResultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		resultObject[propertyName] = [childResultObject]
 	}
@@ -112,7 +112,7 @@ export class PlainResultParser
 		otmEntityName: string,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		resultObject[propertyName] = []
 	}
@@ -123,7 +123,7 @@ export class PlainResultParser
 		selectClauseFragment: any,
 		entityId: any,
 		resultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		// Nothing to be done, plain objects don't need to be flushed since they don't relate
 		// do any other rows
@@ -138,7 +138,7 @@ export class PlainResultParser
 	bridge(
 		parsedResults: any[],
 		selectClauseFragment: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any[] {
 		// Nothing to be done, plain queries are not bridged
 		return parsedResults

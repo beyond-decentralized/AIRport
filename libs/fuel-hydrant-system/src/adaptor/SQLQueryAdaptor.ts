@@ -8,7 +8,7 @@ import {
 	JSONSqlFunctionCall,
 	SQLDataType
 }                          from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
+import { IFuelHydrantContext } from '../FuelHydrantContext'
 
 /**
  * Created by Papa on 8/27/2016.
@@ -56,13 +56,13 @@ export interface ISqlValueProvider {
 
 	getFunctionCallValue(
 		rawValue: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string;
 
 	getFieldFunctionValue(
 		aField: JSONClauseField,
 		defaultCallback: () => string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string;
 
 }
@@ -74,7 +74,7 @@ export interface ISQLFunctionAdaptor {
 		innerValue: string,
 		qEntityMapByAlias: { [alias: string]: IQEntityInternal<any> },
 		sqlValueProvider: ISqlValueProvider,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string;
 
 	getFunctionCall(
@@ -82,7 +82,7 @@ export interface ISQLFunctionAdaptor {
 		value: string,
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal<any> },
 		sqlValueProvider: ISqlValueProvider,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string;
 
 }
@@ -95,7 +95,7 @@ export abstract class AbstractFunctionAdaptor
 		innerValue: string,
 		qEntityMapByAlias: { [alias: string]: IQEntityInternal<any> },
 		sqlValueProvider: ISqlValueProvider,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		clause.af.forEach((appliedFunction) => {
 			innerValue = this.getFunctionCall(
@@ -110,7 +110,7 @@ export abstract class AbstractFunctionAdaptor
 		value: string,
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal<any> },
 		sqlValueProvider: ISqlValueProvider,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string;
 
 }

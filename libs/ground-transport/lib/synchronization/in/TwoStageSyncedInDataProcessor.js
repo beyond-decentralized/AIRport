@@ -21,7 +21,9 @@ export class TwoStageSyncedInDataProcessor {
     ) {
         // TODO: remove unused injections once tested
         const [repositoryActorDao, repositoryTransactionHistoryDuo, sharingMessageDao, sharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictPendingNotificationDao, syncInChecker, repositoryTransactionBlockDao, transactionManager] = await container(this).get(REPO_ACTOR_DAO, REPO_TRANS_HISTORY_DUO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR, SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO, SYNC_IN_CHECKER, REPO_TRANS_BLOCK_DAO, TRANSACTION_MANAGER);
-        const [actorMapById, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessagesWithCompatibleSchemas, sharingMessagesWithCompatibleSchemasAndData,] = await syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(
+        const [actorMapById, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessagesWithCompatibleSchemas, sharingMessagesWithCompatibleSchemasAndData,
+        // usedSchemaVersionIdSet
+        ] = await syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(
         // consistentMessages, actorMap, sharingNodeRepositoryMap,
         // dataMessagesWithInvalidData
         dataMessages);

@@ -1,7 +1,6 @@
 import { doEnsureContext } from '@airport/air-control';
 import {
-	container,
-	DI
+	container
 }                          from '@airport/di';
 import {
 	DbEntity,
@@ -25,11 +24,10 @@ import {
 	SyncSchemaMap
 }                          from '@airport/ground-control';
 import {
-	IObservable,
-	RXJS,
-}                          from '@airport/observe';
+	Observable,
+	Subject
+}                          from 'rxjs';
 import {
-	IOperationContext,
 	ITransaction,
 	OPERATION_CONTEXT_LOADER
 }                          from '@airport/tower';
@@ -46,6 +44,7 @@ import { SheetSQLQuery }   from '../sql/SheetSQLQuery';
 import { TreeSQLQuery }    from '../sql/TreeSQLQuery';
 import { ACTIVE_QUERIES }  from '../tokens';
 import { CachedSQLQuery }  from './ActiveQueries';
+import { IFuelHydrantContext } from '../FuelHydrantContext';
 
 /**
  * Created by Papa on 9/9/2016.
@@ -60,14 +59,14 @@ export abstract class SqlDriver
 	protected maxValues: number;
 
 	supportsLocalTransactions(
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): boolean {
 		return true;
 	}
 
 	getEntityTableName(
 		dbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		return this.getTableName(dbEntity.schemaVersion.schema, dbEntity, context);
 	}
@@ -83,7 +82,7 @@ export abstract class SqlDriver
 				name?: string
 			}
 		},
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		let theTableName = table.name;
 		if (table.tableConfig && table.tableConfig.name) {
@@ -101,12 +100,12 @@ export abstract class SqlDriver
 	abstract composeTableName(
 		schemaName: string,
 		tableName: string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string;
 
 	abstract initialize(
 		dbName: string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): Promise<any>;
 
 	abstract transact(
@@ -115,12 +114,12 @@ export abstract class SqlDriver
 				transaction: ITransaction
 			): Promise<void>
 		},
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): Promise<void>;
 
 	async insertValues(
 		portableQuery: PortableQuery,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		cachedSqlQueryId?: number,
 		// repository?: IRepository
 	): Promise<number> {
@@ -144,7 +143,7 @@ export abstract class SqlDriver
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): Promise<number> {
 		const activeQueries = await container(this)
 			.get(ACTIVE_QUERIES);
@@ -163,7 +162,7 @@ export abstract class SqlDriver
 	async updateWhere(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): Promise<number> {
 		let sqlUpdate  = new SQLUpdate(
 			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(context), context);
@@ -176,7 +175,7 @@ export abstract class SqlDriver
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
 		context          = await this.ensureContext(context);
@@ -194,7 +193,7 @@ export abstract class SqlDriver
 
 	getSQLQuery(
 		portableQuery: PortableQuery,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): SQLQuery<any> {
 		let jsonQuery      = portableQuery.jsonQuery;
 		let dialect        = this.getDialect(context);
@@ -224,19 +223,19 @@ export abstract class SqlDriver
 	abstract isValueValid(
 		value: any,
 		sqlDataType: SQLDataType,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): boolean
 
 	abstract findNative(
 		sqlQuery: string,
 		parameters: any[],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): Promise<any[]>;
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
 		let results = await this.find(portableQuery, internalFragments, context);
@@ -253,10 +252,10 @@ export abstract class SqlDriver
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		cachedSqlQueryId?: number,
-	): IObservable<EntityArray> {
-		let resultsSubject = new (DI.db().getSync(RXJS).Subject)<EntityArray>();
+	): Observable<EntityArray> {
+		let resultsSubject = new Subject<EntityArray>();
 
 		// TODO: Remove the query for the list of cached queries, that are checked every
 		//    time a mutation operation is run
@@ -292,10 +291,10 @@ export abstract class SqlDriver
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		cachedSqlQueryId?: number,
-	): IObservable<E> {
-		let resultsSubject = new (DI.db().getSync(RXJS).Subject)<E>();
+	): Observable<E> {
+		let resultsSubject = new Subject<E>();
 		// TODO: Remove the query for the list of cached queries, that are checked every
 		//       time a mutation operation is run
 		// let resultsSubject                 = new Subject<E>(() => {
@@ -332,40 +331,40 @@ export abstract class SqlDriver
 	abstract doesTableExist(
 		schemaName: string,
 		tableName: string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): Promise<boolean>
 
 	abstract dropTable(
 		schemaName: string,
 		tableName: string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): Promise<boolean>
 
 	abstract query(
 		queryType: QueryType,
 		query: string,
 		params: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		saveTransaction?: boolean
 	): Promise<any>
 
 	abstract isServer(
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): boolean
 
 	protected abstract executeNative(
 		sql: string,
 		parameters: any[],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): Promise<number>;
 
 	protected abstract getDialect(
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): SQLDialect;
 
 	protected splitValues(
 		values: any[][],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any[][][] {
 		const valuesInRow = values[0].length;
 		const numValues   = values.length * valuesInRow;
@@ -386,16 +385,16 @@ export abstract class SqlDriver
 	}
 
 	protected async ensureContext(
-		context: IOperationContext<any, any>
-	): Promise<IOperationContext<any, any>> {
-		context = <IOperationContext<any, any>>doEnsureContext(context);
+		context: IFuelHydrantContext
+	): Promise<IFuelHydrantContext> {
+		context = <IFuelHydrantContext>doEnsureContext(context);
 		await this.ensureIocContext(context);
 
 		return context;
 	}
 
-	protected async ensureIocContext(PST
-		context: IOperationContext<any, any>
+	protected async ensureIocContext(
+		context: IFuelHydrantContext
 	): Promise<void> {
 		const operationContextLoader = await container(this)
 			.get(OPERATION_CONTEXT_LOADER);

@@ -1,6 +1,5 @@
 import { DI }            from '@airport/di';
-import type { ISubject } from '@airport/observe';
-import { RXJS }          from '@airport/observe';
+import { Subject } from 'rxjs';
 import {
 	ChangeListShareInfo,
 	ChangeRecord
@@ -12,7 +11,7 @@ import {
 
 export class InMemoryChangeStore {
 
-	_changesAddedSubjectMap: { [name: string]: ISubject<ChangeRecord[]> } = {};
+	_changesAddedSubjectMap: { [name: string]: Subject<ChangeRecord[]> } = {};
 	private changeListMap: { [name: string]: ChangeRecord[] }             = {};
 
 	addChangeList(
@@ -52,10 +51,10 @@ export class InMemoryChangeStore {
 
 	getChangesAddedSubject(
 		changeListName: string
-	): ISubject<ChangeRecord[]> {
+	): Subject<ChangeRecord[]> {
 		let changesAddedSubject = this._changesAddedSubjectMap[changeListName];
 		if (!changesAddedSubject) {
-			changesAddedSubject                          = new (DI.db().getSync(RXJS).Subject)<ChangeRecord[]>();
+			changesAddedSubject                          = new Subject<ChangeRecord[]>();
 			this._changesAddedSubjectMap[changeListName] = changesAddedSubject;
 		}
 		return changesAddedSubject;

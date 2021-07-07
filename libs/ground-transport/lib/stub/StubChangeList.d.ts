@@ -1,4 +1,4 @@
-import type { ISubject } from '@airport/observe';
+import { Subject } from 'rxjs';
 import { ChangeError, ChangeListShareInfo, ChangeRecord, ChangeRecordIterator, SharedChangeList, SharingPlatformSetupInfo } from '@airport/terminal-map';
 /**
  * Created by Papa on 12/14/2016.
@@ -6,12 +6,12 @@ import { ChangeError, ChangeListShareInfo, ChangeRecord, ChangeRecordIterator, S
 export declare class StubChangeList implements SharedChangeList {
     shareInfo: ChangeListShareInfo;
     private platformInfo;
-    _errorSubject: ISubject<ChangeError>;
-    _changesAddedRemotelySubject: ISubject<ChangeRecordIterator>;
+    _errorSubject: Subject<ChangeError>;
+    _changesAddedRemotelySubject: Subject<ChangeRecordIterator>;
     constructor(shareInfo: ChangeListShareInfo, platformInfo: SharingPlatformSetupInfo);
     loadFromRecord(changeRecord: ChangeRecord): Promise<ChangeRecordIterator>;
     addChanges(changeRecords: ChangeRecord[]): Promise<void>;
-    errorSubject(): ISubject<ChangeError>;
-    changesAddedRemotelySubject(): ISubject<ChangeRecordIterator>;
+    errorSubject(): Subject<ChangeError>;
+    changesAddedRemotelySubject(): Subject<ChangeRecordIterator>;
 }
 //# sourceMappingURL=StubChangeList.d.ts.map

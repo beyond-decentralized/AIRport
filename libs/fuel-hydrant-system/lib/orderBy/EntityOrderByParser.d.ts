@@ -1,6 +1,6 @@
 import { IQEntityInternal, JoinTreeNode } from '@airport/air-control';
 import { JSONEntityFieldInOrderBy } from '@airport/ground-control';
-import { IOperationContext } from '@airport/tower';
+import { IFuelHydrantContext } from '../FuelHydrantContext';
 import { AbstractEntityOrderByParser, IEntityOrderByParser } from './AbstractEntityOrderByParser';
 /**
  * Created by Papa on 10/16/2016.
@@ -35,7 +35,7 @@ export declare class EntityOrderByParser extends AbstractEntityOrderByParser imp
      */
     getOrderByFragment(joinTree: JoinTreeNode, qEntityMapByAlias: {
         [entityAlias: string]: IQEntityInternal<any>;
-    }, context: IOperationContext<any, any>): string;
+    }, context: IFuelHydrantContext): string;
     buildOrderByFragmentForEntity(tableAlias: string, allColumnsToSortBy: string[], idColumnsToSortBy: string[], currentEntityOrderBy: JSONEntityFieldInOrderBy[], qEntityMapByAlias: {
         [entityAlias: string]: IQEntityInternal<any>;
     }): string;

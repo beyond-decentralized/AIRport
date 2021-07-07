@@ -1,4 +1,4 @@
-import { ISubscription } from '@airport/observe';
+import { Subscription } from 'rxjs';
 export interface IAbstractCompletable {
     initialize(): Promise<void>;
     tearDown(): Promise<void>;
@@ -7,6 +7,6 @@ export declare abstract class AbstractCompletable implements IAbstractCompletabl
     private subsriptions;
     abstract initialize(): Promise<void>;
     tearDown(): Promise<void>;
-    protected record(subscription: ISubscription): void;
+    protected record(subscription: Subscription): void;
 }
 //# sourceMappingURL=AbstractCompletable.d.ts.map

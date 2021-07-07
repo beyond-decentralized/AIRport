@@ -23,8 +23,8 @@ import {
 	SqlOperator,
 	TableIndex
 }                          from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
 import {ISqlValueProvider} from '../../adaptor/SQLQueryAdaptor'
+import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {
 	Q_VALIDATOR,
 	SQL_QUERY_ADAPTOR,
@@ -54,13 +54,13 @@ export abstract class SQLWhereBase
 	constructor(
 		protected dbEntity: DbEntity,
 		protected dialect: SQLDialect,
-		protected context: IOperationContext<any, any>,
+		protected context: IFuelHydrantContext,
 	) {
 	}
 
 	getParameters(
 		parameterMap: { [alias: string]: Parameter }, //,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		// valuesArray: (boolean | Date | number | string)[] = null
 	): any[] {
 		const sqlAdaptor = DI.db()
@@ -96,7 +96,7 @@ export abstract class SQLWhereBase
 
 	getFunctionCallValue(
 		rawValue: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		return this.getFieldValue(
 			<JSONClauseField>rawValue, ClauseType.FUNCTION_CALL, null, context
@@ -106,7 +106,7 @@ export abstract class SQLWhereBase
 	getFieldFunctionValue(
 		aField: JSONClauseField,
 		defaultCallback: () => string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		const [sqlAdaptor, validator] = DI.db()
 			.getSync(SQL_QUERY_ADAPTOR, Q_VALIDATOR)
@@ -132,7 +132,7 @@ export abstract class SQLWhereBase
 		clauseField: JSONClauseObject | JSONClauseField [] | JsonFieldQuery,
 		clauseType: ClauseType,
 		defaultCallback: () => string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		const [validator, subStatementSqlGenerator] = DI.db()
 			.getSync(Q_VALIDATOR, SUB_STATEMENT_SQL_GENERATOR)
@@ -235,7 +235,7 @@ export abstract class SQLWhereBase
 	protected getWHEREFragment(
 		operation: JSONBaseOperation,
 		nestingPrefix: string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		let whereFragment = ''
 		if (!operation) {
@@ -274,7 +274,7 @@ export abstract class SQLWhereBase
 	protected getEntityPropertyColumnName(
 		qEntity: IQEntityInternal<any>,
 		columnIndex: number,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		const dbEntity = context.ioc.metadataUtils.getDbEntity(qEntity)
 
@@ -311,7 +311,7 @@ export abstract class SQLWhereBase
 	protected getComplexColumnFragment(
 		value: JSONClauseField,
 		columnName: string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		const sqlAdaptor = DI.db()
 			.getSync(SQL_QUERY_ADAPTOR)
@@ -327,7 +327,7 @@ export abstract class SQLWhereBase
 	protected getEntityManyToOneColumnName(
 		qEntity: IQEntityInternal<any>,
 		columnIndex: number,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		return this.getEntityPropertyColumnName(
 			qEntity, columnIndex, context)
@@ -336,7 +336,7 @@ export abstract class SQLWhereBase
 	protected getLogicalWhereFragment(
 		operation: JSONLogicalOperation,
 		nestingPrefix: string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	) {
 		let operator
 		switch (operation.o) {

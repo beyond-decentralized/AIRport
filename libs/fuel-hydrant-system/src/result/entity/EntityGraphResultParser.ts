@@ -10,7 +10,7 @@ import {
 	EntityRelationType,
 	SQLDataType
 }                          from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
+import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {
 	GraphMtoMapper,
 	ManyToOneStubReference
@@ -62,7 +62,7 @@ export class EntityGraphResultParser
 	addEntity(
 		entityAlias: string,
 		dbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		return context.ioc.schemaUtils.getNewEntity(dbEntity, context.ioc.airDb)
 	}
@@ -85,7 +85,7 @@ export class EntityGraphResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		relationInfos: ReferencedColumnData[],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		const oneToManyStubAdded = this.addManyToOneStub(
 			resultObject, propertyName, relationInfos, context)
@@ -111,7 +111,7 @@ export class EntityGraphResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		childResultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		resultObject[propertyName] = childResultObject
 		const relatedEntityId      = context.ioc.schemaUtils.getIdKey(resultObject[propertyName], relationDbEntity)
@@ -141,7 +141,7 @@ export class EntityGraphResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		childResultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		this.bufferOneToMany(otmDbEntity, propertyName)
 		let childResultsArray = newMappedEntityArray(context.ioc.schemaUtils, relationDbEntity)
@@ -155,7 +155,7 @@ export class EntityGraphResultParser
 		otmEntityName: string,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		resultObject[propertyName] = newMappedEntityArray<any>(context.ioc.schemaUtils, relationDbEntity)
 	}
@@ -166,7 +166,7 @@ export class EntityGraphResultParser
 		selectClauseFragment: any,
 		entityIdValue: string,
 		resultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		if (!entityIdValue) {
 			throw new Error(`No Id provided for entity 
@@ -187,7 +187,7 @@ export class EntityGraphResultParser
 	bridge(
 		parsedResults: any[],
 		selectClauseFragment: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any[] {
 		this.mtoMapper.populateMtos(this.entityMapBySchemaAndTableIndexes)
 		this.otmMapper.populateOtms(this.entityMapBySchemaAndTableIndexes, !this.config || this.config.mapped)
@@ -248,7 +248,7 @@ export class EntityGraphResultParser
 		selectClauseFragment: any,
 		idValue: string,
 		resultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		if (!idValue) {
 			throw new Error(`Entity ID not specified for entity 
@@ -286,7 +286,7 @@ export class EntityGraphResultParser
 		target: any,
 		dbEntity: DbEntity,
 		selectClauseFragment: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		if (!source || target === source) {
 			return target
@@ -394,7 +394,7 @@ export class EntityGraphResultParser
 		entityIdValue: string,
 		currentEntity: any,
 		dbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		let otmStubBuffer  = this.otmStubBuffer
 		this.otmStubBuffer = []

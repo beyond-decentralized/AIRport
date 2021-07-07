@@ -84,8 +84,17 @@ export class TransactionalServer
 
 		// FIXME: check actor
 
-		return await context.ioc.insertManager.addRepository(name, url, platform,
-			platformConfig, distributionStrategy);
+		let numRecordsCreated = 0
+
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			// TODO: figure out how addRepository will work
+			numRecordsCreated = await context.ioc.insertManager.addRepository(
+				name, url, platform, platformConfig, distributionStrategy);
+		})
+
+		return numRecordsCreated
 	}
 
 	async find<E, EntityArray extends Array<E>>(

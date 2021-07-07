@@ -6,7 +6,7 @@ import {
 	JsonSheetQuery,
 	QueryResultType
 }                           from '@airport/ground-control'
-import {IOperationContext}  from '@airport/tower'
+import { IFuelHydrantContext } from '../FuelHydrantContext'
 import {ExactOrderByParser} from '../orderBy/ExactOrderByParser'
 import {
 	Q_VALIDATOR,
@@ -29,7 +29,7 @@ export class SheetSQLQuery
 	constructor(
 		jsonQuery: JsonSheetQuery,
 		dialect: SQLDialect,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	) {
 		super(jsonQuery, dialect, QueryResultType.SHEET, context)
 
@@ -43,7 +43,7 @@ export class SheetSQLQuery
 		results: any[],
 		internalFragments: InternalFragments,
 		queryResultType: QueryResultType,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		bridgedQueryConfiguration?: any
 	): Promise<any[]> {
 		let parsedResults: any[] = []
@@ -65,7 +65,7 @@ export class SheetSQLQuery
 		nested: boolean,
 		selectClauseFragment: any,
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		if (!selectClauseFragment) {
 			throw new Error(`SELECT clause is not defined for a Flat Query`)

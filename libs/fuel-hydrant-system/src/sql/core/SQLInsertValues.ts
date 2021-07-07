@@ -3,7 +3,7 @@ import {
 	DbEntity,
 	JsonInsertValues
 }                          from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
+import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {
 	Q_VALIDATOR,
 	SQL_QUERY_ADAPTOR
@@ -22,7 +22,7 @@ export class SQLInsertValues
 	constructor(
 		public jsonInsertValues: JsonInsertValues,
 		dialect: SQLDialect,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext
 		// repository?: IRepository
 	) {
 		super(context.ioc.airDb.schemas[jsonInsertValues.II.si]
@@ -31,7 +31,7 @@ export class SQLInsertValues
 	}
 
 	toSQL(
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext
 	): string {
 		const validator = DI.db()
 			.getSync(Q_VALIDATOR)
@@ -67,7 +67,7 @@ ${valuesFragment}
 
 	protected getValuesFragment(
 		valuesClauseFragment: any[][],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		const sqlAdaptor = DI.db()
 			.getSync(SQL_QUERY_ADAPTOR)

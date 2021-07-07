@@ -2,7 +2,7 @@
  * Created by Papa on 1/10/2016.
  */
 import { DI }             from '@airport/di';
-import { ISubject, RXJS }       from '@airport/observe';
+import { Subject }       from 'rxjs';
 import {
 	ArrayChangeRecordIterator,
 	ChangeError,
@@ -53,8 +53,8 @@ export class GoogleSharedChangeList
 		await this.handle.addChangeRecords(changeRecords);
 	}
 
-	errorSubject(): ISubject<ChangeError> {
-		let errorSubject = new (DI.db().getSync(RXJS).Subject)<ChangeError>();
+	errorSubject(): Subject<ChangeError> {
+		let errorSubject = new Subject<ChangeError>();
 
 		this.handle.otherChangesSubject.subscribe((otherChange) => {
 			errorSubject.next({
@@ -66,7 +66,7 @@ export class GoogleSharedChangeList
 		return errorSubject;
 	}
 
-	changesAddedRemotelySubject(): ISubject<ChangeRecordIterator> {
+	changesAddedRemotelySubject(): Subject<ChangeRecordIterator> {
 		return this.handle.valuesAddedSubject;
 	}
 

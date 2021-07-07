@@ -31,7 +31,7 @@ import {
 	SortOrder,
 	SQLDataType
 }                                from '@airport/ground-control'
-import {IOperationContext}       from '@airport/tower'
+import { IFuelHydrantContext } from '../FuelHydrantContext'
 import {INonEntityOrderByParser} from '../orderBy/AbstractEntityOrderByParser'
 import {
 	Q_VALIDATOR,
@@ -59,7 +59,7 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		jsonQuery: JNEQ,
 		dialect: SQLDialect,
 		queryResultType: QueryResultType,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	) {
 		super(jsonQuery, null, dialect, queryResultType, context)
 	}
@@ -74,7 +74,7 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 
 	toSQL(
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		const sqlAdaptor   = DI.db()
 			.getSync(SQL_QUERY_ADAPTOR)
@@ -129,7 +129,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 	buildFromJoinTree(
 		joinRelations: JSONRelation[],
 		joinNodeMap: { [alias: string]: JoinTreeNode },
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): JoinTreeNode[] {
 		const validator               = DI.db()
 			.getSync(Q_VALIDATOR)
@@ -240,7 +240,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 	addFieldsToView(
 		viewJoinRelation: JSONViewJoinRelation,
 		viewAlias: string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): IQTree<any> {
 		let view = new QTree(viewJoinRelation.fcp, null)
 		this.addFieldsToViewForSelect(
@@ -262,7 +262,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		select: any,
 		fieldPrefix: string,
 		forFieldQueryAlias: string,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	) {
 		let fieldIndex        = 0
 		let hasDistinctClause = false
@@ -299,7 +299,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		fieldJson: JSONClauseField,
 		alias: string,
 		forFieldQueryAlias: string = null,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): boolean {
 		let hasDistinctClause = false
 		let dbEntity: DbEntity
@@ -369,7 +369,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		nested: boolean,
 		selectClauseFragment: any,
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string;
 
 	protected getFieldSelectFragment(
@@ -377,7 +377,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		clauseType: ClauseType,
 		nestedObjectCallBack: { (): string },
 		fieldIndex: number,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	) {
 		let columnSelectSqlFragment = this.getFieldValue(value, clauseType,
 			// Nested object processing
@@ -394,7 +394,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 
 	protected getFROMFragments(
 		joinTrees: JoinTreeNode[],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		return joinTrees.map(
 			joinTree => this.getFROMFragment(
@@ -405,7 +405,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 	protected getFROMFragment(
 		parentTree: JoinTreeNode,
 		currentTree: JoinTreeNode,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		const subStatementSqlGenerator = DI.db()
 			.getSync(SUB_STATEMENT_SQL_GENERATOR)

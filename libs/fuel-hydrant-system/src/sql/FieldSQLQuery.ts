@@ -6,7 +6,7 @@ import {
 	JsonFieldQuery,
 	QueryResultType
 }                           from '@airport/ground-control'
-import {IOperationContext}  from '@airport/tower'
+import { IFuelHydrantContext } from '../FuelHydrantContext'
 import {ExactOrderByParser} from '../orderBy/ExactOrderByParser'
 import {
 	Q_VALIDATOR,
@@ -26,7 +26,7 @@ export class FieldSQLQuery
 	constructor(
 		jsonQuery: JsonFieldQuery,
 		dialect: SQLDialect,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	) {
 		super(jsonQuery, dialect, QueryResultType.FIELD, context)
 
@@ -40,7 +40,7 @@ export class FieldSQLQuery
 		results: any[],
 		internalFragments: InternalFragments,
 		queryResultType: QueryResultType,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		bridgedQueryConfiguration?: any,
 	): Promise<any[]> {
 		let parsedResults: any[] = []
@@ -61,7 +61,7 @@ export class FieldSQLQuery
 		nested: boolean,
 		selectClauseFragment: any,
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		if (!selectClauseFragment) {
 			throw new Error(`SELECT clause is not defined for a Field Query`)

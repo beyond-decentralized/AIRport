@@ -8,7 +8,7 @@ import {
 	JSONClauseObjectType,
 	JsonUpdate
 }                          from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
+import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {
 	Q_VALIDATOR,
 	SQL_QUERY_ADAPTOR
@@ -27,7 +27,7 @@ export class SQLUpdate
 	constructor(
 		public jsonUpdate: JsonUpdate<IEntityUpdateProperties>,
 		dialect: SQLDialect,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	) {
 		super(context.ioc.airDb.schemas[jsonUpdate.U.si]
 			.currentVersion.entities[jsonUpdate.U.ti], dialect, context)
@@ -35,7 +35,7 @@ export class SQLUpdate
 
 	toSQL(
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		if (!this.jsonUpdate.U) {
 			throw new Error(`Expecting exactly one table in UPDATE clause`)
@@ -70,7 +70,7 @@ ${whereFragment}`
 
 	protected getSetFragment(
 		setClauseFragment: IEntityUpdateProperties,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		const validator = DI.db()
 			.getSync(Q_VALIDATOR)
@@ -94,7 +94,7 @@ ${whereFragment}`
 		columnName: string,
 		value: any,
 		setFragments: any[],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	) {
 		const sqlAdaptor = DI.db()
 			.getSync(SQL_QUERY_ADAPTOR)

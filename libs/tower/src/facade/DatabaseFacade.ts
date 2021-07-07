@@ -2,12 +2,14 @@ import {
 	DATABASE_FACADE,
 	Delete,
 	IDatabaseFacade,
+	IEntityContext,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IFunctionWrapper,
+	InsertColumnValues,
+	InsertValues,
 	IQEntity,
 	IUpdateCache,
-	OperationName,
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
@@ -15,27 +17,22 @@ import {
 	RawUpdateColumns,
 	UpdateColumns,
 	UpdateProperties,
-}                                 from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	container,
-	DI
-}                                 from '@airport/di'
-import {DbEntity,}                from '@airport/ground-control'
+	DI,
+	IContext
+} from '@airport/di'
+import { DbEntity, PortableQuery, TRANSACTIONAL_CONNECTOR, } from '@airport/ground-control'
 import {
 	DistributionStrategy,
 	PlatformType
-}                                 from '@airport/terminal-map'
-import {ITransaction}             from './ITransaction'
-import {IOperationContext}        from './processing/OperationContext'
-import {OperationManager}         from './processing/OperationManager'
-import {OPERATION_CONTEXT_LOADER} from './tokens'
-import {transactional}            from './transactional'
+} from '@airport/terminal-map'
 
 /**
  * Created by Papa on 5/23/2016.
  */
 export class DatabaseFacade
-	extends OperationManager
 	implements IDatabaseFacade {
 
 	name: string
@@ -76,31 +73,23 @@ export class DatabaseFacade
 
 	async addRepository(
 		name: string,
-		url: string                                = null,
-		platform: PlatformType                     = PlatformType.GOOGLE_DOCS,
-		platformConfig: string                     = null,
+		url: string = null,
+		platform: PlatformType = PlatformType.GOOGLE_DOCS,
+		platformConfig: string = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
-		context: IOperationContext<any, any>
+		context: IContext
 	): Promise<number> {
-		await this.ensureIocContext(context)
-		let numRecordsCreated = 0
-
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			// TODO: figure out how addRepository will work
-			numRecordsCreated = await context.ioc.transactionalServer.addRepository(
-				name, url, platform, platformConfig, distributionStrategy, null, context)
-		})
-
-		return numRecordsCreated
+		// TODO: figure out how addRepository will work
+		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
+		return await transactionalConnector.addRepository(
+			name, url, platform, platformConfig, distributionStrategy, context)
 	}
 
 	async insertColumnValues<IQE extends IQEntity<any>>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		context: IOperationContext<any, any>
+		context: IContext
 	): Promise<number> {
 		if (!rawInsertColumnValues) {
 			return 0
@@ -108,22 +97,18 @@ export class DatabaseFacade
 		if (rawInsertColumnValues instanceof Function) {
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
-		await this.ensureIocContext(context)
-		let numInsertedRecords = 0
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			numInsertedRecords = await this.internalInsertColumnValues(
-				<RawInsertColumnValues<IQE>>rawInsertColumnValues,
-				transaction, context)
-		})
+		const insertColumnValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
 
-		return numInsertedRecords
+		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
+			insertColumnValues, null, context)
+
+		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
+		return await transactionalConnector.insertValues(portableQuery, context)
 	}
 
 	async insertValues<IQE extends IQEntity<any>>(
 		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> },
-		context: IOperationContext<any, any>
+		context: IContext
 	): Promise<number> {
 		if (!rawInsertValues) {
 			return 0
@@ -131,24 +116,20 @@ export class DatabaseFacade
 		if (rawInsertValues instanceof Function) {
 			rawInsertValues = rawInsertValues()
 		}
-		await this.ensureIocContext(context)
-		let numInsertedRecords = 0
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			numInsertedRecords = await this.internalInsertValues(
-				rawInsertValues as RawInsertValues<IQE>,
-				transaction, context)
-		})
+		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 
-		return numInsertedRecords
+		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
+			insertValues, null, context)
+
+		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
+		return await transactionalConnector.insertValues(portableQuery, context)
 	}
 
 	async insertColumnValuesGenerateIds<IQE extends IQEntity<any>>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		context: IOperationContext<any, any>
+		context: IContext
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		if (!rawInsertColumnValues) {
 			return []
@@ -156,21 +137,20 @@ export class DatabaseFacade
 		if (rawInsertColumnValues instanceof Function) {
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
-		await this.ensureIocContext(context)
-		let recordIdentifiers
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			recordIdentifiers = await this.internalInsertColumnValuesGenerateIds(
-				rawInsertColumnValues as RawInsertColumnValues<IQE>, transaction, context)
-		})
+		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
+
+		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
+			insertValues, null, context)
+
+		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
+		return await transactionalConnector.insertValuesGetIds(portableQuery, context)
 	}
 
 	async insertValuesGenerateIds<IQE extends IQEntity<any>>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},
-		context: IOperationContext<any, any>
+		context: IContext
 	): Promise<number[] | string[] | number[][] | string[][]> {
 		if (!rawInsertValues) {
 			return []
@@ -178,23 +158,20 @@ export class DatabaseFacade
 		if (rawInsertValues instanceof Function) {
 			rawInsertValues = rawInsertValues()
 		}
-		await this.ensureIocContext(context)
-		let recordIdentifiers
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			recordIdentifiers = await this.internalInsertValuesGetIds(
-				rawInsertValues as RawInsertValues<IQE>, transaction, context)
-		})
+		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 
-		return recordIdentifiers
+		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
+			insertValues, null, context)
+
+		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
+		return await transactionalConnector.insertValuesGetIds(portableQuery, context)
 	}
 
 	async deleteWhere<IQE extends IQEntity<any>>(
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
-		context: IOperationContext<any, any>
+		context: IContext
 	): Promise<number> {
 		if (!rawDelete) {
 			return 0
@@ -202,37 +179,24 @@ export class DatabaseFacade
 		if (rawDelete instanceof Function) {
 			rawDelete = rawDelete()
 		}
-		await this.ensureIocContext(context)
 		let deleteWhere: Delete<IQE> = new Delete(rawDelete)
-		let numDeletedRecords        = 0
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			numDeletedRecords = await this.internalDeleteWhere(deleteWhere,
-				transaction, context)
-		})
-		return numDeletedRecords
+
+		let portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
+			deleteWhere, null, context)
+
+		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
+		return await transactionalConnector.deleteWhere(portableQuery, context)
 	}
 
-	async save<E, EntityCascadeGraph>(
+	async save<E>(
 		entity: E,
-		context: IOperationContext<any, any>,
-		operationName?: OperationName
+		context: IEntityContext,
 	): Promise<number> {
 		if (!entity) {
 			return 0
 		}
-		await this.ensureIocContext(context)
-
-		let numSavedRecords = 0
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			numSavedRecords = await this.performSave(
-				entity, transaction, context)
-		})
-
-		return numSavedRecords
+		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
+		return await transactionalConnector.save(entity, context)
 	}
 
 	/**
@@ -244,9 +208,9 @@ export class DatabaseFacade
 	async updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity<any>>(
 		rawUpdate: RawUpdateColumns<IEUC, IQE>
 			| {
-			(...args: any[]): RawUpdateColumns<IEUC, IQE>
-		},
-		context: IOperationContext<any, any>
+				(...args: any[]): RawUpdateColumns<IEUC, IQE>
+			},
+		context: IContext
 	): Promise<number> {
 		if (!rawUpdate) {
 			return 0
@@ -254,42 +218,35 @@ export class DatabaseFacade
 		if (rawUpdate instanceof Function) {
 			rawUpdate = rawUpdate()
 		}
-		await this.ensureIocContext(context)
 
-		let update: UpdateColumns<any, IQE> = new UpdateColumns(rawUpdate)
-		let numUpdatedRecords               = 0
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			numUpdatedRecords = await this.internalUpdateColumnsWhere(
-				update, transaction, context)
-		})
-		return numUpdatedRecords
+		let updateColumns: UpdateColumns<any, IQE> = new UpdateColumns(rawUpdate)
+
+		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
+			updateColumns, null, context)
+
+		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
+		return await transactionalConnector.updateValues(portableQuery, context)
 	}
 
 	async updateWhere<IEUP extends IEntityUpdateProperties,
 		IQE extends IQEntity<any>>(
-		rawUpdate: RawUpdate<IEUP, IQE> | {
-			(...args: any[]): RawUpdate<IEUP, IQE>
-		},
-		context: IOperationContext<any, any>
-	): Promise<number> {
+			rawUpdate: RawUpdate<IEUP, IQE> | {
+				(...args: any[]): RawUpdate<IEUP, IQE>
+			},
+			context: IContext
+		): Promise<number> {
 		if (!rawUpdate) {
 			return 0
 		}
 		if (rawUpdate instanceof Function) {
 			rawUpdate = rawUpdate()
 		}
-		await this.ensureIocContext(context)
 		let update: UpdateProperties<any, IQE> = new UpdateProperties(rawUpdate)
-		let numUpdatedRecords                  = 0
-		await transactional(async (
-			transaction: ITransaction
-		) => {
-			numUpdatedRecords = await this.internalUpdateWhere(
-				update, transaction, context)
-		})
-		return numUpdatedRecords
+		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
+			update, null, context)
+
+		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
+		return await transactionalConnector.updateValues(portableQuery, context)
 	}
 
 	async getOriginalRecord<T>(
@@ -339,18 +296,6 @@ export class DatabaseFacade
 			fieldUtils, queryUtils, schemaUtils, transactionalServer, updateCache)
 	}
 */
-
-	private ensureId<E>(entity: E) {
-		throw new Error(`Not Implemented`)
-	}
-
-	private async ensureIocContext(
-		context: IOperationContext<any, any>
-	): Promise<void> {
-		const operationContextLoader = await container(this)
-			.get(OPERATION_CONTEXT_LOADER)
-		await operationContextLoader.ensure(context)
-	}
 
 }
 

@@ -1,8 +1,8 @@
-import {IContext}             from '@airport/di'
-import {Observable}          from 'rxjs'
-import {DistributionStrategy} from './data/DistributionStrategy'
-import {PlatformType}         from './data/PatformType'
-import {PortableQuery}        from './query/PortableQuery'
+import { IContext } from '@airport/di'
+import { Observable } from 'rxjs'
+import { DistributionStrategy } from '../data/DistributionStrategy'
+import { PlatformType } from '../data/PatformType'
+import { PortableQuery } from '../query/PortableQuery'
 
 export interface ITransactionalConnector {
 
@@ -46,26 +46,24 @@ export interface ITransactionalConnector {
 		context: IContext,
 	): Promise<number>
 
-	/* FIXME: need to add top level save api here
-		insertValues(
-			portableQuery: PortableQuery,
-			transaction: ITransaction,
-			ensureGeneratedValues?: boolean // For internal use only
-		): Promise<number>
+	insertValues(
+		portableQuery: PortableQuery,
+		context: IContext,
+		ensureGeneratedValues?: boolean // For internal use only
+	): Promise<number>
 
-		insertValuesGetIds(
-			portableQuery: PortableQuery,
-			transaction: ITransaction,
-		): Promise<number[] | string[] | number[][] | string[][]>
+	insertValuesGetIds(
+		portableQuery: PortableQuery,
+		context: IContext,
+	): Promise<number[] | string[] | number[][] | string[][]>
 
-		updateValues(
-			portableQuery: PortableQuery,
-			transaction: ITransaction,
-		): Promise<number>
+	updateValues(
+		portableQuery: PortableQuery,
+		context: IContext,
+	): Promise<number>
 
-		deleteWhere(
-			portableQuery: PortableQuery,
-			transaction: ITransaction,
-		): Promise<number>
-	*/
+	deleteWhere(
+		portableQuery: PortableQuery,
+		context: IContext,
+	): Promise<number>
 }

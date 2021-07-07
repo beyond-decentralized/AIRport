@@ -4,7 +4,7 @@ import {
 	JsonFieldQuery,
 	JsonTreeQuery
 }                                    from '@airport/ground-control'
-import {IOperationContext}           from '@airport/tower'
+import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {SUB_STATEMENT_SQL_GENERATOR} from '../../tokens'
 import {FieldSQLQuery}               from '../FieldSQLQuery'
 import {TreeSQLQuery}                from '../TreeSQLQuery'
@@ -15,14 +15,14 @@ export interface ISubStatementSqlGenerator {
 	getTreeQuerySql(
 		jsonTreeQuery: JsonTreeQuery,
 		dialect: SQLDialect,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string
 
 	getFieldQuerySql(
 		jsonFieldSqlSubQuery: JsonFieldQuery,
 		dialect: SQLDialect,
 		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> },
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string
 
 }
@@ -33,7 +33,7 @@ export class SubStatementSqlGenerator
 	getTreeQuerySql(
 		jsonTreeQuery: JsonTreeQuery,
 		dialect: SQLDialect,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		let mappedSqlQuery = new TreeSQLQuery(
 			jsonTreeQuery, dialect, context)
@@ -45,7 +45,7 @@ export class SubStatementSqlGenerator
 		jsonFieldSqlSubQuery: JsonFieldQuery,
 		dialect: SQLDialect,
 		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> },
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		let fieldSqlQuery = new FieldSQLQuery(
 			jsonFieldSqlSubQuery, dialect, context)

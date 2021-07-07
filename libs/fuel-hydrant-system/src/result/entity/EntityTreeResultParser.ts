@@ -3,7 +3,7 @@ import {
 	valuesEqual
 }                            from '@airport/air-control'
 import {DbEntity}            from '@airport/ground-control'
-import {IOperationContext}   from '@airport/tower'
+import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {TreeResultParser}    from '../TreeResultParser'
 import {IEntityResultParser} from './IEntityResultParser'
 
@@ -30,7 +30,7 @@ export class EntityTreeResultParser
 	addEntity(
 		entityAlias: string,
 		dbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		let resultObject                      = context.ioc.schemaUtils.getNewEntity(
 			dbEntity, context.ioc.airDb)
@@ -49,7 +49,7 @@ export class EntityTreeResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		relationInfos: ReferencedColumnData[],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		this.addManyToOneStub(resultObject, propertyName, relationInfos, context)
 		this.addManyToOneReference(entityAlias, resultObject, propertyName)
@@ -71,7 +71,7 @@ export class EntityTreeResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		childResultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		resultObject[propertyName] = childResultObject
 		if (this.isDifferentOrDoesntExist(entityAlias, resultObject, propertyName)) {
@@ -107,7 +107,7 @@ export class EntityTreeResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		childResultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		resultObject[propertyName] = [childResultObject]
 		this.addOneToManyCollection(entityAlias, resultObject, propertyName)
@@ -119,7 +119,7 @@ export class EntityTreeResultParser
 		otmEntityName: string,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		resultObject[propertyName] = []
 		this.addOneToManyCollection(entityAlias, resultObject, propertyName)
@@ -131,7 +131,7 @@ export class EntityTreeResultParser
 		selectClauseFragment: any,
 		entityId: any,
 		resultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		return this.mergeEntity(entityAlias, resultObject)
 	}
@@ -139,7 +139,7 @@ export class EntityTreeResultParser
 	bridge(
 		parsedResults: any[],
 		selectClauseFragment: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any[] {
 		// Nothing to be done, hierarchical queries are not bridged
 		return parsedResults

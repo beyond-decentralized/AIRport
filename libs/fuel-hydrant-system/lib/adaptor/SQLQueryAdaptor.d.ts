@@ -1,6 +1,6 @@
 import { IQEntityInternal, Parameter } from '@airport/air-control';
 import { JSONClauseField, JSONClauseObject, JSONSqlFunctionCall, SQLDataType } from '@airport/ground-control';
-import { IOperationContext } from '@airport/tower';
+import { IFuelHydrantContext } from '../FuelHydrantContext';
 /**
  * Created by Papa on 8/27/2016.
  */
@@ -24,23 +24,23 @@ export interface ISQLQueryAdaptor {
     getValue(value: any): any;
 }
 export interface ISqlValueProvider {
-    getFunctionCallValue(rawValue: any, context: IOperationContext<any, any>): string;
-    getFieldFunctionValue(aField: JSONClauseField, defaultCallback: () => string, context: IOperationContext<any, any>): string;
+    getFunctionCallValue(rawValue: any, context: IFuelHydrantContext): string;
+    getFieldFunctionValue(aField: JSONClauseField, defaultCallback: () => string, context: IFuelHydrantContext): string;
 }
 export interface ISQLFunctionAdaptor {
     getFunctionCalls(clause: JSONClauseObject, innerValue: string, qEntityMapByAlias: {
         [alias: string]: IQEntityInternal<any>;
-    }, sqlValueProvider: ISqlValueProvider, context: IOperationContext<any, any>): string;
+    }, sqlValueProvider: ISqlValueProvider, context: IFuelHydrantContext): string;
     getFunctionCall(jsonFunctionCall: JSONSqlFunctionCall, value: string, qEntityMapByAlias: {
         [entityName: string]: IQEntityInternal<any>;
-    }, sqlValueProvider: ISqlValueProvider, context: IOperationContext<any, any>): string;
+    }, sqlValueProvider: ISqlValueProvider, context: IFuelHydrantContext): string;
 }
 export declare abstract class AbstractFunctionAdaptor implements ISQLFunctionAdaptor {
     getFunctionCalls(clause: JSONClauseObject, innerValue: string, qEntityMapByAlias: {
         [alias: string]: IQEntityInternal<any>;
-    }, sqlValueProvider: ISqlValueProvider, context: IOperationContext<any, any>): string;
+    }, sqlValueProvider: ISqlValueProvider, context: IFuelHydrantContext): string;
     abstract getFunctionCall(jsonFunctionCall: JSONSqlFunctionCall, value: string, qEntityMapByAlias: {
         [entityName: string]: IQEntityInternal<any>;
-    }, sqlValueProvider: ISqlValueProvider, context: IOperationContext<any, any>): string;
+    }, sqlValueProvider: ISqlValueProvider, context: IFuelHydrantContext): string;
 }
 //# sourceMappingURL=SQLQueryAdaptor.d.ts.map

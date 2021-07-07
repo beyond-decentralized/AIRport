@@ -1,11 +1,11 @@
-import { AIR_DB, and, compareNumbers, DB_FACADE, or } from '@airport/air-control';
+import { AIRPORT_DATABASE, and, compareNumbers, DATABASE_FACADE, or } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
 import { RECORD_UPDATE_STAGE_DAO } from '@airport/moving-walkway';
 import { STAGE2_SYNCED_IN_DATA_PROCESSOR } from '../../tokens';
 export class Stage2SyncedInDataProcessor {
     async applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap) {
-        const [airDb, dbFacade, recordUpdateStageDao] = await container(this).get(AIR_DB, DB_FACADE, RECORD_UPDATE_STAGE_DAO);
+        const [airDb, dbFacade, recordUpdateStageDao] = await container(this).get(AIRPORT_DATABASE, DATABASE_FACADE, RECORD_UPDATE_STAGE_DAO);
         await this.performCreates(stage1Result.recordCreations, schemasBySchemaVersionIdMap, airDb, dbFacade);
         await this.performUpdates(stage1Result.recordUpdates, schemasBySchemaVersionIdMap, recordUpdateStageDao);
         await this.performDeletes(stage1Result.recordDeletions, schemasBySchemaVersionIdMap, airDb, dbFacade);

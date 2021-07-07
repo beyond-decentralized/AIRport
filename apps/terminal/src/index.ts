@@ -1,4 +1,3 @@
-
 export * from './core/repository/RepositoryManager'
 export * from './core/UpdateState'
 export * from './data/DeltaStore'

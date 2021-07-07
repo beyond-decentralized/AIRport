@@ -11,7 +11,6 @@ import { IUpdateManager } from './orchestration/UpdateManager'
 import { ICascadeGraphVerifier } from './processing/CascadeGraphVerifier'
 import { IDependencyGraphResolver } from './processing/DependencyGraphResolver'
 import { IEntityGraphReconstructor } from './processing/EntityGraphReconstructor'
-import { IOperationContextLoader } from './processing/OperationContext'
 import { IOperationManager } from './processing/OperationManager'
 import { IStructuralEntityValidator } from './processing/StructuralEntityValidator'
 
@@ -26,7 +25,6 @@ export const HISTORY_MANAGER = terminal.token<IHistoryManager>('IHistoryManager'
 export const INSERT_MANAGER = terminal.token<IInsertManager>('IInsertManager')
 export const OFFLINE_DELTA_STORE = terminal.token<IOfflineDeltaStore>('IOfflineDeltaStore')
 export const ONLINE_MANAGER = terminal.token<IOnlineManager>('IOnlineManager')
-export const OPERATION_CONTEXT_LOADER = terminal.token<IOperationContextLoader>('IOperationContextLoader')
 export const OPERATION_MANAGER = terminal.token<IOperationManager>('IOperationManager')
 export const QUERY_MANAGER = terminal.token<IQueryManager>('IQueryManager')
 export const REPOSITORY_MANAGER = terminal.token<IRepositoryManager>('IRepositoryManager')

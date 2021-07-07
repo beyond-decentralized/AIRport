@@ -1,6 +1,6 @@
 import { IQEntityInternal, JoinTreeNode } from '@airport/air-control';
 import { DbEntity, InternalFragments, JSONEntityRelation, JsonQuery, JSONRelation, QueryResultType, SchemaMap } from '@airport/ground-control';
-import { IOperationContext } from '@airport/tower';
+import { IFuelHydrantContext } from '../../FuelHydrantContext';
 import { SQLWhereBase } from './SQLWhereBase';
 /**
  * Created by Papa on 8/20/2016.
@@ -27,9 +27,9 @@ export declare abstract class SQLQuery<JQ extends JsonQuery> extends SQLWhereBas
     protected jsonQuery: JQ;
     protected queryResultType: QueryResultType;
     protected entityDefaults: EntityDefaults;
-    constructor(jsonQuery: JQ, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, context: IOperationContext<any, any>);
+    constructor(jsonQuery: JQ, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, context: IFuelHydrantContext);
     getFieldMap(): SchemaMap;
-    abstract toSQL(internalFragments: InternalFragments, context: IOperationContext<any, any>): string;
+    abstract toSQL(internalFragments: InternalFragments, context: IFuelHydrantContext): string;
     /**
      * If bridging is not applied:
      *
@@ -42,10 +42,10 @@ export declare abstract class SQLQuery<JQ extends JsonQuery> extends SQLWhereBas
      * @param results
      * @returns {any[]}
      */
-    abstract parseQueryResults(results: any[], internalFragments: InternalFragments, queryResultType: QueryResultType, context: IOperationContext<any, any>, bridgedQueryConfiguration?: any): Promise<any[]>;
+    abstract parseQueryResults(results: any[], internalFragments: InternalFragments, queryResultType: QueryResultType, context: IFuelHydrantContext, bridgedQueryConfiguration?: any): Promise<any[]>;
     protected abstract buildFromJoinTree(joinRelations: (JSONEntityRelation | JSONRelation)[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
-    }, context: IOperationContext<any, any>, schemaIndex?: number, tableIndex?: number): JoinTreeNode | JoinTreeNode[];
-    protected getEntitySchemaRelationFromJoin(leftQEntity: IQEntityInternal<any>, rightQEntity: IQEntityInternal<any>, entityRelation: JSONEntityRelation, parentRelation: JSONRelation, currentAlias: string, parentAlias: string, joinTypeString: string, errorPrefix: string, context: IOperationContext<any, any>): string;
+    }, context: IFuelHydrantContext, schemaIndex?: number, tableIndex?: number): JoinTreeNode | JoinTreeNode[];
+    protected getEntitySchemaRelationFromJoin(leftQEntity: IQEntityInternal<any>, rightQEntity: IQEntityInternal<any>, entityRelation: JSONEntityRelation, parentRelation: JSONRelation, currentAlias: string, parentAlias: string, joinTypeString: string, errorPrefix: string, context: IFuelHydrantContext): string;
 }
 //# sourceMappingURL=SQLQuery.d.ts.map

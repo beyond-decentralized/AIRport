@@ -25,7 +25,7 @@ import {
 import {
 	EntityState
 } from '@airport/pressurization'
-import { IOperationContext } from '@airport/tower'
+import { IFuelHydrantContext } from '../FuelHydrantContext'
 import { IEntityOrderByParser } from '../orderBy/AbstractEntityOrderByParser'
 import { EntityOrderByParser } from '../orderBy/EntityOrderByParser'
 import {
@@ -63,7 +63,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
 		queryResultType: QueryResultType,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		protected graphQueryConfiguration?: GraphQueryConfiguration
 	) {
 		super(jsonQuery, dbEntity, dialect, queryResultType, context)
@@ -81,7 +81,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 
 	toSQL(
 		internalFragments: InternalFragments,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		let joinNodeMap: { [alias: string]: JoinTreeNode } = {}
 
@@ -125,7 +125,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		results: any[],
 		internalFragments: InternalFragments,
 		queryResultType: QueryResultType,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		bridgedQueryConfiguration?: any
 	): Promise<any[]> {
 		const objectResultParserFactory = await DI.db()
@@ -158,7 +158,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 	protected buildFromJoinTree(
 		joinRelations: JSONEntityRelation[],
 		joinNodeMap: { [alias: string]: JoinTreeNode },
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): JoinTreeNode {
 		let jsonTree: JoinTreeNode
 		// For entity queries it is possible to have a query with no from clause, in this case
@@ -261,7 +261,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		currentJoinNode: JoinTreeNode,
 		resultRow: any,
 		nextFieldIndex: number[],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		const sqlAdaptor = DI.db()
 			.getSync(SQL_QUERY_ADAPTOR)
@@ -391,7 +391,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 	protected setupSelectFields(
 		selectClauseFragment: any,
 		dbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		parentDbProperty?: DbProperty
 	): any {
 		let retrieveAllOwnFields: boolean = true
@@ -486,7 +486,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		dbEntity: DbEntity,
 		selectClauseFragment: any,
 		joinTree: JoinTreeNode,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 		parentProperty?: DbProperty,
 	): string[] {
 		const tableAlias = context.ioc.relationManager.getAlias(joinTree.jsonRelation)
@@ -533,7 +533,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 	private getFROMFragment(
 		parentTree: JoinTreeNode,
 		currentTree: JoinTreeNode,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		let fromFragment = '\t'
 		let currentRelation = currentTree.jsonRelation

@@ -106,11 +106,41 @@ export class TransactionalConnector {
         // TODO: implement
         throw new Error(`TODO: implement`);
     }
-    save(entity, context) {
+    async save(entity, context) {
         if (!isServer) {
             throw new Error('Not implemented');
         }
-        throw new Error(`Not Implemented`);
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        return await transServer.save(entity, null, context);
+    }
+    async insertValues(portableQuery, context, ensureGeneratedValues // For internal use only
+    ) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        return await transServer.insertValues(portableQuery, null, context, ensureGeneratedValues);
+    }
+    async insertValuesGetIds(portableQuery, context) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        return await transServer.insertValuesGetIds(portableQuery, null, context);
+    }
+    async updateValues(portableQuery, context) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        return await transServer.updateValues(portableQuery, null, context);
+    }
+    async deleteWhere(portableQuery, context) {
+        if (!isServer) {
+            throw new Error('Not implemented');
+        }
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        return await transServer.deleteWhere(portableQuery, null, context);
     }
 }
 DI.set(TRANSACTIONAL_CONNECTOR, TransactionalConnector);

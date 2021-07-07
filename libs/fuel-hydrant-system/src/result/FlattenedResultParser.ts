@@ -6,7 +6,7 @@ import {
 	DbEntity,
 	SQLDataType
 }                          from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
+import { IFuelHydrantContext } from '../FuelHydrantContext'
 import {
 	AbstractObjectResultParser,
 	IEntityResultParser
@@ -25,7 +25,7 @@ export class FlattenedResultParser
 	addEntity(
 		entityAlias: string,
 		dbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		return this.currentResultRow
 	}
@@ -48,7 +48,7 @@ export class FlattenedResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		relationInfos: ReferencedColumnData[],
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		this.addManyToOneStub(resultObject, propertyName, relationInfos, context)
 	}
@@ -71,7 +71,7 @@ export class FlattenedResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		childResultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		// Nothing to do, we are working with a flat result array
 	}
@@ -98,7 +98,7 @@ export class FlattenedResultParser
 		propertyName: string,
 		relationDbEntity: DbEntity,
 		childResultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		// Nothing to do, we are working with a flat result array
 	}
@@ -109,7 +109,7 @@ export class FlattenedResultParser
 		otmEntityName: string,
 		propertyName: string,
 		relationDbEntity: DbEntity,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): void {
 		// Nothing to do, we are working with a flat result array
 	}
@@ -120,7 +120,7 @@ export class FlattenedResultParser
 		selectClauseFragment: any,
 		entityId: any,
 		resultObject: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any {
 		// Nothing to do, we are working with a flat result array
 		return resultObject
@@ -133,7 +133,7 @@ export class FlattenedResultParser
 	bridge(
 		parsedResults: any[],
 		selectClauseFragment: any,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): any[] {
 		// No bridging needed for ENTITY_FLATTENED Object queries
 		return parsedResults

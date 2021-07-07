@@ -1,6 +1,6 @@
 /// <reference types="google-drive-realtime-api" />
 import { ChangeRecord } from '@airport/terminal-map';
-import { ISubject } from '@airport/observe';
+import { Subject } from 'rxjs';
 import { GoogleChangeRecordIterator, GoogleRealtimeAdaptorException } from './GoogleRealtimeAdaptor';
 /**
  * Created by Papa on 1/10/2016.
@@ -8,10 +8,10 @@ import { GoogleChangeRecordIterator, GoogleRealtimeAdaptorException } from './Go
 export declare class DocumentHandle {
     private document;
     changeList: gapi.drive.realtime.CollaborativeList<any>;
-    valuesAddedSubject: ISubject<GoogleChangeRecordIterator>;
+    valuesAddedSubject: Subject<GoogleChangeRecordIterator>;
     private valuesArchivedSubject;
-    otherChangesSubject: ISubject<GoogleRealtimeAdaptorException>;
-    constructor(document: gapi.drive.realtime.Document, changeList: gapi.drive.realtime.CollaborativeList<any>, valuesAddedSubject: ISubject<GoogleChangeRecordIterator>, valuesArchivedSubject: ISubject<GoogleChangeRecordIterator>, otherChangesSubject: ISubject<GoogleRealtimeAdaptorException>);
+    otherChangesSubject: Subject<GoogleRealtimeAdaptorException>;
+    constructor(document: gapi.drive.realtime.Document, changeList: gapi.drive.realtime.CollaborativeList<any>, valuesAddedSubject: Subject<GoogleChangeRecordIterator>, valuesArchivedSubject: Subject<GoogleChangeRecordIterator>, otherChangesSubject: Subject<GoogleRealtimeAdaptorException>);
     addChangeRecord(changeRecord: ChangeRecord): Promise<any>;
     addChangeRecords(changeRecords: ChangeRecord[]): Promise<void>;
 }

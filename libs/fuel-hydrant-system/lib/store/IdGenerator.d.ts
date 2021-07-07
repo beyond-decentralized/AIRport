@@ -1,3 +1,5 @@
+import { ISequenceGenerator } from '@airport/check-in';
+import { IContext } from '@airport/di';
 import { OperationHistoryId, RecordHistoryId, RepositoryTransactionHistoryId, TransactionHistoryId } from '@airport/holding-pattern';
 export declare type NumRepositoryTransHistories = number;
 export declare type NumOperationTransHistories = number;
@@ -10,7 +12,13 @@ export interface TransactionHistoryIds {
 }
 export interface IIdGenerator {
     init(): Promise<void>;
-    generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): Promise<TransactionHistoryIds>;
+    generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories, context: IIdGeneratorContext): Promise<TransactionHistoryIds>;
+}
+export interface IIdGeneratorContext extends IContext {
+    di: {
+        sequenceGenerator: ISequenceGenerator;
+    };
+    isServer: boolean;
 }
 /**
  * Created by Papa on 9/2/2016.
@@ -18,7 +26,7 @@ export interface IIdGenerator {
 export declare class IdGenerator implements IIdGenerator {
     private transactionHistoryIdColumns;
     init(): Promise<void>;
-    generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): Promise<TransactionHistoryIds>;
+    generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories, context: IIdGeneratorContext): Promise<TransactionHistoryIds>;
     generateEntityIds(): Promise<void>;
     private getHoldingPatternDbEntity;
 }

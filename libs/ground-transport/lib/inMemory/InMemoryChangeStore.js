@@ -1,5 +1,4 @@
-import { DI } from '@airport/di';
-import { RXJS } from '@airport/observe';
+import { Subject } from 'rxjs';
 /**
  * Created by Papa on 12/14/2016.
  */
@@ -37,7 +36,7 @@ export class InMemoryChangeStore {
     getChangesAddedSubject(changeListName) {
         let changesAddedSubject = this._changesAddedSubjectMap[changeListName];
         if (!changesAddedSubject) {
-            changesAddedSubject = new (DI.db().getSync(RXJS).Subject)();
+            changesAddedSubject = new Subject();
             this._changesAddedSubjectMap[changeListName] = changesAddedSubject;
         }
         return changesAddedSubject;

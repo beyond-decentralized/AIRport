@@ -8,7 +8,7 @@ import {
 	JSONFieldInOrderBy,
 	SortOrder
 }                          from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
+import { IFuelHydrantContext } from '../FuelHydrantContext'
 import {
 	AbstractEntityOrderByParser,
 	IEntityOrderByParser
@@ -52,7 +52,7 @@ export class EntityOrderByParser
 	getOrderByFragment(
 		joinTree: JoinTreeNode,
 		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> },
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		let orderByFragments: string[]          = []
 		let orderBy: JSONEntityFieldInOrderBy[] = []

@@ -1,7 +1,7 @@
 import { doEnsureContext } from '@airport/air-control';
-import { container, DI } from '@airport/di';
+import { container } from '@airport/di';
 import { getSchemaName, QueryResultType, SyncSchemaMap } from '@airport/ground-control';
-import { RXJS, } from '@airport/observe';
+import { Subject } from 'rxjs';
 import { OPERATION_CONTEXT_LOADER } from '@airport/tower';
 import { SQLDelete } from '../sql/core/SQLDelete';
 import { SQLInsertValues } from '../sql/core/SQLInsertValues';
@@ -111,7 +111,7 @@ export class SqlDriver {
         return null;
     }
     search(portableQuery, internalFragments, context, cachedSqlQueryId) {
-        let resultsSubject = new (DI.db().getSync(RXJS).Subject)();
+        let resultsSubject = new Subject();
         // TODO: Remove the query for the list of cached queries, that are checked every
         //    time a mutation operation is run
         // let resultsSubject                 = new Subject<EntityArray>(() => {
@@ -141,7 +141,7 @@ export class SqlDriver {
         return resultsSubject;
     }
     searchOne(portableQuery, internalFragments, context, cachedSqlQueryId) {
-        let resultsSubject = new (DI.db().getSync(RXJS).Subject)();
+        let resultsSubject = new Subject();
         // TODO: Remove the query for the list of cached queries, that are checked every
         //       time a mutation operation is run
         // let resultsSubject                 = new Subject<E>(() => {

@@ -1,5 +1,5 @@
 import {JsonDelete}        from '@airport/ground-control'
-import {IOperationContext} from '@airport/tower'
+import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {SQLNoJoinQuery}    from './SQLNoJoinQuery'
 import {SQLDialect}        from './SQLQuery'
 
@@ -13,7 +13,7 @@ export class SQLDelete
 	constructor(
 		public jsonDelete: JsonDelete,
 		dialect: SQLDialect,
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	) {
 		super(context.ioc.airDb.schemas[jsonDelete.DF.si]
 				.currentVersion.entities[jsonDelete.DF.ti], dialect,
@@ -21,7 +21,7 @@ export class SQLDelete
 	}
 
 	toSQL(
-		context: IOperationContext<any, any>,
+		context: IFuelHydrantContext,
 	): string {
 		let fromFragment  = this.getTableFragment(this.jsonDelete.DF, context)
 		let whereFragment = ''

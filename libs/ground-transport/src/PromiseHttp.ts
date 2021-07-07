@@ -1,4 +1,4 @@
-import {IObservable} from '@airport/observe'
+import {Observable} from 'rxjs'
 
 /**
  * Created by Papa on 1/5/2016.
@@ -33,7 +33,7 @@ export abstract class PromiseHttp {
 	// }
 
 	private asPromise<T>(
-		observable: IObservable<T>
+		observable: Observable<T>
 	): Promise<any> {
 		return new Promise((
 			resolve,
