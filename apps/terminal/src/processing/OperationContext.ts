@@ -20,7 +20,9 @@ import {
 } from '@airport/di'
 import {
 	DbEntity,
+	IOperationContextLoader,
 	IStoreDriver,
+	OPERATION_CONTEXT_LOADER,
 	STORE_DRIVER
 } from '@airport/ground-control'
 import {
@@ -41,7 +43,6 @@ import {
 	DEPENDENCY_GRAPH_RESOLVER,
 	ENTITY_GRAPH_RECONSTRUCTOR,
 	INSERT_MANAGER,
-	OPERATION_CONTEXT_LOADER,
 	OPERATION_MANAGER,
 	QUERY_MANAGER,
 	STRUCTURAL_ENTITY_VALIDATOR,

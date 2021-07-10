@@ -1,1 +1,0 @@
-{"version":3,"file":"EntityContext.d.ts","sourceRoot":"","sources":["../../../../src/lingo/core/data/EntityContext.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,QAAQ,EAAC,MAAkB,aAAa,CAAA;AAChD,OAAO,EAAC,QAAQ,EAAC,MAAkB,yBAAyB,CAAA;AAE5D,MAAM,WAAW,cAChB,SAAQ,QAAQ;IAChB,QAAQ,EAAE,QAAQ,CAAA;CAClB"}

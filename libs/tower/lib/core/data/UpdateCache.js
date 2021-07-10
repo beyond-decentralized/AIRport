@@ -1,6 +1,10 @@
 import { UPDATE_CACHE, UpdateCacheType, valuesEqual } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { EntityRelationType, SQLDataType } from '@airport/ground-control';
+/**
+ * Server side update cache.  Used if a DAO is used on the server or if a particular DAO
+ * operation is not in Autopilot mode.
+ */
 export class UpdateCache {
     // private updateCache: EntityUpdateCache[][] = []
     // private saveRun                            = 0
@@ -24,7 +28,7 @@ export class UpdateCache {
         this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbEntity, ...entities);
     }
     getEntityUpdateCache(entity) {
-        return entity.__updateCache__;
+        return entity.__original__;
     }
     getEntityUpdateDiff(schemaUtils, dbEntity, entity, failOnNoOriginalRecord = true) {
         let updateDiff = {};
@@ -50,8 +54,8 @@ export class UpdateCache {
     }
     saveToUpdateCacheInternal(schemaUtils, cacheForUpdate, dbEntity, ...entities) {
         for (const entity of entities) {
-            entity.__updateCache__ = {};
-            this.getEntityCacheEntry(schemaUtils, cacheForUpdate, dbEntity, entity, entity.__updateCache__);
+            entity.__original__ = {};
+            this.getEntityCacheEntry(schemaUtils, cacheForUpdate, dbEntity, entity, entity.__original__);
         }
     }
     getEntityCacheEntry(schemaUtils, cacheForUpdate, dbEntity, entity, entityCopy) {

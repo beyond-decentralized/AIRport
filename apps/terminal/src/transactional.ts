@@ -1,6 +1,8 @@
 import { DI, IContext } from '@airport/di';
-import {TRANSACTION_MANAGER} from '@airport/terminal-map'
-import {ITransaction}        from './ITransaction'
+import {
+	ITransaction,
+	TRANSACTION_MANAGER
+} from '@airport/terminal-map'
 
 /**
  * Created by Papa on 4/3/2019.

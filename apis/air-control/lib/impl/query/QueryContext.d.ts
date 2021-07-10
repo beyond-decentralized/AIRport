@@ -1,6 +1,5 @@
 import { ITransactionalConnector } from '@airport/ground-control';
 import { IAirportDatabase } from '../../lingo/AirportDatabase';
-import { IUpdateCache } from '../../lingo/core/data/UpdateCache';
 import { IQueryFacade } from '../../lingo/core/repository/DatabaseFacade';
 import { IIocQueryContext, IQueryContext } from '../../lingo/query/QueryContext';
 import { IEntityUtils } from '../../lingo/utils/EntityUtils';
@@ -16,7 +15,6 @@ export declare class IocQueryContext implements IIocQueryContext {
     queryUtils: IQueryUtils;
     schemaUtils: ISchemaUtils;
     transactionalConnector: ITransactionalConnector;
-    updateCache: IUpdateCache;
 }
 export interface IQueryContextLoader {
     ensure<E>(ctx: IQueryContext<E>): Promise<void>;

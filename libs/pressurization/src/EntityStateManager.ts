@@ -1,18 +1,17 @@
-import {DI}                   from '@airport/di'
-import {DbEntity}             from '@airport/ground-control'
-import {ENTITY_STATE_MANAGER} from './tokens'
+import { DI } from '@airport/di'
+import { ENTITY_STATE_MANAGER } from './tokens'
 
 export type OperationUniqueId = number
 
 export enum EntityState {
-	CREATE      = 1,
-	DELETE      = 2,
-	PARENT_ID   = 3,
-	RESULT      = 4,
+	CREATE = 1,
+	DELETE = 2,
+	PARENT_ID = 3,
+	RESULT = 4,
 	RESULT_DATE = 5,
 	RESULT_JSON = 6,
-	STUB        = 7,
-	UPDATE      = 8
+	STUB = 7,
+	UPDATE = 8
 }
 
 export interface EntityWithState {
@@ -32,6 +31,10 @@ export interface IEntityStateAsFlags {
 	isResultJson: boolean
 	isStub: boolean
 	isUpdate: boolean
+}
+
+export interface IDbEntity {
+	name: string
 }
 
 export interface IEntityStateManager {
@@ -87,7 +90,7 @@ export interface IEntityStateManager {
 
 	getEntityStateTypeAsFlags<T>(
 		entity: T,
-		dbEntity: DbEntity
+		dbEntity: IDbEntity
 	): IEntityStateAsFlags
 
 }
@@ -95,64 +98,64 @@ export interface IEntityStateManager {
 export function markAsStub<T>(
 	entity: T
 ) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).markAsStub(entity);	
+	DI.db().getSync(ENTITY_STATE_MANAGER).markAsStub(entity);
 }
 
 export function markForDeletion<T>(
 	entity: T
 ) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).markForDeletion(entity);	
+	DI.db().getSync(ENTITY_STATE_MANAGER).markForDeletion(entity);
 }
 
 export function markToCreate<T>(
 	entity: T
 ) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).markToCreate(entity);	
+	DI.db().getSync(ENTITY_STATE_MANAGER).markToCreate(entity);
 }
 
 export function markToUpdate<T>(
 	entity: T
 ) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).markToUpdate(entity);	
+	DI.db().getSync(ENTITY_STATE_MANAGER).markToUpdate(entity);
 }
 
 export function getEntityState<T>(
 	entity: T
 ) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).getEntityState(entity);	
+	DI.db().getSync(ENTITY_STATE_MANAGER).getEntityState(entity);
 }
 
 export function copyEntityState<T>(
 	entity: T,
 	entity2: T
 ) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).copyEntityState(entity, entity2);	
+	DI.db().getSync(ENTITY_STATE_MANAGER).copyEntityState(entity, entity2);
 }
 
 export function getEntityStateTypeAsFlags<T>(
 	entity: T,
-	dbEntity: DbEntity
+	dbEntity: IDbEntity
 ) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).getEntityStateTypeAsFlags(entity, dbEntity);	
+	DI.db().getSync(ENTITY_STATE_MANAGER).getEntityStateTypeAsFlags(entity, dbEntity);
 }
 
 export function isStub<T>(
 	entity: T
 ) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).isStub(entity);	
+	DI.db().getSync(ENTITY_STATE_MANAGER).isStub(entity);
 }
 
 export function isParentId<T>(
 	entity: T,
-		dbEntity: DbEntity
+	dbEntity: IDbEntity
 ) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).isParentId(entity);	
+	DI.db().getSync(ENTITY_STATE_MANAGER).isParentId(entity);
 }
 
 export class EntityStateManager
 	implements IEntityStateManager {
 	static OPERATION_UNIQUE_ID_FIELD = '__UID__'
-	static STATE_FIELD               = '__state__'
+	static STATE_FIELD = '__state__'
 
 	isStub<T>(
 		entity: T
@@ -243,7 +246,7 @@ export class EntityStateManager
 
 	getEntityStateTypeAsFlags<T>(
 		entity: T,
-		dbEntity: DbEntity
+		dbEntity: IDbEntity
 	): IEntityStateAsFlags {
 		let isCreate, isDelete, isParentId, isResult, isResultDate, isResultJson, isStub, isUpdate
 		const entityState = this.getEntityState(entity)

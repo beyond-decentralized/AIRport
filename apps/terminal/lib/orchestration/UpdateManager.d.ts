@@ -1,6 +1,7 @@
 import { PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
-import { IOperationContext, ITransaction } from '@airport/tower';
+import { ITransaction } from '@airport/terminal-map';
+import { IOperationContext } from '../processing/OperationContext';
 export interface IUpdateManager {
     updateValues(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, ctx: IOperationContext<any, any>): Promise<number>;
 }

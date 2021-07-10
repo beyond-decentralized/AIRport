@@ -16,10 +16,14 @@ import {
 	TRANSACTIONAL_SERVER
 }                        from '../tokens';
 
-var isServer = false;
+var _isServer = false;
 
 export function setIsServer(): void {
-	isServer = true;
+	_isServer = true;
+}
+
+export function isServer(): boolean {
+	return _isServer;
 }
 
 export class TransactionalConnector
@@ -29,7 +33,7 @@ export class TransactionalConnector
 	serverUrl: string;
 
 	async init(): Promise<void> {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -46,7 +50,7 @@ export class TransactionalConnector
 		distributionStrategy: DistributionStrategy,
 		context: IContext
 	): Promise<number> {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -70,7 +74,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -91,7 +95,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -112,7 +116,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<Observable<EntityArray>> {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -133,7 +137,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<Observable<E>> {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -167,7 +171,7 @@ export class TransactionalConnector
 	insert(
 		// todo define parameters
 	) {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 		// TODO: implement
@@ -180,7 +184,7 @@ export class TransactionalConnector
 	update(
 		// todo define parameters
 	) {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 		// TODO: implement
@@ -193,7 +197,7 @@ export class TransactionalConnector
 	delete(
 		// todo define parameters
 	) {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 		// TODO: implement
@@ -204,7 +208,7 @@ export class TransactionalConnector
 		entity: T,
 		context: IContext,
 	): Promise<number> {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -218,7 +222,7 @@ export class TransactionalConnector
 		context: IContext,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number> {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -232,7 +236,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -245,7 +249,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number> {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -258,7 +262,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number> {
-		if(!isServer) {
+		if(!isServer()) {
 			throw new Error('Not implemented');
 		}
 

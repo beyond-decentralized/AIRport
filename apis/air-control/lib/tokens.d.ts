@@ -1,7 +1,6 @@
 import { IRelationManager } from './impl/core/entity/RelationManager';
 import { IQueryContextLoader } from './impl/query/QueryContext';
 import { IAirportDatabase } from './lingo/AirportDatabase';
-import { IUpdateCache } from './lingo/core/data/UpdateCache';
 import { IDatabaseFacade, IQueryFacade } from './lingo/core/repository/DatabaseFacade';
 import { ILookup } from './lingo/query/api/Lookup';
 import { IEntityUtils } from './lingo/utils/EntityUtils';
@@ -20,5 +19,4 @@ export declare const QUERY_FACADE: import("@airport/di").IDiToken<IQueryFacade>;
 export declare const QUERY_UTILS: import("@airport/di").IDiToken<IQueryUtils>;
 export declare const RELATION_MANAGER: import("@airport/di").IDiToken<IRelationManager>;
 export declare const SCHEMA_UTILS: import("@airport/di").IDiToken<ISchemaUtils>;
-export declare const UPDATE_CACHE: import("@airport/di").IDiToken<IUpdateCache>;
 //# sourceMappingURL=tokens.d.ts.map

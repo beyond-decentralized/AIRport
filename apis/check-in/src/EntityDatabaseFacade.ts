@@ -80,15 +80,6 @@ export class EntityDatabaseFacade<Entity,
     return this.Q[this.dbEntity.name];
   }
 
-  //
-  // async releaseCachedForUpdate(
-  // 	updateCacheType: UpdateCacheType,
-  // 	...entities: Entity[]
-  // ): Promise<void> {
-  // 	const dbFacade = await DI.get(DATABASE_FACADE)
-  // 	return await dbFacade.releaseCachedForUpdate(updateCacheType, this.dbEntity,
-  // ...entities) }
-
   async insertColumnValues<IQE extends IQEntity<Entity>>(
     rawInsertColumnValues: RawInsertColumnValues<IQE> | {
       (...args: any[]): RawInsertColumnValues<IQE>;

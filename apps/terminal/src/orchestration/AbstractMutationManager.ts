@@ -12,7 +12,7 @@ import {
 } from '@airport/air-control';
 import { container, IContext } from '@airport/di';
 import { DbColumn, JsonQuery, PortableQuery, QueryResultType } from '@airport/ground-control';
-import { ITransaction } from '@airport/tower';
+import { ITransaction } from '@airport/terminal-map';
 
 export class AbstractMutationManager {
 

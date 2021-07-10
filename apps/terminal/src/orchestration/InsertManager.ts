@@ -32,10 +32,10 @@ import {
 }                           from '@airport/holding-pattern'
 import {
 	DistributionStrategy,
+	ITransaction,
 	PlatformType,
 	TRANSACTION_MANAGER
 }                           from '@airport/terminal-map'
-import {ITransaction}       from '@airport/tower'
 import {IRepositoryManager} from '../core/repository/RepositoryManager'
 import {
 	HISTORY_MANAGER,

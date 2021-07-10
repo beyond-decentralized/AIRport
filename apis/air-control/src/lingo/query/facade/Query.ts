@@ -3,9 +3,11 @@ import {
 	JsonQuery
 }                          from '@airport/ground-control';
 import {
-	IFieldUtils,
+	IFieldUtils
+}                          from '../../utils/FieldUtils';
+import {
 	IQueryUtils
-}                          from '../../..';
+}                          from '../../utils/QueryUtils';
 import {
 	IEntityRelationFrom,
 	IFrom

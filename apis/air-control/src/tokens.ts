@@ -2,7 +2,6 @@ import { system } from '@airport/di'
 import { IRelationManager } from './impl/core/entity/RelationManager'
 import { IQueryContextLoader } from './impl/query/QueryContext'
 import { IAirportDatabase } from './lingo/AirportDatabase'
-import { IUpdateCache } from './lingo/core/data/UpdateCache'
 import {
 	IDatabaseFacade,
 	IQueryFacade
@@ -28,5 +27,4 @@ export const QUERY_FACADE = airControl.token<IQueryFacade>('IQueryFacade')
 export const QUERY_UTILS = airControl.token<IQueryUtils>('IQueryUtils')
 export const RELATION_MANAGER = airControl.token<IRelationManager>('IRelationManager')
 export const SCHEMA_UTILS = airControl.token<ISchemaUtils>('ISchemaUtils')
-export const UPDATE_CACHE = airControl.token<IUpdateCache>('IUpdateCache')
 

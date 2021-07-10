@@ -4,8 +4,7 @@ import {
 	IQueryContext,
 	IQueryFacade,
 	QUERY_CONTEXT_LOADER,
-	QUERY_FACADE,
-	UpdateCacheType
+	QUERY_FACADE
 } from '@airport/air-control';
 import {
 	container,
@@ -29,15 +28,11 @@ export class QueryFacade
 	async find<E, EntityArray extends Array<E>>(
 		query: AbstractQuery,
 		queryResultType: QueryResultType,
-		context: IQueryContext<E>,
-		cacheForUpdate = UpdateCacheType.NONE,
+		context: IQueryContext<E>
 	): Promise<EntityArray> {
 		await this.ensureIocContext(context);
 		const result = await context.ioc.transactionalConnector.find<E, EntityArray>(
 			this.getPortableQuery(query, queryResultType, context), context);
-		// TODO: restore and property maintain update cache, when needed
-		// context.ioc.updateCache.addToCache(
-		// 	context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...result)
 
 		return result;
 	}
@@ -45,14 +40,11 @@ export class QueryFacade
 	async findOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		context: IQueryContext<E>,
-		cacheForUpdate = UpdateCacheType.NONE,
+		context: IQueryContext<E>
 	): Promise<E> {
 		await this.ensureIocContext(context);
 		const result = await context.ioc.transactionalConnector.findOne<E>(this.getPortableQuery(
 			query, queryResultType, context), context);
-		context.ioc.updateCache.addToCache(
-			context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result);
 
 		return result;
 	}
@@ -72,22 +64,15 @@ export class QueryFacade
 		};
 	}
 
+	// FIXME: merge update caches on the client
 	async search<E, EntityArray extends Array<E>>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		context: IQueryContext<E>,
-		cacheForUpdate = UpdateCacheType.NONE,
+		context: IQueryContext<E>
 	): Promise<Observable<EntityArray>> {
 		await this.ensureIocContext(context);
 		let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(
 			query, queryResultType, context), context);
-
-		observable = observable.pipe(map((results: any[]) => {
-			context.ioc.updateCache.addToCache(
-				context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, ...results);
-
-			return results;
-		})) as Observable<EntityArray>;
 
 		return observable as Observable<EntityArray>;
 	}
@@ -95,22 +80,11 @@ export class QueryFacade
 	async searchOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		context: IQueryContext<E>,
-		cacheForUpdate = UpdateCacheType.NONE,
+		context: IQueryContext<E>
 	): Promise<Observable<E>> {
 		await this.ensureIocContext(context);
 		let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(
 			query, queryResultType, context), context);
-
-		observable = observable.pipe(
-			map(
-				result => {
-					context.ioc.updateCache.addToCache(
-						context.ioc.schemaUtils, cacheForUpdate, context.dbEntity, result);
-
-					return result;
-				})
-		);
 
 		return observable as Observable<E>;
 	}

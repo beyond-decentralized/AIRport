@@ -23,7 +23,6 @@ import { SCHEMA_INITIALIZER } from '@airport/landing';
 
 import {
 	TRANSACTIONAL_SERVER,
-	transactional,
 } from '@airport/tower';
 import { SCHEMA_DAO } from '@airport/traffic-pattern';
 import {
@@ -33,6 +32,7 @@ import {
 	USER_DAO,
 } from '@airport/travel-document-checkpoint';
 import { DATABASE_MANAGER } from '../tokens';
+import { transactional } from '../transactional';
 
 export interface IDatabaseManager {
 

@@ -1,18 +1,14 @@
-import {
-	DI,
-	IContext
-}                                  from '@airport/di';
-import { QueryResultType }         from '@airport/ground-control';
+import { IContext } from '@airport/di';
+import { QueryResultType } from '@airport/ground-control';
 import {
 	Observable,
 	from
-}                                  from 'rxjs';
-import { IEntityContext }          from '../../../lingo/core/data/EntityContext';
-import { UpdateCacheType }         from '../../../lingo/core/data/UpdateCacheType';
+} from 'rxjs';
+import { IEntityContext } from '../../../lingo/core/EntityContext';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
-import { IEntitySearchOne }        from '../../../lingo/query/api/EntitySearchOne';
-import { RawEntityQuery }          from '../../../lingo/query/facade/EntityQuery';
-import { EntityLookup }            from './EntityLookup';
+import { IEntitySearchOne } from '../../../lingo/query/api/EntitySearchOne';
+import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery';
+import { EntityLookup } from './EntityLookup';
 
 export interface IEntitySearchOneInternal<Entity, IESP extends IEntitySelectProperties>
 	extends IEntitySearchOne<Entity, IESP> {
@@ -30,7 +26,7 @@ export interface IEntitySearchOneInternal<Entity, IESP extends IEntitySelectProp
  */
 export class EntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 	extends EntityLookup<EntitySearchOne<Entity, IESP>,
-		EntitySearchOne<Entity, IESP>, IESP>
+	EntitySearchOne<Entity, IESP>, IESP>
 	implements IEntitySearchOneInternal<Entity, IESP> {
 
 	graph(
@@ -60,16 +56,6 @@ export class EntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 		isMapped?: boolean
 	): EntitySearchOne<Entity, IESP> {
 		return this.setMap(EntitySearchOne, isMapped);
-	}
-
-	noCache(): EntitySearchOne<Entity, IESP> {
-		return this.setNoCache(EntitySearchOne);
-	}
-
-	cache(
-		cacheForUpdate?: UpdateCacheType
-	): EntitySearchOne<Entity, IESP> {
-		return this.setCache(EntitySearchOne, cacheForUpdate);
 	}
 
 }

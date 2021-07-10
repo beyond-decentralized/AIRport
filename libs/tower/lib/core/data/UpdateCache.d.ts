@@ -6,6 +6,10 @@ import { DbEntity } from '@airport/ground-control';
 export interface EntityUpdateCache {
     [id: string]: any;
 }
+/**
+ * Server side update cache.  Used if a DAO is used on the server or if a particular DAO
+ * operation is not in Autopilot mode.
+ */
 export declare class UpdateCache implements IUpdateCache {
     /**
      * Start Context for an UpdateProperties Operation.  All entity update operations must

@@ -20,6 +20,10 @@ export interface EntityUpdateCache {
 	[id: string]: any;
 }
 
+/**
+ * Server side update cache.  Used if a DAO is used on the server or if a particular DAO
+ * operation is not in Autopilot mode.
+ */
 export class UpdateCache
 	implements IUpdateCache {
 
@@ -56,7 +60,7 @@ export class UpdateCache
 	getEntityUpdateCache(
 		entity: any
 	): any {
-		return entity.__updateCache__
+		return entity.__original__
 	}
 
 	getEntityUpdateDiff(
@@ -100,9 +104,9 @@ export class UpdateCache
 		...entities: any[]
 	): void {
 		for (const entity of entities) {
-			entity.__updateCache__ = {}
+			entity.__original__ = {}
 			this.getEntityCacheEntry(schemaUtils, cacheForUpdate, dbEntity,
-				entity, entity.__updateCache__)
+				entity, entity.__original__)
 		}
 	}
 

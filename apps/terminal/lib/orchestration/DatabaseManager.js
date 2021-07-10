@@ -3,10 +3,11 @@ import { container, DI } from '@airport/di';
 import { getSchemaName, STORE_DRIVER, TRANSACTIONAL_CONNECTOR, } from '@airport/ground-control';
 import { Actor, ACTOR_DAO, } from '@airport/holding-pattern';
 import { SCHEMA_INITIALIZER } from '@airport/landing';
-import { TRANSACTIONAL_SERVER, transactional, } from '@airport/tower';
+import { TRANSACTIONAL_SERVER, } from '@airport/tower';
 import { SCHEMA_DAO } from '@airport/traffic-pattern';
 import { Terminal, TERMINAL_DAO, User, USER_DAO, } from '@airport/travel-document-checkpoint';
 import { DATABASE_MANAGER } from '../tokens';
+import { transactional } from '../transactional';
 export class DatabaseManager {
     constructor() {
         this.initialized = false;

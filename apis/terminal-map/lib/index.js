@@ -17,8 +17,8 @@ export * from './sync/ArrayChangeRecordIterator';
 export * from './sync/ChangeModel';
 export * from './sync/DistributionStrategy';
 export * from './sync/SharedChangeList';
-export * from './transaction/ITransactionalConnector';
 export * from './transaction/ITransaction';
+export * from './transaction/TransactionManager';
 export * from './SharingAdaptor';
 export * from './tokens';
 //# sourceMappingURL=index.js.map

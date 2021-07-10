@@ -1,7 +1,7 @@
 import { DbSchema, DistributionStrategy, PlatformType } from '@airport/ground-control';
 import { QEntityConstructor } from '../impl/core/entity/Entity';
 import { QRelation } from '../impl/core/entity/Relation';
-import { IEntityContext } from './core/data/EntityContext';
+import { IEntityContext } from './core/EntityContext';
 import { EntityConstructor, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from './core/entity/Entity';
 import { FunctionsAndOperators } from './core/FunctionsAndOperators';
 import { INonEntityFind } from './query/api/NonEntityFind';

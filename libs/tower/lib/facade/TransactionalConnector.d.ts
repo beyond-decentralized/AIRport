@@ -3,6 +3,7 @@ import { IContext } from '@airport/di';
 import { DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 export declare function setIsServer(): void;
+export declare function isServer(): boolean;
 export declare class TransactionalConnector implements ITransactionalConnector {
     dbName: string;
     serverUrl: string;

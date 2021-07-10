@@ -1,6 +1,6 @@
 import { DbEntity, DomainName, InternalFragments, IStoreDriver, PortableQuery, QueryType, SchemaName, SchemaStatus, SQLDataType, StoreType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
-import { ITransaction } from '@airport/tower';
+import { ITransaction } from '@airport/terminal-map';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 /**

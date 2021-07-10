@@ -1,15 +1,14 @@
-import {container, DI}              from '@airport/di'
-import {TransactionType} from '@airport/ground-control'
+import { container, DI } from '@airport/di'
+import { TransactionType } from '@airport/ground-control'
 import {
 	IActor,
-	IRepository,
 	IRepositoryTransactionHistory,
 	ITransactionHistory,
 	REPO_TRANS_HISTORY_DUO,
 	RepositoryId,
 	TRANS_HISTORY_DUO
-}                        from '@airport/holding-pattern'
-import {HISTORY_MANAGER} from '../tokens'
+} from '@airport/holding-pattern'
+import { HISTORY_MANAGER } from '../tokens'
 
 export interface IHistoryManager {
 

@@ -1,5 +1,6 @@
 import { JSONBaseOperation, JsonQuery } from '@airport/ground-control';
-import { IFieldUtils, IQueryUtils } from '../../..';
+import { IFieldUtils } from '../../utils/FieldUtils';
+import { IQueryUtils } from '../../utils/QueryUtils';
 import { IEntityRelationFrom, IFrom } from '../../core/entity/Entity';
 import { IFieldInOrderBy } from '../../core/field/FieldInOrderBy';
 /**

@@ -5,7 +5,7 @@ import {
 } from '@airport/ground-control';
 import { QEntityConstructor } from '../impl/core/entity/Entity';
 import { QRelation } from '../impl/core/entity/Relation';
-import { IEntityContext } from './core/data/EntityContext';
+import { IEntityContext } from './core/EntityContext';
 import {
   EntityConstructor,
   IEntityUpdateColumns,

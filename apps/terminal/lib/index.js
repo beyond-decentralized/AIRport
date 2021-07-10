@@ -22,8 +22,7 @@ export * from './processing/StructuralEntityValidator';
 export * from './shared/logic/DatabaseLogic';
 export * from './shared/DateUtils';
 export * from './shared/PlatformUtils';
-export * from './transaction/ITransaction';
-export * from './transaction/transactional';
+export * from './transactional';
 // export * from './Constants'
 export * from './tokens';
 import { setIsServer } from '@airport/tower';

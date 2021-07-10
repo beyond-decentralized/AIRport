@@ -6,38 +6,6 @@ import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
  * Created by Papa on 5/23/2016.
  */
 export class DatabaseFacade {
-    /*constructor() {
-        super();
-        (<any>this.updateCache).databaseFacade = this
-    }*/
-    /*
-        cacheForUpdate(
-            updateCache: IUpdateCache,
-            cacheForUpdate: UpdateCacheType,
-            dbEntity: DbEntity,
-            ...entities: any[]
-        ): void {
-            if (!entities) {
-                return
-            }
-            updateCache.addToCache(cacheForUpdate, dbEntity, ...entities)
-        }
-
-    releaseCachedForUpdate(
-        cacheForUpdate: UpdateCacheType,
-        dbEntity: DbEntity,
-        ...entities: any[]
-    ): void {
-        if (!entities) {
-            return
-        }
-        this.updateCache.dropFromCache(cacheForUpdate, dbEntity, ...entities)
-    }
-
-    dropUpdateCache(): void {
-        this.updateCache.dropCache()
-    }
-     */
     async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH, context) {
         // TODO: figure out how addRepository will work
         const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
@@ -139,15 +107,6 @@ export class DatabaseFacade {
         const portableQuery = context.ioc.queryFacade.getPortableQuery(update, null, context);
         const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
         return await transactionalConnector.updateValues(portableQuery, context);
-    }
-    async getOriginalRecord(dbEntity, entity, updateCache) {
-        const originalRecord = updateCache.getEntityUpdateCache(entity);
-        if (!originalRecord) {
-            throw new Error(`Cannot update '${dbEntity.name}' - entity has no update cache.
-			Did you forget to add .cache() to the query you used to retrieve the 
-			original record?`);
-        }
-        return originalRecord;
     }
     prepare(queryFunction) {
         return new FunctionWrapper(queryFunction);

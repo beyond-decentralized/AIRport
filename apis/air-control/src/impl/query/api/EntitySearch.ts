@@ -7,8 +7,7 @@ import {
 	Observable,
 	from
 }                                  from 'rxjs';
-import { IEntityContext }          from '../../../lingo/core/data/EntityContext';
-import { UpdateCacheType }         from '../../../lingo/core/data/UpdateCacheType';
+import { IEntityContext }          from '../../../lingo/core/EntityContext';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
 import { IEntitySearch }           from '../../../lingo/query/api/EntitySearch';
 import { RawEntityQuery }          from '../../../lingo/query/facade/EntityQuery';
@@ -66,12 +65,6 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 
 	noCache(): EntitySearch<Entity, Entity[], IESP> {
 		return this.setNoCache(EntitySearch);
-	}
-
-	cache(
-		cacheForUpdate?: UpdateCacheType
-	): EntitySearch<Entity, Entity[], IESP> {
-		return this.setCache(EntitySearch, cacheForUpdate);
 	}
 
 }

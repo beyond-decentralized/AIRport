@@ -12,5 +12,4 @@ export const QUERY_FACADE = airControl.token('IQueryFacade');
 export const QUERY_UTILS = airControl.token('IQueryUtils');
 export const RELATION_MANAGER = airControl.token('IRelationManager');
 export const SCHEMA_UTILS = airControl.token('ISchemaUtils');
-export const UPDATE_CACHE = airControl.token('IUpdateCache');
 //# sourceMappingURL=tokens.js.map

@@ -8,11 +8,11 @@ import {
   REPOSITORY_DAO,
   RepositoryTransactionHistory,
 } from '@airport/holding-pattern';
-import { transactional } from '@airport/tower';
 import { IRepositoryManager } from '../core/repository/RepositoryManager';
 import { UpdateState } from '../core/UpdateState';
 import { IOfflineDeltaStore } from '../data/OfflineDeltaStore';
 import { OFFLINE_DELTA_STORE, ONLINE_MANAGER, REPOSITORY_MANAGER } from '../tokens';
+import { transactional } from '../transactional';
 
 export interface IOnlineManager {
 

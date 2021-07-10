@@ -1,8 +1,8 @@
 import { container, DI } from '@airport/di';
 import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { TRANSACTIONAL_SERVER } from '@airport/tower';
-import { OPERATION_CONTEXT_LOADER } from '../tokens';
-import { transactional } from '../transaction/transactional';
+import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
+import { transactional } from '../transactional';
 /**
  * Keeps track of transactions, per client and validates that a given
  * transaction belongs to the provided client.  If the connection

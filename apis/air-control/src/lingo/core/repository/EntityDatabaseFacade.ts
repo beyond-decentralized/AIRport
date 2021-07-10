@@ -3,7 +3,6 @@ import {IEntityFind}       from '../../query/api/EntityFind'
 import {IEntityFindOne}    from '../../query/api/EntityFindOne'
 import {IEntitySearch}     from '../../query/api/EntitySearch'
 import {IEntitySearchOne}  from '../../query/api/EntitySearchOne'
-import {OperationName}     from '../../query/Dao'
 import {IDuo}              from '../../query/Duo'
 import {RawDelete}         from '../../query/facade/Delete'
 import {
@@ -15,7 +14,7 @@ import {
 	RawUpdateColumns
 }                          from '../../query/facade/Update'
 import {MappedEntityArray} from '../../query/MappedEntityArray'
-import {IEntityContext}    from '../data/EntityContext'
+import {IEntityContext}    from '../EntityContext'
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
@@ -68,20 +67,6 @@ export interface IEntityDatabaseFacade<IEntity,
 	 * Creates a new instance of the Query Entity for this entity type.
 	 */
 	from: IQ;
-
-	/**
-	 * Releases UpdateProperties Cache for entities that haven't been released
-	 * via an update call.
-	 *
-	 * @param {Entity} entities
-	 */
-
-	/*
-		releaseCachedForUpdate(
-			updateCacheType: UpdateCacheType,
-			...entities: Entity[]
-		): Promise<void>;
-		*/
 
 	insertColumnValues<IQE extends IQEntity<IEntity>>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {

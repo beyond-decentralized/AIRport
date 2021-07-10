@@ -1,5 +1,5 @@
 import { IActor } from '../../../../schemas/holding-pattern/lib';
-import { ITransaction } from '../transaction/ITransaction';
+import { ITransaction } from '@airport/terminal-map';
 import { IOperationContext } from './OperationContext';
 /**
  * Created by Papa on 11/15/2016.

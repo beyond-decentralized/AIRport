@@ -1,7 +1,6 @@
 import { IContext } from '@airport/di';
 import { DbEntity, ITransactionalConnector } from '@airport/ground-control';
 import { IAirportDatabase } from '../AirportDatabase';
-import { IUpdateCache } from '../core/data/UpdateCache';
 import { IQueryFacade } from '../core/repository/DatabaseFacade';
 import { IEntityUtils } from '../utils/EntityUtils';
 import { IFieldUtils } from '../utils/FieldUtils';
@@ -20,7 +19,6 @@ export interface IIocQueryContext {
     queryUtils: IQueryUtils;
     schemaUtils: ISchemaUtils;
     transactionalConnector: ITransactionalConnector;
-    updateCache: IUpdateCache;
     init(): Promise<void>;
 }
 //# sourceMappingURL=QueryContext.d.ts.map

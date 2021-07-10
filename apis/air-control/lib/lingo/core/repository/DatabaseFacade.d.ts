@@ -6,8 +6,7 @@ import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/Inser
 import { RawUpdate, RawUpdateColumns } from '../../query/facade/Update';
 import { IQueryContext } from '../../query/QueryContext';
 import { EntityIdData } from '../../utils/SchemaUtils';
-import { IEntityContext } from '../data/EntityContext';
-import { UpdateCacheType } from '../data/UpdateCacheType';
+import { IEntityContext } from '../EntityContext';
 import { IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../entity/Entity';
 export interface UpdateRecord {
     newValue: any;
@@ -25,15 +24,6 @@ export interface IDatabaseFacade {
      * Name of the terminal
      */
     name: string;
-    /**
-     * Start Context for an UpdateProperties Operation.  All entity update operations must
-     * be performed on cached entities.
-     *
-     * This starts recording all queries and allows the update to diff recorded
-     * query results with the updated object to get the actual changed fields.
-     *
-     * @param {Entity} entities
-     */
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, ctx: IEntityContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity<any>>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
@@ -85,10 +75,10 @@ export interface IDatabaseFacade {
 }
 export interface IQueryFacade {
     ensureIocContext<E>(context: IQueryContext<E>): Promise<void>;
-    find<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<EntityArray>;
-    findOne<E>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<E>;
-    search<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<Observable<EntityArray>>;
-    searchOne<E>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext, cacheForUpdate?: UpdateCacheType): Promise<Observable<E>>;
+    find<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext): Promise<EntityArray>;
+    findOne<E>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext): Promise<E>;
+    search<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext): Promise<Observable<EntityArray>>;
+    searchOne<E>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext): Promise<Observable<E>>;
     getPortableQuery<E>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext): PortableQuery;
 }
 //# sourceMappingURL=DatabaseFacade.d.ts.map

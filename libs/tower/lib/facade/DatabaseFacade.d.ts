@@ -1,6 +1,5 @@
-import { IDatabaseFacade, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, IUpdateCache, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
+import { IDatabaseFacade, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
 import { IContext } from '@airport/di';
-import { DbEntity } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 /**
  * Created by Papa on 5/23/2016.
@@ -36,7 +35,6 @@ export declare class DatabaseFacade implements IDatabaseFacade {
     updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity<any>>(rawUpdate: RawUpdate<IEUP, IQE> | {
         (...args: any[]): RawUpdate<IEUP, IQE>;
     }, context: IContext): Promise<number>;
-    getOriginalRecord<T>(dbEntity: DbEntity, entity: T, updateCache: IUpdateCache): Promise<any>;
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;
 }
 export declare class FunctionWrapper<QF extends Function> implements IFunctionWrapper<any> {

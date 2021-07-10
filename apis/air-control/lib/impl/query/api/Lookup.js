@@ -5,17 +5,17 @@ export class LookupProxy {
     ensureContext(context) {
         return doEnsureContext(context);
     }
-    lookup(rawQuery, queryResultType, search, one, QueryClass, context, cacheForUpdate, mapResults) {
+    lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults) {
         return DI.db()
             .get(LOOKUP)
-            .then(lookup => lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, context, cacheForUpdate, mapResults));
+            .then(lookup => lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults));
     }
 }
 export class Lookup {
     ensureContext(context) {
         return doEnsureContext(context);
     }
-    async lookup(rawQuery, queryResultType, search, one, QueryClass, context, cacheForUpdate, mapResults) {
+    async lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults) {
         const queryContextLoader = await DI.db().get(QUERY_CONTEXT_LOADER);
         await queryContextLoader.ensure(context);
         let query;
@@ -44,7 +44,7 @@ export class Lookup {
                 queryMethod = context.ioc.queryFacade.find;
             }
         }
-        return await queryMethod.call(context.ioc.queryFacade, query, this.getQueryResultType(queryResultType, mapResults), context, cacheForUpdate);
+        return await queryMethod.call(context.ioc.queryFacade, query, this.getQueryResultType(queryResultType, mapResults), context);
     }
     getQueryResultType(baseQueryResultType, mapResults) {
         switch (baseQueryResultType) {

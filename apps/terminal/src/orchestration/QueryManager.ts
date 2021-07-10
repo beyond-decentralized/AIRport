@@ -7,7 +7,7 @@ import {
 	PortableQuery,
 	STORE_DRIVER
 }                      from '@airport/ground-control'
-import {IObservable}   from '@airport/observe'
+import {Observable}   from 'rxjs'
 import {QUERY_MANAGER} from '../tokens'
 
 export interface IQueryManager {
@@ -27,12 +27,12 @@ export interface IQueryManager {
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		context: IContext,
-	): Promise<IObservable<EntityArray>>;
+	): Promise<Observable<EntityArray>>;
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		context: IContext,
-	): Promise<IObservable<E>>;
+	): Promise<Observable<E>>;
 
 }
 
@@ -65,7 +65,7 @@ export class QueryManager
 		portableQuery: PortableQuery,
 		context: IContext,
 		cachedSqlQueryId?: number,
-	): Promise<IObservable<EntityArray>> {
+	): Promise<Observable<EntityArray>> {
 		const storeDriver = await container(this)
 			.get(STORE_DRIVER)
 
@@ -76,7 +76,7 @@ export class QueryManager
 		portableQuery: PortableQuery,
 		context: IContext,
 		cachedSqlQueryId?: number,
-	): Promise<IObservable<E>> {
+	): Promise<Observable<E>> {
 		const storeDriver = await container(this)
 			.get(STORE_DRIVER)
 

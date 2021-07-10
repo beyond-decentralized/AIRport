@@ -19,8 +19,5 @@ export class EntityFindOne extends EntityLookup {
     noCache() {
         return this.setNoCache(EntityFindOne);
     }
-    cache(cacheForUpdate) {
-        return this.setCache(EntityFindOne, cacheForUpdate);
-    }
 }
 //# sourceMappingURL=EntityFindOne.js.map

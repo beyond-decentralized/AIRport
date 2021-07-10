@@ -1,6 +1,6 @@
 import { IAirportDatabase, IFieldUtils, IQMetadataUtils, IQueryFacade, IQueryUtils, IRelationManager, ISchemaUtils } from '@airport/air-control';
 import { IContext } from '@airport/di';
-import { DbEntity, IStoreDriver } from '@airport/ground-control';
+import { DbEntity, IOperationContextLoader, IStoreDriver } from '@airport/ground-control';
 import { IEntityStateManager } from '@airport/pressurization';
 import { ITransactionalServer } from '@airport/tower';
 import { IDeleteManager } from '../orchestration/DeleteManager';
@@ -61,9 +61,6 @@ export declare class IocOperationContext implements IIocOperationContext {
     updateManager: IUpdateManager;
     static init(context: IIocOperationContext): Promise<void>;
     static ensure(context: IIocOperationContext): Promise<void>;
-}
-export interface IOperationContextLoader {
-    ensure(context: IOperationContext<any, any>): Promise<void>;
 }
 export declare class OperationContextLoader implements IOperationContextLoader {
     ensure(context: IOperationContext<any, any>): Promise<void>;

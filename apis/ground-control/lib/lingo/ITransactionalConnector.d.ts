@@ -1,8 +1,8 @@
 import { IContext } from '@airport/di';
 import { Observable } from 'rxjs';
-import { DistributionStrategy } from '../data/DistributionStrategy';
-import { PlatformType } from '../data/PatformType';
-import { PortableQuery } from '../query/PortableQuery';
+import { DistributionStrategy } from './data/DistributionStrategy';
+import { PlatformType } from './data/PatformType';
+import { PortableQuery } from './query/PortableQuery';
 export interface ITransactionalConnector {
     init(): Promise<void>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context: IContext): Promise<number>;

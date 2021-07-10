@@ -1,20 +1,23 @@
 import { container, DI } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { TRANSACTIONAL_SERVER } from '../tokens';
-var isServer = false;
+var _isServer = false;
 export function setIsServer() {
-    isServer = true;
+    _isServer = true;
+}
+export function isServer() {
+    return _isServer;
 }
 export class TransactionalConnector {
     async init() {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         await transServer.init();
     }
     async addRepository(name, url, platform, platformConfig, distributionStrategy, context) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
@@ -23,7 +26,7 @@ export class TransactionalConnector {
         }, context);
     }
     async find(portableQuery, context, cachedSqlQueryId) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
@@ -32,7 +35,7 @@ export class TransactionalConnector {
         }, context, cachedSqlQueryId);
     }
     async findOne(portableQuery, context, cachedSqlQueryId) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
@@ -41,7 +44,7 @@ export class TransactionalConnector {
         }, context, cachedSqlQueryId);
     }
     async search(portableQuery, context, cachedSqlQueryId) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
@@ -50,7 +53,7 @@ export class TransactionalConnector {
         }, context, cachedSqlQueryId);
     }
     async searchOne(portableQuery, context, cachedSqlQueryId) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
@@ -76,7 +79,7 @@ export class TransactionalConnector {
     insert(
     // todo define parameters
     ) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         // TODO: implement
@@ -88,7 +91,7 @@ export class TransactionalConnector {
     update(
     // todo define parameters
     ) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         // TODO: implement
@@ -100,14 +103,14 @@ export class TransactionalConnector {
     delete(
     // todo define parameters
     ) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         // TODO: implement
         throw new Error(`TODO: implement`);
     }
     async save(entity, context) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
@@ -115,28 +118,28 @@ export class TransactionalConnector {
     }
     async insertValues(portableQuery, context, ensureGeneratedValues // For internal use only
     ) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.insertValues(portableQuery, null, context, ensureGeneratedValues);
     }
     async insertValuesGetIds(portableQuery, context) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.insertValuesGetIds(portableQuery, null, context);
     }
     async updateValues(portableQuery, context) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.updateValues(portableQuery, null, context);
     }
     async deleteWhere(portableQuery, context) {
-        if (!isServer) {
+        if (!isServer()) {
             throw new Error('Not implemented');
         }
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);

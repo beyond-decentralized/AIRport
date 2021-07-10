@@ -9,7 +9,6 @@ import {
 	InsertColumnValues,
 	InsertValues,
 	IQEntity,
-	IUpdateCache,
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
@@ -36,40 +35,6 @@ export class DatabaseFacade
 	implements IDatabaseFacade {
 
 	name: string
-
-	/*constructor() {
-		super();
-		(<any>this.updateCache).databaseFacade = this
-	}*/
-
-	/*
-		cacheForUpdate(
-			updateCache: IUpdateCache,
-			cacheForUpdate: UpdateCacheType,
-			dbEntity: DbEntity,
-			...entities: any[]
-		): void {
-			if (!entities) {
-				return
-			}
-			updateCache.addToCache(cacheForUpdate, dbEntity, ...entities)
-		}
-
-	releaseCachedForUpdate(
-		cacheForUpdate: UpdateCacheType,
-		dbEntity: DbEntity,
-		...entities: any[]
-	): void {
-		if (!entities) {
-			return
-		}
-		this.updateCache.dropFromCache(cacheForUpdate, dbEntity, ...entities)
-	}
-
-	dropUpdateCache(): void {
-		this.updateCache.dropCache()
-	}
-	 */
 
 	async addRepository(
 		name: string,
@@ -249,53 +214,11 @@ export class DatabaseFacade
 		return await transactionalConnector.updateValues(portableQuery, context)
 	}
 
-	async getOriginalRecord<T>(
-		dbEntity: DbEntity,
-		entity: T,
-		updateCache: IUpdateCache
-	): Promise<any> {
-		const originalRecord = updateCache.getEntityUpdateCache(entity)
-
-		if (!originalRecord) {
-			throw new Error(`Cannot update '${dbEntity.name}' - entity has no update cache.
-			Did you forget to add .cache() to the query you used to retrieve the 
-			original record?`)
-		}
-
-		return originalRecord
-	}
-
 	prepare<QF extends Function>(
 		queryFunction: QF
 	): IFunctionWrapper<QF> {
 		return <IFunctionWrapper<QF>><any>new FunctionWrapper<QF>(queryFunction)
 	}
-
-	/*
-	async getOriginalValues(
-		entitiesToUpdate: UpdateRecord[],
-		dbEntity: DbEntity,
-		airDb: IAirportDatabase,
-		fieldUtils: IFieldUtils,
-		queryFacade: IQueryFacade,
-		queryUtils: IQueryUtils,
-		schemaUtils: ISchemaUtils,
-		transactionalServer: ITransactionalServer,
-		updateCache: IUpdateCache
-	): Promise<MappedEntityArray<any>> {
-		const qEntity                         = airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name]
-		let rawTreeQuery: RawEntityQuery<any> = {
-			select: {},
-			from: [qEntity],
-			where: this.getIdsWhereClause(entitiesToUpdate, qEntity)
-		}
-		let entityQuery: EntityQuery<any>     = new EntityQuery(rawTreeQuery)
-
-		return await queryFacade.find<any, MappedEntityArray<any>>(
-			dbEntity, entityQuery, QueryResultType.MAPPED_ENTITY_TREE,
-			fieldUtils, queryUtils, schemaUtils, transactionalServer, updateCache)
-	}
-*/
 
 }
 

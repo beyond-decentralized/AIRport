@@ -39,10 +39,10 @@ import {
 	SystemWideOperationId
 }                           from '@airport/holding-pattern'
 import {
-	IOperationContext,
 	ITransaction
-}                           from '@airport/tower'
+}                           from '@airport/terminal-map'
 import {IRepositoryManager} from '../core/repository/RepositoryManager'
+import { IOperationContext } from '../processing/OperationContext'
 import {
 	HISTORY_MANAGER,
 	OFFLINE_DELTA_STORE,

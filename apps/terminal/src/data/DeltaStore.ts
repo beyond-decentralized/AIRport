@@ -22,7 +22,7 @@ import {
 	StubSharingAdaptor
 }                                      from '@airport/ground-transport'
 import {IRepositoryTransactionHistory} from '@airport/holding-pattern'
-import {ISubscription}                 from '@airport/observe'
+import {Subscription}                 from 'rxjs'
 import {
 	ChangeListShareInfo,
 	ChangeRecord,
@@ -64,7 +64,7 @@ export class DeltaStore
 	implements IDeltaStore {
 
 	protected changeList: SharedChangeList
-	protected remoteChangesSubscription: ISubscription
+	protected remoteChangesSubscription: Subscription
 	protected lastKnownChangeRecord: ChangeRecord
 	updateState: UpdateState = UpdateState.LOCAL
 

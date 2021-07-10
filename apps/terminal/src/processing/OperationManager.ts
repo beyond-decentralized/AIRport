@@ -17,7 +17,7 @@ import {
 } from '@airport/ground-control'
 import { IActor } from '../../../../schemas/holding-pattern/lib'
 import { OPERATION_MANAGER } from '../tokens'
-import { ITransaction } from '../transaction/ITransaction'
+import { ITransaction } from '@airport/terminal-map'
 import { IOperationContext } from './OperationContext'
 
 /**

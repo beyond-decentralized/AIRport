@@ -5,12 +5,12 @@ import {
 	SCHEMA_UTILS,
 	valuesEqual,
 	Y
-}                        from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	getSysWideOpId,
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
-}                        from '@airport/check-in'
+} from '@airport/check-in'
 import {
 	container,
 	DI, IContext,
@@ -29,7 +29,7 @@ import {
 	PortableQuery,
 	QueryResultType,
 	SchemaIndex
-}                        from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	IActor,
 	IOperationHistoryDuo,
@@ -42,15 +42,15 @@ import {
 	REPO_TRANS_HISTORY_DUO,
 	RepositoryEntity,
 	RepositoryId
-}                        from '@airport/holding-pattern'
-import {ITransaction}    from '@airport/tower'
+} from '@airport/holding-pattern'
+import { ITransaction } from '@airport/terminal-map'
 import {
 	DELETE_MANAGER,
 	HISTORY_MANAGER,
 	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER
-}                        from '../tokens'
-import {IHistoryManager} from './HistoryManager'
+} from '../tokens'
+import { IHistoryManager } from './HistoryManager'
 
 export interface IDeleteManager {
 
@@ -76,18 +76,18 @@ export class DeleteManager
 		context: IContext = {},
 	): Promise<number> {
 		const [
-			      airDb,
-			      historyManager,
-			      offlineDataStore,
-			      operHistoryDuo,
-			      recHistoryDuo,
-			      recHistoryOldValueDuo,
-			      repoManager,
-			      repositoryManager,
-			      repoTransHistoryDuo,
-			      schemaUtils,
-			      sequenceGenerator
-		      ] = await container(this)
+			airDb,
+			historyManager,
+			offlineDataStore,
+			operHistoryDuo,
+			recHistoryDuo,
+			recHistoryOldValueDuo,
+			repoManager,
+			repositoryManager,
+			repoTransHistoryDuo,
+			schemaUtils,
+			sequenceGenerator
+		] = await container(this)
 			.get(AIRPORT_DATABASE, HISTORY_MANAGER,
 				OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
 				REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER,
@@ -102,15 +102,15 @@ export class DeleteManager
 			return await deleteCommand
 		}
 
-		const selectCascadeTree: any           = this.getCascadeSubTree(
+		const selectCascadeTree: any = this.getCascadeSubTree(
 			dbEntity, schemaUtils)
-		const jsonDelete                       = <JsonDelete>portableQuery.jsonQuery
+		const jsonDelete = <JsonDelete>portableQuery.jsonQuery
 		const jsonSelect: JsonEntityQuery<any> = {
 			S: selectCascadeTree,
 			F: [jsonDelete.DF],
 			W: jsonDelete.W,
 		}
-		const portableSelect                   = {
+		const portableSelect = {
 			schemaIndex: portableQuery.schemaIndex,
 			tableIndex: portableQuery.tableIndex,
 			jsonQuery: jsonSelect,
@@ -118,11 +118,11 @@ export class DeleteManager
 			parameterMap: portableQuery.parameterMap,
 			// values: portableQuery.values,
 		}
-		const treesToDelete                    = await transaction
+		const treesToDelete = await transaction
 			.find<any, Array<any>>(portableSelect, {}, context)
 
 		const recordsToDelete: RecordsToDelete = new Map()
-		const repositoryIdSet                  = new Set<number>()
+		const repositoryIdSet = new Set<number>()
 		for (const treeToDelete of treesToDelete) {
 			this.recordRepositoryIds(treeToDelete, dbEntity,
 				recordsToDelete, repositoryIdSet, schemaUtils)
@@ -147,11 +147,11 @@ export class DeleteManager
 		repositoryIdSet.add(repositoryId)
 
 		const recordsToDeleteForSchema
-			      = ensureChildJsMap(recordsToDelete, dbEntity.schemaVersion.schema.index)
+			= ensureChildJsMap(recordsToDelete, dbEntity.schemaVersion.schema.index)
 		const recordsToDeleteForTable
-			      = ensureChildJsMap(recordsToDeleteForSchema, dbEntity.index)
+			= ensureChildJsMap(recordsToDeleteForSchema, dbEntity.index)
 		const recordsToDeleteForRepository
-			      = ensureChildArray(recordsToDeleteForTable, repositoryId)
+			= ensureChildArray(recordsToDeleteForTable, repositoryId)
 
 		const recordToDelete = {}
 		// FIXME: implement
@@ -279,9 +279,9 @@ export class DeleteManager
 												value: any,
 												propertyNameChains: string[][]
 											) => {
-												recHistoryDuo.addOldValue(recordHistory, dbColumn,
-													value, recHistoryOldValueDuo)
-											})
+											recHistoryDuo.addOldValue(recordHistory, dbColumn,
+												value, recHistoryOldValueDuo)
+										})
 										break
 									case EntityRelationType.ONE_TO_MANY:
 										// One-To-Many do not contain any columns in source entity
@@ -320,7 +320,7 @@ export class DeleteManager
 						if (!dbRelation.oneToManyElems) {
 							continue
 						}
-						const subTree                 = {}
+						const subTree = {}
 						selectClause[dbProperty.name] = subTree
 						this.getCascadeSubTree(dbRelation.relationEntity, schemaUtils, subTree)
 						break

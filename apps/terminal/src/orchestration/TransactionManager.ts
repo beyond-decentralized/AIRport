@@ -27,10 +27,10 @@ import {
 } from '@airport/holding-pattern';
 import {
 	ICredentials,
+	ITransaction,
 	ITransactionManager,
 	TRANSACTION_MANAGER
 } from '@airport/terminal-map';
-import { ITransaction } from '@airport/tower';
 import { AbstractMutationManager } from './AbstractMutationManager';
 
 export class TransactionManager

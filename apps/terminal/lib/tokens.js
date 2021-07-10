@@ -9,7 +9,6 @@ export const HISTORY_MANAGER = terminal.token('IHistoryManager');
 export const INSERT_MANAGER = terminal.token('IInsertManager');
 export const OFFLINE_DELTA_STORE = terminal.token('IOfflineDeltaStore');
 export const ONLINE_MANAGER = terminal.token('IOnlineManager');
-export const OPERATION_CONTEXT_LOADER = terminal.token('IOperationContextLoader');
 export const OPERATION_MANAGER = terminal.token('IOperationManager');
 export const QUERY_MANAGER = terminal.token('IQueryManager');
 export const REPOSITORY_MANAGER = terminal.token('IRepositoryManager');

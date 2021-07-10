@@ -53,6 +53,7 @@ export * from './lingo/schema/DatabaseRelationConfiguration';
 export * from './lingo/schema/Entity';
 export * from './lingo/schema/Property';
 export * from './lingo/schema/Schema';
+export * from './lingo/ITransactionalConnector';
 export * from './lingo/OperationContextLoader';
 export * from './tokens';
 //# sourceMappingURL=index.d.ts.map

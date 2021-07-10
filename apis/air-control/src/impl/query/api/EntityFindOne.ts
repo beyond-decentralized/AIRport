@@ -1,7 +1,6 @@
 import {IContext}                from '@airport/di'
 import {QueryResultType}         from '@airport/ground-control'
-import {IEntityContext}          from '../../../lingo/core/data/EntityContext'
-import {UpdateCacheType}         from '../../../lingo/core/data/UpdateCacheType'
+import {IEntityContext}          from '../../../lingo/core/EntityContext'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
 import {IEntityFindOne}          from '../../../lingo/query/api/EntityFindOne'
 import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
@@ -57,12 +56,6 @@ export class EntityFindOne<Entity, IESP extends IEntitySelectProperties>
 
 	noCache(): EntityFindOne<Entity, IESP> {
 		return this.setNoCache(EntityFindOne)
-	}
-
-	cache(
-		cacheForUpdate?: UpdateCacheType
-	): EntityFindOne<Entity, IESP> {
-		return this.setCache(EntityFindOne, cacheForUpdate)
 	}
 
 }

@@ -10,7 +10,6 @@ import { IUpdateManager } from './orchestration/UpdateManager';
 import { ICascadeGraphVerifier } from './processing/CascadeGraphVerifier';
 import { IDependencyGraphResolver } from './processing/DependencyGraphResolver';
 import { IEntityGraphReconstructor } from './processing/EntityGraphReconstructor';
-import { IOperationContextLoader } from './processing/OperationContext';
 import { IOperationManager } from './processing/OperationManager';
 import { IStructuralEntityValidator } from './processing/StructuralEntityValidator';
 export declare const CASCADE_GRAPH_VERIFIER: import("@airport/di").IDiToken<ICascadeGraphVerifier>;
@@ -22,7 +21,6 @@ export declare const HISTORY_MANAGER: import("@airport/di").IDiToken<IHistoryMan
 export declare const INSERT_MANAGER: import("@airport/di").IDiToken<IInsertManager>;
 export declare const OFFLINE_DELTA_STORE: import("@airport/di").IDiToken<IOfflineDeltaStore>;
 export declare const ONLINE_MANAGER: import("@airport/di").IDiToken<IOnlineManager>;
-export declare const OPERATION_CONTEXT_LOADER: import("@airport/di").IDiToken<IOperationContextLoader>;
 export declare const OPERATION_MANAGER: import("@airport/di").IDiToken<IOperationManager>;
 export declare const QUERY_MANAGER: import("@airport/di").IDiToken<IQueryManager>;
 export declare const REPOSITORY_MANAGER: import("@airport/di").IDiToken<IRepositoryManager>;

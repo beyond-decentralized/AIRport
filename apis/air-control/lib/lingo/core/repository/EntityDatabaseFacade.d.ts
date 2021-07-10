@@ -8,7 +8,7 @@ import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
 import { RawUpdate, RawUpdateColumns } from '../../query/facade/Update';
 import { MappedEntityArray } from '../../query/MappedEntityArray';
-import { IEntityContext } from '../data/EntityContext';
+import { IEntityContext } from '../EntityContext';
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../entity/Entity';
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -36,12 +36,6 @@ export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySele
      * Creates a new instance of the Query Entity for this entity type.
      */
     from: IQ;
-    /**
-     * Releases UpdateProperties Cache for entities that haven't been released
-     * via an update call.
-     *
-     * @param {Entity} entities
-     */
     insertColumnValues<IQE extends IQEntity<IEntity>>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx?: IEntityContext): Promise<number>;

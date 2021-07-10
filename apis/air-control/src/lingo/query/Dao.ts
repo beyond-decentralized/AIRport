@@ -27,11 +27,6 @@ export interface IDao<Entity,
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>
 
-	// releaseCachedForUpdate(
-	// 	updateCacheType: UpdateCacheType,
-	// 	...entities: Entity[]
-	// );
-
 	count(
 		context?: IContext
 	): Promise<number>;

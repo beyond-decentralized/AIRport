@@ -3,8 +3,7 @@ import {
 	IContext,
 }                          from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
-import { IEntityContext }  from '../../../lingo/core/data/EntityContext';
-import { UpdateCacheType } from '../../../lingo/core/data/UpdateCacheType';
+import { IEntityContext }  from '../../../lingo/core/EntityContext';
 import { ILookup }         from '../../../lingo/query/api/Lookup';
 import { IAbstractQuery }  from '../../../lingo/query/facade/AbstractQuery';
 import { RawQuery, }       from '../../../lingo/query/facade/Query';
@@ -30,7 +29,6 @@ export class LookupProxy
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
 		context: IEntityContext,
-		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any> {
 		return DI.db()
@@ -38,7 +36,7 @@ export class LookupProxy
 			.then(
 				lookup => lookup.lookup(
 					rawQuery, queryResultType, search, one,
-					QueryClass, context, cacheForUpdate, mapResults));
+					QueryClass, context, mapResults));
 	}
 }
 
@@ -58,7 +56,6 @@ export class Lookup
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
 		context: IQueryContext<any>,
-		cacheForUpdate?: UpdateCacheType,
 		mapResults?: boolean
 	): Promise<any> {
 		const queryContextLoader = await DI.db().get(QUERY_CONTEXT_LOADER);
@@ -87,7 +84,7 @@ export class Lookup
 		}
 
 		return await queryMethod.call(context.ioc.queryFacade, query,
-			this.getQueryResultType(queryResultType, mapResults), context, cacheForUpdate);
+			this.getQueryResultType(queryResultType, mapResults), context);
 	}
 
 	private getQueryResultType(

@@ -19,8 +19,5 @@ export class EntityFind extends EntityLookup {
     noCache() {
         return this.setNoCache(EntityFind);
     }
-    cache(cacheForUpdate) {
-        return this.setCache(EntityFind, cacheForUpdate);
-    }
 }
 //# sourceMappingURL=EntityFind.js.map

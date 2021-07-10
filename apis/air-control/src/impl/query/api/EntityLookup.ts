@@ -2,8 +2,7 @@ import {
 	DbEntity,
 	QueryResultType
 }                                from '@airport/ground-control'
-import {IEntityContext}          from '../../../lingo/core/data/EntityContext'
-import {UpdateCacheType}         from '../../../lingo/core/data/UpdateCacheType'
+import {IEntityContext}          from '../../../lingo/core/EntityContext'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
 import {IEntityLookup}           from '../../../lingo/query/api/EntityLookup'
 import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
@@ -24,7 +23,6 @@ export interface IEntityLookupInternal<Child, MappedChild,
 	setMap(
 		MappedChildClass: new (
 			dbEntity: DbEntity,
-			cacheForUpdate: UpdateCacheType,
 			mapResults: boolean
 		) => MappedChild,
 		isMapped: boolean
@@ -33,18 +31,8 @@ export interface IEntityLookupInternal<Child, MappedChild,
 	setNoCache(
 		ChildClass: new (
 			dbEntity: DbEntity,
-			cacheForUpdate: UpdateCacheType,
 			mapResults: boolean
 		) => Child
-	): Child
-
-	setCache(
-		ChildClass: new (
-			dbEntity: DbEntity,
-			cacheForUpdate: UpdateCacheType,
-			mapResults: boolean
-		) => Child,
-		cacheForUpdate: UpdateCacheType
 	): Child
 
 }
@@ -54,12 +42,10 @@ export abstract class EntityLookup<Child, MappedChild,
 	extends LookupProxy
 	implements IEntityLookupInternal<Child, MappedChild, IESP> {
 
-	static cacheForUpdate = UpdateCacheType.NONE
 	static mapResults     = false
 
 	constructor(
 		protected dbEntity: DbEntity,
-		protected cacheForUpdate = EntityLookup.cacheForUpdate,
 		protected mapResults     = EntityLookup.mapResults
 	) {
 		super()
@@ -69,45 +55,25 @@ export abstract class EntityLookup<Child, MappedChild,
 		isMapped?: boolean
 	): MappedChild
 
-	abstract noCache(): Child
-
-	abstract cache(
-		cacheForUpdate?: UpdateCacheType
-	): Child
-
 	setMap(
 		MappedChildClass: new (
 			dbEntity: DbEntity,
-			cacheForUpdate: UpdateCacheType,
 			mapResults: boolean
 		) => MappedChild,
 		isMapped = true
 	): MappedChild {
 		return new MappedChildClass(
-			this.dbEntity, this.cacheForUpdate, isMapped)
+			this.dbEntity, isMapped)
 	}
 
 	setNoCache(
 		ChildClass: new (
 			dbEntity: DbEntity,
-			cacheForUpdate: UpdateCacheType,
 			mapResults: boolean
 		) => Child
 	): Child {
 		return new ChildClass(
-			this.dbEntity, UpdateCacheType.NONE, this.mapResults)
-	}
-
-	setCache(
-		ChildClass: new (
-			dbEntity: DbEntity,
-			cacheForUpdate: UpdateCacheType,
-			mapResults: boolean
-		) => Child,
-		cacheForUpdate: UpdateCacheType = UpdateCacheType.ALL_QUERY_ENTITIES
-	): Child {
-		return new ChildClass(
-			this.dbEntity, cacheForUpdate, this.mapResults)
+			this.dbEntity, this.mapResults)
 	}
 
 	entityLookup(
@@ -119,15 +85,7 @@ export abstract class EntityLookup<Child, MappedChild,
 	): Promise<any> {
 		context.dbEntity = this.dbEntity
 		return this.lookup(rawEntityQuery, queryResultType,
-			search, one, null, context, this.cacheForUpdate, this.mapResults)
+			search, one, null, context, this.mapResults)
 	}
-
-	/*
-		protected cleanNextCallState(): UpdateCacheType {
-			const saveCurrentCallInUpdateCache = this.saveNextCallInUpdateCache
-			this.saveNextCallInUpdateCache     = UpdateCacheType.NONE
-
-			return saveCurrentCallInUpdateCache
-		}*/
 
 }
