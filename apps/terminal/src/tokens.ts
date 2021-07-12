@@ -1,6 +1,7 @@
 import { system } from '@airport/di'
 import { IRepositoryManager } from './core/repository/RepositoryManager'
 import { IOfflineDeltaStore } from './data/OfflineDeltaStore'
+import { ILocalAPIServer } from './LocalAPIServer'
 import { IOnlineManager } from './net/OnlineManager'
 import { IDatabaseManager } from './orchestration/DatabaseManager'
 import { IDeleteManager } from './orchestration/DeleteManager'
@@ -23,6 +24,7 @@ export const DEPENDENCY_GRAPH_RESOLVER = terminal.token<IDependencyGraphResolver
 export const ENTITY_GRAPH_RECONSTRUCTOR = terminal.token<IEntityGraphReconstructor>('IEntityGraphReconstructor')
 export const HISTORY_MANAGER = terminal.token<IHistoryManager>('IHistoryManager')
 export const INSERT_MANAGER = terminal.token<IInsertManager>('IInsertManager')
+export const LOCAL_API_SERVER = terminal.token<ILocalAPIServer>('ILocalAPIServer')
 export const OFFLINE_DELTA_STORE = terminal.token<IOfflineDeltaStore>('IOfflineDeltaStore')
 export const ONLINE_MANAGER = terminal.token<IOnlineManager>('IOnlineManager')
 export const OPERATION_MANAGER = terminal.token<IOperationManager>('IOperationManager')

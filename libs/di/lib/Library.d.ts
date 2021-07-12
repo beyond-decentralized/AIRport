@@ -1,5 +1,5 @@
-import { ISystem } from './System';
-import { GenericDependencyInjectionError, IDiToken } from './Token';
+import { ISystem } from '../System';
+import { GenericDependencyInjectionError, IDiToken } from './dependencyInjection/Token';
 export interface ILibrary {
     name: string;
     system: ISystem;

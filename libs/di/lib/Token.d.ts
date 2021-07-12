@@ -1,10 +1,12 @@
-import { ILibrary } from './Library';
+import { ILibrary } from '../Library';
 export declare type IDiTokenName = string;
 export interface IDiToken<Injectable> {
     library: ILibrary;
     name: string;
     sequence: number;
-    autopilot: boolean;
+    autopilot: boolean | {
+        [methodName: string]: boolean;
+    };
     getPath(): string;
 }
 export declare class DiToken<Injectable> implements IDiToken<Injectable> {

@@ -1,4 +1,4 @@
-import { ILibrary } from './Library';
+import { ILibrary } from './dependencyInjection/Library';
 export interface ISystem {
     libraryMap: {
         [libraryName: string]: ILibrary;

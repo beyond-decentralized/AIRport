@@ -1,10 +1,10 @@
-import { getAutopilotDao } from '@airport/autopilot';
 import {
 	Context,
 	ContextType,
 	IInjectionContext
-} from './Context';
+} from '../Context';
 import { IDiToken } from './Token';
+import { AUTOPILOT_DAO_LOADER } from '../tokens';
 
 export interface IChildContainer
 	extends IContainer {
@@ -526,8 +526,11 @@ export class ChildContainer
 							return;
 						}
 						object = new clazz();
+					} else if (typeof token.autopilot !== 'boolean') {
+						throw new Error(`Partial AUTOPILOT DAOs are not yet supported.`);
 					} else {
-						object = getAutopilotDao();
+						object = this.getSync(AUTOPILOT_DAO_LOADER)
+							.loadDaoAutopilot(token.name);
 					}
 					object.__container__ = this;
 					theObjects[token.sequence] = object;

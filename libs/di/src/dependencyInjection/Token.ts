@@ -6,7 +6,9 @@ export interface IDiToken<Injectable> {
 	library: ILibrary
 	name: string
 	sequence: number
-	autopilot: boolean
+	autopilot: boolean | {
+		[methodName: string]: boolean
+	}
 
 	getPath(): string
 }

@@ -1,5 +1,5 @@
-import { getAutopilotDao } from '@airport/autopilot';
 import { Context, ContextType } from './Context';
+import { AUTOPILOT_DAO_LOADER } from './tokens';
 const classes = [];
 let numPendingInits = 0;
 const theObjects = [];
@@ -95,7 +95,7 @@ export class ChildContainer extends Container {
                     object = new clazz();
                 }
                 else {
-                    object = getAutopilotDao();
+                    object = this.getSync(AUTOPILOT_DAO_LOADER).loadDaoAutopilot();
                 }
                 object.__container__ = this;
                 theObjects[token.sequence] = object;

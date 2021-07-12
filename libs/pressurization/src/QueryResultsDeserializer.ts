@@ -1,9 +1,9 @@
-import {DI}                         from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	EntityState,
 	IEntityStateManager
-}                                   from './EntityStateManager'
-import {QUERY_RESULTS_DESERIALIZER} from './tokens'
+} from './EntityStateManager'
+import { QUERY_RESULTS_DESERIALIZER } from './tokens'
 
 /**
  * Deserializer for query results coming back from the server
@@ -78,7 +78,7 @@ export class QueryResultsDeserializer
 				}
 		}
 
-		let deserializedEntity: any              = {}
+		let deserializedEntity: any = {}
 		operation.lookupTable[operationUniqueId] = deserializedEntity
 
 		for (const propertyName in entity) {

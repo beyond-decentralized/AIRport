@@ -1,9 +1,9 @@
-import {DI}                   from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	EntityState,
 	IEntityStateManager
-}                             from './EntityStateManager'
-import {OPERATION_SERIALIZER} from './tokens'
+} from './EntityStateManager'
+import { OPERATION_SERIALIZER } from './tokens'
 
 /**
  * A simple operation serializer that is not aware
@@ -39,13 +39,7 @@ export class OperationSerializer
 			sequence: 0,
 			stubLookupTable: []
 		}
-		let serializedEntity
-		if (entity instanceof Array) {
-			serializedEntity = <any><E[]>entity.map(anEntity => this.doSerialize(
-				anEntity, operation, entityStateManager))
-		} else {
-			serializedEntity = this.doSerialize(entity, operation, entityStateManager)
-		}
+		let serializedEntity = this.doSerialize(entity, operation, entityStateManager)
 
 		for (let i = 1; i < operation.lookupTable.length; i++) {
 			delete operation.lookupTable[i][entityStateManager.getUniqueIdFieldName()]
@@ -59,19 +53,32 @@ export class OperationSerializer
 		operation: ISerializableOperation,
 		entityStateManager: IEntityStateManager,
 	): E {
+		if (entity instanceof Object) {
+			if (entity instanceof Array) {
+				return <any><E[]>entity.map(anEntity => this.doSerialize(
+					anEntity, operation, entityStateManager))
+			} else if (entity instanceof Date) {
+				return entity.toISOString() as any
+			} else {
+				// fall though
+			}
+		} else {
+			return entity;
+		}
+
 		// TODO: add support for non-create operations
 		let operationUniqueId = entityStateManager.getOperationUniqueId(entity)
 		if (operationUniqueId) {
 			return operation.stubLookupTable[operationUniqueId]
 		}
-		operationUniqueId                                     = ++operation.sequence
-		let entityStub                                        = {}
+		operationUniqueId = ++operation.sequence
+		let entityStub = {}
 		entityStub[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
-		entityStub[entityStateManager.getStateFieldName()]    = EntityState.STUB
-		operation.stubLookupTable[operationUniqueId]          = entityStub
+		entityStub[entityStateManager.getStateFieldName()] = EntityState.STUB
+		operation.stubLookupTable[operationUniqueId] = entityStub
 
-		let entityCopy: any                                   = {}
-		operation.lookupTable[operationUniqueId]              = entity
+		let entityCopy: any = {}
+		operation.lookupTable[operationUniqueId] = entity
 		entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
 
 		let entityState = EntityState.STUB

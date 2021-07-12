@@ -1,7 +1,4 @@
 {
-  "dependencies": {
-    "@airport/autopilot": "0.0.1"
-  },
   "devDependencies": {
     "tslint": "^5.14.0"
   },

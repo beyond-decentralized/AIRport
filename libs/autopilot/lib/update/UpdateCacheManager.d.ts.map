@@ -1,0 +1,1 @@
+{"version":3,"file":"UpdateCacheManager.d.ts","sourceRoot":"","sources":["../../src/update/UpdateCacheManager.ts"],"names":[],"mappings":"AAGA,MAAM,WAAW,mBAAmB;IAEhC,kBAAkB,CAAC,CAAC,EAChB,MAAM,EAAE,CAAC,GACV,IAAI,CAAA;CAEV;AAED,qBAAa,kBACT,YAAW,mBAAmB;IAE9B,kBAAkB,CAAC,CAAC,EAChB,MAAM,EAAE,CAAC,GACV,IAAI;CAIV"}

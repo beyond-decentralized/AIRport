@@ -1,5 +1,5 @@
-import { IInjectionContext } from './Context';
-import { IDiToken } from './Token';
+import { IInjectionContext } from '../Context';
+import { IDiToken } from '../Token';
 export interface IChildContainer extends IContainer {
     context: IInjectionContext;
     get<A>(tokenA: IDiToken<A>): Promise<A>;

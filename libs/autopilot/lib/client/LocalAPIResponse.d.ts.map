@@ -1,0 +1,1 @@
+{"version":3,"file":"LocalAPIResponse.d.ts","sourceRoot":"","sources":["../../src/client/LocalAPIResponse.ts"],"names":[],"mappings":"AAAA,oBAAY,oBAAoB;IAC5B,KAAK,IAAA;IACL,IAAI,IAAA;CACP;AAED,MAAM,WAAW,iBAAiB;IAC9B,OAAO,EAAE,MAAM,CAAC;IAChB,IAAI,EAAE,oBAAoB,CAAC;CAC9B"}

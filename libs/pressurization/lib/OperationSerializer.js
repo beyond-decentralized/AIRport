@@ -8,19 +8,27 @@ export class OperationSerializer {
             sequence: 0,
             stubLookupTable: []
         };
-        let serializedEntity;
-        if (entity instanceof Array) {
-            serializedEntity = entity.map(anEntity => this.doSerialize(anEntity, operation, entityStateManager));
-        }
-        else {
-            serializedEntity = this.doSerialize(entity, operation, entityStateManager);
-        }
+        let serializedEntity = this.doSerialize(entity, operation, entityStateManager);
         for (let i = 1; i < operation.lookupTable.length; i++) {
             delete operation.lookupTable[i][entityStateManager.getUniqueIdFieldName()];
         }
         return serializedEntity;
     }
     doSerialize(entity, operation, entityStateManager) {
+        if (entity instanceof Object) {
+            if (entity instanceof Array) {
+                return entity.map(anEntity => this.doSerialize(anEntity, operation, entityStateManager));
+            }
+            else if (entity instanceof Date) {
+                return entity.toISOString();
+            }
+            else {
+                // fall though
+            }
+        }
+        else {
+            return entity;
+        }
         // TODO: add support for non-create operations
         let operationUniqueId = entityStateManager.getOperationUniqueId(entity);
         if (operationUniqueId) {
