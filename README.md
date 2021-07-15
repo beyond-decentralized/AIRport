@@ -82,8 +82,17 @@ resolution mechanism.
 
 
 ## Backend<a name="backend"></a>
+
+AIRport's backend best fits with decentralized data storage technologies
+since it itself is a decentralized database (though centralized and peer-to-peer
+backend implementations are also possible).
+
 AIRport will use [Arweave](https://github.com/ArweaveTeam/arweave-js)
-as the default backend.
+as the default backend.  Arweave supports indexing and querying by tags, which
+provides the necessary flexibility for interal Repository upkeep (efficiently
+retrieving only recent transactions not made from the target device, etc.).
+It also allows to easily keep track of transaction ownership, groups and
+provides for topical lookup of non-private Repositories.
 
 Integration with [IPFS](https://github.com/ipfs/js-ipfs) is also possible though
 will require additional infrastructure for repository lookup.  IPFS can simplify
