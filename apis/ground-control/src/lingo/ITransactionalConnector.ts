@@ -14,56 +14,56 @@ export interface ITransactionalConnector {
 		platform: PlatformType,
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
-		context: IContext,
+		context?: IContext,
 	): Promise<number>
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context: IContext,
+		context?: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray>
 
 	findOne<E>(
 		portableQuery: PortableQuery,
-		context: IContext,
+		context?: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<E>
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context: IContext,
+		context?: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<Observable<EntityArray>>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
-		context: IContext,
+		context?: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<Observable<E>>
 
 	save<E, T = E | E[]>(
 		entity: T,
-		context: IContext,
+		context?: IContext,
 	): Promise<number>
 
 	insertValues(
 		portableQuery: PortableQuery,
-		context: IContext,
+		context?: IContext,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number>
 
 	insertValuesGetIds(
 		portableQuery: PortableQuery,
-		context: IContext,
+		context?: IContext,
 	): Promise<number[] | string[] | number[][] | string[][]>
 
 	updateValues(
 		portableQuery: PortableQuery,
-		context: IContext,
+		context?: IContext,
 	): Promise<number>
 
 	deleteWhere(
 		portableQuery: PortableQuery,
-		context: IContext,
+		context?: IContext,
 	): Promise<number>
 }

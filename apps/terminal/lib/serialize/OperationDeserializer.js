@@ -1,7 +1,6 @@
-import { DI } from '@airport/di';
-import { EntityState } from './EntityStateManager';
-import { QUERY_RESULTS_DESERIALIZER } from './tokens';
-export class QueryResultsDeserializer {
+import { DI } from "@airport/di";
+import { OPERATION_DESERIALIZER } from "@airport/check-in";
+export class OperationDeserializer {
     deserialize(entity, entityStateManager) {
         const operation = {
             lookupTable: [],
@@ -21,7 +20,7 @@ export class QueryResultsDeserializer {
             case EntityState.RESULT_DATE:
                 return new Date(entity['value']);
             case EntityState.RESULT_JSON:
-                return entity;
+                return JSON.parse(entity);
         }
         let operationUniqueId = entityStateManager.getOperationUniqueId(entity);
         if (!operationUniqueId || typeof operationUniqueId !== 'number'
@@ -65,5 +64,5 @@ export class QueryResultsDeserializer {
         return deserializedEntity;
     }
 }
-DI.set(QUERY_RESULTS_DESERIALIZER, QueryResultsDeserializer);
-//# sourceMappingURL=QueryResultsDeserializer.js.map
+DI.set(OPERATION_DESERIALIZER, OperationDeserializer);
+//# sourceMappingURL=OperationDeserializer.js.map

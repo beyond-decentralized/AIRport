@@ -1,5 +1,5 @@
 export interface ILocalAPIRequest {
-    args: string;
+    args: Array<boolean | number | string>;
     daoName: string;
     methodName: string;
 }

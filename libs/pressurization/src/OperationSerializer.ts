@@ -95,7 +95,10 @@ export class OperationSerializer
 					propertyCopy = property.map(aProperty => this.doSerialize(
 						aProperty, operation, entityStateManager))
 				} else if (property instanceof Date) {
-					propertyCopy = property.toISOString()
+					propertyCopy = {
+						value: property.toISOString()
+					}
+					propertyCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT_DATE
 				} else {
 					propertyCopy = this.doSerialize(property, operation, entityStateManager)
 				}

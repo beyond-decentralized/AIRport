@@ -27,8 +27,9 @@ export class LocalAPIClient
         methodName: string,
         args: any[]
     ): Promise<any> {
-        const [entityStateManager, operationSerializer, queryResultsDeserializer] = await container(this)
-            .get(ENTITY_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER)
+        const [entityStateManager, operationSerializer, queryResultsDeserializer]
+            = await container(this).get(ENTITY_STATE_MANAGER,
+                OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER)
         let serializedParams
         if (args) {
             if (args.length) {
@@ -64,7 +65,8 @@ export class LocalAPIClient
 
         switch (response.type) {
             case LocalAPIResponseType.QUERY:
-                return queryResultsDeserializer.deserialize(response.payload, entityStateManager);
+                return queryResultsDeserializer
+                    .deserialize(response.payload, entityStateManager);
             case LocalAPIResponseType.SAVE:
                 return response.payload;
         }

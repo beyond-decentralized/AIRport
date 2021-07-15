@@ -10,8 +10,9 @@ export enum EntityState {
 	RESULT = 4,
 	RESULT_DATE = 5,
 	RESULT_JSON = 6,
-	STUB = 7,
-	UPDATE = 8
+	RESULT_JSON_ARRAY = 7,
+	STUB = 8,
+	UPDATE = 9
 }
 
 export interface EntityWithState {

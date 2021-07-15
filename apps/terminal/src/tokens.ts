@@ -1,5 +1,6 @@
 import { system } from '@airport/di'
 import { IRepositoryManager } from './core/repository/RepositoryManager'
+import { IDaoRegistry } from './DaoRegistry'
 import { IOfflineDeltaStore } from './data/OfflineDeltaStore'
 import { ILocalAPIServer } from './LocalAPIServer'
 import { IOnlineManager } from './net/OnlineManager'
@@ -18,6 +19,7 @@ import { IStructuralEntityValidator } from './processing/StructuralEntityValidat
 const terminal = system('airport').lib('terminal')
 
 export const CASCADE_GRAPH_VERIFIER = terminal.token<ICascadeGraphVerifier>('ICascadeGraphVerifier')
+export const DAO_REGISTRY = terminal.token<IDaoRegistry>('IDaoRegistry')
 export const DATABASE_MANAGER = terminal.token<IDatabaseManager>('IDatabaseManager')
 export const DELETE_MANAGER = terminal.token<IDeleteManager>('IDeleteManager')
 export const DEPENDENCY_GRAPH_RESOLVER = terminal.token<IDependencyGraphResolver>('IDependencyGraphResolver')

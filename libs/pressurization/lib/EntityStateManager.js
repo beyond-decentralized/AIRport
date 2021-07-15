@@ -8,8 +8,9 @@ export var EntityState;
     EntityState[EntityState["RESULT"] = 4] = "RESULT";
     EntityState[EntityState["RESULT_DATE"] = 5] = "RESULT_DATE";
     EntityState[EntityState["RESULT_JSON"] = 6] = "RESULT_JSON";
-    EntityState[EntityState["STUB"] = 7] = "STUB";
-    EntityState[EntityState["UPDATE"] = 8] = "UPDATE";
+    EntityState[EntityState["RESULT_JSON_ARRAY"] = 7] = "RESULT_JSON_ARRAY";
+    EntityState[EntityState["STUB"] = 8] = "STUB";
+    EntityState[EntityState["UPDATE"] = 9] = "UPDATE";
 })(EntityState || (EntityState = {}));
 export function markAsStub(entity) {
     DI.db().getSync(ENTITY_STATE_MANAGER).markAsStub(entity);

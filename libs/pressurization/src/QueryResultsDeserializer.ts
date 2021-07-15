@@ -52,7 +52,11 @@ export class QueryResultsDeserializer
 			case EntityState.RESULT_DATE:
 				return <any>new Date(entity['value'])
 			case EntityState.RESULT_JSON:
-				return JSON.parse(<any>entity)
+				return entity
+			case EntityState.RESULT_JSON_ARRAY:
+				const value = entity.value
+				value[entityStateManager.getStateFieldName()] = EntityState.RESULT_JSON_ARRAY
+				return entity
 		}
 
 		let operationUniqueId = entityStateManager.getOperationUniqueId(entity)
