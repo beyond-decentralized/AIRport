@@ -1,7 +1,19 @@
-# AIRport - Autonomous Interdependent Repository port
+# AIRport - [Autonomous Interdependent Repository](https://patents.google.com/patent/US10902016B2/) port
 
 ![AIRport - winged DApps](/presentations/images/logo/AIRPort_logo_with_slogan_1.0.png)
 
+* [Description](#description)
+  * [The Problem](#problem)
+  * [The Solution](#solution)
+* [Blockchain](#blockchain)
+* [Backend](#backend)
+* [Economics](#economics)
+  * [Monetization](#monetization)
+* [Application Collaboration](#app-collaboration)
+* [API](#api)
+* [Technical Details](#tech-details)
+
+## Description <a name="description"></a>
 * Allows the Application End Users to seamlessly share the data only with
   selected Users.
 * Lowers the barrier to entry for new Apps as they can reuse existing schemas
@@ -13,13 +25,13 @@
 declarative JSON config into the database itself.
 * PLANNED: Automatic schema upgrades with enforced backward compatibility 
 
-- The problem:
+### The problem: <a name="description"></a>
 
 Decentralized Applications (DApps) lack an easy-to-use database layer.
 
-- Our solution:
+### The solution: <a name="solution"></a>
 
-AIRport a decentralized relational database of Repositories.  Repositories
+AIRport is a decentralized relational database of Repositories.  Repositories
 are virtual databases, each with its own transaction log.  Each Repository has
 a globally unique identifier that allows to distinguish it from other
 repositories in the same relational database (such as WebSql, or SqLite in
@@ -52,7 +64,7 @@ repositories.  Repositories can have references to each other thus depending
 on data that other repository contains, but must be usable without referenced
 repositories (thus being both interdependent and autonomous).
 
-## Blockchain based
+## Blockchain<a name="blockchain"></a>
 
 AIRport Repositories have blockchain based transaction log storage to enable
 communication between devices. AIRport is fully functional off-line, commits 
@@ -63,48 +75,141 @@ Directed Acyclic Graph with each commit being a separate block and all
 sub-chains are resolved to the "longest chain" via timestamp based conflict
 resolution mechanism. 
 
-    For examle if Alice modifies record 1 while being offline and Charlie
+    For example, if Alice modifies record 1 while being offline and Charlie
     modifies the same record also offline but at a later time then both
     with be notified of the conflict and automatic conflict resolution
-    will pick the latest column values while allowing for manual confict
+    will pick the latest column values while allowing for manual conflict
     resolution.
 
 ![AIR Transaction Log](presentations/images/AIRPort_Transaction_Log.png)
 
-Based on my current limited understanding of blockchains:
+Note AIRport Repository block chains may or may not be stored as part of
+another chain.  It makes logical sense to keep each Repository blockchain
+as an independent private chain.  However a repository needs a way of being
+archived on some sort of a backend platform and public blockchains can be
+used for that.
 
-A Repository chain can be integrated with IPFS since it supports DAG
-datastructure and is storage centric.  Integrations with other chains
-are possible: A Repository chain can be tied to the chains of the
-individual chains of creators/participators in the Repository.  In
-turn, those can be integrated into any 3.0 blockchain.
 
-## Installation process
+## Backend<a name="backend"></a>
 
-The process of installing AIRport is:
+AIRport's backend best fits with decentralized data storage technologies
+since it itself is a decentralized database (though centralized and peer-to-peer
+backend implementations are also possible).
 
-*  User navigates to a consumer Application that uses AIRport and creates
-   a Repository
-*  Application prompts the user to install AIRport database App (if not
-   installed already)
-*  User installs AIRport App
-*  The consumer application creates the private Repository and prompts
-   to add other participating users
-*  Creating user shares the Repository, and the App notifies new users
+In the long term AIRport will be most effective if it utilizes both permanent
+and temporary storage for persistence of any given repository.  Transaction logs
+are not a very space efficient way to store data, hence they would ideally be
+stored in temporary storage.  This is a luxury AIRport can afford since even in
+the case of data loss AIRport still has a device-local copy of those transaction
+logs.  So a natural compaction point would be an archival event - when a
+repository is removed from the device-local database.   At that point the current
+snapshot of the repository can be placed in permanent storage and the transaction
+logs can be cleaned up from temporary storage.
 
-![AIRport as Cordova application](presentations/images/AIRport-in-Cordova.png)
+AIRport will use [Arweave](https://github.com/ArweaveTeam/arweave-js)
+as the default backend.  Arweave supports indexing and querying by tags, which
+provides the necessary flexibility for internal Repository upkeep (efficiently
+retrieving only recent transactions not made from the target device, etc.).
+It also allows to easily keep track of transaction ownership, groups and
+provides for topical lookup of non-private Repositories.
 
-## API
+Integration with [IPFS](https://github.com/ipfs/js-ipfs) is also possible though
+will require additional infrastructure for repository lookup.  IPFS can simplify
+conflict resolution since it supports the DAG datastructure.  Ownership as well
+as time breakdown of transactions (for efficient lookup) can be done via the
+directory structure provided by IPFS.
 
-AIRport offers refined, high productivity developer APIS:
+Hence, a combination of Arweave and IPFS storage will likely work best for
+AIRport.  An initial record with tags can be placed in Arweave for lookup.  The
+transaction logs can be held in IPFS.  At archival time the repository can
+be compacted and send to Arweave for permanent storage.  Some repositories
+that are ephemeral may not need compaction at all can afford to keep only a
+small lookup file on Arweave for search accessibility.
 
-* Simplified JPA annotations (no session concept, easier relations)
-* GraphQL like query API
-* GraphQL/Firebase like hybrid solution for mutation & access rules
-* Automatic schema generation and installation
-* WIP: Automatic interface and DAO stub generation
+Further research would need to be performed to find out if it's feasible to
+use other temporary  storage technologies like Sia or Storj.
 
-## Application collaboration
+
+## Economics<a name="economics"></a>
+
+In order for AIRport to be successful all of the involved parties need to be
+incentivized to use it.  The three primary party types are:
+- App Users
+- App Creators
+- AIRport Team
+
+Users are generally interested in keeping their data private.  They are also
+interested in reducing data duplication and duplicate data entry.  Users may
+also be incentivized by profit sharing schemes from both App Creators and
+AIRport Team.
+
+App creators are incentivized by the profits that applications generate.  They
+are also incentivized  in acquiring large market share (to maximize profits)
+by enhancing and enlarging their offerings but are dis-incentivized by the costs
+of additional work and expansion.
+
+AIRport team incentives align closely with those application creators.  They
+have an additional incentive to attract application creators to write Apps
+on the platform.
+
+Airport naturally fulfils User data incentives though it's technology.  It
+also naturally solves the dilemma of monopolizing App product offering by
+naturally driving App specialization (due to its data sharing capabilities).
+
+### Monetization<a name="monetization"></a>
+
+To fulfil the rest of the the incentives two alternative mechanisms can be
+employed.
+
+#### Private advertisement profit sharing
+
+Airport (in combination with Arweave) will support an privacy centric
+advertisement engine.  The decision making engine will kept on user devices,
+thus solving data privacy issues (data will not be shared with any authority
+or intermediary or the advertisers and will remain solely on the users device,
+inside the relational database, which is embedded in the locally installed
+AIRport App).  This allows to keep the user in full control of how much data
+is used for serving Ads.
+
+The advertisement model will be flipped from traditional push, where a central
+authority decides what Ads get pushed to a user, to pull model, where the
+users device decides what Ads to pull to the user.   Ads themselves
+will be stored on Arweave and tagged appropriately (to allow devices to pull
+the most appropriate Ads for the user).  Thus the advertisement platform
+becomes fully decentralized and cannot be manipulated by a central authority.
+
+In the long term multiple incentive tiers will be employed for the users,
+with increasing monetary rewards for all participants (because they provide
+increasingly accurate Ads for the users):
+
+1.  Basic content based tier - users receive Ads based on the data that is
+sent to the target app from AIRport for a given page render.
+2.  Enhanced content based tier - application reinforces the Ad choice by
+sending back to AIRport App the metadata about the page (and static content
+that is rendered on the page).
+3.  Demographic tier - user voluntarily stores their demographic data in
+AIRport (again it's not shared with anyone, just used to pull more accurate
+Ads).
+4.  Geographic tier - users opt in to using their permanent and current
+location for serving Ads (again this information remains on the device
+only and is not shared with anyone).
+5.  Model tier - users opt in to anonymized big data model generation for
+optimal Ad placement.  This does require sharing data which is scrubbed
+of any PI (which AIRport can do since it can provide annotations on
+per column basis to flag all PI data).
+
+Advertisement revenue will be split between the 3 parties (User, Apps,
+Airport) in a manner that best fits the market conditions at that time.
+
+#### Fee model
+Users can opt out (either wholesale, or per App, or per time period,
+or per repository) of advertisements by paying for usage of AIRport and
+applications.  This allows the Apps and AIRport to still fulfill their
+monetary incentives.  AIRport can act as either a central fee platform,
+where it shares advertisement revenue with the Apps or Apps can share
+their revenue with AIRport.
+
+## Application collaboration<a name="app-collaboration"></a>
 
 Core to AIRport is the idea is for multiple applications to collaborate 
 and re-use data.  The two key points here are:
@@ -121,14 +226,42 @@ infrequently used repositories (or may do so automatically if not configured),
 leaving them only in the cloud backup.  The applications however may request the
 user to load additional repositories from the cloud, for processing.
 
-## Autopilot client for Apps
+
+## API<a name="api"></a>
+AIRport offers refined, high productivity developer APIS:
+
+* Simplified JPA annotations (no session concept, easier relations)
+* GraphQL like query API
+* GraphQL/Firebase like hybrid solution for mutation & access rules
+* Automatic schema generation and installation
+* WIP: Automatic interface and DAO stub generation
+
+## Technical details<a name="tech-details"></a>
+
+### Installation process
+
+The process of installing AIRport is:
+
+*  User navigates to a consumer Application that uses AIRport and creates
+  
+  a Repository
+*  Application prompts the user to install AIRport database App (if not
+   installed already)
+*  User installs AIRport App
+*  The consumer application creates the private Repository and prompts
+   to add other participating users
+*  Creating user shares the Repository, and the App notifies new users
+
+![AIRport as Cordova application](presentations/images/AIRport-in-Cordova.png)
+
+### Autopilot client for Apps
 
 AIRport provides "autopilot" client for Apps where CRUD code is
 pre-processed by "@airport/runway" at build time and resides on the
 AIRport server, not in the client-side library:
 
 
-![Autopilot Flow](presentations/images/Autopilot-Flow.png)
+Autopilot Flow](presentations/images/Autopilot-Flow.png)
 
 "@airport/runway" generates TypeScript interfaces which are used to define
 the CRUD and Enitty API of the underlying schema.  The actual CRUD logic 
@@ -140,17 +273,13 @@ included from the schema project (along with the "@airport/di",
 "@airport/autopilot" and "@airport/pressurization" libraries).
 
 
-
-## Technical details
-
 ### On the stack dependency injection
 
 Since AIRport instances will be running on mobile devices, it has its own
 "on the stack" Dependency Injection (DI for short) framework that allows it
 to easily upgrade framework versions of code "on-the-fly", without requiring 
 application restarts or interruptions in service.  Thus, dependency injection
-is done "on the stack" (in the methods of the framework objects and not
-in the constructors of these objects).  The idea is that during an upgrade,
+is done "on the stack" (in the methods of the framework objects and nin the constructors of these objects).  The idea is that during an upgrade,
 all in progress requests are allowed to complete while all pending requests
 are halted (via async functions) at the very start.  Once all requests have
 cleared an upgrade takes place (within the libs\di library, just replacing
