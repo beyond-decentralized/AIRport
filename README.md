@@ -4,9 +4,10 @@
 
 1. [Description](#description)
 2. [Blockchain](#blockchain)
-3. [Application Collaboration](#app-collaboration)
-4. [API](#api)
-5. [Technical Details](#tech-details)
+3. [Backend](#backend)
+4. [Application Collaboration](#app-collaboration)
+5. [API](#api)
+6. [Technical Details](#tech-details)
 
 ## Description <a name="description"></a>
 * Allows the Application End Users to seamlessly share the data only with
@@ -74,7 +75,14 @@ resolution mechanism.
     modifies the same record also offline but at a later time then both
     with be notified of the conflict and automatic conflict resolution
     will pick the latest column values while allowing for manual confict
-    resolution.
+   resolution.
+    
+## Backend<a name="backend"></a>
+AIRport will use [Arweave](https://github.com/ArweaveTeam/arweave-js)
+as the default backend.
+
+Integration with [IPFS](https://github.com/ipfs/js-ipfs) is also possible though
+will require additional infrastructure for repository lookup.
 
 ![AIR Transaction Log](presentations/images/AIRPort_Transaction_Log.png)
 
