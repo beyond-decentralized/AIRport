@@ -5,6 +5,7 @@
 1. [Description](#description)
 2. [Blockchain](#blockchain)
 3. [Backend](#backend)
+3. [Economics](#economics)
 4. [Application Collaboration](#app-collaboration)
 5. [API](#api)
 6. [Technical Details](#tech-details)
@@ -125,6 +126,83 @@ small lookup file on Arweave for search accessiblity.
 Further research would need to be peformed to find out if it's feasible to
 use other temprary storage technolgies like Sia or Storj.
 
+
+## Economics<a name="economics"></a>
+
+In order for AIRport to be successful all of the involved parties need to be
+incentivised to use it.  The three primary party types are:
+- App Users
+- App Creators
+- AIRport Team
+
+Users are generally interested in keeping their data private.  They are also
+interested in reducing data duplication and duplicate data entry.  Users may
+also be insentivised by profit sharing schemes from both App Creators and
+AIRport Team.
+
+App creators are incentivies by the profits that applications generate.  They
+are also insentivised in aquiring large market share (to maximize profits)
+by ehancing and enlarging their offerings but are dis-insetivised by the costs
+of additional work and expansion.
+
+AIRport team is insetives align closely with those application creators.  They
+have an additional insentive to attract application creators to write apps
+on the platform.
+
+Airport naturally fulfils User data insetives though it's technology.  It
+also naturally solves the dilema of monopolizing App product offering by
+naturally driving App specialization (due to its data sharing capabilities).
+
+### Monetization
+
+To fulfil the rest of the the insentives two alternative mechanisms can be
+employed.
+
+#### Private advertisement profit sharing
+
+Airport (in combination with Arweave) will support an privacy centric
+advertisement engine.  The decision making engine will kept on user devices,
+thus solving data privacy issues (data will not be shared with any authority
+or intermediarly or the adverisers and will remain soley on the users device,
+inside the relation database embedded in the locally installed AIRport App).
+This allows tow keep the user in full control of how much data is used for
+serving ads.
+
+The advertisement model will be fliped from traditional push, where a central
+autority decides what ads get pushed to a user, to pull model, where the
+users device decides what ads to pull to the user.   Ads themselves
+will be stored on Arweave and tagged appropriately (to allow devices to pull
+the most approriate ads for the user).  Thus the adverisement platform
+becomes fully decentralized and cannot be manupulated by a central authority.
+
+In the long term multiple incetive tiers will be employed for the users,
+with increasing monetary rewards for all paritcipats (because they provide
+increasingly accurate adds for the users):
+
+1.  Basic content based tier - users recieve adds based on the data that is
+sent to the target app from AIRport for a given page render.
+2.  Ehanced content based tier - application reinforces the ad choice by
+sending back to AIRport App the metadata about the page (and static content
+that is rendered on the page).
+3.  Demographic tier - users volutarily stores their demographics data in
+AIRport (again it's not shared with anyone, just used to pull more accurate
+ads).
+4.  Geographic tier - users opt in to using their permantent and current
+location for serving adds (again this information remains on the device
+only and is not shared with anyone).
+5.  Model tier - users opt in to anonymized big data model generation for
+optimal adds placement.  This does require sharing data which is scrubed
+of any PI (which AIRport can do since it can provide annotations for on
+per column bases which will flag all PI data).
+
+Adveritsement revenue will be split between the 3 parties (User, Apps,
+Airport) in a manner that best fits the market conditions at that time.
+
+#### Fee model
+Users can opt out (either wholesale, or per App, or per time period,
+or per repository) of advertisements by paying for usage of AIRport and
+applications.  This allows the Apps and AIRport to still fulfill their
+monetary insentives.
 
 ## Application collaboration<a name="app-collaboration"></a>
 
