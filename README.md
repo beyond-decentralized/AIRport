@@ -24,9 +24,9 @@ declarative JSON config into the database itself.
 
 Decentralized Applications (DApps) lack an easy-to-use database layer.
 
-### Our solution:
+### The solution:
 
-AIRport a decentralized relational database of Repositories.  Repositories
+AIRport is a decentralized relational database of Repositories.  Repositories
 are virtual databases, each with its own transaction log.  Each Repository has
 a globally unique identifier that allows to distinguish it from other
 repositories in the same relational database (such as WebSql, or SqLite in
