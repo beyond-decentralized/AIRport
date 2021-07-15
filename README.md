@@ -87,6 +87,16 @@ AIRport's backend best fits with decentralized data storage technologies
 since it itself is a decentralized database (though centralized and peer-to-peer
 backend implementations are also possible).
 
+In the long term AIRport will be most effective if it utilizes both permanent
+and temporary storage for persistance of any given repository.  Transaction logs
+are not a very space efficient way to store data, hence they would ideally be
+stored in temorary storage.  This is a luxury AIRport can afford since even in
+the case of data loss AIRport still has a device-local copy of those transaction
+logs.  So a natural compaction point would be an archival event - when a
+repository is removed from the device-local database.   At that point the current
+snapshot of the repository can be placed in permanent storage and the transaction
+logs can be cleaned up from temporary storage.
+
 AIRport will use [Arweave](https://github.com/ArweaveTeam/arweave-js)
 as the default backend.  Arweave supports indexing and querying by tags, which
 provides the necessary flexibility for interal Repository upkeep (efficiently
@@ -100,7 +110,15 @@ conflict resultion since it supports the DAG datastructure.  Ownership as well
 as time breakdown of transactions (for efficient lookup) can be done via the
 directory structure provided by IPFS.
 
+Hence, a combination of Arweave and IPFS storage will likely work best for
+AIRport.  An initial record with tags can be placed in Arweave for lookup.  The
+transaction logs can be help in IPFS.  At archival time the repository can
+be compacted and send to Arweave for permanent storage.  Some repositories
+that are ephemeral may not need compaction at all can afford to keep only a
+small lookup file on Arweave for seach accessiblity.
 
+Further research would need to be peformed to find out if it's feasible to
+use other temprary storage technolgies like Sia or Storj.
 
 
 ## Application collaboration<a name="app-collaboration"></a>
