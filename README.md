@@ -75,7 +75,7 @@ resolution mechanism.
     modifies the same record also offline but at a later time then both
     with be notified of the conflict and automatic conflict resolution
     will pick the latest column values while allowing for manual confict
-   resolution.
+    resolution.
 
 ![AIR Transaction Log](presentations/images/AIRPort_Transaction_Log.png)
 
