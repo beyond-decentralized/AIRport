@@ -76,23 +76,23 @@ resolution mechanism.
     with be notified of the conflict and automatic conflict resolution
     will pick the latest column values while allowing for manual confict
    resolution.
-    
+
+![AIR Transaction Log](presentations/images/AIRPort_Transaction_Log.png)
+
+
+
 ## Backend<a name="backend"></a>
 AIRport will use [Arweave](https://github.com/ArweaveTeam/arweave-js)
 as the default backend.
 
 Integration with [IPFS](https://github.com/ipfs/js-ipfs) is also possible though
-will require additional infrastructure for repository lookup.
+will require additional infrastructure for repository lookup.  IPFS can simplify
+conflict resultion since it supports the DAG datastructure.  Ownership as well
+as time breakdown of transactions (for efficient lookup) can be done via the
+directory structure provided by IPFS.
 
-![AIR Transaction Log](presentations/images/AIRPort_Transaction_Log.png)
 
-Based on my current limited understanding of blockchains:
 
-A Repository chain can be integrated with IPFS since it supports DAG
-datastructure and is storage centric.  Integrations with other chains
-are possible: A Repository chain can be tied to the chains of the
-individual chains of creators/participators in the Repository.  In
-turn, those can be integrated into any 3.0 blockchain.
 
 ## Application collaboration<a name="app-collaboration"></a>
 
