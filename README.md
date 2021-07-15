@@ -4,6 +4,9 @@
 
 1. [Description](#description)
 2. [Blockchain](#blockchain)
+3. [Application Collaboration](#app-collaboration)
+4. [API](#api)
+5. [Technical Details](#tech-details)
 
 ## Description <a name="description"></a>
 * Allows the Application End Users to seamlessly share the data only with
@@ -56,7 +59,7 @@ repositories.  Repositories can have references to each other thus depending
 on data that other repository contains, but must be usable without referenced
 repositories (thus being both interdependent and autonomous).
 
-## Blockchain based<a name="blockchain"></a>
+## Blockchain<a name="blockchain"></a>
 
 AIRport Repositories have blockchain based transaction log storage to enable
 communication between devices. AIRport is fully functional off-line, commits 
@@ -83,32 +86,7 @@ are possible: A Repository chain can be tied to the chains of the
 individual chains of creators/participators in the Repository.  In
 turn, those can be integrated into any 3.0 blockchain.
 
-## Installation process
-
-The process of installing AIRport is:
-
-*  User navigates to a consumer Application that uses AIRport and creates
-   a Repository
-*  Application prompts the user to install AIRport database App (if not
-   installed already)
-*  User installs AIRport App
-*  The consumer application creates the private Repository and prompts
-   to add other participating users
-*  Creating user shares the Repository, and the App notifies new users
-
-![AIRport as Cordova application](presentations/images/AIRport-in-Cordova.png)
-
-## API
-
-AIRport offers refined, high productivity developer APIS:
-
-* Simplified JPA annotations (no session concept, easier relations)
-* GraphQL like query API
-* GraphQL/Firebase like hybrid solution for mutation & access rules
-* Automatic schema generation and installation
-* WIP: Automatic interface and DAO stub generation
-
-## Application collaboration
+## Application collaboration<a name="app-collaboration"></a>
 
 Core to AIRport is the idea is for multiple applications to collaborate 
 and re-use data.  The two key points here are:
@@ -125,14 +103,42 @@ infrequently used repositories (or may do so automatically if not configured),
 leaving them only in the cloud backup.  The applications however may request the
 user to load additional repositories from the cloud, for processing.
 
-## Autopilot client for Apps
+
+## API<a name="api"></a>
+AIRport offers refined, high productivity developer APIS:
+
+* Simplified JPA annotations (no session concept, easier relations)
+* GraphQL like query API
+* GraphQL/Firebase like hybrid solution for mutation & access rules
+* Automatic schema generation and installation
+* WIP: Automatic interface and DAO stub generation
+
+## Technical details<a name="tech-details"></a>
+
+### Installation process
+
+The process of installing AIRport is:
+
+*  User navigates to a consumer Application that uses AIRport and creates
+  
+  a Repository
+*  Application prompts the user to install AIRport database App (if not
+   installed already)
+*  User installs AIRport App
+*  The consumer application creates the private Repository and prompts
+   to add other participating users
+*  Creating user shares the Repository, and the App notifies new users
+
+![AIRport as Cordova application](presentations/images/AIRport-in-Cordova.png)
+
+### Autopilot client for Apps
 
 AIRport provides "autopilot" client for Apps where CRUD code is
 pre-processed by "@airport/runway" at build time and resides on the
 AIRport server, not in the client-side library:
 
 
-![Autopilot Flow](presentations/images/Autopilot-Flow.png)
+Autopilot Flow](presentations/images/Autopilot-Flow.png)
 
 "@airport/runway" generates TypeScript interfaces which are used to define
 the CRUD and Enitty API of the underlying schema.  The actual CRUD logic 
@@ -144,17 +150,13 @@ included from the schema project (along with the "@airport/di",
 "@airport/autopilot" and "@airport/pressurization" libraries).
 
 
-
-## Technical details
-
 ### On the stack dependency injection
 
 Since AIRport instances will be running on mobile devices, it has its own
 "on the stack" Dependency Injection (DI for short) framework that allows it
 to easily upgrade framework versions of code "on-the-fly", without requiring 
 application restarts or interruptions in service.  Thus, dependency injection
-is done "on the stack" (in the methods of the framework objects and not
-in the constructors of these objects).  The idea is that during an upgrade,
+is done "on the stack" (in the methods of the framework objects and nin the constructors of these objects).  The idea is that during an upgrade,
 all in progress requests are allowed to complete while all pending requests
 are halted (via async functions) at the very start.  Once all requests have
 cleared an upgrade takes place (within the libs\di library, just replacing
