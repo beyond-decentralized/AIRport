@@ -79,6 +79,11 @@ resolution mechanism.
 
 ![AIR Transaction Log](presentations/images/AIRPort_Transaction_Log.png)
 
+Note AIRport Repository block chains may or may not be stored as part of
+another chain.  It makes logical sense to keep each Repository blockchain
+as an independent private chain.  However a repository needs a way of being
+archived on some sort of a backend platform and public blockchains can be
+used for that.
 
 
 ## Backend<a name="backend"></a>
@@ -90,7 +95,7 @@ backend implementations are also possible).
 In the long term AIRport will be most effective if it utilizes both permanent
 and temporary storage for persistance of any given repository.  Transaction logs
 are not a very space efficient way to store data, hence they would ideally be
-stored in temorary storage.  This is a luxury AIRport can afford since even in
+stored in temporary storage.  This is a luxury AIRport can afford since even in
 the case of data loss AIRport still has a device-local copy of those transaction
 logs.  So a natural compaction point would be an archival event - when a
 repository is removed from the device-local database.   At that point the current
@@ -112,10 +117,10 @@ directory structure provided by IPFS.
 
 Hence, a combination of Arweave and IPFS storage will likely work best for
 AIRport.  An initial record with tags can be placed in Arweave for lookup.  The
-transaction logs can be help in IPFS.  At archival time the repository can
+transaction logs can be held in IPFS.  At archival time the repository can
 be compacted and send to Arweave for permanent storage.  Some repositories
 that are ephemeral may not need compaction at all can afford to keep only a
-small lookup file on Arweave for seach accessiblity.
+small lookup file on Arweave for search accessiblity.
 
 Further research would need to be peformed to find out if it's feasible to
 use other temprary storage technolgies like Sia or Storj.
