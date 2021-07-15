@@ -20,11 +20,11 @@
 declarative JSON config into the database itself.
 * PLANNED: Automatic schema upgrades with enforced backward compatibility 
 
-- The problem:
+### The problem:
 
 Decentralized Applications (DApps) lack an easy-to-use database layer.
 
-- Our solution:
+### Our solution:
 
 AIRport a decentralized relational database of Repositories.  Repositories
 are virtual databases, each with its own transaction log.  Each Repository has
