@@ -137,16 +137,16 @@ incentivised to use it.  The three primary party types are:
 
 Users are generally interested in keeping their data private.  They are also
 interested in reducing data duplication and duplicate data entry.  Users may
-also be insentivised by profit sharing schemes from both App Creators and
+also be incentivised by profit sharing schemes from both App Creators and
 AIRport Team.
 
 App creators are incentivies by the profits that applications generate.  They
-are also insentivised in aquiring large market share (to maximize profits)
-by ehancing and enlarging their offerings but are dis-insetivised by the costs
+are also incentivised in aquiring large market share (to maximize profits)
+by enhancing and enlarging their offerings but are dis-incetivised by the costs
 of additional work and expansion.
 
-AIRport team is insetives align closely with those application creators.  They
-have an additional insentive to attract application creators to write apps
+AIRport team incetives align closely with those application creators.  They
+have an additional incentive to attract application creators to write Apps
 on the platform.
 
 Airport naturally fulfils User data insetives though it's technology.  It
@@ -164,36 +164,36 @@ Airport (in combination with Arweave) will support an privacy centric
 advertisement engine.  The decision making engine will kept on user devices,
 thus solving data privacy issues (data will not be shared with any authority
 or intermediarly or the adverisers and will remain soley on the users device,
-inside the relation database embedded in the locally installed AIRport App).
-This allows tow keep the user in full control of how much data is used for
-serving ads.
+inside the relational database, which is embedded in the locally installed
+AIRport App).  This allows to keep the user in full control of how much data
+is used for serving Ads.
 
 The advertisement model will be fliped from traditional push, where a central
-autority decides what ads get pushed to a user, to pull model, where the
-users device decides what ads to pull to the user.   Ads themselves
+autority decides what Ads get pushed to a user, to pull model, where the
+users device decides what Ads to pull to the user.   Ads themselves
 will be stored on Arweave and tagged appropriately (to allow devices to pull
 the most approriate ads for the user).  Thus the adverisement platform
 becomes fully decentralized and cannot be manupulated by a central authority.
 
 In the long term multiple incetive tiers will be employed for the users,
 with increasing monetary rewards for all paritcipats (because they provide
-increasingly accurate adds for the users):
+increasingly accurate Ads for the users):
 
-1.  Basic content based tier - users recieve adds based on the data that is
+1.  Basic content based tier - users recieve Ads based on the data that is
 sent to the target app from AIRport for a given page render.
-2.  Ehanced content based tier - application reinforces the ad choice by
+2.  Enhanced content based tier - application reinforces the Ad choice by
 sending back to AIRport App the metadata about the page (and static content
 that is rendered on the page).
-3.  Demographic tier - users volutarily stores their demographics data in
+3.  Demographic tier - user volutarily stores their demographic data in
 AIRport (again it's not shared with anyone, just used to pull more accurate
-ads).
-4.  Geographic tier - users opt in to using their permantent and current
-location for serving adds (again this information remains on the device
+Ads).
+4.  Geographic tier - users opt in to using their permannent and current
+location for serving Ads (again this information remains on the device
 only and is not shared with anyone).
 5.  Model tier - users opt in to anonymized big data model generation for
-optimal adds placement.  This does require sharing data which is scrubed
-of any PI (which AIRport can do since it can provide annotations for on
-per column bases which will flag all PI data).
+optimal Ad placement.  This does require sharing data which is scrubed
+of any PI (which AIRport can do since it can provide annotations on
+per column basis to flag all PI data).
 
 Adveritsement revenue will be split between the 3 parties (User, Apps,
 Airport) in a manner that best fits the market conditions at that time.
@@ -202,7 +202,9 @@ Airport) in a manner that best fits the market conditions at that time.
 Users can opt out (either wholesale, or per App, or per time period,
 or per repository) of advertisements by paying for usage of AIRport and
 applications.  This allows the Apps and AIRport to still fulfill their
-monetary insentives.
+monetary insentives.  AIRport can act as either a central fee platform,
+where it shares advertisement revenue with the Apps or Apps can share
+their revenue with AIRport.
 
 ## Application collaboration<a name="app-collaboration"></a>
 
