@@ -3,12 +3,15 @@
 ![AIRport - winged DApps](/presentations/images/logo/AIRPort_logo_with_slogan_1.0.png)
 
 1. [Description](#description)
+1.1 [The Problem](#problem)
+1.2 [The Solution](#solution)
 2. [Blockchain](#blockchain)
 3. [Backend](#backend)
-3. [Economics](#economics)
-4. [Application Collaboration](#app-collaboration)
-5. [API](#api)
-6. [Technical Details](#tech-details)
+4. [Economics](#economics)
+4.1 [Monetization](#monetization)
+5. [Application Collaboration](#app-collaboration)
+6. [API](#api)
+7. [Technical Details](#tech-details)
 
 ## Description <a name="description"></a>
 * Allows the Application End Users to seamlessly share the data only with
@@ -22,11 +25,11 @@
 declarative JSON config into the database itself.
 * PLANNED: Automatic schema upgrades with enforced backward compatibility 
 
-### The problem:
+### The problem: <a name="description"></a>
 
 Decentralized Applications (DApps) lack an easy-to-use database layer.
 
-### The solution:
+### The solution: <a name="solution"></a>
 
 AIRport is a decentralized relational database of Repositories.  Repositories
 are virtual databases, each with its own transaction log.  Each Repository has
@@ -72,10 +75,10 @@ Directed Acyclic Graph with each commit being a separate block and all
 sub-chains are resolved to the "longest chain" via timestamp based conflict
 resolution mechanism. 
 
-    For examle if Alice modifies record 1 while being offline and Charlie
+    For example, if Alice modifies record 1 while being offline and Charlie
     modifies the same record also offline but at a later time then both
     with be notified of the conflict and automatic conflict resolution
-    will pick the latest column values while allowing for manual confict
+    will pick the latest column values while allowing for manual conflict
     resolution.
 
 ![AIR Transaction Log](presentations/images/AIRPort_Transaction_Log.png)
@@ -94,7 +97,7 @@ since it itself is a decentralized database (though centralized and peer-to-peer
 backend implementations are also possible).
 
 In the long term AIRport will be most effective if it utilizes both permanent
-and temporary storage for persistance of any given repository.  Transaction logs
+and temporary storage for persistence of any given repository.  Transaction logs
 are not a very space efficient way to store data, hence they would ideally be
 stored in temporary storage.  This is a luxury AIRport can afford since even in
 the case of data loss AIRport still has a device-local copy of those transaction
@@ -105,14 +108,14 @@ logs can be cleaned up from temporary storage.
 
 AIRport will use [Arweave](https://github.com/ArweaveTeam/arweave-js)
 as the default backend.  Arweave supports indexing and querying by tags, which
-provides the necessary flexibility for interal Repository upkeep (efficiently
+provides the necessary flexibility for internal Repository upkeep (efficiently
 retrieving only recent transactions not made from the target device, etc.).
 It also allows to easily keep track of transaction ownership, groups and
 provides for topical lookup of non-private Repositories.
 
 Integration with [IPFS](https://github.com/ipfs/js-ipfs) is also possible though
 will require additional infrastructure for repository lookup.  IPFS can simplify
-conflict resultion since it supports the DAG datastructure.  Ownership as well
+conflict resolution since it supports the DAG datastructure.  Ownership as well
 as time breakdown of transactions (for efficient lookup) can be done via the
 directory structure provided by IPFS.
 
@@ -121,10 +124,10 @@ AIRport.  An initial record with tags can be placed in Arweave for lookup.  The
 transaction logs can be held in IPFS.  At archival time the repository can
 be compacted and send to Arweave for permanent storage.  Some repositories
 that are ephemeral may not need compaction at all can afford to keep only a
-small lookup file on Arweave for search accessiblity.
+small lookup file on Arweave for search accessibility.
 
-Further research would need to be peformed to find out if it's feasible to
-use other temprary storage technolgies like Sia or Storj.
+Further research would need to be performed to find out if it's feasible to
+use other temporary  storage technologies like Sia or Storj.
 
 
 ## Economics<a name="economics"></a>
@@ -153,7 +156,7 @@ Airport naturally fulfils User data incentives though it's technology.  It
 also naturally solves the dilemma of monopolizing App product offering by
 naturally driving App specialization (due to its data sharing capabilities).
 
-### Monetization
+### Monetization<a name="monetization"></a>
 
 To fulfil the rest of the the incentives two alternative mechanisms can be
 employed.
