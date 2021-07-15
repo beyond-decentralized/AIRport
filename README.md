@@ -2,6 +2,10 @@
 
 ![AIRport - winged DApps](/presentations/images/logo/AIRPort_logo_with_slogan_1.0.png)
 
+1. [Description](#description)
+2. [Blockchain](#blockchain)
+
+## Description <a name="description"></a>
 * Allows the Application End Users to seamlessly share the data only with
   selected Users.
 * Lowers the barrier to entry for new Apps as they can reuse existing schemas
@@ -52,7 +56,7 @@ repositories.  Repositories can have references to each other thus depending
 on data that other repository contains, but must be usable without referenced
 repositories (thus being both interdependent and autonomous).
 
-## Blockchain based
+## Blockchain based<a name="blockchain"></a>
 
 AIRport Repositories have blockchain based transaction log storage to enable
 communication between devices. AIRport is fully functional off-line, commits 
