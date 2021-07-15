@@ -2,16 +2,16 @@
 
 ![AIRport - winged DApps](/presentations/images/logo/AIRPort_logo_with_slogan_1.0.png)
 
-1. [Description](#description)
-  1.1 [The Problem](#problem)
-  1.2 [The Solution](#solution)
-2. [Blockchain](#blockchain)
-3. [Backend](#backend)
-4. [Economics](#economics)
-  4.1 [Monetization](#monetization)
-5. [Application Collaboration](#app-collaboration)
-6. [API](#api)
-7. [Technical Details](#tech-details)
+* [Description](#description)
+  * [The Problem](#problem)
+  * [The Solution](#solution)
+* [Blockchain](#blockchain)
+* [Backend](#backend)
+* [Economics](#economics)
+  * [Monetization](#monetization)
+* [Application Collaboration](#app-collaboration)
+* [API](#api)
+* [Technical Details](#tech-details)
 
 ## Description <a name="description"></a>
 * Allows the Application End Users to seamlessly share the data only with
