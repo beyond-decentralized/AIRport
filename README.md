@@ -28,7 +28,11 @@ AIRport allows:
 Decentralized Applications (DApps) lack an easy-to-use database layer.
 
 Right now there is no easy way to write DApps that rely on complex relational
-schemas for data storage.
+schemas for data storage.  There is also no way for DApps to share data in
+relational schemas and no way to generate synergies between DApps (from schema
+sharing point of view).  And therefore there is no way to share CRUD logic
+for relational schemas and no way to share process execution logic on top
+of those schemas.
 
 ### The solution: <a name="solution"></a>
 
