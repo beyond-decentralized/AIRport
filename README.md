@@ -175,8 +175,14 @@ employed:
 
 #### Decentralized advertisement with profit sharing<a name="advertisement"></a>
 
-Airport (in combination with Arweave) will support a privacy-centric
-advertisement engine.  The Ad decision making engine will kept on user devices,
+Airport (in combination with Arweave) will support a decentralized, privacy-centric 
+advertisement engine.  Being decentralized it will allow full decentralized 
+applications to be buit on top of AIRport.  Without it Apps will have to rely on 
+centralized advertisement platforms for their revenue.  It also makes long term
+success of the project possible, providing revenue to the AIRport team for bug 
+fixes and improvements.
+
+The Ad decision making engine will kept on user devices,
 thus solving data privacy issues.  Data will not be shared with any authority
 or intermediary or the advertisers and will remain solely on the Users device
 (inside the relational database, which is embedded in the locally installed
