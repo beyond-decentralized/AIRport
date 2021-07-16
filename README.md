@@ -23,7 +23,7 @@ AIRport allows:
 * Schema backward compatibility
 * [BPMN](https://github.com/paed01/bpmn-engine) logic execution (eventually)
 
-### The problem: <a name="description"></a>
+### The problem: <a name="problem"></a>
 
 Decentralized Applications (DApps) lack an easy-to-use database layer.
 
