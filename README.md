@@ -14,20 +14,21 @@
 * [Technical Details](#tech-details)
 
 ## Description <a name="description"></a>
-* Allows the Application End Users to seamlessly share the data only with
-  selected Users.
-* Lowers the barrier to entry for new Apps as they can reuse existing schemas
-  or write add-on functionality to existing Apps.
-* Lowers the barrier to entry by providing exiting data to new Apps.
-* Allows hybrid applications where part of the data is centralized (for
-  large scale sharing) and part is in private Repositories.
-* WIP: Minimal code application library, all CRUD logic is installed via
-declarative JSON config into the database itself.
-* PLANNED: Automatic schema upgrades with enforced backward compatibility 
+AIRport allows:
+* End Users to seamlessly share the data with other Users.
+* Reuse of schemas for new Apps (enables small specialized "add-on Apps").
+* Access to exiting data for new Apps.
+* Hybrid decentralized/(partially) centralized applications.
+* Automatic schema upgrades
+* Schema backward compatibility
+* [BPMN](https://github.com/paed01/bpmn-engine) logic execution (eventually)
 
 ### The problem: <a name="description"></a>
 
 Decentralized Applications (DApps) lack an easy-to-use database layer.
+
+Right now there is no easy way to write DApps that rely on complex relational
+schemas for data storage.
 
 ### The solution: <a name="solution"></a>
 
