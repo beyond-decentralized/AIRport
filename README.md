@@ -160,8 +160,8 @@ have an additional incentive to attract application creators to write Apps
 on the platform.
 
 Airport naturally fulfils User data incentives though it's technology.  It
-also naturally solves the dilemma of monopolizing App product offering by
-naturally driving App specialization (due to its data sharing capabilities).
+also naturally solves the dilemma of monopolizing App product by
+ promoting App specialization (via schema+data sharing).
 
 ### Monetization<a name="monetization"></a>
 
