@@ -76,28 +76,28 @@ repositories.  Repositories are both Autonomous and Interdependent.
 
 ## Blockchain<a name="blockchain"></a>
 
-AIRport Repositories have blockchain based transaction log storage to enable
-communication between devices. AIRport is fully functional off-line, commits 
-are made locally and are added to the "longest chain" once device is back on-line.
-Each Repository transaction log is a separate chain and itself can consist of 
-sub-chains if devices go out of sync. Thus, the Repository transaction log is a
-Directed Acyclic Graph with each commit being a separate block and all 
-sub-chains are resolved to the "longest chain" via timestamp based conflict
-resolution mechanism. 
+AIRport Repositories have blockchain based transaction logs.  Each transaction
+log entry is a block. AIRport is fully functional off-line: transaction commits 
+are made locally and are added to the "longest chain" once a device is back on-line.
+Each Repository transaction log is a separate blockchain and itself can consist of 
+sub-chains if the Repository goes out of sync on multiple devices (if Users modify
+the repository at the same time, without syncing). So, Repository transaction log
+is a Directed Acyclic Graph with each commit being a separate block. All 
+sub-chains (sub graphs) are resolved to the "longest chain" via timestamp based
+conflict resolution mechanism. 
 
     For example, if Alice modifies record 1 while being offline and Charlie
     modifies the same record also offline but at a later time then both
     with be notified of the conflict and automatic conflict resolution
-    will pick the latest column values while allowing for manual conflict
+    will pick the latest column values while still allowing for manual conflict
     resolution.
 
 ![AIR Transaction Log](presentations/images/AIRPort_Transaction_Log.png)
 
-Note AIRport Repository block chains may or may not be stored as part of
-another chain.  It makes logical sense to keep each Repository blockchain
-as an independent private chain.  However a repository needs a way of being
-archived on some sort of a backend platform and public blockchains can be
-used for that.
+AIRport Repository block chains can be stored as part of public chain.  But, it
+makes logical sense to keep each Repository blockchain as an independent private
+chain.  Repository transaction logs can (of course) be archived on public
+blockchains like Arweave and IPVS.
 
 
 ## Backend<a name="backend"></a>
