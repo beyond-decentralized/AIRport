@@ -54,20 +54,25 @@ contains only the Repositories the user of that device decides to keep on it.
 
 ![AIR across devices](presentations/images/AIRport_diagram_1.png)
 
-    For example in an event tracking App data for each event is a separate Repository.
-    Other Applications can build upon this App's schema and provide functionality
-    (such as  event specific chat and voting systems) in their own schemas. Using all
-    of these Apps the users add data to the same Repositories (for the the same
-    events).  Thus Repositories for events span schemas of all the Apps that together
-    provide better functionality than each one separately.  AIRport enables synergies
-    between Apps where "the whole is greater than the sum its parts" thus reducing the
-    overall costs.
+    For example, in an Event Tracking App, data for each event is a separate Repository.
+    Other Applications can build upon this App's schema, provide additional schemas 
+    for functionality that builds upon the first App.  So, another App can build
+    a Event Chat System for participants and use both the Event Tracking App schema
+    as well as it's own schema.  Yet another App can build in Event Voting and use
+    the schemas for both core Event Tracking and Event Chat and provide it's own
+    schema as well.  Even more Apps can built add-on functionality without providing
+    their own schemas.  The data used by all of these Apps (across all related 
+    schemas) is stored in Event specific Repositories, one repository per event.  Thus
+    a repository spans multiple Event Apps and Schemas.  The aggregate of specialized
+    Event Apps together provides better functionality than the sum of its part Apps.
+    Therefore, AIRport enables synergies between Apps where "the whole is greater than
+    the sum its parts", reducing the overall costs (and the costs of building each App).
 
 Each repository is completely autonomous and can be added to a host relational
-database and/or removed from it, at any time, without affecting other
+database or removed from it (at any time) without affecting other
 repositories.  Repositories can have references to each other thus depending
 on data that other repository contains, but must be usable without referenced
-repositories (thus being both interdependent and autonomous).
+repositories.  Repositories are both Autonomous and Interdependent.
 
 ## Blockchain<a name="blockchain"></a>
 
