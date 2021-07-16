@@ -173,7 +173,7 @@ Eventually the same logic will apply for BPMN logic providers.
 To fulfil the rest of the incentives two alternative mechanisms will be
 employed:
 
-#### Private advertisement profit sharing
+#### Decentralized advertisement with profit sharing<a name="advertisement"></a>
 
 Airport (in combination with Arweave) will support a privacy-centric
 advertisement engine.  The Ad decision making engine will kept on user devices,
@@ -219,6 +219,10 @@ applications.  This allows the Apps and AIRport to still fulfill their
 monetary incentives.  AIRport can act as either a central fee platform,
 where it shares User fee revenue with the Apps, or Apps can share
 their revenue with AIRport.
+
+The expectation is that only a small number of Users will op-in for
+the fee model and that the bulk of funds will come from the
+decentralized advertisement engine.
 
 ## Application collaboration<a name="app-collaboration"></a>
 
