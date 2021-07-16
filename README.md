@@ -165,45 +165,44 @@ also naturally solves the dilemma of large App monopolies by
 
 ### Monetization<a name="monetization"></a>
 
-To fulfil the rest of the the incentives two alternative mechanisms can be
+To fulfil the rest of the incentives two alternative mechanisms will be
 employed.
 
 #### Private advertisement profit sharing
 
-Airport (in combination with Arweave) will support an privacy centric
-advertisement engine.  The decision making engine will kept on user devices,
-thus solving data privacy issues (data will not be shared with any authority
-or intermediary or the advertisers and will remain solely on the users device,
-inside the relational database, which is embedded in the locally installed
-AIRport App).  This allows to keep the user in full control of how much data
+Airport (in combination with Arweave) will support a privacy-centric
+advertisement engine.  The Ad decision making engine will kept on user devices,
+thus solving data privacy issues.  Data will not be shared with any authority
+or intermediary or the advertisers and will remain solely on the Users device
+(inside the relational database, which is embedded in the locally installed
+AIRport App).  This keeps the User in full control of how much data
 is used for serving Ads.
 
-The advertisement model will be flipped from traditional push, where a central
-authority decides what Ads get pushed to a user, to pull model, where the
-users device decides what Ads to pull to the user.   Ads themselves
-will be stored on Arweave and tagged appropriately (to allow devices to pull
-the most appropriate Ads for the user).  Thus the advertisement platform
-becomes fully decentralized and cannot be manipulated by a central authority.
+The AIRport advertisement model is flipped from traditional push to pull.
+In the push model a central authority decides what Ads get pushed to a user.
+In AIRport pull model the User device decides what Ads to pull to the User.
+Ads themselves will be stored on Arweave and tagged to allow pulling
+the most appropriate Ads.  Thus the advertisement platform becomes fully 
+decentralized and cannot be manipulated by a central authority.
 
-In the long term multiple incentive tiers will be employed for the users,
+In the long term multiple incentive tiers will be employed for the Users,
 with increasing monetary rewards for all participants (because they provide
-increasingly accurate Ads for the users):
+increasingly accurate Ad placement):
 
-1.  Basic content based tier - users receive Ads based on the data that is
-sent to the target app from AIRport for a given page render.
-2.  Enhanced content based tier - application reinforces the Ad choice by
-sending back to AIRport App the metadata about the page (and static content
-that is rendered on the page).
+1.  Basic "content based" tier - users receive Ads based on the data that is
+(locally) sent to the Apps from AIRport (for any given rendered page).
+2.  Enhanced "content based" tier - Apps reinforces Ad choices by
+sending back to AIRport page metadata (and static content rendered on pages).
 3.  Demographic tier - user voluntarily stores their demographic data in
-AIRport (again it's not shared with anyone, just used to pull more accurate
-Ads).
+AIRport.  Again, it's not shared with anyone, just used to pull more accurate
+Ads.
 4.  Geographic tier - users opt in to using their permanent and current
 location for serving Ads (again this information remains on the device
 only and is not shared with anyone).
-5.  Model tier - users opt in to anonymized big data model generation for
+5.  Model tier - users opt in   anonymized Big Data model generation for
 optimal Ad placement.  This does require sharing data which is scrubbed
-of any PI (which AIRport can do since it can provide annotations on
-per column basis to flag all PI data).
+of any PI (AIRport will provide annotations on per column basis to flag 
+PI data).
 
 Advertisement revenue will be split between the 3 parties (User, Apps,
 Airport) in a manner that best fits the market conditions at that time.
