@@ -177,7 +177,7 @@ employed:
 
 Airport (in combination with Arweave) will support a decentralized, privacy-centric 
 advertisement engine.  Being decentralized it will allow full decentralized 
-applications to be buit on top of AIRport.  Without it Apps will have to rely on 
+applications to be built on top of AIRport.  Without it Apps will have to rely on 
 centralized advertisement platforms for their revenue.  It also makes long term
 success of the project possible, providing revenue to the AIRport team for bug 
 fixes and improvements.
