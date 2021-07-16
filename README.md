@@ -165,8 +165,13 @@ also naturally solves the dilemma of large App monopolies by
 
 ### Monetization<a name="monetization"></a>
 
+A profit sharing setup will be used to reward schema creators when Apps
+use them.  A nano-payment will be made the schema creator every time a CRUD
+operation is performed (by Apps that do not directly associate with that schema).
+Eventually the same logic will apply for BPMN logic providers.
+
 To fulfil the rest of the incentives two alternative mechanisms will be
-employed.
+employed:
 
 #### Private advertisement profit sharing
 
@@ -212,7 +217,7 @@ Users can opt out (either wholesale, or per App, or per time period,
 or per repository) of advertisements by paying for usage of AIRport and
 applications.  This allows the Apps and AIRport to still fulfill their
 monetary incentives.  AIRport can act as either a central fee platform,
-where it shares advertisement revenue with the Apps or Apps can share
+where it shares User fee revenue with the Apps, or Apps can share
 their revenue with AIRport.
 
 ## Application collaboration<a name="app-collaboration"></a>
