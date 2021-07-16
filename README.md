@@ -222,18 +222,26 @@ their revenue with AIRport.
 
 ## Application collaboration<a name="app-collaboration"></a>
 
-Core to AIRport is the idea is for multiple applications to collaborate 
-and re-use data.  The two key points here are:
+Core to AIRport is cross-App collaboration and data reuse. The two key
+points here are:
 
 * User is in control of their data they allow applications to access 
   their data (usually only a part of their data).
 * Applications are in control of sharing schemas with other applications
 - they can allow or deny access to their schemas.
 
-This the applications only interact with the device-local database, making AIRport
+This means that new Applications can be written as add-ons to existing ones.
+Also new applications don't have to worry about tedious data entry by users
+(if that data is already present in the AIRport database).  Ultimately this
+leads to data reuse and datanormalization, while allowing Apps to be more
+integrated with each other.  Once the BPMN module is integrated this will
+also allow applications to share process management logic as well, further
+reducing development costs for new Apps.
+
+The applications only interact with the device-local database, making AIRport
 fully operational in offline-mode.  The database is in charge of maintaining the
 repositories contained in it.  It may occasionally prompt the user to purge
-infrequently used repositories (or may do so automatically if not configured),
+infrequently used repositories (or may do so automatically if so configured),
 leaving them only in the cloud backup.  The applications however may request the
 user to load additional repositories from the cloud, for processing.
 
