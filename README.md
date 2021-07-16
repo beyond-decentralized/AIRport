@@ -136,8 +136,8 @@ held in IPFS.  At archival time the Repository is compacted and send to Arweave 
 permanent storage.  Ephemeral Repositories do not need compaction and are keep mostly
 in IPFS with a small file on Arweave (for lookup purposes).
 
-Further research is needed to determine possibility of using other temporary storage
-technologies like Sia or Storj.
+Further research is needed to determine if using other temporary storage
+technologies (like Sia or Storj) is possible.
 
 
 ## Economics<a name="economics"></a>
