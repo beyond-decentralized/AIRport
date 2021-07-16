@@ -253,7 +253,13 @@ AIRport offers refined, high productivity developer APIS:
 * GraphQL like query API
 * GraphQL/Firebase like hybrid solution for mutation & access rules
 * Automatic schema generation and installation
-* WIP: Automatic interface and DAO stub generation
+* Automatic interface and DAO stub generation
+
+These streamlined and automated APIs reduce the development burnen and allow
+App creators to focus on the core persistence logic (instead of the CRUD
+minutiae).  Developers can simply define their entities and then write
+queries that return complete object trees (or even interlinked object
+graphs).
 
 ## Technical details<a name="tech-details"></a>
 
