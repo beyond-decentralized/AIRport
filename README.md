@@ -103,38 +103,35 @@ blockchains like Arweave and IPVS.
 ## Backend<a name="backend"></a>
 
 AIRport's backend best fits with decentralized data storage technologies
-since it itself is a decentralized database (though centralized and peer-to-peer
-backend implementations are also possible).
+since it itself is a decentralized database.  Centralized and peer-to-peer
+backend implementations are possible for organizational or specialized
+use cases.
 
-In the long term AIRport will be most effective if it utilizes both permanent
-and temporary storage for persistence of any given repository.  Transaction log
-is not a space-efficient way to store data, hence transaction logs are ideally
-stored in temporary storage.  This is a luxury AIRport can afford since in
-the case of data loss AIRport has a device-local copy of all transactions for
-any given repository present on the device.
+In terms of cost effectives it is optimal to store Repositories in both permanent
+and temporary storage.  This is because transaction logs are not space-efficient 
+at storing store data.  However a Repository compaction setup is not reliable
+in a decentralized setting. In such settings it is hard to achieve an agreement
+on when to compact a given Repository.
 
-Transaction logs can be periodically compacted.  A natural compaction point is 
-an "archival event" - when a Repository is removed from a device-local database.
-At that point the current snapshot of that Repository is placed in permanent 
-storage and the transaction logs are cleaned up from temporary storage.
+Thus it is up to the Application and the User to decide if a particular
+Repository has permanent or temporary quality.  Of course a temporary repository
+can become permanent if an agreement between all of its member devices has
+been achieved (or if owner of that repository decides to make it such).  Also,
+time bound repositories (that are sealed at a determined time) are good candidates
+for temporary to permanent transitions.
 
 AIRport will use [Arweave](https://github.com/ArweaveTeam/arweave-js)
-as the default backend.  Arweave supports indexing and querying by tags, which
-provides the necessary flexibility for internal Repository upkeep (efficiently
-retrieving only recent transactions not made fromdevice, etc.).
+for permanent repository storage.  Arweave supports indexing and querying by tags,
+which provides the necessary flexibility for internal Repository upkeep
+(efficiently retrieving only recent transactions not made from this device, etc.).
 Arweave also makes tracking transaction ownership and grouping easy. It also
 provides for topical lookup of non-private Repositories.
 
-[IPFS](https://github.com/ipfs/js-ipfs) is ideally used for temporary transaction
-log storage.  It simplifies conflict resolution since it supports the DAG
-datastructure.  Ownership and time breakdown of transactions (for efficient lookup)
-is done via the directory structure provided by IPFS.
-
-Hence, a combination of Arweave and IPFS storage works best.  An initial record 
-(with appropriate tags for lookup) is placed in Arweave.  The transaction logs are
-held in IPFS.  At archival time the Repository is compacted and send to Arweave for
-permanent storage.  Ephemeral Repositories do not need compaction and are keep mostly
-in IPFS with a small file on Arweave (for lookup purposes).
+[IPFS](https://github.com/ipfs/js-ipfs) can be used for temporary repository
+storage.  It does not provide the tag based search capability of Arweave so
+a small marker with tags may be stored in Arweave for lookup purposes.
+It's hierachical directory and file naming is sufficient for all other
+AIRport storage needs.
 
 Further research is needed to determine if using other temporary storage
 technologies (like Sia or Storj) is possible.
