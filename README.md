@@ -44,6 +44,14 @@ a Cordova based App). For two Users to share a Repository it must be present
 on their devices, and the schemas used by that repository must be installed
 in AIRport databases on those devices.
 
+
+    For example, in the below diagram AIRport database contains two schemas,
+    one from App A and one from App B.  App A Schema contains table A__TABLE_II
+    and App B Schema contains table B__TABLE_I.  Three repositories are pictured
+    Repository B1 spans both tables (and thus both schemas).  Repository B2
+    is fully contained in B__TABLE_I.  Repository C1 spans only tables in App
+    B Schema (other tables are not pictured).
+    
 ![AIR reposiories](presentations/images/AIRport_diagram_2.png)
 
 Each device/phone contains a single AIRport database that is shared by all
