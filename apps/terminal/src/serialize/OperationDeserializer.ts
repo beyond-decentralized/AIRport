@@ -3,6 +3,7 @@ import {
     OPERATION_DESERIALIZER
 } from "@airport/check-in";
 import { DI } from "@airport/di";
+import { DbEntity } from "@airport/ground-control";
 import {
     EntityState,
     IEntityStateManager
@@ -17,6 +18,7 @@ export class OperationDeserializer
 
     deserialize<E, T = E | E[]>(
         entity: T,
+        dbEntity: DbEntity,
         entityStateManager: IEntityStateManager
     ): T {
         const operation: IDeserializableOperation = {
@@ -70,7 +72,60 @@ export class OperationDeserializer
 
         let deserializedEntity: any = {}
         operation.lookupTable[operationUniqueId] = deserializedEntity
-		deserializedEntity[entityStateManager.getStateFieldName()] = state
+        deserializedEntity[entityStateManager.getStateFieldName()] = state
+
+        
+		for (const dbProperty of dbEntity.properties) {
+			let value = entity[dbProperty.name]
+			if (schemaUtils.isEmpty(value)) {
+				continue
+			}
+			if (dbProperty.relation) {
+				const dbRelation = dbProperty.relation[0]
+				switch (dbRelation.relationType) {
+					case EntityRelationType.ONE_TO_MANY:
+						if (cacheForUpdate !== UpdateCacheType.ALL_QUERY_ENTITIES) {
+							continue
+						}
+						if (!(value instanceof Array)) {
+							throw new Error(
+								`Expecting @OneToMany for an array entity relation`)
+						}
+						value.forEach((manyObject) => {
+							this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate,
+								dbRelation.relationEntity, manyObject)
+						})
+						break
+					case EntityRelationType.MANY_TO_ONE:
+						if (!(value instanceof Object) || value instanceof Array) {
+							throw new Error(
+								`Expecting @ManyToOne for a non-array entity relation`)
+						}
+						schemaUtils.forEachColumnOfRelation(
+							dbRelation,
+							entity,
+							(
+								dbColumn: DbColumn,
+								value: any,
+								propertyNameChains: string[][]
+							) => {
+								this.copyColumn(schemaUtils, dbColumn, entityCopy, value)
+							}, false)
+						if (cacheForUpdate !== UpdateCacheType.ALL_QUERY_ENTITIES) {
+							continue
+						}
+						this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate,
+							dbRelation.relationEntity, value)
+						break
+					default:
+						throw new Error(
+							`Unknown relation type: ${dbRelation.relationType}`)
+				}
+			} else {
+				const dbColumn = dbProperty.propertyColumns[0].column
+				this.copyColumn(schemaUtils, dbColumn, entityCopy, value)
+			}
+		}
 
         for (const propertyName in entity) {
             const property = entity[propertyName]

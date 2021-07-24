@@ -66,7 +66,6 @@ export class OperationSerializer
 			return entity;
 		}
 
-		// TODO: add support for non-create operations
 		let operationUniqueId = entityStateManager.getOperationUniqueId(entity)
 		if (operationUniqueId) {
 			return operation.stubLookupTable[operationUniqueId]
@@ -81,26 +80,35 @@ export class OperationSerializer
 		operation.lookupTable[operationUniqueId] = entity
 		entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
 
-		let entityState = EntityState.STUB
-		if (entity['id']) {
-			entityState = EntityState.CREATE
-		}
-		entityCopy[entityStateManager.getStateFieldName()] = entityState
+		// let entityState = EntityState.STUB
+		// if (entity['id']) {
+		// 	entityState = EntityState.CREATE
+		// }
+		// entityCopy[entityStateManager.getStateFieldName()] = entityState
 
 		for (const propertyName in entity) {
 			const property = entity[propertyName]
+			const propertyState = property[entityStateManager.getStateFieldName()]
 			let propertyCopy
 			if (property instanceof Object) {
 				if (property instanceof Array) {
-					propertyCopy = property.map(aProperty => this.doSerialize(
-						aProperty, operation, entityStateManager))
+					if (propertyState === EntityState.RESULT_JSON_ARRAY) {
+						propertyCopy = JSON.stringify(property)
+					} else {
+						propertyCopy = property.map(aProperty => this.doSerialize(
+							aProperty, operation, entityStateManager))
+					}
 				} else if (property instanceof Date) {
 					propertyCopy = {
 						value: property.toISOString()
 					}
 					propertyCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT_DATE
 				} else {
-					propertyCopy = this.doSerialize(property, operation, entityStateManager)
+					if (propertyState === EntityState.RESULT_JSON) {
+						propertyCopy = JSON.stringify(property)
+					} else {
+						propertyCopy = this.doSerialize(property, operation, entityStateManager)
+					}
 				}
 			} else {
 				propertyCopy = property

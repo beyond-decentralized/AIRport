@@ -70,7 +70,7 @@ export class LocalAPIServer
                     expecting an entity or an array of entities, received ${typeof request.args[0]}`)
                 }
                 const entity = operationDeserializer.deserialize(
-                    request.args[0], entityStateManager);
+                    request.args[0], operation.dbEntity, entityStateManager);
 
                 // [context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
                 payload = await transactionalConnector.save(entity, context)

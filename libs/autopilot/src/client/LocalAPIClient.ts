@@ -4,10 +4,9 @@ import {
     OPERATION_SERIALIZER,
     QUERY_RESULTS_DESERIALIZER
 } from "@airport/pressurization";
-import { LOCAL_API_CLIENT } from "../tokens";
+import { LOCAL_API_CLIENT, UPDATE_CACHE_MANAGER } from "../tokens";
 import { ILocalAPIRequest } from "./LocalAPIRequest";
 import { ILocalAPIResponse, LocalAPIResponseType } from "./LocalAPIResponse";
-
 
 export interface ILocalAPIClient {
 
@@ -27,20 +26,23 @@ export class LocalAPIClient
         methodName: string,
         args: any[]
     ): Promise<any> {
-        const [entityStateManager, operationSerializer, queryResultsDeserializer]
-            = await container(this).get(ENTITY_STATE_MANAGER,
-                OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER)
+        const [entityStateManager, operationSerializer, queryResultsDeserializer,
+            updateCacheManager] = await container(this).get(ENTITY_STATE_MANAGER,
+                OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER, UPDATE_CACHE_MANAGER)
+
         let serializedParams
         if (args) {
             if (args.length) {
                 serializedParams = args
-                    .map(arg => operationSerializer.serialize(args, entityStateManager));
+                    .map(arg => operationSerializer.serialize(args, entityStateManager))
             } else {
-                serializedParams = [operationSerializer.serialize(args, entityStateManager)];
+                serializedParams = [operationSerializer.serialize(args, entityStateManager)]
             }
         } else {
-            serializedParams = [];
+            serializedParams = []
         }
+
+        updateCacheManager.setOperationState()
 
         const request: ILocalAPIRequest = {
             args: serializedParams,
