@@ -1,9 +1,14 @@
+import { ISchemaUtils } from "@airport/air-control";
 import {
     IOperationDeserializer,
     OPERATION_DESERIALIZER
 } from "@airport/check-in";
 import { DI } from "@airport/di";
-import { DbEntity } from "@airport/ground-control";
+import {
+    DbColumn,
+    DbEntity,
+    EntityRelationType
+} from "@airport/ground-control";
 import {
     EntityState,
     IEntityStateManager
@@ -19,7 +24,8 @@ export class OperationDeserializer
     deserialize<E, T = E | E[]>(
         entity: T,
         dbEntity: DbEntity,
-        entityStateManager: IEntityStateManager
+        entityStateManager: IEntityStateManager,
+        schemaUtils: ISchemaUtils
     ): T {
         const operation: IDeserializableOperation = {
             lookupTable: [],
@@ -27,10 +33,10 @@ export class OperationDeserializer
         let deserializedEntity
         if (entity instanceof Array) {
             deserializedEntity = <any><E[]>entity.map(anEntity => this.doDeserialize(
-                anEntity, operation, entityStateManager))
+                anEntity, dbEntity, operation, entityStateManager, schemaUtils))
         } else {
             deserializedEntity = this.doDeserialize(
-                entity, operation, entityStateManager)
+                entity, dbEntity, operation, entityStateManager, schemaUtils)
         }
 
         return deserializedEntity
@@ -38,8 +44,10 @@ export class OperationDeserializer
 
     doDeserialize<E>(
         entity: E,
+        dbEntity: DbEntity,
         operation: IDeserializableOperation,
         entityStateManager: IEntityStateManager,
+        schemaUtils: ISchemaUtils
     ): E {
         let state = entityStateManager.getEntityState(entity)
         switch (state) {
@@ -84,17 +92,12 @@ export class OperationDeserializer
 				const dbRelation = dbProperty.relation[0]
 				switch (dbRelation.relationType) {
 					case EntityRelationType.ONE_TO_MANY:
-						if (cacheForUpdate !== UpdateCacheType.ALL_QUERY_ENTITIES) {
-							continue
-						}
 						if (!(value instanceof Array)) {
 							throw new Error(
 								`Expecting @OneToMany for an array entity relation`)
 						}
-						value.forEach((manyObject) => {
-							this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate,
-								dbRelation.relationEntity, manyObject)
-						})
+
+                        
 						break
 					case EntityRelationType.MANY_TO_ONE:
 						if (!(value instanceof Object) || value instanceof Array) {
