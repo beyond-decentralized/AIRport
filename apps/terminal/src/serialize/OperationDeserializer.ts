@@ -7,7 +7,9 @@ import { DI } from "@airport/di";
 import {
     DbColumn,
     DbEntity,
-    EntityRelationType
+    DbProperty,
+    EntityRelationType,
+    SQLDataType
 } from "@airport/ground-control";
 import {
     EntityState,
@@ -82,54 +84,6 @@ export class OperationDeserializer
         operation.lookupTable[operationUniqueId] = deserializedEntity
         deserializedEntity[entityStateManager.getStateFieldName()] = state
 
-        
-		for (const dbProperty of dbEntity.properties) {
-			let value = entity[dbProperty.name]
-			if (schemaUtils.isEmpty(value)) {
-				continue
-			}
-			if (dbProperty.relation) {
-				const dbRelation = dbProperty.relation[0]
-				switch (dbRelation.relationType) {
-					case EntityRelationType.ONE_TO_MANY:
-						if (!(value instanceof Array)) {
-							throw new Error(
-								`Expecting @OneToMany for an array entity relation`)
-						}
-
-                        
-						break
-					case EntityRelationType.MANY_TO_ONE:
-						if (!(value instanceof Object) || value instanceof Array) {
-							throw new Error(
-								`Expecting @ManyToOne for a non-array entity relation`)
-						}
-						schemaUtils.forEachColumnOfRelation(
-							dbRelation,
-							entity,
-							(
-								dbColumn: DbColumn,
-								value: any,
-								propertyNameChains: string[][]
-							) => {
-								this.copyColumn(schemaUtils, dbColumn, entityCopy, value)
-							}, false)
-						if (cacheForUpdate !== UpdateCacheType.ALL_QUERY_ENTITIES) {
-							continue
-						}
-						this.saveToUpdateCacheInternal(schemaUtils, cacheForUpdate,
-							dbRelation.relationEntity, value)
-						break
-					default:
-						throw new Error(
-							`Unknown relation type: ${dbRelation.relationType}`)
-				}
-			} else {
-				const dbColumn = dbProperty.propertyColumns[0].column
-				this.copyColumn(schemaUtils, dbColumn, entityCopy, value)
-			}
-		}
-
         for (const propertyName in entity) {
             const property = entity[propertyName]
             let propertyCopy
@@ -146,8 +100,95 @@ export class OperationDeserializer
             deserializedEntity[propertyName] = propertyCopy
         }
 
+
+        for (const dbProperty of dbEntity.properties) {
+            let value = entity[dbProperty.name]
+            if (schemaUtils.isEmpty(value)) {
+                continue
+            }
+            let propertyCopy
+            if (dbProperty.relation) {
+                const dbRelation = dbProperty.relation[0]
+                switch (dbRelation.relationType) {
+                    case EntityRelationType.ONE_TO_MANY:
+                        if (!(value instanceof Array)) {
+                            throw new Error(
+                                `Expecting @OneToMany for an array entity relation`)
+                        }
+                        propertyCopy = value.map(aProperty => this.doDeserialize(
+                            aProperty, dbRelation.entity, operation,
+                            entityStateManager, schemaUtils))
+                        break
+                    case EntityRelationType.MANY_TO_ONE:
+                        if (!(value instanceof Object) || value instanceof Array) {
+                            throw new Error(
+                                `Expecting @ManyToOne for a non-array entity relation`)
+                        }
+                        propertyCopy = this.doDeserialize(
+                            value, dbRelation.entity, operation,
+                            entityStateManager, schemaUtils)
+                        break
+                    default:
+                        throw new Error(
+                            `Unknown relation type: ${dbRelation.relationType}`)
+                }
+            } else {
+                const dbColumn = dbProperty.propertyColumns[0].column
+                switch (dbColumn.type) {
+                    case SQLDataType.JSON:
+                        propertyCopy = this.cleanJsonObject(value, dbProperty, entityStateManager)
+                        break
+                    case SQLDataType.DATE:
+                        if (!(value instanceof Object)
+                            || value[entityStateManager.getStateFieldName()] !== EntityState.RESULT_DATE
+                            || !value.value) {
+                            throw new Error(`Invalid Serialized Date format for ${dbEntity.name}.${dbProperty.name}`)
+                        }
+                        try {
+                            propertyCopy = new Date(value)
+                        } catch (e) {
+                            throw new Error(`Invalid Serialized Date format for ${dbEntity.name}.${dbProperty.name}`);
+                        }
+                        break;
+                    default:
+                        propertyCopy = value
+                        break;
+                }
+            }
+            deserializedEntity[dbProperty.name] = propertyCopy
+        }
+
         return deserializedEntity
     }
 
+    private cleanJsonObject(
+        value: any,
+        dbProperty: DbProperty,
+        entityStateManager: IEntityStateManager
+    ) {
+        let valueCopy
+        if (value instanceof Object) {
+            if (value instanceof Array) {
+                valueCopy = value.map(aValue =>
+                    this.cleanJsonObject(aValue, dbProperty, entityStateManager))
+            } else {
+                valueCopy = {}
+                if (value[entityStateManager.getStateFieldName()] === EntityState.STUB) {
+                    throw new Error(`Interlinked object graphs are not supported in @Json() columns 
+                    ${dbProperty.entity.name}.${dbProperty.name}`)
+                }
+                delete value[entityStateManager.getStateFieldName()]
+                delete value[entityStateManager.getUniqueIdFieldName()]
+                for (const propertyName in value) {
+                    const property = value[propertyName]
+                    valueCopy[propertyName] = this.
+                        cleanJsonObject(property, dbProperty, entityStateManager)
+                }
+            }
+        } else {
+            valueCopy = value
+        }
+        return valueCopy
+    }
 }
 DI.set(OPERATION_DESERIALIZER, OperationDeserializer);
