@@ -1,11 +1,10 @@
 import { container, DI } from "@airport/di";
 import { ENTITY_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER } from "@airport/pressurization";
-import { LOCAL_API_CLIENT } from "../tokens";
+import { LOCAL_API_CLIENT, UPDATE_CACHE_MANAGER } from "../tokens";
 import { LocalAPIResponseType } from "./LocalAPIResponse";
 export class LocalAPIClient {
-    async invokeDaoMethod(daoName, methodName, args) {
-        const [entityStateManager, operationSerializer, queryResultsDeserializer] = await container(this)
-            .get(ENTITY_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER);
+    async invokeDaoMethod(schemaName, daoName, methodName, args) {
+        const [entityStateManager, operationSerializer, queryResultsDeserializer, updateCacheManager] = await container(this).get(ENTITY_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER, UPDATE_CACHE_MANAGER);
         let serializedParams;
         if (args) {
             if (args.length) {
@@ -19,10 +18,12 @@ export class LocalAPIClient {
         else {
             serializedParams = [];
         }
+        updateCacheManager.setOperationState();
         const request = {
             args: serializedParams,
             daoName,
             methodName,
+            schemaName
         };
         const httpResponse = await fetch('http://localhost:31817', {
             method: 'PUT',
@@ -40,7 +41,8 @@ export class LocalAPIClient {
         const response = await httpResponse.json();
         switch (response.type) {
             case LocalAPIResponseType.QUERY:
-                return queryResultsDeserializer.deserialize(response.payload, entityStateManager);
+                return queryResultsDeserializer
+                    .deserialize(response.payload, entityStateManager);
             case LocalAPIResponseType.SAVE:
                 return response.payload;
         }

@@ -11,6 +11,7 @@ import { ILocalAPIResponse, LocalAPIResponseType } from "./LocalAPIResponse";
 export interface ILocalAPIClient {
 
     invokeDaoMethod(
+        schemaName: string,
         daoName: string,
         methodName: string,
         args: any[]
@@ -22,6 +23,7 @@ export class LocalAPIClient
     implements ILocalAPIClient {
 
     async invokeDaoMethod(
+        schemaName: string,
         daoName: string,
         methodName: string,
         args: any[]
@@ -48,6 +50,7 @@ export class LocalAPIClient
             args: serializedParams,
             daoName,
             methodName,
+            schemaName
         }
 
         const httpResponse = await fetch('http://localhost:31817', {

@@ -52,10 +52,6 @@ export class OperationDeserializer
         schemaUtils: ISchemaUtils
     ): E {
         let state = entityStateManager.getEntityState(entity)
-        switch (state) {
-            case EntityState.RESULT_DATE:
-                return <any>new Date(entity['value'])
-        }
 
         let operationUniqueId = entityStateManager.getOperationUniqueId(entity)
         if (!operationUniqueId || typeof operationUniqueId !== 'number'
@@ -83,23 +79,6 @@ export class OperationDeserializer
         let deserializedEntity: any = {}
         operation.lookupTable[operationUniqueId] = deserializedEntity
         deserializedEntity[entityStateManager.getStateFieldName()] = state
-
-        for (const propertyName in entity) {
-            const property = entity[propertyName]
-            let propertyCopy
-            if (property instanceof Object) {
-                if (property instanceof Array) {
-                    propertyCopy = property.map(aProperty => this.doDeserialize(
-                        aProperty, operation, entityStateManager))
-                } else {
-                    propertyCopy = this.doDeserialize(property, operation, entityStateManager)
-                }
-            } else {
-                propertyCopy = property
-            }
-            deserializedEntity[propertyName] = propertyCopy
-        }
-
 
         for (const dbProperty of dbEntity.properties) {
             let value = entity[dbProperty.name]

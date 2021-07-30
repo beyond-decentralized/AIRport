@@ -4,7 +4,9 @@ import {
     ILocalAPIResponse
 } from "@airport/autopilot";
 import {
+    CLIENT_QUERY_MANAGER,
     OPERATION_DESERIALIZER,
+    QUERY_PARAMETER_DESERIALIZER,
     QUERY_RESULTS_SERIALIZER
 } from "@airport/check-in";
 import {
@@ -18,6 +20,7 @@ import {
     TRANSACTIONAL_CONNECTOR
 } from "@airport/ground-control";
 import { ENTITY_STATE_MANAGER } from "@airport/pressurization";
+import { ClientQueryManager } from "./ClientQueryManager";
 import {
     DaoOperationType,
     IDaoOperation,
@@ -42,9 +45,11 @@ export class LocalAPIServer
     async handleRequest(
         request: ILocalAPIRequest
     ): Promise<ILocalAPIResponse> {
-        const [daoRegistry, entityStateManager, queryResultsSerializer, operationDeserializer,
+        const [clientQueryManager, daoRegistry, entityStateManager,
+            queryParameterDeserializer, queryResultsSerializer, operationDeserializer,
             schemaUtils, transactionalConnector] = await container(this).get(
-                DAO_REGISTRY, ENTITY_STATE_MANAGER, QUERY_RESULTS_SERIALIZER,
+                CLIENT_QUERY_MANAGER, DAO_REGISTRY, ENTITY_STATE_MANAGER,
+                QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER,
                 OPERATION_DESERIALIZER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
 
         const operation = daoRegistry.findOperation(request.daoName, request.methodName)
@@ -53,7 +58,6 @@ export class LocalAPIServer
         }
 
         let payload
-
         switch (operation.type) {
             case DaoOperationType.ADD_REPOSITORY:
                 throw new Error('TODO Implement')
@@ -70,7 +74,7 @@ export class LocalAPIServer
                     expecting an entity or an array of entities, received ${typeof request.args[0]}`)
                 }
                 const entity = operationDeserializer.deserialize(
-                    request.args[0], operation.dbEntity, entityStateManager);
+                    request.args[0], operation.dbEntity, entityStateManager, schemaUtils);
 
                 // [context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
                 payload = await transactionalConnector.save(entity, context)
@@ -79,7 +83,11 @@ export class LocalAPIServer
             case DaoOperationType.FIND_ONE:
             case DaoOperationType.SEARCH:
             case DaoOperationType.SEARCH_ONE:
-                const result = this.handleQuery(operation, request.args,
+                const clientQuery = await clientQueryManager.getClientQuery(
+                    request.schemaName, request.daoName, request.methodName)
+                const queryParameters = queryParameterDeserializer.deserialize(
+                    request.args, clientQuery, entityStateManager)
+                const result = this.handleQuery(operation, queryParameters,
                     transactionalConnector, context)
                 payload = queryResultsSerializer.serialize(
                     result, operation.dbEntity, entityStateManager, schemaUtils)
@@ -120,7 +128,7 @@ export class LocalAPIServer
 
     private getPortableQuery(
         queryReference: IQueryReference,
-        orderedParameters: Array<boolean | number | string>
+        orderedParameters: Array<boolean | Date | number | string>
     ): PortableQuery {
         const parameterMap = {};
 
