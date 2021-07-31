@@ -26,7 +26,7 @@ export class QueryResultsDeserializer
 
 	deserialize<E, T = E | E[]>(
 		entity: T,
-		entityStateManager: IEntityStateManager,
+		entityStateManager: IEntityStateManager
 	): T {
 		const operation: IDeserializableOperation = {
 			lookupTable: [],
@@ -45,7 +45,7 @@ export class QueryResultsDeserializer
 	doDeserialize<E>(
 		entity: E,
 		operation: IDeserializableOperation,
-		entityStateManager: IEntityStateManager,
+		entityStateManager: IEntityStateManager
 	): E {
 		let state = entityStateManager.getEntityState(entity)
 		switch (state) {

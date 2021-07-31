@@ -157,6 +157,7 @@ export class EntityStateManager
 	implements IEntityStateManager {
 	static OPERATION_UNIQUE_ID_FIELD = '__UID__'
 	static STATE_FIELD = '__state__'
+	static ORIGINAL_VALUES_PROPERTY = '__originalValues__'`1
 
 	isStub<T>(
 		entity: T

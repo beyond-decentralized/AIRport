@@ -530,7 +530,7 @@ export class ChildContainer
 						throw new Error(`Partial AUTOPILOT DAOs are not yet supported.`);
 					} else {
 						object = this.getSync(AUTOPILOT_DAO_LOADER)
-							.loadDaoAutopilot(token.name);
+							.loadDaoAutopilot(token.library.uniqueHash, token.name);
 					}
 					object.__container__ = this;
 					theObjects[token.sequence] = object;

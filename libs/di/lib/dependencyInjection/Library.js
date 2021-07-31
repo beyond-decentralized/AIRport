@@ -6,6 +6,10 @@ export class Library {
         this.system = system;
         this.tokens = [];
     }
+    hash(uniqueHash) {
+        this.uniqueHash = uniqueHash;
+        return this;
+    }
     token(name, autopilot = false) {
         diTokenSeq++;
         const diToken = new DiToken(this, name, diTokenSeq, autopilot);

@@ -7,11 +7,13 @@ const ORIGINAL_VALUES_PROPERTY = '__originalValues__'
 export interface IUpdateCacheManager {
 
     saveOriginalValues<T>(
+        serializedEntity: any,
         entity: T,
         entityStateManager: IEntityStateManager,
-    ): void
+    ): any
 
     setOperationState<E, T = E | E[]>(
+        serializedEntity: any,
         entity: T,
         entityStateManager: IEntityStateManager,
     ): void
@@ -22,72 +24,64 @@ export class UpdateCacheManager
     implements IUpdateCacheManager {
 
     saveOriginalValues<E, T = E | E[]>(
-        entity: T,
-        entityStateManager: IEntityStateManager,
-    ): void {
-        const processedEntitySet: Set<any> = new Set()
-        if (entity instanceof Array) {
-            entity.forEach(anEntity => this.doDeserialize(
-                anEntity, entityStateManager, processedEntitySet))
-        } else {
-            this.doDeserialize(entity, entityStateManager, processedEntitySet)
-        }
-    }
-
-    private doDeserialize<E>(
+        serializedEntity: any,
         entity: E,
         entityStateManager: IEntityStateManager,
-        processedEntitySet: Set<any>
-    ): void {
-        if (processedEntitySet.has(entity)) {
-            return
-        }
-        processedEntitySet.add(entity)
-        // delete the state if run after a save()
-        delete entity[entityStateManager.getStateFieldName()]
-
-        const originalValuesObject: any = {}
-        entity[ORIGINAL_VALUES_PROPERTY] = originalValuesObject
-        for (const propertyName in entity) {
-            const property = entity[propertyName]
-            const propertyState = property[entityStateManager.getStateFieldName()]
-            if (property instanceof Object) {
-                if (property instanceof Array) {
-                    if (propertyState === EntityState.RESULT_JSON_ARRAY) {
-                        originalValuesObject[propertyName] = JSON.stringify((property as any).value)
-                        continue
+    ): any {
+        if (serializedEntity instanceof Array) {
+            for (let i = 0; i < serializedEntity.length; i++) {
+                this.saveOriginalValues(
+                    serializedEntity[i], entity[i], entityStateManager)
+            }
+        } else if (serializedEntity instanceof Object) {
+            const entityState = serializedEntity[entityStateManager.getStateFieldName()]
+            switch (entityState) {
+                case EntityState.RESULT_DATE:
+                case EntityState.RESULT_JSON:
+                case EntityState.RESULT_JSON_ARRAY:
+                    return serializedEntity
+                case EntityState.STUB:
+                    break;
+                case EntityState.RESULT:
+                    const originalValuesObject: any = {}
+                    entity[ORIGINAL_VALUES_PROPERTY] = originalValuesObject
+                    for (const propertyName in entity) {
+                        const serializedProperty = serializedEntity[propertyName]
+                        if (!(entity instanceof Object)) {
+                            originalValuesObject[propertyName] = serializedProperty
+                        } else {
+                            const property = entity[propertyName]
+                            const originalValue = this.saveOriginalValues(
+                                serializedProperty, property, entityStateManager)
+                            if (originalValue) {
+                                originalValuesObject[propertyName] = originalValue
+                            }
+                        }
                     }
-                    property.forEach(aProperty => this.doDeserialize(
-                        aProperty, entityStateManager, processedEntitySet))
-                } else if (property instanceof Date) {
-                    originalValuesObject[propertyName] = new Date(property.getTime())
-                } else {
-                    if (propertyState === EntityState.RESULT_JSON) {
-                        originalValuesObject[propertyName] = JSON.stringify(entity)
-                        continue
-                    }
-                    this.doDeserialize(entity, entityStateManager, processedEntitySet)
-                }
-            } else {
-                originalValuesObject[propertyName] = property
+                    break;
             }
         }
     }
 
     setOperationState<E, T = E | E[]>(
+        serializedEntity: any,
         entity: T,
         entityStateManager: IEntityStateManager,
     ): void {
         const processedEntitySet: Set<any> = new Set()
         if (entity instanceof Array) {
-            entity.forEach(anEntity => this.doSetOperationState(
-                anEntity, entityStateManager, processedEntitySet))
+            for (var i = 0; i < serializedEntity.length; i++) {
+                this.doSetOperationState(serializedEntity[i],
+                    entity[i], entityStateManager, processedEntitySet)
+            }
         } else {
-            this.doSetOperationState(entity, entityStateManager, processedEntitySet)
+            this.doSetOperationState(serializedEntity,
+                entity, entityStateManager, processedEntitySet)
         }
     }
 
     private doSetOperationState<E>(
+        serializedEntity: any,
         entity: E,
         entityStateManager: IEntityStateManager,
         processedEntitySet: Set<any>

@@ -7,6 +7,7 @@ import {
 
 export interface ILibrary {
 
+	uniqueHash: string
 	name: string
 	system: ISystem
 	tokens: IDiToken<any>[]
@@ -23,12 +24,20 @@ let diTokenSeq = -1
 export class Library
 	implements ILibrary {
 
+	public uniqueHash: string
 	public tokens: IDiToken<any>[] = []
 
 	constructor(
 		public name: string,
 		public system: ISystem
 	) {
+	}
+
+	hash(
+		uniqueHash: string
+	): ILibrary {
+		this.uniqueHash = uniqueHash
+		return this
 	}
 
 	token<T = GenericDependencyInjectionError>(

@@ -25,6 +25,7 @@ interface ISerializableOperation {
 	lookupTable: any[]
 	sequence: number
 	stubLookupTable: any[]
+	processedEntityMap: Map<any, number>
 }
 
 export class OperationSerializer
@@ -37,7 +38,8 @@ export class OperationSerializer
 		const operation: ISerializableOperation = {
 			lookupTable: [],
 			sequence: 0,
-			stubLookupTable: []
+			stubLookupTable: [],
+			processedEntityMap: new Map()
 		}
 		let serializedEntity = this.doSerialize(entity, operation, entityStateManager)
 
@@ -66,19 +68,21 @@ export class OperationSerializer
 			return entity;
 		}
 
-		let operationUniqueId = entityStateManager.getOperationUniqueId(entity)
+		let operationUniqueId = operation.processedEntityMap.get(entity)
 		if (operationUniqueId) {
 			return operation.stubLookupTable[operationUniqueId]
 		}
 		operationUniqueId = ++operation.sequence
+		operation.processedEntityMap.set(entity, operationUniqueId)
+
 		let entityStub = {}
 		entityStub[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
 		entityStub[entityStateManager.getStateFieldName()] = EntityState.STUB
 		operation.stubLookupTable[operationUniqueId] = entityStub
 
-		let entityCopy: any = {}
+		let serializedEntity: any = {}
 		operation.lookupTable[operationUniqueId] = entity
-		entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
+		serializedEntity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
 
 		// let entityState = EntityState.STUB
 		// if (entity['id']) {
@@ -113,10 +117,10 @@ export class OperationSerializer
 			} else {
 				propertyCopy = property
 			}
-			entityCopy[propertyName] = propertyCopy
+			serializedEntity[propertyName] = propertyCopy
 		}
 
-		return entityCopy
+		return serializedEntity
 	}
 
 }

@@ -10,13 +10,14 @@ export class AutopilotDaoLoader
     implements IAutopilotDaoLoader {
 
     loadDaoAutopilot<T>(
+        uniqueSchemaHash: string,
         daoName: string
     ): T {
         return new Proxy({}, {
             get(target, methodName: string) {
                 return function (...args) {
                     return IOC.getSync(LOCAL_API_CLIENT)
-                        .invokeDaoMethod(daoName, methodName, args);
+                        .invokeDaoMethod(uniqueSchemaHash, daoName, methodName, args);
                 };
             }
         }) as T;

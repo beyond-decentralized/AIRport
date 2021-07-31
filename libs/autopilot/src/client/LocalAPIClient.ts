@@ -44,7 +44,7 @@ export class LocalAPIClient
             serializedParams = []
         }
 
-        updateCacheManager.setOperationState()
+        updateCacheManager.setOperationState(serializedParams, args, entityStateManager)
 
         const request: ILocalAPIRequest = {
             args: serializedParams,
@@ -65,15 +65,18 @@ export class LocalAPIClient
             // redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'origin', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             body: JSON.stringify(request) // body data type must match "Content-Type" header
-        });
-        const response: ILocalAPIResponse = await httpResponse.json();
+        })
+        const response: ILocalAPIResponse = await httpResponse.json()
 
         switch (response.type) {
             case LocalAPIResponseType.QUERY:
-                return queryResultsDeserializer
-                    .deserialize(response.payload, entityStateManager);
+                const value = queryResultsDeserializer
+                    .deserialize(response.payload, entityStateManager)
+                updateCacheManager
+                    .saveOriginalValues(response.payload, value, entityStateManager)
+                return value
             case LocalAPIResponseType.SAVE:
-                return response.payload;
+                return response.payload
         }
     }
 
