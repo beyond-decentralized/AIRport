@@ -1,5 +1,5 @@
 export interface ISaveResultRecords {
-    [id: string]: number;
+    [operationUniqueId: string]: number;
 }
 export interface ISaveResult {
     created: ISaveResultRecords;
