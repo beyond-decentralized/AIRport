@@ -121,7 +121,8 @@ export class UpdateCacheManager
             const propertyState = serializedProperty[entityStateManager.getStateFieldName()]
             if (property instanceof Object) {
                 if (property instanceof Array) {
-                    if (propertyState === EntityState.RESULT_JSON_ARRAY) {
+                    if (!entityState &&
+                        propertyState === EntityState.RESULT_JSON_ARRAY) {
                         if (serializedProperty.value != originalValue.value) {
                             entityState = EntityState.UPDATE
                         }
@@ -130,12 +131,14 @@ export class UpdateCacheManager
                             serializedProperty, aProperty, entityStateManager))
                     }
                 } else if (propertyState === EntityState.RESULT_DATE) {
-                    if (serializedProperty.value != originalValue.value) {
+                    if (!entityState &&
+                        serializedProperty.value != originalValue.value) {
                         entityState = EntityState.UPDATE
                     }
                 } else {
                     if (propertyState === EntityState.RESULT_JSON) {
-                        if (serializedProperty.value != originalValue.value) {
+                        if (!entityState &&
+                            serializedProperty.value != originalValue.value) {
                             entityState = EntityState.UPDATE
                         }
                     } else {
@@ -143,7 +146,7 @@ export class UpdateCacheManager
                             serializedProperty, property, entityStateManager)
                     }
                 }
-            } else if (property != originalValue) {
+            } else if (!entityState && property != originalValue) {
                 entityState = EntityState.UPDATE
             }
         }
@@ -183,7 +186,7 @@ export class UpdateCacheManager
         entityStateManager: IEntityStateManager,
     ): any {
         if (serializedEntity instanceof Array) {
-            for (let i = serializedEntity.length; i >= 0; i--) {
+            for (let i = 0; i < serializedEntity.length; i++) {
                 this.doUpdateOriginalValuesAfterSave(
                     serializedEntity[i], entity[i], saveResult, entityStateManager)
             }
@@ -244,7 +247,7 @@ export class UpdateCacheManager
         processedEntities: Set<any>
     ): boolean {
         if (serializedEntity instanceof Array) {
-            for (let i = serializedEntity.length; i >= 0; i--) {
+            for (let i = serializedEntity.length - 1; i >= 0; i--) {
                 if (this.removeDeletedEntities(serializedEntity[i],
                     entity[i], entityStateManager, processedEntities)) {
                     (entity as unknown as E[]).splice(i, 1)

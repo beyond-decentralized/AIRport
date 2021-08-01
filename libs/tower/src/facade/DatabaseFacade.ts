@@ -27,9 +27,11 @@ import {
 	EntityRelationType,
 	ISaveResult,
 	PortableQuery,
+	SQLDataType,
 	TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
 import {
+	EntityState,
 	ENTITY_STATE_MANAGER,
 	IEntityStateManager
 } from '@airport/pressurization'
@@ -174,6 +176,13 @@ export class DatabaseFacade
 		const [entityStateManager, transactionalConnector]
 			= await container(this).get(ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR)
 
+			updateOriginalValuesAfterSave<E, T = E | E[]>(
+				serializedEntity: any,
+				entity: T,
+				saveResult: ISaveResult,
+				entityStateManager: IEntityStateManager,
+			);
+
 		this.setOperationState(entity, dbEntity, entityStateManager, new Set())
 		const saveResult = await transactionalConnector.save(entity, context)
 		this.removeDeletedEntities(entity, dbEntity, saveResult,
@@ -189,16 +198,13 @@ export class DatabaseFacade
 		processedEntities: Set<any>
 	): void {
 		if (entity instanceof Array) {
-			for (let i = entity.length; i >= 0; i--) {
-				if (this.removeDeletedEntities(
-					entity[i], dbEntity, entityStateManager, processedEntities)) {
-					(entity as unknown as E[]).splice(i, 1)
-				}
+			for (var i = 0; i < entity.length; i++) {
+				this.setOperationState(entity[i], dbEntity,
+					entityStateManager, processedEntities)
 			}
-			return !(entity as unknown as E[]).length
 		} else {
 			if (processedEntities.has(entity)) {
-				return entityStateManager.isDeleted(entity)
+				return
 			}
 			processedEntities.add(entity)
 			const originalValuesObject: any = entityStateManager
@@ -213,37 +219,30 @@ export class DatabaseFacade
 					entityState = EntityState.CREATE
 				}
 			}
-			for (const propertyName in serializedEntity) {
-				const property = entity[propertyName]
-				const serializedProperty = serializedEntity[propertyName]
-				const originalValue = originalValuesObject[propertyName]
-				const propertyState = serializedProperty[entityStateManager.getStateFieldName()]
-				if (property instanceof Object) {
-					if (property instanceof Array) {
-						if (propertyState === EntityState.RESULT_JSON_ARRAY) {
-							if (serializedProperty.value != originalValue.value) {
-								entityState = EntityState.UPDATE
-							}
-						} else {
-							property.forEach(aProperty => this.setOperationState(
-								serializedProperty, aProperty, entityStateManager))
-						}
-					} else if (propertyState === EntityState.RESULT_DATE) {
-						if (serializedProperty.value != originalValue.value) {
-							entityState = EntityState.UPDATE
-						}
-					} else {
-						if (propertyState === EntityState.RESULT_JSON) {
-							if (serializedProperty.value != originalValue.value) {
-								entityState = EntityState.UPDATE
-							}
-						} else {
-							this.setOperationState(
-								serializedProperty, property, entityStateManager)
-						}
+			for (const dbProperty of dbEntity.properties) {
+				const property = entity[dbProperty.name]
+				if (dbProperty.relation) {
+					this.setOperationState(property, dbProperty.relation[0].relationEntity,
+						entityStateManager, processedEntities);
+				} else {
+					if (entityState) {
+						continue
 					}
-				} else if (property != originalValue) {
-					entityState = EntityState.UPDATE
+					const originalValue = originalValuesObject[dbProperty.name]
+					let propertyValue
+					switch (dbProperty.propertyColumns[0].column.type) {
+						case SQLDataType.DATE:
+							propertyValue = (property as Date).toISOString()
+							break;
+						case SQLDataType.JSON:
+							propertyValue = JSON.stringify(property)
+							break;
+						default:
+							break;
+					}
+					if (propertyValue != originalValue) {
+						entityState = EntityState.UPDATE
+					}
 				}
 			}
 			if (!entityState || entityStateManager.isDeleted(entity)) {
@@ -251,6 +250,67 @@ export class DatabaseFacade
 			}
 			entity[entityStateManager.getStateFieldName()] = entityState
 		}
+	}
+
+	updateOriginalValuesAfterSave<E, T = E | E[]>(
+        entity: T,
+		dbEntity: DbEntity,
+        saveResult: ISaveResult,
+        entityStateManager: IEntityStateManager,
+    ): any {
+        if (entity instanceof Array) {
+            for (let i = 0; i < entity.length; i++) {
+                this.updateOriginalValuesAfterSave(entity[i], dbEntity,
+					saveResult, entityStateManager)
+            }
+        } else {
+            let operationUniqueId = entityStateManager.getOperationUniqueId(entity)
+            let createdRecordId = saveResult.created[operationUniqueId]
+            if (createdRecordId) {
+                entity['id'] = createdRecordId
+            } else {
+                let isDeleted = !!saveResult.deleted[operationUniqueId]
+                if (isDeleted) {
+                    entityStateManager.setIsDeleted(true, entity)
+                }
+            }
+            let originalValue
+            const entityState = serializedEntity[entityStateManager.getStateFieldName()]
+            switch (entityState) {
+                case EntityState.RESULT_DATE:
+                    originalValue = {
+                        value: (entity as any).toISOString()
+                    }
+                    originalValue[entityStateManager.getStateFieldName()] = entityState
+                    return originalValue;
+                case EntityState.RESULT_JSON:
+                case EntityState.RESULT_JSON_ARRAY:
+                    originalValue = {
+                        value: JSON.stringify(entity)
+                    }
+                    originalValue[entityStateManager.getStateFieldName()] = entityState
+                    return originalValue;
+                case EntityState.STUB:
+                    break;
+                case EntityState.RESULT:
+                    originalValue = {}
+                    for (const propertyName in entity) {
+                        const serializedProperty = serializedEntity[propertyName]
+                        const property = entity[propertyName]
+                        if (!(serializedProperty instanceof Object)) {
+                            originalValue[propertyName] = property
+                        } else {
+                            const originalValue = this.doUpdateOriginalValuesAfterSave(
+                                serializedProperty, property, saveResult, entityStateManager)
+                            if (originalValue) {
+                                originalValue[propertyName] = originalValue
+                            }
+                        }
+                    }
+                    break;
+            }
+            entityStateManager.setOriginalValues(originalValue, entity);
+        }
 	}
 
 	private removeDeletedEntities<E, T = E | E[]>(
@@ -261,7 +321,7 @@ export class DatabaseFacade
 		processedEntities: Set<any>
 	): boolean {
 		if (entity instanceof Array) {
-			for (let i = entity.length; i >= 0; i--) {
+			for (let i = entity.length - 1; i >= 0; i--) {
 				if (this.removeDeletedEntities(
 					entity[i], dbEntity, saveResult, entityStateManager, processedEntities)) {
 					(entity as unknown as E[]).splice(i, 1)
@@ -273,21 +333,21 @@ export class DatabaseFacade
 				return entityStateManager.isDeleted(entity)
 			}
 			processedEntities.add(entity)
-			for (const relation of dbEntity.relations) {
-				const relationProperty = relation.property
-				const property = entity[relationProperty.name];
+			for (const dbRelation of dbEntity.relations) {
+				const dbRelationProperty = dbRelation.property
+				const property = entity[dbRelationProperty.name];
 				if (!property) {
 					continue
 				}
-				switch (relation.relationType) {
+				switch (dbRelation.relationType) {
 					case EntityRelationType.MANY_TO_ONE:
-						if (this.removeDeletedEntities(property, relation.relationEntity,
+						if (this.removeDeletedEntities(property, dbRelation.relationEntity,
 							saveResult, entityStateManager, processedEntities)) {
-							entity[relationProperty.name] = null
+							entity[dbRelationProperty.name] = null
 						}
 						break;
 					case EntityRelationType.ONE_TO_MANY:
-						this.removeDeletedEntities(property, relation.relationEntity,
+						this.removeDeletedEntities(property, dbRelation.relationEntity,
 							saveResult, entityStateManager, processedEntities)
 						break;
 				}

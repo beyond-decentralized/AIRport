@@ -1,4 +1,5 @@
 import { DI } from '@airport/di'
+import { DbEntity } from '@airport/ground-control';
 import { ENTITY_STATE_MANAGER } from './tokens'
 
 export type OperationUniqueId = number
@@ -206,15 +207,22 @@ export class EntityStateManager
 
 	getOperationUniqueId<T>(
 		entity: T,
-		throwIfNotFound = true
+		throwIfNotFound = true,
+		dbEntity: DbEntity = null
 	): number {
 		const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD]
 
 		if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
 			if (throwIfNotFound) {
+				let entityDescription
+				if(dbEntity) {
+					entityDescription = dbEntity.schemaVersion.schema.name + '.' + dbEntity.name
+				} else {
+					entityDescription = JSON.stringify(entity)
+				}
 				throw new Error(`Could not find "${EntityStateManager.OPERATION_UNIQUE_ID_FIELD}" property on DTO:
 			
-			${JSON.stringify(entity)}`)
+			${entityDescription}`)
 			}
 		}
 		return operationUniqueId

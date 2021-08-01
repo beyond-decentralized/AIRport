@@ -1,3 +1,4 @@
+import { DbEntity } from '@airport/ground-control';
 export declare type OperationUniqueId = number;
 export declare enum EntityState {
     CREATE = 1,
@@ -67,7 +68,7 @@ export declare class EntityStateManager implements IEntityStateManager {
     isParentId<T>(entity: T): boolean;
     getOperationUniqueIdSeq(): IOperationUniqueIdSequence;
     uniquelyIdentify<T>(entity: T, operationUniqueIdSeq: IOperationUniqueIdSequence): void;
-    getOperationUniqueId<T>(entity: T, throwIfNotFound?: boolean): number;
+    getOperationUniqueId<T>(entity: T, throwIfNotFound?: boolean, dbEntity?: DbEntity): number;
     markAsStub<T>(entity: T): void;
     markForDeletion<T>(entity: T): void;
     markToCreate<T>(entity: T): void;
