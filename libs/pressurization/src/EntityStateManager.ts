@@ -58,7 +58,8 @@ export interface IEntityStateManager {
 
 	getOperationUniqueId<T>(
 		entity: T,
-		throwIfNotFound?: boolean
+		throwIfNotFound?: boolean,
+		dbEntity?: DbEntity
 	): number
 
 	markAsStub<T>(

@@ -10,7 +10,6 @@ export interface IOperationSerializer {
     serialize<E, T = E | E[]>(entity: T, entityStateManager: IEntityStateManager): T;
 }
 interface ISerializableOperation {
-    lookupTable: any[];
     namePath: string[];
     processedEntityMap: Map<any, number>;
     sequence: number;

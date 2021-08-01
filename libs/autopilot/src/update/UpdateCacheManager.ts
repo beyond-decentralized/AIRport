@@ -3,7 +3,6 @@ import { ISaveResult } from "@airport/ground-control";
 import { EntityState, IEntityStateManager } from "@airport/pressurization";
 import { UPDATE_CACHE_MANAGER } from "../tokens";
 
-
 export interface IUpdateCacheManager {
 
     saveOriginalValues<T>(

@@ -22,7 +22,6 @@ export interface IOperationSerializer {
 }
 
 interface ISerializableOperation {
-	lookupTable: any[]
 	namePath: string[]
 	processedEntityMap: Map<any, number>
 	sequence: number
@@ -37,7 +36,6 @@ export class OperationSerializer
 		entityStateManager: IEntityStateManager,
 	): T {
 		const operation: ISerializableOperation = {
-			lookupTable: [],
 			namePath: ['root'],
 			processedEntityMap: new Map(),
 			sequence: 0,
@@ -80,8 +78,8 @@ export class OperationSerializer
 		operation.stubLookupTable[operationUniqueId] = entityStub
 
 		let serializedEntity: any = {}
-		operation.lookupTable[operationUniqueId] = entity
 		serializedEntity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
+		entity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
 
 		var isFirstProperty = true;
 		for (const propertyName in entity) {

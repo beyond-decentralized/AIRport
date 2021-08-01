@@ -9,7 +9,7 @@ export class LocalAPIClient {
         if (args) {
             if (args.length) {
                 serializedParams = args
-                    .map(arg => operationSerializer.serialize(args, entityStateManager));
+                    .map(arg => operationSerializer.serialize(arg, entityStateManager));
             }
             else {
                 serializedParams = [operationSerializer.serialize(args, entityStateManager)];

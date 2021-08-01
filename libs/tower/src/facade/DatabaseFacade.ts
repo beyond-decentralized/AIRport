@@ -39,6 +39,7 @@ import {
 	DistributionStrategy,
 	PlatformType
 } from '@airport/terminal-map'
+import { DB_UPDATE_CACHE_MANAGER, ENTITY_COPIER } from '../tokens'
 
 /**
  * Created by Papa on 5/23/2016.
@@ -173,184 +174,20 @@ export class DatabaseFacade
 		if (!entity) {
 			return null
 		}
-		const [entityStateManager, transactionalConnector]
-			= await container(this).get(ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR)
+		const [dbUpdateCacheManager, entityCopier,
+			entityStateManager, transactionalConnector]
+			= await container(this).get(DB_UPDATE_CACHE_MANAGER, ENTITY_COPIER,
+				ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR)
 
-		this.setOperationState(entity, dbEntity, entityStateManager, new Set())
-		const saveResult = await transactionalConnector.save(entity, context)
-		
-		this.updateOriginalValuesAfterSave(entity, dbEntity,
-			saveResult, entityStateManager);
-		this.removeDeletedEntities(entity, dbEntity, saveResult,
+		const entityCopy = entityCopier
+			.copyEntityForProcessing(entity, dbEntity, entityStateManager)
+		dbUpdateCacheManager.setOperationState(
+			entityCopy, dbEntity, entityStateManager, new Set())
+		const saveResult = await transactionalConnector.save(entityCopy, context)
+		dbUpdateCacheManager.afterSaveModifications(entity, dbEntity, saveResult,
 			entityStateManager, new Set())
 
 		return saveResult
-	}
-
-	private setOperationState<E, T = E | E[]>(
-		entity: T,
-		dbEntity: DbEntity,
-		entityStateManager: IEntityStateManager,
-		processedEntities: Set<any>
-	): void {
-		if (entity instanceof Array) {
-			for (var i = 0; i < entity.length; i++) {
-				this.setOperationState(entity[i], dbEntity,
-					entityStateManager, processedEntities)
-			}
-		} else {
-			if (processedEntities.has(entity)) {
-				return
-			}
-			processedEntities.add(entity)
-			const originalValuesObject: any = entityStateManager
-				.getOriginalValues(entity)
-
-			let entityState: EntityState = entity[entityStateManager.getStateFieldName()]
-			if (!entity['id']) {
-				if (entityState === EntityState.DELETE) {
-					throw new Error(
-						'Entity is marked for deletion but does not have an "id" property')
-				} else {
-					entityState = EntityState.CREATE
-				}
-			}
-			for (const dbProperty of dbEntity.properties) {
-				const property = entity[dbProperty.name]
-				if (dbProperty.relation) {
-					this.setOperationState(property, dbProperty.relation[0].relationEntity,
-						entityStateManager, processedEntities);
-				} else {
-					if (entityState) {
-						continue
-					}
-					const originalValue = originalValuesObject[dbProperty.name]
-					let propertyValue
-					switch (dbProperty.propertyColumns[0].column.type) {
-						case SQLDataType.DATE:
-							propertyValue = (property as Date).toISOString()
-							break;
-						case SQLDataType.JSON:
-							propertyValue = JSON.stringify(property)
-							break;
-						default:
-							break;
-					}
-					if (propertyValue != originalValue) {
-						entityState = EntityState.UPDATE
-					}
-				}
-			}
-			if (!entityState || entityStateManager.isDeleted(entity)) {
-				entityState = EntityState.PARENT_ID
-			}
-			entity[entityStateManager.getStateFieldName()] = entityState
-		}
-	}
-
-	updateOriginalValuesAfterSave<E, T = E | E[]>(
-        entity: T,
-		dbEntity: DbEntity,
-        saveResult: ISaveResult,
-        entityStateManager: IEntityStateManager,
-    ): any {
-        if (entity instanceof Array) {
-            for (let i = 0; i < entity.length; i++) {
-                this.updateOriginalValuesAfterSave(entity[i], dbEntity,
-					saveResult, entityStateManager)
-            }
-        } else {
-            let operationUniqueId = entityStateManager.getOperationUniqueId(entity)
-            let createdRecordId = saveResult.created[operationUniqueId]
-            if (createdRecordId) {
-                entity['id'] = createdRecordId
-            } else {
-                let isDeleted = !!saveResult.deleted[operationUniqueId]
-                if (isDeleted) {
-                    entityStateManager.setIsDeleted(true, entity)
-                }
-            }
-            let originalValue
-            const entityState = serializedEntity[entityStateManager.getStateFieldName()]
-            switch (entityState) {
-                case EntityState.RESULT_DATE:
-                    originalValue = {
-                        value: (entity as any).toISOString()
-                    }
-                    originalValue[entityStateManager.getStateFieldName()] = entityState
-                    return originalValue;
-                case EntityState.RESULT_JSON:
-                case EntityState.RESULT_JSON_ARRAY:
-                    originalValue = {
-                        value: JSON.stringify(entity)
-                    }
-                    originalValue[entityStateManager.getStateFieldName()] = entityState
-                    return originalValue;
-                case EntityState.STUB:
-                    break;
-                case EntityState.RESULT:
-                    originalValue = {}
-                    for (const propertyName in entity) {
-                        const serializedProperty = serializedEntity[propertyName]
-                        const property = entity[propertyName]
-                        if (!(serializedProperty instanceof Object)) {
-                            originalValue[propertyName] = property
-                        } else {
-                            const originalValue = this.doUpdateOriginalValuesAfterSave(
-                                serializedProperty, property, saveResult, entityStateManager)
-                            if (originalValue) {
-                                originalValue[propertyName] = originalValue
-                            }
-                        }
-                    }
-                    break;
-            }
-            entityStateManager.setOriginalValues(originalValue, entity);
-        }
-	}
-
-	private removeDeletedEntities<E, T = E | E[]>(
-		entity: T,
-		dbEntity: DbEntity,
-		saveResult: ISaveResult,
-		entityStateManager: IEntityStateManager,
-		processedEntities: Set<any>
-	): boolean {
-		if (entity instanceof Array) {
-			for (let i = entity.length - 1; i >= 0; i--) {
-				if (this.removeDeletedEntities(
-					entity[i], dbEntity, saveResult, entityStateManager, processedEntities)) {
-					(entity as unknown as E[]).splice(i, 1)
-				}
-			}
-			return !(entity as unknown as E[]).length
-		} else {
-			if (processedEntities.has(entity)) {
-				return entityStateManager.isDeleted(entity)
-			}
-			processedEntities.add(entity)
-			for (const dbRelation of dbEntity.relations) {
-				const dbRelationProperty = dbRelation.property
-				const property = entity[dbRelationProperty.name];
-				if (!property) {
-					continue
-				}
-				switch (dbRelation.relationType) {
-					case EntityRelationType.MANY_TO_ONE:
-						if (this.removeDeletedEntities(property, dbRelation.relationEntity,
-							saveResult, entityStateManager, processedEntities)) {
-							entity[dbRelationProperty.name] = null
-						}
-						break;
-					case EntityRelationType.ONE_TO_MANY:
-						this.removeDeletedEntities(property, dbRelation.relationEntity,
-							saveResult, entityStateManager, processedEntities)
-						break;
-				}
-			}
-			return entityStateManager.isDeleted(entity)
-		}
-		return false
 	}
 
 	/**

@@ -4,7 +4,6 @@ import { OPERATION_SERIALIZER } from './tokens';
 export class OperationSerializer {
     serialize(entity, entityStateManager) {
         const operation = {
-            lookupTable: [],
             namePath: ['root'],
             processedEntityMap: new Map(),
             sequence: 0,
@@ -39,8 +38,8 @@ export class OperationSerializer {
         entityStub[entityStateManager.getStateFieldName()] = EntityState.STUB;
         operation.stubLookupTable[operationUniqueId] = entityStub;
         let serializedEntity = {};
-        operation.lookupTable[operationUniqueId] = entity;
         serializedEntity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
+        entity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
         var isFirstProperty = true;
         for (const propertyName in entity) {
             const property = entity[propertyName];
