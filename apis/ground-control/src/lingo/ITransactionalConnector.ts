@@ -3,6 +3,7 @@ import { Observable } from 'rxjs'
 import { DistributionStrategy } from './data/DistributionStrategy'
 import { PlatformType } from './data/PatformType'
 import { PortableQuery } from './query/PortableQuery'
+import { ISaveResult } from './query/SaveResult'
 
 export interface ITransactionalConnector {
 
@@ -44,7 +45,7 @@ export interface ITransactionalConnector {
 	save<E, T = E | E[]>(
 		entity: T,
 		context?: IContext,
-	): Promise<number>
+	): Promise<ISaveResult>
 
 	insertValues(
 		portableQuery: PortableQuery,

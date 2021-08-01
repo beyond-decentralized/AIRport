@@ -53,7 +53,7 @@ export class EntityDatabaseFacade {
     }
     async save(entity, ctx) {
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.save(entity, ctx);
+            return await databaseFacade.save(entity, this.dbEntity, ctx);
         });
     }
     async withDbEntity(ctx, callback) {

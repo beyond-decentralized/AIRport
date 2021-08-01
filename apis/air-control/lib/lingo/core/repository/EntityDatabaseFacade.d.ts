@@ -1,4 +1,4 @@
-import { DbEntity } from '@airport/ground-control';
+import { DbEntity, ISaveResult } from '@airport/ground-control';
 import { IEntityFind } from '../../query/api/EntityFind';
 import { IEntityFindOne } from '../../query/api/EntityFindOne';
 import { IEntitySearch } from '../../query/api/EntitySearch';
@@ -81,6 +81,6 @@ export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySele
      *
      * @return Number of records saved (1 or 0)
      */
-    save(entity: EntityCreateProperties, ctx?: IEntityContext): Promise<number>;
+    save(entity: EntityCreateProperties, ctx?: IEntityContext): Promise<ISaveResult>;
 }
 //# sourceMappingURL=EntityDatabaseFacade.d.ts.map

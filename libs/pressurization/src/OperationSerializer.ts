@@ -23,9 +23,10 @@ export interface IOperationSerializer {
 
 interface ISerializableOperation {
 	lookupTable: any[]
+	namePath: string[]
+	processedEntityMap: Map<any, number>
 	sequence: number
 	stubLookupTable: any[]
-	processedEntityMap: Map<any, number>
 }
 
 export class OperationSerializer
@@ -37,17 +38,13 @@ export class OperationSerializer
 	): T {
 		const operation: ISerializableOperation = {
 			lookupTable: [],
+			namePath: ['root'],
+			processedEntityMap: new Map(),
 			sequence: 0,
 			stubLookupTable: [],
-			processedEntityMap: new Map()
-		}
-		let serializedEntity = this.doSerialize(entity, operation, entityStateManager)
-
-		for (let i = 1; i < operation.lookupTable.length; i++) {
-			delete operation.lookupTable[i][entityStateManager.getUniqueIdFieldName()]
 		}
 
-		return serializedEntity
+		return this.doSerialize(entity, operation, entityStateManager)
 	}
 
 	doSerialize<E>(
@@ -60,9 +57,11 @@ export class OperationSerializer
 				return <any><E[]>entity.map(anEntity => this.doSerialize(
 					anEntity, operation, entityStateManager))
 			} else if (entity instanceof Date) {
-				return entity.toISOString() as any
-			} else {
-				// fall though
+				var copy = {
+					value: entity.toISOString()
+				}
+				copy[entityStateManager.getStateFieldName()] = EntityState.RESULT_DATE
+				return copy as any
 			}
 		} else {
 			return entity;
@@ -84,20 +83,24 @@ export class OperationSerializer
 		operation.lookupTable[operationUniqueId] = entity
 		serializedEntity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
 
-		// let entityState = EntityState.STUB
-		// if (entity['id']) {
-		// 	entityState = EntityState.CREATE
-		// }
-		// entityCopy[entityStateManager.getStateFieldName()] = entityState
-
+		var isFirstProperty = true;
 		for (const propertyName in entity) {
 			const property = entity[propertyName]
 			const propertyState = property[entityStateManager.getStateFieldName()]
 			let propertyCopy
+			if (!isFirstProperty) {
+				operation.namePath.pop()
+			}
+			isFirstProperty = false
+			operation.namePath.push(propertyName)
+
 			if (property instanceof Object) {
 				if (property instanceof Array) {
 					if (propertyState === EntityState.RESULT_JSON_ARRAY) {
-						propertyCopy = JSON.stringify(property)
+						propertyCopy = {
+							value: JSON.stringify(property)
+						}
+						propertyCopy[entityStateManager.getStateFieldName()] = propertyState
 					} else {
 						propertyCopy = property.map(aProperty => this.doSerialize(
 							aProperty, operation, entityStateManager))
@@ -109,15 +112,45 @@ export class OperationSerializer
 					propertyCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT_DATE
 				} else {
 					if (propertyState === EntityState.RESULT_JSON) {
-						propertyCopy = JSON.stringify(property)
+						propertyCopy = {
+							value: JSON.stringify(property)
+						}
+						propertyCopy[entityStateManager.getStateFieldName()] = propertyState
 					} else {
 						propertyCopy = this.doSerialize(property, operation, entityStateManager)
 					}
 				}
 			} else {
-				propertyCopy = property
+				propertyCopy = {
+					value: null
+				}
+				propertyCopy[entityStateManager.getStateFieldName()] = propertyState
+
+				switch (propertyState) {
+					case EntityState.RESULT_JSON_ARRAY:
+						if (property) {
+							throw new Error(`Expecting an Array for "${operation.namePath.join('.')}", got: ${property}`)
+						}
+						break
+					case EntityState.RESULT_JSON:
+						if (property) {
+							throw new Error(`Expecting an Object for "${operation.namePath.join('.')}", got: ${property}`)
+						}
+						break
+					case EntityState.RESULT_DATE:
+						if (property) {
+							throw new Error(`Expecting a Date for "${operation.namePath.join('.')}", got: ${property}`)
+						}
+						break
+					default:
+						propertyCopy = property
+						break
+				}
 			}
 			serializedEntity[propertyName] = propertyCopy
+		}
+		if (!isFirstProperty) {
+			operation.namePath.pop()
 		}
 
 		return serializedEntity

@@ -22,6 +22,10 @@ export class QueryResultsDeserializer {
                 return new Date(entity['value']);
             case EntityState.RESULT_JSON:
                 return entity;
+            case EntityState.RESULT_JSON_ARRAY:
+                const value = entity.value;
+                value[entityStateManager.getStateFieldName()] = EntityState.RESULT_JSON_ARRAY;
+                return entity;
         }
         let operationUniqueId = entityStateManager.getOperationUniqueId(entity);
         if (!operationUniqueId || typeof operationUniqueId !== 'number'
@@ -46,6 +50,7 @@ export class QueryResultsDeserializer {
         }
         let deserializedEntity = {};
         operation.lookupTable[operationUniqueId] = deserializedEntity;
+        delete deserializedEntity[entityStateManager.getUniqueIdFieldName()];
         for (const propertyName in entity) {
             const property = entity[propertyName];
             let propertyCopy;

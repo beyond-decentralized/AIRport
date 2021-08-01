@@ -6,6 +6,7 @@ import {
 }                        from '@airport/di';
 import {
 	DistributionStrategy,
+	ISaveResult,
 	ITransactionalConnector,
 	PlatformType,
 	PortableQuery,
@@ -207,7 +208,7 @@ export class TransactionalConnector
 	async save<E, T = E | E[]>(
 		entity: T,
 		context: IContext,
-	): Promise<number> {
+	): Promise<ISaveResult> {
 		if(!isServer()) {
 			throw new Error('Not implemented');
 		}

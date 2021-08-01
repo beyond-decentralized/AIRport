@@ -32,7 +32,10 @@ import {
   IOperationUniqueIdSequence
 } from '@airport/pressurization';
 import { DI } from '@airport/di';
-import { DbEntity } from '@airport/ground-control';
+import {
+  DbEntity,
+  ISaveResult
+} from '@airport/ground-control';
 
 /**
  * Created by Papa on 12/11/2016.
@@ -181,12 +184,12 @@ export class EntityDatabaseFacade<Entity,
   async save(
     entity: EntityCreate,
     ctx?: IEntityContext,
-  ): Promise<number> {
+  ): Promise<ISaveResult> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
-      return await databaseFacade.save(entity, ctx);
+      return await databaseFacade.save(entity, this.dbEntity, ctx);
     });
   }
 

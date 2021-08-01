@@ -1,1 +1,1 @@
-{"version":3,"file":"LocalAPIResponse.d.ts","sourceRoot":"","sources":["../../src/client/LocalAPIResponse.ts"],"names":[],"mappings":"AAAA,oBAAY,oBAAoB;IAC5B,KAAK,IAAA;IACL,IAAI,IAAA;CACP;AAED,MAAM,WAAW,iBAAiB;IAC9B,OAAO,EAAE,MAAM,CAAC;IAChB,IAAI,EAAE,oBAAoB,CAAC;CAC9B"}
+{"version":3,"file":"LocalAPIResponse.d.ts","sourceRoot":"","sources":["../../src/client/LocalAPIResponse.ts"],"names":[],"mappings":"AAAA,oBAAY,oBAAoB;IAC5B,KAAK,IAAA;IACL,IAAI,IAAA;CACP;AAED,MAAM,WAAW,iBAAiB;IAC9B,YAAY,EAAE,MAAM,CAAA;IACpB,OAAO,EAAE,GAAG,CAAA;IACZ,IAAI,EAAE,oBAAoB,CAAA;CAC7B"}

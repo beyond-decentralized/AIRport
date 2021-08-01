@@ -94,6 +94,24 @@ export interface IEntityStateManager {
 		dbEntity: IDbEntity
 	): IEntityStateAsFlags
 
+	getOriginalValues<T>(
+		entity: T
+	): any
+
+	setOriginalValues<T>(
+		originalValues: any,
+		entity: T
+	): void
+
+	setIsDeleted<T>(
+		isDeleted: boolean,
+		entity: T
+	): void
+
+	isDeleted<T>(
+		entity: T
+	): boolean
+
 }
 
 export function markAsStub<T>(
@@ -155,9 +173,10 @@ export function isParentId<T>(
 
 export class EntityStateManager
 	implements IEntityStateManager {
+	static DELETED_PROPERTY = '__deleted__'
 	static OPERATION_UNIQUE_ID_FIELD = '__UID__'
+	static ORIGINAL_VALUES_PROPERTY = '__originalValues__'
 	static STATE_FIELD = '__state__'
-	static ORIGINAL_VALUES_PROPERTY = '__originalValues__'`1
 
 	isStub<T>(
 		entity: T
@@ -231,6 +250,19 @@ export class EntityStateManager
 		return (<EntityWithState><any>entity).__state__
 	}
 
+	getOriginalValues<T>(
+		entity: T
+	): any {
+		return entity[EntityStateManager.ORIGINAL_VALUES_PROPERTY]
+	}
+
+	setOriginalValues<T>(
+		originalValues: any,
+		entity: T
+	): void {
+		entity[EntityStateManager.ORIGINAL_VALUES_PROPERTY] = originalValues
+	}
+
 	copyEntityState<T>(
 		fromEntity: T,
 		toEntity: T
@@ -292,6 +324,19 @@ export class EntityStateManager
 			isStub,
 			isUpdate,
 		}
+	}
+
+	setIsDeleted<T>(
+		isDeleted: boolean,
+		entity: T
+	): void {
+		entity[EntityStateManager.DELETED_PROPERTY] = true
+	}
+
+	isDeleted<T>(
+		entity: T
+	): boolean {
+		return entity[EntityStateManager.DELETED_PROPERTY]
 	}
 
 }

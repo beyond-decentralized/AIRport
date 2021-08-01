@@ -4,6 +4,7 @@ import {
 	IContext
 } from '@airport/di';
 import {
+	ISaveResult,
 	JsonInsertValues,
 	PortableQuery
 } from '@airport/ground-control';
@@ -148,23 +149,23 @@ export class TransactionalServer
 		entity: E,
 		credentials: ICredentials,
 		context: IOperationContext<any, any>,
-	): Promise<number> {
+	): Promise<ISaveResult> {
 		if (!entity) {
-			return 0
+			return null
 		}
 		await this.ensureIocContext(context)
 
 		const actor = await this.getActor(credentials);
 
-		let numSavedRecords = 0
+		let saveResult: ISaveResult
 		await transactional(async (
 			transaction: ITransaction
 		) => {
-			numSavedRecords = await context.ioc.operationManager.performSave(
+			saveResult = await context.ioc.operationManager.performSave(
 				entity, actor, transaction, context)
 		})
 
-		return numSavedRecords
+		return saveResult
 	}
 
 	async insertValues(

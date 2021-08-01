@@ -1,6 +1,6 @@
 import { IDatabaseFacade, IDuo, IEntityCascadeGraph, IEntityContext, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-control';
 import { IOperationUniqueIdSequence } from '@airport/pressurization';
-import { DbEntity } from '@airport/ground-control';
+import { DbEntity, ISaveResult } from '@airport/ground-control';
 /**
  * Created by Papa on 12/11/2016.
  */
@@ -35,7 +35,7 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     deleteWhere(rawDelete: RawDelete<IQ> | {
         (...args: any[]): RawDelete<IQ>;
     }, ctx?: IEntityContext): Promise<number>;
-    save(entity: EntityCreate, ctx?: IEntityContext): Promise<number>;
+    save(entity: EntityCreate, ctx?: IEntityContext): Promise<ISaveResult>;
     protected withDbEntity<R>(ctx: IEntityContext, callback: {
         (databaseFacade: IDatabaseFacade, ctx: IEntityContext): Promise<R>;
     }): Promise<R>;

@@ -1,4 +1,4 @@
-import { DistributionStrategy, PlatformType, PortableQuery, QueryResultType } from '@airport/ground-control';
+import { DbEntity, DistributionStrategy, ISaveResult, PlatformType, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 import { IAbstractQuery } from '../../query/facade/AbstractQuery';
 import { RawDelete } from '../../query/facade/Delete';
@@ -52,7 +52,7 @@ export interface IDatabaseFacade {
      *
      * @return Number of records saved (1 or 0)
      */
-    save<E, EntityCascadeGraph>(entity: E, ctx: IEntityContext): Promise<number>;
+    save<E, EntityCascadeGraph>(entity: E, dbEntity: DbEntity, ctx: IEntityContext): Promise<ISaveResult>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.

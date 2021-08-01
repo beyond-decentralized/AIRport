@@ -18,7 +18,7 @@ export class LocalAPIClient {
         else {
             serializedParams = [];
         }
-        updateCacheManager.setOperationState();
+        updateCacheManager.setOperationState(serializedParams, args, entityStateManager);
         const request = {
             args: serializedParams,
             daoName,
@@ -39,11 +39,19 @@ export class LocalAPIClient {
             body: JSON.stringify(request) // body data type must match "Content-Type" header
         });
         const response = await httpResponse.json();
+        if (response.errorMessage) {
+            throw new Error(response.errorMessage);
+        }
         switch (response.type) {
             case LocalAPIResponseType.QUERY:
-                return queryResultsDeserializer
+                const value = queryResultsDeserializer
                     .deserialize(response.payload, entityStateManager);
+                updateCacheManager
+                    .saveOriginalValues(response.payload, value, entityStateManager);
+                return value;
             case LocalAPIResponseType.SAVE:
+                updateCacheManager.updateOriginalValuesAfterSave(serializedParams, value, response.payload, entityStateManager);
+                // Return ISaveRecord as specified in Dao spec
                 return response.payload;
         }
     }

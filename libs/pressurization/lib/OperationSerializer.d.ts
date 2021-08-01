@@ -11,6 +11,8 @@ export interface IOperationSerializer {
 }
 interface ISerializableOperation {
     lookupTable: any[];
+    namePath: string[];
+    processedEntityMap: Map<any, number>;
     sequence: number;
     stubLookupTable: any[];
 }

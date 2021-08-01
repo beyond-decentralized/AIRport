@@ -22,7 +22,17 @@ import {
 	DI,
 	IContext
 } from '@airport/di'
-import { DbEntity, PortableQuery, TRANSACTIONAL_CONNECTOR, } from '@airport/ground-control'
+import {
+	DbEntity,
+	EntityRelationType,
+	ISaveResult,
+	PortableQuery,
+	TRANSACTIONAL_CONNECTOR
+} from '@airport/ground-control'
+import {
+	ENTITY_STATE_MANAGER,
+	IEntityStateManager
+} from '@airport/pressurization'
 import {
 	DistributionStrategy,
 	PlatformType
@@ -155,13 +165,136 @@ export class DatabaseFacade
 
 	async save<E>(
 		entity: E,
+		dbEntity: DbEntity,
 		context: IEntityContext,
-	): Promise<number> {
+	): Promise<ISaveResult> {
 		if (!entity) {
-			return 0
+			return null
 		}
-		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-		return await transactionalConnector.save(entity, context)
+		const [entityStateManager, transactionalConnector]
+			= await container(this).get(ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR)
+
+		this.setOperationState(entity, dbEntity, entityStateManager, new Set())
+		const saveResult = await transactionalConnector.save(entity, context)
+		this.removeDeletedEntities(entity, dbEntity, saveResult,
+			entityStateManager, new Set())
+
+		return saveResult
+	}
+
+	private setOperationState<E, T = E | E[]>(
+		entity: T,
+		dbEntity: DbEntity,
+		entityStateManager: IEntityStateManager,
+		processedEntities: Set<any>
+	): void {
+		if (entity instanceof Array) {
+			for (let i = entity.length; i >= 0; i--) {
+				if (this.removeDeletedEntities(
+					entity[i], dbEntity, entityStateManager, processedEntities)) {
+					(entity as unknown as E[]).splice(i, 1)
+				}
+			}
+			return !(entity as unknown as E[]).length
+		} else {
+			if (processedEntities.has(entity)) {
+				return entityStateManager.isDeleted(entity)
+			}
+			processedEntities.add(entity)
+			const originalValuesObject: any = entityStateManager
+				.getOriginalValues(entity)
+
+			let entityState: EntityState = entity[entityStateManager.getStateFieldName()]
+			if (!entity['id']) {
+				if (entityState === EntityState.DELETE) {
+					throw new Error(
+						'Entity is marked for deletion but does not have an "id" property')
+				} else {
+					entityState = EntityState.CREATE
+				}
+			}
+			for (const propertyName in serializedEntity) {
+				const property = entity[propertyName]
+				const serializedProperty = serializedEntity[propertyName]
+				const originalValue = originalValuesObject[propertyName]
+				const propertyState = serializedProperty[entityStateManager.getStateFieldName()]
+				if (property instanceof Object) {
+					if (property instanceof Array) {
+						if (propertyState === EntityState.RESULT_JSON_ARRAY) {
+							if (serializedProperty.value != originalValue.value) {
+								entityState = EntityState.UPDATE
+							}
+						} else {
+							property.forEach(aProperty => this.setOperationState(
+								serializedProperty, aProperty, entityStateManager))
+						}
+					} else if (propertyState === EntityState.RESULT_DATE) {
+						if (serializedProperty.value != originalValue.value) {
+							entityState = EntityState.UPDATE
+						}
+					} else {
+						if (propertyState === EntityState.RESULT_JSON) {
+							if (serializedProperty.value != originalValue.value) {
+								entityState = EntityState.UPDATE
+							}
+						} else {
+							this.setOperationState(
+								serializedProperty, property, entityStateManager)
+						}
+					}
+				} else if (property != originalValue) {
+					entityState = EntityState.UPDATE
+				}
+			}
+			if (!entityState || entityStateManager.isDeleted(entity)) {
+				entityState = EntityState.PARENT_ID
+			}
+			entity[entityStateManager.getStateFieldName()] = entityState
+		}
+	}
+
+	private removeDeletedEntities<E, T = E | E[]>(
+		entity: T,
+		dbEntity: DbEntity,
+		saveResult: ISaveResult,
+		entityStateManager: IEntityStateManager,
+		processedEntities: Set<any>
+	): boolean {
+		if (entity instanceof Array) {
+			for (let i = entity.length; i >= 0; i--) {
+				if (this.removeDeletedEntities(
+					entity[i], dbEntity, saveResult, entityStateManager, processedEntities)) {
+					(entity as unknown as E[]).splice(i, 1)
+				}
+			}
+			return !(entity as unknown as E[]).length
+		} else {
+			if (processedEntities.has(entity)) {
+				return entityStateManager.isDeleted(entity)
+			}
+			processedEntities.add(entity)
+			for (const relation of dbEntity.relations) {
+				const relationProperty = relation.property
+				const property = entity[relationProperty.name];
+				if (!property) {
+					continue
+				}
+				switch (relation.relationType) {
+					case EntityRelationType.MANY_TO_ONE:
+						if (this.removeDeletedEntities(property, relation.relationEntity,
+							saveResult, entityStateManager, processedEntities)) {
+							entity[relationProperty.name] = null
+						}
+						break;
+					case EntityRelationType.ONE_TO_MANY:
+						this.removeDeletedEntities(property, relation.relationEntity,
+							saveResult, entityStateManager, processedEntities)
+						break;
+				}
+			}
+			return entityStateManager.isDeleted(entity)
+		}
+		return false
 	}
 
 	/**

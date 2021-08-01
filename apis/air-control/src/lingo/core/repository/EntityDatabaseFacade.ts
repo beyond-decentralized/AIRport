@@ -1,4 +1,7 @@
-import {DbEntity}          from '@airport/ground-control'
+import {
+	DbEntity,
+	ISaveResult
+}          from '@airport/ground-control'
 import {IEntityFind}       from '../../query/api/EntityFind'
 import {IEntityFindOne}    from '../../query/api/EntityFindOne'
 import {IEntitySearch}     from '../../query/api/EntitySearch'
@@ -139,6 +142,6 @@ export interface IEntityDatabaseFacade<IEntity,
 	save(
 		entity: EntityCreateProperties,
 		ctx?: IEntityContext,
-	): Promise<number>;
+	): Promise<ISaveResult>;
 
 }

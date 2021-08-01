@@ -12,15 +12,15 @@ import {
 	IQEntity,
 	OperationName,
 	QSchema,
-}                                 from '@airport/air-control';
+} from '@airport/air-control';
 import {
 	DI,
 	IContext
-}                                 from '@airport/di';
-import { EntityId as DbEntityId } from '@airport/ground-control';
+} from '@airport/di';
+import { EntityId as DbEntityId, ISaveResult } from '@airport/ground-control';
 import { ENTITY_STATE_MANAGER } from '@airport/pressurization';
-import { EntityDatabaseFacade }   from '../EntityDatabaseFacade';
-import { DaoStub }                from './DaoStub';
+import { EntityDatabaseFacade } from '../EntityDatabaseFacade';
+import { DaoStub } from './DaoStub';
 
 /**
  * Created by Papa on 8/26/2017.
@@ -34,13 +34,13 @@ export abstract class Dao<Entity,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	QE extends IQEntity<Entity>>
 	implements IDao<Entity, EntitySelect, EntityCreate,
-		EntityUpdateColumns, EntityUpdateProperties, EntityId,
-		EntityCascadeGraph, QE> {
+	EntityUpdateColumns, EntityUpdateProperties, EntityId,
+	EntityCascadeGraph, QE> {
 
 	static BaseSave<EntitySelect extends IEntitySelectProperties>(
 		config: EntitySelect
 	): PropertyDecorator {
-		return function(
+		return function (
 			target: any,
 			propertyKey: string
 		) {
@@ -61,11 +61,11 @@ export abstract class Dao<Entity,
 	) {
 		const dbEntity = Q.__dbSchema__.currentVersion.entities[dbEntityId];
 		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
-		this.db        = new EntityDatabaseFacade<Entity,
+		this.db = new EntityDatabaseFacade<Entity,
 			EntitySelect, EntityCreate,
 			EntityUpdateColumns, EntityUpdateProperties, EntityId,
 			EntityCascadeGraph, QE>(
-			dbEntity, Q);
+				dbEntity, Q);
 	}
 
 	async count(
@@ -120,15 +120,9 @@ export abstract class Dao<Entity,
 	async save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entity: EntityInfo,
 		context?: IContext,
-	): Promise<number> {
-		if (entity instanceof Array) {
-			throw new Error(`Not Implemented`);
-		} else {
-			const result = await this.db.save(<EntityCreate>entity,
-				this.ensureContext(context));
-
-			return result;
-		}
+	): Promise<ISaveResult> {
+		return await this.db.save(<EntityCreate>entity,
+			this.ensureContext(context));
 	}
 
 	markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(

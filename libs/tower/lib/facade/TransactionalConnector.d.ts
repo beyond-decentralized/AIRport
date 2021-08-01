@@ -1,6 +1,6 @@
 import { IQueryContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
-import { DistributionStrategy, ITransactionalConnector, PlatformType, PortableQuery } from '@airport/ground-control';
+import { DistributionStrategy, ISaveResult, ITransactionalConnector, PlatformType, PortableQuery } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 export declare function setIsServer(): void;
 export declare function isServer(): boolean;
@@ -37,7 +37,7 @@ export declare class TransactionalConnector implements ITransactionalConnector {
      * @Delete(...)
      */
     delete(): void;
-    save<E, T = E | E[]>(entity: T, context: IContext): Promise<number>;
+    save<E, T = E | E[]>(entity: T, context: IContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, context: IContext, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, context: IContext): Promise<number[] | string[] | number[][] | string[][]>;
     updateValues(portableQuery: PortableQuery, context: IContext): Promise<number>;

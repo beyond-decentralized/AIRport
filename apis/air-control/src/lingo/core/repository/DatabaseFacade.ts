@@ -1,11 +1,12 @@
 import {
+	DbEntity,
 	DistributionStrategy,
+	ISaveResult,
 	PlatformType,
 	PortableQuery,
 	QueryResultType
 }                          from '@airport/ground-control';
 import { Observable }     from 'rxjs';
-import { OperationName }   from '../../query/Dao';
 import { IAbstractQuery }  from '../../query/facade/AbstractQuery';
 import { RawDelete }       from '../../query/facade/Delete';
 import {
@@ -105,8 +106,9 @@ export interface IDatabaseFacade {
 	 */
 	save<E, EntityCascadeGraph>(
 		entity: E,
+		dbEntity: DbEntity,
 		ctx: IEntityContext,
-	): Promise<number>;
+	): Promise<ISaveResult>;
 
 	/**
 	 * Updates an entity with a where clause, using a column based set clause

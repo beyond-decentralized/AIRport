@@ -5,14 +5,12 @@ export class OperationSerializer {
     serialize(entity, entityStateManager) {
         const operation = {
             lookupTable: [],
+            namePath: ['root'],
+            processedEntityMap: new Map(),
             sequence: 0,
-            stubLookupTable: []
+            stubLookupTable: [],
         };
-        let serializedEntity = this.doSerialize(entity, operation, entityStateManager);
-        for (let i = 1; i < operation.lookupTable.length; i++) {
-            delete operation.lookupTable[i][entityStateManager.getUniqueIdFieldName()];
-        }
-        return serializedEntity;
+        return this.doSerialize(entity, operation, entityStateManager);
     }
     doSerialize(entity, operation, entityStateManager) {
         if (entity instanceof Object) {
@@ -20,39 +18,50 @@ export class OperationSerializer {
                 return entity.map(anEntity => this.doSerialize(anEntity, operation, entityStateManager));
             }
             else if (entity instanceof Date) {
-                return entity.toISOString();
-            }
-            else {
-                // fall though
+                var copy = {
+                    value: entity.toISOString()
+                };
+                copy[entityStateManager.getStateFieldName()] = EntityState.RESULT_DATE;
+                return copy;
             }
         }
         else {
             return entity;
         }
-        // TODO: add support for non-create operations
-        let operationUniqueId = entityStateManager.getOperationUniqueId(entity);
+        let operationUniqueId = operation.processedEntityMap.get(entity);
         if (operationUniqueId) {
             return operation.stubLookupTable[operationUniqueId];
         }
         operationUniqueId = ++operation.sequence;
+        operation.processedEntityMap.set(entity, operationUniqueId);
         let entityStub = {};
         entityStub[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
         entityStub[entityStateManager.getStateFieldName()] = EntityState.STUB;
         operation.stubLookupTable[operationUniqueId] = entityStub;
-        let entityCopy = {};
+        let serializedEntity = {};
         operation.lookupTable[operationUniqueId] = entity;
-        entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
-        let entityState = EntityState.STUB;
-        if (entity['id']) {
-            entityState = EntityState.CREATE;
-        }
-        entityCopy[entityStateManager.getStateFieldName()] = entityState;
+        serializedEntity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
+        var isFirstProperty = true;
         for (const propertyName in entity) {
             const property = entity[propertyName];
+            const propertyState = property[entityStateManager.getStateFieldName()];
             let propertyCopy;
+            if (!isFirstProperty) {
+                operation.namePath.pop();
+            }
+            isFirstProperty = false;
+            operation.namePath.push(propertyName);
             if (property instanceof Object) {
                 if (property instanceof Array) {
-                    propertyCopy = property.map(aProperty => this.doSerialize(aProperty, operation, entityStateManager));
+                    if (propertyState === EntityState.RESULT_JSON_ARRAY) {
+                        propertyCopy = {
+                            value: JSON.stringify(property)
+                        };
+                        propertyCopy[entityStateManager.getStateFieldName()] = propertyState;
+                    }
+                    else {
+                        propertyCopy = property.map(aProperty => this.doSerialize(aProperty, operation, entityStateManager));
+                    }
                 }
                 else if (property instanceof Date) {
                     propertyCopy = {
@@ -61,15 +70,49 @@ export class OperationSerializer {
                     propertyCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT_DATE;
                 }
                 else {
-                    propertyCopy = this.doSerialize(property, operation, entityStateManager);
+                    if (propertyState === EntityState.RESULT_JSON) {
+                        propertyCopy = {
+                            value: JSON.stringify(property)
+                        };
+                        propertyCopy[entityStateManager.getStateFieldName()] = propertyState;
+                    }
+                    else {
+                        propertyCopy = this.doSerialize(property, operation, entityStateManager);
+                    }
                 }
             }
             else {
-                propertyCopy = property;
+                propertyCopy = {
+                    value: null
+                };
+                propertyCopy[entityStateManager.getStateFieldName()] = propertyState;
+                switch (propertyState) {
+                    case EntityState.RESULT_JSON_ARRAY:
+                        if (property) {
+                            throw new Error(`Expecting an Array for "${operation.namePath.join('.')}", got: ${property}`);
+                        }
+                        break;
+                    case EntityState.RESULT_JSON:
+                        if (property) {
+                            throw new Error(`Expecting an Object for "${operation.namePath.join('.')}", got: ${property}`);
+                        }
+                        break;
+                    case EntityState.RESULT_DATE:
+                        if (property) {
+                            throw new Error(`Expecting a Date for "${operation.namePath.join('.')}", got: ${property}`);
+                        }
+                        break;
+                    default:
+                        propertyCopy = property;
+                        break;
+                }
             }
-            entityCopy[propertyName] = propertyCopy;
+            serializedEntity[propertyName] = propertyCopy;
         }
-        return entityCopy;
+        if (!isFirstProperty) {
+            operation.namePath.pop();
+        }
+        return serializedEntity;
     }
 }
 DI.set(OPERATION_SERIALIZER, OperationSerializer);

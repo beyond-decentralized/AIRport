@@ -81,6 +81,12 @@ export class EntityStateManager {
     getEntityState(entity) {
         return entity.__state__;
     }
+    getOriginalValues(entity) {
+        return entity[EntityStateManager.ORIGINAL_VALUES_PROPERTY];
+    }
+    setOriginalValues(originalValues, entity) {
+        entity[EntityStateManager.ORIGINAL_VALUES_PROPERTY] = originalValues;
+    }
     copyEntityState(fromEntity, toEntity) {
         toEntity.__state__ = fromEntity.__state__;
     }
@@ -133,8 +139,16 @@ export class EntityStateManager {
             isUpdate,
         };
     }
+    setIsDeleted(isDeleted, entity) {
+        entity[EntityStateManager.DELETED_PROPERTY] = true;
+    }
+    isDeleted(entity) {
+        return entity[EntityStateManager.DELETED_PROPERTY];
+    }
 }
+EntityStateManager.DELETED_PROPERTY = '__deleted__';
 EntityStateManager.OPERATION_UNIQUE_ID_FIELD = '__UID__';
+EntityStateManager.ORIGINAL_VALUES_PROPERTY = '__originalValues__';
 EntityStateManager.STATE_FIELD = '__state__';
 DI.set(ENTITY_STATE_MANAGER, EntityStateManager);
 //# sourceMappingURL=EntityStateManager.js.map

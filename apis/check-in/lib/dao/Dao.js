@@ -47,13 +47,7 @@ export class Dao {
         throw new Error(`Not implemented`);
     }
     async save(entity, context) {
-        if (entity instanceof Array) {
-            throw new Error(`Not Implemented`);
-        }
-        else {
-            const result = await this.db.save(entity, this.ensureContext(context));
-            return result;
-        }
+        return await this.db.save(entity, this.ensureContext(context));
     }
     markForDeletion(entityIdInfo, context) {
         const entityStateManager = DI.db().getSync(ENTITY_STATE_MANAGER);

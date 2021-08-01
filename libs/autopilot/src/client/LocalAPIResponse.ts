@@ -4,6 +4,7 @@ export enum LocalAPIResponseType {
 }
 
 export interface ILocalAPIResponse {
-    payload: string;
-    type: LocalAPIResponseType;
+    errorMessage: string
+    payload: any
+    type: LocalAPIResponseType
 }

@@ -3,7 +3,8 @@ export declare enum LocalAPIResponseType {
     SAVE = 1
 }
 export interface ILocalAPIResponse {
-    payload: string;
+    errorMessage: string;
+    payload: any;
     type: LocalAPIResponseType;
 }
 //# sourceMappingURL=LocalAPIResponse.d.ts.map

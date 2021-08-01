@@ -1,4 +1,5 @@
 import { IContext } from '@airport/di';
+import { ISaveResult } from '@airport/ground-control';
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../core/entity/Entity';
 import { IEntityDatabaseFacade } from '../core/repository/EntityDatabaseFacade';
 export declare type OperationName = string;
@@ -20,7 +21,7 @@ export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, Enti
      * @param context
      * @returns {Promise<number>}
      */
-    save<EntityInfo extends EntityCreate | EntityCreate[]>(entityInfo: EntityInfo, context?: IContext): Promise<number>;
+    save<EntityInfo extends EntityCreate | EntityCreate[]>(entityInfo: EntityInfo, context?: IContext): Promise<ISaveResult>;
     markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(entityIdInfo: EntityInfo, context?: IContext): void;
 }
 //# sourceMappingURL=Dao.d.ts.map

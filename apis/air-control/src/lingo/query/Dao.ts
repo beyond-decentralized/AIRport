@@ -1,4 +1,5 @@
-import {IContext}              from '@airport/di'
+import { IContext } from '@airport/di'
+import { ISaveResult } from '@airport/ground-control'
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
@@ -7,8 +8,8 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity
-}                              from '../core/entity/Entity'
-import {IEntityDatabaseFacade} from '../core/repository/EntityDatabaseFacade'
+} from '../core/entity/Entity'
+import { IEntityDatabaseFacade } from '../core/repository/EntityDatabaseFacade'
 
 export type OperationName = string
 
@@ -62,7 +63,7 @@ export interface IDao<Entity,
 	save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entityInfo: EntityInfo,
 		context?: IContext,
-	): Promise<number>;
+	): Promise<ISaveResult>;
 
 	markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entityIdInfo: EntityInfo,

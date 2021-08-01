@@ -1,7 +1,8 @@
 import { SCHEMA_UTILS } from "@airport/air-control";
 import {
     ILocalAPIRequest,
-    ILocalAPIResponse
+    ILocalAPIResponse,
+    LocalAPIResponseType
 } from "@airport/autopilot";
 import {
     CLIENT_QUERY_MANAGER,
@@ -20,7 +21,6 @@ import {
     TRANSACTIONAL_CONNECTOR
 } from "@airport/ground-control";
 import { ENTITY_STATE_MANAGER } from "@airport/pressurization";
-import { ClientQueryManager } from "./ClientQueryManager";
 import {
     DaoOperationType,
     IDaoOperation,
@@ -58,47 +58,56 @@ export class LocalAPIServer
         }
 
         let payload
-        switch (operation.type) {
-            case DaoOperationType.ADD_REPOSITORY:
-                throw new Error('TODO Implement')
-                break
-            case DaoOperationType.SAVE:
-                if (!request.args) {
-                    throw new Error(`No entity was provied to a save call,
+        let errorMessage: string
+        let type: LocalAPIResponseType
+        try {
+            switch (operation.type) {
+                case DaoOperationType.ADD_REPOSITORY:
+                    throw new Error('TODO Implement')
+                    break
+                case DaoOperationType.SAVE:
+                    type = LocalAPIResponseType.SAVE
+                    if (!request.args) {
+                        throw new Error(`No entity was provied to a save call,
                     expecting an entity or an array of entities`)
-                } else if (request.args.length !== 1) {
-                    throw new Error(`Wrong number of entities was provied to a save call, 
+                    } else if (request.args.length !== 1) {
+                        throw new Error(`Wrong number of entities was provied to a save call, 
                     expecting 1 (an entity or an array of entities), received ${request.args.length}`)
-                } else if (typeof request.args[0] !== 'object') {
-                    throw new Error(`Wrong type of entity was provied to a save call,
+                    } else if (typeof request.args[0] !== 'object') {
+                        throw new Error(`Wrong type of entity was provied to a save call,
                     expecting an entity or an array of entities, received ${typeof request.args[0]}`)
-                }
-                const entity = operationDeserializer.deserialize(
-                    request.args[0], operation.dbEntity, entityStateManager, schemaUtils);
+                    }
+                    const entity = operationDeserializer.deserialize(
+                        request.args[0], operation.dbEntity, entityStateManager, schemaUtils);
 
-                // [context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
-                payload = await transactionalConnector.save(entity, context)
-                break;
-            case DaoOperationType.FIND:
-            case DaoOperationType.FIND_ONE:
-            case DaoOperationType.SEARCH:
-            case DaoOperationType.SEARCH_ONE:
-                const clientQuery = await clientQueryManager.getClientQuery(
-                    request.schemaName, request.daoName, request.methodName)
-                const queryParameters = queryParameterDeserializer.deserialize(
-                    request.args, clientQuery, entityStateManager)
-                const result = this.handleQuery(operation, queryParameters,
-                    transactionalConnector, context)
-                payload = queryResultsSerializer.serialize(
-                    result, operation.dbEntity, entityStateManager, schemaUtils)
-                break;
-            default:
-                throw new Error(`Unknown DaoOperationType: ${operation.type}`);
+                    // [context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
+                    payload = await transactionalConnector.save(entity, context)
+                    break;
+                case DaoOperationType.FIND:
+                case DaoOperationType.FIND_ONE:
+                case DaoOperationType.SEARCH:
+                case DaoOperationType.SEARCH_ONE:
+                    type = LocalAPIResponseType.QUERY
+                    const clientQuery = await clientQueryManager.getClientQuery(
+                        request.schemaName, request.daoName, request.methodName)
+                    const queryParameters = queryParameterDeserializer.deserialize(
+                        request.args, clientQuery, entityStateManager)
+                    const result = this.handleQuery(operation, queryParameters,
+                        transactionalConnector, context)
+                    payload = queryResultsSerializer.serialize(
+                        result, operation.dbEntity, entityStateManager, schemaUtils)
+                    break;
+                default:
+                    throw new Error(`Unknown DaoOperationType: ${operation.type}`);
+            }
+        } catch (e) {
+            errorMessage = e.message
         }
 
         const response: ILocalAPIResponse = {
-            type: null,
-            payload
+            errorMessage,
+            payload,
+            type
         }
 
         return response

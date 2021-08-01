@@ -1,68 +1,64 @@
 import { DI } from "@airport/di";
 import { EntityState } from "@airport/pressurization";
 import { UPDATE_CACHE_MANAGER } from "../tokens";
-const ORIGINAL_VALUES_PROPERTY = '__originalValues__';
 export class UpdateCacheManager {
-    saveOriginalValues(entity, entityStateManager) {
-        const processedEntitySet = new Set();
-        if (entity instanceof Array) {
-            entity.forEach(anEntity => this.doDeserialize(anEntity, entityStateManager, processedEntitySet));
-        }
-        else {
-            this.doDeserialize(entity, entityStateManager, processedEntitySet);
-        }
-    }
-    doDeserialize(entity, entityStateManager, processedEntitySet) {
-        if (processedEntitySet.has(entity)) {
-            return;
-        }
-        processedEntitySet.add(entity);
-        // delete the state if run after a save()
-        delete entity[entityStateManager.getStateFieldName()];
-        const originalValuesObject = {};
-        entity[ORIGINAL_VALUES_PROPERTY] = originalValuesObject;
-        for (const propertyName in entity) {
-            const property = entity[propertyName];
-            const propertyState = property[entityStateManager.getStateFieldName()];
-            if (property instanceof Object) {
-                if (property instanceof Array) {
-                    if (propertyState === EntityState.RESULT_JSON_ARRAY) {
-                        originalValuesObject[propertyName] = JSON.stringify(property.value);
-                        continue;
-                    }
-                    property.forEach(aProperty => this.doDeserialize(aProperty, entityStateManager, processedEntitySet));
-                }
-                else if (property instanceof Date) {
-                    originalValuesObject[propertyName] = new Date(property.getTime());
-                }
-                else {
-                    if (propertyState === EntityState.RESULT_JSON) {
-                        originalValuesObject[propertyName] = JSON.stringify(entity);
-                        continue;
-                    }
-                    this.doDeserialize(entity, entityStateManager, processedEntitySet);
-                }
+    saveOriginalValues(serializedEntity, entity, entityStateManager) {
+        if (serializedEntity instanceof Array) {
+            for (let i = 0; i < serializedEntity.length; i++) {
+                this.saveOriginalValues(serializedEntity[i], entity[i], entityStateManager);
             }
-            else {
-                originalValuesObject[propertyName] = property;
+        }
+        else if (serializedEntity instanceof Object) {
+            const entityState = serializedEntity[entityStateManager.getStateFieldName()];
+            switch (entityState) {
+                case EntityState.RESULT_DATE:
+                case EntityState.RESULT_JSON:
+                case EntityState.RESULT_JSON_ARRAY:
+                    return serializedEntity;
+                case EntityState.STUB:
+                    break;
+                case EntityState.RESULT:
+                    const originalValuesObject = {};
+                    entityStateManager.setOriginalValues(originalValuesObject, entity);
+                    for (const propertyName in entity) {
+                        const serializedProperty = serializedEntity[propertyName];
+                        if (!(serializedProperty instanceof Object)) {
+                            originalValuesObject[propertyName] = serializedProperty;
+                        }
+                        else {
+                            const property = entity[propertyName];
+                            const originalValue = this.saveOriginalValues(serializedProperty, property, entityStateManager);
+                            if (originalValue) {
+                                originalValuesObject[propertyName] = originalValue;
+                            }
+                        }
+                    }
+                    break;
             }
         }
     }
-    setOperationState(entity, entityStateManager) {
-        const processedEntitySet = new Set();
+    setOperationState(serializedEntity, entity, entityStateManager) {
         if (entity instanceof Array) {
-            entity.forEach(anEntity => this.doSetOperationState(anEntity, entityStateManager, processedEntitySet));
+            for (var i = 0; i < serializedEntity.length; i++) {
+                this.doSetOperationState(serializedEntity[i], entity[i], entityStateManager);
+            }
         }
         else {
-            this.doSetOperationState(entity, entityStateManager, processedEntitySet);
+            this.doSetOperationState(serializedEntity, entity, entityStateManager);
         }
     }
-    doSetOperationState(entity, entityStateManager, processedEntitySet) {
-        if (processedEntitySet.has(entity)) {
+    doSetOperationState(serializedEntity, entity, entityStateManager) {
+        if (!serializedEntity) {
             return;
         }
-        processedEntitySet.add(entity);
-        const originalValuesObject = entity[ORIGINAL_VALUES_PROPERTY];
+        switch (serializedEntity[entityStateManager.getStateFieldName()]) {
+            case EntityState.RESULT_DATE:
+            case EntityState.RESULT_JSON:
+            case EntityState.RESULT_JSON_ARRAY:
+                return;
+        }
+        const originalValuesObject = entityStateManager
+            .getOriginalValues(entity);
         let entityState = entity[entityStateManager.getStateFieldName()];
         if (!entity['id']) {
             if (entityState === EntityState.DELETE) {
@@ -72,49 +68,153 @@ export class UpdateCacheManager {
                 entityState = EntityState.CREATE;
             }
         }
-        for (const propertyName in entity) {
+        for (const propertyName in serializedEntity) {
             const property = entity[propertyName];
-            const propertyState = property[entityStateManager.getStateFieldName()];
+            const serializedProperty = serializedEntity[propertyName];
+            const originalValue = originalValuesObject[propertyName];
+            const propertyState = serializedProperty[entityStateManager.getStateFieldName()];
             if (property instanceof Object) {
                 if (property instanceof Array) {
                     if (propertyState === EntityState.RESULT_JSON_ARRAY) {
-                        if (!entityState) {
-                            const newValue = JSON.stringify(property);
-                            const originalValue = originalValuesObject[propertyName];
-                            if (newValue !== originalValue) {
-                                entityState = EntityState.UPDATE;
-                            }
+                        if (serializedProperty.value != originalValue.value) {
+                            entityState = EntityState.UPDATE;
                         }
-                        continue;
                     }
-                    property.forEach(aProperty => this.doSetOperationState(aProperty, entityStateManager, processedEntitySet));
+                    else {
+                        property.forEach(aProperty => this.doSetOperationState(serializedProperty, aProperty, entityStateManager));
+                    }
                 }
-                else if (property instanceof Date) {
-                    originalValuesObject[propertyName] = new Date(property.getTime());
+                else if (propertyState === EntityState.RESULT_DATE) {
+                    if (serializedProperty.value != originalValue.value) {
+                        entityState = EntityState.UPDATE;
+                    }
                 }
                 else {
                     if (propertyState === EntityState.RESULT_JSON) {
-                        if (!entityState) {
-                            const newValue = JSON.stringify(property);
-                            const originalValue = originalValuesObject[propertyName];
-                            if (newValue !== originalValue) {
-                                entityState = EntityState.UPDATE;
-                            }
+                        if (serializedProperty.value != originalValue.value) {
+                            entityState = EntityState.UPDATE;
                         }
-                        originalValuesObject[propertyName] = JSON.stringify(entity);
-                        continue;
                     }
-                    this.doSetOperationState(entity, entityStateManager, processedEntitySet);
+                    else {
+                        this.doSetOperationState(serializedProperty, property, entityStateManager);
+                    }
                 }
             }
-            else {
-                originalValuesObject[propertyName] = property;
+            else if (property != originalValue) {
+                entityState = EntityState.UPDATE;
             }
         }
-        if (!entityState) {
+        if (!entityState || entityStateManager.isDeleted(entity)) {
             entityState = EntityState.PARENT_ID;
         }
         entity[entityStateManager.getStateFieldName()] = entityState;
+    }
+    /**
+     * Resets the originalValue to the new version.
+     *
+     * TODO: process newly created entity IDs (if any),
+     * and add them where applicable
+     *
+     * @param serializedEntity
+     * @param entity
+     * @param entityStateManager
+     * @returns
+     */
+    updateOriginalValuesAfterSave(serializedEntity, entity, saveResult, entityStateManager) {
+        this.doUpdateOriginalValuesAfterSave(serializedEntity, entity, saveResult, entityStateManager);
+        this.removeDeletedEntities(serializedEntity, entity, entityStateManager, new Set());
+    }
+    doUpdateOriginalValuesAfterSave(serializedEntity, entity, saveResult, entityStateManager) {
+        if (serializedEntity instanceof Array) {
+            for (let i = serializedEntity.length; i >= 0; i--) {
+                this.doUpdateOriginalValuesAfterSave(serializedEntity[i], entity[i], saveResult, entityStateManager);
+            }
+        }
+        else if (serializedEntity instanceof Object) {
+            let operationUniqueId = entityStateManager.getOperationUniqueId(serializedEntity);
+            let createdRecordId = saveResult.created[operationUniqueId];
+            if (createdRecordId) {
+                entity['id'] = createdRecordId;
+            }
+            else {
+                let isDeleted = !!saveResult.deleted[operationUniqueId];
+                if (isDeleted) {
+                    entityStateManager.setIsDeleted(true, entity);
+                }
+            }
+            let originalValue;
+            const entityState = serializedEntity[entityStateManager.getStateFieldName()];
+            switch (entityState) {
+                case EntityState.RESULT_DATE:
+                    originalValue = {
+                        value: entity.toISOString()
+                    };
+                    originalValue[entityStateManager.getStateFieldName()] = entityState;
+                    return originalValue;
+                case EntityState.RESULT_JSON:
+                case EntityState.RESULT_JSON_ARRAY:
+                    originalValue = {
+                        value: JSON.stringify(entity)
+                    };
+                    originalValue[entityStateManager.getStateFieldName()] = entityState;
+                    return originalValue;
+                case EntityState.STUB:
+                    break;
+                case EntityState.RESULT:
+                    originalValue = {};
+                    for (const propertyName in entity) {
+                        const serializedProperty = serializedEntity[propertyName];
+                        const property = entity[propertyName];
+                        if (!(serializedProperty instanceof Object)) {
+                            originalValue[propertyName] = property;
+                        }
+                        else {
+                            const originalValue = this.doUpdateOriginalValuesAfterSave(serializedProperty, property, saveResult, entityStateManager);
+                            if (originalValue) {
+                                originalValue[propertyName] = originalValue;
+                            }
+                        }
+                    }
+                    break;
+            }
+            entityStateManager.setOriginalValues(originalValue, entity);
+        }
+    }
+    removeDeletedEntities(serializedEntity, entity, entityStateManager, processedEntities) {
+        if (serializedEntity instanceof Array) {
+            for (let i = serializedEntity.length; i >= 0; i--) {
+                if (this.removeDeletedEntities(serializedEntity[i], entity[i], entityStateManager, processedEntities)) {
+                    entity.splice(i, 1);
+                }
+            }
+            return !entity.length;
+        }
+        else if (serializedEntity instanceof Object) {
+            const entityState = serializedEntity[entityStateManager.getStateFieldName()];
+            switch (entityState) {
+                case EntityState.RESULT_DATE:
+                case EntityState.RESULT_JSON:
+                case EntityState.RESULT_JSON_ARRAY:
+                    return false;
+                default:
+                    if (processedEntities.has(entity)) {
+                        return entityStateManager.isDeleted(entity);
+                    }
+                    processedEntities.add(entity);
+                    for (const propertyName in entity) {
+                        const serializedProperty = serializedEntity[propertyName];
+                        const property = entity[propertyName];
+                        if (serializedProperty instanceof Object
+                            && this.removeDeletedEntities(serializedProperty, property, entityStateManager, processedEntities)) {
+                            if (!(property instanceof Array)) {
+                                entity[property] = null;
+                            }
+                        }
+                    }
+                    return entityStateManager.isDeleted(entity);
+            }
+        }
+        return false;
     }
 }
 DI.set(UPDATE_CACHE_MANAGER, UpdateCacheManager);

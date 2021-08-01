@@ -1,6 +1,7 @@
 import {IContext}          from '@airport/di'
 import {
 	DistributionStrategy,
+	ISaveResult,
 	PlatformType,
 	PortableQuery
 }                          from '@airport/ground-control'
@@ -55,7 +56,7 @@ export interface ITransactionalServer {
 		entity: E,
 		credentials: ICredentials,
 		context: IContext,
-	): Promise<number>
+	): Promise<ISaveResult>
 
 	insertValues(
 		portableQuery: PortableQuery,

@@ -1,5 +1,4 @@
 export * from './core/data/ITransactionalServer';
-export * from './core/data/UpdateCache';
 export * from './core/metadata/MetadataUtils';
 export * from './facade/DatabaseFacade';
 export * from './facade/QueryFacade';
