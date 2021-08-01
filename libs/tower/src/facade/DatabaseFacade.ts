@@ -176,15 +176,11 @@ export class DatabaseFacade
 		const [entityStateManager, transactionalConnector]
 			= await container(this).get(ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR)
 
-			updateOriginalValuesAfterSave<E, T = E | E[]>(
-				serializedEntity: any,
-				entity: T,
-				saveResult: ISaveResult,
-				entityStateManager: IEntityStateManager,
-			);
-
 		this.setOperationState(entity, dbEntity, entityStateManager, new Set())
 		const saveResult = await transactionalConnector.save(entity, context)
+		
+		this.updateOriginalValuesAfterSave(entity, dbEntity,
+			saveResult, entityStateManager);
 		this.removeDeletedEntities(entity, dbEntity, saveResult,
 			entityStateManager, new Set())
 
