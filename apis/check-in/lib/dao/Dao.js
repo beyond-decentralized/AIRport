@@ -1,6 +1,6 @@
 import { doEnsureContext, } from '@airport/air-control';
 import { DI } from '@airport/di';
-import { ENTITY_STATE_MANAGER } from '@airport/pressurization';
+import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { EntityDatabaseFacade } from '../EntityDatabaseFacade';
 import { DaoStub } from './DaoStub';
 /**

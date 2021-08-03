@@ -68,6 +68,7 @@ import {
 import {
 	DbSchema,
 	DistributionStrategy,
+	ISaveResult,
 	PlatformType,
 } from '@airport/ground-control';
 
@@ -316,7 +317,7 @@ export class AirportDatabase
 		entity: E,
 		context?: IEntityContext,
 		operationName?: OperationName,
-	): Promise<number> {
+	): Promise<ISaveResult> {
 		const dbFacade = await container(this)
 			.get(DATABASE_FACADE);
 

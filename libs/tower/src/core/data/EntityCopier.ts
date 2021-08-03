@@ -1,6 +1,8 @@
 import { DI } from "@airport/di"
-import { DbEntity } from "@airport/ground-control"
-import { IEntityStateManager } from "@airport/pressurization"
+import { 
+    DbEntity,
+    IEntityStateManager
+} from "@airport/ground-control"
 import { ENTITY_COPIER } from "../../tokens"
 
 interface ICopyOperation {

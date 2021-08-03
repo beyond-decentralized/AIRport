@@ -1,7 +1,8 @@
 import { DATABASE_FACADE, Delete, InsertColumnValues, InsertValues, UpdateColumns, UpdateProperties, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { TRANSACTIONAL_CONNECTOR, } from '@airport/ground-control';
+import { DB_UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
+import { ENTITY_COPIER } from '../tokens';
 /**
  * Created by Papa on 5/23/2016.
  */
@@ -73,10 +74,16 @@ export class DatabaseFacade {
     }
     async save(entity, context) {
         if (!entity) {
-            return 0;
+            return null;
         }
-        const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-        return await transactionalConnector.save(entity, context);
+        const [dbUpdateCacheManager, entityCopier, entityStateManager, transactionalConnector] = await container(this).get(DB_UPDATE_CACHE_MANAGER, ENTITY_COPIER, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR);
+        const dbEntity = context.dbEntity;
+        const entityCopy = entityCopier
+            .copyEntityForProcessing(entity, dbEntity, entityStateManager);
+        dbUpdateCacheManager.setOperationState(entityCopy, dbEntity, entityStateManager, new Set());
+        const saveResult = await transactionalConnector.save(entityCopy, context);
+        dbUpdateCacheManager.afterSaveModifications(entity, dbEntity, saveResult, entityStateManager, new Set());
+        return saveResult;
     }
     /**
      * Updates an entity with a where clause, using a column based set clause

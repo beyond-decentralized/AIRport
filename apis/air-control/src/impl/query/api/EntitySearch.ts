@@ -48,12 +48,12 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 		return from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
 	}
 
-	search(
+	async search(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
 		context?: IContext
 	): Promise<EntityArray> {
-		return this.entityLookup(rawEntityQuery, queryResultType,
+		return await this.entityLookup(rawEntityQuery, queryResultType,
 			true, false, this.ensureContext(context) as IEntityContext);
 	}
 

@@ -1,4 +1,4 @@
-import { DbSchema, DistributionStrategy, PlatformType } from '@airport/ground-control';
+import { DbSchema, DistributionStrategy, ISaveResult, PlatformType } from '@airport/ground-control';
 import { QEntityConstructor } from '../impl/core/entity/Entity';
 import { QRelation } from '../impl/core/entity/Relation';
 import { IEntityContext } from './core/EntityContext';
@@ -73,7 +73,7 @@ export interface IAirportDatabase extends SchemaHub, FunctionAndOperatorHub {
      *
      * @return Number of records saved (1 or 0)
      */
-    save<E>(entity: E, context?: IEntityContext, operationName?: OperationName): Promise<number>;
+    save<E>(entity: E, context?: IEntityContext, operationName?: OperationName): Promise<ISaveResult>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.

@@ -11,8 +11,10 @@ export class EntitySearchOne extends EntityLookup {
     tree(rawTreeQuery, context) {
         return from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
     }
-    searchOne(rawEntityQuery, queryResultType, context) {
-        return this.entityLookup(rawEntityQuery, queryResultType, true, true, this.ensureContext(context));
+    // TODO: return Observable from deep within the framework
+    // and detect changes to the underlying data
+    async searchOne(rawEntityQuery, queryResultType, context) {
+        return await this.entityLookup(rawEntityQuery, queryResultType, true, true, this.ensureContext(context));
     }
     map(isMapped) {
         return this.setMap(EntitySearchOne, isMapped);

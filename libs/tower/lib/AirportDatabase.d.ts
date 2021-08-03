@@ -1,5 +1,5 @@
 import { FunctionsAndOperators, IAirportDatabase, IDatabaseFacade, IEntityAccumulator, IEntityContext, IEntityRecord, IEntityUpdateColumns, IEntityUpdateProperties, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, IQEntity, OperationName, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
-import { DbSchema, DistributionStrategy, PlatformType } from '@airport/ground-control';
+import { DbSchema, DistributionStrategy, ISaveResult, PlatformType } from '@airport/ground-control';
 export declare class AirportDatabase implements IAirportDatabase {
     db: IDatabaseFacade;
     entityMap: Map<any, IEntityRecord>;
@@ -46,7 +46,7 @@ export declare class AirportDatabase implements IAirportDatabase {
      *
      * @return Number of records saved (1 or 0)
      */
-    save<E>(entity: E, context?: IEntityContext, operationName?: OperationName): Promise<number>;
+    save<E>(entity: E, context?: IEntityContext, operationName?: OperationName): Promise<ISaveResult>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.

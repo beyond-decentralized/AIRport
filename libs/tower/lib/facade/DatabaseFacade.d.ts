@@ -1,5 +1,6 @@
 import { IDatabaseFacade, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
 import { IContext } from '@airport/di';
+import { ISaveResult } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 /**
  * Created by Papa on 5/23/2016.
@@ -22,7 +23,7 @@ export declare class DatabaseFacade implements IDatabaseFacade {
     deleteWhere<IQE extends IQEntity<any>>(rawDelete: RawDelete<IQE> | {
         (...args: any[]): RawDelete<IQE>;
     }, context: IContext): Promise<number>;
-    save<E>(entity: E, context: IEntityContext): Promise<number>;
+    save<E>(entity: E, context: IEntityContext): Promise<ISaveResult>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.

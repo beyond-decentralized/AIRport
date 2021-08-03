@@ -11,8 +11,8 @@ export class EntitySearch extends EntityLookup {
     tree(rawTreeQuery, context) {
         return from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
     }
-    search(rawEntityQuery, queryResultType, context) {
-        return this.entityLookup(rawEntityQuery, queryResultType, true, false, this.ensureContext(context));
+    async search(rawEntityQuery, queryResultType, context) {
+        return await this.entityLookup(rawEntityQuery, queryResultType, true, false, this.ensureContext(context));
     }
     map(isMapped) {
         return this.setMap(EntitySearch, isMapped);

@@ -26,26 +26,26 @@ export class EntityFind<Entity, EntityArray extends Array<Entity>, IESP extends 
 		EntityFind<Entity, MappedEntityArray<Entity>, IESP>, IESP>
 	implements IEntityFindInternal<Entity, EntityArray, IESP> {
 
-	graph(
+	async graph(
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		context?: IContext
 	): Promise<EntityArray> {
-		return this.find(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context)
+		return await this.find(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context)
 	}
 
-	tree(
+	async tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		context?: IContext
 	): Promise<EntityArray> {
-		return this.find(rawTreeQuery, QueryResultType.ENTITY_TREE, context)
+		return await this.find(rawTreeQuery, QueryResultType.ENTITY_TREE, context)
 	}
 
-	find(
+	async find(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
 		context?: IContext
 	): Promise<EntityArray> {
-		return this.entityLookup(rawEntityQuery, queryResultType,
+		return await this.entityLookup(rawEntityQuery, queryResultType,
 			false, false,
 			this.ensureContext(context) as IEntityContext)
 	}

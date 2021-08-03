@@ -1,17 +1,5 @@
 import { DI } from '@airport/di';
-import { ENTITY_STATE_MANAGER } from './tokens';
-export var EntityState;
-(function (EntityState) {
-    EntityState[EntityState["CREATE"] = 1] = "CREATE";
-    EntityState[EntityState["DELETE"] = 2] = "DELETE";
-    EntityState[EntityState["PARENT_ID"] = 3] = "PARENT_ID";
-    EntityState[EntityState["RESULT"] = 4] = "RESULT";
-    EntityState[EntityState["RESULT_DATE"] = 5] = "RESULT_DATE";
-    EntityState[EntityState["RESULT_JSON"] = 6] = "RESULT_JSON";
-    EntityState[EntityState["RESULT_JSON_ARRAY"] = 7] = "RESULT_JSON_ARRAY";
-    EntityState[EntityState["STUB"] = 8] = "STUB";
-    EntityState[EntityState["UPDATE"] = 9] = "UPDATE";
-})(EntityState || (EntityState = {}));
+import { EntityState, ENTITY_STATE_MANAGER } from '@airport/ground-control';
 export function markAsStub(entity) {
     DI.db().getSync(ENTITY_STATE_MANAGER).markAsStub(entity);
 }
@@ -45,15 +33,6 @@ export class EntityStateManager {
     }
     isParentId(entity) {
         return this.getEntityState(entity) === EntityState.PARENT_ID;
-    }
-    getOperationUniqueIdSeq() {
-        return {
-            sequence: 1
-        };
-    }
-    uniquelyIdentify(entity, operationUniqueIdSeq) {
-        // TODO: wire in in the client to mark all sent objects (used for de-duplication on server side).
-        entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD] = operationUniqueIdSeq.sequence++;
     }
     getOperationUniqueId(entity, throwIfNotFound = true, dbEntity = null) {
         const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD];

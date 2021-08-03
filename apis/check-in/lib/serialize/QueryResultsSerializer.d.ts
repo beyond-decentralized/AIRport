@@ -1,6 +1,5 @@
 import { ISchemaUtils } from "@airport/air-control";
-import { DbEntity } from "@airport/ground-control";
-import { IEntityStateManager } from "@airport/pressurization";
+import { DbEntity, IEntityStateManager } from "@airport/ground-control";
 export interface IQueryResultsSerializer {
     serialize<E, T = E | E[]>(entity: T, dbEntity: DbEntity, entityStateManager: IEntityStateManager, schemaUtils: ISchemaUtils): T;
 }

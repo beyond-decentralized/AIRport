@@ -59,12 +59,12 @@ export interface IEntityDatabaseFacade<IEntity,
 	/**
 	 * The Observable based API for all Entity 'searchOne' (searchOne many) queries.
 	 */
-	search: IEntitySearch<IEntity, Array<IEntity> | MappedEntityArray<IEntity>, EntitySelect>;
+	// search: IEntitySearch<IEntity, Array<IEntity> | MappedEntityArray<IEntity>, EntitySelect>;
 
 	/**
 	 * The Observable based API for all Entity 'searchOne' queries.
 	 */
-	searchOne: IEntitySearchOne<IEntity, EntitySelect>;
+	// searchOne: IEntitySearchOne<IEntity, EntitySelect>;
 
 	/**
 	 * Creates a new instance of the Query Entity for this entity type.

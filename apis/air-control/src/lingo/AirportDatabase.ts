@@ -1,6 +1,7 @@
 import {
   DbSchema,
   DistributionStrategy,
+  ISaveResult,
   PlatformType,
 } from '@airport/ground-control';
 import { QEntityConstructor } from '../impl/core/entity/Entity';
@@ -157,7 +158,7 @@ export interface IAirportDatabase
     entity: E,
     context?: IEntityContext,
     operationName?: OperationName,
-  ): Promise<number>;
+  ): Promise<ISaveResult>;
 
   /**
    * Updates an entity with a where clause, using a column based set clause

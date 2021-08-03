@@ -17,8 +17,11 @@ import {
 	DI,
 	IContext
 } from '@airport/di';
-import { EntityId as DbEntityId, ISaveResult } from '@airport/ground-control';
-import { ENTITY_STATE_MANAGER } from '@airport/pressurization';
+import { 
+	EntityId as DbEntityId,
+	ENTITY_STATE_MANAGER, 
+	ISaveResult
+ } from '@airport/ground-control';
 import { EntityDatabaseFacade } from '../EntityDatabaseFacade';
 import { DaoStub } from './DaoStub';
 

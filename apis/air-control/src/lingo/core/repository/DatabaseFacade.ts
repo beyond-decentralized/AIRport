@@ -106,7 +106,6 @@ export interface IDatabaseFacade {
 	 */
 	save<E, EntityCascadeGraph>(
 		entity: E,
-		dbEntity: DbEntity,
 		ctx: IEntityContext,
 	): Promise<ISaveResult>;
 

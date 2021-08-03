@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { EntityState } from './EntityStateManager';
+import { EntityState } from '@airport/ground-control';
 import { QUERY_RESULTS_DESERIALIZER } from './tokens';
 export class QueryResultsDeserializer {
     deserialize(entity, entityStateManager) {

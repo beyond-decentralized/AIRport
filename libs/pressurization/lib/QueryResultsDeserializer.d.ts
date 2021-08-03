@@ -1,4 +1,4 @@
-import { IEntityStateManager } from './EntityStateManager';
+import { IEntityStateManager } from '@airport/ground-control';
 /**
  * Deserializer for query results coming back from the server
  */

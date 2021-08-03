@@ -1,6 +1,5 @@
 import { system } from '@airport/di';
-const airControl = system('airport')
-    .lib('air-control');
+const airControl = system('airport').lib('air-control');
 export const AIRPORT_DATABASE = airControl.token('IAirportDatabase');
 export const DATABASE_FACADE = airControl.token('IDatabaseFacade');
 export const LOOKUP = airControl.token('ILookup');

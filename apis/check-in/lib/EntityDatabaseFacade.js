@@ -1,17 +1,19 @@
-import { DATABASE_FACADE, EntityFind, EntityFindOne, EntitySearch, EntitySearchOne, } from '@airport/air-control';
-import { ENTITY_STATE_MANAGER } from '@airport/pressurization';
+import { DATABASE_FACADE, EntityFind, EntityFindOne, } from '@airport/air-control';
 import { DI } from '@airport/di';
 /**
  * Created by Papa on 12/11/2016.
  */
 export class EntityDatabaseFacade {
+    // search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
+    // searchOne: IEntitySearchOne<Entity, EntitySelect>;
     constructor(dbEntity, Q) {
         this.dbEntity = dbEntity;
         this.Q = Q;
         this.find = new EntityFind(this.dbEntity);
         this.findOne = new EntityFindOne(this.dbEntity);
-        this.search = new EntitySearch(this.dbEntity);
-        this.searchOne = new EntitySearchOne(this.dbEntity);
+        // this.search = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
+        //   this.dbEntity);
+        // this.searchOne = new EntitySearchOne(this.dbEntity);
     }
     get from() {
         return this.Q[this.dbEntity.name];
@@ -53,7 +55,7 @@ export class EntityDatabaseFacade {
     }
     async save(entity, ctx) {
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.save(entity, this.dbEntity, ctx);
+            return await databaseFacade.save(entity, ctx);
         });
     }
     async withDbEntity(ctx, callback) {
@@ -73,32 +75,6 @@ export class EntityDatabaseFacade {
         finally {
             ctx.dbEntity = previousEntity;
         }
-    }
-    identifyObjects(entity, ctx, operationUniqueIdSeq) {
-        const entityStateManager = DI.db()
-            .getSync(ENTITY_STATE_MANAGER);
-        if (!operationUniqueIdSeq) {
-            operationUniqueIdSeq = entityStateManager.getOperationUniqueIdSeq();
-        }
-        const operationUniqueId = entityStateManager.getOperationUniqueId(entity);
-        if (operationUniqueId) {
-            return;
-        }
-        entityStateManager.uniquelyIdentify(entity, operationUniqueIdSeq);
-        Object.keys(entity)
-            .forEach(propertyKey => {
-            const property = entity[propertyKey];
-            if (property instanceof Array) {
-                for (const propertyValue of property) {
-                    if (propertyValue instanceof Object) {
-                        this.identifyObjects(propertyValue, ctx, operationUniqueIdSeq);
-                    }
-                }
-            }
-            else if (property instanceof Object) {
-                this.identifyObjects(property, ctx, operationUniqueIdSeq);
-            }
-        });
     }
 }
 //# sourceMappingURL=EntityDatabaseFacade.js.map

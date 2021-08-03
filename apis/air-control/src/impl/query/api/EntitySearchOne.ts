@@ -43,12 +43,14 @@ export class EntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 		return from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
 	}
 
-	searchOne(
+	// TODO: return Observable from deep within the framework
+	// and detect changes to the underlying data
+	async searchOne(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
 		context?: IContext
 	): Promise<Entity> {
-		return this.entityLookup(rawEntityQuery, queryResultType,
+		return await this.entityLookup(rawEntityQuery, queryResultType,
 			true, true, this.ensureContext(context) as IEntityContext);
 	}
 

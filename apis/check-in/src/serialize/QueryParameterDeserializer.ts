@@ -1,4 +1,4 @@
-import { IEntityStateManager } from "@airport/pressurization";
+import { IEntityStateManager } from "@airport/ground-control";
 import { IClientQuery } from "../clientQuery/ClientQuery";
 
 export interface IQueryParameterDeserializer {

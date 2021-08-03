@@ -1,5 +1,4 @@
-import { IDatabaseFacade, IDuo, IEntityCascadeGraph, IEntityContext, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySearch, IEntitySearchOne, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-control';
-import { IOperationUniqueIdSequence } from '@airport/pressurization';
+import { IDatabaseFacade, IDuo, IEntityCascadeGraph, IEntityContext, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-control';
 import { DbEntity, ISaveResult } from '@airport/ground-control';
 /**
  * Created by Papa on 12/11/2016.
@@ -10,8 +9,6 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     duo: IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>;
     find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
     findOne: IEntityFindOne<Entity, EntitySelect>;
-    search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
-    searchOne: IEntitySearchOne<Entity, EntitySelect>;
     constructor(dbEntity: DbEntity, Q: QSchema);
     get from(): IQ;
     insertColumnValues<IQE extends IQEntity<Entity>>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
@@ -39,6 +36,5 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     protected withDbEntity<R>(ctx: IEntityContext, callback: {
         (databaseFacade: IDatabaseFacade, ctx: IEntityContext): Promise<R>;
     }): Promise<R>;
-    protected identifyObjects<T>(entity: T, ctx: IEntityContext, operationUniqueIdSeq?: IOperationUniqueIdSequence): void;
 }
 //# sourceMappingURL=EntityDatabaseFacade.d.ts.map

@@ -1,12 +1,15 @@
+import { DI } from '@airport/di'
 import {
 	DbEntity,
+	DB_UPDATE_CACHE_MANAGER,
+	ENTITY_STATE_MANAGER,
 	QueryResultType
-}                                from '@airport/ground-control'
-import {IEntityContext}          from '../../../lingo/core/EntityContext'
-import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
-import {IEntityLookup}           from '../../../lingo/query/api/EntityLookup'
-import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
-import {LookupProxy}             from './Lookup'
+} from '@airport/ground-control'
+import { IEntityContext } from '../../../lingo/core/EntityContext'
+import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity'
+import { IEntityLookup } from '../../../lingo/query/api/EntityLookup'
+import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
+import { LookupProxy } from './Lookup'
 
 export interface IEntityLookupInternal<Child, MappedChild,
 	IESP extends IEntitySelectProperties>
@@ -42,11 +45,11 @@ export abstract class EntityLookup<Child, MappedChild,
 	extends LookupProxy
 	implements IEntityLookupInternal<Child, MappedChild, IESP> {
 
-	static mapResults     = false
+	static mapResults = false
 
 	constructor(
 		protected dbEntity: DbEntity,
-		protected mapResults     = EntityLookup.mapResults
+		protected mapResults = EntityLookup.mapResults
 	) {
 		super()
 	}
@@ -76,7 +79,7 @@ export abstract class EntityLookup<Child, MappedChild,
 			this.dbEntity, this.mapResults)
 	}
 
-	entityLookup(
+	async entityLookup(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
 		search: boolean,
@@ -86,12 +89,15 @@ export abstract class EntityLookup<Child, MappedChild,
 		context.dbEntity = this.dbEntity
 		const result = this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)
-			DB_UPDATE_CACHE_MANAGER
-		if(search) {
-
+		const [dbUpdateCacheManager, entityStateManager] =
+			await DI.db().get(DB_UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER)
+		if (search) {
+			throw new Error(`Search operations are not yet supported`);
 		} else {
-
+			dbUpdateCacheManager.saveOriginalValues(
+				result, context.dbEntity, entityStateManager)
 		}
+		return result
 	}
 
 }

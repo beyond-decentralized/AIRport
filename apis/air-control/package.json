@@ -2,7 +2,6 @@
   "dependencies": {
     "@airport/di": "0.0.1",
     "@airport/ground-control": "0.0.1",
-    "@airport/pressurization": "0.0.1",
     "rxjs": "^7.1.0"
   },
   "main": "lib/index.js",

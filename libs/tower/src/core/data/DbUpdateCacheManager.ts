@@ -1,40 +1,14 @@
 import { DI } from "@airport/di"
 import {
     DbEntity,
+    DB_UPDATE_CACHE_MANAGER,
     EntityRelationType,
+    EntityState,
+    IDbUpdateCacheManager,
+    IEntityStateManager,
     ISaveResult,
     SQLDataType
 } from "@airport/ground-control"
-import {
-    EntityState,
-    IEntityStateManager
-} from "@airport/pressurization"
-import { DB_UPDATE_CACHE_MANAGER } from "../../tokens"
-
-export interface IDbUpdateCacheManager {
-
-    saveOriginalValues<E, T = E | E[]>(
-        entity: T,
-        dbEntity: DbEntity,
-        entityStateManager: IEntityStateManager,
-    ): any
-
-    setOperationState<E, T = E | E[]>(
-        entityCopy: T,
-        dbEntity: DbEntity,
-        entityStateManager: IEntityStateManager,
-        processedEntities: Set<any>
-    ): void
-
-    afterSaveModifications<E, T = E | E[]>(
-        entity: T,
-        dbEntity: DbEntity,
-        saveResult: ISaveResult,
-        entityStateManager: IEntityStateManager,
-        processedEntities: Set<any>
-    ): void
-
-}
 
 export class DbUpdateCacheManager
     implements IDbUpdateCacheManager {

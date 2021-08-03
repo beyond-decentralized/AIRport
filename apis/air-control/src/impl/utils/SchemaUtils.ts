@@ -6,13 +6,11 @@ import {
 	DbProperty,
 	DbRelation,
 	EntityRelationType,
+	ENTITY_STATE_MANAGER,
 	repositoryEntity,
 	SchemaIndex,
 	TableIndex
 }                           from '@airport/ground-control'
-import {
-	ENTITY_STATE_MANAGER
-} from '@airport/pressurization'
 import {
 	IAirportDatabase,
 	QSchemaInternal

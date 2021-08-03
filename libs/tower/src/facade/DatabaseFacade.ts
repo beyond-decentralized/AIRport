@@ -23,19 +23,17 @@ import {
 	IContext
 } from '@airport/di'
 import {
-	DbEntity,
+	DB_UPDATE_CACHE_MANAGER,
+	ENTITY_STATE_MANAGER,
 	ISaveResult,
 	PortableQuery,
 	TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
 import {
-	ENTITY_STATE_MANAGER
-} from '@airport/pressurization'
-import {
 	DistributionStrategy,
 	PlatformType
 } from '@airport/terminal-map'
-import { DB_UPDATE_CACHE_MANAGER, ENTITY_COPIER } from '../tokens'
+import { ENTITY_COPIER } from '../tokens'
 
 /**
  * Created by Papa on 5/23/2016.
@@ -164,7 +162,6 @@ export class DatabaseFacade
 
 	async save<E>(
 		entity: E,
-		dbEntity: DbEntity,
 		context: IEntityContext,
 	): Promise<ISaveResult> {
 		if (!entity) {
@@ -175,6 +172,7 @@ export class DatabaseFacade
 			= await container(this).get(DB_UPDATE_CACHE_MANAGER, ENTITY_COPIER,
 				ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR)
 
+		const dbEntity = context.dbEntity;
 		const entityCopy = entityCopier
 			.copyEntityForProcessing(entity, dbEntity, entityStateManager)
 		dbUpdateCacheManager.setOperationState(

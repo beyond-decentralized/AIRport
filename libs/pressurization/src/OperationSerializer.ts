@@ -2,7 +2,7 @@ import { DI } from '@airport/di'
 import {
 	EntityState,
 	IEntityStateManager
-} from './EntityStateManager'
+} from '@airport/ground-control'
 import { OPERATION_SERIALIZER } from './tokens'
 
 /**

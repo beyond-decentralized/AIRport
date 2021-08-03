@@ -1,6 +1,5 @@
 import { DI } from '@airport/di';
-import { CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/ground-control';
-import { ENTITY_STATE_MANAGER } from '@airport/pressurization';
+import { CRUDOperation, EntityRelationType, ENTITY_STATE_MANAGER, repositoryEntity } from '@airport/ground-control';
 import { convertToY, isY } from '../../lingo/query/facade/Query';
 import { SCHEMA_UTILS } from '../../tokens';
 import { valuesEqual } from '../Utils';

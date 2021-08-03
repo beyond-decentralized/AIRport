@@ -13,8 +13,7 @@ import { IQMetadataUtils } from './lingo/utils/QMetadataUtils'
 import { IQueryUtils } from './lingo/utils/QueryUtils'
 import { ISchemaUtils } from './lingo/utils/SchemaUtils'
 
-const airControl = system('airport')
-	.lib('air-control')
+const airControl = system('airport').lib('air-control')
 
 export const AIRPORT_DATABASE = airControl.token<IAirportDatabase>('IAirportDatabase')
 export const DATABASE_FACADE = airControl.token<IDatabaseFacade>('IDatabaseFacade')

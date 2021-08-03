@@ -1,7 +1,11 @@
 import { DI } from '@airport/di'
-import { DbEntity } from '@airport/ground-control';
-import { ENTITY_STATE_MANAGER } from './tokens'
-
+import {
+	DbEntity,
+	EntityState,
+	ENTITY_STATE_MANAGER,
+	IEntityStateAsFlags,
+	IEntityStateManager
+} from '@airport/ground-control';
 
 export interface EntityWithState {
 	__state__: EntityState;

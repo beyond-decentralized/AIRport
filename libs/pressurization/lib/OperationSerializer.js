@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { EntityState } from './EntityStateManager';
+import { EntityState } from '@airport/ground-control';
 import { OPERATION_SERIALIZER } from './tokens';
 export class OperationSerializer {
     serialize(entity, entityStateManager) {

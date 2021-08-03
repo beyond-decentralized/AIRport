@@ -57,9 +57,9 @@ export class EntityDatabaseFacade<Entity,
 
   findOne: IEntityFindOne<Entity, EntitySelect>;
 
-  search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
+  // search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
 
-  searchOne: IEntitySearchOne<Entity, EntitySelect>;
+  // searchOne: IEntitySearchOne<Entity, EntitySelect>;
 
   constructor(
     public dbEntity: DbEntity,
@@ -69,9 +69,9 @@ export class EntityDatabaseFacade<Entity,
       this.dbEntity);
     this.findOne = new EntityFindOne<Entity, EntitySelect>(
       this.dbEntity);
-    this.search = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
-      this.dbEntity);
-    this.searchOne = new EntitySearchOne(this.dbEntity);
+    // this.search = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
+    //   this.dbEntity);
+    // this.searchOne = new EntitySearchOne(this.dbEntity);
   }
 
   get from(): IQ {
@@ -184,7 +184,7 @@ export class EntityDatabaseFacade<Entity,
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
-      return await databaseFacade.save(entity, this.dbEntity, ctx);
+      return await databaseFacade.save(entity, ctx);
     });
   }
 

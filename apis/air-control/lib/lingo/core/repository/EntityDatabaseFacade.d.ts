@@ -1,8 +1,6 @@
 import { DbEntity, ISaveResult } from '@airport/ground-control';
 import { IEntityFind } from '../../query/api/EntityFind';
 import { IEntityFindOne } from '../../query/api/EntityFindOne';
-import { IEntitySearch } from '../../query/api/EntitySearch';
-import { IEntitySearchOne } from '../../query/api/EntitySearchOne';
 import { IDuo } from '../../query/Duo';
 import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
@@ -27,11 +25,9 @@ export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySele
     /**
      * The Observable based API for all Entity 'searchOne' (searchOne many) queries.
      */
-    search: IEntitySearch<IEntity, Array<IEntity> | MappedEntityArray<IEntity>, EntitySelect>;
     /**
      * The Observable based API for all Entity 'searchOne' queries.
      */
-    searchOne: IEntitySearchOne<IEntity, EntitySelect>;
     /**
      * Creates a new instance of the Query Entity for this entity type.
      */
