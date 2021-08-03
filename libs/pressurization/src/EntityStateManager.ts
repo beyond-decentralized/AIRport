@@ -2,119 +2,12 @@ import { DI } from '@airport/di'
 import { DbEntity } from '@airport/ground-control';
 import { ENTITY_STATE_MANAGER } from './tokens'
 
-export type OperationUniqueId = number
-
-export enum EntityState {
-	CREATE = 1,
-	DELETE = 2,
-	PARENT_ID = 3,
-	RESULT = 4,
-	RESULT_DATE = 5,
-	RESULT_JSON = 6,
-	RESULT_JSON_ARRAY = 7,
-	STUB = 8,
-	UPDATE = 9
-}
 
 export interface EntityWithState {
 	__state__: EntityState;
 }
 
-export interface IOperationUniqueIdSequence {
-	sequence: OperationUniqueId
-}
 
-export interface IEntityStateAsFlags {
-	isCreate: boolean
-	isDelete: boolean
-	isParentId: boolean
-	isResult: boolean
-	isResultDate: boolean
-	isResultJson: boolean
-	isStub: boolean
-	isUpdate: boolean
-}
-
-export interface IDbEntity {
-	name: string
-}
-
-export interface IEntityStateManager {
-
-	isStub<T>(
-		entity: T
-	): boolean
-
-	isParentId<T>(
-		entity: T
-	): boolean
-
-	getOperationUniqueIdSeq(): IOperationUniqueIdSequence
-
-	uniquelyIdentify<T>(
-		entity: T,
-		operationUniqueIdSeq: IOperationUniqueIdSequence
-	): void
-
-	getOperationUniqueId<T>(
-		entity: T,
-		throwIfNotFound?: boolean,
-		dbEntity?: DbEntity
-	): number
-
-	markAsStub<T>(
-		entity: T
-	): void
-
-	markForDeletion<T>(
-		entity: T
-	): void
-
-	markToCreate<T>(
-		entity: T
-	): void
-
-	markToUpdate<T>(
-		entity: T
-	): void
-
-	getEntityState<T>(
-		entity: T
-	): EntityState
-
-	copyEntityState<T>(
-		fromEntity: T,
-		toEntity: T
-	): void
-
-	getUniqueIdFieldName(): string
-
-	getStateFieldName(): string
-
-	getEntityStateTypeAsFlags<T>(
-		entity: T,
-		dbEntity: IDbEntity
-	): IEntityStateAsFlags
-
-	getOriginalValues<T>(
-		entity: T
-	): any
-
-	setOriginalValues<T>(
-		originalValues: any,
-		entity: T
-	): void
-
-	setIsDeleted<T>(
-		isDeleted: boolean,
-		entity: T
-	): void
-
-	isDeleted<T>(
-		entity: T
-	): boolean
-
-}
 
 export function markAsStub<T>(
 	entity: T
@@ -155,7 +48,7 @@ export function copyEntityState<T>(
 
 export function getEntityStateTypeAsFlags<T>(
 	entity: T,
-	dbEntity: IDbEntity
+	dbEntity: DbEntity
 ) {
 	DI.db().getSync(ENTITY_STATE_MANAGER).getEntityStateTypeAsFlags(entity, dbEntity);
 }
@@ -168,7 +61,7 @@ export function isStub<T>(
 
 export function isParentId<T>(
 	entity: T,
-	dbEntity: IDbEntity
+	dbEntity: DbEntity
 ) {
 	DI.db().getSync(ENTITY_STATE_MANAGER).isParentId(entity);
 }
@@ -190,20 +83,6 @@ export class EntityStateManager
 		entity: T
 	): boolean {
 		return this.getEntityState(entity) === EntityState.PARENT_ID
-	}
-
-	getOperationUniqueIdSeq(): IOperationUniqueIdSequence {
-		return {
-			sequence: 1
-		}
-	}
-
-	uniquelyIdentify<T>(
-		entity: T,
-		operationUniqueIdSeq: IOperationUniqueIdSequence
-	): void {
-		// TODO: wire in in the client to mark all sent objects (used for de-duplication on server side).
-		entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD] = operationUniqueIdSeq.sequence++
 	}
 
 	getOperationUniqueId<T>(
@@ -289,7 +168,7 @@ export class EntityStateManager
 
 	getEntityStateTypeAsFlags<T>(
 		entity: T,
-		dbEntity: IDbEntity
+		dbEntity: DbEntity
 	): IEntityStateAsFlags {
 		let isCreate, isDelete, isParentId, isResult, isResultDate, isResultJson, isStub, isUpdate
 		const entityState = this.getEntityState(entity)

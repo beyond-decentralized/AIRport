@@ -14,8 +14,8 @@ import { DB_UPDATE_CACHE_MANAGER } from "../../tokens"
 export interface IDbUpdateCacheManager {
 
     saveOriginalValues<E, T = E | E[]>(
-        dbEntity: DbEntity,
         entity: T,
+        dbEntity: DbEntity,
         entityStateManager: IEntityStateManager,
     ): any
 
@@ -40,42 +40,26 @@ export class DbUpdateCacheManager
     implements IDbUpdateCacheManager {
 
     saveOriginalValues<E, T = E | E[]>(
-        dbEntity: DbEntity,
         entity: T,
-        entityStateManager: IEntityStateManager,
+        dbEntity: DbEntity,
+        entityStateManager: IEntityStateManager
     ): any {
         if (entity instanceof Array) {
             for (let i = 0; i < entity.length; i++) {
                 this.saveOriginalValues(
-                    dbEntity, entity[i], entityStateManager)
+                    entity[i], dbEntity, entityStateManager)
             }
         } else {
-            const entityState = entity[entityStateManager.getStateFieldName()]
-            switch (entityState) {
-                case EntityState.RESULT_DATE:
-                case EntityState.RESULT_JSON:
-                case EntityState.RESULT_JSON_ARRAY:
-                    return serializedEntity
-                case EntityState.STUB:
-                    break;
-                case EntityState.RESULT:
-                    const originalValuesObject: any = {}
-                    entityStateManager.setOriginalValues(
-                        originalValuesObject, entity);
-                    for (const propertyName in entity) {
-                        const serializedProperty = serializedEntity[propertyName]
-                        if (!(serializedProperty instanceof Object)) {
-                            originalValuesObject[propertyName] = serializedProperty
-                        } else {
-                            const property = entity[propertyName]
-                            const originalValue = this.saveOriginalValues(
-                                serializedProperty, property, entityStateManager)
-                            if (originalValue) {
-                                originalValuesObject[propertyName] = originalValue
-                            }
-                        }
-                    }
-                    break;
+            const originalValuesObject: any = {}
+            entityStateManager.setOriginalValues(originalValuesObject, entity);
+            for (let dbProperty of dbEntity.properties) {
+                const property = entity[dbProperty.name]
+                if (dbProperty.relation && dbProperty.relation.length) {
+                    this.saveOriginalValues(property, dbProperty.relation[0].relationEntity,
+                        entityStateManager)
+                } else {
+                    originalValuesObject[dbProperty.name] = entity[dbProperty.name]
+                }
             }
         }
     }
@@ -117,13 +101,15 @@ export class DbUpdateCacheManager
                     if (entityState) {
                         continue
                     }
-                    const originalValue = originalValuesObject[dbProperty.name]
+                    let originalValue = originalValuesObject[dbProperty.name]
                     let propertyValue
                     switch (dbProperty.propertyColumns[0].column.type) {
                         case SQLDataType.DATE:
-                            propertyValue = (property as Date).toISOString()
+                            originalValue = (originalValue as Date).getTime()
+                            propertyValue = (property as Date).getTime()
                             break;
                         case SQLDataType.JSON:
+                            originalValue = JSON.stringify(originalValue)
                             propertyValue = JSON.stringify(property)
                             break;
                         default:
@@ -183,17 +169,7 @@ export class DbUpdateCacheManager
                     this.updateOriginalValuesAfterSave(
                         property, dbProperty.relation[0].relationEntity, saveResult, entityStateManager)
                 } else {
-                    switch (dbProperty.propertyColumns[0].column.type) {
-                        case SQLDataType.DATE:
-                            originalValue[dbProperty.name] = (property as Date).toISOString()
-                            break;
-                        case SQLDataType.JSON:
-                            originalValue[dbProperty.name] = JSON.stringify(property)
-                            break;
-                        default:
-                            originalValue[dbProperty.name] = property
-                            break;
-                    }
+                    originalValue[dbProperty.name] = property
                 }
             }
             entityStateManager.setOriginalValues(originalValue, entity);

@@ -84,8 +84,14 @@ export abstract class EntityLookup<Child, MappedChild,
 		context: IEntityContext
 	): Promise<any> {
 		context.dbEntity = this.dbEntity
-		return this.lookup(rawEntityQuery, queryResultType,
+		const result = this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)
+			DB_UPDATE_CACHE_MANAGER
+		if(search) {
+
+		} else {
+
+		}
 	}
 
 }

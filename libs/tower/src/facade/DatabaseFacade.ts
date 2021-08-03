@@ -24,16 +24,12 @@ import {
 } from '@airport/di'
 import {
 	DbEntity,
-	EntityRelationType,
 	ISaveResult,
 	PortableQuery,
-	SQLDataType,
 	TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
 import {
-	EntityState,
-	ENTITY_STATE_MANAGER,
-	IEntityStateManager
+	ENTITY_STATE_MANAGER
 } from '@airport/pressurization'
 import {
 	DistributionStrategy,

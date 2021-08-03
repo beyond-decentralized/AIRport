@@ -20,17 +20,12 @@ import {
   IEntityUpdateProperties,
   IQEntity,
   MappedEntityArray,
-  OperationName,
   QSchema,
   RawDelete,
   RawInsertColumnValues,
   RawInsertValues,
   RawUpdate,
 } from '@airport/air-control';
-import {
-  ENTITY_STATE_MANAGER,
-  IOperationUniqueIdSequence
-} from '@airport/pressurization';
 import { DI } from '@airport/di';
 import {
   DbEntity,
@@ -218,39 +213,6 @@ export class EntityDatabaseFacade<Entity,
     } finally {
       ctx.dbEntity = previousEntity;
     }
-  }
-
-  protected identifyObjects<T>(
-    entity: T,
-    ctx: IEntityContext,
-    operationUniqueIdSeq?: IOperationUniqueIdSequence,
-  ): void {
-    const entityStateManager = DI.db()
-      .getSync(ENTITY_STATE_MANAGER);
-
-    if (!operationUniqueIdSeq) {
-      operationUniqueIdSeq = entityStateManager.getOperationUniqueIdSeq();
-    }
-    const operationUniqueId = entityStateManager.getOperationUniqueId(entity);
-    if (operationUniqueId) {
-      return;
-    }
-
-    entityStateManager.uniquelyIdentify(entity, operationUniqueIdSeq);
-
-    Object.keys(entity)
-      .forEach(propertyKey => {
-        const property = entity[propertyKey];
-        if (property instanceof Array) {
-          for (const propertyValue of property) {
-            if (propertyValue instanceof Object) {
-              this.identifyObjects(propertyValue, ctx, operationUniqueIdSeq);
-            }
-          }
-        } else if (property instanceof Object) {
-          this.identifyObjects(property, ctx, operationUniqueIdSeq);
-        }
-      });
   }
 
 }
