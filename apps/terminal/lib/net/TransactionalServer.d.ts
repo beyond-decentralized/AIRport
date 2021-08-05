@@ -1,5 +1,5 @@
 import { IContext } from '@airport/di';
-import { PortableQuery } from '@airport/ground-control';
+import { ISaveResult, PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { DistributionStrategy, ICredentials, PlatformType } from '@airport/terminal-map';
 import { ITransactionalServer } from '@airport/tower';
@@ -40,7 +40,7 @@ export declare class TransactionalServer implements ITransactionalServer {
     findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Promise<Observable<EntityArray>>;
     searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Promise<Observable<E>>;
-    save<E>(entity: E, credentials: ICredentials, context: IOperationContext<any, any>): Promise<number>;
+    save<E>(entity: E, credentials: ICredentials, context: IOperationContext<any, any>): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>): Promise<number[] | string[] | number[][] | string[][]>;
     updateValues(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>): Promise<number>;

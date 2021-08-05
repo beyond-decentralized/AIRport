@@ -4,7 +4,6 @@ import { QDateField, QDateFunction } from './DateField';
 import { QNumberField, QNumberFunction } from './NumberField';
 import { QOperableField } from './OperableField';
 import { QStringField, QStringFunction } from './StringField';
-import { QUntypedField, QUntypedFunction } from './UntypedField';
 import { bool, date, num, str } from './WrapperFunctions';
 function getSqlFunctionCall(sqlFunction, parameters) {
     if (parameters) {
@@ -127,10 +126,10 @@ export function coalesce(...values) {
     }
     let dataType;
     const firstValue = values[0];
-    if (firstValue instanceof QUntypedField) {
-        dataType = SQLDataType.ANY;
-    }
-    else if (firstValue instanceof QBooleanField || typeof firstValue === 'boolean') {
+    // if (firstValue instanceof QUntypedField) {
+    // 	dataType = SQLDataType.ANY
+    // } else 
+    if (firstValue instanceof QBooleanField || typeof firstValue === 'boolean') {
         dataType = SQLDataType.BOOLEAN;
     }
     else if (firstValue instanceof QDateField || firstValue instanceof Date) {
@@ -143,7 +142,8 @@ export function coalesce(...values) {
         dataType = SQLDataType.STRING;
     }
     else {
-        dataType = SQLDataType.ANY;
+        throw new Error(`Unexpected Field Type: ${firstValue.constructor.name}`);
+        // dataType = SQLDataType.ANY
     }
     const otherValues = values.slice(1, values.length);
     if (firstValue instanceof QOperableField) {
@@ -151,9 +151,9 @@ export function coalesce(...values) {
     }
     else {
         switch (dataType) {
-            case SQLDataType.ANY:
-                return new QUntypedFunction(firstValue)
-                    .applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues));
+            // case SQLDataType.ANY:
+            // 	return new QUntypedFunction(<any>firstValue)
+            // 		.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues))
             case SQLDataType.BOOLEAN:
                 return new QBooleanFunction(firstValue)
                     .applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, otherValues));

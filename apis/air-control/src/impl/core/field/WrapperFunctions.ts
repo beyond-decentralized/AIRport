@@ -86,12 +86,12 @@ export function getPrimitiveValue(
 	datesToNumbers: boolean = true
 ): any {
 	switch (dbColumn.type) {
-		case SQLDataType.ANY: {
-			assertDataType([
-				'boolean', 'number', 'object', 'string'
-			], dbColumn, rowIndex, value)
-			break
-		}
+		// case SQLDataType.ANY: {
+		// 	assertDataType([
+		// 		'boolean', 'number', 'object', 'string'
+		// 	], dbColumn, rowIndex, value)
+		// 	break
+		// }
 		case SQLDataType.BOOLEAN: {
 			assertDataType([
 				'boolean'
@@ -104,12 +104,12 @@ export function getPrimitiveValue(
 			], dbColumn, rowIndex, value)
 			break
 		}
-		case SQLDataType.JSON: {
-			assertDataType([
-				'object'
-			], dbColumn, rowIndex, value)
-			break
-		}
+		// case SQLDataType.JSON: {
+		// 	assertDataType([
+		// 		'object'
+		// 	], dbColumn, rowIndex, value)
+		// 	break
+		// }
 		case SQLDataType.NUMBER: {
 			assertDataType([
 				'number'
@@ -142,10 +142,10 @@ export function getPrimitiveValue(
 				}
 				return datesToNumbers ? value.getTime() : value
 			} else {
-				if (dbColumn.type !== SQLDataType.JSON) {
+				// if (dbColumn.type !== SQLDataType.JSON) {
 					throw new Error(`Unexpected Json object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`)
-				}
-				return JSON.stringify(value)
+				// }
+				// return JSON.stringify(value)
 			}
 		}
 		case 'undefined':

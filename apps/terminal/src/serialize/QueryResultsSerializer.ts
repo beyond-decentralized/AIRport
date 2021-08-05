@@ -92,19 +92,19 @@ export class QueryResultsSerializer
 				}
 			} else {
 				switch (dbProperty.propertyColumns[0].column.type) {
-					case SQLDataType.JSON:
-						if (property instanceof Array) {
-							propertyCopy = {
-								value: property
-							}
-							propertyCopy[entityStateManager.getStateFieldName()]
-								= EntityState.RESULT_JSON_ARRAY
-						} else {
-							propertyCopy = property
-							propertyCopy[entityStateManager.getStateFieldName()]
-								= EntityState.RESULT_JSON
-						}
-						break;
+					// case SQLDataType.JSON:
+					// 	if (property instanceof Array) {
+					// 		propertyCopy = {
+					// 			value: property
+					// 		}
+					// 		propertyCopy[entityStateManager.getStateFieldName()]
+					// 			= EntityState.RESULT_JSON_ARRAY
+					// 	} else {
+					// 		propertyCopy = property
+					// 		propertyCopy[entityStateManager.getStateFieldName()]
+					// 			= EntityState.RESULT_JSON
+					// 	}
+					// 	break;
 					case SQLDataType.DATE:
 						propertyCopy = {
 							value: property.toISOString()
@@ -112,12 +112,14 @@ export class QueryResultsSerializer
 						propertyCopy[entityStateManager.getStateFieldName()]
 							= EntityState.RESULT_DATE
 						break;
-					case SQLDataType.ANY:
+					// case SQLDataType.ANY:
 					case SQLDataType.BOOLEAN:
 					case SQLDataType.NUMBER:
 					case SQLDataType.STRING:
 						propertyCopy = property
 						break;
+					default:
+						throw new Error(`Unsupported data type for property ${dbEntity.schemaVersion.schema.name}.${dbEntity.name}.${dbProperty.name}`)
 				}
 			}
 			entityCopy[dbProperty.name] = propertyCopy

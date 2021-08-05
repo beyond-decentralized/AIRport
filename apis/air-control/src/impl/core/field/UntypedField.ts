@@ -68,7 +68,9 @@ export class QUntypedFunction
 		public value: number | string | RawFieldQuery<any>,
 		private isQueryParameter: boolean = false
 	) {
-		super(<any>{type: SQLDataType.ANY}, null, null, JSONClauseObjectType.FIELD_FUNCTION)
+		// super(<any>{type: SQLDataType.ANY}, null, null, JSONClauseObjectType.FIELD_FUNCTION)
+		super(<any>{type: null}, null, null, JSONClauseObjectType.FIELD_FUNCTION)
+		throw new Error(`Untyped data type is not supported`)
 	}
 
 	getInstance(): QUntypedFunction {

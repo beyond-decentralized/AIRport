@@ -4,13 +4,13 @@ import {
 	EntityRelationType,
 	repositoryEntity,
 	SQLDataType
-}                       from '@airport/ground-control'
-import {SIndexedEntity} from './SEntity'
+} from '@airport/ground-control'
+import { SIndexedEntity } from './SEntity'
 import {
 	SColumn,
 	SRelation
-}                       from './SProperty'
-import {SIndexedSchema} from './SSchema'
+} from './SProperty'
+import { SIndexedSchema } from './SSchema'
 
 export class SchemaRelationResolver {
 
@@ -45,7 +45,7 @@ export class SchemaRelationResolver {
 		indexedSchema: SIndexedSchema,
 		indexedEntity: SIndexedEntity,
 	): void {
-		const anEntity              = indexedEntity.entity
+		const anEntity = indexedEntity.entity
 		const relationEntityNameSet = {}
 		for (const aProperty of anEntity.properties) {
 			const aRelation = aProperty.relation
@@ -65,7 +65,7 @@ export class SchemaRelationResolver {
 				relationIndexedEntity = indexedSchema.schema
 					.referencedSchemas[aRelation.referencedSchemaIndex].dbSchema.currentVersion
 					.entityMapByName[aRelation.entityName]
-				relationEntityName    = relationIndexedEntity.name
+				relationEntityName = relationIndexedEntity.name
 				relationEntityIsLocal = relationIndexedEntity.isLocal
 			} else {
 				relationIndexedEntity =
@@ -94,8 +94,8 @@ export class SchemaRelationResolver {
 				relatedManyToOnes = this.getEntityRelationsOfType(
 					relationIndexedEntity, EntityRelationType.MANY_TO_ONE, anEntity.name)
 
-				const relationEntity  = relationIndexedEntity.entity
-				relationEntityName    = relationEntity.name
+				const relationEntity = relationIndexedEntity.entity
+				relationEntityName = relationEntity.name
 				relationEntityIsLocal = relationEntity.isLocal
 			}
 
@@ -103,13 +103,13 @@ export class SchemaRelationResolver {
 
 			switch (aRelation.relationType) {
 				case EntityRelationType.ONE_TO_MANY:
-/*					if (aRelation.oneToMany && aRelation.oneToMany.cascade
-						&& anEntity.isLocal && !relationEntityIsLocal) {
-						throw new Error(
-							`@OneToMany Relation '${anEntity.name}.${aProperty.name}' is on a Local entity and is cascading 
-						into a repository entity '${aRelation.entityName}'.
-						Cascading from Local entities to Repository entities is not currently supported.`)
-					}*/
+					/*					if (aRelation.oneToMany && aRelation.oneToMany.cascade
+											&& anEntity.isLocal && !relationEntityIsLocal) {
+											throw new Error(
+												`@OneToMany Relation '${anEntity.name}.${aProperty.name}' is on a Local entity and is cascading 
+											into a repository entity '${aRelation.entityName}'.
+											Cascading from Local entities to Repository entities is not currently supported.`)
+										}*/
 					if (crossSchema && !aRelation.sRelationColumns.length) {
 						throw new Error(
 							`@OneToMany Relation '${anEntity.name}.${aProperty.name}' is a cross-schema @OneToMany association.
@@ -216,7 +216,7 @@ export class SchemaRelationResolver {
 		if (ownColumn.tempColumnTypeLinks) {
 			relatedColumns = ownColumn.tempColumnTypeLinks
 			if (relatedColumn.tempColumnTypeLinks) {
-				relatedColumns                = relatedColumns.concat(relatedColumn.tempColumnTypeLinks)
+				relatedColumns = relatedColumns.concat(relatedColumn.tempColumnTypeLinks)
 				ownColumn.tempColumnTypeLinks = relatedColumns
 			} else {
 				relatedColumns.push(relatedColumn)
@@ -227,8 +227,8 @@ export class SchemaRelationResolver {
 			relatedColumns.push(ownColumn)
 			ownColumn.tempColumnTypeLinks = relatedColumns
 		} else {
-			relatedColumns                    = [ownColumn, relatedColumn]
-			ownColumn.tempColumnTypeLinks     = relatedColumns
+			relatedColumns = [ownColumn, relatedColumn]
+			ownColumn.tempColumnTypeLinks = relatedColumns
 			relatedColumn.tempColumnTypeLinks = relatedColumns
 		}
 	}
@@ -266,14 +266,14 @@ export class SchemaRelationResolver {
 		sqlDataType: SQLDataType
 	): 'any' | 'boolean' | 'Date' | 'number' | 'string' | 'Json' {
 		switch (sqlDataType) {
-			case SQLDataType.ANY:
-				return 'any'
+			// case SQLDataType.ANY:
+			// 	return 'any'
 			case SQLDataType.BOOLEAN:
 				return 'boolean'
 			case SQLDataType.DATE:
 				return 'Date'
-			case SQLDataType.JSON:
-				return 'Json'
+			// case SQLDataType.JSON:
+			// 	return 'Json'
 			case SQLDataType.NUMBER:
 				return 'number'
 			case SQLDataType.STRING:

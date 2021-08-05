@@ -159,8 +159,8 @@ must always have a value for all entity operations.`)
 			return
 		}
 		switch (dbColumn.type) {
-			case SQLDataType.ANY:
-				break
+			// case SQLDataType.ANY:
+			// 	break
 			case SQLDataType.BOOLEAN:
 				if (typeof value !== 'boolean') {
 					this.throwUnexpectedProperty(dbProperty, dbColumn, value)
@@ -171,11 +171,11 @@ must always have a value for all entity operations.`)
 					this.throwUnexpectedProperty(dbProperty, dbColumn, value)
 				}
 				break
-			case SQLDataType.JSON:
-				if (typeof value !== 'object' || value instanceof Date) {
-					this.throwUnexpectedProperty(dbProperty, dbColumn, value)
-				}
-				break
+			// case SQLDataType.JSON:
+			// 	if (typeof value !== 'object' || value instanceof Date) {
+			// 		this.throwUnexpectedProperty(dbProperty, dbColumn, value)
+			// 	}
+			// 	break
 			case SQLDataType.NUMBER:
 				if (typeof value !== 'number') {
 					this.throwUnexpectedProperty(dbProperty, dbColumn, value)

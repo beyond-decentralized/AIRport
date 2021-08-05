@@ -15,6 +15,7 @@ import {
 	DbEntity,
 	DbProperty,
 	EntityRelationType,
+	EntityState,
 	InternalFragments,
 	JoinType,
 	JsonEntityQuery,
@@ -22,9 +23,6 @@ import {
 	JSONRelationType,
 	QueryResultType
 } from '@airport/ground-control'
-import {
-	EntityState
-} from '@airport/pressurization'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
 import { IEntityOrderByParser } from '../orderBy/AbstractEntityOrderByParser'
 import { EntityOrderByParser } from '../orderBy/EntityOrderByParser'

@@ -30,13 +30,17 @@ export class SqLiteQueryAdaptor {
                     return new Date(value);
                 }
                 break;
-            case SQLDataType.JSON:
-                if (value !== null) {
-                    return JSON.parse(value);
-                }
-                break;
+            // case SQLDataType.JSON:
+            // 	if (value !== null) {
+            // 		return JSON.parse(value);
+            // 	}
+            // 	break;
+            case SQLDataType.NUMBER:
+            case SQLDataType.STRING:
+                return value;
+            default:
+                throw new Error(`Unexpected data type for column ${columnName}`);
         }
-        return value;
     }
     getFunctionAdaptor() {
         return this.functionAdaptor;

@@ -15,14 +15,14 @@ export class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
         }
         const suffix = primaryKeySuffix;
         switch (jsonColumn.type) {
-            case SQLDataType.ANY:
-                return suffix;
+            // case SQLDataType.ANY:
+            // 	return suffix
             case SQLDataType.BOOLEAN:
                 return `INTEGER ${suffix}`;
             case SQLDataType.DATE:
                 return `REAL ${suffix}`;
-            case SQLDataType.JSON:
-                return `TEXT ${suffix}`;
+            // case SQLDataType.JSON:
+            // 	return `TEXT ${suffix}`
             case SQLDataType.NUMBER:
                 if (suffix) {
                     return `INTEGER ${suffix}`;
@@ -30,6 +30,8 @@ export class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
                 return 'REAL';
             case SQLDataType.STRING:
                 return `TEXT ${suffix}`;
+            default:
+                throw new Error(`Unexpected data type for column ${jsonSchema.name}.${jsonEntity.name}.${jsonColumn.name}`);
         }
     }
     getCreateTableSuffix(jsonSchema, jsonEntity) {

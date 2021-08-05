@@ -1,4 +1,4 @@
-import { JoinTreeNode, QBooleanField, QDateField, QNumberField, QStringField, QTree, QUntypedField, } from '@airport/air-control';
+import { JoinTreeNode, QBooleanField, QDateField, QNumberField, QStringField, QTree, } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { JoinType, JSONClauseObjectType, JSONRelationType, SortOrder, SQLDataType } from '@airport/ground-control';
 import { Q_VALIDATOR, SQL_QUERY_ADAPTOR, SUB_STATEMENT_SQL_GENERATOR } from '../tokens';
@@ -213,9 +213,10 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     case SQLDataType.STRING:
                         view[alias] = new QStringField(dbColumn, dbProperty, view);
                         break;
-                    case SQLDataType.ANY:
-                        view[alias] = new QUntypedField(dbColumn, dbProperty, view);
-                        break;
+                    // case SQLDataType.ANY:
+                    // 	view[alias] = new QUntypedField(dbColumn, dbProperty,
+                    // 		view as IQEntityInternal<any>)
+                    // 	break
                     default:
                         throw new Error(`Unknown SQLDataType: ${fieldJson.dt}.`);
                 }

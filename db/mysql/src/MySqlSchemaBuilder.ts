@@ -2,11 +2,11 @@ import {
 	AIRPORT_DATABASE,
 	IAirportDatabase,
 	QSchemaInternal
-}                         from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	ISequence,
 	SEQUENCE_DAO
-}                         from '@airport/airport-code'
+} from '@airport/airport-code'
 import {
 	container,
 	DI, IContext,
@@ -20,8 +20,8 @@ import {
 	JsonSchemaEntity,
 	QueryType,
 	SQLDataType
-}                         from '@airport/ground-control'
-import {SCHEMA_BUILDER, SqlSchemaBuilder} from '@airport/landing'
+} from '@airport/ground-control'
+import { SCHEMA_BUILDER, SqlSchemaBuilder } from '@airport/landing'
 
 export class MySqlSchemaBuilder
 	extends SqlSchemaBuilder {
@@ -31,7 +31,7 @@ export class MySqlSchemaBuilder
 		storeDriver: IStoreDriver,
 		context: IContext,
 	): Promise<void> {
-		const schemaName            = getSchemaName(jsonSchema)
+		const schemaName = getSchemaName(jsonSchema)
 		const createSchemaStatement = `CREATE SCHEMA ${schemaName}`
 
 		await storeDriver.query(QueryType.DDL, createSchemaStatement, [],
@@ -60,16 +60,16 @@ export class MySqlSchemaBuilder
 		const suffix = primaryKeySuffix // + autoincrementSuffix
 
 		switch (jsonColumn.type) {
-			case SQLDataType.ANY:
-				// FIXME: revisit this, if keeping json need to add logic around retrieval
-				// and storage of this value (like store as { value: X} and pull out the .value
-				return `JSON ${suffix}`
+			// case SQLDataType.ANY:
+			// 	// FIXME: revisit this, if keeping json need to add logic around retrieval
+			// 	// and storage of this value (like store as { value: X} and pull out the .value
+			// 	return `JSON ${suffix}`
 			case SQLDataType.BOOLEAN:
 				return `INTEGER ${suffix}`
 			case SQLDataType.DATE:
 				return `REAL ${suffix}`
-			case SQLDataType.JSON:
-				return `TEXT ${suffix}`
+			// case SQLDataType.JSON:
+			// 	return `TEXT ${suffix}`
 			case SQLDataType.NUMBER:
 				if (suffix) {
 					return `INTEGER ${suffix}`
@@ -77,6 +77,8 @@ export class MySqlSchemaBuilder
 				return 'REAL'
 			case SQLDataType.STRING:
 				return `TEXT ${suffix}`
+			default:
+				throw new Error(`Unexpected data type for column ${jsonSchema.name}${jsonEntity.name}.${jsonColumn.name}`)
 		}
 	}
 

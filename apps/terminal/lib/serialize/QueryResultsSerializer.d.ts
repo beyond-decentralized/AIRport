@@ -1,15 +1,9 @@
+import { ISchemaUtils } from '@airport/air-control';
+import { IQueryResultsSerializer } from '@airport/check-in';
+import { DbEntity } from '@airport/ground-control';
 import { IEntityStateManager } from '@airport/pressurization';
-export interface IQueryResultsSerializer {
-    serialize<E, T = E | E[]>(entity: T, entityStateManager: IEntityStateManager): T;
-}
-interface ISerializableOperation {
-    lookupTable: any[];
-    sequence: number;
-    stubLookupTable: any[];
-}
 export declare class QueryResultsSerializer implements IQueryResultsSerializer {
-    serialize<E, EntityCascadeGraph, T = E | E[]>(entity: T, entityStateManager: IEntityStateManager): T;
-    doSerialize<E>(entity: E, operation: ISerializableOperation, entityStateManager: IEntityStateManager): E;
+    serialize<E, T = E | E[]>(entity: T, dbEntity: DbEntity, entityStateManager: IEntityStateManager, schemaUtils: ISchemaUtils): T;
+    private doSerialize;
 }
-export {};
 //# sourceMappingURL=QueryResultsSerializer.d.ts.map

@@ -62,15 +62,15 @@ export class TransactionalServer {
     }
     async save(entity, credentials, context) {
         if (!entity) {
-            return 0;
+            return null;
         }
         await this.ensureIocContext(context);
         const actor = await this.getActor(credentials);
-        let numSavedRecords = 0;
+        let saveResult;
         await transactional(async (transaction) => {
-            numSavedRecords = await context.ioc.operationManager.performSave(entity, actor, transaction, context);
+            saveResult = await context.ioc.operationManager.performSave(entity, actor, transaction, context);
         });
-        return numSavedRecords;
+        return saveResult;
     }
     async insertValues(portableQuery, credentials, context, ensureGeneratedValues // for internal use only
     ) {

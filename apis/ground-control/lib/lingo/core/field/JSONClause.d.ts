@@ -15,12 +15,10 @@ export declare enum JSONClauseObjectType {
  * Types of data
  */
 export declare enum SQLDataType {
-    ANY = 0,
-    BOOLEAN = 1,
-    DATE = 2,
-    JSON = 3,
-    NUMBER = 4,
-    STRING = 5
+    BOOLEAN = 0,
+    DATE = 1,
+    NUMBER = 2,
+    STRING = 3
 }
 export declare function getSqlDataType(type: string): SQLDataType;
 /**

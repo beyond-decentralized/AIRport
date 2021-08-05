@@ -114,9 +114,9 @@ export class OperationDeserializer
             } else {
                 const dbColumn = dbProperty.propertyColumns[0].column
                 switch (dbColumn.type) {
-                    case SQLDataType.JSON:
-                        propertyCopy = this.cleanJsonObject(value, dbProperty, entityStateManager)
-                        break
+                    // case SQLDataType.JSON:
+                    //     propertyCopy = this.cleanJsonObject(value, dbProperty, entityStateManager)
+                    //     break
                     case SQLDataType.DATE:
                         if (!(value instanceof Object)
                             || value[entityStateManager.getStateFieldName()] !== EntityState.RESULT_DATE
@@ -129,9 +129,13 @@ export class OperationDeserializer
                             throw new Error(`Invalid Serialized Date format for ${dbEntity.name}.${dbProperty.name}`);
                         }
                         break;
-                    default:
+                    case SQLDataType.BOOLEAN:
+                    case SQLDataType.NUMBER:
+                    case SQLDataType.STRING:
                         propertyCopy = value
-                        break;
+                        break
+                    default:
+                        throw new Error(`Unexpected data type for ${dbEntity.name}.${dbProperty.name}`)
                 }
             }
             deserializedEntity[dbProperty.name] = propertyCopy

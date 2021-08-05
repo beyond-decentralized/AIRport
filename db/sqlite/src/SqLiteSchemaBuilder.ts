@@ -56,21 +56,23 @@ export class SqLiteSchemaBuilder
     const suffix = primaryKeySuffix; // + autoincrementSuffix
 
     switch (jsonColumn.type) {
-      case SQLDataType.ANY:
-        return suffix;
+      // case SQLDataType.ANY:
+      //   return suffix
       case SQLDataType.BOOLEAN:
-        return `INTEGER ${suffix}`;
+        return `INTEGER ${suffix}`
       case SQLDataType.DATE:
-        return `REAL ${suffix}`;
-      case SQLDataType.JSON:
-        return `TEXT ${suffix}`;
+        return `REAL ${suffix}`
+      // case SQLDataType.JSON:
+      //   return `TEXT ${suffix}`;
       case SQLDataType.NUMBER:
         if (suffix) {
-          return `INTEGER ${suffix}`;
+          return `INTEGER ${suffix}`
         }
         return 'REAL';
       case SQLDataType.STRING:
-        return `TEXT ${suffix}`;
+        return `TEXT ${suffix}`
+      default:
+        throw new Error(`Unexpected data type for ${jsonSchema.name}.${jsonEntity.name}.${jsonColumn.name}`)
     }
   }
 

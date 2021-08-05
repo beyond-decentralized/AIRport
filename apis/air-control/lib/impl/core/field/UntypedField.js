@@ -1,4 +1,4 @@
-import { JSONClauseObjectType, SQLDataType } from '@airport/ground-control';
+import { JSONClauseObjectType } from '@airport/ground-control';
 import { UntypedOperation } from '../operation/UntypedOperation';
 import { QOperableField } from './OperableField';
 export class QUntypedField extends QOperableField {
@@ -17,9 +17,11 @@ export class QUntypedField extends QOperableField {
 }
 export class QUntypedFunction extends QUntypedField {
     constructor(value, isQueryParameter = false) {
-        super({ type: SQLDataType.ANY }, null, null, JSONClauseObjectType.FIELD_FUNCTION);
+        // super(<any>{type: SQLDataType.ANY}, null, null, JSONClauseObjectType.FIELD_FUNCTION)
+        super({ type: null }, null, null, JSONClauseObjectType.FIELD_FUNCTION);
         this.value = value;
         this.isQueryParameter = isQueryParameter;
+        throw new Error(`Untyped data type is not supported`);
     }
     getInstance() {
         return this.copyFunctions(new QUntypedFunction(this.value));

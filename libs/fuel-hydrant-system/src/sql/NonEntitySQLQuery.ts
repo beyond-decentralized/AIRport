@@ -332,10 +332,10 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 						view[alias] = new QStringField(dbColumn, dbProperty,
 							view as IQEntityInternal<any>)
 						break
-					case SQLDataType.ANY:
-						view[alias] = new QUntypedField(dbColumn, dbProperty,
-							view as IQEntityInternal<any>)
-						break
+					// case SQLDataType.ANY:
+					// 	view[alias] = new QUntypedField(dbColumn, dbProperty,
+					// 		view as IQEntityInternal<any>)
+					// 	break
 					default:
 						throw new Error(`Unknown SQLDataType: ${fieldJson.dt}.`)
 				}

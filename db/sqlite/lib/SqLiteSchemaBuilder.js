@@ -1,4 +1,4 @@
-import { AIR_DB, } from '@airport/air-control';
+import { AIRPORT_DATABASE, } from '@airport/air-control';
 import { SEQUENCE_DAO, } from '@airport/airport-code';
 import { container, DI, } from '@airport/di';
 import { getSchemaName, SQLDataType, } from '@airport/ground-control';
@@ -22,14 +22,14 @@ export class SqLiteSchemaBuilder extends SqlSchemaBuilder {
         // }
         const suffix = primaryKeySuffix; // + autoincrementSuffix
         switch (jsonColumn.type) {
-            case SQLDataType.ANY:
-                return suffix;
+            // case SQLDataType.ANY:
+            //   return suffix
             case SQLDataType.BOOLEAN:
                 return `INTEGER ${suffix}`;
             case SQLDataType.DATE:
                 return `REAL ${suffix}`;
-            case SQLDataType.JSON:
-                return `TEXT ${suffix}`;
+            // case SQLDataType.JSON:
+            //   return `TEXT ${suffix}`;
             case SQLDataType.NUMBER:
                 if (suffix) {
                     return `INTEGER ${suffix}`;
@@ -37,6 +37,8 @@ export class SqLiteSchemaBuilder extends SqlSchemaBuilder {
                 return 'REAL';
             case SQLDataType.STRING:
                 return `TEXT ${suffix}`;
+            default:
+                throw new Error(`Unexpected data type for ${jsonSchema.name}.${jsonEntity.name}.${jsonColumn.name}`);
         }
     }
     getCreateTableSuffix(jsonSchema, jsonEntity) {
@@ -44,7 +46,7 @@ export class SqLiteSchemaBuilder extends SqlSchemaBuilder {
     }
     async buildAllSequences(jsonSchemas) {
         console.log('buildAllSequences');
-        let [airDb, sequenceDao] = await container(this).get(AIR_DB, SEQUENCE_DAO);
+        let [airDb, sequenceDao] = await container(this).get(AIRPORT_DATABASE, SEQUENCE_DAO);
         let allSequences = [];
         for (const jsonSchema of jsonSchemas) {
             const qSchema = airDb.QM[getSchemaName(jsonSchema)];

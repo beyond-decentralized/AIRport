@@ -52,12 +52,12 @@ export function wrapPrimitive(value) {
 }
 export function getPrimitiveValue(value, dbColumn, rowIndex, datesToNumbers = true) {
     switch (dbColumn.type) {
-        case SQLDataType.ANY: {
-            assertDataType([
-                'boolean', 'number', 'object', 'string'
-            ], dbColumn, rowIndex, value);
-            break;
-        }
+        // case SQLDataType.ANY: {
+        // 	assertDataType([
+        // 		'boolean', 'number', 'object', 'string'
+        // 	], dbColumn, rowIndex, value)
+        // 	break
+        // }
         case SQLDataType.BOOLEAN: {
             assertDataType([
                 'boolean'
@@ -70,12 +70,12 @@ export function getPrimitiveValue(value, dbColumn, rowIndex, datesToNumbers = tr
             ], dbColumn, rowIndex, value);
             break;
         }
-        case SQLDataType.JSON: {
-            assertDataType([
-                'object'
-            ], dbColumn, rowIndex, value);
-            break;
-        }
+        // case SQLDataType.JSON: {
+        // 	assertDataType([
+        // 		'object'
+        // 	], dbColumn, rowIndex, value)
+        // 	break
+        // }
         case SQLDataType.NUMBER: {
             assertDataType([
                 'number'
@@ -109,10 +109,10 @@ export function getPrimitiveValue(value, dbColumn, rowIndex, datesToNumbers = tr
                 return datesToNumbers ? value.getTime() : value;
             }
             else {
-                if (dbColumn.type !== SQLDataType.JSON) {
-                    throw new Error(`Unexpected Json object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`);
-                }
-                return JSON.stringify(value);
+                // if (dbColumn.type !== SQLDataType.JSON) {
+                throw new Error(`Unexpected Json object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`);
+                // }
+                // return JSON.stringify(value)
             }
         }
         case 'undefined':

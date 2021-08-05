@@ -1,8 +1,9 @@
-import { DI } from '@airport/di';
-import { EntityState } from '@airport/pressurization';
 import { QUERY_RESULTS_SERIALIZER } from '@airport/check-in';
+import { DI } from '@airport/di';
+import { SQLDataType } from '@airport/ground-control';
+import { EntityState } from '@airport/pressurization';
 export class QueryResultsSerializer {
-    serialize(entity, entityStateManager) {
+    serialize(entity, dbEntity, entityStateManager, schemaUtils) {
         const operation = {
             lookupTable: [],
             sequence: 0,
@@ -10,17 +11,17 @@ export class QueryResultsSerializer {
         };
         let serializedEntity;
         if (entity instanceof Array) {
-            serializedEntity = entity.map(anEntity => this.doSerialize(anEntity, operation, entityStateManager));
+            serializedEntity = entity.map(anEntity => this.doSerialize(anEntity, dbEntity, operation, entityStateManager, schemaUtils));
         }
         else {
-            serializedEntity = this.doSerialize(entity, operation, entityStateManager);
+            serializedEntity = this.doSerialize(entity, dbEntity, operation, entityStateManager, schemaUtils);
         }
         for (let i = 1; i < operation.lookupTable.length; i++) {
             delete operation.lookupTable[i][entityStateManager.getUniqueIdFieldName()];
         }
         return serializedEntity;
     }
-    doSerialize(entity, operation, entityStateManager) {
+    doSerialize(entity, dbEntity, operation, entityStateManager, schemaUtils) {
         // TODO: add support for non-create operations
         let operationUniqueId = entityStateManager.getOperationUniqueId(entity);
         if (operationUniqueId) {
@@ -35,27 +36,56 @@ export class QueryResultsSerializer {
         operation.lookupTable[operationUniqueId] = entity;
         entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
         entityCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT;
-        for (const propertyName in entity) {
-            const property = entity[propertyName];
+        for (const dbProperty of dbEntity.properties) {
+            let property = entity[dbProperty.name];
+            if (schemaUtils.isEmpty(property)) {
+                continue;
+            }
             let propertyCopy;
-            if (property instanceof Object) {
+            if (dbProperty.relation) {
+                const dbRelation = dbProperty.relation[0];
                 if (property instanceof Array) {
-                    propertyCopy = property.map(aProperty => this.doSerialize(aProperty, operation, entityStateManager));
-                }
-                else if (property instanceof Date) {
-                    propertyCopy = {
-                        value: property.toISOString()
-                    };
-                    propertyCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT_DATE;
+                    propertyCopy = property.map(manyObject => {
+                        this.doSerialize(manyObject, dbRelation.relationEntity, operation, entityStateManager, schemaUtils);
+                    });
                 }
                 else {
-                    propertyCopy = this.doSerialize(property, operation, entityStateManager);
+                    propertyCopy = this.doSerialize(property, dbRelation.relationEntity, operation, entityStateManager, schemaUtils);
                 }
             }
             else {
-                propertyCopy = property;
+                switch (dbProperty.propertyColumns[0].column.type) {
+                    // case SQLDataType.JSON:
+                    // 	if (property instanceof Array) {
+                    // 		propertyCopy = {
+                    // 			value: property
+                    // 		}
+                    // 		propertyCopy[entityStateManager.getStateFieldName()]
+                    // 			= EntityState.RESULT_JSON_ARRAY
+                    // 	} else {
+                    // 		propertyCopy = property
+                    // 		propertyCopy[entityStateManager.getStateFieldName()]
+                    // 			= EntityState.RESULT_JSON
+                    // 	}
+                    // 	break;
+                    case SQLDataType.DATE:
+                        propertyCopy = {
+                            value: property.toISOString()
+                        };
+                        propertyCopy[entityStateManager.getStateFieldName()]
+                            = EntityState.RESULT_DATE;
+                        break;
+                    // case SQLDataType.ANY:
+                    case SQLDataType.BOOLEAN:
+                    case SQLDataType.NUMBER:
+                    case SQLDataType.STRING:
+                        propertyCopy = property;
+                        break;
+                    default:
+                        throw new Error(`Unsupported data type for property ${dbEntity.schemaVersion.schema.name}.${dbEntity.name}.${dbProperty.name}`);
+                }
             }
-            entityCopy[propertyName] = propertyCopy;
+            entityCopy[dbProperty.name] = propertyCopy;
         }
         return entityCopy;
     }

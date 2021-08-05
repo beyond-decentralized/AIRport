@@ -1,4 +1,4 @@
-import { AIR_DB } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { DATABASE_MANAGER } from '@airport/terminal';
 export * from './DDLManager';
@@ -8,7 +8,7 @@ export * from './MySqlSchemaBuilder';
 export * from './MySqlSequenceGenerator';
 export * from './MySqlTransaction';
 export async function startDb(domainName, ...schemas) {
-    await DI.db().get(AIR_DB);
+    await DI.db().get(AIRPORT_DATABASE);
     const dbManager = await DI.db().get(DATABASE_MANAGER);
     await dbManager.initWithDb(domainName, {}, ...schemas);
 }

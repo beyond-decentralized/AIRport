@@ -9,30 +9,30 @@ import {
 	SchemaIndex,
 	SQLDataType,
 	TableIndex
-}                                from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	QSchema,
 	QSchemaInternal
-}                                from '../../lingo/AirportDatabase'
+} from '../../lingo/AirportDatabase'
 import {
 	IQEntity,
 	IQEntityInternal
-}                                from '../../lingo/core/entity/Entity'
-import {IQRelation}              from '../../lingo/core/entity/Relation'
-import {IQBooleanField}          from '../../lingo/core/field/BooleanField'
-import {IQDateField}             from '../../lingo/core/field/DateField'
-import {IQNumberField}           from '../../lingo/core/field/NumberField'
-import {IQOperableFieldInternal} from '../../lingo/core/field/OperableField'
-import {IQStringField}           from '../../lingo/core/field/StringField'
-import {IQUntypedField}          from '../../lingo/core/field/UntypedField'
-import {QEntity}                 from '../core/entity/Entity'
-import {QOneToManyRelation}      from '../core/entity/OneToManyRelation'
-import {QRelation}               from '../core/entity/Relation'
-import {QBooleanField}           from '../core/field/BooleanField'
-import {QDateField}              from '../core/field/DateField'
-import {QNumberField}            from '../core/field/NumberField'
-import {QStringField}            from '../core/field/StringField'
-import {QUntypedField}           from '../core/field/UntypedField'
+} from '../../lingo/core/entity/Entity'
+import { IQRelation } from '../../lingo/core/entity/Relation'
+import { IQBooleanField } from '../../lingo/core/field/BooleanField'
+import { IQDateField } from '../../lingo/core/field/DateField'
+import { IQNumberField } from '../../lingo/core/field/NumberField'
+import { IQOperableFieldInternal } from '../../lingo/core/field/OperableField'
+import { IQStringField } from '../../lingo/core/field/StringField'
+import { IQUntypedField } from '../../lingo/core/field/UntypedField'
+import { QEntity } from '../core/entity/Entity'
+import { QOneToManyRelation } from '../core/entity/OneToManyRelation'
+import { QRelation } from '../core/entity/Relation'
+import { QBooleanField } from '../core/field/BooleanField'
+import { QDateField } from '../core/field/DateField'
+import { QNumberField } from '../core/field/NumberField'
+import { QStringField } from '../core/field/StringField'
+import { QUntypedField } from '../core/field/UntypedField'
 
 /**
  * From:
@@ -45,9 +45,9 @@ export function extend(
 	sub,
 	methods
 ) {
-	sub.prototype             = Object.create(base.prototype)
+	sub.prototype = Object.create(base.prototype)
 	sub.prototype.constructor = sub
-	sub.base                  = base.prototype
+	sub.base = base.prototype
 
 	// Copy the methods passed in to the prototype
 	for (const name in methods) {
@@ -64,17 +64,19 @@ export function getColumnQField(
 	column: DbColumn
 ): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField {
 	switch (column.type) {
-		case SQLDataType.ANY:
-			return new QUntypedField(column, property, q)
+		// case SQLDataType.ANY:
+		// 	return new QUntypedField(column, property, q)
 		case SQLDataType.BOOLEAN:
 			return new QBooleanField(column, property, q)
 		case SQLDataType.DATE:
 			return new QDateField(column, property, q)
 		case SQLDataType.NUMBER:
 			return new QNumberField(column, property, q)
-		case SQLDataType.JSON:
+		// case SQLDataType.JSON:
 		case SQLDataType.STRING:
 			return new QStringField(column, property, q)
+		default:
+			throw new Error(`Unsupported data type for property ${entity.schemaVersion.schema.name}.${entity.name}.${property.name}`)
 	}
 }
 
@@ -90,8 +92,8 @@ export function getQRelation(
 			const relationEntity = relation.relationEntity
 			const relationSchema = relationEntity.schemaVersion.schema
 			const qIdRelationConstructor
-			                     = allQSchemas[relationSchema.index]
-				.__qIdRelationConstructors__[relationEntity.index]
+				= allQSchemas[relationSchema.index]
+					.__qIdRelationConstructors__[relationEntity.index]
 			// return new qIdRelationConstructor(relationEntity, property, q)
 			return new qIdRelationConstructor(relation.relationEntity, relation, q)
 		case EntityRelationType.ONE_TO_MANY:
@@ -149,7 +151,7 @@ export function addColumnQField(
 ): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField {
 	const qFieldOrRelation = getColumnQField(entity, property, q, column)
 	q.__driver__.allColumns[column.index]
-	                       = qFieldOrRelation as IQOperableFieldInternal<any, any, any, any>
+		= qFieldOrRelation as IQOperableFieldInternal<any, any, any, any>
 	if (column.idIndex || column.idIndex === 0) {
 		q.__driver__.idColumns[column.idIndex]
 			= qFieldOrRelation as IQOperableFieldInternal<any, any, any, any>
@@ -207,9 +209,9 @@ export function getQEntityIdFields(
 	relationColumnMap?: Map<DbColumn, DbColumn>
 ) {
 	if (!relationColumnMap) {
-		const parentRelation  = parentProperty.relation[0]
+		const parentRelation = parentProperty.relation[0]
 		const relationColumns = parentRelation.manyRelationColumns
-		relationColumnMap     = new Map()
+		relationColumnMap = new Map()
 		for (const relationColumn of relationColumns) {
 			relationColumnMap.set(relationColumn.oneColumn,
 				relationColumn.manyColumn)
@@ -226,7 +228,7 @@ export function getQEntityIdFields(
 
 		// If it's a relation property (and therefore has backing columns)
 		if (property.relation && property.relation.length) {
-			const relation        = property.relation[0]
+			const relation = property.relation[0]
 			const relationColumns = relation.manyRelationColumns
 			for (const relationColumn of relationColumns) {
 				const originalColumn = relationColumnMap.get(relationColumn.manyColumn)
@@ -242,7 +244,7 @@ export function getQEntityIdFields(
 				parentProperty, relationColumnMap)
 		} else {
 			const originalColumn = relationColumnMap.get(property.propertyColumns[0].column)
-			qFieldOrRelation     = getColumnQField(relationEntity,
+			qFieldOrRelation = getColumnQField(relationEntity,
 				parentProperty, qEntity as IQEntityInternal<any>, originalColumn)
 		}
 		addToObject[property.name] = qFieldOrRelation
@@ -260,7 +262,7 @@ export function setQSchemaEntities(
 	// schema)
 
 	qSchema.__qIdRelationConstructors__ = []
-	qSchema.__qConstructors__           = {}
+	qSchema.__qConstructors__ = {}
 
 	// let haveMissingDependencies
 	// do {
@@ -277,8 +279,8 @@ export function setQSchemaEntities(
 		for (const idColumn of entity.idColumns) {
 			if (idColumn.manyRelationColumns
 				&& idColumn.manyRelationColumns.length) {
-				const oneColumn      = idColumn.manyRelationColumns[0].oneColumn
-				const relatedEntity  = oneColumn.entity
+				const oneColumn = idColumn.manyRelationColumns[0].oneColumn
+				const relatedEntity = oneColumn.entity
 				const relatedQSchema = allQSchemas[relatedEntity.schemaVersion.schema.index]
 				if (!relatedQSchema) {
 					throw new Error(`QSchema not yet initialized for ID relation:
@@ -301,12 +303,12 @@ export function setQSchemaEntities(
 			}
 		}
 
-		const qIdRelationConstructor                      = <any>getQEntityIdRelationConstructor()
+		const qIdRelationConstructor = <any>getQEntityIdRelationConstructor()
 		qSchema.__qIdRelationConstructors__[entity.index] = qIdRelationConstructor
 
 		// TODO: compute many-to-many relations
 
-		const qConstructor                      = <any>getQEntityConstructor(allQSchemas)
+		const qConstructor = <any>getQEntityConstructor(allQSchemas)
 		qSchema.__qConstructors__[entity.index] = qConstructor
 
 		if (!Object.getOwnPropertyNames(qSchema)
@@ -332,7 +334,7 @@ export function orderSchemasInOrderOfPrecedence(
 	schemas: DbSchema[]
 ): DbSchema[] {
 	const schemaWithDepsMap: Map<SchemaIndex, DbSchemaWithDependencies> = new Map()
-	const schemasWithDeps: DbSchemaWithDependencies[]                   = schemas.map(
+	const schemasWithDeps: DbSchemaWithDependencies[] = schemas.map(
 		schema => {
 			const dependencies: Set<SchemaIndex> = new Set()
 			for (const schemaReference of schema.currentVersion.references) {

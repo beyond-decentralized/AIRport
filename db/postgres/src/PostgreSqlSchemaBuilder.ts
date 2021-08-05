@@ -1,5 +1,5 @@
-import {ISequence}        from '@airport/airport-code'
-import {container, DI}               from '@airport/di'
+import { ISequence } from '@airport/airport-code'
+import { container, DI } from '@airport/di'
 import {
 	getSchemaName,
 	getSequenceName,
@@ -10,8 +10,8 @@ import {
 	QueryType,
 	SQLDataType,
 	STORE_DRIVER
-}                         from '@airport/ground-control'
-import {SCHEMA_BUILDER, SqlSchemaBuilder} from '@airport/landing'
+} from '@airport/ground-control'
+import { SCHEMA_BUILDER, SqlSchemaBuilder } from '@airport/landing'
 
 export class PostgreSqlSchemaBuilder
 	extends SqlSchemaBuilder {
@@ -20,7 +20,7 @@ export class PostgreSqlSchemaBuilder
 		jsonSchema: JsonSchema,
 		storeDriver: IStoreDriver
 	): Promise<void> {
-		const schemaName            = getSchemaName(jsonSchema)
+		const schemaName = getSchemaName(jsonSchema)
 		const createSchemaStatement = `CREATE SCHEMA ${schemaName}`
 
 		await storeDriver.query(QueryType.DDL, createSchemaStatement, [], false)
@@ -40,14 +40,14 @@ export class PostgreSqlSchemaBuilder
 		const suffix = primaryKeySuffix
 
 		switch (jsonColumn.type) {
-			case SQLDataType.ANY:
-				return suffix
+			// case SQLDataType.ANY:
+			// 	return suffix
 			case SQLDataType.BOOLEAN:
 				return `INTEGER ${suffix}`
 			case SQLDataType.DATE:
 				return `REAL ${suffix}`
-			case SQLDataType.JSON:
-				return `TEXT ${suffix}`
+			// case SQLDataType.JSON:
+			// 	return `TEXT ${suffix}`
 			case SQLDataType.NUMBER:
 				if (suffix) {
 					return `INTEGER ${suffix}`
@@ -55,6 +55,8 @@ export class PostgreSqlSchemaBuilder
 				return 'REAL'
 			case SQLDataType.STRING:
 				return `TEXT ${suffix}`
+			default:
+				throw new Error(`Unexpected data type for column ${jsonSchema.name}.${jsonEntity.name}.${jsonColumn.name}`)
 		}
 	}
 
@@ -88,14 +90,14 @@ export class PostgreSqlSchemaBuilder
 				continue
 			}
 			const prefixedTableName = storeDriver.getTableName(jsonSchema, jsonEntity)
-			const sequenceName      = getSequenceName(prefixedTableName, jsonColumn.name)
-			let incrementBy         = jsonColumn.allocationSize
+			const sequenceName = getSequenceName(prefixedTableName, jsonColumn.name)
+			let incrementBy = jsonColumn.allocationSize
 			if (!incrementBy) {
 				incrementBy = 100000
 			}
 
 			const createSequenceDdl
-				      = `CREATE SEQUENCE ${sequenceName} INCREMENT BY ${incrementBy}`
+				= `CREATE SEQUENCE ${sequenceName} INCREMENT BY ${incrementBy}`
 
 			await storeDriver.query(QueryType.DDL, createSequenceDdl, [], false)
 		}

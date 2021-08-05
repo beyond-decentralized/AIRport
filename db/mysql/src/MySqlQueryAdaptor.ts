@@ -1,20 +1,20 @@
 import {
 	IQEntityInternal,
 	Parameter
-}                            from '@airport/air-control';
-import { DI }                from '@airport/di';
+} from '@airport/air-control';
+import { DI } from '@airport/di';
 import {
 	AbstractFunctionAdaptor,
 	ISQLFunctionAdaptor,
 	ISQLQueryAdaptor,
 	ISqlValueProvider,
 	SQL_QUERY_ADAPTOR,
-}                            from '@airport/fuel-hydrant-system';
+} from '@airport/fuel-hydrant-system';
 import {
 	JSONSqlFunctionCall,
 	SQLDataType,
 	SqlFunction
-}                            from '@airport/ground-control';
+} from '@airport/ground-control';
 import { IOperationContext } from '@airport/tower';
 
 /**
@@ -65,13 +65,17 @@ export class MySqlQueryAdaptor
 					return new Date(value);
 				}
 				break;
-			case SQLDataType.JSON:
-				if (value !== null) {
-					return JSON.parse(value);
-				}
-				break;
+			case SQLDataType.NUMBER:
+			case SQLDataType.STRING:
+				return value;
+			// case SQLDataType.JSON:
+			// 	if (value !== null) {
+			// 		return JSON.parse(value);
+			// 	}
+			// 	break;
+			default:
+				throw new Error(`Unexpected data type for column ${columnName}`)
 		}
-		return value;
 	}
 
 	getFunctionAdaptor(): ISQLFunctionAdaptor {
@@ -157,7 +161,7 @@ export class MySqlFunctionAdaptor
 			case SqlFunction.LCASE:
 				return `LOWER(${value})`;
 			case SqlFunction.MID:
-				let start  = sqlValueProvider.getFunctionCallValue(
+				let start = sqlValueProvider.getFunctionCallValue(
 					jsonFunctionCall.p[0], context);
 				let length = sqlValueProvider.getFunctionCallValue(
 					jsonFunctionCall.p[1], context);
@@ -174,16 +178,16 @@ export class MySqlFunctionAdaptor
 				let formatCall = `FORMAT('${value}', `;
 				for (let i = 0; i < jsonFunctionCall.p.length; i++) {
 					let formatParam = jsonFunctionCall.p[i];
-					formatParam     = sqlValueProvider.getFunctionCallValue(
+					formatParam = sqlValueProvider.getFunctionCallValue(
 						formatParam, context);
-					formatCall      = `${formatCall}, ${formatParam}`;
+					formatCall = `${formatCall}, ${formatParam}`;
 				}
 				formatCall += ')';
 				return formatCall;
 			case SqlFunction.REPLACE:
 				let param1 = sqlValueProvider.getFunctionCallValue(
 					jsonFunctionCall.p[0], context);
-				param2     = sqlValueProvider.getFunctionCallValue(
+				param2 = sqlValueProvider.getFunctionCallValue(
 					jsonFunctionCall.p[1], context);
 				return `REPLACE('${value}', ${param1}, ${param2})`;
 			case SqlFunction.TRIM:
