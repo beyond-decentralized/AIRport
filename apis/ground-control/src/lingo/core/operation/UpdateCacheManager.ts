@@ -2,7 +2,7 @@ import { ISaveResult } from "../../query/SaveResult";
 import { DbEntity } from "../../schema/Entity";
 import { IEntityStateManager } from "./EntityStateManager";
 
-export interface IDbUpdateCacheManager {
+export interface IUpdateCacheManager {
 
     saveOriginalValues<E, T = E | E[]>(
         entity: T,

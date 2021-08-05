@@ -6,8 +6,9 @@ export enum EntityState {
 	PARENT_ID = 3,
 	RESULT = 4,
 	RESULT_DATE = 5,
-	RESULT_JSON = 6,
-	RESULT_JSON_ARRAY = 7,
+	// Json fields promote schema de-normalization
+	// RESULT_JSON = 6,
+	// RESULT_JSON_ARRAY = 7,
 	STUB = 8,
 	UPDATE = 9
 }
@@ -18,7 +19,7 @@ export interface IEntityStateAsFlags {
 	isParentId: boolean
 	isResult: boolean
 	isResultDate: boolean
-	isResultJson: boolean
+	// isResultJson: boolean
 	isStub: boolean
 	isUpdate: boolean
 }

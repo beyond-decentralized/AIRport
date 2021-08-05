@@ -39,7 +39,6 @@ export class OperationSerializer {
         operation.stubLookupTable[operationUniqueId] = entityStub;
         let serializedEntity = {};
         serializedEntity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
-        entity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
         var isFirstProperty = true;
         for (const propertyName in entity) {
             const property = entity[propertyName];
@@ -52,15 +51,14 @@ export class OperationSerializer {
             operation.namePath.push(propertyName);
             if (property instanceof Object) {
                 if (property instanceof Array) {
-                    if (propertyState === EntityState.RESULT_JSON_ARRAY) {
-                        propertyCopy = {
-                            value: JSON.stringify(property)
-                        };
-                        propertyCopy[entityStateManager.getStateFieldName()] = propertyState;
-                    }
-                    else {
-                        propertyCopy = property.map(aProperty => this.doSerialize(aProperty, operation, entityStateManager));
-                    }
+                    // if (propertyState === EntityState.RESULT_JSON_ARRAY) {
+                    // 	propertyCopy = {
+                    // 		value: JSON.stringify(property)
+                    // 	}
+                    // 	propertyCopy[entityStateManager.getStateFieldName()] = propertyState
+                    // } else {
+                    propertyCopy = property.map(aProperty => this.doSerialize(aProperty, operation, entityStateManager));
+                    // }
                 }
                 else if (property instanceof Date) {
                     propertyCopy = {
@@ -69,15 +67,14 @@ export class OperationSerializer {
                     propertyCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT_DATE;
                 }
                 else {
-                    if (propertyState === EntityState.RESULT_JSON) {
-                        propertyCopy = {
-                            value: JSON.stringify(property)
-                        };
-                        propertyCopy[entityStateManager.getStateFieldName()] = propertyState;
-                    }
-                    else {
-                        propertyCopy = this.doSerialize(property, operation, entityStateManager);
-                    }
+                    // if (propertyState === EntityState.RESULT_JSON) {
+                    // 	propertyCopy = {
+                    // 		value: JSON.stringify(property)
+                    // 	}
+                    // 	propertyCopy[entityStateManager.getStateFieldName()] = propertyState
+                    // } else {
+                    propertyCopy = this.doSerialize(property, operation, entityStateManager);
+                    // }
                 }
             }
             else {
@@ -86,16 +83,16 @@ export class OperationSerializer {
                 };
                 propertyCopy[entityStateManager.getStateFieldName()] = propertyState;
                 switch (propertyState) {
-                    case EntityState.RESULT_JSON_ARRAY:
-                        if (property) {
-                            throw new Error(`Expecting an Array for "${operation.namePath.join('.')}", got: ${property}`);
-                        }
-                        break;
-                    case EntityState.RESULT_JSON:
-                        if (property) {
-                            throw new Error(`Expecting an Object for "${operation.namePath.join('.')}", got: ${property}`);
-                        }
-                        break;
+                    // case EntityState.RESULT_JSON_ARRAY:
+                    // 	if (property) {
+                    // 		throw new Error(`Expecting an Array for "${operation.namePath.join('.')}", got: ${property}`)
+                    // 	}
+                    // 	break
+                    // case EntityState.RESULT_JSON:
+                    // 	if (property) {
+                    // 		throw new Error(`Expecting an Object for "${operation.namePath.join('.')}", got: ${property}`)
+                    // 	}
+                    // 	break
                     case EntityState.RESULT_DATE:
                         if (property) {
                             throw new Error(`Expecting a Date for "${operation.namePath.join('.')}", got: ${property}`);

@@ -23,7 +23,7 @@ import {
 	IContext
 } from '@airport/di'
 import {
-	DB_UPDATE_CACHE_MANAGER,
+	UPDATE_CACHE_MANAGER,
 	ENTITY_STATE_MANAGER,
 	ISaveResult,
 	PortableQuery,
@@ -167,18 +167,18 @@ export class DatabaseFacade
 		if (!entity) {
 			return null
 		}
-		const [dbUpdateCacheManager, entityCopier,
+		const [updateCacheManager, entityCopier,
 			entityStateManager, transactionalConnector]
-			= await container(this).get(DB_UPDATE_CACHE_MANAGER, ENTITY_COPIER,
+			= await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER,
 				ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR)
 
 		const dbEntity = context.dbEntity;
 		const entityCopy = entityCopier
 			.copyEntityForProcessing(entity, dbEntity, entityStateManager)
-		dbUpdateCacheManager.setOperationState(
+		updateCacheManager.setOperationState(
 			entityCopy, dbEntity, entityStateManager, new Set())
 		const saveResult = await transactionalConnector.save(entityCopy, context)
-		dbUpdateCacheManager.afterSaveModifications(entity, dbEntity, saveResult,
+		updateCacheManager.afterSaveModifications(entity, dbEntity, saveResult,
 			entityStateManager, new Set())
 
 		return saveResult

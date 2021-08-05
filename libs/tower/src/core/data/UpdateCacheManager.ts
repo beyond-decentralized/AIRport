@@ -1,17 +1,17 @@
 import { DI } from "@airport/di"
 import {
     DbEntity,
-    DB_UPDATE_CACHE_MANAGER,
     EntityRelationType,
     EntityState,
-    IDbUpdateCacheManager,
+    IUpdateCacheManager,
     IEntityStateManager,
     ISaveResult,
-    SQLDataType
+    SQLDataType,
+    UPDATE_CACHE_MANAGER
 } from "@airport/ground-control"
 
-export class DbUpdateCacheManager
-    implements IDbUpdateCacheManager {
+export class UpdateCacheManager
+    implements IUpdateCacheManager {
 
     saveOriginalValues<E, T = E | E[]>(
         entity: T,
@@ -194,4 +194,4 @@ export class DbUpdateCacheManager
         return false
     }
 }
-DI.set(DB_UPDATE_CACHE_MANAGER, DbUpdateCacheManager)
+DI.set(UPDATE_CACHE_MANAGER, UpdateCacheManager)

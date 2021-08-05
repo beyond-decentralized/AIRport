@@ -1,10 +1,11 @@
 import { container, DI } from "@airport/di";
-import { ENTITY_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER } from "@airport/pressurization";
-import { LOCAL_API_CLIENT, UPDATE_CACHE_MANAGER } from "../tokens";
+import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER } from "@airport/pressurization";
+import { ENTITY_STATE_MANAGER } from "@airport/ground-control/lib/tokens";
+import { LOCAL_API_CLIENT } from "../tokens";
 import { LocalAPIResponseType } from "./LocalAPIResponse";
 export class LocalAPIClient {
     async invokeDaoMethod(schemaName, daoName, methodName, args) {
-        const [entityStateManager, operationSerializer, queryResultsDeserializer, updateCacheManager] = await container(this).get(ENTITY_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER, UPDATE_CACHE_MANAGER);
+        const [entityStateManager, operationSerializer, queryResultsDeserializer] = await container(this).get(ENTITY_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER);
         let serializedParams;
         if (args) {
             if (args.length) {
@@ -18,7 +19,6 @@ export class LocalAPIClient {
         else {
             serializedParams = [];
         }
-        updateCacheManager.setOperationState(serializedParams, args, entityStateManager);
         const request = {
             args: serializedParams,
             daoName,
@@ -46,13 +46,12 @@ export class LocalAPIClient {
             case LocalAPIResponseType.QUERY:
                 const value = queryResultsDeserializer
                     .deserialize(response.payload, entityStateManager);
-                updateCacheManager
-                    .saveOriginalValues(response.payload, value, entityStateManager);
                 return value;
             case LocalAPIResponseType.SAVE:
-                updateCacheManager.updateOriginalValuesAfterSave(serializedParams, value, response.payload, entityStateManager);
                 // Return ISaveRecord as specified in Dao spec
                 return response.payload;
+            default:
+                throw new Error('Unexpected LocalAPIResponseType');
         }
     }
 }

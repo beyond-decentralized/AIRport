@@ -192,9 +192,9 @@ export class EntityStateManager
 			case EntityState.RESULT_DATE:
 				isResultDate = true
 				break
-			case EntityState.RESULT_JSON:
-				isResultJson = true
-				break
+			// case EntityState.RESULT_JSON:
+			// 	isResultJson = true
+			// 	break
 			case EntityState.STUB:
 				isStub = true
 				break

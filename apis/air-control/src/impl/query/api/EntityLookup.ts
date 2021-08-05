@@ -1,7 +1,7 @@
 import { DI } from '@airport/di'
 import {
 	DbEntity,
-	DB_UPDATE_CACHE_MANAGER,
+	UPDATE_CACHE_MANAGER,
 	ENTITY_STATE_MANAGER,
 	QueryResultType
 } from '@airport/ground-control'
@@ -89,12 +89,12 @@ export abstract class EntityLookup<Child, MappedChild,
 		context.dbEntity = this.dbEntity
 		const result = this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)
-		const [dbUpdateCacheManager, entityStateManager] =
-			await DI.db().get(DB_UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER)
+		const [updateCacheManager, entityStateManager] =
+			await DI.db().get(UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER)
 		if (search) {
 			throw new Error(`Search operations are not yet supported`);
 		} else {
-			dbUpdateCacheManager.saveOriginalValues(
+			updateCacheManager.saveOriginalValues(
 				result, context.dbEntity, entityStateManager)
 		}
 		return result

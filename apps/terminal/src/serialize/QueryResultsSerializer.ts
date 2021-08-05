@@ -6,12 +6,10 @@ import {
 import { DI } from '@airport/di'
 import {
 	DbEntity,
+	EntityState,
+	IEntityStateManager,
 	SQLDataType
 } from '@airport/ground-control'
-import {
-	EntityState,
-	IEntityStateManager
-} from '@airport/pressurization'
 
 interface ISerializableOperation {
 	lookupTable: any[]

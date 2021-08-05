@@ -1,7 +1,6 @@
 import { QUERY_RESULTS_SERIALIZER } from '@airport/check-in';
 import { DI } from '@airport/di';
-import { SQLDataType } from '@airport/ground-control';
-import { EntityState } from '@airport/pressurization';
+import { EntityState, SQLDataType } from '@airport/ground-control';
 export class QueryResultsSerializer {
     serialize(entity, dbEntity, entityStateManager, schemaUtils) {
         const operation = {
