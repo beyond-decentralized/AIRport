@@ -85,8 +85,6 @@ export class QueryResultsDeserializer
 		let deserializedEntity: any = {}
 		operation.lookupTable[operationUniqueId] = deserializedEntity
 
-		delete deserializedEntity[entityStateManager.getUniqueIdFieldName()]
-
 		for (const propertyName in entity) {
 			const property = entity[propertyName]
 			let propertyCopy
@@ -102,6 +100,7 @@ export class QueryResultsDeserializer
 			}
 			deserializedEntity[propertyName] = propertyCopy
 		}
+		delete deserializedEntity[entityStateManager.getUniqueIdFieldName()]
 
 		return deserializedEntity
 	}

@@ -11,30 +11,10 @@ export interface EntityWithState {
 	__state__: EntityState;
 }
 
-
-
-export function markAsStub<T>(
-	entity: T
-) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).markAsStub(entity);
-}
-
 export function markForDeletion<T>(
 	entity: T
 ) {
 	DI.db().getSync(ENTITY_STATE_MANAGER).markForDeletion(entity);
-}
-
-export function markToCreate<T>(
-	entity: T
-) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).markToCreate(entity);
-}
-
-export function markToUpdate<T>(
-	entity: T
-) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).markToUpdate(entity);
 }
 
 export function getEntityState<T>(
@@ -43,39 +23,12 @@ export function getEntityState<T>(
 	DI.db().getSync(ENTITY_STATE_MANAGER).getEntityState(entity);
 }
 
-export function copyEntityState<T>(
-	entity: T,
-	entity2: T
-) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).copyEntityState(entity, entity2);
-}
-
-export function getEntityStateTypeAsFlags<T>(
-	entity: T,
-	dbEntity: DbEntity
-) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).getEntityStateTypeAsFlags(entity, dbEntity);
-}
-
-export function isStub<T>(
-	entity: T
-) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).isStub(entity);
-}
-
-export function isParentId<T>(
-	entity: T,
-	dbEntity: DbEntity
-) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).isParentId(entity);
-}
-
 export class EntityStateManager
 	implements IEntityStateManager {
 	static DELETED_PROPERTY = '__deleted__'
-	static OPERATION_UNIQUE_ID_FIELD = '__UID__'
 	static ORIGINAL_VALUES_PROPERTY = '__originalValues__'
 	static STATE_FIELD = '__state__'
+	static OPERATION_UNIQUE_ID_FIELD = '__OUID__'
 
 	isStub<T>(
 		entity: T
@@ -87,35 +40,6 @@ export class EntityStateManager
 		entity: T
 	): boolean {
 		return this.getEntityState(entity) === EntityState.PARENT_ID
-	}
-
-	getOperationUniqueId<T>(
-		entity: T,
-		throwIfNotFound = true,
-		dbEntity: DbEntity = null
-	): number {
-		const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD]
-
-		if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
-			if (throwIfNotFound) {
-				let entityDescription
-				if(dbEntity) {
-					entityDescription = dbEntity.schemaVersion.schema.name + '.' + dbEntity.name
-				} else {
-					entityDescription = JSON.stringify(entity)
-				}
-				throw new Error(`Could not find "${EntityStateManager.OPERATION_UNIQUE_ID_FIELD}" property on DTO:
-			
-			${entityDescription}`)
-			}
-		}
-		return operationUniqueId
-	}
-
-	markAsStub<T>(
-		entity: T
-	): void {
-		(<EntityWithState><any>entity).__state__ = EntityState.STUB
 	}
 
 	markForDeletion<T>(
@@ -160,10 +84,6 @@ export class EntityStateManager
 		toEntity: T
 	): void {
 		(<EntityWithState><any>toEntity).__state__ = (<EntityWithState><any>fromEntity).__state__
-	}
-
-	getUniqueIdFieldName(): string {
-		return EntityStateManager.OPERATION_UNIQUE_ID_FIELD
 	}
 
 	getStateFieldName(): string {
@@ -230,6 +150,42 @@ export class EntityStateManager
 	): boolean {
 		return entity[EntityStateManager.DELETED_PROPERTY]
 	}
+
+
+
+getOperationUniqueId<T>(
+    entity: T,
+    throwIfNotFound = true,
+    dbEntity: DbEntity = null
+): number {
+    const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD]
+
+    if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
+        if (throwIfNotFound) {
+            let entityDescription
+            if(dbEntity) {
+                entityDescription = dbEntity.schemaVersion.schema.name + '.' + dbEntity.name
+            } else {
+                entityDescription = JSON.stringify(entity)
+            }
+            throw new Error(`Could not find "${EntityStateManager.OPERATION_UNIQUE_ID_FIELD}" property on DTO:
+        
+        ${entityDescription}`)
+        }
+    }
+    return operationUniqueId
+}
+
+markAsStub<T>(
+    entity: T
+): void {
+    (<EntityWithState><any>entity).__state__ = EntityState.STUB
+}
+
+
+getUniqueIdFieldName(): string {
+    return EntityStateManager.OPERATION_UNIQUE_ID_FIELD
+}
 
 }
 
