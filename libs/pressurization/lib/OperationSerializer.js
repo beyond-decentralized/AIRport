@@ -2,25 +2,25 @@ import { DI } from '@airport/di';
 import { EntityState } from '@airport/ground-control';
 import { OPERATION_SERIALIZER } from './tokens';
 export class OperationSerializer {
-    serialize(entity, entityStateManager) {
+    serialize(entity, serializationStateManager) {
         const operation = {
             namePath: ['root'],
             processedEntityMap: new Map(),
             sequence: 0,
             stubLookupTable: [],
         };
-        return this.doSerialize(entity, operation, entityStateManager);
+        return this.doSerialize(entity, operation, serializationStateManager);
     }
-    doSerialize(entity, operation, entityStateManager) {
+    doSerialize(entity, operation, serializationStateManager) {
         if (entity instanceof Object) {
             if (entity instanceof Array) {
-                return entity.map(anEntity => this.doSerialize(anEntity, operation, entityStateManager));
+                return entity.map(anEntity => this.doSerialize(anEntity, operation, serializationStateManager));
             }
             else if (entity instanceof Date) {
                 var copy = {
                     value: entity.toISOString()
                 };
-                copy[entityStateManager.getStateFieldName()] = EntityState.RESULT_DATE;
+                copy[serializationStateManager.getStateFieldName()] = EntityState.RESULT_DATE;
                 return copy;
             }
         }

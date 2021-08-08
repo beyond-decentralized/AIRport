@@ -1,31 +1,10 @@
 import { DI } from '@airport/di';
 import { EntityState, ENTITY_STATE_MANAGER } from '@airport/ground-control';
-export function markAsStub(entity) {
-    DI.db().getSync(ENTITY_STATE_MANAGER).markAsStub(entity);
-}
 export function markForDeletion(entity) {
     DI.db().getSync(ENTITY_STATE_MANAGER).markForDeletion(entity);
 }
-export function markToCreate(entity) {
-    DI.db().getSync(ENTITY_STATE_MANAGER).markToCreate(entity);
-}
-export function markToUpdate(entity) {
-    DI.db().getSync(ENTITY_STATE_MANAGER).markToUpdate(entity);
-}
 export function getEntityState(entity) {
     DI.db().getSync(ENTITY_STATE_MANAGER).getEntityState(entity);
-}
-export function copyEntityState(entity, entity2) {
-    DI.db().getSync(ENTITY_STATE_MANAGER).copyEntityState(entity, entity2);
-}
-export function getEntityStateTypeAsFlags(entity, dbEntity) {
-    DI.db().getSync(ENTITY_STATE_MANAGER).getEntityStateTypeAsFlags(entity, dbEntity);
-}
-export function isStub(entity) {
-    DI.db().getSync(ENTITY_STATE_MANAGER).isStub(entity);
-}
-export function isParentId(entity, dbEntity) {
-    DI.db().getSync(ENTITY_STATE_MANAGER).isParentId(entity);
 }
 export class EntityStateManager {
     isStub(entity) {
@@ -33,27 +12,6 @@ export class EntityStateManager {
     }
     isParentId(entity) {
         return this.getEntityState(entity) === EntityState.PARENT_ID;
-    }
-    getOperationUniqueId(entity, throwIfNotFound = true, dbEntity = null) {
-        const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD];
-        if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
-            if (throwIfNotFound) {
-                let entityDescription;
-                if (dbEntity) {
-                    entityDescription = dbEntity.schemaVersion.schema.name + '.' + dbEntity.name;
-                }
-                else {
-                    entityDescription = JSON.stringify(entity);
-                }
-                throw new Error(`Could not find "${EntityStateManager.OPERATION_UNIQUE_ID_FIELD}" property on DTO:
-			
-			${entityDescription}`);
-            }
-        }
-        return operationUniqueId;
-    }
-    markAsStub(entity) {
-        entity.__state__ = EntityState.STUB;
     }
     markForDeletion(entity) {
         entity.__state__ = EntityState.DELETE;
@@ -75,9 +33,6 @@ export class EntityStateManager {
     }
     copyEntityState(fromEntity, toEntity) {
         toEntity.__state__ = fromEntity.__state__;
-    }
-    getUniqueIdFieldName() {
-        return EntityStateManager.OPERATION_UNIQUE_ID_FIELD;
     }
     getStateFieldName() {
         return EntityStateManager.STATE_FIELD;
@@ -131,10 +86,34 @@ export class EntityStateManager {
     isDeleted(entity) {
         return entity[EntityStateManager.DELETED_PROPERTY];
     }
+    getOperationUniqueId(entity, throwIfNotFound = true, dbEntity = null) {
+        const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD];
+        if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
+            if (throwIfNotFound) {
+                let entityDescription;
+                if (dbEntity) {
+                    entityDescription = dbEntity.schemaVersion.schema.name + '.' + dbEntity.name;
+                }
+                else {
+                    entityDescription = JSON.stringify(entity);
+                }
+                throw new Error(`Could not find "${EntityStateManager.OPERATION_UNIQUE_ID_FIELD}" property on DTO:
+        
+        ${entityDescription}`);
+            }
+        }
+        return operationUniqueId;
+    }
+    markAsStub(entity) {
+        entity.__state__ = EntityState.STUB;
+    }
+    getUniqueIdFieldName() {
+        return EntityStateManager.OPERATION_UNIQUE_ID_FIELD;
+    }
 }
 EntityStateManager.DELETED_PROPERTY = '__deleted__';
-EntityStateManager.OPERATION_UNIQUE_ID_FIELD = '__UID__';
 EntityStateManager.ORIGINAL_VALUES_PROPERTY = '__originalValues__';
 EntityStateManager.STATE_FIELD = '__state__';
+EntityStateManager.OPERATION_UNIQUE_ID_FIELD = '__OUID__';
 DI.set(ENTITY_STATE_MANAGER, EntityStateManager);
 //# sourceMappingURL=EntityStateManager.js.map

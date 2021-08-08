@@ -1,4 +1,4 @@
-import { IEntityStateManager } from '@airport/ground-control';
+import { ISerializationStateManager } from './SerializationStateManager';
 /**
  * A simple operation serializer that is not aware
  * of the schema and only supports create operations
@@ -7,7 +7,7 @@ import { IEntityStateManager } from '@airport/ground-control';
  * be represented by the "id" property.
  */
 export interface IOperationSerializer {
-    serialize<E, T = E | E[]>(entity: T, entityStateManager: IEntityStateManager): T;
+    serialize<E, T = E | E[]>(entity: T, serializationStateManager: ISerializationStateManager): T;
 }
 interface ISerializableOperation {
     namePath: string[];
@@ -16,8 +16,8 @@ interface ISerializableOperation {
     stubLookupTable: any[];
 }
 export declare class OperationSerializer implements IOperationSerializer {
-    serialize<E, T = E | E[]>(entity: T, entityStateManager: IEntityStateManager): T;
-    doSerialize<E>(entity: E, operation: ISerializableOperation, entityStateManager: IEntityStateManager): E;
+    serialize<E, T = E | E[]>(entity: T, serializationStateManager: ISerializationStateManager): T;
+    doSerialize<E>(entity: E, operation: ISerializableOperation, serializationStateManager: ISerializationStateManager): E;
 }
 export {};
 //# sourceMappingURL=OperationSerializer.d.ts.map

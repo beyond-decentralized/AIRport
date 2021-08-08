@@ -1,8 +1,8 @@
 import { DI } from '@airport/di'
 import {
-	EntityState,
-	IEntityStateManager
-} from '@airport/ground-control'
+	ISerializationStateManager,
+	SerializationState
+} from './SerializationStateManager'
 import { QUERY_RESULTS_DESERIALIZER } from './tokens'
 
 /**
@@ -12,7 +12,7 @@ export interface IQueryResultsDeserializer {
 
 	deserialize<E, T = E | E[]>(
 		entity: T,
-		entityStateManager: IEntityStateManager,
+		serializationStateManager: ISerializationStateManager
 	): T
 
 }
@@ -26,7 +26,7 @@ export class QueryResultsDeserializer
 
 	deserialize<E, T = E | E[]>(
 		entity: T,
-		entityStateManager: IEntityStateManager
+		serializationStateManager: ISerializationStateManager
 	): T {
 		const operation: IDeserializableOperation = {
 			lookupTable: [],
@@ -34,9 +34,9 @@ export class QueryResultsDeserializer
 		let deserializedEntity
 		if (entity instanceof Array) {
 			deserializedEntity = <any><E[]>entity.map(anEntity => this.doDeserialize(
-				anEntity, operation, entityStateManager))
+				anEntity, operation, serializationStateManager))
 		} else {
-			deserializedEntity = this.doDeserialize(entity, operation, entityStateManager)
+			deserializedEntity = this.doDeserialize(entity, operation, serializationStateManager)
 		}
 
 		return deserializedEntity
@@ -45,11 +45,11 @@ export class QueryResultsDeserializer
 	doDeserialize<E>(
 		entity: E,
 		operation: IDeserializableOperation,
-		entityStateManager: IEntityStateManager
+		serializationStateManager: ISerializationStateManager
 	): E {
-		let state = entityStateManager.getEntityState(entity)
+		let state = serializationStateManager.getEntityState(entity)
 		switch (state) {
-			case EntityState.RESULT_DATE:
+			case SerializationState.DATE:
 				return <any>new Date(entity['value'])
 			// case EntityState.RESULT_JSON:
 			// 	return entity
@@ -59,26 +59,24 @@ export class QueryResultsDeserializer
 			// 	return entity
 		}
 
-		let operationUniqueId = entityStateManager.getOperationUniqueId(entity)
-		if (!operationUniqueId || typeof operationUniqueId !== 'number'
-			|| operationUniqueId < 1 || operationUniqueId % 1 === 0) {
-			throw new Error(`Invalid or missing ${entityStateManager.getUniqueIdFieldName()} field.`)
+		let operationUniqueId = serializationStateManager.getSerializationUniqueId(entity)
+		if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
+			throw new Error(`Invalid or missing ${serializationStateManager.getUniqueIdFieldName()} field.`)
 		}
 
 		let alreadyDeserializedEntity = operation.lookupTable[operationUniqueId]
 		switch (state) {
-			case EntityState.STUB: {
-				let alreadyDeserializedEntity = operation.lookupTable[operationUniqueId]
+			case SerializationState.STUB: {
 				if (!alreadyDeserializedEntity) {
 					throw new Error(`Could not find an already present entity for
-					${entityStateManager.getUniqueIdFieldName()} of ${operationUniqueId}`)
+					${serializationStateManager.getUniqueIdFieldName()} of ${operationUniqueId}`)
 				}
 				return alreadyDeserializedEntity
 			}
 			default:
 				if (alreadyDeserializedEntity) {
 					throw new Error(`Entity appears more than once for
-					${entityStateManager.getUniqueIdFieldName()} of ${operationUniqueId}`)
+					${serializationStateManager.getUniqueIdFieldName()} of ${operationUniqueId}`)
 				}
 		}
 
@@ -91,16 +89,16 @@ export class QueryResultsDeserializer
 			if (property instanceof Object) {
 				if (property instanceof Array) {
 					propertyCopy = property.map(aProperty => this.doDeserialize(
-						aProperty, operation, entityStateManager))
+						aProperty, operation, serializationStateManager))
 				} else {
-					propertyCopy = this.doDeserialize(property, operation, entityStateManager)
+					propertyCopy = this.doDeserialize(property, operation, serializationStateManager)
 				}
 			} else {
 				propertyCopy = property
 			}
 			deserializedEntity[propertyName] = propertyCopy
 		}
-		delete deserializedEntity[entityStateManager.getUniqueIdFieldName()]
+		delete deserializedEntity[serializationStateManager.getUniqueIdFieldName()]
 
 		return deserializedEntity
 	}

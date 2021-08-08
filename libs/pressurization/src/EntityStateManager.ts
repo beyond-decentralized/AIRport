@@ -17,12 +17,6 @@ export function markForDeletion<T>(
 	DI.db().getSync(ENTITY_STATE_MANAGER).markForDeletion(entity);
 }
 
-export function getEntityState<T>(
-	entity: T
-) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).getEntityState(entity);
-}
-
 export class EntityStateManager
 	implements IEntityStateManager {
 	static DELETED_PROPERTY = '__deleted__'
@@ -142,13 +136,13 @@ export class EntityStateManager
 		isDeleted: boolean,
 		entity: T
 	): void {
-		entity[EntityStateManager.DELETED_PROPERTY] = true
+		entity[EntityStateManager.STATE_FIELD] = EntityState.DELETE
 	}
 
 	isDeleted<T>(
 		entity: T
 	): boolean {
-		return entity[EntityStateManager.DELETED_PROPERTY]
+		return entity[EntityStateManager.STATE_FIELD] === EntityState.DELETE
 	}
 
 

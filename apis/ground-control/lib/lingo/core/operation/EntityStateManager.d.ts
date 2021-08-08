@@ -1,12 +1,11 @@
 import { DbEntity } from "../../schema/Entity";
 export declare enum EntityState {
-    CREATE = 1,
-    DELETE = 2,
-    PARENT_ID = 3,
-    RESULT = 4,
-    RESULT_DATE = 5,
-    STUB = 8,
-    UPDATE = 9
+    CREATE = "CREATE",
+    DELETE = "DELETE",
+    PARENT_ID = "PARENT_ID",
+    RESULT = "RESULT",
+    STUB = "STUB",
+    UPDATE = "UPDATE"
 }
 export interface IEntityStateAsFlags {
     isCreate: boolean;

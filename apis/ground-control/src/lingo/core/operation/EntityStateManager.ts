@@ -1,16 +1,17 @@
 import { DbEntity } from "../../schema/Entity";
 
 export enum EntityState {
-	CREATE = 1,
-	DELETE = 2,
-	PARENT_ID = 3,
-	RESULT = 4,
-	RESULT_DATE = 5,
+	CREATE = 'CREATE',
+	DATE = 'DATE',
+	DELETE = 'DELETE',
+	PARENT_ID = 'PARENT_ID',
+	// Not sure if RESULT is still needed, with removal of RESULT_JSON and RESULT_JSON_ARRAY
+	// RESULT = 'RESULT',
+	STUB = 'STUB',
+	UPDATE = 'UPDATE',
 	// Json fields promote schema de-normalization
 	// RESULT_JSON = 6,
-	// RESULT_JSON_ARRAY = 7,
-	STUB = 8,
-	UPDATE = 9
+	// RESULT_JSON_ARRAY = 7
 }
 
 export interface IEntityStateAsFlags {
