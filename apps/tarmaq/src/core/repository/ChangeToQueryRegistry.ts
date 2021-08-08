@@ -1,12 +1,12 @@
 import {TableMap} from '@airport/ground-control'
-import {ISubject} from '@airport/observe'
+import {Subject} from 'rxjs'
 
 /**
  * Created by Papa on 9/10/2016.
  */
 
 export class Query {
-	subject: ISubject<any>
+	subject: Subject<any>
 	fieldMap: TableMap
 }
 
@@ -15,7 +15,7 @@ export class ChangeToQueryRegistry {
 	activeQueries: Query[] = []
 
 	addQuery(
-		subject: ISubject<any>,
+		subject: Subject<any>,
 		fieldMap: TableMap
 	): void {
 		this.activeQueries.push({
@@ -25,7 +25,7 @@ export class ChangeToQueryRegistry {
 	}
 
 	removeQuery(
-		subject: ISubject<any>
+		subject: Subject<any>
 	): void {
 		for (let i = 0; i < this.activeQueries.length; i++) {
 			let query = this.activeQueries[i]
