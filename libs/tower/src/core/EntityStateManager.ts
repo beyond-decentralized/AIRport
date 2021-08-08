@@ -103,7 +103,7 @@ export class EntityStateManager
 			case EntityState.RESULT:
 				isResult = true
 				break
-			case EntityState.RESULT_DATE:
+			case EntityState.DATE:
 				isResultDate = true
 				break
 			// case EntityState.RESULT_JSON:
@@ -126,7 +126,6 @@ export class EntityStateManager
 			isParentId,
 			isResult,
 			isResultDate,
-			isResultJson,
 			isStub,
 			isUpdate,
 		}

@@ -1,3 +1,3 @@
-import { IAutopilotDaoLoader } from "./autopilot/IAutopilotDaoLoader";
-export declare const AUTOPILOT_DAO_LOADER: import(".").IDiToken<IAutopilotDaoLoader>;
+import { IAutopilotApiLoader } from "./autopilot/IAutopilotApiLoader";
+export declare const AUTOPILOT_API_LOADER: import(".").IDiToken<IAutopilotApiLoader>;
 //# sourceMappingURL=tokens.d.ts.map

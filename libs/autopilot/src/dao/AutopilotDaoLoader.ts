@@ -1,15 +1,15 @@
 import {
-    AUTOPILOT_DAO_LOADER,
+    AUTOPILOT_API_LOADER,
     DI,
-    IAutopilotDaoLoader,
+    IAutopilotApiLoader,
     IOC
 } from '@airport/di'
 import { LOCAL_API_CLIENT } from '../tokens';
 
-export class AutopilotDaoLoader
-    implements IAutopilotDaoLoader {
+export class AutopilotApiLoader
+    implements IAutopilotApiLoader {
 
-    loadDaoAutopilot<T>(
+    loadApiAutopilot<T>(
         uniqueSchemaHash: string,
         daoName: string
     ): T {
@@ -17,10 +17,10 @@ export class AutopilotDaoLoader
             get(target, methodName: string) {
                 return function (...args) {
                     return IOC.getSync(LOCAL_API_CLIENT)
-                        .invokeDaoMethod(uniqueSchemaHash, daoName, methodName, args);
+                        .invokeApiMethod(uniqueSchemaHash, daoName, methodName, args);
                 };
             }
         }) as T;
     }
 }
-DI.set(AUTOPILOT_DAO_LOADER, AutopilotDaoLoader)
+DI.set(AUTOPILOT_API_LOADER, AutopilotApiLoader)

@@ -2,27 +2,23 @@ import { DI } from "@airport/di";
 import { SERIALIZATION_STATE_MANAGER } from "./tokens";
 export var SerializationState;
 (function (SerializationState) {
-    SerializationState[SerializationState["DATE"] = 1] = "DATE";
-    SerializationState[SerializationState["STUB"] = 2] = "STUB";
+    SerializationState["DATE"] = "DATE";
+    SerializationState["STUB"] = "STUB";
 })(SerializationState || (SerializationState = {}));
 export class SerializationStateManager {
-    getSerializationUniqueId(entity, throwIfNotFound = true, dbEntity = null) {
+    getSerializationUniqueId(entity, throwIfNotFound = true) {
         const serializationUniqueId = entity[SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD];
         if (!serializationUniqueId || typeof serializationUniqueId !== 'number' || serializationUniqueId < 1) {
             if (throwIfNotFound) {
-                let entityDescription;
-                if (dbEntity) {
-                    entityDescription = dbEntity.schemaVersion.schema.name + '.' + dbEntity.name;
-                }
-                else {
-                    entityDescription = JSON.stringify(entity);
-                }
                 throw new Error(`Could not find "${SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD}" property on DTO:
         
-        ${entityDescription}`);
+        ${JSON.stringify(entity)}`);
             }
         }
         return serializationUniqueId;
+    }
+    getEntityState(entity) {
+        return entity[SerializationStateManager.SERIALIZATION_STATE_FIELD];
     }
     markAsStub(entity) {
         this.markAs(entity, SerializationState.STUB);
@@ -41,6 +37,9 @@ export class SerializationStateManager {
     }
     getUniqueIdFieldName() {
         return SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD;
+    }
+    getStateFieldName() {
+        return SerializationStateManager.SERIALIZATION_STATE_FIELD;
     }
     is(entity, serializationState) {
         return entity[SerializationStateManager.SERIALIZATION_STATE_FIELD] == serializationState;

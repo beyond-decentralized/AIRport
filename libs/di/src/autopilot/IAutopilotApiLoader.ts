@@ -1,6 +1,6 @@
-export interface IAutopilotDaoLoader {
+export interface IAutopilotApiLoader {
 
-    loadDaoAutopilot(
+    loadApiAutopilot(
         uniqueSchemaHash: string,
         daoName: string
     ): any;

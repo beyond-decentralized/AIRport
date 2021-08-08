@@ -1,10 +1,8 @@
 import { DI } from "@airport/di";
-import { DbEntity } from "@airport/ground-control";
 import { SERIALIZATION_STATE_MANAGER } from "./tokens";
 
 export enum SerializationState {
     DATE = 'DATE',
-    DELETE = 'DELETE',
     STUB = 'STUB'
 }
 
@@ -17,8 +15,7 @@ export interface ISerializationStateManager {
 
     getSerializationUniqueId<T>(
         entity: T,
-        throwIfNotFound?: boolean,
-        dbEntity?: DbEntity
+        throwIfNotFound?: boolean
     ): number
 
     getEntityState<T>(
@@ -47,14 +44,6 @@ export interface ISerializationStateManager {
 
 }
 
-
-// Copy of equivalent logic in EntityStateManager to not require its import
-export function markForDeletion<T>(
-	entity: T
-) {
-    entity[SerializationStateManager.SERIALIZATION_STATE_FIELD] = SerializationState.DELETE
-}
-
 export class SerializationStateManager
     implements ISerializationStateManager {
 
@@ -63,22 +52,15 @@ export class SerializationStateManager
 
     getSerializationUniqueId<T>(
         entity: T,
-        throwIfNotFound = true,
-        dbEntity: DbEntity = null
+        throwIfNotFound = true
     ): number {
         const serializationUniqueId = entity[SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD]
 
         if (!serializationUniqueId || typeof serializationUniqueId !== 'number' || serializationUniqueId < 1) {
             if (throwIfNotFound) {
-                let entityDescription
-                if (dbEntity) {
-                    entityDescription = dbEntity.schemaVersion.schema.name + '.' + dbEntity.name
-                } else {
-                    entityDescription = JSON.stringify(entity)
-                }
                 throw new Error(`Could not find "${SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD}" property on DTO:
         
-        ${entityDescription}`)
+        ${JSON.stringify(entity)}`)
             }
         }
         return serializationUniqueId
@@ -120,7 +102,7 @@ export class SerializationStateManager
     getUniqueIdFieldName(): string {
         return SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD
     }
-    
+
     getStateFieldName(): string {
         return SerializationStateManager.SERIALIZATION_STATE_FIELD
     }

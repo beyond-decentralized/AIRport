@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { EntityState } from '@airport/ground-control';
+import { SerializationState } from './SerializationStateManager';
 import { OPERATION_SERIALIZER } from './tokens';
 export class OperationSerializer {
     serialize(entity, serializationStateManager) {
@@ -17,11 +17,7 @@ export class OperationSerializer {
                 return entity.map(anEntity => this.doSerialize(anEntity, operation, serializationStateManager));
             }
             else if (entity instanceof Date) {
-                var copy = {
-                    value: entity.toISOString()
-                };
-                copy[serializationStateManager.getStateFieldName()] = EntityState.RESULT_DATE;
-                return copy;
+                return serializationStateManager.serializeAsDate(entity);
             }
         }
         else {
@@ -34,15 +30,15 @@ export class OperationSerializer {
         operationUniqueId = ++operation.sequence;
         operation.processedEntityMap.set(entity, operationUniqueId);
         let entityStub = {};
-        entityStub[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
-        entityStub[entityStateManager.getStateFieldName()] = EntityState.STUB;
+        serializationStateManager.markAsStub(entity);
+        entityStub[serializationStateManager.getUniqueIdFieldName()] = operationUniqueId;
         operation.stubLookupTable[operationUniqueId] = entityStub;
         let serializedEntity = {};
-        serializedEntity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
+        serializedEntity[serializationStateManager.getUniqueIdFieldName()] = operationUniqueId;
         var isFirstProperty = true;
         for (const propertyName in entity) {
             const property = entity[propertyName];
-            const propertyState = property[entityStateManager.getStateFieldName()];
+            const propertyState = property[serializationStateManager.getStateFieldName()];
             let propertyCopy;
             if (!isFirstProperty) {
                 operation.namePath.pop();
@@ -57,14 +53,11 @@ export class OperationSerializer {
                     // 	}
                     // 	propertyCopy[entityStateManager.getStateFieldName()] = propertyState
                     // } else {
-                    propertyCopy = property.map(aProperty => this.doSerialize(aProperty, operation, entityStateManager));
+                    propertyCopy = property.map(aProperty => this.doSerialize(aProperty, operation, serializationStateManager));
                     // }
                 }
                 else if (property instanceof Date) {
-                    propertyCopy = {
-                        value: property.toISOString()
-                    };
-                    propertyCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT_DATE;
+                    propertyCopy = serializationStateManager.serializeAsDate(property);
                 }
                 else {
                     // if (propertyState === EntityState.RESULT_JSON) {
@@ -73,15 +66,11 @@ export class OperationSerializer {
                     // 	}
                     // 	propertyCopy[entityStateManager.getStateFieldName()] = propertyState
                     // } else {
-                    propertyCopy = this.doSerialize(property, operation, entityStateManager);
+                    propertyCopy = this.doSerialize(property, operation, serializationStateManager);
                     // }
                 }
             }
             else {
-                propertyCopy = {
-                    value: null
-                };
-                propertyCopy[entityStateManager.getStateFieldName()] = propertyState;
                 switch (propertyState) {
                     // case EntityState.RESULT_JSON_ARRAY:
                     // 	if (property) {
@@ -93,7 +82,7 @@ export class OperationSerializer {
                     // 		throw new Error(`Expecting an Object for "${operation.namePath.join('.')}", got: ${property}`)
                     // 	}
                     // 	break
-                    case EntityState.RESULT_DATE:
+                    case SerializationState.DATE:
                         if (property) {
                             throw new Error(`Expecting a Date for "${operation.namePath.join('.')}", got: ${property}`);
                         }

@@ -1,9 +1,11 @@
 export var EntityState;
 (function (EntityState) {
     EntityState["CREATE"] = "CREATE";
+    EntityState["DATE"] = "DATE";
     EntityState["DELETE"] = "DELETE";
     EntityState["PARENT_ID"] = "PARENT_ID";
-    EntityState["RESULT"] = "RESULT";
+    // Not sure if RESULT is still needed, with removal of RESULT_JSON and RESULT_JSON_ARRAY
+    // RESULT = 'RESULT',
     EntityState["STUB"] = "STUB";
     EntityState["UPDATE"] = "UPDATE";
     // Json fields promote schema de-normalization

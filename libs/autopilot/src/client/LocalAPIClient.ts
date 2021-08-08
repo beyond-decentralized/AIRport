@@ -1,16 +1,16 @@
 import { container, DI } from "@airport/di";
 import {
     OPERATION_SERIALIZER,
-    QUERY_RESULTS_DESERIALIZER
+    QUERY_RESULTS_DESERIALIZER,
+    SERIALIZATION_STATE_MANAGER
 } from "@airport/pressurization";
-import { ENTITY_STATE_MANAGER } from "@airport/ground-control/lib/tokens";
 import { LOCAL_API_CLIENT } from "../tokens";
 import { ILocalAPIRequest } from "./LocalAPIRequest";
 import { ILocalAPIResponse, LocalAPIResponseType } from "./LocalAPIResponse";
 
 export interface ILocalAPIClient {
 
-    invokeDaoMethod(
+    invokeApiMethod(
         schemaName: string,
         daoName: string,
         methodName: string,
@@ -22,23 +22,23 @@ export interface ILocalAPIClient {
 export class LocalAPIClient
     implements ILocalAPIClient {
 
-    async invokeDaoMethod(
+    async invokeApiMethod(
         schemaName: string,
         daoName: string,
         methodName: string,
         args: any[]
     ): Promise<any> {
-        const [entityStateManager, operationSerializer, queryResultsDeserializer]
-            = await container(this).get(ENTITY_STATE_MANAGER,
+        const [serializationStateManager, operationSerializer, queryResultsDeserializer]
+            = await container(this).get(SERIALIZATION_STATE_MANAGER,
                 OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER)
 
         let serializedParams
         if (args) {
             if (args.length) {
                 serializedParams = args
-                    .map(arg => operationSerializer.serialize(arg, entityStateManager))
+                    .map(arg => operationSerializer.serialize(arg, serializationStateManager))
             } else {
-                serializedParams = [operationSerializer.serialize(args, entityStateManager)]
+                serializedParams = [operationSerializer.serialize(args, serializationStateManager)]
             }
         } else {
             serializedParams = []
@@ -73,7 +73,7 @@ export class LocalAPIClient
         switch (response.type) {
             case LocalAPIResponseType.QUERY:
                 const value = queryResultsDeserializer
-                    .deserialize(response.payload, entityStateManager)
+                    .deserialize(response.payload, serializationStateManager)
                 return value
             case LocalAPIResponseType.SAVE:
                 // Return ISaveRecord as specified in Dao spec

@@ -1,5 +1,5 @@
 import { Context, ContextType } from '../Context';
-import { AUTOPILOT_DAO_LOADER } from '../tokens';
+import { AUTOPILOT_API_LOADER } from '../tokens';
 const classes = [];
 let numPendingInits = 0;
 const theObjects = [];
@@ -98,8 +98,8 @@ export class ChildContainer extends Container {
                     throw new Error(`Partial AUTOPILOT DAOs are not yet supported.`);
                 }
                 else {
-                    object = this.getSync(AUTOPILOT_DAO_LOADER)
-                        .loadDaoAutopilot(token.library.uniqueHash, token.name);
+                    object = this.getSync(AUTOPILOT_API_LOADER)
+                        .loadApiAutopilot(token.library.uniqueHash, token.name);
                 }
                 object.__container__ = this;
                 theObjects[token.sequence] = object;

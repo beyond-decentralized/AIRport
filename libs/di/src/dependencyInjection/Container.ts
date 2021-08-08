@@ -4,7 +4,7 @@ import {
 	IInjectionContext
 } from '../Context';
 import { IDiToken } from './Token';
-import { AUTOPILOT_DAO_LOADER } from '../tokens';
+import { AUTOPILOT_API_LOADER } from '../tokens';
 
 export interface IChildContainer
 	extends IContainer {
@@ -529,8 +529,8 @@ export class ChildContainer
 					} else if (typeof token.autopilot !== 'boolean') {
 						throw new Error(`Partial AUTOPILOT DAOs are not yet supported.`);
 					} else {
-						object = this.getSync(AUTOPILOT_DAO_LOADER)
-							.loadDaoAutopilot(token.library.uniqueHash, token.name);
+						object = this.getSync(AUTOPILOT_API_LOADER)
+							.loadApiAutopilot(token.library.uniqueHash, token.name);
 					}
 					object.__container__ = this;
 					theObjects[token.sequence] = object;

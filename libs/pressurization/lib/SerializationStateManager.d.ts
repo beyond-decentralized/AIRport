@@ -1,29 +1,32 @@
-import { DbEntity } from "@airport/ground-control";
 export declare enum SerializationState {
-    DATE = 1,
-    STUB = 2
+    DATE = "DATE",
+    STUB = "STUB"
 }
 export interface ISerializedDate {
     __serializationState__: SerializationState.DATE;
     value: string;
 }
 export interface ISerializationStateManager {
-    getSerializationUniqueId<T>(entity: T, throwIfNotFound?: boolean, dbEntity?: DbEntity): number;
+    getSerializationUniqueId<T>(entity: T, throwIfNotFound?: boolean): number;
+    getEntityState<T>(entity: T): SerializationState;
     markAsStub<T>(entity: T): void;
     isStub<T>(entity: T): boolean;
     serializeAsDate(value: Date): ISerializedDate;
     isDate<T>(entity: T): boolean;
     getUniqueIdFieldName(): string;
+    getStateFieldName(): string;
 }
 export declare class SerializationStateManager implements ISerializationStateManager {
     static SERIALIZATION_UNIQUE_ID_FIELD: string;
     static SERIALIZATION_STATE_FIELD: string;
-    getSerializationUniqueId<T>(entity: T, throwIfNotFound?: boolean, dbEntity?: DbEntity): number;
+    getSerializationUniqueId<T>(entity: T, throwIfNotFound?: boolean): number;
+    getEntityState<T>(entity: T): SerializationState;
     markAsStub<T>(entity: T): void;
     isStub<T>(entity: T): boolean;
     serializeAsDate(value: Date): ISerializedDate;
     isDate<T>(entity: T): boolean;
     getUniqueIdFieldName(): string;
+    getStateFieldName(): string;
     private is;
     private markAs;
 }

@@ -1,9 +1,9 @@
 import { DbEntity } from "../../schema/Entity";
 export declare enum EntityState {
     CREATE = "CREATE",
+    DATE = "DATE",
     DELETE = "DELETE",
     PARENT_ID = "PARENT_ID",
-    RESULT = "RESULT",
     STUB = "STUB",
     UPDATE = "UPDATE"
 }

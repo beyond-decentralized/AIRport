@@ -1,19 +1,18 @@
 import { container, DI } from "@airport/di";
-import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER } from "@airport/pressurization";
-import { ENTITY_STATE_MANAGER } from "@airport/ground-control/lib/tokens";
+import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER, SERIALIZATION_STATE_MANAGER } from "@airport/pressurization";
 import { LOCAL_API_CLIENT } from "../tokens";
 import { LocalAPIResponseType } from "./LocalAPIResponse";
 export class LocalAPIClient {
-    async invokeDaoMethod(schemaName, daoName, methodName, args) {
-        const [entityStateManager, operationSerializer, queryResultsDeserializer] = await container(this).get(ENTITY_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER);
+    async invokeApiMethod(schemaName, daoName, methodName, args) {
+        const [serializationStateManager, operationSerializer, queryResultsDeserializer] = await container(this).get(SERIALIZATION_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER);
         let serializedParams;
         if (args) {
             if (args.length) {
                 serializedParams = args
-                    .map(arg => operationSerializer.serialize(arg, entityStateManager));
+                    .map(arg => operationSerializer.serialize(arg, serializationStateManager));
             }
             else {
-                serializedParams = [operationSerializer.serialize(args, entityStateManager)];
+                serializedParams = [operationSerializer.serialize(args, serializationStateManager)];
             }
         }
         else {
@@ -45,7 +44,7 @@ export class LocalAPIClient {
         switch (response.type) {
             case LocalAPIResponseType.QUERY:
                 const value = queryResultsDeserializer
-                    .deserialize(response.payload, entityStateManager);
+                    .deserialize(response.payload, serializationStateManager);
                 return value;
             case LocalAPIResponseType.SAVE:
                 // Return ISaveRecord as specified in Dao spec

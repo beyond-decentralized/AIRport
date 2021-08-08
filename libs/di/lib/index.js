@@ -1,5 +1,5 @@
-export * from './autopilot/IAutopilotDaoLoader';
-export * from './autopilot/IDaoAutopilot';
+export * from './autopilot/IAutopilotApiLoader';
+export * from './autopilot/IApiAutopilot';
 export * from './dependencyInjection/Container';
 export * from './dependencyInjection/Injectable';
 export * from './dependencyInjection/Library';
