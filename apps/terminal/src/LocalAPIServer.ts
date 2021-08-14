@@ -20,7 +20,6 @@ import {
     PortableQuery,
     TRANSACTIONAL_CONNECTOR
 } from "@airport/ground-control";
-import { ENTITY_STATE_MANAGER } from "@airport/pressurization";
 import {
     DaoOperationType,
     IDaoOperation,

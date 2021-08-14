@@ -56,6 +56,8 @@ dependencies:
   '@rush-temp/traffic-pattern': 'file:projects/traffic-pattern.tgz'
   '@rush-temp/travel-document-checkpoint': 'file:projects/travel-document-checkpoint.tgz'
   '@rush-temp/vasi': 'file:projects/vasi.tgz'
+  '@rush-temp/web-terminal': 'file:projects/web-terminal.tgz'
+  '@rush-temp/web-tower': 'file:projects/web-tower.tgz'
   '@rush-temp/websql': 'file:projects/websql.tgz'
   '@types/gapi': 0.0.35
   '@types/google-drive-realtime-api': 0.0.33
@@ -5904,7 +5906,7 @@ packages:
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-bYHUPAQN91PRwJ7pHLHiVqh65TDhBmRWlG7uqxSPZycdFnrCtN7J7xDnI2nH788mOE1HzBbe01aOmQ4rvalKmw==
+      integrity: sha512-BRGSklOxUaXsxjjVTKhevNn7VVeQQgq3TauD/Q40LSzWQavothJSERaIlVpFbxOjzaT0hT84zlKvrsloY8+ErQ==
       tarball: 'file:projects/autopilot.tgz'
     version: 0.0.0
   'file:projects/blueprint.tgz_typescript@4.1.2':
@@ -5925,7 +5927,7 @@ packages:
     dev: false
     name: '@rush-temp/check-in'
     resolution:
-      integrity: sha512-2hBtIm/1L9HRq3hbomHC8apnt4HmO9YMtnu5lTZQGOcxKYnAp+SfHx8sCXVRoEPdUHSgEvKJH3tR/sES3pKiiQ==
+      integrity: sha512-0IhQU1iZ6hIgKVWeNah+WAOh6tGnjmzSPuiY9fXFM9Xpe42fo//PHdOQEhKH/ZeWPOlqe2wnAJKYzanT/Uzy+Q==
       tarball: 'file:projects/check-in.tgz'
     version: 0.0.0
   'file:projects/cockroachdb.tgz':
@@ -5951,7 +5953,7 @@ packages:
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-TWZb5dn63hhkKrkBHMhY/eu5ccf+9/cFqUtHThCpRxb7jW3rp0N4/jHMLU+W3z6mcmFu/Wv8pkSl0NwmIcxGpg==
+      integrity: sha512-TZt23YRxYfrkqWGEYgDT1xheyXngodPHa9hIi2UY9U3dUyAUyhT5ImzCuQroL+Sg1fLVsR7LIQMzkkRGEi3hKw==
       tarball: 'file:projects/di.tgz'
     version: 0.0.0
   'file:projects/flight-log-archive.tgz':
@@ -6151,7 +6153,7 @@ packages:
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-Mj+8M74GalEiUZ3uqiU0TETTqiZhckG9XoDq9NcF6KlkxL2kNzfHbLCl5KHEV5M9i6UXp+mK3Su0lV7dGSvKdw==
+      integrity: sha512-AHNQm77ERlxUGVl60M4/mjmKvm1PPzenKTQbETETHo3KooPxFlARBGKvg1OxXWuW+Jt1UBUHzourwu1uKBOIqA==
       tarball: 'file:projects/pressurization.tgz'
     version: 0.0.0
   'file:projects/ramp.tgz':
@@ -6185,7 +6187,7 @@ packages:
     dev: false
     name: '@rush-temp/security-check'
     resolution:
-      integrity: sha512-VgCR/40ti2ZSRSiKMeoXLu/F6Nvl1oWSkip+7LHqdYTgE0ZdBjg15ILk1iTCPFPuZZDxPxsHESiIZYGLoE3Szg==
+      integrity: sha512-2i8aqPhH204Mjo4TVgaQysfyX5gK57YoRwz//RFI3sVE+Hz3p0+yZ/+Ysexd8cYz29y7jy5DM8rlGRFMGzeqfg==
       tarball: 'file:projects/security-check.tgz'
     version: 0.0.0
   'file:projects/sequence.tgz':
@@ -6243,7 +6245,7 @@ packages:
     dev: false
     name: '@rush-temp/terminal-map'
     resolution:
-      integrity: sha512-H9yftmD9+mskmfqvrzYBgCJ6khuECENjHbVHwmGc/81XWBvT26IWfri5WI1jkBRZcexAM3FvNDqVwSb8r+t+CQ==
+      integrity: sha512-iBCEUK99cOl7baMum+buI6/B/G4mFryg7DTK/5f8SOKGyoc1itQgXsZkF2XseRPvx04WneGBxn3cUxkZ5gZkJQ==
       tarball: 'file:projects/terminal-map.tgz'
     version: 0.0.0
   'file:projects/terminal.tgz':
@@ -6253,7 +6255,7 @@ packages:
     dev: false
     name: '@rush-temp/terminal'
     resolution:
-      integrity: sha512-NXJvw+UAhyg1ag1cz35Grv49wqMkJqwx1FEz/wUJY8pBuPvAg11/e8B5WEk9d7xG5qiiGhhVeHRuuwf45CONGg==
+      integrity: sha512-7pAHQCp9Lw0yn45DOwZf1a9g/bL6IkLUw3xkUauULRvqIdYI+Jit7I9yK66GJ+BVIJ/nio+zC2N0UQFf4AHbpw==
       tarball: 'file:projects/terminal.tgz'
     version: 0.0.0
   'file:projects/territory.tgz':
@@ -6287,7 +6289,7 @@ packages:
     dev: false
     name: '@rush-temp/tower'
     resolution:
-      integrity: sha512-O9ddSwzk42BmyC0mDndpuBQaggxTU1hK1t/Gm+SRQmoc6uuMQqmZNgU0vI6PTuSJIZoR518F1A5WbZKYOWweOQ==
+      integrity: sha512-qvkE42QrUfQeh/nYoGBbE6fLks8ode2WyetnYQt0aIkZIH3mYLn2dOrwqpmy4UqVPEKFFSc8U7QFAFhFgnSb2A==
       tarball: 'file:projects/tower.tgz'
     version: 0.0.0
   'file:projects/traffic-pattern.tgz':
@@ -6310,6 +6312,24 @@ packages:
     resolution:
       integrity: sha512-xonl9qqYggc/ONGP0X2AYxM792xd5WmvJ6Dl2EpksXWgqk46j+NFcBx9CPpNdjjKjDURyyzDygacmDGUi+C87Q==
       tarball: 'file:projects/vasi.tgz'
+    version: 0.0.0
+  'file:projects/web-terminal.tgz':
+    dependencies:
+      rxjs: 7.1.0
+    dev: false
+    name: '@rush-temp/web-terminal'
+    resolution:
+      integrity: sha512-cyFgsbtluKSAoYqDPsIVHVRgLtKo6dYDP1WDJsId8TZsXIoUeXLkwODapbT7HDJLJFK0+5z596DZasvIIBJpsA==
+      tarball: 'file:projects/web-terminal.tgz'
+    version: 0.0.0
+  'file:projects/web-tower.tgz':
+    dependencies:
+      rxjs: 7.1.0
+    dev: false
+    name: '@rush-temp/web-tower'
+    resolution:
+      integrity: sha512-GnGzh5dbT4lZWrxZhQHFFTkEjJfeszwWg18xrVd7RPPy8kPNpUpKcm4MA0gRKVhkB8+Ck452QSP3x3iJntBqDA==
+      tarball: 'file:projects/web-tower.tgz'
     version: 0.0.0
   'file:projects/websql.tgz':
     dev: false
@@ -6377,6 +6397,8 @@ specifiers:
   '@rush-temp/traffic-pattern': 'file:./projects/traffic-pattern.tgz'
   '@rush-temp/travel-document-checkpoint': 'file:./projects/travel-document-checkpoint.tgz'
   '@rush-temp/vasi': 'file:./projects/vasi.tgz'
+  '@rush-temp/web-terminal': 'file:./projects/web-terminal.tgz'
+  '@rush-temp/web-tower': 'file:./projects/web-tower.tgz'
   '@rush-temp/websql': 'file:./projects/websql.tgz'
   '@types/gapi': ^0.0.35
   '@types/google-drive-realtime-api': ^0.0.33

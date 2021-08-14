@@ -13,7 +13,6 @@
     "@airport/holding-pattern": "0.0.1",
     "@airport/landing": "0.0.1",
     "@airport/moving-walkway": "0.0.1",
-    "@airport/pressurization": "0.0.1",
     "@airport/runway-edge-lighting": "0.0.1",
     "@airport/takeoff": "0.0.1",
     "@airport/terminal-map": "0.0.1",

@@ -11,6 +11,7 @@ export * from './clientQuery/ClientQueryManager';
 export * from './serialize/OperationDeserializer';
 export * from './serialize/QueryParameterDeserializer';
 export * from './serialize/QueryResultsSerializer';
+export * from './Api';
 export * from './Duo';
 export * from './EntityDatabaseFacade';
 export * from './Selector';

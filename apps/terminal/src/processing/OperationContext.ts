@@ -26,10 +26,6 @@ import {
 	STORE_DRIVER
 } from '@airport/ground-control'
 import {
-	ENTITY_STATE_MANAGER,
-	IEntityStateManager
-} from '@airport/pressurization'
-import {
 	ITransactionalServer,
 	TRANSACTIONAL_SERVER
 } from '@airport/tower'

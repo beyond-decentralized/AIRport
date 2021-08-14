@@ -62,6 +62,11 @@
       "projectFolder": "apps/todo",
       "shouldPublish": true
     },
+    {
+      "packageName": "@airport/web-terminal",
+      "projectFolder": "apps/web-terminal",
+      "shouldPublish": true
+    },
     // "common" folder (alphabetical order)
     {
       "packageName": "@airport/tools",
@@ -102,6 +107,27 @@
     {
       "packageName": "@airport/websql",
       "projectFolder": "db/websql",
+      "shouldPublish": true
+    },
+    // "generators" folder (alphabetical order)
+    {
+      "packageName": "@airport/landing",
+      "projectFolder": "generators/landing",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/runway",
+      "projectFolder": "generators/runway",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/takeoff",
+      "projectFolder": "generators/takeoff",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/taxiway",
+      "projectFolder": "generators/taxiway",
       "shouldPublish": true
     },
     // "highway" folder (alphabetical order)
@@ -186,25 +212,9 @@
       "projectFolder": "libs/tower",
       "shouldPublish": true
     },
-    // "generators" folder (alphabetical order)
     {
-      "packageName": "@airport/landing",
-      "projectFolder": "generators/landing",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/runway",
-      "projectFolder": "generators/runway",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/takeoff",
-      "projectFolder": "generators/takeoff",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/taxiway",
-      "projectFolder": "generators/taxiway",
+      "packageName": "@airport/web-tower",
+      "projectFolder": "libs/web-tower",
       "shouldPublish": true
     },
     // "schemas" folder (alphabetical order),

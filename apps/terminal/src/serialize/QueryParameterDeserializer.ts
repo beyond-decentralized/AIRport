@@ -8,10 +8,6 @@ import { DI } from "@airport/di";
 import {
     SQLDataType
 } from "@airport/ground-control";
-import {
-    EntityState,
-    IEntityStateManager
-} from "@airport/pressurization";
 
 export class QueryParameterDeserializer
     implements IQueryParameterDeserializer {

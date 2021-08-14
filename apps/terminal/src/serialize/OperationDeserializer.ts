@@ -11,10 +11,6 @@ import {
     EntityRelationType,
     SQLDataType
 } from "@airport/ground-control";
-import {
-    EntityState,
-    IEntityStateManager
-} from "@airport/pressurization";
 
 interface IDeserializableOperation {
     lookupTable: any[]

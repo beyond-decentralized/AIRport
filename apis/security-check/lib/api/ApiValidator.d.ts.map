@@ -1,0 +1,1 @@
+{"version":3,"file":"ApiValidator.d.ts","sourceRoot":"","sources":["../../src/api/ApiValidator.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,aAAa,EAAE,MAAM,gBAAgB,CAAC;AAE/C,MAAM,WAAW,aAAa;IAE1B,QAAQ,CACJ,SAAS,EAAE,aAAa,EACxB,UAAU,EAAE,GAAG,EAAE,GAClB,IAAI,CAAA;CAEV"}
