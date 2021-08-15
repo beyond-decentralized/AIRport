@@ -12,13 +12,11 @@ import { IActor } from '@airport/holding-pattern';
 import {
 	DistributionStrategy,
 	ICredentials,
-	PlatformType,
-	TRANSACTION_MANAGER
-} from '@airport/terminal-map';
-import {
 	ITransactionalServer,
+	PlatformType,
+	TRANSACTION_MANAGER,
 	TRANSACTIONAL_SERVER
-} from '@airport/tower';
+} from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 import { IOperationContext } from '../processing/OperationContext';
 import {
@@ -143,6 +141,27 @@ export class TransactionalServer
 		await this.ensureIocContext(context)
 
 		return await context.ioc.queryManager.searchOne<E>(portableQuery, context);
+	}	
+
+	async startTransaction(
+		credentials: ICredentials,
+		context: IContext
+	): Promise<boolean> {
+		throw new Error('FIXME: implement')
+	}
+
+	async commit(
+		credentials: ICredentials,
+		context: IContext
+	): Promise<boolean> {
+		throw new Error('FIXME: implement')
+	}
+
+	async rollback(
+		credentials: ICredentials,
+		context: IContext
+	): Promise<boolean> {
+		throw new Error('FIXME: implement')
 	}
 
 	async save<E>(

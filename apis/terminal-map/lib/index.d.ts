@@ -18,6 +18,7 @@ export * from './sync/ChangeModel';
 export * from './sync/DistributionStrategy';
 export * from './sync/SharedChangeList';
 export * from './transaction/ITransaction';
+export * from './transaction/ITransactionalServer';
 export * from './transaction/TransactionManager';
 export * from './SharingAdaptor';
 export * from './tokens';

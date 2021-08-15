@@ -6,7 +6,7 @@ import {
 	PortableQuery
 }                          from '@airport/ground-control'
 import {Observable}       from 'rxjs'
-import {ICredentials}      from '@airport/terminal-map'
+import { ICredentials } from '../Credentials'
 
 export interface ITransactionalServer {
 
@@ -51,6 +51,21 @@ export interface ITransactionalServer {
 		context: IContext,
 		cachedSqlQueryId?: number
 	): Promise<Observable<E>>
+
+	startTransaction(
+		credentials: ICredentials,
+		context: IContext
+	): Promise<boolean>
+
+	commit(
+		credentials: ICredentials,
+		context: IContext
+	): Promise<boolean>
+
+	rollback(
+		credentials: ICredentials,
+		context: IContext
+	): Promise<boolean>
 
 	save<E>(
 		entity: E,
