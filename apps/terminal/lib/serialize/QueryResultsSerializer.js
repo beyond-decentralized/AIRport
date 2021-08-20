@@ -72,7 +72,7 @@ export class QueryResultsSerializer {
                             value: property.toISOString()
                         };
                         propertyCopy[entityStateManager.getStateFieldName()]
-                            = EntityState.RESULT_DATE;
+                            = EntityState.DATE;
                         break;
                     // case SQLDataType.ANY:
                     case SQLDataType.BOOLEAN:

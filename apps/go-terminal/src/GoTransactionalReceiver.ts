@@ -3,19 +3,18 @@ import {
 	container,
 	DI,
 	IContext
-}                        from '@airport/di';
+} from '@airport/di';
 import {
 	DistributionStrategy,
 	ISaveResult,
-	ITransactionalConnector,
 	PlatformType,
 	PortableQuery,
 	TRANSACTIONAL_CONNECTOR
-}                        from '@airport/ground-control';
-import { Observable }   from 'rxjs';
+} from '@airport/ground-control';
 import {
-	TRANSACTIONAL_SERVER
-}                        from '../tokens';
+	IAddRepositoryIMI, IIsolateMessageIn, IsolateMessageInType } from '@airport/security-check';
+import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
+import { Observable } from 'rxjs';
 
 var _isServer = false;
 
@@ -27,14 +26,103 @@ export function isServer(): boolean {
 	return _isServer;
 }
 
-export class TransactionalConnector
-	implements ITransactionalConnector {
+export class GoTransactionalReceiver {
 
 	dbName: string;
 	serverUrl: string;
 
+	public WebTransactionalReceiver() {
+		window.addEventListener("message", (event) => {
+			const ownDomain = window.location.hostname
+			const mainDomainFragments = ownDomain.split('.')
+			if (mainDomainFragments[0] === 'www') {
+				mainDomainFragments.splice(0, 1)
+			}
+			const domainPrefix = '.' + mainDomainFragments.join('.')
+			const origin = event.origin;
+			// Only accept requests from https protocol and .federateddb
+			if (!origin.startsWith("https") || !origin.endsWith(domainPrefix)) {
+				return
+			}
+			const sourceDomainNameFragments = origin.split('//')[1].split('.')
+			// Only accept requests from '${schemaName}.${mainDomainName}'
+			if (sourceDomainNameFragments.length != mainDomainFragments.length + 1) {
+				return
+			}
+			// Only accept requests from non-'www' domain (don't accept requests from self)
+			if (sourceDomainNameFragments[0] === 'www') {
+				return
+			}
+			const schemaHash = sourceDomainNameFragments[0]
+			const message: IIsolateMessageIn = event.data
+			const isolateId = message.isolateId
+			// FIXME: check schemaHash and isolateId and make sure they result in a match (isolate Id is passed in as a URL parameter)
+
+			this.processMessage(message).then()
+			
+		}, false)
+	}
+	
+
+	async processMessage(
+		message: IIsolateMessageIn
+	) {
+		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+		let result
+		switch (message.type) {
+			case IsolateMessageInType.ADD_REPOSITORY:
+				const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI> message
+				result = await transServer.addRepository(
+					addRepositoryMessage.name,
+					addRepositoryMessage.url,
+					addRepositoryMessage.platform,
+					addRepositoryMessage.platformConfig,
+					addRepositoryMessage.distributionStrategy,
+					{
+						domainAndPort: 'test'
+					},
+					{}
+				);
+				break
+			case IsolateMessageInType.COMMIT:
+				
+				break
+			case IsolateMessageInType.DELETE_WHERE:
+				break
+			case IsolateMessageInType.FIND:
+				break
+			case IsolateMessageInType.FIND_ONE:
+				break
+			case IsolateMessageInType.INSERT_VALUES:
+				break
+			case IsolateMessageInType.INSERT_VALUES_GET_IDS:
+				break
+			case IsolateMessageInType.ROLLBACK:
+				break
+			case IsolateMessageInType.SAVE:
+				break
+			case IsolateMessageInType.SEARCH:
+				break
+			case IsolateMessageInType.SEARCH_ONE:
+				break
+			case IsolateMessageInType.START_TRANSACTION:
+				break
+			case IsolateMessageInType.UPDATE_VALUES:
+				break
+			default:
+				// Unexpected IsolateMessageInType
+				return
+		}
+	}
+
+	async respondToMessage(
+		messageIn: IIsolateMessageIn
+	) {
+
+	}
+
 	async init(): Promise<void> {
-		if(!isServer()) {
+		if (!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -51,7 +139,7 @@ export class TransactionalConnector
 		distributionStrategy: DistributionStrategy,
 		context: IContext
 	): Promise<number> {
-		if(!isServer()) {
+		if (!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -75,7 +163,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		if(!isServer()) {
+		if (!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -96,9 +184,6 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		if(!isServer()) {
-			throw new Error('Not implemented');
-		}
 
 		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
@@ -117,7 +202,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<Observable<EntityArray>> {
-		if(!isServer()) {
+		if (!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -138,7 +223,7 @@ export class TransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<Observable<E>> {
-		if(!isServer()) {
+		if (!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -154,62 +239,11 @@ export class TransactionalConnector
 		);
 	}
 
-	/**
-	 * This is a TIQL Insert statement coming from the client.
-	 * It will have an id of the operation to be invoked, as
-	 * well as the parameters for this specific operation.
-	 * The operation will then be looked up from the schema,
-	 * parsed, cached (if appropriate) and executed.
-	 * 
-	 * NOTE: some of these operations will be internal 
-	 * 
-	 * In a client Dao this will look like:
-	 * 
-	 * @Prepared()
-	 * @Insert(...)
-	 * 
-	 */
-	insert(
-		// todo define parameters
-	) {
-		if(!isServer()) {
-			throw new Error('Not implemented');
-		}
-		// TODO: implement
-		throw new Error(`TODO: implement`)
-	}
-
-	/**
-	 * @Update(...)
-	 */
-	update(
-		// todo define parameters
-	) {
-		if(!isServer()) {
-			throw new Error('Not implemented');
-		}
-		// TODO: implement
-		throw new Error(`TODO: implement`)
-	}
-
-	/**
-	 * @Delete(...)
-	 */
-	delete(
-		// todo define parameters
-	) {
-		if(!isServer()) {
-			throw new Error('Not implemented');
-		}
-		// TODO: implement
-		throw new Error(`TODO: implement`)
-	}
-
 	async save<E, T = E | E[]>(
 		entity: T,
 		context: IContext,
 	): Promise<ISaveResult> {
-		if(!isServer()) {
+		if (!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -223,7 +257,7 @@ export class TransactionalConnector
 		context: IContext,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number> {
-		if(!isServer()) {
+		if (!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -237,7 +271,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		if(!isServer()) {
+		if (!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -250,7 +284,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number> {
-		if(!isServer()) {
+		if (!isServer()) {
 			throw new Error('Not implemented');
 		}
 
@@ -263,7 +297,7 @@ export class TransactionalConnector
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number> {
-		if(!isServer()) {
+		if (!isServer()) {
 			throw new Error('Not implemented');
 		}
 

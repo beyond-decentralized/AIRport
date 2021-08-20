@@ -1,0 +1,1 @@
+{"version":3,"file":"ApiRegistry.js","sourceRoot":"","sources":["../../../src/core/api/ApiRegistry.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,EAAE,EAAE,MAAM,aAAa,CAAC;AACjC,OAAO,EACH,YAAY,EAIf,MAAM,yBAAyB,CAAC;AAEjC,MAAM,OAAO,WAAW;IAKpB,aAAa,CACT,aAAqB,EACrB,UAAkB;QAElB,MAAM,IAAI,KAAK,CAAC,iBAAiB,CAAC,CAAC;IACvC,CAAC;CACJ;AACD,EAAE,CAAC,GAAG,CAAC,YAAY,EAAE,WAAW,CAAC,CAAA"}

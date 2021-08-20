@@ -3,6 +3,7 @@ import { IDaoRegistry } from './DaoRegistry';
 import { IOfflineDeltaStore } from './data/OfflineDeltaStore';
 import { ILocalAPIServer } from './LocalAPIServer';
 import { IOnlineManager } from './net/OnlineManager';
+import { ITransactionalReceiver } from './net/TransactionalReceiver';
 import { IDatabaseManager } from './orchestration/DatabaseManager';
 import { IDeleteManager } from './orchestration/DeleteManager';
 import { IHistoryManager } from './orchestration/HistoryManager';
@@ -29,5 +30,6 @@ export declare const OPERATION_MANAGER: import("@airport/di").IDiToken<IOperatio
 export declare const QUERY_MANAGER: import("@airport/di").IDiToken<IQueryManager>;
 export declare const REPOSITORY_MANAGER: import("@airport/di").IDiToken<IRepositoryManager>;
 export declare const STRUCTURAL_ENTITY_VALIDATOR: import("@airport/di").IDiToken<IStructuralEntityValidator>;
+export declare const TRANSACTIONAL_RECEIVER: import("@airport/di").IDiToken<ITransactionalReceiver>;
 export declare const UPDATE_MANAGER: import("@airport/di").IDiToken<IUpdateManager>;
 //# sourceMappingURL=tokens.d.ts.map

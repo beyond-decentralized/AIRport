@@ -19,6 +19,8 @@ dependencies:
   '@rush-temp/di': 'file:projects/di.tgz_typescript@4.1.2'
   '@rush-temp/flight-log-archive': 'file:projects/flight-log-archive.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:projects/fuel-hydrant-system.tgz'
+  '@rush-temp/go-terminal': 'file:projects/go-terminal.tgz'
+  '@rush-temp/go-tower': 'file:projects/go-tower.tgz'
   '@rush-temp/ground-control': 'file:projects/ground-control.tgz'
   '@rush-temp/ground-transport': 'file:projects/ground-transport.tgz'
   '@rush-temp/guideway': 'file:projects/guideway.tgz'
@@ -5973,6 +5975,24 @@ packages:
       integrity: sha512-XnNMlZlKKGs2Q14RtYLmuZpXUsKGTtyrGeeMxURZnENFsj3+oWsI82tpaWm9pHcmVsYHFFhRu5qKyBd0P3IXWA==
       tarball: 'file:projects/fuel-hydrant-system.tgz'
     version: 0.0.0
+  'file:projects/go-terminal.tgz':
+    dependencies:
+      rxjs: 7.1.0
+    dev: false
+    name: '@rush-temp/go-terminal'
+    resolution:
+      integrity: sha512-7lydlSUIGGLkvKsC9RVWhEuzp7RQoUEniMVrr9sWMyDvc9ZHEzE1/D9+uejAu3GuepQAwHzvxQWEeArbDim33g==
+      tarball: 'file:projects/go-terminal.tgz'
+    version: 0.0.0
+  'file:projects/go-tower.tgz':
+    dependencies:
+      rxjs: 7.1.0
+    dev: false
+    name: '@rush-temp/go-tower'
+    resolution:
+      integrity: sha512-Fa7vQPCpzdIRE0MopII7K9xaB9qGYCNo/WVl7Up08zQiM7gMWWV7v44hZKWlvv04h/iWm9+VEYu1ZrHozo2fjw==
+      tarball: 'file:projects/go-tower.tgz'
+    version: 0.0.0
   'file:projects/ground-control.tgz':
     dependencies:
       rxjs: 7.1.0
@@ -6319,7 +6339,7 @@ packages:
     dev: false
     name: '@rush-temp/web-terminal'
     resolution:
-      integrity: sha512-cyFgsbtluKSAoYqDPsIVHVRgLtKo6dYDP1WDJsId8TZsXIoUeXLkwODapbT7HDJLJFK0+5z596DZasvIIBJpsA==
+      integrity: sha512-KxFBNyowQZrRDnEjVAnPQ80sYR1F6iQ/OUt0oA6m9a7URJ/LDTzki5+MDpnQ0nSEuIrvWk7B7yhR10jZ9LuHDw==
       tarball: 'file:projects/web-terminal.tgz'
     version: 0.0.0
   'file:projects/web-tower.tgz':
@@ -6328,7 +6348,7 @@ packages:
     dev: false
     name: '@rush-temp/web-tower'
     resolution:
-      integrity: sha512-GnGzh5dbT4lZWrxZhQHFFTkEjJfeszwWg18xrVd7RPPy8kPNpUpKcm4MA0gRKVhkB8+Ck452QSP3x3iJntBqDA==
+      integrity: sha512-oxCC7RQAJ8I0UBaPkDMg57kJFm6tQVCHe2Jy6r0DlAjzz1IVUl8tWYSeJHC0pnJW4VrlQDAP56qv3E9ShXUmfw==
       tarball: 'file:projects/web-tower.tgz'
     version: 0.0.0
   'file:projects/websql.tgz':
@@ -6360,6 +6380,8 @@ specifiers:
   '@rush-temp/di': 'file:./projects/di.tgz'
   '@rush-temp/flight-log-archive': 'file:./projects/flight-log-archive.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:./projects/fuel-hydrant-system.tgz'
+  '@rush-temp/go-terminal': 'file:./projects/go-terminal.tgz'
+  '@rush-temp/go-tower': 'file:./projects/go-tower.tgz'
   '@rush-temp/ground-control': 'file:./projects/ground-control.tgz'
   '@rush-temp/ground-transport': 'file:./projects/ground-transport.tgz'
   '@rush-temp/guideway': 'file:./projects/guideway.tgz'

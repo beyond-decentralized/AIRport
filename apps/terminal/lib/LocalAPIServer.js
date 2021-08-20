@@ -3,7 +3,6 @@ import { LocalAPIResponseType } from "@airport/autopilot";
 import { CLIENT_QUERY_MANAGER, OPERATION_DESERIALIZER, QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER } from "@airport/check-in";
 import { container, DI } from "@airport/di";
 import { TRANSACTIONAL_CONNECTOR } from "@airport/ground-control";
-import { ENTITY_STATE_MANAGER } from "@airport/pressurization";
 import { DaoOperationType } from "./DaoRegistry";
 import { DAO_REGISTRY, LOCAL_API_SERVER } from "./tokens";
 export class LocalAPIServer {

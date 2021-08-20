@@ -1,7 +1,6 @@
 import { QUERY_PARAMETER_DESERIALIZER } from "@airport/check-in";
 import { DI } from "@airport/di";
 import { SQLDataType } from "@airport/ground-control";
-import { EntityState } from "@airport/pressurization";
 export class QueryParameterDeserializer {
     deserialize(parameters, query, entityStateManager) {
         if (parameters.length !== query.jsonQuery.parameters.length) {

@@ -15,5 +15,6 @@ export const OPERATION_MANAGER = terminal.token('IOperationManager');
 export const QUERY_MANAGER = terminal.token('IQueryManager');
 export const REPOSITORY_MANAGER = terminal.token('IRepositoryManager');
 export const STRUCTURAL_ENTITY_VALIDATOR = terminal.token('IStructuralEntityValidator');
+export const TRANSACTIONAL_RECEIVER = terminal.token('ITransactionalReceiver');
 export const UPDATE_MANAGER = terminal.token('IUpdateManager');
 //# sourceMappingURL=tokens.js.map

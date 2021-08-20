@@ -1,7 +1,6 @@
 import { OPERATION_DESERIALIZER } from "@airport/check-in";
 import { DI } from "@airport/di";
 import { EntityRelationType, SQLDataType } from "@airport/ground-control";
-import { EntityState } from "@airport/pressurization";
 export class OperationDeserializer {
     deserialize(entity, dbEntity, entityStateManager, schemaUtils) {
         const operation = {

@@ -48,6 +48,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/go-terminal",
+      "projectFolder": "apps/go-terminal",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/tarmaq",
       "projectFolder": "apps/tarmaq",
       "shouldPublish": true
@@ -180,6 +185,11 @@
     {
       "packageName": "@airport/fuel-hydrant-system",
       "projectFolder": "libs/fuel-hydrant-system",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/go-tower",
+      "projectFolder": "libs/go-tower",
       "shouldPublish": true
     },
     {

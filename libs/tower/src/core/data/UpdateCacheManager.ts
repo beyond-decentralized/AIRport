@@ -191,7 +191,6 @@ export class UpdateCacheManager
             }
             return entityStateManager.isDeleted(entity)
         }
-        return false
     }
 }
 DI.set(UPDATE_CACHE_MANAGER, UpdateCacheManager)

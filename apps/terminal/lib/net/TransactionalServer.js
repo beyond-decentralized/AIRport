@@ -1,6 +1,5 @@
 import { container, DI } from '@airport/di';
-import { TRANSACTION_MANAGER } from '@airport/terminal-map';
-import { TRANSACTIONAL_SERVER } from '@airport/tower';
+import { TRANSACTION_MANAGER, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
 import { transactional } from '../transactional';
 /**
@@ -59,6 +58,15 @@ export class TransactionalServer {
     async searchOne(portableQuery, credentials, context, cachedSqlQueryId) {
         await this.ensureIocContext(context);
         return await context.ioc.queryManager.searchOne(portableQuery, context);
+    }
+    async startTransaction(credentials, context) {
+        throw new Error('FIXME: implement');
+    }
+    async commit(credentials, context) {
+        throw new Error('FIXME: implement');
+    }
+    async rollback(credentials, context) {
+        throw new Error('FIXME: implement');
     }
     async save(entity, credentials, context) {
         if (!entity) {
