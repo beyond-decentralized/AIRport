@@ -1,5 +1,6 @@
 import { DistributionStrategy, PlatformType, PortableQuery } from "@airport/ground-control";
-export declare enum IsolateMessageInType {
+import { Observable } from "rxjs";
+export declare enum IsolateMessageType {
     ADD_REPOSITORY = 0,
     COMMIT = 1,
     DELETE_WHERE = 2,
@@ -14,26 +15,35 @@ export declare enum IsolateMessageInType {
     SAVE = 11,
     UPDATE_VALUES = 12
 }
-export interface IIsolateMessageIn {
+export interface IIsolateMessage {
     id: number;
     isolateId: string;
-    type: IsolateMessageInType;
+    type: IsolateMessageType;
 }
-export interface IAddRepositoryIMI extends IIsolateMessageIn {
+export interface IIsolateMessageOut<T> extends IIsolateMessage {
+    result: T;
+}
+export interface IAddRepositoryIMI extends IIsolateMessage {
     distributionStrategy: DistributionStrategy;
     name: string;
     platform: PlatformType;
     platformConfig: string;
     url: string;
 }
-export interface IPortableQueryIMI extends IIsolateMessageIn {
+export interface INumberIMO extends IIsolateMessageOut<number> {
+}
+export interface IPortableQueryIMI extends IIsolateMessage {
     portableQuery: PortableQuery;
 }
 export interface IReadQueryIMI extends IPortableQueryIMI {
     cachedSqlQueryId?: number;
     portableQuery: PortableQuery;
 }
-export interface ISaveIMI<E, T = E | E[]> extends IIsolateMessageIn {
+export interface IDataIMO<T> extends IIsolateMessageOut<T> {
+}
+export interface IObservableDataIMO<T> extends IIsolateMessageOut<Observable<T>> {
+}
+export interface ISaveIMI<E, T = E | E[]> extends IIsolateMessage {
     entity: T;
 }
 //# sourceMappingURL=IsolateMessage.d.ts.map

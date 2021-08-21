@@ -71,7 +71,6 @@ dependencies:
   nodemon: 2.0.6
   prettier: 2.2.1
   reflect-metadata: 0.1.13
-  rxjs: 7.1.0
   serialize-error: 7.0.1
   serve: 11.3.0
   sql.js: 1.3.0
@@ -4455,6 +4454,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-gCFO5iHIbRPwznl6hAYuwNFld8W4S2shtSJIqG27ReWXo9IWrCyEICxUA+6vJHwSR/OakoenC4QsDxq50tzYmw==
+  /rxjs/7.3.0:
+    dependencies:
+      tslib: 2.1.0
+    dev: false
+    resolution:
+      integrity: sha512-p2yuGIg9S1epc3vrjKf6iVb3RCaAYjYskkO+jHIaV0IjOPlJop4UnodOoFb2xeNwlguqLYvGw1b1McillYb5Gw==
   /safe-buffer/5.1.2:
     dev: false
     resolution:
@@ -6204,10 +6209,12 @@ packages:
       tarball: 'file:projects/runway.tgz'
     version: 0.0.0
   'file:projects/security-check.tgz':
+    dependencies:
+      rxjs: 7.3.0
     dev: false
     name: '@rush-temp/security-check'
     resolution:
-      integrity: sha512-2i8aqPhH204Mjo4TVgaQysfyX5gK57YoRwz//RFI3sVE+Hz3p0+yZ/+Ysexd8cYz29y7jy5DM8rlGRFMGzeqfg==
+      integrity: sha512-oADMxMwXmvnCI2KUjtj3REWV43LEGpXX0xNUuYe4e0+YSV92mOUes3LPKUUPHbCpz3V94spGd/EjwcabOCGnXA==
       tarball: 'file:projects/security-check.tgz'
     version: 0.0.0
   'file:projects/sequence.tgz':
@@ -6275,7 +6282,7 @@ packages:
     dev: false
     name: '@rush-temp/terminal'
     resolution:
-      integrity: sha512-7pAHQCp9Lw0yn45DOwZf1a9g/bL6IkLUw3xkUauULRvqIdYI+Jit7I9yK66GJ+BVIJ/nio+zC2N0UQFf4AHbpw==
+      integrity: sha512-wHUW/kSnssdWLfkK2OsteLkhPHyPXSV6sPnOKeUlB5QO3x1pE9u5k+oMpS3Qx8Fsm2ue0hWaHGcUrUbp3WV1ZA==
       tarball: 'file:projects/terminal.tgz'
     version: 0.0.0
   'file:projects/territory.tgz':
@@ -6432,7 +6439,6 @@ specifiers:
   nodemon: ^2.0.6
   prettier: ^2.2.1
   reflect-metadata: ^0.1.13
-  rxjs: ^7.1.0
   serialize-error: ^7.0.1
   serve: ^11.3.0
   sql.js: ^1.3.0

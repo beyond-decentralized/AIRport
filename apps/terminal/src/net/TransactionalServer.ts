@@ -228,7 +228,7 @@ export class TransactionalServer
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		context: IOperationContext<any, any>
-	): Promise<number[] | string[] | number[][] | string[][]> {
+	): Promise<number[]> {
 		const actor = await this.getActor(credentials);
 
 		let numInsertedRecords

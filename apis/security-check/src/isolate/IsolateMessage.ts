@@ -1,11 +1,11 @@
-import { IContext } from "@airport/di";
 import {
     DistributionStrategy,
     PlatformType,
     PortableQuery
 } from "@airport/ground-control";
+import { Observable } from "rxjs";
 
-export enum IsolateMessageInType {
+export enum IsolateMessageType {
     ADD_REPOSITORY,
     COMMIT,
     DELETE_WHERE,
@@ -21,14 +21,19 @@ export enum IsolateMessageInType {
     UPDATE_VALUES
 }
 
-export interface IIsolateMessageIn {
+export interface IIsolateMessage {
     id: number
     isolateId: string
-    type: IsolateMessageInType
+    type: IsolateMessageType
+}
+
+export interface IIsolateMessageOut<T>
+    extends IIsolateMessage {
+    result: T
 }
 
 export interface IAddRepositoryIMI
-    extends IIsolateMessageIn {
+    extends IIsolateMessage {
     distributionStrategy: DistributionStrategy
     name: string
     platform: PlatformType
@@ -36,8 +41,12 @@ export interface IAddRepositoryIMI
     url: string
 }
 
+export interface INumberIMO
+    extends IIsolateMessageOut<number> {
+}
+
 export interface IPortableQueryIMI
-    extends IIsolateMessageIn {
+    extends IIsolateMessage {
     portableQuery: PortableQuery
 }
 
@@ -47,8 +56,16 @@ export interface IReadQueryIMI
     portableQuery: PortableQuery
 }
 
+export interface IDataIMO<T>
+    extends IIsolateMessageOut<T> {
+}
+
+export interface IObservableDataIMO<T>
+    extends IIsolateMessageOut<Observable<T>> {
+}
+
 export interface ISaveIMI<E, T = E | E[]>
-    extends IIsolateMessageIn {
+    extends IIsolateMessage {
     entity: T
 }
 

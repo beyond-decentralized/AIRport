@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "@airport/di": "0.0.1",
-    "@airport/ground-control": "0.0.1"
+    "@airport/ground-control": "0.0.1",
+    "rxjs": "^7.3.0"
   },
   "main": "lib/index.js",
   "name": "@airport/security-check",

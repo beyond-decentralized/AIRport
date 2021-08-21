@@ -1,19 +1,23 @@
 import {
-	container,
 	DI,
 } from '@airport/di';
 import {
-	IAddRepositoryIMI,
-	IIsolateMessageIn,
-	IsolateMessageInType
+	IIsolateMessage,
+	IObservableDataIMO,
+	IsolateMessageType,
 } from '@airport/security-check';
+import { TransactionalReceiver } from '@airport/terminal';
 import {
 	TRANSACTIONAL_RECEIVER,
-	TRANSACTIONAL_SERVER
+	ITransactionalReceiver
 } from '@airport/terminal-map';
-import { Observable } from 'rxjs';
+import {
+	map
+} from 'rxjs/operators'
 
-export class WebTransactionalReceiver {
+export class WebTransactionalReceiver
+	extends TransactionalReceiver
+	implements ITransactionalReceiver {
 
 	dbName: string;
 	serverUrl: string;
@@ -41,71 +45,27 @@ export class WebTransactionalReceiver {
 				return
 			}
 			const schemaHash = sourceDomainNameFragments[0]
-			const message: IIsolateMessageIn = event.data
+			const message: IIsolateMessage = event.data
 			const isolateId = message.isolateId
 			// FIXME: check schemaHash and isolateId and make sure they result in a match (isolate Id is passed in as a URL parameter)
 
-			this.processMessage(message).then()
+			this.processMessage(message).then(response => {
+				switch (response.type) {
+					case IsolateMessageType.SEARCH:
+					case IsolateMessageType.SEARCH_ONE:
+						// const observableDataResult = <IObservableDataIMO<any>>result
+						// observableDataResult.result.pipe(
+						response.result.pipe(
+							map((value, index) => {
+								// FIXME: implement
+							})
+						)
+						return
+				}
+				window.postMessage(response, response.isolateId)
+			})
 
 		}, false)
-	}
-
-
-	async processMessage(
-		message: IIsolateMessageIn
-	) {
-		const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-		let result
-		switch (message.type) {
-			case IsolateMessageInType.ADD_REPOSITORY:
-				const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
-				result = await transServer.addRepository(
-					addRepositoryMessage.name,
-					addRepositoryMessage.url,
-					addRepositoryMessage.platform,
-					addRepositoryMessage.platformConfig,
-					addRepositoryMessage.distributionStrategy,
-					{
-						domainAndPort: 'test'
-					},
-					{}
-				);
-				break
-			case IsolateMessageInType.COMMIT:
-
-				break
-			case IsolateMessageInType.DELETE_WHERE:
-				break
-			case IsolateMessageInType.FIND:
-				break
-			case IsolateMessageInType.FIND_ONE:
-				break
-			case IsolateMessageInType.INSERT_VALUES:
-				break
-			case IsolateMessageInType.INSERT_VALUES_GET_IDS:
-				break
-			case IsolateMessageInType.ROLLBACK:
-				break
-			case IsolateMessageInType.SAVE:
-				break
-			case IsolateMessageInType.SEARCH:
-				break
-			case IsolateMessageInType.SEARCH_ONE:
-				break
-			case IsolateMessageInType.START_TRANSACTION:
-				break
-			case IsolateMessageInType.UPDATE_VALUES:
-				break
-			default:
-				// Unexpected IsolateMessageInType
-				return
-		}
-	}
-
-	async respondToMessage(
-		messageIn: IIsolateMessageIn
-	) {
-
 	}
 
 }
