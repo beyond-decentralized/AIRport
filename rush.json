@@ -43,21 +43,6 @@
     },
     // "apps" folder (alphabetical order)
     {
-      "packageName": "@airport/automated-guideway-transit",
-      "projectFolder": "apps/automated-guideway-transit",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/tarmaq",
-      "projectFolder": "apps/tarmaq",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/terminal",
-      "projectFolder": "apps/terminal",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/todo",
       "projectFolder": "apps/todo",
       "shouldPublish": true
@@ -104,7 +89,23 @@
       "projectFolder": "db/websql",
       "shouldPublish": true
     },
-    // "apps" folder (alphabetical order)
+    // "engines" folder (alphabetical order)
+    {
+      "packageName": "@airport/automated-guideway-transit",
+      "projectFolder": "engines/automated-guideway-transit",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/tarmaq",
+      "projectFolder": "engines/tarmaq",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/terminal",
+      "projectFolder": "engines/terminal",
+      "shouldPublish": true
+    },
+    // "execs" folder (alphabetical order)
     {
       "packageName": "@airport/go-terminal",
       "projectFolder": "execs/go-terminal",
