@@ -31,13 +31,16 @@ export class WebTransactionalReceiver
 			}
 			const domainPrefix = '.' + mainDomainFragments.join('.')
 			const origin = event.origin;
-			// Only accept requests from https protocol and .federateddb
-			if (!origin.startsWith("https") || !origin.endsWith(domainPrefix)) {
+			const message: IIsolateMessage = event.data
+			// Only accept requests from https protocol
+			if (!origin.startsWith("https")
+				|| origin !== message.isolateId
+				|| !origin.endsWith(domainPrefix)) {
 				return
 			}
 			const sourceDomainNameFragments = origin.split('//')[1].split('.')
 			// Only accept requests from '${schemaName}.${mainDomainName}'
-			if (sourceDomainNameFragments.length != mainDomainFragments.length + 1) {
+			if (sourceDomainNameFragments.length !== mainDomainFragments.length + 1) {
 				return
 			}
 			// Only accept requests from non-'www' domain (don't accept requests from self)
@@ -45,7 +48,6 @@ export class WebTransactionalReceiver
 				return
 			}
 			const schemaHash = sourceDomainNameFragments[0]
-			const message: IIsolateMessage = event.data
 			const isolateId = message.isolateId
 			// FIXME: check schemaHash and isolateId and make sure they result in a match (isolate Id is passed in as a URL parameter)
 

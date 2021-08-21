@@ -21,6 +21,7 @@ export interface IIsolateMessage {
     type: IsolateMessageType;
 }
 export interface IIsolateMessageOut<T> extends IIsolateMessage {
+    errorMessage: string;
     result: T;
 }
 export interface IAddRepositoryIMI extends IIsolateMessage {

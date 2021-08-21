@@ -29,6 +29,7 @@ export interface IIsolateMessage {
 
 export interface IIsolateMessageOut<T>
     extends IIsolateMessage {
+    errorMessage: string
     result: T
 }
 

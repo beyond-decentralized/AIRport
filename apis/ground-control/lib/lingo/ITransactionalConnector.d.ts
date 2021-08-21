@@ -16,5 +16,8 @@ export interface ITransactionalConnector {
     insertValuesGetIds(portableQuery: PortableQuery, context?: IContext): Promise<number[] | string[] | number[][] | string[][]>;
     updateValues(portableQuery: PortableQuery, context?: IContext): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, context?: IContext): Promise<number>;
+    startTransaction(context: IContext): Promise<boolean>;
+    commit(context: IContext): Promise<boolean>;
+    rollback(context: IContext): Promise<boolean>;
 }
 //# sourceMappingURL=ITransactionalConnector.d.ts.map

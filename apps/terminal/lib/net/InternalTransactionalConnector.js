@@ -1,13 +1,6 @@
 import { container, DI } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
-var _isServer = false;
-export function setIsServer() {
-    _isServer = true;
-}
-export function isServer() {
-    return _isServer;
-}
 export class TransactionalConnector {
     async init() {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
@@ -63,6 +56,18 @@ export class TransactionalConnector {
     async deleteWhere(portableQuery, context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.deleteWhere(portableQuery, null, context);
+    }
+    async startTransaction(context) {
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        return await transServer.startTransaction(null, context);
+    }
+    async commit(context) {
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        return await transServer.commit(null, context);
+    }
+    async rollback(context) {
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        return await transServer.rollback(null, context);
     }
 }
 DI.set(TRANSACTIONAL_CONNECTOR, TransactionalConnector);

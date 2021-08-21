@@ -14,17 +14,6 @@ import {
 } from '@airport/ground-control';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
-
-var _isServer = false;
-
-export function setIsServer(): void {
-    _isServer = true;
-}
-
-export function isServer(): boolean {
-    return _isServer;
-}
-
 export class TransactionalConnector
     implements ITransactionalConnector {
 
@@ -173,6 +162,30 @@ export class TransactionalConnector
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
         return await transServer.deleteWhere(portableQuery, null, context)
+    }
+
+    async startTransaction(
+        context: IContext
+    ): Promise<boolean> {
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER)
+
+        return await transServer.startTransaction(null, context)
+    }
+
+    async commit(
+        context: IContext
+    ): Promise<boolean> {
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER)
+
+        return await transServer.commit(null, context)
+    }
+
+    async rollback(
+        context: IContext
+    ): Promise<boolean> {
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER)
+
+        return await transServer.rollback(null, context)
     }
 
 }

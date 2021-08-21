@@ -67,4 +67,16 @@ export interface ITransactionalConnector {
 		portableQuery: PortableQuery,
 		context?: IContext,
 	): Promise<number>
+
+	startTransaction(
+		context: IContext
+	): Promise<boolean>
+
+	commit(
+		context: IContext
+	): Promise<boolean>
+
+	rollback(
+		context: IContext
+	): Promise<boolean>
 }

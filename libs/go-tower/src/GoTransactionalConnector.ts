@@ -142,6 +142,24 @@ export class GoTransactionalConnector
 		throw new Error('Not implemented');
 	}
 
+    async startTransaction(
+		context: IContext
+    ): Promise<boolean> {
+		throw new Error('Not implemented');
+    }
+
+    async commit(
+		context: IContext
+    ): Promise<boolean> {
+		throw new Error('Not implemented');
+    }
+
+    async rollback(
+		context: IContext
+    ): Promise<boolean> {
+		throw new Error('Not implemented');
+    }
+
 }
 
 DI.set(TRANSACTIONAL_CONNECTOR, GoTransactionalConnector);
