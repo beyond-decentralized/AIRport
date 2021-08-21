@@ -105,6 +105,11 @@
       "projectFolder": "engines/terminal",
       "shouldPublish": true
     },
+    {
+      "packageName": "@airport/tower",
+      "projectFolder": "engines/tower",
+      "shouldPublish": true
+    },
     // "execs" folder (alphabetical order)
     {
       "packageName": "@airport/go-terminal",
@@ -222,11 +227,6 @@
     {
       "packageName": "@airport/ramp",
       "projectFolder": "libs/ramp",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/tower",
-      "projectFolder": "libs/tower",
       "shouldPublish": true
     },
     // "schemas" folder (alphabetical order)
