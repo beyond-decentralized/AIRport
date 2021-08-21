@@ -41,7 +41,6 @@ export abstract class TransactionalReceiver {
                 );
                 break
             case IsolateMessageType.COMMIT:
-                // const commitMessage: IIsolateMessageIn = <IIsolateMessageIn> message
                 result = await transServer.commit(
                     credentials,
                     {}

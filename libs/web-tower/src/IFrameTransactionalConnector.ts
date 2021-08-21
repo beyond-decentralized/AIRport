@@ -12,13 +12,54 @@ import {
 	PortableQuery,
 	TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control';
+import {
+	IAddRepositoryIMI,
+	IIsolateMessage,
+	IsolateMessageType
+} from '@airport/security-check';
 import { Observable } from 'rxjs';
 
-export class IFrameTransactionalConnector
+export interface IMessageInRecord {
+	message: IIsolateMessage
+	reject
+	resolve
+}
+
+export class IframeTransactionalConnector
 	implements ITransactionalConnector {
 
 	dbName: string;
 	serverUrl: string;
+
+	pendingMessageMap: Map<number, IMessageInRecord> = new Map();
+
+	messageId = 0;
+
+	constructor() {
+		window.addEventListener("message", event => {
+			const ownDomain = window.location.hostname
+			const mainDomainFragments = ownDomain.split('.')
+			if (mainDomainFragments[0] === 'www') {
+				mainDomainFragments.splice(0, 1)
+			}
+			const domainPrefix = '.' + mainDomainFragments.join('.')
+			const origin = event.origin;
+			// Only accept requests from https protocol and .federateddb
+			if (!origin.startsWith("https") || !origin.endsWith(domainPrefix)) {
+				return
+			}
+			const sourceDomainNameFragments = origin.split('//')[1].split('.')
+			// Only accept requests from '${schemaName}.${mainDomainName}'
+			if (sourceDomainNameFragments.length != mainDomainFragments.length + 1) {
+				return
+			}
+			// Only accept requests from non-'www' domain (don't accept requests from self)
+			if (sourceDomainNameFragments[0] === 'www') {
+				return
+			}
+
+		});
+	}
 
 	async init(): Promise<void> {
 		throw new Error('Not implemented');
@@ -32,7 +73,26 @@ export class IFrameTransactionalConnector
 		distributionStrategy: DistributionStrategy,
 		context: IContext
 	): Promise<number> {
-		throw new Error('Not implemented');
+		let message: IAddRepositoryIMI = {
+			distributionStrategy,
+			id: ++this.messageId,
+			isolateId: window.location.hostname,
+			name,
+			platform,
+			platformConfig,
+			type: IsolateMessageType.ADD_REPOSITORY,
+			url
+		}
+		window.postMessage(message, "localhost")
+
+		
+		return new Promise<number>((resolve, reject) => {
+			this.pendingMessageMap.set(message.id, {
+				message,
+				resolve,
+				reject
+			})
+		})
 	}
 
 	async find<E, EntityArray extends Array<E>>(
@@ -144,5 +204,5 @@ export class IFrameTransactionalConnector
 
 }
 
-DI.set(TRANSACTIONAL_CONNECTOR, IFrameTransactionalConnector);
+DI.set(TRANSACTIONAL_CONNECTOR, IframeTransactionalConnector);
 

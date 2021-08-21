@@ -6277,12 +6277,12 @@ packages:
     version: 0.0.0
   'file:projects/terminal.tgz':
     dependencies:
-      rxjs: 7.1.0
+      rxjs: 7.3.0
       zipson: 0.2.12
     dev: false
     name: '@rush-temp/terminal'
     resolution:
-      integrity: sha512-wHUW/kSnssdWLfkK2OsteLkhPHyPXSV6sPnOKeUlB5QO3x1pE9u5k+oMpS3Qx8Fsm2ue0hWaHGcUrUbp3WV1ZA==
+      integrity: sha512-dWax82qydD1rREa3D9uDqLJ1g7w7FoTJaRtvcPU39RVnkuJboVfbHwQO408lznrs7KT4JWn6JLKUU+b3fpPuPQ==
       tarball: 'file:projects/terminal.tgz'
     version: 0.0.0
   'file:projects/territory.tgz':
@@ -6342,11 +6342,11 @@ packages:
     version: 0.0.0
   'file:projects/web-terminal.tgz':
     dependencies:
-      rxjs: 7.1.0
+      rxjs: 7.3.0
     dev: false
     name: '@rush-temp/web-terminal'
     resolution:
-      integrity: sha512-KxFBNyowQZrRDnEjVAnPQ80sYR1F6iQ/OUt0oA6m9a7URJ/LDTzki5+MDpnQ0nSEuIrvWk7B7yhR10jZ9LuHDw==
+      integrity: sha512-ovapDWFNKb4/Gkw9PGbFJyQ+UPZWxQNaU1uf8VdRoTA0BNa30AZMlOY8zHZElWyvPNTfqDyK6mM8/a5wVqun7g==
       tarball: 'file:projects/web-terminal.tgz'
     version: 0.0.0
   'file:projects/web-tower.tgz':

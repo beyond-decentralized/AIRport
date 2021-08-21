@@ -23,7 +23,7 @@ export class WebTransactionalReceiver
 	serverUrl: string;
 
 	public WebTransactionalReceiver() {
-		window.addEventListener("message", (event) => {
+		window.addEventListener("message", event => {
 			const ownDomain = window.location.hostname
 			const mainDomainFragments = ownDomain.split('.')
 			if (mainDomainFragments[0] === 'www') {
@@ -53,11 +53,10 @@ export class WebTransactionalReceiver
 				switch (response.type) {
 					case IsolateMessageType.SEARCH:
 					case IsolateMessageType.SEARCH_ONE:
-						// const observableDataResult = <IObservableDataIMO<any>>result
-						// observableDataResult.result.pipe(
-						response.result.pipe(
-							map((value, index) => {
-								// FIXME: implement
+						const observableDataResult = <IObservableDataIMO<any>>response
+						observableDataResult.result.pipe(
+							map(value => {
+								window.postMessage(value, response.isolateId)
 							})
 						)
 						return
