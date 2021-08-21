@@ -48,11 +48,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/go-terminal",
-      "projectFolder": "apps/go-terminal",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/tarmaq",
       "projectFolder": "apps/tarmaq",
       "shouldPublish": true
@@ -65,11 +60,6 @@
     {
       "packageName": "@airport/todo",
       "projectFolder": "apps/todo",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/web-terminal",
-      "projectFolder": "apps/web-terminal",
       "shouldPublish": true
     },
     // "common" folder (alphabetical order)
@@ -112,6 +102,27 @@
     {
       "packageName": "@airport/websql",
       "projectFolder": "db/websql",
+      "shouldPublish": true
+    },
+    // "apps" folder (alphabetical order)
+    {
+      "packageName": "@airport/go-terminal",
+      "projectFolder": "execs/go-terminal",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/go-tower",
+      "projectFolder": "execs/go-tower",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/web-terminal",
+      "projectFolder": "execs/web-terminal",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/web-tower",
+      "projectFolder": "execs/web-tower",
       "shouldPublish": true
     },
     // "generators" folder (alphabetical order)
@@ -188,11 +199,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/go-tower",
-      "projectFolder": "libs/go-tower",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/ground-transport",
       "projectFolder": "libs/ground-transport",
       "shouldPublish": true
@@ -222,12 +228,7 @@
       "projectFolder": "libs/tower",
       "shouldPublish": true
     },
-    {
-      "packageName": "@airport/web-tower",
-      "projectFolder": "libs/web-tower",
-      "shouldPublish": true
-    },
-    // "schemas" folder (alphabetical order),
+    // "schemas" folder (alphabetical order)
     {
       "packageName": "@airport/airport-code",
       "projectFolder": "schemas/airport-code",

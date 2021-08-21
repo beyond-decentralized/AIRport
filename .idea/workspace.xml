@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1797f768-0a65-43dd-b844-7140e6a5fe17" name="Default Changelist" comment="Added vasi entities.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="1797f768-0a65-43dd-b844-7140e6a5fe17" name="Default Changelist" comment="Added vasi entities." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -131,6 +129,7 @@
       <workItem from="1627333358632" duration="1198000" />
       <workItem from="1629381221550" duration="263000" />
       <workItem from="1629381561368" duration="119000" />
+      <workItem from="1629550727449" duration="155000" />
     </task>
     <task id="LOCAL-00001" summary="Added AIRport logo 1.0">
       <created>1622427837045</created>
