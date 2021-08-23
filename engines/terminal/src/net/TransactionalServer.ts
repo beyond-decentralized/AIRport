@@ -6,6 +6,7 @@ import {
 import {
 	ISaveResult,
 	JsonInsertValues,
+	OPERATION_CONTEXT_LOADER,
 	PortableQuery
 } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
@@ -19,9 +20,6 @@ import {
 } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 import { IOperationContext } from '../processing/OperationContext';
-import {
-	OPERATION_CONTEXT_LOADER
-} from '@airport/ground-control';
 import { ITransaction } from '@airport/terminal-map';
 import { transactional } from '../transactional';
 
@@ -120,27 +118,27 @@ export class TransactionalServer
 			portableQuery, context, cachedSqlQueryId);
 	}
 
-	async search<E, EntityArray extends Array<E>>(
+	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
-	): Promise<Observable<EntityArray>> {
-		await this.ensureIocContext(context)
+	): Observable<EntityArray> {
+		this.ensureIocContextSync(context)
 
-		return await context.ioc.queryManager.search<E, EntityArray>(
+		return context.ioc.queryManager.search<E, EntityArray>(
 			portableQuery, context);
 	}
 
-	async searchOne<E>(
+	searchOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		context: IOperationContext<any, any>,
 		cachedSqlQueryId?: number,
-	): Promise<Observable<E>> {
-		await this.ensureIocContext(context)
+	): Observable<E> {
+		this.ensureIocContextSync(context)
 
-		return await context.ioc.queryManager.searchOne<E>(portableQuery, context);
+		return context.ioc.queryManager.searchOne<E>(portableQuery, context);
 	}	
 
 	async startTransaction(
@@ -294,6 +292,14 @@ export class TransactionalServer
 		const operationContextLoader = await container(this)
 			.get(OPERATION_CONTEXT_LOADER)
 		await operationContextLoader.ensure(context)
+	}
+
+	private async ensureIocContextSync(
+		context: IOperationContext<any, any>
+	): Promise<void> {
+		const operationContextLoader = container(this)
+			.getSync(OPERATION_CONTEXT_LOADER)
+		operationContextLoader.ensureSync(context)
 	}
 
 }

@@ -9,6 +9,7 @@ export enum IsolateMessageType {
     ADD_REPOSITORY,
     COMMIT,
     DELETE_WHERE,
+    INIT_CONNECTION,
     FIND,
     FIND_ONE,
     INSERT_VALUES,
@@ -16,6 +17,7 @@ export enum IsolateMessageType {
     ROLLBACK,
     SEARCH,
     SEARCH_ONE,
+    SEARCH_UNSUBSCRIBE,
     START_TRANSACTION,
     SAVE,
     UPDATE_VALUES

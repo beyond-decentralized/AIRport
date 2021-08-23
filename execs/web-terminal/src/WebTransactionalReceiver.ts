@@ -1,16 +1,19 @@
 import {
 	DI,
-} from '@airport/di';
+} from '@airport/di'
 import {
 	IIsolateMessage,
 	IObservableDataIMO,
 	IsolateMessageType,
-} from '@airport/security-check';
-import { TransactionalReceiver } from '@airport/terminal';
+} from '@airport/security-check'
+import { TransactionalReceiver } from '@airport/terminal'
 import {
 	TRANSACTIONAL_RECEIVER,
 	ITransactionalReceiver
-} from '@airport/terminal-map';
+} from '@airport/terminal-map'
+import {
+	Subscription
+} from 'rxjs'
 import {
 	map
 } from 'rxjs/operators'
@@ -21,15 +24,20 @@ export class WebTransactionalReceiver
 
 	dbName: string;
 	serverUrl: string;
+	subsriptionMap: Map<string, Map<number, Subscription>> = new Map();
 
 	public WebTransactionalReceiver() {
+		const ownDomain = window.location.hostname
+		const mainDomainFragments = ownDomain.split('.')
+		if (mainDomainFragments[0] === 'www') {
+			mainDomainFragments.splice(0, 1)
+		}
+		const domainPrefix = '.' + mainDomainFragments.join('.')
+
+		// set domain to a random value so that an iframe cannot directly invoke logic in this domain
+		document.domain = Math.random() + '.' + Math.random() + domainPrefix
+
 		window.addEventListener("message", event => {
-			const ownDomain = window.location.hostname
-			const mainDomainFragments = ownDomain.split('.')
-			if (mainDomainFragments[0] === 'www') {
-				mainDomainFragments.splice(0, 1)
-			}
-			const domainPrefix = '.' + mainDomainFragments.join('.')
 			const origin = event.origin;
 			const message: IIsolateMessage = event.data
 			// Only accept requests from https protocol
@@ -51,8 +59,24 @@ export class WebTransactionalReceiver
 			const isolateId = message.isolateId
 			// FIXME: check schemaHash and isolateId and make sure they result in a match (isolate Id is passed in as a URL parameter)
 
+			switch (message.type) {
+				case IsolateMessageType.SEARCH_UNSUBSCRIBE:
+					this.subsriptionMap.get(message.isolateId)
+					let isolateSubscriptionMap = this.subsriptionMap.get(message.isolateId)
+					if (!isolateSubscriptionMap) {
+						return
+					}
+					let subscription = isolateSubscriptionMap.get(message.id)
+					if (!subscription) {
+						return
+					}
+					subscription.unsubscribe()
+					isolateSubscriptionMap.delete(message.id)
+					return;
+			}
+
 			this.processMessage(message).then(response => {
-				switch (response.type) {
+				switch (message.type) {
 					case IsolateMessageType.SEARCH:
 					case IsolateMessageType.SEARCH_ONE:
 						const observableDataResult = <IObservableDataIMO<any>>response
@@ -61,6 +85,13 @@ export class WebTransactionalReceiver
 								window.postMessage(value, response.isolateId)
 							})
 						)
+						const subscription = observableDataResult.result.subscribe()
+						let isolateSubscriptionMap = this.subsriptionMap.get(message.isolateId)
+						if (!isolateSubscriptionMap) {
+							isolateSubscriptionMap = new Map()
+							this.subsriptionMap.set(message.isolateId, isolateSubscriptionMap)
+						}
+						isolateSubscriptionMap.set(message.id, subscription)
 						return
 				}
 				window.postMessage(response, response.isolateId)

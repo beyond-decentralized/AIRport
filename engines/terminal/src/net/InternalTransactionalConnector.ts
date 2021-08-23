@@ -83,14 +83,14 @@ export class TransactionalConnector
         );
     }
 
-    async search<E, EntityArray extends Array<E>>(
+    search<E, EntityArray extends Array<E>>(
         portableQuery: PortableQuery,
         context: IQueryContext<E>,
         cachedSqlQueryId?: number,
-    ): Promise<Observable<EntityArray>> {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+    ): Observable<EntityArray> {
+        const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
 
-        return await transServer.search(
+        return transServer.search(
             portableQuery,
             {
                 domainAndPort: 'test'
@@ -100,14 +100,14 @@ export class TransactionalConnector
         );
     }
 
-    async searchOne<E>(
+    searchOne<E>(
         portableQuery: PortableQuery,
         context: IQueryContext<E>,
         cachedSqlQueryId?: number,
-    ): Promise<Observable<E>> {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+    ): Observable<E> {
+        const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
 
-        return await transServer.searchOne(
+        return transServer.searchOne(
             portableQuery,
             {
                 domainAndPort: 'test'
@@ -140,7 +140,7 @@ export class TransactionalConnector
     async insertValuesGetIds(
         portableQuery: PortableQuery,
         context: IContext,
-    ): Promise<number[] | string[] | number[][] | string[][]> {
+    ): Promise<number[]> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
         return await transServer.insertValuesGetIds(portableQuery, null, context)

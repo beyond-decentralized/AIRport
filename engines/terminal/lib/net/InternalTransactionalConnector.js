@@ -24,15 +24,15 @@ export class TransactionalConnector {
             domainAndPort: 'test'
         }, context, cachedSqlQueryId);
     }
-    async search(portableQuery, context, cachedSqlQueryId) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.search(portableQuery, {
+    search(portableQuery, context, cachedSqlQueryId) {
+        const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
+        return transServer.search(portableQuery, {
             domainAndPort: 'test'
         }, context, cachedSqlQueryId);
     }
-    async searchOne(portableQuery, context, cachedSqlQueryId) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.searchOne(portableQuery, {
+    searchOne(portableQuery, context, cachedSqlQueryId) {
+        const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
+        return transServer.searchOne(portableQuery, {
             domainAndPort: 'test'
         }, context, cachedSqlQueryId);
     }

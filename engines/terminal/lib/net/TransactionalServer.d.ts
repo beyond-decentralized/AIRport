@@ -37,8 +37,8 @@ export declare class TransactionalServer implements ITransactionalServer {
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, credentials: ICredentials, context: IOperationContext<any, any>): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Promise<E>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Promise<Observable<EntityArray>>;
-    searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Promise<Observable<E>>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Observable<EntityArray>;
+    searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>, cachedSqlQueryId?: number): Observable<E>;
     startTransaction(credentials: ICredentials, context: IContext): Promise<boolean>;
     commit(credentials: ICredentials, context: IContext): Promise<boolean>;
     rollback(credentials: ICredentials, context: IContext): Promise<boolean>;
@@ -49,6 +49,7 @@ export declare class TransactionalServer implements ITransactionalServer {
     deleteWhere(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext<any, any>): Promise<number>;
     private getActor;
     private ensureIocContext;
+    private ensureIocContextSync;
 }
 export declare function injectTransactionalServer(): void;
 //# sourceMappingURL=TransactionalServer.d.ts.map

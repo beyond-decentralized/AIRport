@@ -21,12 +21,21 @@ import {
 	IReadQueryIMI,
 	ISaveIMI
 } from '@airport/security-check';
-import { Observable } from 'rxjs';
+import {
+	Observable,
+	Observer,
+	Subscription
+} from 'rxjs';
 
 export interface IMessageInRecord {
 	message: IIsolateMessage
 	reject
 	resolve
+}
+
+export interface IObservableMessageInRecord<T> {
+	id: number
+	observer?: Observer<T>
 }
 
 export class IframeTransactionalConnector
@@ -37,19 +46,24 @@ export class IframeTransactionalConnector
 
 	pendingMessageMap: Map<number, IMessageInRecord> = new Map();
 
+	observableMessageMap: Map<number, IObservableMessageInRecord<any>> = new Map()
+
 	messageId = 0;
+
+	mainDomain: string
 
 	constructor() {
 		window.addEventListener("message", event => {
 			const message: IIsolateMessageOut<any> = event.data
-			const mainDomainFragments = message.isolateId.split('.')
+			const origin = event.origin;
+			const mainDomain = origin.split('//')[1]
+			const mainDomainFragments = mainDomain.split('.')
 			let startsWithWww = false
 			if (mainDomainFragments[0] === 'www') {
 				mainDomainFragments.splice(0, 1)
 				startsWithWww = true
 			}
-			const domainPrefix = '.' + mainDomainFragments.join('.')
-			const origin = event.origin;
+			const domainPrefix = '.' + mainDomain
 			const ownDomain = window.location.hostname
 			// Only accept requests from https protocol
 			if (!origin.startsWith("https")
@@ -57,15 +71,15 @@ export class IframeTransactionalConnector
 				|| !ownDomain.endsWith(domainPrefix)) {
 				return
 			}
-			const sourceDomainNameFragments = origin.split('//')[1].split('.')
+			const ownDomainFragments = ownDomain.split('.')
 			// Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
 			const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1)
-			if (sourceDomainNameFragments.length !== expectedNumFragments
+			if (ownDomainFragments.length !== expectedNumFragments
 			) {
 				return
 			}
-			// Only accept requests from non-'www' domain (don't accept requests from self)
-			if (sourceDomainNameFragments[0] === 'www') {
+			// Don't accept requests from self
+			if (mainDomain === ownDomain) {
 				return
 			}
 
@@ -74,12 +88,44 @@ export class IframeTransactionalConnector
 				return
 			}
 
+			let observableMessageRecord: IObservableMessageInRecord<any>
+			switch (message.type) {
+				case IsolateMessageType.INIT_CONNECTION:
+					this.mainDomain = mainDomain
+					this.pendingMessageMap.delete(message.id);
+					return
+				case IsolateMessageType.SEARCH:
+				case IsolateMessageType.SEARCH_ONE:
+					observableMessageRecord = this.observableMessageMap.get(message.id)
+					if (!observableMessageRecord || !observableMessageRecord.observer) {
+						return
+					}
+					if (message.errorMessage) {
+						observableMessageRecord.observer.error(message.errorMessage)
+					} else {
+						observableMessageRecord.observer.next(message.result)
+					}
+					return
+				case IsolateMessageType.SEARCH_UNSUBSCRIBE:
+					observableMessageRecord = this.observableMessageMap.get(message.id)
+					if (!observableMessageRecord || !observableMessageRecord.observer) {
+						return
+					}
+					observableMessageRecord.observer.complete()
+					this.pendingMessageMap.delete(message.id)
+					return
+			}
+
 			if (message.errorMessage) {
 				messageRecord.reject(message.errorMessage)
 			} else {
 				messageRecord.resolve(message.result)
 			}
-
+			this.pendingMessageMap.delete(message.id)
+		})
+		this.sendMessage<IIsolateMessage, null>({
+			...this.getCoreFields(),
+			type: IsolateMessageType.INIT_CONNECTION
 		})
 	}
 
@@ -132,30 +178,29 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	async search<E, EntityArray extends Array<E>>(
+	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
-	): Promise<Observable<EntityArray>> {
-		return this.sendMessage<IReadQueryIMI, Observable<EntityArray>>({
-			...this.getCoreFields(),
-			cachedSqlQueryId,
+	): Observable<EntityArray> {
+		return this.sendObservableMessage<E, EntityArray>(
 			portableQuery,
-			type: IsolateMessageType.SEARCH
-		})
+			context,
+			IsolateMessageType.SEARCH,
+			cachedSqlQueryId
+		);
 	}
-
-	async searchOne<E>(
+	searchOne<E>(
 		portableQuery: PortableQuery,
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
-	): Promise<Observable<E>> {
-		return this.sendMessage<IReadQueryIMI, Observable<E>>({
-			...this.getCoreFields(),
-			cachedSqlQueryId,
+	): Observable<E> {
+		return this.sendObservableMessage<E, E>(
 			portableQuery,
-			type: IsolateMessageType.SEARCH_ONE
-		})
+			context,
+			IsolateMessageType.SEARCH_ONE,
+			cachedSqlQueryId
+		);
 	}
 
 	async save<E, T = E | E[]>(
@@ -261,6 +306,38 @@ export class IframeTransactionalConnector
 			})
 		})
 	}
+
+	private sendObservableMessage<E, T>(
+		portableQuery: PortableQuery,
+		context: IQueryContext<E>,
+		type: IsolateMessageType,
+		cachedSqlQueryId?: number
+	): Observable<T> {
+		const coreFields = this.getCoreFields()
+		let message = {
+			...coreFields,
+			cachedSqlQueryId,
+			portableQuery,
+			type
+		}
+		let observableMessageRecord: IObservableMessageInRecord<T> = {
+			id: coreFields.id
+		}
+		this.observableMessageMap.set(coreFields.id, observableMessageRecord)
+		const observable = new Observable((observer: Observer<any>) => {
+			observableMessageRecord.observer = observer
+			return () => {
+				this.sendMessage<IIsolateMessage, null>({
+					...coreFields,
+					type: IsolateMessageType.SEARCH_UNSUBSCRIBE
+				})
+			};
+		});
+		window.postMessage(message, this.mainDomain)
+
+		return observable;
+	}
+
 
 }
 

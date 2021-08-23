@@ -4,16 +4,18 @@ export declare enum IsolateMessageType {
     ADD_REPOSITORY = 0,
     COMMIT = 1,
     DELETE_WHERE = 2,
-    FIND = 3,
-    FIND_ONE = 4,
-    INSERT_VALUES = 5,
-    INSERT_VALUES_GET_IDS = 6,
-    ROLLBACK = 7,
-    SEARCH = 8,
-    SEARCH_ONE = 9,
-    START_TRANSACTION = 10,
-    SAVE = 11,
-    UPDATE_VALUES = 12
+    INIT_CONNECTION = 3,
+    FIND = 4,
+    FIND_ONE = 5,
+    INSERT_VALUES = 6,
+    INSERT_VALUES_GET_IDS = 7,
+    ROLLBACK = 8,
+    SEARCH = 9,
+    SEARCH_ONE = 10,
+    SEARCH_UNSUBSCRIBE = 11,
+    START_TRANSACTION = 12,
+    SAVE = 13,
+    UPDATE_VALUES = 14
 }
 export interface IIsolateMessage {
     id: number;

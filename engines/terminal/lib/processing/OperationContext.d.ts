@@ -1,8 +1,7 @@
 import { IAirportDatabase, IFieldUtils, IQMetadataUtils, IQueryFacade, IQueryUtils, IRelationManager, ISchemaUtils } from '@airport/air-control';
 import { IContext } from '@airport/di';
-import { DbEntity, IOperationContextLoader, IStoreDriver } from '@airport/ground-control';
-import { IEntityStateManager } from '@airport/pressurization';
-import { ITransactionalServer } from '@airport/tower';
+import { DbEntity, IEntityStateManager, IOperationContextLoader, IStoreDriver } from '@airport/ground-control';
+import { ITransactionalServer } from '@airport/terminal-map';
 import { IDeleteManager } from '../orchestration/DeleteManager';
 import { IInsertManager } from '../orchestration/InsertManager';
 import { IQueryManager } from '../orchestration/QueryManager';
@@ -60,9 +59,12 @@ export declare class IocOperationContext implements IIocOperationContext {
     transactionalServer: ITransactionalServer;
     updateManager: IUpdateManager;
     static init(context: IIocOperationContext): Promise<void>;
+    static initSync(context: IIocOperationContext): void;
     static ensure(context: IIocOperationContext): Promise<void>;
+    static ensureSync(context: IIocOperationContext): void;
 }
 export declare class OperationContextLoader implements IOperationContextLoader {
     ensure(context: IOperationContext<any, any>): Promise<void>;
+    ensureSync(context: IOperationContext<any, any>): void;
 }
 //# sourceMappingURL=OperationContext.d.ts.map

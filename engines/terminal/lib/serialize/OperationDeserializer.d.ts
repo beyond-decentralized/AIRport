@@ -1,7 +1,6 @@
 import { ISchemaUtils } from "@airport/air-control";
 import { IOperationDeserializer } from "@airport/check-in";
-import { DbEntity } from "@airport/ground-control";
-import { IEntityStateManager } from "@airport/pressurization";
+import { DbEntity, IEntityStateManager } from "@airport/ground-control";
 interface IDeserializableOperation {
     lookupTable: any[];
 }

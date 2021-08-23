@@ -12,6 +12,9 @@ export class TransactionalReceiver {
         let context = {};
         try {
             switch (message.type) {
+                case IsolateMessageType.INIT_CONNECTION:
+                    result = null;
+                    break;
                 case IsolateMessageType.ADD_REPOSITORY:
                     const addRepositoryMessage = message;
                     result = await transServer.addRepository(addRepositoryMessage.name, addRepositoryMessage.url, addRepositoryMessage.platform, addRepositoryMessage.platformConfig, addRepositoryMessage.distributionStrategy, credentials, context);

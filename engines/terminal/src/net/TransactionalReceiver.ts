@@ -30,6 +30,9 @@ export abstract class TransactionalReceiver {
         let context: IContext = {}
         try {
             switch (message.type) {
+                case IsolateMessageType.INIT_CONNECTION:
+                    result = null
+                    break;
                 case IsolateMessageType.ADD_REPOSITORY:
                     const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
                     result = await transServer.addRepository(

@@ -43,14 +43,14 @@ export interface ITransactionalServer {
 		credentials: ICredentials,
 		context: IContext,
 		cachedSqlQueryId?: number
-	): Promise<Observable<EntityArray>>
+	): Observable<EntityArray>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		context: IContext,
 		cachedSqlQueryId?: number
-	): Promise<Observable<E>>
+	): Observable<E>
 
 	startTransaction(
 		credentials: ICredentials,
@@ -84,7 +84,7 @@ export interface ITransactionalServer {
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		context: IContext
-	): Promise<number[] | string[] | number[][] | string[][]>
+	): Promise<number[]>
 
 	updateValues(
 		portableQuery: PortableQuery,

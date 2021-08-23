@@ -16,7 +16,7 @@
     "@airport/travel-document-checkpoint": "0.0.1",
     "@types/gapi": "^0.0.35",
     "@types/google-drive-realtime-api": "^0.0.33",
-    "rxjs": "^7.1.0",
+    "rxjs": "^7.3.0",
     "zipson": "^0.2.7"
   },
   "main": "lib/index.js",

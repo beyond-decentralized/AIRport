@@ -1,20 +1,23 @@
 import { DI } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
+import { Observable } from 'rxjs';
 export class IframeTransactionalConnector {
     constructor() {
         this.pendingMessageMap = new Map();
+        this.observableMessageMap = new Map();
         this.messageId = 0;
         window.addEventListener("message", event => {
             const message = event.data;
-            const mainDomainFragments = message.isolateId.split('.');
+            const origin = event.origin;
+            const mainDomain = origin.split('//')[1];
+            const mainDomainFragments = mainDomain.split('.');
             let startsWithWww = false;
             if (mainDomainFragments[0] === 'www') {
                 mainDomainFragments.splice(0, 1);
                 startsWithWww = true;
             }
-            const domainPrefix = '.' + mainDomainFragments.join('.');
-            const origin = event.origin;
+            const domainPrefix = '.' + mainDomain;
             const ownDomain = window.location.hostname;
             // Only accept requests from https protocol
             if (!origin.startsWith("https")
@@ -22,19 +25,47 @@ export class IframeTransactionalConnector {
                 || !ownDomain.endsWith(domainPrefix)) {
                 return;
             }
-            const sourceDomainNameFragments = origin.split('//')[1].split('.');
+            const ownDomainFragments = ownDomain.split('.');
             // Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
             const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1);
-            if (sourceDomainNameFragments.length !== expectedNumFragments) {
+            if (ownDomainFragments.length !== expectedNumFragments) {
                 return;
             }
-            // Only accept requests from non-'www' domain (don't accept requests from self)
-            if (sourceDomainNameFragments[0] === 'www') {
+            // Don't accept requests from self
+            if (mainDomain === ownDomain) {
                 return;
             }
             const messageRecord = this.pendingMessageMap.get(message.id);
             if (!messageRecord) {
                 return;
+            }
+            let observableMessageRecord;
+            switch (message.type) {
+                case IsolateMessageType.INIT_CONNECTION:
+                    this.mainDomain = mainDomain;
+                    this.pendingMessageMap.delete(message.id);
+                    return;
+                case IsolateMessageType.SEARCH:
+                case IsolateMessageType.SEARCH_ONE:
+                    observableMessageRecord = this.observableMessageMap.get(message.id);
+                    if (!observableMessageRecord || !observableMessageRecord.observer) {
+                        return;
+                    }
+                    if (message.errorMessage) {
+                        observableMessageRecord.observer.error(message.errorMessage);
+                    }
+                    else {
+                        observableMessageRecord.observer.next(message.result);
+                    }
+                    return;
+                case IsolateMessageType.SEARCH_UNSUBSCRIBE:
+                    observableMessageRecord = this.observableMessageMap.get(message.id);
+                    if (!observableMessageRecord || !observableMessageRecord.observer) {
+                        return;
+                    }
+                    observableMessageRecord.observer.complete();
+                    this.pendingMessageMap.delete(message.id);
+                    return;
             }
             if (message.errorMessage) {
                 messageRecord.reject(message.errorMessage);
@@ -42,6 +73,11 @@ export class IframeTransactionalConnector {
             else {
                 messageRecord.resolve(message.result);
             }
+            this.pendingMessageMap.delete(message.id);
+        });
+        this.sendMessage({
+            ...this.getCoreFields(),
+            type: IsolateMessageType.INIT_CONNECTION
         });
     }
     async init() {
@@ -74,21 +110,11 @@ export class IframeTransactionalConnector {
             type: IsolateMessageType.FIND_ONE
         });
     }
-    async search(portableQuery, context, cachedSqlQueryId) {
-        return this.sendMessage({
-            ...this.getCoreFields(),
-            cachedSqlQueryId,
-            portableQuery,
-            type: IsolateMessageType.SEARCH
-        });
+    search(portableQuery, context, cachedSqlQueryId) {
+        return this.sendObservableMessage(portableQuery, context, IsolateMessageType.SEARCH, cachedSqlQueryId);
     }
-    async searchOne(portableQuery, context, cachedSqlQueryId) {
-        return this.sendMessage({
-            ...this.getCoreFields(),
-            cachedSqlQueryId,
-            portableQuery,
-            type: IsolateMessageType.SEARCH_ONE
-        });
+    searchOne(portableQuery, context, cachedSqlQueryId) {
+        return this.sendObservableMessage(portableQuery, context, IsolateMessageType.SEARCH_ONE, cachedSqlQueryId);
     }
     async save(entity, context) {
         return this.sendMessage({
@@ -160,6 +186,30 @@ export class IframeTransactionalConnector {
                 reject
             });
         });
+    }
+    sendObservableMessage(portableQuery, context, type, cachedSqlQueryId) {
+        const coreFields = this.getCoreFields();
+        let message = {
+            ...coreFields,
+            cachedSqlQueryId,
+            portableQuery,
+            type
+        };
+        let observableMessageRecord = {
+            id: coreFields.id
+        };
+        this.observableMessageMap.set(coreFields.id, observableMessageRecord);
+        const observable = new Observable((observer) => {
+            observableMessageRecord.observer = observer;
+            return () => {
+                this.sendMessage({
+                    ...coreFields,
+                    type: IsolateMessageType.SEARCH_UNSUBSCRIBE
+                });
+            };
+        });
+        window.postMessage(message, this.mainDomain);
+        return observable;
     }
 }
 DI.set(TRANSACTIONAL_CONNECTOR, IframeTransactionalConnector);

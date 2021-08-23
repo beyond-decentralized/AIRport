@@ -27,12 +27,12 @@ export interface IQueryManager {
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		context: IContext,
-	): Promise<Observable<EntityArray>>;
+	): Observable<EntityArray>;
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		context: IContext,
-	): Promise<Observable<E>>;
+	): Observable<E>;
 
 }
 
@@ -61,26 +61,26 @@ export class QueryManager
 		return await storeDriver.findOne<E>(portableQuery, {}, context, cachedSqlQueryId)
 	}
 
-	async search<E, EntityArray extends Array<E>>(
+	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		context: IContext,
 		cachedSqlQueryId?: number,
-	): Promise<Observable<EntityArray>> {
-		const storeDriver = await container(this)
-			.get(STORE_DRIVER)
+	): Observable<EntityArray> {
+		const storeDriver = container(this)
+			.getSync(STORE_DRIVER)
 
-		return await storeDriver.search<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
+		return storeDriver.search<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
 	}
 
-	async searchOne<E>(
+	searchOne<E>(
 		portableQuery: PortableQuery,
 		context: IContext,
 		cachedSqlQueryId?: number,
-	): Promise<Observable<E>> {
-		const storeDriver = await container(this)
-			.get(STORE_DRIVER)
+	): Observable<E> {
+		const storeDriver = container(this)
+			.getSync(STORE_DRIVER)
 
-		return await storeDriver.searchOne<E>(portableQuery, {}, context, cachedSqlQueryId)
+		return storeDriver.searchOne<E>(portableQuery, {}, context, cachedSqlQueryId)
 	}
 
 }

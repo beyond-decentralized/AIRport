@@ -6,6 +6,7 @@ import {
 } from "@airport/check-in";
 import { DI } from "@airport/di";
 import {
+    IEntityStateManager,
     SQLDataType
 } from "@airport/ground-control";
 

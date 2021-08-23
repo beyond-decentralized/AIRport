@@ -34,13 +34,13 @@ export interface ITransactionalConnector {
 		portableQuery: PortableQuery,
 		context?: IContext,
 		cachedSqlQueryId?: number,
-	): Promise<Observable<EntityArray>>
+	): Observable<EntityArray>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		context?: IContext,
 		cachedSqlQueryId?: number,
-	): Promise<Observable<E>>
+	): Observable<E>
 
 	save<E, T = E | E[]>(
 		entity: T,
@@ -56,7 +56,7 @@ export interface ITransactionalConnector {
 	insertValuesGetIds(
 		portableQuery: PortableQuery,
 		context?: IContext,
-	): Promise<number[] | string[] | number[][] | string[][]>
+	): Promise<number[]>
 
 	updateValues(
 		portableQuery: PortableQuery,

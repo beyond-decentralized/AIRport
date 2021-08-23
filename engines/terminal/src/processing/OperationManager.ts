@@ -12,12 +12,13 @@ import { DI } from '@airport/di'
 import {
 	DbColumn,
 	EntityRelationType,
+	ISaveResult,
 	JSONValueOperation,
 	PortableQuery
 } from '@airport/ground-control'
-import { IActor } from '../../../../schemas/holding-pattern/lib'
-import { OPERATION_MANAGER } from '../tokens'
+import { IActor } from '@airport/holding-pattern'
 import { ITransaction } from '@airport/terminal-map'
+import { OPERATION_MANAGER } from '../tokens'
 import { IOperationContext } from './OperationContext'
 
 /**
@@ -31,7 +32,7 @@ export interface IOperationManager {
 		actor: IActor,
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>,
-	): Promise<number>
+	): Promise<ISaveResult>
 
 }
 
@@ -49,7 +50,7 @@ export class OperationManager
 		actor: IActor,
 		transaction: ITransaction,
 		context: IOperationContext<E, EntityCascadeGraph>,
-	): Promise<number> {
+	): Promise<ISaveResult> {
 		const verifiedTree = context.ioc.cascadeGraphVerifier
 			.verify(entities, context)
 		const entityGraph = context.ioc.entityGraphReconstructor

@@ -1,6 +1,6 @@
 import { container, DI } from '@airport/di';
-import { TRANSACTION_MANAGER, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
+import { TRANSACTION_MANAGER, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { transactional } from '../transactional';
 /**
  * Keeps track of transactions, per client and validates that a given
@@ -51,13 +51,13 @@ export class TransactionalServer {
         await this.ensureIocContext(context);
         return await context.ioc.queryManager.findOne(portableQuery, context, cachedSqlQueryId);
     }
-    async search(portableQuery, credentials, context, cachedSqlQueryId) {
-        await this.ensureIocContext(context);
-        return await context.ioc.queryManager.search(portableQuery, context);
+    search(portableQuery, credentials, context, cachedSqlQueryId) {
+        this.ensureIocContextSync(context);
+        return context.ioc.queryManager.search(portableQuery, context);
     }
-    async searchOne(portableQuery, credentials, context, cachedSqlQueryId) {
-        await this.ensureIocContext(context);
-        return await context.ioc.queryManager.searchOne(portableQuery, context);
+    searchOne(portableQuery, credentials, context, cachedSqlQueryId) {
+        this.ensureIocContextSync(context);
+        return context.ioc.queryManager.searchOne(portableQuery, context);
     }
     async startTransaction(credentials, context) {
         throw new Error('FIXME: implement');
@@ -137,6 +137,11 @@ export class TransactionalServer {
         const operationContextLoader = await container(this)
             .get(OPERATION_CONTEXT_LOADER);
         await operationContextLoader.ensure(context);
+    }
+    async ensureIocContextSync(context) {
+        const operationContextLoader = container(this)
+            .getSync(OPERATION_CONTEXT_LOADER);
+        operationContextLoader.ensureSync(context);
     }
 }
 DI.set(TRANSACTIONAL_SERVER, TransactionalServer);

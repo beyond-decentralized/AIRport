@@ -12,15 +12,15 @@ export class QueryManager {
             .get(STORE_DRIVER);
         return await storeDriver.findOne(portableQuery, {}, context, cachedSqlQueryId);
     }
-    async search(portableQuery, context, cachedSqlQueryId) {
-        const storeDriver = await container(this)
-            .get(STORE_DRIVER);
-        return await storeDriver.search(portableQuery, {}, context, cachedSqlQueryId);
+    search(portableQuery, context, cachedSqlQueryId) {
+        const storeDriver = container(this)
+            .getSync(STORE_DRIVER);
+        return storeDriver.search(portableQuery, {}, context, cachedSqlQueryId);
     }
-    async searchOne(portableQuery, context, cachedSqlQueryId) {
-        const storeDriver = await container(this)
-            .get(STORE_DRIVER);
-        return await storeDriver.searchOne(portableQuery, {}, context, cachedSqlQueryId);
+    searchOne(portableQuery, context, cachedSqlQueryId) {
+        const storeDriver = container(this)
+            .getSync(STORE_DRIVER);
+        return storeDriver.searchOne(portableQuery, {}, context, cachedSqlQueryId);
     }
 }
 DI.set(QUERY_MANAGER, QueryManager);
