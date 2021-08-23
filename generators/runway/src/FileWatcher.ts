@@ -24,6 +24,7 @@ import { Configuration }               from './ddl/options/Options';
 import { EntityCandidate }             from './ddl/parser/EntityCandidate';
 import { generateDefinitions }         from './FileProcessor';
 
+// TODO: figure out if this is needed
 (AirportDatabase as any).bogus = 'loaded for schema generation';
 
 /**
