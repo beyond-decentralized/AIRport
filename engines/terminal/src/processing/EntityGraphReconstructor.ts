@@ -1,19 +1,13 @@
-import {DI}                         from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	DbProperty,
 	EntityRelationType
-}                                   from '@airport/ground-control'
-import {ENTITY_GRAPH_RECONSTRUCTOR} from '../tokens'
-import {IOperationContext}          from './OperationContext'
-
-export interface IEntityGraphReconstructor {
-
-	restoreEntityGraph<T>(
-		root: T[],
-		context: IOperationContext<any, any>
-	): T[]
-
-}
+} from '@airport/ground-control'
+import {
+	IEntityGraphReconstructor,
+	IOperationContext
+} from '@airport/terminal-map'
+import { ENTITY_GRAPH_RECONSTRUCTOR } from '../tokens'
 
 /**
  * Takes a serialized object tree and reconstructs a (potentially)
@@ -24,11 +18,11 @@ export class EntityGraphReconstructor
 
 	restoreEntityGraph<T>(
 		root: T[],
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): T[] {
 		const entitiesByOperationIndex = []
-		const rootCopy                 =
-			      this.linkEntityGraph(root, entitiesByOperationIndex, context)
+		const rootCopy =
+			this.linkEntityGraph(root, entitiesByOperationIndex, context)
 
 		for (let i = 1; i < entitiesByOperationIndex.length; i++) {
 			const entity = entitiesByOperationIndex[i]
@@ -44,9 +38,9 @@ export class EntityGraphReconstructor
 	protected linkEntityGraph<T>(
 		currentEntities: T[],
 		entitiesByOperationIndex: any[],
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): T[] {
-		const dbEntity     = context.dbEntity
+		const dbEntity = context.dbEntity
 		const results: T[] = []
 		for (const entity of currentEntities) {
 			if (!entity) {
@@ -65,10 +59,10 @@ export class EntityGraphReconstructor
 			 * other entities.
 			 */
 			const {
-				      isDelete,
-				      isParentId,
-				      isStub
-			      } = context.ioc.entityStateManager
+				isDelete,
+				isParentId,
+				isStub
+			} = context.ioc.entityStateManager
 				.getEntityStateTypeAsFlags(entity, dbEntity)
 
 			const previouslyFoundEntity = entitiesByOperationIndex[operationUniqueId]
@@ -89,11 +83,11 @@ for "${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqu
 			} else {
 				entityCopy = {}
 				entityCopy[context.ioc.entityStateManager.getUniqueIdFieldName()]
-				           = operationUniqueId
+					= operationUniqueId
 				entityCopy[context.ioc.entityStateManager.getStateFieldName()]
-				           = context.ioc.entityStateManager.getEntityState(entity)
+					= context.ioc.entityStateManager.getEntityState(entity)
 				entitiesByOperationIndex[operationUniqueId]
-				           = entityCopy
+					= entityCopy
 			}
 
 			for (const dbProperty of dbEntity.properties) {
@@ -102,9 +96,9 @@ for "${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqu
 					continue
 				}
 				if (dbProperty.relation && dbProperty.relation.length) {
-					const dbRelation    = dbProperty.relation[0]
+					const dbRelation = dbProperty.relation[0]
 					let relatedEntities = propertyValue
-					let isManyToOne     = false
+					let isManyToOne = false
 					this.assertRelationValueIsAnObject(propertyValue, dbProperty)
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
@@ -123,7 +117,7 @@ for "${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqu
 for ${dbEntity.name}.${dbProperty.name}`)
 					} // switch dbRelation.relationType
 					const previousDbEntity = context.dbEntity
-					context.dbEntity       = dbRelation.relationEntity
+					context.dbEntity = dbRelation.relationEntity
 					let propertyCopyValue
 					if (propertyValue) {
 						propertyCopyValue = this.linkEntityGraph(relatedEntities, entitiesByOperationIndex, context)
@@ -142,7 +136,7 @@ that are themselves Parent Ids.`)
 							}
 						}
 					} // if (propertyValue
-					propertyValue    = propertyCopyValue
+					propertyValue = propertyCopyValue
 					context.dbEntity = previousDbEntity
 				} // if (dbProperty.relation
 				else {

@@ -8,9 +8,11 @@ cd ../air-control
 tsc
 cd ../arrivals-n-departures
 tsc
-cd ../../libs/tower
+cd ../check-in
 tsc
-cd ../../apis/check-in
+cd ../config
+tsc
+cd ../security-check
 tsc
 cd ../../generators/runway
 tsc

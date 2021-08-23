@@ -5,14 +5,14 @@ import {
 import {
 	IOperationContext,
 	ITransaction
-} from '@airport/tower';
+} from '@airport/terminal-map';
 
 export class NoOpSqlDriver
 	extends SqlDriver {
 	composeTableName(
 		schemaName: string,
 		tableName: string,
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): string {
 		return '';
 	}
@@ -20,7 +20,7 @@ export class NoOpSqlDriver
 	doesTableExist(
 		schemaName: string,
 		tableName: string,
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<boolean> {
 		return Promise.resolve(false);
 	}
@@ -28,7 +28,7 @@ export class NoOpSqlDriver
 	dropTable(
 		schemaName: string,
 		tableName: string,
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<boolean> {
 		return Promise.resolve(false);
 	}
@@ -36,26 +36,26 @@ export class NoOpSqlDriver
 	findNative(
 		sqlQuery: string,
 		parameters: any[],
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<any[]> {
 		return Promise.resolve([]);
 	}
 
 	initialize(
 		dbName: string,
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<any> {
 		return Promise.resolve(undefined);
 	}
 
-	isServer(context: IOperationContext<any, any>): boolean {
+	isServer(context: IOperationContext): boolean {
 		return false;
 	}
 
 	isValueValid(
 		value: any,
 		sqlDataType,
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): boolean {
 		return false;
 	}
@@ -64,7 +64,7 @@ export class NoOpSqlDriver
 		queryType,
 		query: string,
 		params: any,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 		saveTransaction?: boolean
 	): Promise<any> {
 		return Promise.resolve(undefined);
@@ -72,7 +72,7 @@ export class NoOpSqlDriver
 
 	transact(
 		callback: { (transaction: ITransaction): Promise<void> },
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<void> {
 		return Promise.resolve(undefined);
 	}
@@ -80,12 +80,12 @@ export class NoOpSqlDriver
 	protected executeNative(
 		sql: string,
 		parameters: any[],
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<number> {
 		return Promise.resolve(0);
 	}
 
-	protected getDialect(context: IOperationContext<any, any>): SQLDialect {
+	protected getDialect(context: IOperationContext): SQLDialect {
 		return undefined;
 	}
 

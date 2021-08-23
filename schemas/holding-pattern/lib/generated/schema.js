@@ -2399,6 +2399,7 @@ export const SCHEMA = {
                     "domain": "air",
                     "index": 0,
                     "name": "@airport/travel-document-checkpoint",
+                    "packageName": "@airport/travel-document-checkpoint",
                     "sinceVersion": 1,
                     "versions": [
                         {

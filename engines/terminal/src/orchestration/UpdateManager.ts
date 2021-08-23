@@ -39,36 +39,19 @@ import {
 	SystemWideOperationId
 }                           from '@airport/holding-pattern'
 import {
-	ITransaction
+	IHistoryManager,
+	IOperationContext,
+	ITransaction,
+	IUpdateManager,
+	RecordHistoryMap
 }                           from '@airport/terminal-map'
 import {IRepositoryManager} from '../core/repository/RepositoryManager'
-import { IOperationContext } from '../processing/OperationContext'
 import {
 	HISTORY_MANAGER,
 	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER,
 	UPDATE_MANAGER
 }                           from '../tokens'
-import {IHistoryManager}    from './HistoryManager'
-
-export interface IUpdateManager {
-
-	updateValues(
-		portableQuery: PortableQuery,
-		actor: IActor,
-		transaction: ITransaction,
-		ctx: IOperationContext<any, any>
-	): Promise<number>;
-
-}
-
-interface RecordHistoryMap {
-	[repositoryId: number]: {
-		[actorId: number]: {
-			[actorRecordId: number]: IRecordHistory
-		}
-	};
-}
 
 export class UpdateManager
 	implements IUpdateManager {
@@ -77,7 +60,7 @@ export class UpdateManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<number> {
 		// TODO: remove unused dependencies after testing
 		const [
@@ -152,7 +135,7 @@ export class UpdateManager
 		return numUpdatedRows
 	}
 
-	private async addUpdateHistory<E, EntityCascadeGraph>(
+	private async addUpdateHistory(
 		portableQuery: PortableQuery,
 		actor: IActor,
 		systemWideOperationId: SystemWideOperationId,
@@ -164,7 +147,7 @@ export class UpdateManager
 		repoManager: IRepositoryManager,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
 		transaction: ITransaction,
-		context: IOperationContext<E, EntityCascadeGraph>
+		context: IOperationContext
 	): Promise<[
 		RecordHistoryMap,
 		RepositorySheetSelectInfo
@@ -271,7 +254,7 @@ export class UpdateManager
 		recHistoryDuo: IRecordHistoryDuo,
 		recHistoryNewValueDuo: IRecordHistoryNewValueDuo,
 		transaction: ITransaction,
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<void> {
 		const qEntity = context.ioc.airDb.qSchemas
 			[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]

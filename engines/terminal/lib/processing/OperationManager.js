@@ -2,6 +2,9 @@ import { and, Delete, InsertValues, UpdateProperties, valuesEqual } from '@airpo
 import { DI } from '@airport/di';
 import { EntityRelationType } from '@airport/ground-control';
 import { OPERATION_MANAGER } from '../tokens';
+/**
+ * Created by Papa on 11/15/2016.
+ */
 export class OperationManager {
     /**
      * Transactional context must have been started by the time this method is called.

@@ -2,8 +2,11 @@ import {
 	QueryType,
 	SQLDataType
 } from '@airport/ground-control'
-import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
-import { IOperationContext } from '@airport/tower';
+import {
+	SQLDialect,
+	SqlDriver
+} from '@airport/fuel-hydrant-system'
+import { IOperationContext } from '@airport/terminal-map';
 
 /**
  * Created by Papa on 11/27/2016.
@@ -27,7 +30,7 @@ export abstract class SqLiteDriver
 	async doesTableExist(
 		schemaName: string,
 		tableName: string,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 	): Promise<boolean> {
 		const matchingTableNames = await this.findNative(
 			// ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
@@ -47,7 +50,7 @@ WHERE
 	async dropTable(
 		schemaName: string,
 		tableName: string,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 	): Promise<boolean> {
 		const matchingTableNames = await this.findNative(
 			`DROP TABLE '${schemaName}__${tableName}'`,
@@ -60,7 +63,7 @@ WHERE
 	async findNative(
 		sqlQuery: string,
 		parameters: any[],
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 	): Promise<any[]> {
 		let nativeParameters = parameters.map((value) => this.convertValueIn(value))
 		return await this.query(QueryType.SELECT, sqlQuery, nativeParameters, context)
@@ -69,7 +72,7 @@ WHERE
 	protected async executeNative(
 		sql: string,
 		parameters: any[],
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 	): Promise<number> {
 		return await this.query(QueryType.MUTATE, sql, parameters, context)
 	}
@@ -114,7 +117,7 @@ WHERE
 		queryType: QueryType,
 		query: string,
 		params,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 		saveTransaction?: boolean
 	): Promise<any>;
 

@@ -8,21 +8,8 @@ import {
 	RepositoryId,
 	TRANS_HISTORY_DUO
 } from '@airport/holding-pattern'
+import { IHistoryManager } from '@airport/terminal-map'
 import { HISTORY_MANAGER } from '../tokens'
-
-export interface IHistoryManager {
-
-	getNewTransHistory(
-		transactionType: TransactionType
-	): Promise<ITransactionHistory>;
-
-	getNewRepoTransHistory(
-		transactionHistory: ITransactionHistory,
-		repositoryId: RepositoryId,
-		actor: IActor
-	): Promise<IRepositoryTransactionHistory>;
-
-}
 
 export class HistoryManager
 	implements IHistoryManager {

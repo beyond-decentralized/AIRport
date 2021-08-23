@@ -9,7 +9,7 @@ import {
 import {
 	IOperationContext,
 	ITransaction
-} from '@airport/tower'
+} from '@airport/terminal-map'
 
 /**
  * Created by Papa on 8/30/2016.
@@ -25,14 +25,14 @@ export class CockroachdbDriver
 	composeTableName(
 		schemaName: string,
 		tableName: string,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 	): string {
 		throw new Error('Not implemented')
 	}
 
 	async initialize(
 		dbName: string,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 	): Promise<any> {
 		throw new Error('Not implemented')
 	}
@@ -44,7 +44,7 @@ export class CockroachdbDriver
 				transaction: ITransaction
 			): Promise<void>
 		},
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 	): Promise<any> {
 		throw new Error('Not implemented')
 	}
@@ -53,7 +53,7 @@ export class CockroachdbDriver
 		queryType: QueryType,
 		query: string,
 		params                   = [],
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 		saveTransaction: boolean = false
 	): Promise<any> {
 		throw new Error('Not implemented')
@@ -64,7 +64,7 @@ export class CockroachdbDriver
 	}
 
 	protected getDialect(
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 	): SQLDialect {
 		return SQLDialect.POSTGRESQL
 	}

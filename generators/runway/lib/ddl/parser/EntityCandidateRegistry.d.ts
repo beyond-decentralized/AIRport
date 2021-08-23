@@ -1,5 +1,5 @@
 import { DbSchema } from '@airport/ground-control';
-import { ISchemaLoader } from '@airport/taxiway/lib/SchemaLoader';
+import { ISchemaLoader } from '@airport/taxiway';
 import { Configuration } from '../options/Options';
 import { EntityReference } from './DocEntry';
 import { EntityCandidate, Interface } from './EntityCandidate';

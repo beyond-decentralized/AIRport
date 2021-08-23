@@ -1,10 +1,6 @@
 import { IContext } from '@airport/di';
 import { JsonSchema } from '@airport/ground-control';
-export interface IDatabaseManager {
-    isInitialized(): boolean;
-    initWithDb(domainName: string, context: IContext, ...schemas: JsonSchema[]): Promise<void>;
-    initNoDb(context: IContext, ...schemas: JsonSchema[]): Promise<void>;
-}
+import { IDatabaseManager } from '@airport/terminal-map';
 export declare class DatabaseManager implements IDatabaseManager {
     private initialized;
     initNoDb(context: IContext, ...schemas: JsonSchema[]): Promise<void>;

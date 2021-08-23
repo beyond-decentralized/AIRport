@@ -544,19 +544,7 @@ export declare const SCHEMA: {
             operations?: undefined;
         })[];
         integerVersion: number;
-        referencedSchemas: ({
-            domain: string;
-            index: number;
-            name: string;
-            sinceVersion: number;
-            versions: {
-                entities: any;
-                integerVersion: number;
-                referencedSchemas: any;
-                versionString: string;
-            }[];
-            packageName?: undefined;
-        } | {
+        referencedSchemas: {
             domain: string;
             index: number;
             name: string;
@@ -568,7 +556,7 @@ export declare const SCHEMA: {
                 referencedSchemas: any;
                 versionString: string;
             }[];
-        })[];
+        }[];
         versionString: string;
     }[];
 };

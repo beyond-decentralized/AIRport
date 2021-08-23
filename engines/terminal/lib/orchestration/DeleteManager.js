@@ -1,8 +1,8 @@
 import { AIRPORT_DATABASE, SCHEMA_UTILS, valuesEqual, Y } from '@airport/air-control';
 import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI, } from '@airport/di';
-import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType } from '@airport/ground-control';
-import { OPER_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO } from '@airport/holding-pattern';
+import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType, } from '@airport/ground-control';
+import { OPER_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO, } from '@airport/holding-pattern';
 import { DELETE_MANAGER, HISTORY_MANAGER, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER } from '../tokens';
 export class DeleteManager {
     async deleteWhere(portableQuery, actor, transaction, context = {}) {
@@ -27,6 +27,7 @@ export class DeleteManager {
             jsonQuery: jsonSelect,
             queryResultType: QueryResultType.ENTITY_TREE,
             parameterMap: portableQuery.parameterMap,
+            // values: portableQuery.values,
         };
         const treesToDelete = await transaction
             .find(portableSelect, {}, context);

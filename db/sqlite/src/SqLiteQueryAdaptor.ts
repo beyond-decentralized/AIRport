@@ -13,7 +13,7 @@ import {
 	SQLDataType,
 	SqlFunction
 } from '@airport/ground-control';
-import { IOperationContext } from '@airport/tower';
+import { IOperationContext } from '@airport/terminal-map';
 
 /**
  * Created by Papa on 8/27/2016.
@@ -136,7 +136,7 @@ export class SqlLiteFunctionAdaptor
 		value: string,
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal<any> },
 		sqlValueProvider: ISqlValueProvider,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 	): string {
 		let param2;
 		switch (jsonFunctionCall.ft) {

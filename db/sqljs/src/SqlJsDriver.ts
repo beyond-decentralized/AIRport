@@ -9,7 +9,7 @@ import {SqLiteDriver}   from '@airport/sqlite'
 import {
 	IOperationContext,
 	ITransaction
-} from '@airport/tower';
+} from '@airport/terminal-map';
 
 declare function require(moduleName: string): any;
 
@@ -34,7 +34,7 @@ export class SqlJsDriver
 	}
 
 	isServer(
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 	): boolean {
 		return false
 	}
@@ -56,7 +56,7 @@ export class SqlJsDriver
 				transaction: ITransaction
 			): Promise<void>
 		},
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 		): Promise<void> {
 		this._db.exec('BEGIN TRANSACTION;')
 		this.currentTransaction = true

@@ -7,7 +7,7 @@ import { SqLiteDriver } from '@airport/sqlite'
 import {
 	IOperationContext,
 	ITransaction
-} from '@airport/tower'
+} from '@airport/terminal-map'
 
 /**
  * Created by Papa on 8/30/2016.
@@ -50,7 +50,7 @@ export class WebSqlDriver
 
 	async initialize(
 		dbName: string,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 	): Promise<any> {
 		let dbOptions: any = {
 			name: dbName,
@@ -114,7 +114,7 @@ export class WebSqlDriver
 		queryType: QueryType,
 		query: string,
 		params = [],
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 		saveTransaction: boolean = false
 	): Promise<any> {
 		

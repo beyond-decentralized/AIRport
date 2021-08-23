@@ -1,30 +1,24 @@
-import {DI}                          from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	DbColumn,
 	DbEntity,
 	DbProperty,
 	EntityRelationType,
 	SQLDataType
-}                                    from '@airport/ground-control'
-import {STRUCTURAL_ENTITY_VALIDATOR} from '../tokens'
-import {IOperationContext}           from './OperationContext'
+} from '@airport/ground-control'
+import {
+	IOperationContext,
+	IStructuralEntityValidator
+} from '@airport/terminal-map'
+import { STRUCTURAL_ENTITY_VALIDATOR } from '../tokens'
 
-export interface IStructuralEntityValidator {
+export class StructuralEntityValidator
+	implements IStructuralEntityValidator {
 
-	validate<E, EntityCascadeGraph>(
+	validate<E>(
 		entities: E[],
 		operatedOnEntityIndicator: boolean[],
-		context: IOperationContext<E, EntityCascadeGraph>,
-	): void
-
-}
-
-export class StructuralEntityValidator {
-
-	validate<E, EntityCascadeGraph>(
-		entities: E[],
-		operatedOnEntityIndicator: boolean[],
-		context: IOperationContext<E, EntityCascadeGraph>,
+		context: IOperationContext,
 	): void {
 		const dbEntity = context.dbEntity
 
@@ -36,11 +30,11 @@ export class StructuralEntityValidator {
 
 		for (const entity of entities) {
 			const {
-				      isCreate,
-				      isDelete,
-				      isParentId,
-				      isStub
-			      } = context.ioc.entityStateManager.getEntityStateTypeAsFlags(entity, dbEntity)
+				isCreate,
+				isDelete,
+				isParentId,
+				isStub
+			} = context.ioc.entityStateManager.getEntityStateTypeAsFlags(entity, dbEntity)
 
 			if (isParentId) {
 				// No processing is needed (already covered by id check
@@ -48,7 +42,7 @@ export class StructuralEntityValidator {
 			}
 
 			const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity)
-			const entityOperatedOn  = !!operatedOnEntityIndicator[operationUniqueId]
+			const entityOperatedOn = !!operatedOnEntityIndicator[operationUniqueId]
 			if (entityOperatedOn) {
 				continue
 			}
@@ -57,7 +51,7 @@ export class StructuralEntityValidator {
 			for (const dbProperty of dbEntity.properties) {
 				let propertyValue: any = entity[dbProperty.name]
 				if (propertyValue === undefined) {
-					propertyValue           = null
+					propertyValue = null
 					entity[dbProperty.name] = propertyValue
 				}
 				/*
@@ -65,7 +59,7 @@ export class StructuralEntityValidator {
 				 * a @ManyToOne, so we need to check
 				 */
 				if (dbProperty.relation && dbProperty.relation.length) {
-					const dbRelation    = dbProperty.relation[0]
+					const dbRelation = dbProperty.relation[0]
 					let relatedEntities = propertyValue
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
@@ -100,7 +94,7 @@ export class StructuralEntityValidator {
 for ${dbEntity.name}.${dbProperty.name}`)
 					} // switch dbRelation.relationType
 					const previousDbEntity = context.dbEntity
-					context.dbEntity       = dbRelation.relationEntity
+					context.dbEntity = dbRelation.relationEntity
 					this.validate(relatedEntities, operatedOnEntityIndicator, context)
 					context.dbEntity = previousDbEntity
 				} // if (dbProperty.relation

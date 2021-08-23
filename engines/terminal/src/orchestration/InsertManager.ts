@@ -32,8 +32,11 @@ import {
 }                           from '@airport/holding-pattern'
 import {
 	DistributionStrategy,
+	IHistoryManager,
+	IInsertManager,
 	ITransaction,
 	PlatformType,
+	RecordId,
 	TRANSACTION_MANAGER
 }                           from '@airport/terminal-map'
 import {IRepositoryManager} from '../core/repository/RepositoryManager'
@@ -43,36 +46,6 @@ import {
 	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER
 }                           from '../tokens'
-import {IHistoryManager}    from './HistoryManager'
-
-export type RecordId = number;
-
-export interface IInsertManager {
-
-	insertValues(
-		portableQuery: PortableQuery,
-		actor: IActor,
-		transaction: ITransaction,
-		context: IContext,
-		ensureGeneratedValues?: boolean
-	): Promise<number>;
-
-	insertValuesGetIds(
-		portableQuery: PortableQuery,
-		actor: IActor,
-		transaction: ITransaction,
-		context: IContext,
-	): Promise<RecordId[] | RecordId[][]>;
-
-	addRepository(
-		name: string,
-		url: string,
-		platform: PlatformType,
-		platformConfig: string,
-		distributionStrategy: DistributionStrategy,
-	): Promise<number>;
-
-}
 
 interface ColumnsToPopulate {
 	actorIdColumn: DbColumn

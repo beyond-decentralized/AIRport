@@ -1,8 +1,25 @@
 import { DI } from '@airport/di';
-import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
-import { QueryType, SQLDataType, STORE_DRIVER } from '@airport/ground-control';
-import { IOperationContext, ITransaction, transactional } from '@airport/tower';
-import { FieldPacket, OkPacket, QueryOptions, ResultSetHeader, RowDataPacket } from 'mysql2';
+import {
+  SQLDialect,
+  SqlDriver
+} from '@airport/fuel-hydrant-system';
+import {
+  QueryType,
+  SQLDataType,
+  STORE_DRIVER
+} from '@airport/ground-control';
+import { transactional } from '@airport/terminal';
+import {
+  IOperationContext,
+  ITransaction
+} from '@airport/terminal-map';
+import {
+  FieldPacket,
+  OkPacket,
+  QueryOptions,
+  ResultSetHeader,
+  RowDataPacket
+} from 'mysql2';
 import * as mysql from 'mysql2/promise';
 import { Connection, Pool } from 'mysql2/promise';
 import { DDLManager } from './DDLManager';
@@ -66,7 +83,7 @@ export class MySqlDriver
   async doesTableExist(
     schemaName: string,
     tableName: string,
-    context: IOperationContext<any, any>,
+    context: IOperationContext,
   ): Promise<boolean> {
     const result = await this.findNative(
       // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
@@ -83,7 +100,7 @@ and TABLE_NAME = '${tableName}';`,
   async dropTable(
     schemaName: string,
     tableName: string,
-    context: IOperationContext<any, any>,
+    context: IOperationContext,
   ): Promise<boolean> {
     await this.findNative(
       `DROP TABLE '${schemaName}'.'${tableName}'`,
@@ -97,7 +114,7 @@ and TABLE_NAME = '${tableName}';`,
   async findNative(
     sqlQuery: string,
     parameters: any[],
-    context: IOperationContext<any, any>,
+    context: IOperationContext,
   ): Promise<any> {
     return await this.query(QueryType.SELECT, sqlQuery, parameters, context);
   }
@@ -105,7 +122,7 @@ and TABLE_NAME = '${tableName}';`,
   protected async executeNative(
     sql: string,
     parameters: any[],
-    context: IOperationContext<any, any>,
+    context: IOperationContext,
   ): Promise<number> {
     return await this.query(QueryType.MUTATE, sql, parameters, context);
   }
@@ -146,7 +163,7 @@ and TABLE_NAME = '${tableName}';`,
     queryType: QueryType,
     query: string,
     params: any,
-    context: IOperationContext<any, any>,
+    context: IOperationContext,
     saveTransaction?: boolean,
   ): Promise<any> {
     return await this.doQuery(queryType, query, params, this.queryApi, context,
@@ -158,7 +175,7 @@ and TABLE_NAME = '${tableName}';`,
     query: string,
     params: any,
     connection: IQueryApi,
-    context: IOperationContext<any, any>,
+    context: IOperationContext,
     saveTransaction?: boolean,
   ): Promise<any> {
     let nativeParameters = params.map((value) => this.convertValueIn(value));
@@ -199,7 +216,7 @@ and TABLE_NAME = '${tableName}';`,
   }
 
   async initAllTables(
-    context: IOperationContext<any, any>,
+    context: IOperationContext,
   ): Promise<any> {
     let createOperations;
     let createQueries: Promise<any>[] = [];

@@ -5,7 +5,7 @@ import {
 import {
 	ISchemaLoader,
 	SchemaLoader
-} from '@airport/taxiway/lib/SchemaLoader';
+} from '@airport/taxiway';
 import {
 	canBeInterface,
 	getImplNameFromInterfaceName

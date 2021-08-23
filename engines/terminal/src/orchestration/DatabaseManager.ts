@@ -1,6 +1,5 @@
 import {
-	AIRPORT_DATABASE,
-	IAirportDatabase,
+	AIRPORT_DATABASE
 } from '@airport/air-control';
 import {
 	container,
@@ -20,10 +19,6 @@ import {
 	ACTOR_DAO,
 } from '@airport/holding-pattern';
 import { SCHEMA_INITIALIZER } from '@airport/landing';
-
-import {
-	TRANSACTIONAL_SERVER,
-} from '@airport/tower';
 import { SCHEMA_DAO } from '@airport/traffic-pattern';
 import {
 	Terminal,
@@ -31,36 +26,12 @@ import {
 	User,
 	USER_DAO,
 } from '@airport/travel-document-checkpoint';
+import {
+	IDatabaseManager,
+	TRANSACTIONAL_SERVER
+} from '@airport/terminal-map';
 import { DATABASE_MANAGER } from '../tokens';
 import { transactional } from '../transactional';
-
-export interface IDatabaseManager {
-
-	/*
-		ensureInitialized(
-			terminalName: string,
-			timeout: number
-		): Promise<void>;
-
-		initializeAll(
-			defaultStoreType: StoreType
-		): Promise<void>;
-	*/
-
-	isInitialized(): boolean;
-
-	initWithDb(
-		domainName: string,
-		context: IContext,
-		...schemas: JsonSchema[]
-	): Promise<void>;
-
-	initNoDb(
-		context: IContext,
-		...schemas: JsonSchema[]
-	): Promise<void>
-
-}
 
 export class DatabaseManager
 	implements IDatabaseManager {

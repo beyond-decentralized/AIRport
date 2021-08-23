@@ -1,20 +1,22 @@
 import { system } from '@airport/di'
+import {
+    ICascadeGraphVerifier,
+    IDatabaseManager,
+    IDeleteManager,
+    IDependencyGraphResolver,
+    IEntityGraphReconstructor,
+    IHistoryManager,
+    IInsertManager,
+    IOperationManager,
+    IQueryManager,
+    IStructuralEntityValidator,
+    IUpdateManager
+} from '@airport/terminal-map'
 import { IRepositoryManager } from './core/repository/RepositoryManager'
 import { IDaoRegistry } from './DaoRegistry'
 import { IOfflineDeltaStore } from './data/OfflineDeltaStore'
 import { ILocalAPIServer } from './LocalAPIServer'
 import { IOnlineManager } from './net/OnlineManager'
-import { IDatabaseManager } from './orchestration/DatabaseManager'
-import { IDeleteManager } from './orchestration/DeleteManager'
-import { IHistoryManager } from './orchestration/HistoryManager'
-import { IInsertManager } from './orchestration/InsertManager'
-import { IQueryManager } from './orchestration/QueryManager'
-import { IUpdateManager } from './orchestration/UpdateManager'
-import { ICascadeGraphVerifier } from './processing/CascadeGraphVerifier'
-import { IDependencyGraphResolver } from './processing/DependencyGraphResolver'
-import { IEntityGraphReconstructor } from './processing/EntityGraphReconstructor'
-import { IOperationManager } from './processing/OperationManager'
-import { IStructuralEntityValidator } from './processing/StructuralEntityValidator'
 
 const terminal = system('airport').lib('terminal')
 

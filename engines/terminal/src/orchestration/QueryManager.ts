@@ -7,34 +7,11 @@ import {
 	PortableQuery,
 	STORE_DRIVER
 }                      from '@airport/ground-control'
+import {
+	IQueryManager
+}                      from '@airport/terminal-map'
 import {Observable}   from 'rxjs'
 import {QUERY_MANAGER} from '../tokens'
-
-export interface IQueryManager {
-
-	find<E, EntityArray extends Array<E>>(
-		portableQuery: PortableQuery,
-		context: IContext,
-		cachedSqlQueryId?: number
-	): Promise<EntityArray>;
-
-	findOne<E>(
-		portableQuery: PortableQuery,
-		context: IContext,
-		cachedSqlQueryId?: number
-	): Promise<E>;
-
-	search<E, EntityArray extends Array<E>>(
-		portableQuery: PortableQuery,
-		context: IContext,
-	): Observable<EntityArray>;
-
-	searchOne<E>(
-		portableQuery: PortableQuery,
-		context: IContext,
-	): Observable<E>;
-
-}
 
 export class QueryManager
 	implements IQueryManager {

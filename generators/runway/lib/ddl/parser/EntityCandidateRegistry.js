@@ -1,4 +1,4 @@
-import { SchemaLoader } from '@airport/taxiway/lib/SchemaLoader';
+import { SchemaLoader } from '@airport/taxiway';
 import { canBeInterface, getImplNameFromInterfaceName } from '../../resolve/pathResolver';
 import { EntityCandidate, Interface } from './EntityCandidate';
 import { globalCandidateInheritanceMap } from './EntityDefinitionGenerator';

@@ -9,9 +9,9 @@ import {
 	SCHEMA_BUILDER,
 	SCHEMA_INITIALIZER
 }                                       from '@airport/landing';
-import { injectTransactionalConnector } from '@airport/tarmaq';
 import {
 	DATABASE_MANAGER,
+	injectTransactionalConnector,
 	injectTransactionalServer
 }                                       from '@airport/terminal';
 import { injectAirportDatabase }        from '@airport/tower';

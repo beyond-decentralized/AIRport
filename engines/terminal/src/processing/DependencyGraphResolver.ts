@@ -4,27 +4,14 @@ import {
 	ensureChildArray,
 	EntityRelationType
 }                                  from '@airport/ground-control'
-import {DEPENDENCY_GRAPH_RESOLVER} from '../tokens'
 import {
 	IDependencyGraphNode,
+	IDependencyGraphResolver,
+	IOperationContext,
+	IOperationsForEntity,
 	IOperationNode
-}                                  from './DependencyGraphNode'
-import {IOperationContext}         from './OperationContext'
-
-export interface IDependencyGraphResolver {
-
-	getOperationsInOrder<E>(
-		entities: E[],
-		context: IOperationContext<E, IEntityCascadeGraph>,
-	): IOperationNode<E>[]
-
-}
-
-interface IOperationsForEntity {
-	create: IOperationNode<any>[],
-	update: IOperationNode<any>[],
-	delete: IOperationNode<any>[]
-}
+}                                  from '@airport/terminal-map'
+import {DEPENDENCY_GRAPH_RESOLVER} from '../tokens'
 
 /*
  * Takes a (potentially) interconnected entity graph and returns
@@ -37,14 +24,14 @@ export class DependencyGraphResolver
 
 	getOperationsInOrder<E>(
 		entities: E[],
-		context: IOperationContext<E, IEntityCascadeGraph>,
+		context: IOperationContext,
 	): IOperationNode<E>[] {
 		const unorderedDependencies = this.getEntitiesToPersist(
 			entities, [], context)
 		const orderedDependencies   = this.orderEntitiesToPersist(
 			unorderedDependencies, context)
 
-		const operationNodes = this.optimizePersistOperations(orderedDependencies, context)
+		const operationNodes = this.optimizePersistOperations<E>(orderedDependencies, context)
 
 		return this.ensureUpdatesAreGroupedCorrectly(operationNodes, context)
 	}
@@ -52,7 +39,7 @@ export class DependencyGraphResolver
 	protected getEntitiesToPersist<E>(
 		entities: E[],
 		operatedOnEntities: IDependencyGraphNode<any>[],
-		context: IOperationContext<E, IEntityCascadeGraph>,
+		context: IOperationContext,
 		dependsOn?: IDependencyGraphNode<any>,
 		dependency?: IDependencyGraphNode<any>,
 		deleteByCascade = false,
@@ -182,7 +169,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 
 	protected orderEntitiesToPersist<E>(
 		unorderedDependencies: IDependencyGraphNode<any>[],
-		context: IOperationContext<E, IEntityCascadeGraph>,
+		context: IOperationContext,
 	): IDependencyGraphNode<any>[] {
 		let orderedNodes: IDependencyGraphNode<any>[]   = []
 		let processedNodes: IDependencyGraphNode<any>[] = []
@@ -210,7 +197,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 	// Group alike operations together, where possible
 	protected optimizePersistOperations<E>(
 		orderedDependencies: IDependencyGraphNode<any>[],
-		context: IOperationContext<E, IEntityCascadeGraph>,
+		context: IOperationContext,
 	): IOperationNode<E>[] {
 		let operationNodes: IOperationNode<any>[]             = []
 		let processedNodes: IDependencyGraphNode<any>[]       = []
@@ -289,7 +276,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 	 */
 	ensureUpdatesAreGroupedCorrectly<E>(
 		operationNodes: IOperationNode<E>[],
-		context
+		context: IOperationContext
 	): IOperationNode<E>[] {
 		// TODO: group related updates ONLY if all updates field values are
 		// the same

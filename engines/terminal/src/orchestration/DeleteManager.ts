@@ -22,13 +22,11 @@ import {
 	DbProperty,
 	ensureChildArray,
 	ensureChildJsMap,
-	EntityId,
 	EntityRelationType,
 	JsonDelete,
 	JsonEntityQuery,
 	PortableQuery,
 	QueryResultType,
-	SchemaIndex
 } from '@airport/ground-control'
 import {
 	IActor,
@@ -40,31 +38,19 @@ import {
 	REC_HIST_OLD_VALUE_DUO,
 	REC_HISTORY_DUO,
 	REPO_TRANS_HISTORY_DUO,
-	RepositoryEntity,
-	RepositoryId
 } from '@airport/holding-pattern'
-import { ITransaction } from '@airport/terminal-map'
+import {
+	IDeleteManager,
+	IHistoryManager, 
+	ITransaction,
+	RecordsToDelete
+ } from '@airport/terminal-map'
 import {
 	DELETE_MANAGER,
 	HISTORY_MANAGER,
 	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER
 } from '../tokens'
-import { IHistoryManager } from './HistoryManager'
-
-export interface IDeleteManager {
-
-	deleteWhere(
-		portableQuery: PortableQuery,
-		actor: IActor,
-		transaction: ITransaction,
-		context?: IContext,
-	): Promise<number>;
-
-}
-
-type RecordsToDelete =
-	Map<SchemaIndex, Map<EntityId, Map<RepositoryId, RepositoryEntity[]>>>;
 
 export class DeleteManager
 	implements IDeleteManager {

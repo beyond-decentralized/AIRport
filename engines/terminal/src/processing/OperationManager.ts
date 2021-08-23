@@ -17,25 +17,16 @@ import {
 	PortableQuery
 } from '@airport/ground-control'
 import { IActor } from '@airport/holding-pattern'
-import { ITransaction } from '@airport/terminal-map'
+import {
+	IOperationContext,
+	IOperationManager,
+	ITransaction
+} from '@airport/terminal-map'
 import { OPERATION_MANAGER } from '../tokens'
-import { IOperationContext } from './OperationContext'
 
 /**
  * Created by Papa on 11/15/2016.
  */
-
-export interface IOperationManager {
-
-	performSave<E, EntityCascadeGraph>(
-		entities: E | E[],
-		actor: IActor,
-		transaction: ITransaction,
-		context: IOperationContext<E, EntityCascadeGraph>,
-	): Promise<ISaveResult>
-
-}
-
 export class OperationManager
 	implements IOperationManager {
 
@@ -45,11 +36,11 @@ export class OperationManager
 	 * @param qEntity
 	 * @param entity
 	 */
-	async performSave<E, EntityCascadeGraph>(
+	async performSave<E>(
 		entities: E | E[],
 		actor: IActor,
 		transaction: ITransaction,
-		context: IOperationContext<E, EntityCascadeGraph>,
+		context: IOperationContext,
 	): Promise<ISaveResult> {
 		const verifiedTree = context.ioc.cascadeGraphVerifier
 			.verify(entities, context)
@@ -80,11 +71,11 @@ export class OperationManager
 		return totalNumberOfChanges
 	}
 
-	protected async internalCreate<E, EntityCascadeGraph>(
+	protected async internalCreate<E>(
 		entities: E[],
 		actor: IActor,
 		transaction: ITransaction,
-		context: IOperationContext<E, EntityCascadeGraph>,
+		context: IOperationContext,
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
 		const qEntity = context.ioc.airDb.qSchemas
@@ -183,12 +174,12 @@ export class OperationManager
 	 *  ManyToOne:
 	 *    Cascades do not travel across ManyToOne
 	 */
-	protected async internalUpdate<E, EntityCascadeGraph>(
+	protected async internalUpdate<E>(
 		entity: E,
 		originalEntity: E,
 		actor: IActor,
 		transaction: ITransaction,
-		context: IOperationContext<E, EntityCascadeGraph>
+		context: IOperationContext
 	): Promise<number> {
 		const qEntity =
 			context.ioc.airDb.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
@@ -269,11 +260,11 @@ export class OperationManager
 		return numberOfAffectedRecords
 	}
 
-	protected async internalDelete<E, EntityCascadeGraph>(
+	protected async internalDelete<E>(
 		entity: E,
 		actor: IActor,
 		transaction: ITransaction,
-		context: IOperationContext<E, EntityCascadeGraph>
+		context: IOperationContext
 	): Promise<number> {
 
 		const dbEntity = context.dbEntity

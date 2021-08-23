@@ -12,7 +12,7 @@ import {
 	DOMAIN_DAO,
 	IDomainDao
 }                        from '@airport/territory'
-import {transactional}   from '@airport/tower'
+import {transactional}   from '@airport/terminal'
 import {
 	ISchemaColumnDao,
 	ISchemaDao,

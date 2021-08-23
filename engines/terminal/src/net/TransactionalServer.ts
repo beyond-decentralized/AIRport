@@ -13,13 +13,13 @@ import { IActor } from '@airport/holding-pattern';
 import {
 	DistributionStrategy,
 	ICredentials,
+	IOperationContext,
 	ITransactionalServer,
 	PlatformType,
 	TRANSACTION_MANAGER,
 	TRANSACTIONAL_SERVER
 } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
-import { IOperationContext } from '../processing/OperationContext';
 import { ITransaction } from '@airport/terminal-map';
 import { transactional } from '../transactional';
 
@@ -73,7 +73,7 @@ export class TransactionalServer
 		platformConfig: string,
 		distributionStrategy: DistributionStrategy,
 		credentials: ICredentials,
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<number> {
 		await this.ensureIocContext(context)
 
@@ -97,7 +97,7 @@ export class TransactionalServer
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
 		await this.ensureIocContext(context)
@@ -109,7 +109,7 @@ export class TransactionalServer
 	async findOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
 		await this.ensureIocContext(context)
@@ -121,7 +121,7 @@ export class TransactionalServer
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 		cachedSqlQueryId?: number,
 	): Observable<EntityArray> {
 		this.ensureIocContextSync(context)
@@ -133,7 +133,7 @@ export class TransactionalServer
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 		cachedSqlQueryId?: number,
 	): Observable<E> {
 		this.ensureIocContextSync(context)
@@ -165,7 +165,7 @@ export class TransactionalServer
 	async save<E>(
 		entity: E,
 		credentials: ICredentials,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 	): Promise<ISaveResult> {
 		if (!entity) {
 			return null
@@ -188,7 +188,7 @@ export class TransactionalServer
 	async insertValues(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IOperationContext<any, any>,
+		context: IOperationContext,
 		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
 		const values = (portableQuery.jsonQuery as JsonInsertValues).V;
@@ -225,7 +225,7 @@ export class TransactionalServer
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<number[]> {
 		const actor = await this.getActor(credentials);
 
@@ -243,7 +243,7 @@ export class TransactionalServer
 	async updateValues(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<number> {
 		const actor = await this.getActor(credentials);
 
@@ -261,7 +261,7 @@ export class TransactionalServer
 	async deleteWhere(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<number> {
 		const actor = await this.getActor(credentials);
 
@@ -287,7 +287,7 @@ export class TransactionalServer
 	}
 
 	private async ensureIocContext(
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<void> {
 		const operationContextLoader = await container(this)
 			.get(OPERATION_CONTEXT_LOADER)
@@ -295,7 +295,7 @@ export class TransactionalServer
 	}
 
 	private async ensureIocContextSync(
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<void> {
 		const operationContextLoader = container(this)
 			.getSync(OPERATION_CONTEXT_LOADER)

@@ -28,13 +28,20 @@ import {
 	STORE_DRIVER
 } from '@airport/ground-control'
 import {
+	ICascadeGraphVerifier,
+	IDeleteManager,
+	IDependencyGraphResolver,
+	IEntityGraphReconstructor,
+	IInsertManager,
+	IIocOperationContext,
+	IOperationContext,
+	IOperationManager,
+	IQueryManager,
+	IStructuralEntityValidator,
 	ITransactionalServer,
+	IUpdateManager,
 	TRANSACTIONAL_SERVER
 } from '@airport/terminal-map'
-import { IDeleteManager } from '../orchestration/DeleteManager'
-import { IInsertManager } from '../orchestration/InsertManager'
-import { IQueryManager } from '../orchestration/QueryManager'
-import { IUpdateManager } from '../orchestration/UpdateManager'
 import {
 	CASCADE_GRAPH_VERIFIER,
 	DELETE_MANAGER,
@@ -47,43 +54,6 @@ import {
 	UPDATE_MANAGER,
 
 } from '../tokens'
-import { ICascadeGraphVerifier } from './CascadeGraphVerifier'
-import { IDependencyGraphResolver } from './DependencyGraphResolver'
-import { IEntityGraphReconstructor } from './EntityGraphReconstructor'
-import { IOperationManager } from './OperationManager'
-import { IStructuralEntityValidator } from './StructuralEntityValidator'
-
-export interface IOperationContext<E, EntityCascadeGraph>
-	extends IContext {
-	entityCascadeGraph: EntityCascadeGraph,
-	checkIfProcessed: boolean
-	dbEntity: DbEntity
-	ioc: IIocOperationContext
-}
-
-export interface IIocOperationContext {
-
-	airDb: IAirportDatabase
-	cascadeGraphVerifier: ICascadeGraphVerifier
-	deleteManager: IDeleteManager
-	dependencyGraphResolver: IDependencyGraphResolver
-	entityGraphReconstructor: IEntityGraphReconstructor
-	entityStateManager: IEntityStateManager
-	fieldUtils: IFieldUtils
-	insertManager: IInsertManager
-	metadataUtils: IQMetadataUtils
-	operationManager: IOperationManager
-	queryFacade: IQueryFacade
-	queryManager: IQueryManager
-	queryUtils: IQueryUtils
-	relationManager: IRelationManager
-	schemaUtils: ISchemaUtils
-	storeDriver: IStoreDriver
-	structuralEntityValidator: IStructuralEntityValidator
-	transactionalServer: ITransactionalServer
-	updateManager: IUpdateManager
-
-}
 
 export class IocOperationContext
 	implements IIocOperationContext {
@@ -222,7 +192,7 @@ export class OperationContextLoader
 	implements IOperationContextLoader {
 
 	async ensure(
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): Promise<void> {
 		if (!context.ioc) {
 			context.ioc = new IocOperationContext()
@@ -233,7 +203,7 @@ export class OperationContextLoader
 	}
 
 	ensureSync(
-		context: IOperationContext<any, any>
+		context: IOperationContext
 	): void {
 		if (!context.ioc) {
 			context.ioc = new IocOperationContext()

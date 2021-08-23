@@ -1,7 +1,6 @@
 import { AliasCache, isID, isN, isY, JoinTreeNode, objectExists, Y } from '@airport/air-control';
 import { DI } from '@airport/di';
-import { EntityRelationType, JoinType, JSONRelationType } from '@airport/ground-control';
-import { EntityState } from '@airport/pressurization';
+import { EntityRelationType, EntityState, JoinType, JSONRelationType } from '@airport/ground-control';
 import { EntityOrderByParser } from '../orderBy/EntityOrderByParser';
 import { OBJECT_RESULT_PARSER_FACTORY, Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../tokens';
 import { SQLQuery } from './core/SQLQuery';

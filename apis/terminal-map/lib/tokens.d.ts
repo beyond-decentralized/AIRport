@@ -1,4 +1,4 @@
-import { ITransactionManager } from './transaction/TransactionManager';
+import { ITransactionManager } from './orchestration/TransactionManager';
 import { ITerminalStore } from './store/TerminalStore';
 import { ITransactionalServer } from './transaction/ITransactionalServer';
 import { ITransactionalReceiver } from './transaction/ITransactionalReceiver';

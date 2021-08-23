@@ -1,4 +1,4 @@
-import { AirportDatabase } from '@airport/tower';
+// import { AirportDatabase }             from '@airport/tower';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import tsc from 'typescript';
@@ -16,7 +16,7 @@ import { QSchemaBuilder } from './ddl/builder/QSchemaBuilder';
 import { JsonSchemaBuilder } from './ddl/builder/schema/JsonSchemaBuilder';
 import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
 import { generateDefinitions } from './FileProcessor';
-AirportDatabase.bogus = 'loaded for schema generation';
+// (AirportDatabase as any).bogus = 'loaded for schema generation';
 /**
  * Created by Papa on 3/30/2016.
  */
