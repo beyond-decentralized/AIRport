@@ -39,8 +39,8 @@ of those schemas.
 AIRport is a decentralized relational database of Repositories.  Repositories
 are virtual databases, each with its own transaction log.  Each Repository has
 a globally unique identifier that allows to distinguish it from other
-repositories in the same relational database (such as WebSql, or SqLite in
-a Cordova based App). For two Users to share a Repository it must be present
+repositories in the same relational database (such as SqlJs in demo mode, or
+SqLite in a native App). For two Users to share a Repository it must be present
 on their devices, and the schemas used by that repository must be installed
 in AIRport databases on those devices.
 
