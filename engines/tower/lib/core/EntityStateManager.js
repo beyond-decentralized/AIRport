@@ -47,9 +47,9 @@ export class EntityStateManager {
             case EntityState.PARENT_ID:
                 isUpdate = true;
                 break;
-            case EntityState.RESULT:
-                isResult = true;
-                break;
+            // case EntityState.RESULT:
+            // 	isResult = true
+            // 	break
             case EntityState.DATE:
                 isResultDate = true;
                 break;
@@ -70,7 +70,7 @@ export class EntityStateManager {
             isCreate,
             isDelete,
             isParentId,
-            isResult,
+            // isResult,
             isResultDate,
             isStub,
             isUpdate,

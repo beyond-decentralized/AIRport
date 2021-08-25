@@ -18,7 +18,7 @@ export interface IEntityStateAsFlags {
 	isCreate: boolean
 	isDelete: boolean
 	isParentId: boolean
-	isResult: boolean
+	// isResult: boolean
 	isResultDate: boolean
 	// isResultJson: boolean
 	isStub: boolean

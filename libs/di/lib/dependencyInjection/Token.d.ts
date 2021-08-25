@@ -1,7 +1,6 @@
 import { ILibrary } from './Library';
 export declare type IDiTokenName = string;
 export interface IDiToken<Injectable> {
-    autopilot: boolean;
     library: ILibrary;
     name: string;
     getPath(): string;
@@ -9,8 +8,7 @@ export interface IDiToken<Injectable> {
 export declare class DiToken<Injectable> implements IDiToken<Injectable> {
     library: ILibrary;
     name: string;
-    autopilot: boolean;
-    constructor(library: ILibrary, name: string, autopilot: boolean);
+    constructor(library: ILibrary, name: string);
     getPath(): string;
 }
 export interface GenericDependencyInjectionError {

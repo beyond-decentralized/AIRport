@@ -84,16 +84,11 @@ export class LocalAPIClient
             throw new Error(response.errorMessage)
         }
 
-        switch (response.type) {
-            case LocalAPIResponseType.QUERY:
-                const value = queryResultsDeserializer
-                    .deserialize(response.payload, serializationStateManager)
-                return value
-            case LocalAPIResponseType.SAVE:
-                // Return ISaveRecord as specified in Dao spec
-                return response.payload
-            default:
-                throw new Error('Unexpected LocalAPIResponseType')
+        if (_inDemoMode) {
+            return queryResultsDeserializer
+                .deserialize(response.payload, serializationStateManager)
+        } else {
+            return response.payload
         }
     }
 
@@ -156,12 +151,6 @@ export class LocalAPIClient
         } else {
             pendingRequest.resolve(response)
         }
-    }
-
-    private uuidv4() {
-        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
     }
 
 }

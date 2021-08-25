@@ -1,18 +1,20 @@
 import { ILibrary } from './Library';
 export interface ISystem {
-    libraryMap: {
-        [libraryName: string]: ILibrary;
-    };
     name: string;
     lib(libraryName: string): ILibrary;
+    getLib(libraryName: string): ILibrary;
+    getLibBySignature(signature: string): ILibrary;
+    mapLibraryBySignature(libraryName: string, signature: string): void;
 }
 export declare class System implements ISystem {
     name: string;
-    libraryMap: {
-        [libraryName: string]: ILibrary;
-    };
+    private libraryMap;
+    private libraryMapBySignature;
     constructor(name: string);
     lib(libraryName: string): ILibrary;
+    getLib(libraryName: string): ILibrary;
+    getLibBySignature(signature: string): ILibrary;
+    mapLibraryBySignature(libraryName: string, signature: string): void;
 }
 export declare function system(systemName: any): ISystem;
 export declare const SYSTEM: ISystem;

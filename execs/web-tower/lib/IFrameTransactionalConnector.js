@@ -1,6 +1,7 @@
-import { DI } from '@airport/di';
+import { container, DI } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
+import { LOCAL_API_SERVER } from '@airport/tower';
 import { Observable } from 'rxjs';
 export class IframeTransactionalConnector {
     constructor() {
@@ -8,8 +9,12 @@ export class IframeTransactionalConnector {
         this.observableMessageMap = new Map();
         this.messageId = 0;
         window.addEventListener("message", event => {
-            const message = event.data;
             const origin = event.origin;
+            const message = event.data;
+            if (message.schemaSignature.indexOf('.') > -1) {
+                // Invalid schema signature - cannot have periods that would point to invalid subdomains
+                return;
+            }
             const mainDomain = origin.split('//')[1];
             const mainDomainFragments = mainDomain.split('.');
             let startsWithWww = false;
@@ -17,63 +22,34 @@ export class IframeTransactionalConnector {
                 mainDomainFragments.splice(0, 1);
                 startsWithWww = true;
             }
-            const domainPrefix = '.' + mainDomain;
+            const domainSuffix = '.' + mainDomainFragments.join('.');
             const ownDomain = window.location.hostname;
             // Only accept requests from https protocol
             if (!origin.startsWith("https")
-                || origin !== message.isolateId
-                || !ownDomain.endsWith(domainPrefix)) {
+                // And only if message has the schema signature 
+                || !message.schemaSignature
+                // And if own domain is a direct sub-domain of the message's domain
+                || ownDomain !== message.schemaSignature + domainSuffix) {
                 return;
             }
             const ownDomainFragments = ownDomain.split('.');
             // Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
+            // All 'App' messages must first come from the main domain, which ensures
+            // that the schema is installed
             const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1);
             if (ownDomainFragments.length !== expectedNumFragments) {
                 return;
             }
-            // Don't accept requests from self
-            if (mainDomain === ownDomain) {
-                return;
-            }
-            const messageRecord = this.pendingMessageMap.get(message.id);
-            if (!messageRecord) {
-                return;
-            }
-            let observableMessageRecord;
-            switch (message.type) {
-                case IsolateMessageType.INIT_CONNECTION:
-                    this.mainDomain = mainDomain;
-                    this.pendingMessageMap.delete(message.id);
+            switch (event.data.category) {
+                case 'FromApp':
+                    this.handleLocalApiRequest(message).then();
                     return;
-                case IsolateMessageType.SEARCH:
-                case IsolateMessageType.SEARCH_ONE:
-                    observableMessageRecord = this.observableMessageMap.get(message.id);
-                    if (!observableMessageRecord || !observableMessageRecord.observer) {
-                        return;
-                    }
-                    if (message.errorMessage) {
-                        observableMessageRecord.observer.error(message.errorMessage);
-                    }
-                    else {
-                        observableMessageRecord.observer.next(message.result);
-                    }
+                case 'Db':
+                    this.handleDbToIsolateMessage(message, mainDomain);
                     return;
-                case IsolateMessageType.SEARCH_UNSUBSCRIBE:
-                    observableMessageRecord = this.observableMessageMap.get(message.id);
-                    if (!observableMessageRecord || !observableMessageRecord.observer) {
-                        return;
-                    }
-                    observableMessageRecord.observer.complete();
-                    this.pendingMessageMap.delete(message.id);
+                default:
                     return;
             }
-            if (message.errorMessage) {
-                messageRecord.reject(message.errorMessage);
-            }
-            else {
-                messageRecord.resolve(message.result);
-            }
-            this.pendingMessageMap.delete(message.id);
         });
         this.sendMessage({
             ...this.getCoreFields(),
@@ -171,10 +147,57 @@ export class IframeTransactionalConnector {
             type: IsolateMessageType.ROLLBACK
         });
     }
+    async handleLocalApiRequest(request) {
+        const localApiServer = await container(this).get(LOCAL_API_SERVER);
+        const response = await localApiServer.handleRequest(request);
+        window.postMessage(response, response.host);
+    }
+    handleDbToIsolateMessage(message, mainDomain) {
+        const messageRecord = this.pendingMessageMap.get(message.id);
+        if (!messageRecord) {
+            return;
+        }
+        let observableMessageRecord;
+        switch (message.type) {
+            case IsolateMessageType.INIT_CONNECTION:
+                this.mainDomain = mainDomain;
+                this.pendingMessageMap.delete(message.id);
+                return;
+            case IsolateMessageType.SEARCH:
+            case IsolateMessageType.SEARCH_ONE:
+                observableMessageRecord = this.observableMessageMap.get(message.id);
+                if (!observableMessageRecord || !observableMessageRecord.observer) {
+                    return;
+                }
+                if (message.errorMessage) {
+                    observableMessageRecord.observer.error(message.errorMessage);
+                }
+                else {
+                    observableMessageRecord.observer.next(message.result);
+                }
+                return;
+            case IsolateMessageType.SEARCH_UNSUBSCRIBE:
+                observableMessageRecord = this.observableMessageMap.get(message.id);
+                if (!observableMessageRecord || !observableMessageRecord.observer) {
+                    return;
+                }
+                observableMessageRecord.observer.complete();
+                this.pendingMessageMap.delete(message.id);
+                return;
+        }
+        if (message.errorMessage) {
+            messageRecord.reject(message.errorMessage);
+        }
+        else {
+            messageRecord.resolve(message.result);
+        }
+        this.pendingMessageMap.delete(message.id);
+    }
     getCoreFields() {
         return {
+            category: 'Db',
             id: ++this.messageId,
-            isolateId: window.location.hostname,
+            schemaSignature: window.location.hostname.split('.')[0],
         };
     }
     sendMessage(message) {

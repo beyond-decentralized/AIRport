@@ -1,0 +1,1 @@
+{"version":3,"file":"LocalAPIServer.d.ts","sourceRoot":"","sources":["../../../src/core/api/LocalAPIServer.ts"],"names":[],"mappings":"AAAA,OAAO,EACH,gBAAgB,EAChB,iBAAiB,EACpB,MAAM,oBAAoB,CAAC;AAU5B,MAAM,WAAW,eAAe;IAE5B,aAAa,CACT,OAAO,EAAE,gBAAgB,GAC1B,OAAO,CAAC,iBAAiB,CAAC,CAAA;CAEhC;AAED,qBAAa,cACT,YAAW,eAAe;IAEpB,aAAa,CACf,OAAO,EAAE,gBAAgB,GAC1B,OAAO,CAAC,iBAAiB,CAAC;CAkChC"}

@@ -1,8 +1,7 @@
 export class DiToken {
-    constructor(library, name, autopilot) {
+    constructor(library, name) {
         this.library = library;
         this.name = name;
-        this.autopilot = autopilot;
     }
     getPath() {
         return this.library.system.name + ':' + this.library.name + ':' + this.name;

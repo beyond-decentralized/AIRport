@@ -15,6 +15,5 @@ export declare class LocalAPIClient implements ILocalAPIClient {
     private sendDemoRequest;
     private startDemoListener;
     private handleDemoResponse;
-    private uuidv4;
 }
 //# sourceMappingURL=LocalAPIClient.d.ts.map

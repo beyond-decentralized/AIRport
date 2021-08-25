@@ -34,6 +34,8 @@ export declare class IframeTransactionalConnector implements ITransactionalConne
     startTransaction(context: IContext): Promise<boolean>;
     commit(context: IContext): Promise<boolean>;
     rollback(context: IContext): Promise<boolean>;
+    private handleLocalApiRequest;
+    private handleDbToIsolateMessage;
     private getCoreFields;
     private sendMessage;
     private sendObservableMessage;

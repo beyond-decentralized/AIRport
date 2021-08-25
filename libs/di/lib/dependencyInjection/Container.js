@@ -1,5 +1,6 @@
 import { Context, ContextType } from '../Context';
 import { AUTOPILOT_API_LOADER } from '../tokens';
+import { SYSTEM } from './System';
 const classMap = new Map();
 let numPendingInits = 0;
 const objectMap = new Map();
@@ -81,9 +82,9 @@ export class ChildContainer extends Container {
             }
             let object = objectMap.get(token.name);
             if (!object) {
-                if (token.autopilot) {
+                if (token.library.autopilot) {
                     object = this.getSync(AUTOPILOT_API_LOADER)
-                        .loadApiAutopilot(token.library.system.name, token.library.uniqueHash, token.name);
+                        .loadApiAutopilot(token.library.signature, token.name);
                 }
                 else {
                     const clazz = classMap.get[token.name];
@@ -100,7 +101,7 @@ export class ChildContainer extends Container {
                 }
                 object.__container__ = this;
                 objectMap.set(token.name, object);
-                if (!token.autopilot && object.init) {
+                if (!token.library.autopilot && object.init) {
                     object.init().then(_ => {
                         object.__initialized__ = true;
                         console.log(`${token.getPath()} initialized.`);
@@ -118,7 +119,21 @@ export class ChildContainer extends Container {
             objects
         };
     }
-    getByNamesAndHash(systemName, libraryUniqueHash, tokenName) {
+    async getBySchemaSignatureAndName(librarySignature, tokenName) {
+        const library = SYSTEM.getLibBySignature(librarySignature);
+        if (!library) {
+            throw new Error(`Could not find library with signature:
+			${librarySignature}
+			in system: '${SYSTEM.name}'`);
+        }
+        const token = library.tokenMap.get(tokenName);
+        if (!token) {
+            throw new Error(`Could not find token: ${tokenName} in library:
+			${library.name}
+			of system:
+			${SYSTEM.name}`);
+        }
+        return await this.get(token);
     }
     get(...tokens) {
         return new Promise((resolve, reject) => {

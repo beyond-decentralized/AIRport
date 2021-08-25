@@ -6,6 +6,12 @@ import {
 import { container, DI } from "@airport/di";
 import { DAO_REGISTRY } from "./tokens";
 
+/**
+ * TODO: probably not-needed - queries no longer come from
+ * the client directly.  They can come from the client but
+ * are considered generic API calls. DaoRegistry is now
+ * replaced with API registry. 
+ */
 export class ClientQueryManager
     implements IClientQueryManager {
 

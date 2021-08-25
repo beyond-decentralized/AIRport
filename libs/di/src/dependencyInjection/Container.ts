@@ -5,6 +5,7 @@ import {
 } from '../Context';
 import { IDiToken } from './Token';
 import { AUTOPILOT_API_LOADER } from '../tokens';
+import { SYSTEM } from './System';
 
 export interface IChildContainer
 	extends IContainer {
@@ -358,9 +359,9 @@ export interface IChildContainer
 	): any
 
 	getBySchemaSignatureAndName(
-		libraryhash: string,
-		name: string
-	): any
+		librarySignature: string,
+		tokenName: string
+	): Promise<any>
 
 }
 
@@ -557,11 +558,25 @@ export class ChildContainer
 		};
 	}
 
-	getBySchemaSignatureAndName(
-		libraryUniqueHash: string,
+	async getBySchemaSignatureAndName(
+		librarySignature: string,
 		tokenName: string
-	): any {
-		SYSTEM
+	): Promise<any> {
+		const library = SYSTEM.getLibBySignature(librarySignature)
+		if (!library) {
+			throw new Error(`Could not find library with signature:
+			${librarySignature}
+			in system: '${SYSTEM.name}'`)
+		}
+		const token = library.tokenMap.get(tokenName)
+
+		if (!token) {
+			throw new Error(`Could not find token: ${tokenName} in library:
+			${library.name}
+			of system:
+			${SYSTEM.name}`)
+		}
+		return await this.get(token)
 	}
 
 	get<A>(

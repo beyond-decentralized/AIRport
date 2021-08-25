@@ -1,6 +1,7 @@
 import { DbEntity } from "@airport/ground-control";
 
 export interface IApiOperation {
+    isAsync: boolean
     parameters: IApiParameter[]
 }
 

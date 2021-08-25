@@ -22,6 +22,7 @@ import {
 	IReadQueryIMI,
 	ISaveIMI
 } from '@airport/security-check';
+import { LOCAL_API_SERVER } from '@airport/tower'
 import {
 	Observable,
 	Observer
@@ -87,10 +88,10 @@ export class IframeTransactionalConnector
 			}
 			switch (event.data.category) {
 				case 'FromApp':
-					this.handleLocalApiRequest(message as ILocalAPIRequest)
+					this.handleLocalApiRequest(message as ILocalAPIRequest).then()
 					return
 				case 'Db':
-					this.handleToIsolateMessage(message as IIsolateMessageOut<any>, mainDomain)
+					this.handleDbToIsolateMessage(message as IIsolateMessageOut<any>, mainDomain)
 					return
 				default:
 					return
@@ -261,13 +262,15 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	private handleLocalApiRequest(
+	private async handleLocalApiRequest(
 		request: ILocalAPIRequest
 	) {
-		
+		const localApiServer = await container(this).get(LOCAL_API_SERVER)
+		const response = await localApiServer.handleRequest(request)
+		window.postMessage(response, response.host)
 	}
 
-	private handleToIsolateMessage(
+	private handleDbToIsolateMessage(
 		message: IIsolateMessageOut<any>,
 		mainDomain: string
 	) {

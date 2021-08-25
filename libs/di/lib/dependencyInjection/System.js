@@ -3,6 +3,7 @@ export class System {
     constructor(name) {
         this.name = name;
         this.libraryMap = {};
+        this.libraryMapBySignature = {};
     }
     lib(libraryName) {
         if (this.libraryMap[libraryName]) {
@@ -15,6 +16,23 @@ export class System {
         const library = new Library(libraryName, this);
         this.libraryMap[libraryName] = library;
         return library;
+    }
+    getLib(libraryName) {
+        return this.libraryMap[libraryName];
+    }
+    getLibBySignature(signature) {
+        return this.libraryMapBySignature[signature];
+    }
+    mapLibraryBySignature(libraryName, signature) {
+        const library = this.libraryMap[libraryName];
+        if (!library) {
+            throw new Error(`Could not find library: '${library}', in system: '${this.name}'`);
+        }
+        if (this.libraryMapBySignature[signature]) {
+            throw new Error(`System '${this.name}' already has a library '${libraryName}'
+			for signature: ${signature}`);
+        }
+        this.libraryMapBySignature[signature] = library;
     }
 }
 const SYSTEM_MAP = {};

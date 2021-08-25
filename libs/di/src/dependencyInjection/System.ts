@@ -5,22 +5,36 @@ import {
 
 export interface ISystem {
 
-	libraryMap: {
-		[libraryName: string]: ILibrary
-	}
 	name: string
 
 	lib(
 		libraryName: string
 	): ILibrary
 
+	getLib(
+		libraryName: string
+	): ILibrary
+
+	getLibBySignature(
+		signature: string
+	): ILibrary
+
+	mapLibraryBySignature(
+		libraryName: string,
+		signature: string
+	): void
+
 }
 
 export class System
 	implements ISystem {
 
-	libraryMap: {
+	private libraryMap: {
 		[libraryName: string]: ILibrary
+	} = {}
+
+	private libraryMapBySignature: {
+		[librarySignature: string]: ILibrary
 	} = {}
 
 	constructor(
@@ -44,6 +58,33 @@ export class System
 		this.libraryMap[libraryName] = library
 
 		return library
+	}
+
+	getLib(
+		libraryName: string
+	): ILibrary {
+		return this.libraryMap[libraryName]
+	}
+
+	getLibBySignature(
+		signature: string
+	): ILibrary {
+		return this.libraryMapBySignature[signature]
+	}
+
+	mapLibraryBySignature(
+		libraryName: string,
+		signature: string
+	): void {
+		const library = this.libraryMap[libraryName]
+		if (!library) {
+			throw new Error(`Could not find library: '${library}', in system: '${this.name}'`)
+		}
+		if (this.libraryMapBySignature[signature]) {
+			throw new Error(`System '${this.name}' already has a library '${libraryName}'
+			for signature: ${signature}`)
+		}
+		this.libraryMapBySignature[signature] = library
 	}
 
 }

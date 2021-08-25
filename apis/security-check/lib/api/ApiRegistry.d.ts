@@ -1,8 +1,11 @@
 import { IApiOperation } from "./ApiOperation";
 export interface IApiRegistry {
     installedApi: InstalledApi;
-    findOperation(apiObjectName: string, methodName: string): IApiOperation;
-    findApiObject(apiObjectName: string, methodName: string): any;
+    init(installedApi: InstalledApi): void;
+    findApiObjectAndOperation(schemaSignature: string, apiObjectName: string, methodName: string): Promise<{
+        apiObject: any;
+        apiOperation: IApiOperation;
+    }>;
 }
 export interface InstalledApi {
     /**
@@ -10,7 +13,7 @@ export interface InstalledApi {
      * a hash can be generated of each version of the same schema.
      */
     schemaApiMap: {
-        [schemaHash: string]: ISchemaApi;
+        [schemaSchemaApi: string]: ISchemaApi;
     };
 }
 export interface ISchemaApi {

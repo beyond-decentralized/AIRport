@@ -1,35 +1,15 @@
-import { SCHEMA_UTILS } from "@airport/air-control";
 import {
     ILocalAPIRequest,
-    ILocalAPIResponse,
-    LocalAPIResponseType
+    ILocalAPIResponse
 } from "@airport/autopilot";
 import {
-    CLIENT_QUERY_MANAGER,
-    OPERATION_DESERIALIZER,
-    QUERY_PARAMETER_DESERIALIZER,
-    QUERY_RESULTS_SERIALIZER
-} from "@airport/check-in";
-import {
     container,
-    DI,
-    IContext
+    DI
 } from "@airport/di";
-import {
-    ITransactionalConnector,
-    PortableQuery,
-    TRANSACTIONAL_CONNECTOR
-} from "@airport/ground-control";
 import { API_REGISTRY } from "@airport/security-check";
 import {
-    DaoOperationType,
-    IDaoOperation,
-    IQueryReference
-} from "./DaoRegistry";
-import {
-    DAO_REGISTRY,
     LOCAL_API_SERVER
-} from "./tokens";
+} from "../../tokens";
 
 export interface ILocalAPIServer {
 
@@ -45,126 +25,38 @@ export class LocalAPIServer
     async handleRequest(
         request: ILocalAPIRequest
     ): Promise<ILocalAPIResponse> {
-        const [clientQueryManager, apiRegistry, entityStateManager,
-            queryParameterDeserializer, queryResultsSerializer, operationDeserializer,
-            schemaUtils, transactionalConnector] = await container(this).get(
-                CLIENT_QUERY_MANAGER, API_REGISTRY, ENTITY_STATE_MANAGER,
-                QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER,
-                OPERATION_DESERIALIZER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
-
-        const operation = apiRegistry.findOperation(request.daoName, request.methodName)
-        const context = {
-            dbEntity: operation.dbEntity
-        }
+        const apiRegistry = await container(this).get(API_REGISTRY)
 
         let payload
         let errorMessage: string
-        let type: LocalAPIResponseType
         try {
-            switch (operation.type) {
-                case DaoOperationType.ADD_REPOSITORY:
-                    throw new Error('TODO Implement')
-                    break
-                case DaoOperationType.SAVE:
-                    type = LocalAPIResponseType.SAVE
-                    if (!request.args) {
-                        throw new Error(`No entity was provied to a save call,
-                    expecting an entity or an array of entities`)
-                    } else if (request.args.length !== 1) {
-                        throw new Error(`Wrong number of entities was provied to a save call, 
-                    expecting 1 (an entity or an array of entities), received ${request.args.length}`)
-                    } else if (typeof request.args[0] !== 'object') {
-                        throw new Error(`Wrong type of entity was provied to a save call,
-                    expecting an entity or an array of entities, received ${typeof request.args[0]}`)
-                    }
-                    const entity = operationDeserializer.deserialize(
-                        request.args[0], operation.dbEntity, entityStateManager, schemaUtils);
-
-                    // [context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
-                    payload = await transactionalConnector.save(entity, context)
-                    break;
-                case DaoOperationType.FIND:
-                case DaoOperationType.FIND_ONE:
-                case DaoOperationType.SEARCH:
-                case DaoOperationType.SEARCH_ONE:
-                    type = LocalAPIResponseType.QUERY
-                    const clientQuery = await clientQueryManager.getClientQuery(
-                        request.schemaName, request.daoName, request.methodName)
-                    const queryParameters = queryParameterDeserializer.deserialize(
-                        request.args, clientQuery, entityStateManager)
-                    const result = this.handleQuery(operation, queryParameters,
-                        transactionalConnector, context)
-                    payload = queryResultsSerializer.serialize(
-                        result, operation.dbEntity, entityStateManager, schemaUtils)
-                    break;
-                default:
-                    throw new Error(`Unknown DaoOperationType: ${operation.type}`);
+            const {
+                apiObject,
+                apiOperation
+            } = await apiRegistry.findApiObjectAndOperation(
+                request.schemaSignature, request.objectName, request.methodName)
+            const result = apiObject[request.methodName].apply(apiObject, request.args)
+            if (apiOperation.isAsync) {
+                payload = await result
+            } else {
+                payload = result
             }
         } catch (e) {
             errorMessage = e.message
         }
 
         const response: ILocalAPIResponse = {
+            category: 'ToApp',
             errorMessage,
+            id: request.id,
+            host: request.host,
             payload,
-            type
+            schemaSignature: request.schemaSignature
         }
 
         return response
     }
 
-    private async handleQuery(
-        operation: IDaoOperation,
-        orderedParameters: Array<boolean | number | string>,
-        transactionalConnector: ITransactionalConnector,
-        context: IContext
-    ) {
-        const portableQuery = this.getPortableQuery(
-            operation.queryReference, orderedParameters)
-        switch (operation.type) {
-            case DaoOperationType.FIND:
-                return await transactionalConnector.find(portableQuery, context)
-            case DaoOperationType.FIND_ONE:
-                return await transactionalConnector.findOne(portableQuery, context)
-            case DaoOperationType.SEARCH:
-                return await transactionalConnector.search(portableQuery, context)
-            case DaoOperationType.SEARCH_ONE:
-                return await transactionalConnector.searchOne(portableQuery, context)
-            default:
-                throw new Error(`Unknown DaoOperationType: ${operation.type}`);
-        }
-    }
-
-    private getPortableQuery(
-        queryReference: IQueryReference,
-        orderedParameters: Array<boolean | Date | number | string>
-    ): PortableQuery {
-        const parameterMap = {};
-
-        if (orderedParameters) {
-            if (orderedParameters.length !== queryReference.parameterAliasesByPosition.length) {
-                throw new Error(`Query expects ${queryReference.parameterAliasesByPosition.length} but ${orderedParameters.length} parameters were passed in`);
-            }
-
-            for (let i = 0; i < orderedParameters.length; i++) {
-                const parameterAlias = queryReference.parameterAliasesByPosition[i]
-                parameterMap[parameterAlias] = orderedParameters[i]
-            }
-        } else {
-            if (queryReference.parameterAliasesByPosition.length) {
-                throw new Error(`Query expects ${queryReference.parameterAliasesByPosition.length} but no parameters were passed in`);
-            }
-        }
-        const portableQuery = queryReference.portableQuery
-
-        return {
-            jsonQuery: portableQuery.jsonQuery,
-            parameterMap,
-            queryResultType: portableQuery.queryResultType,
-            schemaIndex: portableQuery.schemaIndex,
-            tableIndex: portableQuery.tableIndex
-        }
-    }
 
 }
 DI.set(LOCAL_API_SERVER, LocalAPIServer)
