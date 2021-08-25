@@ -9,6 +9,11 @@ export interface IApiRegistry {
         methodName: string
     ): IApiOperation
 
+    findApiObject(
+        apiObjectName: string,
+        methodName: string
+    ): any
+
 }
 
 export interface InstalledApi {

@@ -40,7 +40,7 @@ export interface ISerializationStateManager {
 
     getUniqueIdFieldName(): string
 
-    getStateFieldName(): string
+    // getStateFieldName(): string
 
 }
 
@@ -103,9 +103,9 @@ export class SerializationStateManager
         return SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD
     }
 
-    getStateFieldName(): string {
-        return SerializationStateManager.SERIALIZATION_STATE_FIELD
-    }
+    // getStateFieldName(): string {
+    //     return SerializationStateManager.SERIALIZATION_STATE_FIELD
+    // }
 
     private is<T>(
         entity: T,

@@ -10,14 +10,14 @@ export class AutopilotApiLoader
     implements IAutopilotApiLoader {
 
     loadApiAutopilot<T>(
-        uniqueSchemaHash: string,
+        schemaSignature: string,
         daoName: string
     ): T {
         return new Proxy({}, {
             get(target, methodName: string) {
                 return function (...args) {
                     return IOC.getSync(LOCAL_API_CLIENT)
-                        .invokeApiMethod(uniqueSchemaHash, daoName, methodName, args);
+                        .invokeApiMethod(schemaSignature, daoName, methodName, args);
                 };
             }
         }) as T;

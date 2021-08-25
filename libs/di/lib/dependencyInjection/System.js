@@ -26,4 +26,5 @@ export function system(systemName) {
     SYSTEM_MAP[systemName] = system;
     return system;
 }
+export const SYSTEM = system('airport');
 //# sourceMappingURL=System.js.map

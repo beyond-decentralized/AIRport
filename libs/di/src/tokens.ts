@@ -1,7 +1,7 @@
 import { IAutopilotApiLoader } from "./autopilot/IAutopilotApiLoader";
-import { system } from "./dependencyInjection/System";
+import { lib } from "./dependencyInjection/Library";
 
-const directionIndicator = system('airport').lib('di');
+const directionIndicator = lib('di');
 
 export const AUTOPILOT_API_LOADER = directionIndicator
     .token<IAutopilotApiLoader>('IAutopilotApiLoader');

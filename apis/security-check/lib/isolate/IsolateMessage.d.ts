@@ -18,8 +18,9 @@ export declare enum IsolateMessageType {
     UPDATE_VALUES = 14
 }
 export interface IIsolateMessage {
+    category: 'Db';
     id: number;
-    isolateId: string;
+    schemaSignature: string;
     type: IsolateMessageType;
 }
 export interface IIsolateMessageOut<T> extends IIsolateMessage {

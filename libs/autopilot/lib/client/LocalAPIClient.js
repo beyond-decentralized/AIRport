@@ -1,43 +1,50 @@
 import { container, DI } from "@airport/di";
 import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER, SERIALIZATION_STATE_MANAGER } from "@airport/pressurization";
+import { v4 as uuidv4 } from "uuid";
 import { LOCAL_API_CLIENT } from "../tokens";
-import { LocalAPIResponseType } from "./LocalAPIResponse";
+let _inDemoMode = true;
+let _demoServer = 'turbase.com';
 export class LocalAPIClient {
-    async invokeApiMethod(schemaName, daoName, methodName, args) {
+    constructor() {
+        this.pendingDemoMessageMap = new Map();
+        this.demoListenerStarted = false;
+    }
+    async invokeApiMethod(schemaSignature, objectName, methodName, args) {
         const [serializationStateManager, operationSerializer, queryResultsDeserializer] = await container(this).get(SERIALIZATION_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER);
         let serializedParams;
-        if (args) {
-            if (args.length) {
-                serializedParams = args
-                    .map(arg => operationSerializer.serialize(arg, serializationStateManager));
-            }
-            else {
-                serializedParams = [operationSerializer.serialize(args, serializationStateManager)];
-            }
+        if (_inDemoMode) {
+            serializedParams = args;
         }
         else {
-            serializedParams = [];
+            if (args) {
+                if (args.length) {
+                    serializedParams = args
+                        .map(arg => operationSerializer.serialize(arg, serializationStateManager));
+                }
+                else {
+                    serializedParams = [operationSerializer.serialize(args, serializationStateManager)];
+                }
+            }
+            else {
+                serializedParams = [];
+            }
         }
         const request = {
+            category: 'FromApp',
             args: serializedParams,
-            daoName,
+            host: window.location.hostname,
+            id: uuidv4(),
             methodName,
-            schemaName
+            objectName,
+            schemaSignature
         };
-        const httpResponse = await fetch('http://localhost:31817', {
-            method: 'PUT',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'omit',
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            // redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'origin',
-            body: JSON.stringify(request) // body data type must match "Content-Type" header
-        });
-        const response = await httpResponse.json();
+        let response;
+        if (_inDemoMode) {
+            response = await this.sendDemoRequest(request);
+        }
+        else {
+            response = await this.sendLocalRequest(request);
+        }
         if (response.errorMessage) {
             throw new Error(response.errorMessage);
         }
@@ -52,6 +59,59 @@ export class LocalAPIClient {
             default:
                 throw new Error('Unexpected LocalAPIResponseType');
         }
+    }
+    async sendLocalRequest(request) {
+        const httpResponse = await fetch('http://localhost:31817', {
+            method: 'PUT',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'omit',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            // redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'origin',
+            body: JSON.stringify(request) // body data type must match "Content-Type" header
+        });
+        return await httpResponse.json();
+    }
+    async sendDemoRequest(request) {
+        if (!this.demoListenerStarted) {
+            this.startDemoListener();
+        }
+        const returnValue = new Promise((resolve, reject) => {
+            this.pendingDemoMessageMap.set(request.id, {
+                request,
+                resolve,
+                reject
+            });
+        });
+        window.postMessage(request, _demoServer);
+        return returnValue;
+    }
+    startDemoListener() {
+        window.addEventListener("message", event => {
+            this.handleDemoResponse(event.data);
+        });
+    }
+    handleDemoResponse(response) {
+        if (response.host !== window.location.hostname) {
+            return;
+        }
+        const pendingRequest = this.pendingDemoMessageMap.get(response.id);
+        if (!pendingRequest) {
+            return;
+        }
+        if (response.errorMessage) {
+            pendingRequest.reject(response.errorMessage);
+        }
+        else {
+            pendingRequest.resolve(response);
+        }
+    }
+    uuidv4() {
+        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
     }
 }
 DI.set(LOCAL_API_CLIENT, LocalAPIClient);

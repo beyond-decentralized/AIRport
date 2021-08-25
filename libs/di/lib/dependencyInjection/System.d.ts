@@ -15,4 +15,5 @@ export declare class System implements ISystem {
     lib(libraryName: string): ILibrary;
 }
 export declare function system(systemName: any): ISystem;
+export declare const SYSTEM: ISystem;
 //# sourceMappingURL=System.d.ts.map

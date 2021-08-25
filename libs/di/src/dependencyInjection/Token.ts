@@ -3,14 +3,12 @@ import {ILibrary} from './Library'
 export type IDiTokenName = string
 
 export interface IDiToken<Injectable> {
+	
 	library: ILibrary
 	name: string
-	sequence: number
-	autopilot: boolean | {
-		[methodName: string]: boolean
-	}
 
 	getPath(): string
+
 }
 
 export class DiToken<Injectable>
@@ -18,9 +16,7 @@ export class DiToken<Injectable>
 
 	constructor(
 		public library: ILibrary,
-		public name: string,
-		public sequence: number,
-		public autopilot = false
+		public name: string
 	) {
 	}
 

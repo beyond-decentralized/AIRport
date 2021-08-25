@@ -1,16 +1,17 @@
-import {ISystem} from './System'
+import { ISystem, SYSTEM } from './System'
 import {
 	DiToken,
 	GenericDependencyInjectionError,
 	IDiToken
-}                from './Token'
+} from './Token'
 
 export interface ILibrary {
 
-	uniqueHash: string
+	autopilot: boolean
 	name: string
+	signature: string
 	system: ISystem
-	tokens: IDiToken<any>[]
+	tokenMap: Map<string, IDiToken<any>>
 
 	token<T = GenericDependencyInjectionError>(
 		name: string,
@@ -19,13 +20,12 @@ export interface ILibrary {
 
 }
 
-let diTokenSeq = -1
-
 export class Library
 	implements ILibrary {
 
-	public uniqueHash: string
-	public tokens: IDiToken<any>[] = []
+	public signature: string
+	public tokenMap: Map<string, IDiToken<any>> = new Map()
+	public autopilot = false
 
 	constructor(
 		public name: string,
@@ -33,32 +33,37 @@ export class Library
 	) {
 	}
 
-	hash(
-		uniqueHash: string
+	setSignature(
+		signature: string
 	): ILibrary {
-		this.uniqueHash = uniqueHash
+		this.signature = signature
+		this.autopilot = true
 		return this
 	}
 
 	token<T = GenericDependencyInjectionError>(
 		name: string,
-		autopilot = false
 	): IDiToken<T> {
-		diTokenSeq++
+		const existingToken = this.tokenMap.get(name)
+
+		if (existingToken) {
+			throw new Error(`Token with name '${name}' has already been created`)
+		}
 
 		const diToken = new DiToken(
 			this,
-			name,
-			diTokenSeq,
-			autopilot
+			name
 		)
 
-		this.tokens.push(diToken)
+		this.tokenMap.set(name, diToken)
 
 		return diToken
-
 	}
 
 }
 
-export const AUTOPILOT = true;
+export function lib(
+	libraryName: string
+): ILibrary {
+	return SYSTEM.lib(libraryName)
+}

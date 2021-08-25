@@ -1,4 +1,5 @@
 import { IQueryContext } from '@airport/air-control';
+import { ILocalAPIRequest } from '@airport/autopilot';
 import {
 	container,
 	DI,
@@ -23,8 +24,7 @@ import {
 } from '@airport/security-check';
 import {
 	Observable,
-	Observer,
-	Subscription
+	Observer
 } from 'rxjs';
 
 export interface IMessageInRecord {
@@ -54,8 +54,12 @@ export class IframeTransactionalConnector
 
 	constructor() {
 		window.addEventListener("message", event => {
-			const message: IIsolateMessageOut<any> = event.data
 			const origin = event.origin;
+			const message: IIsolateMessageOut<any> | ILocalAPIRequest = event.data;
+			if(message.schemaSignature.indexOf('.') > -1) {
+				// Invalid schema signature - cannot have periods that would point to invalid subdomains
+				return
+			}
 			const mainDomain = origin.split('//')[1]
 			const mainDomainFragments = mainDomain.split('.')
 			let startsWithWww = false
@@ -63,65 +67,35 @@ export class IframeTransactionalConnector
 				mainDomainFragments.splice(0, 1)
 				startsWithWww = true
 			}
-			const domainPrefix = '.' + mainDomain
+			const domainSuffix = '.' + mainDomainFragments.join('.')
 			const ownDomain = window.location.hostname
 			// Only accept requests from https protocol
 			if (!origin.startsWith("https")
-				|| origin !== message.isolateId
-				|| !ownDomain.endsWith(domainPrefix)) {
+			// And only if message has the schema signature 
+				|| !message.schemaSignature
+				// And if own domain is a direct sub-domain of the message's domain
+				|| ownDomain !== message.schemaSignature + domainSuffix) {
 				return
 			}
 			const ownDomainFragments = ownDomain.split('.')
 			// Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
+			// All 'App' messages must first come from the main domain, which ensures
+			// that the schema is installed
 			const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1)
-			if (ownDomainFragments.length !== expectedNumFragments
-			) {
+			if (ownDomainFragments.length !== expectedNumFragments) {
 				return
 			}
-			// Don't accept requests from self
-			if (mainDomain === ownDomain) {
-				return
-			}
-
-			const messageRecord = this.pendingMessageMap.get(message.id);
-			if (!messageRecord) {
-				return
-			}
-
-			let observableMessageRecord: IObservableMessageInRecord<any>
-			switch (message.type) {
-				case IsolateMessageType.INIT_CONNECTION:
-					this.mainDomain = mainDomain
-					this.pendingMessageMap.delete(message.id);
+			switch (event.data.category) {
+				case 'FromApp':
+					this.handleLocalApiRequest(message as ILocalAPIRequest)
 					return
-				case IsolateMessageType.SEARCH:
-				case IsolateMessageType.SEARCH_ONE:
-					observableMessageRecord = this.observableMessageMap.get(message.id)
-					if (!observableMessageRecord || !observableMessageRecord.observer) {
-						return
-					}
-					if (message.errorMessage) {
-						observableMessageRecord.observer.error(message.errorMessage)
-					} else {
-						observableMessageRecord.observer.next(message.result)
-					}
+				case 'Db':
+					this.handleToIsolateMessage(message as IIsolateMessageOut<any>, mainDomain)
 					return
-				case IsolateMessageType.SEARCH_UNSUBSCRIBE:
-					observableMessageRecord = this.observableMessageMap.get(message.id)
-					if (!observableMessageRecord || !observableMessageRecord.observer) {
-						return
-					}
-					observableMessageRecord.observer.complete()
-					this.pendingMessageMap.delete(message.id)
+				default:
 					return
 			}
 
-			if (message.errorMessage) {
-				messageRecord.reject(message.errorMessage)
-			} else {
-				messageRecord.resolve(message.result)
-			}
-			this.pendingMessageMap.delete(message.id)
 		})
 		this.sendMessage<IIsolateMessage, null>({
 			...this.getCoreFields(),
@@ -287,10 +261,67 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	private getCoreFields() {
+	private handleLocalApiRequest(
+		request: ILocalAPIRequest
+	) {
+		
+	}
+
+	private handleToIsolateMessage(
+		message: IIsolateMessageOut<any>,
+		mainDomain: string
+	) {
+
+		const messageRecord = this.pendingMessageMap.get(message.id);
+		if (!messageRecord) {
+			return
+		}
+
+		let observableMessageRecord: IObservableMessageInRecord<any>
+		switch (message.type) {
+			case IsolateMessageType.INIT_CONNECTION:
+				this.mainDomain = mainDomain
+				this.pendingMessageMap.delete(message.id);
+				return
+			case IsolateMessageType.SEARCH:
+			case IsolateMessageType.SEARCH_ONE:
+				observableMessageRecord = this.observableMessageMap.get(message.id)
+				if (!observableMessageRecord || !observableMessageRecord.observer) {
+					return
+				}
+				if (message.errorMessage) {
+					observableMessageRecord.observer.error(message.errorMessage)
+				} else {
+					observableMessageRecord.observer.next(message.result)
+				}
+				return
+			case IsolateMessageType.SEARCH_UNSUBSCRIBE:
+				observableMessageRecord = this.observableMessageMap.get(message.id)
+				if (!observableMessageRecord || !observableMessageRecord.observer) {
+					return
+				}
+				observableMessageRecord.observer.complete()
+				this.pendingMessageMap.delete(message.id)
+				return
+		}
+
+		if (message.errorMessage) {
+			messageRecord.reject(message.errorMessage)
+		} else {
+			messageRecord.resolve(message.result)
+		}
+		this.pendingMessageMap.delete(message.id)
+	}
+
+	private getCoreFields(): {
+		category: 'Db',
+		id: number,
+		schemaSignature: string
+	} {
 		return {
+			category: 'Db',
 			id: ++this.messageId,
-			isolateId: window.location.hostname,
+			schemaSignature: window.location.hostname.split('.')[0],
 		}
 	}
 

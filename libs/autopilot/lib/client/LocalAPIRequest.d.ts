@@ -1,7 +1,10 @@
 export interface ILocalAPIRequest {
+    category: 'FromApp';
     args: Array<boolean | number | string>;
-    schemaName: string;
-    daoName: string;
+    host: string;
+    id: string;
     methodName: string;
+    objectName: string;
+    schemaSignature: string;
 }
 //# sourceMappingURL=LocalAPIRequest.d.ts.map

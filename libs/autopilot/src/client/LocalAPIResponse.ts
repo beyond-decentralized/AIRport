@@ -1,10 +1,8 @@
-export enum LocalAPIResponseType {
-    QUERY,
-    SAVE
-}
-
 export interface ILocalAPIResponse {
+    category: 'ToApp'
     errorMessage: string
+    id: string // UUID
+    host: string
     payload: any
-    type: LocalAPIResponseType
+    schemaSignature: string
 }

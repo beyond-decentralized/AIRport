@@ -1,4 +1,4 @@
-import { DI } from "@airport/di";
+import { container, DI } from "@airport/di";
 import {
     API_REGISTRY,
     IApiOperation,
@@ -16,6 +16,14 @@ export class ApiRegistry
         methodName: string
     ): IApiOperation {
         throw new Error('TODO: implement');
+    }
+    
+
+    findApiObject(
+        apiObjectName: string,
+        methodName: string
+    ): any {
+        container(this).getSync(apiObjectName);
     }
 }
 DI.set(API_REGISTRY, ApiRegistry)

@@ -13,22 +13,18 @@ import {
     IUpdateManager
 } from '@airport/terminal-map'
 import { IRepositoryManager } from './core/repository/RepositoryManager'
-import { IDaoRegistry } from './DaoRegistry'
 import { IOfflineDeltaStore } from './data/OfflineDeltaStore'
-import { ILocalAPIServer } from './LocalAPIServer'
 import { IOnlineManager } from './net/OnlineManager'
 
 const terminal = system('airport').lib('terminal')
 
 export const CASCADE_GRAPH_VERIFIER = terminal.token<ICascadeGraphVerifier>('ICascadeGraphVerifier')
-export const DAO_REGISTRY = terminal.token<IDaoRegistry>('IDaoRegistry')
 export const DATABASE_MANAGER = terminal.token<IDatabaseManager>('IDatabaseManager')
 export const DELETE_MANAGER = terminal.token<IDeleteManager>('IDeleteManager')
 export const DEPENDENCY_GRAPH_RESOLVER = terminal.token<IDependencyGraphResolver>('IDependencyGraphResolver')
 export const ENTITY_GRAPH_RECONSTRUCTOR = terminal.token<IEntityGraphReconstructor>('IEntityGraphReconstructor')
 export const HISTORY_MANAGER = terminal.token<IHistoryManager>('IHistoryManager')
 export const INSERT_MANAGER = terminal.token<IInsertManager>('IInsertManager')
-export const LOCAL_API_SERVER = terminal.token<ILocalAPIServer>('ILocalAPIServer')
 export const OFFLINE_DELTA_STORE = terminal.token<IOfflineDeltaStore>('IOfflineDeltaStore')
 export const ONLINE_MANAGER = terminal.token<IOnlineManager>('IOnlineManager')
 export const OPERATION_MANAGER = terminal.token<IOperationManager>('IOperationManager')

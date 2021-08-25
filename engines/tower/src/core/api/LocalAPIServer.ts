@@ -20,6 +20,7 @@ import {
     PortableQuery,
     TRANSACTIONAL_CONNECTOR
 } from "@airport/ground-control";
+import { API_REGISTRY } from "@airport/security-check";
 import {
     DaoOperationType,
     IDaoOperation,
@@ -44,14 +45,14 @@ export class LocalAPIServer
     async handleRequest(
         request: ILocalAPIRequest
     ): Promise<ILocalAPIResponse> {
-        const [clientQueryManager, daoRegistry, entityStateManager,
+        const [clientQueryManager, apiRegistry, entityStateManager,
             queryParameterDeserializer, queryResultsSerializer, operationDeserializer,
             schemaUtils, transactionalConnector] = await container(this).get(
-                CLIENT_QUERY_MANAGER, DAO_REGISTRY, ENTITY_STATE_MANAGER,
+                CLIENT_QUERY_MANAGER, API_REGISTRY, ENTITY_STATE_MANAGER,
                 QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER,
                 OPERATION_DESERIALIZER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
 
-        const operation = daoRegistry.findOperation(request.daoName, request.methodName)
+        const operation = apiRegistry.findOperation(request.daoName, request.methodName)
         const context = {
             dbEntity: operation.dbEntity
         }

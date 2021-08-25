@@ -357,6 +357,11 @@ export interface IChildContainer
 		...tokens: Array<IDiToken<any>>
 	): any
 
+	getBySchemaSignatureAndName(
+		libraryhash: string,
+		name: string
+	): any
+
 }
 
 export interface IContainer {
@@ -383,9 +388,9 @@ export interface IRootContainer
 
 }
 
-const classes: any[] = [];
+const classMap: Map<string, any> = new Map();
 let numPendingInits = 0;
-const theObjects: any[] = [];
+const objectMap: Map<string, any> = new Map();
 
 export class Container
 	implements IContainer {
@@ -394,8 +399,8 @@ export class Container
 		token: IDiToken<I>,
 		clazz: new () => I
 	): void {
-		classes[token.sequence] = clazz;
-		theObjects[token.sequence] = null;
+		classMap.set(token.name, clazz)
+		objectMap.set(token.name, null)
 	}
 
 }
@@ -512,10 +517,13 @@ export class ChildContainer
 				if (firstMissingClassToken || firstDiNotSetClass) {
 					return;
 				}
-				let object = theObjects[token.sequence];
+				let object = objectMap.get(token.name)
 				if (!object) {
-					if (!token.autopilot) {
-						const clazz = classes[token.sequence];
+					if (token.library.autopilot) {
+						object = this.getSync(AUTOPILOT_API_LOADER)
+							.loadApiAutopilot(token.library.signature, token.name);
+					} else {
+						const clazz = classMap.get[token.name];
 						if (!clazz) {
 							firstMissingClassToken = token;
 							return;
@@ -526,16 +534,11 @@ export class ChildContainer
 							return;
 						}
 						object = new clazz();
-					} else if (typeof token.autopilot !== 'boolean') {
-						throw new Error(`Partial AUTOPILOT DAOs are not yet supported.`);
-					} else {
-						object = this.getSync(AUTOPILOT_API_LOADER)
-							.loadApiAutopilot(token.library.uniqueHash, token.name);
 					}
-					object.__container__ = this;
-					theObjects[token.sequence] = object;
+					object.__container__ = this
+					objectMap.set(token.name, object)
 
-					if (!token.autopilot && object.init) {
+					if (!token.library.autopilot && object.init) {
 						object.init().then(_ => {
 							object.__initialized__ = true;
 							console.log(`${token.getPath()} initialized.`);
@@ -552,6 +555,13 @@ export class ChildContainer
 			firstMissingClassToken,
 			objects
 		};
+	}
+
+	getBySchemaSignatureAndName(
+		libraryUniqueHash: string,
+		tokenName: string
+	): any {
+		SYSTEM
 	}
 
 	get<A>(

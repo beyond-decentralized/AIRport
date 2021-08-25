@@ -1,6 +1,9 @@
 export interface ILocalAPIRequest {
-    args: Array<boolean | number | string>;
-    schemaName: string;
-    daoName: string;
-    methodName: string;
+    category: 'FromApp'
+    args: Array<boolean | number | string>
+    host: string
+    id: string // UUID
+    methodName: string
+    objectName: string
+    schemaSignature: string
 }

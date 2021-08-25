@@ -1,12 +1,12 @@
 import { AUTOPILOT_API_LOADER, DI, IOC } from '@airport/di';
 import { LOCAL_API_CLIENT } from '../tokens';
 export class AutopilotApiLoader {
-    loadApiAutopilot(uniqueSchemaHash, daoName) {
+    loadApiAutopilot(schemaSignature, daoName) {
         return new Proxy({}, {
             get(target, methodName) {
                 return function (...args) {
                     return IOC.getSync(LOCAL_API_CLIENT)
-                        .invokeApiMethod(uniqueSchemaHash, daoName, methodName, args);
+                        .invokeApiMethod(schemaSignature, daoName, methodName, args);
                 };
             }
         });

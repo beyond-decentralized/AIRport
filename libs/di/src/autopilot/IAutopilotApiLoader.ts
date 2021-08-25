@@ -1,7 +1,7 @@
 export interface IAutopilotApiLoader {
 
     loadApiAutopilot(
-        uniqueSchemaHash: string,
+        schemaSignature: string,
         daoName: string
     ): any;
 

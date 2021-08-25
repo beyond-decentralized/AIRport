@@ -2,6 +2,7 @@ import { IApiOperation } from "./ApiOperation";
 export interface IApiRegistry {
     installedApi: InstalledApi;
     findOperation(apiObjectName: string, methodName: string): IApiOperation;
+    findApiObject(apiObjectName: string, methodName: string): any;
 }
 export interface InstalledApi {
     /**

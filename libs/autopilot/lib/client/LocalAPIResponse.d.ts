@@ -1,10 +1,9 @@
-export declare enum LocalAPIResponseType {
-    QUERY = 0,
-    SAVE = 1
-}
 export interface ILocalAPIResponse {
+    category: 'ToApp';
     errorMessage: string;
+    id: string;
+    host: string;
     payload: any;
-    type: LocalAPIResponseType;
+    schemaSignature: string;
 }
 //# sourceMappingURL=LocalAPIResponse.d.ts.map

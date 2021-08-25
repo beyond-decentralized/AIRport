@@ -8,6 +8,7 @@ import {
     DbEntity,
     DbProperty,
     EntityRelationType,
+    EntityState,
     IEntityStateManager,
     SQLDataType
 } from "@airport/ground-control";
@@ -115,7 +116,7 @@ export class OperationDeserializer
                     //     break
                     case SQLDataType.DATE:
                         if (!(value instanceof Object)
-                            || value[entityStateManager.getStateFieldName()] !== EntityState.RESULT_DATE
+                            || value[entityStateManager.getStateFieldName()] !== EntityState.DATE
                             || !value.value) {
                             throw new Error(`Invalid Serialized Date format for ${dbEntity.name}.${dbProperty.name}`)
                         }

@@ -24,8 +24,9 @@ export enum IsolateMessageType {
 }
 
 export interface IIsolateMessage {
+    category: 'Db'
     id: number
-    isolateId: string
+    schemaSignature: string
     type: IsolateMessageType
 }
 

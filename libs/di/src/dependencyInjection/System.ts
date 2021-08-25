@@ -65,3 +65,5 @@ export function system(
 
 	return system
 }
+
+export const SYSTEM: ISystem = system('airport')

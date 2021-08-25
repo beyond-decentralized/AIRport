@@ -1,7 +1,20 @@
+import { ILocalAPIRequest } from "./LocalAPIRequest";
 export interface ILocalAPIClient {
-    invokeApiMethod(schemaName: string, daoName: string, methodName: string, args: any[]): Promise<void>;
+    invokeApiMethod(schemaSignature: string, daoName: string, methodName: string, args: any[]): Promise<void>;
+}
+export interface IRequestRecord {
+    request: ILocalAPIRequest;
+    reject: any;
+    resolve: any;
 }
 export declare class LocalAPIClient implements ILocalAPIClient {
-    invokeApiMethod(schemaName: string, daoName: string, methodName: string, args: any[]): Promise<any>;
+    pendingDemoMessageMap: Map<string, IRequestRecord>;
+    demoListenerStarted: boolean;
+    invokeApiMethod(schemaSignature: string, objectName: string, methodName: string, args: any[]): Promise<any>;
+    private sendLocalRequest;
+    private sendDemoRequest;
+    private startDemoListener;
+    private handleDemoResponse;
+    private uuidv4;
 }
 //# sourceMappingURL=LocalAPIClient.d.ts.map

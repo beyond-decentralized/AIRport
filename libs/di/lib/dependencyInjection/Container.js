@@ -1,12 +1,12 @@
 import { Context, ContextType } from '../Context';
 import { AUTOPILOT_API_LOADER } from '../tokens';
-const classes = [];
+const classMap = new Map();
 let numPendingInits = 0;
-const theObjects = [];
+const objectMap = new Map();
 export class Container {
     set(token, clazz) {
-        classes[token.sequence] = clazz;
-        theObjects[token.sequence] = null;
+        classMap.set(token.name, clazz);
+        objectMap.set(token.name, null);
     }
 }
 export class ChildContainer extends Container {
@@ -79,10 +79,14 @@ export class ChildContainer extends Container {
             if (firstMissingClassToken || firstDiNotSetClass) {
                 return;
             }
-            let object = theObjects[token.sequence];
+            let object = objectMap.get(token.name);
             if (!object) {
-                if (!token.autopilot) {
-                    const clazz = classes[token.sequence];
+                if (token.autopilot) {
+                    object = this.getSync(AUTOPILOT_API_LOADER)
+                        .loadApiAutopilot(token.library.system.name, token.library.uniqueHash, token.name);
+                }
+                else {
+                    const clazz = classMap.get[token.name];
                     if (!clazz) {
                         firstMissingClassToken = token;
                         return;
@@ -94,15 +98,8 @@ export class ChildContainer extends Container {
                     }
                     object = new clazz();
                 }
-                else if (typeof token.autopilot !== 'boolean') {
-                    throw new Error(`Partial AUTOPILOT DAOs are not yet supported.`);
-                }
-                else {
-                    object = this.getSync(AUTOPILOT_API_LOADER)
-                        .loadApiAutopilot(token.library.uniqueHash, token.name);
-                }
                 object.__container__ = this;
-                theObjects[token.sequence] = object;
+                objectMap.set(token.name, object);
                 if (!token.autopilot && object.init) {
                     object.init().then(_ => {
                         object.__initialized__ = true;
@@ -120,6 +117,8 @@ export class ChildContainer extends Container {
             firstMissingClassToken,
             objects
         };
+    }
+    getByNamesAndHash(systemName, libraryUniqueHash, tokenName) {
     }
     get(...tokens) {
         return new Promise((resolve, reject) => {
