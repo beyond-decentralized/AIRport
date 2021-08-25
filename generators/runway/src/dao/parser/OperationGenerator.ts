@@ -11,6 +11,7 @@ import {
 import * as ts     from 'typescript';
 import tsc         from 'typescript';
 import { DaoFile } from '../../ddl/parser/FileImports';
+import { forEach } from '../../ParserUtils';
 
 export interface JsonFormattedQueryWithExpression
 	extends JsonFormattedQuery {
@@ -123,6 +124,12 @@ function serializeClass(
 ): { [operationName: string]: JsonOperation } {
 	let daoOperations = {};
 
+	// if(true) {
+	// 	// No more directly explosed Dao methods, instead
+	// 	// parameters of @API() methods will in the future be
+	// 	// checked structurally
+	// 	return;
+	// }
 	forEach(symbol.members, (
 		memberName,
 		member
@@ -681,26 +688,6 @@ function getNumericFunctionCallArgument(
 		throw new Error(`Expecting only Numeric Literals as parameters to "${functionName}" function call.`);
 	}
 	return parseInt(argument.text);
-}
-
-function forEach(
-	collection,
-	callback: {
-		(
-			key: string,
-			item: any
-		): void
-	}
-) {
-	if (collection instanceof Map) {
-		for (let [key, value] of collection.entries()) {
-			callback(key, value);
-		}
-	} else {
-		for (let memberName in collection) {
-			callback(memberName, collection[memberName]);
-		}
-	}
 }
 
 function getTypeInfo(

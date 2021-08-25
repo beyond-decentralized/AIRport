@@ -4,6 +4,7 @@
     "@airport/check-in": "0.0.1",
     "@airport/di": "0.0.1",
     "@airport/ground-control": "0.0.1",
+    "@airport/security-check": "0.0.1",
     "@airport/taxiway": "0.0.1",
     "@airport/tower": "0.0.1",
     "@types/node": "^14.11.10",

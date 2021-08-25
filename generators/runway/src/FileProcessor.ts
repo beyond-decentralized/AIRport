@@ -73,5 +73,7 @@ function visit(node: ts.Node) {
 		visitDaoFile(node, path)
 	} else if (path.indexOf(globalThis.configuration.airport.ddlDir) > 0) {
 		visitEntityFile(node, path)
+	} else {
+		visitApiFile(node, path)
 	}
 }
