@@ -3,8 +3,7 @@ import {
     IClientQuery,
     IClientQueryManager
 } from "@airport/check-in";
-import { container, DI } from "@airport/di";
-import { DAO_REGISTRY } from "./tokens";
+import { DI } from "@airport/di";
 
 /**
  * TODO: probably not-needed - queries no longer come from
@@ -20,7 +19,7 @@ export class ClientQueryManager
         daoName: string,
         methodName: string
     ): Promise<IClientQuery> {
-        const daoRegistry = await container(this).get(DAO_REGISTRY)
+        // const daoRegistry = await container(this).get(DAO_REGISTRY)
 
         throw new Error('TODO: implement')
     }

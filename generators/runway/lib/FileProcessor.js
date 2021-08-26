@@ -3,6 +3,7 @@ import { EntityCandidateRegistry } from './ddl/parser/EntityCandidateRegistry';
 import { globalCandidateRegistry, visitEntityFile } from './ddl/parser/EntityDefinitionGenerator';
 import { getClassPath } from './ddl/parser/utils';
 import tsc from 'typescript';
+import { visitApiFile } from './api/parser/ApiGenerator';
 const enumMap = new Map();
 globalThis.enumMap = enumMap;
 /** Generate documention for all classes in a set of .ts files */
@@ -52,6 +53,9 @@ function visit(node) {
     }
     else if (path.indexOf(globalThis.configuration.airport.ddlDir) > 0) {
         visitEntityFile(node, path);
+    }
+    else {
+        visitApiFile(node, path);
     }
 }
 //# sourceMappingURL=FileProcessor.js.map

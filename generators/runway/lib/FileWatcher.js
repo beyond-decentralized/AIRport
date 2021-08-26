@@ -16,6 +16,7 @@ import { QSchemaBuilder } from './ddl/builder/QSchemaBuilder';
 import { JsonSchemaBuilder } from './ddl/builder/schema/JsonSchemaBuilder';
 import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
 import { generateDefinitions } from './FileProcessor';
+// TODO: figure out if this is needed
 AirportDatabase.bogus = 'loaded for schema generation';
 /**
  * Created by Papa on 3/30/2016.

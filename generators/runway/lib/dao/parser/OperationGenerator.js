@@ -1,5 +1,6 @@
 import { OperationType, QueryInputKind, QueryParameterType } from '@airport/ground-control';
 import tsc from 'typescript';
+import { forEach } from '../../ParserUtils';
 export const entityOperationMap = {};
 export const entityOperationPaths = {};
 // let currentFileImports
@@ -76,6 +77,12 @@ export function visitDaoFile(node, path) {
 /** Serialize a class symbol information */
 function serializeClass(symbol, daoName, entityName) {
     let daoOperations = {};
+    // if(true) {
+    // 	// No more directly explosed Dao methods, instead
+    // 	// parameters of @API() methods will in the future be
+    // 	// checked structurally
+    // 	return;
+    // }
     forEach(symbol.members, (memberName, member) => {
         if (!member.valueDeclaration) {
             return;
@@ -520,18 +527,6 @@ function getNumericFunctionCallArgument(argument, functionName) {
         throw new Error(`Expecting only Numeric Literals as parameters to "${functionName}" function call.`);
     }
     return parseInt(argument.text);
-}
-function forEach(collection, callback) {
-    if (collection instanceof Map) {
-        for (let [key, value] of collection.entries()) {
-            callback(key, value);
-        }
-    }
-    else {
-        for (let memberName in collection) {
-            callback(memberName, collection[memberName]);
-        }
-    }
 }
 function getTypeInfo(typeRef, daoName, decoratorName, memberName, index, name, allowArrays = true) {
     let returnType = {

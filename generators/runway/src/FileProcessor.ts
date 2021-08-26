@@ -1,18 +1,20 @@
-import {DbSchema}                from '@airport/ground-control'
-import * as ts         from 'typescript'
-import {visitDaoFile}  from './dao/parser/OperationGenerator'
-import {Configuration} from './ddl/options/Options'
-import {EntityCandidate}         from './ddl/parser/EntityCandidate'
-import {EntityCandidateRegistry} from './ddl/parser/EntityCandidateRegistry'
+import { DbSchema } from '@airport/ground-control'
+import * as ts from 'typescript'
+import { visitDaoFile } from './dao/parser/OperationGenerator'
+import { Configuration } from './ddl/options/Options'
+import { EntityCandidate } from './ddl/parser/EntityCandidate'
+import { EntityCandidateRegistry } from './ddl/parser/EntityCandidateRegistry'
 import {
 	globalCandidateRegistry,
 	visitEntityFile
-}                                from './ddl/parser/EntityDefinitionGenerator'
-import {getClassPath}            from './ddl/parser/utils'
-import tsc              from 'typescript'
+} from './ddl/parser/EntityDefinitionGenerator'
+import { getClassPath } from './ddl/parser/utils'
+import tsc from 'typescript'
+import { visitApiFile } from './api/parser/ApiGenerator'
+import { ISchemaApi } from '../../../apis/security-check/lib'
 
 const enumMap: Map<string, string> = new Map<string, string>()
-globalThis.enumMap                 = enumMap
+globalThis.enumMap = enumMap
 
 /** Generate documention for all classes in a set of .ts files */
 export async function generateDefinitions(
@@ -22,12 +24,12 @@ export async function generateDefinitions(
 	schemaMapByProjectName: { [projectName: string]: DbSchema }
 ): Promise<{ [entityName: string]: EntityCandidate }> {
 	// Build a program using the set of root file names in fileNames
-	let program        = tsc.createProgram(fileNames, options)
+	let program = tsc.createProgram(fileNames, options)
 	globalThis.checker = program.getTypeChecker()
 
 	// Get the checker, we will use it to find more about classes
 	globalCandidateRegistry.configuration = configuration
-	globalCandidateRegistry.schemaMap     = schemaMapByProjectName
+	globalCandidateRegistry.schemaMap = schemaMapByProjectName
 	globalThis.processedCandidateRegistry = new EntityCandidateRegistry(enumMap)
 
 	// const daoFileMap: { [classPath: string]: DaoFile } = {}
@@ -49,7 +51,10 @@ export async function generateDefinitions(
 }
 
 /** visit nodes finding exported classes */
-function visit(node: ts.Node) {
+function visit(
+	node: ts.Node,
+	schemaApi: ISchemaApi
+) {
 	let path = getClassPath((<any>node).parent)
 	// Only top level entities are supported
 	if (!path) {
@@ -61,7 +66,7 @@ function visit(node: ts.Node) {
 	}
 	// Do not process files outside of the project (possible with MS Rush setup)
 	if (path.indexOf(process.cwd() + '/src') > -1
-	&& path.indexOf(process.cwd() + '\\src') > -1) {
+		&& path.indexOf(process.cwd() + '\\src') > -1) {
 		return
 	}
 	// if (path.indexOf(globalThis.configuration.airport.node_modulesLinks.pathToProject) == -1) {
@@ -74,6 +79,6 @@ function visit(node: ts.Node) {
 	} else if (path.indexOf(globalThis.configuration.airport.ddlDir) > 0) {
 		visitEntityFile(node, path)
 	} else {
-		visitApiFile(node, path)
+		visitApiFile(node, path, schemaApi)
 	}
 }

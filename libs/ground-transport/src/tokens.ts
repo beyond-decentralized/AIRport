@@ -26,8 +26,9 @@ import {ISyncNodeManager}                          from './synchronization/SyncN
 
 const groundTransport = system('airport').lib('ground-transport')
 
-export const DIRECT_SHARING_NODE_ENDPOINT       = groundTransport.token<ISharingNodeEndpoint>('ISharingNodeEndpoint')
-export const HTTP_SHARING_NODE_ENDPOINT         = groundTransport.token<ISharingNodeEndpoint>('ISharingNodeEndpoint')
+// FIXME: tokens names do not match the interface name
+export const DIRECT_SHARING_NODE_ENDPOINT       = groundTransport.token<ISharingNodeEndpoint>('IDirectSharingNodeEndpoint')
+export const HTTP_SHARING_NODE_ENDPOINT         = groundTransport.token<ISharingNodeEndpoint>('IHttpSharingNodeEndpoint')
 export const MISSING_RECORD_CREATOR             = groundTransport.token<IMissingRecordCreator>('IMissingRecordCreator')
 export const STAGE1_SYNCED_IN_DATA_PROCESSOR    = groundTransport.token<IStage1SyncedInDataProcessor>('IStage1SyncedInDataProcessor')
 export const STAGE2_SYNCED_IN_DATA_PROCESSOR    = groundTransport.token<IStage2SyncedInDataProcessor>('IStage2SyncedInDataProcessor')

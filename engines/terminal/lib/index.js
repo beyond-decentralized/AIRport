@@ -20,14 +20,12 @@ export * from './processing/EntityGraphReconstructor';
 export * from './processing/OperationContext';
 export * from './processing/OperationManager';
 export * from './processing/StructuralEntityValidator';
-export * from './serialize/OperationDeserializer';
 export * from './serialize/QueryParameterDeserializer';
 export * from './serialize/QueryResultsSerializer';
 export * from './shared/logic/DatabaseLogic';
 export * from './shared/DateUtils';
 export * from './shared/PlatformUtils';
 export * from './ClientQueryManager';
-export * from './LocalAPIServer';
 export * from './transactional';
 // export * from './Constants'
 export * from './tokens';

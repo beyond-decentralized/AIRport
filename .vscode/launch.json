@@ -13,7 +13,7 @@
             ],
             "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\airport-code",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]

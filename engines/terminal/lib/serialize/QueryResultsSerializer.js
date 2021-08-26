@@ -1,6 +1,11 @@
 import { QUERY_RESULTS_SERIALIZER } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { EntityState, SQLDataType } from '@airport/ground-control';
+// TODO: figure out if this is needed - originally written for serializing
+// query resuts returned to the client.  Since then moved to Isolates and
+// generic API calls.  Probably should be used in go-tower to serialize
+// the values returned (and won't be tied to a query of any kind, API
+// interface is generic, unless already known to contain entity objects.)
 export class QueryResultsSerializer {
     serialize(entity, dbEntity, entityStateManager, schemaUtils) {
         const operation = {

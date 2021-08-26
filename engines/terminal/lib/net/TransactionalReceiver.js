@@ -76,7 +76,7 @@ export class TransactionalReceiver {
         return {
             errorMessage,
             id: message.id,
-            isolateId: message.isolateId,
+            schemaSignature: message.schemaSignature,
             type: message.type,
             result
         };

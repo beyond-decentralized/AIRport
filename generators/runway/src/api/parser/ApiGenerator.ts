@@ -1,28 +1,41 @@
-import { IApiObject } from '@airport/security-check';
+import {
+    IApiObject,
+    ISchemaApi
+} from '@airport/security-check';
 import * as ts from 'typescript';
 import tsc from 'typescript';
 import { forEach } from '../../ParserUtils';
 
 export function visitApiFile(
     node: ts.Node,
-    path: string
+    path: string,
+    schemaApi: ISchemaApi
 ): IApiObject {
     if (node.kind !== tsc.SyntaxKind.ClassDeclaration) {
-        return;
+        return
     }
 
-    const classNode = <ts.ClassDeclaration>node;
+    const classNode = <ts.ClassDeclaration>node
     // This is a top level class, get its symbol
-    let symbol = globalThis.checker.getSymbolAtLocation(classNode.name);
-    let className = classNode.name.escapedText as string;
+    const symbol = globalThis.checker.getSymbolAtLocation(classNode.name)
+    const className = classNode.name.escapedText as string
 
-    serializeClass(symbol, className);
+    const apiObject = serializeClass(symbol, className)
+
+    if (apiObject) {
+        schemaApi.apiObjectMap['I' + className] = apiObject
+    }
 }
 
 function serializeClass(
     symbol: ts.Symbol,
     className: string
 ): IApiObject {
+
+    const apiObject: IApiObject = {
+        operationMap: {}
+    }
+    let numApiMethods = 0
 
     forEach(symbol.members, (
         memberName,
@@ -32,38 +45,45 @@ function serializeClass(
             case tsc.SyntaxKind.MethodDeclaration:
                 let methodDescriptor = serializeMethod(
                     symbol, className, memberName, member);
+                if (methodDescriptor.isApiMethod) {
+                    numApiMethods++
+                    apiObject.operationMap[memberName] = {
+                        isAsync: methodDescriptor.isAsync,
+                        parameters: []
+                    }
+                }
                 break;
             default:
                 break;
         }
     });
 
-    return {
-        operationMap: {
-            'methodName': {
-                isAsync: true,
-                parameters: []
-            }
-        }
-    }
+    return numApiMethods ? apiObject : null
 }
 
 function serializeMethod(
     symbol: ts.Symbol,
     className: string,
     memberName: string,
-    member
+    member: ts.Symbol,
 ): {
-    isApiMethod: boolean
+    isApiMethod: boolean,
+    isAsync: boolean
 } {
     if (!member.valueDeclaration.decorators) {
         return
     }
     let isApiMethod = false
+    let isAsync = false
+    for (let modifier of member.declarations[0].modifiers) {
+        if (modifier.kind === tsc.SyntaxKind.AsyncKeyword) {
+            isAsync = true
+        }
+    }
     member.valueDeclaration.decorators.forEach(decorator => {
         // decorator.expression.kind = 196 CallExpression
         // decorator.expression.expression.kind = 75 Identifier
-        let decoratorNameExpression = decorator.expression.expression
+        let decoratorNameExpression = (decorator.expression as any).expression
         const decoratorNameParts = []
         while (decoratorNameExpression) {
             if (decoratorNameExpression.escapedText) {
@@ -76,7 +96,7 @@ function serializeMethod(
         const decoratorName = decoratorNameParts.join('.')
 
         switch (decoratorName) {
-            case 'API':
+            case 'Api':
                 isApiMethod = true
                 break;
             default:
@@ -85,6 +105,7 @@ function serializeMethod(
     });
 
     return {
-        isApiMethod
+        isApiMethod,
+        isAsync
     }
 }

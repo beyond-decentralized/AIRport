@@ -1,6 +1,11 @@
 import { QUERY_PARAMETER_DESERIALIZER } from "@airport/check-in";
 import { DI } from "@airport/di";
 import { SQLDataType } from "@airport/ground-control";
+// TODO: figure out if this is needed - originally written for deserializing
+// Client-side query parameters.  Since then moved to Isolates and generic
+// API calls.  Probably should be used in go-tower to deserialize all of the
+// method argiments passed it (and won't be tied to a query of any kind, API
+// interface is generic, unless already known to contain entity objects.)
 export class QueryParameterDeserializer {
     deserialize(parameters, query, entityStateManager) {
         if (parameters.length !== query.jsonQuery.parameters.length) {

@@ -1,7 +1,8 @@
 import { system } from '@airport/di';
 const groundTransport = system('airport').lib('ground-transport');
-export const DIRECT_SHARING_NODE_ENDPOINT = groundTransport.token('ISharingNodeEndpoint');
-export const HTTP_SHARING_NODE_ENDPOINT = groundTransport.token('ISharingNodeEndpoint');
+// FIXME: tokens names do not match the interface name
+export const DIRECT_SHARING_NODE_ENDPOINT = groundTransport.token('IDirectSharingNodeEndpoint');
+export const HTTP_SHARING_NODE_ENDPOINT = groundTransport.token('IHttpSharingNodeEndpoint');
 export const MISSING_RECORD_CREATOR = groundTransport.token('IMissingRecordCreator');
 export const STAGE1_SYNCED_IN_DATA_PROCESSOR = groundTransport.token('IStage1SyncedInDataProcessor');
 export const STAGE2_SYNCED_IN_DATA_PROCESSOR = groundTransport.token('IStage2SyncedInDataProcessor');
