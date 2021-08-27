@@ -27,7 +27,7 @@
             ],
             "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\flight-log-archive",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
@@ -41,7 +41,7 @@
             ],
             "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\guideway",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
@@ -55,7 +55,7 @@
             ],
             "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\holding-pattern",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
@@ -69,7 +69,7 @@
             ],
             "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\moving-walkway",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
@@ -83,7 +83,7 @@
             ],
             "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\na-kano",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
@@ -97,7 +97,7 @@
             ],
             "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\point-of-destination",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
@@ -111,7 +111,7 @@
             ],
             "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\runway-edge-lighting",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
@@ -125,7 +125,7 @@
             ],
             "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\territory",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
@@ -139,7 +139,7 @@
             ],
             "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\traffic-pattern",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
@@ -153,7 +153,7 @@
             ],
             "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\travel-document-checkpoint",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
@@ -167,7 +167,7 @@
             ],
             "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\vasi",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]

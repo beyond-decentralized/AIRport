@@ -7,6 +7,18 @@ export const SCHEMA = {
 	"sinceVersion": 1,
 	"versions": [
 		{
+			"api": {
+				"apiObjectMap": {
+					"ISchemaApi": {
+						"operationMap": {
+							"testApiDefinitionGeneration": {
+								"isAsync": true,
+								"parameters": []
+							}
+						}
+					}
+				}
+			},
 			"entities": [
 				{
 					"columns": [

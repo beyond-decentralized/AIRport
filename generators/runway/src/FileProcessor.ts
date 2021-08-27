@@ -52,8 +52,7 @@ export async function generateDefinitions(
 
 /** visit nodes finding exported classes */
 function visit(
-	node: ts.Node,
-	schemaApi: ISchemaApi
+	node: ts.Node
 ) {
 	let path = getClassPath((<any>node).parent)
 	// Only top level entities are supported
@@ -79,6 +78,6 @@ function visit(
 	} else if (path.indexOf(globalThis.configuration.airport.ddlDir) > 0) {
 		visitEntityFile(node, path)
 	} else {
-		visitApiFile(node, path, schemaApi)
+		visitApiFile(node, path)
 	}
 }

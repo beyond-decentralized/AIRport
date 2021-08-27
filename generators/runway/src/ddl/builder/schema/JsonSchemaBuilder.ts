@@ -15,6 +15,8 @@ import {
 	SchemaReferenceByIndex,
 	TableIndex
 }                          from '@airport/ground-control';
+import { JsonSchemaWithApi } from '../../../../../../apis/security-check/lib';
+import { currentSchemaApi } from '../../../api/parser/ApiGenerator';
 import { Configuration }   from '../../options/Options';
 import { EntityCandidate } from '../../parser/EntityCandidate';
 import { SIndexedEntity }  from './SEntity';
@@ -63,7 +65,7 @@ export class JsonSchemaBuilder {
 		domain: string,
 		schemaMapByProjectName: { [projectName: string]: DbSchema },
 		entityOperationMap: { [entityName: string]: { [operationName: string]: JsonOperation } }
-	): [JsonSchema, SIndexedSchema] {
+	): [JsonSchemaWithApi, SIndexedSchema] {
 		const sSchemaBuilder = new SSchemaBuilder(this.config, this.entityMapByName);
 
 		const sIndexedSchema = sSchemaBuilder.build(schemaMapByProjectName);
@@ -91,7 +93,7 @@ export class JsonSchemaBuilder {
 	private convertSIndexedSchemaToJsonSchema(
 		domain: string,
 		sIndexedSchema: SIndexedSchema,
-	): JsonSchema {
+	): JsonSchemaWithApi {
 		const jsonEntities: JsonSchemaEntity[] = sIndexedSchema.entities.map(
 			sIndexedEntity => {
 				const sEntity                     = sIndexedEntity.entity;
@@ -151,6 +153,7 @@ export class JsonSchemaBuilder {
 			packageName: sIndexedSchema.schema.name,
 			sinceVersion: 1,
 			versions: [{
+				api: currentSchemaApi,
 				entities: jsonEntities,
 				integerVersion: 1,
 				referencedSchemas: sIndexedSchema.schema.referencedSchemas.map((

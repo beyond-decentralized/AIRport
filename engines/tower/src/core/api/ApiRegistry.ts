@@ -47,7 +47,8 @@ export class ApiRegistry
             ${methodName}`)
         }
 
-        const apiObject = await container(this).getBySchemaSignatureAndName(schemaSignature, apiObjectName);
+        const apiObject = await container(this)
+            .getBySchemaSignatureAndName(schemaSignature, apiObjectName);
 
         return {
             apiObject,

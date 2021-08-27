@@ -1,4 +1,5 @@
 import { DbSchema, JsonOperation, JsonSchema } from '@airport/ground-control';
+import { JsonSchemaWithApi } from '../../../../../../apis/security-check/lib';
 import { Configuration } from '../../options/Options';
 import { EntityCandidate } from '../../parser/EntityCandidate';
 import { SIndexedSchema } from './SSchema';
@@ -15,7 +16,7 @@ export declare class JsonSchemaBuilder {
         [entityName: string]: {
             [operationName: string]: JsonOperation;
         };
-    }): [JsonSchema, SIndexedSchema];
+    }): [JsonSchemaWithApi, SIndexedSchema];
     addOperations(jsonSchema: JsonSchema, entityOperationMap: {
         [entityName: string]: {
             [operationName: string]: JsonOperation;

@@ -2,6 +2,7 @@ import { AirportDatabase } from '@airport/tower';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import tsc from 'typescript';
+import { currentSchemaApi } from './api/parser/ApiGenerator';
 import { entityOperationMap } from './dao/parser/OperationGenerator';
 import { SchemaQueryGenerator } from './dao/parser/SchemaQueryGenerator';
 import { DaoBuilder } from './ddl/builder/DaoBuilder';
@@ -62,6 +63,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
         });
     });
     async function processFiles(rootFileNames, options, configuration) {
+        currentSchemaApi.apiObjectMap = {};
         options.target = tsc.ScriptTarget.ES5;
         const schemaMapByProjectName = {};
         let entityMapByName = await generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);

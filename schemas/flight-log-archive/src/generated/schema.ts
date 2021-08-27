@@ -7,6 +7,9 @@ export const SCHEMA = {
 	"sinceVersion": 1,
 	"versions": [
 		{
+			"api": {
+				"apiObjectMap": {}
+			},
 			"entities": [
 				{
 					"columns": [
@@ -22,7 +25,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 2
 						},
 						{
 							"index": 1,
@@ -36,7 +39,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 2
 						},
 						{
 							"index": 2,
@@ -50,7 +53,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 2
 						}
 					],
 					"idColumnRefs": [
@@ -133,7 +136,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 2
 						},
 						{
 							"index": 1,
@@ -147,7 +150,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": 1
 						},
 						{
 							"index": 2,
@@ -161,7 +164,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 2
 						},
 						{
 							"index": 3,
@@ -175,7 +178,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 1
+							"type": 0
 						}
 					],
 					"idColumnRefs": [

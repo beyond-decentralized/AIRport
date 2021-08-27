@@ -1,28 +1,31 @@
 import {
 	DbSchema,
 	EntityId,
-	JsonSchema,
-}                                      from '@airport/ground-control';
-import { AirportDatabase }             from '@airport/tower';
-import * as fs                         from 'fs';
-import * as ts                         from 'typescript';
-import tsc                             from 'typescript';
-import { entityOperationMap }          from './dao/parser/OperationGenerator';
-import { SchemaQueryGenerator }        from './dao/parser/SchemaQueryGenerator';
-import { DaoBuilder }                  from './ddl/builder/DaoBuilder';
-import { DuoBuilder }                  from './ddl/builder/DuoBuilder';
-import { EntityInterfaceFileBuilder }  from './ddl/builder/entity/EntityInterfaceFileBuilder';
-import { QEntityFileBuilder }          from './ddl/builder/entity/QEntityFileBuilder';
-import { EntityMappingBuilder }        from './ddl/builder/EntityMappingBuilder';
+} from '@airport/ground-control';
+import {
+	JsonSchemaWithApi
+} from '@airport/security-check'
+import { AirportDatabase } from '@airport/tower';
+import * as fs from 'fs';
+import * as ts from 'typescript';
+import tsc from 'typescript';
+import { currentSchemaApi } from './api/parser/ApiGenerator';
+import { entityOperationMap } from './dao/parser/OperationGenerator';
+import { SchemaQueryGenerator } from './dao/parser/SchemaQueryGenerator';
+import { DaoBuilder } from './ddl/builder/DaoBuilder';
+import { DuoBuilder } from './ddl/builder/DuoBuilder';
+import { EntityInterfaceFileBuilder } from './ddl/builder/entity/EntityInterfaceFileBuilder';
+import { QEntityFileBuilder } from './ddl/builder/entity/QEntityFileBuilder';
+import { EntityMappingBuilder } from './ddl/builder/EntityMappingBuilder';
 import { GeneratedFileListingBuilder } from './ddl/builder/GeneratedFileListingBuilder';
-import { GeneratedSummaryBuilder }     from './ddl/builder/GeneratedSummaryBuilder';
-import { PathBuilder }                 from './ddl/builder/PathBuilder';
-import { QSchemaBuilder }              from './ddl/builder/QSchemaBuilder';
-import { JsonSchemaBuilder }           from './ddl/builder/schema/JsonSchemaBuilder';
-import { MappedSuperclassBuilder }     from './ddl/builder/superclass/MappedSuperclassBuilder';
-import { Configuration }               from './ddl/options/Options';
-import { EntityCandidate }             from './ddl/parser/EntityCandidate';
-import { generateDefinitions }         from './FileProcessor';
+import { GeneratedSummaryBuilder } from './ddl/builder/GeneratedSummaryBuilder';
+import { PathBuilder } from './ddl/builder/PathBuilder';
+import { QSchemaBuilder } from './ddl/builder/QSchemaBuilder';
+import { JsonSchemaBuilder } from './ddl/builder/schema/JsonSchemaBuilder';
+import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
+import { Configuration } from './ddl/options/Options';
+import { EntityCandidate } from './ddl/parser/EntityCandidate';
+import { generateDefinitions } from './FileProcessor';
 
 // TODO: figure out if this is needed
 (AirportDatabase as any).bogus = 'loaded for schema generation';
@@ -40,7 +43,7 @@ export async function watchFiles(
 	rootFileNames: string[],
 ) {
 	const files: { [fileName: string]: { version: number } } = {};
-	const pathBuilder                                        = new PathBuilder(configuration);
+	const pathBuilder = new PathBuilder(configuration);
 
 	// initialize the list of files
 	rootFileNames.forEach(
@@ -99,10 +102,11 @@ export async function watchFiles(
 		options: ts.CompilerOptions,
 		configuration: Configuration,
 	): Promise<void> {
-		options.target                                                    = tsc.ScriptTarget.ES5;
+		currentSchemaApi.apiObjectMap = {}
+		options.target = tsc.ScriptTarget.ES5;
 		const schemaMapByProjectName: { [projectName: string]: DbSchema } = {};
-		let entityMapByName                                               =
-			    await generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
+		let entityMapByName =
+			await generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
 		emitFiles(entityMapByName, configuration, schemaMapByProjectName);
 	}
 
@@ -111,9 +115,9 @@ export async function watchFiles(
 		configuration: Configuration,
 		schemaMapByProjectName: { [projectName: string]: DbSchema },
 	): void {
-		const generatedDirPath   = pathBuilder.workingDirPath + '/' + pathBuilder.generatedDirPath;
-		const schemaPath         = generatedDirPath + '/schema.json';
-		const schemaSourcePath   = generatedDirPath + '/schema.ts';
+		const generatedDirPath = pathBuilder.workingDirPath + '/' + pathBuilder.generatedDirPath;
+		const schemaPath = generatedDirPath + '/schema.json';
+		const schemaSourcePath = generatedDirPath + '/schema.ts';
 		const entityMappingsPath = generatedDirPath + '/entityMappings.ts';
 
 		if (!fs.existsSync(generatedDirPath)) {
@@ -125,29 +129,29 @@ export async function watchFiles(
 			schemaString = fs.readFileSync(schemaPath, 'utf8');
 		}
 
-		const schemaBuilder               = new JsonSchemaBuilder(
+		const schemaBuilder = new JsonSchemaBuilder(
 			configuration, entityMapByName, schemaString);
 		const [jsonSchema, indexedSchema] =
-			      schemaBuilder.build(configuration.airport.domain,
-				      schemaMapByProjectName,
-				      entityOperationMap);
+			schemaBuilder.build(configuration.airport.domain,
+				schemaMapByProjectName,
+				entityOperationMap);
 
 		const entityFileReference: { [entityName: string]: string } = {};
 
-		const generatedSummaryBuilder        = new GeneratedSummaryBuilder(pathBuilder);
-		const entityInterfaceListingBuilder  = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
+		const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder);
+		const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
 		const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
-		const qSchemaBuilder                 = new QSchemaBuilder(pathBuilder, configuration);
-		const daoBuilder                     = new DaoBuilder(pathBuilder);
-		const duoBuilder                     = new DuoBuilder(pathBuilder);
-		const entityMappingBuilder           = new EntityMappingBuilder(entityMappingsPath, pathBuilder);
+		const qSchemaBuilder = new QSchemaBuilder(pathBuilder, configuration);
+		const daoBuilder = new DaoBuilder(pathBuilder);
+		const duoBuilder = new DuoBuilder(pathBuilder);
+		const entityMappingBuilder = new EntityMappingBuilder(entityMappingsPath, pathBuilder);
 
 		for (const entityName in entityMapByName) {
 			const entity: EntityCandidate = entityMapByName[entityName];
 
-			const fullGenerationPath         = pathBuilder.getFullPathToGeneratedSource(entity.path, false);
-			const fullQGenerationPath        = pathBuilder.getFullPathToGeneratedSource(entity.path);
-			const qEntityFileBuilder         = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
+			const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, false);
+			const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
+			const qEntityFileBuilder = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
 				entityMapByName, configuration, indexedSchema.entityMapByName[entityName], entity.path);
 			const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder,
 				entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
@@ -169,8 +173,8 @@ export async function watchFiles(
 			daoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
 			duoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
 			entityMappingBuilder.addEntity(tableIndex, entityName, entity.path);
-			const qGenerationPath     = pathBuilder.setupFileForGeneration(entity.path);
-			const generationPath      = pathBuilder.setupFileForGeneration(entity.path, false);
+			const qGenerationPath = pathBuilder.setupFileForGeneration(entity.path);
+			const generationPath = pathBuilder.setupFileForGeneration(entity.path, false);
 			const qEntitySourceString = qEntityFileBuilder.build();
 			fs.writeFileSync(qGenerationPath, qEntitySourceString);
 			const entityInterfaceSourceString = entityInterfaceFileBuilder.build();
@@ -193,11 +197,12 @@ export async function watchFiles(
 		const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
 		fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
 
-		addOperations(jsonSchema, schemaPath, schemaSourcePath, schemaBuilder).then();
+		addOperations(jsonSchema as JsonSchemaWithApi, schemaPath,
+			schemaSourcePath, schemaBuilder).then();
 	}
 
 	async function addOperations(
-		jsonSchema: JsonSchema,
+		jsonSchema: JsonSchemaWithApi,
 		schemaPath: string,
 		schemaSourcePath: string,
 		schemaBuilder: JsonSchemaBuilder
@@ -244,9 +249,9 @@ export async function watchFiles(
 				let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
 				if (diagnostic.file) {
 					let {
-						    line,
-						    character
-					    } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
+						line,
+						character
+					} = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
 					console.log(`  Error ${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
 				} else {
 					console.log(`  Error: ${message}`);

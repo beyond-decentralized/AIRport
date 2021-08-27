@@ -1,5 +1,8 @@
 import tsc from 'typescript';
 import { forEach } from '../../ParserUtils';
+export const currentSchemaApi = {
+    apiObjectMap: {}
+};
 export function visitApiFile(node, path) {
     if (node.kind !== tsc.SyntaxKind.ClassDeclaration) {
         return;
@@ -9,6 +12,9 @@ export function visitApiFile(node, path) {
     const symbol = globalThis.checker.getSymbolAtLocation(classNode.name);
     const className = classNode.name.escapedText;
     const apiObject = serializeClass(symbol, className);
+    if (apiObject) {
+        currentSchemaApi.apiObjectMap['I' + className] = apiObject;
+    }
 }
 function serializeClass(symbol, className) {
     const apiObject = {
@@ -16,6 +22,9 @@ function serializeClass(symbol, className) {
     };
     let numApiMethods = 0;
     forEach(symbol.members, (memberName, member) => {
+        if (!member.valueDeclaration) {
+            return;
+        }
         switch (member.valueDeclaration.kind) {
             case tsc.SyntaxKind.MethodDeclaration:
                 let methodDescriptor = serializeMethod(symbol, className, memberName, member);

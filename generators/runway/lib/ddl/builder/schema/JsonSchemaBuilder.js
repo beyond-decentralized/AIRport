@@ -1,4 +1,5 @@
 import { EntityRelationType, getSqlDataType } from '@airport/ground-control';
+import { currentSchemaApi } from '../../../api/parser/ApiGenerator';
 import { SSchemaBuilder } from './SSchemaBuilder';
 export class JsonSchemaBuilder {
     // schemaVarName = 'SCHEMA'
@@ -91,6 +92,7 @@ export class JsonSchemaBuilder {
             packageName: sIndexedSchema.schema.name,
             sinceVersion: 1,
             versions: [{
+                    api: currentSchemaApi,
                     entities: jsonEntities,
                     integerVersion: 1,
                     referencedSchemas: sIndexedSchema.schema.referencedSchemas.map((sSchemaReference) => ({

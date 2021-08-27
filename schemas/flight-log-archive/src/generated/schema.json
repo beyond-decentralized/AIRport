@@ -6,6 +6,9 @@
 	"sinceVersion": 1,
 	"versions": [
 		{
+			"api": {
+				"apiObjectMap": {}
+			},
 			"entities": [
 				{
 					"columns": [
@@ -21,7 +24,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 2
 						},
 						{
 							"index": 1,
@@ -35,7 +38,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 2
 						},
 						{
 							"index": 2,
@@ -49,7 +52,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 2
 						}
 					],
 					"idColumnRefs": [
@@ -132,7 +135,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 2
 						},
 						{
 							"index": 1,
@@ -146,7 +149,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": 1
 						},
 						{
 							"index": 2,
@@ -160,7 +163,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 2
 						},
 						{
 							"index": 3,
@@ -174,7 +177,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 1
+							"type": 0
 						}
 					],
 					"idColumnRefs": [
