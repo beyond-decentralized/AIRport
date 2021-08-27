@@ -43,6 +43,11 @@
     },
     // "apps" folder (alphabetical order)
     {
+      "packageName": "@airport/functionality-demo",
+      "projectFolder": "apps/functionality-demo",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/todo",
       "projectFolder": "apps/todo",
       "shouldPublish": true
