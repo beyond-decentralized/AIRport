@@ -124,6 +124,16 @@ export function addImportForType(
  *
  */
 
+const workingDirPath = normalizePath(process.cwd())
+
+export function getRelativePath(
+	filePath: string
+): string {
+	const normalizedFilePath = normalizePath(filePath)
+	
+	return normalizedFilePath.substring(workingDirPath.length)
+}
+
 export function normalizePath(
 	path: string
 ): string {

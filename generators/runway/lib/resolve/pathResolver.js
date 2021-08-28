@@ -95,6 +95,11 @@ export function addImportForType(entity, type, fileBuilder) {
  *   /a/b/c/d
  *
  */
+const workingDirPath = normalizePath(process.cwd());
+export function getRelativePath(filePath) {
+    const normalizedFilePath = normalizePath(filePath);
+    return normalizedFilePath.substring(workingDirPath.length);
+}
 export function normalizePath(path) {
     let forwardSlashedPath = path.replace(/\\/g, '/');
     return forwardSlashedPath;

@@ -17,6 +17,7 @@ relativeToPath: string): string;
 export declare function resolveRelativePath(fromPath: string, //
 toPath: string): string;
 export declare function addImportForType(entity: EntityCandidate, type: string, fileBuilder: FileBuilder): void;
+export declare function getRelativePath(filePath: string): string;
 export declare function normalizePath(path: string): string;
 export declare function canBeInterface(type: string): boolean;
 export declare function getImplNameFromInterfaceName(interfaceName: string): string;

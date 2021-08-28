@@ -4,6 +4,7 @@ import { globalCandidateRegistry, visitEntityFile } from './ddl/parser/EntityDef
 import { getClassPath } from './ddl/parser/utils';
 import tsc from 'typescript';
 import { visitApiFile } from './api/parser/ApiGenerator';
+import { visitInterfaceCandidateFile } from './interface/parser/InterfaceDetector';
 const enumMap = new Map();
 globalThis.enumMap = enumMap;
 /** Generate documention for all classes in a set of .ts files */
@@ -57,5 +58,6 @@ function visit(node) {
     else {
         visitApiFile(node, path);
     }
+    visitInterfaceCandidateFile(node, path);
 }
 //# sourceMappingURL=FileProcessor.js.map

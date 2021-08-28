@@ -459,7 +459,8 @@ export class SSchemaBuilder {
 		} else {
 			switch (relationType) {
 				case EntityRelationType.MANY_TO_ONE: {
-					if (!entityExtendsRepositoryEntity(aProperty.entity)) {
+					const [extendsEntity, isLocal] = entityExtendsRepositoryEntity(aProperty.entity)
+					if (!extendsEntity || isLocal) {
 						throw new Error(`@JoinColumn(s) must be specified for @ManyToOne
 					in ${entity.name}.${aProperty.name} (if the related entity does not extend RepositoryEntity).`);
 					}

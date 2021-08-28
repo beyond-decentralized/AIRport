@@ -6,7 +6,7 @@
       "rxjs": "^7.3.0"
     },
     "main": "lib/index.js",
-    "name": "@airport/todo",
+    "name": "@airport/functionality-demo",
     "type": "module",
     "typings": "lib/index",
     "version": "0.0.1"

@@ -1,0 +1,1 @@
+export const projectInterfaces: Map<string, Set<string>> = new Map()
