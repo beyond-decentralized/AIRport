@@ -66,4 +66,6 @@ watchFiles(
 	sourceFilePaths
 ).then();
 
+console.log('done')
+
 

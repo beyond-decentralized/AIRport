@@ -19,6 +19,8 @@ dependencies:
   '@rush-temp/di': 'file:projects/di.tgz_typescript@4.1.2'
   '@rush-temp/flight-log-archive': 'file:projects/flight-log-archive.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:projects/fuel-hydrant-system.tgz'
+  '@rush-temp/functionality-demo': 'file:projects/functionality-demo.tgz'
+  '@rush-temp/functionality-demo-schema': 'file:projects/functionality-demo-schema.tgz'
   '@rush-temp/go-terminal': 'file:projects/go-terminal.tgz'
   '@rush-temp/go-tower': 'file:projects/go-tower.tgz'
   '@rush-temp/ground-control': 'file:projects/ground-control.tgz'
@@ -5902,13 +5904,14 @@ packages:
   'file:projects/autopilot.tgz_typescript@4.1.2':
     dependencies:
       tslint: 5.20.1_typescript@4.1.2
+      uuid: 8.3.2
     dev: false
     id: 'file:projects/autopilot.tgz'
     name: '@rush-temp/autopilot'
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-BRGSklOxUaXsxjjVTKhevNn7VVeQQgq3TauD/Q40LSzWQavothJSERaIlVpFbxOjzaT0hT84zlKvrsloY8+ErQ==
+      integrity: sha512-ebXuo60jm+UlLF+ZHdNp07hXRxdkk18RE6r+loJ8kC5kjmwhAMSJ1dnw6XrFfHd3Y6EaaYMj2hzpwan282h57g==
       tarball: 'file:projects/autopilot.tgz'
     version: 0.0.0
   'file:projects/blueprint.tgz_typescript@4.1.2':
@@ -5974,6 +5977,22 @@ packages:
     resolution:
       integrity: sha512-d0NSqcghHF2t2qY8FexcoBWod79KJ94ueWm9p4wZxPgnNM45vzlAX2DUD1X4t+UuLezi0gUDyVAq7YdwGD/UZA==
       tarball: 'file:projects/fuel-hydrant-system.tgz'
+    version: 0.0.0
+  'file:projects/functionality-demo-schema.tgz':
+    dev: false
+    name: '@rush-temp/functionality-demo-schema'
+    resolution:
+      integrity: sha512-iZXGG5RymsQDxd5i6fa0g6g5mN7x0ClAYRwl9s6kdMDg7HdplizHULWyjHEUeyMHjeJ8rSHHo/Jke84fJWUkAw==
+      tarball: 'file:projects/functionality-demo-schema.tgz'
+    version: 0.0.0
+  'file:projects/functionality-demo.tgz':
+    dependencies:
+      rxjs: 7.3.0
+    dev: false
+    name: '@rush-temp/functionality-demo'
+    resolution:
+      integrity: sha512-e4P2+fhho1iDKMGv5UUU2qEywwK4meVEkQKhyTpyaKbwbJ14A/FWsmMNG+vHnzEuKYwxgYYPMxWpsNETaNhqEA==
+      tarball: 'file:projects/functionality-demo.tgz'
     version: 0.0.0
   'file:projects/go-terminal.tgz':
     dependencies:
@@ -6113,7 +6132,7 @@ packages:
     dev: false
     name: '@rush-temp/landing'
     resolution:
-      integrity: sha512-iAFdmH9E7y5M4cCwLYhbBGsb4SEupfJplm5k4j/93n2UN15XoS10V+IiSUd2d1Ck3UuSLw0lBvOy8SXeq0BM9A==
+      integrity: sha512-01hWMVhVUG2yas09kwd2c3a0lynVdHYwy/8svDvibEtJfuISiFcB3lmgc2d4eZY15ryiPVxXttFgTeeJjG1Rxw==
       tarball: 'file:projects/landing.tgz'
     version: 0.0.0
   'file:projects/mono-rail.tgz':
@@ -6200,7 +6219,7 @@ packages:
     dev: false
     name: '@rush-temp/runway'
     resolution:
-      integrity: sha512-uh1sfeEf7FcFZrM5kj3AUktxrxrKfcDks4G9nZy+Y/9umAn0Vmv6NoNhU8Cbh/TAHxHszaGsnNCXBl1d9trASw==
+      integrity: sha512-XgS68VsUXJg8ofk2yWyA/zHiR4XQTXDZNjWnmjEZyjVzSuIRpIns/oonqbdHxjhiCg6Xf74isfnPLNklDF4IZw==
       tarball: 'file:projects/runway.tgz'
     version: 0.0.0
   'file:projects/security-check.tgz':
@@ -6258,7 +6277,7 @@ packages:
     dev: false
     name: '@rush-temp/taxiway'
     resolution:
-      integrity: sha512-De3Bbj7u6vRjWhqWQHPHBKewsgIjbC0VnpnJyc/F05MotH2yPlHmY29vZ8aMWx5vrRwBjzzGdxdHljwLY6Bpmg==
+      integrity: sha512-fX0IBeRzPM5+/JVyAtvHIKcheDCbrAhDJVCt1vZfQYZIUekcp2mQA3eRhZ4dRmSvLQoQW4Dti7scLm6wnHlj+g==
       tarball: 'file:projects/taxiway.tgz'
     version: 0.0.0
   'file:projects/terminal-map.tgz':
@@ -6311,7 +6330,7 @@ packages:
     dev: false
     name: '@rush-temp/tower'
     resolution:
-      integrity: sha512-WdYVF2zf0RS1i3MbPsb079gdEjPxi8UFNUXfQDxOSWnIRd8cY4Op0kHXdEEwFan8mGy8653WaFC3G8g5ghCMVQ==
+      integrity: sha512-PjDCBiJRk8/bGOI0axuRPjNO6BQZ0ISXsPgcwvQKvJYLd8S+02MNvPe096wGkVXmTtGo0njfaFk/0xNaHz8/FA==
       tarball: 'file:projects/tower.tgz'
     version: 0.0.0
   'file:projects/traffic-pattern.tgz':
@@ -6341,7 +6360,7 @@ packages:
     dev: false
     name: '@rush-temp/web-terminal'
     resolution:
-      integrity: sha512-ovapDWFNKb4/Gkw9PGbFJyQ+UPZWxQNaU1uf8VdRoTA0BNa30AZMlOY8zHZElWyvPNTfqDyK6mM8/a5wVqun7g==
+      integrity: sha512-jlop5OmkWAo51/sShU3ql7U1GRFrEnNiGEo3ODRH5yKnWCLo+0eM0QgvzI8Dm5xzAxrmVr0N2zaymYLYazHslg==
       tarball: 'file:projects/web-terminal.tgz'
     version: 0.0.0
   'file:projects/web-tower.tgz':
@@ -6350,7 +6369,7 @@ packages:
     dev: false
     name: '@rush-temp/web-tower'
     resolution:
-      integrity: sha512-McDlFp794Et3gZlu2anJfqG+jJNhL+eV5baLyPEu3kWC0djUsoY5UqdH6hfkfrLIVv+VF91RD+gkV7hnyc6a/A==
+      integrity: sha512-/nWsXTOGxbZvbZboIPaGGtO714ahUwaQD7uJ5nGXxWbt2bD6LWLob6kumzRoxD/Rv8VVUxZZhGyxEteJ3nZ18g==
       tarball: 'file:projects/web-tower.tgz'
     version: 0.0.0
   'file:projects/websql.tgz':
@@ -6382,6 +6401,8 @@ specifiers:
   '@rush-temp/di': 'file:./projects/di.tgz'
   '@rush-temp/flight-log-archive': 'file:./projects/flight-log-archive.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:./projects/fuel-hydrant-system.tgz'
+  '@rush-temp/functionality-demo': 'file:./projects/functionality-demo.tgz'
+  '@rush-temp/functionality-demo-schema': 'file:./projects/functionality-demo-schema.tgz'
   '@rush-temp/go-terminal': 'file:./projects/go-terminal.tgz'
   '@rush-temp/go-tower': 'file:./projects/go-tower.tgz'
   '@rush-temp/ground-control': 'file:./projects/ground-control.tgz'

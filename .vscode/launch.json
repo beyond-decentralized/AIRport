@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\airport-code\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -25,7 +25,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\flight-log-archive\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -35,11 +35,25 @@
         {
             "type": "pwa-node",
             "request": "launch",
+            "name": "functionality-demo-schema",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\functionality-demo-schema\\node_modules\\@airport\\runway\\lib\\index.js",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\functionality-demo-schema",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
             "name": "guideway",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\guideway\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -53,7 +67,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\holding-pattern\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -67,7 +81,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\moving-walkway\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -81,7 +95,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\na-kano\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -95,7 +109,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\point-of-destination\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -109,7 +123,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\runway-edge-lighting\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -123,7 +137,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\territory\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -137,7 +151,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\traffic-pattern\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -151,7 +165,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],

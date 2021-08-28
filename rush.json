@@ -241,23 +241,23 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/guideway",
-      "projectFolder": "schemas/guideway",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/flight-log-archive",
       "projectFolder": "schemas/flight-log-archive",
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/holding-pattern",
-      "projectFolder": "schemas/holding-pattern",
+      "packageName": "@airport/functionality-demo-schema",
+      "projectFolder": "schemas/functionality-demo-schema",
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/travel-document-checkpoint",
-      "projectFolder": "schemas/travel-document-checkpoint",
+      "packageName": "@airport/guideway",
+      "projectFolder": "schemas/guideway",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/holding-pattern",
+      "projectFolder": "schemas/holding-pattern",
       "shouldPublish": true
     },
     {
@@ -288,6 +288,11 @@
     {
       "packageName": "@airport/traffic-pattern",
       "projectFolder": "schemas/traffic-pattern",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/travel-document-checkpoint",
+      "projectFolder": "schemas/travel-document-checkpoint",
       "shouldPublish": true
     },
     {

@@ -11,7 +11,7 @@ import {
 import { getClassPath } from './ddl/parser/utils'
 import tsc from 'typescript'
 import { visitApiFile } from './api/parser/ApiGenerator'
-import { ISchemaApi } from '../../../apis/security-check/lib'
+import { visitInterfaceCandidateFile } from './interface/parser/InterfaceDetector'
 
 const enumMap: Map<string, string> = new Map<string, string>()
 globalThis.enumMap = enumMap
@@ -80,4 +80,7 @@ function visit(
 	} else {
 		visitApiFile(node, path)
 	}
+	// not needed as long as classes with APIS are referenced in
+	// client side tokens via their interfaces
+	// visitInterfaceCandidateFile(node, path)
 }
