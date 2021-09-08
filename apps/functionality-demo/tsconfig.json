@@ -1,34 +1,6 @@
 {
-  "compilerOptions": {
-    "outDir": "lib/",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-		"types": [
-			"svelte",
-			"svelte/store",
-			"svelte/motion",
-			"svelte/transition",
-			"svelte/animate",
-			"svelte/easing"
-		]
-  },
-	"include": [
-    "src/**/*",
-    "webpack.config.ts"
-  ],
-  "exclude": [
-    "__sapper__/*", 
-    "lib",
-    "node_modules", 
-    "public/*"
-  ],
-	// Fixes errors when changing `module` to ES in the above compiler options
-	// See: https://github.com/webpack/webpack-cli/issues/2458#issuecomment-846635277
-	"ts-node": {
-		"compilerOptions": {
-			"module": "commonjs"
-		}
-	},
-  "extends": "../../tsconfig.core.json"
+  "extends": "@tsconfig/svelte/tsconfig.json",
+
+  "include": ["src/**/*"],
+  "exclude": ["node_modules/*", "__sapper__/*", "public/*"]
 }
