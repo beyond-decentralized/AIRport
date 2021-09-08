@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@airport/functionality-demo-schema": "0.0.1",
     "sirv-cli": "^1.0.0"
   },
   "devDependencies": {
