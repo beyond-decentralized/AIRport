@@ -44,7 +44,7 @@ export class ChildContainer extends Container {
                 this.doGet(tokens, successCallback, errorCallback);
             }, 100);
         }
-        else if (objects.filter(object => !object.__initialized__).length) {
+        else if (objects.filter(object => object && !object.__initialized__).length) {
             const notInitializedObjectIndexes = objects.map((object, index) => object.__initialized__ ? -1 : index)
                 .filter(index => index !== -1);
             const objectPaths = [];
@@ -87,7 +87,7 @@ export class ChildContainer extends Container {
                         .loadApiAutopilot(token.library.signature, token.name);
                 }
                 else {
-                    const clazz = classMap.get[token.name];
+                    const clazz = classMap.get(token.name);
                     if (!clazz) {
                         firstMissingClassToken = token;
                         return;

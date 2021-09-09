@@ -93,6 +93,7 @@ dependencies:
   svelte-check: 2.2.5
   svelte-loader: 2.13.6
   svelte-preprocess: 4.9.2
+  systemjs: 6.10.3
   tslib: 2.1.0
   typedi: 0.8.0
   uuid: 8.3.2
@@ -9081,6 +9082,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-FSdBOOo271VyF/qZnOn1PgwCdt1v4Dx0Sey+U1jgqm1vqRYjPGdip0RGrFW6ItwtkBB8rHgHk26dlVr0uCs82Q==
+  /systemjs/6.10.3:
+    dev: false
+    resolution:
+      integrity: sha512-mXwfLJdaADqWg1J5+Z0bGQEdcXSe+ePPTfzffMB29aVls5cXveRl0vneSV/19t3SfuUBsAraLP8W/g5u9cmYXA==
   /tapable/1.1.3:
     dev: false
     engines:
@@ -10361,7 +10366,7 @@ packages:
     dev: false
     name: '@rush-temp/functionality-demo-frame'
     resolution:
-      integrity: sha512-BMQ8yoPLtksmgSWJzvVq0CanjDrf/bjdMPDNcpU9J+tZIe+dvKhdae94fYJmw/COedTsd5m+Eab/mQMYPyJntg==
+      integrity: sha512-IjwWv4zWMZcewxaJtFWjZmKD3woGoQ8+YandbLiQY5ZqbvXezJymtAA+qzhHHcFQsAVil2lSe6mE6Xw3PnwYPQ==
       tarball: 'file:projects/functionality-demo-frame.tgz'
     version: 0.0.0
   'file:projects/functionality-demo-framework.tgz':
@@ -10379,12 +10384,13 @@ packages:
       svelte: 3.42.4
       svelte-check: 2.2.5_svelte@3.42.4
       svelte-preprocess: 4.9.2_svelte@3.42.4+typescript@4.3.5
+      systemjs: 6.10.3
       tslib: 2.1.0
       typescript: 4.3.5
     dev: false
     name: '@rush-temp/functionality-demo-framework'
     resolution:
-      integrity: sha512-0xtxAhkfRsR59Pt46qSzztqgw0g+CuX9NUTDGyUPhL92huPbhY2GSWbIlzu6linMpFdjtljOM0yDSZTjAhyj8g==
+      integrity: sha512-g1qq5bYuerbmv8bL0S663OmQOIBx1FKhk67eP0uruum+l73LNNLURxRUIdKKBxs6wbBYq1mhxeJ1OKDWmlBj0w==
       tarball: 'file:projects/functionality-demo-framework.tgz'
     version: 0.0.0
   'file:projects/functionality-demo-schema.tgz':
@@ -10825,7 +10831,7 @@ packages:
     dev: false
     name: '@rush-temp/websql'
     resolution:
-      integrity: sha512-F5udrWcYfm28mQQJ5ja8sxlsBVmdE9hVgNYmOpdKM0ghmI7aUaOHvD+DnQ25H59zXnjfejW7yPOlygtS/UTHtg==
+      integrity: sha512-MukYxkg3wgpYTdnOLzC51yMpi9vCJhLewQJcEJ7Q8YLsvV/gLRTErHcu8wyVD12jAtqQKq70W5Zzb3Q1zbB8qA==
       tarball: 'file:projects/websql.tgz'
     version: 0.0.0
 registry: ''
@@ -10924,6 +10930,7 @@ specifiers:
   svelte-check: ^2.0.0
   svelte-loader: ^2.13.6
   svelte-preprocess: ^4.0.0
+  systemjs: ^6.10.3
   tslib: ^2.0.0
   typedi: ^0.8.0
   uuid: ^8.3.2

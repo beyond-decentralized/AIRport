@@ -1,7 +1,7 @@
 import { container, DI } from '@airport/di';
 import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
 import { TRANSACTION_MANAGER, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
-import { transactional } from '../transactional';
+import { transactional } from '@airport/tower';
 /**
  * Keeps track of transactions, per client and validates that a given
  * transaction belongs to the provided client.  If the connection
@@ -146,6 +146,6 @@ export class TransactionalServer {
 }
 DI.set(TRANSACTIONAL_SERVER, TransactionalServer);
 export function injectTransactionalServer() {
-    // console.log('Injecting TransactionalServer')
+    console.log('Injecting TransactionalServer');
 }
 //# sourceMappingURL=TransactionalServer.js.map

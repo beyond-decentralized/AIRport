@@ -43,6 +43,8 @@ iframe {
 import { operations } from "./store";
 
 export let name: string;
+
+
 </script>
 
 <main>

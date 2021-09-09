@@ -192,6 +192,6 @@ export class AirportDatabase {
 }
 DI.set(AIRPORT_DATABASE, AirportDatabase);
 export function injectAirportDatabase() {
-    // console.log('Injecting AirportDatabase');
+    console.log('Injecting AirportDatabase');
 }
 //# sourceMappingURL=AirportDatabase.js.map

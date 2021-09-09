@@ -4,9 +4,13 @@ import {
 }                    from '@airport/airport-code';
 import {
 	ISequenceGenerator,
+	SEQUENCE_GENERATOR,
 	setSeqGen
 }                    from '@airport/check-in';
-import { container } from '@airport/di';
+import {
+	container,
+	DI
+} from '@airport/di';
 import {
 	DbColumn,
 	DbEntity,
@@ -31,13 +35,13 @@ import {
  * Sequence-only solution
  *
  */
-export abstract class SequenceGenerator
+export class SequenceGenerator
 	implements ISequenceGenerator {
 
-	private sequences: ISequence[][][]   = [];
-	private sequenceBlocks: number[][][] = [];
+	protected sequences: ISequence[][][]   = [];
+	protected sequenceBlocks: number[][][] = [];
 
-	private generatingSequenceNumbers = false;
+	protected generatingSequenceNumbers = false;
 
 	exists(
 		dbEntity: DbEntity
@@ -104,8 +108,6 @@ export abstract class SequenceGenerator
 			this.generatingSequenceNumbers = false;
 		}
 	}
-
-	protected abstract nativeGenerate(): Promise<number>;
 
 	/**
 	 * Keeping return value as number[][] in case we ever revert back
@@ -199,3 +201,5 @@ export abstract class SequenceGenerator
 	}
 
 }
+
+DI.set(SEQUENCE_GENERATOR, SequenceGenerator)

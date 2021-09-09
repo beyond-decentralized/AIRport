@@ -193,5 +193,5 @@ export class TransactionalConnector
 DI.set(TRANSACTIONAL_CONNECTOR, TransactionalConnector);
 
 export function injectTransactionalConnector(): void {
-    // console.log('Injecting TransactionalConnector')
+    console.log('Injecting TransactionalConnector')
 }

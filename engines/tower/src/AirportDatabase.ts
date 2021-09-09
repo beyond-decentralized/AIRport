@@ -365,5 +365,5 @@ export class AirportDatabase
 DI.set(AIRPORT_DATABASE, AirportDatabase);
 
 export function injectAirportDatabase(): void {
-	// console.log('Injecting AirportDatabase');
+	console.log('Injecting AirportDatabase');
 }

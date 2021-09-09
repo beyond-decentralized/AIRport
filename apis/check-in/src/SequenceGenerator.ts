@@ -32,8 +32,7 @@ export interface ISequenceGenerator {
 
 	generateSequenceNumbers(
 		dbColumns: DbColumn[],
-		numSequencesNeeded: number[],
-		context: IIdGeneratorContext
+		numSequencesNeeded: number[]
 	): Promise<number[][]>
 
 	initialize(
@@ -86,7 +85,7 @@ export async function getSysWideOpId(
 
 	const generatedNumWrapper = await sequenceGenerator
 		.generateSequenceNumbers(
-			[sysWideOpIdGeneratedColumn], [1], null);
+			[sysWideOpIdGeneratedColumn], [1]);
 
 	return generatedNumWrapper[0][0];
 }

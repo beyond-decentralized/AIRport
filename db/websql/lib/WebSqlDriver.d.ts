@@ -1,7 +1,6 @@
 import { QueryType } from '@airport/ground-control';
-import { SQLDialect } from '@airport/fuel-hydrant-system';
 import { SqLiteDriver } from '@airport/sqlite';
-import { IOperationContext, ITransaction } from '@airport/tower';
+import { IOperationContext, ITransaction } from '@airport/terminal-map';
 /**
  * Created by Papa on 8/30/2016.
  */
@@ -18,23 +17,15 @@ export declare class WebSqlDriver extends SqLiteDriver {
     static BACKUP_LIBRARY: number;
     static BACKUP_DOCUMENTS: number;
     private _db;
-    private currentStatementId;
-    private keepAlive;
-    private keepAliveCount;
-    private transaction;
-    private pendingStatements;
     constructor();
-    protected getDialect(): SQLDialect;
     private getBackupLocation;
-    initialize(dbName: string, context: IOperationContext<any, any>): Promise<any>;
-    transact(callback: {
-        (transaction: ITransaction): Promise<void>;
-    }, context: IOperationContext<any, any>): Promise<void>;
+    initialize(dbName: string, context: IOperationContext): Promise<any>;
+    transact(transactionalCallback: {
+        (transaction: ITransaction): Promise<void> | void;
+    }): Promise<void>;
     rollback(): Promise<void>;
     commit(): Promise<void>;
-    query(queryType: QueryType, query: string, params: any[], context: IOperationContext<any, any>, saveTransaction?: boolean): Promise<any>;
-    private keepTransactionAlive;
-    private executePendingStatements;
+    query(queryType: QueryType, query: string, params: any[], context: IOperationContext, saveTransaction?: boolean): Promise<any>;
     private getReturnValue;
 }
 //# sourceMappingURL=WebSqlDriver.d.ts.map

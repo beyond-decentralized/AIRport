@@ -13,7 +13,7 @@ export class PersistenceConfig {
             this.localStoreConfig = createLocalStoreConfig(config.appName, config.localStore);
         }
     }
-    static getDefaultJsonConfig(appName = 'DefaultApp', distributionStrategy = DistributionStrategy.S3_SECURE_POLL, deltaStorePlatform = PlatformType.GOOGLE_DOCS, localStoreType = StoreType.SQLITE_CORDOVA, offlineDeltaStoreType = StoreType.SQLITE_CORDOVA, idGeneration = IdGeneration.ENTITY_CHANGE_ID) {
+    static getDefaultJsonConfig(appName = 'DefaultApp', distributionStrategy = DistributionStrategy.S3_SECURE_POLL, deltaStorePlatform = PlatformType.GOOGLE_DOCS, localStoreType = StoreType.SQLITE, offlineDeltaStoreType = StoreType.SQLITE, idGeneration = IdGeneration.ENTITY_CHANGE_ID) {
         return {
             appName: appName,
             deltaStore: {

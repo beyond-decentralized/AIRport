@@ -5,7 +5,6 @@ export * from './DDLManager';
 export * from './MySqlDriver';
 export * from './MySqlQueryAdaptor';
 export * from './MySqlSchemaBuilder';
-export * from './MySqlSequenceGenerator';
 export * from './MySqlTransaction';
 export async function startDb(domainName, ...schemas) {
     await DI.db().get(AIRPORT_DATABASE);

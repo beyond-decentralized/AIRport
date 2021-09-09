@@ -1,6 +1,6 @@
 import { SEQUENCE_DAO } from '@airport/airport-code';
-import { setSeqGen } from '@airport/check-in';
-import { container } from '@airport/di';
+import { SEQUENCE_GENERATOR, setSeqGen } from '@airport/check-in';
+import { container, DI } from '@airport/di';
 import { ensureChildArray } from '@airport/ground-control';
 /**
  * Assumptions: 7/4/2019
@@ -129,4 +129,5 @@ export class SequenceGenerator {
         }
     }
 }
+DI.set(SEQUENCE_GENERATOR, SequenceGenerator);
 //# sourceMappingURL=SequenceGenerator.js.map

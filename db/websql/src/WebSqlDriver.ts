@@ -1,7 +1,9 @@
+import { DI } from '@airport/di'
 import {
 	INVALID_TABLE_NAME,
 	QueryType,
-	StoreType
+	StoreType,
+	STORE_DRIVER
 } from '@airport/ground-control'
 import { SqLiteDriver } from '@airport/sqlite'
 import {
@@ -32,7 +34,7 @@ export class WebSqlDriver
 
 	constructor() {
 		super()
-		this.type = StoreType.SQLITE_CORDOVA
+		this.type = StoreType.WEB_SQL
 	}
 
 	private getBackupLocation(dbFlag: number): number {
@@ -92,7 +94,7 @@ export class WebSqlDriver
 		}
 	}
 
-	async rollback(): Promise<void> {		
+	async rollback(): Promise<void> {
 		let win: any = window
 		if (win.sqlitePlugin) {
 			this._db.executeSql('ROLLBACK TRANSACTION;')
@@ -101,7 +103,7 @@ export class WebSqlDriver
 		}
 	}
 
-	async commit(): Promise<void> {		
+	async commit(): Promise<void> {
 		let win: any = window
 		if (win.sqlitePlugin) {
 			this._db.executeSql('COMMIT TRANSACTION;')
@@ -117,7 +119,34 @@ export class WebSqlDriver
 		context: IOperationContext,
 		saveTransaction: boolean = false
 	): Promise<any> {
-		
+
+		return new Promise<any>((
+			resolve,
+			reject
+		) => {
+			try {
+				this._db.transaction(function (tx) {
+					if (!['TQ_BOOLEAN_FIELD_CHANGE', 'TQ_DATE_FIELD_CHANGE', 'TQ_NUMBER_FIELD_CHANGE', 'TQ_STRING_FIELD_CHANGE',
+						'TQ_ENTITY_CHANGE', 'TQ_ENTITY_WHERE_CHANGE', 'TQ_TRANSACTION'].some((deltaTableName) => {
+							return query.indexOf(deltaTableName) > -1
+						})) {
+						console.log(query)
+						console.log(params)
+					}
+
+					tx.executeSql(query, params, function (_tx, results) {
+						var len = results.rows.length, i;
+						const data = []
+						for (i = 0; i < len; i++) {
+							data.push(results.rows.item(i));
+						}
+						resolve(results);
+					}, reject);
+				});
+			} catch (error) {
+				reject(error)
+			}
+		})
 	}
 
 	private getReturnValue(
@@ -135,6 +164,7 @@ export class WebSqlDriver
 	}
 
 }
+DI.set(STORE_DRIVER, WebSqlDriver);
 
 /*
 function runSqlSeries(

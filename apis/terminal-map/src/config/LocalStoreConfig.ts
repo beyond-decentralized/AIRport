@@ -58,7 +58,8 @@ export function createLocalStoreConfig(
 	}
 
 	switch (type) {
-		case StoreType.SQLITE_CORDOVA:
+		case StoreType.SQLITE:
+		case StoreType.WEB_SQL:
 			return new SqLiteCordovaLocalStoreConfig(localStoreName, <StoreType>config.type, config.idGeneration);
 		case StoreType.SQLJS:
 			return new SqlJsCordovaLocalStoreConfig(localStoreName, <StoreType>config.type, config.idGeneration);

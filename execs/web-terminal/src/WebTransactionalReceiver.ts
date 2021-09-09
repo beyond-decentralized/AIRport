@@ -1,4 +1,7 @@
-import { ILocalAPIRequest, ILocalAPIResponse } from '@airport/autopilot'
+import {
+	ILocalAPIRequest,
+	ILocalAPIResponse
+} from '@airport/autopilot'
 import {
 	DI,
 } from '@airport/di'
@@ -18,6 +21,11 @@ import {
 import {
 	map
 } from 'rxjs/operators'
+import {
+	injectTransactionalConnector,
+	injectTransactionalServer
+} from '@airport/terminal'
+import { injectAirportDatabase } from '@airport/tower'
 
 let _mainDomain = 'localhost:31717'
 
@@ -257,6 +265,9 @@ export class WebTransactionalReceiver
 
 DI.set(TRANSACTIONAL_RECEIVER, WebTransactionalReceiver);
 
-export function injectTransactionalConnector(): void {
-	// console.log('Injecting TransactionalConnector')
+export function injectTransactionalReceiver(): void {
+	console.log('Injecting TransactionalReceiver')
+	injectTransactionalConnector()
+	injectAirportDatabase()
+	injectTransactionalServer()
 }

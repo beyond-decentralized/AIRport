@@ -8,7 +8,7 @@ import {
   SQLDataType,
   STORE_DRIVER
 } from '@airport/ground-control';
-import { transactional } from '@airport/terminal';
+import { transactional } from '@airport/tower';
 import {
   IOperationContext,
   ITransaction

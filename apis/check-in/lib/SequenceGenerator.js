@@ -20,7 +20,7 @@ export async function getSysWideOpId(airDb, sequenceGenerator) {
         .__dbSchema__.currentVersion
         .entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
     const generatedNumWrapper = await sequenceGenerator
-        .generateSequenceNumbers([sysWideOpIdGeneratedColumn], [1], null);
+        .generateSequenceNumbers([sysWideOpIdGeneratedColumn], [1]);
     return generatedNumWrapper[0][0];
 }
 //# sourceMappingURL=SequenceGenerator.js.map

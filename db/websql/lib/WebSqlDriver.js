@@ -1,17 +1,10 @@
-import { INVALID_TABLE_NAME, QueryType, StoreType } from '@airport/ground-control';
-import { SQLDialect } from '@airport/fuel-hydrant-system';
+import { DI } from '@airport/di';
+import { INVALID_TABLE_NAME, QueryType, StoreType, STORE_DRIVER } from '@airport/ground-control';
 import { SqLiteDriver } from '@airport/sqlite';
 export class WebSqlDriver extends SqLiteDriver {
     constructor() {
         super();
-        this.currentStatementId = 0;
-        this.keepAlive = false;
-        this.keepAliveCount = 0;
-        this.pendingStatements = [];
-        this.type = StoreType.SQLITE_CORDOVA;
-    }
-    getDialect() {
-        return SQLDialect.SQLITE;
+        this.type = StoreType.WEB_SQL;
     }
     getBackupLocation(dbFlag) {
         switch (dbFlag) {
@@ -44,80 +37,63 @@ export class WebSqlDriver extends SqLiteDriver {
             this._db = win.openDatabase(dbOptions.name, '1.0', 'terminal', 5 * 1024 * 1024);
         }
     }
-    async transact(callback, context) {
-        throw new Error('not implemented');
+    async transact(transactionalCallback) {
+        const transactionModule = await import('./WebSqlTransaction');
+        const transaction = new transactionModule.WebSqlTransaction(this);
+        await transactionalCallback(transaction);
+        let win = window;
+        if (win.sqlitePlugin) {
+            this._db.executeSql('BEGIN TRANSACTION;');
+        }
+        else {
+            this._db.transaction(() => {
+                transactionalCallback(transaction);
+            });
+        }
     }
     async rollback() {
-        if (this.transaction) {
-            this.transaction.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, []);
+        let win = window;
+        if (win.sqlitePlugin) {
+            this._db.executeSql('ROLLBACK TRANSACTION;');
         }
-        await this.commit();
+        else {
+            this._db.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, []);
+        }
     }
     async commit() {
-        this.keepAlive = false;
-        this.keepAliveCount = 0;
-        this.transaction = null;
+        let win = window;
+        if (win.sqlitePlugin) {
+            this._db.executeSql('COMMIT TRANSACTION;');
+        }
+        else {
+            // Nothing to do
+        }
     }
     async query(queryType, query, params = [], context, saveTransaction = false) {
         return new Promise((resolve, reject) => {
-            let id = ++this.currentStatementId;
-            this.pendingStatements.push({
-                id,
-                query,
-                queryType,
-                params,
-                reject,
-                resolve
-            });
             try {
-                if (!this.transaction) {
-                    this._db.transaction((tx) => {
-                        this.transaction = tx;
-                        this.executePendingStatements(tx);
-                    }, (err) => {
-                        reject(err);
-                    }, (done) => {
-                        console.log('Transaction finished');
-                        // nothing to do
-                    });
-                }
+                this._db.transaction(function (tx) {
+                    if (!['TQ_BOOLEAN_FIELD_CHANGE', 'TQ_DATE_FIELD_CHANGE', 'TQ_NUMBER_FIELD_CHANGE', 'TQ_STRING_FIELD_CHANGE',
+                        'TQ_ENTITY_CHANGE', 'TQ_ENTITY_WHERE_CHANGE', 'TQ_TRANSACTION'].some((deltaTableName) => {
+                        return query.indexOf(deltaTableName) > -1;
+                    })) {
+                        console.log(query);
+                        console.log(params);
+                    }
+                    tx.executeSql(query, params, function (_tx, results) {
+                        var len = results.rows.length, i;
+                        const data = [];
+                        for (i = 0; i < len; i++) {
+                            data.push(results.rows.item(i));
+                        }
+                        resolve(results);
+                    }, reject);
+                });
             }
-            catch (err) {
-                reject(err);
+            catch (error) {
+                reject(error);
             }
         });
-    }
-    keepTransactionAlive(tx) {
-        tx.executeSql('SELECT count(*) FROM npmjs_org___airport__territory__Package', [], (tx) => {
-            this.executePendingStatements(tx);
-        }, (tx) => {
-            this.executePendingStatements(tx);
-        });
-    }
-    executePendingStatements(tx) {
-        if (this.pendingStatements.length) {
-            let statement = this.pendingStatements.shift();
-            console.log(statement.query);
-            console.log(statement.params);
-            if (this.keepAlive) {
-                this.keepAliveCount = 100;
-            }
-            tx.executeSql(statement.query, statement.params, (tx, res) => {
-                let response = this.getReturnValue(statement.queryType, res);
-                console.log(response);
-                statement.resolve(response);
-                this.executePendingStatements(tx);
-            }, (tx, err) => {
-                statement.reject(err);
-                this.executePendingStatements(tx);
-            });
-        }
-        else if (--this.keepAliveCount > 0) {
-            this.keepTransactionAlive(tx);
-        }
-        else {
-            this.commit().then();
-        }
     }
     getReturnValue(queryType, response) {
         switch (queryType) {
@@ -133,6 +109,7 @@ export class WebSqlDriver extends SqLiteDriver {
 WebSqlDriver.BACKUP_LOCAL = 2;
 WebSqlDriver.BACKUP_LIBRARY = 1;
 WebSqlDriver.BACKUP_DOCUMENTS = 0;
+DI.set(STORE_DRIVER, WebSqlDriver);
 /*
 function runSqlSeries(
     tx,

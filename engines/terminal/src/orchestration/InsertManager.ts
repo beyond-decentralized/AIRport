@@ -326,7 +326,7 @@ appears more than once in the Columns clause`)
 		const numSequencesNeeded      = generatedColumns.map(
 			_ => values.length)
 		const generatedSequenceValues = await sequenceGenerator.generateSequenceNumbers(
-			generatedColumns, numSequencesNeeded)
+			generatedColumns, numSequencesNeeded, {} as any)
 
 		generatedColumns.forEach((
 			dbColumn,

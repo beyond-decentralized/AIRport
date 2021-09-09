@@ -30,8 +30,8 @@ import {
 	IDatabaseManager,
 	TRANSACTIONAL_SERVER
 } from '@airport/terminal-map';
+import { transactional } from '@airport/tower';
 import { DATABASE_MANAGER } from '../tokens';
-import { transactional } from '../transactional';
 
 export class DatabaseManager
 	implements IDatabaseManager {

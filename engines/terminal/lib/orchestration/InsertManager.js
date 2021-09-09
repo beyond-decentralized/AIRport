@@ -171,7 +171,7 @@ appears more than once in the Columns clause`);
         // to not waste sequence numbers on invalid input
         // (thus reducing storage requirements in SqLite)
         const numSequencesNeeded = generatedColumns.map(_ => values.length);
-        const generatedSequenceValues = await sequenceGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
+        const generatedSequenceValues = await sequenceGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded, {});
         generatedColumns.forEach((dbColumn, generatedColumnIndex) => {
             const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex];
             const insertColumnIndex = generatedColumnIndexes[generatedColumnIndex];

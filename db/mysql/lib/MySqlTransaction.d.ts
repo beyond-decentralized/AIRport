@@ -1,6 +1,5 @@
-import { ITransaction } from '@airport/tower';
 import { ITransactionHistory } from '@airport/holding-pattern';
-import { ICredentials } from '@airport/terminal-map';
+import { ICredentials, ITransaction } from '@airport/terminal-map';
 import { Connection, Pool } from 'mysql2/promise';
 import { MySqlDriver } from './MySqlDriver';
 export declare class MySqlTransaction extends MySqlDriver implements ITransaction {

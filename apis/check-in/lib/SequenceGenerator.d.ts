@@ -14,7 +14,7 @@ export interface IIdGeneratorContext extends IContext {
 }
 export interface ISequenceGenerator {
     exists(dbEntity: DbEntity): boolean;
-    generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[], context: IIdGeneratorContext): Promise<number[][]>;
+    generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
     initialize(sequences?: DbSequence[]): Promise<void>;
     tempInitialize(sequences?: DbSequence[]): Promise<void>;
 }

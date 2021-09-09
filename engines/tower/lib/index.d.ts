@@ -7,4 +7,5 @@ export * from './facade/DatabaseFacade';
 export * from './facade/QueryFacade';
 export * from './AirportDatabase';
 export * from './tokens';
+export * from './transactional';
 //# sourceMappingURL=index.d.ts.map

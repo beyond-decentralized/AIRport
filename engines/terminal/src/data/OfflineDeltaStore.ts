@@ -36,8 +36,9 @@ export function getOfflineDeltaStore(
 	localStore: IStoreDriver,
 ): IOfflineDeltaStore {
 	switch (localStore.type) {
-		case StoreType.SQLITE_CORDOVA:
-		case StoreType.SQLJS:
+		case StoreType.SQLITE:
+			case StoreType.SQLJS:
+			case StoreType.WEB_SQL:
 			throw new Error(`Implement!`);
 		// return new OfflineSqlDeltaStore(localStore);
 		default:

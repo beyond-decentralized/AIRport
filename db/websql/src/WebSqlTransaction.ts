@@ -1,8 +1,10 @@
-import {IInjectable}         from '@airport/di'
-import {ITransaction}        from '@airport/tower'
-import {ITransactionHistory} from '@airport/holding-pattern'
-import {ICredentials}        from '@airport/terminal-map'
-import {WebSqlDriver}         from './WebSqlDriver'
+import { IInjectable } from '@airport/di'
+import { ITransactionHistory } from '@airport/holding-pattern'
+import {
+	ICredentials,
+	ITransaction
+} from '@airport/terminal-map'
+import { WebSqlDriver } from './WebSqlDriver'
 
 export class WebSqlTransaction
 	extends WebSqlDriver
@@ -23,11 +25,11 @@ export class WebSqlTransaction
 	}
 
 	async commit(): Promise<void> {
-        this.driver.commit();
+		this.driver.commit();
 	}
-    
+
 	async rollback(): Promise<void> {
-        this.driver.rollback();
+		this.driver.rollback();
 	}
 
 }

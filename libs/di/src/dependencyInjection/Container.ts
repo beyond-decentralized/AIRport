@@ -469,7 +469,7 @@ export class ChildContainer
 					errorCallback,
 				);
 			}, 100);
-		} else if (objects.filter(object => !object.__initialized__).length) {
+		} else if (objects.filter(object => object && !object.__initialized__).length) {
 			const notInitializedObjectIndexes = objects.map((
 				object,
 				index
@@ -524,7 +524,7 @@ export class ChildContainer
 						object = this.getSync(AUTOPILOT_API_LOADER)
 							.loadApiAutopilot(token.library.signature, token.name);
 					} else {
-						const clazz = classMap.get[token.name];
+						const clazz = classMap.get(token.name);
 						if (!clazz) {
 							firstMissingClassToken = token;
 							return;

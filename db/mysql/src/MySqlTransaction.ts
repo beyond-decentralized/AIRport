@@ -1,12 +1,14 @@
-import {IInjectable}         from '@airport/di'
-import {ITransaction}        from '@airport/tower'
-import {ITransactionHistory} from '@airport/holding-pattern'
-import {ICredentials}        from '@airport/terminal-map'
+import { IInjectable } from '@airport/di'
+import { ITransactionHistory } from '@airport/holding-pattern'
+import {
+	ICredentials,
+	ITransaction
+} from '@airport/terminal-map'
 import {
 	Connection,
 	Pool
-}                            from 'mysql2/promise'
-import {MySqlDriver}         from './MySqlDriver'
+} from 'mysql2/promise'
+import { MySqlDriver } from './MySqlDriver'
 
 export class MySqlTransaction
 	extends MySqlDriver
@@ -21,7 +23,7 @@ export class MySqlTransaction
 		private connection: Connection
 	) {
 		super()
-		this.pool     = pool
+		this.pool = pool
 		this.queryApi = connection;
 		(<IInjectable>this).__container__ = (<IInjectable>driver).__container__
 	}

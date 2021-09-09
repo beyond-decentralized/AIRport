@@ -19,15 +19,14 @@ import { DbColumn, DbEntity } from '@airport/ground-control';
  * Sequence-only solution
  *
  */
-export declare abstract class SequenceGenerator implements ISequenceGenerator {
-    private sequences;
-    private sequenceBlocks;
-    private generatingSequenceNumbers;
+export declare class SequenceGenerator implements ISequenceGenerator {
+    protected sequences: ISequence[][][];
+    protected sequenceBlocks: number[][][];
+    protected generatingSequenceNumbers: boolean;
     exists(dbEntity: DbEntity): boolean;
     initialize(sequences?: ISequence[]): Promise<void>;
     tempInitialize(sequences?: ISequence[]): Promise<void>;
     generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
-    protected abstract nativeGenerate(): Promise<number>;
     /**
      * Keeping return value as number[][] in case we ever revert back
      * to SequenceBlock-like solution

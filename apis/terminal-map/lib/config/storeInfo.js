@@ -11,7 +11,8 @@ export var store;
         type.SQL_JS = 'SQL_JS';
         function getName(localStoreType) {
             switch (localStoreType) {
-                case StoreType.SQLITE_CORDOVA:
+                case StoreType.SQLITE:
+                case StoreType.WEB_SQL:
                     return type.WEB_SQL;
                 case StoreType.SQLJS:
                     return type.SQL_JS;
@@ -23,7 +24,7 @@ export var store;
         function getValue(localStoreTypeName) {
             switch (localStoreTypeName) {
                 case type.WEB_SQL:
-                    return StoreType.SQLITE_CORDOVA;
+                    return StoreType.WEB_SQL;
                 case type.SQL_JS:
                     return StoreType.SQLJS;
                 default:

@@ -3,8 +3,9 @@ import { StoreType } from '@airport/ground-control';
 import { OFFLINE_DELTA_STORE } from '../tokens';
 export function getOfflineDeltaStore(localStore) {
     switch (localStore.type) {
-        case StoreType.SQLITE_CORDOVA:
+        case StoreType.SQLITE:
         case StoreType.SQLJS:
+        case StoreType.WEB_SQL:
             throw new Error(`Implement!`);
         // return new OfflineSqlDeltaStore(localStore);
         default:

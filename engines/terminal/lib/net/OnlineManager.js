@@ -1,9 +1,9 @@
 import { container, DI } from '@airport/di';
 import { BlockSyncStatus } from '@airport/ground-control';
 import { REPO_TRANS_HISTORY_DAO, REPOSITORY_DAO, RepositoryTransactionHistory, } from '@airport/holding-pattern';
+import { transactional } from '@airport/tower';
 import { UpdateState } from '../core/UpdateState';
 import { OFFLINE_DELTA_STORE, ONLINE_MANAGER, REPOSITORY_MANAGER } from '../tokens';
-import { transactional } from '../transactional';
 export class OnlineManager {
     constructor() {
         this.online = false;

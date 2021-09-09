@@ -16,7 +16,7 @@ describe('Configuration:', () => {
 			},
 			clientId: 'test',
 			offlineDeltaStore: {
-				type: StoreType.SQLITE_CORDOVA
+				type: StoreType.SQLITE
 			},
 			platform: PlatformType.GOOGLE_DOCS,
 			recordIdField: 'field',

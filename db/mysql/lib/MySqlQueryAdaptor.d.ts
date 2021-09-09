@@ -1,7 +1,7 @@
 import { IQEntityInternal, Parameter } from '@airport/air-control';
 import { AbstractFunctionAdaptor, ISQLFunctionAdaptor, ISQLQueryAdaptor, ISqlValueProvider } from '@airport/fuel-hydrant-system';
 import { JSONSqlFunctionCall, SQLDataType } from '@airport/ground-control';
-import { IOperationContext } from '@airport/tower';
+import { IOperationContext } from '@airport/terminal-map';
 /**
  * Created by Papa on 8/27/2016.
  */
@@ -22,7 +22,7 @@ export declare class MySqlQueryAdaptor implements ISQLQueryAdaptor {
 export declare class MySqlFunctionAdaptor extends AbstractFunctionAdaptor {
     getFunctionCall(jsonFunctionCall: JSONSqlFunctionCall, value: string, qEntityMapByAlias: {
         [entityName: string]: IQEntityInternal<any>;
-    }, sqlValueProvider: ISqlValueProvider, context: IOperationContext<any, any>): string;
+    }, sqlValueProvider: ISqlValueProvider, context: IOperationContext): string;
     toString(val: any): string;
 }
 //# sourceMappingURL=MySqlQueryAdaptor.d.ts.map

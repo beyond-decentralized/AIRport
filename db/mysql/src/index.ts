@@ -7,7 +7,6 @@ export * from './DDLManager';
 export * from './MySqlDriver';
 export * from './MySqlQueryAdaptor';
 export * from './MySqlSchemaBuilder';
-export * from './MySqlSequenceGenerator';
 export * from './MySqlTransaction';
 
 export async function startDb(

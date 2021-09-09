@@ -22,7 +22,8 @@ export namespace store.type {
 		localStoreType: StoreType
 	): string {
 		switch (localStoreType) {
-			case StoreType.SQLITE_CORDOVA:
+			case StoreType.SQLITE:
+			case StoreType.WEB_SQL:
 				return WEB_SQL
 			case StoreType.SQLJS:
 				return SQL_JS
@@ -37,7 +38,7 @@ export namespace store.type {
 	): StoreType {
 		switch (localStoreTypeName) {
 			case WEB_SQL:
-				return StoreType.SQLITE_CORDOVA
+				return StoreType.WEB_SQL
 			case SQL_JS:
 				return StoreType.SQLJS
 			default:

@@ -4,8 +4,9 @@ export var StoreType;
     StoreType[StoreType["MYSQL"] = 1] = "MYSQL";
     StoreType[StoreType["POSTGRESQL"] = 2] = "POSTGRESQL";
     StoreType[StoreType["REMOTE"] = 3] = "REMOTE";
-    StoreType[StoreType["SQLITE_CORDOVA"] = 4] = "SQLITE_CORDOVA";
+    StoreType[StoreType["SQLITE"] = 4] = "SQLITE";
     StoreType[StoreType["SQLJS"] = 5] = "SQLJS";
+    StoreType[StoreType["WEB_SQL"] = 6] = "WEB_SQL";
 })(StoreType || (StoreType = {}));
 export var IdGeneration;
 (function (IdGeneration) {

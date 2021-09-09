@@ -6,8 +6,8 @@ import { SCHEMA_INITIALIZER } from '@airport/landing';
 import { SCHEMA_DAO } from '@airport/traffic-pattern';
 import { Terminal, TERMINAL_DAO, User, USER_DAO, } from '@airport/travel-document-checkpoint';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
+import { transactional } from '@airport/tower';
 import { DATABASE_MANAGER } from '../tokens';
-import { transactional } from '../transactional';
 export class DatabaseManager {
     constructor() {
         this.initialized = false;

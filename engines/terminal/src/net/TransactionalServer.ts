@@ -14,14 +14,14 @@ import {
 	DistributionStrategy,
 	ICredentials,
 	IOperationContext,
+	ITransaction,
 	ITransactionalServer,
 	PlatformType,
 	TRANSACTION_MANAGER,
 	TRANSACTIONAL_SERVER
 } from '@airport/terminal-map';
+import { transactional } from '@airport/tower';
 import { Observable } from 'rxjs';
-import { ITransaction } from '@airport/terminal-map';
-import { transactional } from '../transactional';
 
 export interface InternalPortableQuery
 	extends PortableQuery {
@@ -307,5 +307,5 @@ export class TransactionalServer
 DI.set(TRANSACTIONAL_SERVER, TransactionalServer);
 
 export function injectTransactionalServer(): void {
-	// console.log('Injecting TransactionalServer')
+	console.log('Injecting TransactionalServer')
 }

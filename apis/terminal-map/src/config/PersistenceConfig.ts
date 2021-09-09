@@ -26,8 +26,8 @@ export class PersistenceConfig<DSC extends JsonDeltaStoreConfig> implements IPer
 		appName: string = 'DefaultApp',
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_SECURE_POLL,
 		deltaStorePlatform: PlatformType = PlatformType.GOOGLE_DOCS,
-		localStoreType: StoreType = StoreType.SQLITE_CORDOVA,
-		offlineDeltaStoreType: StoreType = StoreType.SQLITE_CORDOVA,
+		localStoreType: StoreType = StoreType.SQLITE,
+		offlineDeltaStoreType: StoreType = StoreType.SQLITE,
 		idGeneration: IdGeneration = IdGeneration.ENTITY_CHANGE_ID
 	): JsonPersistenceConfig<JsonDeltaStoreConfig> {
 		return {

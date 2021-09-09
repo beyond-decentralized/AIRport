@@ -215,7 +215,7 @@ export class RepositoryManager
 			},
 			offlineDeltaStore: {
 				// type: this.dbFacade.storeType
-				type: StoreType.SQLITE_CORDOVA
+				type: StoreType.SQLITE
 			},
 			recordIdField: 'id',
 			// platform: repository.platform
