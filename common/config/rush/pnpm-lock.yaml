@@ -23,6 +23,8 @@ dependencies:
   '@rush-temp/flight-log-archive': 'file:projects/flight-log-archive.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:projects/fuel-hydrant-system.tgz'
   '@rush-temp/functionality-demo': 'file:projects/functionality-demo.tgz'
+  '@rush-temp/functionality-demo-frame': 'file:projects/functionality-demo-frame.tgz'
+  '@rush-temp/functionality-demo-framework': 'file:projects/functionality-demo-framework.tgz'
   '@rush-temp/functionality-demo-schema': 'file:projects/functionality-demo-schema.tgz'
   '@rush-temp/go-terminal': 'file:projects/go-terminal.tgz'
   '@rush-temp/go-tower': 'file:projects/go-tower.tgz'
@@ -10339,11 +10341,57 @@ packages:
       integrity: sha512-d0NSqcghHF2t2qY8FexcoBWod79KJ94ueWm9p4wZxPgnNM45vzlAX2DUD1X4t+UuLezi0gUDyVAq7YdwGD/UZA==
       tarball: 'file:projects/fuel-hydrant-system.tgz'
     version: 0.0.0
+  'file:projects/functionality-demo-frame.tgz':
+    dependencies:
+      '@rollup/plugin-commonjs': 17.1.0_rollup@2.56.3
+      '@rollup/plugin-node-resolve': 11.2.1_rollup@2.56.3
+      '@rollup/plugin-typescript': 8.2.5_933e839ab6e578a7dcecab93fb1942dc
+      '@tsconfig/svelte': 2.0.1
+      rollup: 2.56.3
+      rollup-plugin-css-only: 3.1.0_rollup@2.56.3
+      rollup-plugin-livereload: 2.0.5
+      rollup-plugin-svelte: 7.1.0_rollup@2.56.3+svelte@3.42.4
+      rollup-plugin-terser: 7.0.2_rollup@2.56.3
+      sirv-cli: 1.0.14
+      svelte: 3.42.4
+      svelte-check: 2.2.5_svelte@3.42.4
+      svelte-preprocess: 4.9.2_svelte@3.42.4+typescript@4.3.5
+      tslib: 2.1.0
+      typescript: 4.3.5
+    dev: false
+    name: '@rush-temp/functionality-demo-frame'
+    resolution:
+      integrity: sha512-BMQ8yoPLtksmgSWJzvVq0CanjDrf/bjdMPDNcpU9J+tZIe+dvKhdae94fYJmw/COedTsd5m+Eab/mQMYPyJntg==
+      tarball: 'file:projects/functionality-demo-frame.tgz'
+    version: 0.0.0
+  'file:projects/functionality-demo-framework.tgz':
+    dependencies:
+      '@rollup/plugin-commonjs': 17.1.0_rollup@2.56.3
+      '@rollup/plugin-node-resolve': 11.2.1_rollup@2.56.3
+      '@rollup/plugin-typescript': 8.2.5_933e839ab6e578a7dcecab93fb1942dc
+      '@tsconfig/svelte': 2.0.1
+      rollup: 2.56.3
+      rollup-plugin-css-only: 3.1.0_rollup@2.56.3
+      rollup-plugin-livereload: 2.0.5
+      rollup-plugin-svelte: 7.1.0_rollup@2.56.3+svelte@3.42.4
+      rollup-plugin-terser: 7.0.2_rollup@2.56.3
+      sirv-cli: 1.0.14
+      svelte: 3.42.4
+      svelte-check: 2.2.5_svelte@3.42.4
+      svelte-preprocess: 4.9.2_svelte@3.42.4+typescript@4.3.5
+      tslib: 2.1.0
+      typescript: 4.3.5
+    dev: false
+    name: '@rush-temp/functionality-demo-framework'
+    resolution:
+      integrity: sha512-0xtxAhkfRsR59Pt46qSzztqgw0g+CuX9NUTDGyUPhL92huPbhY2GSWbIlzu6linMpFdjtljOM0yDSZTjAhyj8g==
+      tarball: 'file:projects/functionality-demo-framework.tgz'
+    version: 0.0.0
   'file:projects/functionality-demo-schema.tgz':
     dev: false
     name: '@rush-temp/functionality-demo-schema'
     resolution:
-      integrity: sha512-iZXGG5RymsQDxd5i6fa0g6g5mN7x0ClAYRwl9s6kdMDg7HdplizHULWyjHEUeyMHjeJ8rSHHo/Jke84fJWUkAw==
+      integrity: sha512-UNASi1kBNzpNk024C3dx5RI2WMToeeh9Eb3Q7kas+tgp/rAsxzRCc4YxKXbc1szCAfmIqAMcYsx5JwRWf+cxsA==
       tarball: 'file:projects/functionality-demo-schema.tgz'
     version: 0.0.0
   'file:projects/functionality-demo.tgz':
@@ -10395,7 +10443,7 @@ packages:
     dev: false
     name: '@rush-temp/functionality-demo'
     resolution:
-      integrity: sha512-tIkMosB/6Lg8LWWD8kF+oR/uujkFqL06qx0TuAn4oi1ZLf5pFqj3/D6DmPjJaSj8mjzQlEsRGKQu7CtJja8Cag==
+      integrity: sha512-75UhaDXTaDAYqtvsmFNXTzOn5JP/mPtRk5gsPxmhRdsv71XOiz0+aaKDncbKyZ2TBN/8hqjereXUCA4kPf6sCw==
       tarball: 'file:projects/functionality-demo.tgz'
     version: 0.0.0
   'file:projects/go-terminal.tgz':
@@ -10806,6 +10854,8 @@ specifiers:
   '@rush-temp/flight-log-archive': 'file:./projects/flight-log-archive.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:./projects/fuel-hydrant-system.tgz'
   '@rush-temp/functionality-demo': 'file:./projects/functionality-demo.tgz'
+  '@rush-temp/functionality-demo-frame': 'file:./projects/functionality-demo-frame.tgz'
+  '@rush-temp/functionality-demo-framework': 'file:./projects/functionality-demo-framework.tgz'
   '@rush-temp/functionality-demo-schema': 'file:./projects/functionality-demo-schema.tgz'
   '@rush-temp/go-terminal': 'file:./projects/go-terminal.tgz'
   '@rush-temp/go-tower': 'file:./projects/go-tower.tgz'

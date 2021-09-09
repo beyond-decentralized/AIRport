@@ -299,6 +299,17 @@
       "packageName": "@airport/vasi",
       "projectFolder": "schemas/vasi",
       "shouldPublish": true
-    }
+    },
+    // "test" folder (alphabetical order)
+    {
+      "packageName": "@airport/functionality-demo-frame",
+      "projectFolder": "test/functionality-demo-frame",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/functionality-demo-framework",
+      "projectFolder": "test/functionality-demo-framework",
+      "shouldPublish": true
+    },
   ]
 }
