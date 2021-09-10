@@ -47,9 +47,6 @@ export class DatabaseManager
 	): Promise<void> {
 		await container(this).get(AIRPORT_DATABASE);
 
-		const connector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-		await connector.init();
-
 		const server = await container(this).get(TRANSACTIONAL_SERVER);
 		(server as any).tempActor = new Actor();
 
@@ -65,10 +62,7 @@ export class DatabaseManager
 		context: IContext,
 		...schemas: JsonSchema[]
 	): Promise<void> {
-		const airDb = await container(this).get(AIRPORT_DATABASE);
-
-		const connector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-		await connector.init();
+		await container(this).get(AIRPORT_DATABASE);
 
 		const storeDriver = await container(this).get(STORE_DRIVER);
 		/*

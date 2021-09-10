@@ -1,6 +1,6 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { getSchemaName, STORE_DRIVER, TRANSACTIONAL_CONNECTOR, } from '@airport/ground-control';
+import { getSchemaName, STORE_DRIVER, } from '@airport/ground-control';
 import { Actor, ACTOR_DAO, } from '@airport/holding-pattern';
 import { SCHEMA_INITIALIZER } from '@airport/landing';
 import { SCHEMA_DAO } from '@airport/traffic-pattern';
@@ -16,8 +16,6 @@ export class DatabaseManager {
     // }
     async initNoDb(context, ...schemas) {
         await container(this).get(AIRPORT_DATABASE);
-        const connector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-        await connector.init();
         const server = await container(this).get(TRANSACTIONAL_SERVER);
         server.tempActor = new Actor();
         await this.installAirportSchema(true, false, context);
@@ -26,9 +24,7 @@ export class DatabaseManager {
         this.initialized = true;
     }
     async initWithDb(domainName, context, ...schemas) {
-        const airDb = await container(this).get(AIRPORT_DATABASE);
-        const connector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-        await connector.init();
+        await container(this).get(AIRPORT_DATABASE);
         const storeDriver = await container(this).get(STORE_DRIVER);
         /*
                 await storeDriver.dropTable('air__airport_code', 'SEQUENCES')

@@ -86,6 +86,7 @@ for "${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqu
 					= operationUniqueId
 				entityCopy[context.ioc.entityStateManager.getStateFieldName()]
 					= context.ioc.entityStateManager.getEntityState(entity)
+				context.ioc.entityStateManager.copyEntityState(entity, entityCopy)
 				entitiesByOperationIndex[operationUniqueId]
 					= entityCopy
 			}

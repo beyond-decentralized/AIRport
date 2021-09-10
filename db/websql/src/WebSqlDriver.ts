@@ -30,7 +30,7 @@ export class WebSqlDriver
 	static BACKUP_LIBRARY = 1
 	static BACKUP_DOCUMENTS = 0
 
-	private _db: any
+	public _db: any
 
 	constructor() {
 		super()

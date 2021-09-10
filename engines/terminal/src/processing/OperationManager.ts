@@ -3,6 +3,7 @@ import {
 	Delete,
 	InsertValues,
 	IQOperableFieldInternal,
+	or,
 	RawDelete,
 	RawInsertValues,
 	UpdateProperties,
@@ -22,6 +23,7 @@ import {
 	IOperationManager,
 	ITransaction
 } from '@airport/terminal-map'
+import { IocOperationContext } from '..'
 import { OPERATION_MANAGER } from '../tokens'
 
 /**
@@ -49,35 +51,38 @@ export class OperationManager
 		context.ioc.structuralEntityValidator.validate(entityGraph, [], context)
 		const operations = context.ioc.dependencyGraphResolver
 			.getOperationsInOrder(entityGraph, context)
-		let totalNumberOfChanges = 0
 		const rootDbEntity = context.dbEntity
+		const saveResult: ISaveResult = {
+			created: {},
+			updated: {},
+			deleted: {}
+		}
 		for (const operation of operations) {
 			context.dbEntity = operation.dbEntity
 			if (operation.isCreate) {
-				totalNumberOfChanges += await this.internalCreate(
-					operation.entities, actor, transaction, context)
+				await this.internalCreate(
+					operation.entities, actor, transaction, saveResult, context)
 			} else if (operation.isDelete) {
-				// TODO: add support for multiple records
-				totalNumberOfChanges += await this.internalDelete(
-					operation.entities, actor, transaction, context)
+				await this.internalDelete(
+					operation.entities, actor, transaction, saveResult, context)
 			} else {
-				// TODO: add support for multiple records
-				totalNumberOfChanges += await this.internalUpdate(
-					operation.entities, null, actor, transaction, context)
+				await this.internalUpdate(
+					operation.entities, null, actor, transaction, saveResult, context)
 			}
 		}
 		context.dbEntity = rootDbEntity
 
-		return totalNumberOfChanges
+		return saveResult
 	}
 
 	protected async internalCreate<E>(
 		entities: E[],
 		actor: IActor,
 		transaction: ITransaction,
+		saveResult: ISaveResult,
 		context: IOperationContext,
 		ensureGeneratedValues?: boolean
-	): Promise<number> {
+	): Promise<void> {
 		const qEntity = context.ioc.airDb.qSchemas
 		[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
 
@@ -137,7 +142,6 @@ export class OperationManager
 		}
 
 		const insertValues: InsertValues<any> = new InsertValues(rawInsert)
-		let numberOfAffectedRecords = 0
 
 		if (rawInsert.values.length) {
 			const generatedColumns = context.dbEntity.columns.filter(
@@ -148,22 +152,26 @@ export class OperationManager
 				const idsAndGeneratedValues = await context.ioc.insertManager
 					.insertValuesGetIds(portableQuery, actor, transaction, context);
 				for (let i = 0; i < entities.length; i++) {
+					const entity = entities[i]
+					const entitySaveResult = {}
+					saveResult.created[
+						context.ioc.entityStateManager.getOperationUniqueId(entity)
+					] = entitySaveResult
 					for (const generatedColumn of generatedColumns) {
 						// Return index for generated column values is: DbColumn.index
-						entities[i][generatedColumn.propertyColumns[0].property.name]
-							= idsAndGeneratedValues[i][generatedColumn.index]
+						const generatedPropertyName = generatedColumn.propertyColumns[0].property.name
+						const generatedPropertyValue = idsAndGeneratedValues[i][generatedColumn.index]
+						entity[generatedPropertyName] = generatedPropertyValue
+						entitySaveResult[generatedPropertyName] = generatedPropertyValue
 					}
 				}
-				numberOfAffectedRecords = idsAndGeneratedValues.length
 			} else {
 				const portableQuery: PortableQuery = context.ioc.queryFacade
 					.getPortableQuery(insertValues, null, context)
-				numberOfAffectedRecords = await context.ioc.insertManager.insertValues(
+				await context.ioc.insertManager.insertValues(
 					portableQuery, actor, transaction, context, ensureGeneratedValues);
 			}
 		}
-
-		return numberOfAffectedRecords
 	}
 
 	/**
@@ -175,97 +183,104 @@ export class OperationManager
 	 *    Cascades do not travel across ManyToOne
 	 */
 	protected async internalUpdate<E>(
-		entity: E,
+		entities: E[],
 		originalEntity: E,
 		actor: IActor,
 		transaction: ITransaction,
+		saveResult: ISaveResult,
 		context: IOperationContext
-	): Promise<number> {
-		const qEntity =
-			context.ioc.airDb.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
+	): Promise<void> {
+		const qEntity = context.ioc.airDb.qSchemas
+		[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
 		const setFragment: any = {}
 		const idWhereFragments: JSONValueOperation[] = []
-		let numUpdates = 0
+		let runUpdate = false
 
-		for (const dbProperty of context.dbEntity.properties) {
-			const updatedValue = entity[dbProperty.name]
-			if (!dbProperty.relation || !dbProperty.relation.length) {
-				const dbColumn = dbProperty.propertyColumns[0].column
-				const originalValue = originalEntity[dbColumn.name]
-				if (dbProperty.isId) {
-					// For an id property, the value is guaranteed to be the same (and not empty) -
-					// cannot entity-update id fields
-					idWhereFragments.push((<any>qEntity)[dbProperty.name]
-						.equals(updatedValue))
-				} else if (!valuesEqual(originalValue, updatedValue)) {
-					setFragment[dbColumn.name] = updatedValue
-					numUpdates++
-				}
-			} else {
-				const dbRelation = dbProperty.relation[0]
-				switch (dbRelation.relationType) {
-					case EntityRelationType.MANY_TO_ONE:
-						context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (
-							dbColumn: DbColumn,
-							value: any,
-							propertyNameChains: string[][],
-						) => {
-							let originalValue = originalEntity[dbColumn.name]
-							if (dbProperty.isId) {
-								let idQProperty = qEntity
-								for (const propertyNameLink of propertyNameChains[0]) {
-									idQProperty = idQProperty[propertyNameLink]
+		for (const entity of entities) {
+			for (const dbProperty of context.dbEntity.properties) {
+				const updatedValue = entity[dbProperty.name]
+				if (!dbProperty.relation || !dbProperty.relation.length) {
+					const dbColumn = dbProperty.propertyColumns[0].column
+					const originalValue = originalEntity[dbColumn.name]
+					if (dbProperty.isId) {
+						// For an id property, the value is guaranteed to be the same (and not empty) -
+						// cannot entity-update id fields
+						idWhereFragments.push((<any>qEntity)[dbProperty.name]
+							.equals(updatedValue))
+					} else if (!valuesEqual(originalValue, updatedValue)) {
+						setFragment[dbColumn.name] = updatedValue
+						saveResult.updated[
+							context.ioc.entityStateManager.getOperationUniqueId(entity)
+						] = true
+						runUpdate = true
+					}
+				} else {
+					const dbRelation = dbProperty.relation[0]
+					switch (dbRelation.relationType) {
+						case EntityRelationType.MANY_TO_ONE:
+							context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (
+								dbColumn: DbColumn,
+								value: any,
+								propertyNameChains: string[][],
+							) => {
+								let originalValue = originalEntity[dbColumn.name]
+								if (dbProperty.isId) {
+									let idQProperty = qEntity
+									for (const propertyNameLink of propertyNameChains[0]) {
+										idQProperty = idQProperty[propertyNameLink]
+									}
+									// For an id property, the value is guaranteed to be the same (and not
+									// empty) - cannot entity-update id fields
+									idWhereFragments.push(idQProperty.equals(value))
+								} else if (!valuesEqual(originalValue, value)) {
+									setFragment[dbColumn.name] = value
+									saveResult.updated[
+										context.ioc.entityStateManager.getOperationUniqueId(entity)
+									] = true
+									runUpdate = true
 								}
-								// For an id property, the value is guaranteed to be the same (and not
-								// empty) - cannot entity-update id fields
-								idWhereFragments.push(idQProperty.equals(value))
-							} else if (!valuesEqual(originalValue, value)) {
-								setFragment[dbColumn.name] = value
-								numUpdates++
-							}
-						}, dbProperty.isId)
-						break
-					case EntityRelationType.ONE_TO_MANY:
-						break
-					default:
-						throw new Error(
-							`Unknown relationType '${dbRelation.relationType}' 
+							}, dbProperty.isId)
+							break
+						case EntityRelationType.ONE_TO_MANY:
+							break
+						default:
+							throw new Error(
+								`Unknown relationType '${dbRelation.relationType}' 
 						for '${context.dbEntity.name}.${dbProperty.name}'.`)
+					}
 				}
 			}
-		}
 
-		let numberOfAffectedRecords = 0
-		if (numUpdates) {
-			let whereFragment
-			if (idWhereFragments.length > 1) {
-				whereFragment = and(...idWhereFragments)
-			} else {
-				whereFragment = idWhereFragments[0]
+			if (runUpdate) {
+				let whereFragment
+				if (idWhereFragments.length > 1) {
+					whereFragment = and(...idWhereFragments)
+				} else {
+					whereFragment = idWhereFragments[0]
+				}
+				const rawUpdate = {
+					update: qEntity,
+					set: setFragment,
+					where: whereFragment
+				}
+				const update: UpdateProperties<any, any> = new UpdateProperties(rawUpdate)
+				const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
+					update, null, context)
+
+				await context.ioc.updateManager.updateValues(
+					portableQuery, actor, transaction, context);
+
 			}
-			const rawUpdate = {
-				update: qEntity,
-				set: setFragment,
-				where: whereFragment
-			}
-			const update: UpdateProperties<any, any> = new UpdateProperties(rawUpdate)
-			const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-				update, null, context)
-
-			numberOfAffectedRecords = await context.ioc.updateManager.updateValues(
-				portableQuery, actor, transaction, context);
-
 		}
-
-		return numberOfAffectedRecords
 	}
 
 	protected async internalDelete<E>(
-		entity: E,
+		entities: E[],
 		actor: IActor,
 		transaction: ITransaction,
+		saveResult: ISaveResult,
 		context: IOperationContext
-	): Promise<number> {
+	): Promise<void> {
 
 		const dbEntity = context.dbEntity
 		const qEntity =
@@ -273,71 +288,83 @@ export class OperationManager
 			[dbEntity.schemaVersion.schema.index][dbEntity.name]
 		const idWhereFragments: JSONValueOperation[] = []
 		const valuesMapByColumn: any[] = []
-		for (let propertyName in entity) {
-			if (!entity.hasOwnProperty(propertyName)) {
-				continue
-			}
-			const dbProperty = dbEntity.propertyMap[propertyName]
-			// Skip transient fields
-			if (!dbProperty) {
-				continue
-			}
-			const deletedValue = entity[propertyName]
+		let entityIdWhereClauses = []
+		for (const entity of entities) {
+			for (let propertyName in entity) {
+				if (!entity.hasOwnProperty(propertyName)) {
+					continue
+				}
+				const dbProperty = dbEntity.propertyMap[propertyName]
+				// Skip transient fields
+				if (!dbProperty) {
+					continue
+				}
+				const deletedValue = entity[propertyName]
 
-			let dbRelation
-			if (dbProperty.relation && dbProperty.relation.length) {
-				dbRelation = dbProperty.relation[0]
-			}
-			if (!dbRelation) {
-				if (dbProperty.isId) {
-					// For an id property, the value is guaranteed to be the same (and not empty) -
-					// cannot entity-update id fields
-					idWhereFragments.push((<any>qEntity)[propertyName].equals(deletedValue))
+				let dbRelation
+				if (dbProperty.relation && dbProperty.relation.length) {
+					dbRelation = dbProperty.relation[0]
 				}
-			} else {
-				switch (dbRelation.relationType) {
-					case EntityRelationType.MANY_TO_ONE:
-						context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, dbEntity, (
-							dbColumn: DbColumn,
-							value: any,
-							propertyNameChains: string[][]
-						) => {
-							if (dbProperty.isId && valuesMapByColumn[dbColumn.index] === undefined) {
-								let idQProperty = qEntity
-								for (const propertyNameLink of propertyNameChains[0]) {
-									idQProperty = idQProperty[propertyNameLink]
+				if (!dbRelation) {
+					if (dbProperty.isId) {
+						// For an id property, the value is guaranteed to be the same (and not empty) -
+						// cannot entity-update id fields
+						idWhereFragments.push((<any>qEntity)[propertyName].equals(deletedValue))
+					}
+				} else {
+					switch (dbRelation.relationType) {
+						case EntityRelationType.MANY_TO_ONE:
+							context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, dbEntity, (
+								dbColumn: DbColumn,
+								value: any,
+								propertyNameChains: string[][]
+							) => {
+								if (dbProperty.isId && valuesMapByColumn[dbColumn.index] === undefined) {
+									let idQProperty = qEntity
+									for (const propertyNameLink of propertyNameChains[0]) {
+										idQProperty = idQProperty[propertyNameLink]
+									}
+									// For an id property, the value is guaranteed to be the same (and not
+									// empty) - cannot entity-update id fields
+									idWhereFragments.push(idQProperty.equals(value))
 								}
-								// For an id property, the value is guaranteed to be the same (and not
-								// empty) - cannot entity-update id fields
-								idWhereFragments.push(idQProperty.equals(value))
-							}
-						}, false)
-						break
-					case EntityRelationType.ONE_TO_MANY:
-						break
-					default:
-						throw new Error(
-							`Unknown relationType '${dbRelation.relationType}' 
+							}, false)
+							break
+						case EntityRelationType.ONE_TO_MANY:
+							break
+						default:
+							throw new Error(
+								`Unknown relationType '${dbRelation.relationType}' 
 						for '${dbEntity.name}.${dbProperty.name}'.`)
+					}
 				}
 			}
+
+			if (idWhereFragments.length > 1) {
+				entityIdWhereClauses.push(and(...idWhereFragments))
+			} else {
+				entityIdWhereClauses.push(idWhereFragments[0])
+			}
+			saveResult.deleted[
+				context.ioc.entityStateManager.getOperationUniqueId(entity)
+			] = true
 		}
 
-		let idWhereClause
-		if (idWhereFragments.length > 1) {
-			idWhereClause = and(...idWhereFragments)
+		let where
+		if (entityIdWhereClauses.length === 1) {
+			where = entityIdWhereClauses[0]
 		} else {
-			idWhereClause = idWhereFragments[0]
+			where = or(...entityIdWhereClauses)
 		}
 
 		let rawDelete: RawDelete<any> = {
 			deleteFrom: qEntity,
-			where: idWhereClause
+			where
 		}
 		let deleteWhere: Delete<any> = new Delete(rawDelete)
 		let portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
 			deleteWhere, null, context)
-		return await context.ioc.deleteManager.deleteWhere(portableQuery, actor,
+		await context.ioc.deleteManager.deleteWhere(portableQuery, actor,
 			transaction, context)
 	}
 

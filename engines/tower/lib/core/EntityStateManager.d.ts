@@ -22,6 +22,7 @@ export declare class EntityStateManager implements IEntityStateManager {
     setIsDeleted<T>(isDeleted: boolean, entity: T): void;
     isDeleted<T>(entity: T): boolean;
     getOperationUniqueId<T>(entity: T, throwIfNotFound?: boolean, dbEntity?: DbEntity): number;
+    copyOperationUniqueId<T>(entity: T, entityCopy: T): void;
     markAsStub<T>(entity: T): void;
     getUniqueIdFieldName(): string;
 }

@@ -100,8 +100,7 @@ export abstract class SequenceGenerator
 
 	async generateSequenceNumbers(
 		dbColumns: DbColumn[],
-		numSequencesNeeded: number[],
-		context: ISequenceGeneratorContext
+		numSequencesNeeded: number[]
 	): Promise<number[][]> {
 		if (!dbColumns.length) {
 			return []

@@ -12,7 +12,7 @@ export declare class OperationManager implements IOperationManager {
      * @param entity
      */
     performSave<E>(entities: E | E[], actor: IActor, transaction: ITransaction, context: IOperationContext): Promise<ISaveResult>;
-    protected internalCreate<E>(entities: E[], actor: IActor, transaction: ITransaction, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<number>;
+    protected internalCreate<E>(entities: E[], actor: IActor, transaction: ITransaction, saveResult: ISaveResult, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<void>;
     /**
      * On an update operation, can a nested create contain an update?
      * Via:
@@ -21,7 +21,7 @@ export declare class OperationManager implements IOperationManager {
      *  ManyToOne:
      *    Cascades do not travel across ManyToOne
      */
-    protected internalUpdate<E>(entity: E, originalEntity: E, actor: IActor, transaction: ITransaction, context: IOperationContext): Promise<number>;
-    protected internalDelete<E>(entity: E, actor: IActor, transaction: ITransaction, context: IOperationContext): Promise<number>;
+    protected internalUpdate<E>(entities: E[], originalEntity: E, actor: IActor, transaction: ITransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
+    protected internalDelete<E>(entities: E[], actor: IActor, transaction: ITransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
 }
 //# sourceMappingURL=OperationManager.d.ts.map

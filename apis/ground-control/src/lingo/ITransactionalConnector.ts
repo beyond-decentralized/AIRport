@@ -7,8 +7,6 @@ import { ISaveResult } from './query/SaveResult'
 
 export interface ITransactionalConnector {
 
-	init(): Promise<void>
-
 	addRepository(
 		name: string,
 		url: string,

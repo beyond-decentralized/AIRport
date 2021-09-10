@@ -100,6 +100,10 @@ export class EntityStateManager {
         }
         return operationUniqueId;
     }
+    copyOperationUniqueId(entity, entityCopy) {
+        const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD];
+        entityCopy[EntityStateManager.OPERATION_UNIQUE_ID_FIELD] = operationUniqueId;
+    }
     markAsStub(entity) {
         entity.__state__ = EntityState.STUB;
     }

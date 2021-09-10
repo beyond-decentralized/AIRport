@@ -64,7 +64,7 @@ export abstract class PostgreSqlDriver
 		}
 	}
 
-	abstract async query(
+	abstract query(
 		queryType: QueryType,
 		query: string,
 		params,

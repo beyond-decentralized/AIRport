@@ -12,7 +12,7 @@ export interface TransactionHistoryIds {
 }
 export interface IIdGenerator {
     init(): Promise<void>;
-    generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories, context: IIdGeneratorContext): Promise<TransactionHistoryIds>;
+    generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): Promise<TransactionHistoryIds>;
 }
 export interface IIdGeneratorContext extends IContext {
     di: {
@@ -26,7 +26,9 @@ export interface IIdGeneratorContext extends IContext {
 export declare class IdGenerator implements IIdGenerator {
     private transactionHistoryIdColumns;
     init(): Promise<void>;
-    generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories, context: IIdGeneratorContext): Promise<TransactionHistoryIds>;
+    populateTransactionHistoryIdColumns(): Promise<void>;
+    doPopulateTransactionHistoryIdColumns(resolve: any): void;
+    generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): Promise<TransactionHistoryIds>;
     generateEntityIds(): Promise<void>;
     private getHoldingPatternDbEntity;
 }

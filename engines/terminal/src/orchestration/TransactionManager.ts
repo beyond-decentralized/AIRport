@@ -105,38 +105,20 @@ export class TransactionManager
 			);
 			this.transactionInProgress = credentials.domainAndPort;
 		}
-		let fieldMap = new SyncSchemaMap();
 
-		if (storeDriver.isServer()) {
-			await storeDriver.transact(async (
-				transaction: ITransaction,
-			) => {
-				transaction.transHistory = transHistoryDuo.getNewRecord();
-				transaction.credentials = credentials;
-				try {
-					await transactionalCallback(transaction);
-					await this.commit(transaction, context);
-				} catch (e) {
-					console.error(e);
-					await this.rollback(transaction, context);
-				}
-			}, context);
-		} else {
-			storeDriver.transact((
-				transaction: ITransaction,
-			) => {
-				transaction.transHistory = transHistoryDuo.getNewRecord();
-				transaction.credentials = credentials;
-				try {
-					transactionalCallback(transaction);
-					this.commit(transaction, context);
-				} catch (e) {
-					console.error(e);
-					this.rollback(transaction, context);
-				}
-			}, context);
-		}
-
+		await storeDriver.transact(async (
+			transaction: ITransaction,
+		) => {
+			transaction.transHistory = transHistoryDuo.getNewRecord();
+			transaction.credentials = credentials;
+			try {
+				await transactionalCallback(transaction);
+				await this.commit(transaction, context);
+			} catch (e) {
+				console.error(e);
+				await this.rollback(transaction, context);
+			}
+		}, context);
 	}
 
 	private async rollback(
@@ -195,6 +177,7 @@ export class TransactionManager
 			}
 			await this.saveRepositoryHistory(transaction, idGenerator, context);
 
+			// TODO: what else needs to be saved (if anything)?
 			await transaction.saveTransaction(transaction.transHistory);
 
 			activeQueries.rerunQueries();
@@ -244,7 +227,7 @@ export class TransactionManager
 		const transHistoryIds = await idGenerator.generateTransactionHistoryIds(
 			transactionHistory.repositoryTransactionHistories.length,
 			transactionHistory.allOperationHistory.length,
-			transactionHistory.allRecordHistory.length,
+			transactionHistory.allRecordHistory.length
 		);
 
 		schemaMap.ensureEntity((<IQEntityInternal<TransactionHistory>><any>Q.TransactionHistory).__driver__.dbEntity, true);

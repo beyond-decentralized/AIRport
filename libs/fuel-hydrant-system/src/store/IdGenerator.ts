@@ -37,8 +37,7 @@ export interface IIdGenerator {
 	generateTransactionHistoryIds(
 		numRepositoryTransHistories: NumRepositoryTransHistories,
 		numOperationTransHistories: NumOperationTransHistories,
-		numRecordHistories: NumRecordHistories,
-		context: IIdGeneratorContext
+		numRecordHistories: NumRecordHistories
 	): Promise<TransactionHistoryIds>;
 
 }
@@ -63,50 +62,63 @@ export class IdGenerator
 	async init(): Promise<void> {
 		(await container(this)
 			.get(SEQUENCE_GENERATOR)).initialize()
+		this.populateTransactionHistoryIdColumns().then()
+	}
 
-		const transHistoryDbEntity =
-			this.getHoldingPatternDbEntity('TransactionHistory')
-		const repoTransHistoryDbEntity =
-			this.getHoldingPatternDbEntity('RepositoryTransactionHistory')
-		const operationHistoryDbEntity =
-			this.getHoldingPatternDbEntity('OperationHistory')
-		const recordHistoryDbEntity =
-			this.getHoldingPatternDbEntity('RecordHistory')
+	populateTransactionHistoryIdColumns(): Promise<void> {
+		return new Promise((resolve, _reject) => {
+			this.doPopulateTransactionHistoryIdColumns(resolve);
+		});
+	}
 
-		this.transactionHistoryIdColumns.push(
-			transHistoryDbEntity.idColumns[0]
-		)
-		this.transactionHistoryIdColumns.push(
-			repoTransHistoryDbEntity.idColumns[0]
-		)
-		this.transactionHistoryIdColumns.push(
-			operationHistoryDbEntity.idColumns[0]
-		)
-		this.transactionHistoryIdColumns.push(
-			recordHistoryDbEntity.idColumns[0]
-		)
+	doPopulateTransactionHistoryIdColumns(resolve): void {
+		if (Q.db && Q.db.currentVersion) {
+			const transHistoryDbEntity =
+				this.getHoldingPatternDbEntity('TransactionHistory')
+			const repoTransHistoryDbEntity =
+				this.getHoldingPatternDbEntity('RepositoryTransactionHistory')
+			const operationHistoryDbEntity =
+				this.getHoldingPatternDbEntity('OperationHistory')
+			const recordHistoryDbEntity =
+				this.getHoldingPatternDbEntity('RecordHistory')
+
+			this.transactionHistoryIdColumns.push(
+				transHistoryDbEntity.idColumns[0]
+			)
+			this.transactionHistoryIdColumns.push(
+				repoTransHistoryDbEntity.idColumns[0]
+			)
+			this.transactionHistoryIdColumns.push(
+				operationHistoryDbEntity.idColumns[0]
+			)
+			this.transactionHistoryIdColumns.push(
+				recordHistoryDbEntity.idColumns[0]
+			)
+
+			resolve()
+		} else {
+			setTimeout(() => {
+				this.doPopulateTransactionHistoryIdColumns(resolve)
+			}, 100)
+		}
 	}
 
 	async generateTransactionHistoryIds(
 		numRepositoryTransHistories: NumRepositoryTransHistories,
 		numOperationTransHistories: NumOperationTransHistories,
-		numRecordHistories: NumRecordHistories,
-		context: IIdGeneratorContext
+		numRecordHistories: NumRecordHistories
 	): Promise<TransactionHistoryIds> {
 
-		const sequenceGenerator = context.di.sequenceGenerator
+		const sequenceGenerator = await container(this).get(SEQUENCE_GENERATOR)
 
-		let generatedSequenceNumbers: any = sequenceGenerator.generateSequenceNumbers(
+		let generatedSequenceNumbers: any = await sequenceGenerator.generateSequenceNumbers(
 			this.transactionHistoryIdColumns,
 			[
 				1,
 				numRepositoryTransHistories,
 				numOperationTransHistories,
 				numRecordHistories
-			], context);
-		if (context.isServer) {
-			generatedSequenceNumbers = await generatedSequenceNumbers;
-		}
+			]);
 
 		return {
 			operationHistoryIds: generatedSequenceNumbers[2],

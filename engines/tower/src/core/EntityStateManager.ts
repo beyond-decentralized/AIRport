@@ -144,41 +144,47 @@ export class EntityStateManager
 		return entity[EntityStateManager.STATE_FIELD] === EntityState.DELETE
 	}
 
+	getOperationUniqueId<T>(
+		entity: T,
+		throwIfNotFound = true,
+		dbEntity: DbEntity = null
+	): number {
+		const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD]
 
-
-getOperationUniqueId<T>(
-    entity: T,
-    throwIfNotFound = true,
-    dbEntity: DbEntity = null
-): number {
-    const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD]
-
-    if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
-        if (throwIfNotFound) {
-            let entityDescription
-            if(dbEntity) {
-                entityDescription = dbEntity.schemaVersion.schema.name + '.' + dbEntity.name
-            } else {
-                entityDescription = JSON.stringify(entity)
-            }
-            throw new Error(`Could not find "${EntityStateManager.OPERATION_UNIQUE_ID_FIELD}" property on DTO:
+		if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
+			if (throwIfNotFound) {
+				let entityDescription
+				if (dbEntity) {
+					entityDescription = dbEntity.schemaVersion.schema.name + '.' + dbEntity.name
+				} else {
+					entityDescription = JSON.stringify(entity)
+				}
+				throw new Error(`Could not find "${EntityStateManager.OPERATION_UNIQUE_ID_FIELD}" property on DTO:
         
         ${entityDescription}`)
-        }
-    }
-    return operationUniqueId
-}
+			}
+		}
+		return operationUniqueId
+	}
 
-markAsStub<T>(
-    entity: T
-): void {
-    (<EntityWithState><any>entity).__state__ = EntityState.STUB
-}
+	copyOperationUniqueId<T>(
+		entity: T,
+		entityCopy: T
+	): void {
+		const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD]
+		entityCopy[EntityStateManager.OPERATION_UNIQUE_ID_FIELD] = operationUniqueId
+	}
+
+	markAsStub<T>(
+		entity: T
+	): void {
+		(<EntityWithState><any>entity).__state__ = EntityState.STUB
+	}
 
 
-getUniqueIdFieldName(): string {
-    return EntityStateManager.OPERATION_UNIQUE_ID_FIELD
-}
+	getUniqueIdFieldName(): string {
+		return EntityStateManager.OPERATION_UNIQUE_ID_FIELD
+	}
 
 }
 

@@ -41,6 +41,11 @@ export interface IEntityStateManager {
 		dbEntity?: DbEntity
 	): number
 
+	copyOperationUniqueId<T>(
+		entity: T,
+		entityCopy: T
+	): void
+
 	markAsStub<T>(
 		entity: T
 	): void

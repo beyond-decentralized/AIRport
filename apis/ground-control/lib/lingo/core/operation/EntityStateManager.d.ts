@@ -19,6 +19,7 @@ export interface IEntityStateManager {
     isStub<T>(entity: T): boolean;
     isParentId<T>(entity: T): boolean;
     getOperationUniqueId<T>(entity: T, throwIfNotFound?: boolean, dbEntity?: DbEntity): number;
+    copyOperationUniqueId<T>(entity: T, entityCopy: T): void;
     markAsStub<T>(entity: T): void;
     markForDeletion<T>(entity: T): void;
     markToCreate<T>(entity: T): void;

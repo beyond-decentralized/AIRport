@@ -28,8 +28,7 @@ export class MySqlTransaction
 		(<IInjectable>this).__container__ = (<IInjectable>driver).__container__
 	}
 
-	saveTransaction(transaction: ITransactionHistory): Promise<any> {
-		throw new Error('Method not implemented.')
+	async saveTransaction(transaction: ITransactionHistory): Promise<void> {
 	}
 
 	async commit(): Promise<void> {

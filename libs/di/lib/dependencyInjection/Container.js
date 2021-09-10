@@ -57,6 +57,7 @@ export class ChildContainer extends Container {
             setTimeout(() => {
                 this.doGet(tokens, successCallback, errorCallback);
             }, 100);
+            return;
         }
         if (firstMissingClassToken) {
             const message = 'Dependency Injection could not find class for token: '

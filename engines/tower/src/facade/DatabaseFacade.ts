@@ -9,6 +9,8 @@ import {
 	InsertColumnValues,
 	InsertValues,
 	IQEntity,
+	IQueryContext,
+	QUERY_CONTEXT_LOADER,
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
@@ -70,9 +72,9 @@ export class DatabaseFacade
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
 		const insertColumnValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
-
-		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			insertColumnValues, null, context)
+		const queryContext = await this.ensureQueryContext(context)
+		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+			insertColumnValues, null, queryContext)
 
 		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
 		return await transactionalConnector.insertValues(portableQuery, context)
@@ -89,9 +91,9 @@ export class DatabaseFacade
 			rawInsertValues = rawInsertValues()
 		}
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
-
-		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			insertValues, null, context)
+		const queryContext = await this.ensureQueryContext(context)
+		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+			insertValues, null, queryContext)
 
 		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
 		return await transactionalConnector.insertValues(portableQuery, context)
@@ -110,9 +112,9 @@ export class DatabaseFacade
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
 		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
-
-		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			insertValues, null, context)
+		const queryContext = await this.ensureQueryContext(context)
+		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+			insertValues, null, queryContext)
 
 		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
 		return await transactionalConnector.insertValuesGetIds(portableQuery, context)
@@ -131,9 +133,9 @@ export class DatabaseFacade
 			rawInsertValues = rawInsertValues()
 		}
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
-
-		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			insertValues, null, context)
+		const queryContext = await this.ensureQueryContext(context)
+		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+			insertValues, null, queryContext)
 
 		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
 		return await transactionalConnector.insertValuesGetIds(portableQuery, context)
@@ -152,9 +154,9 @@ export class DatabaseFacade
 			rawDelete = rawDelete()
 		}
 		let deleteWhere: Delete<IQE> = new Delete(rawDelete)
-
-		let portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			deleteWhere, null, context)
+		const queryContext = await this.ensureQueryContext(context)
+		let portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+			deleteWhere, null, queryContext)
 
 		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
 		return await transactionalConnector.deleteWhere(portableQuery, context)
@@ -203,11 +205,11 @@ export class DatabaseFacade
 		if (rawUpdate instanceof Function) {
 			rawUpdate = rawUpdate()
 		}
-
+		
 		let updateColumns: UpdateColumns<any, IQE> = new UpdateColumns(rawUpdate)
-
-		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			updateColumns, null, context)
+		const queryContext = await this.ensureQueryContext(context)
+		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+			updateColumns, null, queryContext)
 
 		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
 		return await transactionalConnector.updateValues(portableQuery, context)
@@ -227,8 +229,9 @@ export class DatabaseFacade
 			rawUpdate = rawUpdate()
 		}
 		let update: UpdateProperties<any, IQE> = new UpdateProperties(rawUpdate)
-		const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
-			update, null, context)
+		const queryContext = await this.ensureQueryContext(context)
+		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+			update, null, queryContext)
 
 		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
 		return await transactionalConnector.updateValues(portableQuery, context)
@@ -238,6 +241,16 @@ export class DatabaseFacade
 		queryFunction: QF
 	): IFunctionWrapper<QF> {
 		return <IFunctionWrapper<QF>><any>new FunctionWrapper<QF>(queryFunction)
+	}
+
+	private async ensureQueryContext<E>(
+		context: IContext
+	): Promise<IQueryContext<E>> {
+		const queryContext: IQueryContext<E> = context as IQueryContext<E>
+		const queryContextLoader = await container(this).get(QUERY_CONTEXT_LOADER)
+		await queryContextLoader.ensure(queryContext);
+
+		return queryContext
 	}
 
 }

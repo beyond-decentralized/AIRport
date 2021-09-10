@@ -16,7 +16,7 @@ export declare class WebSqlDriver extends SqLiteDriver {
     static BACKUP_LOCAL: number;
     static BACKUP_LIBRARY: number;
     static BACKUP_DOCUMENTS: number;
-    private _db;
+    _db: any;
     constructor();
     private getBackupLocation;
     initialize(dbName: string, context: IOperationContext): Promise<any>;

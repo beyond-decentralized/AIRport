@@ -1,4 +1,4 @@
-import { DATABASE_FACADE, Delete, InsertColumnValues, InsertValues, UpdateColumns, UpdateProperties, } from '@airport/air-control';
+import { DATABASE_FACADE, Delete, InsertColumnValues, InsertValues, QUERY_CONTEXT_LOADER, UpdateColumns, UpdateProperties, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
@@ -20,7 +20,8 @@ export class DatabaseFacade {
             rawInsertColumnValues = rawInsertColumnValues();
         }
         const insertColumnValues = new InsertColumnValues(rawInsertColumnValues);
-        const portableQuery = context.ioc.queryFacade.getPortableQuery(insertColumnValues, null, context);
+        const queryContext = await this.ensureQueryContext(context);
+        const portableQuery = queryContext.ioc.queryFacade.getPortableQuery(insertColumnValues, null, queryContext);
         const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
         return await transactionalConnector.insertValues(portableQuery, context);
     }
@@ -32,7 +33,8 @@ export class DatabaseFacade {
             rawInsertValues = rawInsertValues();
         }
         const insertValues = new InsertValues(rawInsertValues);
-        const portableQuery = context.ioc.queryFacade.getPortableQuery(insertValues, null, context);
+        const queryContext = await this.ensureQueryContext(context);
+        const portableQuery = queryContext.ioc.queryFacade.getPortableQuery(insertValues, null, queryContext);
         const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
         return await transactionalConnector.insertValues(portableQuery, context);
     }
@@ -44,7 +46,8 @@ export class DatabaseFacade {
             rawInsertColumnValues = rawInsertColumnValues();
         }
         const insertValues = new InsertColumnValues(rawInsertColumnValues);
-        const portableQuery = context.ioc.queryFacade.getPortableQuery(insertValues, null, context);
+        const queryContext = await this.ensureQueryContext(context);
+        const portableQuery = queryContext.ioc.queryFacade.getPortableQuery(insertValues, null, queryContext);
         const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
         return await transactionalConnector.insertValuesGetIds(portableQuery, context);
     }
@@ -56,7 +59,8 @@ export class DatabaseFacade {
             rawInsertValues = rawInsertValues();
         }
         const insertValues = new InsertValues(rawInsertValues);
-        const portableQuery = context.ioc.queryFacade.getPortableQuery(insertValues, null, context);
+        const queryContext = await this.ensureQueryContext(context);
+        const portableQuery = queryContext.ioc.queryFacade.getPortableQuery(insertValues, null, queryContext);
         const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
         return await transactionalConnector.insertValuesGetIds(portableQuery, context);
     }
@@ -68,7 +72,8 @@ export class DatabaseFacade {
             rawDelete = rawDelete();
         }
         let deleteWhere = new Delete(rawDelete);
-        let portableQuery = context.ioc.queryFacade.getPortableQuery(deleteWhere, null, context);
+        const queryContext = await this.ensureQueryContext(context);
+        let portableQuery = queryContext.ioc.queryFacade.getPortableQuery(deleteWhere, null, queryContext);
         const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
         return await transactionalConnector.deleteWhere(portableQuery, context);
     }
@@ -99,7 +104,8 @@ export class DatabaseFacade {
             rawUpdate = rawUpdate();
         }
         let updateColumns = new UpdateColumns(rawUpdate);
-        const portableQuery = context.ioc.queryFacade.getPortableQuery(updateColumns, null, context);
+        const queryContext = await this.ensureQueryContext(context);
+        const portableQuery = queryContext.ioc.queryFacade.getPortableQuery(updateColumns, null, queryContext);
         const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
         return await transactionalConnector.updateValues(portableQuery, context);
     }
@@ -111,12 +117,19 @@ export class DatabaseFacade {
             rawUpdate = rawUpdate();
         }
         let update = new UpdateProperties(rawUpdate);
-        const portableQuery = context.ioc.queryFacade.getPortableQuery(update, null, context);
+        const queryContext = await this.ensureQueryContext(context);
+        const portableQuery = queryContext.ioc.queryFacade.getPortableQuery(update, null, queryContext);
         const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
         return await transactionalConnector.updateValues(portableQuery, context);
     }
     prepare(queryFunction) {
         return new FunctionWrapper(queryFunction);
+    }
+    async ensureQueryContext(context) {
+        const queryContext = context;
+        const queryContextLoader = await container(this).get(QUERY_CONTEXT_LOADER);
+        await queryContextLoader.ensure(queryContext);
+        return queryContext;
     }
 }
 DI.set(DATABASE_FACADE, DatabaseFacade);

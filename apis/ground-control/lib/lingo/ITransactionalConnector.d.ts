@@ -5,7 +5,6 @@ import { PlatformType } from './data/PatformType';
 import { PortableQuery } from './query/PortableQuery';
 import { ISaveResult } from './query/SaveResult';
 export interface ITransactionalConnector {
-    init(): Promise<void>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context?: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context?: IContext, cachedSqlQueryId?: number): Promise<E>;

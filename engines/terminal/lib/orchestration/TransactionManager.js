@@ -1,6 +1,6 @@
 import { container, DI } from '@airport/di';
 import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system';
-import { STORE_DRIVER, SyncSchemaMap } from '@airport/ground-control';
+import { STORE_DRIVER } from '@airport/ground-control';
 import { Q, TRANS_HISTORY_DUO, } from '@airport/holding-pattern';
 import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
@@ -46,35 +46,18 @@ export class TransactionManager extends AbstractMutationManager {
             this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== credentials.domainAndPort);
             this.transactionInProgress = credentials.domainAndPort;
         }
-        let fieldMap = new SyncSchemaMap();
-        if (storeDriver.isServer()) {
-            await storeDriver.transact(async (transaction) => {
-                transaction.transHistory = transHistoryDuo.getNewRecord();
-                transaction.credentials = credentials;
-                try {
-                    await transactionalCallback(transaction);
-                    await this.commit(transaction, context);
-                }
-                catch (e) {
-                    console.error(e);
-                    await this.rollback(transaction, context);
-                }
-            }, context);
-        }
-        else {
-            storeDriver.transact((transaction) => {
-                transaction.transHistory = transHistoryDuo.getNewRecord();
-                transaction.credentials = credentials;
-                try {
-                    transactionalCallback(transaction);
-                    this.commit(transaction, context);
-                }
-                catch (e) {
-                    console.error(e);
-                    this.rollback(transaction, context);
-                }
-            }, context);
-        }
+        await storeDriver.transact(async (transaction) => {
+            transaction.transHistory = transHistoryDuo.getNewRecord();
+            transaction.credentials = credentials;
+            try {
+                await transactionalCallback(transaction);
+                await this.commit(transaction, context);
+            }
+            catch (e) {
+                console.error(e);
+                await this.rollback(transaction, context);
+            }
+        }, context);
     }
     async rollback(transaction, context) {
         const storeDriver = await container(this)

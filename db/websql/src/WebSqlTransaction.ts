@@ -18,10 +18,10 @@ export class WebSqlTransaction
 	) {
 		super();
 		(<IInjectable>this).__container__ = (<IInjectable>driver).__container__
+		this._db = driver._db
 	}
 
-	saveTransaction(transaction: ITransactionHistory): Promise<any> {
-		throw new Error('Method not implemented.')
+	async saveTransaction(transaction: ITransactionHistory): Promise<any> {
 	}
 
 	async commit(): Promise<void> {

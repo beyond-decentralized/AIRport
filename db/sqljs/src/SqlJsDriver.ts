@@ -85,6 +85,7 @@ export class SqlJsDriver
 		queryType: QueryType,
 		query: string,
 		params                   = [],
+		context: IOperationContext,
 		saveTransaction: boolean = false
 	): Promise<any> {
 		return new Promise<any>((

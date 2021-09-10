@@ -37,7 +37,7 @@ export class SequenceGenerator {
         this.addSequences(sequences);
         setSeqGen(this);
     }
-    async generateSequenceNumbers(dbColumns, numSequencesNeeded, context) {
+    async generateSequenceNumbers(dbColumns, numSequencesNeeded) {
         if (!dbColumns.length) {
             return [];
         }

@@ -4,9 +4,9 @@ export class WebSqlTransaction extends WebSqlDriver {
         super();
         this.driver = driver;
         this.__container__ = driver.__container__;
+        this._db = driver._db;
     }
-    saveTransaction(transaction) {
-        throw new Error('Method not implemented.');
+    async saveTransaction(transaction) {
     }
     async commit() {
         this.driver.commit();

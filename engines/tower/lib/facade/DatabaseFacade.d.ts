@@ -37,6 +37,7 @@ export declare class DatabaseFacade implements IDatabaseFacade {
         (...args: any[]): RawUpdate<IEUP, IQE>;
     }, context: IContext): Promise<number>;
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;
+    private ensureQueryContext;
 }
 export declare class FunctionWrapper<QF extends Function> implements IFunctionWrapper<any> {
     constructor(queryFunction: QF);

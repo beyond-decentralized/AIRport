@@ -20,12 +20,6 @@ export class TransactionalConnector
     dbName: string;
     serverUrl: string;
 
-    async init(): Promise<void> {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-
-        await transServer.init();
-    }
-
     async addRepository(
         name: string,
         url: string,
