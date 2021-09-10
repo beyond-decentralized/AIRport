@@ -130,4 +130,7 @@ export class SequenceGenerator {
     }
 }
 DI.set(SEQUENCE_GENERATOR, SequenceGenerator);
+export function injectSequenceGenerator() {
+    console.log('injecting SequenceGenerator');
+}
 //# sourceMappingURL=SequenceGenerator.js.map

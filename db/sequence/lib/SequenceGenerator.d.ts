@@ -38,4 +38,5 @@ export declare class SequenceGenerator implements ISequenceGenerator {
     private isDoneGeneratingSeqNums;
     private addSequences;
 }
+export declare function injectSequenceGenerator(): void;
 //# sourceMappingURL=SequenceGenerator.d.ts.map

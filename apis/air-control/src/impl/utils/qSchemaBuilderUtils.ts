@@ -64,15 +64,15 @@ export function getColumnQField(
 	column: DbColumn
 ): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField {
 	switch (column.type) {
-		// case SQLDataType.ANY:
-		// 	return new QUntypedField(column, property, q)
+		case SQLDataType.ANY:
+			return new QUntypedField(column, property, q)
 		case SQLDataType.BOOLEAN:
 			return new QBooleanField(column, property, q)
 		case SQLDataType.DATE:
 			return new QDateField(column, property, q)
 		case SQLDataType.NUMBER:
 			return new QNumberField(column, property, q)
-		// case SQLDataType.JSON:
+		case SQLDataType.JSON:
 		case SQLDataType.STRING:
 			return new QStringField(column, property, q)
 		default:

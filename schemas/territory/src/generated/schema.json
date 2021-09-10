@@ -6,6 +6,9 @@
 	"sinceVersion": 1,
 	"versions": [
 		{
+			"api": {
+				"apiObjectMap": {}
+			},
 			"entities": [
 				{
 					"columns": [
@@ -21,7 +24,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						},
 						{
 							"index": 1,
@@ -35,7 +38,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": 4
 						}
 					],
 					"idColumnRefs": [
@@ -112,7 +115,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						},
 						{
 							"index": 1,
@@ -135,7 +138,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						},
 						{
 							"index": 2,
@@ -158,7 +161,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						}
 					],
 					"idColumnRefs": [
@@ -242,7 +245,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						},
 						{
 							"index": 1,
@@ -256,7 +259,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": 4
 						}
 					],
 					"idColumnRefs": [
@@ -333,7 +336,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						},
 						{
 							"index": 1,
@@ -347,7 +350,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": 4
 						},
 						{
 							"index": 2,
@@ -370,7 +373,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						}
 					],
 					"idColumnRefs": [
@@ -466,7 +469,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						},
 						{
 							"index": 1,
@@ -480,7 +483,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": 4
 						},
 						{
 							"index": 2,
@@ -502,7 +505,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						}
 					],
 					"idColumnRefs": [

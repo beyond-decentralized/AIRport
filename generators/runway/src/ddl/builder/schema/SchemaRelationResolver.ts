@@ -266,14 +266,14 @@ export class SchemaRelationResolver {
 		sqlDataType: SQLDataType
 	): 'any' | 'boolean' | 'Date' | 'number' | 'string' | 'Json' {
 		switch (sqlDataType) {
-			// case SQLDataType.ANY:
-			// 	return 'any'
+			case SQLDataType.ANY:
+				return 'any'
 			case SQLDataType.BOOLEAN:
 				return 'boolean'
 			case SQLDataType.DATE:
 				return 'Date'
-			// case SQLDataType.JSON:
-			// 	return 'Json'
+			case SQLDataType.JSON:
+				return 'Json'
 			case SQLDataType.NUMBER:
 				return 'number'
 			case SQLDataType.STRING:

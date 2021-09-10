@@ -25,7 +25,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": 3
 						},
 						{
 							"index": 1,
@@ -39,7 +39,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": 3
 						},
 						{
 							"index": 2,
@@ -53,7 +53,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": 3
 						}
 					],
 					"idColumnRefs": [
@@ -136,7 +136,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": 3
 						},
 						{
 							"index": 1,
@@ -150,7 +150,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 1
+							"type": 2
 						},
 						{
 							"index": 2,
@@ -164,7 +164,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": 3
 						},
 						{
 							"index": 3,
@@ -178,7 +178,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 0
+							"type": 1
 						}
 					],
 					"idColumnRefs": [

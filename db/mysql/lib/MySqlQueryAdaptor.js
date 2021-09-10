@@ -31,14 +31,15 @@ export class MySqlQueryAdaptor {
                     return new Date(value);
                 }
                 break;
+            case SQLDataType.ANY:
             case SQLDataType.NUMBER:
             case SQLDataType.STRING:
                 return value;
-            // case SQLDataType.JSON:
-            // 	if (value !== null) {
-            // 		return JSON.parse(value);
-            // 	}
-            // 	break;
+            case SQLDataType.JSON:
+                if (value !== null) {
+                    return JSON.parse(value);
+                }
+                break;
             default:
                 throw new Error(`Unexpected data type for column ${columnName}`);
         }

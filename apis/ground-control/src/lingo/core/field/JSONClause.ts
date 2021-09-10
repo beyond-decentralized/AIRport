@@ -18,11 +18,11 @@ export enum JSONClauseObjectType {
  */
 export enum SQLDataType {
 	// Allowing ANY allows developers to de-type their data
-	// ANY,
+	ANY,
 	BOOLEAN,
 	DATE,
 	// Allowing JSON allows developers to de-normalize their data
-	// JSON,
+	JSON,
 	NUMBER,
 	STRING,
 }
@@ -31,14 +31,14 @@ export function getSqlDataType(
 	type: string
 ): SQLDataType {
 	switch (type) {
-		// case 'any':
-		// 	return SQLDataType.ANY
+		case 'any':
+			return SQLDataType.ANY
 		case 'boolean':
 			return SQLDataType.BOOLEAN
 		case 'Date':
 			return SQLDataType.DATE
-		// case 'Json':
-		// 	return SQLDataType.JSON
+		case 'Json':
+			return SQLDataType.JSON
 		case 'number':
 			return SQLDataType.NUMBER
 		case 'string':

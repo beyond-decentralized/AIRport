@@ -154,14 +154,14 @@ ${fieldsets.join('\n')}
 		document: IVespaDocument
 	): string {
 		switch (field.dbColumn.type) {
-			// case SQLDataType.ANY:
-			// 	return 'string';
+			case SQLDataType.ANY:
+				return 'string';
 			case SQLDataType.BOOLEAN:
 				return 'bool';
 			case SQLDataType.DATE:
 				return 'string';
-			// case SQLDataType.JSON:
-			// 	return 'string';
+			case SQLDataType.JSON:
+				return 'string';
 			case SQLDataType.NUMBER: {
 				if (!field.dbColumn.precision) {
 					return 'double';

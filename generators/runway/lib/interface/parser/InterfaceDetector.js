@@ -4,6 +4,17 @@ import { projectInterfaces } from '../InterfaceRegistry';
 export const currentSchemaApi = {
     apiObjectMap: {}
 };
+/**
+ * Detecting interfaces is not really needed as long as interfaces
+ * are generated for the API classes.  The interfaces themselves
+ * may have class references but those should not make it into the
+ * bundle.  The only executable code in the bundle should be
+ * the "lib('nameOfLibrary')" and its token definitions.
+ *
+ * @param node
+ * @param path
+ * @returns
+ */
 export function visitInterfaceCandidateFile(node, path) {
     if (node.kind !== tsc.SyntaxKind.InterfaceDeclaration) {
         return;

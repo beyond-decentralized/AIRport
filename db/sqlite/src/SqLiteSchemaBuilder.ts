@@ -56,14 +56,14 @@ export class SqLiteSchemaBuilder
     const suffix = primaryKeySuffix; // + autoincrementSuffix
 
     switch (jsonColumn.type) {
-      // case SQLDataType.ANY:
-      //   return suffix
+      case SQLDataType.ANY:
+        return suffix
       case SQLDataType.BOOLEAN:
         return `INTEGER ${suffix}`
       case SQLDataType.DATE:
         return `REAL ${suffix}`
-      // case SQLDataType.JSON:
-      //   return `TEXT ${suffix}`;
+      case SQLDataType.JSON:
+        return `TEXT ${suffix}`;
       case SQLDataType.NUMBER:
         if (suffix) {
           return `INTEGER ${suffix}`

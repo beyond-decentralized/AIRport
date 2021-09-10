@@ -7,6 +7,9 @@ export const SCHEMA = {
 	"sinceVersion": 1,
 	"versions": [
 		{
+			"api": {
+				"apiObjectMap": {}
+			},
 			"entities": [
 				{
 					"columns": [
@@ -22,7 +25,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						},
 						{
 							"index": 1,
@@ -36,7 +39,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": 4
 						}
 					],
 					"idColumnRefs": [
@@ -113,7 +116,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						},
 						{
 							"index": 1,
@@ -136,7 +139,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						},
 						{
 							"index": 2,
@@ -159,7 +162,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						}
 					],
 					"idColumnRefs": [
@@ -243,7 +246,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						},
 						{
 							"index": 1,
@@ -257,7 +260,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": 4
 						}
 					],
 					"idColumnRefs": [
@@ -334,7 +337,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						},
 						{
 							"index": 1,
@@ -348,7 +351,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": 4
 						},
 						{
 							"index": 2,
@@ -371,7 +374,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						}
 					],
 					"idColumnRefs": [
@@ -467,7 +470,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						},
 						{
 							"index": 1,
@@ -481,7 +484,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": 4
 						},
 						{
 							"index": 2,
@@ -503,7 +506,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": 3
 						}
 					],
 					"idColumnRefs": [

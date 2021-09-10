@@ -59,19 +59,20 @@ export class QueryResultsSerializer {
             }
             else {
                 switch (dbProperty.propertyColumns[0].column.type) {
-                    // case SQLDataType.JSON:
-                    // 	if (property instanceof Array) {
-                    // 		propertyCopy = {
-                    // 			value: property
-                    // 		}
-                    // 		propertyCopy[entityStateManager.getStateFieldName()]
-                    // 			= EntityState.RESULT_JSON_ARRAY
-                    // 	} else {
-                    // 		propertyCopy = property
-                    // 		propertyCopy[entityStateManager.getStateFieldName()]
-                    // 			= EntityState.RESULT_JSON
-                    // 	}
-                    // 	break;
+                    case SQLDataType.JSON:
+                        // 	if (property instanceof Array) {
+                        // 		propertyCopy = {
+                        // 			value: property
+                        // 		}
+                        // 		propertyCopy[entityStateManager.getStateFieldName()]
+                        // 			= EntityState.RESULT_JSON_ARRAY
+                        // 	} else {
+                        // 		propertyCopy = property
+                        // 		propertyCopy[entityStateManager.getStateFieldName()]
+                        // 			= EntityState.RESULT_JSON
+                        // 	}
+                        throw new Error(`@Json() properties cannot be serialized.`);
+                        break;
                     case SQLDataType.DATE:
                         propertyCopy = {
                             value: property.toISOString()
@@ -79,7 +80,7 @@ export class QueryResultsSerializer {
                         propertyCopy[entityStateManager.getStateFieldName()]
                             = EntityState.DATE;
                         break;
-                    // case SQLDataType.ANY:
+                    case SQLDataType.ANY:
                     case SQLDataType.BOOLEAN:
                     case SQLDataType.NUMBER:
                     case SQLDataType.STRING:

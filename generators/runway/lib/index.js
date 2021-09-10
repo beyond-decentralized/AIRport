@@ -46,4 +46,5 @@ function isTsFile(fileName) {
 watchFiles(configuration, {
     module: 6 // tsc.ModuleKind.ES2020,
 }, sourceFilePaths).then();
+console.log('done');
 //# sourceMappingURL=index.js.map

@@ -82,10 +82,10 @@ export class UpdateCacheManager
                             originalValue = (originalValue as Date).getTime()
                             propertyValue = (property as Date).getTime()
                             break;
-                        // case SQLDataType.JSON:
-                        //     originalValue = JSON.stringify(originalValue)
-                        //     propertyValue = JSON.stringify(property)
-                        //     break;
+                        case SQLDataType.JSON:
+                            originalValue = JSON.stringify(originalValue)
+                            propertyValue = JSON.stringify(property)
+                            break;
                         default:
                             break;
                     }

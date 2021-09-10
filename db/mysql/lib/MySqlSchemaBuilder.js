@@ -24,16 +24,16 @@ export class MySqlSchemaBuilder extends SqlSchemaBuilder {
         // }
         const suffix = primaryKeySuffix; // + autoincrementSuffix
         switch (jsonColumn.type) {
-            // case SQLDataType.ANY:
-            // 	// FIXME: revisit this, if keeping json need to add logic around retrieval
-            // 	// and storage of this value (like store as { value: X} and pull out the .value
-            // 	return `JSON ${suffix}`
+            case SQLDataType.ANY:
+                // FIXME: revisit this, if keeping json need to add logic around retrieval
+                // and storage of this value (like store as { value: X} and pull out the .value
+                return `JSON ${suffix}`;
             case SQLDataType.BOOLEAN:
                 return `INTEGER ${suffix}`;
             case SQLDataType.DATE:
                 return `REAL ${suffix}`;
-            // case SQLDataType.JSON:
-            // 	return `TEXT ${suffix}`
+            case SQLDataType.JSON:
+                return `TEXT ${suffix}`;
             case SQLDataType.NUMBER:
                 if (suffix) {
                     return `INTEGER ${suffix}`;

@@ -63,11 +63,12 @@ export abstract class SqLiteQueryAdaptor
 					return new Date(value)
 				}
 				break;
-			// case SQLDataType.JSON:
-			// 	if (value !== null) {
-			// 		return JSON.parse(value);
-			// 	}
-			// 	break;
+			case SQLDataType.JSON:
+				if (value !== null) {
+					return JSON.parse(value);
+				}
+				break;
+			case SQLDataType.ANY:
 			case SQLDataType.NUMBER:
 			case SQLDataType.STRING:
 				return value

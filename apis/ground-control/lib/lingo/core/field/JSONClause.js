@@ -16,24 +16,24 @@ export var JSONClauseObjectType;
 export var SQLDataType;
 (function (SQLDataType) {
     // Allowing ANY allows developers to de-type their data
-    // ANY,
-    SQLDataType[SQLDataType["BOOLEAN"] = 0] = "BOOLEAN";
-    SQLDataType[SQLDataType["DATE"] = 1] = "DATE";
+    SQLDataType[SQLDataType["ANY"] = 0] = "ANY";
+    SQLDataType[SQLDataType["BOOLEAN"] = 1] = "BOOLEAN";
+    SQLDataType[SQLDataType["DATE"] = 2] = "DATE";
     // Allowing JSON allows developers to de-normalize their data
-    // JSON,
-    SQLDataType[SQLDataType["NUMBER"] = 2] = "NUMBER";
-    SQLDataType[SQLDataType["STRING"] = 3] = "STRING";
+    SQLDataType[SQLDataType["JSON"] = 3] = "JSON";
+    SQLDataType[SQLDataType["NUMBER"] = 4] = "NUMBER";
+    SQLDataType[SQLDataType["STRING"] = 5] = "STRING";
 })(SQLDataType || (SQLDataType = {}));
 export function getSqlDataType(type) {
     switch (type) {
-        // case 'any':
-        // 	return SQLDataType.ANY
+        case 'any':
+            return SQLDataType.ANY;
         case 'boolean':
             return SQLDataType.BOOLEAN;
         case 'Date':
             return SQLDataType.DATE;
-        // case 'Json':
-        // 	return SQLDataType.JSON
+        case 'Json':
+            return SQLDataType.JSON;
         case 'number':
             return SQLDataType.NUMBER;
         case 'string':

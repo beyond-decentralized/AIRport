@@ -6,6 +6,7 @@ import { QBooleanField } from '../core/field/BooleanField';
 import { QDateField } from '../core/field/DateField';
 import { QNumberField } from '../core/field/NumberField';
 import { QStringField } from '../core/field/StringField';
+import { QUntypedField } from '../core/field/UntypedField';
 /**
  * From:
  * http://js-bits.blogspot.com/2010/08/javascript-inheritance-done-right.html
@@ -25,15 +26,15 @@ export function extend(base, sub, methods) {
 }
 export function getColumnQField(entity, property, q, column) {
     switch (column.type) {
-        // case SQLDataType.ANY:
-        // 	return new QUntypedField(column, property, q)
+        case SQLDataType.ANY:
+            return new QUntypedField(column, property, q);
         case SQLDataType.BOOLEAN:
             return new QBooleanField(column, property, q);
         case SQLDataType.DATE:
             return new QDateField(column, property, q);
         case SQLDataType.NUMBER:
             return new QNumberField(column, property, q);
-        // case SQLDataType.JSON:
+        case SQLDataType.JSON:
         case SQLDataType.STRING:
             return new QStringField(column, property, q);
         default:
