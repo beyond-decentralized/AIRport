@@ -91,6 +91,7 @@ export class OperationDeserializer {
                             throw new Error(`Invalid Serialized Date format for ${dbEntity.name}.${dbProperty.name}`);
                         }
                         break;
+                    case SQLDataType.ANY:
                     case SQLDataType.BOOLEAN:
                     case SQLDataType.NUMBER:
                     case SQLDataType.STRING:

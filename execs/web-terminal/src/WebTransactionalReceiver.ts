@@ -25,7 +25,10 @@ import {
 	injectTransactionalConnector,
 	injectTransactionalServer
 } from '@airport/terminal'
-import { injectAirportDatabase } from '@airport/tower'
+import { 
+	injectAirportDatabase,
+	injectEntityStateManager
+} from '@airport/tower'
 
 let _mainDomain = 'localhost:31717'
 
@@ -270,4 +273,5 @@ export function injectTransactionalReceiver(): void {
 	injectTransactionalConnector()
 	injectAirportDatabase()
 	injectTransactionalServer()
+	injectEntityStateManager()
 }

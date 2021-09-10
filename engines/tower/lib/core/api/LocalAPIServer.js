@@ -31,4 +31,4 @@ export class LocalAPIServer {
     }
 }
 DI.set(LOCAL_API_SERVER, LocalAPIServer);
-//# sourceMappingURL=LocalAPIServer.js.map
+//# sourceMappingURL=LocalApiServer.js.map

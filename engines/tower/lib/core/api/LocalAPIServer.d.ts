@@ -5,4 +5,4 @@ export interface ILocalAPIServer {
 export declare class LocalAPIServer implements ILocalAPIServer {
     handleRequest(request: ILocalAPIRequest): Promise<ILocalAPIResponse>;
 }
-//# sourceMappingURL=LocalAPIServer.d.ts.map
+//# sourceMappingURL=LocalApiServer.d.ts.map

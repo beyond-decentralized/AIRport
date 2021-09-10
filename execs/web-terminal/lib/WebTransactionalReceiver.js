@@ -4,7 +4,7 @@ import { TransactionalReceiver } from '@airport/terminal';
 import { TRANSACTIONAL_RECEIVER } from '@airport/terminal-map';
 import { map } from 'rxjs/operators';
 import { injectTransactionalConnector, injectTransactionalServer } from '@airport/terminal';
-import { injectAirportDatabase } from '@airport/tower';
+import { injectAirportDatabase, injectEntityStateManager } from '@airport/tower';
 let _mainDomain = 'localhost:31717';
 export class WebTransactionalReceiver extends TransactionalReceiver {
     constructor() {
@@ -196,5 +196,6 @@ export function injectTransactionalReceiver() {
     injectTransactionalConnector();
     injectAirportDatabase();
     injectTransactionalServer();
+    injectEntityStateManager();
 }
 //# sourceMappingURL=WebTransactionalReceiver.js.map

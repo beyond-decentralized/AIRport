@@ -112,4 +112,7 @@ EntityStateManager.ORIGINAL_VALUES_PROPERTY = '__originalValues__';
 EntityStateManager.STATE_FIELD = '__state__';
 EntityStateManager.OPERATION_UNIQUE_ID_FIELD = '__OUID__';
 DI.set(ENTITY_STATE_MANAGER, EntityStateManager);
+export function injectEntityStateManager() {
+    console.log('inject EntityStateManager');
+}
 //# sourceMappingURL=EntityStateManager.js.map

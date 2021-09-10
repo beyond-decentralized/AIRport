@@ -25,4 +25,5 @@ export declare class EntityStateManager implements IEntityStateManager {
     markAsStub<T>(entity: T): void;
     getUniqueIdFieldName(): string;
 }
+export declare function injectEntityStateManager(): void;
 //# sourceMappingURL=EntityStateManager.d.ts.map

@@ -183,3 +183,7 @@ getUniqueIdFieldName(): string {
 }
 
 DI.set(ENTITY_STATE_MANAGER, EntityStateManager)
+
+export function injectEntityStateManager() {
+	console.log('inject EntityStateManager')
+}
