@@ -96,6 +96,7 @@ export class TransactionalServer {
                 return 0;
             }
         }
+        await this.ensureIocContext(context);
         const actor = await this.getActor(credentials);
         let numInsertedRecords;
         await transactional(async (transaction) => {
@@ -104,6 +105,7 @@ export class TransactionalServer {
         return numInsertedRecords;
     }
     async insertValuesGetIds(portableQuery, credentials, context) {
+        await this.ensureIocContext(context);
         const actor = await this.getActor(credentials);
         let numInsertedRecords;
         await transactional(async (transaction) => {
@@ -112,6 +114,7 @@ export class TransactionalServer {
         return numInsertedRecords;
     }
     async updateValues(portableQuery, credentials, context) {
+        await this.ensureIocContext(context);
         const actor = await this.getActor(credentials);
         let numUpdatedRecords;
         await transactional(async (transaction) => {
@@ -120,6 +123,7 @@ export class TransactionalServer {
         return numUpdatedRecords;
     }
     async deleteWhere(portableQuery, credentials, context) {
+        await this.ensureIocContext(context);
         const actor = await this.getActor(credentials);
         let numDeletedRecords;
         await transactional(async (transaction) => {

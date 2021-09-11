@@ -42,7 +42,7 @@ export class TransactionManager extends AbstractMutationManager {
         while (!this.canRunTransaction(credentials.domainAndPort, storeDriver, context)) {
             await this.wait(this.yieldToRunningTransaction);
         }
-        if (!storeDriver.isServer(context)) {
+        if (!isServer) {
             this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== credentials.domainAndPort);
             this.transactionInProgress = credentials.domainAndPort;
         }
@@ -77,12 +77,7 @@ export class TransactionManager extends AbstractMutationManager {
             return;
         }
         try {
-            if (storeDriver.isServer()) {
-                await transaction.rollback();
-            }
-            else {
-                transaction.rollback();
-            }
+            await transaction.rollback();
         }
         finally {
             this.clearTransaction();
@@ -96,13 +91,8 @@ export class TransactionManager extends AbstractMutationManager {
             throw new Error(`Cannot commit inactive transaction '${transaction.credentials.domainAndPort}'.`);
         }
         try {
-            if (storeDriver.isServer()) {
-                await transaction.rollback();
-            }
-            else {
-                transaction.rollback();
-            }
             await this.saveRepositoryHistory(transaction, idGenerator, context);
+            // TODO: what else needs to be saved (if anything)?
             await transaction.saveTransaction(transaction.transHistory);
             activeQueries.rerunQueries();
             await transaction.commit();

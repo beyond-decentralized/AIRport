@@ -69,7 +69,7 @@ export class EntityCopier
 
             for (let dbProperty of dbEntity.properties) {
                 const property = entity[dbProperty.name]
-                if (dbProperty.relation && dbProperty.relation.length) {
+                if (dbProperty.relation && dbProperty.relation.length && property) {
                     entityCopy[dbProperty.name] = this.doCopyEntityForProcessing(
                         property, dbProperty.relation[0].relationEntity,
                         entityStateManager, operation)

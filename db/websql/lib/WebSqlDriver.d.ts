@@ -21,10 +21,8 @@ export declare class WebSqlDriver extends SqLiteDriver {
     private getBackupLocation;
     initialize(dbName: string, context: IOperationContext): Promise<any>;
     transact(transactionalCallback: {
-        (transaction: ITransaction): Promise<void> | void;
+        (transaction: ITransaction): Promise<void>;
     }): Promise<void>;
-    rollback(): Promise<void>;
-    commit(): Promise<void>;
     query(queryType: QueryType, query: string, params: any[], context: IOperationContext, saveTransaction?: boolean): Promise<any>;
     private getReturnValue;
 }

@@ -1,4 +1,5 @@
 import { IInjectable } from '@airport/di'
+import { INVALID_TABLE_NAME } from '@airport/ground-control'
 import { ITransactionHistory } from '@airport/holding-pattern'
 import {
 	ICredentials,
@@ -15,6 +16,7 @@ export class WebSqlTransaction
 
 	constructor(
 		private driver: WebSqlDriver,
+		private nativeTransaction
 	) {
 		super();
 		(<IInjectable>this).__container__ = (<IInjectable>driver).__container__
@@ -25,11 +27,13 @@ export class WebSqlTransaction
 	}
 
 	async commit(): Promise<void> {
-		this.driver.commit();
+		// this.nativeTransaction.executeSql('COMMIT');
+		// this.driver.commit();
 	}
 
 	async rollback(): Promise<void> {
-		this.driver.rollback();
+		this.nativeTransaction.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, [])
+		// this.driver.rollback();
 	}
 
 }

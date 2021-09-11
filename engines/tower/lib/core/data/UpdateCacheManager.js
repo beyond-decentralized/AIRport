@@ -43,31 +43,35 @@ export class UpdateCacheManager {
                     entityState = EntityState.CREATE;
                 }
             }
-            for (const dbProperty of dbEntity.properties) {
-                const property = entityCopy[dbProperty.name];
-                if (dbProperty.relation && dbProperty.relation.length) {
-                    this.setOperationState(property, dbProperty.relation[0].relationEntity, entityStateManager, processedEntities);
-                }
-                else {
-                    if (entityState) {
-                        continue;
+            if (originalValuesObject) {
+                for (const dbProperty of dbEntity.properties) {
+                    const property = entityCopy[dbProperty.name];
+                    if (dbProperty.relation && dbProperty.relation.length) {
+                        this.setOperationState(property, dbProperty.relation[0].relationEntity, entityStateManager, processedEntities);
                     }
-                    let originalValue = originalValuesObject[dbProperty.name];
-                    let propertyValue;
-                    switch (dbProperty.propertyColumns[0].column.type) {
-                        case SQLDataType.DATE:
-                            originalValue = originalValue.getTime();
-                            propertyValue = property.getTime();
-                            break;
-                        case SQLDataType.JSON:
-                            originalValue = JSON.stringify(originalValue);
-                            propertyValue = JSON.stringify(property);
-                            break;
-                        default:
-                            break;
-                    }
-                    if (propertyValue != originalValue) {
-                        entityState = EntityState.UPDATE;
+                    else {
+                        if (entityState) {
+                            continue;
+                        }
+                        let originalValue = originalValuesObject[dbProperty.name];
+                        let propertyValue;
+                        if (originalValue) {
+                            switch (dbProperty.propertyColumns[0].column.type) {
+                                case SQLDataType.DATE:
+                                    originalValue = originalValue.getTime();
+                                    propertyValue = property.getTime();
+                                    break;
+                                case SQLDataType.JSON:
+                                    originalValue = JSON.stringify(originalValue);
+                                    propertyValue = JSON.stringify(property);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        if (propertyValue != originalValue) {
+                            entityState = EntityState.UPDATE;
+                        }
                     }
                 }
             }

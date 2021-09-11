@@ -61,56 +61,63 @@ export class WebSqlDriver
 		}
 
 		let win: any = window
-		if (win.sqlitePlugin) {
-			let location = this.getBackupLocation(dbOptions.backupFlag)
-			dbOptions.location = location
-			dbOptions.createFromLocation = dbOptions.existingDatabase ? 1 : 0
-			this._db = win.sqlitePlugin.openDatabase(dbOptions)
-		} else {
-			// console.warn('Storage: SQLite plugin not installed, falling back to WebSQL. Make
-			// sure to install cordova-sqlite-storage in production!')
-			this._db = win.openDatabase(dbOptions.name, '1.0', 'terminal', 5 * 1024 * 1024)
-		}
+		// if (win.sqlitePlugin) {
+		// 	let location = this.getBackupLocation(dbOptions.backupFlag)
+		// 	dbOptions.location = location
+		// 	dbOptions.createFromLocation = dbOptions.existingDatabase ? 1 : 0
+		// 	this._db = win.sqlitePlugin.openDatabase(dbOptions)
+		// } else {
+		// console.warn('Storage: SQLite plugin not installed, falling back to WebSQL. Make
+		// sure to install cordova-sqlite-storage in production!')
+		this._db = win.openDatabase(dbOptions.name, '1.0', 'terminal', 5 * 1024 * 1024)
+		// }
 	}
 
 	async transact(
 		transactionalCallback: {
 			(
 				transaction: ITransaction
-			): Promise<void> | void
+			): Promise<void>
 		},
 	): Promise<void> {
 		const transactionModule = await import('./WebSqlTransaction');
-		const transaction = new transactionModule.WebSqlTransaction(this);
-		await transactionalCallback(transaction);
+		// await transactionalCallback(transaction);
 
-		let win: any = window
-		if (win.sqlitePlugin) {
-			this._db.executeSql('BEGIN TRANSACTION;')
-		} else {
-			this._db.transaction(() => {
+		// let win: any = window
+		// if (win.sqlitePlugin) {
+		// 	this._db.executeSql('BEGIN TRANSACTION;')
+		// } else {
+		return new Promise((resolve, reject) => {
+			this._db.transaction((tx) => {
+				const transaction = new transactionModule.WebSqlTransaction(this, tx);
 				transactionalCallback(transaction)
-			});
-		}
+					.then(() => {
+						resolve()
+					}).catch((e) => {
+						reject(e)
+					})
+			})
+		})
+		// }
 	}
 
-	async rollback(): Promise<void> {
-		let win: any = window
-		if (win.sqlitePlugin) {
-			this._db.executeSql('ROLLBACK TRANSACTION;')
-		} else {
-			this._db.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, [])
-		}
-	}
+/* 	async rollback(): Promise<void> {
+		// let win: any = window
+		// if (win.sqlitePlugin) {
+		// 	this._db.executeSql('ROLLBACK TRANSACTION;')
+		// } else {
+		this._db.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, [])
+		// }
+	} */
 
-	async commit(): Promise<void> {
+/* 	async commit(): Promise<void> {
 		let win: any = window
 		if (win.sqlitePlugin) {
 			this._db.executeSql('COMMIT TRANSACTION;')
 		} else {
 			// Nothing to do
 		}
-	}
+	} */
 
 	async query(
 		queryType: QueryType,

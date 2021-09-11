@@ -208,7 +208,8 @@ export class TransactionalServer
 				return 0;
 			}
 		}
-
+		
+		await this.ensureIocContext(context)
 		const actor = await this.getActor(credentials);
 
 		let numInsertedRecords
@@ -227,6 +228,7 @@ export class TransactionalServer
 		credentials: ICredentials,
 		context: IOperationContext
 	): Promise<number[]> {
+		await this.ensureIocContext(context)
 		const actor = await this.getActor(credentials);
 
 		let numInsertedRecords
@@ -245,6 +247,7 @@ export class TransactionalServer
 		credentials: ICredentials,
 		context: IOperationContext
 	): Promise<number> {
+		await this.ensureIocContext(context)
 		const actor = await this.getActor(credentials);
 
 		let numUpdatedRecords
@@ -263,6 +266,7 @@ export class TransactionalServer
 		credentials: ICredentials,
 		context: IOperationContext
 	): Promise<number> {
+		await this.ensureIocContext(context)
 		const actor = await this.getActor(credentials);
 
 		let numDeletedRecords

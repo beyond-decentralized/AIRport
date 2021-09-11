@@ -98,7 +98,7 @@ export class TransactionManager
 		while (!this.canRunTransaction(credentials.domainAndPort, storeDriver, context)) {
 			await this.wait(this.yieldToRunningTransaction);
 		}
-		if (!storeDriver.isServer(context)) {
+		if (!isServer) {
 			this.transactionIndexQueue = this.transactionIndexQueue.filter(
 				transIndex =>
 					transIndex !== credentials.domainAndPort,
@@ -144,11 +144,7 @@ export class TransactionManager
 			return;
 		}
 		try {
-			if (storeDriver.isServer()) {
-				await transaction.rollback();
-			} else {
-				transaction.rollback();
-			}
+			await transaction.rollback();
 		} finally {
 			this.clearTransaction();
 		}
@@ -170,11 +166,6 @@ export class TransactionManager
 		}
 
 		try {
-			if (storeDriver.isServer()) {
-				await transaction.rollback();
-			} else {
-				transaction.rollback();
-			}
 			await this.saveRepositoryHistory(transaction, idGenerator, context);
 
 			// TODO: what else needs to be saved (if anything)?

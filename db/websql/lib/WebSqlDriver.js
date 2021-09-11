@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { INVALID_TABLE_NAME, QueryType, StoreType, STORE_DRIVER } from '@airport/ground-control';
+import { QueryType, StoreType, STORE_DRIVER } from '@airport/ground-control';
 import { SqLiteDriver } from '@airport/sqlite';
 export class WebSqlDriver extends SqLiteDriver {
     constructor() {
@@ -25,50 +25,53 @@ export class WebSqlDriver extends SqLiteDriver {
             existingDatabase: false
         };
         let win = window;
-        if (win.sqlitePlugin) {
-            let location = this.getBackupLocation(dbOptions.backupFlag);
-            dbOptions.location = location;
-            dbOptions.createFromLocation = dbOptions.existingDatabase ? 1 : 0;
-            this._db = win.sqlitePlugin.openDatabase(dbOptions);
-        }
-        else {
-            // console.warn('Storage: SQLite plugin not installed, falling back to WebSQL. Make
-            // sure to install cordova-sqlite-storage in production!')
-            this._db = win.openDatabase(dbOptions.name, '1.0', 'terminal', 5 * 1024 * 1024);
-        }
+        // if (win.sqlitePlugin) {
+        // 	let location = this.getBackupLocation(dbOptions.backupFlag)
+        // 	dbOptions.location = location
+        // 	dbOptions.createFromLocation = dbOptions.existingDatabase ? 1 : 0
+        // 	this._db = win.sqlitePlugin.openDatabase(dbOptions)
+        // } else {
+        // console.warn('Storage: SQLite plugin not installed, falling back to WebSQL. Make
+        // sure to install cordova-sqlite-storage in production!')
+        this._db = win.openDatabase(dbOptions.name, '1.0', 'terminal', 5 * 1024 * 1024);
+        // }
     }
     async transact(transactionalCallback) {
         const transactionModule = await import('./WebSqlTransaction');
-        const transaction = new transactionModule.WebSqlTransaction(this);
-        await transactionalCallback(transaction);
-        let win = window;
-        if (win.sqlitePlugin) {
-            this._db.executeSql('BEGIN TRANSACTION;');
-        }
-        else {
-            this._db.transaction(() => {
-                transactionalCallback(transaction);
+        // await transactionalCallback(transaction);
+        // let win: any = window
+        // if (win.sqlitePlugin) {
+        // 	this._db.executeSql('BEGIN TRANSACTION;')
+        // } else {
+        return new Promise((resolve, reject) => {
+            this._db.transaction((tx) => {
+                const transaction = new transactionModule.WebSqlTransaction(this, tx);
+                transactionalCallback(transaction)
+                    .then(() => {
+                    resolve();
+                }).catch((e) => {
+                    reject(e);
+                });
             });
-        }
+        });
+        // }
     }
-    async rollback() {
-        let win = window;
-        if (win.sqlitePlugin) {
-            this._db.executeSql('ROLLBACK TRANSACTION;');
-        }
-        else {
-            this._db.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, []);
-        }
-    }
-    async commit() {
-        let win = window;
-        if (win.sqlitePlugin) {
-            this._db.executeSql('COMMIT TRANSACTION;');
-        }
-        else {
-            // Nothing to do
-        }
-    }
+    /* 	async rollback(): Promise<void> {
+            // let win: any = window
+            // if (win.sqlitePlugin) {
+            // 	this._db.executeSql('ROLLBACK TRANSACTION;')
+            // } else {
+            this._db.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, [])
+            // }
+        } */
+    /* 	async commit(): Promise<void> {
+            let win: any = window
+            if (win.sqlitePlugin) {
+                this._db.executeSql('COMMIT TRANSACTION;')
+            } else {
+                // Nothing to do
+            }
+        } */
     async query(queryType, query, params = [], context, saveTransaction = false) {
         return new Promise((resolve, reject) => {
             try {
