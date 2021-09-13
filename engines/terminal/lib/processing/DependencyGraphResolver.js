@@ -28,12 +28,12 @@ export class DependencyGraphResolver {
              */
             const { isCreate, isDelete, isParentId, isStub } = context.ioc.entityStateManager
                 .getEntityStateTypeAsFlags(entity, dbEntity);
-            if (isParentId) {
+            if (isStub) {
                 // No processing is needed
                 continue;
             }
             const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity);
-            if (deleteByCascade && (!isDelete || !isStub)) {
+            if (deleteByCascade && (!isDelete || !isParentId)) {
                 throw new Error(`Cannot do a Create or Update operation on an entity that will be
 deleted by cascading rules.  Entity: ${dbEntity.name}.
 Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`);
@@ -48,7 +48,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
                 }
                 continue;
             }
-            else if (!isStub && !deleteByCascade) {
+            else if (!isParentId && !deleteByCascade) {
                 dependencyGraphNode = {
                     dbEntity,
                     dependsOn: dependsOn && !isDelete ? [dependsOn] : [],
@@ -56,6 +56,9 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
                     isCreate,
                     isDelete
                 };
+                if (dependsOn) {
+                    dependencyGraphNode.dependsOn.push(dependsOn);
+                }
                 if (dependency) {
                     dependency.dependsOn.push(dependencyGraphNode);
                 }
@@ -117,7 +120,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
                     const dbEntity = dbRelation.relationEntity;
                     const previousDbEntity = dbEntity;
                     context.dbEntity = dbEntity;
-                    const childDependencyLinkedNodes = this.getEntitiesToPersist(childEntities, operatedOnEntities, context, fromDependencyForChild, !isStub && !isDelete && childIsDependency ? dependencyGraphNode : null, childDeleteByCascade);
+                    const childDependencyLinkedNodes = this.getEntitiesToPersist(childEntities, operatedOnEntities, context, fromDependencyForChild, !isParentId && !isDelete && childIsDependency ? dependencyGraphNode : null, childDeleteByCascade);
                     allProcessedNodes = allProcessedNodes.concat(childDependencyLinkedNodes);
                     context.dbEntity = previousDbEntity;
                 }

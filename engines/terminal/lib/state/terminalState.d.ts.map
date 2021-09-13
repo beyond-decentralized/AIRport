@@ -1,1 +1,1 @@
-{"version":3,"file":"terminalState.d.ts","sourceRoot":"","sources":["../../src/state/terminalState.ts"],"names":[],"mappings":"AAAA;;;GAGG"}
+{"version":3,"file":"terminalState.d.ts","sourceRoot":"","sources":["../../src/state/terminalState.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,EAEH,OAAO,EACV,MAAM,MAAM,CAAC;AAEd,eAAO,MAAM,cAAc,EAAE,OAAO,CAAC;IACjC,YAAY,EAAE;QACV,kBAAkB,EAAE,GAAG,CAAA;QACvB,wBAAwB,EAAE,MAAM,CAAA;KACnC,CAAA;CACJ,CAKC,CAAA"}
