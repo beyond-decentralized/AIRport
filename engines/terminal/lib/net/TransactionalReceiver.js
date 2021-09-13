@@ -47,7 +47,7 @@ export class TransactionalReceiver {
                     break;
                 case IsolateMessageType.SAVE:
                     const saveMessage = message;
-                    result = await transServer.insertValuesGetIds(saveMessage.entity, credentials, context);
+                    result = await transServer.save(saveMessage.entity, credentials, context);
                     break;
                 case IsolateMessageType.SEARCH:
                     const searchMessage = message;

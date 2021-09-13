@@ -89,7 +89,7 @@ export class TransactionalServer
 			// TODO: figure out how addRepository will work
 			numRecordsCreated = await context.ioc.insertManager.addRepository(
 				name, url, platform, platformConfig, distributionStrategy);
-		})
+		}, context)
 
 		return numRecordsCreated
 	}
@@ -180,7 +180,7 @@ export class TransactionalServer
 		) => {
 			saveResult = await context.ioc.operationManager.performSave(
 				entity, actor, transaction, context)
-		})
+		}, context)
 
 		return saveResult
 	}
@@ -218,7 +218,7 @@ export class TransactionalServer
 		) => {
 			numInsertedRecords = await context.ioc.insertManager.insertValues(
 				portableQuery, actor, transaction, context, ensureGeneratedValues);
-		})
+		}, context)
 
 		return numInsertedRecords
 	}
@@ -237,7 +237,7 @@ export class TransactionalServer
 		) => {
 			numInsertedRecords = await context.ioc.insertManager.insertValuesGetIds(
 				portableQuery, actor, transaction, context);
-		})
+		}, context)
 
 		return numInsertedRecords
 	}
@@ -256,7 +256,7 @@ export class TransactionalServer
 		) => {
 			numUpdatedRecords = await context.ioc.updateManager.updateValues(
 				portableQuery, actor, transaction, context);
-		})
+		}, context)
 
 		return numUpdatedRecords
 	}
@@ -275,7 +275,7 @@ export class TransactionalServer
 		) => {
 			numDeletedRecords = await context.ioc.deleteManager.deleteWhere(
 				portableQuery, actor, transaction, context);
-		})
+		}, context)
 
 		return numDeletedRecords
 	}

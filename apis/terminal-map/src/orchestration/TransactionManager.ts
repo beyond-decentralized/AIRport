@@ -3,8 +3,13 @@ import {
 	IStoreDriver,
 	StoreType
 } from '@airport/ground-control';
+import { ITransaction } from '../transaction/ITransaction';
 import { ICredentials } from '../Credentials';
 
+
+export interface ITransactionContext {
+	transaction: ITransaction
+}
 export interface ITransactionManager {
 
 	storeType: StoreType;
@@ -24,7 +29,8 @@ export interface ITransactionManager {
 		credentials: ICredentials,
 		callback: {
 			(
-				transaction: IStoreDriver
+				transaction: IStoreDriver,
+				context?: IContext
 			): Promise<void> | void
 		},
 		context: IContext,

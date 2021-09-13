@@ -61,66 +61,66 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
                 }
                 allProcessedNodes.push(dependencyGraphNode);
             }
+            operatedOnEntities[operationUniqueId] = dependencyGraphNode;
             for (const dbProperty of context.dbEntity.properties) {
                 let childEntities;
                 let propertyValue = entity[dbProperty.name];
-                if (propertyValue === null) {
+                if (!propertyValue || typeof propertyValue !== 'object'
+                    || !(dbProperty.relation && dbProperty.relation.length)) {
                     continue;
                 }
-                if (dbProperty.relation && dbProperty.relation.length) {
-                    let fromDependencyForChild = null;
-                    let childIsDependency = false;
-                    let childDeleteByCascade = deleteByCascade || isDelete;
-                    const dbRelation = dbProperty.relation[0];
-                    switch (dbRelation.relationType) {
-                        // Relation is an entity that this entity depends on
-                        case EntityRelationType.MANY_TO_ONE:
-                            childDeleteByCascade = false;
-                            const childState = context.ioc.entityStateManager
-                                .getEntityStateTypeAsFlags(entity, dbEntity);
-                            if (childState.isParentId) {
-                                continue;
-                            }
-                            if (childState.isDelete) {
-                                if (!isDelete) {
-                                    throw new Error(`Cannot delete an entity without removing all references to it.
+                let fromDependencyForChild = null;
+                let childIsDependency = false;
+                let childDeleteByCascade = deleteByCascade || isDelete;
+                const dbRelation = dbProperty.relation[0];
+                switch (dbRelation.relationType) {
+                    // Relation is an entity that this entity depends on
+                    case EntityRelationType.MANY_TO_ONE:
+                        childDeleteByCascade = false;
+                        const childState = context.ioc.entityStateManager
+                            .getEntityStateTypeAsFlags(entity, dbEntity);
+                        if (childState.isParentId) {
+                            continue;
+                        }
+                        if (childState.isDelete) {
+                            if (!isDelete) {
+                                throw new Error(`Cannot delete an entity without removing all references to it.
 								Found a reference in ${dbEntity.name}.${dbProperty.name}.
 								Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`);
-                                }
-                                else {
-                                    // Prune this entry
-                                    if (!deleteByCascade) {
-                                        if (dependency) {
-                                            dependency.dependsOn.pop();
-                                        }
-                                        allProcessedNodes.pop();
+                            }
+                            else {
+                                // Prune this entry
+                                if (!deleteByCascade) {
+                                    if (dependency) {
+                                        dependency.dependsOn.pop();
                                     }
-                                    deleteByCascade = true;
+                                    allProcessedNodes.pop();
                                 }
+                                deleteByCascade = true;
                             }
-                            if (childState.isCreate) {
-                                childIsDependency = true;
-                            }
-                            childEntities = [propertyValue];
-                            break;
-                        // Relation is an array of entities that depend in this entity
-                        case EntityRelationType.ONE_TO_MANY:
-                            if (isCreate) {
-                                fromDependencyForChild = dependencyGraphNode;
-                            }
-                            // Nested deletions wil be automatically pruned in recursive calls
-                            childEntities = propertyValue;
-                            break;
-                    }
-                    if (childEntities) {
-                        const dbEntity = dbRelation.relationEntity;
-                        const previousDbEntity = dbEntity;
-                        context.dbEntity = dbEntity;
-                        const childDependencyLinkedNodes = this.getEntitiesToPersist(childEntities, operatedOnEntities, context, fromDependencyForChild, !isStub && !isDelete && childIsDependency ? dependencyGraphNode : null, childDeleteByCascade);
-                        allProcessedNodes = allProcessedNodes.concat(childDependencyLinkedNodes);
-                        context.dbEntity = previousDbEntity;
-                    }
-                } // if relation
+                        }
+                        if (childState.isCreate) {
+                            childIsDependency = true;
+                        }
+                        childEntities = [propertyValue];
+                        break;
+                    // Relation is an array of entities that depend in this entity
+                    case EntityRelationType.ONE_TO_MANY:
+                        if (isCreate) {
+                            fromDependencyForChild = dependencyGraphNode;
+                        }
+                        // Nested deletions wil be automatically pruned in recursive calls
+                        childEntities = propertyValue;
+                        break;
+                }
+                if (childEntities) {
+                    const dbEntity = dbRelation.relationEntity;
+                    const previousDbEntity = dbEntity;
+                    context.dbEntity = dbEntity;
+                    const childDependencyLinkedNodes = this.getEntitiesToPersist(childEntities, operatedOnEntities, context, fromDependencyForChild, !isStub && !isDelete && childIsDependency ? dependencyGraphNode : null, childDeleteByCascade);
+                    allProcessedNodes = allProcessedNodes.concat(childDependencyLinkedNodes);
+                    context.dbEntity = previousDbEntity;
+                }
             } // for properties
         } // for entities
         return allProcessedNodes;
@@ -129,20 +129,27 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
         let orderedNodes = [];
         let processedNodes = [];
         while (orderedNodes.length < unorderedDependencies.length) {
-            NODE_LOOP: for (const node of unorderedDependencies) {
+            for (const node of unorderedDependencies) {
+                const entityUid = context.ioc.entityStateManager
+                    .getOperationUniqueId(node.entity);
+                if (processedNodes[entityUid]) {
+                    continue;
+                }
+                let nodeProcessed = true;
                 for (const dependency of node.dependsOn) {
                     const dependencyUid = context.ioc.entityStateManager
                         .getOperationUniqueId(dependency.entity);
                     // If a dependency is not yet processed (and is possibly has
                     // other dependencies of it's own)
                     if (!processedNodes[dependencyUid]) {
-                        continue NODE_LOOP;
+                        nodeProcessed = false;
+                        break;
                     }
                 }
-                const entityUid = context.ioc.entityStateManager
-                    .getOperationUniqueId(node.entity);
-                processedNodes[entityUid] = node;
-                orderedNodes.push(node);
+                if (nodeProcessed) {
+                    processedNodes[entityUid] = node;
+                    orderedNodes.push(node);
+                }
             }
         }
         return orderedNodes;

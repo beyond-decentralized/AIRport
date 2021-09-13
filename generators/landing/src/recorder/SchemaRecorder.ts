@@ -5,7 +5,8 @@ import {
 }                        from '@airport/air-control'
 import {
 	container,
-	DI
+	DI,
+	IContext
 }                        from '@airport/di'
 import {DdlObjects}      from '@airport/takeoff'
 import {
@@ -42,7 +43,8 @@ export interface ISchemaRecorder {
 
 	record(
 		ddlObjects: DdlObjects,
-		normalOperation: boolean
+		normalOperation: boolean,
+		context: IContext
 	): Promise<void>
 
 }
@@ -52,7 +54,8 @@ export class SchemaRecorder
 
 	async record(
 		ddlObjects: DdlObjects,
-		normalOperation: boolean
+		normalOperation: boolean,
+		context: IContext
 	): Promise<void> {
 		const [airDb, domainDao, schemaColumnDao, schemaDao,
 			      schemaEntityDao, schemaPropertyColumnDao, schemaPropertyDao,
@@ -73,15 +76,15 @@ export class SchemaRecorder
 					schemaVersionDao, schemaReferenceDao,
 					schemaEntityDao, schemaPropertyDao,
 					schemaRelationDao, schemaColumnDao,
-					schemaPropertyColumnDao, schemaRelationColumnDao)
+					schemaPropertyColumnDao, schemaRelationColumnDao, context)
 			} else {
 				await this.bootstrapRecord(airDb, ddlObjects, domainDao, schemaDao,
 					schemaVersionDao, schemaReferenceDao,
 					schemaEntityDao, schemaPropertyDao,
 					schemaRelationDao, schemaColumnDao,
-					schemaPropertyColumnDao, schemaRelationColumnDao)
+					schemaPropertyColumnDao, schemaRelationColumnDao, context)
 			}
-		})
+		}, context)
 	}
 
 	private async normalRecord(
@@ -96,20 +99,23 @@ export class SchemaRecorder
 		schemaColumnDao: ISchemaColumnDao,
 		schemaPropertyColumnDao: ISchemaPropertyColumnDao,
 		schemaRelationColumnDao: ISchemaRelationColumnDao,
+		context: IContext
 	) {
-		await domainDao.save(ddlObjects.domains)
-		await schemaDao.save(ddlObjects.schemas)
-		await schemaVersionDao.save(ddlObjects.schemaVersions)
+		await domainDao.save(ddlObjects.domains, context)
+		await schemaDao.save(ddlObjects.schemas, context)
+		await schemaVersionDao.save(ddlObjects.schemaVersions, context)
 		await schemaReferenceDao.save(
-			ddlObjects.schemaReferences as SchemaReferenceECreateProperties[])
-		await schemaEntityDao.save(ddlObjects.entities)
-		await schemaPropertyDao.save(ddlObjects.properties)
-		await schemaRelationDao.save(ddlObjects.relations)
-		await schemaColumnDao.save(ddlObjects.columns)
+			ddlObjects.schemaReferences as SchemaReferenceECreateProperties[], context)
+		await schemaEntityDao.save(ddlObjects.entities, context)
+		await schemaPropertyDao.save(ddlObjects.properties, context)
+		await schemaRelationDao.save(ddlObjects.relations, context)
+		await schemaColumnDao.save(ddlObjects.columns, context)
 		await schemaPropertyColumnDao.save(
-			ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[])
+			ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[],
+			context)
 		await schemaRelationColumnDao.save(
-			ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[])
+			ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[],
+			context)
 	}
 
 	private setDefaultVersioning(
@@ -165,27 +171,29 @@ export class SchemaRecorder
 		schemaColumnDao: ISchemaColumnDao,
 		schemaPropertyColumnDao: ISchemaPropertyColumnDao,
 		schemaRelationColumnDao: ISchemaRelationColumnDao,
+		context: IContext
 	) {
-		await this.bulkCreate(domainDao, ddlObjects.domains)
-		await this.bulkCreate(schemaDao, ddlObjects.schemas)
-		await this.bulkCreate(schemaVersionDao, ddlObjects.latestSchemaVersions)
+		await this.bulkCreate(domainDao, ddlObjects.domains, context)
+		await this.bulkCreate(schemaDao, ddlObjects.schemas, context)
+		await this.bulkCreate(schemaVersionDao, ddlObjects.latestSchemaVersions, context)
 		await this.bulkCreate(schemaReferenceDao,
-			ddlObjects.schemaReferences as SchemaReferenceECreateProperties[])
-		await this.bulkCreate(schemaEntityDao, ddlObjects.entities)
-		await this.bulkCreate(schemaPropertyDao, ddlObjects.properties)
-		await this.bulkCreate(schemaRelationDao, ddlObjects.relations)
-		await this.bulkCreate(schemaColumnDao, ddlObjects.columns)
+			ddlObjects.schemaReferences as SchemaReferenceECreateProperties[], context)
+		await this.bulkCreate(schemaEntityDao, ddlObjects.entities, context)
+		await this.bulkCreate(schemaPropertyDao, ddlObjects.properties, context)
+		await this.bulkCreate(schemaRelationDao, ddlObjects.relations, context)
+		await this.bulkCreate(schemaColumnDao, ddlObjects.columns, context)
 		await this.bulkCreate(schemaPropertyColumnDao,
-			ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[])
+			ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[], context)
 		await this.bulkCreate(schemaRelationColumnDao,
-			ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[])
+			ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[], context)
 	}
 
 	private async bulkCreate(
 		dao: IDao<any, any, any, any, any, any, any, any>,
-		entities: any[]
+		entities: any[],
+		context: IContext
 	) {
-		await dao.save(entities)
+		await dao.save(entities, context)
 	}
 
 }

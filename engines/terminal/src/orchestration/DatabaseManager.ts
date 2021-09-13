@@ -137,7 +137,7 @@ export class DatabaseManager
 		await this.installAirportSchema(false, hydrate, context);
 
 		if (!hydrate) {
-			await this.initTerminal(domainName);
+			await this.initTerminal(domainName, context);
 		}
 
 		if (schemas && schemas.length) {
@@ -243,26 +243,29 @@ export class DatabaseManager
 
 	private async initTerminal(
 		domainName: DomainName,
+		context: IContext
 	): Promise<void> {
-		await transactional(async () => {
+		await transactional(async (
+			_transaction
+			) => {
 			const user = new User();
 			user.uniqueId = domainName;
 			const userDao = await container(this).get(USER_DAO);
-			await userDao.save(user);
+			await userDao.save(user, context);
 
 			const terminal = new Terminal();
 			terminal.name = domainName;
 			terminal.owner = user;
 			const terminalDao = await container(this).get(TERMINAL_DAO);
-			await terminalDao.save(terminal);
+			await terminalDao.save(terminal, context);
 
 			const actor = new Actor();
 			actor.user = user;
 			actor.terminal = terminal;
 			actor.randomId = Math.random();
 			const actorDao = await container(this).get(ACTOR_DAO);
-			await actorDao.save(actor);
-		});
+			await actorDao.save(actor, context);
+		}, context);
 	}
 
 	/*

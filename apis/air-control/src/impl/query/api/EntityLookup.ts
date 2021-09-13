@@ -1,7 +1,6 @@
 import { DI } from '@airport/di'
 import {
 	DbEntity,
-	UPDATE_CACHE_MANAGER,
 	ENTITY_STATE_MANAGER,
 	QueryResultType
 } from '@airport/ground-control'
@@ -9,6 +8,7 @@ import { IEntityContext } from '../../../lingo/core/EntityContext'
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity'
 import { IEntityLookup } from '../../../lingo/query/api/EntityLookup'
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
+import { UPDATE_CACHE_MANAGER } from '../../../tokens'
 import { LookupProxy } from './Lookup'
 
 export interface IEntityLookupInternal<Child, MappedChild,

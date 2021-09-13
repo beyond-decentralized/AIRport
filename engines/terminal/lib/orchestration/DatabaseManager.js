@@ -93,7 +93,7 @@ export class DatabaseManager {
         const hydrate = await storeDriver.doesTableExist('air___airport__territory', 'packages', context);
         await this.installAirportSchema(false, hydrate, context);
         if (!hydrate) {
-            await this.initTerminal(domainName);
+            await this.initTerminal(domainName, context);
         }
         if (schemas && schemas.length) {
             // FIXME: add ability to build feature schemas in the future
@@ -182,24 +182,24 @@ export class DatabaseManager {
             await schemaInitializer.initialize(schemas, context, buildSchemas);
         }
     }
-    async initTerminal(domainName) {
-        await transactional(async () => {
+    async initTerminal(domainName, context) {
+        await transactional(async (_transaction) => {
             const user = new User();
             user.uniqueId = domainName;
             const userDao = await container(this).get(USER_DAO);
-            await userDao.save(user);
+            await userDao.save(user, context);
             const terminal = new Terminal();
             terminal.name = domainName;
             terminal.owner = user;
             const terminalDao = await container(this).get(TERMINAL_DAO);
-            await terminalDao.save(terminal);
+            await terminalDao.save(terminal, context);
             const actor = new Actor();
             actor.user = user;
             actor.terminal = terminal;
             actor.randomId = Math.random();
             const actorDao = await container(this).get(ACTOR_DAO);
-            await actorDao.save(actor);
-        });
+            await actorDao.save(actor, context);
+        }, context);
     }
     /*
     static async addDataStore(

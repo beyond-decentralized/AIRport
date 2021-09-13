@@ -1,5 +1,6 @@
+import { UPDATE_CACHE_MANAGER } from "@airport/air-control";
 import { DI } from "@airport/di";
-import { EntityRelationType, EntityState, SQLDataType, UPDATE_CACHE_MANAGER } from "@airport/ground-control";
+import { EntityRelationType, EntityState, SQLDataType } from "@airport/ground-control";
 export class UpdateCacheManager {
     saveOriginalValues(entity, dbEntity, entityStateManager) {
         if (entity instanceof Array) {
@@ -21,10 +22,10 @@ export class UpdateCacheManager {
             }
         }
     }
-    setOperationState(entityCopy, dbEntity, entityStateManager, processedEntities) {
+    setOperationState(entityCopy, dbEntity, entityStateManager, schemaUtils, processedEntities) {
         if (entityCopy instanceof Array) {
             for (var i = 0; i < entityCopy.length; i++) {
-                this.setOperationState(entityCopy[i], dbEntity, entityStateManager, processedEntities);
+                this.setOperationState(entityCopy[i], dbEntity, entityStateManager, schemaUtils, processedEntities);
             }
         }
         else {
@@ -35,6 +36,7 @@ export class UpdateCacheManager {
             const originalValuesObject = entityStateManager
                 .getOriginalValues(entityCopy);
             let entityState = entityCopy[entityStateManager.getStateFieldName()];
+            let hasId = true;
             if (!entityCopy['id']) {
                 if (entityState === EntityState.DELETE) {
                     throw new Error('Entity is marked for deletion but does not have an "id" property');
@@ -42,12 +44,59 @@ export class UpdateCacheManager {
                 else {
                     entityState = EntityState.CREATE;
                 }
+                hasId = false;
             }
+            let isIdGenerated = true;
             if (originalValuesObject) {
                 for (const dbProperty of dbEntity.properties) {
                     const property = entityCopy[dbProperty.name];
-                    if (dbProperty.relation && dbProperty.relation.length) {
-                        this.setOperationState(property, dbProperty.relation[0].relationEntity, entityStateManager, processedEntities);
+                    if (property && dbProperty.relation && dbProperty.relation.length) {
+                        if (dbProperty.relation && dbProperty.relation.length) {
+                            const dbRelation = dbProperty.relation[0];
+                            schemaUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
+                                // const firstPropertyNameChain = propertyNameChains[0];
+                                for (const currentPropertyNameChange of propertyNameChains) {
+                                    let value = entityCopy;
+                                    let originalValue = originalValuesObject;
+                                    for (let i = 0; i < currentPropertyNameChange.length; i++) {
+                                        const propertyName = currentPropertyNameChange[i];
+                                        value = value[propertyName];
+                                        originalValue = originalValue[propertyName];
+                                        let noValue = value === null || value === undefined;
+                                        let noOriginalValue = originalValue === null
+                                            || originalValue === undefined;
+                                        if (noValue) {
+                                            if (originalValue) {
+                                                entityState = EntityState.UPDATE;
+                                                return true;
+                                            }
+                                            break;
+                                        }
+                                        if (noOriginalValue) {
+                                            if (value) {
+                                                entityState = EntityState.UPDATE;
+                                                return true;
+                                            }
+                                            break;
+                                        }
+                                        if (typeof value === 'object') {
+                                            if (typeof originalValue !== 'object') {
+                                                return true;
+                                            }
+                                        }
+                                        else if (typeof originalValue === 'object') {
+                                            return true;
+                                        }
+                                        else {
+                                            if (value !== originalValue) {
+                                                entityState = EntityState.UPDATE;
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
                     }
                     else {
                         if (entityState) {
@@ -75,7 +124,32 @@ export class UpdateCacheManager {
                     }
                 }
             }
-            if (!entityState || entityStateManager.isDeleted(entityCopy)) {
+            else if (hasId) {
+                // let hasNonIdValues = false;
+                for (const dbProperty of dbEntity.properties) {
+                    if (dbProperty.name === 'id') {
+                        isIdGenerated = dbProperty.propertyColumns[0].column.isGenerated;
+                        if (!isIdGenerated) {
+                            break;
+                        }
+                    }
+                }
+            }
+            for (const dbProperty of dbEntity.properties) {
+                const property = entityCopy[dbProperty.name];
+                if (property && dbProperty.relation && dbProperty.relation.length) {
+                    this.setOperationState(property, dbProperty.relation[0].relationEntity, entityStateManager, schemaUtils, processedEntities);
+                }
+            }
+            if (!entityState) {
+                if (!isIdGenerated) {
+                    entityState = EntityState.CREATE;
+                }
+                else {
+                    entityState = EntityState.PARENT_ID;
+                }
+            }
+            else if (entityStateManager.isDeleted(entityCopy)) {
                 entityState = EntityState.PARENT_ID;
             }
             entityCopy[entityStateManager.getStateFieldName()] = entityState;
@@ -106,7 +180,7 @@ export class UpdateCacheManager {
             let originalValue = {};
             for (const dbProperty of dbEntity.properties) {
                 const property = entity[dbProperty.name];
-                if (dbProperty.relation && dbProperty.relation.length) {
+                if (property && dbProperty.relation && dbProperty.relation.length) {
                     this.updateOriginalValuesAfterSave(property, dbProperty.relation[0].relationEntity, saveResult, entityStateManager);
                 }
                 else {

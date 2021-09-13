@@ -49,7 +49,7 @@ export class SchemaInitializer {
         }
         const ddlObjects = schemaComposer.compose(schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
         if (normalOperation) {
-            await schemaRecorder.record(ddlObjects, normalOperation);
+            await schemaRecorder.record(ddlObjects, normalOperation, context);
         }
         this.addNewSchemaVersionsToAll(ddlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
@@ -57,7 +57,7 @@ export class SchemaInitializer {
         const newSequences = await schemaBuilder.buildAllSequences(schemasWithValidDependencies, context);
         await sequenceGenerator.initialize(newSequences);
         if (!normalOperation) {
-            await schemaRecorder.record(ddlObjects, normalOperation);
+            await schemaRecorder.record(ddlObjects, normalOperation, context);
         }
     }
     async stage(jsonSchemas, context) {

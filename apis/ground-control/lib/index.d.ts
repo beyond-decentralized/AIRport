@@ -13,7 +13,6 @@ export * from './lingo/core/entity/Relation';
 export * from './lingo/core/field/FieldInOrderBy';
 export * from './lingo/core/field/Functions';
 export * from './lingo/core/field/JSONClause';
-export * from './lingo/core/operation/UpdateCacheManager';
 export * from './lingo/core/operation/EntityStateManager';
 export * from './lingo/core/operation/Operation';
 export * from './lingo/data/sync/TransactionType';

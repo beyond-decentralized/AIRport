@@ -16,6 +16,8 @@ import {
 	RawInsertValues,
 	RawUpdate,
 	RawUpdateColumns,
+	SCHEMA_UTILS,
+	UPDATE_CACHE_MANAGER,
 	UpdateColumns,
 	UpdateProperties,
 } from '@airport/air-control'
@@ -25,7 +27,6 @@ import {
 	IContext
 } from '@airport/di'
 import {
-	UPDATE_CACHE_MANAGER,
 	ENTITY_STATE_MANAGER,
 	ISaveResult,
 	PortableQuery,
@@ -170,15 +171,15 @@ export class DatabaseFacade
 			return null
 		}
 		const [updateCacheManager, entityCopier,
-			entityStateManager, transactionalConnector]
+			entityStateManager, schemaUtils, transactionalConnector]
 			= await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER,
-				ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR)
+				ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
 
 		const dbEntity = context.dbEntity;
 		const entityCopy = entityCopier
 			.copyEntityForProcessing(entity, dbEntity, entityStateManager)
 		updateCacheManager.setOperationState(
-			entityCopy, dbEntity, entityStateManager, new Set())
+			entityCopy, dbEntity, entityStateManager, schemaUtils, new Set())
 		const saveResult = await transactionalConnector.save(entityCopy, context)
 		updateCacheManager.afterSaveModifications(entity, dbEntity, saveResult,
 			entityStateManager, new Set())

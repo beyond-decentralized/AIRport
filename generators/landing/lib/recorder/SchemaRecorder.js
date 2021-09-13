@@ -5,31 +5,31 @@ import { transactional } from '@airport/tower';
 import { SCHEMA_COLUMN_DAO, SCHEMA_DAO, SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO, SCHEMA_RELATION_DAO, SCHEMA_VERSION_DAO } from '@airport/traffic-pattern';
 import { SCHEMA_RECORDER } from '../tokens';
 export class SchemaRecorder {
-    async record(ddlObjects, normalOperation) {
+    async record(ddlObjects, normalOperation, context) {
         const [airDb, domainDao, schemaColumnDao, schemaDao, schemaEntityDao, schemaPropertyColumnDao, schemaPropertyDao, schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao, schemaVersionDao] = await container(this)
             .get(AIRPORT_DATABASE, DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO, SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO, SCHEMA_RELATION_DAO, SCHEMA_VERSION_DAO);
         await transactional(async () => {
             // FIXME: add support for real schema versioning
             this.setDefaultVersioning(ddlObjects);
             if (normalOperation) {
-                await this.normalRecord(ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao);
+                await this.normalRecord(ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao, context);
             }
             else {
-                await this.bootstrapRecord(airDb, ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao);
+                await this.bootstrapRecord(airDb, ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao, context);
             }
-        });
+        }, context);
     }
-    async normalRecord(ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao) {
-        await domainDao.save(ddlObjects.domains);
-        await schemaDao.save(ddlObjects.schemas);
-        await schemaVersionDao.save(ddlObjects.schemaVersions);
-        await schemaReferenceDao.save(ddlObjects.schemaReferences);
-        await schemaEntityDao.save(ddlObjects.entities);
-        await schemaPropertyDao.save(ddlObjects.properties);
-        await schemaRelationDao.save(ddlObjects.relations);
-        await schemaColumnDao.save(ddlObjects.columns);
-        await schemaPropertyColumnDao.save(ddlObjects.propertyColumns);
-        await schemaRelationColumnDao.save(ddlObjects.relationColumns);
+    async normalRecord(ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao, context) {
+        await domainDao.save(ddlObjects.domains, context);
+        await schemaDao.save(ddlObjects.schemas, context);
+        await schemaVersionDao.save(ddlObjects.schemaVersions, context);
+        await schemaReferenceDao.save(ddlObjects.schemaReferences, context);
+        await schemaEntityDao.save(ddlObjects.entities, context);
+        await schemaPropertyDao.save(ddlObjects.properties, context);
+        await schemaRelationDao.save(ddlObjects.relations, context);
+        await schemaColumnDao.save(ddlObjects.columns, context);
+        await schemaPropertyColumnDao.save(ddlObjects.propertyColumns, context);
+        await schemaRelationColumnDao.save(ddlObjects.relationColumns, context);
     }
     setDefaultVersioning(ddlObjects) {
         for (const schemaReference of ddlObjects.schemaReferences) {
@@ -68,20 +68,20 @@ export class SchemaRecorder {
             relationColumn.sinceVersion = relationColumn.parentRelation.entity.schemaVersion;
         }
     }
-    async bootstrapRecord(airDb, ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao) {
-        await this.bulkCreate(domainDao, ddlObjects.domains);
-        await this.bulkCreate(schemaDao, ddlObjects.schemas);
-        await this.bulkCreate(schemaVersionDao, ddlObjects.latestSchemaVersions);
-        await this.bulkCreate(schemaReferenceDao, ddlObjects.schemaReferences);
-        await this.bulkCreate(schemaEntityDao, ddlObjects.entities);
-        await this.bulkCreate(schemaPropertyDao, ddlObjects.properties);
-        await this.bulkCreate(schemaRelationDao, ddlObjects.relations);
-        await this.bulkCreate(schemaColumnDao, ddlObjects.columns);
-        await this.bulkCreate(schemaPropertyColumnDao, ddlObjects.propertyColumns);
-        await this.bulkCreate(schemaRelationColumnDao, ddlObjects.relationColumns);
+    async bootstrapRecord(airDb, ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao, context) {
+        await this.bulkCreate(domainDao, ddlObjects.domains, context);
+        await this.bulkCreate(schemaDao, ddlObjects.schemas, context);
+        await this.bulkCreate(schemaVersionDao, ddlObjects.latestSchemaVersions, context);
+        await this.bulkCreate(schemaReferenceDao, ddlObjects.schemaReferences, context);
+        await this.bulkCreate(schemaEntityDao, ddlObjects.entities, context);
+        await this.bulkCreate(schemaPropertyDao, ddlObjects.properties, context);
+        await this.bulkCreate(schemaRelationDao, ddlObjects.relations, context);
+        await this.bulkCreate(schemaColumnDao, ddlObjects.columns, context);
+        await this.bulkCreate(schemaPropertyColumnDao, ddlObjects.propertyColumns, context);
+        await this.bulkCreate(schemaRelationColumnDao, ddlObjects.relationColumns, context);
     }
-    async bulkCreate(dao, entities) {
-        await dao.save(entities);
+    async bulkCreate(dao, entities, context) {
+        await dao.save(entities, context);
     }
 }
 DI.set(SCHEMA_RECORDER, SchemaRecorder);

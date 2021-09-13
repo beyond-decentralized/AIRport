@@ -1,4 +1,4 @@
-import { system } from '@airport/di'
+import { lib } from '@airport/di'
 import { IRelationManager } from './impl/core/entity/RelationManager'
 import { IQueryContextLoader } from './impl/query/QueryContext'
 import { IAirportDatabase } from './lingo/AirportDatabase'
@@ -6,6 +6,7 @@ import {
 	IDatabaseFacade,
 	IQueryFacade
 } from './lingo/core/repository/DatabaseFacade'
+import { IUpdateCacheManager } from './lingo/core/UpdateCacheManager'
 import { ILookup } from './lingo/query/api/Lookup'
 import { IEntityUtils } from './lingo/utils/EntityUtils'
 import { IFieldUtils } from './lingo/utils/FieldUtils'
@@ -13,7 +14,7 @@ import { IQMetadataUtils } from './lingo/utils/QMetadataUtils'
 import { IQueryUtils } from './lingo/utils/QueryUtils'
 import { ISchemaUtils } from './lingo/utils/SchemaUtils'
 
-const airControl = system('airport').lib('air-control')
+const airControl = lib('air-control')
 
 export const AIRPORT_DATABASE = airControl.token<IAirportDatabase>('IAirportDatabase')
 export const DATABASE_FACADE = airControl.token<IDatabaseFacade>('IDatabaseFacade')
@@ -26,4 +27,5 @@ export const QUERY_FACADE = airControl.token<IQueryFacade>('IQueryFacade')
 export const QUERY_UTILS = airControl.token<IQueryUtils>('IQueryUtils')
 export const RELATION_MANAGER = airControl.token<IRelationManager>('IRelationManager')
 export const SCHEMA_UTILS = airControl.token<ISchemaUtils>('ISchemaUtils')
+export const UPDATE_CACHE_MANAGER = airControl.token<IUpdateCacheManager>('IUpdateCacheManager')
 

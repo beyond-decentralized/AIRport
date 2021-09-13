@@ -98,7 +98,7 @@ export class EntityStateManager
 				isDelete = true
 				break
 			case EntityState.PARENT_ID:
-				isUpdate = true
+				isParentId = true
 				break
 			// case EntityState.RESULT:
 			// 	isResult = true
@@ -113,7 +113,7 @@ export class EntityStateManager
 				isStub = true
 				break
 			case EntityState.UPDATE:
-				isParentId = true
+				isUpdate = true
 				break
 			default:
 				throw new Error(`Unexpected entity state

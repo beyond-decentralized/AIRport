@@ -1,5 +1,5 @@
-import { system } from '@airport/di';
-const airControl = system('airport').lib('air-control');
+import { lib } from '@airport/di';
+const airControl = lib('air-control');
 export const AIRPORT_DATABASE = airControl.token('IAirportDatabase');
 export const DATABASE_FACADE = airControl.token('IDatabaseFacade');
 export const LOOKUP = airControl.token('ILookup');
@@ -11,4 +11,5 @@ export const QUERY_FACADE = airControl.token('IQueryFacade');
 export const QUERY_UTILS = airControl.token('IQueryUtils');
 export const RELATION_MANAGER = airControl.token('IRelationManager');
 export const SCHEMA_UTILS = airControl.token('ISchemaUtils');
+export const UPDATE_CACHE_MANAGER = airControl.token('IUpdateCacheManager');
 //# sourceMappingURL=tokens.js.map

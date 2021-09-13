@@ -6,7 +6,7 @@ import {
 import { ENTITY_COPIER } from "../../tokens"
 
 interface ICopyOperation {
-    processedEntitySet: Set<any>
+    processedEntityMap: Map<any, any>
     sequence: number
 }
 
@@ -38,7 +38,7 @@ export class EntityCopier
         entityStateManager: IEntityStateManager,
     ): T {
         const operation: ICopyOperation = {
-            processedEntitySet: new Set(),
+            processedEntityMap: new Map(),
             sequence: 0,
         }
 
@@ -58,10 +58,10 @@ export class EntityCopier
         } else {
             let entityCopy: any = {}
 
-            if (operation.processedEntitySet.has(entity)) {
-                return
+            if (operation.processedEntityMap.has(entity)) {
+                return operation.processedEntityMap.get(entity)
             }
-            operation.processedEntitySet.add(entity)
+            operation.processedEntityMap.set(entity, entityCopy)
 
             const operationUniqueId = ++operation.sequence
             entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId

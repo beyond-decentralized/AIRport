@@ -39,7 +39,10 @@ export class TransactionalConnector
             {
                 domainAndPort: 'test'
             },
-            context
+            {
+                internal: true,
+                ...context
+            }
         );
     }
 
@@ -55,7 +58,10 @@ export class TransactionalConnector
             {
                 domainAndPort: 'test'
             },
-            context,
+            {
+                internal: true,
+                ...context
+            },
             cachedSqlQueryId
         );
     }
@@ -72,7 +78,10 @@ export class TransactionalConnector
             {
                 domainAndPort: 'test'
             },
-            context,
+            {
+                internal: true,
+                ...context
+            },
             cachedSqlQueryId
         );
     }
@@ -89,7 +98,10 @@ export class TransactionalConnector
             {
                 domainAndPort: 'test'
             },
-            context,
+            {
+                internal: true,
+                ...context
+            },
             cachedSqlQueryId
         );
     }
@@ -106,7 +118,10 @@ export class TransactionalConnector
             {
                 domainAndPort: 'test'
             },
-            context,
+            {
+                internal: true,
+                ...context
+            },
             cachedSqlQueryId
         );
     }
@@ -117,7 +132,10 @@ export class TransactionalConnector
     ): Promise<ISaveResult> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
-        return await transServer.save(entity, null, context);
+        return await transServer.save(entity, null, {
+            internal: true,
+            ...context
+        });
     }
 
     async insertValues(
@@ -128,7 +146,10 @@ export class TransactionalConnector
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
         return await transServer.insertValues(
-            portableQuery, null, context, ensureGeneratedValues)
+            portableQuery, null, {
+                internal: true,
+                ...context
+            }, ensureGeneratedValues)
     }
 
     async insertValuesGetIds(
@@ -137,7 +158,10 @@ export class TransactionalConnector
     ): Promise<number[]> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-        return await transServer.insertValuesGetIds(portableQuery, null, context)
+        return await transServer.insertValuesGetIds(portableQuery, null, {
+            internal: true,
+            ...context
+        })
     }
 
     async updateValues(
@@ -146,7 +170,10 @@ export class TransactionalConnector
     ): Promise<number> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-        return await transServer.updateValues(portableQuery, null, context)
+        return await transServer.updateValues(portableQuery, null, {
+            internal: true,
+            ...context
+        })
     }
 
     async deleteWhere(
@@ -155,7 +182,10 @@ export class TransactionalConnector
     ): Promise<number> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-        return await transServer.deleteWhere(portableQuery, null, context)
+        return await transServer.deleteWhere(portableQuery, null, {
+            internal: true,
+            ...context
+        })
     }
 
     async startTransaction(
@@ -163,7 +193,10 @@ export class TransactionalConnector
     ): Promise<boolean> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-        return await transServer.startTransaction(null, context)
+        return await transServer.startTransaction(null, {
+            internal: true,
+            ...context
+        })
     }
 
     async commit(
@@ -171,7 +204,10 @@ export class TransactionalConnector
     ): Promise<boolean> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-        return await transServer.commit(null, context)
+        return await transServer.commit(null, {
+            internal: true,
+            ...context
+        })
     }
 
     async rollback(
@@ -179,7 +215,10 @@ export class TransactionalConnector
     ): Promise<boolean> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-        return await transServer.rollback(null, context)
+        return await transServer.rollback(null, {
+            internal: true,
+            ...context
+        })
     }
 
 }

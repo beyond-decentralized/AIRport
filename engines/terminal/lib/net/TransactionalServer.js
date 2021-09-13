@@ -40,7 +40,7 @@ export class TransactionalServer {
         await transactional(async (transaction) => {
             // TODO: figure out how addRepository will work
             numRecordsCreated = await context.ioc.insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy);
-        });
+        }, context);
         return numRecordsCreated;
     }
     async find(portableQuery, credentials, context, cachedSqlQueryId) {
@@ -77,7 +77,7 @@ export class TransactionalServer {
         let saveResult;
         await transactional(async (transaction) => {
             saveResult = await context.ioc.operationManager.performSave(entity, actor, transaction, context);
-        });
+        }, context);
         return saveResult;
     }
     async insertValues(portableQuery, credentials, context, ensureGeneratedValues // for internal use only
@@ -101,7 +101,7 @@ export class TransactionalServer {
         let numInsertedRecords;
         await transactional(async (transaction) => {
             numInsertedRecords = await context.ioc.insertManager.insertValues(portableQuery, actor, transaction, context, ensureGeneratedValues);
-        });
+        }, context);
         return numInsertedRecords;
     }
     async insertValuesGetIds(portableQuery, credentials, context) {
@@ -110,7 +110,7 @@ export class TransactionalServer {
         let numInsertedRecords;
         await transactional(async (transaction) => {
             numInsertedRecords = await context.ioc.insertManager.insertValuesGetIds(portableQuery, actor, transaction, context);
-        });
+        }, context);
         return numInsertedRecords;
     }
     async updateValues(portableQuery, credentials, context) {
@@ -119,7 +119,7 @@ export class TransactionalServer {
         let numUpdatedRecords;
         await transactional(async (transaction) => {
             numUpdatedRecords = await context.ioc.updateManager.updateValues(portableQuery, actor, transaction, context);
-        });
+        }, context);
         return numUpdatedRecords;
     }
     async deleteWhere(portableQuery, credentials, context) {
@@ -128,7 +128,7 @@ export class TransactionalServer {
         let numDeletedRecords;
         await transactional(async (transaction) => {
             numDeletedRecords = await context.ioc.deleteManager.deleteWhere(portableQuery, actor, transaction, context);
-        });
+        }, context);
         return numDeletedRecords;
     }
     async getActor(credentials) {

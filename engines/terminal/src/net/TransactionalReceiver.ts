@@ -99,7 +99,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.SAVE:
                     const saveMessage: ISaveIMI<any, any> = <ISaveIMI<any, any>>message
-                    result = await transServer.insertValuesGetIds(
+                    result = await transServer.save(
                         saveMessage.entity,
                         credentials,
                         context

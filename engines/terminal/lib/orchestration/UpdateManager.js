@@ -69,6 +69,7 @@ export class UpdateManager {
             jsonQuery: jsonSelect,
             queryResultType: QueryResultType.SHEET,
             parameterMap: portableQuery.parameterMap,
+            // values: portableQuery.values,
         };
         const recordsToUpdate = await transaction.find(portableSelect, {}, context);
         const { recordsByRepositoryId, repositoryIdSet } = this.groupRecordsByRepository(recordsToUpdate, getSheetSelectFromSetClauseResult);

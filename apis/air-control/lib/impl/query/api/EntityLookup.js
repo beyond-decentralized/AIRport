@@ -1,5 +1,6 @@
 import { DI } from '@airport/di';
-import { UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER } from '@airport/ground-control';
+import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
+import { UPDATE_CACHE_MANAGER } from '../../../tokens';
 import { LookupProxy } from './Lookup';
 export class EntityLookup extends LookupProxy {
     constructor(dbEntity, mapResults = EntityLookup.mapResults) {

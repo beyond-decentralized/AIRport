@@ -12,9 +12,10 @@ import { IEntityGraphReconstructor } from "./EntityGraphReconstructor";
 import { IOperationManager } from "./OperationManager";
 import { IStructuralEntityValidator } from "./StructuralEntityValidator";
 export interface IOperationContext extends IContext {
-    entityCascadeGraph: any;
     checkIfProcessed: boolean;
     dbEntity: DbEntity;
+    entityCascadeGraph: any;
+    internal: boolean;
     ioc: IIocOperationContext;
 }
 export interface IIocOperationContext {

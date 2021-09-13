@@ -10,8 +10,6 @@ export class IdGenerator {
         this.transactionHistoryIdColumns = [];
     }
     async init() {
-        (await container(this)
-            .get(SEQUENCE_GENERATOR)).initialize();
         this.populateTransactionHistoryIdColumns().then();
     }
     populateTransactionHistoryIdColumns() {

@@ -130,7 +130,7 @@ export class SchemaInitializer
 			schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
 
 		if (normalOperation) {
-			await schemaRecorder.record(ddlObjects, normalOperation);
+			await schemaRecorder.record(ddlObjects, normalOperation, context);
 		}
 
 		this.addNewSchemaVersionsToAll(ddlObjects);
@@ -146,7 +146,7 @@ export class SchemaInitializer
 		await sequenceGenerator.initialize(newSequences);
 
 		if (!normalOperation) {
-			await schemaRecorder.record(ddlObjects, normalOperation);
+			await schemaRecorder.record(ddlObjects, normalOperation, context);
 		}
 	}
 

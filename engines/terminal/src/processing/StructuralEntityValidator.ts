@@ -93,10 +93,12 @@ export class StructuralEntityValidator
 							throw new Error(`Unexpected relation type ${dbRelation.relationType}
 for ${dbEntity.name}.${dbProperty.name}`)
 					} // switch dbRelation.relationType
-					const previousDbEntity = context.dbEntity
-					context.dbEntity = dbRelation.relationEntity
-					this.validate(relatedEntities, operatedOnEntityIndicator, context)
-					context.dbEntity = previousDbEntity
+					if (relatedEntities) {
+						const previousDbEntity = context.dbEntity
+						context.dbEntity = dbRelation.relationEntity
+						this.validate(relatedEntities, operatedOnEntityIndicator, context)
+						context.dbEntity = previousDbEntity
+					}
 				} // if (dbProperty.relation
 				else {
 					const dbColumn = dbProperty.propertyColumns[0].column

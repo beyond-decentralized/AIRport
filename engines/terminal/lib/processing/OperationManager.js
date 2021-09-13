@@ -13,11 +13,22 @@ export class OperationManager {
      * @param entity
      */
     async performSave(entities, actor, transaction, context) {
-        const verifiedTree = context.ioc.cascadeGraphVerifier
-            .verify(entities, context);
-        const entityGraph = context.ioc.entityGraphReconstructor
-            .restoreEntityGraph(verifiedTree, context);
-        context.ioc.structuralEntityValidator.validate(entityGraph, [], context);
+        let entityGraph;
+        if (context.internal) {
+            if (entities instanceof Array) {
+                entityGraph = entities;
+            }
+            else {
+                entityGraph = [entities];
+            }
+        }
+        else {
+            const verifiedTree = context.ioc.cascadeGraphVerifier
+                .verify(entities, context);
+            entityGraph = context.ioc.entityGraphReconstructor
+                .restoreEntityGraph(verifiedTree, context);
+            context.ioc.structuralEntityValidator.validate(entityGraph, [], context);
+        }
         const operations = context.ioc.dependencyGraphResolver
             .getOperationsInOrder(entityGraph, context);
         const rootDbEntity = context.dbEntity;

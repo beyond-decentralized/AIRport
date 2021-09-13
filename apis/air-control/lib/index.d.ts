@@ -88,6 +88,7 @@ export * from './lingo/core/operation/UntypedOperation';
 export * from './lingo/core/repository/EntityDatabaseFacade';
 export * from './lingo/core/repository/DatabaseFacade';
 export * from './lingo/core/FunctionsAndOperators';
+export * from './lingo/core/UpdateCacheManager';
 export * from './lingo/query/api/EntityFind';
 export * from './lingo/query/api/EntityFindOne';
 export * from './lingo/query/api/EntityLookup';

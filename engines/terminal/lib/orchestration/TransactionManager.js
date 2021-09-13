@@ -26,6 +26,10 @@ export class TransactionManager extends AbstractMutationManager {
         return container(this).getSync(STORE_DRIVER).isServer(context);
     }
     async transact(credentials, transactionalCallback, context) {
+        if (context.transaction) {
+            await transactionalCallback(context.transaction, context);
+            return;
+        }
         const [storeDriver, transHistoryDuo] = await container(this)
             .get(STORE_DRIVER, TRANS_HISTORY_DUO);
         const isServer = storeDriver.isServer(context);
@@ -35,7 +39,9 @@ export class TransactionManager extends AbstractMutationManager {
                 // Either just continue using the current transaction
                 // or return (domain shouldn't be initiating multiple transactions
                 // at the same time
-                return;
+                throw new Error(`'${credentials.domainAndPort}' initialized multiple transactions
+				at the same time. Only one concurrent transaction is allowed per application.`);
+                // return;
             }
             this.transactionIndexQueue.push(credentials.domainAndPort);
         }
@@ -47,15 +53,19 @@ export class TransactionManager extends AbstractMutationManager {
             this.transactionInProgress = credentials.domainAndPort;
         }
         await storeDriver.transact(async (transaction) => {
+            context.transaction = transaction;
             transaction.transHistory = transHistoryDuo.getNewRecord();
             transaction.credentials = credentials;
             try {
-                await transactionalCallback(transaction);
+                await transactionalCallback(transaction, context);
                 await this.commit(transaction, context);
             }
             catch (e) {
                 console.error(e);
                 await this.rollback(transaction, context);
+            }
+            finally {
+                context.transaction = null;
             }
         }, context);
     }

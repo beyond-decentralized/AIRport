@@ -18,6 +18,7 @@ export class QueryFacade {
             queryResultType,
             schemaIndex: context.dbEntity.schemaVersion.schema.index,
             tableIndex: context.dbEntity.index,
+            // values: query.values
         };
     }
     // FIXME: merge update caches on the client

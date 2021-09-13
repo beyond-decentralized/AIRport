@@ -1,6 +1,6 @@
 import { IContext } from '@airport/di';
 import { IStoreDriver, StoreType } from '@airport/ground-control';
-import { ICredentials, ITransactionManager } from '@airport/terminal-map';
+import { ICredentials, ITransactionContext, ITransactionManager } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export declare class TransactionManager extends AbstractMutationManager implements ITransactionManager {
     storeType: StoreType;
@@ -14,8 +14,8 @@ export declare class TransactionManager extends AbstractMutationManager implemen
     initialize(dbName: string, context: IContext): Promise<void>;
     isServer(context?: IContext): boolean;
     transact(credentials: ICredentials, transactionalCallback: {
-        (transaction: IStoreDriver): Promise<void> | void;
-    }, context: IContext): Promise<void>;
+        (transaction: IStoreDriver, context: IContext): Promise<void> | void;
+    }, context: ITransactionContext): Promise<void>;
     private rollback;
     private commit;
     private clearTransaction;

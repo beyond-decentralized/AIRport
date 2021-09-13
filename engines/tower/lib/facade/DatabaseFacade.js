@@ -1,6 +1,6 @@
-import { DATABASE_FACADE, Delete, InsertColumnValues, InsertValues, QUERY_CONTEXT_LOADER, UpdateColumns, UpdateProperties, } from '@airport/air-control';
+import { DATABASE_FACADE, Delete, InsertColumnValues, InsertValues, QUERY_CONTEXT_LOADER, SCHEMA_UTILS, UPDATE_CACHE_MANAGER, UpdateColumns, UpdateProperties, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
+import { ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 import { ENTITY_COPIER } from '../tokens';
 /**
@@ -81,11 +81,11 @@ export class DatabaseFacade {
         if (!entity) {
             return null;
         }
-        const [updateCacheManager, entityCopier, entityStateManager, transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR);
+        const [updateCacheManager, entityCopier, entityStateManager, schemaUtils, transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER, ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR);
         const dbEntity = context.dbEntity;
         const entityCopy = entityCopier
             .copyEntityForProcessing(entity, dbEntity, entityStateManager);
-        updateCacheManager.setOperationState(entityCopy, dbEntity, entityStateManager, new Set());
+        updateCacheManager.setOperationState(entityCopy, dbEntity, entityStateManager, schemaUtils, new Set());
         const saveResult = await transactionalConnector.save(entityCopy, context);
         updateCacheManager.afterSaveModifications(entity, dbEntity, saveResult, entityStateManager, new Set());
         return saveResult;

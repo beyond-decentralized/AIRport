@@ -42,7 +42,8 @@ import {
 export async function transactional<T>(
 	callback: {
 		(
-			transaction: ITransaction
+			transaction: ITransaction,
+			context?: IContext
 		): Promise<void> | void
 	},
 	context: IContext = {},

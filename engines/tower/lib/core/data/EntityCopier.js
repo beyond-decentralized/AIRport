@@ -3,7 +3,7 @@ import { ENTITY_COPIER } from "../../tokens";
 export class EntityCopier {
     copyEntityForProcessing(entity, dbEntity, entityStateManager) {
         const operation = {
-            processedEntitySet: new Set(),
+            processedEntityMap: new Map(),
             sequence: 0,
         };
         return this.doCopyEntityForProcessing(entity, dbEntity, entityStateManager, operation);
@@ -14,10 +14,10 @@ export class EntityCopier {
         }
         else {
             let entityCopy = {};
-            if (operation.processedEntitySet.has(entity)) {
-                return;
+            if (operation.processedEntityMap.has(entity)) {
+                return operation.processedEntityMap.get(entity);
             }
-            operation.processedEntitySet.add(entity);
+            operation.processedEntityMap.set(entity, entityCopy);
             const operationUniqueId = ++operation.sequence;
             entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
             entity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;

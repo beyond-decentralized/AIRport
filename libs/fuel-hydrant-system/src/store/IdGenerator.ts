@@ -60,8 +60,6 @@ export class IdGenerator
 	private transactionHistoryIdColumns: DbColumn[] = []
 
 	async init(): Promise<void> {
-		(await container(this)
-			.get(SEQUENCE_GENERATOR)).initialize()
 		this.populateTransactionHistoryIdColumns().then()
 	}
 

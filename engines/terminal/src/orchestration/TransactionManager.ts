@@ -28,6 +28,7 @@ import {
 import {
 	ICredentials,
 	ITransaction,
+	ITransactionContext,
 	ITransactionManager,
 	TRANSACTION_MANAGER
 } from '@airport/terminal-map';
@@ -70,10 +71,15 @@ export class TransactionManager
 		transactionalCallback: {
 			(
 				transaction: IStoreDriver,
+				context: IContext
 			): Promise<void> | void
 		},
-		context: IContext,
+		context: ITransactionContext,
 	): Promise<void> {
+		if (context.transaction) {
+			await transactionalCallback(context.transaction, context)
+			return
+		}
 		const [storeDriver, transHistoryDuo] = await container(this)
 			.get(
 				STORE_DRIVER, TRANS_HISTORY_DUO,
@@ -90,7 +96,9 @@ export class TransactionManager
 				// Either just continue using the current transaction
 				// or return (domain shouldn't be initiating multiple transactions
 				// at the same time
-				return;
+				throw new Error(`'${credentials.domainAndPort}' initialized multiple transactions
+				at the same time. Only one concurrent transaction is allowed per application.`)
+				// return;
 			}
 			this.transactionIndexQueue.push(credentials.domainAndPort);
 		}
@@ -109,14 +117,17 @@ export class TransactionManager
 		await storeDriver.transact(async (
 			transaction: ITransaction,
 		) => {
+			context.transaction = transaction
 			transaction.transHistory = transHistoryDuo.getNewRecord();
 			transaction.credentials = credentials;
 			try {
-				await transactionalCallback(transaction);
+				await transactionalCallback(transaction, context);
 				await this.commit(transaction, context);
 			} catch (e) {
 				console.error(e);
 				await this.rollback(transaction, context);
+			} finally {
+				context.transaction = null
 			}
 		}, context);
 	}

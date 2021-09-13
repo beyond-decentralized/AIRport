@@ -1,13 +1,17 @@
+import {
+    ISchemaUtils,
+    IUpdateCacheManager,
+    UPDATE_CACHE_MANAGER
+} from "@airport/air-control";
 import { DI } from "@airport/di"
 import {
     DbEntity,
     EntityRelationType,
     EntityState,
-    IUpdateCacheManager,
     IEntityStateManager,
     ISaveResult,
     SQLDataType,
-    UPDATE_CACHE_MANAGER
+    DbColumn
 } from "@airport/ground-control"
 
 export class UpdateCacheManager
@@ -42,12 +46,13 @@ export class UpdateCacheManager
         entityCopy: T,
         dbEntity: DbEntity,
         entityStateManager: IEntityStateManager,
+        schemaUtils: ISchemaUtils,
         processedEntities: Set<any>
     ): void {
         if (entityCopy instanceof Array) {
             for (var i = 0; i < entityCopy.length; i++) {
                 this.setOperationState(entityCopy[i], dbEntity,
-                    entityStateManager, processedEntities)
+                    entityStateManager, schemaUtils, processedEntities)
             }
         } else {
             if (processedEntities.has(entityCopy)) {
@@ -58,6 +63,7 @@ export class UpdateCacheManager
                 .getOriginalValues(entityCopy)
 
             let entityState: EntityState = entityCopy[entityStateManager.getStateFieldName()]
+            let hasId = true
             if (!entityCopy['id']) {
                 if (entityState === EntityState.DELETE) {
                     throw new Error(
@@ -65,13 +71,60 @@ export class UpdateCacheManager
                 } else {
                     entityState = EntityState.CREATE
                 }
+                hasId = false
             }
+            let isIdGenerated = true
             if (originalValuesObject) {
                 for (const dbProperty of dbEntity.properties) {
                     const property = entityCopy[dbProperty.name]
-                    if (dbProperty.relation && dbProperty.relation.length) {
-                        this.setOperationState(property, dbProperty.relation[0].relationEntity,
-                            entityStateManager, processedEntities);
+                    if (property && dbProperty.relation && dbProperty.relation.length) {
+                        if (dbProperty.relation && dbProperty.relation.length) {
+                            const dbRelation = dbProperty.relation[0];
+                            schemaUtils.forEachColumnTypeOfRelation(dbRelation, (
+                                dbColumn: DbColumn,
+                                propertyNameChains: string[][],
+                            ) => {
+                                // const firstPropertyNameChain = propertyNameChains[0];
+                                for (const currentPropertyNameChange of propertyNameChains) {
+                                    let value = entityCopy
+                                    let originalValue = originalValuesObject
+                                    for (let i = 0; i < currentPropertyNameChange.length; i++) {
+                                        const propertyName = currentPropertyNameChange[i];
+                                        value = value[propertyName]
+                                        originalValue = originalValue[propertyName]
+                                        let noValue = value === null || value === undefined
+                                        let noOriginalValue = originalValue === null
+                                            || originalValue === undefined
+                                        if (noValue) {
+                                            if (originalValue) {
+                                                entityState = EntityState.UPDATE
+                                                return true
+                                            }
+                                            break
+                                        }
+                                        if (noOriginalValue) {
+                                            if (value) {
+                                                entityState = EntityState.UPDATE
+                                                return true
+                                            }
+                                            break
+                                        }
+                                        if (typeof value === 'object') {
+                                            if (typeof originalValue !== 'object') {
+                                                return true
+                                            }
+                                        } else if (typeof originalValue === 'object') {
+                                            return true
+                                        } else {
+                                            if (value !== originalValue) {
+                                                entityState = EntityState.UPDATE
+                                                return true
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
                     } else {
                         if (entityState) {
                             continue
@@ -97,8 +150,31 @@ export class UpdateCacheManager
                         }
                     }
                 }
+            } else if (hasId) {
+                // let hasNonIdValues = false;
+                for (const dbProperty of dbEntity.properties) {
+                    if (dbProperty.name === 'id') {
+                        isIdGenerated = dbProperty.propertyColumns[0].column.isGenerated
+                        if (!isIdGenerated) {
+                            break
+                        }
+                    }
+                }
             }
-            if (!entityState || entityStateManager.isDeleted(entityCopy)) {
+            for (const dbProperty of dbEntity.properties) {
+                const property = entityCopy[dbProperty.name]
+                if (property && dbProperty.relation && dbProperty.relation.length) {
+                    this.setOperationState(property, dbProperty.relation[0].relationEntity,
+                        entityStateManager, schemaUtils, processedEntities);
+                }
+            }
+            if (!entityState) {
+                if (!isIdGenerated) {
+                    entityState = EntityState.CREATE
+                } else {
+                    entityState = EntityState.PARENT_ID
+                }
+            } else if (entityStateManager.isDeleted(entityCopy)) {
                 entityState = EntityState.PARENT_ID
             }
             entityCopy[entityStateManager.getStateFieldName()] = entityState
@@ -143,7 +219,7 @@ export class UpdateCacheManager
             let originalValue = {}
             for (const dbProperty of dbEntity.properties) {
                 const property = entity[dbProperty.name]
-                if (dbProperty.relation && dbProperty.relation.length) {
+                if (property && dbProperty.relation && dbProperty.relation.length) {
                     this.updateOriginalValuesAfterSave(
                         property, dbProperty.relation[0].relationEntity, saveResult, entityStateManager)
                 } else {

@@ -26,9 +26,10 @@ import { IStructuralEntityValidator } from "./StructuralEntityValidator";
 
 export interface IOperationContext
     extends IContext {
-    entityCascadeGraph: any,
     checkIfProcessed: boolean
     dbEntity: DbEntity
+    entityCascadeGraph: any
+    internal: boolean
     ioc: IIocOperationContext
 }
 
