@@ -1,5 +1,5 @@
 import {DI}             from '@airport/di'
-import {JsonSchema}     from '@airport/ground-control'
+import {getSchemaNameFromDomainAndName, JsonSchema}     from '@airport/ground-control'
 import {
 	ITerminalStore,
 	TERMINAL_STORE
@@ -35,11 +35,16 @@ export class SchemaLocator
 		if (!schemaVersionsForDomainName) {
 			return null
 		}
-		const latestSchemaVersionForSchema = schemaVersionsForDomainName.get(jsonSchema.name)
+		const schemaName = getSchemaNameFromDomainAndName(
+			jsonSchema.domain,
+			jsonSchema.name
+		)
+		const latestSchemaVersionForSchema = schemaVersionsForDomainName.get(schemaName)
 
 		const jsonSchemaVersion = jsonSchema.versions[0]
 
-		if (latestSchemaVersionForSchema.integerVersion !== jsonSchemaVersion.integerVersion) {
+		if (latestSchemaVersionForSchema
+			&& latestSchemaVersionForSchema.integerVersion !== jsonSchemaVersion.integerVersion) {
 			throw new Error(`Multiple versions of schemas are not yet supported`)
 		}
 

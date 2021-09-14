@@ -142,10 +142,10 @@ export function getPrimitiveValue(
 				}
 				return datesToNumbers ? value.getTime() : value
 			} else {
-				// if (dbColumn.type !== SQLDataType.JSON) {
+				if (dbColumn.type !== SQLDataType.JSON) {
 					throw new Error(`Unexpected Json object for row: ${rowIndex + 1}, column: ${getColumnName(dbColumn)}`)
-				// }
-				// return JSON.stringify(value)
+				}
+				return JSON.stringify(value)
 			}
 		}
 		case 'undefined':

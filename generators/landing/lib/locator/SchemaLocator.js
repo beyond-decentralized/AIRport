@@ -1,4 +1,5 @@
 import { DI } from '@airport/di';
+import { getSchemaNameFromDomainAndName } from '@airport/ground-control';
 import { SCHEMA_LOCATOR } from '../tokens';
 export class SchemaLocator {
     // private terminalStore: ITerminalStore
@@ -8,9 +9,11 @@ export class SchemaLocator {
         if (!schemaVersionsForDomainName) {
             return null;
         }
-        const latestSchemaVersionForSchema = schemaVersionsForDomainName.get(jsonSchema.name);
+        const schemaName = getSchemaNameFromDomainAndName(jsonSchema.domain, jsonSchema.name);
+        const latestSchemaVersionForSchema = schemaVersionsForDomainName.get(schemaName);
         const jsonSchemaVersion = jsonSchema.versions[0];
-        if (latestSchemaVersionForSchema.integerVersion !== jsonSchemaVersion.integerVersion) {
+        if (latestSchemaVersionForSchema
+            && latestSchemaVersionForSchema.integerVersion !== jsonSchemaVersion.integerVersion) {
             throw new Error(`Multiple versions of schemas are not yet supported`);
         }
         return latestSchemaVersionForSchema;

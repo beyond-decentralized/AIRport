@@ -2,8 +2,8 @@ import { DI } from '@airport/di';
 import { DDL_OBJECT_LINKER } from './tokens';
 export class DdlObjectLinker {
     link(ddlObjects, terminalStore) {
-        const { allSchemaVersionsByIds, columns, domains, entities, latestSchemaVersions, properties, propertyColumns, relationColumns, relations, schemaReferences, schemas } = ddlObjects;
-        this.linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, domains, schemas, latestSchemaVersions, schemaReferences);
+        const { allDomains, allSchemaVersionsByIds, columns, entities, latestSchemaVersions, properties, propertyColumns, relationColumns, relations, schemaReferences, schemas } = ddlObjects;
+        this.linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, allDomains, schemas, latestSchemaVersions, schemaReferences);
         const entityArrayById = this.linkEntities(allSchemaVersionsByIds, entities);
         const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(properties, relations, entityArrayById, terminalStore);
         this.linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns, entityArrayById, terminalStore);

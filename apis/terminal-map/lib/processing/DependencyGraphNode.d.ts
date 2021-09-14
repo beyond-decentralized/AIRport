@@ -1,5 +1,8 @@
 import { DbEntity } from '@airport/ground-control';
 export interface IDependencyGraphNode<E> {
+    circleTraversedFor: {
+        [entityOUId: number]: boolean;
+    };
     dbEntity: DbEntity;
     dependsOnByOUID: IDependencyGraphNode<any>[];
     dependsOn: IDependencyGraphNode<any>[];

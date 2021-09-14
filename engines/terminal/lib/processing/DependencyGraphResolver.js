@@ -10,6 +10,7 @@ import { DEPENDENCY_GRAPH_RESOLVER } from '../tokens';
 export class DependencyGraphResolver {
     getOperationsInOrder(entities, context) {
         const unorderedDependencies = this.getEntitiesToPersist(entities, [], context);
+        this.resolveCircularDependencies(unorderedDependencies, context);
         const orderedDependencies = this.orderEntitiesToPersist(unorderedDependencies, context);
         const operationNodes = this.optimizePersistOperations(orderedDependencies, context);
         return this.ensureUpdatesAreGroupedCorrectly(operationNodes, context);
@@ -45,6 +46,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
             }
             else if (!isParentId && !deleteByCascade) {
                 dependencyGraphNode = {
+                    circleTraversedFor: {},
                     dbEntity,
                     dependsOnByOUID: [],
                     dependsOn: [],
@@ -135,6 +137,39 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
             } // for properties
         } // for entities
         return allProcessedNodes;
+    }
+    resolveCircularDependencies(unorderedDependencies, context) {
+        for (const node of unorderedDependencies) {
+            const nodeOUID = context.ioc.entityStateManager.getOperationUniqueId(node.entity);
+            this.resolveCircularDependenciesForNode(node, nodeOUID, node, context);
+        }
+    }
+    resolveCircularDependenciesForNode(node, nodeOUID, currentlyTraversedNode, context) {
+        if (!currentlyTraversedNode.dependsOn
+            || currentlyTraversedNode.circleTraversedFor[nodeOUID]) {
+            return;
+        }
+        currentlyTraversedNode.circleTraversedFor[nodeOUID] = true;
+        for (let i = currentlyTraversedNode.dependsOn.length - 1; i >= 0; i--) {
+            const dependency = currentlyTraversedNode.dependsOn[i];
+            const dependencyOUID = context.ioc.entityStateManager
+                .getOperationUniqueId(dependency.entity);
+            if (dependencyOUID === nodeOUID) {
+                if (this.hasGeneratedIdColumns(node)) {
+                    throw new Error(`Cannot resolve circular dependencies for nodes that have @GeneratedValue Id columns`);
+                }
+                currentlyTraversedNode.dependsOn.splice(i, 1);
+            }
+            this.resolveCircularDependenciesForNode(node, nodeOUID, dependency, context);
+        }
+    }
+    hasGeneratedIdColumns(node) {
+        for (const idColumn of node.dbEntity.idColumns) {
+            if (idColumn.isGenerated) {
+                return true;
+            }
+        }
+        return false;
     }
     orderEntitiesToPersist(unorderedDependencies, context) {
         let orderedNodes = [];

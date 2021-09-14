@@ -10,6 +10,16 @@ export class WebSqlTransaction extends WebSqlDriver {
     }
     async saveTransaction(transaction) {
     }
+    async query(queryType, query, params = [], context, saveTransaction = false) {
+        return new Promise((resolve, reject) => {
+            try {
+                this.doQuery(queryType, query, params, context, this.nativeTransaction, resolve, reject);
+            }
+            catch (error) {
+                reject(error);
+            }
+        });
+    }
     async commit() {
         // this.nativeTransaction.executeSql('COMMIT');
         // this.driver.commit();

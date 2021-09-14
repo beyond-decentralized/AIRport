@@ -39,13 +39,13 @@ export class DdlObjectLinker
 		terminalStore: ITerminalStore
 	): void {
 		const {
-			      allSchemaVersionsByIds, columns, domains, entities, latestSchemaVersions,
+			      allDomains, allSchemaVersionsByIds, columns, entities, latestSchemaVersions,
 			      properties, propertyColumns, relationColumns, relations, schemaReferences,
 			      schemas
 		      } = ddlObjects
 
 		this.linkDomainsAndSchemasAndVersions(
-			allSchemaVersionsByIds, domains, schemas, latestSchemaVersions, schemaReferences)
+			allSchemaVersionsByIds, allDomains, schemas, latestSchemaVersions, schemaReferences)
 
 		const entityArrayById: ISchemaEntity[]  =
 			      this.linkEntities(allSchemaVersionsByIds, entities)

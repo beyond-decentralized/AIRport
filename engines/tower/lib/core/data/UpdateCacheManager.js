@@ -13,7 +13,7 @@ export class UpdateCacheManager {
             entityStateManager.setOriginalValues(originalValuesObject, entity);
             for (let dbProperty of dbEntity.properties) {
                 const property = entity[dbProperty.name];
-                if (dbProperty.relation && dbProperty.relation.length) {
+                if (property && dbProperty.relation && dbProperty.relation.length) {
                     this.saveOriginalValues(property, dbProperty.relation[0].relationEntity, entityStateManager);
                 }
                 else {
@@ -156,16 +156,20 @@ export class UpdateCacheManager {
         }
     }
     afterSaveModifications(entity, dbEntity, saveResult, entityStateManager, processedEntities) {
-        this.updateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager);
+        this.updateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager, new Set());
         this.removeDeletedEntities(entity, dbEntity, saveResult, entityStateManager, processedEntities);
     }
-    updateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager) {
+    updateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager, processedEntities) {
         if (entity instanceof Array) {
             for (let i = 0; i < entity.length; i++) {
-                this.updateOriginalValuesAfterSave(entity[i], dbEntity, saveResult, entityStateManager);
+                this.updateOriginalValuesAfterSave(entity[i], dbEntity, saveResult, entityStateManager, processedEntities);
             }
         }
         else {
+            if (processedEntities.has(entity)) {
+                return;
+            }
+            processedEntities.add(entity);
             let operationUniqueId = entityStateManager.getOperationUniqueId(entity, true, dbEntity);
             let createdRecordId = saveResult.created[operationUniqueId];
             if (createdRecordId) {
@@ -181,7 +185,7 @@ export class UpdateCacheManager {
             for (const dbProperty of dbEntity.properties) {
                 const property = entity[dbProperty.name];
                 if (property && dbProperty.relation && dbProperty.relation.length) {
-                    this.updateOriginalValuesAfterSave(property, dbProperty.relation[0].relationEntity, saveResult, entityStateManager);
+                    this.updateOriginalValuesAfterSave(property, dbProperty.relation[0].relationEntity, saveResult, entityStateManager, processedEntities);
                 }
                 else {
                     originalValue[dbProperty.name] = property;

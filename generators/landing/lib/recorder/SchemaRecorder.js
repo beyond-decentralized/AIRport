@@ -69,16 +69,19 @@ export class SchemaRecorder {
         }
     }
     async bootstrapRecord(airDb, ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao, context) {
-        await this.bulkCreate(domainDao, ddlObjects.domains, context);
+        // await this.bulkCreate(domainDao, ddlObjects.domains, context)
         await this.bulkCreate(schemaDao, ddlObjects.schemas, context);
-        await this.bulkCreate(schemaVersionDao, ddlObjects.latestSchemaVersions, context);
-        await this.bulkCreate(schemaReferenceDao, ddlObjects.schemaReferences, context);
-        await this.bulkCreate(schemaEntityDao, ddlObjects.entities, context);
-        await this.bulkCreate(schemaPropertyDao, ddlObjects.properties, context);
-        await this.bulkCreate(schemaRelationDao, ddlObjects.relations, context);
-        await this.bulkCreate(schemaColumnDao, ddlObjects.columns, context);
-        await this.bulkCreate(schemaPropertyColumnDao, ddlObjects.propertyColumns, context);
-        await this.bulkCreate(schemaRelationColumnDao, ddlObjects.relationColumns, context);
+        // await this.bulkCreate(schemaVersionDao, ddlObjects.latestSchemaVersions, context)
+        // await this.bulkCreate(schemaReferenceDao,
+        // 	ddlObjects.schemaReferences as SchemaReferenceECreateProperties[], context)
+        // await this.bulkCreate(schemaEntityDao, ddlObjects.entities, context)
+        // await this.bulkCreate(schemaPropertyDao, ddlObjects.properties, context)
+        // await this.bulkCreate(schemaRelationDao, ddlObjects.relations, context)
+        // await this.bulkCreate(schemaColumnDao, ddlObjects.columns, context)
+        // await this.bulkCreate(schemaPropertyColumnDao,
+        // 	ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[], context)
+        // await this.bulkCreate(schemaRelationColumnDao,
+        // 	ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[], context)
     }
     async bulkCreate(dao, entities, context) {
         await dao.save(entities, context);

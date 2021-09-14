@@ -101,23 +101,23 @@ export class WebSqlDriver
 		// }
 	}
 
-/* 	async rollback(): Promise<void> {
-		// let win: any = window
-		// if (win.sqlitePlugin) {
-		// 	this._db.executeSql('ROLLBACK TRANSACTION;')
-		// } else {
-		this._db.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, [])
-		// }
-	} */
+	/* 	async rollback(): Promise<void> {
+			// let win: any = window
+			// if (win.sqlitePlugin) {
+			// 	this._db.executeSql('ROLLBACK TRANSACTION;')
+			// } else {
+			this._db.executeSql('SELECT count(*) FROM ' + INVALID_TABLE_NAME, [])
+			// }
+		} */
 
-/* 	async commit(): Promise<void> {
-		let win: any = window
-		if (win.sqlitePlugin) {
-			this._db.executeSql('COMMIT TRANSACTION;')
-		} else {
-			// Nothing to do
-		}
-	} */
+	/* 	async commit(): Promise<void> {
+			let win: any = window
+			if (win.sqlitePlugin) {
+				this._db.executeSql('COMMIT TRANSACTION;')
+			} else {
+				// Nothing to do
+			}
+		} */
 
 	async query(
 		queryType: QueryType,
@@ -132,29 +132,44 @@ export class WebSqlDriver
 			reject
 		) => {
 			try {
-				this._db.transaction(function (tx) {
-					if (!['TQ_BOOLEAN_FIELD_CHANGE', 'TQ_DATE_FIELD_CHANGE', 'TQ_NUMBER_FIELD_CHANGE', 'TQ_STRING_FIELD_CHANGE',
-						'TQ_ENTITY_CHANGE', 'TQ_ENTITY_WHERE_CHANGE', 'TQ_TRANSACTION'].some((deltaTableName) => {
-							return query.indexOf(deltaTableName) > -1
-						})) {
-						console.log(query)
-						console.log(params)
-					}
-
-					tx.executeSql(query, params, function (_tx, results) {
-						var len = results.rows.length, i;
-						const data = []
-						for (i = 0; i < len; i++) {
-							data.push(results.rows.item(i));
-						}
-						resolve(results);
-					}, reject);
+				this._db.transaction((tx) => {
+					this.doQuery(queryType, query, params,
+						context, tx, resolve, reject)
 				});
 			} catch (error) {
 				reject(error)
 			}
 		})
 	}
+
+	protected doQuery(
+		queryType: QueryType,
+		query: string,
+		params = [],
+		context: IOperationContext,
+		tx,
+		resolve,
+		reject
+	): void {
+		if (!['TQ_BOOLEAN_FIELD_CHANGE', 'TQ_DATE_FIELD_CHANGE', 'TQ_NUMBER_FIELD_CHANGE', 'TQ_STRING_FIELD_CHANGE',
+			'TQ_ENTITY_CHANGE', 'TQ_ENTITY_WHERE_CHANGE', 'TQ_TRANSACTION'].some((deltaTableName) => {
+				return query.indexOf(deltaTableName) > -1
+			})) {
+			console.log(query)
+			console.log(params)
+		}
+
+		tx.executeSql(query, params, function (_tx, results) {
+			var len = results.rows.length, i;
+			const data = []
+			for (i = 0; i < len; i++) {
+				data.push(results.rows.item(i));
+			}
+			resolve(results);
+		}, reject);
+	}
+
+
 
 	private getReturnValue(
 		queryType: QueryType,

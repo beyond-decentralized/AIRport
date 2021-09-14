@@ -1,8 +1,9 @@
 import { IInjectable } from '@airport/di'
-import { INVALID_TABLE_NAME } from '@airport/ground-control'
+import { INVALID_TABLE_NAME, QueryType } from '@airport/ground-control'
 import { ITransactionHistory } from '@airport/holding-pattern'
 import {
 	ICredentials,
+	IOperationContext,
 	ITransaction
 } from '@airport/terminal-map'
 import { WebSqlDriver } from './WebSqlDriver'
@@ -24,6 +25,26 @@ export class WebSqlTransaction
 	}
 
 	async saveTransaction(transaction: ITransactionHistory): Promise<any> {
+	}
+
+	async query(
+		queryType: QueryType,
+		query: string,
+		params = [],
+		context: IOperationContext,
+		saveTransaction: boolean = false
+	): Promise<any> {
+		return new Promise<any>((
+			resolve,
+			reject
+		) => {
+			try {
+				this.doQuery(queryType, query, params,
+					context, this.nativeTransaction, resolve, reject)
+			} catch (error) {
+				reject(error)
+			}
+		})
 	}
 
 	async commit(): Promise<void> {

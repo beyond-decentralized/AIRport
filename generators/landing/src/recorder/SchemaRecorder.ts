@@ -173,19 +173,19 @@ export class SchemaRecorder
 		schemaRelationColumnDao: ISchemaRelationColumnDao,
 		context: IContext
 	) {
-		await this.bulkCreate(domainDao, ddlObjects.domains, context)
+		// await this.bulkCreate(domainDao, ddlObjects.domains, context)
 		await this.bulkCreate(schemaDao, ddlObjects.schemas, context)
-		await this.bulkCreate(schemaVersionDao, ddlObjects.latestSchemaVersions, context)
-		await this.bulkCreate(schemaReferenceDao,
-			ddlObjects.schemaReferences as SchemaReferenceECreateProperties[], context)
-		await this.bulkCreate(schemaEntityDao, ddlObjects.entities, context)
-		await this.bulkCreate(schemaPropertyDao, ddlObjects.properties, context)
-		await this.bulkCreate(schemaRelationDao, ddlObjects.relations, context)
-		await this.bulkCreate(schemaColumnDao, ddlObjects.columns, context)
-		await this.bulkCreate(schemaPropertyColumnDao,
-			ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[], context)
-		await this.bulkCreate(schemaRelationColumnDao,
-			ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[], context)
+		// await this.bulkCreate(schemaVersionDao, ddlObjects.latestSchemaVersions, context)
+		// await this.bulkCreate(schemaReferenceDao,
+		// 	ddlObjects.schemaReferences as SchemaReferenceECreateProperties[], context)
+		// await this.bulkCreate(schemaEntityDao, ddlObjects.entities, context)
+		// await this.bulkCreate(schemaPropertyDao, ddlObjects.properties, context)
+		// await this.bulkCreate(schemaRelationDao, ddlObjects.relations, context)
+		// await this.bulkCreate(schemaColumnDao, ddlObjects.columns, context)
+		// await this.bulkCreate(schemaPropertyColumnDao,
+		// 	ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[], context)
+		// await this.bulkCreate(schemaRelationColumnDao,
+		// 	ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[], context)
 	}
 
 	private async bulkCreate(

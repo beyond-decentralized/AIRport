@@ -75,28 +75,31 @@ export class WebSqlDriver extends SqLiteDriver {
     async query(queryType, query, params = [], context, saveTransaction = false) {
         return new Promise((resolve, reject) => {
             try {
-                this._db.transaction(function (tx) {
-                    if (!['TQ_BOOLEAN_FIELD_CHANGE', 'TQ_DATE_FIELD_CHANGE', 'TQ_NUMBER_FIELD_CHANGE', 'TQ_STRING_FIELD_CHANGE',
-                        'TQ_ENTITY_CHANGE', 'TQ_ENTITY_WHERE_CHANGE', 'TQ_TRANSACTION'].some((deltaTableName) => {
-                        return query.indexOf(deltaTableName) > -1;
-                    })) {
-                        console.log(query);
-                        console.log(params);
-                    }
-                    tx.executeSql(query, params, function (_tx, results) {
-                        var len = results.rows.length, i;
-                        const data = [];
-                        for (i = 0; i < len; i++) {
-                            data.push(results.rows.item(i));
-                        }
-                        resolve(results);
-                    }, reject);
+                this._db.transaction((tx) => {
+                    this.doQuery(queryType, query, params, context, tx, resolve, reject);
                 });
             }
             catch (error) {
                 reject(error);
             }
         });
+    }
+    doQuery(queryType, query, params = [], context, tx, resolve, reject) {
+        if (!['TQ_BOOLEAN_FIELD_CHANGE', 'TQ_DATE_FIELD_CHANGE', 'TQ_NUMBER_FIELD_CHANGE', 'TQ_STRING_FIELD_CHANGE',
+            'TQ_ENTITY_CHANGE', 'TQ_ENTITY_WHERE_CHANGE', 'TQ_TRANSACTION'].some((deltaTableName) => {
+            return query.indexOf(deltaTableName) > -1;
+        })) {
+            console.log(query);
+            console.log(params);
+        }
+        tx.executeSql(query, params, function (_tx, results) {
+            var len = results.rows.length, i;
+            const data = [];
+            for (i = 0; i < len; i++) {
+                data.push(results.rows.item(i));
+            }
+            resolve(results);
+        }, reject);
     }
     getReturnValue(queryType, response) {
         switch (queryType) {
