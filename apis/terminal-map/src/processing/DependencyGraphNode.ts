@@ -2,6 +2,7 @@ import {DbEntity} from '@airport/ground-control'
 
 export interface IDependencyGraphNode<E> {
 	dbEntity: DbEntity
+	dependsOnByOUID: IDependencyGraphNode<any>[] 
 	dependsOn: IDependencyGraphNode<any>[]
 	entity: E
 	isCreate: boolean

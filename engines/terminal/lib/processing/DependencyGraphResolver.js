@@ -39,32 +39,40 @@ deleted by cascading rules.  Entity: ${dbEntity.name}.
 Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`);
             }
             let dependencyGraphNode = operatedOnEntities[operationUniqueId];
+            let isExistingNode = false;
             if (dependencyGraphNode) {
-                if (dependsOn) {
-                    dependencyGraphNode.dependsOn.push(dependsOn);
-                }
-                if (dependency) {
-                    dependency.dependsOn.push(dependencyGraphNode);
-                }
-                continue;
+                isExistingNode = true;
             }
             else if (!isParentId && !deleteByCascade) {
                 dependencyGraphNode = {
                     dbEntity,
-                    dependsOn: dependsOn && !isDelete ? [dependsOn] : [],
+                    dependsOnByOUID: [],
+                    dependsOn: [],
                     entity,
                     isCreate,
                     isDelete
                 };
-                if (dependsOn) {
-                    dependencyGraphNode.dependsOn.push(dependsOn);
+                allProcessedNodes.push(dependencyGraphNode);
+                operatedOnEntities[operationUniqueId] = dependencyGraphNode;
+            }
+            if (!isDelete) {
+                if (dependsOn && !isDelete) {
+                    const dependsOnOUID = context.ioc.entityStateManager.getOperationUniqueId(dependsOn.entity);
+                    if (!dependencyGraphNode.dependsOnByOUID[dependsOnOUID]) {
+                        dependencyGraphNode.dependsOnByOUID[dependsOnOUID] = dependsOn;
+                        dependencyGraphNode.dependsOn.push(dependsOn);
+                    }
                 }
                 if (dependency) {
-                    dependency.dependsOn.push(dependencyGraphNode);
+                    if (!dependencyGraphNode.dependsOnByOUID[operationUniqueId]) {
+                        dependency.dependsOnByOUID[operationUniqueId] = dependencyGraphNode;
+                        dependency.dependsOn.push(dependencyGraphNode);
+                    }
                 }
-                allProcessedNodes.push(dependencyGraphNode);
             }
-            operatedOnEntities[operationUniqueId] = dependencyGraphNode;
+            if (isExistingNode) {
+                continue;
+            }
             for (const dbProperty of context.dbEntity.properties) {
                 let childEntities;
                 let propertyValue = entity[dbProperty.name];
@@ -118,7 +126,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
                 }
                 if (childEntities) {
                     const dbEntity = dbRelation.relationEntity;
-                    const previousDbEntity = dbEntity;
+                    const previousDbEntity = context.dbEntity;
                     context.dbEntity = dbEntity;
                     const childDependencyLinkedNodes = this.getEntitiesToPersist(childEntities, operatedOnEntities, context, fromDependencyForChild, !isParentId && !isDelete && childIsDependency ? dependencyGraphNode : null, childDeleteByCascade);
                     allProcessedNodes = allProcessedNodes.concat(childDependencyLinkedNodes);
