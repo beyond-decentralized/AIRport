@@ -126,20 +126,36 @@ export class WebSqlDriver
 		context: IOperationContext,
 		saveTransaction: boolean = false
 	): Promise<any> {
-
-		return new Promise<any>((
+		const queryResultPromise = new Promise<any>((
 			resolve,
 			reject
 		) => {
 			try {
 				this._db.transaction((tx) => {
-					this.doQuery(queryType, query, params,
-						context, tx, resolve, reject)
+					try {
+						this.doQuery(queryType, query, params,
+							context, tx, resolve, reject)
+					} catch (error) {
+						reject(error)
+					}
 				});
 			} catch (error) {
 				reject(error)
 			}
 		})
+
+		queryResultPromise.catch((error) => {
+			if(queryType === QueryType.DDL) {
+				throw new Error(`Error executing:
+				
+				${query}
+
+				Object already exists or cannot be modified in the specified way.`)
+			}
+			throw error
+		});
+
+		return queryResultPromise;
 	}
 
 	protected doQuery(

@@ -96,7 +96,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 				allProcessedNodes.push(dependencyGraphNode)
 				operatedOnEntities[operationUniqueId] = dependencyGraphNode
 			}
-			if (!isDelete) {
+			if (!isParentId && !isDelete) {
 				if (dependsOn && !isDelete) {
 					const dependsOnOUID = context.ioc.entityStateManager.getOperationUniqueId(dependsOn.entity)
 					if (!dependencyGraphNode.dependsOnByOUID[dependsOnOUID]) {

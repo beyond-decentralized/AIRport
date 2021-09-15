@@ -73,16 +73,32 @@ export class WebSqlDriver extends SqLiteDriver {
             }
         } */
     async query(queryType, query, params = [], context, saveTransaction = false) {
-        return new Promise((resolve, reject) => {
+        const queryResultPromise = new Promise((resolve, reject) => {
             try {
                 this._db.transaction((tx) => {
-                    this.doQuery(queryType, query, params, context, tx, resolve, reject);
+                    try {
+                        this.doQuery(queryType, query, params, context, tx, resolve, reject);
+                    }
+                    catch (error) {
+                        reject(error);
+                    }
                 });
             }
             catch (error) {
                 reject(error);
             }
         });
+        queryResultPromise.catch((error) => {
+            if (queryType === QueryType.DDL) {
+                throw new Error(`Error executing:
+				
+				${query}
+
+				Object already exists or cannot be modified in the specified way.`);
+            }
+            throw error;
+        });
+        return queryResultPromise;
     }
     doQuery(queryType, query, params = [], context, tx, resolve, reject) {
         if (!['TQ_BOOLEAN_FIELD_CHANGE', 'TQ_DATE_FIELD_CHANGE', 'TQ_NUMBER_FIELD_CHANGE', 'TQ_STRING_FIELD_CHANGE',
