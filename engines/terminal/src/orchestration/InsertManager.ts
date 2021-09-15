@@ -67,7 +67,7 @@ export class InsertManager
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
 		return <number>await this.internalInsertValues(
-			portableQuery, actor, transaction, context, ensureGeneratedValues)
+			portableQuery, actor, transaction, context, false, ensureGeneratedValues)
 	}
 
 	async insertValuesGetIds(
@@ -77,7 +77,7 @@ export class InsertManager
 		context: IContext,
 	): Promise<RecordId[] | RecordId[][]> {
 		return <RecordId[] | RecordId[][]>await this.internalInsertValues(
-			portableQuery, actor, transaction, context)
+			portableQuery, actor, transaction, context, true)
 	}
 
 	async addRepository(
@@ -221,7 +221,7 @@ appears more than once in the Columns clause`)
 		const idColumns = dbEntity.idColumns
 
 		const allIds: RecordId[][] = []
-		for (const entityValues of values) {
+		for (const _entityValues of values) {
 			allIds.push([])
 		}
 

@@ -10,10 +10,10 @@ export class InsertManager {
     // 	return this.transManager.currentTransHistory
     // }
     async insertValues(portableQuery, actor, transaction, context, ensureGeneratedValues) {
-        return await this.internalInsertValues(portableQuery, actor, transaction, context, ensureGeneratedValues);
+        return await this.internalInsertValues(portableQuery, actor, transaction, context, false, ensureGeneratedValues);
     }
     async insertValuesGetIds(portableQuery, actor, transaction, context) {
-        return await this.internalInsertValues(portableQuery, actor, transaction, context);
+        return await this.internalInsertValues(portableQuery, actor, transaction, context, true);
     }
     async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH) {
         const [repoManager, transManager] = await container(this)
@@ -78,7 +78,7 @@ appears more than once in the Columns clause`);
         const values = jsonInsertValues.V;
         const idColumns = dbEntity.idColumns;
         const allIds = [];
-        for (const entityValues of values) {
+        for (const _entityValues of values) {
             allIds.push([]);
         }
         let actorIdColumn;

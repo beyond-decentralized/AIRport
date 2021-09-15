@@ -87,7 +87,7 @@ export abstract class EntityLookup<Child, MappedChild,
 		context: IEntityContext
 	): Promise<any> {
 		context.dbEntity = this.dbEntity
-		const result = this.lookup(rawEntityQuery, queryResultType,
+		const result = await this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)
 		const [updateCacheManager, entityStateManager] =
 			await DI.db().get(UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER)

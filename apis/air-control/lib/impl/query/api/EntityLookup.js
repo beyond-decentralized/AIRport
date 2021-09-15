@@ -16,7 +16,7 @@ export class EntityLookup extends LookupProxy {
     }
     async entityLookup(rawEntityQuery, queryResultType, search, one, context) {
         context.dbEntity = this.dbEntity;
-        const result = this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);
+        const result = await this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);
         const [updateCacheManager, entityStateManager] = await DI.db().get(UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER);
         if (search) {
             throw new Error(`Search operations are not yet supported`);
