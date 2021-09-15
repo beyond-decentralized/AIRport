@@ -26,7 +26,8 @@ export class Stage2SyncedInDataProcessor {
         for (const [schemaVersionId, creationInSchemaMap] of recordCreations) {
             for (const [tableIndex, creationInTableMap] of creationInSchemaMap) {
                 const schemaIndex = schemasBySchemaVersionIdMap[schemaVersionId];
-                const dbEntity = airDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
+                const dbEntity = airDb.schemas[schemaIndex].currentVersion[0]
+                    .schemaVersion.entities[tableIndex];
                 const qEntity = airDb.qSchemas[schemaIndex][dbEntity.name];
                 const columns = [
                     qEntity.repository.id,
@@ -121,7 +122,8 @@ export class Stage2SyncedInDataProcessor {
         for (const [schemaVersionId, deletionInSchemaMap] of recordDeletions) {
             const schema = schemasBySchemaVersionIdMap.get(schemaVersionId);
             for (const [tableIndex, deletionInTableMap] of deletionInSchemaMap) {
-                const dbEntity = airDb.schemas[schema.index].currentVersion.entities[tableIndex];
+                const dbEntity = airDb.schemas[schema.index].currentVersion[0]
+                    .schemaVersion.entities[tableIndex];
                 const qEntity = airDb.qSchemas[schema.index][dbEntity.name];
                 let numClauses = 0;
                 let repositoryWhereFragments = [];

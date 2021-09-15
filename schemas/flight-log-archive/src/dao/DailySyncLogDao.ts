@@ -2,27 +2,27 @@ import {
 	AIRPORT_DATABASE,
 	and,
 	distinct
-}                            from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	container,
 	DI
-}                            from '@airport/di'
+} from '@airport/di'
 import {
 	DailySyncLogDatabaseId,
 	DailySyncLogDateNumber,
 	DailySyncLogRepositoryId,
 	DailySyncLogSynced,
 	DailySyncLogValues
-}                            from '../ddl/DailySyncLog'
-import {BaseDailySyncLogDao} from '../generated/baseDaos'
-import {QDailySyncLog}       from '../generated/qdailysynclog'
-import {Q}                   from '../generated/qSchema'
-import {DAILY_SYNC_LOG_DAO}  from '../tokens'
+} from '../ddl/DailySyncLog'
+import { BaseDailySyncLogDao } from '../generated/baseDaos'
+import { QDailySyncLog } from '../generated/qdailysynclog'
+import { Q } from '../generated/qSchema'
+import { DAILY_SYNC_LOG_DAO } from '../tokens'
 
 export type DailyToMonthlyResult = [
 	DailySyncLogDatabaseId,
 	DailySyncLogRepositoryId
-	];
+];
 
 export interface IDailySyncLogDao {
 
@@ -59,7 +59,8 @@ export class DailySyncLogDao
 	async insertValues(
 		values: DailySyncLogValues[]
 	): Promise<void> {
-		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog
+		const dbEntity = Q.db.currentVersion[0].schemaVersion
+			.entityMapByName.RealtimeSyncLog
 		let dsl: QDailySyncLog
 
 		const airDb = await container(this).get(AIRPORT_DATABASE)

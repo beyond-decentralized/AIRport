@@ -1,5 +1,5 @@
 import { and, or } from '@airport/air-control';
-import { AIR_DB } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { MISSING_RECORD_DAO } from '../../tokens';
 import { BaseMissingRecordDao, Q } from '../../generated/generated';
@@ -23,9 +23,9 @@ export class MissingRecordDao extends BaseMissingRecordDao {
         const mr = Q.MissingRecord;
         let numClauses = 0;
         const currentSchemaVersionMapById = {};
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         for (const schema of airDb.schemas) {
-            const schemaVersion = schema.currentVersion;
+            const schemaVersion = schema.currentVersion[0].schemaVersion;
             currentSchemaVersionMapById[schemaVersion.id] = schemaVersion;
         }
         let repositoryWhereFragments = [];

@@ -2,8 +2,12 @@ export declare const SCHEMA: {
     domain: string;
     index: any;
     name: string;
+    packageName: string;
     sinceVersion: number;
     versions: {
+        api: {
+            apiObjectMap: {};
+        };
         entities: ({
             columns: {
                 index: number;
@@ -78,6 +82,7 @@ export declare const SCHEMA: {
                 name: string;
                 indexes: any[];
             };
+            operations: {};
         } | {
             columns: {
                 index: number;
@@ -138,6 +143,7 @@ export declare const SCHEMA: {
                 name: string;
                 indexes: any[];
             };
+            operations: {};
         })[];
         integerVersion: number;
         referencedSchemas: any[];

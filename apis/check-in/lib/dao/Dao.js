@@ -10,7 +10,8 @@ export class Dao {
     constructor(dbEntityId, Q, internal = false) {
         this.internal = internal;
         this.stub = new DaoStub();
-        const dbEntity = Q.__dbSchema__.currentVersion.entities[dbEntityId];
+        const dbEntity = Q.__dbSchema__.currentVersion[0]
+            .schemaVersion.entities[dbEntityId];
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
         this.db = new EntityDatabaseFacade(dbEntity, Q);
     }

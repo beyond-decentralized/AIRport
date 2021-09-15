@@ -258,7 +258,7 @@ export function setQSchemaEntities(
 	qSchema: QSchemaInternal,
 	allQSchemas: QSchema[]
 ) {
-	// const entities = orderEntitiesByIdDependencies(schema.currentVersion.entities,
+	// const entities = orderEntitiesByIdDependencies(schema.currentVersion[0].schemaVersion.entities,
 	// schema)
 
 	qSchema.__qIdRelationConstructors__ = []
@@ -271,7 +271,7 @@ export function setQSchemaEntities(
 	// Many-to-Ones must reference the table by primary key in order to
 	// guarantee a single record.  Any other type of join may return multiple
 	// records and is in fact a Many-to-Many
-	schema.currentVersion.entities.forEach((
+	schema.currentVersion[0].schemaVersion.entities.forEach((
 		// entities.forEach((
 		entity: DbEntity
 	) => {
@@ -337,7 +337,8 @@ export function orderSchemasInOrderOfPrecedence(
 	const schemasWithDeps: DbSchemaWithDependencies[] = schemas.map(
 		schema => {
 			const dependencies: Set<SchemaIndex> = new Set()
-			for (const schemaReference of schema.currentVersion.references) {
+			for (const schemaReference of schema.currentVersion[0]
+				.schemaVersion.references) {
 				dependencies.add(schemaReference.referencedSchemaVersion.schema.index)
 			}
 			const schemaWithDependencies: DbSchemaWithDependencies = {

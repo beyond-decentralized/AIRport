@@ -370,11 +370,13 @@ export class SSchemaBuilder {
             }
             referencedSchemaIndex = schemaReference.index;
             const propertyType = aProperty.nonArrayType;
-            let relatedEntity = schemaReference.dbSchema.currentVersion.entityMapByName[propertyType];
+            let relatedEntity = schemaReference.dbSchema.currentVersion[0]
+                .schemaVersion.entityMapByName[propertyType];
             if (!relatedEntity) {
                 if (canBeInterface(propertyType)) {
                     const entityType = getImplNameFromInterfaceName(propertyType);
-                    relatedEntity = schemaReference.dbSchema.currentVersion.entityMapByName[entityType];
+                    relatedEntity = schemaReference.dbSchema.currentVersion[0]
+                        .schemaVersion.entityMapByName[entityType];
                     if (!relatedEntity) {
                         throw new Error(`Could not find related entity '${entityType}' 
 						(from interface ${propertyType}) 

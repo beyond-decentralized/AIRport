@@ -1,7 +1,9 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { DomainGraph, DomainEOptionalId, DomainESelect, QDomainQRelation } from '@airport/territory';
-import { SchemaVersionGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersion, QSchemaVersionQRelation } from './qschemaversion';
+import { SchemaVersionGraph, SchemaVersionESelect, QSchemaVersion } from './qschemaversion';
 import { SchemaVersion } from '../../ddl/schema/SchemaVersion';
+import { SchemaCurrentVersionGraph, SchemaCurrentVersionESelect, QSchemaCurrentVersion } from './qschemacurrentversion';
+import { SchemaCurrentVersion } from '../../ddl/schema/SchemaCurrentVersion';
 import { Schema } from '../../ddl/schema/Schema';
 /**
  * SELECT - All fields and relations (optional).
@@ -13,7 +15,7 @@ export interface SchemaESelect extends IEntitySelectProperties, SchemaEOptionalI
     status?: number | IQNumberField;
     domain?: DomainESelect;
     versions?: SchemaVersionESelect;
-    currentVersion?: SchemaVersionESelect;
+    currentVersion?: SchemaCurrentVersionESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -36,7 +38,6 @@ export interface SchemaEUpdateProperties extends IEntityUpdateProperties {
     packageName?: string | IQStringField;
     status?: number | IQNumberField;
     domain?: DomainEOptionalId;
-    currentVersion?: SchemaVersionEOptionalId;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
@@ -48,7 +49,7 @@ export interface SchemaGraph extends SchemaEOptionalId, IEntityCascadeGraph {
     status?: number | IQNumberField;
     domain?: DomainGraph;
     versions?: SchemaVersionGraph[];
-    currentVersion?: SchemaVersionGraph;
+    currentVersion?: SchemaCurrentVersionGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -59,7 +60,6 @@ export interface SchemaEUpdateColumns extends IEntityUpdateColumns {
     PACKAGE_NAME?: string | IQStringField;
     STATUS?: number | IQNumberField;
     DOMAIN_ID?: number | IQNumberField;
-    CURRENT_VERSION_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -82,7 +82,7 @@ export interface QSchema extends IQEntity<Schema> {
     status: IQNumberField;
     domain: QDomainQRelation;
     versions: IQOneToManyRelation<SchemaVersion, QSchemaVersion>;
-    currentVersion: QSchemaVersionQRelation;
+    currentVersion: IQOneToManyRelation<SchemaCurrentVersion, QSchemaCurrentVersion>;
 }
 export interface QSchemaQId {
     index: IQNumberField;

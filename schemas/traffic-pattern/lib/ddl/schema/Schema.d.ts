@@ -1,5 +1,6 @@
 import { PackageName, SchemaIndex, SchemaName, SchemaScope, SchemaStatus } from '@airport/ground-control';
 import { Domain } from '@airport/territory';
+import { SchemaCurrentVersion } from './SchemaCurrentVersion';
 import { SchemaVersion } from './SchemaVersion';
 export declare class Schema {
     index: SchemaIndex;
@@ -9,6 +10,6 @@ export declare class Schema {
     packageName: PackageName;
     status: SchemaStatus;
     versions: SchemaVersion[];
-    currentVersion: SchemaVersion;
+    currentVersion: SchemaCurrentVersion[];
 }
 //# sourceMappingURL=Schema.d.ts.map

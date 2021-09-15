@@ -5,6 +5,9 @@ export declare const SCHEMA: {
     packageName: string;
     sinceVersion: number;
     versions: {
+        api: {
+            apiObjectMap: {};
+        };
         entities: ({
             columns: ({
                 allocationSize: number;

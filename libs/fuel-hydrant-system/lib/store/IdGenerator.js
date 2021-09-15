@@ -53,7 +53,8 @@ export class IdGenerator {
     async generateEntityIds() {
     }
     getHoldingPatternDbEntity(holdingPatternEntityName) {
-        return Q.db.currentVersion.entityMapByName[holdingPatternEntityName];
+        return Q.db.currentVersion[0].schemaVersion
+            .entityMapByName[holdingPatternEntityName];
     }
 }
 DI.set(ID_GENERATOR, IdGenerator);

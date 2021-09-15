@@ -1,9 +1,9 @@
-import {AIRPORT_DATABASE}             from '@airport/air-control'
+import { AIRPORT_DATABASE } from '@airport/air-control'
 import {
 	getSysWideOpId,
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR
-}                           from '@airport/check-in'
+} from '@airport/check-in'
 import {
 	container,
 	DI, IContext,
@@ -15,7 +15,7 @@ import {
 	JsonInsertValues,
 	PortableQuery,
 	repositoryEntity,
-}                           from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	IActor,
 	IOperationHistory,
@@ -29,7 +29,7 @@ import {
 	REC_HISTORY_DUO,
 	REPO_TRANS_HISTORY_DUO,
 	SystemWideOperationId
-}                           from '@airport/holding-pattern'
+} from '@airport/holding-pattern'
 import {
 	DistributionStrategy,
 	IHistoryManager,
@@ -38,14 +38,14 @@ import {
 	PlatformType,
 	RecordId,
 	TRANSACTION_MANAGER
-}                           from '@airport/terminal-map'
-import {IRepositoryManager} from '../core/repository/RepositoryManager'
+} from '@airport/terminal-map'
+import { IRepositoryManager } from '../core/repository/RepositoryManager'
 import {
 	HISTORY_MANAGER,
 	INSERT_MANAGER,
 	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER
-}                           from '../tokens'
+} from '../tokens'
 
 interface ColumnsToPopulate {
 	actorIdColumn: DbColumn
@@ -82,9 +82,9 @@ export class InsertManager
 
 	async addRepository(
 		name: string,
-		url: string                                = null,
-		platform: PlatformType                     = PlatformType.GOOGLE_DOCS,
-		platformConfig: string                     = null,
+		url: string = null,
+		platform: PlatformType = PlatformType.GOOGLE_DOCS,
+		platformConfig: string = null,
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
 	): Promise<number> {
 		const [repoManager, transManager] = await container(this)
@@ -123,21 +123,21 @@ export class InsertManager
 		actor: IActor,
 		transaction: ITransaction,
 		context: IContext,
-		getIds: boolean                = false,
+		getIds: boolean = false,
 		ensureGeneratedValues: boolean = true
 	): Promise<number | RecordId[] | RecordId[][]> {
 		// TODO: remove unused dependencies after testing
 		const [
-			      airDb,
-			      sequenceGenerator,
-			      historyManager,
-			      offlineDataStore,
-			      operHistoryDuo,
-			      recHistoryDuo,
-			      recHistoryNewValueDuo,
-			      repositoryManager,
-			      repoTransHistoryDuo
-		      ] = await container(this)
+			airDb,
+			sequenceGenerator,
+			historyManager,
+			offlineDataStore,
+			operHistoryDuo,
+			recHistoryDuo,
+			recHistoryNewValueDuo,
+			repositoryManager,
+			repoTransHistoryDuo
+		] = await container(this)
 			.get(AIRPORT_DATABASE,
 				SEQUENCE_GENERATOR, HISTORY_MANAGER,
 				OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
@@ -145,7 +145,7 @@ export class InsertManager
 				REPO_TRANS_HISTORY_DUO)
 
 		const dbEntity = airDb.schemas[portableQuery.schemaIndex]
-			.currentVersion.entities[portableQuery.tableIndex]
+			.currentVersion[0].schemaVersion.entities[portableQuery.tableIndex]
 
 		const errorPrefix = `Error inserting into '${dbEntity.name}'.'
 `
@@ -217,7 +217,7 @@ appears more than once in the Columns clause`)
 		errorPrefix: string,
 		sequenceGenerator: ISequenceGenerator
 	): Promise<RecordId[] | RecordId[][]> {
-		const values    = jsonInsertValues.V
+		const values = jsonInsertValues.V
 		const idColumns = dbEntity.idColumns
 
 		const allIds: RecordId[][] = []
@@ -229,7 +229,7 @@ appears more than once in the Columns clause`)
 		let sysWideOperationIdColumn: DbColumn
 
 		if (!dbEntity.isLocal) {
-			actorIdColumn            = columnsToPopulate.actorIdColumn
+			actorIdColumn = columnsToPopulate.actorIdColumn
 			sysWideOperationIdColumn = columnsToPopulate.sysWideOperationIdColumn
 		}
 
@@ -238,7 +238,7 @@ appears more than once in the Columns clause`)
 				continue
 			}
 
-			let isActorIdColumn   = false
+			let isActorIdColumn = false
 			let inStatementColumnIndex: number
 			const matchingColumns = jsonInsertValues.C.filter(
 				(
@@ -253,7 +253,7 @@ appears more than once in the Columns clause`)
 			if (matchingColumns.length < 1) {
 				// Actor Id cannot be in the insert statement
 				if (idColumn.id === actorIdColumn.id) {
-					isActorIdColumn        = true
+					isActorIdColumn = true
 					inStatementColumnIndex = jsonInsertValues.C.length
 					jsonInsertValues.C.push(actorIdColumn.index)
 				} else {
@@ -266,7 +266,7 @@ appears more than once in the Columns clause`)
 
 			for (let i = 0; i < values.length; i++) {
 				const entityValues = values[i]
-				const idValues     = allIds[i]
+				const idValues = allIds[i]
 				let idValue
 				if (isActorIdColumn) {
 					idValue = actor.id
@@ -323,24 +323,24 @@ appears more than once in the Columns clause`)
 		// Populating generated values AFTER the checks
 		// to not waste sequence numbers on invalid input
 		// (thus reducing storage requirements in SqLite)
-		const numSequencesNeeded      = generatedColumns.map(
+		const numSequencesNeeded = generatedColumns.map(
 			_ => values.length)
 		const generatedSequenceValues = await sequenceGenerator.generateSequenceNumbers(
 			generatedColumns, numSequencesNeeded)
 
 		generatedColumns.forEach((
-			dbColumn,
+			_dbColumn,
 			generatedColumnIndex
 		) => {
 			const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex]
-			const insertColumnIndex             = generatedColumnIndexes[generatedColumnIndex]
+			const insertColumnIndex = generatedColumnIndexes[generatedColumnIndex]
 			// const columnIndex                   = dbColumn.index
 			values.forEach((
 				entityValues,
 				index
 			) => {
-				const generatedValue                = generatedColumnSequenceValues[index]
-				entityValues[insertColumnIndex]     = generatedValue
+				const generatedValue = generatedColumnSequenceValues[index]
+				entityValues[insertColumnIndex] = generatedValue
 				allIds[index][generatedColumnIndex] = generatedValue
 			})
 		})
@@ -390,10 +390,10 @@ appears more than once in the Columns clause`)
 		jsonInsertValues: JsonInsertValues,
 		errorPrefix: string
 	): ColumnsToPopulate {
-		const actorIdColumn            = dbEntity.idColumnMap[repositoryEntity.ACTOR_ID]
-		const actorRecordIdColumn      = dbEntity.idColumnMap[repositoryEntity.ACTOR_RECORD_ID]
-		const repositoryIdColumn       = dbEntity.idColumnMap[repositoryEntity.REPOSITORY_ID]
-		const isDraftIdColumn          = dbEntity.columnMap[repositoryEntity.IS_DRAFT]
+		const actorIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_ID]
+		const actorRecordIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_RECORD_ID]
+		const repositoryIdColumn = dbEntity.idColumnMap[repositoryEntity.REPOSITORY_ID]
+		const isDraftIdColumn = dbEntity.columnMap[repositoryEntity.IS_DRAFT]
 		const sysWideOperationIdColumn = dbEntity.columnMap[repositoryEntity.SYSTEM_WIDE_OPERATION_ID]
 
 		let repositoryIdColumnQueryIndex
@@ -465,7 +465,7 @@ You must provide a valid IS_DRAFT value for Repository entities.`
 				const value = entityValues[i]
 
 				const columnIndex = jsonInsertValues.C[i]
-				const dbColumn    = dbEntity.columns[columnIndex]
+				const dbColumn = dbEntity.columns[columnIndex]
 
 				if (dbColumn.notNull && value === null && !isDraft) {
 					throw new Error(errorPrefix +
@@ -516,11 +516,11 @@ and cannot have NULL values for non-draft records.`)
 	): Promise<void> {
 		const jsonInsertValues = <JsonInsertValues>portableQuery.jsonQuery
 
-		let operationsByRepo: IOperationHistory[]               = []
+		let operationsByRepo: IOperationHistory[] = []
 		let repoTransHistories: IRepositoryTransactionHistory[] = []
 
-		const repositoryIdIndex  = dbEntity.columnMap[repositoryEntity.REPOSITORY_ID].index
-		const actorIdIndex       = dbEntity.columnMap[repositoryEntity.ACTOR_ID].index
+		const repositoryIdIndex = dbEntity.columnMap[repositoryEntity.REPOSITORY_ID].index
+		const actorIdIndex = dbEntity.columnMap[repositoryEntity.ACTOR_ID].index
 		const actorRecordIdIndex = dbEntity.columnMap[repositoryEntity.ACTOR_RECORD_ID].index
 
 		let repositoryIdColumnNumber
@@ -543,7 +543,7 @@ and cannot have NULL values for non-draft records.`)
 
 		// Rows may belong to different repositories
 		for (const row of jsonInsertValues.V) {
-			const repositoryId   = row[repositoryIdColumnNumber]
+			const repositoryId = row[repositoryIdColumnNumber]
 			// const repo           = await repoManager.getRepository(repositoryId)
 			let repoTransHistory = repoTransHistories[repositoryId]
 			if (!repoTransHistory) {
@@ -553,7 +553,7 @@ and cannot have NULL values for non-draft records.`)
 
 			let operationHistory = operationsByRepo[repositoryId]
 			if (!operationHistory) {
-				operationHistory               = repoTransHistoryDuo.startOperation(
+				operationHistory = repoTransHistoryDuo.startOperation(
 					repoTransHistory, systemWideOperationId, ChangeType.INSERT_VALUES,
 					dbEntity, operHistoryDuo)
 				operationsByRepo[repositoryId] = operationHistory
@@ -570,8 +570,8 @@ and cannot have NULL values for non-draft records.`)
 					continue
 				}
 				const columnIndex = jsonInsertValues.C[columnNumber]
-				const dbColumn    = dbEntity.columns[columnIndex]
-				const newValue    = row[columnNumber]
+				const dbColumn = dbEntity.columns[columnIndex]
+				const newValue = row[columnNumber]
 				recHistoryDuo.addNewValue(recordHistory, dbColumn, newValue,
 					recHistoryNewValueDuo)
 			}

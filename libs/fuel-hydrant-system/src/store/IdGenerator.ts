@@ -134,7 +134,8 @@ export class IdGenerator
 	private getHoldingPatternDbEntity(
 		holdingPatternEntityName: string
 	): DbEntity {
-		return Q.db.currentVersion.entityMapByName[holdingPatternEntityName]
+		return Q.db.currentVersion[0].schemaVersion
+			.entityMapByName[holdingPatternEntityName]
 	}
 
 }

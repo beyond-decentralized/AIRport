@@ -382,11 +382,13 @@ export class EntityCandidateRegistry {
 		property: PropertyDocEntry,
 	): DbEntity {
 		const type = property.nonArrayType;
-		let otherSchemaDbEntity = dbSchema.currentVersion.entityMapByName[type];
+		let otherSchemaDbEntity = dbSchema.currentVersion[0].schemaVersion
+			.entityMapByName[type];
 		if (!otherSchemaDbEntity) {
 			if (canBeInterface(type)) {
 				const relatedImplementationName = getImplNameFromInterfaceName(type);
-				otherSchemaDbEntity = dbSchema.currentVersion.entityMapByName[relatedImplementationName];
+				otherSchemaDbEntity = dbSchema.currentVersion[0].schemaVersion
+					.entityMapByName[relatedImplementationName];
 				if (!otherSchemaDbEntity) {
 					throw new Error(`Could not find entity '${relatedImplementationName}' 
 					(from interface ${type}) in project '${projectName}'`);

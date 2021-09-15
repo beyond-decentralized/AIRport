@@ -1,4 +1,4 @@
-import { AIR_DB, and, distinct, exists, not } from '@airport/air-control';
+import { AIRPORT_DATABASE, and, distinct, exists, not } from '@airport/air-control';
 import { MessageToTMContentType } from '@airport/arrivals-n-departures';
 import { container, DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
@@ -15,7 +15,7 @@ export class AgtRepositoryTransactionBlockDao extends BaseAgtRepositoryTransacti
             tmTransactionLogIds = Array.from(tmTransactionLogIds);
         }
         let rtb;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         const records = await airDb.find.sheet({
             from: [
                 rtb = Q.AgtRepositoryTransactionBlock
@@ -36,9 +36,10 @@ export class AgtRepositoryTransactionBlockDao extends BaseAgtRepositoryTransacti
     async insertValues(
     // values must be sorted by TerminalId [1]
     values) {
-        const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeAgtRepositoryTransactionBlock;
+        const dbEntity = Q.db.currentVersion[0].schemaVersion
+            .entityMapByName.RealtimeAgtRepositoryTransactionBlock;
         let rtb;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         return await airDb
             .insertValuesGenerateIds({
             insertInto: rtb = Q.AgtRepositoryTransactionBlock,
@@ -58,7 +59,7 @@ export class AgtRepositoryTransactionBlockDao extends BaseAgtRepositoryTransacti
         let rtb, tr, sl, sm;
         // TODO: once CockroachDb supports optimized (non-nested loop) correlated
         // query, test against NOT EXISTS and see which is faster
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         const rtbsToSend = await airDb.find.tree({
             from: [
                 rtb = Q.AgtRepositoryTransactionBlock,
@@ -104,7 +105,7 @@ export class AgtRepositoryTransactionBlockDao extends BaseAgtRepositoryTransacti
         // TODO: verify correctness of NOT EXISTS
         // TODO: test performance on CockroachDb vs TiDB for NOT EXISTS vs
         // NOT IN vs EXCEPT
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         await airDb.find.sheet({
             from: [
                 sr = Q.AgtRepositoryTransactionBlock,
@@ -164,7 +165,7 @@ export class AgtRepositoryTransactionBlockDao extends BaseAgtRepositoryTransacti
         const results = [];
         const repositoryTransactionBlockIds = [];
         let rtb;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         const rtbsToArchive = await airDb.find.sheet({
             from: [
                 rtb = Q.AgtRepositoryTransactionBlock,
@@ -201,7 +202,7 @@ export class AgtRepositoryTransactionBlockDao extends BaseAgtRepositoryTransacti
     }
     async getAllStuckChangesToArchive(toDateExclusive, cursorSize, callback) {
         let rtb;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         await airDb.find.sheet({
             from: [
                 rtb = Q.AgtRepositoryTransactionBlock,

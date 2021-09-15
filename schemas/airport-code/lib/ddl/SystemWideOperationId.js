@@ -20,4 +20,4 @@ SystemWideOperationId = __decorate([
     Table({ name: 'SYSTEM_WIDE_OPERATION_IDS' })
 ], SystemWideOperationId);
 export { SystemWideOperationId };
-//# sourceMappingURL=systemwideoperationid.js.map
+//# sourceMappingURL=SystemWideOperationId.js.map

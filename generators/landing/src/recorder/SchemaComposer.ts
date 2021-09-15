@@ -17,6 +17,7 @@ import { IDomain }         from '@airport/territory';
 import {
 	ISchema,
 	ISchemaColumn,
+	ISchemaCurrentVersion,
 	ISchemaEntity,
 	ISchemaProperty,
 	ISchemaPropertyColumn,
@@ -262,11 +263,16 @@ export class SchemaComposer
 					// referencesMapByName: {},
 					// referencedByMapByName: {},
 				};
-				// needed for normalOperation only
-				schema.currentVersion = newSchemaVersion;
 				// schema.versions                        = [newSchemaVersion]
 				newSchemaVersions.push(newSchemaVersion);
 			}
+			let newSchemaCurrentVersion: ISchemaCurrentVersion = {
+				schema,
+				schemaVersion: newSchemaVersion
+			}
+			// needed for normalOperation only
+			schema.currentVersion = [newSchemaCurrentVersion];
+
 			newLatestSchemaVersions.push(newSchemaVersion);
 			newSchemaVersionMapBySchemaName.set(schemaName, newSchemaVersion);
 		}

@@ -102,7 +102,7 @@ export class SyncInChecker {
                 delete repoTransHistory.id;
                 for (const operationHistory of repoTransHistory.operationHistory) {
                     delete operationHistory.id;
-                    const localSchemaVersionId = schemaVersionIdMapByRemoteSchemaVersionId.get(operationHistory.schemaVersion.id);
+                    const localSchemaVersionId = schemaVersionIdMapByRemoteSchemaVersionId.get(operationHistory.entity.schemaVersion.id);
                     usedSchemaIndexSet.add(localSchemaVersionId);
                     operationHistory.entity.schemaVersion.id = localSchemaVersionId;
                     for (const recordHistory of operationHistory.recordHistory) {

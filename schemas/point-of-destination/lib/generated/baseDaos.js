@@ -1,5 +1,5 @@
-import { Dao } from '@airport/check-in';
-import { Q, duoDiSet } from './qSchema';
+import { Dao, DaoQueryDecorators, } from '@airport/check-in';
+import { Q, duoDiSet, } from './qSchema';
 // Schema Q object Dependency Injection readiness detection Dao
 export class SQDIDao extends Dao {
     constructor(dbEntityId) {
@@ -7,11 +7,18 @@ export class SQDIDao extends Dao {
     }
 }
 export class BaseDailyArchiveDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(0);
-    }
     constructor() {
         super(0);
     }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet(0);
+    }
 }
+BaseDailyArchiveDao.Find = new DaoQueryDecorators();
+BaseDailyArchiveDao.FindOne = new DaoQueryDecorators();
+BaseDailyArchiveDao.Search = new DaoQueryDecorators();
+BaseDailyArchiveDao.SearchOne = new DaoQueryDecorators();
 //# sourceMappingURL=baseDaos.js.map

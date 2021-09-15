@@ -133,11 +133,15 @@ export class SchemaComposer {
                     // referencesMapByName: {},
                     // referencedByMapByName: {},
                 };
-                // needed for normalOperation only
-                schema.currentVersion = newSchemaVersion;
                 // schema.versions                        = [newSchemaVersion]
                 newSchemaVersions.push(newSchemaVersion);
             }
+            let newSchemaCurrentVersion = {
+                schema,
+                schemaVersion: newSchemaVersion
+            };
+            // needed for normalOperation only
+            schema.currentVersion = [newSchemaCurrentVersion];
             newLatestSchemaVersions.push(newSchemaVersion);
             newSchemaVersionMapBySchemaName.set(schemaName, newSchemaVersion);
         }

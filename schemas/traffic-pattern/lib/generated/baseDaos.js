@@ -8,10 +8,13 @@ export class SQDIDao extends Dao {
 }
 export class BaseSchemaDao extends SQDIDao {
     constructor() {
-        super(9);
+        super(10);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(9);
+        return duoDiSet(10);
     }
 }
 BaseSchemaDao.Find = new DaoQueryDecorators();
@@ -22,6 +25,9 @@ export class BaseSchemaColumnDao extends SQDIDao {
     constructor() {
         super(4);
     }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
     static diSet() {
         return duoDiSet(4);
     }
@@ -30,9 +36,27 @@ BaseSchemaColumnDao.Find = new DaoQueryDecorators();
 BaseSchemaColumnDao.FindOne = new DaoQueryDecorators();
 BaseSchemaColumnDao.Search = new DaoQueryDecorators();
 BaseSchemaColumnDao.SearchOne = new DaoQueryDecorators();
+export class BaseSchemaCurrentVersionDao extends SQDIDao {
+    constructor() {
+        super(9);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet(9);
+    }
+}
+BaseSchemaCurrentVersionDao.Find = new DaoQueryDecorators();
+BaseSchemaCurrentVersionDao.FindOne = new DaoQueryDecorators();
+BaseSchemaCurrentVersionDao.Search = new DaoQueryDecorators();
+BaseSchemaCurrentVersionDao.SearchOne = new DaoQueryDecorators();
 export class BaseSchemaEntityDao extends SQDIDao {
     constructor() {
         super(6);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
     }
     static diSet() {
         return duoDiSet(6);
@@ -46,6 +70,9 @@ export class BaseSchemaOperationDao extends SQDIDao {
     constructor() {
         super(5);
     }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
     static diSet() {
         return duoDiSet(5);
     }
@@ -57,6 +84,9 @@ BaseSchemaOperationDao.SearchOne = new DaoQueryDecorators();
 export class BaseSchemaPropertyDao extends SQDIDao {
     constructor() {
         super(2);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
     }
     static diSet() {
         return duoDiSet(2);
@@ -70,6 +100,9 @@ export class BaseSchemaPropertyColumnDao extends SQDIDao {
     constructor() {
         super(3);
     }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
     static diSet() {
         return duoDiSet(3);
     }
@@ -81,6 +114,9 @@ BaseSchemaPropertyColumnDao.SearchOne = new DaoQueryDecorators();
 export class BaseSchemaReferenceDao extends SQDIDao {
     constructor() {
         super(7);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
     }
     static diSet() {
         return duoDiSet(7);
@@ -94,6 +130,9 @@ export class BaseSchemaRelationDao extends SQDIDao {
     constructor() {
         super(1);
     }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
     static diSet() {
         return duoDiSet(1);
     }
@@ -106,6 +145,9 @@ export class BaseSchemaRelationColumnDao extends SQDIDao {
     constructor() {
         super(0);
     }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
     static diSet() {
         return duoDiSet(0);
     }
@@ -117,6 +159,9 @@ BaseSchemaRelationColumnDao.SearchOne = new DaoQueryDecorators();
 export class BaseSchemaVersionDao extends SQDIDao {
     constructor() {
         super(8);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
     }
     static diSet() {
         return duoDiSet(8);

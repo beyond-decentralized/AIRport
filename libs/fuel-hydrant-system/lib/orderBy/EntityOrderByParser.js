@@ -55,7 +55,7 @@ export class EntityOrderByParser extends AbstractEntityOrderByParser {
                     return true;
                 }
                 const orderByDbEntity = context.ioc.airDb.schemas[orderByField.si]
-                    .currentVersion.entities[orderByField.ti];
+                    .schemaVersion.currentVersion[0].entities[orderByField.ti];
                 const dbColumn = orderByDbEntity.columns[orderByField.ci];
                 if (this.isForParentNode(currentJoinNode, orderByField)) {
                     throw new Error(`Found out of order entry in Order By 
@@ -92,7 +92,7 @@ export class EntityOrderByParser extends AbstractEntityOrderByParser {
                     const dbEntity = dbRelation.relationEntity;
                     const matchingNodes = currentJoinNode.childNodes.filter(childNode => {
                         const jsonRelation = childNode.jsonRelation;
-                        return jsonRelation.si === dbEntity.schemaVersion.id
+                        return jsonRelation.si === dbEntity.schemaVersion.schema.index
                             && jsonRelation.ti === dbEntity.index;
                     });
                     if (!matchingNodes.length) {

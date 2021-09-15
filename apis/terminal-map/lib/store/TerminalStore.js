@@ -16,7 +16,7 @@ export class TerminalStore {
             for (const domain of domains) {
                 const mapForDomain = ensureChildJsMap(latestSchemaVersionMapByNames, domain.name);
                 for (const schema of domain.schemas) {
-                    mapForDomain.set(schema.name, schema.currentVersion);
+                    mapForDomain.set(schema.name, schema.currentVersion[0].schemaVersion);
                 }
             }
             return latestSchemaVersionMapByNames;
@@ -47,7 +47,8 @@ export class TerminalStore {
             const latestSchemaVersionsBySchemaIndexes = [];
             for (const domain of domains) {
                 for (const schema of domain.schemas) {
-                    latestSchemaVersionsBySchemaIndexes[schema.index] = schema.currentVersion;
+                    latestSchemaVersionsBySchemaIndexes[schema.index]
+                        = schema.currentVersion[0].schemaVersion;
                 }
             }
             return latestSchemaVersionsBySchemaIndexes;

@@ -1,5 +1,6 @@
 export * from './schema/qschema';
 export * from './schema/qschemacolumn';
+export * from './schema/qschemacurrentversion';
 export * from './schema/qschemaentity';
 export * from './schema/qschemaoperation';
 export * from './schema/qschemaproperty';

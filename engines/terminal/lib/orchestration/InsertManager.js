@@ -37,7 +37,7 @@ export class InsertManager {
         const [airDb, sequenceGenerator, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo] = await container(this)
             .get(AIRPORT_DATABASE, SEQUENCE_GENERATOR, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO);
         const dbEntity = airDb.schemas[portableQuery.schemaIndex]
-            .currentVersion.entities[portableQuery.tableIndex];
+            .currentVersion[0].schemaVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error inserting into '${dbEntity.name}'.'
 `;
         const jsonInsertValues = portableQuery.jsonQuery;
@@ -172,7 +172,7 @@ appears more than once in the Columns clause`);
         // (thus reducing storage requirements in SqLite)
         const numSequencesNeeded = generatedColumns.map(_ => values.length);
         const generatedSequenceValues = await sequenceGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
-        generatedColumns.forEach((dbColumn, generatedColumnIndex) => {
+        generatedColumns.forEach((_dbColumn, generatedColumnIndex) => {
             const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex];
             const insertColumnIndex = generatedColumnIndexes[generatedColumnIndex];
             // const columnIndex                   = dbColumn.index

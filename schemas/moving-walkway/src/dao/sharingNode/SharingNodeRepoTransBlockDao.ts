@@ -2,20 +2,20 @@ import {
 	AIRPORT_DATABASE,
 	and,
 	field
-}                                          from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	SharingNodeRepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
-}                                          from '@airport/arrivals-n-departures'
+} from '@airport/arrivals-n-departures'
 import {
 	container,
 	DI
-}                                          from '@airport/di'
+} from '@airport/di'
 import {
 	ensureChildArray,
 	ensureChildJsMap
-}                                          from '@airport/ground-control'
-import {SharingNodeId}                     from '../../ddl/ddl'
+} from '@airport/ground-control'
+import { SharingNodeId } from '../../ddl/ddl'
 import {
 	BaseSharingNodeRepoTransBlockDao,
 	IBaseSharingNodeRepoTransBlockDao,
@@ -23,8 +23,8 @@ import {
 	Q,
 	QSharingNodeRepoTransBlock,
 	QSharingNodeRepoTransBlockStage,
-}                                          from '../../generated/generated'
-import {SHARING_NODE_REPO_TRANS_BLOCK_DAO} from '../../tokens'
+} from '../../generated/generated'
+import { SHARING_NODE_REPO_TRANS_BLOCK_DAO } from '../../tokens'
 
 export type SharingNodeRepoTransBlockValues = [
 	SharingNodeId,
@@ -38,7 +38,7 @@ export type SharingNodeRepoTransBlockValues = [
 export interface RepoTransBlocksForSharingNodes {
 	repositoryTransactionBlockIds: Set<TmRepositoryTransactionBlockId>;
 	repoTransBlocksBySharingNodeId
-		: Map<SharingNodeId, TmRepositoryTransactionBlockId[]>;
+	: Map<SharingNodeId, TmRepositoryTransactionBlockId[]>;
 }
 
 export interface ISharingNodeRepoTransBlockDao
@@ -147,7 +147,8 @@ export class SharingNodeRepoTransBlockDao
 	async insertValues(
 		values: SharingNodeRepoTransBlockValues[]
 	): Promise<number> {
-		const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock
+		const dbEntity = Q.db.currentVersion[0].schemaVersion
+			.entityMapByName.SharingNodeRepoTransBlock
 
 		const airDb = await container(this)
 			.get(AIRPORT_DATABASE)
@@ -175,7 +176,7 @@ export class SharingNodeRepoTransBlockDao
 		syncStatus: SharingNodeRepoTransBlockSyncStatus
 	): Promise<RepoTransBlocksForSharingNodes> {
 		const repoTransBlocksBySharingNodeId
-			      : Map<SharingNodeId, TmRepositoryTransactionBlockId[]>           = new Map()
+			: Map<SharingNodeId, TmRepositoryTransactionBlockId[]> = new Map()
 		const repositoryTransactionBlockIds: Set<TmRepositoryTransactionBlockId> = new Set()
 
 		let snrtb: QSharingNodeRepoTransBlock

@@ -12,7 +12,7 @@
 export interface ICreateResultRecords {
     [operationUniqueId: string]: {
         [propertyName: string]: number;
-    };
+    } | boolean;
 }
 export interface IUpdateResultRecords {
     [operationUniqueId: string]: boolean;

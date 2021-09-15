@@ -215,7 +215,7 @@ export class JsonSchemaBuilder {
 					const relatedDbSchema    = sIndexedSchema.schema.referencedSchemas[sRelation.referencedSchemaIndex];
 					relationSchemaIndex      = relatedDbSchema.index;
 					relatedIndexedEntity     = relatedDbSchema.dbSchema
-						.currentVersion.entityMapByName[sRelation.entityName];
+						.currentVersion[0].schemaVersion.entityMapByName[sRelation.entityName];
 					relationTableIndex       = relatedIndexedEntity.index;
 				} else {
 					relatedIndexedEntity = sIndexedSchema.entityMapByName[sRelation.entityName];

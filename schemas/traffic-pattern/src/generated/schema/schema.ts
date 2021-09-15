@@ -4,6 +4,9 @@ import {
 import {
 	ISchemaVersion,
 } from './schemaversion';
+import {
+	ISchemaCurrentVersion,
+} from './schemacurrentversion';
 
 
 
@@ -27,7 +30,7 @@ export interface ISchema {
 	// Non-Id Relations
 	domain?: IDomain;
 	versions?: ISchemaVersion[];
-	currentVersion?: ISchemaVersion;
+	currentVersion?: ISchemaCurrentVersion[];
 
 	// Transient Properties
 

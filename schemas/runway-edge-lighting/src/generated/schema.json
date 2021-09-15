@@ -6,6 +6,9 @@
 	"sinceVersion": 1,
 	"versions": [
 		{
+			"api": {
+				"apiObjectMap": {}
+			},
 			"entities": [
 				{
 					"columns": [

@@ -9,7 +9,8 @@ export class DeleteManager {
         const [airDb, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoManager, repositoryManager, repoTransHistoryDuo, schemaUtils, sequenceGenerator] = await container(this)
             .get(AIRPORT_DATABASE, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO, SCHEMA_UTILS, SEQUENCE_GENERATOR);
         const dbEntity = airDb
-            .schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex];
+            .schemas[portableQuery.schemaIndex].currentVersion[0].schemaVersion
+            .entities[portableQuery.tableIndex];
         const deleteCommand = transaction.deleteWhere(portableQuery, context);
         if (dbEntity.isLocal) {
             return await deleteCommand;
@@ -110,7 +111,8 @@ export class DeleteManager {
         let systemWideOperationId;
         for (const [schemaIndex, schemaRecordsToDelete] of recordsToDelete) {
             for (const [entityIndex, entityRecordsToDelete] of schemaRecordsToDelete) {
-                const dbEntity = airDb.schemas[schemaIndex].currentVersion.entities[entityIndex];
+                const dbEntity = airDb.schemas[schemaIndex].currentVersion[0]
+                    .schemaVersion.entities[entityIndex];
                 if (!systemWideOperationId) {
                     systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator);
                 }

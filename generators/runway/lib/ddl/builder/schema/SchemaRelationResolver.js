@@ -34,8 +34,8 @@ export class SchemaRelationResolver {
             let crossSchema = aRelation.referencedSchemaIndex || aRelation.referencedSchemaIndex === 0;
             if (crossSchema) {
                 relationIndexedEntity = indexedSchema.schema
-                    .referencedSchemas[aRelation.referencedSchemaIndex].dbSchema.currentVersion
-                    .entityMapByName[aRelation.entityName];
+                    .referencedSchemas[aRelation.referencedSchemaIndex].dbSchema.currentVersion[0]
+                    .schemaVersion.entityMapByName[aRelation.entityName];
                 relationEntityName = relationIndexedEntity.name;
                 relationEntityIsLocal = relationIndexedEntity.isLocal;
             }

@@ -17,11 +17,11 @@ import { IContext } from '@airport/di';
  * initialized before it itself can be declared to be initialized.
  */
 export interface IIdGeneratorContext
- extends IContext {
- di: {
-	 sequenceGenerator: ISequenceGenerator,
- }
- isServer: boolean
+	extends IContext {
+	di: {
+		sequenceGenerator: ISequenceGenerator,
+	}
+	isServer: boolean
 }
 
 export interface ISequenceGenerator {
@@ -62,7 +62,8 @@ export function diSet(
 		return false;
 	}
 
-	const dbEntity = dbSchema.currentVersion.entities[dbEntityId];
+	const dbEntity = dbSchema.currentVersion[0]
+		.schemaVersion.entities[dbEntityId];
 
 	return SEQ_GEN.exists(dbEntity);
 }
@@ -71,7 +72,8 @@ export function duoDiSet(
 	dbSchema: DbSchema,
 	dbEntityId: number
 ): boolean {
-	return dbSchema && dbSchema.currentVersion.entities[dbEntityId] as any as boolean;
+	return dbSchema && dbSchema.currentVersion[0]
+		.schemaVersion.entities[dbEntityId] as any as boolean;
 }
 
 export async function getSysWideOpId(
@@ -79,9 +81,9 @@ export async function getSysWideOpId(
 	sequenceGenerator: ISequenceGenerator
 ): Promise<number> {
 	const sysWideOpIdGeneratedColumn
-		      = (airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA] as QSchemaInternal)
-		.__dbSchema__.currentVersion
-		.entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
+		= (airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA] as QSchemaInternal)
+			.__dbSchema__.currentVersion[0].schemaVersion
+			.entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
 
 	const generatedNumWrapper = await sequenceGenerator
 		.generateSequenceNumbers(

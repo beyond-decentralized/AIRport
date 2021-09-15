@@ -1,4 +1,4 @@
-import { AIR_DB } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ensureChildArray } from '@airport/ground-control';
 import { SHARING_MESSAGE_DAO } from '../../tokens';
@@ -51,7 +51,7 @@ export class SharingMessageDao extends BaseSharingMessageDao {
         }*/
     async findAllSyncedSharingMessageIdsForSharingNodes(sharingNodeIds) {
         const sharingMessageIdsBySharingNodeId = new Map();
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         let sm;
         const data = await airDb.find.sheet({
             from: [

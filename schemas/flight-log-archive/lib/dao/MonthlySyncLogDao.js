@@ -1,4 +1,4 @@
-import { AIR_DB, and } from '@airport/air-control';
+import { AIRPORT_DATABASE, and } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { MONTHLY_SYNC_LOG_DAO } from '../tokens';
 import { BaseMonthlySyncLogDao } from '../generated/baseDaos';
@@ -6,7 +6,7 @@ import { Q } from '../generated/qSchema';
 export class MonthlySyncLogDao extends BaseMonthlySyncLogDao {
     async findAllForDatabase(databaseId, synced, callback) {
         let dsl;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         await airDb.find.sheet({
             from: [
                 dsl = Q.MonthlySyncLog

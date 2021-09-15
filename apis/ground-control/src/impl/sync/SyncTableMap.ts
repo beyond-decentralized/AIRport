@@ -1,5 +1,5 @@
 import {TableIndex}      from "../../lingo/schema/Entity";
-import {SchemaVersionId} from "../../lingo/schema/Schema";
+import {SchemaIndex} from "../../lingo/schema/Schema";
 import {ColumnMap}       from "../query/ColumnMap";
 import {
 	ALL_TABLE_COLUMNS,
@@ -15,10 +15,10 @@ export class SyncTableMap
 	extends TableMap {
 
 	constructor(
-		schemaVersionId: SchemaVersionId,
+		schemaIndex: SchemaIndex,
 		tableMap: { [tableIndex: string]: ColumnMap }
 	) {
-		super(schemaVersionId, tableMap);
+		super(schemaIndex, tableMap);
 	}
 
 	ensureEntity(

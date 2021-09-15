@@ -6,8 +6,8 @@ import {
 	IAirportDatabase,
 	IDatabaseFacade,
 	or
-}                                        from '@airport/air-control'
-import {container, DI}                              from '@airport/di'
+} from '@airport/air-control'
+import { container, DI } from '@airport/di'
 import {
 	ColumnIndex,
 	ensureChildJsMap,
@@ -16,23 +16,23 @@ import {
 	SchemaIndex,
 	SchemaVersionId,
 	TableIndex
-}                                        from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	ActorId,
 	RepositoryEntity_ActorRecordId,
 	RepositoryId
-}                                        from '@airport/holding-pattern'
+} from '@airport/holding-pattern'
 import {
 	IRecordUpdateStageDao,
 	RECORD_UPDATE_STAGE_DAO,
 	RecordUpdateStageValues
-}                                        from '@airport/moving-walkway'
-import {ISchema}                         from '@airport/traffic-pattern'
-import {STAGE2_SYNCED_IN_DATA_PROCESSOR} from '../../tokens'
+} from '@airport/moving-walkway'
+import { ISchema } from '@airport/traffic-pattern'
+import { STAGE2_SYNCED_IN_DATA_PROCESSOR } from '../../tokens'
 import {
 	RecordUpdate,
 	Stage1SyncedInDataProcessingResult
-}                                        from './SyncInUtils'
+} from './SyncInUtils'
 
 /**
  * Stage 2 data processor is used to optimize the number of required
@@ -104,21 +104,22 @@ export class Stage2SyncedInDataProcessor
 	): Promise<void> {
 		for (const [schemaVersionId, creationInSchemaMap] of recordCreations) {
 			for (const [tableIndex, creationInTableMap] of creationInSchemaMap) {
-				const schemaIndex     = schemasBySchemaVersionIdMap[schemaVersionId]
-				const dbEntity        = airDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
-				const qEntity         = airDb.qSchemas[schemaIndex][dbEntity.name]
-				const columns         = [
+				const schemaIndex = schemasBySchemaVersionIdMap[schemaVersionId]
+				const dbEntity = airDb.schemas[schemaIndex].currentVersion[0]
+					.schemaVersion.entities[tableIndex]
+				const qEntity = airDb.qSchemas[schemaIndex][dbEntity.name]
+				const columns = [
 					qEntity.repository.id,
 					qEntity.actor.id,
 					qEntity.actorRecordId
 				]
-				let creatingColumns   = true
-				let numInserts        = 0
+				let creatingColumns = true
+				let numInserts = 0
 				const values: any[][] = []
 				for (const [repositoryId, creationForRepositoryMap] of creationInTableMap) {
 					for (const [actorId, creationForActorMap] of creationForRepositoryMap) {
 						for (const [actorRecordId, creationOfRowMap] of creationForActorMap) {
-							const rowValues                                  = [
+							const rowValues = [
 								repositoryId,
 								actorId,
 								actorRecordId
@@ -175,7 +176,7 @@ export class Stage2SyncedInDataProcessor
 		// Build the final update data structure
 		for (const [schemaVersionId, schemaUpdateMap] of recordUpdates) {
 			const finalSchemaUpdateMap
-				      = ensureChildJsMap(finalUpdateMap, schemaVersionId)
+				= ensureChildJsMap(finalUpdateMap, schemaVersionId)
 			for (const [tableIndex, tableUpdateMap] of schemaUpdateMap) {
 				const finalTableUpdateMap = ensureChildJsMap(finalSchemaUpdateMap, tableIndex)
 				for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
@@ -228,10 +229,11 @@ export class Stage2SyncedInDataProcessor
 		for (const [schemaVersionId, deletionInSchemaMap] of recordDeletions) {
 			const schema = schemasBySchemaVersionIdMap.get(schemaVersionId)
 			for (const [tableIndex, deletionInTableMap] of deletionInSchemaMap) {
-				const dbEntity = airDb.schemas[schema.index].currentVersion.entities[tableIndex]
-				const qEntity  = airDb.qSchemas[schema.index][dbEntity.name]
+				const dbEntity = airDb.schemas[schema.index].currentVersion[0]
+					.schemaVersion.entities[tableIndex]
+				const qEntity = airDb.qSchemas[schema.index][dbEntity.name]
 
-				let numClauses                                    = 0
+				let numClauses = 0
 				let repositoryWhereFragments: JSONBaseOperation[] = []
 				for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
 					let actorWhereFragments: JSONBaseOperation[] = []
@@ -268,7 +270,7 @@ export class Stage2SyncedInDataProcessor
 	 */
 	private getRecordKeyMap(
 		recordUpdateMap: Map<ColumnIndex, RecordUpdate>, // combination of columns/values
-	                                                   // being updated
+		// being updated
 		finalTableUpdateMap: ColumnUpdateKeyMap, // the map of updates for a table
 	): RecordKeyMap {
 		const updatedColumns: ColumnIndex[] = []

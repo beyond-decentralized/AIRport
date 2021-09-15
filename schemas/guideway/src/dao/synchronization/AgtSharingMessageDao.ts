@@ -1,29 +1,29 @@
 import {
 	AIRPORT_DATABASE,
 	and
-}                                from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	AgtRepositoryId,
 	AgtSharingMessageId,
 	TerminalId,
 	TmSharingMessageId,
-}                                from '@airport/arrivals-n-departures'
+} from '@airport/arrivals-n-departures'
 import {
 	container,
 	DI
-}                                from '@airport/di'
-import {ensureChildJsMap}        from '@airport/ground-control'
+} from '@airport/di'
+import { ensureChildJsMap } from '@airport/ground-control'
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtSharingMessageAcknowledged
-}                                from '../../ddl/ddl'
+} from '../../ddl/ddl'
 import {
 	BaseAgtSharingMessageDao,
 	IBaseAgtSharingMessageDao,
 	Q,
 	QAgtSharingMessage
-}                                from '../../generated/generated'
-import {AGT_SHARING_MESSAGE_DAO} from '../../tokens'
+} from '../../generated/generated'
+import { AGT_SHARING_MESSAGE_DAO } from '../../tokens'
 
 export type InsertAgtSharingMessage = [
 	TerminalId, TmSharingMessageId, AgtSharingMessageAcknowledged
@@ -60,7 +60,8 @@ export class AgtSharingMessageDao
 	): Promise<Map<TerminalId, AgtSharingMessageId>> {
 		const sharingMessageIdsByTerminalId: Map<TerminalId, AgtSharingMessageId> = new Map()
 
-		const dbEntity = Q.db.currentVersion.entityMapByName.AgtSharingMessage
+		const dbEntity = Q.db.currentVersion[0].schemaVersion
+			.entityMapByName.AgtSharingMessage
 		let asm: QAgtSharingMessage
 
 		const airDb = await container(this)
@@ -90,7 +91,7 @@ export class AgtSharingMessageDao
 		agtSharingMessageIds: AgtSharingMessageId[]
 	): Promise<Map<TerminalId, Set<AgtSharingMessageId>>> {
 		const resultMapByTerminalId: Map<TerminalId, Set<AgtSharingMessageId>>
-			      = new Map()
+			= new Map()
 
 		let asm: QAgtSharingMessage
 
@@ -98,19 +99,19 @@ export class AgtSharingMessageDao
 			.get(AIRPORT_DATABASE)
 
 		const dbSyncLogs =
-			      await airDb.find.sheet({
-				      from: [
-					      asm = Q.AgtSharingMessage
-				      ],
-				      select: [
-					      asm.terminal.id,
-					      asm.id
-				      ],
-				      where: and(
-					      asm.id.in(agtSharingMessageIds),
-					      asm.acknowledged.equals(AgtSharingMessageAcknowledged.NOT_ACKNOWLEDGED)
-				      )
-			      })
+			await airDb.find.sheet({
+				from: [
+					asm = Q.AgtSharingMessage
+				],
+				select: [
+					asm.terminal.id,
+					asm.id
+				],
+				where: and(
+					asm.id.in(agtSharingMessageIds),
+					asm.acknowledged.equals(AgtSharingMessageAcknowledged.NOT_ACKNOWLEDGED)
+				)
+			})
 
 		for (const dbSyncLog of dbSyncLogs) {
 			const terminalId = dbSyncLog[0]
@@ -147,8 +148,8 @@ export class AgtSharingMessageDao
 		tmSharingMessageIds: TmSharingMessageId[]
 	): Promise<Map<TerminalId, Map<TmSharingMessageId, AgtSharingMessageId>>> {
 		const idMapByTerminalIdAndTmSharingMessageId
-			      : Map<TerminalId, Map<TmSharingMessageId, AgtSharingMessageId>>
-			      = new Map()
+			: Map<TerminalId, Map<TmSharingMessageId, AgtSharingMessageId>>
+			= new Map()
 
 		let asm: QAgtSharingMessage
 

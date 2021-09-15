@@ -197,7 +197,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             case JSONClauseObjectType.EXISTS_FUNCTION:
                 throw new Error(`Exists function cannot be used in SELECT clause.`);
             case JSONClauseObjectType.FIELD:
-                dbEntity = context.ioc.airDb.schemas[fieldJson.si].currentVersion.entities[fieldJson.ti];
+                dbEntity = context.ioc.airDb.schemas[fieldJson.si].currentVersion[0]
+                    .schemaVersion.entities[fieldJson.ti];
                 dbProperty = dbEntity.properties[fieldJson.pi];
                 dbColumn = dbEntity.columns[fieldJson.ci];
                 switch (fieldJson.dt) {

@@ -70,7 +70,7 @@ export class OperationManager
 			context.dbEntity = operation.dbEntity
 			if (operation.isCreate) {
 				await this.internalCreate(
-					operation.entities, actor, transaction, saveResult, context)
+					operation.entities, actor, transaction, saveResult, context, true)
 			} else if (operation.isDelete) {
 				await this.internalDelete(
 					operation.entities, actor, transaction, saveResult, context)
@@ -159,7 +159,7 @@ export class OperationManager
 				const portableQuery: PortableQuery = context.ioc.queryFacade
 					.getPortableQuery(insertValues, null, context)
 				const idsAndGeneratedValues = await context.ioc.insertManager
-					.insertValuesGetIds(portableQuery, actor, transaction, context);
+					.insertValuesGetIds(portableQuery, actor, transaction, context)
 				for (let i = 0; i < entities.length; i++) {
 					const entity = entities[i]
 					const entitySaveResult = {}
@@ -178,7 +178,13 @@ export class OperationManager
 				const portableQuery: PortableQuery = context.ioc.queryFacade
 					.getPortableQuery(insertValues, null, context)
 				await context.ioc.insertManager.insertValues(
-					portableQuery, actor, transaction, context, ensureGeneratedValues);
+					portableQuery, actor, transaction, context, ensureGeneratedValues)
+					for (let i = 0; i < entities.length; i++) {
+						const entity = entities[i]
+						saveResult.created[
+							context.ioc.entityStateManager.getOperationUniqueId(entity)
+						] = true
+					}
 			}
 		}
 	}

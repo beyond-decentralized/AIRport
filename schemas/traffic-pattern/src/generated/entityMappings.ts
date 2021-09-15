@@ -11,6 +11,7 @@ import { SchemaOperation } from '../ddl/schema/SchemaOperation';
 import { SchemaEntity } from '../ddl/schema/SchemaEntity';
 import { SchemaReference } from '../ddl/schema/SchemaReference';
 import { SchemaVersion } from '../ddl/schema/SchemaVersion';
+import { SchemaCurrentVersion } from '../ddl/schema/SchemaCurrentVersion';
 import { Schema } from '../ddl/schema/Schema';
 
 DI.db().get(AIRPORT_DATABASE).then(airDb => {
@@ -25,5 +26,6 @@ DI.db().get(AIRPORT_DATABASE).then(airDb => {
   accumulator.add(SchemaEntity, 6);
   accumulator.add(SchemaReference, 7);
   accumulator.add(SchemaVersion, 8);
-  accumulator.add(Schema, 9);
+  accumulator.add(SchemaCurrentVersion, 9);
+  accumulator.add(Schema, 10);
 });

@@ -8,10 +8,10 @@ export class SQDIDuo extends Duo {
 }
 export class BaseSchemaDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(9);
+        return duoDiSet(10);
     }
     constructor() {
-        super(9);
+        super(10);
     }
 }
 export class BaseSchemaColumnDuo extends SQDIDuo {
@@ -20,6 +20,14 @@ export class BaseSchemaColumnDuo extends SQDIDuo {
     }
     constructor() {
         super(4);
+    }
+}
+export class BaseSchemaCurrentVersionDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(9);
+    }
+    constructor() {
+        super(9);
     }
 }
 export class BaseSchemaEntityDuo extends SQDIDuo {

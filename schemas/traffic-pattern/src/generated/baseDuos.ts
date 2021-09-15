@@ -26,6 +26,19 @@ import {
 	QSchemaColumn,
 } from './schema/qschemacolumn';
 import {
+	ISchemaCurrentVersion,
+} from './schema/schemacurrentversion';
+import {
+	SchemaCurrentVersionESelect,
+	SchemaCurrentVersionECreateColumns,
+	SchemaCurrentVersionECreateProperties,
+	SchemaCurrentVersionEUpdateColumns,
+	SchemaCurrentVersionEUpdateProperties,
+	SchemaCurrentVersionEId,
+	SchemaCurrentVersionGraph,
+	QSchemaCurrentVersion,
+} from './schema/qschemacurrentversion';
+import {
 	ISchemaEntity,
 } from './schema/schemaentity';
 import {
@@ -186,11 +199,11 @@ export class BaseSchemaDuo
 	implements IBaseSchemaDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(9)
+		super(10)
 	}
 }
 
@@ -209,6 +222,24 @@ export class BaseSchemaColumnDuo
 	
 	constructor() {
 		super(4)
+	}
+}
+
+
+export interface IBaseSchemaCurrentVersionDuo
+  extends IDuo<ISchemaCurrentVersion, SchemaCurrentVersionESelect, SchemaCurrentVersionECreateProperties, SchemaCurrentVersionEUpdateColumns, SchemaCurrentVersionEUpdateProperties, SchemaCurrentVersionEId, SchemaCurrentVersionGraph, QSchemaCurrentVersion> {
+}
+
+export class BaseSchemaCurrentVersionDuo
+  extends SQDIDuo<ISchemaCurrentVersion, SchemaCurrentVersionESelect, SchemaCurrentVersionECreateProperties, SchemaCurrentVersionEUpdateColumns, SchemaCurrentVersionEUpdateProperties, SchemaCurrentVersionEId, SchemaCurrentVersionGraph, QSchemaCurrentVersion>
+	implements IBaseSchemaCurrentVersionDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(9)
+	}
+	
+	constructor() {
+		super(9)
 	}
 }
 

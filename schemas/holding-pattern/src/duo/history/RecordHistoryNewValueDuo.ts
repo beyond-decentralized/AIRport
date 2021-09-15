@@ -38,7 +38,6 @@ export class RecordHistoryNewValueDuo
 		recordHistoryNewValue.newValue      = newValue
 
 		return recordHistoryNewValue
-
 	}
 
 }

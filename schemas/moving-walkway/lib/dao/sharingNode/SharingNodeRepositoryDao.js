@@ -1,4 +1,4 @@
-import { AIR_DB, and, distinct, Y } from '@airport/air-control';
+import { AIRPORT_DATABASE, and, distinct, Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
 import { REC_HIST_NEW_VALUE_DAO, REC_HIST_OLD_VALUE_DAO, REPO_TRANS_HISTORY_DAO } from '@airport/holding-pattern';
@@ -64,7 +64,7 @@ export class SharingNodeRepositoryDao extends BaseSharingNodeRepositoryDao {
     }
     async findNewRepoTransHistoriesForSharingNodes(sharingNodeIds) {
         const sharingNodeIdMapByRepositoryId = new Map();
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         let snr = Q.SharingNodeRepository;
         let r;
         let rth;

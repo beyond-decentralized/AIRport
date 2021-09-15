@@ -1,10 +1,15 @@
+/* eslint-disable */
 export const SCHEMA = {
     "domain": "air",
     "index": null,
     "name": "@airport/guideway",
+    "packageName": "@airport/guideway",
     "sinceVersion": 1,
     "versions": [
         {
+            "api": {
+                "apiObjectMap": {}
+            },
             "entities": [
                 {
                     "columns": [
@@ -111,7 +116,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "AGT_SYNC_LOG",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -262,7 +268,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "AGT_SHARING_MESSAGES",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -909,7 +916,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "AGT_TERMINAL_REPOSITORIES",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -1148,7 +1156,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "AGT_TERMINALS",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -1449,7 +1458,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "AGT_REPOSITORY_TRANSACTION_BLOCKS",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -1601,7 +1611,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "AGT_REPOSITORIES",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -1713,7 +1724,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "DAILY_ARCHIVE_LOG",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [

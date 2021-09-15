@@ -1,6 +1,3 @@
-import { IDuo, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/air-control';
-import { Duo } from '@airport/check-in';
-import { EntityId as DbEntityId } from '@airport/ground-control';
 import { IAgtRepositoryTransactionBlock } from './synchronization/agtrepositorytransactionblock';
 import { AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateColumns, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockGraph, QAgtRepositoryTransactionBlock } from './synchronization/qagtrepositorytransactionblock';
 import { IAgtSharingMessage } from './synchronization/agtsharingmessage';
@@ -39,6 +36,9 @@ import { IUser } from './user/user';
 import { UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser } from './user/quser';
 import { IUserRepository } from './user/userrepository';
 import { UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateColumns, UserRepositoryEUpdateProperties, UserRepositoryEId, UserRepositoryGraph, QUserRepository } from './user/quserrepository';
+import { IDuo, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/air-control';
+import { Duo } from '@airport/check-in';
+import { EntityId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDuo<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity<Entity>> extends Duo<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE> {
     constructor(dbEntityId: DbEntityId);
 }

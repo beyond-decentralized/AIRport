@@ -1,4 +1,4 @@
-import { AIR_DB, and, field } from '@airport/air-control';
+import { AIRPORT_DATABASE, and, field } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ensureChildArray, ensureChildJsMap } from '@airport/ground-control';
 import { BaseSharingNodeRepoTransBlockDao, Q, } from '../../generated/generated';
@@ -48,9 +48,10 @@ export class SharingNodeRepoTransBlockDao extends BaseSharingNodeRepoTransBlockD
         });
     }
     async insertValues(values) {
-        const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlock;
+        const dbEntity = Q.db.currentVersion[0].schemaVersion
+            .entityMapByName.SharingNodeRepoTransBlock;
         const airDb = await container(this)
-            .get(AIR_DB);
+            .get(AIRPORT_DATABASE);
         let snrtb;
         return await airDb.insertValues({
             insertInto: snrtb = Q.SharingNodeRepoTransBlock,
@@ -72,7 +73,7 @@ export class SharingNodeRepoTransBlockDao extends BaseSharingNodeRepoTransBlockD
         const repositoryTransactionBlockIds = new Set();
         let snrtb;
         const airDb = await container(this)
-            .get(AIR_DB);
+            .get(AIRPORT_DATABASE);
         const records = await airDb.find.sheet({
             from: [
                 snrtb = Q.SharingNodeRepoTransBlock,

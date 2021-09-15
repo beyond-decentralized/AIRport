@@ -1,4 +1,4 @@
-import { AIR_DB, and, field, or } from '@airport/air-control';
+import { AIRPORT_DATABASE, and, field, or } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { RECORD_UPDATE_STAGE_DAO } from '../tokens';
 import { BaseRecordUpdateStageDao, Q } from '../generated/generated';
@@ -24,8 +24,9 @@ export class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
         });
     }
     async updateEntityWhereIds(schemaIndex, schemaVersionId, tableIndex, idMap, updatedColumnIndexes) {
-        const airDb = await container(this).get(AIR_DB);
-        const dbEntity = airDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
+        const airDb = await container(this).get(AIRPORT_DATABASE);
+        const dbEntity = airDb.schemas[schemaIndex].currentVersion[0]
+            .schemaVersion.entities[tableIndex];
         const qEntity = airDb.qSchemas[schemaIndex][dbEntity.name];
         const repositoryEquals = [];
         for (const [repositoryId, idsForRepository] of idMap) {

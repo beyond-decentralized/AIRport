@@ -4,21 +4,21 @@ import {
 	max,
 	min,
 	tree
-}                     from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	AgtRepositoryId,
 	AgtSharingMessageId,
 	TerminalId,
-}                     from '@airport/arrivals-n-departures'
+} from '@airport/arrivals-n-departures'
 import {
 	container,
 	DI
-}                     from '@airport/di'
+} from '@airport/di'
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtRepositoryTransactionBlockId,
 	AgtSharingMessageAcknowledged
-}                     from '../../ddl/ddl'
+} from '../../ddl/ddl'
 import {
 	BaseSyncLogDao,
 	IBaseSyncLogDao,
@@ -26,8 +26,8 @@ import {
 	QAgtRepositoryTransactionBlock,
 	QAgtSharingMessage,
 	QSyncLog
-}                     from '../../generated/generated'
-import {SYNC_LOG_DAO} from '../../tokens'
+} from '../../generated/generated'
+import { SYNC_LOG_DAO } from '../../tokens'
 
 export type SyncedTerminalRepository = [TerminalId, AgtRepositoryId];
 export type TerminalSyncStatus = [TerminalId, AgtRepositoryId, AgtSharingMessageAcknowledged];
@@ -66,7 +66,8 @@ export class SyncLogDao
 	async insertValues(
 		values: InsertSyncLog[]
 	): Promise<void> {
-		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog
+		const dbEntity = Q.db.currentVersion[0].schemaVersion
+			.entityMapByName.RealtimeSyncLog
 		let sl: QSyncLog
 
 		const airDb = await container(this)
@@ -125,8 +126,8 @@ export class SyncLogDao
 		repositoryIds: AgtRepositoryId[],
 	): Promise<TerminalSyncStatus[]> {
 		let sl: QSyncLog,
-		    sm: QAgtSharingMessage,
-		    rtb: QAgtRepositoryTransactionBlock
+			sm: QAgtSharingMessage,
+			rtb: QAgtRepositoryTransactionBlock
 
 		// AgtRepositoryTransactionBlock Sub-Query
 		const smrtb = tree({

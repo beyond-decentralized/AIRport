@@ -9,15 +9,17 @@ export function diSet(dbSchema, dbEntityId // EntityId
         || !dbSchema) {
         return false;
     }
-    const dbEntity = dbSchema.currentVersion.entities[dbEntityId];
+    const dbEntity = dbSchema.currentVersion[0]
+        .schemaVersion.entities[dbEntityId];
     return SEQ_GEN.exists(dbEntity);
 }
 export function duoDiSet(dbSchema, dbEntityId) {
-    return dbSchema && dbSchema.currentVersion.entities[dbEntityId];
+    return dbSchema && dbSchema.currentVersion[0]
+        .schemaVersion.entities[dbEntityId];
 }
 export async function getSysWideOpId(airDb, sequenceGenerator) {
     const sysWideOpIdGeneratedColumn = airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA]
-        .__dbSchema__.currentVersion
+        .__dbSchema__.currentVersion[0].schemaVersion
         .entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
     const generatedNumWrapper = await sequenceGenerator
         .generateSequenceNumbers([sysWideOpIdGeneratedColumn], [1]);

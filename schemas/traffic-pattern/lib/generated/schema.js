@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const SCHEMA = {
     "domain": "air",
     "index": null,
@@ -6,6 +7,9 @@ export const SCHEMA = {
     "sinceVersion": 1,
     "versions": [
         {
+            "api": {
+                "apiObjectMap": {}
+            },
             "entities": [
                 {
                     "columns": [
@@ -2968,7 +2972,7 @@ export const SCHEMA = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneSchemaIndex": null,
-                                    "oneTableIndex": 9,
+                                    "oneTableIndex": 10,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -3094,7 +3098,7 @@ export const SCHEMA = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 10,
                             "sinceVersion": 1
                         },
                         {
@@ -3143,6 +3147,114 @@ export const SCHEMA = {
                         "indexes": []
                     },
                     "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 10,
+                                    "oneRelationIndex": 2,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SCHEMA_INDEX",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 8,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SCHEMA_VERSION_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": 4
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 9,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "SchemaCurrentVersion",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "schema",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "schemaVersion",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": 1,
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 8,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SCHEMA_CURRENT_VERSIONS",
+                        "indexes": []
+                    }
                 },
                 {
                     "columns": [
@@ -3237,28 +3349,6 @@ export const SCHEMA = {
                             ],
                             "sinceVersion": 1,
                             "type": 4
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 8,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "CURRENT_VERSION_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": 4
                         }
                     ],
                     "idColumnRefs": [
@@ -3266,7 +3356,7 @@ export const SCHEMA = {
                             "index": 0
                         }
                     ],
-                    "index": 9,
+                    "index": 10,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "Schema",
@@ -3372,11 +3462,14 @@ export const SCHEMA = {
                         {
                             "index": 2,
                             "isId": false,
-                            "relationType": 1,
+                            "oneToManyElems": {
+                                "mappedBy": "schema"
+                            },
+                            "relationType": 0,
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 9,
                             "sinceVersion": 1
                         }
                     ],
@@ -3394,6 +3487,7 @@ export const SCHEMA = {
                     "domain": "air",
                     "index": 0,
                     "name": "@airport/territory",
+                    "packageName": "@airport/territory",
                     "sinceVersion": 1,
                     "versions": [
                         {

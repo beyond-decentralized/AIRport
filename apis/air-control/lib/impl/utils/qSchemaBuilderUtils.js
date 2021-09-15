@@ -156,7 +156,7 @@ export function getQEntityIdFields(addToObject, relationEntity, qEntity, parentP
     return addToObject;
 }
 export function setQSchemaEntities(schema, qSchema, allQSchemas) {
-    // const entities = orderEntitiesByIdDependencies(schema.currentVersion.entities,
+    // const entities = orderEntitiesByIdDependencies(schema.currentVersion[0].schemaVersion.entities,
     // schema)
     qSchema.__qIdRelationConstructors__ = [];
     qSchema.__qConstructors__ = {};
@@ -167,7 +167,7 @@ export function setQSchemaEntities(schema, qSchema, allQSchemas) {
     // Many-to-Ones must reference the table by primary key in order to
     // guarantee a single record.  Any other type of join may return multiple
     // records and is in fact a Many-to-Many
-    schema.currentVersion.entities.forEach((
+    schema.currentVersion[0].schemaVersion.entities.forEach((
     // entities.forEach((
     entity) => {
         // NOTE: an @Id column is guaranteed to be present in only one property
@@ -214,7 +214,8 @@ export function orderSchemasInOrderOfPrecedence(schemas) {
     const schemaWithDepsMap = new Map();
     const schemasWithDeps = schemas.map(schema => {
         const dependencies = new Set();
-        for (const schemaReference of schema.currentVersion.references) {
+        for (const schemaReference of schema.currentVersion[0]
+            .schemaVersion.references) {
             dependencies.add(schemaReference.referencedSchemaVersion.schema.index);
         }
         const schemaWithDependencies = {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { UserTerminal } from '../ddl/UserTerminal';

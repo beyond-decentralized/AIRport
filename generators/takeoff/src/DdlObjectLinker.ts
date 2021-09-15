@@ -11,6 +11,7 @@ import {IDomain}           from '@airport/territory'
 import {
 	ISchema,
 	ISchemaColumn,
+	ISchemaCurrentVersion,
 	ISchemaEntity,
 	ISchemaProperty,
 	ISchemaPropertyColumn,
@@ -82,7 +83,11 @@ export class DdlObjectLinker
 
 		latestSchemaVersions.forEach((schemaVersion: ISchemaVersion) => {
 			const schema          = schemaMapByIndex.get(schemaVersion.schema.index)
-			schema.currentVersion = schemaVersion
+			let schemaCurrentVersion: ISchemaCurrentVersion = {
+				schema,
+				schemaVersion
+			}
+			schema.currentVersion = [schemaCurrentVersion]
 			schema.versions       = [schemaVersion]
 
 			schemaVersion.schema                = schema

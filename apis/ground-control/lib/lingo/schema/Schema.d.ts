@@ -70,7 +70,7 @@ export interface JsonSchema extends SchemaReferenceByIndex<SchemaIndex>, JsonDat
  * A schema with additional indexes (maps).
  */
 export interface DbSchema extends SchemaReferenceByIndex<SchemaIndex>, DatabaseObject {
-    currentVersion: DbSchemaVersion;
+    currentVersion: DbSchemaCurrentVersion[];
     /**
      * Domain of the schema ('public' if published).
      */
@@ -116,6 +116,13 @@ export interface DatabaseObject {
 }
 export interface DbSchemaVersionReference {
     integerVersion: SchemaVersionInteger;
+}
+/**
+ * A schema with additional indexes (maps).
+ */
+export interface DbSchemaCurrentVersion {
+    schema: DbSchema;
+    schemaVersion: DbSchemaVersion;
 }
 /**
  * A schema with additional indexes (maps).

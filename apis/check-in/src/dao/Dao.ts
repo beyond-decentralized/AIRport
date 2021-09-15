@@ -17,11 +17,11 @@ import {
 	DI,
 	IContext
 } from '@airport/di';
-import { 
+import {
 	EntityId as DbEntityId,
-	ENTITY_STATE_MANAGER, 
+	ENTITY_STATE_MANAGER,
 	ISaveResult
- } from '@airport/ground-control';
+} from '@airport/ground-control';
 import { EntityDatabaseFacade } from '../EntityDatabaseFacade';
 import { DaoStub } from './DaoStub';
 
@@ -62,7 +62,8 @@ export abstract class Dao<Entity,
 		Q: QSchema,
 		private internal = false
 	) {
-		const dbEntity = Q.__dbSchema__.currentVersion.entities[dbEntityId];
+		const dbEntity = Q.__dbSchema__.currentVersion[0]
+			.schemaVersion.entities[dbEntityId];
 		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
 		this.db = new EntityDatabaseFacade<Entity,
 			EntitySelect, EntityCreate,

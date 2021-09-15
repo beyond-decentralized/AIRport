@@ -1,16 +1,16 @@
-import {DI}                from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	DbEntity,
 	JsonInsertValues
-}                          from '@airport/ground-control'
+} from '@airport/ground-control'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {
 	Q_VALIDATOR,
 	SQL_QUERY_ADAPTOR
-}                          from '../../tokens'
-import {SQLNoJoinQuery}    from './SQLNoJoinQuery'
-import {SQLDialect}        from './SQLQuery'
-import {ClauseType}        from './SQLWhereBase'
+} from '../../tokens'
+import { SQLNoJoinQuery } from './SQLNoJoinQuery'
+import { SQLDialect } from './SQLQuery'
+import { ClauseType } from './SQLWhereBase'
 
 /**
  * Created by Papa on 11/17/2016.
@@ -25,8 +25,8 @@ export class SQLInsertValues
 		context: IFuelHydrantContext
 		// repository?: IRepository
 	) {
-		super(context.ioc.airDb.schemas[jsonInsertValues.II.si]
-				.currentVersion.entities[jsonInsertValues.II.ti], dialect,
+		super(context.ioc.airDb.schemas[jsonInsertValues.II.si].currentVersion[0]
+			.schemaVersion.entities[jsonInsertValues.II.ti], dialect,
 			context)
 	}
 
@@ -39,10 +39,10 @@ export class SQLInsertValues
 			throw new Error(`Expecting exactly one table in INSERT INTO clause`)
 		}
 		validator.validateInsertQEntity(this.dbEntity)
-		let tableFragment   = this.getTableFragment(
+		let tableFragment = this.getTableFragment(
 			this.jsonInsertValues.II, context, false)
 		let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C)
-		let valuesFragment  = this.getValuesFragment(
+		let valuesFragment = this.getValuesFragment(
 			this.jsonInsertValues.V, context)
 
 		return `INSERT INTO

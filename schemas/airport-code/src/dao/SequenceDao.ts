@@ -1,11 +1,11 @@
-import {plus}         from '@airport/air-control'
-import {DI}           from '@airport/di'
-import {SEQUENCE_DAO} from '../tokens'
+import { plus } from '@airport/air-control'
+import { DI } from '@airport/di'
+import { SEQUENCE_DAO } from '../tokens'
 import {
 	BaseSequenceDao,
 	IBaseSequenceDao,
 	Q
-}                     from '../generated/generated'
+} from '../generated/generated'
 
 export interface IAbstractSequenceDao {
 }
@@ -21,8 +21,8 @@ export class SequenceDao
 	implements ISequenceDao {
 
 	static diSet(): boolean {
-		return Q.__dbSchema__ && Q.__dbSchema__
-			.currentVersion.entities[0]
+		return Q.__dbSchema__ && Q.__dbSchema__.currentVersion[0]
+			.schemaVersion.entities[0]
 	}
 
 	async incrementCurrentValues(): Promise<void> {

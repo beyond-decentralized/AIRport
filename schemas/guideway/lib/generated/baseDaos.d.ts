@@ -1,6 +1,3 @@
-import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/air-control';
-import { Dao } from '@airport/check-in';
-import { EntityId as DbEntityId } from '@airport/ground-control';
 import { IAgtRepositoryTransactionBlock } from './synchronization/agtrepositorytransactionblock';
 import { AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateColumns, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockGraph, QAgtRepositoryTransactionBlock } from './synchronization/qagtrepositorytransactionblock';
 import { IAgtSharingMessage } from './synchronization/agtsharingmessage';
@@ -39,120 +36,218 @@ import { IUser } from './user/user';
 import { UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser } from './user/quser';
 import { IUserRepository } from './user/userrepository';
 import { UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateColumns, UserRepositoryEUpdateProperties, UserRepositoryEId, UserRepositoryGraph, QUserRepository } from './user/quserrepository';
+import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/air-control';
+import { Dao, DaoQueryDecorators } from '@airport/check-in';
+import { EntityId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity<Entity>> extends Dao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE> {
     constructor(dbEntityId: DbEntityId);
 }
 export interface IBaseAgtRepositoryTransactionBlockDao extends IDao<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateColumns, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockGraph, QAgtRepositoryTransactionBlock> {
 }
 export declare class BaseAgtRepositoryTransactionBlockDao extends SQDIDao<IAgtRepositoryTransactionBlock, AgtRepositoryTransactionBlockESelect, AgtRepositoryTransactionBlockECreateProperties, AgtRepositoryTransactionBlockEUpdateColumns, AgtRepositoryTransactionBlockEUpdateProperties, AgtRepositoryTransactionBlockEId, AgtRepositoryTransactionBlockGraph, QAgtRepositoryTransactionBlock> implements IBaseAgtRepositoryTransactionBlockDao {
+    static Find: DaoQueryDecorators<AgtRepositoryTransactionBlockESelect>;
+    static FindOne: DaoQueryDecorators<AgtRepositoryTransactionBlockESelect>;
+    static Search: DaoQueryDecorators<AgtRepositoryTransactionBlockESelect>;
+    static SearchOne: DaoQueryDecorators<AgtRepositoryTransactionBlockESelect>;
+    static Save(config: AgtRepositoryTransactionBlockGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseAgtSharingMessageDao extends IDao<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateColumns, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, AgtSharingMessageGraph, QAgtSharingMessage> {
 }
 export declare class BaseAgtSharingMessageDao extends SQDIDao<IAgtSharingMessage, AgtSharingMessageESelect, AgtSharingMessageECreateProperties, AgtSharingMessageEUpdateColumns, AgtSharingMessageEUpdateProperties, AgtSharingMessageEId, AgtSharingMessageGraph, QAgtSharingMessage> implements IBaseAgtSharingMessageDao {
+    static Find: DaoQueryDecorators<AgtSharingMessageESelect>;
+    static FindOne: DaoQueryDecorators<AgtSharingMessageESelect>;
+    static Search: DaoQueryDecorators<AgtSharingMessageESelect>;
+    static SearchOne: DaoQueryDecorators<AgtSharingMessageESelect>;
+    static Save(config: AgtSharingMessageGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseArchiveDao extends IDao<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateColumns, ArchiveEUpdateProperties, ArchiveEId, ArchiveGraph, QArchive> {
 }
 export declare class BaseArchiveDao extends SQDIDao<IArchive, ArchiveESelect, ArchiveECreateProperties, ArchiveEUpdateColumns, ArchiveEUpdateProperties, ArchiveEId, ArchiveGraph, QArchive> implements IBaseArchiveDao {
+    static Find: DaoQueryDecorators<ArchiveESelect>;
+    static FindOne: DaoQueryDecorators<ArchiveESelect>;
+    static Search: DaoQueryDecorators<ArchiveESelect>;
+    static SearchOne: DaoQueryDecorators<ArchiveESelect>;
+    static Save(config: ArchiveGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseDailyArchiveLogDao extends IDao<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateColumns, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, DailyArchiveLogGraph, QDailyArchiveLog> {
 }
 export declare class BaseDailyArchiveLogDao extends SQDIDao<IDailyArchiveLog, DailyArchiveLogESelect, DailyArchiveLogECreateProperties, DailyArchiveLogEUpdateColumns, DailyArchiveLogEUpdateProperties, DailyArchiveLogEId, DailyArchiveLogGraph, QDailyArchiveLog> implements IBaseDailyArchiveLogDao {
+    static Find: DaoQueryDecorators<DailyArchiveLogESelect>;
+    static FindOne: DaoQueryDecorators<DailyArchiveLogESelect>;
+    static Search: DaoQueryDecorators<DailyArchiveLogESelect>;
+    static SearchOne: DaoQueryDecorators<DailyArchiveLogESelect>;
+    static Save(config: DailyArchiveLogGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseDailyTerminalSyncLogDao extends IDao<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateColumns, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, DailyTerminalSyncLogGraph, QDailyTerminalSyncLog> {
 }
 export declare class BaseDailyTerminalSyncLogDao extends SQDIDao<IDailyTerminalSyncLog, DailyTerminalSyncLogESelect, DailyTerminalSyncLogECreateProperties, DailyTerminalSyncLogEUpdateColumns, DailyTerminalSyncLogEUpdateProperties, DailyTerminalSyncLogEId, DailyTerminalSyncLogGraph, QDailyTerminalSyncLog> implements IBaseDailyTerminalSyncLogDao {
+    static Find: DaoQueryDecorators<DailyTerminalSyncLogESelect>;
+    static FindOne: DaoQueryDecorators<DailyTerminalSyncLogESelect>;
+    static Search: DaoQueryDecorators<DailyTerminalSyncLogESelect>;
+    static SearchOne: DaoQueryDecorators<DailyTerminalSyncLogESelect>;
+    static Save(config: DailyTerminalSyncLogGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseMonthlyArchiveLogDao extends IDao<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateColumns, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, MonthlyArchiveLogGraph, QMonthlyArchiveLog> {
 }
 export declare class BaseMonthlyArchiveLogDao extends SQDIDao<IMonthlyArchiveLog, MonthlyArchiveLogESelect, MonthlyArchiveLogECreateProperties, MonthlyArchiveLogEUpdateColumns, MonthlyArchiveLogEUpdateProperties, MonthlyArchiveLogEId, MonthlyArchiveLogGraph, QMonthlyArchiveLog> implements IBaseMonthlyArchiveLogDao {
+    static Find: DaoQueryDecorators<MonthlyArchiveLogESelect>;
+    static FindOne: DaoQueryDecorators<MonthlyArchiveLogESelect>;
+    static Search: DaoQueryDecorators<MonthlyArchiveLogESelect>;
+    static SearchOne: DaoQueryDecorators<MonthlyArchiveLogESelect>;
+    static Save(config: MonthlyArchiveLogGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseMonthlyTerminalSyncLogDao extends IDao<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateColumns, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, MonthlyTerminalSyncLogGraph, QMonthlyTerminalSyncLog> {
 }
 export declare class BaseMonthlyTerminalSyncLogDao extends SQDIDao<IMonthlyTerminalSyncLog, MonthlyTerminalSyncLogESelect, MonthlyTerminalSyncLogECreateProperties, MonthlyTerminalSyncLogEUpdateColumns, MonthlyTerminalSyncLogEUpdateProperties, MonthlyTerminalSyncLogEId, MonthlyTerminalSyncLogGraph, QMonthlyTerminalSyncLog> implements IBaseMonthlyTerminalSyncLogDao {
+    static Find: DaoQueryDecorators<MonthlyTerminalSyncLogESelect>;
+    static FindOne: DaoQueryDecorators<MonthlyTerminalSyncLogESelect>;
+    static Search: DaoQueryDecorators<MonthlyTerminalSyncLogESelect>;
+    static SearchOne: DaoQueryDecorators<MonthlyTerminalSyncLogESelect>;
+    static Save(config: MonthlyTerminalSyncLogGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseRepositoryDao extends IDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryGraph, QRepository> {
 }
 export declare class BaseRepositoryDao extends SQDIDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryGraph, QRepository> implements IBaseRepositoryDao {
+    static Find: DaoQueryDecorators<RepositoryESelect>;
+    static FindOne: DaoQueryDecorators<RepositoryESelect>;
+    static Search: DaoQueryDecorators<RepositoryESelect>;
+    static SearchOne: DaoQueryDecorators<RepositoryESelect>;
+    static Save(config: RepositoryGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseRepositoryArchiveDao extends IDao<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateColumns, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, RepositoryArchiveGraph, QRepositoryArchive> {
 }
 export declare class BaseRepositoryArchiveDao extends SQDIDao<IRepositoryArchive, RepositoryArchiveESelect, RepositoryArchiveECreateProperties, RepositoryArchiveEUpdateColumns, RepositoryArchiveEUpdateProperties, RepositoryArchiveEId, RepositoryArchiveGraph, QRepositoryArchive> implements IBaseRepositoryArchiveDao {
+    static Find: DaoQueryDecorators<RepositoryArchiveESelect>;
+    static FindOne: DaoQueryDecorators<RepositoryArchiveESelect>;
+    static Search: DaoQueryDecorators<RepositoryArchiveESelect>;
+    static SearchOne: DaoQueryDecorators<RepositoryArchiveESelect>;
+    static Save(config: RepositoryArchiveGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseSecurityAnswerDao extends IDao<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateColumns, SecurityAnswerEUpdateProperties, SecurityAnswerEId, SecurityAnswerGraph, QSecurityAnswer> {
 }
 export declare class BaseSecurityAnswerDao extends SQDIDao<ISecurityAnswer, SecurityAnswerESelect, SecurityAnswerECreateProperties, SecurityAnswerEUpdateColumns, SecurityAnswerEUpdateProperties, SecurityAnswerEId, SecurityAnswerGraph, QSecurityAnswer> implements IBaseSecurityAnswerDao {
+    static Find: DaoQueryDecorators<SecurityAnswerESelect>;
+    static FindOne: DaoQueryDecorators<SecurityAnswerESelect>;
+    static Search: DaoQueryDecorators<SecurityAnswerESelect>;
+    static SearchOne: DaoQueryDecorators<SecurityAnswerESelect>;
+    static Save(config: SecurityAnswerGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseSecurityQuestionDao extends IDao<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateColumns, SecurityQuestionEUpdateProperties, SecurityQuestionEId, SecurityQuestionGraph, QSecurityQuestion> {
 }
 export declare class BaseSecurityQuestionDao extends SQDIDao<ISecurityQuestion, SecurityQuestionESelect, SecurityQuestionECreateProperties, SecurityQuestionEUpdateColumns, SecurityQuestionEUpdateProperties, SecurityQuestionEId, SecurityQuestionGraph, QSecurityQuestion> implements IBaseSecurityQuestionDao {
+    static Find: DaoQueryDecorators<SecurityQuestionESelect>;
+    static FindOne: DaoQueryDecorators<SecurityQuestionESelect>;
+    static Search: DaoQueryDecorators<SecurityQuestionESelect>;
+    static SearchOne: DaoQueryDecorators<SecurityQuestionESelect>;
+    static Save(config: SecurityQuestionGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseServerDao extends IDao<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateColumns, ServerEUpdateProperties, ServerEId, ServerGraph, QServer> {
 }
 export declare class BaseServerDao extends SQDIDao<IServer, ServerESelect, ServerECreateProperties, ServerEUpdateColumns, ServerEUpdateProperties, ServerEId, ServerGraph, QServer> implements IBaseServerDao {
+    static Find: DaoQueryDecorators<ServerESelect>;
+    static FindOne: DaoQueryDecorators<ServerESelect>;
+    static Search: DaoQueryDecorators<ServerESelect>;
+    static SearchOne: DaoQueryDecorators<ServerESelect>;
+    static Save(config: ServerGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseServerSyncLogDao extends IDao<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateColumns, ServerSyncLogEUpdateProperties, ServerSyncLogEId, ServerSyncLogGraph, QServerSyncLog> {
 }
 export declare class BaseServerSyncLogDao extends SQDIDao<IServerSyncLog, ServerSyncLogESelect, ServerSyncLogECreateProperties, ServerSyncLogEUpdateColumns, ServerSyncLogEUpdateProperties, ServerSyncLogEId, ServerSyncLogGraph, QServerSyncLog> implements IBaseServerSyncLogDao {
+    static Find: DaoQueryDecorators<ServerSyncLogESelect>;
+    static FindOne: DaoQueryDecorators<ServerSyncLogESelect>;
+    static Search: DaoQueryDecorators<ServerSyncLogESelect>;
+    static SearchOne: DaoQueryDecorators<ServerSyncLogESelect>;
+    static Save(config: ServerSyncLogGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseSyncLogDao extends IDao<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateColumns, SyncLogEUpdateProperties, SyncLogEId, SyncLogGraph, QSyncLog> {
 }
 export declare class BaseSyncLogDao extends SQDIDao<ISyncLog, SyncLogESelect, SyncLogECreateProperties, SyncLogEUpdateColumns, SyncLogEUpdateProperties, SyncLogEId, SyncLogGraph, QSyncLog> implements IBaseSyncLogDao {
+    static Find: DaoQueryDecorators<SyncLogESelect>;
+    static FindOne: DaoQueryDecorators<SyncLogESelect>;
+    static Search: DaoQueryDecorators<SyncLogESelect>;
+    static SearchOne: DaoQueryDecorators<SyncLogESelect>;
+    static Save(config: SyncLogGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseTerminalDao extends IDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal> {
 }
 export declare class BaseTerminalDao extends SQDIDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal> implements IBaseTerminalDao {
+    static Find: DaoQueryDecorators<TerminalESelect>;
+    static FindOne: DaoQueryDecorators<TerminalESelect>;
+    static Search: DaoQueryDecorators<TerminalESelect>;
+    static SearchOne: DaoQueryDecorators<TerminalESelect>;
+    static Save(config: TerminalGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseTerminalRepositoryDao extends IDao<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateColumns, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, TerminalRepositoryGraph, QTerminalRepository> {
 }
 export declare class BaseTerminalRepositoryDao extends SQDIDao<ITerminalRepository, TerminalRepositoryESelect, TerminalRepositoryECreateProperties, TerminalRepositoryEUpdateColumns, TerminalRepositoryEUpdateProperties, TerminalRepositoryEId, TerminalRepositoryGraph, QTerminalRepository> implements IBaseTerminalRepositoryDao {
+    static Find: DaoQueryDecorators<TerminalRepositoryESelect>;
+    static FindOne: DaoQueryDecorators<TerminalRepositoryESelect>;
+    static Search: DaoQueryDecorators<TerminalRepositoryESelect>;
+    static SearchOne: DaoQueryDecorators<TerminalRepositoryESelect>;
+    static Save(config: TerminalRepositoryGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseTuningParametersDao extends IDao<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateColumns, TuningParametersEUpdateProperties, TuningParametersEId, TuningParametersGraph, QTuningParameters> {
 }
 export declare class BaseTuningParametersDao extends SQDIDao<ITuningParameters, TuningParametersESelect, TuningParametersECreateProperties, TuningParametersEUpdateColumns, TuningParametersEUpdateProperties, TuningParametersEId, TuningParametersGraph, QTuningParameters> implements IBaseTuningParametersDao {
+    static Find: DaoQueryDecorators<TuningParametersESelect>;
+    static FindOne: DaoQueryDecorators<TuningParametersESelect>;
+    static Search: DaoQueryDecorators<TuningParametersESelect>;
+    static SearchOne: DaoQueryDecorators<TuningParametersESelect>;
+    static Save(config: TuningParametersGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseUserDao extends IDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser> {
 }
 export declare class BaseUserDao extends SQDIDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser> implements IBaseUserDao {
+    static Find: DaoQueryDecorators<UserESelect>;
+    static FindOne: DaoQueryDecorators<UserESelect>;
+    static Search: DaoQueryDecorators<UserESelect>;
+    static SearchOne: DaoQueryDecorators<UserESelect>;
+    static Save(config: UserGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
 export interface IBaseUserRepositoryDao extends IDao<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateColumns, UserRepositoryEUpdateProperties, UserRepositoryEId, UserRepositoryGraph, QUserRepository> {
 }
 export declare class BaseUserRepositoryDao extends SQDIDao<IUserRepository, UserRepositoryESelect, UserRepositoryECreateProperties, UserRepositoryEUpdateColumns, UserRepositoryEUpdateProperties, UserRepositoryEId, UserRepositoryGraph, QUserRepository> implements IBaseUserRepositoryDao {
+    static Find: DaoQueryDecorators<UserRepositoryESelect>;
+    static FindOne: DaoQueryDecorators<UserRepositoryESelect>;
+    static Search: DaoQueryDecorators<UserRepositoryESelect>;
+    static SearchOne: DaoQueryDecorators<UserRepositoryESelect>;
+    static Save(config: UserRepositoryGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

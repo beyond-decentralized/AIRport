@@ -2,6 +2,8 @@ import { ISchema } from './schema/schema';
 import { SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, SchemaGraph, QSchema } from './schema/qschema';
 import { ISchemaColumn } from './schema/schemacolumn';
 import { SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, SchemaColumnGraph, QSchemaColumn } from './schema/qschemacolumn';
+import { ISchemaCurrentVersion } from './schema/schemacurrentversion';
+import { SchemaCurrentVersionESelect, SchemaCurrentVersionECreateProperties, SchemaCurrentVersionEUpdateColumns, SchemaCurrentVersionEUpdateProperties, SchemaCurrentVersionEId, SchemaCurrentVersionGraph, QSchemaCurrentVersion } from './schema/qschemacurrentversion';
 import { ISchemaEntity } from './schema/schemaentity';
 import { SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityGraph, QSchemaEntity } from './schema/qschemaentity';
 import { ISchemaOperation } from './schema/schemaoperation';
@@ -31,6 +33,7 @@ export declare class BaseSchemaDao extends SQDIDao<ISchema, SchemaESelect, Schem
     static FindOne: DaoQueryDecorators<SchemaESelect>;
     static Search: DaoQueryDecorators<SchemaESelect>;
     static SearchOne: DaoQueryDecorators<SchemaESelect>;
+    static Save(config: SchemaGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
@@ -41,6 +44,18 @@ export declare class BaseSchemaColumnDao extends SQDIDao<ISchemaColumn, SchemaCo
     static FindOne: DaoQueryDecorators<SchemaColumnESelect>;
     static Search: DaoQueryDecorators<SchemaColumnESelect>;
     static SearchOne: DaoQueryDecorators<SchemaColumnESelect>;
+    static Save(config: SchemaColumnGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseSchemaCurrentVersionDao extends IDao<ISchemaCurrentVersion, SchemaCurrentVersionESelect, SchemaCurrentVersionECreateProperties, SchemaCurrentVersionEUpdateColumns, SchemaCurrentVersionEUpdateProperties, SchemaCurrentVersionEId, SchemaCurrentVersionGraph, QSchemaCurrentVersion> {
+}
+export declare class BaseSchemaCurrentVersionDao extends SQDIDao<ISchemaCurrentVersion, SchemaCurrentVersionESelect, SchemaCurrentVersionECreateProperties, SchemaCurrentVersionEUpdateColumns, SchemaCurrentVersionEUpdateProperties, SchemaCurrentVersionEId, SchemaCurrentVersionGraph, QSchemaCurrentVersion> implements IBaseSchemaCurrentVersionDao {
+    static Find: DaoQueryDecorators<SchemaCurrentVersionESelect>;
+    static FindOne: DaoQueryDecorators<SchemaCurrentVersionESelect>;
+    static Search: DaoQueryDecorators<SchemaCurrentVersionESelect>;
+    static SearchOne: DaoQueryDecorators<SchemaCurrentVersionESelect>;
+    static Save(config: SchemaCurrentVersionGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
@@ -51,6 +66,7 @@ export declare class BaseSchemaEntityDao extends SQDIDao<ISchemaEntity, SchemaEn
     static FindOne: DaoQueryDecorators<SchemaEntityESelect>;
     static Search: DaoQueryDecorators<SchemaEntityESelect>;
     static SearchOne: DaoQueryDecorators<SchemaEntityESelect>;
+    static Save(config: SchemaEntityGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
@@ -61,6 +77,7 @@ export declare class BaseSchemaOperationDao extends SQDIDao<ISchemaOperation, Sc
     static FindOne: DaoQueryDecorators<SchemaOperationESelect>;
     static Search: DaoQueryDecorators<SchemaOperationESelect>;
     static SearchOne: DaoQueryDecorators<SchemaOperationESelect>;
+    static Save(config: SchemaOperationGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
@@ -71,6 +88,7 @@ export declare class BaseSchemaPropertyDao extends SQDIDao<ISchemaProperty, Sche
     static FindOne: DaoQueryDecorators<SchemaPropertyESelect>;
     static Search: DaoQueryDecorators<SchemaPropertyESelect>;
     static SearchOne: DaoQueryDecorators<SchemaPropertyESelect>;
+    static Save(config: SchemaPropertyGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
@@ -81,6 +99,7 @@ export declare class BaseSchemaPropertyColumnDao extends SQDIDao<ISchemaProperty
     static FindOne: DaoQueryDecorators<SchemaPropertyColumnESelect>;
     static Search: DaoQueryDecorators<SchemaPropertyColumnESelect>;
     static SearchOne: DaoQueryDecorators<SchemaPropertyColumnESelect>;
+    static Save(config: SchemaPropertyColumnGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
@@ -91,6 +110,7 @@ export declare class BaseSchemaReferenceDao extends SQDIDao<ISchemaReference, Sc
     static FindOne: DaoQueryDecorators<SchemaReferenceESelect>;
     static Search: DaoQueryDecorators<SchemaReferenceESelect>;
     static SearchOne: DaoQueryDecorators<SchemaReferenceESelect>;
+    static Save(config: SchemaReferenceGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
@@ -101,6 +121,7 @@ export declare class BaseSchemaRelationDao extends SQDIDao<ISchemaRelation, Sche
     static FindOne: DaoQueryDecorators<SchemaRelationESelect>;
     static Search: DaoQueryDecorators<SchemaRelationESelect>;
     static SearchOne: DaoQueryDecorators<SchemaRelationESelect>;
+    static Save(config: SchemaRelationGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
@@ -111,6 +132,7 @@ export declare class BaseSchemaRelationColumnDao extends SQDIDao<ISchemaRelation
     static FindOne: DaoQueryDecorators<SchemaRelationColumnESelect>;
     static Search: DaoQueryDecorators<SchemaRelationColumnESelect>;
     static SearchOne: DaoQueryDecorators<SchemaRelationColumnESelect>;
+    static Save(config: SchemaRelationColumnGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
@@ -121,6 +143,7 @@ export declare class BaseSchemaVersionDao extends SQDIDao<ISchemaVersion, Schema
     static FindOne: DaoQueryDecorators<SchemaVersionESelect>;
     static Search: DaoQueryDecorators<SchemaVersionESelect>;
     static SearchOne: DaoQueryDecorators<SchemaVersionESelect>;
+    static Save(config: SchemaVersionGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

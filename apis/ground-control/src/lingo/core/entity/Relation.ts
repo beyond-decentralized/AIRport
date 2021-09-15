@@ -73,8 +73,8 @@ export interface JSONRelation {
 	 */
 	rep: string;
 	/**
-	 *  Schema Version Id
-	 * Schema Version Id of the parent entity in relation
+	 *  Schema Index
+	 * Schema Index of the parent entity in relation
 	 */
 	si?: number;
 }

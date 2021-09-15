@@ -1,10 +1,15 @@
+/* eslint-disable */
 export const SCHEMA = {
     "domain": "air",
     "index": null,
     "name": "@airport/runway-edge-lighting",
+    "packageName": "@airport/runway-edge-lighting",
     "sinceVersion": 1,
     "versions": [
         {
+            "api": {
+                "apiObjectMap": {}
+            },
             "entities": [
                 {
                     "columns": [
@@ -201,7 +206,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "LOG_ENTRIES",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -334,7 +340,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "LOG_ENTRY_VALUES",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -465,7 +472,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "LOG_ENTRY",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -668,6 +676,7 @@ export const SCHEMA = {
                     "domain": "air",
                     "index": 0,
                     "name": "@airport/territory",
+                    "packageName": "@airport/territory",
                     "sinceVersion": 1,
                     "versions": [
                         {

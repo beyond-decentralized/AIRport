@@ -1,25 +1,25 @@
 import {
 	IMemoizedSelector,
 	SELECTOR_MANAGER
-}                                from '@airport/check-in';
-import { DI }                    from '@airport/di';
+} from '@airport/check-in';
+import { DI } from '@airport/di';
 import {
 	DomainName,
 	ensureChildJsMap,
 	JsonSchemaName,
 	SchemaName
-}                                from '@airport/ground-control';
+} from '@airport/ground-control';
 import { BehaviorSubject } from 'rxjs';
-import { IDomain }               from '@airport/territory';
+import { IDomain } from '@airport/territory';
 import {
 	ISchema,
 	ISchemaColumn,
 	ISchemaEntity,
 	ISchemaRelation,
 	ISchemaVersion
-}                                from '@airport/traffic-pattern';
-import { TERMINAL_STORE }        from '../tokens';
-import { ITerminalState }        from './TerminalState';
+} from '@airport/traffic-pattern';
+import { TERMINAL_STORE } from '../tokens';
+import { ITerminalState } from './TerminalState';
 
 export interface ITerminalStore {
 
@@ -75,12 +75,12 @@ export class TerminalStore
 
 	async init(): Promise<void> {
 		const selectorManager = await DI.db().get(SELECTOR_MANAGER);
-		this.state                    = new BehaviorSubject<ITerminalState>({
+		this.state = new BehaviorSubject<ITerminalState>({
 			domains: [], nodesBySyncFrequency: new Map(), schemas: [], terminal: null,
 		});
 
-		this.getTerminalState                 = selectorManager.createRootSelector(this.state);
-		this.getDomains                       = selectorManager.createSelector(this.getTerminalState,
+		this.getTerminalState = selectorManager.createRootSelector(this.state);
+		this.getDomains = selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.domains);
 		this.getLatestSchemaVersionMapByNames = selectorManager.createSelector(this.getDomains,
 			domains => {
@@ -89,7 +89,7 @@ export class TerminalStore
 				for (const domain of domains) {
 					const mapForDomain = ensureChildJsMap(latestSchemaVersionMapByNames, domain.name);
 					for (const schema of domain.schemas) {
-						mapForDomain.set(schema.name, schema.currentVersion);
+						mapForDomain.set(schema.name, schema.currentVersion[0].schemaVersion);
 					}
 				}
 
@@ -100,16 +100,16 @@ export class TerminalStore
 			this.getLatestSchemaVersionMapByNames, (
 				latestSchemaVersionMapByNames: Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>
 			) => {
-				const latestSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion> = new Map();
+			const latestSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion> = new Map();
 
-				for (const schemaVersionsForDomainName of latestSchemaVersionMapByNames.values()) {
-					for (const schemaVersion of schemaVersionsForDomainName.values()) {
-						latestSchemaVersionMapBySchemaName.set(schemaVersion.schema.name, schemaVersion);
-					}
+			for (const schemaVersionsForDomainName of latestSchemaVersionMapByNames.values()) {
+				for (const schemaVersion of schemaVersionsForDomainName.values()) {
+					latestSchemaVersionMapBySchemaName.set(schemaVersion.schema.name, schemaVersion);
 				}
+			}
 
-				return latestSchemaVersionMapBySchemaName;
-			});
+			return latestSchemaVersionMapBySchemaName;
+		});
 
 		// getNodesBySyncFrequency = createSelector(this.getTerminalState,
 		// 	terminal => terminal.nodesBySyncFrequency)
@@ -135,7 +135,8 @@ export class TerminalStore
 
 				for (const domain of domains) {
 					for (const schema of domain.schemas) {
-						latestSchemaVersionsBySchemaIndexes[schema.index] = schema.currentVersion;
+						latestSchemaVersionsBySchemaIndexes[schema.index]
+							= schema.currentVersion[0].schemaVersion;
 					}
 				}
 

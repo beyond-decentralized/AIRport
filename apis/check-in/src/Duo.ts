@@ -94,8 +94,8 @@ export class Duo<Entity,
   EntityCascadeGraph extends IEntityCascadeGraph,
   IQE extends IQEntity<Entity>>
   implements IDuo<Entity, EntitySelect, EntityCreate,
-    EntityUpdateColumns, EntityUpdate, EntityId,
-    EntityCascadeGraph, IQE> {
+  EntityUpdateColumns, EntityUpdate, EntityId,
+  EntityCascadeGraph, IQE> {
 
   select: IFieldsSelect<EntitySelect>;
 
@@ -106,7 +106,8 @@ export class Duo<Entity,
     qSchema?: QSchema,
   ) {
     if (typeof dbEntityId === 'number') {
-      this.dbEntity = qSchema.__dbSchema__.currentVersion.entities[dbEntityId];
+      this.dbEntity = qSchema.__dbSchema__.currentVersion[0]
+        .schemaVersion.entities[dbEntityId];
     } else {
       this.dbEntity = dbEntityId;
     }

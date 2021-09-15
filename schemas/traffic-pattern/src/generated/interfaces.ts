@@ -1,5 +1,6 @@
 export * from './schema/schema';
 export * from './schema/schemacolumn';
+export * from './schema/schemacurrentversion';
 export * from './schema/schemaentity';
 export * from './schema/schemaoperation';
 export * from './schema/schemaproperty';

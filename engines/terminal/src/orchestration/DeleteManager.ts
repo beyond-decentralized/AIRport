@@ -41,10 +41,10 @@ import {
 } from '@airport/holding-pattern'
 import {
 	IDeleteManager,
-	IHistoryManager, 
+	IHistoryManager,
 	ITransaction,
 	RecordsToDelete
- } from '@airport/terminal-map'
+} from '@airport/terminal-map'
 import {
 	DELETE_MANAGER,
 	HISTORY_MANAGER,
@@ -81,7 +81,8 @@ export class DeleteManager
 				SCHEMA_UTILS, SEQUENCE_GENERATOR)
 
 		const dbEntity = airDb
-			.schemas[portableQuery.schemaIndex].currentVersion.entities[portableQuery.tableIndex]
+			.schemas[portableQuery.schemaIndex].currentVersion[0].schemaVersion
+			.entities[portableQuery.tableIndex]
 
 		const deleteCommand = transaction.deleteWhere(portableQuery, context)
 		if (dbEntity.isLocal) {
@@ -234,7 +235,8 @@ export class DeleteManager
 		let systemWideOperationId
 		for (const [schemaIndex, schemaRecordsToDelete] of recordsToDelete) {
 			for (const [entityIndex, entityRecordsToDelete] of schemaRecordsToDelete) {
-				const dbEntity = airDb.schemas[schemaIndex].currentVersion.entities[entityIndex]
+				const dbEntity = airDb.schemas[schemaIndex].currentVersion[0]
+					.schemaVersion.entities[entityIndex]
 
 				if (!systemWideOperationId) {
 					systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator)

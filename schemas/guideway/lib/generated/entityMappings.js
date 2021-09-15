@@ -1,4 +1,5 @@
-import { AIR_DB } from '@airport/air-control';
+/* eslint-disable */
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { SyncLog } from '../ddl/synchronization/SyncLog';
 import { AgtSharingMessage } from '../ddl/synchronization/AgtSharingMessage';
@@ -19,7 +20,7 @@ import { RepositoryArchive } from '../ddl/repository/RepositoryArchive';
 import { ServerSyncLog } from '../ddl/server/ServerSyncLog';
 import { Server } from '../ddl/server/Server';
 import { TuningParameters } from '../ddl/tuning/TuningParameters';
-DI.db().get(AIR_DB).then(airDb => {
+DI.db().get(AIRPORT_DATABASE).then(airDb => {
     const accumulator = airDb.getAccumulator('air', 'guideway');
     accumulator.add(SyncLog, 0);
     accumulator.add(AgtSharingMessage, 1);

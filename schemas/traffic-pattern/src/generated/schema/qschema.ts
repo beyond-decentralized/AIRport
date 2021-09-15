@@ -46,6 +46,19 @@ import {
 	SchemaVersion,
 } from '../../ddl/schema/SchemaVersion';
 import {
+	SchemaCurrentVersionGraph,
+	SchemaCurrentVersionEId,
+	SchemaCurrentVersionEOptionalId,
+	SchemaCurrentVersionEUpdateProperties,
+	SchemaCurrentVersionESelect,
+	QSchemaCurrentVersion,
+	QSchemaCurrentVersionQId,
+	QSchemaCurrentVersionQRelation,
+} from './qschemacurrentversion';
+import {
+	SchemaCurrentVersion,
+} from '../../ddl/schema/SchemaCurrentVersion';
+import {
 	Schema,
 } from '../../ddl/schema/Schema';
 
@@ -73,7 +86,7 @@ export interface SchemaESelect
   // Non-Id relations (including OneToMany's)
 	domain?: DomainESelect;
 	versions?: SchemaVersionESelect;
-	currentVersion?: SchemaVersionESelect;
+	currentVersion?: SchemaCurrentVersionESelect;
 
 }
 
@@ -113,7 +126,6 @@ export interface SchemaEUpdateProperties
 
 	// Non-Id Relations - ids only & no OneToMany's
 	domain?: DomainEOptionalId;
-	currentVersion?: SchemaVersionEOptionalId;
 
 }
 
@@ -133,7 +145,7 @@ export interface SchemaGraph
 	// Relations
 	domain?: DomainGraph;
 	versions?: SchemaVersionGraph[];
-	currentVersion?: SchemaVersionGraph;
+	currentVersion?: SchemaCurrentVersionGraph[];
 
 }
 
@@ -148,7 +160,6 @@ export interface SchemaEUpdateColumns
 	PACKAGE_NAME?: string | IQStringField;
 	STATUS?: number | IQNumberField;
 	DOMAIN_ID?: number | IQNumberField;
-	CURRENT_VERSION_ID?: number | IQNumberField;
 
 }
 
@@ -192,7 +203,7 @@ export interface QSchema extends IQEntity<Schema>
 	// Non-Id Relations
 	domain: QDomainQRelation;
 	versions: IQOneToManyRelation<SchemaVersion, QSchemaVersion>;
-	currentVersion: QSchemaVersionQRelation;
+	currentVersion: IQOneToManyRelation<SchemaCurrentVersion, QSchemaCurrentVersion>;
 
 }
 

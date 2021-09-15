@@ -144,7 +144,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
             this.resolveCircularDependenciesForNode(node, nodeOUID, node, context);
         }
     }
-    resolveCircularDependenciesForNode(node, nodeOUID, currentlyTraversedNode, context) {
+    resolveCircularDependenciesForNode(node, nodeOUID, currentlyTraversedNode, context, nodePath = []) {
         if (!currentlyTraversedNode.dependsOn
             || currentlyTraversedNode.circleTraversedFor[nodeOUID]) {
             return;
@@ -155,21 +155,22 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
             const dependencyOUID = context.ioc.entityStateManager
                 .getOperationUniqueId(dependency.entity);
             if (dependencyOUID === nodeOUID) {
-                if (this.hasGeneratedIdColumns(node)) {
-                    throw new Error(`Cannot resolve circular dependencies for nodes that have @GeneratedValue Id columns`);
+                let entityPath = [];
+                for (let pathNode of nodePath) {
+                    let entityLongName = pathNode.dbEntity.schemaVersion.schema.name + ':' + pathNode.dbEntity.name;
+                    entityPath.push(entityLongName);
                 }
-                currentlyTraversedNode.dependsOn.splice(i, 1);
+                let entityLongName = dependency.dbEntity.schemaVersion.schema.name + ':' + dependency.dbEntity.name;
+                entityPath.push(entityLongName);
+                entityLongName = nodePath[0].dbEntity.schemaVersion.schema.name + ':' + nodePath[0].dbEntity.name;
+                throw new Error(`Found a circular dependency in
+					${entityPath.join(' -> ')}
+					`);
             }
-            this.resolveCircularDependenciesForNode(node, nodeOUID, dependency, context);
+            nodePath.push(dependency);
+            this.resolveCircularDependenciesForNode(node, nodeOUID, dependency, context, nodePath);
+            nodePath.pop();
         }
-    }
-    hasGeneratedIdColumns(node) {
-        for (const idColumn of node.dbEntity.idColumns) {
-            if (idColumn.isGenerated) {
-                return true;
-            }
-        }
-        return false;
     }
     orderEntitiesToPersist(unorderedDependencies, context) {
         let orderedNodes = [];

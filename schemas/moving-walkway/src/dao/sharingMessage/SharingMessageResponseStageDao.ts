@@ -54,7 +54,8 @@ export class SharingMessageResponseStageDao
 	async insertValues(
 		values: SharingMessageResponseStageValues[]
 	): Promise<number> {
-		const dbEntity = Q.db.currentVersion.entityMapByName.SharingMessageResponseStage;
+		const dbEntity = Q.db.currentVersion[0].schemaVersion
+		.entityMapByName.SharingMessageResponseStage;
 
 		let smrs: QSharingMessageResponseStage;
 

@@ -1,0 +1,1 @@
+{"version":3,"file":"SchemaApi.d.ts","sourceRoot":"","sources":["../../src/api/SchemaApi.ts"],"names":[],"mappings":"AAIA,MAAM,WAAW,UAAU;IAEvB,2BAA2B,IAAI,OAAO,CAAC,IAAI,CAAC,CAAA;CAE/C;AAED,qBAAa,SACT,YAAW,UAAU;IAGf,2BAA2B,IAAI,OAAO,CAAC,IAAI,CAAC;CAGrD"}

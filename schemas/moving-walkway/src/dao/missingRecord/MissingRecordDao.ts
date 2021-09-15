@@ -1,31 +1,31 @@
 import {
 	and,
 	or
-}                           from '@airport/air-control'
-import {AIRPORT_DATABASE}             from '@airport/air-control'
-import {container, DI}                 from '@airport/di'
+} from '@airport/air-control'
+import { AIRPORT_DATABASE } from '@airport/air-control'
+import { container, DI } from '@airport/di'
 import {
 	JSONBaseOperation,
 	SchemaVersionId,
 	TableIndex
-}                           from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	ActorId,
 	RepositoryEntity_ActorRecordId,
 	RepositoryId
-}                           from '@airport/holding-pattern'
-import {ISchemaVersion}     from '@airport/traffic-pattern'
+} from '@airport/holding-pattern'
+import { ISchemaVersion } from '@airport/traffic-pattern'
 import {
 	MissingRecordId,
 	MissingRecordStatus,
-}                           from '../../ddl/ddl'
-import {MISSING_RECORD_DAO} from '../../tokens'
+} from '../../ddl/ddl'
+import { MISSING_RECORD_DAO } from '../../tokens'
 import {
 	BaseMissingRecordDao,
 	IBaseMissingRecordDao,
 	Q,
 	QMissingRecord
-}                    from '../../generated/generated'
+} from '../../generated/generated'
 
 export interface IMissingRecordDao
 	extends IBaseMissingRecordDao {
@@ -88,7 +88,7 @@ export class MissingRecordDao
 		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		for (const schema of airDb.schemas) {
-			const schemaVersion                           = schema.currentVersion
+			const schemaVersion = schema.currentVersion[0].schemaVersion
 			currentSchemaVersionMapById[schemaVersion.id] = schemaVersion
 		}
 
@@ -98,7 +98,7 @@ export class MissingRecordDao
 			for (const [schemaVersionId, recordIdsForSchema] of recordIdsForRepository) {
 				let tableWhereFragments: JSONBaseOperation[] = []
 				for (const [tableIndex, recordIdsForTable] of recordIdsForSchema) {
-					const dbEntity                               = currentSchemaVersionMapById[schemaVersionId].entities[tableIndex]
+					const dbEntity = currentSchemaVersionMapById[schemaVersionId].entities[tableIndex]
 					let actorWhereFragments: JSONBaseOperation[] = []
 					for (const [actorId, recordIdsForActor] of recordIdsForTable) {
 						numClauses++

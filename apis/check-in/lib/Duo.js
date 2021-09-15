@@ -47,7 +47,8 @@ class FieldsSelect {
 export class Duo {
     constructor(dbEntityId, qSchema) {
         if (typeof dbEntityId === 'number') {
-            this.dbEntity = qSchema.__dbSchema__.currentVersion.entities[dbEntityId];
+            this.dbEntity = qSchema.__dbSchema__.currentVersion[0]
+                .schemaVersion.entities[dbEntityId];
         }
         else {
             this.dbEntity = dbEntityId;

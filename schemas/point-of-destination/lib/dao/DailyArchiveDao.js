@@ -1,12 +1,13 @@
-import { AIR_DB, and, or } from '@airport/air-control';
+import { AIRPORT_DATABASE, and, or } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { DAILY_ARCHIVE_DAO } from '../tokens';
 import { BaseDailyArchiveDao } from '../generated/baseDaos';
 import { Q } from '../generated/qSchema';
 export class DailyArchiveDao extends BaseDailyArchiveDao {
     async addRecords(values) {
-        const airDb = await container(this).get(AIR_DB);
-        const dbEntity = Q.db.currentVersion.entityMapByName.DailyArchive;
+        const airDb = await container(this).get(AIRPORT_DATABASE);
+        const dbEntity = Q.db.currentVersion[0].schemaVersion
+            .entityMapByName.DailyArchive;
         let da;
         await airDb.insertValues({
             insertInto: da = Q.DailyArchive,
@@ -21,7 +22,7 @@ export class DailyArchiveDao extends BaseDailyArchiveDao {
         });
     }
     async findForRepositoryIdsOnDates(repositoryIds, dates) {
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         const whereClauseFragments = [];
         let i = -1;
         let dsl = Q.DailyArchive;

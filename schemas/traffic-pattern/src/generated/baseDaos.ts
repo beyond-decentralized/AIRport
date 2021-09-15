@@ -26,6 +26,19 @@ import {
 	QSchemaColumn,
 } from './schema/qschemacolumn';
 import {
+	ISchemaCurrentVersion,
+} from './schema/schemacurrentversion';
+import {
+	SchemaCurrentVersionESelect,
+	SchemaCurrentVersionECreateColumns,
+	SchemaCurrentVersionECreateProperties,
+	SchemaCurrentVersionEUpdateColumns,
+	SchemaCurrentVersionEUpdateProperties,
+	SchemaCurrentVersionEId,
+	SchemaCurrentVersionGraph,
+	QSchemaCurrentVersion,
+} from './schema/qschemacurrentversion';
+import {
 	ISchemaEntity,
 } from './schema/schemaentity';
 import {
@@ -197,11 +210,11 @@ export class BaseSchemaDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(9)
+		super(10)
 	}
 }
 
@@ -230,6 +243,34 @@ export class BaseSchemaColumnDao
 	
 	constructor() {
 		super(4)
+	}
+}
+
+
+export interface IBaseSchemaCurrentVersionDao
+  extends IDao<ISchemaCurrentVersion, SchemaCurrentVersionESelect, SchemaCurrentVersionECreateProperties, SchemaCurrentVersionEUpdateColumns, SchemaCurrentVersionEUpdateProperties, SchemaCurrentVersionEId, SchemaCurrentVersionGraph, QSchemaCurrentVersion> {
+}
+
+export class BaseSchemaCurrentVersionDao
+  extends SQDIDao<ISchemaCurrentVersion, SchemaCurrentVersionESelect, SchemaCurrentVersionECreateProperties, SchemaCurrentVersionEUpdateColumns, SchemaCurrentVersionEUpdateProperties, SchemaCurrentVersionEId, SchemaCurrentVersionGraph, QSchemaCurrentVersion>
+	implements IBaseSchemaCurrentVersionDao {
+	
+	static Find      = new DaoQueryDecorators<SchemaCurrentVersionESelect>();
+	static FindOne   = new DaoQueryDecorators<SchemaCurrentVersionESelect>();
+	static Search    = new DaoQueryDecorators<SchemaCurrentVersionESelect>();
+	static SearchOne = new DaoQueryDecorators<SchemaCurrentVersionESelect>();
+	static Save(
+		config: SchemaCurrentVersionGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SchemaCurrentVersionGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(9)
+	}
+	
+	constructor() {
+		super(9)
 	}
 }
 

@@ -694,6 +694,18 @@ export const MAPPED_SUPERCLASS = [
 														},
 														"path": "@airport/territory"
 													},
+													"SchemaCurrentVersion": {
+														"fileImports": null,
+														"isLocal": true,
+														"objectMapByAsName": {
+															"SchemaCurrentVersion": {
+																"asName": "SchemaCurrentVersion",
+																"moduleImport": null,
+																"sourceName": "SchemaCurrentVersion"
+															}
+														},
+														"path": "./SchemaCurrentVersion"
+													},
 													"SchemaVersion": {
 														"fileImports": null,
 														"isLocal": true,
@@ -711,6 +723,7 @@ export const MAPPED_SUPERCLASS = [
 													"@airport/air-control": null,
 													"@airport/ground-control": null,
 													"@airport/territory": null,
+													"./SchemaCurrentVersion": null,
 													"./SchemaVersion": null
 												}
 											},
@@ -1059,16 +1072,10 @@ export const MAPPED_SUPERCLASS = [
 												{
 													"decorators": [
 														{
-															"name": "ManyToOne",
-															"values": []
-														},
-														{
-															"name": "JoinColumn",
+															"name": "OneToMany",
 															"values": [
 																{
-																	"name": "CURRENT_VERSION_ID",
-																	"referencedColumnName": "ID",
-																	"nullable": false
+																	"mappedBy": "schema"
 																}
 															]
 														}
@@ -1078,10 +1085,247 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "currentVersion",
-													"type": "SchemaVersion",
+													"type": "SchemaCurrentVersion[]",
 													"ownerEntity": null,
-													"nonArrayType": "SchemaVersion",
-													"entity": null,
+													"isArray": true,
+													"nonArrayType": "SchemaCurrentVersion",
+													"entity": {
+														"type": "SchemaCurrentVersion",
+														"path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaCurrentVersion.ts",
+														"parentClassName": null,
+														"isSuperclass": false,
+														"ids": [
+															{
+																"decorators": [
+																	{
+																		"name": "Id",
+																		"values": []
+																	},
+																	{
+																		"name": "ManyToOne",
+																		"values": []
+																	},
+																	{
+																		"name": "JoinColumn",
+																		"values": [
+																			{
+																				"name": "SCHEMA_INDEX",
+																				"referencedColumnName": "SCHEMA_INDEX",
+																				"nullable": false
+																			}
+																		]
+																	}
+																],
+																"isGenerated": false,
+																"isId": true,
+																"isMappedSuperclass": false,
+																"isTransient": false,
+																"name": "schema",
+																"type": "Schema",
+																"ownerEntity": null,
+																"nonArrayType": "Schema",
+																"entity": null,
+																"index": 0
+															},
+															{
+																"decorators": [
+																	{
+																		"name": "Id",
+																		"values": []
+																	},
+																	{
+																		"name": "ManyToOne",
+																		"values": []
+																	},
+																	{
+																		"name": "JoinColumn",
+																		"values": [
+																			{
+																				"name": "SCHEMA_VERSION_ID",
+																				"referencedColumnName": "ID",
+																				"nullable": false
+																			}
+																		]
+																	}
+																],
+																"isGenerated": false,
+																"isId": true,
+																"isMappedSuperclass": false,
+																"isTransient": false,
+																"name": "schemaVersion",
+																"type": "SchemaVersion",
+																"ownerEntity": null,
+																"nonArrayType": "SchemaVersion",
+																"entity": null,
+																"index": 1
+															}
+														],
+														"docEntry": {
+															"decorators": [
+																{
+																	"name": "Entity",
+																	"values": []
+																},
+																{
+																	"name": "Table",
+																	"values": [
+																		{
+																			"name": "SCHEMA_CURRENT_VERSIONS"
+																		}
+																	]
+																}
+															],
+															"isGenerated": false,
+															"isId": false,
+															"isMappedSuperclass": false,
+															"isTransient": false,
+															"name": "SchemaCurrentVersion",
+															"type": "typeof SchemaCurrentVersion",
+															"fileImports": {
+																"importMapByObjectAsName": {
+																	"Entity": {
+																		"fileImports": null,
+																		"isLocal": false,
+																		"objectMapByAsName": {
+																			"Entity": {
+																				"asName": "Entity",
+																				"moduleImport": null,
+																				"sourceName": "Entity"
+																			},
+																			"Id": {
+																				"asName": "Id",
+																				"moduleImport": null,
+																				"sourceName": "Id"
+																			},
+																			"JoinColumn": {
+																				"asName": "JoinColumn",
+																				"moduleImport": null,
+																				"sourceName": "JoinColumn"
+																			},
+																			"ManyToOne": {
+																				"asName": "ManyToOne",
+																				"moduleImport": null,
+																				"sourceName": "ManyToOne"
+																			},
+																			"Table": {
+																				"asName": "Table",
+																				"moduleImport": null,
+																				"sourceName": "Table"
+																			}
+																		},
+																		"path": "@airport/air-control"
+																	},
+																	"Id": null,
+																	"JoinColumn": null,
+																	"ManyToOne": null,
+																	"Table": null,
+																	"Schema": {
+																		"fileImports": null,
+																		"isLocal": true,
+																		"objectMapByAsName": {
+																			"Schema": {
+																				"asName": "Schema",
+																				"moduleImport": null,
+																				"sourceName": "Schema"
+																			}
+																		},
+																		"path": "./Schema"
+																	},
+																	"SchemaVersion": {
+																		"fileImports": null,
+																		"isLocal": true,
+																		"objectMapByAsName": {
+																			"SchemaVersion": {
+																				"asName": "SchemaVersion",
+																				"moduleImport": null,
+																				"sourceName": "SchemaVersion"
+																			}
+																		},
+																		"path": "./SchemaVersion"
+																	}
+																},
+																"importMapByModulePath": {
+																	"@airport/air-control": null,
+																	"./Schema": null,
+																	"./SchemaVersion": null
+																}
+															},
+															"properties": [
+																{
+																	"decorators": [
+																		{
+																			"name": "Id",
+																			"values": []
+																		},
+																		{
+																			"name": "ManyToOne",
+																			"values": []
+																		},
+																		{
+																			"name": "JoinColumn",
+																			"values": [
+																				{
+																					"name": "SCHEMA_INDEX",
+																					"referencedColumnName": "SCHEMA_INDEX",
+																					"nullable": false
+																				}
+																			]
+																		}
+																	],
+																	"isGenerated": false,
+																	"isId": true,
+																	"isMappedSuperclass": false,
+																	"isTransient": false,
+																	"name": "schema",
+																	"type": "Schema",
+																	"ownerEntity": null,
+																	"nonArrayType": "Schema",
+																	"entity": null,
+																	"index": 0
+																},
+																{
+																	"decorators": [
+																		{
+																			"name": "Id",
+																			"values": []
+																		},
+																		{
+																			"name": "ManyToOne",
+																			"values": []
+																		},
+																		{
+																			"name": "JoinColumn",
+																			"values": [
+																				{
+																					"name": "SCHEMA_VERSION_ID",
+																					"referencedColumnName": "ID",
+																					"nullable": false
+																				}
+																			]
+																		}
+																	],
+																	"isGenerated": false,
+																	"isId": true,
+																	"isMappedSuperclass": false,
+																	"isTransient": false,
+																	"name": "schemaVersion",
+																	"type": "SchemaVersion",
+																	"ownerEntity": null,
+																	"nonArrayType": "SchemaVersion",
+																	"entity": null,
+																	"index": 1
+																}
+															],
+															"methodSignatures": [],
+															"constructors": [
+																{
+																	"parameters": [],
+																	"returnType": "SchemaCurrentVersion"
+																}
+															]
+														},
+														"implementedInterfaceNames": []
+													},
 													"index": 7
 												}
 											],

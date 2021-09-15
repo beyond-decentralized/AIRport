@@ -8,8 +8,8 @@ import {
 	QStringField,
 	QTree,
 	QUntypedField,
-}                                from '@airport/air-control'
-import {DI}                      from '@airport/di'
+} from '@airport/air-control'
+import { DI } from '@airport/di'
 import {
 	DbColumn,
 	DbEntity,
@@ -30,20 +30,20 @@ import {
 	QueryResultType,
 	SortOrder,
 	SQLDataType
-}                                from '@airport/ground-control'
+} from '@airport/ground-control'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
-import {INonEntityOrderByParser} from '../orderBy/AbstractEntityOrderByParser'
+import { INonEntityOrderByParser } from '../orderBy/AbstractEntityOrderByParser'
 import {
 	Q_VALIDATOR,
 	SQL_QUERY_ADAPTOR,
 	SUB_STATEMENT_SQL_GENERATOR
-}                                from '../tokens'
+} from '../tokens'
 import {
 	SQLDialect,
 	SQLQuery
-}                                from './core/SQLQuery'
-import {ClauseType}              from './core/SQLWhereBase'
-import {SqlFunctionField}        from './SqlFunctionField'
+} from './core/SQLQuery'
+import { ClauseType } from './core/SQLWhereBase'
+import { SqlFunctionField } from './SqlFunctionField'
 
 /**
  * Created by Papa on 10/28/2016.
@@ -76,19 +76,19 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		internalFragments: InternalFragments,
 		context: IFuelHydrantContext,
 	): string {
-		const sqlAdaptor   = DI.db()
+		const sqlAdaptor = DI.db()
 			.getSync(SQL_QUERY_ADAPTOR)
-		let jsonQuery      = <JsonNonEntityQuery>this.jsonQuery
+		let jsonQuery = <JsonNonEntityQuery>this.jsonQuery
 		let joinNodeMap: { [alias: string]: JoinTreeNode }
-		                   = {}
-		this.joinTrees     = this.buildFromJoinTree(
+			= {}
+		this.joinTrees = this.buildFromJoinTree(
 			jsonQuery.F, joinNodeMap, context)
 		let selectFragment = this.getSELECTFragment(
 			false, jsonQuery.S, internalFragments,
 			context)
-		let fromFragment   = this.getFROMFragments(
+		let fromFragment = this.getFROMFragments(
 			this.joinTrees, context)
-		let whereFragment  = ''
+		let whereFragment = ''
 		if (jsonQuery.W) {
 			whereFragment = `
 WHERE
@@ -131,7 +131,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		joinNodeMap: { [alias: string]: JoinTreeNode },
 		context: IFuelHydrantContext,
 	): JoinTreeNode[] {
-		const validator               = DI.db()
+		const validator = DI.db()
 			.getSync(Q_VALIDATOR)
 		let jsonTrees: JoinTreeNode[] = []
 		let jsonTree: JoinTreeNode
@@ -154,10 +154,10 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 
 		let alias = context.ioc.relationManager.getAlias(firstRelation)
 		validator.validateReadFromEntity(firstRelation)
-		let firstEntity               = context.ioc.relationManager.createRelatedQEntity(
+		let firstEntity = context.ioc.relationManager.createRelatedQEntity(
 			firstRelation, context)
 		this.qEntityMapByAlias[alias] = firstEntity
-		jsonTree                      = new JoinTreeNode(firstRelation, [], null)
+		jsonTree = new JoinTreeNode(firstRelation, [], null)
 		jsonTrees.push(jsonTree)
 		joinNodeMap[alias] = jsonTree
 
@@ -171,16 +171,16 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			alias = context.ioc.relationManager.getAlias(joinRelation)
 			switch (joinRelation.rt) {
 				case JSONRelationType.SUB_QUERY_ROOT:
-					let view                      = this.addFieldsToView(
+					let view = this.addFieldsToView(
 						<JSONViewJoinRelation>joinRelation, alias, context)
 					this.qEntityMapByAlias[alias] = view as IQEntityInternal<any>
 					continue
 				case JSONRelationType.ENTITY_ROOT:
 					// Non-Joined table
-					let nonJoinedEntity           = context.ioc.relationManager.createRelatedQEntity(
+					let nonJoinedEntity = context.ioc.relationManager.createRelatedQEntity(
 						joinRelation, context)
 					this.qEntityMapByAlias[alias] = nonJoinedEntity
-					let anotherTree               = new JoinTreeNode(joinRelation, [], null)
+					let anotherTree = new JoinTreeNode(joinRelation, [], null)
 					if (joinNodeMap[alias]) {
 						throw new Error(
 							`Alias '${alias}' used more than once in the FROM clause.`)
@@ -218,7 +218,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					`Missing parent entity for alias ${parentAlias}, on table ${i + 1} in FROM clause. 
 					NOTE: sub-queries in FROM clause cannot reference parent FROM tables.`)
 			}
-			let leftNode  = joinNodeMap[parentAlias]
+			let leftNode = joinNodeMap[parentAlias]
 			let rightNode = new JoinTreeNode(joinRelation, [], leftNode)
 			leftNode.addChildNode(rightNode)
 
@@ -264,17 +264,17 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		forFieldQueryAlias: string,
 		context: IFuelHydrantContext,
 	) {
-		let fieldIndex        = 0
+		let fieldIndex = 0
 		let hasDistinctClause = false
 		for (let fieldName in select) {
-			let alias                      = `${fieldPrefix}${++fieldIndex}`
+			let alias = `${fieldPrefix}${++fieldIndex}`
 			let fieldJson: JSONClauseField = select[fieldName]
 			// If its a nested select
 			if (!fieldJson.ot) {
 				this.addFieldsToViewForSelect(view, viewAlias, fieldJson,
 					`${alias}_`, null, context)
 			} else {
-				let aliasToSet    = forFieldQueryAlias ? forFieldQueryAlias : alias
+				let aliasToSet = forFieldQueryAlias ? forFieldQueryAlias : alias
 				hasDistinctClause = hasDistinctClause && this.addFieldToViewForSelect(
 					view, viewAlias, fieldPrefix, fieldJson, aliasToSet,
 					forFieldQueryAlias, context)
@@ -312,9 +312,10 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			case JSONClauseObjectType.EXISTS_FUNCTION:
 				throw new Error(`Exists function cannot be used in SELECT clause.`)
 			case JSONClauseObjectType.FIELD:
-				dbEntity   = context.ioc.airDb.schemas[fieldJson.si].currentVersion.entities[fieldJson.ti]
+				dbEntity = context.ioc.airDb.schemas[fieldJson.si].currentVersion[0]
+					.schemaVersion.entities[fieldJson.ti]
 				dbProperty = dbEntity.properties[fieldJson.pi]
-				dbColumn   = dbEntity.columns[fieldJson.ci]
+				dbColumn = dbEntity.columns[fieldJson.ci]
 				switch (fieldJson.dt) {
 					case SQLDataType.BOOLEAN:
 						view[alias] = new QBooleanField(dbColumn, dbProperty,
@@ -409,10 +410,10 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 	): string {
 		const subStatementSqlGenerator = DI.db()
 			.getSync(SUB_STATEMENT_SQL_GENERATOR)
-		let fromFragment               = '\t'
-		let currentRelation            = currentTree.jsonRelation
-		let currentAlias               = context.ioc.relationManager.getAlias(currentRelation)
-		let qEntity                    = this.qEntityMapByAlias[currentAlias]
+		let fromFragment = '\t'
+		let currentRelation = currentTree.jsonRelation
+		let currentAlias = context.ioc.relationManager.getAlias(currentRelation)
+		let qEntity = this.qEntityMapByAlias[currentAlias]
 
 		if (!parentTree) {
 			switch (currentRelation.rt) {
@@ -421,7 +422,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					break
 				case JSONRelationType.SUB_QUERY_ROOT:
 					let viewRelation = <JSONViewJoinRelation>currentRelation
-					let subQuerySql  = subStatementSqlGenerator.getTreeQuerySql(
+					let subQuerySql = subStatementSqlGenerator.getTreeQuerySql(
 						viewRelation.sq, this.dialect, context)
 					fromFragment += `(${subQuerySql}) ${currentAlias}`
 					break
@@ -431,8 +432,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			}
 		} else {
 			let parentRelation = parentTree.jsonRelation
-			let parentAlias    = context.ioc.relationManager.getAlias(parentRelation)
-			let leftEntity     = this.qEntityMapByAlias[parentAlias]
+			let parentAlias = context.ioc.relationManager.getAlias(parentRelation)
+			let leftEntity = this.qEntityMapByAlias[parentAlias]
 
 			let rightEntity = this.qEntityMapByAlias[currentAlias]
 
@@ -459,7 +460,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			switch (currentRelation.rt) {
 				case JSONRelationType.ENTITY_JOIN_ON:
 					let joinRelation = <JSONJoinRelation>currentRelation
-					joinOnClause     = this.getWHEREFragment(joinRelation.jwc, '\t',
+					joinOnClause = this.getWHEREFragment(joinRelation.jwc, '\t',
 						context)
 					fromFragment += `\t${joinTypeString} ${context.ioc.storeDriver.getEntityTableName(
 						qEntity.__driver__.dbEntity, context)} ${currentAlias} ON\n${joinOnClause}`
@@ -472,9 +473,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					break
 				case JSONRelationType.SUB_QUERY_JOIN_ON:
 					let viewJoinRelation = <JSONViewJoinRelation>currentRelation
-					const mappedSql      = subStatementSqlGenerator.getTreeQuerySql(
+					const mappedSql = subStatementSqlGenerator.getTreeQuerySql(
 						viewJoinRelation.sq, this.dialect, context)
-					joinOnClause         = this.getWHEREFragment(
+					joinOnClause = this.getWHEREFragment(
 						viewJoinRelation.jwc, '\t', context)
 					fromFragment += `${joinTypeString} (${mappedSql}) ${currentAlias} ON\n${joinOnClause}`
 					break

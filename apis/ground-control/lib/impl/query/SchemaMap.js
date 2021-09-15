@@ -6,16 +6,16 @@ export class SchemaMap {
     ensureEntity(entity, allColumns = false, TableMapConstructor = TableMap) {
         return this.ensure(entity.schemaVersion.id, entity.index, allColumns, TableMapConstructor);
     }
-    ensure(schemaVersionId, tableIndex, allColumns = false, TableMapConstructor = TableMap) {
-        let tableMap = this.schemaMap[schemaVersionId];
+    ensure(schemaIndex, tableIndex, allColumns = false, TableMapConstructor = TableMap) {
+        let tableMap = this.schemaMap[schemaIndex];
         if (!tableMap) {
-            tableMap = new TableMapConstructor(schemaVersionId);
-            this.schemaMap[schemaVersionId] = tableMap;
+            tableMap = new TableMapConstructor(schemaIndex);
+            this.schemaMap[schemaIndex] = tableMap;
         }
         return tableMap.ensure(tableIndex, allColumns);
     }
-    existsByStructure(schemaVersionId, tableIndex, columnIndex) {
-        let tableMap = this.schemaMap[schemaVersionId];
+    existsByStructure(schemaIndex, tableIndex, columnIndex) {
+        let tableMap = this.schemaMap[schemaIndex];
         if (!tableMap) {
             return false;
         }

@@ -18,6 +18,7 @@ import {
 	JsonTreeQuery,
 	JSONValueOperation,
 	OperationCategory,
+	SchemaIndex,
 	SchemaMap,
 	SchemaVersionId,
 	SqlOperator,
@@ -289,11 +290,11 @@ export abstract class SQLWhereBase
 	}
 
 	protected addField(
-		schemaVersionId: SchemaVersionId,
+		schemaIndex: SchemaIndex,
 		tableIndex: TableIndex,
 		columnIndex: ColumnIndex,
 	): void {
-		this.fieldMap.ensure(schemaVersionId, tableIndex)
+		this.fieldMap.ensure(schemaIndex, tableIndex)
 			.ensure(columnIndex)
 	}
 

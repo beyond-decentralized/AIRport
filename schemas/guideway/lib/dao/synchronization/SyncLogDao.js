@@ -1,14 +1,15 @@
-import { AIR_DB, and, max, min, tree } from '@airport/air-control';
+import { AIRPORT_DATABASE, and, max, min, tree } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { AgtSharingMessageAcknowledged } from '../../ddl/ddl';
 import { BaseSyncLogDao, Q } from '../../generated/generated';
 import { SYNC_LOG_DAO } from '../../tokens';
 export class SyncLogDao extends BaseSyncLogDao {
     async insertValues(values) {
-        const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeSyncLog;
+        const dbEntity = Q.db.currentVersion[0].schemaVersion
+            .entityMapByName.RealtimeSyncLog;
         let sl;
         const airDb = await container(this)
-            .get(AIR_DB);
+            .get(AIRPORT_DATABASE);
         await airDb.insertValues({
             insertInto: sl = Q.SyncLog,
             columns: [
@@ -73,7 +74,7 @@ export class SyncLogDao extends BaseSyncLogDao {
             ]
         });
         const airDb = await container(this)
-            .get(AIR_DB);
+            .get(AIRPORT_DATABASE);
         return await airDb.find.sheet({
             from: [
                 smrtb

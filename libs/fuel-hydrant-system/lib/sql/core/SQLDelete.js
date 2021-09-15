@@ -4,8 +4,8 @@ import { SQLNoJoinQuery } from './SQLNoJoinQuery';
  */
 export class SQLDelete extends SQLNoJoinQuery {
     constructor(jsonDelete, dialect, context) {
-        super(context.ioc.airDb.schemas[jsonDelete.DF.si]
-            .currentVersion.entities[jsonDelete.DF.ti], dialect, context);
+        super(context.ioc.airDb.schemas[jsonDelete.DF.si].currentVersion[0]
+            .schemaVersion.entities[jsonDelete.DF.ti], dialect, context);
         this.jsonDelete = jsonDelete;
     }
     toSQL(context) {

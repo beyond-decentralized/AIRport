@@ -33,4 +33,4 @@ Sequence = __decorate([
     Table({ name: 'SEQUENCES' })
 ], Sequence);
 export { Sequence };
-//# sourceMappingURL=sequence.js.map
+//# sourceMappingURL=Sequence.js.map

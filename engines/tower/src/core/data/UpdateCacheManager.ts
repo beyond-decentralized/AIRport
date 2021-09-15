@@ -64,14 +64,36 @@ export class UpdateCacheManager
 
             let entityState: EntityState = entityCopy[entityStateManager.getStateFieldName()]
             let hasId = true
-            if (!entityCopy['id']) {
-                if (entityState === EntityState.DELETE) {
-                    throw new Error(
-                        'Entity is marked for deletion but does not have an "id" property')
-                } else {
-                    entityState = EntityState.CREATE
+            for (const dbProperty of dbEntity.properties) {
+                if (!dbProperty.isId) {
+                    return
                 }
-                hasId = false
+                if (dbProperty.relation && dbProperty.relation.length) {
+                    schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (
+                        _dbColumn: DbColumn,
+                        propertyNameChains: string[][],
+                    ) => {
+                        for (let propertyNameChain of propertyNameChains) {
+                            let nestedProperty = entityCopy
+                            for (let propertyName of propertyNameChain) {
+                                if (nestedProperty) {
+                                    nestedProperty = nestedProperty[propertyName]
+                                }
+                            }
+                            if (!nestedProperty) {
+                                if (entityState === EntityState.DELETE) {
+                                    throw new Error(
+                                        `Entity is marked for deletion but does not have an @Id() property:
+            ${propertyNameChain.join('.')}
+                                    `)
+                                } else {
+                                    entityState = EntityState.CREATE
+                                    return true
+                                }
+                            }
+                        }
+                    })
+                }
             }
             let isIdGenerated = true
             if (originalValuesObject) {
@@ -153,11 +175,12 @@ export class UpdateCacheManager
             } else if (hasId) {
                 // let hasNonIdValues = false;
                 for (const dbProperty of dbEntity.properties) {
-                    if (dbProperty.name === 'id') {
-                        isIdGenerated = dbProperty.propertyColumns[0].column.isGenerated
-                        if (!isIdGenerated) {
-                            break
-                        }
+                    if (!dbProperty.isId) {
+                        continue
+                    }
+                    isIdGenerated = dbProperty.propertyColumns[0].column.isGenerated
+                    if (!isIdGenerated) {
+                        break
                     }
                 }
             }
@@ -207,15 +230,19 @@ export class UpdateCacheManager
                     saveResult, entityStateManager, processedEntities)
             }
         } else {
-            if(processedEntities.has(entity)) {
+            if (processedEntities.has(entity)) {
                 return
             }
             processedEntities.add(entity)
 
             let operationUniqueId = entityStateManager.getOperationUniqueId(entity, true, dbEntity)
-            let createdRecordId = saveResult.created[operationUniqueId]
-            if (createdRecordId) {
-                entity['id'] = createdRecordId
+            let createdRecord = saveResult.created[operationUniqueId]
+            if (createdRecord) {
+                if (createdRecord !== true) {
+                    for (const generatedPropertyName in createdRecord) {
+                        entity[generatedPropertyName] = createdRecord[generatedPropertyName]
+                    }
+                }
             } else {
                 let isDeleted = !!saveResult.deleted[operationUniqueId]
                 if (isDeleted) {
@@ -227,7 +254,7 @@ export class UpdateCacheManager
                 const property = entity[dbProperty.name]
                 if (property && dbProperty.relation && dbProperty.relation.length) {
                     this.updateOriginalValuesAfterSave(
-                        property, dbProperty.relation[0].relationEntity, 
+                        property, dbProperty.relation[0].relationEntity,
                         saveResult, entityStateManager, processedEntities)
                 } else {
                     originalValue[dbProperty.name] = property

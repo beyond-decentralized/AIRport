@@ -27,6 +27,10 @@ export class DbSchemaBuilder {
             schema: undefined,
             versionString,
         };
+        const dbSchemaCurrentVersion = {
+            schema: null,
+            schemaVersion: dbSchemaVersion
+        };
         const dbDomain = {
             applications: [],
             id: undefined,
@@ -34,7 +38,7 @@ export class DbSchemaBuilder {
             schemas: []
         };
         const dbSchema = {
-            currentVersion: dbSchemaVersion,
+            currentVersion: [dbSchemaCurrentVersion],
             domain: dbDomain,
             index: allSchemas.length,
             name: jsonSchema.name,
@@ -44,6 +48,7 @@ export class DbSchemaBuilder {
             status: SchemaStatus.CURRENT,
             versions: [dbSchemaVersion]
         };
+        dbSchemaCurrentVersion.schema = dbSchema;
         dbSchemaVersion.schema = dbSchema;
         allSchemas.push(dbSchema);
         for (const jsonEntity of currentJsonSchemaVersion.entities) {
@@ -99,8 +104,10 @@ export class DbSchemaBuilder {
                         continue;
                     }
                     // FIXME: find a way to get the right schema version once versioning is added
-                    const ownSchemaVersion = ownSchema.currentVersion;
-                    const referencedSchemaVersion = referencedSchema.currentVersion;
+                    const ownSchemaVersion = ownSchema.currentVersion[0]
+                        .schemaVersion;
+                    const referencedSchemaVersion = referencedSchema.currentVersion[0]
+                        .schemaVersion;
                     const dbSchemaReference = {
                         index: parseInt(index),
                         ownSchemaVersion,

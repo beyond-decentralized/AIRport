@@ -4,7 +4,7 @@ import {
 	distinct,
 	exists,
 	not
-}                                 from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	AgtRepositoryId,
 	MessageToTMContentType,
@@ -12,9 +12,9 @@ import {
 	RepoTransBlockMessageToTM,
 	TerminalId,
 	TmRepositoryTransactionBlockId
-}                                 from '@airport/arrivals-n-departures'
-import {container, DI}                       from '@airport/di'
-import {ensureChildJsMap}         from '@airport/ground-control'
+} from '@airport/arrivals-n-departures'
+import { container, DI } from '@airport/di'
+import { ensureChildJsMap } from '@airport/ground-control'
 import {
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtRepositoryTransactionBlockArchivingStatus,
@@ -23,8 +23,8 @@ import {
 	AgtSharingMessageAcknowledged,
 	ArchivingStatus,
 	ServerId,
-}                                 from '../../ddl/ddl'
-import {AGT_REPO_TRANS_BLOCK_DAO} from '../../tokens'
+} from '../../ddl/ddl'
+import { AGT_REPO_TRANS_BLOCK_DAO } from '../../tokens'
 import {
 	BaseAgtRepositoryTransactionBlockDao,
 	IBaseAgtRepositoryTransactionBlockDao,
@@ -34,13 +34,13 @@ import {
 	QRepository,
 	QSyncLog,
 	QTerminalRepository
-}                                 from '../../generated/generated'
+} from '../../generated/generated'
 
 export type ArchiveBatchRecord = [
 	AgtRepositoryTransactionBlockId,
 	AgtRepositoryId,
 	RepositoryTransactionBlockContents
-	];
+];
 
 export type InsertAgtRepositoryTransactionBlock = [
 	AgtRepositoryId,
@@ -50,23 +50,23 @@ export type InsertAgtRepositoryTransactionBlock = [
 	AgtRepositoryTransactionBlockIsRecent,
 	TmRepositoryTransactionBlockId,
 	RepositoryTransactionBlockContents
-	];
+];
 
 export type AgtRepositoryTransactionBlockToArchive = [
 	AgtRepositoryTransactionBlockAddDatetime,
 	AgtRepositoryTransactionBlockId,
 	RepositoryTransactionBlockContents
-	];
+];
 
 export type RepositoryAgtRepoTransBlocksToArchive = [
 	AgtRepositoryId,
 	AgtRepositoryTransactionBlockToArchive[]
-	];
+];
 
 export type AgtRepositoryTransactionBlocksToArchiveResult = [
 	RepositoryAgtRepoTransBlocksToArchive[],
 	AgtRepositoryTransactionBlockId[]
-	];
+];
 
 export type NumberOfRTBsReservedToArchive = number;
 
@@ -142,7 +142,7 @@ export class AgtRepositoryTransactionBlockDao
 		AgtRepositoryTransactionBlockId, AgtRepositoryTransactionBlockAddDatetime]>>> {
 		const existingDataIdMap: Map<TerminalId, Map<TmRepositoryTransactionBlockId, [
 			AgtRepositoryTransactionBlockId, AgtRepositoryTransactionBlockAddDatetime]>>
-			      = new Map()
+			= new Map()
 
 		if (terminalIds instanceof Set) {
 			terminalIds = Array.from(terminalIds)
@@ -182,7 +182,8 @@ export class AgtRepositoryTransactionBlockDao
 		// values must be sorted by TerminalId [1]
 		values: InsertAgtRepositoryTransactionBlock[]
 	): Promise<AgtRepositoryTransactionBlockId[]> {
-		const dbEntity = Q.db.currentVersion.entityMapByName.RealtimeAgtRepositoryTransactionBlock
+		const dbEntity = Q.db.currentVersion[0].schemaVersion
+			.entityMapByName.RealtimeAgtRepositoryTransactionBlock
 		let rtb: QAgtRepositoryTransactionBlock
 
 		const airDb = await container(this).get(AIRPORT_DATABASE)
@@ -209,9 +210,9 @@ export class AgtRepositoryTransactionBlockDao
 			AugmentedRepoTransBlockMessageToTM[]> = new Map()
 
 		let rtb: QAgtRepositoryTransactionBlock,
-		    tr: QTerminalRepository,
-		    sl: QSyncLog,
-		    sm: QAgtSharingMessage
+			tr: QTerminalRepository,
+			sl: QSyncLog,
+			sm: QAgtSharingMessage
 		// TODO: once CockroachDb supports optimized (non-nested loop) correlated
 		// query, test against NOT EXISTS and see which is faster
 
@@ -253,7 +254,7 @@ export class AgtRepositoryTransactionBlockDao
 
 		for (const rtbToSend of rtbsToSend) {
 			const terminalIdToSendTo: TerminalId = <any>rtbToSend.terminalId
-			let rbsForTerminalId                 = rtbToSendMapByTerminalId.get(terminalIdToSendTo)
+			let rbsForTerminalId = rtbToSendMapByTerminalId.get(terminalIdToSendTo)
 			if (!rbsForTerminalId) {
 				rbsForTerminalId = <AugmentedRepoTransBlockMessageToTM[]>[]
 				rtbToSendMapByTerminalId.set(terminalIdToSendTo, rbsForTerminalId)
@@ -275,10 +276,10 @@ export class AgtRepositoryTransactionBlockDao
 		) => void,
 	): Promise<void> {
 		let sr: QAgtRepositoryTransactionBlock,
-		    r: QRepository,
-		    dr: QTerminalRepository,
-		    sl: QSyncLog,
-		    dsl: QAgtSharingMessage
+			r: QRepository,
+			dr: QTerminalRepository,
+			sl: QSyncLog,
+			dsl: QAgtSharingMessage
 		// TODO: verify correctness of NOT EXISTS
 		// TODO: test performance on CockroachDb vs TiDB for NOT EXISTS vs
 		// NOT IN vs EXCEPT
@@ -334,7 +335,7 @@ export class AgtRepositoryTransactionBlockDao
 		numRepositoriesToReserve: number
 	): Promise<NumberOfRTBsReservedToArchive> {
 		let rtb: QAgtRepositoryTransactionBlock,
-		    rtb2: QAgtRepositoryTransactionBlock
+			rtb2: QAgtRepositoryTransactionBlock
 		return await this.db.updateWhere({
 			update: rtb = Q.AgtRepositoryTransactionBlock,
 			set: {
@@ -365,7 +366,7 @@ export class AgtRepositoryTransactionBlockDao
 		toDateExclusive: AgtRepositoryTransactionBlockAddDatetime,
 		serverId: ServerId
 	): Promise<AgtRepositoryTransactionBlocksToArchiveResult> {
-		const results: RepositoryAgtRepoTransBlocksToArchive[]                 = []
+		const results: RepositoryAgtRepoTransBlocksToArchive[] = []
 		const repositoryTransactionBlockIds: AgtRepositoryTransactionBlockId[] = []
 
 		let rtb: QAgtRepositoryTransactionBlock
@@ -395,14 +396,14 @@ export class AgtRepositoryTransactionBlockDao
 			]
 		})
 
-		let lastAgtRepositoryId   = rtbsToArchive[0][0]
+		let lastAgtRepositoryId = rtbsToArchive[0][0]
 		let currentRepositoryRtbs = []
 		for (const rtbToArchive of rtbsToArchive) {
 			const currentAgtRepositoryId = rtbToArchive[0]
 			if (lastAgtRepositoryId !== currentAgtRepositoryId) {
 				results.push([lastAgtRepositoryId, currentRepositoryRtbs])
 				currentRepositoryRtbs = []
-				lastAgtRepositoryId   = currentAgtRepositoryId
+				lastAgtRepositoryId = currentAgtRepositoryId
 			}
 			repositoryTransactionBlockIds.push(rtbToArchive[2])
 			currentRepositoryRtbs.push(rtbToArchive.slice(1))

@@ -170,7 +170,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				ri: null,
 				rt: JSONRelationType.ENTITY_ROOT,
 				rep: 'r_',
-				si: this.dbEntity.index
+				si: this.dbEntity.schemaVersion.id
 			}
 			joinRelations.push(onlyJsonRelation)
 		}

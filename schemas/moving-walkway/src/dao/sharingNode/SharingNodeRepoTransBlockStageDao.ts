@@ -1,20 +1,20 @@
-import {AIRPORT_DATABASE}                                  from '@airport/air-control'
+import { AIRPORT_DATABASE } from '@airport/air-control'
 import {
 	SharingNodeRepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
-}                                                from '@airport/arrivals-n-departures'
+} from '@airport/arrivals-n-departures'
 import {
 	container,
 	DI
-}                                                from '@airport/di'
-import {SharingNodeId}                           from '../../ddl/ddl'
+} from '@airport/di'
+import { SharingNodeId } from '../../ddl/ddl'
 import {
 	BaseSharingNodeRepoTransBlockStageDao,
 	IBaseSharingNodeRepoTransBlockStageDao,
 	Q,
 	QSharingNodeRepoTransBlockStage
-}                                                from '../../generated/generated'
-import {SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO} from '../../tokens'
+} from '../../generated/generated'
+import { SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO } from '../../tokens'
 
 export type SharingNodeRepoTransBlockStageValues = [
 	SharingNodeId,
@@ -41,7 +41,8 @@ export class SharingNodeRepoTransBlockStageDao
 	async insertValues(
 		values: SharingNodeRepoTransBlockStageValues[]
 	): Promise<number> {
-		const dbEntity = Q.db.currentVersion.entityMapByName.SharingNodeRepoTransBlockStage
+		const dbEntity = Q.db.currentVersion[0].schemaVersion
+			.entityMapByName.SharingNodeRepoTransBlockStage
 
 		const airDb = await container(this)
 			.get(AIRPORT_DATABASE)

@@ -10,7 +10,7 @@ export class UpdateManager {
         const [historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, sequenceGenerator] = await container(this)
             .get(HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO, SEQUENCE_GENERATOR);
         const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
-            .currentVersion.entities[portableQuery.tableIndex];
+            .currentVersion[0].schemaVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error updating '${dbEntity.name}'
 `;
         const internalFragments = {

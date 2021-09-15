@@ -1,4 +1,4 @@
-import { AIR_DB } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
@@ -20,7 +20,7 @@ export function diSet(dbEntityId) {
 export function duoDiSet(dbEntityId) {
     return ddS(Q.__dbSchema__, dbEntityId);
 }
-DI.db().eventuallyGet(AIR_DB).then((airDb) => {
+DI.db().eventuallyGet(AIRPORT_DATABASE).then((airDb) => {
     airDb.QM[getSchemaName(Q_SCHEMA)] = Q;
 });
 //# sourceMappingURL=qSchema.js.map

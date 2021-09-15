@@ -517,6 +517,18 @@ export declare const MAPPED_SUPERCLASS: {
                                             };
                                             path: string;
                                         };
+                                        SchemaCurrentVersion: {
+                                            fileImports: any;
+                                            isLocal: boolean;
+                                            objectMapByAsName: {
+                                                SchemaCurrentVersion: {
+                                                    asName: string;
+                                                    moduleImport: any;
+                                                    sourceName: string;
+                                                };
+                                            };
+                                            path: string;
+                                        };
                                         SchemaVersion: {
                                             fileImports: any;
                                             isLocal: boolean;
@@ -551,6 +563,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         "@airport/air-control": any;
                                         "@airport/ground-control": any;
                                         "@airport/territory": any;
+                                        "./SchemaCurrentVersion": any;
                                         "./SchemaVersion": any;
                                         "./SchemaColumn"?: undefined;
                                         "./SchemaOperation"?: undefined;
@@ -737,34 +750,145 @@ export declare const MAPPED_SUPERCLASS: {
                                     ownerEntity: any;
                                     isArray: boolean;
                                     nonArrayType: string;
-                                    entity: any;
-                                    index: number;
-                                    primitive?: undefined;
-                                    fromProject?: undefined;
-                                    otherSchemaDbEntity?: undefined;
-                                } | {
-                                    decorators: {
-                                        name: string;
-                                        values: {
+                                    entity: {
+                                        type: string;
+                                        path: string;
+                                        parentClassName: any;
+                                        isSuperclass: boolean;
+                                        ids: {
+                                            decorators: {
+                                                name: string;
+                                                values: {
+                                                    name: string;
+                                                    referencedColumnName: string;
+                                                    nullable: boolean;
+                                                }[];
+                                            }[];
+                                            isGenerated: boolean;
+                                            isId: boolean;
+                                            isMappedSuperclass: boolean;
+                                            isTransient: boolean;
                                             name: string;
-                                            referencedColumnName: string;
-                                            nullable: boolean;
+                                            type: string;
+                                            ownerEntity: any;
+                                            nonArrayType: string;
+                                            entity: any;
+                                            index: number;
                                         }[];
-                                    }[];
-                                    isGenerated: boolean;
-                                    isId: boolean;
-                                    isMappedSuperclass: boolean;
-                                    isTransient: boolean;
-                                    name: string;
-                                    type: string;
-                                    ownerEntity: any;
-                                    nonArrayType: string;
-                                    entity: any;
+                                        docEntry: {
+                                            decorators: {
+                                                name: string;
+                                                values: {
+                                                    name: string;
+                                                }[];
+                                            }[];
+                                            isGenerated: boolean;
+                                            isId: boolean;
+                                            isMappedSuperclass: boolean;
+                                            isTransient: boolean;
+                                            name: string;
+                                            type: string;
+                                            fileImports: {
+                                                importMapByObjectAsName: {
+                                                    Entity: {
+                                                        fileImports: any;
+                                                        isLocal: boolean;
+                                                        objectMapByAsName: {
+                                                            Entity: {
+                                                                asName: string;
+                                                                moduleImport: any;
+                                                                sourceName: string;
+                                                            };
+                                                            Id: {
+                                                                asName: string;
+                                                                moduleImport: any;
+                                                                sourceName: string;
+                                                            };
+                                                            JoinColumn: {
+                                                                asName: string;
+                                                                moduleImport: any;
+                                                                sourceName: string;
+                                                            };
+                                                            ManyToOne: {
+                                                                asName: string;
+                                                                moduleImport: any;
+                                                                sourceName: string;
+                                                            };
+                                                            Table: {
+                                                                asName: string;
+                                                                moduleImport: any;
+                                                                sourceName: string;
+                                                            };
+                                                        };
+                                                        path: string;
+                                                    };
+                                                    Id: any;
+                                                    JoinColumn: any;
+                                                    ManyToOne: any;
+                                                    Table: any;
+                                                    Schema: {
+                                                        fileImports: any;
+                                                        isLocal: boolean;
+                                                        objectMapByAsName: {
+                                                            Schema: {
+                                                                asName: string;
+                                                                moduleImport: any;
+                                                                sourceName: string;
+                                                            };
+                                                        };
+                                                        path: string;
+                                                    };
+                                                    SchemaVersion: {
+                                                        fileImports: any;
+                                                        isLocal: boolean;
+                                                        objectMapByAsName: {
+                                                            SchemaVersion: {
+                                                                asName: string;
+                                                                moduleImport: any;
+                                                                sourceName: string;
+                                                            };
+                                                        };
+                                                        path: string;
+                                                    };
+                                                };
+                                                importMapByModulePath: {
+                                                    "@airport/air-control": any;
+                                                    "./Schema": any;
+                                                    "./SchemaVersion": any;
+                                                };
+                                            };
+                                            properties: {
+                                                decorators: {
+                                                    name: string;
+                                                    values: {
+                                                        name: string;
+                                                        referencedColumnName: string;
+                                                        nullable: boolean;
+                                                    }[];
+                                                }[];
+                                                isGenerated: boolean;
+                                                isId: boolean;
+                                                isMappedSuperclass: boolean;
+                                                isTransient: boolean;
+                                                name: string;
+                                                type: string;
+                                                ownerEntity: any;
+                                                nonArrayType: string;
+                                                entity: any;
+                                                index: number;
+                                            }[];
+                                            methodSignatures: any[];
+                                            constructors: {
+                                                parameters: any[];
+                                                returnType: string;
+                                            }[];
+                                        };
+                                        implementedInterfaceNames: any[];
+                                    };
                                     index: number;
                                     primitive?: undefined;
                                     fromProject?: undefined;
                                     otherSchemaDbEntity?: undefined;
-                                    isArray?: undefined;
                                 })[];
                                 methodSignatures: any[];
                                 constructors: {
@@ -1060,6 +1184,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         SchemaScope?: undefined;
                                         SchemaStatus?: undefined;
                                         Domain?: undefined;
+                                        SchemaCurrentVersion?: undefined;
                                         SchemaReferenceIndex?: undefined;
                                     };
                                     importMapByModulePath: {
@@ -1074,6 +1199,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         "../../generated/schema/schemacolumn": any;
                                         "../../generated/schema/schemaproperty": any;
                                         "@airport/territory"?: undefined;
+                                        "./SchemaCurrentVersion"?: undefined;
                                     };
                                 };
                                 properties: ({
@@ -2095,6 +2221,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         SchemaScope?: undefined;
                                         SchemaStatus?: undefined;
                                         Domain?: undefined;
+                                        SchemaCurrentVersion?: undefined;
                                         DbBoolean?: undefined;
                                         Json?: undefined;
                                         TableConfiguration?: undefined;
@@ -2117,6 +2244,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         "./SchemaVersion": any;
                                         "./VersionedSchemaObject": any;
                                         "@airport/territory"?: undefined;
+                                        "./SchemaCurrentVersion"?: undefined;
                                         "./SchemaColumn"?: undefined;
                                         "./SchemaOperation"?: undefined;
                                         "./SchemaProperty"?: undefined;

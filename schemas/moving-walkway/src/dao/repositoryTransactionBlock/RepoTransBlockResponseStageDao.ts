@@ -1,18 +1,18 @@
-import {AIRPORT_DATABASE}                              from '@airport/air-control'
+import { AIRPORT_DATABASE } from '@airport/air-control'
 import {
 	RepoTransBlockSyncOutcomeType,
 	TmRepositoryTransactionBlockId
-}                                            from '@airport/arrivals-n-departures'
+} from '@airport/arrivals-n-departures'
 import {
 	container,
 	DI
-}                                            from '@airport/di'
+} from '@airport/di'
 import {
 	BaseRepoTransBlockResponseStageDao,
 	Q,
 	QRepoTransBlockResponseStage
-}                                            from '../../generated/generated'
-import {REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO} from '../../tokens'
+} from '../../generated/generated'
+import { REPO_TRANS_BLOCK_RESPONSE_STAGE_DAO } from '../../tokens'
 
 export type RepoTransBlockResponseStageValues = [
 	TmRepositoryTransactionBlockId,
@@ -39,7 +39,8 @@ export class RepoTransBlockResponseStageDao
 		values: RepoTransBlockResponseStageValues[]
 	): Promise<number> {
 
-		const dbEntity = Q.db.currentVersion.entityMapByName.RepoTransBlockResponseStage
+		const dbEntity = Q.db.currentVersion[0].schemaVersion
+			.entityMapByName.RepoTransBlockResponseStage
 
 		let smrs: QRepoTransBlockResponseStage
 

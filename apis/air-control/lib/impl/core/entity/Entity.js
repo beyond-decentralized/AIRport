@@ -69,7 +69,7 @@ export class QEntityDriver {
             jt: this.joinType,
             rt: null,
             rep: columnAliases.entityAliases.getNextAlias(this.getRootJoinEntity()),
-            si: this.dbEntity.schemaVersion.id
+            si: this.dbEntity.schemaVersion.schema.index
         };
         if (this.joinWhereClause) {
             this.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);

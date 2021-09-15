@@ -1,11 +1,11 @@
 import {
 	DbEntity,
 	TableIndex
-}                        from "../../lingo/schema/Entity";
-import {ColumnIndex}     from "../../lingo/schema/Property";
-import {SchemaVersionId} from "../../lingo/schema/Schema";
-import {ColumnMap}       from "./ColumnMap";
-import {TableMap}        from "./TableMap";
+} from "../../lingo/schema/Entity";
+import { ColumnIndex } from "../../lingo/schema/Property";
+import { SchemaIndex } from "../../lingo/schema/Schema";
+import { ColumnMap } from "./ColumnMap";
+import { TableMap } from "./TableMap";
 
 export class SchemaMap {
 
@@ -23,26 +23,26 @@ export class SchemaMap {
 	}
 
 	ensure(
-		schemaVersionId: SchemaVersionId,
+		schemaIndex: SchemaIndex,
 		tableIndex: TableIndex,
 		allColumns: boolean = false,
 		TableMapConstructor = TableMap
 	): ColumnMap {
-		let tableMap = this.schemaMap[schemaVersionId];
+		let tableMap = this.schemaMap[schemaIndex];
 		if (!tableMap) {
-			tableMap = new TableMapConstructor(schemaVersionId);
-			this.schemaMap[schemaVersionId] = tableMap;
+			tableMap = new TableMapConstructor(schemaIndex);
+			this.schemaMap[schemaIndex] = tableMap;
 		}
 
 		return tableMap.ensure(tableIndex, allColumns);
 	}
 
 	existsByStructure(
-		schemaVersionId: SchemaVersionId,
+		schemaIndex: SchemaIndex,
 		tableIndex: TableIndex,
 		columnIndex: ColumnIndex
 	): boolean {
-		let tableMap = this.schemaMap[schemaVersionId];
+		let tableMap = this.schemaMap[schemaIndex];
 		if (!tableMap) {
 			return false;
 		}

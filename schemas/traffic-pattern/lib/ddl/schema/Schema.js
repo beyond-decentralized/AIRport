@@ -8,6 +8,7 @@ import { Column, DbNumber, DbString, Entity, Id, JoinColumn, ManyToOne, OneToMan
 let Schema = class Schema {
     constructor() {
         this.versions = [];
+        this.currentVersion = [];
     }
 };
 __decorate([
@@ -39,8 +40,7 @@ __decorate([
     OneToMany({ mappedBy: 'schema' })
 ], Schema.prototype, "versions", void 0);
 __decorate([
-    ManyToOne(),
-    JoinColumn({ name: 'CURRENT_VERSION_ID', referencedColumnName: 'ID', nullable: false })
+    OneToMany({ mappedBy: 'schema' })
 ], Schema.prototype, "currentVersion", void 0);
 Schema = __decorate([
     Entity(),

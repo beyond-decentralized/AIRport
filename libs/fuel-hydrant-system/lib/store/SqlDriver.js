@@ -87,7 +87,7 @@ export class SqlDriver {
             case QueryResType.MAPPED_ENTITY_GRAPH:
             case QueryResType.MAPPED_ENTITY_TREE:
                 const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
-                    .currentVersion.entities[portableQuery.tableIndex];
+                    .currentVersion[0].schemaVersion.entities[portableQuery.tableIndex];
                 return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, context);
             case QueryResType.FIELD:
                 return new FieldSQLQuery(jsonQuery, dialect, context);

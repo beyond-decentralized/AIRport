@@ -5,7 +5,7 @@ import {
 	JSONRelation,
 	JSONRelationType,
 	RelationIndex,
-	SchemaVersionId,
+	SchemaIndex,
 	TableIndex
 } from "@airport/ground-control";
 
@@ -42,7 +42,7 @@ export class JoinTreeNode {
 	}
 
 	getEntityRelationChildNodeByIndexes(
-		schemaVersionId: SchemaVersionId,
+		schemaIndex: SchemaIndex,
 		tableIndex: TableIndex,
 		relationIndex: RelationIndex
 	): JoinTreeNode {
@@ -75,7 +75,7 @@ export class JoinTreeNode {
 			rt: JSONRelationType.ENTITY_SCHEMA_RELATION,
 			rep: rootEntityPrefix,
 			ri: relationIndex,
-			si: schemaVersionId
+			si: schemaIndex
 		};
 		let childTreeNode                          = new JoinTreeNode(jsonEntityRelation, [], this);
 		this.addChildNode(childTreeNode);

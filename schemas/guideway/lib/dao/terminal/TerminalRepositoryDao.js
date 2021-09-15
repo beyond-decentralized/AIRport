@@ -1,4 +1,4 @@
-import { AIR_DB, and } from '@airport/air-control';
+import { AIRPORT_DATABASE, and } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { TERMINAL_REPOSITORY_DAO } from '../../tokens';
 import { BaseTerminalRepositoryDao } from '../../generated/generated';
@@ -7,7 +7,7 @@ export class TerminalRepositoryDao extends BaseTerminalRepositoryDao {
     async findByTerminalIdInAndRepositoryIdIn(terminalIds, repositoryIds) {
         const resultMapByTerminalId = new Map();
         let tr;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         const results = await airDb.find.sheet({
             from: [
                 tr = Q.TerminalRepository

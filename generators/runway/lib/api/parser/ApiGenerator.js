@@ -28,7 +28,7 @@ function serializeClass(symbol, className) {
         switch (member.valueDeclaration.kind) {
             case tsc.SyntaxKind.MethodDeclaration:
                 let methodDescriptor = serializeMethod(symbol, className, memberName, member);
-                if (methodDescriptor.isApiMethod) {
+                if (methodDescriptor && methodDescriptor.isApiMethod) {
                     numApiMethods++;
                     apiObject.operationMap[memberName] = {
                         isAsync: methodDescriptor.isAsync,

@@ -1,5 +1,5 @@
-import { Dao } from '@airport/check-in';
-import { Q, duoDiSet } from './qSchema';
+import { Dao, DaoQueryDecorators, } from '@airport/check-in';
+import { Q, duoDiSet, } from './qSchema';
 // Schema Q object Dependency Injection readiness detection Dao
 export class SQDIDao extends Dao {
     constructor(dbEntityId) {
@@ -7,51 +7,93 @@ export class SQDIDao extends Dao {
     }
 }
 export class BaseAgtDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(5);
-    }
     constructor() {
         super(5);
     }
-}
-export class BaseTerminalDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(3);
+    static Save(config) {
+        return Dao.BaseSave(config);
     }
+    static diSet() {
+        return duoDiSet(5);
+    }
+}
+BaseAgtDao.Find = new DaoQueryDecorators();
+BaseAgtDao.FindOne = new DaoQueryDecorators();
+BaseAgtDao.Search = new DaoQueryDecorators();
+BaseAgtDao.SearchOne = new DaoQueryDecorators();
+export class BaseTerminalDao extends SQDIDao {
     constructor() {
         super(3);
     }
-}
-export class BaseTerminalAgtDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(4);
+    static Save(config) {
+        return Dao.BaseSave(config);
     }
+    static diSet() {
+        return duoDiSet(3);
+    }
+}
+BaseTerminalDao.Find = new DaoQueryDecorators();
+BaseTerminalDao.FindOne = new DaoQueryDecorators();
+BaseTerminalDao.Search = new DaoQueryDecorators();
+BaseTerminalDao.SearchOne = new DaoQueryDecorators();
+export class BaseTerminalAgtDao extends SQDIDao {
     constructor() {
         super(4);
     }
-}
-export class BaseUserDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(2);
+    static Save(config) {
+        return Dao.BaseSave(config);
     }
+    static diSet() {
+        return duoDiSet(4);
+    }
+}
+BaseTerminalAgtDao.Find = new DaoQueryDecorators();
+BaseTerminalAgtDao.FindOne = new DaoQueryDecorators();
+BaseTerminalAgtDao.Search = new DaoQueryDecorators();
+BaseTerminalAgtDao.SearchOne = new DaoQueryDecorators();
+export class BaseUserDao extends SQDIDao {
     constructor() {
         super(2);
     }
-}
-export class BaseUserTerminalDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(0);
+    static Save(config) {
+        return Dao.BaseSave(config);
     }
+    static diSet() {
+        return duoDiSet(2);
+    }
+}
+BaseUserDao.Find = new DaoQueryDecorators();
+BaseUserDao.FindOne = new DaoQueryDecorators();
+BaseUserDao.Search = new DaoQueryDecorators();
+BaseUserDao.SearchOne = new DaoQueryDecorators();
+export class BaseUserTerminalDao extends SQDIDao {
     constructor() {
         super(0);
     }
-}
-export class BaseUserTerminalAgtDao extends SQDIDao {
-    static diSet() {
-        return duoDiSet(1);
+    static Save(config) {
+        return Dao.BaseSave(config);
     }
+    static diSet() {
+        return duoDiSet(0);
+    }
+}
+BaseUserTerminalDao.Find = new DaoQueryDecorators();
+BaseUserTerminalDao.FindOne = new DaoQueryDecorators();
+BaseUserTerminalDao.Search = new DaoQueryDecorators();
+BaseUserTerminalDao.SearchOne = new DaoQueryDecorators();
+export class BaseUserTerminalAgtDao extends SQDIDao {
     constructor() {
         super(1);
     }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet(1);
+    }
 }
+BaseUserTerminalAgtDao.Find = new DaoQueryDecorators();
+BaseUserTerminalAgtDao.FindOne = new DaoQueryDecorators();
+BaseUserTerminalAgtDao.Search = new DaoQueryDecorators();
+BaseUserTerminalAgtDao.SearchOne = new DaoQueryDecorators();
 //# sourceMappingURL=baseDaos.js.map

@@ -1,10 +1,15 @@
+/* eslint-disable */
 export const SCHEMA = {
     "domain": "air",
     "index": null,
     "name": "@airport/territory",
+    "packageName": "@airport/territory",
     "sinceVersion": 1,
     "versions": [
         {
+            "api": {
+                "apiObjectMap": {}
+            },
             "entities": [
                 {
                     "columns": [
@@ -94,7 +99,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "PACKAGES",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -223,7 +229,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "APPLICATION_PACKAGES",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -313,7 +320,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "DOMAINS",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -445,7 +453,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "APPLICATIONS",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -554,7 +563,8 @@ export const SCHEMA = {
                     "tableConfig": {
                         "name": "PACKAGED_UNITS",
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 }
             ],
             "integerVersion": 1,

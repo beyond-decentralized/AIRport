@@ -193,8 +193,8 @@ export class SQLWhereBase {
         const dbEntity = dbColumn.propertyColumns[0].property.entity;
         this.addField(dbEntity.schemaVersion.id, dbEntity.index, dbColumn.index);
     }
-    addField(schemaVersionId, tableIndex, columnIndex) {
-        this.fieldMap.ensure(schemaVersionId, tableIndex)
+    addField(schemaIndex, tableIndex, columnIndex) {
+        this.fieldMap.ensure(schemaIndex, tableIndex)
             .ensure(columnIndex);
     }
     warn(warning) {

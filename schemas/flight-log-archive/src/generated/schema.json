@@ -24,7 +24,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 3
+							"type": 4
 						},
 						{
 							"index": 1,
@@ -38,7 +38,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 3
+							"type": 4
 						},
 						{
 							"index": 2,
@@ -52,7 +52,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 3
+							"type": 4
 						}
 					],
 					"idColumnRefs": [
@@ -135,7 +135,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 3
+							"type": 4
 						},
 						{
 							"index": 1,
@@ -163,7 +163,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 3
+							"type": 4
 						},
 						{
 							"index": 3,

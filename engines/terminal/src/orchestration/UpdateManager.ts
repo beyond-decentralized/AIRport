@@ -80,7 +80,7 @@ export class UpdateManager
 				SEQUENCE_GENERATOR)
 
 		const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
-			.currentVersion.entities[portableQuery.tableIndex]
+			.currentVersion[0].schemaVersion.entities[portableQuery.tableIndex]
 
 		const errorPrefix = `Error updating '${dbEntity.name}'
 `

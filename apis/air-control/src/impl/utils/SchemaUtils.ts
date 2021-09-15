@@ -1,4 +1,4 @@
-import {DI}                 from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	CRUDOperation,
 	DbColumn,
@@ -10,30 +10,30 @@ import {
 	repositoryEntity,
 	SchemaIndex,
 	TableIndex
-}                           from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	IAirportDatabase,
 	QSchemaInternal
-}                           from '../../lingo/AirportDatabase'
+} from '../../lingo/AirportDatabase'
 import {
 	IEntityIdProperties,
 	IQEntity
-}                           from '../../lingo/core/entity/Entity'
-import {IQFieldInternal}    from '../../lingo/core/field/Field'
+} from '../../lingo/core/entity/Entity'
+import { IQFieldInternal } from '../../lingo/core/field/Field'
 import {
 	convertToY,
 	isY
-}                           from '../../lingo/query/facade/Query'
+} from '../../lingo/query/facade/Query'
 import {
 	IdKeysByIdColumnIndex,
 	ISchemaUtils,
 	RepositorySheetSelectInfo
-}                           from '../../lingo/utils/SchemaUtils'
+} from '../../lingo/utils/SchemaUtils'
 import {
 	SCHEMA_UTILS
-}                           from '../../tokens'
-import {QEntityConstructor} from '../core/entity/Entity'
-import {valuesEqual}        from '../Utils'
+} from '../../tokens'
+import { QEntityConstructor } from '../core/entity/Entity'
+import { valuesEqual } from '../Utils'
 
 interface ColumnValueForPath {
 	value: any,
@@ -50,7 +50,8 @@ export class SchemaUtils
 		tableIndex: TableIndex,
 		airDb: IAirportDatabase
 	): DbEntity {
-		return airDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
+		return airDb.schemas[schemaIndex].currentVersion[0]
+			.schemaVersion.entities[tableIndex]
 	}
 
 	isRepositoryId(
@@ -182,8 +183,8 @@ export class SchemaUtils
 		for (const dbColumn of dbEntity.idColumns) {
 
 			const [propertyNameChains, idValue] =
-				      this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn,
-					      entityObject, true, failOnNoId)
+				this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn,
+					entityObject, true, failOnNoId)
 
 			idValueCallback && idValueCallback(dbColumn, idValue, propertyNameChains)
 
@@ -198,14 +199,14 @@ export class SchemaUtils
 		dbEntity: DbEntity,
 		dbColumn: DbColumn,
 		entityObject: any,
-		forIdKey                      = false,
+		forIdKey = false,
 		generateNegativeIdsForMissing = true
 	): [string[][], any] {
-		const columnValuesAndPaths           = this.getColumnValuesAndPaths(
+		const columnValuesAndPaths = this.getColumnValuesAndPaths(
 			dbColumn, entityObject, [], forIdKey, generateNegativeIdsForMissing)
-		const firstColumnValueAndPath        = columnValuesAndPaths[0]
+		const firstColumnValueAndPath = columnValuesAndPaths[0]
 		const propertyNameChains: string[][] = [firstColumnValueAndPath.path]
-		const value                          = firstColumnValueAndPath.value
+		const value = firstColumnValueAndPath.value
 		columnValuesAndPaths.reduce((
 			last,
 			current
@@ -235,8 +236,8 @@ export class SchemaUtils
 				dbColumn: DbColumn,
 				propertyNameChains: string[][]
 			) => {
-				let convertTo                = true
-				let propertySelectClause     = selectClause
+				let convertTo = true
+				let propertySelectClause = selectClause
 				const firstPropertyNameChain = propertyNameChains[0]
 				firstPropertyNameChain.forEach((
 					propertyNameLink,
@@ -297,7 +298,7 @@ export class SchemaUtils
 	): void {
 		const dbEntity = dbRelation.property.entity
 		for (const dbRelationColumn of dbRelation.manyRelationColumns) {
-			const dbColumn                    = dbRelationColumn.manyColumn
+			const dbColumn = dbRelationColumn.manyColumn
 			const [propertyNameChains, value] = this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entity)
 			if (callback(dbColumn, value, propertyNameChains)) {
 				return
@@ -315,7 +316,7 @@ export class SchemaUtils
 		}
 	): void {
 		for (const dbRelationColumn of dbRelation.manyRelationColumns) {
-			const dbColumn           = dbRelationColumn.manyColumn
+			const dbColumn = dbRelationColumn.manyColumn
 			const propertyNameChains = this.getColumnPaths(dbColumn, [])
 			if (callback(dbColumn, propertyNameChains)) {
 				return
@@ -333,12 +334,12 @@ export class SchemaUtils
 		let actorIdColumnIndex: number
 		let actorRecordIdColumnIndex: number
 		let draftColumnIndex: number
-		let draftColumnUpdated                     = false
+		let draftColumnUpdated = false
 		let repositoryIdColumnIndex: number
 		let systemWideOperationIdColumn: DbColumn
 
 		for (const columnIndex in dbEntity.columns) {
-			const dbColumn   = dbEntity.columns[columnIndex]
+			const dbColumn = dbEntity.columns[columnIndex]
 			let dbProperty
 			const isIdColumn = dbColumn.propertyColumns.some(
 				propertyColumn => {
@@ -405,7 +406,7 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 		dbColumn: DbColumn,
 		relationObject: any,
 		breadCrumb: string[],
-		forIdKey: boolean                      = false,
+		forIdKey: boolean = false,
 		generateNegativeIdsForMissing: boolean = true
 		// noIdValueCallback: {
 		// 	(
@@ -419,9 +420,9 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 			let columnValuesAndPaths = []
 			// If a column is part of a relation, it would be on the Many Side
 			for (const dbRelationColumn of dbColumn.manyRelationColumns) {
-				const dbProperty         = dbRelationColumn.manyRelation.property
+				const dbProperty = dbRelationColumn.manyRelation.property
 				const relationBreadCrumb = [...breadCrumb]
-				const propertyName       = dbProperty.name
+				const propertyName = dbProperty.name
 				relationBreadCrumb.push(propertyName)
 				const value = relationObject[propertyName]
 				if (!value) {
@@ -437,18 +438,18 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 						value
 					})
 				} else {
-					const otherEntityColumn      = dbRelationColumn.oneColumn
+					const otherEntityColumn = dbRelationColumn.oneColumn
 					const relationValuesAndPaths = this.getColumnValuesAndPaths(otherEntityColumn, value, relationBreadCrumb, forIdKey)
-					columnValuesAndPaths         = columnValuesAndPaths.concat(relationValuesAndPaths)
+					columnValuesAndPaths = columnValuesAndPaths.concat(relationValuesAndPaths)
 				}
 			}
 			return columnValuesAndPaths
 		} else {
 			// If a column is not a part of (a) relation(s) then it is associated
 			// to only one property
-			const dbProperty         = dbColumn.propertyColumns[0].property
+			const dbProperty = dbColumn.propertyColumns[0].property
 			const propertyBreadCrumb = [...breadCrumb]
-			const propertyName       = dbProperty.name
+			const propertyName = dbProperty.name
 			propertyBreadCrumb.push(propertyName)
 			let value = relationObject[propertyName]
 			if (forIdKey && this.isIdEmpty(value)) {
@@ -481,17 +482,17 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 		if (this.isManyRelationColumn(dbColumn)) {
 			// If a column is part of a relation, it would be on the Many Side
 			for (const dbRelationColumn of dbColumn.manyRelationColumns) {
-				const dbProperty         = dbRelationColumn.manyRelation.property
+				const dbProperty = dbRelationColumn.manyRelation.property
 				const relationBreadCrumb = [...breadCrumb]
 				relationBreadCrumb.push(dbProperty.name)
-				const otherEntityColumn      = dbRelationColumn.oneColumn
+				const otherEntityColumn = dbRelationColumn.oneColumn
 				const relationValuesAndPaths = this.getColumnPaths(otherEntityColumn, relationBreadCrumb)
-				columnValuesAndPaths         = columnValuesAndPaths.concat(relationValuesAndPaths)
+				columnValuesAndPaths = columnValuesAndPaths.concat(relationValuesAndPaths)
 			}
 		} else {
 			// If a column is not a part of (a) relation(s) then it is associated
 			// to only one property
-			const dbProperty         = dbColumn.propertyColumns[0].property
+			const dbProperty = dbColumn.propertyColumns[0].property
 			const propertyBreadCrumb = [...breadCrumb]
 			propertyBreadCrumb.push(dbProperty.name)
 			columnValuesAndPaths.push(propertyBreadCrumb)
@@ -506,9 +507,9 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 		entitySelectClause: IQFieldInternal<any>[],
 	) {
 		if (this.isManyRelationColumn(dbColumn)) {
-			const columnPaths     = this.getColumnPaths(dbColumn, [])
+			const columnPaths = this.getColumnPaths(dbColumn, [])
 			const firstColumnPath = columnPaths[0]
-			let relationColumn    = qEntity[firstColumnPath[0]]
+			let relationColumn = qEntity[firstColumnPath[0]]
 			firstColumnPath.reduce((
 				last,
 				current

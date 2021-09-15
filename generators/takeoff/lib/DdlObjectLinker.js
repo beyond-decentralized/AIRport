@@ -22,7 +22,11 @@ export class DdlObjectLinker {
         });
         latestSchemaVersions.forEach((schemaVersion) => {
             const schema = schemaMapByIndex.get(schemaVersion.schema.index);
-            schema.currentVersion = schemaVersion;
+            let schemaCurrentVersion = {
+                schema,
+                schemaVersion
+            };
+            schema.currentVersion = [schemaCurrentVersion];
             schema.versions = [schemaVersion];
             schemaVersion.schema = schema;
             schemaVersion.entities = [];

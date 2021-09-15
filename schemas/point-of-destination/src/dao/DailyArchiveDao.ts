@@ -3,18 +3,18 @@ import {
 	and,
 	JSONLogicalOperation,
 	or
-}                            from '@airport/air-control'
-import {container, DI}                  from '@airport/di'
+} from '@airport/air-control'
+import { container, DI } from '@airport/di'
 import {
 	DailyArchiveDate,
 	DailyArchiveRepositoryData,
 	DailyArchiveRepositoryId,
 	DailyArchiveValues
-}                            from '../ddl/DailyArchive'
-import {DAILY_ARCHIVE_DAO}   from '../tokens'
-import {BaseDailyArchiveDao} from '../generated/baseDaos'
-import {QDailyArchive}       from '../generated/qdailyarchive'
-import {Q}                   from '../generated/qSchema'
+} from '../ddl/DailyArchive'
+import { DAILY_ARCHIVE_DAO } from '../tokens'
+import { BaseDailyArchiveDao } from '../generated/baseDaos'
+import { QDailyArchive } from '../generated/qdailyarchive'
+import { Q } from '../generated/qSchema'
 
 export type FlatDailyArchive =
 	[DailyArchiveRepositoryId, DailyArchiveDate, DailyArchiveRepositoryData];
@@ -41,7 +41,8 @@ export class DailyArchiveDao
 	): Promise<void> {
 		const airDb = await container(this).get(AIRPORT_DATABASE)
 
-		const dbEntity = Q.db.currentVersion.entityMapByName.DailyArchive
+		const dbEntity = Q.db.currentVersion[0].schemaVersion
+			.entityMapByName.DailyArchive
 		let da: QDailyArchive
 		await airDb.insertValues({
 			insertInto: da = Q.DailyArchive,
@@ -63,8 +64,8 @@ export class DailyArchiveDao
 		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const whereClauseFragments: JSONLogicalOperation[] = []
-		let i                                              = -1
-		let dsl: QDailyArchive                             = Q.DailyArchive
+		let i = -1
+		let dsl: QDailyArchive = Q.DailyArchive
 		for (const repositoryId of repositoryIds) {
 			const repositoryDates = dates[++i]
 			whereClauseFragments.push(

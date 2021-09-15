@@ -1,4 +1,4 @@
-import { AIR_DB, and, Y } from '@airport/air-control';
+import { AIRPORT_DATABASE, and, Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { TERMINAL_DAO } from '../../tokens';
 import { BaseTerminalDao } from '../../generated/baseDaos';
@@ -7,7 +7,7 @@ export class TerminalDao extends BaseTerminalDao {
     async findTerminalVerificationRecords(terminalIds) {
         const resultMapByTerminalId = new Map();
         let t;
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         const results = await airDb.find.sheet({
             from: [
                 t = Q.Terminal
@@ -27,7 +27,7 @@ export class TerminalDao extends BaseTerminalDao {
     async findTerminalRepositoryVerificationRecords(terminalIds, 
     // Superset of all of repository ids received for all of the above terminals
     repositoryIds) {
-        const airDb = await container(this).get(AIR_DB);
+        const airDb = await container(this).get(AIRPORT_DATABASE);
         const resultMapByTerminalId = new Map();
         let tr;
         const results = await airDb.find.sheet({

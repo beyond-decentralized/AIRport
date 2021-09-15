@@ -1,5 +1,6 @@
 import { IDomain } from '@airport/territory';
 import { ISchemaVersion } from './schemaversion';
+import { ISchemaCurrentVersion } from './schemacurrentversion';
 export interface ISchema {
     index: number;
     scope?: string;
@@ -8,6 +9,6 @@ export interface ISchema {
     status?: number;
     domain?: IDomain;
     versions?: ISchemaVersion[];
-    currentVersion?: ISchemaVersion;
+    currentVersion?: ISchemaCurrentVersion[];
 }
 //# sourceMappingURL=schema.d.ts.map

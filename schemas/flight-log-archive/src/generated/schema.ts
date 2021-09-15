@@ -25,7 +25,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 3
+							"type": 4
 						},
 						{
 							"index": 1,
@@ -39,7 +39,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 3
+							"type": 4
 						},
 						{
 							"index": 2,
@@ -53,7 +53,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 3
+							"type": 4
 						}
 					],
 					"idColumnRefs": [
@@ -136,7 +136,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 3
+							"type": 4
 						},
 						{
 							"index": 1,
@@ -164,7 +164,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 3
+							"type": 4
 						},
 						{
 							"index": 3,

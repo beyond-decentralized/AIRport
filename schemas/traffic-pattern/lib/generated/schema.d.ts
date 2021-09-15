@@ -5,6 +5,9 @@ export declare const SCHEMA: {
     packageName: string;
     sinceVersion: number;
     versions: {
+        api: {
+            apiObjectMap: {};
+        };
         entities: ({
             columns: ({
                 index: number;
@@ -333,17 +336,6 @@ export declare const SCHEMA: {
                 relationTableIndex: number;
                 sinceVersion: number;
                 relationTableSchemaIndex?: undefined;
-            } | {
-                index: number;
-                isId: boolean;
-                relationType: number;
-                propertyRef: {
-                    index: number;
-                };
-                relationTableIndex: number;
-                sinceVersion: number;
-                relationTableSchemaIndex?: undefined;
-                oneToManyElems?: undefined;
             })[];
             sinceVersion: number;
             tableConfig: {
@@ -357,6 +349,7 @@ export declare const SCHEMA: {
             domain: string;
             index: number;
             name: string;
+            packageName: string;
             sinceVersion: number;
             versions: {
                 entities: any;

@@ -5,7 +5,8 @@ import { SCHEMA_UTILS } from '../../tokens';
 import { valuesEqual } from '../Utils';
 export class SchemaUtils {
     getDbEntity(schemaIndex, tableIndex, airDb) {
-        return airDb.schemas[schemaIndex].currentVersion.entities[tableIndex];
+        return airDb.schemas[schemaIndex].currentVersion[0]
+            .schemaVersion.entities[tableIndex];
     }
     isRepositoryId(columnName) {
         return columnName === repositoryEntity.REPOSITORY_ID;

@@ -3,28 +3,28 @@ import {
 	and,
 	field,
 	or
-}                                from '@airport/air-control'
-import {container, DI}                      from '@airport/di'
+} from '@airport/air-control'
+import { container, DI } from '@airport/di'
 import {
 	ColumnIndex,
 	JSONBaseOperation,
 	SchemaIndex,
 	SchemaVersionId,
 	TableIndex
-}                                from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	ActorId,
 	RecordHistoryActorRecordId,
 	RepositoryEntity_ActorRecordId,
 	RepositoryId
-}                                from '@airport/holding-pattern'
-import {RECORD_UPDATE_STAGE_DAO} from '../tokens'
+} from '@airport/holding-pattern'
+import { RECORD_UPDATE_STAGE_DAO } from '../tokens'
 import {
 	BaseRecordUpdateStageDao,
 	IBaseRecordUpdateStageDao,
 	Q,
 	QRecordUpdateStage
-}                                from '../generated/generated'
+} from '../generated/generated'
 
 export type RecordUpdateStageValue = any;
 
@@ -36,7 +36,7 @@ export type RecordUpdateStageValues = [
 	RecordHistoryActorRecordId,
 	ColumnIndex,
 	RecordUpdateStageValue
-	];
+];
 
 export interface IRecordUpdateStageDao
 	extends IBaseRecordUpdateStageDao {
@@ -99,8 +99,9 @@ export class RecordUpdateStageDao
 	): Promise<void> {
 		const airDb = await container(this).get(AIRPORT_DATABASE)
 
-		const dbEntity = airDb.schemas[schemaIndex].currentVersion.entities[tableIndex]
-		const qEntity  = airDb.qSchemas[schemaIndex][dbEntity.name]
+		const dbEntity = airDb.schemas[schemaIndex].currentVersion[0]
+			.schemaVersion.entities[tableIndex]
+		const qEntity = airDb.qSchemas[schemaIndex][dbEntity.name]
 
 		const repositoryEquals: JSONBaseOperation[] = []
 		for (const [repositoryId, idsForRepository] of idMap) {
@@ -119,9 +120,9 @@ export class RecordUpdateStageDao
 
 		const setClause = {}
 		for (const columnIndex of updatedColumnIndexes) {
-			const column            = dbEntity.columns[columnIndex]
-			let columnRus           = Q.RecordUpdateStage
-			let columnSetClause     = field({
+			const column = dbEntity.columns[columnIndex]
+			let columnRus = Q.RecordUpdateStage
+			let columnSetClause = field({
 				from: [
 					columnRus
 				],
@@ -136,7 +137,7 @@ export class RecordUpdateStageDao
 						columnRus.column.id.equals(column.id)
 					)
 			})
-			const propertyName      = column
+			const propertyName = column
 				.propertyColumns[0].property.name
 			setClause[propertyName] = columnSetClause
 		}

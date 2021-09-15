@@ -15,7 +15,7 @@ export class SQLNoJoinQuery extends SQLWhereBase {
             throw new Error(`Table in UPDATE/DELETE clause cannot be joined`);
         }
         const firstDbEntity = context.ioc.airDb.schemas[fromRelation.si]
-            .currentVersion.entities[fromRelation.ti];
+            .currentVersion[0].schemaVersion.entities[fromRelation.ti];
         let tableName = context.ioc.storeDriver.getEntityTableName(firstDbEntity, context);
         if (fromRelation.si !== this.dbEntity.schemaVersion.schema.index
             || fromRelation.ti !== this.dbEntity.index) {

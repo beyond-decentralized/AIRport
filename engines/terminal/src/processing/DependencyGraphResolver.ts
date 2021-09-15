@@ -197,6 +197,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 		nodeOUID: number,
 		currentlyTraversedNode: IDependencyGraphNode<any>,
 		context: IOperationContext,
+		nodePath: IDependencyGraphNode<any>[] = []
 	): void {
 		if (!currentlyTraversedNode.dependsOn
 			|| currentlyTraversedNode.circleTraversedFor[nodeOUID]) {
@@ -208,27 +209,24 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 			const dependencyOUID = context.ioc.entityStateManager
 				.getOperationUniqueId(dependency.entity)
 			if (dependencyOUID === nodeOUID) {
-				if (this.hasGeneratedIdColumns(node)) {
-					throw new Error(
-						`Cannot resolve circular dependencies for nodes that have @GeneratedValue Id columns`
-					)
+				let entityPath = []
+				for (let pathNode of nodePath) {
+					let entityLongName = pathNode.dbEntity.schemaVersion.schema.name + ':' + pathNode.dbEntity.name
+					entityPath.push(entityLongName)
 				}
-				currentlyTraversedNode.dependsOn.splice(i, 1)
+				let entityLongName = dependency.dbEntity.schemaVersion.schema.name + ':' + dependency.dbEntity.name
+				entityPath.push(entityLongName)
+				entityLongName = nodePath[0].dbEntity.schemaVersion.schema.name + ':' + nodePath[0].dbEntity.name
+				throw new Error(
+					`Found a circular dependency in
+					${entityPath.join(' -> ')}
+					`
+				)
 			}
-			this.resolveCircularDependenciesForNode(node, nodeOUID, dependency, context)
+			nodePath.push(dependency)
+			this.resolveCircularDependenciesForNode(node, nodeOUID, dependency, context, nodePath)
+			nodePath.pop()
 		}
-	}
-
-	protected hasGeneratedIdColumns(
-		node: IDependencyGraphNode<any>
-	) {
-		for (const idColumn of node.dbEntity.idColumns) {
-			if (idColumn.isGenerated) {
-				return true
-			}
-		}
-
-		return false
 	}
 
 	protected orderEntitiesToPersist<E>(

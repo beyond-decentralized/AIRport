@@ -2,6 +2,7 @@ import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema, EntityId } from '@airport/ground-control';
 import { QSchema } from './schema/qschema';
 import { QSchemaColumn } from './schema/qschemacolumn';
+import { QSchemaCurrentVersion } from './schema/qschemacurrentversion';
 import { QSchemaEntity } from './schema/qschemaentity';
 import { QSchemaOperation } from './schema/qschemaoperation';
 import { QSchemaProperty } from './schema/qschemaproperty';
@@ -14,6 +15,7 @@ export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
     Schema: QSchema;
     SchemaColumn: QSchemaColumn;
+    SchemaCurrentVersion: QSchemaCurrentVersion;
     SchemaEntity: QSchemaEntity;
     SchemaOperation: QSchemaOperation;
     SchemaProperty: QSchemaProperty;

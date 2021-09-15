@@ -7,6 +7,9 @@ export const SCHEMA = {
     "sinceVersion": 1,
     "versions": [
         {
+            "api": {
+                "apiObjectMap": {}
+            },
             "entities": [
                 {
                     "columns": [

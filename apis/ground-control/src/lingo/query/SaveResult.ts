@@ -10,9 +10,11 @@
  * generated for each object passed into the save commands.
  */
 export interface ICreateResultRecords {
+    // Generated Column values if any are present
+    // or a flag that the entity has been created
     [operationUniqueId: string]: {
         [propertyName: string]: number
-    }
+    } | boolean
 }
 
 export interface IUpdateResultRecords {

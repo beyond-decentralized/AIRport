@@ -8,15 +8,16 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-}                        from '@airport/air-control';
+} from '@airport/air-control';
 import {
 	PackageName,
 	SchemaIndex,
 	SchemaName,
 	SchemaScope,
 	SchemaStatus
-}                        from '@airport/ground-control';
-import { Domain }        from '@airport/territory';
+} from '@airport/ground-control';
+import { Domain } from '@airport/territory';
+import { SchemaCurrentVersion } from './SchemaCurrentVersion';
 import { SchemaVersion } from './SchemaVersion';
 
 @Entity()
@@ -57,8 +58,7 @@ export class Schema {
 	@OneToMany({ mappedBy: 'schema' })
 	versions: SchemaVersion[] = [];
 
-	@ManyToOne()
-	@JoinColumn({ name: 'CURRENT_VERSION_ID', referencedColumnName: 'ID', nullable: false })
-	currentVersion: SchemaVersion;
+	@OneToMany({ mappedBy: 'schema' })
+	currentVersion: SchemaCurrentVersion[] = [];
 
 }

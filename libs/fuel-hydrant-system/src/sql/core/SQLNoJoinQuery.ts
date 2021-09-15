@@ -39,7 +39,7 @@ export abstract class SQLNoJoinQuery
 		}
 
 		const firstDbEntity: DbEntity = context.ioc.airDb.schemas[fromRelation.si]
-			.currentVersion.entities[fromRelation.ti]
+			.currentVersion[0].schemaVersion.entities[fromRelation.ti]
 		let tableName                 = context.ioc.storeDriver.getEntityTableName(firstDbEntity, context)
 		if (fromRelation.si !== this.dbEntity.schemaVersion.schema.index
 			|| fromRelation.ti !== this.dbEntity.index) {

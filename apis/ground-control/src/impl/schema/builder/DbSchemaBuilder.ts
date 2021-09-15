@@ -1,25 +1,26 @@
-import { IDbSchemaBuilder }   from '../../../lingo/schema/builder/DbSchemaBuilder';
+import { IDbSchemaBuilder } from '../../../lingo/schema/builder/DbSchemaBuilder';
 import { ILinkingDictionary } from '../../../lingo/schema/builder/LinkingDictionary';
 import {
 	DbEntity,
 	JsonSchemaEntity,
-}                             from '../../../lingo/schema/Entity';
+} from '../../../lingo/schema/Entity';
 import {
 	DbColumn,
 	DbProperty,
 	DbRelation,
 	JsonSchemaColumn,
 	JsonSchemaRelation
-}                             from '../../../lingo/schema/Property';
+} from '../../../lingo/schema/Property';
 import {
 	DbDomain,
 	DbSchema,
+	DbSchemaCurrentVersion,
 	DbSchemaReference,
 	DbSchemaVersion,
 	JsonSchema,
-}                             from '../../../lingo/schema/Schema';
-import { SchemaStatus }       from '../../../lingo/schema/SchemaStatus';
-import { ensureChildMap }     from '../../utils/DatastructureUtils';
+} from '../../../lingo/schema/Schema';
+import { SchemaStatus } from '../../../lingo/schema/SchemaStatus';
+import { ensureChildMap } from '../../utils/DatastructureUtils';
 
 export class DbSchemaBuilder
 	implements IDbSchemaBuilder {
@@ -29,16 +30,16 @@ export class DbSchemaBuilder
 		allSchemas: DbSchema[],
 		dictionary: ILinkingDictionary,
 	): DbSchema {
-		const entities                 = [];
-		const entityMapByName          = {};
-		const references               = [];
-		const referencedBy             = [];
-		const referencedByMapByName    = {};
-		const referencesMapByName      = {};
+		const entities = [];
+		const entityMapByName = {};
+		const references = [];
+		const referencedBy = [];
+		const referencedByMapByName = {};
+		const referencesMapByName = {};
 		// FIXME: when versioning is added process all schema versions
 		const currentJsonSchemaVersion = jsonSchema.versions[0];
-		const versionString            = currentJsonSchemaVersion.versionString;
-		const versionParts             = versionString.split('.');
+		const versionString = currentJsonSchemaVersion.versionString;
+		const versionParts = versionString.split('.');
 
 		const dbSchemaVersion: DbSchemaVersion = {
 			id: null,
@@ -55,14 +56,18 @@ export class DbSchemaBuilder
 			schema: undefined,
 			versionString,
 		};
-		const dbDomain: DbDomain               = {
+		const dbSchemaCurrentVersion: DbSchemaCurrentVersion = {
+			schema: null,
+			schemaVersion: dbSchemaVersion
+		}
+		const dbDomain: DbDomain = {
 			applications: [],
 			id: undefined,
 			name: jsonSchema.domain,
 			schemas: []
 		};
-		const dbSchema: DbSchema               = {
-			currentVersion: dbSchemaVersion,
+		const dbSchema: DbSchema = {
+			currentVersion: [dbSchemaCurrentVersion],
 			domain: dbDomain,
 			index: allSchemas.length,
 			name: jsonSchema.name,
@@ -72,14 +77,15 @@ export class DbSchemaBuilder
 			status: SchemaStatus.CURRENT,
 			versions: [dbSchemaVersion]
 		};
-		dbSchemaVersion.schema                 = dbSchema;
+		dbSchemaCurrentVersion.schema = dbSchema;
+		dbSchemaVersion.schema = dbSchema;
 		allSchemas.push(dbSchema);
 
 		for (const jsonEntity of currentJsonSchemaVersion.entities) {
-			const dbEntity                 = this.buildDbEntity(
+			const dbEntity = this.buildDbEntity(
 				jsonSchema, jsonEntity, dictionary,
 				currentJsonSchemaVersion.referencedSchemas, dbSchemaVersion);
-			entities[dbEntity.index]       = dbEntity;
+			entities[dbEntity.index] = dbEntity;
 			entityMapByName[dbEntity.name] = dbEntity;
 		}
 
@@ -101,7 +107,7 @@ export class DbSchemaBuilder
 		// Map referenced schemas
 		for (const domain in jsonSchemaMap) {
 			const domainMap: { [schemaName: string]: JsonSchema } = jsonSchemaMap[domain];
-			const dbDomainMap                                     = schemaMap[domain];
+			const dbDomainMap = schemaMap[domain];
 			if (!dbDomainMap) {
 				if (failOnMissingMappings) {
 					throw new Error(`Domain '${domain}' is not yet available for relation linking.`);
@@ -122,9 +128,9 @@ export class DbSchemaBuilder
 				// FIXME: find a way to get the right schema version once versioning is added
 				const jsonSchemaVersion = jsonSchema.versions[0];
 				for (const index in jsonSchemaVersion.referencedSchemas) {
-					const schemaReference      = jsonSchemaVersion.referencedSchemas[index];
+					const schemaReference = jsonSchemaVersion.referencedSchemas[index];
 					const referencedSchemaName = schemaReference.name;
-					const referencedDbDomain   = schemaMap[schemaReference.domain];
+					const referencedDbDomain = schemaMap[schemaReference.domain];
 					if (!referencedDbDomain) {
 						if (failOnMissingMappings) {
 							throw new Error(
@@ -141,17 +147,19 @@ export class DbSchemaBuilder
 						continue;
 					}
 					// FIXME: find a way to get the right schema version once versioning is added
-					const ownSchemaVersion                     = ownSchema.currentVersion;
-					const referencedSchemaVersion              = referencedSchema.currentVersion;
+					const ownSchemaVersion = ownSchema.currentVersion[0]
+						.schemaVersion;
+					const referencedSchemaVersion = referencedSchema.currentVersion[0]
+						.schemaVersion;
 					const dbSchemaReference: DbSchemaReference = {
 						index: parseInt(index),
 						ownSchemaVersion,
 						referencedSchemaVersion,
 						sinceVersion: null
 					};
-					ownSchemaVersion.references[index]         = dbSchemaReference;
+					ownSchemaVersion.references[index] = dbSchemaReference;
 					referencedSchemaVersion.referencedBy.push(dbSchemaReference);
-					ownSchemaVersion.referencesMapByName[referencedSchema.name]   = dbSchemaReference;
+					ownSchemaVersion.referencesMapByName[referencedSchema.name] = dbSchemaReference;
 					referencedSchemaVersion.referencedByMapByName[ownSchema.name] = dbSchemaReference;
 				}
 			}
@@ -162,7 +170,7 @@ export class DbSchemaBuilder
 			const domainMap = dictionary.dbColumnRelationMapByManySide[domain];
 			for (const schemaName in domainMap) {
 				const mapForSchema = domainMap[schemaName];
-				const manySchema   = schemaMap[schemaName];
+				const manySchema = schemaMap[schemaName];
 				if (!manySchema) {
 					if (failOnMissingMappings) {
 						throw new Error(
@@ -172,21 +180,21 @@ export class DbSchemaBuilder
 				}
 				for (const entityIndex in mapForSchema) {
 					const mapForEntity = mapForSchema[entityIndex];
-					const manyEntity   = manySchema.entities[entityIndex];
+					const manyEntity = manySchema.entities[entityIndex];
 					if (!schemaMap) {
 						throw new Error(
 							`Table '${schemaName}.${entityIndex}' is not defined.`);
 					}
 					for (const relationIndex in mapForEntity) {
 						const mapForRelation = mapForEntity[relationIndex];
-						const manyRelation   = manyEntity.relations[relationIndex];
+						const manyRelation = manyEntity.relations[relationIndex];
 						if (!manyRelation) {
 							throw new Error(
 								`Relation '${schemaName}.${manyEntity.name} - ${relationIndex}' is not defined.`);
 						}
 						for (const columnIndex in mapForRelation) {
 							const relationColumnReference = mapForRelation[columnIndex];
-							const oneSchema               = schemaMap[relationColumnReference.schemaName];
+							const oneSchema = schemaMap[relationColumnReference.schemaName];
 							if (!oneSchema) {
 								if (failOnMissingMappings) {
 									throw new Error(
@@ -238,14 +246,14 @@ export class DbSchemaBuilder
 		referencedSchemas: JsonSchema[],
 		schemaVersion: DbSchemaVersion
 	): DbEntity {
-		const columnMap                = {};
-		const columns: DbColumn[]      = [];
-		const idColumns: DbColumn[]    = [];
-		const idColumnMap              = {};
-		const propertyMap              = {};
+		const columnMap = {};
+		const columns: DbColumn[] = [];
+		const idColumns: DbColumn[] = [];
+		const idColumnMap = {};
+		const propertyMap = {};
 		const properties: DbProperty[] = [];
-		const relations: DbRelation[]  = [];
-		const dbEntity: DbEntity       = {
+		const relations: DbRelation[] = [];
+		const dbEntity: DbEntity = {
 			columnMap,
 			columns,
 			idColumns,
@@ -268,7 +276,7 @@ export class DbSchemaBuilder
 			jsonProperty,
 			index
 		) => {
-			const property: DbProperty     = {
+			const property: DbProperty = {
 				propertyColumns: [],
 				entity: dbEntity,
 				id: null,
@@ -279,19 +287,19 @@ export class DbSchemaBuilder
 				sinceVersion: schemaVersion
 			};
 			propertyMap[jsonProperty.name] = property;
-			properties[index]              = property;
+			properties[index] = property;
 		});
 		jsonEntity.properties.sort((
 			a,
 			b
-			) =>
-				a.index < b.index ? -1 : 1
+		) =>
+			a.index < b.index ? -1 : 1
 		);
 		properties.sort((
 			a,
 			b
-			) =>
-				a.index < b.index ? -1 : 1
+		) =>
+			a.index < b.index ? -1 : 1
 		);
 
 		jsonEntity.relations.forEach((
@@ -306,19 +314,19 @@ export class DbSchemaBuilder
 		relations.sort((
 			a,
 			b
-			) =>
-				a.index < b.index ? -1 : 1
+		) =>
+			a.index < b.index ? -1 : 1
 		);
 
 		jsonEntity.columns.forEach((
 			jsonColumn,
 			index
 		) => {
-			const dbColumn             = this.buildDbColumn(
+			const dbColumn = this.buildDbColumn(
 				jsonSchema, jsonEntity, jsonColumn, properties,
 				dictionary, referencedSchemas, schemaVersion, dbEntity);
 			columnMap[jsonColumn.name] = dbColumn;
-			columns[index]             = dbColumn;
+			columns[index] = dbColumn;
 		});
 		jsonEntity.idColumnRefs.forEach((
 			idColumnRef,
@@ -329,8 +337,8 @@ export class DbSchemaBuilder
 		columns.sort((
 			a,
 			b
-			) =>
-				a.index < b.index ? -1 : 1
+		) =>
+			a.index < b.index ? -1 : 1
 		);
 
 		return dbEntity;
@@ -415,10 +423,10 @@ export class DbSchemaBuilder
 			sinceVersion: schemaVersion,
 			type: jsonColumn.type
 		};
-		const propertyColumns    = jsonColumn.propertyRefs.map(
+		const propertyColumns = jsonColumn.propertyRefs.map(
 			propertyColumnRef => {
 				const propertyIndex = propertyColumnRef.index;
-				const property      = properties[propertyIndex];
+				const property = properties[propertyIndex];
 				return {
 					column: dbColumn,
 					property,
@@ -437,9 +445,9 @@ export class DbSchemaBuilder
 				} else {
 					manySchema = referencedSchemas[manySchemaReferenceIndex];
 				}
-				const manyTableIndex          = jsonEntity.index;
-				const manyRelationIndex       = relationColumnRef.manyRelationIndex;
-				const manyColumnIndex         = dbColumn.index;
+				const manyTableIndex = jsonEntity.index;
+				const manyRelationIndex = relationColumnRef.manyRelationIndex;
+				const manyColumnIndex = dbColumn.index;
 				const oneSchemaReferenceIndex = relationColumnRef.oneSchemaIndex;
 				let oneSchema;
 				if (oneSchemaReferenceIndex === null) {
@@ -451,9 +459,9 @@ export class DbSchemaBuilder
 					// FIXME: figure out if not having references to nested schemas is OK
 					return;
 				}
-				const oneTableIndex    = relationColumnRef.oneTableIndex;
+				const oneTableIndex = relationColumnRef.oneTableIndex;
 				const oneRelationIndex = relationColumnRef.oneRelationIndex;
-				const oneColumnIndex   = relationColumnRef.oneColumnIndex;
+				const oneColumnIndex = relationColumnRef.oneColumnIndex;
 
 				const manyRelationColumnMap = ensureChildMap(
 					ensureChildMap(

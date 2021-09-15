@@ -1,4 +1,4 @@
-import { AIR_DB, and } from '@airport/air-control';
+import { AIRPORT_DATABASE, and } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { AgtSharingMessageAcknowledged } from '../../ddl/ddl';
@@ -7,10 +7,11 @@ import { AGT_SHARING_MESSAGE_DAO } from '../../tokens';
 export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
     async insertValues(values) {
         const sharingMessageIdsByTerminalId = new Map();
-        const dbEntity = Q.db.currentVersion.entityMapByName.AgtSharingMessage;
+        const dbEntity = Q.db.currentVersion[0].schemaVersion
+            .entityMapByName.AgtSharingMessage;
         let asm;
         const airDb = await container(this)
-            .get(AIR_DB);
+            .get(AIRPORT_DATABASE);
         const sharingMessageIds = await airDb.insertValuesGenerateIds({
             insertInto: asm = Q.AgtSharingMessage,
             columns: [
@@ -32,7 +33,7 @@ export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
         const resultMapByTerminalId = new Map();
         let asm;
         const airDb = await container(this)
-            .get(AIR_DB);
+            .get(AIRPORT_DATABASE);
         const dbSyncLogs = await airDb.find.sheet({
             from: [
                 asm = Q.AgtSharingMessage
@@ -69,7 +70,7 @@ export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
         const idMapByTerminalIdAndTmSharingMessageId = new Map();
         let asm;
         const airDb = await container(this)
-            .get(AIR_DB);
+            .get(AIRPORT_DATABASE);
         const sharingMessages = await airDb.find.sheet({
             from: [
                 asm = Q.AgtSharingMessage
