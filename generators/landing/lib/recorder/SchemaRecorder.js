@@ -20,16 +20,21 @@ export class SchemaRecorder {
         }, context);
     }
     async normalRecord(ddlObjects, domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao, context) {
-        await domainDao.save(ddlObjects.domains, context);
+        // await domainDao.save(ddlObjects.domains, context)
         await schemaDao.save(ddlObjects.schemas, context);
-        await schemaVersionDao.save(ddlObjects.schemaVersions, context);
-        await schemaReferenceDao.save(ddlObjects.schemaReferences, context);
-        await schemaEntityDao.save(ddlObjects.entities, context);
-        await schemaPropertyDao.save(ddlObjects.properties, context);
-        await schemaRelationDao.save(ddlObjects.relations, context);
-        await schemaColumnDao.save(ddlObjects.columns, context);
-        await schemaPropertyColumnDao.save(ddlObjects.propertyColumns, context);
-        await schemaRelationColumnDao.save(ddlObjects.relationColumns, context);
+        // await schemaVersionDao.save(ddlObjects.schemaVersions, context)
+        // await schemaReferenceDao.save(
+        // 	ddlObjects.schemaReferences as SchemaReferenceECreateProperties[], context)
+        // await schemaEntityDao.save(ddlObjects.entities, context)
+        // await schemaPropertyDao.save(ddlObjects.properties, context)
+        // await schemaRelationDao.save(ddlObjects.relations, context)
+        // await schemaColumnDao.save(ddlObjects.columns, context)
+        // await schemaPropertyColumnDao.save(
+        // 	ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[],
+        // 	context)
+        // await schemaRelationColumnDao.save(
+        // 	ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[],
+        // 	context)
     }
     setDefaultVersioning(ddlObjects) {
         for (const schemaReference of ddlObjects.schemaReferences) {
