@@ -21,7 +21,10 @@ from
 WHERE
 	type = 'table'
 	AND tbl_name = '${schemaName}__${tableName}'`, [], context);
-        return matchingTableNames.length === 1;
+        return this.getNumberOfRows(matchingTableNames) === 1;
+    }
+    getNumberOfRows(result) {
+        return this.getRows(result).length;
     }
     async dropTable(schemaName, tableName, context) {
         const matchingTableNames = await this.findNative(`DROP TABLE '${schemaName}__${tableName}'`, [], context);

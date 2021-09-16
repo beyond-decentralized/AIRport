@@ -185,17 +185,21 @@ export class WebSqlDriver
 		}, reject);
 	}
 
-
+	protected getRows(
+		result: any
+	): number {
+		return result.rows
+	}
 
 	private getReturnValue(
 		queryType: QueryType,
-		response
+		result: any
 	): any {
 		switch (queryType) {
 			case QueryType.MUTATE:
-				return response.rowsAffected
+				return result.rowsAffected
 			case QueryType.SELECT:
-				return response.rows
+				return result.rows
 			default:
 				return null
 		}

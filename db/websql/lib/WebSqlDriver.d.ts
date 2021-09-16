@@ -25,6 +25,7 @@ export declare class WebSqlDriver extends SqLiteDriver {
     }): Promise<void>;
     query(queryType: QueryType, query: string, params: any[], context: IOperationContext, saveTransaction?: boolean): Promise<any>;
     protected doQuery(queryType: QueryType, query: string, params: any[], context: IOperationContext, tx: any, resolve: any, reject: any): void;
+    protected getRows(result: any): number;
     private getReturnValue;
 }
 //# sourceMappingURL=WebSqlDriver.d.ts.map

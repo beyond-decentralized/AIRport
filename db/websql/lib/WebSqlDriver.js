@@ -117,12 +117,15 @@ export class WebSqlDriver extends SqLiteDriver {
             resolve(results);
         }, reject);
     }
-    getReturnValue(queryType, response) {
+    getRows(result) {
+        return result.rows;
+    }
+    getReturnValue(queryType, result) {
         switch (queryType) {
             case QueryType.MUTATE:
-                return response.rowsAffected;
+                return result.rowsAffected;
             case QueryType.SELECT:
-                return response.rows;
+                return result.rows;
             default:
                 return null;
         }

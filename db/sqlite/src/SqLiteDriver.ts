@@ -44,8 +44,18 @@ WHERE
 			[], context
 		)
 
-		return matchingTableNames.length === 1
+		return this.getNumberOfRows(matchingTableNames) === 1
 	}
+
+	protected getNumberOfRows(
+		result: any
+	): number {
+		return this.getRows(result).length
+	}
+
+	protected abstract getRows(
+		result: any
+	)
 
 	async dropTable(
 		schemaName: string,

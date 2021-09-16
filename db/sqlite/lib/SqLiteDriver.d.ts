@@ -8,6 +8,8 @@ export declare abstract class SqLiteDriver extends SqlDriver {
     constructor();
     composeTableName(schemaName: string, tableName: string): string;
     doesTableExist(schemaName: string, tableName: string, context: IOperationContext): Promise<boolean>;
+    protected getNumberOfRows(result: any): number;
+    protected abstract getRows(result: any): any;
     dropTable(schemaName: string, tableName: string, context: IOperationContext): Promise<boolean>;
     findNative(sqlQuery: string, parameters: any[], context: IOperationContext): Promise<any[]>;
     protected executeNative(sql: string, parameters: any[], context: IOperationContext): Promise<number>;
