@@ -55,7 +55,7 @@ export class EntityOrderByParser extends AbstractEntityOrderByParser {
                     return true;
                 }
                 const orderByDbEntity = context.ioc.airDb.schemas[orderByField.si]
-                    .schemaVersion.currentVersion[0].entities[orderByField.ti];
+                    .currentVersion[0].schemaVersion.entities[orderByField.ti];
                 const dbColumn = orderByDbEntity.columns[orderByField.ci];
                 if (this.isForParentNode(currentJoinNode, orderByField)) {
                     throw new Error(`Found out of order entry in Order By 

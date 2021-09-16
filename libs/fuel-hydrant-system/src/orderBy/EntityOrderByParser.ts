@@ -1,18 +1,18 @@
 import {
 	IQEntityInternal,
 	JoinTreeNode
-}                          from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	DbEntity,
 	JSONEntityFieldInOrderBy,
 	JSONFieldInOrderBy,
 	SortOrder
-}                          from '@airport/ground-control'
+} from '@airport/ground-control'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
 import {
 	AbstractEntityOrderByParser,
 	IEntityOrderByParser
-}                          from './AbstractEntityOrderByParser'
+} from './AbstractEntityOrderByParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -54,7 +54,7 @@ export class EntityOrderByParser
 		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> },
 		context: IFuelHydrantContext,
 	): string {
-		let orderByFragments: string[]          = []
+		let orderByFragments: string[] = []
 		let orderBy: JSONEntityFieldInOrderBy[] = []
 		if (this.orderBy) {
 			orderBy = this.orderBy.slice()
@@ -72,7 +72,7 @@ export class EntityOrderByParser
 			(currentSelectFragment = selectFragmentQueue.shift())
 			&& (currentJoinNode = joinNodeQueue.shift())) {
 
-			const tableAlias         = context.ioc.relationManager.getAlias(currentJoinNode.jsonRelation)
+			const tableAlias = context.ioc.relationManager.getAlias(currentJoinNode.jsonRelation)
 			const dbEntity: DbEntity = qEntityMapByAlias[tableAlias].__driver__.dbEntity
 
 			const currentEntityOrderBy = []
@@ -84,8 +84,8 @@ export class EntityOrderByParser
 				}
 
 				const orderByDbEntity: DbEntity = context.ioc.airDb.schemas[orderByField.si]
-					.schemaVersion.currentVersion[0].entities[orderByField.ti]
-				const dbColumn                  = orderByDbEntity.columns[orderByField.ci]
+					.currentVersion[0].schemaVersion.entities[orderByField.ti]
+				const dbColumn = orderByDbEntity.columns[orderByField.ci]
 				if (this.isForParentNode(currentJoinNode, orderByField)) {
 					throw new Error(`Found out of order entry in Order By 
 					[${orderByDbEntity.schemaVersion.schema.name} - ${orderByDbEntity.name}.${dbColumn.name}].
@@ -101,7 +101,7 @@ export class EntityOrderByParser
 			})
 
 			const allColumnsToSortBy: string[] = []
-			const idColumnsToSortBy: string[]  = []
+			const idColumnsToSortBy: string[] = []
 			// By now the select clause is guaranteed to have:
 			// Either all ID columns defined on the entity (if @Id columns are defined)
 			// Or ALL of the columns on the entity (if no @Id columns are defined)
@@ -121,7 +121,7 @@ export class EntityOrderByParser
 					}
 
 					const dbRelation = dbProperty.relation[0]
-					const dbEntity   = dbRelation.relationEntity
+					const dbEntity = dbRelation.relationEntity
 
 					const matchingNodes = currentJoinNode.childNodes.filter(childNode => {
 						const jsonRelation = childNode.jsonRelation
@@ -148,7 +148,7 @@ export class EntityOrderByParser
 			let entityOrderByFragments = this.buildOrderByFragmentForEntity(
 				tableAlias, allColumnsToSortBy,
 				idColumnsToSortBy, currentEntityOrderBy, qEntityMapByAlias)
-			orderByFragments           = orderByFragments.concat(entityOrderByFragments)
+			orderByFragments = orderByFragments.concat(entityOrderByFragments)
 		}
 		if (orderBy.length) {
 			throw new Error(`
@@ -166,14 +166,14 @@ export class EntityOrderByParser
 		currentEntityOrderBy: JSONEntityFieldInOrderBy[],
 		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> },
 	) {
-		const finalOrderByColumnsFragments: JSONFieldInOrderBy[]               = []
+		const finalOrderByColumnsFragments: JSONFieldInOrderBy[] = []
 		const inputOrderByPropertyNameSet: { [propertyName: string]: boolean } = {}
 
 		const dbEntity: DbEntity = qEntityMapByAlias[tableAlias].__driver__.dbEntity
 		// First add the fields specified in the Order By clause for this entity
 		currentEntityOrderBy.forEach((orderByField) => {
 			finalOrderByColumnsFragments.push(orderByField)
-			const columnName                        = dbEntity.columns[orderByField.ci].name
+			const columnName = dbEntity.columns[orderByField.ci].name
 			inputOrderByPropertyNameSet[columnName] = true
 		})
 		if (idColumnsToSortBy.length) {
