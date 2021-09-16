@@ -10,6 +10,7 @@ import { IEntityLookup } from '../../../lingo/query/api/EntityLookup'
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
 import { UPDATE_CACHE_MANAGER } from '../../../tokens'
 import { LookupProxy } from './Lookup'
+import { SCHEMA_UTILS } from '../../..'
 
 export interface IEntityLookupInternal<Child, MappedChild,
 	IESP extends IEntitySelectProperties>
@@ -89,13 +90,13 @@ export abstract class EntityLookup<Child, MappedChild,
 		context.dbEntity = this.dbEntity
 		const result = await this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)
-		const [updateCacheManager, entityStateManager] =
-			await DI.db().get(UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER)
+		const [entityStateManager, schemaUtils, updateCacheManager] =
+			await DI.db().get(ENTITY_STATE_MANAGER, SCHEMA_UTILS, UPDATE_CACHE_MANAGER)
 		if (search) {
 			throw new Error(`Search operations are not yet supported`);
 		} else {
 			updateCacheManager.saveOriginalValues(
-				result, context.dbEntity, entityStateManager)
+				result, context.dbEntity, entityStateManager, schemaUtils)
 		}
 		return result
 	}

@@ -191,27 +191,29 @@ appears more than once in the Columns clause`);
         if (!idColumns.length && !generatedColumns.length) {
             return values.length;
         }
-        switch (idColumns.length) {
-            case 0: {
-                // If there is just one @Generated column and no @Id columns
-                if (generatedColumns.length == 1) {
-                    const columnIndex = generatedColumns[0].index;
-                    return allIds.map(rowIds => rowIds[columnIndex]);
-                }
-                break;
-            }
-            case 1: {
-                // If there is exactly 1 @Id column and no @Generated columns
-                // or it is the @Generated column
-                if (!generatedColumns.length
-                    || (generatedColumns.length === 1
-                        && idColumns[0].index === generatedColumns[0].index)) {
-                    const columnIndex = idColumns[0].index;
-                    return allIds.map(rowIds => rowIds[columnIndex]);
-                }
-                break;
-            }
-        }
+        // switch (idColumns.length) {
+        // 	case 0: {
+        // 		// If there is just one @Generated column and no @Id columns
+        // 		if (generatedColumns.length == 1) {
+        // 			const columnIndex = generatedColumns[0].index
+        // 			return allIds.map(
+        // 				rowIds => rowIds[columnIndex])
+        // 		}
+        // 		break
+        // 	}
+        // 	case 1: {
+        // 		// If there is exactly 1 @Id column and no @Generated columns
+        // 		// or it is the @Generated column
+        // 		if (!generatedColumns.length
+        // 			|| (generatedColumns.length === 1
+        // 				&& idColumns[0].index === generatedColumns[0].index)) {
+        // 			const columnIndex = idColumns[0].index
+        // 			return allIds.map(
+        // 				rowIds => rowIds[columnIndex])
+        // 		}
+        // 		break
+        // 	}
+        // }
         return allIds;
     }
     ensureRepositoryEntityIdValues(actor, dbEntity, jsonInsertValues, errorPrefix) {

@@ -12,7 +12,7 @@ export interface ITransactionalConnector {
     searchOne<E>(portableQuery: PortableQuery, context?: IContext, cachedSqlQueryId?: number): Observable<E>;
     save<E, T = E | E[]>(entity: T, context?: IContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, context?: IContext, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, context?: IContext): Promise<number[]>;
+    insertValuesGetIds(portableQuery: PortableQuery, context?: IContext): Promise<number[][] | string[][]>;
     updateValues(portableQuery: PortableQuery, context?: IContext): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, context?: IContext): Promise<number>;
     startTransaction(context: IContext): Promise<boolean>;

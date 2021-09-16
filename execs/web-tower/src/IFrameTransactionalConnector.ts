@@ -205,8 +205,8 @@ export class IframeTransactionalConnector
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
 		context: IContext,
-	): Promise<number[]> {
-		return this.sendMessage<IPortableQueryIMI, number[]>({
+	): Promise<number[][]> {
+		return this.sendMessage<IPortableQueryIMI, number[][]>({
 			...this.getCoreFields(),
 			portableQuery,
 			type: IsolateMessageType.INSERT_VALUES_GET_IDS

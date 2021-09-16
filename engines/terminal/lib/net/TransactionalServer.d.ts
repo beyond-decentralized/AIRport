@@ -43,7 +43,7 @@ export declare class TransactionalServer implements ITransactionalServer {
     rollback(credentials: ICredentials, context: IContext): Promise<boolean>;
     save<E>(entity: E, credentials: ICredentials, context: IOperationContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext): Promise<number[]>;
+    insertValuesGetIds(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext): Promise<number>;
     private getActor;

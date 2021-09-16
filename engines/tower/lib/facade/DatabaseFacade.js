@@ -87,7 +87,7 @@ export class DatabaseFacade {
             .copyEntityForProcessing(entity, dbEntity, entityStateManager);
         updateCacheManager.setOperationState(entityCopy, dbEntity, entityStateManager, schemaUtils, new Set());
         const saveResult = await transactionalConnector.save(entityCopy, context);
-        updateCacheManager.afterSaveModifications(entity, dbEntity, saveResult, entityStateManager, new Set());
+        updateCacheManager.afterSaveModifications(entity, dbEntity, saveResult, entityStateManager, schemaUtils, new Set());
         return saveResult;
     }
     /**

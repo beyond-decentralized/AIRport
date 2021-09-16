@@ -11,16 +11,16 @@ export class EntityStateManager {
         return this.getEntityState(entity) === EntityState.PARENT_ID;
     }
     markForDeletion(entity) {
-        entity.__state__ = EntityState.DELETE;
+        entity[EntityStateManager.STATE_FIELD] = EntityState.DELETE;
     }
     markToCreate(entity) {
-        entity.__state__ = EntityState.CREATE;
+        entity[EntityStateManager.STATE_FIELD] = EntityState.CREATE;
     }
     markToUpdate(entity) {
-        entity.__state__ = EntityState.UPDATE;
+        entity[EntityStateManager.STATE_FIELD] = EntityState.UPDATE;
     }
     getEntityState(entity) {
-        return entity.__state__;
+        return entity[EntityStateManager.STATE_FIELD];
     }
     getOriginalValues(entity) {
         return entity[EntityStateManager.ORIGINAL_VALUES_PROPERTY];
@@ -29,7 +29,8 @@ export class EntityStateManager {
         entity[EntityStateManager.ORIGINAL_VALUES_PROPERTY] = originalValues;
     }
     copyEntityState(fromEntity, toEntity) {
-        toEntity.__state__ = fromEntity.__state__;
+        toEntity[EntityStateManager.STATE_FIELD]
+            = fromEntity[EntityStateManager.STATE_FIELD];
     }
     getStateFieldName() {
         return EntityStateManager.STATE_FIELD;
@@ -105,7 +106,7 @@ export class EntityStateManager {
         entityCopy[EntityStateManager.OPERATION_UNIQUE_ID_FIELD] = operationUniqueId;
     }
     markAsStub(entity) {
-        entity.__state__ = EntityState.STUB;
+        entity[EntityStateManager.STATE_FIELD] = EntityState.STUB;
     }
     getUniqueIdFieldName() {
         return EntityStateManager.OPERATION_UNIQUE_ID_FIELD;

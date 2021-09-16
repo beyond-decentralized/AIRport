@@ -75,8 +75,8 @@ export class InsertManager
 		actor: IActor,
 		transaction: ITransaction,
 		context: IContext,
-	): Promise<RecordId[] | RecordId[][]> {
-		return <RecordId[] | RecordId[][]>await this.internalInsertValues(
+	): Promise<RecordId[][]> {
+		return <RecordId[][]>await this.internalInsertValues(
 			portableQuery, actor, transaction, context, true)
 	}
 
@@ -357,29 +357,29 @@ appears more than once in the Columns clause`)
 			return values.length as any
 		}
 
-		switch (idColumns.length) {
-			case 0: {
-				// If there is just one @Generated column and no @Id columns
-				if (generatedColumns.length == 1) {
-					const columnIndex = generatedColumns[0].index
-					return allIds.map(
-						rowIds => rowIds[columnIndex])
-				}
-				break
-			}
-			case 1: {
-				// If there is exactly 1 @Id column and no @Generated columns
-				// or it is the @Generated column
-				if (!generatedColumns.length
-					|| (generatedColumns.length === 1
-						&& idColumns[0].index === generatedColumns[0].index)) {
-					const columnIndex = idColumns[0].index
-					return allIds.map(
-						rowIds => rowIds[columnIndex])
-				}
-				break
-			}
-		}
+		// switch (idColumns.length) {
+		// 	case 0: {
+		// 		// If there is just one @Generated column and no @Id columns
+		// 		if (generatedColumns.length == 1) {
+		// 			const columnIndex = generatedColumns[0].index
+		// 			return allIds.map(
+		// 				rowIds => rowIds[columnIndex])
+		// 		}
+		// 		break
+		// 	}
+		// 	case 1: {
+		// 		// If there is exactly 1 @Id column and no @Generated columns
+		// 		// or it is the @Generated column
+		// 		if (!generatedColumns.length
+		// 			|| (generatedColumns.length === 1
+		// 				&& idColumns[0].index === generatedColumns[0].index)) {
+		// 			const columnIndex = idColumns[0].index
+		// 			return allIds.map(
+		// 				rowIds => rowIds[columnIndex])
+		// 		}
+		// 		break
+		// 	}
+		// }
 
 		return allIds
 	}

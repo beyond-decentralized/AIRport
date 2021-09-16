@@ -84,7 +84,7 @@ export interface ITransactionalServer {
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
 		context: IContext
-	): Promise<number[]>
+	): Promise<number[][]>
 
 	updateValues(
 		portableQuery: PortableQuery,

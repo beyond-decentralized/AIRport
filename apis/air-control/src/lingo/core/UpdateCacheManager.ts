@@ -11,6 +11,7 @@ export interface IUpdateCacheManager {
         entity: T,
         dbEntity: DbEntity,
         entityStateManager: IEntityStateManager,
+        schemaUtils: ISchemaUtils,
     ): any
 
     setOperationState<E, T = E | E[]>(
@@ -26,6 +27,7 @@ export interface IUpdateCacheManager {
         dbEntity: DbEntity,
         saveResult: ISaveResult,
         entityStateManager: IEntityStateManager,
+        schemaUtils: ISchemaUtils,
         processedEntities: Set<any>
     ): void
 

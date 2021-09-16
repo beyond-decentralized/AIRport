@@ -155,7 +155,7 @@ export class TransactionalConnector
     async insertValuesGetIds(
         portableQuery: PortableQuery,
         context: IContext,
-    ): Promise<number[]> {
+    ): Promise<number[][]> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
         return await transServer.insertValuesGetIds(portableQuery, null, {

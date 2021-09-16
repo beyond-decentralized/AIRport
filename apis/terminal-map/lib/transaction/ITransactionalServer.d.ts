@@ -14,7 +14,7 @@ export interface ITransactionalServer {
     rollback(credentials: ICredentials, context: IContext): Promise<boolean>;
     save<E>(entity: E, credentials: ICredentials, context: IContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, credentials: ICredentials, context: IContext): Promise<number[]>;
+    insertValuesGetIds(portableQuery: PortableQuery, credentials: ICredentials, context: IContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, credentials: ICredentials, context: IContext): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, credentials: ICredentials, context: IContext): Promise<number>;
 }

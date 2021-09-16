@@ -16,10 +16,10 @@ export declare class DatabaseFacade implements IDatabaseFacade {
     }, context: IContext): Promise<number>;
     insertColumnValuesGenerateIds<IQE extends IQEntity<any>>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
-    }, context: IContext): Promise<number[] | string[] | number[][] | string[][]>;
+    }, context: IContext): Promise<number[][] | string[][]>;
     insertValuesGenerateIds<IQE extends IQEntity<any>>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
-    }, context: IContext): Promise<number[] | string[] | number[][] | string[][]>;
+    }, context: IContext): Promise<number[][] | string[][]>;
     deleteWhere<IQE extends IQEntity<any>>(rawDelete: RawDelete<IQE> | {
         (...args: any[]): RawDelete<IQE>;
     }, context: IContext): Promise<number>;

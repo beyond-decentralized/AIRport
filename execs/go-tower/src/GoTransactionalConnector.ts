@@ -124,7 +124,7 @@ export class GoTransactionalConnector
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
 		context: IContext,
-	): Promise<number[] | string[] | number[][] | string[][]> {
+	): Promise<number[][] | string[][]> {
 		throw new Error('Not implemented');
 	}
 

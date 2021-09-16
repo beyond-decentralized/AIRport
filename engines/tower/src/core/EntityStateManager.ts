@@ -39,25 +39,25 @@ export class EntityStateManager
 	markForDeletion<T>(
 		entity: T
 	): void {
-		(<EntityWithState><any>entity).__state__ = EntityState.DELETE
+		(<EntityWithState><any>entity)[EntityStateManager.STATE_FIELD] = EntityState.DELETE
 	}
 
 	markToCreate<T>(
 		entity: T
 	): void {
-		(<EntityWithState><any>entity).__state__ = EntityState.CREATE
+		(<EntityWithState><any>entity)[EntityStateManager.STATE_FIELD] = EntityState.CREATE
 	}
 
 	markToUpdate<T>(
 		entity: T
 	): void {
-		(<EntityWithState><any>entity).__state__ = EntityState.UPDATE
+		(<EntityWithState><any>entity)[EntityStateManager.STATE_FIELD] = EntityState.UPDATE
 	}
 
 	getEntityState<T>(
 		entity: T
 	): EntityState {
-		return (<EntityWithState><any>entity).__state__
+		return (<EntityWithState><any>entity)[EntityStateManager.STATE_FIELD]
 	}
 
 	getOriginalValues<T>(
@@ -77,7 +77,8 @@ export class EntityStateManager
 		fromEntity: T,
 		toEntity: T
 	): void {
-		(<EntityWithState><any>toEntity).__state__ = (<EntityWithState><any>fromEntity).__state__
+		(<EntityWithState><any>toEntity)[EntityStateManager.STATE_FIELD]
+			= (<EntityWithState><any>fromEntity)[EntityStateManager.STATE_FIELD]
 	}
 
 	getStateFieldName(): string {
@@ -178,7 +179,7 @@ export class EntityStateManager
 	markAsStub<T>(
 		entity: T
 	): void {
-		(<EntityWithState><any>entity).__state__ = EntityState.STUB
+		(<EntityWithState><any>entity)[EntityStateManager.STATE_FIELD] = EntityState.STUB
 	}
 
 

@@ -105,7 +105,7 @@ export class DatabaseFacade
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
 		context: IContext
-	): Promise<number[] | string[] | number[][] | string[][]> {
+	): Promise<number[][] | string[][]> {
 		if (!rawInsertColumnValues) {
 			return []
 		}
@@ -126,7 +126,7 @@ export class DatabaseFacade
 			(...args: any[]): RawInsertValues<IQE>;
 		},
 		context: IContext
-	): Promise<number[] | string[] | number[][] | string[][]> {
+	): Promise<number[][] | string[][]> {
 		if (!rawInsertValues) {
 			return []
 		}
@@ -182,7 +182,7 @@ export class DatabaseFacade
 			entityCopy, dbEntity, entityStateManager, schemaUtils, new Set())
 		const saveResult = await transactionalConnector.save(entityCopy, context)
 		updateCacheManager.afterSaveModifications(entity, dbEntity, saveResult,
-			entityStateManager, new Set())
+			entityStateManager, schemaUtils, new Set())
 
 		return saveResult
 	}

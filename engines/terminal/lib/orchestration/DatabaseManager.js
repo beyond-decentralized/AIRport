@@ -187,7 +187,6 @@ export class DatabaseManager {
             const user = new User();
             user.uniqueId = domainName;
             const userDao = await container(this).get(USER_DAO);
-            // FIXME: How to handle redundant save calls?
             await userDao.save(user, context);
             const terminal = new Terminal();
             terminal.name = domainName;
