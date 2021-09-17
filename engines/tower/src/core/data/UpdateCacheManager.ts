@@ -230,7 +230,7 @@ export class UpdateCacheManager
             }
         }
         if (!entityState) {
-            if (hasId && hasGeneratedIds) {
+            if ((hasId && hasGeneratedIds) || originalValuesObject) {
                 entityState = EntityState.PARENT_ID
             } else {
                 entityState = EntityState.CREATE

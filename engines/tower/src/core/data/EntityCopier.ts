@@ -1,5 +1,5 @@
 import { DI } from "@airport/di"
-import { 
+import {
     DbEntity,
     IEntityStateManager
 } from "@airport/ground-control"
@@ -65,7 +65,9 @@ export class EntityCopier
 
             const operationUniqueId = ++operation.sequence
             entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
-            entity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
+            entity[entityStateManager.getUniqueIdFieldName()] =
+                entityStateManager.setOriginalValues(
+                    entityStateManager.getOriginalValues(entity), entityCopy)
 
             for (let dbProperty of dbEntity.properties) {
                 const property = entity[dbProperty.name]
