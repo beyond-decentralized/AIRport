@@ -114,11 +114,11 @@ export class WebSqlDriver extends SqLiteDriver {
             for (i = 0; i < len; i++) {
                 data.push(results.rows.item(i));
             }
-            resolve(results);
+            resolve(data);
         }, reject);
     }
     getRows(result) {
-        return result.rows;
+        return result;
     }
     getReturnValue(queryType, result) {
         switch (queryType) {

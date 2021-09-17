@@ -21,7 +21,7 @@ export declare class OperationManager implements IOperationManager {
      *  ManyToOne:
      *    Cascades do not travel across ManyToOne
      */
-    protected internalUpdate<E>(entities: E[], originalEntity: E, actor: IActor, transaction: ITransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
+    protected internalUpdate<E>(entities: E[], actor: IActor, transaction: ITransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
     protected internalDelete<E>(entities: E[], actor: IActor, transaction: ITransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
 }
 //# sourceMappingURL=OperationManager.d.ts.map

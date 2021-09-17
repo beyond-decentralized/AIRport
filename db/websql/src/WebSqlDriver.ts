@@ -181,14 +181,14 @@ export class WebSqlDriver
 			for (i = 0; i < len; i++) {
 				data.push(results.rows.item(i));
 			}
-			resolve(results);
+			resolve(data);
 		}, reject);
 	}
 
 	protected getRows(
 		result: any
 	): number {
-		return result.rows
+		return result
 	}
 
 	private getReturnValue(

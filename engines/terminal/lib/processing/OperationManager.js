@@ -1,6 +1,6 @@
 import { and, Delete, InsertValues, or, UpdateProperties, valuesEqual } from '@airport/air-control';
-import { DI } from '@airport/di';
-import { EntityRelationType } from '@airport/ground-control';
+import { container, DI } from '@airport/di';
+import { EntityRelationType, ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { OPERATION_MANAGER } from '../tokens';
 /**
  * Created by Papa on 11/15/2016.
@@ -46,7 +46,7 @@ export class OperationManager {
                 await this.internalDelete(operation.entities, actor, transaction, saveResult, context);
             }
             else {
-                await this.internalUpdate(operation.entities, null, actor, transaction, saveResult, context);
+                await this.internalUpdate(operation.entities, actor, transaction, saveResult, context);
             }
         }
         context.dbEntity = rootDbEntity;
@@ -138,12 +138,14 @@ export class OperationManager {
      *  ManyToOne:
      *    Cascades do not travel across ManyToOne
      */
-    async internalUpdate(entities, originalEntity, actor, transaction, saveResult, context) {
+    async internalUpdate(entities, actor, transaction, saveResult, context) {
+        const entityStateManager = await container(this).get(ENTITY_STATE_MANAGER);
         const qEntity = context.ioc.airDb.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name];
         const setFragment = {};
         const idWhereFragments = [];
         let runUpdate = false;
         for (const entity of entities) {
+            const originalEntity = entityStateManager.getOriginalValues(entity);
             for (const dbProperty of context.dbEntity.properties) {
                 const updatedValue = entity[dbProperty.name];
                 if (!dbProperty.relation || !dbProperty.relation.length) {

@@ -212,6 +212,7 @@ export class UpdateCacheManager
                                 propertyValue = JSON.stringify(property)
                                 break;
                             default:
+                                propertyValue = property
                                 break;
                         }
                     }

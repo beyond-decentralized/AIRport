@@ -9,10 +9,11 @@ import {
 	UpdateProperties,
 	valuesEqual
 } from '@airport/air-control'
-import { DI } from '@airport/di'
+import { container, DI } from '@airport/di'
 import {
 	DbColumn,
 	EntityRelationType,
+	ENTITY_STATE_MANAGER,
 	ISaveResult,
 	JSONValueOperation,
 	PortableQuery
@@ -76,7 +77,7 @@ export class OperationManager
 					operation.entities, actor, transaction, saveResult, context)
 			} else {
 				await this.internalUpdate(
-					operation.entities, null, actor, transaction, saveResult, context)
+					operation.entities, actor, transaction, saveResult, context)
 			}
 		}
 		context.dbEntity = rootDbEntity
@@ -199,12 +200,12 @@ export class OperationManager
 	 */
 	protected async internalUpdate<E>(
 		entities: E[],
-		originalEntity: E,
 		actor: IActor,
 		transaction: ITransaction,
 		saveResult: ISaveResult,
 		context: IOperationContext
 	): Promise<void> {
+		const entityStateManager = await container(this).get(ENTITY_STATE_MANAGER)
 		const qEntity = context.ioc.airDb.qSchemas
 		[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
 		const setFragment: any = {}
@@ -212,6 +213,7 @@ export class OperationManager
 		let runUpdate = false
 
 		for (const entity of entities) {
+			const originalEntity = entityStateManager.getOriginalValues(entity)
 			for (const dbProperty of context.dbEntity.properties) {
 				const updatedValue = entity[dbProperty.name]
 				if (!dbProperty.relation || !dbProperty.relation.length) {
