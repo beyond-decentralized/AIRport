@@ -20,8 +20,8 @@ export class EntityCopier {
             operation.processedEntityMap.set(entity, entityCopy);
             const operationUniqueId = ++operation.sequence;
             entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
-            entity[entityStateManager.getUniqueIdFieldName()] =
-                entityStateManager.setOriginalValues(entityStateManager.getOriginalValues(entity), entityCopy);
+            entity[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
+            entityStateManager.setOriginalValues(entityStateManager.getOriginalValues(entity), entityCopy);
             for (let dbProperty of dbEntity.properties) {
                 const property = entity[dbProperty.name];
                 if (dbProperty.relation && dbProperty.relation.length && property) {
