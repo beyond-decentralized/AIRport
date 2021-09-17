@@ -3,11 +3,16 @@ import { Api } from "@airport/check-in";
 import { PARENT_DAO } from "../tokens";
 import { IParent } from "../generated/parent";
 import { DEMO_API } from "../client";
+export interface IDemoApi {
 
-export class DemoApi {
+    findAllParentsWithChildren(): Promise<IParent[]>
+
+}
+
+export class DemoApi implements IDemoApi {
 
     @Api()
-    async getAllParentsWithChildren(): Promise<IParent[]> {
+    async findAllParentsWithChildren(): Promise<IParent[]> {
         const parentDao = await container(this).get(PARENT_DAO)
 
         return await parentDao.findAllWithChildren()

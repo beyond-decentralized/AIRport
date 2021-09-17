@@ -14,7 +14,6 @@ export interface ISerializationStateManager {
     serializeAsDate(value: Date): ISerializedDate;
     isDate<T>(entity: T): boolean;
     getUniqueIdFieldName(): string;
-    getStateFieldName(): string;
 }
 export declare class SerializationStateManager implements ISerializationStateManager {
     static SERIALIZATION_UNIQUE_ID_FIELD: string;
@@ -26,7 +25,6 @@ export declare class SerializationStateManager implements ISerializationStateMan
     serializeAsDate(value: Date): ISerializedDate;
     isDate<T>(entity: T): boolean;
     getUniqueIdFieldName(): string;
-    getStateFieldName(): string;
     private is;
     private markAs;
 }

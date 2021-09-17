@@ -1,5 +1,4 @@
 import { DI } from '@airport/di';
-import { SerializationState } from './SerializationStateManager';
 import { OPERATION_SERIALIZER } from './tokens';
 export class OperationSerializer {
     serialize(entity, serializationStateManager) {
@@ -38,7 +37,7 @@ export class OperationSerializer {
         var isFirstProperty = true;
         for (const propertyName in entity) {
             const property = entity[propertyName];
-            const propertyState = property[serializationStateManager.getStateFieldName()];
+            // const propertyState = property[serializationStateManager.getStateFieldName()]
             let propertyCopy;
             if (!isFirstProperty) {
                 operation.namePath.pop();
@@ -71,26 +70,26 @@ export class OperationSerializer {
                 }
             }
             else {
-                switch (propertyState) {
-                    // case EntityState.RESULT_JSON_ARRAY:
-                    // 	if (property) {
-                    // 		throw new Error(`Expecting an Array for "${operation.namePath.join('.')}", got: ${property}`)
-                    // 	}
-                    // 	break
-                    // case EntityState.RESULT_JSON:
-                    // 	if (property) {
-                    // 		throw new Error(`Expecting an Object for "${operation.namePath.join('.')}", got: ${property}`)
-                    // 	}
-                    // 	break
-                    case SerializationState.DATE:
-                        if (property) {
-                            throw new Error(`Expecting a Date for "${operation.namePath.join('.')}", got: ${property}`);
-                        }
-                        break;
-                    default:
-                        propertyCopy = property;
-                        break;
-                }
+                // switch (propertyState) {
+                // 	// case EntityState.RESULT_JSON_ARRAY:
+                // 	// 	if (property) {
+                // 	// 		throw new Error(`Expecting an Array for "${operation.namePath.join('.')}", got: ${property}`)
+                // 	// 	}
+                // 	// 	break
+                // 	// case EntityState.RESULT_JSON:
+                // 	// 	if (property) {
+                // 	// 		throw new Error(`Expecting an Object for "${operation.namePath.join('.')}", got: ${property}`)
+                // 	// 	}
+                // 	// 	break
+                // 	case SerializationState.DATE:
+                // 		if (property) {
+                // 			throw new Error(`Expecting a Date for "${operation.namePath.join('.')}", got: ${property}`)
+                // 		}
+                // 		break
+                // 	default:
+                propertyCopy = property;
+                // break
+                // }
             }
             serializedEntity[propertyName] = propertyCopy;
         }

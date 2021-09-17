@@ -1,5 +1,8 @@
 import { IParent } from "../generated/parent";
-export declare class DemoApi {
-    getAllParentsWithChildren(): Promise<IParent[]>;
+export interface IDemoApi {
+    findAllParentsWithChildren(): Promise<IParent[]>;
+}
+export declare class DemoApi implements IDemoApi {
+    findAllParentsWithChildren(): Promise<IParent[]>;
 }
 //# sourceMappingURL=DemoApi.d.ts.map

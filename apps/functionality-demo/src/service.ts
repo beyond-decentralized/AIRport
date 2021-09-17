@@ -1,9 +1,5 @@
 import type { Parent } from '@airport/functionality-demo-schema'
-
-export type DeepPartial<T> = {
-    [P in keyof T]?: DeepPartial<T[P]>;
-};
-
+import type { DeepPartial } from '@airport/pressurization';
 export class FunctionalityDemoService {
 
     records: DeepPartial<Parent>[] = [{

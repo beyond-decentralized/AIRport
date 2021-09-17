@@ -1,11 +1,6 @@
 import { lib } from "@airport/di";
-import { IParent } from "./generated/parent";
+import { IDemoApi } from "../api/DemoApi";
 
-export interface IDemoApi {
-
-    getAllParentsWithChildren(): Promise<IParent[]>
-
-}
 
 const functionalityDemoSchema = lib('functionality-demo-schema')
 

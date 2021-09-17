@@ -9,13 +9,13 @@ import { Api } from "@airport/check-in";
 import { PARENT_DAO } from "../tokens";
 import { DEMO_API } from "../client";
 export class DemoApi {
-    async getAllParentsWithChildren() {
+    async findAllParentsWithChildren() {
         const parentDao = await container(this).get(PARENT_DAO);
         return await parentDao.findAllWithChildren();
     }
 }
 __decorate([
     Api()
-], DemoApi.prototype, "getAllParentsWithChildren", null);
+], DemoApi.prototype, "findAllParentsWithChildren", null);
 DI.set(DEMO_API, DemoApi);
 //# sourceMappingURL=DemoApi.js.map

@@ -38,9 +38,9 @@ export class SerializationStateManager {
     getUniqueIdFieldName() {
         return SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD;
     }
-    getStateFieldName() {
-        return SerializationStateManager.SERIALIZATION_STATE_FIELD;
-    }
+    // getStateFieldName(): string {
+    //     return SerializationStateManager.SERIALIZATION_STATE_FIELD
+    // }
     is(entity, serializationState) {
         return entity[SerializationStateManager.SERIALIZATION_STATE_FIELD] == serializationState;
     }

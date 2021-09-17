@@ -1,9 +1,6 @@
 import { ISerializationStateManager } from './SerializationStateManager';
 /**
- * A simple operation serializer that is not aware
- * of the schema and only supports create operations
- * (good enough for now, to be expanded on later).
- * Also, ids are currently assumed to always
+ * A simple operation serializer. Ids are assumed to always
  * be represented by the "id" property.
  */
 export interface IOperationSerializer {
