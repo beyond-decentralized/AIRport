@@ -66,9 +66,15 @@ export class UpdateCacheManager {
             .getOriginalValues(entityCopy);
         let entityState = entityCopy[entityStateManager.getStateFieldName()];
         let hasId = true;
+        let hasGeneratedIds = false;
         for (const dbProperty of dbEntity.properties) {
             if (!dbProperty.isId) {
                 continue;
+            }
+            for (const propertyColumn of dbProperty.propertyColumns) {
+                if (propertyColumn.column.isGenerated) {
+                    hasGeneratedIds = true;
+                }
             }
             if (dbProperty.relation && dbProperty.relation.length) {
                 schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (_dbColumn, propertyNameChains) => {
@@ -189,7 +195,7 @@ export class UpdateCacheManager {
             }
         }
         if (!entityState) {
-            if (hasId) {
+            if (hasId && hasGeneratedIds) {
                 entityState = EntityState.PARENT_ID;
             }
             else {

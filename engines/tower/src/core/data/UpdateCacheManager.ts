@@ -38,33 +38,33 @@ export class UpdateCacheManager
                 if (dbProperty.relation[0].relationType === EntityRelationType.MANY_TO_ONE) {
                     // Save the nested child object Ids in the original values of this object
                     // in case the object behind this relation is changed
-                        schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (
-                            _dbColumn: DbColumn,
-                            propertyNameChains: string[][],
-                        ) => {
-                            for (let propertyNameChain of propertyNameChains) {
-                                let nestedProperty = entity
-                                let currentPropertyOriginalValue = originalValuesObject
-                                for (let i = 0; i < propertyNameChain.length; i++) {
-                                    const propertyName = propertyNameChain[i]
-                                    if (nestedProperty instanceof Object) {
-                                        nestedProperty = nestedProperty[propertyName]
-                                        let originalValue
-                                        // Nested object continues
-                                        if (i === propertyNameChain.length - 1) {
-                                            originalValue = nestedProperty
-                                        } else {
-                                            originalValue = {}
-                                        }
-                                        currentPropertyOriginalValue[propertyName] = originalValue
-                                        currentPropertyOriginalValue = currentPropertyOriginalValue[propertyName]
+                    schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (
+                        _dbColumn: DbColumn,
+                        propertyNameChains: string[][],
+                    ) => {
+                        for (let propertyNameChain of propertyNameChains) {
+                            let nestedProperty = entity
+                            let currentPropertyOriginalValue = originalValuesObject
+                            for (let i = 0; i < propertyNameChain.length; i++) {
+                                const propertyName = propertyNameChain[i]
+                                if (nestedProperty instanceof Object) {
+                                    nestedProperty = nestedProperty[propertyName]
+                                    let originalValue
+                                    // Nested object continues
+                                    if (i === propertyNameChain.length - 1) {
+                                        originalValue = nestedProperty
                                     } else {
-                                        // This is the actual value
-                                        currentPropertyOriginalValue[propertyName] = nestedProperty
+                                        originalValue = {}
                                     }
+                                    currentPropertyOriginalValue[propertyName] = originalValue
+                                    currentPropertyOriginalValue = currentPropertyOriginalValue[propertyName]
+                                } else {
+                                    // This is the actual value
+                                    currentPropertyOriginalValue[propertyName] = nestedProperty
                                 }
                             }
-                        });
+                        }
+                    });
                 }
                 this.saveOriginalValues(property, dbProperty.relation[0].relationEntity,
                     entityStateManager, schemaUtils)
@@ -97,9 +97,15 @@ export class UpdateCacheManager
 
         let entityState: EntityState = entityCopy[entityStateManager.getStateFieldName()]
         let hasId = true
+        let hasGeneratedIds = false
         for (const dbProperty of dbEntity.properties) {
             if (!dbProperty.isId) {
                 continue
+            }
+            for (const propertyColumn of dbProperty.propertyColumns) {
+                if (propertyColumn.column.isGenerated) {
+                    hasGeneratedIds = true
+                }
             }
             if (dbProperty.relation && dbProperty.relation.length) {
                 schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (
@@ -224,7 +230,7 @@ export class UpdateCacheManager
             }
         }
         if (!entityState) {
-            if (hasId) {
+            if (hasId && hasGeneratedIds) {
                 entityState = EntityState.PARENT_ID
             } else {
                 entityState = EntityState.CREATE
