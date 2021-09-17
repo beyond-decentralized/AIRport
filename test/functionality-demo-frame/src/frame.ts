@@ -1,4 +1,4 @@
-import functionalityDemoSchema from '@airport/functionality-demo-schema/lib/index'
+import functionalityDemoSchema from '@airport/functionality-demo-schema/lib/server'
 
 functionalityDemoSchema.DemoApi
 

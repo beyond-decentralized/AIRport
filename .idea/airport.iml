@@ -34,30 +34,6 @@
       <excludeFolder url="file://$MODULE_DIR$/apis/terminal-map/.rush" />
       <excludeFolder url="file://$MODULE_DIR$/apis/terminal-map/lib" />
     </content>
-    <content url="file://$MODULE_DIR$/apps/airdb">
-      <excludeFolder url="file://$MODULE_DIR$/apps/airdb/.idea" />
-      <excludeFolder url="file://$MODULE_DIR$/apps/airdb/.rush" />
-      <excludeFolder url="file://$MODULE_DIR$/apps/airdb/lib" />
-      <excludeFolder url="file://$MODULE_DIR$/apps/airdb/platforms" />
-      <excludeFolder url="file://$MODULE_DIR$/apps/airdb/plugins" />
-      <excludeFolder url="file://$MODULE_DIR$/apps/airdb/resources" />
-    </content>
-    <content url="file://$MODULE_DIR$/apps/automated-guideway-transit">
-      <excludeFolder url="file://$MODULE_DIR$/apps/automated-guideway-transit/.idea" />
-      <excludeFolder url="file://$MODULE_DIR$/apps/automated-guideway-transit/.rush" />
-      <excludeFolder url="file://$MODULE_DIR$/apps/automated-guideway-transit/lib" />
-    </content>
-    <content url="file://$MODULE_DIR$/apps/pedestrian-terminal-connector" />
-    <content url="file://$MODULE_DIR$/apps/tarmaq">
-      <excludeFolder url="file://$MODULE_DIR$/apps/tarmaq/.idea" />
-      <excludeFolder url="file://$MODULE_DIR$/apps/tarmaq/.rush" />
-      <excludeFolder url="file://$MODULE_DIR$/apps/tarmaq/lib" />
-    </content>
-    <content url="file://$MODULE_DIR$/apps/terminal">
-      <excludeFolder url="file://$MODULE_DIR$/apps/terminal/.idea" />
-      <excludeFolder url="file://$MODULE_DIR$/apps/terminal/.rush" />
-      <excludeFolder url="file://$MODULE_DIR$/apps/terminal/lib" />
-    </content>
     <content url="file://$MODULE_DIR$/common">
       <excludeFolder url="file://$MODULE_DIR$/common/temp" />
     </content>
@@ -213,6 +189,30 @@
       <excludeFolder url="file://$MODULE_DIR$/schemas/travel-document-checkpoint/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/schemas/travel-document-checkpoint/.rush" />
       <excludeFolder url="file://$MODULE_DIR$/schemas/travel-document-checkpoint/lib" />
+    </content>
+    <content url="file://$MODULE_DIR$/ui/airdb">
+      <excludeFolder url="file://$MODULE_DIR$/ui/airdb/plugins" />
+      <excludeFolder url="file://$MODULE_DIR$/ui/airdb/resources" />
+      <excludeFolder url="file://$MODULE_DIR$/ui/airdb/platforms" />
+      <excludeFolder url="file://$MODULE_DIR$/ui/airdb/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/ui/airdb/.rush" />
+      <excludeFolder url="file://$MODULE_DIR$/ui/airdb/.idea" />
+    </content>
+    <content url="file://$MODULE_DIR$/ui/automated-guideway-transit">
+      <excludeFolder url="file://$MODULE_DIR$/ui/automated-guideway-transit/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/ui/automated-guideway-transit/.rush" />
+      <excludeFolder url="file://$MODULE_DIR$/ui/automated-guideway-transit/.idea" />
+    </content>
+    <content url="file://$MODULE_DIR$/ui/pedestrian-terminal-connector" />
+    <content url="file://$MODULE_DIR$/ui/tarmaq">
+      <excludeFolder url="file://$MODULE_DIR$/ui/tarmaq/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/ui/tarmaq/.rush" />
+      <excludeFolder url="file://$MODULE_DIR$/ui/tarmaq/.idea" />
+    </content>
+    <content url="file://$MODULE_DIR$/ui/terminal">
+      <excludeFolder url="file://$MODULE_DIR$/ui/terminal/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/ui/terminal/.rush" />
+      <excludeFolder url="file://$MODULE_DIR$/ui/terminal/.idea" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

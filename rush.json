@@ -41,17 +41,6 @@
       "projectFolder": "apis/terminal-map",
       "shouldPublish": true
     },
-    // "apps" folder (alphabetical order)
-    {
-      "packageName": "@airport/functionality-demo",
-      "projectFolder": "apps/functionality-demo",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/todo",
-      "projectFolder": "apps/todo",
-      "shouldPublish": true
-    },
     // "common" folder (alphabetical order)
     {
       "packageName": "@airport/tools",
@@ -309,6 +298,17 @@
     {
       "packageName": "@airport/functionality-demo-framework",
       "projectFolder": "test/functionality-demo-framework",
+      "shouldPublish": true
+    },
+    // "ui" folder (alphabetical order)
+    {
+      "packageName": "@airport/functionality-demo",
+      "projectFolder": "ui/functionality-demo",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/todo",
+      "projectFolder": "ui/todo",
       "shouldPublish": true
     },
   ]

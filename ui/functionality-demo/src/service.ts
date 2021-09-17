@@ -1,3 +1,5 @@
+import { markForDeletion } from '@airport/autopilot'
+import { DemoApi } from '@airport/functionality-demo-schema'
 import type { Parent } from '@airport/functionality-demo-schema'
 import type { DeepPartial } from '@airport/pressurization';
 export class FunctionalityDemoService {
@@ -26,8 +28,14 @@ export class FunctionalityDemoService {
         children: []
     }]
 
+    private demoApi: DemoApi
+
+    constructor() {
+        this.demoApi = new DemoApi()
+    }
+
     async getAllRecords(): Promise<DeepPartial<Parent>[]> {
-        return this.records;
+        return this.demoApi.getAllParentsWithChildren();
     }
 
     async save(
@@ -63,8 +71,9 @@ export class FunctionalityDemoService {
         records: any[],
         toDelete: any
     ): void {
-        for(let i = records.length; i >= 0; i--) {
-            if(records[i] === toDelete) {
+        for (let i = records.length; i >= 0; i--) {
+            if (records[i] === toDelete) {
+                markForDeletion(toDelete, records)
                 records.splice(i, 1)
                 break
             }

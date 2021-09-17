@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1797f768-0a65-43dd-b844-7140e6a5fe17" name="Default Changelist" comment="Added vasi entities." />
+    <list default="true" id="1797f768-0a65-43dd-b844-7140e6a5fe17" name="Default Changelist" comment="Renamed apps to ui.">
+      <change afterPath="$PROJECT_DIR$/ui/functionality-demo/public/favicon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/functionality-demo/public/global.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/functionality-demo/public/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/functionality-demo/src/App.svelte" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/functionality-demo/src/global.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/functionality-demo/src/main.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/functionality-demo/src/service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/todo/src/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/todo/src/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/functionality-demo/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ui/functionality-demo/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/functionality-demo/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/functionality-demo/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/functionality-demo/public/favicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/functionality-demo/public/global.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/functionality-demo/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/functionality-demo/rollup.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/functionality-demo/rollup.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/functionality-demo/src/App.svelte" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/functionality-demo/src/global.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/functionality-demo/src/main.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/functionality-demo/src/service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/functionality-demo/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/functionality-demo/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/todo/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/ui/todo/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/todo/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/todo/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/todo/src/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/todo/src/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/todo/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/todo/tsconfig.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,9 +50,6 @@
     <dismissed value="$PROJECT_DIR$/apis/ground-control/package.json" />
     <dismissed value="$PROJECT_DIR$/apis/security-check/package.json" />
     <dismissed value="$PROJECT_DIR$/apis/terminal-map/package.json" />
-    <dismissed value="$PROJECT_DIR$/apps/automated-guideway-transit/package.json" />
-    <dismissed value="$PROJECT_DIR$/apps/tarmaq/package.json" />
-    <dismissed value="$PROJECT_DIR$/apps/terminal/package.json" />
     <dismissed value="$PROJECT_DIR$/db/cockroachdb/package.json" />
     <dismissed value="$PROJECT_DIR$/db/mysql/package.json" />
     <dismissed value="$PROJECT_DIR$/db/postgres/package.json" />
@@ -51,7 +74,6 @@
     <dismissed value="$PROJECT_DIR$/libs/jet-bridge/package.json" />
     <dismissed value="$PROJECT_DIR$/libs/mono-rail/package.json" />
     <dismissed value="$PROJECT_DIR$/libs/ramp/package.json" />
-    <dismissed value="$PROJECT_DIR$/libs/tower/package.json" />
     <dismissed value="$PROJECT_DIR$/schemas/airport-code/package.json" />
     <dismissed value="$PROJECT_DIR$/schemas/flight-log-archive/package.json" />
     <dismissed value="$PROJECT_DIR$/schemas/guideway/package.json" />
@@ -131,6 +153,7 @@
       <workItem from="1629381561368" duration="119000" />
       <workItem from="1629550727449" duration="155000" />
       <workItem from="1629553416811" duration="30000" />
+      <workItem from="1631901757284" duration="218000" />
     </task>
     <task id="LOCAL-00001" summary="Added AIRport logo 1.0">
       <created>1622427837045</created>
@@ -174,7 +197,14 @@
       <option name="project" value="LOCAL" />
       <updated>1623105480614</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Renamed apps to ui.">
+      <created>1631901891106</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1631901891106</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -201,6 +231,7 @@
     <MESSAGE value="Updated the README.md and added new diagrams" />
     <MESSAGE value="removed airdb project - it's its own project now." />
     <MESSAGE value="Added vasi entities." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added vasi entities." />
+    <MESSAGE value="Renamed apps to ui." />
+    <option name="LAST_COMMIT_MESSAGE" value="Renamed apps to ui." />
   </component>
 </project>
