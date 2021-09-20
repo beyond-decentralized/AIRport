@@ -4,6 +4,12 @@ export class AutopilotApiLoader {
     loadApiAutopilot(schemaSignature, daoName) {
         return new Proxy({}, {
             get(target, methodName) {
+                switch (methodName) {
+                    case '__initialized__':
+                        return true;
+                    case 'then':
+                        return target;
+                }
                 return function (...args) {
                     return IOC.getSync(LOCAL_API_CLIENT)
                         .invokeApiMethod(schemaSignature, daoName, methodName, args);

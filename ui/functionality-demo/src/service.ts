@@ -2,58 +2,38 @@ import { markForDeletion } from '@airport/autopilot'
 import { DemoApi } from '@airport/functionality-demo-schema'
 import type { Parent } from '@airport/functionality-demo-schema'
 import type { DeepPartial } from '@airport/pressurization';
+import { allParentRecords } from './store';
 export class FunctionalityDemoService {
 
-    records: DeepPartial<Parent>[] = [{
-        id: 1,
-        bool: true,
-        num: 1001,
-        str: "Parent-String1",
-        children: [{
-            id: 101,
-            bool: true,
-            num: 2001,
-            str: "aString 1"
-        }, {
-            id: 102,
-            bool: false,
-            num: 2002,
-            str: "aString 2"
-        }]
-    }, {
-        id: 2,
-        bool: false,
-        num: 1002,
-        str: "Parent-String2",
-        children: []
-    }]
-
-    private demoApi: DemoApi
+    private demoApi = new DemoApi()
 
     constructor() {
-        this.demoApi = new DemoApi()
+        this.getAllRecords().then()
     }
 
-    async getAllRecords(): Promise<DeepPartial<Parent>[]> {
-        return this.demoApi.getAllParentsWithChildren();
+    async getAllRecords(): Promise<void> {
+        const parentRecords = await this.demoApi.getAllParentsWithChildren()
+        allParentRecords.set(parentRecords)
     }
 
     async save(
         records: DeepPartial<Parent>[]
     ): Promise<void> {
-        console.log(JSON.stringify(records, null, 4));
+        await this.demoApi.saveChanges(records)
+        await this.getAllRecords()
     }
 
     addParent(
-        records: DeepPartial<Parent>[]
+        parentRecords: DeepPartial<Parent>[]
     ): void {
-        records.push({
+        parentRecords.push({
             id: null,
             bool: false,
             num: 0,
             str: "",
             children: []
         })
+        allParentRecords.set(parentRecords)
     }
 
     addChild(
@@ -68,16 +48,18 @@ export class FunctionalityDemoService {
     }
 
     delete(
-        records: any[],
+        // records: any[],
         toDelete: any
     ): void {
+        markForDeletion(toDelete)
+        /*
         for (let i = records.length; i >= 0; i--) {
             if (records[i] === toDelete) {
-                markForDeletion(toDelete, records)
-                records.splice(i, 1)
+                markForDeletion(toDelete)
                 break
             }
         }
+        */
     }
 
 }

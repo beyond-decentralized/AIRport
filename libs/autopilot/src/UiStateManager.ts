@@ -76,9 +76,9 @@ export class UiStateManager
 		if (!arrayToRemoveFrom) {
 			return
 		}
-		for (let i = arrayToRemoveFrom.length; i >= 0; i--) {
+		for (let i = arrayToRemoveFrom.length - 1; i >= 0; i--) {
 			if (arrayToRemoveFrom[i] === entity) {
-				entity.splice(i, 1)
+				arrayToRemoveFrom.splice(i, 1)
 				break
 			}
 		}

@@ -1,6 +1,6 @@
 import { DI } from "@airport/di";
 import { BaseChildDao } from "../generated/baseDaos";
-import { CHILD_DAO } from "../tokens";
+import { CHILD_DAO } from "../server-tokens";
 
 export interface IChildDao {
 

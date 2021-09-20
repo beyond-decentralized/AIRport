@@ -21,7 +21,8 @@ export interface ILocalAPIClient {
 }
 
 let _inDemoMode = true
-let _demoServer = 'turbase.com'
+// let _demoServer = 'https://turbase.app'
+let _demoServer = 'http://localhost:7000'
 
 export interface IRequestRecord {
     request: ILocalAPIRequest

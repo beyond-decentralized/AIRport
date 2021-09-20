@@ -1,5 +1,5 @@
-import functionalityDemoSchema from '@airport/functionality-demo-schema/lib/server'
+import { markerFunction } from '@airport/functionality-demo-schema/lib/server'
 
-functionalityDemoSchema.DemoApi
+markerFunction()
 
 export const marker = 1

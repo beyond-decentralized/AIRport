@@ -1,5 +1,4 @@
-import { IChildDao } from "./dao/ChildDao";
-import { IParentDao } from "./dao/ParentDao";
-export declare const CHILD_DAO: import("@airport/di").IDiToken<IChildDao>;
-export declare const PARENT_DAO: import("@airport/di").IDiToken<IParentDao>;
+import { IDemoApi } from "./server";
+export declare const functionalityDemoSchema: import("@airport/di").ILibrary;
+export declare const DEMO_API: import("@airport/di").IDiToken<IDemoApi>;
 //# sourceMappingURL=tokens.d.ts.map

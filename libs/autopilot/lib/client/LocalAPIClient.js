@@ -3,7 +3,8 @@ import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER, SERIALIZATION_STATE_M
 import { v4 as uuidv4 } from "uuid";
 import { LOCAL_API_CLIENT } from "../tokens";
 let _inDemoMode = true;
-let _demoServer = 'turbase.com';
+// let _demoServer = 'https://turbase.app'
+let _demoServer = 'http://localhost:7000';
 export class LocalAPIClient {
     constructor() {
         this.pendingDemoMessageMap = new Map();

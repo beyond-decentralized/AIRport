@@ -10,10 +10,11 @@ export declare enum EntityState {
     UPDATE = "UPDATE"
 }
 export declare function markForDeletion<T>(entity: T): void;
+export declare function isDeleted<T>(entity: T): boolean;
 export interface IUiStateManager {
     isStub<T>(entity: T): boolean;
     isParentId<T>(entity: T): boolean;
-    markForDeletion<T>(entity: T): void;
+    markForDeletion<T>(entity: T, arrayToRemoveFrom?: T[]): void;
     isDeleted<T>(entity: T): boolean;
     markAsStub<T>(entity: T): void;
 }
@@ -21,7 +22,7 @@ export declare class UiStateManager implements IUiStateManager {
     protected static STATE_FIELD: string;
     isStub<T>(entity: T): boolean;
     isParentId<T>(entity: T): boolean;
-    markForDeletion<T>(entity: T): void;
+    markForDeletion<T>(entity: T, arrayToRemoveFrom?: T[]): void;
     isDeleted<T>(entity: T): boolean;
     markAsStub<T>(entity: T): void;
     private getEntityState;

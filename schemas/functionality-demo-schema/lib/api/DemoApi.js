@@ -6,16 +6,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { container, DI } from "@airport/di";
 import { Api } from "@airport/check-in";
-import { PARENT_DAO } from "../tokens";
 import { DEMO_API } from "../client";
+import { PARENT_DAO } from "../server-tokens";
 export class DemoApi {
     async findAllParentsWithChildren() {
         const parentDao = await container(this).get(PARENT_DAO);
         return await parentDao.findAllWithChildren();
     }
+    async saveChanges(records) {
+        const parentDao = await container(this).get(PARENT_DAO);
+        await parentDao.saveChanges(records);
+    }
 }
 __decorate([
     Api()
 ], DemoApi.prototype, "findAllParentsWithChildren", null);
+__decorate([
+    Api()
+], DemoApi.prototype, "saveChanges", null);
 DI.set(DEMO_API, DemoApi);
 //# sourceMappingURL=DemoApi.js.map

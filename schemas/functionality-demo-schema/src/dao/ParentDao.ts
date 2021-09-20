@@ -1,12 +1,18 @@
 import { Y } from "@airport/air-control";
 import { DI } from "@airport/di";
+import { DeepPartial } from "@airport/pressurization";
+import { Parent } from "../client";
 import { BaseParentDao } from "../generated/baseDaos";
 import { IParent } from "../generated/parent";
-import { PARENT_DAO } from "../tokens";
+import { PARENT_DAO } from "../server-tokens";
 
 export interface IParentDao {
 
     findAllWithChildren(): Promise<IParent[]>
+
+    saveChanges(
+        records: DeepPartial<Parent>[]
+    ): Promise<void>
 
 }
 
@@ -29,6 +35,12 @@ export class ParentDao
                 str: Y
             }
         })
+    }
+
+    async saveChanges(
+        records: DeepPartial<Parent>[]
+    ): Promise<void> {
+        await this.save(records)
     }
 
 }

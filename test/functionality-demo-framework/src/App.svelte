@@ -42,7 +42,7 @@ iframe {
 <script lang="ts">
 import { operations } from "./store";
 
-export let name: string;
+// export let name: string;
 
 
 </script>
@@ -60,7 +60,7 @@ export let name: string;
 		</p>
       </td>
       <td>
-        <iframe src="http://localhost:4000/"></iframe>
+        <iframe title="application-frame" src="http://localhost:4000/"></iframe>
       </td>
     </tr>
   </table>
