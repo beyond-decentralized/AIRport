@@ -8,14 +8,12 @@ import { injectAirportDatabase, injectEntityStateManager } from '@airport/tower'
 let _mainDomain = 'localhost:31717';
 export class WebTransactionalReceiver extends TransactionalReceiver {
     constructor() {
-        super(...arguments);
+        super();
         this.subsriptionMap = new Map();
         this.pendingFromAppMessageIds = new Map();
         this.pendingHostCounts = new Map();
         this.pendingSchemaCounts = new Map();
         this.installedSchemaFrames = new Set();
-    }
-    WebTransactionalReceiver() {
         const ownDomain = window.location.hostname;
         this.mainDomainFragments = ownDomain.split('.');
         if (this.mainDomainFragments[0] === 'www') {
@@ -24,28 +22,36 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         this.domainPrefix = '.' + this.mainDomainFragments.join('.');
         this.installedSchemaFrames.add("featureDemo");
         // set domain to a random value so that an iframe cannot directly invoke logic in this domain
-        document.domain = Math.random() + '.' + Math.random() + this.domainPrefix;
+        if (document.domain !== 'localhost') {
+            document.domain = Math.random() + '.' + Math.random() + this.domainPrefix;
+        }
         window.addEventListener("message", event => {
             const messageOrigin = event.origin;
             const message = event.data;
-            if (message.schemaSignature.indexOf('.') > -1) {
-                // Invalid schema signature - cannot have periods that would point to invalid subdomains
+            // All requests need to have a schema signature
+            // to know what schema is being communicated to/from
+            if (!this.hasValidSchemaSignature(message)) {
                 return;
             }
-            switch (event.data.category) {
+            switch (message.category) {
                 case 'Db':
                     this.handleIsolateMessage(message, messageOrigin);
                     break;
                 case 'FromApp':
+                    message.category = 'FromAppRedirected';
                     this.handleFromAppRequest(message, messageOrigin).then();
                     break;
                 case 'ToApp':
+                    message.category = 'ToAppRedirected';
                     this.handleToAppRequest(message, messageOrigin);
-                    return;
+                    break;
                 default:
-                    return;
+                    break;
             }
         }, false);
+    }
+    hasValidSchemaSignature(message) {
+        return message.schemaSignature && message.schemaSignature.indexOf('.') === -1;
     }
     async handleFromAppRequest(message, messageOrigin) {
         const appDomain = messageOrigin.split('//')[1];

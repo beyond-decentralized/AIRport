@@ -11,7 +11,8 @@ export declare class WebTransactionalReceiver extends TransactionalReceiver impl
     pendingHostCounts: Map<string, number>;
     pendingSchemaCounts: Map<string, number>;
     installedSchemaFrames: Set<string>;
-    WebTransactionalReceiver(): void;
+    constructor();
+    private hasValidSchemaSignature;
     private handleFromAppRequest;
     private handleToAppRequest;
     private ensureSchemaIsInstalled;

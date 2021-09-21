@@ -48,7 +48,8 @@ export class WebTransactionalReceiver
 
 	installedSchemaFrames: Set<string> = new Set()
 
-	public WebTransactionalReceiver() {
+	constructor() {
+		super()
 		const ownDomain = window.location.hostname
 		this.mainDomainFragments = ownDomain.split('.')
 		if (this.mainDomainFragments[0] === 'www') {
@@ -59,13 +60,17 @@ export class WebTransactionalReceiver
 		this.installedSchemaFrames.add("featureDemo")
 
 		// set domain to a random value so that an iframe cannot directly invoke logic in this domain
-		document.domain = Math.random() + '.' + Math.random() + this.domainPrefix
+		if (document.domain !== 'localhost') {
+			document.domain = Math.random() + '.' + Math.random() + this.domainPrefix
+		}
 
 		window.addEventListener("message", event => {
 			const messageOrigin = event.origin;
 			const message: IIsolateMessage | ILocalAPIRequest | ILocalAPIResponse = event.data
-			if (message.schemaSignature.indexOf('.') > -1) {
-				// Invalid schema signature - cannot have periods that would point to invalid subdomains
+			
+			// All requests need to have a schema signature
+			// to know what schema is being communicated to/from
+			if (!this.hasValidSchemaSignature(message)) {
 				return
 			}
 			switch (message.category) {
@@ -73,21 +78,23 @@ export class WebTransactionalReceiver
 					this.handleIsolateMessage(message as IIsolateMessage, messageOrigin)
 					break
 				case 'FromApp':
+					message.category = 'FromAppRedirected'
 					this.handleFromAppRequest(message as ILocalAPIRequest, messageOrigin).then()
 					break
-				case 'FromAppRedirected':
-					// Message from self to a App child frame, no need to handle
-					break
 				case 'ToApp':
+					message.category = 'ToAppRedirected'
 					this.handleToAppRequest(message as ILocalAPIResponse, messageOrigin)
-					break
-				case 'ToAppRedirected':
-					// Message from self to a UI (in any window), no need to handle
 					break
 				default:
 					break
 			}
 		}, false)
+	}
+
+	private hasValidSchemaSignature(
+		message: IIsolateMessage | ILocalAPIRequest | ILocalAPIResponse
+	) {
+		return message.schemaSignature && message.schemaSignature.indexOf('.') === -1
 	}
 
 	private async handleFromAppRequest(

@@ -10,7 +10,12 @@ export interface IRequestRecord {
 export declare class LocalAPIClient implements ILocalAPIClient {
     pendingDemoMessageMap: Map<string, IRequestRecord>;
     demoListenerStarted: boolean;
+    connectionReady: boolean;
+    constructor();
+    private hasValidSchemaSignature;
     invokeApiMethod(schemaSignature: string, objectName: string, methodName: string, args: any[]): Promise<any>;
+    private wait;
+    private isConnectionReady;
     private sendLocalRequest;
     private sendDemoRequest;
     private startDemoListener;

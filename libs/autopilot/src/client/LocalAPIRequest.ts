@@ -1,5 +1,5 @@
 export interface ILocalAPIRequest {
-    category: 'FromApp' | 'FromAppRedirected'
+    category:  'FromApp' | 'FromAppRedirected' | 'IsConnectionReady' 
     args: Array<boolean | number | string>
     host: string
     id: string // UUID

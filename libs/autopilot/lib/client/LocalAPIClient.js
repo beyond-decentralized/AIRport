@@ -9,8 +9,38 @@ export class LocalAPIClient {
     constructor() {
         this.pendingDemoMessageMap = new Map();
         this.demoListenerStarted = false;
+        this.connectionReady = false;
+        if (_inDemoMode) {
+            window.addEventListener("message", event => {
+                const message = event.data;
+                switch (message.category) {
+                    case 'ConnectionIsReady':
+                        this.connectionReady = true;
+                        break;
+                    case 'ToAppRedirected':
+                        // All requests need to have a schema signature
+                        // to know what schema is being communicated to/from
+                        if (!this.hasValidSchemaSignature(message)) {
+                            return;
+                        }
+                        let requestDemoMessage = this.pendingDemoMessageMap.get(message.id);
+                        if (requestDemoMessage) {
+                            requestDemoMessage.resolve(message);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }, false);
+        }
+    }
+    hasValidSchemaSignature(message) {
+        return message.schemaSignature && message.schemaSignature.indexOf('.') === -1;
     }
     async invokeApiMethod(schemaSignature, objectName, methodName, args) {
+        while (!await this.isConnectionReady(schemaSignature)) {
+            await this.wait(100);
+        }
         const [serializationStateManager, operationSerializer, queryResultsDeserializer] = await container(this).get(SERIALIZATION_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER);
         let serializedParams;
         if (_inDemoMode) {
@@ -57,6 +87,38 @@ export class LocalAPIClient {
             return response.payload;
         }
     }
+    wait(milliseconds) {
+        return new Promise((resolve, _reject) => {
+            setTimeout(() => {
+                resolve();
+            }, milliseconds);
+        });
+    }
+    async isConnectionReady(schemaSignature) {
+        if (this.connectionReady) {
+            return true;
+        }
+        let request = {
+            category: 'IsConnectionReady',
+            args: [],
+            host: window.location.hostname,
+            id: null,
+            methodName: null,
+            objectName: null,
+            schemaSignature
+        };
+        if (_inDemoMode) {
+            window.parent.postMessage(request, _demoServer);
+            return false;
+        }
+        else {
+            const response = await this.sendLocalRequest(request);
+            if (response.errorMessage) {
+                return false;
+            }
+            return true;
+        }
+    }
     async sendLocalRequest(request) {
         const httpResponse = await fetch('http://localhost:31817', {
             method: 'PUT',
@@ -85,7 +147,7 @@ export class LocalAPIClient {
             });
         });
         // window.postMessage(request, _demoServer)
-        parent.postMessage(request, '*');
+        window.parent.postMessage(request, _demoServer);
         return returnValue;
     }
     startDemoListener() {
@@ -95,6 +157,9 @@ export class LocalAPIClient {
     }
     handleDemoResponse(response) {
         if (response.host !== window.location.hostname) {
+            return;
+        }
+        if (response.category !== 'ToAppRedirected') {
             return;
         }
         const pendingRequest = this.pendingDemoMessageMap.get(response.id);

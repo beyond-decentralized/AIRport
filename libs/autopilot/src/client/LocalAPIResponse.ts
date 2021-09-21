@@ -1,5 +1,5 @@
 export interface ILocalAPIResponse {
-    category: 'ToApp' | 'ToAppRedirected'
+    category: 'ConnectionIsReady' | 'ToApp' | 'ToAppRedirected'
     errorMessage: string
     id: string // UUID
     host: string

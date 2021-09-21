@@ -37,12 +37,50 @@ export class LocalAPIClient
 
     demoListenerStarted = false;
 
+    connectionReady = false
+
+    constructor() {
+        if (_inDemoMode) {
+            window.addEventListener("message", event => {
+                const message: ILocalAPIResponse = event.data
+                switch (message.category) {
+                    case 'ConnectionIsReady':
+                        this.connectionReady = true
+                        break
+                    case 'ToAppRedirected':
+                        // All requests need to have a schema signature
+                        // to know what schema is being communicated to/from
+                        if (!this.hasValidSchemaSignature(message)) {
+                            return
+                        }
+                        let requestDemoMessage = this.pendingDemoMessageMap.get(message.id)
+                        if (requestDemoMessage) {
+                            requestDemoMessage.resolve(message)
+                        }
+                        break
+                    default:
+                        break
+                }
+            }, false)
+        }
+    }
+
+    private hasValidSchemaSignature(
+        message: ILocalAPIResponse
+    ) {
+        return message.schemaSignature && message.schemaSignature.indexOf('.') === -1
+    }
+
     async invokeApiMethod(
         schemaSignature: string,
         objectName: string,
         methodName: string,
         args: any[]
     ): Promise<any> {
+        while (!await this.isConnectionReady(schemaSignature)) {
+            await this.wait(100)
+        }
+
         const [serializationStateManager, operationSerializer, queryResultsDeserializer]
             = await container(this).get(SERIALIZATION_STATE_MANAGER,
                 OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER)
@@ -93,6 +131,45 @@ export class LocalAPIClient
         }
     }
 
+    private wait(
+        milliseconds: number
+    ): Promise<void> {
+        return new Promise((resolve, _reject) => {
+            setTimeout(() => {
+                resolve()
+            }, milliseconds)
+        })
+    }
+
+    private async isConnectionReady(
+        schemaSignature: string
+    ): Promise<boolean> {
+        if (this.connectionReady) {
+            return true
+        }
+        let request: ILocalAPIRequest = {
+            category: 'IsConnectionReady',
+            args: [],
+            host: window.location.hostname,
+            id: null,
+            methodName: null,
+            objectName: null,
+            schemaSignature
+        }
+
+        if (_inDemoMode) {
+            window.parent.postMessage(request, _demoServer)
+            return false
+        } else {
+            const response = await this.sendLocalRequest(request)
+
+            if (response.errorMessage) {
+                return false
+            }
+            return true
+        }
+    }
+
     private async sendLocalRequest(
         request: ILocalAPIRequest
     ): Promise<ILocalAPIResponse> {
@@ -127,7 +204,7 @@ export class LocalAPIClient
             })
         })
         // window.postMessage(request, _demoServer)
-        parent.postMessage(request, '*')
+        window.parent.postMessage(request, _demoServer)
 
         return returnValue
     }
@@ -142,6 +219,9 @@ export class LocalAPIClient
         response: ILocalAPIResponse
     ) {
         if (response.host !== window.location.hostname) {
+            return
+        }
+        if (response.category !== 'ToAppRedirected') {
             return
         }
         const pendingRequest = this.pendingDemoMessageMap.get(response.id)

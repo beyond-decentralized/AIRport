@@ -40,8 +40,8 @@ export class IframeTransactionalConnector {
             if (ownDomainFragments.length !== expectedNumFragments) {
                 return;
             }
-            switch (event.data.category) {
-                case 'FromApp':
+            switch (message.category) {
+                case 'FromAppRedirected':
                     this.handleLocalApiRequest(message).then();
                     return;
                 case 'Db':
