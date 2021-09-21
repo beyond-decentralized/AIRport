@@ -85,7 +85,7 @@ export class LocalAPIClient {
             });
         });
         // window.postMessage(request, _demoServer)
-        window.postMessage(request, '*');
+        parent.postMessage(request, '*');
         return returnValue;
     }
     startDemoListener() {

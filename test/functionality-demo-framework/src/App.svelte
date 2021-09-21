@@ -23,12 +23,17 @@ td {
 
 p {
   border: 1px solid black;
-  height: 800px;
+  height: 400px;
   overflow-y: auto;
 }
 
-iframe {
-  height: 800px;
+iframe.app {
+  height: 400px;
+  width: 100%;
+}
+
+iframe.ui {
+  height: 400px;
   width: 100%;
 }
 
@@ -40,11 +45,9 @@ iframe {
 </style>
 
 <script lang="ts">
-import { operations } from "./store";
+import { operations } from './store';
 
 // export let name: string;
-
-
 </script>
 
 <main>
@@ -54,13 +57,26 @@ import { operations } from "./store";
     <tr>
       <td>
         <p>
-			{#each $operations as operation, i}
-			<div>{operation}</div>
-			{/each}
-		</p>
+          {#each $operations as operation, i}
+            <div>{operation}</div>
+          {/each}
+        </p>
       </td>
       <td>
-        <iframe title="application-frame" src="http://localhost:4000/"></iframe>
+        <iframe
+          id="app"
+          class="app"
+          title="application-frame"
+          src="http://localhost:4000/"></iframe>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <iframe
+          id="ui"
+          class="ui"
+          title="application-frame"
+          src="http://localhost:8000/"></iframe>
       </td>
     </tr>
   </table>
