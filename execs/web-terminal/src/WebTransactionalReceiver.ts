@@ -25,7 +25,7 @@ import {
 	injectTransactionalConnector,
 	injectTransactionalServer
 } from '@airport/terminal'
-import { 
+import {
 	injectAirportDatabase,
 	injectEntityStateManager
 } from '@airport/tower'
@@ -68,18 +68,24 @@ export class WebTransactionalReceiver
 				// Invalid schema signature - cannot have periods that would point to invalid subdomains
 				return
 			}
-			switch (event.data.category) {
+			switch (message.category) {
 				case 'Db':
 					this.handleIsolateMessage(message as IIsolateMessage, messageOrigin)
 					break
 				case 'FromApp':
 					this.handleFromAppRequest(message as ILocalAPIRequest, messageOrigin).then()
 					break
+				case 'FromAppRedirected':
+					// Message from self to a App child frame, no need to handle
+					break
 				case 'ToApp':
 					this.handleToAppRequest(message as ILocalAPIResponse, messageOrigin)
-					return
+					break
+				case 'ToAppRedirected':
+					// Message from self to a UI (in any window), no need to handle
+					break
 				default:
-					return
+					break
 			}
 		}, false)
 	}
