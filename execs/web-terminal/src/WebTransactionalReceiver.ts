@@ -67,7 +67,7 @@ export class WebTransactionalReceiver
 		window.addEventListener("message", event => {
 			const messageOrigin = event.origin;
 			const message: IIsolateMessage | ILocalAPIRequest | ILocalAPIResponse = event.data
-			
+
 			// All requests need to have a schema signature
 			// to know what schema is being communicated to/from
 			if (!this.hasValidSchemaSignature(message)) {
@@ -80,6 +80,17 @@ export class WebTransactionalReceiver
 				case 'FromApp':
 					message.category = 'FromAppRedirected'
 					this.handleFromAppRequest(message as ILocalAPIRequest, messageOrigin).then()
+					break
+				case 'IsConnectionReady':
+					const connectionIsReadyMessage: ILocalAPIResponse = {
+						category: 'ConnectionIsReady',
+						errorMessage: null,
+						id: (message as ILocalAPIRequest).id,
+						host: document.domain,
+						payload: null,
+						schemaSignature: (message as ILocalAPIRequest).schemaSignature
+					};
+					(event.source as Window).postMessage(connectionIsReadyMessage, messageOrigin)
 					break
 				case 'ToApp':
 					message.category = 'ToAppRedirected'

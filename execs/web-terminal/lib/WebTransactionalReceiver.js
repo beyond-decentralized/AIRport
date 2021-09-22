@@ -41,6 +41,17 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                     message.category = 'FromAppRedirected';
                     this.handleFromAppRequest(message, messageOrigin).then();
                     break;
+                case 'IsConnectionReady':
+                    const connectionIsReadyMessage = {
+                        category: 'ConnectionIsReady',
+                        errorMessage: null,
+                        id: message.id,
+                        host: document.domain,
+                        payload: null,
+                        schemaSignature: message.schemaSignature
+                    };
+                    event.source.postMessage(connectionIsReadyMessage, messageOrigin);
+                    break;
                 case 'ToApp':
                     message.category = 'ToAppRedirected';
                     this.handleToAppRequest(message, messageOrigin);
