@@ -66,8 +66,10 @@ import { operations } from './store';
         <iframe
           id="app"
           class="app"
+          name="functionality-demo-schema"
+          src="http://localhost:4000/"
           title="application-frame"
-          src="http://localhost:4000/"></iframe>
+          ></iframe>
       </td>
     </tr>
     <tr>

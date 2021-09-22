@@ -8,6 +8,7 @@ export class IframeTransactionalConnector {
         this.pendingMessageMap = new Map();
         this.observableMessageMap = new Map();
         this.messageId = 0;
+        this.connectionInitialized = false;
         window.addEventListener("message", event => {
             const origin = event.origin;
             const message = event.data;
@@ -24,27 +25,33 @@ export class IframeTransactionalConnector {
             }
             const domainSuffix = '.' + mainDomainFragments.join('.');
             const ownDomain = window.location.hostname;
-            // Only accept requests from https protocol
-            if (!origin.startsWith("https")
-                // And only if message has the schema signature 
-                || !message.schemaSignature
-                // And if own domain is a direct sub-domain of the message's domain
-                || ownDomain !== message.schemaSignature + domainSuffix) {
-                return;
-            }
-            const ownDomainFragments = ownDomain.split('.');
-            // Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
-            // All 'App' messages must first come from the main domain, which ensures
-            // that the schema is installed
-            const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1);
-            if (ownDomainFragments.length !== expectedNumFragments) {
-                return;
+            if (ownDomain !== 'localhost') {
+                // Only accept requests from https protocol
+                if (!origin.startsWith("https")
+                    // And only if message has the schema signature 
+                    || !message.schemaSignature
+                    // And if own domain is a direct sub-domain of the message's domain
+                    || ownDomain !== message.schemaSignature + domainSuffix) {
+                    return;
+                }
+                const ownDomainFragments = ownDomain.split('.');
+                // Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
+                // All 'App' messages must first come from the main domain, which ensures
+                // that the schema is installed
+                const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1);
+                if (ownDomainFragments.length !== expectedNumFragments) {
+                    return;
+                }
             }
             switch (message.category) {
                 case 'FromAppRedirected':
                     this.handleLocalApiRequest(message).then();
                     return;
                 case 'Db':
+                    if (message.type === IsolateMessageType.INIT_CONNECTION) {
+                        this.connectionInitialized = true;
+                        return;
+                    }
                     this.handleDbToIsolateMessage(message, mainDomain);
                     return;
                 default:
@@ -54,13 +61,10 @@ export class IframeTransactionalConnector {
         this.sendMessage({
             ...this.getCoreFields(),
             type: IsolateMessageType.INIT_CONNECTION
-        });
-    }
-    async init() {
-        throw new Error('Not implemented');
+        }).then();
     }
     async addRepository(name, url, platform, platformConfig, distributionStrategy, context) {
-        return this.sendMessage({
+        return await this.sendMessage({
             ...this.getCoreFields(),
             distributionStrategy,
             name,
@@ -71,7 +75,7 @@ export class IframeTransactionalConnector {
         });
     }
     async find(portableQuery, context, cachedSqlQueryId) {
-        return this.sendMessage({
+        return await this.sendMessage({
             ...this.getCoreFields(),
             cachedSqlQueryId,
             portableQuery,
@@ -79,7 +83,7 @@ export class IframeTransactionalConnector {
         });
     }
     async findOne(portableQuery, context, cachedSqlQueryId) {
-        return this.sendMessage({
+        return await this.sendMessage({
             ...this.getCoreFields(),
             cachedSqlQueryId,
             portableQuery,
@@ -93,7 +97,7 @@ export class IframeTransactionalConnector {
         return this.sendObservableMessage(portableQuery, context, IsolateMessageType.SEARCH_ONE, cachedSqlQueryId);
     }
     async save(entity, context) {
-        return this.sendMessage({
+        return await this.sendMessage({
             ...this.getCoreFields(),
             entity,
             type: IsolateMessageType.SAVE
@@ -102,47 +106,47 @@ export class IframeTransactionalConnector {
     // FIXME: check if ensureGeneratedValues is needed
     async insertValues(portableQuery, context, ensureGeneratedValues // For internal use only
     ) {
-        return this.sendMessage({
+        return await this.sendMessage({
             ...this.getCoreFields(),
             portableQuery,
             type: IsolateMessageType.INSERT_VALUES
         });
     }
     async insertValuesGetIds(portableQuery, context) {
-        return this.sendMessage({
+        return await this.sendMessage({
             ...this.getCoreFields(),
             portableQuery,
             type: IsolateMessageType.INSERT_VALUES_GET_IDS
         });
     }
     async updateValues(portableQuery, context) {
-        return this.sendMessage({
+        return await this.sendMessage({
             ...this.getCoreFields(),
             portableQuery,
             type: IsolateMessageType.UPDATE_VALUES
         });
     }
     async deleteWhere(portableQuery, context) {
-        return this.sendMessage({
+        return await this.sendMessage({
             ...this.getCoreFields(),
             portableQuery,
             type: IsolateMessageType.DELETE_WHERE
         });
     }
     async startTransaction(context) {
-        return this.sendMessage({
+        return await this.sendMessage({
             ...this.getCoreFields(),
             type: IsolateMessageType.START_TRANSACTION
         });
     }
     async commit(context) {
-        return this.sendMessage({
+        return await this.sendMessage({
             ...this.getCoreFields(),
             type: IsolateMessageType.COMMIT
         });
     }
     async rollback(context) {
-        return this.sendMessage({
+        return await this.sendMessage({
             ...this.getCoreFields(),
             type: IsolateMessageType.ROLLBACK
         });
@@ -200,8 +204,11 @@ export class IframeTransactionalConnector {
             schemaSignature: window.location.hostname.split('.')[0],
         };
     }
-    sendMessage(message) {
-        window.postMessage(message, "localhost");
+    async sendMessage(message) {
+        while (!await this.isConnectionInitialized()) {
+            await this.wait(100);
+        }
+        window.parent.postMessage(message, "*");
         return new Promise((resolve, reject) => {
             this.pendingMessageMap.set(message.id, {
                 message,
@@ -228,12 +235,33 @@ export class IframeTransactionalConnector {
                 this.sendMessage({
                     ...coreFields,
                     type: IsolateMessageType.SEARCH_UNSUBSCRIBE
-                });
+                }).then();
             };
         });
-        window.postMessage(message, this.mainDomain);
+        window.parent.postMessage(message, this.mainDomain);
         return observable;
+    }
+    wait(milliseconds) {
+        return new Promise((resolve, _reject) => {
+            setTimeout(() => {
+                resolve();
+            }, milliseconds);
+        });
+    }
+    async isConnectionInitialized() {
+        if (this.connectionInitialized) {
+            return true;
+        }
+        let message = {
+            ...this.getCoreFields(),
+            type: IsolateMessageType.INIT_CONNECTION
+        };
+        window.parent.postMessage(message, "*");
+        return false;
     }
 }
 DI.set(TRANSACTIONAL_CONNECTOR, IframeTransactionalConnector);
+export function loadIframeTransactionalConnector() {
+    console.log('IframeTransactionalConnector loaded');
+}
 //# sourceMappingURL=IFrameTransactionalConnector.js.map

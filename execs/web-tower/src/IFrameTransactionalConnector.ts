@@ -53,11 +53,13 @@ export class IframeTransactionalConnector
 
 	mainDomain: string
 
+	connectionInitialized = false
+
 	constructor() {
 		window.addEventListener("message", event => {
 			const origin = event.origin;
 			const message: IIsolateMessageOut<any> | ILocalAPIRequest = event.data;
-			if(message.schemaSignature.indexOf('.') > -1) {
+			if (message.schemaSignature.indexOf('.') > -1) {
 				// Invalid schema signature - cannot have periods that would point to invalid subdomains
 				return
 			}
@@ -70,27 +72,33 @@ export class IframeTransactionalConnector
 			}
 			const domainSuffix = '.' + mainDomainFragments.join('.')
 			const ownDomain = window.location.hostname
-			// Only accept requests from https protocol
-			if (!origin.startsWith("https")
-			// And only if message has the schema signature 
-				|| !message.schemaSignature
-				// And if own domain is a direct sub-domain of the message's domain
-				|| ownDomain !== message.schemaSignature + domainSuffix) {
-				return
-			}
-			const ownDomainFragments = ownDomain.split('.')
-			// Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
-			// All 'App' messages must first come from the main domain, which ensures
-			// that the schema is installed
-			const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1)
-			if (ownDomainFragments.length !== expectedNumFragments) {
-				return
+			if (ownDomain !== 'localhost') {
+				// Only accept requests from https protocol
+				if (!origin.startsWith("https")
+					// And only if message has the schema signature 
+					|| !message.schemaSignature
+					// And if own domain is a direct sub-domain of the message's domain
+					|| ownDomain !== message.schemaSignature + domainSuffix) {
+					return
+				}
+				const ownDomainFragments = ownDomain.split('.')
+				// Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
+				// All 'App' messages must first come from the main domain, which ensures
+				// that the schema is installed
+				const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1)
+				if (ownDomainFragments.length !== expectedNumFragments) {
+					return
+				}
 			}
 			switch (message.category) {
 				case 'FromAppRedirected':
 					this.handleLocalApiRequest(message as ILocalAPIRequest).then()
 					return
 				case 'Db':
+					if (message.type === IsolateMessageType.INIT_CONNECTION) {
+						this.connectionInitialized = true
+						return
+					}
 					this.handleDbToIsolateMessage(message as IIsolateMessageOut<any>, mainDomain)
 					return
 				default:
@@ -98,14 +106,10 @@ export class IframeTransactionalConnector
 			}
 
 		})
-		this.sendMessage<IIsolateMessage, null>({
+		this.sendMessage({
 			...this.getCoreFields(),
 			type: IsolateMessageType.INIT_CONNECTION
-		})
-	}
-
-	async init(): Promise<void> {
-		throw new Error('Not implemented');
+		}).then()
 	}
 
 	async addRepository(
@@ -116,7 +120,7 @@ export class IframeTransactionalConnector
 		distributionStrategy: DistributionStrategy,
 		context: IContext
 	): Promise<number> {
-		return this.sendMessage<IAddRepositoryIMI, number>({
+		return await this.sendMessage<IAddRepositoryIMI, number>({
 			...this.getCoreFields(),
 			distributionStrategy,
 			name,
@@ -132,7 +136,7 @@ export class IframeTransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		return this.sendMessage<IReadQueryIMI, EntityArray>({
+		return await this.sendMessage<IReadQueryIMI, EntityArray>({
 			...this.getCoreFields(),
 			cachedSqlQueryId,
 			portableQuery,
@@ -145,7 +149,7 @@ export class IframeTransactionalConnector
 		context: IQueryContext<E>,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		return this.sendMessage<IReadQueryIMI, E>({
+		return await this.sendMessage<IReadQueryIMI, E>({
 			...this.getCoreFields(),
 			cachedSqlQueryId,
 			portableQuery,
@@ -182,7 +186,7 @@ export class IframeTransactionalConnector
 		entity: T,
 		context: IContext,
 	): Promise<ISaveResult> {
-		return this.sendMessage<ISaveIMI<any, any>, ISaveResult>({
+		return await this.sendMessage<ISaveIMI<any, any>, ISaveResult>({
 			...this.getCoreFields(),
 			entity,
 			type: IsolateMessageType.SAVE
@@ -195,7 +199,7 @@ export class IframeTransactionalConnector
 		context: IContext,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number> {
-		return this.sendMessage<IPortableQueryIMI, number>({
+		return await this.sendMessage<IPortableQueryIMI, number>({
 			...this.getCoreFields(),
 			portableQuery,
 			type: IsolateMessageType.INSERT_VALUES
@@ -206,7 +210,7 @@ export class IframeTransactionalConnector
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number[][]> {
-		return this.sendMessage<IPortableQueryIMI, number[][]>({
+		return await this.sendMessage<IPortableQueryIMI, number[][]>({
 			...this.getCoreFields(),
 			portableQuery,
 			type: IsolateMessageType.INSERT_VALUES_GET_IDS
@@ -217,7 +221,7 @@ export class IframeTransactionalConnector
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number> {
-		return this.sendMessage<IPortableQueryIMI, number>({
+		return await this.sendMessage<IPortableQueryIMI, number>({
 			...this.getCoreFields(),
 			portableQuery,
 			type: IsolateMessageType.UPDATE_VALUES
@@ -228,7 +232,7 @@ export class IframeTransactionalConnector
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number> {
-		return this.sendMessage<IPortableQueryIMI, number>({
+		return await this.sendMessage<IPortableQueryIMI, number>({
 			...this.getCoreFields(),
 			portableQuery,
 			type: IsolateMessageType.DELETE_WHERE
@@ -238,7 +242,7 @@ export class IframeTransactionalConnector
 	async startTransaction(
 		context: IContext
 	): Promise<boolean> {
-		return this.sendMessage<IIsolateMessage, boolean>({
+		return await this.sendMessage<IIsolateMessage, boolean>({
 			...this.getCoreFields(),
 			type: IsolateMessageType.START_TRANSACTION
 		})
@@ -247,7 +251,7 @@ export class IframeTransactionalConnector
 	async commit(
 		context: IContext
 	): Promise<boolean> {
-		return this.sendMessage<IIsolateMessage, boolean>({
+		return await this.sendMessage<IIsolateMessage, boolean>({
 			...this.getCoreFields(),
 			type: IsolateMessageType.COMMIT
 		})
@@ -256,7 +260,7 @@ export class IframeTransactionalConnector
 	async rollback(
 		context: IContext
 	): Promise<boolean> {
-		return this.sendMessage<IIsolateMessage, boolean>({
+		return await this.sendMessage<IIsolateMessage, boolean>({
 			...this.getCoreFields(),
 			type: IsolateMessageType.ROLLBACK
 		})
@@ -328,10 +332,13 @@ export class IframeTransactionalConnector
 		}
 	}
 
-	private sendMessage<IMessageIn extends IIsolateMessage, ReturnType>(
+	private async sendMessage<IMessageIn extends IIsolateMessage, ReturnType>(
 		message: IMessageIn
 	): Promise<ReturnType> {
-		window.postMessage(message, "localhost")
+		while (!await this.isConnectionInitialized()) {
+			await this.wait(100)
+		}
+		window.parent.postMessage(message, "*")
 		return new Promise<ReturnType>((resolve, reject) => {
 			this.pendingMessageMap.set(message.id, {
 				message,
@@ -364,12 +371,36 @@ export class IframeTransactionalConnector
 				this.sendMessage<IIsolateMessage, null>({
 					...coreFields,
 					type: IsolateMessageType.SEARCH_UNSUBSCRIBE
-				})
+				}).then()
 			};
 		});
-		window.postMessage(message, this.mainDomain)
+		window.parent.postMessage(message, this.mainDomain)
 
 		return observable;
+	}
+
+	private wait(
+		milliseconds: number
+	): Promise<void> {
+		return new Promise((resolve, _reject) => {
+			setTimeout(() => {
+				resolve()
+			}, milliseconds)
+		})
+	}
+
+	private async isConnectionInitialized(): Promise<boolean> {
+		if (this.connectionInitialized) {
+			return true
+		}
+
+		let message: IIsolateMessage = {
+			...this.getCoreFields(),
+			type: IsolateMessageType.INIT_CONNECTION
+		}
+
+		window.parent.postMessage(message, "*")
+		return false
 	}
 
 
@@ -377,3 +408,6 @@ export class IframeTransactionalConnector
 
 DI.set(TRANSACTIONAL_CONNECTOR, IframeTransactionalConnector);
 
+export function loadIframeTransactionalConnector() {
+	console.log('IframeTransactionalConnector loaded')
+}

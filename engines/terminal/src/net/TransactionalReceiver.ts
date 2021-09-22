@@ -31,7 +31,7 @@ export abstract class TransactionalReceiver {
         try {
             switch (message.type) {
                 case IsolateMessageType.INIT_CONNECTION:
-                    result = null
+                    result = message
                     break;
                 case IsolateMessageType.ADD_REPOSITORY:
                     const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
@@ -144,6 +144,7 @@ export abstract class TransactionalReceiver {
             errorMessage = error.message
         }
         return {
+            category: 'Db',
             errorMessage,
             id: message.id,
             schemaSignature: message.schemaSignature,

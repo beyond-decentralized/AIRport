@@ -14,6 +14,7 @@ export declare class WebTransactionalReceiver extends TransactionalReceiver impl
     constructor();
     private hasValidSchemaSignature;
     private handleFromAppRequest;
+    private getFrameWindow;
     private handleToAppRequest;
     private ensureSchemaIsInstalled;
     private messageIsFromValidSchema;

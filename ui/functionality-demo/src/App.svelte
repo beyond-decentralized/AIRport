@@ -1,8 +1,7 @@
 <style>
 main {
   text-align: center;
-  padding: 1em;
-  max-width: 240px;
+  padding: 0em;
   margin: 0 auto;
 }
 
@@ -10,13 +9,6 @@ h1 {
   color: #ff3e00;
   font-size: 2em;
   font-weight: 100;
-  margin: 5px;
-}
-
-@media (min-width: 640px) {
-  main {
-    max-width: none;
-  }
 }
 </style>
 
@@ -84,45 +76,52 @@ function existingRecords(
             ></td
           >
         </tr>
-        <tr rowspan="5">
-          <div style="margin-left: 100px;">Child Records</div>
-          <table
-            style="border: 1px solid black; margin-left: 50px; width: 100%;"
-          >
-            <thead>
-              <td>Child Id</td>
-              <td>Boolean</td>
-              <td>Number</td>
-              <td>String</td>
-              <td
-                ><button on:click="{() => addChild(parentRecord)}"
-                  >Add Child</button
-                ></td
-              >
-            </thead>
-            <tbody>
-              {#each existingRecords(parentRecord.children) as childRecord, i}
-                <tr>
-                  <td>{childRecord.id}</td>
-                  <td
-                    ><input
-                      type="checkbox"
-                      bind:checked="{childRecord.bool}"
-                    /></td
-                  >
-                  <td><input type="number" bind:value="{childRecord.num}" /></td
-                  >
-                  <td><input bind:value="{childRecord.str}" /></td>
-                  <td
-                    ><button
-                      on:click="{() => del(parentRecord.children, childRecord)}"
-                      >Delete</button
-                    ></td
-                  >
-                </tr>
-              {/each}
-            </tbody>
-          </table>
+        <tr>
+          <td colspan="5">
+            <div style="margin-left: 100px;">Child Records</div>
+            <table
+              style="border: 1px solid black; margin-left: 50px; width: 100%;"
+            >
+              <thead>
+                <td>Child Id</td>
+                <td>Boolean</td>
+                <td>Number</td>
+                <td>String</td>
+                <td
+                  ><button on:click="{() => addChild(parentRecord)}"
+                    >Add Child</button
+                  ></td
+                >
+              </thead>
+              <tbody>
+                {#each existingRecords(parentRecord.children) as childRecord, i}
+                  <tr>
+                    <td>{childRecord.id}</td>
+                    <td
+                      ><input
+                        type="checkbox"
+                        bind:checked="{childRecord.bool}"
+                      /></td
+                    >
+                    <td
+                      ><input
+                        type="number"
+                        bind:value="{childRecord.num}"
+                      /></td
+                    >
+                    <td><input bind:value="{childRecord.str}" /></td>
+                    <td
+                      ><button
+                        on:click="{() =>
+                          del(parentRecord.children, childRecord)}"
+                        >Delete</button
+                      ></td
+                    >
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          </td>
         </tr>
       {/each}
     </tbody>

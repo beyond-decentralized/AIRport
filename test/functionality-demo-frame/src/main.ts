@@ -1,3 +1,4 @@
+import { initAIRportApp } from './airportApp';
 import App from './App.svelte';
 import { marker } from './frame'
 
@@ -9,5 +10,7 @@ const app = new App({
 		name: 'world'
 	}
 });
+
+initAIRportApp().then();
 
 export default app;

@@ -13,7 +13,7 @@ export class TransactionalReceiver {
         try {
             switch (message.type) {
                 case IsolateMessageType.INIT_CONNECTION:
-                    result = null;
+                    result = message;
                     break;
                 case IsolateMessageType.ADD_REPOSITORY:
                     const addRepositoryMessage = message;
@@ -74,6 +74,7 @@ export class TransactionalReceiver {
             errorMessage = error.message;
         }
         return {
+            category: 'Db',
             errorMessage,
             id: message.id,
             schemaSignature: message.schemaSignature,

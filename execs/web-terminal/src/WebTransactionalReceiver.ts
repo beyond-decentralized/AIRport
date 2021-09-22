@@ -75,7 +75,8 @@ export class WebTransactionalReceiver
 			}
 			switch (message.category) {
 				case 'Db':
-					this.handleIsolateMessage(message as IIsolateMessage, messageOrigin)
+					this.handleIsolateMessage(message as IIsolateMessage, messageOrigin,
+						event.source as Window)
 					break
 				case 'FromApp':
 					message.category = 'FromAppRedirected'
@@ -112,18 +113,25 @@ export class WebTransactionalReceiver
 		message: ILocalAPIRequest,
 		messageOrigin: string
 	): Promise<void> {
-		const appDomain = messageOrigin.split('//')[1]
+		const appDomainAndPort = messageOrigin.split('//')[1]
+		const appDomain = appDomainAndPort.split(':')[0]
 		if (message.host !== appDomain) {
 			return
 		}
 
 		let numPendingMessagesFromHost = this.pendingHostCounts.get(message.host)
+		if (!numPendingMessagesFromHost) {
+			numPendingMessagesFromHost = 0
+		}
 		if (numPendingMessagesFromHost > 4) {
 			// Prevent hosts from making local 'Denial of Service' attacks
 			return
 		}
 
 		let numPendingMessagesForSchema = this.pendingSchemaCounts.get(message.schemaSignature)
+		if (!numPendingMessagesForSchema) {
+			numPendingMessagesForSchema = 0
+		}
 		if (numPendingMessagesForSchema === -1) {
 			// Already could not install the schema, may be a DOS attack, return right away
 			return
@@ -149,8 +157,25 @@ export class WebTransactionalReceiver
 		}
 		pendingMessageIdsFromHostForSchema.add(message.id)
 
-		// Forward the request to the correct schema iframe
-		window.postMessage(message, message.schemaSignature + this.domainPrefix)
+		const frameWindow = this.getFrameWindow(message.schemaSignature)
+
+		if (frameWindow) {
+			// Forward the request to the correct schema iframe
+			frameWindow.postMessage(message, '*')
+		}
+	}
+
+	private getFrameWindow(
+		schemaSignature: string
+	) {
+		const iframes = document.getElementsByTagName("iframe")
+		for (var i = 0; i < iframes.length; i++) {
+			let iframe = iframes[i]
+			if (iframe.name === schemaSignature) {
+				return iframe.contentWindow
+			}
+		}
+		return null
 	}
 
 	private async handleToAppRequest(
@@ -217,6 +242,12 @@ export class WebTransactionalReceiver
 	): boolean {
 		const schemaDomain = messageOrigin.split('//')[1]
 		const schemaDomainFragments = schemaDomain.split('.')
+
+		// Allow local debugging
+		if (schemaDomain.split(':')[0] === 'localhost') {
+			return true
+		}
+
 		// Only accept requests from https protocol
 		if (!messageOrigin.startsWith("https")
 			// and from schema domains that match the schemaSignature
@@ -244,7 +275,8 @@ export class WebTransactionalReceiver
 
 	private handleIsolateMessage(
 		message: IIsolateMessage,
-		messageOrigin: string
+		messageOrigin: string,
+		source: Window
 	): void {
 		if (!this.messageIsFromValidSchema(message, messageOrigin)) {
 			return
@@ -284,7 +316,7 @@ export class WebTransactionalReceiver
 					isolateSubscriptionMap.set(message.id, subscription)
 					return
 			}
-			window.postMessage(response, shemaDomainName)
+			source.postMessage(response, '*')
 		})
 	}
 
