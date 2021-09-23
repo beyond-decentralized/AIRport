@@ -62,7 +62,7 @@ export class SchemaDao extends BaseSchemaDao {
         let d;
         let sMaV;
         let sMiV;
-        const schemas = await airDb.find.tree({
+        const schemaLookupRecords = await airDb.find.tree({
             from: [
                 sMiV = tree({
                     from: [
@@ -77,6 +77,7 @@ export class SchemaDao extends BaseSchemaDao {
                                 domainId: d.id,
                                 domainName: d.name,
                                 name: s.name,
+                                lastIds: s.lastIds,
                                 majorVersion: max(sv.majorVersion),
                                 minorVersion: sv.minorVersion,
                                 patchVersion: sv.patchVersion,
@@ -96,6 +97,7 @@ export class SchemaDao extends BaseSchemaDao {
                         index: sMaV.index,
                         domainId: sMaV.domainId,
                         domainName: sMaV.domainName,
+                        lastIds: sMaV.lastIds,
                         name: sMaV.name,
                         majorVersion: sMaV.majorVersion,
                         minorVersion: max(sMaV.minorVersion),
@@ -117,6 +119,7 @@ export class SchemaDao extends BaseSchemaDao {
                     id: sMiV.domainId,
                     name: sMiV.domainName
                 },
+                lastIds: sMiV.lastIds,
                 name: sMiV.name,
                 majorVersion: sMiV.majorVersion,
                 minorVersion: sMiV.minorVersion,
@@ -131,9 +134,9 @@ export class SchemaDao extends BaseSchemaDao {
                 sMiV.minorVersion
             ]
         });
-        for (const schema of schemas) {
-            ensureChildJsMap(maxVersionedMapBySchemaAndDomainNames, schema.domain.name)
-                .set(schema.name, schema);
+        for (const schemaLookupRecord of schemaLookupRecords) {
+            ensureChildJsMap(maxVersionedMapBySchemaAndDomainNames, schemaLookupRecord.domain.name)
+                .set(schemaLookupRecord.name, schemaLookupRecord);
         }
         return maxVersionedMapBySchemaAndDomainNames;
     }

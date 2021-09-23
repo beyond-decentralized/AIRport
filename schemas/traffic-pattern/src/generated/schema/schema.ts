@@ -1,4 +1,7 @@
 import {
+	LastIds,
+} from '@airport/security-check';
+import {
 	IDomain,
 } from '@airport/territory';
 import {
@@ -26,6 +29,7 @@ export interface ISchema {
 	name?: string;
 	packageName?: string;
 	status?: number;
+	lastIds?: LastIds;
 
 	// Non-Id Relations
 	domain?: IDomain;

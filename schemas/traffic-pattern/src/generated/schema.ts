@@ -3331,6 +3331,20 @@ export const SCHEMA = {
 						{
 							"index": 5,
 							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "LAST_IDS",
+							"notNull": true,
+							"propertyRefs": [
+								{
+									"index": 8
+								}
+							],
+							"sinceVersion": 1,
+							"type": 3
+						},
+						{
+							"index": 6,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
@@ -3431,6 +3445,15 @@ export const SCHEMA = {
 							"relationRef": {
 								"index": 2
 							},
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 5
+							},
+							"index": 8,
+							"isId": false,
+							"name": "lastIds",
 							"sinceVersion": 1
 						}
 					],

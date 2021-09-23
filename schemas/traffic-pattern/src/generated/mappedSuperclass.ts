@@ -620,6 +620,11 @@ export const MAPPED_SUPERCLASS = [
 																"moduleImport": null,
 																"sourceName": "JoinColumn"
 															},
+															"Json": {
+																"asName": "Json",
+																"moduleImport": null,
+																"sourceName": "Json"
+															},
 															"ManyToOne": {
 																"asName": "ManyToOne",
 																"moduleImport": null,
@@ -643,6 +648,7 @@ export const MAPPED_SUPERCLASS = [
 													"Entity": null,
 													"Id": null,
 													"JoinColumn": null,
+													"Json": null,
 													"ManyToOne": null,
 													"OneToMany": null,
 													"Table": null,
@@ -682,6 +688,18 @@ export const MAPPED_SUPERCLASS = [
 													"SchemaName": null,
 													"SchemaScope": null,
 													"SchemaStatus": null,
+													"LastIds": {
+														"fileImports": null,
+														"isLocal": false,
+														"objectMapByAsName": {
+															"LastIds": {
+																"asName": "LastIds",
+																"moduleImport": null,
+																"sourceName": "LastIds"
+															}
+														},
+														"path": "@airport/security-check"
+													},
 													"Domain": {
 														"fileImports": null,
 														"isLocal": false,
@@ -722,6 +740,7 @@ export const MAPPED_SUPERCLASS = [
 												"importMapByModulePath": {
 													"@airport/air-control": null,
 													"@airport/ground-control": null,
+													"@airport/security-check": null,
 													"@airport/territory": null,
 													"./SchemaCurrentVersion": null,
 													"./SchemaVersion": null
@@ -1327,6 +1346,33 @@ export const MAPPED_SUPERCLASS = [
 														"implementedInterfaceNames": []
 													},
 													"index": 7
+												},
+												{
+													"decorators": [
+														{
+															"name": "Column",
+															"values": [
+																{
+																	"name": "LAST_IDS",
+																	"nullable": false
+																}
+															]
+														},
+														{
+															"name": "Json",
+															"values": []
+														}
+													],
+													"isGenerated": false,
+													"isId": false,
+													"isMappedSuperclass": false,
+													"isTransient": false,
+													"name": "lastIds",
+													"type": "LastIds",
+													"ownerEntity": null,
+													"nonArrayType": "LastIds",
+													"primitive": "Json",
+													"index": 8
 												}
 											],
 											"methodSignatures": [],

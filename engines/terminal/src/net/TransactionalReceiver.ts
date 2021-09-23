@@ -3,7 +3,12 @@ import {
     IContext,
 } from '@airport/di';
 import {
+    JsonSchemaWithApi
+} from '@airport/check-in'
+import {
     IAddRepositoryIMI,
+    IInitConnectionIMI,
+    IInitConnectionIMO,
     IIsolateMessage,
     IIsolateMessageOut,
     IPortableQueryIMI,
@@ -11,6 +16,7 @@ import {
     ISaveIMI,
     IsolateMessageType
 } from '@airport/security-check';
+import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff';
 import {
     ICredentials,
     TRANSACTIONAL_SERVER
@@ -21,7 +27,8 @@ export abstract class TransactionalReceiver {
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(
         message: IIsolateMessage
     ): Promise<ReturnType> {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        const [ddlObjectRetriever, transactionalServer] = await container(this)
+            .get(DDL_OBJECT_RETRIEVER, TRANSACTIONAL_SERVER);
         let result: any
         let errorMessage
         let credentials: ICredentials = {
@@ -31,11 +38,15 @@ export abstract class TransactionalReceiver {
         try {
             switch (message.type) {
                 case IsolateMessageType.INIT_CONNECTION:
+                    ddlObjectRetriever.lastIds
+                    let initConnectionMessage: IInitConnectionIMI = message
+                    const schema: JsonSchemaWithApi = initConnectionMessage.schema
+                    schema.
                     result = message
                     break;
                 case IsolateMessageType.ADD_REPOSITORY:
                     const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
-                    result = await transServer.addRepository(
+                    result = await transactionalServer.addRepository(
                         addRepositoryMessage.name,
                         addRepositoryMessage.url,
                         addRepositoryMessage.platform,
@@ -46,14 +57,14 @@ export abstract class TransactionalReceiver {
                     );
                     break
                 case IsolateMessageType.COMMIT:
-                    result = await transServer.commit(
+                    result = await transactionalServer.commit(
                         credentials,
                         {}
                     )
                     break
                 case IsolateMessageType.DELETE_WHERE:
                     const deleteWhereMessage: IPortableQueryIMI = <IPortableQueryIMI>message
-                    result = await transServer.deleteWhere(
+                    result = await transactionalServer.deleteWhere(
                         deleteWhereMessage.portableQuery,
                         credentials,
                         context
@@ -61,7 +72,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.FIND:
                     const findMessage: IReadQueryIMI = <IReadQueryIMI>message;
-                    result = await transServer.find(
+                    result = await transactionalServer.find(
                         findMessage.portableQuery,
                         credentials,
                         context
@@ -69,7 +80,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.FIND_ONE:
                     const findOneMessage: IReadQueryIMI = <IReadQueryIMI>message;
-                    result = await transServer.findOne(
+                    result = await transactionalServer.findOne(
                         findOneMessage.portableQuery,
                         credentials,
                         context
@@ -77,7 +88,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.INSERT_VALUES:
                     const insertValuesMessage: IPortableQueryIMI = <IPortableQueryIMI>message
-                    result = await transServer.insertValues(
+                    result = await transactionalServer.insertValues(
                         insertValuesMessage.portableQuery,
                         credentials,
                         context
@@ -85,21 +96,21 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.INSERT_VALUES_GET_IDS:
                     const insertValuesGetIdsMessage: IPortableQueryIMI = <IPortableQueryIMI>message
-                    result = await transServer.insertValuesGetIds(
+                    result = await transactionalServer.insertValuesGetIds(
                         insertValuesGetIdsMessage.portableQuery,
                         credentials,
                         context
                     )
                     break
                 case IsolateMessageType.ROLLBACK:
-                    result = await transServer.rollback(
+                    result = await transactionalServer.rollback(
                         credentials,
                         {}
                     )
                     break
                 case IsolateMessageType.SAVE:
                     const saveMessage: ISaveIMI<any, any> = <ISaveIMI<any, any>>message
-                    result = await transServer.save(
+                    result = await transactionalServer.save(
                         saveMessage.entity,
                         credentials,
                         context
@@ -107,7 +118,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.SEARCH:
                     const searchMessage: IReadQueryIMI = <IReadQueryIMI>message;
-                    result = await transServer.search(
+                    result = await transactionalServer.search(
                         searchMessage.portableQuery,
                         credentials,
                         context
@@ -115,21 +126,21 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.SEARCH_ONE:
                     const searchOneMessage: IReadQueryIMI = <IReadQueryIMI>message;
-                    result = await transServer.search(
+                    result = await transactionalServer.search(
                         searchOneMessage.portableQuery,
                         credentials,
                         context
                     )
                     break
                 case IsolateMessageType.START_TRANSACTION:
-                    result = await transServer.startTransaction(
+                    result = await transactionalServer.startTransaction(
                         credentials,
                         context
                     )
                     break
                 case IsolateMessageType.UPDATE_VALUES:
                     const updateValuesMessage: IPortableQueryIMI = <IPortableQueryIMI>message
-                    result = await transServer.insertValuesGetIds(
+                    result = await transactionalServer.insertValuesGetIds(
                         updateValuesMessage.portableQuery,
                         credentials,
                         context

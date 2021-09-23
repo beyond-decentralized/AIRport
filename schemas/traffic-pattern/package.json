@@ -11,6 +11,7 @@
     "@airport/check-in": "0.0.1",
     "@airport/di": "0.0.1",
     "@airport/ground-control": "0.0.1",
+    "@airport/security-check": "0.0.1",
     "@airport/territory": "0.0.1"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
-import { ITerminalStore } from '@airport/terminal-map';
-import { DdlObjects } from './QueryObjectInitializer';
+import type { ITerminalStore } from '@airport/terminal-map';
+import type { DdlObjects } from './QueryObjectInitializer';
 export interface IDdlObjectLinker {
     link(ddlObjects: DdlObjects, terminalStore: ITerminalStore): void;
 }

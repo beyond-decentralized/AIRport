@@ -93,6 +93,9 @@ export class SchemaComposer {
             const schema = {
                 domain,
                 index: ++ddlObjectRetriever.lastIds.schemas,
+                lastIds: {
+                    ...ddlObjectRetriever.lastIds
+                },
                 name: schemaName,
                 packageName: jsonSchema.name,
                 scope: 'public',

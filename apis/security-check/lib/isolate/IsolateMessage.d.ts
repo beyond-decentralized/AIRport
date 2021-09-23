@@ -1,5 +1,7 @@
+import { JsonSchemaWithApi } from '@airport/check-in';
 import { DistributionStrategy, PlatformType, PortableQuery } from "@airport/ground-control";
 import { Observable } from "rxjs";
+import { LastIds } from '../LastIds';
 export declare enum IsolateMessageType {
     ADD_REPOSITORY = 0,
     COMMIT = 1,
@@ -26,6 +28,11 @@ export interface IIsolateMessage {
 export interface IIsolateMessageOut<T> extends IIsolateMessage {
     errorMessage: string;
     result: T;
+}
+export interface IInitConnectionIMI extends IIsolateMessage {
+    schema: JsonSchemaWithApi;
+}
+export interface IInitConnectionIMO extends IIsolateMessageOut<LastIds> {
 }
 export interface IAddRepositoryIMI extends IIsolateMessage {
     distributionStrategy: DistributionStrategy;

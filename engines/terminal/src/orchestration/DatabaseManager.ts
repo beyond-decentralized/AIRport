@@ -32,6 +32,7 @@ import {
 } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 import { DATABASE_MANAGER } from '../tokens';
+import { LastIds } from '@airport/security-check';
 
 export class DatabaseManager
 	implements IDatabaseManager {
@@ -216,13 +217,34 @@ export class DatabaseManager
 		schemas: JsonSchema[],
 		context: IContext,
 		buildSchemas: boolean,
-	) {
+	): Promise<Map<DomainName, Map<SchemaName, LastIds>>> {
 		const schemaDao = await container(this).get(SCHEMA_DAO);
+
+		const candidateSchemaDomainNames: DomainName[] = []
+		const candidateSchemaNames: SchemaName[] = []
+		for (const jsonSchema of schemas) {
+			candidateSchemaDomainNames.push(jsonSchema.domain)
+			candidateSchemaNames.push(getSchemaName(jsonSchema))
+		}
+		// FIXME: this search should be done by schema signature
+		const maxVersionedMapBySchemaAndDomainNames = await schemaDao.findMaxVersionedMapBySchemaAndDomainNames(
+			candidateSchemaDomainNames, candidateSchemaNames)
+		const lastIdsByDomainAndSchemaNames = new Map()
 
 		const schemaNames: SchemaName[] = [];
 		for (const jsonSchema of schemas) {
-			const schemaName = getSchemaName(jsonSchema);
-			schemaNames.push(schemaName);
+			const schemaName = getSchemaName(jsonSchema)
+			const schemaMapForDomain = maxVersionedMapBySchemaAndDomainNames.get(jsonSchema.domain)
+			if (!schemaMapForDomain) {
+				schemaNames.push(schemaName)
+			} else {
+				const schemaLookupRecord = schemaMapForDomain.get(schemaName)
+				if (schemaLookupRecord) {
+
+				} else {
+					schemaNames.push(schemaName)
+				}
+			}
 		}
 
 		const existingSchemaMap = await schemaDao.findMapByNames(schemaNames);
@@ -247,7 +269,7 @@ export class DatabaseManager
 	): Promise<void> {
 		await transactional(async (
 			_transaction
-			) => {
+		) => {
 			const user = new User();
 			user.uniqueId = domainName;
 			// const userDao = await container(this).get(USER_DAO);

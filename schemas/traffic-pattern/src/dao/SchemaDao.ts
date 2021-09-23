@@ -4,8 +4,8 @@ import {
 	max,
 	tree,
 	Y
-}                   from '@airport/air-control'
-import {container, DI}         from '@airport/di'
+} from '@airport/air-control'
+import { container, DI } from '@airport/di'
 import {
 	DomainName,
 	ensureChildJsMap,
@@ -13,9 +13,10 @@ import {
 	SchemaName,
 	SchemaStatus,
 	SchemaVersionId
-}                   from '@airport/ground-control'
-import {QDomain}    from '@airport/territory'
-import {SCHEMA_DAO} from '../tokens'
+} from '@airport/ground-control'
+import { LastIds } from '@airport/security-check'
+import { QDomain } from '@airport/territory'
+import { SCHEMA_DAO } from '../tokens'
 import {
 	BaseSchemaDao,
 	IBaseSchemaDao,
@@ -23,8 +24,20 @@ import {
 	Q,
 	QSchema,
 	QSchemaVersion
-}                   from '../generated/generated'
+} from '../generated/generated'
 
+export interface ISchemaLookupRecord {
+	index: number
+	domain: {
+		id: number
+		name: string
+	},
+	lastIds: LastIds
+	name: string
+	majorVersion: number
+	minorVersion: number
+	patchVersion: number
+}
 
 export interface ISchemaDao
 	extends IBaseSchemaDao {
@@ -38,7 +51,7 @@ export interface ISchemaDao
 	findMaxVersionedMapBySchemaAndDomainNames(
 		schemaDomainNames: DomainName[],
 		schemaNames: SchemaName[]
-	): Promise<Map<DomainName, Map<SchemaName, ISchema>>>;
+	): Promise<Map<DomainName, Map<SchemaName, ISchemaLookupRecord>>>;
 
 	setStatusByIndexes(
 		indexes: SchemaIndex[],
@@ -74,7 +87,7 @@ export class SchemaDao
 		const schemaMapByIndex: Map<SchemaVersionId, ISchema> = new Map()
 
 		let s: QSchema,
-		    sv: QSchemaVersion
+			sv: QSchemaVersion
 		const schemas = await this.db.find.tree({
 			select: {
 				index: Y,
@@ -121,11 +134,11 @@ export class SchemaDao
 	async findMaxVersionedMapBySchemaAndDomainNames(
 		schemaDomainNames: DomainName[],
 		schemaNames: SchemaName[]
-	): Promise<Map<DomainName, Map<SchemaName, ISchema>>> {
+	): Promise<Map<DomainName, Map<SchemaName, ISchemaLookupRecord>>> {
 		const airDb = await container(this).get(AIRPORT_DATABASE)
 
-		const maxVersionedMapBySchemaAndDomainNames: Map<DomainName, Map<SchemaName, ISchema>>
-			      = new Map()
+		const maxVersionedMapBySchemaAndDomainNames: Map<DomainName, Map<SchemaName, ISchemaLookupRecord>>
+			= new Map()
 
 		let sv: QSchemaVersion
 		let s: QSchema
@@ -133,7 +146,7 @@ export class SchemaDao
 		let sMaV
 		let sMiV
 
-		const schemas = await airDb.find.tree({
+		const schemaLookupRecords = await airDb.find.tree({
 			from: [
 				sMiV = tree({
 					from: [
@@ -148,6 +161,7 @@ export class SchemaDao
 								domainId: d.id,
 								domainName: d.name,
 								name: s.name,
+								lastIds: s.lastIds,
 								majorVersion: max(sv.majorVersion),
 								minorVersion: sv.minorVersion,
 								patchVersion: sv.patchVersion,
@@ -169,6 +183,7 @@ export class SchemaDao
 						index: sMaV.index,
 						domainId: sMaV.domainId,
 						domainName: sMaV.domainName,
+						lastIds: sMaV.lastIds,
 						name: sMaV.name,
 						majorVersion: sMaV.majorVersion,
 						minorVersion: max(sMaV.minorVersion),
@@ -189,6 +204,7 @@ export class SchemaDao
 					id: sMiV.domainId,
 					name: sMiV.domainName
 				},
+				lastIds: sMiV.lastIds,
 				name: sMiV.name,
 				majorVersion: sMiV.majorVersion,
 				minorVersion: sMiV.minorVersion,
@@ -204,10 +220,10 @@ export class SchemaDao
 			]
 		})
 
-		for (const schema of schemas) {
+		for (const schemaLookupRecord of schemaLookupRecords) {
 			ensureChildJsMap(
-				maxVersionedMapBySchemaAndDomainNames, schema.domain.name)
-				.set(schema.name, schema)
+				maxVersionedMapBySchemaAndDomainNames, schemaLookupRecord.domain.name)
+				.set(schemaLookupRecord.name, schemaLookupRecord)
 		}
 
 

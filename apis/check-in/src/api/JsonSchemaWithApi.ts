@@ -12,4 +12,5 @@ export interface JsonSchemaVersionWithApi
     extends JsonSchemaVersion {
 
     api: ISchemaApi
+
 }

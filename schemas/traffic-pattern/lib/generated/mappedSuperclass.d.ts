@@ -439,6 +439,11 @@ export declare const MAPPED_SUPERCLASS: {
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
+                                                Json: {
+                                                    asName: string;
+                                                    moduleImport: any;
+                                                    sourceName: string;
+                                                };
                                                 ManyToOne: {
                                                     asName: string;
                                                     moduleImport: any;
@@ -455,7 +460,6 @@ export declare const MAPPED_SUPERCLASS: {
                                                     sourceName: string;
                                                 };
                                                 DbBoolean?: undefined;
-                                                Json?: undefined;
                                                 TableConfiguration?: undefined;
                                                 Transient?: undefined;
                                             };
@@ -466,6 +470,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         Entity: any;
                                         Id: any;
                                         JoinColumn: any;
+                                        Json: any;
                                         ManyToOne: any;
                                         OneToMany: any;
                                         Table: any;
@@ -505,6 +510,18 @@ export declare const MAPPED_SUPERCLASS: {
                                         SchemaName: any;
                                         SchemaScope: any;
                                         SchemaStatus: any;
+                                        LastIds: {
+                                            fileImports: any;
+                                            isLocal: boolean;
+                                            objectMapByAsName: {
+                                                LastIds: {
+                                                    asName: string;
+                                                    moduleImport: any;
+                                                    sourceName: string;
+                                                };
+                                            };
+                                            path: string;
+                                        };
                                         Domain: {
                                             fileImports: any;
                                             isLocal: boolean;
@@ -542,7 +559,6 @@ export declare const MAPPED_SUPERCLASS: {
                                             path: string;
                                         };
                                         DbBoolean?: undefined;
-                                        Json?: undefined;
                                         TableConfiguration?: undefined;
                                         Transient?: undefined;
                                         EntityId?: undefined;
@@ -562,6 +578,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     importMapByModulePath: {
                                         "@airport/air-control": any;
                                         "@airport/ground-control": any;
+                                        "@airport/security-check": any;
                                         "@airport/territory": any;
                                         "./SchemaCurrentVersion": any;
                                         "./SchemaVersion": any;
@@ -1183,6 +1200,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         SchemaName?: undefined;
                                         SchemaScope?: undefined;
                                         SchemaStatus?: undefined;
+                                        LastIds?: undefined;
                                         Domain?: undefined;
                                         SchemaCurrentVersion?: undefined;
                                         SchemaReferenceIndex?: undefined;
@@ -1198,6 +1216,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         "./VersionedSchemaObject": any;
                                         "../../generated/schema/schemacolumn": any;
                                         "../../generated/schema/schemaproperty": any;
+                                        "@airport/security-check"?: undefined;
                                         "@airport/territory"?: undefined;
                                         "./SchemaCurrentVersion"?: undefined;
                                     };
@@ -2163,9 +2182,9 @@ export declare const MAPPED_SUPERCLASS: {
                                                     sourceName: string;
                                                 };
                                                 DbString?: undefined;
+                                                Json?: undefined;
                                                 OneToMany?: undefined;
                                                 DbBoolean?: undefined;
-                                                Json?: undefined;
                                                 TableConfiguration?: undefined;
                                                 Transient?: undefined;
                                             };
@@ -2214,16 +2233,17 @@ export declare const MAPPED_SUPERCLASS: {
                                             path: string;
                                         };
                                         DbString?: undefined;
+                                        Json?: undefined;
                                         OneToMany?: undefined;
                                         PackageName?: undefined;
                                         SchemaIndex?: undefined;
                                         SchemaName?: undefined;
                                         SchemaScope?: undefined;
                                         SchemaStatus?: undefined;
+                                        LastIds?: undefined;
                                         Domain?: undefined;
                                         SchemaCurrentVersion?: undefined;
                                         DbBoolean?: undefined;
-                                        Json?: undefined;
                                         TableConfiguration?: undefined;
                                         Transient?: undefined;
                                         EntityId?: undefined;
@@ -2243,6 +2263,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         "@airport/ground-control": any;
                                         "./SchemaVersion": any;
                                         "./VersionedSchemaObject": any;
+                                        "@airport/security-check"?: undefined;
                                         "@airport/territory"?: undefined;
                                         "./SchemaCurrentVersion"?: undefined;
                                         "./SchemaColumn"?: undefined;

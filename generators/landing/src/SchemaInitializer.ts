@@ -15,6 +15,7 @@ import {
 	DbSchema,
 	JsonSchema
 } from '@airport/ground-control';
+import { JsonSchemaWithLastIds } from '@airport/security-check';
 import {
 	DDL_OBJECT_LINKER,
 	DDL_OBJECT_RETRIEVER,
@@ -40,7 +41,7 @@ export interface ISchemaInitializer {
 		context: IContext,
 		normalOperation?: boolean
 	): Promise<void>
-	
+
 	initializeForAIRportApp(
 		jsonSchema: JsonSchema
 	): Promise<void>
@@ -84,7 +85,7 @@ export class SchemaInitializer
 	}
 
 	async initialize(
-		jsonSchemas: JsonSchema[],
+		jsonSchemas: JsonSchemaWithLastIds[],
 		context: IContext,
 		normalOperation: boolean = true
 	): Promise<void> {
@@ -182,9 +183,9 @@ export class SchemaInitializer
 	}
 
 	private async getSchemasWithValidDependencies(
-		jsonSchemas: JsonSchema[],
+		jsonSchemas: JsonSchemaWithLastIds[],
 		normalOperation: boolean
-	): Promise<JsonSchema[]> {
+	): Promise<JsonSchemaWithLastIds[]> {
 		const [schemaChecker, schemaLocator, terminalStore]
 			= await container(this).get(SCHEMA_CHECKER, SCHEMA_LOCATOR, TERMINAL_STORE);
 		const jsonSchemasToInstall: JsonSchema[] = [];

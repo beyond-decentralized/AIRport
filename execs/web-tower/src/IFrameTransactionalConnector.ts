@@ -42,6 +42,12 @@ export interface IObservableMessageInRecord<T> {
 	observer?: Observer<T>
 }
 
+export enum ConnectionState {
+	NOT_INITIALIED,
+	INITIALIZING,
+	INITIALIZED
+}
+
 export class IframeTransactionalConnector
 	implements ITransactionalConnector {
 
@@ -56,7 +62,7 @@ export class IframeTransactionalConnector
 
 	mainDomain: string
 
-	connectionInitialized = false
+	connectionState = ConnectionState.NOT_INITIALIED
 
 	async init() {
 		window.addEventListener("message", event => {
@@ -393,10 +399,16 @@ export class IframeTransactionalConnector
 	}
 
 	private async isConnectionInitialized(): Promise<boolean> {
-		const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER)
-		await applicationInitializer.initialize()
-		if (this.connectionInitialized) {
-			return true
+		switch (this.connectionState) {
+			case ConnectionState.NOT_INITIALIED:
+				break;
+			case ConnectionState.INITIALIZING:
+				const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER)
+				await applicationInitializer.initialize()
+				this.connectionState = ConnectionState.INITIALIZED
+				return true
+			case ConnectionState.INITIALIZED:
+				return true
 		}
 
 		let message: IIsolateMessage = {

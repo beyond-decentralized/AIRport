@@ -1,9 +1,10 @@
-import {container, DI}                   from '@airport/di'
+import { container, DI } from '@airport/di'
 import {
 	DomainId,
 	SchemaIndex,
-}                             from '@airport/ground-control'
-import {DOMAIN_DAO}           from '@airport/territory'
+} from '@airport/ground-control'
+import type { LastIds } from '@airport/security-check'
+import { DOMAIN_DAO } from '@airport/territory'
 import {
 	ISchema,
 	ISchemaVersion,
@@ -16,9 +17,9 @@ import {
 	SCHEMA_RELATION_COLUMN_DAO,
 	SCHEMA_RELATION_DAO,
 	SCHEMA_VERSION_DAO
-}                             from '@airport/traffic-pattern'
-import {DDL_OBJECT_RETRIEVER} from './tokens'
-import {DdlObjects}           from './QueryObjectInitializer'
+} from '@airport/traffic-pattern'
+import { DDL_OBJECT_RETRIEVER } from './tokens'
+import { DdlObjects } from './QueryObjectInitializer'
 
 export interface IDdlObjectRetriever {
 
@@ -27,18 +28,6 @@ export interface IDdlObjectRetriever {
 	retrieveDdlObjects()
 		: Promise<DdlObjects>
 
-}
-
-export interface LastIds {
-	columns: number
-	domains: number
-	entities: number
-	properties: number
-	propertyColumns: number
-	relationColumns: number
-	relations: number
-	schemas: number
-	schemaVersions: number
 }
 
 export class DdlObjectRetriever
@@ -58,17 +47,17 @@ export class DdlObjectRetriever
 
 	async retrieveDdlObjects(): Promise<DdlObjects> {
 		const [domainDao, schemaDao, schemaVersionDao, schemaReferenceDao,
-			      schemaEntityDao, schemaPropertyDao, schemaRelationDao,
-			      schemaColumnDao, schemaPropertyColumnDao,
-			      schemaRelationColumnDao
-		      ]                            = await container(this).get(DOMAIN_DAO,
+			schemaEntityDao, schemaPropertyDao, schemaRelationDao,
+			schemaColumnDao, schemaPropertyColumnDao,
+			schemaRelationColumnDao
+		] = await container(this).get(DOMAIN_DAO,
 			SCHEMA_DAO, SCHEMA_VERSION_DAO, SCHEMA_REFERENCE_DAO,
 			SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_RELATION_DAO,
 			SCHEMA_COLUMN_DAO, SCHEMA_PROPERTY_COLUMN_DAO,
 			SCHEMA_RELATION_COLUMN_DAO)
-		const schemas                      = await schemaDao.findAllActive()
+		const schemas = await schemaDao.findAllActive()
 		const schemaIndexes: SchemaIndex[] = []
-		const domainIdSet: Set<DomainId>   = new Set()
+		const domainIdSet: Set<DomainId> = new Set()
 		schemas.forEach(
 			schema => {
 				schemaIndexes.push(schema.index)
@@ -88,14 +77,14 @@ export class DdlObjectRetriever
 
 		let lastSchemaIndex: SchemaIndex
 		const allSchemaVersionsByIds: ISchemaVersion[] = []
-		const latestSchemaVersions: ISchemaVersion[]   = []
-		const schemaVersions: ISchemaVersion[]         = []
+		const latestSchemaVersions: ISchemaVersion[] = []
+		const schemaVersions: ISchemaVersion[] = []
 		for (const schemaVersion of allSchemaVersions) {
 			if (schemaVersion.schema.index !== lastSchemaIndex) {
 				latestSchemaVersions.push(schemaVersion)
 			}
 			allSchemaVersionsByIds[schemaVersion.id] = schemaVersion
-			lastSchemaIndex                          = schemaVersion.schema.index
+			lastSchemaIndex = schemaVersion.schema.index
 			schemaVersions.push(schemaVersion)
 		}
 
@@ -105,7 +94,7 @@ export class DdlObjectRetriever
 		const schemaReferences = await schemaReferenceDao
 			.findAllForSchemaVersions(latestSchemaVersionIds)
 
-		const entities  = await schemaEntityDao
+		const entities = await schemaEntityDao
 			.findAllForSchemaVersions(latestSchemaVersionIds)
 		const entityIds = entities.map(
 			entity => entity.id)
@@ -119,7 +108,7 @@ export class DdlObjectRetriever
 	})
 		 */
 
-		const properties  = await schemaPropertyDao
+		const properties = await schemaPropertyDao
 			.findAllForEntities(entityIds)
 		const propertyIds = properties.map(
 			property => property.id)
@@ -127,7 +116,7 @@ export class DdlObjectRetriever
 		const relations = await schemaRelationDao
 			.findAllForProperties(propertyIds)
 
-		const columns   = await schemaColumnDao
+		const columns = await schemaColumnDao
 			.findAllForEntities(entityIds)
 		const columnIds = columns.map(
 			column => column.id)

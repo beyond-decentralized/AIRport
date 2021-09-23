@@ -1,9 +1,13 @@
 import {
+    JsonSchemaWithApi
+} from '@airport/check-in'
+import {
     DistributionStrategy,
     PlatformType,
     PortableQuery
 } from "@airport/ground-control";
 import { Observable } from "rxjs";
+import { LastIds } from '../LastIds';
 
 export enum IsolateMessageType {
     ADD_REPOSITORY,
@@ -34,6 +38,20 @@ export interface IIsolateMessageOut<T>
     extends IIsolateMessage {
     errorMessage: string
     result: T
+}
+
+// FIXME: right now feature/App schema initialization happens on 
+// Initail connection handshake (as a short term solution)
+// rethink that - schema should probably be initialized at initial
+// schema retrieval request (from a UI or an app that needs it)
+// and initial connection should probably not play a role in that
+export interface IInitConnectionIMI
+    extends IIsolateMessage {
+    schema: JsonSchemaWithApi
+}
+
+export interface IInitConnectionIMO
+    extends IIsolateMessageOut<LastIds> {
 }
 
 export interface IAddRepositoryIMI
