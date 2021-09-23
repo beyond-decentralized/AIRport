@@ -1,7 +1,7 @@
 import {
     IApiObject,
     ISchemaApi
-} from '@airport/security-check';
+} from '@airport/check-in';
 import * as ts from 'typescript';
 import tsc from 'typescript';
 import { forEach } from '../../ParserUtils';

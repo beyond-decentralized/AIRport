@@ -4,7 +4,7 @@ import {
     SchemaIndex
 } from "@airport/ground-control";
 import { IContext } from "@airport/di";
-import {
+import type {
     IActor,
     RepositoryEntity,
     RepositoryId

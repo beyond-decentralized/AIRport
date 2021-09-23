@@ -1,4 +1,4 @@
-import { IOperationContext } from "./OperationContext";
+import type { IOperationContext } from "./OperationContext";
 
 export interface IStructuralEntityValidator {
 

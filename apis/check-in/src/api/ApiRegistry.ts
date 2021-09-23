@@ -2,10 +2,10 @@ import { IApiOperation } from "./ApiOperation";
 
 export interface IApiRegistry {
 
-    installedApi: InstalledApi
-    
-    init(
-        installedApi: InstalledApi
+    initialize(
+        // installedApi: InstalledApi
+        // schemaSignature: string,
+        schemaApi: ISchemaApi
     ): void
 
     findApiObjectAndOperation(

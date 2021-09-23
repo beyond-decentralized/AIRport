@@ -1,3 +1,4 @@
+import { APPLICATION_INITIALIZER } from '@airport/check-in';
 import { container, DI } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
@@ -9,6 +10,8 @@ export class IframeTransactionalConnector {
         this.observableMessageMap = new Map();
         this.messageId = 0;
         this.connectionInitialized = false;
+    }
+    init() {
         window.addEventListener("message", event => {
             const origin = event.origin;
             const message = event.data;
@@ -249,6 +252,8 @@ export class IframeTransactionalConnector {
         });
     }
     async isConnectionInitialized() {
+        const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER);
+        await applicationInitializer.initialize();
         if (this.connectionInitialized) {
             return true;
         }

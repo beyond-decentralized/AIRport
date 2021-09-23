@@ -1,25 +1,31 @@
 import { container, DI } from "@airport/di";
-import { API_REGISTRY } from "@airport/security-check";
+import { API_REGISTRY } from "@airport/check-in";
 export class ApiRegistry {
-    init(installedApi) {
-        this.installedApi = installedApi;
+    initialize(
+    // installedApi: InstalledApi
+    schemaApi) {
+        // this.installedApi = installedApi
+        this.schemaApi = schemaApi;
     }
     async findApiObjectAndOperation(schemaSignature, apiObjectName, methodName) {
-        const schemaApi = this.installedApi.schemaApiMap[schemaSignature];
-        if (!schemaApi) {
-            throw new Error(`Could not find SchemaAPI for signature:
-            ${schemaSignature}`);
-        }
-        const apiObjectDefinition = schemaApi.apiObjectMap[apiObjectName];
+        // const schemaApi = this.installedApi.schemaApiMap[schemaSignature]
+        // if (!schemaApi) {
+        //     throw new Error(`Could not find SchemaAPI for signature:
+        //     ${schemaSignature}`)
+        // }
+        // const apiObjectDefinition = schemaApi.apiObjectMap[apiObjectName]
+        const apiObjectDefinition = this.schemaApi.apiObjectMap[apiObjectName];
         if (!apiObjectDefinition) {
-            throw new Error(`Could not find API object for Schema signature:
+            throw new Error(`Could not find API object for 
+        Schema signature:
             ${schemaSignature}
         Object name:
             ${apiObjectName}`);
         }
         const apiOperation = apiObjectDefinition.operationMap[methodName];
         if (!apiOperation) {
-            throw new Error(`Could not find API object method for Schema signature:
+            throw new Error(`Could not find API object method for 
+        Schema signature:
             ${schemaSignature}
         Object name:
             ${apiObjectName}

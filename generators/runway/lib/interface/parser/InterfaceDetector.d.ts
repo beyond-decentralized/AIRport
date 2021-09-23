@@ -1,4 +1,4 @@
-import { IApiObject, ISchemaApi } from '@airport/security-check';
+import { IApiObject, ISchemaApi } from '@airport/check-in';
 import * as ts from 'typescript';
 export declare const currentSchemaApi: ISchemaApi;
 /**

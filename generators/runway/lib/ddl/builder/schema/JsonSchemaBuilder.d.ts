@@ -1,5 +1,5 @@
+import { JsonSchemaWithApi } from '@airport/check-in';
 import { DbSchema, JsonOperation, JsonSchema } from '@airport/ground-control';
-import { JsonSchemaWithApi } from '../../../../../../apis/security-check/lib';
 import { Configuration } from '../../options/Options';
 import { EntityCandidate } from '../../parser/EntityCandidate';
 import { SIndexedSchema } from './SSchema';

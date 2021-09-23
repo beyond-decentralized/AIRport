@@ -1,3 +1,4 @@
+import { JsonSchemaWithApi } from '@airport/check-in';
 import {
 	ColumnIndex,
 	DatabaseOneToManyElements,
@@ -15,7 +16,6 @@ import {
 	SchemaReferenceByIndex,
 	TableIndex
 }                          from '@airport/ground-control';
-import { JsonSchemaWithApi } from '../../../../../../apis/security-check/lib';
 import { currentSchemaApi } from '../../../api/parser/ApiGenerator';
 import { Configuration }   from '../../options/Options';
 import { EntityCandidate } from '../../parser/EntityCandidate';

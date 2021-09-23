@@ -1,5 +1,5 @@
 import { TransactionType } from "@airport/ground-control";
-import {
+import type {
     IActor,
     IRepositoryTransactionHistory,
     ITransactionHistory,

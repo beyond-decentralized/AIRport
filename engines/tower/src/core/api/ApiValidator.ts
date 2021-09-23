@@ -3,7 +3,7 @@ import {
     API_VALIDATOR,
     IApiOperation,
     IApiValidator
-} from "@airport/security-check";
+} from "@airport/check-in";
 
 export class ApiValidator
     implements IApiValidator {

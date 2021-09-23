@@ -8,7 +8,20 @@ export const SCHEMA = {
 	"versions": [
 		{
 			"api": {
-				"apiObjectMap": {}
+				"apiObjectMap": {
+					"IDemoApi": {
+						"operationMap": {
+							"findAllParentsWithChildren": {
+								"isAsync": true,
+								"parameters": []
+							},
+							"saveChanges": {
+								"isAsync": true,
+								"parameters": []
+							}
+						}
+					}
+				}
 			},
 			"entities": [
 				{

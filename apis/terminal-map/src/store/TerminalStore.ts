@@ -10,7 +10,7 @@ import {
 	SchemaName
 } from '@airport/ground-control';
 import { BehaviorSubject } from 'rxjs';
-import { IDomain } from '@airport/territory';
+import type { IDomain } from '@airport/territory';
 import {
 	ISchema,
 	ISchemaColumn,

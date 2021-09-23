@@ -1,4 +1,5 @@
-import { system } from '@airport/di';
+import { lib } from '@airport/di';
+import { IApiRegistry, IApiValidator, IApplicationInitializer } from '.';
 import { IClientQueryManager } from './clientQuery/ClientQueryManager';
 import { ISelectorManager } from './Selector';
 import { ISequenceGenerator } from './SequenceGenerator';
@@ -6,9 +7,12 @@ import { IOperationDeserializer } from './serialize/OperationDeserializer';
 import { IQueryParameterDeserializer } from './serialize/QueryParameterDeserializer';
 import { IQueryResultsSerializer } from './serialize/QueryResultsSerializer';
 
-const checkIn = system('airport').lib('check-in');
+const checkIn = lib('check-in');
 
+export const API_REGISTRY = checkIn.token<IApiRegistry>('IApiRegistry')
+export const API_VALIDATOR = checkIn.token<IApiValidator>('IApiValidator')
 export const CLIENT_QUERY_MANAGER = checkIn.token<IClientQueryManager>('IClientQueryManager');
+export const APPLICATION_INITIALIZER = checkIn.token<IApplicationInitializer>('IApplicationInitializer')
 export const OPERATION_DESERIALIZER = checkIn.token<IOperationDeserializer>('IOperationDeserializer');
 export const QUERY_PARAMETER_DESERIALIZER = checkIn.token<IQueryParameterDeserializer>('IQueryParameterDeserializer');
 export const QUERY_RESULTS_SERIALIZER = checkIn.token<IQueryResultsSerializer>('IQueryResultsSerializer');

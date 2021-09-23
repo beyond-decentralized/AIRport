@@ -1,5 +1,5 @@
+import { API_REGISTRY } from "@airport/check-in";
 import { container, DI } from "@airport/di";
-import { API_REGISTRY } from "@airport/security-check";
 import { LOCAL_API_SERVER } from "../../tokens";
 export class LocalAPIServer {
     async handleRequest(request) {

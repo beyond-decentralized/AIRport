@@ -1,5 +1,5 @@
 import { DI } from "@airport/di";
-import { API_VALIDATOR } from "@airport/security-check";
+import { API_VALIDATOR } from "@airport/check-in";
 export class ApiValidator {
     validate(operation, parameters) {
         // FIXME: implement (eventually)

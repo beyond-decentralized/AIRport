@@ -6,7 +6,20 @@ export declare const SCHEMA: {
     sinceVersion: number;
     versions: {
         api: {
-            apiObjectMap: {};
+            apiObjectMap: {
+                IDemoApi: {
+                    operationMap: {
+                        findAllParentsWithChildren: {
+                            isAsync: boolean;
+                            parameters: any[];
+                        };
+                        saveChanges: {
+                            isAsync: boolean;
+                            parameters: any[];
+                        };
+                    };
+                };
+            };
         };
         entities: ({
             columns: {

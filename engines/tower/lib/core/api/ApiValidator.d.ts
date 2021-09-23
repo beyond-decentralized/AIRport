@@ -1,4 +1,4 @@
-import { IApiOperation, IApiValidator } from "@airport/security-check";
+import { IApiOperation, IApiValidator } from "@airport/check-in";
 export declare class ApiValidator implements IApiValidator {
     validate(operation: IApiOperation, parameters: any[]): void;
 }

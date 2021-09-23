@@ -1,10 +1,10 @@
 import { IContext } from "@airport/di";
-import {
+import type {
     DistributionStrategy,
     PlatformType,
     PortableQuery
 } from "@airport/ground-control";
-import {
+import type {
     IActor,
     RecordHistoryId
 } from "@airport/holding-pattern";

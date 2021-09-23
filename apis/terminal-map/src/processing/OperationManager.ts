@@ -1,7 +1,7 @@
-import { ISaveResult } from "@airport/ground-control";
-import { IActor } from "@airport/holding-pattern";
-import { ITransaction } from "../transaction/ITransaction";
-import { IOperationContext } from "./OperationContext";
+import type { ISaveResult } from "@airport/ground-control";
+import type { IActor } from "@airport/holding-pattern";
+import type { ITransaction } from "../transaction/ITransaction";
+import type { IOperationContext } from "./OperationContext";
 
 export interface IOperationManager {
 

@@ -3,18 +3,22 @@ import {
     API_REGISTRY,
     IApiOperation,
     IApiRegistry,
-    InstalledApi
-} from "@airport/security-check";
+    InstalledApi,
+    ISchemaApi
+} from "@airport/check-in";
 
 export class ApiRegistry
     implements IApiRegistry {
 
-    installedApi: InstalledApi
+    // installedApi: InstalledApi
+    schemaApi: ISchemaApi
 
-    init(
-        installedApi: InstalledApi
+    initialize(
+        // installedApi: InstalledApi
+        schemaApi: ISchemaApi
     ): void {
-        this.installedApi = installedApi
+        // this.installedApi = installedApi
+        this.schemaApi = schemaApi
     }
 
     async findApiObjectAndOperation(
@@ -25,21 +29,24 @@ export class ApiRegistry
         apiObject: any,
         apiOperation: IApiOperation
     }> {
-        const schemaApi = this.installedApi.schemaApiMap[schemaSignature]
-        if (!schemaApi) {
-            throw new Error(`Could not find SchemaAPI for signature:
-            ${schemaSignature}`)
-        }
-        const apiObjectDefinition = schemaApi.apiObjectMap[apiObjectName]
+        // const schemaApi = this.installedApi.schemaApiMap[schemaSignature]
+        // if (!schemaApi) {
+        //     throw new Error(`Could not find SchemaAPI for signature:
+        //     ${schemaSignature}`)
+        // }
+        // const apiObjectDefinition = schemaApi.apiObjectMap[apiObjectName]
+        const apiObjectDefinition = this.schemaApi.apiObjectMap[apiObjectName]
         if (!apiObjectDefinition) {
-            throw new Error(`Could not find API object for Schema signature:
+            throw new Error(`Could not find API object for 
+        Schema signature:
             ${schemaSignature}
         Object name:
             ${apiObjectName}`)
         }
         const apiOperation = apiObjectDefinition.operationMap[methodName]
         if (!apiOperation) {
-            throw new Error(`Could not find API object method for Schema signature:
+            throw new Error(`Could not find API object method for 
+        Schema signature:
             ${schemaSignature}
         Object name:
             ${apiObjectName}

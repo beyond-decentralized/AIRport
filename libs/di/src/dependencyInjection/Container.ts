@@ -366,7 +366,6 @@ export interface IChildContainer
 }
 
 export interface IContainer {
-
 	set<I>(
 		token: IDiToken<I>,
 		clazz: new () => I
@@ -521,7 +520,7 @@ export class ChildContainer
 				}
 				let object = objectMap.get(token.name)
 				if (!object) {
-					if (token.library.autopilot) {
+					if (!this.context.inAIRportApp && token.library.autopilot) {
 						object = this.getSync(AUTOPILOT_API_LOADER)
 							.loadApiAutopilot(token.library.signature, token.name);
 					} else {
@@ -541,10 +540,16 @@ export class ChildContainer
 					objectMap.set(token.name, object)
 
 					if (!token.library.autopilot && object.init) {
-						object.init().then(_ => {
+						const result = object.init()
+						if (result instanceof Promise) {
+							object.init().then(_ => {
+								object.__initialized__ = true;
+								console.log(`${token.getPath()} initialized.`);
+							});
+						} else {
 							object.__initialized__ = true;
 							console.log(`${token.getPath()} initialized.`);
-						});
+						}
 					} else {
 						object.__initialized__ = true;
 					}
@@ -572,9 +577,12 @@ export class ChildContainer
 		const token = library.tokenMap.get(tokenName)
 
 		if (!token) {
-			throw new Error(`Could not find token: ${tokenName} in library:
+			throw new Error(`Could not find token: ${tokenName}
+in library:
 			${library.name}
-			of system:
+with signature:
+			${librarySignature}
+of system:
 			${SYSTEM.name}`)
 		}
 		return await this.get(token)

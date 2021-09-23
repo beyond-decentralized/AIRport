@@ -20,7 +20,7 @@ export declare class IframeTransactionalConnector implements ITransactionalConne
     messageId: number;
     mainDomain: string;
     connectionInitialized: boolean;
-    constructor();
+    init(): void;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<E>;

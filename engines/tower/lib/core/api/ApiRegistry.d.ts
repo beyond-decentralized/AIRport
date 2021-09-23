@@ -1,7 +1,7 @@
-import { IApiOperation, IApiRegistry, InstalledApi } from "@airport/security-check";
+import { IApiOperation, IApiRegistry, ISchemaApi } from "@airport/check-in";
 export declare class ApiRegistry implements IApiRegistry {
-    installedApi: InstalledApi;
-    init(installedApi: InstalledApi): void;
+    schemaApi: ISchemaApi;
+    initialize(schemaApi: ISchemaApi): void;
     findApiObjectAndOperation(schemaSignature: string, apiObjectName: string, methodName: string): Promise<{
         apiObject: any;
         apiOperation: IApiOperation;

@@ -4,7 +4,7 @@ import {
 } from '@airport/ground-control';
 import {
 	JsonSchemaWithApi
-} from '@airport/security-check'
+} from '@airport/check-in'
 import { AirportDatabase } from '@airport/tower';
 import * as fs from 'fs';
 import * as ts from 'typescript';

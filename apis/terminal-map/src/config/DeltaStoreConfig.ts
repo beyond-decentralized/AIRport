@@ -8,7 +8,7 @@ import {
 	IChangeListConfig,
 	JsonChangeListConfig
 }                        from './ChangeListConfig'
-import {GoogleSetupInfo} from './GoogleSharingModel'
+import type {GoogleSetupInfo} from './GoogleSharingModel'
 import {
 	IOfflineDeltaStoreConfig,
 	JsonOfflineDeltaStoreConfig,

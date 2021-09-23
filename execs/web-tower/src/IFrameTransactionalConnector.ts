@@ -1,6 +1,9 @@
 import { IQueryContext } from '@airport/air-control';
 import { ILocalAPIRequest } from '@airport/autopilot';
 import {
+	APPLICATION_INITIALIZER
+} from '@airport/check-in'
+import {
 	container,
 	DI,
 	IContext
@@ -55,7 +58,7 @@ export class IframeTransactionalConnector
 
 	connectionInitialized = false
 
-	constructor() {
+	async init() {
 		window.addEventListener("message", event => {
 			const origin = event.origin;
 			const message: IIsolateMessageOut<any> | ILocalAPIRequest = event.data;
@@ -390,6 +393,8 @@ export class IframeTransactionalConnector
 	}
 
 	private async isConnectionInitialized(): Promise<boolean> {
+		const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER)
+		await applicationInitializer.initialize()
 		if (this.connectionInitialized) {
 			return true
 		}
