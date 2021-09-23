@@ -50,28 +50,29 @@ export class SchemaComposer
 		schemaLocator: ISchemaLocator,
 		terminalStore: ITerminalStore
 	): DdlObjects {
-		const domainSet: Set<DomainName> = new Set();
 		const jsonSchemaMapByName: Map<SchemaName, JsonSchemaWithLastIds> = new Map();
 
+		const allDomains = terminalStore.getDomains().slice()
+		const newDomains: IDomain[] = []
+		const allSchemas: ISchema[] = terminalStore.getSchemas().slice()
+		const newSchemas: ISchema[] = []
 		for (const jsonSchema of jsonSchemas) {
-			domainSet.add(jsonSchema.domain);
+			const lastIds = {
+				...ddlObjectRetriever.lastIds
+			}
+			const domain = this.composeDomain(jsonSchema.domain,
+				allDomains, newDomains, ddlObjectRetriever);
+			const schema = this.composeSchema(domain, jsonSchema, allSchemas, newSchemas,
+				ddlObjectRetriever);
+			if (!schema.lastIds) {
+				schema.lastIds = lastIds
+			}
 			jsonSchemaMapByName.set(getSchemaName(jsonSchema), jsonSchema);
 		}
 
 		const allSchemaVersionsByIds = [...terminalStore.getAllSchemaVersionsByIds()];
 
-		const {
-			domainMapByName,
-			allDomains,
-			newDomains
-		} = this.composeDomains(domainSet,
-			ddlObjectRetriever, terminalStore);
-		const {
-			allSchemas,
-			newSchemaMapByName,
-			newSchemas
-		} = this.composeSchemas(domainMapByName, jsonSchemaMapByName,
-			ddlObjectRetriever, terminalStore);
+
 		const {
 			newLatestSchemaVersions,
 			newSchemaVersionMapBySchemaName,
@@ -145,92 +146,59 @@ export class SchemaComposer
 
 	private composeDomain(
 		domainName: DomainName,
-		ddlObjectRetriever: IDdlObjectRetriever,
-		terminalStore: ITerminalStore,
-	): {
-		domainMapByName: Map<DomainName, IDomain>,
 		allDomains: IDomain[],
-		newDomains: IDomain[]
-	} {
-		const allDomains: IDomain[] = [];
-		const existingDomains = terminalStore.getDomains();
-
-		const domain: Map<DomainName, IDomain> = new Map();
-		for (const domain of existingDomains) {
-			if (domainNameSet.has(domain.name)) {
-				domainMapByName.set(domain.name, domain);
+		newDomains: IDomain[],
+		ddlObjectRetriever: IDdlObjectRetriever,
+	): IDomain {
+		let domain: IDomain
+		for (const existingDomain of allDomains) {
+			if (domainName === existingDomain.name) {
+				domain = existingDomain
 			}
 		}
-
-		const newDomains: IDomain[] = [];
-		for (const domainName of domainNameSet) {
-			const existingDomain = domainMapByName.get(domainName);
-			if (existingDomain) {
-				allDomains.push(existingDomain);
-				// continue
-			} else {
-				const domain: IDomain = {
-					id: ++ddlObjectRetriever.lastIds.domains,
-					name: domainName,
-					schemas: []
-				};
-				domainMapByName.set(domain.name, domain);
-				allDomains.push(domain);
-				newDomains.push(domain);
-			}
+		if (!domain) {
+			domain = {
+				id: ++ddlObjectRetriever.lastIds.domains,
+				name: domainName,
+				schemas: []
+			};
+			allDomains.push(domain);
+			newDomains.push(domain);
 		}
 
-		return {
-			allDomains,
-			domainMapByName,
-			newDomains
-		};
+		return domain
 	}
 
-	private composeSchemas(
-		domainMapByName: Map<DomainName, IDomain>,
-		jsonSchemaMapByName: Map<SchemaName, JsonSchemaWithLastIds>,
-		ddlObjectRetriever: IDdlObjectRetriever,
-		terminalStore: ITerminalStore,
-	): {
+	private composeSchema(
+		domain: IDomain,
+		jsonSchema: JsonSchemaWithLastIds,
 		allSchemas: ISchema[],
-		newSchemaMapByName: Map<SchemaName, ISchema>,
-		newSchemas: ISchema[]
-	} {
-		const schemaMapByName: Map<SchemaName, ISchema> = new Map();
-		const newSchemaMapByName: Map<SchemaName, ISchema> = new Map();
-		const allSchemas = terminalStore.getSchemas();
-		for (const schema of allSchemas) {
-			schemaMapByName.set(schema.name, schema);
-		}
-
-		const newSchemas: ISchema[] = [];
-		for (const [schemaName, jsonSchema] of jsonSchemaMapByName) {
-			if (schemaMapByName.has(schemaName)) {
-				continue;
+		newSchemas: ISchema[],
+		ddlObjectRetriever: IDdlObjectRetriever
+	): ISchema {
+		let schema: ISchema
+		for (const existingSchema of allSchemas) {
+			// FIXME: keep track of schemas by signature
+			if (existingSchema.name === jsonSchema.name
+				&& existingSchema.domain.name === domain.name) {
+				schema = existingSchema
 			}
-			const domain = domainMapByName.get(jsonSchema.domain);
-			const schema: ISchema = {
+		}
+		if (!schema) {
+			schema = {
 				domain,
 				index: ++ddlObjectRetriever.lastIds.schemas,
-				lastIds: {
-					...ddlObjectRetriever.lastIds
-				},
-				name: schemaName,
+				lastIds: null,
+				name: jsonSchema.name,
 				packageName: jsonSchema.name,
 				scope: 'public',
 				status: SchemaStatus.CURRENT,
 			};
 			allSchemas.push(schema);
 			newSchemas.push(schema);
-			newSchemaMapByName.set(schema.name, schema);
 		}
 
-		return {
-			allSchemas,
-			newSchemaMapByName,
-			newSchemas
-		};
+		return schema
 	}
 
 	private composeSchemaVersions(
