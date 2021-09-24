@@ -21,20 +21,27 @@ export class ParentDao
     implements IParentDao {
 
     async findAllWithChildren(): Promise<IParent[]> {
-        return await this.db.find.tree({
-            select: {
-                bool: Y,
-                children: {
+        let parentRecords = []
+        try {
+            parentRecords = await this.db.find.tree({
+                select: {
                     bool: Y,
+                    children: {
+                        bool: Y,
+                        id: Y,
+                        num: Y,
+                        str: Y
+                    },
                     id: Y,
                     num: Y,
                     str: Y
-                },
-                id: Y,
-                num: Y,
-                str: Y
-            }
-        })
+                }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+
+        return parentRecords
     }
 
     async saveChanges(

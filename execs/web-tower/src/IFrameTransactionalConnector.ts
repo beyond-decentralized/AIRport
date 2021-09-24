@@ -317,10 +317,10 @@ export class IframeTransactionalConnector
 
 		let observableMessageRecord: IObservableMessageInRecord<any>
 		switch (message.type) {
-			case IsolateMessageType.APP_INITIALIZING:
-				this.mainDomain = mainDomain
-				this.pendingMessageMap.delete(message.id);
-				return
+			// case IsolateMessageType.APP_INITIALIZING:
+			// 	this.mainDomain = mainDomain
+			// 	this.pendingMessageMap.delete(message.id);
+			// 	return
 			case IsolateMessageType.SEARCH:
 			case IsolateMessageType.SEARCH_ONE:
 				observableMessageRecord = this.observableMessageMap.get(message.id)

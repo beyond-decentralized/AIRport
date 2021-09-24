@@ -55,7 +55,6 @@ export abstract class TransactionalReceiver {
                     const databaseManager = await container(this).get(DATABASE_MANAGER)
                     // FIXME: initalize ahead of time, at Isolate Loading
                     await databaseManager.initFeatureSchemas([schema], {}, true)
-                    // TODO: work here next
                     result = schema.lastIds
                     break;
                 case IsolateMessageType.APP_INITIALIZED:
