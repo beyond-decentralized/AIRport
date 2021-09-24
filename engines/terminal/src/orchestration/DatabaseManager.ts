@@ -213,7 +213,7 @@ export class DatabaseManager
 		return this.initialized;
 	}
 
-	private async initFeatureSchemas(
+	async initFeatureSchemas(
 		schemas: JsonSchema[],
 		context: IContext,
 		buildSchemas: boolean,

@@ -1,10 +1,13 @@
 import {
     API_REGISTRY,
-    APPLICATION_INITIALIZER,
-    IApplicationInitializer
 } from '@airport/check-in'
 import { container, DI, SYSTEM } from '@airport/di'
 import { SCHEMA_INITIALIZER } from '@airport/landing'
+import {
+    APPLICATION_INITIALIZER,
+    IApplicationInitializer,
+    LastIds
+} from '@airport/security-check'
 import { SCHEMA } from './generated/schema'
 
 export class ApplicationInitializer
@@ -13,7 +16,8 @@ export class ApplicationInitializer
     private initializing = false
 
     async initialize(
-        librarySignature: string = 'functionality-demo-schema'
+        lastIds: LastIds,
+        librarySignature: string = 'functionality-demo-schema',
     ): Promise<void> {
         if (this.initializing) {
             return

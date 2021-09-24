@@ -15,6 +15,7 @@ export type JsonSchemaName = string;
 export type PackageId = number;
 export type PackageName = string;
 export type SchemaIndex = number;
+// NOTE: SchemaName contains DomainName as a prefix DOMAIN_NAME___SCHEMA_NAME
 export type SchemaName = string;
 export type SchemaReferenceIndex = number;
 export type SchemaScope = 'private' | 'public' | null;

@@ -1,5 +1,3 @@
-import { deltaConst } from '@airport/air-control';
-import { deltaStore } from '../SharingAdaptor';
 export class ChangeListConfig {
     constructor(config, deltaStoreConfig) {
         this.config = config;

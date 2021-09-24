@@ -21,6 +21,7 @@ import {
     ICredentials,
     TRANSACTIONAL_SERVER
 } from '@airport/terminal-map';
+import { DATABASE_MANAGER } from '../tokens';
 
 export abstract class TransactionalReceiver {
 
@@ -39,9 +40,11 @@ export abstract class TransactionalReceiver {
             switch (message.type) {
                 case IsolateMessageType.INIT_CONNECTION:
                     ddlObjectRetriever.lastIds
-                    let initConnectionMessage: IInitConnectionIMI = message
+                    let initConnectionMessage: IInitConnectionIMI = message as any
                     const schema: JsonSchemaWithApi = initConnectionMessage.schema
-                    schema.
+                    const databaseManager = await container(this).get(DATABASE_MANAGER)
+                    const lastIdMap = await databaseManager.initFeatureSchemas([schema], {}, true)
+                    // TODO: work here next
                     result = message
                     break;
                 case IsolateMessageType.ADD_REPOSITORY:

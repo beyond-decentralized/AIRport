@@ -1,17 +1,23 @@
-import { APPLICATION_INITIALIZER } from '@airport/check-in';
 import { container, DI } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
 import { LOCAL_API_SERVER } from '@airport/tower';
+import { APPLICATION_INITIALIZER } from '@airport/security-check';
 import { Observable } from 'rxjs';
+export var ConnectionState;
+(function (ConnectionState) {
+    ConnectionState[ConnectionState["NOT_INITIALIED"] = 0] = "NOT_INITIALIED";
+    ConnectionState[ConnectionState["INITIALIZING"] = 1] = "INITIALIZING";
+    ConnectionState[ConnectionState["INITIALIZED"] = 2] = "INITIALIZED";
+})(ConnectionState || (ConnectionState = {}));
 export class IframeTransactionalConnector {
     constructor() {
         this.pendingMessageMap = new Map();
         this.observableMessageMap = new Map();
         this.messageId = 0;
-        this.connectionInitialized = false;
+        this.connectionState = ConnectionState.NOT_INITIALIED;
     }
-    init() {
+    async init() {
         window.addEventListener("message", event => {
             const origin = event.origin;
             const message = event.data;
@@ -52,7 +58,9 @@ export class IframeTransactionalConnector {
                     return;
                 case 'Db':
                     if (message.type === IsolateMessageType.INIT_CONNECTION) {
-                        this.connectionInitialized = true;
+                        this.connectionState = ConnectionState.INITIALIZING;
+                        let initConnectionIMO = message;
+                        this.lastIds = initConnectionIMO.result;
                         return;
                     }
                     this.handleDbToIsolateMessage(message, mainDomain);
@@ -252,10 +260,16 @@ export class IframeTransactionalConnector {
         });
     }
     async isConnectionInitialized() {
-        const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER);
-        await applicationInitializer.initialize();
-        if (this.connectionInitialized) {
-            return true;
+        switch (this.connectionState) {
+            case ConnectionState.NOT_INITIALIED:
+                break;
+            case ConnectionState.INITIALIZING:
+                const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER);
+                await applicationInitializer.initialize(this.lastIds);
+                this.connectionState = ConnectionState.INITIALIZED;
+                return true;
+            case ConnectionState.INITIALIZED:
+                return true;
         }
         let message = {
             ...this.getCoreFields(),

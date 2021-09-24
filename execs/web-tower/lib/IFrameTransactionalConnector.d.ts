@@ -1,7 +1,7 @@
 import { IQueryContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
 import { DistributionStrategy, ISaveResult, ITransactionalConnector, PlatformType, PortableQuery } from '@airport/ground-control';
-import { IIsolateMessage } from '@airport/security-check';
+import { IIsolateMessage, LastIds } from '@airport/security-check';
 import { Observable, Observer } from 'rxjs';
 export interface IMessageInRecord {
     message: IIsolateMessage;
@@ -12,6 +12,11 @@ export interface IObservableMessageInRecord<T> {
     id: number;
     observer?: Observer<T>;
 }
+export declare enum ConnectionState {
+    NOT_INITIALIED = 0,
+    INITIALIZING = 1,
+    INITIALIZED = 2
+}
 export declare class IframeTransactionalConnector implements ITransactionalConnector {
     dbName: string;
     serverUrl: string;
@@ -19,8 +24,9 @@ export declare class IframeTransactionalConnector implements ITransactionalConne
     observableMessageMap: Map<number, IObservableMessageInRecord<any>>;
     messageId: number;
     mainDomain: string;
-    connectionInitialized: boolean;
-    init(): void;
+    connectionState: ConnectionState;
+    lastIds: LastIds;
+    init(): Promise<void>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<E>;

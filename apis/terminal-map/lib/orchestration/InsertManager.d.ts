@@ -1,6 +1,6 @@
 import { IContext } from "@airport/di";
-import { DistributionStrategy, PlatformType, PortableQuery } from "@airport/ground-control";
-import { IActor, RecordHistoryId } from "@airport/holding-pattern";
+import type { DistributionStrategy, PlatformType, PortableQuery } from "@airport/ground-control";
+import type { IActor, RecordHistoryId } from "@airport/holding-pattern";
 import { ITransaction } from "../transaction/ITransaction";
 export declare type RecordId = number;
 export interface IInsertManager {

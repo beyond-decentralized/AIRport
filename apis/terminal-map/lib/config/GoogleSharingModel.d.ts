@@ -1,5 +1,5 @@
-import { SharingPlatformSetupInfo } from '../SharingAdaptor';
-import { ChangeListShareInfo } from '../SharingAdaptor';
+import type { SharingPlatformSetupInfo } from '../SharingAdaptor';
+import type { ChangeListShareInfo } from '../SharingAdaptor';
 /**
  * Created by Papa on 1/10/2016.
  */

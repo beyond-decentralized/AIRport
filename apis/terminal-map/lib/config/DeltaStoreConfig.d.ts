@@ -1,6 +1,6 @@
 import { SharingPlatformSetupInfo } from '../SharingAdaptor';
 import { IChangeListConfig, JsonChangeListConfig } from './ChangeListConfig';
-import { GoogleSetupInfo } from './GoogleSharingModel';
+import type { GoogleSetupInfo } from './GoogleSharingModel';
 import { IOfflineDeltaStoreConfig, JsonOfflineDeltaStoreConfig } from './OfflineDeltaStoreConfig';
 import { PlatformType } from './PlatformType';
 /**

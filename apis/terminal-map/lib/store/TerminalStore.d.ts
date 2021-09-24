@@ -1,7 +1,7 @@
 import { IMemoizedSelector } from '@airport/check-in';
 import { DomainName, JsonSchemaName, SchemaName } from '@airport/ground-control';
 import { BehaviorSubject } from 'rxjs';
-import { IDomain } from '@airport/territory';
+import type { IDomain } from '@airport/territory';
 import { ISchema, ISchemaColumn, ISchemaEntity, ISchemaRelation, ISchemaVersion } from '@airport/traffic-pattern';
 import { ITerminalState } from './TerminalState';
 export interface ITerminalStore {

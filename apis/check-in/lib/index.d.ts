@@ -12,7 +12,6 @@ export * from './serialize/OperationDeserializer';
 export * from './serialize/QueryParameterDeserializer';
 export * from './serialize/QueryResultsSerializer';
 export * from './api/Api';
-export * from './api/ApplicationInitializer';
 export * from './api/ApiOperation';
 export * from './api/ApiRegistry';
 export * from './api/ApiValidator';

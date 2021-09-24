@@ -1,6 +1,6 @@
-import { ChangeListShareInfo } from '../SharingAdaptor';
-import { DistributionStrategy } from '../sync/DistributionStrategy';
-import { IDeltaStoreConfig } from './DeltaStoreConfig';
+import type { ChangeListShareInfo } from '../SharingAdaptor';
+import type { DistributionStrategy } from '../sync/DistributionStrategy';
+import type { IDeltaStoreConfig } from './DeltaStoreConfig';
 /**
  * Created by Papa on 5/28/2016.
  */

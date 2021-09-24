@@ -2,8 +2,13 @@ import {
     IContext
 } from "@airport/di"
 import {
-    JsonSchema
+	DomainName,
+    JsonSchema,
+	SchemaName
 } from "@airport/ground-control"
+import {
+	LastIds
+} from "@airport/security-check"
 
 export interface IDatabaseManager {
 
@@ -30,5 +35,11 @@ export interface IDatabaseManager {
 		context: IContext,
 		...schemas: JsonSchema[]
 	): Promise<void>
+	
+	initFeatureSchemas(
+		schemas: JsonSchema[],
+		context: IContext,
+		buildSchemas: boolean,
+	): Promise<Map<DomainName, Map<SchemaName, LastIds>>>
 
 }

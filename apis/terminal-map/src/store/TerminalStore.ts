@@ -29,6 +29,7 @@ export interface ITerminalStore {
 
 	getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>
 
+	// Schema name contains the domain name as a prefix + '___'
 	getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<SchemaName, ISchemaVersion>, ITerminalState>
 
 	getAllSchemaVersionsByIds: IMemoizedSelector<ISchemaVersion[], ITerminalState>

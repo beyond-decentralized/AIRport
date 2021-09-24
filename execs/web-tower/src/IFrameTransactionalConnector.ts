@@ -1,9 +1,6 @@
 import { IQueryContext } from '@airport/air-control';
 import { ILocalAPIRequest } from '@airport/autopilot';
 import {
-	APPLICATION_INITIALIZER
-} from '@airport/check-in'
-import {
 	container,
 	DI,
 	IContext
@@ -23,9 +20,14 @@ import {
 	IsolateMessageType,
 	IPortableQueryIMI,
 	IReadQueryIMI,
-	ISaveIMI
+	ISaveIMI,
+	LastIds,
+	IInitConnectionIMO
 } from '@airport/security-check';
 import { LOCAL_API_SERVER } from '@airport/tower'
+import {
+	APPLICATION_INITIALIZER
+} from '@airport/security-check'
 import {
 	Observable,
 	Observer
@@ -63,6 +65,7 @@ export class IframeTransactionalConnector
 	mainDomain: string
 
 	connectionState = ConnectionState.NOT_INITIALIED
+	lastIds: LastIds
 
 	async init() {
 		window.addEventListener("message", event => {
@@ -105,7 +108,9 @@ export class IframeTransactionalConnector
 					return
 				case 'Db':
 					if (message.type === IsolateMessageType.INIT_CONNECTION) {
-						this.connectionInitialized = true
+						this.connectionState = ConnectionState.INITIALIZING
+						let initConnectionIMO: IInitConnectionIMO = message
+						this.lastIds = initConnectionIMO.result
 						return
 					}
 					this.handleDbToIsolateMessage(message as IIsolateMessageOut<any>, mainDomain)
@@ -404,7 +409,7 @@ export class IframeTransactionalConnector
 				break;
 			case ConnectionState.INITIALIZING:
 				const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER)
-				await applicationInitializer.initialize()
+				await applicationInitializer.initialize(this.lastIds)
 				this.connectionState = ConnectionState.INITIALIZED
 				return true
 			case ConnectionState.INITIALIZED:
