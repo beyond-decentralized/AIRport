@@ -10,9 +10,9 @@ export interface ISchemaComposer {
 export declare class SchemaComposer implements ISchemaComposer {
     compose(jsonSchemas: JsonSchemaWithLastIds[], ddlObjectRetriever: IDdlObjectRetriever, schemaLocator: ISchemaLocator, terminalStore: ITerminalStore): DdlObjects;
     getExistingLatestSchemaVersion(referencedSchemaName: SchemaName, terminalStore: ITerminalStore): ISchemaVersion;
-    private composeDomains;
-    private composeSchemas;
-    private composeSchemaVersions;
+    private composeDomain;
+    private composeSchema;
+    private composeSchemaVersion;
     private composeSchemaReferences;
     private composeSchemaEntities;
     private composeSchemaProperties;

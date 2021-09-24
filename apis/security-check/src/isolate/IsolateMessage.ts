@@ -7,6 +7,7 @@ import {
     PortableQuery
 } from "@airport/ground-control";
 import { Observable } from "rxjs";
+import { JsonSchemaWithLastIds } from '..';
 import { LastIds } from '../LastIds';
 
 export enum IsolateMessageType {
@@ -47,7 +48,7 @@ export interface IIsolateMessageOut<T>
 // and initial connection should probably not play a role in that
 export interface IInitConnectionIMI
     extends IIsolateMessage {
-    schema: JsonSchemaWithApi
+    schema: JsonSchemaWithLastIds
 }
 
 export interface IInitConnectionIMO

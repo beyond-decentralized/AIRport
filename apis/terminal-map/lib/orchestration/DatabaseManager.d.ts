@@ -1,10 +1,10 @@
 import { IContext } from "@airport/di";
-import { DomainName, JsonSchema, SchemaName } from "@airport/ground-control";
-import { LastIds } from "@airport/security-check";
+import { JsonSchema } from "@airport/ground-control";
+import { JsonSchemaWithLastIds } from "@airport/security-check";
 export interface IDatabaseManager {
     isInitialized(): boolean;
     initWithDb(domainName: string, context: IContext, ...schemas: JsonSchema[]): Promise<void>;
     initNoDb(context: IContext, ...schemas: JsonSchema[]): Promise<void>;
-    initFeatureSchemas(schemas: JsonSchema[], context: IContext, buildSchemas: boolean): Promise<Map<DomainName, Map<SchemaName, LastIds>>>;
+    initFeatureSchemas(schemas: JsonSchemaWithLastIds[], context: IContext, buildSchemas: boolean): void;
 }
 //# sourceMappingURL=DatabaseManager.d.ts.map

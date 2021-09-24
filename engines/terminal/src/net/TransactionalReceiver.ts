@@ -14,7 +14,8 @@ import {
     IPortableQueryIMI,
     IReadQueryIMI,
     ISaveIMI,
-    IsolateMessageType
+    IsolateMessageType,
+    JsonSchemaWithLastIds
 } from '@airport/security-check';
 import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff';
 import {
@@ -41,11 +42,11 @@ export abstract class TransactionalReceiver {
                 case IsolateMessageType.INIT_CONNECTION:
                     ddlObjectRetriever.lastIds
                     let initConnectionMessage: IInitConnectionIMI = message as any
-                    const schema: JsonSchemaWithApi = initConnectionMessage.schema
+                    const schema: JsonSchemaWithLastIds = initConnectionMessage.schema
                     const databaseManager = await container(this).get(DATABASE_MANAGER)
-                    const lastIdMap = await databaseManager.initFeatureSchemas([schema], {}, true)
+                    await databaseManager.initFeatureSchemas([schema], {}, true)
                     // TODO: work here next
-                    result = message
+                    result = schema.lastIds
                     break;
                 case IsolateMessageType.ADD_REPOSITORY:
                     const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message

@@ -37,22 +37,22 @@ import {
 export interface ISchemaInitializer {
 
 	initialize(
-		jsonSchemas: JsonSchema[],
+		jsonSchemas: JsonSchemaWithLastIds[],
 		context: IContext,
 		normalOperation?: boolean
 	): Promise<void>
 
 	initializeForAIRportApp(
-		jsonSchema: JsonSchema
+		jsonSchema: JsonSchemaWithLastIds
 	): Promise<void>
 
 	hydrate(
-		jsonSchemas: JsonSchema[],
+		jsonSchemas: JsonSchemaWithLastIds[],
 		context: IContext,
 	): Promise<void>
 
 	stage(
-		jsonSchemas: JsonSchema[],
+		jsonSchemas: JsonSchemaWithLastIds[],
 		context: IContext,
 	): Promise<[IAirportDatabase, IQueryObjectInitializer, ISequenceGenerator]>
 
@@ -68,7 +68,7 @@ export class SchemaInitializer
 	}
 
 	async hydrate(
-		jsonSchemas: JsonSchema[],
+		jsonSchemas: JsonSchemaWithLastIds[],
 		context: IContext,
 	): Promise<void> {
 		const [airDb, queryObjectInitializer, sequenceGenerator] =
@@ -129,7 +129,7 @@ export class SchemaInitializer
 	}
 
 	async initializeForAIRportApp(
-		jsonSchema: JsonSchema
+		jsonSchema: JsonSchemaWithLastIds
 	): Promise<void> {
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			queryObjectInitializer, schemaComposer, schemaLocator, terminalStore]
@@ -152,7 +152,7 @@ export class SchemaInitializer
 	}
 
 	async stage(
-		jsonSchemas: JsonSchema[],
+		jsonSchemas: JsonSchemaWithLastIds[],
 		context: IContext,
 	): Promise<[IAirportDatabase, IQueryObjectInitializer, ISequenceGenerator]> {
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,

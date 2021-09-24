@@ -1,9 +1,12 @@
 import { container, } from '@airport/di';
 import { IsolateMessageType } from '@airport/security-check';
+import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
+import { DATABASE_MANAGER } from '../tokens';
 export class TransactionalReceiver {
     async processMessage(message) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        const [ddlObjectRetriever, transactionalServer] = await container(this)
+            .get(DDL_OBJECT_RETRIEVER, TRANSACTIONAL_SERVER);
         let result;
         let errorMessage;
         let credentials = {
@@ -13,56 +16,62 @@ export class TransactionalReceiver {
         try {
             switch (message.type) {
                 case IsolateMessageType.INIT_CONNECTION:
-                    result = message;
+                    ddlObjectRetriever.lastIds;
+                    let initConnectionMessage = message;
+                    const schema = initConnectionMessage.schema;
+                    const databaseManager = await container(this).get(DATABASE_MANAGER);
+                    await databaseManager.initFeatureSchemas([schema], {}, true);
+                    // TODO: work here next
+                    result = schema.lastIds;
                     break;
                 case IsolateMessageType.ADD_REPOSITORY:
                     const addRepositoryMessage = message;
-                    result = await transServer.addRepository(addRepositoryMessage.name, addRepositoryMessage.url, addRepositoryMessage.platform, addRepositoryMessage.platformConfig, addRepositoryMessage.distributionStrategy, credentials, context);
+                    result = await transactionalServer.addRepository(addRepositoryMessage.name, addRepositoryMessage.url, addRepositoryMessage.platform, addRepositoryMessage.platformConfig, addRepositoryMessage.distributionStrategy, credentials, context);
                     break;
                 case IsolateMessageType.COMMIT:
-                    result = await transServer.commit(credentials, {});
+                    result = await transactionalServer.commit(credentials, {});
                     break;
                 case IsolateMessageType.DELETE_WHERE:
                     const deleteWhereMessage = message;
-                    result = await transServer.deleteWhere(deleteWhereMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.deleteWhere(deleteWhereMessage.portableQuery, credentials, context);
                     break;
                 case IsolateMessageType.FIND:
                     const findMessage = message;
-                    result = await transServer.find(findMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.find(findMessage.portableQuery, credentials, context);
                     break;
                 case IsolateMessageType.FIND_ONE:
                     const findOneMessage = message;
-                    result = await transServer.findOne(findOneMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.findOne(findOneMessage.portableQuery, credentials, context);
                     break;
                 case IsolateMessageType.INSERT_VALUES:
                     const insertValuesMessage = message;
-                    result = await transServer.insertValues(insertValuesMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.insertValues(insertValuesMessage.portableQuery, credentials, context);
                     break;
                 case IsolateMessageType.INSERT_VALUES_GET_IDS:
                     const insertValuesGetIdsMessage = message;
-                    result = await transServer.insertValuesGetIds(insertValuesGetIdsMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.insertValuesGetIds(insertValuesGetIdsMessage.portableQuery, credentials, context);
                     break;
                 case IsolateMessageType.ROLLBACK:
-                    result = await transServer.rollback(credentials, {});
+                    result = await transactionalServer.rollback(credentials, {});
                     break;
                 case IsolateMessageType.SAVE:
                     const saveMessage = message;
-                    result = await transServer.save(saveMessage.entity, credentials, context);
+                    result = await transactionalServer.save(saveMessage.entity, credentials, context);
                     break;
                 case IsolateMessageType.SEARCH:
                     const searchMessage = message;
-                    result = await transServer.search(searchMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.search(searchMessage.portableQuery, credentials, context);
                     break;
                 case IsolateMessageType.SEARCH_ONE:
                     const searchOneMessage = message;
-                    result = await transServer.search(searchOneMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.search(searchOneMessage.portableQuery, credentials, context);
                     break;
                 case IsolateMessageType.START_TRANSACTION:
-                    result = await transServer.startTransaction(credentials, context);
+                    result = await transactionalServer.startTransaction(credentials, context);
                     break;
                 case IsolateMessageType.UPDATE_VALUES:
                     const updateValuesMessage = message;
-                    result = await transServer.insertValuesGetIds(updateValuesMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.insertValuesGetIds(updateValuesMessage.portableQuery, credentials, context);
                     break;
                 default:
                     // Unexpected IsolateMessageInType

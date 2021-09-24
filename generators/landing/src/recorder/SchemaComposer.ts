@@ -115,6 +115,7 @@ export class SchemaComposer
 				schema.lastIds = {
 					...ddlObjectRetriever.lastIds
 				}
+				jsonSchema.lastIds = schema.lastIds
 				schema.index = ++ddlObjectRetriever.lastIds.schemas
 			}
 			if (!domain.id) {

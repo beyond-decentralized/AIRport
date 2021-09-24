@@ -164,10 +164,30 @@ export class DatabaseManager {
     }
     async initFeatureSchemas(schemas, context, buildSchemas) {
         const schemaDao = await container(this).get(SCHEMA_DAO);
+        const candidateSchemaDomainNames = [];
+        const candidateSchemaNames = [];
+        for (const jsonSchema of schemas) {
+            candidateSchemaDomainNames.push(jsonSchema.domain);
+            candidateSchemaNames.push(getSchemaName(jsonSchema));
+        }
+        // FIXME: this search should be done by schema signature
+        const maxVersionedMapBySchemaAndDomainNames = await schemaDao.findMaxVersionedMapBySchemaAndDomainNames(candidateSchemaDomainNames, candidateSchemaNames);
+        const lastIdsByDomainAndSchemaNames = new Map();
         const schemaNames = [];
         for (const jsonSchema of schemas) {
             const schemaName = getSchemaName(jsonSchema);
-            schemaNames.push(schemaName);
+            const schemaMapForDomain = maxVersionedMapBySchemaAndDomainNames.get(jsonSchema.domain);
+            if (!schemaMapForDomain) {
+                schemaNames.push(schemaName);
+            }
+            else {
+                const schemaLookupRecord = schemaMapForDomain.get(schemaName);
+                if (schemaLookupRecord) {
+                }
+                else {
+                    schemaNames.push(schemaName);
+                }
+            }
         }
         const existingSchemaMap = await schemaDao.findMapByNames(schemaNames);
         const schemasToInitialize = [];

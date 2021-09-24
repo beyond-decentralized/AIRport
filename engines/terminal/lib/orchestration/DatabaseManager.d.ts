@@ -1,12 +1,12 @@
 import { IContext } from '@airport/di';
-import { JsonSchema } from '@airport/ground-control';
 import { IDatabaseManager } from '@airport/terminal-map';
+import { JsonSchemaWithLastIds } from '@airport/security-check';
 export declare class DatabaseManager implements IDatabaseManager {
     private initialized;
-    initNoDb(context: IContext, ...schemas: JsonSchema[]): Promise<void>;
-    initWithDb(domainName: string, context: IContext, ...schemas: JsonSchema[]): Promise<void>;
+    initNoDb(context: IContext, ...schemas: JsonSchemaWithLastIds[]): Promise<void>;
+    initWithDb(domainName: string, context: IContext, ...schemas: JsonSchemaWithLastIds[]): Promise<void>;
     isInitialized(): boolean;
-    private initFeatureSchemas;
+    initFeatureSchemas(schemas: JsonSchemaWithLastIds[], context: IContext, buildSchemas: boolean): Promise<void>;
     private initTerminal;
     private installAirportSchema;
 }

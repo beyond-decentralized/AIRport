@@ -7,7 +7,7 @@ import {
 	SchemaName
 } from "@airport/ground-control"
 import {
-	LastIds
+	JsonSchemaWithLastIds
 } from "@airport/security-check"
 
 export interface IDatabaseManager {
@@ -28,18 +28,18 @@ export interface IDatabaseManager {
 	initWithDb(
 		domainName: string,
 		context: IContext,
-		...schemas: JsonSchema[]
+		...schemas: JsonSchemaWithLastIds[]
 	): Promise<void>;
 
 	initNoDb(
 		context: IContext,
-		...schemas: JsonSchema[]
+		...schemas: JsonSchemaWithLastIds[]
 	): Promise<void>
 	
 	initFeatureSchemas(
-		schemas: JsonSchema[],
+		schemas: JsonSchemaWithLastIds[],
 		context: IContext,
 		buildSchemas: boolean,
-	): Promise<Map<DomainName, Map<SchemaName, LastIds>>>
+	): void
 
 }

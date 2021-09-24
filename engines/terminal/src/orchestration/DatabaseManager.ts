@@ -32,7 +32,7 @@ import {
 } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 import { DATABASE_MANAGER } from '../tokens';
-import { LastIds } from '@airport/security-check';
+import { JsonSchemaWithLastIds } from '@airport/security-check';
 
 export class DatabaseManager
 	implements IDatabaseManager {
@@ -44,7 +44,7 @@ export class DatabaseManager
 
 	async initNoDb(
 		context: IContext,
-		...schemas: JsonSchema[]
+		...schemas: JsonSchemaWithLastIds[]
 	): Promise<void> {
 		await container(this).get(AIRPORT_DATABASE);
 
@@ -61,7 +61,7 @@ export class DatabaseManager
 	async initWithDb(
 		domainName: string,
 		context: IContext,
-		...schemas: JsonSchema[]
+		...schemas: JsonSchemaWithLastIds[]
 	): Promise<void> {
 		await container(this).get(AIRPORT_DATABASE);
 
@@ -214,10 +214,10 @@ export class DatabaseManager
 	}
 
 	async initFeatureSchemas(
-		schemas: JsonSchema[],
+		schemas: JsonSchemaWithLastIds[],
 		context: IContext,
 		buildSchemas: boolean,
-	): Promise<Map<DomainName, Map<SchemaName, LastIds>>> {
+	): Promise<void> {
 		const schemaDao = await container(this).get(SCHEMA_DAO);
 
 		const candidateSchemaDomainNames: DomainName[] = []
