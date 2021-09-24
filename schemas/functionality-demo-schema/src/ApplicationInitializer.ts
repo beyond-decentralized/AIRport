@@ -8,6 +8,7 @@ import {
     IApplicationInitializer,
     LastIds
 } from '@airport/security-check'
+import { DDL_OBJECT_RETRIEVER } from '../../../generators/takeoff/lib'
 import { SCHEMA } from './generated/schema'
 
 export class ApplicationInitializer
@@ -26,8 +27,9 @@ export class ApplicationInitializer
 
         DI.db().context.inAIRportApp = true
 
-        const [apiRegistry, schemaInitializer] = await container(this)
-            .get(API_REGISTRY, SCHEMA_INITIALIZER)
+        const [apiRegistry, ddlObjectRetriever, schemaInitializer] = await container(this)
+            .get(API_REGISTRY, DDL_OBJECT_RETRIEVER, SCHEMA_INITIALIZER)
+        ddlObjectRetriever.lastIds = lastIds
 
         await schemaInitializer.initializeForAIRportApp(SCHEMA as any)
 
