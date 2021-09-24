@@ -43,6 +43,7 @@ export class SchemaComposer {
             const schema = this.composeSchema(domain, jsonSchema, allSchemas, newSchemas, schemaMapByName);
             this.composeSchemaVersion(jsonSchema, schema, newLatestSchemaVersions, newSchemaVersions, newSchemaVersionMapBySchemaName);
         }
+        const allSchemaVersionsByIds = [...terminalStore.getAllSchemaVersionsByIds()];
         const { newSchemaReferenceMap, newSchemaReferences } = this.composeSchemaReferences(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, schemaLocator, terminalStore);
         for (const jsonSchema of jsonSchemas) {
             const schemaNameWithDomainNamePrefix = getSchemaName(jsonSchema);
@@ -60,13 +61,15 @@ export class SchemaComposer {
                 domain.id = ++ddlObjectRetriever.lastIds.domains;
             }
             const schemaVersion = newSchemaVersionMapBySchemaName.get(schema.name);
+            if (!schemaVersion.id) {
+                schemaVersion.id = ++ddlObjectRetriever.lastIds.schemaVersions;
+            }
             this.composeSchemaEntities(jsonSchema, schemaVersion, newEntitiesMapBySchemaName, newEntities, ddlObjectRetriever);
             this.composeSchemaProperties(jsonSchema, newProperties, newPropertiesMap, newEntitiesMapBySchemaName, ddlObjectRetriever);
             this.composeSchemaRelations(jsonSchema, newRelations, newRelationsMap, newEntitiesMapBySchemaName, newPropertiesMap, newSchemaReferenceMap, ddlObjectRetriever, terminalStore);
             this.composeSchemaColumns(jsonSchema, newColumns, newColumnsMap, newPropertyColumns, newEntitiesMapBySchemaName, newPropertiesMap, ddlObjectRetriever);
             this.composeSchemaRelationColumns(jsonSchema, newRelationColumns, newSchemaVersionMapBySchemaName, newSchemaReferenceMap, newRelationsMap, newColumnsMap, ddlObjectRetriever, terminalStore);
         }
-        const allSchemaVersionsByIds = [...terminalStore.getAllSchemaVersionsByIds()];
         return {
             allDomains,
             allSchemas,
@@ -138,6 +141,12 @@ export class SchemaComposer {
                 minorVersion: parseInt(versionParts[1]),
                 patchVersion: parseInt(versionParts[2]),
                 schema,
+                // entities: [],
+                // references: [],
+                // referencedBy: [],
+                // entityMapByName: {},
+                // referencesMapByName: {},
+                // referencedByMapByName: {},
             };
             // schema.versions                        = [newSchemaVersion]
             newSchemaVersions.push(newSchemaVersion);
@@ -201,6 +210,13 @@ export class SchemaComposer {
                 isRepositoryEntity: jsonEntity.isRepositoryEntity,
                 name: jsonEntity.name,
                 tableConfig: jsonEntity.tableConfig,
+                // columns: [],
+                // columnMap: {},
+                // idColumns: [],
+                // idColumnMap: {},
+                // relations: [],
+                // properties: [],
+                // propertyMap: {}
             };
             // schemaVersion.entities.push(entity)
             newSchemaEntities.push(entity);
@@ -228,6 +244,7 @@ export class SchemaComposer {
                     entity,
                     name: jsonProperty.name,
                     isId: jsonProperty.isId,
+                    // propertyColumns: []
                 };
                 // entity.properties.push(property)
                 // entity.propertyMap[property.name] = property
@@ -277,6 +294,8 @@ export class SchemaComposer {
                     oneToManyElems: jsonRelation.oneToManyElems,
                     relationEntity,
                     relationType: jsonRelation.relationType,
+                    // oneRelationColumns: [],
+                    // manyRelationColumns: []
                 };
                 // property.relation               = [relation]
                 // relationEntity.relations.push(relation)
@@ -321,6 +340,9 @@ export class SchemaComposer {
                     propertyColumns: [],
                     scale: jsonColumn.scale,
                     type: jsonColumn.type,
+                    // propertyColumns: [],
+                    // oneRelationColumns: [],
+                    // manyRelationColumns: []
                 };
                 columnsForTable[index] = column;
                 newColumns.push(column);

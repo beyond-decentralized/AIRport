@@ -4,18 +4,22 @@ import { IsolateMessageType } from '@airport/security-check';
 import { LOCAL_API_SERVER } from '@airport/tower';
 import { APPLICATION_INITIALIZER } from '@airport/security-check';
 import { Observable } from 'rxjs';
-export var ConnectionState;
-(function (ConnectionState) {
-    ConnectionState[ConnectionState["NOT_INITIALIED"] = 0] = "NOT_INITIALIED";
-    ConnectionState[ConnectionState["INITIALIZING"] = 1] = "INITIALIZING";
-    ConnectionState[ConnectionState["INITIALIZED"] = 2] = "INITIALIZED";
-})(ConnectionState || (ConnectionState = {}));
+// FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
+// and debugging (http://localhost:7000)
+export const hostServer = 'http://localhost:7000';
+export var AppState;
+(function (AppState) {
+    AppState[AppState["NOT_INITIALIED"] = 0] = "NOT_INITIALIED";
+    AppState[AppState["START_INITIALIZING"] = 1] = "START_INITIALIZING";
+    AppState[AppState["INITIALIZING_IN_PROGRESS"] = 2] = "INITIALIZING_IN_PROGRESS";
+    AppState[AppState["INITIALIZED"] = 3] = "INITIALIZED";
+})(AppState || (AppState = {}));
 export class IframeTransactionalConnector {
     constructor() {
         this.pendingMessageMap = new Map();
         this.observableMessageMap = new Map();
         this.messageId = 0;
-        this.connectionState = ConnectionState.NOT_INITIALIED;
+        this.appState = AppState.NOT_INITIALIED;
     }
     async init() {
         window.addEventListener("message", event => {
@@ -57,10 +61,12 @@ export class IframeTransactionalConnector {
                     this.handleLocalApiRequest(message).then();
                     return;
                 case 'Db':
-                    if (message.type === IsolateMessageType.INIT_CONNECTION) {
-                        this.connectionState = ConnectionState.INITIALIZING;
-                        let initConnectionIMO = message;
-                        this.lastIds = initConnectionIMO.result;
+                    if (message.type === IsolateMessageType.APP_INITIALIZING) {
+                        if (this.appState === AppState.NOT_INITIALIED) {
+                            let initConnectionIMO = message;
+                            this.lastIds = initConnectionIMO.result;
+                            this.appState = AppState.START_INITIALIZING;
+                        }
                         return;
                     }
                     this.handleDbToIsolateMessage(message, mainDomain);
@@ -69,10 +75,7 @@ export class IframeTransactionalConnector {
                     return;
             }
         });
-        this.sendMessage({
-            ...this.getCoreFields(),
-            type: IsolateMessageType.INIT_CONNECTION
-        }).then();
+        this.initializeConnection().then();
     }
     async addRepository(name, url, platform, platformConfig, distributionStrategy, context) {
         return await this.sendMessage({
@@ -162,7 +165,17 @@ export class IframeTransactionalConnector {
             type: IsolateMessageType.ROLLBACK
         });
     }
+    async initializeConnection() {
+        while (this.appState === AppState.NOT_INITIALIED
+            || this.appState === AppState.START_INITIALIZING) {
+            await this.isConnectionInitialized();
+            await this.wait(100);
+        }
+    }
     async handleLocalApiRequest(request) {
+        while (this.appState !== AppState.INITIALIZED) {
+            await this.wait(100);
+        }
         const localApiServer = await container(this).get(LOCAL_API_SERVER);
         const response = await localApiServer.handleRequest(request);
         window.postMessage(response, response.host);
@@ -174,7 +187,7 @@ export class IframeTransactionalConnector {
         }
         let observableMessageRecord;
         switch (message.type) {
-            case IsolateMessageType.INIT_CONNECTION:
+            case IsolateMessageType.APP_INITIALIZING:
                 this.mainDomain = mainDomain;
                 this.pendingMessageMap.delete(message.id);
                 return;
@@ -219,7 +232,7 @@ export class IframeTransactionalConnector {
         while (!await this.isConnectionInitialized()) {
             await this.wait(100);
         }
-        window.parent.postMessage(message, "*");
+        window.parent.postMessage(message, hostServer);
         return new Promise((resolve, reject) => {
             this.pendingMessageMap.set(message.id, {
                 message,
@@ -249,7 +262,7 @@ export class IframeTransactionalConnector {
                 }).then();
             };
         });
-        window.parent.postMessage(message, this.mainDomain);
+        window.parent.postMessage(message, hostServer);
         return observable;
     }
     wait(milliseconds) {
@@ -260,22 +273,31 @@ export class IframeTransactionalConnector {
         });
     }
     async isConnectionInitialized() {
-        switch (this.connectionState) {
-            case ConnectionState.NOT_INITIALIED:
+        switch (this.appState) {
+            case AppState.NOT_INITIALIED:
                 break;
-            case ConnectionState.INITIALIZING:
+            case AppState.INITIALIZING_IN_PROGRESS:
+                return false;
+            case AppState.START_INITIALIZING:
+                this.appState = AppState.INITIALIZING_IN_PROGRESS;
                 const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER);
                 await applicationInitializer.initialize(this.lastIds);
-                this.connectionState = ConnectionState.INITIALIZED;
+                this.appState = AppState.INITIALIZED;
+                window.parent.postMessage({
+                    ...this.getCoreFields(),
+                    type: IsolateMessageType.APP_INITIALIZED
+                }, hostServer);
                 return true;
-            case ConnectionState.INITIALIZED:
+            case AppState.INITIALIZED:
                 return true;
         }
+        const applicationInitializer = await DI.db().get(APPLICATION_INITIALIZER);
         let message = {
             ...this.getCoreFields(),
-            type: IsolateMessageType.INIT_CONNECTION
+            schema: applicationInitializer.getSchema(),
+            type: IsolateMessageType.APP_INITIALIZING
         };
-        window.parent.postMessage(message, "*");
+        window.parent.postMessage(message, hostServer);
         return false;
     }
 }

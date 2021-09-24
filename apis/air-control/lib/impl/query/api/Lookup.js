@@ -58,6 +58,11 @@ export class Lookup {
                     return QueryResultType.MAPPED_ENTITY_TREE;
                 }
                 return QueryResultType.ENTITY_TREE;
+            case QueryResultType.FIELD:
+            case QueryResultType.RAW:
+            case QueryResultType.TREE:
+            case QueryResultType.SHEET:
+                return baseQueryResultType;
             default:
                 throw new Error(`Unexpected Base Query ResultType: '${baseQueryResultType}'.`);
         }

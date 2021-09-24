@@ -174,6 +174,8 @@ export class QEntityDriver<IEntity>
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): JSONRelation {
+		// FIXME: this does not work for non-entity tree queries, as there is not dbEntity
+		// see SchemaDao.findMaxVersionedMapBySchemaAndDomainNames for an example
 		let jsonRelation: JSONRelation = {
 			cci: this.currentChildIndex,
 			ti: this.dbEntity.index,

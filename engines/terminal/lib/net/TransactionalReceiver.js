@@ -3,7 +3,13 @@ import { IsolateMessageType } from '@airport/security-check';
 import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER } from '../tokens';
+import { getSchemaName } from '@airport/ground-control';
 export class TransactionalReceiver {
+    constructor() {
+        // FIXME: move this state to Terminal.state
+        this.initializingApps = new Set();
+        this.initializedApps = new Set();
+    }
     async processMessage(message) {
         const [ddlObjectRetriever, transactionalServer] = await container(this)
             .get(DDL_OBJECT_RETRIEVER, TRANSACTIONAL_SERVER);
@@ -15,15 +21,23 @@ export class TransactionalReceiver {
         let context = {};
         try {
             switch (message.type) {
-                case IsolateMessageType.INIT_CONNECTION:
-                    ddlObjectRetriever.lastIds;
+                case IsolateMessageType.APP_INITIALIZING:
                     let initConnectionMessage = message;
                     const schema = initConnectionMessage.schema;
+                    const schemaName = getSchemaName(schema);
+                    if (this.initializingApps.has(schemaName)) {
+                        return null;
+                    }
+                    this.initializingApps.add(schemaName);
                     const databaseManager = await container(this).get(DATABASE_MANAGER);
+                    // FIXME: initalize ahead of time, at Isolate Loading
                     await databaseManager.initFeatureSchemas([schema], {}, true);
                     // TODO: work here next
                     result = schema.lastIds;
                     break;
+                case IsolateMessageType.APP_INITIALIZED:
+                    this.initializedApps.add(schemaName);
+                    return null;
                 case IsolateMessageType.ADD_REPOSITORY:
                     const addRepositoryMessage = message;
                     result = await transactionalServer.addRepository(addRepositoryMessage.name, addRepositoryMessage.url, addRepositoryMessage.platform, addRepositoryMessage.platformConfig, addRepositoryMessage.distributionStrategy, credentials, context);

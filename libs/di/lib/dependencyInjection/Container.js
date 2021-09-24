@@ -43,6 +43,7 @@ export class ChildContainer extends Container {
             setTimeout(() => {
                 this.doGet(tokens, successCallback, errorCallback);
             }, 100);
+            return;
         }
         else if (objects.filter(object => object && !object.__initialized__).length) {
             const notInitializedObjectIndexes = objects.map((object, index) => object.__initialized__ ? -1 : index)
@@ -222,5 +223,8 @@ export class InversionOfControl {
     }
 }
 export const DI = new RootContainer();
+if (window) {
+    window.DI = DI;
+}
 export const IOC = new InversionOfControl();
 //# sourceMappingURL=Container.js.map

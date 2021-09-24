@@ -66,8 +66,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
     }
     async handleFromAppRequest(message, messageOrigin) {
         const appDomainAndPort = messageOrigin.split('//')[1];
-        const appDomain = appDomainAndPort.split(':')[0];
-        if (message.host !== appDomain) {
+        if (message.host !== appDomainAndPort) {
             return;
         }
         let numPendingMessagesFromHost = this.pendingHostCounts.get(message.host);
@@ -210,6 +209,9 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                 return;
         }
         this.processMessage(message).then(response => {
+            if (!response) {
+                return;
+            }
             let shemaDomainName = message.schemaSignature + '.' + _mainDomain;
             switch (message.type) {
                 case IsolateMessageType.SEARCH:

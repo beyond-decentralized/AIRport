@@ -6,9 +6,10 @@ import { SCHEMA_INITIALIZER } from '@airport/landing'
 import {
     APPLICATION_INITIALIZER,
     IApplicationInitializer,
+    JsonSchemaWithLastIds,
     LastIds
 } from '@airport/security-check'
-import { DDL_OBJECT_RETRIEVER } from '../../../generators/takeoff/lib'
+import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff'
 import { SCHEMA } from './generated/schema'
 
 export class ApplicationInitializer
@@ -36,6 +37,10 @@ export class ApplicationInitializer
         apiRegistry.initialize(SCHEMA.versions[0].api)
 
         SYSTEM.mapLibraryBySignature('functionality-demo-schema', librarySignature)
+    }
+
+    getSchema(): JsonSchemaWithLastIds {
+        return SCHEMA as any
     }
 }
 DI.set(APPLICATION_INITIALIZER, ApplicationInitializer)

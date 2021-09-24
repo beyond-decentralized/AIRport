@@ -171,35 +171,40 @@ export class DatabaseManager {
             candidateSchemaNames.push(getSchemaName(jsonSchema));
         }
         // FIXME: this search should be done by schema signature
-        const maxVersionedMapBySchemaAndDomainNames = await schemaDao.findMaxVersionedMapBySchemaAndDomainNames(candidateSchemaDomainNames, candidateSchemaNames);
+        // const maxVersionedMapBySchemaAndDomainNames = await schemaDao.findMaxVersionedMapBySchemaAndDomainNames(
+        // 	candidateSchemaDomainNames, candidateSchemaNames)
         const lastIdsByDomainAndSchemaNames = new Map();
         const schemaNames = [];
         for (const jsonSchema of schemas) {
             const schemaName = getSchemaName(jsonSchema);
-            const schemaMapForDomain = maxVersionedMapBySchemaAndDomainNames.get(jsonSchema.domain);
-            if (!schemaMapForDomain) {
-                schemaNames.push(schemaName);
-            }
-            else {
-                const schemaLookupRecord = schemaMapForDomain.get(schemaName);
-                if (schemaLookupRecord) {
-                }
-                else {
-                    schemaNames.push(schemaName);
-                }
-            }
+            // FIXME: right now Non-Entity Tree queries don't work, fix them and figure out
+            // what needs to be done here
+            // const schemaMapForDomain = maxVersionedMapBySchemaAndDomainNames.get(jsonSchema.domain)
+            // if (!schemaMapForDomain) {
+            // 	schemaNames.push(schemaName)
+            // } else {
+            // 	const schemaLookupRecord = schemaMapForDomain.get(schemaName)
+            // 	if (schemaLookupRecord) {
+            // 	} else {
+            schemaNames.push(schemaName);
+            // }
+            // }
         }
         const existingSchemaMap = await schemaDao.findMapByNames(schemaNames);
         const schemasToInitialize = [];
         for (const jsonSchema of schemas) {
             const schemaName = getSchemaName(jsonSchema);
-            if (!existingSchemaMap.has(schemaName)) {
+            const existingSchema = existingSchemaMap.get(schemaName);
+            if (existingSchema) {
+                jsonSchema.lastIds = existingSchema.lastIds;
+            }
+            else {
                 schemasToInitialize.push(jsonSchema);
             }
         }
         if (schemasToInitialize.length) {
             const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
-            await schemaInitializer.initialize(schemas, context, buildSchemas);
+            await schemaInitializer.initialize(schemasToInitialize, context, buildSchemas);
         }
     }
     async initTerminal(domainName, context) {

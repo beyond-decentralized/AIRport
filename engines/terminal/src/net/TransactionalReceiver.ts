@@ -23,8 +23,13 @@ import {
     TRANSACTIONAL_SERVER
 } from '@airport/terminal-map';
 import { DATABASE_MANAGER } from '../tokens';
+import { getSchemaName } from '@airport/ground-control';
 
 export abstract class TransactionalReceiver {
+
+    // FIXME: move this state to Terminal.state
+    initializingApps: Set<string> = new Set()
+    initializedApps: Set<string> = new Set()
 
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(
         message: IIsolateMessage
@@ -39,15 +44,23 @@ export abstract class TransactionalReceiver {
         let context: IContext = {}
         try {
             switch (message.type) {
-                case IsolateMessageType.INIT_CONNECTION:
-                    ddlObjectRetriever.lastIds
+                case IsolateMessageType.APP_INITIALIZING:
                     let initConnectionMessage: IInitConnectionIMI = message as any
                     const schema: JsonSchemaWithLastIds = initConnectionMessage.schema
+                    const schemaName = getSchemaName(schema)
+                    if(this.initializingApps.has(schemaName)) {
+                        return null
+                    }
+                    this.initializingApps.add(schemaName)
                     const databaseManager = await container(this).get(DATABASE_MANAGER)
+                    // FIXME: initalize ahead of time, at Isolate Loading
                     await databaseManager.initFeatureSchemas([schema], {}, true)
                     // TODO: work here next
                     result = schema.lastIds
                     break;
+                case IsolateMessageType.APP_INITIALIZED:
+                    this.initializedApps.add(schemaName)
+                    return null
                 case IsolateMessageType.ADD_REPOSITORY:
                     const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
                     result = await transactionalServer.addRepository(

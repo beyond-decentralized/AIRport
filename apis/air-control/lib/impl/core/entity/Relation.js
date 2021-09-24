@@ -17,7 +17,7 @@ QRelation.prototype.leftJoin = function () {
 QRelation.prototype.getNewQEntity = function (joinType) {
     const [airDb, relationManager, schemaUtils] = DI.db()
         .getSync(AIRPORT_DATABASE, RELATION_MANAGER, SCHEMA_UTILS);
-    const dbEntity = this.dbRelation.property.entity;
+    const dbEntity = this.dbRelation.relationEntity;
     const qEntityConstructor = schemaUtils.getQEntityConstructor(this.dbRelation.relationEntity, airDb);
     let newQEntity = new qEntityConstructor(dbEntity, relationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType);
     newQEntity.__driver__.parentJoinEntity = this.parentQ;

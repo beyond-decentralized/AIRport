@@ -4,20 +4,21 @@ import { JsonSchemaWithLastIds } from '..';
 import { LastIds } from '../LastIds';
 export declare enum IsolateMessageType {
     ADD_REPOSITORY = 0,
-    COMMIT = 1,
-    DELETE_WHERE = 2,
-    INIT_CONNECTION = 3,
-    FIND = 4,
-    FIND_ONE = 5,
-    INSERT_VALUES = 6,
-    INSERT_VALUES_GET_IDS = 7,
-    ROLLBACK = 8,
-    SEARCH = 9,
-    SEARCH_ONE = 10,
-    SEARCH_UNSUBSCRIBE = 11,
-    START_TRANSACTION = 12,
-    SAVE = 13,
-    UPDATE_VALUES = 14
+    APP_INITIALIZING = 1,
+    APP_INITIALIZED = 2,
+    COMMIT = 3,
+    DELETE_WHERE = 4,
+    FIND = 5,
+    FIND_ONE = 6,
+    INSERT_VALUES = 7,
+    INSERT_VALUES_GET_IDS = 8,
+    ROLLBACK = 9,
+    SEARCH = 10,
+    SEARCH_ONE = 11,
+    SEARCH_UNSUBSCRIBE = 12,
+    START_TRANSACTION = 13,
+    SAVE = 14,
+    UPDATE_VALUES = 15
 }
 export interface IIsolateMessage {
     category: 'Db';

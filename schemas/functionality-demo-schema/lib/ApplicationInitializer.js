@@ -2,7 +2,7 @@ import { API_REGISTRY, } from '@airport/check-in';
 import { container, DI, SYSTEM } from '@airport/di';
 import { SCHEMA_INITIALIZER } from '@airport/landing';
 import { APPLICATION_INITIALIZER } from '@airport/security-check';
-import { DDL_OBJECT_RETRIEVER } from '../../../generators/takeoff/lib';
+import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff';
 import { SCHEMA } from './generated/schema';
 export class ApplicationInitializer {
     constructor() {
@@ -20,6 +20,9 @@ export class ApplicationInitializer {
         await schemaInitializer.initializeForAIRportApp(SCHEMA);
         apiRegistry.initialize(SCHEMA.versions[0].api);
         SYSTEM.mapLibraryBySignature('functionality-demo-schema', librarySignature);
+    }
+    getSchema() {
+        return SCHEMA;
     }
 }
 DI.set(APPLICATION_INITIALIZER, ApplicationInitializer);

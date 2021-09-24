@@ -13,7 +13,8 @@
     "@airport/ground-control": "0.0.1",
     "@airport/landing": "0.0.1",
     "@airport/pressurization": "0.0.1",
-    "@airport/security-check": "0.0.1"
+    "@airport/security-check": "0.0.1",
+    "@airport/takeoff": "0.0.1"
   },
   "devDependencies": {
     "@airport/runway": "0.0.1"

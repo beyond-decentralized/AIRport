@@ -25,7 +25,6 @@
     "@tsconfig/svelte": "^2.0.0"
   },
   "dependencies": {
-    "@airport/functionality-demo-schema": "0.0.1",
     "@airport/di": "0.0.1",
     "@airport/terminal-map": "0.0.1",
     "@airport/web-terminal": "0.0.1",

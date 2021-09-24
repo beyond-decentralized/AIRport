@@ -12,10 +12,12 @@ export interface IObservableMessageInRecord<T> {
     id: number;
     observer?: Observer<T>;
 }
-export declare enum ConnectionState {
+export declare const hostServer = "http://localhost:7000";
+export declare enum AppState {
     NOT_INITIALIED = 0,
-    INITIALIZING = 1,
-    INITIALIZED = 2
+    START_INITIALIZING = 1,
+    INITIALIZING_IN_PROGRESS = 2,
+    INITIALIZED = 3
 }
 export declare class IframeTransactionalConnector implements ITransactionalConnector {
     dbName: string;
@@ -24,7 +26,7 @@ export declare class IframeTransactionalConnector implements ITransactionalConne
     observableMessageMap: Map<number, IObservableMessageInRecord<any>>;
     messageId: number;
     mainDomain: string;
-    connectionState: ConnectionState;
+    appState: AppState;
     lastIds: LastIds;
     init(): Promise<void>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context: IContext): Promise<number>;
@@ -40,6 +42,7 @@ export declare class IframeTransactionalConnector implements ITransactionalConne
     startTransaction(context: IContext): Promise<boolean>;
     commit(context: IContext): Promise<boolean>;
     rollback(context: IContext): Promise<boolean>;
+    private initializeConnection;
     private handleLocalApiRequest;
     private handleDbToIsolateMessage;
     private getCoreFields;

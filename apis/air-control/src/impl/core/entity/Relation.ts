@@ -33,7 +33,7 @@ QRelation.prototype.leftJoin = function <IQ extends IQEntityInternal<any>>(): IQ
 QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal<any>>(joinType: JoinType): IQ {
 	const [airDb, relationManager, schemaUtils] = DI.db()
 		.getSync(AIRPORT_DATABASE, RELATION_MANAGER, SCHEMA_UTILS)
-	const dbEntity = this.dbRelation.property.entity
+	const dbEntity = this.dbRelation.relationEntity
 
 	const qEntityConstructor = schemaUtils.getQEntityConstructor(
 			this.dbRelation.relationEntity, airDb)

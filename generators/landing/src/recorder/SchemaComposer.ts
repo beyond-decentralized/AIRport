@@ -98,6 +98,7 @@ export class SchemaComposer
 				newLatestSchemaVersions, newSchemaVersions, newSchemaVersionMapBySchemaName)
 		}
 
+		const allSchemaVersionsByIds = [...terminalStore.getAllSchemaVersionsByIds()];
 		const {
 			newSchemaReferenceMap,
 			newSchemaReferences
@@ -109,7 +110,6 @@ export class SchemaComposer
 			jsonSchemaMapByName.set(schemaNameWithDomainNamePrefix, jsonSchema);
 
 			const domain = domainNameMapByName.get(jsonSchema.domain)
-
 			const schema = schemaMapByName.get(getSchemaName(jsonSchema))
 			if (!schema.index) {
 				schema.lastIds = {
@@ -121,8 +121,11 @@ export class SchemaComposer
 			if (!domain.id) {
 				domain.id = ++ddlObjectRetriever.lastIds.domains
 			}
-
 			const schemaVersion = newSchemaVersionMapBySchemaName.get(schema.name)
+			if(!schemaVersion.id) {
+				schemaVersion.id = ++ddlObjectRetriever.lastIds.schemaVersions
+			}
+
 			this.composeSchemaEntities(jsonSchema, schemaVersion,
 				newEntitiesMapBySchemaName, newEntities, ddlObjectRetriever)
 			this.composeSchemaProperties(jsonSchema, newProperties, newPropertiesMap,
@@ -138,8 +141,6 @@ export class SchemaComposer
 				newSchemaReferenceMap, newRelationsMap,
 				newColumnsMap, ddlObjectRetriever, terminalStore)
 		}
-
-		const allSchemaVersionsByIds = [...terminalStore.getAllSchemaVersionsByIds()];
 
 		return {
 			allDomains,

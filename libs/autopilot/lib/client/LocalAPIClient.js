@@ -63,7 +63,7 @@ export class LocalAPIClient {
         const request = {
             category: 'FromApp',
             args: serializedParams,
-            host: window.location.hostname,
+            host: window.location.host,
             id: uuidv4(),
             methodName,
             objectName,
@@ -101,7 +101,7 @@ export class LocalAPIClient {
         let request = {
             category: 'IsConnectionReady',
             args: [],
-            host: window.location.hostname,
+            host: window.location.host,
             id: null,
             methodName: null,
             objectName: null,

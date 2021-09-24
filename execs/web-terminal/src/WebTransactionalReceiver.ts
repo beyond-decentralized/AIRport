@@ -114,8 +114,7 @@ export class WebTransactionalReceiver
 		messageOrigin: string
 	): Promise<void> {
 		const appDomainAndPort = messageOrigin.split('//')[1]
-		const appDomain = appDomainAndPort.split(':')[0]
-		if (message.host !== appDomain) {
+		if (message.host !== appDomainAndPort) {
 			return
 		}
 
@@ -297,6 +296,9 @@ export class WebTransactionalReceiver
 		}
 
 		this.processMessage(message).then(response => {
+			if (!response) {
+				return
+			}
 			let shemaDomainName = message.schemaSignature + '.' + _mainDomain
 			switch (message.type) {
 				case IsolateMessageType.SEARCH:

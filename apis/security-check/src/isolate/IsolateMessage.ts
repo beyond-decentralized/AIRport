@@ -1,7 +1,4 @@
 import {
-    JsonSchemaWithApi
-} from '@airport/check-in'
-import {
     DistributionStrategy,
     PlatformType,
     PortableQuery
@@ -12,9 +9,10 @@ import { LastIds } from '../LastIds';
 
 export enum IsolateMessageType {
     ADD_REPOSITORY,
+    APP_INITIALIZING,
+    APP_INITIALIZED,
     COMMIT,
     DELETE_WHERE,
-    INIT_CONNECTION,
     FIND,
     FIND_ONE,
     INSERT_VALUES,

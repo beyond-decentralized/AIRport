@@ -15,6 +15,7 @@ import {
 } from '@airport/ground-control';
 import {
 	IAddRepositoryIMI,
+	IInitConnectionIMI,
 	IIsolateMessage,
 	IIsolateMessageOut,
 	IsolateMessageType,
@@ -44,9 +45,14 @@ export interface IObservableMessageInRecord<T> {
 	observer?: Observer<T>
 }
 
-export enum ConnectionState {
+// FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
+// and debugging (http://localhost:7000)
+export const hostServer = 'http://localhost:7000'
+
+export enum AppState {
 	NOT_INITIALIED,
-	INITIALIZING,
+	START_INITIALIZING,
+	INITIALIZING_IN_PROGRESS,
 	INITIALIZED
 }
 
@@ -62,9 +68,10 @@ export class IframeTransactionalConnector
 
 	messageId = 0;
 
+	// FIXME: tie this in to the hostServer variable
 	mainDomain: string
 
-	connectionState = ConnectionState.NOT_INITIALIED
+	appState = AppState.NOT_INITIALIED
 	lastIds: LastIds
 
 	async init() {
@@ -107,10 +114,12 @@ export class IframeTransactionalConnector
 					this.handleLocalApiRequest(message as ILocalAPIRequest).then()
 					return
 				case 'Db':
-					if (message.type === IsolateMessageType.INIT_CONNECTION) {
-						this.connectionState = ConnectionState.INITIALIZING
-						let initConnectionIMO: IInitConnectionIMO = message
-						this.lastIds = initConnectionIMO.result
+					if (message.type === IsolateMessageType.APP_INITIALIZING) {
+						if (this.appState === AppState.NOT_INITIALIED) {
+							let initConnectionIMO: IInitConnectionIMO = message
+							this.lastIds = initConnectionIMO.result
+							this.appState = AppState.START_INITIALIZING
+						}
 						return
 					}
 					this.handleDbToIsolateMessage(message as IIsolateMessageOut<any>, mainDomain)
@@ -120,10 +129,7 @@ export class IframeTransactionalConnector
 			}
 
 		})
-		this.sendMessage({
-			...this.getCoreFields(),
-			type: IsolateMessageType.INIT_CONNECTION
-		}).then()
+		this.initializeConnection().then()
 	}
 
 	async addRepository(
@@ -280,9 +286,20 @@ export class IframeTransactionalConnector
 		})
 	}
 
+	private async initializeConnection() {
+		while (this.appState === AppState.NOT_INITIALIED
+			|| this.appState === AppState.START_INITIALIZING) {
+			await this.isConnectionInitialized()
+			await this.wait(100)
+		}
+	}
+
 	private async handleLocalApiRequest(
 		request: ILocalAPIRequest
 	) {
+		while (this.appState !== AppState.INITIALIZED) {
+			await this.wait(100)
+		}
 		const localApiServer = await container(this).get(LOCAL_API_SERVER)
 		const response = await localApiServer.handleRequest(request)
 		window.postMessage(response, response.host)
@@ -300,7 +317,7 @@ export class IframeTransactionalConnector
 
 		let observableMessageRecord: IObservableMessageInRecord<any>
 		switch (message.type) {
-			case IsolateMessageType.INIT_CONNECTION:
+			case IsolateMessageType.APP_INITIALIZING:
 				this.mainDomain = mainDomain
 				this.pendingMessageMap.delete(message.id);
 				return
@@ -352,7 +369,7 @@ export class IframeTransactionalConnector
 		while (!await this.isConnectionInitialized()) {
 			await this.wait(100)
 		}
-		window.parent.postMessage(message, "*")
+		window.parent.postMessage(message, hostServer)
 		return new Promise<ReturnType>((resolve, reject) => {
 			this.pendingMessageMap.set(message.id, {
 				message,
@@ -388,7 +405,7 @@ export class IframeTransactionalConnector
 				}).then()
 			};
 		});
-		window.parent.postMessage(message, this.mainDomain)
+		window.parent.postMessage(message, hostServer)
 
 		return observable;
 	}
@@ -404,24 +421,34 @@ export class IframeTransactionalConnector
 	}
 
 	private async isConnectionInitialized(): Promise<boolean> {
-		switch (this.connectionState) {
-			case ConnectionState.NOT_INITIALIED:
+		switch (this.appState) {
+			case AppState.NOT_INITIALIED:
 				break;
-			case ConnectionState.INITIALIZING:
+			case AppState.INITIALIZING_IN_PROGRESS:
+				return false
+			case AppState.START_INITIALIZING:
+				this.appState = AppState.INITIALIZING_IN_PROGRESS
 				const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER)
 				await applicationInitializer.initialize(this.lastIds)
-				this.connectionState = ConnectionState.INITIALIZED
+				this.appState = AppState.INITIALIZED
+				window.parent.postMessage({
+					...this.getCoreFields(),
+					type: IsolateMessageType.APP_INITIALIZED
+				}, hostServer)
 				return true
-			case ConnectionState.INITIALIZED:
+			case AppState.INITIALIZED:
 				return true
 		}
 
-		let message: IIsolateMessage = {
+		const applicationInitializer = await DI.db().get(APPLICATION_INITIALIZER)
+
+		let message: IInitConnectionIMI = {
 			...this.getCoreFields(),
-			type: IsolateMessageType.INIT_CONNECTION
+			schema: applicationInitializer.getSchema(),
+			type: IsolateMessageType.APP_INITIALIZING
 		}
 
-		window.parent.postMessage(message, "*")
+		window.parent.postMessage(message, hostServer)
 		return false
 	}
 

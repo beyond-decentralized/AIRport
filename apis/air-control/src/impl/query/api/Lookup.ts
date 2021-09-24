@@ -1,17 +1,17 @@
 import {
 	DI,
 	IContext,
-}                          from '@airport/di';
+} from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
-import { IEntityContext }  from '../../../lingo/core/EntityContext';
-import { ILookup }         from '../../../lingo/query/api/Lookup';
-import { IAbstractQuery }  from '../../../lingo/query/facade/AbstractQuery';
-import { RawQuery, }       from '../../../lingo/query/facade/Query';
-import { IQueryContext }   from '../../../lingo/query/QueryContext';
+import { IEntityContext } from '../../../lingo/core/EntityContext';
+import { ILookup } from '../../../lingo/query/api/Lookup';
+import { IAbstractQuery } from '../../../lingo/query/facade/AbstractQuery';
+import { RawQuery, } from '../../../lingo/query/facade/Query';
+import { IQueryContext } from '../../../lingo/query/QueryContext';
 import {
 	LOOKUP,
 	QUERY_CONTEXT_LOADER
-}                          from '../../../tokens';
+} from '../../../tokens';
 
 export class LookupProxy
 	implements ILookup {
@@ -63,9 +63,9 @@ export class Lookup
 		let query: IAbstractQuery;
 		if (QueryClass) {
 			const rawNonEntityQuery = context.ioc.entityUtils.getQuery(rawQuery);
-			query                   = new QueryClass(rawNonEntityQuery);
+			query = new QueryClass(rawNonEntityQuery);
 		} else {
-			query           = context.ioc.entityUtils.getEntityQuery(rawQuery);
+			query = context.ioc.entityUtils.getEntityQuery(rawQuery);
 			queryResultType = this.getQueryResultType(queryResultType, mapResults);
 		}
 		let queryMethod;
@@ -102,6 +102,11 @@ export class Lookup
 					return QueryResultType.MAPPED_ENTITY_TREE;
 				}
 				return QueryResultType.ENTITY_TREE;
+			case QueryResultType.FIELD:
+			case QueryResultType.RAW:
+			case QueryResultType.TREE:
+			case QueryResultType.SHEET:
+				return baseQueryResultType
 			default:
 				throw new Error(`Unexpected Base Query ResultType: '${baseQueryResultType}'.`);
 		}

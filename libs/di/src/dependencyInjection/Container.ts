@@ -468,6 +468,7 @@ export class ChildContainer
 					errorCallback,
 				);
 			}, 100);
+			return
 		} else if (objects.filter(object => object && !object.__initialized__).length) {
 			const notInitializedObjectIndexes = objects.map((
 				object,
@@ -1335,5 +1336,9 @@ export class InversionOfControl {
 }
 
 export const DI: IRootContainer = new RootContainer();
+
+if(window) {
+	(window as any).DI = DI
+}
 
 export const IOC: InversionOfControl = new InversionOfControl();
