@@ -61,7 +61,7 @@ export class IframeTransactionalConnector {
                 }
             }
             switch (message.category) {
-                case 'FromAppRedirected':
+                case 'FromClientRedirected':
                     this.handleLocalApiRequest(message, origin).then();
                     return;
                 case 'Db':

@@ -47,7 +47,7 @@ export class LocalAPIClient
                     case 'ConnectionIsReady':
                         this.connectionReady = true
                         break
-                    case 'ToAppRedirected':
+                    case 'ToClientRedirected':
                         // All requests need to have a schema signature
                         // to know what schema is being communicated to/from
                         if (!this.hasValidSchemaSignature(message)) {
@@ -102,12 +102,13 @@ export class LocalAPIClient
         }
 
         const request: ILocalAPIRequest = {
-            category: 'FromApp',
+            category: 'FromClient',
             args: serializedParams,
             host: window.location.host,
             id: uuidv4(),
             methodName,
             objectName,
+            protocol: window.location.protocol,
             schemaSignature
         }
 
@@ -154,6 +155,7 @@ export class LocalAPIClient
             id: null,
             methodName: null,
             objectName: null,
+            protocol: window.location.protocol,
             schemaSignature
         }
 
@@ -221,7 +223,7 @@ export class LocalAPIClient
         if (response.host !== window.location.hostname) {
             return
         }
-        if (response.category !== 'ToAppRedirected') {
+        if (response.category !== 'ToClientRedirected') {
             return
         }
         const pendingRequest = this.pendingDemoMessageMap.get(response.id)

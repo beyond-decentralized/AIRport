@@ -42,7 +42,7 @@ export class WebTransactionalReceiver
 	serverUrl: string;
 	subsriptionMap: Map<string, Map<number, Subscription>> = new Map()
 
-	pendingFromAppMessageIds: Map<string, Map<string, Set<string>>> = new Map()
+	pendingFromClientMessageIds: Map<string, Map<string, Set<string>>> = new Map()
 	pendingHostCounts: Map<string, number> = new Map()
 	pendingSchemaCounts: Map<string, number> = new Map()
 
@@ -78,9 +78,9 @@ export class WebTransactionalReceiver
 					this.handleIsolateMessage(message as IIsolateMessage, messageOrigin,
 						event.source as Window)
 					break
-				case 'FromApp':
-					message.category = 'FromAppRedirected'
-					this.handleFromAppRequest(message as ILocalAPIRequest, messageOrigin).then()
+				case 'FromClient':
+					message.category = 'FromClientRedirected'
+					this.handleFromClientRequest(message as ILocalAPIRequest, messageOrigin).then()
 					break
 				case 'IsConnectionReady':
 					const connectionIsReadyMessage: ILocalAPIResponse = {
@@ -88,14 +88,15 @@ export class WebTransactionalReceiver
 						errorMessage: null,
 						id: (message as ILocalAPIRequest).id,
 						host: document.domain,
+						protocol: window.location.protocol,
 						payload: null,
 						schemaSignature: (message as ILocalAPIRequest).schemaSignature
 					};
 					(event.source as Window).postMessage(connectionIsReadyMessage, messageOrigin)
 					break
-				case 'ToApp':
-					message.category = 'ToAppRedirected'
-					this.handleToAppRequest(message as ILocalAPIResponse, messageOrigin)
+				case 'ToClient':
+					message.category = 'ToClientRedirected'
+					this.handleToClientRequest(message as ILocalAPIResponse, messageOrigin)
 					break
 				default:
 					break
@@ -109,7 +110,7 @@ export class WebTransactionalReceiver
 		return message.schemaSignature && message.schemaSignature.indexOf('.') === -1
 	}
 
-	private async handleFromAppRequest(
+	private async handleFromClientRequest(
 		message: ILocalAPIRequest,
 		messageOrigin: string
 	): Promise<void> {
@@ -144,10 +145,10 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		let pendingMessageIdsFromHost = this.pendingFromAppMessageIds.get(message.host)
+		let pendingMessageIdsFromHost = this.pendingFromClientMessageIds.get(message.host)
 		if (!pendingMessageIdsFromHost) {
 			pendingMessageIdsFromHost = new Map()
-			this.pendingFromAppMessageIds.set(message.host, pendingMessageIdsFromHost)
+			this.pendingFromClientMessageIds.set(message.host, pendingMessageIdsFromHost)
 		}
 		let pendingMessageIdsFromHostForSchema = pendingMessageIdsFromHost.get(message.schemaSignature)
 		if (!pendingMessageIdsFromHostForSchema) {
@@ -177,14 +178,14 @@ export class WebTransactionalReceiver
 		return null
 	}
 
-	private async handleToAppRequest(
+	private async handleToClientRequest(
 		message: ILocalAPIResponse,
 		messageOrigin: string
 	): Promise<void> {
 		if (!this.messageIsFromValidSchema(message, messageOrigin)) {
 			return
 		}
-		let pendingMessagesFromHost = this.pendingFromAppMessageIds.get(message.host)
+		let pendingMessagesFromHost = this.pendingFromClientMessageIds.get(message.host)
 		if (!pendingMessagesFromHost) {
 			return
 		}

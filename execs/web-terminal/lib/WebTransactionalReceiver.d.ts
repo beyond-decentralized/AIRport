@@ -7,15 +7,15 @@ export declare class WebTransactionalReceiver extends TransactionalReceiver impl
     mainDomainFragments: string[];
     serverUrl: string;
     subsriptionMap: Map<string, Map<number, Subscription>>;
-    pendingFromAppMessageIds: Map<string, Map<string, Set<string>>>;
+    pendingFromClientMessageIds: Map<string, Map<string, Set<string>>>;
     pendingHostCounts: Map<string, number>;
     pendingSchemaCounts: Map<string, number>;
     installedSchemaFrames: Set<string>;
     constructor();
     private hasValidSchemaSignature;
-    private handleFromAppRequest;
+    private handleFromClientRequest;
     private getFrameWindow;
-    private handleToAppRequest;
+    private handleToClientRequest;
     private ensureSchemaIsInstalled;
     private messageIsFromValidSchema;
     private handleIsolateMessage;

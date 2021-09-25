@@ -10,7 +10,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
     constructor() {
         super();
         this.subsriptionMap = new Map();
-        this.pendingFromAppMessageIds = new Map();
+        this.pendingFromClientMessageIds = new Map();
         this.pendingHostCounts = new Map();
         this.pendingSchemaCounts = new Map();
         this.installedSchemaFrames = new Set();
@@ -37,9 +37,9 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                 case 'Db':
                     this.handleIsolateMessage(message, messageOrigin, event.source);
                     break;
-                case 'FromApp':
-                    message.category = 'FromAppRedirected';
-                    this.handleFromAppRequest(message, messageOrigin).then();
+                case 'FromClient':
+                    message.category = 'FromClientRedirected';
+                    this.handleFromClientRequest(message, messageOrigin).then();
                     break;
                 case 'IsConnectionReady':
                     const connectionIsReadyMessage = {
@@ -47,14 +47,15 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                         errorMessage: null,
                         id: message.id,
                         host: document.domain,
+                        protocol: window.location.protocol,
                         payload: null,
                         schemaSignature: message.schemaSignature
                     };
                     event.source.postMessage(connectionIsReadyMessage, messageOrigin);
                     break;
-                case 'ToApp':
-                    message.category = 'ToAppRedirected';
-                    this.handleToAppRequest(message, messageOrigin);
+                case 'ToClient':
+                    message.category = 'ToClientRedirected';
+                    this.handleToClientRequest(message, messageOrigin);
                     break;
                 default:
                     break;
@@ -64,7 +65,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
     hasValidSchemaSignature(message) {
         return message.schemaSignature && message.schemaSignature.indexOf('.') === -1;
     }
-    async handleFromAppRequest(message, messageOrigin) {
+    async handleFromClientRequest(message, messageOrigin) {
         const appDomainAndPort = messageOrigin.split('//')[1];
         if (message.host !== appDomainAndPort) {
             return;
@@ -91,10 +92,10 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             this.pendingSchemaCounts.set(message.schemaSignature, -1);
             return;
         }
-        let pendingMessageIdsFromHost = this.pendingFromAppMessageIds.get(message.host);
+        let pendingMessageIdsFromHost = this.pendingFromClientMessageIds.get(message.host);
         if (!pendingMessageIdsFromHost) {
             pendingMessageIdsFromHost = new Map();
-            this.pendingFromAppMessageIds.set(message.host, pendingMessageIdsFromHost);
+            this.pendingFromClientMessageIds.set(message.host, pendingMessageIdsFromHost);
         }
         let pendingMessageIdsFromHostForSchema = pendingMessageIdsFromHost.get(message.schemaSignature);
         if (!pendingMessageIdsFromHostForSchema) {
@@ -118,11 +119,11 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         }
         return null;
     }
-    async handleToAppRequest(message, messageOrigin) {
+    async handleToClientRequest(message, messageOrigin) {
         if (!this.messageIsFromValidSchema(message, messageOrigin)) {
             return;
         }
-        let pendingMessagesFromHost = this.pendingFromAppMessageIds.get(message.host);
+        let pendingMessagesFromHost = this.pendingFromClientMessageIds.get(message.host);
         if (!pendingMessagesFromHost) {
             return;
         }
