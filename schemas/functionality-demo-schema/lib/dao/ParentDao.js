@@ -20,16 +20,18 @@ export class ParentDao extends BaseParentDao {
                     num: Y,
                     str: Y
                 },
+                // FIXME: automatically derive FROM clause using SELECT clause if no FROM is provided
                 from: [
                     // FIXME: create a this.Parent and type it QParent
                     parent = this.db.from,
-                    // FIXME provide a utility
                     parent.children.innerJoin()
                 ]
             });
         }
         catch (e) {
+            // Keep this JIK for debugging
             console.log(e);
+            throw e;
         }
         return parentRecords;
     }

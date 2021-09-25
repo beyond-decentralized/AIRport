@@ -46,7 +46,9 @@ export class ParentDao
                 ]
             })
         } catch (e) {
+            // Keep this JIK for debugging
             console.log(e)
+            throw e
         }
 
         return parentRecords

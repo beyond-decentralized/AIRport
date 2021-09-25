@@ -111,7 +111,7 @@ export class IframeTransactionalConnector
 			}
 			switch (message.category) {
 				case 'FromAppRedirected':
-					this.handleLocalApiRequest(message as ILocalAPIRequest).then()
+					this.handleLocalApiRequest(message as ILocalAPIRequest, origin).then()
 					return
 				case 'Db':
 					if (message.type === IsolateMessageType.APP_INITIALIZING) {
@@ -295,14 +295,15 @@ export class IframeTransactionalConnector
 	}
 
 	private async handleLocalApiRequest(
-		request: ILocalAPIRequest
+		request: ILocalAPIRequest,
+		origin: string
 	) {
 		while (this.appState !== AppState.INITIALIZED) {
 			await this.wait(100)
 		}
 		const localApiServer = await container(this).get(LOCAL_API_SERVER)
 		const response = await localApiServer.handleRequest(request)
-		window.postMessage(response, response.host)
+		window.postMessage(response, origin)
 	}
 
 	private handleDbToIsolateMessage(

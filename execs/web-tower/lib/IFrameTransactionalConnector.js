@@ -58,7 +58,7 @@ export class IframeTransactionalConnector {
             }
             switch (message.category) {
                 case 'FromAppRedirected':
-                    this.handleLocalApiRequest(message).then();
+                    this.handleLocalApiRequest(message, origin).then();
                     return;
                 case 'Db':
                     if (message.type === IsolateMessageType.APP_INITIALIZING) {
@@ -172,13 +172,13 @@ export class IframeTransactionalConnector {
             await this.wait(100);
         }
     }
-    async handleLocalApiRequest(request) {
+    async handleLocalApiRequest(request, origin) {
         while (this.appState !== AppState.INITIALIZED) {
             await this.wait(100);
         }
         const localApiServer = await container(this).get(LOCAL_API_SERVER);
         const response = await localApiServer.handleRequest(request);
-        window.postMessage(response, response.host);
+        window.postMessage(response, origin);
     }
     handleDbToIsolateMessage(message, mainDomain) {
         const messageRecord = this.pendingMessageMap.get(message.id);
@@ -187,10 +187,10 @@ export class IframeTransactionalConnector {
         }
         let observableMessageRecord;
         switch (message.type) {
-            case IsolateMessageType.APP_INITIALIZING:
-                this.mainDomain = mainDomain;
-                this.pendingMessageMap.delete(message.id);
-                return;
+            // case IsolateMessageType.APP_INITIALIZING:
+            // 	this.mainDomain = mainDomain
+            // 	this.pendingMessageMap.delete(message.id);
+            // 	return
             case IsolateMessageType.SEARCH:
             case IsolateMessageType.SEARCH_ONE:
                 observableMessageRecord = this.observableMessageMap.get(message.id);
