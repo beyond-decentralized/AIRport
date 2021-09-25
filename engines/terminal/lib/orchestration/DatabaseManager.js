@@ -95,7 +95,6 @@ export class DatabaseManager {
         if (!hydrate) {
             await this.initTerminal(domainName, context);
         }
-        await this.initFeatureSchemas(context);
         this.initialized = true;
     }
     isInitialized() {

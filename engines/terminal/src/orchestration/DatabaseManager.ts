@@ -140,8 +140,6 @@ export class DatabaseManager
 			await this.initTerminal(domainName, context);
 		}
 
-		await this.initFeatureSchemas(context);
-
 		this.initialized = true;
 	}
 

@@ -106,9 +106,17 @@ export class GraphOtmMapper {
 			for (const entityIndex in mtoEntityReferenceMapForSchema) {
 				const mtoEntityReferenceMapForEntity = mtoEntityReferenceMapForSchema[entityIndex]
 
+				// If there are no entities of this type in query results, just keep the stubs
+				if(!entityMap[schemaIndex]) {
+					continue
+				}
 				let entityOfTypeMap = entityMap[schemaIndex][entityIndex]
 				// If there are no entities of this type in query results, just keep the stubs
 				if (!entityOfTypeMap) {
+					continue
+				}
+				// If there are no OTM for this type in query results, no mapping needs to happen
+				if(!this.otmEntityReferenceMap[schemaIndex]) {
 					continue
 				}
 				let entityWithOtmMap: { [otmEntityId: string]: any } = this.otmEntityReferenceMap[schemaIndex][entityIndex]
