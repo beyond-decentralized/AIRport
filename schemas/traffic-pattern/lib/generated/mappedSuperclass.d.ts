@@ -510,11 +510,11 @@ export declare const MAPPED_SUPERCLASS: {
                                         SchemaName: any;
                                         SchemaScope: any;
                                         SchemaStatus: any;
-                                        LastIds: {
+                                        JsonSchemaWithLastIds: {
                                             fileImports: any;
                                             isLocal: boolean;
                                             objectMapByAsName: {
-                                                LastIds: {
+                                                JsonSchemaWithLastIds: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
@@ -1200,7 +1200,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         SchemaName?: undefined;
                                         SchemaScope?: undefined;
                                         SchemaStatus?: undefined;
-                                        LastIds?: undefined;
+                                        JsonSchemaWithLastIds?: undefined;
                                         Domain?: undefined;
                                         SchemaCurrentVersion?: undefined;
                                         SchemaReferenceIndex?: undefined;
@@ -2240,7 +2240,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         SchemaName?: undefined;
                                         SchemaScope?: undefined;
                                         SchemaStatus?: undefined;
-                                        LastIds?: undefined;
+                                        JsonSchemaWithLastIds?: undefined;
                                         Domain?: undefined;
                                         SchemaCurrentVersion?: undefined;
                                         DbBoolean?: undefined;

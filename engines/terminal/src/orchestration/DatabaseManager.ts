@@ -19,7 +19,7 @@ import {
 	ACTOR_DAO,
 } from '@airport/holding-pattern';
 import { SCHEMA_INITIALIZER } from '@airport/landing';
-import { SCHEMA_DAO } from '@airport/traffic-pattern';
+import { ISchema, SCHEMA_DAO } from '@airport/traffic-pattern';
 import {
 	Terminal,
 	TERMINAL_DAO,
@@ -51,7 +51,7 @@ export class DatabaseManager
 		const server = await container(this).get(TRANSACTIONAL_SERVER);
 		(server as any).tempActor = new Actor();
 
-		await this.installAirportSchema(true, false, context);
+		await this.installStarterSchema(true, false, context);
 
 		const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
 		await schemaInitializer.stage(schemas, context);
@@ -60,8 +60,7 @@ export class DatabaseManager
 
 	async initWithDb(
 		domainName: string,
-		context: IContext,
-		...schemas: JsonSchemaWithLastIds[]
+		context: IContext
 	): Promise<void> {
 		await container(this).get(AIRPORT_DATABASE);
 
@@ -135,136 +134,74 @@ export class DatabaseManager
 		const hydrate = await storeDriver.doesTableExist('air___airport__territory',
 			'PACKAGES', context);
 
-		await this.installAirportSchema(false, hydrate, context);
+		await this.installStarterSchema(false, hydrate, context);
 
 		if (!hydrate) {
 			await this.initTerminal(domainName, context);
 		}
 
-		if (schemas && schemas.length) {
-			// FIXME: add ability to build feature schemas in the future
-			await this.initFeatureSchemas(schemas, context, false);
-		}
-
-		// (server as any).tempActor = null
-
-		/*
-				throw new Error(`Implement!`)
-				let dbFacade: IDatabaseFacade = this.databaseMap[terminalName]
-				if (!dbFacade) {
-					dbFacade                       = new DatabaseFacade(terminalName)
-					this.databaseMap[terminalName] = dbFacade
-					this.dbNames.push(terminalName)
-					this.dbNameSet[terminalName] = true
-				}
-				if (this.isInitialized(terminalName)) {
-					throw new Error(
-					`Database '${terminalName}' is already initialized`)
-				}
-				this.allDbsEntityData.forEach(
-					entityData => {
-						let entityName = MetadataStore.getEntityName(entityData.entityConstructor)
-						if (!dbFacade.qEntityMap[entityName]) {
-							let qEntity                     = new entityData.qEntityConstructor(entityData.qEntityConstructor, entityData.entityConstructor, entityName)
-							dbFacade.qEntityMap[entityName] = qEntity
-						}
-					})
-				await dbFacade.init(storeType)
-				*/
+		await this.initFeatureSchemas(context);
 
 		this.initialized = true;
 	}
 
-	/*
-		async ensureInitialized(
-			terminalName: string = dbConst.DEFAULT_DB,
-			timeout: number      = 5000
-		): Promise<void> {
-			return new Promise((
-				resolve,
-				reject
-			) => {
-				this.doEnsureInitialized(terminalName, resolve, reject, timeout)
-			})
-		}
-
-
-		async initializeAll(
-			defaultStoreType: StoreType
-		): Promise<void> {
-			AIRPORT_DATABASE
-			throw new Error(`Implement!`)
-					const db = TQ.db(dbConst.DEFAULT_DB);
-					if (!TQ.isInitialized(dbConst.DEFAULT_DB)) {
-						await TQ.addDataStore(defaultStoreType, dbConst.DEFAULT_DB);
-						await db.entityManager.goOnline();
-					}
-
-					const dataStores = await db.dao.dataStore.findAsGraph();
-					for (let dataStore of dataStores) {
-						if (!TQ.isInitialized(dataStore.name)) {
-							await TQ.init(dataStore.storeType, dataStore.name);
-							await TQ.db(dataStore.name).entityManager.goOnline();
-						}
-					}
-	}
-*/
 	isInitialized(): boolean {
 		return this.initialized;
 	}
 
 	async initFeatureSchemas(
-		schemas: JsonSchemaWithLastIds[],
 		context: IContext,
-		buildSchemas: boolean,
+		jsonSchemas?: JsonSchemaWithLastIds[]
 	): Promise<void> {
 		const schemaDao = await container(this).get(SCHEMA_DAO);
 
-		const candidateSchemaDomainNames: DomainName[] = []
-		const candidateSchemaNames: SchemaName[] = []
-		for (const jsonSchema of schemas) {
-			candidateSchemaDomainNames.push(jsonSchema.domain)
-			candidateSchemaNames.push(getSchemaName(jsonSchema))
+		const schemas = await schemaDao.findAll()
+		const existingSchemaMap: Map<string, ISchema> = new Map()
+		for (const schema of schemas) {
+			existingSchemaMap.set(schema.name, schema)
 		}
+
+		// const candidateSchemaDomainNames: DomainName[] = []
+		// const candidateSchemaNames: SchemaName[] = []
+		// for (const jsonSchema of jsonSchemas) {
+		// 	 candidateSchemaDomainNames.push(jsonSchema.domain)
+		// 	 candidateSchemaNames.push(getSchemaName(jsonSchema))
+		// }
 		// FIXME: this search should be done by schema signature
 		// const maxVersionedMapBySchemaAndDomainNames = await schemaDao.findMaxVersionedMapBySchemaAndDomainNames(
 		// 	candidateSchemaDomainNames, candidateSchemaNames)
-		const lastIdsByDomainAndSchemaNames = new Map()
+		// const lastIdsByDomainAndSchemaNames = new Map()
 
-		const schemaNames: SchemaName[] = [];
-		for (const jsonSchema of schemas) {
-			const schemaName = getSchemaName(jsonSchema)
-			// FIXME: right now Non-Entity Tree queries don't work, fix them and figure out
-			// what needs to be done here
-			// const schemaMapForDomain = maxVersionedMapBySchemaAndDomainNames.get(jsonSchema.domain)
-			// if (!schemaMapForDomain) {
-			// 	schemaNames.push(schemaName)
-			// } else {
-			// 	const schemaLookupRecord = schemaMapForDomain.get(schemaName)
-			// 	if (schemaLookupRecord) {
+		// const schemaNames: SchemaName[] = [];
+		// for (const jsonSchema of jsonSchemas) {
+		// 	const schemaName = getSchemaName(jsonSchema)
+		// FIXME: right now Non-Entity Tree queries don't work, fix them and figure out
+		// what needs to be done here
+		// const schemaMapForDomain = maxVersionedMapBySchemaAndDomainNames.get(jsonSchema.domain)
+		// if (!schemaMapForDomain) {
+		// 	schemaNames.push(schemaName)
+		// } else {
+		// 	const schemaLookupRecord = schemaMapForDomain.get(schemaName)
+		// 	if (schemaLookupRecord) {
 
-			// 	} else {
-					schemaNames.push(schemaName)
-				// }
-			// }
-		}
+		// 	} else {
+		// schemaNames.push(schemaName)
+		// }
+		// }
+		// }
 
-		const existingSchemaMap = await schemaDao.findMapByNames(schemaNames)
-		const schemasToInitialize: JsonSchemaWithLastIds[] = []
-		for (const jsonSchema of schemas) {
-			const schemaName = getSchemaName(jsonSchema)
-			const existingSchema = existingSchemaMap.get(schemaName)
-			if (existingSchema) {
-				jsonSchema.lastIds = existingSchema.lastIds
-			} else {
-				schemasToInitialize.push(jsonSchema)
+		const schemasToCreate: JsonSchemaWithLastIds[] = []
+		for (const jsonSchema of jsonSchemas) {
+			if (existingSchemaMap.has(getSchemaName(jsonSchema))) {
+				schemasToCreate.push(jsonSchema)
 			}
 		}
 
-		if (schemasToInitialize.length) {
+		// if (schemasToCreate.length) {
 			const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
-			await schemaInitializer.initialize(schemasToInitialize, context, buildSchemas);
-		}
+			// await schemaInitializer.initialize(schemasToCreate, context, existingSchemasAreHydrated);
+			await schemaInitializer.initialize(jsonSchemas, context, true);
+		// }
 	}
 
 	private async initTerminal(
@@ -329,7 +266,7 @@ export class DatabaseManager
 	}
 	*/
 
-	private async installAirportSchema(
+	private async installStarterSchema(
 		stage: boolean,
 		hydrate: boolean,
 		context: IContext,
@@ -339,7 +276,10 @@ export class DatabaseManager
 		if (stage) {
 			await schemaInitializer.stage(blueprintFile.BLUEPRINT as any, context);
 		} else if (hydrate) {
-			await schemaInitializer.hydrate(blueprintFile.BLUEPRINT as any, context);
+			const schemaDao = await container(this).get(SCHEMA_DAO)
+			const schemas = await schemaDao.findAll()
+			const jsonSchemas = schemas.map(schema => schema.jsonSchema)
+			await schemaInitializer.hydrate(jsonSchemas as any, context);
 		} else {
 			await schemaInitializer.initialize(blueprintFile.BLUEPRINT as any,
 				context, false);

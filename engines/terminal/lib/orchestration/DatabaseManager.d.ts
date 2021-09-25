@@ -4,10 +4,10 @@ import { JsonSchemaWithLastIds } from '@airport/security-check';
 export declare class DatabaseManager implements IDatabaseManager {
     private initialized;
     initNoDb(context: IContext, ...schemas: JsonSchemaWithLastIds[]): Promise<void>;
-    initWithDb(domainName: string, context: IContext, ...schemas: JsonSchemaWithLastIds[]): Promise<void>;
+    initWithDb(domainName: string, context: IContext): Promise<void>;
     isInitialized(): boolean;
-    initFeatureSchemas(schemas: JsonSchemaWithLastIds[], context: IContext, buildSchemas: boolean): Promise<void>;
+    initFeatureSchemas(context: IContext, jsonSchemas?: JsonSchemaWithLastIds[]): Promise<void>;
     private initTerminal;
-    private installAirportSchema;
+    private installStarterSchema;
 }
 //# sourceMappingURL=DatabaseManager.d.ts.map

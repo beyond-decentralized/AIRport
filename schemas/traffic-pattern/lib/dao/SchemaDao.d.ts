@@ -1,5 +1,4 @@
-import { DomainName, SchemaIndex, SchemaName, SchemaStatus, SchemaVersionId } from '@airport/ground-control';
-import { LastIds } from '@airport/security-check';
+import { DomainName, JsonSchema, SchemaIndex, SchemaName, SchemaStatus, SchemaVersionId } from '@airport/ground-control';
 import { BaseSchemaDao, IBaseSchemaDao, ISchema } from '../generated/generated';
 export interface ISchemaLookupRecord {
     index: number;
@@ -7,7 +6,7 @@ export interface ISchemaLookupRecord {
         id: number;
         name: string;
     };
-    lastIds: LastIds;
+    jsonSchema: JsonSchema;
     name: string;
     majorVersion: number;
     minorVersion: number;

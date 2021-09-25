@@ -5,7 +5,8 @@ import {
 } from '../Context';
 import { IDiToken } from './Token';
 import { AUTOPILOT_API_LOADER } from '../tokens';
-import { SYSTEM } from './System';
+import { SYSTEM, system } from './System';
+import { lib } from './Library';
 
 export interface IChildContainer
 	extends IContainer {
@@ -1337,8 +1338,10 @@ export class InversionOfControl {
 
 export const DI: IRootContainer = new RootContainer();
 
-if(window) {
-	(window as any).DI = DI
+if (typeof window !== 'undefined') {
+	(window as any).DI = DI;
+	(window as any).lib = lib;
+	(window as any).system = system
 }
 
 export const IOC: InversionOfControl = new InversionOfControl();

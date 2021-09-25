@@ -27,8 +27,7 @@ export interface IDatabaseManager {
 
 	initWithDb(
 		domainName: string,
-		context: IContext,
-		...schemas: JsonSchemaWithLastIds[]
+		context: IContext
 	): Promise<void>;
 
 	initNoDb(
@@ -37,9 +36,8 @@ export interface IDatabaseManager {
 	): Promise<void>
 	
 	initFeatureSchemas(
-		schemas: JsonSchemaWithLastIds[],
 		context: IContext,
-		buildSchemas: boolean,
+		jsonSchemas?: JsonSchemaWithLastIds[],
 	): void
 
 }

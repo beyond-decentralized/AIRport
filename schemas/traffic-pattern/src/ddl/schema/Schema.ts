@@ -17,7 +17,7 @@ import {
 	SchemaScope,
 	SchemaStatus
 } from '@airport/ground-control';
-import type { LastIds } from '@airport/security-check';
+import type { JsonSchemaWithLastIds } from '@airport/security-check';
 import { Domain } from '@airport/territory';
 import { SchemaCurrentVersion } from './SchemaCurrentVersion';
 import { SchemaVersion } from './SchemaVersion';
@@ -67,8 +67,8 @@ export class Schema {
 	// FIXME: revisit schema tracking when versioning is implemented
 	// better to track everything by names
 	// FIXME: once versioned should be in schema version (if still needed)
-	@Column({ name: 'LAST_IDS', nullable: false })
+	@Column({ name: 'JSON_SCHEMA', nullable: false })
 	@Json()
-	lastIds: LastIds
+	jsonSchema: JsonSchemaWithLastIds
 
 }

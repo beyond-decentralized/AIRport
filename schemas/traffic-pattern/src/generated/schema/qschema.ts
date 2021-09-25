@@ -22,7 +22,7 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	LastIds,
+	JsonSchemaWithLastIds,
 } from '@airport/security-check';
 import {
 	DomainGraph,
@@ -83,7 +83,7 @@ export interface SchemaESelect
 	name?: string | IQStringField;
 	packageName?: string | IQStringField;
 	status?: number | IQNumberField;
-	lastIds?: LastIds | IQStringField;
+	jsonSchema?: JsonSchemaWithLastIds | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -127,7 +127,7 @@ export interface SchemaEUpdateProperties
 	name?: string | IQStringField;
 	packageName?: string | IQStringField;
 	status?: number | IQNumberField;
-	lastIds?: LastIds | IQStringField;
+	jsonSchema?: JsonSchemaWithLastIds | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	domain?: DomainEOptionalId;
@@ -146,7 +146,7 @@ export interface SchemaGraph
 	name?: string | IQStringField;
 	packageName?: string | IQStringField;
 	status?: number | IQNumberField;
-	lastIds?: LastIds | IQStringField;
+	jsonSchema?: JsonSchemaWithLastIds | IQStringField;
 
 	// Relations
 	domain?: DomainGraph;
@@ -165,7 +165,7 @@ export interface SchemaEUpdateColumns
 	SCHEMA_NAME?: string | IQStringField;
 	PACKAGE_NAME?: string | IQStringField;
 	STATUS?: number | IQNumberField;
-	LAST_IDS?: string | IQStringField;
+	JSON_SCHEMA?: string | IQStringField;
 	DOMAIN_ID?: number | IQNumberField;
 
 }
@@ -206,7 +206,7 @@ export interface QSchema extends IQEntity<Schema>
 	name: IQStringField;
 	packageName: IQStringField;
 	status: IQNumberField;
-	lastIds: IQStringField;
+	jsonSchema: IQStringField;
 
 	// Non-Id Relations
 	domain: QDomainQRelation;

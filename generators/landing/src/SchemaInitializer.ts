@@ -13,6 +13,7 @@ import {
 } from '@airport/di';
 import {
 	DbSchema,
+	getSchemaName,
 	JsonSchema
 } from '@airport/ground-control';
 import { JsonSchemaWithLastIds } from '@airport/security-check';
@@ -25,6 +26,7 @@ import {
 	QUERY_OBJECT_INITIALIZER
 } from '@airport/takeoff';
 import { TERMINAL_STORE } from '@airport/terminal-map';
+import { ISchema, SCHEMA_DAO } from '@airport/traffic-pattern';
 import {
 	SCHEMA_BUILDER,
 	SCHEMA_CHECKER,
@@ -39,7 +41,7 @@ export interface ISchemaInitializer {
 	initialize(
 		jsonSchemas: JsonSchemaWithLastIds[],
 		context: IContext,
-		normalOperation?: boolean
+		canAlreadyRunQueries: boolean
 	): Promise<void>
 
 	initializeForAIRportApp(
@@ -84,10 +86,19 @@ export class SchemaInitializer
 		await sequenceGenerator.initialize();
 	}
 
+	/*
+	 * Initialization scenarios:
+	 *
+	 * Brand new install - initialize BLUEPRINT schemas
+	 * Install new App - initialize New schema (and any new dependency schemas)
+	 * Reload existing install - hydrate all schemas
+	 * Reload exiting App - nothing to do
+	 */
+
 	async initialize(
 		jsonSchemas: JsonSchemaWithLastIds[],
 		context: IContext,
-		normalOperation: boolean = true
+		canAlreadyRunQueries: boolean
 	): Promise<void> {
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			queryObjectInitializer, schemaBuilder, schemaComposer,
@@ -98,7 +109,7 @@ export class SchemaInitializer
 				SEQUENCE_GENERATOR, TERMINAL_STORE);
 
 		const schemasWithValidDependencies = await this.
-			getSchemasWithValidDependencies(jsonSchemas, normalOperation)
+			getSchemasWithValidDependencies(jsonSchemas, canAlreadyRunQueries)
 
 		for (const jsonSchema of schemasWithValidDependencies) {
 			await schemaBuilder.build(jsonSchema, context);
@@ -107,8 +118,8 @@ export class SchemaInitializer
 		const ddlObjects = schemaComposer.compose(
 			schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
 
-		if (normalOperation) {
-			await schemaRecorder.record(ddlObjects, normalOperation, context);
+		if (canAlreadyRunQueries) {
+			await schemaRecorder.record(ddlObjects, context);
 		}
 
 		this.addNewSchemaVersionsToAll(ddlObjects);
@@ -123,8 +134,8 @@ export class SchemaInitializer
 
 		await sequenceGenerator.initialize(newSequences);
 
-		if (!normalOperation) {
-			await schemaRecorder.record(ddlObjects, normalOperation, context);
+		if (!canAlreadyRunQueries) {
+			await schemaRecorder.record(ddlObjects, context);
 		}
 	}
 
@@ -184,7 +195,7 @@ export class SchemaInitializer
 
 	private async getSchemasWithValidDependencies(
 		jsonSchemas: JsonSchemaWithLastIds[],
-		normalOperation: boolean
+		checkDependencies: boolean
 	): Promise<JsonSchemaWithLastIds[]> {
 		const [schemaChecker, schemaLocator, terminalStore]
 			= await container(this).get(SCHEMA_CHECKER, SCHEMA_LOCATOR, TERMINAL_STORE);
@@ -204,7 +215,7 @@ export class SchemaInitializer
 
 		let schemasWithValidDependencies;
 
-		if (normalOperation) {
+		if (checkDependencies) {
 			const schemaReferenceCheckResults = await schemaChecker
 				.checkDependencies(jsonSchemasToInstall);
 

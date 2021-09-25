@@ -26,7 +26,6 @@ export class SchemaVersionDao extends BaseSchemaVersionDao {
         return await this.db.find.tree({
             from: [
                 sv = Q.SchemaVersion,
-                // s = sv.schema.innerJoin()
             ],
             select: {},
             orderBy: [

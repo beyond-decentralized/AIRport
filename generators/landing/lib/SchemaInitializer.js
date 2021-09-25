@@ -18,24 +18,32 @@ export class SchemaInitializer {
         this.setAirDbSchemas(airDb, ddlObjects);
         await sequenceGenerator.initialize();
     }
-    async initialize(jsonSchemas, context, normalOperation = true) {
+    /*
+     * Initialization scenarios:
+     *
+     * Brand new install - initialize BLUEPRINT schemas
+     * Install new App - initialize New schema (and any new dependency schemas)
+     * Reload existing install - hydrate all schemas
+     * Reload exiting App - nothing to do
+     */
+    async initialize(jsonSchemas, context, canAlreadyRunQueries) {
         const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaBuilder, schemaComposer, schemaLocator, schemaRecorder, sequenceGenerator, terminalStore] = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER, SCHEMA_COMPOSER, SCHEMA_LOCATOR, SCHEMA_RECORDER, SEQUENCE_GENERATOR, TERMINAL_STORE);
         const schemasWithValidDependencies = await this.
-            getSchemasWithValidDependencies(jsonSchemas, normalOperation);
+            getSchemasWithValidDependencies(jsonSchemas, canAlreadyRunQueries);
         for (const jsonSchema of schemasWithValidDependencies) {
             await schemaBuilder.build(jsonSchema, context);
         }
         const ddlObjects = schemaComposer.compose(schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
-        if (normalOperation) {
-            await schemaRecorder.record(ddlObjects, normalOperation, context);
+        if (canAlreadyRunQueries) {
+            await schemaRecorder.record(ddlObjects, context);
         }
         this.addNewSchemaVersionsToAll(ddlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
         this.setAirDbSchemas(airDb, ddlObjects);
         const newSequences = await schemaBuilder.buildAllSequences(schemasWithValidDependencies, context);
         await sequenceGenerator.initialize(newSequences);
-        if (!normalOperation) {
-            await schemaRecorder.record(ddlObjects, normalOperation, context);
+        if (!canAlreadyRunQueries) {
+            await schemaRecorder.record(ddlObjects, context);
         }
     }
     async initializeForAIRportApp(jsonSchema) {
@@ -58,7 +66,7 @@ export class SchemaInitializer {
         await sequenceGenerator.tempInitialize(newSequences);
         return [airDb, queryObjectInitializer, sequenceGenerator];
     }
-    async getSchemasWithValidDependencies(jsonSchemas, normalOperation) {
+    async getSchemasWithValidDependencies(jsonSchemas, checkDependencies) {
         const [schemaChecker, schemaLocator, terminalStore] = await container(this).get(SCHEMA_CHECKER, SCHEMA_LOCATOR, TERMINAL_STORE);
         const jsonSchemasToInstall = [];
         for (const jsonSchema of jsonSchemas) {
@@ -71,7 +79,7 @@ export class SchemaInitializer {
             jsonSchemasToInstall.push(jsonSchema);
         }
         let schemasWithValidDependencies;
-        if (normalOperation) {
+        if (checkDependencies) {
             const schemaReferenceCheckResults = await schemaChecker
                 .checkDependencies(jsonSchemasToInstall);
             if (schemaReferenceCheckResults.neededDependencies.length

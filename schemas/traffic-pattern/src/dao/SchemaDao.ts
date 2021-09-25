@@ -9,12 +9,12 @@ import { container, DI } from '@airport/di'
 import {
 	DomainName,
 	ensureChildJsMap,
+	JsonSchema,
 	SchemaIndex,
 	SchemaName,
 	SchemaStatus,
 	SchemaVersionId
 } from '@airport/ground-control'
-import { LastIds } from '@airport/security-check'
 import { QDomain } from '@airport/territory'
 import { SCHEMA_DAO } from '../tokens'
 import {
@@ -32,7 +32,7 @@ export interface ISchemaLookupRecord {
 		id: number
 		name: string
 	},
-	lastIds: LastIds
+	jsonSchema: JsonSchema
 	name: string
 	majorVersion: number
 	minorVersion: number
@@ -161,7 +161,7 @@ export class SchemaDao
 								domainId: d.id,
 								domainName: d.name,
 								name: s.name,
-								lastIds: s.lastIds,
+								jsonSchema: s.jsonSchema,
 								majorVersion: max(sv.majorVersion),
 								minorVersion: sv.minorVersion,
 								patchVersion: sv.patchVersion,
@@ -183,7 +183,7 @@ export class SchemaDao
 						index: sMaV.index,
 						domainId: sMaV.domainId,
 						domainName: sMaV.domainName,
-						lastIds: sMaV.lastIds,
+						jsonSchema: sMaV.jsonSchema,
 						name: sMaV.name,
 						majorVersion: sMaV.majorVersion,
 						minorVersion: max(sMaV.minorVersion),
@@ -204,7 +204,7 @@ export class SchemaDao
 					id: sMiV.domainId,
 					name: sMiV.domainName
 				},
-				lastIds: sMiV.lastIds,
+				jsonSchema: sMiV.jsonSchema,
 				name: sMiV.name,
 				majorVersion: sMiV.majorVersion,
 				minorVersion: sMiV.minorVersion,

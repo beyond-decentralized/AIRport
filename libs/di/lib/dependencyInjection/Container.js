@@ -1,6 +1,7 @@
 import { Context, ContextType } from '../Context';
 import { AUTOPILOT_API_LOADER } from '../tokens';
-import { SYSTEM } from './System';
+import { SYSTEM, system } from './System';
+import { lib } from './Library';
 const classMap = new Map();
 let numPendingInits = 0;
 const objectMap = new Map();
@@ -223,8 +224,10 @@ export class InversionOfControl {
     }
 }
 export const DI = new RootContainer();
-if (window) {
+if (typeof window !== 'undefined') {
     window.DI = DI;
+    window.lib = lib;
+    window.system = system;
 }
 export const IOC = new InversionOfControl();
 //# sourceMappingURL=Container.js.map

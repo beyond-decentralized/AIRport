@@ -43,9 +43,9 @@ __decorate([
     OneToMany({ mappedBy: 'schema' })
 ], Schema.prototype, "currentVersion", void 0);
 __decorate([
-    Column({ name: 'LAST_IDS', nullable: false }),
+    Column({ name: 'JSON_SCHEMA', nullable: false }),
     Json()
-], Schema.prototype, "lastIds", void 0);
+], Schema.prototype, "jsonSchema", void 0);
 Schema = __decorate([
     Entity(),
     Table({

@@ -1,5 +1,5 @@
 import { PackageName, SchemaIndex, SchemaName, SchemaScope, SchemaStatus } from '@airport/ground-control';
-import type { LastIds } from '@airport/security-check';
+import type { JsonSchemaWithLastIds } from '@airport/security-check';
 import { Domain } from '@airport/territory';
 import { SchemaCurrentVersion } from './SchemaCurrentVersion';
 import { SchemaVersion } from './SchemaVersion';
@@ -12,6 +12,6 @@ export declare class Schema {
     status: SchemaStatus;
     versions: SchemaVersion[];
     currentVersion: SchemaCurrentVersion[];
-    lastIds: LastIds;
+    jsonSchema: JsonSchemaWithLastIds;
 }
 //# sourceMappingURL=Schema.d.ts.map

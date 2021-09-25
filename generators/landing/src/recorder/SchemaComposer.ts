@@ -112,10 +112,11 @@ export class SchemaComposer
 			const domain = domainNameMapByName.get(jsonSchema.domain)
 			const schema = schemaMapByName.get(getSchemaName(jsonSchema))
 			if (!schema.index) {
-				schema.lastIds = {
+				const lastIds = {
 					...ddlObjectRetriever.lastIds
 				}
-				jsonSchema.lastIds = schema.lastIds
+				jsonSchema.lastIds = lastIds
+				schema.jsonSchema = jsonSchema
 				schema.index = ++ddlObjectRetriever.lastIds.schemas
 			}
 			if (!domain.id) {
@@ -207,7 +208,7 @@ export class SchemaComposer
 			schema = {
 				domain,
 				index: null,
-				lastIds: null,
+				jsonSchema: null,
 				name: schemaName,
 				packageName: jsonSchema.name,
 				scope: 'public',

@@ -3332,7 +3332,7 @@ export const SCHEMA = {
                             "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "LAST_IDS",
+                            "name": "JSON_SCHEMA",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -3453,7 +3453,7 @@ export const SCHEMA = {
                             },
                             "index": 8,
                             "isId": false,
-                            "name": "lastIds",
+                            "name": "jsonSchema",
                             "sinceVersion": 1
                         }
                     ],
