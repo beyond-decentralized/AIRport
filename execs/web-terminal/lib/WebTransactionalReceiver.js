@@ -143,7 +143,11 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             this.pendingHostCounts.set(message.host, numMessagesForSchema - 1);
         }
         // Forward the request to the correct app
-        window.postMessage(message, message.host);
+        const frameWindow = this.getFrameWindow(message.schemaSignature);
+        if (frameWindow) {
+            // Forward the request to the correct schema iframe
+            frameWindow.postMessage(message, message.host);
+        }
     }
     async ensureSchemaIsInstalled(schemaSignature, numPendingMessagesForSchema) {
         if (!schemaSignature) {

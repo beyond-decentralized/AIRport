@@ -210,7 +210,13 @@ export class WebTransactionalReceiver
 		}
 
 		// Forward the request to the correct app
-		window.postMessage(message, message.host)
+
+		const frameWindow = this.getFrameWindow(message.schemaSignature)
+
+		if (frameWindow) {
+			// Forward the request to the correct schema iframe
+			frameWindow.postMessage(message, message.host)
+		}
 
 	}
 

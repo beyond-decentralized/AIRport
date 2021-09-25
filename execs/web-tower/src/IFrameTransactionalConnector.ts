@@ -76,8 +76,13 @@ export class IframeTransactionalConnector
 
 	async init() {
 		window.addEventListener("message", event => {
-			const origin = event.origin;
 			const message: IIsolateMessageOut<any> | ILocalAPIRequest = event.data;
+			if ((message as any).__handled__) {
+				return
+			}
+			(message as any).__handled__ = true
+
+			const origin = event.origin;
 			if (message.schemaSignature.indexOf('.') > -1) {
 				// Invalid schema signature - cannot have periods that would point to invalid subdomains
 				return
@@ -303,7 +308,7 @@ export class IframeTransactionalConnector
 		}
 		const localApiServer = await container(this).get(LOCAL_API_SERVER)
 		const response = await localApiServer.handleRequest(request)
-		window.postMessage(response, origin)
+		window.parent.postMessage(response, origin)
 	}
 
 	private handleDbToIsolateMessage(
