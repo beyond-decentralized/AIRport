@@ -4,6 +4,7 @@ import { DeepPartial } from "@airport/pressurization";
 import { Parent } from "../client";
 import { BaseParentDao } from "../generated/baseDaos";
 import { IParent } from "../generated/parent";
+import { QParent } from "../server";
 import { PARENT_DAO } from "../server-tokens";
 
 export interface IParentDao {
@@ -23,6 +24,7 @@ export class ParentDao
     async findAllWithChildren(): Promise<IParent[]> {
         let parentRecords = []
         try {
+            let parent: QParent
             parentRecords = await this.db.find.tree({
                 select: {
                     bool: Y,
@@ -35,7 +37,13 @@ export class ParentDao
                     id: Y,
                     num: Y,
                     str: Y
-                }
+                },
+                // FIXME: automatically derive FROM clause using SELECT clause if no FROM is provided
+                from: [
+                    // FIXME: create a this.Parent and type it QParent
+                    parent = this.db.from,
+                    parent.children.innerJoin()
+                ]
             })
         } catch (e) {
             console.log(e)

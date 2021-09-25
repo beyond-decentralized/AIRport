@@ -30,6 +30,9 @@ export class UpdateCacheManager
             }
             return
         }
+        if(!entity) {
+            return
+        }
         const originalValuesObject: any = {}
         entityStateManager.setOriginalValues(originalValuesObject, entity);
         for (let dbProperty of dbEntity.properties) {

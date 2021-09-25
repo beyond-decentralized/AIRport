@@ -44,7 +44,11 @@ export class Lookup {
                 queryMethod = context.ioc.queryFacade.find;
             }
         }
-        return await queryMethod.call(context.ioc.queryFacade, query, this.getQueryResultType(queryResultType, mapResults), context);
+        let result = await queryMethod.call(context.ioc.queryFacade, query, this.getQueryResultType(queryResultType, mapResults), context);
+        if (!one && !result) {
+            result = [];
+        }
+        return result;
     }
     getQueryResultType(baseQueryResultType, mapResults) {
         switch (baseQueryResultType) {

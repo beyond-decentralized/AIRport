@@ -62,6 +62,8 @@ export class QEntityDriver {
     }
 */
     getRelationJson(columnAliases, queryUtils, fieldUtils) {
+        // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
+        // see SchemaDao.findMaxVersionedMapBySchemaAndDomainNames for an example
         let jsonRelation = {
             cci: this.currentChildIndex,
             ti: this.dbEntity.index,

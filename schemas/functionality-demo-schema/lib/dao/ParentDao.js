@@ -6,6 +6,7 @@ export class ParentDao extends BaseParentDao {
     async findAllWithChildren() {
         let parentRecords = [];
         try {
+            let parent;
             parentRecords = await this.db.find.tree({
                 select: {
                     bool: Y,
@@ -18,7 +19,13 @@ export class ParentDao extends BaseParentDao {
                     id: Y,
                     num: Y,
                     str: Y
-                }
+                },
+                from: [
+                    // FIXME: create a this.Parent and type it QParent
+                    parent = this.db.from,
+                    // FIXME provide a utility
+                    parent.children.innerJoin()
+                ]
             });
         }
         catch (e) {
