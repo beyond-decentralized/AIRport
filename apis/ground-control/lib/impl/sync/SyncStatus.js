@@ -1,39 +1,39 @@
 export var BlockSyncStatus;
 (function (BlockSyncStatus) {
     // Sync request has been sent but no reply has come yet
-    BlockSyncStatus[BlockSyncStatus["SYNCHRONIZING"] = 0] = "SYNCHRONIZING";
+    BlockSyncStatus["SYNCHRONIZING"] = "SYNCHRONIZING";
     // Sync has been acknowledged by the AGT
-    BlockSyncStatus[BlockSyncStatus["SYNCHRONIZED"] = 1] = "SYNCHRONIZED";
+    BlockSyncStatus["SYNCHRONIZED"] = "SYNCHRONIZED";
     // Sync has not been acked by AGT so, requesting sync status from AGT
-    BlockSyncStatus[BlockSyncStatus["REQUESTING_SYNC_STATUS"] = 2] = "REQUESTING_SYNC_STATUS";
+    BlockSyncStatus["REQUESTING_SYNC_STATUS"] = "REQUESTING_SYNC_STATUS";
     /*
        Do not re-sync until AGT starts responds with a request for more data.
        NOTE: no need of a separate status, state is maintained on SharingNode level.
      */
-    // RESYNC_SUSPENDED,
+    // RESYNC_SUSPENDED = 'RESYNC_SUSPENDED',
     // AGT requested re-sync for this block, send it again
-    BlockSyncStatus[BlockSyncStatus["RESYNC_REQUESTED"] = 3] = "RESYNC_REQUESTED";
+    BlockSyncStatus["RESYNC_REQUESTED"] = "RESYNC_REQUESTED";
 })(BlockSyncStatus || (BlockSyncStatus = {}));
 export var RepositorySyncStatus;
 (function (RepositorySyncStatus) {
     // Actively syncing this repository
-    RepositorySyncStatus[RepositorySyncStatus["ACTIVE"] = 0] = "ACTIVE";
+    RepositorySyncStatus["ACTIVE"] = "ACTIVE";
     // AGT is not responding, temporarily pending AGT responses
-    RepositorySyncStatus[RepositorySyncStatus["PENDING"] = 1] = "PENDING";
+    RepositorySyncStatus["PENDING"] = "PENDING";
     // AGT (or TM) delayed sync of this repository (for a period of time)
-    RepositorySyncStatus[RepositorySyncStatus["DELAYED"] = 2] = "DELAYED";
+    RepositorySyncStatus["DELAYED"] = "DELAYED";
     // AGT (or TM) suspended sync of this repository
-    RepositorySyncStatus[RepositorySyncStatus["SUSPENDED"] = 3] = "SUSPENDED";
+    RepositorySyncStatus["SUSPENDED"] = "SUSPENDED";
     // AGT (or TM) temporarily rerouted syncing of this repository to a different AGT
-    RepositorySyncStatus[RepositorySyncStatus["TEMPORARILY_REROUTED"] = 4] = "TEMPORARILY_REROUTED";
+    RepositorySyncStatus["TEMPORARILY_REROUTED"] = "TEMPORARILY_REROUTED";
     // AGT (or TM) permanently rerouted syncing of this repository to a different AGT
-    RepositorySyncStatus[RepositorySyncStatus["PERMANENTLY_REROUTED"] = 5] = "PERMANENTLY_REROUTED";
+    RepositorySyncStatus["PERMANENTLY_REROUTED"] = "PERMANENTLY_REROUTED";
 })(RepositorySyncStatus || (RepositorySyncStatus = {}));
 export var TerminalSyncStatus;
 (function (TerminalSyncStatus) {
     // Terminal is actively syncing
-    TerminalSyncStatus[TerminalSyncStatus["ACTIVE"] = 0] = "ACTIVE";
+    TerminalSyncStatus["ACTIVE"] = "ACTIVE";
     // Terminal syncing has been suspended
-    TerminalSyncStatus[TerminalSyncStatus["SUSPENDED"] = 1] = "SUSPENDED";
+    TerminalSyncStatus["SUSPENDED"] = "SUSPENDED";
 })(TerminalSyncStatus || (TerminalSyncStatus = {}));
 //# sourceMappingURL=SyncStatus.js.map

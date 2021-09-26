@@ -1,5 +1,5 @@
 export declare enum DataOrigin {
-    LOCAL = 0,
-    REMOTE = 1
+    LOCAL = "LOCAL",
+    REMOTE = "REMOTE"
 }
 //# sourceMappingURL=DataOrigin.d.ts.map

@@ -78,7 +78,7 @@ export class SchemaColumn
 	scale: ColumnScale;
 
 	@Column({ name: 'TYPE', nullable: false })
-	@DbNumber()
+	@DbString()
 	type: SQLDataType;
 
 	@ManyToOne()

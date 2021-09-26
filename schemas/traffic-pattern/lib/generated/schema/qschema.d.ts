@@ -13,7 +13,7 @@ export interface SchemaESelect extends IEntitySelectProperties, SchemaEOptionalI
     scope?: string | IQStringField;
     name?: string | IQStringField;
     packageName?: string | IQStringField;
-    status?: number | IQNumberField;
+    status?: string | IQStringField;
     jsonSchema?: JsonSchemaWithLastIds | IQStringField;
     domain?: DomainESelect;
     versions?: SchemaVersionESelect;
@@ -38,7 +38,7 @@ export interface SchemaEUpdateProperties extends IEntityUpdateProperties {
     scope?: string | IQStringField;
     name?: string | IQStringField;
     packageName?: string | IQStringField;
-    status?: number | IQNumberField;
+    status?: string | IQStringField;
     jsonSchema?: JsonSchemaWithLastIds | IQStringField;
     domain?: DomainEOptionalId;
 }
@@ -49,7 +49,7 @@ export interface SchemaGraph extends SchemaEOptionalId, IEntityCascadeGraph {
     scope?: string | IQStringField;
     name?: string | IQStringField;
     packageName?: string | IQStringField;
-    status?: number | IQNumberField;
+    status?: string | IQStringField;
     jsonSchema?: JsonSchemaWithLastIds | IQStringField;
     domain?: DomainGraph;
     versions?: SchemaVersionGraph[];
@@ -62,7 +62,7 @@ export interface SchemaEUpdateColumns extends IEntityUpdateColumns {
     SCOPE?: string | IQStringField;
     SCHEMA_NAME?: string | IQStringField;
     PACKAGE_NAME?: string | IQStringField;
-    STATUS?: number | IQNumberField;
+    STATUS?: string | IQStringField;
     JSON_SCHEMA?: string | IQStringField;
     DOMAIN_ID?: number | IQNumberField;
 }
@@ -84,7 +84,7 @@ export interface QSchema extends IQEntity<Schema> {
     scope: IQStringField;
     name: IQStringField;
     packageName: IQStringField;
-    status: IQNumberField;
+    status: IQStringField;
     jsonSchema: IQStringField;
     domain: QDomainQRelation;
     versions: IQOneToManyRelation<SchemaVersion, QSchemaVersion>;

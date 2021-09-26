@@ -20,7 +20,7 @@ export interface IUserRepository {
 	user: IUser;
 
 	// Non-Id Properties
-	permission?: number;
+	permission?: string;
 
 	// Non-Id Relations
 

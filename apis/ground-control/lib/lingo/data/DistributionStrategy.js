@@ -20,11 +20,11 @@ export var DistributionStrategy;
      *  subscribes to any possible changes in any of these stores.
      *  It is the server's responsibility to update the S3.
      */
-    DistributionStrategy[DistributionStrategy["S3_SECURE_POLL"] = 0] = "S3_SECURE_POLL";
+    DistributionStrategy["S3_SECURE_POLL"] = "S3_SECURE_POLL";
     /**
      * There is no need for a server, all clients are aware of S3
      * and are responsible for pushing their changes to it.
      */
-    DistributionStrategy[DistributionStrategy["S3_DISTIBUTED_PUSH"] = 1] = "S3_DISTIBUTED_PUSH";
+    DistributionStrategy["S3_DISTIBUTED_PUSH"] = "S3_DISTIBUTED_PUSH";
 })(DistributionStrategy || (DistributionStrategy = {}));
 //# sourceMappingURL=DistributionStrategy.js.map

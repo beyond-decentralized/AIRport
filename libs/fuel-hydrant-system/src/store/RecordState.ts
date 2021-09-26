@@ -22,9 +22,9 @@ export class RecordStateData
 }
 
 export enum CurrentState {
-	CREATED,
-	DELETED,
-	UPDATED
+	CREATED = 'CREATED',
+	DELETED = 'DELETED',
+	UPDATED = 'UPDATED'
 }
 
 export interface IRecordState {

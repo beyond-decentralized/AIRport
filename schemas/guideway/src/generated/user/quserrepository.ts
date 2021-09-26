@@ -65,7 +65,7 @@ declare function require(moduleName: string): any;
 export interface UserRepositoryESelect
     extends IEntitySelectProperties, UserRepositoryEOptionalId {
 	// Non-Id Properties
-	permission?: number | IQNumberField;
+	permission?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 	repository?: RepositoryESelect;
@@ -106,7 +106,7 @@ export interface UserRepositoryEOptionalId {
 export interface UserRepositoryEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	permission?: number | IQNumberField;
+	permission?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -120,7 +120,7 @@ export interface UserRepositoryGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	permission?: number | IQNumberField;
+	permission?: string | IQStringField;
 
 	// Relations
 	repository?: RepositoryGraph;
@@ -134,7 +134,7 @@ export interface UserRepositoryGraph
 export interface UserRepositoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	PERMISSION?: number | IQNumberField;
+	PERMISSION?: string | IQStringField;
 
 }
 
@@ -171,7 +171,7 @@ export interface QUserRepository extends IQEntity<UserRepository>
 	user: QUserQRelation;
 
 	// Non-Id Fields
-	permission: IQNumberField;
+	permission: IQStringField;
 
 	// Non-Id Relations
 

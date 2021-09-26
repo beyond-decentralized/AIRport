@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '../repository/qrepository';
 import { UserGraph, UserEId, UserEOptionalId, UserESelect, QUserQId, QUserQRelation } from './quser';
 import { UserRepository } from '../../ddl/user/UserRepository';
@@ -6,7 +6,7 @@ import { UserRepository } from '../../ddl/user/UserRepository';
  * SELECT - All fields and relations (optional).
  */
 export interface UserRepositoryESelect extends IEntitySelectProperties, UserRepositoryEOptionalId {
-    permission?: number | IQNumberField;
+    permission?: string | IQStringField;
     repository?: RepositoryESelect;
     user?: UserESelect;
 }
@@ -28,13 +28,13 @@ export interface UserRepositoryEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface UserRepositoryEUpdateProperties extends IEntityUpdateProperties {
-    permission?: number | IQNumberField;
+    permission?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface UserRepositoryGraph extends UserRepositoryEOptionalId, IEntityCascadeGraph {
-    permission?: number | IQNumberField;
+    permission?: string | IQStringField;
     repository?: RepositoryGraph;
     user?: UserGraph;
 }
@@ -42,7 +42,7 @@ export interface UserRepositoryGraph extends UserRepositoryEOptionalId, IEntityC
  * UPDATE - non-id columns (optional).
  */
 export interface UserRepositoryEUpdateColumns extends IEntityUpdateColumns {
-    PERMISSION?: number | IQNumberField;
+    PERMISSION?: string | IQStringField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -60,7 +60,7 @@ export interface UserRepositoryECreateColumns extends UserRepositoryEId, UserRep
 export interface QUserRepository extends IQEntity<UserRepository> {
     repository: QRepositoryQRelation;
     user: QUserQRelation;
-    permission: IQNumberField;
+    permission: IQStringField;
 }
 export interface QUserRepositoryQId {
     repository: QRepositoryQId;

@@ -162,7 +162,7 @@ export class TreeSQLQuery
 			let jsonClauseField: JSONClauseField = selectClauseFragment[propertyName]
 			let dataType                         = jsonClauseField.dt
 			// Must be a sub-query
-			if (!dataType && dataType !== 0) {
+			if (!dataType) {
 				let childResultObject = this.parseQueryResult(
 					jsonClauseField,
 					resultRow,

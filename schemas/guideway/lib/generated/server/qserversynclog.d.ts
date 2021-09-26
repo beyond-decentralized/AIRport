@@ -1,11 +1,11 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ServerGraph, ServerEOptionalId, ServerESelect, QServerQRelation } from './qserver';
 import { ServerSyncLog } from '../../ddl/server/ServerSyncLog';
 /**
  * SELECT - All fields and relations (optional).
  */
 export interface ServerSyncLogESelect extends IEntitySelectProperties, ServerSyncLogEOptionalId {
-    type?: number | IQNumberField;
+    type?: string | IQStringField;
     startDatetime?: Date | IQDateField;
     endDatetime?: Date | IQDateField;
     numberOfConnections?: number | IQNumberField;
@@ -29,7 +29,7 @@ export interface ServerSyncLogEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface ServerSyncLogEUpdateProperties extends IEntityUpdateProperties {
-    type?: number | IQNumberField;
+    type?: string | IQStringField;
     startDatetime?: Date | IQDateField;
     endDatetime?: Date | IQDateField;
     numberOfConnections?: number | IQNumberField;
@@ -41,7 +41,7 @@ export interface ServerSyncLogEUpdateProperties extends IEntityUpdateProperties 
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ServerSyncLogGraph extends ServerSyncLogEOptionalId, IEntityCascadeGraph {
-    type?: number | IQNumberField;
+    type?: string | IQStringField;
     startDatetime?: Date | IQDateField;
     endDatetime?: Date | IQDateField;
     numberOfConnections?: number | IQNumberField;
@@ -53,7 +53,7 @@ export interface ServerSyncLogGraph extends ServerSyncLogEOptionalId, IEntityCas
  * UPDATE - non-id columns (optional).
  */
 export interface ServerSyncLogEUpdateColumns extends IEntityUpdateColumns {
-    TYPE?: number | IQNumberField;
+    TYPE?: string | IQStringField;
     START_DATETIME?: Date | IQDateField;
     PROCESSED_DATETIME?: Date | IQDateField;
     NUMBER_OF_CONNECTIONS?: number | IQNumberField;
@@ -76,7 +76,7 @@ export interface ServerSyncLogECreateColumns extends ServerSyncLogEId, ServerSyn
  */
 export interface QServerSyncLog extends IQEntity<ServerSyncLog> {
     id: IQNumberField;
-    type: IQNumberField;
+    type: IQStringField;
     startDatetime: IQDateField;
     endDatetime: IQDateField;
     numberOfConnections: IQNumberField;

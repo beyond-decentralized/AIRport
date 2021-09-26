@@ -1,5 +1,5 @@
 import {
-	DbNumber,
+	DbString,
 	Id,
 	JoinColumn,
 	ManyToOne
@@ -24,7 +24,7 @@ export class RepoTransBlockSchemaToChange {
 	})
 	repositoryTransactionBlock: RepositoryTransactionBlock;
 
-	@DbNumber()
+	@DbString()
 	status: SchemaChangeStatus;
 
 	@Id()

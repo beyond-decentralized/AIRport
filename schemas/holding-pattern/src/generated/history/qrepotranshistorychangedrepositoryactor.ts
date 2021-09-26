@@ -78,7 +78,7 @@ declare function require(moduleName: string): any;
 export interface RepoTransHistoryChangedRepositoryActorESelect
     extends IEntitySelectProperties, RepoTransHistoryChangedRepositoryActorEOptionalId {
 	// Non-Id Properties
-	referenceType?: number | IQNumberField;
+	referenceType?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -118,7 +118,7 @@ export interface RepoTransHistoryChangedRepositoryActorEOptionalId {
 export interface RepoTransHistoryChangedRepositoryActorEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	referenceType?: number | IQNumberField;
+	referenceType?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	repositoryTransactionHistory?: RepositoryTransactionHistoryEOptionalId;
@@ -135,7 +135,7 @@ export interface RepoTransHistoryChangedRepositoryActorGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	referenceType?: number | IQNumberField;
+	referenceType?: string | IQStringField;
 
 	// Relations
 	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph;
@@ -150,7 +150,7 @@ export interface RepoTransHistoryChangedRepositoryActorGraph
 export interface RepoTransHistoryChangedRepositoryActorEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	REFERENCE_TYPE?: number | IQNumberField;
+	REFERENCE_TYPE?: string | IQStringField;
 	REPOSITORY_TRANSACTION_HISTORY_ID?: number | IQNumberField;
 	REPOSITORY_ID?: number | IQNumberField;
 	ACTOR_ID?: number | IQNumberField;
@@ -189,7 +189,7 @@ export interface QRepoTransHistoryChangedRepositoryActor extends IQEntity<RepoTr
 	// Id Relations
 
 	// Non-Id Fields
-	referenceType: IQNumberField;
+	referenceType: IQStringField;
 
 	// Non-Id Relations
 	repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;

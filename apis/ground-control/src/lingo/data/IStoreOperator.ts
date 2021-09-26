@@ -4,9 +4,9 @@ import {PortableQuery} from '../query/PortableQuery'
 import {DbColumn}      from '../schema/Property'
 
 export enum QueryType {
-	DDL,
-	SELECT,
-	MUTATE
+	DDL = 'DDL',
+	SELECT = 'SELECT',
+	MUTATE = 'MUTATE'
 }
 
 export interface ATransactionHistory {

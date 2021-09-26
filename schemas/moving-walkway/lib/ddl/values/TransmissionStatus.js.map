@@ -1,1 +1,1 @@
-{"version":3,"file":"TransmissionStatus.js","sourceRoot":"","sources":["../../../src/ddl/values/TransmissionStatus.ts"],"names":[],"mappings":"AAAA,MAAM,CAAN,IAAY,kBAGX;AAHD,WAAY,kBAAkB;IAC7B,2EAAY,CAAA;IACZ,2DAAI,CAAA;AACL,CAAC,EAHW,kBAAkB,KAAlB,kBAAkB,QAG7B"}
+{"version":3,"file":"TransmissionStatus.js","sourceRoot":"","sources":["../../../src/ddl/values/TransmissionStatus.ts"],"names":[],"mappings":"AAAA,MAAM,CAAN,IAAY,kBAGX;AAHD,WAAY,kBAAkB;IAC7B,mDAA6B,CAAA;IAC7B,mCAAa,CAAA;AACd,CAAC,EAHW,kBAAkB,KAAlB,kBAAkB,QAG7B"}

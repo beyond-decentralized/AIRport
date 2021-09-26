@@ -58,7 +58,7 @@ __decorate([
 ], RepositoryTransactionBlock.prototype, "repository", void 0);
 __decorate([
     Column({ name: "SYNC_OUTCOME_TYPE" }),
-    DbNumber()
+    DbString()
 ], RepositoryTransactionBlock.prototype, "syncOutcomeType", void 0);
 __decorate([
     DbString()

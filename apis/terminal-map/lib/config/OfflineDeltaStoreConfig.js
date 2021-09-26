@@ -1,5 +1,5 @@
 import { deltaConst } from '@airport/air-control';
-import { PlatformType } from './PlatformType';
+import { PlatformType } from '@airport/ground-control';
 export class OfflineDeltaStoreConfig {
     constructor(config, deltaStoreConfig) {
         this.config = config;

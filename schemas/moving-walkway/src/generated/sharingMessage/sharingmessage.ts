@@ -20,7 +20,7 @@ export interface ISharingMessage {
 	sharingNode: ISharingNode;
 
 	// Non-Id Properties
-	origin?: number;
+	origin?: string;
 	agtSharingMessageId?: number;
 	syncTimestamp?: Date;
 

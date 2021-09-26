@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Entity,
 	Id,
 	Table
@@ -23,7 +24,7 @@ export class RepoTransBlockResponseStage {
 	// agtSyncRecordId: AgtSyncRecordId;
 
 	@Column({name: "SYNC_OUTCOME_TYPE"})
-	@DbNumber()
+	@DbString()
 	syncOutcomeType: RepoTransBlockSyncOutcomeType;
 
 }

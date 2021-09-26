@@ -7,7 +7,7 @@ import { LogEntryType } from '../ddl/LogEntryType';
  * SELECT - All fields and relations (optional).
  */
 export interface LogEntryTypeESelect extends IEntitySelectProperties, LogEntryTypeEOptionalId {
-    level?: number | IQNumberField;
+    level?: string | IQStringField;
     text?: string | IQStringField;
     applicationPackage?: ApplicationPackageESelect;
     packagedUnit?: PackagedUnitESelect;
@@ -29,7 +29,7 @@ export interface LogEntryTypeEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface LogEntryTypeEUpdateProperties extends IEntityUpdateProperties {
-    level?: number | IQNumberField;
+    level?: string | IQStringField;
     text?: string | IQStringField;
     applicationPackage?: ApplicationPackageEOptionalId;
     packagedUnit?: PackagedUnitEOptionalId;
@@ -38,7 +38,7 @@ export interface LogEntryTypeEUpdateProperties extends IEntityUpdateProperties {
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface LogEntryTypeGraph extends LogEntryTypeEOptionalId, IEntityCascadeGraph {
-    level?: number | IQNumberField;
+    level?: string | IQStringField;
     text?: string | IQStringField;
     applicationPackage?: ApplicationPackageGraph;
     packagedUnit?: PackagedUnitGraph;
@@ -48,7 +48,7 @@ export interface LogEntryTypeGraph extends LogEntryTypeEOptionalId, IEntityCasca
  * UPDATE - non-id columns (optional).
  */
 export interface LogEntryTypeEUpdateColumns extends IEntityUpdateColumns {
-    LEVEL?: number | IQNumberField;
+    LEVEL?: string | IQStringField;
     TEXT?: string | IQStringField;
     APPLICATION_PACKAGE_ID?: number | IQNumberField;
     PACKAGED_UNIT_ID?: number | IQNumberField;
@@ -68,7 +68,7 @@ export interface LogEntryTypeECreateColumns extends LogEntryTypeEId, LogEntryTyp
  */
 export interface QLogEntryType extends IQEntity<LogEntryType> {
     id: IQNumberField;
-    level: IQNumberField;
+    level: IQStringField;
     text: IQStringField;
     applicationPackage: QApplicationPackageQRelation;
     packagedUnit: QPackagedUnitQRelation;

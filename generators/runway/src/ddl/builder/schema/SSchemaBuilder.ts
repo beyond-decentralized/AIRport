@@ -403,7 +403,7 @@ export class SSchemaBuilder {
 					throw new Error(`Unsupported cardinality decorator ${decorator.name}`);
 			}
 		}
-		if (!relationType && relationType !== 0) {
+		if (!relationType) {
 			throw new Error(
 				`Cardinality (@ManyToOne,@OneToMany) is not defined 
 				for ${entity.name}.${aProperty.name}`);

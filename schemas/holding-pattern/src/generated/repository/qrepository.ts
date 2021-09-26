@@ -96,7 +96,7 @@ export interface RepositoryESelect
 	name?: string | IQStringField;
 	url?: string | IQStringField;
 	platformConfig?: string | IQStringField;
-	syncPriority?: number | IQNumberField;
+	syncPriority?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -142,7 +142,7 @@ export interface RepositoryEUpdateProperties
 	name?: string | IQStringField;
 	url?: string | IQStringField;
 	platformConfig?: string | IQStringField;
-	syncPriority?: number | IQNumberField;
+	syncPriority?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	ownerActor?: ActorEOptionalId;
@@ -162,7 +162,7 @@ export interface RepositoryGraph
 	name?: string | IQStringField;
 	url?: string | IQStringField;
 	platformConfig?: string | IQStringField;
-	syncPriority?: number | IQNumberField;
+	syncPriority?: string | IQStringField;
 
 	// Relations
 	ownerActor?: ActorGraph;
@@ -183,7 +183,7 @@ export interface RepositoryEUpdateColumns
 	NAME?: string | IQStringField;
 	REPOSITORY_URL?: string | IQStringField;
 	PLATFORM_CONFIG?: string | IQStringField;
-	SYNC_PRIORITY?: number | IQNumberField;
+	SYNC_PRIORITY?: string | IQStringField;
 	OWNER_ACTOR_ID?: number | IQNumberField;
 
 }
@@ -225,7 +225,7 @@ export interface QRepository extends IQEntity<Repository>
 	name: IQStringField;
 	url: IQStringField;
 	platformConfig: IQStringField;
-	syncPriority: IQNumberField;
+	syncPriority: IQStringField;
 
 	// Non-Id Relations
 	ownerActor: QActorQRelation;

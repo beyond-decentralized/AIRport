@@ -95,7 +95,7 @@ export interface SchemaRelationESelect
 	foreignKey?: ForeignKey | IQStringField;
 	manyToOneElems?: ManyToOneElements | IQStringField;
 	oneToManyElems?: OneToManyElements | IQStringField;
-	relationType?: number | IQNumberField;
+	relationType?: string | IQStringField;
 	isId?: boolean | IQBooleanField;
 
 	// Id Relations - full property interfaces
@@ -142,7 +142,7 @@ export interface SchemaRelationEUpdateProperties
 	foreignKey?: ForeignKey | IQStringField;
 	manyToOneElems?: ManyToOneElements | IQStringField;
 	oneToManyElems?: OneToManyElements | IQStringField;
-	relationType?: number | IQNumberField;
+	relationType?: string | IQStringField;
 	isId?: boolean | IQBooleanField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -164,7 +164,7 @@ export interface SchemaRelationGraph
 	foreignKey?: ForeignKey | IQStringField;
 	manyToOneElems?: ManyToOneElements | IQStringField;
 	oneToManyElems?: OneToManyElements | IQStringField;
-	relationType?: number | IQNumberField;
+	relationType?: string | IQStringField;
 	isId?: boolean | IQBooleanField;
 
 	// Relations
@@ -189,7 +189,7 @@ export interface SchemaRelationEUpdateColumns
 	FOREIGN_KEY?: string | IQStringField;
 	MANY_TO_ONE_ELEMENTS?: string | IQStringField;
 	ONE_TO_MANY_ELEMENTS?: string | IQStringField;
-	RELATION_TYPE?: number | IQNumberField;
+	RELATION_TYPE?: string | IQStringField;
 	IS_ID?: boolean | IQBooleanField;
 	SCHEMA_PROPERTY_ID?: number | IQNumberField;
 	SCHEMA_TABLE_ID?: number | IQNumberField;
@@ -233,7 +233,7 @@ export interface QSchemaRelation extends QVersionedSchemaObject<SchemaRelation>
 	foreignKey: IQStringField;
 	manyToOneElems: IQStringField;
 	oneToManyElems: IQStringField;
-	relationType: IQNumberField;
+	relationType: IQStringField;
 	isId: IQBooleanField;
 
 	// Non-Id Relations

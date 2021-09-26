@@ -1,1 +1,1 @@
-{"version":3,"file":"DataOrigin.d.ts","sourceRoot":"","sources":["../../../src/ddl/values/DataOrigin.ts"],"names":[],"mappings":"AAAA,oBAAY,UAAU;IACrB,KAAK,IAAA;IACL,MAAM,IAAA;CACN"}
+{"version":3,"file":"DataOrigin.d.ts","sourceRoot":"","sources":["../../../src/ddl/values/DataOrigin.ts"],"names":[],"mappings":"AAAA,oBAAY,UAAU;IACrB,KAAK,UAAU;IACf,MAAM,WAAW;CACjB"}

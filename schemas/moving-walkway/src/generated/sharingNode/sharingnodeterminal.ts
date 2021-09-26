@@ -22,7 +22,7 @@ export interface ISharingNodeTerminal {
 	// Non-Id Properties
 	agtTerminalId?: number;
 	agtTerminalPassword?: string;
-	terminalSyncStatus?: number;
+	terminalSyncStatus?: string;
 
 	// Non-Id Relations
 

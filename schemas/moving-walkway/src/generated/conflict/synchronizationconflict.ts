@@ -20,7 +20,7 @@ export interface ISynchronizationConflict {
 	// Id Relations
 
 	// Non-Id Properties
-	type?: number;
+	type?: string;
 
 	// Non-Id Relations
 	repository?: IRepository;

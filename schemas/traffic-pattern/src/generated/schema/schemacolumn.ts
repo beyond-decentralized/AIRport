@@ -33,7 +33,7 @@ export interface ISchemaColumn extends IVersionedSchemaObject {
 	notNull?: boolean;
 	precision?: number;
 	scale?: number;
-	type?: number;
+	type?: string;
 
 	// Non-Id Relations
 	entity?: ISchemaEntity;

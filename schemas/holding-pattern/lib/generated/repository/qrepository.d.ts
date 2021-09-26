@@ -16,7 +16,7 @@ export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEO
     name?: string | IQStringField;
     url?: string | IQStringField;
     platformConfig?: string | IQStringField;
-    syncPriority?: number | IQNumberField;
+    syncPriority?: string | IQStringField;
     ownerActor?: ActorESelect;
     repositoryActors?: RepositoryActorESelect;
     repositoryApplications?: RepositoryApplicationESelect;
@@ -43,7 +43,7 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     name?: string | IQStringField;
     url?: string | IQStringField;
     platformConfig?: string | IQStringField;
-    syncPriority?: number | IQNumberField;
+    syncPriority?: string | IQStringField;
     ownerActor?: ActorEOptionalId;
 }
 /**
@@ -55,7 +55,7 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
     name?: string | IQStringField;
     url?: string | IQStringField;
     platformConfig?: string | IQStringField;
-    syncPriority?: number | IQNumberField;
+    syncPriority?: string | IQStringField;
     ownerActor?: ActorGraph;
     repositoryActors?: RepositoryActorGraph[];
     repositoryApplications?: RepositoryApplicationGraph[];
@@ -70,7 +70,7 @@ export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
     NAME?: string | IQStringField;
     REPOSITORY_URL?: string | IQStringField;
     PLATFORM_CONFIG?: string | IQStringField;
-    SYNC_PRIORITY?: number | IQNumberField;
+    SYNC_PRIORITY?: string | IQStringField;
     OWNER_ACTOR_ID?: number | IQNumberField;
 }
 /**
@@ -93,7 +93,7 @@ export interface QRepository extends IQEntity<Repository> {
     name: IQStringField;
     url: IQStringField;
     platformConfig: IQStringField;
-    syncPriority: IQNumberField;
+    syncPriority: IQStringField;
     ownerActor: QActorQRelation;
     repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
     repositoryApplications: IQOneToManyRelation<RepositoryApplication, QRepositoryApplication>;

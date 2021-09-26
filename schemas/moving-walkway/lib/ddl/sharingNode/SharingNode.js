@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, Entity, Id, Table } from "@airport/air-control";
+import { Column, DbNumber, DbString, Entity, Id, Table } from "@airport/air-control";
 import { OneToMany } from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
 let SharingNode = class SharingNode {
 };
@@ -14,7 +14,7 @@ __decorate([
 ], SharingNode.prototype, "id", void 0);
 __decorate([
     Column({ name: "SHARING_MECHANISM" }),
-    DbNumber()
+    DbString()
 ], SharingNode.prototype, "sharingMechanism", void 0);
 __decorate([
     Column({ name: "IS_ACTIVE" })
@@ -25,7 +25,7 @@ __decorate([
 ], SharingNode.prototype, "syncFrequency", void 0);
 __decorate([
     Column({ name: "CONNECTION_PROTOCOL" }),
-    DbNumber()
+    DbString()
 ], SharingNode.prototype, "connectionProtocol", void 0);
 __decorate([
     Column({ name: "CONNECTION_URL" })

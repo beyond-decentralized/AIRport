@@ -68,11 +68,11 @@ export class Repository {
 	url: RepositoryUrl;
 
 	// @Column({name: "DISTRIBUTION_STRATEGY"})
-	// @DbNumber()
+	// @DbString()
 	// distributionStrategy: DistributionStrategy;
 	//
 	// @Column({name: "REPOSITORY_PLATFORM"})
-	// @DbNumber()
+	// @DbString)
 	// platform: PlatformType;
 
 	@Column({name: "PLATFORM_CONFIG", nullable: false})
@@ -98,7 +98,7 @@ export class Repository {
 	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];
 
 	@Column({name: "SYNC_PRIORITY", nullable: false})
-	@DbNumber()
+	@DbString()
 	syncPriority: SyncPriority;
 
 }

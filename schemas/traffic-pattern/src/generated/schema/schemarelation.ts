@@ -34,7 +34,7 @@ export interface ISchemaRelation extends IVersionedSchemaObject {
 	foreignKey?: ForeignKey;
 	manyToOneElems?: ManyToOneElements;
 	oneToManyElems?: OneToManyElements;
-	relationType?: number;
+	relationType?: string;
 	isId?: boolean;
 
 	// Non-Id Relations

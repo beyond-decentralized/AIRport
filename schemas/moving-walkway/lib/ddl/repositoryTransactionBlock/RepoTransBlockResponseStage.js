@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, Entity, Id, Table } from "@airport/air-control";
+import { Column, DbNumber, DbString, Entity, Id, Table } from "@airport/air-control";
 let RepoTransBlockResponseStage = class RepoTransBlockResponseStage {
 };
 __decorate([
@@ -13,7 +13,7 @@ __decorate([
 ], RepoTransBlockResponseStage.prototype, "id", void 0);
 __decorate([
     Column({ name: "SYNC_OUTCOME_TYPE" }),
-    DbNumber()
+    DbString()
 ], RepoTransBlockResponseStage.prototype, "syncOutcomeType", void 0);
 RepoTransBlockResponseStage = __decorate([
     Entity(),

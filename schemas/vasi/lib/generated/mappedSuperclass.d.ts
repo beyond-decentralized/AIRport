@@ -331,7 +331,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         sinceVersion: any;
                     }[];
                     sinceVersion: any;
-                    type: number;
+                    type: string;
                     idIndex: number;
                 } | {
                     entity: any;
@@ -349,7 +349,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         sinceVersion: any;
                     }[];
                     sinceVersion: any;
-                    type: number;
+                    type: string;
                     idIndex?: undefined;
                 })[];
                 idColumns: {
@@ -368,7 +368,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         sinceVersion: any;
                     }[];
                     sinceVersion: any;
-                    type: number;
+                    type: string;
                     idIndex: number;
                 }[];
                 idColumnMap: any;
@@ -391,7 +391,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     name: string;
                     relation: {
                         isId: boolean;
-                        relationType: number;
+                        relationType: string;
                         id: any;
                         index: number;
                         property: any;
@@ -411,7 +411,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     relation: {
                         isId: boolean;
                         oneToManyElems: any;
-                        relationType: number;
+                        relationType: string;
                         id: any;
                         index: number;
                         property: any;
@@ -425,7 +425,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 relationReferences: any[];
                 relations: ({
                     isId: boolean;
-                    relationType: number;
+                    relationType: string;
                     id: any;
                     index: number;
                     property: any;
@@ -437,7 +437,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 } | {
                     isId: boolean;
                     oneToManyElems: any;
-                    relationType: number;
+                    relationType: string;
                     id: any;
                     index: number;
                     property: any;
@@ -735,7 +735,7 @@ export declare const MAPPED_SUPERCLASS: ({
                             sinceVersion: any;
                         }[];
                         sinceVersion: any;
-                        type: number;
+                        type: string;
                         idIndex: number;
                     } | {
                         entity: any;
@@ -753,7 +753,7 @@ export declare const MAPPED_SUPERCLASS: ({
                             sinceVersion: any;
                         }[];
                         sinceVersion: any;
-                        type: number;
+                        type: string;
                         idIndex?: undefined;
                     })[];
                     idColumns: {
@@ -772,7 +772,7 @@ export declare const MAPPED_SUPERCLASS: ({
                             sinceVersion: any;
                         }[];
                         sinceVersion: any;
-                        type: number;
+                        type: string;
                         idIndex: number;
                     }[];
                     idColumnMap: any;
@@ -795,7 +795,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         name: string;
                         relation: {
                             isId: boolean;
-                            relationType: number;
+                            relationType: string;
                             id: any;
                             index: number;
                             property: any;
@@ -815,7 +815,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         relation: {
                             isId: boolean;
                             oneToManyElems: any;
-                            relationType: number;
+                            relationType: string;
                             id: any;
                             index: number;
                             property: any;
@@ -829,7 +829,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     relationReferences: any[];
                     relations: ({
                         isId: boolean;
-                        relationType: number;
+                        relationType: string;
                         id: any;
                         index: number;
                         property: any;
@@ -841,7 +841,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     } | {
                         isId: boolean;
                         oneToManyElems: any;
-                        relationType: number;
+                        relationType: string;
                         id: any;
                         index: number;
                         property: any;
@@ -1212,7 +1212,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         sinceVersion: any;
                     }[];
                     sinceVersion: any;
-                    type: number;
+                    type: string;
                     idIndex: number;
                 } | {
                     entity: any;
@@ -1230,7 +1230,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         sinceVersion: any;
                     }[];
                     sinceVersion: any;
-                    type: number;
+                    type: string;
                     idIndex?: undefined;
                 })[];
                 idColumns: {
@@ -1249,7 +1249,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         sinceVersion: any;
                     }[];
                     sinceVersion: any;
-                    type: number;
+                    type: string;
                     idIndex: number;
                 }[];
                 idColumnMap: any;
@@ -1272,7 +1272,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     name: string;
                     relation: {
                         isId: boolean;
-                        relationType: number;
+                        relationType: string;
                         id: any;
                         index: number;
                         property: any;
@@ -1292,7 +1292,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     relation: {
                         isId: boolean;
                         oneToManyElems: any;
-                        relationType: number;
+                        relationType: string;
                         id: any;
                         index: number;
                         property: any;
@@ -1306,7 +1306,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 relationReferences: any[];
                 relations: ({
                     isId: boolean;
-                    relationType: number;
+                    relationType: string;
                     id: any;
                     index: number;
                     property: any;
@@ -1318,7 +1318,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 } | {
                     isId: boolean;
                     oneToManyElems: any;
-                    relationType: number;
+                    relationType: string;
                     id: any;
                     index: number;
                     property: any;

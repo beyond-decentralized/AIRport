@@ -25,7 +25,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -39,7 +39,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -53,7 +53,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -136,7 +136,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -150,7 +150,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": "DATE"
 						},
 						{
 							"index": 2,
@@ -164,7 +164,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 3,
@@ -178,7 +178,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 1
+							"type": "BOOLEAN"
 						}
 					],
 					"idColumnRefs": [

@@ -7,7 +7,7 @@ export interface IRepositoryTransactionHistory {
     id: number;
     remoteId?: number;
     saveTimestamp?: Date;
-    repositoryTransactionType?: number;
+    repositoryTransactionType?: string;
     blockId?: number;
     transactionHistory?: ITransactionHistory;
     repository?: IRepository;

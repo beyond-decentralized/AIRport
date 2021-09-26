@@ -33,7 +33,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -47,7 +47,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -61,7 +61,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 3,
@@ -75,7 +75,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 4,
@@ -89,7 +89,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -176,7 +176,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -220,7 +220,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -234,7 +234,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -248,7 +248,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [

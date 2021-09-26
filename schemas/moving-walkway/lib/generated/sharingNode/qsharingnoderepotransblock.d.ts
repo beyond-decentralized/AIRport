@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { SharingNodeGraph, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from './qsharingnode';
 import { RepositoryTransactionBlockGraph, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from '../repositoryTransactionBlock/qrepositorytransactionblock';
 import { SharingNodeRepoTransBlock } from '../../ddl/sharingNode/SharingNodeRepoTransBlock';
@@ -6,7 +6,7 @@ import { SharingNodeRepoTransBlock } from '../../ddl/sharingNode/SharingNodeRepo
  * SELECT - All fields and relations (optional).
  */
 export interface SharingNodeRepoTransBlockESelect extends IEntitySelectProperties, SharingNodeRepoTransBlockEOptionalId {
-    syncStatus?: number | IQNumberField;
+    syncStatus?: string | IQStringField;
     sharingNode?: SharingNodeESelect;
     repositoryTransactionBlock?: RepositoryTransactionBlockESelect;
 }
@@ -28,13 +28,13 @@ export interface SharingNodeRepoTransBlockEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SharingNodeRepoTransBlockEUpdateProperties extends IEntityUpdateProperties {
-    syncStatus?: number | IQNumberField;
+    syncStatus?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SharingNodeRepoTransBlockGraph extends SharingNodeRepoTransBlockEOptionalId, IEntityCascadeGraph {
-    syncStatus?: number | IQNumberField;
+    syncStatus?: string | IQStringField;
     sharingNode?: SharingNodeGraph;
     repositoryTransactionBlock?: RepositoryTransactionBlockGraph;
 }
@@ -42,7 +42,7 @@ export interface SharingNodeRepoTransBlockGraph extends SharingNodeRepoTransBloc
  * UPDATE - non-id columns (optional).
  */
 export interface SharingNodeRepoTransBlockEUpdateColumns extends IEntityUpdateColumns {
-    SYNC_STATUS?: number | IQNumberField;
+    SYNC_STATUS?: string | IQStringField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -60,7 +60,7 @@ export interface SharingNodeRepoTransBlockECreateColumns extends SharingNodeRepo
 export interface QSharingNodeRepoTransBlock extends IQEntity<SharingNodeRepoTransBlock> {
     sharingNode: QSharingNodeQRelation;
     repositoryTransactionBlock: QRepositoryTransactionBlockQRelation;
-    syncStatus: IQNumberField;
+    syncStatus: IQStringField;
 }
 export interface QSharingNodeRepoTransBlockQId {
     sharingNode: QSharingNodeQId;

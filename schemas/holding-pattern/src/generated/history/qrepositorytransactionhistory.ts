@@ -106,7 +106,7 @@ export interface RepositoryTransactionHistoryESelect
 	// Non-Id Properties
 	remoteId?: number | IQNumberField;
 	saveTimestamp?: Date | IQDateField;
-	repositoryTransactionType?: number | IQNumberField;
+	repositoryTransactionType?: string | IQStringField;
 	blockId?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
@@ -151,7 +151,7 @@ export interface RepositoryTransactionHistoryEUpdateProperties
 	// Non-Id Properties
 	remoteId?: number | IQNumberField;
 	saveTimestamp?: Date | IQDateField;
-	repositoryTransactionType?: number | IQNumberField;
+	repositoryTransactionType?: string | IQStringField;
 	blockId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -171,7 +171,7 @@ export interface RepositoryTransactionHistoryGraph
 	// Non-Id Properties
 	remoteId?: number | IQNumberField;
 	saveTimestamp?: Date | IQDateField;
-	repositoryTransactionType?: number | IQNumberField;
+	repositoryTransactionType?: string | IQStringField;
 	blockId?: number | IQNumberField;
 
 	// Relations
@@ -191,7 +191,7 @@ export interface RepositoryTransactionHistoryEUpdateColumns
 	// Non-Id Columns
 	REMOTE_ID?: number | IQNumberField;
 	SAVE_TIMESTAMP?: Date | IQDateField;
-	REPOSITORY_TRANSACTION_TYPE?: number | IQNumberField;
+	REPOSITORY_TRANSACTION_TYPE?: string | IQStringField;
 	REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID?: number | IQNumberField;
 	TRANSACTION_HISTORY_ID?: number | IQNumberField;
 	REPOSITORY_ID?: number | IQNumberField;
@@ -233,7 +233,7 @@ export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransa
 	// Non-Id Fields
 	remoteId: IQNumberField;
 	saveTimestamp: IQDateField;
-	repositoryTransactionType: IQNumberField;
+	repositoryTransactionType: IQStringField;
 	blockId: IQNumberField;
 
 	// Non-Id Relations

@@ -36,7 +36,7 @@ export class Repository {
 	name: RepositoryName
 
 	@Column({name: 'STATUS', nullable: false})
-	@DbNumber()
+	@DbString()
 	status: RepositoryStatus
 
 	@OneToMany()

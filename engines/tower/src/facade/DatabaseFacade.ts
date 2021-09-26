@@ -27,15 +27,13 @@ import {
 	IContext
 } from '@airport/di'
 import {
+	DistributionStrategy,
 	ENTITY_STATE_MANAGER,
 	ISaveResult,
+	PlatformType,
 	PortableQuery,
 	TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
-import {
-	DistributionStrategy,
-	PlatformType
-} from '@airport/terminal-map'
 import { ENTITY_COPIER } from '../tokens'
 
 /**
@@ -206,7 +204,7 @@ export class DatabaseFacade
 		if (rawUpdate instanceof Function) {
 			rawUpdate = rawUpdate()
 		}
-		
+
 		let updateColumns: UpdateColumns<any, IQE> = new UpdateColumns(rawUpdate)
 		const queryContext = await this.ensureQueryContext(context)
 		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(

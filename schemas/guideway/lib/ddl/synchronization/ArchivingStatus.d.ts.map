@@ -1,1 +1,1 @@
-{"version":3,"file":"ArchivingStatus.d.ts","sourceRoot":"","sources":["../../../src/ddl/synchronization/ArchivingStatus.ts"],"names":[],"mappings":"AAAA,oBAAY,eAAe;IAC1B,aAAa,IAAA;IACb,qBAAqB,IAAA;IACrB,kBAAkB,IAAA;CAClB"}
+{"version":3,"file":"ArchivingStatus.d.ts","sourceRoot":"","sources":["../../../src/ddl/synchronization/ArchivingStatus.ts"],"names":[],"mappings":"AAAA,oBAAY,eAAe;IAC1B,aAAa,kBAAkB;IAC/B,qBAAqB,0BAA0B;IAC/C,kBAAkB,uBAAuB;CACzC"}

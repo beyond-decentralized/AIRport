@@ -3,8 +3,8 @@ import {JSONFieldInOrderBy} from '../../core/field/FieldInOrderBy'
 import {JSONBaseOperation}  from '../../core/operation/Operation'
 
 export enum JsonStatementType {
-	ENTITY_QUERY,
-	NON_ENTITY_QUERY
+	ENTITY_QUERY = 'ENTITY_QUERY',
+	NON_ENTITY_QUERY = 'NON_ENTITY_QUERY'
 }
 
 /**

@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from './qrepositorytransactionhistory';
 import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransactionHistory';
 import { TransactionHistory } from '../../ddl/history/TransactionHistory';
@@ -6,7 +6,7 @@ import { TransactionHistory } from '../../ddl/history/TransactionHistory';
  * SELECT - All fields and relations (optional).
  */
 export interface TransactionHistoryESelect extends IEntitySelectProperties, TransactionHistoryEOptionalId {
-    transactionType?: number | IQNumberField;
+    transactionType?: string | IQStringField;
     repositoryTransactionHistories?: RepositoryTransactionHistoryESelect;
 }
 /**
@@ -25,20 +25,20 @@ export interface TransactionHistoryEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface TransactionHistoryEUpdateProperties extends IEntityUpdateProperties {
-    transactionType?: number | IQNumberField;
+    transactionType?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface TransactionHistoryGraph extends TransactionHistoryEOptionalId, IEntityCascadeGraph {
-    transactionType?: number | IQNumberField;
+    transactionType?: string | IQStringField;
     repositoryTransactionHistories?: RepositoryTransactionHistoryGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).
  */
 export interface TransactionHistoryEUpdateColumns extends IEntityUpdateColumns {
-    TRANSACTION_TYPE?: number | IQNumberField;
+    TRANSACTION_TYPE?: string | IQStringField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -55,7 +55,7 @@ export interface TransactionHistoryECreateColumns extends TransactionHistoryEId,
  */
 export interface QTransactionHistory extends IQEntity<TransactionHistory> {
     id: IQNumberField;
-    transactionType: IQNumberField;
+    transactionType: IQStringField;
     repositoryTransactionHistories: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
 }
 export interface QTransactionHistoryQId {

@@ -2,11 +2,13 @@
  * Created by Papa on 1/7/2016.
  */
 
+ import {
+	PlatformType
+}                               from '@airport/ground-control';
 import {
 	ChangeListShareInfo,
 	GoogleChangeListShareInfo,
 	GoogleSetupInfo,
-	PlatformType,
 	SharedChangeList,
 	SharingAdaptor
 }                               from '@airport/terminal-map';

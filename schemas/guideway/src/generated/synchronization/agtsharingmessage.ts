@@ -20,7 +20,7 @@ export interface IAgtSharingMessage {
 
 	// Non-Id Properties
 	tmSharingMessageId?: number;
-	acknowledged?: number;
+	acknowledged?: string;
 
 	// Non-Id Relations
 	terminal?: ITerminal;

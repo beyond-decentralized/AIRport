@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { SharingNodeGraph, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from '../sharingNode/qsharingnode';
 import { SharingMessageRepoTransBlockGraph, SharingMessageRepoTransBlockESelect, QSharingMessageRepoTransBlock } from './qsharingmessagerepotransblock';
 import { SharingMessageRepoTransBlock } from '../../ddl/sharingMessage/SharingMessageRepoTransBlock';
@@ -7,7 +7,7 @@ import { SharingMessage } from '../../ddl/sharingMessage/SharingMessage';
  * SELECT - All fields and relations (optional).
  */
 export interface SharingMessageESelect extends IEntitySelectProperties, SharingMessageEOptionalId {
-    origin?: number | IQNumberField;
+    origin?: string | IQStringField;
     agtSharingMessageId?: number | IQNumberField;
     syncTimestamp?: Date | IQDateField;
     sharingNode?: SharingNodeESelect;
@@ -31,7 +31,7 @@ export interface SharingMessageEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SharingMessageEUpdateProperties extends IEntityUpdateProperties {
-    origin?: number | IQNumberField;
+    origin?: string | IQStringField;
     agtSharingMessageId?: number | IQNumberField;
     syncTimestamp?: Date | IQDateField;
 }
@@ -39,7 +39,7 @@ export interface SharingMessageEUpdateProperties extends IEntityUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SharingMessageGraph extends SharingMessageEOptionalId, IEntityCascadeGraph {
-    origin?: number | IQNumberField;
+    origin?: string | IQStringField;
     agtSharingMessageId?: number | IQNumberField;
     syncTimestamp?: Date | IQDateField;
     sharingNode?: SharingNodeGraph;
@@ -49,7 +49,7 @@ export interface SharingMessageGraph extends SharingMessageEOptionalId, IEntityC
  * UPDATE - non-id columns (optional).
  */
 export interface SharingMessageEUpdateColumns extends IEntityUpdateColumns {
-    ORIGIN?: number | IQNumberField;
+    ORIGIN?: string | IQStringField;
     AGT_SHARING_MESSAGE_ID?: number | IQNumberField;
     SYNC_TIMESTAMP?: Date | IQDateField;
 }
@@ -69,7 +69,7 @@ export interface SharingMessageECreateColumns extends SharingMessageEId, Sharing
 export interface QSharingMessage extends IQEntity<SharingMessage> {
     id: IQNumberField;
     sharingNode: QSharingNodeQRelation;
-    origin: IQNumberField;
+    origin: IQStringField;
     agtSharingMessageId: IQNumberField;
     syncTimestamp: IQDateField;
     sharingMessageRepoTransBlocks: IQOneToManyRelation<SharingMessageRepoTransBlock, QSharingMessageRepoTransBlock>;

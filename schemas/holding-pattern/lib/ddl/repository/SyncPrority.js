@@ -1,11 +1,14 @@
 export var SyncPriority;
 (function (SyncPriority) {
-    SyncPriority[SyncPriority["VITAL"] = 0] = "VITAL";
-    SyncPriority[SyncPriority["CRITICAL"] = 1] = "CRITICAL";
-    SyncPriority[SyncPriority["HIGH"] = 2] = "HIGH";
-    SyncPriority[SyncPriority["ABOVE_NORMAL"] = 3] = "ABOVE_NORMAL";
-    SyncPriority[SyncPriority["NORMAL"] = 4] = "NORMAL";
-    SyncPriority[SyncPriority["BELOW_NORMAL"] = 5] = "BELOW_NORMAL";
-    SyncPriority[SyncPriority["LOW"] = 6] = "LOW";
+    // Internally reserved
+    SyncPriority["VITAL"] = "VITAL";
+    // Framework updates
+    SyncPriority["CRITICAL"] = "CRITICAL";
+    // Application/Schema Updates
+    SyncPriority["HIGH"] = "HIGH";
+    SyncPriority["ABOVE_NORMAL"] = "ABOVE_NORMAL";
+    SyncPriority["NORMAL"] = "NORMAL";
+    SyncPriority["BELOW_NORMAL"] = "BELOW_NORMAL";
+    SyncPriority["LOW"] = "LOW";
 })(SyncPriority || (SyncPriority = {}));
 //# sourceMappingURL=SyncPrority.js.map

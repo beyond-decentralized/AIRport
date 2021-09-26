@@ -14,7 +14,7 @@ export interface ISharingNodeRepoTransBlockStage {
 	// Id Relations
 
 	// Non-Id Properties
-	syncStatus?: number;
+	syncStatus?: string;
 
 	// Non-Id Relations
 

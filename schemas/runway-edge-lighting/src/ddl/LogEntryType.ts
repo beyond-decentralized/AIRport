@@ -1,5 +1,6 @@
 import {
 	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
@@ -27,7 +28,7 @@ export class LogEntryType {
 	@GeneratedValue()
 	id: LogEntryTypeId;
 
-	@DbNumber()
+	@DbString()
 	level: LogLevel;
 
 	// TODO: eventually, if requested, implement codes (a la ORA or TS codes)

@@ -3,7 +3,7 @@
  */
 export var ArgumentType;
 (function (ArgumentType) {
-    ArgumentType[ArgumentType["CONFIG"] = 0] = "CONFIG";
+    ArgumentType["CONFIG"] = "ArgumentType";
 })(ArgumentType || (ArgumentType = {}));
 export class Flags {
 }

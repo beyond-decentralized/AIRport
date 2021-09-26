@@ -1888,7 +1888,7 @@ export const MAPPED_SUPERCLASS = [
 									}
 								],
 								"sinceVersion": null,
-								"type": 4,
+								"type": "NUMBER",
 								"idIndex": 0
 							},
 							{
@@ -1909,7 +1909,7 @@ export const MAPPED_SUPERCLASS = [
 									}
 								],
 								"sinceVersion": null,
-								"type": 5
+								"type": "STRING"
 							},
 							{
 								"entity": null,
@@ -1929,7 +1929,7 @@ export const MAPPED_SUPERCLASS = [
 									}
 								],
 								"sinceVersion": null,
-								"type": 5
+								"type": "STRING"
 							},
 							{
 								"entity": null,
@@ -1949,7 +1949,7 @@ export const MAPPED_SUPERCLASS = [
 									}
 								],
 								"sinceVersion": null,
-								"type": 5
+								"type": "STRING"
 							},
 							{
 								"entity": null,
@@ -1969,7 +1969,7 @@ export const MAPPED_SUPERCLASS = [
 									}
 								],
 								"sinceVersion": null,
-								"type": 5
+								"type": "STRING"
 							},
 							{
 								"entity": null,
@@ -1989,7 +1989,7 @@ export const MAPPED_SUPERCLASS = [
 									}
 								],
 								"sinceVersion": null,
-								"type": 5
+								"type": "STRING"
 							}
 						],
 						"idColumns": [
@@ -2011,7 +2011,7 @@ export const MAPPED_SUPERCLASS = [
 									}
 								],
 								"sinceVersion": null,
-								"type": 4,
+								"type": "NUMBER",
 								"idIndex": 0
 							}
 						],
@@ -2130,7 +2130,7 @@ export const MAPPED_SUPERCLASS = [
 									{
 										"isId": false,
 										"oneToManyElems": null,
-										"relationType": 0,
+										"relationType": "ONE_TO_MANY",
 										"id": null,
 										"index": 0,
 										"property": null,
@@ -2153,7 +2153,7 @@ export const MAPPED_SUPERCLASS = [
 									{
 										"isId": false,
 										"oneToManyElems": null,
-										"relationType": 0,
+										"relationType": "ONE_TO_MANY",
 										"id": null,
 										"index": 1,
 										"property": null,
@@ -2171,7 +2171,7 @@ export const MAPPED_SUPERCLASS = [
 							{
 								"isId": false,
 								"oneToManyElems": null,
-								"relationType": 0,
+								"relationType": "ONE_TO_MANY",
 								"id": null,
 								"index": 0,
 								"property": null,
@@ -2183,7 +2183,7 @@ export const MAPPED_SUPERCLASS = [
 							{
 								"isId": false,
 								"oneToManyElems": null,
-								"relationType": 0,
+								"relationType": "ONE_TO_MANY",
 								"id": null,
 								"index": 1,
 								"property": null,
@@ -3195,7 +3195,7 @@ export const MAPPED_SUPERCLASS = [
 										}
 									],
 									"sinceVersion": null,
-									"type": 4,
+									"type": "NUMBER",
 									"idIndex": 0
 								},
 								{
@@ -3216,7 +3216,7 @@ export const MAPPED_SUPERCLASS = [
 										}
 									],
 									"sinceVersion": null,
-									"type": 5
+									"type": "STRING"
 								},
 								{
 									"entity": null,
@@ -3236,7 +3236,7 @@ export const MAPPED_SUPERCLASS = [
 										}
 									],
 									"sinceVersion": null,
-									"type": 5
+									"type": "STRING"
 								},
 								{
 									"entity": null,
@@ -3256,7 +3256,7 @@ export const MAPPED_SUPERCLASS = [
 										}
 									],
 									"sinceVersion": null,
-									"type": 5
+									"type": "STRING"
 								},
 								{
 									"entity": null,
@@ -3276,7 +3276,7 @@ export const MAPPED_SUPERCLASS = [
 										}
 									],
 									"sinceVersion": null,
-									"type": 5
+									"type": "STRING"
 								},
 								{
 									"entity": null,
@@ -3296,7 +3296,7 @@ export const MAPPED_SUPERCLASS = [
 										}
 									],
 									"sinceVersion": null,
-									"type": 5
+									"type": "STRING"
 								}
 							],
 							"idColumns": [
@@ -3318,7 +3318,7 @@ export const MAPPED_SUPERCLASS = [
 										}
 									],
 									"sinceVersion": null,
-									"type": 4,
+									"type": "NUMBER",
 									"idIndex": 0
 								}
 							],
@@ -3437,7 +3437,7 @@ export const MAPPED_SUPERCLASS = [
 										{
 											"isId": false,
 											"oneToManyElems": null,
-											"relationType": 0,
+											"relationType": "ONE_TO_MANY",
 											"id": null,
 											"index": 0,
 											"property": null,
@@ -3460,7 +3460,7 @@ export const MAPPED_SUPERCLASS = [
 										{
 											"isId": false,
 											"oneToManyElems": null,
-											"relationType": 0,
+											"relationType": "ONE_TO_MANY",
 											"id": null,
 											"index": 1,
 											"property": null,
@@ -3478,7 +3478,7 @@ export const MAPPED_SUPERCLASS = [
 								{
 									"isId": false,
 									"oneToManyElems": null,
-									"relationType": 0,
+									"relationType": "ONE_TO_MANY",
 									"id": null,
 									"index": 0,
 									"property": null,
@@ -3490,7 +3490,7 @@ export const MAPPED_SUPERCLASS = [
 								{
 									"isId": false,
 									"oneToManyElems": null,
-									"relationType": 0,
+									"relationType": "ONE_TO_MANY",
 									"id": null,
 									"index": 1,
 									"property": null,

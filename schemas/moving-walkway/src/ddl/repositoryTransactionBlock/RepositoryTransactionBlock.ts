@@ -84,7 +84,7 @@ export class RepositoryTransactionBlock {
 	repository: Repository;
 
 	@Column({name: "SYNC_OUTCOME_TYPE"})
-	@DbNumber()
+	@DbString()
 	syncOutcomeType: RepoTransBlockSyncOutcomeType;
 
 	@DbString()

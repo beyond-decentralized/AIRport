@@ -32,9 +32,8 @@ __decorate([
     DbString()
 ], SharingNodeTerminal.prototype, "agtTerminalPassword", void 0);
 __decorate([
-    DbNumber(),
     Column({ name: "TERMINAL_SYNC_STATUS" }),
-    DbNumber()
+    DbString()
 ], SharingNodeTerminal.prototype, "terminalSyncStatus", void 0);
 SharingNodeTerminal = __decorate([
     Entity(),

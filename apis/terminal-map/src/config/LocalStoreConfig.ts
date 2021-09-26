@@ -1,9 +1,11 @@
-import { StoreType } from '@airport/ground-control';
 import {
 	IdGeneration,
+	StoreType
+} from '@airport/ground-control';
+import {
 	store,
 	StoreSetupInfo
-}                    from './storeInfo';
+} from './storeInfo';
 
 /**
  * Created by Papa on 5/28/2016.
@@ -40,10 +42,10 @@ export function createLocalStoreConfig(
 	localStoreName: string,
 	config: JsonLocalStoreConfig
 ): ILocalStoreConfig {
-	if (!config.type && config.type !== 0) {
+	if (!config.type) {
 		throw new Error(`Local Store Type is not specified`);
 	}
-	if (!config.idGeneration && config.idGeneration !== 0) {
+	if (!config.idGeneration) {
 		throw new Error(`Id Generation startegy is not specified`);
 	}
 

@@ -21,8 +21,8 @@ export interface ISharingNodeRepository {
 
 	// Non-Id Properties
 	agtRepositoryId?: number;
-	advisedSyncPriority?: number;
-	repositorySyncStatus?: number;
+	advisedSyncPriority?: string;
+	repositorySyncStatus?: string;
 
 	// Non-Id Relations
 

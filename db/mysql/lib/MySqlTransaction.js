@@ -8,8 +8,7 @@ export class MySqlTransaction extends MySqlDriver {
         this.queryApi = connection;
         this.__container__ = driver.__container__;
     }
-    saveTransaction(transaction) {
-        throw new Error('Method not implemented.');
+    async saveTransaction(transaction) {
     }
     async commit() {
         await this.connection.commit();

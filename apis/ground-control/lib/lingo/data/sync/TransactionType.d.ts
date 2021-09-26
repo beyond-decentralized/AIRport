@@ -1,5 +1,5 @@
 export declare enum TransactionType {
-    LOCAL = 0,
-    REMOTE_SYNC = 1
+    LOCAL = "LOCAL",
+    REMOTE_SYNC = "REMOTE_SYNC"
 }
 //# sourceMappingURL=TransactionType.d.ts.map

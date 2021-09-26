@@ -15,6 +15,7 @@ import {
 	injectTransactionalServer
 }                                       from '@airport/terminal';
 import { injectAirportDatabase }        from '@airport/tower';
+import { JsonSchemaWithLastIds } from '../../../takeoff/node_modules/@airport/security-check/lib';
 import { NoOpSchemaBuilder }            from './NoOpSchemaBuilder';
 import { NoOpSequenceGenerator }        from './NoOpSequenceGenerator';
 import { NoOpSqlDriver }                from './NoOpSqlDriver';
@@ -33,7 +34,7 @@ export class TempDatabase
 	private tempDbInitialized = false;
 
 	async initialize(
-		schemas: JsonSchema[]
+		schemas: JsonSchemaWithLastIds[]
 	): Promise<void> {
 		if (this.tempDbInitialized) {
 			const schemaInitializer = await DI.db().get(SCHEMA_INITIALIZER);

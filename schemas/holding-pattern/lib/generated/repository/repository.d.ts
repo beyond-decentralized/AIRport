@@ -9,7 +9,7 @@ export interface IRepository {
     name?: string;
     url?: string;
     platformConfig?: string;
-    syncPriority?: number;
+    syncPriority?: string;
     ownerActor?: IActor;
     repositoryActors?: IRepositoryActor[];
     repositoryApplications?: IRepositoryApplication[];

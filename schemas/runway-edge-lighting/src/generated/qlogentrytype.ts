@@ -72,7 +72,7 @@ declare function require(moduleName: string): any;
 export interface LogEntryTypeESelect
     extends IEntitySelectProperties, LogEntryTypeEOptionalId {
 	// Non-Id Properties
-	level?: number | IQNumberField;
+	level?: string | IQStringField;
 	text?: string | IQStringField;
 
 	// Id Relations - full property interfaces
@@ -113,7 +113,7 @@ export interface LogEntryTypeEOptionalId {
 export interface LogEntryTypeEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	level?: number | IQNumberField;
+	level?: string | IQStringField;
 	text?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -130,7 +130,7 @@ export interface LogEntryTypeGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	level?: number | IQNumberField;
+	level?: string | IQStringField;
 	text?: string | IQStringField;
 
 	// Relations
@@ -146,7 +146,7 @@ export interface LogEntryTypeGraph
 export interface LogEntryTypeEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	LEVEL?: number | IQNumberField;
+	LEVEL?: string | IQStringField;
 	TEXT?: string | IQStringField;
 	APPLICATION_PACKAGE_ID?: number | IQNumberField;
 	PACKAGED_UNIT_ID?: number | IQNumberField;
@@ -185,7 +185,7 @@ export interface QLogEntryType extends IQEntity<LogEntryType>
 	// Id Relations
 
 	// Non-Id Fields
-	level: IQNumberField;
+	level: IQStringField;
 	text: IQStringField;
 
 	// Non-Id Relations

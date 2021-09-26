@@ -38,10 +38,10 @@ import {SQLDialect}        from './SQLQuery'
  */
 
 export enum ClauseType {
-	MAPPED_SELECT_CLAUSE,
-	NON_MAPPED_SELECT_CLAUSE,
-	WHERE_CLAUSE,
-	FUNCTION_CALL
+	MAPPED_SELECT_CLAUSE = 'MAPPED_SELECT_CLAUSE',
+	NON_MAPPED_SELECT_CLAUSE = 'NON_MAPPED_SELECT_CLAUSE',
+	WHERE_CLAUSE = 'WHERE_CLAUSE',
+	FUNCTION_CALL = 'FUNCTION_CALL'
 }
 
 export abstract class SQLWhereBase
@@ -148,7 +148,7 @@ export abstract class SQLWhereBase
 					clauseFieldMember, clauseType, defaultCallback, context))
 				.join(', ')
 		}
-		if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot && clauseField.ot !== 0) {
+		if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot) {
 			throw new Error(`Object Type is not defined in JSONClauseField`)
 		}
 

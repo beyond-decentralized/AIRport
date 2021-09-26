@@ -21,7 +21,7 @@ export interface IRepository {
 	// Non-Id Properties
 	lastUpdateTime?: Date;
 	name?: string;
-	status?: number;
+	status?: string;
 
 	// Non-Id Relations
 	terminalRepositories?: ITerminalRepository[];

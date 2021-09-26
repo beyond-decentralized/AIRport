@@ -27,16 +27,16 @@ export interface IApiValueParameter<V = boolean | number | string> extends IApiP
     value: V;
 }
 export declare enum ApiObjectKind {
-    ARRAY = 0,
-    BOOLEAN = 1,
-    BOOLEAN_VALUE = 2,
-    DATE = 3,
-    DB_ENTITY = 4,
-    NUMBER = 5,
-    NUMBER_VALUE = 6,
-    OBJECT = 7,
-    STRING = 8,
-    STRING_VALUE = 9,
-    TYPE_UNION = 10
+    ARRAY = "ARRAY",
+    BOOLEAN = "BOOLEAN",
+    BOOLEAN_VALUE = "BOOLEAN_VALUE",
+    DATE = "DATE",
+    DB_ENTITY = "DB_ENTITY",
+    NUMBER = "NUMBER",
+    NUMBER_VALUE = "NUMBER_VALUE",
+    OBJECT = "OBJECT",
+    STRING = "STRING",
+    STRING_VALUE = "STRING_VALUE",
+    TYPE_UNION = "TYPE_UNION"
 }
 //# sourceMappingURL=ApiOperation.d.ts.map

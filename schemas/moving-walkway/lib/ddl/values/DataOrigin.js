@@ -1,6 +1,6 @@
 export var DataOrigin;
 (function (DataOrigin) {
-    DataOrigin[DataOrigin["LOCAL"] = 0] = "LOCAL";
-    DataOrigin[DataOrigin["REMOTE"] = 1] = "REMOTE";
+    DataOrigin["LOCAL"] = "LOCAL";
+    DataOrigin["REMOTE"] = "REMOTE";
 })(DataOrigin || (DataOrigin = {}));
 //# sourceMappingURL=DataOrigin.js.map

@@ -3,6 +3,6 @@
  * for MAX(AgtSharingMessage.state) with a GROUP BY.
  */
 export enum AgtSharingMessageAcknowledged {
-	NOT_ACKNOWLEDGED,
-	ACKNOWLEDGED
+	NOT_ACKNOWLEDGED = 'NOT_ACKNOWLEDGED',
+	ACKNOWLEDGED = 'ACKNOWLEDGED'
 }

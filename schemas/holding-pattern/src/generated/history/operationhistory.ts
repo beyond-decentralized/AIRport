@@ -24,7 +24,7 @@ export interface IOperationHistory {
 
 	// Non-Id Properties
 	orderNumber?: number;
-	changeType?: number;
+	changeType?: string;
 	systemWideOperationId?: number;
 
 	// Non-Id Relations

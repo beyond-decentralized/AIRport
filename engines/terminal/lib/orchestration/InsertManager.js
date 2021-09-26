@@ -1,9 +1,9 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI, } from '@airport/di';
-import { ChangeType, repositoryEntity, } from '@airport/ground-control';
+import { ChangeType, DistributionStrategy, PlatformType, repositoryEntity, } from '@airport/ground-control';
 import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO } from '@airport/holding-pattern';
-import { DistributionStrategy, PlatformType, TRANSACTION_MANAGER } from '@airport/terminal-map';
+import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { HISTORY_MANAGER, INSERT_MANAGER, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER } from '../tokens';
 export class InsertManager {
     // get currentTransHistory(): ITransactionHistory {

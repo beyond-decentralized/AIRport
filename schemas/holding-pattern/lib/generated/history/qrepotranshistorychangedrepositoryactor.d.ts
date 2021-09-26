@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryEOptionalId, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistoryQRelation } from './qrepositorytransactionhistory';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
 import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
@@ -7,7 +7,7 @@ import { RepoTransHistoryChangedRepositoryActor } from '../../ddl/history/RepoTr
  * SELECT - All fields and relations (optional).
  */
 export interface RepoTransHistoryChangedRepositoryActorESelect extends IEntitySelectProperties, RepoTransHistoryChangedRepositoryActorEOptionalId {
-    referenceType?: number | IQNumberField;
+    referenceType?: string | IQStringField;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
     repository?: RepositoryESelect;
     actor?: ActorESelect;
@@ -28,7 +28,7 @@ export interface RepoTransHistoryChangedRepositoryActorEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RepoTransHistoryChangedRepositoryActorEUpdateProperties extends IEntityUpdateProperties {
-    referenceType?: number | IQNumberField;
+    referenceType?: string | IQStringField;
     repositoryTransactionHistory?: RepositoryTransactionHistoryEOptionalId;
     repository?: RepositoryEOptionalId;
     actor?: ActorEOptionalId;
@@ -37,7 +37,7 @@ export interface RepoTransHistoryChangedRepositoryActorEUpdateProperties extends
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepoTransHistoryChangedRepositoryActorGraph extends RepoTransHistoryChangedRepositoryActorEOptionalId, IEntityCascadeGraph {
-    referenceType?: number | IQNumberField;
+    referenceType?: string | IQStringField;
     repositoryTransactionHistory?: RepositoryTransactionHistoryGraph;
     repository?: RepositoryGraph;
     actor?: ActorGraph;
@@ -46,7 +46,7 @@ export interface RepoTransHistoryChangedRepositoryActorGraph extends RepoTransHi
  * UPDATE - non-id columns (optional).
  */
 export interface RepoTransHistoryChangedRepositoryActorEUpdateColumns extends IEntityUpdateColumns {
-    REFERENCE_TYPE?: number | IQNumberField;
+    REFERENCE_TYPE?: string | IQStringField;
     REPOSITORY_TRANSACTION_HISTORY_ID?: number | IQNumberField;
     REPOSITORY_ID?: number | IQNumberField;
     ACTOR_ID?: number | IQNumberField;
@@ -66,7 +66,7 @@ export interface RepoTransHistoryChangedRepositoryActorECreateColumns extends Re
  */
 export interface QRepoTransHistoryChangedRepositoryActor extends IQEntity<RepoTransHistoryChangedRepositoryActor> {
     id: IQNumberField;
-    referenceType: IQNumberField;
+    referenceType: IQStringField;
     repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
     repository: QRepositoryQRelation;
     actor: QActorQRelation;

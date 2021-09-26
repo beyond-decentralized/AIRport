@@ -1,6 +1,19 @@
-import { createDeltaStoreConfig, IDeltaStoreConfig, JsonDeltaStoreConfig } from "./DeltaStoreConfig";
-import { createLocalStoreConfig, ILocalStoreConfig, JsonLocalStoreConfig } from "./LocalStoreConfig";
-import { DistributionStrategy, IdGeneration, PlatformType, StoreType } from "@airport/ground-control";
+import {
+	DistributionStrategy,
+	IdGeneration,
+	PlatformType,
+	StoreType
+} from "@airport/ground-control";
+import {
+	createDeltaStoreConfig,
+	IDeltaStoreConfig,
+	JsonDeltaStoreConfig
+} from "./DeltaStoreConfig";
+import {
+	createLocalStoreConfig,
+	ILocalStoreConfig,
+	JsonLocalStoreConfig
+} from "./LocalStoreConfig";
 
 /**
  * Created by Papa on 5/28/2016.

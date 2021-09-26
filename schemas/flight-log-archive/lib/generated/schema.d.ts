@@ -19,7 +19,7 @@ export declare const SCHEMA: {
                     index: number;
                 }[];
                 sinceVersion: number;
-                type: number;
+                type: string;
             }[];
             idColumnRefs: {
                 index: number;

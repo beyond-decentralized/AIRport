@@ -1,10 +1,10 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepoTransBlockResponseStage } from '../../ddl/repositoryTransactionBlock/RepoTransBlockResponseStage';
 /**
  * SELECT - All fields and relations (optional).
  */
 export interface RepoTransBlockResponseStageESelect extends IEntitySelectProperties, RepoTransBlockResponseStageEOptionalId {
-    syncOutcomeType?: number | IQNumberField;
+    syncOutcomeType?: string | IQStringField;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -22,19 +22,19 @@ export interface RepoTransBlockResponseStageEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RepoTransBlockResponseStageEUpdateProperties extends IEntityUpdateProperties {
-    syncOutcomeType?: number | IQNumberField;
+    syncOutcomeType?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepoTransBlockResponseStageGraph extends RepoTransBlockResponseStageEOptionalId, IEntityCascadeGraph {
-    syncOutcomeType?: number | IQNumberField;
+    syncOutcomeType?: string | IQStringField;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
 export interface RepoTransBlockResponseStageEUpdateColumns extends IEntityUpdateColumns {
-    SYNC_OUTCOME_TYPE?: number | IQNumberField;
+    SYNC_OUTCOME_TYPE?: string | IQStringField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -51,7 +51,7 @@ export interface RepoTransBlockResponseStageECreateColumns extends RepoTransBloc
  */
 export interface QRepoTransBlockResponseStage extends IQEntity<RepoTransBlockResponseStage> {
     id: IQNumberField;
-    syncOutcomeType: IQNumberField;
+    syncOutcomeType: IQStringField;
 }
 export interface QRepoTransBlockResponseStageQId {
     id: IQNumberField;

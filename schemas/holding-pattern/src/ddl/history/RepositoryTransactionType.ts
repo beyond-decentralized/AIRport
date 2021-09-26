@@ -1,4 +1,4 @@
 export enum RepositoryTransactionType {
-	LOCAL,
-	REMOTE
+	LOCAL = 'LOCAL',
+	REMOTE = 'REMOTE'
 }

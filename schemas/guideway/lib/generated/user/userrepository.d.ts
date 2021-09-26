@@ -3,6 +3,6 @@ import { IUser } from './user';
 export interface IUserRepository {
     repository: IRepository;
     user: IUser;
-    permission?: number;
+    permission?: string;
 }
 //# sourceMappingURL=userrepository.d.ts.map

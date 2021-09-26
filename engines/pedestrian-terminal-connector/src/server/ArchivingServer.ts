@@ -141,7 +141,7 @@ export class ArchivingServer
 			toDateExclusive,
 			repositoryIds
 		)
-		const databaseIds:
+		// const databaseIds:
 		const InsertDailySyncLogs: InsertDailySyncLog[] = <InsertDailySyncLog[]>
 			dailyDbSyncStatuses.map(
 				dailyDbSyncStatus => {
@@ -149,6 +149,6 @@ export class ArchivingServer
 					return dailyDbSyncStatus
 				})
 		await this.dailySyncLogDao.insertValues(InsertDailySyncLogs)
-		await
+		// await
 	}
 }

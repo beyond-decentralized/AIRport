@@ -63,7 +63,7 @@ declare function require(moduleName: string): any;
 export interface RepoTransBlockSchemaToChangeESelect
     extends IEntitySelectProperties, RepoTransBlockSchemaToChangeEOptionalId {
 	// Non-Id Properties
-	status?: number | IQNumberField;
+	status?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 	repositoryTransactionBlock?: RepositoryTransactionBlockESelect;
@@ -104,7 +104,7 @@ export interface RepoTransBlockSchemaToChangeEOptionalId {
 export interface RepoTransBlockSchemaToChangeEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	status?: number | IQNumberField;
+	status?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -118,7 +118,7 @@ export interface RepoTransBlockSchemaToChangeGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	status?: number | IQNumberField;
+	status?: string | IQStringField;
 
 	// Relations
 	repositoryTransactionBlock?: RepositoryTransactionBlockGraph;
@@ -132,7 +132,7 @@ export interface RepoTransBlockSchemaToChangeGraph
 export interface RepoTransBlockSchemaToChangeEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	STATUS?: number | IQNumberField;
+	STATUS?: string | IQStringField;
 
 }
 
@@ -169,7 +169,7 @@ export interface QRepoTransBlockSchemaToChange extends IQEntity<RepoTransBlockSc
 	schema: QSchemaQRelation;
 
 	// Non-Id Fields
-	status: IQNumberField;
+	status: IQStringField;
 
 	// Non-Id Relations
 

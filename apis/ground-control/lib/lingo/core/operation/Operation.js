@@ -3,37 +3,37 @@
  */
 export var OperationCategory;
 (function (OperationCategory) {
-    OperationCategory[OperationCategory["BOOLEAN"] = 0] = "BOOLEAN";
-    OperationCategory[OperationCategory["DATE"] = 1] = "DATE";
-    OperationCategory[OperationCategory["FUNCTION"] = 2] = "FUNCTION";
-    OperationCategory[OperationCategory["LOGICAL"] = 3] = "LOGICAL";
-    OperationCategory[OperationCategory["NUMBER"] = 4] = "NUMBER";
-    OperationCategory[OperationCategory["STRING"] = 5] = "STRING";
-    OperationCategory[OperationCategory["UNTYPED"] = 6] = "UNTYPED"; // Operation on an untyped field
+    OperationCategory["BOOLEAN"] = "BOOLEAN";
+    OperationCategory["DATE"] = "DATE";
+    OperationCategory["FUNCTION"] = "FUNCTION";
+    OperationCategory["LOGICAL"] = "LOGICAL";
+    OperationCategory["NUMBER"] = "NUMBER";
+    OperationCategory["STRING"] = "STRING";
+    OperationCategory["UNTYPED"] = "UNTYPED"; // Operation on an untyped field
 })(OperationCategory || (OperationCategory = {}));
 export var SqlOperator;
 (function (SqlOperator) {
-    SqlOperator[SqlOperator["AND"] = 0] = "AND";
-    SqlOperator[SqlOperator["EQUALS"] = 1] = "EQUALS";
-    SqlOperator[SqlOperator["EXISTS"] = 2] = "EXISTS";
-    SqlOperator[SqlOperator["GREATER_THAN"] = 3] = "GREATER_THAN";
-    SqlOperator[SqlOperator["GREATER_THAN_OR_EQUALS"] = 4] = "GREATER_THAN_OR_EQUALS";
-    SqlOperator[SqlOperator["IN"] = 5] = "IN";
-    SqlOperator[SqlOperator["IS_NOT_NULL"] = 6] = "IS_NOT_NULL";
-    SqlOperator[SqlOperator["IS_NULL"] = 7] = "IS_NULL";
-    SqlOperator[SqlOperator["LESS_THAN"] = 8] = "LESS_THAN";
-    SqlOperator[SqlOperator["LESS_THAN_OR_EQUALS"] = 9] = "LESS_THAN_OR_EQUALS";
-    SqlOperator[SqlOperator["LIKE"] = 10] = "LIKE";
-    SqlOperator[SqlOperator["OR"] = 11] = "OR";
-    SqlOperator[SqlOperator["NOT"] = 12] = "NOT";
-    SqlOperator[SqlOperator["NOT_EQUALS"] = 13] = "NOT_EQUALS";
-    SqlOperator[SqlOperator["NOT_IN"] = 14] = "NOT_IN";
+    SqlOperator["AND"] = "AND";
+    SqlOperator["EQUALS"] = "EQUALS";
+    SqlOperator["EXISTS"] = "EXISTS";
+    SqlOperator["GREATER_THAN"] = "GREATER_THAN";
+    SqlOperator["GREATER_THAN_OR_EQUALS"] = "GREATER_THAN_OR_EQUALS";
+    SqlOperator["IN"] = "IN";
+    SqlOperator["IS_NOT_NULL"] = "IS_NOT_NULL";
+    SqlOperator["IS_NULL"] = "IS_NULL";
+    SqlOperator["LESS_THAN"] = "LESS_THAN";
+    SqlOperator["LESS_THAN_OR_EQUALS"] = "LESS_THAN_OR_EQUALS";
+    SqlOperator["LIKE"] = "LIKE";
+    SqlOperator["OR"] = "OR";
+    SqlOperator["NOT"] = "NOT";
+    SqlOperator["NOT_EQUALS"] = "NOT_EQUALS";
+    SqlOperator["NOT_IN"] = "NOT_IN";
 })(SqlOperator || (SqlOperator = {}));
 export var CRUDOperation;
 (function (CRUDOperation) {
-    CRUDOperation[CRUDOperation["CREATE"] = 0] = "CREATE";
-    CRUDOperation[CRUDOperation["READ"] = 1] = "READ";
-    CRUDOperation[CRUDOperation["UPDATE"] = 2] = "UPDATE";
-    CRUDOperation[CRUDOperation["DELETE"] = 3] = "DELETE";
+    CRUDOperation["CREATE"] = "CREATE";
+    CRUDOperation["READ"] = "READ";
+    CRUDOperation["UPDATE"] = "UPDATE";
+    CRUDOperation["DELETE"] = "DELETE";
 })(CRUDOperation || (CRUDOperation = {}));
 //# sourceMappingURL=Operation.js.map

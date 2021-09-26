@@ -3,7 +3,7 @@
  * for MAX(AgtSharingMessage.state) with a GROUP BY.
  */
 export declare enum AgtSharingMessageAcknowledged {
-    NOT_ACKNOWLEDGED = 0,
-    ACKNOWLEDGED = 1
+    NOT_ACKNOWLEDGED = "NOT_ACKNOWLEDGED",
+    ACKNOWLEDGED = "ACKNOWLEDGED"
 }
 //# sourceMappingURL=AgtSharingMessageAcknowledged.d.ts.map

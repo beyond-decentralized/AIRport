@@ -3,6 +3,6 @@ import { ISchema } from '@airport/traffic-pattern';
 export interface IRepoTransBlockSchemaToChange {
     repositoryTransactionBlock: IRepositoryTransactionBlock;
     schema: ISchema;
-    status?: number;
+    status?: string;
 }
 //# sourceMappingURL=repotransblockschematochange.d.ts.map

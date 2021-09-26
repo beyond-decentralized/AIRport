@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
+import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
 /**
  * A AgtSharingMessage record is created everytime the AGT sends a group of sync records
  * to Terminals.  Eventually, when Terminals respond with an ACK of receipt a corresponding
@@ -30,7 +30,7 @@ __decorate([
 ], AgtSharingMessage.prototype, "syncLogs", void 0);
 __decorate([
     Column({ name: 'ACKNOWLEDGED', nullable: false }),
-    DbNumber()
+    DbString()
 ], AgtSharingMessage.prototype, "acknowledged", void 0);
 AgtSharingMessage = __decorate([
     Entity(),

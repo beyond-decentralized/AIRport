@@ -2,8 +2,8 @@ import { JSONRelation } from '../../core/entity/Relation';
 import { JSONFieldInOrderBy } from '../../core/field/FieldInOrderBy';
 import { JSONBaseOperation } from '../../core/operation/Operation';
 export declare enum JsonStatementType {
-    ENTITY_QUERY = 0,
-    NON_ENTITY_QUERY = 1
+    ENTITY_QUERY = "ENTITY_QUERY",
+    NON_ENTITY_QUERY = "NON_ENTITY_QUERY"
 }
 /**
  * All JSON Statements extend this object (have an optional where clause)

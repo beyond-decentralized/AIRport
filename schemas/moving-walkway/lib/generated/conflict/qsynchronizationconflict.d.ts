@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, RecordHistoryGraph, RecordHistoryEOptionalId, RecordHistoryESelect, QRecordHistoryQRelation } from '@airport/holding-pattern';
 import { SynchronizationConflictValuesGraph, SynchronizationConflictValuesESelect, QSynchronizationConflictValues } from './qsynchronizationconflictvalues';
 import { SynchronizationConflictValues } from '../../ddl/conflict/SynchronizationConflictValues';
@@ -7,7 +7,7 @@ import { SynchronizationConflict } from '../../ddl/conflict/SynchronizationConfl
  * SELECT - All fields and relations (optional).
  */
 export interface SynchronizationConflictESelect extends IEntitySelectProperties, SynchronizationConflictEOptionalId {
-    type?: number | IQNumberField;
+    type?: string | IQStringField;
     repository?: RepositoryESelect;
     overwrittenRecordHistory?: RecordHistoryESelect;
     overwritingRecordHistory?: RecordHistoryESelect;
@@ -29,7 +29,7 @@ export interface SynchronizationConflictEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SynchronizationConflictEUpdateProperties extends IEntityUpdateProperties {
-    type?: number | IQNumberField;
+    type?: string | IQStringField;
     repository?: RepositoryEOptionalId;
     overwrittenRecordHistory?: RecordHistoryEOptionalId;
     overwritingRecordHistory?: RecordHistoryEOptionalId;
@@ -38,7 +38,7 @@ export interface SynchronizationConflictEUpdateProperties extends IEntityUpdateP
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SynchronizationConflictGraph extends SynchronizationConflictEOptionalId, IEntityCascadeGraph {
-    type?: number | IQNumberField;
+    type?: string | IQStringField;
     repository?: RepositoryGraph;
     overwrittenRecordHistory?: RecordHistoryGraph;
     overwritingRecordHistory?: RecordHistoryGraph;
@@ -48,7 +48,7 @@ export interface SynchronizationConflictGraph extends SynchronizationConflictEOp
  * UPDATE - non-id columns (optional).
  */
 export interface SynchronizationConflictEUpdateColumns extends IEntityUpdateColumns {
-    TYPE?: number | IQNumberField;
+    TYPE?: string | IQStringField;
     REPOSITORY_ID?: number | IQNumberField;
     OVERWRITTEN_RECORD_HISTORY_ID?: number | IQNumberField;
     OVERWRITING_RECORD_HISTORY_ID?: number | IQNumberField;
@@ -68,7 +68,7 @@ export interface SynchronizationConflictECreateColumns extends SynchronizationCo
  */
 export interface QSynchronizationConflict extends IQEntity<SynchronizationConflict> {
     id: IQNumberField;
-    type: IQNumberField;
+    type: IQStringField;
     repository: QRepositoryQRelation;
     overwrittenRecordHistory: QRecordHistoryQRelation;
     overwritingRecordHistory: QRecordHistoryQRelation;

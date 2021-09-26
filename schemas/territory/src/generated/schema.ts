@@ -25,7 +25,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -39,7 +39,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
@@ -87,7 +87,7 @@ export const SCHEMA = {
 							"oneToManyElems": {
 								"mappedBy": "package"
 							},
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 2
 							},
@@ -116,7 +116,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -139,7 +139,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -162,7 +162,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -207,7 +207,7 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -217,7 +217,7 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 2
 							},
@@ -246,7 +246,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -260,7 +260,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
@@ -308,7 +308,7 @@ export const SCHEMA = {
 							"oneToManyElems": {
 								"mappedBy": "domain"
 							},
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 2
 							},
@@ -337,7 +337,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -351,7 +351,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 2,
@@ -374,7 +374,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -428,7 +428,7 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 2
 							},
@@ -441,7 +441,7 @@ export const SCHEMA = {
 							"oneToManyElems": {
 								"mappedBy": "application"
 							},
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 3
 							},
@@ -470,7 +470,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -484,7 +484,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 2,
@@ -506,7 +506,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -551,7 +551,7 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 2
 							},

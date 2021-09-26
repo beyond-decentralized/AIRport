@@ -2,6 +2,7 @@ import {
 	Column,
 	DbDate,
 	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
@@ -83,7 +84,7 @@ export class SharingMessage {
 	})
 	sharingNode: SharingNode
 
-	@DbNumber()
+	@DbString()
 	origin: DataOrigin
 
 	// Needed to ACK back the fact that the message was synced

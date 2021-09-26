@@ -1,4 +1,7 @@
-import { StoreType } from '@airport/ground-control';
+import {
+	IdGeneration,
+	StoreType
+} from '@airport/ground-control';
 
 export interface StoreShareInfo {
 	name: string;
@@ -10,13 +13,9 @@ export interface StoreSetupInfo {
 	idGeneration: IdGeneration;
 }
 
-export enum IdGeneration {
-	ENTITY_CHANGE_ID,
-}
-
 export namespace store.type {
 	export const WEB_SQL = 'WEB_SQL'
-	export const SQL_JS  = 'SQL_JS'
+	export const SQL_JS = 'SQL_JS'
 
 	export function getName(
 		localStoreType: StoreType

@@ -18,7 +18,7 @@ export interface SchemaColumnESelect extends VersionedSchemaObjectESelect, Schem
     notNull?: boolean | IQBooleanField;
     precision?: number | IQNumberField;
     scale?: number | IQNumberField;
-    type?: number | IQNumberField;
+    type?: string | IQStringField;
     entity?: SchemaEntityESelect;
     propertyColumns?: SchemaPropertyColumnESelect;
     manyRelationColumns?: SchemaRelationColumnESelect;
@@ -48,7 +48,7 @@ export interface SchemaColumnEUpdateProperties extends VersionedSchemaObjectEUpd
     notNull?: boolean | IQBooleanField;
     precision?: number | IQNumberField;
     scale?: number | IQNumberField;
-    type?: number | IQNumberField;
+    type?: string | IQStringField;
     entity?: SchemaEntityEOptionalId;
 }
 /**
@@ -63,7 +63,7 @@ export interface SchemaColumnGraph extends SchemaColumnEOptionalId, VersionedSch
     notNull?: boolean | IQBooleanField;
     precision?: number | IQNumberField;
     scale?: number | IQNumberField;
-    type?: number | IQNumberField;
+    type?: string | IQStringField;
     entity?: SchemaEntityGraph;
     propertyColumns?: SchemaPropertyColumnGraph[];
     manyRelationColumns?: SchemaRelationColumnGraph[];
@@ -84,7 +84,7 @@ export interface SchemaColumnEUpdateColumns extends VersionedSchemaObjectEUpdate
     NOT_NULL?: boolean | IQBooleanField;
     PRECISION?: number | IQNumberField;
     SCALE?: number | IQNumberField;
-    TYPE?: number | IQNumberField;
+    TYPE?: string | IQStringField;
     SCHEMA_ENTITY_ID?: number | IQNumberField;
 }
 /**
@@ -110,7 +110,7 @@ export interface QSchemaColumn extends QVersionedSchemaObject<SchemaColumn> {
     notNull: IQBooleanField;
     precision: IQNumberField;
     scale: IQNumberField;
-    type: IQNumberField;
+    type: IQStringField;
     entity: QSchemaEntityQRelation;
     propertyColumns: IQOneToManyRelation<SchemaPropertyColumn, QSchemaPropertyColumn>;
     manyRelationColumns: IQOneToManyRelation<SchemaRelationColumn, QSchemaRelationColumn>;

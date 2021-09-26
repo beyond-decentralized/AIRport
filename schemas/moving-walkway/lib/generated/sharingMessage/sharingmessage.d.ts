@@ -3,7 +3,7 @@ import { ISharingMessageRepoTransBlock } from './sharingmessagerepotransblock';
 export interface ISharingMessage {
     id: number;
     sharingNode: ISharingNode;
-    origin?: number;
+    origin?: string;
     agtSharingMessageId?: number;
     syncTimestamp?: Date;
     sharingMessageRepoTransBlocks?: ISharingMessageRepoTransBlock[];

@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '../terminal/qterminal';
 import { SyncLogGraph, SyncLogESelect, QSyncLog } from './qsynclog';
 import { SyncLog } from '../../ddl/synchronization/SyncLog';
@@ -8,7 +8,7 @@ import { AgtSharingMessage } from '../../ddl/synchronization/AgtSharingMessage';
  */
 export interface AgtSharingMessageESelect extends IEntitySelectProperties, AgtSharingMessageEOptionalId {
     tmSharingMessageId?: number | IQNumberField;
-    acknowledged?: number | IQNumberField;
+    acknowledged?: string | IQStringField;
     terminal?: TerminalESelect;
     syncLogs?: SyncLogESelect;
 }
@@ -29,7 +29,7 @@ export interface AgtSharingMessageEOptionalId {
  */
 export interface AgtSharingMessageEUpdateProperties extends IEntityUpdateProperties {
     tmSharingMessageId?: number | IQNumberField;
-    acknowledged?: number | IQNumberField;
+    acknowledged?: string | IQStringField;
     terminal?: TerminalEOptionalId;
 }
 /**
@@ -37,7 +37,7 @@ export interface AgtSharingMessageEUpdateProperties extends IEntityUpdatePropert
  */
 export interface AgtSharingMessageGraph extends AgtSharingMessageEOptionalId, IEntityCascadeGraph {
     tmSharingMessageId?: number | IQNumberField;
-    acknowledged?: number | IQNumberField;
+    acknowledged?: string | IQStringField;
     terminal?: TerminalGraph;
     syncLogs?: SyncLogGraph[];
 }
@@ -46,7 +46,7 @@ export interface AgtSharingMessageGraph extends AgtSharingMessageEOptionalId, IE
  */
 export interface AgtSharingMessageEUpdateColumns extends IEntityUpdateColumns {
     TM_SHARING_MESSAGE_ID?: number | IQNumberField;
-    ACKNOWLEDGED?: number | IQNumberField;
+    ACKNOWLEDGED?: string | IQStringField;
     SYNCED_TERMINAL_ID?: number | IQNumberField;
 }
 /**
@@ -65,7 +65,7 @@ export interface AgtSharingMessageECreateColumns extends AgtSharingMessageEId, A
 export interface QAgtSharingMessage extends IQEntity<AgtSharingMessage> {
     id: IQNumberField;
     tmSharingMessageId: IQNumberField;
-    acknowledged: IQNumberField;
+    acknowledged: IQStringField;
     terminal: QTerminalQRelation;
     syncLogs: IQOneToManyRelation<SyncLog, QSyncLog>;
 }

@@ -3,7 +3,7 @@ import { IRepository, IActor } from '@airport/holding-pattern';
 export interface IMissingRecord {
     id: number;
     actorRecordId?: number;
-    status?: number;
+    status?: string;
     schemaVersion?: ISchemaVersion;
     entity?: ISchemaEntity;
     repository?: IRepository;

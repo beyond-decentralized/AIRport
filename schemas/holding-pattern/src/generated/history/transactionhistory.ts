@@ -34,7 +34,7 @@ export interface ITransactionHistory {
 	// Id Relations
 
 	// Non-Id Properties
-	transactionType?: number;
+	transactionType?: string;
 
 	// Non-Id Relations
 	repositoryTransactionHistories?: IRepositoryTransactionHistory[];

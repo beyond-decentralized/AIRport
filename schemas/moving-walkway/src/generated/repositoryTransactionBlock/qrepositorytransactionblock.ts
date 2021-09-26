@@ -124,7 +124,7 @@ export interface RepositoryTransactionBlockESelect
 	// Non-Id Properties
 	sourceId?: number | IQNumberField;
 	hash?: string | IQStringField;
-	syncOutcomeType?: number | IQNumberField;
+	syncOutcomeType?: string | IQStringField;
 	contents?: string | IQStringField;
 
 	// Id Relations - full property interfaces
@@ -171,7 +171,7 @@ export interface RepositoryTransactionBlockEUpdateProperties
 	// Non-Id Properties
 	sourceId?: number | IQNumberField;
 	hash?: string | IQStringField;
-	syncOutcomeType?: number | IQNumberField;
+	syncOutcomeType?: string | IQStringField;
 	contents?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -190,7 +190,7 @@ export interface RepositoryTransactionBlockGraph
 	// Non-Id Properties
 	sourceId?: number | IQNumberField;
 	hash?: string | IQStringField;
-	syncOutcomeType?: number | IQNumberField;
+	syncOutcomeType?: string | IQStringField;
 	contents?: string | IQStringField;
 
 	// Relations
@@ -212,7 +212,7 @@ export interface RepositoryTransactionBlockEUpdateColumns
 	// Non-Id Columns
 	SOURCE_ID?: number | IQNumberField;
 	HASH?: string | IQStringField;
-	SYNC_OUTCOME_TYPE?: number | IQNumberField;
+	SYNC_OUTCOME_TYPE?: string | IQStringField;
 	CONTENTS?: string | IQStringField;
 	SOURCE_TERMINAL_ID?: number | IQNumberField;
 	REPOSITORY_ID?: number | IQNumberField;
@@ -253,7 +253,7 @@ export interface QRepositoryTransactionBlock extends IQEntity<RepositoryTransact
 	// Non-Id Fields
 	sourceId: IQNumberField;
 	hash: IQStringField;
-	syncOutcomeType: IQNumberField;
+	syncOutcomeType: IQStringField;
 	contents: IQStringField;
 
 	// Non-Id Relations

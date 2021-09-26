@@ -12,7 +12,9 @@ import {
 	ChangeType,
 	DbColumn,
 	DbEntity,
+	DistributionStrategy,
 	JsonInsertValues,
+	PlatformType,
 	PortableQuery,
 	repositoryEntity,
 } from '@airport/ground-control'
@@ -31,11 +33,9 @@ import {
 	SystemWideOperationId
 } from '@airport/holding-pattern'
 import {
-	DistributionStrategy,
 	IHistoryManager,
 	IInsertManager,
 	ITransaction,
-	PlatformType,
 	RecordId,
 	TRANSACTION_MANAGER
 } from '@airport/terminal-map'

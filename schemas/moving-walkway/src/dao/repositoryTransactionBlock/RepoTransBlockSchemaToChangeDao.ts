@@ -1,9 +1,9 @@
-import {DI}                                    from '@airport/di'
-import {REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO} from '../../tokens'
+import { DI } from '@airport/di'
+import { REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO } from '../../tokens'
 import {
 	BaseRepoTransBlockSchemaToChangeDao,
 	IBaseRepoTransBlockSchemaToChangeDao
-}                                              from '../../generated/generated'
+} from '../../generated/generated'
 
 export interface IRepoTransBlockSchemaToChangeDao
 	extends IBaseRepoTransBlockSchemaToChangeDao {
@@ -11,7 +11,8 @@ export interface IRepoTransBlockSchemaToChangeDao
 }
 
 export class RepoTransBlockSchemaToChangeDao
-	extends BaseRepoTransBlockSchemaToChangeDao {
+	extends BaseRepoTransBlockSchemaToChangeDao
+	implements IRepoTransBlockSchemaToChangeDao {
 
 }
 

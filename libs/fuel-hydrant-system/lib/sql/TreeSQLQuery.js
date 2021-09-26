@@ -109,7 +109,7 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
             let jsonClauseField = selectClauseFragment[propertyName];
             let dataType = jsonClauseField.dt;
             // Must be a sub-query
-            if (!dataType && dataType !== 0) {
+            if (!dataType) {
                 let childResultObject = this.parseQueryResult(jsonClauseField, resultRow, nextFieldIndex, aliasCache, aliasCache.getFollowingAlias());
                 this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, propertyName, childResultObject);
             }

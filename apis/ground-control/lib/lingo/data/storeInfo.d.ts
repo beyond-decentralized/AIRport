@@ -1,11 +1,11 @@
 export declare enum StoreType {
-    COCKROACHDB = 0,
-    MYSQL = 1,
-    POSTGRESQL = 2,
-    REMOTE = 3,
-    SQLITE = 4,
-    SQLJS = 5,
-    WEB_SQL = 6
+    COCKROACHDB = "COCKROACHDB",
+    MYSQL = "MYSQL",
+    POSTGRESQL = "POSTGRESQL",
+    REMOTE = "REMOTE",
+    SQLITE = "SQLITE",
+    SQLJS = "SQLJS",
+    WEB_SQL = "WEB_SQL"
 }
 export interface StoreShareInfo {
     name: string;
@@ -16,6 +16,6 @@ export interface StoreSetupInfo {
     idGeneration: IdGeneration;
 }
 export declare enum IdGeneration {
-    ENTITY_CHANGE_ID = 0
+    ENTITY_CHANGE_ID = "ENTITY_CHANGE_ID"
 }
 //# sourceMappingURL=storeInfo.d.ts.map

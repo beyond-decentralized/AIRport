@@ -8,10 +8,10 @@ import { SharingNode } from '../../ddl/sharingNode/SharingNode';
  * SELECT - All fields and relations (optional).
  */
 export interface SharingNodeESelect extends IEntitySelectProperties, SharingNodeEOptionalId {
-    sharingMechanism?: number | IQNumberField;
+    sharingMechanism?: string | IQStringField;
     isActive?: boolean | IQBooleanField;
     syncFrequency?: number | IQNumberField;
-    connectionProtocol?: number | IQNumberField;
+    connectionProtocol?: string | IQStringField;
     connectionUrl?: string | IQStringField;
     messages?: SharingMessageESelect;
     sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockESelect;
@@ -32,20 +32,20 @@ export interface SharingNodeEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SharingNodeEUpdateProperties extends IEntityUpdateProperties {
-    sharingMechanism?: number | IQNumberField;
+    sharingMechanism?: string | IQStringField;
     isActive?: boolean | IQBooleanField;
     syncFrequency?: number | IQNumberField;
-    connectionProtocol?: number | IQNumberField;
+    connectionProtocol?: string | IQStringField;
     connectionUrl?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SharingNodeGraph extends SharingNodeEOptionalId, IEntityCascadeGraph {
-    sharingMechanism?: number | IQNumberField;
+    sharingMechanism?: string | IQStringField;
     isActive?: boolean | IQBooleanField;
     syncFrequency?: number | IQNumberField;
-    connectionProtocol?: number | IQNumberField;
+    connectionProtocol?: string | IQStringField;
     connectionUrl?: string | IQStringField;
     messages?: SharingMessageGraph[];
     sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockGraph[];
@@ -54,10 +54,10 @@ export interface SharingNodeGraph extends SharingNodeEOptionalId, IEntityCascade
  * UPDATE - non-id columns (optional).
  */
 export interface SharingNodeEUpdateColumns extends IEntityUpdateColumns {
-    SHARING_MECHANISM?: number | IQNumberField;
+    SHARING_MECHANISM?: string | IQStringField;
     IS_ACTIVE?: boolean | IQBooleanField;
     SYNC_FREQUENCY?: number | IQNumberField;
-    CONNECTION_PROTOCOL?: number | IQNumberField;
+    CONNECTION_PROTOCOL?: string | IQStringField;
     CONNECTION_URL?: string | IQStringField;
 }
 /**
@@ -75,10 +75,10 @@ export interface SharingNodeECreateColumns extends SharingNodeEId, SharingNodeEU
  */
 export interface QSharingNode extends IQEntity<SharingNode> {
     id: IQNumberField;
-    sharingMechanism: IQNumberField;
+    sharingMechanism: IQStringField;
     isActive: IQBooleanField;
     syncFrequency: IQNumberField;
-    connectionProtocol: IQNumberField;
+    connectionProtocol: IQStringField;
     connectionUrl: IQStringField;
     messages: IQOneToManyRelation<SharingMessage, QSharingMessage>;
     sharingNodeRepoTransBlocks: IQOneToManyRelation<SharingNodeRepoTransBlock, QSharingNodeRepoTransBlock>;

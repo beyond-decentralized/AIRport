@@ -20,7 +20,7 @@ export interface IRepoTransBlockSchemaToChange {
 	schema: ISchema;
 
 	// Non-Id Properties
-	status?: number;
+	status?: string;
 
 	// Non-Id Relations
 

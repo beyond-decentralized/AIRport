@@ -3,7 +3,7 @@
  */
 
 export enum ArgumentType {
-	CONFIG
+	CONFIG = 'ArgumentType'
 }
 
 export class Flags {

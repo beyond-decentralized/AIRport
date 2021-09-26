@@ -1,5 +1,5 @@
+import {PlatformType, DistributionStrategy} from "@airport/ground-control";
 import {DeltaStoreConfig, GoogleDeltaStoreConfig, JsonDeltaStoreConfig} from "../../config/DeltaStoreConfig";
-import {PlatformType, DistributionStrategy} from "delta-store";
 import {StoreType} from "../../../../terminal/src/store/Store";
 import {PersistenceConfig} from "../../config/PersistenceConfig";
 /**

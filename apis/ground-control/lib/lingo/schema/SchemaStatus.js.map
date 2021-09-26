@@ -1,1 +1,1 @@
-{"version":3,"file":"SchemaStatus.js","sourceRoot":"","sources":["../../../src/lingo/schema/SchemaStatus.ts"],"names":[],"mappings":"AAAA,MAAM,CAAN,IAAY,YAIX;AAJD,WAAY,YAAY;IACvB,qDAAO,CAAA;IACP,qDAAO,CAAA;IACP,mEAAc,CAAA;AACf,CAAC,EAJW,YAAY,KAAZ,YAAY,QAIvB"}
+{"version":3,"file":"SchemaStatus.js","sourceRoot":"","sources":["../../../src/lingo/schema/SchemaStatus.ts"],"names":[],"mappings":"AAAA,MAAM,CAAN,IAAY,YAIX;AAJD,WAAY,YAAY;IACvB,mCAAmB,CAAA;IACnB,mCAAmB,CAAA;IACnB,iDAAiC,CAAA;AAClC,CAAC,EAJW,YAAY,KAAZ,YAAY,QAIvB"}

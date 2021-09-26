@@ -3,9 +3,9 @@ import { SQLDataType } from '../core/field/JSONClause';
 import { PortableQuery } from '../query/PortableQuery';
 import { DbColumn } from '../schema/Property';
 export declare enum QueryType {
-    DDL = 0,
-    SELECT = 1,
-    MUTATE = 2
+    DDL = "DDL",
+    SELECT = "SELECT",
+    MUTATE = "MUTATE"
 }
 export interface ATransactionHistory {
 }

@@ -1,5 +1,5 @@
 export declare enum TransmissionStatus {
-    ACKNOWLEDGED = 0,
-    SENT = 1
+    ACKNOWLEDGED = "ACKNOWLEDGED",
+    SENT = "SENT"
 }
 //# sourceMappingURL=TransmissionStatus.d.ts.map

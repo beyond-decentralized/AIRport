@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryTransactionBlockGraph, RepositoryTransactionBlockEId, RepositoryTransactionBlockEOptionalId, RepositoryTransactionBlockESelect, QRepositoryTransactionBlockQId, QRepositoryTransactionBlockQRelation } from './qrepositorytransactionblock';
 import { SchemaGraph, SchemaEId, SchemaEOptionalId, SchemaESelect, QSchemaQId, QSchemaQRelation } from '@airport/traffic-pattern';
 import { RepoTransBlockSchemaToChange } from '../../ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange';
@@ -6,7 +6,7 @@ import { RepoTransBlockSchemaToChange } from '../../ddl/repositoryTransactionBlo
  * SELECT - All fields and relations (optional).
  */
 export interface RepoTransBlockSchemaToChangeESelect extends IEntitySelectProperties, RepoTransBlockSchemaToChangeEOptionalId {
-    status?: number | IQNumberField;
+    status?: string | IQStringField;
     repositoryTransactionBlock?: RepositoryTransactionBlockESelect;
     schema?: SchemaESelect;
 }
@@ -28,13 +28,13 @@ export interface RepoTransBlockSchemaToChangeEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RepoTransBlockSchemaToChangeEUpdateProperties extends IEntityUpdateProperties {
-    status?: number | IQNumberField;
+    status?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepoTransBlockSchemaToChangeGraph extends RepoTransBlockSchemaToChangeEOptionalId, IEntityCascadeGraph {
-    status?: number | IQNumberField;
+    status?: string | IQStringField;
     repositoryTransactionBlock?: RepositoryTransactionBlockGraph;
     schema?: SchemaGraph;
 }
@@ -42,7 +42,7 @@ export interface RepoTransBlockSchemaToChangeGraph extends RepoTransBlockSchemaT
  * UPDATE - non-id columns (optional).
  */
 export interface RepoTransBlockSchemaToChangeEUpdateColumns extends IEntityUpdateColumns {
-    STATUS?: number | IQNumberField;
+    STATUS?: string | IQStringField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -60,7 +60,7 @@ export interface RepoTransBlockSchemaToChangeECreateColumns extends RepoTransBlo
 export interface QRepoTransBlockSchemaToChange extends IQEntity<RepoTransBlockSchemaToChange> {
     repositoryTransactionBlock: QRepositoryTransactionBlockQRelation;
     schema: QSchemaQRelation;
-    status: IQNumberField;
+    status: IQStringField;
 }
 export interface QRepoTransBlockSchemaToChangeQId {
     repositoryTransactionBlock: QRepositoryTransactionBlockQId;

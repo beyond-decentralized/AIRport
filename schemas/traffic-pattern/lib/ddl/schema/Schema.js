@@ -34,7 +34,7 @@ __decorate([
 ], Schema.prototype, "packageName", void 0);
 __decorate([
     Column({ name: 'STATUS', nullable: false }),
-    DbNumber()
+    DbString()
 ], Schema.prototype, "status", void 0);
 __decorate([
     OneToMany({ mappedBy: 'schema' })

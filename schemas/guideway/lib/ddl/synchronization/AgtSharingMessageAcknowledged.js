@@ -4,7 +4,7 @@
  */
 export var AgtSharingMessageAcknowledged;
 (function (AgtSharingMessageAcknowledged) {
-    AgtSharingMessageAcknowledged[AgtSharingMessageAcknowledged["NOT_ACKNOWLEDGED"] = 0] = "NOT_ACKNOWLEDGED";
-    AgtSharingMessageAcknowledged[AgtSharingMessageAcknowledged["ACKNOWLEDGED"] = 1] = "ACKNOWLEDGED";
+    AgtSharingMessageAcknowledged["NOT_ACKNOWLEDGED"] = "NOT_ACKNOWLEDGED";
+    AgtSharingMessageAcknowledged["ACKNOWLEDGED"] = "ACKNOWLEDGED";
 })(AgtSharingMessageAcknowledged || (AgtSharingMessageAcknowledged = {}));
 //# sourceMappingURL=AgtSharingMessageAcknowledged.js.map

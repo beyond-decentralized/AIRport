@@ -2,8 +2,8 @@
  * Order of a sorted field, as specified in the ORDER BY clause.
  */
 export enum SortOrder {
-	ASCENDING,
-	DESCENDING
+	ASCENDING = 'ASCENDING',
+	DESCENDING = 'DESCENDING'
 }
 
 /**

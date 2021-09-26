@@ -1,6 +1,6 @@
 export enum UserRepositoryPermission {
-	NONE,
-	READ,
-	WRITE,
-	MANAGE
+	NONE = 'NONE',
+	READ = 'READ',
+	WRITE = 'WRITE',
+	MANAGE = 'MANAGE'
 }

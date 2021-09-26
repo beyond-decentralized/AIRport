@@ -19,9 +19,9 @@ export interface ColumnConfiguration {
     scale?: number;
 }
 export declare enum ConstraintMode {
-    CONSTRAINT = 0,
-    NO_CONSTRAINT = 1,
-    PROVIDER_DEFAULT = 2
+    CONSTRAINT = "CONSTRAINT",
+    NO_CONSTRAINT = "NO_CONSTRAINT",
+    PROVIDER_DEFAULT = "PROVIDER_DEFAULT"
 }
 /**
  * Marks an object property as a SQL column.

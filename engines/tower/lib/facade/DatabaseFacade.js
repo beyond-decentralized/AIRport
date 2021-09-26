@@ -1,7 +1,6 @@
 import { DATABASE_FACADE, Delete, InsertColumnValues, InsertValues, QUERY_CONTEXT_LOADER, SCHEMA_UTILS, UPDATE_CACHE_MANAGER, UpdateColumns, UpdateProperties, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
-import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
+import { DistributionStrategy, ENTITY_STATE_MANAGER, PlatformType, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { ENTITY_COPIER } from '../tokens';
 /**
  * Created by Papa on 5/23/2016.

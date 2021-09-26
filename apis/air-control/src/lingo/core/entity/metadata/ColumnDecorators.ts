@@ -31,9 +31,9 @@ export interface ColumnConfiguration {
 }
 
 export enum ConstraintMode {
-	CONSTRAINT, // Apply the constraint.
-	NO_CONSTRAINT, // Do not apply the constraint.
-	PROVIDER_DEFAULT, // Use the provider-defined default behavior.
+	CONSTRAINT = 'CONSTRAINT', // Apply the constraint.
+	NO_CONSTRAINT = 'NO_CONSTRAINT', // Do not apply the constraint.
+	PROVIDER_DEFAULT = 'PROVIDER_DEFAULT', // Use the provider-defined default behavior.
 }
 
 /**

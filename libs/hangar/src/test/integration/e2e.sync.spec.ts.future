@@ -1,3 +1,5 @@
+import {PlatformType} from "@airport/ground-control";
+import {Subscription} from "rxjs";
 import {
 	assertGoalCount,
 	assertTaskCount,
@@ -8,8 +10,6 @@ import {
 	tqSync
 } from "../misc/utils.spec";
 import {initializeTQ} from "../misc/setup.spec";
-import {PlatformType} from "delta-store";
-import {Subscription} from "rxjs";
 import {IRepository} from "../../data/repository/model/Repository";
 import {QTqTestGoal} from "../../generated/test/misc/qTqTestGoal";
 import {ITqTestGoal, TqTestGoal} from "../misc/TqTestGoal";

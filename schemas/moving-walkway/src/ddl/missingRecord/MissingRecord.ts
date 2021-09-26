@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Entity,
 	Id,
 	JoinColumn,
@@ -52,7 +53,7 @@ export class MissingRecord {
 	@DbNumber()
 	actorRecordId: RecordHistoryActorRecordId;
 
-	@DbNumber()
+	@DbString()
 	status: MissingRecordStatus;
 
 }

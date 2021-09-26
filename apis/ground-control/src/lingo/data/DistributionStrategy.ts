@@ -19,10 +19,10 @@ export enum DistributionStrategy {
 	 *  subscribes to any possible changes in any of these stores.
 	 *  It is the server's responsibility to update the S3.
 	 */
-	S3_SECURE_POLL,
+	S3_SECURE_POLL = 'S3_SECURE_POLL',
 	/**
 	 * There is no need for a server, all clients are aware of S3
 	 * and are responsible for pushing their changes to it.
 	 */
-	S3_DISTIBUTED_PUSH
+	S3_DISTIBUTED_PUSH = 'S3_DISTIBUTED_PUSH'
 }

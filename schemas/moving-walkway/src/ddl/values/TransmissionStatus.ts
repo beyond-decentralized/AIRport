@@ -1,4 +1,4 @@
 export enum TransmissionStatus {
-	ACKNOWLEDGED,
-	SENT,
+	ACKNOWLEDGED = 'ACKNOWLEDGED',
+	SENT = 'SENT',
 }

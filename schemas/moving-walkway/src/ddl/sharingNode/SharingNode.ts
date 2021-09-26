@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Entity,
 	Id,
 	Table
@@ -25,7 +26,7 @@ export class SharingNode {
 	id: SharingNodeId;
 
 	@Column({name: "SHARING_MECHANISM"})
-	@DbNumber()
+	@DbString()
 	sharingMechanism: SharingMechanism;
 
 	@Column({name: "IS_ACTIVE"})
@@ -36,7 +37,7 @@ export class SharingNode {
 	syncFrequency: SharingNodeSyncFrequency;
 
 	@Column({name: "CONNECTION_PROTOCOL"})
-	@DbNumber()
+	@DbString()
 	connectionProtocol: SharingNodeProtocol;
 
 	@Column({name: "CONNECTION_URL"})

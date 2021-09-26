@@ -52,7 +52,7 @@ declare function require(moduleName: string): any;
 export interface ServerSyncLogESelect
     extends IEntitySelectProperties, ServerSyncLogEOptionalId {
 	// Non-Id Properties
-	type?: number | IQNumberField;
+	type?: string | IQStringField;
 	startDatetime?: Date | IQDateField;
 	endDatetime?: Date | IQDateField;
 	numberOfConnections?: number | IQNumberField;
@@ -95,7 +95,7 @@ export interface ServerSyncLogEOptionalId {
 export interface ServerSyncLogEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	type?: number | IQNumberField;
+	type?: string | IQStringField;
 	startDatetime?: Date | IQDateField;
 	endDatetime?: Date | IQDateField;
 	numberOfConnections?: number | IQNumberField;
@@ -115,7 +115,7 @@ export interface ServerSyncLogGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	type?: number | IQNumberField;
+	type?: string | IQStringField;
 	startDatetime?: Date | IQDateField;
 	endDatetime?: Date | IQDateField;
 	numberOfConnections?: number | IQNumberField;
@@ -133,7 +133,7 @@ export interface ServerSyncLogGraph
 export interface ServerSyncLogEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	TYPE?: number | IQNumberField;
+	TYPE?: string | IQStringField;
 	START_DATETIME?: Date | IQDateField;
 	PROCESSED_DATETIME?: Date | IQDateField;
 	NUMBER_OF_CONNECTIONS?: number | IQNumberField;
@@ -175,7 +175,7 @@ export interface QServerSyncLog extends IQEntity<ServerSyncLog>
 	// Id Relations
 
 	// Non-Id Fields
-	type: IQNumberField;
+	type: IQStringField;
 	startDatetime: IQDateField;
 	endDatetime: IQDateField;
 	numberOfConnections: IQNumberField;

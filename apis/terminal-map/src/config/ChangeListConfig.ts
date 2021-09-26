@@ -1,10 +1,12 @@
-import type {deltaConst}           from '@airport/air-control'
+import { deltaConst } from '@airport/air-control'
+import type { DistributionStrategy } from '@airport/ground-control'
 import type {
-	ChangeListShareInfo,
+	ChangeListShareInfo
+} from '../SharingAdaptor'
+import {
 	deltaStore
-}                             from '../SharingAdaptor'
-import type {DistributionStrategy} from '../sync/DistributionStrategy'
-import type {IDeltaStoreConfig}    from './DeltaStoreConfig'
+} from '../SharingAdaptor'
+import type { IDeltaStoreConfig } from './DeltaStoreConfig'
 
 /**
  * Created by Papa on 5/28/2016.
@@ -35,7 +37,7 @@ export class ChangeListConfig
 		this.deltaStoreConfig = deltaStoreConfig
 
 		let distributionStrategy = config.distributionStrategy
-		if (!distributionStrategy && distributionStrategy !== 0) {
+		if (!distributionStrategy) {
 			throw new Error(`Distribution Strategy is not defined`)
 		}
 		if (typeof distributionStrategy === 'string') {

@@ -1,5 +1,5 @@
 export declare enum SchemaChangeStatus {
-    CHANGE_NEEDED = 0,
-    CHANGE_COMPLETED = 1
+    CHANGE_NEEDED = "CHANGE_NEEDED",
+    CHANGE_COMPLETED = "CHANGE_COMPLETED"
 }
 //# sourceMappingURL=SchemaChangeStatus.d.ts.map

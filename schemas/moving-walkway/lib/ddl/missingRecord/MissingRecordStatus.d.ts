@@ -1,5 +1,5 @@
 export declare enum MissingRecordStatus {
-    MISSING = 0,
-    LOADED = 1
+    MISSING = "MISSING",
+    LOADED = "LOADED"
 }
 //# sourceMappingURL=MissingRecordStatus.d.ts.map

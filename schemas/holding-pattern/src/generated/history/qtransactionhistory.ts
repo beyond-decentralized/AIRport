@@ -52,7 +52,7 @@ declare function require(moduleName: string): any;
 export interface TransactionHistoryESelect
     extends IEntitySelectProperties, TransactionHistoryEOptionalId {
 	// Non-Id Properties
-	transactionType?: number | IQNumberField;
+	transactionType?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -90,7 +90,7 @@ export interface TransactionHistoryEOptionalId {
 export interface TransactionHistoryEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	transactionType?: number | IQNumberField;
+	transactionType?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -104,7 +104,7 @@ export interface TransactionHistoryGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	transactionType?: number | IQNumberField;
+	transactionType?: string | IQStringField;
 
 	// Relations
 	repositoryTransactionHistories?: RepositoryTransactionHistoryGraph[];
@@ -117,7 +117,7 @@ export interface TransactionHistoryGraph
 export interface TransactionHistoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	TRANSACTION_TYPE?: number | IQNumberField;
+	TRANSACTION_TYPE?: string | IQStringField;
 
 }
 
@@ -153,7 +153,7 @@ export interface QTransactionHistory extends IQEntity<TransactionHistory>
 	// Id Relations
 
 	// Non-Id Fields
-	transactionType: IQNumberField;
+	transactionType: IQStringField;
 
 	// Non-Id Relations
 	repositoryTransactionHistories: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;

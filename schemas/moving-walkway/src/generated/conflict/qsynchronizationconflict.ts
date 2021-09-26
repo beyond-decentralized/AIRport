@@ -72,7 +72,7 @@ declare function require(moduleName: string): any;
 export interface SynchronizationConflictESelect
     extends IEntitySelectProperties, SynchronizationConflictEOptionalId {
 	// Non-Id Properties
-	type?: number | IQNumberField;
+	type?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -113,7 +113,7 @@ export interface SynchronizationConflictEOptionalId {
 export interface SynchronizationConflictEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	type?: number | IQNumberField;
+	type?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	repository?: RepositoryEOptionalId;
@@ -130,7 +130,7 @@ export interface SynchronizationConflictGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	type?: number | IQNumberField;
+	type?: string | IQStringField;
 
 	// Relations
 	repository?: RepositoryGraph;
@@ -146,7 +146,7 @@ export interface SynchronizationConflictGraph
 export interface SynchronizationConflictEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	TYPE?: number | IQNumberField;
+	TYPE?: string | IQStringField;
 	REPOSITORY_ID?: number | IQNumberField;
 	OVERWRITTEN_RECORD_HISTORY_ID?: number | IQNumberField;
 	OVERWRITING_RECORD_HISTORY_ID?: number | IQNumberField;
@@ -185,7 +185,7 @@ export interface QSynchronizationConflict extends IQEntity<SynchronizationConfli
 	// Id Relations
 
 	// Non-Id Fields
-	type: IQNumberField;
+	type: IQStringField;
 
 	// Non-Id Relations
 	repository: QRepositoryQRelation;

@@ -29,8 +29,8 @@ export type JwtTokenMessageOut =
     [CallbackId, JwtPerTokenMessageOut[]];
 
 export enum JwtTokenMessageType {
-    CHECK_TOKEN,
-    ISSUE_TOKEN,
+    CHECK_TOKEN = 'CHECK_TOKEN',
+    ISSUE_TOKEN = 'ISSUE_TOKEN',
 }
 */
 //# sourceMappingURL=JwtTokenMessage.js.map

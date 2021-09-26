@@ -25,7 +25,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 1,
@@ -57,7 +57,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -79,7 +79,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -127,7 +127,7 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -138,7 +138,7 @@ export const SCHEMA = {
 						{
 							"index": 1,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 0
 							},

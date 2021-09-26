@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
@@ -66,7 +67,7 @@ export class RepositoryTransactionHistory {
 	saveTimestamp: RepositoryTransactionHistorySaveTimestamp
 
 	@Column({name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false})
-	@DbNumber()
+	@DbString()
 	repositoryTransactionType: RepositoryTransactionType = RepositoryTransactionType.LOCAL
 
 	@Column({

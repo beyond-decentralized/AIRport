@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { TransactionHistoryGraph, TransactionHistoryEOptionalId, TransactionHistoryESelect, QTransactionHistoryQRelation } from './qtransactionhistory';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
 import { RepoTransHistoryChangedRepositoryActorGraph, RepoTransHistoryChangedRepositoryActorESelect, QRepoTransHistoryChangedRepositoryActor } from './qrepotranshistorychangedrepositoryactor';
@@ -13,7 +13,7 @@ import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransa
 export interface RepositoryTransactionHistoryESelect extends IEntitySelectProperties, RepositoryTransactionHistoryEOptionalId {
     remoteId?: number | IQNumberField;
     saveTimestamp?: Date | IQDateField;
-    repositoryTransactionType?: number | IQNumberField;
+    repositoryTransactionType?: string | IQStringField;
     blockId?: number | IQNumberField;
     transactionHistory?: TransactionHistoryESelect;
     repository?: RepositoryESelect;
@@ -39,7 +39,7 @@ export interface RepositoryTransactionHistoryEOptionalId {
 export interface RepositoryTransactionHistoryEUpdateProperties extends IEntityUpdateProperties {
     remoteId?: number | IQNumberField;
     saveTimestamp?: Date | IQDateField;
-    repositoryTransactionType?: number | IQNumberField;
+    repositoryTransactionType?: string | IQStringField;
     blockId?: number | IQNumberField;
     transactionHistory?: TransactionHistoryEOptionalId;
     repository?: RepositoryEOptionalId;
@@ -51,7 +51,7 @@ export interface RepositoryTransactionHistoryEUpdateProperties extends IEntityUp
 export interface RepositoryTransactionHistoryGraph extends RepositoryTransactionHistoryEOptionalId, IEntityCascadeGraph {
     remoteId?: number | IQNumberField;
     saveTimestamp?: Date | IQDateField;
-    repositoryTransactionType?: number | IQNumberField;
+    repositoryTransactionType?: string | IQStringField;
     blockId?: number | IQNumberField;
     transactionHistory?: TransactionHistoryGraph;
     repository?: RepositoryGraph;
@@ -65,7 +65,7 @@ export interface RepositoryTransactionHistoryGraph extends RepositoryTransaction
 export interface RepositoryTransactionHistoryEUpdateColumns extends IEntityUpdateColumns {
     REMOTE_ID?: number | IQNumberField;
     SAVE_TIMESTAMP?: Date | IQDateField;
-    REPOSITORY_TRANSACTION_TYPE?: number | IQNumberField;
+    REPOSITORY_TRANSACTION_TYPE?: string | IQStringField;
     REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID?: number | IQNumberField;
     TRANSACTION_HISTORY_ID?: number | IQNumberField;
     REPOSITORY_ID?: number | IQNumberField;
@@ -88,7 +88,7 @@ export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransa
     id: IQNumberField;
     remoteId: IQNumberField;
     saveTimestamp: IQDateField;
-    repositoryTransactionType: IQNumberField;
+    repositoryTransactionType: IQStringField;
     blockId: IQNumberField;
     transactionHistory: QTransactionHistoryQRelation;
     repository: QRepositoryQRelation;

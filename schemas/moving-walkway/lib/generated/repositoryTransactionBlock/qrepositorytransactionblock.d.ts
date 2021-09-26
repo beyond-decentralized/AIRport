@@ -16,7 +16,7 @@ import { RepositoryTransactionBlock } from '../../ddl/repositoryTransactionBlock
 export interface RepositoryTransactionBlockESelect extends IEntitySelectProperties, RepositoryTransactionBlockEOptionalId {
     sourceId?: number | IQNumberField;
     hash?: string | IQStringField;
-    syncOutcomeType?: number | IQNumberField;
+    syncOutcomeType?: string | IQStringField;
     contents?: string | IQStringField;
     source?: TerminalESelect;
     repository?: RepositoryESelect;
@@ -44,7 +44,7 @@ export interface RepositoryTransactionBlockEOptionalId {
 export interface RepositoryTransactionBlockEUpdateProperties extends IEntityUpdateProperties {
     sourceId?: number | IQNumberField;
     hash?: string | IQStringField;
-    syncOutcomeType?: number | IQNumberField;
+    syncOutcomeType?: string | IQStringField;
     contents?: string | IQStringField;
     source?: TerminalEOptionalId;
     repository?: RepositoryEOptionalId;
@@ -55,7 +55,7 @@ export interface RepositoryTransactionBlockEUpdateProperties extends IEntityUpda
 export interface RepositoryTransactionBlockGraph extends RepositoryTransactionBlockEOptionalId, IEntityCascadeGraph {
     sourceId?: number | IQNumberField;
     hash?: string | IQStringField;
-    syncOutcomeType?: number | IQNumberField;
+    syncOutcomeType?: string | IQStringField;
     contents?: string | IQStringField;
     source?: TerminalGraph;
     repository?: RepositoryGraph;
@@ -71,7 +71,7 @@ export interface RepositoryTransactionBlockGraph extends RepositoryTransactionBl
 export interface RepositoryTransactionBlockEUpdateColumns extends IEntityUpdateColumns {
     SOURCE_ID?: number | IQNumberField;
     HASH?: string | IQStringField;
-    SYNC_OUTCOME_TYPE?: number | IQNumberField;
+    SYNC_OUTCOME_TYPE?: string | IQStringField;
     CONTENTS?: string | IQStringField;
     SOURCE_TERMINAL_ID?: number | IQNumberField;
     REPOSITORY_ID?: number | IQNumberField;
@@ -93,7 +93,7 @@ export interface QRepositoryTransactionBlock extends IQEntity<RepositoryTransact
     id: IQNumberField;
     sourceId: IQNumberField;
     hash: IQStringField;
-    syncOutcomeType: IQNumberField;
+    syncOutcomeType: IQStringField;
     contents: IQStringField;
     source: QTerminalQRelation;
     repository: QRepositoryQRelation;

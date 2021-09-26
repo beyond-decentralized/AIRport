@@ -1,5 +1,5 @@
 export declare enum SharingNodeProtocol {
-    HTTPS = 0,
-    LOCAL = 1
+    HTTPS = "HTTPS",
+    LOCAL = "LOCAL"
 }
 //# sourceMappingURL=SharingNodeProtocol.d.ts.map

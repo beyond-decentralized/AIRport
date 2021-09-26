@@ -1,10 +1,10 @@
 export declare enum LogLevel {
-    FATAL = 0,
-    ERROR = 1,
-    WARNING = 2,
-    INFO = 3,
-    DEBUG = 4,
-    TRACE = 5
+    FATAL = "FATAL",
+    ERROR = "ERROR",
+    WARNING = "WARNING",
+    INFO = "INFO",
+    DEBUG = "DEBUG",
+    TRACE = "TRACE"
 }
 export declare type SetLogLevel = LogLevel.INFO | LogLevel.DEBUG | LogLevel.TRACE;
 //# sourceMappingURL=LogLevel.d.ts.map

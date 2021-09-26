@@ -3,7 +3,7 @@ import { ISyncLog } from './synclog';
 export interface IAgtSharingMessage {
     id: number;
     tmSharingMessageId?: number;
-    acknowledged?: number;
+    acknowledged?: string;
     terminal?: ITerminal;
     syncLogs?: ISyncLog[];
 }

@@ -1,6 +1,6 @@
+import { DistributionStrategy, IdGeneration, PlatformType, StoreType } from "@airport/ground-control";
 import { IDeltaStoreConfig, JsonDeltaStoreConfig } from "./DeltaStoreConfig";
 import { ILocalStoreConfig, JsonLocalStoreConfig } from "./LocalStoreConfig";
-import { DistributionStrategy, IdGeneration, PlatformType, StoreType } from "@airport/ground-control";
 /**
  * Created by Papa on 5/28/2016.
  */

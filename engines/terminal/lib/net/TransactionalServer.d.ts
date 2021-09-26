@@ -1,7 +1,7 @@
 import { IContext } from '@airport/di';
-import { ISaveResult, PortableQuery } from '@airport/ground-control';
+import { DistributionStrategy, ISaveResult, PlatformType, PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
-import { DistributionStrategy, ICredentials, IOperationContext, ITransactionalServer, PlatformType } from '@airport/terminal-map';
+import { ICredentials, IOperationContext, ITransactionalServer } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export interface InternalPortableQuery extends PortableQuery {
     domainAndPort: string;

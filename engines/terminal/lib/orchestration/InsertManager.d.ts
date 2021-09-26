@@ -1,7 +1,7 @@
 import { IContext } from '@airport/di';
-import { DbColumn, DbEntity, JsonInsertValues, PortableQuery } from '@airport/ground-control';
+import { DbColumn, DbEntity, DistributionStrategy, JsonInsertValues, PlatformType, PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
-import { DistributionStrategy, IInsertManager, ITransaction, PlatformType, RecordId } from '@airport/terminal-map';
+import { IInsertManager, ITransaction, RecordId } from '@airport/terminal-map';
 export declare class InsertManager implements IInsertManager {
     insertValues(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, context: IContext, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, context: IContext): Promise<RecordId[][]>;

@@ -13,7 +13,7 @@ export interface SchemaRelationESelect extends VersionedSchemaObjectESelect, Sch
     foreignKey?: ForeignKey | IQStringField;
     manyToOneElems?: ManyToOneElements | IQStringField;
     oneToManyElems?: OneToManyElements | IQStringField;
-    relationType?: number | IQNumberField;
+    relationType?: string | IQStringField;
     isId?: boolean | IQBooleanField;
     property?: SchemaPropertyESelect;
     entity?: SchemaEntityESelect;
@@ -41,7 +41,7 @@ export interface SchemaRelationEUpdateProperties extends VersionedSchemaObjectEU
     foreignKey?: ForeignKey | IQStringField;
     manyToOneElems?: ManyToOneElements | IQStringField;
     oneToManyElems?: OneToManyElements | IQStringField;
-    relationType?: number | IQNumberField;
+    relationType?: string | IQStringField;
     isId?: boolean | IQBooleanField;
     property?: SchemaPropertyEOptionalId;
     entity?: SchemaEntityEOptionalId;
@@ -55,7 +55,7 @@ export interface SchemaRelationGraph extends SchemaRelationEOptionalId, Versione
     foreignKey?: ForeignKey | IQStringField;
     manyToOneElems?: ManyToOneElements | IQStringField;
     oneToManyElems?: OneToManyElements | IQStringField;
-    relationType?: number | IQNumberField;
+    relationType?: string | IQStringField;
     isId?: boolean | IQBooleanField;
     property?: SchemaPropertyGraph;
     entity?: SchemaEntityGraph;
@@ -74,7 +74,7 @@ export interface SchemaRelationEUpdateColumns extends VersionedSchemaObjectEUpda
     FOREIGN_KEY?: string | IQStringField;
     MANY_TO_ONE_ELEMENTS?: string | IQStringField;
     ONE_TO_MANY_ELEMENTS?: string | IQStringField;
-    RELATION_TYPE?: number | IQNumberField;
+    RELATION_TYPE?: string | IQStringField;
     IS_ID?: boolean | IQBooleanField;
     SCHEMA_PROPERTY_ID?: number | IQNumberField;
     SCHEMA_TABLE_ID?: number | IQNumberField;
@@ -99,7 +99,7 @@ export interface QSchemaRelation extends QVersionedSchemaObject<SchemaRelation> 
     foreignKey: IQStringField;
     manyToOneElems: IQStringField;
     oneToManyElems: IQStringField;
-    relationType: IQNumberField;
+    relationType: IQStringField;
     isId: IQBooleanField;
     property: QSchemaPropertyQRelation;
     entity: QSchemaEntityQRelation;

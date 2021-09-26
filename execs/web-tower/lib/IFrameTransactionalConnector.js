@@ -9,10 +9,10 @@ import { Observable } from 'rxjs';
 export const hostServer = 'http://localhost:7000';
 export var AppState;
 (function (AppState) {
-    AppState[AppState["NOT_INITIALIED"] = 0] = "NOT_INITIALIED";
-    AppState[AppState["START_INITIALIZING"] = 1] = "START_INITIALIZING";
-    AppState[AppState["INITIALIZING_IN_PROGRESS"] = 2] = "INITIALIZING_IN_PROGRESS";
-    AppState[AppState["INITIALIZED"] = 3] = "INITIALIZED";
+    AppState["NOT_INITIALIED"] = "NOT_INITIALIED";
+    AppState["START_INITIALIZING"] = "START_INITIALIZING";
+    AppState["INITIALIZING_IN_PROGRESS"] = "INITIALIZING_IN_PROGRESS";
+    AppState["INITIALIZED"] = "INITIALIZED";
 })(AppState || (AppState = {}));
 export class IframeTransactionalConnector {
     constructor() {

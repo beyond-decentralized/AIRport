@@ -8,9 +8,9 @@ export class RecordStateData {
 }
 export var CurrentState;
 (function (CurrentState) {
-    CurrentState[CurrentState["CREATED"] = 0] = "CREATED";
-    CurrentState[CurrentState["DELETED"] = 1] = "DELETED";
-    CurrentState[CurrentState["UPDATED"] = 2] = "UPDATED";
+    CurrentState["CREATED"] = "CREATED";
+    CurrentState["DELETED"] = "DELETED";
+    CurrentState["UPDATED"] = "UPDATED";
 })(CurrentState || (CurrentState = {}));
 export class RecordState {
     constructor() {

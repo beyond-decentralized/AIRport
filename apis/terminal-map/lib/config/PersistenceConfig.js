@@ -1,6 +1,6 @@
+import { DistributionStrategy, IdGeneration, PlatformType, StoreType } from "@airport/ground-control";
 import { createDeltaStoreConfig } from "./DeltaStoreConfig";
 import { createLocalStoreConfig } from "./LocalStoreConfig";
-import { DistributionStrategy, IdGeneration, PlatformType, StoreType } from "@airport/ground-control";
 export class PersistenceConfig {
     constructor(config) {
         this.config = config;

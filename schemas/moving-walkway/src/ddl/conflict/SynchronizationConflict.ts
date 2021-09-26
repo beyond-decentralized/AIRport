@@ -1,5 +1,6 @@
 import {
 	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
@@ -7,18 +8,18 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-}                                      from "@airport/air-control";
+} from "@airport/air-control";
 import {
 	IRecordHistory,
 	IRepository
-}                                      from "@airport/holding-pattern";
-import {SynchronizationConflictType}   from "./SynchronizationConflictType";
-import {SynchronizationConflictValues} from "./SynchronizationConflictValues";
+} from "@airport/holding-pattern";
+import { SynchronizationConflictType } from "./SynchronizationConflictType";
+import { SynchronizationConflictValues } from "./SynchronizationConflictValues";
 
 export type SynchronizationConflictId = number;
 
 @Entity()
-@Table({name: "SYNCHRONIZATION_CONFLICT"})
+@Table({ name: "SYNCHRONIZATION_CONFLICT" })
 export class SynchronizationConflict {
 
 	@GeneratedValue()
@@ -27,21 +28,21 @@ export class SynchronizationConflict {
 	id: SynchronizationConflictId;
 
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID"})
+	@JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" })
 	repository: IRepository;
 
 	@ManyToOne()
-	@JoinColumn({name: "OVERWRITTEN_RECORD_HISTORY_ID", referencedColumnName: "ID"})
+	@JoinColumn({ name: "OVERWRITTEN_RECORD_HISTORY_ID", referencedColumnName: "ID" })
 	overwrittenRecordHistory: IRecordHistory;
 
 	@ManyToOne()
-	@JoinColumn({name: "OVERWRITING_RECORD_HISTORY_ID", referencedColumnName: "ID"})
+	@JoinColumn({ name: "OVERWRITING_RECORD_HISTORY_ID", referencedColumnName: "ID" })
 	overwritingRecordHistory: IRecordHistory;
 
-	@OneToMany({mappedBy: "SYNCHRONIZATION_CONFLICT_ID"})
+	@OneToMany({ mappedBy: "SYNCHRONIZATION_CONFLICT_ID" })
 	values: SynchronizationConflictValues[];
 
-	@DbNumber()
+	@DbString()
 	type: SynchronizationConflictType;
 
 }

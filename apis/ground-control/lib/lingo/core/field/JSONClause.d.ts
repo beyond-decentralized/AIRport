@@ -4,23 +4,23 @@ import { JSONSqlFunctionCall } from './Functions';
  * All possible types of serialized JSON clauses.
  */
 export declare enum JSONClauseObjectType {
-    FIELD = 0,
-    FIELD_FUNCTION = 1,
-    FIELD_QUERY = 2,
-    DISTINCT_FUNCTION = 3,
-    EXISTS_FUNCTION = 4,
-    MANY_TO_ONE_RELATION = 5
+    FIELD = "FIELD",
+    FIELD_FUNCTION = "FIELD_FUNCTION",
+    FIELD_QUERY = "FIELD_QUERY",
+    DISTINCT_FUNCTION = "DISTINCT_FUNCTION",
+    EXISTS_FUNCTION = "EXISTS_FUNCTION",
+    MANY_TO_ONE_RELATION = "MANY_TO_ONE_RELATION"
 }
 /**
  * Types of data
  */
 export declare enum SQLDataType {
-    ANY = 0,
-    BOOLEAN = 1,
-    DATE = 2,
-    JSON = 3,
-    NUMBER = 4,
-    STRING = 5
+    ANY = "ANY",
+    BOOLEAN = "BOOLEAN",
+    DATE = "DATE",
+    JSON = "JSON",
+    NUMBER = "NUMBER",
+    STRING = "STRING"
 }
 export declare function getSqlDataType(type: string): SQLDataType;
 /**

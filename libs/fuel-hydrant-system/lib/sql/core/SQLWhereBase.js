@@ -6,10 +6,10 @@ import { Q_VALIDATOR, SQL_QUERY_ADAPTOR, SUB_STATEMENT_SQL_GENERATOR } from '../
  */
 export var ClauseType;
 (function (ClauseType) {
-    ClauseType[ClauseType["MAPPED_SELECT_CLAUSE"] = 0] = "MAPPED_SELECT_CLAUSE";
-    ClauseType[ClauseType["NON_MAPPED_SELECT_CLAUSE"] = 1] = "NON_MAPPED_SELECT_CLAUSE";
-    ClauseType[ClauseType["WHERE_CLAUSE"] = 2] = "WHERE_CLAUSE";
-    ClauseType[ClauseType["FUNCTION_CALL"] = 3] = "FUNCTION_CALL";
+    ClauseType["MAPPED_SELECT_CLAUSE"] = "MAPPED_SELECT_CLAUSE";
+    ClauseType["NON_MAPPED_SELECT_CLAUSE"] = "NON_MAPPED_SELECT_CLAUSE";
+    ClauseType["WHERE_CLAUSE"] = "WHERE_CLAUSE";
+    ClauseType["FUNCTION_CALL"] = "FUNCTION_CALL";
 })(ClauseType || (ClauseType = {}));
 export class SQLWhereBase {
     constructor(dbEntity, dialect, context) {
@@ -84,7 +84,7 @@ export class SQLWhereBase {
                 .map((clauseFieldMember) => this.getFieldValue(clauseFieldMember, clauseType, defaultCallback, context))
                 .join(', ');
         }
-        if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot && clauseField.ot !== 0) {
+        if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot) {
             throw new Error(`Object Type is not defined in JSONClauseField`);
         }
         const aField = clauseField;

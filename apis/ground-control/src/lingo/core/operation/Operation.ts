@@ -5,31 +5,31 @@ import { JSONClauseField, JSONClauseObject } from '../field/JSONClause';
  * Category of a SQL contentType
  */
 export enum OperationCategory {
-	BOOLEAN, // Operation on a boolean field
-	DATE, // Operation on a date field
-	FUNCTION, // Operation containing a function call
-	LOGICAL, // A logical contentType - AND | OR | NOT
-	NUMBER, // Operation on a number field
-	STRING, // Operation on a string field
-	UNTYPED // Operation on an untyped field
+	BOOLEAN = 'BOOLEAN', // Operation on a boolean field
+	DATE = 'DATE', // Operation on a date field
+	FUNCTION = 'FUNCTION', // Operation containing a function call
+	LOGICAL = 'LOGICAL', // A logical contentType - AND | OR | NOT
+	NUMBER = 'NUMBER', // Operation on a number field
+	STRING = 'STRING', // Operation on a string field
+	UNTYPED = 'UNTYPED' // Operation on an untyped field
 }
 
 export enum SqlOperator {
-	AND,
-	EQUALS,
-	EXISTS,
-	GREATER_THAN,
-	GREATER_THAN_OR_EQUALS,
-	IN,
-	IS_NOT_NULL,
-	IS_NULL,
-	LESS_THAN,
-	LESS_THAN_OR_EQUALS,
-	LIKE,
-	OR,
-	NOT,
-	NOT_EQUALS,
-	NOT_IN
+	AND = 'AND',
+	EQUALS = 'EQUALS',
+	EXISTS = 'EXISTS',
+	GREATER_THAN = 'GREATER_THAN',
+	GREATER_THAN_OR_EQUALS = 'GREATER_THAN_OR_EQUALS',
+	IN = 'IN',
+	IS_NOT_NULL = 'IS_NOT_NULL',
+	IS_NULL = 'IS_NULL',
+	LESS_THAN = 'LESS_THAN',
+	LESS_THAN_OR_EQUALS = 'LESS_THAN_OR_EQUALS',
+	LIKE = 'LIKE',
+	OR = 'OR',
+	NOT = 'NOT',
+	NOT_EQUALS = 'NOT_EQUALS',
+	NOT_IN = 'NOT_IN'
 }
 
 /**
@@ -70,8 +70,8 @@ export interface JSONBaseOperation {
 }
 
 export enum CRUDOperation {
-	CREATE,
-	READ,
-	UPDATE,
-	DELETE,
+	CREATE = 'CREATE',
+	READ = 'READ',
+	UPDATE = 'UPDATE',
+	DELETE = 'DELETE',
 }

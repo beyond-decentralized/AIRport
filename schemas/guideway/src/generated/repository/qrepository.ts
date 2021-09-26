@@ -67,7 +67,7 @@ export interface RepositoryESelect
 	// Non-Id Properties
 	lastUpdateTime?: Date | IQDateField;
 	name?: string | IQStringField;
-	status?: number | IQNumberField;
+	status?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -108,7 +108,7 @@ export interface RepositoryEUpdateProperties
 	// Non-Id Properties
 	lastUpdateTime?: Date | IQDateField;
 	name?: string | IQStringField;
-	status?: number | IQNumberField;
+	status?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -124,7 +124,7 @@ export interface RepositoryGraph
 	// Non-Id Properties
 	lastUpdateTime?: Date | IQDateField;
 	name?: string | IQStringField;
-	status?: number | IQNumberField;
+	status?: string | IQStringField;
 
 	// Relations
 	terminalRepositories?: TerminalRepositoryGraph[];
@@ -140,7 +140,7 @@ export interface RepositoryEUpdateColumns
 	// Non-Id Columns
 	LAST_UPDATE_DATETIME?: Date | IQDateField;
 	NAME?: string | IQStringField;
-	STATUS?: number | IQNumberField;
+	STATUS?: string | IQStringField;
 
 }
 
@@ -178,7 +178,7 @@ export interface QRepository extends IQEntity<Repository>
 	// Non-Id Fields
 	lastUpdateTime: IQDateField;
 	name: IQStringField;
-	status: IQNumberField;
+	status: IQStringField;
 
 	// Non-Id Relations
 	terminalRepositories: IQOneToManyRelation<TerminalRepository, QTerminalRepository>;

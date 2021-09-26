@@ -1,10 +1,12 @@
+import { deltaConst } from '@airport/air-control';
+import { deltaStore } from '../SharingAdaptor';
 export class ChangeListConfig {
     constructor(config, deltaStoreConfig) {
         this.config = config;
         this.deltaStoreConfig = deltaStoreConfig;
         this.deltaStoreConfig = deltaStoreConfig;
         let distributionStrategy = config.distributionStrategy;
-        if (!distributionStrategy && distributionStrategy !== 0) {
+        if (!distributionStrategy) {
             throw new Error(`Distribution Strategy is not defined`);
         }
         if (typeof distributionStrategy === 'string') {

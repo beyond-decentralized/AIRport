@@ -22,9 +22,9 @@ import {SQLWhereBase}      from './SQLWhereBase'
  */
 
 export enum SQLDialect {
-	MYSQL,
-	POSTGRESQL,
-	SQLITE,
+	MYSQL = 'MYSQL',
+	POSTGRESQL = 'POSTGRESQL',
+	SQLITE = 'SQLITE',
 }
 
 export class EntityDefaults {

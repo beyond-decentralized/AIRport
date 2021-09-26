@@ -32,7 +32,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -54,7 +54,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -93,7 +93,7 @@
 						{
 							"index": 0,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 0
 							},
@@ -103,7 +103,7 @@
 						{
 							"index": 1,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -132,7 +132,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -146,7 +146,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -160,7 +160,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "STRING"
 						},
 						{
 							"index": 3,
@@ -182,7 +182,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -245,7 +245,7 @@
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -255,7 +255,7 @@
 						{
 							"index": 1,
 							"isId": false,
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 3
 							},
@@ -284,7 +284,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -298,7 +298,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
@@ -351,7 +351,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 1,
@@ -373,7 +373,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -395,7 +395,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -443,7 +443,7 @@
 						{
 							"index": 0,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 0
 							},
@@ -453,7 +453,7 @@
 						{
 							"index": 1,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -481,7 +481,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "STRING"
 						},
 						{
 							"index": 1,
@@ -503,7 +503,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -525,7 +525,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -573,7 +573,7 @@
 						{
 							"index": 0,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 0
 							},
@@ -583,7 +583,7 @@
 						{
 							"index": 1,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -611,7 +611,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -625,7 +625,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 2,
@@ -639,7 +639,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 3,
@@ -653,7 +653,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 1
+							"type": "BOOLEAN"
 						}
 					],
 					"idColumnRefs": [
@@ -743,7 +743,7 @@
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 4
 							},
@@ -753,7 +753,7 @@
 						{
 							"index": 1,
 							"isId": false,
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 5
 							},
@@ -763,7 +763,7 @@
 						{
 							"index": 2,
 							"isId": false,
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 6
 							},
@@ -773,7 +773,7 @@
 						{
 							"index": 3,
 							"isId": false,
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 7
 							},
@@ -801,7 +801,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -823,7 +823,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -845,7 +845,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -893,7 +893,7 @@
 						{
 							"index": 0,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 0
 							},
@@ -903,7 +903,7 @@
 						{
 							"index": 1,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -932,7 +932,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -946,7 +946,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 2,
@@ -960,7 +960,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 3,
@@ -974,7 +974,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 4,
@@ -988,7 +988,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 5,
@@ -1002,7 +1002,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 6,
@@ -1024,7 +1024,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -1123,7 +1123,7 @@
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 6
 							},
@@ -1133,7 +1133,7 @@
 						{
 							"index": 1,
 							"isId": false,
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 7
 							},
@@ -1143,7 +1143,7 @@
 						{
 							"index": 2,
 							"isId": false,
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 8
 							},
@@ -1172,7 +1172,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -1186,7 +1186,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -1200,7 +1200,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 3,
@@ -1214,7 +1214,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 4,
@@ -1228,7 +1228,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 5,
@@ -1253,7 +1253,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 6,
@@ -1275,7 +1275,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 7,
@@ -1297,7 +1297,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -1405,7 +1405,7 @@
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -1415,7 +1415,7 @@
 						{
 							"index": 1,
 							"isId": false,
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 2
 							},
@@ -1425,7 +1425,7 @@
 						{
 							"index": 2,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 3
 							},
@@ -1435,7 +1435,7 @@
 						{
 							"index": 3,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 4
 							},
@@ -1445,7 +1445,7 @@
 						{
 							"index": 4,
 							"isId": false,
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 9
 							},
@@ -1474,7 +1474,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -1488,7 +1488,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": "DATE"
 						},
 						{
 							"index": 2,
@@ -1502,7 +1502,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 3,
@@ -1516,7 +1516,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
@@ -1588,7 +1588,7 @@
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 4
 							},
@@ -1598,7 +1598,7 @@
 						{
 							"index": 1,
 							"isId": false,
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 5
 							},
@@ -1627,7 +1627,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -1641,7 +1641,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -1663,7 +1663,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -1711,7 +1711,7 @@
 						{
 							"index": 0,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 0
 							},
@@ -1740,7 +1740,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -1762,7 +1762,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -1784,7 +1784,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 3,
@@ -1806,7 +1806,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -1857,7 +1857,7 @@
 						{
 							"index": 0,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 0
 							},
@@ -1867,7 +1867,7 @@
 						{
 							"index": 1,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -1895,7 +1895,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -1909,7 +1909,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -1923,7 +1923,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 0
+							"type": "ANY"
 						},
 						{
 							"index": 3,
@@ -1945,7 +1945,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -2002,7 +2002,7 @@
 						{
 							"index": 0,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 0
 							},
@@ -2030,7 +2030,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 1
+							"type": "BOOLEAN"
 						},
 						{
 							"index": 1,
@@ -2044,7 +2044,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 2,
@@ -2066,7 +2066,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 3,
@@ -2088,7 +2088,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 4,
@@ -2110,7 +2110,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -2170,7 +2170,7 @@
 						{
 							"index": 0,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 0
 							},
@@ -2180,7 +2180,7 @@
 						{
 							"index": 1,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -2208,7 +2208,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 1,
@@ -2222,7 +2222,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
@@ -2283,7 +2283,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -2305,7 +2305,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
@@ -2344,7 +2344,7 @@
 						{
 							"index": 0,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 0
 							},
@@ -2354,7 +2354,7 @@
 						{
 							"index": 1,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -2382,7 +2382,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -2396,7 +2396,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "STRING"
 						},
 						{
 							"index": 2,
@@ -2410,7 +2410,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": "DATE"
 						},
 						{
 							"index": 3,
@@ -2424,7 +2424,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": "DATE"
 						},
 						{
 							"index": 4,
@@ -2438,7 +2438,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 5,
@@ -2452,7 +2452,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 6,
@@ -2466,7 +2466,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 7,
@@ -2488,7 +2488,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -2578,7 +2578,7 @@
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -2606,7 +2606,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -2620,7 +2620,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -2665,7 +2665,7 @@
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 2
 							},
@@ -2693,7 +2693,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 1,
@@ -2707,7 +2707,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 2,
@@ -2721,7 +2721,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 3,
@@ -2735,7 +2735,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [

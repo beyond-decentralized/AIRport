@@ -1,8 +1,8 @@
 import { and, DATABASE_FACADE, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { StoreType } from '@airport/ground-control';
+import { DistributionStrategy, PlatformType, StoreType, } from '@airport/ground-control';
 import { REPOSITORY_DAO } from '@airport/holding-pattern';
-import { DeltaStoreConfig, DistributionStrategy, PlatformType, REPOSITORY_FIELD, } from '@airport/terminal-map';
+import { DeltaStoreConfig, REPOSITORY_FIELD, } from '@airport/terminal-map';
 import { DeltaStore, getSharingAdaptor } from '../../data/DeltaStore';
 import { REPOSITORY_MANAGER } from '../../tokens';
 export class RepositoryManager {

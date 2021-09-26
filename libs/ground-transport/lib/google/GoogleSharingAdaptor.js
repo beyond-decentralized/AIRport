@@ -1,7 +1,7 @@
 /**
  * Created by Papa on 1/7/2016.
  */
-import { PlatformType } from '@airport/terminal-map';
+import { PlatformType } from '@airport/ground-control';
 import { GoogleSharedChangeList } from './GoogleSharedChangeList';
 // @Injectable()
 export class GoogleSharingAdaptor {

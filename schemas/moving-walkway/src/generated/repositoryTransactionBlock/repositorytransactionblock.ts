@@ -34,7 +34,7 @@ export interface IRepositoryTransactionBlock {
 	// Non-Id Properties
 	sourceId?: number;
 	hash?: string;
-	syncOutcomeType?: number;
+	syncOutcomeType?: string;
 	contents?: string;
 
 	// Non-Id Relations

@@ -1,7 +1,7 @@
 export declare enum ClientConnectionState {
-    PENDING = 1,
-    UNVERIFIED = 2,
-    ACTIVE = 3,
-    INACTIVE = 4
+    PENDING = "PENDING",
+    UNVERIFIED = "UNVERIFIED",
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE"
 }
 //# sourceMappingURL=ClientConnectionState.d.ts.map

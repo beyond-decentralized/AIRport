@@ -32,8 +32,8 @@ export type ClientInMessage = [
 	];
 
 export enum ClientInOperation {
-	CONNECT,
-	ADD_DATA
+	CONNECT = 'CONNECT',
+	ADD_DATA = 'ADD_DATA'
 }
 
 export type VerifiedClientPollMessages = [

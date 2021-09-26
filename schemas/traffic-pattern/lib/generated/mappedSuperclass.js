@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
     {
         "type": "VersionedSchemaObject",
-        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\VersionedSchemaObject.ts",
+        "path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\VersionedSchemaObject.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
@@ -90,7 +90,7 @@ export const MAPPED_SUPERCLASS = [
                     "nonArrayType": "SchemaVersion",
                     "entity": {
                         "type": "SchemaVersion",
-                        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaVersion.ts",
+                        "path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaVersion.ts",
                         "parentClassName": null,
                         "isSuperclass": false,
                         "ids": [
@@ -527,7 +527,7 @@ export const MAPPED_SUPERCLASS = [
                                     "nonArrayType": "Schema",
                                     "entity": {
                                         "type": "Schema",
-                                        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\Schema.ts",
+                                        "path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\Schema.ts",
                                         "parentClassName": null,
                                         "isSuperclass": false,
                                         "ids": [
@@ -825,7 +825,7 @@ export const MAPPED_SUPERCLASS = [
                                                                     }
                                                                 ],
                                                                 "sinceVersion": null,
-                                                                "type": 4,
+                                                                "type": "NUMBER",
                                                                 "idIndex": 0
                                                             },
                                                             {
@@ -846,7 +846,7 @@ export const MAPPED_SUPERCLASS = [
                                                                     }
                                                                 ],
                                                                 "sinceVersion": null,
-                                                                "type": 5
+                                                                "type": "STRING"
                                                             }
                                                         ],
                                                         "idColumns": [
@@ -868,7 +868,7 @@ export const MAPPED_SUPERCLASS = [
                                                                     }
                                                                 ],
                                                                 "sinceVersion": null,
-                                                                "type": 4,
+                                                                "type": "NUMBER",
                                                                 "idIndex": 0
                                                             }
                                                         ],
@@ -923,7 +923,7 @@ export const MAPPED_SUPERCLASS = [
                                                                     {
                                                                         "isId": false,
                                                                         "oneToManyElems": null,
-                                                                        "relationType": 0,
+                                                                        "relationType": "ONE_TO_MANY",
                                                                         "id": null,
                                                                         "index": 0,
                                                                         "property": null,
@@ -941,7 +941,7 @@ export const MAPPED_SUPERCLASS = [
                                                             {
                                                                 "isId": false,
                                                                 "oneToManyElems": null,
-                                                                "relationType": 0,
+                                                                "relationType": "ONE_TO_MANY",
                                                                 "id": null,
                                                                 "index": 0,
                                                                 "property": null,
@@ -1050,7 +1050,7 @@ export const MAPPED_SUPERCLASS = [
                                                             ]
                                                         },
                                                         {
-                                                            "name": "DbNumber",
+                                                            "name": "DbString",
                                                             "values": []
                                                         }
                                                     ],
@@ -1062,7 +1062,7 @@ export const MAPPED_SUPERCLASS = [
                                                     "type": "SchemaStatus",
                                                     "ownerEntity": null,
                                                     "nonArrayType": "SchemaStatus",
-                                                    "primitive": "number",
+                                                    "primitive": "string",
                                                     "index": 5
                                                 },
                                                 {
@@ -1110,7 +1110,7 @@ export const MAPPED_SUPERCLASS = [
                                                     "nonArrayType": "SchemaCurrentVersion",
                                                     "entity": {
                                                         "type": "SchemaCurrentVersion",
-                                                        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaCurrentVersion.ts",
+                                                        "path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaCurrentVersion.ts",
                                                         "parentClassName": null,
                                                         "isSuperclass": false,
                                                         "ids": [
@@ -1409,7 +1409,7 @@ export const MAPPED_SUPERCLASS = [
                                     "nonArrayType": "SchemaEntity",
                                     "entity": {
                                         "type": "SchemaEntity",
-                                        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaEntity.ts",
+                                        "path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaEntity.ts",
                                         "parentClassName": "VersionedSchemaObject",
                                         "location": "./VersionedSchemaObject",
                                         "isSuperclass": false,
@@ -1898,7 +1898,7 @@ export const MAPPED_SUPERCLASS = [
                                                     "nonArrayType": "SchemaColumn",
                                                     "entity": {
                                                         "type": "SchemaColumn",
-                                                        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaColumn.ts",
+                                                        "path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaColumn.ts",
                                                         "parentClassName": "VersionedSchemaObject",
                                                         "location": "./VersionedSchemaObject",
                                                         "isSuperclass": false,
@@ -2386,7 +2386,7 @@ export const MAPPED_SUPERCLASS = [
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "name": "DbNumber",
+                                                                            "name": "DbString",
                                                                             "values": []
                                                                         }
                                                                     ],
@@ -2398,7 +2398,7 @@ export const MAPPED_SUPERCLASS = [
                                                                     "type": "SQLDataType",
                                                                     "ownerEntity": null,
                                                                     "nonArrayType": "SQLDataType",
-                                                                    "primitive": "number",
+                                                                    "primitive": "string",
                                                                     "index": 9
                                                                 },
                                                                 {
@@ -2451,7 +2451,7 @@ export const MAPPED_SUPERCLASS = [
                                                                     "nonArrayType": "SchemaPropertyColumn",
                                                                     "entity": {
                                                                         "type": "SchemaPropertyColumn",
-                                                                        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaPropertyColumn.ts",
+                                                                        "path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaPropertyColumn.ts",
                                                                         "parentClassName": "VersionedSchemaObject",
                                                                         "location": "./VersionedSchemaObject",
                                                                         "isSuperclass": false,
@@ -2785,7 +2785,7 @@ export const MAPPED_SUPERCLASS = [
                                                     "nonArrayType": "SchemaOperation",
                                                     "entity": {
                                                         "type": "SchemaOperation",
-                                                        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaOperation.ts",
+                                                        "path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaOperation.ts",
                                                         "parentClassName": "VersionedSchemaObject",
                                                         "location": "./VersionedSchemaObject",
                                                         "isSuperclass": false,
@@ -3303,7 +3303,7 @@ export const MAPPED_SUPERCLASS = [
                                     "nonArrayType": "SchemaReference",
                                     "entity": {
                                         "type": "SchemaReference",
-                                        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaReference.ts",
+                                        "path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaReference.ts",
                                         "parentClassName": "VersionedSchemaObject",
                                         "location": "./VersionedSchemaObject",
                                         "isSuperclass": false,

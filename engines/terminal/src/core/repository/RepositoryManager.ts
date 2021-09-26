@@ -10,7 +10,11 @@ import {
 	RawUpdate,
 } from '@airport/air-control'
 import { container, DI } from '@airport/di'
-import { StoreType } from '@airport/ground-control'
+import {
+	DistributionStrategy,
+	PlatformType,
+	StoreType,
+} from '@airport/ground-control'
 import {
 	IActor,
 	IRepository,
@@ -20,9 +24,7 @@ import {
 } from '@airport/holding-pattern'
 import {
 	DeltaStoreConfig,
-	DistributionStrategy,
 	JsonDeltaStoreConfig,
-	PlatformType,
 	REPOSITORY_FIELD,
 } from '@airport/terminal-map'
 import { ITerminal } from '@airport/travel-document-checkpoint'

@@ -1,4 +1,5 @@
 import {
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id
@@ -50,7 +51,7 @@ export class RepoTransHistoryChangedRepositoryActor {
 		name: 'REFERENCE_TYPE',
 		nullable: false
 	})
-	@DbNumber()
+	@DbString()
 	referenceType: RepoTransHistoryChangedReferenceType
 
 }

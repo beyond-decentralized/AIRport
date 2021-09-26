@@ -1,4 +1,4 @@
 export enum DataOrigin {
-	LOCAL,
-	REMOTE
+	LOCAL = 'LOCAL',
+	REMOTE = 'REMOTE'
 }

@@ -1,8 +1,4 @@
 import { StoreType } from '@airport/ground-control';
-export var IdGeneration;
-(function (IdGeneration) {
-    IdGeneration[IdGeneration["ENTITY_CHANGE_ID"] = 0] = "ENTITY_CHANGE_ID";
-})(IdGeneration || (IdGeneration = {}));
 export var store;
 (function (store) {
     var type;

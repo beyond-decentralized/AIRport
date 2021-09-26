@@ -1,1 +1,1 @@
-{"version":3,"file":"SchemaStatus.d.ts","sourceRoot":"","sources":["../../../src/lingo/schema/SchemaStatus.ts"],"names":[],"mappings":"AAAA,oBAAY,YAAY;IACvB,OAAO,IAAA;IACP,OAAO,IAAA;IACP,cAAc,IAAA;CACd"}
+{"version":3,"file":"SchemaStatus.d.ts","sourceRoot":"","sources":["../../../src/lingo/schema/SchemaStatus.ts"],"names":[],"mappings":"AAAA,oBAAY,YAAY;IACvB,OAAO,YAAY;IACnB,OAAO,YAAY;IACnB,cAAc,mBAAmB;CACjC"}

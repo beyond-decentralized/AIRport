@@ -3,6 +3,6 @@ import { IRepositoryTransactionBlock } from '../repositoryTransactionBlock/repos
 export interface ISharingNodeRepoTransBlock {
     sharingNode: ISharingNode;
     repositoryTransactionBlock: IRepositoryTransactionBlock;
-    syncStatus?: number;
+    syncStatus?: string;
 }
 //# sourceMappingURL=sharingnoderepotransblock.d.ts.map

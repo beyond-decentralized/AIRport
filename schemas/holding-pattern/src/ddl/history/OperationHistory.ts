@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
@@ -48,7 +49,7 @@ export class OperationHistory {
 	orderNumber: OperationHistoryOrderNumber
 
 	@Column({name: 'CHANGE_TYPE', nullable: false})
-	@DbNumber()
+	@DbString()
 	changeType: ChangeType
 
 	// This field is local to the device only, when copied to new device this value is re-created

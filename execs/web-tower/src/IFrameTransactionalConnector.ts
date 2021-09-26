@@ -50,10 +50,10 @@ export interface IObservableMessageInRecord<T> {
 export const hostServer = 'http://localhost:7000'
 
 export enum AppState {
-	NOT_INITIALIED,
-	START_INITIALIZING,
-	INITIALIZING_IN_PROGRESS,
-	INITIALIZED
+	NOT_INITIALIED = 'NOT_INITIALIED',
+	START_INITIALIZING = 'START_INITIALIZING',
+	INITIALIZING_IN_PROGRESS = 'INITIALIZING_IN_PROGRESS',
+	INITIALIZED = 'INITIALIZED'
 }
 
 export class IframeTransactionalConnector

@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Entity,
 	ForeignKey,
 	Id,
@@ -53,7 +54,7 @@ export class SchemaRelation
 	@Column({name: 'ONE_TO_MANY_ELEMENTS'})
 	oneToManyElems: OneToManyElements
 
-	@DbNumber()
+	@DbString()
 	@Column({name: 'RELATION_TYPE', nullable: false})
 	relationType: EntityRelationType
 

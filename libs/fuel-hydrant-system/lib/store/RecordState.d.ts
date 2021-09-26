@@ -31,9 +31,9 @@ export declare class RecordStateData implements IRecordStateData {
     };
 }
 export declare enum CurrentState {
-    CREATED = 0,
-    DELETED = 1,
-    UPDATED = 2
+    CREATED = "CREATED",
+    DELETED = "DELETED",
+    UPDATED = "UPDATED"
 }
 export interface IRecordState {
     data: IRecordStateData;

@@ -33,7 +33,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -56,7 +56,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -95,7 +95,7 @@
 						{
 							"index": 0,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 0
 							},
@@ -105,7 +105,7 @@
 						{
 							"index": 1,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -133,7 +133,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -164,7 +164,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -178,7 +178,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 3,
@@ -201,7 +201,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 4,
@@ -235,7 +235,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -319,7 +319,7 @@
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 3
 							},
@@ -329,7 +329,7 @@
 						{
 							"index": 1,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 4
 							},
@@ -339,7 +339,7 @@
 						{
 							"index": 2,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 5
 							},
@@ -349,7 +349,7 @@
 						{
 							"index": 3,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 6
 							},
@@ -377,7 +377,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -391,7 +391,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 2,
@@ -405,7 +405,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 3,
@@ -419,7 +419,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 4,
@@ -433,7 +433,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 5,
@@ -447,7 +447,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
@@ -540,7 +540,7 @@
 							"oneToManyElems": {
 								"mappedBy": "user"
 							},
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 6
 							},
@@ -553,7 +553,7 @@
 							"oneToManyElems": {
 								"mappedBy": "user"
 							},
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 7
 							},
@@ -581,7 +581,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -595,7 +595,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 2,
@@ -609,7 +609,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 3,
@@ -623,7 +623,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 1
+							"type": "BOOLEAN"
 						},
 						{
 							"index": 4,
@@ -645,7 +645,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -735,7 +735,7 @@
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 3
 							},
@@ -748,7 +748,7 @@
 							"oneToManyElems": {
 								"mappedBy": "terminal"
 							},
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 5
 							},
@@ -761,7 +761,7 @@
 							"oneToManyElems": {
 								"mappedBy": "terminal"
 							},
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 6
 							},
@@ -774,7 +774,7 @@
 							"oneToManyElems": {
 								"mappedBy": "terminal"
 							},
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 7
 							},
@@ -802,7 +802,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 1,
@@ -825,7 +825,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -848,7 +848,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -905,7 +905,7 @@
 						{
 							"index": 0,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 0
 							},
@@ -915,7 +915,7 @@
 						{
 							"index": 1,
 							"isId": true,
-							"relationType": 1,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1
 							},
@@ -928,7 +928,7 @@
 							"oneToManyElems": {
 								"mappedBy": "terminalAgt"
 							},
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 3
 							},
@@ -956,7 +956,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -970,7 +970,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
@@ -1027,7 +1027,7 @@
 							"oneToManyElems": {
 								"mappedBy": "agt"
 							},
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 2
 							},
@@ -1040,7 +1040,7 @@
 							"oneToManyElems": {
 								"mappedBy": "agt"
 							},
-							"relationType": 0,
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 3
 							},

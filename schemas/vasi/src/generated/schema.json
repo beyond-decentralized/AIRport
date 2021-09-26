@@ -24,7 +24,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
@@ -38,7 +38,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 2,
@@ -52,7 +52,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 3,
@@ -66,7 +66,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 4,
@@ -80,7 +80,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 5,
@@ -94,7 +94,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 6,
@@ -108,7 +108,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 7,
@@ -122,7 +122,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						},
 						{
 							"index": 8,
@@ -136,7 +136,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
@@ -252,7 +252,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": "DATE"
 						},
 						{
 							"index": 1,
@@ -266,7 +266,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -280,7 +280,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
@@ -342,7 +342,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 2
+							"type": "DATE"
 						},
 						{
 							"index": 1,
@@ -356,7 +356,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 4
+							"type": "NUMBER"
 						},
 						{
 							"index": 2,
@@ -370,7 +370,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": 5
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [

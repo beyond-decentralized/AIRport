@@ -80,7 +80,7 @@ export interface MissingRecordESelect
     extends IEntitySelectProperties, MissingRecordEOptionalId {
 	// Non-Id Properties
 	actorRecordId?: number | IQNumberField;
-	status?: number | IQNumberField;
+	status?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -122,7 +122,7 @@ export interface MissingRecordEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	actorRecordId?: number | IQNumberField;
-	status?: number | IQNumberField;
+	status?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	schemaVersion?: SchemaVersionEOptionalId;
@@ -141,7 +141,7 @@ export interface MissingRecordGraph
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	actorRecordId?: number | IQNumberField;
-	status?: number | IQNumberField;
+	status?: string | IQStringField;
 
 	// Relations
 	schemaVersion?: SchemaVersionGraph;
@@ -158,7 +158,7 @@ export interface MissingRecordEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	ACTOR_RECORD_ID?: number | IQNumberField;
-	STATUS?: number | IQNumberField;
+	STATUS?: string | IQStringField;
 	SCHEMA_VERSION_ID?: number | IQNumberField;
 	SCHEMA_ENTITY_ID?: number | IQNumberField;
 	REPOSITORY_ID?: number | IQNumberField;
@@ -199,7 +199,7 @@ export interface QMissingRecord extends IQEntity<MissingRecord>
 
 	// Non-Id Fields
 	actorRecordId: IQNumberField;
-	status: IQNumberField;
+	status: IQStringField;
 
 	// Non-Id Relations
 	schemaVersion: QSchemaVersionQRelation;

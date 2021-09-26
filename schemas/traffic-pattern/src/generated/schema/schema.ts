@@ -28,7 +28,7 @@ export interface ISchema {
 	scope?: string;
 	name?: string;
 	packageName?: string;
-	status?: number;
+	status?: string;
 	jsonSchema?: JsonSchemaWithLastIds;
 
 	// Non-Id Relations

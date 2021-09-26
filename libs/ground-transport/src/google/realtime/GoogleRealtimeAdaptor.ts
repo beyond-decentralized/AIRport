@@ -12,9 +12,9 @@ import { GoogleRealtime } from './GoogleRealtime';
  */
 
 export enum Operation {
-	CHANGES_ADDED_BY_OTHERS, //
-	CLEAUP_BY_OWNER, //
-	GET_NEXT_CHANGE
+	CHANGES_ADDED_BY_OTHERS = 'CHANGES_ADDED_BY_OTHERS', //
+	CLEAUP_BY_OWNER = 'CLEAUP_BY_OWNER', //
+	GET_NEXT_CHANGE = 'GET_NEXT_CHANGE'
 }
 
 export class GoogleRealtimeAdaptorException {

@@ -8,7 +8,7 @@ import { SharingNodeTerminal } from '../../ddl/sharingNode/SharingNodeTerminal';
 export interface SharingNodeTerminalESelect extends IEntitySelectProperties, SharingNodeTerminalEOptionalId {
     agtTerminalId?: number | IQNumberField;
     agtTerminalPassword?: string | IQStringField;
-    terminalSyncStatus?: number | IQNumberField;
+    terminalSyncStatus?: string | IQStringField;
     sharingNode?: SharingNodeESelect;
     terminal?: TerminalESelect;
 }
@@ -32,7 +32,7 @@ export interface SharingNodeTerminalEOptionalId {
 export interface SharingNodeTerminalEUpdateProperties extends IEntityUpdateProperties {
     agtTerminalId?: number | IQNumberField;
     agtTerminalPassword?: string | IQStringField;
-    terminalSyncStatus?: number | IQNumberField;
+    terminalSyncStatus?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
@@ -40,7 +40,7 @@ export interface SharingNodeTerminalEUpdateProperties extends IEntityUpdatePrope
 export interface SharingNodeTerminalGraph extends SharingNodeTerminalEOptionalId, IEntityCascadeGraph {
     agtTerminalId?: number | IQNumberField;
     agtTerminalPassword?: string | IQStringField;
-    terminalSyncStatus?: number | IQNumberField;
+    terminalSyncStatus?: string | IQStringField;
     sharingNode?: SharingNodeGraph;
     terminal?: TerminalGraph;
 }
@@ -50,7 +50,7 @@ export interface SharingNodeTerminalGraph extends SharingNodeTerminalEOptionalId
 export interface SharingNodeTerminalEUpdateColumns extends IEntityUpdateColumns {
     AGT_TERMINAL_ID?: number | IQNumberField;
     TERMINAL_PASSWORD?: string | IQStringField;
-    TERMINAL_SYNC_STATUS?: number | IQNumberField;
+    TERMINAL_SYNC_STATUS?: string | IQStringField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -70,7 +70,7 @@ export interface QSharingNodeTerminal extends IQEntity<SharingNodeTerminal> {
     terminal: QTerminalQRelation;
     agtTerminalId: IQNumberField;
     agtTerminalPassword: IQStringField;
-    terminalSyncStatus: IQNumberField;
+    terminalSyncStatus: IQStringField;
 }
 export interface QSharingNodeTerminalQId {
     sharingNode: QSharingNodeQId;

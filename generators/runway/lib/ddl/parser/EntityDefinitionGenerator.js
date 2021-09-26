@@ -11,10 +11,10 @@ export const globalCandidateRegistry = new EntityCandidateRegistry(globalThis.en
 export const globalCandidateInheritanceMap = new Map();
 var TsObjectType;
 (function (TsObjectType) {
-    TsObjectType[TsObjectType["OBJECT_LITERAL"] = 0] = "OBJECT_LITERAL";
-    TsObjectType[TsObjectType["OBJECT_LITERAL_ARRAY"] = 1] = "OBJECT_LITERAL_ARRAY";
-    TsObjectType[TsObjectType["DECORATOR"] = 2] = "DECORATOR";
-    TsObjectType[TsObjectType["DECORATOR_ARRAY"] = 3] = "DECORATOR_ARRAY";
+    TsObjectType["OBJECT_LITERAL"] = "OBJECT_LITERAL";
+    TsObjectType["OBJECT_LITERAL_ARRAY"] = "OBJECT_LITERAL_ARRAY";
+    TsObjectType["DECORATOR"] = "DECORATOR";
+    TsObjectType["DECORATOR_ARRAY"] = "DECORATOR_ARRAY";
 })(TsObjectType || (TsObjectType = {}));
 let currentFileImports;
 const entityFileMap = {};

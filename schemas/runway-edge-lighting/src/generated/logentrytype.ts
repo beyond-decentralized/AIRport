@@ -20,7 +20,7 @@ export interface ILogEntryType {
 	// Id Relations
 
 	// Non-Id Properties
-	level?: number;
+	level?: string;
 	text?: string;
 
 	// Non-Id Relations

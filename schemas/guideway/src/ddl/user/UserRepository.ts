@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Entity,
 	Id,
 	JoinColumn,
@@ -30,7 +31,7 @@ export class UserRepository {
 	user: User;
 
 	@Column({name: 'PERMISSION', nullable: false})
-	@DbNumber()
+	@DbString()
 	permission: UserRepositoryPermission;
 
 }

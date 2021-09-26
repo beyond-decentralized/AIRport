@@ -13,16 +13,16 @@ export type Operation_Rule = string
 export type Operation_Type = number
 
 export enum OperationType {
-	DELETE,
-	FIND_ONE_GRAPH,
-	FIND_ONE_TREE,
-	FIND_GRAPH,
-	FIND_TREE,
-	SAVE,
-	SEARCH_ONE_GRAPH,
-	SEARCH_ONE_TREE,
-	SEARCH_GRAPH,
-	SEARCH_TREE
+	DELETE = 'DELETE',
+	FIND_ONE_GRAPH = 'FIND_ONE_GRAPH',
+	FIND_ONE_TREE = 'FIND_ONE_TREE',
+	FIND_GRAPH = 'FIND_GRAPH',
+	FIND_TREE = 'FIND_TREE',
+	SAVE = 'SAVE',
+	SEARCH_ONE_GRAPH = 'SEARCH_ONE_GRAPH',
+	SEARCH_ONE_TREE = 'SEARCH_ONE_TREE',
+	SEARCH_GRAPH = 'SEARCH_GRAPH',
+	SEARCH_TREE = 'SEARCH_TREE'
 }
 
 export interface JsonOperations {
@@ -34,16 +34,16 @@ export interface JsonOperation {
 }
 
 export enum QueryInputKind {
-	PARAMETER,
-	Q,
-	QENTITY
+	PARAMETER = 'PARAMETER',
+	Q = 'Q',
+	QENTITY = 'QENTITY'
 }
 
 export enum QueryParameterType {
-	BOOLEAN,
-	DATE,
-	NUMBER,
-	STRING
+	BOOLEAN = 'BOOLEAN',
+	DATE = 'DATE',
+	NUMBER = 'NUMBER',
+	STRING = 'STRING'
 }
 
 export interface QueryInput {

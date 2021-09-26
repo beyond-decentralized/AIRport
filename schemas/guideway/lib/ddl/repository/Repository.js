@@ -22,7 +22,7 @@ __decorate([
 ], Repository.prototype, "name", void 0);
 __decorate([
     Column({ name: 'STATUS', nullable: false }),
-    DbNumber()
+    DbString()
 ], Repository.prototype, "status", void 0);
 __decorate([
     OneToMany()

@@ -6,9 +6,9 @@ import { GoogleRealtime } from './GoogleRealtime';
  * Created by Papa on 1/7/2016.
  */
 export declare enum Operation {
-    CHANGES_ADDED_BY_OTHERS = 0,
-    CLEAUP_BY_OWNER = 1,
-    GET_NEXT_CHANGE = 2
+    CHANGES_ADDED_BY_OTHERS = "CHANGES_ADDED_BY_OTHERS",
+    CLEAUP_BY_OWNER = "CLEAUP_BY_OWNER",
+    GET_NEXT_CHANGE = "GET_NEXT_CHANGE"
 }
 export declare class GoogleRealtimeAdaptorException {
     message: string;

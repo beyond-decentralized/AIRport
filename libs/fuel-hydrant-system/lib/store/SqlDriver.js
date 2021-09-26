@@ -27,7 +27,7 @@ export class SqlDriver {
             theTableName = table.tableConfig.name;
         }
         let schemaName;
-        if (schema.status || schema.status === 0) {
+        if (schema.status) {
             schemaName = schema.name;
         }
         else {

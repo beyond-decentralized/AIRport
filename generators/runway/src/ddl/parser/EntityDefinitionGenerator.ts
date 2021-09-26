@@ -35,10 +35,10 @@ export const globalCandidateInheritanceMap: Map<string, string>
 	= new Map<string, string>()
 
 enum TsObjectType {
-	OBJECT_LITERAL,
-	OBJECT_LITERAL_ARRAY,
-	DECORATOR,
-	DECORATOR_ARRAY,
+	OBJECT_LITERAL = 'OBJECT_LITERAL',
+	OBJECT_LITERAL_ARRAY = 'OBJECT_LITERAL_ARRAY',
+	DECORATOR = 'DECORATOR',
+	DECORATOR_ARRAY = 'DECORATOR_ARRAY',
 }
 
 let currentFileImports

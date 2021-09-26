@@ -1,11 +1,11 @@
 export enum StoreType {
-	COCKROACHDB,
-	MYSQL,
-	POSTGRESQL,
-	REMOTE,
-	SQLITE,
-	SQLJS,
-	WEB_SQL,
+	COCKROACHDB = 'COCKROACHDB',
+	MYSQL = 'MYSQL',
+	POSTGRESQL = 'POSTGRESQL',
+	REMOTE = 'REMOTE',
+	SQLITE = 'SQLITE',
+	SQLJS = 'SQLJS',
+	WEB_SQL = 'WEB_SQL',
 }
 
 export interface StoreShareInfo {
@@ -19,5 +19,5 @@ export interface StoreSetupInfo {
 }
 
 export enum IdGeneration {
-	ENTITY_CHANGE_ID
+	ENTITY_CHANGE_ID = 'ENTITY_CHANGE_ID'
 }

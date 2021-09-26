@@ -65,7 +65,7 @@ export interface SharingNodeTerminalESelect
 	// Non-Id Properties
 	agtTerminalId?: number | IQNumberField;
 	agtTerminalPassword?: string | IQStringField;
-	terminalSyncStatus?: number | IQNumberField;
+	terminalSyncStatus?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 	sharingNode?: SharingNodeESelect;
@@ -108,7 +108,7 @@ export interface SharingNodeTerminalEUpdateProperties
 	// Non-Id Properties
 	agtTerminalId?: number | IQNumberField;
 	agtTerminalPassword?: string | IQStringField;
-	terminalSyncStatus?: number | IQNumberField;
+	terminalSyncStatus?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -124,7 +124,7 @@ export interface SharingNodeTerminalGraph
 	// Non-Id Properties
 	agtTerminalId?: number | IQNumberField;
 	agtTerminalPassword?: string | IQStringField;
-	terminalSyncStatus?: number | IQNumberField;
+	terminalSyncStatus?: string | IQStringField;
 
 	// Relations
 	sharingNode?: SharingNodeGraph;
@@ -140,7 +140,7 @@ export interface SharingNodeTerminalEUpdateColumns
 	// Non-Id Columns
 	AGT_TERMINAL_ID?: number | IQNumberField;
 	TERMINAL_PASSWORD?: string | IQStringField;
-	TERMINAL_SYNC_STATUS?: number | IQNumberField;
+	TERMINAL_SYNC_STATUS?: string | IQStringField;
 
 }
 
@@ -179,7 +179,7 @@ export interface QSharingNodeTerminal extends IQEntity<SharingNodeTerminal>
 	// Non-Id Fields
 	agtTerminalId: IQNumberField;
 	agtTerminalPassword: IQStringField;
-	terminalSyncStatus: IQNumberField;
+	terminalSyncStatus: IQStringField;
 
 	// Non-Id Relations
 

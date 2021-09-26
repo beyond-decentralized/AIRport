@@ -7,7 +7,7 @@ import { RecordHistoryOldValue } from '../../ddl/history/RecordHistoryOldValue';
 import { IRepositoryTransactionHistory } from './repositorytransactionhistory';
 export interface ITransactionHistory {
     id: number;
-    transactionType?: number;
+    transactionType?: string;
     repositoryTransactionHistories?: IRepositoryTransactionHistory[];
     repoTransHistoryMap?: {
         [repositoryId: number]: RepositoryTransactionHistory;

@@ -14,10 +14,10 @@ export interface IObservableMessageInRecord<T> {
 }
 export declare const hostServer = "http://localhost:7000";
 export declare enum AppState {
-    NOT_INITIALIED = 0,
-    START_INITIALIZING = 1,
-    INITIALIZING_IN_PROGRESS = 2,
-    INITIALIZED = 3
+    NOT_INITIALIED = "NOT_INITIALIED",
+    START_INITIALIZING = "START_INITIALIZING",
+    INITIALIZING_IN_PROGRESS = "INITIALIZING_IN_PROGRESS",
+    INITIALIZED = "INITIALIZED"
 }
 export declare class IframeTransactionalConnector implements ITransactionalConnector {
     dbName: string;

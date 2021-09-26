@@ -2,7 +2,7 @@
  * Created by Papa on 4/24/2016.
  */
 export declare enum ArgumentType {
-    CONFIG = 0
+    CONFIG = "ArgumentType"
 }
 export declare class Flags {
     optionsFilePath: string;

@@ -1,4 +1,4 @@
 export enum MissingRecordStatus {
-	MISSING,
-	LOADED
+	MISSING = 'MISSING',
+	LOADED = 'LOADED'
 }

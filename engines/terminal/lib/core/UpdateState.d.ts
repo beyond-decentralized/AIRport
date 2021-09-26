@@ -1,6 +1,6 @@
 export declare enum UpdateState {
-    GO_ONLINE = 0,
-    REMOTE = 1,
-    LOCAL = 2
+    GO_ONLINE = "GO_ONLINE",
+    REMOTE = "REMOTE",
+    LOCAL = "LOCAL"
 }
 //# sourceMappingURL=UpdateState.d.ts.map

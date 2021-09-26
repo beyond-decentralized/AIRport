@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { SharingNodeGraph, SharingNodeEId, SharingNodeEOptionalId, SharingNodeESelect, QSharingNodeQId, QSharingNodeQRelation } from './qsharingnode';
 import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from '@airport/holding-pattern';
 import { SharingNodeRepository } from '../../ddl/sharingNode/SharingNodeRepository';
@@ -7,8 +7,8 @@ import { SharingNodeRepository } from '../../ddl/sharingNode/SharingNodeReposito
  */
 export interface SharingNodeRepositoryESelect extends IEntitySelectProperties, SharingNodeRepositoryEOptionalId {
     agtRepositoryId?: number | IQNumberField;
-    advisedSyncPriority?: number | IQNumberField;
-    repositorySyncStatus?: number | IQNumberField;
+    advisedSyncPriority?: string | IQStringField;
+    repositorySyncStatus?: string | IQStringField;
     sharingNode?: SharingNodeESelect;
     repository?: RepositoryESelect;
 }
@@ -31,16 +31,16 @@ export interface SharingNodeRepositoryEOptionalId {
  */
 export interface SharingNodeRepositoryEUpdateProperties extends IEntityUpdateProperties {
     agtRepositoryId?: number | IQNumberField;
-    advisedSyncPriority?: number | IQNumberField;
-    repositorySyncStatus?: number | IQNumberField;
+    advisedSyncPriority?: string | IQStringField;
+    repositorySyncStatus?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SharingNodeRepositoryGraph extends SharingNodeRepositoryEOptionalId, IEntityCascadeGraph {
     agtRepositoryId?: number | IQNumberField;
-    advisedSyncPriority?: number | IQNumberField;
-    repositorySyncStatus?: number | IQNumberField;
+    advisedSyncPriority?: string | IQStringField;
+    repositorySyncStatus?: string | IQStringField;
     sharingNode?: SharingNodeGraph;
     repository?: RepositoryGraph;
 }
@@ -49,8 +49,8 @@ export interface SharingNodeRepositoryGraph extends SharingNodeRepositoryEOption
  */
 export interface SharingNodeRepositoryEUpdateColumns extends IEntityUpdateColumns {
     AGT_REPOSITORY_ID?: number | IQNumberField;
-    ADVISED_SYNC_PRIORITY?: number | IQNumberField;
-    REPOSITORY_SYNC_STATUS?: number | IQNumberField;
+    ADVISED_SYNC_PRIORITY?: string | IQStringField;
+    REPOSITORY_SYNC_STATUS?: string | IQStringField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -69,8 +69,8 @@ export interface QSharingNodeRepository extends IQEntity<SharingNodeRepository> 
     sharingNode: QSharingNodeQRelation;
     repository: QRepositoryQRelation;
     agtRepositoryId: IQNumberField;
-    advisedSyncPriority: IQNumberField;
-    repositorySyncStatus: IQNumberField;
+    advisedSyncPriority: IQStringField;
+    repositorySyncStatus: IQStringField;
 }
 export interface QSharingNodeRepositoryQId {
     sharingNode: QSharingNodeQId;

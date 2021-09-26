@@ -10,7 +10,7 @@ import { Repository } from '../../ddl/repository/Repository';
 export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEOptionalId {
     lastUpdateTime?: Date | IQDateField;
     name?: string | IQStringField;
-    status?: number | IQNumberField;
+    status?: string | IQStringField;
     terminalRepositories?: TerminalRepositoryESelect;
     repositoryTransactionBlocks?: AgtRepositoryTransactionBlockESelect;
 }
@@ -32,7 +32,7 @@ export interface RepositoryEOptionalId {
 export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     lastUpdateTime?: Date | IQDateField;
     name?: string | IQStringField;
-    status?: number | IQNumberField;
+    status?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
@@ -40,7 +40,7 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
 export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGraph {
     lastUpdateTime?: Date | IQDateField;
     name?: string | IQStringField;
-    status?: number | IQNumberField;
+    status?: string | IQStringField;
     terminalRepositories?: TerminalRepositoryGraph[];
     repositoryTransactionBlocks?: AgtRepositoryTransactionBlockGraph[];
 }
@@ -50,7 +50,7 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
 export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
     LAST_UPDATE_DATETIME?: Date | IQDateField;
     NAME?: string | IQStringField;
-    STATUS?: number | IQNumberField;
+    STATUS?: string | IQStringField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -69,7 +69,7 @@ export interface QRepository extends IQEntity<Repository> {
     id: IQNumberField;
     lastUpdateTime: IQDateField;
     name: IQStringField;
-    status: IQNumberField;
+    status: IQStringField;
     terminalRepositories: IQOneToManyRelation<TerminalRepository, QTerminalRepository>;
     repositoryTransactionBlocks: IQOneToManyRelation<AgtRepositoryTransactionBlock, QAgtRepositoryTransactionBlock>;
 }

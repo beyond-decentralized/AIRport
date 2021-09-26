@@ -1,5 +1,5 @@
 export declare enum RepoTransHistoryChangedReferenceType {
-    ADDED_REFERENCE = 0,
-    REMOVED_REFERENCE = 1
+    ADDED_REFERENCE = "ADDED_REFERENCE",
+    REMOVED_REFERENCE = "REMOVED_REFERENCE"
 }
 //# sourceMappingURL=RepoTransHistoryChangedReferenceType.d.ts.map

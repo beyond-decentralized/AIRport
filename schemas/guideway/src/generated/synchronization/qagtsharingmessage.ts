@@ -66,7 +66,7 @@ export interface AgtSharingMessageESelect
     extends IEntitySelectProperties, AgtSharingMessageEOptionalId {
 	// Non-Id Properties
 	tmSharingMessageId?: number | IQNumberField;
-	acknowledged?: number | IQNumberField;
+	acknowledged?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -106,7 +106,7 @@ export interface AgtSharingMessageEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	tmSharingMessageId?: number | IQNumberField;
-	acknowledged?: number | IQNumberField;
+	acknowledged?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	terminal?: TerminalEOptionalId;
@@ -122,7 +122,7 @@ export interface AgtSharingMessageGraph
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	tmSharingMessageId?: number | IQNumberField;
-	acknowledged?: number | IQNumberField;
+	acknowledged?: string | IQStringField;
 
 	// Relations
 	terminal?: TerminalGraph;
@@ -137,7 +137,7 @@ export interface AgtSharingMessageEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	TM_SHARING_MESSAGE_ID?: number | IQNumberField;
-	ACKNOWLEDGED?: number | IQNumberField;
+	ACKNOWLEDGED?: string | IQStringField;
 	SYNCED_TERMINAL_ID?: number | IQNumberField;
 
 }
@@ -175,7 +175,7 @@ export interface QAgtSharingMessage extends IQEntity<AgtSharingMessage>
 
 	// Non-Id Fields
 	tmSharingMessageId: IQNumberField;
-	acknowledged: IQNumberField;
+	acknowledged: IQStringField;
 
 	// Non-Id Relations
 	terminal: QTerminalQRelation;

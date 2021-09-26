@@ -1,6 +1,6 @@
 export declare enum SyncType {
-    REALTIME = 0,
-    RECENT = 1,
-    ARCHIVE = 2
+    REALTIME = "REALTIME",
+    RECENT = "RECENT",
+    ARCHIVE = "ARCHIVE"
 }
 //# sourceMappingURL=SyncType.d.ts.map

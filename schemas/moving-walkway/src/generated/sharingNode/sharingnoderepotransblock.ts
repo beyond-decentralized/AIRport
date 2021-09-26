@@ -20,7 +20,7 @@ export interface ISharingNodeRepoTransBlock {
 	repositoryTransactionBlock: IRepositoryTransactionBlock;
 
 	// Non-Id Properties
-	syncStatus?: number;
+	syncStatus?: string;
 
 	// Non-Id Relations
 

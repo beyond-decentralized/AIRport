@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, Entity, Id, JoinColumn, ManyToOne, Table } from "@airport/air-control";
-import { DbNumber } from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
+import { DbString } from "@airport/air-control";
 /**
  * Every RepositoryTransactionBlock has an Id at every AGT that syncs
  * it.  This record stores that Id.
@@ -27,7 +27,7 @@ __decorate([
     })
 ], SharingNodeRepoTransBlock.prototype, "repositoryTransactionBlock", void 0);
 __decorate([
-    DbNumber(),
+    DbString(),
     Column({ name: "SYNC_STATUS" })
 ], SharingNodeRepoTransBlock.prototype, "syncStatus", void 0);
 SharingNodeRepoTransBlock = __decorate([

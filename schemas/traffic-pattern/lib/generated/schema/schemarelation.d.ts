@@ -9,7 +9,7 @@ export interface ISchemaRelation extends IVersionedSchemaObject {
     foreignKey?: ForeignKey;
     manyToOneElems?: ManyToOneElements;
     oneToManyElems?: OneToManyElements;
-    relationType?: number;
+    relationType?: string;
     isId?: boolean;
     property?: ISchemaProperty;
     entity?: ISchemaEntity;

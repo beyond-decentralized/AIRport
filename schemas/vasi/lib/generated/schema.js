@@ -25,7 +25,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 4
+                            "type": "NUMBER"
                         },
                         {
                             "index": 1,
@@ -39,7 +39,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 5
+                            "type": "STRING"
                         },
                         {
                             "index": 2,
@@ -53,7 +53,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 5
+                            "type": "STRING"
                         },
                         {
                             "index": 3,
@@ -67,7 +67,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 5
+                            "type": "STRING"
                         },
                         {
                             "index": 4,
@@ -81,7 +81,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 5
+                            "type": "STRING"
                         },
                         {
                             "index": 5,
@@ -95,7 +95,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 5
+                            "type": "STRING"
                         },
                         {
                             "index": 6,
@@ -109,7 +109,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 5
+                            "type": "STRING"
                         },
                         {
                             "index": 7,
@@ -123,7 +123,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 5
+                            "type": "STRING"
                         },
                         {
                             "index": 8,
@@ -137,7 +137,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 5
+                            "type": "STRING"
                         }
                     ],
                     "idColumnRefs": [
@@ -253,7 +253,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 2
+                            "type": "DATE"
                         },
                         {
                             "index": 1,
@@ -267,7 +267,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 4
+                            "type": "NUMBER"
                         },
                         {
                             "index": 2,
@@ -281,7 +281,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 5
+                            "type": "STRING"
                         }
                     ],
                     "idColumnRefs": [
@@ -343,7 +343,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 2
+                            "type": "DATE"
                         },
                         {
                             "index": 1,
@@ -357,7 +357,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 4
+                            "type": "NUMBER"
                         },
                         {
                             "index": 2,
@@ -371,7 +371,7 @@ export const SCHEMA = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": 5
+                            "type": "STRING"
                         }
                     ],
                     "idColumnRefs": [

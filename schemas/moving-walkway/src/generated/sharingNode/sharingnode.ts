@@ -19,10 +19,10 @@ export interface ISharingNode {
 	// Id Relations
 
 	// Non-Id Properties
-	sharingMechanism?: number;
+	sharingMechanism?: string;
 	isActive?: boolean;
 	syncFrequency?: number;
-	connectionProtocol?: number;
+	connectionProtocol?: string;
 	connectionUrl?: string;
 
 	// Non-Id Relations

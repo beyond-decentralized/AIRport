@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbDate, DbNumber, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from '@airport/air-control';
+import { Column, DbDate, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from '@airport/air-control';
 // FIXME: SECURITY - ensure that a given sharing message is processed only once by a given AGT
 /**
  * A sharing message is a record of a number of RepositoryTransactionBlocks
@@ -61,7 +61,7 @@ __decorate([
     })
 ], SharingMessage.prototype, "sharingNode", void 0);
 __decorate([
-    DbNumber()
+    DbString()
 ], SharingMessage.prototype, "origin", void 0);
 __decorate([
     Column({ name: 'AGT_SHARING_MESSAGE_ID' }),

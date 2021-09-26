@@ -11,16 +11,16 @@ export declare type Operation_Name = string;
 export declare type Operation_Rule = string;
 export declare type Operation_Type = number;
 export declare enum OperationType {
-    DELETE = 0,
-    FIND_ONE_GRAPH = 1,
-    FIND_ONE_TREE = 2,
-    FIND_GRAPH = 3,
-    FIND_TREE = 4,
-    SAVE = 5,
-    SEARCH_ONE_GRAPH = 6,
-    SEARCH_ONE_TREE = 7,
-    SEARCH_GRAPH = 8,
-    SEARCH_TREE = 9
+    DELETE = "DELETE",
+    FIND_ONE_GRAPH = "FIND_ONE_GRAPH",
+    FIND_ONE_TREE = "FIND_ONE_TREE",
+    FIND_GRAPH = "FIND_GRAPH",
+    FIND_TREE = "FIND_TREE",
+    SAVE = "SAVE",
+    SEARCH_ONE_GRAPH = "SEARCH_ONE_GRAPH",
+    SEARCH_ONE_TREE = "SEARCH_ONE_TREE",
+    SEARCH_GRAPH = "SEARCH_GRAPH",
+    SEARCH_TREE = "SEARCH_TREE"
 }
 export interface JsonOperations {
     [operationName: string]: JsonOperation;
@@ -29,15 +29,15 @@ export interface JsonOperation {
     type: OperationType;
 }
 export declare enum QueryInputKind {
-    PARAMETER = 0,
-    Q = 1,
-    QENTITY = 2
+    PARAMETER = "PARAMETER",
+    Q = "Q",
+    QENTITY = "QENTITY"
 }
 export declare enum QueryParameterType {
-    BOOLEAN = 0,
-    DATE = 1,
-    NUMBER = 2,
-    STRING = 3
+    BOOLEAN = "BOOLEAN",
+    DATE = "DATE",
+    NUMBER = "NUMBER",
+    STRING = "STRING"
 }
 export interface QueryInput {
     clazz?: string;

@@ -8,8 +8,8 @@ export interface IInjectionContext extends IContext {
     type: ContextType;
 }
 export declare enum ContextType {
-    DB = 0,
-    UI = 1
+    DB = "DB",
+    UI = "UI"
 }
 export declare class Context implements IInjectionContext {
     name: string;

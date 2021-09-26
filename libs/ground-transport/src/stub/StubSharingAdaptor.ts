@@ -1,6 +1,8 @@
 import {
+	PlatformType
+} from '@airport/ground-control'
+import {
 	ChangeListShareInfo,
-	PlatformType,
 	SharedChangeList,
 	SharingAdaptor,
 	SharingPlatformSetupInfo,

@@ -4,27 +4,27 @@ import { JSONBaseOperation, SqlOperator } from '../operation/Operation';
  * SQL Join contentType.
  */
 export declare enum JoinType {
-    FULL_JOIN = 0,
-    INNER_JOIN = 1,
-    LEFT_JOIN = 2,
-    RIGHT_JOIN = 3
+    FULL_JOIN = "FULL_JOIN",
+    INNER_JOIN = "INNER_JOIN",
+    LEFT_JOIN = "LEFT_JOIN",
+    RIGHT_JOIN = "RIGHT_JOIN"
 }
 /**
  * Type of Entity Relation
  */
 export declare enum EntityRelationType {
-    ONE_TO_MANY = 0,
-    MANY_TO_ONE = 1
+    ONE_TO_MANY = "ONE_TO_MANY",
+    MANY_TO_ONE = "MANY_TO_ONE"
 }
 /**
  * Serialized relation contentType.
  */
 export declare enum JSONRelationType {
-    ENTITY_JOIN_ON = 0,
-    ENTITY_SCHEMA_RELATION = 1,
-    ENTITY_ROOT = 2,
-    SUB_QUERY_JOIN_ON = 3,
-    SUB_QUERY_ROOT = 4
+    ENTITY_JOIN_ON = "ENTITY_JOIN_ON",
+    ENTITY_SCHEMA_RELATION = "ENTITY_SCHEMA_RELATION",
+    ENTITY_ROOT = "ENTITY_ROOT",
+    SUB_QUERY_JOIN_ON = "SUB_QUERY_JOIN_ON",
+    SUB_QUERY_ROOT = "SUB_QUERY_ROOT"
 }
 /**
  * Serialized relation.

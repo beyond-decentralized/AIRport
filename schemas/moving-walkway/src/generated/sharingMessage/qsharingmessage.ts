@@ -65,7 +65,7 @@ declare function require(moduleName: string): any;
 export interface SharingMessageESelect
     extends IEntitySelectProperties, SharingMessageEOptionalId {
 	// Non-Id Properties
-	origin?: number | IQNumberField;
+	origin?: string | IQStringField;
 	agtSharingMessageId?: number | IQNumberField;
 	syncTimestamp?: Date | IQDateField;
 
@@ -108,7 +108,7 @@ export interface SharingMessageEOptionalId {
 export interface SharingMessageEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	origin?: number | IQNumberField;
+	origin?: string | IQStringField;
 	agtSharingMessageId?: number | IQNumberField;
 	syncTimestamp?: Date | IQDateField;
 
@@ -124,7 +124,7 @@ export interface SharingMessageGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	origin?: number | IQNumberField;
+	origin?: string | IQStringField;
 	agtSharingMessageId?: number | IQNumberField;
 	syncTimestamp?: Date | IQDateField;
 
@@ -140,7 +140,7 @@ export interface SharingMessageGraph
 export interface SharingMessageEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	ORIGIN?: number | IQNumberField;
+	ORIGIN?: string | IQStringField;
 	AGT_SHARING_MESSAGE_ID?: number | IQNumberField;
 	SYNC_TIMESTAMP?: Date | IQDateField;
 
@@ -179,7 +179,7 @@ export interface QSharingMessage extends IQEntity<SharingMessage>
 	sharingNode: QSharingNodeQRelation;
 
 	// Non-Id Fields
-	origin: IQNumberField;
+	origin: IQStringField;
 	agtSharingMessageId: IQNumberField;
 	syncTimestamp: IQDateField;
 

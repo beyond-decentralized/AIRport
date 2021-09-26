@@ -5,7 +5,7 @@ export interface IOperationHistory {
     id: number;
     repositoryTransactionHistory: IRepositoryTransactionHistory;
     orderNumber?: number;
-    changeType?: number;
+    changeType?: string;
     systemWideOperationId?: number;
     entity?: ISchemaEntity;
     recordHistory?: IRecordHistory[];

@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, Id } from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
+import { Column, DbNumber, DbString, Id } from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
 import { Entity, Table } from "@airport/air-control/lib/impl/core/entity/metadata/EntityDecorators";
 let SharingNodeRepoTransBlockStage = class SharingNodeRepoTransBlockStage {
 };
@@ -19,7 +19,7 @@ __decorate([
 ], SharingNodeRepoTransBlockStage.prototype, "repositoryTransactionBlockId", void 0);
 __decorate([
     Column({ name: "SYNC_STATUS" }),
-    DbNumber()
+    DbString()
 ], SharingNodeRepoTransBlockStage.prototype, "syncStatus", void 0);
 SharingNodeRepoTransBlockStage = __decorate([
     Entity(),

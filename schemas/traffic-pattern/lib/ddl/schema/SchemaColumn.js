@@ -52,7 +52,7 @@ __decorate([
 ], SchemaColumn.prototype, "scale", void 0);
 __decorate([
     Column({ name: 'TYPE', nullable: false }),
-    DbNumber()
+    DbString()
 ], SchemaColumn.prototype, "type", void 0);
 __decorate([
     ManyToOne(),

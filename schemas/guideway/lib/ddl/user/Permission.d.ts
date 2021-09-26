@@ -1,7 +1,7 @@
 export declare enum UserRepositoryPermission {
-    NONE = 0,
-    READ = 1,
-    WRITE = 2,
-    MANAGE = 3
+    NONE = "NONE",
+    READ = "READ",
+    WRITE = "WRITE",
+    MANAGE = "MANAGE"
 }
 //# sourceMappingURL=Permission.d.ts.map

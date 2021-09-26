@@ -54,7 +54,7 @@ export class Schema {
 	packageName: PackageName;
 
 	@Column({ name: 'STATUS', nullable: false })
-	@DbNumber()
+	@DbString()
 	status: SchemaStatus;
 
 	@OneToMany({ mappedBy: 'schema' })

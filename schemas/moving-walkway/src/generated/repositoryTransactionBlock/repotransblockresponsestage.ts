@@ -13,7 +13,7 @@ export interface IRepoTransBlockResponseStage {
 	// Id Relations
 
 	// Non-Id Properties
-	syncOutcomeType?: number;
+	syncOutcomeType?: string;
 
 	// Non-Id Relations
 

@@ -1,10 +1,10 @@
 export var LogLevel;
 (function (LogLevel) {
-    LogLevel[LogLevel["FATAL"] = 0] = "FATAL";
-    LogLevel[LogLevel["ERROR"] = 1] = "ERROR";
-    LogLevel[LogLevel["WARNING"] = 2] = "WARNING";
-    LogLevel[LogLevel["INFO"] = 3] = "INFO";
-    LogLevel[LogLevel["DEBUG"] = 4] = "DEBUG";
-    LogLevel[LogLevel["TRACE"] = 5] = "TRACE";
+    LogLevel["FATAL"] = "FATAL";
+    LogLevel["ERROR"] = "ERROR";
+    LogLevel["WARNING"] = "WARNING";
+    LogLevel["INFO"] = "INFO";
+    LogLevel["DEBUG"] = "DEBUG";
+    LogLevel["TRACE"] = "TRACE";
 })(LogLevel || (LogLevel = {}));
 //# sourceMappingURL=LogLevel.js.map

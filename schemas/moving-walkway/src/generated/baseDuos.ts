@@ -1,24 +1,7 @@
+/* eslint-disable */
 import {
-	IDuo,
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { Duo } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	duoDiSet
-} from './qSchema'
-import {
-	IMissingRecord
-} from './missingRecord/missingrecord'
+	IMissingRecord,
+} from './missingRecord/missingrecord';
 import {
 	MissingRecordESelect,
 	MissingRecordECreateColumns,
@@ -27,11 +10,11 @@ import {
 	MissingRecordEUpdateProperties,
 	MissingRecordEId,
 	MissingRecordGraph,
-	QMissingRecord
-} from './missingRecord/qmissingrecord'
+	QMissingRecord,
+} from './missingRecord/qmissingrecord';
 import {
-	IMissingRecordRepoTransBlock
-} from './missingRecord/missingrecordrepotransblock'
+	IMissingRecordRepoTransBlock,
+} from './missingRecord/missingrecordrepotransblock';
 import {
 	MissingRecordRepoTransBlockESelect,
 	MissingRecordRepoTransBlockECreateColumns,
@@ -40,11 +23,11 @@ import {
 	MissingRecordRepoTransBlockEUpdateProperties,
 	MissingRecordRepoTransBlockEId,
 	MissingRecordRepoTransBlockGraph,
-	QMissingRecordRepoTransBlock
-} from './missingRecord/qmissingrecordrepotransblock'
+	QMissingRecordRepoTransBlock,
+} from './missingRecord/qmissingrecordrepotransblock';
 import {
-	IRecordUpdateStage
-} from './recordupdatestage'
+	IRecordUpdateStage,
+} from './recordupdatestage';
 import {
 	RecordUpdateStageESelect,
 	RecordUpdateStageECreateColumns,
@@ -53,11 +36,11 @@ import {
 	RecordUpdateStageEUpdateProperties,
 	RecordUpdateStageEId,
 	RecordUpdateStageGraph,
-	QRecordUpdateStage
-} from './qrecordupdatestage'
+	QRecordUpdateStage,
+} from './qrecordupdatestage';
 import {
-	IRepoTransBlockResponseStage
-} from './repositoryTransactionBlock/repotransblockresponsestage'
+	IRepoTransBlockResponseStage,
+} from './repositoryTransactionBlock/repotransblockresponsestage';
 import {
 	RepoTransBlockResponseStageESelect,
 	RepoTransBlockResponseStageECreateColumns,
@@ -66,11 +49,11 @@ import {
 	RepoTransBlockResponseStageEUpdateProperties,
 	RepoTransBlockResponseStageEId,
 	RepoTransBlockResponseStageGraph,
-	QRepoTransBlockResponseStage
-} from './repositoryTransactionBlock/qrepotransblockresponsestage'
+	QRepoTransBlockResponseStage,
+} from './repositoryTransactionBlock/qrepotransblockresponsestage';
 import {
-	IRepoTransBlockSchemaToChange
-} from './repositoryTransactionBlock/repotransblockschematochange'
+	IRepoTransBlockSchemaToChange,
+} from './repositoryTransactionBlock/repotransblockschematochange';
 import {
 	RepoTransBlockSchemaToChangeESelect,
 	RepoTransBlockSchemaToChangeECreateColumns,
@@ -79,11 +62,11 @@ import {
 	RepoTransBlockSchemaToChangeEUpdateProperties,
 	RepoTransBlockSchemaToChangeEId,
 	RepoTransBlockSchemaToChangeGraph,
-	QRepoTransBlockSchemaToChange
-} from './repositoryTransactionBlock/qrepotransblockschematochange'
+	QRepoTransBlockSchemaToChange,
+} from './repositoryTransactionBlock/qrepotransblockschematochange';
 import {
-	IRepositoryTransactionBlock
-} from './repositoryTransactionBlock/repositorytransactionblock'
+	IRepositoryTransactionBlock,
+} from './repositoryTransactionBlock/repositorytransactionblock';
 import {
 	RepositoryTransactionBlockESelect,
 	RepositoryTransactionBlockECreateColumns,
@@ -92,11 +75,11 @@ import {
 	RepositoryTransactionBlockEUpdateProperties,
 	RepositoryTransactionBlockEId,
 	RepositoryTransactionBlockGraph,
-	QRepositoryTransactionBlock
-} from './repositoryTransactionBlock/qrepositorytransactionblock'
+	QRepositoryTransactionBlock,
+} from './repositoryTransactionBlock/qrepositorytransactionblock';
 import {
-	IRepositoryTransactionHistoryUpdateStage
-} from './repositoryTransactionBlock/repositorytransactionhistoryupdatestage'
+	IRepositoryTransactionHistoryUpdateStage,
+} from './repositoryTransactionBlock/repositorytransactionhistoryupdatestage';
 import {
 	RepositoryTransactionHistoryUpdateStageESelect,
 	RepositoryTransactionHistoryUpdateStageECreateColumns,
@@ -105,11 +88,11 @@ import {
 	RepositoryTransactionHistoryUpdateStageEUpdateProperties,
 	RepositoryTransactionHistoryUpdateStageEId,
 	RepositoryTransactionHistoryUpdateStageGraph,
-	QRepositoryTransactionHistoryUpdateStage
-} from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage'
+	QRepositoryTransactionHistoryUpdateStage,
+} from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage';
 import {
-	ISharingMessage
-} from './sharingMessage/sharingmessage'
+	ISharingMessage,
+} from './sharingMessage/sharingmessage';
 import {
 	SharingMessageESelect,
 	SharingMessageECreateColumns,
@@ -118,11 +101,11 @@ import {
 	SharingMessageEUpdateProperties,
 	SharingMessageEId,
 	SharingMessageGraph,
-	QSharingMessage
-} from './sharingMessage/qsharingmessage'
+	QSharingMessage,
+} from './sharingMessage/qsharingmessage';
 import {
-	ISharingMessageRepoTransBlock
-} from './sharingMessage/sharingmessagerepotransblock'
+	ISharingMessageRepoTransBlock,
+} from './sharingMessage/sharingmessagerepotransblock';
 import {
 	SharingMessageRepoTransBlockESelect,
 	SharingMessageRepoTransBlockECreateColumns,
@@ -131,11 +114,11 @@ import {
 	SharingMessageRepoTransBlockEUpdateProperties,
 	SharingMessageRepoTransBlockEId,
 	SharingMessageRepoTransBlockGraph,
-	QSharingMessageRepoTransBlock
-} from './sharingMessage/qsharingmessagerepotransblock'
+	QSharingMessageRepoTransBlock,
+} from './sharingMessage/qsharingmessagerepotransblock';
 import {
-	ISharingNode
-} from './sharingNode/sharingnode'
+	ISharingNode,
+} from './sharingNode/sharingnode';
 import {
 	SharingNodeESelect,
 	SharingNodeECreateColumns,
@@ -144,11 +127,11 @@ import {
 	SharingNodeEUpdateProperties,
 	SharingNodeEId,
 	SharingNodeGraph,
-	QSharingNode
-} from './sharingNode/qsharingnode'
+	QSharingNode,
+} from './sharingNode/qsharingnode';
 import {
-	ISharingNodeRepoTransBlock
-} from './sharingNode/sharingnoderepotransblock'
+	ISharingNodeRepoTransBlock,
+} from './sharingNode/sharingnoderepotransblock';
 import {
 	SharingNodeRepoTransBlockESelect,
 	SharingNodeRepoTransBlockECreateColumns,
@@ -157,11 +140,11 @@ import {
 	SharingNodeRepoTransBlockEUpdateProperties,
 	SharingNodeRepoTransBlockEId,
 	SharingNodeRepoTransBlockGraph,
-	QSharingNodeRepoTransBlock
-} from './sharingNode/qsharingnoderepotransblock'
+	QSharingNodeRepoTransBlock,
+} from './sharingNode/qsharingnoderepotransblock';
 import {
-	ISharingNodeRepoTransBlockStage
-} from './sharingNode/sharingnoderepotransblockstage'
+	ISharingNodeRepoTransBlockStage,
+} from './sharingNode/sharingnoderepotransblockstage';
 import {
 	SharingNodeRepoTransBlockStageESelect,
 	SharingNodeRepoTransBlockStageECreateColumns,
@@ -170,11 +153,11 @@ import {
 	SharingNodeRepoTransBlockStageEUpdateProperties,
 	SharingNodeRepoTransBlockStageEId,
 	SharingNodeRepoTransBlockStageGraph,
-	QSharingNodeRepoTransBlockStage
-} from './sharingNode/qsharingnoderepotransblockstage'
+	QSharingNodeRepoTransBlockStage,
+} from './sharingNode/qsharingnoderepotransblockstage';
 import {
-	ISharingNodeRepository
-} from './sharingNode/sharingnoderepository'
+	ISharingNodeRepository,
+} from './sharingNode/sharingnoderepository';
 import {
 	SharingNodeRepositoryESelect,
 	SharingNodeRepositoryECreateColumns,
@@ -183,11 +166,11 @@ import {
 	SharingNodeRepositoryEUpdateProperties,
 	SharingNodeRepositoryEId,
 	SharingNodeRepositoryGraph,
-	QSharingNodeRepository
-} from './sharingNode/qsharingnoderepository'
+	QSharingNodeRepository,
+} from './sharingNode/qsharingnoderepository';
 import {
-	ISharingNodeTerminal
-} from './sharingNode/sharingnodeterminal'
+	ISharingNodeTerminal,
+} from './sharingNode/sharingnodeterminal';
 import {
 	SharingNodeTerminalESelect,
 	SharingNodeTerminalECreateColumns,
@@ -196,11 +179,11 @@ import {
 	SharingNodeTerminalEUpdateProperties,
 	SharingNodeTerminalEId,
 	SharingNodeTerminalGraph,
-	QSharingNodeTerminal
-} from './sharingNode/qsharingnodeterminal'
+	QSharingNodeTerminal,
+} from './sharingNode/qsharingnodeterminal';
 import {
-	ISynchronizationConflict
-} from './conflict/synchronizationconflict'
+	ISynchronizationConflict,
+} from './conflict/synchronizationconflict';
 import {
 	SynchronizationConflictESelect,
 	SynchronizationConflictECreateColumns,
@@ -209,11 +192,11 @@ import {
 	SynchronizationConflictEUpdateProperties,
 	SynchronizationConflictEId,
 	SynchronizationConflictGraph,
-	QSynchronizationConflict
-} from './conflict/qsynchronizationconflict'
+	QSynchronizationConflict,
+} from './conflict/qsynchronizationconflict';
 import {
-	ISynchronizationConflictPendingNotification
-} from './conflict/synchronizationconflictpendingnotification'
+	ISynchronizationConflictPendingNotification,
+} from './conflict/synchronizationconflictpendingnotification';
 import {
 	SynchronizationConflictPendingNotificationESelect,
 	SynchronizationConflictPendingNotificationECreateColumns,
@@ -222,11 +205,11 @@ import {
 	SynchronizationConflictPendingNotificationEUpdateProperties,
 	SynchronizationConflictPendingNotificationEId,
 	SynchronizationConflictPendingNotificationGraph,
-	QSynchronizationConflictPendingNotification
-} from './conflict/qsynchronizationconflictpendingnotification'
+	QSynchronizationConflictPendingNotification,
+} from './conflict/qsynchronizationconflictpendingnotification';
 import {
-	ISynchronizationConflictValues
-} from './conflict/synchronizationconflictvalues'
+	ISynchronizationConflictValues,
+} from './conflict/synchronizationconflictvalues';
 import {
 	SynchronizationConflictValuesESelect,
 	SynchronizationConflictValuesECreateColumns,
@@ -235,8 +218,28 @@ import {
 	SynchronizationConflictValuesEUpdateProperties,
 	SynchronizationConflictValuesEId,
 	SynchronizationConflictValuesGraph,
-	QSynchronizationConflictValues
-} from './conflict/qsynchronizationconflictvalues'
+	QSynchronizationConflictValues,
+} from './conflict/qsynchronizationconflictvalues';
+import {
+	IDuo,
+	IEntityCascadeGraph,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+} from '@airport/air-control';
+import {
+	Duo,
+} from '@airport/check-in';
+import {
+	EntityId as DbEntityId,
+} from '@airport/ground-control';
+import {
+	Q,
+	duoDiSet,
+} from './qSchema';
 
 
 // Schema Q object Dependency Injection readiness detection Duo
@@ -274,11 +277,11 @@ export class BaseMissingRecordDuo
 	implements IBaseMissingRecordDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(4)
+		super(0)
 	}
 }
 
@@ -292,11 +295,11 @@ export class BaseMissingRecordRepoTransBlockDuo
 	implements IBaseMissingRecordRepoTransBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(11)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(11)
+		super(1)
 	}
 }
 
@@ -310,11 +313,11 @@ export class BaseRecordUpdateStageDuo
 	implements IBaseRecordUpdateStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(0)
+		super(8)
 	}
 }
 
@@ -328,11 +331,11 @@ export class BaseRepoTransBlockResponseStageDuo
 	implements IBaseRepoTransBlockResponseStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(13)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(13)
+		super(9)
 	}
 }
 
@@ -346,11 +349,11 @@ export class BaseRepoTransBlockSchemaToChangeDuo
 	implements IBaseRepoTransBlockSchemaToChangeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(9)
+		super(3)
 	}
 }
 
@@ -364,11 +367,11 @@ export class BaseRepositoryTransactionBlockDuo
 	implements IBaseRepositoryTransactionBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(10)
+		super(4)
 	}
 }
 
@@ -382,11 +385,11 @@ export class BaseRepositoryTransactionHistoryUpdateStageDuo
 	implements IBaseRepositoryTransactionHistoryUpdateStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(12)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(12)
+		super(10)
 	}
 }
 
@@ -400,11 +403,11 @@ export class BaseSharingMessageDuo
 	implements IBaseSharingMessageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(7)
+		super(6)
 	}
 }
 
@@ -418,11 +421,11 @@ export class BaseSharingMessageRepoTransBlockDuo
 	implements IBaseSharingMessageRepoTransBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(8)
+		super(5)
 	}
 }
 
@@ -436,11 +439,11 @@ export class BaseSharingNodeDuo
 	implements IBaseSharingNodeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(6)
+		super(7)
 	}
 }
 
@@ -454,11 +457,11 @@ export class BaseSharingNodeRepoTransBlockDuo
 	implements IBaseSharingNodeRepoTransBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(5)
+		super(2)
 	}
 }
 
@@ -472,11 +475,11 @@ export class BaseSharingNodeRepoTransBlockStageDuo
 	implements IBaseSharingNodeRepoTransBlockStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(16)
+		return duoDiSet(11)
 	}
 	
 	constructor() {
-		super(16)
+		super(11)
 	}
 }
 
@@ -490,11 +493,11 @@ export class BaseSharingNodeRepositoryDuo
 	implements IBaseSharingNodeRepositoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(15)
+		return duoDiSet(12)
 	}
 	
 	constructor() {
-		super(15)
+		super(12)
 	}
 }
 
@@ -508,11 +511,11 @@ export class BaseSharingNodeTerminalDuo
 	implements IBaseSharingNodeTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(14)
+		return duoDiSet(13)
 	}
 	
 	constructor() {
-		super(14)
+		super(13)
 	}
 }
 
@@ -526,11 +529,11 @@ export class BaseSynchronizationConflictDuo
 	implements IBaseSynchronizationConflictDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(15)
 	}
 	
 	constructor() {
-		super(2)
+		super(15)
 	}
 }
 
@@ -544,11 +547,11 @@ export class BaseSynchronizationConflictPendingNotificationDuo
 	implements IBaseSynchronizationConflictPendingNotificationDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(16)
 	}
 	
 	constructor() {
-		super(3)
+		super(16)
 	}
 }
 
@@ -562,10 +565,10 @@ export class BaseSynchronizationConflictValuesDuo
 	implements IBaseSynchronizationConflictValuesDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(14)
 	}
 	
 	constructor() {
-		super(1)
+		super(14)
 	}
 }

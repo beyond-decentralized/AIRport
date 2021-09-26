@@ -5,20 +5,20 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-}                                   from "@airport/air-control";
-import {DbNumber}                   from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
+} from "@airport/air-control";
+import { DbString } from "@airport/air-control";
 import {
 	SharingNodeRepoTransBlockSyncStatus
-}                                   from "@airport/arrivals-n-departures";
-import {RepositoryTransactionBlock} from "../repositoryTransactionBlock/RepositoryTransactionBlock";
-import {SharingNode}                from "./SharingNode";
+} from "@airport/arrivals-n-departures";
+import { RepositoryTransactionBlock } from "../repositoryTransactionBlock/RepositoryTransactionBlock";
+import { SharingNode } from "./SharingNode";
 
 /**
  * Every RepositoryTransactionBlock has an Id at every AGT that syncs
  * it.  This record stores that Id.
  */
 @Entity()
-@Table({name: "SHARING_NODE_REPO_TRANS_BLOCKS"})
+@Table({ name: "SHARING_NODE_REPO_TRANS_BLOCKS" })
 export class SharingNodeRepoTransBlock {
 
 	@Id()
@@ -43,14 +43,14 @@ export class SharingNodeRepoTransBlock {
 	// syncTimestamp: SharingMessageSyncTimestamp;
 	//
 	// @Column({name: "SYNC_OUTCOME_TYPE"})
-	// @DbNumber()
+	// @DbString()
 	// syncOutcomeType: SharingNodeRepoTransBlockSyncOutcomeType;
 
-	// @DbNumber()
+	// @DbString()
 	// origin: DataOrigin;
 
-	@DbNumber()
-	@Column({name: "SYNC_STATUS"})
+	@DbString()
+	@Column({ name: "SYNC_STATUS" })
 	syncStatus: SharingNodeRepoTransBlockSyncStatus;
 
 }

@@ -2,8 +2,8 @@
  * Order of a sorted field, as specified in the ORDER BY clause.
  */
 export declare enum SortOrder {
-    ASCENDING = 0,
-    DESCENDING = 1
+    ASCENDING = "ASCENDING",
+    DESCENDING = "DESCENDING"
 }
 /**
  * A serialized version of a query field as specified in the GROUP BY clause.

@@ -1,6 +1,6 @@
 export var MissingRecordStatus;
 (function (MissingRecordStatus) {
-    MissingRecordStatus[MissingRecordStatus["MISSING"] = 0] = "MISSING";
-    MissingRecordStatus[MissingRecordStatus["LOADED"] = 1] = "LOADED";
+    MissingRecordStatus["MISSING"] = "MISSING";
+    MissingRecordStatus["LOADED"] = "LOADED";
 })(MissingRecordStatus || (MissingRecordStatus = {}));
 //# sourceMappingURL=MissingRecordStatus.js.map

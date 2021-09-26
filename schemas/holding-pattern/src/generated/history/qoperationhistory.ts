@@ -77,7 +77,7 @@ export interface OperationHistoryESelect
     extends IEntitySelectProperties, OperationHistoryEOptionalId {
 	// Non-Id Properties
 	orderNumber?: number | IQNumberField;
-	changeType?: number | IQNumberField;
+	changeType?: string | IQStringField;
 	systemWideOperationId?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
@@ -121,7 +121,7 @@ export interface OperationHistoryEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	orderNumber?: number | IQNumberField;
-	changeType?: number | IQNumberField;
+	changeType?: string | IQStringField;
 	systemWideOperationId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -138,7 +138,7 @@ export interface OperationHistoryGraph
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	orderNumber?: number | IQNumberField;
-	changeType?: number | IQNumberField;
+	changeType?: string | IQStringField;
 	systemWideOperationId?: number | IQNumberField;
 
 	// Relations
@@ -155,7 +155,7 @@ export interface OperationHistoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	ORDER_NUMBER?: number | IQNumberField;
-	CHANGE_TYPE?: number | IQNumberField;
+	CHANGE_TYPE?: string | IQStringField;
 	SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
 	ENTITY_ID?: number | IQNumberField;
 
@@ -195,7 +195,7 @@ export interface QOperationHistory extends IQEntity<OperationHistory>
 
 	// Non-Id Fields
 	orderNumber: IQNumberField;
-	changeType: IQNumberField;
+	changeType: IQStringField;
 	systemWideOperationId: IQNumberField;
 
 	// Non-Id Relations

@@ -1,5 +1,5 @@
+import type { DistributionStrategy } from '@airport/ground-control';
 import type { ChangeListShareInfo } from '../SharingAdaptor';
-import type { DistributionStrategy } from '../sync/DistributionStrategy';
 import type { IDeltaStoreConfig } from './DeltaStoreConfig';
 /**
  * Created by Papa on 5/28/2016.

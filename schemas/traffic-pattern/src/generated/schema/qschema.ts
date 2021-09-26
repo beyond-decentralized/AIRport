@@ -82,7 +82,7 @@ export interface SchemaESelect
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
 	packageName?: string | IQStringField;
-	status?: number | IQNumberField;
+	status?: string | IQStringField;
 	jsonSchema?: JsonSchemaWithLastIds | IQStringField;
 
 	// Id Relations - full property interfaces
@@ -126,7 +126,7 @@ export interface SchemaEUpdateProperties
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
 	packageName?: string | IQStringField;
-	status?: number | IQNumberField;
+	status?: string | IQStringField;
 	jsonSchema?: JsonSchemaWithLastIds | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -145,7 +145,7 @@ export interface SchemaGraph
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
 	packageName?: string | IQStringField;
-	status?: number | IQNumberField;
+	status?: string | IQStringField;
 	jsonSchema?: JsonSchemaWithLastIds | IQStringField;
 
 	// Relations
@@ -164,7 +164,7 @@ export interface SchemaEUpdateColumns
 	SCOPE?: string | IQStringField;
 	SCHEMA_NAME?: string | IQStringField;
 	PACKAGE_NAME?: string | IQStringField;
-	STATUS?: number | IQNumberField;
+	STATUS?: string | IQStringField;
 	JSON_SCHEMA?: string | IQStringField;
 	DOMAIN_ID?: number | IQNumberField;
 
@@ -205,7 +205,7 @@ export interface QSchema extends IQEntity<Schema>
 	scope: IQStringField;
 	name: IQStringField;
 	packageName: IQStringField;
-	status: IQNumberField;
+	status: IQStringField;
 	jsonSchema: IQStringField;
 
 	// Non-Id Relations

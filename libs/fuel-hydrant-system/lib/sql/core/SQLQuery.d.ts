@@ -6,9 +6,9 @@ import { SQLWhereBase } from './SQLWhereBase';
  * Created by Papa on 8/20/2016.
  */
 export declare enum SQLDialect {
-    MYSQL = 0,
-    POSTGRESQL = 1,
-    SQLITE = 2
+    MYSQL = "MYSQL",
+    POSTGRESQL = "POSTGRESQL",
+    SQLITE = "SQLITE"
 }
 export declare class EntityDefaults {
     map: {

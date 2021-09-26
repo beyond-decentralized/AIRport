@@ -1,5 +1,5 @@
 export declare enum RepositoryTransactionType {
-    LOCAL = 0,
-    REMOTE = 1
+    LOCAL = "LOCAL",
+    REMOTE = "REMOTE"
 }
 //# sourceMappingURL=RepositoryTransactionType.d.ts.map

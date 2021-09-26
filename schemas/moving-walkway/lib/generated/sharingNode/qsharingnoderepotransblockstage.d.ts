@@ -1,10 +1,10 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { SharingNodeRepoTransBlockStage } from '../../ddl/sharingNode/SharingNodeRepoTransBlockStage';
 /**
  * SELECT - All fields and relations (optional).
  */
 export interface SharingNodeRepoTransBlockStageESelect extends IEntitySelectProperties, SharingNodeRepoTransBlockStageEOptionalId {
-    syncStatus?: number | IQNumberField;
+    syncStatus?: string | IQStringField;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -24,19 +24,19 @@ export interface SharingNodeRepoTransBlockStageEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface SharingNodeRepoTransBlockStageEUpdateProperties extends IEntityUpdateProperties {
-    syncStatus?: number | IQNumberField;
+    syncStatus?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface SharingNodeRepoTransBlockStageGraph extends SharingNodeRepoTransBlockStageEOptionalId, IEntityCascadeGraph {
-    syncStatus?: number | IQNumberField;
+    syncStatus?: string | IQStringField;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
 export interface SharingNodeRepoTransBlockStageEUpdateColumns extends IEntityUpdateColumns {
-    SYNC_STATUS?: number | IQNumberField;
+    SYNC_STATUS?: string | IQStringField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -54,7 +54,7 @@ export interface SharingNodeRepoTransBlockStageECreateColumns extends SharingNod
 export interface QSharingNodeRepoTransBlockStage extends IQEntity<SharingNodeRepoTransBlockStage> {
     sharingNodeId: IQNumberField;
     repositoryTransactionBlockId: IQNumberField;
-    syncStatus: IQNumberField;
+    syncStatus: IQStringField;
 }
 export interface QSharingNodeRepoTransBlockStageQId {
     sharingNodeId: IQNumberField;

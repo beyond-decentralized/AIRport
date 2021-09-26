@@ -4,7 +4,7 @@ export interface IRepository {
     id: number;
     lastUpdateTime?: Date;
     name?: string;
-    status?: number;
+    status?: string;
     terminalRepositories?: ITerminalRepository[];
     repositoryTransactionBlocks?: IAgtRepositoryTransactionBlock[];
 }

@@ -39,7 +39,7 @@ declare function require(moduleName: string): any;
 export interface RepoTransBlockResponseStageESelect
     extends IEntitySelectProperties, RepoTransBlockResponseStageEOptionalId {
 	// Non-Id Properties
-	syncOutcomeType?: number | IQNumberField;
+	syncOutcomeType?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -76,7 +76,7 @@ export interface RepoTransBlockResponseStageEOptionalId {
 export interface RepoTransBlockResponseStageEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	syncOutcomeType?: number | IQNumberField;
+	syncOutcomeType?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -90,7 +90,7 @@ export interface RepoTransBlockResponseStageGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	syncOutcomeType?: number | IQNumberField;
+	syncOutcomeType?: string | IQStringField;
 
 	// Relations
 
@@ -102,7 +102,7 @@ export interface RepoTransBlockResponseStageGraph
 export interface RepoTransBlockResponseStageEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	SYNC_OUTCOME_TYPE?: number | IQNumberField;
+	SYNC_OUTCOME_TYPE?: string | IQStringField;
 
 }
 
@@ -138,7 +138,7 @@ export interface QRepoTransBlockResponseStage extends IQEntity<RepoTransBlockRes
 	// Id Relations
 
 	// Non-Id Fields
-	syncOutcomeType: IQNumberField;
+	syncOutcomeType: IQStringField;
 
 	// Non-Id Relations
 

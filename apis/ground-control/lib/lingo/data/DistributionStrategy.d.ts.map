@@ -1,1 +1,1 @@
-{"version":3,"file":"DistributionStrategy.d.ts","sourceRoot":"","sources":["../../../src/lingo/data/DistributionStrategy.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;GAcG;AACH,oBAAY,oBAAoB;IAC/B;;;;OAIG;IACH,cAAc,IAAA;IACd;;;OAGG;IACH,kBAAkB,IAAA;CAClB"}
+{"version":3,"file":"DistributionStrategy.d.ts","sourceRoot":"","sources":["../../../src/lingo/data/DistributionStrategy.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;GAcG;AACH,oBAAY,oBAAoB;IAC/B;;;;OAIG;IACH,cAAc,mBAAmB;IACjC;;;OAGG;IACH,kBAAkB,uBAAuB;CACzC"}

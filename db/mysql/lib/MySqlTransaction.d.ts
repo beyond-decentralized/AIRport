@@ -8,7 +8,7 @@ export declare class MySqlTransaction extends MySqlDriver implements ITransactio
     credentials: ICredentials;
     transHistory: ITransactionHistory;
     constructor(driver: MySqlDriver, pool: Pool, connection: Connection);
-    saveTransaction(transaction: ITransactionHistory): Promise<any>;
+    saveTransaction(transaction: ITransactionHistory): Promise<void>;
     commit(): Promise<void>;
     rollback(): Promise<void>;
 }

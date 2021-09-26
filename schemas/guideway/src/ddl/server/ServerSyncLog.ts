@@ -36,7 +36,7 @@ export class ServerSyncLog {
 	server: Server;
 
 	@Column({name: 'TYPE', nullable: false})
-	@DbNumber()
+	@DbString()
 	type: SyncType;
 
 	@Column({name: "START_DATETIME", nullable: false})

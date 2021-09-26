@@ -1,1 +1,1 @@
-{"version":3,"file":"SchemaChangeStatus.d.ts","sourceRoot":"","sources":["../../../src/ddl/values/SchemaChangeStatus.ts"],"names":[],"mappings":"AAAA,oBAAY,kBAAkB;IAC7B,aAAa,IAAA;IACb,gBAAgB,IAAA;CAChB"}
+{"version":3,"file":"SchemaChangeStatus.d.ts","sourceRoot":"","sources":["../../../src/ddl/values/SchemaChangeStatus.ts"],"names":[],"mappings":"AAAA,oBAAY,kBAAkB;IAC7B,aAAa,kBAAkB;IAC/B,gBAAgB,qBAAqB;CACrC"}

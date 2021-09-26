@@ -22,7 +22,7 @@ export interface IRepoTransHistoryChangedRepositoryActor {
 	// Id Relations
 
 	// Non-Id Properties
-	referenceType?: number;
+	referenceType?: string;
 
 	// Non-Id Relations
 	repositoryTransactionHistory?: IRepositoryTransactionHistory;

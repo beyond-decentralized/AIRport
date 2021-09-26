@@ -5,9 +5,9 @@ import { DocumentHandle } from './DocumentHandle';
  */
 export var Operation;
 (function (Operation) {
-    Operation[Operation["CHANGES_ADDED_BY_OTHERS"] = 0] = "CHANGES_ADDED_BY_OTHERS";
-    Operation[Operation["CLEAUP_BY_OWNER"] = 1] = "CLEAUP_BY_OWNER";
-    Operation[Operation["GET_NEXT_CHANGE"] = 2] = "GET_NEXT_CHANGE";
+    Operation["CHANGES_ADDED_BY_OTHERS"] = "CHANGES_ADDED_BY_OTHERS";
+    Operation["CLEAUP_BY_OWNER"] = "CLEAUP_BY_OWNER";
+    Operation["GET_NEXT_CHANGE"] = "GET_NEXT_CHANGE";
 })(Operation || (Operation = {}));
 export class GoogleRealtimeAdaptorException {
     constructor(message, operation, event, exception) {

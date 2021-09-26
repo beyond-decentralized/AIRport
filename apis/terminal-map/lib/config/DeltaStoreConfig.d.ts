@@ -1,8 +1,8 @@
+import { PlatformType } from '@airport/ground-control';
 import { SharingPlatformSetupInfo } from '../SharingAdaptor';
 import { IChangeListConfig, JsonChangeListConfig } from './ChangeListConfig';
 import type { GoogleSetupInfo } from './GoogleSharingModel';
 import { IOfflineDeltaStoreConfig, JsonOfflineDeltaStoreConfig } from './OfflineDeltaStoreConfig';
-import { PlatformType } from './PlatformType';
 /**
  * Created by Papa on 5/31/2016.
  */

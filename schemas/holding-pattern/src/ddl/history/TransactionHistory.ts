@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
@@ -39,7 +40,7 @@ export class TransactionHistory
 	id: TransactionHistoryId
 
 	@Column({name: 'TRANSACTION_TYPE', nullable: false})
-	@DbNumber()
+	@DbString()
 	transactionType: TransactionType
 
 	@OneToMany({mappedBy: 'transactionHistory'})

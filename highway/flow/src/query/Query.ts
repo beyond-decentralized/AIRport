@@ -1,6 +1,6 @@
 export enum QueryType {
-	PREPARED,
-	DYNAMIC
+	PREPARED = 'PREPARED',
+	DYNAMIC = 'DYNAMIC'
 }
 
 export interface IQueryRequest {

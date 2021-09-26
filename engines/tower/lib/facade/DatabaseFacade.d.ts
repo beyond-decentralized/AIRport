@@ -1,7 +1,6 @@
 import { IDatabaseFacade, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
 import { IContext } from '@airport/di';
-import { ISaveResult } from '@airport/ground-control';
-import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
+import { DistributionStrategy, ISaveResult, PlatformType } from '@airport/ground-control';
 /**
  * Created by Papa on 5/23/2016.
  */

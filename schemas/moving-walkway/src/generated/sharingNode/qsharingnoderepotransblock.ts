@@ -65,7 +65,7 @@ declare function require(moduleName: string): any;
 export interface SharingNodeRepoTransBlockESelect
     extends IEntitySelectProperties, SharingNodeRepoTransBlockEOptionalId {
 	// Non-Id Properties
-	syncStatus?: number | IQNumberField;
+	syncStatus?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 	sharingNode?: SharingNodeESelect;
@@ -106,7 +106,7 @@ export interface SharingNodeRepoTransBlockEOptionalId {
 export interface SharingNodeRepoTransBlockEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	syncStatus?: number | IQNumberField;
+	syncStatus?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -120,7 +120,7 @@ export interface SharingNodeRepoTransBlockGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	syncStatus?: number | IQNumberField;
+	syncStatus?: string | IQStringField;
 
 	// Relations
 	sharingNode?: SharingNodeGraph;
@@ -134,7 +134,7 @@ export interface SharingNodeRepoTransBlockGraph
 export interface SharingNodeRepoTransBlockEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	SYNC_STATUS?: number | IQNumberField;
+	SYNC_STATUS?: string | IQStringField;
 
 }
 
@@ -171,7 +171,7 @@ export interface QSharingNodeRepoTransBlock extends IQEntity<SharingNodeRepoTran
 	repositoryTransactionBlock: QRepositoryTransactionBlockQRelation;
 
 	// Non-Id Fields
-	syncStatus: IQNumberField;
+	syncStatus: IQStringField;
 
 	// Non-Id Relations
 

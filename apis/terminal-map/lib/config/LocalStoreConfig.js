@@ -10,10 +10,10 @@ export class CommonLocalStoreConfig {
     }
 }
 export function createLocalStoreConfig(localStoreName, config) {
-    if (!config.type && config.type !== 0) {
+    if (!config.type) {
         throw new Error(`Local Store Type is not specified`);
     }
-    if (!config.idGeneration && config.idGeneration !== 0) {
+    if (!config.idGeneration) {
         throw new Error(`Id Generation startegy is not specified`);
     }
     let type;

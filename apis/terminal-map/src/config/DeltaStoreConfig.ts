@@ -1,4 +1,5 @@
 import {deltaConst}      from '@airport/air-control'
+import {PlatformType}    from '@airport/ground-control'
 import {
 	deltaStore,
 	SharingPlatformSetupInfo
@@ -14,7 +15,6 @@ import {
 	JsonOfflineDeltaStoreConfig,
 	OfflineDeltaStoreConfig
 }                        from './OfflineDeltaStoreConfig'
-import {PlatformType}    from './PlatformType'
 
 /**
  * Created by Papa on 5/31/2016.
@@ -51,7 +51,7 @@ export class DeltaStoreConfig
 	constructor(
 		public config: JsonDeltaStoreConfig
 	) {
-		if (!config.platform && config.platform !== 0) {
+		if (!config.platform) {
 			throw new Error(`Sharing Platform is not defined `)
 		}
 
@@ -130,7 +130,7 @@ export class StubDeltaStoreConfig
 export function createDeltaStoreConfig(
 	jsonDeltaStoreConfig: JsonDeltaStoreConfig
 ): IDeltaStoreConfig {
-	if (!jsonDeltaStoreConfig.platform && jsonDeltaStoreConfig.platform !== 0) {
+	if (!jsonDeltaStoreConfig.platform) {
 		throw new Error(`deltaStore.platform is nod specified`)
 	}
 	let platformType: PlatformType = getPlatformType(jsonDeltaStoreConfig.platform)

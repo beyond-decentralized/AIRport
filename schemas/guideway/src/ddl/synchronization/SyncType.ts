@@ -1,5 +1,5 @@
 export enum SyncType {
-	REALTIME,
-	RECENT,
-	ARCHIVE,
+	REALTIME = 'REALTIME',
+	RECENT = 'RECENT',
+	ARCHIVE = 'ARCHIVE',
 }

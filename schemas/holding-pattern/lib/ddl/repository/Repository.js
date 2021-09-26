@@ -62,7 +62,7 @@ __decorate([
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
 __decorate([
     Column({ name: "SYNC_PRIORITY", nullable: false }),
-    DbNumber()
+    DbString()
 ], Repository.prototype, "syncPriority", void 0);
 Repository = __decorate([
     Entity(),

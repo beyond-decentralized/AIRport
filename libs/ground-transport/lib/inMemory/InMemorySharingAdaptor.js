@@ -1,4 +1,4 @@
-import { PlatformType } from "@airport/terminal-map";
+import { PlatformType } from '@airport/ground-control';
 import { InMemoryChangeList } from "./InMemoryChangeList";
 import { InMemoryChangeStore } from "./InMemoryChangeStore";
 /**

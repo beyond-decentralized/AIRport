@@ -1,1 +1,1 @@
-{"version":3,"file":"UpdateState.d.ts","sourceRoot":"","sources":["../../src/core/UpdateState.ts"],"names":[],"mappings":"AAAA,oBAAY,WAAW;IACtB,SAAS,IAAA;IACT,MAAM,IAAA;IACN,KAAK,IAAA;CACL"}
+{"version":3,"file":"UpdateState.d.ts","sourceRoot":"","sources":["../../src/core/UpdateState.ts"],"names":[],"mappings":"AAAA,oBAAY,WAAW;IACtB,SAAS,cAAc;IACvB,MAAM,WAAW;IACjB,KAAK,UAAU;CACf"}

@@ -1,4 +1,4 @@
 export enum SharingNodeProtocol {
-	HTTPS,
-	LOCAL
+	HTTPS = 'HTTPS',
+	LOCAL = 'LOCAL'
 }

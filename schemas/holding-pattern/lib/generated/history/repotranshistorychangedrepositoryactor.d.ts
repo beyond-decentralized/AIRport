@@ -3,7 +3,7 @@ import { IRepository } from '../repository/repository';
 import { IActor } from '../infrastructure/actor';
 export interface IRepoTransHistoryChangedRepositoryActor {
     id: number;
-    referenceType?: number;
+    referenceType?: string;
     repositoryTransactionHistory?: IRepositoryTransactionHistory;
     repository?: IRepository;
     actor?: IActor;

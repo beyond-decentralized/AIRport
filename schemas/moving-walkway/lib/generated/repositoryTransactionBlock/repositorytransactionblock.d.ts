@@ -8,7 +8,7 @@ export interface IRepositoryTransactionBlock {
     id: number;
     sourceId?: number;
     hash?: string;
-    syncOutcomeType?: number;
+    syncOutcomeType?: string;
     contents?: string;
     source?: ITerminal;
     repository?: IRepository;

@@ -5,12 +5,12 @@ import {JSONSqlFunctionCall} from './Functions'
  * All possible types of serialized JSON clauses.
  */
 export enum JSONClauseObjectType {
-	FIELD, // Regular Field (column)
-	FIELD_FUNCTION, // Function on a field
-	FIELD_QUERY, // A field backed by a sub-query
-	DISTINCT_FUNCTION, // The DISTINCT clause
-	EXISTS_FUNCTION, // The EXISTS condition
-	MANY_TO_ONE_RELATION // A many-to-one relation (used in a query)
+	FIELD = 'FIELD', // Regular Field (column)
+	FIELD_FUNCTION = 'FIELD_FUNCTION', // Function on a field
+	FIELD_QUERY = 'FIELD_QUERY', // A field backed by a sub-query
+	DISTINCT_FUNCTION = 'DISTINCT_FUNCTION', // The DISTINCT clause
+	EXISTS_FUNCTION = 'EXISTS_FUNCTION', // The EXISTS condition
+	MANY_TO_ONE_RELATION = 'MANY_TO_ONE_RELATION' // A many-to-one relation (used in a query)
 }
 
 /**
@@ -18,13 +18,13 @@ export enum JSONClauseObjectType {
  */
 export enum SQLDataType {
 	// Allowing ANY allows developers to de-type their data
-	ANY,
-	BOOLEAN,
-	DATE,
+	ANY = 'ANY',
+	BOOLEAN = 'BOOLEAN',
+	DATE = 'DATE',
 	// Allowing JSON allows developers to de-normalize their data
-	JSON,
-	NUMBER,
-	STRING,
+	JSON = 'JSON',
+	NUMBER = 'NUMBER',
+	STRING = 'STRING',
 }
 
 export function getSqlDataType(

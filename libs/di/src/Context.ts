@@ -12,8 +12,8 @@ export interface IInjectionContext
 }
 
 export enum ContextType {
-	DB,
-	UI
+	DB = 'DB',
+	UI = 'UI'
 }
 
 export class Context

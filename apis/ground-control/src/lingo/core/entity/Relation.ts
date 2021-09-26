@@ -8,18 +8,18 @@ import {
  * SQL Join contentType.
  */
 export enum JoinType {
-	FULL_JOIN,
-	INNER_JOIN,
-	LEFT_JOIN,
-	RIGHT_JOIN
+	FULL_JOIN = 'FULL_JOIN',
+	INNER_JOIN = 'INNER_JOIN',
+	LEFT_JOIN = 'LEFT_JOIN',
+	RIGHT_JOIN = 'RIGHT_JOIN'
 }
 
 /**
  * Type of Entity Relation
  */
 export enum EntityRelationType {
-	ONE_TO_MANY,
-	MANY_TO_ONE
+	ONE_TO_MANY = 'ONE_TO_MANY',
+	MANY_TO_ONE = 'MANY_TO_ONE'
 }
 
 /**
@@ -27,15 +27,15 @@ export enum EntityRelationType {
  */
 export enum JSONRelationType {
 	// Join of an entity with the ON clause
-	ENTITY_JOIN_ON,
+	ENTITY_JOIN_ON = 'ENTITY_JOIN_ON',
 	// Join of an entity via a schema relation
-	ENTITY_SCHEMA_RELATION,
+	ENTITY_SCHEMA_RELATION = 'ENTITY_SCHEMA_RELATION',
 	// The root entity in a join
-	ENTITY_ROOT,
+	ENTITY_ROOT = 'ENTITY_ROOT',
 	// Join of a sub-query (with the ON clause)
-	SUB_QUERY_JOIN_ON,
+	SUB_QUERY_JOIN_ON = 'SUB_QUERY_JOIN_ON',
 	// The root sub-query in a join
-	SUB_QUERY_ROOT
+	SUB_QUERY_ROOT = 'SUB_QUERY_ROOT'
 }
 
 /**

@@ -22,7 +22,7 @@ export interface IMissingRecord {
 
 	// Non-Id Properties
 	actorRecordId?: number;
-	status?: number;
+	status?: string;
 
 	// Non-Id Relations
 	schemaVersion?: ISchemaVersion;

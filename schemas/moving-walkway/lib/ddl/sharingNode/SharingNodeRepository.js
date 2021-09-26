@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, Entity, Id, JoinColumn, ManyToOne, Table } from "@airport/air-control";
+import { Column, DbNumber, DbString, Entity, Id, JoinColumn, ManyToOne, Table } from "@airport/air-control";
 let SharingNodeRepository = class SharingNodeRepository {
 };
 __decorate([
@@ -27,10 +27,10 @@ __decorate([
 ], SharingNodeRepository.prototype, "agtRepositoryId", void 0);
 __decorate([
     Column({ name: "ADVISED_SYNC_PRIORITY" }),
-    DbNumber()
+    DbString()
 ], SharingNodeRepository.prototype, "advisedSyncPriority", void 0);
 __decorate([
-    DbNumber(),
+    DbString(),
     Column({ name: "REPOSITORY_SYNC_STATUS" })
 ], SharingNodeRepository.prototype, "repositorySyncStatus", void 0);
 SharingNodeRepository = __decorate([

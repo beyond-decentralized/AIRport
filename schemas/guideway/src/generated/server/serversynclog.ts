@@ -16,7 +16,7 @@ export interface IServerSyncLog {
 	// Id Relations
 
 	// Non-Id Properties
-	type?: number;
+	type?: string;
 	startDatetime?: Date;
 	endDatetime?: Date;
 	numberOfConnections?: number;

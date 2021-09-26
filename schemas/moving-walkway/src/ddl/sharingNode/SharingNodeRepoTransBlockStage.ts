@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Id
 }                      from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
 import {
@@ -27,7 +28,7 @@ export class SharingNodeRepoTransBlockStage {
 	repositoryTransactionBlockId: TmRepositoryTransactionBlockId;
 
 	@Column({name: "SYNC_STATUS"})
-	@DbNumber()
+	@DbString()
 	syncStatus: SharingNodeRepoTransBlockSyncStatus;
 
 }

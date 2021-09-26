@@ -1,7 +1,6 @@
 import { IEntityUpdateProperties, IQEntityInternal, MappedEntityArray, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
-import { StoreType } from '@airport/ground-control';
+import { DistributionStrategy, PlatformType, StoreType } from '@airport/ground-control';
 import { IActor, IRepository, IRepositoryTransactionHistory } from '@airport/holding-pattern';
-import { DistributionStrategy, PlatformType } from '@airport/terminal-map';
 import { ITerminal } from '@airport/travel-document-checkpoint';
 import { IDeltaStore } from '../../data/DeltaStore';
 import { UpdateState } from '../UpdateState';

@@ -1,4 +1,4 @@
 export enum TransactionType {
-	LOCAL,
-	REMOTE_SYNC
+	LOCAL = 'LOCAL',
+	REMOTE_SYNC = 'REMOTE_SYNC'
 }

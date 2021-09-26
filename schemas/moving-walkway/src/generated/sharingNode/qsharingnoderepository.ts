@@ -64,8 +64,8 @@ export interface SharingNodeRepositoryESelect
     extends IEntitySelectProperties, SharingNodeRepositoryEOptionalId {
 	// Non-Id Properties
 	agtRepositoryId?: number | IQNumberField;
-	advisedSyncPriority?: number | IQNumberField;
-	repositorySyncStatus?: number | IQNumberField;
+	advisedSyncPriority?: string | IQStringField;
+	repositorySyncStatus?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 	sharingNode?: SharingNodeESelect;
@@ -107,8 +107,8 @@ export interface SharingNodeRepositoryEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	agtRepositoryId?: number | IQNumberField;
-	advisedSyncPriority?: number | IQNumberField;
-	repositorySyncStatus?: number | IQNumberField;
+	advisedSyncPriority?: string | IQStringField;
+	repositorySyncStatus?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -123,8 +123,8 @@ export interface SharingNodeRepositoryGraph
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	agtRepositoryId?: number | IQNumberField;
-	advisedSyncPriority?: number | IQNumberField;
-	repositorySyncStatus?: number | IQNumberField;
+	advisedSyncPriority?: string | IQStringField;
+	repositorySyncStatus?: string | IQStringField;
 
 	// Relations
 	sharingNode?: SharingNodeGraph;
@@ -139,8 +139,8 @@ export interface SharingNodeRepositoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	AGT_REPOSITORY_ID?: number | IQNumberField;
-	ADVISED_SYNC_PRIORITY?: number | IQNumberField;
-	REPOSITORY_SYNC_STATUS?: number | IQNumberField;
+	ADVISED_SYNC_PRIORITY?: string | IQStringField;
+	REPOSITORY_SYNC_STATUS?: string | IQStringField;
 
 }
 
@@ -178,8 +178,8 @@ export interface QSharingNodeRepository extends IQEntity<SharingNodeRepository>
 
 	// Non-Id Fields
 	agtRepositoryId: IQNumberField;
-	advisedSyncPriority: IQNumberField;
-	repositorySyncStatus: IQNumberField;
+	advisedSyncPriority: IQStringField;
+	repositorySyncStatus: IQStringField;
 
 	// Non-Id Relations
 

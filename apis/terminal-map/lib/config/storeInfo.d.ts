@@ -1,4 +1,4 @@
-import { StoreType } from '@airport/ground-control';
+import { IdGeneration, StoreType } from '@airport/ground-control';
 export interface StoreShareInfo {
     name: string;
 }
@@ -6,9 +6,6 @@ export interface StoreSetupInfo {
     name: string;
     type: StoreType;
     idGeneration: IdGeneration;
-}
-export declare enum IdGeneration {
-    ENTITY_CHANGE_ID = 0
 }
 export declare namespace store.type {
     const WEB_SQL = "WEB_SQL";

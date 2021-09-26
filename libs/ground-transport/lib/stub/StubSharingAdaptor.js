@@ -1,4 +1,4 @@
-import { PlatformType, } from "@airport/terminal-map";
+import { PlatformType } from '@airport/ground-control';
 import { StubChangeList } from "./StubChangeList";
 /**
  * Created by Papa on 12/14/2016.

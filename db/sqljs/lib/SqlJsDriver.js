@@ -44,7 +44,7 @@ export class SqlJsDriver extends SqLiteDriver {
             this.currentTransaction = false;
         }
     }
-    async query(queryType, query, params = [], saveTransaction = false) {
+    async query(queryType, query, params = [], context, saveTransaction = false) {
         return new Promise((resolve, reject) => {
             let stmt;
             try {

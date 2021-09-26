@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
@@ -45,7 +46,7 @@ export class AgtSharingMessage {
 	syncLogs: SyncLog[];
 
 	@Column({name: 'ACKNOWLEDGED', nullable: false})
-	@DbNumber()
+	@DbString()
 	acknowledged: AgtSharingMessageAcknowledged;
 
 }

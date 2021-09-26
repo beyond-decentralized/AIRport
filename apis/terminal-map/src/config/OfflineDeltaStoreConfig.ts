@@ -1,8 +1,8 @@
 import { deltaConst }               from '@airport/air-control';
+import { PlatformType }             from '@airport/ground-control';
 import type { StoreType }                from '@airport/ground-control';
 import type { SharingPlatformSetupInfo } from '../SharingAdaptor';
 import type { IDeltaStoreConfig }        from './DeltaStoreConfig';
-import { PlatformType }             from './PlatformType';
 
 /**
  * Created by Papa on 9/24/2016.

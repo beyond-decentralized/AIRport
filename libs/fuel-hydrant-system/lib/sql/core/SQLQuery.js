@@ -5,9 +5,9 @@ import { SQLWhereBase } from './SQLWhereBase';
  */
 export var SQLDialect;
 (function (SQLDialect) {
-    SQLDialect[SQLDialect["MYSQL"] = 0] = "MYSQL";
-    SQLDialect[SQLDialect["POSTGRESQL"] = 1] = "POSTGRESQL";
-    SQLDialect[SQLDialect["SQLITE"] = 2] = "SQLITE";
+    SQLDialect["MYSQL"] = "MYSQL";
+    SQLDialect["POSTGRESQL"] = "POSTGRESQL";
+    SQLDialect["SQLITE"] = "SQLITE";
 })(SQLDialect || (SQLDialect = {}));
 export class EntityDefaults {
     constructor() {

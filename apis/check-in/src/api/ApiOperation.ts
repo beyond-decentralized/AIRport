@@ -42,15 +42,15 @@ export interface IApiValueParameter<V = boolean | number | string>
 }
 
 export enum ApiObjectKind {
-    ARRAY,
-    BOOLEAN,
-    BOOLEAN_VALUE,
-    DATE,
-    DB_ENTITY,
-    NUMBER,
-    NUMBER_VALUE,
-    OBJECT,
-    STRING,
-    STRING_VALUE,
-    TYPE_UNION
+    ARRAY = 'ARRAY',
+    BOOLEAN = 'BOOLEAN',
+    BOOLEAN_VALUE = 'BOOLEAN_VALUE',
+    DATE = 'DATE',
+    DB_ENTITY = 'DB_ENTITY',
+    NUMBER = 'NUMBER',
+    NUMBER_VALUE = 'NUMBER_VALUE',
+    OBJECT = 'OBJECT',
+    STRING = 'STRING',
+    STRING_VALUE = 'STRING_VALUE',
+    TYPE_UNION = 'TYPE_UNION'
 }

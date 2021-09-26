@@ -4,30 +4,30 @@ import { JSONClauseField, JSONClauseObject } from '../field/JSONClause';
  * Category of a SQL contentType
  */
 export declare enum OperationCategory {
-    BOOLEAN = 0,
-    DATE = 1,
-    FUNCTION = 2,
-    LOGICAL = 3,
-    NUMBER = 4,
-    STRING = 5,
-    UNTYPED = 6
+    BOOLEAN = "BOOLEAN",
+    DATE = "DATE",
+    FUNCTION = "FUNCTION",
+    LOGICAL = "LOGICAL",
+    NUMBER = "NUMBER",
+    STRING = "STRING",
+    UNTYPED = "UNTYPED"
 }
 export declare enum SqlOperator {
-    AND = 0,
-    EQUALS = 1,
-    EXISTS = 2,
-    GREATER_THAN = 3,
-    GREATER_THAN_OR_EQUALS = 4,
-    IN = 5,
-    IS_NOT_NULL = 6,
-    IS_NULL = 7,
-    LESS_THAN = 8,
-    LESS_THAN_OR_EQUALS = 9,
-    LIKE = 10,
-    OR = 11,
-    NOT = 12,
-    NOT_EQUALS = 13,
-    NOT_IN = 14
+    AND = "AND",
+    EQUALS = "EQUALS",
+    EXISTS = "EXISTS",
+    GREATER_THAN = "GREATER_THAN",
+    GREATER_THAN_OR_EQUALS = "GREATER_THAN_OR_EQUALS",
+    IN = "IN",
+    IS_NOT_NULL = "IS_NOT_NULL",
+    IS_NULL = "IS_NULL",
+    LESS_THAN = "LESS_THAN",
+    LESS_THAN_OR_EQUALS = "LESS_THAN_OR_EQUALS",
+    LIKE = "LIKE",
+    OR = "OR",
+    NOT = "NOT",
+    NOT_EQUALS = "NOT_EQUALS",
+    NOT_IN = "NOT_IN"
 }
 /**
  * Serialized version of a function call.
@@ -56,9 +56,9 @@ export interface JSONBaseOperation {
     o: SqlOperator;
 }
 export declare enum CRUDOperation {
-    CREATE = 0,
-    READ = 1,
-    UPDATE = 2,
-    DELETE = 3
+    CREATE = "CREATE",
+    READ = "READ",
+    UPDATE = "UPDATE",
+    DELETE = "DELETE"
 }
 //# sourceMappingURL=Operation.d.ts.map

@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, Entity, Id, JoinColumn, Json, ManyToOne, OneToMany, Table } from '@airport/air-control';
+import { Column, DbNumber, DbString, Entity, Id, JoinColumn, Json, ManyToOne, OneToMany, Table } from '@airport/air-control';
 import { VersionedSchemaObject } from './VersionedSchemaObject';
 let SchemaRelation = class SchemaRelation extends VersionedSchemaObject {
     constructor() {
@@ -38,7 +38,7 @@ __decorate([
     Column({ name: 'ONE_TO_MANY_ELEMENTS' })
 ], SchemaRelation.prototype, "oneToManyElems", void 0);
 __decorate([
-    DbNumber(),
+    DbString(),
     Column({ name: 'RELATION_TYPE', nullable: false })
 ], SchemaRelation.prototype, "relationType", void 0);
 __decorate([

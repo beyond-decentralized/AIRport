@@ -45,9 +45,8 @@ export class SharingNodeTerminal {
 	@DbString()
 	agtTerminalPassword: TerminalPassword;
 
-	@DbNumber()
 	@Column({name: "TERMINAL_SYNC_STATUS"})
-	@DbNumber()
+	@DbString()
 	terminalSyncStatus: TerminalSyncStatus;
 
 }

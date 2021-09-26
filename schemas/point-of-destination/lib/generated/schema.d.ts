@@ -25,7 +25,7 @@ export declare const SCHEMA: {
                     index: number;
                 }[];
                 sinceVersion: number;
-                type: number;
+                type: string;
             }[];
             idColumnRefs: {
                 index: number;
@@ -56,7 +56,7 @@ export declare const SCHEMA: {
             relations: {
                 index: number;
                 isId: boolean;
-                relationType: number;
+                relationType: string;
                 propertyRef: {
                     index: number;
                 };

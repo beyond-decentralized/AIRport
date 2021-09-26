@@ -1,24 +1,7 @@
+/* eslint-disable */
 import {
-	IDao,
-	IEntityCascadeGraph,
-	IEntityCreateProperties,
-	IEntityIdProperties,
-	IEntitySelectProperties,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	IQEntity
-} from '@airport/air-control'
-import { Dao } from '@airport/check-in'
-import {
-	EntityId as DbEntityId
-} from '@airport/ground-control'
-import {
-	Q,
-	duoDiSet
-} from './qSchema'
-import {
-	IMissingRecord
-} from './missingRecord/missingrecord'
+	IMissingRecord,
+} from './missingRecord/missingrecord';
 import {
 	MissingRecordESelect,
 	MissingRecordECreateColumns,
@@ -27,11 +10,11 @@ import {
 	MissingRecordEUpdateProperties,
 	MissingRecordEId,
 	MissingRecordGraph,
-	QMissingRecord
-} from './missingRecord/qmissingrecord'
+	QMissingRecord,
+} from './missingRecord/qmissingrecord';
 import {
-	IMissingRecordRepoTransBlock
-} from './missingRecord/missingrecordrepotransblock'
+	IMissingRecordRepoTransBlock,
+} from './missingRecord/missingrecordrepotransblock';
 import {
 	MissingRecordRepoTransBlockESelect,
 	MissingRecordRepoTransBlockECreateColumns,
@@ -40,11 +23,11 @@ import {
 	MissingRecordRepoTransBlockEUpdateProperties,
 	MissingRecordRepoTransBlockEId,
 	MissingRecordRepoTransBlockGraph,
-	QMissingRecordRepoTransBlock
-} from './missingRecord/qmissingrecordrepotransblock'
+	QMissingRecordRepoTransBlock,
+} from './missingRecord/qmissingrecordrepotransblock';
 import {
-	IRecordUpdateStage
-} from './recordupdatestage'
+	IRecordUpdateStage,
+} from './recordupdatestage';
 import {
 	RecordUpdateStageESelect,
 	RecordUpdateStageECreateColumns,
@@ -53,11 +36,11 @@ import {
 	RecordUpdateStageEUpdateProperties,
 	RecordUpdateStageEId,
 	RecordUpdateStageGraph,
-	QRecordUpdateStage
-} from './qrecordupdatestage'
+	QRecordUpdateStage,
+} from './qrecordupdatestage';
 import {
-	IRepoTransBlockResponseStage
-} from './repositoryTransactionBlock/repotransblockresponsestage'
+	IRepoTransBlockResponseStage,
+} from './repositoryTransactionBlock/repotransblockresponsestage';
 import {
 	RepoTransBlockResponseStageESelect,
 	RepoTransBlockResponseStageECreateColumns,
@@ -66,11 +49,11 @@ import {
 	RepoTransBlockResponseStageEUpdateProperties,
 	RepoTransBlockResponseStageEId,
 	RepoTransBlockResponseStageGraph,
-	QRepoTransBlockResponseStage
-} from './repositoryTransactionBlock/qrepotransblockresponsestage'
+	QRepoTransBlockResponseStage,
+} from './repositoryTransactionBlock/qrepotransblockresponsestage';
 import {
-	IRepoTransBlockSchemaToChange
-} from './repositoryTransactionBlock/repotransblockschematochange'
+	IRepoTransBlockSchemaToChange,
+} from './repositoryTransactionBlock/repotransblockschematochange';
 import {
 	RepoTransBlockSchemaToChangeESelect,
 	RepoTransBlockSchemaToChangeECreateColumns,
@@ -79,11 +62,11 @@ import {
 	RepoTransBlockSchemaToChangeEUpdateProperties,
 	RepoTransBlockSchemaToChangeEId,
 	RepoTransBlockSchemaToChangeGraph,
-	QRepoTransBlockSchemaToChange
-} from './repositoryTransactionBlock/qrepotransblockschematochange'
+	QRepoTransBlockSchemaToChange,
+} from './repositoryTransactionBlock/qrepotransblockschematochange';
 import {
-	IRepositoryTransactionBlock
-} from './repositoryTransactionBlock/repositorytransactionblock'
+	IRepositoryTransactionBlock,
+} from './repositoryTransactionBlock/repositorytransactionblock';
 import {
 	RepositoryTransactionBlockESelect,
 	RepositoryTransactionBlockECreateColumns,
@@ -92,11 +75,11 @@ import {
 	RepositoryTransactionBlockEUpdateProperties,
 	RepositoryTransactionBlockEId,
 	RepositoryTransactionBlockGraph,
-	QRepositoryTransactionBlock
-} from './repositoryTransactionBlock/qrepositorytransactionblock'
+	QRepositoryTransactionBlock,
+} from './repositoryTransactionBlock/qrepositorytransactionblock';
 import {
-	IRepositoryTransactionHistoryUpdateStage
-} from './repositoryTransactionBlock/repositorytransactionhistoryupdatestage'
+	IRepositoryTransactionHistoryUpdateStage,
+} from './repositoryTransactionBlock/repositorytransactionhistoryupdatestage';
 import {
 	RepositoryTransactionHistoryUpdateStageESelect,
 	RepositoryTransactionHistoryUpdateStageECreateColumns,
@@ -105,11 +88,11 @@ import {
 	RepositoryTransactionHistoryUpdateStageEUpdateProperties,
 	RepositoryTransactionHistoryUpdateStageEId,
 	RepositoryTransactionHistoryUpdateStageGraph,
-	QRepositoryTransactionHistoryUpdateStage
-} from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage'
+	QRepositoryTransactionHistoryUpdateStage,
+} from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage';
 import {
-	ISharingMessage
-} from './sharingMessage/sharingmessage'
+	ISharingMessage,
+} from './sharingMessage/sharingmessage';
 import {
 	SharingMessageESelect,
 	SharingMessageECreateColumns,
@@ -118,11 +101,11 @@ import {
 	SharingMessageEUpdateProperties,
 	SharingMessageEId,
 	SharingMessageGraph,
-	QSharingMessage
-} from './sharingMessage/qsharingmessage'
+	QSharingMessage,
+} from './sharingMessage/qsharingmessage';
 import {
-	ISharingMessageRepoTransBlock
-} from './sharingMessage/sharingmessagerepotransblock'
+	ISharingMessageRepoTransBlock,
+} from './sharingMessage/sharingmessagerepotransblock';
 import {
 	SharingMessageRepoTransBlockESelect,
 	SharingMessageRepoTransBlockECreateColumns,
@@ -131,11 +114,11 @@ import {
 	SharingMessageRepoTransBlockEUpdateProperties,
 	SharingMessageRepoTransBlockEId,
 	SharingMessageRepoTransBlockGraph,
-	QSharingMessageRepoTransBlock
-} from './sharingMessage/qsharingmessagerepotransblock'
+	QSharingMessageRepoTransBlock,
+} from './sharingMessage/qsharingmessagerepotransblock';
 import {
-	ISharingNode
-} from './sharingNode/sharingnode'
+	ISharingNode,
+} from './sharingNode/sharingnode';
 import {
 	SharingNodeESelect,
 	SharingNodeECreateColumns,
@@ -144,11 +127,11 @@ import {
 	SharingNodeEUpdateProperties,
 	SharingNodeEId,
 	SharingNodeGraph,
-	QSharingNode
-} from './sharingNode/qsharingnode'
+	QSharingNode,
+} from './sharingNode/qsharingnode';
 import {
-	ISharingNodeRepoTransBlock
-} from './sharingNode/sharingnoderepotransblock'
+	ISharingNodeRepoTransBlock,
+} from './sharingNode/sharingnoderepotransblock';
 import {
 	SharingNodeRepoTransBlockESelect,
 	SharingNodeRepoTransBlockECreateColumns,
@@ -157,11 +140,11 @@ import {
 	SharingNodeRepoTransBlockEUpdateProperties,
 	SharingNodeRepoTransBlockEId,
 	SharingNodeRepoTransBlockGraph,
-	QSharingNodeRepoTransBlock
-} from './sharingNode/qsharingnoderepotransblock'
+	QSharingNodeRepoTransBlock,
+} from './sharingNode/qsharingnoderepotransblock';
 import {
-	ISharingNodeRepoTransBlockStage
-} from './sharingNode/sharingnoderepotransblockstage'
+	ISharingNodeRepoTransBlockStage,
+} from './sharingNode/sharingnoderepotransblockstage';
 import {
 	SharingNodeRepoTransBlockStageESelect,
 	SharingNodeRepoTransBlockStageECreateColumns,
@@ -170,11 +153,11 @@ import {
 	SharingNodeRepoTransBlockStageEUpdateProperties,
 	SharingNodeRepoTransBlockStageEId,
 	SharingNodeRepoTransBlockStageGraph,
-	QSharingNodeRepoTransBlockStage
-} from './sharingNode/qsharingnoderepotransblockstage'
+	QSharingNodeRepoTransBlockStage,
+} from './sharingNode/qsharingnoderepotransblockstage';
 import {
-	ISharingNodeRepository
-} from './sharingNode/sharingnoderepository'
+	ISharingNodeRepository,
+} from './sharingNode/sharingnoderepository';
 import {
 	SharingNodeRepositoryESelect,
 	SharingNodeRepositoryECreateColumns,
@@ -183,11 +166,11 @@ import {
 	SharingNodeRepositoryEUpdateProperties,
 	SharingNodeRepositoryEId,
 	SharingNodeRepositoryGraph,
-	QSharingNodeRepository
-} from './sharingNode/qsharingnoderepository'
+	QSharingNodeRepository,
+} from './sharingNode/qsharingnoderepository';
 import {
-	ISharingNodeTerminal
-} from './sharingNode/sharingnodeterminal'
+	ISharingNodeTerminal,
+} from './sharingNode/sharingnodeterminal';
 import {
 	SharingNodeTerminalESelect,
 	SharingNodeTerminalECreateColumns,
@@ -196,11 +179,11 @@ import {
 	SharingNodeTerminalEUpdateProperties,
 	SharingNodeTerminalEId,
 	SharingNodeTerminalGraph,
-	QSharingNodeTerminal
-} from './sharingNode/qsharingnodeterminal'
+	QSharingNodeTerminal,
+} from './sharingNode/qsharingnodeterminal';
 import {
-	ISynchronizationConflict
-} from './conflict/synchronizationconflict'
+	ISynchronizationConflict,
+} from './conflict/synchronizationconflict';
 import {
 	SynchronizationConflictESelect,
 	SynchronizationConflictECreateColumns,
@@ -209,11 +192,11 @@ import {
 	SynchronizationConflictEUpdateProperties,
 	SynchronizationConflictEId,
 	SynchronizationConflictGraph,
-	QSynchronizationConflict
-} from './conflict/qsynchronizationconflict'
+	QSynchronizationConflict,
+} from './conflict/qsynchronizationconflict';
 import {
-	ISynchronizationConflictPendingNotification
-} from './conflict/synchronizationconflictpendingnotification'
+	ISynchronizationConflictPendingNotification,
+} from './conflict/synchronizationconflictpendingnotification';
 import {
 	SynchronizationConflictPendingNotificationESelect,
 	SynchronizationConflictPendingNotificationECreateColumns,
@@ -222,11 +205,11 @@ import {
 	SynchronizationConflictPendingNotificationEUpdateProperties,
 	SynchronizationConflictPendingNotificationEId,
 	SynchronizationConflictPendingNotificationGraph,
-	QSynchronizationConflictPendingNotification
-} from './conflict/qsynchronizationconflictpendingnotification'
+	QSynchronizationConflictPendingNotification,
+} from './conflict/qsynchronizationconflictpendingnotification';
 import {
-	ISynchronizationConflictValues
-} from './conflict/synchronizationconflictvalues'
+	ISynchronizationConflictValues,
+} from './conflict/synchronizationconflictvalues';
 import {
 	SynchronizationConflictValuesESelect,
 	SynchronizationConflictValuesECreateColumns,
@@ -235,8 +218,29 @@ import {
 	SynchronizationConflictValuesEUpdateProperties,
 	SynchronizationConflictValuesEId,
 	SynchronizationConflictValuesGraph,
-	QSynchronizationConflictValues
-} from './conflict/qsynchronizationconflictvalues'
+	QSynchronizationConflictValues,
+} from './conflict/qsynchronizationconflictvalues';
+import {
+	IDao,
+	IEntityCascadeGraph,
+	IEntityCreateProperties,
+	IEntityIdProperties,
+	IEntitySelectProperties,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+} from '@airport/air-control';
+import {
+	Dao,
+	DaoQueryDecorators,
+} from '@airport/check-in';
+import {
+	EntityId as DbEntityId,
+} from '@airport/ground-control';
+import {
+	Q,
+	duoDiSet,
+} from './qSchema';
 
 
 // Schema Q object Dependency Injection readiness detection Dao
@@ -272,42 +276,16 @@ export interface IBaseMissingRecordDao
 export class BaseMissingRecordDao
   extends SQDIDao<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateColumns, MissingRecordEUpdateProperties, MissingRecordEId, MissingRecordGraph, QMissingRecord>
 	implements IBaseMissingRecordDao {
-
-	static diSet(): boolean {
-		return duoDiSet(4)
-	}
 	
-	constructor() {
-		super(4)
-	}
-}
-
-
-export interface IBaseMissingRecordRepoTransBlockDao
-  extends IDao<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateColumns, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, MissingRecordRepoTransBlockGraph, QMissingRecordRepoTransBlock> {
-}
-
-export class BaseMissingRecordRepoTransBlockDao
-  extends SQDIDao<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateColumns, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, MissingRecordRepoTransBlockGraph, QMissingRecordRepoTransBlock>
-	implements IBaseMissingRecordRepoTransBlockDao {
-
-	static diSet(): boolean {
-		return duoDiSet(11)
-	}
-	
-	constructor() {
-		super(11)
-	}
-}
-
-
-export interface IBaseRecordUpdateStageDao
-  extends IDao<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage> {
-}
-
-export class BaseRecordUpdateStageDao
-  extends SQDIDao<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage>
-	implements IBaseRecordUpdateStageDao {
+	static Find      = new DaoQueryDecorators<MissingRecordESelect>();
+	static FindOne   = new DaoQueryDecorators<MissingRecordESelect>();
+	static Search    = new DaoQueryDecorators<MissingRecordESelect>();
+	static SearchOne = new DaoQueryDecorators<MissingRecordESelect>();
+	static Save(
+		config: MissingRecordGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<MissingRecordGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(0)
@@ -319,103 +297,51 @@ export class BaseRecordUpdateStageDao
 }
 
 
-export interface IBaseRepoTransBlockResponseStageDao
-  extends IDao<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateColumns, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, RepoTransBlockResponseStageGraph, QRepoTransBlockResponseStage> {
+export interface IBaseMissingRecordRepoTransBlockDao
+  extends IDao<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateColumns, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, MissingRecordRepoTransBlockGraph, QMissingRecordRepoTransBlock> {
 }
 
-export class BaseRepoTransBlockResponseStageDao
-  extends SQDIDao<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateColumns, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, RepoTransBlockResponseStageGraph, QRepoTransBlockResponseStage>
-	implements IBaseRepoTransBlockResponseStageDao {
+export class BaseMissingRecordRepoTransBlockDao
+  extends SQDIDao<IMissingRecordRepoTransBlock, MissingRecordRepoTransBlockESelect, MissingRecordRepoTransBlockECreateProperties, MissingRecordRepoTransBlockEUpdateColumns, MissingRecordRepoTransBlockEUpdateProperties, MissingRecordRepoTransBlockEId, MissingRecordRepoTransBlockGraph, QMissingRecordRepoTransBlock>
+	implements IBaseMissingRecordRepoTransBlockDao {
+	
+	static Find      = new DaoQueryDecorators<MissingRecordRepoTransBlockESelect>();
+	static FindOne   = new DaoQueryDecorators<MissingRecordRepoTransBlockESelect>();
+	static Search    = new DaoQueryDecorators<MissingRecordRepoTransBlockESelect>();
+	static SearchOne = new DaoQueryDecorators<MissingRecordRepoTransBlockESelect>();
+	static Save(
+		config: MissingRecordRepoTransBlockGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<MissingRecordRepoTransBlockGraph>(config);
+  }
 
 	static diSet(): boolean {
-		return duoDiSet(13)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(13)
+		super(1)
 	}
 }
 
 
-export interface IBaseRepoTransBlockSchemaToChangeDao
-  extends IDao<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateColumns, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeGraph, QRepoTransBlockSchemaToChange> {
+export interface IBaseRecordUpdateStageDao
+  extends IDao<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage> {
 }
 
-export class BaseRepoTransBlockSchemaToChangeDao
-  extends SQDIDao<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateColumns, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeGraph, QRepoTransBlockSchemaToChange>
-	implements IBaseRepoTransBlockSchemaToChangeDao {
-
-	static diSet(): boolean {
-		return duoDiSet(9)
-	}
+export class BaseRecordUpdateStageDao
+  extends SQDIDao<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage>
+	implements IBaseRecordUpdateStageDao {
 	
-	constructor() {
-		super(9)
-	}
-}
-
-
-export interface IBaseRepositoryTransactionBlockDao
-  extends IDao<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateColumns, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, RepositoryTransactionBlockGraph, QRepositoryTransactionBlock> {
-}
-
-export class BaseRepositoryTransactionBlockDao
-  extends SQDIDao<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateColumns, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, RepositoryTransactionBlockGraph, QRepositoryTransactionBlock>
-	implements IBaseRepositoryTransactionBlockDao {
-
-	static diSet(): boolean {
-		return duoDiSet(10)
-	}
-	
-	constructor() {
-		super(10)
-	}
-}
-
-
-export interface IBaseRepositoryTransactionHistoryUpdateStageDao
-  extends IDao<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateColumns, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, RepositoryTransactionHistoryUpdateStageGraph, QRepositoryTransactionHistoryUpdateStage> {
-}
-
-export class BaseRepositoryTransactionHistoryUpdateStageDao
-  extends SQDIDao<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateColumns, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, RepositoryTransactionHistoryUpdateStageGraph, QRepositoryTransactionHistoryUpdateStage>
-	implements IBaseRepositoryTransactionHistoryUpdateStageDao {
-
-	static diSet(): boolean {
-		return duoDiSet(12)
-	}
-	
-	constructor() {
-		super(12)
-	}
-}
-
-
-export interface IBaseSharingMessageDao
-  extends IDao<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateColumns, SharingMessageEUpdateProperties, SharingMessageEId, SharingMessageGraph, QSharingMessage> {
-}
-
-export class BaseSharingMessageDao
-  extends SQDIDao<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateColumns, SharingMessageEUpdateProperties, SharingMessageEId, SharingMessageGraph, QSharingMessage>
-	implements IBaseSharingMessageDao {
-
-	static diSet(): boolean {
-		return duoDiSet(7)
-	}
-	
-	constructor() {
-		super(7)
-	}
-}
-
-
-export interface IBaseSharingMessageRepoTransBlockDao
-  extends IDao<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateColumns, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, SharingMessageRepoTransBlockGraph, QSharingMessageRepoTransBlock> {
-}
-
-export class BaseSharingMessageRepoTransBlockDao
-  extends SQDIDao<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateColumns, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, SharingMessageRepoTransBlockGraph, QSharingMessageRepoTransBlock>
-	implements IBaseSharingMessageRepoTransBlockDao {
+	static Find      = new DaoQueryDecorators<RecordUpdateStageESelect>();
+	static FindOne   = new DaoQueryDecorators<RecordUpdateStageESelect>();
+	static Search    = new DaoQueryDecorators<RecordUpdateStageESelect>();
+	static SearchOne = new DaoQueryDecorators<RecordUpdateStageESelect>();
+	static Save(
+		config: RecordUpdateStageGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<RecordUpdateStageGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(8)
@@ -427,121 +353,51 @@ export class BaseSharingMessageRepoTransBlockDao
 }
 
 
-export interface IBaseSharingNodeDao
-  extends IDao<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateColumns, SharingNodeEUpdateProperties, SharingNodeEId, SharingNodeGraph, QSharingNode> {
+export interface IBaseRepoTransBlockResponseStageDao
+  extends IDao<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateColumns, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, RepoTransBlockResponseStageGraph, QRepoTransBlockResponseStage> {
 }
 
-export class BaseSharingNodeDao
-  extends SQDIDao<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateColumns, SharingNodeEUpdateProperties, SharingNodeEId, SharingNodeGraph, QSharingNode>
-	implements IBaseSharingNodeDao {
+export class BaseRepoTransBlockResponseStageDao
+  extends SQDIDao<IRepoTransBlockResponseStage, RepoTransBlockResponseStageESelect, RepoTransBlockResponseStageECreateProperties, RepoTransBlockResponseStageEUpdateColumns, RepoTransBlockResponseStageEUpdateProperties, RepoTransBlockResponseStageEId, RepoTransBlockResponseStageGraph, QRepoTransBlockResponseStage>
+	implements IBaseRepoTransBlockResponseStageDao {
+	
+	static Find      = new DaoQueryDecorators<RepoTransBlockResponseStageESelect>();
+	static FindOne   = new DaoQueryDecorators<RepoTransBlockResponseStageESelect>();
+	static Search    = new DaoQueryDecorators<RepoTransBlockResponseStageESelect>();
+	static SearchOne = new DaoQueryDecorators<RepoTransBlockResponseStageESelect>();
+	static Save(
+		config: RepoTransBlockResponseStageGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<RepoTransBlockResponseStageGraph>(config);
+  }
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(6)
+		super(9)
 	}
 }
 
 
-export interface IBaseSharingNodeRepoTransBlockDao
-  extends IDao<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateColumns, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, SharingNodeRepoTransBlockGraph, QSharingNodeRepoTransBlock> {
+export interface IBaseRepoTransBlockSchemaToChangeDao
+  extends IDao<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateColumns, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeGraph, QRepoTransBlockSchemaToChange> {
 }
 
-export class BaseSharingNodeRepoTransBlockDao
-  extends SQDIDao<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateColumns, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, SharingNodeRepoTransBlockGraph, QSharingNodeRepoTransBlock>
-	implements IBaseSharingNodeRepoTransBlockDao {
-
-	static diSet(): boolean {
-		return duoDiSet(5)
-	}
+export class BaseRepoTransBlockSchemaToChangeDao
+  extends SQDIDao<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateColumns, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeGraph, QRepoTransBlockSchemaToChange>
+	implements IBaseRepoTransBlockSchemaToChangeDao {
 	
-	constructor() {
-		super(5)
-	}
-}
-
-
-export interface IBaseSharingNodeRepoTransBlockStageDao
-  extends IDao<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateColumns, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, SharingNodeRepoTransBlockStageGraph, QSharingNodeRepoTransBlockStage> {
-}
-
-export class BaseSharingNodeRepoTransBlockStageDao
-  extends SQDIDao<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateColumns, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, SharingNodeRepoTransBlockStageGraph, QSharingNodeRepoTransBlockStage>
-	implements IBaseSharingNodeRepoTransBlockStageDao {
-
-	static diSet(): boolean {
-		return duoDiSet(16)
-	}
-	
-	constructor() {
-		super(16)
-	}
-}
-
-
-export interface IBaseSharingNodeRepositoryDao
-  extends IDao<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateColumns, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, SharingNodeRepositoryGraph, QSharingNodeRepository> {
-}
-
-export class BaseSharingNodeRepositoryDao
-  extends SQDIDao<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateColumns, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, SharingNodeRepositoryGraph, QSharingNodeRepository>
-	implements IBaseSharingNodeRepositoryDao {
-
-	static diSet(): boolean {
-		return duoDiSet(15)
-	}
-	
-	constructor() {
-		super(15)
-	}
-}
-
-
-export interface IBaseSharingNodeTerminalDao
-  extends IDao<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateColumns, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, SharingNodeTerminalGraph, QSharingNodeTerminal> {
-}
-
-export class BaseSharingNodeTerminalDao
-  extends SQDIDao<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateColumns, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, SharingNodeTerminalGraph, QSharingNodeTerminal>
-	implements IBaseSharingNodeTerminalDao {
-
-	static diSet(): boolean {
-		return duoDiSet(14)
-	}
-	
-	constructor() {
-		super(14)
-	}
-}
-
-
-export interface IBaseSynchronizationConflictDao
-  extends IDao<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict> {
-}
-
-export class BaseSynchronizationConflictDao
-  extends SQDIDao<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict>
-	implements IBaseSynchronizationConflictDao {
-
-	static diSet(): boolean {
-		return duoDiSet(2)
-	}
-	
-	constructor() {
-		super(2)
-	}
-}
-
-
-export interface IBaseSynchronizationConflictPendingNotificationDao
-  extends IDao<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationGraph, QSynchronizationConflictPendingNotification> {
-}
-
-export class BaseSynchronizationConflictPendingNotificationDao
-  extends SQDIDao<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationGraph, QSynchronizationConflictPendingNotification>
-	implements IBaseSynchronizationConflictPendingNotificationDao {
+	static Find      = new DaoQueryDecorators<RepoTransBlockSchemaToChangeESelect>();
+	static FindOne   = new DaoQueryDecorators<RepoTransBlockSchemaToChangeESelect>();
+	static Search    = new DaoQueryDecorators<RepoTransBlockSchemaToChangeESelect>();
+	static SearchOne = new DaoQueryDecorators<RepoTransBlockSchemaToChangeESelect>();
+	static Save(
+		config: RepoTransBlockSchemaToChangeGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<RepoTransBlockSchemaToChangeGraph>(config);
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(3)
@@ -553,6 +409,314 @@ export class BaseSynchronizationConflictPendingNotificationDao
 }
 
 
+export interface IBaseRepositoryTransactionBlockDao
+  extends IDao<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateColumns, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, RepositoryTransactionBlockGraph, QRepositoryTransactionBlock> {
+}
+
+export class BaseRepositoryTransactionBlockDao
+  extends SQDIDao<IRepositoryTransactionBlock, RepositoryTransactionBlockESelect, RepositoryTransactionBlockECreateProperties, RepositoryTransactionBlockEUpdateColumns, RepositoryTransactionBlockEUpdateProperties, RepositoryTransactionBlockEId, RepositoryTransactionBlockGraph, QRepositoryTransactionBlock>
+	implements IBaseRepositoryTransactionBlockDao {
+	
+	static Find      = new DaoQueryDecorators<RepositoryTransactionBlockESelect>();
+	static FindOne   = new DaoQueryDecorators<RepositoryTransactionBlockESelect>();
+	static Search    = new DaoQueryDecorators<RepositoryTransactionBlockESelect>();
+	static SearchOne = new DaoQueryDecorators<RepositoryTransactionBlockESelect>();
+	static Save(
+		config: RepositoryTransactionBlockGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<RepositoryTransactionBlockGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(4)
+	}
+	
+	constructor() {
+		super(4)
+	}
+}
+
+
+export interface IBaseRepositoryTransactionHistoryUpdateStageDao
+  extends IDao<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateColumns, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, RepositoryTransactionHistoryUpdateStageGraph, QRepositoryTransactionHistoryUpdateStage> {
+}
+
+export class BaseRepositoryTransactionHistoryUpdateStageDao
+  extends SQDIDao<IRepositoryTransactionHistoryUpdateStage, RepositoryTransactionHistoryUpdateStageESelect, RepositoryTransactionHistoryUpdateStageECreateProperties, RepositoryTransactionHistoryUpdateStageEUpdateColumns, RepositoryTransactionHistoryUpdateStageEUpdateProperties, RepositoryTransactionHistoryUpdateStageEId, RepositoryTransactionHistoryUpdateStageGraph, QRepositoryTransactionHistoryUpdateStage>
+	implements IBaseRepositoryTransactionHistoryUpdateStageDao {
+	
+	static Find      = new DaoQueryDecorators<RepositoryTransactionHistoryUpdateStageESelect>();
+	static FindOne   = new DaoQueryDecorators<RepositoryTransactionHistoryUpdateStageESelect>();
+	static Search    = new DaoQueryDecorators<RepositoryTransactionHistoryUpdateStageESelect>();
+	static SearchOne = new DaoQueryDecorators<RepositoryTransactionHistoryUpdateStageESelect>();
+	static Save(
+		config: RepositoryTransactionHistoryUpdateStageGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<RepositoryTransactionHistoryUpdateStageGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(10)
+	}
+	
+	constructor() {
+		super(10)
+	}
+}
+
+
+export interface IBaseSharingMessageDao
+  extends IDao<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateColumns, SharingMessageEUpdateProperties, SharingMessageEId, SharingMessageGraph, QSharingMessage> {
+}
+
+export class BaseSharingMessageDao
+  extends SQDIDao<ISharingMessage, SharingMessageESelect, SharingMessageECreateProperties, SharingMessageEUpdateColumns, SharingMessageEUpdateProperties, SharingMessageEId, SharingMessageGraph, QSharingMessage>
+	implements IBaseSharingMessageDao {
+	
+	static Find      = new DaoQueryDecorators<SharingMessageESelect>();
+	static FindOne   = new DaoQueryDecorators<SharingMessageESelect>();
+	static Search    = new DaoQueryDecorators<SharingMessageESelect>();
+	static SearchOne = new DaoQueryDecorators<SharingMessageESelect>();
+	static Save(
+		config: SharingMessageGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SharingMessageGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(6)
+	}
+	
+	constructor() {
+		super(6)
+	}
+}
+
+
+export interface IBaseSharingMessageRepoTransBlockDao
+  extends IDao<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateColumns, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, SharingMessageRepoTransBlockGraph, QSharingMessageRepoTransBlock> {
+}
+
+export class BaseSharingMessageRepoTransBlockDao
+  extends SQDIDao<ISharingMessageRepoTransBlock, SharingMessageRepoTransBlockESelect, SharingMessageRepoTransBlockECreateProperties, SharingMessageRepoTransBlockEUpdateColumns, SharingMessageRepoTransBlockEUpdateProperties, SharingMessageRepoTransBlockEId, SharingMessageRepoTransBlockGraph, QSharingMessageRepoTransBlock>
+	implements IBaseSharingMessageRepoTransBlockDao {
+	
+	static Find      = new DaoQueryDecorators<SharingMessageRepoTransBlockESelect>();
+	static FindOne   = new DaoQueryDecorators<SharingMessageRepoTransBlockESelect>();
+	static Search    = new DaoQueryDecorators<SharingMessageRepoTransBlockESelect>();
+	static SearchOne = new DaoQueryDecorators<SharingMessageRepoTransBlockESelect>();
+	static Save(
+		config: SharingMessageRepoTransBlockGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SharingMessageRepoTransBlockGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(5)
+	}
+	
+	constructor() {
+		super(5)
+	}
+}
+
+
+export interface IBaseSharingNodeDao
+  extends IDao<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateColumns, SharingNodeEUpdateProperties, SharingNodeEId, SharingNodeGraph, QSharingNode> {
+}
+
+export class BaseSharingNodeDao
+  extends SQDIDao<ISharingNode, SharingNodeESelect, SharingNodeECreateProperties, SharingNodeEUpdateColumns, SharingNodeEUpdateProperties, SharingNodeEId, SharingNodeGraph, QSharingNode>
+	implements IBaseSharingNodeDao {
+	
+	static Find      = new DaoQueryDecorators<SharingNodeESelect>();
+	static FindOne   = new DaoQueryDecorators<SharingNodeESelect>();
+	static Search    = new DaoQueryDecorators<SharingNodeESelect>();
+	static SearchOne = new DaoQueryDecorators<SharingNodeESelect>();
+	static Save(
+		config: SharingNodeGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SharingNodeGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(7)
+	}
+	
+	constructor() {
+		super(7)
+	}
+}
+
+
+export interface IBaseSharingNodeRepoTransBlockDao
+  extends IDao<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateColumns, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, SharingNodeRepoTransBlockGraph, QSharingNodeRepoTransBlock> {
+}
+
+export class BaseSharingNodeRepoTransBlockDao
+  extends SQDIDao<ISharingNodeRepoTransBlock, SharingNodeRepoTransBlockESelect, SharingNodeRepoTransBlockECreateProperties, SharingNodeRepoTransBlockEUpdateColumns, SharingNodeRepoTransBlockEUpdateProperties, SharingNodeRepoTransBlockEId, SharingNodeRepoTransBlockGraph, QSharingNodeRepoTransBlock>
+	implements IBaseSharingNodeRepoTransBlockDao {
+	
+	static Find      = new DaoQueryDecorators<SharingNodeRepoTransBlockESelect>();
+	static FindOne   = new DaoQueryDecorators<SharingNodeRepoTransBlockESelect>();
+	static Search    = new DaoQueryDecorators<SharingNodeRepoTransBlockESelect>();
+	static SearchOne = new DaoQueryDecorators<SharingNodeRepoTransBlockESelect>();
+	static Save(
+		config: SharingNodeRepoTransBlockGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SharingNodeRepoTransBlockGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(2)
+	}
+	
+	constructor() {
+		super(2)
+	}
+}
+
+
+export interface IBaseSharingNodeRepoTransBlockStageDao
+  extends IDao<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateColumns, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, SharingNodeRepoTransBlockStageGraph, QSharingNodeRepoTransBlockStage> {
+}
+
+export class BaseSharingNodeRepoTransBlockStageDao
+  extends SQDIDao<ISharingNodeRepoTransBlockStage, SharingNodeRepoTransBlockStageESelect, SharingNodeRepoTransBlockStageECreateProperties, SharingNodeRepoTransBlockStageEUpdateColumns, SharingNodeRepoTransBlockStageEUpdateProperties, SharingNodeRepoTransBlockStageEId, SharingNodeRepoTransBlockStageGraph, QSharingNodeRepoTransBlockStage>
+	implements IBaseSharingNodeRepoTransBlockStageDao {
+	
+	static Find      = new DaoQueryDecorators<SharingNodeRepoTransBlockStageESelect>();
+	static FindOne   = new DaoQueryDecorators<SharingNodeRepoTransBlockStageESelect>();
+	static Search    = new DaoQueryDecorators<SharingNodeRepoTransBlockStageESelect>();
+	static SearchOne = new DaoQueryDecorators<SharingNodeRepoTransBlockStageESelect>();
+	static Save(
+		config: SharingNodeRepoTransBlockStageGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SharingNodeRepoTransBlockStageGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(11)
+	}
+	
+	constructor() {
+		super(11)
+	}
+}
+
+
+export interface IBaseSharingNodeRepositoryDao
+  extends IDao<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateColumns, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, SharingNodeRepositoryGraph, QSharingNodeRepository> {
+}
+
+export class BaseSharingNodeRepositoryDao
+  extends SQDIDao<ISharingNodeRepository, SharingNodeRepositoryESelect, SharingNodeRepositoryECreateProperties, SharingNodeRepositoryEUpdateColumns, SharingNodeRepositoryEUpdateProperties, SharingNodeRepositoryEId, SharingNodeRepositoryGraph, QSharingNodeRepository>
+	implements IBaseSharingNodeRepositoryDao {
+	
+	static Find      = new DaoQueryDecorators<SharingNodeRepositoryESelect>();
+	static FindOne   = new DaoQueryDecorators<SharingNodeRepositoryESelect>();
+	static Search    = new DaoQueryDecorators<SharingNodeRepositoryESelect>();
+	static SearchOne = new DaoQueryDecorators<SharingNodeRepositoryESelect>();
+	static Save(
+		config: SharingNodeRepositoryGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SharingNodeRepositoryGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(12)
+	}
+	
+	constructor() {
+		super(12)
+	}
+}
+
+
+export interface IBaseSharingNodeTerminalDao
+  extends IDao<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateColumns, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, SharingNodeTerminalGraph, QSharingNodeTerminal> {
+}
+
+export class BaseSharingNodeTerminalDao
+  extends SQDIDao<ISharingNodeTerminal, SharingNodeTerminalESelect, SharingNodeTerminalECreateProperties, SharingNodeTerminalEUpdateColumns, SharingNodeTerminalEUpdateProperties, SharingNodeTerminalEId, SharingNodeTerminalGraph, QSharingNodeTerminal>
+	implements IBaseSharingNodeTerminalDao {
+	
+	static Find      = new DaoQueryDecorators<SharingNodeTerminalESelect>();
+	static FindOne   = new DaoQueryDecorators<SharingNodeTerminalESelect>();
+	static Search    = new DaoQueryDecorators<SharingNodeTerminalESelect>();
+	static SearchOne = new DaoQueryDecorators<SharingNodeTerminalESelect>();
+	static Save(
+		config: SharingNodeTerminalGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SharingNodeTerminalGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(13)
+	}
+	
+	constructor() {
+		super(13)
+	}
+}
+
+
+export interface IBaseSynchronizationConflictDao
+  extends IDao<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict> {
+}
+
+export class BaseSynchronizationConflictDao
+  extends SQDIDao<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict>
+	implements IBaseSynchronizationConflictDao {
+	
+	static Find      = new DaoQueryDecorators<SynchronizationConflictESelect>();
+	static FindOne   = new DaoQueryDecorators<SynchronizationConflictESelect>();
+	static Search    = new DaoQueryDecorators<SynchronizationConflictESelect>();
+	static SearchOne = new DaoQueryDecorators<SynchronizationConflictESelect>();
+	static Save(
+		config: SynchronizationConflictGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SynchronizationConflictGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(15)
+	}
+	
+	constructor() {
+		super(15)
+	}
+}
+
+
+export interface IBaseSynchronizationConflictPendingNotificationDao
+  extends IDao<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationGraph, QSynchronizationConflictPendingNotification> {
+}
+
+export class BaseSynchronizationConflictPendingNotificationDao
+  extends SQDIDao<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationGraph, QSynchronizationConflictPendingNotification>
+	implements IBaseSynchronizationConflictPendingNotificationDao {
+	
+	static Find      = new DaoQueryDecorators<SynchronizationConflictPendingNotificationESelect>();
+	static FindOne   = new DaoQueryDecorators<SynchronizationConflictPendingNotificationESelect>();
+	static Search    = new DaoQueryDecorators<SynchronizationConflictPendingNotificationESelect>();
+	static SearchOne = new DaoQueryDecorators<SynchronizationConflictPendingNotificationESelect>();
+	static Save(
+		config: SynchronizationConflictPendingNotificationGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SynchronizationConflictPendingNotificationGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(16)
+	}
+	
+	constructor() {
+		super(16)
+	}
+}
+
+
 export interface IBaseSynchronizationConflictValuesDao
   extends IDao<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues> {
 }
@@ -560,12 +724,22 @@ export interface IBaseSynchronizationConflictValuesDao
 export class BaseSynchronizationConflictValuesDao
   extends SQDIDao<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues>
 	implements IBaseSynchronizationConflictValuesDao {
+	
+	static Find      = new DaoQueryDecorators<SynchronizationConflictValuesESelect>();
+	static FindOne   = new DaoQueryDecorators<SynchronizationConflictValuesESelect>();
+	static Search    = new DaoQueryDecorators<SynchronizationConflictValuesESelect>();
+	static SearchOne = new DaoQueryDecorators<SynchronizationConflictValuesESelect>();
+	static Save(
+		config: SynchronizationConflictValuesGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<SynchronizationConflictValuesGraph>(config);
+  }
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(14)
 	}
 	
 	constructor() {
-		super(1)
+		super(14)
 	}
 }

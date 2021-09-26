@@ -9,7 +9,7 @@ export var EntityState;
     EntityState["STUB"] = "STUB";
     EntityState["UPDATE"] = "UPDATE";
     // Json fields promote schema de-normalization
-    // RESULT_JSON = 6,
-    // RESULT_JSON_ARRAY = 7
+    // RESULT_JSON = 'RESULT_JSON',
+    // RESULT_JSON_ARRAY = 'RESULT_JSON_ARRAY'
 })(EntityState || (EntityState = {}));
 //# sourceMappingURL=EntityStateManager.js.map

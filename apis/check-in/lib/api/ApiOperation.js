@@ -1,15 +1,15 @@
 export var ApiObjectKind;
 (function (ApiObjectKind) {
-    ApiObjectKind[ApiObjectKind["ARRAY"] = 0] = "ARRAY";
-    ApiObjectKind[ApiObjectKind["BOOLEAN"] = 1] = "BOOLEAN";
-    ApiObjectKind[ApiObjectKind["BOOLEAN_VALUE"] = 2] = "BOOLEAN_VALUE";
-    ApiObjectKind[ApiObjectKind["DATE"] = 3] = "DATE";
-    ApiObjectKind[ApiObjectKind["DB_ENTITY"] = 4] = "DB_ENTITY";
-    ApiObjectKind[ApiObjectKind["NUMBER"] = 5] = "NUMBER";
-    ApiObjectKind[ApiObjectKind["NUMBER_VALUE"] = 6] = "NUMBER_VALUE";
-    ApiObjectKind[ApiObjectKind["OBJECT"] = 7] = "OBJECT";
-    ApiObjectKind[ApiObjectKind["STRING"] = 8] = "STRING";
-    ApiObjectKind[ApiObjectKind["STRING_VALUE"] = 9] = "STRING_VALUE";
-    ApiObjectKind[ApiObjectKind["TYPE_UNION"] = 10] = "TYPE_UNION";
+    ApiObjectKind["ARRAY"] = "ARRAY";
+    ApiObjectKind["BOOLEAN"] = "BOOLEAN";
+    ApiObjectKind["BOOLEAN_VALUE"] = "BOOLEAN_VALUE";
+    ApiObjectKind["DATE"] = "DATE";
+    ApiObjectKind["DB_ENTITY"] = "DB_ENTITY";
+    ApiObjectKind["NUMBER"] = "NUMBER";
+    ApiObjectKind["NUMBER_VALUE"] = "NUMBER_VALUE";
+    ApiObjectKind["OBJECT"] = "OBJECT";
+    ApiObjectKind["STRING"] = "STRING";
+    ApiObjectKind["STRING_VALUE"] = "STRING_VALUE";
+    ApiObjectKind["TYPE_UNION"] = "TYPE_UNION";
 })(ApiObjectKind || (ApiObjectKind = {}));
 //# sourceMappingURL=ApiOperation.js.map

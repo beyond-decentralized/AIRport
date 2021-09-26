@@ -7,10 +7,10 @@ import { SQLDialect } from './SQLQuery';
  * Created by Papa on 10/2/2016.
  */
 export declare enum ClauseType {
-    MAPPED_SELECT_CLAUSE = 0,
-    NON_MAPPED_SELECT_CLAUSE = 1,
-    WHERE_CLAUSE = 2,
-    FUNCTION_CALL = 3
+    MAPPED_SELECT_CLAUSE = "MAPPED_SELECT_CLAUSE",
+    NON_MAPPED_SELECT_CLAUSE = "NON_MAPPED_SELECT_CLAUSE",
+    WHERE_CLAUSE = "WHERE_CLAUSE",
+    FUNCTION_CALL = "FUNCTION_CALL"
 }
 export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected dbEntity: DbEntity;
