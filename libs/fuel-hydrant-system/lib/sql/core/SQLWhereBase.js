@@ -108,7 +108,7 @@ export class SQLWhereBase {
                 this.addField(aField.si, aField.ti, aField.ci);
                 return this.getComplexColumnFragment(aField, columnName, context);
             case JSONClauseObjectType.FIELD_QUERY:
-                let jsonFieldSqlSubQuery = aField.fsq;
+                let jsonFieldSqlSubQuery = aField.fieldSubQuery;
                 if (aField.S) {
                     jsonFieldSqlSubQuery = aField;
                 }

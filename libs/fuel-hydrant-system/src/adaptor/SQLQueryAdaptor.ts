@@ -97,7 +97,7 @@ export abstract class AbstractFunctionAdaptor
 		sqlValueProvider: ISqlValueProvider,
 		context: IFuelHydrantContext,
 	): string {
-		clause.af.forEach((appliedFunction) => {
+		clause.appliedFunctions.forEach((appliedFunction) => {
 			innerValue = this.getFunctionCall(
 				appliedFunction, innerValue, qEntityMapByAlias, sqlValueProvider, context)
 		})

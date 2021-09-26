@@ -66,7 +66,7 @@ export class MappedOrderByParser
 
 			for (let propertyName in currentSelectFragment) {
 				let field: JSONClauseField = currentSelectFragment[propertyName]
-				if (!field.af) {
+				if (!field.appliedFunctions) {
 					selectFragmentQueue.push(field)
 					continue
 				}

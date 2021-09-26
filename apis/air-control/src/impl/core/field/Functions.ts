@@ -443,7 +443,7 @@ export class QDistinctFunction<ISelect>
 			getSqlFunctionCall(SqlFunction.DISTINCT)
 		]
 		return {
-			af: appliedFunctions,
+			appliedFunctions: appliedFunctions,
 			dt: null,
 			fa: null,
 			ot: JSONClauseObjectType.DISTINCT_FUNCTION,
@@ -507,7 +507,7 @@ export class QExistsFunction<IME extends ITreeEntity>
 		return {
 			c: this.category,
 			ob: <JSONClauseObject>{
-				af: appliedFunctions,
+				appliedFunctions: appliedFunctions,
 				dt: null,
 				ot: JSONClauseObjectType.EXISTS_FUNCTION,
 				v: <any>parsedQuery

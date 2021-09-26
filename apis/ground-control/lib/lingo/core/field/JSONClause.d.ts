@@ -31,7 +31,7 @@ export interface JSONClauseObject {
      * Applied Functions
      * All functions applied to this clause, in order of definition
      */
-    af: JSONSqlFunctionCall[];
+    appliedFunctions: JSONSqlFunctionCall[];
     /**
      * Object Type
      * Type of clause
@@ -76,7 +76,7 @@ export interface JSONClauseField extends JSONClauseObject {
      * A reference pointer from a field to a sub-query, as defined in SELECT clause via the
      * field function
      */
-    fsq?: JsonFieldQuery;
+    fieldSubQuery?: JsonFieldQuery;
     /**
      * Table Alias
      * Alias of the table to which this field/column belongs

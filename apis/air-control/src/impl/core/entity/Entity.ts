@@ -177,9 +177,9 @@ export class QEntityDriver<IEntity>
 		// FIXME: this does not work for non-entity tree queries, as there is not dbEntity
 		// see SchemaDao.findMaxVersionedMapBySchemaAndDomainNames for an example
 		let jsonRelation: JSONRelation = {
-			cci: this.currentChildIndex,
+			currentChildIndex: this.currentChildIndex,
 			ti: this.dbEntity.index,
-			fcp: this.fromClausePosition,
+			fromClausePosition: this.fromClausePosition,
 			jt: this.joinType,
 			rt: null,
 			rep: columnAliases.entityAliases.getNextAlias(this.getRootJoinEntity()),
@@ -204,7 +204,7 @@ export class QEntityDriver<IEntity>
 		fieldUtils: IFieldUtils
 	): JSONJoinRelation {
 		jsonRelation.rt = JSONRelationType.ENTITY_JOIN_ON
-		jsonRelation.jwc = queryUtils.whereClauseToJSON(
+		jsonRelation.joinWhereClause = queryUtils.whereClauseToJSON(
 			this.joinWhereClause, columnAliases, fieldUtils)
 
 		return jsonRelation
@@ -238,9 +238,9 @@ export class QEntityDriver<IEntity>
 		// }
 		//
 		// let joinWhereClause = this.dbRelation.whereJoinTable.addToJoinFunction(otmQEntity,
-		// mtoQEntity, this.airportDb, this.airportDb.F); jsonRelation.jwc    =
+		// mtoQEntity, this.airportDb, this.airportDb.F); jsonRelation.joinWhereClause    =
 		// this.utils.Query.whereClauseToJSON(joinWhereClause, columnAliases);
-		// jsonRelation.wjto   = this.dbRelation.joinFunctionWithOperator;  return
+		// jsonRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
 		// jsonRelation;
 	}
 
@@ -369,7 +369,7 @@ export class QTreeDriver<IEntity>
 		jsonRelation = <JSONViewJoinRelation>super.getJoinRelationJson(
 			jsonRelation, columnAliases, queryUtils, fieldUtils)
 		jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON
-		jsonRelation.sq = new TreeQuery(this.subQuery, columnAliases.entityAliases)
+		jsonRelation.subQuery = new TreeQuery(this.subQuery, columnAliases.entityAliases)
 			.toJSON(queryUtils, fieldUtils)
 
 		return jsonRelation
@@ -384,7 +384,7 @@ export class QTreeDriver<IEntity>
 		jsonRelation = <JSONViewJoinRelation>super.getJoinRelationJson(
 			jsonRelation, columnAliases, queryUtils, fieldUtils)
 		jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT
-		jsonRelation.sq = new TreeQuery(this.subQuery, columnAliases.entityAliases)
+		jsonRelation.subQuery = new TreeQuery(this.subQuery, columnAliases.entityAliases)
 			.toJSON(queryUtils, fieldUtils)
 
 		return jsonRelation

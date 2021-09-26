@@ -26,7 +26,7 @@ export class JoinTreeNode {
 	addChildNode(
 		joinTreeNode: JoinTreeNode
 	): void {
-		let childFromClausePositionArray = joinTreeNode.jsonRelation.fcp;
+		let childFromClausePositionArray = joinTreeNode.jsonRelation.fromClausePosition;
 		let childPosition                = childFromClausePositionArray[childFromClausePositionArray.length - 1];
 		this.childNodes[childPosition]   = joinTreeNode;
 	}
@@ -59,7 +59,7 @@ export class JoinTreeNode {
 		}
 		// No node matched, this must be reference to a sub-entity in select clause (in a Entity
 		// query)
-		let childPosition = this.jsonRelation.fcp.slice();
+		let childPosition = this.jsonRelation.fromClausePosition.slice();
 		childPosition.push(this.childNodes.length);
 		let rootEntityPrefix;
 		if (this.parentNode) {
@@ -68,8 +68,8 @@ export class JoinTreeNode {
 			rootEntityPrefix = this.jsonRelation.rep;
 		}
 		let jsonEntityRelation: JSONEntityRelation = {
-			cci: 0,
-			fcp: childPosition,
+			currentChildIndex: 0,
+			fromClausePosition: childPosition,
 			ti: tableIndex,
 			jt: JoinType.LEFT_JOIN,
 			rt: JSONRelationType.ENTITY_SCHEMA_RELATION,

@@ -34,7 +34,7 @@ export interface JSONRelation {
      * Current Child Index
      * Index of the child entity in the relation FROM branch
      */
-    cci: number;
+    currentChildIndex: number;
     /**
      * Table Index
      * Table Index of the parent entity in relation
@@ -44,7 +44,7 @@ export interface JSONRelation {
      * From Clause Position
      * Entity position in the FROM clause tree
      */
-    fcp: number[];
+    fromClausePosition: number[];
     /**
      *  Join Type
      * Type of SQL join in relation
@@ -74,7 +74,7 @@ export interface JSONJoinRelation extends JSONRelation {
      *  Join Where Clause
      * X in the JOIN ... ON X
      */
-    jwc?: JSONBaseOperation;
+    joinWhereClause?: JSONBaseOperation;
 }
 /**
  * Serialized JOIN relation to a sub-view/sub-query
@@ -84,7 +84,7 @@ export interface JSONViewJoinRelation extends JSONJoinRelation {
      *  Sub Query
      * Sub-query definition
      */
-    sq: JsonTreeQuery;
+    subQuery: JsonTreeQuery;
 }
 /**
  * Serialized relation to an ORM Entity
@@ -101,6 +101,6 @@ export interface JSONEntityRelation extends JSONJoinRelation {
      * Where Join Table Operator
      * How @WhereJoinTable is joined to the rest of the JOIN ON
      */
-    wjto?: SqlOperator.AND | SqlOperator.OR;
+    joinWhereClauseOperator?: SqlOperator.AND | SqlOperator.OR;
 }
 //# sourceMappingURL=Relation.d.ts.map

@@ -61,7 +61,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.q.__driver__.getRootJoinEntity());
 		}
 		let jsonField: JSONClauseField = {
-			af: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases,
+			appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases,
 				queryUtils, fieldUtils),
 			si: this.dbProperty.entity.schemaVersion.id,
 			ti: this.dbProperty.entity.index,
@@ -73,7 +73,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			dt: this.dbColumn.type
 		};
 		if (this.__fieldSubQuery__) {
-			jsonField.fsq = fieldUtils.getFieldQueryJson(
+			jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(
 				this.__fieldSubQuery__, columnAliases.entityAliases, queryUtils);
 			jsonField.ot  = JSONClauseObjectType.FIELD_QUERY;
 		}
@@ -131,7 +131,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			alias = columnAliases.getNextAlias(this);
 		}
 		return {
-			af: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases,
+			appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases,
 				queryUtils, fieldUtils),
 			fa: alias,
 			ot: this.objectType,

@@ -37,7 +37,7 @@ export class SheetSQLQuery extends NonEntitySQLQuery {
         {
             let distinctClause = selectClauseFragment;
             if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
-                let distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0], internalFragments, context);
+                let distinctSelect = this.getSELECTFragment(nested, distinctClause.appliedFunctions[0].p[0], internalFragments, context);
                 return `DISTINCT ${distinctSelect}`;
             }
         }

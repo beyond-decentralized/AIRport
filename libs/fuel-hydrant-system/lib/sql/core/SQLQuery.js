@@ -75,9 +75,9 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
         }
         let onClause = allJoinOnColumns.map(joinOnColumn => ` ${parentAlias}.${joinOnColumn.leftColumn} = ${currentAlias}.${joinOnColumn.rightColumn}`)
             .join('\n\t\t\tAND');
-        if (entityRelation.jwc) {
-            const whereClause = this.getWHEREFragment(entityRelation.jwc, '\t\t', context);
-            const joinWhereOperator = entityRelation.wjto === SqlOperator.AND ? 'AND' : 'OR';
+        if (entityRelation.joinWhereClause) {
+            const whereClause = this.getWHEREFragment(entityRelation.joinWhereClause, '\t\t', context);
+            const joinWhereOperator = entityRelation.joinWhereClauseOperator === SqlOperator.AND ? 'AND' : 'OR';
             onClause = `${onClause}
 			${joinWhereOperator} ${whereClause}`;
         }

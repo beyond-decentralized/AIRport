@@ -197,13 +197,13 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 						joinRelation, context)
 					break
 				case JSONRelationType.SUB_QUERY_JOIN_ON:
-					if (!(<JSONJoinRelation>joinRelation).jwc) {
+					if (!(<JSONJoinRelation>joinRelation).joinWhereClause) {
 						this.warn(`View ${i + 1} in FROM clause is missing joinWhereClause`)
 					}
 					rightEntity = this.addFieldsToView(<JSONViewJoinRelation>joinRelation, alias, context)
 					break
 				case JSONRelationType.ENTITY_JOIN_ON:
-					if (!(<JSONJoinRelation>joinRelation).jwc) {
+					if (!(<JSONJoinRelation>joinRelation).joinWhereClause) {
 						this.warn(`Table ${i + 1} in FROM clause is missing joinWhereClause`)
 					}
 					rightEntity = context.ioc.relationManager.createRelatedQEntity(
@@ -242,9 +242,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		viewAlias: string,
 		context: IFuelHydrantContext,
 	): IQTree<any> {
-		let view = new QTree(viewJoinRelation.fcp, null)
+		let view = new QTree(viewJoinRelation.fromClausePosition, null)
 		this.addFieldsToViewForSelect(
-			view, viewAlias, viewJoinRelation.sq.S, 'f',
+			view, viewAlias, viewJoinRelation.subQuery.S, 'f',
 			null, context)
 
 		return view
@@ -423,7 +423,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 				case JSONRelationType.SUB_QUERY_ROOT:
 					let viewRelation = <JSONViewJoinRelation>currentRelation
 					let subQuerySql = subStatementSqlGenerator.getTreeQuerySql(
-						viewRelation.sq, this.dialect, context)
+						viewRelation.subQuery, this.dialect, context)
 					fromFragment += `(${subQuerySql}) ${currentAlias}`
 					break
 				default:
@@ -460,7 +460,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			switch (currentRelation.rt) {
 				case JSONRelationType.ENTITY_JOIN_ON:
 					let joinRelation = <JSONJoinRelation>currentRelation
-					joinOnClause = this.getWHEREFragment(joinRelation.jwc, '\t',
+					joinOnClause = this.getWHEREFragment(joinRelation.joinWhereClause, '\t',
 						context)
 					fromFragment += `\t${joinTypeString} ${context.ioc.storeDriver.getEntityTableName(
 						qEntity.__driver__.dbEntity, context)} ${currentAlias} ON\n${joinOnClause}`
@@ -474,9 +474,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 				case JSONRelationType.SUB_QUERY_JOIN_ON:
 					let viewJoinRelation = <JSONViewJoinRelation>currentRelation
 					const mappedSql = subStatementSqlGenerator.getTreeQuerySql(
-						viewJoinRelation.sq, this.dialect, context)
+						viewJoinRelation.subQuery, this.dialect, context)
 					joinOnClause = this.getWHEREFragment(
-						viewJoinRelation.jwc, '\t', context)
+						viewJoinRelation.joinWhereClause, '\t', context)
 					fromFragment += `${joinTypeString} (${mappedSql}) ${currentAlias} ON\n${joinOnClause}`
 					break
 				default:

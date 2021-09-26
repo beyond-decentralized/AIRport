@@ -32,7 +32,7 @@ export class QField {
             rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.q.__driver__.getRootJoinEntity());
         }
         let jsonField = {
-            af: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils),
+            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils),
             si: this.dbProperty.entity.schemaVersion.id,
             ti: this.dbProperty.entity.index,
             fa: alias,
@@ -43,7 +43,7 @@ export class QField {
             dt: this.dbColumn.type
         };
         if (this.__fieldSubQuery__) {
-            jsonField.fsq = fieldUtils.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases, queryUtils);
+            jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases, queryUtils);
             jsonField.ot = JSONClauseObjectType.FIELD_QUERY;
         }
         return jsonField;
@@ -73,7 +73,7 @@ export class QField {
             alias = columnAliases.getNextAlias(this);
         }
         return {
-            af: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils),
+            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils),
             fa: alias,
             ot: this.objectType,
             dt: this.dbColumn.type,

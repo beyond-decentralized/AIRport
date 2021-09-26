@@ -281,7 +281,7 @@ export class QDistinctFunction extends StandAloneFunction {
             getSqlFunctionCall(SqlFunction.DISTINCT)
         ];
         return {
-            af: appliedFunctions,
+            appliedFunctions: appliedFunctions,
             dt: null,
             fa: null,
             ot: JSONClauseObjectType.DISTINCT_FUNCTION,
@@ -327,7 +327,7 @@ export class QExistsFunction extends StandAloneFunction {
         return {
             c: this.category,
             ob: {
-                af: appliedFunctions,
+                appliedFunctions: appliedFunctions,
                 dt: null,
                 ot: JSONClauseObjectType.EXISTS_FUNCTION,
                 v: parsedQuery

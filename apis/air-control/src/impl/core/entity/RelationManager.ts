@@ -57,13 +57,13 @@ export class RelationManager
 	getAlias(
 		jsonRelation: JSONRelation
 	): string {
-		return this.getPositionAlias(jsonRelation.rep, jsonRelation.fcp)
+		return this.getPositionAlias(jsonRelation.rep, jsonRelation.fromClausePosition)
 	}
 
 	getParentAlias(
 		jsonRelation: JSONRelation
 	): string {
-		let fromClausePosition = jsonRelation.fcp
+		let fromClausePosition = jsonRelation.fromClausePosition
 		if (fromClausePosition.length === 0) {
 			throw new Error(`Cannot find alias of a parent entity for the root entity`)
 		}
@@ -80,7 +80,7 @@ export class RelationManager
 			dbEntity, context.ioc.airDb)
 		return new QEntityConstructor<IQ>(
 			dbEntity,
-			joinRelation.fcp,
+			joinRelation.fromClausePosition,
 			dbEntity.relations[(<JSONEntityRelation>joinRelation).ri],
 			joinRelation.jt)
 	}

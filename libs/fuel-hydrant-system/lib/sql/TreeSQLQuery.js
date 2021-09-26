@@ -52,7 +52,7 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
             if (nested) {
                 throw new Error(`Cannot have DISTINCT specified in a nested select clause`);
             }
-            const distinctSelect = this.getSELECTFragment(nested, distinctClause.af[0].p[0], internalFragments, context);
+            const distinctSelect = this.getSELECTFragment(nested, distinctClause.appliedFunctions[0].p[0], internalFragments, context);
             return `DISTINCT ${distinctSelect}`;
         }
         let numProperties = 0;
@@ -98,7 +98,7 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
         {
             let distinctClause = selectClauseFragment;
             if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
-                return this.parseQueryResult(distinctClause.af[0].p[0], resultRow, nextFieldIndex, aliasCache, entityAlias);
+                return this.parseQueryResult(distinctClause.appliedFunctions[0].p[0], resultRow, nextFieldIndex, aliasCache, entityAlias);
             }
         }
         let resultObject = this.queryParser.addEntity(entityAlias);

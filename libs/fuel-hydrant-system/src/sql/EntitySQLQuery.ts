@@ -163,9 +163,9 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		// make the query entity the root tree node
 		if (joinRelations.length < 1) {
 			let onlyJsonRelation: JSONEntityRelation = {
-				cci: 0,
+				currentChildIndex: 0,
 				ti: this.dbEntity.index,
-				fcp: [],
+				fromClausePosition: [],
 				jt: null,
 				ri: null,
 				rt: JSONRelationType.ENTITY_ROOT,

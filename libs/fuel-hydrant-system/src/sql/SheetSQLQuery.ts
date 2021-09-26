@@ -74,7 +74,7 @@ export class SheetSQLQuery
 			let distinctClause = <JSONClauseField>selectClauseFragment
 			if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
 				let distinctSelect = this.getSELECTFragment(
-					nested, distinctClause.af[0].p[0], internalFragments,
+					nested, distinctClause.appliedFunctions[0].p[0], internalFragments,
 					context)
 				return `DISTINCT ${distinctSelect}`
 			}

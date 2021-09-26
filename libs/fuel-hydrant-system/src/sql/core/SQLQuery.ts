@@ -156,11 +156,11 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
 				` ${parentAlias}.${joinOnColumn.leftColumn} = ${currentAlias}.${joinOnColumn.rightColumn}`
 		)
 			.join('\n\t\t\tAND')
-		if (entityRelation.jwc) {
+		if (entityRelation.joinWhereClause) {
 			const whereClause       = this.getWHEREFragment(
-				entityRelation.jwc, '\t\t',
+				entityRelation.joinWhereClause, '\t\t',
 				context)
-			const joinWhereOperator = entityRelation.wjto === SqlOperator.AND ? 'AND' : 'OR'
+			const joinWhereOperator = entityRelation.joinWhereClauseOperator === SqlOperator.AND ? 'AND' : 'OR'
 			onClause                = `${onClause}
 			${joinWhereOperator} ${whereClause}`
 		}

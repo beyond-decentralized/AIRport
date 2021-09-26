@@ -177,7 +177,7 @@ export abstract class SQLWhereBase
 				return this.getComplexColumnFragment(aField, columnName,
 					context)
 			case JSONClauseObjectType.FIELD_QUERY:
-				let jsonFieldSqlSubQuery: JsonFieldQuery = aField.fsq
+				let jsonFieldSqlSubQuery: JsonFieldQuery = aField.fieldSubQuery
 				if ((<JsonFieldQuery><any>aField).S) {
 					jsonFieldSqlSubQuery = <any>aField
 				}

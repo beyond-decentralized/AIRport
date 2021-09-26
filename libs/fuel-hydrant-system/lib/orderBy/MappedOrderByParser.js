@@ -49,7 +49,7 @@ export class MappedOrderByParser {
             let currentSelectFragmentFieldSet = {};
             for (let propertyName in currentSelectFragment) {
                 let field = currentSelectFragment[propertyName];
-                if (!field.af) {
+                if (!field.appliedFunctions) {
                     selectFragmentQueue.push(field);
                     continue;
                 }

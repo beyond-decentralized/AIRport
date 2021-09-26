@@ -65,9 +65,9 @@ export class QEntityDriver {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
         // see SchemaDao.findMaxVersionedMapBySchemaAndDomainNames for an example
         let jsonRelation = {
-            cci: this.currentChildIndex,
+            currentChildIndex: this.currentChildIndex,
             ti: this.dbEntity.index,
-            fcp: this.fromClausePosition,
+            fromClausePosition: this.fromClausePosition,
             jt: this.joinType,
             rt: null,
             rep: columnAliases.entityAliases.getNextAlias(this.getRootJoinEntity()),
@@ -86,7 +86,7 @@ export class QEntityDriver {
     }
     getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
         jsonRelation.rt = JSONRelationType.ENTITY_JOIN_ON;
-        jsonRelation.jwc = queryUtils.whereClauseToJSON(this.joinWhereClause, columnAliases, fieldUtils);
+        jsonRelation.joinWhereClause = queryUtils.whereClauseToJSON(this.joinWhereClause, columnAliases, fieldUtils);
         return jsonRelation;
     }
     getEntityRelationJson(jsonRelation) {
@@ -111,9 +111,9 @@ export class QEntityDriver {
         // }
         //
         // let joinWhereClause = this.dbRelation.whereJoinTable.addToJoinFunction(otmQEntity,
-        // mtoQEntity, this.airportDb, this.airportDb.F); jsonRelation.jwc    =
+        // mtoQEntity, this.airportDb, this.airportDb.F); jsonRelation.joinWhereClause    =
         // this.utils.Query.whereClauseToJSON(joinWhereClause, columnAliases);
-        // jsonRelation.wjto   = this.dbRelation.joinFunctionWithOperator;  return
+        // jsonRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
         // jsonRelation;
     }
     getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
@@ -163,14 +163,14 @@ export class QTreeDriver extends QEntityDriver {
     getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
         jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);
         jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON;
-        jsonRelation.sq = new TreeQuery(this.subQuery, columnAliases.entityAliases)
+        jsonRelation.subQuery = new TreeQuery(this.subQuery, columnAliases.entityAliases)
             .toJSON(queryUtils, fieldUtils);
         return jsonRelation;
     }
     getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
         jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);
         jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT;
-        jsonRelation.sq = new TreeQuery(this.subQuery, columnAliases.entityAliases)
+        jsonRelation.subQuery = new TreeQuery(this.subQuery, columnAliases.entityAliases)
             .toJSON(queryUtils, fieldUtils);
         return jsonRelation;
     }
