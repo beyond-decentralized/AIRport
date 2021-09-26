@@ -77,10 +77,10 @@ export class IframeTransactionalConnector
 	async init() {
 		window.addEventListener("message", event => {
 			const message: IIsolateMessageOut<any> | ILocalAPIRequest = event.data;
-			if ((message as any).__handled__) {
+			if (message.__received__) {
 				return
 			}
-			(message as any).__handled__ = true
+			message.__received__ = true
 
 			const origin = event.origin;
 			if (message.schemaSignature.indexOf('.') > -1) {

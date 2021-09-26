@@ -13,6 +13,10 @@ export class LocalAPIClient {
         if (_inDemoMode) {
             window.addEventListener("message", event => {
                 const message = event.data;
+                if (message.__received__) {
+                    return;
+                }
+                message.__received__ = true;
                 switch (message.category) {
                     case 'ConnectionIsReady':
                         this.connectionReady = true;

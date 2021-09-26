@@ -8,25 +8,26 @@ import { JsonSchemaWithLastIds } from '..';
 import { LastIds } from '../LastIds';
 
 export enum IsolateMessageType {
-    ADD_REPOSITORY,
-    APP_INITIALIZING,
-    APP_INITIALIZED,
-    COMMIT,
-    DELETE_WHERE,
-    FIND,
-    FIND_ONE,
-    INSERT_VALUES,
-    INSERT_VALUES_GET_IDS,
-    ROLLBACK,
-    SEARCH,
-    SEARCH_ONE,
-    SEARCH_UNSUBSCRIBE,
-    START_TRANSACTION,
-    SAVE,
-    UPDATE_VALUES
+    ADD_REPOSITORY = 'ADD_REPOSITORY',
+    APP_INITIALIZING = 'APP_INITIALIZING',
+    APP_INITIALIZED = 'APP_INITIALIZED',
+    COMMIT = 'COMMIT',
+    DELETE_WHERE = 'DELETE_WHERE',
+    FIND = 'FIND',
+    FIND_ONE = 'FIND_ONE',
+    INSERT_VALUES = 'INSERT_VALUES',
+    INSERT_VALUES_GET_IDS = 'INSERT_VALUES_GET_IDS',
+    ROLLBACK = 'ROLLBACK',
+    SEARCH = 'SEARCH',
+    SEARCH_ONE = 'SEARCH_ONE',
+    SEARCH_UNSUBSCRIBE = 'UNSUBSCRIBE',
+    START_TRANSACTION = 'START_TRANSACTION',
+    SAVE = 'SAVE',
+    UPDATE_VALUES = 'UPDATE_VALUES'
 }
 
 export interface IIsolateMessage {
+    __received__?: boolean
     category: 'Db'
     id: number
     schemaSignature: string

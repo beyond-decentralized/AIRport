@@ -24,10 +24,10 @@ export class IframeTransactionalConnector {
     async init() {
         window.addEventListener("message", event => {
             const message = event.data;
-            if (message.__handled__) {
+            if (message.__received__) {
                 return;
             }
-            message.__handled__ = true;
+            message.__received__ = true;
             const origin = event.origin;
             if (message.schemaSignature.indexOf('.') > -1) {
                 // Invalid schema signature - cannot have periods that would point to invalid subdomains

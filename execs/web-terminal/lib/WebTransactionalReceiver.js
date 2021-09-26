@@ -26,8 +26,12 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             document.domain = Math.random() + '.' + Math.random() + this.domainPrefix;
         }
         window.addEventListener("message", event => {
-            const messageOrigin = event.origin;
             const message = event.data;
+            if (message.__received__) {
+                return;
+            }
+            message.__received__ = true;
+            const messageOrigin = event.origin;
             // All requests need to have a schema signature
             // to know what schema is being communicated to/from
             if (!this.hasValidSchemaSignature(message)) {
@@ -38,8 +42,12 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                     this.handleIsolateMessage(message, messageOrigin, event.source);
                     break;
                 case 'FromClient':
-                    message.category = 'FromClientRedirected';
-                    this.handleFromClientRequest(message, messageOrigin).then();
+                    const fromClientRedirectedMessage = {
+                        ...message,
+                        __received__: false,
+                        category: 'FromClientRedirected'
+                    };
+                    this.handleFromClientRequest(fromClientRedirectedMessage, messageOrigin).then();
                     break;
                 case 'IsConnectionReady':
                     const connectionIsReadyMessage = {
@@ -54,8 +62,12 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                     event.source.postMessage(connectionIsReadyMessage, messageOrigin);
                     break;
                 case 'ToClient':
-                    message.category = 'ToClientRedirected';
-                    this.handleToClientRequest(message, messageOrigin);
+                    const toClientRedirectedMessage = {
+                        ...message,
+                        __received__: false,
+                        category: 'ToClientRedirected'
+                    };
+                    this.handleToClientRequest(toClientRedirectedMessage, messageOrigin);
                     break;
                 default:
                     break;
@@ -147,7 +159,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         const frameWindow = this.getFrameWindow(message.schemaSignature);
         if (frameWindow) {
             // Forward the request to the correct schema iframe
-            frameWindow.postMessage(message, message.host);
+            frameWindow.postMessage(message, message.protocol + '//' + message.host);
         }
     }
     async ensureSchemaIsInstalled(schemaSignature, numPendingMessagesForSchema) {

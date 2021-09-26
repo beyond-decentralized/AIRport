@@ -3,24 +3,25 @@ import { Observable } from "rxjs";
 import { JsonSchemaWithLastIds } from '..';
 import { LastIds } from '../LastIds';
 export declare enum IsolateMessageType {
-    ADD_REPOSITORY = 0,
-    APP_INITIALIZING = 1,
-    APP_INITIALIZED = 2,
-    COMMIT = 3,
-    DELETE_WHERE = 4,
-    FIND = 5,
-    FIND_ONE = 6,
-    INSERT_VALUES = 7,
-    INSERT_VALUES_GET_IDS = 8,
-    ROLLBACK = 9,
-    SEARCH = 10,
-    SEARCH_ONE = 11,
-    SEARCH_UNSUBSCRIBE = 12,
-    START_TRANSACTION = 13,
-    SAVE = 14,
-    UPDATE_VALUES = 15
+    ADD_REPOSITORY = "ADD_REPOSITORY",
+    APP_INITIALIZING = "APP_INITIALIZING",
+    APP_INITIALIZED = "APP_INITIALIZED",
+    COMMIT = "COMMIT",
+    DELETE_WHERE = "DELETE_WHERE",
+    FIND = "FIND",
+    FIND_ONE = "FIND_ONE",
+    INSERT_VALUES = "INSERT_VALUES",
+    INSERT_VALUES_GET_IDS = "INSERT_VALUES_GET_IDS",
+    ROLLBACK = "ROLLBACK",
+    SEARCH = "SEARCH",
+    SEARCH_ONE = "SEARCH_ONE",
+    SEARCH_UNSUBSCRIBE = "UNSUBSCRIBE",
+    START_TRANSACTION = "START_TRANSACTION",
+    SAVE = "SAVE",
+    UPDATE_VALUES = "UPDATE_VALUES"
 }
 export interface IIsolateMessage {
+    __received__?: boolean;
     category: 'Db';
     id: number;
     schemaSignature: string;

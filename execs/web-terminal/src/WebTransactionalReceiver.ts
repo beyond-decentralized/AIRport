@@ -65,8 +65,13 @@ export class WebTransactionalReceiver
 		}
 
 		window.addEventListener("message", event => {
-			const messageOrigin = event.origin;
 			const message: IIsolateMessage | ILocalAPIRequest | ILocalAPIResponse = event.data
+			if (message.__received__) {
+				return
+			}
+			message.__received__ = true
+
+			const messageOrigin = event.origin;
 
 			// All requests need to have a schema signature
 			// to know what schema is being communicated to/from
@@ -79,8 +84,12 @@ export class WebTransactionalReceiver
 						event.source as Window)
 					break
 				case 'FromClient':
-					message.category = 'FromClientRedirected'
-					this.handleFromClientRequest(message as ILocalAPIRequest, messageOrigin).then()
+					const fromClientRedirectedMessage: ILocalAPIRequest = {
+						...message,
+						__received__: false,
+						category: 'FromClientRedirected'
+					}
+					this.handleFromClientRequest(fromClientRedirectedMessage, messageOrigin).then()
 					break
 				case 'IsConnectionReady':
 					const connectionIsReadyMessage: ILocalAPIResponse = {
@@ -95,8 +104,12 @@ export class WebTransactionalReceiver
 					(event.source as Window).postMessage(connectionIsReadyMessage, messageOrigin)
 					break
 				case 'ToClient':
-					message.category = 'ToClientRedirected'
-					this.handleToClientRequest(message as ILocalAPIResponse, messageOrigin)
+					const toClientRedirectedMessage: ILocalAPIResponse = {
+						...message,
+						__received__: false,
+						category: 'ToClientRedirected'
+					}
+					this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
 					break
 				default:
 					break
@@ -216,8 +229,9 @@ export class WebTransactionalReceiver
 
 		if (frameWindow) {
 			// Forward the request to the correct schema iframe
-			frameWindow.postMessage(message, message.host)
+			frameWindow.postMessage(message, message.protocol + '//' + message.host)
 		}
+
 
 	}
 
