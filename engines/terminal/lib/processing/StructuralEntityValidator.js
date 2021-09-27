@@ -9,7 +9,7 @@ export class StructuralEntityValidator {
 					Please use non-entity operations (like 'insert' or 'updateWhere') instead.`);
         }
         for (const entity of entities) {
-            const { isCreate, isDelete, isParentId, isStub } = context.ioc.entityStateManager.getEntityStateTypeAsFlags(entity, dbEntity);
+            const { isCreate, isParentId, isStub } = context.ioc.entityStateManager.getEntityStateTypeAsFlags(entity, dbEntity);
             if (isParentId) {
                 // No processing is needed (already covered by id check
                 continue;
@@ -75,7 +75,7 @@ for ${dbEntity.name}.${dbProperty.name}`);
                         this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty);
                     }
                     else {
-                        if (isStub || isParentId || isDelete) {
+                        if (isStub || isParentId) {
                             if (propertyValue !== undefined) {
                                 throw new Error(`Unexpected non-@Id value Stub|ParentId|Deleted record.
 Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`);

@@ -55,10 +55,11 @@ export class SQLUpdate
 				context)
 			whereFragment  = `WHERE
 ${whereFragment}`
-			// Always replace the root entity alias reference with the table name
-			let tableAlias = context.ioc.relationManager.getAlias(this.jsonUpdate.U)
-			let tableName  = context.ioc.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
-			whereFragment  = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
+			// TODO: following might be needed for some RDBMS, does not work for SqLite
+			// Replace the root entity alias reference with the table name
+			// let tableAlias = context.ioc.relationManager.getAlias(this.jsonUpdate.U)
+			// let tableName  = context.ioc.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
+			// whereFragment  = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
 		}
 
 		return `UPDATE

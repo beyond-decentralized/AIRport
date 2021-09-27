@@ -180,12 +180,12 @@ export class OperationManager
 					.getPortableQuery(insertValues, null, context)
 				await context.ioc.insertManager.insertValues(
 					portableQuery, actor, transaction, context, ensureGeneratedValues)
-					for (let i = 0; i < entities.length; i++) {
-						const entity = entities[i]
-						saveResult.created[
-							context.ioc.entityStateManager.getOperationUniqueId(entity)
-						] = true
-					}
+				for (let i = 0; i < entities.length; i++) {
+					const entity = entities[i]
+					saveResult.created[
+						context.ioc.entityStateManager.getOperationUniqueId(entity)
+					] = true
+				}
 			}
 		}
 	}
@@ -208,24 +208,26 @@ export class OperationManager
 		const entityStateManager = await container(this).get(ENTITY_STATE_MANAGER)
 		const qEntity = context.ioc.airDb.qSchemas
 		[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
-		const setFragment: any = {}
-		const idWhereFragments: JSONValueOperation[] = []
-		let runUpdate = false
 
 		for (const entity of entities) {
+			const setFragment: any = {}
+			const idWhereFragments: JSONValueOperation[] = []
+			let runUpdate = false
 			const originalEntity = entityStateManager.getOriginalValues(entity)
+			if (!originalEntity) {
+				continue
+			}
 			for (const dbProperty of context.dbEntity.properties) {
 				const updatedValue = entity[dbProperty.name]
 				if (!dbProperty.relation || !dbProperty.relation.length) {
-					const dbColumn = dbProperty.propertyColumns[0].column
-					const originalValue = originalEntity[dbColumn.name]
+					const originalValue = originalEntity[dbProperty.name]
 					if (dbProperty.isId) {
 						// For an id property, the value is guaranteed to be the same (and not empty) -
 						// cannot entity-update id fields
 						idWhereFragments.push((<any>qEntity)[dbProperty.name]
 							.equals(updatedValue))
 					} else if (!valuesEqual(originalValue, updatedValue)) {
-						setFragment[dbColumn.name] = updatedValue
+						setFragment[dbProperty.name] = updatedValue
 						saveResult.updated[
 							context.ioc.entityStateManager.getOperationUniqueId(entity)
 						] = true
@@ -235,12 +237,30 @@ export class OperationManager
 					const dbRelation = dbProperty.relation[0]
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
+							let propertyOriginalValue = originalEntity[dbProperty.name]
 							context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (
-								dbColumn: DbColumn,
+								_dbColumn: DbColumn,
 								value: any,
 								propertyNameChains: string[][],
 							) => {
-								let originalValue = originalEntity[dbColumn.name]
+								let originalColumnValue = propertyOriginalValue
+								let columnValue = value
+								let valuePropertyNameChain = value
+								for (const childPropertyName of propertyNameChains[0]) {
+									if (originalColumnValue instanceof Object
+										&& originalColumnValue[childPropertyName]) {
+										originalColumnValue = originalColumnValue[childPropertyName]
+									} else {
+										originalColumnValue = null
+									}
+									if (columnValue instanceof Object
+										&& columnValue[childPropertyName]) {
+										columnValue = columnValue[childPropertyName]
+										valuePropertyNameChain.push(childPropertyName)
+									} else {
+										columnValue = null
+									}
+								}
 								if (dbProperty.isId) {
 									let idQProperty = qEntity
 									for (const propertyNameLink of propertyNameChains[0]) {
@@ -249,8 +269,16 @@ export class OperationManager
 									// For an id property, the value is guaranteed to be the same (and not
 									// empty) - cannot entity-update id fields
 									idWhereFragments.push(idQProperty.equals(value))
-								} else if (!valuesEqual(originalValue, value)) {
-									setFragment[dbColumn.name] = value
+								} else if (!valuesEqual(originalColumnValue, columnValue)) {
+									let currentSetFragment = setFragment
+									for (let i = 0; i < valuePropertyNameChain.length - 1; i++) {
+										const childPropertyName = valuePropertyNameChain[i]
+										if(!currentSetFragment[childPropertyName]) {
+											currentSetFragment[childPropertyName] = {}
+										}
+										currentSetFragment = currentSetFragment[childPropertyName]
+									}
+									currentSetFragment[valuePropertyNameChain.length - 1] = columnValue
 									saveResult.updated[
 										context.ioc.entityStateManager.getOperationUniqueId(entity)
 									] = true

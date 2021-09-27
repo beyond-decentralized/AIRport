@@ -235,7 +235,7 @@ export class UpdateCacheManager
         }
         if (!entityState) {
             if ((hasId && hasGeneratedIds) || originalValuesObject) {
-                entityState = EntityState.PARENT_ID
+                entityState = EntityState.PASS_THROUGH
             } else {
                 entityState = EntityState.CREATE
             }

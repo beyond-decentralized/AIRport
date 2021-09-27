@@ -31,12 +31,14 @@ export class EntityStateManager {
     copyEntityState(fromEntity, toEntity) {
         toEntity[EntityStateManager.STATE_FIELD]
             = fromEntity[EntityStateManager.STATE_FIELD];
+        toEntity[EntityStateManager.ORIGINAL_VALUES_PROPERTY]
+            = fromEntity[EntityStateManager.ORIGINAL_VALUES_PROPERTY];
     }
     getStateFieldName() {
         return EntityStateManager.STATE_FIELD;
     }
     getEntityStateTypeAsFlags(entity, dbEntity) {
-        let isCreate, isDelete, isParentId, isResult, isResultDate, isResultJson, isStub, isUpdate;
+        let isCreate, isDelete, isParentId, isPassThrough, isResult, isResultDate, isResultJson, isStub, isUpdate;
         const entityState = this.getEntityState(entity);
         switch (entityState) {
             case EntityState.CREATE:
@@ -47,6 +49,9 @@ export class EntityStateManager {
                 break;
             case EntityState.PARENT_ID:
                 isParentId = true;
+                break;
+            case EntityState.PASS_THROUGH:
+                isPassThrough = true;
                 break;
             // case EntityState.RESULT:
             // 	isResult = true
@@ -71,6 +76,7 @@ export class EntityStateManager {
             isCreate,
             isDelete,
             isParentId,
+            isPassThrough,
             // isResult,
             isResultDate,
             isStub,

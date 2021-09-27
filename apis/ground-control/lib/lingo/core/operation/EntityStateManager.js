@@ -4,6 +4,7 @@ export var EntityState;
     EntityState["DATE"] = "DATE";
     EntityState["DELETE"] = "DELETE";
     EntityState["PARENT_ID"] = "PARENT_ID";
+    EntityState["PASS_THROUGH"] = "PASS_THROUGH";
     // Not sure if RESULT is still needed, with removal of RESULT_JSON and RESULT_JSON_ARRAY
     // RESULT = 'RESULT',
     EntityState["STUB"] = "STUB";

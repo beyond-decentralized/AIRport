@@ -9,6 +9,7 @@ import {
 
 export interface EntityWithState {
 	__state__: EntityState;
+	__originalValues__: any
 }
 
 export function markForDeletion<T>(
@@ -78,7 +79,10 @@ export class EntityStateManager
 		toEntity: T
 	): void {
 		(<EntityWithState><any>toEntity)[EntityStateManager.STATE_FIELD]
-			= (<EntityWithState><any>fromEntity)[EntityStateManager.STATE_FIELD]
+			= (<EntityWithState><any>fromEntity)[EntityStateManager.STATE_FIELD];
+		(<EntityWithState><any>toEntity)[EntityStateManager.ORIGINAL_VALUES_PROPERTY]
+			= (<EntityWithState><any>fromEntity)[EntityStateManager.ORIGINAL_VALUES_PROPERTY]
+
 	}
 
 	getStateFieldName(): string {
@@ -89,7 +93,8 @@ export class EntityStateManager
 		entity: T,
 		dbEntity: DbEntity
 	): IEntityStateAsFlags {
-		let isCreate, isDelete, isParentId, isResult, isResultDate, isResultJson, isStub, isUpdate
+		let isCreate, isDelete, isParentId, isPassThrough, isResult,
+			isResultDate, isResultJson, isStub, isUpdate
 		const entityState = this.getEntityState(entity)
 		switch (entityState) {
 			case EntityState.CREATE:
@@ -100,6 +105,9 @@ export class EntityStateManager
 				break
 			case EntityState.PARENT_ID:
 				isParentId = true
+				break
+			case EntityState.PASS_THROUGH:
+				isPassThrough = true
 				break
 			// case EntityState.RESULT:
 			// 	isResult = true
@@ -125,6 +133,7 @@ export class EntityStateManager
 			isCreate,
 			isDelete,
 			isParentId,
+			isPassThrough,
 			// isResult,
 			isResultDate,
 			isStub,

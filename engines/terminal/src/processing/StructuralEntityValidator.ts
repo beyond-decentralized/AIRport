@@ -31,7 +31,6 @@ export class StructuralEntityValidator
 		for (const entity of entities) {
 			const {
 				isCreate,
-				isDelete,
 				isParentId,
 				isStub
 			} = context.ioc.entityStateManager.getEntityStateTypeAsFlags(entity, dbEntity)
@@ -106,7 +105,7 @@ for ${dbEntity.name}.${dbProperty.name}`)
 						const isIdColumnEmpty = context.ioc.schemaUtils.isIdEmpty(propertyValue)
 						this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty)
 					} else {
-						if (isStub || isParentId || isDelete) {
+						if (isStub || isParentId) {
 							if (propertyValue !== undefined) {
 								throw new Error(`Unexpected non-@Id value Stub|ParentId|Deleted record.
 Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`)

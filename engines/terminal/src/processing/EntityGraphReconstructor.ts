@@ -59,7 +59,6 @@ export class EntityGraphReconstructor
 			 * other entities.
 			 */
 			const {
-				isDelete,
 				isParentId,
 				isStub
 			} = context.ioc.entityStateManager
@@ -141,7 +140,7 @@ that are themselves Parent Ids.`)
 					context.dbEntity = previousDbEntity
 				} // if (dbProperty.relation
 				else {
-					if ((isDelete || isParentId || isStub) && !dbProperty.isId) {
+					if ((isParentId || isStub) && !dbProperty.isId) {
 						// TODO: can a ParentId comprise of fields that are not part of it's own Id
 						// but are a part of Parent's Id?
 						throw new Error(`Deletes, ParentIds and Stubs may only contain @Id properties or relations.`)

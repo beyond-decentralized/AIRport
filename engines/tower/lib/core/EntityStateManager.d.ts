@@ -1,6 +1,7 @@
 import { DbEntity, EntityState, IEntityStateAsFlags, IEntityStateManager } from '@airport/ground-control';
 export interface EntityWithState {
     __state__: EntityState;
+    __originalValues__: any;
 }
 export declare function markForDeletion<T>(entity: T): void;
 export declare class EntityStateManager implements IEntityStateManager {

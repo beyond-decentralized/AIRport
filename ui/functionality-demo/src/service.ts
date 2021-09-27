@@ -52,6 +52,11 @@ export class FunctionalityDemoService {
         toDelete: any
     ): void {
         markForDeletion(toDelete)
+        let originalParentRecords
+        const unsubscribe = allParentRecords.subscribe(parentRecords =>
+            originalParentRecords = parentRecords)
+        unsubscribe()
+        allParentRecords.set([...originalParentRecords])
         /*
         for (let i = records.length; i >= 0; i--) {
             if (records[i] === toDelete) {

@@ -4,6 +4,7 @@ export declare enum EntityState {
     DATE = "DATE",
     DELETE = "DELETE",
     PARENT_ID = "PARENT_ID",
+    PASS_THROUGH = "PASS_THROUGH",
     STUB = "STUB",
     UPDATE = "UPDATE"
 }
@@ -11,6 +12,7 @@ export interface IEntityStateAsFlags {
     isCreate: boolean;
     isDelete: boolean;
     isParentId: boolean;
+    isPassThrough: boolean;
     isResultDate: boolean;
     isStub: boolean;
     isUpdate: boolean;

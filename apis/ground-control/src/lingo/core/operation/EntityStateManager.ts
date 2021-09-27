@@ -5,6 +5,7 @@ export enum EntityState {
 	DATE = 'DATE',
 	DELETE = 'DELETE',
 	PARENT_ID = 'PARENT_ID',
+	PASS_THROUGH = 'PASS_THROUGH',
 	// Not sure if RESULT is still needed, with removal of RESULT_JSON and RESULT_JSON_ARRAY
 	// RESULT = 'RESULT',
 	STUB = 'STUB',
@@ -18,6 +19,7 @@ export interface IEntityStateAsFlags {
 	isCreate: boolean
 	isDelete: boolean
 	isParentId: boolean
+	isPassThrough: boolean
 	// isResult: boolean
 	isResultDate: boolean
 	// isResultJson: boolean

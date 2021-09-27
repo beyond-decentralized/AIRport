@@ -36,7 +36,7 @@ export class EntityGraphReconstructor {
              * entity stubs that are needed structurally to get to
              * other entities.
              */
-            const { isDelete, isParentId, isStub } = context.ioc.entityStateManager
+            const { isParentId, isStub } = context.ioc.entityStateManager
                 .getEntityStateTypeAsFlags(entity, dbEntity);
             const previouslyFoundEntity = entitiesByOperationIndex[operationUniqueId];
             let entityCopy;
@@ -114,7 +114,7 @@ that are themselves Parent Ids.`);
                     context.dbEntity = previousDbEntity;
                 } // if (dbProperty.relation
                 else {
-                    if ((isDelete || isParentId || isStub) && !dbProperty.isId) {
+                    if ((isParentId || isStub) && !dbProperty.isId) {
                         // TODO: can a ParentId comprise of fields that are not part of it's own Id
                         // but are a part of Parent's Id?
                         throw new Error(`Deletes, ParentIds and Stubs may only contain @Id properties or relations.`);
