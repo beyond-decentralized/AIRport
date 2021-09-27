@@ -1,4 +1,4 @@
-import { IEntityCascadeGraph } from '@airport/air-control'
+import { IEntityCascadeGraph, isUpdate } from '@airport/air-control'
 import { DI } from '@airport/di'
 import {
 	ensureChildArray,
@@ -63,7 +63,8 @@ export class DependencyGraphResolver
 				isCreate,
 				isDelete,
 				isParentId,
-				isStub
+				isStub,
+				isUpdate
 			} = context.ioc.entityStateManager
 				.getEntityStateTypeAsFlags(entity, dbEntity)
 
@@ -73,7 +74,7 @@ export class DependencyGraphResolver
 			}
 
 			const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity)
-			if (deleteByCascade && (!isDelete || !isParentId)) {
+			if (deleteByCascade && (isCreate || isUpdate)) {
 				throw new Error(`Cannot do a Create or Update operation on an entity that will be
 deleted by cascading rules.  Entity: ${dbEntity.name}.
 Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`)

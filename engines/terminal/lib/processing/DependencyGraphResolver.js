@@ -27,14 +27,14 @@ export class DependencyGraphResolver {
              * has no associated operations or child entities of
              * it's own).
              */
-            const { isCreate, isDelete, isParentId, isStub } = context.ioc.entityStateManager
+            const { isCreate, isDelete, isParentId, isStub, isUpdate } = context.ioc.entityStateManager
                 .getEntityStateTypeAsFlags(entity, dbEntity);
             if (isStub) {
                 // No processing is needed
                 continue;
             }
             const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity);
-            if (deleteByCascade && (!isDelete || !isParentId)) {
+            if (deleteByCascade && (isCreate || isUpdate)) {
                 throw new Error(`Cannot do a Create or Update operation on an entity that will be
 deleted by cascading rules.  Entity: ${dbEntity.name}.
 Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`);
