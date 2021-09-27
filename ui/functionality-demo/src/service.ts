@@ -45,6 +45,7 @@ export class FunctionalityDemoService {
             num: 0,
             str: ""
         })
+        this.updateStore()
     }
 
     delete(
@@ -52,11 +53,7 @@ export class FunctionalityDemoService {
         toDelete: any
     ): void {
         markForDeletion(toDelete)
-        let originalParentRecords
-        const unsubscribe = allParentRecords.subscribe(parentRecords =>
-            originalParentRecords = parentRecords)
-        unsubscribe()
-        allParentRecords.set([...originalParentRecords])
+        this.updateStore()
         /*
         for (let i = records.length; i >= 0; i--) {
             if (records[i] === toDelete) {
@@ -65,6 +62,14 @@ export class FunctionalityDemoService {
             }
         }
         */
+    }
+
+    private updateStore() {
+        let originalParentRecords
+        const unsubscribe = allParentRecords.subscribe(parentRecords =>
+            originalParentRecords = parentRecords)
+        unsubscribe()
+        allParentRecords.set([...originalParentRecords])
     }
 
 }

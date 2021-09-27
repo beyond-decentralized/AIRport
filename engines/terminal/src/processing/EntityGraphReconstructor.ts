@@ -44,7 +44,7 @@ export class EntityGraphReconstructor
 		const results: T[] = []
 		for (const entity of currentEntities) {
 			if (!entity) {
-				throw `Null root entities @OneToMany arrays with null entities are not allowed`
+				throw `Null root entities and @OneToMany arrays with null entities are not allowed`
 			}
 			const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity)
 			if (!operationUniqueId || typeof operationUniqueId !== 'number'
@@ -129,12 +129,12 @@ for ${dbEntity.name}.${dbProperty.name}`)
 that are themselves Parent Ids.`)
 								}
 							}
-						} // if (isManyToOne
-						else {
-							if (propertyValue) {
-								propertyCopyValue = propertyValue.concat(propertyCopyValue)
+						} else {
+							if(isParentId) {
+								throw new Error(`Parent Ids may NOT contain @OneToMany colletions.`)
 							}
-						}
+						}// if (isManyToOne
+						// if !isManyToOne - nothing to do
 					} // if (propertyValue
 					propertyValue = propertyCopyValue
 					context.dbEntity = previousDbEntity

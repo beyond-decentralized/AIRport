@@ -2,7 +2,7 @@ import { DI } from '@airport/di';
 import { EntityRelationType, SQLDataType } from '@airport/ground-control';
 import { STRUCTURAL_ENTITY_VALIDATOR } from '../tokens';
 export class StructuralEntityValidator {
-    validate(entities, operatedOnEntityIndicator, context) {
+    validate(entities, operatedOnEntityIndicator, context, fromOneToMany = false, parentRelationPropertyName = null, parentRelationEntity = null) {
         const dbEntity = context.dbEntity;
         if (!dbEntity.idColumns.length) {
             throw new Error(`Cannot run 'save' for entity '${dbEntity.name}' with no @Id(s).
@@ -32,10 +32,10 @@ export class StructuralEntityValidator {
                  */
                 if (dbProperty.relation && dbProperty.relation.length) {
                     const dbRelation = dbProperty.relation[0];
-                    let relatedEntities = propertyValue;
+                    let relatedEntities;
+                    let relatinIsOneToMany = false;
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            relatedEntities = [propertyValue];
                             // Id columns are for the parent (currently processed) entity and must be
                             // checked as part of this entity
                             if (dbProperty.isId) {
@@ -53,18 +53,31 @@ export class StructuralEntityValidator {
                                     }
                                 }, false);
                             }
+                            if (fromOneToMany) {
+                                if (!propertyValue) {
+                                    if (!dbRelation.manyToOneElems.mappedBy
+                                        || dbRelation.manyToOneElems.mappedBy === parentRelationPropertyName) {
+                                        // The @ManyToOne side of the relationship is missing, add it
+                                        entity[dbProperty.name] = parentRelationEntity;
+                                    }
+                                }
+                            }
+                            if (propertyValue) {
+                                relatedEntities = [propertyValue];
+                            }
                             break;
                         case EntityRelationType.ONE_TO_MANY:
-                            // nothing to do
+                            relatinIsOneToMany = true;
+                            relatedEntities = propertyValue;
                             break;
                         default:
                             throw new Error(`Unexpected relation type ${dbRelation.relationType}
 for ${dbEntity.name}.${dbProperty.name}`);
                     } // switch dbRelation.relationType
-                    if (relatedEntities) {
+                    if (relatedEntities && relatedEntities.length) {
                         const previousDbEntity = context.dbEntity;
                         context.dbEntity = dbRelation.relationEntity;
-                        this.validate(relatedEntities, operatedOnEntityIndicator, context);
+                        this.validate(relatedEntities, operatedOnEntityIndicator, context, relatinIsOneToMany, dbProperty.name, entity);
                         context.dbEntity = previousDbEntity;
                     }
                 } // if (dbProperty.relation
