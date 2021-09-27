@@ -68,7 +68,7 @@ export interface SRelation {
 	/**
 	 * Many-to-One configuration object (or 'true' if @ManyToOne but no object is present).
 	 */
-	manyToOne?: DatabaseManyToOneElements | true;
+	manyToOne?: DatabaseManyToOneElements;
 
 	/**
 	 * One-to-Many configuration object (if @OneToMany)

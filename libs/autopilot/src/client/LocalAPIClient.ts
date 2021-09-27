@@ -130,10 +130,10 @@ export class LocalAPIClient
         }
 
         if (_inDemoMode) {
+            return response.payload
+        } else {
             return queryResultsDeserializer
                 .deserialize(response.payload, serializationStateManager)
-        } else {
-            return response.payload
         }
     }
 

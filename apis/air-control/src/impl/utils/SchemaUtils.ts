@@ -104,6 +104,9 @@ export class SchemaUtils
 		airDb: IAirportDatabase
 	): any {
 		const entityConstructor = this.getEntityConstructor(dbEntity, airDb)
+		if(!entityConstructor) {
+			return {}
+		}
 		return new entityConstructor()
 	}
 

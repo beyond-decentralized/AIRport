@@ -36,6 +36,9 @@ export class QMetadataUtils
 	): any {
 		const dbEntity          = qEntity.__driver__.dbEntity
 		const entityConstructor = airDb.qSchemas[dbEntity.schemaVersion.schema.index].__constructors__[dbEntity.name]
+		if(!entityConstructor) {
+			return {}
+		}
 		return new entityConstructor()
 	}
 

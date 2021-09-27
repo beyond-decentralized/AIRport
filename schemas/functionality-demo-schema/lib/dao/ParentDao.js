@@ -24,7 +24,7 @@ export class ParentDao extends BaseParentDao {
                 from: [
                     // FIXME: create a this.Parent and type it QParent
                     parent = this.db.from,
-                    parent.children.innerJoin()
+                    parent.children.leftJoin()
                 ]
             });
         }

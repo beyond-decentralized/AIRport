@@ -88,6 +88,10 @@ export interface IObservableDataIMO<T>
 
 export interface ISaveIMI<E, T = E | E[]>
     extends IIsolateMessage {
-    entity: T
+    entity: T,
+    dbEntity: {
+        id: number,
+        schemaVersionId: number
+    }
 }
 

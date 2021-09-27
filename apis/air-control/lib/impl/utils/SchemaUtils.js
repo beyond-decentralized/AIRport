@@ -38,6 +38,9 @@ export class SchemaUtils {
     }
     getNewEntity(dbEntity, airDb) {
         const entityConstructor = this.getEntityConstructor(dbEntity, airDb);
+        if (!entityConstructor) {
+            return {};
+        }
         return new entityConstructor();
     }
     isIdEmpty(idValue) {

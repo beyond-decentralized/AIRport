@@ -139,7 +139,7 @@ export interface JsonSchemaRelation extends SchemaReferenceByIndex<RelationIndex
     /**
      * Many-to-One configuration object (or 'true' if @ManyToOne but no object is present).
      */
-    manyToOneElems?: DatabaseManyToOneElements | true;
+    manyToOneElems?: DatabaseManyToOneElements;
     /**
      * One-to-Many configuration object (if @OneToMany).
      */
@@ -180,7 +180,7 @@ export interface DbRelation extends SchemaReferenceByIndex<RelationIndex>, Datab
      * joins
      */
     manyRelationColumns: DbRelationColumn[];
-    manyToOneElems: DatabaseManyToOneElements | true;
+    manyToOneElems: DatabaseManyToOneElements;
     oneRelationColumns?: DbRelationColumn[];
     oneToManyElems: DatabaseOneToManyElements;
     property: DbProperty;

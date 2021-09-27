@@ -1,4 +1,7 @@
-import { IQueryContext } from '@airport/air-control';
+import {
+	IEntityContext,
+	IQueryContext
+} from '@airport/air-control';
 import { ILocalAPIRequest } from '@airport/autopilot';
 import {
 	container,
@@ -209,10 +212,15 @@ export class IframeTransactionalConnector
 
 	async save<E, T = E | E[]>(
 		entity: T,
-		context: IContext,
+		context: IEntityContext,
 	): Promise<ISaveResult> {
+		const dbEntity = context.dbEntity;
 		return await this.sendMessage<ISaveIMI<any, any>, ISaveResult>({
 			...this.getCoreFields(),
+			dbEntity: {
+				id: dbEntity.id,
+				schemaVersionId: dbEntity.schemaVersion.id
+			},
 			entity,
 			type: IsolateMessageType.SAVE
 		})

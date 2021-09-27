@@ -1,7 +1,7 @@
 import { container, } from '@airport/di';
 import { IsolateMessageType } from '@airport/security-check';
 import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff';
-import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
+import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER } from '../tokens';
 import { getSchemaName } from '@airport/ground-control';
 export class TransactionalReceiver {
@@ -19,6 +19,7 @@ export class TransactionalReceiver {
             domainAndPort: 'test'
         };
         let context = {};
+        context.startedAt = new Date();
         try {
             switch (message.type) {
                 case IsolateMessageType.APP_INITIALIZING:
@@ -69,6 +70,18 @@ export class TransactionalReceiver {
                     break;
                 case IsolateMessageType.SAVE:
                     const saveMessage = message;
+                    const terminalStore = await container(this).get(TERMINAL_STORE);
+                    if (!saveMessage.dbEntity) {
+                        errorMessage = `DbEntity id was not passed in`;
+                        break;
+                    }
+                    const dbEntityId = saveMessage.dbEntity.id;
+                    const dbEntity = terminalStore.getAllEntities()[dbEntityId];
+                    if (!dbEntity) {
+                        errorMessage = `Could not find DbEntity with Id ${dbEntityId}`;
+                        break;
+                    }
+                    context.dbEntity = dbEntity;
                     result = await transactionalServer.save(saveMessage.entity, credentials, context);
                     break;
                 case IsolateMessageType.SEARCH:

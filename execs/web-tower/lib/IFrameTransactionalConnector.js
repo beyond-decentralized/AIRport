@@ -115,8 +115,13 @@ export class IframeTransactionalConnector {
         return this.sendObservableMessage(portableQuery, context, IsolateMessageType.SEARCH_ONE, cachedSqlQueryId);
     }
     async save(entity, context) {
+        const dbEntity = context.dbEntity;
         return await this.sendMessage({
             ...this.getCoreFields(),
+            dbEntity: {
+                id: dbEntity.id,
+                schemaVersionId: dbEntity.schemaVersion.id
+            },
             entity,
             type: IsolateMessageType.SAVE
         });

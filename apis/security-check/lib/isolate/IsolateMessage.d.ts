@@ -58,5 +58,9 @@ export interface IObservableDataIMO<T> extends IIsolateMessageOut<Observable<T>>
 }
 export interface ISaveIMI<E, T = E | E[]> extends IIsolateMessage {
     entity: T;
+    dbEntity: {
+        id: number;
+        schemaVersionId: number;
+    };
 }
 //# sourceMappingURL=IsolateMessage.d.ts.map

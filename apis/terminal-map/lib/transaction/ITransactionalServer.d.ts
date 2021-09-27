@@ -1,3 +1,4 @@
+import { IEntityContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
 import { DistributionStrategy, ISaveResult, PlatformType, PortableQuery } from '@airport/ground-control';
 import { Observable } from 'rxjs';
@@ -12,7 +13,7 @@ export interface ITransactionalServer {
     startTransaction(credentials: ICredentials, context: IContext): Promise<boolean>;
     commit(credentials: ICredentials, context: IContext): Promise<boolean>;
     rollback(credentials: ICredentials, context: IContext): Promise<boolean>;
-    save<E>(entity: E, credentials: ICredentials, context: IContext): Promise<ISaveResult>;
+    save<E>(entity: E, credentials: ICredentials, context: IEntityContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, credentials: ICredentials, context: IContext, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, credentials: ICredentials, context: IContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, credentials: ICredentials, context: IContext): Promise<number>;

@@ -1,3 +1,4 @@
+import { IEntityContext } from '@airport/air-control'
 import {IContext}          from '@airport/di'
 import {
 	DistributionStrategy,
@@ -70,7 +71,7 @@ export interface ITransactionalServer {
 	save<E>(
 		entity: E,
 		credentials: ICredentials,
-		context: IContext,
+		context: IEntityContext,
 	): Promise<ISaveResult>
 
 	insertValues(

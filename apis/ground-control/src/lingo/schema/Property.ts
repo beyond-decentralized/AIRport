@@ -216,7 +216,7 @@ export interface JsonSchemaRelation
 	/**
 	 * Many-to-One configuration object (or 'true' if @ManyToOne but no object is present).
 	 */
-	manyToOneElems?: DatabaseManyToOneElements | true;
+	manyToOneElems?: DatabaseManyToOneElements;
 
 	/**
 	 * One-to-Many configuration object (if @OneToMany).
@@ -284,7 +284,7 @@ export interface DbRelation
 	 */
 	// isRepositoryJoin: boolean;
 	manyRelationColumns: DbRelationColumn[];
-	manyToOneElems: DatabaseManyToOneElements | true;
+	manyToOneElems: DatabaseManyToOneElements;
 	oneRelationColumns?: DbRelationColumn[];
 	oneToManyElems: DatabaseOneToManyElements;
 	property: DbProperty;

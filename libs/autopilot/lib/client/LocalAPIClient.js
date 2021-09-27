@@ -85,11 +85,11 @@ export class LocalAPIClient {
             throw new Error(response.errorMessage);
         }
         if (_inDemoMode) {
-            return queryResultsDeserializer
-                .deserialize(response.payload, serializationStateManager);
+            return response.payload;
         }
         else {
-            return response.payload;
+            return queryResultsDeserializer
+                .deserialize(response.payload, serializationStateManager);
         }
     }
     wait(milliseconds) {

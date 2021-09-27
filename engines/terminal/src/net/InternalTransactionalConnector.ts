@@ -1,4 +1,4 @@
-import { IQueryContext } from '@airport/air-control';
+import { IEntityContext, IQueryContext } from '@airport/air-control';
 import {
     container,
     DI,
@@ -128,7 +128,7 @@ export class TransactionalConnector
 
     async save<E, T = E | E[]>(
         entity: T,
-        context: IContext,
+        context: IEntityContext,
     ): Promise<ISaveResult> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
@@ -147,9 +147,9 @@ export class TransactionalConnector
 
         return await transServer.insertValues(
             portableQuery, null, {
-                internal: true,
-                ...context
-            }, ensureGeneratedValues)
+            internal: true,
+            ...context
+        }, ensureGeneratedValues)
     }
 
     async insertValuesGetIds(
