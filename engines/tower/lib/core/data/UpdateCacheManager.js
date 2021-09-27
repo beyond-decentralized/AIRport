@@ -171,22 +171,24 @@ export class UpdateCacheManager {
                     }
                     let originalValue = originalValuesObject[dbProperty.name];
                     let propertyValue;
-                    if (originalValue) {
-                        switch (dbProperty.propertyColumns[0].column.type) {
-                            case SQLDataType.DATE:
+                    switch (dbProperty.propertyColumns[0].column.type) {
+                        case SQLDataType.DATE:
+                            if (originalValue) {
                                 originalValue = originalValue.getTime();
-                                propertyValue = property.getTime();
-                                break;
-                            case SQLDataType.JSON:
+                            }
+                            propertyValue = property.getTime();
+                            break;
+                        case SQLDataType.JSON:
+                            if (originalValue) {
                                 originalValue = JSON.stringify(originalValue);
-                                propertyValue = JSON.stringify(property);
-                                break;
-                            default:
-                                propertyValue = property;
-                                break;
-                        }
+                            }
+                            propertyValue = JSON.stringify(property);
+                            break;
+                        default:
+                            propertyValue = property;
+                            break;
                     }
-                    if (propertyValue != originalValue) {
+                    if (propertyValue !== originalValue) {
                         entityState = EntityState.UPDATE;
                     }
                 }
