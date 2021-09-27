@@ -127,6 +127,7 @@ export class SchemaRelationResolver {
 			switch (aRelation.relationType) {
 				case EntityRelationType.ONE_TO_MANY:
 					// Don't need to assign oneSideRelationIndex
+					// oneSideRelationIndex = aRelation.index
 					break
 				case EntityRelationType.MANY_TO_ONE:
 					if (!crossSchema) {

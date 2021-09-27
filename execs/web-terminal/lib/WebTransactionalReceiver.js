@@ -47,7 +47,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                         __received__: false,
                         category: 'FromClientRedirected'
                     };
-                    this.handleFromClientRequest(fromClientRedirectedMessage, messageOrigin).then();
+                    this.handleFromClientRequest(fromClientRedirectedMessage, messageOrigin, event.source).then();
                     break;
                 case 'IsConnectionReady':
                     const connectionIsReadyMessage = {
@@ -77,7 +77,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
     hasValidSchemaSignature(message) {
         return message.schemaSignature && message.schemaSignature.indexOf('.') === -1;
     }
-    async handleFromClientRequest(message, messageOrigin) {
+    async handleFromClientRequest(message, messageOrigin, sourceWindow) {
         const appDomainAndPort = messageOrigin.split('//')[1];
         if (message.host !== appDomainAndPort) {
             return;
@@ -111,10 +111,10 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         }
         let pendingMessageIdsFromHostForSchema = pendingMessageIdsFromHost.get(message.schemaSignature);
         if (!pendingMessageIdsFromHostForSchema) {
-            pendingMessageIdsFromHostForSchema = new Set();
+            pendingMessageIdsFromHostForSchema = new Map();
             pendingMessageIdsFromHost.set(message.schemaSignature, pendingMessageIdsFromHostForSchema);
         }
-        pendingMessageIdsFromHostForSchema.add(message.id);
+        pendingMessageIdsFromHostForSchema.set(message.id, sourceWindow);
         const frameWindow = this.getFrameWindow(message.schemaSignature);
         if (frameWindow) {
             // Forward the request to the correct schema iframe
@@ -143,7 +143,8 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         if (!pendingMessagesFromHostForSchema) {
             return;
         }
-        if (!pendingMessagesFromHostForSchema.has(message.id)) {
+        let sourceWindow = pendingMessagesFromHostForSchema.get(message.id);
+        if (!sourceWindow) {
             return;
         }
         pendingMessagesFromHostForSchema.delete(message.id);
@@ -155,12 +156,8 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         if (numMessagesForSchema > 0) {
             this.pendingHostCounts.set(message.host, numMessagesForSchema - 1);
         }
-        // Forward the request to the correct app
-        const frameWindow = this.getFrameWindow(message.schemaSignature);
-        if (frameWindow) {
-            // Forward the request to the correct schema iframe
-            frameWindow.postMessage(message, message.protocol + '//' + message.host);
-        }
+        // Forward the request to the source client
+        sourceWindow.postMessage(message, message.protocol + '//' + message.host);
     }
     async ensureSchemaIsInstalled(schemaSignature, numPendingMessagesForSchema) {
         if (!schemaSignature) {

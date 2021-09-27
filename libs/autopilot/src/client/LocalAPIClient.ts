@@ -225,7 +225,7 @@ export class LocalAPIClient
     private handleDemoResponse(
         response: ILocalAPIResponse
     ) {
-        if (response.host !== window.location.hostname) {
+        if (response.host !== window.location.host) {
             return
         }
         if (response.category !== 'ToClientRedirected') {

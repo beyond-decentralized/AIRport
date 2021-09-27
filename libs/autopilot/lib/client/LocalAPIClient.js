@@ -162,7 +162,7 @@ export class LocalAPIClient {
         });
     }
     handleDemoResponse(response) {
-        if (response.host !== window.location.hostname) {
+        if (response.host !== window.location.host) {
             return;
         }
         if (response.category !== 'ToClientRedirected') {

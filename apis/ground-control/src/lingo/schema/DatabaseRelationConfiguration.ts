@@ -54,8 +54,10 @@ export interface DatabaseForeignKey {
  * One-To-Many relation configuration
  */
 export interface DatabaseOneToManyElements {
-	// Name of the property on the Many side of the relation
+
+	// Name of the property on the One side of the relation
 	mappedBy?: string;
+
 }
 
 /**
@@ -64,4 +66,7 @@ export interface DatabaseOneToManyElements {
 export interface DatabaseManyToOneElements {
 	// TODO: see if optional is needed
 	// optional?: boolean;
+
+	// Name of the property on the One side of the relation
+	mappedBy?: string;
 }

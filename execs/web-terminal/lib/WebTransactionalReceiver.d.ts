@@ -7,7 +7,7 @@ export declare class WebTransactionalReceiver extends TransactionalReceiver impl
     mainDomainFragments: string[];
     serverUrl: string;
     subsriptionMap: Map<string, Map<number, Subscription>>;
-    pendingFromClientMessageIds: Map<string, Map<string, Set<string>>>;
+    pendingFromClientMessageIds: Map<string, Map<string, Map<string, Window>>>;
     pendingHostCounts: Map<string, number>;
     pendingSchemaCounts: Map<string, number>;
     installedSchemaFrames: Set<string>;

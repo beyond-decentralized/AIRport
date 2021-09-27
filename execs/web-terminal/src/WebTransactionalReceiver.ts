@@ -42,7 +42,7 @@ export class WebTransactionalReceiver
 	serverUrl: string;
 	subsriptionMap: Map<string, Map<number, Subscription>> = new Map()
 
-	pendingFromClientMessageIds: Map<string, Map<string, Set<string>>> = new Map()
+	pendingFromClientMessageIds: Map<string, Map<string, Map<string, Window>>> = new Map()
 	pendingHostCounts: Map<string, number> = new Map()
 	pendingSchemaCounts: Map<string, number> = new Map()
 
@@ -89,7 +89,7 @@ export class WebTransactionalReceiver
 						__received__: false,
 						category: 'FromClientRedirected'
 					}
-					this.handleFromClientRequest(fromClientRedirectedMessage, messageOrigin).then()
+					this.handleFromClientRequest(fromClientRedirectedMessage, messageOrigin, (event.source as Window)).then()
 					break
 				case 'IsConnectionReady':
 					const connectionIsReadyMessage: ILocalAPIResponse = {
@@ -125,7 +125,8 @@ export class WebTransactionalReceiver
 
 	private async handleFromClientRequest(
 		message: ILocalAPIRequest,
-		messageOrigin: string
+		messageOrigin: string,
+		sourceWindow: Window
 	): Promise<void> {
 		const appDomainAndPort = messageOrigin.split('//')[1]
 		if (message.host !== appDomainAndPort) {
@@ -165,10 +166,10 @@ export class WebTransactionalReceiver
 		}
 		let pendingMessageIdsFromHostForSchema = pendingMessageIdsFromHost.get(message.schemaSignature)
 		if (!pendingMessageIdsFromHostForSchema) {
-			pendingMessageIdsFromHostForSchema = new Set()
+			pendingMessageIdsFromHostForSchema = new Map()
 			pendingMessageIdsFromHost.set(message.schemaSignature, pendingMessageIdsFromHostForSchema)
 		}
-		pendingMessageIdsFromHostForSchema.add(message.id)
+		pendingMessageIdsFromHostForSchema.set(message.id, sourceWindow)
 
 		const frameWindow = this.getFrameWindow(message.schemaSignature)
 
@@ -208,7 +209,9 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		if (!pendingMessagesFromHostForSchema.has(message.id)) {
+		let sourceWindow = pendingMessagesFromHostForSchema.get(message.id)
+
+		if (!sourceWindow) {
 			return
 		}
 
@@ -223,16 +226,8 @@ export class WebTransactionalReceiver
 			this.pendingHostCounts.set(message.host, numMessagesForSchema - 1)
 		}
 
-		// Forward the request to the correct app
-
-		const frameWindow = this.getFrameWindow(message.schemaSignature)
-
-		if (frameWindow) {
-			// Forward the request to the correct schema iframe
-			frameWindow.postMessage(message, message.protocol + '//' + message.host)
-		}
-
-
+		// Forward the request to the source client
+		sourceWindow.postMessage(message, message.protocol + '//' + message.host)
 	}
 
 	private async ensureSchemaIsInstalled(

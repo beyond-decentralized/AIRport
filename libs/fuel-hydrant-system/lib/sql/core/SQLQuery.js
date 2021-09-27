@@ -46,7 +46,18 @@ export class SQLQuery extends SQLWhereBase {
                 relationColumns = dbRelation.manyRelationColumns;
                 break;
             case EntityRelationType.ONE_TO_MANY:
-                relationColumns = dbRelation.oneRelationColumns;
+                if (dbRelation.oneRelationColumns && dbRelation.oneRelationColumns.length) {
+                    relationColumns = dbRelation.oneRelationColumns;
+                }
+                else {
+                    const matchingRelations = dbRelation.relationEntity.relations.filter(manySideRelation => manySideRelation.relationEntity.id == leftDbEntity.id
+                        && manySideRelation.manyToOneElems
+                        && manySideRelation.manyToOneElems !== true
+                        && manySideRelation.manyToOneElems.mappedBy === dbRelation.property.name);
+                    if (matchingRelations.length) {
+                        relationColumns = matchingRelations[0].manyRelationColumns;
+                    }
+                }
                 break;
             default:
                 throw new Error(`Unknown relation type ${dbRelation.relationType} 

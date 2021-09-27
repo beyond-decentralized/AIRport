@@ -284,7 +284,7 @@ export interface DbRelation
 	 */
 	// isRepositoryJoin: boolean;
 	manyRelationColumns: DbRelationColumn[];
-	manyToOneElems: DatabaseManyToOneElements;
+	manyToOneElems: DatabaseManyToOneElements | true;
 	oneRelationColumns?: DbRelationColumn[];
 	oneToManyElems: DatabaseOneToManyElements;
 	property: DbProperty;

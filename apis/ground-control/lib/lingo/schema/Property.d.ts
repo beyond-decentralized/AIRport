@@ -180,7 +180,7 @@ export interface DbRelation extends SchemaReferenceByIndex<RelationIndex>, Datab
      * joins
      */
     manyRelationColumns: DbRelationColumn[];
-    manyToOneElems: DatabaseManyToOneElements;
+    manyToOneElems: DatabaseManyToOneElements | true;
     oneRelationColumns?: DbRelationColumn[];
     oneToManyElems: DatabaseOneToManyElements;
     property: DbProperty;

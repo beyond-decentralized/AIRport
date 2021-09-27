@@ -30,5 +30,6 @@ export interface DatabaseOneToManyElements {
  * Many-To-One relation configuration.
  */
 export interface DatabaseManyToOneElements {
+    mappedBy?: string;
 }
 //# sourceMappingURL=DatabaseRelationConfiguration.d.ts.map

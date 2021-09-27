@@ -1,8 +1,9 @@
 import {
 	IQEntityInternal,
 	JoinTreeNode
-}                          from '@airport/air-control'
+} from '@airport/air-control'
 import {
+	DatabaseManyToOneElements,
 	DbEntity,
 	DbRelationColumn,
 	EntityRelationType,
@@ -13,9 +14,9 @@ import {
 	QueryResultType,
 	SchemaMap,
 	SqlOperator
-}                          from '@airport/ground-control'
+} from '@airport/ground-control'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
-import {SQLWhereBase}      from './SQLWhereBase'
+import { SQLWhereBase } from './SQLWhereBase'
 
 /**
  * Created by Papa on 8/20/2016.
@@ -34,7 +35,7 @@ export class EntityDefaults {
 		let defaultsForAlias = this.map[alias]
 		if (!defaultsForAlias) {
 			defaultsForAlias = {}
-			this.map[alias]  = defaultsForAlias
+			this.map[alias] = defaultsForAlias
 		}
 		return defaultsForAlias
 	}
@@ -93,7 +94,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	): Promise<any[]>;
 
 	protected abstract buildFromJoinTree(
-		joinRelations: (JSONEntityRelation | JSONRelation) [],
+		joinRelations: (JSONEntityRelation | JSONRelation)[],
 		joinNodeMap: { [alias: string]: JoinTreeNode },
 		context: IFuelHydrantContext,
 		schemaIndex?: number,
@@ -113,9 +114,9 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	): string {
 		const allJoinOnColumns: JoinOnColumns[] = []
 
-		const leftDbEntity  = leftQEntity.__driver__.dbEntity
+		const leftDbEntity = leftQEntity.__driver__.dbEntity
 		const rightDbEntity = rightQEntity.__driver__.dbEntity
-		const dbRelation    = leftDbEntity.relations[entityRelation.ri]
+		const dbRelation = leftDbEntity.relations[entityRelation.ri]
 
 		let relationColumns: DbRelationColumn[]
 		switch (dbRelation.relationType) {
@@ -123,7 +124,19 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 				relationColumns = dbRelation.manyRelationColumns
 				break
 			case EntityRelationType.ONE_TO_MANY:
-				relationColumns = dbRelation.oneRelationColumns
+				if (dbRelation.oneRelationColumns && dbRelation.oneRelationColumns.length) {
+					relationColumns = dbRelation.oneRelationColumns
+				} else {
+					const matchingRelations = dbRelation.relationEntity.relations.filter(manySideRelation =>
+						manySideRelation.relationEntity.id == leftDbEntity.id
+						&& manySideRelation.manyToOneElems
+						&& manySideRelation.manyToOneElems !== true
+						&& (manySideRelation.manyToOneElems as DatabaseManyToOneElements).mappedBy === dbRelation.property.name
+					)
+					if (matchingRelations.length) {
+						relationColumns = matchingRelations[0].manyRelationColumns
+					}
+				}
 				break
 			default:
 				throw new Error(`Unknown relation type ${dbRelation.relationType} 
@@ -134,11 +147,11 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
 			let referencedColumnName: string
 			switch (dbRelation.relationType) {
 				case EntityRelationType.MANY_TO_ONE:
-					ownColumnName        = relationColumn.manyColumn.name
+					ownColumnName = relationColumn.manyColumn.name
 					referencedColumnName = relationColumn.oneColumn.name
 					break
 				case EntityRelationType.ONE_TO_MANY:
-					ownColumnName        = relationColumn.oneColumn.name
+					ownColumnName = relationColumn.oneColumn.name
 					referencedColumnName = relationColumn.manyColumn.name
 					break
 				default:
@@ -157,14 +170,14 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
 		)
 			.join('\n\t\t\tAND')
 		if (entityRelation.joinWhereClause) {
-			const whereClause       = this.getWHEREFragment(
+			const whereClause = this.getWHEREFragment(
 				entityRelation.joinWhereClause, '\t\t',
 				context)
 			const joinWhereOperator = entityRelation.joinWhereClauseOperator === SqlOperator.AND ? 'AND' : 'OR'
-			onClause                = `${onClause}
+			onClause = `${onClause}
 			${joinWhereOperator} ${whereClause}`
 		}
-		const tableName    = context.ioc.storeDriver.getEntityTableName(rightDbEntity, context)
+		const tableName = context.ioc.storeDriver.getEntityTableName(rightDbEntity, context)
 		const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`
 
 		return fromFragment
