@@ -118,10 +118,6 @@ export class SchemaInitializer
 		const ddlObjects = schemaComposer.compose(
 			schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
 
-		if (canAlreadyRunQueries) {
-			await schemaRecorder.record(ddlObjects, context);
-		}
-
 		this.addNewSchemaVersionsToAll(ddlObjects);
 
 		queryObjectInitializer.generateQObjectsAndPopulateStore(
@@ -134,9 +130,7 @@ export class SchemaInitializer
 
 		await sequenceGenerator.initialize(newSequences);
 
-		if (!canAlreadyRunQueries) {
-			await schemaRecorder.record(ddlObjects, context);
-		}
+		await schemaRecorder.record(ddlObjects, context);
 	}
 
 	async initializeForAIRportApp(

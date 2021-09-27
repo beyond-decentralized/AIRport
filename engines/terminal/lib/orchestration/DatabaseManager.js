@@ -135,14 +135,18 @@ export class DatabaseManager {
         // }
         const schemasToCreate = [];
         for (const jsonSchema of jsonSchemas) {
-            if (existingSchemaMap.has(getSchemaName(jsonSchema))) {
+            const existingSchema = existingSchemaMap.get(getSchemaName(jsonSchema));
+            if (existingSchema) {
+                jsonSchema.lastIds = existingSchema.jsonSchema.lastIds;
+            }
+            else {
                 schemasToCreate.push(jsonSchema);
             }
         }
         // if (schemasToCreate.length) {
         const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
         // await schemaInitializer.initialize(schemasToCreate, context, existingSchemasAreHydrated);
-        await schemaInitializer.initialize(jsonSchemas, context, true);
+        await schemaInitializer.initialize(schemasToCreate, context, true);
         // }
     }
     async initTerminal(domainName, context) {
@@ -205,10 +209,20 @@ export class DatabaseManager {
             await schemaInitializer.stage(blueprintFile.BLUEPRINT, context);
         }
         else if (hydrate) {
-            const schemaDao = await container(this).get(SCHEMA_DAO);
-            const schemas = await schemaDao.findAll();
-            const jsonSchemas = schemas.map(schema => schema.jsonSchema);
-            await schemaInitializer.hydrate(jsonSchemas, context);
+            await schemaInitializer.hydrate(blueprintFile.BLUEPRINT, context);
+            // Below appears to be not needed - hydrate gets all schemas
+            // const schemaDao = await container(this).get(SCHEMA_DAO)
+            // const schemas = await schemaDao.findAll()
+            // const jsonSchemaNameSet: Set<string> = new Set()
+            // blueprintFile.BLUEPRINT
+            // 	.map(jsonSchema => getSchemaName(jsonSchema))
+            // 	// schemname contains both domain and schema's actual name
+            // 	.forEach(schemaName => {
+            // 		jsonSchemaNameSet.add(schemaName)
+            // 	})
+            // const jsonSchemas = schemas.filter(schema => !jsonSchemaNameSet.has(schema.name))
+            // 	.map(schema => schema.jsonSchema)
+            // await schemaInitializer.hydrate(jsonSchemas as any, context);
         }
         else {
             await schemaInitializer.initialize(blueprintFile.BLUEPRINT, context, false);

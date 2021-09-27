@@ -34,17 +34,12 @@ export class SchemaInitializer {
             await schemaBuilder.build(jsonSchema, context);
         }
         const ddlObjects = schemaComposer.compose(schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
-        if (canAlreadyRunQueries) {
-            await schemaRecorder.record(ddlObjects, context);
-        }
         this.addNewSchemaVersionsToAll(ddlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
         this.setAirDbSchemas(airDb, ddlObjects);
         const newSequences = await schemaBuilder.buildAllSequences(schemasWithValidDependencies, context);
         await sequenceGenerator.initialize(newSequences);
-        if (!canAlreadyRunQueries) {
-            await schemaRecorder.record(ddlObjects, context);
-        }
+        await schemaRecorder.record(ddlObjects, context);
     }
     async initializeForAIRportApp(jsonSchema) {
         const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaComposer, schemaLocator, terminalStore] = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_COMPOSER, SCHEMA_LOCATOR, TERMINAL_STORE);

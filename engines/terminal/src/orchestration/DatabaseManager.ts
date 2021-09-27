@@ -190,15 +190,18 @@ export class DatabaseManager
 
 		const schemasToCreate: JsonSchemaWithLastIds[] = []
 		for (const jsonSchema of jsonSchemas) {
-			if (existingSchemaMap.has(getSchemaName(jsonSchema))) {
+			const existingSchema = existingSchemaMap.get(getSchemaName(jsonSchema))
+			if (existingSchema) {
+				jsonSchema.lastIds = existingSchema.jsonSchema.lastIds
+			} else {
 				schemasToCreate.push(jsonSchema)
 			}
 		}
 
 		// if (schemasToCreate.length) {
-			const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
-			// await schemaInitializer.initialize(schemasToCreate, context, existingSchemasAreHydrated);
-			await schemaInitializer.initialize(jsonSchemas, context, true);
+		const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
+		// await schemaInitializer.initialize(schemasToCreate, context, existingSchemasAreHydrated);
+		await schemaInitializer.initialize(schemasToCreate, context, true);
 		// }
 	}
 
@@ -274,10 +277,20 @@ export class DatabaseManager
 		if (stage) {
 			await schemaInitializer.stage(blueprintFile.BLUEPRINT as any, context);
 		} else if (hydrate) {
-			const schemaDao = await container(this).get(SCHEMA_DAO)
-			const schemas = await schemaDao.findAll()
-			const jsonSchemas = schemas.map(schema => schema.jsonSchema)
-			await schemaInitializer.hydrate(jsonSchemas as any, context);
+			await schemaInitializer.hydrate(blueprintFile.BLUEPRINT as any, context);
+			// Below appears to be not needed - hydrate gets all schemas
+			// const schemaDao = await container(this).get(SCHEMA_DAO)
+			// const schemas = await schemaDao.findAll()
+			// const jsonSchemaNameSet: Set<string> = new Set()
+			// blueprintFile.BLUEPRINT
+			// 	.map(jsonSchema => getSchemaName(jsonSchema))
+			// 	// schemname contains both domain and schema's actual name
+			// 	.forEach(schemaName => {
+			// 		jsonSchemaNameSet.add(schemaName)
+			// 	})
+			// const jsonSchemas = schemas.filter(schema => !jsonSchemaNameSet.has(schema.name))
+			// 	.map(schema => schema.jsonSchema)
+			// await schemaInitializer.hydrate(jsonSchemas as any, context);
 		} else {
 			await schemaInitializer.initialize(blueprintFile.BLUEPRINT as any,
 				context, false);
