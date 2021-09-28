@@ -104,6 +104,9 @@ export class TransactionalConnector {
             ...context
         });
     }
+    onMessage(callback) {
+        // Nothing to do, onMessage callback was added for demo purposes for Web implementations
+    }
 }
 DI.set(TRANSACTIONAL_CONNECTOR, TransactionalConnector);
 export function injectTransactionalConnector() {

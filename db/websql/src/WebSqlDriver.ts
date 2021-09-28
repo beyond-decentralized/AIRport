@@ -171,8 +171,16 @@ export class WebSqlDriver
 			'TQ_ENTITY_CHANGE', 'TQ_ENTITY_WHERE_CHANGE', 'TQ_TRANSACTION'].some((deltaTableName) => {
 				return query.indexOf(deltaTableName) > -1
 			})) {
-			const dateTime = new Date()
-			console.log(`${dateTime.getHours()}:${dateTime.getMinutes()}.${dateTime.getMilliseconds()}`)
+			const date = new Date()
+			let min: any = date.getMinutes();
+			let sec: any = date.getSeconds();
+			let milliseconds: any = date.getMilliseconds();
+
+			min = (min < 10 ? '0' : '') + min;
+			sec = (sec < 10 ? '0' : '') + sec;
+			milliseconds =
+				(milliseconds < 10 ? '00' : milliseconds < 100 ? '0' : '') + milliseconds;
+			console.log(min + ':' + sec + '.' + milliseconds)
 			console.log(query)
 			console.log(params)
 		}

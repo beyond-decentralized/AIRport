@@ -109,7 +109,7 @@ export class TransactionalReceiver {
             errorMessage = error.message;
         }
         return {
-            category: 'Db',
+            category: 'FromDb',
             errorMessage,
             id: message.id,
             schemaSignature: message.schemaSignature,

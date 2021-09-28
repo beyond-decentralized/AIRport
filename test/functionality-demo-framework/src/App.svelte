@@ -64,7 +64,6 @@ const messageExpandedState = []
 
 function getMessageHeader(message) {
   const date = new Date(message.__receivedTime__);
-  let hour: any = date.getHours();
   let min: any = date.getMinutes();
   let sec: any = date.getSeconds();
   let milliseconds: any = date.getMilliseconds();

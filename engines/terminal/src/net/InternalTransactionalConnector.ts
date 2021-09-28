@@ -221,6 +221,12 @@ export class TransactionalConnector
         })
     }
 
+    onMessage(callback: (
+        message: any
+    ) => void) {
+        // Nothing to do, onMessage callback was added for demo purposes for Web implementations
+    }
+
 }
 
 DI.set(TRANSACTIONAL_CONNECTOR, TransactionalConnector);

@@ -43,7 +43,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             }
             const messageOrigin = event.origin;
             switch (message.category) {
-                case 'Db':
+                case 'ToDb':
                     this.handleIsolateMessage(message, messageOrigin, event.source);
                     break;
                 case 'FromClient':

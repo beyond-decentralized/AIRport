@@ -29,7 +29,7 @@ export enum IsolateMessageType {
 export interface IIsolateMessage {
     __received__?: boolean
     __receivedTime__?: number
-    category: 'Db'
+    category: 'FromDb' | 'ToDb'
     id: number
     schemaSignature: string
     type: IsolateMessageType
@@ -37,6 +37,7 @@ export interface IIsolateMessage {
 
 export interface IIsolateMessageOut<T>
     extends IIsolateMessage {
+    category: 'FromDb'
     errorMessage: string
     result: T
 }

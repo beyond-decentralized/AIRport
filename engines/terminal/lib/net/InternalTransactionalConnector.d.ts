@@ -18,6 +18,7 @@ export declare class TransactionalConnector implements ITransactionalConnector {
     startTransaction(context: IContext): Promise<boolean>;
     commit(context: IContext): Promise<boolean>;
     rollback(context: IContext): Promise<boolean>;
+    onMessage(callback: (message: any) => void): void;
 }
 export declare function injectTransactionalConnector(): void;
 //# sourceMappingURL=InternalTransactionalConnector.d.ts.map

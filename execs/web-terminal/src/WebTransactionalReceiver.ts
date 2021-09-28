@@ -89,7 +89,7 @@ export class WebTransactionalReceiver
 
 			const messageOrigin = event.origin;
 			switch (message.category) {
-				case 'Db':
+				case 'ToDb':
 					this.handleIsolateMessage(message as IIsolateMessage, messageOrigin,
 						event.source as Window)
 					break

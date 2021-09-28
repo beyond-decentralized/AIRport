@@ -69,7 +69,7 @@ export class IframeTransactionalConnector {
                 case 'FromClientRedirected':
                     this.handleLocalApiRequest(message, origin).then();
                     return;
-                case 'Db':
+                case 'FromDb':
                     if (message.type === IsolateMessageType.APP_INITIALIZING) {
                         if (this.appState === AppState.NOT_INITIALIED) {
                             let initConnectionIMO = message;
@@ -237,7 +237,7 @@ export class IframeTransactionalConnector {
     }
     getCoreFields() {
         return {
-            category: 'Db',
+            category: 'ToDb',
             id: ++this.messageId,
             schemaSignature: window.location.hostname.split('.')[0],
         };
