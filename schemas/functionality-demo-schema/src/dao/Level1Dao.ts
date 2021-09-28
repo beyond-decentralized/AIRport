@@ -15,6 +15,18 @@ export interface ILevel1Dao {
         records: DeepPartial<Level1>[]
     ): Promise<void>
 
+    updateAllBoolValues(
+        newBoolValue: boolean
+    ): Promise<void>
+
+    updateAllNumValues(
+        newNumValue: number
+    ): Promise<void>
+
+    updateAllStrValues(
+        newStrValue: string
+    ): Promise<void>
+
 }
 
 export class Level1Dao
@@ -58,6 +70,57 @@ export class Level1Dao
         records: DeepPartial<Level1>[]
     ): Promise<void> {
         await this.save(records)
+    }
+
+    async updateAllBoolValues(
+        newBoolValue: boolean
+    ): Promise<void> {
+        try {
+            let level1: QLevel1
+            await this.db.updateWhere({
+                update: level1 = this.db.from,
+                set: {
+                    bool: newBoolValue
+                }
+            })
+        } catch (e) {
+            console.log(e)
+            throw e
+        }
+    }
+
+    async updateAllNumValues(
+        newNumValue: number
+    ): Promise<void> {
+        try {
+            let level1: QLevel1
+            await this.db.updateWhere({
+                update: level1 = this.db.from,
+                set: {
+                    num: newNumValue
+                }
+            })
+        } catch (e) {
+            console.log(e)
+            throw e
+        }
+    }
+
+    async updateAllStrValues(
+        newStrValue: string
+    ): Promise<void> {
+        try {
+            let level1: QLevel1
+            await this.db.updateWhere({
+                update: level1 = this.db.from,
+                set: {
+                    str: newStrValue
+                }
+            })
+        } catch (e) {
+            console.log(e)
+            throw e
+        }
     }
 
 }

@@ -10,6 +10,10 @@ h1 {
   font-size: 2em;
   font-weight: 100;
 }
+
+.hidden {
+  display: none;
+}
 </style>
 
 <script lang="ts">
@@ -22,8 +26,32 @@ import { allLevel1Records } from './store';
 
 let service = new FunctionalityDemoService();
 
+let globalLevel1Values = {
+  bool: false,
+  num: 0,
+  str: '',
+};
+
+let globalOperationsOn = false;
+
+function toggleGlobalOperations() {
+  globalOperationsOn = !globalOperationsOn;
+}
+
 async function save(records: DeepPartial<Level1>[]) {
   await service.save(records);
+}
+
+async function updateLevel1BoolValues(): Promise<void> {
+  await service.updateLevel1BoolValues(globalLevel1Values.bool);
+}
+
+async function updateLevel1NumValues(): Promise<void> {
+  await service.updateLevel1NumValues(globalLevel1Values.num);
+}
+
+async function updateLevel1StrValues(): Promise<void> {
+  await service.updateLevel1StrValues(globalLevel1Values.str);
 }
 
 async function addLevel1Record(records: DeepPartial<Level1>[]) {
@@ -50,7 +78,9 @@ function existingRecords(
   <table>
     <thead>
       <tr>
-        <td>Lvl1 Id</td>
+        <td>
+          <button on:click="{toggleGlobalOperations}"> Lvl1 Id </button>
+        </td>
         <td>Boolean</td>
         <td>Number</td>
         <td>String</td>
@@ -59,6 +89,26 @@ function existingRecords(
             >+ Lvl1</button
           ></td
         >
+      </tr>
+      <tr class="{globalOperationsOn ? '' : 'hidden'}">
+        <td> </td>
+        <td>
+          <input type="checkbox" bind:checked="{globalLevel1Values.bool}" />
+          <button on:click="{updateLevel1BoolValues}">=</button>
+        </td>
+        <td>
+          <input
+            style="width: 70%;"
+            type="number"
+            bind:value="{globalLevel1Values.num}"
+          />
+          <button on:click="{updateLevel1NumValues}">=</button>
+        </td>
+        <td>
+          <input style="width: 70%;" bind:value="{globalLevel1Values.str}" />
+          <button on:click="{updateLevel1StrValues}">=</button>
+        </td>
+        <td> </td>
       </tr>
     </thead>
     <tbody>
@@ -70,11 +120,11 @@ function existingRecords(
           </td>
           <td><input type="number" bind:value="{level1Record.num}" /></td>
           <td><input bind:value="{level1Record.str}" /></td>
-          <td
-            ><button on:click="{() => del($allLevel1Records, level1Record)}"
-              >- Lvl1</button
-            ></td
-          >
+          <td>
+            <button on:click="{() => del($allLevel1Records, level1Record)}">
+              - Lvl1
+            </button>
+          </td>
         </tr>
         <tr>
           <td colspan="5">

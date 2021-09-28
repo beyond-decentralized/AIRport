@@ -17,6 +17,18 @@ export declare const SCHEMA: {
                             isAsync: boolean;
                             parameters: any[];
                         };
+                        updateAllBoolValues: {
+                            isAsync: boolean;
+                            parameters: any[];
+                        };
+                        updateAllNumValues: {
+                            isAsync: boolean;
+                            parameters: any[];
+                        };
+                        updateAllStrValues: {
+                            isAsync: boolean;
+                            parameters: any[];
+                        };
                     };
                 };
             };
@@ -74,6 +86,7 @@ export declare const SCHEMA: {
             tableConfig: {
                 indexes: any[];
             };
+            operations: {};
         } | {
             columns: {
                 index: number;
@@ -136,6 +149,7 @@ export declare const SCHEMA: {
             tableConfig: {
                 indexes: any[];
             };
+            operations: {};
         })[];
         integerVersion: number;
         referencedSchemas: any[];

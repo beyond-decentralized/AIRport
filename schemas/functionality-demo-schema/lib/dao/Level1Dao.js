@@ -38,6 +38,51 @@ export class Level1Dao extends BaseLevel1Dao {
     async saveChanges(records) {
         await this.save(records);
     }
+    async updateAllBoolValues(newBoolValue) {
+        try {
+            let level1;
+            await this.db.updateWhere({
+                update: level1 = this.db.from,
+                set: {
+                    bool: newBoolValue
+                }
+            });
+        }
+        catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }
+    async updateAllNumValues(newNumValue) {
+        try {
+            let level1;
+            await this.db.updateWhere({
+                update: level1 = this.db.from,
+                set: {
+                    num: newNumValue
+                }
+            });
+        }
+        catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }
+    async updateAllStrValues(newStrValue) {
+        try {
+            let level1;
+            await this.db.updateWhere({
+                update: level1 = this.db.from,
+                set: {
+                    str: newStrValue
+                }
+            });
+        }
+        catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }
 }
 DI.set(LEVEL_1_DAO, Level1Dao);
 //# sourceMappingURL=Level1Dao.js.map

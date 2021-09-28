@@ -148,7 +148,10 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 							continue
 						}
 						if (parentState.isDelete) {
-							if (!isDelete) {
+							if (isPassThrough) {
+								// Automatically delete all contained records
+								context.ioc.entityStateManager.markForDeletion(entity)
+							} else if (!isDelete) {
 								throw new Error(`Cannot delete an entity without removing all references to it.
 								Found a reference in ${dbEntity.name}.${dbProperty.name}.
 								Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`)

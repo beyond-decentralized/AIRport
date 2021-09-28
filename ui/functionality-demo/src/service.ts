@@ -22,6 +22,27 @@ export class FunctionalityDemoService {
         await this.getAllRecords()
     }
 
+    async updateLevel1BoolValues(
+        newBoolValue: boolean
+    ): Promise<void> {
+        await this.demoApi.updateAllBoolValues(newBoolValue)
+        await this.getAllRecords()
+    }
+
+    async updateLevel1NumValues(
+        newNumValue: number
+    ): Promise<void> {
+        await this.demoApi.updateAllNumValues(newNumValue)
+        await this.getAllRecords()
+    }
+
+    async updateLevel1StrValues(
+        newStrValue: string
+    ): Promise<void> {
+        await this.demoApi.updateAllStrValues(newStrValue)
+        await this.getAllRecords()
+    }
+
     addLevel1Record(
         level1Records: DeepPartial<Level1>[]
     ): void {

@@ -18,6 +18,18 @@ export const SCHEMA = {
                             "saveChanges": {
                                 "isAsync": true,
                                 "parameters": []
+                            },
+                            "updateAllBoolValues": {
+                                "isAsync": true,
+                                "parameters": []
+                            },
+                            "updateAllNumValues": {
+                                "isAsync": true,
+                                "parameters": []
+                            },
+                            "updateAllStrValues": {
+                                "isAsync": true,
+                                "parameters": []
                             }
                         }
                     }
@@ -154,7 +166,8 @@ export const SCHEMA = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -311,7 +324,8 @@ export const SCHEMA = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "indexes": []
-                    }
+                    },
+                    "operations": {}
                 }
             ],
             "integerVersion": 1,

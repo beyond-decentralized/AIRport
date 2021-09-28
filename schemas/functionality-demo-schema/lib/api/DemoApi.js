@@ -17,6 +17,18 @@ export class DemoApi {
         const level1Dao = await container(this).get(LEVEL_1_DAO);
         await level1Dao.saveChanges(records);
     }
+    async updateAllBoolValues(newBoolValue) {
+        const level1Dao = await container(this).get(LEVEL_1_DAO);
+        await level1Dao.updateAllBoolValues(newBoolValue);
+    }
+    async updateAllNumValues(newNumValue) {
+        const level1Dao = await container(this).get(LEVEL_1_DAO);
+        await level1Dao.updateAllNumValues(newNumValue);
+    }
+    async updateAllStrValues(newStrValue) {
+        const level1Dao = await container(this).get(LEVEL_1_DAO);
+        await level1Dao.updateAllStrValues(newStrValue);
+    }
 }
 __decorate([
     Api()
@@ -24,5 +36,14 @@ __decorate([
 __decorate([
     Api()
 ], DemoApi.prototype, "saveChanges", null);
+__decorate([
+    Api()
+], DemoApi.prototype, "updateAllBoolValues", null);
+__decorate([
+    Api()
+], DemoApi.prototype, "updateAllNumValues", null);
+__decorate([
+    Api()
+], DemoApi.prototype, "updateAllStrValues", null);
 DI.set(DEMO_API, DemoApi);
 //# sourceMappingURL=DemoApi.js.map

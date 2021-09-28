@@ -17,6 +17,18 @@
 							"saveChanges": {
 								"isAsync": true,
 								"parameters": []
+							},
+							"updateAllBoolValues": {
+								"isAsync": true,
+								"parameters": []
+							},
+							"updateAllNumValues": {
+								"isAsync": true,
+								"parameters": []
+							},
+							"updateAllStrValues": {
+								"isAsync": true,
+								"parameters": []
 							}
 						}
 					}
@@ -153,7 +165,8 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"indexes": []
-					}
+					},
+					"operations": {}
 				},
 				{
 					"columns": [
@@ -310,7 +323,8 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"indexes": []
-					}
+					},
+					"operations": {}
 				}
 			],
 			"integerVersion": 1,

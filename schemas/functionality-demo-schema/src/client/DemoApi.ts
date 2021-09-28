@@ -19,4 +19,28 @@ export class DemoApi {
         return await demoApi.saveChanges(records)
     }
 
+    async updateAllBoolValues(
+        newBoolValue: boolean
+    ): Promise<void> {
+        const demoApi = await IOC.get(DEMO_API)
+
+        await demoApi.updateAllBoolValues(newBoolValue)
+    }
+
+    async updateAllNumValues(
+        newNumValue: number
+    ): Promise<void> {
+        const demoApi = await IOC.get(DEMO_API)
+
+        await demoApi.updateAllNumValues(newNumValue)
+    }
+
+    async updateAllStrValues(
+        newStrValue: string
+    ): Promise<void> {
+        const demoApi = await IOC.get(DEMO_API)
+
+        await demoApi.updateAllStrValues(newStrValue)
+    }
+
 }

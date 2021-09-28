@@ -1,1 +1,1 @@
-{"version":3,"file":"Level2Dao.d.ts","sourceRoot":"","sources":["../../src/dao/Level2Dao.ts"],"names":[],"mappings":"AAGA,MAAM,WAAW,UAAU;CAE1B;AAED,qBAAa,SACT,YAAW,UAAU;CAExB"}
+{"version":3,"file":"Level2Dao.d.ts","sourceRoot":"","sources":["../../src/dao/Level2Dao.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,aAAa,EAAE,MAAM,wBAAwB,CAAC;AAGvD,MAAM,WAAW,UAAU;CAE1B;AAED,qBAAa,SACT,SAAQ,aACR,YAAW,UAAU;CAExB"}

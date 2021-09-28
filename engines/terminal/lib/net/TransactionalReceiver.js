@@ -97,7 +97,7 @@ export class TransactionalReceiver {
                     break;
                 case IsolateMessageType.UPDATE_VALUES:
                     const updateValuesMessage = message;
-                    result = await transactionalServer.insertValuesGetIds(updateValuesMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.updateValues(updateValuesMessage.portableQuery, credentials, context);
                     break;
                 default:
                     // Unexpected IsolateMessageInType

@@ -11,6 +11,18 @@ export interface IDemoApi {
         records: DeepPartial<Level1>[]
     ): Promise<void>
 
+    updateAllBoolValues(
+        newBoolValue: boolean
+    ): Promise<void>
+
+    updateAllNumValues(
+        newNumValue: number
+    ): Promise<void>
+
+    updateAllStrValues(
+        newStrValue: string
+    ): Promise<void>
+
 }
 
 export class DemoApi implements IDemoApi {
@@ -29,6 +41,33 @@ export class DemoApi implements IDemoApi {
         const level1Dao = await container(this).get(LEVEL_1_DAO)
 
         await level1Dao.saveChanges(records)
+    }
+
+    @Api()
+    async updateAllBoolValues(
+        newBoolValue: boolean
+    ): Promise<void> {
+        const level1Dao = await container(this).get(LEVEL_1_DAO)
+
+        await level1Dao.updateAllBoolValues(newBoolValue)
+    }
+
+    @Api()
+    async updateAllNumValues(
+        newNumValue: number
+    ): Promise<void> {
+        const level1Dao = await container(this).get(LEVEL_1_DAO)
+
+        await level1Dao.updateAllNumValues(newNumValue)
+    }
+
+    @Api()
+    async updateAllStrValues(
+        newStrValue: string
+    ): Promise<void> {
+        const level1Dao = await container(this).get(LEVEL_1_DAO)
+
+        await level1Dao.updateAllStrValues(newStrValue)
     }
 
 }

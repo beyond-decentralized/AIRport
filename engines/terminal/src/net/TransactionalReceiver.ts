@@ -171,7 +171,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.UPDATE_VALUES:
                     const updateValuesMessage: IPortableQueryIMI = <IPortableQueryIMI>message
-                    result = await transactionalServer.insertValuesGetIds(
+                    result = await transactionalServer.updateValues(
                         updateValuesMessage.portableQuery,
                         credentials,
                         context
