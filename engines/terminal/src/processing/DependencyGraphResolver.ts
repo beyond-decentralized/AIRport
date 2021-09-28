@@ -27,7 +27,7 @@ export class DependencyGraphResolver
 		context: IOperationContext,
 	): IOperationNode<E>[] {
 		const unorderedDependencies = this.getEntitiesToPersist(
-			entities, [], context)
+			entities, [], [], context)
 		this.resolveCircularDependencies(
 			unorderedDependencies, context
 		)
@@ -42,6 +42,7 @@ export class DependencyGraphResolver
 	protected getEntitiesToPersist<E>(
 		entities: E[],
 		operatedOnEntities: IDependencyGraphNode<any>[],
+		operatedOnPassThroughs: boolean[],
 		context: IOperationContext,
 		dependsOn?: IDependencyGraphNode<any>,
 		dependency?: IDependencyGraphNode<any>,
@@ -63,6 +64,7 @@ export class DependencyGraphResolver
 				isCreate,
 				isDelete,
 				isParentId,
+				isPassThrough,
 				isStub,
 				isUpdate
 			} = context.ioc.entityStateManager
@@ -80,63 +82,72 @@ deleted by cascading rules.  Entity: ${dbEntity.name}.
 Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`)
 			}
 
-			let dependencyGraphNode: IDependencyGraphNode<E> = operatedOnEntities[operationUniqueId]
-			let isExistingNode = false
-			if (dependencyGraphNode) {
-				isExistingNode = true
-			} else if (!isParentId && !deleteByCascade) {
-				dependencyGraphNode = {
-					circleTraversedFor: {},
-					dbEntity,
-					dependsOnByOUID: [],
-					dependsOn: [],
-					entity,
-					isCreate,
-					isDelete
+			let dependencyGraphNode: IDependencyGraphNode<E>
+			if (isPassThrough) {
+				if (operatedOnPassThroughs[operationUniqueId]) {
+					continue
+				} else {
+					operatedOnPassThroughs[operationUniqueId] = true
 				}
-				allProcessedNodes.push(dependencyGraphNode)
-				operatedOnEntities[operationUniqueId] = dependencyGraphNode
-			}
-			if (!isParentId && !isDelete) {
-				if (dependsOn && !isDelete) {
-					const dependsOnOUID = context.ioc.entityStateManager.getOperationUniqueId(dependsOn.entity)
-					if (!dependencyGraphNode.dependsOnByOUID[dependsOnOUID]) {
-						dependencyGraphNode.dependsOnByOUID[dependsOnOUID] = dependsOn
-						dependencyGraphNode.dependsOn.push(dependsOn)
+			} else {
+				dependencyGraphNode = operatedOnEntities[operationUniqueId]
+				let isExistingNode = false
+				if (dependencyGraphNode) {
+					isExistingNode = true
+				} else if (!isParentId && !deleteByCascade) {
+					dependencyGraphNode = {
+						circleTraversedFor: {},
+						dbEntity,
+						dependsOnByOUID: [],
+						dependsOn: [],
+						entity,
+						isCreate,
+						isDelete
+					}
+					allProcessedNodes.push(dependencyGraphNode)
+					operatedOnEntities[operationUniqueId] = dependencyGraphNode
+				}
+				if (!isParentId && !isDelete) {
+					if (dependsOn && !isDelete) {
+						const dependsOnOUID = context.ioc.entityStateManager.getOperationUniqueId(dependsOn.entity)
+						if (!dependencyGraphNode.dependsOnByOUID[dependsOnOUID]) {
+							dependencyGraphNode.dependsOnByOUID[dependsOnOUID] = dependsOn
+							dependencyGraphNode.dependsOn.push(dependsOn)
+						}
+					}
+					if (dependency) {
+						if (!dependencyGraphNode.dependsOnByOUID[operationUniqueId]) {
+							dependency.dependsOnByOUID[operationUniqueId] = dependencyGraphNode
+							dependency.dependsOn.push(dependencyGraphNode)
+						}
 					}
 				}
-				if (dependency) {
-					if (!dependencyGraphNode.dependsOnByOUID[operationUniqueId]) {
-						dependency.dependsOnByOUID[operationUniqueId] = dependencyGraphNode
-						dependency.dependsOn.push(dependencyGraphNode)
-					}
+				if (isExistingNode) {
+					continue
 				}
-			}
-			if (isExistingNode) {
-				continue
 			}
 
 			for (const dbProperty of context.dbEntity.properties) {
-				let childEntities
+				let relatedEntities
 				let propertyValue: any = entity[dbProperty.name]
 				if (!propertyValue || typeof propertyValue !== 'object'
 					|| !(dbProperty.relation && dbProperty.relation.length)) {
 					continue
 				}
 				let fromDependencyForChild: IDependencyGraphNode<E> = null
-				let childIsDependency = false
+				let isDependency = false
 				let childDeleteByCascade = deleteByCascade || isDelete
 				const dbRelation = dbProperty.relation[0]
 				switch (dbRelation.relationType) {
 					// Relation is an entity that this entity depends on
 					case EntityRelationType.MANY_TO_ONE:
 						childDeleteByCascade = false
-						const childState = context.ioc.entityStateManager
-							.getEntityStateTypeAsFlags(entity, dbEntity)
-						if (childState.isParentId) {
+						const parentState = context.ioc.entityStateManager
+							.getEntityStateTypeAsFlags(propertyValue, dbRelation.relationEntity)
+						if (parentState.isParentId ) {
 							continue
 						}
-						if (childState.isDelete) {
+						if (parentState.isDelete) {
 							if (!isDelete) {
 								throw new Error(`Cannot delete an entity without removing all references to it.
 								Found a reference in ${dbEntity.name}.${dbProperty.name}.
@@ -152,10 +163,10 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 								deleteByCascade = true
 							}
 						}
-						if (childState.isCreate) {
-							childIsDependency = true
+						if (parentState.isCreate) {
+							isDependency = true
 						}
-						childEntities = [propertyValue]
+						relatedEntities = [propertyValue]
 						break
 					// Relation is an array of entities that depend in this entity
 					case EntityRelationType.ONE_TO_MANY:
@@ -163,16 +174,17 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 							fromDependencyForChild = dependencyGraphNode
 						}
 						// Nested deletions wil be automatically pruned in recursive calls
-						childEntities = propertyValue
+						relatedEntities = propertyValue
 						break
 				}
-				if (childEntities) {
+				if (relatedEntities) {
 					const dbEntity = dbRelation.relationEntity
 					const previousDbEntity = context.dbEntity
 					context.dbEntity = dbEntity
 					const childDependencyLinkedNodes = this.getEntitiesToPersist(
-						childEntities, operatedOnEntities, context, fromDependencyForChild,
-						!isParentId && !isDelete && childIsDependency ? dependencyGraphNode : null,
+						relatedEntities, operatedOnEntities, operatedOnPassThroughs,
+						context, fromDependencyForChild,
+						!isParentId && !isDelete && isDependency ? dependencyGraphNode : null,
 						childDeleteByCascade)
 					allProcessedNodes = allProcessedNodes.concat(childDependencyLinkedNodes)
 					context.dbEntity = previousDbEntity

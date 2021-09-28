@@ -37,7 +37,10 @@ export class UpdateCacheManager
         entityStateManager.setOriginalValues(originalValuesObject, entity);
         for (let dbProperty of dbEntity.properties) {
             const property = entity[dbProperty.name]
-            if (property && dbProperty.relation && dbProperty.relation.length) {
+            if (dbProperty.relation && dbProperty.relation.length) {
+                if (!property) {
+                    continue
+                }
                 if (dbProperty.relation[0].relationType === EntityRelationType.MANY_TO_ONE) {
                     // Save the nested child object Ids in the original values of this object
                     // in case the object behind this relation is changed
@@ -144,7 +147,10 @@ export class UpdateCacheManager
         if (originalValuesObject) {
             for (const dbProperty of dbEntity.properties) {
                 const property = entityCopy[dbProperty.name]
-                if (property && dbProperty.relation && dbProperty.relation.length) {
+                if (dbProperty.relation && dbProperty.relation.length) {
+                    if(!property) {
+                        continue
+                    }
                     const dbRelation = dbProperty.relation[0];
                     schemaUtils.forEachColumnTypeOfRelation(dbRelation, (
                         _dbColumn: DbColumn,
