@@ -1,16 +1,17 @@
 <style>
 main {
   text-align: center;
-  padding: 1em;
+  padding: 0.5em;
   max-width: 240px;
   margin: 0 auto;
 }
 
 h1 {
   color: #ff3e00;
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: 100;
-  margin: 5px;
+  margin: 0px;
+  padding: 0px;
 }
 
 table {
@@ -23,17 +24,18 @@ td {
 
 p {
   border: 1px solid black;
-  height: 400px;
+  height: 200px;
+  margin: 0;
   overflow-y: auto;
 }
 
 iframe.app {
-  height: 400px;
+  height: 200px;
   width: 100%;
 }
 
 iframe.ui {
-  height: 400px;
+  height: 670px;
   width: 100%;
 }
 
@@ -90,8 +92,8 @@ function getMessageDetails(message) {
 </script>
 
 <main>
-  <h1>AIRport framework</h1>
-  <div>Operations:</div>
+  <h1>AIRport core functionality demo</h1>
+  <div>messages:</div>
   <table>
     <tr>
       <td>

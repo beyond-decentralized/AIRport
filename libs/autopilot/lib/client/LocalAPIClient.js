@@ -17,6 +17,11 @@ export class LocalAPIClient {
                     return;
                 }
                 message.__received__ = true;
+                if (this.messageCallback) {
+                    const receivedDate = new Date();
+                    message.__receivedTime__ = receivedDate.getTime();
+                    this.messageCallback(message);
+                }
                 switch (message.category) {
                     case 'ConnectionIsReady':
                         this.connectionReady = true;
@@ -37,6 +42,9 @@ export class LocalAPIClient {
                 }
             }, false);
         }
+    }
+    onMessage(callback) {
+        this.messageCallback = callback;
     }
     hasValidSchemaSignature(message) {
         return message.schemaSignature && message.schemaSignature.indexOf('.') === -1;

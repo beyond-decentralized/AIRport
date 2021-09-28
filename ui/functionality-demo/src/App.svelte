@@ -14,11 +14,29 @@ h1 {
 .hidden {
   display: none;
 }
+
+p {
+  border: 1px solid black;
+  height: 100px;
+  margin: 0;
+  overflow-y: auto;
+}
+div.log {
+  text-align: left;
+}
+button {
+  padding: 0;
+  margin: 0;
+}
+
+.hidden {
+  display: none;
+}
 </style>
 
 <script lang="ts">
 import { isDeleted } from '@airport/autopilot';
-
+import { messages } from './store';
 import type { Level1 } from '@airport/functionality-demo-schema';
 import type { DeepPartial } from '@airport/pressurization';
 import { FunctionalityDemoService } from './service';
@@ -71,10 +89,58 @@ function existingRecords(
 ): DeepPartial<Level1>[] {
   return records.filter((record) => !isDeleted(record));
 }
+
+const messageExpandedState = []
+
+function getMessageHeader(message) {
+  const date = new Date(message.__receivedTime__);
+  let min: any = date.getMinutes();
+  let sec: any = date.getSeconds();
+  let milliseconds: any = date.getMilliseconds();
+
+  min = (min < 10 ? '0' : '') + min;
+  sec = (sec < 10 ? '0' : '') + sec;
+  milliseconds =
+    (milliseconds < 10 ? '00' : milliseconds < 100 ? '0' : '') + milliseconds;
+
+  var timeString = min + ':' + sec + '.' + milliseconds;
+
+  return timeString + ' ' + message.category;
+}
+
+function expandMessage(index) {
+  messageExpandedState[index] = !messageExpandedState[index]
+}
+
+function getMessageDetails(message) {
+  return JSON.stringify(message)
+}
+
 </script>
 
 <main>
-  <h1>AIRport core demo</h1>
+  <table>
+    <tr>
+      <td>
+        <p>
+          {#each $messages as message, i}
+            <div class="log">
+              {getMessageHeader(message)}
+              <button on:click="{() => expandMessage(i)}"
+                >&nbsp;&nbsp;i&nbsp;&nbsp;</button
+              >
+            </div>
+            <div class="{messageExpandedState[i] ? 'log' : 'hidden log'}">
+              {getMessageDetails(message)}
+            </div>
+          {/each}
+        </p>
+      </td>
+      <td>
+        <h1>Demo UI</h1>
+      </td>
+    </tr>
+  </table>
   <table>
     <thead>
       <tr>

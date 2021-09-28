@@ -18,6 +18,10 @@ export interface ILocalAPIClient {
         args: any[]
     ): Promise<void>;
 
+	onMessage(callback: (
+		message: any
+	) => void)
+
 }
 
 let _inDemoMode = true
@@ -39,6 +43,10 @@ export class LocalAPIClient
 
     connectionReady = false
 
+	messageCallback: (
+		message: any
+	) => void
+
     constructor() {
         if (_inDemoMode) {
             window.addEventListener("message", event => {
@@ -47,6 +55,12 @@ export class LocalAPIClient
                     return
                 }
                 message.__received__ = true
+
+                if (this.messageCallback) {
+                    const receivedDate = new Date()
+                    message.__receivedTime__ = receivedDate.getTime()
+                    this.messageCallback(message)
+                }
 
                 switch (message.category) {
                     case 'ConnectionIsReady':
@@ -69,6 +83,12 @@ export class LocalAPIClient
             }, false)
         }
     }
+
+	onMessage(callback: (
+		message: any
+	) => void) {
+		this.messageCallback = callback
+	}
 
     private hasValidSchemaSignature(
         message: ILocalAPIResponse
