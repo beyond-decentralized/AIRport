@@ -31,12 +31,17 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                 return;
             }
             message.__received__ = true;
-            const messageOrigin = event.origin;
+            if (this.messageCallback) {
+                const receivedDate = new Date();
+                message.__receivedTime__ = receivedDate.getTime();
+                this.messageCallback(message);
+            }
             // All requests need to have a schema signature
             // to know what schema is being communicated to/from
             if (!this.hasValidSchemaSignature(message)) {
                 return;
             }
+            const messageOrigin = event.origin;
             switch (message.category) {
                 case 'Db':
                     this.handleIsolateMessage(message, messageOrigin, event.source);
@@ -45,6 +50,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                     const fromClientRedirectedMessage = {
                         ...message,
                         __received__: false,
+                        __receivedTime__: null,
                         category: 'FromClientRedirected'
                     };
                     this.handleFromClientRequest(fromClientRedirectedMessage, messageOrigin, event.source).then();
@@ -65,6 +71,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                     const toClientRedirectedMessage = {
                         ...message,
                         __received__: false,
+                        __receivedTime__: null,
                         category: 'ToClientRedirected'
                     };
                     this.handleToClientRequest(toClientRedirectedMessage, messageOrigin);
@@ -73,6 +80,9 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                     break;
             }
         }, false);
+    }
+    onMessage(callback) {
+        this.messageCallback = callback;
     }
     hasValidSchemaSignature(message) {
         return message.schemaSignature && message.schemaSignature.indexOf('.') === -1;

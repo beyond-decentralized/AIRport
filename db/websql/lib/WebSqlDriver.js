@@ -105,6 +105,8 @@ export class WebSqlDriver extends SqLiteDriver {
             'TQ_ENTITY_CHANGE', 'TQ_ENTITY_WHERE_CHANGE', 'TQ_TRANSACTION'].some((deltaTableName) => {
             return query.indexOf(deltaTableName) > -1;
         })) {
+            const dateTime = new Date();
+            console.log(`${dateTime.getHours()}:${dateTime.getMinutes()}.${dateTime.getMilliseconds()}`);
             console.log(query);
             console.log(params);
         }

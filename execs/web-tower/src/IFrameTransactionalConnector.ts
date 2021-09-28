@@ -77,6 +77,10 @@ export class IframeTransactionalConnector
 	appState = AppState.NOT_INITIALIED
 	lastIds: LastIds
 
+	messageCallback: (
+		message: any
+	) => void
+
 	async init() {
 		window.addEventListener("message", event => {
 			const message: IIsolateMessageOut<any> | ILocalAPIRequest = event.data;
@@ -84,6 +88,12 @@ export class IframeTransactionalConnector
 				return
 			}
 			message.__received__ = true
+
+			if (this.messageCallback) {
+				const receivedDate = new Date()
+				message.__receivedTime__ = receivedDate.getTime()
+				this.messageCallback(message)
+			}
 
 			const origin = event.origin;
 			if (message.schemaSignature.indexOf('.') > -1) {
@@ -466,6 +476,11 @@ export class IframeTransactionalConnector
 		return false
 	}
 
+	onMessage(callback: (
+		message: any
+	) => void) {
+		this.messageCallback = callback
+	}
 
 }
 

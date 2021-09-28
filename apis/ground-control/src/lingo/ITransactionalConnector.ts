@@ -77,4 +77,9 @@ export interface ITransactionalConnector {
 	rollback(
 		context: IContext
 	): Promise<boolean>
+
+    onMessage(callback: (
+        message: any
+    ) => void)
+
 }

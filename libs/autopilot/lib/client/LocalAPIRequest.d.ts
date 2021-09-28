@@ -1,5 +1,6 @@
 export interface ILocalAPIRequest {
     __received__?: boolean;
+    __receivedTime__?: number;
     args: Array<boolean | number | string>;
     category: 'FromClient' | 'FromClientRedirected' | 'IsConnectionReady';
     host: string;

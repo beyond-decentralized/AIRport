@@ -18,5 +18,6 @@ export interface ITransactionalConnector {
     startTransaction(context: IContext): Promise<boolean>;
     commit(context: IContext): Promise<boolean>;
     rollback(context: IContext): Promise<boolean>;
+    onMessage(callback: (message: any) => void): any;
 }
 //# sourceMappingURL=ITransactionalConnector.d.ts.map

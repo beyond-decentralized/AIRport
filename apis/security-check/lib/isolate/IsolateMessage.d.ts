@@ -22,6 +22,7 @@ export declare enum IsolateMessageType {
 }
 export interface IIsolateMessage {
     __received__?: boolean;
+    __receivedTime__?: number;
     category: 'Db';
     id: number;
     schemaSignature: string;

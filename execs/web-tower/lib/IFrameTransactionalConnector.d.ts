@@ -28,6 +28,7 @@ export declare class IframeTransactionalConnector implements ITransactionalConne
     mainDomain: string;
     appState: AppState;
     lastIds: LastIds;
+    messageCallback: (message: any) => void;
     init(): Promise<void>;
     addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<EntityArray>;
@@ -50,6 +51,7 @@ export declare class IframeTransactionalConnector implements ITransactionalConne
     private sendObservableMessage;
     private wait;
     private isConnectionInitialized;
+    onMessage(callback: (message: any) => void): void;
 }
 export declare function loadIframeTransactionalConnector(): void;
 //# sourceMappingURL=IFrameTransactionalConnector.d.ts.map

@@ -28,6 +28,11 @@ export class IframeTransactionalConnector {
                 return;
             }
             message.__received__ = true;
+            if (this.messageCallback) {
+                const receivedDate = new Date();
+                message.__receivedTime__ = receivedDate.getTime();
+                this.messageCallback(message);
+            }
             const origin = event.origin;
             if (message.schemaSignature.indexOf('.') > -1) {
                 // Invalid schema signature - cannot have periods that would point to invalid subdomains
@@ -308,6 +313,9 @@ export class IframeTransactionalConnector {
         };
         window.parent.postMessage(message, hostServer);
         return false;
+    }
+    onMessage(callback) {
+        this.messageCallback = callback;
     }
 }
 DI.set(TRANSACTIONAL_CONNECTOR, IframeTransactionalConnector);
