@@ -1,34 +1,34 @@
 import { Y } from "@airport/air-control";
 import { DI } from "@airport/di";
 import { DeepPartial } from "@airport/pressurization";
-import { Parent } from "../client";
-import { BaseParentDao } from "../generated/baseDaos";
-import { IParent } from "../generated/parent";
-import { QParent } from "../server";
-import { PARENT_DAO } from "../server-tokens";
+import { Level1 } from "../client";
+import { ILevel1 } from "../generated/level1";
+import { QLevel1 } from "../generated/qlevel1";
+import { BaseLevel1Dao } from "../generated/generated";
+import { LEVEL_1_DAO } from "../server-tokens";
 
-export interface IParentDao {
+export interface ILevel1Dao {
 
-    findAllWithChildren(): Promise<IParent[]>
+    findAllWithLevel2(): Promise<ILevel1[]>
 
     saveChanges(
-        records: DeepPartial<Parent>[]
+        records: DeepPartial<Level1>[]
     ): Promise<void>
 
 }
 
-export class ParentDao
-    extends BaseParentDao
-    implements IParentDao {
+export class Level1Dao
+    extends BaseLevel1Dao
+    implements ILevel1Dao {
 
-    async findAllWithChildren(): Promise<IParent[]> {
+    async findAllWithLevel2(): Promise<ILevel1[]> {
         let parentRecords = []
         try {
-            let parent: QParent
+            let level1: QLevel1
             parentRecords = await this.db.find.tree({
                 select: {
                     bool: Y,
-                    children: {
+                    contained: {
                         bool: Y,
                         id: Y,
                         num: Y,
@@ -41,8 +41,8 @@ export class ParentDao
                 // FIXME: automatically derive FROM clause using SELECT clause if no FROM is provided
                 from: [
                     // FIXME: create a this.Parent and type it QParent
-                    parent = this.db.from,
-                    parent.children.leftJoin()
+                    level1 = this.db.from,
+                    level1.contained.leftJoin()
                 ]
             })
         } catch (e) {
@@ -55,10 +55,10 @@ export class ParentDao
     }
 
     async saveChanges(
-        records: DeepPartial<Parent>[]
+        records: DeepPartial<Level1>[]
     ): Promise<void> {
         await this.save(records)
     }
 
 }
-DI.set(PARENT_DAO, ParentDao)
+DI.set(LEVEL_1_DAO, Level1Dao)

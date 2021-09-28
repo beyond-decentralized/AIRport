@@ -15,23 +15,23 @@ h1 {
 <script lang="ts">
 import { isDeleted } from '@airport/autopilot';
 
-import type { Parent } from '@airport/functionality-demo-schema';
+import type { Level1 } from '@airport/functionality-demo-schema';
 import type { DeepPartial } from '@airport/pressurization';
 import { FunctionalityDemoService } from './service';
-import { allParentRecords } from './store';
+import { allLevel1Records } from './store';
 
 let service = new FunctionalityDemoService();
 
-async function save(records: DeepPartial<Parent>[]) {
+async function save(records: DeepPartial<Level1>[]) {
   await service.save(records);
 }
 
-async function addParent(records: DeepPartial<Parent>[]) {
-  service.addParent(records);
+async function addLevel1Record(records: DeepPartial<Level1>[]) {
+  service.addLevel1Record(records);
 }
 
-async function addChild(parentRecord: DeepPartial<Parent>) {
-  service.addChild(parentRecord);
+async function addLevel2Record(level1Record: DeepPartial<Level1>) {
+  service.addLevel2Record(level1Record);
 }
 
 async function del(records: any[], toDelete: any) {
@@ -39,82 +39,82 @@ async function del(records: any[], toDelete: any) {
 }
 
 function existingRecords(
-  records: DeepPartial<Parent>[]
-): DeepPartial<Parent>[] {
+  records: DeepPartial<Level1>[]
+): DeepPartial<Level1>[] {
   return records.filter((record) => !isDeleted(record));
 }
 </script>
 
 <main>
-  <h1>AIRport CRUD functionality demo</h1>
+  <h1>AIRport core demo</h1>
   <table>
     <thead>
       <tr>
-        <td>Id</td>
+        <td>Lvl1 Id</td>
         <td>Boolean</td>
         <td>Number</td>
         <td>String</td>
         <td
-          ><button on:click="{() => addParent($allParentRecords)}"
-            >Add Parent</button
+          ><button on:click="{() => addLevel1Record($allLevel1Records)}"
+            >+ Lvl1</button
           ></td
         >
       </tr>
     </thead>
     <tbody>
-      {#each existingRecords($allParentRecords) as parentRecord, i}
+      {#each existingRecords($allLevel1Records) as level1Record, i}
         <tr>
-          <td>{parentRecord.id}</td>
+          <td>{level1Record.id}</td>
           <td>
-            <input type="checkbox" bind:checked="{parentRecord.bool}" />
+            <input type="checkbox" bind:checked="{level1Record.bool}" />
           </td>
-          <td><input type="number" bind:value="{parentRecord.num}" /></td>
-          <td><input bind:value="{parentRecord.str}" /></td>
+          <td><input type="number" bind:value="{level1Record.num}" /></td>
+          <td><input bind:value="{level1Record.str}" /></td>
           <td
-            ><button on:click="{() => del($allParentRecords, parentRecord)}"
-              >Delete</button
+            ><button on:click="{() => del($allLevel1Records, level1Record)}"
+              >- Lvl1</button
             ></td
           >
         </tr>
         <tr>
           <td colspan="5">
-            <div style="margin-left: 100px;">Child Records</div>
+            <div style="margin-left: 100px;">Level2 Records</div>
             <table
               style="border: 1px solid black; margin-left: 50px; width: 100%;"
             >
               <thead>
-                <td>Child Id</td>
+                <td>Lvl2 Id</td>
                 <td>Boolean</td>
                 <td>Number</td>
                 <td>String</td>
                 <td
-                  ><button on:click="{() => addChild(parentRecord)}"
-                    >Add Child</button
+                  ><button on:click="{() => addLevel2Record(level1Record)}"
+                    >+ Lvl2</button
                   ></td
                 >
               </thead>
               <tbody>
-                {#each existingRecords(parentRecord.children) as childRecord, i}
+                {#each existingRecords(level1Record.contained) as level2Record, i}
                   <tr>
-                    <td>{childRecord.id}</td>
+                    <td>{level2Record.id}</td>
                     <td
                       ><input
                         type="checkbox"
-                        bind:checked="{childRecord.bool}"
+                        bind:checked="{level2Record.bool}"
                       /></td
                     >
                     <td
                       ><input
                         type="number"
-                        bind:value="{childRecord.num}"
+                        bind:value="{level2Record.num}"
                       /></td
                     >
-                    <td><input bind:value="{childRecord.str}" /></td>
+                    <td><input bind:value="{level2Record.str}" /></td>
                     <td
                       ><button
                         on:click="{() =>
-                          del(parentRecord.children, childRecord)}"
-                        >Delete</button
+                          del(level1Record.contained, level2Record)}"
+                        >- Lvl2</button
                       ></td
                     >
                   </tr>
@@ -126,5 +126,5 @@ function existingRecords(
       {/each}
     </tbody>
   </table>
-  <button on:click="{() => save($allParentRecords)}">Save</button>
+  <button on:click="{() => save($allLevel1Records)}">Save</button>
 </main>

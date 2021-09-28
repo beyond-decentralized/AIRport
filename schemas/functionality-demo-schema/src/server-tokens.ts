@@ -1,5 +1,8 @@
-import { IChildDao, IParentDao } from "./server"
+import {
+    ILevel1Dao,
+    ILevel2Dao
+} from "./server"
 import { functionalityDemoSchema } from "./tokens"
 
-export const CHILD_DAO = functionalityDemoSchema.token<IChildDao>('IChildDao')
-export const PARENT_DAO = functionalityDemoSchema.token<IParentDao>('IParentDao')
+export const LEVEL_1_DAO = functionalityDemoSchema.token<ILevel1Dao>('ILevel1Dao')
+export const LEVEL_2_DAO = functionalityDemoSchema.token<ILevel2Dao>('ILevel2Dao')

@@ -11,7 +11,7 @@ export const SCHEMA = {
                 "apiObjectMap": {
                     "IDemoApi": {
                         "operationMap": {
-                            "findAllParentsWithChildren": {
+                            "findAllLevel1WithLevel2": {
                                 "isAsync": true,
                                 "parameters": []
                             },
@@ -91,7 +91,7 @@ export const SCHEMA = {
                     "index": 0,
                     "isLocal": true,
                     "isRepositoryEntity": false,
-                    "name": "Parent",
+                    "name": "Level1",
                     "properties": [
                         {
                             "columnRef": {
@@ -132,7 +132,7 @@ export const SCHEMA = {
                         {
                             "index": 4,
                             "isId": false,
-                            "name": "children",
+                            "name": "contained",
                             "relationRef": {
                                 "index": 0
                             },
@@ -154,8 +154,7 @@ export const SCHEMA = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "indexes": []
-                    },
-                    "operations": {}
+                    }
                 },
                 {
                     "columns": [
@@ -227,7 +226,7 @@ export const SCHEMA = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "PARENTID",
+                            "name": "LEVEL1ID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -246,7 +245,7 @@ export const SCHEMA = {
                     "index": 1,
                     "isLocal": true,
                     "isRepositoryEntity": false,
-                    "name": "Child",
+                    "name": "Level2",
                     "properties": [
                         {
                             "columnRef": {
@@ -287,7 +286,7 @@ export const SCHEMA = {
                         {
                             "index": 4,
                             "isId": false,
-                            "name": "parent",
+                            "name": "up",
                             "relationRef": {
                                 "index": 0
                             },
@@ -299,7 +298,7 @@ export const SCHEMA = {
                             "index": 0,
                             "isId": false,
                             "manyToOneElems": {
-                                "mappedBy": "children"
+                                "mappedBy": "contained"
                             },
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
@@ -312,8 +311,7 @@ export const SCHEMA = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "indexes": []
-                    },
-                    "operations": {}
+                    }
                 }
             ],
             "integerVersion": 1,

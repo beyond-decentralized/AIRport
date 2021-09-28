@@ -1,9 +1,9 @@
 import { IOC } from "@airport/di";
 import { DEMO_API } from "../tokens";
 export class DemoApi {
-    async getAllParentsWithChildren() {
+    async getAllLevel1WithLevel2() {
         const demoApi = await IOC.get(DEMO_API);
-        return await demoApi.findAllParentsWithChildren();
+        return await demoApi.findAllLevel1WithLevel2();
     }
     async saveChanges(records) {
         const demoApi = await IOC.get(DEMO_API);

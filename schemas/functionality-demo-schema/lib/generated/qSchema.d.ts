@@ -1,11 +1,11 @@
 import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema, EntityId } from '@airport/ground-control';
-import { QChild } from './qchild';
-import { QParent } from './qparent';
+import { QLevel1 } from './qlevel1';
+import { QLevel2 } from './qlevel2';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
-    Child: QChild;
-    Parent: QParent;
+    Level1: QLevel1;
+    Level2: QLevel2;
 }
 export declare const Q_SCHEMA: LocalQSchema;
 export declare const Q: LocalQSchema;

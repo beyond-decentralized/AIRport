@@ -12,25 +12,25 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { QChild } from './qchild';
-import { QParent } from './qparent';
+import { QLevel1 } from './qlevel1';
+import { QLevel2 } from './qlevel2';
 import {
-  Child,
-  Parent
+  Level1,
+  Level2
 } from '../ddl/ddl';
 
 export interface LocalQSchema extends AirportQSchema {
 
   db: DbSchema;
 
-	Child: QChild;
-	Parent: QParent;
+	Level1: QLevel1;
+	Level2: QLevel2;
 
 }
 
 const __constructors__ = {
-	Child: Child,
-	Parent: Parent
+	Level1: Level1,
+	Level2: Level2
 };
 
 export const Q_SCHEMA: LocalQSchema = <any>{

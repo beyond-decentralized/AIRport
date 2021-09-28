@@ -1,18 +1,18 @@
 import { IOC } from "@airport/di"
 import { DeepPartial } from "@airport/pressurization";
-import { Parent } from "../ddl/Parent";
+import { Level1 } from "../ddl/Level1";
 import { DEMO_API } from "../tokens";
 
 export class DemoApi {
 
-    async getAllParentsWithChildren(): Promise<DeepPartial<Parent>[]> {
+    async getAllLevel1WithLevel2(): Promise<DeepPartial<Level1>[]> {
         const demoApi = await IOC.get(DEMO_API)
 
-        return await demoApi.findAllParentsWithChildren()
+        return await demoApi.findAllLevel1WithLevel2()
     }
 
     async saveChanges(
-        records: DeepPartial<Parent>[]
+        records: DeepPartial<Level1>[]
     ): Promise<void> {
         const demoApi = await IOC.get(DEMO_API)
 

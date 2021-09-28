@@ -9,10 +9,10 @@ import {
     OneToMany,
     Table
 } from '@airport/air-control'
-import { Child } from './Child'
+import { Level2 } from './Level2'
 
 @Entity()
-export class Parent {
+export class Level1 {
 
     @Id()
 	@GeneratedValue()
@@ -25,6 +25,6 @@ export class Parent {
     str: string
 
     @OneToMany()
-    children: Child[]
+    contained: Level2[]
 
 }

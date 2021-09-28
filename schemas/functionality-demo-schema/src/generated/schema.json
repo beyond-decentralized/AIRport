@@ -10,7 +10,7 @@
 				"apiObjectMap": {
 					"IDemoApi": {
 						"operationMap": {
-							"findAllParentsWithChildren": {
+							"findAllLevel1WithLevel2": {
 								"isAsync": true,
 								"parameters": []
 							},
@@ -90,7 +90,7 @@
 					"index": 0,
 					"isLocal": true,
 					"isRepositoryEntity": false,
-					"name": "Parent",
+					"name": "Level1",
 					"properties": [
 						{
 							"columnRef": {
@@ -131,7 +131,7 @@
 						{
 							"index": 4,
 							"isId": false,
-							"name": "children",
+							"name": "contained",
 							"relationRef": {
 								"index": 0
 							},
@@ -153,8 +153,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"indexes": []
-					},
-					"operations": {}
+					}
 				},
 				{
 					"columns": [
@@ -226,7 +225,7 @@
 									"sinceVersion": 1
 								}
 							],
-							"name": "PARENTID",
+							"name": "LEVEL1ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -245,7 +244,7 @@
 					"index": 1,
 					"isLocal": true,
 					"isRepositoryEntity": false,
-					"name": "Child",
+					"name": "Level2",
 					"properties": [
 						{
 							"columnRef": {
@@ -286,7 +285,7 @@
 						{
 							"index": 4,
 							"isId": false,
-							"name": "parent",
+							"name": "up",
 							"relationRef": {
 								"index": 0
 							},
@@ -298,7 +297,7 @@
 							"index": 0,
 							"isId": false,
 							"manyToOneElems": {
-								"mappedBy": "children"
+								"mappedBy": "contained"
 							},
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
@@ -311,8 +310,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"indexes": []
-					},
-					"operations": {}
+					}
 				}
 			],
 			"integerVersion": 1,

@@ -1,8 +1,7 @@
 import { markForDeletion } from '@airport/autopilot'
-import { DemoApi } from '@airport/functionality-demo-schema'
-import type { Parent } from '@airport/functionality-demo-schema'
+import { DemoApi, Level1 } from '@airport/functionality-demo-schema'
 import type { DeepPartial } from '@airport/pressurization';
-import { allParentRecords } from './store';
+import { allLevel1Records as allLevel1Records } from './store';
 export class FunctionalityDemoService {
 
     private demoApi = new DemoApi()
@@ -12,34 +11,34 @@ export class FunctionalityDemoService {
     }
 
     async getAllRecords(): Promise<void> {
-        const parentRecords = await this.demoApi.getAllParentsWithChildren()
-        allParentRecords.set(parentRecords)
+        const level1Records = await this.demoApi.getAllLevel1WithLevel2()
+        allLevel1Records.set(level1Records)
     }
 
     async save(
-        records: DeepPartial<Parent>[]
+        records: DeepPartial<Level1>[]
     ): Promise<void> {
         await this.demoApi.saveChanges(records)
         await this.getAllRecords()
     }
 
-    addParent(
-        parentRecords: DeepPartial<Parent>[]
+    addLevel1Record(
+        level1Records: DeepPartial<Level1>[]
     ): void {
-        parentRecords.push({
+        level1Records.push({
             id: null,
             bool: false,
             num: 0,
             str: "",
-            children: []
+            contained: []
         })
-        allParentRecords.set(parentRecords)
+        allLevel1Records.set(level1Records)
     }
 
-    addChild(
-        parentRecord: DeepPartial<Parent>
+    addLevel2Record(
+        level1Record: DeepPartial<Level1>
     ): void {
-        parentRecord.children.push({
+        level1Record.contained.push({
             id: null,
             bool: false,
             num: 0,
@@ -66,10 +65,10 @@ export class FunctionalityDemoService {
 
     private updateStore() {
         let originalParentRecords
-        const unsubscribe = allParentRecords.subscribe(parentRecords =>
+        const unsubscribe = allLevel1Records.subscribe(parentRecords =>
             originalParentRecords = parentRecords)
         unsubscribe()
-        allParentRecords.set([...originalParentRecords])
+        allLevel1Records.set([...originalParentRecords])
     }
 
 }

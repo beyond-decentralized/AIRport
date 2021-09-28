@@ -1,14 +1,14 @@
 import { container, DI } from "@airport/di";
 import { Api } from "@airport/check-in";
-import { DEMO_API, Parent } from "../client";
+import { DEMO_API, Level1 } from "../client";
 import { DeepPartial } from "@airport/pressurization";
-import { PARENT_DAO } from "../server-tokens";
+import { LEVEL_1_DAO as LEVEL_1_DAO } from "../server-tokens";
 export interface IDemoApi {
 
-    findAllParentsWithChildren(): Promise<DeepPartial<Parent>[]>
+    findAllLevel1WithLevel2(): Promise<DeepPartial<Level1>[]>
 
     saveChanges(
-        records: DeepPartial<Parent>[]
+        records: DeepPartial<Level1>[]
     ): Promise<void>
 
 }
@@ -16,19 +16,19 @@ export interface IDemoApi {
 export class DemoApi implements IDemoApi {
 
     @Api()
-    async findAllParentsWithChildren(): Promise<DeepPartial<Parent>[]> {
-        const parentDao = await container(this).get(PARENT_DAO)
+    async findAllLevel1WithLevel2(): Promise<DeepPartial<Level1>[]> {
+        const level1Dao = await container(this).get(LEVEL_1_DAO)
 
-        return await parentDao.findAllWithChildren()
+        return await level1Dao.findAllWithLevel2()
     }
 
     @Api()
     async saveChanges(
-        records: DeepPartial<Parent>[]
+        records: DeepPartial<Level1>[]
     ): Promise<void> {
-        const parentDao = await container(this).get(PARENT_DAO)
+        const level1Dao = await container(this).get(LEVEL_1_DAO)
 
-        await parentDao.saveChanges(records)
+        await level1Dao.saveChanges(records)
     }
 
 }

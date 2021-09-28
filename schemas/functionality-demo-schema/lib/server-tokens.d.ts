@@ -1,4 +1,4 @@
-import { IChildDao, IParentDao } from "./server";
-export declare const CHILD_DAO: import("@airport/di").IDiToken<IChildDao>;
-export declare const PARENT_DAO: import("@airport/di").IDiToken<IParentDao>;
+import { ILevel1Dao, ILevel2Dao } from "./server";
+export declare const LEVEL_1_DAO: import("@airport/di").IDiToken<ILevel1Dao>;
+export declare const LEVEL_2_DAO: import("@airport/di").IDiToken<ILevel2Dao>;
 //# sourceMappingURL=server-tokens.d.ts.map

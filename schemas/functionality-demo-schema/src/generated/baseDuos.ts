@@ -1,30 +1,30 @@
 /* eslint-disable */
 import {
-	IChild,
-} from './child';
+	ILevel1,
+} from './level1';
 import {
-	ChildESelect,
-	ChildECreateColumns,
-	ChildECreateProperties,
-	ChildEUpdateColumns,
-	ChildEUpdateProperties,
-	ChildEId,
-	ChildGraph,
-	QChild,
-} from './qchild';
+	Level1ESelect,
+	Level1ECreateColumns,
+	Level1ECreateProperties,
+	Level1EUpdateColumns,
+	Level1EUpdateProperties,
+	Level1EId,
+	Level1Graph,
+	QLevel1,
+} from './qlevel1';
 import {
-	IParent,
-} from './parent';
+	ILevel2,
+} from './level2';
 import {
-	ParentESelect,
-	ParentECreateColumns,
-	ParentECreateProperties,
-	ParentEUpdateColumns,
-	ParentEUpdateProperties,
-	ParentEId,
-	ParentGraph,
-	QParent,
-} from './qparent';
+	Level2ESelect,
+	Level2ECreateColumns,
+	Level2ECreateProperties,
+	Level2EUpdateColumns,
+	Level2EUpdateProperties,
+	Level2EId,
+	Level2Graph,
+	QLevel2,
+} from './qlevel2';
 import {
 	IDuo,
 	IEntityCascadeGraph,
@@ -73,31 +73,13 @@ export class SQDIDuo<Entity,
 }
 
 
-export interface IBaseChildDuo
-  extends IDuo<IChild, ChildESelect, ChildECreateProperties, ChildEUpdateColumns, ChildEUpdateProperties, ChildEId, ChildGraph, QChild> {
+export interface IBaseLevel1Duo
+  extends IDuo<ILevel1, Level1ESelect, Level1ECreateProperties, Level1EUpdateColumns, Level1EUpdateProperties, Level1EId, Level1Graph, QLevel1> {
 }
 
-export class BaseChildDuo
-  extends SQDIDuo<IChild, ChildESelect, ChildECreateProperties, ChildEUpdateColumns, ChildEUpdateProperties, ChildEId, ChildGraph, QChild>
-	implements IBaseChildDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(1)
-	}
-	
-	constructor() {
-		super(1)
-	}
-}
-
-
-export interface IBaseParentDuo
-  extends IDuo<IParent, ParentESelect, ParentECreateProperties, ParentEUpdateColumns, ParentEUpdateProperties, ParentEId, ParentGraph, QParent> {
-}
-
-export class BaseParentDuo
-  extends SQDIDuo<IParent, ParentESelect, ParentECreateProperties, ParentEUpdateColumns, ParentEUpdateProperties, ParentEId, ParentGraph, QParent>
-	implements IBaseParentDuo {
+export class BaseLevel1Duo
+  extends SQDIDuo<ILevel1, Level1ESelect, Level1ECreateProperties, Level1EUpdateColumns, Level1EUpdateProperties, Level1EId, Level1Graph, QLevel1>
+	implements IBaseLevel1Duo {
 
 	static diSet(): boolean {
 		return duoDiSet(0)
@@ -105,5 +87,23 @@ export class BaseParentDuo
 	
 	constructor() {
 		super(0)
+	}
+}
+
+
+export interface IBaseLevel2Duo
+  extends IDuo<ILevel2, Level2ESelect, Level2ECreateProperties, Level2EUpdateColumns, Level2EUpdateProperties, Level2EId, Level2Graph, QLevel2> {
+}
+
+export class BaseLevel2Duo
+  extends SQDIDuo<ILevel2, Level2ESelect, Level2ECreateProperties, Level2EUpdateColumns, Level2EUpdateProperties, Level2EId, Level2Graph, QLevel2>
+	implements IBaseLevel2Duo {
+
+	static diSet(): boolean {
+		return duoDiSet(1)
+	}
+	
+	constructor() {
+		super(1)
 	}
 }

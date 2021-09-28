@@ -6,22 +6,7 @@ export class SQDIDao extends Dao {
         super(dbEntityId, Q);
     }
 }
-export class BaseChildDao extends SQDIDao {
-    constructor() {
-        super(1);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet(1);
-    }
-}
-BaseChildDao.Find = new DaoQueryDecorators();
-BaseChildDao.FindOne = new DaoQueryDecorators();
-BaseChildDao.Search = new DaoQueryDecorators();
-BaseChildDao.SearchOne = new DaoQueryDecorators();
-export class BaseParentDao extends SQDIDao {
+export class BaseLevel1Dao extends SQDIDao {
     constructor() {
         super(0);
     }
@@ -32,8 +17,23 @@ export class BaseParentDao extends SQDIDao {
         return duoDiSet(0);
     }
 }
-BaseParentDao.Find = new DaoQueryDecorators();
-BaseParentDao.FindOne = new DaoQueryDecorators();
-BaseParentDao.Search = new DaoQueryDecorators();
-BaseParentDao.SearchOne = new DaoQueryDecorators();
+BaseLevel1Dao.Find = new DaoQueryDecorators();
+BaseLevel1Dao.FindOne = new DaoQueryDecorators();
+BaseLevel1Dao.Search = new DaoQueryDecorators();
+BaseLevel1Dao.SearchOne = new DaoQueryDecorators();
+export class BaseLevel2Dao extends SQDIDao {
+    constructor() {
+        super(1);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet(1);
+    }
+}
+BaseLevel2Dao.Find = new DaoQueryDecorators();
+BaseLevel2Dao.FindOne = new DaoQueryDecorators();
+BaseLevel2Dao.Search = new DaoQueryDecorators();
+BaseLevel2Dao.SearchOne = new DaoQueryDecorators();
 //# sourceMappingURL=baseDaos.js.map

@@ -1,3 +1,3 @@
 import { writable } from 'svelte/store';
 
-export const allParentRecords = writable([]);
+export const allLevel1Records = writable([]);

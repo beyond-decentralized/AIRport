@@ -9,7 +9,7 @@ export declare const SCHEMA: {
             apiObjectMap: {
                 IDemoApi: {
                     operationMap: {
-                        findAllParentsWithChildren: {
+                        findAllLevel1WithLevel2: {
                             isAsync: boolean;
                             parameters: any[];
                         };
@@ -74,7 +74,6 @@ export declare const SCHEMA: {
             tableConfig: {
                 indexes: any[];
             };
-            operations: {};
         } | {
             columns: {
                 index: number;
@@ -137,7 +136,6 @@ export declare const SCHEMA: {
             tableConfig: {
                 indexes: any[];
             };
-            operations: {};
         })[];
         integerVersion: number;
         referencedSchemas: any[];

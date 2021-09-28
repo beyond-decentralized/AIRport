@@ -2,10 +2,10 @@ import { AIRPORT_DATABASE } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
-import { Child, Parent } from '../ddl/ddl';
+import { Level1, Level2 } from '../ddl/ddl';
 const __constructors__ = {
-    Child: Child,
-    Parent: Parent
+    Level1: Level1,
+    Level2: Level2
 };
 export const Q_SCHEMA = {
     __constructors__,

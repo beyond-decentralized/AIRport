@@ -5,10 +5,10 @@ import {
     JoinColumn,
     ManyToOne
 } from "@airport/air-control"
-import { Parent } from "./Parent"
+import { Level1 } from "./Level1"
 
 @Entity()
-export class Child {
+export class Level2 {
 
     @Id()
     @GeneratedValue()
@@ -20,8 +20,8 @@ export class Child {
 
     str: string
 
-    @ManyToOne({ mappedBy: 'children' })
-    @JoinColumn({ name: 'parentId', referencedColumnName: 'id' })
-    parent: Parent
+    @ManyToOne({ mappedBy: 'contained' })
+    @JoinColumn({ name: 'level1Id', referencedColumnName: 'id' })
+    up: Level1
 
 }

@@ -22,21 +22,21 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ChildGraph,
-	ChildEId,
-	ChildEOptionalId,
-	ChildEUpdateProperties,
-	ChildESelect,
-	QChild,
-	QChildQId,
-	QChildQRelation,
-} from './qchild';
+	Level2Graph,
+	Level2EId,
+	Level2EOptionalId,
+	Level2EUpdateProperties,
+	Level2ESelect,
+	QLevel2,
+	QLevel2QId,
+	QLevel2QRelation,
+} from './qlevel2';
 import {
-	Child,
-} from '../ddl/Child';
+	Level2,
+} from '../ddl/Level2';
 import {
-	Parent,
-} from '../ddl/Parent';
+	Level1,
+} from '../ddl/Level1';
 
 
 declare function require(moduleName: string): any;
@@ -49,8 +49,8 @@ declare function require(moduleName: string): any;
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface ParentESelect
-    extends IEntitySelectProperties, ParentEOptionalId {
+export interface Level1ESelect
+    extends IEntitySelectProperties, Level1EOptionalId {
 	// Non-Id Properties
 	bool?: boolean | IQBooleanField;
 	num?: number | IQNumberField;
@@ -59,14 +59,14 @@ export interface ParentESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	children?: ChildESelect;
+	contained?: Level2ESelect;
 
 }
 
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface ParentEId
+export interface Level1EId
     extends IEntityIdProperties {
 	// Id Properties
 	id: number | IQNumberField;
@@ -78,7 +78,7 @@ export interface ParentEId
 /**
  * Ids fields and relations only (optional).
  */
-export interface ParentEOptionalId {
+export interface Level1EOptionalId {
 	// Id Properties
 	id?: number | IQNumberField;
 
@@ -89,7 +89,7 @@ export interface ParentEOptionalId {
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface ParentEUpdateProperties
+export interface Level1EUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	bool?: boolean | IQBooleanField;
@@ -103,8 +103,8 @@ export interface ParentEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ParentGraph
-	extends ParentEOptionalId, IEntityCascadeGraph {
+export interface Level1Graph
+	extends Level1EOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
@@ -113,14 +113,14 @@ export interface ParentGraph
 	str?: string | IQStringField;
 
 	// Relations
-	children?: ChildGraph[];
+	contained?: Level2Graph[];
 
 }
 
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface ParentEUpdateColumns
+export interface Level1EUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	BOOL?: boolean | IQBooleanField;
@@ -132,15 +132,15 @@ export interface ParentEUpdateColumns
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface ParentECreateProperties
-extends Partial<ParentEId>, ParentEUpdateProperties {
+export interface Level1ECreateProperties
+extends Partial<Level1EId>, Level1EUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
-export interface ParentECreateColumns
-extends ParentEId, ParentEUpdateColumns {
+export interface Level1ECreateColumns
+extends Level1EId, Level1EUpdateColumns {
 }
 
 
@@ -153,7 +153,7 @@ extends ParentEId, ParentEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QParent extends IQEntity<Parent>
+export interface QLevel1 extends IQEntity<Level1>
 {
 	// Id Fields
 	id: IQNumberField;
@@ -166,13 +166,13 @@ export interface QParent extends IQEntity<Parent>
 	str: IQStringField;
 
 	// Non-Id Relations
-	children: IQOneToManyRelation<Child, QChild>;
+	contained: IQOneToManyRelation<Level2, QLevel2>;
 
 }
 
 
 // Entity Id Interface
-export interface QParentQId
+export interface QLevel1QId
 {
 	
 	// Id Fields
@@ -184,7 +184,7 @@ export interface QParentQId
 }
 
 // Entity Relation Interface
-export interface QParentQRelation
-	extends IQRelation<Parent, QParent>, QParentQId {
+export interface QLevel1QRelation
+	extends IQRelation<Level1, QLevel1>, QLevel1QId {
 }
 

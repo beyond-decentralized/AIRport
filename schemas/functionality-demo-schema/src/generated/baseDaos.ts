@@ -1,30 +1,30 @@
 /* eslint-disable */
 import {
-	IChild,
-} from './child';
+	ILevel1,
+} from './level1';
 import {
-	ChildESelect,
-	ChildECreateColumns,
-	ChildECreateProperties,
-	ChildEUpdateColumns,
-	ChildEUpdateProperties,
-	ChildEId,
-	ChildGraph,
-	QChild,
-} from './qchild';
+	Level1ESelect,
+	Level1ECreateColumns,
+	Level1ECreateProperties,
+	Level1EUpdateColumns,
+	Level1EUpdateProperties,
+	Level1EId,
+	Level1Graph,
+	QLevel1,
+} from './qlevel1';
 import {
-	IParent,
-} from './parent';
+	ILevel2,
+} from './level2';
 import {
-	ParentESelect,
-	ParentECreateColumns,
-	ParentECreateProperties,
-	ParentEUpdateColumns,
-	ParentEUpdateProperties,
-	ParentEId,
-	ParentGraph,
-	QParent,
-} from './qparent';
+	Level2ESelect,
+	Level2ECreateColumns,
+	Level2ECreateProperties,
+	Level2EUpdateColumns,
+	Level2EUpdateProperties,
+	Level2EId,
+	Level2Graph,
+	QLevel2,
+} from './qlevel2';
 import {
 	IDao,
 	IEntityCascadeGraph,
@@ -74,50 +74,22 @@ export class SQDIDao<Entity,
 }
 
 
-export interface IBaseChildDao
-  extends IDao<IChild, ChildESelect, ChildECreateProperties, ChildEUpdateColumns, ChildEUpdateProperties, ChildEId, ChildGraph, QChild> {
+export interface IBaseLevel1Dao
+  extends IDao<ILevel1, Level1ESelect, Level1ECreateProperties, Level1EUpdateColumns, Level1EUpdateProperties, Level1EId, Level1Graph, QLevel1> {
 }
 
-export class BaseChildDao
-  extends SQDIDao<IChild, ChildESelect, ChildECreateProperties, ChildEUpdateColumns, ChildEUpdateProperties, ChildEId, ChildGraph, QChild>
-	implements IBaseChildDao {
+export class BaseLevel1Dao
+  extends SQDIDao<ILevel1, Level1ESelect, Level1ECreateProperties, Level1EUpdateColumns, Level1EUpdateProperties, Level1EId, Level1Graph, QLevel1>
+	implements IBaseLevel1Dao {
 	
-	static Find      = new DaoQueryDecorators<ChildESelect>();
-	static FindOne   = new DaoQueryDecorators<ChildESelect>();
-	static Search    = new DaoQueryDecorators<ChildESelect>();
-	static SearchOne = new DaoQueryDecorators<ChildESelect>();
+	static Find      = new DaoQueryDecorators<Level1ESelect>();
+	static FindOne   = new DaoQueryDecorators<Level1ESelect>();
+	static Search    = new DaoQueryDecorators<Level1ESelect>();
+	static SearchOne = new DaoQueryDecorators<Level1ESelect>();
 	static Save(
-		config: ChildGraph
+		config: Level1Graph
 	): PropertyDecorator {
-		return Dao.BaseSave<ChildGraph>(config);
-  }
-
-	static diSet(): boolean {
-		return duoDiSet(1)
-	}
-	
-	constructor() {
-		super(1)
-	}
-}
-
-
-export interface IBaseParentDao
-  extends IDao<IParent, ParentESelect, ParentECreateProperties, ParentEUpdateColumns, ParentEUpdateProperties, ParentEId, ParentGraph, QParent> {
-}
-
-export class BaseParentDao
-  extends SQDIDao<IParent, ParentESelect, ParentECreateProperties, ParentEUpdateColumns, ParentEUpdateProperties, ParentEId, ParentGraph, QParent>
-	implements IBaseParentDao {
-	
-	static Find      = new DaoQueryDecorators<ParentESelect>();
-	static FindOne   = new DaoQueryDecorators<ParentESelect>();
-	static Search    = new DaoQueryDecorators<ParentESelect>();
-	static SearchOne = new DaoQueryDecorators<ParentESelect>();
-	static Save(
-		config: ParentGraph
-	): PropertyDecorator {
-		return Dao.BaseSave<ParentGraph>(config);
+		return Dao.BaseSave<Level1Graph>(config);
   }
 
 	static diSet(): boolean {
@@ -126,5 +98,33 @@ export class BaseParentDao
 	
 	constructor() {
 		super(0)
+	}
+}
+
+
+export interface IBaseLevel2Dao
+  extends IDao<ILevel2, Level2ESelect, Level2ECreateProperties, Level2EUpdateColumns, Level2EUpdateProperties, Level2EId, Level2Graph, QLevel2> {
+}
+
+export class BaseLevel2Dao
+  extends SQDIDao<ILevel2, Level2ESelect, Level2ECreateProperties, Level2EUpdateColumns, Level2EUpdateProperties, Level2EId, Level2Graph, QLevel2>
+	implements IBaseLevel2Dao {
+	
+	static Find      = new DaoQueryDecorators<Level2ESelect>();
+	static FindOne   = new DaoQueryDecorators<Level2ESelect>();
+	static Search    = new DaoQueryDecorators<Level2ESelect>();
+	static SearchOne = new DaoQueryDecorators<Level2ESelect>();
+	static Save(
+		config: Level2Graph
+	): PropertyDecorator {
+		return Dao.BaseSave<Level2Graph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(1)
+	}
+	
+	constructor() {
+		super(1)
 	}
 }

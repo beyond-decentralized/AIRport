@@ -7,20 +7,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { container, DI } from "@airport/di";
 import { Api } from "@airport/check-in";
 import { DEMO_API } from "../client";
-import { PARENT_DAO } from "../server-tokens";
+import { LEVEL_1_DAO as LEVEL_1_DAO } from "../server-tokens";
 export class DemoApi {
-    async findAllParentsWithChildren() {
-        const parentDao = await container(this).get(PARENT_DAO);
-        return await parentDao.findAllWithChildren();
+    async findAllLevel1WithLevel2() {
+        const level1Dao = await container(this).get(LEVEL_1_DAO);
+        return await level1Dao.findAllWithLevel2();
     }
     async saveChanges(records) {
-        const parentDao = await container(this).get(PARENT_DAO);
-        await parentDao.saveChanges(records);
+        const level1Dao = await container(this).get(LEVEL_1_DAO);
+        await level1Dao.saveChanges(records);
     }
 }
 __decorate([
     Api()
-], DemoApi.prototype, "findAllParentsWithChildren", null);
+], DemoApi.prototype, "findAllLevel1WithLevel2", null);
 __decorate([
     Api()
 ], DemoApi.prototype, "saveChanges", null);

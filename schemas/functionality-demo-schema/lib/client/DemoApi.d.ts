@@ -1,7 +1,7 @@
 import { DeepPartial } from "@airport/pressurization";
-import { Parent } from "../ddl/Parent";
+import { Level1 } from "../ddl/Level1";
 export declare class DemoApi {
-    getAllParentsWithChildren(): Promise<DeepPartial<Parent>[]>;
-    saveChanges(records: DeepPartial<Parent>[]): Promise<void>;
+    getAllLevel1WithLevel2(): Promise<DeepPartial<Level1>[]>;
+    saveChanges(records: DeepPartial<Level1>[]): Promise<void>;
 }
 //# sourceMappingURL=DemoApi.d.ts.map

@@ -1,6 +1,6 @@
 import {
-	IChild,
-} from './child';
+	ILevel2,
+} from './level2';
 
 
 
@@ -8,7 +8,7 @@ import {
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface IParent {
+export interface ILevel1 {
 	
 	// Id Properties
 	id: number;
@@ -21,7 +21,7 @@ export interface IParent {
 	str?: string;
 
 	// Non-Id Relations
-	children?: IChild[];
+	contained?: ILevel2[];
 
 	// Transient Properties
 

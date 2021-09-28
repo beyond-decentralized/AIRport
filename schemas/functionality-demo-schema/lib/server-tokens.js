@@ -1,4 +1,4 @@
 import { functionalityDemoSchema } from "./tokens";
-export const CHILD_DAO = functionalityDemoSchema.token('IChildDao');
-export const PARENT_DAO = functionalityDemoSchema.token('IParentDao');
+export const LEVEL_1_DAO = functionalityDemoSchema.token('ILevel1Dao');
+export const LEVEL_2_DAO = functionalityDemoSchema.token('ILevel2Dao');
 //# sourceMappingURL=server-tokens.js.map
