@@ -89,6 +89,7 @@ export class SequenceGenerator {
                 numColumnSequencesNeeded--;
                 sequenceBlock--;
             }
+            this.sequenceBlocks[schema.index][dbEntity.index][dbColumn.index] = sequenceBlock;
             if (numColumnSequencesNeeded) {
                 const numNewSequencesNeeded = sequence.incrementBy + numColumnSequencesNeeded;
                 const newSequence = { ...sequence };
