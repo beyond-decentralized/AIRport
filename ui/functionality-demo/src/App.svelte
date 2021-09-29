@@ -19,6 +19,7 @@ p {
   border: 1px solid black;
   height: 100px;
   margin: 0;
+  min-width: 260px;
   overflow-y: auto;
 }
 div.log {
@@ -105,7 +106,9 @@ function getMessageHeader(message) {
 
   var timeString = min + ':' + sec + '.' + milliseconds;
 
-  return timeString + ' ' + message.category;
+  const suffx = message.type ? ': ' + message.type : ''
+
+  return timeString + ' ' + message.category + suffx;
 }
 
 function expandMessage(index) {

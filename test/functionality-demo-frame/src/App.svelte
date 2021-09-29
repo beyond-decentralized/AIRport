@@ -59,7 +59,9 @@ function getMessageHeader(message) {
 
   var timeString = min + ':' + sec + '.' + milliseconds;
 
-  return timeString + ' ' + message.category;
+  const suffx = message.type ? ': ' + message.type : ''
+
+  return timeString + ' ' + message.category + suffx;
 }
 
 function expandMessage(index) {
