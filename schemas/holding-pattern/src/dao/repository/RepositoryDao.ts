@@ -18,10 +18,10 @@ import {
 	UserUniqueId
 }                         from '@airport/travel-document-checkpoint'
 import {
-	ActorRandomId,
+	ActorUuId,
 	RepositoryId,
-	RepositoryOrderedId,
-	RepositoryRandomId,
+	RepositoryCreatedAt,
+	RepositoryUuId,
 	RepositoryTransactionHistoryId,
 }                         from '../../ddl/ddl'
 import {REPOSITORY_DAO}   from '../../tokens'
@@ -49,9 +49,9 @@ export interface IRepositoryDao
 	): Promise<MappedEntityArray<IRepository>>;
 
 	findLocalRepoIdsByGlobalIds(
-		createdAts: RepositoryOrderedId[],
-		uuIds: RepositoryRandomId[],
-		ownerActorRandomIds: ActorRandomId[],
+		createdAts: RepositoryCreatedAt[],
+		uuIds: RepositoryUuId[],
+		ownerActorRandomIds: ActorUuId[],
 		ownerUserUniqueIds: UserUniqueId[],
 		ownerTerminalNames: TerminalName[],
 		ownerTerminalSecondIds: TerminalSecondId[],
@@ -66,8 +66,8 @@ export interface IRepositoryDao
 
 export type RepositoryIdMap = Map<UserUniqueId,
 	Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId,
-		Map<ActorRandomId, Map<RepositoryOrderedId,
-			Map<RepositoryRandomId, RepositoryId>>>>>>>;
+		Map<ActorUuId, Map<RepositoryCreatedAt,
+			Map<RepositoryUuId, RepositoryId>>>>>>>;
 
 export class RepositoryDao
 	extends BaseRepositoryDao
@@ -215,9 +215,9 @@ export class RepositoryDao
 	}
 
 	async findLocalRepoIdsByGlobalIds(
-		createdAts: RepositoryOrderedId[],
-		uuIds: RepositoryRandomId[],
-		ownerActorRandomIds: ActorRandomId[],
+		createdAts: RepositoryCreatedAt[],
+		uuIds: RepositoryUuId[],
+		ownerActorRandomIds: ActorUuId[],
 		ownerUserUniqueIds: UserUniqueId[],
 		ownerTerminalNames: TerminalName[],
 		ownerTerminalSecondIds: TerminalSecondId[],
@@ -273,7 +273,7 @@ export class RepositoryDao
 							resultRow[2]),
 						resultRow[3]),
 					resultRow[4]),
-				resultRow[5]).set(resultRow[6], resultRow[7])
+				resultRow[5].getTime()).set(resultRow[6], resultRow[7])
 		}
 
 

@@ -7,6 +7,7 @@ import { SCHEMA_DAO } from '@airport/traffic-pattern';
 import { Terminal, User, } from '@airport/travel-document-checkpoint';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
+import { v4 as uuidv4 } from "uuid";
 import { DATABASE_MANAGER } from '../tokens';
 export class DatabaseManager {
     constructor() {
@@ -163,7 +164,7 @@ export class DatabaseManager {
             const actor = new Actor();
             actor.user = user;
             actor.terminal = terminal;
-            actor.randomId = Math.random();
+            actor.uuId = uuidv4();
             const actorDao = await container(this).get(ACTOR_DAO);
             await actorDao.save(actor, context);
         }, context);

@@ -17,7 +17,7 @@ import {RepositoryActor}  from '../repository/RepositoryActor'
 import {ActorApplication} from './ActorApplication'
 
 export type ActorId = number;
-export type ActorUuId = number;
+export type ActorUuId = string;
 
 @Entity()
 export class Actor {

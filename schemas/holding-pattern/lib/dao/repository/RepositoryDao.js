@@ -34,9 +34,6 @@ export class RepositoryDao extends BaseRepositoryDao {
             where: 
             // and(
             r.id.in(repositoryIds),
-            // d.name.equals(dbName),
-            // u.uniqueId.equals(userEmail)
-            // )
         });
     }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
@@ -146,7 +143,7 @@ export class RepositoryDao extends BaseRepositoryDao {
             where: and(r.createdAt.in(createdAts), r.uuId.in(uuIds), oa.uuId.in(ownerActorRandomIds), ou.uniqueId.in(ownerUserUniqueIds), od.name.in(ownerTerminalNames), od.secondId.in(ownerTerminalSecondIds), odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds))
         });
         for (const resultRow of resultRows) {
-            ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4]), resultRow[5]).set(resultRow[6], resultRow[7]);
+            ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4]), resultRow[5].getTime()).set(resultRow[6], resultRow[7]);
         }
         return repositoryIdMap;
     }

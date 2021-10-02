@@ -14,7 +14,7 @@ import {
 }                  from '@airport/travel-document-checkpoint'
 import {
 	ActorId,
-	ActorRandomId,
+	ActorUuId,
 }                  from '../../ddl/ddl'
 import {ACTOR_DAO} from '../../tokens'
 import {
@@ -33,13 +33,13 @@ export interface IActorDao
 	): Promise<IActor[]>;
 
 	findWithDetailsByGlobalIds(
-		uuIds: ActorRandomId[],
+		uuIds: ActorUuId[],
 		userIds: UserId[],
 		terminalIds: TmTerminalId[]
 	): Promise<IActor[]>;
 
 	findMapsWithDetailsByGlobalIds(
-		uuIds: ActorRandomId[],
+		uuIds: ActorUuId[],
 		userIds: UserId[],
 		terminalIds: TmTerminalId[],
 		actorMap: Map<UserId, Map<TmTerminalId, IActor>>,
@@ -61,7 +61,7 @@ export class ActorDao
 	}
 
 	async findMapsWithDetailsByGlobalIds(
-		uuIds: ActorRandomId[],
+		uuIds: ActorUuId[],
 		userIds: UserId[],
 		terminalIds: TmTerminalId[],
 		actorMap: Map<UserId, Map<TmTerminalId, IActor>>,
@@ -81,7 +81,7 @@ export class ActorDao
 	}
 
 	async findWithDetailsByGlobalIds(
-		uuIds: ActorRandomId[],
+		uuIds: ActorUuId[],
 		userIds: UserId[],
 		terminalIds: TmTerminalId[]
 	): Promise<IActor[]> {

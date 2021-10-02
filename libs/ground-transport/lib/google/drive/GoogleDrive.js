@@ -9,7 +9,6 @@ export class GoogleDrive {
             'https://www.googleapis.com/auth/drive.appfolder',
             'email',
             'profile',
-            // Add other scopes needed by your application.
         ];
     }
     createFolder(name, folderId) {

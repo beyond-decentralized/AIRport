@@ -122,8 +122,6 @@ export class SyncLogMessageProcessor {
                     tmRepositoryTransactionBlockId,
                     // sharingMessageSyncTimestamp,
                     repoTransBlockSyncOutcome.syncStatus,
-                    // DataOrigin.LOCAL,
-                    // BlockSyncStatus.SYNCHRONIZED
                 ]);
             }
         }

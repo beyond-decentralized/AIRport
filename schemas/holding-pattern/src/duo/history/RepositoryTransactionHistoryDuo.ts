@@ -116,8 +116,8 @@ export class RepositoryTransactionHistoryDuo
 				return databaseOwnerComparison
 			}
 
-			const actorRandomIdComparison
-				      = this.compareNumbers(actor1.uuId, actor2.uuId)
+			const actorRandomIdComparison = actor1.uuId.localeCompare(actor2.uuId)
+
 			return actorRandomIdComparison
 		})
 	}

@@ -119,7 +119,7 @@ export class SyncInChecker {
             const actorMapByRemoteActorId = new Map();
             const newActors = [];
             for (const actor of data.actors) {
-                const localActor = actorMap.get(actor.randomId).get(actor.user.uniqueId).get(actor.terminal.name)
+                const localActor = actorMap.get(actor.uuId).get(actor.user.uniqueId).get(actor.terminal.name)
                     .get(actor.terminal.secondId).get(actor.terminal.owner.uniqueId);
                 actorMapByRemoteActorId.set(actor.id, localActor);
                 newActors.push(localActor);

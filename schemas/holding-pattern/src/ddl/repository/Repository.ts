@@ -30,8 +30,8 @@ import { SyncPriority } from "./SyncPrority";
  */
 
 export type RepositoryId = number;
-export type RepositoryOrderedId = number;
-export type RepositoryUiId = number;
+export type RepositoryCreatedAt = Date;
+export type RepositoryUuId = string;
 export type RepositoryName = string;
 export type RepositoryUrl = string;
 
@@ -56,11 +56,11 @@ export class Repository {
 
 	@Column({ name: "CREATED_AT", nullable: false })
 	@DbDate()
-	createdAt: Date;
+	createdAt: RepositoryCreatedAt;
 
 	@Column({ name: "UU_ID", nullable: false })
 	@DbString()
-	uuId: RepositoryUiId;
+	uuId: RepositoryUuId;
 
 	@Column({ name: "NAME", nullable: false })
 	@DbString()

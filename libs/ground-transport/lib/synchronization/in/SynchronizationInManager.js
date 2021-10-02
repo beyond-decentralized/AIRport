@@ -89,7 +89,6 @@ export class SynchronizationInManager {
                             data,
                             serializedData,
                             sharingMessage,
-                            // syncDatetime: syncTimestamp,
                         };
                         messageWithContent.dataMessages.push(dataMessage);
                         allDataMessages.push(dataMessage);
