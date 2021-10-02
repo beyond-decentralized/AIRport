@@ -3,7 +3,7 @@ import { IActorApplication } from './actorapplication';
 import { IRepositoryActor } from '../repository/repositoryactor';
 export interface IActor {
     id: number;
-    randomId?: number;
+    uuId?: string;
     user?: IUser;
     terminal?: ITerminal;
     actorApplications?: IActorApplication[];

@@ -117,7 +117,7 @@ export class RepositoryTransactionHistoryDuo
 			}
 
 			const actorRandomIdComparison
-				      = this.compareNumbers(actor1.randomId, actor2.randomId)
+				      = this.compareNumbers(actor1.uuId, actor2.uuId)
 			return actorRandomIdComparison
 		})
 	}

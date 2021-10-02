@@ -85,7 +85,7 @@ declare function require(moduleName: string): any;
 export interface ActorESelect
     extends IEntitySelectProperties, ActorEOptionalId {
 	// Non-Id Properties
-	randomId?: number | IQNumberField;
+	uuId?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -126,7 +126,7 @@ export interface ActorEOptionalId {
 export interface ActorEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	randomId?: number | IQNumberField;
+	uuId?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	user?: UserEOptionalId;
@@ -142,7 +142,7 @@ export interface ActorGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	randomId?: number | IQNumberField;
+	uuId?: string | IQStringField;
 
 	// Relations
 	user?: UserGraph;
@@ -158,7 +158,7 @@ export interface ActorGraph
 export interface ActorEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	RANDOM_ID?: number | IQNumberField;
+	UU_ID?: string | IQStringField;
 	USER_ID?: number | IQNumberField;
 	TERMINAL_ID?: number | IQNumberField;
 
@@ -196,7 +196,7 @@ export interface QActor extends IQEntity<Actor>
 	// Id Relations
 
 	// Non-Id Fields
-	randomId: IQNumberField;
+	uuId: IQStringField;
 
 	// Non-Id Relations
 	user: QUserQRelation;

@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
+import { Column, DbDate, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
 let Repository = class Repository {
     constructor() {
         /*
@@ -29,17 +29,19 @@ __decorate([
 ], Repository.prototype, "id", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
-        nullable: false })
+    JoinColumn({
+        name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
+        nullable: false
+    })
 ], Repository.prototype, "ownerActor", void 0);
 __decorate([
-    Column({ name: "ORDERED_ID", nullable: false }),
-    DbNumber()
-], Repository.prototype, "orderedId", void 0);
+    Column({ name: "CREATED_AT", nullable: false }),
+    DbDate()
+], Repository.prototype, "createdAt", void 0);
 __decorate([
-    Column({ name: "RANDOM_ID", nullable: false }),
-    DbNumber()
-], Repository.prototype, "randomId", void 0);
+    Column({ name: "UU_ID", nullable: false }),
+    DbString()
+], Repository.prototype, "uuId", void 0);
 __decorate([
     Column({ name: "NAME", nullable: false }),
     DbString()

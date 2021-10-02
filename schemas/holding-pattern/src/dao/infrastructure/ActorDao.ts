@@ -33,13 +33,13 @@ export interface IActorDao
 	): Promise<IActor[]>;
 
 	findWithDetailsByGlobalIds(
-		randomIds: ActorRandomId[],
+		uuIds: ActorRandomId[],
 		userIds: UserId[],
 		terminalIds: TmTerminalId[]
 	): Promise<IActor[]>;
 
 	findMapsWithDetailsByGlobalIds(
-		randomIds: ActorRandomId[],
+		uuIds: ActorRandomId[],
 		userIds: UserId[],
 		terminalIds: TmTerminalId[],
 		actorMap: Map<UserId, Map<TmTerminalId, IActor>>,
@@ -61,14 +61,14 @@ export class ActorDao
 	}
 
 	async findMapsWithDetailsByGlobalIds(
-		randomIds: ActorRandomId[],
+		uuIds: ActorRandomId[],
 		userIds: UserId[],
 		terminalIds: TmTerminalId[],
 		actorMap: Map<UserId, Map<TmTerminalId, IActor>>,
 		actorMapById: Map<ActorId, IActor>
 	): Promise<void> {
 		const actors = await this.findWithDetailsByGlobalIds(
-			randomIds,
+			uuIds,
 			userIds,
 			terminalIds
 		)
@@ -81,14 +81,14 @@ export class ActorDao
 	}
 
 	async findWithDetailsByGlobalIds(
-		randomIds: ActorRandomId[],
+		uuIds: ActorRandomId[],
 		userIds: UserId[],
 		terminalIds: TmTerminalId[]
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor
 		) => and(
-			a.randomId.in(randomIds),
+			a.uuId.in(uuIds),
 			a.terminal.id.in(terminalIds),
 			a.user.id.in(userIds)
 		))
@@ -105,7 +105,7 @@ export class ActorDao
 		return await this.db.find.tree({
 			select: {
 				id,
-				randomId: Y,
+				uuId: Y,
 				user: {
 					id,
 				},

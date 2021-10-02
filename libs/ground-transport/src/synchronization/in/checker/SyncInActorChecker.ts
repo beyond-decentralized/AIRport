@@ -84,7 +84,7 @@ export class SyncInActorChecker
 			consistentMessages.push(message)
 
 			for (const actor of data.actors) {
-				actorRandomIdSet.add(actor.randomId)
+				actorRandomIdSet.add(actor.uuId)
 				userUniqueIdsSet.add(actor.user.uniqueId)
 			}
 		}
@@ -171,7 +171,7 @@ export class SyncInActorChecker
 			const updatedActors: IActor[]                               = []
 			for (const actor of message.data.actors) {
 				const localActor: IActor = actorMap
-					.get(actor.randomId)
+					.get(actor.uuId)
 					.get(actor.user.uniqueId)
 					.get(actor.terminal.name)
 					.get(actor.terminal.secondId)
@@ -211,7 +211,7 @@ export class SyncInActorChecker
 					id: undefined,
 					...actor,
 				}
-				const actorsForRandomId = actorMap.get(actor.randomId)
+				const actorsForRandomId = actorMap.get(actor.uuId)
 				if (!actorsForRandomId) {
 					this.addActorToMap(actor, newActorMap)
 					this.addActorToMap(actor, actorMap)
@@ -270,7 +270,7 @@ export class SyncInActorChecker
 		ensureChildJsMap(
 			ensureChildJsMap(
 				ensureChildJsMap(
-					ensureChildJsMap(actorMap, actor.randomId),
+					ensureChildJsMap(actorMap, actor.uuId),
 					actor.user.uniqueId),
 				actor.terminal.name),
 			actor.terminal.secondId)

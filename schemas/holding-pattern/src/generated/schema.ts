@@ -633,7 +633,7 @@ export const SCHEMA = {
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "ORDERED_ID",
+							"name": "CREATED_AT",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -641,13 +641,13 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "DATE"
 						},
 						{
 							"index": 2,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "RANDOM_ID",
+							"name": "UU_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -655,7 +655,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "STRING"
 						},
 						{
 							"index": 3,
@@ -770,7 +770,7 @@ export const SCHEMA = {
 							},
 							"index": 2,
 							"isId": false,
-							"name": "orderedId",
+							"name": "createdAt",
 							"sinceVersion": 1
 						},
 						{
@@ -779,7 +779,7 @@ export const SCHEMA = {
 							},
 							"index": 3,
 							"isId": false,
-							"name": "randomId",
+							"name": "uuId",
 							"sinceVersion": 1
 						},
 						{
@@ -1056,7 +1056,7 @@ export const SCHEMA = {
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "RANDOM_ID",
+							"name": "UU_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1064,7 +1064,7 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "STRING"
 						},
 						{
 							"index": 2,
@@ -1154,7 +1154,7 @@ export const SCHEMA = {
 							},
 							"index": 3,
 							"isId": false,
-							"name": "randomId",
+							"name": "uuId",
 							"sinceVersion": 1
 						},
 						{

@@ -91,8 +91,8 @@ declare function require(moduleName: string): any;
 export interface RepositoryESelect
     extends IEntitySelectProperties, RepositoryEOptionalId {
 	// Non-Id Properties
-	orderedId?: number | IQNumberField;
-	randomId?: number | IQNumberField;
+	createdAt?: Date | IQDateField;
+	uuId?: string | IQStringField;
 	name?: string | IQStringField;
 	url?: string | IQStringField;
 	platformConfig?: string | IQStringField;
@@ -137,8 +137,8 @@ export interface RepositoryEOptionalId {
 export interface RepositoryEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	orderedId?: number | IQNumberField;
-	randomId?: number | IQNumberField;
+	createdAt?: Date | IQDateField;
+	uuId?: string | IQStringField;
 	name?: string | IQStringField;
 	url?: string | IQStringField;
 	platformConfig?: string | IQStringField;
@@ -157,8 +157,8 @@ export interface RepositoryGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	orderedId?: number | IQNumberField;
-	randomId?: number | IQNumberField;
+	createdAt?: Date | IQDateField;
+	uuId?: string | IQStringField;
 	name?: string | IQStringField;
 	url?: string | IQStringField;
 	platformConfig?: string | IQStringField;
@@ -178,8 +178,8 @@ export interface RepositoryGraph
 export interface RepositoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	ORDERED_ID?: number | IQNumberField;
-	RANDOM_ID?: number | IQNumberField;
+	CREATED_AT?: Date | IQDateField;
+	UU_ID?: string | IQStringField;
 	NAME?: string | IQStringField;
 	REPOSITORY_URL?: string | IQStringField;
 	PLATFORM_CONFIG?: string | IQStringField;
@@ -220,8 +220,8 @@ export interface QRepository extends IQEntity<Repository>
 	// Id Relations
 
 	// Non-Id Fields
-	orderedId: IQNumberField;
-	randomId: IQNumberField;
+	createdAt: IQDateField;
+	uuId: IQStringField;
 	name: IQStringField;
 	url: IQStringField;
 	platformConfig: IQStringField;

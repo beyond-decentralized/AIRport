@@ -48,12 +48,12 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
             select: {
                 ...this.db.duo.select.fields,
                 actor: {
-                    randomId: Y,
+                    uuId: Y,
                     user: {}
                 },
                 repository: {
-                    orderedId: Y,
-                    randomId: Y,
+                    createdAt: Y,
+                    uuId: Y,
                     ownerActor: {}
                 },
                 transactionHistory: {

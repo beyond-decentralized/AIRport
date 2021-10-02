@@ -1,6 +1,7 @@
 import {
 	Column,
 	DbNumber,
+	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
@@ -16,7 +17,7 @@ import {RepositoryActor}  from '../repository/RepositoryActor'
 import {ActorApplication} from './ActorApplication'
 
 export type ActorId = number;
-export type ActorRandomId = number;
+export type ActorUuId = number;
 
 @Entity()
 export class Actor {
@@ -36,9 +37,9 @@ export class Actor {
 		nullable: false})
 	terminal: Terminal
 
-	@Column({name: 'RANDOM_ID', nullable: false})
-	@DbNumber()
-	randomId: ActorRandomId
+	@Column({name: 'UU_ID', nullable: false})
+	@DbString()
+	uuId: ActorUuId
 
 	@OneToMany({mappedBy: 'actor'})
 	actorApplications: ActorApplication[] = []

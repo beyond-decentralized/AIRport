@@ -7,7 +7,7 @@ export interface IRepositoryDao extends IBaseRepositoryDao {
     findReposWithDetailsByIds(repositoryIdsInClause: RepositoryTransactionHistoryId[] | RawFieldQuery<IQNumberField> | {
         (...args: any[]): RawFieldQuery<IQNumberField>;
     }, dbName: TerminalName, userEmail: UserUniqueId): Promise<MappedEntityArray<IRepository>>;
-    findLocalRepoIdsByGlobalIds(orderedIds: RepositoryOrderedId[], randomIds: RepositoryRandomId[], ownerActorRandomIds: ActorRandomId[], ownerUserUniqueIds: UserUniqueId[], ownerTerminalNames: TerminalName[], ownerTerminalSecondIds: TerminalSecondId[], ownerTerminalOwnerUserUniqueIds: UserUniqueId[]): Promise<RepositoryIdMap>;
+    findLocalRepoIdsByGlobalIds(createdAts: RepositoryOrderedId[], uuIds: RepositoryRandomId[], ownerActorRandomIds: ActorRandomId[], ownerUserUniqueIds: UserUniqueId[], ownerTerminalNames: TerminalName[], ownerTerminalSecondIds: TerminalSecondId[], ownerTerminalOwnerUserUniqueIds: UserUniqueId[]): Promise<RepositoryIdMap>;
     findReposWithGlobalIds(repositoryIds: RepositoryId[]): Promise<Map<RepositoryId, IRepository>>;
 }
 export declare type RepositoryIdMap = Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, Map<ActorRandomId, Map<RepositoryOrderedId, Map<RepositoryRandomId, RepositoryId>>>>>>>;
@@ -18,6 +18,6 @@ export declare class RepositoryDao extends BaseRepositoryDao implements IReposit
         (...args: any[]): RawFieldQuery<IQNumberField>;
     }, dbName: TerminalName, userEmail: UserUniqueId): Promise<MappedEntityArray<IRepository>>;
     findReposWithGlobalIds(repositoryIds: RepositoryId[]): Promise<Map<RepositoryId, IRepository>>;
-    findLocalRepoIdsByGlobalIds(orderedIds: RepositoryOrderedId[], randomIds: RepositoryRandomId[], ownerActorRandomIds: ActorRandomId[], ownerUserUniqueIds: UserUniqueId[], ownerTerminalNames: TerminalName[], ownerTerminalSecondIds: TerminalSecondId[], ownerTerminalOwnerUserUniqueIds: UserUniqueId[]): Promise<RepositoryIdMap>;
+    findLocalRepoIdsByGlobalIds(createdAts: RepositoryOrderedId[], uuIds: RepositoryRandomId[], ownerActorRandomIds: ActorRandomId[], ownerUserUniqueIds: UserUniqueId[], ownerTerminalNames: TerminalName[], ownerTerminalSecondIds: TerminalSecondId[], ownerTerminalOwnerUserUniqueIds: UserUniqueId[]): Promise<RepositoryIdMap>;
 }
 //# sourceMappingURL=RepositoryDao.d.ts.map

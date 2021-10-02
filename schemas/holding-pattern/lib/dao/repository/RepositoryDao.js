@@ -13,8 +13,8 @@ export class RepositoryDao extends BaseRepositoryDao {
         let id = Y;
         return await this.db.find.map().tree({
             select: {
-                orderedId: Y,
-                randomId: Y,
+                createdAt: Y,
+                uuId: Y,
                 ownerActor: {
                     user: {
                         id
@@ -48,8 +48,8 @@ export class RepositoryDao extends BaseRepositoryDao {
                 ownerActor: {
                     id
                 },
-                orderedId: Y,
-                randomId: Y
+                createdAt: Y,
+                uuId: Y
             },
             from: [
                 r = Q.Repository
@@ -96,8 +96,8 @@ export class RepositoryDao extends BaseRepositoryDao {
         const repositories = await this.db.find.tree({
             select: {
                 id: Y,
-                orderedId: Y,
-                randomId: Y,
+                createdAt: Y,
+                uuId: Y,
                 ownerActor: {
                     id: Y,
                     user: {
@@ -117,7 +117,7 @@ export class RepositoryDao extends BaseRepositoryDao {
         }
         return repositoryMapById;
     }
-    async findLocalRepoIdsByGlobalIds(orderedIds, randomIds, ownerActorRandomIds, ownerUserUniqueIds, ownerTerminalNames, ownerTerminalSecondIds, ownerTerminalOwnerUserUniqueIds) {
+    async findLocalRepoIdsByGlobalIds(createdAts, uuIds, ownerActorRandomIds, ownerUserUniqueIds, ownerTerminalNames, ownerTerminalSecondIds, ownerTerminalOwnerUserUniqueIds) {
         const repositoryIdMap = new Map();
         let r;
         let oa;
@@ -138,12 +138,12 @@ export class RepositoryDao extends BaseRepositoryDao {
                 od.name,
                 od.secondId,
                 ou.uniqueId,
-                oa.randomId,
-                r.orderedId,
-                r.randomId,
+                oa.uuId,
+                r.createdAt,
+                r.uuId,
                 r.id,
             ],
-            where: and(r.orderedId.in(orderedIds), r.randomId.in(randomIds), oa.randomId.in(ownerActorRandomIds), ou.uniqueId.in(ownerUserUniqueIds), od.name.in(ownerTerminalNames), od.secondId.in(ownerTerminalSecondIds), odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds))
+            where: and(r.createdAt.in(createdAts), r.uuId.in(uuIds), oa.uuId.in(ownerActorRandomIds), ou.uniqueId.in(ownerUserUniqueIds), od.name.in(ownerTerminalNames), od.secondId.in(ownerTerminalSecondIds), odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds))
         });
         for (const resultRow of resultRows) {
             ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4]), resultRow[5]).set(resultRow[6], resultRow[7]);

@@ -43,7 +43,7 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
             if (databaseOwnerComparison) {
                 return databaseOwnerComparison;
             }
-            const actorRandomIdComparison = this.compareNumbers(actor1.randomId, actor2.randomId);
+            const actorRandomIdComparison = this.compareNumbers(actor1.uuId, actor2.uuId);
             return actorRandomIdComparison;
         });
     }

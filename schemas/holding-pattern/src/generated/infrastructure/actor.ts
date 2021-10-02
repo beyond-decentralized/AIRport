@@ -23,7 +23,7 @@ export interface IActor {
 	// Id Relations
 
 	// Non-Id Properties
-	randomId?: number;
+	uuId?: string;
 
 	// Non-Id Relations
 	user?: IUser;

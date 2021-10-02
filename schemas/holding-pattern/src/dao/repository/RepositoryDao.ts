@@ -49,8 +49,8 @@ export interface IRepositoryDao
 	): Promise<MappedEntityArray<IRepository>>;
 
 	findLocalRepoIdsByGlobalIds(
-		orderedIds: RepositoryOrderedId[],
-		randomIds: RepositoryRandomId[],
+		createdAts: RepositoryOrderedId[],
+		uuIds: RepositoryRandomId[],
 		ownerActorRandomIds: ActorRandomId[],
 		ownerUserUniqueIds: UserUniqueId[],
 		ownerTerminalNames: TerminalName[],
@@ -84,8 +84,8 @@ export class RepositoryDao
 		let id = Y
 		return await this.db.find.map().tree({
 			select: {
-				orderedId: Y,
-				randomId: Y,
+				createdAt: Y,
+				uuId: Y,
 				ownerActor: {
 					user: {
 						id
@@ -122,8 +122,8 @@ export class RepositoryDao
 				ownerActor: {
 					id
 				},
-				orderedId: Y,
-				randomId: Y
+				createdAt: Y,
+				uuId: Y
 			},
 			from: [
 				r = Q.Repository
@@ -189,8 +189,8 @@ export class RepositoryDao
 		const repositories = await this.db.find.tree({
 			select: {
 				id: Y,
-				orderedId: Y,
-				randomId: Y,
+				createdAt: Y,
+				uuId: Y,
 				ownerActor: {
 					id: Y,
 					user: {
@@ -215,8 +215,8 @@ export class RepositoryDao
 	}
 
 	async findLocalRepoIdsByGlobalIds(
-		orderedIds: RepositoryOrderedId[],
-		randomIds: RepositoryRandomId[],
+		createdAts: RepositoryOrderedId[],
+		uuIds: RepositoryRandomId[],
 		ownerActorRandomIds: ActorRandomId[],
 		ownerUserUniqueIds: UserUniqueId[],
 		ownerTerminalNames: TerminalName[],
@@ -246,15 +246,15 @@ export class RepositoryDao
 				od.name,
 				od.secondId,
 				ou.uniqueId,
-				oa.randomId,
-				r.orderedId,
-				r.randomId,
+				oa.uuId,
+				r.createdAt,
+				r.uuId,
 				r.id,
 			],
 			where: and(
-				r.orderedId.in(orderedIds),
-				r.randomId.in(randomIds),
-				oa.randomId.in(ownerActorRandomIds),
+				r.createdAt.in(createdAts),
+				r.uuId.in(uuIds),
+				oa.uuId.in(ownerActorRandomIds),
 				ou.uniqueId.in(ownerUserUniqueIds),
 				od.name.in(ownerTerminalNames),
 				od.secondId.in(ownerTerminalSecondIds),

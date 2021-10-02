@@ -8,14 +8,14 @@ import { SyncPriority } from "./SyncPrority";
  */
 export declare type RepositoryId = number;
 export declare type RepositoryOrderedId = number;
-export declare type RepositoryRandomId = number;
+export declare type RepositoryUiId = number;
 export declare type RepositoryName = string;
 export declare type RepositoryUrl = string;
 export declare class Repository {
     id: RepositoryId;
     ownerActor: Actor;
-    orderedId: RepositoryOrderedId;
-    randomId: RepositoryRandomId;
+    createdAt: Date;
+    uuId: RepositoryUiId;
     name: RepositoryName;
     url: RepositoryUrl;
     platformConfig: string;

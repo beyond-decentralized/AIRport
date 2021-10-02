@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
 import { RepositoryActorGraph, RepositoryActorESelect, QRepositoryActor } from './qrepositoryactor';
 import { RepositoryActor } from '../../ddl/repository/RepositoryActor';
@@ -11,8 +11,8 @@ import { Repository } from '../../ddl/repository/Repository';
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEOptionalId {
-    orderedId?: number | IQNumberField;
-    randomId?: number | IQNumberField;
+    createdAt?: Date | IQDateField;
+    uuId?: string | IQStringField;
     name?: string | IQStringField;
     url?: string | IQStringField;
     platformConfig?: string | IQStringField;
@@ -38,8 +38,8 @@ export interface RepositoryEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
-    orderedId?: number | IQNumberField;
-    randomId?: number | IQNumberField;
+    createdAt?: Date | IQDateField;
+    uuId?: string | IQStringField;
     name?: string | IQStringField;
     url?: string | IQStringField;
     platformConfig?: string | IQStringField;
@@ -50,8 +50,8 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGraph {
-    orderedId?: number | IQNumberField;
-    randomId?: number | IQNumberField;
+    createdAt?: Date | IQDateField;
+    uuId?: string | IQStringField;
     name?: string | IQStringField;
     url?: string | IQStringField;
     platformConfig?: string | IQStringField;
@@ -65,8 +65,8 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
  * UPDATE - non-id columns (optional).
  */
 export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
-    ORDERED_ID?: number | IQNumberField;
-    RANDOM_ID?: number | IQNumberField;
+    CREATED_AT?: Date | IQDateField;
+    UU_ID?: string | IQStringField;
     NAME?: string | IQStringField;
     REPOSITORY_URL?: string | IQStringField;
     PLATFORM_CONFIG?: string | IQStringField;
@@ -88,8 +88,8 @@ export interface RepositoryECreateColumns extends RepositoryEId, RepositoryEUpda
  */
 export interface QRepository extends IQEntity<Repository> {
     id: IQNumberField;
-    orderedId: IQNumberField;
-    randomId: IQNumberField;
+    createdAt: IQDateField;
+    uuId: IQStringField;
     name: IQStringField;
     url: IQStringField;
     platformConfig: IQStringField;

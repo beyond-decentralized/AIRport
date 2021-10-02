@@ -4,8 +4,8 @@ import { IRepositoryApplication } from './repositoryapplication';
 import { IRepositoryTransactionHistory } from '../history/repositorytransactionhistory';
 export interface IRepository {
     id: number;
-    orderedId?: number;
-    randomId?: number;
+    createdAt?: Date;
+    uuId?: string;
     name?: string;
     url?: string;
     platformConfig?: string;

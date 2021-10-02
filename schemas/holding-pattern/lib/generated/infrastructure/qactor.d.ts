@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation, TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
 import { ActorApplicationGraph, ActorApplicationESelect, QActorApplication } from './qactorapplication';
 import { ActorApplication } from '../../ddl/infrastructure/ActorApplication';
@@ -9,7 +9,7 @@ import { Actor } from '../../ddl/infrastructure/Actor';
  * SELECT - All fields and relations (optional).
  */
 export interface ActorESelect extends IEntitySelectProperties, ActorEOptionalId {
-    randomId?: number | IQNumberField;
+    uuId?: string | IQStringField;
     user?: UserESelect;
     terminal?: TerminalESelect;
     actorApplications?: ActorApplicationESelect;
@@ -31,7 +31,7 @@ export interface ActorEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface ActorEUpdateProperties extends IEntityUpdateProperties {
-    randomId?: number | IQNumberField;
+    uuId?: string | IQStringField;
     user?: UserEOptionalId;
     terminal?: TerminalEOptionalId;
 }
@@ -39,7 +39,7 @@ export interface ActorEUpdateProperties extends IEntityUpdateProperties {
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ActorGraph extends ActorEOptionalId, IEntityCascadeGraph {
-    randomId?: number | IQNumberField;
+    uuId?: string | IQStringField;
     user?: UserGraph;
     terminal?: TerminalGraph;
     actorApplications?: ActorApplicationGraph[];
@@ -49,7 +49,7 @@ export interface ActorGraph extends ActorEOptionalId, IEntityCascadeGraph {
  * UPDATE - non-id columns (optional).
  */
 export interface ActorEUpdateColumns extends IEntityUpdateColumns {
-    RANDOM_ID?: number | IQNumberField;
+    UU_ID?: string | IQStringField;
     USER_ID?: number | IQNumberField;
     TERMINAL_ID?: number | IQNumberField;
 }
@@ -68,7 +68,7 @@ export interface ActorECreateColumns extends ActorEId, ActorEUpdateColumns {
  */
 export interface QActor extends IQEntity<Actor> {
     id: IQNumberField;
-    randomId: IQNumberField;
+    uuId: IQStringField;
     user: QUserQRelation;
     terminal: QTerminalQRelation;
     actorApplications: IQOneToManyRelation<ActorApplication, QActorApplication>;

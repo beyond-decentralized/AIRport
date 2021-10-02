@@ -25,8 +25,8 @@ export interface IRepository {
 	// Id Relations
 
 	// Non-Id Properties
-	orderedId?: number;
-	randomId?: number;
+	createdAt?: Date;
+	uuId?: string;
 	name?: string;
 	url?: string;
 	platformConfig?: string;

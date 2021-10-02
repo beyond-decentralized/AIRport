@@ -79,8 +79,8 @@ export class SharingNodeRepositoryDao
 					ownerActor: {
 						id
 					},
-					orderedId: Y,
-					randomId: Y,
+					createdAt: Y,
+					uuId: Y,
 				},
 				sharingNode: {
 					id,

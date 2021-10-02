@@ -1,5 +1,6 @@
 import {
 	Column,
+	DbDate,
 	DbNumber,
 	DbString,
 	Entity,
@@ -9,7 +10,7 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-}                     from "@airport/air-control";
+} from "@airport/air-control";
 import {
 	Actor
 } from '../infrastructure/Actor'
@@ -22,7 +23,7 @@ import {
 import {
 	RepositoryTransactionHistory
 } from '../history/RepositoryTransactionHistory'
-import {SyncPriority} from "./SyncPrority";
+import { SyncPriority } from "./SyncPrority";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -30,7 +31,7 @@ import {SyncPriority} from "./SyncPrority";
 
 export type RepositoryId = number;
 export type RepositoryOrderedId = number;
-export type RepositoryRandomId = number;
+export type RepositoryUiId = number;
 export type RepositoryName = string;
 export type RepositoryUrl = string;
 
@@ -40,30 +41,32 @@ export type RepositoryUrl = string;
 })
 export class Repository {
 
-	@Column({name: "ID"})
+	@Column({ name: "ID" })
 	@GeneratedValue()
 	@Id()
 	@DbNumber()
 	id: RepositoryId;
 
 	@ManyToOne()
-	@JoinColumn({name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
-		nullable: false})
+	@JoinColumn({
+		name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
+		nullable: false
+	})
 	ownerActor: Actor;
 
-	@Column({name: "ORDERED_ID", nullable: false})
-	@DbNumber()
-	orderedId: RepositoryOrderedId;
+	@Column({ name: "CREATED_AT", nullable: false })
+	@DbDate()
+	createdAt: Date;
 
-	@Column({name: "RANDOM_ID", nullable: false})
-	@DbNumber()
-	randomId: RepositoryRandomId;
+	@Column({ name: "UU_ID", nullable: false })
+	@DbString()
+	uuId: RepositoryUiId;
 
-	@Column({name: "NAME", nullable: false})
+	@Column({ name: "NAME", nullable: false })
 	@DbString()
 	name: RepositoryName;
 
-	@Column({name: "REPOSITORY_URL", nullable: false})
+	@Column({ name: "REPOSITORY_URL", nullable: false })
 	@DbString()
 	url: RepositoryUrl;
 
@@ -75,7 +78,7 @@ export class Repository {
 	// @DbString)
 	// platform: PlatformType;
 
-	@Column({name: "PLATFORM_CONFIG", nullable: false})
+	@Column({ name: "PLATFORM_CONFIG", nullable: false })
 	platformConfig: string;
 
 	/*
@@ -88,16 +91,16 @@ export class Repository {
 	lastSyncedTransaction: IRepositoryTransactionHistory;
 */
 
-	@OneToMany({mappedBy: 'repository'})
+	@OneToMany({ mappedBy: 'repository' })
 	repositoryActors: RepositoryActor[] = [];
 
-	@OneToMany({mappedBy: 'repository'})
+	@OneToMany({ mappedBy: 'repository' })
 	repositoryApplications: RepositoryApplication[] = [];
 
-	@OneToMany({mappedBy: 'repository'})
+	@OneToMany({ mappedBy: 'repository' })
 	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];
 
-	@Column({name: "SYNC_PRIORITY", nullable: false})
+	@Column({ name: "SYNC_PRIORITY", nullable: false })
 	@DbString()
 	syncPriority: SyncPriority;
 
