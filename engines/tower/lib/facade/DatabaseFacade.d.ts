@@ -1,12 +1,12 @@
 import { IDatabaseFacade, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
 import { IContext } from '@airport/di';
-import { DistributionStrategy, ISaveResult, PlatformType } from '@airport/ground-control';
+import { ISaveResult } from '@airport/ground-control';
 /**
  * Created by Papa on 5/23/2016.
  */
 export declare class DatabaseFacade implements IDatabaseFacade {
     name: string;
-    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context: IContext): Promise<number>;
+    addRepository(name: string, context: IContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity<any>>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, context: IContext): Promise<number>;

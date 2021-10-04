@@ -22,20 +22,20 @@ export class TransactionalConnector
 
     async addRepository(
         name: string,
-        url: string,
-        platform: PlatformType,
-        platformConfig: string,
-        distributionStrategy: DistributionStrategy,
+        // url: string,
+        // platform: PlatformType,
+        // platformConfig: string,
+        // distributionStrategy: DistributionStrategy,
         context: IContext
     ): Promise<number> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
         return await transServer.addRepository(
             name,
-            url,
-            platform,
-            platformConfig,
-            distributionStrategy,
+            // url,
+            // platform,
+            // platformConfig,
+            // distributionStrategy,
             {
                 domainAndPort: 'test'
             },

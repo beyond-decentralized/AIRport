@@ -9,10 +9,10 @@ export interface ITransactionalConnector {
 
 	addRepository(
 		name: string,
-		url: string,
-		platform: PlatformType,
-		platformConfig: string,
-		distributionStrategy: DistributionStrategy,
+		// url: string,
+		// platform: PlatformType,
+		// platformConfig: string,
+		// distributionStrategy: DistributionStrategy,
 		context?: IContext,
 	): Promise<number>
 

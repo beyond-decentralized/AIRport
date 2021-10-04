@@ -11,7 +11,7 @@ import {ensureChildJsMap}      from '@airport/ground-control'
 import {
 	ACTOR_DAO,
 	ActorId,
-	ActorRandomId,
+	ActorUuId,
 	IActor
 }                              from '@airport/holding-pattern'
 import {
@@ -27,7 +27,7 @@ import {TerminalCheckResults}  from './SyncInTerminalChecker'
 import {UserCheckResults}      from './SyncInUserChecker'
 
 export interface ActorCheckResults {
-	actorMap: Map<ActorRandomId, Map<UserUniqueId,
+	actorMap: Map<ActorUuId, Map<UserUniqueId,
 		Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>;
 	actorMapById: Map<ActorId, IActor>;
 	consistentMessages: IDataToTM[];
@@ -63,7 +63,7 @@ export class SyncInActorChecker
 		const [actorDao, terminalDao] = await container(this)
 			.get(ACTOR_DAO, TERMINAL_DAO)
 
-		const actorRandomIdSet: Set<ActorRandomId>       = new Set()
+		const actorRandomIdSet: Set<ActorUuId>       = new Set()
 		const userUniqueIdsSet: Set<UserUniqueId>        = new Set()
 		const terminalNameSet: Set<TerminalName>         = new Set()
 		const terminalSecondIdSet: Set<TerminalSecondId> = new Set()
@@ -162,7 +162,7 @@ export class SyncInActorChecker
 	}
 
 	private updateActorIdsInMessages(
-		actorMap: Map<ActorRandomId, Map<UserUniqueId,
+		actorMap: Map<ActorUuId, Map<UserUniqueId,
 			Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>,
 		dataMessages: IDataToTM[]
 	): void {
@@ -198,10 +198,10 @@ export class SyncInActorChecker
 
 	private getNewActors(
 		dataMessages: IDataToTM[],
-		actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName,
+		actorMap: Map<ActorUuId, Map<UserUniqueId, Map<TerminalName,
 			Map<TerminalSecondId, Map<UserUniqueId, ActorId>>>>>
 	): IActor[] {
-		const newActorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName,
+		const newActorMap: Map<ActorUuId, Map<UserUniqueId, Map<TerminalName,
 			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>> = new Map()
 
 		// split messages by repository
@@ -264,7 +264,7 @@ export class SyncInActorChecker
 
 	private addActorToMap(
 		actor: IActor,
-		actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName,
+		actorMap: Map<ActorUuId, Map<UserUniqueId, Map<TerminalName,
 			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>
 	): void {
 		ensureChildJsMap(

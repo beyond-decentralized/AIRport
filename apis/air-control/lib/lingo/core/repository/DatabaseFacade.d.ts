@@ -1,4 +1,4 @@
-import { DistributionStrategy, ISaveResult, PlatformType, PortableQuery, QueryResultType } from '@airport/ground-control';
+import { ISaveResult, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 import { IAbstractQuery } from '../../query/facade/AbstractQuery';
 import { RawDelete } from '../../query/facade/Delete';
@@ -24,7 +24,7 @@ export interface IDatabaseFacade {
      * Name of the terminal
      */
     name: string;
-    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, ctx: IEntityContext): Promise<number>;
+    addRepository(name: string, ctx: IEntityContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity<any>>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx: IEntityContext): Promise<number>;

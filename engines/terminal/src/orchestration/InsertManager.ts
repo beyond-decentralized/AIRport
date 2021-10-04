@@ -82,18 +82,21 @@ export class InsertManager
 
 	async addRepository(
 		name: string,
-		url: string = null,
-		platform: PlatformType = PlatformType.GOOGLE_DOCS,
-		platformConfig: string = null,
-		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
+		// url: string = null,
+		// platform: PlatformType = PlatformType.GOOGLE_DOCS,
+		// platformConfig: string = null,
+		// distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
+		context: IContext,
 	): Promise<number> {
 		const [repoManager, transManager] = await container(this)
 			.get(
 				REPOSITORY_MANAGER, TRANSACTION_MANAGER)
 
 		const repository = await repoManager.createRepository(
-			name, distributionStrategy, transManager.storeType,
-			platform, platformConfig, 'id')
+			name, 
+			// distributionStrategy, transManager.storeType,
+			// platform, platformConfig, 
+			'id')
 
 		return repository.id
 	}

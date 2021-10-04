@@ -17,10 +17,10 @@ export interface ITransactionalServer {
 
 	addRepository(
 		name: string,
-		url: string,
-		platform: PlatformType,
-		platformConfig: string,
-		distributionStrategy: DistributionStrategy,
+		// url: string,
+		// platform: PlatformType,
+		// platformConfig: string,
+		// distributionStrategy: DistributionStrategy,
 		credentials: ICredentials,
 		context: IContext
 	): Promise<number>

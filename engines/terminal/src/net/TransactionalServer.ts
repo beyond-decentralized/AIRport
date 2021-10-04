@@ -68,10 +68,10 @@ export class TransactionalServer
 
 	async addRepository(
 		name: string,
-		url: string,
-		platform: PlatformType,
-		platformConfig: string,
-		distributionStrategy: DistributionStrategy,
+		// url: string,
+		// platform: PlatformType,
+		// platformConfig: string,
+		// distributionStrategy: DistributionStrategy,
 		credentials: ICredentials,
 		context: IOperationContext
 	): Promise<number> {
@@ -87,8 +87,9 @@ export class TransactionalServer
 			transaction: ITransaction
 		) => {
 			// TODO: figure out how addRepository will work
-			numRecordsCreated = await context.ioc.insertManager.addRepository(
-				name, url, platform, platformConfig, distributionStrategy);
+			numRecordsCreated = await context.ioc.insertManager.addRepository(name,
+				// url, platform, platformConfig, distributionStrategy
+				context);
 		}, context)
 
 		return numRecordsCreated

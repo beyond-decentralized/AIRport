@@ -120,10 +120,17 @@ export class AirportDatabase {
     getAccumulator(schemaDomain, schemaName) {
         return new EntityAccumulator(schemaDomain, schemaName, this.entityMap);
     }
-    async addRepository(name, url, platform, platformConfig, distributionStrategy, context) {
+    async addRepository(name, 
+    // url: string,
+    // platform: PlatformType,
+    // platformConfig: string,
+    // distributionStrategy: DistributionStrategy,
+    context) {
         const dbFacade = await container(this)
             .get(DATABASE_FACADE);
-        return await dbFacade.addRepository(name, url, platform, platformConfig, distributionStrategy, context);
+        return await dbFacade.addRepository(name, 
+        // url, platform, platformConfig, distributionStrategy, 
+        context);
     }
     async insertColumnValues(rawInsertValues, context) {
         const dbFacade = await container(this)

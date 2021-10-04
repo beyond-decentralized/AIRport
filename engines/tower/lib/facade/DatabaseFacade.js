@@ -1,15 +1,22 @@
 import { DATABASE_FACADE, Delete, InsertColumnValues, InsertValues, QUERY_CONTEXT_LOADER, SCHEMA_UTILS, UPDATE_CACHE_MANAGER, UpdateColumns, UpdateProperties, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { DistributionStrategy, ENTITY_STATE_MANAGER, PlatformType, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
+import { ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { ENTITY_COPIER } from '../tokens';
 /**
  * Created by Papa on 5/23/2016.
  */
 export class DatabaseFacade {
-    async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH, context) {
+    async addRepository(name, 
+    // url: string = null,
+    // platform: PlatformType = PlatformType.GOOGLE_DOCS,
+    // platformConfig: string = null,
+    // distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
+    context) {
         // TODO: figure out how addRepository will work
         const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-        return await transactionalConnector.addRepository(name, url, platform, platformConfig, distributionStrategy, context);
+        return await transactionalConnector.addRepository(name, 
+        // url, platform, platformConfig, distributionStrategy, 
+        context);
     }
     async insertColumnValues(rawInsertColumnValues, context) {
         if (!rawInsertColumnValues) {

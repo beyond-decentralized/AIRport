@@ -1,4 +1,4 @@
-import { DistributionStrategy, PlatformType, PortableQuery } from "@airport/ground-control";
+import { PortableQuery } from "@airport/ground-control";
 import { Observable } from "rxjs";
 import { JsonSchemaWithLastIds } from '..';
 import { LastIds } from '../LastIds';
@@ -39,11 +39,7 @@ export interface IInitConnectionIMI extends IIsolateMessage {
 export interface IInitConnectionIMO extends IIsolateMessageOut<LastIds> {
 }
 export interface IAddRepositoryIMI extends IIsolateMessage {
-    distributionStrategy: DistributionStrategy;
     name: string;
-    platform: PlatformType;
-    platformConfig: string;
-    url: string;
 }
 export interface INumberIMO extends IIsolateMessageOut<number> {
 }

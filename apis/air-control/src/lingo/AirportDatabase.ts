@@ -100,10 +100,10 @@ export interface IAirportDatabase
 
   addRepository(
     name: string,
-    url: string,
-    platform: PlatformType,
-    platformConfig: string,
-    distributionStrategy: DistributionStrategy,
+    // url: string,
+    // platform: PlatformType,
+    // platformConfig: string,
+    // distributionStrategy: DistributionStrategy,
     context?: IEntityContext,
   ): Promise<number>;
 

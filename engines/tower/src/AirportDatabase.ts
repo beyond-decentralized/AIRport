@@ -228,17 +228,18 @@ export class AirportDatabase
 
 	async addRepository(
 		name: string,
-		url: string,
-		platform: PlatformType,
-		platformConfig: string,
-		distributionStrategy: DistributionStrategy,
+		// url: string,
+		// platform: PlatformType,
+		// platformConfig: string,
+		// distributionStrategy: DistributionStrategy,
 		context?: IEntityContext,
 	): Promise<number> {
 		const dbFacade = await container(this)
 			.get(DATABASE_FACADE);
 
-		return await dbFacade.addRepository(name, url, platform,
-			platformConfig, distributionStrategy, context);
+		return await dbFacade.addRepository(name, 
+			// url, platform, platformConfig, distributionStrategy, 
+			context);
 	}
 
 	async insertColumnValues<IQE extends IQEntity<any>>(

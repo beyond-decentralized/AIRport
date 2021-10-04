@@ -2,9 +2,19 @@ import { container, DI } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 export class TransactionalConnector {
-    async addRepository(name, url, platform, platformConfig, distributionStrategy, context) {
+    async addRepository(name, 
+    // url: string,
+    // platform: PlatformType,
+    // platformConfig: string,
+    // distributionStrategy: DistributionStrategy,
+    context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.addRepository(name, url, platform, platformConfig, distributionStrategy, {
+        return await transServer.addRepository(name, 
+        // url,
+        // platform,
+        // platformConfig,
+        // distributionStrategy,
+        {
             domainAndPort: 'test'
         }, {
             internal: true,

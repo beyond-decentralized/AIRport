@@ -1,11 +1,11 @@
 import { TerminalName, TerminalSecondId } from '@airport/arrivals-n-departures';
-import { ActorId, ActorRandomId, IActor } from '@airport/holding-pattern';
+import { ActorId, ActorUuId, IActor } from '@airport/holding-pattern';
 import { UserUniqueId } from '@airport/travel-document-checkpoint';
 import { IDataToTM } from '../SyncInUtils';
 import { TerminalCheckResults } from './SyncInTerminalChecker';
 import { UserCheckResults } from './SyncInUserChecker';
 export interface ActorCheckResults {
-    actorMap: Map<ActorRandomId, Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>;
+    actorMap: Map<ActorUuId, Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>;
     actorMapById: Map<ActorId, IActor>;
     consistentMessages: IDataToTM[];
     inconsistentMessages: IDataToTM[];

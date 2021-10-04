@@ -67,10 +67,10 @@ export abstract class TransactionalReceiver {
                     const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
                     result = await transactionalServer.addRepository(
                         addRepositoryMessage.name,
-                        addRepositoryMessage.url,
-                        addRepositoryMessage.platform,
-                        addRepositoryMessage.platformConfig,
-                        addRepositoryMessage.distributionStrategy,
+                        // addRepositoryMessage.url,
+                        // addRepositoryMessage.platform,
+                        // addRepositoryMessage.platformConfig,
+                        // addRepositoryMessage.distributionStrategy,
                         credentials,
                         context
                     );

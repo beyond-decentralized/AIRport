@@ -58,11 +58,11 @@ export interface IInitConnectionIMO
 
 export interface IAddRepositoryIMI
     extends IIsolateMessage {
-    distributionStrategy: DistributionStrategy
+    // distributionStrategy: DistributionStrategy
     name: string
-    platform: PlatformType
-    platformConfig: string
-    url: string
+    // platform: PlatformType
+    // platformConfig: string
+    // url: string
 }
 
 export interface INumberIMO

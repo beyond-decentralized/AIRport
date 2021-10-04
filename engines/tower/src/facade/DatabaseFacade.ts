@@ -46,16 +46,17 @@ export class DatabaseFacade
 
 	async addRepository(
 		name: string,
-		url: string = null,
-		platform: PlatformType = PlatformType.GOOGLE_DOCS,
-		platformConfig: string = null,
-		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
+		// url: string = null,
+		// platform: PlatformType = PlatformType.GOOGLE_DOCS,
+		// platformConfig: string = null,
+		// distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
 		context: IContext
 	): Promise<number> {
 		// TODO: figure out how addRepository will work
 		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-		return await transactionalConnector.addRepository(
-			name, url, platform, platformConfig, distributionStrategy, context)
+		return await transactionalConnector.addRepository(name, 
+			// url, platform, platformConfig, distributionStrategy, 
+			context)
 	}
 
 	async insertColumnValues<IQE extends IQEntity<any>>(
