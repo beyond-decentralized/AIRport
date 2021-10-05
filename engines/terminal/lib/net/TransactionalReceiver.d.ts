@@ -3,6 +3,5 @@ export declare abstract class TransactionalReceiver {
     initializingApps: Set<string>;
     initializedApps: Set<string>;
     processMessage<ReturnType extends IIsolateMessageOut<any>>(message: IIsolateMessage): Promise<ReturnType>;
-    private ensureDomainAndApplicationRecords;
 }
 //# sourceMappingURL=TransactionalReceiver.d.ts.map

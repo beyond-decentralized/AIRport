@@ -1,10 +1,9 @@
 import { container, } from '@airport/di';
-import { IsolateMessageType } from '@airport/security-check';
-import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff';
-import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
-import { DATABASE_MANAGER } from '../tokens';
 import { getSchemaName } from '@airport/ground-control';
-import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/territory';
+import { IsolateMessageType } from '@airport/security-check';
+import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
+import { INTERNAL_RECORD_MANAGER } from '..';
+import { DATABASE_MANAGER } from '../tokens';
 export class TransactionalReceiver {
     constructor() {
         // FIXME: move this state to Terminal.state
@@ -12,8 +11,8 @@ export class TransactionalReceiver {
         this.initializedApps = new Set();
     }
     async processMessage(message) {
-        const [ddlObjectRetriever, transactionalServer] = await container(this)
-            .get(DDL_OBJECT_RETRIEVER, TRANSACTIONAL_SERVER);
+        const transactionalServer = await container(this)
+            .get(TRANSACTIONAL_SERVER);
         let result;
         let errorMessage;
         let credentials = {
@@ -31,9 +30,11 @@ export class TransactionalReceiver {
                         return null;
                     }
                     this.initializingApps.add(schemaName);
-                    const databaseManager = await container(this).get(DATABASE_MANAGER);
+                    const [databaseManager, internalRecordManager] = await container(this)
+                        .get(DATABASE_MANAGER, INTERNAL_RECORD_MANAGER);
                     // FIXME: initalize ahead of time, at Isolate Loading
                     await databaseManager.initFeatureSchemas({}, [schema]);
+                    await internalRecordManager.ensureSchemaRecords(schema, {});
                     result = schema.lastIds;
                     break;
                 case IsolateMessageType.APP_INITIALIZED:
@@ -122,27 +123,6 @@ export class TransactionalReceiver {
             type: message.type,
             result
         };
-    }
-    async ensureDomainAndApplicationRecords(schema) {
-        const [applicationDao, domainDao] = await container(this).get(APPLICATION_DAO, DOMAIN_DAO);
-        let domain = await domainDao.findByName(schema.domain);
-        if (!domain) {
-            domain = {
-                id: null,
-                name: schema.domain,
-            };
-            await domainDao.save(domain);
-        }
-        let application = await applicationDao
-            .findByDomainNameAndName(schema.domain, schema.name);
-        if (!application) {
-            application = {
-                domain,
-                id: null,
-                name: schema.name,
-            };
-            await applicationDao.save(application);
-        }
     }
 }
 //# sourceMappingURL=TransactionalReceiver.js.map

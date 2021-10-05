@@ -1,10 +1,9 @@
+import { IEntityContext } from '@airport/air-control';
 import {
     container,
     IContext,
 } from '@airport/di';
-import {
-    JsonSchemaWithApi
-} from '@airport/check-in'
+import { getSchemaName } from '@airport/ground-control';
 import {
     IAddRepositoryIMI,
     IInitConnectionIMI,
@@ -23,13 +22,8 @@ import {
     TERMINAL_STORE,
     TRANSACTIONAL_SERVER
 } from '@airport/terminal-map';
+import { INTERNAL_RECORD_MANAGER } from '..';
 import { DATABASE_MANAGER } from '../tokens';
-import { getSchemaName } from '@airport/ground-control';
-import { IEntityContext } from '@airport/air-control';
-import {
-    APPLICATION_DAO,
-    DOMAIN_DAO
-} from '@airport/territory';
 
 export abstract class TransactionalReceiver {
 
@@ -40,8 +34,8 @@ export abstract class TransactionalReceiver {
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(
         message: IIsolateMessage
     ): Promise<ReturnType> {
-        const [ddlObjectRetriever, transactionalServer] = await container(this)
-            .get(DDL_OBJECT_RETRIEVER, TRANSACTIONAL_SERVER);
+        const transactionalServer = await container(this)
+            .get(TRANSACTIONAL_SERVER);
         let result: any
         let errorMessage
         let credentials: ICredentials = {
@@ -59,10 +53,13 @@ export abstract class TransactionalReceiver {
                         return null
                     }
                     this.initializingApps.add(schemaName)
-                    const databaseManager = await container(this).get(DATABASE_MANAGER)
+
+                    const [databaseManager, internalRecordManager] = await container(this)
+                        .get(DATABASE_MANAGER, INTERNAL_RECORD_MANAGER)
                     // FIXME: initalize ahead of time, at Isolate Loading
                     await databaseManager.initFeatureSchemas({}, [schema])
 
+                    await internalRecordManager.ensureSchemaRecords(schema, {})
 
                     result = schema.lastIds
                     break;
@@ -199,30 +196,6 @@ export abstract class TransactionalReceiver {
             type: message.type,
             result
         } as any
-    }
-
-    private async ensureDomainAndApplicationRecords(
-        schema: JsonSchemaWithLastIds
-    ): Promise<void> {
-        const [applicationDao, domainDao] = await container(this).get(APPLICATION_DAO, DOMAIN_DAO)
-        let domain = await domainDao.findByName(schema.domain)
-        if (!domain) {
-            domain = {
-                id: null,
-                name: schema.domain,
-            }
-            await domainDao.save(domain)
-        }
-        let application = await applicationDao
-            .findByDomainNameAndName(schema.domain, schema.name)
-        if(!application) {
-            application = {
-                domain,
-                id: null,
-                name: schema.name,
-            }
-            await applicationDao.save(application)
-        }
     }
 
 }

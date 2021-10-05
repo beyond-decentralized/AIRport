@@ -49,7 +49,7 @@ export class Actor {
 	@JoinColumn({ name: "APPLICATION_ID", referencedColumnName: "ID" })
 	application: Application
 
-	@OneToMany({ mappedBy: 'ACTOR_ID' })
-	repositoryActor: RepositoryActor[]
+	@OneToMany({ mappedBy: 'actor' })
+	repositoryActors: RepositoryActor[]
 
 }

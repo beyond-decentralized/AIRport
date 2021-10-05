@@ -35,8 +35,8 @@ __decorate([
     JoinColumn({ name: "APPLICATION_ID", referencedColumnName: "ID" })
 ], Actor.prototype, "application", void 0);
 __decorate([
-    OneToMany({ mappedBy: 'ACTOR_ID' })
-], Actor.prototype, "repositoryActor", void 0);
+    OneToMany({ mappedBy: 'actor' })
+], Actor.prototype, "repositoryActors", void 0);
 Actor = __decorate([
     Entity()
 ], Actor);

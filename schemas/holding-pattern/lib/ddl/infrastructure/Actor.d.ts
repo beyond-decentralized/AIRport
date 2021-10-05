@@ -9,6 +9,6 @@ export declare class Actor {
     terminal: Terminal;
     uuId: ActorUuId;
     application: Application;
-    repositoryActor: RepositoryActor[];
+    repositoryActors: RepositoryActor[];
 }
 //# sourceMappingURL=Actor.d.ts.map

@@ -1,5 +1,6 @@
 import { ICascadeGraphVerifier, IDatabaseManager, IDeleteManager, IDependencyGraphResolver, IEntityGraphReconstructor, IHistoryManager, IInsertManager, IOperationManager, IQueryManager, IStructuralEntityValidator, IUpdateManager } from '@airport/terminal-map';
 import { IRepositoryManager } from './core/repository/RepositoryManager';
+import { IInternalRecordManager } from './data/InternalRecordManager';
 import { IOfflineDeltaStore } from './data/OfflineDeltaStore';
 import { IOnlineManager } from './net/OnlineManager';
 export declare const CASCADE_GRAPH_VERIFIER: import("@airport/di").IDiToken<ICascadeGraphVerifier>;
@@ -9,6 +10,7 @@ export declare const DEPENDENCY_GRAPH_RESOLVER: import("@airport/di").IDiToken<I
 export declare const ENTITY_GRAPH_RECONSTRUCTOR: import("@airport/di").IDiToken<IEntityGraphReconstructor>;
 export declare const HISTORY_MANAGER: import("@airport/di").IDiToken<IHistoryManager>;
 export declare const INSERT_MANAGER: import("@airport/di").IDiToken<IInsertManager>;
+export declare const INTERNAL_RECORD_MANAGER: import("@airport/di").IDiToken<IInternalRecordManager>;
 export declare const OFFLINE_DELTA_STORE: import("@airport/di").IDiToken<IOfflineDeltaStore>;
 export declare const ONLINE_MANAGER: import("@airport/di").IDiToken<IOnlineManager>;
 export declare const OPERATION_MANAGER: import("@airport/di").IDiToken<IOperationManager>;

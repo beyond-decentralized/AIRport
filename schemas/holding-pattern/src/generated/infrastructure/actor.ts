@@ -29,7 +29,7 @@ export interface IActor {
 	user?: IUser;
 	terminal?: ITerminal;
 	application?: IApplication;
-	repositoryActor?: IRepositoryActor[];
+	repositoryActors?: IRepositoryActor[];
 
 	// Transient Properties
 

@@ -91,7 +91,7 @@ export interface ActorESelect
 	user?: UserESelect;
 	terminal?: TerminalESelect;
 	application?: ApplicationESelect;
-	repositoryActor?: RepositoryActorESelect;
+	repositoryActors?: RepositoryActorESelect;
 
 }
 
@@ -147,7 +147,7 @@ export interface ActorGraph
 	user?: UserGraph;
 	terminal?: TerminalGraph;
 	application?: ApplicationGraph;
-	repositoryActor?: RepositoryActorGraph[];
+	repositoryActors?: RepositoryActorGraph[];
 
 }
 
@@ -202,7 +202,7 @@ export interface QActor extends IQEntity<Actor>
 	user: QUserQRelation;
 	terminal: QTerminalQRelation;
 	application: QApplicationQRelation;
-	repositoryActor: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
+	repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
 
 }
 

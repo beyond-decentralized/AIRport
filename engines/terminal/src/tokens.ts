@@ -13,6 +13,7 @@ import {
     IUpdateManager
 } from '@airport/terminal-map'
 import { IRepositoryManager } from './core/repository/RepositoryManager'
+import { IInternalRecordManager } from './data/InternalRecordManager'
 import { IOfflineDeltaStore } from './data/OfflineDeltaStore'
 import { IOnlineManager } from './net/OnlineManager'
 
@@ -25,6 +26,7 @@ export const DEPENDENCY_GRAPH_RESOLVER = terminal.token<IDependencyGraphResolver
 export const ENTITY_GRAPH_RECONSTRUCTOR = terminal.token<IEntityGraphReconstructor>('IEntityGraphReconstructor')
 export const HISTORY_MANAGER = terminal.token<IHistoryManager>('IHistoryManager')
 export const INSERT_MANAGER = terminal.token<IInsertManager>('IInsertManager')
+export const INTERNAL_RECORD_MANAGER = terminal.token<IInternalRecordManager>('IInternalRecordManager')
 export const OFFLINE_DELTA_STORE = terminal.token<IOfflineDeltaStore>('IOfflineDeltaStore')
 export const ONLINE_MANAGER = terminal.token<IOnlineManager>('IOnlineManager')
 export const OPERATION_MANAGER = terminal.token<IOperationManager>('IOperationManager')

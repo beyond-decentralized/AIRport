@@ -1,6 +1,7 @@
 export * from './core/repository/RepositoryManager';
 export * from './core/UpdateState';
 export * from './data/DeltaStore';
+export * from './data/InternalRecordManager';
 export * from './data/OfflineDeltaStore';
 export * from './net/InternalTransactionalConnector';
 export * from './net/OnlineManager';

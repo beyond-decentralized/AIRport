@@ -685,6 +685,7 @@ export const SCHEMA = {
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": null,
 									"oneTableIndex": 4,
+									"oneRelationIndex": 3,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -925,7 +926,7 @@ export const SCHEMA = {
 						{
 							"index": 5,
 							"isId": false,
-							"name": "repositoryActor",
+							"name": "repositoryActors",
 							"relationRef": {
 								"index": 3
 							},
@@ -970,7 +971,7 @@ export const SCHEMA = {
 							"index": 3,
 							"isId": false,
 							"oneToManyElems": {
-								"mappedBy": "ACTOR_ID"
+								"mappedBy": "actor"
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {

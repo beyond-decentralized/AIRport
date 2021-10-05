@@ -12,7 +12,7 @@ export interface ActorESelect extends IEntitySelectProperties, ActorEOptionalId 
     user?: UserESelect;
     terminal?: TerminalESelect;
     application?: ApplicationESelect;
-    repositoryActor?: RepositoryActorESelect;
+    repositoryActors?: RepositoryActorESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -43,7 +43,7 @@ export interface ActorGraph extends ActorEOptionalId, IEntityCascadeGraph {
     user?: UserGraph;
     terminal?: TerminalGraph;
     application?: ApplicationGraph;
-    repositoryActor?: RepositoryActorGraph[];
+    repositoryActors?: RepositoryActorGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -73,7 +73,7 @@ export interface QActor extends IQEntity<Actor> {
     user: QUserQRelation;
     terminal: QTerminalQRelation;
     application: QApplicationQRelation;
-    repositoryActor: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
+    repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
 }
 export interface QActorQId {
     id: IQNumberField;
