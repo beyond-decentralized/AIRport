@@ -1,5 +1,5 @@
 import { IMemoizedSelector } from '@airport/check-in';
-import { ApplicationId, DomainName, JsonSchemaName, SchemaName } from '@airport/ground-control';
+import { ApplicationSignature, DomainName, JsonSchemaName, SchemaName } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import type { IApplication, IDomain } from '@airport/territory';
 import { ISchema, ISchemaColumn, ISchemaEntity, ISchemaRelation, ISchemaVersion } from '@airport/traffic-pattern';
@@ -8,11 +8,9 @@ import { ITerminalState } from './TerminalState';
 export interface ITerminalStore {
     state: BehaviorSubject<ITerminalState>;
     getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
-    getApplicationActorMapById: IMemoizedSelector<Map<ApplicationId, IActor>, ITerminalState>;
-    getApplicationActorMapByNames: IMemoizedSelector<Map<DomainName, Map<SchemaName, IActor>>, ITerminalState>;
+    getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>;
     getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
-    getApplicationMapById: IMemoizedSelector<Map<ApplicationId, IApplication>, ITerminalState>;
-    getApplicationMapByNames: IMemoizedSelector<Map<DomainName, Map<SchemaName, IApplication>>, ITerminalState>;
+    getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
     getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>;
@@ -29,11 +27,9 @@ export interface ITerminalStore {
 export declare class TerminalStore implements ITerminalStore {
     state: BehaviorSubject<ITerminalState>;
     getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
-    getApplicationActorMapById: IMemoizedSelector<Map<ApplicationId, IActor>, ITerminalState>;
-    getApplicationActorMapByNames: IMemoizedSelector<Map<DomainName, Map<SchemaName, IActor>>, ITerminalState>;
+    getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>;
     getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
-    getApplicationMapById: IMemoizedSelector<Map<ApplicationId, IApplication>, ITerminalState>;
-    getApplicationMapByNames: IMemoizedSelector<Map<DomainName, Map<SchemaName, IApplication>>, ITerminalState>;
+    getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
     getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>;

@@ -356,6 +356,20 @@ export const SCHEMA = {
                         {
                             "index": 2,
                             "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "SIGNATURE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -370,7 +384,7 @@ export const SCHEMA = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 2
+                                    "index": 3
                                 }
                             ],
                             "sinceVersion": 1,
@@ -406,7 +420,16 @@ export const SCHEMA = {
                             "sinceVersion": 1
                         },
                         {
+                            "columnRef": {
+                                "index": 2
+                            },
                             "index": 2,
+                            "isId": false,
+                            "name": "signature",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
                             "isId": false,
                             "name": "domain",
                             "relationRef": {
@@ -415,7 +438,7 @@ export const SCHEMA = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 3,
+                            "index": 4,
                             "isId": false,
                             "name": "applicationPackages",
                             "relationRef": {
@@ -430,7 +453,7 @@ export const SCHEMA = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 2
+                                "index": 3
                             },
                             "relationTableIndex": 2,
                             "sinceVersion": 1
@@ -443,7 +466,7 @@ export const SCHEMA = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 3
+                                "index": 4
                             },
                             "relationTableIndex": 1,
                             "sinceVersion": 1

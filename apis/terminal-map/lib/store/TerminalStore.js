@@ -17,35 +17,19 @@ export class TerminalStore {
         });
         this.getTerminalState = selectorManager.createRootSelector(this.state);
         this.getApplicationActors = selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
-        this.getApplicationActorMapById = selectorManager.createSelector(this.getApplicationActors, applicationActors => {
-            const applicationActorsByIds = new Map();
+        this.getApplicationActorMapBySignature = selectorManager.createSelector(this.getApplicationActors, applicationActors => {
+            const applicationActorsBySignature = new Map();
             for (const applicationActor of applicationActors) {
-                applicationActorsByIds.set(applicationActor.application.id, applicationActor);
+                applicationActorsBySignature.set(applicationActor.application.signature, applicationActor);
             }
-            return applicationActorsByIds;
+            return applicationActorsBySignature;
         });
-        this.getApplicationActorMapByNames = selectorManager.createSelector(this.getApplicationActors, applicationActors => {
-            const applicationActorsByNames = new Map();
-            for (const applicationActor of applicationActors) {
-                const mapForDomain = ensureChildJsMap(applicationActorsByNames, applicationActor.application.domain.name);
-                mapForDomain.set(applicationActor.application.name, applicationActor);
-            }
-            return applicationActorsByNames;
-        });
-        this.getApplicationMapById = selectorManager.createSelector(this.getApplications, applications => {
-            const applicationsByIds = new Map();
+        this.getApplicationMapBySignature = selectorManager.createSelector(this.getApplications, applications => {
+            const applicationsBySignature = new Map();
             for (const application of applications) {
-                applicationsByIds.set(application.id, application);
+                applicationsBySignature.set(application.signature, application);
             }
-            return applicationsByIds;
-        });
-        this.getApplicationMapByNames = selectorManager.createSelector(this.getApplications, applications => {
-            const applicationsByNames = new Map();
-            for (const application of applications) {
-                const mapForDomain = ensureChildJsMap(applicationsByNames, application.domain.name);
-                mapForDomain.set(application.name, application);
-            }
-            return applicationsByNames;
+            return applicationsBySignature;
         });
         this.getDomains = selectorManager.createSelector(this.getTerminalState, terminal => terminal.domains);
         this.getFrameworkActor = selectorManager.createSelector(this.getTerminalState, terminal => terminal.frameworkActor);

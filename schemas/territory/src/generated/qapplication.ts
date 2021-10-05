@@ -66,6 +66,7 @@ export interface ApplicationESelect
     extends IEntitySelectProperties, ApplicationEOptionalId {
 	// Non-Id Properties
 	name?: string | IQStringField;
+	signature?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -105,6 +106,7 @@ export interface ApplicationEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	name?: string | IQStringField;
+	signature?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	domain?: DomainEOptionalId;
@@ -120,6 +122,7 @@ export interface ApplicationGraph
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	name?: string | IQStringField;
+	signature?: string | IQStringField;
 
 	// Relations
 	domain?: DomainGraph;
@@ -134,6 +137,7 @@ export interface ApplicationEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	NAME?: string | IQStringField;
+	SIGNATURE?: string | IQStringField;
 	DOMAIN_ID?: number | IQNumberField;
 
 }
@@ -171,6 +175,7 @@ export interface QApplication extends IQEntity<Application>
 
 	// Non-Id Fields
 	name: IQStringField;
+	signature: IQStringField;
 
 	// Non-Id Relations
 	domain: QDomainQRelation;

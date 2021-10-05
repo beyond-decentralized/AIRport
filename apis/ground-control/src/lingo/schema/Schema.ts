@@ -7,6 +7,7 @@ import { SchemaStatus }           from './SchemaStatus';
 
 export type ApplicationId = number;
 export type ApplicationName = string;
+export type ApplicationSignature = string;
 export type ApplicationPackageId = number;
 export type DatabaseIndex = number;
 export type DomainId = number;
@@ -55,6 +56,8 @@ export interface DbApplication {
 	id: ApplicationId
 
 	name: ApplicationName
+
+	signature: ApplicationSignature
 
 }
 

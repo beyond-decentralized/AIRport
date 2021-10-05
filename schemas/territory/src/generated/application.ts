@@ -20,6 +20,7 @@ export interface IApplication {
 
 	// Non-Id Properties
 	name?: string;
+	signature?: string;
 
 	// Non-Id Relations
 	domain?: IDomain;

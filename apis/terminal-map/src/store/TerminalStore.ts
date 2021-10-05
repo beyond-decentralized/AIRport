@@ -5,6 +5,7 @@ import {
 import { DI } from '@airport/di';
 import {
 	ApplicationId,
+	ApplicationSignature,
 	DomainName,
 	ensureChildJsMap,
 	JsonSchemaName,
@@ -29,15 +30,11 @@ export interface ITerminalStore {
 
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
-	getApplicationActorMapById: IMemoizedSelector<Map<ApplicationId, IActor>, ITerminalState>
-
-	getApplicationActorMapByNames: IMemoizedSelector<Map<DomainName, Map<SchemaName, IActor>>, ITerminalState>
+	getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>
 
 	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
 
-	getApplicationMapById: IMemoizedSelector<Map<ApplicationId, IApplication>, ITerminalState>
-
-	getApplicationMapByNames: IMemoizedSelector<Map<DomainName, Map<SchemaName, IApplication>>, ITerminalState>
+	getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>
 
@@ -72,15 +69,11 @@ export class TerminalStore
 
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
-	getApplicationActorMapById: IMemoizedSelector<Map<ApplicationId, IActor>, ITerminalState>
-
-	getApplicationActorMapByNames: IMemoizedSelector<Map<DomainName, Map<SchemaName, IActor>>, ITerminalState>
+	getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>
 
 	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
 
-	getApplicationMapById: IMemoizedSelector<Map<ApplicationId, IApplication>, ITerminalState>
-
-	getApplicationMapByNames: IMemoizedSelector<Map<DomainName, Map<SchemaName, IApplication>>, ITerminalState>
+	getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
 
@@ -119,40 +112,21 @@ export class TerminalStore
 		this.getTerminalState = selectorManager.createRootSelector(this.state);
 		this.getApplicationActors = selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.applicationActors)
-		this.getApplicationActorMapById = selectorManager.createSelector(this.getApplicationActors,
+		this.getApplicationActorMapBySignature = selectorManager.createSelector(this.getApplicationActors,
 			applicationActors => {
-				const applicationActorsByIds: Map<ApplicationId, IActor> = new Map()
+				const applicationActorsBySignature: Map<ApplicationSignature, IActor> = new Map()
 				for (const applicationActor of applicationActors) {
-					applicationActorsByIds.set(applicationActor.application.id, applicationActor)
+					applicationActorsBySignature.set(applicationActor.application.signature, applicationActor)
 				}
-				return applicationActorsByIds
+				return applicationActorsBySignature
 			})
-		this.getApplicationActorMapByNames = selectorManager.createSelector(this.getApplicationActors,
-			applicationActors => {
-				const applicationActorsByNames: Map<DomainName, Map<SchemaName, IActor>> = new Map()
-				for (const applicationActor of applicationActors) {
-					const mapForDomain = ensureChildJsMap(applicationActorsByNames,
-						applicationActor.application.domain.name)
-					mapForDomain.set(applicationActor.application.name, applicationActor)
-				}
-				return applicationActorsByNames
-			})
-		this.getApplicationMapById = selectorManager.createSelector(this.getApplications,
+		this.getApplicationMapBySignature = selectorManager.createSelector(this.getApplications,
 			applications => {
-				const applicationsByIds: Map<ApplicationId, IApplication> = new Map()
+				const applicationsBySignature: Map<ApplicationSignature, IApplication> = new Map()
 				for (const application of applications) {
-					applicationsByIds.set(application.id, application)
+					applicationsBySignature.set(application.signature, application)
 				}
-				return applicationsByIds
-			})
-		this.getApplicationMapByNames = selectorManager.createSelector(this.getApplications,
-			applications => {
-				const applicationsByNames: Map<DomainName, Map<SchemaName, IApplication>> = new Map()
-				for (const application of applications) {
-					const mapForDomain = ensureChildJsMap(applicationsByNames, application.domain.name)
-					mapForDomain.set(application.name, application)
-				}
-				return applicationsByNames
+				return applicationsBySignature
 			})
 		this.getDomains = selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.domains);
