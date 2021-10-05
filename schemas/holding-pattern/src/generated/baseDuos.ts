@@ -13,32 +13,6 @@ import {
 	QActor,
 } from './infrastructure/qactor';
 import {
-	IActorApplication,
-} from './infrastructure/actorapplication';
-import {
-	ActorApplicationESelect,
-	ActorApplicationECreateColumns,
-	ActorApplicationECreateProperties,
-	ActorApplicationEUpdateColumns,
-	ActorApplicationEUpdateProperties,
-	ActorApplicationEId,
-	ActorApplicationGraph,
-	QActorApplication,
-} from './infrastructure/qactorapplication';
-import {
-	IApplication,
-} from './infrastructure/application';
-import {
-	ApplicationESelect,
-	ApplicationECreateColumns,
-	ApplicationECreateProperties,
-	ApplicationEUpdateColumns,
-	ApplicationEUpdateProperties,
-	ApplicationEId,
-	ApplicationGraph,
-	QApplication,
-} from './infrastructure/qapplication';
-import {
 	IOperationHistory,
 } from './history/operationhistory';
 import {
@@ -238,47 +212,11 @@ export class BaseActorDuo
 	implements IBaseActorDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(6)
-	}
-}
-
-
-export interface IBaseActorApplicationDuo
-  extends IDuo<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateColumns, ActorApplicationEUpdateProperties, ActorApplicationEId, ActorApplicationGraph, QActorApplication> {
-}
-
-export class BaseActorApplicationDuo
-  extends SQDIDuo<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateColumns, ActorApplicationEUpdateProperties, ActorApplicationEId, ActorApplicationGraph, QActorApplication>
-	implements IBaseActorApplicationDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(1)
-	}
-	
-	constructor() {
-		super(1)
-	}
-}
-
-
-export interface IBaseApplicationDuo
-  extends IDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> {
-}
-
-export class BaseApplicationDuo
-  extends SQDIDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication>
-	implements IBaseApplicationDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(2)
-	}
-	
-	constructor() {
-		super(2)
+		super(4)
 	}
 }
 
@@ -292,11 +230,11 @@ export class BaseOperationHistoryDuo
 	implements IBaseOperationHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(12)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(12)
+		super(10)
 	}
 }
 
@@ -328,11 +266,11 @@ export class BaseRecordHistoryNewValueDuo
 	implements IBaseRecordHistoryNewValueDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(8)
+		super(6)
 	}
 }
 
@@ -346,11 +284,11 @@ export class BaseRecordHistoryOldValueDuo
 	implements IBaseRecordHistoryOldValueDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(9)
+		super(7)
 	}
 }
 
@@ -364,11 +302,11 @@ export class BaseRepoTransHistoryChangedRepositoryActorDuo
 	implements IBaseRepoTransHistoryChangedRepositoryActorDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(7)
+		super(5)
 	}
 }
 
@@ -382,11 +320,11 @@ export class BaseRepositoryDuo
 	implements IBaseRepositoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(4)
+		super(2)
 	}
 }
 
@@ -400,11 +338,11 @@ export class BaseRepositoryActorDuo
 	implements IBaseRepositoryActorDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(5)
+		super(3)
 	}
 }
 
@@ -418,11 +356,11 @@ export class BaseRepositoryApplicationDuo
 	implements IBaseRepositoryApplicationDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(3)
+		super(1)
 	}
 }
 
@@ -436,11 +374,11 @@ export class BaseRepositorySchemaDuo
 	implements IBaseRepositorySchemaDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(13)
+		return duoDiSet(11)
 	}
 	
 	constructor() {
-		super(13)
+		super(11)
 	}
 }
 
@@ -454,11 +392,11 @@ export class BaseRepositoryTransactionHistoryDuo
 	implements IBaseRepositoryTransactionHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(11)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(11)
+		super(9)
 	}
 }
 
@@ -472,10 +410,10 @@ export class BaseTransactionHistoryDuo
 	implements IBaseTransactionHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(10)
+		super(8)
 	}
 }

@@ -59,10 +59,10 @@ export interface IRepositoryManager {
 
 	createRepository(
 		appName: string,
-		distributionStrategy: DistributionStrategy,
-		offlineStoreType: StoreType,
-		platformType: PlatformType,
-		platformConfig: any,
+		// distributionStrategy: DistributionStrategy,
+		// offlineStoreType: StoreType,
+		// platformType: PlatformType,
+		// platformConfig: any,
 		recordIdField: string
 	): Promise<IRepository>;
 
@@ -134,13 +134,15 @@ export class RepositoryManager
 
 	async createRepository(
 		appName: string,
-		distributionStrategy: DistributionStrategy,
-		offlineStoreType: StoreType,
-		platformType: PlatformType,
-		platformConfig: any,
+		// distributionStrategy: DistributionStrategy,
+		// offlineStoreType: StoreType,
+		// platformType: PlatformType,
+		// platformConfig: any,
 		recordIdField: string
 	): Promise<IRepository> {
-		let repository = await this.createRepositoryRecord(appName, distributionStrategy, platformType, platformConfig)
+		let repository = await this.createRepositoryRecord(appName,
+			// distributionStrategy, platformType, platformConfig
+		)
 		await this.addDeltaStore(repository)
 
 		return repository
@@ -241,18 +243,19 @@ export class RepositoryManager
 
 	private async createRepositoryRecord(
 		appName: string,
-		distributionStrategy: DistributionStrategy,
-		platformType: PlatformType,
-		platformConfig: any,
+		// distributionStrategy: DistributionStrategy,
+		// platformType: PlatformType,
+		// platformConfig: any,
 	): Promise<IRepository> {
 		const repository = {
-			distributionStrategy: distributionStrategy,
+			distributionStrategy: null,
 			id: null,
 			lastSyncedTransaction: null,
 			localDatabase: null,
 			name: appName,
-			platform: platformType,
-			platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
+			platform: null,
+			// platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
+			platformConfig: null,
 			repositoryDatabases: null,
 			repositoryUsers: null,
 			transactionHistory: null,

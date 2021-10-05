@@ -4,6 +4,7 @@ import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff';
 import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER } from '../tokens';
 import { getSchemaName } from '@airport/ground-control';
+import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/territory';
 export class TransactionalReceiver {
     constructor() {
         // FIXME: move this state to Terminal.state
@@ -40,7 +41,12 @@ export class TransactionalReceiver {
                     return null;
                 case IsolateMessageType.ADD_REPOSITORY:
                     const addRepositoryMessage = message;
-                    result = await transactionalServer.addRepository(addRepositoryMessage.name, addRepositoryMessage.url, addRepositoryMessage.platform, addRepositoryMessage.platformConfig, addRepositoryMessage.distributionStrategy, credentials, context);
+                    result = await transactionalServer.addRepository(addRepositoryMessage.name, 
+                    // addRepositoryMessage.url,
+                    // addRepositoryMessage.platform,
+                    // addRepositoryMessage.platformConfig,
+                    // addRepositoryMessage.distributionStrategy,
+                    credentials, context);
                     break;
                 case IsolateMessageType.COMMIT:
                     result = await transactionalServer.commit(credentials, {});
@@ -116,6 +122,27 @@ export class TransactionalReceiver {
             type: message.type,
             result
         };
+    }
+    async ensureDomainAndApplicationRecords(schema) {
+        const [applicationDao, domainDao] = await container(this).get(APPLICATION_DAO, DOMAIN_DAO);
+        let domain = await domainDao.findByName(schema.domain);
+        if (!domain) {
+            domain = {
+                id: null,
+                name: schema.domain,
+            };
+            await domainDao.save(domain);
+        }
+        let application = await applicationDao
+            .findByDomainNameAndName(schema.domain, schema.name);
+        if (!application) {
+            application = {
+                domain,
+                id: null,
+                name: schema.name,
+            };
+            await applicationDao.save(application);
+        }
     }
 }
 //# sourceMappingURL=TransactionalReceiver.js.map

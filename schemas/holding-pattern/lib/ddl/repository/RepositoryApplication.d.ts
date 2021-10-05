@@ -1,4 +1,4 @@
-import { Application } from '../infrastructure/Application';
+import { Application } from '@airport/territory';
 import { Repository } from './Repository';
 /**
  * Created by Papa on 12/18/2016.

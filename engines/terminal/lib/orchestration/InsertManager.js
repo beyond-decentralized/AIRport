@@ -1,7 +1,7 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI, } from '@airport/di';
-import { ChangeType, DistributionStrategy, PlatformType, repositoryEntity, } from '@airport/ground-control';
+import { ChangeType, repositoryEntity, } from '@airport/ground-control';
 import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO } from '@airport/holding-pattern';
 import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { HISTORY_MANAGER, INSERT_MANAGER, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER } from '../tokens';
@@ -15,10 +15,18 @@ export class InsertManager {
     async insertValuesGetIds(portableQuery, actor, transaction, context) {
         return await this.internalInsertValues(portableQuery, actor, transaction, context, true);
     }
-    async addRepository(name, url = null, platform = PlatformType.GOOGLE_DOCS, platformConfig = null, distributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH) {
+    async addRepository(name, 
+    // url: string = null,
+    // platform: PlatformType = PlatformType.GOOGLE_DOCS,
+    // platformConfig: string = null,
+    // distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
+    context) {
         const [repoManager, transManager] = await container(this)
             .get(REPOSITORY_MANAGER, TRANSACTION_MANAGER);
-        const repository = await repoManager.createRepository(name, distributionStrategy, transManager.storeType, platform, platformConfig, 'id');
+        const repository = await repoManager.createRepository(name, 
+        // distributionStrategy, transManager.storeType,
+        // platform, platformConfig, 
+        'id');
         return repository.id;
     }
     verifyNoGeneratedColumns(dbEntity, jsonInsertValues, errorPrefix) {

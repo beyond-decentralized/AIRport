@@ -21,8 +21,13 @@ export class RepositoryManager {
         const repositoryDao = await container(this).get(REPOSITORY_DAO);
         return await repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail);
     }
-    async createRepository(appName, distributionStrategy, offlineStoreType, platformType, platformConfig, recordIdField) {
-        let repository = await this.createRepositoryRecord(appName, distributionStrategy, platformType, platformConfig);
+    async createRepository(appName, 
+    // distributionStrategy: DistributionStrategy,
+    // offlineStoreType: StoreType,
+    // platformType: PlatformType,
+    // platformConfig: any,
+    recordIdField) {
+        let repository = await this.createRepositoryRecord(appName);
         await this.addDeltaStore(repository);
         return repository;
     }
@@ -103,15 +108,16 @@ export class RepositoryManager {
         this.deltaStore[repository.id] = deltaStore;
         return deltaStore;
     }
-    async createRepositoryRecord(appName, distributionStrategy, platformType, platformConfig) {
+    async createRepositoryRecord(appName) {
         const repository = {
-            distributionStrategy: distributionStrategy,
+            distributionStrategy: null,
             id: null,
             lastSyncedTransaction: null,
             localDatabase: null,
             name: appName,
-            platform: platformType,
-            platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
+            platform: null,
+            // platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
+            platformConfig: null,
             repositoryDatabases: null,
             repositoryUsers: null,
             transactionHistory: null,

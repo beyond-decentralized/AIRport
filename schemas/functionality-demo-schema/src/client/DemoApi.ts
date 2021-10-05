@@ -5,6 +5,14 @@ import { DEMO_API } from "../tokens";
 
 export class DemoApi {
 
+    async addRepository(): Promise<void> {
+
+    }
+
+    async getRepositoryListings(): Promise<any[]> {
+        return []
+    }
+
     async getAllLevel1WithLevel2(): Promise<DeepPartial<Level1>[]> {
         const demoApi = await IOC.get(DEMO_API)
 

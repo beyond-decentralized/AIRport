@@ -8,13 +8,13 @@ import {
 	JoinColumn,
 	ManyToOne,
 	OneToMany
-}                         from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	Terminal,
 	User
-}                         from '@airport/travel-document-checkpoint'
-import {RepositoryActor}  from '../repository/RepositoryActor'
-import {ActorApplication} from './ActorApplication'
+} from '@airport/travel-document-checkpoint'
+import { Application } from '@airport/territory';
+import { RepositoryActor } from '../repository/RepositoryActor'
 
 export type ActorId = number;
 export type ActorUuId = string;
@@ -28,23 +28,28 @@ export class Actor {
 	id: ActorId
 
 	@ManyToOne()
-	@JoinColumn({name: 'USER_ID', referencedColumnName: 'ID',
-		nullable: false})
+	@JoinColumn({
+		name: 'USER_ID', referencedColumnName: 'ID',
+		nullable: false
+	})
 	user: User
 
 	@ManyToOne()
-	@JoinColumn({name: 'TERMINAL_ID', referencedColumnName: 'ID',
-		nullable: false})
+	@JoinColumn({
+		name: 'TERMINAL_ID', referencedColumnName: 'ID',
+		nullable: false
+	})
 	terminal: Terminal
 
-	@Column({name: 'UU_ID', nullable: false})
+	@Column({ name: 'UU_ID', nullable: false })
 	@DbString()
 	uuId: ActorUuId
 
-	@OneToMany({mappedBy: 'actor'})
-	actorApplications: ActorApplication[] = []
+	@ManyToOne()
+	@JoinColumn({ name: "APPLICATION_ID", referencedColumnName: "ID" })
+	application: Application
 
-	@OneToMany({mappedBy: 'ACTOR_ID'})
+	@OneToMany({ mappedBy: 'ACTOR_ID' })
 	repositoryActor: RepositoryActor[]
 
 }

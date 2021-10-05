@@ -214,7 +214,7 @@ export class WebTransactionalReceiver
 		message: ILocalAPIResponse,
 		messageOrigin: string
 	): Promise<void> {
-		if (!this.messageIsFromValidSchema(message, messageOrigin)) {
+		if (!this.messageIsFromValidApp(message, messageOrigin)) {
 			return
 		}
 		let pendingMessagesFromHost = this.pendingFromClientMessageIds.get(message.host)
@@ -269,7 +269,7 @@ export class WebTransactionalReceiver
 		return true
 	}
 
-	private messageIsFromValidSchema(
+	private messageIsFromValidApp(
 		message: IIsolateMessage | ILocalAPIResponse,
 		messageOrigin: string
 	): boolean {
@@ -311,7 +311,7 @@ export class WebTransactionalReceiver
 		messageOrigin: string,
 		source: Window
 	): void {
-		if (!this.messageIsFromValidSchema(message, messageOrigin)) {
+		if (!this.messageIsFromValidApp(message, messageOrigin)) {
 			return
 		}
 		switch (message.type) {

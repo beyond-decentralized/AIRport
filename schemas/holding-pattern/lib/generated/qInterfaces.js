@@ -6,8 +6,6 @@ export * from './history/qrepositorytransactionhistory';
 export * from './history/qrepotranshistorychangedrepositoryactor';
 export * from './history/qtransactionhistory';
 export * from './infrastructure/qactor';
-export * from './infrastructure/qactorapplication';
-export * from './infrastructure/qapplication';
 export * from './infrastructure/qstageable';
 export * from './repository/qrepository';
 export * from './repository/qrepositoryactor';

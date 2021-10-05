@@ -26,6 +26,10 @@ import {
 import { DATABASE_MANAGER } from '../tokens';
 import { getSchemaName } from '@airport/ground-control';
 import { IEntityContext } from '@airport/air-control';
+import {
+    APPLICATION_DAO,
+    DOMAIN_DAO
+} from '@airport/territory';
 
 export abstract class TransactionalReceiver {
 
@@ -51,13 +55,15 @@ export abstract class TransactionalReceiver {
                     let initConnectionMessage: IInitConnectionIMI = message as any
                     const schema: JsonSchemaWithLastIds = initConnectionMessage.schema
                     const schemaName = getSchemaName(schema)
-                    if(this.initializingApps.has(schemaName)) {
+                    if (this.initializingApps.has(schemaName)) {
                         return null
                     }
                     this.initializingApps.add(schemaName)
                     const databaseManager = await container(this).get(DATABASE_MANAGER)
                     // FIXME: initalize ahead of time, at Isolate Loading
                     await databaseManager.initFeatureSchemas({}, [schema])
+
+
                     result = schema.lastIds
                     break;
                 case IsolateMessageType.APP_INITIALIZED:
@@ -130,13 +136,13 @@ export abstract class TransactionalReceiver {
                 case IsolateMessageType.SAVE:
                     const saveMessage: ISaveIMI<any, any> = <ISaveIMI<any, any>>message
                     const terminalStore = await container(this).get(TERMINAL_STORE)
-                    if(!saveMessage.dbEntity) {
+                    if (!saveMessage.dbEntity) {
                         errorMessage = `DbEntity id was not passed in`
                         break
                     }
                     const dbEntityId = saveMessage.dbEntity.id
                     const dbEntity = terminalStore.getAllEntities()[dbEntityId]
-                    if(!dbEntity) {
+                    if (!dbEntity) {
                         errorMessage = `Could not find DbEntity with Id ${dbEntityId}`
                         break
                     }
@@ -193,6 +199,30 @@ export abstract class TransactionalReceiver {
             type: message.type,
             result
         } as any
+    }
+
+    private async ensureDomainAndApplicationRecords(
+        schema: JsonSchemaWithLastIds
+    ): Promise<void> {
+        const [applicationDao, domainDao] = await container(this).get(APPLICATION_DAO, DOMAIN_DAO)
+        let domain = await domainDao.findByName(schema.domain)
+        if (!domain) {
+            domain = {
+                id: null,
+                name: schema.domain,
+            }
+            await domainDao.save(domain)
+        }
+        let application = await applicationDao
+            .findByDomainNameAndName(schema.domain, schema.name)
+        if(!application) {
+            application = {
+                domain,
+                id: null,
+                name: schema.name,
+            }
+            await applicationDao.save(application)
+        }
     }
 
 }

@@ -13,8 +13,6 @@ import {
 	getSchemaName
 }                      from '@airport/ground-control';
 import { QActor } from './infrastructure/qactor';
-import { QActorApplication } from './infrastructure/qactorapplication';
-import { QApplication } from './infrastructure/qapplication';
 import { QChildRepoRow } from './traditional/qchildreporow';
 import { QChildRow } from './traditional/qchildrow';
 import { QImmutableRepoRow } from './traditional/qimmutablereporow';
@@ -37,8 +35,6 @@ import { QStageable } from './infrastructure/qstageable';
 import { QTransactionHistory } from './history/qtransactionhistory';
 import {
   Actor,
-  ActorApplication,
-  Application,
   ChildRepoRow,
   ChildRow,
   ImmutableRepoRow,
@@ -66,8 +62,6 @@ export interface LocalQSchema extends AirportQSchema {
   db: DbSchema;
 
 	Actor: QActor;
-	ActorApplication: QActorApplication;
-	Application: QApplication;
 	OperationHistory: QOperationHistory;
 	RecordHistory: QRecordHistory;
 	RecordHistoryNewValue: QRecordHistoryNewValue;
@@ -84,8 +78,6 @@ export interface LocalQSchema extends AirportQSchema {
 
 const __constructors__ = {
 	Actor: Actor,
-	ActorApplication: ActorApplication,
-	Application: Application,
 	ChildRepoRow: ChildRepoRow,
 	ChildRow: ChildRow,
 	ImmutableRepoRow: ImmutableRepoRow,

@@ -7,7 +7,7 @@ import {
 	ManyToOne,
 	Table
 }                    from "@airport/air-control";
-import {Application} from '../infrastructure/Application'
+import {Application} from '@airport/territory'
 import {Repository}  from './Repository'
 
 /**

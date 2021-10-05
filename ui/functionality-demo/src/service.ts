@@ -1,13 +1,26 @@
 import { markForDeletion } from '@airport/autopilot'
 import { DemoApi, Level1 } from '@airport/functionality-demo-schema'
 import type { DeepPartial } from '@airport/pressurization';
-import { allLevel1Records as allLevel1Records } from './store';
+import { allLevel1Records } from './store';
 export class FunctionalityDemoService {
 
     private demoApi = new DemoApi()
 
     constructor() {
         this.getAllRecords().then()
+    }
+
+    async addRepository(
+        repositoryName: string
+    ) {
+        await this.demoApi.addRepository(repositoryName)
+        await this.getRepositoryListings()
+
+    }
+
+    async getRepositoryListings() {
+        const repositoryListings = await this.demoApi.getRepositoryListings()
+        allLevel1Records.set(level1Records)
     }
 
     async getAllRecords(): Promise<void> {

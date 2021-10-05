@@ -1,16 +1,16 @@
-import {DI}         from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	DomainId,
 	DomainName
-}                   from '@airport/ground-control'
-import {DOMAIN_DAO} from '../tokens'
+} from '@airport/ground-control'
+import { DOMAIN_DAO } from '../tokens'
 import {
 	BaseDomainDao,
 	IBaseDomainDao,
 	IDomain,
 	Q,
 	QDomain
-}                   from '../generated/generated'
+} from '../generated/generated'
 
 export interface IDomainDao
 	extends IBaseDomainDao {
@@ -22,6 +22,10 @@ export interface IDomainDao
 	findMapByNameWithNames(
 		domainNames: DomainName[]
 	): Promise<Map<DomainName, IDomain>>
+
+	findByName(
+		domainName: DomainName
+	): Promise<IDomain>
 
 }
 
@@ -60,6 +64,17 @@ export class DomainDao
 		}
 
 		return domainMapByNameWithNames
+	}
+
+	async findByName(
+		name: DomainName
+	): Promise<IDomain> {
+		let d: QDomain
+		return await this.db.findOne.tree({
+			select: {},
+			from: [d = Q.Domain],
+			where: d.name.equals(name)
+		})
 	}
 
 }

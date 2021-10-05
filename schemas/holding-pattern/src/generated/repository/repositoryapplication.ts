@@ -3,7 +3,7 @@ import {
 } from './repository';
 import {
 	IApplication,
-} from '../infrastructure/application';
+} from '@airport/territory';
 
 
 

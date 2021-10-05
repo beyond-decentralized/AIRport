@@ -1,5 +1,4 @@
 import { IEntityUpdateProperties, IQEntityInternal, MappedEntityArray, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
-import { DistributionStrategy, PlatformType, StoreType } from '@airport/ground-control';
 import { IActor, IRepository, IRepositoryTransactionHistory } from '@airport/holding-pattern';
 import { ITerminal } from '@airport/travel-document-checkpoint';
 import { IDeltaStore } from '../../data/DeltaStore';
@@ -21,7 +20,7 @@ export interface IRepositoryManager {
         [repositoryId: string]: IRepository;
     };
     initialize(): Promise<void>;
-    createRepository(appName: string, distributionStrategy: DistributionStrategy, offlineStoreType: StoreType, platformType: PlatformType, platformConfig: any, recordIdField: string): Promise<IRepository>;
+    createRepository(appName: string, recordIdField: string): Promise<IRepository>;
     getRepository(repositoryId: number): Promise<IRepository>;
     getActor(actorId: number): Promise<IActor>;
     goOffline(): void;
@@ -45,7 +44,7 @@ export declare class RepositoryManager implements IRepositoryManager {
     userEmail: string;
     initialize(): Promise<void>;
     findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>>;
-    createRepository(appName: string, distributionStrategy: DistributionStrategy, offlineStoreType: StoreType, platformType: PlatformType, platformConfig: any, recordIdField: string): Promise<IRepository>;
+    createRepository(appName: string, recordIdField: string): Promise<IRepository>;
     getRepository(repositoryId: number): Promise<IRepository>;
     getActor(actorId: number): Promise<IActor>;
     goOffline(): void;

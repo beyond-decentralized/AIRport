@@ -123,65 +123,6 @@ export declare const SCHEMA: {
             columns: {
                 index: number;
                 isGenerated: boolean;
-                manyRelationColumnRefs: any[];
-                name: string;
-                notNull: boolean;
-                propertyRefs: {
-                    index: number;
-                }[];
-                sinceVersion: number;
-                type: string;
-            }[];
-            idColumnRefs: {
-                index: number;
-            }[];
-            index: number;
-            isLocal: boolean;
-            isRepositoryEntity: boolean;
-            name: string;
-            properties: ({
-                columnRef: {
-                    index: number;
-                };
-                index: number;
-                isId: boolean;
-                name: string;
-                sinceVersion: number;
-                relationRef?: undefined;
-            } | {
-                index: number;
-                isId: boolean;
-                name: string;
-                relationRef: {
-                    index: number;
-                };
-                sinceVersion: number;
-                columnRef?: undefined;
-            })[];
-            relations: {
-                index: number;
-                isId: boolean;
-                oneToManyElems: {
-                    mappedBy: string;
-                };
-                relationType: string;
-                propertyRef: {
-                    index: number;
-                };
-                relationTableIndex: number;
-                sinceVersion: number;
-            }[];
-            sinceVersion: number;
-            tableConfig: {
-                indexes: any[];
-                name?: undefined;
-                primaryKey?: undefined;
-            };
-            operations?: undefined;
-        } | {
-            columns: {
-                index: number;
-                isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
                     oneSchemaIndex: number;

@@ -6,9 +6,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany } from '@airport/air-control';
 let Actor = class Actor {
-    constructor() {
-        this.actorApplications = [];
-    }
 };
 __decorate([
     Id(),
@@ -17,21 +14,26 @@ __decorate([
 ], Actor.prototype, "id", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'USER_ID', referencedColumnName: 'ID',
-        nullable: false })
+    JoinColumn({
+        name: 'USER_ID', referencedColumnName: 'ID',
+        nullable: false
+    })
 ], Actor.prototype, "user", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID',
-        nullable: false })
+    JoinColumn({
+        name: 'TERMINAL_ID', referencedColumnName: 'ID',
+        nullable: false
+    })
 ], Actor.prototype, "terminal", void 0);
 __decorate([
     Column({ name: 'UU_ID', nullable: false }),
     DbString()
 ], Actor.prototype, "uuId", void 0);
 __decorate([
-    OneToMany({ mappedBy: 'actor' })
-], Actor.prototype, "actorApplications", void 0);
+    ManyToOne(),
+    JoinColumn({ name: "APPLICATION_ID", referencedColumnName: "ID" })
+], Actor.prototype, "application", void 0);
 __decorate([
     OneToMany({ mappedBy: 'ACTOR_ID' })
 ], Actor.prototype, "repositoryActor", void 0);

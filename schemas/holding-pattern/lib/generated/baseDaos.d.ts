@@ -1,9 +1,5 @@
 import { IActor } from './infrastructure/actor';
 import { ActorESelect, ActorECreateProperties, ActorEUpdateColumns, ActorEUpdateProperties, ActorEId, ActorGraph, QActor } from './infrastructure/qactor';
-import { IActorApplication } from './infrastructure/actorapplication';
-import { ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateColumns, ActorApplicationEUpdateProperties, ActorApplicationEId, ActorApplicationGraph, QActorApplication } from './infrastructure/qactorapplication';
-import { IApplication } from './infrastructure/application';
-import { ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication } from './infrastructure/qapplication';
 import { IOperationHistory } from './history/operationhistory';
 import { OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateColumns, OperationHistoryEUpdateProperties, OperationHistoryEId, OperationHistoryGraph, QOperationHistory } from './history/qoperationhistory';
 import { IRecordHistory } from './history/recordhistory';
@@ -40,28 +36,6 @@ export declare class BaseActorDao extends SQDIDao<IActor, ActorESelect, ActorECr
     static Search: DaoQueryDecorators<ActorESelect>;
     static SearchOne: DaoQueryDecorators<ActorESelect>;
     static Save(config: ActorGraph): PropertyDecorator;
-    static diSet(): boolean;
-    constructor();
-}
-export interface IBaseActorApplicationDao extends IDao<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateColumns, ActorApplicationEUpdateProperties, ActorApplicationEId, ActorApplicationGraph, QActorApplication> {
-}
-export declare class BaseActorApplicationDao extends SQDIDao<IActorApplication, ActorApplicationESelect, ActorApplicationECreateProperties, ActorApplicationEUpdateColumns, ActorApplicationEUpdateProperties, ActorApplicationEId, ActorApplicationGraph, QActorApplication> implements IBaseActorApplicationDao {
-    static Find: DaoQueryDecorators<ActorApplicationESelect>;
-    static FindOne: DaoQueryDecorators<ActorApplicationESelect>;
-    static Search: DaoQueryDecorators<ActorApplicationESelect>;
-    static SearchOne: DaoQueryDecorators<ActorApplicationESelect>;
-    static Save(config: ActorApplicationGraph): PropertyDecorator;
-    static diSet(): boolean;
-    constructor();
-}
-export interface IBaseApplicationDao extends IDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> {
-}
-export declare class BaseApplicationDao extends SQDIDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> implements IBaseApplicationDao {
-    static Find: DaoQueryDecorators<ApplicationESelect>;
-    static FindOne: DaoQueryDecorators<ApplicationESelect>;
-    static Search: DaoQueryDecorators<ApplicationESelect>;
-    static SearchOne: DaoQueryDecorators<ApplicationESelect>;
-    static Save(config: ApplicationGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

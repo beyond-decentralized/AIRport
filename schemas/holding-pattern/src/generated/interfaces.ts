@@ -6,8 +6,6 @@ export * from './history/repositorytransactionhistory';
 export * from './history/repotranshistorychangedrepositoryactor';
 export * from './history/transactionhistory';
 export * from './infrastructure/actor';
-export * from './infrastructure/actorapplication';
-export * from './infrastructure/application';
 export * from './infrastructure/stageable';
 export * from './repository/repository';
 export * from './repository/repositoryactor';

@@ -1,8 +1,6 @@
 import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema, EntityId } from '@airport/ground-control';
 import { QActor } from './infrastructure/qactor';
-import { QActorApplication } from './infrastructure/qactorapplication';
-import { QApplication } from './infrastructure/qapplication';
 import { QOperationHistory } from './history/qoperationhistory';
 import { QRecordHistory } from './history/qrecordhistory';
 import { QRecordHistoryNewValue } from './history/qrecordhistorynewvalue';
@@ -17,8 +15,6 @@ import { QTransactionHistory } from './history/qtransactionhistory';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
     Actor: QActor;
-    ActorApplication: QActorApplication;
-    Application: QApplication;
     OperationHistory: QOperationHistory;
     RecordHistory: QRecordHistory;
     RecordHistoryNewValue: QRecordHistoryNewValue;

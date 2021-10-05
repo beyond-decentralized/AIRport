@@ -32,14 +32,21 @@ export class TransactionalServer {
             .get(TRANSACTION_MANAGER);
         return await transManager.initialize('airport', context);
     }
-    async addRepository(name, url, platform, platformConfig, distributionStrategy, credentials, context) {
+    async addRepository(name, 
+    // url: string,
+    // platform: PlatformType,
+    // platformConfig: string,
+    // distributionStrategy: DistributionStrategy,
+    credentials, context) {
         await this.ensureIocContext(context);
         const actor = await this.getActor(credentials);
         // FIXME: check actor
         let numRecordsCreated = 0;
         await transactional(async (transaction) => {
             // TODO: figure out how addRepository will work
-            numRecordsCreated = await context.ioc.insertManager.addRepository(name, url, platform, platformConfig, distributionStrategy);
+            numRecordsCreated = await context.ioc.insertManager.addRepository(name, 
+            // url, platform, platformConfig, distributionStrategy
+            context);
         }, context);
         return numRecordsCreated;
     }

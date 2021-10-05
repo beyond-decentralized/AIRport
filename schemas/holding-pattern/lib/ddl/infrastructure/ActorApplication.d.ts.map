@@ -1,1 +1,0 @@
-{"version":3,"file":"ActorApplication.d.ts","sourceRoot":"","sources":["../../../src/ddl/infrastructure/ActorApplication.ts"],"names":[],"mappings":"AASA,OAAO,EAAC,KAAK,EAAC,MAAY,SAAS,CAAA;AACnC,OAAO,EAAC,WAAW,EAAC,MAAM,eAAe,CAAA;AAEzC;;GAEG;AAEH;;GAEG;AACH,qBAEa,gBAAgB;IAK5B,EAAE,EAAE,MAAM,CAAA;IAKV,KAAK,EAAE,KAAK,CAAA;IAOZ,WAAW,EAAE,WAAW,CAAA;CAExB"}

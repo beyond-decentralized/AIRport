@@ -25,6 +25,14 @@ export class DomainDao extends BaseDomainDao {
         }
         return domainMapByNameWithNames;
     }
+    async findByName(name) {
+        let d;
+        return await this.db.findOne.tree({
+            select: {},
+            from: [d = Q.Domain],
+            where: d.name.equals(name)
+        });
+    }
 }
 DI.set(DOMAIN_DAO, DomainDao);
 //# sourceMappingURL=DomainDao.js.map

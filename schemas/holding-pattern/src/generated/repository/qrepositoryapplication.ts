@@ -43,10 +43,8 @@ import {
 	QApplication,
 	QApplicationQId,
 	QApplicationQRelation,
-} from '../infrastructure/qapplication';
-import {
 	Application,
-} from '../../ddl/infrastructure/Application';
+} from '@airport/territory';
 import {
 	RepositoryApplication,
 } from '../../ddl/repository/RepositoryApplication';
