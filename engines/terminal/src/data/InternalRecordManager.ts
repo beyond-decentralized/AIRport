@@ -1,7 +1,8 @@
 import { container, DI, IContext } from "@airport/di";
 import { DomainName } from "@airport/ground-control";
-import { Actor, ACTOR_DAO } from "@airport/holding-pattern";
+import { Actor, ACTOR_DAO, IActor } from "@airport/holding-pattern";
 import { JsonSchemaWithLastIds } from "@airport/security-check";
+import { TERMINAL_STORE } from "@airport/terminal-map";
 import { APPLICATION_DAO, DOMAIN_DAO } from "@airport/territory";
 import { transactional } from "@airport/tower";
 import { Terminal, User } from "@airport/travel-document-checkpoint";
@@ -25,7 +26,6 @@ export interface IInternalRecordManager {
 export class InternalRecordManager
     implements IInternalRecordManager {
 
-
     async ensureSchemaRecords(
         schema: JsonSchemaWithLastIds,
         context: IContext
@@ -33,15 +33,20 @@ export class InternalRecordManager
         await transactional(async (
             _transaction
         ) => {
-            const [actorDao, applicationDao, domainDao] = await container(this)
-                .get(ACTOR_DAO, APPLICATION_DAO, DOMAIN_DAO)
+            const [actorDao, applicationDao, domainDao, terminalStore]
+                = await container(this)
+                    .get(ACTOR_DAO, APPLICATION_DAO, DOMAIN_DAO, TERMINAL_STORE)
             let domain = await domainDao.findByName(schema.domain)
+            const lastTerminalState = terminalStore.getTerminalState()
+            const domains = lastTerminalState.domains.slice()
             if (!domain) {
                 domain = {
                     id: null,
                     name: schema.domain,
                 }
                 await domainDao.save(domain)
+
+                domains.push(domain)
             }
             let application = await applicationDao
                 .findByDomainNameAndName(schema.domain, schema.name)
@@ -53,15 +58,29 @@ export class InternalRecordManager
                 }
                 await applicationDao.save(application)
 
-                const actor: Actor = {
-                    application: application as any,
+                const frameworkActor = terminalStore.getFrameworkActor()
+                const actor: IActor = {
+                    application: application,
                     id: null,
                     repositoryActors: [],
-                    terminal: undefined,
-                    user: undefined,
+                    terminal: frameworkActor.terminal,
+                    user: frameworkActor.user,
                     uuId: uuidv4()
                 }
                 await actorDao.save(actor)
+
+                const lastTerminalState = terminalStore.getTerminalState()
+                const applications = lastTerminalState.applications.slice()
+                applications.push(application)
+                const applicationActors = lastTerminalState.applicationActors.slice()
+                applicationActors.push(actor)
+                terminalStore.state.next({
+                    ...lastTerminalState,
+                    applicationActors,
+                    applications,
+                    domains
+                })
+
             }
         }, context);
 
@@ -91,6 +110,14 @@ export class InternalRecordManager
             actor.uuId = uuidv4();
             const actorDao = await container(this).get(ACTOR_DAO);
             await actorDao.save(actor, context);
+
+            const terminalStore = await container(this).get(TERMINAL_STORE)
+            const lastTerminalState = terminalStore.getTerminalState()
+            terminalStore.state.next({
+                ...lastTerminalState,
+                frameworkActor: actor,
+                terminal
+            })
         }, context);
     }
 }
