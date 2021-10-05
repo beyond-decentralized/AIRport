@@ -12,6 +12,7 @@ export interface ITerminalStore {
     getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
     getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
+    getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
     getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>;
     getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<SchemaName, ISchemaVersion>, ITerminalState>;
@@ -31,6 +32,7 @@ export declare class TerminalStore implements ITerminalStore {
     getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
     getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
+    getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
     getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>;
     getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<SchemaName, ISchemaVersion>, ITerminalState>;

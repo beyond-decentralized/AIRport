@@ -38,6 +38,8 @@ export interface ITerminalStore {
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>
 
+	getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>
+
 	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
 
 	getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>
@@ -76,6 +78,8 @@ export class TerminalStore
 	getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
+
+	getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>
 
 	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
 
@@ -130,6 +134,14 @@ export class TerminalStore
 			})
 		this.getDomains = selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.domains);
+		this.getDomainMapByName = selectorManager.createSelector(this.getDomains,
+			domains => {
+				const domainsByName: Map<ApplicationSignature, IApplication> = new Map()
+				for (const domain of domains) {
+					domainsByName.set(domain.name, domain)
+				}
+				return domainsByName
+			})
 		this.getFrameworkActor = selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.frameworkActor)
 		this.getLatestSchemaVersionMapByNames = selectorManager.createSelector(this.getDomains,

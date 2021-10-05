@@ -32,6 +32,13 @@ export class TerminalStore {
             return applicationsBySignature;
         });
         this.getDomains = selectorManager.createSelector(this.getTerminalState, terminal => terminal.domains);
+        this.getDomainMapByName = selectorManager.createSelector(this.getDomains, domains => {
+            const domainsByName = new Map();
+            for (const domain of domains) {
+                domainsByName.set(domain.name, domain);
+            }
+            return domainsByName;
+        });
         this.getFrameworkActor = selectorManager.createSelector(this.getTerminalState, terminal => terminal.frameworkActor);
         this.getLatestSchemaVersionMapByNames = selectorManager.createSelector(this.getDomains, domains => {
             const latestSchemaVersionMapByNames = new Map();
