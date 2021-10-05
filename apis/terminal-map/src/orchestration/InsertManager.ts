@@ -35,6 +35,7 @@ export interface IInsertManager {
         // platform: PlatformType,
         // platformConfig: string,
         // distributionStrategy: DistributionStrategy,
+        actor: IActor,
         context: IContext,
     ): Promise<number>;
 

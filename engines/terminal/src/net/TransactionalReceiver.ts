@@ -39,7 +39,7 @@ export abstract class TransactionalReceiver {
         let result: any
         let errorMessage
         let credentials: ICredentials = {
-            domainAndPort: 'test'
+            applicationSignature: message.schemaSignature
         }
         let context: IContext = {}
         context.startedAt = new Date()

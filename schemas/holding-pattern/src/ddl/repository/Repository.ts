@@ -78,8 +78,8 @@ export class Repository {
 	// @DbString)
 	// platform: PlatformType;
 
-	@Column({ name: "PLATFORM_CONFIG", nullable: false })
-	platformConfig: string;
+	// @Column({ name: "PLATFORM_CONFIG", nullable: false })
+	// platformConfig: string;
 
 	/*
 	@ManyToOne()
@@ -93,9 +93,6 @@ export class Repository {
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryActors: RepositoryActor[] = [];
-
-	@OneToMany({ mappedBy: 'repository' })
-	repositoryApplications: RepositoryApplication[] = [];
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];

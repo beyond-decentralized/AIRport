@@ -48,19 +48,6 @@ import {
 	RepositoryActor,
 } from '../../ddl/repository/RepositoryActor';
 import {
-	RepositoryApplicationGraph,
-	RepositoryApplicationEId,
-	RepositoryApplicationEOptionalId,
-	RepositoryApplicationEUpdateProperties,
-	RepositoryApplicationESelect,
-	QRepositoryApplication,
-	QRepositoryApplicationQId,
-	QRepositoryApplicationQRelation,
-} from './qrepositoryapplication';
-import {
-	RepositoryApplication,
-} from '../../ddl/repository/RepositoryApplication';
-import {
 	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
@@ -95,7 +82,6 @@ export interface RepositoryESelect
 	uuId?: string | IQStringField;
 	name?: string | IQStringField;
 	url?: string | IQStringField;
-	platformConfig?: string | IQStringField;
 	syncPriority?: string | IQStringField;
 
 	// Id Relations - full property interfaces
@@ -103,7 +89,6 @@ export interface RepositoryESelect
   // Non-Id relations (including OneToMany's)
 	ownerActor?: ActorESelect;
 	repositoryActors?: RepositoryActorESelect;
-	repositoryApplications?: RepositoryApplicationESelect;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 
 }
@@ -141,7 +126,6 @@ export interface RepositoryEUpdateProperties
 	uuId?: string | IQStringField;
 	name?: string | IQStringField;
 	url?: string | IQStringField;
-	platformConfig?: string | IQStringField;
 	syncPriority?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -161,13 +145,11 @@ export interface RepositoryGraph
 	uuId?: string | IQStringField;
 	name?: string | IQStringField;
 	url?: string | IQStringField;
-	platformConfig?: string | IQStringField;
 	syncPriority?: string | IQStringField;
 
 	// Relations
 	ownerActor?: ActorGraph;
 	repositoryActors?: RepositoryActorGraph[];
-	repositoryApplications?: RepositoryApplicationGraph[];
 	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
 
 }
@@ -182,7 +164,6 @@ export interface RepositoryEUpdateColumns
 	UU_ID?: string | IQStringField;
 	NAME?: string | IQStringField;
 	REPOSITORY_URL?: string | IQStringField;
-	PLATFORM_CONFIG?: string | IQStringField;
 	SYNC_PRIORITY?: string | IQStringField;
 	OWNER_ACTOR_ID?: number | IQNumberField;
 
@@ -224,13 +205,11 @@ export interface QRepository extends IQEntity<Repository>
 	uuId: IQStringField;
 	name: IQStringField;
 	url: IQStringField;
-	platformConfig: IQStringField;
 	syncPriority: IQStringField;
 
 	// Non-Id Relations
 	ownerActor: QActorQRelation;
 	repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
-	repositoryApplications: IQOneToManyRelation<RepositoryApplication, QRepositoryApplication>;
 	repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
 
 }

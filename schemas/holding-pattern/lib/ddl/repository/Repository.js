@@ -7,6 +7,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Column, DbDate, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
 let Repository = class Repository {
     constructor() {
+        // @Column({name: "DISTRIBUTION_STRATEGY"})
+        // @DbString()
+        // distributionStrategy: DistributionStrategy;
+        //
+        // @Column({name: "REPOSITORY_PLATFORM"})
+        // @DbString)
+        // platform: PlatformType;
+        // @Column({ name: "PLATFORM_CONFIG", nullable: false })
+        // platformConfig: string;
         /*
         @ManyToOne()
         @JoinColumns([
@@ -17,7 +26,6 @@ let Repository = class Repository {
         lastSyncedTransaction: IRepositoryTransactionHistory;
     */
         this.repositoryActors = [];
-        this.repositoryApplications = [];
         this.repositoryTransactionHistory = [];
     }
 };
@@ -51,14 +59,8 @@ __decorate([
     DbString()
 ], Repository.prototype, "url", void 0);
 __decorate([
-    Column({ name: "PLATFORM_CONFIG", nullable: false })
-], Repository.prototype, "platformConfig", void 0);
-__decorate([
     OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryActors", void 0);
-__decorate([
-    OneToMany({ mappedBy: 'repository' })
-], Repository.prototype, "repositoryApplications", void 0);
 __decorate([
     OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryTransactionHistory", void 0);

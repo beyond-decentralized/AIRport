@@ -2,8 +2,6 @@ import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntity
 import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
 import { RepositoryActorGraph, RepositoryActorESelect, QRepositoryActor } from './qrepositoryactor';
 import { RepositoryActor } from '../../ddl/repository/RepositoryActor';
-import { RepositoryApplicationGraph, RepositoryApplicationESelect, QRepositoryApplication } from './qrepositoryapplication';
-import { RepositoryApplication } from '../../ddl/repository/RepositoryApplication';
 import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
 import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransactionHistory';
 import { Repository } from '../../ddl/repository/Repository';
@@ -15,11 +13,9 @@ export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEO
     uuId?: string | IQStringField;
     name?: string | IQStringField;
     url?: string | IQStringField;
-    platformConfig?: string | IQStringField;
     syncPriority?: string | IQStringField;
     ownerActor?: ActorESelect;
     repositoryActors?: RepositoryActorESelect;
-    repositoryApplications?: RepositoryApplicationESelect;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 }
 /**
@@ -42,7 +38,6 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     uuId?: string | IQStringField;
     name?: string | IQStringField;
     url?: string | IQStringField;
-    platformConfig?: string | IQStringField;
     syncPriority?: string | IQStringField;
     ownerActor?: ActorEOptionalId;
 }
@@ -54,11 +49,9 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
     uuId?: string | IQStringField;
     name?: string | IQStringField;
     url?: string | IQStringField;
-    platformConfig?: string | IQStringField;
     syncPriority?: string | IQStringField;
     ownerActor?: ActorGraph;
     repositoryActors?: RepositoryActorGraph[];
-    repositoryApplications?: RepositoryApplicationGraph[];
     repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
 }
 /**
@@ -69,7 +62,6 @@ export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
     UU_ID?: string | IQStringField;
     NAME?: string | IQStringField;
     REPOSITORY_URL?: string | IQStringField;
-    PLATFORM_CONFIG?: string | IQStringField;
     SYNC_PRIORITY?: string | IQStringField;
     OWNER_ACTOR_ID?: number | IQNumberField;
 }
@@ -92,11 +84,9 @@ export interface QRepository extends IQEntity<Repository> {
     uuId: IQStringField;
     name: IQStringField;
     url: IQStringField;
-    platformConfig: IQStringField;
     syncPriority: IQStringField;
     ownerActor: QActorQRelation;
     repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
-    repositoryApplications: IQOneToManyRelation<RepositoryApplication, QRepositoryApplication>;
     repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
 }
 export interface QRepositoryQId {

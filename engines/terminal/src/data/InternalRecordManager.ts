@@ -7,7 +7,6 @@ import { DomainName } from "@airport/ground-control";
 import {
     Actor,
     ACTOR_DAO,
-    IActor
 } from "@airport/holding-pattern";
 import { JsonSchemaWithLastIds } from "@airport/security-check";
 import { TERMINAL_STORE } from "@airport/terminal-map";

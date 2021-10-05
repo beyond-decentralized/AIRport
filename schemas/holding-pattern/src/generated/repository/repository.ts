@@ -5,9 +5,6 @@ import {
 	IRepositoryActor,
 } from './repositoryactor';
 import {
-	IRepositoryApplication,
-} from './repositoryapplication';
-import {
 	IRepositoryTransactionHistory,
 } from '../history/repositorytransactionhistory';
 
@@ -29,13 +26,11 @@ export interface IRepository {
 	uuId?: string;
 	name?: string;
 	url?: string;
-	platformConfig?: string;
 	syncPriority?: string;
 
 	// Non-Id Relations
 	ownerActor?: IActor;
 	repositoryActors?: IRepositoryActor[];
-	repositoryApplications?: IRepositoryApplication[];
 	repositoryTransactionHistory?: IRepositoryTransactionHistory[];
 
 	// Transient Properties

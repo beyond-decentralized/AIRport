@@ -239,7 +239,6 @@ export const SCHEMA = {
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": null,
 									"oneTableIndex": 2,
-									"oneRelationIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -423,11 +422,11 @@ export const SCHEMA = {
 							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "PLATFORM_CONFIG",
+							"name": "SYNC_PRIORITY",
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 6
+									"index": 8
 								}
 							],
 							"sinceVersion": 1,
@@ -435,20 +434,6 @@ export const SCHEMA = {
 						},
 						{
 							"index": 6,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "SYNC_PRIORITY",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 10
-								}
-							],
-							"sinceVersion": 1,
-							"type": "STRING"
-						},
-						{
-							"index": 7,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -535,16 +520,7 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"columnRef": {
-								"index": 5
-							},
 							"index": 6,
-							"isId": false,
-							"name": "platformConfig",
-							"sinceVersion": 1
-						},
-						{
-							"index": 7,
 							"isId": false,
 							"name": "repositoryActors",
 							"relationRef": {
@@ -553,28 +529,19 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 8,
+							"index": 7,
 							"isId": false,
-							"name": "repositoryApplications",
+							"name": "repositoryTransactionHistory",
 							"relationRef": {
 								"index": 2
 							},
 							"sinceVersion": 1
 						},
 						{
-							"index": 9,
-							"isId": false,
-							"name": "repositoryTransactionHistory",
-							"relationRef": {
-								"index": 3
-							},
-							"sinceVersion": 1
-						},
-						{
 							"columnRef": {
-								"index": 6
+								"index": 5
 							},
-							"index": 10,
+							"index": 8,
 							"isId": false,
 							"name": "syncPriority",
 							"sinceVersion": 1
@@ -599,7 +566,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 7
+								"index": 6
 							},
 							"relationTableIndex": 3,
 							"sinceVersion": 1
@@ -612,20 +579,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 8
-							},
-							"relationTableIndex": 1,
-							"sinceVersion": 1
-						},
-						{
-							"index": 3,
-							"isId": false,
-							"oneToManyElems": {
-								"mappedBy": "repository"
-							},
-							"relationType": "ONE_TO_MANY",
-							"propertyRef": {
-								"index": 9
+								"index": 7
 							},
 							"relationTableIndex": 9,
 							"sinceVersion": 1
@@ -1610,7 +1564,7 @@ export const SCHEMA = {
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": null,
 									"oneTableIndex": 2,
-									"oneRelationIndex": 3,
+									"oneRelationIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}

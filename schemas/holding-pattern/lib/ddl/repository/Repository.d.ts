@@ -1,6 +1,5 @@
 import { Actor } from '../infrastructure/Actor';
 import { RepositoryActor } from '../repository/RepositoryActor';
-import { RepositoryApplication } from '../repository/RepositoryApplication';
 import { RepositoryTransactionHistory } from '../history/RepositoryTransactionHistory';
 import { SyncPriority } from "./SyncPrority";
 /**
@@ -18,9 +17,7 @@ export declare class Repository {
     uuId: RepositoryUuId;
     name: RepositoryName;
     url: RepositoryUrl;
-    platformConfig: string;
     repositoryActors: RepositoryActor[];
-    repositoryApplications: RepositoryApplication[];
     repositoryTransactionHistory: RepositoryTransactionHistory[];
     syncPriority: SyncPriority;
 }
