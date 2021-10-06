@@ -1,5 +1,6 @@
 import { IContext } from '@airport/di'
 import { Observable } from 'rxjs'
+import { AIRepository } from './AIRepositoryEntities'
 import { DistributionStrategy } from './data/DistributionStrategy'
 import { PlatformType } from './data/PatformType'
 import { PortableQuery } from './query/PortableQuery'
@@ -15,6 +16,10 @@ export interface ITransactionalConnector {
 		// distributionStrategy: DistributionStrategy,
 		context?: IContext,
 	): Promise<number>
+
+	getApplicationRepositories(
+		context?: IContext,
+	): Promise<AIRepository[]>
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
@@ -78,8 +83,8 @@ export interface ITransactionalConnector {
 		context: IContext
 	): Promise<boolean>
 
-    onMessage(callback: (
-        message: any
-    ) => void)
+	onMessage(callback: (
+		message: any
+	) => void)
 
 }

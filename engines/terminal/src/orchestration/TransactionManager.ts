@@ -88,30 +88,30 @@ export class TransactionManager
 		const isServer = storeDriver.isServer(context)
 
 		if (!isServer) {
-			if (credentials.domainAndPort === this.transactionInProgress
+			if (credentials.applicationSignature === this.transactionInProgress
 				|| this.transactionIndexQueue.filter(
 					transIndex =>
-						transIndex === credentials.domainAndPort,
+						transIndex === credentials.applicationSignature,
 				).length) {
 				// Either just continue using the current transaction
 				// or return (domain shouldn't be initiating multiple transactions
 				// at the same time
-				throw new Error(`'${credentials.domainAndPort}' initialized multiple transactions
+				throw new Error(`'${credentials.applicationSignature}' initialized multiple transactions
 				at the same time. Only one concurrent transaction is allowed per application.`)
 				// return;
 			}
-			this.transactionIndexQueue.push(credentials.domainAndPort);
+			this.transactionIndexQueue.push(credentials.applicationSignature);
 		}
 
-		while (!this.canRunTransaction(credentials.domainAndPort, storeDriver, context)) {
+		while (!this.canRunTransaction(credentials.applicationSignature, storeDriver, context)) {
 			await this.wait(this.yieldToRunningTransaction);
 		}
 		if (!isServer) {
 			this.transactionIndexQueue = this.transactionIndexQueue.filter(
 				transIndex =>
-					transIndex !== credentials.domainAndPort,
+					transIndex !== credentials.applicationSignature,
 			);
-			this.transactionInProgress = credentials.domainAndPort;
+			this.transactionInProgress = credentials.applicationSignature;
 		}
 
 		await storeDriver.transact(async (
@@ -138,11 +138,11 @@ export class TransactionManager
 	): Promise<void> {
 		const storeDriver = await container(this)
 			.get(STORE_DRIVER);
-		if (!storeDriver.isServer(context) && this.transactionInProgress !== transaction.credentials.domainAndPort) {
+		if (!storeDriver.isServer(context) && this.transactionInProgress !== transaction.credentials.applicationSignature) {
 			let foundTransactionInQueue = false;
 			this.transactionIndexQueue.filter(
 				transIndex => {
-					if (transIndex === transaction.credentials.domainAndPort) {
+					if (transIndex === transaction.credentials.applicationSignature) {
 						foundTransactionInQueue = true;
 						return false;
 					}
@@ -150,7 +150,7 @@ export class TransactionManager
 				});
 			if (!foundTransactionInQueue) {
 				throw new Error(
-					`Could not find transaction '${transaction.credentials.domainAndPort}' is not found`);
+					`Could not find transaction '${transaction.credentials.applicationSignature}' is not found`);
 			}
 			return;
 		}
@@ -171,9 +171,9 @@ export class TransactionManager
 			);
 
 		if (!storeDriver.isServer(context)
-			&& this.transactionInProgress !== transaction.credentials.domainAndPort) {
+			&& this.transactionInProgress !== transaction.credentials.applicationSignature) {
 			throw new Error(
-				`Cannot commit inactive transaction '${transaction.credentials.domainAndPort}'.`);
+				`Cannot commit inactive transaction '${transaction.credentials.applicationSignature}'.`);
 		}
 
 		try {

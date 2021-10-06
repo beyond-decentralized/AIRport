@@ -1,6 +1,7 @@
 import { container, DI } from '@airport/di';
 import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
-import { TRANSACTION_MANAGER, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
+import { REPOSITORY_DAO } from '@airport/holding-pattern';
+import { TRANSACTION_MANAGER, TRANSACTIONAL_SERVER, TERMINAL_STORE } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 /**
  * Keeps track of transactions, per client and validates that a given
@@ -41,14 +42,19 @@ export class TransactionalServer {
         await this.ensureIocContext(context);
         const actor = await this.getActor(credentials);
         // FIXME: check actor
-        let numRecordsCreated = 0;
+        let repositoryId = 0;
         await transactional(async (transaction) => {
             // TODO: figure out how addRepository will work
-            numRecordsCreated = await context.ioc.insertManager.addRepository(name, 
+            repositoryId = await context.ioc.insertManager.addRepository(name, 
             // url, platform, platformConfig, distributionStrategy
-            context);
+            actor, context);
         }, context);
-        return numRecordsCreated;
+        return repositoryId;
+    }
+    async getApplicationRepositories(credentials, context) {
+        const repositoryDao = await container(this).get(REPOSITORY_DAO);
+        return await repositoryDao
+            .findReposForAppSignature(credentials.applicationSignature);
     }
     async find(portableQuery, credentials, context, cachedSqlQueryId) {
         await this.ensureIocContext(context);
@@ -142,7 +148,14 @@ export class TransactionalServer {
         if (this.tempActor) {
             return this.tempActor;
         }
-        throw new Error(`Not Implemented`);
+        const terminalStore = await container(this).get(TERMINAL_STORE);
+        const actor = terminalStore.getApplicationActorMapBySignature()
+            .get(credentials.applicationSignature);
+        if (!actor) {
+            throw new Error(`Could not find actor for Application Signature:
+	${credentials.applicationSignature}`);
+        }
+        return actor;
     }
     async ensureIocContext(context) {
         const operationContextLoader = await container(this)

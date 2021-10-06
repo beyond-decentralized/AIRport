@@ -150,6 +150,20 @@ export class RepositoryDao extends BaseRepositoryDao {
         }
         return repositoryIdMap;
     }
+    async findReposForAppSignature(applicationSignature) {
+        let repo;
+        let act;
+        let app;
+        return await this.db.find.graph({
+            select: {},
+            from: [
+                repo = Q.Repository,
+                act = repo.ownerActor.innerJoin(),
+                app = act.application.innerJoin()
+            ],
+            where: app.signature.equals(applicationSignature)
+        });
+    }
 }
 DI.set(REPOSITORY_DAO, RepositoryDao);
 //# sourceMappingURL=RepositoryDao.js.map

@@ -4,6 +4,7 @@ import {
 	IContext
 } from '@airport/di';
 import {
+	AIRepository,
 	DistributionStrategy,
 	ISaveResult,
 	JsonInsertValues,
@@ -11,7 +12,7 @@ import {
 	PlatformType,
 	PortableQuery
 } from '@airport/ground-control';
-import { IActor, RepositoryId } from '@airport/holding-pattern';
+import { IActor, RepositoryId, REPOSITORY_DAO } from '@airport/holding-pattern';
 import {
 	ICredentials,
 	IOperationContext,
@@ -95,6 +96,16 @@ export class TransactionalServer
 		}, context)
 
 		return repositoryId
+	}
+
+	async getApplicationRepositories(
+		credentials: ICredentials,
+		context: IOperationContext,
+	): Promise<AIRepository[]> {
+		const repositoryDao = await container(this).get(REPOSITORY_DAO)
+
+		return await repositoryDao
+			.findReposForAppSignature(credentials.applicationSignature)
 	}
 
 	async find<E, EntityArray extends Array<E>>(

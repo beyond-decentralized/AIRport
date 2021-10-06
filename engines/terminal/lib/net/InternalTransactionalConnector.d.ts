@@ -1,11 +1,12 @@
 import { IEntityContext, IQueryContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
-import { ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
+import { AIRepository, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 export declare class TransactionalConnector implements ITransactionalConnector {
     dbName: string;
     serverUrl: string;
     addRepository(name: string, context: IContext): Promise<number>;
+    getApplicationRepositories(context?: IContext): Promise<AIRepository[]>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Observable<EntityArray>;

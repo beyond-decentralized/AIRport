@@ -1,11 +1,23 @@
-import { container, DI } from "@airport/di";
+import { DATABASE_FACADE } from "@airport/air-control";
 import { Api } from "@airport/check-in";
-import { DEMO_API, Level1 } from "../client";
+import { container, DI } from "@airport/di";
+import { AIRepository } from "@airport/ground-control";
 import { DeepPartial } from "@airport/pressurization";
+import {
+    DEMO_API,
+    Level1
+} from "../client";
 import { LEVEL_1_DAO as LEVEL_1_DAO } from "../server-tokens";
+
 export interface IDemoApi {
 
+    addRepository(
+        repositoryName: string
+    ): Promise<void>
+
     findAllLevel1WithLevel2(): Promise<DeepPartial<Level1>[]>
+
+    getRepositoryListings(): Promise<AIRepository[]>
 
     saveChanges(
         records: DeepPartial<Level1>[]
@@ -28,10 +40,27 @@ export interface IDemoApi {
 export class DemoApi implements IDemoApi {
 
     @Api()
+    async addRepository(
+        repositoryName: string
+    ): Promise<void> {
+        const databaseFacade = await container(this).get(DATABASE_FACADE)
+
+        await databaseFacade.addRepository(repositoryName)
+    }
+
+
+    @Api()
     async findAllLevel1WithLevel2(): Promise<DeepPartial<Level1>[]> {
         const level1Dao = await container(this).get(LEVEL_1_DAO)
 
         return await level1Dao.findAllWithLevel2()
+    }
+
+    @Api()
+    async getRepositoryListings(): Promise<AIRepository[]> {
+        const databaseFacade = await container(this).get(DATABASE_FACADE)
+        
+        return await databaseFacade.getApplicationRepositories()
     }
 
     @Api()

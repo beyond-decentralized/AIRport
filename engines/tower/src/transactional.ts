@@ -51,6 +51,6 @@ export async function transactional<T>(
 	const transactionManager = await DI.db()
 		.get(TRANSACTION_MANAGER)
 	await transactionManager.transact({
-		domainAndPort: 'any'
+		applicationSignature: null
 	}, callback, context)
 }

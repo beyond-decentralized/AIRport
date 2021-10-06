@@ -1,6 +1,6 @@
 import { IEntityContext, IQueryContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
-import { DistributionStrategy, ISaveResult, ITransactionalConnector, PlatformType, PortableQuery } from '@airport/ground-control';
+import { AIRepository, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
 import { IIsolateMessage, LastIds } from '@airport/security-check';
 import { Observable, Observer } from 'rxjs';
 export interface IMessageInRecord {
@@ -30,7 +30,8 @@ export declare class IframeTransactionalConnector implements ITransactionalConne
     lastIds: LastIds;
     messageCallback: (message: any) => void;
     init(): Promise<void>;
-    addRepository(name: string, url: string, platform: PlatformType, platformConfig: string, distributionStrategy: DistributionStrategy, context: IContext): Promise<number>;
+    addRepository(name: string, context: IContext): Promise<number>;
+    getApplicationRepositories(context?: IContext): Promise<AIRepository[]>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext<E>, cachedSqlQueryId?: number): Observable<EntityArray>;

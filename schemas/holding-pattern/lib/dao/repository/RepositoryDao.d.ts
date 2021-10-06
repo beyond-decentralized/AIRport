@@ -1,5 +1,6 @@
 import { IQNumberField, MappedEntityArray, RawFieldQuery } from '@airport/air-control';
 import { TerminalName, TerminalSecondId } from '@airport/arrivals-n-departures';
+import { ApplicationSignature } from '@airport/ground-control';
 import { UserUniqueId } from '@airport/travel-document-checkpoint';
 import { ActorUuId, RepositoryId, RepositoryCreatedAt, RepositoryUuId, RepositoryTransactionHistoryId } from '../../ddl/ddl';
 import { BaseRepositoryDao, IBaseRepositoryDao, IRepository } from '../../generated/generated';
@@ -9,6 +10,7 @@ export interface IRepositoryDao extends IBaseRepositoryDao {
     }, dbName: TerminalName, userEmail: UserUniqueId): Promise<MappedEntityArray<IRepository>>;
     findLocalRepoIdsByGlobalIds(createdAts: RepositoryCreatedAt[], uuIds: RepositoryUuId[], ownerActorRandomIds: ActorUuId[], ownerUserUniqueIds: UserUniqueId[], ownerTerminalNames: TerminalName[], ownerTerminalSecondIds: TerminalSecondId[], ownerTerminalOwnerUserUniqueIds: UserUniqueId[]): Promise<RepositoryIdMap>;
     findReposWithGlobalIds(repositoryIds: RepositoryId[]): Promise<Map<RepositoryId, IRepository>>;
+    findReposForAppSignature(applicationSignature: ApplicationSignature): Promise<IRepository[]>;
 }
 export declare type RepositoryIdMap = Map<UserUniqueId, Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, Map<ActorUuId, Map<RepositoryCreatedAt, Map<RepositoryUuId, RepositoryId>>>>>>>;
 export declare class RepositoryDao extends BaseRepositoryDao implements IRepositoryDao {
@@ -19,5 +21,6 @@ export declare class RepositoryDao extends BaseRepositoryDao implements IReposit
     }, dbName: TerminalName, userEmail: UserUniqueId): Promise<MappedEntityArray<IRepository>>;
     findReposWithGlobalIds(repositoryIds: RepositoryId[]): Promise<Map<RepositoryId, IRepository>>;
     findLocalRepoIdsByGlobalIds(createdAts: RepositoryCreatedAt[], uuIds: RepositoryUuId[], ownerActorRandomIds: ActorUuId[], ownerUserUniqueIds: UserUniqueId[], ownerTerminalNames: TerminalName[], ownerTerminalSecondIds: TerminalSecondId[], ownerTerminalOwnerUserUniqueIds: UserUniqueId[]): Promise<RepositoryIdMap>;
+    findReposForAppSignature(applicationSignature: ApplicationSignature): Promise<IRepository[]>;
 }
 //# sourceMappingURL=RepositoryDao.d.ts.map

@@ -231,10 +231,10 @@ export class RepositoryManager
 			platform: PlatformType.OFFLINE
 		}
 
-		if (repository.platformConfig) {
-			let platformConfig = JSON.parse(repository.platformConfig)
-			jsonDeltaStoreConfig = <any>{ ...jsonDeltaStoreConfig, ...platformConfig }
-		}
+		// if (repository.platformConfig) {
+		// 	let platformConfig = JSON.parse(repository.platformConfig)
+		// 	jsonDeltaStoreConfig = <any>{ ...jsonDeltaStoreConfig, ...platformConfig }
+		// }
 		let deltaStoreConfig = new DeltaStoreConfig(jsonDeltaStoreConfig)
 		let deltaStore = new DeltaStore(deltaStoreConfig, sharingAdaptor)
 

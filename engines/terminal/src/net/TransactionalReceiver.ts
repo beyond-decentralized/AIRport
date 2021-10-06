@@ -49,7 +49,7 @@ export abstract class TransactionalReceiver {
                     let initConnectionMessage: IInitConnectionIMI = message as any
                     const schema: JsonSchemaWithLastIds = initConnectionMessage.schema
                     const schemaName = getSchemaName(schema)
-                    
+
                     if (this.initializingApps.has(schemaName)) {
                         return null
                     }
@@ -79,6 +79,12 @@ export abstract class TransactionalReceiver {
                         credentials,
                         context
                     );
+                    break
+                case IsolateMessageType.GET_APP_REPOSITORIES:
+                    result = await transactionalServer.getApplicationRepositories(
+                        credentials,
+                        context
+                    )
                     break
                 case IsolateMessageType.COMMIT:
                     result = await transactionalServer.commit(

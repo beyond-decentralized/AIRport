@@ -16,7 +16,7 @@ export class TransactionalReceiver {
         let result;
         let errorMessage;
         let credentials = {
-            domainAndPort: 'test'
+            applicationSignature: message.schemaSignature
         };
         let context = {};
         context.startedAt = new Date();
@@ -34,7 +34,7 @@ export class TransactionalReceiver {
                         .get(DATABASE_MANAGER, INTERNAL_RECORD_MANAGER);
                     // FIXME: initalize ahead of time, at Isolate Loading
                     await databaseManager.initFeatureSchemas({}, [schema]);
-                    await internalRecordManager.ensureSchemaRecords(schema, {});
+                    await internalRecordManager.ensureSchemaRecords(schema, message.schemaSignature, {});
                     result = schema.lastIds;
                     break;
                 case IsolateMessageType.APP_INITIALIZED:
@@ -48,6 +48,9 @@ export class TransactionalReceiver {
                     // addRepositoryMessage.platformConfig,
                     // addRepositoryMessage.distributionStrategy,
                     credentials, context);
+                    break;
+                case IsolateMessageType.GET_APP_REPOSITORIES:
+                    result = await transactionalServer.getApplicationRepositories(credentials, context);
                     break;
                 case IsolateMessageType.COMMIT:
                     result = await transactionalServer.commit(credentials, {});
