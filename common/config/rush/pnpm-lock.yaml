@@ -71,6 +71,7 @@ dependencies:
   '@tsconfig/svelte': 2.0.1
   '@types/gapi': 0.0.35
   '@types/google-drive-realtime-api': 0.0.33
+  '@types/sql.js': 1.4.3
   '@types/uuid': 8.3.0
   cross-env: 7.0.3
   css-loader: 3.5.3_webpack@4.43.0
@@ -88,12 +89,11 @@ dependencies:
   serialize-error: 7.0.1
   serve: 11.3.2
   sirv-cli: 1.0.14
-  sql.js: 1.3.0
+  sql.js: 1.6.2
   style-loader: 1.2.0_webpack@4.43.0
   svelte-check: 2.2.5
   svelte-loader: 2.13.6
   svelte-preprocess: 4.9.2
-  systemjs: 6.10.3
   tslib: 2.1.0
   typedi: 0.8.0
   uuid: 8.3.2
@@ -1557,6 +1557,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-hGOroxRTBkYl5gSBRJOffhV4+io+Y2bFX1VP7LgKEVHJt/LPPJaWUIuDAz74Vlp7l7hCDZfaDi7iPxwNwuVA4Q==
+  /@types/emscripten/1.39.5:
+    dev: false
+    resolution:
+      integrity: sha512-DIOOg+POSrYl+OlNRHQuIEqCd8DCtynG57H862UCce16nXJX7J8eWxNGgOcf8Eyge8zXeSs27mz1UcFu8L/L7g==
   /@types/eslint-scope/3.7.1:
     dependencies:
       '@types/eslint': 7.28.0
@@ -1703,6 +1707,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-K5K+yml8LTo9bWJI/rECfIPrGgxdpeNbj+d53lwN4QjW1MCwlkhUms+gtdzigTeUyBr09+u8BwOIY3MXvHdcsA==
+  /@types/sql.js/1.4.3:
+    dependencies:
+      '@types/emscripten': 1.39.5
+      '@types/node': 14.14.20
+    dev: false
+    resolution:
+      integrity: sha512-3bz1LJIiJtKMEL8tYf7c9Nrb1lYcFeWQkE8vhWvobE29ZzizW79DtoTjqx1bR82DS2Ch2K30nOwNhuLclZ1vYg==
   /@types/tapable/1.0.8:
     dev: false
     resolution:
@@ -8489,10 +8500,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-+IDeoYKAqEDkHfIgnclnQi36jYE=
-  /sql.js/1.3.0:
+  /sql.js/1.6.2:
     dev: false
     resolution:
-      integrity: sha512-bxrJ/9rqJ2SA6hpHnSodRjKBugZHewRvNTITTt74W1VZWmzODjdS68yQW0/J9oC0NWKylHEtV1ptkoTyOYO4Tw==
+      integrity: sha512-9iucI5fXQa+Gspeqf/BNB20PxJIn5LhXDt4mjXoFPqXdR+NqtFs15SdKpSIJ6s529aGL9zFR9p2eSCIEiMsNGA==
   /sqlstring/2.3.2:
     dev: false
     engines:
@@ -10366,7 +10377,7 @@ packages:
     dev: false
     name: '@rush-temp/functionality-demo-frame'
     resolution:
-      integrity: sha512-IjwWv4zWMZcewxaJtFWjZmKD3woGoQ8+YandbLiQY5ZqbvXezJymtAA+qzhHHcFQsAVil2lSe6mE6Xw3PnwYPQ==
+      integrity: sha512-zh76p41OJTmM2ZQbHHQ6oaGCazB0ACVthvmYIwHYOqbJLlIgf5TgbqqNgeOiT4Md82/58MzI1y5MmfH5sorTAQ==
       tarball: 'file:projects/functionality-demo-frame.tgz'
     version: 0.0.0
   'file:projects/functionality-demo-framework.tgz':
@@ -10390,14 +10401,14 @@ packages:
     dev: false
     name: '@rush-temp/functionality-demo-framework'
     resolution:
-      integrity: sha512-g1qq5bYuerbmv8bL0S663OmQOIBx1FKhk67eP0uruum+l73LNNLURxRUIdKKBxs6wbBYq1mhxeJ1OKDWmlBj0w==
+      integrity: sha512-bsdGIsbeswN4BYl9V+IhwX6u7mBII9xgRzWVNy3NqY+9uGejiBBJwGdxUe4JAHn2q89J952BShRDb9secs8XVg==
       tarball: 'file:projects/functionality-demo-framework.tgz'
     version: 0.0.0
   'file:projects/functionality-demo-schema.tgz':
     dev: false
     name: '@rush-temp/functionality-demo-schema'
     resolution:
-      integrity: sha512-UNASi1kBNzpNk024C3dx5RI2WMToeeh9Eb3Q7kas+tgp/rAsxzRCc4YxKXbc1szCAfmIqAMcYsx5JwRWf+cxsA==
+      integrity: sha512-uR6g96uU5f7Td+EcEHfxne1Go5d1HsBOBPJHvYGVHM6naZ/WURbkMN1Jy+AXSFmtC3EMIHCuYZCGiyVLLcun9w==
       tarball: 'file:projects/functionality-demo-schema.tgz'
     version: 0.0.0
   'file:projects/functionality-demo.tgz':
@@ -10449,7 +10460,7 @@ packages:
     dev: false
     name: '@rush-temp/functionality-demo'
     resolution:
-      integrity: sha512-75UhaDXTaDAYqtvsmFNXTzOn5JP/mPtRk5gsPxmhRdsv71XOiz0+aaKDncbKyZ2TBN/8hqjereXUCA4kPf6sCw==
+      integrity: sha512-yZM3DafTGJNxrzPrrMIy0Aed3asamN37au8hCNWjgdtKpjGDYS43R87jAe7s6XzvZsfmVTAx9pJempP+2J0Bbg==
       tarball: 'file:projects/functionality-demo.tgz'
     version: 0.0.0
   'file:projects/go-terminal.tgz':
@@ -10502,7 +10513,7 @@ packages:
     dev: false
     name: '@rush-temp/holding-pattern'
     resolution:
-      integrity: sha512-XVhGQUaDkq9of1fBtAmf5uC3a234Cd+fVHjMp5rWZfvaQpPtAR7EIZOm4gdV6UEbnMsqIep9p5yHvBBFTrCykw==
+      integrity: sha512-eXZhil3BLsHJxx58axuEjDdo7p+mD4dHJXJzXXdUabiQMnR4u3DSmoXxVcgfIH9NzbxnvmEET3UScBPmFHhrOw==
       tarball: 'file:projects/holding-pattern.tgz'
     version: 0.0.0
   'file:projects/hw-control.tgz':
@@ -10590,7 +10601,7 @@ packages:
     dev: false
     name: '@rush-temp/landing'
     resolution:
-      integrity: sha512-01hWMVhVUG2yas09kwd2c3a0lynVdHYwy/8svDvibEtJfuISiFcB3lmgc2d4eZY15ryiPVxXttFgTeeJjG1Rxw==
+      integrity: sha512-5ky1kqvNjmBHy/yQjgkmQX3RHXuAEhS7hC0Bl/rAHCic2yOyHMTnkNzAFcn0b2AzaO118eL7U5I9LSduSKXsCg==
       tarball: 'file:projects/landing.tgz'
     version: 0.0.0
   'file:projects/mono-rail.tgz':
@@ -10683,7 +10694,7 @@ packages:
     dev: false
     name: '@rush-temp/security-check'
     resolution:
-      integrity: sha512-oADMxMwXmvnCI2KUjtj3REWV43LEGpXX0xNUuYe4e0+YSV92mOUes3LPKUUPHbCpz3V94spGd/EjwcabOCGnXA==
+      integrity: sha512-OakZ76mpdWqWSyZ+OTcVByXzyo48iOWpUxTzITec2QTJ4b2gd9JZzMAzul9HOr5aawZ4I6co5htx1uMDr83XDQ==
       tarball: 'file:projects/security-check.tgz'
     version: 0.0.0
   'file:projects/sequence.tgz':
@@ -10702,18 +10713,19 @@ packages:
     version: 0.0.0
   'file:projects/sqljs.tgz':
     dependencies:
-      sql.js: 1.3.0
+      '@types/sql.js': 1.4.3
+      sql.js: 1.6.2
     dev: false
     name: '@rush-temp/sqljs'
     resolution:
-      integrity: sha512-xdJZsVgPdcZT4euSBgLkad9tu3uQU5YL0+i5rUmEnTtO0wVnUab9xOZ19fORK9TOPgzQz5ZMoM694u+6iOlbvg==
+      integrity: sha512-hMUbJtmwJx2F+8nlCFkFndM4TX18qsZuWI3ja4508L0HgKUKXAMk+9XfBtFoGvgtFszW8NP9xbK1r0HR6noByA==
       tarball: 'file:projects/sqljs.tgz'
     version: 0.0.0
   'file:projects/takeoff.tgz':
     dev: false
     name: '@rush-temp/takeoff'
     resolution:
-      integrity: sha512-lEvkAeMOQymwKhjRl+ilKCgTp5qYLh6JYS9UrMDYzwufhHOUAipWDscaWy5A4TWQFPwhTJkOMtojbx/xpFX0rA==
+      integrity: sha512-brqtYgGGPpX+qGZYzTreuKOoKuha2OPbRQpcqHRtNKDoyOiYvhmqx5eyHisZ2WQReuWtTlZwBxSIhPNp8Bc05A==
       tarball: 'file:projects/takeoff.tgz'
     version: 0.0.0
   'file:projects/tarmaq.tgz':
@@ -10741,17 +10753,18 @@ packages:
     dev: false
     name: '@rush-temp/terminal-map'
     resolution:
-      integrity: sha512-51YgWHdsVQnFTGlT/P9l9arHj8ZBanxBFmrOrELSzc1V0A146vUyw/6MrVWrOT/VTnXdwX7+vIjSk/0MNMRDbg==
+      integrity: sha512-b/8tGgXEpt0mcOiOnAA3OyIjGBqJ3FWun0c2eE5j9qwhL+pzSKXG29RyQZXnjy1kTajToJm/k2x4mKqtENTRAw==
       tarball: 'file:projects/terminal-map.tgz'
     version: 0.0.0
   'file:projects/terminal.tgz':
     dependencies:
       rxjs: 7.3.0
+      uuid: 8.3.2
       zipson: 0.2.12
     dev: false
     name: '@rush-temp/terminal'
     resolution:
-      integrity: sha512-dWax82qydD1rREa3D9uDqLJ1g7w7FoTJaRtvcPU39RVnkuJboVfbHwQO408lznrs7KT4JWn6JLKUU+b3fpPuPQ==
+      integrity: sha512-F1kukHynHlCdr23D5RkF8PpBm3lZJootH0WjVyVGxWKauJhleZrmMC7lE7g0Wu9AVjjRaqz15qE92tIv5Oz9zw==
       tarball: 'file:projects/terminal.tgz'
     version: 0.0.0
   'file:projects/territory.tgz':
@@ -10792,7 +10805,7 @@ packages:
     dev: false
     name: '@rush-temp/traffic-pattern'
     resolution:
-      integrity: sha512-sJHuDC4Brtg8Y8ABwVEsMk3C83Ji1sY2KCDEGl9ztyWsyh/jyiHMws0fe4TYt6y78Ttf7UIeLja7Tc8KN5a6+Q==
+      integrity: sha512-2yiE0o2WNTyycMTKeuC++x8VOWPKCYGu/7bV5FpNQnp1MPAKlHyG70KdjcP5vGUilX9lK9xohn7mIdqqRk+tjg==
       tarball: 'file:projects/traffic-pattern.tgz'
     version: 0.0.0
   'file:projects/travel-document-checkpoint.tgz':
@@ -10812,10 +10825,11 @@ packages:
   'file:projects/web-terminal.tgz':
     dependencies:
       rxjs: 7.3.0
+      sql.js: 1.6.2
     dev: false
     name: '@rush-temp/web-terminal'
     resolution:
-      integrity: sha512-jlop5OmkWAo51/sShU3ql7U1GRFrEnNiGEo3ODRH5yKnWCLo+0eM0QgvzI8Dm5xzAxrmVr0N2zaymYLYazHslg==
+      integrity: sha512-exJbAseNkq9pKgPUYyvkhVYSnU/mvFveNZ0cE0uXlE4QtNJ6hgdINiW8sux5Nbcx4wDVT0Uko0rm1LS3DzbnXw==
       tarball: 'file:projects/web-terminal.tgz'
     version: 0.0.0
   'file:projects/web-tower.tgz':
@@ -10824,14 +10838,14 @@ packages:
     dev: false
     name: '@rush-temp/web-tower'
     resolution:
-      integrity: sha512-/nWsXTOGxbZvbZboIPaGGtO714ahUwaQD7uJ5nGXxWbt2bD6LWLob6kumzRoxD/Rv8VVUxZZhGyxEteJ3nZ18g==
+      integrity: sha512-+ysgMlidVdvytqD51lIZiSrEIbpNs6JTZeFr6P0hfpnEMnfW+tjwf88iCTm6aWBjtXSICbwrqgvxU3XfR4o51g==
       tarball: 'file:projects/web-tower.tgz'
     version: 0.0.0
   'file:projects/websql.tgz':
     dev: false
     name: '@rush-temp/websql'
     resolution:
-      integrity: sha512-MukYxkg3wgpYTdnOLzC51yMpi9vCJhLewQJcEJ7Q8YLsvV/gLRTErHcu8wyVD12jAtqQKq70W5Zzb3Q1zbB8qA==
+      integrity: sha512-RgdfF2te+rxELZU4d8ReZCeMLltzuLndFiMhuZSVAIBBsYjePsEmN15gRYc43InupiQT8+Qy/PFCfzS9/nKgaA==
       tarball: 'file:projects/websql.tgz'
     version: 0.0.0
 registry: ''
@@ -10908,6 +10922,7 @@ specifiers:
   '@tsconfig/svelte': ^2.0.0
   '@types/gapi': ^0.0.35
   '@types/google-drive-realtime-api': ^0.0.33
+  '@types/sql.js': ^1.4.3
   '@types/uuid': ^8.3.0
   cross-env: ^7.0.2
   css-loader: ^3.5.3
@@ -10925,12 +10940,11 @@ specifiers:
   serialize-error: ^7.0.1
   serve: ^11.3.0
   sirv-cli: ^1.0.0
-  sql.js: ^1.3.0
+  sql.js: ^1.6.2
   style-loader: ^1.2.0
   svelte-check: ^2.0.0
   svelte-loader: ^2.13.6
   svelte-preprocess: ^4.0.0
-  systemjs: ^6.10.3
   tslib: ^2.0.0
   typedi: ^0.8.0
   uuid: ^8.3.2

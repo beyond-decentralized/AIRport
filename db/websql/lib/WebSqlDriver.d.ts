@@ -18,7 +18,6 @@ export declare class WebSqlDriver extends SqLiteDriver {
     static BACKUP_DOCUMENTS: number;
     _db: any;
     constructor();
-    private getBackupLocation;
     initialize(dbName: string, context: IOperationContext): Promise<any>;
     transact(transactionalCallback: {
         (transaction: ITransaction): Promise<void>;
@@ -26,6 +25,5 @@ export declare class WebSqlDriver extends SqLiteDriver {
     query(queryType: QueryType, query: string, params: any[], context: IOperationContext, saveTransaction?: boolean): Promise<any>;
     protected doQuery(queryType: QueryType, query: string, params: any[], context: IOperationContext, tx: any, resolve: any, reject: any): void;
     protected getRows(result: any): number;
-    private getReturnValue;
 }
 //# sourceMappingURL=WebSqlDriver.d.ts.map

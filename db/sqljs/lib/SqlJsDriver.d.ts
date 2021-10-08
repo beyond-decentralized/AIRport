@@ -1,21 +1,23 @@
+import type * as SQL from 'sql.js';
 import { SQLDialect } from '@airport/fuel-hydrant-system';
 import { QueryType } from '@airport/ground-control';
 import { SqLiteDriver } from '@airport/sqlite';
 import { IOperationContext, ITransaction } from '@airport/terminal-map';
+/**
+ * Created by Papa on 11/27/2016.
+ */
 export declare class SqlJsDriver extends SqLiteDriver {
-    private _db;
-    private currentTransaction;
+    _db: SQL.Database;
     constructor();
-    isServer(context: IOperationContext): boolean;
     initialize(): Promise<any>;
-    transact(callback: {
+    transact(transactionalCallback: {
         (transaction: ITransaction): Promise<void>;
     }, context: IOperationContext): Promise<void>;
     commit(): Promise<void>;
     rollback(): Promise<void>;
     query(queryType: QueryType, query: string, params: any[], context: IOperationContext, saveTransaction?: boolean): Promise<any>;
     handleError(error: any): void;
+    protected getRows(result: any): number;
     protected getDialect(): SQLDialect;
-    private getReturnValue;
 }
 //# sourceMappingURL=SqlJsDriver.d.ts.map

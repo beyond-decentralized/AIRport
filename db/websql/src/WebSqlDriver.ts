@@ -1,6 +1,5 @@
 import { DI } from '@airport/di'
 import {
-	INVALID_TABLE_NAME,
 	QueryType,
 	StoreType,
 	STORE_DRIVER
@@ -35,19 +34,6 @@ export class WebSqlDriver
 	constructor() {
 		super()
 		this.type = StoreType.WEB_SQL
-	}
-
-	private getBackupLocation(dbFlag: number): number {
-		switch (dbFlag) {
-			case WebSqlDriver.BACKUP_LOCAL:
-				return 2
-			case WebSqlDriver.BACKUP_LIBRARY:
-				return 1
-			case WebSqlDriver.BACKUP_DOCUMENTS:
-				return 0
-			default:
-				throw Error('Invalid backup flag: ' + dbFlag)
-		}
 	}
 
 	async initialize(
@@ -199,20 +185,6 @@ export class WebSqlDriver
 		result: any
 	): number {
 		return result
-	}
-
-	private getReturnValue(
-		queryType: QueryType,
-		result: any
-	): any {
-		switch (queryType) {
-			case QueryType.MUTATE:
-				return result.rowsAffected
-			case QueryType.SELECT:
-				return result.rows
-			default:
-				return null
-		}
 	}
 
 }

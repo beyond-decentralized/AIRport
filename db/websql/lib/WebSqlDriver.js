@@ -6,18 +6,6 @@ export class WebSqlDriver extends SqLiteDriver {
         super();
         this.type = StoreType.WEB_SQL;
     }
-    getBackupLocation(dbFlag) {
-        switch (dbFlag) {
-            case WebSqlDriver.BACKUP_LOCAL:
-                return 2;
-            case WebSqlDriver.BACKUP_LIBRARY:
-                return 1;
-            case WebSqlDriver.BACKUP_DOCUMENTS:
-                return 0;
-            default:
-                throw Error('Invalid backup flag: ' + dbFlag);
-        }
-    }
     async initialize(dbName, context) {
         let dbOptions = {
             name: dbName,
@@ -128,16 +116,6 @@ export class WebSqlDriver extends SqLiteDriver {
     }
     getRows(result) {
         return result;
-    }
-    getReturnValue(queryType, result) {
-        switch (queryType) {
-            case QueryType.MUTATE:
-                return result.rowsAffected;
-            case QueryType.SELECT:
-                return result.rows;
-            default:
-                return null;
-        }
     }
 }
 WebSqlDriver.BACKUP_LOCAL = 2;

@@ -60,7 +60,7 @@ WHERE
                 throw new Error(`Unexpected typeof value: ${typeof value}`);
         }
     }
-    isValueValid(value, sqlDataType) {
+    isValueValid(value, sqlDataType, context) {
         throw new Error('Method not implemented.');
         // switch (sqlDataType) {
         // 	case SQLDataType.DATE:
