@@ -8,6 +8,7 @@ export class TransactionManager extends AbstractMutationManager {
     constructor() {
         super(...arguments);
         this.transactionIndexQueue = [];
+        this.signatureOfTransactionInProgress = null;
         this.transactionInProgress = null;
         this.yieldToRunningTransaction = 200;
     }
@@ -34,8 +35,11 @@ export class TransactionManager extends AbstractMutationManager {
             .get(STORE_DRIVER, TRANS_HISTORY_DUO);
         const isServer = storeDriver.isServer(context);
         if (!isServer) {
-            if (credentials.applicationSignature === this.transactionInProgress
-                || this.transactionIndexQueue.filter(transIndex => transIndex === credentials.applicationSignature).length) {
+            if (credentials.applicationSignature === this.signatureOfTransactionInProgress) {
+                await transactionalCallback(this.transactionInProgress, context);
+                return;
+            }
+            else if (this.transactionIndexQueue.filter(transIndex => transIndex === credentials.applicationSignature).length) {
                 // Either just continue using the current transaction
                 // or return (domain shouldn't be initiating multiple transactions
                 // at the same time
@@ -50,9 +54,10 @@ export class TransactionManager extends AbstractMutationManager {
         }
         if (!isServer) {
             this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== credentials.applicationSignature);
-            this.transactionInProgress = credentials.applicationSignature;
+            this.signatureOfTransactionInProgress = credentials.applicationSignature;
         }
         await storeDriver.transact(async (transaction) => {
+            this.transactionInProgress = transaction;
             context.transaction = transaction;
             transaction.transHistory = transHistoryDuo.getNewRecord();
             transaction.credentials = credentials;
@@ -72,7 +77,7 @@ export class TransactionManager extends AbstractMutationManager {
     async rollback(transaction, context) {
         const storeDriver = await container(this)
             .get(STORE_DRIVER);
-        if (!storeDriver.isServer(context) && this.transactionInProgress !== transaction.credentials.applicationSignature) {
+        if (!storeDriver.isServer(context) && this.signatureOfTransactionInProgress !== transaction.credentials.applicationSignature) {
             let foundTransactionInQueue = false;
             this.transactionIndexQueue.filter(transIndex => {
                 if (transIndex === transaction.credentials.applicationSignature) {
@@ -97,7 +102,7 @@ export class TransactionManager extends AbstractMutationManager {
         const [activeQueries, idGenerator, storeDriver] = await container(this)
             .get(ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER);
         if (!storeDriver.isServer(context)
-            && this.transactionInProgress !== transaction.credentials.applicationSignature) {
+            && this.signatureOfTransactionInProgress !== transaction.credentials.applicationSignature) {
             throw new Error(`Cannot commit inactive transaction '${transaction.credentials.applicationSignature}'.`);
         }
         try {
@@ -129,9 +134,10 @@ export class TransactionManager extends AbstractMutationManager {
     // [transaction]);
     // this.queries.markQueriesToRerun(transaction.transactionHistory.schemaMap); } }
     clearTransaction() {
+        this.signatureOfTransactionInProgress = null;
         this.transactionInProgress = null;
         if (this.transactionIndexQueue.length) {
-            this.transactionInProgress = this.transactionIndexQueue.shift();
+            this.signatureOfTransactionInProgress = this.transactionIndexQueue.shift();
         }
     }
     async saveRepositoryHistory(transaction, idGenerator, context) {
@@ -186,7 +192,7 @@ export class TransactionManager extends AbstractMutationManager {
         if (storeDriver.isServer(context)) {
             return true;
         }
-        if (this.transactionInProgress) {
+        if (this.signatureOfTransactionInProgress) {
             return false;
         }
         return this.transactionIndexQueue[this.transactionIndexQueue.length - 1]

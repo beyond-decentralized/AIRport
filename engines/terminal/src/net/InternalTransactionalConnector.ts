@@ -38,7 +38,7 @@ export class TransactionalConnector
             // platformConfig,
             // distributionStrategy,
             {
-                applicationSignature: null
+                applicationSignature: 'internal'
             },
             {
                 internal: true,
@@ -54,7 +54,7 @@ export class TransactionalConnector
 
         return await transServer.getApplicationRepositories(
             {
-                applicationSignature: null
+                applicationSignature: 'internal'
             },
             context
         );
@@ -71,7 +71,7 @@ export class TransactionalConnector
         return await transServer.find(
             portableQuery,
             {
-                applicationSignature: null
+                applicationSignature: 'internal'
             },
             {
                 internal: true,
@@ -91,7 +91,7 @@ export class TransactionalConnector
         return await transServer.findOne(
             portableQuery,
             {
-                applicationSignature: null
+                applicationSignature: 'internal'
             },
             {
                 internal: true,
@@ -111,7 +111,7 @@ export class TransactionalConnector
         return transServer.search(
             portableQuery,
             {
-                applicationSignature: null
+                applicationSignature: 'internal'
             },
             {
                 internal: true,
@@ -131,7 +131,7 @@ export class TransactionalConnector
         return transServer.searchOne(
             portableQuery,
             {
-                applicationSignature: null
+                applicationSignature: 'internal'
             },
             {
                 internal: true,

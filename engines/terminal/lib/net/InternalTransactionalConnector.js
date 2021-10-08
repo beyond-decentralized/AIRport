@@ -15,7 +15,7 @@ export class TransactionalConnector {
         // platformConfig,
         // distributionStrategy,
         {
-            applicationSignature: null
+            applicationSignature: 'internal'
         }, {
             internal: true,
             ...context
@@ -24,13 +24,13 @@ export class TransactionalConnector {
     async getApplicationRepositories(context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.getApplicationRepositories({
-            applicationSignature: null
+            applicationSignature: 'internal'
         }, context);
     }
     async find(portableQuery, context, cachedSqlQueryId) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.find(portableQuery, {
-            applicationSignature: null
+            applicationSignature: 'internal'
         }, {
             internal: true,
             ...context
@@ -39,7 +39,7 @@ export class TransactionalConnector {
     async findOne(portableQuery, context, cachedSqlQueryId) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.findOne(portableQuery, {
-            applicationSignature: null
+            applicationSignature: 'internal'
         }, {
             internal: true,
             ...context
@@ -48,7 +48,7 @@ export class TransactionalConnector {
     search(portableQuery, context, cachedSqlQueryId) {
         const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
         return transServer.search(portableQuery, {
-            applicationSignature: null
+            applicationSignature: 'internal'
         }, {
             internal: true,
             ...context
@@ -57,7 +57,7 @@ export class TransactionalConnector {
     searchOne(portableQuery, context, cachedSqlQueryId) {
         const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
         return transServer.searchOne(portableQuery, {
-            applicationSignature: null
+            applicationSignature: 'internal'
         }, {
             internal: true,
             ...context

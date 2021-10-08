@@ -4,14 +4,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { container, DI } from "@airport/di";
+import { DATABASE_FACADE } from "@airport/air-control";
 import { Api } from "@airport/check-in";
+import { container, DI } from "@airport/di";
 import { DEMO_API } from "../client";
 import { LEVEL_1_DAO as LEVEL_1_DAO } from "../server-tokens";
 export class DemoApi {
+    async addRepository(repositoryName) {
+        const databaseFacade = await container(this).get(DATABASE_FACADE);
+        await databaseFacade.addRepository(repositoryName);
+    }
     async findAllLevel1WithLevel2() {
         const level1Dao = await container(this).get(LEVEL_1_DAO);
         return await level1Dao.findAllWithLevel2();
+    }
+    async getRepositoryListings() {
+        const databaseFacade = await container(this).get(DATABASE_FACADE);
+        return await databaseFacade.getApplicationRepositories();
     }
     async saveChanges(records) {
         const level1Dao = await container(this).get(LEVEL_1_DAO);
@@ -32,7 +41,13 @@ export class DemoApi {
 }
 __decorate([
     Api()
+], DemoApi.prototype, "addRepository", null);
+__decorate([
+    Api()
 ], DemoApi.prototype, "findAllLevel1WithLevel2", null);
+__decorate([
+    Api()
+], DemoApi.prototype, "getRepositoryListings", null);
 __decorate([
     Api()
 ], DemoApi.prototype, "saveChanges", null);

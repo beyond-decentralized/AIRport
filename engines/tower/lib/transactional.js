@@ -36,7 +36,7 @@ export async function transactional(callback, context = {}) {
     const transactionManager = await DI.db()
         .get(TRANSACTION_MANAGER);
     await transactionManager.transact({
-        applicationSignature: null
+        applicationSignature: 'internal'
     }, callback, context);
 }
 //# sourceMappingURL=transactional.js.map

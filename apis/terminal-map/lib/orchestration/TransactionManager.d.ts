@@ -7,7 +7,8 @@ export interface ITransactionContext {
 }
 export interface ITransactionManager {
     storeType: StoreType;
-    transactionInProgress: string;
+    signatureOfTransactionInProgress: string;
+    transactionInProgress: ITransaction;
     initialize(dbName: string, context: IContext): Promise<void>;
     isServer(contex?: IContext): boolean;
     transact(credentials: ICredentials, callback: {

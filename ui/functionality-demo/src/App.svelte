@@ -37,7 +37,7 @@ button {
 
 <script lang="ts">
 import { isDeleted } from '@airport/autopilot';
-import { messages } from './store';
+import { messages, repositoryListings } from './store';
 import type { Level1 } from '@airport/functionality-demo-schema';
 import type { DeepPartial } from '@airport/pressurization';
 import { FunctionalityDemoService } from './service';
@@ -56,7 +56,9 @@ let globalOperationsOn = false;
 let newRepositoryName = '';
 let currentRepository;
 
-async function addRepository() {}
+async function addRepository() {
+  await service.addRepository(newRepositoryName);
+}
 
 function toggleGlobalOperations() {
   globalOperationsOn = !globalOperationsOn;
@@ -123,6 +125,8 @@ function expandMessage(index) {
 function getMessageDetails(message) {
   return JSON.stringify(message);
 }
+
+function onRepositoryChange() {}
 </script>
 
 <main>
@@ -147,8 +151,15 @@ function getMessageDetails(message) {
         <h1>Demo UI</h1>
       </td>
       <td>
-        <select>
-          <option></option>
+        <select
+          bind:value="{currentRepository}"
+          on:change="{onRepositoryChange}"
+        >
+          {#each $repositoryListings as repository}
+            <option value="{repository}">
+              {repository.name}
+            </option>
+          {/each}
         </select>
         <input type="text" bind:value="{newRepositoryName}" />
         <button on:click="{addRepository}">Add Repository</button>

@@ -41,7 +41,8 @@ export class TransactionManager
 	// Keyed by repository index
 	storeType: StoreType;
 	transactionIndexQueue: string[] = [];
-	transactionInProgress: string = null;
+	signatureOfTransactionInProgress: string = null;
+	transactionInProgress: ITransaction = null;
 	yieldToRunningTransaction: number = 200;
 
 	/**
@@ -88,8 +89,10 @@ export class TransactionManager
 		const isServer = storeDriver.isServer(context)
 
 		if (!isServer) {
-			if (credentials.applicationSignature === this.transactionInProgress
-				|| this.transactionIndexQueue.filter(
+			if (credentials.applicationSignature === this.signatureOfTransactionInProgress) {
+				await transactionalCallback(this.transactionInProgress, context);
+				return
+			} else if(this.transactionIndexQueue.filter(
 					transIndex =>
 						transIndex === credentials.applicationSignature,
 				).length) {
@@ -111,12 +114,13 @@ export class TransactionManager
 				transIndex =>
 					transIndex !== credentials.applicationSignature,
 			);
-			this.transactionInProgress = credentials.applicationSignature;
+			this.signatureOfTransactionInProgress = credentials.applicationSignature;
 		}
 
 		await storeDriver.transact(async (
 			transaction: ITransaction,
 		) => {
+			this.transactionInProgress = transaction 
 			context.transaction = transaction
 			transaction.transHistory = transHistoryDuo.getNewRecord();
 			transaction.credentials = credentials;
@@ -138,7 +142,7 @@ export class TransactionManager
 	): Promise<void> {
 		const storeDriver = await container(this)
 			.get(STORE_DRIVER);
-		if (!storeDriver.isServer(context) && this.transactionInProgress !== transaction.credentials.applicationSignature) {
+		if (!storeDriver.isServer(context) && this.signatureOfTransactionInProgress !== transaction.credentials.applicationSignature) {
 			let foundTransactionInQueue = false;
 			this.transactionIndexQueue.filter(
 				transIndex => {
@@ -171,7 +175,7 @@ export class TransactionManager
 			);
 
 		if (!storeDriver.isServer(context)
-			&& this.transactionInProgress !== transaction.credentials.applicationSignature) {
+			&& this.signatureOfTransactionInProgress !== transaction.credentials.applicationSignature) {
 			throw new Error(
 				`Cannot commit inactive transaction '${transaction.credentials.applicationSignature}'.`);
 		}
@@ -209,9 +213,10 @@ export class TransactionManager
 	// this.queries.markQueriesToRerun(transaction.transactionHistory.schemaMap); } }
 
 	private clearTransaction() {
+		this.signatureOfTransactionInProgress = null;
 		this.transactionInProgress = null;
 		if (this.transactionIndexQueue.length) {
-			this.transactionInProgress = this.transactionIndexQueue.shift();
+			this.signatureOfTransactionInProgress = this.transactionIndexQueue.shift();
 		}
 	}
 
@@ -310,7 +315,7 @@ export class TransactionManager
 		if (storeDriver.isServer(context)) {
 			return true;
 		}
-		if (this.transactionInProgress) {
+		if (this.signatureOfTransactionInProgress) {
 			return false;
 		}
 

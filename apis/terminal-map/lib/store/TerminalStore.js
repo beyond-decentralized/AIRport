@@ -16,6 +16,7 @@ export class TerminalStore {
             terminal: null,
         });
         this.getTerminalState = selectorManager.createRootSelector(this.state);
+        this.getApplications = selectorManager.createSelector(this.getTerminalState, terminal => terminal.applications);
         this.getApplicationActors = selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
         this.getApplicationActorMapBySignature = selectorManager.createSelector(this.getApplicationActors, applicationActors => {
             const applicationActorsBySignature = new Map();
