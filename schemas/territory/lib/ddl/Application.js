@@ -19,6 +19,9 @@ __decorate([
     DbString()
 ], Application.prototype, "name", void 0);
 __decorate([
+    DbString()
+], Application.prototype, "signature", void 0);
+__decorate([
     ManyToOne(),
     JoinColumn({ name: "DOMAIN_ID", referencedColumnName: "ID" })
 ], Application.prototype, "domain", void 0);

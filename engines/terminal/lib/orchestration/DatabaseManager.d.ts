@@ -7,7 +7,6 @@ export declare class DatabaseManager implements IDatabaseManager {
     initWithDb(domainName: string, context: IContext): Promise<void>;
     isInitialized(): boolean;
     initFeatureSchemas(context: IContext, jsonSchemas?: JsonSchemaWithLastIds[]): Promise<void>;
-    private initTerminal;
     private installStarterSchema;
 }
 //# sourceMappingURL=DatabaseManager.d.ts.map

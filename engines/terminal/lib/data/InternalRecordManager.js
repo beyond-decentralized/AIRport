@@ -1,42 +1,73 @@
 import { container, DI } from "@airport/di";
-import { Actor, ACTOR_DAO } from "@airport/holding-pattern";
+import { Actor, ACTOR_DAO, } from "@airport/holding-pattern";
+import { TERMINAL_STORE } from "@airport/terminal-map";
 import { APPLICATION_DAO, DOMAIN_DAO } from "@airport/territory";
 import { transactional } from "@airport/tower";
 import { Terminal, User } from "@airport/travel-document-checkpoint";
 import { v4 as uuidv4 } from "uuid";
 import { INTERNAL_RECORD_MANAGER } from "../tokens";
 export class InternalRecordManager {
-    async ensureSchemaRecords(schema, context) {
+    async ensureSchemaRecords(schema, signature, context) {
         await transactional(async (_transaction) => {
-            const [actorDao, applicationDao, domainDao] = await container(this)
-                .get(ACTOR_DAO, APPLICATION_DAO, DOMAIN_DAO);
-            let domain = await domainDao.findByName(schema.domain);
+            const [actorDao, applicationDao, domainDao, terminalStore] = await container(this)
+                .get(ACTOR_DAO, APPLICATION_DAO, DOMAIN_DAO, TERMINAL_STORE);
+            let domain = terminalStore.getDomainMapByName().get(schema.domain);
             if (!domain) {
-                domain = {
-                    id: null,
-                    name: schema.domain,
-                };
-                await domainDao.save(domain);
+                domain = await domainDao.findByName(schema.domain);
+                if (!domain) {
+                    domain = {
+                        id: null,
+                        name: schema.domain,
+                    };
+                    await domainDao.save(domain);
+                }
+                const lastTerminalState = terminalStore.getTerminalState();
+                const domains = lastTerminalState.domains.slice();
+                domains.push(domain);
+                terminalStore.state.next({
+                    ...lastTerminalState,
+                    domains
+                });
             }
-            let application = await applicationDao
-                .findByDomainNameAndName(schema.domain, schema.name);
-            if (!application) {
+            let actor = terminalStore
+                .getApplicationActorMapBySignature().get(signature);
+            if (actor) {
+                return;
+            }
+            actor = await actorDao.findByApplicationSignature(signature);
+            let application;
+            if (!actor) {
                 application = {
                     domain,
                     id: null,
                     name: schema.name,
+                    signature
                 };
                 await applicationDao.save(application);
-                const actor = {
+                const frameworkActor = terminalStore.getFrameworkActor();
+                actor = {
                     application: application,
                     id: null,
                     repositoryActors: [],
-                    terminal: undefined,
-                    user: undefined,
+                    terminal: frameworkActor.terminal,
+                    user: frameworkActor.user,
                     uuId: uuidv4()
                 };
                 await actorDao.save(actor);
             }
+            else {
+                application = actor.application;
+            }
+            const lastTerminalState = terminalStore.getTerminalState();
+            const applications = lastTerminalState.applications.slice();
+            applications.push(application);
+            const applicationActors = lastTerminalState.applicationActors.slice();
+            applicationActors.push(actor);
+            terminalStore.state.next({
+                ...lastTerminalState,
+                applicationActors,
+                applications
+            });
         }, context);
     }
     async initTerminal(domainName, context) {
@@ -56,6 +87,13 @@ export class InternalRecordManager {
             actor.uuId = uuidv4();
             const actorDao = await container(this).get(ACTOR_DAO);
             await actorDao.save(actor, context);
+            const terminalStore = await container(this).get(TERMINAL_STORE);
+            const lastTerminalState = terminalStore.getTerminalState();
+            terminalStore.state.next({
+                ...lastTerminalState,
+                frameworkActor: actor,
+                terminal
+            });
         }, context);
     }
 }

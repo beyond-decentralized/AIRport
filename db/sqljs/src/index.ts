@@ -1,10 +1,13 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { DI } from '@airport/di';
-import { JsonSchema } from '@airport/ground-control';
+import { injectSequenceGenerator } from '@airport/sequence';
 import { DATABASE_MANAGER } from '@airport/terminal';
 
 export * from './SqlJsDriver'
 export * from './SqlJsQueryAdaptor'
+export * from './SqlJsTransaction'
+
+injectSequenceGenerator()
 
 export async function startDb(
 	domainName: string

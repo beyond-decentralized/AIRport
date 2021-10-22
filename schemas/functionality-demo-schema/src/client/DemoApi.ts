@@ -1,16 +1,23 @@
 import { IOC } from "@airport/di"
+import { AIRepository } from "@airport/ground-control";
 import { DeepPartial } from "@airport/pressurization";
 import { Level1 } from "../ddl/Level1";
 import { DEMO_API } from "../tokens";
 
 export class DemoApi {
 
-    async addRepository(): Promise<void> {
+    async addRepository(
+        repositoryName: string
+    ): Promise<void> {
+        const demoApi = await IOC.get(DEMO_API)
 
+        return await demoApi.addRepository(repositoryName)
     }
 
-    async getRepositoryListings(): Promise<any[]> {
-        return []
+    async getRepositoryListings(): Promise<AIRepository[]> {
+        const demoApi = await IOC.get(DEMO_API)
+
+        return await demoApi.getRepositoryListings()
     }
 
     async getAllLevel1WithLevel2(): Promise<DeepPartial<Level1>[]> {

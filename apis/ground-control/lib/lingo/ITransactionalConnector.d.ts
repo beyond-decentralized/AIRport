@@ -1,9 +1,11 @@
 import { IContext } from '@airport/di';
 import { Observable } from 'rxjs';
+import { AIRepository } from './AIRepositoryEntities';
 import { PortableQuery } from './query/PortableQuery';
 import { ISaveResult } from './query/SaveResult';
 export interface ITransactionalConnector {
     addRepository(name: string, context?: IContext): Promise<number>;
+    getApplicationRepositories(context?: IContext): Promise<AIRepository[]>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context?: IContext, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IContext, cachedSqlQueryId?: number): Observable<EntityArray>;

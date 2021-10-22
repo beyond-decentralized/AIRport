@@ -7,10 +7,40 @@ export class TerminalStore {
     async init() {
         const selectorManager = await DI.db().get(SELECTOR_MANAGER);
         this.state = new BehaviorSubject({
-            domains: [], nodesBySyncFrequency: new Map(), schemas: [], terminal: null,
+            applicationActors: [],
+            applications: [],
+            domains: [],
+            frameworkActor: null,
+            nodesBySyncFrequency: new Map(),
+            schemas: [],
+            terminal: null,
         });
         this.getTerminalState = selectorManager.createRootSelector(this.state);
+        this.getApplications = selectorManager.createSelector(this.getTerminalState, terminal => terminal.applications);
+        this.getApplicationActors = selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
+        this.getApplicationActorMapBySignature = selectorManager.createSelector(this.getApplicationActors, applicationActors => {
+            const applicationActorsBySignature = new Map();
+            for (const applicationActor of applicationActors) {
+                applicationActorsBySignature.set(applicationActor.application.signature, applicationActor);
+            }
+            return applicationActorsBySignature;
+        });
+        this.getApplicationMapBySignature = selectorManager.createSelector(this.getApplications, applications => {
+            const applicationsBySignature = new Map();
+            for (const application of applications) {
+                applicationsBySignature.set(application.signature, application);
+            }
+            return applicationsBySignature;
+        });
         this.getDomains = selectorManager.createSelector(this.getTerminalState, terminal => terminal.domains);
+        this.getDomainMapByName = selectorManager.createSelector(this.getDomains, domains => {
+            const domainsByName = new Map();
+            for (const domain of domains) {
+                domainsByName.set(domain.name, domain);
+            }
+            return domainsByName;
+        });
+        this.getFrameworkActor = selectorManager.createSelector(this.getTerminalState, terminal => terminal.frameworkActor);
         this.getLatestSchemaVersionMapByNames = selectorManager.createSelector(this.getDomains, domains => {
             const latestSchemaVersionMapByNames = new Map();
             for (const domain of domains) {

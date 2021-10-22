@@ -39,7 +39,7 @@ export abstract class TransactionalReceiver {
         let result: any
         let errorMessage
         let credentials: ICredentials = {
-            domainAndPort: 'test'
+            applicationSignature: message.schemaSignature
         }
         let context: IContext = {}
         context.startedAt = new Date()
@@ -49,6 +49,7 @@ export abstract class TransactionalReceiver {
                     let initConnectionMessage: IInitConnectionIMI = message as any
                     const schema: JsonSchemaWithLastIds = initConnectionMessage.schema
                     const schemaName = getSchemaName(schema)
+
                     if (this.initializingApps.has(schemaName)) {
                         return null
                     }
@@ -59,7 +60,8 @@ export abstract class TransactionalReceiver {
                     // FIXME: initalize ahead of time, at Isolate Loading
                     await databaseManager.initFeatureSchemas({}, [schema])
 
-                    await internalRecordManager.ensureSchemaRecords(schema, {})
+                    await internalRecordManager.ensureSchemaRecords(
+                        schema, message.schemaSignature, {})
 
                     result = schema.lastIds
                     break;
@@ -77,6 +79,12 @@ export abstract class TransactionalReceiver {
                         credentials,
                         context
                     );
+                    break
+                case IsolateMessageType.GET_APP_REPOSITORIES:
+                    result = await transactionalServer.getApplicationRepositories(
+                        credentials,
+                        context
+                    )
                     break
                 case IsolateMessageType.COMMIT:
                     result = await transactionalServer.commit(

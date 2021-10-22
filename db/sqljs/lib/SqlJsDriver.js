@@ -1,48 +1,33 @@
-// FIXME: add support, in future, if needed
-// import {Database}      from 'sql.js'
 import { SQLDialect } from '@airport/fuel-hydrant-system';
-import { QueryType, StoreType } from '@airport/ground-control';
+import { StoreType, STORE_DRIVER } from '@airport/ground-control';
 import { SqLiteDriver } from '@airport/sqlite';
+import { DI } from '@airport/di';
+import { SqlJsTransaction } from './SqlJsTransaction';
+/**
+ * Created by Papa on 11/27/2016.
+ */
 export class SqlJsDriver extends SqLiteDriver {
     constructor() {
         super();
         this.type = StoreType.SQLJS;
     }
-    isServer(context) {
-        return false;
-    }
     async initialize() {
-        if (typeof SQL !== 'undefined') {
-            this._db = new SQL.Database();
-        }
-        else {
-            // FIXME: add support, in future, if needed
-            // let sql  = require('sql.js')
-            // this._db = new sql.Database()
-            throw new Error('Not implemented');
-        }
+        const SQL = await initSqlJs({
+            // Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
+            // You can omit locateFile completely when running in node
+            locateFile: file => `https://sql.js.org/dist/${file}`
+        });
+        this._db = new SQL.Database();
     }
-    async transact(callback, context) {
+    async transact(transactionalCallback, context) {
         this._db.exec('BEGIN TRANSACTION;');
-        this.currentTransaction = true;
-        // TODO implement
-        return null;
+        await transactionalCallback(new SqlJsTransaction(this));
     }
     async commit() {
-        try {
-            this._db.exec('COMMIT;');
-        }
-        finally {
-            this.currentTransaction = false;
-        }
+        this._db.exec('COMMIT;');
     }
     async rollback() {
-        try {
-            this._db.exec('ROLLBACK;');
-        }
-        finally {
-            this.currentTransaction = false;
-        }
+        this._db.exec('ROLLBACK;');
     }
     async query(queryType, query, params = [], context, saveTransaction = false) {
         return new Promise((resolve, reject) => {
@@ -76,18 +61,12 @@ export class SqlJsDriver extends SqLiteDriver {
     handleError(error) {
         throw error;
     }
+    getRows(result) {
+        return result;
+    }
     getDialect() {
         return SQLDialect.SQLITE;
     }
-    getReturnValue(queryType, response) {
-        switch (queryType) {
-            case QueryType.MUTATE:
-                return response.rowsAffected;
-            case QueryType.SELECT:
-                return response.rows;
-            default:
-                return null;
-        }
-    }
 }
+DI.set(STORE_DRIVER, SqlJsDriver);
 //# sourceMappingURL=SqlJsDriver.js.map

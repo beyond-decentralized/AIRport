@@ -11,7 +11,8 @@ import {
 } from '@airport/air-control'
 import {
 	ApplicationId,
-	ApplicationName
+	ApplicationName,
+	ApplicationSignature
 }                           from '@airport/ground-control'
 import {ApplicationPackage} from "./ApplicationPackage";
 import {Domain}             from "./Domain";
@@ -28,6 +29,9 @@ export class Application {
 
 	@DbString()
 	name: ApplicationName
+
+	@DbString()
+	signature: ApplicationSignature
 
 	@ManyToOne()
 	@JoinColumn({name: "DOMAIN_ID", referencedColumnName: "ID"})

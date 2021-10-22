@@ -3,6 +3,7 @@ import { SchemaReferenceByIndex } from './Property';
 import { SchemaStatus } from './SchemaStatus';
 export declare type ApplicationId = number;
 export declare type ApplicationName = string;
+export declare type ApplicationSignature = string;
 export declare type ApplicationPackageId = number;
 export declare type DatabaseIndex = number;
 export declare type DomainId = number;
@@ -35,6 +36,7 @@ export interface DbApplication {
     domain: DbDomain;
     id: ApplicationId;
     name: ApplicationName;
+    signature: ApplicationSignature;
 }
 export interface DbDomain {
     applications: DbApplication[];

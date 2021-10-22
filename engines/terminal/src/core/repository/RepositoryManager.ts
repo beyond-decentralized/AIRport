@@ -18,9 +18,12 @@ import {
 import {
 	IActor,
 	IRepository,
+	IRepositoryActor,
 	IRepositoryTransactionHistory,
 	QRepositoryEntity,
-	REPOSITORY_DAO
+	REPOSITORY_ACTOR_DAO,
+	REPOSITORY_DAO,
+	SyncPriority
 } from '@airport/holding-pattern'
 import {
 	DeltaStoreConfig,
@@ -28,6 +31,7 @@ import {
 	REPOSITORY_FIELD,
 } from '@airport/terminal-map'
 import { ITerminal } from '@airport/travel-document-checkpoint'
+import { v4 as uuidv4 } from "uuid";
 import {
 	DeltaStore,
 	getSharingAdaptor,
@@ -63,7 +67,7 @@ export interface IRepositoryManager {
 		// offlineStoreType: StoreType,
 		// platformType: PlatformType,
 		// platformConfig: any,
-		recordIdField: string
+		actor: IActor
 	): Promise<IRepository>;
 
 	getRepository(repositoryId: number): Promise<IRepository>;
@@ -138,10 +142,11 @@ export class RepositoryManager
 		// offlineStoreType: StoreType,
 		// platformType: PlatformType,
 		// platformConfig: any,
-		recordIdField: string
+		actor: IActor,
 	): Promise<IRepository> {
 		let repository = await this.createRepositoryRecord(appName,
 			// distributionStrategy, platformType, platformConfig
+			actor
 		)
 		await this.addDeltaStore(repository)
 
@@ -226,10 +231,10 @@ export class RepositoryManager
 			platform: PlatformType.OFFLINE
 		}
 
-		if (repository.platformConfig) {
-			let platformConfig = JSON.parse(repository.platformConfig)
-			jsonDeltaStoreConfig = <any>{ ...jsonDeltaStoreConfig, ...platformConfig }
-		}
+		// if (repository.platformConfig) {
+		// 	let platformConfig = JSON.parse(repository.platformConfig)
+		// 	jsonDeltaStoreConfig = <any>{ ...jsonDeltaStoreConfig, ...platformConfig }
+		// }
 		let deltaStoreConfig = new DeltaStoreConfig(jsonDeltaStoreConfig)
 		let deltaStore = new DeltaStore(deltaStoreConfig, sharingAdaptor)
 
@@ -243,26 +248,40 @@ export class RepositoryManager
 
 	private async createRepositoryRecord(
 		appName: string,
+		actor: IActor
 		// distributionStrategy: DistributionStrategy,
 		// platformType: PlatformType,
 		// platformConfig: any,
 	): Promise<IRepository> {
-		const repository = {
-			distributionStrategy: null,
+		const repository: IRepository = {
+			createdAt: new Date(),
 			id: null,
-			lastSyncedTransaction: null,
-			localDatabase: null,
+			ownerActor: actor,
 			name: appName,
-			platform: null,
 			// platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
-			platformConfig: null,
-			repositoryDatabases: null,
-			repositoryUsers: null,
-			transactionHistory: null,
+			// platformConfig: null,
+			repositoryActors: [],
+			repositoryTransactionHistory: [],
+			syncPriority: SyncPriority.NORMAL,
 			url: null,
+			uuId: uuidv4(),
 		}
-		const repositoryDao = await container(this).get(REPOSITORY_DAO)
-		await repositoryDao.save(repository)
+
+		const repositoryActor: IRepositoryActor = {
+			actor,
+			id: null,
+			repository
+		}
+
+		const repositoryActorDao = await container(this).get(REPOSITORY_ACTOR_DAO)
+
+		await repositoryActorDao.save(repositoryActor)
+
+		// const repositoryDao = await container(this).get(REPOSITORY_DAO)
+		// await repositoryDao.save(repository)
+
+		repository.repositoryActors.push(repositoryActor)
+
 		this.repositories.push(repository)
 
 		return repository

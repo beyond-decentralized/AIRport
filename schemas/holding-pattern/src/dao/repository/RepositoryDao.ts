@@ -5,26 +5,26 @@ import {
 	MappedEntityArray,
 	RawFieldQuery,
 	Y
-}                         from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	TerminalName,
 	TerminalSecondId
-}                         from '@airport/arrivals-n-departures'
-import {container, DI}               from '@airport/di'
-import {ensureChildJsMap} from '@airport/ground-control'
+} from '@airport/arrivals-n-departures'
+import { container, DI } from '@airport/di'
+import { ApplicationSignature, ensureChildJsMap } from '@airport/ground-control'
 import {
 	QTerminal,
 	QUser,
 	UserUniqueId
-}                         from '@airport/travel-document-checkpoint'
+} from '@airport/travel-document-checkpoint'
 import {
 	ActorUuId,
 	RepositoryId,
 	RepositoryCreatedAt,
 	RepositoryUuId,
 	RepositoryTransactionHistoryId,
-}                         from '../../ddl/ddl'
-import {REPOSITORY_DAO}   from '../../tokens'
+} from '../../ddl/ddl'
+import { REPOSITORY_DAO } from '../../tokens'
 import {
 	BaseRepositoryDao,
 	IBaseRepositoryDao,
@@ -33,7 +33,8 @@ import {
 	QActor,
 	QRepository,
 	QRepositoryActor,
-}                         from '../../generated/generated'
+} from '../../generated/generated'
+import { QApplication } from '@airport/territory'
 
 export interface IRepositoryDao
 	extends IBaseRepositoryDao {
@@ -42,8 +43,8 @@ export interface IRepositoryDao
 		repositoryIdsInClause: RepositoryTransactionHistoryId[]
 			| RawFieldQuery<IQNumberField>
 			| {
-			(...args: any[]): RawFieldQuery<IQNumberField>
-		},
+				(...args: any[]): RawFieldQuery<IQNumberField>
+			},
 		dbName: TerminalName,
 		userEmail: UserUniqueId,
 	): Promise<MappedEntityArray<IRepository>>;
@@ -61,6 +62,10 @@ export interface IRepositoryDao
 	findReposWithGlobalIds(
 		repositoryIds: RepositoryId[]
 	): Promise<Map<RepositoryId, IRepository>>;
+
+	findReposForAppSignature(
+		applicationSignature: ApplicationSignature
+	): Promise<IRepository[]>
 
 }
 
@@ -103,7 +108,7 @@ export class RepositoryDao
 				d = a.terminal.innerJoin()
 			],
 			where:
-			// and(
+				// and(
 				r.id.in(repositoryIds),
 			// d.name.equals(dbName),
 			// u.uniqueId.equals(userEmail)
@@ -136,8 +141,8 @@ export class RepositoryDao
 		repositoryIdsInClause: RepositoryTransactionHistoryId[]
 			| RawFieldQuery<IQNumberField>
 			| {
-			(...args: any[]): RawFieldQuery<IQNumberField>
-		},
+				(...args: any[]): RawFieldQuery<IQNumberField>
+			},
 		dbName: TerminalName,
 		userEmail: UserUniqueId,
 	): Promise<MappedEntityArray<IRepository>> {
@@ -148,32 +153,32 @@ export class RepositoryDao
 		let d: QTerminal
 		let id = Y
 		return await this.db.find.map().tree({
-				select: {
-					...this.db.duo.select.fields,
-					repositoryActors: {
-						actor: {
-							user: {
-								id
-							},
-							terminal: {
-								id
-							}
+			select: {
+				...this.db.duo.select.fields,
+				repositoryActors: {
+					actor: {
+						user: {
+							id
+						},
+						terminal: {
+							id
 						}
-					},
+					}
 				},
-				from: [
-					r = Q.Repository,
-					ra = r.repositoryActors.innerJoin(),
-					a = ra.actor.innerJoin(),
-					u = a.user.innerJoin(),
-					d = a.terminal.innerJoin()
-				],
-				where: and(
-					r.id.in(repositoryIdsInClause),
-					d.name.equals(dbName),
-					u.uniqueId.equals(userEmail)
-				)
-			}
+			},
+			from: [
+				r = Q.Repository,
+				ra = r.repositoryActors.innerJoin(),
+				a = ra.actor.innerJoin(),
+				u = a.user.innerJoin(),
+				d = a.terminal.innerJoin()
+			],
+			where: and(
+				r.id.in(repositoryIdsInClause),
+				d.name.equals(dbName),
+				u.uniqueId.equals(userEmail)
+			)
+		}
 		)
 	}
 
@@ -181,7 +186,7 @@ export class RepositoryDao
 		repositoryIds: RepositoryId[]
 	): Promise<Map<RepositoryId, IRepository>> {
 		const repositoryMapById: Map<RepositoryId, IRepository>
-			      = new Map()
+			= new Map()
 
 		let r: QRepository
 		let a: QActor
@@ -278,6 +283,23 @@ export class RepositoryDao
 
 
 		return repositoryIdMap
+	}
+
+	async findReposForAppSignature(
+		applicationSignature: ApplicationSignature
+	): Promise<IRepository[]> {
+		let repo: QRepository
+		let act: QActor
+		let app: QApplication
+		return await this.db.find.graph({
+			select: {},
+			from: [
+				repo = Q.Repository,
+				act = repo.ownerActor.innerJoin(),
+				app = act.application.innerJoin()
+			],
+			where: app.signature.equals(applicationSignature)
+		})
 	}
 
 }

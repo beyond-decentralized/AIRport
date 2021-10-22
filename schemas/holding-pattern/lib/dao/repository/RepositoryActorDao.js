@@ -1,7 +1,7 @@
 import { and, Y } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { ensureChildJsSet } from '@airport/ground-control';
-import { REPO_ACTOR_DAO } from '../../tokens';
+import { REPOSITORY_ACTOR_DAO } from '../../tokens';
 import { BaseRepositoryActorDao, Q, } from '../../generated/generated';
 export class RepositoryActorDao extends BaseRepositoryActorDao {
     async findAllForLocalActorsWhereRepositoryIdIn(repositoryIds) {
@@ -34,5 +34,5 @@ export class RepositoryActorDao extends BaseRepositoryActorDao {
         return actorIdMapByRepositoryId;
     }
 }
-DI.set(REPO_ACTOR_DAO, RepositoryActorDao);
+DI.set(REPOSITORY_ACTOR_DAO, RepositoryActorDao);
 //# sourceMappingURL=RepositoryActorDao.js.map

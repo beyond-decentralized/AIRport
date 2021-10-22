@@ -15,16 +15,22 @@ export class TransactionalConnector {
         // platformConfig,
         // distributionStrategy,
         {
-            domainAndPort: 'test'
+            applicationSignature: 'internal'
         }, {
             internal: true,
             ...context
         });
     }
+    async getApplicationRepositories(context) {
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        return await transServer.getApplicationRepositories({
+            applicationSignature: 'internal'
+        }, context);
+    }
     async find(portableQuery, context, cachedSqlQueryId) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.find(portableQuery, {
-            domainAndPort: 'test'
+            applicationSignature: 'internal'
         }, {
             internal: true,
             ...context
@@ -33,7 +39,7 @@ export class TransactionalConnector {
     async findOne(portableQuery, context, cachedSqlQueryId) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.findOne(portableQuery, {
-            domainAndPort: 'test'
+            applicationSignature: 'internal'
         }, {
             internal: true,
             ...context
@@ -42,7 +48,7 @@ export class TransactionalConnector {
     search(portableQuery, context, cachedSqlQueryId) {
         const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
         return transServer.search(portableQuery, {
-            domainAndPort: 'test'
+            applicationSignature: 'internal'
         }, {
             internal: true,
             ...context
@@ -51,7 +57,7 @@ export class TransactionalConnector {
     searchOne(portableQuery, context, cachedSqlQueryId) {
         const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
         return transServer.searchOne(portableQuery, {
-            domainAndPort: 'test'
+            applicationSignature: 'internal'
         }, {
             internal: true,
             ...context

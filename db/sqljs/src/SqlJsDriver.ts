@@ -1,32 +1,28 @@
-// FIXME: add support, in future, if needed
-// import {Database}      from 'sql.js'
-import {SQLDialect}     from '@airport/fuel-hydrant-system'
+import type * as SQL from 'sql.js'
+import { SQLDialect } from '@airport/fuel-hydrant-system'
 import {
 	QueryType,
-	StoreType
-}                       from '@airport/ground-control'
-import {SqLiteDriver}   from '@airport/sqlite'
+	StoreType,
+	STORE_DRIVER
+} from '@airport/ground-control'
+import { SqLiteDriver } from '@airport/sqlite'
 import {
 	IOperationContext,
 	ITransaction
 } from '@airport/terminal-map';
+import { DI } from '@airport/di';
+import { SqlJsTransaction } from './SqlJsTransaction';
 
-declare function require(moduleName: string): any;
+declare function initSqlJs(config: any): any;
 
 /**
  * Created by Papa on 11/27/2016.
  */
 
-declare var SQL
-
 export class SqlJsDriver
 	extends SqLiteDriver {
 
-	// FIXME: add support, in future, if needed
-	// private _db: Database
-	private _db: any
-
-	private currentTransaction
+	_db: SQL.Database
 
 	constructor() {
 		super()
@@ -34,51 +30,39 @@ export class SqlJsDriver
 	}
 
 	async initialize(): Promise<any> {
-		if (typeof SQL !== 'undefined') {
-			this._db = new SQL.Database()
-		} else {
-			// FIXME: add support, in future, if needed
-			// let sql  = require('sql.js')
-			// this._db = new sql.Database()
-			throw new Error('Not implemented')
-		}
+		const SQL = await initSqlJs({
+			// Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
+			// You can omit locateFile completely when running in node
+			locateFile: file => `https://sql.js.org/dist/${file}`
+		});
+		this._db = new SQL.Database()
 	}
 
 	async transact(
-		callback: {
+		transactionalCallback: {
 			(
 				transaction: ITransaction
 			): Promise<void>
 		},
 		context: IOperationContext,
-		): Promise<void> {
+	): Promise<void> {
 		this._db.exec('BEGIN TRANSACTION;')
-		this.currentTransaction = true
-		// TODO implement
 
-		return null
+		await transactionalCallback(new SqlJsTransaction(this))
 	}
 
 	async commit(): Promise<void> {
-		try {
-			this._db.exec('COMMIT;')
-		} finally {
-			this.currentTransaction = false
-		}
+		this._db.exec('COMMIT;')
 	}
 
 	async rollback(): Promise<void> {
-		try {
-			this._db.exec('ROLLBACK;')
-		} finally {
-			this.currentTransaction = false
-		}
+		this._db.exec('ROLLBACK;')
 	}
 
 	async query(
 		queryType: QueryType,
 		query: string,
-		params                   = [],
+		params = [],
 		context: IOperationContext,
 		saveTransaction: boolean = false
 	): Promise<any> {
@@ -90,8 +74,8 @@ export class SqlJsDriver
 			try {
 				if (!['TQ_BOOLEAN_FIELD_CHANGE', 'TQ_DATE_FIELD_CHANGE', 'TQ_NUMBER_FIELD_CHANGE', 'TQ_STRING_FIELD_CHANGE',
 					'TQ_ENTITY_CHANGE', 'TQ_ENTITY_WHERE_CHANGE', 'TQ_TRANSACTION'].some((deltaTableName) => {
-					return query.indexOf(deltaTableName) > -1
-				})) {
+						return query.indexOf(deltaTableName) > -1
+					})) {
 					console.log(query)
 					console.log(params)
 				}
@@ -117,10 +101,6 @@ export class SqlJsDriver
 		throw error
 	}
 
-	protected getDialect(): SQLDialect {
-		return SQLDialect.SQLITE
-	}
-
 	protected getRows(
 		result: any
 	): number {
@@ -141,5 +121,9 @@ export class SqlJsDriver
 		}
 	}
 
-}
+	protected getDialect(): SQLDialect {
+		return SQLDialect.SQLITE
+	}
 
+}
+DI.set(STORE_DRIVER, SqlJsDriver);

@@ -9,6 +9,7 @@ import {
 	IContext
 } from '@airport/di';
 import {
+	AIRepository,
 	DistributionStrategy,
 	ISaveResult,
 	ITransactionalConnector,
@@ -152,20 +153,29 @@ export class IframeTransactionalConnector
 
 	async addRepository(
 		name: string,
-		url: string,
-		platform: PlatformType,
-		platformConfig: string,
-		distributionStrategy: DistributionStrategy,
+		// url: string,
+		// platform: PlatformType,
+		// platformConfig: string,
+		// distributionStrategy: DistributionStrategy,
 		context: IContext
 	): Promise<number> {
 		return await this.sendMessage<IAddRepositoryIMI, number>({
 			...this.getCoreFields(),
-			distributionStrategy,
+			// distributionStrategy,
 			name,
-			platform,
-			platformConfig,
+			// platform,
+			// platformConfig,
 			type: IsolateMessageType.ADD_REPOSITORY,
-			url
+			// url
+		})
+	}
+
+	async getApplicationRepositories(
+		context?: IContext
+	): Promise<AIRepository[]> {
+		return await this.sendMessage<IIsolateMessage, AIRepository[]>({
+			...this.getCoreFields(),
+			type: IsolateMessageType.GET_APP_REPOSITORIES,
 		})
 	}
 

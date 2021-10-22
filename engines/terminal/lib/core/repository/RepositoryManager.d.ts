@@ -20,7 +20,7 @@ export interface IRepositoryManager {
         [repositoryId: string]: IRepository;
     };
     initialize(): Promise<void>;
-    createRepository(appName: string, recordIdField: string): Promise<IRepository>;
+    createRepository(appName: string, actor: IActor): Promise<IRepository>;
     getRepository(repositoryId: number): Promise<IRepository>;
     getActor(actorId: number): Promise<IActor>;
     goOffline(): void;
@@ -44,7 +44,7 @@ export declare class RepositoryManager implements IRepositoryManager {
     userEmail: string;
     initialize(): Promise<void>;
     findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>>;
-    createRepository(appName: string, recordIdField: string): Promise<IRepository>;
+    createRepository(appName: string, actor: IActor): Promise<IRepository>;
     getRepository(repositoryId: number): Promise<IRepository>;
     getActor(actorId: number): Promise<IActor>;
     goOffline(): void;

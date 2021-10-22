@@ -1,3 +1,3 @@
 export interface ICredentials {
-	domainAndPort: string
+	applicationSignature: string
 }

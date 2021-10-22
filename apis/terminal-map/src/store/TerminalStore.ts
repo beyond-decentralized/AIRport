@@ -4,13 +4,15 @@ import {
 } from '@airport/check-in';
 import { DI } from '@airport/di';
 import {
+	ApplicationId,
+	ApplicationSignature,
 	DomainName,
 	ensureChildJsMap,
 	JsonSchemaName,
 	SchemaName
 } from '@airport/ground-control';
-import { BehaviorSubject } from 'rxjs';
-import type { IDomain } from '@airport/territory';
+import { IActor } from '@airport/holding-pattern';
+import type { IApplication, IDomain } from '@airport/territory';
 import {
 	ISchema,
 	ISchemaColumn,
@@ -18,6 +20,7 @@ import {
 	ISchemaRelation,
 	ISchemaVersion
 } from '@airport/traffic-pattern';
+import { BehaviorSubject } from 'rxjs';
 import { TERMINAL_STORE } from '../tokens';
 import { ITerminalState } from './TerminalState';
 
@@ -25,7 +28,19 @@ export interface ITerminalStore {
 
 	state: BehaviorSubject<ITerminalState>
 
+	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
+
+	getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>
+
+	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
+
+	getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>
+
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>
+
+	getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>
+
+	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
 
 	getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>
 
@@ -54,7 +69,19 @@ export class TerminalStore
 
 	state: BehaviorSubject<ITerminalState>;
 
+	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
+
+	getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>
+
+	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
+
+	getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>
+
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
+
+	getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>
+
+	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
 
 	getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>;
 
@@ -77,12 +104,48 @@ export class TerminalStore
 	async init(): Promise<void> {
 		const selectorManager = await DI.db().get(SELECTOR_MANAGER);
 		this.state = new BehaviorSubject<ITerminalState>({
-			domains: [], nodesBySyncFrequency: new Map(), schemas: [], terminal: null,
+			applicationActors: [],
+			applications: [],
+			domains: [],
+			frameworkActor: null,
+			nodesBySyncFrequency: new Map(),
+			schemas: [],
+			terminal: null,
 		});
 
 		this.getTerminalState = selectorManager.createRootSelector(this.state);
+		this.getApplications = selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.applications)
+		this.getApplicationActors = selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.applicationActors)
+		this.getApplicationActorMapBySignature = selectorManager.createSelector(this.getApplicationActors,
+			applicationActors => {
+				const applicationActorsBySignature: Map<ApplicationSignature, IActor> = new Map()
+				for (const applicationActor of applicationActors) {
+					applicationActorsBySignature.set(applicationActor.application.signature, applicationActor)
+				}
+				return applicationActorsBySignature
+			})
+		this.getApplicationMapBySignature = selectorManager.createSelector(this.getApplications,
+			applications => {
+				const applicationsBySignature: Map<ApplicationSignature, IApplication> = new Map()
+				for (const application of applications) {
+					applicationsBySignature.set(application.signature, application)
+				}
+				return applicationsBySignature
+			})
 		this.getDomains = selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.domains);
+		this.getDomainMapByName = selectorManager.createSelector(this.getDomains,
+			domains => {
+				const domainsByName: Map<ApplicationSignature, IApplication> = new Map()
+				for (const domain of domains) {
+					domainsByName.set(domain.name, domain)
+				}
+				return domainsByName
+			})
+		this.getFrameworkActor = selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.frameworkActor)
 		this.getLatestSchemaVersionMapByNames = selectorManager.createSelector(this.getDomains,
 			domains => {
 				const latestSchemaVersionMapByNames: Map<DomainName, Map<SchemaName, ISchemaVersion>> = new Map();

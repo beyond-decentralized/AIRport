@@ -1,14 +1,11 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { getSchemaName, STORE_DRIVER, } from '@airport/ground-control';
-import { Actor, ACTOR_DAO, } from '@airport/holding-pattern';
+import { Actor, } from '@airport/holding-pattern';
 import { SCHEMA_INITIALIZER } from '@airport/landing';
 import { SCHEMA_DAO } from '@airport/traffic-pattern';
-import { Terminal, User, } from '@airport/travel-document-checkpoint';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
-import { transactional } from '@airport/tower';
-import { v4 as uuidv4 } from "uuid";
-import { DATABASE_MANAGER } from '../tokens';
+import { DATABASE_MANAGER, INTERNAL_RECORD_MANAGER } from '../tokens';
 export class DatabaseManager {
     constructor() {
         this.initialized = false;
@@ -94,7 +91,9 @@ export class DatabaseManager {
         const hydrate = await storeDriver.doesTableExist('air___airport__territory', 'PACKAGES', context);
         await this.installStarterSchema(false, hydrate, context);
         if (!hydrate) {
-            await this.initTerminal(domainName, context);
+            const internalRecordManager = await container(this)
+                .get(INTERNAL_RECORD_MANAGER);
+            await internalRecordManager.initTerminal(domainName, context);
         }
         this.initialized = true;
     }
@@ -149,25 +148,6 @@ export class DatabaseManager {
         // await schemaInitializer.initialize(schemasToCreate, context, existingSchemasAreHydrated);
         await schemaInitializer.initialize(schemasToCreate, context, true);
         // }
-    }
-    async initTerminal(domainName, context) {
-        await transactional(async (_transaction) => {
-            const user = new User();
-            user.uniqueId = domainName;
-            // const userDao = await container(this).get(USER_DAO);
-            // await userDao.save(user, context);
-            const terminal = new Terminal();
-            terminal.name = domainName;
-            terminal.owner = user;
-            // const terminalDao = await container(this).get(TERMINAL_DAO);
-            // await terminalDao.save(terminal, context);
-            const actor = new Actor();
-            actor.user = user;
-            actor.terminal = terminal;
-            actor.uuId = uuidv4();
-            const actorDao = await container(this).get(ACTOR_DAO);
-            await actorDao.save(actor, context);
-        }, context);
     }
     /*
     static async addDataStore(

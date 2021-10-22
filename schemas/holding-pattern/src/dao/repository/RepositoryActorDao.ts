@@ -9,7 +9,7 @@ import {
 	ActorId,
 	RepositoryId
 }                         from '../../ddl/ddl'
-import {REPO_ACTOR_DAO}   from '../../tokens'
+import {REPOSITORY_ACTOR_DAO}   from '../../tokens'
 import {
 	BaseRepositoryActorDao,
 	IBaseRepositoryActorDao,
@@ -82,4 +82,4 @@ export class RepositoryActorDao
 
 }
 
-DI.set(REPO_ACTOR_DAO, RepositoryActorDao)
+DI.set(REPOSITORY_ACTOR_DAO, RepositoryActorDao)

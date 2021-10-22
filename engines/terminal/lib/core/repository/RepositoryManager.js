@@ -1,8 +1,9 @@
 import { and, DATABASE_FACADE, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { DistributionStrategy, PlatformType, StoreType, } from '@airport/ground-control';
-import { REPOSITORY_DAO } from '@airport/holding-pattern';
+import { REPOSITORY_ACTOR_DAO, REPOSITORY_DAO, SyncPriority } from '@airport/holding-pattern';
 import { DeltaStoreConfig, REPOSITORY_FIELD, } from '@airport/terminal-map';
+import { v4 as uuidv4 } from "uuid";
 import { DeltaStore, getSharingAdaptor } from '../../data/DeltaStore';
 import { REPOSITORY_MANAGER } from '../../tokens';
 export class RepositoryManager {
@@ -26,8 +27,10 @@ export class RepositoryManager {
     // offlineStoreType: StoreType,
     // platformType: PlatformType,
     // platformConfig: any,
-    recordIdField) {
-        let repository = await this.createRepositoryRecord(appName);
+    actor) {
+        let repository = await this.createRepositoryRecord(appName, 
+        // distributionStrategy, platformType, platformConfig
+        actor);
         await this.addDeltaStore(repository);
         return repository;
     }
@@ -96,10 +99,10 @@ export class RepositoryManager {
             // platform: repository.platform
             platform: PlatformType.OFFLINE
         };
-        if (repository.platformConfig) {
-            let platformConfig = JSON.parse(repository.platformConfig);
-            jsonDeltaStoreConfig = { ...jsonDeltaStoreConfig, ...platformConfig };
-        }
+        // if (repository.platformConfig) {
+        // 	let platformConfig = JSON.parse(repository.platformConfig)
+        // 	jsonDeltaStoreConfig = <any>{ ...jsonDeltaStoreConfig, ...platformConfig }
+        // }
         let deltaStoreConfig = new DeltaStoreConfig(jsonDeltaStoreConfig);
         let deltaStore = new DeltaStore(deltaStoreConfig, sharingAdaptor);
         const dbFacade = await container(this)
@@ -108,23 +111,34 @@ export class RepositoryManager {
         this.deltaStore[repository.id] = deltaStore;
         return deltaStore;
     }
-    async createRepositoryRecord(appName) {
+    async createRepositoryRecord(appName, actor
+    // distributionStrategy: DistributionStrategy,
+    // platformType: PlatformType,
+    // platformConfig: any,
+    ) {
         const repository = {
-            distributionStrategy: null,
+            createdAt: new Date(),
             id: null,
-            lastSyncedTransaction: null,
-            localDatabase: null,
+            ownerActor: actor,
             name: appName,
-            platform: null,
             // platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
-            platformConfig: null,
-            repositoryDatabases: null,
-            repositoryUsers: null,
-            transactionHistory: null,
+            // platformConfig: null,
+            repositoryActors: [],
+            repositoryTransactionHistory: [],
+            syncPriority: SyncPriority.NORMAL,
             url: null,
+            uuId: uuidv4(),
         };
-        const repositoryDao = await container(this).get(REPOSITORY_DAO);
-        await repositoryDao.save(repository);
+        const repositoryActor = {
+            actor,
+            id: null,
+            repository
+        };
+        const repositoryActorDao = await container(this).get(REPOSITORY_ACTOR_DAO);
+        await repositoryActorDao.save(repositoryActor);
+        // const repositoryDao = await container(this).get(REPOSITORY_DAO)
+        // await repositoryDao.save(repository)
+        repository.repositoryActors.push(repositoryActor);
         this.repositories.push(repository);
         return repository;
     }

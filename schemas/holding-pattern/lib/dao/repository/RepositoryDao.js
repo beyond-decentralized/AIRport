@@ -34,6 +34,9 @@ export class RepositoryDao extends BaseRepositoryDao {
             where: 
             // and(
             r.id.in(repositoryIds),
+            // d.name.equals(dbName),
+            // u.uniqueId.equals(userEmail)
+            // )
         });
     }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
@@ -146,6 +149,20 @@ export class RepositoryDao extends BaseRepositoryDao {
             ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4]), resultRow[5].getTime()).set(resultRow[6], resultRow[7]);
         }
         return repositoryIdMap;
+    }
+    async findReposForAppSignature(applicationSignature) {
+        let repo;
+        let act;
+        let app;
+        return await this.db.find.graph({
+            select: {},
+            from: [
+                repo = Q.Repository,
+                act = repo.ownerActor.innerJoin(),
+                app = act.application.innerJoin()
+            ],
+            where: app.signature.equals(applicationSignature)
+        });
     }
 }
 DI.set(REPOSITORY_DAO, RepositoryDao);

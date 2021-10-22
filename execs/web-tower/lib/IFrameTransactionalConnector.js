@@ -86,15 +86,26 @@ export class IframeTransactionalConnector {
         });
         this.initializeConnection().then();
     }
-    async addRepository(name, url, platform, platformConfig, distributionStrategy, context) {
+    async addRepository(name, 
+    // url: string,
+    // platform: PlatformType,
+    // platformConfig: string,
+    // distributionStrategy: DistributionStrategy,
+    context) {
         return await this.sendMessage({
             ...this.getCoreFields(),
-            distributionStrategy,
+            // distributionStrategy,
             name,
-            platform,
-            platformConfig,
+            // platform,
+            // platformConfig,
             type: IsolateMessageType.ADD_REPOSITORY,
-            url
+            // url
+        });
+    }
+    async getApplicationRepositories(context) {
+        return await this.sendMessage({
+            ...this.getCoreFields(),
+            type: IsolateMessageType.GET_APP_REPOSITORIES,
         });
     }
     async find(portableQuery, context, cachedSqlQueryId) {

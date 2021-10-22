@@ -5,6 +5,7 @@ import {
     IContext
 } from '@airport/di';
 import {
+    AIRepository,
     DistributionStrategy,
     ISaveResult,
     ITransactionalConnector,
@@ -37,13 +38,27 @@ export class TransactionalConnector
             // platformConfig,
             // distributionStrategy,
             {
-                domainAndPort: 'test'
+                applicationSignature: 'internal'
             },
             {
                 internal: true,
                 ...context
             }
         );
+    }
+
+    async getApplicationRepositories(
+        context?: IContext,
+    ): Promise<AIRepository[]> {
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+
+        return await transServer.getApplicationRepositories(
+            {
+                applicationSignature: 'internal'
+            },
+            context
+        );
+
     }
 
     async find<E, EntityArray extends Array<E>>(
@@ -56,7 +71,7 @@ export class TransactionalConnector
         return await transServer.find(
             portableQuery,
             {
-                domainAndPort: 'test'
+                applicationSignature: 'internal'
             },
             {
                 internal: true,
@@ -76,7 +91,7 @@ export class TransactionalConnector
         return await transServer.findOne(
             portableQuery,
             {
-                domainAndPort: 'test'
+                applicationSignature: 'internal'
             },
             {
                 internal: true,
@@ -96,7 +111,7 @@ export class TransactionalConnector
         return transServer.search(
             portableQuery,
             {
-                domainAndPort: 'test'
+                applicationSignature: 'internal'
             },
             {
                 internal: true,
@@ -116,7 +131,7 @@ export class TransactionalConnector
         return transServer.searchOne(
             portableQuery,
             {
-                domainAndPort: 'test'
+                applicationSignature: 'internal'
             },
             {
                 internal: true,

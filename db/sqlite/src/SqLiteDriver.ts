@@ -113,7 +113,8 @@ WHERE
 
 	isValueValid(
 		value: any,
-		sqlDataType: SQLDataType
+		sqlDataType: SQLDataType,
+        context: IOperationContext,
 	): boolean {
 		throw new Error('Method not implemented.');
 		// switch (sqlDataType) {

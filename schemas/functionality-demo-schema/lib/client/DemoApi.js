@@ -1,6 +1,14 @@
 import { IOC } from "@airport/di";
 import { DEMO_API } from "../tokens";
 export class DemoApi {
+    async addRepository(repositoryName) {
+        const demoApi = await IOC.get(DEMO_API);
+        return await demoApi.addRepository(repositoryName);
+    }
+    async getRepositoryListings() {
+        const demoApi = await IOC.get(DEMO_API);
+        return await demoApi.getRepositoryListings();
+    }
     async getAllLevel1WithLevel2() {
         const demoApi = await IOC.get(DEMO_API);
         return await demoApi.findAllLevel1WithLevel2();

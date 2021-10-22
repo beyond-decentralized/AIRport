@@ -20,13 +20,13 @@ export class InsertManager {
     // platform: PlatformType = PlatformType.GOOGLE_DOCS,
     // platformConfig: string = null,
     // distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
-    context) {
+    actor, context) {
         const [repoManager, transManager] = await container(this)
             .get(REPOSITORY_MANAGER, TRANSACTION_MANAGER);
         const repository = await repoManager.createRepository(name, 
         // distributionStrategy, transManager.storeType,
         // platform, platformConfig, 
-        'id');
+        actor);
         return repository.id;
     }
     verifyNoGeneratedColumns(dbEntity, jsonInsertValues, errorPrefix) {

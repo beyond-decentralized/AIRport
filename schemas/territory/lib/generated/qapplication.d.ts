@@ -8,6 +8,7 @@ import { Application } from '../ddl/Application';
  */
 export interface ApplicationESelect extends IEntitySelectProperties, ApplicationEOptionalId {
     name?: string | IQStringField;
+    signature?: string | IQStringField;
     domain?: DomainESelect;
     applicationPackages?: ApplicationPackageESelect;
 }
@@ -28,6 +29,7 @@ export interface ApplicationEOptionalId {
  */
 export interface ApplicationEUpdateProperties extends IEntityUpdateProperties {
     name?: string | IQStringField;
+    signature?: string | IQStringField;
     domain?: DomainEOptionalId;
 }
 /**
@@ -35,6 +37,7 @@ export interface ApplicationEUpdateProperties extends IEntityUpdateProperties {
  */
 export interface ApplicationGraph extends ApplicationEOptionalId, IEntityCascadeGraph {
     name?: string | IQStringField;
+    signature?: string | IQStringField;
     domain?: DomainGraph;
     applicationPackages?: ApplicationPackageGraph[];
 }
@@ -43,6 +46,7 @@ export interface ApplicationGraph extends ApplicationEOptionalId, IEntityCascade
  */
 export interface ApplicationEUpdateColumns extends IEntityUpdateColumns {
     NAME?: string | IQStringField;
+    SIGNATURE?: string | IQStringField;
     DOMAIN_ID?: number | IQNumberField;
 }
 /**
@@ -61,6 +65,7 @@ export interface ApplicationECreateColumns extends ApplicationEId, ApplicationEU
 export interface QApplication extends IQEntity<Application> {
     id: IQNumberField;
     name: IQStringField;
+    signature: IQStringField;
     domain: QDomainQRelation;
     applicationPackages: IQOneToManyRelation<ApplicationPackage, QApplicationPackage>;
 }

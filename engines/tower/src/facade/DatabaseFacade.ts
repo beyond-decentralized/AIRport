@@ -27,6 +27,7 @@ import {
 	IContext
 } from '@airport/di'
 import {
+	AIRepository,
 	DistributionStrategy,
 	ENTITY_STATE_MANAGER,
 	ISaveResult,
@@ -50,13 +51,24 @@ export class DatabaseFacade
 		// platform: PlatformType = PlatformType.GOOGLE_DOCS,
 		// platformConfig: string = null,
 		// distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
-		context: IContext
+		context?: IContext
 	): Promise<number> {
 		// TODO: figure out how addRepository will work
-		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-		return await transactionalConnector.addRepository(name, 
+		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR)
+
+		return await transactionalConnector.addRepository(
+			name,
 			// url, platform, platformConfig, distributionStrategy, 
-			context)
+			context
+		)
+	}
+
+	async getApplicationRepositories(
+		context?: IContext
+	): Promise<AIRepository[]> {
+		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR)
+
+		return await transactionalConnector.getApplicationRepositories(context)
 	}
 
 	async insertColumnValues<IQE extends IQEntity<any>>(

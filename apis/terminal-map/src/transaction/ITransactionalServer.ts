@@ -1,12 +1,13 @@
 import { IEntityContext } from '@airport/air-control'
-import {IContext}          from '@airport/di'
+import { IContext } from '@airport/di'
 import {
+	AIRepository,
 	DistributionStrategy,
 	ISaveResult,
 	PlatformType,
 	PortableQuery
-}                          from '@airport/ground-control'
-import {Observable}       from 'rxjs'
+} from '@airport/ground-control'
+import { Observable } from 'rxjs'
 import { ICredentials } from '../Credentials'
 
 export interface ITransactionalServer {
@@ -24,6 +25,11 @@ export interface ITransactionalServer {
 		credentials: ICredentials,
 		context: IContext
 	): Promise<number>
+
+	getApplicationRepositories(
+		credentials: ICredentials,
+		context: IContext,
+	): Promise<AIRepository[]>
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,

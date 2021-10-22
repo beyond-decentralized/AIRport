@@ -1,11 +1,12 @@
 import { IContext } from '@airport/di';
 import { IStoreDriver, StoreType } from '@airport/ground-control';
-import { ICredentials, ITransactionContext, ITransactionManager } from '@airport/terminal-map';
+import { ICredentials, ITransaction, ITransactionContext, ITransactionManager } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export declare class TransactionManager extends AbstractMutationManager implements ITransactionManager {
     storeType: StoreType;
     transactionIndexQueue: string[];
-    transactionInProgress: string;
+    signatureOfTransactionInProgress: string;
+    transactionInProgress: ITransaction;
     yieldToRunningTransaction: number;
     /**
      * Initializes the EntityManager at server load time.

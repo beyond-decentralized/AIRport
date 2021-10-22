@@ -4,6 +4,7 @@ import {
 	IContext
 } from '@airport/di';
 import {
+	AIRepository,
 	DistributionStrategy,
 	ISaveResult,
 	JsonInsertValues,
@@ -11,14 +12,15 @@ import {
 	PlatformType,
 	PortableQuery
 } from '@airport/ground-control';
-import { IActor } from '@airport/holding-pattern';
+import { IActor, RepositoryId, REPOSITORY_DAO } from '@airport/holding-pattern';
 import {
 	ICredentials,
 	IOperationContext,
 	ITransaction,
 	ITransactionalServer,
 	TRANSACTION_MANAGER,
-	TRANSACTIONAL_SERVER
+	TRANSACTIONAL_SERVER,
+	TERMINAL_STORE
 } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 import { Observable } from 'rxjs';
@@ -74,25 +76,36 @@ export class TransactionalServer
 		// distributionStrategy: DistributionStrategy,
 		credentials: ICredentials,
 		context: IOperationContext
-	): Promise<number> {
+	): Promise<RepositoryId> {
 		await this.ensureIocContext(context)
 
 		const actor = await this.getActor(credentials);
 
 		// FIXME: check actor
 
-		let numRecordsCreated = 0
+		let repositoryId = 0
 
 		await transactional(async (
 			transaction: ITransaction
 		) => {
 			// TODO: figure out how addRepository will work
-			numRecordsCreated = await context.ioc.insertManager.addRepository(name,
+			repositoryId = await context.ioc.insertManager.addRepository(name,
 				// url, platform, platformConfig, distributionStrategy
+				actor,
 				context);
 		}, context)
 
-		return numRecordsCreated
+		return repositoryId
+	}
+
+	async getApplicationRepositories(
+		credentials: ICredentials,
+		context: IOperationContext,
+	): Promise<AIRepository[]> {
+		const repositoryDao = await container(this).get(REPOSITORY_DAO)
+
+		return await repositoryDao
+			.findReposForAppSignature(credentials.applicationSignature)
 	}
 
 	async find<E, EntityArray extends Array<E>>(
@@ -140,7 +153,7 @@ export class TransactionalServer
 		this.ensureIocContextSync(context)
 
 		return context.ioc.queryManager.searchOne<E>(portableQuery, context);
-	}	
+	}
 
 	async startTransaction(
 		credentials: ICredentials,
@@ -209,7 +222,7 @@ export class TransactionalServer
 				return 0;
 			}
 		}
-		
+
 		await this.ensureIocContext(context)
 		const actor = await this.getActor(credentials);
 
@@ -287,8 +300,15 @@ export class TransactionalServer
 		if (this.tempActor) {
 			return this.tempActor;
 		}
+		const terminalStore = await container(this).get(TERMINAL_STORE)
+		const actor = terminalStore.getApplicationActorMapBySignature()
+			.get(credentials.applicationSignature)
+		if (!actor) {
+			throw new Error(`Could not find actor for Application Signature:
+	${credentials.applicationSignature}`);
+		}
 
-		throw new Error(`Not Implemented`);
+		return actor
 	}
 
 	private async ensureIocContext(

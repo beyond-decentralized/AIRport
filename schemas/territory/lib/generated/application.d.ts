@@ -3,6 +3,7 @@ import { IApplicationPackage } from './applicationpackage';
 export interface IApplication {
     id: number;
     name?: string;
+    signature?: string;
     domain?: IDomain;
     applicationPackages?: IApplicationPackage[];
 }

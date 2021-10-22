@@ -1,30 +1,33 @@
 import {
+	AIRepository,
 	DbEntity,
+	DbSchema,
 	DistributionStrategy,
 	ISaveResult,
 	PlatformType,
 	PortableQuery,
 	QueryResultType
-}                          from '@airport/ground-control';
-import { Observable }     from 'rxjs';
-import { IAbstractQuery }  from '../../query/facade/AbstractQuery';
-import { RawDelete }       from '../../query/facade/Delete';
+} from '@airport/ground-control';
+import { Observable } from 'rxjs';
+import { IAbstractQuery } from '../../query/facade/AbstractQuery';
+import { RawDelete } from '../../query/facade/Delete';
 import {
 	RawInsertColumnValues,
 	RawInsertValues
-}                          from '../../query/facade/InsertValues';
+} from '../../query/facade/InsertValues';
 import {
 	RawUpdate,
 	RawUpdateColumns
-}                          from '../../query/facade/Update';
-import { IQueryContext }   from '../../query/QueryContext';
-import { EntityIdData }    from '../../utils/SchemaUtils';
-import { IEntityContext }  from '../EntityContext';
+} from '../../query/facade/Update';
+import { IQueryContext } from '../../query/QueryContext';
+import { EntityIdData } from '../../utils/SchemaUtils';
+import { IEntityContext } from '../EntityContext';
 import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-}                          from '../entity/Entity';
+} from '../entity/Entity';
+import { IContext } from '@airport/di';
 
 export interface UpdateRecord {
 	newValue: any,
@@ -54,8 +57,12 @@ export interface IDatabaseFacade {
 		// platform: PlatformType,
 		// platformConfig: string,
 		// distributionStrategy: DistributionStrategy,
-		ctx: IEntityContext
+		ctx?: IContext
 	): Promise<number>;
+
+	getApplicationRepositories(
+		context?: IContext
+	): Promise<AIRepository[]>
 
 	insertColumnValues<IQE extends IQEntity<any>>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
@@ -118,8 +125,8 @@ export interface IDatabaseFacade {
 	updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity<any>>(
 		rawUpdateColumns: RawUpdateColumns<IEUC, IQE>
 			| {
-			(...args: any[]): RawUpdateColumns<IEUC, IQE>
-		},
+				(...args: any[]): RawUpdateColumns<IEUC, IQE>
+			},
 		ctx: IEntityContext
 	): Promise<number>;
 

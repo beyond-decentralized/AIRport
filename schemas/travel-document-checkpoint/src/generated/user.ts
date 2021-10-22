@@ -34,5 +34,3 @@ export interface IUser {
 	// Public Methods
 	
 }
-
-
