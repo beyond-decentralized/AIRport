@@ -53,26 +53,38 @@ export class GraphOtmMapper {
 		}
 		// Add into mtoEntityReferenceMap
 		const otmDbEntity = mtoStubReference.otmDbEntity
+		
 		let mtoEntityReferenceMapForEntity: {
-			[otmReferenceId: string]: { [otmProperty: string]: MappedEntityArray<any> }
+			[otmReferenceId: string]: { [otmProperty: string]: Array<any> }
 		}                 = ensureChildMap(
 			ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.schemaVersion.schema.index),
 			otmDbEntity.index
 		)
+		// TODO: MappedEntityArray is not serializable, make it so before using
+		// let mtoEntityReferenceMapForEntity: {
+		// 	[otmReferenceId: string]: { [otmProperty: string]: MappedEntityArray<any> }
+		// }                 = ensureChildMap(
+		// 	ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.schemaVersion.schema.index),
+		// 	otmDbEntity.index
+		// )
 
-		let mapForOtmEntity: { [otmProperty: string]: MappedEntityArray<any> } = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId]
+		// let mapForOtmEntity: { [otmProperty: string]: MappedEntityArray<any> } = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId]
+		let mapForOtmEntity: { [otmProperty: string]: Array<any> } = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId]
 		if (!mapForOtmEntity) {
 			mapForOtmEntity                                              = {}
 			mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId] = mapForOtmEntity
 		}
-		let mtoCollection: MappedEntityArray<any> = mapForOtmEntity[mtoStubReference.otmEntityField]
+		// let mtoCollection: MappedEntityArray<any> = mapForOtmEntity[mtoStubReference.otmEntityField]
+		let mtoCollection: any[] = mapForOtmEntity[mtoStubReference.otmEntityField]
 		if (!mtoCollection) {
-			mtoCollection = newMappedEntityArray<any>(context.ioc.schemaUtils, dbEntity)
+			// mtoCollection = newMappedEntityArray<any>(context.ioc.schemaUtils, dbEntity)
+			mtoCollection = []
 			mapForOtmEntity[mtoStubReference.otmEntityField]
 			              = mtoCollection
 		}
+		// mtoCollection.put(mtoStubReference.mtoParentObject)
 
-		mtoCollection.put(mtoStubReference.mtoParentObject)
+		mtoCollection.push(mtoStubReference.mtoParentObject)
 	}
 
 	addOtmReference(

@@ -11,6 +11,7 @@ import {
 import {
 	AIRepository,
 	DistributionStrategy,
+	getSchemaName,
 	ISaveResult,
 	ITransactionalConnector,
 	PlatformType,
@@ -467,6 +468,7 @@ export class IframeTransactionalConnector
 				this.appState = AppState.INITIALIZED
 				window.parent.postMessage({
 					...this.getCoreFields(),
+					schemaName: getSchemaName(applicationInitializer.getSchema()),
 					type: IsolateMessageType.APP_INITIALIZED
 				}, hostServer)
 				return true

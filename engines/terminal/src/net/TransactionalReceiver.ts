@@ -6,6 +6,7 @@ import {
 import { getSchemaName } from '@airport/ground-control';
 import {
     IAddRepositoryIMI,
+    IConnectionInitializedIMI,
     IInitConnectionIMI,
     IInitConnectionIMO,
     IIsolateMessage,
@@ -66,7 +67,7 @@ export abstract class TransactionalReceiver {
                     result = schema.lastIds
                     break;
                 case IsolateMessageType.APP_INITIALIZED:
-                    this.initializedApps.add(schemaName)
+                    this.initializedApps.add((message as IConnectionInitializedIMI).schemaName)
                     return null
                 case IsolateMessageType.ADD_REPOSITORY:
                     const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message

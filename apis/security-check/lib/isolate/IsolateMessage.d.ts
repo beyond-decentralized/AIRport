@@ -37,6 +37,9 @@ export interface IIsolateMessageOut<T> extends IIsolateMessage {
 export interface IInitConnectionIMI extends IIsolateMessage {
     schema: JsonSchemaWithLastIds;
 }
+export interface IConnectionInitializedIMI extends IIsolateMessage {
+    schemaName: string;
+}
 export interface IInitConnectionIMO extends IIsolateMessageOut<LastIds> {
 }
 export interface IAddRepositoryIMI extends IIsolateMessage {

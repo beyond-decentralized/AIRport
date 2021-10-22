@@ -53,6 +53,11 @@ export interface IInitConnectionIMI
     schema: JsonSchemaWithLastIds
 }
 
+export interface IConnectionInitializedIMI
+    extends IIsolateMessage {
+    schemaName: string
+}
+
 export interface IInitConnectionIMO
     extends IIsolateMessageOut<LastIds> {
 }

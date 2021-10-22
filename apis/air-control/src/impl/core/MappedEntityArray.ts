@@ -6,6 +6,7 @@ import {ISchemaUtils}      from '../../lingo/utils/SchemaUtils'
  * Created by Papa on 10/14/2016.
  */
 
+// FIXME: MappedEnityArray does not serialize, make it serializable before it can be used
 export function newMappedEntityArray<E>(
 	schemaUtils: ISchemaUtils,
 	dbEntity: DbEntity

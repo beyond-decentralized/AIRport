@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
+import { getSchemaName, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
 import { LOCAL_API_SERVER } from '@airport/tower';
 import { APPLICATION_INITIALIZER } from '@airport/security-check';
@@ -99,7 +99,6 @@ export class IframeTransactionalConnector {
             // platform,
             // platformConfig,
             type: IsolateMessageType.ADD_REPOSITORY,
-            // url
         });
     }
     async getApplicationRepositories(context) {
@@ -310,6 +309,7 @@ export class IframeTransactionalConnector {
                 this.appState = AppState.INITIALIZED;
                 window.parent.postMessage({
                     ...this.getCoreFields(),
+                    schemaName: getSchemaName(applicationInitializer.getSchema()),
                     type: IsolateMessageType.APP_INITIALIZED
                 }, hostServer);
                 return true;

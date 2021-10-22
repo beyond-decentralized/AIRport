@@ -1,5 +1,5 @@
 import {
-	newMappedEntityArray,
+	// newMappedEntityArray,
 	objectExists,
 	ReferencedColumnData
 }                          from '@airport/air-control'
@@ -144,9 +144,11 @@ export class EntityGraphResultParser
 		context: IFuelHydrantContext,
 	): void {
 		this.bufferOneToMany(otmDbEntity, propertyName)
-		let childResultsArray = newMappedEntityArray(context.ioc.schemaUtils, relationDbEntity)
-		childResultsArray.put(childResultObject)
-		resultObject[propertyName] = childResultsArray
+		// TODO: MappedEntityArray is not serializable, make it so before using
+		// let childResultsArray = newMappedEntityArray(context.ioc.schemaUtils, relationDbEntity)
+		// childResultsArray.put(childResultObject)
+		// resultObject[propertyName] = childResultsArray
+		resultObject[propertyName] = [childResultObject]
 	}
 
 	bufferBlankOneToMany(
@@ -157,7 +159,9 @@ export class EntityGraphResultParser
 		relationDbEntity: DbEntity,
 		context: IFuelHydrantContext,
 	): void {
-		resultObject[propertyName] = newMappedEntityArray<any>(context.ioc.schemaUtils, relationDbEntity)
+		// TODO: MappedEntityArray is not serializable, make it so before using
+		// resultObject[propertyName] = newMappedEntityArray<any>(context.ioc.schemaUtils, relationDbEntity)
+		resultObject[propertyName] = []
 	}
 
 	flushEntity(
@@ -193,12 +197,15 @@ export class EntityGraphResultParser
 		this.otmMapper.populateOtms(this.entityMapBySchemaAndTableIndexes, !this.config || this.config.mapped)
 
 		// merge any out of order entity references (there shouldn't be any)
-		let resultMEA = newMappedEntityArray(context.ioc.schemaUtils, this.rootDbEntity)
-		resultMEA.putAll(parsedResults)
-		if (!this.config || this.config.mapped) {
-			return resultMEA
-		}
-		return resultMEA.toArray()
+		// TODO: MappedEntityArray is not serializable, make it so before using
+		// let resultMEA = newMappedEntityArray(context.ioc.schemaUtils, this.rootDbEntity)
+		// resultMEA.putAll(parsedResults)
+		// if (!this.config || this.config.mapped) {
+		// 	return resultMEA
+		// }
+		// return resultMEA.toArray()
+	
+		return parsedResults
 	}
 
 	private bufferManyToOne(

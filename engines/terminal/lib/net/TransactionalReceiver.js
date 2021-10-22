@@ -38,7 +38,7 @@ export class TransactionalReceiver {
                     result = schema.lastIds;
                     break;
                 case IsolateMessageType.APP_INITIALIZED:
-                    this.initializedApps.add(schemaName);
+                    this.initializedApps.add(message.schemaName);
                     return null;
                 case IsolateMessageType.ADD_REPOSITORY:
                     const addRepositoryMessage = message;
