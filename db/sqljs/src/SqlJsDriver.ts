@@ -33,12 +33,6 @@ export class SqlJsDriver
 		this.type = StoreType.SQLJS
 	}
 
-	isServer(
-		context: IOperationContext,
-	): boolean {
-		return false
-	}
-
 	async initialize(): Promise<any> {
 		if (typeof SQL !== 'undefined') {
 			this._db = new SQL.Database()
@@ -125,6 +119,12 @@ export class SqlJsDriver
 
 	protected getDialect(): SQLDialect {
 		return SQLDialect.SQLITE
+	}
+
+	protected getRows(
+		result: any
+	): number {
+		return result
 	}
 
 	private getReturnValue(

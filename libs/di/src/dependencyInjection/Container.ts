@@ -544,7 +544,7 @@ export class ChildContainer
 					if (!token.library.autopilot && object.init) {
 						const result = object.init()
 						if (result instanceof Promise) {
-							object.init().then(_ => {
+							result.then(_ => {
 								object.__initialized__ = true;
 								console.log(`${token.getPath()} initialized.`);
 							});

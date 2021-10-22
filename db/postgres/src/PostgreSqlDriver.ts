@@ -1,7 +1,7 @@
-import {QueryType}     from '@airport/ground-control'
-import {transactional} from '@airport/tower'
-import {SqlDriver}     from '@airport/fuel-hydrant-system'
-import {DDLManager}    from 'src/DDLManager'
+import { QueryType } from '@airport/ground-control'
+import { transactional } from '@airport/tower'
+import { SqlDriver } from '@airport/fuel-hydrant-system'
+import { DDLManager } from './DDLManager'
 
 /**
  * Created by Papa on 11/27/2016.
@@ -10,11 +10,17 @@ import {DDLManager}    from 'src/DDLManager'
 export abstract class PostgreSqlDriver
 	extends SqlDriver {
 
+	pool: pg.Pool
+
 	composeTableName(
 		schemaName: string,
 		tableName: string
 	): string {
 		return `${schemaName}.${tableName}`
+	}
+
+	async init() {
+
 	}
 
 	async doesTableExist(
@@ -74,7 +80,7 @@ export abstract class PostgreSqlDriver
 	async initAllTables(): Promise<any> {
 		let createOperations
 		let createQueries: Promise<any>[] = []
-		let createSql                     = DDLManager.getCreateDDL()
+		let createSql = DDLManager.getCreateDDL()
 		await transactional(async () => {
 			for (const createSqlStatement of createSql) {
 				const createTablePromise = this.query(QueryType.DDL, createSqlStatement, [], false)
@@ -92,6 +98,21 @@ export abstract class PostgreSqlDriver
 			let currentQuery = createQueries[i]
 			await currentQuery
 		}
+	}
+
+	async transact(
+		callback: {
+			(
+				transaction: ITransaction
+			): Promise<void>
+		},
+		context: IOperationContext,
+	): Promise<void> {
+		this._db.exec('BEGIN;')
+		this.currentTransaction = true
+		// TODO implement
+
+		return null
 	}
 
 }
