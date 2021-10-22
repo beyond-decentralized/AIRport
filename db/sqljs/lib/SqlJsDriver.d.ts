@@ -18,6 +18,7 @@ export declare class SqlJsDriver extends SqLiteDriver {
     query(queryType: QueryType, query: string, params: any[], context: IOperationContext, saveTransaction?: boolean): Promise<any>;
     handleError(error: any): void;
     protected getRows(result: any): number;
+    private getReturnValue;
     protected getDialect(): SQLDialect;
 }
 //# sourceMappingURL=SqlJsDriver.d.ts.map

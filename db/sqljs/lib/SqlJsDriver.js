@@ -1,5 +1,5 @@
 import { SQLDialect } from '@airport/fuel-hydrant-system';
-import { StoreType, STORE_DRIVER } from '@airport/ground-control';
+import { QueryType, StoreType, STORE_DRIVER } from '@airport/ground-control';
 import { SqLiteDriver } from '@airport/sqlite';
 import { DI } from '@airport/di';
 import { SqlJsTransaction } from './SqlJsTransaction';
@@ -63,6 +63,16 @@ export class SqlJsDriver extends SqLiteDriver {
     }
     getRows(result) {
         return result;
+    }
+    getReturnValue(queryType, response) {
+        switch (queryType) {
+            case QueryType.MUTATE:
+                return response.rowsAffected;
+            case QueryType.SELECT:
+                return response.rows;
+            default:
+                return null;
+        }
     }
     getDialect() {
         return SQLDialect.SQLITE;
