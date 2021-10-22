@@ -24,6 +24,7 @@ export var deltaStore;
                 case platform.GOOGLE:
                     return PlatformType.GOOGLE_DOCS;
                 case platform.IN_MEMORY:
+                case 'OFFLINE':
                     return PlatformType.IN_MEMORY;
                 case platform.STUB:
                     return PlatformType.STUB;

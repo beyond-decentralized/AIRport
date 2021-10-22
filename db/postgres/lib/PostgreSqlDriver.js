@@ -1,7 +1,12 @@
-import { QueryType } from '@airport/ground-control';
+import { QueryType, STORE_DRIVER } from '@airport/ground-control';
 import { transactional } from '@airport/tower';
-import { SqlDriver } from '@airport/fuel-hydrant-system';
-import { DDLManager } from 'src/DDLManager';
+import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
+import pg from 'pg';
+import { Pool } from 'pg';
+import { parse } from 'pg-connection-string';
+import { DDLManager } from './DDLManager';
+import { DI } from '@airport/di';
+import { PostgreTransaction } from './PostgreTransaction';
 /**
  * Created by Papa on 11/27/2016.
  */
@@ -10,14 +15,29 @@ export class PostgreSqlDriver extends SqlDriver {
         return `${schemaName}.${tableName}`;
     }
     async doesTableExist(schemaName, tableName) {
-        throw new Error(`Not implemented`);
+        try {
+            const result = await this.pool.query(`SELECT EXISTS (
+				SELECT FROM information_schema.tables 
+				WHERE  table_schema = '${schemaName}'
+				AND    table_name   = '${tableName}'
+				)`);
+            return result.rows && !!result.rows.length;
+        }
+        catch (error) {
+            console.log(error);
+            throw error;
+        }
     }
-    async findNative(sqlQuery, parameters) {
+    async dropTable(schemaName, tableName, context) {
+        await this.pool.query(`DROP TABLE  '${schemaName}'.'${tableName}'`);
+        return true;
+    }
+    async findNative(sqlQuery, parameters, context) {
         let nativeParameters = parameters.map((value) => this.convertValueIn(value));
-        return await this.query(QueryType.SELECT, sqlQuery, nativeParameters);
+        return await this.query(QueryType.SELECT, sqlQuery, nativeParameters, context);
     }
-    async executeNative(sql, parameters) {
-        return await this.query(QueryType.MUTATE, sql, parameters);
+    async executeNative(sql, parameters, context) {
+        return await this.query(QueryType.MUTATE, sql, parameters, context);
     }
     convertValueIn(value) {
         switch (typeof value) {
@@ -42,13 +62,60 @@ export class PostgreSqlDriver extends SqlDriver {
                 throw new Error(`Unexpected typeof value: ${typeof value}`);
         }
     }
-    async initAllTables() {
+    isValueValid(value, sqlDataType, context) {
+        throw new Error('Method not implemented.');
+        // switch (sqlDataType) {
+        // 	case SQLDataType.DATE:
+        // 	case SQLDataType.NUMBER:
+        // }
+        // return false
+    }
+    async query(queryType, query, params, context, saveTransaction) {
+        const client = await this.getClient();
+        return await this.doQuery(queryType, query, params, client, context, saveTransaction);
+    }
+    async doQuery(queryType, query, params, client, context, saveTransaction) {
+        let nativeParameters = params.map((value) => this.convertValueIn(value));
+        console.log(query);
+        console.log(nativeParameters);
+        const results = await client.query(query, nativeParameters);
+        return results.rows;
+    }
+    async initialize(connectionString) {
+        // TODO: make connection secure when needed
+        // Number of cores will be 3*3 (or eventually 3*5) but to allow 
+        // for scaling of write services
+        // only 3 core per Node.js process is allocated
+        let numberOfCrdbCores = 3;
+        // Best practice - 4 connections per core
+        pg.defaults.poolSize = numberOfCrdbCores * 4;
+        // let connectionString = "postgres://root@localhost:26257/votecube?sslmode=disable"
+        // Expand $env:appdata environment variable in Windows connection string
+        if (connectionString.includes("env:appdata")) {
+            connectionString = await connectionString.replace("$env:appdata", process.env.APPDATA);
+        }
+        // Expand $HOME environment variable in UNIX connection string
+        else if (connectionString.includes("HOME")) {
+            connectionString = await connectionString.replace("$HOME", process.env.HOME);
+        }
+        var config = parse(connectionString);
+        // config.port = port;
+        // config.database = database;
+        this.pool = new Pool(config);
+    }
+    async transact(transactionalCallback, context) {
+        const client = await this.pool.connect();
+        await client.query('BEGIN');
+        const transaction = new PostgreTransaction(this, this.pool, client);
+        await transactionalCallback(transaction);
+    }
+    async initAllTables(context) {
         let createOperations;
         let createQueries = [];
         let createSql = DDLManager.getCreateDDL();
         await transactional(async () => {
             for (const createSqlStatement of createSql) {
-                const createTablePromise = this.query(QueryType.DDL, createSqlStatement, [], false);
+                const createTablePromise = this.query(QueryType.DDL, createSqlStatement, [], context, false);
                 createQueries.push(createTablePromise);
             }
             await this.initTables(createQueries);
@@ -60,5 +127,15 @@ export class PostgreSqlDriver extends SqlDriver {
             await currentQuery;
         }
     }
+    isServer() {
+        return true;
+    }
+    getDialect() {
+        return SQLDialect.POSTGRESQL;
+    }
+    async getClient() {
+        return await this.pool;
+    }
 }
+DI.set(STORE_DRIVER, PostgreSqlDriver);
 //# sourceMappingURL=PostgreSqlDriver.js.map

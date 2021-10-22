@@ -310,6 +310,6 @@
       "packageName": "@airport/todo",
       "projectFolder": "ui/todo",
       "shouldPublish": true
-    },
+    }
   ]
 }

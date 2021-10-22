@@ -8,6 +8,9 @@ import { DeltaStore, getSharingAdaptor } from '../../data/DeltaStore';
 import { REPOSITORY_MANAGER } from '../../tokens';
 export class RepositoryManager {
     constructor() {
+        // deltaStore: IDeltaStore = {}
+        this.deltaStore = {};
+        this.repositories = [];
         this.repositoriesById = {};
     }
     async initialize() {

@@ -1,9 +1,9 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { SEQUENCE_DAO } from '@airport/airport-code';
-import { container, DI } from '@airport/di';
+import { container, DI, } from '@airport/di';
 import { getSchemaName, QueryType, SQLDataType } from '@airport/ground-control';
 import { SCHEMA_BUILDER, SqlSchemaBuilder } from '@airport/landing';
-export class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
+export class PostgreSchemaBuilder extends SqlSchemaBuilder {
     async createSchema(jsonSchema, storeDriver, context) {
         const schemaName = getSchemaName(jsonSchema);
         const createSchemaStatement = `CREATE SCHEMA ${schemaName}`;
@@ -15,10 +15,19 @@ export class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
             || this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
             primaryKeySuffix = ' NOT NULL';
         }
-        const suffix = primaryKeySuffix;
+        // SEQUENCES no longer have a generated id (for simplicity of code)
+        // let autoincrementSuffix = ''
+        // if (jsonColumn.isGenerated
+        // 	&& jsonSchema.name === '@airport/airport-code'
+        // 	&& jsonEntity.name === 'SEQUENCES') {
+        // 	autoincrementSuffix = ' AUTOINCREMENT'
+        // }
+        const suffix = primaryKeySuffix; // + autoincrementSuffix
         switch (jsonColumn.type) {
             case SQLDataType.ANY:
-                return suffix;
+                // FIXME: revisit this, if keeping json need to add logic around retrieval
+                // and storage of this value (like store as { value: X} and pull out the .value
+                return `JSON ${suffix}`;
             case SQLDataType.BOOLEAN:
                 return `INTEGER ${suffix}`;
             case SQLDataType.DATE:
@@ -30,13 +39,13 @@ export class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
             case SQLDataType.STRING:
                 return `TEXT ${suffix}`;
             default:
-                throw new Error(`Unexpected data type for column ${jsonSchema.name}.${jsonEntity.name}.${jsonColumn.name}`);
+                throw new Error(`Unexpected data type for column ${jsonSchema.name}${jsonEntity.name}.${jsonColumn.name}`);
         }
     }
     getCreateTableSuffix(jsonSchema, jsonEntity) {
         return ``;
     }
-    async buildAllSequences(jsonSchemas) {
+    async buildAllSequences(jsonSchemas, context) {
         console.log('buildAllSequences');
         let [airDb, sequenceDao] = await container(this).get(AIRPORT_DATABASE, SEQUENCE_DAO);
         let allSequences = [];
@@ -81,5 +90,5 @@ export class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
         return sequences;
     }
 }
-DI.set(SCHEMA_BUILDER, PostgreSqlSchemaBuilder);
-//# sourceMappingURL=PostgreSqlSchemaBuilder.js.map
+DI.set(SCHEMA_BUILDER, PostgreSchemaBuilder);
+//# sourceMappingURL=PostgreSchemaBuilder.js.map

@@ -409,7 +409,7 @@ export const SCHEMA = {
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "REPOSITORY_URL",
-							"notNull": true,
+							"notNull": false,
 							"propertyRefs": [
 								{
 									"index": 5

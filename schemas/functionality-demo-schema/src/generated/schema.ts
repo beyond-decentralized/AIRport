@@ -11,7 +11,15 @@ export const SCHEMA = {
 				"apiObjectMap": {
 					"IDemoApi": {
 						"operationMap": {
+							"addRepository": {
+								"isAsync": true,
+								"parameters": []
+							},
 							"findAllLevel1WithLevel2": {
+								"isAsync": true,
+								"parameters": []
+							},
+							"getRepositoryListings": {
 								"isAsync": true,
 								"parameters": []
 							},
@@ -93,6 +101,28 @@ export const SCHEMA = {
 							],
 							"sinceVersion": 1,
 							"type": "STRING"
+						},
+						{
+							"index": 4,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 0,
+									"oneSchemaIndex": null,
+									"oneTableIndex": 1,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "LEVEL1ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 4
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -103,7 +133,7 @@ export const SCHEMA = {
 					"index": 0,
 					"isLocal": true,
 					"isRepositoryEntity": false,
-					"name": "Level1",
+					"name": "Level2",
 					"properties": [
 						{
 							"columnRef": {
@@ -144,7 +174,7 @@ export const SCHEMA = {
 						{
 							"index": 4,
 							"isId": false,
-							"name": "contained",
+							"name": "up",
 							"relationRef": {
 								"index": 0
 							},
@@ -155,7 +185,10 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": "ONE_TO_MANY",
+							"manyToOneElems": {
+								"mappedBy": "contained"
+							},
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 4
 							},
@@ -226,28 +259,6 @@ export const SCHEMA = {
 							],
 							"sinceVersion": 1,
 							"type": "STRING"
-						},
-						{
-							"index": 4,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
-									"oneTableIndex": 0,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "LEVEL1ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 4
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -258,7 +269,7 @@ export const SCHEMA = {
 					"index": 1,
 					"isLocal": true,
 					"isRepositoryEntity": false,
-					"name": "Level2",
+					"name": "Level1",
 					"properties": [
 						{
 							"columnRef": {
@@ -299,7 +310,7 @@ export const SCHEMA = {
 						{
 							"index": 4,
 							"isId": false,
-							"name": "up",
+							"name": "contained",
 							"relationRef": {
 								"index": 0
 							},
@@ -310,10 +321,7 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"manyToOneElems": {
-								"mappedBy": "contained"
-							},
-							"relationType": "MANY_TO_ONE",
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 4
 							},

@@ -14,7 +14,7 @@ export interface EntityRepoQueryData {
     idProperty: string;
 }
 export interface IRepositoryManager {
-    deltaStore: IDeltaStore;
+    deltaStore: any;
     repositories: IRepository[];
     repositoriesById: {
         [repositoryId: string]: IRepository;
@@ -35,7 +35,7 @@ export interface IRepositoryManager {
     findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>>;
 }
 export declare class RepositoryManager implements IRepositoryManager {
-    deltaStore: IDeltaStore;
+    deltaStore: {};
     repositories: IRepository[];
     repositoriesById: {
         [repositoryId: string]: IRepository;

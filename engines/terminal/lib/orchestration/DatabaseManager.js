@@ -19,6 +19,7 @@ export class DatabaseManager {
         await this.installStarterSchema(true, false, context);
         const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
         await schemaInitializer.stage(schemas, context);
+        server.tempActor = null;
         this.initialized = true;
     }
     async initWithDb(domainName, context) {
@@ -95,6 +96,7 @@ export class DatabaseManager {
                 .get(INTERNAL_RECORD_MANAGER);
             await internalRecordManager.initTerminal(domainName, context);
         }
+        server.tempActor = null;
         this.initialized = true;
     }
     isInitialized() {
@@ -144,10 +146,13 @@ export class DatabaseManager {
             }
         }
         // if (schemasToCreate.length) {
-        const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
+        const [schemaInitializer, server] = await container(this)
+            .get(SCHEMA_INITIALIZER, TRANSACTIONAL_SERVER);
+        server.tempActor = new Actor();
         // await schemaInitializer.initialize(schemasToCreate, context, existingSchemasAreHydrated);
         await schemaInitializer.initialize(schemasToCreate, context, true);
         // }
+        server.tempActor = null;
     }
     /*
     static async addDataStore(

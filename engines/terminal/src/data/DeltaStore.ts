@@ -159,6 +159,7 @@ export function getSharingAdaptor(
 			}
 			return GOOGLE_SHARING_ADAPTOR
 		case PlatformType.IN_MEMORY:
+		case PlatformType.OFFLINE:
 			if (!IN_MEMORY_SHARING_ADAPTOR) {
 				IN_MEMORY_SHARING_ADAPTOR = new InMemorySharingAdaptor()
 			}

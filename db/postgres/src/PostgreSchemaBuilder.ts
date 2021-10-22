@@ -1,21 +1,29 @@
-import { AIRPORT_DATABASE, IAirportDatabase, QSchemaInternal } from '@airport/air-control'
-import { ISequence, SEQUENCE_DAO } from '@airport/airport-code'
-import { container, DI, IContext } from '@airport/di'
+import {
+	AIRPORT_DATABASE,
+	IAirportDatabase,
+	QSchemaInternal
+} from '@airport/air-control'
+import {
+	ISequence,
+	SEQUENCE_DAO
+} from '@airport/airport-code'
+import {
+	container,
+	DI, IContext,
+} from '@airport/di';
 import {
 	DbSchema,
 	getSchemaName,
-	getSequenceName,
 	IStoreDriver,
 	JsonSchema,
 	JsonSchemaColumn,
 	JsonSchemaEntity,
 	QueryType,
-	SQLDataType,
-	STORE_DRIVER
+	SQLDataType
 } from '@airport/ground-control'
 import { SCHEMA_BUILDER, SqlSchemaBuilder } from '@airport/landing'
 
-export class PostgreSqlSchemaBuilder
+export class PostgreSchemaBuilder
 	extends SqlSchemaBuilder {
 
 	async createSchema(
@@ -41,11 +49,21 @@ export class PostgreSqlSchemaBuilder
 			primaryKeySuffix = ' NOT NULL'
 		}
 
-		const suffix = primaryKeySuffix
+		// SEQUENCES no longer have a generated id (for simplicity of code)
+		// let autoincrementSuffix = ''
+		// if (jsonColumn.isGenerated
+		// 	&& jsonSchema.name === '@airport/airport-code'
+		// 	&& jsonEntity.name === 'SEQUENCES') {
+		// 	autoincrementSuffix = ' AUTOINCREMENT'
+		// }
+
+		const suffix = primaryKeySuffix // + autoincrementSuffix
 
 		switch (jsonColumn.type) {
 			case SQLDataType.ANY:
-				return suffix
+				// FIXME: revisit this, if keeping json need to add logic around retrieval
+				// and storage of this value (like store as { value: X} and pull out the .value
+				return `JSON ${suffix}`
 			case SQLDataType.BOOLEAN:
 				return `INTEGER ${suffix}`
 			case SQLDataType.DATE:
@@ -57,7 +75,7 @@ export class PostgreSqlSchemaBuilder
 			case SQLDataType.STRING:
 				return `TEXT ${suffix}`
 			default:
-				throw new Error(`Unexpected data type for column ${jsonSchema.name}.${jsonEntity.name}.${jsonColumn.name}`)
+				throw new Error(`Unexpected data type for column ${jsonSchema.name}${jsonEntity.name}.${jsonColumn.name}`)
 		}
 	}
 
@@ -69,7 +87,8 @@ export class PostgreSqlSchemaBuilder
 	}
 
 	async buildAllSequences(
-		jsonSchemas: JsonSchema[]
+		jsonSchemas: JsonSchema[],
+		context: IContext,
 	): Promise<ISequence[]> {
 		console.log('buildAllSequences')
 
@@ -132,29 +151,6 @@ export class PostgreSqlSchemaBuilder
 		return sequences
 	}
 
-	/* 	async buildSequences(
-			jsonSchema: JsonSchema,
-			jsonEntity: JsonSchemaEntity,
-			storeDriver: IStoreDriver
-		): Promise<void> {
-			for (const jsonColumn of jsonEntity.columns) {
-				if (!jsonColumn.isGenerated) {
-					continue
-				}
-				const prefixedTableName = storeDriver.getTableName(jsonSchema, jsonEntity)
-				const sequenceName = getSequenceName(prefixedTableName, jsonColumn.name)
-				let incrementBy = jsonColumn.allocationSize
-				if (!incrementBy) {
-					incrementBy = 100000
-				}
-	
-				const createSequenceDdl
-					= `CREATE SEQUENCE ${sequenceName} INCREMENT BY ${incrementBy}`
-	
-				await storeDriver.query(QueryType.DDL, createSequenceDdl, [], false)
-			}
-		} */
-
 }
 
-DI.set(SCHEMA_BUILDER, PostgreSqlSchemaBuilder)
+DI.set(SCHEMA_BUILDER, PostgreSchemaBuilder)

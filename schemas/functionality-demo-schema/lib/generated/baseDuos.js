@@ -8,18 +8,18 @@ export class SQDIDuo extends Duo {
 }
 export class BaseLevel1Duo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(0);
-    }
-    constructor() {
-        super(0);
-    }
-}
-export class BaseLevel2Duo extends SQDIDuo {
-    static diSet() {
         return duoDiSet(1);
     }
     constructor() {
         super(1);
+    }
+}
+export class BaseLevel2Duo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(0);
+    }
+    constructor() {
+        super(0);
     }
 }
 //# sourceMappingURL=baseDuos.js.map

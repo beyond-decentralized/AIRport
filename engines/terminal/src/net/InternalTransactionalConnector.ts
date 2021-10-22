@@ -147,7 +147,10 @@ export class TransactionalConnector
     ): Promise<ISaveResult> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
-        return await transServer.save(entity, null, {
+        return await transServer.save(entity,
+            {
+                applicationSignature: 'internal'
+            }, {
             internal: true,
             ...context
         });
@@ -161,7 +164,10 @@ export class TransactionalConnector
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
         return await transServer.insertValues(
-            portableQuery, null, {
+            portableQuery,
+            {
+                applicationSignature: 'internal'
+            }, {
             internal: true,
             ...context
         }, ensureGeneratedValues)
@@ -173,7 +179,10 @@ export class TransactionalConnector
     ): Promise<number[][]> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-        return await transServer.insertValuesGetIds(portableQuery, null, {
+        return await transServer.insertValuesGetIds(portableQuery,
+            {
+                applicationSignature: 'internal'
+            }, {
             internal: true,
             ...context
         })
@@ -185,7 +194,10 @@ export class TransactionalConnector
     ): Promise<number> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-        return await transServer.updateValues(portableQuery, null, {
+        return await transServer.updateValues(portableQuery,
+            {
+                applicationSignature: 'internal'
+            }, {
             internal: true,
             ...context
         })
@@ -197,7 +209,10 @@ export class TransactionalConnector
     ): Promise<number> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-        return await transServer.deleteWhere(portableQuery, null, {
+        return await transServer.deleteWhere(portableQuery,
+            {
+                applicationSignature: 'internal'
+            }, {
             internal: true,
             ...context
         })
@@ -208,7 +223,10 @@ export class TransactionalConnector
     ): Promise<boolean> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-        return await transServer.startTransaction(null, {
+        return await transServer.startTransaction(
+            {
+                applicationSignature: 'internal'
+            }, {
             internal: true,
             ...context
         })
@@ -219,7 +237,10 @@ export class TransactionalConnector
     ): Promise<boolean> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-        return await transServer.commit(null, {
+        return await transServer.commit(
+            {
+                applicationSignature: 'internal'
+            }, {
             internal: true,
             ...context
         })
@@ -230,7 +251,10 @@ export class TransactionalConnector
     ): Promise<boolean> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
-        return await transServer.rollback(null, {
+        return await transServer.rollback(
+            {
+                applicationSignature: 'internal'
+            }, {
             internal: true,
             ...context
         })

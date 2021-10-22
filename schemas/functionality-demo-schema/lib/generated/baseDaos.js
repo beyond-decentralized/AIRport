@@ -8,13 +8,13 @@ export class SQDIDao extends Dao {
 }
 export class BaseLevel1Dao extends SQDIDao {
     constructor() {
-        super(0);
+        super(1);
     }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(0);
+        return duoDiSet(1);
     }
 }
 BaseLevel1Dao.Find = new DaoQueryDecorators();
@@ -23,13 +23,13 @@ BaseLevel1Dao.Search = new DaoQueryDecorators();
 BaseLevel1Dao.SearchOne = new DaoQueryDecorators();
 export class BaseLevel2Dao extends SQDIDao {
     constructor() {
-        super(1);
+        super(0);
     }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(1);
+        return duoDiSet(0);
     }
 }
 BaseLevel2Dao.Find = new DaoQueryDecorators();

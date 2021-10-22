@@ -55,7 +55,8 @@ export interface EntityRepoQueryData {
 
 export interface IRepositoryManager {
 
-	deltaStore: IDeltaStore;
+	// deltaStore: IDeltaStore;
+	deltaStore;
 	repositories: IRepository[];
 	repositoriesById: { [repositoryId: string]: IRepository };
 
@@ -112,8 +113,9 @@ export interface IRepositoryManager {
 export class RepositoryManager
 	implements IRepositoryManager {
 
-	deltaStore: IDeltaStore
-	repositories: IRepository[]
+	// deltaStore: IDeltaStore = {}
+	deltaStore = {}
+	repositories: IRepository[] = []
 	repositoriesById: { [repositoryId: string]: IRepository } = {}
 	terminal: ITerminal
 	userEmail: string

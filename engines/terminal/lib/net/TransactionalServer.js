@@ -1,6 +1,6 @@
 import { container, DI } from '@airport/di';
 import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
-import { REPOSITORY_DAO } from '@airport/holding-pattern';
+import { Actor, REPOSITORY_DAO } from '@airport/holding-pattern';
 import { TRANSACTION_MANAGER, TRANSACTIONAL_SERVER, TERMINAL_STORE } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 /**
@@ -147,6 +147,9 @@ export class TransactionalServer {
     async getActor(credentials) {
         if (this.tempActor) {
             return this.tempActor;
+        }
+        if (credentials.applicationSignature === 'internal') {
+            return new Actor();
         }
         const terminalStore = await container(this).get(TERMINAL_STORE);
         const actor = terminalStore.getApplicationActorMapBySignature()

@@ -12,7 +12,7 @@ import {
 	PlatformType,
 	PortableQuery
 } from '@airport/ground-control';
-import { IActor, RepositoryId, REPOSITORY_DAO } from '@airport/holding-pattern';
+import { Actor, IActor, RepositoryId, REPOSITORY_DAO } from '@airport/holding-pattern';
 import {
 	ICredentials,
 	IOperationContext,
@@ -299,6 +299,9 @@ export class TransactionalServer
 	): Promise<IActor> {
 		if (this.tempActor) {
 			return this.tempActor;
+		}
+		if(credentials.applicationSignature === 'internal') {
+			return new Actor()
 		}
 		const terminalStore = await container(this).get(TERMINAL_STORE)
 		const actor = terminalStore.getApplicationActorMapBySignature()

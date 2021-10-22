@@ -66,7 +66,7 @@ export class Repository {
 	@DbString()
 	name: RepositoryName;
 
-	@Column({ name: "REPOSITORY_URL", nullable: false })
+	@Column({ name: "REPOSITORY_URL" })
 	@DbString()
 	url: RepositoryUrl;
 

@@ -1,24 +1,24 @@
-import { AIRPORT_DATABASE }                       from '@airport/air-control';
-import { SEQUENCE_GENERATOR }           from '@airport/check-in';
-import { DI }                           from '@airport/di';
+import { AIRPORT_DATABASE } from '@airport/air-control';
+import { SEQUENCE_GENERATOR } from '@airport/check-in';
+import { DI } from '@airport/di';
 import {
 	JsonSchema,
 	STORE_DRIVER
-}                                       from '@airport/ground-control';
+} from '@airport/ground-control';
 import {
 	SCHEMA_BUILDER,
 	SCHEMA_INITIALIZER
-}                                       from '@airport/landing';
+} from '@airport/landing';
 import {
 	DATABASE_MANAGER,
 	injectTransactionalConnector,
 	injectTransactionalServer
-}                                       from '@airport/terminal';
-import { injectAirportDatabase }        from '@airport/tower';
-import { JsonSchemaWithLastIds } from '../../../takeoff/node_modules/@airport/security-check/lib';
-import { NoOpSchemaBuilder }            from './NoOpSchemaBuilder';
-import { NoOpSequenceGenerator }        from './NoOpSequenceGenerator';
-import { NoOpSqlDriver }                from './NoOpSqlDriver';
+} from '@airport/terminal';
+import { injectAirportDatabase } from '@airport/tower';
+import { JsonSchemaWithLastIds } from '@airport/security-check';
+import { NoOpSchemaBuilder } from './NoOpSchemaBuilder';
+import { NoOpSequenceGenerator } from './NoOpSequenceGenerator';
+import { NoOpSqlDriver } from './NoOpSqlDriver';
 
 export interface ITempDatabase {
 

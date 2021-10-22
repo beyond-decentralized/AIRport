@@ -1,16 +1,29 @@
-import { QueryType } from '@airport/ground-control';
-import { SqlDriver } from '@airport/fuel-hydrant-system';
+import { QueryType, SQLDataType } from '@airport/ground-control';
+import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
+import pg from 'pg';
+import { IOperationContext, ITransaction } from '@airport/terminal-map';
 /**
  * Created by Papa on 11/27/2016.
  */
-export declare abstract class PostgreSqlDriver extends SqlDriver {
+export declare class PostgreSqlDriver extends SqlDriver {
+    pool: pg.Pool;
     composeTableName(schemaName: string, tableName: string): string;
     doesTableExist(schemaName: string, tableName: string): Promise<boolean>;
-    findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
-    protected executeNative(sql: string, parameters: any[]): Promise<number>;
+    dropTable(schemaName: string, tableName: string, context: IOperationContext): Promise<boolean>;
+    findNative(sqlQuery: string, parameters: any[], context: IOperationContext): Promise<any[]>;
+    protected executeNative(sql: string, parameters: any[], context: IOperationContext): Promise<number>;
     protected convertValueIn(value: any): number | string;
-    abstract query(queryType: QueryType, query: string, params: any, saveTransaction?: boolean): Promise<any>;
-    initAllTables(): Promise<any>;
+    isValueValid(value: any, sqlDataType: SQLDataType, context: IOperationContext): boolean;
+    query(queryType: QueryType, query: string, params: any, context: IOperationContext, saveTransaction?: boolean): Promise<any>;
+    doQuery(queryType: QueryType, query: string, params: any, client: pg.PoolClient | pg.Pool, context: IOperationContext, saveTransaction?: boolean): Promise<any>;
+    initialize(connectionString: string): Promise<void>;
+    transact(transactionalCallback: {
+        (transaction: ITransaction): Promise<void>;
+    }, context: IOperationContext): Promise<void>;
+    initAllTables(context: IOperationContext): Promise<any>;
     initTables(createQueries: Promise<any>[]): Promise<void>;
+    isServer(): boolean;
+    protected getDialect(): SQLDialect;
+    protected getClient(): Promise<pg.PoolClient | pg.Pool>;
 }
 //# sourceMappingURL=PostgreSqlDriver.d.ts.map

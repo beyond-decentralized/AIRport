@@ -65,7 +65,9 @@ export class TransactionalConnector {
     }
     async save(entity, context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.save(entity, null, {
+        return await transServer.save(entity, {
+            applicationSignature: 'internal'
+        }, {
             internal: true,
             ...context
         });
@@ -73,49 +75,63 @@ export class TransactionalConnector {
     async insertValues(portableQuery, context, ensureGeneratedValues // For internal use only
     ) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.insertValues(portableQuery, null, {
+        return await transServer.insertValues(portableQuery, {
+            applicationSignature: 'internal'
+        }, {
             internal: true,
             ...context
         }, ensureGeneratedValues);
     }
     async insertValuesGetIds(portableQuery, context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.insertValuesGetIds(portableQuery, null, {
+        return await transServer.insertValuesGetIds(portableQuery, {
+            applicationSignature: 'internal'
+        }, {
             internal: true,
             ...context
         });
     }
     async updateValues(portableQuery, context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.updateValues(portableQuery, null, {
+        return await transServer.updateValues(portableQuery, {
+            applicationSignature: 'internal'
+        }, {
             internal: true,
             ...context
         });
     }
     async deleteWhere(portableQuery, context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.deleteWhere(portableQuery, null, {
+        return await transServer.deleteWhere(portableQuery, {
+            applicationSignature: 'internal'
+        }, {
             internal: true,
             ...context
         });
     }
     async startTransaction(context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.startTransaction(null, {
+        return await transServer.startTransaction({
+            applicationSignature: 'internal'
+        }, {
             internal: true,
             ...context
         });
     }
     async commit(context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.commit(null, {
+        return await transServer.commit({
+            applicationSignature: 'internal'
+        }, {
             internal: true,
             ...context
         });
     }
     async rollback(context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.rollback(null, {
+        return await transServer.rollback({
+            applicationSignature: 'internal'
+        }, {
             internal: true,
             ...context
         });

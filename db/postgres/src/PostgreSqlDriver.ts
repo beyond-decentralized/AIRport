@@ -1,13 +1,19 @@
-import { QueryType } from '@airport/ground-control'
+import { QueryType, SQLDataType, STORE_DRIVER } from '@airport/ground-control'
 import { transactional } from '@airport/tower'
-import { SqlDriver } from '@airport/fuel-hydrant-system'
+import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
+import pg from 'pg'
+import { Pool } from 'pg'
+import { parse } from 'pg-connection-string'
 import { DDLManager } from './DDLManager'
+import { DI } from '@airport/di'
+import { IOperationContext, ITransaction } from '@airport/terminal-map'
+import { PostgreTransaction } from './PostgreTransaction'
 
 /**
  * Created by Papa on 11/27/2016.
  */
 
-export abstract class PostgreSqlDriver
+export class PostgreSqlDriver
 	extends SqlDriver {
 
 	pool: pg.Pool
@@ -19,30 +25,48 @@ export abstract class PostgreSqlDriver
 		return `${schemaName}.${tableName}`
 	}
 
-	async init() {
-
-	}
-
 	async doesTableExist(
 		schemaName: string,
 		tableName: string
 	): Promise<boolean> {
-		throw new Error(`Not implemented`)
+		try {
+			const result = await this.pool.query(`SELECT EXISTS (
+				SELECT FROM information_schema.tables 
+				WHERE  table_schema = '${schemaName}'
+				AND    table_name   = '${tableName}'
+				)`)
+			return result.rows && !!result.rows.length
+		} catch (error) {
+			console.log(error)
+			throw error
+		}
+	}
+
+	async dropTable(
+		schemaName: string,
+		tableName: string,
+		context: IOperationContext,
+	): Promise<boolean> {
+		await this.pool.query(`DROP TABLE  '${schemaName}'.'${tableName}'`)
+
+		return true
 	}
 
 	async findNative(
 		sqlQuery: string,
-		parameters: any[]
+		parameters: any[],
+		context: IOperationContext,
 	): Promise<any[]> {
 		let nativeParameters = parameters.map((value) => this.convertValueIn(value))
-		return await this.query(QueryType.SELECT, sqlQuery, nativeParameters)
+		return await this.query(QueryType.SELECT, sqlQuery, nativeParameters, context)
 	}
 
 	protected async executeNative(
 		sql: string,
-		parameters: any[]
+		parameters: any[],
+		context: IOperationContext,
 	): Promise<number> {
-		return await this.query(QueryType.MUTATE, sql, parameters)
+		return await this.query(QueryType.MUTATE, sql, parameters, context)
 	}
 
 
@@ -70,20 +94,104 @@ export abstract class PostgreSqlDriver
 		}
 	}
 
-	abstract query(
+	isValueValid(
+		value: any,
+		sqlDataType: SQLDataType,
+		context: IOperationContext,
+	): boolean {
+		throw new Error('Method not implemented.');
+		// switch (sqlDataType) {
+		// 	case SQLDataType.DATE:
+		// 	case SQLDataType.NUMBER:
+		// }
+		// return false
+	}
+
+	async query(
 		queryType: QueryType,
 		query: string,
-		params,
-		saveTransaction?: boolean
-	): Promise<any>;
+		params: any,
+		context: IOperationContext,
+		saveTransaction?: boolean,
+	): Promise<any> {
+		const client = await this.getClient()
+		return await this.doQuery(queryType, query, params, client, context,
+			saveTransaction);
+	}
 
-	async initAllTables(): Promise<any> {
+	async doQuery(
+		queryType: QueryType,
+		query: string,
+		params: any,
+		client: pg.PoolClient | pg.Pool,
+		context: IOperationContext,
+		saveTransaction?: boolean,
+	): Promise<any> {
+		let nativeParameters = params.map((value) => this.convertValueIn(value));
+		console.log(query);
+		console.log(nativeParameters);
+		const results = await client.query(query, nativeParameters);
+
+		return results.rows;
+	}
+
+	async initialize(
+		connectionString: string,
+	) {
+		// TODO: make connection secure when needed
+		// Number of cores will be 3*3 (or eventually 3*5) but to allow 
+		// for scaling of write services
+		// only 3 core per Node.js process is allocated
+		let numberOfCrdbCores = 3
+
+		// Best practice - 4 connections per core
+		pg.defaults.poolSize = numberOfCrdbCores * 4
+
+		// let connectionString = "postgres://root@localhost:26257/votecube?sslmode=disable"
+		// Expand $env:appdata environment variable in Windows connection string
+		if (connectionString.includes("env:appdata")) {
+			connectionString = await connectionString.replace(
+				"$env:appdata",
+				process.env.APPDATA
+			);
+		}
+		// Expand $HOME environment variable in UNIX connection string
+		else if (connectionString.includes("HOME")) {
+			connectionString = await connectionString.replace(
+				"$HOME",
+				process.env.HOME
+			);
+		}
+		var config = parse(connectionString);
+		// config.port = port;
+		// config.database = database;
+		this.pool = new Pool(config as any);
+	}
+
+	async transact(
+		transactionalCallback: {
+			(
+				transaction: ITransaction,
+			): Promise<void>
+		},
+		context: IOperationContext,
+	): Promise<void> {
+		const client = await this.pool.connect()
+		await client.query('BEGIN')
+		const transaction = new PostgreTransaction(this, this.pool, client);
+		await transactionalCallback(transaction);
+	}
+
+	async initAllTables(
+		context: IOperationContext,
+	): Promise<any> {
 		let createOperations
 		let createQueries: Promise<any>[] = []
 		let createSql = DDLManager.getCreateDDL()
 		await transactional(async () => {
 			for (const createSqlStatement of createSql) {
-				const createTablePromise = this.query(QueryType.DDL, createSqlStatement, [], false)
+				const createTablePromise = this.query(
+					QueryType.DDL, createSqlStatement, [], context, false)
 				createQueries.push(createTablePromise)
 			}
 
@@ -100,19 +208,17 @@ export abstract class PostgreSqlDriver
 		}
 	}
 
-	async transact(
-		callback: {
-			(
-				transaction: ITransaction
-			): Promise<void>
-		},
-		context: IOperationContext,
-	): Promise<void> {
-		this._db.exec('BEGIN;')
-		this.currentTransaction = true
-		// TODO implement
+	isServer(): boolean {
+		return true
+	}
 
-		return null
+	protected getDialect(): SQLDialect {
+		return SQLDialect.POSTGRESQL;
+	}
+
+	protected async getClient(): Promise<pg.PoolClient | pg.Pool> {
+		return await this.pool
 	}
 
 }
+DI.set(STORE_DRIVER, PostgreSqlDriver);

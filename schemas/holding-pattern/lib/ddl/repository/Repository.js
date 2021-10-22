@@ -55,7 +55,7 @@ __decorate([
     DbString()
 ], Repository.prototype, "name", void 0);
 __decorate([
-    Column({ name: "REPOSITORY_URL", nullable: false }),
+    Column({ name: "REPOSITORY_URL" }),
     DbString()
 ], Repository.prototype, "url", void 0);
 __decorate([

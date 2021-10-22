@@ -47,6 +47,7 @@ export namespace deltaStore.platform {
 			case GOOGLE:
 				return PlatformType.GOOGLE_DOCS
 			case IN_MEMORY:
+			case 'OFFLINE':
 				return PlatformType.IN_MEMORY
 			case STUB:
 				return PlatformType.STUB

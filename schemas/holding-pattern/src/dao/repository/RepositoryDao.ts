@@ -291,7 +291,7 @@ export class RepositoryDao
 		let repo: QRepository
 		let act: QActor
 		let app: QApplication
-		return await this.db.find.graph({
+		return await this.db.find.tree({
 			select: {},
 			from: [
 				repo = Q.Repository,
