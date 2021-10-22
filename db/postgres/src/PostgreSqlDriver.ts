@@ -147,7 +147,6 @@ export class PostgreSqlDriver
 		// Best practice - 4 connections per core
 		pg.defaults.poolSize = numberOfCrdbCores * 4
 
-		// let connectionString = "postgres://root@localhost:26257/votecube?sslmode=disable"
 		// Expand $env:appdata environment variable in Windows connection string
 		if (connectionString.includes("env:appdata")) {
 			connectionString = await connectionString.replace(
