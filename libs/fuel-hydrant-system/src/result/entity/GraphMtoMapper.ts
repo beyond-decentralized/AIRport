@@ -27,7 +27,7 @@ export class GraphMtoMapper {
 		[mtoEntityId: string]: {
 			// Name of the MtO property
 			[mtoPropertyName: string]: // The stub reference
-				ManyToOneStubReference
+			ManyToOneStubReference
 		}
 	}[][] = []
 
@@ -38,7 +38,7 @@ export class GraphMtoMapper {
 		const mtoDbEntity = mtoStubReference.mtoDbEntity
 		let mtoEntitiesForTypeMap: {
 			[mtoEntityId: string]: { [mtoPropertyName: string]: ManyToOneStubReference }
-		}                 = ensureChildMap(
+		} = ensureChildMap(
 			ensureChildArray(this.mtoStubReferenceMap, mtoDbEntity.schemaVersion.schema.index),
 			mtoDbEntity.index
 		)
@@ -59,7 +59,11 @@ export class GraphMtoMapper {
 					let mtosForEntity = mtoEntitiesForTypeMap[mtoEntityId]
 					for (let mtoPropertyName in mtosForEntity) {
 						let mtoStubReference: ManyToOneStubReference = mtosForEntity[mtoPropertyName]
-						let otmEntitiesForTypeMap                    = entityMap[schemaIndex][entityIndex]
+						let otmDbEntity = mtoStubReference.otmDbEntity
+						if (!entityMap[otmDbEntity.schemaVersion.schema.index]) {
+							continue
+						}
+						let otmEntitiesForTypeMap = entityMap[otmDbEntity.schemaVersion.schema.index][otmDbEntity.index]
 						if (!otmEntitiesForTypeMap) {
 							continue
 						}

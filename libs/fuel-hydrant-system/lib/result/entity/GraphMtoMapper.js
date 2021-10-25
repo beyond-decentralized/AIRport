@@ -22,7 +22,11 @@ export class GraphMtoMapper {
                     let mtosForEntity = mtoEntitiesForTypeMap[mtoEntityId];
                     for (let mtoPropertyName in mtosForEntity) {
                         let mtoStubReference = mtosForEntity[mtoPropertyName];
-                        let otmEntitiesForTypeMap = entityMap[schemaIndex][entityIndex];
+                        let otmDbEntity = mtoStubReference.otmDbEntity;
+                        if (!entityMap[otmDbEntity.schemaVersion.schema.index]) {
+                            continue;
+                        }
+                        let otmEntitiesForTypeMap = entityMap[otmDbEntity.schemaVersion.schema.index][otmDbEntity.index];
                         if (!otmEntitiesForTypeMap) {
                             continue;
                         }
