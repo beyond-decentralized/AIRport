@@ -1,0 +1,6 @@
+import { BatchReadResponse, BatchResponse, BatchWriteResponse, ReadRequestBatch, ReplyToClient, ReplyToClientContext, RequestBatch, WriteRequestBatch } from '@airport/nonhub-types';
+export declare function processBatchRequests<RecordType, Reply extends ReplyToClient, ReplyContext extends ReplyToClientContext<Reply>, BatchResponseType, BatchIn extends RequestBatch<RecordType, Reply, ReplyContext>, BatchOut extends BatchResponse<BatchResponseType>>(getBatch: () => BatchIn, getCurrentBatch: () => BatchIn, masterKey: string, requestHost: string, respond: (lastBatch: BatchIn, responseData: BatchOut) => void): Promise<void>;
+export declare function respondToReads(requestBatch: ReadRequestBatch, response: BatchReadResponse): void;
+export declare function respondToWrites(requestBatch: WriteRequestBatch, response: BatchWriteResponse): void;
+export declare function genericRespond<Request, Reply extends ReplyToClient, ReplyContext extends ReplyToClientContext<Reply>, BatchResponseType>(requestBatch: RequestBatch<Request, Reply, ReplyContext>, response: BatchResponse<BatchResponseType>): void;
+//# sourceMappingURL=batchProcessors.d.ts.map

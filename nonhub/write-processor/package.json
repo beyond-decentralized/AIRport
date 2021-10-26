@@ -1,0 +1,37 @@
+{
+    "dependencies": {
+        "@airport/air-control": "0.0.1",
+        "@airport/autopilot": "0.0.1",
+        "@airport/di": "0.0.1",
+        "@airport/ground-control": "0.0.1",
+        "@airport/nonhub-types": "0.0.1",
+        "@airport/postgres": "0.0.1",
+        "@airport/processor-common": "0.0.1",
+        "@airport/security-check": "0.0.1",
+        "@airport/sqljs": "0.0.1",
+        "@airport/terminal": "0.0.1",
+        "@airport/terminal-map": "0.0.1",
+        "@airport/tower": "0.0.1",
+        "axios": "^0.23.0",
+        "child-process": "latest",
+        "fastify": "^3.22.0",
+        "fastify-cors": "^6.0.2",
+        "fastify-static": "^4.4.2",
+        "pg": "latest",
+        "pg-connection-string": "latest",
+        "rxjs": "^7.3.0",
+        "string-cipher": "^1.0.8",
+        "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+        "@types/node": "^16.10.7",
+        "@types/pg": "latest",
+        "tslint": "^6.1.3",
+        "typescript": "^4.2.4"
+    },
+    "main": "lib/server.js",
+    "name": "@airport/write-processor",
+    "type": "module",
+    "typings": "lib/server",
+    "version": "0.0.1"
+}

@@ -223,6 +223,32 @@
       "projectFolder": "libs/ramp",
       "shouldPublish": true
     },
+    // "nonhub" folder (alphabetical order)
+    {
+      "packageName": "@airport/bulk-read-processor",
+      "projectFolder": "nonhub/bulk-read-processor",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/gateway",
+      "projectFolder": "nonhub/gateway",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/nonhub-types",
+      "projectFolder": "nonhub/nonhub-types",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/processor-common",
+      "projectFolder": "nonhub/processor-common",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/write-processor",
+      "projectFolder": "nonhub/write-processor",
+      "shouldPublish": true
+    },
     // "schemas" folder (alphabetical order)
     {
       "packageName": "@airport/airport-code",
