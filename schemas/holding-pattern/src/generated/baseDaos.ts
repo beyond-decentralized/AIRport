@@ -223,11 +223,11 @@ export class BaseActorDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(4)
+		super(3)
 	}
 }
 
@@ -251,11 +251,11 @@ export class BaseOperationHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(10)
+		super(9)
 	}
 }
 
@@ -307,11 +307,11 @@ export class BaseRecordHistoryNewValueDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(6)
+		super(5)
 	}
 }
 
@@ -335,11 +335,11 @@ export class BaseRecordHistoryOldValueDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(7)
+		super(6)
 	}
 }
 
@@ -363,11 +363,11 @@ export class BaseRepoTransHistoryChangedRepositoryActorDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(5)
+		super(4)
 	}
 }
 
@@ -391,11 +391,11 @@ export class BaseRepositoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(2)
+		super(1)
 	}
 }
 
@@ -419,11 +419,11 @@ export class BaseRepositoryActorDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(3)
+		super(2)
 	}
 }
 
@@ -447,11 +447,11 @@ export class BaseRepositoryApplicationDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(1)
+		super(10)
 	}
 }
 
@@ -503,11 +503,11 @@ export class BaseRepositoryTransactionHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(9)
+		super(8)
 	}
 }
 
@@ -531,10 +531,10 @@ export class BaseTransactionHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(8)
+		super(7)
 	}
 }

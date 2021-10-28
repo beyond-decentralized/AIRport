@@ -15,13 +15,15 @@ import { ApplicationSignature, ensureChildJsMap } from '@airport/ground-control'
 import {
 	QTerminal,
 	QUser,
-	UserUniqueId
+	User_Email,
+	User_PrivateId,
+	User_PublicId
 } from '@airport/travel-document-checkpoint'
 import {
 	ActorUuId,
-	RepositoryId,
-	RepositoryCreatedAt,
-	RepositoryUuId,
+	Repository_Id,
+	Repository_CreatedAt,
+	Repository_UuId,
 	RepositoryTransactionHistoryId,
 } from '../../ddl/ddl'
 import { REPOSITORY_DAO } from '../../tokens'
@@ -46,22 +48,22 @@ export interface IRepositoryDao
 				(...args: any[]): RawFieldQuery<IQNumberField>
 			},
 		dbName: TerminalName,
-		userEmail: UserUniqueId,
+		userEmail: User_Email,
 	): Promise<MappedEntityArray<IRepository>>;
 
 	findLocalRepoIdsByGlobalIds(
-		createdAts: RepositoryCreatedAt[],
-		uuIds: RepositoryUuId[],
+		createdAts: Repository_CreatedAt[],
+		uuIds: Repository_UuId[],
 		ownerActorRandomIds: ActorUuId[],
-		ownerUserUniqueIds: UserUniqueId[],
+		ownerUserPrivateIds: User_PrivateId[],
 		ownerTerminalNames: TerminalName[],
 		ownerTerminalSecondIds: TerminalSecondId[],
-		ownerTerminalOwnerUserUniqueIds: UserUniqueId[]
+		ownerTerminalOwnerUserUniqueIds: User_PrivateId[]
 	): Promise<RepositoryIdMap>;
 
 	findReposWithGlobalIds(
-		repositoryIds: RepositoryId[]
-	): Promise<Map<RepositoryId, IRepository>>;
+		repositoryIds: Repository_Id[]
+	): Promise<Map<Repository_Id, IRepository>>;
 
 	findReposForAppSignature(
 		applicationSignature: ApplicationSignature
@@ -69,17 +71,17 @@ export interface IRepositoryDao
 
 }
 
-export type RepositoryIdMap = Map<UserUniqueId,
-	Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId,
-		Map<ActorUuId, Map<RepositoryCreatedAt,
-			Map<RepositoryUuId, RepositoryId>>>>>>>;
+export type RepositoryIdMap = Map<User_PrivateId,
+	Map<TerminalName, Map<TerminalSecondId, Map<User_PrivateId,
+		Map<ActorUuId, Map<Repository_CreatedAt,
+			Map<Repository_UuId, Repository_Id>>>>>>>;
 
 export class RepositoryDao
 	extends BaseRepositoryDao
 	implements IRepositoryDao {
 
 	async findReposWithTransactionLogDetailsByIds(
-		repositoryIds: RepositoryId[]
+		repositoryIds: Repository_Id[]
 	): Promise<MappedEntityArray<IRepository>> {
 		let r: QRepository
 		let ra: QRepositoryActor
@@ -117,7 +119,7 @@ export class RepositoryDao
 	}
 
 	async findReposWithDetailsAndSyncNodeIds(
-		repositoryIds: RepositoryId[]
+		repositoryIds: Repository_Id[]
 	): Promise<IRepository[]> {
 		let r: QRepository
 		const id = Y
@@ -144,7 +146,7 @@ export class RepositoryDao
 				(...args: any[]): RawFieldQuery<IQNumberField>
 			},
 		dbName: TerminalName,
-		userEmail: UserUniqueId,
+		userEmail: User_Email,
 	): Promise<MappedEntityArray<IRepository>> {
 		let r: QRepository
 		let ra: QRepositoryActor
@@ -176,16 +178,16 @@ export class RepositoryDao
 			where: and(
 				r.id.in(repositoryIdsInClause),
 				d.name.equals(dbName),
-				u.uniqueId.equals(userEmail)
+				u.email.equals(userEmail)
 			)
 		}
 		)
 	}
 
 	async findReposWithGlobalIds(
-		repositoryIds: RepositoryId[]
-	): Promise<Map<RepositoryId, IRepository>> {
-		const repositoryMapById: Map<RepositoryId, IRepository>
+		repositoryIds: Repository_Id[]
+	): Promise<Map<Repository_Id, IRepository>> {
+		const repositoryMapById: Map<Repository_Id, IRepository>
 			= new Map()
 
 		let r: QRepository
@@ -199,7 +201,7 @@ export class RepositoryDao
 				ownerActor: {
 					id: Y,
 					user: {
-						uniqueId: Y
+						privateId: Y
 					},
 				}
 			},
@@ -220,13 +222,13 @@ export class RepositoryDao
 	}
 
 	async findLocalRepoIdsByGlobalIds(
-		createdAts: RepositoryCreatedAt[],
-		uuIds: RepositoryUuId[],
+		createdAts: Repository_CreatedAt[],
+		uuIds: Repository_UuId[],
 		ownerActorRandomIds: ActorUuId[],
-		ownerUserUniqueIds: UserUniqueId[],
+		ownerUserUniqueIds: User_PrivateId[],
 		ownerTerminalNames: TerminalName[],
 		ownerTerminalSecondIds: TerminalSecondId[],
-		ownerTerminalOwnerUserUniqueIds: UserUniqueId[]
+		ownerTerminalOwnerUserUniqueIds: User_PrivateId[]
 	): Promise<RepositoryIdMap> {
 		const repositoryIdMap: RepositoryIdMap = new Map()
 
@@ -247,10 +249,10 @@ export class RepositoryDao
 				odu = od.owner.innerJoin(),
 			],
 			select: [
-				odu.uniqueId,
+				odu.privateId,
 				od.name,
 				od.secondId,
-				ou.uniqueId,
+				ou.privateId,
 				oa.uuId,
 				r.createdAt,
 				r.uuId,
@@ -260,10 +262,10 @@ export class RepositoryDao
 				r.createdAt.in(createdAts),
 				r.uuId.in(uuIds),
 				oa.uuId.in(ownerActorRandomIds),
-				ou.uniqueId.in(ownerUserUniqueIds),
+				ou.privateId.in(ownerUserUniqueIds),
 				od.name.in(ownerTerminalNames),
 				od.secondId.in(ownerTerminalSecondIds),
-				odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds)
+				odu.privateId.in(ownerTerminalOwnerUserUniqueIds)
 			)
 		})
 

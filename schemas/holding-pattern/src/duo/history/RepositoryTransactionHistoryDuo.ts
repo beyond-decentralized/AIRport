@@ -6,7 +6,7 @@ import {
 import {
 	ActorId,
 	Repository,
-	RepositoryId,
+	Repository_Id,
 	RepositoryTransactionHistory,
 	SystemWideOperationId
 } from '../../ddl/ddl'
@@ -23,7 +23,7 @@ import {IOperationHistoryDuo}   from './OperationHistoryDuo'
 export interface IRepositoryTransactionHistoryDuo {
 
 	getNewRecord(
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		actor: IActor
 	): IRepositoryTransactionHistory;
 
@@ -51,7 +51,7 @@ export class RepositoryTransactionHistoryDuo
 	implements IRepositoryTransactionHistoryDuo {
 
 	getNewRecord(
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		actor: IActor
 	): IRepositoryTransactionHistory {
 		let transaction: IRepositoryTransactionHistory = new RepositoryTransactionHistory()
@@ -94,7 +94,7 @@ export class RepositoryTransactionHistoryDuo
 			const actor1 = actorMapById.get(repoTransHistory1.actor.id)
 			const actor2 = actorMapById.get(repoTransHistory2.actor.id)
 
-			const userIdComparison = actor1.user.uniqueId.localeCompare(actor2.user.uniqueId)
+			const userIdComparison = actor1.user.privateId.localeCompare(actor2.user.privateId)
 			if (userIdComparison) {
 				return userIdComparison
 			}
@@ -111,7 +111,7 @@ export class RepositoryTransactionHistoryDuo
 			}
 
 			const databaseOwnerComparison
-				      = actor1.terminal.owner.uniqueId.localeCompare(actor2.terminal.owner.uniqueId)
+				      = actor1.terminal.owner.privateId.localeCompare(actor2.terminal.owner.privateId)
 			if (databaseOwnerComparison) {
 				return databaseOwnerComparison
 			}

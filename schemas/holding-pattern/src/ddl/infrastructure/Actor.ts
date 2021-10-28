@@ -25,6 +25,7 @@ export class Actor {
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
+	@Column({ name: 'ID' })
 	id: ActorId
 
 	@ManyToOne()

@@ -55,6 +55,10 @@ __decorate([
     DbString()
 ], Repository.prototype, "name", void 0);
 __decorate([
+    Column({ name: 'AGE_SUITABILITY', nullable: false }),
+    DbNumber()
+], Repository.prototype, "ageSuitability", void 0);
+__decorate([
     Column({ name: "REPOSITORY_URL" }),
     DbString()
 ], Repository.prototype, "url", void 0);

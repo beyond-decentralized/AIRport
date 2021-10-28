@@ -1,6 +1,6 @@
 import { IQNumberField, IQOrderableField, JSONLogicalOperation, RawFieldQuery } from '@airport/air-control';
 import { EntityId, JSONBaseOperation } from '@airport/ground-control';
-import { ActorId, RecordHistoryActorRecordId, RepositoryEntity_ActorRecordId, RepositoryId, RepositoryTransactionHistoryId } from '../../ddl/ddl';
+import { ActorId, RecordHistoryActorRecordId, RepositoryEntity_ActorRecordId, Repository_Id, RepositoryTransactionHistoryId } from '../../ddl/ddl';
 import { IOperationHistoryDuo } from '../../duo/history/OperationHistoryDuo';
 import { IRecordHistoryDuo } from '../../duo/history/RecordHistoryDuo';
 import { BaseRepositoryTransactionHistoryDao, IRepositoryTransactionHistory, QActor, QOperationHistory, QRecordHistory, QRecordHistoryNewValue, QRepository, QRepositoryTransactionHistory, RepositoryTransactionHistoryESelect } from '../../generated/generated';
@@ -12,8 +12,8 @@ export interface IRepositoryTransactionHistoryDao {
     findWhereIdsIn(idsInClause: RepositoryTransactionHistoryId[] | RawFieldQuery<IQNumberField> | {
         (...args: any[]): RawFieldQuery<IQNumberField>;
     }): Promise<IRepositoryTransactionHistory[]>;
-    findExistingRecordIdMap(recordIdMap: Map<RepositoryId, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>): Promise<Map<RepositoryId, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
-    findAllLocalChangesForRecordIds(changedRecordIds: Map<RepositoryId, IChangedRecordIdsForRepository>): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>>;
+    findExistingRecordIdMap(recordIdMap: Map<Repository_Id, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>): Promise<Map<Repository_Id, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
+    findAllLocalChangesForRecordIds(changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
     setBlockIdWhereId(getSetClause: {
         (id: IQNumberField): IQOrderableField<IQNumberField>;
     }): Promise<number>;
@@ -36,8 +36,8 @@ export declare class RepositoryTransactionHistoryDao extends BaseRepositoryTrans
     findWithActorAndRepositoryWherIdsIn(idsInClause: RepositoryTransactionHistoryId[] | RawFieldQuery<IQNumberField> | {
         (...args: any[]): RawFieldQuery<IQNumberField>;
     }): Promise<IRepositoryTransactionHistory[]>;
-    findAllLocalChangesForRecordIds(changedRecordIds: Map<RepositoryId, IChangedRecordIdsForRepository>): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>>;
-    findExistingRecordIdMap(recordIdMap: Map<RepositoryId, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>): Promise<Map<RepositoryId, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
+    findAllLocalChangesForRecordIds(changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
+    findExistingRecordIdMap(recordIdMap: Map<Repository_Id, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>): Promise<Map<Repository_Id, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
     setBlockIdWhereId(getSetClause: {
         (id: IQNumberField): IQNumberField;
     }): Promise<number>;

@@ -85,7 +85,7 @@ export class RepositoryDao extends BaseRepositoryDao {
                 u = a.user.innerJoin(),
                 d = a.terminal.innerJoin()
             ],
-            where: and(r.id.in(repositoryIdsInClause), d.name.equals(dbName), u.uniqueId.equals(userEmail))
+            where: and(r.id.in(repositoryIdsInClause), d.name.equals(dbName), u.email.equals(userEmail))
         });
     }
     async findReposWithGlobalIds(repositoryIds) {
@@ -101,7 +101,7 @@ export class RepositoryDao extends BaseRepositoryDao {
                 ownerActor: {
                     id: Y,
                     user: {
-                        uniqueId: Y
+                        privateId: Y
                     },
                 }
             },
@@ -134,16 +134,16 @@ export class RepositoryDao extends BaseRepositoryDao {
                 odu = od.owner.innerJoin(),
             ],
             select: [
-                odu.uniqueId,
+                odu.privateId,
                 od.name,
                 od.secondId,
-                ou.uniqueId,
+                ou.privateId,
                 oa.uuId,
                 r.createdAt,
                 r.uuId,
                 r.id,
             ],
-            where: and(r.createdAt.in(createdAts), r.uuId.in(uuIds), oa.uuId.in(ownerActorRandomIds), ou.uniqueId.in(ownerUserUniqueIds), od.name.in(ownerTerminalNames), od.secondId.in(ownerTerminalSecondIds), odu.uniqueId.in(ownerTerminalOwnerUserUniqueIds))
+            where: and(r.createdAt.in(createdAts), r.uuId.in(uuIds), oa.uuId.in(ownerActorRandomIds), ou.privateId.in(ownerUserUniqueIds), od.name.in(ownerTerminalNames), od.secondId.in(ownerTerminalSecondIds), odu.privateId.in(ownerTerminalOwnerUserUniqueIds))
         });
         for (const resultRow of resultRows) {
             ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4]), resultRow[5].getTime()).set(resultRow[6], resultRow[7]);
@@ -154,7 +154,7 @@ export class RepositoryDao extends BaseRepositoryDao {
         let repo;
         let act;
         let app;
-        return await this.db.find.graph({
+        return await this.db.find.tree({
             select: {},
             from: [
                 repo = Q.Repository,

@@ -81,6 +81,7 @@ export interface RepositoryESelect
 	createdAt?: Date | IQDateField;
 	uuId?: string | IQStringField;
 	name?: string | IQStringField;
+	ageSuitability?: number | IQNumberField;
 	url?: string | IQStringField;
 	syncPriority?: string | IQStringField;
 
@@ -125,6 +126,7 @@ export interface RepositoryEUpdateProperties
 	createdAt?: Date | IQDateField;
 	uuId?: string | IQStringField;
 	name?: string | IQStringField;
+	ageSuitability?: number | IQNumberField;
 	url?: string | IQStringField;
 	syncPriority?: string | IQStringField;
 
@@ -144,6 +146,7 @@ export interface RepositoryGraph
 	createdAt?: Date | IQDateField;
 	uuId?: string | IQStringField;
 	name?: string | IQStringField;
+	ageSuitability?: number | IQNumberField;
 	url?: string | IQStringField;
 	syncPriority?: string | IQStringField;
 
@@ -163,6 +166,7 @@ export interface RepositoryEUpdateColumns
 	CREATED_AT?: Date | IQDateField;
 	UU_ID?: string | IQStringField;
 	NAME?: string | IQStringField;
+	AGE_SUITABILITY?: number | IQNumberField;
 	REPOSITORY_URL?: string | IQStringField;
 	SYNC_PRIORITY?: string | IQStringField;
 	OWNER_ACTOR_ID?: number | IQNumberField;
@@ -204,6 +208,7 @@ export interface QRepository extends IQEntity<Repository>
 	createdAt: IQDateField;
 	uuId: IQStringField;
 	name: IQStringField;
+	ageSuitability: IQNumberField;
 	url: IQStringField;
 	syncPriority: IQStringField;
 

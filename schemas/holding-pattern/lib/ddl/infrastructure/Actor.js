@@ -10,7 +10,8 @@ let Actor = class Actor {
 __decorate([
     Id(),
     GeneratedValue(),
-    DbNumber()
+    DbNumber(),
+    Column({ name: 'ID' })
 ], Actor.prototype, "id", void 0);
 __decorate([
     ManyToOne(),

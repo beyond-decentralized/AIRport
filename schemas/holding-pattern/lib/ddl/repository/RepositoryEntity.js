@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, GeneratedValue, Id, JoinColumn, ManyToOne, MappedSuperclass } from '@airport/air-control';
+import { Column, DbNumber, GeneratedValue, Id, JoinColumn, ManyToOne, MappedSuperclass } from '@airport/air-control';
 import { Stageable } from '../infrastructure/Stageable';
 let RepositoryEntity = class RepositoryEntity extends Stageable {
 };
@@ -30,7 +30,8 @@ __decorate([
     GeneratedValue()
 ], RepositoryEntity.prototype, "actorRecordId", void 0);
 __decorate([
-    Column({ name: 'AGE_SUITABILITY', nullable: false })
+    Column({ name: 'AGE_SUITABILITY', nullable: false }),
+    DbNumber()
 ], RepositoryEntity.prototype, "ageSuitability", void 0);
 __decorate([
     Column({ name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false })

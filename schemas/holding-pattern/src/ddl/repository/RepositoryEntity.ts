@@ -1,5 +1,6 @@
 import {
 	Column,
+	DbNumber,
 	GeneratedValue,
 	Id,
 	JoinColumn,
@@ -16,7 +17,7 @@ import {Repository}                    from './Repository'
  */
 
 export type RepositoryEntity_ActorRecordId = number
-export type RepositoryEntity_AgeSuitability = number
+export type RepositoryEntity_AgeSuitability = 0 | 7 | 13 | 18
 export type RepositoryEntity_SystemWideOperationId = SystemWideOperationId
 
 @MappedSuperclass()
@@ -45,6 +46,7 @@ export abstract class RepositoryEntity
 	actorRecordId: RepositoryEntity_ActorRecordId
 
 	@Column({name: 'AGE_SUITABILITY', nullable: false})
+	@DbNumber()
 	ageSuitability: RepositoryEntity_AgeSuitability
 
 	// This field is local to the device only, when copied to new device this value is re-created

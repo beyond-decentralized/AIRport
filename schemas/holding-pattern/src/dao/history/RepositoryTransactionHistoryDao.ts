@@ -23,7 +23,7 @@ import {
 	ActorId,
 	RecordHistoryActorRecordId,
 	RepositoryEntity_ActorRecordId,
-	RepositoryId,
+	Repository_Id,
 	RepositoryTransactionHistoryId
 }                             from '../../ddl/ddl'
 import {
@@ -76,9 +76,9 @@ export interface IRepositoryTransactionHistoryDao {
 	): Promise<IRepositoryTransactionHistory[]>;
 
 	findExistingRecordIdMap(
-		recordIdMap: Map<RepositoryId,
+		recordIdMap: Map<Repository_Id,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>
-	): Promise<Map<RepositoryId,
+	): Promise<Map<Repository_Id,
 		Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
 
 	// updateSyncStatusHistory(
@@ -87,8 +87,8 @@ export interface IRepositoryTransactionHistoryDao {
 	// ): Promise<void>;
 
 	findAllLocalChangesForRecordIds(
-		changedRecordIds: Map<RepositoryId, IChangedRecordIdsForRepository>
-	): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>>;
+		changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>
+	): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
 
 	setBlockIdWhereId(
 		getSetClause: {
@@ -228,9 +228,9 @@ export class RepositoryTransactionHistoryDao
 	}
 
 	async findAllLocalChangesForRecordIds(
-		changedRecordIds: Map<RepositoryId, IChangedRecordIdsForRepository>
-	): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>> {
-		const repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>
+		changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>
+	): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>> {
+		const repoTransHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>
 			      = new Map()
 		/*
 				const trafficPatternQSchema = this.airDb.QM[
@@ -338,11 +338,11 @@ export class RepositoryTransactionHistoryDao
 	}
 
 	async findExistingRecordIdMap(
-		recordIdMap: Map<RepositoryId,
+		recordIdMap: Map<Repository_Id,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>
-	): Promise<Map<RepositoryId,
+	): Promise<Map<Repository_Id,
 		Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>> {
-		const existingRecordIdMap: Map<RepositoryId,
+		const existingRecordIdMap: Map<Repository_Id,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>
 			      = new Map()
 

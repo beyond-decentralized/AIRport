@@ -44,31 +44,7 @@ export const MAPPED_SUPERCLASS = [
                     "@airport/air-control": null
                 }
             },
-            "properties": [
-                {
-                    "decorators": [
-                        {
-                            "name": "Column",
-                            "values": [
-                                {
-                                    "name": "IS_DRAFT",
-                                    "nullable": false
-                                }
-                            ]
-                        }
-                    ],
-                    "isGenerated": false,
-                    "isId": false,
-                    "isMappedSuperclass": false,
-                    "isTransient": false,
-                    "name": "draft",
-                    "type": "boolean",
-                    "ownerEntity": null,
-                    "nonArrayType": "boolean",
-                    "primitive": "boolean",
-                    "index": 0
-                }
-            ],
+            "properties": [],
             "methodSignatures": [],
             "constructors": [
                 {
@@ -207,6 +183,11 @@ export const MAPPED_SUPERCLASS = [
                                 "moduleImport": null,
                                 "sourceName": "Column"
                             },
+                            "DbNumber": {
+                                "asName": "DbNumber",
+                                "moduleImport": null,
+                                "sourceName": "DbNumber"
+                            },
                             "GeneratedValue": {
                                 "asName": "GeneratedValue",
                                 "moduleImport": null,
@@ -235,6 +216,7 @@ export const MAPPED_SUPERCLASS = [
                         },
                         "path": "@airport/air-control"
                     },
+                    "DbNumber": null,
                     "GeneratedValue": null,
                     "Id": null,
                     "JoinColumn": null,
@@ -403,6 +385,10 @@ export const MAPPED_SUPERCLASS = [
                                     "nullable": false
                                 }
                             ]
+                        },
+                        {
+                            "name": "DbNumber",
+                            "values": []
                         }
                     ],
                     "isGenerated": false,
@@ -410,9 +396,9 @@ export const MAPPED_SUPERCLASS = [
                     "isMappedSuperclass": false,
                     "isTransient": false,
                     "name": "ageSuitability",
-                    "type": "number",
+                    "type": "RepositoryEntity_AgeSuitability",
                     "ownerEntity": null,
-                    "nonArrayType": "number",
+                    "nonArrayType": "RepositoryEntity_AgeSuitability",
                     "primitive": "number",
                     "index": 3
                 },
@@ -493,31 +479,7 @@ export const MAPPED_SUPERCLASS = [
                         "@airport/air-control": null
                     }
                 },
-                "properties": [
-                    {
-                        "decorators": [
-                            {
-                                "name": "Column",
-                                "values": [
-                                    {
-                                        "name": "IS_DRAFT",
-                                        "nullable": false
-                                    }
-                                ]
-                            }
-                        ],
-                        "isGenerated": false,
-                        "isId": false,
-                        "isMappedSuperclass": false,
-                        "isTransient": false,
-                        "name": "draft",
-                        "type": "boolean",
-                        "ownerEntity": null,
-                        "nonArrayType": "boolean",
-                        "primitive": "boolean",
-                        "index": 0
-                    }
-                ],
+                "properties": [],
                 "methodSignatures": [],
                 "constructors": [
                     {
@@ -720,6 +682,11 @@ export const MAPPED_SUPERCLASS = [
                                     "moduleImport": null,
                                     "sourceName": "Column"
                                 },
+                                "DbNumber": {
+                                    "asName": "DbNumber",
+                                    "moduleImport": null,
+                                    "sourceName": "DbNumber"
+                                },
                                 "GeneratedValue": {
                                     "asName": "GeneratedValue",
                                     "moduleImport": null,
@@ -748,6 +715,7 @@ export const MAPPED_SUPERCLASS = [
                             },
                             "path": "@airport/air-control"
                         },
+                        "DbNumber": null,
                         "GeneratedValue": null,
                         "Id": null,
                         "JoinColumn": null,
@@ -916,6 +884,10 @@ export const MAPPED_SUPERCLASS = [
                                         "nullable": false
                                     }
                                 ]
+                            },
+                            {
+                                "name": "DbNumber",
+                                "values": []
                             }
                         ],
                         "isGenerated": false,
@@ -923,9 +895,9 @@ export const MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "ageSuitability",
-                        "type": "number",
+                        "type": "RepositoryEntity_AgeSuitability",
                         "ownerEntity": null,
-                        "nonArrayType": "number",
+                        "nonArrayType": "RepositoryEntity_AgeSuitability",
                         "primitive": "number",
                         "index": 3
                     },
@@ -1006,31 +978,7 @@ export const MAPPED_SUPERCLASS = [
                             "@airport/air-control": null
                         }
                     },
-                    "properties": [
-                        {
-                            "decorators": [
-                                {
-                                    "name": "Column",
-                                    "values": [
-                                        {
-                                            "name": "IS_DRAFT",
-                                            "nullable": false
-                                        }
-                                    ]
-                                }
-                            ],
-                            "isGenerated": false,
-                            "isId": false,
-                            "isMappedSuperclass": false,
-                            "isTransient": false,
-                            "name": "draft",
-                            "type": "boolean",
-                            "ownerEntity": null,
-                            "nonArrayType": "boolean",
-                            "primitive": "boolean",
-                            "index": 0
-                        }
-                    ],
+                    "properties": [],
                     "methodSignatures": [],
                     "constructors": [
                         {
@@ -1152,31 +1100,7 @@ export const MAPPED_SUPERCLASS = [
                         "@airport/air-control": null
                     }
                 },
-                "properties": [
-                    {
-                        "decorators": [
-                            {
-                                "name": "Column",
-                                "values": [
-                                    {
-                                        "name": "IS_DRAFT",
-                                        "nullable": false
-                                    }
-                                ]
-                            }
-                        ],
-                        "isGenerated": false,
-                        "isId": false,
-                        "isMappedSuperclass": false,
-                        "isTransient": false,
-                        "name": "draft",
-                        "type": "boolean",
-                        "ownerEntity": null,
-                        "nonArrayType": "boolean",
-                        "primitive": "boolean",
-                        "index": 0
-                    }
-                ],
+                "properties": [],
                 "methodSignatures": [],
                 "constructors": [
                     {
@@ -1433,6 +1357,11 @@ export const MAPPED_SUPERCLASS = [
                                     "moduleImport": null,
                                     "sourceName": "Column"
                                 },
+                                "DbNumber": {
+                                    "asName": "DbNumber",
+                                    "moduleImport": null,
+                                    "sourceName": "DbNumber"
+                                },
                                 "GeneratedValue": {
                                     "asName": "GeneratedValue",
                                     "moduleImport": null,
@@ -1461,6 +1390,7 @@ export const MAPPED_SUPERCLASS = [
                             },
                             "path": "@airport/air-control"
                         },
+                        "DbNumber": null,
                         "GeneratedValue": null,
                         "Id": null,
                         "JoinColumn": null,
@@ -1629,6 +1559,10 @@ export const MAPPED_SUPERCLASS = [
                                         "nullable": false
                                     }
                                 ]
+                            },
+                            {
+                                "name": "DbNumber",
+                                "values": []
                             }
                         ],
                         "isGenerated": false,
@@ -1636,9 +1570,9 @@ export const MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "ageSuitability",
-                        "type": "number",
+                        "type": "RepositoryEntity_AgeSuitability",
                         "ownerEntity": null,
-                        "nonArrayType": "number",
+                        "nonArrayType": "RepositoryEntity_AgeSuitability",
                         "primitive": "number",
                         "index": 3
                     },
@@ -1719,31 +1653,7 @@ export const MAPPED_SUPERCLASS = [
                             "@airport/air-control": null
                         }
                     },
-                    "properties": [
-                        {
-                            "decorators": [
-                                {
-                                    "name": "Column",
-                                    "values": [
-                                        {
-                                            "name": "IS_DRAFT",
-                                            "nullable": false
-                                        }
-                                    ]
-                                }
-                            ],
-                            "isGenerated": false,
-                            "isId": false,
-                            "isMappedSuperclass": false,
-                            "isTransient": false,
-                            "name": "draft",
-                            "type": "boolean",
-                            "ownerEntity": null,
-                            "nonArrayType": "boolean",
-                            "primitive": "boolean",
-                            "index": 0
-                        }
-                    ],
+                    "properties": [],
                     "methodSignatures": [],
                     "constructors": [
                         {
@@ -1897,7 +1807,7 @@ export const MAPPED_SUPERCLASS = [
                                 "index": 1,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
-                                "name": "UNIQUE_IDENTIFIER",
+                                "name": "PRIVATE_ID",
                                 "notNull": true,
                                 "oneRelationColumns": [],
                                 "propertyColumnMap": null,
@@ -1917,8 +1827,8 @@ export const MAPPED_SUPERCLASS = [
                                 "index": 2,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
-                                "name": "FIRST_NAME",
-                                "notNull": false,
+                                "name": "PUBLIC_ID",
+                                "notNull": true,
                                 "oneRelationColumns": [],
                                 "propertyColumnMap": null,
                                 "propertyColumns": [
@@ -1937,7 +1847,7 @@ export const MAPPED_SUPERCLASS = [
                                 "index": 3,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
-                                "name": "LAST_NAME",
+                                "name": "USERNAME",
                                 "notNull": false,
                                 "oneRelationColumns": [],
                                 "propertyColumnMap": null,
@@ -1957,7 +1867,7 @@ export const MAPPED_SUPERCLASS = [
                                 "index": 4,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
-                                "name": "MIDDLE_NAME",
+                                "name": "EMAIL",
                                 "notNull": false,
                                 "oneRelationColumns": [],
                                 "propertyColumnMap": null,
@@ -1977,7 +1887,7 @@ export const MAPPED_SUPERCLASS = [
                                 "index": 5,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
-                                "name": "PHONE",
+                                "name": "COUNTRY_ID",
                                 "notNull": false,
                                 "oneRelationColumns": [],
                                 "propertyColumnMap": null,
@@ -1989,7 +1899,7 @@ export const MAPPED_SUPERCLASS = [
                                     }
                                 ],
                                 "sinceVersion": null,
-                                "type": "STRING"
+                                "type": "NUMBER"
                             }
                         ],
                         "idColumns": [
@@ -2017,7 +1927,7 @@ export const MAPPED_SUPERCLASS = [
                         ],
                         "idColumnMap": null,
                         "id": null,
-                        "index": 2,
+                        "index": 4,
                         "isLocal": true,
                         "isRepositoryEntity": false,
                         "name": "User",
@@ -2051,7 +1961,7 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 1,
                                 "isId": false,
-                                "name": "uniqueId",
+                                "name": "privateId",
                                 "relation": null,
                                 "sinceVersion": null
                             },
@@ -2067,7 +1977,7 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 2,
                                 "isId": false,
-                                "name": "firstName",
+                                "name": "publicId",
                                 "relation": null,
                                 "sinceVersion": null
                             },
@@ -2083,7 +1993,7 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 3,
                                 "isId": false,
-                                "name": "lastName",
+                                "name": "email",
                                 "relation": null,
                                 "sinceVersion": null
                             },
@@ -2099,7 +2009,7 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 4,
                                 "isId": false,
-                                "name": "middleName",
+                                "name": "username",
                                 "relation": null,
                                 "sinceVersion": null
                             },
@@ -2115,8 +2025,20 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 5,
                                 "isId": false,
-                                "name": "phone",
-                                "relation": null,
+                                "name": "country",
+                                "relation": [
+                                    {
+                                        "isId": false,
+                                        "relationType": "MANY_TO_ONE",
+                                        "id": null,
+                                        "index": 0,
+                                        "property": null,
+                                        "manyRelationColumns": [],
+                                        "oneRelationColumns": [],
+                                        "relationEntity": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
                                 "sinceVersion": null
                             },
                             {
@@ -2132,7 +2054,7 @@ export const MAPPED_SUPERCLASS = [
                                         "oneToManyElems": null,
                                         "relationType": "ONE_TO_MANY",
                                         "id": null,
-                                        "index": 0,
+                                        "index": 1,
                                         "property": null,
                                         "manyRelationColumns": [],
                                         "oneRelationColumns": [],
@@ -2155,7 +2077,7 @@ export const MAPPED_SUPERCLASS = [
                                         "oneToManyElems": null,
                                         "relationType": "ONE_TO_MANY",
                                         "id": null,
-                                        "index": 1,
+                                        "index": 2,
                                         "property": null,
                                         "manyRelationColumns": [],
                                         "oneRelationColumns": [],
@@ -2170,8 +2092,7 @@ export const MAPPED_SUPERCLASS = [
                         "relations": [
                             {
                                 "isId": false,
-                                "oneToManyElems": null,
-                                "relationType": "ONE_TO_MANY",
+                                "relationType": "MANY_TO_ONE",
                                 "id": null,
                                 "index": 0,
                                 "property": null,
@@ -2186,6 +2107,18 @@ export const MAPPED_SUPERCLASS = [
                                 "relationType": "ONE_TO_MANY",
                                 "id": null,
                                 "index": 1,
+                                "property": null,
+                                "manyRelationColumns": [],
+                                "oneRelationColumns": [],
+                                "relationEntity": null,
+                                "sinceVersion": null
+                            },
+                            {
+                                "isId": false,
+                                "oneToManyElems": null,
+                                "relationType": "ONE_TO_MANY",
+                                "id": null,
+                                "index": 2,
                                 "property": null,
                                 "manyRelationColumns": [],
                                 "oneRelationColumns": [],
@@ -2275,31 +2208,7 @@ export const MAPPED_SUPERCLASS = [
                         "@airport/air-control": null
                     }
                 },
-                "properties": [
-                    {
-                        "decorators": [
-                            {
-                                "name": "Column",
-                                "values": [
-                                    {
-                                        "name": "IS_DRAFT",
-                                        "nullable": false
-                                    }
-                                ]
-                            }
-                        ],
-                        "isGenerated": false,
-                        "isId": false,
-                        "isMappedSuperclass": false,
-                        "isTransient": false,
-                        "name": "draft",
-                        "type": "boolean",
-                        "ownerEntity": null,
-                        "nonArrayType": "boolean",
-                        "primitive": "boolean",
-                        "index": 0
-                    }
-                ],
+                "properties": [],
                 "methodSignatures": [],
                 "constructors": [
                     {
@@ -2647,6 +2556,11 @@ export const MAPPED_SUPERCLASS = [
                                         "moduleImport": null,
                                         "sourceName": "Column"
                                     },
+                                    "DbNumber": {
+                                        "asName": "DbNumber",
+                                        "moduleImport": null,
+                                        "sourceName": "DbNumber"
+                                    },
                                     "GeneratedValue": {
                                         "asName": "GeneratedValue",
                                         "moduleImport": null,
@@ -2675,6 +2589,7 @@ export const MAPPED_SUPERCLASS = [
                                 },
                                 "path": "@airport/air-control"
                             },
+                            "DbNumber": null,
                             "GeneratedValue": null,
                             "Id": null,
                             "JoinColumn": null,
@@ -2843,6 +2758,10 @@ export const MAPPED_SUPERCLASS = [
                                             "nullable": false
                                         }
                                     ]
+                                },
+                                {
+                                    "name": "DbNumber",
+                                    "values": []
                                 }
                             ],
                             "isGenerated": false,
@@ -2850,9 +2769,9 @@ export const MAPPED_SUPERCLASS = [
                             "isMappedSuperclass": false,
                             "isTransient": false,
                             "name": "ageSuitability",
-                            "type": "number",
+                            "type": "RepositoryEntity_AgeSuitability",
                             "ownerEntity": null,
-                            "nonArrayType": "number",
+                            "nonArrayType": "RepositoryEntity_AgeSuitability",
                             "primitive": "number",
                             "index": 3
                         },
@@ -2933,31 +2852,7 @@ export const MAPPED_SUPERCLASS = [
                                 "@airport/air-control": null
                             }
                         },
-                        "properties": [
-                            {
-                                "decorators": [
-                                    {
-                                        "name": "Column",
-                                        "values": [
-                                            {
-                                                "name": "IS_DRAFT",
-                                                "nullable": false
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "isGenerated": false,
-                                "isId": false,
-                                "isMappedSuperclass": false,
-                                "isTransient": false,
-                                "name": "draft",
-                                "type": "boolean",
-                                "ownerEntity": null,
-                                "nonArrayType": "boolean",
-                                "primitive": "boolean",
-                                "index": 0
-                            }
-                        ],
+                        "properties": [],
                         "methodSignatures": [],
                         "constructors": [
                             {
@@ -3204,7 +3099,7 @@ export const MAPPED_SUPERCLASS = [
                                     "index": 1,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
-                                    "name": "UNIQUE_IDENTIFIER",
+                                    "name": "PRIVATE_ID",
                                     "notNull": true,
                                     "oneRelationColumns": [],
                                     "propertyColumnMap": null,
@@ -3224,8 +3119,8 @@ export const MAPPED_SUPERCLASS = [
                                     "index": 2,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
-                                    "name": "FIRST_NAME",
-                                    "notNull": false,
+                                    "name": "PUBLIC_ID",
+                                    "notNull": true,
                                     "oneRelationColumns": [],
                                     "propertyColumnMap": null,
                                     "propertyColumns": [
@@ -3244,7 +3139,7 @@ export const MAPPED_SUPERCLASS = [
                                     "index": 3,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
-                                    "name": "LAST_NAME",
+                                    "name": "USERNAME",
                                     "notNull": false,
                                     "oneRelationColumns": [],
                                     "propertyColumnMap": null,
@@ -3264,7 +3159,7 @@ export const MAPPED_SUPERCLASS = [
                                     "index": 4,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
-                                    "name": "MIDDLE_NAME",
+                                    "name": "EMAIL",
                                     "notNull": false,
                                     "oneRelationColumns": [],
                                     "propertyColumnMap": null,
@@ -3284,7 +3179,7 @@ export const MAPPED_SUPERCLASS = [
                                     "index": 5,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
-                                    "name": "PHONE",
+                                    "name": "COUNTRY_ID",
                                     "notNull": false,
                                     "oneRelationColumns": [],
                                     "propertyColumnMap": null,
@@ -3296,7 +3191,7 @@ export const MAPPED_SUPERCLASS = [
                                         }
                                     ],
                                     "sinceVersion": null,
-                                    "type": "STRING"
+                                    "type": "NUMBER"
                                 }
                             ],
                             "idColumns": [
@@ -3324,7 +3219,7 @@ export const MAPPED_SUPERCLASS = [
                             ],
                             "idColumnMap": null,
                             "id": null,
-                            "index": 2,
+                            "index": 4,
                             "isLocal": true,
                             "isRepositoryEntity": false,
                             "name": "User",
@@ -3358,7 +3253,7 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 1,
                                     "isId": false,
-                                    "name": "uniqueId",
+                                    "name": "privateId",
                                     "relation": null,
                                     "sinceVersion": null
                                 },
@@ -3374,7 +3269,7 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 2,
                                     "isId": false,
-                                    "name": "firstName",
+                                    "name": "publicId",
                                     "relation": null,
                                     "sinceVersion": null
                                 },
@@ -3390,7 +3285,7 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 3,
                                     "isId": false,
-                                    "name": "lastName",
+                                    "name": "email",
                                     "relation": null,
                                     "sinceVersion": null
                                 },
@@ -3406,7 +3301,7 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 4,
                                     "isId": false,
-                                    "name": "middleName",
+                                    "name": "username",
                                     "relation": null,
                                     "sinceVersion": null
                                 },
@@ -3422,8 +3317,20 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 5,
                                     "isId": false,
-                                    "name": "phone",
-                                    "relation": null,
+                                    "name": "country",
+                                    "relation": [
+                                        {
+                                            "isId": false,
+                                            "relationType": "MANY_TO_ONE",
+                                            "id": null,
+                                            "index": 0,
+                                            "property": null,
+                                            "manyRelationColumns": [],
+                                            "oneRelationColumns": [],
+                                            "relationEntity": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
                                     "sinceVersion": null
                                 },
                                 {
@@ -3439,7 +3346,7 @@ export const MAPPED_SUPERCLASS = [
                                             "oneToManyElems": null,
                                             "relationType": "ONE_TO_MANY",
                                             "id": null,
-                                            "index": 0,
+                                            "index": 1,
                                             "property": null,
                                             "manyRelationColumns": [],
                                             "oneRelationColumns": [],
@@ -3462,7 +3369,7 @@ export const MAPPED_SUPERCLASS = [
                                             "oneToManyElems": null,
                                             "relationType": "ONE_TO_MANY",
                                             "id": null,
-                                            "index": 1,
+                                            "index": 2,
                                             "property": null,
                                             "manyRelationColumns": [],
                                             "oneRelationColumns": [],
@@ -3477,8 +3384,7 @@ export const MAPPED_SUPERCLASS = [
                             "relations": [
                                 {
                                     "isId": false,
-                                    "oneToManyElems": null,
-                                    "relationType": "ONE_TO_MANY",
+                                    "relationType": "MANY_TO_ONE",
                                     "id": null,
                                     "index": 0,
                                     "property": null,
@@ -3493,6 +3399,18 @@ export const MAPPED_SUPERCLASS = [
                                     "relationType": "ONE_TO_MANY",
                                     "id": null,
                                     "index": 1,
+                                    "property": null,
+                                    "manyRelationColumns": [],
+                                    "oneRelationColumns": [],
+                                    "relationEntity": null,
+                                    "sinceVersion": null
+                                },
+                                {
+                                    "isId": false,
+                                    "oneToManyElems": null,
+                                    "relationType": "ONE_TO_MANY",
+                                    "id": null,
+                                    "index": 2,
                                     "property": null,
                                     "manyRelationColumns": [],
                                     "oneRelationColumns": [],
@@ -3582,31 +3500,7 @@ export const MAPPED_SUPERCLASS = [
                             "@airport/air-control": null
                         }
                     },
-                    "properties": [
-                        {
-                            "decorators": [
-                                {
-                                    "name": "Column",
-                                    "values": [
-                                        {
-                                            "name": "IS_DRAFT",
-                                            "nullable": false
-                                        }
-                                    ]
-                                }
-                            ],
-                            "isGenerated": false,
-                            "isId": false,
-                            "isMappedSuperclass": false,
-                            "isTransient": false,
-                            "name": "draft",
-                            "type": "boolean",
-                            "ownerEntity": null,
-                            "nonArrayType": "boolean",
-                            "primitive": "boolean",
-                            "index": 0
-                        }
-                    ],
+                    "properties": [],
                     "methodSignatures": [],
                     "constructors": [
                         {

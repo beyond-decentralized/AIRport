@@ -212,11 +212,11 @@ export class BaseActorDuo
 	implements IBaseActorDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(4)
+		super(3)
 	}
 }
 
@@ -230,11 +230,11 @@ export class BaseOperationHistoryDuo
 	implements IBaseOperationHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(10)
+		super(9)
 	}
 }
 
@@ -266,11 +266,11 @@ export class BaseRecordHistoryNewValueDuo
 	implements IBaseRecordHistoryNewValueDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(6)
+		super(5)
 	}
 }
 
@@ -284,11 +284,11 @@ export class BaseRecordHistoryOldValueDuo
 	implements IBaseRecordHistoryOldValueDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(7)
+		super(6)
 	}
 }
 
@@ -302,11 +302,11 @@ export class BaseRepoTransHistoryChangedRepositoryActorDuo
 	implements IBaseRepoTransHistoryChangedRepositoryActorDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(5)
+		super(4)
 	}
 }
 
@@ -320,11 +320,11 @@ export class BaseRepositoryDuo
 	implements IBaseRepositoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(2)
+		super(1)
 	}
 }
 
@@ -338,11 +338,11 @@ export class BaseRepositoryActorDuo
 	implements IBaseRepositoryActorDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(3)
+		super(2)
 	}
 }
 
@@ -356,11 +356,11 @@ export class BaseRepositoryApplicationDuo
 	implements IBaseRepositoryApplicationDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(1)
+		super(10)
 	}
 }
 
@@ -392,11 +392,11 @@ export class BaseRepositoryTransactionHistoryDuo
 	implements IBaseRepositoryTransactionHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(9)
+		super(8)
 	}
 }
 
@@ -410,10 +410,10 @@ export class BaseTransactionHistoryDuo
 	implements IBaseTransactionHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(8)
+		super(7)
 	}
 }

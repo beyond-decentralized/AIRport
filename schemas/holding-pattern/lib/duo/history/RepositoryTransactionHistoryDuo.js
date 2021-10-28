@@ -27,7 +27,7 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
             }
             const actor1 = actorMapById.get(repoTransHistory1.actor.id);
             const actor2 = actorMapById.get(repoTransHistory2.actor.id);
-            const userIdComparison = actor1.user.uniqueId.localeCompare(actor2.user.uniqueId);
+            const userIdComparison = actor1.user.privateId.localeCompare(actor2.user.privateId);
             if (userIdComparison) {
                 return userIdComparison;
             }
@@ -39,7 +39,7 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
             if (databaseSecondIdComparison) {
                 return databaseSecondIdComparison;
             }
-            const databaseOwnerComparison = actor1.terminal.owner.uniqueId.localeCompare(actor2.terminal.owner.uniqueId);
+            const databaseOwnerComparison = actor1.terminal.owner.privateId.localeCompare(actor2.terminal.owner.privateId);
             if (databaseOwnerComparison) {
                 return databaseOwnerComparison;
             }

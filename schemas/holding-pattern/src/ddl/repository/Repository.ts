@@ -18,9 +18,6 @@ import {
 	RepositoryActor
 } from '../repository/RepositoryActor'
 import {
-	RepositoryApplication
-} from '../repository/RepositoryApplication'
-import {
 	RepositoryTransactionHistory
 } from '../history/RepositoryTransactionHistory'
 import { SyncPriority } from "./SyncPrority";
@@ -29,11 +26,12 @@ import { SyncPriority } from "./SyncPrority";
  * Created by Papa on 2/9/2017.
  */
 
-export type RepositoryId = number;
-export type RepositoryCreatedAt = Date;
-export type RepositoryUuId = string;
-export type RepositoryName = string;
-export type RepositoryUrl = string;
+export type Repository_Id = number;
+export type Repository_CreatedAt = Date;
+export type Repository_UuId = string;
+export type Repository_Name = string;
+export type Repository_Url = string;
+export type Repository_AgeSuitability = 0 | 7 | 13 | 18
 
 @Entity()
 @Table({
@@ -45,7 +43,7 @@ export class Repository {
 	@GeneratedValue()
 	@Id()
 	@DbNumber()
-	id: RepositoryId;
+	id: Repository_Id;
 
 	@ManyToOne()
 	@JoinColumn({
@@ -56,19 +54,23 @@ export class Repository {
 
 	@Column({ name: "CREATED_AT", nullable: false })
 	@DbDate()
-	createdAt: RepositoryCreatedAt;
+	createdAt: Repository_CreatedAt;
 
 	@Column({ name: "UU_ID", nullable: false })
 	@DbString()
-	uuId: RepositoryUuId;
+	uuId: Repository_UuId;
 
 	@Column({ name: "NAME", nullable: false })
 	@DbString()
-	name: RepositoryName;
+	name: Repository_Name;
+
+	@Column({name: 'AGE_SUITABILITY', nullable: false})
+	@DbNumber()
+	ageSuitability: Repository_AgeSuitability
 
 	@Column({ name: "REPOSITORY_URL" })
 	@DbString()
-	url: RepositoryUrl;
+	url: Repository_Url;
 
 	// @Column({name: "DISTRIBUTION_STRATEGY"})
 	// @DbString()

@@ -12,7 +12,6 @@ export interface IStageable {
 	// Id Relations
 
 	// Non-Id Properties
-	draft?: boolean;
 
 	// Non-Id Relations
 

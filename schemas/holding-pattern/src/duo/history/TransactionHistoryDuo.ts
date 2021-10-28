@@ -1,7 +1,7 @@
 import {DI}                               from '@airport/di'
 import {TransactionType}                  from '@airport/ground-control'
 import {
-	RepositoryId,
+	Repository_Id,
 	TransactionHistory
 }                                         from '../../ddl/ddl'
 import {TRANS_HISTORY_DUO}                from '../../tokens'
@@ -22,7 +22,7 @@ export interface ITransactionHistoryDuo {
 
 	getRepositoryTransaction(
 		transactionHistory: ITransactionHistory,
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		actor: IActor,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo
 	): IRepositoryTransactionHistory
@@ -45,7 +45,7 @@ export class TransactionHistoryDuo
 
 	getRepositoryTransaction(
 		transactionHistory: ITransactionHistory,
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		actor: IActor,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo
 	): IRepositoryTransactionHistory {

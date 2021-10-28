@@ -1,9 +1,8 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
 /**
  * SELECT - All fields and relations (optional).
  */
 export interface StageableESelect extends IEntitySelectProperties, StageableEOptionalId {
-    draft?: boolean | IQBooleanField;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -19,13 +18,11 @@ export interface StageableEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface StageableEUpdateProperties extends IEntityUpdateProperties {
-    draft?: boolean | IQBooleanField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface StageableGraph extends StageableEOptionalId, IEntityCascadeGraph {
-    draft?: boolean | IQBooleanField;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -46,7 +43,6 @@ export interface StageableECreateColumns extends StageableEId, StageableEUpdateC
  * Query Entity Query Definition (used for Q.EntityName).
  */
 export interface QStageable<T> extends IQEntity<T> {
-    draft: IQBooleanField;
 }
 export interface QStageableQId {
 }
