@@ -1,5 +1,9 @@
 import { IAgt } from './agt';
 import { AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt } from './qagt';
+import { IContinent } from './continent';
+import { ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent } from './qcontinent';
+import { ICountry } from './country';
+import { CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry } from './qcountry';
 import { ITerminal } from './terminal';
 import { TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal } from './qterminal';
 import { ITerminalAgt } from './terminalagt';
@@ -24,6 +28,28 @@ export declare class BaseAgtDao extends SQDIDao<IAgt, AgtESelect, AgtECreateProp
     static Search: DaoQueryDecorators<AgtESelect>;
     static SearchOne: DaoQueryDecorators<AgtESelect>;
     static Save(config: AgtGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseContinentDao extends IDao<IContinent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> {
+}
+export declare class BaseContinentDao extends SQDIDao<IContinent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> implements IBaseContinentDao {
+    static Find: DaoQueryDecorators<ContinentESelect>;
+    static FindOne: DaoQueryDecorators<ContinentESelect>;
+    static Search: DaoQueryDecorators<ContinentESelect>;
+    static SearchOne: DaoQueryDecorators<ContinentESelect>;
+    static Save(config: ContinentGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseCountryDao extends IDao<ICountry, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> {
+}
+export declare class BaseCountryDao extends SQDIDao<ICountry, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> implements IBaseCountryDao {
+    static Find: DaoQueryDecorators<CountryESelect>;
+    static FindOne: DaoQueryDecorators<CountryESelect>;
+    static Search: DaoQueryDecorators<CountryESelect>;
+    static SearchOne: DaoQueryDecorators<CountryESelect>;
+    static Save(config: CountryGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

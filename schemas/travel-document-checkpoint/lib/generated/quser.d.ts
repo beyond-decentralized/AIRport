@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation } from './qcountry';
 import { UserTerminalGraph, UserTerminalESelect, QUserTerminal } from './quserterminal';
 import { UserTerminal } from '../ddl/UserTerminal';
 import { UserTerminalAgtGraph, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
@@ -8,11 +9,11 @@ import { User } from '../ddl/User';
  * SELECT - All fields and relations (optional).
  */
 export interface UserESelect extends IEntitySelectProperties, UserEOptionalId {
-    uniqueId?: string | IQStringField;
-    firstName?: string | IQStringField;
-    lastName?: string | IQStringField;
-    middleName?: string | IQStringField;
-    phone?: string | IQStringField;
+    privateId?: string | IQStringField;
+    publicId?: string | IQStringField;
+    email?: string | IQStringField;
+    username?: string | IQStringField;
+    country?: CountryESelect;
     userTerminal?: UserTerminalESelect;
     userTerminalAgts?: UserTerminalAgtESelect;
 }
@@ -32,21 +33,21 @@ export interface UserEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface UserEUpdateProperties extends IEntityUpdateProperties {
-    uniqueId?: string | IQStringField;
-    firstName?: string | IQStringField;
-    lastName?: string | IQStringField;
-    middleName?: string | IQStringField;
-    phone?: string | IQStringField;
+    privateId?: string | IQStringField;
+    publicId?: string | IQStringField;
+    email?: string | IQStringField;
+    username?: string | IQStringField;
+    country?: CountryEOptionalId;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
-    uniqueId?: string | IQStringField;
-    firstName?: string | IQStringField;
-    lastName?: string | IQStringField;
-    middleName?: string | IQStringField;
-    phone?: string | IQStringField;
+    privateId?: string | IQStringField;
+    publicId?: string | IQStringField;
+    email?: string | IQStringField;
+    username?: string | IQStringField;
+    country?: CountryGraph;
     userTerminal?: UserTerminalGraph[];
     userTerminalAgts?: UserTerminalAgtGraph[];
 }
@@ -54,11 +55,11 @@ export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
  * UPDATE - non-id columns (optional).
  */
 export interface UserEUpdateColumns extends IEntityUpdateColumns {
-    UNIQUE_IDENTIFIER?: string | IQStringField;
-    FIRST_NAME?: string | IQStringField;
-    LAST_NAME?: string | IQStringField;
-    MIDDLE_NAME?: string | IQStringField;
-    PHONE?: string | IQStringField;
+    PRIVATE_ID?: string | IQStringField;
+    PUBLIC_ID?: string | IQStringField;
+    USERNAME?: string | IQStringField;
+    EMAIL?: string | IQStringField;
+    COUNTRY_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -75,11 +76,11 @@ export interface UserECreateColumns extends UserEId, UserEUpdateColumns {
  */
 export interface QUser extends IQEntity<User> {
     id: IQNumberField;
-    uniqueId: IQStringField;
-    firstName: IQStringField;
-    lastName: IQStringField;
-    middleName: IQStringField;
-    phone: IQStringField;
+    privateId: IQStringField;
+    publicId: IQStringField;
+    email: IQStringField;
+    username: IQStringField;
+    country: QCountryQRelation;
     userTerminal: IQOneToManyRelation<UserTerminal, QUserTerminal>;
     userTerminalAgts: IQOneToManyRelation<UserTerminalAgt, QUserTerminalAgt>;
 }

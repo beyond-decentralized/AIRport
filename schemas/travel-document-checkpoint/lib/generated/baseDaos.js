@@ -8,65 +8,20 @@ export class SQDIDao extends Dao {
 }
 export class BaseAgtDao extends SQDIDao {
     constructor() {
-        super(5);
+        super(7);
     }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(5);
+        return duoDiSet(7);
     }
 }
 BaseAgtDao.Find = new DaoQueryDecorators();
 BaseAgtDao.FindOne = new DaoQueryDecorators();
 BaseAgtDao.Search = new DaoQueryDecorators();
 BaseAgtDao.SearchOne = new DaoQueryDecorators();
-export class BaseTerminalDao extends SQDIDao {
-    constructor() {
-        super(3);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet(3);
-    }
-}
-BaseTerminalDao.Find = new DaoQueryDecorators();
-BaseTerminalDao.FindOne = new DaoQueryDecorators();
-BaseTerminalDao.Search = new DaoQueryDecorators();
-BaseTerminalDao.SearchOne = new DaoQueryDecorators();
-export class BaseTerminalAgtDao extends SQDIDao {
-    constructor() {
-        super(4);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet(4);
-    }
-}
-BaseTerminalAgtDao.Find = new DaoQueryDecorators();
-BaseTerminalAgtDao.FindOne = new DaoQueryDecorators();
-BaseTerminalAgtDao.Search = new DaoQueryDecorators();
-BaseTerminalAgtDao.SearchOne = new DaoQueryDecorators();
-export class BaseUserDao extends SQDIDao {
-    constructor() {
-        super(2);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet(2);
-    }
-}
-BaseUserDao.Find = new DaoQueryDecorators();
-BaseUserDao.FindOne = new DaoQueryDecorators();
-BaseUserDao.Search = new DaoQueryDecorators();
-BaseUserDao.SearchOne = new DaoQueryDecorators();
-export class BaseUserTerminalDao extends SQDIDao {
+export class BaseContinentDao extends SQDIDao {
     constructor() {
         super(0);
     }
@@ -77,11 +32,11 @@ export class BaseUserTerminalDao extends SQDIDao {
         return duoDiSet(0);
     }
 }
-BaseUserTerminalDao.Find = new DaoQueryDecorators();
-BaseUserTerminalDao.FindOne = new DaoQueryDecorators();
-BaseUserTerminalDao.Search = new DaoQueryDecorators();
-BaseUserTerminalDao.SearchOne = new DaoQueryDecorators();
-export class BaseUserTerminalAgtDao extends SQDIDao {
+BaseContinentDao.Find = new DaoQueryDecorators();
+BaseContinentDao.FindOne = new DaoQueryDecorators();
+BaseContinentDao.Search = new DaoQueryDecorators();
+BaseContinentDao.SearchOne = new DaoQueryDecorators();
+export class BaseCountryDao extends SQDIDao {
     constructor() {
         super(1);
     }
@@ -90,6 +45,81 @@ export class BaseUserTerminalAgtDao extends SQDIDao {
     }
     static diSet() {
         return duoDiSet(1);
+    }
+}
+BaseCountryDao.Find = new DaoQueryDecorators();
+BaseCountryDao.FindOne = new DaoQueryDecorators();
+BaseCountryDao.Search = new DaoQueryDecorators();
+BaseCountryDao.SearchOne = new DaoQueryDecorators();
+export class BaseTerminalDao extends SQDIDao {
+    constructor() {
+        super(5);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet(5);
+    }
+}
+BaseTerminalDao.Find = new DaoQueryDecorators();
+BaseTerminalDao.FindOne = new DaoQueryDecorators();
+BaseTerminalDao.Search = new DaoQueryDecorators();
+BaseTerminalDao.SearchOne = new DaoQueryDecorators();
+export class BaseTerminalAgtDao extends SQDIDao {
+    constructor() {
+        super(6);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet(6);
+    }
+}
+BaseTerminalAgtDao.Find = new DaoQueryDecorators();
+BaseTerminalAgtDao.FindOne = new DaoQueryDecorators();
+BaseTerminalAgtDao.Search = new DaoQueryDecorators();
+BaseTerminalAgtDao.SearchOne = new DaoQueryDecorators();
+export class BaseUserDao extends SQDIDao {
+    constructor() {
+        super(4);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet(4);
+    }
+}
+BaseUserDao.Find = new DaoQueryDecorators();
+BaseUserDao.FindOne = new DaoQueryDecorators();
+BaseUserDao.Search = new DaoQueryDecorators();
+BaseUserDao.SearchOne = new DaoQueryDecorators();
+export class BaseUserTerminalDao extends SQDIDao {
+    constructor() {
+        super(2);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet(2);
+    }
+}
+BaseUserTerminalDao.Find = new DaoQueryDecorators();
+BaseUserTerminalDao.FindOne = new DaoQueryDecorators();
+BaseUserTerminalDao.Search = new DaoQueryDecorators();
+BaseUserTerminalDao.SearchOne = new DaoQueryDecorators();
+export class BaseUserTerminalAgtDao extends SQDIDao {
+    constructor() {
+        super(3);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet(3);
     }
 }
 BaseUserTerminalAgtDao.Find = new DaoQueryDecorators();

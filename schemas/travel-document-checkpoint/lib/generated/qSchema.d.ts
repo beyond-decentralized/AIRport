@@ -1,6 +1,8 @@
 import { QSchema as AirportQSchema } from '@airport/air-control';
 import { DbSchema, EntityId } from '@airport/ground-control';
 import { QAgt } from './qagt';
+import { QContinent } from './qcontinent';
+import { QCountry } from './qcountry';
 import { QTerminal } from './qterminal';
 import { QTerminalAgt } from './qterminalagt';
 import { QUser } from './quser';
@@ -9,6 +11,8 @@ import { QUserTerminalAgt } from './quserterminalagt';
 export interface LocalQSchema extends AirportQSchema {
     db: DbSchema;
     Agt: QAgt;
+    Continent: QContinent;
+    Country: QCountry;
     Terminal: QTerminal;
     TerminalAgt: QTerminalAgt;
     User: QUser;

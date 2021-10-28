@@ -11339,10 +11339,12 @@ packages:
       tarball: 'file:projects/traffic-pattern.tgz'
     version: 0.0.0
   'file:projects/travel-document-checkpoint.tgz':
+    dependencies:
+      uuid: 8.3.2
     dev: false
     name: '@rush-temp/travel-document-checkpoint'
     resolution:
-      integrity: sha512-3kEefmEi8+XJKKmdRAWU8l6auFsRrEzP90z8QigGxtA4rl7XWjGzWCmxW/uIStRBRHCQx1hus3Bwc5L7TFutaA==
+      integrity: sha512-xkJLcuUnK/bq065M3Nqo1dParB06Myqs/ygDn2ef3zoiZwAZcGq5u5NYSCJLRaUr9iI0wTL9idApVOCQ2jlktw==
       tarball: 'file:projects/travel-document-checkpoint.tgz'
     version: 0.0.0
   'file:projects/vasi.tgz':

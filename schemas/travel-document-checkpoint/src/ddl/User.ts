@@ -5,17 +5,19 @@ import {
 	Entity,
 	GeneratedValue,
 	Id,
+	JoinColumn,
+	ManyToOne,
 	OneToMany
-}                         from '@airport/air-control'
-import {UserTerminal}     from './UserTerminal'
-import {UserTerminalAgt}  from './UserTerminalAgt'
+} from '@airport/air-control'
+import { Country } from './Country';
+import { UserTerminal } from './UserTerminal'
+import { UserTerminalAgt } from './UserTerminalAgt'
 
 export type UserId = number;
-export type UserUniqueId = string;
-export type UserFirstName = string;
-export type UserLastName = string;
-export type UserMiddleName = string;
-export type UserPhone = string;
+export type User_PrivateId = string;
+export type User_PublicId = string;
+export type User_Username = string;
+export type User_Email = string;
 
 @Entity()
 export class User {
@@ -25,29 +27,30 @@ export class User {
 	@DbNumber()
 	id: UserId;
 
-	@Column({name: "UNIQUE_IDENTIFIER", nullable: false})
+	@Column({ name: "PRIVATE_ID", nullable: false })
 	@DbString()
-	uniqueId: UserUniqueId;
+	privateId: User_PrivateId;
 
-	@Column({name: "FIRST_NAME"})
+	@Column({ name: "PUBLIC_ID", nullable: false })
 	@DbString()
-	firstName: UserFirstName;
+	publicId: User_PublicId;
 
-	@Column({name: "LAST_NAME"})
+	@Column({ name: "USERNAME" })
 	@DbString()
-	lastName: UserLastName;
+	email: User_Username;
 
-	@Column({name: "MIDDLE_NAME"})
+	@Column({ name: "EMAIL" })
 	@DbString()
-	middleName: UserMiddleName;
+	username: User_Email;
 
-	@DbString()
-	phone: UserPhone;
+	@ManyToOne()
+	@JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID' })
+	country: Country
 
-	@OneToMany({mappedBy: 'user'})
+	@OneToMany({ mappedBy: 'user' })
 	userTerminal: UserTerminal[]
 
-	@OneToMany({mappedBy: 'user'})
+	@OneToMany({ mappedBy: 'user' })
 	userTerminalAgts: UserTerminalAgt[]
 
 }

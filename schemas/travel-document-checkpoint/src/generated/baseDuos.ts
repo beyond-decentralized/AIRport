@@ -13,6 +13,32 @@ import {
 	QAgt,
 } from './qagt';
 import {
+	IContinent,
+} from './continent';
+import {
+	ContinentESelect,
+	ContinentECreateColumns,
+	ContinentECreateProperties,
+	ContinentEUpdateColumns,
+	ContinentEUpdateProperties,
+	ContinentEId,
+	ContinentGraph,
+	QContinent,
+} from './qcontinent';
+import {
+	ICountry,
+} from './country';
+import {
+	CountryESelect,
+	CountryECreateColumns,
+	CountryECreateProperties,
+	CountryEUpdateColumns,
+	CountryEUpdateProperties,
+	CountryEId,
+	CountryGraph,
+	QCountry,
+} from './qcountry';
+import {
 	ITerminal,
 } from './terminal';
 import {
@@ -134,11 +160,47 @@ export class BaseAgtDuo
 	implements IBaseAgtDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(5)
+		super(7)
+	}
+}
+
+
+export interface IBaseContinentDuo
+  extends IDuo<IContinent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> {
+}
+
+export class BaseContinentDuo
+  extends SQDIDuo<IContinent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent>
+	implements IBaseContinentDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(0)
+	}
+	
+	constructor() {
+		super(0)
+	}
+}
+
+
+export interface IBaseCountryDuo
+  extends IDuo<ICountry, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> {
+}
+
+export class BaseCountryDuo
+  extends SQDIDuo<ICountry, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry>
+	implements IBaseCountryDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(1)
+	}
+	
+	constructor() {
+		super(1)
 	}
 }
 
@@ -152,11 +214,11 @@ export class BaseTerminalDuo
 	implements IBaseTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(3)
+		super(5)
 	}
 }
 
@@ -170,11 +232,11 @@ export class BaseTerminalAgtDuo
 	implements IBaseTerminalAgtDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(4)
+		super(6)
 	}
 }
 
@@ -188,11 +250,11 @@ export class BaseUserDuo
 	implements IBaseUserDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(2)
+		super(4)
 	}
 }
 
@@ -206,11 +268,11 @@ export class BaseUserTerminalDuo
 	implements IBaseUserTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(0)
+		super(2)
 	}
 }
 
@@ -224,10 +286,10 @@ export class BaseUserTerminalAgtDuo
 	implements IBaseUserTerminalAgtDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(1)
+		super(3)
 	}
 }

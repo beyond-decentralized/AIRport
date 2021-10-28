@@ -13,6 +13,32 @@ import {
 	QAgt,
 } from './qagt';
 import {
+	IContinent,
+} from './continent';
+import {
+	ContinentESelect,
+	ContinentECreateColumns,
+	ContinentECreateProperties,
+	ContinentEUpdateColumns,
+	ContinentEUpdateProperties,
+	ContinentEId,
+	ContinentGraph,
+	QContinent,
+} from './qcontinent';
+import {
+	ICountry,
+} from './country';
+import {
+	CountryESelect,
+	CountryECreateColumns,
+	CountryECreateProperties,
+	CountryEUpdateColumns,
+	CountryEUpdateProperties,
+	CountryEId,
+	CountryGraph,
+	QCountry,
+} from './qcountry';
+import {
 	ITerminal,
 } from './terminal';
 import {
@@ -145,11 +171,67 @@ export class BaseAgtDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(5)
+		super(7)
+	}
+}
+
+
+export interface IBaseContinentDao
+  extends IDao<IContinent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> {
+}
+
+export class BaseContinentDao
+  extends SQDIDao<IContinent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent>
+	implements IBaseContinentDao {
+	
+	static Find      = new DaoQueryDecorators<ContinentESelect>();
+	static FindOne   = new DaoQueryDecorators<ContinentESelect>();
+	static Search    = new DaoQueryDecorators<ContinentESelect>();
+	static SearchOne = new DaoQueryDecorators<ContinentESelect>();
+	static Save(
+		config: ContinentGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<ContinentGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(0)
+	}
+	
+	constructor() {
+		super(0)
+	}
+}
+
+
+export interface IBaseCountryDao
+  extends IDao<ICountry, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> {
+}
+
+export class BaseCountryDao
+  extends SQDIDao<ICountry, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry>
+	implements IBaseCountryDao {
+	
+	static Find      = new DaoQueryDecorators<CountryESelect>();
+	static FindOne   = new DaoQueryDecorators<CountryESelect>();
+	static Search    = new DaoQueryDecorators<CountryESelect>();
+	static SearchOne = new DaoQueryDecorators<CountryESelect>();
+	static Save(
+		config: CountryGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<CountryGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(1)
+	}
+	
+	constructor() {
+		super(1)
 	}
 }
 
@@ -173,11 +255,11 @@ export class BaseTerminalDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(3)
+		super(5)
 	}
 }
 
@@ -201,11 +283,11 @@ export class BaseTerminalAgtDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(4)
+		super(6)
 	}
 }
 
@@ -229,11 +311,11 @@ export class BaseUserDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(2)
+		super(4)
 	}
 }
 
@@ -257,11 +339,11 @@ export class BaseUserTerminalDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(0)
+		super(2)
 	}
 }
 
@@ -285,10 +367,10 @@ export class BaseUserTerminalAgtDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(1)
+		super(3)
 	}
 }

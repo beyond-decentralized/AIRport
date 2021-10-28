@@ -6,6 +6,8 @@ export declare type UserTerminalAgtPassword = number;
 export declare type UserTerminalAgtId = number;
 export declare type UserTerminalAgtAgtId = number;
 /**
+ * DEPRECATED - syncing will now be done via IPFS/Peergos
+ *
  * User needs some sort of password that can be used to verify that
  * a given user is indeed making changes (instead of another one).
  *

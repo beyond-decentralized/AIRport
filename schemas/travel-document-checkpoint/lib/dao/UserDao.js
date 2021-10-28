@@ -1,33 +1,36 @@
 import { DI } from '@airport/di';
 import { USER_DAO } from '../tokens';
-import { BaseUserDao, Q } from '../generated/generated';
+import { BaseUserDao, Q, } from '../generated/generated';
+import { or } from '@airport/air-control';
 export class UserDao extends BaseUserDao {
-    // @Operation<UserECascadeGraph>({
-    //
-    // })
-    // createNew = this.create
-    async findMapByUniqueId(userUniqueIds) {
-        return await this.findFieldsMapByUniqueId(userUniqueIds, {});
-    }
-    async findFieldsMapByUniqueId(userUniqueIds, select) {
-        const userMap = new Map();
-        const users = await this.findFieldsByUniqueId(userUniqueIds, {});
-        for (const user of users) {
-            userMap.set(user.uniqueId, user);
-        }
-        return userMap;
-    }
-    async findByUniqueId(uniqueIds) {
-        return await this.findFieldsByUniqueId(uniqueIds, {});
-    }
-    async findFieldsByUniqueId(uniqueIds, select) {
+    async findByEmailsOrUserNames(emails, usernames) {
         let u;
         return await this.db.find.tree({
-            select,
+            select: {},
             from: [
                 u = Q.User
             ],
-            where: u.uniqueId.in(uniqueIds)
+            where: or(u.email.in(emails), u.username.in(usernames))
+        });
+    }
+    async findByPrivateIds(privateIds) {
+        let u;
+        return await this.db.find.tree({
+            select: {},
+            from: [
+                u = Q.User
+            ],
+            where: u.privateId.in(privateIds)
+        });
+    }
+    async findByPublicIds(publicIds) {
+        let u;
+        return await this.db.find.tree({
+            select: {},
+            from: [
+                u = Q.User
+            ],
+            where: u.publicId.in(publicIds)
         });
     }
 }

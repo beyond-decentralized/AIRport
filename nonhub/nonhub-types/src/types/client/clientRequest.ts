@@ -26,7 +26,10 @@ export interface SearchRequest
 
 export interface UserRequest
     extends Request {
-    username: string
+    birthMonth: number
+    countryId: number
+    email: string
+    userName: string
 }
 
 export interface WriteRequest

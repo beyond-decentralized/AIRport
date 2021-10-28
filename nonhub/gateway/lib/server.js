@@ -1,7 +1,7 @@
 import { BasicServer, } from '@airport/nonhub-types';
 import { v4 as uuidv4 } from "uuid";
 import { processBatchRequests, respondToReads } from './batchProcessors';
-import { processReadRequest, processWriteRequest, } from './requestProcessors';
+import { processReadRequest, processUserRequest as processSignUpRequest, processWriteRequest, } from './requestProcessors';
 const fs = require('fs');
 const path = require('path');
 const server = new BasicServer({
@@ -103,16 +103,16 @@ server.setIntervalProcessing(async () => {
 //         }, () => currentUser, masterKey, 'http://localhost:5678', genericRespond)
 //     }, 600)
 // }, 400)
-server.fastify.put('/read', (request, reply) => {
+server.fastify.put('/api/read', (request, reply) => {
     processReadRequest(request, reply, currentRead);
 });
-server.fastify.put('/search', (request, reply) => {
+server.fastify.put('/api/search', (request, reply) => {
     // processSearchRequest(request, reply, currentSearch)
 });
-server.fastify.put('/user', (request, reply) => {
-    // processUserRequest(request, reply, currentUser)
+server.fastify.put('/api/signUp', (request, reply) => {
+    processSignUpRequest(request, reply, masterKey);
 });
-server.fastify.put('/write', (request, reply) => {
+server.fastify.put('/api/write', (request, reply) => {
     processWriteRequest(request, reply, masterKey, 'http://localhost:2345');
 });
 server.start();

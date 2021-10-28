@@ -18,7 +18,10 @@ export interface SearchRequest extends Request {
     searchTerm: string;
 }
 export interface UserRequest extends Request {
-    username: string;
+    birthMonth: number;
+    countryId: number;
+    email: string;
+    userName: string;
 }
 export interface WriteRequest extends Request {
     category: 'FromClient';

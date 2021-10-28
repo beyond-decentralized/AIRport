@@ -12,6 +12,11 @@ import {Agt}              from './Agt'
 import {Terminal}         from './Terminal'
 import {UserTerminalAgt}  from './UserTerminalAgt'
 
+/**
+ * 
+ * DEPRECATED - syncing will now be done via IPFS/Peergos
+ * 
+ */
 @Entity()
 @Table({name: 'TERMINAL_AGTS'})
 export class TerminalAgt {

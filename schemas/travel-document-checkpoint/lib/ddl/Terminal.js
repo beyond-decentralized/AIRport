@@ -5,6 +5,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, DbBoolean, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany } from '@airport/air-control';
+/**
+ *
+ * DEPRECATED - syncing will now be done via IPFS/Peergos
+ *
+ */
 let Terminal = class Terminal {
     constructor() {
         this.isLocal = false;

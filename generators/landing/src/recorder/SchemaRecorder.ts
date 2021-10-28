@@ -73,7 +73,10 @@ export class SchemaRecorder
 			this.setDefaultVersioning(ddlObjects)
 
 			// await domainDao.save(ddlObjects.domains, context)
-			await schemaDao.save(ddlObjects.schemas, context)
+
+			// FIXME: record the schema fields
+			// await schemaDao.save(ddlObjects.schemas, context)
+			
 			// await schemaVersionDao.save(ddlObjects.schemaVersions, context)
 			// await schemaReferenceDao.save(
 			// 	ddlObjects.schemaReferences as SchemaReferenceECreateProperties[], context)

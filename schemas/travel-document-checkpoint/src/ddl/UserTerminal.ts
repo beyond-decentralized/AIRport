@@ -8,6 +8,11 @@ import {
 import {Terminal} from './Terminal'
 import {User}     from './User'
 
+/**
+ * 
+ * DEPRECATED - syncing will now be done via IPFS/Peergos
+ * 
+ */
 @Entity()
 @Table({name: 'USER_TERMINAL'})
 export class UserTerminal {

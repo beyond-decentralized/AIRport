@@ -2,9 +2,11 @@ import { AIRPORT_DATABASE } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
-import { Agt, Terminal, TerminalAgt, User, UserTerminal, UserTerminalAgt } from '../ddl/ddl';
+import { Agt, Continent, Country, Terminal, TerminalAgt, User, UserTerminal, UserTerminalAgt } from '../ddl/ddl';
 const __constructors__ = {
     Agt: Agt,
+    Continent: Continent,
+    Country: Country,
     Terminal: Terminal,
     TerminalAgt: TerminalAgt,
     User: User,

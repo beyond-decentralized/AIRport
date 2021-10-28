@@ -7,6 +7,8 @@ import {
     ReplyToClient,
     ReplyToClientContext,
     RequestBatch,
+    UserRequest,
+    WriteRequest,
 } from '@airport/nonhub-types'
 import Fastify from 'fastify'
 import { v4 as uuidv4 } from "uuid"
@@ -15,12 +17,15 @@ import {
     respondToReads
 } from './batchProcessors'
 import {
+    doProcessWriteRequestAsync,
     processReadRequest,
+    processUserRequest as processSignUpRequest,
     processWriteRequest,
 } from './requestProcessors'
 
 const fs = require('fs')
 const path = require('path')
+
 
 const server = new BasicServer({
     logger: false,
@@ -137,28 +142,28 @@ server.setIntervalProcessing(async () => {
 // }, 400)
 
 
-server.fastify.put('/read', (
+server.fastify.put('/api/read', (
     request,
     reply
 ) => {
     processReadRequest(request, reply, currentRead)
 })
 
-server.fastify.put('/search', (
+server.fastify.put('/api/search', (
     request,
     reply
 ) => {
     // processSearchRequest(request, reply, currentSearch)
 })
 
-server.fastify.put('/user', (
+server.fastify.put('/api/signUp', (
     request,
     reply
 ) => {
-    // processUserRequest(request, reply, currentUser)
+    processSignUpRequest(request, reply, masterKey)
 })
 
-server.fastify.put('/write', (
+server.fastify.put('/api/write', (
     request,
     reply
 ) => {

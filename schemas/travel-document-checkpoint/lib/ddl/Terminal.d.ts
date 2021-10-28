@@ -5,6 +5,11 @@ import { UserTerminal } from './UserTerminal';
 import { UserTerminalAgt } from './UserTerminalAgt';
 export declare type TmTerminalId = number;
 export declare type TerminalIsLocal = boolean;
+/**
+ *
+ * DEPRECATED - syncing will now be done via IPFS/Peergos
+ *
+ */
 export declare class Terminal {
     id: TmTerminalId;
     name: TerminalName;

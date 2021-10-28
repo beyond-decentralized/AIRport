@@ -1,15 +1,13 @@
-import { UserUniqueId } from '../ddl/ddl';
-import { BaseUserDao, IBaseUserDao, IUser, UserESelect } from '../generated/generated';
+import { User_Email, User_PrivateId, User_PublicId, User_Username } from '../ddl/ddl';
+import { BaseUserDao, IBaseUserDao, IUser } from '../generated/generated';
 export interface IUserDao extends IBaseUserDao {
-    findMapByUniqueId(userUniqueIds: UserUniqueId[]): Promise<Map<UserUniqueId, IUser>>;
-    findFieldsMapByUniqueId(userUniqueIds: UserUniqueId[], select: UserESelect): Promise<Map<UserUniqueId, IUser>>;
-    findByUniqueId(userUniqueIds: UserUniqueId[]): Promise<IUser[]>;
-    findFieldsByUniqueId(userUniqueIds: UserUniqueId[], select: UserESelect): Promise<IUser[]>;
+    findByEmailsOrUserNames(emails: User_Email[], usernames: User_Username[]): Promise<IUser[]>;
+    findByPrivateIds(privateIds: User_PrivateId[]): Promise<IUser[]>;
+    findByPublicIds(publicIds: User_PublicId[]): Promise<IUser[]>;
 }
 export declare class UserDao extends BaseUserDao implements IUserDao {
-    findMapByUniqueId(userUniqueIds: UserUniqueId[]): Promise<Map<UserUniqueId, IUser>>;
-    findFieldsMapByUniqueId(userUniqueIds: UserUniqueId[], select: UserESelect): Promise<Map<UserUniqueId, IUser>>;
-    findByUniqueId(uniqueIds: UserUniqueId[]): Promise<IUser[]>;
-    findFieldsByUniqueId(uniqueIds: UserUniqueId[], select: UserESelect): Promise<IUser[]>;
+    findByEmailsOrUserNames(emails: User_Email[], usernames: User_Username[]): Promise<IUser[]>;
+    findByPrivateIds(privateIds: User_PrivateId[]): Promise<IUser[]>;
+    findByPublicIds(publicIds: User_PublicId[]): Promise<IUser[]>;
 }
 //# sourceMappingURL=UserDao.d.ts.map

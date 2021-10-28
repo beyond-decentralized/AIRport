@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, OneToMany } from '@airport/air-control';
+import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany } from '@airport/air-control';
 let User = class User {
 };
 __decorate([
@@ -13,24 +13,25 @@ __decorate([
     DbNumber()
 ], User.prototype, "id", void 0);
 __decorate([
-    Column({ name: "UNIQUE_IDENTIFIER", nullable: false }),
+    Column({ name: "PRIVATE_ID", nullable: false }),
     DbString()
-], User.prototype, "uniqueId", void 0);
+], User.prototype, "privateId", void 0);
 __decorate([
-    Column({ name: "FIRST_NAME" }),
+    Column({ name: "PUBLIC_ID", nullable: false }),
     DbString()
-], User.prototype, "firstName", void 0);
+], User.prototype, "publicId", void 0);
 __decorate([
-    Column({ name: "LAST_NAME" }),
+    Column({ name: "USERNAME" }),
     DbString()
-], User.prototype, "lastName", void 0);
+], User.prototype, "email", void 0);
 __decorate([
-    Column({ name: "MIDDLE_NAME" }),
+    Column({ name: "EMAIL" }),
     DbString()
-], User.prototype, "middleName", void 0);
+], User.prototype, "username", void 0);
 __decorate([
-    DbString()
-], User.prototype, "phone", void 0);
+    ManyToOne(),
+    JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID' })
+], User.prototype, "country", void 0);
 __decorate([
     OneToMany({ mappedBy: 'user' })
 ], User.prototype, "userTerminal", void 0);

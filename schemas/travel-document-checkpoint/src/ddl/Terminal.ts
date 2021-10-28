@@ -22,6 +22,11 @@ import {UserTerminalAgt} from './UserTerminalAgt'
 export type TmTerminalId = number;
 export type TerminalIsLocal = boolean;
 
+/**
+ * 
+ * DEPRECATED - syncing will now be done via IPFS/Peergos
+ * 
+ */
 @Entity()
 export class Terminal {
 

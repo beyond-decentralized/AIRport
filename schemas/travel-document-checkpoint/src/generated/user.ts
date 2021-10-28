@@ -1,4 +1,7 @@
 import {
+	ICountry,
+} from './country';
+import {
 	IUserTerminal,
 } from './userterminal';
 import {
@@ -19,13 +22,13 @@ export interface IUser {
 	// Id Relations
 
 	// Non-Id Properties
-	uniqueId?: string;
-	firstName?: string;
-	lastName?: string;
-	middleName?: string;
-	phone?: string;
+	privateId?: string;
+	publicId?: string;
+	email?: string;
+	username?: string;
 
 	// Non-Id Relations
+	country?: ICountry;
 	userTerminal?: IUserTerminal[];
 	userTerminalAgts?: IUserTerminalAgt[];
 
@@ -34,3 +37,5 @@ export interface IUser {
 	// Public Methods
 	
 }
+
+

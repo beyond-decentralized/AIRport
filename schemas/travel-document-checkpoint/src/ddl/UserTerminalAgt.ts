@@ -20,6 +20,8 @@ export type UserTerminalAgtId = number;
 export type UserTerminalAgtAgtId = number;
 
 /**
+ * DEPRECATED - syncing will now be done via IPFS/Peergos
+ * 
  * User needs some sort of password that can be used to verify that
  * a given user is indeed making changes (instead of another one).
  *

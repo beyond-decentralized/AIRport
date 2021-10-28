@@ -13,6 +13,8 @@ import {
 	getSchemaName
 }                      from '@airport/ground-control';
 import { QAgt } from './qagt';
+import { QContinent } from './qcontinent';
+import { QCountry } from './qcountry';
 import { QTerminal } from './qterminal';
 import { QTerminalAgt } from './qterminalagt';
 import { QUser } from './quser';
@@ -20,6 +22,8 @@ import { QUserTerminal } from './quserterminal';
 import { QUserTerminalAgt } from './quserterminalagt';
 import {
   Agt,
+  Continent,
+  Country,
   Terminal,
   TerminalAgt,
   User,
@@ -32,6 +36,8 @@ export interface LocalQSchema extends AirportQSchema {
   db: DbSchema;
 
 	Agt: QAgt;
+	Continent: QContinent;
+	Country: QCountry;
 	Terminal: QTerminal;
 	TerminalAgt: QTerminalAgt;
 	User: QUser;
@@ -42,6 +48,8 @@ export interface LocalQSchema extends AirportQSchema {
 
 const __constructors__ = {
 	Agt: Agt,
+	Continent: Continent,
+	Country: Country,
 	Terminal: Terminal,
 	TerminalAgt: TerminalAgt,
 	User: User,

@@ -18,6 +18,8 @@ const axios = require('axios')
 
 let minimumTimestamp: number = new Date('2021-12-31T23:59:59').getTime()
 
+const EARLIEST_BIRTH_MONTH = Date.UTC(1900, 0)
+
 export function processReadRequest(
     request,
     reply,
@@ -100,35 +102,68 @@ export function processSearchRequest(
 export function processUserRequest(
     request,
     reply,
-    currentUserBatch: UserRequestBatch
+    masterKey
 ) {
-    let userRequest: UserRequest = request.body as UserRequest
-    if (!userRequest) {
-        reply.send({ received: false })
+    const userRequest: UserRequest = request.body
+    const email = userRequest.email
+    const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    if (typeof email !== 'string'
+        || email.length > 64
+        || !emailRegexp.test(email)) {
+        reply.send({
+            received: true,
+            error: 'INVALID_EMAIL'
+        })
         return
     }
-    // This is the proposed private UUID, reply will contain a public UUID
-    let senderUuid = userRequest.senderUuid
-    if (typeof senderUuid !== 'string' || senderUuid.length !== 36) {
-        reply.send({ received: false })
-        return
-    }
-    let username = userRequest.username
-    if (typeof username !== 'string' || username.length < 3 || username.length > 36) {
-        reply.send({ received: false })
+    const username = userRequest.userName
+    const usernameRegexp = /^\S*$/
+    if (typeof username !== 'string'
+        || username.length < 3 || username.length > 32
+        || !usernameRegexp.test(username)) {
+        reply.send({
+            received: true,
+            error: 'INVALID_USERNAME'
+        })
         return
     }
 
-    const uuid = uuidv4()
-    currentUserBatch.replyContexts[uuid] = {
-        responded: false,
-        replyHandle: reply
+    const now = new Date().getTime()
+
+    const birthMonth = parseInt(userRequest.birthMonth as any)
+    if (isNaN(birthMonth) || typeof birthMonth !== 'number'
+        || birthMonth < EARLIEST_BIRTH_MONTH || birthMonth > now) {
+        reply.send({
+            received: true,
+            error: 'INVALID_BIRTH_MONTH'
+        })
+        return
     }
-    currentUserBatch.requestData.records.push({
-        senderUuid,
-        username,
-        uuid: uuidv4()
-    })
+
+    const countryId = parseInt(userRequest.countryId as any)
+    if (isNaN(countryId) || typeof countryId !== 'number'
+        || countryId < 1 || countryId > 234) {
+        reply.send({
+            received: true,
+            error: 'INVALID_COUNTRY'
+        })
+        return
+    }
+
+    doProcessWriteRequestAsync(
+        {
+            birthMonth,
+            category: 'FromClient',
+            countryId,
+            email,
+            senderUuid: null,
+            username,
+            uuid: uuidv4(),
+        },
+        reply,
+        masterKey,
+        'http://localhost:2345'
+    ).then()
 }
 
 export function processWriteRequest(
@@ -162,6 +197,16 @@ async function processWriteRequestAsync(
         return
     }
 
+    await doProcessWriteRequestAsync(writeRequest, reply, masterKey, requestHost)
+}
+
+
+export async function doProcessWriteRequestAsync<WR extends WriteRequest>(
+    writeRequest: WR,
+    reply,
+    masterKey,
+    requestHost
+) {
     let received = true
     let response: string
     try {

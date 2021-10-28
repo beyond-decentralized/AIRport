@@ -1,4 +1,6 @@
 export * from './qagt';
+export * from './qcontinent';
+export * from './qcountry';
 export * from './qterminal';
 export * from './qterminalagt';
 export * from './quser';
