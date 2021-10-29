@@ -64,7 +64,7 @@ export class Repository {
 	@DbString()
 	name: Repository_Name;
 
-	@Column({name: 'AGE_SUITABILITY', nullable: false})
+	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
 	ageSuitability: Repository_AgeSuitability
 

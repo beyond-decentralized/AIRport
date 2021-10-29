@@ -34,9 +34,6 @@ export class RepositoryDao extends BaseRepositoryDao {
             where: 
             // and(
             r.id.in(repositoryIds),
-            // d.name.equals(dbName),
-            // u.uniqueId.equals(userEmail)
-            // )
         });
     }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
