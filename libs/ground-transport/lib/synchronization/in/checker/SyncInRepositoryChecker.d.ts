@@ -1,9 +1,9 @@
-import { RepositoryId } from '@airport/holding-pattern';
+import { Repository_Id } from '@airport/holding-pattern';
 import { SharingNodeId } from '@airport/moving-walkway';
 import { IDataToTM } from '../SyncInUtils';
 export interface RepositoryCheckResults {
     consistentMessages: IDataToTM[];
-    sharingNodeRepositoryMap: Map<SharingNodeId, Set<RepositoryId>>;
+    sharingNodeRepositoryMap: Map<SharingNodeId, Set<Repository_Id>>;
 }
 export interface ISyncInRepositoryChecker {
     ensureRepositories(incomingMessages: IDataToTM[], dataMessagesWithInvalidData: IDataToTM[]): Promise<RepositoryCheckResults>;

@@ -13,7 +13,7 @@ import {
 import {
 	IRepository,
 	REPO_TRANS_HISTORY_DAO,
-	RepositoryId,
+	Repository_Id,
 	RepositoryTransactionHistoryId
 }                            from '@airport/holding-pattern'
 import {
@@ -38,9 +38,9 @@ export interface ISyncOutSerializer {
 	serializeMessages(
 		sharingNodeDbMap: Map<SharingNodeId, ISharingNodeTerminal>,
 		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
-		repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<RepositoryId,
+		repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<Repository_Id,
 			[IRepository, AgtRepositoryId]>>,
-		repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>,
+		repoTransBlockDataByRepoId: Map<Repository_Id, RepositoryTransactionBlockData>,
 		repoTransHistoryIds: Set<RepositoryTransactionHistoryId>,
 		terminal: ITerminal
 	): Promise<Map<SharingNodeId, MessageFromTM>>;
@@ -53,9 +53,9 @@ export class SyncOutSerializer
 	async serializeMessages(
 		sharingNodeDbMap: Map<SharingNodeId, ISharingNodeTerminal>,
 		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
-		repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<RepositoryId,
+		repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<Repository_Id,
 			[IRepository, AgtRepositoryId]>>,
-		repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>,
+		repoTransBlockDataByRepoId: Map<Repository_Id, RepositoryTransactionBlockData>,
 		repoTransHistoryIds: Set<RepositoryTransactionHistoryId>,
 		terminal: ITerminal
 	): Promise<Map<SharingNodeId, MessageFromTM>> {
@@ -72,7 +72,7 @@ export class SyncOutSerializer
 
 		const lastSyncAttemptTimestamp                                                      = new Date()
 		const repositoryTransactionBlocks: IRepositoryTransactionBlock[]                    = []
-		const repoTransBlocksByRepositoryId: Map<RepositoryId, IRepositoryTransactionBlock> = new Map()
+		const repoTransBlocksByRepositoryId: Map<Repository_Id, IRepositoryTransactionBlock> = new Map()
 
 		let allTransLogRepoTransHistories: IRepoTransBlockRepoTransHistory[] = []
 		for (const [repositoryId, messageData] of repoTransBlockDataByRepoId) {

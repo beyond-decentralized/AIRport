@@ -16,7 +16,7 @@ import {
 }                              from '@airport/holding-pattern'
 import {
 	TERMINAL_DAO,
-	UserUniqueId
+	User_PrivateId
 }                              from '@airport/travel-document-checkpoint'
 import {SYNC_IN_ACTOR_CHECKER} from '../../../tokens'
 import {
@@ -27,8 +27,8 @@ import {TerminalCheckResults}  from './SyncInTerminalChecker'
 import {UserCheckResults}      from './SyncInUserChecker'
 
 export interface ActorCheckResults {
-	actorMap: Map<ActorUuId, Map<UserUniqueId,
-		Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>;
+	actorMap: Map<ActorUuId, Map<User_PrivateId,
+		Map<TerminalName, Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>>;
 	actorMapById: Map<ActorId, IActor>;
 	consistentMessages: IDataToTM[];
 	inconsistentMessages: IDataToTM[];
@@ -38,8 +38,8 @@ export interface ISyncInActorChecker {
 
 	ensureActorsAndGetAsMaps(
 		dataMessages: IDataToTM[],
-		actorMap: Map<UserUniqueId, Map<TerminalName,
-			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>,
+		actorMap: Map<User_PrivateId, Map<TerminalName,
+			Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>,
 		actorMapById: Map<ActorId, IActor>,
 		userCheckResults: UserCheckResults,
 		terminalCheckResults: TerminalCheckResults,
@@ -53,8 +53,8 @@ export class SyncInActorChecker
 
 	async ensureActorsAndGetAsMaps(
 		dataMessages: IDataToTM[],
-		actorMap: Map<UserUniqueId, Map<TerminalName,
-			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>,
+		actorMap: Map<User_PrivateId, Map<TerminalName,
+			Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>,
 		actorMapById: Map<ActorId, IActor>,
 		userCheckResults: UserCheckResults,
 		terminalCheckResults: TerminalCheckResults,
@@ -64,10 +64,10 @@ export class SyncInActorChecker
 			.get(ACTOR_DAO, TERMINAL_DAO)
 
 		const actorRandomIdSet: Set<ActorUuId>       = new Set()
-		const userUniqueIdsSet: Set<UserUniqueId>        = new Set()
+		const userUniqueIdsSet: Set<User_PrivateId>        = new Set()
 		const terminalNameSet: Set<TerminalName>         = new Set()
 		const terminalSecondIdSet: Set<TerminalSecondId> = new Set()
-		const ownerUniqueIdSet: Set<UserUniqueId>        = new Set()
+		const ownerUniqueIdSet: Set<User_PrivateId>        = new Set()
 
 		const consistentMessages: IDataToTM[] = []
 		// split messages by repository and record actor information
@@ -79,13 +79,13 @@ export class SyncInActorChecker
 			const data = message.data
 			terminalNameSet.add(data.terminal.name)
 			terminalSecondIdSet.add(data.terminal.secondId)
-			ownerUniqueIdSet.add(data.terminal.owner.uniqueId)
+			ownerUniqueIdSet.add(data.terminal.owner.privateId)
 
 			consistentMessages.push(message)
 
 			for (const actor of data.actors) {
 				actorRandomIdSet.add(actor.uuId)
-				userUniqueIdsSet.add(actor.user.uniqueId)
+				userUniqueIdsSet.add(actor.user.privateId)
 			}
 		}
 
@@ -99,7 +99,7 @@ export class SyncInActorChecker
 		for (const message of dataMessages) {
 			const terminal   = message.data.terminal
 			const terminalId = terminalMapByGlobalIds
-				.get(terminal.owner.uniqueId)
+				.get(terminal.owner.privateId)
 				.get(terminal.name)
 				.get(terminal.secondId).id
 			terminalIdSet.add(terminalId)
@@ -162,8 +162,8 @@ export class SyncInActorChecker
 	}
 
 	private updateActorIdsInMessages(
-		actorMap: Map<ActorUuId, Map<UserUniqueId,
-			Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>,
+		actorMap: Map<ActorUuId, Map<User_PrivateId,
+			Map<TerminalName, Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>>,
 		dataMessages: IDataToTM[]
 	): void {
 		for (const message of dataMessages) {
@@ -172,10 +172,10 @@ export class SyncInActorChecker
 			for (const actor of message.data.actors) {
 				const localActor: IActor = actorMap
 					.get(actor.uuId)
-					.get(actor.user.uniqueId)
+					.get(actor.user.privateId)
 					.get(actor.terminal.name)
 					.get(actor.terminal.secondId)
-					.get(actor.terminal.owner.uniqueId)
+					.get(actor.terminal.owner.privateId)
 				updatedActors.push(localActor)
 				messageActorMapByRemoteId.set(actor.id, localActor)
 			}
@@ -198,11 +198,11 @@ export class SyncInActorChecker
 
 	private getNewActors(
 		dataMessages: IDataToTM[],
-		actorMap: Map<ActorUuId, Map<UserUniqueId, Map<TerminalName,
-			Map<TerminalSecondId, Map<UserUniqueId, ActorId>>>>>
+		actorMap: Map<ActorUuId, Map<User_PrivateId, Map<TerminalName,
+			Map<TerminalSecondId, Map<User_PrivateId, ActorId>>>>>
 	): IActor[] {
-		const newActorMap: Map<ActorUuId, Map<UserUniqueId, Map<TerminalName,
-			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>> = new Map()
+		const newActorMap: Map<ActorUuId, Map<User_PrivateId, Map<TerminalName,
+			Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>> = new Map()
 
 		// split messages by repository
 		for (const message of dataMessages) {
@@ -217,7 +217,7 @@ export class SyncInActorChecker
 					this.addActorToMap(actor, actorMap)
 					break
 				}
-				const actorsForUserUniqueId = actorsForRandomId.get(actor.user.uniqueId)
+				const actorsForUserUniqueId = actorsForRandomId.get(actor.user.privateId)
 				if (!actorsForUserUniqueId) {
 					this.addActorToMap(actor, newActorMap)
 					this.addActorToMap(actor, actorMap)
@@ -236,7 +236,7 @@ export class SyncInActorChecker
 					this.addActorToMap(actor, actorMap)
 					break
 				}
-				const existingActor = actorsForTerminalSecondId.get(actor.terminal.owner.uniqueId)
+				const existingActor = actorsForTerminalSecondId.get(actor.terminal.owner.privateId)
 				if (!existingActor) {
 					this.addActorToMap(actor, newActorMap)
 					this.addActorToMap(actor, actorMap)
@@ -264,17 +264,17 @@ export class SyncInActorChecker
 
 	private addActorToMap(
 		actor: IActor,
-		actorMap: Map<ActorUuId, Map<UserUniqueId, Map<TerminalName,
-			Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>
+		actorMap: Map<ActorUuId, Map<User_PrivateId, Map<TerminalName,
+			Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>>
 	): void {
 		ensureChildJsMap(
 			ensureChildJsMap(
 				ensureChildJsMap(
 					ensureChildJsMap(actorMap, actor.uuId),
-					actor.user.uniqueId),
+					actor.user.privateId),
 				actor.terminal.name),
 			actor.terminal.secondId)
-			.set(actor.terminal.owner.uniqueId, actor)
+			.set(actor.terminal.owner.privateId, actor)
 	}
 
 }

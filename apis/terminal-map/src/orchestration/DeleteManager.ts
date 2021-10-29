@@ -7,7 +7,7 @@ import { IContext } from "@airport/di";
 import type {
     IActor,
     RepositoryEntity,
-    RepositoryId
+    Repository_Id
 } from "@airport/holding-pattern";
 import { ITransaction } from "../transaction/ITransaction";
 
@@ -23,4 +23,4 @@ export interface IDeleteManager {
 }
 
 export type RecordsToDelete =
-    Map<SchemaIndex, Map<EntityId, Map<RepositoryId, RepositoryEntity[]>>>
+    Map<SchemaIndex, Map<EntityId, Map<Repository_Id, RepositoryEntity[]>>>

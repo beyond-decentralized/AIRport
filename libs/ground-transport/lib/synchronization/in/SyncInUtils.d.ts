@@ -1,5 +1,5 @@
 import { ColumnIndex, EntityId, SchemaIndex, SchemaVersionId } from '@airport/ground-control';
-import { ActorId, IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRepositoryTransactionHistory, RecordHistoryId, RepositoryEntity_ActorRecordId, RepositoryId } from '@airport/holding-pattern';
+import { ActorId, IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRepositoryTransactionHistory, RecordHistoryId, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
 import { IRepositoryTransactionBlock, ISharingMessage, ISynchronizationConflict, RepositoryTransactionBlockData } from '@airport/moving-walkway';
 export declare type RemoteSchemaIndex = SchemaIndex;
 export declare type RemoteSchemaVersionId = SchemaVersionId;
@@ -40,16 +40,16 @@ export interface RecordUpdate {
     recordHistoryId: RecordHistoryId;
 }
 export interface ISyncInUtils {
-    ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: RepositoryId, operationHistory: IOperationHistory, recordMapBySchemaTableAndRepository: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<CI, V>>>>): Map<CI, V>;
+    ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: Repository_Id, operationHistory: IOperationHistory, recordMapBySchemaTableAndRepository: Map<SchemaVersionId, Map<EntityId, Map<Repository_Id, Map<CI, V>>>>): Map<CI, V>;
 }
 export interface Stage1SyncedInDataProcessingResult {
-    recordCreations: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>;
-    recordDeletions: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
-    recordUpdates: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>;
-    syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>;
+    recordCreations: Map<SchemaVersionId, Map<EntityId, Map<Repository_Id, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>;
+    recordDeletions: Map<SchemaVersionId, Map<EntityId, Map<Repository_Id, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
+    recordUpdates: Map<SchemaVersionId, Map<EntityId, Map<Repository_Id, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>;
+    syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>;
 }
 export declare class SyncInUtils implements ISyncInUtils {
-    ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: RepositoryId, operationHistory: IOperationHistory, recordMapBySchemaTableAndRepository: Map<SchemaVersionId, Map<EntityId, Map<RepositoryId, Map<CI, V>>>>): Map<CI, V>;
+    ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: Repository_Id, operationHistory: IOperationHistory, recordMapBySchemaTableAndRepository: Map<SchemaVersionId, Map<EntityId, Map<Repository_Id, Map<CI, V>>>>): Map<CI, V>;
     private recordSharingMessageRepoTransBlocks;
     private recordSharingNodeRepoTransBlocks;
 }

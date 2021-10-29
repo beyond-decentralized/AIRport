@@ -20,7 +20,7 @@ import {
 import {
 	ActorId,
 	RepositoryEntity_ActorRecordId,
-	RepositoryId
+	Repository_Id
 } from '@airport/holding-pattern'
 import {
 	IRecordUpdateStageDao,
@@ -58,7 +58,7 @@ interface ColumnUpdateKeyMap
 }
 
 interface RecordKeyMap
-	extends Map<RepositoryId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>> {
+	extends Map<Repository_Id, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>> {
 }
 
 type ColumnIndexAndValue = [ColumnIndex, any];
@@ -96,7 +96,7 @@ export class Stage2SyncedInDataProcessor
 
 	async performCreates(
 		recordCreations: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
 		airDb: IAirportDatabase,
@@ -164,7 +164,7 @@ export class Stage2SyncedInDataProcessor
 
 	async performUpdates(
 		recordUpdates: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
 		recordUpdateStageDao: IRecordUpdateStageDao
@@ -220,7 +220,7 @@ export class Stage2SyncedInDataProcessor
 
 	async performDeletes(
 		recordDeletions: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<ActorId,
 				Set<RepositoryEntity_ActorRecordId>>>>>,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
 		airDb: IAirportDatabase,

@@ -1,6 +1,6 @@
 import { IAirportDatabase, IDatabaseFacade } from '@airport/air-control';
 import { ColumnIndex, SchemaVersionId, TableIndex } from '@airport/ground-control';
-import { ActorId, RepositoryEntity_ActorRecordId, RepositoryId } from '@airport/holding-pattern';
+import { ActorId, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
 import { IRecordUpdateStageDao } from '@airport/moving-walkway';
 import { ISchema } from '@airport/traffic-pattern';
 import { RecordUpdate, Stage1SyncedInDataProcessingResult } from './SyncInUtils';
@@ -25,9 +25,9 @@ export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataP
      *  To tie in a given SchemaVersionId to its SchemaIndex an additional mapping data
      *  structure is passed in.
      */
-    performCreates(recordCreations: Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>, schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>, airDb: IAirportDatabase, dbFacade: IDatabaseFacade): Promise<void>;
-    performUpdates(recordUpdates: Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>, schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>, recordUpdateStageDao: IRecordUpdateStageDao): Promise<void>;
-    performDeletes(recordDeletions: Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>, schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>, airDb: IAirportDatabase, dbFacade: IDatabaseFacade): Promise<void>;
+    performCreates(recordCreations: Map<SchemaVersionId, Map<TableIndex, Map<Repository_Id, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>, schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>, airDb: IAirportDatabase, dbFacade: IDatabaseFacade): Promise<void>;
+    performUpdates(recordUpdates: Map<SchemaVersionId, Map<TableIndex, Map<Repository_Id, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>, schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>, recordUpdateStageDao: IRecordUpdateStageDao): Promise<void>;
+    performDeletes(recordDeletions: Map<SchemaVersionId, Map<TableIndex, Map<Repository_Id, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>, schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>, airDb: IAirportDatabase, dbFacade: IDatabaseFacade): Promise<void>;
     /**
      * Get the record key map (RecordKeyMap = RepositoryId -> ActorId
      * -> RepositoryEntity_ActorRecordId) for the recordUpdateMap (the specified combination

@@ -194,10 +194,11 @@ export class SSchemaBuilder {
 
 		const primitiveColumnMapByName: { [columnName: string]: SColumn } = {};
 		const relationColumnMapByName: { [columnName: string]: SColumn } = {};
+		const relatedTableMap: Map<string, number> = new Map();
 
 		this.buildColumnsWithParentEntities(
 			entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName,
-			referencedSchemasByProjectName);
+			relatedTableMap, referencedSchemasByProjectName);
 
 		entity.properties.sort((
 			prop1,
@@ -221,6 +222,7 @@ export class SSchemaBuilder {
 		entity: SEntity,
 		primitiveColumnMapByName: { [columnName: string]: SColumn },
 		relationColumnMapByName: { [columnName: string]: SColumn },
+		relatedTableMap: Map<string, number>,
 		referencedSchemasByProjectName: { [projectName: string]: SSchemaReference },
 		project?: string,
 	) {
@@ -233,11 +235,11 @@ export class SSchemaBuilder {
 			}
 			numParentProperties = this.buildColumnsWithParentEntities(
 				parentEntity, entity, primitiveColumnMapByName, relationColumnMapByName,
-				referencedSchemasByProjectName, parentProject);
+				relatedTableMap, referencedSchemasByProjectName, parentProject);
 		}
 		return this.buildColumns(entityCandidate, entity,
-			primitiveColumnMapByName, relationColumnMapByName, numParentProperties,
-			referencedSchemasByProjectName, project);
+			primitiveColumnMapByName, relationColumnMapByName, relatedTableMap,
+			numParentProperties, referencedSchemasByProjectName, project);
 	}
 
 	private buildColumns(
@@ -245,6 +247,7 @@ export class SSchemaBuilder {
 		entity: SEntity,
 		primitiveColumnMapByName: { [columnName: string]: SColumn },
 		relationColumnMapByName: { [columnName: string]: SColumn },
+		relatedTableMap: Map<string, number>,
 		numParentProperties: number,
 		referencedSchemasByProjectName: { [projectName: string]: SSchemaReference },
 		project?: string,
@@ -281,6 +284,7 @@ export class SSchemaBuilder {
 				entity,
 				relationColumnMapByName,
 				primitiveColumnMapByName,
+				relatedTableMap,
 				numParentProperties,
 				referencedSchemasByProjectName
 			);
@@ -296,6 +300,7 @@ export class SSchemaBuilder {
 				entity,
 				relationColumnMapByName,
 				primitiveColumnMapByName,
+				relatedTableMap,
 				numParentProperties,
 				referencedSchemasByProjectName
 			);
@@ -311,6 +316,7 @@ export class SSchemaBuilder {
 		entity: SEntity,
 		relationColumnMapByName: { [columnName: string]: SColumn },
 		primitiveColumnMapByName: { [columnName: string]: SColumn },
+		relatedTableMap: Map<string, number>,
 		numParentProperties: number,
 		referencedSchemasByProjectName: { [projectName: string]: SSchemaReference },
 	): void {
@@ -470,7 +476,19 @@ export class SSchemaBuilder {
 
 					const relationColumnReferences = ['REPOSITORY_ID', 'ACTOR_ID', 'ACTOR_RECORD_ID'];
 
-					['_RID', '_AID', '_ARID'].forEach((
+					let numExistingReferenceToTable = relatedTableMap.get(relatedTableName)
+
+					if (!numExistingReferenceToTable) {
+						numExistingReferenceToTable = 1
+					} else {
+						numExistingReferenceToTable++
+					}
+					relatedTableMap.set(relatedTableName, numExistingReferenceToTable)
+
+					const columnSuffixes = ['_RID_', '_AID_', '_ARID_'].map(suffix =>
+						suffix + numExistingReferenceToTable)
+
+						columnSuffixes.forEach((
 						suffix,
 						index
 					) => {

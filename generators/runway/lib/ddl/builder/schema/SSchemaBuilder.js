@@ -121,7 +121,8 @@ export class SSchemaBuilder {
         };
         const primitiveColumnMapByName = {};
         const relationColumnMapByName = {};
-        this.buildColumnsWithParentEntities(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, referencedSchemasByProjectName);
+        const relatedTableMap = new Map();
+        this.buildColumnsWithParentEntities(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, relatedTableMap, referencedSchemasByProjectName);
         entity.properties.sort((prop1, prop2) => {
             return prop1.index - prop2.index;
         });
@@ -133,7 +134,7 @@ export class SSchemaBuilder {
         }
         return entity;
     }
-    buildColumnsWithParentEntities(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, referencedSchemasByProjectName, project) {
+    buildColumnsWithParentEntities(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, relatedTableMap, referencedSchemasByProjectName, project) {
         let parentEntity = entityCandidate.parentEntity;
         let numParentProperties = 0;
         if (parentEntity) {
@@ -141,11 +142,11 @@ export class SSchemaBuilder {
             if (parentEntity.project) {
                 parentProject = parentEntity.project;
             }
-            numParentProperties = this.buildColumnsWithParentEntities(parentEntity, entity, primitiveColumnMapByName, relationColumnMapByName, referencedSchemasByProjectName, parentProject);
+            numParentProperties = this.buildColumnsWithParentEntities(parentEntity, entity, primitiveColumnMapByName, relationColumnMapByName, relatedTableMap, referencedSchemasByProjectName, parentProject);
         }
-        return this.buildColumns(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, numParentProperties, referencedSchemasByProjectName, project);
+        return this.buildColumns(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, relatedTableMap, numParentProperties, referencedSchemasByProjectName, project);
     }
-    buildColumns(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, numParentProperties, referencedSchemasByProjectName, project) {
+    buildColumns(entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName, relatedTableMap, numParentProperties, referencedSchemasByProjectName, project) {
         const idProperties = entityCandidate.getIdProperties();
         const primitiveIdProperties = idProperties.filter(aProperty => {
             if (!aProperty.fromProject) {
@@ -164,15 +165,15 @@ export class SSchemaBuilder {
         this.processPrimitiveColumns(primitiveNonIdProperties, false, entity, primitiveColumnMapByName, numParentProperties);
         const relationIdProperties = idProperties.filter(aProperty => !aProperty.primitive);
         for (const aProperty of relationIdProperties) {
-            this.processRelationProperty(aProperty, true, entityCandidate, entity, relationColumnMapByName, primitiveColumnMapByName, numParentProperties, referencedSchemasByProjectName);
+            this.processRelationProperty(aProperty, true, entityCandidate, entity, relationColumnMapByName, primitiveColumnMapByName, relatedTableMap, numParentProperties, referencedSchemasByProjectName);
         }
         const relationNonIdProperties = nonIdProperties.filter(aProperty => !aProperty.primitive);
         for (const aProperty of relationNonIdProperties) {
-            this.processRelationProperty(aProperty, false, entityCandidate, entity, relationColumnMapByName, primitiveColumnMapByName, numParentProperties, referencedSchemasByProjectName);
+            this.processRelationProperty(aProperty, false, entityCandidate, entity, relationColumnMapByName, primitiveColumnMapByName, relatedTableMap, numParentProperties, referencedSchemasByProjectName);
         }
         return numParentProperties + idProperties.length + nonIdProperties.length;
     }
-    processRelationProperty(aProperty, isIdProperty, entityCandidate, entity, relationColumnMapByName, primitiveColumnMapByName, numParentProperties, referencedSchemasByProjectName) {
+    processRelationProperty(aProperty, isIdProperty, entityCandidate, entity, relationColumnMapByName, primitiveColumnMapByName, relatedTableMap, numParentProperties, referencedSchemasByProjectName) {
         let columnRelationDefs = [];
         let columnsDefined = false;
         let foreignKey;
@@ -324,7 +325,16 @@ export class SSchemaBuilder {
                     const relatedTableName = this.getTableNameFromEntity(aProperty.entity);
                     const notNull = isManyToOnePropertyNotNull(aProperty);
                     const relationColumnReferences = ['REPOSITORY_ID', 'ACTOR_ID', 'ACTOR_RECORD_ID'];
-                    ['_RID', '_AID', '_ARID'].forEach((suffix, index) => {
+                    let numExistingReferenceToTable = relatedTableMap.get(relatedTableName);
+                    if (!numExistingReferenceToTable) {
+                        numExistingReferenceToTable = 1;
+                    }
+                    else {
+                        numExistingReferenceToTable++;
+                    }
+                    relatedTableMap.set(relatedTableName, numExistingReferenceToTable);
+                    const columnSuffixes = ['_RID_', '_AID_', '_ARID_'].map(suffix => suffix + numExistingReferenceToTable);
+                    columnSuffixes.forEach((suffix, index) => {
                         const [sRelationColumn, sColumn] = this.processRelationColumn(relatedTableName + suffix, relationColumnReferences[index], true, isIdProperty, propertyIndex, entity, relationColumnMapByName, primitiveColumnMapByName, notNull);
                         sRelationColumns.push(sRelationColumn);
                         if (sColumn) {

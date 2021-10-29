@@ -12,7 +12,7 @@ import {
 	PlatformType,
 	PortableQuery
 } from '@airport/ground-control';
-import { Actor, IActor, RepositoryId, REPOSITORY_DAO } from '@airport/holding-pattern';
+import { Actor, IActor, Repository_Id, REPOSITORY_DAO } from '@airport/holding-pattern';
 import {
 	ICredentials,
 	IOperationContext,
@@ -76,7 +76,7 @@ export class TransactionalServer
 		// distributionStrategy: DistributionStrategy,
 		credentials: ICredentials,
 		context: IOperationContext
-	): Promise<RepositoryId> {
+	): Promise<Repository_Id> {
 		await this.ensureIocContext(context)
 
 		const actor = await this.getActor(credentials);

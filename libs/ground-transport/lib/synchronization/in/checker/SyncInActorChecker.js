@@ -22,11 +22,11 @@ export class SyncInActorChecker {
             const data = message.data;
             terminalNameSet.add(data.terminal.name);
             terminalSecondIdSet.add(data.terminal.secondId);
-            ownerUniqueIdSet.add(data.terminal.owner.uniqueId);
+            ownerUniqueIdSet.add(data.terminal.owner.privateId);
             consistentMessages.push(message);
             for (const actor of data.actors) {
                 actorRandomIdSet.add(actor.uuId);
-                userUniqueIdsSet.add(actor.user.uniqueId);
+                userUniqueIdsSet.add(actor.user.privateId);
             }
         }
         const terminalMapByGlobalIds = await terminalDao.findMapByGlobalIds(Array.from(ownerUniqueIdSet), Array.from(terminalNameSet), Array.from(terminalSecondIdSet));
@@ -34,7 +34,7 @@ export class SyncInActorChecker {
         for (const message of dataMessages) {
             const terminal = message.data.terminal;
             const terminalId = terminalMapByGlobalIds
-                .get(terminal.owner.uniqueId)
+                .get(terminal.owner.privateId)
                 .get(terminal.name)
                 .get(terminal.secondId).id;
             terminalIdSet.add(terminalId);
@@ -86,10 +86,10 @@ export class SyncInActorChecker {
             for (const actor of message.data.actors) {
                 const localActor = actorMap
                     .get(actor.uuId)
-                    .get(actor.user.uniqueId)
+                    .get(actor.user.privateId)
                     .get(actor.terminal.name)
                     .get(actor.terminal.secondId)
-                    .get(actor.terminal.owner.uniqueId);
+                    .get(actor.terminal.owner.privateId);
                 updatedActors.push(localActor);
                 messageActorMapByRemoteId.set(actor.id, localActor);
             }
@@ -124,7 +124,7 @@ export class SyncInActorChecker {
                     this.addActorToMap(actor, actorMap);
                     break;
                 }
-                const actorsForUserUniqueId = actorsForRandomId.get(actor.user.uniqueId);
+                const actorsForUserUniqueId = actorsForRandomId.get(actor.user.privateId);
                 if (!actorsForUserUniqueId) {
                     this.addActorToMap(actor, newActorMap);
                     this.addActorToMap(actor, actorMap);
@@ -142,7 +142,7 @@ export class SyncInActorChecker {
                     this.addActorToMap(actor, actorMap);
                     break;
                 }
-                const existingActor = actorsForTerminalSecondId.get(actor.terminal.owner.uniqueId);
+                const existingActor = actorsForTerminalSecondId.get(actor.terminal.owner.privateId);
                 if (!existingActor) {
                     this.addActorToMap(actor, newActorMap);
                     this.addActorToMap(actor, actorMap);
@@ -165,8 +165,8 @@ export class SyncInActorChecker {
         return newActors;
     }
     addActorToMap(actor, actorMap) {
-        ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(actorMap, actor.uuId), actor.user.uniqueId), actor.terminal.name), actor.terminal.secondId)
-            .set(actor.terminal.owner.uniqueId, actor);
+        ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(actorMap, actor.uuId), actor.user.privateId), actor.terminal.name), actor.terminal.secondId)
+            .set(actor.terminal.owner.privateId, actor);
     }
 }
 DI.set(SYNC_IN_ACTOR_CHECKER, SyncInActorChecker);

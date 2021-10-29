@@ -1,5 +1,5 @@
 import { EntityId, SchemaVersionId } from '@airport/ground-control';
-import { ActorId, IRecordHistory, RepositoryEntity_ActorRecordId, RepositoryId } from '@airport/holding-pattern';
+import { ActorId, IRecordHistory, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
 import { IMissingRecord, IRepositoryTransactionBlock } from '@airport/moving-walkway';
 import { IDataToTM } from '../SyncInUtils';
 export interface DataCheckResults {
@@ -17,8 +17,8 @@ export interface MissingRecordResults {
     missingRecordDataToTMs: IMissingRecordDataToTM[];
 }
 export interface DataStructuresForChanges {
-    messageIndexMapByRecordToUpdateIds: Map<RepositoryId, Map<SchemaVersionId, Map<EntityId, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Set<number>>>>>>;
-    recordsToUpdateMap: Map<RepositoryId, Map<SchemaVersionId, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
+    messageIndexMapByRecordToUpdateIds: Map<Repository_Id, Map<SchemaVersionId, Map<EntityId, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Set<number>>>>>>;
+    recordsToUpdateMap: Map<Repository_Id, Map<SchemaVersionId, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
 }
 export interface ISyncInDataChecker {
     checkData(dataMessagesWithCompatibleSchemas: IDataToTM[]): Promise<DataCheckResults>;

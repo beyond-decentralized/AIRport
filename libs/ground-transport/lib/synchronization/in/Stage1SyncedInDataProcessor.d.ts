@@ -1,4 +1,4 @@
-import { ActorId, IActor, IRecordHistory, RecordHistoryId, RepositoryEntity_ActorRecordId, RepositoryId } from '@airport/holding-pattern';
+import { ActorId, IActor, IRecordHistory, RecordHistoryId, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
 import { ISyncRepoTransHistory, Stage1SyncedInDataProcessingResult } from './SyncInUtils';
 /**
  * Stage 1 data processor is used to
@@ -7,7 +7,7 @@ import { ISyncRepoTransHistory, Stage1SyncedInDataProcessingResult } from './Syn
  *  2)  Generate synchronization conflict datastructure
  */
 export interface IStage1SyncedInDataProcessor {
-    performStage1DataProcessing(repoTransHistoryMapByRepositoryId: Map<RepositoryId, ISyncRepoTransHistory[]>, actorMayById: Map<ActorId, IActor>): Promise<Stage1SyncedInDataProcessingResult>;
+    performStage1DataProcessing(repoTransHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>, actorMayById: Map<ActorId, IActor>): Promise<Stage1SyncedInDataProcessingResult>;
 }
 export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataProcessor {
     /**
@@ -20,7 +20,7 @@ export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataP
      * @param {Map<ActorId, IActor>} actorMayById
      * @returns {Promise<void>}
      */
-    performStage1DataProcessing(repoTransHistoryMapByRepositoryId: Map<RepositoryId, ISyncRepoTransHistory[]>, actorMayById: Map<ActorId, IActor>): Promise<Stage1SyncedInDataProcessingResult>;
+    performStage1DataProcessing(repoTransHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>, actorMayById: Map<ActorId, IActor>): Promise<Stage1SyncedInDataProcessingResult>;
     ensureRecordHistoryId(recordHistory: IRecordHistory, actorRecordIdSetByActor: Map<ActorId, Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>, actorRecordId?: RepositoryEntity_ActorRecordId): void;
     private getDeletedRecordIds;
     private mergeArraysInMap;

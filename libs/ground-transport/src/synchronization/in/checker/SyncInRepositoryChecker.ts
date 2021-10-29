@@ -4,7 +4,7 @@ import {
 	ensureChildArray,
 	ensureChildJsSet
 }                             from '@airport/ground-control'
-import {RepositoryId}         from '@airport/holding-pattern'
+import {Repository_Id}         from '@airport/holding-pattern'
 import {
 	SHARING_NODE_REPOSITORY_DAO,
 	SharingNodeId
@@ -14,7 +14,7 @@ import {IDataToTM}            from '../SyncInUtils'
 
 export interface RepositoryCheckResults {
 	consistentMessages: IDataToTM[];
-	sharingNodeRepositoryMap: Map<SharingNodeId, Set<RepositoryId>>;
+	sharingNodeRepositoryMap: Map<SharingNodeId, Set<Repository_Id>>;
 }
 
 
@@ -45,7 +45,7 @@ export class SyncInRepositoryChecker
 		// const agtRepositoryIds: Set<AgtRepositoryId> = new Set();
 		const sharingNodeIds: Set<SharingNodeId> = new Set()
 
-		const sharingNodeRepositoryMap: Map<SharingNodeId, Set<RepositoryId>> = new Map()
+		const sharingNodeRepositoryMap: Map<SharingNodeId, Set<Repository_Id>> = new Map()
 
 
 		for (const message of incomingMessages) {
@@ -86,7 +86,7 @@ export class SyncInRepositoryChecker
 	): boolean {
 		const data                                       = message.data
 		const repositoryId                               = data.repository.id
-		const referencedRepositorySet: Set<RepositoryId> = new Set()
+		const referencedRepositorySet: Set<Repository_Id> = new Set()
 		for (const repository of data.referencedRepositories) {
 			if (referencedRepositorySet.has(repositoryId)) {
 				return false

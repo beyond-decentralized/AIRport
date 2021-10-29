@@ -12,7 +12,7 @@ import {
 import {
 	ActorId,
 	RepositoryEntity_ActorRecordId,
-	RepositoryId
+	Repository_Id
 } from '@airport/holding-pattern'
 import { ISchemaVersion } from '@airport/traffic-pattern'
 import {
@@ -31,13 +31,13 @@ export interface IMissingRecordDao
 	extends IBaseMissingRecordDao {
 
 	setStatusWhereIdsInAndReturnIds(
-		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
+		recordIdMap: Map<Repository_Id, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>,
 		status: MissingRecordStatus
 	): Promise<MissingRecordId[]>;
 
 	findActualIdsByRecordIds(
-		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
+		recordIdMap: Map<Repository_Id, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>
 	): Promise<MissingRecordId[]>;
 
@@ -52,7 +52,7 @@ export class MissingRecordDao
 	implements IMissingRecordDao {
 
 	async setStatusWhereIdsInAndReturnIds(
-		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
+		recordIdMap: Map<Repository_Id, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>,
 		status: MissingRecordStatus
 	): Promise<MissingRecordId[]> {
@@ -76,7 +76,7 @@ export class MissingRecordDao
 	}
 
 	async findActualIdsByRecordIds(
-		recordIdMap: Map<RepositoryId, Map<SchemaVersionId,
+		recordIdMap: Map<Repository_Id, Map<SchemaVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>
 	): Promise<MissingRecordId[]> {
 		const mr = Q.MissingRecord

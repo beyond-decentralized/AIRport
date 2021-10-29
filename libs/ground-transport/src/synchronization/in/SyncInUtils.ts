@@ -14,7 +14,7 @@ import {
 	IRepositoryTransactionHistory,
 	RecordHistoryId,
 	RepositoryEntity_ActorRecordId,
-	RepositoryId
+	Repository_Id
 }                      from '@airport/holding-pattern'
 import {
 	IRepositoryTransactionBlock,
@@ -91,10 +91,10 @@ export interface RecordUpdate {
 export interface ISyncInUtils {
 
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
 		recordMapBySchemaTableAndRepository: Map<SchemaVersionId,
-			Map<EntityId, Map<RepositoryId, Map<CI, V>>>>
+			Map<EntityId, Map<Repository_Id, Map<CI, V>>>>
 	): Map<CI, V>;
 
 	// createSharingMessage(
@@ -107,25 +107,25 @@ export interface ISyncInUtils {
 
 export interface Stage1SyncedInDataProcessingResult {
 	recordCreations: Map<SchemaVersionId,
-		Map<EntityId, Map<RepositoryId, Map<ActorId,
+		Map<EntityId, Map<Repository_Id, Map<ActorId,
 			Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 	recordDeletions: Map<SchemaVersionId,
-		Map<EntityId, Map<RepositoryId, Map<ActorId,
+		Map<EntityId, Map<Repository_Id, Map<ActorId,
 			Set<RepositoryEntity_ActorRecordId>>>>>,
 	recordUpdates: Map<SchemaVersionId,
-		Map<EntityId, Map<RepositoryId, Map<ActorId,
+		Map<EntityId, Map<Repository_Id, Map<ActorId,
 			Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
-	syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>
+	syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>
 }
 
 export class SyncInUtils
 	implements ISyncInUtils {
 
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
 		recordMapBySchemaTableAndRepository: Map<SchemaVersionId,
-			Map<EntityId, Map<RepositoryId, Map<CI, V>>>>
+			Map<EntityId, Map<Repository_Id, Map<CI, V>>>>
 	): Map<CI, V> {
 		// FIXME: ensure that OperationHistory schemaVersion is correctly set
 		return <any>ensureChildJsMap(

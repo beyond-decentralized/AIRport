@@ -21,7 +21,7 @@ import {
 	REPO_TRANS_HISTORY_DAO,
 	REPO_TRANS_HISTORY_DUO,
 	RepositoryEntity_ActorRecordId,
-	RepositoryId,
+	Repository_Id,
 }           from '@airport/holding-pattern'
 import {
 	ISynchronizationConflict,
@@ -47,7 +47,7 @@ import {
 export interface IStage1SyncedInDataProcessor {
 
 	performStage1DataProcessing(
-		repoTransHistoryMapByRepositoryId: Map<RepositoryId, ISyncRepoTransHistory[]>,
+		repoTransHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>,
 		actorMayById: Map<ActorId, IActor>
 	): Promise<Stage1SyncedInDataProcessingResult>;
 
@@ -67,7 +67,7 @@ export class Stage1SyncedInDataProcessor
 	 * @returns {Promise<void>}
 	 */
 	async performStage1DataProcessing(
-		repoTransHistoryMapByRepositoryId: Map<RepositoryId, ISyncRepoTransHistory[]>,
+		repoTransHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>,
 		actorMayById: Map<ActorId, IActor>
 	): Promise<Stage1SyncedInDataProcessingResult> {
 		const [actorDao, repoTransHistoryDao,
@@ -80,7 +80,7 @@ export class Stage1SyncedInDataProcessor
 		// changes by repository ids or by the actual tables and records in those tables
 		// that will be updated or deleted.
 
-		const changedRecordIds: Map<RepositoryId, IChangedRecordIdsForRepository> = new Map()
+		const changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository> = new Map()
 
 		for (const [repositoryId, repoTransHistoriesForRepo]
 			of repoTransHistoryMapByRepositoryId) {
@@ -119,7 +119,7 @@ export class Stage1SyncedInDataProcessor
 			}
 		}
 
-		const allRepoTransHistoryMapByRepoId: Map<RepositoryId, ISyncRepoTransHistory[]>
+		const allRepoTransHistoryMapByRepoId: Map<Repository_Id, ISyncRepoTransHistory[]>
 			      = new Map()
 
 		const allRemoteRecordDeletions = this.getDeletedRecordIds(
@@ -128,7 +128,7 @@ export class Stage1SyncedInDataProcessor
 
 		// find local history for the matching repositories and corresponding time period
 		const localRepoTransHistoryMapByRepositoryId
-			      : Map<RepositoryId, ISyncRepoTransHistory[]>
+			      : Map<Repository_Id, ISyncRepoTransHistory[]>
 			                            = await repoTransHistoryDao
 			.findAllLocalChangesForRecordIds(changedRecordIds)
 		const allLocalRecordDeletions = this.getDeletedRecordIds(
@@ -163,16 +163,16 @@ export class Stage1SyncedInDataProcessor
 		}
 
 		const recordCreations: Map<SchemaVersionId,
-			Map<EntityId, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>          = new Map()
 		const recordUpdates: Map<SchemaVersionId,
-			Map<EntityId, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>> = new Map()
 		const recordDeletions: Map<SchemaVersionId,
-			Map<EntityId, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<Repository_Id, Map<ActorId,
 				Set<RepositoryEntity_ActorRecordId>>>>>                                 = new Map()
 
-		const syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]> = new Map()
+		const syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]> = new Map()
 
 		// FIXME: add code to ensure that remote records coming in are performed only
 		// by the actors that claim the operation AND that the records created are
@@ -223,13 +223,13 @@ export class Stage1SyncedInDataProcessor
 	}
 
 	private getDeletedRecordIds(
-		allRepoTransHistoryMapByRepoId: Map<RepositoryId, ISyncRepoTransHistory[]>,
-		repoTransHistoryMapByRepoId: Map<RepositoryId, ISyncRepoTransHistory[]>,
+		allRepoTransHistoryMapByRepoId: Map<Repository_Id, ISyncRepoTransHistory[]>,
+		repoTransHistoryMapByRepoId: Map<Repository_Id, ISyncRepoTransHistory[]>,
 		syncInUtils: ISyncInUtils,
 		isLocal = false
-	): Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<ActorId,
+	): Map<SchemaVersionId, Map<TableIndex, Map<Repository_Id, Map<ActorId,
 		Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>> {
-		const recordDeletions: Map<SchemaVersionId, Map<TableIndex, Map<RepositoryId, Map<ActorId,
+		const recordDeletions: Map<SchemaVersionId, Map<TableIndex, Map<Repository_Id, Map<ActorId,
 			Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>> = new Map()
 		for (const [repositoryId, repoTransHistories] of repoTransHistoryMapByRepoId) {
 			this.mergeArraysInMap(allRepoTransHistoryMapByRepoId, repositoryId, repoTransHistories)
@@ -269,25 +269,25 @@ export class Stage1SyncedInDataProcessor
 	NOTE: local creates are not inputted into this processing.
 	 */
 	private processCreation(
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
 		isLocal: boolean,
 		recordCreations: Map<SchemaVersionId,
-			Map<EntityId, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		recordUpdates: Map<SchemaVersionId,
-			Map<EntityId, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 		recordDeletions: Map<SchemaVersionId,
-			Map<EntityId, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<Repository_Id, Map<ActorId,
 				Set<RepositoryEntity_ActorRecordId>>>>>,
 		allRemoteRecordDeletions: Map<SchemaVersionId,
-			Map<EntityId, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
 		allLocalRecordDeletions: Map<SchemaVersionId,
-			Map<EntityId, Map<RepositoryId, Map<ActorId,
+			Map<EntityId, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
-		syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>,
+		syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>,
 		syncInUtils: ISyncInUtils
 	): void {
 
@@ -371,22 +371,22 @@ export class Stage1SyncedInDataProcessor
 	this processing.
 	 */
 	private processUpdate(
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
 		isLocal: boolean,
 		recordCreations: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		recordUpdates: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 		allRemoteRecordDeletions: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
 		allLocalRecordDeletions: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
-		syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>,
+		syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>,
 		syncInUtils: ISyncInUtils
 	): void {
 		const recordCreationsForRepoInTable
@@ -509,19 +509,19 @@ export class Stage1SyncedInDataProcessor
 	this processing.
 	 */
 	private processDeletion(
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
 		recordCreations: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		recordUpdates: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		recordDeletions: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<ActorId,
 				Set<RepositoryEntity_ActorRecordId>>>>>,
 		allLocalRecordDeletions: Map<SchemaVersionId,
-			Map<TableIndex, Map<RepositoryId, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<ActorId,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
 		syncInUtils: ISyncInUtils
 	): void {
@@ -573,14 +573,14 @@ export class Stage1SyncedInDataProcessor
 	}
 
 	private getRecordsForRepoInTable<T>(
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
 		recordMapBySchemaTableAndRepository: Map<SchemaVersionId,
-			Map<EntityId, Map<RepositoryId, T>>>
+			Map<EntityId, Map<Repository_Id, T>>>
 	): T {
 		const recordMapForSchema = recordMapBySchemaTableAndRepository
 			.get(operationHistory.entity.schemaVersion.id)
-		let recordMapForTable: Map<RepositoryId, T>
+		let recordMapForTable: Map<Repository_Id, T>
 		if (recordMapForSchema) {
 			recordMapForTable = recordMapForSchema.get(operationHistory.entity.id)
 		}
@@ -641,7 +641,7 @@ export class Stage1SyncedInDataProcessor
 	}
 
 	private getRecordInfo(
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
 		recordHistory: IRecordHistory
 	): string {
@@ -656,10 +656,10 @@ export class Stage1SyncedInDataProcessor
 
 	private addSyncConflict(
 		synchronizationConflictType: SynchronizationConflictType,
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		overwrittenRecordHistory: IRecordHistory,
 		overwritingRecordHistory: IRecordHistory,
-		syncConflictMapByRepoId: Map<RepositoryId, ISynchronizationConflict[]>
+		syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>
 	): ISynchronizationConflict {
 		const syncConflict = this.createSynchronizationConflict(
 			synchronizationConflictType,
@@ -674,7 +674,7 @@ export class Stage1SyncedInDataProcessor
 
 	private createSynchronizationConflict(
 		synchronizationConflictType: SynchronizationConflictType,
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		overwrittenRecordHistory: IRecordHistory,
 		overwritingRecordHistory: IRecordHistory
 	): ISynchronizationConflict {

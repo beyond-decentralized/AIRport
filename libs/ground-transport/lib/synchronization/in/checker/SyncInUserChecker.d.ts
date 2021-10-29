@@ -1,7 +1,7 @@
-import { IUser, UserId, UserUniqueId } from '@airport/travel-document-checkpoint';
+import { IUser, UserId, User_PrivateId } from '@airport/travel-document-checkpoint';
 import { IDataToTM } from '../SyncInUtils';
 export interface UserCheckResults {
-    map: Map<UserUniqueId, IUser>;
+    map: Map<User_PrivateId, IUser>;
     mapById: Map<UserId, IUser>;
     mapByMessageIndexAndRemoteUserId: Map<UserId, IUser>[];
     consistentMessages: IDataToTM[];

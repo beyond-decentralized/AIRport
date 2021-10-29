@@ -13,7 +13,7 @@ import {
 	RecordHistoryActorRecordId,
 	REPO_TRANS_HISTORY_DAO,
 	RepositoryEntity_ActorRecordId,
-	RepositoryId
+	Repository_Id
 }                       from '@airport/holding-pattern'
 import {
 	IMissingRecord,
@@ -57,9 +57,9 @@ export interface MissingRecordResults {
 }
 
 export interface DataStructuresForChanges {
-	messageIndexMapByRecordToUpdateIds: Map<RepositoryId, Map<SchemaVersionId,
+	messageIndexMapByRecordToUpdateIds: Map<Repository_Id, Map<SchemaVersionId,
 		Map<EntityId, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Set<number>>>>>>;
-	recordsToUpdateMap: Map<RepositoryId, Map<SchemaVersionId,
+	recordsToUpdateMap: Map<Repository_Id, Map<SchemaVersionId,
 		Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
 }
 
@@ -101,7 +101,7 @@ export class SyncInDataChecker
 		      }                             = this.getDataStructuresForChanges(
 			dataMessagesWithCompatibleSchemas, syncInUtils)
 
-		const existingRecordIdMap: Map<RepositoryId, Map<SchemaVersionId,
+		const existingRecordIdMap: Map<Repository_Id, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>
 			      = await repositoryTransactionHistoryDao.findExistingRecordIdMap(
 			recordsToUpdateMap)
@@ -125,7 +125,7 @@ export class SyncInDataChecker
 			}
 		}
 
-		const toBeInsertedRecordMap: Map<RepositoryId, Map<SchemaVersionId,
+		const toBeInsertedRecordMap: Map<Repository_Id, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>
 			      = this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemasAndData)
 
@@ -151,14 +151,14 @@ export class SyncInDataChecker
 		dataMessagesWithCompatibleSchemas: IDataToTM[],
 		syncInUtils: ISyncInUtils
 	): DataStructuresForChanges {
-		const recordsToInsertMap: Map<RepositoryId, Map<SchemaVersionId,
+		const recordsToInsertMap: Map<Repository_Id, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>
 			      = this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemas)
 
-		const recordsToUpdateMap: Map<RepositoryId, Map<SchemaVersionId,
+		const recordsToUpdateMap: Map<Repository_Id, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>
 			      = new Map()
-		const messageIndexMapByRecordToUpdateIds: Map<RepositoryId, Map<SchemaVersionId,
+		const messageIndexMapByRecordToUpdateIds: Map<Repository_Id, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Set<number>>>>>>
 			      = new Map()
 
@@ -231,11 +231,11 @@ export class SyncInDataChecker
 	private async determineMissingRecords(
 		dataMessagesWithCompatibleSchemas: IDataToTM[],
 		dataMessagesWithIncompatibleData: IDataToTM[],
-		recordToUpdateMap: Map<RepositoryId, Map<SchemaVersionId,
+		recordToUpdateMap: Map<Repository_Id, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>,
-		existingRecordIdMap: Map<RepositoryId, Map<SchemaVersionId,
+		existingRecordIdMap: Map<Repository_Id, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>,
-		messageIndexMapByRecordToUpdateIds: Map<RepositoryId, Map<SchemaVersionId,
+		messageIndexMapByRecordToUpdateIds: Map<Repository_Id, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Map<RepositoryEntity_ActorRecordId, Set<number>>>>>>,
 		missingRecordDao: IMissingRecordDao
 	): Promise<MissingRecordResults> {
@@ -334,9 +334,9 @@ export class SyncInDataChecker
 
 	private getRecordsToInsertMap(
 		dataMessages: IDataToTM[]
-	): Map<RepositoryId, Map<SchemaVersionId,
+	): Map<Repository_Id, Map<SchemaVersionId,
 		Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>> {
-		const recordsToInsertMap: Map<RepositoryId, Map<SchemaVersionId,
+		const recordsToInsertMap: Map<Repository_Id, Map<SchemaVersionId,
 			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>
 			      = new Map()
 
@@ -376,7 +376,7 @@ export class SyncInDataChecker
 	}
 
 	private recordMissingRecordAndRepoTransBlockRelations(
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		schemaVersionId: SchemaVersionId,
 		entityId: TableIndex,
 		actorId: ActorId,
@@ -412,7 +412,7 @@ export class SyncInDataChecker
 	}
 
 	private createMissingRecord(
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		schemaVersionId: SchemaVersionId,
 		entityId: EntityId,
 		actorId: ActorId,

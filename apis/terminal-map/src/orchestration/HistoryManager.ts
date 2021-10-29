@@ -3,7 +3,7 @@ import type {
     IActor,
     IRepositoryTransactionHistory,
     ITransactionHistory,
-    RepositoryId
+    Repository_Id
 } from "@airport/holding-pattern";
 
 export interface IHistoryManager {
@@ -14,7 +14,7 @@ export interface IHistoryManager {
 
     getNewRepoTransHistory(
         transactionHistory: ITransactionHistory,
-        repositoryId: RepositoryId,
+        repositoryId: Repository_Id,
         actor: IActor
     ): Promise<IRepositoryTransactionHistory>;
 

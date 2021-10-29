@@ -57,7 +57,7 @@ export class SyncInUserChecker {
             const user = {
                 ...remoteUser
             };
-            remoteUserMapByUniqueId.set(user.uniqueId, user);
+            remoteUserMapByUniqueId.set(user.privateId, user);
             mapForMessageByRemoteUserId.set(user.id, user);
         }
         return mapForMessageByRemoteUserId;

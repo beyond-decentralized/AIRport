@@ -5,7 +5,7 @@ import {
 	IRepositoryTransactionHistory,
 	ITransactionHistory,
 	REPO_TRANS_HISTORY_DUO,
-	RepositoryId,
+	Repository_Id,
 	TRANS_HISTORY_DUO
 } from '@airport/holding-pattern'
 import { IHistoryManager } from '@airport/terminal-map'
@@ -28,7 +28,7 @@ export class HistoryManager
 
 	async getNewRepoTransHistory(
 		transactionHistory: ITransactionHistory,
-		repositoryId: RepositoryId,
+		repositoryId: Repository_Id,
 		actor: IActor,
 	): Promise<IRepositoryTransactionHistory> {
 		const [repoTransHistoryDuo, transHistoryDuo] = await container(this).get(
