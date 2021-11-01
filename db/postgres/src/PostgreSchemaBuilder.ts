@@ -151,6 +151,37 @@ export class PostgreSchemaBuilder
 		return sequences
 	}
 
+	protected getIndexSql(
+		indexName: string,
+		tableName: string,
+		columnNameList: string[],
+		unique: boolean
+	): string {
+		let uniquePrefix
+		if (unique) {
+			uniquePrefix = ' UNIQUE'
+		}
+		return `CREATE${uniquePrefix} INDEX ${indexName}
+	  ON ${tableName} USING btree (
+	  ${columnNameList.join(', ')}
+	  )`
+	}
+
+	protected getForeignKeySql(
+		tableName: string,
+		foreignKeyName: string,
+		foreignKeyColumnNames: string[],
+		referencedTableName: string,
+		referencedColumnNames: string[]
+	): string {
+		return `ALTER TABLE ${tableName}
+  ADD CONSTRAINT ${foreignKeyName}
+  FOREIGN KEY (${foreignKeyColumnNames.join(', ')})
+    REFERENCES ${referencedTableName} (${referencedColumnNames})
+    ON DELETE Cascade
+    ON UPDATE Cascade`;
+	}
+
 }
 
 DI.set(SCHEMA_BUILDER, PostgreSchemaBuilder)

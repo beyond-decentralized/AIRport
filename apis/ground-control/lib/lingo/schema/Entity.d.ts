@@ -1,4 +1,4 @@
-import { DatabaseObjectConfiguration } from './DatabaseObjectConfiguration';
+import { DatabaseObjectConfiguration, JsonDatabaseObjectConfiguration } from './DatabaseObjectConfiguration';
 import { DbOperation, JsonOperations } from './Operation';
 import { DbColumn, DbProperty, DbRelation, JsonSchemaColumn, JsonSchemaProperty, JsonSchemaRelation, SchemaReferenceByIndex } from './Property';
 import { DatabaseObject, DbSchemaVersion, JsonDatabaseObject } from './Schema';
@@ -45,7 +45,7 @@ export interface JsonSchemaEntity extends SchemaReferenceByIndex<TableIndex>, Js
     /**
      * Table configuration object.
      */
-    tableConfig: DatabaseObjectConfiguration<any>;
+    tableConfig: JsonDatabaseObjectConfiguration<any>;
 }
 /**
  * Schema Entity with additional indexes (maps).

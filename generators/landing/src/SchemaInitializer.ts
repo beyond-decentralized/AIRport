@@ -40,6 +40,7 @@ export interface ISchemaInitializer {
 
 	initialize(
 		jsonSchemas: JsonSchemaWithLastIds[],
+		existingSchemaMap: Map<string, ISchema>,
 		context: IContext,
 		canAlreadyRunQueries: boolean
 	): Promise<void>
@@ -97,6 +98,7 @@ export class SchemaInitializer
 
 	async initialize(
 		jsonSchemas: JsonSchemaWithLastIds[],
+		existingSchemaMap: Map<string, ISchema>,
 		context: IContext,
 		canAlreadyRunQueries: boolean
 	): Promise<void> {
@@ -112,7 +114,7 @@ export class SchemaInitializer
 			getSchemasWithValidDependencies(jsonSchemas, canAlreadyRunQueries)
 
 		for (const jsonSchema of schemasWithValidDependencies) {
-			await schemaBuilder.build(jsonSchema, context);
+			await schemaBuilder.build(jsonSchema, existingSchemaMap, context);
 		}
 
 		const ddlObjects = schemaComposer.compose(

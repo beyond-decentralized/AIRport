@@ -2,14 +2,18 @@ import { IAirportDatabase } from '@airport/air-control';
 import { ISequence } from '@airport/airport-code';
 import { container, IContext } from '@airport/di';
 import {
+  EntityRelationType,
+  getSchemaNameFromDomainAndName,
   IStoreDriver,
   JsonSchema,
   JsonSchemaColumn,
   JsonSchemaEntity,
+  JsonSchemaVersion,
   PropertyReference,
   QueryType,
   STORE_DRIVER,
 } from '@airport/ground-control';
+import { ISchema } from '@airport/traffic-pattern';
 import { ISchemaBuilder } from './ISchemaBuilder';
 
 export abstract class SqlSchemaBuilder
@@ -17,6 +21,7 @@ export abstract class SqlSchemaBuilder
 
   async build(
     jsonSchema: JsonSchema,
+    existingSchemaMap: Map<string, ISchema>,
     context: IContext,
   ): Promise<void> {
     const storeDriver = await container(this).get(STORE_DRIVER);
@@ -25,8 +30,16 @@ export abstract class SqlSchemaBuilder
 
 
     for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-      await this.buildTable(jsonSchema, jsonEntity, storeDriver, context);
+      await this.buildTable(jsonSchema, jsonEntity, existingSchemaMap, storeDriver, context);
     }
+
+    const relatedJsonSchemaMap: Map<string, JsonSchema> = new Map()
+
+    for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
+      await this.buildForeignKeys(jsonSchema, jsonEntity, existingSchemaMap,
+        relatedJsonSchemaMap, storeDriver, context);
+    }
+
   }
 
   abstract createSchema(
@@ -38,6 +51,7 @@ export abstract class SqlSchemaBuilder
   async buildTable(
     jsonSchema: JsonSchema,
     jsonEntity: JsonSchemaEntity,
+    existingSchemaMap: Map<string, ISchema>,
     storeDriver: IStoreDriver,
     context: IContext,
   ): Promise<void> {
@@ -69,21 +83,123 @@ export abstract class SqlSchemaBuilder
 
     await storeDriver.query(QueryType.DDL, createTableDdl, [], context, false);
 
-    for (const indexConfig of jsonEntity.tableConfig.indexes) {
-      let uniquePrefix = '';
-      if (indexConfig.unique) {
-        uniquePrefix = ' UNIQUE';
+    let indexNumber = 0
+    if (jsonEntity.tableConfig.columnIndexes) {
+      for (const indexConfig of jsonEntity.tableConfig.columnIndexes) {
+        const createIndexDdl = this.getIndexSql('idx_' + tableName + '_' + (++indexNumber),
+          tableName, indexConfig.columnList, indexConfig.unique);
+
+        await storeDriver.query(QueryType.DDL, createIndexDdl, [], context, false);
       }
+    }
+    if (jsonEntity.tableConfig.propertyIndexes) {
+      for (const indexConfig of jsonEntity.tableConfig.propertyIndexes) {
+        const columnNameList = []
+        for (const jsonColumn of jsonEntity.columns) {
+          for (const propertyRef of jsonColumn.propertyRefs) {
+            if (propertyRef.index === indexConfig.propertyIndex) {
+              columnNameList.push(jsonColumn.name)
+              break
+            }
+          }
+        }
 
-      const createIndexDdl = `CREATE${uniquePrefix} INDEX ${indexConfig.name}
-			ON ${tableName} (
-			${indexConfig.columnList.join(', ')}
-			)`;
+        const createIndexDdl = this.getIndexSql('idx_' + tableName + '_' + (++indexNumber),
+          tableName, columnNameList, indexConfig.unique);
 
-      await storeDriver.query(QueryType.DDL, createIndexDdl, [], context, false);
+        await storeDriver.query(QueryType.DDL, createIndexDdl, [], context, false);
+      }
     }
     //
   }
+
+  async buildForeignKeys(
+    jsonSchema: JsonSchema,
+    jsonEntity: JsonSchemaEntity,
+    existingSchemaMap: Map<string, ISchema>,
+    relatedJsonSchemaMap: Map<string, JsonSchema>,
+    storeDriver: IStoreDriver,
+    context: IContext,
+  ): Promise<void> {
+    if (!jsonEntity.relations || !jsonEntity.relations.length) {
+      return
+    }
+
+    const schemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
+    const tableName = storeDriver.getTableName(jsonSchema, jsonEntity, context);
+
+    let foreignKeyNumber = 0
+    for (const jsonRelation of jsonEntity.relations) {
+      if (jsonRelation.relationType !== EntityRelationType.MANY_TO_ONE) {
+        continue
+      }
+      let relatedJsonSchema: JsonSchema
+      let relatedJsonEntity: JsonSchemaEntity
+      if (jsonRelation.relationTableSchemaIndex
+        || jsonRelation.relationTableSchemaIndex === 0) {
+        const referencedSchema = schemaVersion
+          .referencedSchemas[jsonRelation.relationTableSchemaIndex]
+        let relatedSchemaName = getSchemaNameFromDomainAndName(
+          referencedSchema.domain, referencedSchema.name
+        )
+        relatedJsonSchema = relatedJsonSchemaMap.get(relatedSchemaName)
+        if (!relatedJsonSchema) {
+          const relatedSchema = existingSchemaMap.get(relatedSchemaName)
+          // TODO: does the JSON schema need to be parse?
+          relatedJsonSchema = relatedSchema.jsonSchema
+          relatedJsonSchemaMap.set(relatedSchemaName, relatedJsonSchema)
+        }
+        const relatedSchemaVersion: JsonSchemaVersion = relatedJsonSchema
+          .versions[relatedJsonSchema.versions.length - 1]
+        relatedJsonEntity = relatedSchemaVersion.entities[jsonRelation.relationTableIndex]
+      } else {
+        relatedJsonSchema = jsonSchema
+        relatedJsonEntity = schemaVersion.entities[jsonRelation.relationTableIndex]
+      }
+
+      let foreignKeyColumnNames = []
+      for (const jsonColumn of jsonEntity.columns) {
+        for (const propertyRef of jsonColumn.propertyRefs) {
+          if (propertyRef.index === jsonRelation.propertyRef.index) {
+            foreignKeyColumnNames.push(jsonColumn.name)
+            break
+          }
+        }
+      }
+
+      const referencedTableName = storeDriver
+        .getTableName(relatedJsonSchema, relatedJsonEntity, context);
+      let referencedColumnNames = []
+      for (const relatedIdColumnRef of relatedJsonEntity.idColumnRefs) {
+        referencedColumnNames.push(relatedJsonEntity.columns[relatedIdColumnRef.index].name)
+      }
+      const foreignKeySql = this.getForeignKeySql(tableName, 'fk_' + tableName + '_foreignKeyNumber',
+        foreignKeyColumnNames, referencedTableName, referencedColumnNames)
+
+      if (foreignKeySql) {
+        await storeDriver.query(QueryType.DDL, foreignKeySql, [], context, false);
+      }
+    }
+  }
+
+  async buildForeignKeysForTable() {
+
+  }
+
+  protected abstract getIndexSql(
+    indexName: string,
+    tableName: string,
+    columnNameList: string[],
+    unique: boolean
+  ): string
+
+  protected abstract getForeignKeySql(
+    tableName: string,
+    foreignKeyName: string,
+    foreignKeyColumnNames: string[],
+    referencedTableName: string,
+    referencedColumnNames: string[]
+  ): string
 
   abstract buildAllSequences(
     jsonSchemas: JsonSchema[],

@@ -2,8 +2,9 @@ import { IAirportDatabase } from '@airport/air-control';
 import { ISequence } from '@airport/airport-code';
 import { JsonSchema } from '@airport/ground-control';
 import { IContext } from '@airport/di';
+import { ISchema } from '@airport/traffic-pattern';
 export interface ISchemaBuilder {
-    build(jsonSchema: JsonSchema, context: IContext): Promise<void>;
+    build(jsonSchema: JsonSchema, existingSchemaMap: Map<string, ISchema>, context: IContext): Promise<void>;
     buildAllSequences(jsonSchemas: JsonSchema[], context: IContext): Promise<ISequence[]>;
     stageSequences(jsonSchemas: JsonSchema[], airDb: IAirportDatabase, context: IContext): ISequence[];
 }

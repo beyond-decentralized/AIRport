@@ -80,6 +80,24 @@ export class PostgreSqlSchemaBuilder extends SqlSchemaBuilder {
         }
         return sequences;
     }
+    getIndexSql(indexName, tableName, columnNameList, unique) {
+        let uniquePrefix;
+        if (unique) {
+            uniquePrefix = ' UNIQUE';
+        }
+        return `CREATE${uniquePrefix} INDEX ${indexName}
+	  ON ${tableName} USING btree (
+	  ${columnNameList.join(', ')}
+	  )`;
+    }
+    getForeignKeySql(tableName, foreignKeyName, foreignKeyColumnNames, referencedTableName, referencedColumnNames) {
+        return `ALTER TABLE ${tableName}
+  ADD CONSTRAINT ${foreignKeyName}
+  FOREIGN KEY (${foreignKeyColumnNames.join(', ')})
+    REFERENCES ${referencedTableName} (${referencedColumnNames})
+    ON DELETE Cascade
+    ON UPDATE Cascade`;
+    }
 }
 DI.set(SCHEMA_BUILDER, PostgreSqlSchemaBuilder);
 //# sourceMappingURL=PostgreSqlSchemaBuilder.js.map

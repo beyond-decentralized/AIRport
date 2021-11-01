@@ -1,4 +1,4 @@
-import {DatabaseObjectConfiguration} from './DatabaseObjectConfiguration'
+import {DatabaseObjectConfiguration, JsonDatabaseObjectConfiguration} from './DatabaseObjectConfiguration'
 import {
 	DbOperation,
 	JsonOperations
@@ -76,7 +76,7 @@ export interface JsonSchemaEntity
 	/**
 	 * Table configuration object.
 	 */
-	tableConfig: DatabaseObjectConfiguration<any>;
+	tableConfig: JsonDatabaseObjectConfiguration<any>;
 
 }
 

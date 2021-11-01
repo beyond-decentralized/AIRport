@@ -10,5 +10,7 @@ export declare class SqLiteSchemaBuilder extends SqlSchemaBuilder {
     buildAllSequences(jsonSchemas: JsonSchema[]): Promise<ISequence[]>;
     stageSequences(jsonSchemas: JsonSchema[], airDb: IAirportDatabase): ISequence[];
     buildSequences(dbSchema: DbSchema, jsonEntity: JsonSchemaEntity): ISequence[];
+    protected getIndexSql(indexName: string, tableName: string, columnNameList: string[], unique: boolean): string;
+    protected getForeignKeySql(tableName: string, foreignKeyName: string, foreignKeyColumnNames: string[], referencedTableName: string, referencedColumnNames: string[]): string;
 }
 //# sourceMappingURL=SqLiteSchemaBuilder.d.ts.map

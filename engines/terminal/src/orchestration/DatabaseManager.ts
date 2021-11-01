@@ -24,6 +24,7 @@ import {
 	INTERNAL_RECORD_MANAGER
 } from '../tokens';
 import { JsonSchemaWithLastIds } from '@airport/security-check';
+import { BLUEPRINT } from '@airport/blueprint';
 
 export class DatabaseManager
 	implements IDatabaseManager {
@@ -123,7 +124,7 @@ export class DatabaseManager
 		const server = await container(this).get(TRANSACTIONAL_SERVER);
 		(server as any).tempActor = new Actor();
 
-		const hydrate = await storeDriver.doesTableExist('air___airport__territory',
+		const hydrate = await storeDriver.doesTableExist(getSchemaName(BLUEPRINT[0]),
 			'PACKAGES', context);
 
 		await this.installStarterSchema(false, hydrate, context);
@@ -198,7 +199,7 @@ export class DatabaseManager
 			.get(SCHEMA_INITIALIZER, TRANSACTIONAL_SERVER);
 		(server as any).tempActor = new Actor();
 		// await schemaInitializer.initialize(schemasToCreate, context, existingSchemasAreHydrated);
-		await schemaInitializer.initialize(schemasToCreate, context, true);
+		await schemaInitializer.initialize(schemasToCreate, existingSchemaMap, context, true);
 		// }
 
 		(server as any).tempActor = null;

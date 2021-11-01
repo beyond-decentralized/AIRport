@@ -26,12 +26,12 @@ export class SchemaInitializer {
      * Reload existing install - hydrate all schemas
      * Reload exiting App - nothing to do
      */
-    async initialize(jsonSchemas, context, canAlreadyRunQueries) {
+    async initialize(jsonSchemas, existingSchemaMap, context, canAlreadyRunQueries) {
         const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaBuilder, schemaComposer, schemaLocator, schemaRecorder, sequenceGenerator, terminalStore] = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER, SCHEMA_COMPOSER, SCHEMA_LOCATOR, SCHEMA_RECORDER, SEQUENCE_GENERATOR, TERMINAL_STORE);
         const schemasWithValidDependencies = await this.
             getSchemasWithValidDependencies(jsonSchemas, canAlreadyRunQueries);
         for (const jsonSchema of schemasWithValidDependencies) {
-            await schemaBuilder.build(jsonSchema, context);
+            await schemaBuilder.build(jsonSchema, existingSchemaMap, context);
         }
         const ddlObjects = schemaComposer.compose(schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
         this.addNewSchemaVersionsToAll(ddlObjects);

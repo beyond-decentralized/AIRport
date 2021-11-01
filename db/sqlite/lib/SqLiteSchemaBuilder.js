@@ -88,6 +88,24 @@ export class SqLiteSchemaBuilder extends SqlSchemaBuilder {
         }
         return sequences;
     }
+    getIndexSql(indexName, tableName, columnNameList, unique) {
+        let uniquePrefix;
+        if (unique) {
+            uniquePrefix = ' UNIQUE';
+        }
+        return `CREATE${uniquePrefix} INDEX ${indexName}
+    ON ${tableName} (
+    ${columnNameList.join(', ')}
+    )`;
+    }
+    getForeignKeySql(tableName, foreignKeyName, foreignKeyColumnNames, referencedTableName, referencedColumnNames) {
+        // TODO: investigate adding foreign key support for SqLite.
+        // Right now there is no alter table command and it has to be baked
+        // into the CREATE TALBE command, though techniques for getting
+        // around this do exist:
+        // https://stackoverflow.com/questions/1884818/how-do-i-add-a-foreign-key-to-an-existing-sqlite-table
+        return null;
+    }
 }
 DI.set(SCHEMA_BUILDER, SqLiteSchemaBuilder);
 //# sourceMappingURL=SqLiteSchemaBuilder.js.map
