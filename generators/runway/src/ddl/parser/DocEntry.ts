@@ -28,6 +28,16 @@ export interface DocEntry {
 	type?: string;
 }
 
+export interface ArrowFunctionDecoratorProperty {
+	parameters: ArrowFunctionDecoratorPropertyParameter[]
+	returnValue: Object | Object[]
+}
+
+export interface ArrowFunctionDecoratorPropertyParameter {
+	name: string
+	type: string
+}
+
 export interface EntityReference {
 	entity?: EntityCandidate;
 	fromProject?: string;

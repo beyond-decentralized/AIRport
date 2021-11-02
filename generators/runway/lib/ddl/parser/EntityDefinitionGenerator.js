@@ -354,6 +354,16 @@ function parseObjectProperty(initializer, objectType, objectName) {
         case tsc.SyntaxKind.BinaryExpression:
             throw new Error(`Expression are not allowed as parameter values.`);
         case tsc.SyntaxKind.ArrowFunction:
+            const arrowFunction = initializer;
+            const parameters = arrowFunction.parameters.map(parameter => ({
+                name: parameter.name,
+                type: parameter.type.typeName.escapedText
+            }));
+            const body = parseObjectProperty(arrowFunction.body, TsObjectType.OBJECT_LITERAL, null);
+            value = {
+                body,
+                parameters
+            };
             if (objectType == TsObjectType.DECORATOR && objectName === 'WhereJoinTable') {
                 const printer = tsc.createPrinter({
                     newLine: tsc.NewLineKind.LineFeed,

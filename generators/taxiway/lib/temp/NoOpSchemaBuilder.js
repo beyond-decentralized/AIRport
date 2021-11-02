@@ -55,5 +55,11 @@ export class NoOpSchemaBuilder extends SqlSchemaBuilder {
         }
         return sequences;
     }
+    getIndexSql(indexName, tableName, columnNameList, unique) {
+        return '';
+    }
+    getForeignKeySql(tableName, foreignKeyName, foreignKeyColumnNames, referencedTableName, referencedColumnNames) {
+        return null;
+    }
 }
 //# sourceMappingURL=NoOpSchemaBuilder.js.map

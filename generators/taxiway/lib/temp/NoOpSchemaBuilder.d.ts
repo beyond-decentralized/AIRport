@@ -9,5 +9,7 @@ export declare class NoOpSchemaBuilder extends SqlSchemaBuilder {
     buildAllSequences(jsonSchemas: JsonSchema[], context: IContext): Promise<any[]>;
     stageSequences(jsonSchemas: JsonSchema[], airDb: IAirportDatabase, context: IContext): any[];
     buildSequences(dbSchema: DbSchema, jsonEntity: JsonSchemaEntity): any[];
+    protected getIndexSql(indexName: string, tableName: string, columnNameList: string[], unique: boolean): string;
+    protected getForeignKeySql(tableName: string, foreignKeyName: string, foreignKeyColumnNames: string[], referencedTableName: string, referencedColumnNames: string[]): string;
 }
 //# sourceMappingURL=NoOpSchemaBuilder.d.ts.map

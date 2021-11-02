@@ -17,7 +17,7 @@ export interface PropertyIndexConfiguration {
 
 export interface APropertyIndexConfiguration {
 	property: any,
-	unique: boolean
+	unique?: boolean
 }
 
 export interface JsonDatabaseObjectConfiguration<DIC extends DatabaseIndexConfiguration> {
@@ -28,5 +28,5 @@ export interface JsonDatabaseObjectConfiguration<DIC extends DatabaseIndexConfig
 
 export interface AJsonPropertyIndexConfiguration {
 	propertyIndex: number
-	unique: boolean
+	unique?: boolean
 }

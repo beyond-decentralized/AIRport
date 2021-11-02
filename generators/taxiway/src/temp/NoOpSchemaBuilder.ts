@@ -107,4 +107,23 @@ export class NoOpSchemaBuilder
 		return sequences;
 	}
 
+	protected getIndexSql(
+		indexName: string,
+		tableName: string,
+		columnNameList: string[],
+		unique: boolean
+	): string {
+		return ''
+	}
+
+	protected getForeignKeySql(
+		tableName: string,
+		foreignKeyName: string,
+		foreignKeyColumnNames: string[],
+		referencedTableName: string,
+		referencedColumnNames: string[]
+	): string {
+		return null
+	}
+
 }

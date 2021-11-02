@@ -8,7 +8,7 @@ export interface PropertyIndexConfiguration {
 }
 export interface APropertyIndexConfiguration {
     property: any;
-    unique: boolean;
+    unique?: boolean;
 }
 export interface JsonDatabaseObjectConfiguration<DIC extends DatabaseIndexConfiguration> {
     name: string;
@@ -17,6 +17,6 @@ export interface JsonDatabaseObjectConfiguration<DIC extends DatabaseIndexConfig
 }
 export interface AJsonPropertyIndexConfiguration {
     propertyIndex: number;
-    unique: boolean;
+    unique?: boolean;
 }
 //# sourceMappingURL=DatabaseObjectConfiguration.d.ts.map

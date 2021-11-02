@@ -1,5 +1,5 @@
 import { JsonSchema } from '@airport/ground-control';
-import { JsonSchemaWithLastIds } from '../../../takeoff/node_modules/@airport/security-check/lib';
+import { JsonSchemaWithLastIds } from '@airport/security-check';
 export interface ITempDatabase {
     initialize(schemas: JsonSchema[]): Promise<void>;
 }
