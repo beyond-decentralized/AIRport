@@ -1,5 +1,6 @@
 import * as ts from 'typescript';
 import tsc from 'typescript';
+import { getExpectedPropertyIndexesFormatMessage } from '../../ParserUtils';
 import { EntityCandidate, Interface } from './EntityCandidate';
 import { EntityCandidateRegistry } from './EntityCandidateRegistry';
 import { ImportManager } from './ImportManager';
@@ -355,11 +356,22 @@ function parseObjectProperty(initializer, objectType, objectName) {
             throw new Error(`Expression are not allowed as parameter values.`);
         case tsc.SyntaxKind.ArrowFunction:
             const arrowFunction = initializer;
+            for (const parameter of arrowFunction.parameters) {
+                if (!parameter.name || !parameter.type) {
+                    throw new Error(`Uxpected @Table property indexes:${getExpectedPropertyIndexesFormatMessage()}`);
+                }
+            }
             const parameters = arrowFunction.parameters.map(parameter => ({
-                name: parameter.name,
+                name: parameter.name.escapedText,
                 type: parameter.type.typeName.escapedText
             }));
-            const body = parseObjectProperty(arrowFunction.body, TsObjectType.OBJECT_LITERAL, null);
+            let body;
+            try {
+                body = parseObjectProperty(arrowFunction.body, TsObjectType.OBJECT_LITERAL, null);
+            }
+            catch (e) {
+                throw new Error(`Uxpected @Table property indexes:${getExpectedPropertyIndexesFormatMessage()}`);
+            }
             value = {
                 body,
                 parameters
@@ -417,8 +429,8 @@ export default WhereJoinTableFunction`;
                     moduleName: 'WhereJoinTableModule'
                 });
                 value = transpilationResult.outputText;
-                break;
             }
+            break;
         default:
             let objectTypeDescription = '';
             switch (objectType) {

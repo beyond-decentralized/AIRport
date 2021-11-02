@@ -32,9 +32,9 @@ import { ISchemaProperty } from '../../generated/schema/schemaproperty';
 @Entity()
 @Table({
 	name: 'SCHEMA_ENTITIES',
-	indexes: (se: SchemaEntity) => [{
-		property: se.schemaVersion
-	}]
+	// indexes: (se: SchemaEntity) => [{
+	// 	property: se.schemaVersion
+	// }]
 })
 export class SchemaEntity
 	extends VersionedSchemaObject {

@@ -17,3 +17,24 @@ export function forEach(
 		}
 	}
 }
+
+export function getExpectedPropertyIndexesFormatMessage(): string {
+	return `
+
+	General expected property 'indexes' format format:
+
+	@Entity()
+	@Table({
+		name: 'TABLE_NAME',
+		indexes: (enityAlias:  EntityType) => [{
+			property: entityAlias.propetyName
+		}]
+	})
+	export class EntityType {
+
+		@ManyToOne()
+		propertyName: AnotherEntityType 
+
+		...
+	}`
+}

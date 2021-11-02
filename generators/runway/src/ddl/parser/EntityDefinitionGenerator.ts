@@ -1,5 +1,6 @@
-import * as ts                   from 'typescript'
-import tsc              from 'typescript'
+import * as ts from 'typescript'
+import tsc from 'typescript'
+import { getExpectedPropertyIndexesFormatMessage } from '../../ParserUtils'
 import {
 	ClassDocEntry,
 	Decorator,
@@ -7,23 +8,23 @@ import {
 	MethodSignatureDocEntry,
 	PropertyDocEntry,
 	TypeOrParamDocEntry
-}                                from './DocEntry'
+} from './DocEntry'
 import {
 	EntityCandidate,
 	Interface
-}                                from './EntityCandidate'
-import {EntityCandidateRegistry} from './EntityCandidateRegistry'
+} from './EntityCandidate'
+import { EntityCandidateRegistry } from './EntityCandidateRegistry'
 import {
 	EntityFile,
 	FileImports
-}                                from './FileImports'
-import {ImportManager}           from './ImportManager'
+} from './FileImports'
+import { ImportManager } from './ImportManager'
 import {
 	getImplementedInterfaces,
 	getParentClassImport,
 	getParentClassName,
 	isDecoratedAsEntity
-}                                from './utils'
+} from './utils'
 
 /**
  * Created by Papa on 3/26/2016.
@@ -42,7 +43,7 @@ enum TsObjectType {
 }
 
 let currentFileImports
-const entityFileMap: { [classPath: string]: EntityFile }        = {}
+const entityFileMap: { [classPath: string]: EntityFile } = {}
 const fileImportsMapByFilePath: { [path: string]: FileImports } = {}
 
 
@@ -52,7 +53,7 @@ export function visitEntityFile(
 ) {
 	let file = entityFileMap[path]
 	if (!file) {
-		file                = {
+		file = {
 			path,
 			hasEntityCandidate: false,
 			hasEnums: false,
@@ -76,13 +77,13 @@ export function visitEntityFile(
 
 		let fileImports = fileImportsMapByFilePath[path]
 		if (!fileImports) {
-			fileImports                    = ImportManager.resolveImports(node.parent, file.path)
+			fileImports = ImportManager.resolveImports(node.parent, file.path)
 			fileImportsMapByFilePath[path] = fileImports
 		}
 		currentFileImports = fileImports
 
 		// This is a top level class, get its symbol
-		let symbol          = globalThis.checker
+		let symbol = globalThis.checker
 			.getSymbolAtLocation((<ts.ClassDeclaration>node).name)
 		let serializedClass = serializeClass(symbol, node.decorators, path, fileImports, node.parent)
 		// if (serializedClass) {
@@ -96,7 +97,7 @@ export function visitEntityFile(
 		}
 		file.hasInterfaces = true
 		// This is a top level interface, get its symbol
-		let symbol         = globalThis.checker
+		let symbol = globalThis.checker
 			.getSymbolAtLocation((<ts.ClassDeclaration>node).name)
 		registerInterface(symbol, path)
 	} else if (node.kind === tsc.SyntaxKind.ModuleDeclaration) {
@@ -108,7 +109,7 @@ export function visitEntityFile(
 			throw new Error(onlyClassInFileError)
 		}
 		file.hasEnums = true
-		let symbol    = globalThis.checker
+		let symbol = globalThis.checker
 			.getSymbolAtLocation((<ts.EnumDeclaration>node).name)
 		globalThis.enumMap.set(symbol.name, path)
 	}
@@ -120,16 +121,16 @@ function serializeSymbol(
 	symbol: ts.Symbol,
 	parent = (<any>symbol).parent
 ): DocEntry {
-	const declarations     = symbol.declarations
-	let isGenerated        = false
-	let allocationSize     = undefined
-	let isId               = false
+	const declarations = symbol.declarations
+	let isGenerated = false
+	let allocationSize = undefined
+	let isId = false
 	let isMappedSuperclass = false
-	let isTransient        = false
-	const decorators       = []
+	let isTransient = false
+	const decorators = []
 	let declaration
 	if (declarations && declarations.length === 1) {
-		declaration        = symbol.declarations[0]
+		declaration = symbol.declarations[0]
 		const tsDecorators = declaration.decorators
 		if (tsDecorators) {
 			for (const tsDecorator of tsDecorators) {
@@ -158,11 +159,11 @@ function serializeSymbol(
 	}
 
 
-// 		if (flags & 8 /* NoTruncation */) {
-// if (flags & 256 /* UseFullyQualifiedType */) {
-// if (flags & 4096 /* SuppressAnyReturnType */) {
-// if (flags & 1 /* WriteArrayAsGenericType */) {
-// if (flags & 64 /* WriteTypeArgumentsOfSignature */) {
+	// 		if (flags & 8 /* NoTruncation */) {
+	// if (flags & 256 /* UseFullyQualifiedType */) {
+	// if (flags & 4096 /* SuppressAnyReturnType */) {
+	// if (flags & 1 /* WriteArrayAsGenericType */) {
+	// if (flags & 64 /* WriteTypeArgumentsOfSignature */) {
 
 	let type = globalThis.checker.typeToString(
 		globalThis.checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration),
@@ -221,22 +222,22 @@ function serializeSymbol(
 function serializeMethodDefinition(
 	symbol: ts.Symbol
 ): MethodSignatureDocEntry {
-	const name                              = symbol.getName()
+	const name = symbol.getName()
 	const parameters: TypeOrParamDocEntry[] = []
 
 	const signature = <ts.SignatureDeclaration>symbol.valueDeclaration
-	const tsParams  = signature.parameters
+	const tsParams = signature.parameters
 
 	for (const tsParam of tsParams) {
 		const typeInfo = getType(tsParam.type, 0)
-		const name     = <string>(<ts.Identifier>tsParam.name).escapedText
+		const name = <string>(<ts.Identifier>tsParam.name).escapedText
 		const optional = (<ts.ParameterDeclaration>tsParam).questionToken ? true : false
-		parameters.push({...typeInfo, name, optional})
+		parameters.push({ ...typeInfo, name, optional })
 	}
 
-	const typeInfo   = getType(signature.type, 0)
-	const optional   = (<ts.FunctionLikeDeclarationBase>signature).questionToken ? true : false
-	const returnType = {...typeInfo, name, optional}
+	const typeInfo = getType(signature.type, 0)
+	const optional = (<ts.FunctionLikeDeclarationBase>signature).questionToken ? true : false
+	const returnType = { ...typeInfo, name, optional }
 
 	return {
 		name,
@@ -249,10 +250,10 @@ function getType(
 	tsType: ts.TypeNode,
 	arrayDepth: number
 ): TypeOrParamDocEntry {
-	let type          = 'any'
-	let primitive     = null
+	let type = 'any'
+	let primitive = null
 	let genericParams = []
-	const typeInfo    = {
+	const typeInfo = {
 		type,
 		primitive,
 		arrayDepth,
@@ -268,25 +269,25 @@ function getType(
 			return typeInfo
 		case tsc.SyntaxKind.BooleanKeyword:
 			type = primitive = 'boolean'
-			return {...typeInfo, primitive, type}
+			return { ...typeInfo, primitive, type }
 		case tsc.SyntaxKind.NumberKeyword:
 			type = primitive = 'number'
-			return {...typeInfo, primitive, type}
+			return { ...typeInfo, primitive, type }
 		case tsc.SyntaxKind.StringKeyword:
 			type = primitive = 'string'
-			return {...typeInfo, primitive, type}
+			return { ...typeInfo, primitive, type }
 		case tsc.SyntaxKind.VoidKeyword:
 			type = 'void'
-			return {...typeInfo, type}
+			return { ...typeInfo, type }
 		case tsc.SyntaxKind.TypeReference:
 			const typeName: ts.Identifier = <ts.Identifier>(<ts.TypeReferenceNode>tsType).typeName
-			const typeArguments           = (<ts.TypeReferenceNode>tsType).typeArguments
+			const typeArguments = (<ts.TypeReferenceNode>tsType).typeArguments
 			if (typeArguments && typeArguments.length) {
 				genericParams = typeArguments.map(
 					genericParam => getType(genericParam, 0))
 			}
 			type = <string>typeName.escapedText
-			return {...typeInfo, type, genericParams}
+			return { ...typeInfo, type, genericParams }
 		default:
 			throw new Error(
 				`Unsupported Syntax kind for method parameter/type: ${tsType.kind}`)
@@ -330,9 +331,9 @@ function parseObjectLiteralExpression(
 		objLitExpr.properties.forEach((
 			property: ts.PropertyAssignment
 		) => {
-			const propertyName   = (<ts.Identifier>property.name).text
-			const initializer    = property.initializer
-			const value          = parseObjectProperty(initializer, TsObjectType.OBJECT_LITERAL, propertyName)
+			const propertyName = (<ts.Identifier>property.name).text
+			const initializer = property.initializer
+			const value = parseObjectProperty(initializer, TsObjectType.OBJECT_LITERAL, propertyName)
 			object[propertyName] = value
 		})
 	}
@@ -367,7 +368,7 @@ function parseObjectProperty(
 			break
 		case tsc.SyntaxKind.RegularExpressionLiteral:
 			let regExp = <ts.Identifier>initializer
-			value      = convertRegExpStringToObject(regExp.text)
+			value = convertRegExpStringToObject(regExp.text)
 			break
 		case tsc.SyntaxKind.StringLiteral:
 		case tsc.SyntaxKind.NoSubstitutionTemplateLiteral:
@@ -376,7 +377,7 @@ function parseObjectProperty(
 		case tsc.SyntaxKind.TrueKeyword:
 			value = true
 			break
-		case  tsc.SyntaxKind.FalseKeyword:
+		case tsc.SyntaxKind.FalseKeyword:
 			value = false
 			break
 		case tsc.SyntaxKind.NumericLiteral:
@@ -389,14 +390,14 @@ function parseObjectProperty(
 			break
 		case tsc.SyntaxKind.NewExpression:
 			let newExpression = <ts.NewExpression>initializer
-			let type          = (<ts.Identifier>newExpression.expression).text
-			value             = 'new ' + type
+			let type = (<ts.Identifier>newExpression.expression).text
+			value = 'new ' + type
 			break
 		case tsc.SyntaxKind.ObjectLiteralExpression:
 			value = parseObjectLiteralExpression(<ts.ObjectLiteralExpression>initializer)
 			break
 		case tsc.SyntaxKind.ArrayLiteralExpression:
-			value            = []
+			value = []
 			let arrayLiteral = <ts.ArrayLiteralExpression>initializer
 			arrayLiteral.elements.forEach((
 				element: ts.Node
@@ -423,12 +424,22 @@ function parseObjectProperty(
 		case tsc.SyntaxKind.BinaryExpression:
 			throw new Error(`Expression are not allowed as parameter values.`)
 		case tsc.SyntaxKind.ArrowFunction:
-			const arrowFunction = <ts.ArrowFunction> initializer
+			const arrowFunction = <ts.ArrowFunction>initializer
+			for (const parameter of arrowFunction.parameters) {
+				if (!parameter.name || !parameter.type) {
+					throw new Error(`Uxpected @Table property indexes:${getExpectedPropertyIndexesFormatMessage()}`)
+				}
+			}
 			const parameters = arrowFunction.parameters.map(parameter => ({
-				name: parameter.name,
+				name: (parameter.name as any).escapedText,
 				type: (parameter.type as any).typeName.escapedText
 			}))
-			const body = parseObjectProperty(arrowFunction.body, TsObjectType.OBJECT_LITERAL, null)
+			let body
+			try {
+				body = parseObjectProperty(arrowFunction.body, TsObjectType.OBJECT_LITERAL, null)
+			} catch (e) {
+				throw new Error(`Uxpected @Table property indexes:${getExpectedPropertyIndexesFormatMessage()}`)
+			}
 			value = {
 				body,
 				parameters
@@ -482,14 +493,14 @@ export default WhereJoinTableFunction`;
 				// airport reference (and nothing else)
 				const typescriptDefinition = printer.printNode(
 					ts.EmitHint.Expression, initializer, globalThis.currentSourceFile)
-				const compilerOptions      = {module: ts.ModuleKind.CommonJS}
-				const transpilationResult  = tsc.transpileModule(typescriptDefinition, {
+				const compilerOptions = { module: ts.ModuleKind.CommonJS }
+				const transpilationResult = tsc.transpileModule(typescriptDefinition, {
 					compilerOptions: compilerOptions,
 					moduleName: 'WhereJoinTableModule'
 				})
-				value                      = transpilationResult.outputText
-				break
+				value = transpilationResult.outputText
 			}
+			break
 		default:
 			let objectTypeDescription = ''
 			switch (objectType) {
@@ -567,11 +578,11 @@ function serializeClass(
 	file
 ): ClassDocEntry {
 	const details: ClassDocEntry = serializeSymbol(symbol, file)
-	details.fileImports          = fileImports
+	details.fileImports = fileImports
 
-	let properties: PropertyDocEntry[]              = []
+	let properties: PropertyDocEntry[] = []
 	let methodSignatures: MethodSignatureDocEntry[] = []
-	let ids: DocEntry[]                             = []
+	let ids: DocEntry[] = []
 
 	forEach(symbol.members, (
 		memberName,
@@ -615,11 +626,11 @@ function serializeClass(
 			throw new Error('Not implemented')
 		}
 	})
-	details.properties       = properties
+	details.properties = properties
 	details.methodSignatures = methodSignatures
 
 	// Get the construct signatures
-	let constructorType  = globalThis.checker
+	let constructorType = globalThis.checker
 		.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration)
 	details.constructors = constructorType.getConstructSignatures().map(serializeSignature)
 
@@ -638,9 +649,9 @@ function serializeClass(
 	}
 
 	if (entityDecorator) {
-		let entityCandidate      = EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport, entityDecorator.isSuperclass)
+		let entityCandidate = EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport, entityDecorator.isSuperclass)
 		entityCandidate.docEntry = details
-		entityCandidate.ids      = ids
+		entityCandidate.ids = ids
 
 		entityCandidate.implementedInterfaceNames = getImplementedInterfaces(symbol)
 
@@ -668,7 +679,7 @@ function registerInterface(
 	classPath: string
 ) {
 	let anInterface = new Interface(classPath, symbol.name)
-	let interfaces  = globalCandidateRegistry.allInterfacesMap.get(symbol.name)
+	let interfaces = globalCandidateRegistry.allInterfacesMap.get(symbol.name)
 	if (!interfaces) {
 		interfaces = []
 		globalCandidateRegistry.allInterfacesMap.set(symbol.name, interfaces)

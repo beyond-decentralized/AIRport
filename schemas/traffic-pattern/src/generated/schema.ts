@@ -385,7 +385,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_RELATION_COLUMNS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -862,7 +862,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_RELATIONS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -1186,7 +1186,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_PROPERTIES",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -1419,7 +1419,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_PROPERTY_COLUMNS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -1903,7 +1903,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_COLUMNS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -2183,7 +2183,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_OPERATIONS",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -2618,7 +2618,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_ENTITIES",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -2874,7 +2874,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_REFERENCES",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -3144,7 +3144,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_VERSIONS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -3253,7 +3253,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_CURRENT_VERSIONS",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -3499,7 +3499,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMAS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				}

@@ -71,6 +71,7 @@ export class JsonSchemaBuilder {
             });
             columns.sort((a, b) => a.index < b.index ? -1 : 1);
             const [properties, relations] = this.getPropertiesAndRelations(sIndexedSchema, sIndexedEntity, columns);
+            const tableConfig = this.convertTableConfig(sEntity);
             return {
                 columns,
                 idColumnRefs: this.getIdColumnReferences(sIndexedEntity),
@@ -81,7 +82,7 @@ export class JsonSchemaBuilder {
                 properties: properties,
                 relations: relations,
                 sinceVersion: 1,
-                tableConfig: sEntity.table,
+                tableConfig,
             };
         });
         // FIXME: add schema versioning support
@@ -111,6 +112,87 @@ export class JsonSchemaBuilder {
                     versionString: '1.0.0'
                 }]
         };
+    }
+    convertTableConfig(sEntity) {
+        if (!sEntity.table) {
+            return null;
+        }
+        if (!sEntity.table.indexes) {
+            return {
+                name: sEntity.table.name
+            };
+        }
+        const rawPropertyIndexes = sEntity.table.indexes;
+        if (!rawPropertyIndexes.body) {
+            return {
+                name: sEntity.table.name,
+                columnIndexes: sEntity.table.indexes
+            };
+        }
+        if (!rawPropertyIndexes.parameters || rawPropertyIndexes.parameters.length !== 1) {
+            throw new Error(`Unexpected number of parameters in 'indexes' arrow function.${this.getGenerateExpectedFormatMessage()}`);
+        }
+        const propertyMapByName = new Map();
+        for (let property of sEntity.properties) {
+            propertyMapByName.set(property.name, property);
+        }
+        const parameter = rawPropertyIndexes.parameters[0];
+        if (parameter.type !== sEntity.name) {
+            throw new Error(`Unexpected type of 'indexes' arrow function parameter,
+	expecting '${parameter.type}' got '${parameter.type}'.${this.getGenerateExpectedFormatMessage()}`);
+        }
+        const propertyIndexes = rawPropertyIndexes.body.map((rawPropertyIndex, index) => {
+            if (!rawPropertyIndex.property) {
+                throw new Error(`Propery based index #${index + 1} does not have a 'property'
+	specified.${this.getGenerateExpectedFormatMessage()}`);
+            }
+            const objectPropertyFragments = rawPropertyIndex.property.split('.');
+            if (objectPropertyFragments.length !== 2) {
+                throw new Error(`PropertyBased index #${index + 1} does not have correct property syntax.
+Expecting entityAlias.propertyName.${this.getGenerateExpectedFormatMessage()}`);
+            }
+            if (objectPropertyFragments[0] !== parameter.name) {
+                throw new Error(`PropertyBased index #${index + 1} does not have correct property syntax.
+Expecting entityAlias.propertyName.${this.getGenerateExpectedFormatMessage()}`);
+            }
+            let propertyName = objectPropertyFragments[1];
+            let property = propertyMapByName.get(propertyName);
+            if (!property) {
+                throw new Error(`PropertyBased index #${index + 1} does not have a valid property name.
+Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName} ${this.getGenerateExpectedFormatMessage()}`);
+            }
+            const coreConfig = {
+                propertyIndex: property.index
+            };
+            if (rawPropertyIndex.unique === true) {
+                coreConfig.unique = true;
+            }
+            return coreConfig;
+        });
+        return {
+            name: sEntity.table.name,
+            propertyIndexes
+        };
+    }
+    getGenerateExpectedFormatMessage() {
+        return `
+		
+		General expected format:
+
+		@Entity()
+		@Table({
+			name: 'TABLE_NAME',
+			indexes: (enityAlias:  EntityType) => [{
+				property: entityAlias.propetyName
+			}]
+		})
+		export class EntityType {
+	
+			@ManyToOne()
+			propertyName: AnotherEntityType 
+	
+			...
+		}`;
     }
     getIdColumnReferences(sIndexedEntity) {
         return sIndexedEntity.idColumns.map(sColumn => ({

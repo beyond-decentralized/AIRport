@@ -384,7 +384,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_RELATION_COLUMNS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -861,7 +861,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_RELATIONS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -1185,7 +1185,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_PROPERTIES",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -1418,7 +1418,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_PROPERTY_COLUMNS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -1902,7 +1902,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_COLUMNS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -2182,7 +2182,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_OPERATIONS",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -2617,7 +2617,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_ENTITIES",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -2873,7 +2873,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_REFERENCES",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -3143,7 +3143,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_VERSIONS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -3252,7 +3252,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMA_CURRENT_VERSIONS",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -3498,7 +3498,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SCHEMAS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				}

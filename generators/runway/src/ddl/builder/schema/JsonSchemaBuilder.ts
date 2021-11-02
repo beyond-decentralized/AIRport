@@ -1,11 +1,16 @@
 import { JsonSchemaWithApi } from '@airport/check-in';
 import {
+	AJsonPropertyIndexConfiguration,
 	ColumnIndex,
+	DatabaseIndexConfiguration,
+	DatabaseObjectConfiguration,
 	DatabaseOneToManyElements,
 	DbEntity,
 	DbSchema,
 	EntityRelationType,
 	getSqlDataType,
+	IntermediatePropertyIndexConfiguration,
+	JsonDatabaseObjectConfiguration,
 	JsonOperation,
 	JsonSchema,
 	JsonSchemaColumn,
@@ -15,17 +20,18 @@ import {
 	SchemaIndex,
 	SchemaReferenceByIndex,
 	TableIndex
-}                          from '@airport/ground-control';
+} from '@airport/ground-control';
 import { currentSchemaApi } from '../../../api/parser/ApiGenerator';
-import { Configuration }   from '../../options/Options';
+import { getExpectedPropertyIndexesFormatMessage } from '../../../ParserUtils';
+import { Configuration } from '../../options/Options';
 import { EntityCandidate } from '../../parser/EntityCandidate';
-import { SIndexedEntity }  from './SEntity';
-import { SRelation }       from './SProperty';
+import { SEntity, SIndexedEntity } from './SEntity';
+import { SProperty, SRelation } from './SProperty';
 import {
 	SIndexedSchema,
 	SSchemaReference
-}                          from './SSchema';
-import { SSchemaBuilder }  from './SSchemaBuilder';
+} from './SSchema';
+import { SSchemaBuilder } from './SSchemaBuilder';
 
 export class JsonSchemaBuilder {
 
@@ -96,7 +102,7 @@ export class JsonSchemaBuilder {
 	): JsonSchemaWithApi {
 		const jsonEntities: JsonSchemaEntity[] = sIndexedSchema.entities.map(
 			sIndexedEntity => {
-				const sEntity                     = sIndexedEntity.entity;
+				const sEntity = sIndexedEntity.entity;
 				const columns: JsonSchemaColumn[] = sIndexedEntity.columns.map(
 					sColumn => {
 						const jsonColumn: JsonSchemaColumn = {
@@ -125,11 +131,13 @@ export class JsonSchemaBuilder {
 				columns.sort((
 					a,
 					b
-					) =>
-						a.index < b.index ? -1 : 1
+				) =>
+					a.index < b.index ? -1 : 1
 				);
 
 				const [properties, relations] = this.getPropertiesAndRelations(sIndexedSchema, sIndexedEntity, columns);
+
+				const tableConfig = this.convertTableConfig(sEntity)
 
 				return {
 					columns,
@@ -141,7 +149,7 @@ export class JsonSchemaBuilder {
 					properties: properties,
 					relations: relations,
 					sinceVersion: 1,
-					tableConfig: sEntity.table,
+					tableConfig,
 				};
 			});
 
@@ -176,6 +184,83 @@ export class JsonSchemaBuilder {
 		};
 	}
 
+	private convertTableConfig<DIC extends DatabaseIndexConfiguration>(
+		sEntity: SEntity
+	): JsonDatabaseObjectConfiguration<DIC> {
+		if (!sEntity.table) {
+			return null
+		}
+		if (!sEntity.table.indexes) {
+
+			return {
+				name: sEntity.table.name
+			}
+		}
+
+		const rawPropertyIndexes: IntermediatePropertyIndexConfiguration = sEntity.table.indexes as any
+		if (!rawPropertyIndexes.body) {
+			return {
+				name: sEntity.table.name,
+				columnIndexes: sEntity.table.indexes as any
+			}
+		}
+
+		if (!rawPropertyIndexes.parameters || rawPropertyIndexes.parameters.length !== 1) {
+			throw new Error(`Unexpected number of parameters in 'indexes' arrow function.${getExpectedPropertyIndexesFormatMessage()}`);
+		}
+
+		const propertyMapByName: Map<string, SProperty> = new Map()
+		for (let property of sEntity.properties) {
+			propertyMapByName.set(property.name, property)
+		}
+
+		const parameter = rawPropertyIndexes.parameters[0]
+		if (parameter.type !== sEntity.name) {
+			throw new Error(`Unexpected type of 'indexes' arrow function parameter,
+	expecting '${parameter.type}' got '${parameter.type}'.${getExpectedPropertyIndexesFormatMessage()}`)
+		}
+
+		const propertyIndexes = rawPropertyIndexes.body.map((rawPropertyIndex, index) => {
+			if (!rawPropertyIndex.property) {
+				throw new Error(`Propery based index #${index + 1} does not have a 'property'
+	specified.${getExpectedPropertyIndexesFormatMessage()}`)
+			}
+
+			const objectPropertyFragments = rawPropertyIndex.property.split('.')
+			if (objectPropertyFragments.length !== 2) {
+				throw new Error(`PropertyBased index #${index + 1} does not have correct property syntax.
+Expecting entityAlias.propertyName.${getExpectedPropertyIndexesFormatMessage()}`)
+			}
+
+			if (objectPropertyFragments[0] !== parameter.name) {
+				throw new Error(`PropertyBased index #${index + 1} does not have correct property syntax.
+Expecting entityAlias.propertyName.${getExpectedPropertyIndexesFormatMessage()}`)
+			}
+
+			let propertyName = objectPropertyFragments[1]
+			let property = propertyMapByName.get(propertyName)
+			if (!property) {
+				throw new Error(`PropertyBased index #${index + 1} does not have a valid property name.
+Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName} ${getExpectedPropertyIndexesFormatMessage()}`)
+			}
+
+			const coreConfig: AJsonPropertyIndexConfiguration = {
+				propertyIndex: property.index
+			}
+
+			if (rawPropertyIndex.unique === true) {
+				coreConfig.unique = true
+			}
+
+			return coreConfig
+		})
+
+		return {
+			name: sEntity.table.name,
+			propertyIndexes
+		}
+	}
+
 	private getIdColumnReferences(
 		sIndexedEntity: SIndexedEntity
 	): SchemaReferenceByIndex<ColumnIndex>[] {
@@ -190,7 +275,7 @@ export class JsonSchemaBuilder {
 		sIndexedEntity: SIndexedEntity,
 		columns: JsonSchemaColumn[],
 	): [JsonSchemaProperty[], JsonSchemaRelation[]] {
-		const relations  = [];
+		const relations = [];
 		const properties = sIndexedEntity.entity.properties.map((
 			sProperty,
 			index
@@ -201,7 +286,7 @@ export class JsonSchemaBuilder {
 			const sRelation = sProperty.relation;
 			if (!sRelation) {
 				const sColumn = sProperty.columns[0];
-				columnRef     = {
+				columnRef = {
 					index: sColumn.index
 				};
 
@@ -212,15 +297,15 @@ export class JsonSchemaBuilder {
 				let relatedIndexedEntity: SIndexedEntity | DbEntity;
 				if (sRelation.referencedSchemaIndex || sRelation.referencedSchemaIndex === 0) {
 					relationTableSchemaIndex = sRelation.referencedSchemaIndex;
-					const relatedDbSchema    = sIndexedSchema.schema.referencedSchemas[sRelation.referencedSchemaIndex];
-					relationSchemaIndex      = relatedDbSchema.index;
-					relatedIndexedEntity     = relatedDbSchema.dbSchema
+					const relatedDbSchema = sIndexedSchema.schema.referencedSchemas[sRelation.referencedSchemaIndex];
+					relationSchemaIndex = relatedDbSchema.index;
+					relatedIndexedEntity = relatedDbSchema.dbSchema
 						.currentVersion[0].schemaVersion.entityMapByName[sRelation.entityName];
-					relationTableIndex       = relatedIndexedEntity.index;
+					relationTableIndex = relatedIndexedEntity.index;
 				} else {
 					relatedIndexedEntity = sIndexedSchema.entityMapByName[sRelation.entityName];
-					relationSchemaIndex  = null;
-					relationTableIndex   = relatedIndexedEntity.entity.tableIndex;
+					relationSchemaIndex = null;
+					relationTableIndex = relatedIndexedEntity.entity.tableIndex;
 				}
 
 				this.buildColumnRelations(
@@ -244,8 +329,8 @@ export class JsonSchemaBuilder {
 					relationTableSchemaIndex,
 					sinceVersion: 1
 				};
-				relations[sRelation.index]         = relation;
-				relationRef                        = {
+				relations[sRelation.index] = relation;
+				relationRef = {
 					index: sRelation.index
 				};
 			}

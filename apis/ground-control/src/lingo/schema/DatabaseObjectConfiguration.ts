@@ -11,6 +11,17 @@ export interface DatabaseObjectConfiguration<DIC extends DatabaseIndexConfigurat
 	// primaryKey?: string[];
 }
 
+export interface IntermediatePropertyIndexConfiguration {
+	body: {
+		property: string,
+		unique: boolean
+	}[],
+	parameters: {
+		name: string
+		type: string
+	}[]
+}
+
 export interface PropertyIndexConfiguration {
 	(entity): APropertyIndexConfiguration[]
 }
@@ -22,8 +33,8 @@ export interface APropertyIndexConfiguration {
 
 export interface JsonDatabaseObjectConfiguration<DIC extends DatabaseIndexConfiguration> {
 	name: string
-	columnIndexes: DIC
-	propertyIndexes: AJsonPropertyIndexConfiguration[]
+	columnIndexes?: DIC
+	propertyIndexes?: AJsonPropertyIndexConfiguration[]
 }
 
 export interface AJsonPropertyIndexConfiguration {

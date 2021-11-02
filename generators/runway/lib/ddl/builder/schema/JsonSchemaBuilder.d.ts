@@ -23,6 +23,8 @@ export declare class JsonSchemaBuilder {
         };
     }): void;
     private convertSIndexedSchemaToJsonSchema;
+    private convertTableConfig;
+    private getGenerateExpectedFormatMessage;
     private getIdColumnReferences;
     private getPropertiesAndRelations;
     private buildColumnRelations;

@@ -10,4 +10,24 @@ export function forEach(collection, callback) {
         }
     }
 }
+export function getExpectedPropertyIndexesFormatMessage() {
+    return `s
+
+	General expected property 'indexes' format format:
+
+	@Entity()
+	@Table({
+		name: 'TABLE_NAME',
+		indexes: (enityAlias:  EntityType) => [{
+			property: entityAlias.propetyName
+		}]
+	})
+	export class EntityType {
+
+		@ManyToOne()
+		propertyName: AnotherEntityType 
+
+		...
+	}`;
+}
 //# sourceMappingURL=ParserUtils.js.map
