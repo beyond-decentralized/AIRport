@@ -20,8 +20,7 @@ export function forEach(
 
 export function getExpectedPropertyIndexesFormatMessage(): string {
 	return `
-
-	General expected property 'indexes' format format:
+	General expected @Table({ indexes: ...}) formats for property based indexes:
 
 	@Entity()
 	@Table({

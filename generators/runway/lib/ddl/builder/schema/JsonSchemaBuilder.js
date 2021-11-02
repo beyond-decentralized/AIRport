@@ -1,5 +1,6 @@
 import { EntityRelationType, getSqlDataType } from '@airport/ground-control';
 import { currentSchemaApi } from '../../../api/parser/ApiGenerator';
+import { getExpectedPropertyIndexesFormatMessage } from '../../../ParserUtils';
 import { SSchemaBuilder } from './SSchemaBuilder';
 export class JsonSchemaBuilder {
     // schemaVarName = 'SCHEMA'
@@ -130,7 +131,7 @@ export class JsonSchemaBuilder {
             };
         }
         if (!rawPropertyIndexes.parameters || rawPropertyIndexes.parameters.length !== 1) {
-            throw new Error(`Unexpected number of parameters in 'indexes' arrow function.${this.getGenerateExpectedFormatMessage()}`);
+            throw new Error(`Unexpected number of parameters in 'indexes' arrow function.${getExpectedPropertyIndexesFormatMessage()}`);
         }
         const propertyMapByName = new Map();
         for (let property of sEntity.properties) {
@@ -139,27 +140,27 @@ export class JsonSchemaBuilder {
         const parameter = rawPropertyIndexes.parameters[0];
         if (parameter.type !== sEntity.name) {
             throw new Error(`Unexpected type of 'indexes' arrow function parameter,
-	expecting '${parameter.type}' got '${parameter.type}'.${this.getGenerateExpectedFormatMessage()}`);
+	expecting '${parameter.type}' got '${parameter.type}'.${getExpectedPropertyIndexesFormatMessage()}`);
         }
         const propertyIndexes = rawPropertyIndexes.body.map((rawPropertyIndex, index) => {
             if (!rawPropertyIndex.property) {
                 throw new Error(`Propery based index #${index + 1} does not have a 'property'
-	specified.${this.getGenerateExpectedFormatMessage()}`);
+	specified.${getExpectedPropertyIndexesFormatMessage()}`);
             }
             const objectPropertyFragments = rawPropertyIndex.property.split('.');
             if (objectPropertyFragments.length !== 2) {
                 throw new Error(`PropertyBased index #${index + 1} does not have correct property syntax.
-Expecting entityAlias.propertyName.${this.getGenerateExpectedFormatMessage()}`);
+Expecting entityAlias.propertyName.${getExpectedPropertyIndexesFormatMessage()}`);
             }
             if (objectPropertyFragments[0] !== parameter.name) {
                 throw new Error(`PropertyBased index #${index + 1} does not have correct property syntax.
-Expecting entityAlias.propertyName.${this.getGenerateExpectedFormatMessage()}`);
+Expecting entityAlias.propertyName.${getExpectedPropertyIndexesFormatMessage()}`);
             }
             let propertyName = objectPropertyFragments[1];
             let property = propertyMapByName.get(propertyName);
             if (!property) {
                 throw new Error(`PropertyBased index #${index + 1} does not have a valid property name.
-Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName} ${this.getGenerateExpectedFormatMessage()}`);
+Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName} ${getExpectedPropertyIndexesFormatMessage()}`);
             }
             const coreConfig = {
                 propertyIndex: property.index
@@ -173,26 +174,6 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
             name: sEntity.table.name,
             propertyIndexes
         };
-    }
-    getGenerateExpectedFormatMessage() {
-        return `
-		
-		General expected format:
-
-		@Entity()
-		@Table({
-			name: 'TABLE_NAME',
-			indexes: (enityAlias:  EntityType) => [{
-				property: entityAlias.propetyName
-			}]
-		})
-		export class EntityType {
-	
-			@ManyToOne()
-			propertyName: AnotherEntityType 
-	
-			...
-		}`;
     }
     getIdColumnReferences(sIndexedEntity) {
         return sIndexedEntity.idColumns.map(sColumn => ({
