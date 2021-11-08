@@ -29,10 +29,10 @@ export type RecordHistoryNewValueNewValue = any;
 @Entity()
 @Table({
 	name: "REPOSITORY_RECORD_HISTORY_NEW_VALUES",
-	primaryKey: [
-		"REPOSITORY_RECORD_HISTORY_ID",
-		"COLUMN_INDEX"
-	]
+	// primaryKey: [
+	// 	"REPOSITORY_RECORD_HISTORY_ID",
+	// 	"COLUMN_INDEX"
+	// ]
 })
 export class RecordHistoryNewValue {
 

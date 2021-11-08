@@ -1,4 +1,4 @@
-import { doEnsureContext, } from '@airport/air-control';
+import { doEnsureContext, Y } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { EntityDatabaseFacade } from '../EntityDatabaseFacade';
@@ -25,6 +25,20 @@ export class Dao {
     }
     exists(entityId, context) {
         throw new Error(`Not Implemented`);
+    }
+    repositoryId() {
+        return {
+            actor: {
+                id: Y,
+                uuId: Y
+            },
+            actorRecordId: Y,
+            ageSuitability: Y,
+            repository: {
+                id: Y,
+                uuId: Y
+            }
+        };
     }
     async findAll(entityIds, context, cacheForUpdate = false) {
         if (entityIds) {

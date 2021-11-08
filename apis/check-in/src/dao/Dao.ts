@@ -12,6 +12,7 @@ import {
 	IQEntity,
 	OperationName,
 	QSchema,
+	Y
 } from '@airport/air-control';
 import {
 	DI,
@@ -84,6 +85,21 @@ export abstract class Dao<Entity,
 	): Promise<boolean> {
 		throw new Error(`Not Implemented`);
 	}
+
+    protected repositoryId() {
+        return {
+            actor: {
+                id: Y,
+                uuId: Y
+            },
+            actorRecordId: Y,
+            ageSuitability:Y,
+            repository: {
+                id: Y,
+                uuId: Y
+            }
+        }
+    }
 
 	async findAll(
 		entityIds?: EntityId[],

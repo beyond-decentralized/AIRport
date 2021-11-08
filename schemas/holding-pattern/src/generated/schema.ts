@@ -204,7 +204,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "REPOSITORY_RECORD_HISTORY",
-						"indexes": [
+						"columnIndexes": [
 							{
 								"name": "RCRD_HSTR_TO_OPRTN_HSTR_FX",
 								"columnList": [
@@ -480,7 +480,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "REPOSITORY",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -613,7 +613,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "REPOSITORY_ACTORS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -829,7 +829,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -1022,7 +1022,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "REPO_TRANS_HISTORY_CHANGED_REPOSITORY_ACTORS",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -1135,11 +1135,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "REPOSITORY_RECORD_HISTORY_NEW_VALUES",
-						"primaryKey": [
-							"REPOSITORY_RECORD_HISTORY_ID",
-							"COLUMN_INDEX"
-						],
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -1253,11 +1249,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "REPOSITORY_RECORD_HISTORY_OLD_VALUES",
-						"primaryKey": [
-							"REPOSITORY_RECORD_HISTORY_ID",
-							"COLUMN_INDEX"
-						],
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -1349,7 +1341,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "TRANSACTION_HISTORY",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -1656,7 +1648,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "REPOSITORY_TRANSACTION_HISTORY",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -1881,7 +1873,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "REPOSITORY_OPERATION_HISTORY",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -2012,7 +2004,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "REPOSITORY_APPLICATION",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -2124,7 +2116,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "REPOSITORY_SCHEMAS",
-						"indexes": []
+						"columnIndexes": []
 					}
 				}
 			],

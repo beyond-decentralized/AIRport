@@ -13,6 +13,18 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     constructor(dbEntityId: DbEntityId, Q: QSchema, internal?: boolean);
     count(context?: IContext): Promise<number>;
     exists(entityId: EntityId, context?: IContext): Promise<boolean>;
+    protected repositoryId(): {
+        actor: {
+            id: any;
+            uuId: any;
+        };
+        actorRecordId: any;
+        ageSuitability: any;
+        repository: {
+            id: any;
+            uuId: any;
+        };
+    };
     findAll(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
     findAllAsTrees(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
     findById(entityId: EntityId, context?: IContext, cacheForUpdate?: boolean): Promise<Entity>;
