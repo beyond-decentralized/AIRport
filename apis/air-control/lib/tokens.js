@@ -10,6 +10,7 @@ export const QUERY_CONTEXT_LOADER = airControl.token('IQueryContextLoader');
 export const QUERY_FACADE = airControl.token('IQueryFacade');
 export const QUERY_UTILS = airControl.token('IQueryUtils');
 export const RELATION_MANAGER = airControl.token('IRelationManager');
+export const REPOSITORY_LOADER = airControl.token('IRepositoryLoader');
 export const SCHEMA_UTILS = airControl.token('ISchemaUtils');
 export const UPDATE_CACHE_MANAGER = airControl.token('IUpdateCacheManager');
 //# sourceMappingURL=tokens.js.map

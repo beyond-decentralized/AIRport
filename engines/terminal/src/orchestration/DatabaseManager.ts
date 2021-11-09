@@ -265,7 +265,7 @@ export class DatabaseManager
 			// 	.map(schema => schema.jsonSchema)
 			// await schemaInitializer.hydrate(jsonSchemas as any, context);
 		} else {
-			await schemaInitializer.initialize(blueprintFile.BLUEPRINT as any,
+			await schemaInitializer.initialize(blueprintFile.BLUEPRINT as any, new Map(),
 				context, false);
 		}
 	}

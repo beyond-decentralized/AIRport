@@ -1,4 +1,4 @@
-import { DATABASE_FACADE, EntityFind, EntityFindOne, } from '@airport/air-control';
+import { DATABASE_FACADE, EntityFind, EntityFindOne, EntityLookup, } from '@airport/air-control';
 import { DI } from '@airport/di';
 /**
  * Created by Papa on 12/11/2016.
@@ -17,6 +17,12 @@ export class EntityDatabaseFacade {
     }
     get from() {
         return this.Q[this.dbEntity.name];
+    }
+    findForRepository(repositorySource, repositoryUuid) {
+        return new EntityFind(this.dbEntity, EntityLookup.mapResults, repositorySource, repositoryUuid);
+    }
+    findOneForRepository(repositorySource, repositoryUuid) {
+        return new EntityFindOne(this.dbEntity, EntityLookup.mapResults, repositorySource, repositoryUuid);
     }
     async insertColumnValues(rawInsertColumnValues, ctx) {
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {

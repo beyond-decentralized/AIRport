@@ -1,3 +1,4 @@
+export * from './core/repository/RepositoryLoader';
 export * from './core/repository/RepositoryManager';
 export * from './core/UpdateState';
 export * from './data/DeltaStore';

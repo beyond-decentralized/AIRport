@@ -51,6 +51,16 @@ export interface IEntityDatabaseFacade<IEntity,
 	 */
 	find: IEntityFind<IEntity, Array<IEntity> | MappedEntityArray<IEntity>, EntitySelect>;
 
+	findForRepository(
+		repositorySource: string,
+		repositoryUuid: string
+	): IEntityFind<IEntity, Array<IEntity> | MappedEntityArray<IEntity>, EntitySelect>;
+
+	findOneForRepository(
+		repositorySource: string,
+		repositoryUuid: string
+	): IEntityFindOne<IEntity, EntitySelect>;
+
 	/**
 	 * The Promise based API for all Entity 'findOne' queries.
 	 */

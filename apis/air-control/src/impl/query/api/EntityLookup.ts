@@ -8,9 +8,12 @@ import { IEntityContext } from '../../../lingo/core/EntityContext'
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity'
 import { IEntityLookup } from '../../../lingo/query/api/EntityLookup'
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
-import { UPDATE_CACHE_MANAGER } from '../../../tokens'
+import {
+	REPOSITORY_LOADER,
+	SCHEMA_UTILS,
+	UPDATE_CACHE_MANAGER
+} from '../../../tokens'
 import { LookupProxy } from './Lookup'
-import { SCHEMA_UTILS } from '../../..'
 
 export interface IEntityLookupInternal<Child, MappedChild,
 	IESP extends IEntitySelectProperties>
@@ -50,7 +53,9 @@ export abstract class EntityLookup<Child, MappedChild,
 
 	constructor(
 		protected dbEntity: DbEntity,
-		protected mapResults = EntityLookup.mapResults
+		protected mapResults = EntityLookup.mapResults,
+		protected repositorySource: string = null,
+		protected repositoryUuid: string = null,
 	) {
 		super()
 	}
@@ -66,8 +71,7 @@ export abstract class EntityLookup<Child, MappedChild,
 		) => MappedChild,
 		isMapped = true
 	): MappedChild {
-		return new MappedChildClass(
-			this.dbEntity, isMapped)
+		return new MappedChildClass(this.dbEntity, isMapped)
 	}
 
 	setNoCache(
@@ -76,8 +80,7 @@ export abstract class EntityLookup<Child, MappedChild,
 			mapResults: boolean
 		) => Child
 	): Child {
-		return new ChildClass(
-			this.dbEntity, this.mapResults)
+		return new ChildClass(this.dbEntity, this.mapResults)
 	}
 
 	async entityLookup(
@@ -88,6 +91,10 @@ export abstract class EntityLookup<Child, MappedChild,
 		context: IEntityContext
 	): Promise<any> {
 		context.dbEntity = this.dbEntity
+		if (this.repositorySource && this.repositoryUuid) {
+			const repositoryLoader = await DI.db().get(REPOSITORY_LOADER)
+			await repositoryLoader.loadRepository(this.repositorySource, this.repositoryUuid)
+		}
 		const result = await this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)
 		const [entityStateManager, schemaUtils, updateCacheManager] =

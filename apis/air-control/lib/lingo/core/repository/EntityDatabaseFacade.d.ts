@@ -18,6 +18,8 @@ export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySele
      * The Promise based API for all Entity 'find' (find many) queries.
      */
     find: IEntityFind<IEntity, Array<IEntity> | MappedEntityArray<IEntity>, EntitySelect>;
+    findForRepository(repositorySource: string, repositoryUuid: string): IEntityFind<IEntity, Array<IEntity> | MappedEntityArray<IEntity>, EntitySelect>;
+    findOneForRepository(repositorySource: string, repositoryUuid: string): IEntityFindOne<IEntity, EntitySelect>;
     /**
      * The Promise based API for all Entity 'findOne' queries.
      */

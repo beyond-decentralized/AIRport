@@ -26,7 +26,7 @@ import {
 	QUERY_OBJECT_INITIALIZER
 } from '@airport/takeoff';
 import { TERMINAL_STORE } from '@airport/terminal-map';
-import { ISchema, SCHEMA_DAO } from '@airport/traffic-pattern';
+import { ISchema } from '@airport/traffic-pattern';
 import {
 	SCHEMA_BUILDER,
 	SCHEMA_CHECKER,
@@ -42,7 +42,7 @@ export interface ISchemaInitializer {
 		jsonSchemas: JsonSchemaWithLastIds[],
 		existingSchemaMap: Map<string, ISchema>,
 		context: IContext,
-		canAlreadyRunQueries: boolean
+		checkDependencies: boolean
 	): Promise<void>
 
 	initializeForAIRportApp(
@@ -100,7 +100,7 @@ export class SchemaInitializer
 		jsonSchemas: JsonSchemaWithLastIds[],
 		existingSchemaMap: Map<string, ISchema>,
 		context: IContext,
-		canAlreadyRunQueries: boolean
+		checkDependencies: boolean
 	): Promise<void> {
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			queryObjectInitializer, schemaBuilder, schemaComposer,
@@ -111,7 +111,7 @@ export class SchemaInitializer
 				SEQUENCE_GENERATOR, TERMINAL_STORE);
 
 		const schemasWithValidDependencies = await this.
-			getSchemasWithValidDependencies(jsonSchemas, canAlreadyRunQueries)
+			getSchemasWithValidDependencies(jsonSchemas, checkDependencies)
 
 		for (const jsonSchema of schemasWithValidDependencies) {
 			await schemaBuilder.build(jsonSchema, existingSchemaMap, context);

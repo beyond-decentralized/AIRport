@@ -14,8 +14,10 @@ export interface IEntityLookupInternal<Child, MappedChild, IESP extends IEntityS
 export declare abstract class EntityLookup<Child, MappedChild, IESP extends IEntitySelectProperties> extends LookupProxy implements IEntityLookupInternal<Child, MappedChild, IESP> {
     protected dbEntity: DbEntity;
     protected mapResults: boolean;
+    protected repositorySource: string;
+    protected repositoryUuid: string;
     static mapResults: boolean;
-    constructor(dbEntity: DbEntity, mapResults?: boolean);
+    constructor(dbEntity: DbEntity, mapResults?: boolean, repositorySource?: string, repositoryUuid?: string);
     abstract map(isMapped?: boolean): MappedChild;
     setMap(MappedChildClass: new (dbEntity: DbEntity, mapResults: boolean) => MappedChild, isMapped?: boolean): MappedChild;
     setNoCache(ChildClass: new (dbEntity: DbEntity, mapResults: boolean) => Child): Child;

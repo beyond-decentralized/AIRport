@@ -6,6 +6,7 @@ import { SCHEMA_INITIALIZER } from '@airport/landing';
 import { SCHEMA_DAO } from '@airport/traffic-pattern';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER, INTERNAL_RECORD_MANAGER } from '../tokens';
+import { BLUEPRINT } from '@airport/blueprint';
 export class DatabaseManager {
     constructor() {
         this.initialized = false;
@@ -89,7 +90,7 @@ export class DatabaseManager {
         */
         const server = await container(this).get(TRANSACTIONAL_SERVER);
         server.tempActor = new Actor();
-        const hydrate = await storeDriver.doesTableExist('air___airport__territory', 'PACKAGES', context);
+        const hydrate = await storeDriver.doesTableExist(getSchemaName(BLUEPRINT[0]), 'PACKAGES', context);
         await this.installStarterSchema(false, hydrate, context);
         if (!hydrate) {
             const internalRecordManager = await container(this)
@@ -150,7 +151,7 @@ export class DatabaseManager {
             .get(SCHEMA_INITIALIZER, TRANSACTIONAL_SERVER);
         server.tempActor = new Actor();
         // await schemaInitializer.initialize(schemasToCreate, context, existingSchemasAreHydrated);
-        await schemaInitializer.initialize(schemasToCreate, context, true);
+        await schemaInitializer.initialize(schemasToCreate, existingSchemaMap, context, true);
         // }
         server.tempActor = null;
     }
@@ -211,7 +212,7 @@ export class DatabaseManager {
             // await schemaInitializer.hydrate(jsonSchemas as any, context);
         }
         else {
-            await schemaInitializer.initialize(blueprintFile.BLUEPRINT, context, false);
+            await schemaInitializer.initialize(blueprintFile.BLUEPRINT, new Map(), context, false);
         }
     }
 }
