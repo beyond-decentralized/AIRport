@@ -63,6 +63,10 @@ __decorate([
     DbString()
 ], Repository.prototype, "url", void 0);
 __decorate([
+    Column({ name: "SOURCE" }),
+    DbString()
+], Repository.prototype, "source", void 0);
+__decorate([
     OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryActors", void 0);
 __decorate([

@@ -27,6 +27,7 @@ export interface IRepository {
 	name?: string;
 	ageSuitability?: number;
 	url?: string;
+	source?: string;
 	syncPriority?: string;
 
 	// Non-Id Relations

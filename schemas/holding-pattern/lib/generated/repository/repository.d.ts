@@ -8,6 +8,7 @@ export interface IRepository {
     name?: string;
     ageSuitability?: number;
     url?: string;
+    source?: string;
     syncPriority?: string;
     ownerActor?: IActor;
     repositoryActors?: IRepositoryActor[];

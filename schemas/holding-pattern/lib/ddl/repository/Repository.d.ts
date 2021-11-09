@@ -5,12 +5,13 @@ import { SyncPriority } from "./SyncPrority";
 /**
  * Created by Papa on 2/9/2017.
  */
-export declare type Repository_Id = number;
-export declare type Repository_CreatedAt = Date;
-export declare type Repository_UuId = string;
-export declare type Repository_Name = string;
-export declare type Repository_Url = string;
 export declare type Repository_AgeSuitability = 0 | 7 | 13 | 18;
+export declare type Repository_CreatedAt = Date;
+export declare type Repository_Id = number;
+export declare type Repository_Name = string;
+export declare type Repository_Source = string;
+export declare type Repository_Url = string;
+export declare type Repository_UuId = string;
 export declare class Repository {
     id: Repository_Id;
     ownerActor: Actor;
@@ -19,6 +20,7 @@ export declare class Repository {
     name: Repository_Name;
     ageSuitability: Repository_AgeSuitability;
     url: Repository_Url;
+    source: Repository_Source;
     repositoryActors: RepositoryActor[];
     repositoryTransactionHistory: RepositoryTransactionHistory[];
     syncPriority: SyncPriority;

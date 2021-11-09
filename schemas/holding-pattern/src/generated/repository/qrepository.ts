@@ -83,6 +83,7 @@ export interface RepositoryESelect
 	name?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
 	url?: string | IQStringField;
+	source?: string | IQStringField;
 	syncPriority?: string | IQStringField;
 
 	// Id Relations - full property interfaces
@@ -128,6 +129,7 @@ export interface RepositoryEUpdateProperties
 	name?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
 	url?: string | IQStringField;
+	source?: string | IQStringField;
 	syncPriority?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -148,6 +150,7 @@ export interface RepositoryGraph
 	name?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
 	url?: string | IQStringField;
+	source?: string | IQStringField;
 	syncPriority?: string | IQStringField;
 
 	// Relations
@@ -168,6 +171,7 @@ export interface RepositoryEUpdateColumns
 	NAME?: string | IQStringField;
 	AGE_SUITABILITY?: number | IQNumberField;
 	REPOSITORY_URL?: string | IQStringField;
+	SOURCE?: string | IQStringField;
 	SYNC_PRIORITY?: string | IQStringField;
 	OWNER_ACTOR_ID?: number | IQNumberField;
 
@@ -210,6 +214,7 @@ export interface QRepository extends IQEntity<Repository>
 	name: IQStringField;
 	ageSuitability: IQNumberField;
 	url: IQStringField;
+	source: IQStringField;
 	syncPriority: IQStringField;
 
 	// Non-Id Relations

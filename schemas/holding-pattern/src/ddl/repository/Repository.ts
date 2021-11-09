@@ -26,12 +26,13 @@ import { SyncPriority } from "./SyncPrority";
  * Created by Papa on 2/9/2017.
  */
 
-export type Repository_Id = number;
-export type Repository_CreatedAt = Date;
-export type Repository_UuId = string;
-export type Repository_Name = string;
-export type Repository_Url = string;
 export type Repository_AgeSuitability = 0 | 7 | 13 | 18
+export type Repository_CreatedAt = Date;
+export type Repository_Id = number;
+export type Repository_Name = string;
+export type Repository_Source = string;
+export type Repository_Url = string;
+export type Repository_UuId = string;
 
 @Entity()
 @Table({
@@ -71,6 +72,10 @@ export class Repository {
 	@Column({ name: "REPOSITORY_URL" })
 	@DbString()
 	url: Repository_Url;
+
+	@Column({ name: "SOURCE" })
+	@DbString()
+	source: Repository_Source
 
 	// @Column({name: "DISTRIBUTION_STRATEGY"})
 	// @DbString()

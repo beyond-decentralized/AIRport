@@ -305,11 +305,11 @@ export const SCHEMA = {
 							"index": 6,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "SYNC_PRIORITY",
-							"notNull": true,
+							"name": "SOURCE",
+							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 9
+									"index": 7
 								}
 							],
 							"sinceVersion": 1,
@@ -317,6 +317,20 @@ export const SCHEMA = {
 						},
 						{
 							"index": 7,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "SYNC_PRIORITY",
+							"notNull": true,
+							"propertyRefs": [
+								{
+									"index": 10
+								}
+							],
+							"sinceVersion": 1,
+							"type": "STRING"
+						},
+						{
+							"index": 8,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -412,7 +426,16 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
+							"columnRef": {
+								"index": 6
+							},
 							"index": 7,
+							"isId": false,
+							"name": "source",
+							"sinceVersion": 1
+						},
+						{
+							"index": 8,
 							"isId": false,
 							"name": "repositoryActors",
 							"relationRef": {
@@ -421,7 +444,7 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 8,
+							"index": 9,
 							"isId": false,
 							"name": "repositoryTransactionHistory",
 							"relationRef": {
@@ -431,9 +454,9 @@ export const SCHEMA = {
 						},
 						{
 							"columnRef": {
-								"index": 6
+								"index": 7
 							},
-							"index": 9,
+							"index": 10,
 							"isId": false,
 							"name": "syncPriority",
 							"sinceVersion": 1
@@ -458,7 +481,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 7
+								"index": 8
 							},
 							"relationTableIndex": 2,
 							"sinceVersion": 1
@@ -471,7 +494,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 8
+								"index": 9
 							},
 							"relationTableIndex": 8,
 							"sinceVersion": 1
