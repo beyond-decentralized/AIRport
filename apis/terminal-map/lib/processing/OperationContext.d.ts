@@ -18,6 +18,10 @@ export interface IOperationContext extends IContext {
     internal: boolean;
     ioc: IIocOperationContext;
 }
+export interface IQueryOperationContext extends IOperationContext {
+    repositorySource?: string;
+    repositoryUuid?: string;
+}
 export interface IIocOperationContext {
     airDb: IAirportDatabase;
     cascadeGraphVerifier: ICascadeGraphVerifier;

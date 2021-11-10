@@ -109,9 +109,21 @@ export interface IDatabaseFacade {
 	 * Ether creates or updates an entity - internal API.  Use the
 	 *  API provided by the IEntityDatabaseFacade.
 	 *
-	 * @return Number of records saved (1 or 0)
+	 * @return ISaveResult object with metadata on saved objects
 	 */
-	save<E, EntityCascadeGraph>(
+	save<E>(
+		entity: E,
+		ctx: IEntityContext,
+	): Promise<ISaveResult>;
+
+	/**
+	 * Ether creates or updates an entity and saves it it a destination
+	 *  - internal API.  Use the API provided by the IEntityDatabaseFacade.
+	 *
+	 * @return ISaveResult object with metadata on saved objects
+	 */
+	 saveToDestination<E>(
+		repositoryDestination: string,
 		entity: E,
 		ctx: IEntityContext,
 	): Promise<ISaveResult>;
@@ -152,7 +164,7 @@ export interface IDatabaseFacade {
 export interface IQueryFacade {
 
 	ensureIocContext<E>(
-		context: IQueryContext<E>
+		context: IQueryContext
 	): Promise<void>
 
 	// init(): Promise<void>;

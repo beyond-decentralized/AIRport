@@ -3,6 +3,7 @@ import { Observable } from 'rxjs'
 import { AIRepository } from './AIRepositoryEntities'
 import { DistributionStrategy } from './data/DistributionStrategy'
 import { PlatformType } from './data/PatformType'
+import { IAbstractQueryContext } from './query/AbstractQueryContext'
 import { PortableQuery } from './query/PortableQuery'
 import { ISaveResult } from './query/SaveResult'
 
@@ -23,29 +24,35 @@ export interface ITransactionalConnector {
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context?: IContext,
+		context?: IAbstractQueryContext<any>,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray>
 
 	findOne<E>(
 		portableQuery: PortableQuery,
-		context?: IContext,
+		context?: IAbstractQueryContext<any>,
 		cachedSqlQueryId?: number,
 	): Promise<E>
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context?: IContext,
+		context?: IAbstractQueryContext<any>,
 		cachedSqlQueryId?: number,
 	): Observable<EntityArray>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
-		context?: IContext,
+		context?: IAbstractQueryContext<any>,
 		cachedSqlQueryId?: number,
 	): Observable<E>
 
 	save<E, T = E | E[]>(
+		entity: T,
+		context?: IContext,
+	): Promise<ISaveResult>
+
+	saveToDestination<E, T = E | E[]>(
+		repositoryDestination: string,
 		entity: T,
 		context?: IContext,
 	): Promise<ISaveResult>

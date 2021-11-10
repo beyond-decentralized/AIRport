@@ -14,17 +14,20 @@ import {
     IPortableQueryIMI,
     IReadQueryIMI,
     ISaveIMI,
+    ISaveToDestinationIMI,
     IsolateMessageType,
     JsonSchemaWithLastIds
 } from '@airport/security-check';
-import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff';
 import {
     ICredentials,
+    IQueryOperationContext,
     TERMINAL_STORE,
     TRANSACTIONAL_SERVER
 } from '@airport/terminal-map';
-import { INTERNAL_RECORD_MANAGER } from '..';
-import { DATABASE_MANAGER } from '../tokens';
+import {
+    DATABASE_MANAGER,
+    INTERNAL_RECORD_MANAGER
+} from '../tokens';
 
 export abstract class TransactionalReceiver {
 
@@ -106,7 +109,11 @@ export abstract class TransactionalReceiver {
                     result = await transactionalServer.find(
                         findMessage.portableQuery,
                         credentials,
-                        context
+                        {
+                            ...context as any,
+                            repositorySource: findMessage.repositorySource,
+                            repositoryUuId: findMessage.repositoryUuid
+                        } as IQueryOperationContext
                     )
                     break
                 case IsolateMessageType.FIND_ONE:
@@ -114,7 +121,11 @@ export abstract class TransactionalReceiver {
                     result = await transactionalServer.findOne(
                         findOneMessage.portableQuery,
                         credentials,
-                        context
+                        {
+                            ...context as any,
+                            repositorySource: findMessage.repositorySource,
+                            repositoryUuId: findMessage.repositoryUuid
+                        } as IQueryOperationContext
                     )
                     break
                 case IsolateMessageType.INSERT_VALUES:
@@ -140,6 +151,7 @@ export abstract class TransactionalReceiver {
                     )
                     break
                 case IsolateMessageType.SAVE:
+                case IsolateMessageType.SAVE_TO_DESTINATION:
                     const saveMessage: ISaveIMI<any, any> = <ISaveIMI<any, any>>message
                     const terminalStore = await container(this).get(TERMINAL_STORE)
                     if (!saveMessage.dbEntity) {
@@ -153,18 +165,33 @@ export abstract class TransactionalReceiver {
                         break
                     }
                     (context as IEntityContext).dbEntity = dbEntity as any
-                    result = await transactionalServer.save(
-                        saveMessage.entity,
-                        credentials,
-                        context as IEntityContext
-                    )
+                    if (message.type === IsolateMessageType.SAVE) {
+                        result = await transactionalServer.save(
+                            saveMessage.entity,
+                            credentials,
+                            context as IEntityContext
+                        )
+                    } else {
+                        const saveToDestinationMessage: ISaveToDestinationIMI<any, any>
+                            = <ISaveToDestinationIMI<any, any>>message
+                        result = await transactionalServer.saveToDestination(
+                            saveToDestinationMessage.repositoryDestination,
+                            saveToDestinationMessage.entity,
+                            credentials,
+                            context as IEntityContext
+                        )
+                    }
                     break
                 case IsolateMessageType.SEARCH:
                     const searchMessage: IReadQueryIMI = <IReadQueryIMI>message;
                     result = await transactionalServer.search(
                         searchMessage.portableQuery,
                         credentials,
-                        context
+                        {
+                            ...context as any,
+                            repositorySource: findMessage.repositorySource,
+                            repositoryUuId: findMessage.repositoryUuid
+                        } as IQueryOperationContext
                     )
                     break
                 case IsolateMessageType.SEARCH_ONE:
@@ -172,7 +199,11 @@ export abstract class TransactionalReceiver {
                     result = await transactionalServer.search(
                         searchOneMessage.portableQuery,
                         credentials,
-                        context
+                        {
+                            ...context as any,
+                            repositorySource: findMessage.repositorySource,
+                            repositoryUuId: findMessage.repositoryUuid
+                        } as IQueryOperationContext
                     )
                     break
                 case IsolateMessageType.START_TRANSACTION:

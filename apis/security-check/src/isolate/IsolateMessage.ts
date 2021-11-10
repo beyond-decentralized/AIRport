@@ -24,6 +24,7 @@ export enum IsolateMessageType {
     SEARCH_UNSUBSCRIBE = 'UNSUBSCRIBE',
     START_TRANSACTION = 'START_TRANSACTION',
     SAVE = 'SAVE',
+    SAVE_TO_DESTINATION = 'SAVE_TO_DESTINATION',
     UPDATE_VALUES = 'UPDATE_VALUES'
 }
 
@@ -32,6 +33,8 @@ export interface IIsolateMessage {
     __receivedTime__?: number
     category: 'FromDb' | 'ToDb'
     id: number
+    repositoryDestination?: string
+    repositorySource?: string
     schemaSignature: string
     type: IsolateMessageType
 }
@@ -84,6 +87,8 @@ export interface IReadQueryIMI
     extends IPortableQueryIMI {
     cachedSqlQueryId?: number
     portableQuery: PortableQuery
+    repositorySource: string
+    repositoryUuid: string
 }
 
 export interface IDataIMO<T>
@@ -96,10 +101,19 @@ export interface IObservableDataIMO<T>
 
 export interface ISaveIMI<E, T = E | E[]>
     extends IIsolateMessage {
-    entity: T,
     dbEntity: {
         id: number,
         schemaVersionId: number
     }
+    entity: T
 }
 
+export interface ISaveToDestinationIMI<E, T = E | E[]>
+    extends IIsolateMessage {
+    dbEntity: {
+        id: number,
+        schemaVersionId: number
+    }
+    entity: T
+    repositoryDestination: string
+}

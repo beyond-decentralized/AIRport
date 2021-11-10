@@ -2,6 +2,7 @@ import {
     IAirportDatabase,
     IFieldUtils,
     IQMetadataUtils,
+    IQueryContext,
     IQueryFacade,
     IQueryUtils,
     IRelationManager,
@@ -31,6 +32,12 @@ export interface IOperationContext
     entityCascadeGraph: any
     internal: boolean
     ioc: IIocOperationContext
+}
+
+export interface IQueryOperationContext
+    extends IOperationContext {
+    repositorySource?: string
+    repositoryUuid?: string
 }
 
 export interface IIocOperationContext {

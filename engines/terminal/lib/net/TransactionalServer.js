@@ -93,6 +93,19 @@ export class TransactionalServer {
         }, context);
         return saveResult;
     }
+    async saveToDestination(repositoryDestination, entity, credentials, context) {
+        if (!entity) {
+            return null;
+        }
+        await this.ensureIocContext(context);
+        const actor = await this.getActor(credentials);
+        let saveResult;
+        await transactional(async (transaction) => {
+            // TODO: save to serialized repository to the specified destination
+            saveResult = await context.ioc.operationManager.performSave(entity, actor, transaction, context);
+        }, context);
+        return saveResult;
+    }
     async insertValues(portableQuery, credentials, context, ensureGeneratedValues // for internal use only
     ) {
         const values = portableQuery.jsonQuery.V;

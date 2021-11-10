@@ -4,7 +4,7 @@ import {
 	Observable,
 	from
 } from 'rxjs';
-import { IEntityContext } from '../../../lingo/core/EntityContext';
+import { IEntityQueryContext } from '../../../lingo/core/EntityContext';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
 import { IEntitySearchOne } from '../../../lingo/query/api/EntitySearchOne';
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery';
@@ -51,7 +51,7 @@ export class EntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 		context?: IContext
 	): Promise<Entity> {
 		return await this.entityLookup(rawEntityQuery, queryResultType,
-			true, true, this.ensureContext(context) as IEntityContext);
+			true, true, this.ensureContext(context) as IEntityQueryContext);
 	}
 
 	map(

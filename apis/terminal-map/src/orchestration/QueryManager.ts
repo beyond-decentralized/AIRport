@@ -1,29 +1,29 @@
-import type { IContext } from "@airport/di"
 import type { PortableQuery } from "@airport/ground-control"
 import type { Observable } from "rxjs"
+import { IQueryOperationContext } from "../processing/OperationContext"
 
 export interface IQueryManager {
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context: IContext,
+		context: IQueryOperationContext,
 		cachedSqlQueryId?: number
 	): Promise<EntityArray>;
 
 	findOne<E>(
 		portableQuery: PortableQuery,
-		context: IContext,
+		context: IQueryOperationContext,
 		cachedSqlQueryId?: number
 	): Promise<E>;
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context: IContext,
+		context: IQueryOperationContext,
 	): Observable<EntityArray>;
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
-		context: IContext,
+		context: IQueryOperationContext,
 	): Observable<E>;
 
 }

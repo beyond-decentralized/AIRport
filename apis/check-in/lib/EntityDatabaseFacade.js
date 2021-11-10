@@ -64,6 +64,14 @@ export class EntityDatabaseFacade {
             return await databaseFacade.save(entity, ctx);
         });
     }
+    /**
+     * @return ISaveResult object with metadata on saved objects
+     */
+    async saveToDestination(repositoryDestination, entity, ctx) {
+        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
+            return await databaseFacade.saveToDestination(repositoryDestination, entity, ctx);
+        });
+    }
     async withDbEntity(ctx, callback) {
         if (!ctx) {
             ctx = {};

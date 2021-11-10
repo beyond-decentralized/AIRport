@@ -3,7 +3,7 @@
     "@airport/check-in": "0.0.1",
     "@airport/di": "0.0.1",
     "@airport/ground-control": "0.0.1",
-    "rxjs": "^7.3.0"
+    "rxjs": "~7.4.0"
   },
   "main": "lib/index.js",
   "name": "@airport/security-check",

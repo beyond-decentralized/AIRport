@@ -28,7 +28,7 @@ export class QueryFacade
 	async find<E, EntityArray extends Array<E>>(
 		query: AbstractQuery,
 		queryResultType: QueryResultType,
-		context: IQueryContext<E>
+		context: IQueryContext
 	): Promise<EntityArray> {
 		await this.ensureIocContext(context);
 		const result = await context.ioc.transactionalConnector.find<E, EntityArray>(
@@ -40,7 +40,7 @@ export class QueryFacade
 	async findOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		context: IQueryContext<E>
+		context: IQueryContext
 	): Promise<E> {
 		await this.ensureIocContext(context);
 		const result = await context.ioc.transactionalConnector.findOne<E>(this.getPortableQuery(
@@ -52,7 +52,7 @@ export class QueryFacade
 	getPortableQuery<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		context: IQueryContext<E>
+		context: IQueryContext
 	): PortableQuery {
 		return {
 			jsonQuery: <JsonQuery>query.toJSON(context.ioc.queryUtils, context.ioc.fieldUtils),
@@ -68,7 +68,7 @@ export class QueryFacade
 	async search<E, EntityArray extends Array<E>>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		context: IQueryContext<E>
+		context: IQueryContext
 	): Promise<Observable<EntityArray>> {
 		await this.ensureIocContext(context);
 		let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(
@@ -80,7 +80,7 @@ export class QueryFacade
 	async searchOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		context: IQueryContext<E>
+		context: IQueryContext
 	): Promise<Observable<E>> {
 		await this.ensureIocContext(context);
 		let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(
@@ -90,7 +90,7 @@ export class QueryFacade
 	}
 
 	async ensureIocContext<E>(
-		context: IQueryContext<E>
+		context: IQueryContext
 	): Promise<void> {
 		const queryContextLoader = await container(this)
 			.get(QUERY_CONTEXT_LOADER);

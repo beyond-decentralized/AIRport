@@ -3,7 +3,7 @@ import {
 	IContext,
 } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
-import { IEntityContext } from '../../../lingo/core/EntityContext';
+import { IEntityQueryContext } from '../../../lingo/core/EntityContext';
 import { ILookup } from '../../../lingo/query/api/Lookup';
 import { IAbstractQuery } from '../../../lingo/query/facade/AbstractQuery';
 import { RawQuery, } from '../../../lingo/query/facade/Query';
@@ -15,6 +15,12 @@ import {
 
 export class LookupProxy
 	implements ILookup {
+
+		constructor(
+			protected repositorySource: string = null,
+			protected repositoryUuid: string = null,
+		) {
+		}
 
 	ensureContext<C extends IContext = IContext>(
 		context?: C
@@ -28,7 +34,7 @@ export class LookupProxy
 		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
-		context: IEntityContext,
+		context: IEntityQueryContext,
 		mapResults?: boolean
 	): Promise<any> {
 		return DI.db()
@@ -55,7 +61,7 @@ export class Lookup
 		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
-		context: IQueryContext<any>,
+		context: IQueryContext,
 		mapResults?: boolean
 	): Promise<any> {
 		const queryContextLoader = await DI.db().get(QUERY_CONTEXT_LOADER);

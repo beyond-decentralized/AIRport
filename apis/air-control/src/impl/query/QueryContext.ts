@@ -53,7 +53,7 @@ export class IocQueryContext
 export interface IQueryContextLoader {
 
 	ensure<E>(
-		ctx: IQueryContext<E>
+		ctx: IQueryContext
 	): Promise<void>
 
 }
@@ -62,7 +62,7 @@ export class QueryContextLoader
 	implements IQueryContextLoader {
 
 	async ensure<E>(
-		ctx: IQueryContext<E>
+		ctx: IQueryContext
 	): Promise<void> {
 		if (!ctx.ioc) {
 			ctx.ioc = new IocQueryContext();

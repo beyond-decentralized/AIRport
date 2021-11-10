@@ -7,7 +7,7 @@ import {
 	Observable,
 	from
 }                                  from 'rxjs';
-import { IEntityContext }          from '../../../lingo/core/EntityContext';
+import { IEntityQueryContext }          from '../../../lingo/core/EntityContext';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
 import { IEntitySearch }           from '../../../lingo/query/api/EntitySearch';
 import { RawEntityQuery }          from '../../../lingo/query/facade/EntityQuery';
@@ -54,7 +54,7 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 		context?: IContext
 	): Promise<EntityArray> {
 		return await this.entityLookup(rawEntityQuery, queryResultType,
-			true, false, this.ensureContext(context) as IEntityContext);
+			true, false, this.ensureContext(context) as IEntityQueryContext);
 	}
 
 	map(

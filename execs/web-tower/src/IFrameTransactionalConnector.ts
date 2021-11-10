@@ -182,33 +182,37 @@ export class IframeTransactionalConnector
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context: IQueryContext<E>,
+		context: IQueryContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
 		return await this.sendMessage<IReadQueryIMI, EntityArray>({
 			...this.getCoreFields(),
 			cachedSqlQueryId,
 			portableQuery,
+			repositorySource: context.repositorySource,
+			repositoryUuid: context.repositoryUuid,
 			type: IsolateMessageType.FIND
 		})
 	}
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
-		context: IQueryContext<E>,
+		context: IQueryContext,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
 		return await this.sendMessage<IReadQueryIMI, E>({
 			...this.getCoreFields(),
 			cachedSqlQueryId,
 			portableQuery,
+			repositorySource: context.repositorySource,
+			repositoryUuid: context.repositoryUuid,
 			type: IsolateMessageType.FIND_ONE
 		})
 	}
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context: IQueryContext<E>,
+		context: IQueryContext,
 		cachedSqlQueryId?: number,
 	): Observable<EntityArray> {
 		return this.sendObservableMessage<E, EntityArray>(
@@ -218,9 +222,10 @@ export class IframeTransactionalConnector
 			cachedSqlQueryId
 		);
 	}
+
 	searchOne<E>(
 		portableQuery: PortableQuery,
-		context: IQueryContext<E>,
+		context: IQueryContext,
 		cachedSqlQueryId?: number,
 	): Observable<E> {
 		return this.sendObservableMessage<E, E>(
@@ -244,6 +249,24 @@ export class IframeTransactionalConnector
 			},
 			entity,
 			type: IsolateMessageType.SAVE
+		})
+	}
+
+	async saveToDestination<E, T = E | E[]>(
+		repositoryDestination: string,
+		entity: T,
+		context?: IContext,
+	): Promise<ISaveResult> {
+		const dbEntity = context.dbEntity;
+		return await this.sendMessage<ISaveIMI<any, any>, ISaveResult>({
+			...this.getCoreFields(),
+			dbEntity: {
+				id: dbEntity.id,
+				schemaVersionId: dbEntity.schemaVersion.id
+			},
+			entity,
+			repositoryDestination,
+			type: IsolateMessageType.SAVE_TO_DESTINATION
 		})
 	}
 
@@ -416,7 +439,7 @@ export class IframeTransactionalConnector
 
 	private sendObservableMessage<E, T>(
 		portableQuery: PortableQuery,
-		context: IQueryContext<E>,
+		context: IQueryContext,
 		type: IsolateMessageType,
 		cachedSqlQueryId?: number
 	): Observable<T> {
@@ -425,6 +448,8 @@ export class IframeTransactionalConnector
 			...coreFields,
 			cachedSqlQueryId,
 			portableQuery,
+			repositorySource: context.repositorySource,
+			repositoryUuid: context.repositoryUuid,
 			type
 		}
 		let observableMessageRecord: IObservableMessageInRecord<T> = {

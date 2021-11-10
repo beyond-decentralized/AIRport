@@ -63,7 +63,7 @@ export class NonEntitySearchOne
 	): Promise<any> {
 		return this.lookup(rawNonEntityQuery, queryResultType,
 			true, true, QueryClass,
-			this.ensureContext(context as IQueryContext<any>));
+			this.ensureContext(context as IQueryContext));
 	}
 
 }

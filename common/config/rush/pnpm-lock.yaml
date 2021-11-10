@@ -100,7 +100,7 @@ dependencies:
   rollup-plugin-livereload: 2.0.5
   rollup-plugin-svelte: 7.1.0_rollup@2.56.3
   rollup-plugin-terser: 7.0.2_rollup@2.56.3
-  rxjs: 7.3.0
+  rxjs: 7.4.0
   serialize-error: 7.0.1
   serve: 11.3.2
   sirv-cli: 1.0.14
@@ -8317,6 +8317,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-p2yuGIg9S1epc3vrjKf6iVb3RCaAYjYskkO+jHIaV0IjOPlJop4UnodOoFb2xeNwlguqLYvGw1b1McillYb5Gw==
+  /rxjs/7.4.0:
+    dependencies:
+      tslib: 2.1.0
+    dev: false
+    resolution:
+      integrity: sha512-7SQDi7xeTMCJpqViXh8gL/lebcwlp3d831F05+9B44A4B0WfsEwUQHR64gsH1kvJ+Ep/J9K2+n1hVl1CsGN23w==
   /sade/1.7.4:
     dependencies:
       mri: 1.1.6
@@ -10711,11 +10717,11 @@ packages:
       integrity: sha512-+u+fyZQXJUJDTf4NGCChW+LoWGqCrhwHAfvtCtcmE0e40KmQt4YSP4l3TOay1WjRNv+VfODgBD/vNwaSSGnDwA==
   'file:projects/air-control.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/air-control'
     resolution:
-      integrity: sha512-CTTI747HzzIlj99qWXnz58NNfnDeQ0VoIAGxm0o+Ygdy7eERj3vkda7eRPwLLIlDlWfMhqDSQJNENUjUYy/v+g==
+      integrity: sha512-yDgr21KcmLcChzAuB9DYIa7ahVypimzsEJkGvOGRA5Y2M992KXXKYvD1J/K7gqPojQJk97cIWiEqazypkfkL+g==
       tarball: 'file:projects/air-control.tgz'
     version: 0.0.0
   'file:projects/airport-code.tgz':
@@ -10787,11 +10793,11 @@ packages:
     version: 0.0.0
   'file:projects/check-in.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/check-in'
     resolution:
-      integrity: sha512-LT/qFBDw01/mcho5RDozllsaafpRW+9SVg4UFfMPuqs4bad1v/OE9aQE821RjUSqt2RqePphHCqndcMzJ4sc+Q==
+      integrity: sha512-Lmi59piaePZXXlSHlK/DsuMCRrUkNuM7A8MHsUaSMYlT5thdZXy3Zt9lsp09XqpBrRvWh1TmsLnCBhfL/kB/DA==
       tarball: 'file:projects/check-in.tgz'
     version: 0.0.0
   'file:projects/cockroachdb.tgz':
@@ -10826,12 +10832,12 @@ packages:
     version: 0.0.0
   'file:projects/fuel-hydrant-system.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
       sql.js: 0.5.0
     dev: false
     name: '@rush-temp/fuel-hydrant-system'
     resolution:
-      integrity: sha512-d0NSqcghHF2t2qY8FexcoBWod79KJ94ueWm9p4wZxPgnNM45vzlAX2DUD1X4t+UuLezi0gUDyVAq7YdwGD/UZA==
+      integrity: sha512-+caFm9I9VGDvCF6JP+hXwq7pvZemCHph1Bg1tDVh6HR4ZfY5q6eJdKZIZCWtQhQYvVZVBByszAmALuvd60ym5A==
       tarball: 'file:projects/fuel-hydrant-system.tgz'
     version: 0.0.0
   'file:projects/functionality-demo-frame.tgz':
@@ -10959,41 +10965,41 @@ packages:
     version: 0.0.0
   'file:projects/go-terminal.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/go-terminal'
     resolution:
-      integrity: sha512-9Os1R3iD3Um1zS11dNfuxC0V56/Don0CTZyWUxBAIOywYhBSb3wrQv4chG77qhsVdr9qMVdURhumqeQEl+7Q9A==
+      integrity: sha512-1KpVmsLEzk8fYNWmZAwWgFCWdbaqLTop2wDzdz0LL1xwm9iPgbq3h5G7SCXWEAXQXLFCaoHn63mT7YsYblNG3A==
       tarball: 'file:projects/go-terminal.tgz'
     version: 0.0.0
   'file:projects/go-tower.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/go-tower'
     resolution:
-      integrity: sha512-J6ZfceFIn2n/9tURC3lwEN8pQqp55etlMlkBFSaGxEqvjmeDGohlkGPjTMmZgKFYBnvTiIkyeEZfm3+tPmnGTA==
+      integrity: sha512-0khoJLPg9MaNnagjKXb1h6eAsIGFRGqQXo8HDPJmBLHmQJuypAA5ezMkuszA5/F+SAft3kSDTdl+RfR9kMA/Hg==
       tarball: 'file:projects/go-tower.tgz'
     version: 0.0.0
   'file:projects/ground-control.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/ground-control'
     resolution:
-      integrity: sha512-zRyt+2Wc7VIrm22OoTEbt45TZSyNlx7o528D4Rbe5cZLjUDcZtgAyJ60Sxr5JWHbNG1eMK6K/r4z63Yz/7agSA==
+      integrity: sha512-cc9QzeaASuyc5iDKfPGboRNBXYsuwGNNbC6fsMajcBYTfjT69iKXcfE+VY39ixQ98D9rPWU58i8000xPxfh/vw==
       tarball: 'file:projects/ground-control.tgz'
     version: 0.0.0
   'file:projects/ground-transport.tgz':
     dependencies:
       '@types/gapi': 0.0.35
       '@types/google-drive-realtime-api': 0.0.33
-      rxjs: 7.3.0
+      rxjs: 7.4.0
       zipson: 0.2.12
     dev: false
     name: '@rush-temp/ground-transport'
     resolution:
-      integrity: sha512-HM10yPwKOuhxaC7npiRfVUfNiuQy6h70EBF5etDTaJuWFuDDwrskBkDFEoutjEiA2tdrf2nDaPyRTwiFaZ8xqw==
+      integrity: sha512-j3Syy6Q6L/ln3PRl1DMg0wH5TTWrJL9o1k8t3S26gY5nplXcrOlBpaWaL7h/X7LA9oAqepEFXzVCw73hojJ4WQ==
       tarball: 'file:projects/ground-transport.tgz'
     version: 0.0.0
   'file:projects/guideway.tgz':
@@ -11012,11 +11018,11 @@ packages:
     version: 0.0.0
   'file:projects/hw-control.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/hw-control'
     resolution:
-      integrity: sha512-+hO7pEiPwwa9gjmAeJuEEKeLBLA27JUOPnRQd2WZSKZNrkuAnLOdUjS2+0D+LjoSV+wAiRLj6ssqXiniRSjnXw==
+      integrity: sha512-eVkwaxqk51v+vmlI6W6Q+d1iygTV0UzPAzSSgZiBINzHaiXcHBBBVjJL3PWdfJPZTpELMkjQ9hQpxUhdy6HiYg==
       tarball: 'file:projects/hw-control.tgz'
     version: 0.0.0
   'file:projects/hw-driveway.tgz':
@@ -11056,21 +11062,21 @@ packages:
     version: 0.0.0
   'file:projects/hw-scylladb.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/hw-scylladb'
     resolution:
-      integrity: sha512-StodBdDhSOhm6+VknoEdGaLR2tdNwJBksUkS+2Y+ZEow2yWOG+DZUXZ/Z8W3UuvvS8fR0PkUS8wQ8IMEgKMfrA==
+      integrity: sha512-uw49EEpztD7HmzeJ1UnoZx3JChI4WVvQnM7OJ0sxW4eS2FIDmIRO7skJWjGGw85et+bKnfo5lvR7oKA8wuc7PQ==
       tarball: 'file:projects/hw-scylladb.tgz'
     version: 0.0.0
   'file:projects/hw-vespa.tgz':
     dependencies:
       '@types/node': 14.14.20
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/hw-vespa'
     resolution:
-      integrity: sha512-TZULlLyecgGQ+8vQSwx5rCI0MTYhXIhZy46K8IH8SKoU4Isg640Gk81ItYePoPnUjn2ys9Bc1soGpUKxndKgkw==
+      integrity: sha512-W/aIcOO8EgYJh35vfNetXYLcXO5W2Yfp1kqNnweiesa6qg/Yiyw2RHNTj0MWZt0x5XLsl/0aFgBjiLUSCGf00g==
       tarball: 'file:projects/hw-vespa.tgz'
     version: 0.0.0
   'file:projects/jet-bridge.tgz':
@@ -11100,11 +11106,11 @@ packages:
     version: 0.0.0
   'file:projects/mono-rail.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/mono-rail'
     resolution:
-      integrity: sha512-9VZmWEU10RemIR+aSiGa68n/wPvbv85lcSndPbIzhheQu79yfdHfLYblNMI5F6jlGQ0eUocTO26CXSbo8Wy8ug==
+      integrity: sha512-kKEYcF+9liIEvGPXEYWOYFO4/Cd0vns5huM1VCdMtqc7QcL/zHvPVIiJVH8vnYAoIkvxOgF/2NAqc7b5BvOTMA==
       tarball: 'file:projects/mono-rail.tgz'
     version: 0.0.0
   'file:projects/moving-walkway.tgz':
@@ -11179,7 +11185,7 @@ packages:
       fastify: 3.22.1
       fastify-cors: 6.0.2
       fastify-static: 4.4.2
-      rxjs: 7.3.0
+      rxjs: 7.4.0
       string-cipher: 1.0.8
       tslint: 6.1.3_typescript@4.4.2
       typescript: 4.4.2
@@ -11187,7 +11193,7 @@ packages:
     dev: false
     name: '@rush-temp/processor-common'
     resolution:
-      integrity: sha512-mIt2T0kI3eUa+SJfNA+Te0pAZELmy7XTtzTEBZ5NaoRKXEpkfNmp/Yj7NcBJeWmIgqnFufMufuSCZLRTLgcGTg==
+      integrity: sha512-JRBnWRZp2JyR+7EYXW+D3z3OiakFnwVo1CoEC6JJXxB4Xye7yPoeDD3UW5Zv9DdsZi+dWPXjGdh7Y8i0I3BUwQ==
       tarball: 'file:projects/processor-common.tgz'
     version: 0.0.0
   'file:projects/ramp.tgz':
@@ -11219,11 +11225,11 @@ packages:
     version: 0.0.0
   'file:projects/security-check.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/security-check'
     resolution:
-      integrity: sha512-OakZ76mpdWqWSyZ+OTcVByXzyo48iOWpUxTzITec2QTJ4b2gd9JZzMAzul9HOr5aawZ4I6co5htx1uMDr83XDQ==
+      integrity: sha512-9jHimuM1u6mkz1AEYSDsSzBbN8uiXM3QEWc/qE/KeqVvj/fzdrZxDLOsR4qUIpS+QrAVQlzMpESG0uRJ2iTBVA==
       tarball: 'file:projects/security-check.tgz'
     version: 0.0.0
   'file:projects/sequence.tgz':
@@ -11243,12 +11249,12 @@ packages:
   'file:projects/sqljs.tgz':
     dependencies:
       '@types/sql.js': 1.4.3
-      rxjs: 7.3.0
+      rxjs: 7.4.0
       sql.js: 1.6.2
     dev: false
     name: '@rush-temp/sqljs'
     resolution:
-      integrity: sha512-/usnWSjImjysMYNgCIB1BD5XnPCP/ByoHzuMXdXpmuJRSHlokiKciIQIjRpx1yy0Hm3SEdq8NaIpFrsF6Im9vw==
+      integrity: sha512-jP2eADCwJ32+xxmilDepy+79IJz3B/Tqi+ek/eLljRtHt0/YBTVwb4WmF8iWtOdJF3KaNpAosOTfVUoC3FrKjQ==
       tarball: 'file:projects/sqljs.tgz'
     version: 0.0.0
   'file:projects/takeoff.tgz':
@@ -11260,11 +11266,11 @@ packages:
     version: 0.0.0
   'file:projects/tarmaq.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/tarmaq'
     resolution:
-      integrity: sha512-LxEh89njt3jYd5wYuBkU2ZAmtget5pRa5f56/3S8PujRhD8f2FIMGKMgBUshyMOvc0OuXiXMCpEKnGAnPp2txA==
+      integrity: sha512-uv1/WgtBaNcSnnFcJrJlCdvgyp+5XLLXgpN6nlIagsZFT0QsIjNGf7r8WJYguvB+q1BLJwm+LXyrC8DoUhGwQA==
       tarball: 'file:projects/tarmaq.tgz'
     version: 0.0.0
   'file:projects/taxiway.tgz':
@@ -11279,22 +11285,22 @@ packages:
     version: 0.0.0
   'file:projects/terminal-map.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/terminal-map'
     resolution:
-      integrity: sha512-b/8tGgXEpt0mcOiOnAA3OyIjGBqJ3FWun0c2eE5j9qwhL+pzSKXG29RyQZXnjy1kTajToJm/k2x4mKqtENTRAw==
+      integrity: sha512-HnMSB9/L9wHmbY7w8aGF9EmDCesJ6w949Uuw6XPyXGCnQJ13ksjbhhPzs0hkiS2RYaccVZN3Ijk3fohuh8LNHA==
       tarball: 'file:projects/terminal-map.tgz'
     version: 0.0.0
   'file:projects/terminal.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
       uuid: 8.3.2
       zipson: 0.2.12
     dev: false
     name: '@rush-temp/terminal'
     resolution:
-      integrity: sha512-F1kukHynHlCdr23D5RkF8PpBm3lZJootH0WjVyVGxWKauJhleZrmMC7lE7g0Wu9AVjjRaqz15qE92tIv5Oz9zw==
+      integrity: sha512-FA6xwNvTIFx/CxllhumAMC0GH0/js/0DUMM6rTZ7Km+lxXnCvAy8wTp7UcuLH+btB9DXybAZSwtJe2xLxYZ9Jw==
       tarball: 'file:projects/terminal.tgz'
     version: 0.0.0
   'file:projects/territory.tgz':
@@ -11306,11 +11312,11 @@ packages:
     version: 0.0.0
   'file:projects/todo.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/todo'
     resolution:
-      integrity: sha512-eIroOLLxz80i06oLg5bu/Vk9EUufodhixwRiHW7SiEslwVWAUSMeO776KpdgQP/VugrjXr34raTW5QNTlx0ZLg==
+      integrity: sha512-BUFgInT5Hk2UFDULC6IU2sjsxv+UMg4q70zhE1cAqX6WF2MDT0p21+lfqmEspksAP9Y63pHPYEdrtt3vYxk49A==
       tarball: 'file:projects/todo.tgz'
     version: 0.0.0
   'file:projects/tools.tgz':
@@ -11324,11 +11330,11 @@ packages:
     version: 0.0.0
   'file:projects/tower.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/tower'
     resolution:
-      integrity: sha512-PjDCBiJRk8/bGOI0axuRPjNO6BQZ0ISXsPgcwvQKvJYLd8S+02MNvPe096wGkVXmTtGo0njfaFk/0xNaHz8/FA==
+      integrity: sha512-lk2XFLeu3nLAhXy4wNdL92qPQsLa4AnbUmonBuelF3+DqISGzqCFizbzkTjAO3eHYhvV9O+V845StdTIv8kcbA==
       tarball: 'file:projects/tower.tgz'
     version: 0.0.0
   'file:projects/traffic-pattern.tgz':
@@ -11356,21 +11362,21 @@ packages:
     version: 0.0.0
   'file:projects/web-terminal.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
       sql.js: 1.6.2
     dev: false
     name: '@rush-temp/web-terminal'
     resolution:
-      integrity: sha512-exJbAseNkq9pKgPUYyvkhVYSnU/mvFveNZ0cE0uXlE4QtNJ6hgdINiW8sux5Nbcx4wDVT0Uko0rm1LS3DzbnXw==
+      integrity: sha512-n1ouFroFcANrtE9nmZuAWF29Ib1JQvC2GtvELy7LlZSxW41wRkd1zxFJJkqikE1qOXbMgbB7xbMyKJ2WdbAVfg==
       tarball: 'file:projects/web-terminal.tgz'
     version: 0.0.0
   'file:projects/web-tower.tgz':
     dependencies:
-      rxjs: 7.3.0
+      rxjs: 7.4.0
     dev: false
     name: '@rush-temp/web-tower'
     resolution:
-      integrity: sha512-+ysgMlidVdvytqD51lIZiSrEIbpNs6JTZeFr6P0hfpnEMnfW+tjwf88iCTm6aWBjtXSICbwrqgvxU3XfR4o51g==
+      integrity: sha512-M3KEHesGq27TLwgr3K5/RoE4MKr4l+B1lufHjT20N1GP+b7Dz83Zu3AfXqu4p9aaUGP6If/58heEhZ6VqDYaxA==
       tarball: 'file:projects/web-tower.tgz'
     version: 0.0.0
   'file:projects/websql.tgz':
@@ -11391,7 +11397,7 @@ packages:
       fastify-static: 4.4.2
       pg: 8.7.1_pg@8.7.1
       pg-connection-string: 2.5.0
-      rxjs: 7.3.0
+      rxjs: 7.4.0
       string-cipher: 1.0.8
       tslint: 6.1.3_typescript@4.4.2
       typescript: 4.4.2
@@ -11399,7 +11405,7 @@ packages:
     dev: false
     name: '@rush-temp/write-processor'
     resolution:
-      integrity: sha512-BwAjURCV4WSuk6wG2TULD3cj1/9d6j5DLL9HnWOmuwLWrUGP6nu2u5aUzHWMKXVUEzcxWxL8UlM5X7txdZoCLQ==
+      integrity: sha512-ZZWNtsDof6fAIIYlB65oTGl5zxDUb6oDRNl/mtSo0RVPwIz60I6E8PZ3r1lsbp91OWCAJm4wGQkGPAg0sMyl/A==
       tarball: 'file:projects/write-processor.tgz'
     version: 0.0.0
 registry: ''
@@ -11505,7 +11511,7 @@ specifiers:
   rollup-plugin-livereload: ^2.0.0
   rollup-plugin-svelte: ^7.0.0
   rollup-plugin-terser: ^7.0.0
-  rxjs: ^7.3.0
+  rxjs: ~7.4.0
   serialize-error: ^7.0.1
   serve: ^11.3.0
   sirv-cli: ^1.0.0

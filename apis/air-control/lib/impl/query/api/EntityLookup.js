@@ -4,11 +4,9 @@ import { REPOSITORY_LOADER, SCHEMA_UTILS, UPDATE_CACHE_MANAGER } from '../../../
 import { LookupProxy } from './Lookup';
 export class EntityLookup extends LookupProxy {
     constructor(dbEntity, mapResults = EntityLookup.mapResults, repositorySource = null, repositoryUuid = null) {
-        super();
+        super(repositorySource, repositoryUuid);
         this.dbEntity = dbEntity;
         this.mapResults = mapResults;
-        this.repositorySource = repositorySource;
-        this.repositoryUuid = repositoryUuid;
     }
     setMap(MappedChildClass, isMapped = true) {
         return new MappedChildClass(this.dbEntity, isMapped);
@@ -22,6 +20,8 @@ export class EntityLookup extends LookupProxy {
             const repositoryLoader = await DI.db().get(REPOSITORY_LOADER);
             await repositoryLoader.loadRepository(this.repositorySource, this.repositoryUuid);
         }
+        context.repositorySource = this.repositorySource;
+        context.repositoryUuid = this.repositoryUuid;
         const result = await this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);
         const [entityStateManager, schemaUtils, updateCacheManager] = await DI.db().get(ENTITY_STATE_MANAGER, SCHEMA_UTILS, UPDATE_CACHE_MANAGER);
         if (search) {

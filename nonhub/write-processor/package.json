@@ -19,7 +19,7 @@
         "fastify-static": "^4.4.2",
         "pg": "latest",
         "pg-connection-string": "latest",
-        "rxjs": "^7.3.0",
+        "rxjs": "~7.4.0",
         "string-cipher": "^1.0.8",
         "uuid": "^8.3.2"
     },

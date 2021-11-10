@@ -16,6 +16,7 @@ export var IsolateMessageType;
     IsolateMessageType["SEARCH_UNSUBSCRIBE"] = "UNSUBSCRIBE";
     IsolateMessageType["START_TRANSACTION"] = "START_TRANSACTION";
     IsolateMessageType["SAVE"] = "SAVE";
+    IsolateMessageType["SAVE_TO_DESTINATION"] = "SAVE_TO_DESTINATION";
     IsolateMessageType["UPDATE_VALUES"] = "UPDATE_VALUES";
 })(IsolateMessageType || (IsolateMessageType = {}));
 //# sourceMappingURL=IsolateMessage.js.map

@@ -79,18 +79,18 @@ export class EntityDatabaseFacade<Entity,
     return this.Q[this.dbEntity.name];
   }
 
-	findForRepository(
-		repositorySource: string,
-		repositoryUuid: string
-	): IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect> {
+  findForRepository(
+    repositorySource: string,
+    repositoryUuid: string
+  ): IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect> {
     return new EntityFind<Entity, Array<Entity>, EntitySelect>(
       this.dbEntity, EntityLookup.mapResults, repositorySource, repositoryUuid);
   }
 
-	findOneForRepository(
-		repositorySource: string,
-		repositoryUuid: string
-	): IEntityFindOne<Entity, EntitySelect> {
+  findOneForRepository(
+    repositorySource: string,
+    repositoryUuid: string
+  ): IEntityFindOne<Entity, EntitySelect> {
     return new EntityFindOne<Entity, EntitySelect>(
       this.dbEntity, EntityLookup.mapResults, repositorySource, repositoryUuid);
   }
@@ -202,6 +202,22 @@ export class EntityDatabaseFacade<Entity,
       ctx: IEntityContext,
     ) => {
       return await databaseFacade.save(entity, ctx);
+    });
+  }
+
+  /**
+   * @return ISaveResult object with metadata on saved objects
+   */
+  async saveToDestination(
+    repositoryDestination: string,
+    entity: EntityCreate,
+    ctx?: IEntityContext,
+  ): Promise<ISaveResult> {
+    return await this.withDbEntity(ctx, async (
+      databaseFacade: IDatabaseFacade,
+      ctx: IEntityContext,
+    ) => {
+      return await databaseFacade.saveToDestination(repositoryDestination, entity, ctx);
     });
   }
 

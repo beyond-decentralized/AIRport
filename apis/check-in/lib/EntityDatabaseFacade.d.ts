@@ -35,6 +35,10 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
         (...args: any[]): RawDelete<IQ>;
     }, ctx?: IEntityContext): Promise<number>;
     save(entity: EntityCreate, ctx?: IEntityContext): Promise<ISaveResult>;
+    /**
+     * @return ISaveResult object with metadata on saved objects
+     */
+    saveToDestination(repositoryDestination: string, entity: EntityCreate, ctx?: IEntityContext): Promise<ISaveResult>;
     protected withDbEntity<R>(ctx: IEntityContext, callback: {
         (databaseFacade: IDatabaseFacade, ctx: IEntityContext): Promise<R>;
     }): Promise<R>;

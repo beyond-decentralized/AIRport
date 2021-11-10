@@ -20,7 +20,8 @@ import {
 	ITransactionalServer,
 	TRANSACTION_MANAGER,
 	TRANSACTIONAL_SERVER,
-	TERMINAL_STORE
+	TERMINAL_STORE,
+	IQueryOperationContext
 } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 import { Observable } from 'rxjs';
@@ -111,7 +112,7 @@ export class TransactionalServer
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IOperationContext,
+		context: IQueryOperationContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
 		await this.ensureIocContext(context)
@@ -123,7 +124,7 @@ export class TransactionalServer
 	async findOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IOperationContext,
+		context: IQueryOperationContext,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
 		await this.ensureIocContext(context)
@@ -135,7 +136,7 @@ export class TransactionalServer
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IOperationContext,
+		context: IQueryOperationContext,
 		cachedSqlQueryId?: number,
 	): Observable<EntityArray> {
 		this.ensureIocContextSync(context)
@@ -147,7 +148,7 @@ export class TransactionalServer
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IOperationContext,
+		context: IQueryOperationContext,
 		cachedSqlQueryId?: number,
 	): Observable<E> {
 		this.ensureIocContextSync(context)
@@ -198,6 +199,32 @@ export class TransactionalServer
 
 		return saveResult
 	}
+
+	async saveToDestination<E>(
+		repositoryDestination: string,
+		entity: E,
+		credentials: ICredentials,
+		context: IOperationContext,
+	): Promise<ISaveResult> {
+		if (!entity) {
+			return null
+		}
+		await this.ensureIocContext(context)
+
+		const actor = await this.getActor(credentials);
+
+		let saveResult: ISaveResult
+		await transactional(async (
+			transaction: ITransaction
+		) => {
+			// TODO: save to serialized repository to the specified destination
+			saveResult = await context.ioc.operationManager.performSave(
+				entity, actor, transaction, context)
+		}, context)
+
+		return saveResult
+	}
+
 
 	async insertValues(
 		portableQuery: PortableQuery,

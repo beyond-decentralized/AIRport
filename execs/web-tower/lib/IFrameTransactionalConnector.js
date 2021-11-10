@@ -112,6 +112,8 @@ export class IframeTransactionalConnector {
             ...this.getCoreFields(),
             cachedSqlQueryId,
             portableQuery,
+            repositorySource: context.repositorySource,
+            repositoryUuid: context.repositoryUuid,
             type: IsolateMessageType.FIND
         });
     }
@@ -120,6 +122,8 @@ export class IframeTransactionalConnector {
             ...this.getCoreFields(),
             cachedSqlQueryId,
             portableQuery,
+            repositorySource: context.repositorySource,
+            repositoryUuid: context.repositoryUuid,
             type: IsolateMessageType.FIND_ONE
         });
     }
@@ -139,6 +143,19 @@ export class IframeTransactionalConnector {
             },
             entity,
             type: IsolateMessageType.SAVE
+        });
+    }
+    async saveToDestination(repositoryDestination, entity, context) {
+        const dbEntity = context.dbEntity;
+        return await this.sendMessage({
+            ...this.getCoreFields(),
+            dbEntity: {
+                id: dbEntity.id,
+                schemaVersionId: dbEntity.schemaVersion.id
+            },
+            entity,
+            repositoryDestination,
+            type: IsolateMessageType.SAVE_TO_DESTINATION
         });
     }
     // FIXME: check if ensureGeneratedValues is needed
@@ -271,6 +288,8 @@ export class IframeTransactionalConnector {
             ...coreFields,
             cachedSqlQueryId,
             portableQuery,
+            repositorySource: context.repositorySource,
+            repositoryUuid: context.repositoryUuid,
             type
         };
         let observableMessageRecord = {

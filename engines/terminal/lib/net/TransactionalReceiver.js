@@ -2,8 +2,7 @@ import { container, } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
 import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
-import { INTERNAL_RECORD_MANAGER } from '..';
-import { DATABASE_MANAGER } from '../tokens';
+import { DATABASE_MANAGER, INTERNAL_RECORD_MANAGER } from '../tokens';
 export class TransactionalReceiver {
     constructor() {
         // FIXME: move this state to Terminal.state
@@ -61,11 +60,19 @@ export class TransactionalReceiver {
                     break;
                 case IsolateMessageType.FIND:
                     const findMessage = message;
-                    result = await transactionalServer.find(findMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.find(findMessage.portableQuery, credentials, {
+                        ...context,
+                        repositorySource: findMessage.repositorySource,
+                        repositoryUuId: findMessage.repositoryUuid
+                    });
                     break;
                 case IsolateMessageType.FIND_ONE:
                     const findOneMessage = message;
-                    result = await transactionalServer.findOne(findOneMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.findOne(findOneMessage.portableQuery, credentials, {
+                        ...context,
+                        repositorySource: findMessage.repositorySource,
+                        repositoryUuId: findMessage.repositoryUuid
+                    });
                     break;
                 case IsolateMessageType.INSERT_VALUES:
                     const insertValuesMessage = message;
@@ -79,6 +86,7 @@ export class TransactionalReceiver {
                     result = await transactionalServer.rollback(credentials, {});
                     break;
                 case IsolateMessageType.SAVE:
+                case IsolateMessageType.SAVE_TO_DESTINATION:
                     const saveMessage = message;
                     const terminalStore = await container(this).get(TERMINAL_STORE);
                     if (!saveMessage.dbEntity) {
@@ -92,15 +100,29 @@ export class TransactionalReceiver {
                         break;
                     }
                     context.dbEntity = dbEntity;
-                    result = await transactionalServer.save(saveMessage.entity, credentials, context);
+                    if (message.type === IsolateMessageType.SAVE) {
+                        result = await transactionalServer.save(saveMessage.entity, credentials, context);
+                    }
+                    else {
+                        const saveToDestinationMessage = message;
+                        result = await transactionalServer.saveToDestination(saveToDestinationMessage.repositoryDestination, saveToDestinationMessage.entity, credentials, context);
+                    }
                     break;
                 case IsolateMessageType.SEARCH:
                     const searchMessage = message;
-                    result = await transactionalServer.search(searchMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.search(searchMessage.portableQuery, credentials, {
+                        ...context,
+                        repositorySource: findMessage.repositorySource,
+                        repositoryUuId: findMessage.repositoryUuid
+                    });
                     break;
                 case IsolateMessageType.SEARCH_ONE:
                     const searchOneMessage = message;
-                    result = await transactionalServer.search(searchOneMessage.portableQuery, credentials, context);
+                    result = await transactionalServer.search(searchOneMessage.portableQuery, credentials, {
+                        ...context,
+                        repositorySource: findMessage.repositorySource,
+                        repositoryUuId: findMessage.repositoryUuid
+                    });
                     break;
                 case IsolateMessageType.START_TRANSACTION:
                     result = await transactionalServer.startTransaction(credentials, context);

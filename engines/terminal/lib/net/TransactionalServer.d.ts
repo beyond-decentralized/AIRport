@@ -1,7 +1,7 @@
 import { IContext } from '@airport/di';
 import { AIRepository, ISaveResult, PortableQuery } from '@airport/ground-control';
 import { IActor, Repository_Id } from '@airport/holding-pattern';
-import { ICredentials, IOperationContext, ITransactionalServer } from '@airport/terminal-map';
+import { ICredentials, IOperationContext, ITransactionalServer, IQueryOperationContext } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export interface InternalPortableQuery extends PortableQuery {
     domainAndPort: string;
@@ -35,14 +35,15 @@ export declare class TransactionalServer implements ITransactionalServer {
     init(context?: IContext): Promise<void>;
     addRepository(name: string, credentials: ICredentials, context: IOperationContext): Promise<Repository_Id>;
     getApplicationRepositories(credentials: ICredentials, context: IOperationContext): Promise<AIRepository[]>;
-    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext, cachedSqlQueryId?: number): Promise<EntityArray>;
-    findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext, cachedSqlQueryId?: number): Promise<E>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext, cachedSqlQueryId?: number): Observable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext, cachedSqlQueryId?: number): Observable<E>;
+    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<EntityArray>;
+    findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<E>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<EntityArray>;
+    searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<E>;
     startTransaction(credentials: ICredentials, context: IContext): Promise<boolean>;
     commit(credentials: ICredentials, context: IContext): Promise<boolean>;
     rollback(credentials: ICredentials, context: IContext): Promise<boolean>;
     save<E>(entity: E, credentials: ICredentials, context: IOperationContext): Promise<ISaveResult>;
+    saveToDestination<E>(repositoryDestination: string, entity: E, credentials: ICredentials, context: IOperationContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext): Promise<number>;

@@ -5,7 +5,7 @@
         "fastify": "^3.22.0",
         "fastify-cors": "^6.0.2",
         "fastify-static": "^4.4.2",
-        "rxjs": "^7.3.0",
+        "rxjs": "~7.4.0",
         "string-cipher": "^1.0.8",
         "uuid": "^8.3.2"
     },

@@ -63,7 +63,7 @@ export class TransactionalConnector
 
     async find<E, EntityArray extends Array<E>>(
         portableQuery: PortableQuery,
-        context: IQueryContext<E>,
+        context: IQueryContext,
         cachedSqlQueryId?: number,
     ): Promise<EntityArray> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
@@ -75,7 +75,7 @@ export class TransactionalConnector
             },
             {
                 internal: true,
-                ...context
+                ...context as any
             },
             cachedSqlQueryId
         );
@@ -83,7 +83,7 @@ export class TransactionalConnector
 
     async findOne<E>(
         portableQuery: PortableQuery,
-        context: IQueryContext<E>,
+        context: IQueryContext,
         cachedSqlQueryId?: number,
     ): Promise<E> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
@@ -95,7 +95,7 @@ export class TransactionalConnector
             },
             {
                 internal: true,
-                ...context
+                ...context as any
             },
             cachedSqlQueryId
         );
@@ -103,7 +103,7 @@ export class TransactionalConnector
 
     search<E, EntityArray extends Array<E>>(
         portableQuery: PortableQuery,
-        context: IQueryContext<E>,
+        context: IQueryContext,
         cachedSqlQueryId?: number,
     ): Observable<EntityArray> {
         const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
@@ -115,7 +115,7 @@ export class TransactionalConnector
             },
             {
                 internal: true,
-                ...context
+                ...context as any
             },
             cachedSqlQueryId
         );
@@ -123,7 +123,7 @@ export class TransactionalConnector
 
     searchOne<E>(
         portableQuery: PortableQuery,
-        context: IQueryContext<E>,
+        context: IQueryContext,
         cachedSqlQueryId?: number,
     ): Observable<E> {
         const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
@@ -135,7 +135,7 @@ export class TransactionalConnector
             },
             {
                 internal: true,
-                ...context
+                ...context as any
             },
             cachedSqlQueryId
         );
@@ -154,6 +154,22 @@ export class TransactionalConnector
             internal: true,
             ...context
         });
+    }
+
+	async saveToDestination<E, T = E | E[]>(
+		repositoryDestination: string,
+		entity: T,
+		context?: IContext,
+	): Promise<ISaveResult> {
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+
+        return await transServer.saveToDestination(repositoryDestination, entity,
+            {
+                applicationSignature: 'internal'
+            }, {
+            internal: true,
+            ...context
+        } as any);
     }
 
     async insertValues(

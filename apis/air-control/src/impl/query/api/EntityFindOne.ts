@@ -1,6 +1,6 @@
 import {IContext}                from '@airport/di'
 import {QueryResultType}         from '@airport/ground-control'
-import {IEntityContext}          from '../../../lingo/core/EntityContext'
+import {IEntityQueryContext}          from '../../../lingo/core/EntityContext'
 import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
 import {IEntityFindOne}          from '../../../lingo/query/api/EntityFindOne'
 import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
@@ -47,7 +47,7 @@ export class EntityFindOne<Entity, IESP extends IEntitySelectProperties>
 		context?: IContext
 	): Promise<Entity> {
 		return await this.entityLookup(rawEntityQuery, queryResultType,
-			false, true, this.ensureContext(context) as IEntityContext)
+			false, true, this.ensureContext(context) as IEntityQueryContext)
 	}
 
 	map(

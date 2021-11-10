@@ -2,6 +2,10 @@ import { DI, } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
 import { LOOKUP, QUERY_CONTEXT_LOADER } from '../../../tokens';
 export class LookupProxy {
+    constructor(repositorySource = null, repositoryUuid = null) {
+        this.repositorySource = repositorySource;
+        this.repositoryUuid = repositoryUuid;
+    }
     ensureContext(context) {
         return doEnsureContext(context);
     }

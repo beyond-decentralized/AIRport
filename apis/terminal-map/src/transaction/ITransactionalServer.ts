@@ -1,4 +1,4 @@
-import { IEntityContext } from '@airport/air-control'
+import { IEntityContext, IQueryContext } from '@airport/air-control'
 import { IContext } from '@airport/di'
 import {
 	AIRepository,
@@ -8,6 +8,7 @@ import {
 	PortableQuery
 } from '@airport/ground-control'
 import { Observable } from 'rxjs'
+import { IQueryOperationContext } from '..'
 import { ICredentials } from '../Credentials'
 
 export interface ITransactionalServer {
@@ -34,28 +35,28 @@ export interface ITransactionalServer {
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IContext,
+		context: IQueryOperationContext,
 		cachedSqlQueryId?: number
 	): Promise<EntityArray>
 
 	findOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IContext,
+		context: IQueryOperationContext,
 		cachedSqlQueryId?: number
 	): Promise<E>
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IContext,
+		context: IQueryOperationContext,
 		cachedSqlQueryId?: number
 	): Observable<EntityArray>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IContext,
+		context: IQueryOperationContext,
 		cachedSqlQueryId?: number
 	): Observable<E>
 
@@ -75,6 +76,13 @@ export interface ITransactionalServer {
 	): Promise<boolean>
 
 	save<E>(
+		entity: E,
+		credentials: ICredentials,
+		context: IEntityContext,
+	): Promise<ISaveResult>
+
+	saveToDestination<E>(
+		repositoryDestination: string,
 		entity: E,
 		credentials: ICredentials,
 		context: IEntityContext,

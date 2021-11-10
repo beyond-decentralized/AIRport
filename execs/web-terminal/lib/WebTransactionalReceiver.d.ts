@@ -19,7 +19,7 @@ export declare class WebTransactionalReceiver extends TransactionalReceiver impl
     private getFrameWindow;
     private handleToClientRequest;
     private ensureSchemaIsInstalled;
-    private messageIsFromValidSchema;
+    private messageIsFromValidApp;
     private handleIsolateMessage;
 }
 export declare function injectTransactionalReceiver(): void;

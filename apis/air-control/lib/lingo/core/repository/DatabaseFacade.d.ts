@@ -52,9 +52,16 @@ export interface IDatabaseFacade {
      * Ether creates or updates an entity - internal API.  Use the
      *  API provided by the IEntityDatabaseFacade.
      *
-     * @return Number of records saved (1 or 0)
+     * @return ISaveResult object with metadata on saved objects
      */
-    save<E, EntityCascadeGraph>(entity: E, ctx: IEntityContext): Promise<ISaveResult>;
+    save<E>(entity: E, ctx: IEntityContext): Promise<ISaveResult>;
+    /**
+     * Ether creates or updates an entity and saves it it a destination
+     *  - internal API.  Use the API provided by the IEntityDatabaseFacade.
+     *
+     * @return ISaveResult object with metadata on saved objects
+     */
+    saveToDestination<E>(repositoryDestination: string, entity: E, ctx: IEntityContext): Promise<ISaveResult>;
     /**
      * Updates an entity with a where clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.
@@ -76,7 +83,7 @@ export interface IDatabaseFacade {
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;
 }
 export interface IQueryFacade {
-    ensureIocContext<E>(context: IQueryContext<E>): Promise<void>;
+    ensureIocContext<E>(context: IQueryContext): Promise<void>;
     find<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext): Promise<EntityArray>;
     findOne<E>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext): Promise<E>;
     search<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext): Promise<Observable<EntityArray>>;

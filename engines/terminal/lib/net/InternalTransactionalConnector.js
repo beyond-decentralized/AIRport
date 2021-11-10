@@ -72,6 +72,15 @@ export class TransactionalConnector {
             ...context
         });
     }
+    async saveToDestination(repositoryDestination, entity, context) {
+        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        return await transServer.saveToDestination(repositoryDestination, entity, {
+            applicationSignature: 'internal'
+        }, {
+            internal: true,
+            ...context
+        });
+    }
     async insertValues(portableQuery, context, ensureGeneratedValues // For internal use only
     ) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);

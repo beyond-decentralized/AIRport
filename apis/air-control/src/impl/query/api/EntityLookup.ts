@@ -4,7 +4,10 @@ import {
 	ENTITY_STATE_MANAGER,
 	QueryResultType
 } from '@airport/ground-control'
-import { IEntityContext } from '../../../lingo/core/EntityContext'
+import {
+	IEntityContext,
+	IEntityQueryContext
+} from '../../../lingo/core/EntityContext'
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity'
 import { IEntityLookup } from '../../../lingo/query/api/EntityLookup'
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
@@ -54,10 +57,10 @@ export abstract class EntityLookup<Child, MappedChild,
 	constructor(
 		protected dbEntity: DbEntity,
 		protected mapResults = EntityLookup.mapResults,
-		protected repositorySource: string = null,
-		protected repositoryUuid: string = null,
+		repositorySource: string = null,
+		repositoryUuid: string = null,
 	) {
-		super()
+		super(repositorySource, repositoryUuid)
 	}
 
 	abstract map(
@@ -88,13 +91,16 @@ export abstract class EntityLookup<Child, MappedChild,
 		queryResultType: QueryResultType,
 		search: boolean,
 		one: boolean,
-		context: IEntityContext
+		context: IEntityQueryContext
 	): Promise<any> {
 		context.dbEntity = this.dbEntity
 		if (this.repositorySource && this.repositoryUuid) {
 			const repositoryLoader = await DI.db().get(REPOSITORY_LOADER)
 			await repositoryLoader.loadRepository(this.repositorySource, this.repositoryUuid)
 		}
+		context.repositorySource = this.repositorySource
+		context.repositoryUuid = this.repositoryUuid
+
 		const result = await this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)
 		const [entityStateManager, schemaUtils, updateCacheManager] =

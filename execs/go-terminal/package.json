@@ -6,7 +6,7 @@
     "@airport/security-check": "0.0.1",
     "@airport/terminal": "0.0.1",
     "@airport/terminal-map": "0.0.1",
-    "rxjs": "^7.3.0"
+    "rxjs": "~7.4.0"
   },
   "main": "lib/index.js",
   "name": "@airport/go-terminal",

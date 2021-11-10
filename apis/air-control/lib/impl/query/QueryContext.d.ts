@@ -17,9 +17,9 @@ export declare class IocQueryContext implements IIocQueryContext {
     transactionalConnector: ITransactionalConnector;
 }
 export interface IQueryContextLoader {
-    ensure<E>(ctx: IQueryContext<E>): Promise<void>;
+    ensure<E>(ctx: IQueryContext): Promise<void>;
 }
 export declare class QueryContextLoader implements IQueryContextLoader {
-    ensure<E>(ctx: IQueryContext<E>): Promise<void>;
+    ensure<E>(ctx: IQueryContext): Promise<void>;
 }
 //# sourceMappingURL=QueryContext.d.ts.map

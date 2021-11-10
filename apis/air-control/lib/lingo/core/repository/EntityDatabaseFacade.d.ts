@@ -77,8 +77,12 @@ export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySele
      * UpdateProperties Context to determine if the entity needs to be updated.
      * If the entity isn't found in the update context, creates it.
      *
-     * @return Number of records saved (1 or 0)
+     * @return ISaveResult object with metadata on saved objects
      */
     save(entity: EntityCreateProperties, ctx?: IEntityContext): Promise<ISaveResult>;
+    /**
+     * @return ISaveResult object with metadata on saved objects
+     */
+    saveToDestination(repositoryDestination: string, entity: EntityCreateProperties, ctx?: IEntityContext): Promise<ISaveResult>;
 }
 //# sourceMappingURL=EntityDatabaseFacade.d.ts.map

@@ -142,7 +142,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         return null;
     }
     async handleToClientRequest(message, messageOrigin) {
-        if (!this.messageIsFromValidSchema(message, messageOrigin)) {
+        if (!this.messageIsFromValidApp(message, messageOrigin)) {
             return;
         }
         let pendingMessagesFromHost = this.pendingFromClientMessageIds.get(message.host);
@@ -184,7 +184,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         }
         return true;
     }
-    messageIsFromValidSchema(message, messageOrigin) {
+    messageIsFromValidApp(message, messageOrigin) {
         const schemaDomain = messageOrigin.split('//')[1];
         const schemaDomainFragments = schemaDomain.split('.');
         // Allow local debugging
@@ -215,7 +215,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         return this.installedSchemaFrames.has(schemaDomainSignature);
     }
     handleIsolateMessage(message, messageOrigin, source) {
-        if (!this.messageIsFromValidSchema(message, messageOrigin)) {
+        if (!this.messageIsFromValidApp(message, messageOrigin)) {
             return;
         }
         switch (message.type) {

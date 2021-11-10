@@ -181,8 +181,51 @@ export class DatabaseFacade
 		if (!entity) {
 			return null
 		}
-		const [updateCacheManager, entityCopier,
-			entityStateManager, schemaUtils, transactionalConnector]
+		const entityCopy = await this.preSaveOperations(entity, context)
+
+		const [updateCacheManager, entityStateManager, schemaUtils,
+			transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER,
+				ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
+
+		const saveResult = await transactionalConnector.save(entityCopy, context)
+
+		updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult,
+			entityStateManager, schemaUtils, new Set())
+
+		return saveResult
+	}
+
+	async saveToDestination<E>(
+		repositoryDestination: string,
+		entity: E,
+		context: IEntityContext,
+	): Promise<ISaveResult> {
+		if (!entity) {
+			return null
+		}
+		const entityCopy = await this.preSaveOperations(entity, context)
+
+		const [updateCacheManager, entityStateManager, schemaUtils,
+			transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER,
+				ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
+
+		const saveResult = await transactionalConnector
+			.saveToDestination(repositoryDestination, entityCopy, context)
+
+		updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult,
+			entityStateManager, schemaUtils, new Set())
+
+		return saveResult
+	}
+
+	private async preSaveOperations<E>(
+		entity: E,
+		context: IEntityContext,
+	): Promise<E> {
+		if (!entity) {
+			return null
+		}
+		const [updateCacheManager, entityCopier, entityStateManager, schemaUtils]
 			= await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER,
 				ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
 
@@ -191,11 +234,8 @@ export class DatabaseFacade
 			.copyEntityForProcessing(entity, dbEntity, entityStateManager)
 		updateCacheManager.setOperationState(
 			entityCopy, dbEntity, entityStateManager, schemaUtils, new Set())
-		const saveResult = await transactionalConnector.save(entityCopy, context)
-		updateCacheManager.afterSaveModifications(entity, dbEntity, saveResult,
-			entityStateManager, schemaUtils, new Set())
 
-		return saveResult
+		return entityCopy
 	}
 
 	/**
@@ -257,8 +297,8 @@ export class DatabaseFacade
 
 	private async ensureQueryContext<E>(
 		context: IContext
-	): Promise<IQueryContext<E>> {
-		const queryContext: IQueryContext<E> = context as IQueryContext<E>
+	): Promise<IQueryContext> {
+		const queryContext: IQueryContext = context as IQueryContext
 		const queryContextLoader = await container(this).get(QUERY_CONTEXT_LOADER)
 		await queryContextLoader.ensure(queryContext);
 
