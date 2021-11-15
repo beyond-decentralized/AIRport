@@ -51,6 +51,7 @@ dependencies:
   '@rush-temp/pressurization': 'file:projects/pressurization.tgz'
   '@rush-temp/processor-common': 'file:projects/processor-common.tgz'
   '@rush-temp/ramp': 'file:projects/ramp.tgz'
+  '@rush-temp/repository-demo-framework': 'file:projects/repository-demo-framework.tgz'
   '@rush-temp/runway': 'file:projects/runway.tgz'
   '@rush-temp/runway-edge-lighting': 'file:projects/runway-edge-lighting.tgz'
   '@rush-temp/security-check': 'file:projects/security-check.tgz'
@@ -11203,6 +11204,29 @@ packages:
       integrity: sha512-28KiBK5EnsJjX1ETY/hf7pdIMjjzO/2lyXTn5xxTtLVR5qP7xBIb5qLx4pfbEmRed2PmtfWw9vhQN6X6ELa0dA==
       tarball: 'file:projects/ramp.tgz'
     version: 0.0.0
+  'file:projects/repository-demo-framework.tgz':
+    dependencies:
+      '@rollup/plugin-commonjs': 17.1.0_rollup@2.56.3
+      '@rollup/plugin-node-resolve': 11.2.1_rollup@2.56.3
+      '@rollup/plugin-typescript': 8.2.5_933e839ab6e578a7dcecab93fb1942dc
+      '@tsconfig/svelte': 2.0.1
+      rollup: 2.56.3
+      rollup-plugin-css-only: 3.1.0_rollup@2.56.3
+      rollup-plugin-livereload: 2.0.5
+      rollup-plugin-svelte: 7.1.0_rollup@2.56.3+svelte@3.42.4
+      rollup-plugin-terser: 7.0.2_rollup@2.56.3
+      sirv-cli: 1.0.14
+      svelte: 3.42.4
+      svelte-check: 2.2.5_svelte@3.42.4
+      svelte-preprocess: 4.9.2_svelte@3.42.4+typescript@4.3.5
+      tslib: 2.1.0
+      typescript: 4.3.5
+    dev: false
+    name: '@rush-temp/repository-demo-framework'
+    resolution:
+      integrity: sha512-/UBWBfbeAl8QySBegCqG8MzjERzGYsjmDJDPhLVenUKNsNALjMisiRB3sXqMFjV13Rpc12W2SvAzt2WPeb6WWA==
+      tarball: 'file:projects/repository-demo-framework.tgz'
+    version: 0.0.0
   'file:projects/runway-edge-lighting.tgz':
     dependencies:
       typedi: 0.8.0
@@ -11462,6 +11486,7 @@ specifiers:
   '@rush-temp/pressurization': 'file:./projects/pressurization.tgz'
   '@rush-temp/processor-common': 'file:./projects/processor-common.tgz'
   '@rush-temp/ramp': 'file:./projects/ramp.tgz'
+  '@rush-temp/repository-demo-framework': 'file:./projects/repository-demo-framework.tgz'
   '@rush-temp/runway': 'file:./projects/runway.tgz'
   '@rush-temp/runway-edge-lighting': 'file:./projects/runway-edge-lighting.tgz'
   '@rush-temp/security-check': 'file:./projects/security-check.tgz'

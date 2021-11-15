@@ -326,6 +326,11 @@
       "projectFolder": "test/functionality-demo-framework",
       "shouldPublish": true
     },
+    {
+      "packageName": "@airport/repository-demo-framework",
+      "projectFolder": "test/repository-demo-framework",
+      "shouldPublish": true
+    },
     // "ui" folder (alphabetical order)
     {
       "packageName": "@airport/functionality-demo",
