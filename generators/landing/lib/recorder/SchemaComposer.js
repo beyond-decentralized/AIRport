@@ -44,8 +44,8 @@ export class SchemaComposer {
             const schema = this.composeSchema(domain, jsonSchema, allSchemas, newSchemas, schemaMapByName);
             this.composeSchemaVersion(jsonSchema, schema, newLatestSchemaVersions, newSchemaVersions, newSchemaVersionMapBySchemaName);
         }
-        const allSchemaVersionsByIds = [...terminalStore.getAllSchemaVersionsByIds()];
         const { newSchemaReferenceMap, newSchemaReferences } = await this.composeSchemaReferences(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, schemaLocator, terminalStore);
+        const allSchemaVersionsByIds = [...terminalStore.getAllSchemaVersionsByIds()];
         const ddlObjects = {
             allDomains,
             allSchemas,

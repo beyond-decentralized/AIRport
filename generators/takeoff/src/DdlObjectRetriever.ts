@@ -76,14 +76,14 @@ export class DdlObjectRetriever
 			.findAllActiveOrderBySchemaIndexAndId()
 
 		let lastSchemaIndex: SchemaIndex
-		const allSchemaVersionsByIds: ISchemaVersion[] = []
+		// const allSchemaVersionsByIds: ISchemaVersion[] = []
 		const latestSchemaVersions: ISchemaVersion[] = []
 		const schemaVersions: ISchemaVersion[] = []
 		for (const schemaVersion of allSchemaVersions) {
 			if (schemaVersion.schema.index !== lastSchemaIndex) {
 				latestSchemaVersions.push(schemaVersion)
 			}
-			allSchemaVersionsByIds[schemaVersion.id] = schemaVersion
+			// allSchemaVersionsByIds[schemaVersion.id] = schemaVersion
 			lastSchemaIndex = schemaVersion.schema.index
 			schemaVersions.push(schemaVersion)
 		}
@@ -140,9 +140,9 @@ export class DdlObjectRetriever
 		}
 
 		return {
-			allDomains: domains,
-			allSchemas: schemas,
-			allSchemaVersionsByIds,
+			// allDomains: domains,
+			// allSchemas: schemas,
+			// allSchemaVersionsByIds,
 			columns,
 			domains,
 			entities,

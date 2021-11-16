@@ -5,13 +5,14 @@ import { ISchema, ISchemaColumn, ISchemaEntity, ISchemaProperty, ISchemaProperty
 import { IDdlObjectLinker } from './DdlObjectLinker';
 import { IQueryEntityClassCreator } from './QueryEntityClassCreator';
 export interface IQueryObjectInitializer {
-    initialize(airDb: IAirportDatabase): Promise<DdlObjects>;
-    generateQObjectsAndPopulateStore(ddlObjects: DdlObjects, airDb: IAirportDatabase, ddlObjectLinker: IDdlObjectLinker, queryEntityClassCreator: IQueryEntityClassCreator, terminalStore: ITerminalStore): void;
+    generateQObjectsAndPopulateStore(allDdlObjects: AllDdlObjects, airDb: IAirportDatabase, ddlObjectLinker: IDdlObjectLinker, queryEntityClassCreator: IQueryEntityClassCreator, terminalStore: ITerminalStore): void;
+}
+export interface AllDdlObjects {
+    allSchemaVersionsByIds: ISchemaVersion[];
+    all: DdlObjects;
+    added: DdlObjects;
 }
 export interface DdlObjects {
-    allDomains: IDomain[];
-    allSchemas: ISchema[];
-    allSchemaVersionsByIds: ISchemaVersion[];
     columns: ISchemaColumn[];
     domains: IDomain[];
     entities: ISchemaEntity[];
@@ -25,7 +26,6 @@ export interface DdlObjects {
     schemaVersions: ISchemaVersion[];
 }
 export declare class QueryObjectInitializer implements IQueryObjectInitializer {
-    generateQObjectsAndPopulateStore(ddlObjects: DdlObjects, airDb: IAirportDatabase, ddlObjectLinker: IDdlObjectLinker, queryEntityClassCreator: IQueryEntityClassCreator, terminalStore: ITerminalStore): void;
-    initialize(airDb: IAirportDatabase): Promise<DdlObjects>;
+    generateQObjectsAndPopulateStore(allDdlObjects: AllDdlObjects, airDb: IAirportDatabase, ddlObjectLinker: IDdlObjectLinker, queryEntityClassCreator: IQueryEntityClassCreator, terminalStore: ITerminalStore): void;
 }
 //# sourceMappingURL=QueryObjectInitializer.d.ts.map

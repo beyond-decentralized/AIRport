@@ -32,14 +32,14 @@ export class DdlObjectRetriever {
         const allSchemaVersions = await schemaVersionDao
             .findAllActiveOrderBySchemaIndexAndId();
         let lastSchemaIndex;
-        const allSchemaVersionsByIds = [];
+        // const allSchemaVersionsByIds: ISchemaVersion[] = []
         const latestSchemaVersions = [];
         const schemaVersions = [];
         for (const schemaVersion of allSchemaVersions) {
             if (schemaVersion.schema.index !== lastSchemaIndex) {
                 latestSchemaVersions.push(schemaVersion);
             }
-            allSchemaVersionsByIds[schemaVersion.id] = schemaVersion;
+            // allSchemaVersionsByIds[schemaVersion.id] = schemaVersion
             lastSchemaIndex = schemaVersion.schema.index;
             schemaVersions.push(schemaVersion);
         }
@@ -82,9 +82,9 @@ export class DdlObjectRetriever {
             schemaVersions: schemaVersions.length,
         };
         return {
-            allDomains: domains,
-            allSchemas: schemas,
-            allSchemaVersionsByIds,
+            // allDomains: domains,
+            // allSchemas: schemas,
+            // allSchemaVersionsByIds,
             columns,
             domains,
             entities,

@@ -1,16 +1,15 @@
-import { container, DI } from '@airport/di';
-import { TERMINAL_STORE } from '@airport/terminal-map';
-import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER } from './tokens';
+import { DI } from '@airport/di';
+import { QUERY_OBJECT_INITIALIZER } from './tokens';
 export class QueryObjectInitializer {
-    generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore) {
-        ddlObjectLinker.link(ddlObjects, terminalStore);
-        queryEntityClassCreator.createAll(ddlObjects.schemas, airDb);
+    generateQObjectsAndPopulateStore(allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore) {
+        ddlObjectLinker.link(allDdlObjects, terminalStore);
+        queryEntityClassCreator.createAll(allDdlObjects.added.schemas, airDb);
         const lastTerminalState = terminalStore.getTerminalState();
         const existingDomainMap = {};
         for (const domain of lastTerminalState.domains) {
             existingDomainMap[domain.name] = domain;
         }
-        for (const domain of ddlObjects.domains) {
+        for (const domain of allDdlObjects.added.domains) {
             delete existingDomainMap[domain.name];
         }
         const unmodifiedDomains = [];
@@ -21,7 +20,7 @@ export class QueryObjectInitializer {
         for (const schema of lastTerminalState.schemas) {
             existingSchemaMap[schema.name] = schema;
         }
-        for (const schema of ddlObjects.schemas) {
+        for (const schema of allDdlObjects.added.schemas) {
             delete existingSchemaMap[schema.name];
         }
         const unmodifiedSchemas = [];
@@ -32,19 +31,13 @@ export class QueryObjectInitializer {
             ...lastTerminalState,
             domains: [
                 ...unmodifiedDomains,
-                ...ddlObjects.domains
+                ...allDdlObjects.added.domains
             ],
             schemas: [
                 ...unmodifiedSchemas,
-                ...ddlObjects.schemas
+                ...allDdlObjects.added.schemas
             ]
         });
-    }
-    async initialize(airDb) {
-        const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, terminalStore] = await container(this).get(DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE);
-        const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects();
-        this.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
-        return ddlObjects;
     }
 }
 DI.set(QUERY_OBJECT_INITIALIZER, QueryObjectInitializer);

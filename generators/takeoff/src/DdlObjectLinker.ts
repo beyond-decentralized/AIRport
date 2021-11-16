@@ -21,12 +21,12 @@ import type {
 	ISchemaVersion
 } from '@airport/traffic-pattern'
 import { DDL_OBJECT_LINKER } from './tokens'
-import type { DdlObjects } from './QueryObjectInitializer'
+import { AllDdlObjects } from './QueryObjectInitializer'
 
 export interface IDdlObjectLinker {
 
 	link(
-		ddlObjects: DdlObjects,
+		ddlObjects: AllDdlObjects,
 		terminalStore: ITerminalStore
 	): void
 
@@ -36,17 +36,20 @@ export class DdlObjectLinker
 	implements IDdlObjectLinker {
 
 	link(
-		ddlObjects: DdlObjects,
+		allDdlObjects: AllDdlObjects,
 		terminalStore: ITerminalStore
 	): void {
 		const {
-			allDomains, allSchemaVersionsByIds, columns, entities, latestSchemaVersions,
+			all, allSchemaVersionsByIds, added
+		} = allDdlObjects
+		const {
+			columns, entities, latestSchemaVersions,
 			properties, propertyColumns, relationColumns, relations, schemaReferences,
 			schemas
-		} = ddlObjects
+		} = added
 
 		this.linkDomainsAndSchemasAndVersions(
-			allSchemaVersionsByIds, allDomains, schemas, latestSchemaVersions, schemaReferences)
+			allSchemaVersionsByIds, all.domains, schemas, latestSchemaVersions, schemaReferences)
 
 		const entityArrayById: ISchemaEntity[] =
 			this.linkEntities(allSchemaVersionsByIds, entities)

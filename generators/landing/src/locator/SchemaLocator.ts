@@ -1,6 +1,6 @@
 import { DI } from '@airport/di'
 import { getSchemaNameFromDomainAndName, JsonSchema } from '@airport/ground-control'
-import { DdlObjects } from '@airport/takeoff'
+import { AllDdlObjects } from '@airport/takeoff'
 import {
 	ITerminalStore,
 	TERMINAL_STORE
@@ -18,7 +18,7 @@ export interface ISchemaLocator {
 	locateLatestSchemaVersionBySchemaName(
 		schemaName: string,
 		terminalStore: ITerminalStore,
-		ddlObjects?: DdlObjects
+		allDdlObjects?: AllDdlObjects
 	): Promise<ISchemaVersion>
 
 }
@@ -56,7 +56,7 @@ export class SchemaLocator
 	async locateLatestSchemaVersionBySchemaName(
 		schemaName: string,
 		terminalStore: ITerminalStore,
-		ddlObjects?: DdlObjects
+		allDdlObjects?: AllDdlObjects
 	): Promise<ISchemaVersion> {
 		return terminalStore.getLatestSchemaVersionMapBySchemaName()
 			.get(schemaName)

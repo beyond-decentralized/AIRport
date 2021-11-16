@@ -30,12 +30,14 @@ import {
 
 export interface IQueryObjectInitializer {
 
+	/*
 	initialize(
 		airDb: IAirportDatabase
 	): Promise<DdlObjects>
+	*/
 
 	generateQObjectsAndPopulateStore(
-		ddlObjects: DdlObjects,
+		allDdlObjects: AllDdlObjects,
 		airDb: IAirportDatabase,
 		ddlObjectLinker: IDdlObjectLinker,
 		queryEntityClassCreator: IQueryEntityClassCreator,
@@ -69,21 +71,21 @@ export class QueryObjectInitializer
 	implements IQueryObjectInitializer {
 
 	generateQObjectsAndPopulateStore(
-		ddlObjects: DdlObjects,
+		allDdlObjects: AllDdlObjects,
 		airDb: IAirportDatabase,
 		ddlObjectLinker: IDdlObjectLinker,
 		queryEntityClassCreator: IQueryEntityClassCreator,
 		terminalStore: ITerminalStore
 	): void {
-		ddlObjectLinker.link(ddlObjects, terminalStore);
-		queryEntityClassCreator.createAll(ddlObjects.schemas, airDb);
+		ddlObjectLinker.link(allDdlObjects, terminalStore);
+		queryEntityClassCreator.createAll(allDdlObjects.added.schemas, airDb);
 		const lastTerminalState = terminalStore.getTerminalState();
 
 		const existingDomainMap = {};
 		for (const domain of lastTerminalState.domains) {
 			existingDomainMap[domain.name] = domain;
 		}
-		for (const domain of ddlObjects.domains) {
+		for (const domain of allDdlObjects.added.domains) {
 			delete existingDomainMap[domain.name];
 		}
 		const unmodifiedDomains: IDomain[] = [];
@@ -95,7 +97,7 @@ export class QueryObjectInitializer
 		for (const schema of lastTerminalState.schemas) {
 			existingSchemaMap[schema.name] = schema;
 		}
-		for (const schema of ddlObjects.schemas) {
+		for (const schema of allDdlObjects.added.schemas) {
 			delete existingSchemaMap[schema.name];
 		}
 		const unmodifiedSchemas: ISchema[] = [];
@@ -107,15 +109,16 @@ export class QueryObjectInitializer
 			...lastTerminalState,
 			domains: [
 				...unmodifiedDomains,
-				...ddlObjects.domains
+				...allDdlObjects.added.domains
 			],
 			schemas: [
 				...unmodifiedSchemas,
-				...ddlObjects.schemas
+				...allDdlObjects.added.schemas
 			]
 		});
 	}
 
+	/*
 	async initialize(
 		airDb: IAirportDatabase
 	): Promise<DdlObjects> {
@@ -131,6 +134,7 @@ export class QueryObjectInitializer
 
 		return ddlObjects;
 	}
+	*/
 
 }
 

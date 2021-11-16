@@ -3,7 +3,7 @@ import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { SCHEMA_LOCATOR, SchemaLocator } from '@airport/landing'
 import { ITerminalStore } from '@airport/terminal-map'
 import { ISchemaVersion } from '@airport/traffic-pattern'
-import { DdlObjects } from '@airport/takeoff'
+import { AllDdlObjects } from '@airport/takeoff'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 
 export class IFrameSchemaLocator
@@ -12,7 +12,7 @@ export class IFrameSchemaLocator
     async locateLatestSchemaVersionBySchemaName(
         schemaName: string,
         terminalStore: ITerminalStore,
-        ddlObjects?: DdlObjects
+        ddlObjects?: AllDdlObjects
     ): Promise<ISchemaVersion> {
         let schemaVersion = terminalStore.getLatestSchemaVersionMapBySchemaName()
             .get(schemaName)
