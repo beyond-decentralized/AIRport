@@ -93,6 +93,9 @@ export class SqLiteSchemaBuilder extends SqlSchemaBuilder {
         if (unique) {
             uniquePrefix = ' UNIQUE';
         }
+        else {
+            uniquePrefix = '';
+        }
         return `CREATE${uniquePrefix} INDEX ${indexName}
     ON ${tableName} (
     ${columnNameList.join(', ')}

@@ -113,11 +113,16 @@ export class SchemaInitializer
 		const schemasWithValidDependencies = await this.
 			getSchemasWithValidDependencies(jsonSchemas, checkDependencies)
 
-		for (const jsonSchema of schemasWithValidDependencies) {
-			await schemaBuilder.build(jsonSchema, existingSchemaMap, context);
+		const newJsonSchemaMap: Map<string, JsonSchemaWithLastIds> = new Map()
+		for(const jsonSchema of jsonSchemas) {
+			newJsonSchemaMap.set(getSchemaName(jsonSchema), jsonSchema);
 		}
 
-		const ddlObjects = schemaComposer.compose(
+		for (const jsonSchema of schemasWithValidDependencies) {
+			await schemaBuilder.build(jsonSchema, existingSchemaMap, newJsonSchemaMap, context);
+		}
+
+		const ddlObjects = await schemaComposer.compose(
 			schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
 
 		this.addNewSchemaVersionsToAll(ddlObjects);
@@ -147,7 +152,7 @@ export class SchemaInitializer
 		const schemasWithValidDependencies = await this.
 			getSchemasWithValidDependencies([jsonSchema], false)
 
-		const ddlObjects = schemaComposer.compose(
+		const ddlObjects = await schemaComposer.compose(
 			schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore)
 
 		this.addNewSchemaVersionsToAll(ddlObjects);
@@ -171,7 +176,7 @@ export class SchemaInitializer
 
 		// Temporarily Initialize schema DDL objects and Sequences to allow for normal hydration
 
-		const tempDdlObjects = schemaComposer.compose(
+		const tempDdlObjects = await schemaComposer.compose(
 			jsonSchemas, ddlObjectRetriever, schemaLocator, terminalStore);
 
 		this.addNewSchemaVersionsToAll(tempDdlObjects);

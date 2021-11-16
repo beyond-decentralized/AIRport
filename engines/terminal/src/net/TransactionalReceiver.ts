@@ -7,6 +7,7 @@ import { getSchemaName } from '@airport/ground-control';
 import {
     IAddRepositoryIMI,
     IConnectionInitializedIMI,
+    IGetLatestSchemaVersionBySchemaNameIMI,
     IInitConnectionIMI,
     IInitConnectionIMO,
     IIsolateMessage,
@@ -151,7 +152,7 @@ export abstract class TransactionalReceiver {
                     )
                     break
                 case IsolateMessageType.SAVE:
-                case IsolateMessageType.SAVE_TO_DESTINATION:
+                case IsolateMessageType.SAVE_TO_DESTINATION: {
                     const saveMessage: ISaveIMI<any, any> = <ISaveIMI<any, any>>message
                     const terminalStore = await container(this).get(TERMINAL_STORE)
                     if (!saveMessage.dbEntity) {
@@ -182,6 +183,7 @@ export abstract class TransactionalReceiver {
                         )
                     }
                     break
+                }
                 case IsolateMessageType.SEARCH:
                     const searchMessage: IReadQueryIMI = <IReadQueryIMI>message;
                     result = await transactionalServer.search(
@@ -220,6 +222,12 @@ export abstract class TransactionalReceiver {
                         context
                     )
                     break
+                case IsolateMessageType.GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME: {
+                    const terminalStore = await container(this).get(TERMINAL_STORE)
+                    result = terminalStore.getLatestSchemaVersionMapBySchemaName()
+                        .get((message as IGetLatestSchemaVersionBySchemaNameIMI).schemaName)
+                    break;
+                }
                 default:
                     // Unexpected IsolateMessageInType
                     return

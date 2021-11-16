@@ -2,6 +2,7 @@ import { IEntityContext, IQueryContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
 import { AIRepository, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
 import { IIsolateMessage, LastIds } from '@airport/security-check';
+import { ISchemaVersion } from '@airport/traffic-pattern';
 import { Observable, Observer } from 'rxjs';
 export interface IMessageInRecord {
     message: IIsolateMessage;
@@ -19,7 +20,10 @@ export declare enum AppState {
     INITIALIZING_IN_PROGRESS = "INITIALIZING_IN_PROGRESS",
     INITIALIZED = "INITIALIZED"
 }
-export declare class IframeTransactionalConnector implements ITransactionalConnector {
+export interface IIframeTransactionalConnector extends ITransactionalConnector {
+    getLatestSchemaVersionMapBySchemaName(schemaName: string): Promise<ISchemaVersion>;
+}
+export declare class IframeTransactionalConnector implements IIframeTransactionalConnector {
     dbName: string;
     serverUrl: string;
     pendingMessageMap: Map<number, IMessageInRecord>;
@@ -45,11 +49,13 @@ export declare class IframeTransactionalConnector implements ITransactionalConne
     startTransaction(context: IContext): Promise<boolean>;
     commit(context: IContext): Promise<boolean>;
     rollback(context: IContext): Promise<boolean>;
+    getLatestSchemaVersionMapBySchemaName(schemaName: string): Promise<ISchemaVersion>;
     private initializeConnection;
     private handleLocalApiRequest;
     private handleDbToIsolateMessage;
     private getCoreFields;
     private sendMessage;
+    private sendMessageNoWait;
     private sendObservableMessage;
     private wait;
     private isConnectionInitialized;

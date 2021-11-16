@@ -5,11 +5,11 @@ import { ITerminalStore } from '@airport/terminal-map';
 import { ISchemaVersion } from '@airport/traffic-pattern';
 import { ISchemaLocator } from '../locator/SchemaLocator';
 export interface ISchemaComposer {
-    compose(jsonSchemas: JsonSchemaWithLastIds[], ddlObjectRetriever: IDdlObjectRetriever, schemaLocator: ISchemaLocator, terminalStore: ITerminalStore): DdlObjects;
+    compose(jsonSchemas: JsonSchemaWithLastIds[], ddlObjectRetriever: IDdlObjectRetriever, schemaLocator: ISchemaLocator, terminalStore: ITerminalStore): Promise<DdlObjects>;
 }
 export declare class SchemaComposer implements ISchemaComposer {
-    compose(jsonSchemas: JsonSchemaWithLastIds[], ddlObjectRetriever: IDdlObjectRetriever, schemaLocator: ISchemaLocator, terminalStore: ITerminalStore): DdlObjects;
-    getExistingLatestSchemaVersion(referencedSchemaName: SchemaName, terminalStore: ITerminalStore): ISchemaVersion;
+    compose(jsonSchemas: JsonSchemaWithLastIds[], ddlObjectRetriever: IDdlObjectRetriever, schemaLocator: ISchemaLocator, terminalStore: ITerminalStore): Promise<DdlObjects>;
+    getExistingLatestSchemaVersion(referencedSchemaName: SchemaName, terminalStore: ITerminalStore, ddlObjects: DdlObjects): Promise<ISchemaVersion>;
     private composeDomain;
     private composeSchema;
     private composeSchemaVersion;

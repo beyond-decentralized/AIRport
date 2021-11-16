@@ -27,6 +27,10 @@ export interface IDomainDao
 		domainName: DomainName
 	): Promise<IDomain>
 
+	checkAndInsertIfNeeded(
+		domains: IDomain[]
+	): Promise<void>
+
 }
 
 export class DomainDao
@@ -74,6 +78,37 @@ export class DomainDao
 			select: {},
 			from: [d = Q.Domain],
 			where: d.name.equals(name)
+		})
+	}
+
+	async checkAndInsertIfNeeded(
+		domains: IDomain[]
+	): Promise<void> {
+		const existingDomains = await this.findByIdIn(domains.map(domain => domain.id))
+		const existingDomainMap: Map<DomainId, IDomain> = new Map()
+		for (const existingDomain of existingDomains) {
+			existingDomainMap.set(existingDomain.id, existingDomain)
+		}
+		const newDomains: IDomain[] = []
+		for (const domain of domains) {
+			if (!existingDomainMap.has(domain.id)) {
+				newDomains.push(domain)
+			}
+		}
+		let d: QDomain;
+		const values = []
+		for (const domain of newDomains) {
+			values.push([
+				domain.id, domain.name
+			])
+		}
+		await this.db.insertValuesGenerateIds({
+			insertInto: d = Q.Domain,
+			columns: [
+				d.id,
+				d.name,
+			],
+			values
 		})
 	}
 

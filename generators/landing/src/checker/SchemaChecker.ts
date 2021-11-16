@@ -206,7 +206,6 @@ export class SchemaChecker
 		} else {
 			const schemaDao         = await container(this).get(SCHEMA_DAO)
 			existingSchemaMapByName = await schemaDao.findMapByNames(schemaNames)
-
 		}
 
 		return {

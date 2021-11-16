@@ -1,4 +1,5 @@
 import { container, DI } from "@airport/di";
+import { ENTITY_STATE_MANAGER } from "@airport/ground-control";
 import { Actor, ACTOR_DAO, } from "@airport/holding-pattern";
 import { TERMINAL_STORE } from "@airport/terminal-map";
 import { APPLICATION_DAO, DOMAIN_DAO } from "@airport/territory";
@@ -9,10 +10,10 @@ import { INTERNAL_RECORD_MANAGER } from "../tokens";
 export class InternalRecordManager {
     async ensureSchemaRecords(schema, signature, context) {
         await transactional(async (_transaction) => {
-            const [actorDao, applicationDao, domainDao, terminalStore] = await container(this)
-                .get(ACTOR_DAO, APPLICATION_DAO, DOMAIN_DAO, TERMINAL_STORE);
+            const [actorDao, applicationDao, domainDao, entityStateManager, terminalStore] = await container(this)
+                .get(ACTOR_DAO, APPLICATION_DAO, DOMAIN_DAO, ENTITY_STATE_MANAGER, TERMINAL_STORE);
             let domain = terminalStore.getDomainMapByName().get(schema.domain);
-            if (!domain) {
+            if (!domain || !entityStateManager.getOriginalValues(domain)) {
                 domain = await domainDao.findByName(schema.domain);
                 if (!domain) {
                     domain = {
@@ -23,7 +24,17 @@ export class InternalRecordManager {
                 }
                 const lastTerminalState = terminalStore.getTerminalState();
                 const domains = lastTerminalState.domains.slice();
-                domains.push(domain);
+                let replaced = false;
+                for (let i = 0; i < domains.length; i++) {
+                    let currentDomain = domains[i];
+                    if (currentDomain.name === domain.name) {
+                        domains.splice(i, 1, domain);
+                        replaced = true;
+                    }
+                }
+                if (!replaced) {
+                    domains.push(domain);
+                }
                 terminalStore.state.next({
                     ...lastTerminalState,
                     domains
@@ -74,6 +85,7 @@ export class InternalRecordManager {
         await transactional(async (_transaction) => {
             const user = new User();
             user.privateId = domainName;
+            user.publicId = domainName;
             // const userDao = await container(this).get(USER_DAO);
             // await userDao.save(user, context);
             const terminal = new Terminal();

@@ -13,6 +13,7 @@ import {
   QueryType,
   STORE_DRIVER,
 } from '@airport/ground-control';
+import { JsonSchemaWithLastIds } from '@airport/security-check';
 import { ISchema } from '@airport/traffic-pattern';
 import { ISchemaBuilder } from './ISchemaBuilder';
 
@@ -22,6 +23,7 @@ export abstract class SqlSchemaBuilder
   async build(
     jsonSchema: JsonSchema,
     existingSchemaMap: Map<string, ISchema>,
+    newJsonSchemaMap: Map<string, JsonSchemaWithLastIds>,
     context: IContext,
   ): Promise<void> {
     const storeDriver = await container(this).get(STORE_DRIVER);
@@ -37,7 +39,7 @@ export abstract class SqlSchemaBuilder
 
     for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
       await this.buildForeignKeys(jsonSchema, jsonEntity, existingSchemaMap,
-        relatedJsonSchemaMap, storeDriver, context);
+        newJsonSchemaMap, relatedJsonSchemaMap, storeDriver, context);
     }
 
   }
@@ -117,6 +119,7 @@ export abstract class SqlSchemaBuilder
     jsonSchema: JsonSchema,
     jsonEntity: JsonSchemaEntity,
     existingSchemaMap: Map<string, ISchema>,
+    newJsonSchemaMap: Map<string, JsonSchemaWithLastIds>,
     relatedJsonSchemaMap: Map<string, JsonSchema>,
     storeDriver: IStoreDriver,
     context: IContext,
@@ -145,8 +148,15 @@ export abstract class SqlSchemaBuilder
         relatedJsonSchema = relatedJsonSchemaMap.get(relatedSchemaName)
         if (!relatedJsonSchema) {
           const relatedSchema = existingSchemaMap.get(relatedSchemaName)
-          // TODO: does the JSON schema need to be parse?
-          relatedJsonSchema = relatedSchema.jsonSchema
+          if (relatedSchema) {
+            relatedJsonSchema = relatedSchema.jsonSchema
+          } else {
+            relatedJsonSchema = newJsonSchemaMap.get(relatedSchemaName)
+          }
+          if (!relatedJsonSchema) {
+            throw new Error(`Could not find related schema ${relatedSchemaName}
+            in either existing schemas or newly installing schemas.`)
+          }
           relatedJsonSchemaMap.set(relatedSchemaName, relatedJsonSchema)
         }
         const relatedSchemaVersion: JsonSchemaVersion = relatedJsonSchema

@@ -44,11 +44,13 @@ export interface IQueryObjectInitializer {
 
 }
 
-export interface DdlObjects {
-
-	allDomains: IDomain[]
-	allSchemas: ISchema[]
+export interface AllDdlObjects {
 	allSchemaVersionsByIds: ISchemaVersion[]
+	all: DdlObjects
+	added: DdlObjects
+}
+
+export interface DdlObjects {
 	columns: ISchemaColumn[]
 	domains: IDomain[]
 	entities: ISchemaEntity[]

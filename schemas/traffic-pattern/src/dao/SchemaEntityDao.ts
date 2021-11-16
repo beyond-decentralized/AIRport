@@ -16,6 +16,10 @@ export interface ISchemaEntityDao
 		schemaVersionIds: SchemaVersionId[]
 	): Promise<ISchemaEntity[]>
 
+	insert(
+		schemaEntities: ISchemaEntity[]
+	): Promise<void>
+
 }
 
 export class SchemaEntityDao
@@ -33,6 +37,40 @@ export class SchemaEntityDao
 				se = Q.SchemaEntity
 			],
 			where: se.schemaVersion.id.in(schemaVersionIds)
+		})
+	}
+	
+	async insert(
+		schemaEntities: ISchemaEntity[]
+	): Promise<void> {
+		let se: QSchemaEntity;
+		const values = []
+		for (const schemaEntity of schemaEntities) {
+			values.push([
+				schemaEntity.id, schemaEntity.index,
+				schemaEntity.isLocal, schemaEntity.isRepositoryEntity,
+				schemaEntity.name, schemaEntity.tableConfig,
+				schemaEntity.schemaVersion.id,
+				schemaEntity.deprecatedSinceVersion ? schemaEntity.deprecatedSinceVersion.id : null,
+				schemaEntity.removedInVersion ? schemaEntity.removedInVersion.id : null,
+				schemaEntity.sinceVersion ? schemaEntity.sinceVersion.id : null,
+			])
+		}
+		await this.db.insertValuesGenerateIds({
+			insertInto: se = Q.SchemaEntity,
+			columns: [
+				se.id,
+				se.index,
+				se.isLocal,
+				se.isRepositoryEntity,
+				se.name,
+				se.tableConfig,
+				se.schemaVersion.id,
+				se.deprecatedSinceVersion.id,
+				se.removedInVersion.id,
+				se.sinceVersion.id
+			],
+			values
 		})
 	}
 

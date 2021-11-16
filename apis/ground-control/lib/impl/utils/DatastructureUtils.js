@@ -51,4 +51,7 @@ export function ensureChildJsSet(parentContainer, index) {
     }
     return childSet;
 }
+export function undefinedToNull(value) {
+    return value === undefined ? null : value;
+}
 //# sourceMappingURL=DatastructureUtils.js.map

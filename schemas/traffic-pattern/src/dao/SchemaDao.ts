@@ -62,6 +62,10 @@ export interface ISchemaDao
 		schemaNames: SchemaName[]
 	): Promise<Map<SchemaName, ISchema>>
 
+	insert(
+		schemas: ISchema[]
+	): Promise<void>
+
 }
 
 export class SchemaDao
@@ -264,6 +268,33 @@ export class SchemaDao
 		}
 
 		return mapByName
+	}
+
+	async insert(
+		schemas: ISchema[]
+	): Promise<void> {
+		let s: QSchema;
+		const values = []
+		for(const schema of schemas) {
+			values.push([
+				schema.index, schema.domain.id, schema.scope,
+				schema.name, schema.packageName, schema.status,
+				schema.jsonSchema
+			])
+		}
+		await this.db.insertValuesGenerateIds({
+				insertInto: s = Q.Schema,
+				columns: [
+					s.index,
+					s.domain.id,
+					s.scope,
+					s.name,
+					s.packageName,
+					s.status,
+					s.jsonSchema
+				],
+				values
+			})
 	}
 }
 

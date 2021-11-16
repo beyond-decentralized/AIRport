@@ -165,6 +165,30 @@ export class SchemaDao extends BaseSchemaDao {
         }
         return mapByName;
     }
+    async insert(schemas) {
+        let s;
+        const values = [];
+        for (const schema of schemas) {
+            values.push([
+                schema.index, schema.domain.id, schema.scope,
+                schema.name, schema.packageName, schema.status,
+                schema.jsonSchema
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            insertInto: s = Q.Schema,
+            columns: [
+                s.index,
+                s.domain.id,
+                s.scope,
+                s.name,
+                s.packageName,
+                s.status,
+                s.jsonSchema
+            ],
+            values
+        });
+    }
 }
 DI.set(SCHEMA_DAO, SchemaDao);
 //# sourceMappingURL=SchemaDao.js.map

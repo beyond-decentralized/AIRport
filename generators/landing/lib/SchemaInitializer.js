@@ -1,6 +1,7 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI } from '@airport/di';
+import { getSchemaName } from '@airport/ground-control';
 import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER } from '@airport/takeoff';
 import { TERMINAL_STORE } from '@airport/terminal-map';
 import { SCHEMA_BUILDER, SCHEMA_CHECKER, SCHEMA_COMPOSER, SCHEMA_INITIALIZER, SCHEMA_LOCATOR, SCHEMA_RECORDER } from './tokens';
@@ -30,10 +31,14 @@ export class SchemaInitializer {
         const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaBuilder, schemaComposer, schemaLocator, schemaRecorder, sequenceGenerator, terminalStore] = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER, SCHEMA_COMPOSER, SCHEMA_LOCATOR, SCHEMA_RECORDER, SEQUENCE_GENERATOR, TERMINAL_STORE);
         const schemasWithValidDependencies = await this.
             getSchemasWithValidDependencies(jsonSchemas, checkDependencies);
-        for (const jsonSchema of schemasWithValidDependencies) {
-            await schemaBuilder.build(jsonSchema, existingSchemaMap, context);
+        const newJsonSchemaMap = new Map();
+        for (const jsonSchema of jsonSchemas) {
+            newJsonSchemaMap.set(getSchemaName(jsonSchema), jsonSchema);
         }
-        const ddlObjects = schemaComposer.compose(schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
+        for (const jsonSchema of schemasWithValidDependencies) {
+            await schemaBuilder.build(jsonSchema, existingSchemaMap, newJsonSchemaMap, context);
+        }
+        const ddlObjects = await schemaComposer.compose(schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
         this.addNewSchemaVersionsToAll(ddlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
         this.setAirDbSchemas(airDb, ddlObjects);
@@ -45,7 +50,7 @@ export class SchemaInitializer {
         const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaComposer, schemaLocator, terminalStore] = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_COMPOSER, SCHEMA_LOCATOR, TERMINAL_STORE);
         const schemasWithValidDependencies = await this.
             getSchemasWithValidDependencies([jsonSchema], false);
-        const ddlObjects = schemaComposer.compose(schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
+        const ddlObjects = await schemaComposer.compose(schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
         this.addNewSchemaVersionsToAll(ddlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
         this.setAirDbSchemas(airDb, ddlObjects);
@@ -53,7 +58,7 @@ export class SchemaInitializer {
     async stage(jsonSchemas, context) {
         const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaBuilder, schemaComposer, schemaLocator, sequenceGenerator, terminalStore] = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER, SCHEMA_COMPOSER, SCHEMA_LOCATOR, SEQUENCE_GENERATOR, TERMINAL_STORE);
         // Temporarily Initialize schema DDL objects and Sequences to allow for normal hydration
-        const tempDdlObjects = schemaComposer.compose(jsonSchemas, ddlObjectRetriever, schemaLocator, terminalStore);
+        const tempDdlObjects = await schemaComposer.compose(jsonSchemas, ddlObjectRetriever, schemaLocator, terminalStore);
         this.addNewSchemaVersionsToAll(tempDdlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(tempDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
         this.setAirDbSchemas(airDb, tempDdlObjects);

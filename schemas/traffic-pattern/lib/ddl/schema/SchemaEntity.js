@@ -92,7 +92,10 @@ __decorate([
 SchemaEntity = __decorate([
     Entity(),
     Table({
-        name: 'SCHEMA_ENTITIES'
+        name: 'SCHEMA_ENTITIES',
+        // indexes: (se: SchemaEntity) => [{
+        // 	property: se.schemaVersion
+        // }]
     })
 ], SchemaEntity);
 export { SchemaEntity };

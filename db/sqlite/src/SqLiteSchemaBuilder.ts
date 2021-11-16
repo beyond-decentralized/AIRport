@@ -155,6 +155,8 @@ export class SqLiteSchemaBuilder
     let uniquePrefix
     if (unique) {
       uniquePrefix = ' UNIQUE'
+    } else {
+      uniquePrefix = ''
     }
     return `CREATE${uniquePrefix} INDEX ${indexName}
     ON ${tableName} (

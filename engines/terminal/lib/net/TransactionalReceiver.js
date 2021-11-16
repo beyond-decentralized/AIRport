@@ -86,7 +86,7 @@ export class TransactionalReceiver {
                     result = await transactionalServer.rollback(credentials, {});
                     break;
                 case IsolateMessageType.SAVE:
-                case IsolateMessageType.SAVE_TO_DESTINATION:
+                case IsolateMessageType.SAVE_TO_DESTINATION: {
                     const saveMessage = message;
                     const terminalStore = await container(this).get(TERMINAL_STORE);
                     if (!saveMessage.dbEntity) {
@@ -108,6 +108,7 @@ export class TransactionalReceiver {
                         result = await transactionalServer.saveToDestination(saveToDestinationMessage.repositoryDestination, saveToDestinationMessage.entity, credentials, context);
                     }
                     break;
+                }
                 case IsolateMessageType.SEARCH:
                     const searchMessage = message;
                     result = await transactionalServer.search(searchMessage.portableQuery, credentials, {
@@ -131,6 +132,12 @@ export class TransactionalReceiver {
                     const updateValuesMessage = message;
                     result = await transactionalServer.updateValues(updateValuesMessage.portableQuery, credentials, context);
                     break;
+                case IsolateMessageType.GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME: {
+                    const terminalStore = await container(this).get(TERMINAL_STORE);
+                    result = terminalStore.getLatestSchemaVersionMapBySchemaName()
+                        .get(message.schemaName);
+                    break;
+                }
                 default:
                     // Unexpected IsolateMessageInType
                     return;

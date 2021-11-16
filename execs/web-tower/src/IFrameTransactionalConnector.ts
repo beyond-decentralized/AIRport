@@ -20,6 +20,7 @@ import {
 } from '@airport/ground-control';
 import {
 	IAddRepositoryIMI,
+	IGetLatestSchemaVersionBySchemaNameIMI,
 	IInitConnectionIMI,
 	IIsolateMessage,
 	IIsolateMessageOut,
@@ -34,6 +35,7 @@ import { LOCAL_API_SERVER } from '@airport/tower'
 import {
 	APPLICATION_INITIALIZER
 } from '@airport/security-check'
+import { ISchemaVersion } from '@airport/traffic-pattern'
 import {
 	Observable,
 	Observer
@@ -61,8 +63,15 @@ export enum AppState {
 	INITIALIZED = 'INITIALIZED'
 }
 
+export interface IIframeTransactionalConnector
+	extends ITransactionalConnector {
+	getLatestSchemaVersionMapBySchemaName(
+		schemaName: string
+	): Promise<ISchemaVersion>
+}
+
 export class IframeTransactionalConnector
-	implements ITransactionalConnector {
+	implements IIframeTransactionalConnector {
 
 	dbName: string;
 	serverUrl: string;
@@ -343,6 +352,16 @@ export class IframeTransactionalConnector
 		})
 	}
 
+	async getLatestSchemaVersionMapBySchemaName(
+		schemaName: string
+	): Promise<ISchemaVersion> {
+		return await this.sendMessageNoWait<IGetLatestSchemaVersionBySchemaNameIMI, ISchemaVersion>({
+			...this.getCoreFields(),
+			schemaName,
+			type: IsolateMessageType.GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME
+		})
+	}
+
 	private async initializeConnection() {
 		while (this.appState === AppState.NOT_INITIALIED
 			|| this.appState === AppState.START_INITIALIZING) {
@@ -427,6 +446,12 @@ export class IframeTransactionalConnector
 		while (!await this.isConnectionInitialized()) {
 			await this.wait(100)
 		}
+		return await this.sendMessageNoWait(message)
+	}
+
+	private async sendMessageNoWait<IMessageIn extends IIsolateMessage, ReturnType>(
+		message: IMessageIn
+	): Promise<ReturnType> {
 		window.parent.postMessage(message, hostServer)
 		return new Promise<ReturnType>((resolve, reject) => {
 			this.pendingMessageMap.set(message.id, {

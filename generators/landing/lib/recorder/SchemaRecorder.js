@@ -13,22 +13,16 @@ export class SchemaRecorder {
         await transactional(async () => {
             // FIXME: add support for real schema versioning
             this.setDefaultVersioning(ddlObjects);
-            // await domainDao.save(ddlObjects.domains, context)
-            // FIXME: record the schema fields
-            // await schemaDao.save(ddlObjects.schemas, context)
-            // await schemaVersionDao.save(ddlObjects.schemaVersions, context)
-            // await schemaReferenceDao.save(
-            // 	ddlObjects.schemaReferences as SchemaReferenceECreateProperties[], context)
-            // await schemaEntityDao.save(ddlObjects.entities, context)
-            // await schemaPropertyDao.save(ddlObjects.properties, context)
-            // await schemaRelationDao.save(ddlObjects.relations, context)
-            // await schemaColumnDao.save(ddlObjects.columns, context)
-            // await schemaPropertyColumnDao.save(
-            // 	ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[],
-            // 	context)
-            // await schemaRelationColumnDao.save(
-            // 	ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[],
-            // 	context)
+            await domainDao.checkAndInsertIfNeeded(ddlObjects.domains);
+            await schemaDao.insert(ddlObjects.schemas);
+            await schemaVersionDao.insert(ddlObjects.schemaVersions);
+            await schemaReferenceDao.insert(ddlObjects.schemaReferences);
+            await schemaEntityDao.insert(ddlObjects.entities);
+            await schemaPropertyDao.insert(ddlObjects.properties);
+            await schemaRelationDao.insert(ddlObjects.relations);
+            await schemaColumnDao.insert(ddlObjects.columns);
+            await schemaPropertyColumnDao.insert(ddlObjects.propertyColumns);
+            await schemaRelationColumnDao.insert(ddlObjects.relationColumns);
         }, context);
     }
     /*

@@ -99,6 +99,7 @@ export class IframeTransactionalConnector {
             // platform,
             // platformConfig,
             type: IsolateMessageType.ADD_REPOSITORY,
+            // url
         });
     }
     async getApplicationRepositories(context) {
@@ -206,6 +207,13 @@ export class IframeTransactionalConnector {
             type: IsolateMessageType.ROLLBACK
         });
     }
+    async getLatestSchemaVersionMapBySchemaName(schemaName) {
+        return await this.sendMessageNoWait({
+            ...this.getCoreFields(),
+            schemaName,
+            type: IsolateMessageType.GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME
+        });
+    }
     async initializeConnection() {
         while (this.appState === AppState.NOT_INITIALIED
             || this.appState === AppState.START_INITIALIZING) {
@@ -273,6 +281,9 @@ export class IframeTransactionalConnector {
         while (!await this.isConnectionInitialized()) {
             await this.wait(100);
         }
+        return await this.sendMessageNoWait(message);
+    }
+    async sendMessageNoWait(message) {
         window.parent.postMessage(message, hostServer);
         return new Promise((resolve, reject) => {
             this.pendingMessageMap.set(message.id, {

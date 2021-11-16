@@ -67,3 +67,9 @@ export function ensureChildJsSet<E>(
 
 	return childSet
 }
+
+export function undefinedToNull(
+	value: any
+) {
+	return value === undefined ? null : value
+}

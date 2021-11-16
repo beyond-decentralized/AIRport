@@ -9,7 +9,7 @@ injectTransactionalReceiver()
 let allMessages = []
 
 export async function initFramework() {
-    await startDb('functionality_demo')
+    await startDb('votecube')
     const transactionalReceiver = await IOC.get(TRANSACTIONAL_RECEIVER)
     transactionalReceiver.onMessage((message) => {
         allMessages.push(message)

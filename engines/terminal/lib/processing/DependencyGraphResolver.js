@@ -70,13 +70,17 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
                 if (!isParentId && !isDelete) {
                     if (dependsOn && !isDelete) {
                         const dependsOnOUID = context.ioc.entityStateManager.getOperationUniqueId(dependsOn.entity);
-                        if (!dependencyGraphNode.dependsOnByOUID[dependsOnOUID]) {
+                        if (!dependencyGraphNode.dependsOnByOUID[dependsOnOUID]
+                            && context.ioc.entityStateManager
+                                .getOperationUniqueId(dependencyGraphNode.entity) !== dependsOnOUID) {
                             dependencyGraphNode.dependsOnByOUID[dependsOnOUID] = dependsOn;
                             dependencyGraphNode.dependsOn.push(dependsOn);
                         }
                     }
                     if (dependency) {
-                        if (!dependencyGraphNode.dependsOnByOUID[operationUniqueId]) {
+                        if (!dependencyGraphNode.dependsOnByOUID[operationUniqueId]
+                            && context.ioc.entityStateManager
+                                .getOperationUniqueId(dependency.entity) !== operationUniqueId) {
                             dependency.dependsOnByOUID[operationUniqueId] = dependencyGraphNode;
                             dependency.dependsOn.push(dependencyGraphNode);
                         }

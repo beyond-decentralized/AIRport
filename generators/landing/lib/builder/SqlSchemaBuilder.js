@@ -1,7 +1,7 @@
 import { container } from '@airport/di';
 import { EntityRelationType, getSchemaNameFromDomainAndName, QueryType, STORE_DRIVER, } from '@airport/ground-control';
 export class SqlSchemaBuilder {
-    async build(jsonSchema, existingSchemaMap, context) {
+    async build(jsonSchema, existingSchemaMap, newJsonSchemaMap, context) {
         const storeDriver = await container(this).get(STORE_DRIVER);
         await this.createSchema(jsonSchema, storeDriver, context);
         for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
@@ -9,7 +9,7 @@ export class SqlSchemaBuilder {
         }
         const relatedJsonSchemaMap = new Map();
         for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-            await this.buildForeignKeys(jsonSchema, jsonEntity, existingSchemaMap, relatedJsonSchemaMap, storeDriver, context);
+            await this.buildForeignKeys(jsonSchema, jsonEntity, existingSchemaMap, newJsonSchemaMap, relatedJsonSchemaMap, storeDriver, context);
         }
     }
     async buildTable(jsonSchema, jsonEntity, existingSchemaMap, storeDriver, context) {
@@ -55,7 +55,7 @@ export class SqlSchemaBuilder {
         }
         //
     }
-    async buildForeignKeys(jsonSchema, jsonEntity, existingSchemaMap, relatedJsonSchemaMap, storeDriver, context) {
+    async buildForeignKeys(jsonSchema, jsonEntity, existingSchemaMap, newJsonSchemaMap, relatedJsonSchemaMap, storeDriver, context) {
         if (!jsonEntity.relations || !jsonEntity.relations.length) {
             return;
         }
@@ -76,8 +76,16 @@ export class SqlSchemaBuilder {
                 relatedJsonSchema = relatedJsonSchemaMap.get(relatedSchemaName);
                 if (!relatedJsonSchema) {
                     const relatedSchema = existingSchemaMap.get(relatedSchemaName);
-                    // TODO: does the JSON schema need to be parse?
-                    relatedJsonSchema = relatedSchema.jsonSchema;
+                    if (relatedSchema) {
+                        relatedJsonSchema = relatedSchema.jsonSchema;
+                    }
+                    else {
+                        relatedJsonSchema = newJsonSchemaMap.get(relatedSchemaName);
+                    }
+                    if (!relatedJsonSchema) {
+                        throw new Error(`Could not find related schema ${relatedSchemaName}
+            in either existing schemas or newly installing schemas.`);
+                    }
                     relatedJsonSchemaMap.set(relatedSchemaName, relatedJsonSchema);
                 }
                 const relatedSchemaVersion = relatedJsonSchema

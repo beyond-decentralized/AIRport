@@ -1,9 +1,9 @@
-import {DI}                from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	SCHEMA_VERSION_DAO,
 	SCHEMA_VERSION_DUO
-}                          from '../tokens'
-import {ISchemaVersionDuo} from '../duo/SchemaVersionDuo'
+} from '../tokens'
+import { ISchemaVersionDuo } from '../duo/SchemaVersionDuo'
 import {
 	BaseSchemaVersionDao,
 	IBaseSchemaVersionDao,
@@ -11,12 +11,16 @@ import {
 	Q,
 	QSchema,
 	QSchemaVersion
-}                          from '../generated/generated'
+} from '../generated/generated'
 
 export interface ISchemaVersionDao
 	extends IBaseSchemaVersionDao {
 
 	findAllActiveOrderBySchemaIndexAndId(): Promise<ISchemaVersion[]>
+
+	insert(
+		schemaVersions: ISchemaVersion[]
+	): Promise<void>
 
 }
 
@@ -66,8 +70,8 @@ export class SchemaVersionDao
 		schemaNames: SchemaName[]
 	): Promise<Map<DomainName, Map<SchemaName, ISchemaVersion>>> {
 		const maxVersionedMapBySchemaAndDomainNames
-			      : Map<DomainName, Map<SchemaName, ISchemaVersion>>
-			      = new Map()
+				  : Map<DomainName, Map<SchemaName, ISchemaVersion>>
+				  = new Map()
 
 		let sv: QSchemaVersion
 		let s: QSchema
@@ -133,6 +137,33 @@ export class SchemaVersionDao
 		})
 	}
 */
+	async insert(
+		schemaVersions: ISchemaVersion[]
+	): Promise<void> {
+		let sv: QSchemaVersion;
+		const values = []
+		for (const schemaVersion of schemaVersions) {
+			values.push([
+				schemaVersion.id, schemaVersion.integerVersion,
+				schemaVersion.versionString, schemaVersion.majorVersion,
+				schemaVersion.minorVersion, schemaVersion.patchVersion,
+				schemaVersion.schema.index
+			])
+		}
+		await this.db.insertValuesGenerateIds({
+			insertInto: sv = Q.SchemaVersion,
+			columns: [
+				sv.id,
+				sv.integerVersion,
+				sv.versionString,
+				sv.majorVersion,
+				sv.minorVersion,
+				sv.patchVersion,
+				sv.schema.index,
+			],
+			values
+		})
+	}
 
 }
 

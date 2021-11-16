@@ -18,6 +18,7 @@ export interface ISchemaDao extends IBaseSchemaDao {
     findMaxVersionedMapBySchemaAndDomainNames(schemaDomainNames: DomainName[], schemaNames: SchemaName[]): Promise<Map<DomainName, Map<SchemaName, ISchemaLookupRecord>>>;
     setStatusByIndexes(indexes: SchemaIndex[], status: SchemaStatus): Promise<void>;
     findMapByNames(schemaNames: SchemaName[]): Promise<Map<SchemaName, ISchema>>;
+    insert(schemas: ISchema[]): Promise<void>;
 }
 export declare class SchemaDao extends BaseSchemaDao implements ISchemaDao {
     findAllActive(): Promise<ISchema[]>;
@@ -26,5 +27,6 @@ export declare class SchemaDao extends BaseSchemaDao implements ISchemaDao {
     findMaxVersionedMapBySchemaAndDomainNames(schemaDomainNames: DomainName[], schemaNames: SchemaName[]): Promise<Map<DomainName, Map<SchemaName, ISchemaLookupRecord>>>;
     setStatusByIndexes(indexes: SchemaIndex[], status: SchemaStatus): Promise<void>;
     findMapByNames(schemaNames: SchemaName[]): Promise<Map<SchemaName, ISchema>>;
+    insert(schemas: ISchema[]): Promise<void>;
 }
 //# sourceMappingURL=SchemaDao.d.ts.map

@@ -16,6 +16,7 @@ export enum IsolateMessageType {
     FIND = 'FIND',
     FIND_ONE = 'FIND_ONE',
     GET_APP_REPOSITORIES = 'GET_APP_REPOSITORIES',
+    GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME = 'GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME',
     INSERT_VALUES = 'INSERT_VALUES',
     INSERT_VALUES_GET_IDS = 'INSERT_VALUES_GET_IDS',
     ROLLBACK = 'ROLLBACK',
@@ -116,4 +117,9 @@ export interface ISaveToDestinationIMI<E, T = E | E[]>
     }
     entity: T
     repositoryDestination: string
+}
+
+export interface IGetLatestSchemaVersionBySchemaNameIMI
+    extends IIsolateMessage {
+    schemaName: string
 }
