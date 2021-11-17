@@ -43,7 +43,7 @@ export class DdlObjectLinker
 			all, allSchemaVersionsByIds, added
 		} = allDdlObjects
 		const {
-			columns, entities, latestSchemaVersions,
+			columns, latestSchemaVersions,
 			properties, propertyColumns, relationColumns, relations, schemaReferences,
 			schemas
 		} = added
@@ -52,7 +52,7 @@ export class DdlObjectLinker
 			allSchemaVersionsByIds, all.domains, schemas, latestSchemaVersions, schemaReferences)
 
 		const entityArrayById: ISchemaEntity[] =
-			this.linkEntities(allSchemaVersionsByIds, entities)
+			this.linkEntities(allSchemaVersionsByIds, all.entities)
 
 		const {
 			propertyMapById, relationMapById

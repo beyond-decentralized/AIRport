@@ -10,6 +10,7 @@ import {
 } from '@airport/ground-control';
 import { JsonSchemaWithLastIds } from '@airport/security-check';
 import {
+	AllDdlObjects,
 	DdlObjects,
 	IDdlObjectRetriever
 } from '@airport/takeoff';
@@ -27,9 +28,8 @@ import {
 	ISchemaRelationColumn,
 	ISchemaVersion
 } from '@airport/traffic-pattern';
-import { SCHEMA_LOCATOR } from '..';
 import { ISchemaLocator } from '../locator/SchemaLocator';
-import { SCHEMA_COMPOSER } from '../tokens';
+import { SCHEMA_COMPOSER, SCHEMA_LOCATOR } from '../tokens';
 
 export interface ISchemaComposer {
 
@@ -38,7 +38,7 @@ export interface ISchemaComposer {
 		ddlObjectRetriever: IDdlObjectRetriever,
 		schemaLocator: ISchemaLocator,
 		terminalStore: ITerminalStore
-	): Promise<DdlObjects>;
+	): Promise<AllDdlObjects>;
 
 }
 
@@ -50,21 +50,19 @@ export class SchemaComposer
 		ddlObjectRetriever: IDdlObjectRetriever,
 		schemaLocator: ISchemaLocator,
 		terminalStore: ITerminalStore
-	): Promise<DdlObjects> {
+	): Promise<AllDdlObjects> {
 		// FIXME: investigate if references here shoud be done by schemaSignatures and not DOMAIN_NAME___SCHEMA_NAME
 
 		// NOTE: schema name contains domain name as a prefix
 		const jsonSchemaMapByName: Map<SchemaName, JsonSchemaWithLastIds> = new Map();
 
 		const allDomains = terminalStore.getDomains().slice()
-		const newDomains: IDomain[] = []
 		const domainNameMapByName: Map<DomainName, IDomain> = new Map()
 		for (const domain of allDomains) {
 			domainNameMapByName.set(domain.name, domain)
 		}
 
 		const allSchemas: ISchema[] = terminalStore.getSchemas().slice()
-		const newSchemas: ISchema[] = []
 		// NOTE: schema name contains domain name as a prefix
 		const schemaMapByName: Map<SchemaName, ISchema> = new Map()
 		for (const schema of allSchemas) {
@@ -72,44 +70,18 @@ export class SchemaComposer
 		}
 
 		const newLatestSchemaVersions: ISchemaVersion[] = []
-		const newSchemaVersions: ISchemaVersion[] = []
 		// NOTE: schema name contains domain name as a prefix
 		const newSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion> = new Map()
 		// NOTE: schema name contains domain name as a prefix
 		const newEntitiesMapBySchemaName: Map<SchemaName, ISchemaEntity[]> = new Map()
-		const newEntities: ISchemaEntity[] = []
-		const newProperties: ISchemaProperty[] = []
 		// NOTE: schema name contains domain name as a prefix
 		const newPropertiesMap: Map<SchemaName, ISchemaProperty[][]> = new Map()
-		const newRelations: ISchemaRelation[] = []
 		// NOTE: schema name contains domain name as a prefix
 		const newRelationsMap: Map<SchemaName, ISchemaRelation[][]> = new Map()
 		// NOTE: schema name contains domain name as a prefix
 		const newColumnsMap: Map<SchemaName, ISchemaColumn[][]> = new Map()
-		const newColumns: ISchemaColumn[] = []
-		const newPropertyColumns: ISchemaPropertyColumn[] = []
-		const newRelationColumns: ISchemaRelationColumn[] = []
 
-		for (const jsonSchema of jsonSchemas) {
-			jsonSchemaMapByName.set(getSchemaName(jsonSchema), jsonSchema);
-			const domain = this.composeDomain(jsonSchema.domain,
-				allDomains, newDomains, domainNameMapByName)
-			const schema = this.composeSchema(domain, jsonSchema, allSchemas, newSchemas, schemaMapByName)
-			this.composeSchemaVersion(jsonSchema, schema,
-				newLatestSchemaVersions, newSchemaVersions, newSchemaVersionMapBySchemaName)
-		}
-
-		const {
-			newSchemaReferenceMap,
-			newSchemaReferences
-		} = await this.composeSchemaReferences(jsonSchemaMapByName,
-			newSchemaVersionMapBySchemaName, schemaLocator, terminalStore)
-
-		const allSchemaVersionsByIds: ISchemaVersion[] = [...terminalStore.getAllSchemaVersionsByIds()];
-		const ddlObjects: DdlObjects = {
-			allDomains,
-			allSchemas,
-			allSchemaVersionsByIds,
+		const added: DdlObjects = {
 			columns: [],
 			domains: [],
 			entities: [],
@@ -121,6 +93,47 @@ export class SchemaComposer
 			schemaReferences: [],
 			schemas: [],
 			schemaVersions: []
+		}
+		const allSchemaVersionsByIds: ISchemaVersion[] = [...terminalStore.getAllSchemaVersionsByIds()];
+		const all: DdlObjects = {
+			columns: [], //
+			domains: [], //
+			entities: [], //
+			latestSchemaVersions: [], //
+			properties: [], //
+			propertyColumns: [],
+			relationColumns: [],
+			relations: [], //
+			schemaReferences: [], //
+			schemas: [], //
+			schemaVersions: [] //
+		}
+		const allDdlObjects: AllDdlObjects = {
+			all,
+			allSchemaVersionsByIds,
+			added
+		}
+
+		for (const jsonSchema of jsonSchemas) {
+			jsonSchemaMapByName.set(getSchemaName(jsonSchema), jsonSchema);
+			const domain = this.composeDomain(jsonSchema.domain,
+				allDomains, added.domains, domainNameMapByName)
+			const schema = this.composeSchema(domain, jsonSchema, allSchemas, added.schemas, schemaMapByName)
+			this.composeSchemaVersion(jsonSchema, schema,
+				newLatestSchemaVersions, added.schemaVersions, newSchemaVersionMapBySchemaName)
+		}
+
+		const {
+			newSchemaReferenceMap,
+			newSchemaReferences
+		} = await this.composeSchemaReferences(jsonSchemaMapByName,
+			newSchemaVersionMapBySchemaName, schemaLocator, terminalStore,
+			allDdlObjects)
+
+		added.schemaReferences = newSchemaReferences
+
+		for (const schemaVersion of allSchemaVersionsByIds) {
+			this.addSchemaVersionObjects(schemaVersion, all)
 		}
 
 		for (const jsonSchema of jsonSchemas) {
@@ -146,52 +159,87 @@ export class SchemaComposer
 			}
 
 			this.composeSchemaEntities(jsonSchema, schemaVersion,
-				newEntitiesMapBySchemaName, newEntities, ddlObjectRetriever)
-			this.composeSchemaProperties(jsonSchema, newProperties, newPropertiesMap,
+				newEntitiesMapBySchemaName, added.entities, ddlObjectRetriever)
+			this.composeSchemaProperties(jsonSchema, added.properties, newPropertiesMap,
 				newEntitiesMapBySchemaName, ddlObjectRetriever)
-			await this.composeSchemaRelations(jsonSchema, newRelations, newRelationsMap,
+			await this.composeSchemaRelations(jsonSchema, added.relations, newRelationsMap,
 				newEntitiesMapBySchemaName, newPropertiesMap, newSchemaReferenceMap,
-				ddlObjectRetriever, terminalStore, ddlObjects
+				ddlObjectRetriever, terminalStore, allDdlObjects
 			)
-			this.composeSchemaColumns(jsonSchema, newColumns, newColumnsMap,
-				newPropertyColumns, newEntitiesMapBySchemaName, newPropertiesMap, ddlObjectRetriever)
+			this.composeSchemaColumns(jsonSchema, added.columns, newColumnsMap,
+				added.propertyColumns, newEntitiesMapBySchemaName, newPropertiesMap, ddlObjectRetriever)
 			await this.composeSchemaRelationColumns(
-				jsonSchema, newRelationColumns, newSchemaVersionMapBySchemaName,
+				jsonSchema, added.relationColumns, newSchemaVersionMapBySchemaName,
 				newSchemaReferenceMap, newRelationsMap,
-				newColumnsMap, ddlObjectRetriever, terminalStore, ddlObjects)
+				newColumnsMap, ddlObjectRetriever, terminalStore, allDdlObjects)
 		}
 
-		return {
-			allDomains,
-			allSchemas,
-			allSchemaVersionsByIds,
-			columns: newColumns,
-			domains: newDomains,
-			entities: newEntities,
-			latestSchemaVersions: newLatestSchemaVersions,
-			properties: newProperties,
-			propertyColumns: newPropertyColumns,
-			relationColumns: newRelationColumns,
-			relations: newRelations,
-			schemaReferences: newSchemaReferences,
-			schemas: newSchemas,
-			schemaVersions: newSchemaVersions
-		};
+		return allDdlObjects;
+	}
+
+	addSchemaVersionObjects(
+		schemaVersion: ISchemaVersion,
+		ddlObjects: DdlObjects,
+	) {
+		let foundDomain = false
+		for (const domain of ddlObjects.domains) {
+			if (domain.name === schemaVersion.schema.domain.name) {
+				foundDomain = true
+				break
+			}
+		}
+		if (!foundDomain) {
+			ddlObjects.domains.push(schemaVersion.schema.domain)
+		}
+		let foundSchema = false
+		for (const schema of ddlObjects.schemas) {
+			if (schema.domain === schemaVersion.schema.domain
+				&& schema.name === schemaVersion.schema.name) {
+				foundSchema = true
+				break
+			}
+		}
+		if (!foundSchema) {
+			ddlObjects.schemas.push(schemaVersion.schema)
+		}
+		ddlObjects.schemaVersions.push(schemaVersion)
+		ddlObjects.latestSchemaVersions.push(schemaVersion)
+		ddlObjects.schemaReferences = ddlObjects.schemaReferences
+			.concat(schemaVersion.references)
+		ddlObjects.entities = ddlObjects.entities.concat(schemaVersion.entities)
+
+		for (const entity of schemaVersion.entities) {
+			ddlObjects.columns = ddlObjects.columns.concat(entity.columns)
+			ddlObjects.properties = ddlObjects.properties.concat(entity.properties)
+			let entityPropertyColumns: ISchemaPropertyColumn[] = []
+			for (const property of entity.properties) {
+				entityPropertyColumns = entityPropertyColumns
+					.concat(property.propertyColumns)
+			}
+			ddlObjects.propertyColumns = ddlObjects.propertyColumns
+				.concat(entityPropertyColumns)
+			ddlObjects.relations = ddlObjects.relations.concat(entity.relations)
+			let entityRelationColumns: ISchemaRelationColumn[] = []
+			for (const relation of entity.relations) {
+				entityRelationColumns = entityRelationColumns
+					.concat(relation.manyRelationColumns)
+			}
+			ddlObjects.relationColumns = ddlObjects.relationColumns
+				.concat(entityRelationColumns)
+		}
+
 	}
 
 	async getExistingLatestSchemaVersion(
 		referencedSchemaName: SchemaName,
-		terminalStore: ITerminalStore,
-		ddlObjects: DdlObjects
+		allDdlObjects: AllDdlObjects
 	): Promise<ISchemaVersion> {
-		const schemaLocator = await container(this).get(SCHEMA_LOCATOR)
-		const referencedSchemaVersion = await schemaLocator.locateLatestSchemaVersionBySchemaName(
-			referencedSchemaName, terminalStore, ddlObjects);
-		if (!referencedSchemaVersion) {
-			throw new Error(`Cannot find schema "${referencedSchemaName}".`);
+		for (const latestSchemaVersion of allDdlObjects.all.latestSchemaVersions) {
+			if (latestSchemaVersion.schema.name == referencedSchemaName) {
+				return latestSchemaVersion;
+			}
 		}
-
-		return referencedSchemaVersion;
+		throw new Error(`Cannot find schema "${referencedSchemaName}".`);
 	}
 
 	private composeDomain(
@@ -288,7 +336,8 @@ export class SchemaComposer
 		jsonSchemaMapByName: Map<SchemaName, JsonSchema>,
 		newSchemaVersionMapBySchemaName: Map<SchemaName, ISchemaVersion>,
 		schemaLocator: ISchemaLocator,
-		terminalStore: ITerminalStore
+		terminalStore: ITerminalStore,
+		allDdlObjects: AllDdlObjects
 	): Promise<{
 		newSchemaReferenceMap: Map<SchemaName, ISchemaReference[]>,
 		newSchemaReferences: ISchemaReference[]
@@ -315,6 +364,7 @@ export class SchemaComposer
 						${referencedSchemaName}
 						in either existing schemas or schemas being currently processed`);
 					}
+					this.addSchemaVersionObjects(referencedSchemaVersion, allDdlObjects.all)
 				}
 				const schemaReference: ISchemaReference = {
 					index: jsonReferencedSchema.index,
@@ -421,7 +471,7 @@ export class SchemaComposer
 		newSchemaReferenceMap: Map<SchemaName, ISchemaReference[]>,
 		ddlObjectRetriever: IDdlObjectRetriever,
 		terminalStore: ITerminalStore,
-		ddlObjects: DdlObjects
+		allDdlObjects: AllDdlObjects
 	): Promise<void> {
 		const schemaName = getSchemaName(jsonSchema)
 		const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
@@ -459,7 +509,7 @@ export class SchemaComposer
 
 				if (!entitiesArray) {
 					const schemaVersion = await this.getExistingLatestSchemaVersion(
-						referencedSchemaName, terminalStore, ddlObjects)
+						referencedSchemaName, allDdlObjects)
 					entitiesArray = schemaVersion.entities;
 				}
 
@@ -581,7 +631,7 @@ export class SchemaComposer
 		newColumnsMap: Map<SchemaName, ISchemaColumn[][]>,
 		ddlObjectRetriever: IDdlObjectRetriever,
 		terminalStore: ITerminalStore,
-		ddlObjects: DdlObjects
+		allDdlObjects: AllDdlObjects
 	): Promise<void> {
 		const schemaName = getSchemaName(jsonSchema)
 		const currentSchemaVersion = jsonSchema.versions[jsonSchema.versions.length - 1];
@@ -626,7 +676,7 @@ export class SchemaComposer
 						[jsonRelationColumn.oneTableIndex];
 					} else {
 						const schemaVersion = await this.getExistingLatestSchemaVersion(
-							referencedSchemaName, terminalStore, ddlObjects)
+							referencedSchemaName, allDdlObjects)
 						const entitiesArray = schemaVersion.entities;
 						const entity = entitiesArray[jsonRelationColumn.oneTableIndex];
 						oneTableColumns = entity.columns;

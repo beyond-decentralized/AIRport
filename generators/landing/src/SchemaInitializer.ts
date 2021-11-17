@@ -18,6 +18,7 @@ import {
 } from '@airport/ground-control';
 import { JsonSchemaWithLastIds } from '@airport/security-check';
 import {
+	AllDdlObjects,
 	DDL_OBJECT_LINKER,
 	DDL_OBJECT_RETRIEVER,
 	DdlObjects,
@@ -64,8 +65,8 @@ export interface ISchemaInitializer {
 export class SchemaInitializer
 	implements ISchemaInitializer {
 
-	addNewSchemaVersionsToAll(ddlObjects: DdlObjects) {
-		for (const schemaVersion of ddlObjects.schemaVersions) {
+	addNewSchemaVersionsToAll(ddlObjects: AllDdlObjects) {
+		for (const schemaVersion of ddlObjects.added.schemaVersions) {
 			ddlObjects.allSchemaVersionsByIds[schemaVersion.id] = schemaVersion;
 		}
 	}
@@ -122,22 +123,22 @@ export class SchemaInitializer
 			await schemaBuilder.build(jsonSchema, existingSchemaMap, newJsonSchemaMap, context);
 		}
 
-		const ddlObjects = await schemaComposer.compose(
+		const allDdlObjects = await schemaComposer.compose(
 			schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
 
-		this.addNewSchemaVersionsToAll(ddlObjects);
+		this.addNewSchemaVersionsToAll(allDdlObjects);
 
 		queryObjectInitializer.generateQObjectsAndPopulateStore(
-			ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
+			allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
 
-		this.setAirDbSchemas(airDb, ddlObjects);
+		this.setAirDbSchemas(airDb, allDdlObjects);
 
 		const newSequences = await schemaBuilder.buildAllSequences(
 			schemasWithValidDependencies, context);
 
 		await sequenceGenerator.initialize(newSequences);
 
-		await schemaRecorder.record(ddlObjects, context);
+		await schemaRecorder.record(allDdlObjects.added, context);
 	}
 
 	async initializeForAIRportApp(
@@ -235,9 +236,9 @@ export class SchemaInitializer
 
 	private setAirDbSchemas(
 		airDb: IAirportDatabase,
-		ddlObjects: DdlObjects
+		ddlObjects: AllDdlObjects
 	) {
-		for (let schema of ddlObjects.allSchemas) {
+		for (let schema of ddlObjects.all.schemas) {
 			airDb.schemas[schema.index] = schema as DbSchema;
 		}
 	}

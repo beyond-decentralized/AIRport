@@ -1,5 +1,6 @@
-import { DI } from '@airport/di';
-import { QUERY_OBJECT_INITIALIZER } from './tokens';
+import { container, DI } from '@airport/di';
+import { TERMINAL_STORE } from '@airport/terminal-map';
+import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER } from './tokens';
 export class QueryObjectInitializer {
     generateQObjectsAndPopulateStore(allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore) {
         ddlObjectLinker.link(allDdlObjects, terminalStore);
@@ -38,6 +39,21 @@ export class QueryObjectInitializer {
                 ...allDdlObjects.added.schemas
             ]
         });
+    }
+    async initialize(airDb) {
+        const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, terminalStore] = await container(this).get(DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE);
+        const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects();
+        const allSchemaVersionsByIds = [];
+        for (const schemaVersion of ddlObjects.schemaVersions) {
+            allSchemaVersionsByIds[schemaVersion.id] = schemaVersion;
+        }
+        let allDdlObjects = {
+            all: ddlObjects,
+            allSchemaVersionsByIds,
+            added: ddlObjects
+        };
+        this.generateQObjectsAndPopulateStore(allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
+        return allDdlObjects;
     }
 }
 DI.set(QUERY_OBJECT_INITIALIZER, QueryObjectInitializer);

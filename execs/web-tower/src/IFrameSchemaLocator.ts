@@ -12,7 +12,6 @@ export class IFrameSchemaLocator
     async locateLatestSchemaVersionBySchemaName(
         schemaName: string,
         terminalStore: ITerminalStore,
-        ddlObjects?: AllDdlObjects
     ): Promise<ISchemaVersion> {
         let schemaVersion = terminalStore.getLatestSchemaVersionMapBySchemaName()
             .get(schemaName)
@@ -24,12 +23,7 @@ export class IFrameSchemaLocator
         const transactionalConnector = await container(this)
             .get(TRANSACTIONAL_CONNECTOR) as IIframeTransactionalConnector
 
-        schemaVersion = await transactionalConnector.getLatestSchemaVersionMapBySchemaName(schemaName)
-        if (ddlObjects) {
-            ddlObjects.allSchemaVersionsByIds[schemaVersion.id] = schemaVersion
-        }
-
-        return schemaVersion
+        return await transactionalConnector.getLatestSchemaVersionMapBySchemaName(schemaName)
     }
 }
 DI.set(SCHEMA_LOCATOR, IFrameSchemaLocator)

@@ -38,9 +38,9 @@ export class SchemaInitializer {
         for (const jsonSchema of schemasWithValidDependencies) {
             await schemaBuilder.build(jsonSchema, existingSchemaMap, newJsonSchemaMap, context);
         }
-        const ddlObjects = await schemaComposer.compose(schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
+        const allDdlObjects = await schemaComposer.compose(schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
         this.addNewSchemaVersionsToAll(ddlObjects);
-        queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
+        queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
         this.setAirDbSchemas(airDb, ddlObjects);
         const newSequences = await schemaBuilder.buildAllSequences(schemasWithValidDependencies, context);
         await sequenceGenerator.initialize(newSequences);

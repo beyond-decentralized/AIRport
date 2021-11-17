@@ -5,11 +5,12 @@ import { ISchema, ISchemaColumn, ISchemaEntity, ISchemaProperty, ISchemaProperty
 import { IDdlObjectLinker } from './DdlObjectLinker';
 import { IQueryEntityClassCreator } from './QueryEntityClassCreator';
 export interface IQueryObjectInitializer {
+    initialize(airDb: IAirportDatabase): Promise<AllDdlObjects>;
     generateQObjectsAndPopulateStore(allDdlObjects: AllDdlObjects, airDb: IAirportDatabase, ddlObjectLinker: IDdlObjectLinker, queryEntityClassCreator: IQueryEntityClassCreator, terminalStore: ITerminalStore): void;
 }
 export interface AllDdlObjects {
-    allSchemaVersionsByIds: ISchemaVersion[];
     all: DdlObjects;
+    allSchemaVersionsByIds: ISchemaVersion[];
     added: DdlObjects;
 }
 export interface DdlObjects {
@@ -27,5 +28,6 @@ export interface DdlObjects {
 }
 export declare class QueryObjectInitializer implements IQueryObjectInitializer {
     generateQObjectsAndPopulateStore(allDdlObjects: AllDdlObjects, airDb: IAirportDatabase, ddlObjectLinker: IDdlObjectLinker, queryEntityClassCreator: IQueryEntityClassCreator, terminalStore: ITerminalStore): void;
+    initialize(airDb: IAirportDatabase): Promise<AllDdlObjects>;
 }
 //# sourceMappingURL=QueryObjectInitializer.d.ts.map

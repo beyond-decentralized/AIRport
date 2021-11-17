@@ -18,7 +18,7 @@ export class SchemaLocator {
         }
         return latestSchemaVersionForSchema;
     }
-    async locateLatestSchemaVersionBySchemaName(schemaName, terminalStore, allDdlObjects) {
+    async locateLatestSchemaVersionBySchemaName(schemaName, terminalStore) {
         return terminalStore.getLatestSchemaVersionMapBySchemaName()
             .get(schemaName);
     }

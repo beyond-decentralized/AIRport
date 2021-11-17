@@ -18,7 +18,6 @@ export interface ISchemaLocator {
 	locateLatestSchemaVersionBySchemaName(
 		schemaName: string,
 		terminalStore: ITerminalStore,
-		allDdlObjects?: AllDdlObjects
 	): Promise<ISchemaVersion>
 
 }
@@ -56,7 +55,6 @@ export class SchemaLocator
 	async locateLatestSchemaVersionBySchemaName(
 		schemaName: string,
 		terminalStore: ITerminalStore,
-		allDdlObjects?: AllDdlObjects
 	): Promise<ISchemaVersion> {
 		return terminalStore.getLatestSchemaVersionMapBySchemaName()
 			.get(schemaName)

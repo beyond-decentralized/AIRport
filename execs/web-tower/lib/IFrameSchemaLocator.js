@@ -2,7 +2,7 @@ import { container, DI } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { SCHEMA_LOCATOR, SchemaLocator } from '@airport/landing';
 export class IFrameSchemaLocator extends SchemaLocator {
-    async locateLatestSchemaVersionBySchemaName(schemaName, terminalStore, ddlObjects) {
+    async locateLatestSchemaVersionBySchemaName(schemaName, terminalStore) {
         let schemaVersion = terminalStore.getLatestSchemaVersionMapBySchemaName()
             .get(schemaName);
         if (schemaVersion) {
@@ -10,11 +10,7 @@ export class IFrameSchemaLocator extends SchemaLocator {
         }
         const transactionalConnector = await container(this)
             .get(TRANSACTIONAL_CONNECTOR);
-        schemaVersion = await transactionalConnector.getLatestSchemaVersionMapBySchemaName(schemaName);
-        if (ddlObjects) {
-            ddlObjects.allSchemaVersionsByIds[schemaVersion.id] = schemaVersion;
-        }
-        return schemaVersion;
+        return await transactionalConnector.getLatestSchemaVersionMapBySchemaName(schemaName);
     }
 }
 DI.set(SCHEMA_LOCATOR, IFrameSchemaLocator);

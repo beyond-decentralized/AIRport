@@ -3,9 +3,9 @@ import { DDL_OBJECT_LINKER } from './tokens';
 export class DdlObjectLinker {
     link(allDdlObjects, terminalStore) {
         const { all, allSchemaVersionsByIds, added } = allDdlObjects;
-        const { columns, entities, latestSchemaVersions, properties, propertyColumns, relationColumns, relations, schemaReferences, schemas } = added;
+        const { columns, latestSchemaVersions, properties, propertyColumns, relationColumns, relations, schemaReferences, schemas } = added;
         this.linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, all.domains, schemas, latestSchemaVersions, schemaReferences);
-        const entityArrayById = this.linkEntities(allSchemaVersionsByIds, entities);
+        const entityArrayById = this.linkEntities(allSchemaVersionsByIds, all.entities);
         const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(properties, relations, entityArrayById, terminalStore);
         this.linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns, entityArrayById, terminalStore);
     }

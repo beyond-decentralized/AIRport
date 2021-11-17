@@ -30,11 +30,9 @@ import {
 
 export interface IQueryObjectInitializer {
 
-	/*
 	initialize(
 		airDb: IAirportDatabase
-	): Promise<DdlObjects>
-	*/
+	): Promise<AllDdlObjects>
 
 	generateQObjectsAndPopulateStore(
 		allDdlObjects: AllDdlObjects,
@@ -47,8 +45,8 @@ export interface IQueryObjectInitializer {
 }
 
 export interface AllDdlObjects {
-	allSchemaVersionsByIds: ISchemaVersion[]
 	all: DdlObjects
+	allSchemaVersionsByIds: ISchemaVersion[]
 	added: DdlObjects
 }
 
@@ -118,10 +116,9 @@ export class QueryObjectInitializer
 		});
 	}
 
-	/*
 	async initialize(
 		airDb: IAirportDatabase
-	): Promise<DdlObjects> {
+	): Promise<AllDdlObjects> {
 		const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			      terminalStore] = await container(this).get(
 			DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
@@ -129,12 +126,23 @@ export class QueryObjectInitializer
 
 		const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects();
 
-		this.generateQObjectsAndPopulateStore(ddlObjects, airDb,
+		const allSchemaVersionsByIds = []
+
+		for(const schemaVersion of ddlObjects.schemaVersions) {
+			allSchemaVersionsByIds[schemaVersion.id] = schemaVersion
+		}
+
+		let allDdlObjects: AllDdlObjects = {
+			all: ddlObjects,
+			allSchemaVersionsByIds,
+			added: ddlObjects
+		}
+
+		this.generateQObjectsAndPopulateStore(allDdlObjects, airDb,
 			ddlObjectLinker, queryEntityClassCreator, terminalStore);
 
-		return ddlObjects;
+		return allDdlObjects;
 	}
-	*/
 
 }
 
