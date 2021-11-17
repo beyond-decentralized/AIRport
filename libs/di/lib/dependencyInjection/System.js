@@ -26,7 +26,7 @@ export class System {
     mapLibraryBySignature(libraryName, signature) {
         const library = this.libraryMap[libraryName];
         if (!library) {
-            throw new Error(`Could not find library: '${library}', in system: '${this.name}'`);
+            throw new Error(`Could not find library: '${libraryName}', in system: '${this.name}'`);
         }
         if (this.libraryMapBySignature[signature]) {
             throw new Error(`System '${this.name}' already has a library '${libraryName}'

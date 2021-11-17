@@ -3,11 +3,11 @@ import { DDL_OBJECT_LINKER } from './tokens';
 export class DdlObjectLinker {
     link(allDdlObjects, terminalStore) {
         const { all, allSchemaVersionsByIds, added } = allDdlObjects;
-        const { columns, latestSchemaVersions, properties, propertyColumns, relationColumns, relations, schemaReferences, schemas } = added;
+        const { latestSchemaVersions, properties, relations, schemaReferences, schemas } = added;
         this.linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, all.domains, schemas, latestSchemaVersions, schemaReferences);
-        const entityArrayById = this.linkEntities(allSchemaVersionsByIds, all.entities);
+        const entityArrayById = this.linkEntities(allSchemaVersionsByIds, all.entities, added.entities);
         const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(properties, relations, entityArrayById, terminalStore);
-        this.linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns, entityArrayById, terminalStore);
+        this.linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById, terminalStore);
     }
     linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, domains, schemas, latestSchemaVersions, schemaReferences) {
         const domainMapById = new Map();
@@ -48,11 +48,15 @@ export class DdlObjectLinker {
             schemaReference.referencedSchemaVersion = referencedSchemaVersion;
         });
     }
-    linkEntities(allSchemaVersionsByIds, entities // All of the entities of newly created schemas
+    linkEntities(allSchemaVersionsByIds, allEntities, // All of the entities of newly created schemas
+    addedEntities // All of the entities of newly created schemas
     // from the latest available versions
     ) {
         const entityArrayById = [];
-        entities.forEach((entity) => {
+        allEntities.forEach((entity) => {
+            entityArrayById[entity.id] = entity;
+        });
+        addedEntities.forEach((entity) => {
             const schemaVersion = allSchemaVersionsByIds[entity.schemaVersion.id];
             entity.schemaVersion = schemaVersion;
             schemaVersion.entities[entity.index] = entity;
@@ -102,9 +106,12 @@ export class DdlObjectLinker {
             propertyMapById, relationMapById
         };
     }
-    linkColumns(propertyMapById, relationMapById, columns, propertyColumns, relationColumns, entityArrayById, terminalStore) {
+    linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById, terminalStore) {
         const columnMapById = new Map();
-        columns.forEach((column) => {
+        allDdlObjects.all.columns.forEach((column) => {
+            columnMapById.set(column.id, column);
+        });
+        allDdlObjects.added.columns.forEach((column) => {
             columnMapById.set(column.id, column);
             const entity = entityArrayById[column.entity.id];
             entity.columns[column.index] = column;
@@ -115,7 +122,7 @@ export class DdlObjectLinker {
             }
             column.entity = entity;
         });
-        propertyColumns.forEach((propertyColumn) => {
+        allDdlObjects.added.propertyColumns.forEach((propertyColumn) => {
             const column = columnMapById.get(propertyColumn.column.id);
             column.propertyColumns.push(propertyColumn);
             const property = propertyMapById.get(propertyColumn.property.id);
@@ -123,7 +130,7 @@ export class DdlObjectLinker {
             propertyColumn.column = column;
             propertyColumn.property = property;
         });
-        relationColumns.forEach((relationColumn) => {
+        allDdlObjects.added.relationColumns.forEach((relationColumn) => {
             let manyColumn = columnMapById.get(relationColumn.manyColumn.id);
             if (!manyColumn) {
                 manyColumn = terminalStore.getAllColumns()[relationColumn.manyColumn.id];

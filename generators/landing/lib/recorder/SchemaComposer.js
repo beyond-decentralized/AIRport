@@ -69,7 +69,9 @@ export class SchemaComposer {
         const { newSchemaReferenceMap, newSchemaReferences } = await this.composeSchemaReferences(jsonSchemaMapByName, newSchemaVersionMapBySchemaName, schemaLocator, terminalStore, allDdlObjects);
         added.schemaReferences = newSchemaReferences;
         for (const schemaVersion of allSchemaVersionsByIds) {
-            this.addSchemaVersionObjects(schemaVersion, all);
+            if (schemaVersion) {
+                this.addSchemaVersionObjects(schemaVersion, all);
+            }
         }
         for (const jsonSchema of jsonSchemas) {
             const schemaNameWithDomainNamePrefix = getSchemaName(jsonSchema);
@@ -97,7 +99,19 @@ export class SchemaComposer {
             this.composeSchemaColumns(jsonSchema, added.columns, newColumnsMap, added.propertyColumns, newEntitiesMapBySchemaName, newPropertiesMap, ddlObjectRetriever);
             await this.composeSchemaRelationColumns(jsonSchema, added.relationColumns, newSchemaVersionMapBySchemaName, newSchemaReferenceMap, newRelationsMap, newColumnsMap, ddlObjectRetriever, terminalStore, allDdlObjects);
         }
+        this.addObjects(allDdlObjects.added, allDdlObjects.all);
+        for (const schemaVersion of allDdlObjects.all.schemaVersions) {
+            allDdlObjects.allSchemaVersionsByIds[schemaVersion.id] = schemaVersion;
+        }
         return allDdlObjects;
+    }
+    async getExistingLatestSchemaVersion(referencedSchemaName, allDdlObjects) {
+        for (const latestSchemaVersion of allDdlObjects.all.latestSchemaVersions) {
+            if (latestSchemaVersion.schema.name == referencedSchemaName) {
+                return latestSchemaVersion;
+            }
+        }
+        throw new Error(`Cannot find schema "${referencedSchemaName}".`);
     }
     addSchemaVersionObjects(schemaVersion, ddlObjects) {
         let foundDomain = false;
@@ -146,13 +160,46 @@ export class SchemaComposer {
                 .concat(entityRelationColumns);
         }
     }
-    async getExistingLatestSchemaVersion(referencedSchemaName, allDdlObjects) {
-        for (const latestSchemaVersion of allDdlObjects.all.latestSchemaVersions) {
-            if (latestSchemaVersion.schema.name == referencedSchemaName) {
-                return latestSchemaVersion;
+    addObjects(fromObjects, toObjects) {
+        toObjects.columns = toObjects.columns.concat(fromObjects.columns);
+        for (const fromDomain of fromObjects.domains) {
+            let foundDomain = false;
+            for (const toDomain of toObjects.domains) {
+                if (toDomain.name === fromDomain.name) {
+                    foundDomain = true;
+                    break;
+                }
+            }
+            if (!foundDomain) {
+                toObjects.domains.push(fromDomain);
             }
         }
-        throw new Error(`Cannot find schema "${referencedSchemaName}".`);
+        toObjects.entities = toObjects.entities.concat(fromObjects.entities);
+        toObjects.latestSchemaVersions = toObjects.latestSchemaVersions
+            .concat(fromObjects.latestSchemaVersions);
+        toObjects.properties = toObjects.properties.concat(fromObjects.properties);
+        toObjects.propertyColumns = toObjects.propertyColumns
+            .concat(fromObjects.propertyColumns);
+        toObjects.relationColumns = toObjects.relationColumns
+            .concat(fromObjects.relationColumns);
+        toObjects.relations = toObjects.relations.concat(fromObjects.relations);
+        for (const fromSchema of fromObjects.schemas) {
+            let foundSchema = false;
+            for (const toSchema of toObjects.schemas) {
+                if (toSchema.domain === fromSchema.domain
+                    && toSchema.name === fromSchema.name) {
+                    foundSchema = true;
+                    break;
+                }
+            }
+            if (!foundSchema) {
+                toObjects.schemas.push(fromSchema);
+            }
+        }
+        toObjects.schemaReferences = toObjects.schemaReferences
+            .concat(fromObjects.schemaReferences);
+        toObjects.schemaVersions = toObjects.schemaVersions
+            .concat(fromObjects.schemaVersions);
     }
     composeDomain(domainName, allDomains, newDomains, domainNameMapByName) {
         let domain = domainNameMapByName.get(domainName);
@@ -200,14 +247,19 @@ export class SchemaComposer {
                 minorVersion: parseInt(versionParts[1]),
                 patchVersion: parseInt(versionParts[2]),
                 schema,
-                // entities: [],
-                // references: [],
-                // referencedBy: [],
-                // entityMapByName: {},
-                // referencesMapByName: {},
-                // referencedByMapByName: {},
+                entities: [],
+                references: [],
+                referencedBy: [],
+                entityMapByName: {},
+                referencesMapByName: {},
+                referencedByMapByName: {},
             };
-            // schema.versions                        = [newSchemaVersion]
+            if (schema.versions) {
+                schema.versions.push(newSchemaVersion);
+            }
+            else {
+                schema.versions = [newSchemaVersion];
+            }
             newSchemaVersions.push(newSchemaVersion);
         }
         let newSchemaCurrentVersion = {

@@ -144,6 +144,7 @@ export class TransactionalReceiver {
             }
         }
         catch (error) {
+            console.error(error);
             result = null;
             errorMessage = error.message;
         }

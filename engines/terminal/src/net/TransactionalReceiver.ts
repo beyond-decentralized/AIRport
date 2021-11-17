@@ -233,7 +233,8 @@ export abstract class TransactionalReceiver {
                     return
             }
         } catch (error) {
-            result = null;
+            console.error(error)
+            result = null
             errorMessage = error.message
         }
         return {

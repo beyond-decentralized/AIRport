@@ -7,7 +7,7 @@ import { TERMINAL_STORE } from '@airport/terminal-map';
 import { SCHEMA_BUILDER, SCHEMA_CHECKER, SCHEMA_COMPOSER, SCHEMA_INITIALIZER, SCHEMA_LOCATOR, SCHEMA_RECORDER } from './tokens';
 export class SchemaInitializer {
     addNewSchemaVersionsToAll(ddlObjects) {
-        for (const schemaVersion of ddlObjects.schemaVersions) {
+        for (const schemaVersion of ddlObjects.added.schemaVersions) {
             ddlObjects.allSchemaVersionsByIds[schemaVersion.id] = schemaVersion;
         }
     }
@@ -39,12 +39,12 @@ export class SchemaInitializer {
             await schemaBuilder.build(jsonSchema, existingSchemaMap, newJsonSchemaMap, context);
         }
         const allDdlObjects = await schemaComposer.compose(schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
-        this.addNewSchemaVersionsToAll(ddlObjects);
+        this.addNewSchemaVersionsToAll(allDdlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
-        this.setAirDbSchemas(airDb, ddlObjects);
+        this.setAirDbSchemas(airDb, allDdlObjects);
         const newSequences = await schemaBuilder.buildAllSequences(schemasWithValidDependencies, context);
         await sequenceGenerator.initialize(newSequences);
-        await schemaRecorder.record(ddlObjects, context);
+        await schemaRecorder.record(allDdlObjects.added, context);
     }
     async initializeForAIRportApp(jsonSchema) {
         const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, schemaComposer, schemaLocator, terminalStore] = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_COMPOSER, SCHEMA_LOCATOR, TERMINAL_STORE);
@@ -95,7 +95,7 @@ export class SchemaInitializer {
         return schemasWithValidDependencies;
     }
     setAirDbSchemas(airDb, ddlObjects) {
-        for (let schema of ddlObjects.allSchemas) {
+        for (let schema of ddlObjects.all.schemas) {
             airDb.schemas[schema.index] = schema;
         }
     }

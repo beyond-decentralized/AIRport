@@ -4,7 +4,7 @@ import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QU
 export class QueryObjectInitializer {
     generateQObjectsAndPopulateStore(allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore) {
         ddlObjectLinker.link(allDdlObjects, terminalStore);
-        queryEntityClassCreator.createAll(allDdlObjects.added.schemas, airDb);
+        queryEntityClassCreator.createAll(allDdlObjects.all.schemas, airDb);
         const lastTerminalState = terminalStore.getTerminalState();
         const existingDomainMap = {};
         for (const domain of lastTerminalState.domains) {

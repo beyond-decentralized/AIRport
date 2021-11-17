@@ -76,7 +76,7 @@ export class QueryObjectInitializer
 		terminalStore: ITerminalStore
 	): void {
 		ddlObjectLinker.link(allDdlObjects, terminalStore);
-		queryEntityClassCreator.createAll(allDdlObjects.added.schemas, airDb);
+		queryEntityClassCreator.createAll(allDdlObjects.all.schemas, airDb);
 		const lastTerminalState = terminalStore.getTerminalState();
 
 		const existingDomainMap = {};

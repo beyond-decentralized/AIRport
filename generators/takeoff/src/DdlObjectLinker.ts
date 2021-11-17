@@ -43,24 +43,21 @@ export class DdlObjectLinker
 			all, allSchemaVersionsByIds, added
 		} = allDdlObjects
 		const {
-			columns, latestSchemaVersions,
-			properties, propertyColumns, relationColumns, relations, schemaReferences,
-			schemas
+			latestSchemaVersions, properties, relations, schemaReferences, schemas
 		} = added
 
 		this.linkDomainsAndSchemasAndVersions(
 			allSchemaVersionsByIds, all.domains, schemas, latestSchemaVersions, schemaReferences)
 
 		const entityArrayById: ISchemaEntity[] =
-			this.linkEntities(allSchemaVersionsByIds, all.entities)
+			this.linkEntities(allSchemaVersionsByIds, all.entities, added.entities)
 
 		const {
 			propertyMapById, relationMapById
 		} = this.linkPropertiesAndRelations(properties, relations,
 			entityArrayById, terminalStore)
 
-		this.linkColumns(propertyMapById, relationMapById, columns,
-			propertyColumns, relationColumns, entityArrayById, terminalStore)
+		this.linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById, terminalStore)
 
 	}
 
@@ -119,12 +116,17 @@ export class DdlObjectLinker
 
 	private linkEntities(
 		allSchemaVersionsByIds: ISchemaVersion[],
-		entities: ISchemaEntity[] // All of the entities of newly created schemas
+		allEntities: ISchemaEntity[], // All of the entities of newly created schemas
+		addedEntities: ISchemaEntity[] // All of the entities of newly created schemas
 		// from the latest available versions
 	): ISchemaEntity[] {
 		const entityArrayById: ISchemaEntity[] = []
 
-		entities.forEach((entity: ISchemaEntity) => {
+		allEntities.forEach((entity: ISchemaEntity) => {
+			entityArrayById[entity.id] = entity
+		})
+
+		addedEntities.forEach((entity: ISchemaEntity) => {
 			const schemaVersion = allSchemaVersionsByIds[entity.schemaVersion.id]
 			entity.schemaVersion = schemaVersion
 			schemaVersion.entities[entity.index] = entity
@@ -199,14 +201,15 @@ export class DdlObjectLinker
 	private linkColumns(
 		propertyMapById: Map<PropertyId, ISchemaProperty>,
 		relationMapById: Map<RelationId, ISchemaRelation>,
-		columns: ISchemaColumn[],
-		propertyColumns: ISchemaPropertyColumn[],
-		relationColumns: ISchemaRelationColumn[],
+		allDdlObjects: AllDdlObjects,
 		entityArrayById: ISchemaEntity[],
 		terminalStore: ITerminalStore
 	) {
 		const columnMapById: Map<ColumnId, ISchemaColumn> = new Map()
-		columns.forEach((column: ISchemaColumn) => {
+		allDdlObjects.all.columns.forEach((column: ISchemaColumn) => {
+			columnMapById.set(column.id, column)
+		})
+		allDdlObjects.added.columns.forEach((column: ISchemaColumn) => {
 			columnMapById.set(column.id, column)
 
 			const entity = entityArrayById[column.entity.id]
@@ -219,10 +222,9 @@ export class DdlObjectLinker
 			}
 
 			column.entity = entity
-
 		})
 
-		propertyColumns.forEach((propertyColumn: ISchemaPropertyColumn) => {
+		allDdlObjects.added.propertyColumns.forEach((propertyColumn: ISchemaPropertyColumn) => {
 			const column = columnMapById.get(propertyColumn.column.id)
 			column.propertyColumns.push(propertyColumn)
 
@@ -233,7 +235,7 @@ export class DdlObjectLinker
 			propertyColumn.property = property
 		})
 
-		relationColumns.forEach((relationColumn: ISchemaRelationColumn) => {
+		allDdlObjects.added.relationColumns.forEach((relationColumn: ISchemaRelationColumn) => {
 			let manyColumn = columnMapById.get(relationColumn.manyColumn.id)
 			if (!manyColumn) {
 				manyColumn = terminalStore.getAllColumns()[relationColumn.manyColumn.id]
