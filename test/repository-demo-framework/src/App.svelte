@@ -23,17 +23,17 @@ let name;
 <iframe
   id="app"
   class="app"
-  name="repository-demo-app"
+  name="votecube"
   src="http://localhost:4000/"
   style="display: none;"
-  title="repository-demo-app"></iframe>
+  title="votecube"></iframe>
 
 <div id="content">
   <iframe
     id="ui"
     class="ui"
-    name="repository-demo-ui"
+    name="votecube-ui"
     src="http://localhost:8000/"
     style="width: 100%; height: 100%;"
-    title="repository-demo-ui"></iframe>
+    title="votecube-ui"></iframe>
 </div>

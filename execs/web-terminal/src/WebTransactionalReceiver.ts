@@ -194,6 +194,8 @@ export class WebTransactionalReceiver
 		if (frameWindow) {
 			// Forward the request to the correct schema iframe
 			frameWindow.postMessage(message, '*')
+		} else {
+			throw new Error(`No Application IFrame found for signature: ${message.schemaSignature}`)
 		}
 	}
 

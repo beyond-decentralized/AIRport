@@ -43,6 +43,7 @@ export class LocalAPIServer
             }
         } catch (e) {
             errorMessage = e.message
+            console.error(e)
         }
 
         const response: ILocalAPIResponse = {

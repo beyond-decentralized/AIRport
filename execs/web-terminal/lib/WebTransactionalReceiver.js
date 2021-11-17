@@ -130,6 +130,9 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             // Forward the request to the correct schema iframe
             frameWindow.postMessage(message, '*');
         }
+        else {
+            throw new Error(`No Application IFrame found for signature: ${message.schemaSignature}`);
+        }
     }
     getFrameWindow(schemaSignature) {
         const iframes = document.getElementsByTagName("iframe");
