@@ -6,12 +6,14 @@ import { readConfiguration } from './ddl/options/generator';
 import { watchFiles } from './FileWatcher';
 const configuration = readConfiguration(process.cwd(), process.argv);
 globalThis.configuration = configuration;
-const ddlDirPath = process.cwd() + '/' + configuration.airport.ddlDir;
-let sourceFilePaths = findAllSourceFilePaths(ddlDirPath);
-if (configuration.airport.daoDir) {
-    const daoDirPath = process.cwd() + '/' + configuration.airport.daoDir;
-    const daoSourceFilePaths = findAllSourceFilePaths(daoDirPath);
-    sourceFilePaths = [...daoSourceFilePaths, ...sourceFilePaths];
+let sourceFilePaths = addRootDirPaths(configuration.airport.ddlDir, 'src/ddl', []);
+sourceFilePaths = addRootDirPaths(configuration.airport.daoDir, 'src/dao', sourceFilePaths);
+sourceFilePaths = addRootDirPaths(null, 'src/api', sourceFilePaths);
+function addRootDirPaths(dirNameFromConfig, defaultDir, existingSourceFilePaths) {
+    const dir = dirNameFromConfig ? dirNameFromConfig : defaultDir;
+    const dirPath = process.cwd() + '/' + dir;
+    const sourceFilePaths = findAllSourceFilePaths(dirPath);
+    return [...existingSourceFilePaths, ...sourceFilePaths];
 }
 function findAllSourceFilePaths(dirPath) {
     if (!fs.existsSync(dirPath)) {

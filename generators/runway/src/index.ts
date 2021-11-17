@@ -2,20 +2,33 @@
  * Created by Papa on 4/24/2016.
  */
 
-import * as fs               from 'fs';
+import * as fs from 'fs';
 import { readConfiguration } from './ddl/options/generator';
-import { watchFiles }        from './FileWatcher';
+import { watchFiles } from './FileWatcher';
 
-const configuration      = readConfiguration(process.cwd(), process.argv);
+const configuration = readConfiguration(process.cwd(), process.argv);
 globalThis.configuration = configuration;
 
-const ddlDirPath    = process.cwd() + '/' + configuration.airport.ddlDir;
-let sourceFilePaths = findAllSourceFilePaths(ddlDirPath);
+let sourceFilePaths = addRootDirPaths(
+	configuration.airport.ddlDir, 'src/ddl', []
+)
+sourceFilePaths = addRootDirPaths(
+	configuration.airport.daoDir, 'src/dao', sourceFilePaths
+) 
+sourceFilePaths = addRootDirPaths(
+	null, 'src/api', sourceFilePaths
+) 
 
-if (configuration.airport.daoDir) {
-	const daoDirPath         = process.cwd() + '/' + configuration.airport.daoDir;
-	const daoSourceFilePaths = findAllSourceFilePaths(daoDirPath);
-	sourceFilePaths          = [...daoSourceFilePaths, ...sourceFilePaths];
+function addRootDirPaths(
+	dirNameFromConfig: string,
+	defaultDir: string,
+	existingSourceFilePaths: string[]
+) {
+	const dir = dirNameFromConfig ? dirNameFromConfig : defaultDir
+	const dirPath = process.cwd() + '/' + dir
+	const sourceFilePaths = findAllSourceFilePaths(dirPath);
+
+	return [...existingSourceFilePaths, ...sourceFilePaths]
 }
 
 function findAllSourceFilePaths(
@@ -24,13 +37,13 @@ function findAllSourceFilePaths(
 	if (!fs.existsSync(dirPath)) {
 		fs.mkdirSync(dirPath);
 	}
-	const allFileNames       = fs.readdirSync(dirPath);
+	const allFileNames = fs.readdirSync(dirPath);
 	const containedFilePaths = allFileNames.map(
 		fileName => {
 			return dirPath + '/' + fileName;
 		});
-	let sourceFilePaths      = [];
-	const subDirectoryPaths  = containedFilePaths.filter(
+	let sourceFilePaths = [];
+	const subDirectoryPaths = containedFilePaths.filter(
 		filePath => {
 			if (fs.lstatSync(filePath).isDirectory()) {
 				return true;
