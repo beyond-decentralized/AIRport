@@ -8,19 +8,15 @@ import {
     DI
 } from "@airport/di";
 import {
+    ILocalAPIServer,
     LOCAL_API_SERVER
-} from "../../tokens";
+} from "@airport/security-check";
 
-export interface ILocalAPIServer {
-
-    handleRequest(
-        request: ILocalAPIRequest
-    ): Promise<ILocalAPIResponse>
-
-}
 
 export class LocalAPIServer
     implements ILocalAPIServer {
+
+    systemName: string = 'Not_Specified'
 
     async handleRequest(
         request: ILocalAPIRequest
@@ -34,7 +30,7 @@ export class LocalAPIServer
                 apiObject,
                 apiOperation
             } = await apiRegistry.findApiObjectAndOperation(
-                request.schemaSignature, request.objectName, request.methodName)
+                this.systemName, request.schemaSignature, request.objectName, request.methodName)
             const result = apiObject[request.methodName].apply(apiObject, request.args)
             if (apiOperation.isAsync) {
                 payload = await result

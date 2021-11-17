@@ -22,6 +22,7 @@ export class ApiRegistry
     }
 
     async findApiObjectAndOperation(
+        systemName: string,
         schemaSignature: string,
         apiObjectName: string,
         methodName: string
@@ -55,7 +56,7 @@ export class ApiRegistry
         }
 
         const apiObject = await container(this)
-            .getBySchemaSignatureAndName(schemaSignature, apiObjectName);
+            .getBySchemaSignatureAndName(systemName, schemaSignature, apiObjectName);
 
         return {
             apiObject,

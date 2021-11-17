@@ -1,6 +1,5 @@
 import { ILocalAPIRequest, ILocalAPIResponse } from "@airport/autopilot";
-import { ILocalAPIServer } from "@airport/security-check";
-export declare class LocalAPIServer implements ILocalAPIServer {
+export interface ILocalAPIServer {
     systemName: string;
     handleRequest(request: ILocalAPIRequest): Promise<ILocalAPIResponse>;
 }

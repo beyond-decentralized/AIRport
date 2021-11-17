@@ -360,6 +360,7 @@ export interface IChildContainer
 	): any
 
 	getBySchemaSignatureAndName(
+		systemName: string,
 		librarySignature: string,
 		tokenName: string
 	): Promise<any>
@@ -567,14 +568,15 @@ export class ChildContainer
 	}
 
 	async getBySchemaSignatureAndName(
+		systemName: string,
 		librarySignature: string,
 		tokenName: string
 	): Promise<any> {
-		const library = SYSTEM.getLibBySignature(librarySignature)
+		const library = system(systemName).getLibBySignature(librarySignature)
 		if (!library) {
 			throw new Error(`Could not find library with signature:
 			${librarySignature}
-			in system: '${SYSTEM.name}'`)
+			in system: '${systemName}'`)
 		}
 		const token = library.tokenMap.get(tokenName)
 

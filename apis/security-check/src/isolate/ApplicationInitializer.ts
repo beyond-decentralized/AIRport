@@ -1,5 +1,5 @@
-import { JsonSchemaWithLastIds } from ".";
-import { LastIds } from "./LastIds";
+import { JsonSchemaWithLastIds } from "../JsonSchemaWithLastIds";
+import { LastIds } from "../LastIds";
 
 export interface IApplicationInitializer {
 

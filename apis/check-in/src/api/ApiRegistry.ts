@@ -9,6 +9,7 @@ export interface IApiRegistry {
     ): void
 
     findApiObjectAndOperation(
+        systemName: string,
         schemaSignature: string,
         apiObjectName: string,
         methodName: string

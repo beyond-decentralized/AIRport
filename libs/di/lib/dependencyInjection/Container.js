@@ -129,12 +129,12 @@ export class ChildContainer extends Container {
             objects
         };
     }
-    async getBySchemaSignatureAndName(librarySignature, tokenName) {
-        const library = SYSTEM.getLibBySignature(librarySignature);
+    async getBySchemaSignatureAndName(systemName, librarySignature, tokenName) {
+        const library = system(systemName).getLibBySignature(librarySignature);
         if (!library) {
             throw new Error(`Could not find library with signature:
 			${librarySignature}
-			in system: '${SYSTEM.name}'`);
+			in system: '${systemName}'`);
         }
         const token = library.tokenMap.get(tokenName);
         if (!token) {

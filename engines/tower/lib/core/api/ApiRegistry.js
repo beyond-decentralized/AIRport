@@ -7,7 +7,7 @@ export class ApiRegistry {
         // this.installedApi = installedApi
         this.schemaApi = schemaApi;
     }
-    async findApiObjectAndOperation(schemaSignature, apiObjectName, methodName) {
+    async findApiObjectAndOperation(systemName, schemaSignature, apiObjectName, methodName) {
         // const schemaApi = this.installedApi.schemaApiMap[schemaSignature]
         // if (!schemaApi) {
         //     throw new Error(`Could not find SchemaAPI for signature:
@@ -33,7 +33,7 @@ export class ApiRegistry {
             ${methodName}`);
         }
         const apiObject = await container(this)
-            .getBySchemaSignatureAndName(schemaSignature, apiObjectName);
+            .getBySchemaSignatureAndName(systemName, schemaSignature, apiObjectName);
         return {
             apiObject,
             apiOperation
