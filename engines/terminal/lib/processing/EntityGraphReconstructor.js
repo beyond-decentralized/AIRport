@@ -8,7 +8,8 @@ import { ENTITY_GRAPH_RECONSTRUCTOR } from '../tokens';
 export class EntityGraphReconstructor {
     restoreEntityGraph(root, context) {
         const entitiesByOperationIndex = [];
-        const rootCopy = this.linkEntityGraph(root, entitiesByOperationIndex, context);
+        const processedEntitySet = new Set();
+        const rootCopy = this.linkEntityGraph(root, entitiesByOperationIndex, processedEntitySet, context);
         for (let i = 1; i < entitiesByOperationIndex.length; i++) {
             const entity = entitiesByOperationIndex[i];
             if (!entity) {
@@ -18,13 +19,17 @@ export class EntityGraphReconstructor {
         }
         return rootCopy;
     }
-    linkEntityGraph(currentEntities, entitiesByOperationIndex, context) {
+    linkEntityGraph(currentEntities, entitiesByOperationIndex, processedEntitySet, context) {
         const dbEntity = context.dbEntity;
         const results = [];
         for (const entity of currentEntities) {
             if (!entity) {
                 throw `Null root entities and @OneToMany arrays with null entities are not allowed`;
             }
+            if (processedEntitySet.has(entity)) {
+                continue;
+            }
+            processedEntitySet.add(entity);
             const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity);
             if (!operationUniqueId || typeof operationUniqueId !== 'number'
                 || operationUniqueId < 1) {
@@ -94,7 +99,7 @@ for ${dbEntity.name}.${dbProperty.name}`);
                     context.dbEntity = dbRelation.relationEntity;
                     let propertyCopyValue;
                     if (propertyValue) {
-                        propertyCopyValue = this.linkEntityGraph(relatedEntities, entitiesByOperationIndex, context);
+                        propertyCopyValue = this.linkEntityGraph(relatedEntities, entitiesByOperationIndex, processedEntitySet, context);
                         if (isManyToOne) {
                             propertyCopyValue = propertyCopyValue[0];
                             if (isParentId) {

@@ -21,8 +21,9 @@ export class EntityGraphReconstructor
 		context: IOperationContext
 	): T[] {
 		const entitiesByOperationIndex = []
+		const processedEntitySet = new Set()
 		const rootCopy =
-			this.linkEntityGraph(root, entitiesByOperationIndex, context)
+			this.linkEntityGraph(root, entitiesByOperationIndex, processedEntitySet, context)
 
 		for (let i = 1; i < entitiesByOperationIndex.length; i++) {
 			const entity = entitiesByOperationIndex[i]
@@ -38,6 +39,7 @@ export class EntityGraphReconstructor
 	protected linkEntityGraph<T>(
 		currentEntities: T[],
 		entitiesByOperationIndex: any[],
+		processedEntitySet: Set<Object>,
 		context: IOperationContext
 	): T[] {
 		const dbEntity = context.dbEntity
@@ -46,6 +48,11 @@ export class EntityGraphReconstructor
 			if (!entity) {
 				throw `Null root entities and @OneToMany arrays with null entities are not allowed`
 			}
+			if (processedEntitySet.has(entity)) {
+				continue;
+			}
+			processedEntitySet.add(entity)
+
 			const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity)
 			if (!operationUniqueId || typeof operationUniqueId !== 'number'
 				|| operationUniqueId < 1) {
@@ -120,7 +127,8 @@ for ${dbEntity.name}.${dbProperty.name}`)
 					context.dbEntity = dbRelation.relationEntity
 					let propertyCopyValue
 					if (propertyValue) {
-						propertyCopyValue = this.linkEntityGraph(relatedEntities, entitiesByOperationIndex, context)
+						propertyCopyValue = this.linkEntityGraph(relatedEntities,
+							entitiesByOperationIndex, processedEntitySet, context)
 						if (isManyToOne) {
 							propertyCopyValue = propertyCopyValue[0]
 							if (isParentId) {
@@ -130,7 +138,7 @@ that are themselves Parent Ids.`)
 								}
 							}
 						} else {
-							if(isParentId) {
+							if (isParentId) {
 								throw new Error(`Parent Ids may NOT contain @OneToMany colletions.`)
 							}
 						}// if (isManyToOne
