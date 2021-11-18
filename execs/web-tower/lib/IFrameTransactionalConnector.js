@@ -1,8 +1,7 @@
 import { container, DI } from '@airport/di';
 import { getSchemaName, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
-import { LOCAL_API_SERVER } from '@airport/tower';
-import { APPLICATION_INITIALIZER } from '@airport/security-check';
+import { APPLICATION_INITIALIZER, LOCAL_API_SERVER } from '@airport/security-check';
 import { Observable } from 'rxjs';
 // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
 // and debugging (http://localhost:7000)

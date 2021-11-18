@@ -31,9 +31,9 @@ import {
 	LastIds,
 	IInitConnectionIMO
 } from '@airport/security-check';
-import { LOCAL_API_SERVER } from '@airport/tower'
 import {
-	APPLICATION_INITIALIZER
+	APPLICATION_INITIALIZER,
+	LOCAL_API_SERVER
 } from '@airport/security-check'
 import { ISchemaVersion } from '@airport/traffic-pattern'
 import {
