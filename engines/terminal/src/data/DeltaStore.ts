@@ -28,38 +28,16 @@ import {
 	ChangeRecord,
 	ChangeRecordIterator,
 	IChangeListConfig,
+	IDeltaStore,
 	IDeltaStoreConfig,
 	SharedChangeList,
 	SharingAdaptor,
+	UpdateState
 }                                      from '@airport/terminal-map'
-import {UpdateState}                   from '../core/UpdateState'
 
 /**
  * Created by Papa on 5/27/2016.
  */
-export interface IDeltaStore {
-
-	config: IDeltaStoreConfig;
-	sharingAdaptor: SharingAdaptor;
-	updateState: UpdateState;
-
-	addChanges<E>(
-		changeListConfig: IChangeListConfig,
-		changeRecords: E[]
-	): Promise<void>;
-
-	goOffline(): void;
-
-	goOnline(
-		remoteChangesCallback: { (transactions: IRepositoryTransactionHistory[]): Promise<void> }
-	): Promise<void>;
-
-	loadTransactionsSinceLastKnown(
-		lastKnownChangeRecord: ChangeRecord
-	): Promise<ChangeRecordIterator>;
-
-}
-
 export class DeltaStore
 	implements IDeltaStore {
 

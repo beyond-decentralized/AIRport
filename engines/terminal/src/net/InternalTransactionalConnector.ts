@@ -6,10 +6,8 @@ import {
 } from '@airport/di';
 import {
     AIRepository,
-    DistributionStrategy,
     ISaveResult,
     ITransactionalConnector,
-    PlatformType,
     PortableQuery,
     TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control';
@@ -22,7 +20,6 @@ export class TransactionalConnector
     serverUrl: string;
 
     async addRepository(
-        name: string,
         // url: string,
         // platform: PlatformType,
         // platformConfig: string,
@@ -32,7 +29,6 @@ export class TransactionalConnector
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
         return await transServer.addRepository(
-            name,
             // url,
             // platform,
             // platformConfig,

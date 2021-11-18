@@ -45,7 +45,7 @@ export interface IAirportDatabase extends SchemaHub, FunctionAndOperatorHub {
     search: INonEntitySearch;
     searchOne: INonEntitySearchOne;
     getAccumulator(schemaDomain: string, schemaName: string): IEntityAccumulator;
-    addRepository(name: string, context?: IEntityContext): Promise<number>;
+    addRepository(context?: IEntityContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity<any>>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, context?: IEntityContext): Promise<number>;

@@ -12,7 +12,10 @@ import {
 */
 import { PlatformType } from '@airport/ground-control';
 import { GoogleApi, GoogleDrive, GoogleDriveAdaptor, GoogleRealtime, GoogleRealtimeAdaptor, GoogleSharingAdaptor, InMemorySharingAdaptor, StubSharingAdaptor } from '@airport/ground-transport';
-import { UpdateState } from '../core/UpdateState';
+import { UpdateState } from '@airport/terminal-map';
+/**
+ * Created by Papa on 5/27/2016.
+ */
 export class DeltaStore {
     constructor(config, sharingAdaptor = null) {
         this.config = config;

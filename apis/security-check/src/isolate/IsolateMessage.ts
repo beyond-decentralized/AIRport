@@ -69,7 +69,7 @@ export interface IInitConnectionIMO
 export interface IAddRepositoryIMI
     extends IIsolateMessage {
     // distributionStrategy: DistributionStrategy
-    name: string
+    // name: string
     // platform: PlatformType
     // platformConfig: string
     // url: string

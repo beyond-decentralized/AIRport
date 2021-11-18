@@ -52,7 +52,6 @@ export interface IDatabaseFacade {
 	name: string;
 
 	addRepository(
-		name: string,
 		// url: string,
 		// platform: PlatformType,
 		// platformConfig: string,

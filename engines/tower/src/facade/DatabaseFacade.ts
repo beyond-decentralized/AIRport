@@ -46,7 +46,6 @@ export class DatabaseFacade
 	name: string
 
 	async addRepository(
-		name: string,
 		// url: string = null,
 		// platform: PlatformType = PlatformType.GOOGLE_DOCS,
 		// platformConfig: string = null,
@@ -57,7 +56,6 @@ export class DatabaseFacade
 		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR)
 
 		return await transactionalConnector.addRepository(
-			name,
 			// url, platform, platformConfig, distributionStrategy, 
 			context
 		)

@@ -74,22 +74,15 @@ export class StructuralEntityValidator
 									columnValue: any,
 									propertyNameChains: string[][],
 								) => {
-									const isIdColumnEmpty = context.ioc.schemaUtils.isIdEmpty(columnValue)
-									if (dbColumn.idIndex || dbColumn.idIndex === 0) {
-										this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty)
-										if (context.ioc.schemaUtils.isRepositoryId(dbColumn.name)) {
-											if (context.ioc.schemaUtils.isEmpty(columnValue)) {
-												throw new Error(`Repository Id must be specified on an insert for
-							 ${dbEntity.name}.${dbProperty.name},
-											column:  ${dbColumn.name}`)
-											}
-										}
-									}
+									this.validateRelationColumn(dbEntity, dbProperty, dbColumn,
+										isCreate, entity, columnValue, context)
 								}, false)
 							}
 							if (fromOneToMany) {
-								if (!propertyValue) {
-									if (!dbRelation.manyToOneElems.mappedBy
+								// 'actor' or the 'repository' property may be automatically populated
+								// in the entity by this.validateRelationColumn
+								if (!propertyValue && !entity[dbProperty.name]) {
+									if (!dbRelation.manyToOneElems || !dbRelation.manyToOneElems.mappedBy
 										|| dbRelation.manyToOneElems.mappedBy === parentRelationPropertyName) {
 										// The @ManyToOne side of the relationship is missing, add it
 										entity[dbProperty.name] = parentRelationEntity
@@ -134,6 +127,45 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateMa
 			} // for (const dbProperty
 		} // for (const entity
 	}
+
+	protected validateRelationColumn<E>(
+		dbEntity: DbEntity,
+		dbProperty: DbProperty,
+		dbColumn: DbColumn,
+		isCreate: boolean,
+		entity: E,
+		columnValue: any,
+		context: IOperationContext,
+	) {
+		const isIdColumnEmpty = context.ioc.schemaUtils.isIdEmpty(columnValue)
+		if (!dbColumn.idIndex && dbColumn.idIndex !== 0) {
+			return
+		}
+		if (dbEntity.isRepositoryEntity) {
+			if (!isIdColumnEmpty) {
+				if(isCreate) {
+					if(context.ioc.schemaUtils.isActorId(dbColumn.name)) {
+					throw new Error(`Actor cannot be passed in for create Operations`)
+				}
+			}
+				return
+			}
+			if (!isCreate) {
+				throw new Error(`Ids must be populated in entities for non-Create operations`)
+			}
+			if (context.ioc.schemaUtils.isRepositoryId(dbColumn.name)) {
+				// Repository was not provided - use context's 'newRepository'
+				entity[dbProperty.name] = context.ioc.repositoryManager.getNewRepository(context)
+			} else if (context.ioc.schemaUtils.isActorId(dbColumn.name)) {
+				// Use context's 'actor'
+				entity[dbProperty.name] = context.actor
+			} else {
+				throw new Error(`Unexpected @Id column '${dbColumn.name}' in a Repository Entity.`)
+			}
+		} else {
+			this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty)
+		}
+	} 
 
 	protected ensureIdValue(
 		dbEntity: DbEntity,

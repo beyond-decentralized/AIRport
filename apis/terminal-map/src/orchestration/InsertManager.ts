@@ -30,7 +30,6 @@ export interface IInsertManager {
     ): Promise<RecordHistoryId[] | RecordId[][]>;
 
     addRepository(
-        name: string,
         // url: string,
         // platform: PlatformType,
         // platformConfig: string,

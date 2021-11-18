@@ -40,8 +40,8 @@ export class TransactionalReceiver {
                     this.initializedApps.add(message.schemaName);
                     return null;
                 case IsolateMessageType.ADD_REPOSITORY:
-                    const addRepositoryMessage = message;
-                    result = await transactionalServer.addRepository(addRepositoryMessage.name, 
+                    // const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
+                    result = await transactionalServer.addRepository(
                     // addRepositoryMessage.url,
                     // addRepositoryMessage.platform,
                     // addRepositoryMessage.platformConfig,

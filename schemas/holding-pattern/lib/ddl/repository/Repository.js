@@ -12,8 +12,8 @@ let Repository = class Repository {
         // distributionStrategy: DistributionStrategy;
         //
         // @Column({name: "REPOSITORY_PLATFORM"})
-        // @DbString)
-        // platform: PlatformType;
+        // @DbString()
+        // platform: PlatformType
         // @Column({ name: "PLATFORM_CONFIG", nullable: false })
         // platformConfig: string;
         /*
@@ -51,17 +51,9 @@ __decorate([
     DbString()
 ], Repository.prototype, "uuId", void 0);
 __decorate([
-    Column({ name: "NAME", nullable: false }),
-    DbString()
-], Repository.prototype, "name", void 0);
-__decorate([
     Column({ name: 'AGE_SUITABILITY', nullable: false }),
     DbNumber()
 ], Repository.prototype, "ageSuitability", void 0);
-__decorate([
-    Column({ name: "REPOSITORY_URL" }),
-    DbString()
-], Repository.prototype, "url", void 0);
 __decorate([
     Column({ name: "SOURCE" }),
     DbString()

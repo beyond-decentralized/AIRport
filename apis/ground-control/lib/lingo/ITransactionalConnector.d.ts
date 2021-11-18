@@ -5,7 +5,7 @@ import { IAbstractQueryContext } from './query/AbstractQueryContext';
 import { PortableQuery } from './query/PortableQuery';
 import { ISaveResult } from './query/SaveResult';
 export interface ITransactionalConnector {
-    addRepository(name: string, context?: IContext): Promise<number>;
+    addRepository(context?: IContext): Promise<number>;
     getApplicationRepositories(context?: IContext): Promise<AIRepository[]>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IAbstractQueryContext<any>, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context?: IAbstractQueryContext<any>, cachedSqlQueryId?: number): Promise<E>;

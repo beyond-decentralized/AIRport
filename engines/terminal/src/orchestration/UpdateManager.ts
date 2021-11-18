@@ -41,11 +41,11 @@ import {
 import {
 	IHistoryManager,
 	IOperationContext,
+	IRepositoryManager,
 	ITransaction,
 	IUpdateManager,
 	RecordHistoryMap
 }                           from '@airport/terminal-map'
-import {IRepositoryManager} from '../core/repository/RepositoryManager'
 import {
 	HISTORY_MANAGER,
 	OFFLINE_DELTA_STORE,

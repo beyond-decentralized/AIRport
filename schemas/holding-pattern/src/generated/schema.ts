@@ -263,7 +263,7 @@ export const SCHEMA = {
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "NAME",
+							"name": "AGE_SUITABILITY",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -271,31 +271,31 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "STRING"
+							"type": "NUMBER"
 						},
 						{
 							"index": 4,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "AGE_SUITABILITY",
-							"notNull": true,
+							"name": "SOURCE",
+							"notNull": false,
 							"propertyRefs": [
 								{
 									"index": 5
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "STRING"
 						},
 						{
 							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "REPOSITORY_URL",
-							"notNull": false,
+							"name": "SYNC_PRIORITY",
+							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 6
+									"index": 8
 								}
 							],
 							"sinceVersion": 1,
@@ -303,34 +303,6 @@ export const SCHEMA = {
 						},
 						{
 							"index": 6,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "SOURCE",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 7
-								}
-							],
-							"sinceVersion": 1,
-							"type": "STRING"
-						},
-						{
-							"index": 7,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "SYNC_PRIORITY",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 10
-								}
-							],
-							"sinceVersion": 1,
-							"type": "STRING"
-						},
-						{
-							"index": 8,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -404,7 +376,7 @@ export const SCHEMA = {
 							},
 							"index": 4,
 							"isId": false,
-							"name": "name",
+							"name": "ageSuitability",
 							"sinceVersion": 1
 						},
 						{
@@ -413,29 +385,11 @@ export const SCHEMA = {
 							},
 							"index": 5,
 							"isId": false,
-							"name": "ageSuitability",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 5
-							},
-							"index": 6,
-							"isId": false,
-							"name": "url",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 6
-							},
-							"index": 7,
-							"isId": false,
 							"name": "source",
 							"sinceVersion": 1
 						},
 						{
-							"index": 8,
+							"index": 6,
 							"isId": false,
 							"name": "repositoryActors",
 							"relationRef": {
@@ -444,7 +398,7 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 9,
+							"index": 7,
 							"isId": false,
 							"name": "repositoryTransactionHistory",
 							"relationRef": {
@@ -454,9 +408,9 @@ export const SCHEMA = {
 						},
 						{
 							"columnRef": {
-								"index": 7
+								"index": 5
 							},
-							"index": 10,
+							"index": 8,
 							"isId": false,
 							"name": "syncPriority",
 							"sinceVersion": 1
@@ -481,7 +435,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 8
+								"index": 6
 							},
 							"relationTableIndex": 2,
 							"sinceVersion": 1
@@ -494,7 +448,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 9
+								"index": 7
 							},
 							"relationTableIndex": 8,
 							"sinceVersion": 1

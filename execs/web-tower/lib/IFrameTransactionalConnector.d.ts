@@ -34,7 +34,7 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     lastIds: LastIds;
     messageCallback: (message: any) => void;
     init(): Promise<void>;
-    addRepository(name: string, context: IContext): Promise<number>;
+    addRepository(context: IContext): Promise<number>;
     getApplicationRepositories(context?: IContext): Promise<AIRepository[]>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Promise<E>;

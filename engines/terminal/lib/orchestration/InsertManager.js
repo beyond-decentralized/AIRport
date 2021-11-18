@@ -15,7 +15,7 @@ export class InsertManager {
     async insertValuesGetIds(portableQuery, actor, transaction, context) {
         return await this.internalInsertValues(portableQuery, actor, transaction, context, true);
     }
-    async addRepository(name, 
+    async addRepository(
     // url: string = null,
     // platform: PlatformType = PlatformType.GOOGLE_DOCS,
     // platformConfig: string = null,
@@ -23,7 +23,7 @@ export class InsertManager {
     actor, context) {
         const [repoManager, transManager] = await container(this)
             .get(REPOSITORY_MANAGER, TRANSACTION_MANAGER);
-        const repository = await repoManager.createRepository(name, 
+        const repository = await repoManager.createRepository(
         // distributionStrategy, transManager.storeType,
         // platform, platformConfig, 
         actor);

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 export declare class TransactionalConnector implements ITransactionalConnector {
     dbName: string;
     serverUrl: string;
-    addRepository(name: string, context: IContext): Promise<number>;
+    addRepository(context: IContext): Promise<number>;
     getApplicationRepositories(context?: IContext): Promise<AIRepository[]>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Promise<E>;

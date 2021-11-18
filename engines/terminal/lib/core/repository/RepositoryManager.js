@@ -25,13 +25,20 @@ export class RepositoryManager {
         const repositoryDao = await container(this).get(REPOSITORY_DAO);
         return await repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail);
     }
-    async createRepository(appName, 
+    getNewRepository(context) {
+        if (context.newRepository) {
+            return context.newRepository;
+        }
+        context.newRepository = this.getRepositoryRecord(context.actor);
+        return context.newRepository;
+    }
+    async createRepository(
     // distributionStrategy: DistributionStrategy,
     // offlineStoreType: StoreType,
     // platformType: PlatformType,
     // platformConfig: any,
     actor) {
-        let repository = await this.createRepositoryRecord(appName, 
+        let repository = await this.createRepositoryRecord(
         // distributionStrategy, platformType, platformConfig
         actor);
         await this.addDeltaStore(repository);
@@ -114,24 +121,28 @@ export class RepositoryManager {
         this.deltaStore[repository.id] = deltaStore;
         return deltaStore;
     }
-    async createRepositoryRecord(appName, actor
-    // distributionStrategy: DistributionStrategy,
-    // platformType: PlatformType,
-    // platformConfig: any,
-    ) {
+    getRepositoryRecord(actor) {
         const repository = {
+            ageSuitability: 0,
             createdAt: new Date(),
             id: null,
             ownerActor: actor,
-            name: appName,
             // platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
             // platformConfig: null,
             repositoryActors: [],
             repositoryTransactionHistory: [],
+            source: 'localhost:8080',
             syncPriority: SyncPriority.NORMAL,
-            url: null,
             uuId: uuidv4(),
         };
+        return repository;
+    }
+    async createRepositoryRecord(actor
+    // distributionStrategy: DistributionStrategy,
+    // platformType: PlatformType,
+    // platformConfig: any,
+    ) {
+        const repository = this.getRepositoryRecord(actor);
         const repositoryActor = {
             actor,
             id: null,

@@ -85,7 +85,7 @@ export class IframeTransactionalConnector {
         });
         this.initializeConnection().then();
     }
-    async addRepository(name, 
+    async addRepository(
     // url: string,
     // platform: PlatformType,
     // platformConfig: string,
@@ -94,11 +94,9 @@ export class IframeTransactionalConnector {
         return await this.sendMessage({
             ...this.getCoreFields(),
             // distributionStrategy,
-            name,
             // platform,
             // platformConfig,
             type: IsolateMessageType.ADD_REPOSITORY,
-            // url
         });
     }
     async getApplicationRepositories(context) {

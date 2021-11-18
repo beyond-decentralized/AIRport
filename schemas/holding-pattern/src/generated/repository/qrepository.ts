@@ -80,9 +80,7 @@ export interface RepositoryESelect
 	// Non-Id Properties
 	createdAt?: Date | IQDateField;
 	uuId?: string | IQStringField;
-	name?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
-	url?: string | IQStringField;
 	source?: string | IQStringField;
 	syncPriority?: string | IQStringField;
 
@@ -126,9 +124,7 @@ export interface RepositoryEUpdateProperties
 	// Non-Id Properties
 	createdAt?: Date | IQDateField;
 	uuId?: string | IQStringField;
-	name?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
-	url?: string | IQStringField;
 	source?: string | IQStringField;
 	syncPriority?: string | IQStringField;
 
@@ -147,9 +143,7 @@ export interface RepositoryGraph
 	// Non-Id Properties
 	createdAt?: Date | IQDateField;
 	uuId?: string | IQStringField;
-	name?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
-	url?: string | IQStringField;
 	source?: string | IQStringField;
 	syncPriority?: string | IQStringField;
 
@@ -168,9 +162,7 @@ export interface RepositoryEUpdateColumns
 	// Non-Id Columns
 	CREATED_AT?: Date | IQDateField;
 	UU_ID?: string | IQStringField;
-	NAME?: string | IQStringField;
 	AGE_SUITABILITY?: number | IQNumberField;
-	REPOSITORY_URL?: string | IQStringField;
 	SOURCE?: string | IQStringField;
 	SYNC_PRIORITY?: string | IQStringField;
 	OWNER_ACTOR_ID?: number | IQNumberField;
@@ -211,9 +203,7 @@ export interface QRepository extends IQEntity<Repository>
 	// Non-Id Fields
 	createdAt: IQDateField;
 	uuId: IQStringField;
-	name: IQStringField;
 	ageSuitability: IQNumberField;
-	url: IQStringField;
 	source: IQStringField;
 	syncPriority: IQStringField;
 

@@ -6,7 +6,7 @@ import { AIRepository, ISaveResult } from '@airport/ground-control';
  */
 export declare class DatabaseFacade implements IDatabaseFacade {
     name: string;
-    addRepository(name: string, context?: IContext): Promise<number>;
+    addRepository(context?: IContext): Promise<number>;
     getApplicationRepositories(context?: IContext): Promise<AIRepository[]>;
     insertColumnValues<IQE extends IQEntity<any>>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;

@@ -33,7 +33,7 @@ export interface InternalPortableQuery extends PortableQuery {
 export declare class TransactionalServer implements ITransactionalServer {
     tempActor: IActor;
     init(context?: IContext): Promise<void>;
-    addRepository(name: string, credentials: ICredentials, context: IOperationContext): Promise<Repository_Id>;
+    addRepository(credentials: ICredentials, context: IOperationContext): Promise<Repository_Id>;
     getApplicationRepositories(credentials: ICredentials, context: IOperationContext): Promise<AIRepository[]>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<E>;

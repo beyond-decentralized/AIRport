@@ -5,11 +5,9 @@ import {
 } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
 import {
-    IAddRepositoryIMI,
     IConnectionInitializedIMI,
     IGetLatestSchemaVersionBySchemaNameIMI,
     IInitConnectionIMI,
-    IInitConnectionIMO,
     IIsolateMessage,
     IIsolateMessageOut,
     IPortableQueryIMI,
@@ -74,9 +72,8 @@ export abstract class TransactionalReceiver {
                     this.initializedApps.add((message as IConnectionInitializedIMI).schemaName)
                     return null
                 case IsolateMessageType.ADD_REPOSITORY:
-                    const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
+                    // const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
                     result = await transactionalServer.addRepository(
-                        addRepositoryMessage.name,
                         // addRepositoryMessage.url,
                         // addRepositoryMessage.platform,
                         // addRepositoryMessage.platformConfig,

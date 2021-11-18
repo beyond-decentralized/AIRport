@@ -35,11 +35,11 @@ import {
 import {
 	IHistoryManager,
 	IInsertManager,
+	IRepositoryManager,
 	ITransaction,
 	RecordId,
 	TRANSACTION_MANAGER
 } from '@airport/terminal-map'
-import { IRepositoryManager } from '../core/repository/RepositoryManager'
 import {
 	HISTORY_MANAGER,
 	INSERT_MANAGER,
@@ -81,7 +81,6 @@ export class InsertManager
 	}
 
 	async addRepository(
-		name: string,
 		// url: string = null,
 		// platform: PlatformType = PlatformType.GOOGLE_DOCS,
 		// platformConfig: string = null,
@@ -94,7 +93,6 @@ export class InsertManager
 				REPOSITORY_MANAGER, TRANSACTION_MANAGER)
 
 		const repository = await repoManager.createRepository(
-			name,
 			// distributionStrategy, transManager.storeType,
 			// platform, platformConfig, 
 			actor)

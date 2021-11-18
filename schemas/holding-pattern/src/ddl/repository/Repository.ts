@@ -61,17 +61,9 @@ export class Repository {
 	@DbString()
 	uuId: Repository_UuId;
 
-	@Column({ name: "NAME", nullable: false })
-	@DbString()
-	name: Repository_Name;
-
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
 	ageSuitability: Repository_AgeSuitability
-
-	@Column({ name: "REPOSITORY_URL" })
-	@DbString()
-	url: Repository_Url;
 
 	@Column({ name: "SOURCE" })
 	@DbString()
@@ -82,8 +74,8 @@ export class Repository {
 	// distributionStrategy: DistributionStrategy;
 	//
 	// @Column({name: "REPOSITORY_PLATFORM"})
-	// @DbString)
-	// platform: PlatformType;
+	// @DbString()
+	// platform: PlatformType
 
 	// @Column({ name: "PLATFORM_CONFIG", nullable: false })
 	// platformConfig: string;

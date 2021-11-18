@@ -25,7 +25,7 @@ export interface IDatabaseFacade {
      * Name of the terminal
      */
     name: string;
-    addRepository(name: string, ctx?: IContext): Promise<number>;
+    addRepository(ctx?: IContext): Promise<number>;
     getApplicationRepositories(context?: IContext): Promise<AIRepository[]>;
     insertColumnValues<IQE extends IQEntity<any>>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;

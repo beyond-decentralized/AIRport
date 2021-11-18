@@ -40,22 +40,16 @@ export class StructuralEntityValidator {
                             // checked as part of this entity
                             if (dbProperty.isId) {
                                 context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, propertyNameChains) => {
-                                    const isIdColumnEmpty = context.ioc.schemaUtils.isIdEmpty(columnValue);
-                                    if (dbColumn.idIndex || dbColumn.idIndex === 0) {
-                                        this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty);
-                                        if (context.ioc.schemaUtils.isRepositoryId(dbColumn.name)) {
-                                            if (context.ioc.schemaUtils.isEmpty(columnValue)) {
-                                                throw new Error(`Repository Id must be specified on an insert for
-							 ${dbEntity.name}.${dbProperty.name},
-											column:  ${dbColumn.name}`);
-                                            }
-                                        }
-                                    }
+                                    this.validateRelationColumn(dbEntity, dbProperty, dbColumn, isCreate, entity, columnValue, context);
                                 }, false);
+                                // If the 'actor' or the 'repository' property was automatically populated
+                                if (entity[dbProperty.name]) {
+                                    propertyValue = entity[dbProperty.name];
+                                }
                             }
                             if (fromOneToMany) {
                                 if (!propertyValue) {
-                                    if (!dbRelation.manyToOneElems.mappedBy
+                                    if (!dbRelation.manyToOneElems || !dbRelation.manyToOneElems.mappedBy
                                         || dbRelation.manyToOneElems.mappedBy === parentRelationPropertyName) {
                                         // The @ManyToOne side of the relationship is missing, add it
                                         entity[dbProperty.name] = parentRelationEntity;
@@ -99,6 +93,39 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateMa
                 } // else (dbProperty.relation
             } // for (const dbProperty
         } // for (const entity
+    }
+    validateRelationColumn(dbEntity, dbProperty, dbColumn, isCreate, entity, columnValue, context) {
+        const isIdColumnEmpty = context.ioc.schemaUtils.isIdEmpty(columnValue);
+        if (!dbColumn.idIndex && dbColumn.idIndex !== 0) {
+            return;
+        }
+        if (dbEntity.isRepositoryEntity) {
+            if (!isIdColumnEmpty) {
+                if (isCreate) {
+                    if (context.ioc.schemaUtils.isActorId(dbColumn.name)) {
+                        throw new Error(`Actor cannot be passed in for create Operations`);
+                    }
+                }
+                return;
+            }
+            if (!isCreate) {
+                throw new Error(`Ids must be populated in entities for non-Create operations`);
+            }
+            if (context.ioc.schemaUtils.isRepositoryId(dbColumn.name)) {
+                // Repository was not provided - use context's 'newRepository'
+                entity[dbProperty.name] = context.ioc.repositoryManager.getNewRepository(context);
+            }
+            else if (context.ioc.schemaUtils.isActorId(dbColumn.name)) {
+                // Use context's 'actor'
+                entity[dbProperty.name] = context.actor;
+            }
+            else {
+                throw new Error(`Unexpected @Id column '${dbColumn.name}' in a Repository Entity.`);
+            }
+        }
+        else {
+            this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty);
+        }
     }
     ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty) {
         if (dbColumn.isGenerated) {

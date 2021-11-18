@@ -227,7 +227,6 @@ export class AirportDatabase
 	}
 
 	async addRepository(
-		name: string,
 		// url: string,
 		// platform: PlatformType,
 		// platformConfig: string,
@@ -237,7 +236,7 @@ export class AirportDatabase
 		const dbFacade = await container(this)
 			.get(DATABASE_FACADE);
 
-		return await dbFacade.addRepository(name, 
+		return await dbFacade.addRepository( 
 			// url, platform, platformConfig, distributionStrategy, 
 			context);
 	}

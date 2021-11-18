@@ -27,18 +27,20 @@ import {
 } from '@airport/holding-pattern'
 import {
 	DeltaStoreConfig,
+	IDeltaStore,
+	IOperationContext,
+	IRepositoryManager,
 	JsonDeltaStoreConfig,
 	REPOSITORY_FIELD,
+	UpdateState,
 } from '@airport/terminal-map'
 import { ITerminal } from '@airport/travel-document-checkpoint'
 import { v4 as uuidv4 } from "uuid";
 import {
 	DeltaStore,
-	getSharingAdaptor,
-	IDeltaStore
+	getSharingAdaptor
 } from '../../data/DeltaStore'
 import { REPOSITORY_MANAGER } from '../../tokens'
-import { UpdateState } from '../UpdateState'
 
 /**
  * Created by Papa on 2/12/2017.
@@ -51,63 +53,6 @@ export interface RepoQueryData {
 export interface EntityRepoQueryData {
 	qEntity: IQEntityInternal<any>,
 	idProperty: string;
-}
-
-export interface IRepositoryManager {
-
-	// deltaStore: IDeltaStore;
-	deltaStore;
-	repositories: IRepository[];
-	repositoriesById: { [repositoryId: string]: IRepository };
-
-	initialize(): Promise<void>;
-
-	createRepository(
-		appName: string,
-		// distributionStrategy: DistributionStrategy,
-		// offlineStoreType: StoreType,
-		// platformType: PlatformType,
-		// platformConfig: any,
-		actor: IActor
-	): Promise<IRepository>;
-
-	getRepository(repositoryId: number): Promise<IRepository>;
-
-	getActor(actorId: number): Promise<IActor>;
-
-	goOffline(): void;
-
-	getUpdateState(repository: IRepository): UpdateState;
-
-	setUpdateStateForAll(updateState: UpdateState): void;
-
-	setUpdateState(
-		repository: IRepository,
-		updateState: UpdateState
-	): void;
-
-	getDeltaStore(repository: IRepository): IDeltaStore;
-
-	ensureRepositoryScopeOnInsertValues<IQE extends IQEntityInternal<any>>(
-		repository: IRepository,
-		rawInsertValues: RawInsertValues<IQE>
-	): RawInsertValues<IQE>;
-
-	ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal<any>>(
-		qEntity: IQEntityInternal<any>,
-		repository: IRepository,
-		rawUpdate: RawUpdate<IEUP, IQE>
-	): RawUpdate<IEUP, IQE>;
-
-	getOnlyRepositoryInDatabase(): IRepository;
-
-	ensureRepositoryScopeOnDeleteWhere<IQE extends IQEntityInternal<any>>(
-		qEntity: IQE,
-		repository: IRepository,
-		rawDelete: RawDelete<IQE>
-	): RawDelete<IQE>;
-
-	findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>>;
 }
 
 export class RepositoryManager
@@ -138,15 +83,26 @@ export class RepositoryManager
 			repositoryIds, this.terminal.name, this.userEmail)
 	}
 
+	getNewRepository(
+		context: IOperationContext
+	): IRepository {
+		if (context.newRepository) {
+			return context.newRepository
+		}
+
+		context.newRepository = this.getRepositoryRecord(context.actor)
+
+		return context.newRepository
+	}
+
 	async createRepository(
-		appName: string,
 		// distributionStrategy: DistributionStrategy,
 		// offlineStoreType: StoreType,
 		// platformType: PlatformType,
 		// platformConfig: any,
 		actor: IActor,
 	): Promise<IRepository> {
-		let repository = await this.createRepositoryRecord(appName,
+		let repository = await this.createRepositoryRecord(
 			// distributionStrategy, platformType, platformConfig
 			actor
 		)
@@ -248,26 +204,33 @@ export class RepositoryManager
 		return deltaStore
 	}
 
+	private getRepositoryRecord(
+		actor: IActor
+	): IRepository {
+		const repository: IRepository = {
+			ageSuitability: 0,
+			createdAt: new Date(),
+			id: null,
+			ownerActor: actor,
+			// platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
+			// platformConfig: null,
+			repositoryActors: [],
+			repositoryTransactionHistory: [],
+			source: 'localhost:8080',
+			syncPriority: SyncPriority.NORMAL,
+			uuId: uuidv4(),
+		}
+
+		return repository
+	}
+
 	private async createRepositoryRecord(
-		appName: string,
 		actor: IActor
 		// distributionStrategy: DistributionStrategy,
 		// platformType: PlatformType,
 		// platformConfig: any,
 	): Promise<IRepository> {
-		const repository: IRepository = {
-			createdAt: new Date(),
-			id: null,
-			ownerActor: actor,
-			name: appName,
-			// platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
-			// platformConfig: null,
-			repositoryActors: [],
-			repositoryTransactionHistory: [],
-			syncPriority: SyncPriority.NORMAL,
-			url: null,
-			uuId: uuidv4(),
-		}
+		const repository: IRepository = this.getRepositoryRecord(actor)
 
 		const repositoryActor: IRepositoryActor = {
 			actor,

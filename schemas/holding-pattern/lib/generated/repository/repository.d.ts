@@ -5,9 +5,7 @@ export interface IRepository {
     id: number;
     createdAt?: Date;
     uuId?: string;
-    name?: string;
     ageSuitability?: number;
-    url?: string;
     source?: string;
     syncPriority?: string;
     ownerActor?: IActor;

@@ -10,7 +10,6 @@ import { ISaveResult } from './query/SaveResult'
 export interface ITransactionalConnector {
 
 	addRepository(
-		name: string,
 		// url: string,
 		// platform: PlatformType,
 		// platformConfig: string,

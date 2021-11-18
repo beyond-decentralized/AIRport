@@ -2,22 +2,10 @@ import { PlatformType } from '@airport/ground-control';
 import { GoogleSharingAdaptor } from '@airport/ground-transport';
 import { IRepositoryTransactionHistory } from '@airport/holding-pattern';
 import { Subscription } from 'rxjs';
-import { ChangeRecord, ChangeRecordIterator, IChangeListConfig, IDeltaStoreConfig, SharedChangeList, SharingAdaptor } from '@airport/terminal-map';
-import { UpdateState } from '../core/UpdateState';
+import { ChangeRecord, IChangeListConfig, IDeltaStore, IDeltaStoreConfig, SharedChangeList, SharingAdaptor, UpdateState } from '@airport/terminal-map';
 /**
  * Created by Papa on 5/27/2016.
  */
-export interface IDeltaStore {
-    config: IDeltaStoreConfig;
-    sharingAdaptor: SharingAdaptor;
-    updateState: UpdateState;
-    addChanges<E>(changeListConfig: IChangeListConfig, changeRecords: E[]): Promise<void>;
-    goOffline(): void;
-    goOnline(remoteChangesCallback: {
-        (transactions: IRepositoryTransactionHistory[]): Promise<void>;
-    }): Promise<void>;
-    loadTransactionsSinceLastKnown(lastKnownChangeRecord: ChangeRecord): Promise<ChangeRecordIterator>;
-}
 export declare class DeltaStore implements IDeltaStore {
     config: IDeltaStoreConfig;
     sharingAdaptor: SharingAdaptor;

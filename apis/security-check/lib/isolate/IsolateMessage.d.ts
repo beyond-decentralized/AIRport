@@ -47,7 +47,6 @@ export interface IConnectionInitializedIMI extends IIsolateMessage {
 export interface IInitConnectionIMO extends IIsolateMessageOut<LastIds> {
 }
 export interface IAddRepositoryIMI extends IIsolateMessage {
-    name: string;
 }
 export interface INumberIMO extends IIsolateMessageOut<number> {
 }

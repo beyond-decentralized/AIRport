@@ -33,7 +33,7 @@ export class TransactionalServer {
             .get(TRANSACTION_MANAGER);
         return await transManager.initialize('airport', context);
     }
-    async addRepository(name, 
+    async addRepository(
     // url: string,
     // platform: PlatformType,
     // platformConfig: string,
@@ -45,7 +45,7 @@ export class TransactionalServer {
         let repositoryId = 0;
         await transactional(async (transaction) => {
             // TODO: figure out how addRepository will work
-            repositoryId = await context.ioc.insertManager.addRepository(name, 
+            repositoryId = await context.ioc.insertManager.addRepository(
             // url, platform, platformConfig, distributionStrategy
             actor, context);
         }, context);
@@ -87,6 +87,7 @@ export class TransactionalServer {
         }
         await this.ensureIocContext(context);
         const actor = await this.getActor(credentials);
+        context.actor = actor;
         let saveResult;
         await transactional(async (transaction) => {
             saveResult = await context.ioc.operationManager.performSave(entity, actor, transaction, context);
@@ -99,6 +100,7 @@ export class TransactionalServer {
         }
         await this.ensureIocContext(context);
         const actor = await this.getActor(credentials);
+        context.actor = actor;
         let saveResult;
         await transactional(async (transaction) => {
             // TODO: save to serialized repository to the specified destination

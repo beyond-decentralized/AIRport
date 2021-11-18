@@ -2,11 +2,11 @@ import { AIRPORT_DATABASE, FIELD_UTILS, Q_METADATA_UTILS, QUERY_FACADE, QUERY_UT
 import { DI } from '@airport/di';
 import { ENTITY_STATE_MANAGER, OPERATION_CONTEXT_LOADER, STORE_DRIVER } from '@airport/ground-control';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
-import { CASCADE_GRAPH_VERIFIER, DELETE_MANAGER, DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR, INSERT_MANAGER, OPERATION_MANAGER, QUERY_MANAGER, STRUCTURAL_ENTITY_VALIDATOR, UPDATE_MANAGER, } from '../tokens';
+import { CASCADE_GRAPH_VERIFIER, DELETE_MANAGER, DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR, INSERT_MANAGER, OPERATION_MANAGER, QUERY_MANAGER, REPOSITORY_MANAGER, STRUCTURAL_ENTITY_VALIDATOR, UPDATE_MANAGER, } from '../tokens';
 export class IocOperationContext {
     static async init(context) {
-        const [airDb, cascadeGraphVerifier, deleteManager, dependencyGraphResolver, entityGraphReconstructor, entityStateManager, fieldUtils, insertManager, metadataUtils, operationManager, queryFacade, queryManager, queryUtils, relationManager, schemaUtils, storeDriver, structuralEntityValidator, transactionalServer, updateManager] = await DI.db()
-            .get(AIRPORT_DATABASE, CASCADE_GRAPH_VERIFIER, DELETE_MANAGER, DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR, ENTITY_STATE_MANAGER, FIELD_UTILS, INSERT_MANAGER, Q_METADATA_UTILS, OPERATION_MANAGER, QUERY_FACADE, QUERY_MANAGER, QUERY_UTILS, RELATION_MANAGER, SCHEMA_UTILS, STORE_DRIVER, STRUCTURAL_ENTITY_VALIDATOR, TRANSACTIONAL_SERVER, UPDATE_MANAGER);
+        const [airDb, cascadeGraphVerifier, deleteManager, dependencyGraphResolver, entityGraphReconstructor, entityStateManager, fieldUtils, insertManager, metadataUtils, operationManager, queryFacade, queryManager, queryUtils, relationManager, repositoryManager, schemaUtils, storeDriver, structuralEntityValidator, transactionalServer, updateManager] = await DI.db()
+            .get(AIRPORT_DATABASE, CASCADE_GRAPH_VERIFIER, DELETE_MANAGER, DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR, ENTITY_STATE_MANAGER, FIELD_UTILS, INSERT_MANAGER, Q_METADATA_UTILS, OPERATION_MANAGER, QUERY_FACADE, QUERY_MANAGER, QUERY_UTILS, RELATION_MANAGER, REPOSITORY_MANAGER, SCHEMA_UTILS, STORE_DRIVER, STRUCTURAL_ENTITY_VALIDATOR, TRANSACTIONAL_SERVER, UPDATE_MANAGER);
         context.airDb = airDb;
         context.cascadeGraphVerifier = cascadeGraphVerifier;
         context.deleteManager = deleteManager;
@@ -21,6 +21,7 @@ export class IocOperationContext {
         context.queryManager = queryManager;
         context.queryUtils = queryUtils;
         context.relationManager = relationManager;
+        context.repositoryManager = repositoryManager;
         context.schemaUtils = schemaUtils;
         context.storeDriver = storeDriver;
         context.structuralEntityValidator = structuralEntityValidator;

@@ -8,6 +8,9 @@ export class SchemaUtils {
         return airDb.schemas[schemaIndex].currentVersion[0]
             .schemaVersion.entities[tableIndex];
     }
+    isActorId(columnName) {
+        return columnName === repositoryEntity.ACTOR_ID;
+    }
     isRepositoryId(columnName) {
         return columnName === repositoryEntity.REPOSITORY_ID;
     }

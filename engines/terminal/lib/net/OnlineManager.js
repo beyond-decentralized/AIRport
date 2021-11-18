@@ -1,8 +1,8 @@
 import { container, DI } from '@airport/di';
 import { BlockSyncStatus } from '@airport/ground-control';
 import { REPO_TRANS_HISTORY_DAO, REPOSITORY_DAO, RepositoryTransactionHistory, } from '@airport/holding-pattern';
+import { UpdateState } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
-import { UpdateState } from '../core/UpdateState';
 import { OFFLINE_DELTA_STORE, ONLINE_MANAGER, REPOSITORY_MANAGER } from '../tokens';
 export class OnlineManager {
     constructor() {

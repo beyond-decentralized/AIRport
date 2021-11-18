@@ -14,6 +14,8 @@ import {
     IEntityStateManager,
     IStoreDriver
 } from "@airport/ground-control";
+import { IActor, IRepository } from "@airport/holding-pattern";
+import { IRepositoryManager } from "../repository/RepositoryManager";
 import { IDeleteManager } from "../orchestration/DeleteManager";
 import { IInsertManager } from "../orchestration/InsertManager";
 import { IQueryManager } from "../orchestration/QueryManager";
@@ -27,11 +29,13 @@ import { IStructuralEntityValidator } from "./StructuralEntityValidator";
 
 export interface IOperationContext
     extends IContext {
+    actor: IActor
     checkIfProcessed: boolean
     dbEntity: DbEntity
     entityCascadeGraph: any
     internal: boolean
     ioc: IIocOperationContext
+    newRepository?: IRepository
 }
 
 export interface IQueryOperationContext
@@ -56,6 +60,7 @@ export interface IIocOperationContext {
     queryManager: IQueryManager
     queryUtils: IQueryUtils
     relationManager: IRelationManager
+    repositoryManager: IRepositoryManager
     schemaUtils: ISchemaUtils
     storeDriver: IStoreDriver
     structuralEntityValidator: IStructuralEntityValidator

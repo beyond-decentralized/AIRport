@@ -46,6 +46,7 @@ export interface ISchemaUtils {
     isIdEmpty(idValue: any): boolean;
     isEmpty(value: any): boolean;
     isRelationColumn(dbColumn: DbColumn): boolean;
+    isActorId(columnName: string): boolean;
     isRepositoryId(columnName: string): boolean;
     doCascade(dbRelation: DbRelation, crudOperation: CRUDOperation): boolean;
     getIdKey(entityObject: IEntityIdProperties, dbEntity: DbEntity, failOnNoId?: boolean, idValueCallback?: {

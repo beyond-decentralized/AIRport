@@ -2,14 +2,14 @@ import { container, DI } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 export class TransactionalConnector {
-    async addRepository(name, 
+    async addRepository(
     // url: string,
     // platform: PlatformType,
     // platformConfig: string,
     // distributionStrategy: DistributionStrategy,
     context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.addRepository(name, 
+        return await transServer.addRepository(
         // url,
         // platform,
         // platformConfig,

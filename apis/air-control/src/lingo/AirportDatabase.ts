@@ -99,7 +99,6 @@ export interface IAirportDatabase
   ): IEntityAccumulator
 
   addRepository(
-    name: string,
     // url: string,
     // platform: PlatformType,
     // platformConfig: string,

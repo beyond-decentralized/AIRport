@@ -17,9 +17,7 @@ export declare class Repository {
     ownerActor: Actor;
     createdAt: Repository_CreatedAt;
     uuId: Repository_UuId;
-    name: Repository_Name;
     ageSuitability: Repository_AgeSuitability;
-    url: Repository_Url;
     source: Repository_Source;
     repositoryActors: RepositoryActor[];
     repositoryTransactionHistory: RepositoryTransactionHistory[];

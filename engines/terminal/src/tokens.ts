@@ -9,10 +9,10 @@ import {
     IInsertManager,
     IOperationManager,
     IQueryManager,
+    IRepositoryManager,
     IStructuralEntityValidator,
     IUpdateManager
 } from '@airport/terminal-map'
-import { IRepositoryManager } from './core/repository/RepositoryManager'
 import { IInternalRecordManager } from './data/InternalRecordManager'
 import { IOfflineDeltaStore } from './data/OfflineDeltaStore'
 import { IOnlineManager } from './net/OnlineManager'

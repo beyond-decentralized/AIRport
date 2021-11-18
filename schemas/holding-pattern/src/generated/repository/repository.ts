@@ -24,9 +24,7 @@ export interface IRepository {
 	// Non-Id Properties
 	createdAt?: Date;
 	uuId?: string;
-	name?: string;
 	ageSuitability?: number;
-	url?: string;
 	source?: string;
 	syncPriority?: string;
 

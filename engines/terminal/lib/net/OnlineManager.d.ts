@@ -1,6 +1,6 @@
 import { IContext } from '@airport/di';
 import { IRepository, IRepositoryTransactionHistoryDao } from '@airport/holding-pattern';
-import { IRepositoryManager } from '../core/repository/RepositoryManager';
+import { IRepositoryManager } from '@airport/terminal-map';
 import { IOfflineDeltaStore } from '../data/OfflineDeltaStore';
 export interface IOnlineManager {
     goOffline(context?: IContext): Promise<void>;

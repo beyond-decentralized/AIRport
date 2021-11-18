@@ -70,7 +70,6 @@ export class TransactionalServer
 	}
 
 	async addRepository(
-		name: string,
 		// url: string,
 		// platform: PlatformType,
 		// platformConfig: string,
@@ -90,7 +89,7 @@ export class TransactionalServer
 			transaction: ITransaction
 		) => {
 			// TODO: figure out how addRepository will work
-			repositoryId = await context.ioc.insertManager.addRepository(name,
+			repositoryId = await context.ioc.insertManager.addRepository(
 				// url, platform, platformConfig, distributionStrategy
 				actor,
 				context);
@@ -188,6 +187,7 @@ export class TransactionalServer
 		await this.ensureIocContext(context)
 
 		const actor = await this.getActor(credentials);
+		context.actor = actor
 
 		let saveResult: ISaveResult
 		await transactional(async (
@@ -212,6 +212,7 @@ export class TransactionalServer
 		await this.ensureIocContext(context)
 
 		const actor = await this.getActor(credentials);
+		context.actor = actor
 
 		let saveResult: ISaveResult
 		await transactional(async (

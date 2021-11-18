@@ -162,7 +162,6 @@ export class IframeTransactionalConnector
 	}
 
 	async addRepository(
-		name: string,
 		// url: string,
 		// platform: PlatformType,
 		// platformConfig: string,
@@ -172,7 +171,6 @@ export class IframeTransactionalConnector
 		return await this.sendMessage<IAddRepositoryIMI, number>({
 			...this.getCoreFields(),
 			// distributionStrategy,
-			name,
 			// platform,
 			// platformConfig,
 			type: IsolateMessageType.ADD_REPOSITORY,

@@ -54,6 +54,12 @@ export class SchemaUtils
 			.schemaVersion.entities[tableIndex]
 	}
 
+	isActorId(
+		columnName: string
+	): boolean {
+		return columnName === repositoryEntity.ACTOR_ID
+	}
+
 	isRepositoryId(
 		columnName: string
 	): boolean {

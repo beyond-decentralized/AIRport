@@ -6,6 +6,7 @@ import { QEntityConstructor } from '../core/entity/Entity';
 export declare class SchemaUtils implements ISchemaUtils {
     static TEMP_ID: number;
     getDbEntity(schemaIndex: SchemaIndex, tableIndex: TableIndex, airDb: IAirportDatabase): DbEntity;
+    isActorId(columnName: string): boolean;
     isRepositoryId(columnName: string): boolean;
     doCascade(dbRelation: DbRelation, crudOperation: CRUDOperation): boolean;
     getQEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): QEntityConstructor<any>;

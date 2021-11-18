@@ -85,6 +85,10 @@ export interface ISchemaUtils {
     dbColumn: DbColumn,
   ): boolean;
 
+	isActorId(
+		columnName: string
+	): boolean
+
   isRepositoryId(
     columnName: string,
   ): boolean;

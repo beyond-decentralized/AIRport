@@ -120,7 +120,7 @@ export class AirportDatabase {
     getAccumulator(schemaDomain, schemaName) {
         return new EntityAccumulator(schemaDomain, schemaName, this.entityMap);
     }
-    async addRepository(name, 
+    async addRepository(
     // url: string,
     // platform: PlatformType,
     // platformConfig: string,
@@ -128,7 +128,7 @@ export class AirportDatabase {
     context) {
         const dbFacade = await container(this)
             .get(DATABASE_FACADE);
-        return await dbFacade.addRepository(name, 
+        return await dbFacade.addRepository(
         // url, platform, platformConfig, distributionStrategy, 
         context);
     }

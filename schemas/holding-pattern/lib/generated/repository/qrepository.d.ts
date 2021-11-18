@@ -11,9 +11,7 @@ import { Repository } from '../../ddl/repository/Repository';
 export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEOptionalId {
     createdAt?: Date | IQDateField;
     uuId?: string | IQStringField;
-    name?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
-    url?: string | IQStringField;
     source?: string | IQStringField;
     syncPriority?: string | IQStringField;
     ownerActor?: ActorESelect;
@@ -38,9 +36,7 @@ export interface RepositoryEOptionalId {
 export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     createdAt?: Date | IQDateField;
     uuId?: string | IQStringField;
-    name?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
-    url?: string | IQStringField;
     source?: string | IQStringField;
     syncPriority?: string | IQStringField;
     ownerActor?: ActorEOptionalId;
@@ -51,9 +47,7 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
 export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGraph {
     createdAt?: Date | IQDateField;
     uuId?: string | IQStringField;
-    name?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
-    url?: string | IQStringField;
     source?: string | IQStringField;
     syncPriority?: string | IQStringField;
     ownerActor?: ActorGraph;
@@ -66,9 +60,7 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
 export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
     CREATED_AT?: Date | IQDateField;
     UU_ID?: string | IQStringField;
-    NAME?: string | IQStringField;
     AGE_SUITABILITY?: number | IQNumberField;
-    REPOSITORY_URL?: string | IQStringField;
     SOURCE?: string | IQStringField;
     SYNC_PRIORITY?: string | IQStringField;
     OWNER_ACTOR_ID?: number | IQNumberField;
@@ -90,9 +82,7 @@ export interface QRepository extends IQEntity<Repository> {
     id: IQNumberField;
     createdAt: IQDateField;
     uuId: IQStringField;
-    name: IQStringField;
     ageSuitability: IQNumberField;
-    url: IQStringField;
     source: IQStringField;
     syncPriority: IQStringField;
     ownerActor: QActorQRelation;

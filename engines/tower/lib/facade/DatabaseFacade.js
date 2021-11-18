@@ -6,7 +6,7 @@ import { ENTITY_COPIER } from '../tokens';
  * Created by Papa on 5/23/2016.
  */
 export class DatabaseFacade {
-    async addRepository(name, 
+    async addRepository(
     // url: string = null,
     // platform: PlatformType = PlatformType.GOOGLE_DOCS,
     // platformConfig: string = null,
@@ -14,7 +14,7 @@ export class DatabaseFacade {
     context) {
         // TODO: figure out how addRepository will work
         const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-        return await transactionalConnector.addRepository(name, 
+        return await transactionalConnector.addRepository(
         // url, platform, platformConfig, distributionStrategy, 
         context);
     }

@@ -15,11 +15,9 @@ import {
 	SCHEMA_UTILS,
 } from '@airport/air-control'
 import {
-	DI,
-	IContext
+	DI
 } from '@airport/di'
 import {
-	DbEntity,
 	ENTITY_STATE_MANAGER,
 	IEntityStateManager,
 	IOperationContextLoader,
@@ -37,6 +35,7 @@ import {
 	IOperationContext,
 	IOperationManager,
 	IQueryManager,
+	IRepositoryManager,
 	IStructuralEntityValidator,
 	ITransactionalServer,
 	IUpdateManager,
@@ -50,6 +49,7 @@ import {
 	INSERT_MANAGER,
 	OPERATION_MANAGER,
 	QUERY_MANAGER,
+	REPOSITORY_MANAGER,
 	STRUCTURAL_ENTITY_VALIDATOR,
 	UPDATE_MANAGER,
 
@@ -72,6 +72,7 @@ export class IocOperationContext
 	queryManager: IQueryManager
 	queryUtils: IQueryUtils
 	relationManager: IRelationManager
+	repositoryManager: IRepositoryManager
 	schemaUtils: ISchemaUtils
 	storeDriver: IStoreDriver
 	structuralEntityValidator: IStructuralEntityValidator
@@ -84,8 +85,9 @@ export class IocOperationContext
 		const [airDb, cascadeGraphVerifier, deleteManager, dependencyGraphResolver,
 			entityGraphReconstructor, entityStateManager, fieldUtils,
 			insertManager, metadataUtils, operationManager, queryFacade,
-			queryManager, queryUtils, relationManager, schemaUtils, storeDriver,
-			structuralEntityValidator, transactionalServer, updateManager]
+			queryManager, queryUtils, relationManager, repositoryManager,
+			schemaUtils, storeDriver, structuralEntityValidator, transactionalServer,
+			updateManager]
 			= await DI.db()
 				.get(
 					AIRPORT_DATABASE, CASCADE_GRAPH_VERIFIER, DELETE_MANAGER,
@@ -93,8 +95,8 @@ export class IocOperationContext
 					ENTITY_STATE_MANAGER, FIELD_UTILS, INSERT_MANAGER,
 					Q_METADATA_UTILS, OPERATION_MANAGER, QUERY_FACADE,
 					QUERY_MANAGER, QUERY_UTILS, RELATION_MANAGER,
-					SCHEMA_UTILS, STORE_DRIVER, STRUCTURAL_ENTITY_VALIDATOR,
-					TRANSACTIONAL_SERVER, UPDATE_MANAGER
+					REPOSITORY_MANAGER, SCHEMA_UTILS, STORE_DRIVER, 
+					STRUCTURAL_ENTITY_VALIDATOR, TRANSACTIONAL_SERVER, UPDATE_MANAGER
 				)
 		context.airDb = airDb
 		context.cascadeGraphVerifier = cascadeGraphVerifier
@@ -110,6 +112,7 @@ export class IocOperationContext
 		context.queryManager = queryManager
 		context.queryUtils = queryUtils
 		context.relationManager = relationManager
+		context.repositoryManager = repositoryManager
 		context.schemaUtils = schemaUtils
 		context.storeDriver = storeDriver
 		context.structuralEntityValidator = structuralEntityValidator
