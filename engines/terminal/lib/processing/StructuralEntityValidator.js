@@ -42,13 +42,11 @@ export class StructuralEntityValidator {
                                 context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, propertyNameChains) => {
                                     this.validateRelationColumn(dbEntity, dbProperty, dbColumn, isCreate, entity, columnValue, context);
                                 }, false);
-                                // If the 'actor' or the 'repository' property was automatically populated
-                                if (entity[dbProperty.name]) {
-                                    propertyValue = entity[dbProperty.name];
-                                }
                             }
                             if (fromOneToMany) {
-                                if (!propertyValue) {
+                                // 'actor' or the 'repository' property may be automatically populated
+                                // in the entity by this.validateRelationColumn
+                                if (!propertyValue && !entity[dbProperty.name]) {
                                     if (!dbRelation.manyToOneElems || !dbRelation.manyToOneElems.mappedBy
                                         || dbRelation.manyToOneElems.mappedBy === parentRelationPropertyName) {
                                         // The @ManyToOne side of the relationship is missing, add it
