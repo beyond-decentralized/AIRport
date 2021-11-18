@@ -16,9 +16,11 @@ import { TERMINAL_STORE } from "@airport/terminal-map";
 import {
     APPLICATION_DAO,
     DOMAIN_DAO,
-    IApplication
+    IApplication,
+    IDomain
 } from "@airport/territory";
 import { transactional } from "@airport/tower";
+import { ISchema } from "@airport/traffic-pattern";
 import {
     Terminal,
     User
@@ -52,41 +54,11 @@ export class InternalRecordManager
         await transactional(async (
             _transaction
         ) => {
-            const [actorDao, applicationDao, domainDao, entityStateManager, terminalStore]
+            const [actorDao, applicationDao, terminalStore]
                 = await container(this)
-                    .get(ACTOR_DAO, APPLICATION_DAO, DOMAIN_DAO, ENTITY_STATE_MANAGER,
-                        TERMINAL_STORE)
+                    .get(ACTOR_DAO, APPLICATION_DAO, TERMINAL_STORE)
 
-            let domain = terminalStore.getDomainMapByName().get(schema.domain)
-
-            if (!domain || !entityStateManager.getOriginalValues(domain)) {
-                domain = await domainDao.findByName(schema.domain)
-                if (!domain) {
-                    domain = {
-                        id: null,
-                        name: schema.domain,
-                    }
-                    await domainDao.save(domain)
-                }
-                const lastTerminalState = terminalStore.getTerminalState()
-                const domains = lastTerminalState.domains.slice()
-                let replaced = false
-                for (let i = 0; i < domains.length; i++) {
-                    let currentDomain = domains[i]
-                    if (currentDomain.name === domain.name) {
-                        domains.splice(i, 1, domain)
-                        replaced = true
-                    }
-                }
-                if (!replaced) {
-                    domains.push(domain)
-                }
-
-                terminalStore.state.next({
-                    ...lastTerminalState,
-                    domains
-                })
-            }
+            const domain = await this.updateDomain(schema)
 
             let actor = terminalStore
                 .getApplicationActorMapBySignature().get(signature)
@@ -168,6 +140,62 @@ export class InternalRecordManager
                 terminal
             })
         }, context);
+    }
+
+    private async updateDomain(
+        schema: JsonSchemaWithLastIds,
+    ): Promise<IDomain> {
+        const [domainDao, entityStateManager, terminalStore]
+            = await container(this)
+                .get(DOMAIN_DAO, ENTITY_STATE_MANAGER,
+                    TERMINAL_STORE)
+        let domain = terminalStore.getDomainMapByName().get(schema.domain)
+
+        if (domain && entityStateManager.getOriginalValues(domain)) {
+            return domain
+        }
+        let dbDomain = await domainDao.findByName(schema.domain)
+        let updatedDomain
+        if (domain) {
+            if (dbDomain) {
+                entityStateManager.setOriginalValues(
+                    entityStateManager.getOriginalValues(dbDomain), domain)
+                updatedDomain = domain
+            }
+        } else {
+            if (dbDomain) {
+                updatedDomain = dbDomain
+            } else {
+                updatedDomain = {
+                    id: null,
+                    name: schema.domain,
+                }
+                await domainDao.save(updatedDomain)
+            }
+        }
+        if (!updatedDomain) {
+            return domain
+        }
+        const lastTerminalState = terminalStore.getTerminalState()
+        const domains = lastTerminalState.domains.slice()
+        let replaced = false
+        for (let i = 0; i < domains.length; i++) {
+            let currentDomain = domains[i]
+            if (currentDomain.name === domain.name) {
+                domains.splice(i, 1, domain)
+                replaced = true
+            }
+        }
+        if (!replaced) {
+            domains.push(domain)
+        }
+
+        terminalStore.state.next({
+            ...lastTerminalState,
+            domains
+        })
+
+        return updatedDomain
     }
 }
 DI.set(INTERNAL_RECORD_MANAGER, InternalRecordManager)

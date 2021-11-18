@@ -8,5 +8,6 @@ export interface IInternalRecordManager {
 export declare class InternalRecordManager implements IInternalRecordManager {
     ensureSchemaRecords(schema: JsonSchemaWithLastIds, signature: string, context: IContext): Promise<void>;
     initTerminal(domainName: DomainName, context: IContext): Promise<void>;
+    private updateDomain;
 }
 //# sourceMappingURL=InternalRecordManager.d.ts.map
