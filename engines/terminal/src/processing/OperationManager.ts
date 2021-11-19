@@ -57,8 +57,9 @@ export class OperationManager
 				.verify(entities, context)
 			entityGraph = context.ioc.entityGraphReconstructor
 				.restoreEntityGraph(verifiedTree, context)
-			context.ioc.structuralEntityValidator.validate(entityGraph, [], context)
 		}
+		context.ioc.structuralEntityValidator.validate(entityGraph, [], context)
+
 		const operations = context.ioc.dependencyGraphResolver
 			.getOperationsInOrder(entityGraph, context)
 		const rootDbEntity = context.dbEntity
@@ -273,7 +274,7 @@ export class OperationManager
 									let currentSetFragment = setFragment
 									for (let i = 0; i < valuePropertyNameChain.length - 1; i++) {
 										const childPropertyName = valuePropertyNameChain[i]
-										if(!currentSetFragment[childPropertyName]) {
+										if (!currentSetFragment[childPropertyName]) {
 											currentSetFragment[childPropertyName] = {}
 										}
 										currentSetFragment = currentSetFragment[childPropertyName]

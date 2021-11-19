@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE } from '@airport/air-control'
+import { AIRPORT_DATABASE, Id } from '@airport/air-control'
 import {
 	getSysWideOpId,
 	ISequenceGenerator,
@@ -48,7 +48,7 @@ import {
 } from '../tokens'
 
 interface ColumnsToPopulate {
-	actorIdColumn: DbColumn
+	actorRecordIdColumn: DbColumn
 	sysWideOperationIdColumn: DbColumn
 }
 
@@ -227,11 +227,11 @@ appears more than once in the Columns clause`)
 			allIds.push([])
 		}
 
-		let actorIdColumn: DbColumn
+		let actorRecordIdColumn: DbColumn
 		let sysWideOperationIdColumn: DbColumn
 
 		if (!dbEntity.isLocal) {
-			actorIdColumn = columnsToPopulate.actorIdColumn
+			actorRecordIdColumn = columnsToPopulate.actorRecordIdColumn
 			sysWideOperationIdColumn = columnsToPopulate.sysWideOperationIdColumn
 		}
 
@@ -240,7 +240,7 @@ appears more than once in the Columns clause`)
 				continue
 			}
 
-			let isActorIdColumn = false
+			let isActorRecordIdColumn = false
 			let inStatementColumnIndex: number
 			const matchingColumns = jsonInsertValues.C.filter(
 				(
@@ -254,10 +254,10 @@ appears more than once in the Columns clause`)
 				})
 			if (matchingColumns.length < 1) {
 				// Actor Id cannot be in the insert statement
-				if (idColumn.id === actorIdColumn.id) {
-					isActorIdColumn = true
+				if (idColumn.id === actorRecordIdColumn.id) {
+					isActorRecordIdColumn = true
 					inStatementColumnIndex = jsonInsertValues.C.length
-					jsonInsertValues.C.push(actorIdColumn.index)
+					jsonInsertValues.C.push(actorRecordIdColumn.index)
 				} else {
 					throw new Error(errorPrefix +
 						`Could not find @Id column ${dbEntity.name}.${idColumn.name} in
@@ -270,7 +270,8 @@ appears more than once in the Columns clause`)
 				const entityValues = values[i]
 				const idValues = allIds[i]
 				let idValue
-				if (isActorIdColumn) {
+				TODO: remove actor record Id logic, it is covered by generated columns logic
+				if (isActorRecordIdColumn) {
 					idValue = actor.id
 				} else {
 					idValue = entityValues[inStatementColumnIndex]
@@ -392,7 +393,6 @@ appears more than once in the Columns clause`)
 		jsonInsertValues: JsonInsertValues,
 		errorPrefix: string
 	): ColumnsToPopulate {
-		const actorIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_ID]
 		const actorRecordIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_RECORD_ID]
 		const repositoryIdColumn = dbEntity.idColumnMap[repositoryEntity.REPOSITORY_ID]
 		const isDraftIdColumn = dbEntity.columnMap[repositoryEntity.IS_DRAFT]
@@ -403,11 +403,7 @@ appears more than once in the Columns clause`)
 
 		for (let i = 0; i < jsonInsertValues.C.length; i++) {
 			const columnIndex = jsonInsertValues.C[i]
-
 			switch (columnIndex) {
-				case actorIdColumn.index:
-					throw new Error(errorPrefix +
-						`You cannot explicitly provide an ACTOR_ID value for Repository entities.`)
 				case actorRecordIdColumn.index:
 					throw new Error(errorPrefix +
 						`You cannot explicitly provide an ACTOR_RECORD_ID value for Repository entities.`)
@@ -475,19 +471,10 @@ You must provide a valid IS_DRAFT value for Repository entities.`
 and cannot have NULL values for non-draft records.`)
 				}
 			}
-
-			entityValues[actorIdColumn.index] = actor.id
-			// const actorRecordId               = this.idGenerator.generateEntityId(dbEntity)
-			// actorRecordIds.push(actorRecordId)
-			// entityValues[actorRecordIdColumn.index] = actorRecordId
-
-			// if (!entityValues[actorRecordIdColumn.index]) {
-			//
-			// }
 		}
 
 		return {
-			actorIdColumn,
+			actorRecordIdColumn,
 			sysWideOperationIdColumn
 		}
 	}

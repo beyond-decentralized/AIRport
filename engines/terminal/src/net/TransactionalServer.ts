@@ -273,15 +273,15 @@ export class TransactionalServer
 		await this.ensureIocContext(context)
 		const actor = await this.getActor(credentials);
 
-		let numInsertedRecords
+		let ids
 		await transactional(async (
 			transaction: ITransaction
 		) => {
-			numInsertedRecords = await context.ioc.insertManager.insertValuesGetIds(
+			ids = await context.ioc.insertManager.insertValuesGetIds(
 				portableQuery, actor, transaction, context);
 		}, context)
 
-		return numInsertedRecords
+		return ids
 	}
 
 	async updateValues(
