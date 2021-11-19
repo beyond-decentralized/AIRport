@@ -35,6 +35,7 @@ export interface IOperationContext
     entityCascadeGraph: any
     internal: boolean
     ioc: IIocOperationContext
+    isSaveOperation?: boolean
     newRepository?: IRepository
 }
 

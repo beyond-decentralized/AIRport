@@ -13,6 +13,7 @@ import {
     SQLDataType,
     DbColumn
 } from "@airport/ground-control"
+import { IRepositoryEntity } from "@airport/holding-pattern";
 
 export class UpdateCacheManager
     implements IUpdateCacheManager {
@@ -148,7 +149,7 @@ export class UpdateCacheManager
             for (const dbProperty of dbEntity.properties) {
                 const property = entityCopy[dbProperty.name]
                 if (dbProperty.relation && dbProperty.relation.length) {
-                    if(!property) {
+                    if (!property) {
                         continue
                     }
                     const dbRelation = dbProperty.relation[0];
@@ -290,6 +291,13 @@ export class UpdateCacheManager
                 if (createdRecord !== true) {
                     for (const generatedPropertyName in createdRecord) {
                         entity[generatedPropertyName] = createdRecord[generatedPropertyName]
+                    }
+                    if (dbEntity.isRepositoryEntity) {
+                        let repositoryEntity = entity as any as IRepositoryEntity
+                        if (!repositoryEntity.repository || !repositoryEntity.repository.id) {
+                            repositoryEntity.repository = saveResult.newRepository
+                        }
+                        repositoryEntity.actor = saveResult.actor
                     }
                 }
             } else if (saveResult.deleted[operationUniqueId]) {

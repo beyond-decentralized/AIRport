@@ -20,6 +20,7 @@ export interface IOperationContext extends IContext {
     entityCascadeGraph: any;
     internal: boolean;
     ioc: IIocOperationContext;
+    isSaveOperation?: boolean;
     newRepository?: IRepository;
 }
 export interface IQueryOperationContext extends IOperationContext {

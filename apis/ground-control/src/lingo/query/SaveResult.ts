@@ -1,3 +1,22 @@
+export interface ISaveUser {
+	id: number;
+}
+
+export interface ISaveActor {
+    id: number;
+    uuId?: string;
+    user?: ISaveUser;
+}
+
+export interface ISaveRepository {
+	id: number;
+	createdAt?: Date;
+	uuId?: string;
+	ageSuitability?: number;
+	source?: string;
+	ownerActor?: ISaveActor;
+}
+
 /**
  * Save results are needed to update application/schema isolates:
  *     - created objects with new ids
@@ -25,7 +44,9 @@ export interface IDeleteResultRecords {
 }
 
 export interface ISaveResult {
+    actor: ISaveActor
     created: ICreateResultRecords
-    updated: IUpdateResultRecords
     deleted: IDeleteResultRecords
+    newRepository: ISaveRepository
+    updated: IUpdateResultRecords
 }

@@ -14,8 +14,11 @@ import {
 	DbColumn,
 	EntityRelationType,
 	ENTITY_STATE_MANAGER,
+	ISaveActor,
+	ISaveRepository,
 	ISaveResult,
 	JSONValueOperation,
+	PlatformType,
 	PortableQuery
 } from '@airport/ground-control'
 import { IActor } from '@airport/holding-pattern'
@@ -46,6 +49,7 @@ export class OperationManager
 		context: IOperationContext,
 	): Promise<ISaveResult> {
 		let entityGraph
+		context.isSaveOperation = true
 		if (context.internal) {
 			if (entities instanceof Array) {
 				entityGraph = entities
@@ -63,10 +67,36 @@ export class OperationManager
 		const operations = context.ioc.dependencyGraphResolver
 			.getOperationsInOrder(entityGraph, context)
 		const rootDbEntity = context.dbEntity
+		let saveActor: ISaveActor = {
+			id: actor.id,
+			uuId: actor.uuId,
+			user: actor.user ? {
+				id: actor.user.id
+			}: null
+		}
+		let newRepository: ISaveRepository
+		if(context.newRepository) {
+			newRepository = {
+				id: context.newRepository.id,
+				createdAt: context.newRepository.createdAt,
+				uuId: context.newRepository.uuId,
+				ageSuitability: context.newRepository.ageSuitability,
+				source: context.newRepository.source,
+				ownerActor: {
+					id: actor.id,
+					uuId: actor.uuId,
+					user: actor.user ? {
+						id: actor.user.id
+					}: null
+				}
+			}
+		}
 		const saveResult: ISaveResult = {
+			actor: saveActor,
 			created: {},
+			newRepository,
+			deleted: {},
 			updated: {},
-			deleted: {}
 		}
 		for (const operation of operations) {
 			context.dbEntity = operation.dbEntity

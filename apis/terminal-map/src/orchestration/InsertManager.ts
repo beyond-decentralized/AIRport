@@ -1,13 +1,12 @@
 import { IContext } from "@airport/di";
 import type {
-    DistributionStrategy,
-    PlatformType,
     PortableQuery
 } from "@airport/ground-control";
 import type {
     IActor,
     RecordHistoryId
 } from "@airport/holding-pattern";
+import { IOperationContext } from "../processing/OperationContext";
 import { ITransaction } from "../transaction/ITransaction";
 
 export type RecordId = number;
@@ -18,7 +17,7 @@ export interface IInsertManager {
         portableQuery: PortableQuery,
         actor: IActor,
         transaction: ITransaction,
-        context: IContext,
+        context: IOperationContext,
         ensureGeneratedValues?: boolean
     ): Promise<number>;
 
@@ -26,7 +25,7 @@ export interface IInsertManager {
         portableQuery: PortableQuery,
         actor: IActor,
         transaction: ITransaction,
-        context: IContext,
+        context: IOperationContext,
     ): Promise<RecordHistoryId[] | RecordId[][]>;
 
     addRepository(
@@ -35,7 +34,7 @@ export interface IInsertManager {
         // platformConfig: string,
         // distributionStrategy: DistributionStrategy,
         actor: IActor,
-        context: IContext,
+        context: IOperationContext,
     ): Promise<number>;
 
 }

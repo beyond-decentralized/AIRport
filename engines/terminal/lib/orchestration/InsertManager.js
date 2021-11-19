@@ -65,7 +65,7 @@ appears more than once in the Columns clause`);
         let columnsToPopulate;
         const insertValues = portableQuery.jsonQuery;
         if (dbEntity.isRepositoryEntity) {
-            columnsToPopulate = this.ensureRepositoryEntityIdValues(actor, dbEntity, insertValues, errorPrefix);
+            columnsToPopulate = this.ensureRepositoryEntityIdValues(actor, dbEntity, insertValues, errorPrefix, context);
         }
         let generatedColumns = this.verifyNoGeneratedColumns(dbEntity, portableQuery.jsonQuery, errorPrefix);
         let ids;
@@ -224,7 +224,7 @@ appears more than once in the Columns clause`);
         // }
         return allIds;
     }
-    ensureRepositoryEntityIdValues(actor, dbEntity, jsonInsertValues, errorPrefix) {
+    ensureRepositoryEntityIdValues(actor, dbEntity, jsonInsertValues, errorPrefix, context) {
         const actorIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_ID];
         const actorRecordIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_RECORD_ID];
         const repositoryIdColumn = dbEntity.idColumnMap[repositoryEntity.REPOSITORY_ID];
@@ -236,6 +236,10 @@ appears more than once in the Columns clause`);
             const columnIndex = jsonInsertValues.C[i];
             switch (columnIndex) {
                 case actorIdColumn.index:
+                    if (context.isSaveOperation) {
+                        // Save operations validate Actor ealier and set it on the entity objects
+                        break;
+                    }
                     throw new Error(errorPrefix +
                         `You cannot explicitly provide an ACTOR_ID value for Repository entities.`);
                 case actorRecordIdColumn.index:
@@ -295,13 +299,10 @@ You must provide a valid IS_DRAFT value for Repository entities.`;
 and cannot have NULL values for non-draft records.`);
                 }
             }
-            entityValues[actorIdColumn.index] = actor.id;
-            // const actorRecordId               = this.idGenerator.generateEntityId(dbEntity)
-            // actorRecordIds.push(actorRecordId)
-            // entityValues[actorRecordIdColumn.index] = actorRecordId
-            // if (!entityValues[actorRecordIdColumn.index]) {
-            //
-            // }
+            if (!context.isSaveOperation) {
+                // Save operation set Actor ealier (at the entity level, to be returned back to client)
+                entityValues[actorIdColumn.index] = actor.id;
+            }
         }
         return {
             actorIdColumn,

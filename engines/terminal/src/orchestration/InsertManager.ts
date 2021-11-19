@@ -35,6 +35,7 @@ import {
 import {
 	IHistoryManager,
 	IInsertManager,
+	IOperationContext,
 	IRepositoryManager,
 	ITransaction,
 	RecordId,
@@ -48,7 +49,7 @@ import {
 } from '../tokens'
 
 interface ColumnsToPopulate {
-	actorRecordIdColumn: DbColumn
+	actorIdColumn: DbColumn
 	sysWideOperationIdColumn: DbColumn
 }
 
@@ -63,7 +64,7 @@ export class InsertManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
-		context: IContext,
+		context: IOperationContext,
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
 		return <number>await this.internalInsertValues(
@@ -74,7 +75,7 @@ export class InsertManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
-		context: IContext,
+		context: IOperationContext,
 	): Promise<RecordId[][]> {
 		return <RecordId[][]>await this.internalInsertValues(
 			portableQuery, actor, transaction, context, true)
@@ -124,7 +125,7 @@ export class InsertManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
-		context: IContext,
+		context: IOperationContext,
 		getIds: boolean = false,
 		ensureGeneratedValues: boolean = true
 	): Promise<number | RecordId[] | RecordId[][]> {
@@ -174,7 +175,7 @@ appears more than once in the Columns clause`)
 
 		if (dbEntity.isRepositoryEntity) {
 			columnsToPopulate = this.ensureRepositoryEntityIdValues(actor, dbEntity,
-				insertValues, errorPrefix)
+				insertValues, errorPrefix, context)
 		}
 
 		let generatedColumns = this.verifyNoGeneratedColumns(dbEntity,
@@ -227,11 +228,11 @@ appears more than once in the Columns clause`)
 			allIds.push([])
 		}
 
-		let actorRecordIdColumn: DbColumn
+		let actorIdColumn: DbColumn
 		let sysWideOperationIdColumn: DbColumn
 
 		if (!dbEntity.isLocal) {
-			actorRecordIdColumn = columnsToPopulate.actorRecordIdColumn
+			actorIdColumn = columnsToPopulate.actorIdColumn
 			sysWideOperationIdColumn = columnsToPopulate.sysWideOperationIdColumn
 		}
 
@@ -240,7 +241,7 @@ appears more than once in the Columns clause`)
 				continue
 			}
 
-			let isActorRecordIdColumn = false
+			let isActorIdColumn = false
 			let inStatementColumnIndex: number
 			const matchingColumns = jsonInsertValues.C.filter(
 				(
@@ -254,10 +255,10 @@ appears more than once in the Columns clause`)
 				})
 			if (matchingColumns.length < 1) {
 				// Actor Id cannot be in the insert statement
-				if (idColumn.id === actorRecordIdColumn.id) {
-					isActorRecordIdColumn = true
+				if (idColumn.id === actorIdColumn.id) {
+					isActorIdColumn = true
 					inStatementColumnIndex = jsonInsertValues.C.length
-					jsonInsertValues.C.push(actorRecordIdColumn.index)
+					jsonInsertValues.C.push(actorIdColumn.index)
 				} else {
 					throw new Error(errorPrefix +
 						`Could not find @Id column ${dbEntity.name}.${idColumn.name} in
@@ -270,8 +271,7 @@ appears more than once in the Columns clause`)
 				const entityValues = values[i]
 				const idValues = allIds[i]
 				let idValue
-				TODO: remove actor record Id logic, it is covered by generated columns logic
-				if (isActorRecordIdColumn) {
+				if (isActorIdColumn) {
 					idValue = actor.id
 				} else {
 					idValue = entityValues[inStatementColumnIndex]
@@ -391,8 +391,10 @@ appears more than once in the Columns clause`)
 		actor: IActor,
 		dbEntity: DbEntity,
 		jsonInsertValues: JsonInsertValues,
-		errorPrefix: string
+		errorPrefix: string,
+		context: IOperationContext
 	): ColumnsToPopulate {
+		const actorIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_ID]
 		const actorRecordIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_RECORD_ID]
 		const repositoryIdColumn = dbEntity.idColumnMap[repositoryEntity.REPOSITORY_ID]
 		const isDraftIdColumn = dbEntity.columnMap[repositoryEntity.IS_DRAFT]
@@ -404,6 +406,13 @@ appears more than once in the Columns clause`)
 		for (let i = 0; i < jsonInsertValues.C.length; i++) {
 			const columnIndex = jsonInsertValues.C[i]
 			switch (columnIndex) {
+				case actorIdColumn.index:
+					if(context.isSaveOperation) {
+						// Save operations validate Actor ealier and set it on the entity objects
+						break;
+					}
+					throw new Error(errorPrefix +
+						`You cannot explicitly provide an ACTOR_ID value for Repository entities.`)
 				case actorRecordIdColumn.index:
 					throw new Error(errorPrefix +
 						`You cannot explicitly provide an ACTOR_RECORD_ID value for Repository entities.`)
@@ -471,10 +480,16 @@ You must provide a valid IS_DRAFT value for Repository entities.`
 and cannot have NULL values for non-draft records.`)
 				}
 			}
+			if(!context.isSaveOperation) {
+				// Save operation set Actor ealier (at the entity level, to be returned back to client)
+				entityValues[actorIdColumn.index] = actor.id
+			}
 		}
 
+
+
 		return {
-			actorRecordIdColumn,
+			actorIdColumn,
 			sysWideOperationIdColumn
 		}
 	}

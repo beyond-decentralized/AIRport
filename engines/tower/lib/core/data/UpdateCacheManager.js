@@ -238,6 +238,13 @@ export class UpdateCacheManager {
                     for (const generatedPropertyName in createdRecord) {
                         entity[generatedPropertyName] = createdRecord[generatedPropertyName];
                     }
+                    if (dbEntity.isRepositoryEntity) {
+                        let repositoryEntity = entity;
+                        if (!repositoryEntity.repository || !repositoryEntity.repository.id) {
+                            repositoryEntity.repository = saveResult.newRepository;
+                        }
+                        repositoryEntity.actor = saveResult.actor;
+                    }
                 }
             }
             else if (saveResult.deleted[operationUniqueId]) {

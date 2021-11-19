@@ -14,6 +14,7 @@ export class OperationManager {
      */
     async performSave(entities, actor, transaction, context) {
         let entityGraph;
+        context.isSaveOperation = true;
         if (context.internal) {
             if (entities instanceof Array) {
                 entityGraph = entities;
@@ -27,15 +28,41 @@ export class OperationManager {
                 .verify(entities, context);
             entityGraph = context.ioc.entityGraphReconstructor
                 .restoreEntityGraph(verifiedTree, context);
-            context.ioc.structuralEntityValidator.validate(entityGraph, [], context);
         }
+        context.ioc.structuralEntityValidator.validate(entityGraph, [], context);
         const operations = context.ioc.dependencyGraphResolver
             .getOperationsInOrder(entityGraph, context);
         const rootDbEntity = context.dbEntity;
+        let saveActor = {
+            id: actor.id,
+            uuId: actor.uuId,
+            user: actor.user ? {
+                id: actor.user.id
+            } : null
+        };
+        let newRepository;
+        if (context.newRepository) {
+            newRepository = {
+                id: context.newRepository.id,
+                createdAt: context.newRepository.createdAt,
+                uuId: context.newRepository.uuId,
+                ageSuitability: context.newRepository.ageSuitability,
+                source: context.newRepository.source,
+                ownerActor: {
+                    id: actor.id,
+                    uuId: actor.uuId,
+                    user: actor.user ? {
+                        id: actor.user.id
+                    } : null
+                }
+            };
+        }
         const saveResult = {
+            actor: saveActor,
             created: {},
+            newRepository,
+            deleted: {},
             updated: {},
-            deleted: {}
         };
         for (const operation of operations) {
             context.dbEntity = operation.dbEntity;
