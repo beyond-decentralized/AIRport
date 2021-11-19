@@ -25,10 +25,6 @@ export interface IRepositoryManager {
 
 	initialize(): Promise<void>;
 
-    getNewRepository(
-      context: IOperationContext
-    ): IRepository
-
 	createRepository(
 		// distributionStrategy: DistributionStrategy,
 		// offlineStoreType: StoreType,

@@ -15,14 +15,14 @@ import { STRUCTURAL_ENTITY_VALIDATOR } from '../tokens'
 export class StructuralEntityValidator
 	implements IStructuralEntityValidator {
 
-	validate<E>(
+	async validate<E>(
 		entities: E[],
 		operatedOnEntityIndicator: boolean[],
 		context: IOperationContext,
 		fromOneToMany = false,
 		parentRelationPropertyName = null,
 		parentRelationEntity = null
-	): void {
+	): Promise<void> {
 		const dbEntity = context.dbEntity
 
 		if (!dbEntity.idColumns.length) {
@@ -69,14 +69,25 @@ export class StructuralEntityValidator
 							// Id columns are for the parent (currently processed) entity and must be
 							// checked as part of this entity
 							if (dbProperty.isId) {
+								let newRepositoryNeeded = false;
 								context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (
 									dbColumn: DbColumn,
 									columnValue: any,
 									propertyNameChains: string[][],
 								) => {
-									this.validateRelationColumn(dbEntity, dbProperty, dbColumn,
-										isCreate, entity, columnValue, context)
+									if (this.validateRelationColumnAndCheckNewRepositoryNeed(
+										dbEntity, dbProperty, dbColumn,
+										isCreate, entity, columnValue, context)) {
+										newRepositoryNeeded = true
+									}
 								}, false)
+								if (newRepositoryNeeded) {
+									if (!context.newRepository) {
+										context.newRepository =
+											await context.ioc.repositoryManager.createRepository(context.actor)
+									}
+									entity[dbProperty.name] = context.newRepository
+								}
 							}
 							if (fromOneToMany) {
 								// 'actor' or the 'repository' property may be automatically populated
@@ -128,7 +139,7 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateMa
 		} // for (const entity
 	}
 
-	protected validateRelationColumn<E>(
+	protected validateRelationColumnAndCheckNewRepositoryNeed<E>(
 		dbEntity: DbEntity,
 		dbProperty: DbProperty,
 		dbColumn: DbColumn,
@@ -136,18 +147,19 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateMa
 		entity: E,
 		columnValue: any,
 		context: IOperationContext,
-	) {
+	): boolean {
+		let newRepositoryNeeded = false
 		const isIdColumnEmpty = context.ioc.schemaUtils.isIdEmpty(columnValue)
 		if (!dbColumn.idIndex && dbColumn.idIndex !== 0) {
 			return
 		}
 		if (dbEntity.isRepositoryEntity) {
 			if (!isIdColumnEmpty) {
-				if(isCreate) {
-					if(context.ioc.schemaUtils.isActorId(dbColumn.name)) {
-					throw new Error(`Actor cannot be passed in for create Operations`)
+				if (isCreate) {
+					if (context.ioc.schemaUtils.isActorId(dbColumn.name)) {
+						throw new Error(`Actor cannot be passed in for create Operations`)
+					}
 				}
-			}
 				return
 			}
 			if (!isCreate) {
@@ -155,7 +167,7 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateMa
 			}
 			if (context.ioc.schemaUtils.isRepositoryId(dbColumn.name)) {
 				// Repository was not provided - use context's 'newRepository'
-				entity[dbProperty.name] = context.ioc.repositoryManager.getNewRepository(context)
+				newRepositoryNeeded = true
 			} else if (context.ioc.schemaUtils.isActorId(dbColumn.name)) {
 				// Use context's 'actor'
 				entity[dbProperty.name] = context.actor
@@ -165,7 +177,9 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateMa
 		} else {
 			this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty)
 		}
-	} 
+
+		return newRepositoryNeeded
+	}
 
 	protected ensureIdValue(
 		dbEntity: DbEntity,

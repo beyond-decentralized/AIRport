@@ -83,18 +83,6 @@ export class RepositoryManager
 			repositoryIds, this.terminal.name, this.userEmail)
 	}
 
-	getNewRepository(
-		context: IOperationContext
-	): IRepository {
-		if (context.newRepository) {
-			return context.newRepository
-		}
-
-		context.newRepository = this.getRepositoryRecord(context.actor)
-
-		return context.newRepository
-	}
-
 	async createRepository(
 		// distributionStrategy: DistributionStrategy,
 		// offlineStoreType: StoreType,

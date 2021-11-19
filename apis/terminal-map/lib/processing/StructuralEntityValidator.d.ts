@@ -1,5 +1,5 @@
 import type { IOperationContext } from "./OperationContext";
 export interface IStructuralEntityValidator {
-    validate<E>(entities: E[], operatedOnEntityIndicator: boolean[], context: IOperationContext): void;
+    validate<E>(entities: E[], operatedOnEntityIndicator: boolean[], context: IOperationContext): Promise<void>;
 }
 //# sourceMappingURL=StructuralEntityValidator.d.ts.map

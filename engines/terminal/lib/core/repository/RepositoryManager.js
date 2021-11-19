@@ -25,13 +25,6 @@ export class RepositoryManager {
         const repositoryDao = await container(this).get(REPOSITORY_DAO);
         return await repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.name, this.userEmail);
     }
-    getNewRepository(context) {
-        if (context.newRepository) {
-            return context.newRepository;
-        }
-        context.newRepository = this.getRepositoryRecord(context.actor);
-        return context.newRepository;
-    }
     async createRepository(
     // distributionStrategy: DistributionStrategy,
     // offlineStoreType: StoreType,

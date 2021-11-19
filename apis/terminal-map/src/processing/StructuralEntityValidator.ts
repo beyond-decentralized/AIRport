@@ -6,6 +6,6 @@ export interface IStructuralEntityValidator {
 		entities: E[],
 		operatedOnEntityIndicator: boolean[],
 		context: IOperationContext,
-	): void
+	): Promise<void>
 
 }

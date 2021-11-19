@@ -2,7 +2,6 @@ import { IEntityUpdateProperties, IQEntityInternal, MappedEntityArray, RawDelete
 import { IActor, IRepository } from '@airport/holding-pattern';
 import { IDeltaStore } from './DeltaStore';
 import { UpdateState } from '../core/UpdateState';
-import { IOperationContext } from '../processing/OperationContext';
 export interface IRepositoryManager {
     deltaStore: any;
     repositories: IRepository[];
@@ -10,7 +9,6 @@ export interface IRepositoryManager {
         [repositoryId: string]: IRepository;
     };
     initialize(): Promise<void>;
-    getNewRepository(context: IOperationContext): IRepository;
     createRepository(actor: IActor): Promise<IRepository>;
     getRepository(repositoryId: number): Promise<IRepository>;
     getActor(actorId: number): Promise<IActor>;
