@@ -15,6 +15,7 @@ export class TransactionHistoryDuo extends BaseTransactionHistoryDuo {
             repoTransHistory = repoTransHistoryDuo.getNewRecord(repositoryId, actor);
             transactionHistory.repositoryTransactionHistories.push(repoTransHistory);
             transactionHistory.repoTransHistoryMap[repositoryId] = repoTransHistory;
+            repoTransHistory.transactionHistory = transactionHistory;
         }
         return repoTransHistory;
     }

@@ -8,6 +8,7 @@ export class OperationHistoryDuo extends BaseOperationHistoryDuo {
             entity: dbEntity,
             id: undefined,
             orderNumber: ++repositoryTransactionHistory.transactionHistory.numberOfOperations,
+            recordHistory: [],
             repositoryTransactionHistory: repositoryTransactionHistory,
             systemWideOperationId
         };
@@ -26,6 +27,7 @@ export class OperationHistoryDuo extends BaseOperationHistoryDuo {
     }
     startRecordHistory(operationHistory, actorRecordId, recHistoryDuo) {
         const recordHistory = recHistoryDuo.getNewRecord(actorRecordId);
+        recordHistory.operationHistory = operationHistory;
         operationHistory.recordHistory.push(recordHistory);
         operationHistory.repositoryTransactionHistory
             .transactionHistory.allRecordHistory.push(recordHistory);

@@ -2,6 +2,7 @@ import {
 	Column,
 	DbNumber,
 	Entity,
+	GeneratedValue,
 	Id,
 	Table
 } from '@airport/air-control'
@@ -18,6 +19,7 @@ export class SystemWideOperationId {
 	@Id()
 	@Column({name: 'ID', nullable: false})
 	@DbNumber()
+	@GeneratedValue()
 	id: SystemWideOperationId_Id
 
 }

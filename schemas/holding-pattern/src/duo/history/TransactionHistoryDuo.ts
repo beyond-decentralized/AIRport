@@ -57,6 +57,7 @@ export class TransactionHistoryDuo
 
 			transactionHistory.repositoryTransactionHistories.push(repoTransHistory)
 			transactionHistory.repoTransHistoryMap[repositoryId] = <any>repoTransHistory
+			repoTransHistory.transactionHistory = transactionHistory
 		}
 
 		return repoTransHistory

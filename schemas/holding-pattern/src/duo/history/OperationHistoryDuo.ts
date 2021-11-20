@@ -53,6 +53,7 @@ export class OperationHistoryDuo
 			entity: dbEntity,
 			id: undefined,
 			orderNumber: ++repositoryTransactionHistory.transactionHistory.numberOfOperations,
+			recordHistory: [],
 			repositoryTransactionHistory: repositoryTransactionHistory,
 			systemWideOperationId
 		}
@@ -80,6 +81,8 @@ export class OperationHistoryDuo
 		recHistoryDuo: IRecordHistoryDuo
 	): IRecordHistory {
 		const recordHistory = recHistoryDuo.getNewRecord(actorRecordId)
+
+		recordHistory.operationHistory = operationHistory
 
 		operationHistory.recordHistory.push(recordHistory)
 

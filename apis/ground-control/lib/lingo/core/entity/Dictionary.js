@@ -112,7 +112,7 @@ export var repositoryEntity;
     repositoryEntity.IS_DRAFT = 'IS_DRAFT';
     repositoryEntity.LOCAL_ENTITY_NAME = 'LocalRepositoryEntity';
     repositoryEntity.REPOSITORY_ID = 'REPOSITORY_ID';
-    repositoryEntity.SYS_WIDE_OP_ID_SCHEMA = 'npmjs_org___airport__airport_code';
+    repositoryEntity.SYS_WIDE_OP_ID_SCHEMA = 'air___airport__airport_code';
     repositoryEntity.SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId';
     repositoryEntity.systemWideOperationId = 'systemWideOperationId';
     repositoryEntity.SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID';

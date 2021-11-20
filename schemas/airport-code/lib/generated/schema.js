@@ -159,7 +159,7 @@ export const SCHEMA = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "SEQUENCES",
-                        "indexes": []
+                        "columnIndexes": []
                     },
                     "operations": {}
                 },
@@ -167,7 +167,7 @@ export const SCHEMA = {
                     "columns": [
                         {
                             "index": 0,
-                            "isGenerated": false,
+                            "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
                             "notNull": true,
@@ -204,7 +204,7 @@ export const SCHEMA = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "SYSTEM_WIDE_OPERATION_IDS",
-                        "indexes": []
+                        "columnIndexes": []
                     }
                 },
                 {
@@ -294,7 +294,7 @@ export const SCHEMA = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "TERMINAL_RUNS",
-                        "indexes": []
+                        "columnIndexes": []
                     },
                     "operations": {}
                 }

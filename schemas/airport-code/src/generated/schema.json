@@ -158,7 +158,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SEQUENCES",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -166,7 +166,7 @@
 					"columns": [
 						{
 							"index": 0,
-							"isGenerated": false,
+							"isGenerated": true,
 							"manyRelationColumnRefs": [],
 							"name": "ID",
 							"notNull": true,
@@ -203,7 +203,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SYSTEM_WIDE_OPERATION_IDS",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -293,7 +293,7 @@
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "TERMINAL_RUNS",
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				}
