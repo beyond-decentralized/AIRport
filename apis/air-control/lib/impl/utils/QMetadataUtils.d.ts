@@ -6,6 +6,7 @@ import { IQMetadataUtils } from '../../lingo/utils/QMetadataUtils';
 export declare class QMetadataUtils implements IQMetadataUtils {
     getAllColumns(qEntity: IQEntityInternal<any>): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
     getAllNonGeneratedColumns(qEntity: IQEntityInternal<any>): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
+    getAllInsertableColumns(qEntity: IQEntityInternal<any>): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
     getDbEntity<IQE extends IQEntityInternal<any>>(qEntity: IQE): DbEntity;
     getNewEntity(qEntity: IQEntityInternal<any>, airDb: IAirportDatabase): any;
 }

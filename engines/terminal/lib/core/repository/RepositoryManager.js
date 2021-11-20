@@ -141,7 +141,9 @@ export class RepositoryManager {
             id: null,
             repository
         };
-        const repositoryActorDao = await container(this).get(REPOSITORY_ACTOR_DAO);
+        const [repositoryDao, repositoryActorDao] = await container(this)
+            .get(REPOSITORY_DAO, REPOSITORY_ACTOR_DAO);
+        await repositoryDao.save(repository);
         await repositoryActorDao.save(repositoryActor);
         // const repositoryDao = await container(this).get(REPOSITORY_DAO)
         // await repositoryDao.save(repository)

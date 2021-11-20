@@ -105,6 +105,12 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
                     // Relation is an entity that this entity depends on
                     case EntityRelationType.MANY_TO_ONE:
                         childDeleteByCascade = false;
+                        // TODO: see if there is a cleaner way to escape nested Actor and Repository records
+                        if (dbEntity.isRepositoryEntity && (dbProperty.name === 'repository'
+                            || dbProperty.name === 'actor')
+                            && !propertyValue[context.ioc.entityStateManager.getStateFieldName()]) {
+                            continue;
+                        }
                         const parentState = context.ioc.entityStateManager
                             .getEntityStateTypeAsFlags(propertyValue, dbRelation.relationEntity);
                         if (parentState.isParentId) {
@@ -134,6 +140,8 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
                         if (parentState.isCreate) {
                             isDependency = true;
                         }
+                        // Do not persist actor or repository, they
+                        // are created separately
                         relatedEntities = [propertyValue];
                         break;
                     // Relation is an array of entities that depend in this entity

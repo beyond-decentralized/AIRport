@@ -1,4 +1,5 @@
 import { DI } from '@airport/di/lib';
+import { repositoryEntity } from '@airport/ground-control';
 import { Q_METADATA_UTILS } from '../../tokens';
 export class QMetadataUtils {
     getAllColumns(qEntity) {
@@ -6,6 +7,20 @@ export class QMetadataUtils {
     }
     getAllNonGeneratedColumns(qEntity) {
         return this.getAllColumns(qEntity).filter(qField => !qField.dbColumn.isGenerated);
+    }
+    getAllInsertableColumns(qEntity) {
+        return this.getAllColumns(qEntity).filter(qField => {
+            if (qField.dbColumn.isGenerated) {
+                return false;
+            }
+            if (qEntity.__driver__.dbEntity.isRepositoryEntity) {
+                switch (qField.dbColumn.name) {
+                    case repositoryEntity.SYSTEM_WIDE_OPERATION_ID:
+                        return false;
+                }
+            }
+            return true;
+        });
     }
     getDbEntity(qEntity) {
         return qEntity.__driver__.dbEntity;

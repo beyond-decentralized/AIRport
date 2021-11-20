@@ -15,6 +15,10 @@ export interface IQMetadataUtils {
 		qEntity: IQEntityInternal<any>
 	): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]
 
+	getAllInsertableColumns(
+		qEntity: IQEntityInternal<any>
+	): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]
+
 	getDbEntity<IQE extends IQEntityInternal<any>>(
 		qEntity: IQE
 	): DbEntity

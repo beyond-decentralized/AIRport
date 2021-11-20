@@ -397,11 +397,18 @@ appears more than once in the Columns clause`)
 		const actorIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_ID]
 		const actorRecordIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_RECORD_ID]
 		const repositoryIdColumn = dbEntity.idColumnMap[repositoryEntity.REPOSITORY_ID]
-		const isDraftIdColumn = dbEntity.columnMap[repositoryEntity.IS_DRAFT]
+		// const isDraftIdColumn = dbEntity.columnMap[repositoryEntity.IS_DRAFT]
 		const sysWideOperationIdColumn = dbEntity.columnMap[repositoryEntity.SYSTEM_WIDE_OPERATION_ID]
 
 		let repositoryIdColumnQueryIndex
-		let isDraftColumnQueryIndex
+		// let isDraftColumnQueryIndex
+
+		// let isDraftIdColumnIndex
+		// if(isDraftIdColumn) {
+		// 	isDraftIdColumnIndex = isDraftIdColumn.index
+		// } else {
+		// 	isDraftIdColumnIndex = -1
+		// }
 
 		for (let i = 0; i < jsonInsertValues.C.length; i++) {
 			const columnIndex = jsonInsertValues.C[i]
@@ -422,9 +429,9 @@ You cannot explicitly provide a SYSTEM_WIDE_OPERATION_ID value for Repository en
 				case repositoryIdColumn.index:
 					repositoryIdColumnQueryIndex = i
 					break
-				case isDraftIdColumn.index:
-					isDraftColumnQueryIndex = i
-					break
+				// case isDraftIdColumnIndex:
+				// 	isDraftColumnQueryIndex = i
+				// 	break
 			}
 		}
 
@@ -432,17 +439,17 @@ You cannot explicitly provide a SYSTEM_WIDE_OPERATION_ID value for Repository en
 			`Error inserting into '${dbEntity.name}'.
 You must provide a valid REPOSITORY_ID value for Repository entities.`
 
-		const missingIsDraftErrorMsg = errorPrefix +
-			`Error inserting into '${dbEntity.name}'.
-You must provide a valid IS_DRAFT value for Repository entities.`
+// 		const missingIsDraftErrorMsg = errorPrefix +
+// 			`Error inserting into '${dbEntity.name}'.
+// You must provide a valid IS_DRAFT value for Repository entities.`
 
 		if (repositoryIdColumnQueryIndex === undefined) {
 			throw new Error(missingRepositoryIdErrorMsg)
 		}
 
-		if (isDraftColumnQueryIndex === undefined) {
-			throw new Error(missingIsDraftErrorMsg)
-		}
+		// if (isDraftColumnQueryIndex === undefined) {
+		// 	throw new Error(missingIsDraftErrorMsg)
+		// }
 
 		for (const entityValues of jsonInsertValues.V) {
 			if (entityValues.length !== jsonInsertValues.C.length) {
@@ -451,10 +458,10 @@ You must provide a valid IS_DRAFT value for Repository entities.`
 				`)
 			}
 
-			let isDraft = entityValues[isDraftColumnQueryIndex]
-			if (isDraft !== true && isDraft !== false) {
-				throw new Error(missingIsDraftErrorMsg)
-			}
+			// let isDraft = entityValues[isDraftColumnQueryIndex]
+			// if (isDraft !== true && isDraft !== false) {
+			// 	throw new Error(missingIsDraftErrorMsg)
+			// }
 
 			let repositoryId = entityValues[repositoryIdColumnQueryIndex]
 			if (typeof repositoryId !== 'number'
@@ -465,7 +472,7 @@ You must provide a valid IS_DRAFT value for Repository entities.`
 
 			for (let i = 0; i < entityValues.length; i++) {
 				switch (i) {
-					case isDraftColumnQueryIndex:
+					// case isDraftColumnQueryIndex:
 					case repositoryIdColumnQueryIndex:
 						continue
 				}
@@ -474,10 +481,12 @@ You must provide a valid IS_DRAFT value for Repository entities.`
 				const columnIndex = jsonInsertValues.C[i]
 				const dbColumn = dbEntity.columns[columnIndex]
 
-				if (dbColumn.notNull && value === null && !isDraft) {
+				if (dbColumn.notNull && value === null
+					//  && !isDraft
+					 ) {
 					throw new Error(errorPrefix +
 						`Column '${dbColumn.name}' is NOT NULL
-and cannot have NULL values for non-draft records.`)
+and cannot have NULL values.`)
 				}
 			}
 			if(!context.isSaveOperation) {
@@ -485,8 +494,6 @@ and cannot have NULL values for non-draft records.`)
 				entityValues[actorIdColumn.index] = actor.id
 			}
 		}
-
-
 
 		return {
 			actorIdColumn,

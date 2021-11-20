@@ -62,7 +62,7 @@ export class OperationManager
 			entityGraph = context.ioc.entityGraphReconstructor
 				.restoreEntityGraph(verifiedTree, context)
 		}
-		context.ioc.structuralEntityValidator.validate(entityGraph, [], context)
+		await context.ioc.structuralEntityValidator.validate(entityGraph, [], context)
 
 		const operations = context.ioc.dependencyGraphResolver
 			.getOperationsInOrder(entityGraph, context)
@@ -129,7 +129,7 @@ export class OperationManager
 
 		let rawInsert: RawInsertValues<any> = {
 			insertInto: qEntity,
-			columns: context.ioc.metadataUtils.getAllNonGeneratedColumns(qEntity),
+			columns: context.ioc.metadataUtils.getAllInsertableColumns(qEntity),
 			values: []
 		}
 		let columnIndexesInValues = []

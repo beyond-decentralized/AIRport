@@ -29,7 +29,7 @@ export class OperationManager {
             entityGraph = context.ioc.entityGraphReconstructor
                 .restoreEntityGraph(verifiedTree, context);
         }
-        context.ioc.structuralEntityValidator.validate(entityGraph, [], context);
+        await context.ioc.structuralEntityValidator.validate(entityGraph, [], context);
         const operations = context.ioc.dependencyGraphResolver
             .getOperationsInOrder(entityGraph, context);
         const rootDbEntity = context.dbEntity;
@@ -83,7 +83,7 @@ export class OperationManager {
         const qEntity = context.ioc.airDb.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name];
         let rawInsert = {
             insertInto: qEntity,
-            columns: context.ioc.metadataUtils.getAllNonGeneratedColumns(qEntity),
+            columns: context.ioc.metadataUtils.getAllInsertableColumns(qEntity),
             values: []
         };
         let columnIndexesInValues = [];
