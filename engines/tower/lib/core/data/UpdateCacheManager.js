@@ -231,69 +231,76 @@ export class UpdateCacheManager {
                 return;
             }
             processedEntities.add(entity);
-            let operationUniqueId = entityStateManager.getOperationUniqueId(entity, true, dbEntity);
-            let createdRecord = saveResult.created[operationUniqueId];
-            if (createdRecord) {
-                if (createdRecord !== true) {
-                    for (const generatedPropertyName in createdRecord) {
-                        entity[generatedPropertyName] = createdRecord[generatedPropertyName];
-                    }
-                    if (dbEntity.isRepositoryEntity) {
-                        let repositoryEntity = entity;
-                        if (!repositoryEntity.repository || !repositoryEntity.repository.id) {
-                            repositoryEntity.repository = saveResult.newRepository;
-                        }
-                        repositoryEntity.actor = saveResult.actor;
-                    }
-                }
-            }
-            else if (saveResult.deleted[operationUniqueId]) {
-                entityStateManager.setIsDeleted(true, entity);
-                entityStateManager.setOriginalValues(null, entity);
-                return;
-            }
+            let operationUniqueId = entityStateManager.getOperationUniqueId(entity, false, dbEntity);
             let originalValuesObject = {};
-            for (const dbProperty of dbEntity.properties) {
-                const property = entity[dbProperty.name];
-                if (property && dbProperty.relation && dbProperty.relation.length) {
-                    if (dbProperty.relation[0].relationType === EntityRelationType.MANY_TO_ONE) {
-                        // Save the nested child object Ids in the original values of this object
-                        // in case the object behind this relation is changed
-                        schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (_dbColumn, propertyNameChains) => {
-                            for (let propertyNameChain of propertyNameChains) {
-                                let nestedProperty = entity;
-                                let currentPropertyOriginalValue = originalValuesObject;
-                                for (let i = 0; i < propertyNameChain.length; i++) {
-                                    const propertyName = propertyNameChain[i];
-                                    if (nestedProperty instanceof Object) {
-                                        nestedProperty = nestedProperty[propertyName];
-                                        let originalValue;
-                                        // Nested object continues
-                                        if (i === propertyNameChain.length - 1) {
-                                            originalValue = nestedProperty;
-                                        }
-                                        else {
-                                            originalValue = {};
-                                        }
-                                        currentPropertyOriginalValue[propertyName] = originalValue;
-                                        currentPropertyOriginalValue = currentPropertyOriginalValue[propertyName];
-                                    }
-                                    else {
-                                        // This is the actual value
-                                        currentPropertyOriginalValue[propertyName] = nestedProperty;
-                                    }
-                                }
-                            }
-                        });
-                    }
-                    this.updateOriginalValuesAfterSave(property, dbProperty.relation[0].relationEntity, saveResult, entityStateManager, schemaUtils, processedEntities);
-                }
-                else {
-                    originalValuesObject[dbProperty.name] = property;
-                }
+            if (operationUniqueId) {
+                originalValuesObject = this.doUpdateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager, schemaUtils, processedEntities, operationUniqueId);
             }
             entityStateManager.setOriginalValues(originalValuesObject, entity);
         }
+    }
+    doUpdateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager, schemaUtils, processedEntities, operationUniqueId) {
+        let createdRecord = saveResult.created[operationUniqueId];
+        if (createdRecord) {
+            if (createdRecord !== true) {
+                for (const generatedPropertyName in createdRecord) {
+                    entity[generatedPropertyName] = createdRecord[generatedPropertyName];
+                }
+                if (dbEntity.isRepositoryEntity) {
+                    let repositoryEntity = entity;
+                    if (!repositoryEntity.repository || !repositoryEntity.repository.id) {
+                        repositoryEntity.repository = saveResult.newRepository;
+                    }
+                    repositoryEntity.actor = saveResult.actor;
+                }
+            }
+        }
+        else if (saveResult.deleted[operationUniqueId]) {
+            entityStateManager.setIsDeleted(true, entity);
+            entityStateManager.setOriginalValues(null, entity);
+            return;
+        }
+        let originalValuesObject = {};
+        for (const dbProperty of dbEntity.properties) {
+            const property = entity[dbProperty.name];
+            if (property && dbProperty.relation && dbProperty.relation.length) {
+                if (dbProperty.relation[0].relationType === EntityRelationType.MANY_TO_ONE) {
+                    // Save the nested child object Ids in the original values of this object
+                    // in case the object behind this relation is changed
+                    schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (_dbColumn, propertyNameChains) => {
+                        for (let propertyNameChain of propertyNameChains) {
+                            let nestedProperty = entity;
+                            let currentPropertyOriginalValue = originalValuesObject;
+                            for (let i = 0; i < propertyNameChain.length; i++) {
+                                const propertyName = propertyNameChain[i];
+                                if (nestedProperty instanceof Object) {
+                                    nestedProperty = nestedProperty[propertyName];
+                                    let originalValue;
+                                    // Nested object continues
+                                    if (i === propertyNameChain.length - 1) {
+                                        originalValue = nestedProperty;
+                                    }
+                                    else {
+                                        originalValue = {};
+                                    }
+                                    currentPropertyOriginalValue[propertyName] = originalValue;
+                                    currentPropertyOriginalValue = currentPropertyOriginalValue[propertyName];
+                                }
+                                else {
+                                    // This is the actual value
+                                    currentPropertyOriginalValue[propertyName] = nestedProperty;
+                                }
+                            }
+                        }
+                    });
+                }
+                this.updateOriginalValuesAfterSave(property, dbProperty.relation[0].relationEntity, saveResult, entityStateManager, schemaUtils, processedEntities);
+            }
+            else {
+                originalValuesObject[dbProperty.name] = property;
+            }
+        }
+        return originalValuesObject;
     }
     removeDeletedEntities(entity, dbEntity, saveResult, entityStateManager, processedEntities) {
         if (entity instanceof Array) {

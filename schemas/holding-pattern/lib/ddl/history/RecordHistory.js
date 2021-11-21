@@ -17,10 +17,6 @@ __decorate([
     SequenceGenerator({ allocationSize: 2000 })
 ], RecordHistory.prototype, "id", void 0);
 __decorate([
-    ManyToOne(),
-    JoinColumn({ name: 'ACTOR_ID', referencedColumnName: 'ID', nullable: false })
-], RecordHistory.prototype, "actor", void 0);
-__decorate([
     Column({ name: 'ACTOR_RECORD_ID', nullable: false }),
     DbNumber()
 ], RecordHistory.prototype, "actorRecordId", void 0);

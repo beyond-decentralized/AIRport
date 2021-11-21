@@ -5,6 +5,7 @@ export declare class UpdateCacheManager implements IUpdateCacheManager {
     setOperationState<E, T = E | E[]>(entityCopy: T, dbEntity: DbEntity, entityStateManager: IEntityStateManager, schemaUtils: ISchemaUtils, processedEntities: Set<any>): void;
     afterSaveModifications<E, T = E | E[]>(entity: T, dbEntity: DbEntity, saveResult: ISaveResult, entityStateManager: IEntityStateManager, schemaUtils: ISchemaUtils, processedEntities: Set<any>): void;
     private updateOriginalValuesAfterSave;
+    private doUpdateOriginalValuesAfterSave;
     private removeDeletedEntities;
 }
 //# sourceMappingURL=UpdateCacheManager.d.ts.map

@@ -46,10 +46,6 @@ export class RecordHistory {
 	@SequenceGenerator({allocationSize: 2000})
 	id: RecordHistoryId
 
-	@ManyToOne()
-	@JoinColumn({name: 'ACTOR_ID', referencedColumnName: 'ID', nullable: false})
-	actor: Actor
-
 	@Column({name: 'ACTOR_RECORD_ID', nullable: false})
 	@DbNumber()
 	actorRecordId: RecordHistoryActorRecordId

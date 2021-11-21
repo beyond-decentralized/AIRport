@@ -253,7 +253,7 @@ export class RepositoryTransactionHistoryDao
 				const actorEquals: JSONBaseOperation[] = []
 				for (const [actorId, recordsForActor] of recordMapForEntity) {
 					actorEquals.push(and(
-						rh.actor.id.equals(actorId),
+						rth.actor.id.equals(actorId),
 						rh.actorRecordId.in(Array.from(recordsForActor))
 					))
 				}
@@ -359,7 +359,7 @@ export class RepositoryTransactionHistoryDao
 				let actorIdsFragments: JSONBaseOperation[] = []
 				for (const [actorId, recordIdSetForActor] of recordIdMapForTableInRepository) {
 					actorIdsFragments.push(and(
-						rh.actor.id.equals(actorId),
+						rth.actor.id.equals(actorId),
 						rh.actorRecordId.in(Array.from(recordIdSetForActor))
 					))
 				}
@@ -386,7 +386,7 @@ export class RepositoryTransactionHistoryDao
 			select: distinct([
 				rth.repository.id,
 				oh.entity.id,
-				rh.actor.id,
+				rth.actor.id,
 				rh.actorRecordId
 			]),
 			where: or(...idsFragments)
