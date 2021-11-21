@@ -13,7 +13,6 @@ export declare type RepositoryTransactionHistorySaveTimestamp = Date;
 export declare type RepositoryTransactionHistoryBlockId = number;
 export declare class RepositoryTransactionHistory {
     id: RepositoryTransactionHistoryId;
-    remoteId: RepositoryTransactionHistoryRemoteId;
     transactionHistory: TransactionHistory;
     repository: Repository;
     changedRepositoryActors: RepoTransHistoryChangedRepositoryActor[];

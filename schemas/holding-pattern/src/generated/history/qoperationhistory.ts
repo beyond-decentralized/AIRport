@@ -81,9 +81,9 @@ export interface OperationHistoryESelect
 	systemWideOperationId?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
-	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 
   // Non-Id relations (including OneToMany's)
+	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 	entity?: SchemaEntityESelect;
 	recordHistory?: RecordHistoryESelect;
 
@@ -98,7 +98,6 @@ export interface OperationHistoryEId
 	id: number | IQNumberField;
 
 	// Id Relations - Ids only
-	repositoryTransactionHistory: RepositoryTransactionHistoryEId;
 
 }
 
@@ -110,7 +109,6 @@ export interface OperationHistoryEOptionalId {
 	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
-	repositoryTransactionHistory?: RepositoryTransactionHistoryEOptionalId;
 
 }
 
@@ -125,6 +123,7 @@ export interface OperationHistoryEUpdateProperties
 	systemWideOperationId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+	repositoryTransactionHistory?: RepositoryTransactionHistoryEOptionalId;
 	entity?: SchemaEntityEOptionalId;
 
 }
@@ -157,6 +156,7 @@ export interface OperationHistoryEUpdateColumns
 	ORDER_NUMBER?: number | IQNumberField;
 	CHANGE_TYPE?: string | IQStringField;
 	SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
+	REPOSITORY_TRANSACTION_HISTORY_ID?: number | IQNumberField;
 	ENTITY_ID?: number | IQNumberField;
 
 }
@@ -191,7 +191,6 @@ export interface QOperationHistory extends IQEntity<OperationHistory>
 	id: IQNumberField;
 
 	// Id Relations
-	repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
 
 	// Non-Id Fields
 	orderNumber: IQNumberField;
@@ -199,6 +198,7 @@ export interface QOperationHistory extends IQEntity<OperationHistory>
 	systemWideOperationId: IQNumberField;
 
 	// Non-Id Relations
+	repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
 	entity: QSchemaEntityQRelation;
 	recordHistory: IQOneToManyRelation<RecordHistory, QRecordHistory>;
 
@@ -213,7 +213,6 @@ export interface QOperationHistoryQId
 	id: IQNumberField;
 
 	// Id Relations
-	repositoryTransactionHistory: QRepositoryTransactionHistoryQId;
 
 
 }

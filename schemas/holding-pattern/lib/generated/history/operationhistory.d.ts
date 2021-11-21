@@ -3,10 +3,10 @@ import { ISchemaEntity } from '@airport/traffic-pattern';
 import { IRecordHistory } from './recordhistory';
 export interface IOperationHistory {
     id: number;
-    repositoryTransactionHistory: IRepositoryTransactionHistory;
     orderNumber?: number;
     changeType?: string;
     systemWideOperationId?: number;
+    repositoryTransactionHistory?: IRepositoryTransactionHistory;
     entity?: ISchemaEntity;
     recordHistory?: IRecordHistory[];
 }

@@ -304,7 +304,7 @@ You must provide a valid REPOSITORY_ID value for Repository entities.`;
                 ) {
                     throw new Error(errorPrefix +
                         `Column '${dbColumn.name}' is NOT NULL
-and cannot have NULL values for non-draft records.`);
+and cannot have NULL values.`);
                 }
             }
             if (!context.isSaveOperation) {

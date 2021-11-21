@@ -9,12 +9,23 @@ export class InsertValues extends AbstractInsertValues {
             .__driver__;
         const insertInto = driver.getRelationJson(this.columnAliases, queryUtils, fieldUtils);
         const dbColumns = [];
-        const columnIndexes = this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map(column => {
-            const dbColumn = column.dbColumn;
-            this.validateColumn(dbColumn, driver.dbEntity);
-            dbColumns.push(dbColumn);
-            return dbColumn.index;
-        });
+        let columnIndexes;
+        if (this.columnIndexes) {
+            columnIndexes = this.columnIndexes;
+            for (let i = 0; i < columnIndexes.length; i++) {
+                const dbColumn = driver.dbEntity.columns[columnIndexes[i]];
+                this.validateColumn(dbColumn, driver.dbEntity);
+                dbColumns.push(dbColumn);
+            }
+        }
+        else {
+            columnIndexes = this.rawInsertValues.columns.map(column => {
+                const dbColumn = column.dbColumn;
+                this.validateColumn(dbColumn, driver.dbEntity);
+                dbColumns.push(dbColumn);
+                return dbColumn.index;
+            });
+        }
         return {
             II: insertInto,
             C: columnIndexes,

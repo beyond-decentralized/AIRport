@@ -70,7 +70,7 @@ export class IdGenerator
 	}
 
 	doPopulateTransactionHistoryIdColumns(resolve): void {
-		if (Q.db && Q.db.currentVersion) {
+		if (Q.__dbSchema__ && Q.__dbSchema__.currentVersion) {
 			const transHistoryDbEntity =
 				this.getHoldingPatternDbEntity('TransactionHistory')
 			const repoTransHistoryDbEntity =
@@ -134,7 +134,7 @@ export class IdGenerator
 	private getHoldingPatternDbEntity(
 		holdingPatternEntityName: string
 	): DbEntity {
-		return Q.db.currentVersion[0].schemaVersion
+		return Q.__dbSchema__.currentVersion[0].schemaVersion
 			.entityMapByName[holdingPatternEntityName]
 	}
 

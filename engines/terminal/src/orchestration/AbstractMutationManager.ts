@@ -14,6 +14,10 @@ import { container, IContext } from '@airport/di';
 import { DbColumn, JsonQuery, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { ITransaction } from '@airport/terminal-map';
 
+interface IColumnValueLookup {
+  name: string
+  nested: IColumnValueLookup
+}
 export class AbstractMutationManager {
 
   protected getPortableQuery(
@@ -45,7 +49,7 @@ export class AbstractMutationManager {
 
     const dbEntity = (q as IQEntityInternal<any>).__driver__.dbEntity;
     const columnIndexes: number[] = [];
-    const columnValueLookups: any[] = [];
+    const columnValueLookups: IColumnValueLookup[] = [];
     for (const dbProperty of dbEntity.properties) {
       let columnValueLookup = {
         name: dbProperty.name,
@@ -61,7 +65,7 @@ export class AbstractMutationManager {
             return;
           }
           columnIndexes[dbColumn.index] = dbColumn.index;
-          columnValueLookups[dbColumn.index](columnValueLookup);
+          columnValueLookups[dbColumn.index] = columnValueLookup;
           const firstPropertyNameChain = propertyNameChains[0];
           for (let i = 1; i < firstPropertyNameChain.length; i++) {
             const propertyName = firstPropertyNameChain[i];
@@ -79,7 +83,7 @@ export class AbstractMutationManager {
           continue;
         }
         columnIndexes[dbColumn.index] = dbColumn.index;
-        columnValueLookups[dbColumn.index](columnValueLookup);
+        columnValueLookups[dbColumn.index] = columnValueLookup;
       }
     }
     const values = entities.map(
@@ -94,7 +98,7 @@ export class AbstractMutationManager {
               lookup = lookup.nested;
               value = value[lookup.name];
             }
-            return value;
+            return value === undefined ? null : value;
           });
       });
     const rawInsertValues: RawInsertValues<any> = {

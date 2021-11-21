@@ -1342,21 +1342,21 @@ export const SCHEMA = {
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "REMOTE_ID",
+							"name": "SAVE_TIMESTAMP",
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 1
+									"index": 5
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "DATE"
 						},
 						{
 							"index": 2,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "SAVE_TIMESTAMP",
+							"name": "REPOSITORY_TRANSACTION_TYPE",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1364,38 +1364,24 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "DATE"
+							"type": "STRING"
 						},
 						{
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "REPOSITORY_TRANSACTION_TYPE",
-							"notNull": true,
+							"name": "REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID",
+							"notNull": false,
 							"propertyRefs": [
 								{
 									"index": 7
 								}
 							],
 							"sinceVersion": 1,
-							"type": "STRING"
-						},
-						{
-							"index": 4,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 8
-								}
-							],
-							"sinceVersion": 1,
 							"type": "NUMBER"
 						},
 						{
-							"index": 5,
+							"index": 4,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -1411,14 +1397,14 @@ export const SCHEMA = {
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 2
+									"index": 1
 								}
 							],
 							"sinceVersion": 1,
 							"type": "NUMBER"
 						},
 						{
-							"index": 6,
+							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -1434,14 +1420,14 @@ export const SCHEMA = {
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 3
+									"index": 2
 								}
 							],
 							"sinceVersion": 1,
 							"type": "NUMBER"
 						},
 						{
-							"index": 7,
+							"index": 6,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -1456,7 +1442,7 @@ export const SCHEMA = {
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 5
+									"index": 4
 								}
 							],
 							"sinceVersion": 1,
@@ -1483,16 +1469,7 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"columnRef": {
-								"index": 1
-							},
 							"index": 1,
-							"isId": false,
-							"name": "remoteId",
-							"sinceVersion": 1
-						},
-						{
-							"index": 2,
 							"isId": false,
 							"name": "transactionHistory",
 							"relationRef": {
@@ -1501,7 +1478,7 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 3,
+							"index": 2,
 							"isId": false,
 							"name": "repository",
 							"relationRef": {
@@ -1510,7 +1487,7 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 4,
+							"index": 3,
 							"isId": false,
 							"name": "changedRepositoryActors",
 							"relationRef": {
@@ -1519,7 +1496,7 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 5,
+							"index": 4,
 							"isId": false,
 							"name": "actor",
 							"relationRef": {
@@ -1529,11 +1506,20 @@ export const SCHEMA = {
 						},
 						{
 							"columnRef": {
+								"index": 1
+							},
+							"index": 5,
+							"isId": false,
+							"name": "saveTimestamp",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
 								"index": 2
 							},
 							"index": 6,
 							"isId": false,
-							"name": "saveTimestamp",
+							"name": "repositoryTransactionType",
 							"sinceVersion": 1
 						},
 						{
@@ -1542,20 +1528,11 @@ export const SCHEMA = {
 							},
 							"index": 7,
 							"isId": false,
-							"name": "repositoryTransactionType",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 4
-							},
-							"index": 8,
-							"isId": false,
 							"name": "blockId",
 							"sinceVersion": 1
 						},
 						{
-							"index": 9,
+							"index": 8,
 							"isId": false,
 							"name": "operationHistory",
 							"relationRef": {
@@ -1570,7 +1547,7 @@ export const SCHEMA = {
 							"isId": false,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 2
+								"index": 1
 							},
 							"relationTableIndex": 7,
 							"sinceVersion": 1
@@ -1580,7 +1557,7 @@ export const SCHEMA = {
 							"isId": false,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 3
+								"index": 2
 							},
 							"relationTableIndex": 1,
 							"sinceVersion": 1
@@ -1593,7 +1570,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 4
+								"index": 3
 							},
 							"relationTableIndex": 4,
 							"sinceVersion": 1
@@ -1603,7 +1580,7 @@ export const SCHEMA = {
 							"isId": false,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 5
+								"index": 4
 							},
 							"relationTableIndex": 3,
 							"sinceVersion": 1
@@ -1616,7 +1593,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 9
+								"index": 8
 							},
 							"relationTableIndex": 9,
 							"sinceVersion": 1
@@ -1737,9 +1714,6 @@ export const SCHEMA = {
 					"idColumnRefs": [
 						{
 							"index": 0
-						},
-						{
-							"index": 4
 						}
 					],
 					"index": 9,
@@ -1758,7 +1732,7 @@ export const SCHEMA = {
 						},
 						{
 							"index": 1,
-							"isId": true,
+							"isId": false,
 							"name": "repositoryTransactionHistory",
 							"relationRef": {
 								"index": 0
@@ -1814,7 +1788,7 @@ export const SCHEMA = {
 					"relations": [
 						{
 							"index": 0,
-							"isId": true,
+							"isId": false,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
 								"index": 1

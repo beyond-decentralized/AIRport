@@ -11,7 +11,6 @@ import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransa
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryTransactionHistoryESelect extends IEntitySelectProperties, RepositoryTransactionHistoryEOptionalId {
-    remoteId?: number | IQNumberField;
     saveTimestamp?: Date | IQDateField;
     repositoryTransactionType?: string | IQStringField;
     blockId?: number | IQNumberField;
@@ -37,7 +36,6 @@ export interface RepositoryTransactionHistoryEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RepositoryTransactionHistoryEUpdateProperties extends IEntityUpdateProperties {
-    remoteId?: number | IQNumberField;
     saveTimestamp?: Date | IQDateField;
     repositoryTransactionType?: string | IQStringField;
     blockId?: number | IQNumberField;
@@ -49,7 +47,6 @@ export interface RepositoryTransactionHistoryEUpdateProperties extends IEntityUp
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepositoryTransactionHistoryGraph extends RepositoryTransactionHistoryEOptionalId, IEntityCascadeGraph {
-    remoteId?: number | IQNumberField;
     saveTimestamp?: Date | IQDateField;
     repositoryTransactionType?: string | IQStringField;
     blockId?: number | IQNumberField;
@@ -63,7 +60,6 @@ export interface RepositoryTransactionHistoryGraph extends RepositoryTransaction
  * UPDATE - non-id columns (optional).
  */
 export interface RepositoryTransactionHistoryEUpdateColumns extends IEntityUpdateColumns {
-    REMOTE_ID?: number | IQNumberField;
     SAVE_TIMESTAMP?: Date | IQDateField;
     REPOSITORY_TRANSACTION_TYPE?: string | IQStringField;
     REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID?: number | IQNumberField;
@@ -86,7 +82,6 @@ export interface RepositoryTransactionHistoryECreateColumns extends RepositoryTr
  */
 export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransactionHistory> {
     id: IQNumberField;
-    remoteId: IQNumberField;
     saveTimestamp: IQDateField;
     repositoryTransactionType: IQStringField;
     blockId: IQNumberField;

@@ -240,7 +240,7 @@ export class TransactionManager
 		schemaMap.ensureEntity((<IQEntityInternal<TransactionHistory>><any>Q.TransactionHistory).__driver__.dbEntity, true);
 		transactionHistory.id = transHistoryIds.transactionHistoryId;
 		await this.doInsertValues(transaction, Q.TransactionHistory,
-			[transaction], context);
+			[transactionHistory], context);
 
 		schemaMap.ensureEntity((<IQEntityInternal<RepositoryTransactionHistory>><any>Q.RepositoryTransactionHistory).__driver__.dbEntity, true);
 		transactionHistory.repositoryTransactionHistories.forEach((

@@ -27,9 +27,6 @@ __decorate([
     SequenceGenerator({ allocationSize: 200 })
 ], RepositoryTransactionHistory.prototype, "id", void 0);
 __decorate([
-    Column({ name: 'REMOTE_ID', nullable: false })
-], RepositoryTransactionHistory.prototype, "remoteId", void 0);
-__decorate([
     ManyToOne(),
     JoinColumn({
         name: 'TRANSACTION_HISTORY_ID',
@@ -62,8 +59,7 @@ __decorate([
 ], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
 __decorate([
     Column({
-        name: 'REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID',
-        nullable: false
+        name: 'REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID'
     })
 ], RepositoryTransactionHistory.prototype, "blockId", void 0);
 __decorate([

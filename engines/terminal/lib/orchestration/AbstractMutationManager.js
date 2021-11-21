@@ -27,7 +27,7 @@ export class AbstractMutationManager {
                         return;
                     }
                     columnIndexes[dbColumn.index] = dbColumn.index;
-                    columnValueLookups[dbColumn.index](columnValueLookup);
+                    columnValueLookups[dbColumn.index] = columnValueLookup;
                     const firstPropertyNameChain = propertyNameChains[0];
                     for (let i = 1; i < firstPropertyNameChain.length; i++) {
                         const propertyName = firstPropertyNameChain[i];
@@ -46,7 +46,7 @@ export class AbstractMutationManager {
                     continue;
                 }
                 columnIndexes[dbColumn.index] = dbColumn.index;
-                columnValueLookups[dbColumn.index](columnValueLookup);
+                columnValueLookups[dbColumn.index] = columnValueLookup;
             }
         }
         const values = entities.map(entity => {
@@ -59,7 +59,7 @@ export class AbstractMutationManager {
                     lookup = lookup.nested;
                     value = value[lookup.name];
                 }
-                return value;
+                return value === undefined ? null : value;
             });
         });
         const rawInsertValues = {

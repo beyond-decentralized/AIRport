@@ -37,7 +37,6 @@ export class OperationHistory {
 	@Id()
 	id: OperationHistoryId
 
-	@Id()
 	@ManyToOne()
 	@JoinColumn({
 		name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID',

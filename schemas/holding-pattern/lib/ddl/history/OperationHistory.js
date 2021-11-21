@@ -19,7 +19,6 @@ __decorate([
     Id()
 ], OperationHistory.prototype, "id", void 0);
 __decorate([
-    Id(),
     ManyToOne(),
     JoinColumn({
         name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID',

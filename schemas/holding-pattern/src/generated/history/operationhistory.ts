@@ -20,7 +20,6 @@ export interface IOperationHistory {
 	id: number;
 
 	// Id Relations
-	repositoryTransactionHistory: IRepositoryTransactionHistory;
 
 	// Non-Id Properties
 	orderNumber?: number;
@@ -28,6 +27,7 @@ export interface IOperationHistory {
 	systemWideOperationId?: number;
 
 	// Non-Id Relations
+	repositoryTransactionHistory?: IRepositoryTransactionHistory;
 	entity?: ISchemaEntity;
 	recordHistory?: IRecordHistory[];
 

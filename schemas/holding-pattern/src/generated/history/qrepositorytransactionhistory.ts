@@ -104,7 +104,6 @@ declare function require(moduleName: string): any;
 export interface RepositoryTransactionHistoryESelect
     extends IEntitySelectProperties, RepositoryTransactionHistoryEOptionalId {
 	// Non-Id Properties
-	remoteId?: number | IQNumberField;
 	saveTimestamp?: Date | IQDateField;
 	repositoryTransactionType?: string | IQStringField;
 	blockId?: number | IQNumberField;
@@ -149,7 +148,6 @@ export interface RepositoryTransactionHistoryEOptionalId {
 export interface RepositoryTransactionHistoryEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	remoteId?: number | IQNumberField;
 	saveTimestamp?: Date | IQDateField;
 	repositoryTransactionType?: string | IQStringField;
 	blockId?: number | IQNumberField;
@@ -169,7 +167,6 @@ export interface RepositoryTransactionHistoryGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	remoteId?: number | IQNumberField;
 	saveTimestamp?: Date | IQDateField;
 	repositoryTransactionType?: string | IQStringField;
 	blockId?: number | IQNumberField;
@@ -189,7 +186,6 @@ export interface RepositoryTransactionHistoryGraph
 export interface RepositoryTransactionHistoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	REMOTE_ID?: number | IQNumberField;
 	SAVE_TIMESTAMP?: Date | IQDateField;
 	REPOSITORY_TRANSACTION_TYPE?: string | IQStringField;
 	REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID?: number | IQNumberField;
@@ -231,7 +227,6 @@ export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransa
 	// Id Relations
 
 	// Non-Id Fields
-	remoteId: IQNumberField;
 	saveTimestamp: IQDateField;
 	repositoryTransactionType: IQStringField;
 	blockId: IQNumberField;

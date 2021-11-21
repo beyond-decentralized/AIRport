@@ -149,7 +149,7 @@ export class TransactionManager extends AbstractMutationManager {
         const transHistoryIds = await idGenerator.generateTransactionHistoryIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
         schemaMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true);
         transactionHistory.id = transHistoryIds.transactionHistoryId;
-        await this.doInsertValues(transaction, Q.TransactionHistory, [transaction], context);
+        await this.doInsertValues(transaction, Q.TransactionHistory, [transactionHistory], context);
         schemaMap.ensureEntity(Q.RepositoryTransactionHistory.__driver__.dbEntity, true);
         transactionHistory.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
             repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index];

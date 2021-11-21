@@ -36,9 +36,6 @@ export class RepositoryTransactionHistory {
 	@SequenceGenerator({allocationSize: 200})
 	id: RepositoryTransactionHistoryId
 
-	@Column({name: 'REMOTE_ID', nullable: false})
-	remoteId: RepositoryTransactionHistoryRemoteId
-
 	@ManyToOne()
 	@JoinColumn({
 		name: 'TRANSACTION_HISTORY_ID',
@@ -71,8 +68,7 @@ export class RepositoryTransactionHistory {
 	repositoryTransactionType: RepositoryTransactionType = RepositoryTransactionType.LOCAL
 
 	@Column({
-		name: 'REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID',
-		nullable: false
+		name: 'REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID'
 	})
 	blockId: RepositoryTransactionHistoryBlockId
 
