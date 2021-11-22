@@ -16,11 +16,17 @@ export interface ILocalAPIClient {
         daoName: string,
         methodName: string,
         args: any[]
-    ): Promise<void>;
+    ): Promise<void>
 
-	onMessage(callback: (
-		message: any
-	) => void)
+    sendMessageToAIRport(
+        objectName: string,
+        methodName: string,
+        args: any[]
+    ): Promise<any>
+
+    onMessage(callback: (
+        message: any
+    ) => void)
 
 }
 
@@ -43,9 +49,9 @@ export class LocalAPIClient
 
     connectionReady = false
 
-	messageCallback: (
-		message: any
-	) => void
+    messageCallback: (
+        message: any
+    ) => void
 
     constructor() {
         if (_inDemoMode) {
@@ -84,16 +90,24 @@ export class LocalAPIClient
         }
     }
 
-	onMessage(callback: (
-		message: any
-	) => void) {
-		this.messageCallback = callback
-	}
+    onMessage(callback: (
+        message: any
+    ) => void) {
+        this.messageCallback = callback
+    }
 
     private hasValidSchemaSignature(
         message: ILocalAPIResponse
     ) {
         return message.schemaSignature && message.schemaSignature.indexOf('.') === -1
+    }
+
+    async sendMessageToAIRport(
+        objectName: string,
+        methodName: string,
+        args: any[]
+    ): Promise<any> {
+        return await this.invokeApiMethod('AIRport', objectName, methodName, args)
     }
 
     async invokeApiMethod(

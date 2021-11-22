@@ -151,6 +151,11 @@ export class WebTransactionalReceiver
 			return
 		}
 
+		if (message.schemaSignature === 'AIRport') {
+			this.handleToAIRportMessage(message, messageOrigin, sourceWindow)
+			return
+		}
+
 		let numPendingMessagesFromHost = this.pendingHostCounts.get(message.host)
 		if (!numPendingMessagesFromHost) {
 			numPendingMessagesFromHost = 0
@@ -196,6 +201,21 @@ export class WebTransactionalReceiver
 			frameWindow.postMessage(message, '*')
 		} else {
 			throw new Error(`No Application IFrame found for signature: ${message.schemaSignature}`)
+		}
+	}
+
+	private handleToAIRportMessage(
+		message: ILocalAPIRequest,
+		messageOrigin: string,
+		sourceWindow: Window
+	): void {
+		if (message.objectName == 'UrlManager' && message.methodName == 'changeUrl') {
+			try {
+				const appPath = (message.args[0] as string).split('//')[1]
+				window.location.hash = '#/' + appPath
+			} catch (e) {
+				console.error(e)
+			}
 		}
 	}
 

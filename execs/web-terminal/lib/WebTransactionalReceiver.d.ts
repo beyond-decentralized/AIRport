@@ -16,6 +16,7 @@ export declare class WebTransactionalReceiver extends TransactionalReceiver impl
     onMessage(callback: (message: any) => void): void;
     private hasValidSchemaSignature;
     private handleFromClientRequest;
+    private handleToAIRportMessage;
     private getFrameWindow;
     private handleToClientRequest;
     private ensureSchemaIsInstalled;

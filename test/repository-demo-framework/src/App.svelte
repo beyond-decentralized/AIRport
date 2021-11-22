@@ -17,7 +17,18 @@ html {
 </style>
 
 <script lang="ts">
-let name;
+import { onMount } from 'svelte';
+import page  from 'page'
+
+page('/:uiPath', (context) => {
+  console.log(context);
+})
+page()
+
+onMount(async () => {
+  (document.getElementById('ui') as HTMLIFrameElement).src =
+    'http://' + window.location.hash.substring(2);
+});
 </script>
 
 <iframe
@@ -33,7 +44,7 @@ let name;
     id="ui"
     class="ui"
     name="votecube-ui"
-    src="http://localhost:8000/"
+    src=""
     style="width: 100%; height: 100%;"
     title="votecube-ui"></iframe>
 </div>

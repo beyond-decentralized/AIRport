@@ -13,6 +13,7 @@
     "@airport/terminal-map": "0.0.1",
     "@airport/web-terminal": "0.0.1",
     "@airport/sqljs": "0.0.1",
+    "page": "^1.11.6",
     "sirv-cli": "^1.0.0"
   },
   "devDependencies": {

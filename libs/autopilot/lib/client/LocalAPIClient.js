@@ -49,6 +49,9 @@ export class LocalAPIClient {
     hasValidSchemaSignature(message) {
         return message.schemaSignature && message.schemaSignature.indexOf('.') === -1;
     }
+    async sendMessageToAIRport(objectName, methodName, args) {
+        return await this.invokeApiMethod('AIRport', objectName, methodName, args);
+    }
     async invokeApiMethod(schemaSignature, objectName, methodName, args) {
         while (!await this.isConnectionReady(schemaSignature)) {
             await this.wait(100);

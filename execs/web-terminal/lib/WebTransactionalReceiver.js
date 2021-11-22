@@ -92,6 +92,10 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         if (message.host !== appDomainAndPort) {
             return;
         }
+        if (message.schemaSignature === 'AIRport') {
+            this.handleToAIRportMessage(message, messageOrigin, sourceWindow);
+            return;
+        }
         let numPendingMessagesFromHost = this.pendingHostCounts.get(message.host);
         if (!numPendingMessagesFromHost) {
             numPendingMessagesFromHost = 0;
@@ -132,6 +136,17 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         }
         else {
             throw new Error(`No Application IFrame found for signature: ${message.schemaSignature}`);
+        }
+    }
+    handleToAIRportMessage(message, messageOrigin, sourceWindow) {
+        if (message.objectName == 'UrlManager' && message.methodName == 'changeUrl') {
+            try {
+                const appPath = message.args[0].split('//')[1];
+                window.location.hash = '#/' + appPath;
+            }
+            catch (e) {
+                console.error(e);
+            }
         }
     }
     getFrameWindow(schemaSignature) {

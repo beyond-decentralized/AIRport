@@ -92,6 +92,7 @@ dependencies:
   inversify: 5.0.5
   mysql2: 2.1.0
   nodemon: 2.0.6
+  page: 1.11.6
   pg: 8.7.1_pg@8.7.1
   pg-connection-string: 2.5.0
   prettier: 2.2.1
@@ -6921,6 +6922,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-HAKu/fG3HpHFO0AA8WE8q2g+gBJaZ9MG7fcKk+IJPLTGAD6Psw4443l+9DGRbOIh3/aXr7Phy0TjilYivJo5XQ==
+  /page/1.11.6:
+    dependencies:
+      path-to-regexp: 1.2.1
+    dev: false
+    resolution:
+      integrity: sha512-P6e2JfzkBrPeFCIPplLP7vDDiU84RUUZMrWdsH4ZBGJ8OosnwFkcUkBHp1DTIjuipLliw9yQn/ZJsXZvarsO+g==
   /pako/1.0.11:
     dev: false
     resolution:
@@ -7031,6 +7038,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-32BBeABfUi8V60SQ5yR6G/qmf4w=
+  /path-to-regexp/1.2.1:
+    dependencies:
+      isarray: 0.0.1
+    dev: false
+    resolution:
+      integrity: sha1-szcFwUAjTYc8hyHHuf2LVB7Tr/k=
   /path-to-regexp/2.2.1:
     dev: false
     resolution:
@@ -11210,6 +11223,7 @@ packages:
       '@rollup/plugin-node-resolve': 11.2.1_rollup@2.56.3
       '@rollup/plugin-typescript': 8.2.5_933e839ab6e578a7dcecab93fb1942dc
       '@tsconfig/svelte': 2.0.1
+      page: 1.11.6
       rollup: 2.56.3
       rollup-plugin-css-only: 3.1.0_rollup@2.56.3
       rollup-plugin-livereload: 2.0.5
@@ -11224,7 +11238,7 @@ packages:
     dev: false
     name: '@rush-temp/repository-demo-framework'
     resolution:
-      integrity: sha512-/UBWBfbeAl8QySBegCqG8MzjERzGYsjmDJDPhLVenUKNsNALjMisiRB3sXqMFjV13Rpc12W2SvAzt2WPeb6WWA==
+      integrity: sha512-MJhWbW9i+MLXmtcrMmLYd1082bBRb26N3DrLcO5WphUqmyWRlxnnyry2zv7cAUhaqbuzoIMOhvCmvDmF08lLzQ==
       tarball: 'file:projects/repository-demo-framework.tgz'
     version: 0.0.0
   'file:projects/runway-edge-lighting.tgz':
@@ -11253,7 +11267,7 @@ packages:
     dev: false
     name: '@rush-temp/security-check'
     resolution:
-      integrity: sha512-9jHimuM1u6mkz1AEYSDsSzBbN8uiXM3QEWc/qE/KeqVvj/fzdrZxDLOsR4qUIpS+QrAVQlzMpESG0uRJ2iTBVA==
+      integrity: sha512-0aPtZ82mMmDbHzg3hG2QHSyoJdnclA2ppOT7/1WLkffWRehR3iSxPrwHeQqdulU7wgQdf9IJqawk6MCAX3D5Vg==
       tarball: 'file:projects/security-check.tgz'
     version: 0.0.0
   'file:projects/sequence.tgz':
@@ -11400,7 +11414,7 @@ packages:
     dev: false
     name: '@rush-temp/web-tower'
     resolution:
-      integrity: sha512-M3KEHesGq27TLwgr3K5/RoE4MKr4l+B1lufHjT20N1GP+b7Dz83Zu3AfXqu4p9aaUGP6If/58heEhZ6VqDYaxA==
+      integrity: sha512-sSWaBODCAYiuFbr7CQmJRsZG0sIg/NCj/t00qG/THu0egXZBBugjWi/ORdIlJQcZE3CgoQkT63OzYkPHDKG5Ew==
       tarball: 'file:projects/web-tower.tgz'
     version: 0.0.0
   'file:projects/websql.tgz':
@@ -11527,6 +11541,7 @@ specifiers:
   inversify: ^5.0.5
   mysql2: ^2.1.0
   nodemon: ^2.0.6
+  page: ^1.11.6
   pg: latest
   pg-connection-string: latest
   prettier: ^2.2.1
