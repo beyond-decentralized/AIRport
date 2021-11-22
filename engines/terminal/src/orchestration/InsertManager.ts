@@ -280,7 +280,7 @@ appears more than once in the Columns clause`)
 							`No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`)
 					}
 				}
-				idValues[idColumn.idIndex] = idValue
+				idValues[idColumn.index] = idValue
 			}
 		}
 
@@ -332,7 +332,7 @@ appears more than once in the Columns clause`)
 			generatedColumns, numSequencesNeeded)
 
 		generatedColumns.forEach((
-			_dbColumn,
+			dbColumn,
 			generatedColumnIndex
 		) => {
 			const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex]
@@ -344,7 +344,7 @@ appears more than once in the Columns clause`)
 			) => {
 				const generatedValue = generatedColumnSequenceValues[index]
 				entityValues[insertColumnIndex] = generatedValue
-				allIds[index][generatedColumnIndex] = generatedValue
+				allIds[index][dbColumn.index] = generatedValue
 			})
 		})
 

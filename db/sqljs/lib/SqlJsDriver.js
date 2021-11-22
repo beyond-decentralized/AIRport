@@ -46,6 +46,7 @@ export class SqlJsDriver extends SqLiteDriver {
                 while (stmt.step()) {
                     results.push(stmt.get());
                 }
+                console.log(results);
                 resolve(results);
             }
             catch (error) {

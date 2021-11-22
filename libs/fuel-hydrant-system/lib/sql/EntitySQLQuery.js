@@ -171,7 +171,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         }
         return jsonTree;
     }
-    parseQueryResult(selectClauseFragment, entityAlias, currentJoinNode, resultRow, nextFieldIndex, context) {
+    parseQueryResult(selectClauseFragment, entityAlias, currentJoinNode, resultRow, nextColumnIndex, context) {
         const sqlAdaptor = DI.db()
             .getSync(SQL_QUERY_ADAPTOR);
         // Return blanks, primitives and Dates directly
@@ -188,11 +188,11 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 const columnAlias = this.columnAliases.getFollowingAlias();
                 const defaultValue = this.entityDefaults.getForAlias(entityAlias)[propertyName];
                 const dbColumn = dbProperty.propertyColumns[0].column;
-                const propertyValue = sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextFieldIndex[0], dbColumn.type, defaultValue);
+                const propertyValue = sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, defaultValue);
                 if (this.queryParser.addProperty(entityAlias, resultObject, dbColumn.type, propertyName, propertyValue)) {
                     numNonNullColumns++;
                 }
-                nextFieldIndex[0]++;
+                nextColumnIndex[0]++;
             }
             else {
                 const childSelectClauseFragment = selectClauseFragment[propertyName];
@@ -201,11 +201,11 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 if (childSelectClauseFragment === null || childSelectClauseFragment.__state__ === EntityState.STUB) {
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            let haveRelationValues = true;
+                            let haveRelationValues = false;
                             let relationInfos = [];
                             context.ioc.schemaUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
                                 const columnAlias = this.columnAliases.getFollowingAlias();
-                                let value = sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextFieldIndex[0], dbColumn.type, null);
+                                let value = sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, null);
                                 relationInfos.push({
                                     propertyNameChains: propertyNameChains,
                                     sqlDataType: dbColumn.type,
@@ -215,6 +215,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                                     haveRelationValues = true;
                                     numNonNullColumns++;
                                 }
+                                nextColumnIndex[0]++;
                             });
                             if (haveRelationValues) {
                                 this.queryParser.bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, childDbEntity, relationInfos, context);
@@ -230,14 +231,13 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                             throw new Error(`Unknown relation type '${dbRelation.relationType}' for 
 								'${dbEntity.name}.${dbProperty.name}'`);
                     }
-                    nextFieldIndex[0]++;
                 }
                 else {
                     const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation);
                     const childEntityAlias = context.ioc.relationManager.getAlias(childJoinNode.jsonRelation);
                     const relationQEntity = this.qEntityMapByAlias[childEntityAlias];
                     const relationDbEntity = relationQEntity.__driver__.dbEntity;
-                    let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextFieldIndex, context);
+                    let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextColumnIndex, context);
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
                             if (childResultObject) {
@@ -304,9 +304,16 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         else {
             selectFragment = { ...selectClauseFragment };
         }
+        let allFieldsSpecified = false;
+        if (selectFragment.__allFields__ === true) {
+            allFieldsSpecified = true;
+            delete selectFragment.__allFields__;
+        }
         const entityDefinitionHasIds = !!dbEntity.idColumns.length;
         for (const propertyName in selectFragment) {
-            retrieveAllOwnFields = false;
+            if (!allFieldsSpecified) {
+                retrieveAllOwnFields = false;
+            }
             const dbProperty = dbEntity.propertyMap[propertyName];
             if (!dbProperty) {
                 throw new Error(`Entity property '${dbEntity.name}.${propertyName}' does not exist.`);
@@ -348,6 +355,10 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                     case EntityRelationType.ONE_TO_MANY:
                         break;
                     case EntityRelationType.MANY_TO_ONE:
+                        // If select fragment for the child entity is already defined, do not overwrite it
+                        if (selectFragment[dbProperty.name]) {
+                            break;
+                        }
                         const manyToOneRelation = {};
                         context.ioc.entityStateManager.markAsStub(manyToOneRelation);
                         selectFragment[dbProperty.name] = manyToOneRelation;

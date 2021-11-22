@@ -1,6 +1,6 @@
 import { DI } from '@airport/di';
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
-import { REPOSITORY_LOADER, SCHEMA_UTILS, UPDATE_CACHE_MANAGER } from '../../../tokens';
+import { SCHEMA_UTILS, UPDATE_CACHE_MANAGER } from '../../../tokens';
 import { LookupProxy } from './Lookup';
 export class EntityLookup extends LookupProxy {
     constructor(dbEntity, mapResults = EntityLookup.mapResults, repositorySource = null, repositoryUuid = null) {
@@ -16,10 +16,6 @@ export class EntityLookup extends LookupProxy {
     }
     async entityLookup(rawEntityQuery, queryResultType, search, one, context) {
         context.dbEntity = this.dbEntity;
-        if (this.repositorySource && this.repositoryUuid) {
-            const repositoryLoader = await DI.db().get(REPOSITORY_LOADER);
-            await repositoryLoader.loadRepository(this.repositorySource, this.repositoryUuid);
-        }
         context.repositorySource = this.repositorySource;
         context.repositoryUuid = this.repositoryUuid;
         const result = await this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);

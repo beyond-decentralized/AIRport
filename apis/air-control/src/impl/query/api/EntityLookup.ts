@@ -94,10 +94,6 @@ export abstract class EntityLookup<Child, MappedChild,
 		context: IEntityQueryContext
 	): Promise<any> {
 		context.dbEntity = this.dbEntity
-		if (this.repositorySource && this.repositoryUuid) {
-			const repositoryLoader = await DI.db().get(REPOSITORY_LOADER)
-			await repositoryLoader.loadRepository(this.repositorySource, this.repositoryUuid)
-		}
 		context.repositorySource = this.repositorySource
 		context.repositoryUuid = this.repositoryUuid
 

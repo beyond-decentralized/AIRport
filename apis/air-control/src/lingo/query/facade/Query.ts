@@ -51,6 +51,10 @@ export const Y: any = {
 	update: false
 };
 
+export const ALL_FIELDS: any = {
+	__allFields__: true
+}
+
 export const YES = Y;
 
 export function convertToY(

@@ -86,6 +86,7 @@ export class SqlJsDriver
 				while (stmt.step()) {
 					results.push(stmt.get())
 				}
+				console.log(results)
 				resolve(results)
 			} catch (error) {
 				reject(error)

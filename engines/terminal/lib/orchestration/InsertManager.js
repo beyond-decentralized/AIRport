@@ -135,7 +135,7 @@ appears more than once in the Columns clause`);
                             `No value provided on insert for @Id '${dbEntity.name}.${idColumn.name}'.`);
                     }
                 }
-                idValues[idColumn.idIndex] = idValue;
+                idValues[idColumn.index] = idValue;
             }
         }
         // if (dbEntity.isRepositoryEntity) {
@@ -180,14 +180,14 @@ appears more than once in the Columns clause`);
         // (thus reducing storage requirements in SqLite)
         const numSequencesNeeded = generatedColumns.map(_ => values.length);
         const generatedSequenceValues = await sequenceGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
-        generatedColumns.forEach((_dbColumn, generatedColumnIndex) => {
+        generatedColumns.forEach((dbColumn, generatedColumnIndex) => {
             const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex];
             const insertColumnIndex = generatedColumnIndexes[generatedColumnIndex];
             // const columnIndex                   = dbColumn.index
             values.forEach((entityValues, index) => {
                 const generatedValue = generatedColumnSequenceValues[index];
                 entityValues[insertColumnIndex] = generatedValue;
-                allIds[index][generatedColumnIndex] = generatedValue;
+                allIds[index][dbColumn.index] = generatedValue;
             });
         });
         if (!dbEntity.isLocal) {

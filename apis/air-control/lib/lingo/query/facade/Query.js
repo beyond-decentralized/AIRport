@@ -6,6 +6,9 @@ export const Y = {
     insert: true,
     update: false
 };
+export const ALL_FIELDS = {
+    __allFields__: true
+};
 export const YES = Y;
 export function convertToY(object) {
     object.airportSelectField = true;

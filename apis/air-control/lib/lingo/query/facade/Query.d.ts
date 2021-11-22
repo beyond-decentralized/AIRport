@@ -24,6 +24,7 @@ export interface IQuery {
 }
 export declare function ANOTHER(a: number, b?: number): any;
 export declare const Y: any;
+export declare const ALL_FIELDS: any;
 export declare const YES: any;
 export declare function convertToY(object: any): void;
 export declare function isY(object: any): boolean;

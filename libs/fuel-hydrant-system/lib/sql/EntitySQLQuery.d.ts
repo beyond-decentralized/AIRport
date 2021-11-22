@@ -35,7 +35,7 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
     protected buildFromJoinTree(joinRelations: JSONEntityRelation[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
     }, context: IFuelHydrantContext): JoinTreeNode;
-    protected parseQueryResult(selectClauseFragment: any, entityAlias: string, currentJoinNode: JoinTreeNode, resultRow: any, nextFieldIndex: number[], context: IFuelHydrantContext): any;
+    protected parseQueryResult(selectClauseFragment: any, entityAlias: string, currentJoinNode: JoinTreeNode, resultRow: any, nextColumnIndex: number[], context: IFuelHydrantContext): any;
     /**
      * Verify that the entity select clause is valid (has ids) and fill in clauses
      * that are blank (defined as {}).
