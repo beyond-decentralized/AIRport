@@ -26,4 +26,13 @@ export interface IWriteRequest {
 export interface IWriteReply {
     transactionLogEntryTime: number;
 }
+export interface SearchRequest {
+    searchTerm: string;
+}
+export interface UserRequest {
+    birthMonth: number;
+    countryId: number;
+    email: string;
+    userName: string;
+}
 //# sourceMappingURL=common.d.ts.map
