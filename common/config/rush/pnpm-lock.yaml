@@ -16,7 +16,6 @@ dependencies:
   '@rush-temp/automated-guideway-transit': 'file:projects/automated-guideway-transit.tgz'
   '@rush-temp/autopilot': 'file:projects/autopilot.tgz'
   '@rush-temp/blueprint': 'file:projects/blueprint.tgz'
-  '@rush-temp/bulk-read-processor': 'file:projects/bulk-read-processor.tgz'
   '@rush-temp/check-in': 'file:projects/check-in.tgz'
   '@rush-temp/cockroachdb': 'file:projects/cockroachdb.tgz'
   '@rush-temp/config': 'file:projects/config.tgz'
@@ -27,7 +26,6 @@ dependencies:
   '@rush-temp/functionality-demo-frame': 'file:projects/functionality-demo-frame.tgz'
   '@rush-temp/functionality-demo-framework': 'file:projects/functionality-demo-framework.tgz'
   '@rush-temp/functionality-demo-schema': 'file:projects/functionality-demo-schema.tgz'
-  '@rush-temp/gateway': 'file:projects/gateway.tgz'
   '@rush-temp/go-terminal': 'file:projects/go-terminal.tgz'
   '@rush-temp/go-tower': 'file:projects/go-tower.tgz'
   '@rush-temp/ground-control': 'file:projects/ground-control.tgz'
@@ -45,6 +43,9 @@ dependencies:
   '@rush-temp/moving-walkway': 'file:projects/moving-walkway.tgz'
   '@rush-temp/mysql': 'file:projects/mysql.tgz'
   '@rush-temp/na-kano': 'file:projects/na-kano.tgz'
+  '@rush-temp/nonhub-client': 'file:projects/nonhub-client.tgz'
+  '@rush-temp/nonhub-in-memory-server': 'file:projects/nonhub-in-memory-server.tgz'
+  '@rush-temp/nonhub-server': 'file:projects/nonhub-server.tgz'
   '@rush-temp/nonhub-types': 'file:projects/nonhub-types.tgz'
   '@rush-temp/point-of-destination': 'file:projects/point-of-destination.tgz'
   '@rush-temp/postgres': 'file:projects/postgres.tgz'
@@ -73,7 +74,6 @@ dependencies:
   '@rush-temp/web-terminal': 'file:projects/web-terminal.tgz'
   '@rush-temp/web-tower': 'file:projects/web-tower.tgz'
   '@rush-temp/websql': 'file:projects/websql.tgz'
-  '@rush-temp/write-processor': 'file:projects/write-processor.tgz'
   '@tsconfig/svelte': 2.0.1
   '@types/gapi': 0.0.35
   '@types/google-drive-realtime-api': 0.0.33
@@ -83,7 +83,6 @@ dependencies:
   async: 3.2.1
   axios: 0.23.0
   cassandra-driver: 4.6.3
-  child-process: 1.0.2
   cross-env: 7.0.3
   css-loader: 3.5.3_webpack@4.43.0
   fastify: 3.22.1
@@ -93,8 +92,6 @@ dependencies:
   mysql2: 2.1.0
   nodemon: 2.0.6
   page: 1.11.6
-  pg: 8.7.1_pg@8.7.1
-  pg-connection-string: 2.5.0
   prettier: 2.2.1
   reflect-metadata: 0.1.13
   rollup: 2.56.3
@@ -2951,10 +2948,6 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
-  /child-process/1.0.2:
-    dev: false
-    resolution:
-      integrity: sha1-mJdNx+0e5MYin44wX6cxOmiFp/I=
   /chokidar/2.1.8:
     dependencies:
       anymatch: 2.0.0
@@ -10787,24 +10780,6 @@ packages:
       integrity: sha512-MIBvgywC/e9yhuSBdgcqwVjzacyOfoiMRlrBGmHHlh9bbd6s4C4S2nXjmFj02VRGHrFaeT0eBXGYfee3gNDDvA==
       tarball: 'file:projects/blueprint.tgz'
     version: 0.0.0
-  'file:projects/bulk-read-processor.tgz':
-    dependencies:
-      '@types/node': 16.11.2
-      async: 3.2.1
-      axios: 0.23.0
-      cassandra-driver: 4.6.3
-      fastify: 3.22.1
-      fastify-cors: 6.0.2
-      string-cipher: 1.0.8
-      tslint: 6.1.3_typescript@4.4.2
-      typescript: 4.4.2
-      uuid: 8.3.2
-    dev: false
-    name: '@rush-temp/bulk-read-processor'
-    resolution:
-      integrity: sha512-if4t5fsW6b7Ghqde+vIk4ODUNvbYwfB6rXa8v0W8ONyW7PhCj3BvErUBmFR5Bprob82u2dMkUDwwU+yICazCzg==
-      tarball: 'file:projects/bulk-read-processor.tgz'
-    version: 0.0.0
   'file:projects/check-in.tgz':
     dependencies:
       rxjs: 7.4.0
@@ -10959,23 +10934,6 @@ packages:
     resolution:
       integrity: sha512-yZM3DafTGJNxrzPrrMIy0Aed3asamN37au8hCNWjgdtKpjGDYS43R87jAe7s6XzvZsfmVTAx9pJempP+2J0Bbg==
       tarball: 'file:projects/functionality-demo.tgz'
-    version: 0.0.0
-  'file:projects/gateway.tgz':
-    dependencies:
-      '@types/node': 16.11.2
-      axios: 0.23.0
-      fastify: 3.22.1
-      fastify-cors: 6.0.2
-      fastify-static: 4.4.2
-      string-cipher: 1.0.8
-      tslint: 6.1.3_typescript@4.4.2
-      typescript: 4.4.2
-      uuid: 8.3.2
-    dev: false
-    name: '@rush-temp/gateway'
-    resolution:
-      integrity: sha512-rNN8OdMzrKxUWD6GPbfn3H6MzKcwHpJ8KYwsWM7gjvor4T2r3m88GDnqhIHq85zkcU87MadwUZARBD2M0J5lmA==
-      tarball: 'file:projects/gateway.tgz'
     version: 0.0.0
   'file:projects/go-terminal.tgz':
     dependencies:
@@ -11152,6 +11110,58 @@ packages:
       integrity: sha512-FJYWttlnpRZi1SjCDic2Bolrsm4nYEqARQnacJj7Kv75BNpJgpXd/1tDXhdCirpuooDZyClCqs36EAzcA8UDHg==
       tarball: 'file:projects/na-kano.tgz'
     version: 0.0.0
+  'file:projects/nonhub-client.tgz':
+    dependencies:
+      '@types/node': 16.11.2
+      axios: 0.23.0
+      fastify: 3.22.1
+      fastify-cors: 6.0.2
+      fastify-static: 4.4.2
+      string-cipher: 1.0.8
+      tslint: 6.1.3_typescript@4.4.2
+      typescript: 4.4.2
+      uuid: 8.3.2
+    dev: false
+    name: '@rush-temp/nonhub-client'
+    resolution:
+      integrity: sha512-Tu8p7WOKRZwmZVdv0+N+oXLXcEUQgG7CTWOvWUT2xvQf8MmIUrNZebwkqXOurmAs9gG+tnTemIifd4jlPy4YjA==
+      tarball: 'file:projects/nonhub-client.tgz'
+    version: 0.0.0
+  'file:projects/nonhub-in-memory-server.tgz':
+    dependencies:
+      '@types/node': 16.11.2
+      async: 3.2.1
+      axios: 0.23.0
+      fastify: 3.22.1
+      fastify-cors: 6.0.2
+      string-cipher: 1.0.8
+      tslint: 6.1.3_typescript@4.4.2
+      typescript: 4.4.2
+      uuid: 8.3.2
+    dev: false
+    name: '@rush-temp/nonhub-in-memory-server'
+    resolution:
+      integrity: sha512-TxdAtI0qdpceB8IUIWkyHzG2UyKQU1SaiMT1jUOliEgW5enNePWrmHg1ekkVP9PWCJwtWzLJWDLYql6coFK6gA==
+      tarball: 'file:projects/nonhub-in-memory-server.tgz'
+    version: 0.0.0
+  'file:projects/nonhub-server.tgz':
+    dependencies:
+      '@types/node': 16.11.2
+      async: 3.2.1
+      axios: 0.23.0
+      cassandra-driver: 4.6.3
+      fastify: 3.22.1
+      fastify-cors: 6.0.2
+      string-cipher: 1.0.8
+      tslint: 6.1.3_typescript@4.4.2
+      typescript: 4.4.2
+      uuid: 8.3.2
+    dev: false
+    name: '@rush-temp/nonhub-server'
+    resolution:
+      integrity: sha512-XnHTLY2CDGKCkRMQySYy2QvREIBSHkItmU3TQCJvNNmo+kzFmjLzPB+SCI8H9f9h2PCs+aKVkYRITVxi2Gzj0w==
+      tarball: 'file:projects/nonhub-server.tgz'
+    version: 0.0.0
   'file:projects/nonhub-types.tgz':
     dependencies:
       '@types/node': 16.11.2
@@ -11199,6 +11209,8 @@ packages:
       fastify: 3.22.1
       fastify-cors: 6.0.2
       fastify-static: 4.4.2
+      pg: 8.7.1_pg@8.7.1
+      pg-connection-string: 2.5.0
       rxjs: 7.4.0
       string-cipher: 1.0.8
       tslint: 6.1.3_typescript@4.4.2
@@ -11207,7 +11219,7 @@ packages:
     dev: false
     name: '@rush-temp/processor-common'
     resolution:
-      integrity: sha512-JRBnWRZp2JyR+7EYXW+D3z3OiakFnwVo1CoEC6JJXxB4Xye7yPoeDD3UW5Zv9DdsZi+dWPXjGdh7Y8i0I3BUwQ==
+      integrity: sha512-3WRa04NfDZwOOhD6Qd5bfStdqY3o+GxRIES7zyDVAF4aTRcN+NdLlrcc72HV/E6BcZbo8UOFHkDtFIjoC1JS8g==
       tarball: 'file:projects/processor-common.tgz'
     version: 0.0.0
   'file:projects/ramp.tgz':
@@ -11424,28 +11436,6 @@ packages:
       integrity: sha512-RgdfF2te+rxELZU4d8ReZCeMLltzuLndFiMhuZSVAIBBsYjePsEmN15gRYc43InupiQT8+Qy/PFCfzS9/nKgaA==
       tarball: 'file:projects/websql.tgz'
     version: 0.0.0
-  'file:projects/write-processor.tgz':
-    dependencies:
-      '@types/node': 16.11.2
-      '@types/pg': 8.6.1
-      axios: 0.23.0
-      child-process: 1.0.2
-      fastify: 3.22.1
-      fastify-cors: 6.0.2
-      fastify-static: 4.4.2
-      pg: 8.7.1_pg@8.7.1
-      pg-connection-string: 2.5.0
-      rxjs: 7.4.0
-      string-cipher: 1.0.8
-      tslint: 6.1.3_typescript@4.4.2
-      typescript: 4.4.2
-      uuid: 8.3.2
-    dev: false
-    name: '@rush-temp/write-processor'
-    resolution:
-      integrity: sha512-ZZWNtsDof6fAIIYlB65oTGl5zxDUb6oDRNl/mtSo0RVPwIz60I6E8PZ3r1lsbp91OWCAJm4wGQkGPAg0sMyl/A==
-      tarball: 'file:projects/write-processor.tgz'
-    version: 0.0.0
 registry: ''
 specifiers:
   '@node-ts/bus-core': ^0.6.3
@@ -11465,7 +11455,6 @@ specifiers:
   '@rush-temp/automated-guideway-transit': 'file:./projects/automated-guideway-transit.tgz'
   '@rush-temp/autopilot': 'file:./projects/autopilot.tgz'
   '@rush-temp/blueprint': 'file:./projects/blueprint.tgz'
-  '@rush-temp/bulk-read-processor': 'file:./projects/bulk-read-processor.tgz'
   '@rush-temp/check-in': 'file:./projects/check-in.tgz'
   '@rush-temp/cockroachdb': 'file:./projects/cockroachdb.tgz'
   '@rush-temp/config': 'file:./projects/config.tgz'
@@ -11476,7 +11465,6 @@ specifiers:
   '@rush-temp/functionality-demo-frame': 'file:./projects/functionality-demo-frame.tgz'
   '@rush-temp/functionality-demo-framework': 'file:./projects/functionality-demo-framework.tgz'
   '@rush-temp/functionality-demo-schema': 'file:./projects/functionality-demo-schema.tgz'
-  '@rush-temp/gateway': 'file:./projects/gateway.tgz'
   '@rush-temp/go-terminal': 'file:./projects/go-terminal.tgz'
   '@rush-temp/go-tower': 'file:./projects/go-tower.tgz'
   '@rush-temp/ground-control': 'file:./projects/ground-control.tgz'
@@ -11494,6 +11482,9 @@ specifiers:
   '@rush-temp/moving-walkway': 'file:./projects/moving-walkway.tgz'
   '@rush-temp/mysql': 'file:./projects/mysql.tgz'
   '@rush-temp/na-kano': 'file:./projects/na-kano.tgz'
+  '@rush-temp/nonhub-client': 'file:./projects/nonhub-client.tgz'
+  '@rush-temp/nonhub-in-memory-server': 'file:./projects/nonhub-in-memory-server.tgz'
+  '@rush-temp/nonhub-server': 'file:./projects/nonhub-server.tgz'
   '@rush-temp/nonhub-types': 'file:./projects/nonhub-types.tgz'
   '@rush-temp/point-of-destination': 'file:./projects/point-of-destination.tgz'
   '@rush-temp/postgres': 'file:./projects/postgres.tgz'
@@ -11522,7 +11513,6 @@ specifiers:
   '@rush-temp/web-terminal': 'file:./projects/web-terminal.tgz'
   '@rush-temp/web-tower': 'file:./projects/web-tower.tgz'
   '@rush-temp/websql': 'file:./projects/websql.tgz'
-  '@rush-temp/write-processor': 'file:./projects/write-processor.tgz'
   '@tsconfig/svelte': ^2.0.0
   '@types/gapi': ^0.0.35
   '@types/google-drive-realtime-api': ^0.0.33
@@ -11532,7 +11522,6 @@ specifiers:
   async: ^3.2.1
   axios: ^0.23.0
   cassandra-driver: ^4.6.3
-  child-process: latest
   cross-env: ^7.0.2
   css-loader: ^3.5.3
   fastify: ^3.22.0
@@ -11542,8 +11531,6 @@ specifiers:
   mysql2: ^2.1.0
   nodemon: ^2.0.6
   page: ^1.11.6
-  pg: latest
-  pg-connection-string: latest
   prettier: ^2.2.1
   reflect-metadata: ^0.1.13
   rollup: ^2.3.4

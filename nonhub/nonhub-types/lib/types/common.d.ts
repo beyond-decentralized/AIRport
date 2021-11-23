@@ -14,4 +14,16 @@ export declare enum ServerError {
     INVALID = "INVALID",
     SHUTDOWN = "SHUTDOWN"
 }
+export interface IReadRequest {
+    repositoryUuId: string;
+    transactionLogEntryTime: number;
+}
+export declare type ReadReply = string;
+export interface IWriteRequest {
+    repositoryUuId: string;
+    data: string;
+}
+export interface IWriteReply {
+    transactionLogEntryTime: number;
+}
 //# sourceMappingURL=common.d.ts.map

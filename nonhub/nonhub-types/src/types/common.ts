@@ -16,3 +16,19 @@ export enum ServerError {
     INVALID = 'INVALID',
     SHUTDOWN = 'SHUTDOWN'
 }
+
+export interface IReadRequest {
+    repositoryUuId: string
+    transactionLogEntryTime: number
+}
+
+export type ReadReply = string
+
+export interface IWriteRequest {
+    repositoryUuId: string
+    data: string
+}
+
+export interface IWriteReply {
+    transactionLogEntryTime: number
+}

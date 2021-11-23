@@ -17,8 +17,8 @@ export class BasicServer {
             this.shutdown();
         });
     }
-    start() {
-        this.doStart().then();
+    start(port = 80, address = '0.0.0.0') {
+        this.doStart(port, address).then();
     }
     shutdown() {
         this.serverState = ServerState.SHUTTING_DOWN_REQUESTS;
@@ -35,10 +35,10 @@ export class BasicServer {
         }, interval);
         this.checkServerState();
     }
-    async doStart() {
+    async doStart(port, address) {
         try {
             await this.doStartResources();
-            await this.fastify.listen(80, '0.0.0.0');
+            await this.fastify.listen(port, address);
         }
         catch (err) {
             try {

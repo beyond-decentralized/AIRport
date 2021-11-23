@@ -8,10 +8,10 @@ export declare class BasicServer<Server extends http.Server, Request extends Raw
     private shutdownIntervalHandle;
     private batchIntervalHandle;
     constructor(opts?: FastifyServerOptions<Server, Logger>);
-    start(): void;
+    start(port?: number, address?: string): void;
     shutdown(): void;
     setIntervalProcessing(callback: () => Promise<void>, interval: number): void;
-    protected doStart(): Promise<void>;
+    protected doStart(port: number, address: string): Promise<void>;
     protected doStartResources(): Promise<void>;
     protected shutdownServer(): void;
     protected shutdownResources(): void;

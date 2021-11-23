@@ -42,8 +42,11 @@ export class BasicServer<
         })
     }
 
-    start() {
-        this.doStart().then()
+    start(
+        port = 80,
+        address = '0.0.0.0'
+    ) {
+        this.doStart(port, address).then()
     }
 
     shutdown() {
@@ -66,10 +69,13 @@ export class BasicServer<
         this.checkServerState()
     }
 
-    protected async doStart() {
+    protected async doStart(
+        port: number,
+        address: string
+    ) {
         try {
             await this.doStartResources()
-            await this.fastify.listen(80, '0.0.0.0')
+            await this.fastify.listen(port, address)
         } catch (err) {
             try {
                 this.fastify.log.error(err)

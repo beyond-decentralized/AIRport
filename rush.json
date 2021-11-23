@@ -225,13 +225,18 @@
     },
     // "nonhub" folder (alphabetical order)
     {
-      "packageName": "@airport/bulk-read-processor",
-      "projectFolder": "nonhub/bulk-read-processor",
+      "packageName": "@airport/nonhub-client",
+      "projectFolder": "nonhub/client",
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/gateway",
-      "projectFolder": "nonhub/gateway",
+      "packageName": "@airport/nonhub-in-memory-server",
+      "projectFolder": "nonhub/in-memory-server",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/nonhub-server",
+      "projectFolder": "nonhub/server",
       "shouldPublish": true
     },
     {
@@ -242,11 +247,6 @@
     {
       "packageName": "@airport/processor-common",
       "projectFolder": "nonhub/processor-common",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/write-processor",
-      "projectFolder": "nonhub/write-processor",
       "shouldPublish": true
     },
     // "schemas" folder (alphabetical order)
