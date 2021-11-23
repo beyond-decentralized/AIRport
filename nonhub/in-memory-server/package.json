@@ -17,6 +17,6 @@
     "main": "lib/server.js",
     "name": "@airport/nonhub-in-memory-server",
     "type": "module",
-    "typings": "lib/index",
+    "typings": "lib/server",
     "version": "0.0.1"
   }

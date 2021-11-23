@@ -97,11 +97,11 @@ export function processSearchRequest(request, reply) {
         reply.send({ received: false });
         return;
     }
-    let senderUuid = searchRequest.senderUuid;
-    if (typeof senderUuid !== 'string' || senderUuid.length !== 36) {
-        reply.send({ received: false });
-        return;
-    }
+    // let senderUuid = searchRequest.senderUuid
+    // if (typeof senderUuid !== 'string' || senderUuid.length !== 36) {
+    //     reply.send({ received: false })
+    //     return
+    // }
     let searchTerm = searchRequest.searchTerm;
     if (typeof searchTerm !== 'string' || searchTerm.length < 5 || searchTerm.length > 120) {
         reply.send({ received: false });

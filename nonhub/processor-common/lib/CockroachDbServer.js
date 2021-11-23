@@ -1,7 +1,7 @@
-import { BasicServer } from '@airport/nonhub-types';
 import { startDb } from '@airport/postgres';
 import pg from 'pg';
 import { parse } from "pg-connection-string";
+import { BasicServer } from '.';
 const Pool = pg.Pool;
 export class CockroachDbServer extends BasicServer {
     async doStartResources() {

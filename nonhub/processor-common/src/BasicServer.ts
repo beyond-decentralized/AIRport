@@ -7,7 +7,7 @@ import type {
     RawReplyDefaultExpression,
     RawRequestDefaultExpression,
 } from 'fastify'
-import { ServerState } from '../types/common'
+import { ServerState } from '@airport/nonhub-types/src/types/common'
 
 export class BasicServer<
     Server extends http.Server,

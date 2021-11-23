@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import * as http from 'http';
 import type { FastifyInstance, FastifyLoggerInstance, FastifyServerOptions, RawReplyDefaultExpression, RawRequestDefaultExpression } from 'fastify';
-import { ServerState } from '../types/common';
+import { ServerState } from '@airport/nonhub-types/src/types/common';
 export declare class BasicServer<Server extends http.Server, Request extends RawRequestDefaultExpression<Server> = RawRequestDefaultExpression<Server>, Reply extends RawReplyDefaultExpression<Server> = RawReplyDefaultExpression<Server>, Logger extends FastifyLoggerInstance = FastifyLoggerInstance> {
     fastify: FastifyInstance<Server, Request, Reply, Logger> & PromiseLike<FastifyInstance<Server, Request, Reply, Logger>>;
     serverState: ServerState;

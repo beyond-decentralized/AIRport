@@ -1,4 +1,4 @@
-import { BasicServer } from "@airport/nonhub-types";
+import { BasicServer } from '.';
 export class ScyllaDbServer extends BasicServer {
     async doStartResources() {
         const cassandra = require('cassandra-driver');

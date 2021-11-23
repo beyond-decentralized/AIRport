@@ -1,5 +1,5 @@
-import { BasicServer } from "@airport/nonhub-types";
 import * as http from 'http'
+import { BasicServer } from '.';
 
 export class ScyllaDbServer
     extends BasicServer<http.Server> {

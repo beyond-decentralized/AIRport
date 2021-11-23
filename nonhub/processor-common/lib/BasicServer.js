@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import { ServerState } from '../types/common';
+import { ServerState } from '@airport/nonhub-types/src/types/common';
 export class BasicServer {
     constructor(opts) {
         this.serverState = ServerState.RUNNING;

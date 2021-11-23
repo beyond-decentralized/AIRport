@@ -1,6 +1,6 @@
 /// <reference types="node" />
-import { BasicServer } from "@airport/nonhub-types";
 import * as http from 'http';
+import { BasicServer } from '.';
 export declare class ScyllaDbServer extends BasicServer<http.Server> {
     scyllaDbClient: any;
     protected doStartResources(): Promise<void>;
