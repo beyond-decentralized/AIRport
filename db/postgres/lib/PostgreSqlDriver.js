@@ -2,11 +2,12 @@ import { QueryType, STORE_DRIVER } from '@airport/ground-control';
 import { transactional } from '@airport/tower';
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
 import pg from 'pg';
-import { Pool } from 'pg';
-import { parse } from 'pg-connection-string';
+import pgConnectionString from 'pg-connection-string';
 import { DDLManager } from './DDLManager';
 import { DI } from '@airport/di';
 import { PostgreTransaction } from './PostgreTransaction';
+const Pool = pg.Pool;
+const parse = pgConnectionString.parse;
 /**
  * Created by Papa on 11/27/2016.
  */

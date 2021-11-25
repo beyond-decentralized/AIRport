@@ -91,8 +91,7 @@ declare function require(moduleName: string): any;
 export interface TerminalESelect
     extends IEntitySelectProperties, TerminalEOptionalId {
 	// Non-Id Properties
-	name?: string | IQStringField;
-	secondId?: number | IQNumberField;
+	uuId?: string | IQStringField;
 	isLocal?: boolean | IQBooleanField;
 
 	// Id Relations - full property interfaces
@@ -134,8 +133,7 @@ export interface TerminalEOptionalId {
 export interface TerminalEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	name?: string | IQStringField;
-	secondId?: number | IQNumberField;
+	uuId?: string | IQStringField;
 	isLocal?: boolean | IQBooleanField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -151,8 +149,7 @@ export interface TerminalGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	name?: string | IQStringField;
-	secondId?: number | IQNumberField;
+	uuId?: string | IQStringField;
 	isLocal?: boolean | IQBooleanField;
 
 	// Relations
@@ -169,8 +166,7 @@ export interface TerminalGraph
 export interface TerminalEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	NAME?: string | IQStringField;
-	SECOND_ID?: number | IQNumberField;
+	UUID?: string | IQStringField;
 	IS_LOCAL?: boolean | IQBooleanField;
 	OWNER_USER_ID?: number | IQNumberField;
 
@@ -208,8 +204,7 @@ export interface QTerminal extends IQEntity<Terminal>
 	// Id Relations
 
 	// Non-Id Fields
-	name: IQStringField;
-	secondId: IQNumberField;
+	uuId: IQStringField;
 	isLocal: IQBooleanField;
 
 	// Non-Id Relations

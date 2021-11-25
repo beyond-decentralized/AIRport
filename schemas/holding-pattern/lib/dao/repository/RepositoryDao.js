@@ -4,6 +4,27 @@ import { ensureChildJsMap } from '@airport/ground-control';
 import { REPOSITORY_DAO } from '../../tokens';
 import { BaseRepositoryDao, Q, } from '../../generated/generated';
 export class RepositoryDao extends BaseRepositoryDao {
+    async getRepositoryLoadInfo(repositorySource, repositoryUuId) {
+        let r;
+        let rth;
+        let th;
+        let t;
+        return await this.db.findOne.tree({
+            select: {
+                immutable: Y,
+                repositoryTransactionHistory: {
+                    saveTimestamp: Y
+                }
+            },
+            from: [
+                r = Q.Repository,
+                rth = r.repositoryTransactionHistory.innerJoin(),
+                th = rth.transactionHistory.innerJoin(),
+                t = th.terminal.innerJoin()
+            ],
+            where: and(r.source.equals(repositorySource), r.uuId.equals(repositoryUuId), t.isLocal.equals(false))
+        });
+    }
     async findReposWithTransactionLogDetailsByIds(repositoryIds) {
         let r;
         let ra;
@@ -34,9 +55,6 @@ export class RepositoryDao extends BaseRepositoryDao {
             where: 
             // and(
             r.id.in(repositoryIds),
-            // d.name.equals(dbName),
-            // u.uniqueId.equals(userEmail)
-            // )
         });
     }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
@@ -57,7 +75,7 @@ export class RepositoryDao extends BaseRepositoryDao {
             where: r.id.in(repositoryIds)
         });
     }
-    async findReposWithDetailsByIds(repositoryIdsInClause, dbName, userEmail) {
+    async findReposWithDetailsByIds(repositoryIdsInClause, uuId, userEmail) {
         let r;
         let ra;
         let a;
@@ -85,7 +103,7 @@ export class RepositoryDao extends BaseRepositoryDao {
                 u = a.user.innerJoin(),
                 d = a.terminal.innerJoin()
             ],
-            where: and(r.id.in(repositoryIdsInClause), d.name.equals(dbName), u.email.equals(userEmail))
+            where: and(r.id.in(repositoryIdsInClause), d.uuId.equals(uuId), u.email.equals(userEmail))
         });
     }
     async findReposWithGlobalIds(repositoryIds) {
@@ -117,36 +135,35 @@ export class RepositoryDao extends BaseRepositoryDao {
         }
         return repositoryMapById;
     }
-    async findLocalRepoIdsByGlobalIds(createdAts, uuIds, ownerActorRandomIds, ownerUserUniqueIds, ownerTerminalNames, ownerTerminalSecondIds, ownerTerminalOwnerUserUniqueIds) {
+    async findLocalRepoIdsByGlobalIds(createdAts, uuIds, ownerActorRandomIds, ownerUserUniqueIds, ownerTerminalUuids, ownerTerminalOwnerUserUniqueIds) {
         const repositoryIdMap = new Map();
-        let r;
-        let oa;
-        let od;
-        let odu;
-        let ou;
+        let repo;
+        let ownerActor;
+        let terminal;
+        let terminalUser;
+        let repoOwnerUser;
         const airDb = await container(this).get(AIRPORT_DATABASE);
         const resultRows = await airDb.find.sheet({
             from: [
-                r = Q.Repository,
-                oa = r.ownerActor.innerJoin(),
-                ou = oa.user.innerJoin(),
-                od = oa.terminal.innerJoin(),
-                odu = od.owner.innerJoin(),
+                repo = Q.Repository,
+                ownerActor = repo.ownerActor.innerJoin(),
+                repoOwnerUser = ownerActor.user.innerJoin(),
+                terminal = ownerActor.terminal.innerJoin(),
+                terminalUser = terminal.owner.innerJoin(),
             ],
             select: [
-                odu.privateId,
-                od.name,
-                od.secondId,
-                ou.privateId,
-                oa.uuId,
-                r.createdAt,
-                r.uuId,
-                r.id,
+                terminalUser.privateId,
+                terminal.uuId,
+                repoOwnerUser.privateId,
+                ownerActor.uuId,
+                repo.createdAt,
+                repo.uuId,
+                repo.id,
             ],
-            where: and(r.createdAt.in(createdAts), r.uuId.in(uuIds), oa.uuId.in(ownerActorRandomIds), ou.privateId.in(ownerUserUniqueIds), od.name.in(ownerTerminalNames), od.secondId.in(ownerTerminalSecondIds), odu.privateId.in(ownerTerminalOwnerUserUniqueIds))
+            where: and(repo.createdAt.in(createdAts), repo.uuId.in(uuIds), ownerActor.uuId.in(ownerActorRandomIds), repoOwnerUser.privateId.in(ownerUserUniqueIds), terminal.uuId.in(ownerTerminalUuids), terminalUser.privateId.in(ownerTerminalOwnerUserUniqueIds))
         });
         for (const resultRow of resultRows) {
-            ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4]), resultRow[5].getTime()).set(resultRow[6], resultRow[7]);
+            ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4].getTime()).set(resultRow[5], resultRow[6]);
         }
         return repositoryIdMap;
     }

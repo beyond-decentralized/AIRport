@@ -14,13 +14,13 @@ import {
 import axios from 'axios';
 
 const client = lib('nonhub-client')
-const NONHUB_CLIENT = client.token<INonhubClient>('INonhubClient')
+export const NONHUB_CLIENT = client.token<INonhubClient>('INonhubClient')
 
 export interface INonhubClient {
 
     getRepository(
         repositoryUuid: string,
-        transactionLogEntryTime: number
+        transactionLogEntryTime?: number
     ): Promise<any>
     
     writeRepository(
@@ -39,7 +39,7 @@ export class NonhubClient
 
     async getRepository(
         repositoryUuId: string,
-        transactionLogEntryTime: number
+        transactionLogEntryTime: number = null
     ): Promise<any> {
         const textResponse = await this.sendMessage<IReadRequest, any>({
             repositoryUuId,

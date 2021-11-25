@@ -1,7 +1,5 @@
 import { IRepositoryTransactionHistory } from '@airport/holding-pattern'
 import { SharingAdaptor } from '../SharingAdaptor';
-import { IDeltaStoreConfig } from '../config/DeltaStoreConfig';
-import { IChangeListConfig } from '../config/ChangeListConfig';
 import { UpdateState } from '../core/UpdateState';
 import {
     ChangeRecord,
@@ -10,12 +8,10 @@ import {
 
 export interface IDeltaStore {
 
-    config: IDeltaStoreConfig;
     sharingAdaptor: SharingAdaptor;
     updateState: UpdateState;
 
     addChanges<E>(
-        changeListConfig: IChangeListConfig,
         changeRecords: E[]
     ): Promise<void>;
 

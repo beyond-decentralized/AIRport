@@ -1,4 +1,5 @@
 import { ATransactionHistory, SyncSchemaMap, TransactionType } from '@airport/ground-control';
+import { Terminal } from '@airport/travel-document-checkpoint';
 import { OperationHistory } from './OperationHistory';
 import { RecordHistory } from './RecordHistory';
 import { RecordHistoryNewValue } from './RecordHistoryNewValue';
@@ -12,6 +13,7 @@ export declare type TransactionHistoryId = number;
 export declare class TransactionHistory implements ATransactionHistory {
     id: TransactionHistoryId;
     transactionType: TransactionType;
+    terminal: Terminal;
     repositoryTransactionHistories: RepositoryTransactionHistory[];
     repoTransHistoryMap: {
         [repositoryId: number]: RepositoryTransactionHistory;

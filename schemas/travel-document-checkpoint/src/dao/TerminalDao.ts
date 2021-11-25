@@ -1,33 +1,30 @@
-import {and}              from '@airport/air-control'
+import { and } from '@airport/air-control'
+import { DI } from '@airport/di'
+import { ensureChildJsMap } from '@airport/ground-control'
 import {
-	TerminalName,
-	TerminalSecondId
-}                         from '@airport/arrivals-n-departures'
-import {DI}               from '@airport/di'
-import {ensureChildJsMap} from '@airport/ground-control'
-import {UserId}           from '../ddl/ddl'
-import {TERMINAL_DAO}     from '../tokens'
+	UserId,
+	Terminal_UuId
+} from '../ddl/ddl'
+import { TERMINAL_DAO } from '../tokens'
 import {
 	BaseTerminalDao,
 	IBaseTerminalDao,
 	ITerminal,
 	Q,
 	QTerminal
-}                         from '../generated/generated'
+} from '../generated/generated'
 
 export interface ITerminalDao
 	extends IBaseTerminalDao {
 
 	findMapByIds(
 		ownerUniqueIds: UserId[],
-		names: TerminalName[],
-		secondIds: TerminalSecondId[]
-	): Promise<Map<UserId, Map<TerminalName, Map<TerminalSecondId, ITerminal>>>>;
+		uuIds: Terminal_UuId[]
+	): Promise<Map<UserId, Map<Terminal_UuId, ITerminal>>>;
 
 	findByIds(
 		ownerIds: UserId[],
-		names: TerminalName[],
-		secondIds: TerminalSecondId[]
+		uuIds: Terminal_UuId[]
 	): Promise<ITerminal[]>;
 
 }
@@ -38,19 +35,14 @@ export class TerminalDao
 
 	async findMapByIds(
 		ownerIds: UserId[],
-		names: TerminalName[],
-		secondIds: TerminalSecondId[]
-	): Promise<Map<UserId, Map<TerminalName, Map<TerminalSecondId, ITerminal>>>> {
-		const terminalMap: Map<UserId,
-			Map<TerminalName, Map<TerminalSecondId, ITerminal>>> = new Map()
+		uuIds: Terminal_UuId[],
+	): Promise<Map<UserId, Map<Terminal_UuId, ITerminal>>> {
+		const terminalMap: Map<UserId, Map<Terminal_UuId, ITerminal>> = new Map()
 
-		const terminals = await this.findByIds(ownerIds, names, secondIds)
+		const terminals = await this.findByIds(ownerIds, uuIds)
 		for (const terminal of terminals) {
-			ensureChildJsMap(
-				ensureChildJsMap(terminalMap,
-					terminal.owner.id),
-				terminal.name)
-				.set(terminal.secondId, terminal)
+			ensureChildJsMap(terminalMap, terminal.owner.id)
+				.set(terminal.uuId, terminal)
 		}
 
 		return terminalMap
@@ -58,8 +50,7 @@ export class TerminalDao
 
 	async findByIds(
 		ownerIds: UserId[],
-		names: TerminalName[],
-		secondIds: TerminalSecondId[]
+		uuIds: Terminal_UuId[],
 	): Promise<ITerminal[]> {
 		let d: QTerminal
 		return await this.db.find.tree({
@@ -69,8 +60,7 @@ export class TerminalDao
 			],
 			where: and(
 				d.owner.id.in(ownerIds),
-				d.name.in(names),
-				d.secondId.in(secondIds)
+				d.uuId.in(uuIds)
 			)
 		})
 	}

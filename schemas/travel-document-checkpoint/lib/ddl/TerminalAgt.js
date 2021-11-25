@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { DbString, Entity, Id, JoinColumn, ManyToOne, OneToMany, Table } from '@airport/air-control';
+import { Entity, Id, JoinColumn, ManyToOne, OneToMany, Table } from '@airport/air-control';
 /**
  *
  * DEPRECATED - syncing will now be done via IPFS/Peergos
@@ -22,9 +22,6 @@ __decorate([
     ManyToOne(),
     JoinColumn({ name: 'AGT_ID', referencedColumnName: 'ID' })
 ], TerminalAgt.prototype, "agt", void 0);
-__decorate([
-    DbString()
-], TerminalAgt.prototype, "password", void 0);
 __decorate([
     OneToMany({ mappedBy: 'terminalAgt' })
 ], TerminalAgt.prototype, "userTerminalAgts", void 0);

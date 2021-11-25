@@ -4,8 +4,7 @@ import { IUserTerminal } from './userterminal';
 import { IUserTerminalAgt } from './userterminalagt';
 export interface ITerminal {
     id: number;
-    name?: string;
-    secondId?: number;
+    uuId?: string;
     isLocal?: boolean;
     owner?: IUser;
     terminalAgts?: ITerminalAgt[];

@@ -1,5 +1,4 @@
 import {MessageFromTM}           from "./message/MessageFromTM";
-import {SerializedMessageFromTM} from "./message/SerializedMessageFromTM";
 import {ISyncConnectionVerifier} from './SyncConnectionVerifier'
 
 export interface ISyncConnectionServer<IncomingMessage, ServerResponse, Server, Timer> {
@@ -26,7 +25,7 @@ export interface ISyncConnectionServer<IncomingMessage, ServerResponse, Server, 
 		req: IncomingMessage,
 		res: ServerResponse,
 		callback: (
-			message: SerializedMessageFromTM
+			message: any
 		) => void,
 	): void;
 

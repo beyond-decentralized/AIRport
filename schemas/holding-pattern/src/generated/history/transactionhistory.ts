@@ -17,6 +17,9 @@ import {
 	RecordHistoryOldValue,
 } from '../../ddl/history/RecordHistoryOldValue';
 import {
+	ITerminal,
+} from '@airport/travel-document-checkpoint';
+import {
 	IRepositoryTransactionHistory,
 } from './repositorytransactionhistory';
 
@@ -37,6 +40,7 @@ export interface ITransactionHistory {
 	transactionType?: string;
 
 	// Non-Id Relations
+	terminal?: ITerminal;
 	repositoryTransactionHistories?: IRepositoryTransactionHistory[];
 
 	// Transient Properties

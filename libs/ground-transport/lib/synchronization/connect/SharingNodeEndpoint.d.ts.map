@@ -1,1 +1,0 @@
-{"version":3,"file":"SharingNodeEndpoint.d.ts","sourceRoot":"","sources":["../../../src/synchronization/connect/SharingNodeEndpoint.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,mBAAmB,EACnB,aAAa,EACb,MAA0B,gCAAgC,CAAC;AAC5D,OAAO,EAAC,YAAY,EAAC,MAAM,yBAAyB,CAAC;AAErD,MAAM,WAAW,oBAAoB;IAEpC,kBAAkB,CACjB,WAAW,EAAE,YAAY,EACzB,OAAO,EAAE,aAAa,GACpB,OAAO,CAAC,mBAAmB,CAAC,CAAC;CAEhC"}

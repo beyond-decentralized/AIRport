@@ -10,12 +10,6 @@ import {
 	OneToMany,
 	Table
 }                           from '@airport/air-control'
-import {
-	TerminalId,
-	TerminalName,
-	TerminalPassword,
-	TerminalSecondId
-}                           from '@airport/arrivals-n-departures'
 import {AgtSharingMessage}  from '../synchronization/AgtSharingMessage'
 import {User}               from '../user/User'
 import {TerminalRepository} from './TerminalRepository'
@@ -31,21 +25,19 @@ export type TerminalLastSseConnectionDatetime = number;
 export class Terminal {
 
 	@Id()
-	@DbNumber()
 	@GeneratedValue()
-	id: TerminalId
+	id: number
 
 	@Column({name: 'NAME', nullable: false})
-	@DbString()
-	name: TerminalName
+	name: string
 
 	@DbNumber()
 	@Column({name: 'SECOND_ID', nullable: false})
-	secondId: TerminalSecondId
+	secondId: number
 
 	@Column({name: 'PASSWORD', nullable: false})
 	@DbString()
-	password: TerminalPassword
+	password: string
 
 	@Column({name: 'LAST_RECENT_CONNECTION_DATETIME', nullable: false})
 	@DbNumber()

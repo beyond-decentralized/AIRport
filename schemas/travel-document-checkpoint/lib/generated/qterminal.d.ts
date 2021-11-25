@@ -11,8 +11,7 @@ import { Terminal } from '../ddl/Terminal';
  * SELECT - All fields and relations (optional).
  */
 export interface TerminalESelect extends IEntitySelectProperties, TerminalEOptionalId {
-    name?: string | IQStringField;
-    secondId?: number | IQNumberField;
+    uuId?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
     owner?: UserESelect;
     terminalAgts?: TerminalAgtESelect;
@@ -35,8 +34,7 @@ export interface TerminalEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface TerminalEUpdateProperties extends IEntityUpdateProperties {
-    name?: string | IQStringField;
-    secondId?: number | IQNumberField;
+    uuId?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
     owner?: UserEOptionalId;
 }
@@ -44,8 +42,7 @@ export interface TerminalEUpdateProperties extends IEntityUpdateProperties {
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface TerminalGraph extends TerminalEOptionalId, IEntityCascadeGraph {
-    name?: string | IQStringField;
-    secondId?: number | IQNumberField;
+    uuId?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
     owner?: UserGraph;
     terminalAgts?: TerminalAgtGraph[];
@@ -56,8 +53,7 @@ export interface TerminalGraph extends TerminalEOptionalId, IEntityCascadeGraph 
  * UPDATE - non-id columns (optional).
  */
 export interface TerminalEUpdateColumns extends IEntityUpdateColumns {
-    NAME?: string | IQStringField;
-    SECOND_ID?: number | IQNumberField;
+    UUID?: string | IQStringField;
     IS_LOCAL?: boolean | IQBooleanField;
     OWNER_USER_ID?: number | IQNumberField;
 }
@@ -76,8 +72,7 @@ export interface TerminalECreateColumns extends TerminalEId, TerminalEUpdateColu
  */
 export interface QTerminal extends IQEntity<Terminal> {
     id: IQNumberField;
-    name: IQStringField;
-    secondId: IQNumberField;
+    uuId: IQStringField;
     isLocal: IQBooleanField;
     owner: QUserQRelation;
     terminalAgts: IQOneToManyRelation<TerminalAgt, QTerminalAgt>;

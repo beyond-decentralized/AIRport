@@ -6,15 +6,12 @@ import {
 	RawFieldQuery,
 	Y
 } from '@airport/air-control'
-import {
-	TerminalName,
-	TerminalSecondId
-} from '@airport/arrivals-n-departures'
 import { container, DI } from '@airport/di'
 import { ApplicationSignature, ensureChildJsMap } from '@airport/ground-control'
 import {
 	QTerminal,
 	QUser,
+	Terminal_UuId,
 	User_Email,
 	User_PrivateId,
 	User_PublicId
@@ -23,6 +20,7 @@ import {
 	ActorUuId,
 	Repository_Id,
 	Repository_CreatedAt,
+	Repository_Source,
 	Repository_UuId,
 	RepositoryTransactionHistoryId,
 } from '../../ddl/ddl'
@@ -35,11 +33,18 @@ import {
 	QActor,
 	QRepository,
 	QRepositoryActor,
+	QRepositoryTransactionHistory,
+	QTransactionHistory,
 } from '../../generated/generated'
 import { QApplication } from '@airport/territory'
 
 export interface IRepositoryDao
 	extends IBaseRepositoryDao {
+
+	getRepositoryLoadInfo(
+		repositorySource: Repository_Source,
+		repositoryUuId: Repository_UuId
+	): Promise<IRepository>
 
 	findReposWithDetailsByIds(
 		repositoryIdsInClause: RepositoryTransactionHistoryId[]
@@ -47,7 +52,7 @@ export interface IRepositoryDao
 			| {
 				(...args: any[]): RawFieldQuery<IQNumberField>
 			},
-		dbName: TerminalName,
+		uuId: Terminal_UuId,
 		userEmail: User_Email,
 	): Promise<MappedEntityArray<IRepository>>;
 
@@ -55,9 +60,8 @@ export interface IRepositoryDao
 		createdAts: Repository_CreatedAt[],
 		uuIds: Repository_UuId[],
 		ownerActorRandomIds: ActorUuId[],
-		ownerUserPrivateIds: User_PrivateId[],
-		ownerTerminalNames: TerminalName[],
-		ownerTerminalSecondIds: TerminalSecondId[],
+		ownerUserUniqueIds: User_PrivateId[],
+		ownerTerminalUuids: Terminal_UuId[],
 		ownerTerminalOwnerUserUniqueIds: User_PrivateId[]
 	): Promise<RepositoryIdMap>;
 
@@ -72,13 +76,44 @@ export interface IRepositoryDao
 }
 
 export type RepositoryIdMap = Map<User_PrivateId,
-	Map<TerminalName, Map<TerminalSecondId, Map<User_PrivateId,
-		Map<ActorUuId, Map<Repository_CreatedAt,
-			Map<Repository_UuId, Repository_Id>>>>>>>;
+	Map<Terminal_UuId, Map<User_PrivateId,
+		Map<ActorUuId, Map<number,
+			Map<Repository_UuId, Repository_Id>>>>>>;
 
 export class RepositoryDao
 	extends BaseRepositoryDao
 	implements IRepositoryDao {
+
+	async getRepositoryLoadInfo(
+		repositorySource: Repository_Source,
+		repositoryUuId: Repository_UuId
+	): Promise<IRepository> {
+
+		let r: QRepository
+		let rth: QRepositoryTransactionHistory
+		let th: QTransactionHistory
+		let t: QTerminal
+
+		return await this.db.findOne.tree({
+			select: {
+				immutable: Y,
+				repositoryTransactionHistory: {
+					saveTimestamp: Y
+				}
+			},
+			from: [
+				r = Q.Repository,
+				rth = r.repositoryTransactionHistory.innerJoin(),
+				th = rth.transactionHistory.innerJoin(),
+				t = th.terminal.innerJoin()
+			],
+			where: and(
+				r.source.equals(repositorySource),
+				r.uuId.equals(repositoryUuId),
+				t.isLocal.equals(false)
+			)
+		})
+	}
 
 	async findReposWithTransactionLogDetailsByIds(
 		repositoryIds: Repository_Id[]
@@ -145,7 +180,7 @@ export class RepositoryDao
 			| {
 				(...args: any[]): RawFieldQuery<IQNumberField>
 			},
-		dbName: TerminalName,
+		uuId: Terminal_UuId,
 		userEmail: User_Email,
 	): Promise<MappedEntityArray<IRepository>> {
 		let r: QRepository
@@ -177,7 +212,7 @@ export class RepositoryDao
 			],
 			where: and(
 				r.id.in(repositoryIdsInClause),
-				d.name.equals(dbName),
+				d.uuId.equals(uuId),
 				u.email.equals(userEmail)
 			)
 		}
@@ -226,52 +261,48 @@ export class RepositoryDao
 		uuIds: Repository_UuId[],
 		ownerActorRandomIds: ActorUuId[],
 		ownerUserUniqueIds: User_PrivateId[],
-		ownerTerminalNames: TerminalName[],
-		ownerTerminalSecondIds: TerminalSecondId[],
+		ownerTerminalUuids: Terminal_UuId[],
 		ownerTerminalOwnerUserUniqueIds: User_PrivateId[]
 	): Promise<RepositoryIdMap> {
 		const repositoryIdMap: RepositoryIdMap = new Map()
 
-		let r: QRepository
-		let oa: QActor
-		let od: QTerminal
-		let odu: QUser
-		let ou: QUser
+		let repo: QRepository
+		let ownerActor: QActor
+		let terminal: QTerminal
+		let terminalUser: QUser
+		let repoOwnerUser: QUser
 
 		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const resultRows = await airDb.find.sheet({
 			from: [
-				r = Q.Repository,
-				oa = r.ownerActor.innerJoin(),
-				ou = oa.user.innerJoin(),
-				od = oa.terminal.innerJoin(),
-				odu = od.owner.innerJoin(),
+				repo = Q.Repository,
+				ownerActor = repo.ownerActor.innerJoin(),
+				repoOwnerUser = ownerActor.user.innerJoin(),
+				terminal = ownerActor.terminal.innerJoin(),
+				terminalUser = terminal.owner.innerJoin(),
 			],
 			select: [
-				odu.privateId,
-				od.name,
-				od.secondId,
-				ou.privateId,
-				oa.uuId,
-				r.createdAt,
-				r.uuId,
-				r.id,
+				terminalUser.privateId,
+				terminal.uuId,
+				repoOwnerUser.privateId,
+				ownerActor.uuId,
+				repo.createdAt,
+				repo.uuId,
+				repo.id,
 			],
 			where: and(
-				r.createdAt.in(createdAts),
-				r.uuId.in(uuIds),
-				oa.uuId.in(ownerActorRandomIds),
-				ou.privateId.in(ownerUserUniqueIds),
-				od.name.in(ownerTerminalNames),
-				od.secondId.in(ownerTerminalSecondIds),
-				odu.privateId.in(ownerTerminalOwnerUserUniqueIds)
+				repo.createdAt.in(createdAts),
+				repo.uuId.in(uuIds),
+				ownerActor.uuId.in(ownerActorRandomIds),
+				repoOwnerUser.privateId.in(ownerUserUniqueIds),
+				terminal.uuId.in(ownerTerminalUuids),
+				terminalUser.privateId.in(ownerTerminalOwnerUserUniqueIds)
 			)
 		})
 
 		for (const resultRow of resultRows) {
 			ensureChildJsMap(
-				ensureChildJsMap(
 					ensureChildJsMap(
 						ensureChildJsMap(
 							ensureChildJsMap(
@@ -279,8 +310,7 @@ export class RepositoryDao
 								resultRow[1]),
 							resultRow[2]),
 						resultRow[3]),
-					resultRow[4]),
-				resultRow[5].getTime()).set(resultRow[6], resultRow[7])
+					resultRow[4].getTime()).set(resultRow[5], resultRow[6])
 		}
 
 

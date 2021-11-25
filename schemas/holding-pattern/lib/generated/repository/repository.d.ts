@@ -7,6 +7,7 @@ export interface IRepository {
     uuId?: string;
     ageSuitability?: number;
     source?: string;
+    immutable?: boolean;
     syncPriority?: string;
     ownerActor?: IActor;
     repositoryActors?: IRepositoryActor[];

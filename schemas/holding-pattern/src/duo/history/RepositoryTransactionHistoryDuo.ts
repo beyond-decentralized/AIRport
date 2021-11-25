@@ -99,15 +99,9 @@ export class RepositoryTransactionHistoryDuo
 				return userIdComparison
 			}
 
-			const databaseNameComparison = actor1.terminal.name.localeCompare(actor2.terminal.name)
-			if (databaseNameComparison) {
-				return databaseNameComparison
-			}
-
-			const databaseSecondIdComparison
-				      = this.compareNumbers(actor1.terminal.secondId, actor2.terminal.secondId)
-			if (databaseSecondIdComparison) {
-				return databaseSecondIdComparison
+			const databaseUuidComparison = actor1.terminal.uuId.localeCompare(actor2.terminal.uuId)
+			if (databaseUuidComparison) {
+				return databaseUuidComparison
 			}
 
 			const databaseOwnerComparison

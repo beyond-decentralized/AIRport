@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import { ServerState } from '@airport/nonhub-types/src/types/common';
+import { ServerState } from '@airport/nonhub-types';
 export class BasicServer {
     constructor(opts) {
         this.serverState = ServerState.RUNNING;
@@ -23,10 +23,16 @@ export class BasicServer {
     shutdown() {
         this.serverState = ServerState.SHUTTING_DOWN_REQUESTS;
         this.shutdownIntervalHandle = setInterval(() => {
+            console.log('Checking shutdown');
             if (this.serverState === ServerState.SHUTTING_DOWN_SERVER) {
+                console.log('Shutting down');
                 clearInterval(this.shutdownIntervalHandle);
                 this.shutdownServer();
             }
+            else {
+                console.log('NOT shutting down');
+            }
+            this.checkServerState();
         }, 5000);
     }
     setIntervalProcessing(callback, interval) {
@@ -70,8 +76,8 @@ export class BasicServer {
             if (this.batchIntervalHandle) {
                 clearInterval(this.batchIntervalHandle);
                 this.batchIntervalHandle = null;
-                this.serverState = ServerState.SHUTTING_DOWN_SERVER;
             }
+            this.serverState = ServerState.SHUTTING_DOWN_SERVER;
         }
     }
 }

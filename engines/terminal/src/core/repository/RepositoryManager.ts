@@ -80,7 +80,7 @@ export class RepositoryManager
 		const repositoryDao = await container(this).get(REPOSITORY_DAO)
 
 		return await repositoryDao.findReposWithDetailsByIds(
-			repositoryIds, this.terminal.name, this.userEmail)
+			repositoryIds, this.terminal.uuId, this.userEmail)
 	}
 
 	async createRepository(

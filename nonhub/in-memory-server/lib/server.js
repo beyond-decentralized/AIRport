@@ -1,4 +1,5 @@
-import { BasicServer, ServerState, } from '@airport/nonhub-types';
+import { ServerState, } from '@airport/nonhub-types';
+import { BasicServer } from '@airport/processor-common';
 import { decryptString, encryptStringSync } from "string-cipher";
 var masterKey = 'ciw7p02f70000ysjon7gztjn7c2x7GfJ';
 const EARLIEST_BIRTH_MONTH = Date.UTC(1900, 0);

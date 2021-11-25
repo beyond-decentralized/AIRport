@@ -62,8 +62,9 @@ export class InternalRecordManager {
             // const userDao = await container(this).get(USER_DAO);
             // await userDao.save(user, context);
             const terminal = new Terminal();
-            terminal.name = domainName;
             terminal.owner = user;
+            terminal.isLocal = true;
+            terminal.uuId = uuidv4();
             // const terminalDao = await container(this).get(TERMINAL_DAO);
             // await terminalDao.save(terminal, context);
             const actor = new Actor();

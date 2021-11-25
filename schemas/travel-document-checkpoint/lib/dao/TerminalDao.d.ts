@@ -1,12 +1,11 @@
-import { TerminalName, TerminalSecondId } from '@airport/arrivals-n-departures';
-import { UserId } from '../ddl/ddl';
+import { UserId, Terminal_UuId } from '../ddl/ddl';
 import { BaseTerminalDao, IBaseTerminalDao, ITerminal } from '../generated/generated';
 export interface ITerminalDao extends IBaseTerminalDao {
-    findMapByIds(ownerUniqueIds: UserId[], names: TerminalName[], secondIds: TerminalSecondId[]): Promise<Map<UserId, Map<TerminalName, Map<TerminalSecondId, ITerminal>>>>;
-    findByIds(ownerIds: UserId[], names: TerminalName[], secondIds: TerminalSecondId[]): Promise<ITerminal[]>;
+    findMapByIds(ownerUniqueIds: UserId[], uuIds: Terminal_UuId[]): Promise<Map<UserId, Map<Terminal_UuId, ITerminal>>>;
+    findByIds(ownerIds: UserId[], uuIds: Terminal_UuId[]): Promise<ITerminal[]>;
 }
 export declare class TerminalDao extends BaseTerminalDao implements ITerminalDao {
-    findMapByIds(ownerIds: UserId[], names: TerminalName[], secondIds: TerminalSecondId[]): Promise<Map<UserId, Map<TerminalName, Map<TerminalSecondId, ITerminal>>>>;
-    findByIds(ownerIds: UserId[], names: TerminalName[], secondIds: TerminalSecondId[]): Promise<ITerminal[]>;
+    findMapByIds(ownerIds: UserId[], uuIds: Terminal_UuId[]): Promise<Map<UserId, Map<Terminal_UuId, ITerminal>>>;
+    findByIds(ownerIds: UserId[], uuIds: Terminal_UuId[]): Promise<ITerminal[]>;
 }
 //# sourceMappingURL=TerminalDao.d.ts.map

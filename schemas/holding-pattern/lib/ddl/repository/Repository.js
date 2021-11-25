@@ -59,6 +59,9 @@ __decorate([
     DbString()
 ], Repository.prototype, "source", void 0);
 __decorate([
+    Column({ name: "IMMUTABLE", nullable: false })
+], Repository.prototype, "immutable", void 0);
+__decorate([
     OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryActors", void 0);
 __decorate([

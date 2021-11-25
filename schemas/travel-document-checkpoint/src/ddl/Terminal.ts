@@ -8,19 +8,17 @@ import {
 	Id,
 	JoinColumn,
 	ManyToOne,
-	OneToMany
+	OneToMany,
+	Table
 } from '@airport/air-control'
-import {
-	TerminalName,
-	TerminalSecondId
-}                        from '@airport/arrivals-n-departures'
-import {TerminalAgt}     from './TerminalAgt'
-import {User}            from './User'
-import {UserTerminal}    from './UserTerminal'
-import {UserTerminalAgt} from './UserTerminalAgt'
+import { TerminalAgt } from './TerminalAgt'
+import { User } from './User'
+import { UserTerminal } from './UserTerminal'
+import { UserTerminalAgt } from './UserTerminalAgt'
 
-export type TmTerminalId = number;
-export type TerminalIsLocal = boolean;
+export type TmTerminal_Id = number;
+export type Terminal_IsLocal = boolean;
+export type Terminal_UuId = string;
 
 /**
  * 
@@ -28,35 +26,39 @@ export type TerminalIsLocal = boolean;
  * 
  */
 @Entity()
+@Table({
+	name: 'TERMINAL',
+	indexes: (t: Terminal) => [{
+		property: t.uuId,
+		unique: true
+	}]
+})
 export class Terminal {
 
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	id: TmTerminalId
+	id: TmTerminal_Id
 
+	@Column({ name: 'UUID', nullable: false })
 	@DbString()
-	name: TerminalName
-
-	@Column({name: 'SECOND_ID'})
-	@DbNumber()
-	secondId: TerminalSecondId
+	uuId: Terminal_UuId
 
 	@ManyToOne()
-	@JoinColumn({name: 'OWNER_USER_ID', referencedColumnName: 'ID'})
+	@JoinColumn({ name: 'OWNER_USER_ID', referencedColumnName: 'ID' })
 	owner: User
 
-	@Column({name: 'IS_LOCAL'})
+	@Column({ name: 'IS_LOCAL', nullable: false })
 	@DbBoolean()
-	isLocal: TerminalIsLocal = false
+	isLocal: Terminal_IsLocal = false
 
-	@OneToMany({mappedBy: 'terminal'})
+	@OneToMany({ mappedBy: 'terminal' })
 	terminalAgts: TerminalAgt[]
 
-	@OneToMany({mappedBy: 'terminal'})
+	@OneToMany({ mappedBy: 'terminal' })
 	userTerminal: UserTerminal[]
 
-	@OneToMany({mappedBy: 'terminal'})
+	@OneToMany({ mappedBy: 'terminal' })
 	userTerminalAgt: UserTerminalAgt[]
 
 }

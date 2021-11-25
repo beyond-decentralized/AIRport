@@ -8,6 +8,7 @@ import { SyncPriority } from "./SyncPrority";
 export declare type Repository_AgeSuitability = 0 | 7 | 13 | 18;
 export declare type Repository_CreatedAt = Date;
 export declare type Repository_Id = number;
+export declare type Repository_Immutable = boolean;
 export declare type Repository_Name = string;
 export declare type Repository_Source = string;
 export declare type Repository_Url = string;
@@ -19,6 +20,7 @@ export declare class Repository {
     uuId: Repository_UuId;
     ageSuitability: Repository_AgeSuitability;
     source: Repository_Source;
+    immutable: Repository_Immutable;
     repositoryActors: RepositoryActor[];
     repositoryTransactionHistory: RepositoryTransactionHistory[];
     syncPriority: SyncPriority;

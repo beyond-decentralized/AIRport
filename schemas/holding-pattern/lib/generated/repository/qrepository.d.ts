@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
 import { RepositoryActorGraph, RepositoryActorESelect, QRepositoryActor } from './qrepositoryactor';
 import { RepositoryActor } from '../../ddl/repository/RepositoryActor';
@@ -13,6 +13,7 @@ export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEO
     uuId?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
     source?: string | IQStringField;
+    immutable?: boolean | IQBooleanField;
     syncPriority?: string | IQStringField;
     ownerActor?: ActorESelect;
     repositoryActors?: RepositoryActorESelect;
@@ -38,6 +39,7 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     uuId?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
     source?: string | IQStringField;
+    immutable?: boolean | IQBooleanField;
     syncPriority?: string | IQStringField;
     ownerActor?: ActorEOptionalId;
 }
@@ -49,6 +51,7 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
     uuId?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
     source?: string | IQStringField;
+    immutable?: boolean | IQBooleanField;
     syncPriority?: string | IQStringField;
     ownerActor?: ActorGraph;
     repositoryActors?: RepositoryActorGraph[];
@@ -62,6 +65,7 @@ export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
     UU_ID?: string | IQStringField;
     AGE_SUITABILITY?: number | IQNumberField;
     SOURCE?: string | IQStringField;
+    IMMUTABLE?: boolean | IQBooleanField;
     SYNC_PRIORITY?: string | IQStringField;
     OWNER_ACTOR_ID?: number | IQNumberField;
 }
@@ -84,6 +88,7 @@ export interface QRepository extends IQEntity<Repository> {
     uuId: IQStringField;
     ageSuitability: IQNumberField;
     source: IQStringField;
+    immutable: IQBooleanField;
     syncPriority: IQStringField;
     ownerActor: QActorQRelation;
     repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;

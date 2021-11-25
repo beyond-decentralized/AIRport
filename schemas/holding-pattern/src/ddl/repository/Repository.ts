@@ -29,6 +29,7 @@ import { SyncPriority } from "./SyncPrority";
 export type Repository_AgeSuitability = 0 | 7 | 13 | 18
 export type Repository_CreatedAt = Date;
 export type Repository_Id = number;
+export type Repository_Immutable = boolean;
 export type Repository_Name = string;
 export type Repository_Source = string;
 export type Repository_Url = string;
@@ -68,6 +69,9 @@ export class Repository {
 	@Column({ name: "SOURCE" })
 	@DbString()
 	source: Repository_Source
+
+	@Column({ name: "IMMUTABLE", nullable: false })
+	immutable: Repository_Immutable
 
 	// @Column({name: "DISTRIBUTION_STRATEGY"})
 	// @DbString()

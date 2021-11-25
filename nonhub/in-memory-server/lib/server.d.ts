@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { BasicServer } from '@airport/nonhub-types';
+import { BasicServer } from '@airport/processor-common';
 import type { FastifyLoggerInstance } from 'fastify';
 import * as http from 'http';
 export declare const server: BasicServer<http.Server, http.IncomingMessage, http.ServerResponse, FastifyLoggerInstance>;

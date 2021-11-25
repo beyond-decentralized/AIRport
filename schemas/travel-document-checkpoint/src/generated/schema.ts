@@ -111,7 +111,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "CONTINENTS",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -243,7 +243,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "COUNTRIES",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -352,7 +352,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "USER_TERMINAL",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -596,7 +596,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "USER_TERMINAL_AGT",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -818,7 +818,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"indexes": []
+						"columnIndexes": []
 					},
 					"operations": {}
 				},
@@ -842,8 +842,8 @@ export const SCHEMA = {
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "NAME",
-							"notNull": false,
+							"name": "UUID",
+							"notNull": true,
 							"propertyRefs": [
 								{
 									"index": 1
@@ -856,32 +856,18 @@ export const SCHEMA = {
 							"index": 2,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "SECOND_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 2
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 3,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
 							"name": "IS_LOCAL",
-							"notNull": false,
+							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 4
+									"index": 3
 								}
 							],
 							"sinceVersion": 1,
 							"type": "BOOLEAN"
 						},
 						{
-							"index": 4,
+							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -896,7 +882,7 @@ export const SCHEMA = {
 							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 3
+									"index": 2
 								}
 							],
 							"sinceVersion": 1,
@@ -928,20 +914,11 @@ export const SCHEMA = {
 							},
 							"index": 1,
 							"isId": false,
-							"name": "name",
+							"name": "uuId",
 							"sinceVersion": 1
 						},
 						{
-							"columnRef": {
-								"index": 2
-							},
 							"index": 2,
-							"isId": false,
-							"name": "secondId",
-							"sinceVersion": 1
-						},
-						{
-							"index": 3,
 							"isId": false,
 							"name": "owner",
 							"relationRef": {
@@ -951,15 +928,15 @@ export const SCHEMA = {
 						},
 						{
 							"columnRef": {
-								"index": 3
+								"index": 2
 							},
-							"index": 4,
+							"index": 3,
 							"isId": false,
 							"name": "isLocal",
 							"sinceVersion": 1
 						},
 						{
-							"index": 5,
+							"index": 4,
 							"isId": false,
 							"name": "terminalAgts",
 							"relationRef": {
@@ -968,7 +945,7 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 6,
+							"index": 5,
 							"isId": false,
 							"name": "userTerminal",
 							"relationRef": {
@@ -977,7 +954,7 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 7,
+							"index": 6,
 							"isId": false,
 							"name": "userTerminalAgt",
 							"relationRef": {
@@ -992,7 +969,7 @@ export const SCHEMA = {
 							"isId": false,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 3
+								"index": 2
 							},
 							"relationTableIndex": 4,
 							"sinceVersion": 1
@@ -1005,7 +982,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 5
+								"index": 4
 							},
 							"relationTableIndex": 6,
 							"sinceVersion": 1
@@ -1018,7 +995,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 6
+								"index": 5
 							},
 							"relationTableIndex": 2,
 							"sinceVersion": 1
@@ -1031,7 +1008,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 7
+								"index": 6
 							},
 							"relationTableIndex": 3,
 							"sinceVersion": 1
@@ -1039,7 +1016,13 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"indexes": []
+						"name": "TERMINAL",
+						"propertyIndexes": [
+							{
+								"propertyIndex": 1,
+								"unique": true
+							}
+						]
 					},
 					"operations": {}
 				},
@@ -1194,7 +1177,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "TERMINAL_AGTS",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -1305,7 +1288,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"indexes": []
+						"columnIndexes": []
 					}
 				}
 			],

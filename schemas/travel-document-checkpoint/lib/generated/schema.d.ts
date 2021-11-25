@@ -93,7 +93,8 @@ export declare const SCHEMA: {
             sinceVersion: number;
             tableConfig: {
                 name: string;
-                indexes: any[];
+                columnIndexes: any[];
+                propertyIndexes?: undefined;
             };
             operations?: undefined;
         } | {
@@ -167,8 +168,9 @@ export declare const SCHEMA: {
             })[];
             sinceVersion: number;
             tableConfig: {
-                indexes: any[];
+                columnIndexes: any[];
                 name?: undefined;
+                propertyIndexes?: undefined;
             };
             operations: {};
         } | {
@@ -241,8 +243,12 @@ export declare const SCHEMA: {
             })[];
             sinceVersion: number;
             tableConfig: {
-                indexes: any[];
-                name?: undefined;
+                name: string;
+                propertyIndexes: {
+                    propertyIndex: number;
+                    unique: boolean;
+                }[];
+                columnIndexes?: undefined;
             };
             operations: {};
         } | {
@@ -299,8 +305,9 @@ export declare const SCHEMA: {
             }[];
             sinceVersion: number;
             tableConfig: {
-                indexes: any[];
+                columnIndexes: any[];
                 name?: undefined;
+                propertyIndexes?: undefined;
             };
             operations?: undefined;
         })[];

@@ -1,23 +1,3 @@
-import { ITMDataDeserializer } from './impl/data/TMDataDeserializer';
-import { ITMDataFormatVerifier } from './impl/data/TMDataFormatVerifier';
-import { ITMDataSchemaVerifier } from './impl/data/TMDataSchemaVerifier';
-import { ITMDataSerializer } from './impl/data/TMDataSerializer';
-import { IMessageFromTMDeserializer } from './impl/message/deserializer/MessageFromTMDeserializer';
-import { IMessageToTMDeserializer } from './impl/message/deserializer/MessageToTMDeserializer';
-import { IMessageFromTMSerializer } from './impl/message/serializer/MessageFromTMSerializer';
-import { IMessageToTMSerializer } from './impl/message/serializer/MessageToTMSerializer';
-import { IMessageFromTMVerifier } from './impl/message/verifier/MessageFromTMVerifier';
-import { IMessageToTMVerifier } from './impl/message/verifier/MessageToTMVerifier';
 import { ISyncConnectionServer } from './lingo/SyncConnectionServer';
-export declare const MESSAGE_FROM_TM_DESERIALIZER: import("@airport/di").IDiToken<IMessageFromTMDeserializer>;
-export declare const MESSAGE_FROM_TM_SERIALIZER: import("@airport/di").IDiToken<IMessageFromTMSerializer>;
-export declare const MESSAGE_FROM_TM_VERIFIER: import("@airport/di").IDiToken<IMessageFromTMVerifier>;
-export declare const MESSAGE_TO_TM_DESERIALIZER: import("@airport/di").IDiToken<IMessageToTMDeserializer>;
-export declare const MESSAGE_TO_TM_SERIALIZER: import("@airport/di").IDiToken<IMessageToTMSerializer>;
-export declare const MESSAGE_TO_TM_VERIFIER: import("@airport/di").IDiToken<IMessageToTMVerifier>;
 export declare const SYNC_CONNECTION_SERVER: import("@airport/di").IDiToken<ISyncConnectionServer<any, any, any, any>>;
-export declare const TM_DATA_SERIALIZER: import("@airport/di").IDiToken<ITMDataSerializer>;
-export declare const TM_DATA_DESERIALIZER: import("@airport/di").IDiToken<ITMDataDeserializer>;
-export declare const TM_DATA_FORMAT_VERIFIER: import("@airport/di").IDiToken<ITMDataFormatVerifier>;
-export declare const TM_DATA_SCHEMA_VERIFIER: import("@airport/di").IDiToken<ITMDataSchemaVerifier>;
 //# sourceMappingURL=tokens.d.ts.map

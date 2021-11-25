@@ -12,12 +12,6 @@ import {
 */
 import {PlatformType}                  from '@airport/ground-control'
 import {
-	GoogleApi,
-	GoogleDrive,
-	GoogleDriveAdaptor,
-	GoogleRealtime,
-	GoogleRealtimeAdaptor,
-	GoogleSharingAdaptor,
 	InMemorySharingAdaptor,
 	StubSharingAdaptor
 }                                      from '@airport/ground-transport'
@@ -27,9 +21,7 @@ import {
 	ChangeListShareInfo,
 	ChangeRecord,
 	ChangeRecordIterator,
-	IChangeListConfig,
 	IDeltaStore,
-	IDeltaStoreConfig,
 	SharedChangeList,
 	SharingAdaptor,
 	UpdateState
@@ -47,13 +39,11 @@ export class DeltaStore
 	updateState: UpdateState = UpdateState.LOCAL
 
 	constructor(
-		public config: IDeltaStoreConfig,
 		public sharingAdaptor: SharingAdaptor = null
 	) {
 	}
 
 	async addChanges<E>(
-		changeListConfig: IChangeListConfig,
 		changeRecords: E[]
 	): Promise<void> {
 		await this.changeList.addChanges(changeRecords)

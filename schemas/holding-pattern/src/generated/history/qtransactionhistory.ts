@@ -22,6 +22,17 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
+	TerminalGraph,
+	TerminalEId,
+	TerminalEOptionalId,
+	TerminalEUpdateProperties,
+	TerminalESelect,
+	QTerminal,
+	QTerminalQId,
+	QTerminalQRelation,
+	Terminal,
+} from '@airport/travel-document-checkpoint';
+import {
 	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
@@ -57,6 +68,7 @@ export interface TransactionHistoryESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
+	terminal?: TerminalESelect;
 	repositoryTransactionHistories?: RepositoryTransactionHistoryESelect;
 
 }
@@ -93,6 +105,7 @@ export interface TransactionHistoryEUpdateProperties
 	transactionType?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+	terminal?: TerminalEOptionalId;
 
 }
 
@@ -107,6 +120,7 @@ export interface TransactionHistoryGraph
 	transactionType?: string | IQStringField;
 
 	// Relations
+	terminal?: TerminalGraph;
 	repositoryTransactionHistories?: RepositoryTransactionHistoryGraph[];
 
 }
@@ -118,6 +132,7 @@ export interface TransactionHistoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	TRANSACTION_TYPE?: string | IQStringField;
+	TERMINAL_ID?: number | IQNumberField;
 
 }
 
@@ -156,6 +171,7 @@ export interface QTransactionHistory extends IQEntity<TransactionHistory>
 	transactionType: IQStringField;
 
 	// Non-Id Relations
+	terminal: QTerminalQRelation;
 	repositoryTransactionHistories: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
 
 }

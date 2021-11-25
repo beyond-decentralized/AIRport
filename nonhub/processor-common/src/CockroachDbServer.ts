@@ -1,10 +1,11 @@
 import * as http from 'http'
 import { startDb } from '@airport/postgres'
 import pg from 'pg'
-import { parse } from "pg-connection-string"
+import pgConnectionString from "pg-connection-string"
 import { BasicServer } from '.'
 
 const Pool = pg.Pool
+const parse = pgConnectionString.parse
 
 export class CockroachDbServer
     extends BasicServer<http.Server> {

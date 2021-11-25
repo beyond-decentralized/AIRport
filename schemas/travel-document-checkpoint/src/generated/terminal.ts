@@ -25,8 +25,7 @@ export interface ITerminal {
 	// Id Relations
 
 	// Non-Id Properties
-	name?: string;
-	secondId?: number;
+	uuId?: string;
 	isLocal?: boolean;
 
 	// Non-Id Relations

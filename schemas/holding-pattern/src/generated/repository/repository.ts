@@ -26,6 +26,7 @@ export interface IRepository {
 	uuId?: string;
 	ageSuitability?: number;
 	source?: string;
+	immutable?: boolean;
 	syncPriority?: string;
 
 	// Non-Id Relations

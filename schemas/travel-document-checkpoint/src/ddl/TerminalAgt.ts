@@ -7,7 +7,6 @@ import {
 	OneToMany,
 	Table
 }                         from '@airport/air-control'
-import {TerminalPassword} from '@airport/arrivals-n-departures'
 import {Agt}              from './Agt'
 import {Terminal}         from './Terminal'
 import {UserTerminalAgt}  from './UserTerminalAgt'
@@ -31,8 +30,7 @@ export class TerminalAgt {
 	@JoinColumn({name: 'AGT_ID', referencedColumnName: 'ID'})
 	agt: Agt
 
-	@DbString()
-	password: TerminalPassword
+	password: string
 
 	@OneToMany({mappedBy: 'terminalAgt'})
 	userTerminalAgts: UserTerminalAgt[]
