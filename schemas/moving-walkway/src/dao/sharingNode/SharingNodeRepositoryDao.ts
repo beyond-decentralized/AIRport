@@ -27,7 +27,7 @@ import {
 	Repository_Id,
 	RepositoryTransactionHistoryId
 }                                    from '@airport/holding-pattern'
-import {SharingNodeId}               from '../../ddl/ddl'
+import {SharingNode_Id}               from '../../ddl/ddl'
 import {SHARING_NODE_REPOSITORY_DAO} from '../../tokens'
 import {
 	BaseSharingNodeRepositoryDao,
@@ -40,18 +40,18 @@ export interface ISharingNodeRepositoryDao {
 
 	findRepositoryMapBySharingNodeAndRepositoryIds(
 		repositoryIds: Repository_Id[],
-		sharingNodeIds: SharingNodeId[]
-	): Promise<Map<SharingNodeId, Map<Repository_Id,
+		sharingNodeIds: SharingNode_Id[]
+	): Promise<Map<SharingNode_Id, Map<Repository_Id,
 		ISharingNodeRepository>>>;
 
 	findBySharingNodeAndAgtRepositoryIds(
-		sharingNodeIds: SharingNodeId[],
+		sharingNodeIds: SharingNode_Id[],
 		agtRepositoryIds: AgtRepositoryId[],
-	): Promise<Map<SharingNodeId, Map<AgtRepositoryId, Repository_Id>>>;
+	): Promise<Map<SharingNode_Id, Map<AgtRepositoryId, Repository_Id>>>;
 
 	findNewRepoTransHistoriesForSharingNodes(
-		sharingNodeIds: SharingNodeId[]
-	): Promise<[Map<Repository_Id, Set<SharingNodeId>>,
+		sharingNodeIds: SharingNode_Id[]
+	): Promise<[Map<Repository_Id, Set<SharingNode_Id>>,
 		IRepositoryTransactionHistory[]]>;
 
 }
@@ -62,9 +62,9 @@ export class SharingNodeRepositoryDao
 
 	async findRepositoryMapBySharingNodeAndRepositoryIds(
 		repositoryIds: Repository_Id[],
-		sharingNodeIds: SharingNodeId[]
-	): Promise<Map<SharingNodeId, Map<Repository_Id, ISharingNodeRepository>>> {
-		const repositoriesBySharingNodeIds: Map<SharingNodeId, Map<Repository_Id,
+		sharingNodeIds: SharingNode_Id[]
+	): Promise<Map<SharingNode_Id, Map<Repository_Id, ISharingNodeRepository>>> {
+		const repositoriesBySharingNodeIds: Map<SharingNode_Id, Map<Repository_Id,
 			ISharingNodeRepository>> = new Map()
 
 		let snr: QSharingNodeRepository
@@ -106,11 +106,11 @@ export class SharingNodeRepositoryDao
 	}
 
 	async findBySharingNodeAndAgtRepositoryIds(
-		sharingNodeIds: SharingNodeId[],
+		sharingNodeIds: SharingNode_Id[],
 		agtRepositoryIds: AgtRepositoryId[],
-	): Promise<Map<SharingNodeId, Map<AgtRepositoryId, Repository_Id>>> {
+	): Promise<Map<SharingNode_Id, Map<AgtRepositoryId, Repository_Id>>> {
 		const repositoryIdsBySharingNodeAndAgtRepositoryIds
-			      : Map<SharingNodeId, Map<AgtRepositoryId, Repository_Id>>
+			      : Map<SharingNode_Id, Map<AgtRepositoryId, Repository_Id>>
 			      = new Map()
 
 		let snr: QSharingNodeRepository
@@ -148,11 +148,11 @@ export class SharingNodeRepositoryDao
 	}
 
 	async findNewRepoTransHistoriesForSharingNodes(
-		sharingNodeIds: SharingNodeId[]
-	): Promise<[Map<Repository_Id, Set<SharingNodeId>>,
+		sharingNodeIds: SharingNode_Id[]
+	): Promise<[Map<Repository_Id, Set<SharingNode_Id>>,
 		IRepositoryTransactionHistory[]]> {
 		const sharingNodeIdMapByRepositoryId
-			      : Map<Repository_Id, Set<SharingNodeId>> = new Map()
+			      : Map<Repository_Id, Set<SharingNode_Id>> = new Map()
 
 		const airDb = await container(this).get(AIRPORT_DATABASE)
 
@@ -180,7 +180,7 @@ export class SharingNodeRepositoryDao
 
 		const repositoryTransactionHistoryIdSet: Set<RepositoryTransactionHistoryId> = new Set()
 		for (const sharingNodeIdWithRepoTransHistoryId of sharingNodeIdsWithRepoTransHistoryIds) {
-			const sharingNodeId: SharingNodeId = sharingNodeIdWithRepoTransHistoryId[0]
+			const sharingNodeId: SharingNode_Id = sharingNodeIdWithRepoTransHistoryId[0]
 			const repositoryId: Repository_Id   = sharingNodeIdWithRepoTransHistoryId[1]
 			ensureChildJsSet(sharingNodeIdMapByRepositoryId,
 				repositoryId)

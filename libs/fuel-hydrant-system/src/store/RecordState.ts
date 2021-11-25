@@ -1,4 +1,3 @@
-import {ChangeRecord} from '@airport/terminal-map'
 
 /**
  * Created by Papa on 6/28/2016.
@@ -37,8 +36,6 @@ export interface IRecordState {
 
 	delete(): void;
 
-	getChangeRecord(): ChangeRecord;
-
 	update(): void;
 
 	toJSON(): any;
@@ -59,10 +56,6 @@ export class RecordState
 
 	delete(): void {
 		this.currentState = CurrentState.DELETED
-	}
-
-	getChangeRecord(): ChangeRecord {
-		return null
 	}
 
 	toJSON(): any {

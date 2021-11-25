@@ -1,6 +1,5 @@
 import {
 	and,
-	DATABASE_FACADE,
 	IEntityUpdateProperties,
 	IQEntityInternal,
 	IQOperableFieldInternal,
@@ -10,11 +9,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control'
 import { container, DI } from '@airport/di'
-import {
-	DistributionStrategy,
-	PlatformType,
-	StoreType,
-} from '@airport/ground-control'
 import {
 	IActor,
 	IRepository,
@@ -26,20 +20,12 @@ import {
 	SyncPriority
 } from '@airport/holding-pattern'
 import {
-	DeltaStoreConfig,
-	IDeltaStore,
-	IOperationContext,
 	IRepositoryManager,
-	JsonDeltaStoreConfig,
 	REPOSITORY_FIELD,
 	UpdateState,
 } from '@airport/terminal-map'
 import { ITerminal } from '@airport/travel-document-checkpoint'
 import { v4 as uuidv4 } from "uuid";
-import {
-	DeltaStore,
-	getSharingAdaptor
-} from '../../data/DeltaStore'
 import { REPOSITORY_MANAGER } from '../../tokens'
 
 /**
@@ -58,8 +44,6 @@ export interface EntityRepoQueryData {
 export class RepositoryManager
 	implements IRepositoryManager {
 
-	// deltaStore: IDeltaStore = {}
-	deltaStore = {}
 	repositories: IRepository[] = []
 	repositoriesById: { [repositoryId: string]: IRepository } = {}
 	terminal: ITerminal
@@ -68,10 +52,6 @@ export class RepositoryManager
 	async initialize(): Promise<void> {
 		await this.ensureRepositoryRecords()
 		await this.ensureAndCacheRepositories()
-		for (let i = 0; i < this.repositories.length; i++) {
-			let repository = this.repositories[i]
-			await this.addDeltaStore(repository)
-		}
 	}
 
 	async findReposWithDetailsByIds(
@@ -84,17 +64,9 @@ export class RepositoryManager
 	}
 
 	async createRepository(
-		// distributionStrategy: DistributionStrategy,
-		// offlineStoreType: StoreType,
-		// platformType: PlatformType,
-		// platformConfig: any,
 		actor: IActor,
 	): Promise<IRepository> {
-		let repository = await this.createRepositoryRecord(
-			// distributionStrategy, platformType, platformConfig
-			actor
-		)
-		await this.addDeltaStore(repository)
+		let repository = await this.createRepositoryRecord(actor)
 
 		return repository
 	}
@@ -108,33 +80,22 @@ export class RepositoryManager
 	}
 
 	goOffline(): void {
-		for (let repositoryId in this.deltaStore) {
-			let deltaStore = this.deltaStore[repositoryId]
-			deltaStore.goOffline()
-		}
+		throw new Error(`not implemented`)
 	}
 
 	getUpdateState(repository: IRepository): UpdateState {
-		return this.deltaStore[repository.id].updateState
+		throw new Error(`not implemented`)
 	}
 
 	setUpdateStateForAll(updateState: UpdateState): void {
-		for (let repositoryId in this.deltaStore) {
-			let deltaStore = this.deltaStore[repositoryId]
-			deltaStore.updateState = updateState
-		}
+		throw new Error(`not implemented`)
 	}
 
 	setUpdateState(
 		repository: IRepository,
 		updateState: UpdateState
 	): void {
-		let deltaStore = this.deltaStore[repository.id]
-		deltaStore.updateState = updateState
-	}
-
-	getDeltaStore(repository: IRepository): IDeltaStore {
-		return this.deltaStore[repository.id]
+		throw new Error(`not implemented`)
 	}
 
 	private async ensureRepositoryRecords(): Promise<void> {
@@ -156,40 +117,6 @@ export class RepositoryManager
 										deltaStoreConfig.setupInfo.platformType);
 						}
 						*/
-	}
-
-	private async addDeltaStore(repository: IRepository): Promise<IDeltaStore> {
-		// TODO: revisit configuration (instead of hard-coding
-		// let sharingAdaptor                             =
-		// getSharingAdaptor(repository.platform)
-		let sharingAdaptor = getSharingAdaptor(PlatformType.OFFLINE)
-		let jsonDeltaStoreConfig: JsonDeltaStoreConfig = {
-			changeList: {
-				// distributionStrategy: repository.distributionStrategy
-				distributionStrategy: DistributionStrategy.S3_SECURE_POLL
-			},
-			offlineDeltaStore: {
-				// type: this.dbFacade.storeType
-				type: StoreType.SQLITE
-			},
-			recordIdField: 'id',
-			// platform: repository.platform
-			platform: PlatformType.OFFLINE
-		}
-
-		// if (repository.platformConfig) {
-		// 	let platformConfig = JSON.parse(repository.platformConfig)
-		// 	jsonDeltaStoreConfig = <any>{ ...jsonDeltaStoreConfig, ...platformConfig }
-		// }
-		let deltaStoreConfig = new DeltaStoreConfig(jsonDeltaStoreConfig)
-		let deltaStore = new DeltaStore(deltaStoreConfig, sharingAdaptor)
-
-		const dbFacade = await container(this)
-			.get(DATABASE_FACADE)
-		deltaStore.config.changeListConfig.changeListInfo.dbId = dbFacade.name
-		this.deltaStore[repository.id] = deltaStore
-
-		return deltaStore
 	}
 
 	private getRepositoryRecord(

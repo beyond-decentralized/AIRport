@@ -7,9 +7,7 @@ export class SharingNodeDao extends BaseSharingNodeDao {
         const allBySyncFrequency = new Map();
         let sn;
         const sharingNodes = await this.db.find.tree({
-            select: {
-                ...this.db.duo.select.fields
-            },
+            select: {},
             from: [
                 sn = Q.SharingNode
             ],

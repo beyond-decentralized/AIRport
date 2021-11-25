@@ -1,7 +1,7 @@
 import {container, DI}                         from '@airport/di'
 import {
 	ISharingNode,
-	SharingNodeSyncFrequency
+	SharingNode_SyncFrequency
 }                                   from '@airport/moving-walkway'
 import {
 	ITerminalState,
@@ -11,7 +11,7 @@ import {ITerminal}                  from '@airport/travel-document-checkpoint'
 import {AbstractCompletable}        from '../../AbstractCompletable'
 import {
 	SYNC_NODE_MANAGER,
-	SYNC_OUT_COORDINATOR,
+	SYNCHRONIZATION_OUT_COORDINATOR,
 	SYNC_OUT_MANAGER
 }                                   from '../../tokens'
 import {ISynchronizationOutManager} from './SynchronizationOutManager'
@@ -26,7 +26,7 @@ export class SynchronizationOutCoordinator
 	extends AbstractCompletable
 	implements ISynchronizationOutCoordinator {
 
-	private nodesBySyncFrequency: Map<SharingNodeSyncFrequency, ISharingNode[]>
+	private nodesBySyncFrequency: Map<SharingNode_SyncFrequency, ISharingNode[]>
 		        = new Map()
 
 	// private syncOutManager: ISynchronizationOutManager
@@ -58,7 +58,7 @@ export class SynchronizationOutCoordinator
 	}
 
 	private updateSyncPool(
-		nodesBySyncFrequency: Map<SharingNodeSyncFrequency, ISharingNode[]>,
+		nodesBySyncFrequency: Map<SharingNode_SyncFrequency, ISharingNode[]>,
 		terminal: ITerminal,
 		syncOutManager: ISynchronizationOutManager
 	) {
@@ -76,7 +76,7 @@ export class SynchronizationOutCoordinator
 	}
 
 	private returnToSyncPool(
-		frequency: SharingNodeSyncFrequency,
+		frequency: SharingNode_SyncFrequency,
 		terminal: ITerminal,
 		syncOutManager: ISynchronizationOutManager
 	): void {
@@ -89,7 +89,7 @@ export class SynchronizationOutCoordinator
 	}
 
 	private scheduleSyncsForFrequency(
-		frequency: SharingNodeSyncFrequency,
+		frequency: SharingNode_SyncFrequency,
 		sharingNodes: ISharingNode[],
 		terminal: ITerminal,
 		syncOutManager: ISynchronizationOutManager
@@ -102,4 +102,4 @@ export class SynchronizationOutCoordinator
 
 }
 
-DI.set(SYNC_OUT_COORDINATOR, SynchronizationOutCoordinator)
+DI.set(SYNCHRONIZATION_OUT_COORDINATOR, SynchronizationOutCoordinator)

@@ -14,7 +14,6 @@ import {
     IUpdateManager
 } from '@airport/terminal-map'
 import { IInternalRecordManager } from './data/InternalRecordManager'
-import { IOfflineDeltaStore } from './data/OfflineDeltaStore'
 import { IOnlineManager } from './net/OnlineManager'
 
 const terminal = system('airport').lib('terminal')
@@ -27,7 +26,6 @@ export const ENTITY_GRAPH_RECONSTRUCTOR = terminal.token<IEntityGraphReconstruct
 export const HISTORY_MANAGER = terminal.token<IHistoryManager>('IHistoryManager')
 export const INSERT_MANAGER = terminal.token<IInsertManager>('IInsertManager')
 export const INTERNAL_RECORD_MANAGER = terminal.token<IInternalRecordManager>('IInternalRecordManager')
-export const OFFLINE_DELTA_STORE = terminal.token<IOfflineDeltaStore>('IOfflineDeltaStore')
 export const ONLINE_MANAGER = terminal.token<IOnlineManager>('IOnlineManager')
 export const OPERATION_MANAGER = terminal.token<IOperationManager>('IOperationManager')
 export const QUERY_MANAGER = terminal.token<IQueryManager>('IQueryManager')

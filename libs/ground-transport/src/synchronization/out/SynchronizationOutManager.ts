@@ -24,7 +24,7 @@ import {
 	SHARING_NODE_REPO_TRANS_BLOCK_DAO,
 	SHARING_NODE_REPOSITORY_DAO,
 	SHARING_NODE_TERMINAL_DAO,
-	SharingNodeId,
+	SharingNode_Id,
 }                        from '@airport/moving-walkway'
 import {SCHEMA_DAO}      from '@airport/traffic-pattern'
 import {ITerminal}       from '@airport/travel-document-checkpoint'
@@ -95,7 +95,7 @@ export class SynchronizationOutManager
 				SYNC_OUT_MSG_SENDER,
 				SYNC_OUT_SERIALIZER)
 
-		const sharingNodeMap: Map<SharingNodeId, ISharingNode> = new Map()
+		const sharingNodeMap: Map<SharingNode_Id, ISharingNode> = new Map()
 		sharingNodes.forEach(
 			sharingNode => {
 				sharingNodeMap.set(sharingNode.id, sharingNode)
@@ -175,11 +175,11 @@ export class SynchronizationOutManager
 
 	/**
 	 *
-	 * @param {SharingNodeId[]} sharingNodeIds
+	 * @param {SharingNode_Id[]} sharingNodeIds
 	 * @returns {Promise<void>}
 	 */
 	private async getNotAcknowledgedRTBs(
-		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
+		sharingNodeMap: Map<SharingNode_Id, ISharingNode>,
 		sharingNodeDao: ISharingNodeDao,
 		sharingNodeRepoTransBlockDao: ISharingNodeRepoTransBlockDao
 	) {
@@ -193,7 +193,7 @@ export class SynchronizationOutManager
 		// If server did not respond to Sync Status requests
 		if (syncStatusRepositoryTransactionBlockIds.length) {
 			// scale down to keep-alive request
-			const inactiveSharingNodeIds: SharingNodeId[] = Array.from(
+			const inactiveSharingNodeIds: SharingNode_Id[] = Array.from(
 				syncStatusRepoTransBlockIdsBySharingNodeId.keys())
 			// Keep the RTB Sync Status in Requesting and update the SharingNode status
 			await sharingNodeDao.updateIsActive(inactiveSharingNodeIds, false)
@@ -218,7 +218,7 @@ export class SynchronizationOutManager
 
 		if (syncingRepositoryTransactionBlockIds.length) {
 			// scale down to sync status requests
-			const syncAckSharingNodeIds: SharingNodeId[] = Array.from(
+			const syncAckSharingNodeIds: SharingNode_Id[] = Array.from(
 				syncingRepoTransBlockIdsBySharingNodeIds.keys())
 			await sharingNodeRepoTransBlockDao.updateBlockSyncStatus(syncAckSharingNodeIds,
 				syncingRepositoryTransactionBlockIds,
@@ -297,7 +297,7 @@ export class SynchronizationOutManager
 	}
 
 	private async addNewSharingMessages(
-		newReposTransHistoryBlocksBySharingNodeId: Map<SharingNodeId, IRepositoryTransactionBlock[]>,
+		newReposTransHistoryBlocksBySharingNodeId: Map<SharingNode_Id, IRepositoryTransactionBlock[]>,
 		source: ITerminal,
 		sharingMessageDao: ISharingMessageDao,
 		sharingMessageRepoTransBlockDao: ISharingMessageRepoTransBlockDao

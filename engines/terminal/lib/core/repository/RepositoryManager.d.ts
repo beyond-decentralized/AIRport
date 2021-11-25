@@ -1,6 +1,6 @@
 import { IEntityUpdateProperties, IQEntityInternal, MappedEntityArray, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
 import { IActor, IRepository, IRepositoryTransactionHistory } from '@airport/holding-pattern';
-import { IDeltaStore, IRepositoryManager, UpdateState } from '@airport/terminal-map';
+import { IRepositoryManager, UpdateState } from '@airport/terminal-map';
 import { ITerminal } from '@airport/travel-document-checkpoint';
 /**
  * Created by Papa on 2/12/2017.
@@ -13,7 +13,6 @@ export interface EntityRepoQueryData {
     idProperty: string;
 }
 export declare class RepositoryManager implements IRepositoryManager {
-    deltaStore: {};
     repositories: IRepository[];
     repositoriesById: {
         [repositoryId: string]: IRepository;
@@ -29,9 +28,7 @@ export declare class RepositoryManager implements IRepositoryManager {
     getUpdateState(repository: IRepository): UpdateState;
     setUpdateStateForAll(updateState: UpdateState): void;
     setUpdateState(repository: IRepository, updateState: UpdateState): void;
-    getDeltaStore(repository: IRepository): IDeltaStore;
     private ensureRepositoryRecords;
-    private addDeltaStore;
     private getRepositoryRecord;
     private createRepositoryRecord;
     private ensureAndCacheRepositories;

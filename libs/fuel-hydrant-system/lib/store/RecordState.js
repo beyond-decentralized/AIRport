@@ -1,3 +1,6 @@
+/**
+ * Created by Papa on 6/28/2016.
+ */
 export class RecordStateData {
     constructor() {
         this.accessed = {};
@@ -24,9 +27,6 @@ export class RecordState {
     }
     delete() {
         this.currentState = CurrentState.DELETED;
-    }
-    getChangeRecord() {
-        return null;
     }
     toJSON() {
         // TODO: implement

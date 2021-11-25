@@ -26,7 +26,7 @@ import {
 	RepositoryTransactionBlockData,
 	RepositoryTransactionHistoryUpdateStageValues,
 	SHARING_NODE_REPOSITORY_DAO,
-	SharingNodeId
+	SharingNode_Id
 }                                          from '@airport/moving-walkway'
 import {
 	ISchema,
@@ -39,9 +39,9 @@ import {SYNC_OUT_REPO_TRANS_BLOCK_CREATOR} from '../../tokens'
 export interface ISyncOutRepositoryTransactionBlockCreator {
 
 	createNewBlocks(
-		sharingNodeIds: SharingNodeId[],
+		sharingNodeIds: SharingNode_Id[],
 		terminal: ITerminal
-	): Promise<Map<SharingNodeId, IRepositoryTransactionBlock[]>>;
+	): Promise<Map<SharingNode_Id, IRepositoryTransactionBlock[]>>;
 
 }
 
@@ -50,9 +50,9 @@ export class SyncOutRepositoryTransactionBlockCreator
 
 	// Get new repository transaction histories not yet in RepoTransBlocks
 	async createNewBlocks(
-		sharingNodeIds: SharingNodeId[],
+		sharingNodeIds: SharingNode_Id[],
 		terminal: ITerminal
-	): Promise<Map<SharingNodeId, IRepositoryTransactionBlock[]>> {
+	): Promise<Map<SharingNode_Id, IRepositoryTransactionBlock[]>> {
 		const [actorDao, repositoryDao, repositoryTransactionBlockDao,
 			      repositoryTransactionHistoryUpdateStageDao, schemaDao,
 			      sharingNodeRepositoryDao] = await container(this).get(ACTOR_DAO, REPOSITORY_DAO,
@@ -393,10 +393,10 @@ export class SyncOutRepositoryTransactionBlockCreator
 
 	private groupRepoTransBlocksBySharingNode(
 		repositoryTransactionBlocks: IRepositoryTransactionBlock[],
-		sharingNodeIdMapByRepositoryId: Map<RepositoryId, Set<SharingNodeId>>
-	): Map<SharingNodeId, IRepositoryTransactionBlock[]> {
+		sharingNodeIdMapByRepositoryId: Map<RepositoryId, Set<SharingNode_Id>>
+	): Map<SharingNode_Id, IRepositoryTransactionBlock[]> {
 		const reposTransHistoryBlockMapBySharingNodeId
-			      : Map<SharingNodeId, IRepositoryTransactionBlock[]> = new Map()
+			      : Map<SharingNode_Id, IRepositoryTransactionBlock[]> = new Map()
 
 		for (const repositoryTransactionBlock of repositoryTransactionBlocks) {
 			const repositoryId     = repositoryTransactionBlock.repository.id

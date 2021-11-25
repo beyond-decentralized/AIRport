@@ -19,8 +19,7 @@ export type SharingNodeRepositorySyncPriority = number;
 
 @Entity()
 @Table({
-	name: "SHARING_NODE_REPOSITORIES",
-	primaryKey: ['SHARING_NODE_ID', 'REPOSITORY_ID']
+	name: "SHARING_NODE_REPOSITORIES"
 })
 export class SharingNodeRepository {
 

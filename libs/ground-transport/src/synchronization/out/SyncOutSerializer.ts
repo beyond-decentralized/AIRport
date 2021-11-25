@@ -26,7 +26,7 @@ import {
 	RepositoryTransactionBlockData,
 	SHARING_MESSAGE_DAO,
 	SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
-	SharingNodeId
+	SharingNode_Id
 }                            from '@airport/moving-walkway'
 import {transactional}       from '@airport/tower'
 import {ITerminal}           from '@airport/travel-document-checkpoint'
@@ -36,14 +36,14 @@ import {SYNC_OUT_SERIALIZER} from '../../tokens'
 export interface ISyncOutSerializer {
 
 	serializeMessages(
-		sharingNodeDbMap: Map<SharingNodeId, ISharingNodeTerminal>,
-		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
-		repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<Repository_Id,
+		sharingNodeDbMap: Map<SharingNode_Id, ISharingNodeTerminal>,
+		sharingNodeMap: Map<SharingNode_Id, ISharingNode>,
+		repoMapBySharingNodeAndRepoIds: Map<SharingNode_Id, Map<Repository_Id,
 			[IRepository, AgtRepositoryId]>>,
 		repoTransBlockDataByRepoId: Map<Repository_Id, RepositoryTransactionBlockData>,
 		repoTransHistoryIds: Set<RepositoryTransactionHistoryId>,
 		terminal: ITerminal
-	): Promise<Map<SharingNodeId, MessageFromTM>>;
+	): Promise<Map<SharingNode_Id, MessageFromTM>>;
 
 }
 
@@ -51,14 +51,14 @@ export class SyncOutSerializer
 	implements ISyncOutSerializer {
 
 	async serializeMessages(
-		sharingNodeDbMap: Map<SharingNodeId, ISharingNodeTerminal>,
-		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
-		repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<Repository_Id,
+		sharingNodeDbMap: Map<SharingNode_Id, ISharingNodeTerminal>,
+		sharingNodeMap: Map<SharingNode_Id, ISharingNode>,
+		repoMapBySharingNodeAndRepoIds: Map<SharingNode_Id, Map<Repository_Id,
 			[IRepository, AgtRepositoryId]>>,
 		repoTransBlockDataByRepoId: Map<Repository_Id, RepositoryTransactionBlockData>,
 		repoTransHistoryIds: Set<RepositoryTransactionHistoryId>,
 		terminal: ITerminal
-	): Promise<Map<SharingNodeId, MessageFromTM>> {
+	): Promise<Map<SharingNode_Id, MessageFromTM>> {
 		const [repoTransBlockDao,
 			      repoTransBlockRepoTransHistoryDao,
 			      sharingMessageDao,
@@ -68,7 +68,7 @@ export class SyncOutSerializer
 			REPO_TRANS_HISTORY_DAO,
 			SHARING_MESSAGE_DAO,
 			SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO)
-		const messageMap: Map<SharingNodeId, MessageFromTM> = new Map()
+		const messageMap: Map<SharingNode_Id, MessageFromTM> = new Map()
 
 		const lastSyncAttemptTimestamp                                                      = new Date()
 		const repositoryTransactionBlocks: IRepositoryTransactionBlock[]                    = []

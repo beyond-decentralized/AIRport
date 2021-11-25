@@ -1,9 +1,7 @@
 import { IEntityUpdateProperties, IQEntityInternal, MappedEntityArray, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
 import { IActor, IRepository } from '@airport/holding-pattern';
-import { IDeltaStore } from './DeltaStore';
 import { UpdateState } from '../core/UpdateState';
 export interface IRepositoryManager {
-    deltaStore: any;
     repositories: IRepository[];
     repositoriesById: {
         [repositoryId: string]: IRepository;
@@ -16,7 +14,6 @@ export interface IRepositoryManager {
     getUpdateState(repository: IRepository): UpdateState;
     setUpdateStateForAll(updateState: UpdateState): void;
     setUpdateState(repository: IRepository, updateState: UpdateState): void;
-    getDeltaStore(repository: IRepository): IDeltaStore;
     ensureRepositoryScopeOnInsertValues<IQE extends IQEntityInternal<any>>(repository: IRepository, rawInsertValues: RawInsertValues<IQE>): RawInsertValues<IQE>;
     ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal<any>>(qEntity: IQEntityInternal<any>, repository: IRepository, rawUpdate: RawUpdate<IEUP, IQE>): RawUpdate<IEUP, IQE>;
     getOnlyRepositoryInDatabase(): IRepository;

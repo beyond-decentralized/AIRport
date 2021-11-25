@@ -48,7 +48,6 @@ import {
 import {
 	DELETE_MANAGER,
 	HISTORY_MANAGER,
-	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER
 } from '../tokens'
 
@@ -64,20 +63,15 @@ export class DeleteManager
 		const [
 			airDb,
 			historyManager,
-			offlineDataStore,
 			operHistoryDuo,
 			recHistoryDuo,
 			recHistoryOldValueDuo,
-			repoManager,
-			repositoryManager,
 			repoTransHistoryDuo,
 			schemaUtils,
 			sequenceGenerator
 		] = await container(this)
-			.get(AIRPORT_DATABASE, HISTORY_MANAGER,
-				OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
-				REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER,
-				REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO,
+			.get(AIRPORT_DATABASE, HISTORY_MANAGER, OPER_HISTORY_DUO,
+				REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPO_TRANS_HISTORY_DUO,
 				SCHEMA_UTILS, SEQUENCE_GENERATOR)
 
 		const dbEntity = airDb

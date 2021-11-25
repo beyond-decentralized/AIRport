@@ -7,7 +7,7 @@ import {
 	container,
 	DI
 } from '@airport/di'
-import { SharingNodeId } from '../../ddl/ddl'
+import { SharingNode_Id } from '../../ddl/ddl'
 import {
 	BaseSharingNodeRepoTransBlockStageDao,
 	IBaseSharingNodeRepoTransBlockStageDao,
@@ -17,7 +17,7 @@ import {
 import { SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO } from '../../tokens'
 
 export type SharingNodeRepoTransBlockStageValues = [
-	SharingNodeId,
+	SharingNode_Id,
 	TmRepositoryTransactionBlockId,
 	SharingNodeRepoTransBlockSyncStatus
 ];

@@ -10,26 +10,16 @@ import {
 	IActor,
 	IRepository
 } from '@airport/holding-pattern'
-import {
-    IDeltaStore
-} from './DeltaStore'
 import { UpdateState } from '../core/UpdateState'
-import { IOperationContext } from '../processing/OperationContext'
 
 export interface IRepositoryManager {
 
-	// deltaStore: IDeltaStore;
-	deltaStore;
 	repositories: IRepository[];
 	repositoriesById: { [repositoryId: string]: IRepository };
 
 	initialize(): Promise<void>;
 
 	createRepository(
-		// distributionStrategy: DistributionStrategy,
-		// offlineStoreType: StoreType,
-		// platformType: PlatformType,
-		// platformConfig: any,
 		actor: IActor
 	): Promise<IRepository>;
 
@@ -47,8 +37,6 @@ export interface IRepositoryManager {
 		repository: IRepository,
 		updateState: UpdateState
 	): void;
-
-	getDeltaStore(repository: IRepository): IDeltaStore;
 
 	ensureRepositoryScopeOnInsertValues<IQE extends IQEntityInternal<any>>(
 		repository: IRepository,

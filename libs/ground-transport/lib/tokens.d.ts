@@ -1,4 +1,3 @@
-import { ISharingNodeEndpoint } from './synchronization/connect/SharingNodeEndpoint';
 import { ISyncInActorChecker } from './synchronization/in/checker/SyncInActorChecker';
 import { ISyncInChecker } from './synchronization/in/checker/SyncInChecker';
 import { ISyncInConsistencyChecker } from './synchronization/in/checker/SyncInConsistencyChecker';
@@ -22,8 +21,6 @@ import { ISyncOutMessageSender } from './synchronization/out/SyncOutMessageSende
 import { ISyncOutRepositoryTransactionBlockCreator } from './synchronization/out/SyncOutRepositoryTransactionBlockCreator';
 import { ISyncOutSerializer } from './synchronization/out/SyncOutSerializer';
 import { ISyncNodeManager } from './synchronization/SyncNodeManager';
-export declare const DIRECT_SHARING_NODE_ENDPOINT: import("@airport/di").IDiToken<ISharingNodeEndpoint>;
-export declare const HTTP_SHARING_NODE_ENDPOINT: import("@airport/di").IDiToken<ISharingNodeEndpoint>;
 export declare const MISSING_RECORD_CREATOR: import("@airport/di").IDiToken<IMissingRecordCreator>;
 export declare const STAGE1_SYNCED_IN_DATA_PROCESSOR: import("@airport/di").IDiToken<IStage1SyncedInDataProcessor>;
 export declare const STAGE2_SYNCED_IN_DATA_PROCESSOR: import("@airport/di").IDiToken<IStage2SyncedInDataProcessor>;

@@ -48,7 +48,6 @@ import {
 }                           from '@airport/terminal-map'
 import {
 	HISTORY_MANAGER,
-	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER,
 	UPDATE_MANAGER
 }                           from '../tokens'
@@ -65,7 +64,6 @@ export class UpdateManager
 		// TODO: remove unused dependencies after testing
 		const [
 			      historyManager,
-			      offlineDataStore,
 			      operHistoryDuo,
 			      recHistoryDuo,
 			      recHistoryNewValueDuo,
@@ -73,7 +71,7 @@ export class UpdateManager
 			      repositoryManager,
 			      repoTransHistoryDuo,
 			      sequenceGenerator] = await container(this)
-			.get(HISTORY_MANAGER, OFFLINE_DELTA_STORE,
+			.get(HISTORY_MANAGER,
 				OPER_HISTORY_DUO, REC_HISTORY_DUO,
 				REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO,
 				REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO,

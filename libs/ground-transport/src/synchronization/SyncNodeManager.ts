@@ -8,14 +8,13 @@ import {
 	ISharingNodeTerminal,
 	SHARING_NODE_DAO,
 	SHARING_NODE_TERMINAL_DAO,
-	SharingNodeId
+	SharingNode_Id
 }                             from '@airport/moving-walkway'
 import {TERMINAL_STORE}       from '@airport/terminal-map'
 import {
 	SYNC_IN_MANAGER,
 	SYNC_NODE_MANAGER,
 }                             from '../tokens'
-import {ISharingNodeEndpoint} from './connect/SharingNodeEndpoint'
 
 export interface ISyncNodeManager {
 
@@ -24,8 +23,8 @@ export interface ISyncNodeManager {
 	initialize(): Promise<void>;
 
 	sendMessages(
-		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
-		messagesBySharingNode: Map<SharingNodeId, MessageFromTM>
+		sharingNodeMap: Map<SharingNode_Id, ISharingNode>,
+		messagesBySharingNode: Map<SharingNode_Id, MessageFromTM>
 	): Promise<void>;
 
 }
@@ -44,8 +43,8 @@ export class SyncNodeManager
 	}
 
 	async sendMessages(
-		sharingNodeMap: Map<SharingNodeId, ISharingNode>,
-		messagesBySharingNode: Map<SharingNodeId, MessageFromTM>
+		sharingNodeMap: Map<SharingNode_Id, ISharingNode>,
+		messagesBySharingNode: Map<SharingNode_Id, MessageFromTM>
 	): Promise<void> {
 		const [sharingNodeDao,
 			      sharingNodeTerminalDao,
@@ -58,7 +57,7 @@ export class SyncNodeManager
 			theTerminal
 			) => terminal = theTerminal
 		).unsubscribe()
-		const sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>
+		const sharingNodeTerminalMap: Map<SharingNode_Id, ISharingNodeTerminal>
 			      = await sharingNodeTerminalDao
 			.findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(
 				terminal.id, Array.from(sharingNodeMap.keys())

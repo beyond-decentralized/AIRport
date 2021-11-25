@@ -3,11 +3,11 @@ import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI, } from '@airport/di';
 import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType, } from '@airport/ground-control';
 import { OPER_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO, } from '@airport/holding-pattern';
-import { DELETE_MANAGER, HISTORY_MANAGER, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER } from '../tokens';
+import { DELETE_MANAGER, HISTORY_MANAGER } from '../tokens';
 export class DeleteManager {
     async deleteWhere(portableQuery, actor, transaction, context = {}) {
-        const [airDb, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoManager, repositoryManager, repoTransHistoryDuo, schemaUtils, sequenceGenerator] = await container(this)
-            .get(AIRPORT_DATABASE, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO, SCHEMA_UTILS, SEQUENCE_GENERATOR);
+        const [airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, schemaUtils, sequenceGenerator] = await container(this)
+            .get(AIRPORT_DATABASE, HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPO_TRANS_HISTORY_DUO, SCHEMA_UTILS, SEQUENCE_GENERATOR);
         const dbEntity = airDb
             .schemas[portableQuery.schemaIndex].currentVersion[0].schemaVersion
             .entities[portableQuery.tableIndex];

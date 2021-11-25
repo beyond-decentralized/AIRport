@@ -4,18 +4,18 @@ import {
 	DbString,
 	Entity,
 	Id,
+	OneToMany,
 	Table
 }                                  from "@airport/air-control";
-import {OneToMany}                 from "@airport/air-control/lib/impl/core/entity/metadata/ColumnDecorators";
 import {SharingMessage}            from "../sharingMessage/SharingMessage";
 import {SharingMechanism}          from "../values/SharingMechanism";
 import {SharingNodeProtocol}       from "../values/SharingNodeProtocol";
 import {SharingNodeRepoTransBlock} from "./SharingNodeRepoTransBlock";
 
-export type SharingNodeId = number;
-export type SharingNodeIsActive = boolean;
-export type SharingNodeSyncFrequency = number;
-export type SharingNodeURL = string;
+export type SharingNode_Id = number;
+export type SharingNode_IsActive = boolean;
+export type SharingNode_SyncFrequency = number;
+export type SharingNode_URL = string;
 
 @Entity()
 @Table({name: "SHARING_NODES"})
@@ -23,25 +23,25 @@ export class SharingNode {
 
 	@Id()
 	@DbNumber()
-	id: SharingNodeId;
+	id: SharingNode_Id;
 
 	@Column({name: "SHARING_MECHANISM"})
 	@DbString()
 	sharingMechanism: SharingMechanism;
 
 	@Column({name: "IS_ACTIVE"})
-	isActive: SharingNodeIsActive;
+	isActive: SharingNode_IsActive;
 
 	@Column({name: "SYNC_FREQUENCY"})
 	@DbNumber()
-	syncFrequency: SharingNodeSyncFrequency;
+	syncFrequency: SharingNode_SyncFrequency;
 
 	@Column({name: "CONNECTION_PROTOCOL"})
 	@DbString()
 	connectionProtocol: SharingNodeProtocol;
 
 	@Column({name: "CONNECTION_URL"})
-	connectionUrl: SharingNodeURL;
+	connectionUrl: SharingNode_URL;
 
 	@OneToMany({mappedBy: "sharingNode"})
 	messages: SharingMessage[];

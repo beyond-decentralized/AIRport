@@ -24,7 +24,7 @@ import {
 	REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO,
 	SchemaChangeStatus,
 	SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
-	SharingNodeId
+	SharingNode_Id
 }                     from '@airport/moving-walkway'
 import {
 	ISchema,
@@ -68,7 +68,7 @@ export interface ISyncInChecker {
 		// actorMap: Map<ActorRandomId,
 		// 	Map<UserUniqueId,
 		// 		Map<TerminalName, Map<TerminalSecondId, Map<UserUniqueId, IActor>>>>>,
-		// sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
+		// sharingNodeRepositoryMap: Map<SharingNode_Id, Map<AgtRepositoryId, RepositoryId>>,
 		// dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<CheckResults>;
 
@@ -292,7 +292,7 @@ export class SyncInChecker
 
 	private updateRepositoryReferences(
 		dataMessages: IDataToTM[],
-		sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
+		sharingNodeRepositoryMap: Map<SharingNode_Id, Map<AgtRepositoryId, RepositoryId>>
 	): void {
 		for (const dataMessage of dataMessages) {
 			const data          = dataMessage.data

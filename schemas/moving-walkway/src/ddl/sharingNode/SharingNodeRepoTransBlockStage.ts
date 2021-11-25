@@ -12,7 +12,7 @@ import {
 	SharingNodeRepoTransBlockSyncStatus,
 	TmRepositoryTransactionBlockId
 }                      from "@airport/arrivals-n-departures";
-import {SharingNodeId} from "./SharingNode";
+import {SharingNode_Id} from "./SharingNode";
 
 @Entity()
 @Table({name: "SHARING_NODE_REPO_TRANS_BLOCK_STAGE"})
@@ -20,7 +20,7 @@ export class SharingNodeRepoTransBlockStage {
 
 	@Id()
 	@Column({name: "SHARING_NODE_ID"})
-	sharingNodeId: SharingNodeId;
+	sharingNodeId: SharingNode_Id;
 
 	@Id()
 	@Column({name: "REPOSITORY_TRANSACTION_BLOCK_ID"})

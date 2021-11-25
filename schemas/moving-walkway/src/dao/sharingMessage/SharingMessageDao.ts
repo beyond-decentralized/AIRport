@@ -10,7 +10,7 @@ import {
 	REC_HIST_OLD_VALUE_DAO,
 	REPO_TRANS_HISTORY_DAO
 }                            from '@airport/holding-pattern'
-import {SharingNodeId}       from '../../ddl/ddl'
+import {SharingNode_Id}       from '../../ddl/ddl'
 import {SHARING_MESSAGE_DAO} from '../../tokens'
 import {
 	BaseSharingMessageDao,
@@ -36,8 +36,8 @@ export interface ISharingMessageDao
 	// ): Promise<number>;
 
 	findAllSyncedSharingMessageIdsForSharingNodes(
-		sharingNodeIds: SharingNodeId[]
-	): Promise<Map<SharingNodeId, TmSharingMessageId[]>>;
+		sharingNodeIds: SharingNode_Id[]
+	): Promise<Map<SharingNode_Id, TmSharingMessageId[]>>;
 
 }
 
@@ -94,9 +94,9 @@ export class SharingMessageDao
 		}*/
 
 	async findAllSyncedSharingMessageIdsForSharingNodes(
-		sharingNodeIds: SharingNodeId[]
-	): Promise<Map<SharingNodeId, TmSharingMessageId[]>> {
-		const sharingMessageIdsBySharingNodeId: Map<SharingNodeId, TmSharingMessageId[]>
+		sharingNodeIds: SharingNode_Id[]
+	): Promise<Map<SharingNode_Id, TmSharingMessageId[]>> {
+		const sharingMessageIdsBySharingNodeId: Map<SharingNode_Id, TmSharingMessageId[]>
 			      = new Map()
 
 		const airDb = await container(this).get(AIRPORT_DATABASE)

@@ -12,7 +12,7 @@ import {
 	SHARING_NODE_REPO_TRANS_BLOCK_DAO,
 	SHARING_NODE_REPO_TRANS_BLOCK_STAGE_DAO,
 	SharingMessageSyncTimestamp,
-	SharingNodeId,
+	SharingNode_Id,
 	SharingNodeRepoTransBlockStageValues,
 	SharingNodeRepoTransBlockValues
 }                                   from '@airport/moving-walkway'
@@ -105,17 +105,17 @@ export class SyncLogMessageProcessor
 	): {
 		repoTransBlockIdSet: Set<TmRepositoryTransactionBlockId>;
 		sharingNodeRepoTransBlockStageValues: SharingNodeRepoTransBlockStageValues[];
-		repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNodeId,
+		repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNode_Id,
 			Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncStatus>>;
 		// sharingMessageResponseStageValues: SharingMessageResponseStageValues[];
-		sharingNodeIdSet: Set<SharingNodeId>;
+		sharingNodeIdSet: Set<SharingNode_Id>;
 	} {
 		// const sharingMessageResponseStageValues: SharingMessageResponseStageValues[] = [];
 		let sharingNodeRepoTransBlockStageValues: SharingNodeRepoTransBlockStageValues[] = []
-		const sharingNodeIdSet: Set<SharingNodeId>                                       = new Set()
+		const sharingNodeIdSet: Set<SharingNode_Id>                                       = new Set()
 		const repoTransBlockIdSet: Set<TmRepositoryTransactionBlockId>                   = new Set()
 
-		const repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNodeId,
+		const repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNode_Id,
 			Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncStatus>> = new Map()
 
 		for (const syncLogMessage of syncLogMessages) {
@@ -154,9 +154,9 @@ export class SyncLogMessageProcessor
 	}
 
 	// private async updateExistingSharingNodeRepoTransBlocks(
-	// 	sharingNodeIdSet: Set<SharingNodeId>,
+	// 	sharingNodeIdSet: Set<SharingNode_Id>,
 	// 	repoTransBlockIdSet: Set<TmRepositoryTransactionBlockId>,
-	// 	repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNodeId,
+	// 	repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNode_Id,
 	// 		Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncStatus>>
 	// ): Promise<void> {
 	// 	const existingSharingNodeRepoTransBlockMap = await
@@ -180,7 +180,7 @@ export class SyncLogMessageProcessor
 	// this.sharingNodeRepoTransBlockStageDao.delete(); }
 
 	private async insertNewSharingNodeRepoTransBlocks(
-		repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNodeId,
+		repoTransBlockSyncOutcomeMapBySharingNodeId: Map<SharingNode_Id,
 			Map<TmRepositoryTransactionBlockId, RepoTransBlockSyncStatus>>,
 		sharingNodeRepoTransBlockDao: ISharingNodeRepoTransBlockDao
 	): Promise<void> {

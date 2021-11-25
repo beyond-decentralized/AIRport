@@ -15,7 +15,7 @@ import {
 	ensureChildArray,
 	ensureChildJsMap
 } from '@airport/ground-control'
-import { SharingNodeId } from '../../ddl/ddl'
+import { SharingNode_Id } from '../../ddl/ddl'
 import {
 	BaseSharingNodeRepoTransBlockDao,
 	IBaseSharingNodeRepoTransBlockDao,
@@ -27,7 +27,7 @@ import {
 import { SHARING_NODE_REPO_TRANS_BLOCK_DAO } from '../../tokens'
 
 export type SharingNodeRepoTransBlockValues = [
-	SharingNodeId,
+	SharingNode_Id,
 	TmRepositoryTransactionBlockId,
 	// SharingMessageSyncTimestamp,
 	// RepoTransBlockSyncOutcomeType,
@@ -38,23 +38,23 @@ export type SharingNodeRepoTransBlockValues = [
 export interface RepoTransBlocksForSharingNodes {
 	repositoryTransactionBlockIds: Set<TmRepositoryTransactionBlockId>;
 	repoTransBlocksBySharingNodeId
-	: Map<SharingNodeId, TmRepositoryTransactionBlockId[]>;
+	: Map<SharingNode_Id, TmRepositoryTransactionBlockId[]>;
 }
 
 export interface ISharingNodeRepoTransBlockDao
 	extends IBaseSharingNodeRepoTransBlockDao {
 
 	findMapBySharingNodeIdWhereSharingNodeIdInAndRepoTransBlockIdIn(
-		sharingNodeIds: SharingNodeId[],
+		sharingNodeIds: SharingNode_Id[],
 		repoTransBlockIds: TmRepositoryTransactionBlockId[]
-	): Promise<Map<SharingNodeId,
+	): Promise<Map<SharingNode_Id,
 		Map<TmRepositoryTransactionBlockId, ISharingNodeRepoTransBlock>>>;
 
 	updateFromResponseStage( //
 	): Promise<number>;
 
 	updateBlockSyncStatus(
-		sharingNodeIds: SharingNodeId[],
+		sharingNodeIds: SharingNode_Id[],
 		repoTransBlockIds: TmRepositoryTransactionBlockId[],
 		existingSyncStatus: SharingNodeRepoTransBlockSyncStatus,
 		newSyncStatus: SharingNodeRepoTransBlockSyncStatus
@@ -65,7 +65,7 @@ export interface ISharingNodeRepoTransBlockDao
 	): Promise<number>;
 
 	getForSharingNodeIdsAndBlockStatus(
-		sharingNodeIds: SharingNodeId[],
+		sharingNodeIds: SharingNode_Id[],
 		syncStatus: SharingNodeRepoTransBlockSyncStatus
 	): Promise<RepoTransBlocksForSharingNodes>;
 
@@ -76,11 +76,11 @@ export class SharingNodeRepoTransBlockDao
 	implements ISharingNodeRepoTransBlockDao {
 
 	async findMapBySharingNodeIdWhereSharingNodeIdInAndRepoTransBlockIdIn(
-		sharingNodeIds: SharingNodeId[],
+		sharingNodeIds: SharingNode_Id[],
 		repoTransBlockIds: TmRepositoryTransactionBlockId[]
-	): Promise<Map<SharingNodeId,
+	): Promise<Map<SharingNode_Id,
 		Map<TmRepositoryTransactionBlockId, ISharingNodeRepoTransBlock>>> {
-		const mapBySharingNodeId: Map<SharingNodeId,
+		const mapBySharingNodeId: Map<SharingNode_Id,
 			Map<TmRepositoryTransactionBlockId, ISharingNodeRepoTransBlock>> = new Map()
 
 		let snrtb: QSharingNodeRepoTransBlock
@@ -125,7 +125,7 @@ export class SharingNodeRepoTransBlockDao
 	}
 
 	async updateBlockSyncStatus(
-		sharingNodeIds: SharingNodeId[],
+		sharingNodeIds: SharingNode_Id[],
 		repoTransBlockIds: TmRepositoryTransactionBlockId[],
 		existingSyncStatus: SharingNodeRepoTransBlockSyncStatus,
 		newSyncStatus: SharingNodeRepoTransBlockSyncStatus
@@ -172,11 +172,11 @@ export class SharingNodeRepoTransBlockDao
 	}
 
 	async getForSharingNodeIdsAndBlockStatus(
-		sharingNodeIds: SharingNodeId[],
+		sharingNodeIds: SharingNode_Id[],
 		syncStatus: SharingNodeRepoTransBlockSyncStatus
 	): Promise<RepoTransBlocksForSharingNodes> {
 		const repoTransBlocksBySharingNodeId
-			: Map<SharingNodeId, TmRepositoryTransactionBlockId[]> = new Map()
+			: Map<SharingNode_Id, TmRepositoryTransactionBlockId[]> = new Map()
 		const repositoryTransactionBlockIds: Set<TmRepositoryTransactionBlockId> = new Set()
 
 		let snrtb: QSharingNodeRepoTransBlock

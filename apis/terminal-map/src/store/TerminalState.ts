@@ -1,7 +1,7 @@
 import { IActor } from '@airport/holding-pattern'
 import type {
 	ISharingNode,
-	SharingNodeSyncFrequency
+	SharingNode_SyncFrequency
 }                  from '@airport/moving-walkway'
 import type {IApplication, IDomain}   from '@airport/territory'
 import type {ISchema}   from '@airport/traffic-pattern'
@@ -13,7 +13,7 @@ export interface ITerminalState {
 	applications: IApplication[]
 	domains: IDomain[]
 	frameworkActor: IActor
-	nodesBySyncFrequency: Map<SharingNodeSyncFrequency, ISharingNode[]>
+	nodesBySyncFrequency: Map<SharingNode_SyncFrequency, ISharingNode[]>
 	schemas: ISchema[]
 	terminal: ITerminal
 

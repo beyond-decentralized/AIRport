@@ -1,8 +1,8 @@
 import {DI}               from '@airport/di'
 import {
-	SharingNodeId,
-	SharingNodeIsActive,
-	SharingNodeSyncFrequency
+	SharingNode_Id,
+	SharingNode_IsActive,
+	SharingNode_SyncFrequency
 }                         from '../../ddl/ddl'
 import {SHARING_NODE_DAO} from '../../tokens'
 import {
@@ -15,11 +15,11 @@ import {
 export interface ISharingNodeDao {
 
 	findAllGroupedBySyncFrequency( //
-	): Promise<Map<SharingNodeSyncFrequency, ISharingNode[]>>;
+	): Promise<Map<SharingNode_SyncFrequency, ISharingNode[]>>;
 
 	updateIsActive(
-		sharingNodeIds: SharingNodeId[],
-		isActive: SharingNodeIsActive
+		sharingNodeIds: SharingNode_Id[],
+		isActive: SharingNode_IsActive
 	): Promise<void>;
 
 }
@@ -29,14 +29,12 @@ export class SharingNodeDao
 	implements ISharingNodeDao {
 
 	async findAllGroupedBySyncFrequency( //
-	): Promise<Map<SharingNodeSyncFrequency, ISharingNode[]>> {
+	): Promise<Map<SharingNode_SyncFrequency, ISharingNode[]>> {
 		const allBySyncFrequency = new Map()
 
 		let sn: QSharingNode
 		const sharingNodes: ISharingNode[] = await this.db.find.tree({
-			select: {
-				...this.db.duo.select.fields
-			},
+			select: {},
 			from: [
 				sn = Q.SharingNode
 			],
@@ -67,8 +65,8 @@ export class SharingNodeDao
 	}
 
 	async updateIsActive(
-		sharingNodeIds: SharingNodeId[],
-		isActive: SharingNodeIsActive
+		sharingNodeIds: SharingNode_Id[],
+		isActive: SharingNode_IsActive
 	): Promise<void> {
 		let sn: QSharingNode
 		await this.db.updateWhere({

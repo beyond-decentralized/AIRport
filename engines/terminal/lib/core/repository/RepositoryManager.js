@@ -1,40 +1,24 @@
-import { and, DATABASE_FACADE, } from '@airport/air-control';
+import { and, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { DistributionStrategy, PlatformType, StoreType, } from '@airport/ground-control';
 import { REPOSITORY_ACTOR_DAO, REPOSITORY_DAO, SyncPriority } from '@airport/holding-pattern';
-import { DeltaStoreConfig, REPOSITORY_FIELD, } from '@airport/terminal-map';
+import { REPOSITORY_FIELD, } from '@airport/terminal-map';
 import { v4 as uuidv4 } from "uuid";
-import { DeltaStore, getSharingAdaptor } from '../../data/DeltaStore';
 import { REPOSITORY_MANAGER } from '../../tokens';
 export class RepositoryManager {
     constructor() {
-        // deltaStore: IDeltaStore = {}
-        this.deltaStore = {};
         this.repositories = [];
         this.repositoriesById = {};
     }
     async initialize() {
         await this.ensureRepositoryRecords();
         await this.ensureAndCacheRepositories();
-        for (let i = 0; i < this.repositories.length; i++) {
-            let repository = this.repositories[i];
-            await this.addDeltaStore(repository);
-        }
     }
     async findReposWithDetailsByIds(...repositoryIds) {
         const repositoryDao = await container(this).get(REPOSITORY_DAO);
         return await repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.uuId, this.userEmail);
     }
-    async createRepository(
-    // distributionStrategy: DistributionStrategy,
-    // offlineStoreType: StoreType,
-    // platformType: PlatformType,
-    // platformConfig: any,
-    actor) {
-        let repository = await this.createRepositoryRecord(
-        // distributionStrategy, platformType, platformConfig
-        actor);
-        await this.addDeltaStore(repository);
+    async createRepository(actor) {
+        let repository = await this.createRepositoryRecord(actor);
         return repository;
     }
     async getRepository(repositoryId) {
@@ -44,26 +28,16 @@ export class RepositoryManager {
         throw new Error(`not implemented`);
     }
     goOffline() {
-        for (let repositoryId in this.deltaStore) {
-            let deltaStore = this.deltaStore[repositoryId];
-            deltaStore.goOffline();
-        }
+        throw new Error(`not implemented`);
     }
     getUpdateState(repository) {
-        return this.deltaStore[repository.id].updateState;
+        throw new Error(`not implemented`);
     }
     setUpdateStateForAll(updateState) {
-        for (let repositoryId in this.deltaStore) {
-            let deltaStore = this.deltaStore[repositoryId];
-            deltaStore.updateState = updateState;
-        }
+        throw new Error(`not implemented`);
     }
     setUpdateState(repository, updateState) {
-        let deltaStore = this.deltaStore[repository.id];
-        deltaStore.updateState = updateState;
-    }
-    getDeltaStore(repository) {
-        return this.deltaStore[repository.id];
+        throw new Error(`not implemented`);
     }
     async ensureRepositoryRecords() {
         const repositoryDao = await container(this).get(REPOSITORY_DAO);
@@ -83,36 +57,6 @@ export class RepositoryManager {
                                         deltaStoreConfig.setupInfo.platformType);
                         }
                         */
-    }
-    async addDeltaStore(repository) {
-        // TODO: revisit configuration (instead of hard-coding
-        // let sharingAdaptor                             =
-        // getSharingAdaptor(repository.platform)
-        let sharingAdaptor = getSharingAdaptor(PlatformType.OFFLINE);
-        let jsonDeltaStoreConfig = {
-            changeList: {
-                // distributionStrategy: repository.distributionStrategy
-                distributionStrategy: DistributionStrategy.S3_SECURE_POLL
-            },
-            offlineDeltaStore: {
-                // type: this.dbFacade.storeType
-                type: StoreType.SQLITE
-            },
-            recordIdField: 'id',
-            // platform: repository.platform
-            platform: PlatformType.OFFLINE
-        };
-        // if (repository.platformConfig) {
-        // 	let platformConfig = JSON.parse(repository.platformConfig)
-        // 	jsonDeltaStoreConfig = <any>{ ...jsonDeltaStoreConfig, ...platformConfig }
-        // }
-        let deltaStoreConfig = new DeltaStoreConfig(jsonDeltaStoreConfig);
-        let deltaStore = new DeltaStore(deltaStoreConfig, sharingAdaptor);
-        const dbFacade = await container(this)
-            .get(DATABASE_FACADE);
-        deltaStore.config.changeListConfig.changeListInfo.dbId = dbFacade.name;
-        this.deltaStore[repository.id] = deltaStore;
-        return deltaStore;
     }
     getRepositoryRecord(actor) {
         const repository = {

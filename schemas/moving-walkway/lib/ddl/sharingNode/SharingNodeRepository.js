@@ -36,8 +36,7 @@ __decorate([
 SharingNodeRepository = __decorate([
     Entity(),
     Table({
-        name: "SHARING_NODE_REPOSITORIES",
-        primaryKey: ['SHARING_NODE_ID', 'REPOSITORY_ID']
+        name: "SHARING_NODE_REPOSITORIES"
     })
 ], SharingNodeRepository);
 export { SharingNodeRepository };

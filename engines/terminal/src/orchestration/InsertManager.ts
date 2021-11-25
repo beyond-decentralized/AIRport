@@ -44,7 +44,6 @@ import {
 import {
 	HISTORY_MANAGER,
 	INSERT_MANAGER,
-	OFFLINE_DELTA_STORE,
 	REPOSITORY_MANAGER
 } from '../tokens'
 
@@ -134,7 +133,6 @@ export class InsertManager
 			airDb,
 			sequenceGenerator,
 			historyManager,
-			offlineDataStore,
 			operHistoryDuo,
 			recHistoryDuo,
 			recHistoryNewValueDuo,
@@ -142,8 +140,7 @@ export class InsertManager
 			repoTransHistoryDuo
 		] = await container(this)
 			.get(AIRPORT_DATABASE,
-				SEQUENCE_GENERATOR, HISTORY_MANAGER,
-				OFFLINE_DELTA_STORE, OPER_HISTORY_DUO,
+				SEQUENCE_GENERATOR, HISTORY_MANAGER, OPER_HISTORY_DUO,
 				REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER,
 				REPO_TRANS_HISTORY_DUO)
 

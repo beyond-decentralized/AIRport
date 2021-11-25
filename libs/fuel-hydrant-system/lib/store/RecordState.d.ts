@@ -1,4 +1,3 @@
-import { ChangeRecord } from '@airport/terminal-map';
 /**
  * Created by Papa on 6/28/2016.
  */
@@ -42,7 +41,6 @@ export interface IRecordState {
     proxied: boolean;
     create(): void;
     delete(): void;
-    getChangeRecord(): ChangeRecord;
     update(): void;
     toJSON(): any;
 }
@@ -54,7 +52,6 @@ export declare class RecordState implements IRecordState {
     proxied: boolean;
     create(): void;
     delete(): void;
-    getChangeRecord(): ChangeRecord;
     toJSON(): any;
     update(): void;
 }

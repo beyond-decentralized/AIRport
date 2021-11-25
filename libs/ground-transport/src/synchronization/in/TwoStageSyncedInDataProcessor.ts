@@ -32,7 +32,7 @@ import {
 	RepositoryTransactionBlockData,
 	SHARING_MESSAGE_DAO,
 	SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
-	SharingNodeId,
+	SharingNode_Id,
 	SYNC_CONFLICT_DAO,
 	SYNC_CONFLICT_PENDING_NOTIFICATION_DAO
 }                                     from '@airport/moving-walkway'
@@ -62,7 +62,7 @@ export interface ITwoStageSyncedInDataProcessor {
 
 	syncDataMessages(
 		dataMessages: IDataToTM[],
-		// sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
+		// sharingNodeRepositoryMap: Map<SharingNode_Id, Map<AgtRepositoryId, RepositoryId>>,
 		// dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<void>;
 
@@ -74,14 +74,14 @@ export class TwoStageSyncedInDataProcessor
 	/**
 	 * Synchronize the data messages coming from AGT (new data for this TM).
 	 * @param {IDataToTM[]} dataMessages  Incoming data messages.
-	 * @param {Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>}
+	 * @param {Map<SharingNode_Id, Map<AgtRepositoryId, RepositoryId>>}
 	 *   sharingNodeRepositoryMap Local (TM) repository Id Map.
 	 * @returns {Promise<void>}
 	 */
 	async syncDataMessages(
 		dataMessages: IDataToTM[] //,
-		// sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
-		// sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
+		// sharingNodeRepositoryMap: Map<SharingNode_Id, Map<AgtRepositoryId, RepositoryId>>
+		// sharingNodeRepositoryMap: Map<SharingNode_Id, Map<AgtRepositoryId, RepositoryId>>,
 		// dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<void> {
 		// TODO: remove unused injections once tested

@@ -4,7 +4,7 @@ import { container, DI, } from '@airport/di';
 import { ChangeType, repositoryEntity, } from '@airport/ground-control';
 import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO } from '@airport/holding-pattern';
 import { TRANSACTION_MANAGER } from '@airport/terminal-map';
-import { HISTORY_MANAGER, INSERT_MANAGER, OFFLINE_DELTA_STORE, REPOSITORY_MANAGER } from '../tokens';
+import { HISTORY_MANAGER, INSERT_MANAGER, REPOSITORY_MANAGER } from '../tokens';
 export class InsertManager {
     // get currentTransHistory(): ITransactionHistory {
     // 	return this.transManager.currentTransHistory
@@ -42,8 +42,8 @@ export class InsertManager {
     }
     async internalInsertValues(portableQuery, actor, transaction, context, getIds = false, ensureGeneratedValues = true) {
         // TODO: remove unused dependencies after testing
-        const [airDb, sequenceGenerator, historyManager, offlineDataStore, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo] = await container(this)
-            .get(AIRPORT_DATABASE, SEQUENCE_GENERATOR, HISTORY_MANAGER, OFFLINE_DELTA_STORE, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO);
+        const [airDb, sequenceGenerator, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo] = await container(this)
+            .get(AIRPORT_DATABASE, SEQUENCE_GENERATOR, HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO);
         const dbEntity = airDb.schemas[portableQuery.schemaIndex]
             .currentVersion[0].schemaVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error inserting into '${dbEntity.name}'.'

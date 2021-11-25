@@ -18,7 +18,7 @@ import {
 	ISharingNodeTerminal,
 	RepositoryTransactionBlockData,
 	SHARING_MESSAGE_DAO,
-	SharingNodeId
+	SharingNode_Id
 }                                 from '@airport/moving-walkway'
 import {transactional}            from '@airport/tower'
 import {parse}                    from 'zipson/lib'
@@ -50,7 +50,7 @@ export interface ISynchronizationInManager {
 	receiveMessages(
 		sharingNodes: ISharingNode[],
 		incomingMessages: BatchedMessagesToTM[],
-		sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>
+		sharingNodeTerminalMap: Map<SharingNode_Id, ISharingNodeTerminal>
 	): Promise<void>;
 
 }
@@ -83,7 +83,7 @@ export class SynchronizationInManager
 	async receiveMessages(
 		sharingNodes: ISharingNode[],
 		incomingMessages: BatchedMessagesToTM[],
-		sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>
+		sharingNodeTerminalMap: Map<SharingNode_Id, ISharingNodeTerminal>
 	): Promise<void> {
 		// TODO: is syncInChecker needed (what was the reason for original injection)?
 		const [sharingMessageDao, syncInChecker,

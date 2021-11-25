@@ -1,8 +1,8 @@
 import { SharingNodeRepoTransBlockSyncStatus, TmRepositoryTransactionBlockId } from '@airport/arrivals-n-departures';
-import { SharingNodeId } from '../../ddl/ddl';
+import { SharingNode_Id } from '../../ddl/ddl';
 import { BaseSharingNodeRepoTransBlockStageDao, IBaseSharingNodeRepoTransBlockStageDao } from '../../generated/generated';
 export declare type SharingNodeRepoTransBlockStageValues = [
-    SharingNodeId,
+    SharingNode_Id,
     TmRepositoryTransactionBlockId,
     SharingNodeRepoTransBlockSyncStatus
 ];

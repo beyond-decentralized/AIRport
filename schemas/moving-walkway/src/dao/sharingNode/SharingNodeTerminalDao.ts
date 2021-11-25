@@ -1,7 +1,7 @@
 import {and}                       from '@airport/air-control'
 import {TerminalId}                from '@airport/arrivals-n-departures'
 import {DI}                        from '@airport/di'
-import {SharingNodeId}             from '../../ddl/ddl'
+import {SharingNode_Id}             from '../../ddl/ddl'
 import {SHARING_NODE_TERMINAL_DAO} from '../../tokens'
 import {
 	BaseSharingNodeTerminalDao,
@@ -16,8 +16,8 @@ export interface ISharingNodeTerminalDao
 
 	findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(
 		terminalId: TerminalId,
-		sharingNodeIds: SharingNodeId[]
-	): Promise<Map<SharingNodeId, ISharingNodeTerminal>>;
+		sharingNodeIds: SharingNode_Id[]
+	): Promise<Map<SharingNode_Id, ISharingNodeTerminal>>;
 
 }
 
@@ -27,9 +27,9 @@ export class SharingNodeTerminalDao
 
 	async findBySharingNodeTmMapByTerminalIdAndSharingNodeIds(
 		terminalId: TerminalId,
-		sharingNodeIds: SharingNodeId[]
-	): Promise<Map<SharingNodeId, ISharingNodeTerminal>> {
-		const sharingNodeTmMapBySharingNodeId: Map<SharingNodeId, ISharingNodeTerminal> = new Map()
+		sharingNodeIds: SharingNode_Id[]
+	): Promise<Map<SharingNode_Id, ISharingNodeTerminal>> {
+		const sharingNodeTmMapBySharingNodeId: Map<SharingNode_Id, ISharingNodeTerminal> = new Map()
 
 		let snd: QSharingNodeTerminal
 		const sharingNodeTerminals = await this.db.find.tree({

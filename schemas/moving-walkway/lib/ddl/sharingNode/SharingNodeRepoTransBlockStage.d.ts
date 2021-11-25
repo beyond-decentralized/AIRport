@@ -1,7 +1,7 @@
 import { SharingNodeRepoTransBlockSyncStatus, TmRepositoryTransactionBlockId } from "@airport/arrivals-n-departures";
-import { SharingNodeId } from "./SharingNode";
+import { SharingNode_Id } from "./SharingNode";
 export declare class SharingNodeRepoTransBlockStage {
-    sharingNodeId: SharingNodeId;
+    sharingNodeId: SharingNode_Id;
     repositoryTransactionBlockId: TmRepositoryTransactionBlockId;
     syncStatus: SharingNodeRepoTransBlockSyncStatus;
 }

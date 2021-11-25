@@ -7,14 +7,14 @@ import {
 import {Repository_Id}         from '@airport/holding-pattern'
 import {
 	SHARING_NODE_REPOSITORY_DAO,
-	SharingNodeId
+	SharingNode_Id
 }                             from '@airport/moving-walkway'
 import {SYNC_IN_REPO_CHECKER} from '../../../tokens'
 import {IDataToTM}            from '../SyncInUtils'
 
 export interface RepositoryCheckResults {
 	consistentMessages: IDataToTM[];
-	sharingNodeRepositoryMap: Map<SharingNodeId, Set<Repository_Id>>;
+	sharingNodeRepositoryMap: Map<SharingNode_Id, Set<Repository_Id>>;
 }
 
 
@@ -37,15 +37,15 @@ export class SyncInRepositoryChecker
 		const consistentMessages: IDataToTM[] = []
 
 		// const dataMessageMapBySharingNodeAndAgtRepositoryId:
-		// 	Map<SharingNodeId, Map<AgtRepositoryId, IDataToTM[]>>
+		// 	Map<SharingNode_Id, Map<AgtRepositoryId, IDataToTM[]>>
 		// 	= new Map();
 		const dataMessageMapBySharingNodeId:
-			      Map<SharingNodeId, Map<AgtRepositoryId, IDataToTM[]>>
+			      Map<SharingNode_Id, Map<AgtRepositoryId, IDataToTM[]>>
 			                                       = new Map()
 		// const agtRepositoryIds: Set<AgtRepositoryId> = new Set();
-		const sharingNodeIds: Set<SharingNodeId> = new Set()
+		const sharingNodeIds: Set<SharingNode_Id> = new Set()
 
-		const sharingNodeRepositoryMap: Map<SharingNodeId, Set<Repository_Id>> = new Map()
+		const sharingNodeRepositoryMap: Map<SharingNode_Id, Set<Repository_Id>> = new Map()
 
 
 		for (const message of incomingMessages) {
@@ -110,16 +110,16 @@ export class SyncInRepositoryChecker
 	/*  NOT needed - AgtRepositoryIds are not sent FROM Agt, only TO Agt
 		private async updateRepositoryIdsAndFilterOutMissingRepositoryMessages(
 			agtRepositoryIds: Set<AgtRepositoryId>,
-			sharingNodeIds: Set<SharingNodeId>,
+			sharingNodeIds: Set<SharingNode_Id>,
 			dataMessageMapBySharingNodeAndAgtRepositoryId:
-				Map<SharingNodeId, Map<AgtRepositoryId, IDataToTM[]>>
+				Map<SharingNode_Id, Map<AgtRepositoryId, IDataToTM[]>>
 		): Promise<{
 			dataMessages: IDataToTM[];
-			sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>;
+			sharingNodeRepositoryMap: Map<SharingNode_Id, Map<AgtRepositoryId, RepositoryId>>;
 		}> {
 			// ASSUMPTION: repositories removed from this device will not be in
 			// the returned SharingNodeRepositories (already removed locally)
-			const sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
+			const sharingNodeRepositoryMap: Map<SharingNode_Id, Map<AgtRepositoryId, RepositoryId>>
 				= await this.sharingNodeRepositoryDao.findBySharingNodeAndAgtRepositoryIds(
 				Array.from(sharingNodeIds), Array.from(agtRepositoryIds));
 

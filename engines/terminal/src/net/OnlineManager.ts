@@ -1,4 +1,8 @@
-import { container, DI, IContext } from '@airport/di';
+import {
+  container,
+  DI,
+  IContext
+} from '@airport/di';
 import { BlockSyncStatus } from '@airport/ground-control';
 import {
   IRepository,
@@ -13,8 +17,10 @@ import {
   UpdateState
 } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
-import { IOfflineDeltaStore } from '../data/OfflineDeltaStore';
-import { OFFLINE_DELTA_STORE, ONLINE_MANAGER, REPOSITORY_MANAGER } from '../tokens';
+import {
+  ONLINE_MANAGER,
+  REPOSITORY_MANAGER
+} from '../tokens';
 
 export interface IOnlineManager {
 
