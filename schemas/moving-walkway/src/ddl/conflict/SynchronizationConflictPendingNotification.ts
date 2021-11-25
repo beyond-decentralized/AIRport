@@ -9,7 +9,7 @@ import {
 import {IActor}                  from "@airport/holding-pattern";
 import {SynchronizationConflict} from "./SynchronizationConflict";
 
-export type SynchronizationConflictPendingNotificationAcknowledged = boolean;
+export type SynchronizationConflictPendingNotification_Acknowledged = boolean;
 
 @Entity()
 @Table({name: "SYNC_CONFLICT_PENDING_NOTIFICATION"})
@@ -26,6 +26,6 @@ export class SynchronizationConflictPendingNotification {
 	actor: IActor;
 
 	@DbBoolean()
-	acknowledged: SynchronizationConflictPendingNotificationAcknowledged;
+	acknowledged: SynchronizationConflictPendingNotification_Acknowledged;
 
 }

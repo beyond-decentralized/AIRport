@@ -277,11 +277,11 @@ export class BaseMissingRecordDuo
 	implements IBaseMissingRecordDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(0)
+		super(3)
 	}
 }
 
@@ -295,11 +295,11 @@ export class BaseMissingRecordRepoTransBlockDuo
 	implements IBaseMissingRecordRepoTransBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(1)
+		super(10)
 	}
 }
 
@@ -313,11 +313,11 @@ export class BaseRecordUpdateStageDuo
 	implements IBaseRecordUpdateStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(16)
 	}
 	
 	constructor() {
-		super(8)
+		super(16)
 	}
 }
 
@@ -331,11 +331,11 @@ export class BaseRepoTransBlockResponseStageDuo
 	implements IBaseRepoTransBlockResponseStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(12)
 	}
 	
 	constructor() {
-		super(9)
+		super(12)
 	}
 }
 
@@ -349,11 +349,11 @@ export class BaseRepoTransBlockSchemaToChangeDuo
 	implements IBaseRepoTransBlockSchemaToChangeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(3)
+		super(8)
 	}
 }
 
@@ -367,11 +367,11 @@ export class BaseRepositoryTransactionBlockDuo
 	implements IBaseRepositoryTransactionBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(4)
+		super(9)
 	}
 }
 
@@ -385,11 +385,11 @@ export class BaseRepositoryTransactionHistoryUpdateStageDuo
 	implements IBaseRepositoryTransactionHistoryUpdateStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(11)
 	}
 	
 	constructor() {
-		super(10)
+		super(11)
 	}
 }
 
@@ -421,11 +421,11 @@ export class BaseSharingMessageRepoTransBlockDuo
 	implements IBaseSharingMessageRepoTransBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(5)
+		super(7)
 	}
 }
 
@@ -439,11 +439,11 @@ export class BaseSharingNodeDuo
 	implements IBaseSharingNodeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(7)
+		super(5)
 	}
 }
 
@@ -457,11 +457,11 @@ export class BaseSharingNodeRepoTransBlockDuo
 	implements IBaseSharingNodeRepoTransBlockDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(2)
+		super(4)
 	}
 }
 
@@ -475,11 +475,11 @@ export class BaseSharingNodeRepoTransBlockStageDuo
 	implements IBaseSharingNodeRepoTransBlockStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(11)
+		return duoDiSet(15)
 	}
 	
 	constructor() {
-		super(11)
+		super(15)
 	}
 }
 
@@ -493,11 +493,11 @@ export class BaseSharingNodeRepositoryDuo
 	implements IBaseSharingNodeRepositoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(12)
+		return duoDiSet(14)
 	}
 	
 	constructor() {
-		super(12)
+		super(14)
 	}
 }
 
@@ -529,11 +529,11 @@ export class BaseSynchronizationConflictDuo
 	implements IBaseSynchronizationConflictDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(15)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(15)
+		super(1)
 	}
 }
 
@@ -547,11 +547,11 @@ export class BaseSynchronizationConflictPendingNotificationDuo
 	implements IBaseSynchronizationConflictPendingNotificationDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(16)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(16)
+		super(2)
 	}
 }
 
@@ -565,10 +565,10 @@ export class BaseSynchronizationConflictValuesDuo
 	implements IBaseSynchronizationConflictValuesDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(14)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(14)
+		super(0)
 	}
 }
