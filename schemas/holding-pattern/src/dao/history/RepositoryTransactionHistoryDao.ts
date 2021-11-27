@@ -76,8 +76,8 @@ export interface IRepositoryTransactionHistoryDao {
 	): Promise<IRepositoryTransactionHistory[]>;
 
 	findExistingRecordIdMap(
-		recordIdMap: Map<Repository_Id,
-			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>
+		recordIdMap: Map<Repository_Id, Map<ActorId, 
+			Map<EntityId, Set<RepositoryEntity_ActorRecordId>>>>
 	): Promise<Map<Repository_Id,
 		Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
 

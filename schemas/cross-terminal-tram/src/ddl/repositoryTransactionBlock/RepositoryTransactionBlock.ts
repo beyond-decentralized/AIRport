@@ -58,19 +58,22 @@ export type RepositoryTransactionBlockHash = string;
  * determine the likelihood of TMs not "excluding" known blocks from their unique chains (and
  * probably used for other purposes as well).
  */
+
+export type RepositoryTransactionBlock_Id = number
+
 @Entity()
 @Table({name: "REPOSITORY_TRANSACTION_BLOCKS"})
 export class RepositoryTransactionBlock {
 
 	@Id()
 	@DbNumber()
-	id: TmRepositoryTransactionBlockId;
+	id: RepositoryTransactionBlock_Id;
 
 	@Column({name: "SOURCE_ID"})
 	@DbNumber()
 	sourceId: TmRepositoryTransactionBlockId;
 
-	// Needed to determine of the block has already been processed
+	// Needed to determine if the block has already been processed
 	hash: RepositoryTransactionBlockHash;
 
 	@ManyToOne()

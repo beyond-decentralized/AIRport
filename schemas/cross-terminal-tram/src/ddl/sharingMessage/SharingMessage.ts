@@ -15,7 +15,7 @@ import {
 	AgtSharingMessageId,
 	TmSharingMessageId
 }                                     from '@airport/arrivals-n-departures'
-import {DataOrigin}                   from '../..'
+import {DataOrigin}                   from '../values/DataOrigin'
 import {SharingNode}                  from '../sharingNode/SharingNode'
 import {SharingMessageRepoTransBlock} from './SharingMessageRepoTransBlock'
 

@@ -1,0 +1,4 @@
+export enum SchemaChangeStatus {
+	CHANGE_NEEDED = 'CHANGE_NEEDED',
+	CHANGE_COMPLETED = 'CHANGE_COMPLETED'
+}
