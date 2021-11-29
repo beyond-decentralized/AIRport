@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { SchemaVersionGraph, SchemaVersionEOptionalId, SchemaVersionESelect, QSchemaVersionQRelation, SchemaEntityGraph, SchemaEntityEOptionalId, SchemaEntityESelect, QSchemaEntityQRelation } from '@airport/traffic-pattern';
-import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '@airport/holding-pattern';
+import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation, RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryEOptionalId, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistoryQRelation } from '@airport/holding-pattern';
 import { MissingRecord } from '../../ddl/missingRecord/MissingRecord';
 /**
  * SELECT - All fields and relations (optional).
@@ -12,6 +12,7 @@ export interface MissingRecordESelect extends IEntitySelectProperties, MissingRe
     entity?: SchemaEntityESelect;
     repository?: RepositoryESelect;
     actor?: ActorESelect;
+    repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -35,6 +36,7 @@ export interface MissingRecordEUpdateProperties extends IEntityUpdateProperties 
     entity?: SchemaEntityEOptionalId;
     repository?: RepositoryEOptionalId;
     actor?: ActorEOptionalId;
+    repositoryTransactionHistory?: RepositoryTransactionHistoryEOptionalId;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
@@ -46,6 +48,7 @@ export interface MissingRecordGraph extends MissingRecordEOptionalId, IEntityCas
     entity?: SchemaEntityGraph;
     repository?: RepositoryGraph;
     actor?: ActorGraph;
+    repositoryTransactionHistory?: RepositoryTransactionHistoryGraph;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -57,6 +60,7 @@ export interface MissingRecordEUpdateColumns extends IEntityUpdateColumns {
     SCHEMA_ENTITY_ID?: number | IQNumberField;
     REPOSITORY_ID?: number | IQNumberField;
     ACTOR_ID?: number | IQNumberField;
+    REPOSITORY_TRANSACTION_HISTORY_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -79,6 +83,7 @@ export interface QMissingRecord extends IQEntity<MissingRecord> {
     entity: QSchemaEntityQRelation;
     repository: QRepositoryQRelation;
     actor: QActorQRelation;
+    repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
 }
 export interface QMissingRecordQId {
     id: IQNumberField;

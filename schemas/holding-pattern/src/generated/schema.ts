@@ -1394,7 +1394,7 @@ export const SCHEMA = {
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID",
+							"name": "BLOCK_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1406,6 +1406,20 @@ export const SCHEMA = {
 						},
 						{
 							"index": 4,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "SYNCED",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 8
+								}
+							],
+							"sinceVersion": 1,
+							"type": "BOOLEAN"
+						},
+						{
+							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -1428,7 +1442,7 @@ export const SCHEMA = {
 							"type": "NUMBER"
 						},
 						{
-							"index": 5,
+							"index": 6,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -1451,7 +1465,7 @@ export const SCHEMA = {
 							"type": "NUMBER"
 						},
 						{
-							"index": 6,
+							"index": 7,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -1556,7 +1570,16 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
+							"columnRef": {
+								"index": 4
+							},
 							"index": 8,
+							"isId": false,
+							"name": "synced",
+							"sinceVersion": 1
+						},
+						{
+							"index": 9,
 							"isId": false,
 							"name": "operationHistory",
 							"relationRef": {
@@ -1617,7 +1640,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 8
+								"index": 9
 							},
 							"relationTableIndex": 9,
 							"sinceVersion": 1

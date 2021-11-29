@@ -12,7 +12,7 @@ export interface IRepositoryTransactionHistoryDao {
     findWhereIdsIn(idsInClause: RepositoryTransactionHistoryId[] | RawFieldQuery<IQNumberField> | {
         (...args: any[]): RawFieldQuery<IQNumberField>;
     }): Promise<IRepositoryTransactionHistory[]>;
-    findExistingRecordIdMap(recordIdMap: Map<Repository_Id, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>): Promise<Map<Repository_Id, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
+    findExistingRecordIdMap(recordIdMap: Map<Repository_Id, Map<ActorId, Map<EntityId, Set<RepositoryEntity_ActorRecordId>>>>): Promise<Map<Repository_Id, Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
     findAllLocalChangesForRecordIds(changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
     setBlockIdWhereId(getSetClause: {
         (id: IQNumberField): IQOrderableField<IQNumberField>;

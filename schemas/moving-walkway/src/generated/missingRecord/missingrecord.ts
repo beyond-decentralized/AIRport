@@ -5,6 +5,7 @@ import {
 import {
 	IRepository,
 	IActor,
+	IRepositoryTransactionHistory,
 } from '@airport/holding-pattern';
 
 
@@ -29,6 +30,7 @@ export interface IMissingRecord {
 	entity?: ISchemaEntity;
 	repository?: IRepository;
 	actor?: IActor;
+	repositoryTransactionHistory?: IRepositoryTransactionHistory;
 
 	// Transient Properties
 

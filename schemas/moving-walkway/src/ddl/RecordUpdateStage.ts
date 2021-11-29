@@ -5,7 +5,6 @@ import {
 	GeneratedValue,
 	Id,
 	JoinColumn,
-	JoinColumns,
 	ManyToOne,
 	Table
 } from '@airport/air-control'

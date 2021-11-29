@@ -4,6 +4,20 @@ import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet, Trans
 import { OPER_HISTORY_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DAO, } from '../../tokens';
 import { BaseRepositoryTransactionHistoryDao, Q } from '../../generated/generated';
 export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
+    /*
+    async clearContentsWhereIdsIn(
+        repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[]
+    ): Promise<void> {
+        const rtb: QRepositoryTransactionBlock = Q.QRepositoryTransactionBlock
+        await this.db.updateWhere({
+            update: rtb,
+            set: {
+                contents: null
+            },
+            where: rtb.id.in(repositoryTransactionBlockIds)
+        })
+    }
+    */
     getSelectClauseWithRecordHistory(operHistoryDuo, recHistoryDuo) {
         const id = Y;
         return {

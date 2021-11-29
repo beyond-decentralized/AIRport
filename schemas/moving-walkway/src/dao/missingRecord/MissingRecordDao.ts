@@ -1,5 +1,7 @@
 import {
 	and,
+	distinct,
+	not,
 	or
 } from '@airport/air-control'
 import { AIRPORT_DATABASE } from '@airport/air-control'
@@ -11,24 +13,32 @@ import {
 } from '@airport/ground-control'
 import {
 	ActorId,
+	QRepositoryTransactionHistory,
 	RepositoryEntity_ActorRecordId,
-	Repository_Id
+	Repository_Id,
+	Q as HPQ,
+	IRepositoryTransactionHistory
 } from '@airport/holding-pattern'
 import { ISchemaVersion } from '@airport/traffic-pattern'
 import {
 	MissingRecordId,
 	MissingRecordStatus,
 } from '../../ddl/ddl'
-import { MISSING_RECORD_DAO } from '../../tokens'
 import {
 	BaseMissingRecordDao,
 	IBaseMissingRecordDao,
 	Q,
 	QMissingRecord
 } from '../../generated/generated'
+import { MISSING_RECORD_DAO } from '../../tokens'
 
 export interface IMissingRecordDao
 	extends IBaseMissingRecordDao {
+
+	findWithMissingRecordIdsAndNoMissingRecordsWithStatus(
+		missingRecordIds: MissingRecordId[],
+		status: MissingRecordStatus
+	): Promise<IRepositoryTransactionHistory[]>
 
 	setStatusWhereIdsInAndReturnIds(
 		recordIdMap: Map<Repository_Id, Map<SchemaVersionId,
@@ -50,6 +60,26 @@ export interface IMissingRecordDao
 export class MissingRecordDao
 	extends BaseMissingRecordDao
 	implements IMissingRecordDao {
+
+	async findWithMissingRecordIdsAndNoMissingRecordsWithStatus(
+		missingRecordIds: MissingRecordId[],
+		status: MissingRecordStatus
+	): Promise<IRepositoryTransactionHistory[]> {
+		let rth: QRepositoryTransactionHistory,
+			mr: QMissingRecord
+		return await this.db.find.tree({
+			select: distinct({}),
+			from: [
+				rth = HPQ.RepositoryTransactionHistory,
+				mr = rth.innerJoin(Q.MissingRecord).on(qmr => qmr
+					.repositoryTransactionHistory.id.equals(rth.id))
+			],
+			where: and(
+				mr.id.in(missingRecordIds),
+				not(mr.status.equals(status))
+			)
+		})
+	}
 
 	async setStatusWhereIdsInAndReturnIds(
 		recordIdMap: Map<Repository_Id, Map<SchemaVersionId,

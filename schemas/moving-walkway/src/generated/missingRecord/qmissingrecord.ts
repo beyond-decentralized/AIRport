@@ -60,6 +60,15 @@ import {
 	QActorQId,
 	QActorQRelation,
 	Actor,
+	RepositoryTransactionHistoryGraph,
+	RepositoryTransactionHistoryEId,
+	RepositoryTransactionHistoryEOptionalId,
+	RepositoryTransactionHistoryEUpdateProperties,
+	RepositoryTransactionHistoryESelect,
+	QRepositoryTransactionHistory,
+	QRepositoryTransactionHistoryQId,
+	QRepositoryTransactionHistoryQRelation,
+	RepositoryTransactionHistory,
 } from '@airport/holding-pattern';
 import {
 	MissingRecord,
@@ -89,6 +98,7 @@ export interface MissingRecordESelect
 	entity?: SchemaEntityESelect;
 	repository?: RepositoryESelect;
 	actor?: ActorESelect;
+	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 
 }
 
@@ -129,6 +139,7 @@ export interface MissingRecordEUpdateProperties
 	entity?: SchemaEntityEOptionalId;
 	repository?: RepositoryEOptionalId;
 	actor?: ActorEOptionalId;
+	repositoryTransactionHistory?: RepositoryTransactionHistoryEOptionalId;
 
 }
 
@@ -148,6 +159,7 @@ export interface MissingRecordGraph
 	entity?: SchemaEntityGraph;
 	repository?: RepositoryGraph;
 	actor?: ActorGraph;
+	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph;
 
 }
 
@@ -163,6 +175,7 @@ export interface MissingRecordEUpdateColumns
 	SCHEMA_ENTITY_ID?: number | IQNumberField;
 	REPOSITORY_ID?: number | IQNumberField;
 	ACTOR_ID?: number | IQNumberField;
+	REPOSITORY_TRANSACTION_HISTORY_ID?: number | IQNumberField;
 
 }
 
@@ -206,6 +219,7 @@ export interface QMissingRecord extends IQEntity<MissingRecord>
 	entity: QSchemaEntityQRelation;
 	repository: QRepositoryQRelation;
 	actor: QActorQRelation;
+	repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
 
 }
 

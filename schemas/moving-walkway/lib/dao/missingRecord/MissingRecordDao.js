@@ -1,9 +1,22 @@
-import { and, or } from '@airport/air-control';
+import { and, distinct, not, or } from '@airport/air-control';
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { MISSING_RECORD_DAO } from '../../tokens';
+import { Q as HPQ } from '@airport/holding-pattern';
 import { BaseMissingRecordDao, Q } from '../../generated/generated';
+import { MISSING_RECORD_DAO } from '../../tokens';
 export class MissingRecordDao extends BaseMissingRecordDao {
+    async findWithMissingRecordIdsAndNoMissingRecordsWithStatus(missingRecordIds, status) {
+        let rth, mr;
+        return await this.db.find.tree({
+            select: distinct({}),
+            from: [
+                rth = HPQ.RepositoryTransactionHistory,
+                mr = rth.innerJoin(Q.MissingRecord).on(qmr => qmr
+                    .repositoryTransactionHistory.id.equals(rth.id))
+            ],
+            where: and(mr.id.in(missingRecordIds), not(mr.status.equals(status)))
+        });
+    }
     async setStatusWhereIdsInAndReturnIds(recordIdMap, status) {
         const ids = await this.findActualIdsByRecordIds(recordIdMap);
         if (!ids.length) {

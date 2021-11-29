@@ -31,6 +31,7 @@ export interface IRepositoryTransactionHistory {
 	saveTimestamp?: Date;
 	repositoryTransactionType?: string;
 	blockId?: number;
+	synced?: boolean;
 
 	// Non-Id Relations
 	transactionHistory?: ITransactionHistory;

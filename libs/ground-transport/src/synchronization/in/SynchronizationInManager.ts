@@ -13,17 +13,11 @@ import {
 }                                 from '@airport/di'
 import {
 	DataOrigin,
-	ISharingMessage,
-	ISharingNode,
-	ISharingNodeTerminal,
-	RepositoryTransactionBlockData,
-	SHARING_MESSAGE_DAO,
-	SharingNodeId
+	RepositoryTransactionBlockData
 }                                 from '@airport/moving-walkway'
 import {transactional}            from '@airport/tower'
 import {parse}                    from 'zipson/lib'
 import {
-	SYNC_IN_CHECKER,
 	SYNC_IN_MANAGER,
 	SYNC_LOG_MESSAGE_PROCESSOR,
 	TWO_STAGE_SYNCED_IN_DATA_PROCESSOR
@@ -35,11 +29,7 @@ import {IDataToTM}                from './SyncInUtils'
  * Synchronization Log part of the Message from AGT to Terminal (TM)
  */
 export interface ISyncLogToTM {
-	// agtTerminalSyncLogId: AgtTerminalSyncLogId;
 	outcomes: RepoTransBlockSyncStatus[];
-	sharingNode: ISharingNode;
-	// syncDatetime: AgtSyncRecordAddDatetime;
-	tmSharingMessageId: TmSharingMessageId;
 }
 
 /**
@@ -48,16 +38,9 @@ export interface ISyncLogToTM {
 export interface ISynchronizationInManager {
 
 	receiveMessages(
-		sharingNodes: ISharingNode[],
 		incomingMessages: BatchedMessagesToTM[],
-		sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>
 	): Promise<void>;
 
-}
-
-export interface ISharingMessageWithData {
-	sharingMessage: ISharingMessage;
-	dataMessage: IDataToTM;
 }
 
 export type LastRemoteChangeMillis = number;
@@ -71,25 +54,18 @@ export class SynchronizationInManager
 	implements ISynchronizationInManager {
 
 	/**
-	 * ASSUMPTION: all of the messages are intended for this TM.
-	 *
-	 * @param {ISharingNode[]} sharingNodes   All of the sharing associated with incoming
-	 *   messages
-	 *      (in same order as messages)
 	 * @param {MessageToTM[][]} incomingMessages    All of the incoming messages, grouped
 	 *   into arrays by sharing node
 	 * @returns {Promise<void>}   Return when all of the messages have been processed
 	 */
 	async receiveMessages(
-		sharingNodes: ISharingNode[],
 		incomingMessages: BatchedMessagesToTM[],
-		sharingNodeTerminalMap: Map<SharingNodeId, ISharingNodeTerminal>
 	): Promise<void> {
 		// TODO: is syncInChecker needed (what was the reason for original injection)?
-		const [sharingMessageDao, syncInChecker,
+		const [sharingMessageDao,
 			      syncLogMessageProcessor, twoStageSyncedInDataProcessor
 		      ] = await container(this)
-			.get(SHARING_MESSAGE_DAO, SYNC_IN_CHECKER,
+			.get(SHARING_MESSAGE_DAO,
 				SYNC_LOG_MESSAGE_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
 
 		const syncTimestamp                      = new Date()

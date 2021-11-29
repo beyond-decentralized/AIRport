@@ -1,5 +1,5 @@
 import { ISchemaVersion, ISchemaEntity } from '@airport/traffic-pattern';
-import { IRepository, IActor } from '@airport/holding-pattern';
+import { IRepository, IActor, IRepositoryTransactionHistory } from '@airport/holding-pattern';
 export interface IMissingRecord {
     id: number;
     actorRecordId?: number;
@@ -8,5 +8,6 @@ export interface IMissingRecord {
     entity?: ISchemaEntity;
     repository?: IRepository;
     actor?: IActor;
+    repositoryTransactionHistory?: IRepositoryTransactionHistory;
 }
 //# sourceMappingURL=missingrecord.d.ts.map

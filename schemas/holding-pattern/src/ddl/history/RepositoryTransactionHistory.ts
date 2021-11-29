@@ -26,6 +26,7 @@ export type RepositoryTransactionHistoryId = number;
 export type RepositoryTransactionHistoryRemoteId = number;
 export type RepositoryTransactionHistorySaveTimestamp = Date;
 export type RepositoryTransactionHistoryBlockId = number;
+export type RepositoryTransactionHistoryBlock_Synced = boolean;
 
 @Entity()
 @Table({name: 'REPOSITORY_TRANSACTION_HISTORY'})
@@ -68,9 +69,14 @@ export class RepositoryTransactionHistory {
 	repositoryTransactionType: RepositoryTransactionType = RepositoryTransactionType.LOCAL
 
 	@Column({
-		name: 'REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID'
+		name: 'BLOCK_ID'
 	})
 	blockId: RepositoryTransactionHistoryBlockId
+
+	@Column({
+		name: 'SYNCED'
+	})
+	synced: RepositoryTransactionHistoryBlock_Synced
 
 	@OneToMany({mappedBy: 'repositoryTransactionHistory'})
 	operationHistory: OperationHistory[] = []

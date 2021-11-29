@@ -38,6 +38,13 @@ __decorate([
 __decorate([
     DbString()
 ], MissingRecord.prototype, "status", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({
+        name: "REPOSITORY_TRANSACTION_HISTORY_ID",
+        referencedColumnName: "ID"
+    })
+], MissingRecord.prototype, "repositoryTransactionHistory", void 0);
 MissingRecord = __decorate([
     Entity(),
     Table({ name: "MISSING_RECORDS" })

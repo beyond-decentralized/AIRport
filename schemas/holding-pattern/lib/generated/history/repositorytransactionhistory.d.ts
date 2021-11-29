@@ -8,6 +8,7 @@ export interface IRepositoryTransactionHistory {
     saveTimestamp?: Date;
     repositoryTransactionType?: string;
     blockId?: number;
+    synced?: boolean;
     transactionHistory?: ITransactionHistory;
     repository?: IRepository;
     changedRepositoryActors?: IRepoTransHistoryChangedRepositoryActor[];

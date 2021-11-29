@@ -59,9 +59,14 @@ __decorate([
 ], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
 __decorate([
     Column({
-        name: 'REPOSITORY_TRANSACTION_HISTORY_BLOCK_ID'
+        name: 'BLOCK_ID'
     })
 ], RepositoryTransactionHistory.prototype, "blockId", void 0);
+__decorate([
+    Column({
+        name: 'SYNCED'
+    })
+], RepositoryTransactionHistory.prototype, "synced", void 0);
 __decorate([
     OneToMany({ mappedBy: 'repositoryTransactionHistory' })
 ], RepositoryTransactionHistory.prototype, "operationHistory", void 0);

@@ -1,1 +1,0 @@
-{"version":3,"file":"sharingnoderepotransblock.d.ts","sourceRoot":"","sources":["../../../src/generated/sharingNode/sharingnoderepotransblock.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,YAAY,EACZ,MAAM,eAAe,CAAC;AACvB,OAAO,EACN,2BAA2B,EAC3B,MAAM,0DAA0D,CAAC;AAQlE,MAAM,WAAW,0BAA0B;IAK1C,WAAW,EAAE,YAAY,CAAC;IAC1B,0BAA0B,EAAE,2BAA2B,CAAC;IAGxD,UAAU,CAAC,EAAE,MAAM,CAAC;CAQpB"}

@@ -11,6 +11,7 @@ export declare type RepositoryTransactionHistoryId = number;
 export declare type RepositoryTransactionHistoryRemoteId = number;
 export declare type RepositoryTransactionHistorySaveTimestamp = Date;
 export declare type RepositoryTransactionHistoryBlockId = number;
+export declare type RepositoryTransactionHistoryBlock_Synced = boolean;
 export declare class RepositoryTransactionHistory {
     id: RepositoryTransactionHistoryId;
     transactionHistory: TransactionHistory;
@@ -20,6 +21,7 @@ export declare class RepositoryTransactionHistory {
     saveTimestamp: RepositoryTransactionHistorySaveTimestamp;
     repositoryTransactionType: RepositoryTransactionType;
     blockId: RepositoryTransactionHistoryBlockId;
+    synced: RepositoryTransactionHistoryBlock_Synced;
     operationHistory: OperationHistory[];
     constructor(data?: RepositoryTransactionHistory);
 }

@@ -108,6 +108,20 @@ export interface IChangedRecordIdsForRepository {
 export class RepositoryTransactionHistoryDao
 	extends BaseRepositoryTransactionHistoryDao
 	implements IRepositoryTransactionHistoryDao {
+	/*
+	async clearContentsWhereIdsIn(
+		repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[]
+	): Promise<void> {
+		const rtb: QRepositoryTransactionBlock = Q.QRepositoryTransactionBlock
+		await this.db.updateWhere({
+			update: rtb,
+			set: {
+				contents: null
+			},
+			where: rtb.id.in(repositoryTransactionBlockIds)
+		})
+	}
+	*/
 
 	getSelectClauseWithRecordHistory(
 		operHistoryDuo: IOperationHistoryDuo,

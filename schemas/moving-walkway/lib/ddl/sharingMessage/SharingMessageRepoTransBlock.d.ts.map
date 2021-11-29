@@ -1,1 +1,0 @@
-{"version":3,"file":"SharingMessageRepoTransBlock.d.ts","sourceRoot":"","sources":["../../../src/ddl/sharingMessage/SharingMessageRepoTransBlock.ts"],"names":[],"mappings":"AAOA,OAAO,EAAC,0BAA0B,EAAC,MAAM,0DAA0D,CAAC;AACpG,OAAO,EAAC,cAAc,EAAC,MAAkB,kBAAkB,CAAC;AAE5D;;GAEG;AACH,qBAEa,4BAA4B;IAOxC,cAAc,EAAE,cAAc,CAAC;IAO/B,0BAA0B,EAAE,0BAA0B,CAAC;CAEvD"}
