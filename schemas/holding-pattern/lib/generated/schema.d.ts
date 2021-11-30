@@ -28,6 +28,24 @@ export declare const SCHEMA: {
                     manyRelationIndex: number;
                     oneSchemaIndex: any;
                     oneTableIndex: number;
+                    oneColumnIndex: number;
+                    sinceVersion: number;
+                }[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: string;
+                allocationSize?: undefined;
+            } | {
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: {
+                    manyRelationIndex: number;
+                    oneSchemaIndex: any;
+                    oneTableIndex: number;
                     oneRelationIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;

@@ -6,13 +6,13 @@ import {
 	IUserDao,
 	USER_DAO,
 	UserId,
-	User_PrivateId
+	User_UuId
 }                                       from '@airport/travel-document-checkpoint'
 import {SYNC_IN_USER_CHECKER}           from '../../../tokens'
 import {IDataToTM}                      from '../SyncInUtils'
 
 export interface UserCheckResults {
-	map: Map<User_PrivateId, IUser>;
+	map: Map<User_UuId, IUser>;
 	mapById: Map<UserId, IUser>;
 	mapByMessageIndexAndRemoteUserId: Map<UserId, IUser>[];
 	consistentMessages: IDataToTM[];
@@ -35,7 +35,7 @@ export class SyncInUserChecker
 	): Promise<UserCheckResults> {
 		const userDao = await container(this).get(USER_DAO)
 
-		const remoteUserMapByUniqueId: Map<User_PrivateId, IUser>      = new Map()
+		const remoteUserMapByUniqueId: Map<User_UuId, IUser>      = new Map()
 		const mapById: Map<UserId, IUser>                            = new Map()
 		const mapByMessageIndexAndRemoteUserId: Map<UserId, IUser>[] = []
 
@@ -96,7 +96,7 @@ export class SyncInUserChecker
 
 	private gatherUserUniqueIds(
 		data: RepositoryTransactionBlockData,
-		remoteUserMapByUniqueId: Map<User_PrivateId, IUser>
+		remoteUserMapByUniqueId: Map<User_UuId, IUser>
 	): Map<UserId, IUser> {
 		const mapForMessageByRemoteUserId: Map<UserId, IUser> = new Map()
 		for (const remoteUser of data.users) {
@@ -110,8 +110,8 @@ export class SyncInUserChecker
 	}
 
 	private async addMissingUsers(
-		remoteUserMapByUniqueId: Map<User_PrivateId, IUser>,
-		userMap: Map<User_PrivateId, IUser>,
+		remoteUserMapByUniqueId: Map<User_UuId, IUser>,
+		userMap: Map<User_UuId, IUser>,
 		userMapById: Map<UserId, IUser>,
 		userDao: IUserDao
 	): Promise<void> {

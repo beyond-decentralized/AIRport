@@ -35,13 +35,9 @@ export class UserApi {
         email: string,
     ): Promise<IAddUserResponse> {
         const userDao = await container(this).get(USER_DAO)
-        const existingUsers = await userDao.findByEmailsOrUserNames([email], [username])
+        const existingUsers = await userDao.findByUserNames([username])
         for (const existingUser of existingUsers) {
-            if (existingUser.email === email) {
-                return {
-                    errorCode: AddUserErrorCodes.EMAIL_TAKEN
-                }
-            } else if (existingUser.username === username) {
+            if (existingUser.username === username) {
                 return {
                     errorCode: AddUserErrorCodes.USERNAME_TAKEN
                 }
@@ -49,9 +45,7 @@ export class UserApi {
         }
         const user: IUser = {
             id: null,
-            email,
-            privateId: uuidv4(),
-            publicId: uuidv4(),
+            uuId: uuidv4(),
             username
         }
         await userDao.save(user)
@@ -66,7 +60,7 @@ export class UserApi {
         privateId: string
     ): Promise<IUser> {
         const userDao = await container(this).get(USER_DAO)
-        const users = await userDao.findByPrivateIds([privateId])
+        const users = await userDao.findByUuIds([privateId])
 
         if (users.length) {
             return users[0]

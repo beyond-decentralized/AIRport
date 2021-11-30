@@ -56,7 +56,7 @@ export class RepositoryTransactionHistoryDuo
 	): IRepositoryTransactionHistory {
 		let transaction: IRepositoryTransactionHistory = new RepositoryTransactionHistory()
 
-		let saveTimestamp = new Date()
+		let saveTimestamp = new Date().getTime()
 
 		transaction.saveTimestamp = saveTimestamp
 		transaction.repository    = new Repository()
@@ -86,7 +86,7 @@ export class RepositoryTransactionHistoryDuo
 			repoTransHistory2: IRepositoryTransactionHistory
 		) => {
 			const saveTimeComparison
-				      = this.compareDates(repoTransHistory1.saveTimestamp, repoTransHistory2.saveTimestamp)
+				      = this.compareNumbers(repoTransHistory1.saveTimestamp, repoTransHistory2.saveTimestamp)
 			if (saveTimeComparison) {
 				return saveTimeComparison
 			}
@@ -94,7 +94,7 @@ export class RepositoryTransactionHistoryDuo
 			const actor1 = actorMapById.get(repoTransHistory1.actor.id)
 			const actor2 = actorMapById.get(repoTransHistory2.actor.id)
 
-			const userIdComparison = actor1.user.privateId.localeCompare(actor2.user.privateId)
+			const userIdComparison = actor1.user.uuId.localeCompare(actor2.user.uuId)
 			if (userIdComparison) {
 				return userIdComparison
 			}
@@ -105,7 +105,7 @@ export class RepositoryTransactionHistoryDuo
 			}
 
 			const databaseOwnerComparison
-				      = actor1.terminal.owner.privateId.localeCompare(actor2.terminal.owner.privateId)
+				      = actor1.terminal.owner.uuId.localeCompare(actor2.terminal.owner.uuId)
 			if (databaseOwnerComparison) {
 				return databaseOwnerComparison
 			}

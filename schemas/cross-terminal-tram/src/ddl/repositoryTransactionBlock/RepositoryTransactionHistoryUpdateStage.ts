@@ -6,8 +6,8 @@ import {
 	Table
 } from '@airport/air-control'
 import {
-	RepositoryTransactionHistoryBlockId,
-	RepositoryTransactionHistoryId
+	RepositoryTransactionHistory_BlockId,
+	RepositoryTransactionHistory_Id
 } from "@airport/holding-pattern";
 
 @Entity()
@@ -17,10 +17,10 @@ export class RepositoryTransactionHistoryUpdateStage {
 	@Id()
 	@Column({name: "REPOSITORY_TRANSACTION_HISTORY_ID"})
 	@DbNumber()
-	repositoryTransactionHistoryId: RepositoryTransactionHistoryId;
+	repositoryTransactionHistoryId: RepositoryTransactionHistory_Id;
 
 	@Column({name: "BLOCK_ID"})
 	@DbNumber()
-	blockId: RepositoryTransactionHistoryBlockId;
+	blockId: RepositoryTransactionHistory_BlockId;
 
 }

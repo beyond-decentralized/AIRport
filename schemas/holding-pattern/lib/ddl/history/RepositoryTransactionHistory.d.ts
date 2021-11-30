@@ -7,21 +7,19 @@ import { TransactionHistory } from './TransactionHistory';
 /**
  * Created by Papa on 9/15/2016.
  */
-export declare type RepositoryTransactionHistoryId = number;
-export declare type RepositoryTransactionHistoryRemoteId = number;
-export declare type RepositoryTransactionHistorySaveTimestamp = Date;
-export declare type RepositoryTransactionHistoryBlockId = number;
-export declare type RepositoryTransactionHistoryBlock_Synced = boolean;
+export declare type RepositoryTransactionHistory_Id = number;
+export declare type RepositoryTransactionHistory_SaveTimestamp = number;
+export declare type RepositoryTransactionHistory_BlockId = number;
+export declare type RepositoryTransactionHistory_Synced = boolean;
 export declare class RepositoryTransactionHistory {
-    id: RepositoryTransactionHistoryId;
+    id: RepositoryTransactionHistory_Id;
     transactionHistory: TransactionHistory;
     repository: Repository;
     changedRepositoryActors: RepoTransHistoryChangedRepositoryActor[];
     actor: Actor;
-    saveTimestamp: RepositoryTransactionHistorySaveTimestamp;
+    saveTimestamp: RepositoryTransactionHistory_SaveTimestamp;
     repositoryTransactionType: RepositoryTransactionType;
-    blockId: RepositoryTransactionHistoryBlockId;
-    synced: RepositoryTransactionHistoryBlock_Synced;
+    synced: RepositoryTransactionHistory_Synced;
     operationHistory: OperationHistory[];
     constructor(data?: RepositoryTransactionHistory);
 }

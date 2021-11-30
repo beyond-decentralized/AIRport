@@ -101,14 +101,7 @@ export declare const SCHEMA: {
             columns: {
                 index: number;
                 isGenerated: boolean;
-                manyRelationColumnRefs: {
-                    manyRelationIndex: number;
-                    oneSchemaIndex: any;
-                    oneTableIndex: number;
-                    oneRelationIndex: number;
-                    oneColumnIndex: number;
-                    sinceVersion: number;
-                }[];
+                manyRelationColumnRefs: any[];
                 name: string;
                 notNull: boolean;
                 propertyRefs: {
@@ -143,17 +136,7 @@ export declare const SCHEMA: {
                 sinceVersion: number;
                 columnRef?: undefined;
             })[];
-            relations: ({
-                index: number;
-                isId: boolean;
-                relationType: string;
-                propertyRef: {
-                    index: number;
-                };
-                relationTableIndex: number;
-                sinceVersion: number;
-                oneToManyElems?: undefined;
-            } | {
+            relations: {
                 index: number;
                 isId: boolean;
                 oneToManyElems: {
@@ -165,7 +148,7 @@ export declare const SCHEMA: {
                 };
                 relationTableIndex: number;
                 sinceVersion: number;
-            })[];
+            }[];
             sinceVersion: number;
             tableConfig: {
                 columnIndexes: any[];

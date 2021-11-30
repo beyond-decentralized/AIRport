@@ -22,11 +22,10 @@ import {TransactionHistory}                     from './TransactionHistory'
  * Created by Papa on 9/15/2016.
  */
 
-export type RepositoryTransactionHistoryId = number;
-export type RepositoryTransactionHistoryRemoteId = number;
-export type RepositoryTransactionHistorySaveTimestamp = Date;
-export type RepositoryTransactionHistoryBlockId = number;
-export type RepositoryTransactionHistoryBlock_Synced = boolean;
+export type RepositoryTransactionHistory_Id = number;
+export type RepositoryTransactionHistory_SaveTimestamp = number;
+export type RepositoryTransactionHistory_BlockId = number;
+export type RepositoryTransactionHistory_Synced = boolean;
 
 @Entity()
 @Table({name: 'REPOSITORY_TRANSACTION_HISTORY'})
@@ -35,7 +34,7 @@ export class RepositoryTransactionHistory {
 	@GeneratedValue()
 	@Id()
 	@SequenceGenerator({allocationSize: 200})
-	id: RepositoryTransactionHistoryId
+	id: RepositoryTransactionHistory_Id
 
 	@ManyToOne()
 	@JoinColumn({
@@ -62,21 +61,22 @@ export class RepositoryTransactionHistory {
 	actor: Actor
 
 	@Column({name: 'SAVE_TIMESTAMP', nullable: false})
-	saveTimestamp: RepositoryTransactionHistorySaveTimestamp
+	@DbNumber()
+	saveTimestamp: RepositoryTransactionHistory_SaveTimestamp
 
 	@Column({name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false})
 	@DbString()
 	repositoryTransactionType: RepositoryTransactionType = RepositoryTransactionType.LOCAL
 
-	@Column({
-		name: 'BLOCK_ID'
-	})
-	blockId: RepositoryTransactionHistoryBlockId
+	// @Column({
+	// 	name: 'BLOCK_ID'
+	// })
+	// blockId: RepositoryTransactionHistory_BlockId
 
 	@Column({
 		name: 'SYNCED'
 	})
-	synced: RepositoryTransactionHistoryBlock_Synced
+	synced: RepositoryTransactionHistory_Synced
 
 	@OneToMany({mappedBy: 'repositoryTransactionHistory'})
 	operationHistory: OperationHistory[] = []

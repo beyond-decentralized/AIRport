@@ -256,7 +256,7 @@ export const SCHEMA = {
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": null,
 									"oneTableIndex": 4,
-									"oneRelationIndex": 1,
+									"oneRelationIndex": 0,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -424,7 +424,7 @@ export const SCHEMA = {
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": null,
 									"oneTableIndex": 4,
-									"oneRelationIndex": 2,
+									"oneRelationIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -619,7 +619,7 @@ export const SCHEMA = {
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "PRIVATE_ID",
+							"name": "UUID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -633,8 +633,8 @@ export const SCHEMA = {
 							"index": 2,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "PUBLIC_ID",
-							"notNull": true,
+							"name": "USERNAME",
+							"notNull": false,
 							"propertyRefs": [
 								{
 									"index": 2
@@ -642,57 +642,6 @@ export const SCHEMA = {
 							],
 							"sinceVersion": 1,
 							"type": "STRING"
-						},
-						{
-							"index": 3,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "USERNAME",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 3
-								}
-							],
-							"sinceVersion": 1,
-							"type": "STRING"
-						},
-						{
-							"index": 4,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "EMAIL",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 4
-								}
-							],
-							"sinceVersion": 1,
-							"type": "STRING"
-						},
-						{
-							"index": 5,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
-									"oneTableIndex": 1,
-									"oneRelationIndex": 1,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "COUNTRY_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 5
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -720,7 +669,7 @@ export const SCHEMA = {
 							},
 							"index": 1,
 							"isId": false,
-							"name": "privateId",
+							"name": "uuId",
 							"sinceVersion": 1
 						},
 						{
@@ -729,51 +678,24 @@ export const SCHEMA = {
 							},
 							"index": 2,
 							"isId": false,
-							"name": "publicId",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 3
-							},
-							"index": 3,
-							"isId": false,
-							"name": "email",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 4
-							},
-							"index": 4,
-							"isId": false,
 							"name": "username",
 							"sinceVersion": 1
 						},
 						{
-							"index": 5,
+							"index": 3,
 							"isId": false,
-							"name": "country",
+							"name": "userTerminal",
 							"relationRef": {
 								"index": 0
 							},
 							"sinceVersion": 1
 						},
 						{
-							"index": 6,
-							"isId": false,
-							"name": "userTerminal",
-							"relationRef": {
-								"index": 1
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 7,
+							"index": 4,
 							"isId": false,
 							"name": "userTerminalAgts",
 							"relationRef": {
-								"index": 2
+								"index": 1
 							},
 							"sinceVersion": 1
 						}
@@ -782,11 +704,14 @@ export const SCHEMA = {
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 5
+							"oneToManyElems": {
+								"mappedBy": "user"
 							},
-							"relationTableIndex": 1,
+							"relationType": "ONE_TO_MANY",
+							"propertyRef": {
+								"index": 3
+							},
+							"relationTableIndex": 2,
 							"sinceVersion": 1
 						},
 						{
@@ -797,20 +722,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 6
-							},
-							"relationTableIndex": 2,
-							"sinceVersion": 1
-						},
-						{
-							"index": 2,
-							"isId": false,
-							"oneToManyElems": {
-								"mappedBy": "user"
-							},
-							"relationType": "ONE_TO_MANY",
-							"propertyRef": {
-								"index": 7
+								"index": 4
 							},
 							"relationTableIndex": 3,
 							"sinceVersion": 1

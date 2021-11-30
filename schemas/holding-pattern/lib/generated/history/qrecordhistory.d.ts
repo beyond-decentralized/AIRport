@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQEntity, IQRelation } from '@airport/air-control';
+import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
 import { OperationHistoryGraph, OperationHistoryEOptionalId, OperationHistoryESelect, QOperationHistoryQRelation } from './qoperationhistory';
 import { RecordHistoryNewValueGraph, RecordHistoryNewValueESelect, QRecordHistoryNewValue } from './qrecordhistorynewvalue';
 import { RecordHistoryNewValue } from '../../ddl/history/RecordHistoryNewValue';
@@ -10,6 +11,7 @@ import { RecordHistory } from '../../ddl/history/RecordHistory';
  */
 export interface RecordHistoryESelect extends IEntitySelectProperties, RecordHistoryEOptionalId {
     actorRecordId?: number | IQNumberField;
+    actor?: ActorESelect;
     operationHistory?: OperationHistoryESelect;
     newValues?: RecordHistoryNewValueESelect;
     oldValues?: RecordHistoryOldValueESelect;
@@ -31,6 +33,7 @@ export interface RecordHistoryEOptionalId {
  */
 export interface RecordHistoryEUpdateProperties extends IEntityUpdateProperties {
     actorRecordId?: number | IQNumberField;
+    actor?: ActorEOptionalId;
     operationHistory?: OperationHistoryEOptionalId;
 }
 /**
@@ -38,6 +41,7 @@ export interface RecordHistoryEUpdateProperties extends IEntityUpdateProperties 
  */
 export interface RecordHistoryGraph extends RecordHistoryEOptionalId, IEntityCascadeGraph {
     actorRecordId?: number | IQNumberField;
+    actor?: ActorGraph;
     operationHistory?: OperationHistoryGraph;
     newValues?: RecordHistoryNewValueGraph[];
     oldValues?: RecordHistoryOldValueGraph[];
@@ -47,6 +51,7 @@ export interface RecordHistoryGraph extends RecordHistoryEOptionalId, IEntityCas
  */
 export interface RecordHistoryEUpdateColumns extends IEntityUpdateColumns {
     ACTOR_RECORD_ID?: number | IQNumberField;
+    ACTOR_ID?: number | IQNumberField;
     REPOSITORY_OPERATION_HISTORY_ID?: number | IQNumberField;
 }
 /**
@@ -65,6 +70,7 @@ export interface RecordHistoryECreateColumns extends RecordHistoryEId, RecordHis
 export interface QRecordHistory extends IQEntity<RecordHistory> {
     id: IQNumberField;
     actorRecordId: IQNumberField;
+    actor: QActorQRelation;
     operationHistory: QOperationHistoryQRelation;
     newValues: IQOneToManyRelation<RecordHistoryNewValue, QRecordHistoryNewValue>;
     oldValues: IQOneToManyRelation<RecordHistoryOldValue, QRecordHistoryOldValue>;

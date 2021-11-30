@@ -5,8 +5,8 @@ import {
 import {container, DI} from '@airport/di'
 import {
 	REPO_TRANS_HISTORY_DAO,
-	RepositoryTransactionHistoryBlockId,
-	RepositoryTransactionHistoryId
+	RepositoryTransactionHistory_BlockId,
+	RepositoryTransactionHistory_Id
 }           from '@airport/holding-pattern'
 import {
 	BaseRepositoryTransactionHistoryUpdateStageDao,
@@ -19,8 +19,8 @@ import {
 import {Q}  from '../../generated/generated'
 
 export type RepositoryTransactionHistoryUpdateStageValues = [
-	RepositoryTransactionHistoryId,
-	RepositoryTransactionHistoryBlockId
+	RepositoryTransactionHistory_Id,
+	RepositoryTransactionHistory_BlockId
 	];
 
 export interface IRepositoryTransactionHistoryUpdateStageDao

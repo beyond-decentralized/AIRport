@@ -22,19 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	CountryGraph,
-	CountryEId,
-	CountryEOptionalId,
-	CountryEUpdateProperties,
-	CountryESelect,
-	QCountry,
-	QCountryQId,
-	QCountryQRelation,
-} from './qcountry';
-import {
-	Country,
-} from '../ddl/Country';
-import {
 	UserTerminalGraph,
 	UserTerminalEId,
 	UserTerminalEOptionalId,
@@ -78,15 +65,12 @@ declare function require(moduleName: string): any;
 export interface UserESelect
     extends IEntitySelectProperties, UserEOptionalId {
 	// Non-Id Properties
-	privateId?: string | IQStringField;
-	publicId?: string | IQStringField;
-	email?: string | IQStringField;
+	uuId?: string | IQStringField;
 	username?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	country?: CountryESelect;
 	userTerminal?: UserTerminalESelect;
 	userTerminalAgts?: UserTerminalAgtESelect;
 
@@ -121,13 +105,10 @@ export interface UserEOptionalId {
 export interface UserEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	privateId?: string | IQStringField;
-	publicId?: string | IQStringField;
-	email?: string | IQStringField;
+	uuId?: string | IQStringField;
 	username?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	country?: CountryEOptionalId;
 
 }
 
@@ -139,13 +120,10 @@ export interface UserGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	privateId?: string | IQStringField;
-	publicId?: string | IQStringField;
-	email?: string | IQStringField;
+	uuId?: string | IQStringField;
 	username?: string | IQStringField;
 
 	// Relations
-	country?: CountryGraph;
 	userTerminal?: UserTerminalGraph[];
 	userTerminalAgts?: UserTerminalAgtGraph[];
 
@@ -157,11 +135,8 @@ export interface UserGraph
 export interface UserEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	PRIVATE_ID?: string | IQStringField;
-	PUBLIC_ID?: string | IQStringField;
+	UUID?: string | IQStringField;
 	USERNAME?: string | IQStringField;
-	EMAIL?: string | IQStringField;
-	COUNTRY_ID?: number | IQNumberField;
 
 }
 
@@ -197,13 +172,10 @@ export interface QUser extends IQEntity<User>
 	// Id Relations
 
 	// Non-Id Fields
-	privateId: IQStringField;
-	publicId: IQStringField;
-	email: IQStringField;
+	uuId: IQStringField;
 	username: IQStringField;
 
 	// Non-Id Relations
-	country: QCountryQRelation;
 	userTerminal: IQOneToManyRelation<UserTerminal, QUserTerminal>;
 	userTerminalAgts: IQOneToManyRelation<UserTerminalAgt, QUserTerminalAgt>;
 

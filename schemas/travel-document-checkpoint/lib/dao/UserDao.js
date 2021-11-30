@@ -1,36 +1,25 @@
 import { DI } from '@airport/di';
 import { USER_DAO } from '../tokens';
 import { BaseUserDao, Q, } from '../generated/generated';
-import { or } from '@airport/air-control';
 export class UserDao extends BaseUserDao {
-    async findByEmailsOrUserNames(emails, usernames) {
+    async findByUserNames(usernames) {
         let u;
         return await this.db.find.tree({
             select: {},
             from: [
                 u = Q.User
             ],
-            where: or(u.email.in(emails), u.username.in(usernames))
+            where: u.username.in(usernames)
         });
     }
-    async findByPrivateIds(privateIds) {
+    async findByUuIds(uuIds) {
         let u;
         return await this.db.find.tree({
             select: {},
             from: [
                 u = Q.User
             ],
-            where: u.privateId.in(privateIds)
-        });
-    }
-    async findByPublicIds(publicIds) {
-        let u;
-        return await this.db.find.tree({
-            select: {},
-            from: [
-                u = Q.User
-            ],
-            where: u.publicId.in(publicIds)
+            where: u.uuId.in(uuIds)
         });
     }
 }

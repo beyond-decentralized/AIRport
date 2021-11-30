@@ -14,7 +14,7 @@ import {
 	IRepository,
 	REPO_TRANS_HISTORY_DAO,
 	Repository_Id,
-	RepositoryTransactionHistoryId
+	RepositoryTransactionHistory_Id
 }                            from '@airport/holding-pattern'
 import {
 	IRepositoryTransactionBlock,
@@ -41,7 +41,7 @@ export interface ISyncOutSerializer {
 		repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<Repository_Id,
 			[IRepository, AgtRepositoryId]>>,
 		repoTransBlockDataByRepoId: Map<Repository_Id, RepositoryTransactionBlockData>,
-		repoTransHistoryIds: Set<RepositoryTransactionHistoryId>,
+		repoTransHistoryIds: Set<RepositoryTransactionHistory_Id>,
 		terminal: ITerminal
 	): Promise<Map<SharingNodeId, MessageFromTM>>;
 
@@ -56,7 +56,7 @@ export class SyncOutSerializer
 		repoMapBySharingNodeAndRepoIds: Map<SharingNodeId, Map<Repository_Id,
 			[IRepository, AgtRepositoryId]>>,
 		repoTransBlockDataByRepoId: Map<Repository_Id, RepositoryTransactionBlockData>,
-		repoTransHistoryIds: Set<RepositoryTransactionHistoryId>,
+		repoTransHistoryIds: Set<RepositoryTransactionHistory_Id>,
 		terminal: ITerminal
 	): Promise<Map<SharingNodeId, MessageFromTM>> {
 		const [repoTransBlockDao,

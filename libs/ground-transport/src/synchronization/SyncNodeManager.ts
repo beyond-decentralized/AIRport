@@ -12,7 +12,7 @@ import {
 }                             from '@airport/moving-walkway'
 import {TERMINAL_STORE}       from '@airport/terminal-map'
 import {
-	SYNC_IN_MANAGER,
+	SYNCHRONIZATION_IN_MANAGER,
 	SYNC_NODE_MANAGER,
 }                             from '../tokens'
 
@@ -51,7 +51,7 @@ export class SyncNodeManager
 			      synchronizationInManager,
 			      terminalStore] = await container(this).get(
 			SYNC_NODE_MANAGER, SHARING_NODE_TERMINAL_DAO,
-			SYNC_IN_MANAGER, TERMINAL_STORE)
+			SYNCHRONIZATION_IN_MANAGER, TERMINAL_STORE)
 		let terminal
 		terminalStore.terminal.subscribe((
 			theTerminal

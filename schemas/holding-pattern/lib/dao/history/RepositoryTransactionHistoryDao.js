@@ -203,15 +203,6 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
         }
         return existingRecordIdMap;
     }
-    async setBlockIdWhereId(getSetClause) {
-        const rth = this.db.from;
-        return await this.db.updateWhere({
-            update: rth,
-            set: {
-                blockId: getSetClause(rth.id)
-            }
-        });
-    }
 }
 DI.set(REPO_TRANS_HISTORY_DAO, RepositoryTransactionHistoryDao);
 //# sourceMappingURL=RepositoryTransactionHistoryDao.js.map

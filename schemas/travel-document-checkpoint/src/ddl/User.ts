@@ -14,10 +14,8 @@ import { UserTerminal } from './UserTerminal'
 import { UserTerminalAgt } from './UserTerminalAgt'
 
 export type UserId = number;
-export type User_PrivateId = string;
-export type User_PublicId = string;
+export type User_UuId = string;
 export type User_Username = string;
-export type User_Email = string;
 
 @Entity()
 export class User {
@@ -27,25 +25,13 @@ export class User {
 	@DbNumber()
 	id: UserId;
 
-	@Column({ name: "PRIVATE_ID", nullable: false })
+	@Column({ name: "UUID", nullable: false })
 	@DbString()
-	privateId: User_PrivateId;
-
-	@Column({ name: "PUBLIC_ID", nullable: false })
-	@DbString()
-	publicId: User_PublicId;
+	uuId: User_UuId;
 
 	@Column({ name: "USERNAME" })
 	@DbString()
-	email: User_Username;
-
-	@Column({ name: "EMAIL" })
-	@DbString()
-	username: User_Email;
-
-	@ManyToOne()
-	@JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID' })
-	country: Country
+	username: User_Username;
 
 	@OneToMany({ mappedBy: 'user' })
 	userTerminal: UserTerminal[]

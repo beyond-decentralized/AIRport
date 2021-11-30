@@ -104,9 +104,8 @@ declare function require(moduleName: string): any;
 export interface RepositoryTransactionHistoryESelect
     extends IEntitySelectProperties, RepositoryTransactionHistoryEOptionalId {
 	// Non-Id Properties
-	saveTimestamp?: Date | IQDateField;
+	saveTimestamp?: number | IQNumberField;
 	repositoryTransactionType?: string | IQStringField;
-	blockId?: number | IQNumberField;
 	synced?: boolean | IQBooleanField;
 
 	// Id Relations - full property interfaces
@@ -149,9 +148,8 @@ export interface RepositoryTransactionHistoryEOptionalId {
 export interface RepositoryTransactionHistoryEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	saveTimestamp?: Date | IQDateField;
+	saveTimestamp?: number | IQNumberField;
 	repositoryTransactionType?: string | IQStringField;
-	blockId?: number | IQNumberField;
 	synced?: boolean | IQBooleanField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -169,9 +167,8 @@ export interface RepositoryTransactionHistoryGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	saveTimestamp?: Date | IQDateField;
+	saveTimestamp?: number | IQNumberField;
 	repositoryTransactionType?: string | IQStringField;
-	blockId?: number | IQNumberField;
 	synced?: boolean | IQBooleanField;
 
 	// Relations
@@ -189,9 +186,8 @@ export interface RepositoryTransactionHistoryGraph
 export interface RepositoryTransactionHistoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	SAVE_TIMESTAMP?: Date | IQDateField;
+	SAVE_TIMESTAMP?: number | IQNumberField;
 	REPOSITORY_TRANSACTION_TYPE?: string | IQStringField;
-	BLOCK_ID?: number | IQNumberField;
 	SYNCED?: boolean | IQBooleanField;
 	TRANSACTION_HISTORY_ID?: number | IQNumberField;
 	REPOSITORY_ID?: number | IQNumberField;
@@ -231,9 +227,8 @@ export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransa
 	// Id Relations
 
 	// Non-Id Fields
-	saveTimestamp: IQDateField;
+	saveTimestamp: IQNumberField;
 	repositoryTransactionType: IQStringField;
-	blockId: IQNumberField;
 	synced: IQBooleanField;
 
 	// Non-Id Relations

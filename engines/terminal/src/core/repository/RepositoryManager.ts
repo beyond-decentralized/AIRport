@@ -47,7 +47,7 @@ export class RepositoryManager
 	repositories: IRepository[] = []
 	repositoriesById: { [repositoryId: string]: IRepository } = {}
 	terminal: ITerminal
-	userEmail: string
+	userUuId: string
 
 	async initialize(): Promise<void> {
 		await this.ensureRepositoryRecords()
@@ -60,7 +60,7 @@ export class RepositoryManager
 		const repositoryDao = await container(this).get(REPOSITORY_DAO)
 
 		return await repositoryDao.findReposWithDetailsByIds(
-			repositoryIds, this.terminal.uuId, this.userEmail)
+			repositoryIds, this.terminal.uuId, this.userUuId)
 	}
 
 	async createRepository(

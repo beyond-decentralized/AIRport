@@ -3,13 +3,15 @@ import { BaseDomainDao, IBaseDomainDao, IDomain } from '../generated/generated';
 export interface IDomainDao extends IBaseDomainDao {
     findByIdIn(domainIds: DomainId[]): Promise<IDomain[]>;
     findMapByNameWithNames(domainNames: DomainName[]): Promise<Map<DomainName, IDomain>>;
-    findByName(domainName: DomainName): Promise<IDomain>;
+    findOneByName(domainName: DomainName): Promise<IDomain>;
+    findByNames(domainNames: DomainName[]): Promise<IDomain[]>;
     checkAndInsertIfNeeded(domains: IDomain[]): Promise<void>;
 }
 export declare class DomainDao extends BaseDomainDao implements IDomainDao {
     findByIdIn(domainIds: DomainId[]): Promise<IDomain[]>;
     findMapByNameWithNames(domainNames: DomainName[]): Promise<Map<DomainName, IDomain>>;
-    findByName(name: DomainName): Promise<IDomain>;
+    findOneByName(name: DomainName): Promise<IDomain>;
+    findByNames(names: DomainName[]): Promise<IDomain[]>;
     checkAndInsertIfNeeded(domains: IDomain[]): Promise<void>;
 }
 //# sourceMappingURL=DomainDao.d.ts.map

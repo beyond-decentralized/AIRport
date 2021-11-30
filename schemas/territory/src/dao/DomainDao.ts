@@ -23,9 +23,13 @@ export interface IDomainDao
 		domainNames: DomainName[]
 	): Promise<Map<DomainName, IDomain>>
 
-	findByName(
+	findOneByName(
 		domainName: DomainName
 	): Promise<IDomain>
+
+	findByNames(
+		domainNames: DomainName[]
+	): Promise<IDomain[]>
 
 	checkAndInsertIfNeeded(
 		domains: IDomain[]
@@ -70,7 +74,7 @@ export class DomainDao
 		return domainMapByNameWithNames
 	}
 
-	async findByName(
+	async findOneByName(
 		name: DomainName
 	): Promise<IDomain> {
 		let d: QDomain
@@ -78,6 +82,17 @@ export class DomainDao
 			select: {},
 			from: [d = Q.Domain],
 			where: d.name.equals(name)
+		})
+	}
+
+	async findByNames(
+		names: DomainName[]
+	): Promise<IDomain[]> {
+		let d: QDomain
+		return await this.db.find.tree({
+			select: {},
+			from: [d = Q.Domain],
+			where: d.name.in(names)
 		})
 	}
 

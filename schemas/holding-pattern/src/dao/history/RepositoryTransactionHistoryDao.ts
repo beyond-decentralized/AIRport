@@ -24,7 +24,7 @@ import {
 	RecordHistoryActorRecordId,
 	RepositoryEntity_ActorRecordId,
 	Repository_Id,
-	RepositoryTransactionHistoryId
+	RepositoryTransactionHistory_Id
 }                             from '../../ddl/ddl'
 import {
 	OPER_HISTORY_DUO,
@@ -68,7 +68,7 @@ export interface IRepositoryTransactionHistoryDao {
 	): Promise<IRepositoryTransactionHistory[]>;
 
 	findWhereIdsIn(
-		idsInClause: RepositoryTransactionHistoryId[]
+		idsInClause: RepositoryTransactionHistory_Id[]
 			| RawFieldQuery<IQNumberField>
 			| {
 			(...args: any[]): RawFieldQuery<IQNumberField>
@@ -83,26 +83,26 @@ export interface IRepositoryTransactionHistoryDao {
 
 	// updateSyncStatusHistory(
 	// 	syncStatus: SyncStatus,
-	// 	repoTransHistoryIds: RepositoryTransactionHistoryId[]
+	// 	repoTransHistoryIds: RepositoryTransactionHistory_Id[]
 	// ): Promise<void>;
 
 	findAllLocalChangesForRecordIds(
 		changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>
 	): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
 
-	setBlockIdWhereId(
-		getSetClause: {
-			(
-				id: IQNumberField
-			): IQOrderableField<IQNumberField>
-		}
-	): Promise<number>
+	// setBlockIdWhereId(
+	// 	getSetClause: {
+	// 		(
+	// 			id: IQNumberField
+	// 		): IQOrderableField<IQNumberField>
+	// 	}
+	// ): Promise<number>
 
 }
 
 export interface IChangedRecordIdsForRepository {
 	ids: Map<EntityId, Map<ActorId, Set<RecordHistoryActorRecordId>>>;
-	firstChangeTime: Date;
+	firstChangeTime: number;
 }
 
 export class RepositoryTransactionHistoryDao
@@ -180,7 +180,7 @@ export class RepositoryTransactionHistoryDao
 	}
 
 	async findWhereIdsIn(
-		idsInClause: RepositoryTransactionHistoryId[]
+		idsInClause: RepositoryTransactionHistory_Id[]
 			| RawFieldQuery<IQNumberField>
 			| {
 			(...args: any[]): RawFieldQuery<IQNumberField>
@@ -230,7 +230,7 @@ export class RepositoryTransactionHistoryDao
 	}
 
 	async findWithActorAndRepositoryWherIdsIn(
-		idsInClause: RepositoryTransactionHistoryId[]
+		idsInClause: RepositoryTransactionHistory_Id[]
 			| RawFieldQuery<IQNumberField>
 			| {
 			(...args: any[]): RawFieldQuery<IQNumberField>
@@ -417,22 +417,22 @@ export class RepositoryTransactionHistoryDao
 		return existingRecordIdMap
 	}
 
-	async setBlockIdWhereId(
-		getSetClause: {
-			(
-				id: IQNumberField
-			): IQNumberField
-		}
-	): Promise<number> {
-		const rth: QRepositoryTransactionHistory = this.db.from
+	// async setBlockIdWhereId(
+	// 	getSetClause: {
+	// 		(
+	// 			id: IQNumberField
+	// 		): IQNumberField
+	// 	}
+	// ): Promise<number> {
+	// 	const rth: QRepositoryTransactionHistory = this.db.from
 
-		return await this.db.updateWhere({
-			update: rth,
-			set: {
-				blockId: getSetClause(rth.id)
-			}
-		})
-	}
+	// 	return await this.db.updateWhere({
+	// 		update: rth,
+	// 		set: {
+	// 			blockId: getSetClause(rth.id)
+	// 		}
+	// 	})
+	// }
 
 }
 

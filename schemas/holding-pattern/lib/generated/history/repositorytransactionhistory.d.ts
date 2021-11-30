@@ -5,9 +5,8 @@ import { IActor } from '../infrastructure/actor';
 import { IOperationHistory } from './operationhistory';
 export interface IRepositoryTransactionHistory {
     id: number;
-    saveTimestamp?: Date;
+    saveTimestamp?: number;
     repositoryTransactionType?: string;
-    blockId?: number;
     synced?: boolean;
     transactionHistory?: ITransactionHistory;
     repository?: IRepository;

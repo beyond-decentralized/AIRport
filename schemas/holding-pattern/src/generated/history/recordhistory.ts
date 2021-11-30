@@ -2,6 +2,9 @@ import {
 	SyncColumnMap,
 } from '@airport/ground-control';
 import {
+	IActor,
+} from '../infrastructure/actor';
+import {
 	IOperationHistory,
 } from './operationhistory';
 import {
@@ -28,6 +31,7 @@ export interface IRecordHistory {
 	actorRecordId?: number;
 
 	// Non-Id Relations
+	actor?: IActor;
 	operationHistory?: IOperationHistory;
 	newValues?: IRecordHistoryNewValue[];
 	oldValues?: IRecordHistoryOldValue[];

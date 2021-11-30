@@ -1,3 +1,4 @@
+import { and, Y } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { SCHEMA_VERSION_DAO } from '../tokens';
 import { BaseSchemaVersionDao, Q } from '../generated/generated';
@@ -32,6 +33,33 @@ export class SchemaVersionDao extends BaseSchemaVersionDao {
             orderBy: [
                 sv.schema.index.asc(),
                 sv.id.desc()
+            ]
+        });
+    }
+    async findByDomainNamesAndSchemaNames(domainNames, schemaNames) {
+        let sv;
+        let s;
+        let d;
+        return await this.db.find.tree({
+            select: {
+                integerVersion: Y,
+                schema: {
+                    domain: {
+                        name: Y
+                    },
+                    name: Y
+                }
+            },
+            from: [
+                sv = Q.SchemaVersion,
+                s = sv.schema.innerJoin(),
+                d = s.domain.innerJoin()
+            ],
+            where: and(d.name.in(domainNames), s.name.in(schemaNames)),
+            orderBy: [
+                d.name.asc(),
+                s.index.asc(),
+                sv.integerVersion.desc()
             ]
         });
     }

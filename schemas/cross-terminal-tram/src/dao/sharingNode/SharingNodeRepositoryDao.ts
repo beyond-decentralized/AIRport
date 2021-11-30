@@ -25,7 +25,7 @@ import {
 	RecordHistoryId,
 	REPO_TRANS_HISTORY_DAO,
 	Repository_Id,
-	RepositoryTransactionHistoryId
+	RepositoryTransactionHistory_Id
 }                                    from '@airport/holding-pattern'
 import {SharingNode_Id}               from '../../ddl/ddl'
 import {SHARING_NODE_REPOSITORY_DAO} from '../../tokens'
@@ -178,7 +178,7 @@ export class SharingNodeRepositoryDao
 			)
 		})
 
-		const repositoryTransactionHistoryIdSet: Set<RepositoryTransactionHistoryId> = new Set()
+		const repositoryTransactionHistoryIdSet: Set<RepositoryTransactionHistory_Id> = new Set()
 		for (const sharingNodeIdWithRepoTransHistoryId of sharingNodeIdsWithRepoTransHistoryIds) {
 			const sharingNodeId: SharingNode_Id = sharingNodeIdWithRepoTransHistoryId[0]
 			const repositoryId: Repository_Id   = sharingNodeIdWithRepoTransHistoryId[1]

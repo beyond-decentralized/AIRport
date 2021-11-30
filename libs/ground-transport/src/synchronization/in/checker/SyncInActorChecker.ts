@@ -2,29 +2,30 @@ import {
 	TerminalId,
 	TerminalName,
 	TerminalSecondId
-}                              from '@airport/arrivals-n-departures'
+} from '@airport/arrivals-n-departures'
 import {
 	container,
 	DI
-}                              from '@airport/di'
-import {ensureChildJsMap}      from '@airport/ground-control'
+} from '@airport/di'
+import { ensureChildJsMap } from '@airport/ground-control'
 import {
 	ACTOR_DAO,
 	ActorId,
 	ActorUuId,
 	IActor
-}                              from '@airport/holding-pattern'
+} from '@airport/holding-pattern'
 import {
 	TERMINAL_DAO,
 	User_PrivateId
-}                              from '@airport/travel-document-checkpoint'
-import {SYNC_IN_ACTOR_CHECKER} from '../../../tokens'
+} from '@airport/travel-document-checkpoint'
+import { SYNC_IN_ACTOR_CHECKER } from '../../../tokens'
+import { MessageToTM } from '../../types'
 import {
 	IDataToTM,
 	RemoteActorId
-}                              from '../SyncInUtils'
-import {TerminalCheckResults}  from './SyncInTerminalChecker'
-import {UserCheckResults}      from './SyncInUserChecker'
+} from '../SyncInUtils'
+import { TerminalCheckResults } from './SyncInTerminalChecker'
+import { UserCheckResults } from './SyncInUserChecker'
 
 export interface ActorCheckResults {
 	actorMap: Map<ActorUuId, Map<User_PrivateId,
@@ -36,14 +37,8 @@ export interface ActorCheckResults {
 
 export interface ISyncInActorChecker {
 
-	ensureActorsAndGetAsMaps(
-		dataMessages: IDataToTM[],
-		actorMap: Map<User_PrivateId, Map<TerminalName,
-			Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>,
-		actorMapById: Map<ActorId, IActor>,
-		userCheckResults: UserCheckResults,
-		terminalCheckResults: TerminalCheckResults,
-		dataMessagesWithInvalidData: IDataToTM[]
+	ensureActor(
+		message: MessageToTM
 	): Promise<ActorCheckResults>;
 
 }
@@ -52,41 +47,37 @@ export class SyncInActorChecker
 	implements ISyncInActorChecker {
 
 	async ensureActorsAndGetAsMaps(
-		dataMessages: IDataToTM[],
+		message: MessageToTM,
 		actorMap: Map<User_PrivateId, Map<TerminalName,
 			Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>,
 		actorMapById: Map<ActorId, IActor>,
-		userCheckResults: UserCheckResults,
-		terminalCheckResults: TerminalCheckResults,
 		dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<ActorCheckResults> {
 		const [actorDao, terminalDao] = await container(this)
 			.get(ACTOR_DAO, TERMINAL_DAO)
 
-		const actorRandomIdSet: Set<ActorUuId>       = new Set()
-		const userUniqueIdsSet: Set<User_PrivateId>        = new Set()
-		const terminalNameSet: Set<TerminalName>         = new Set()
+		const actorRandomIdSet: Set<ActorUuId> = new Set()
+		const userUniqueIdsSet: Set<User_PrivateId> = new Set()
+		const terminalNameSet: Set<TerminalName> = new Set()
 		const terminalSecondIdSet: Set<TerminalSecondId> = new Set()
-		const ownerUniqueIdSet: Set<User_PrivateId>        = new Set()
+		const ownerUniqueIdSet: Set<User_PrivateId> = new Set()
 
 		const consistentMessages: IDataToTM[] = []
 		// split messages by repository and record actor information
-		for (const message of dataMessages) {
-			if (!this.areActorIdsConsistentInMessage(message)) {
-				dataMessagesWithInvalidData.push(message)
-				continue
-			}
-			const data = message.data
-			terminalNameSet.add(data.terminal.name)
-			terminalSecondIdSet.add(data.terminal.secondId)
-			ownerUniqueIdSet.add(data.terminal.owner.privateId)
+		if (!this.areActorIdsConsistentInMessage(message)) {
+			dataMessagesWithInvalidData.push(message)
+			continue
+		}
+		const data = message.data
+		terminalNameSet.add(data.terminal.name)
+		terminalSecondIdSet.add(data.terminal.secondId)
+		ownerUniqueIdSet.add(data.terminal.owner.privateId)
 
-			consistentMessages.push(message)
+		consistentMessages.push(message)
 
-			for (const actor of data.actors) {
-				actorRandomIdSet.add(actor.uuId)
-				userUniqueIdsSet.add(actor.user.privateId)
-			}
+		for (const actor of data.actors) {
+			actorRandomIdSet.add(actor.uuId)
+			userUniqueIdsSet.add(actor.user.privateId)
 		}
 
 		const terminalMapByGlobalIds = await terminalDao.findMapByGlobalIds(
@@ -96,14 +87,12 @@ export class SyncInActorChecker
 		)
 
 		const terminalIdSet: Set<TerminalId> = new Set()
-		for (const message of dataMessages) {
-			const terminal   = message.data.terminal
-			const terminalId = terminalMapByGlobalIds
-				.get(terminal.owner.privateId)
-				.get(terminal.name)
-				.get(terminal.secondId).id
-			terminalIdSet.add(terminalId)
-		}
+		const terminal = message.data.terminal
+		const terminalId = terminalMapByGlobalIds
+			.get(terminal.owner.privateId)
+			.get(terminal.name)
+			.get(terminal.secondId).id
+		terminalIdSet.add(terminalId)
 
 		// NOTE: remote actors should not contain terminal info, it should be populated here
 		// this is because a given RTB is always generated in one and only one terminal
@@ -134,7 +123,7 @@ export class SyncInActorChecker
 	private areActorIdsConsistentInMessage(
 		message: IDataToTM
 	): boolean {
-		const actorIdSet: Set<ActorId>     = new Set()
+		const actorIdSet: Set<ActorId> = new Set()
 		const usedActorIdSet: Set<ActorId> = new Set()
 		for (const actor of message.data.actors) {
 			actorIdSet.add(actor.id)
@@ -168,7 +157,7 @@ export class SyncInActorChecker
 	): void {
 		for (const message of dataMessages) {
 			const messageActorMapByRemoteId: Map<RemoteActorId, IActor> = new Map()
-			const updatedActors: IActor[]                               = []
+			const updatedActors: IActor[] = []
 			for (const actor of message.data.actors) {
 				const localActor: IActor = actorMap
 					.get(actor.uuId)
@@ -179,17 +168,17 @@ export class SyncInActorChecker
 				updatedActors.push(localActor)
 				messageActorMapByRemoteId.set(actor.id, localActor)
 			}
-			const data  = message.data
+			const data = message.data
 			data.actors = updatedActors
 			for (const repoTransHistory of data.repoTransHistories) {
 				const transactionRemoteActorId = repoTransHistory.actor.id
-				const transactionLocalActor    = messageActorMapByRemoteId.get(transactionRemoteActorId)
-				repoTransHistory.actor.id      = transactionLocalActor.id
+				const transactionLocalActor = messageActorMapByRemoteId.get(transactionRemoteActorId)
+				repoTransHistory.actor.id = transactionLocalActor.id
 				for (const operationHistory of repoTransHistory.operationHistory) {
 					for (const recordHistory of operationHistory.recordHistory) {
 						const recordRemoteActorId = recordHistory.actor.id
-						const recordLocalActor    = messageActorMapByRemoteId.get(recordRemoteActorId)
-						recordHistory.actor.id    = recordLocalActor.id
+						const recordLocalActor = messageActorMapByRemoteId.get(recordRemoteActorId)
+						recordHistory.actor.id = recordLocalActor.id
 					}
 				}
 			}
@@ -207,7 +196,7 @@ export class SyncInActorChecker
 		// split messages by repository
 		for (const message of dataMessages) {
 			for (let actor of message.data.actors) {
-				actor                   = {
+				actor = {
 					id: undefined,
 					...actor,
 				}
@@ -230,7 +219,7 @@ export class SyncInActorChecker
 					break
 				}
 				const actorsForTerminalSecondId
-					      = actorsForTerminalName.get(actor.terminal.secondId)
+					= actorsForTerminalName.get(actor.terminal.secondId)
 				if (!actorsForTerminalSecondId) {
 					this.addActorToMap(actor, newActorMap)
 					this.addActorToMap(actor, actorMap)

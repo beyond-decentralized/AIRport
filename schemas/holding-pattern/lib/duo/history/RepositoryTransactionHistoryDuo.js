@@ -5,7 +5,7 @@ import { BaseRepositoryTransactionHistoryDuo, } from '../../generated/generated'
 export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHistoryDuo {
     getNewRecord(repositoryId, actor) {
         let transaction = new RepositoryTransactionHistory();
-        let saveTimestamp = new Date();
+        let saveTimestamp = new Date().getTime();
         transaction.saveTimestamp = saveTimestamp;
         transaction.repository = new Repository();
         transaction.repository.id = repositoryId;
@@ -21,13 +21,13 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
     }
     sortRepoTransHistories(repoTransHistories, actorMapById) {
         repoTransHistories.sort((repoTransHistory1, repoTransHistory2) => {
-            const saveTimeComparison = this.compareDates(repoTransHistory1.saveTimestamp, repoTransHistory2.saveTimestamp);
+            const saveTimeComparison = this.compareNumbers(repoTransHistory1.saveTimestamp, repoTransHistory2.saveTimestamp);
             if (saveTimeComparison) {
                 return saveTimeComparison;
             }
             const actor1 = actorMapById.get(repoTransHistory1.actor.id);
             const actor2 = actorMapById.get(repoTransHistory2.actor.id);
-            const userIdComparison = actor1.user.privateId.localeCompare(actor2.user.privateId);
+            const userIdComparison = actor1.user.uuId.localeCompare(actor2.user.uuId);
             if (userIdComparison) {
                 return userIdComparison;
             }
@@ -35,7 +35,7 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
             if (databaseUuidComparison) {
                 return databaseUuidComparison;
             }
-            const databaseOwnerComparison = actor1.terminal.owner.privateId.localeCompare(actor2.terminal.owner.privateId);
+            const databaseOwnerComparison = actor1.terminal.owner.uuId.localeCompare(actor2.terminal.owner.uuId);
             if (databaseOwnerComparison) {
                 return databaseOwnerComparison;
             }

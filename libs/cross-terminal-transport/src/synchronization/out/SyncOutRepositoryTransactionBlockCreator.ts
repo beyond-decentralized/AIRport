@@ -14,7 +14,7 @@ import {
 	IRepositoryTransactionHistory,
 	REPOSITORY_DAO,
 	RepositoryId,
-	RepositoryTransactionHistoryId
+	RepositoryTransactionHistory_Id
 }                                          from '@airport/holding-pattern'
 import {
 	DataOrigin,
@@ -73,7 +73,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 
 		const schemaVersionIdSetsByRepository: Map<RepositoryId, Set<SchemaVersionId>> = new Map()
 
-		const repositoryTransactionHistoryIds: Set<RepositoryTransactionHistoryId> = new Set()
+		const repositoryTransactionHistoryIds: Set<RepositoryTransactionHistory_Id> = new Set()
 
 		this.gatherIdsForBlockCreation(
 			repoTransHistoriesToSync, repositoryTransactionHistoryIds, repositoryIdSet,
@@ -104,7 +104,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 	 * So, we need all of the versions used by transaction history records. */
 	private gatherIdsForBlockCreation(
 		repoTransHistoriesToSync: IRepositoryTransactionHistory[],
-		repositoryTransactionHistoryIds: Set<RepositoryTransactionHistoryId>,
+		repositoryTransactionHistoryIds: Set<RepositoryTransactionHistory_Id>,
 		repositoryIdSet: Set<RepositoryId>,
 		repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>,
 		schemaVersionIds: Set<SchemaIndex>,

@@ -25,12 +25,20 @@ export class DomainDao extends BaseDomainDao {
         }
         return domainMapByNameWithNames;
     }
-    async findByName(name) {
+    async findOneByName(name) {
         let d;
         return await this.db.findOne.tree({
             select: {},
             from: [d = Q.Domain],
             where: d.name.equals(name)
+        });
+    }
+    async findByNames(names) {
+        let d;
+        return await this.db.find.tree({
+            select: {},
+            from: [d = Q.Domain],
+            where: d.name.in(names)
         });
     }
     async checkAndInsertIfNeeded(domains) {

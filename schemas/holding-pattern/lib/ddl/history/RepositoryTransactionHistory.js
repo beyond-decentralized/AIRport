@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, SequenceGenerator, Table, } from '@airport/air-control';
+import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, SequenceGenerator, Table, } from '@airport/air-control';
 import { RepositoryTransactionType } from './RepositoryTransactionType';
 let RepositoryTransactionHistory = class RepositoryTransactionHistory {
     constructor(data) {
@@ -51,17 +51,13 @@ __decorate([
     })
 ], RepositoryTransactionHistory.prototype, "actor", void 0);
 __decorate([
-    Column({ name: 'SAVE_TIMESTAMP', nullable: false })
+    Column({ name: 'SAVE_TIMESTAMP', nullable: false }),
+    DbNumber()
 ], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
 __decorate([
     Column({ name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false }),
     DbString()
 ], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
-__decorate([
-    Column({
-        name: 'BLOCK_ID'
-    })
-], RepositoryTransactionHistory.prototype, "blockId", void 0);
 __decorate([
     Column({
         name: 'SYNCED'

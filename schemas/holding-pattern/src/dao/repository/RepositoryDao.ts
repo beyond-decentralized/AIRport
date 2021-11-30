@@ -12,9 +12,7 @@ import {
 	QTerminal,
 	QUser,
 	Terminal_UuId,
-	User_Email,
-	User_PrivateId,
-	User_PublicId
+	User_UuId
 } from '@airport/travel-document-checkpoint'
 import {
 	ActorUuId,
@@ -22,7 +20,7 @@ import {
 	Repository_CreatedAt,
 	Repository_Source,
 	Repository_UuId,
-	RepositoryTransactionHistoryId,
+	RepositoryTransactionHistory_Id,
 } from '../../ddl/ddl'
 import { REPOSITORY_DAO } from '../../tokens'
 import {
@@ -47,22 +45,22 @@ export interface IRepositoryDao
 	): Promise<IRepository>
 
 	findReposWithDetailsByIds(
-		repositoryIdsInClause: RepositoryTransactionHistoryId[]
+		repositoryIdsInClause: RepositoryTransactionHistory_Id[]
 			| RawFieldQuery<IQNumberField>
 			| {
 				(...args: any[]): RawFieldQuery<IQNumberField>
 			},
 		uuId: Terminal_UuId,
-		userEmail: User_Email,
+		userUuId: User_UuId,
 	): Promise<MappedEntityArray<IRepository>>;
 
 	findLocalRepoIdsByGlobalIds(
 		createdAts: Repository_CreatedAt[],
 		uuIds: Repository_UuId[],
 		ownerActorRandomIds: ActorUuId[],
-		ownerUserUniqueIds: User_PrivateId[],
+		ownerUserUniqueIds: User_UuId[],
 		ownerTerminalUuids: Terminal_UuId[],
-		ownerTerminalOwnerUserUniqueIds: User_PrivateId[]
+		ownerTerminalOwnerUserUniqueIds: User_UuId[]
 	): Promise<RepositoryIdMap>;
 
 	findReposWithGlobalIds(
@@ -75,8 +73,8 @@ export interface IRepositoryDao
 
 }
 
-export type RepositoryIdMap = Map<User_PrivateId,
-	Map<Terminal_UuId, Map<User_PrivateId,
+export type RepositoryIdMap = Map<User_UuId,
+	Map<Terminal_UuId, Map<User_UuId,
 		Map<ActorUuId, Map<number,
 			Map<Repository_UuId, Repository_Id>>>>>>;
 
@@ -175,13 +173,13 @@ export class RepositoryDao
 	}
 
 	async findReposWithDetailsByIds(
-		repositoryIdsInClause: RepositoryTransactionHistoryId[]
+		repositoryIdsInClause: RepositoryTransactionHistory_Id[]
 			| RawFieldQuery<IQNumberField>
 			| {
 				(...args: any[]): RawFieldQuery<IQNumberField>
 			},
 		uuId: Terminal_UuId,
-		userEmail: User_Email,
+		userUuId: User_UuId,
 	): Promise<MappedEntityArray<IRepository>> {
 		let r: QRepository
 		let ra: QRepositoryActor
@@ -213,7 +211,7 @@ export class RepositoryDao
 			where: and(
 				r.id.in(repositoryIdsInClause),
 				d.uuId.equals(uuId),
-				u.email.equals(userEmail)
+				u.uuId.equals(userUuId)
 			)
 		}
 		)
@@ -236,7 +234,7 @@ export class RepositoryDao
 				ownerActor: {
 					id: Y,
 					user: {
-						privateId: Y
+						uuId: Y
 					},
 				}
 			},
@@ -260,9 +258,9 @@ export class RepositoryDao
 		createdAts: Repository_CreatedAt[],
 		uuIds: Repository_UuId[],
 		ownerActorRandomIds: ActorUuId[],
-		ownerUserUniqueIds: User_PrivateId[],
+		ownerUserUniqueIds: User_UuId[],
 		ownerTerminalUuids: Terminal_UuId[],
-		ownerTerminalOwnerUserUniqueIds: User_PrivateId[]
+		ownerTerminalOwnerUserUniqueIds: User_UuId[]
 	): Promise<RepositoryIdMap> {
 		const repositoryIdMap: RepositoryIdMap = new Map()
 
@@ -283,9 +281,9 @@ export class RepositoryDao
 				terminalUser = terminal.owner.innerJoin(),
 			],
 			select: [
-				terminalUser.privateId,
+				terminalUser.uuId,
 				terminal.uuId,
-				repoOwnerUser.privateId,
+				repoOwnerUser.uuId,
 				ownerActor.uuId,
 				repo.createdAt,
 				repo.uuId,
@@ -295,9 +293,9 @@ export class RepositoryDao
 				repo.createdAt.in(createdAts),
 				repo.uuId.in(uuIds),
 				ownerActor.uuId.in(ownerActorRandomIds),
-				repoOwnerUser.privateId.in(ownerUserUniqueIds),
+				repoOwnerUser.uuId.in(ownerUserUniqueIds),
 				terminal.uuId.in(ownerTerminalUuids),
-				terminalUser.privateId.in(ownerTerminalOwnerUserUniqueIds)
+				terminalUser.uuId.in(ownerTerminalOwnerUserUniqueIds)
 			)
 		})
 

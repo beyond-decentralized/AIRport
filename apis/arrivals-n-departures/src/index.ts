@@ -1,2 +1,1 @@
-export * from './lingo/lingo';
-export * from './tokens';
+export * from './Message';

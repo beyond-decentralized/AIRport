@@ -55,6 +55,9 @@ export class RepositoryDao extends BaseRepositoryDao {
             where: 
             // and(
             r.id.in(repositoryIds),
+            // d.name.equals(dbName),
+            // u.uniqueId.equals(userEmail)
+            // )
         });
     }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
@@ -75,7 +78,7 @@ export class RepositoryDao extends BaseRepositoryDao {
             where: r.id.in(repositoryIds)
         });
     }
-    async findReposWithDetailsByIds(repositoryIdsInClause, uuId, userEmail) {
+    async findReposWithDetailsByIds(repositoryIdsInClause, uuId, userUuId) {
         let r;
         let ra;
         let a;
@@ -103,7 +106,7 @@ export class RepositoryDao extends BaseRepositoryDao {
                 u = a.user.innerJoin(),
                 d = a.terminal.innerJoin()
             ],
-            where: and(r.id.in(repositoryIdsInClause), d.uuId.equals(uuId), u.email.equals(userEmail))
+            where: and(r.id.in(repositoryIdsInClause), d.uuId.equals(uuId), u.uuId.equals(userUuId))
         });
     }
     async findReposWithGlobalIds(repositoryIds) {
@@ -119,7 +122,7 @@ export class RepositoryDao extends BaseRepositoryDao {
                 ownerActor: {
                     id: Y,
                     user: {
-                        privateId: Y
+                        uuId: Y
                     },
                 }
             },
@@ -152,15 +155,15 @@ export class RepositoryDao extends BaseRepositoryDao {
                 terminalUser = terminal.owner.innerJoin(),
             ],
             select: [
-                terminalUser.privateId,
+                terminalUser.uuId,
                 terminal.uuId,
-                repoOwnerUser.privateId,
+                repoOwnerUser.uuId,
                 ownerActor.uuId,
                 repo.createdAt,
                 repo.uuId,
                 repo.id,
             ],
-            where: and(repo.createdAt.in(createdAts), repo.uuId.in(uuIds), ownerActor.uuId.in(ownerActorRandomIds), repoOwnerUser.privateId.in(ownerUserUniqueIds), terminal.uuId.in(ownerTerminalUuids), terminalUser.privateId.in(ownerTerminalOwnerUserUniqueIds))
+            where: and(repo.createdAt.in(createdAts), repo.uuId.in(uuIds), ownerActor.uuId.in(ownerActorRandomIds), repoOwnerUser.uuId.in(ownerUserUniqueIds), terminal.uuId.in(ownerTerminalUuids), terminalUser.uuId.in(ownerTerminalOwnerUserUniqueIds))
         });
         for (const resultRow of resultRows) {
             ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4].getTime()).set(resultRow[5], resultRow[6]);

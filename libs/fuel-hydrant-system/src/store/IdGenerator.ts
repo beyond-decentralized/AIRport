@@ -12,7 +12,7 @@ import {
 	OperationHistoryId,
 	Q,
 	RecordHistoryId,
-	RepositoryTransactionHistoryId,
+	RepositoryTransactionHistory_Id,
 	TransactionHistoryId
 } from '@airport/holding-pattern'
 import { ID_GENERATOR } from '../tokens'
@@ -25,7 +25,7 @@ export interface TransactionHistoryIds {
 
 	operationHistoryIds: OperationHistoryId[]
 	recordHistoryIds: RecordHistoryId[]
-	repositoryHistoryIds: RepositoryTransactionHistoryId[]
+	repositoryHistoryIds: RepositoryTransactionHistory_Id[]
 	transactionHistoryId: TransactionHistoryId
 
 }

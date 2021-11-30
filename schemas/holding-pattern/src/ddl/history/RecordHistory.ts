@@ -52,6 +52,13 @@ export class RecordHistory {
 
 	@ManyToOne()
 	@JoinColumn({
+		name: 'ACTOR_ID', referencedColumnName: 'ID',
+		nullable: false
+	})
+	actor: Actor
+
+	@ManyToOne()
+	@JoinColumn({
 		name: 'REPOSITORY_OPERATION_HISTORY_ID', referencedColumnName: 'ID',
 		nullable: false
 	})

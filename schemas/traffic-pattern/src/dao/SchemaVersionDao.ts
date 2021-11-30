@@ -1,9 +1,8 @@
+import { and, Y } from '@airport/air-control'
 import { DI } from '@airport/di'
 import {
-	SCHEMA_VERSION_DAO,
-	SCHEMA_VERSION_DUO
+	SCHEMA_VERSION_DAO
 } from '../tokens'
-import { ISchemaVersionDuo } from '../duo/SchemaVersionDuo'
 import {
 	BaseSchemaVersionDao,
 	IBaseSchemaVersionDao,
@@ -12,11 +11,17 @@ import {
 	QSchema,
 	QSchemaVersion
 } from '../generated/generated'
+import { QDomain } from '@airport/territory'
 
 export interface ISchemaVersionDao
 	extends IBaseSchemaVersionDao {
 
 	findAllActiveOrderBySchemaIndexAndId(): Promise<ISchemaVersion[]>
+
+	findByDomainNamesAndSchemaNames(
+		domainNames: string[],
+		schemaNames: string[]
+	): Promise<ISchemaVersion[]>
 
 	insert(
 		schemaVersions: ISchemaVersion[]
@@ -60,6 +65,42 @@ export class SchemaVersionDao
 			orderBy: [
 				sv.schema.index.asc(),
 				sv.id.desc()
+			]
+		})
+	}
+
+	async findByDomainNamesAndSchemaNames(
+		domainNames: string[],
+		schemaNames: string[]
+	): Promise<ISchemaVersion[]> {
+		let sv: QSchemaVersion
+		let s: QSchema
+		let d: QDomain
+
+		return await this.db.find.tree({
+			select: {
+				id: Y,
+				integerVersion: Y,
+				schema: {
+					domain: {
+						name: Y
+					},
+					name: Y
+				}
+			},
+			from: [
+				sv = Q.SchemaVersion,
+				s = sv.schema.innerJoin(),
+				d = s.domain.innerJoin()
+			],
+			where: and(
+				d.name.in(domainNames),
+				s.name.in(schemaNames)
+			),
+			orderBy: [
+				d.name.asc(),
+				s.index.asc(),
+				sv.integerVersion.desc()
 			]
 		})
 	}
