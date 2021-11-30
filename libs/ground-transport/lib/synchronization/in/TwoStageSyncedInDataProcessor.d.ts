@@ -1,19 +1,15 @@
-import { IDataToTM } from './SyncInUtils';
+import { TerminalMessage } from '@airport/arrivals-n-departures';
 /**
  * Synchronizes incoming data and records message conflicts in two processing stages.
  */
 export interface ITwoStageSyncedInDataProcessor {
-    syncDataMessages(dataMessages: IDataToTM[]): Promise<void>;
+    syncDataMessage(dataMessages: TerminalMessage): Promise<void>;
 }
 export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInDataProcessor {
     /**
-     * Synchronize the data messages coming from AGT (new data for this TM).
-     * @param {IDataToTM[]} dataMessages  Incoming data messages.
-     * @param {Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>}
-     *   sharingNodeRepositoryMap Local (TM) repository Id Map.
-     * @returns {Promise<void>}
+     * Synchronize the data messages coming to Terminal (new data for this TM)
      */
-    syncDataMessages(dataMessages: IDataToTM[]): Promise<void>;
+    syncDataMessage(dataMessages: TerminalMessage): Promise<void>;
     private recordSharingMessageToHistoryRecords;
     private getRepoTransHistoryMapByRepoId;
     private addRepoTransHistoriesToMapFromData;

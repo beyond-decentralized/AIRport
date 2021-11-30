@@ -1,19 +1,18 @@
-import { IUser, UserId, User_PrivateId } from '@airport/travel-document-checkpoint';
+import { TerminalMessage } from '@airport/arrivals-n-departures';
+import { IUser, UserId, User_UuId } from '@airport/travel-document-checkpoint';
 import { IDataToTM } from '../SyncInUtils';
 export interface UserCheckResults {
-    map: Map<User_PrivateId, IUser>;
+    map: Map<User_UuId, IUser>;
     mapById: Map<UserId, IUser>;
     mapByMessageIndexAndRemoteUserId: Map<UserId, IUser>[];
     consistentMessages: IDataToTM[];
     inconsistentMessages: IDataToTM[];
 }
 export interface ISyncInUserChecker {
-    ensureUsersAndGetAsMaps(dataMessages: IDataToTM[]): Promise<UserCheckResults>;
+    ensureUsers(message: TerminalMessage): Promise<boolean>;
 }
 export declare class SyncInUserChecker implements ISyncInUserChecker {
-    ensureUsersAndGetAsMaps(dataMessages: IDataToTM[]): Promise<UserCheckResults>;
-    private areUserIdsConsistentInMessageData;
-    private gatherUserUniqueIds;
+    ensureUsers(message: TerminalMessage): Promise<boolean>;
     private addMissingUsers;
 }
 //# sourceMappingURL=SyncInUserChecker.d.ts.map

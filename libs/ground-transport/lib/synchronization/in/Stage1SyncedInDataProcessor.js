@@ -11,7 +11,7 @@ export class Stage1SyncedInDataProcessor {
      *  2)  Synchronization conflict datastructure is generated
      *
      * @param {Map<RepositoryId, ISyncRepoTransHistory[]>} repoTransHistoryMapByRepositoryId
-     * @param {Map<ActorId, IActor>} actorMayById
+     * @param {Map<Actor_Id, IActor>} actorMayById
      * @returns {Promise<void>}
      */
     async performStage1DataProcessing(repoTransHistoryMapByRepositoryId, actorMayById) {

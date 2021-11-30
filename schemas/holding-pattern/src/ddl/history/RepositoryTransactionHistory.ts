@@ -50,13 +50,6 @@ export class RepositoryTransactionHistory {
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'TRANSACTION_HISTORY_ID',
-		referencedColumnName: 'ID', nullable: false
-	})
-	transactionHistory: TransactionHistory
-
-	@ManyToOne()
-	@JoinColumn({
 		name: 'REPOSITORY_ID',
 		referencedColumnName: 'ID', nullable: false
 	})
@@ -68,6 +61,13 @@ export class RepositoryTransactionHistory {
 		nullable: false
 	})
 	actor: Actor
+
+	@ManyToOne()
+	@JoinColumn({
+		name: 'TRANSACTION_HISTORY_ID',
+		referencedColumnName: 'ID', nullable: false
+	})
+	transactionHistory: TransactionHistory
 
 	@OneToMany({mappedBy: 'repositoryTransactionHistory'})
 	operationHistory: OperationHistory[] = []

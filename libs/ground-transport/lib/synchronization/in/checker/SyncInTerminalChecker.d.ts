@@ -1,17 +1,9 @@
-import { ITerminal } from '@airport/travel-document-checkpoint';
-import { IDataToTM } from '../SyncInUtils';
-import { UserCheckResults } from './SyncInUserChecker';
-export interface TerminalCheckResults {
-    mapByMessageIndex: ITerminal[];
-    consistentMessages: IDataToTM[];
-    inconsistentMessages: IDataToTM[];
-}
+import { TerminalMessage } from '@airport/arrivals-n-departures';
 export interface ISyncInTerminalChecker {
+    ensureTerminals(message: TerminalMessage): Promise<boolean>;
 }
 export declare class SyncInTerminalChecker implements ISyncInTerminalChecker {
-    ensureTerminalsAndGetAsMaps(dataMessages: IDataToTM[], localTerminal: ITerminal, userCheckResults: UserCheckResults): Promise<TerminalCheckResults>;
-    private recordTerminalCredentials;
-    private areTerminalIdsConsistentInMessageData;
+    ensureTerminals(message: TerminalMessage): Promise<boolean>;
     private addMissingTerminals;
 }
 //# sourceMappingURL=SyncInTerminalChecker.d.ts.map

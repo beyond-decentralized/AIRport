@@ -2,7 +2,7 @@ import { container, DI } from '@airport/di';
 import { ensureChildArray, ensureChildJsSet } from '@airport/ground-control';
 import { ACTOR_DAO, REPOSITORY_DAO } from '@airport/holding-pattern';
 import { DataOrigin, REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, SHARING_NODE_REPOSITORY_DAO } from '@airport/moving-walkway';
-import { SCHEMA_DAO } from '@airport/traffic-pattern';
+import { SCHEMA_DAO } from '@airport/airspace';
 import { SYNC_OUT_REPO_TRANS_BLOCK_CREATOR } from '../../tokens';
 export class SyncOutRepositoryTransactionBlockCreator {
     // Get new repository transaction histories not yet in RepoTransBlocks
@@ -110,8 +110,7 @@ export class SyncOutRepositoryTransactionBlockCreator {
         const repoTransBlockData = {
             terminal: {
                 id: terminal.id,
-                name: terminal.name,
-                secondId: terminal.secondId,
+                uuId: terminal.uuId,
                 owner: {
                     uniqueId: terminal.owner.uniqueId
                 }

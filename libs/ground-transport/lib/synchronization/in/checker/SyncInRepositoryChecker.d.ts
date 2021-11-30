@@ -1,15 +1,9 @@
-import { Repository_Id } from '@airport/holding-pattern';
-import { SharingNodeId } from '@airport/moving-walkway';
-import { IDataToTM } from '../SyncInUtils';
-export interface RepositoryCheckResults {
-    consistentMessages: IDataToTM[];
-    sharingNodeRepositoryMap: Map<SharingNodeId, Set<Repository_Id>>;
-}
+import { TerminalMessage } from '@airport/arrivals-n-departures';
 export interface ISyncInRepositoryChecker {
-    ensureRepositories(incomingMessages: IDataToTM[], dataMessagesWithInvalidData: IDataToTM[]): Promise<RepositoryCheckResults>;
+    ensureRepositories(message: TerminalMessage): Promise<boolean>;
 }
 export declare class SyncInRepositoryChecker implements ISyncInRepositoryChecker {
-    ensureRepositories(incomingMessages: IDataToTM[], dataMessagesWithInvalidData: IDataToTM[]): Promise<RepositoryCheckResults>;
-    private areRepositoryIdsConsistentInMessage;
+    ensureRepositories(message: TerminalMessage): Promise<boolean>;
+    private checkRepository;
 }
 //# sourceMappingURL=SyncInRepositoryChecker.d.ts.map

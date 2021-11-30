@@ -72,10 +72,8 @@ export class RecordHistory {
 	})
 	operationHistory: OperationHistory
 
-
 	@OneToMany({mappedBy: 'recordHistory'})
 	newValues: RecordHistoryNewValue[] = []
-
 
 	@OneToMany({mappedBy: 'recordHistory'})
 	oldValues: RecordHistoryOldValue[] = []

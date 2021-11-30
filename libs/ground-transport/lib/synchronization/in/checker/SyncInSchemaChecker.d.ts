@@ -1,44 +1,21 @@
-import { DomainName, SchemaName, SchemaVersionId } from '@airport/ground-control';
-import { IDomain } from '@airport/territory';
-import { ISchema, ISchemaVersion } from '@airport/traffic-pattern';
-import { IDataToTM } from '../SyncInUtils';
-export interface SchemaCheckResults {
-    dataMessagesWithCompatibleSchemas: IDataToTM[];
-    dataMessagesWithIncompatibleSchemas: IDataToTM[];
-    dataMessagesWithInvalidSchemas: IDataToTM[];
-    dataMessagesToBeUpgraded: IDataToTM[];
-    maxVersionedMapBySchemaAndDomainNames: Map<DomainName, Map<SchemaName, ISchemaVersion>>;
-    requiredSchemaVersionIds: Set<SchemaVersionId>;
-    schemasWithChangesMap: Map<DomainName, Map<SchemaName, ISchema>>;
+import { TerminalMessage } from "@airport/arrivals-n-departures";
+import { IDomain, ISchema } from "@airport/airspace";
+export interface IDomainCheckRecord {
+    domain?: IDomain;
+    domainName: string;
+    found?: boolean;
 }
-export interface DataMessageSchemaGroupings {
-    dataMessagesToBeUpgraded: IDataToTM[];
-    dataMessagesWithCompatibleSchemas: IDataToTM[];
-    dataMessagesWithIncompatibleSchemas: IDataToTM[];
-    missingDomainMap: Map<DomainName, IDomain>;
-    missingSchemaMap: Map<DomainName, Map<SchemaName, ISchema>>;
-    requiredSchemaVersionIds: Set<SchemaVersionId>;
-    schemasToBeUpgradedMap: Map<DomainName, Map<SchemaName, ISchema>>;
+export interface ISchemaCheckRecord {
+    found?: boolean;
+    schemaName: string;
+    schema?: ISchema;
 }
 export interface ISyncInSchemaChecker {
-    checkSchemas(dataMessages: IDataToTM[]): Promise<SchemaCheckResults>;
+    ensureSchemas(message: TerminalMessage): Promise<boolean>;
 }
 export declare class SyncInSchemaChecker implements ISyncInSchemaChecker {
-    checkSchemas(dataMessages: IDataToTM[]): Promise<SchemaCheckResults>;
-    private groupMessagesAndSchemasBySchemaState;
-    private verifyRTBSchemaConsistency;
-    /**
-     * Record which schemas will have to be added to this TM or upgraded to a later version.
-     *
-     * Schemas to be upgraded change status to NEEDS_UPGRADES.  New records are created for
-     * missing schemas.
-     *
-     * @param {Map<SchemaDomainName, Map<SchemaName, ISchema>>} schemasToBeUpgradedMap
-     * @param {Map<SchemaDomainName, Set<SchemaName>>} missingSchemaNameMap
-     * @returns {Promise<void>}
-     */
-    private recordSchemasToBeAddedAndUpgraded;
-    private compareSchemaVersions;
-    private compareGivenSchemaVersionLevel;
+    ensureSchemas(message: TerminalMessage): Promise<boolean>;
+    private checkSchemasAndDomains;
+    private getNames;
 }
 //# sourceMappingURL=SyncInSchemaChecker.d.ts.map

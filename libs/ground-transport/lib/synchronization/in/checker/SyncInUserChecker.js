@@ -1,87 +1,45 @@
-import { Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { USER_DAO } from '@airport/travel-document-checkpoint';
 import { SYNC_IN_USER_CHECKER } from '../../../tokens';
 export class SyncInUserChecker {
-    async ensureUsersAndGetAsMaps(dataMessages) {
-        const userDao = await container(this).get(USER_DAO);
-        const remoteUserMapByUniqueId = new Map();
-        const mapById = new Map();
-        const mapByMessageIndexAndRemoteUserId = [];
-        const consistentMessages = [];
-        const inconsistentMessages = [];
-        for (const message of dataMessages) {
-            const data = message.data;
-            if (!this.areUserIdsConsistentInMessageData(data)) {
-                inconsistentMessages.push(message);
-                continue;
+    async ensureUsers(message) {
+        try {
+            const userDao = await container(this).get(USER_DAO);
+            let userUuids = [];
+            let messageUserIndexMap = new Map();
+            for (let i = 0; i < message.users.length; i++) {
+                const user = message.users[i];
+                if (!user.uuId || typeof user.uuId !== 'string') {
+                    throw new Error(`Invalid 'user.uuid'`);
+                }
+                userUuids.push(user.uuId);
+                messageUserIndexMap.set(user.uuId, i);
+                // Make sure id field is not in the input
+                delete user.id;
             }
-            const mapForMessageByRemoteUserId = this.gatherUserUniqueIds(data, remoteUserMapByUniqueId);
-            consistentMessages.push(message);
-            mapByMessageIndexAndRemoteUserId.push(mapForMessageByRemoteUserId);
-        }
-        const map = userDao.findFieldsMapByUniqueId(Array.from(remoteUserMapByUniqueId.keys()), {
-            id: Y,
-            uniqueId: Y
-        });
-        await this.addMissingUsers(remoteUserMapByUniqueId, map, mapById, userDao);
-        return {
-            map,
-            mapById,
-            mapByMessageIndexAndRemoteUserId,
-            consistentMessages,
-            inconsistentMessages
-        };
-    }
-    areUserIdsConsistentInMessageData(data) {
-        const userIdSet = new Set();
-        for (const user of data.users) {
-            const userId = user.id;
-            if (userIdSet.has(userId)) {
-                return false;
+            const users = await userDao.findByUuIds(userUuids);
+            for (const user of users) {
+                const messageUserIndex = messageUserIndexMap.get(user.uuId);
+                message.users[messageUserIndex] = user;
+            }
+            const missingUsers = message.users.filter(messageUser => !messageUser.id);
+            if (missingUsers.length) {
+                await this.addMissingUsers(missingUsers, userDao);
             }
         }
-        if (!userIdSet.has(data.terminal.owner.id)) {
+        catch (e) {
+            console.error(e);
             return false;
-        }
-        for (const actor of data.actors) {
-            if (!userIdSet.has(actor.user.id)) {
-                return false;
-            }
         }
         return true;
     }
-    gatherUserUniqueIds(data, remoteUserMapByUniqueId) {
-        const mapForMessageByRemoteUserId = new Map();
-        for (const remoteUser of data.users) {
-            const user = {
-                ...remoteUser
-            };
-            remoteUserMapByUniqueId.set(user.privateId, user);
-            mapForMessageByRemoteUserId.set(user.id, user);
-        }
-        return mapForMessageByRemoteUserId;
-    }
-    async addMissingUsers(remoteUserMapByUniqueId, userMap, userMapById, userDao) {
-        const newUsers = [];
-        for (const [uniqueId, user] of remoteUserMapByUniqueId) {
-            const existingUser = userMap.get(uniqueId);
-            if (!existingUser) {
-                delete user.id;
-                newUsers.push(user);
-                userMap.set(uniqueId, user);
-            }
-            else {
-                user.id = existingUser.id;
-                userMapById.set(existingUser.id, user);
+    async addMissingUsers(missingUsers, userDao) {
+        for (const user of missingUsers) {
+            if (!user.username || typeof user.username !== 'string') {
+                throw new Error(`Invalid User.username ${user.username}`);
             }
         }
-        if (newUsers.length) {
-            await userDao.bulkCreate(newUsers, false);
-            for (const newUser of newUsers) {
-                userMapById.set(newUser.id, newUser);
-            }
-        }
+        await userDao.insert(missingUsers);
     }
 }
 DI.set(SYNC_IN_USER_CHECKER, SyncInUserChecker);

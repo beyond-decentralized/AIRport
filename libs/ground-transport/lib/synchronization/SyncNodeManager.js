@@ -1,7 +1,7 @@
 import { container, DI } from '@airport/di';
 import { SHARING_NODE_DAO, SHARING_NODE_TERMINAL_DAO } from '@airport/moving-walkway';
 import { TERMINAL_STORE } from '@airport/terminal-map';
-import { SYNC_IN_MANAGER, SYNC_NODE_MANAGER, } from '../tokens';
+import { SYNCHRONIZATION_IN_MANAGER, SYNC_NODE_MANAGER, } from '../tokens';
 export class SyncNodeManager {
     async initialize() {
         const [sharingNodeDao, terminalStore] = await container(this).get(SHARING_NODE_DAO, TERMINAL_STORE);
@@ -9,7 +9,7 @@ export class SyncNodeManager {
         terminalStore.nodesBySyncFrequency.next(nodesBySyncFrequency);
     }
     async sendMessages(sharingNodeMap, messagesBySharingNode) {
-        const [sharingNodeDao, sharingNodeTerminalDao, synchronizationInManager, terminalStore] = await container(this).get(SYNC_NODE_MANAGER, SHARING_NODE_TERMINAL_DAO, SYNC_IN_MANAGER, TERMINAL_STORE);
+        const [sharingNodeDao, sharingNodeTerminalDao, synchronizationInManager, terminalStore] = await container(this).get(SYNC_NODE_MANAGER, SHARING_NODE_TERMINAL_DAO, SYNCHRONIZATION_IN_MANAGER, TERMINAL_STORE);
         let terminal;
         terminalStore.terminal.subscribe((theTerminal) => terminal = theTerminal).unsubscribe();
         const sharingNodeTerminalMap = await sharingNodeTerminalDao

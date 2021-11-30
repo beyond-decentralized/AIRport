@@ -145,7 +145,7 @@ export class Stage2SyncedInDataProcessor {
         }
     }
     /**
-     * Get the record key map (RecordKeyMap = RepositoryId -> ActorId
+     * Get the record key map (RecordKeyMap = RepositoryId -> Actor_Id
      * -> RepositoryEntity_ActorRecordId) for the recordUpdateMap (the specified combination
      * of columns/values being updated)
      * @param {Map<ColumnIndex, RecordUpdate>} recordUpdateMap

@@ -1,9 +1,10 @@
 import { container, DI } from '@airport/di';
-import { ChangeType, ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
-import { REPO_TRANS_HISTORY_DAO } from '@airport/holding-pattern';
-import { MISSING_RECORD_DAO, MISSING_RECORD_REPO_TRANS_BLOCK_DAO, MissingRecordStatus, REPO_TRANS_BLOCK_DAO, SHARING_MESSAGE_DAO } from '@airport/moving-walkway';
-import { TERMINAL_STORE } from '@airport/terminal-map';
-import { SYNC_IN_DATA_CHECKER, SYNC_IN_REPO_TRANS_BLOCK_CREATOR, SYNC_IN_UTILS } from '../../../tokens';
+import { ChangeType } from '@airport/ground-control';
+import { SCHEMA_ENTITY_DAO } from '@airport/airspace';
+import { SYNC_IN_DATA_CHECKER } from '../../../tokens';
+import { AIRPORT_DATABASE } from '@airport/air-control';
+import { getSysWideOpIds, SEQUENCE_GENERATOR } from '@airport/check-in';
+import { RepositoryTransactionType } from '@airport/holding-pattern';
 export class SyncInDataChecker {
     /**
      * Every dataMessage.data.repoTransHistories array must be sorted before entering
@@ -12,201 +13,242 @@ export class SyncInDataChecker {
      * @param {IDataToTM[]} dataMessagesWithCompatibleSchemas
      * @returns {DataCheckResults}
      */
-    async checkData(dataMessagesWithCompatibleSchemas) {
-        // TODO: remove unneeded dependencies once tested
-        const [missingRecordDao, missingRecordRepoTransBlockDao, repositoryTransactionBlockDao, repositoryTransactionHistoryDao, sharingMessageDao, syncInRepositoryTransactionBlockCreator, syncInUtils, terminalStore] = await container(this).get(MISSING_RECORD_DAO, MISSING_RECORD_REPO_TRANS_BLOCK_DAO, REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_DAO, SHARING_MESSAGE_DAO, SYNC_IN_REPO_TRANS_BLOCK_CREATOR, SYNC_IN_UTILS, TERMINAL_STORE);
-        const { messageIndexMapByRecordToUpdateIds, recordsToUpdateMap } = this.getDataStructuresForChanges(dataMessagesWithCompatibleSchemas, syncInUtils);
-        const existingRecordIdMap = await repositoryTransactionHistoryDao.findExistingRecordIdMap(recordsToUpdateMap);
-        const dataMessagesWithIncompatibleData = [];
-        const { compatibleDataMessageFlags, missingRecordDataToTMs, } = await this.determineMissingRecords(dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, recordsToUpdateMap, existingRecordIdMap, messageIndexMapByRecordToUpdateIds, missingRecordDao);
-        const dataMessagesWithCompatibleSchemasAndData = [];
-        // filter out data messages with records that do not exist
-        for (let i = 0; i < compatibleDataMessageFlags.length; i++) {
-            const dataMessage = dataMessagesWithCompatibleSchemas[i];
-            if (compatibleDataMessageFlags[i]) {
-                dataMessagesWithCompatibleSchemasAndData.push(dataMessage);
+    async checkData(message) {
+        const history = message.history;
+        try {
+            if (!history || typeof history !== 'object') {
+                throw new Error(`Invalid TerminalMessage.history`);
             }
+            if (!history.operationHistory || !(history.operationHistory instanceof Array)) {
+                return false;
+            }
+            if (!history.saveTimestamp || typeof history.saveTimestamp !== 'number') {
+                throw new Error(`Invalid TerminalMessage.history.saveTimestamp`);
+            }
+            if (history.transactionHistory) {
+                throw new Error(`TerminalMessage.history.transactionHistory cannot be specified`);
+            }
+            if (history.repositoryTransactionType) {
+                throw new Error(`TerminalMessage.history.repositoryTransactionType cannot be specified`);
+            }
+            if (history.synced) {
+                throw new Error(`TerminalMessage.history.synced cannot be specified`);
+            }
+            const actor = message.actors[history.actor];
+            if (!actor) {
+                throw new Error(`Cannot find Actor for "in-message id" TerminalMessage.history.actor`);
+            }
+            // Repository is already set in SyncInRepositoryChecker
+            history.actor = actor;
+            history.repositoryTransactionType = RepositoryTransactionType.REMOTE;
+            history.synced = true;
+            delete history.id;
+            const schemaEntityMap = await this.populateSchemaEntityMap(message);
+            await this.checkOperationHistories(message, schemaEntityMap);
         }
-        const toBeInsertedRecordMap = this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemasAndData);
-        const foundMissingRecordIds = await missingRecordDao.setStatusWhereIdsInAndReturnIds(toBeInsertedRecordMap, MissingRecordStatus.MISSING);
-        // Find repository transaction blocks that now can be processed
-        const existingRepoTransBlocksWithCompatibleSchemasAndData = await this.getExistingRepoTransBlocksWithCompatibleSchemasAndData(foundMissingRecordIds, missingRecordDao, missingRecordRepoTransBlockDao, repositoryTransactionBlockDao);
-        return {
-            dataMessagesWithCompatibleSchemasAndData,
-            dataMessagesWithIncompatibleData,
-            existingRepoTransBlocksWithCompatibleSchemasAndData,
-            missingRecordDataToTMs
-        };
+        catch (e) {
+            console.error(e);
+            return false;
+        }
+        return true;
     }
-    getDataStructuresForChanges(dataMessagesWithCompatibleSchemas, syncInUtils) {
-        const recordsToInsertMap = this.getRecordsToInsertMap(dataMessagesWithCompatibleSchemas);
-        const recordsToUpdateMap = new Map();
-        const messageIndexMapByRecordToUpdateIds = new Map();
-        for (let i = 0; i < dataMessagesWithCompatibleSchemas.length; i++) {
-            const dataMessages = dataMessagesWithCompatibleSchemas[i];
-            dataMessages.data.repoTransHistories.sort((repoTransHistory1, repoTransHistory2) => repoTransHistory1.saveTimestamp.getTime() - repoTransHistory2.saveTimestamp.getTime());
-            for (const repoTransHistory of dataMessages.data.repoTransHistories) {
-                const repositoryId = repoTransHistory.repository.id;
-                const recordToInsertMapForRepo = recordsToInsertMap.get(repositoryId);
-                repoTransHistory.operationHistory.sort((operationHistory1, operationHistory2) => operationHistory1.orderNumber - operationHistory2.orderNumber);
-                for (const operationHistory of repoTransHistory.operationHistory) {
-                    let recordToInsertMapForEntityInRepo;
-                    if (recordToInsertMapForRepo) {
-                        const recordToInsertMapForSchemaInRepo = recordToInsertMapForRepo.get(operationHistory.entity.schemaVersion.id);
-                        if (recordToInsertMapForSchemaInRepo) {
-                            recordToInsertMapForEntityInRepo
-                                = recordToInsertMapForSchemaInRepo.get(operationHistory.entity.id);
-                        }
+    async populateSchemaEntityMap(message) {
+        let schemaVersionsById = new Map();
+        let schemaVersionIds = [];
+        for (const schemaVersion of message.schemaVersions) {
+            schemaVersionIds.push(schemaVersion.id);
+            schemaVersionsById.set(schemaVersion.id, schemaVersion);
+        }
+        const schemaEntityDao = await container(this).get(SCHEMA_ENTITY_DAO);
+        const schemaEntities = await schemaEntityDao.findAllForSchemaVersions(schemaVersionIds);
+        const schemaEntityMap = new Map();
+        for (let schemaEntity of schemaEntities) {
+            const schemaVersion = schemaVersionsById.get(schemaEntity.schemaVersion.id);
+            let entitiesForDomain = schemaEntityMap.get(schemaVersion.schema.domain.name);
+            if (!entitiesForDomain) {
+                entitiesForDomain = new Map();
+                schemaEntityMap.set(schemaVersion.schema.domain.name, entitiesForDomain);
+            }
+            let entitiesForSchema = entitiesForDomain.get(schemaVersion.schema.name);
+            if (!entitiesForSchema) {
+                entitiesForSchema = new Map();
+                entitiesForDomain.set(schemaVersion.schema.name, entitiesForSchema);
+            }
+            entitiesForSchema.set(schemaEntity.index, schemaEntity);
+        }
+        return schemaEntityMap;
+    }
+    async checkOperationHistories(message, schemaEntityMap) {
+        const history = message.history;
+        if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
+            throw new Error(`Invalid TerminalMessage.history.operationHistory`);
+        }
+        const [airDb, sequenceGenerator] = await container(this)
+            .get(AIRPORT_DATABASE, SEQUENCE_GENERATOR);
+        const systemWideOperationIds = getSysWideOpIds(history.operationHistory.length, airDb, sequenceGenerator);
+        let orderNumber = 0;
+        for (let i = 0; i < history.operationHistory.length; i++) {
+            const operationHistory = history.operationHistory[i];
+            if (typeof operationHistory !== 'object') {
+                throw new Error(`Invalid operationHistory`);
+            }
+            if (operationHistory.orderNumber) {
+                throw new Error(`TerminalMessage.history -> operationHistory.orderNumber cannot be specified`);
+            }
+            operationHistory.orderNumber = ++orderNumber;
+            switch (operationHistory.changeType) {
+                case ChangeType.DELETE_ROWS:
+                case ChangeType.INSERT_VALUES:
+                case ChangeType.UPDATE_ROWS:
+                case ChangeType.INSERT_REFERENCE_VALUES:
+                    break;
+                default:
+                    throw new Error(`Invalid operationHistory.changeType: ${operationHistory.changeType}`);
+            }
+            if (typeof operationHistory.entity !== 'object') {
+                throw new Error(`Invalid operationHistory.entity`);
+            }
+            if (typeof operationHistory.entity.schemaVersion !== 'number') {
+                throw new Error(`Expecting "in-message index" (number)
+					in 'operationHistory.entity.schemaVersion'`);
+            }
+            const schemaVersion = message.schemaVersions[operationHistory.entity.schemaVersion];
+            if (!schemaVersion) {
+                throw new Error(`Invalid index into message.schemaVersions [${operationHistory.entity.schemaVersion}],
+				in operationHistory.entity.schemaVersion`);
+            }
+            const schemaEntity = schemaEntityMap.get(schemaVersion.schema.domain.name)
+                .get(schemaVersion.schema.name).get(operationHistory.entity.index);
+            if (!schemaEntity) {
+                throw new Error(`Invalid operationHistory.entity.index: ${operationHistory.entity.index}`);
+            }
+            operationHistory.entity = schemaEntity;
+            if (operationHistory.repositoryTransactionHistory) {
+                throw new Error(`TerminalMessage.history -> operationHistory.repositoryTransactionHistory cannot be specified`);
+            }
+            operationHistory.repositoryTransactionHistory = history;
+            if (operationHistory.systemWideOperationId) {
+                throw new Error(`TerminalMessage.history -> operationHistory.systemWideOperationId cannot be specified`);
+            }
+            operationHistory.systemWideOperationId = systemWideOperationIds[i];
+            delete operationHistory.id;
+            await this.checkRecordHistories(operationHistory, message);
+        }
+    }
+    async checkRecordHistories(operationHistory, message) {
+        const recordHistories = operationHistory.recordHistory;
+        if (!(recordHistories instanceof Array) || !recordHistories.length) {
+            throw new Error(`Inalid TerminalMessage.history -> operationHistory.recordHistory`);
+        }
+        for (const recordHistory of recordHistories) {
+            if (!recordHistory.actorRecordId || typeof recordHistory.actorRecordId !== 'number') {
+                throw new Error(`Invalid TerminalMessage.history -> operationHistory.recordHistory.actorRecordId`);
+            }
+            switch (operationHistory.changeType) {
+                case ChangeType.INSERT_VALUES:
+                    if (recordHistory.actor) {
+                        throw new Error(`Cannot specify TerminalMessage.history -> operationHistory.recordHistory.actor
+for ChangeType.INSERT_VALUES`);
                     }
-                    switch (operationHistory.changeType) {
-                        case ChangeType.DELETE_ROWS:
-                        case ChangeType.UPDATE_ROWS:
-                            for (const recordHistory of operationHistory.recordHistory) {
-                                let recordToInsertSetForActor;
-                                if (recordToInsertMapForEntityInRepo) {
-                                    recordToInsertSetForActor
-                                        = recordToInsertMapForEntityInRepo.get(recordHistory.actor.id);
-                                }
-                                if (!recordToInsertSetForActor
-                                    || !recordToInsertSetForActor.has(recordHistory.actorRecordId)) {
-                                    const recordToUpdateMapForRepoInTable = syncInUtils
-                                        .ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordsToUpdateMap);
-                                    this.ensureRecordId(recordHistory, recordToUpdateMapForRepoInTable, recordHistory.actorRecordId);
-                                    ensureChildJsSet(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(messageIndexMapByRecordToUpdateIds, repositoryId), operationHistory.entity.schemaVersion.id), operationHistory.entity.id), recordHistory.actor.id), recordHistory.actorRecordId)
-                                        .add(i);
-                                }
-                            }
-                            break;
+                    recordHistory.actor = operationHistory.repositoryTransactionHistory.actor;
+                case ChangeType.DELETE_ROWS:
+                case ChangeType.UPDATE_ROWS:
+                case ChangeType.INSERT_REFERENCE_VALUES: {
+                    const actor = message.actors[recordHistory.actor];
+                    if (!actor) {
+                        throw new Error(`Did find Actor for "in-message id" in TerminalMessage.history -> operationHistory.actor`);
                     }
+                    recordHistory.actor = actor;
+                    break;
                 }
             }
-        }
-        return {
-            messageIndexMapByRecordToUpdateIds,
-            recordsToUpdateMap
-        };
-    }
-    async determineMissingRecords(dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, recordToUpdateMap, existingRecordIdMap, messageIndexMapByRecordToUpdateIds, missingRecordDao) {
-        const compatibleDataMessageFlags = dataMessagesWithCompatibleSchemas.map(_ => true);
-        const missingRecords = [];
-        const missingRecordDataToTMs = [];
-        const sparseDataMessagesWithIncompatibleData = [];
-        for (const [repositoryId, updatedRecordMapForRepository] of recordToUpdateMap) {
-            const existingRecordMapForRepository = existingRecordIdMap.get(repositoryId);
-            const messageIndexMapForRepository = messageIndexMapByRecordToUpdateIds.get(repositoryId);
-            for (const [schemaIndex, updatedRecordMapForSchemaInRepo] of updatedRecordMapForRepository) {
-                let existingRecordMapForSchemaInRepo;
-                if (existingRecordMapForRepository) {
-                    existingRecordMapForSchemaInRepo = existingRecordMapForRepository.get(schemaIndex);
-                }
-                const messageIndexMapForSchemaIndRepo = messageIndexMapForRepository.get(schemaIndex);
-                for (const [entityId, updatedRecordMapForTableInRepo] of updatedRecordMapForSchemaInRepo) {
-                    let existingRecordMapForTableInSchema;
-                    if (existingRecordMapForSchemaInRepo) {
-                        existingRecordMapForTableInSchema = existingRecordMapForSchemaInRepo.get(entityId);
+            switch (operationHistory.changeType) {
+                case ChangeType.INSERT_VALUES:
+                case ChangeType.DELETE_ROWS:
+                case ChangeType.UPDATE_ROWS:
+                    if (recordHistory.repository) {
+                        throw new Error(`Cannot specify TerminalMessage.history -> operationHistory.recordHistory.repository
+for ChangeType.INSERT_VALUES|DELETE_ROWS|UPDATE_ROWS`);
                     }
-                    const messageIndexMapForTableInSchema = messageIndexMapForSchemaIndRepo.get(entityId);
-                    for (const [actorId, actorRecordIds] of updatedRecordMapForTableInRepo) {
-                        let existingRecordIdSetForActor;
-                        if (existingRecordMapForTableInSchema) {
-                            existingRecordIdSetForActor = existingRecordMapForTableInSchema.get(actorId);
-                        }
-                        const messageIndexMapForActor = messageIndexMapForTableInSchema.get(actorId);
-                        if (existingRecordIdSetForActor) {
-                            for (const actorRecordId of actorRecordIds) {
-                                if (!existingRecordIdSetForActor.has(actorRecordId)) {
-                                    this.recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaIndex, entityId, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordDataToTMs);
-                                }
-                            }
-                        }
-                        else {
-                            for (const actorRecordId of actorRecordIds) {
-                                this.recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaIndex, entityId, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordDataToTMs);
-                            }
-                        }
+                    recordHistory.repository = operationHistory.repositoryTransactionHistory.repository;
+                    break;
+                case ChangeType.INSERT_REFERENCE_VALUES: {
+                    const repository = message.referencedRepositories[recordHistory.repository];
+                    if (!repository) {
+                        throw new Error(`Did find Repository for "in-message id" in TerminalMessage.history -> operationHistory.repository`);
                     }
+                    recordHistory.repository = repository;
+                    break;
                 }
             }
+            if (recordHistory.operationHistory) {
+                throw new Error(`TerminalMessage.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
+            }
+            this.checkNewValues(recordHistory, operationHistory);
+            this.checkOldValues(recordHistory, operationHistory);
+            recordHistory.operationHistory = operationHistory;
+            delete recordHistory.id;
         }
-        if (missingRecords.length) {
-            await missingRecordDao.bulkCreate(missingRecords, false);
-        }
-        return {
-            compatibleDataMessageFlags,
-            missingRecordDataToTMs
-        };
     }
-    getRecordsToInsertMap(dataMessages) {
-        const recordsToInsertMap = new Map();
-        for (let i = 0; i < dataMessages.length; i++) {
-            const dataMessage = dataMessages[i];
-            for (const repoTransHistory of dataMessage.data.repoTransHistories) {
-                const repositoryId = repoTransHistory.repository.id;
-                for (const operationHistory of repoTransHistory.operationHistory) {
-                    switch (operationHistory.changeType) {
-                        case ChangeType.INSERT_VALUES:
-                            for (const recordHistory of operationHistory.recordHistory) {
-                                ensureChildJsSet(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(recordsToInsertMap, repositoryId), operationHistory.entity.schemaVersion.id), operationHistory.entity.id), recordHistory.actor.id)
-                                    .add(recordHistory.actorRecordId);
-                            }
-                            break;
-                    }
+    checkNewValues(recordHistory, operationHistory) {
+        switch (operationHistory.changeType) {
+            case ChangeType.DELETE_ROWS:
+                if (recordHistory.newValues) {
+                    throw new Error(`Cannot specify TerminalMessage.history -> operationHistory.recordHistory.newValues
+for ChangeType.DELETE_ROWS`);
                 }
+                return;
+            case ChangeType.INSERT_VALUES:
+            case ChangeType.UPDATE_ROWS:
+            case ChangeType.INSERT_REFERENCE_VALUES:
+                if (!(recordHistory.newValues instanceof Array) || !recordHistory.newValues.length) {
+                    throw new Error(`Must specify TerminalMessage.history -> operationHistory.recordHistory.newValues
+for ChangeType.INSERT_VALUES|UPDATE_ROWS|INSERT_REFERENCE_VALUES`);
+                }
+                break;
+        }
+        for (const newValue of recordHistory.newValues) {
+            if (newValue.recordHistory) {
+                throw new Error(`Cannot specify TerminalMessage.history -> operationHistory.recordHistory.newValues.recordHistory`);
+            }
+            newValue.recordHistory = recordHistory;
+            if (typeof newValue.columnIndex !== 'number') {
+                throw new Error(`Invalid TerminalMessage.history -> operationHistory.recordHistory.newValues.columnIndex`);
+            }
+            if (typeof newValue.newValue === undefined) {
+                throw new Error(`Invalid TerminalMessage.history -> operationHistory.recordHistory.newValues.newValue`);
             }
         }
-        return recordsToInsertMap;
     }
-    ensureRecordId(recordHistory, actorRecordIdSetByActor, actorRecordId = recordHistory.actorRecordId) {
-        ensureChildJsSet(actorRecordIdSetByActor, recordHistory.actor.id).add(actorRecordId);
-    }
-    recordMissingRecordAndRepoTransBlockRelations(repositoryId, schemaVersionId, entityId, actorId, actorRecordId, missingRecords, compatibleDataMessageFlags, messageIndexMapForActor, dataMessagesWithCompatibleSchemas, dataMessagesWithIncompatibleData, sparseDataMessagesWithIncompatibleData, missingRecordDataToTMs) {
-        const missingRecord = this.createMissingRecord(repositoryId, schemaVersionId, entityId, actorId, actorRecordId);
-        missingRecords.push(missingRecord);
-        for (const messageIndex of messageIndexMapForActor.get(actorRecordId)) {
-            let dataMessage;
-            if (compatibleDataMessageFlags[messageIndex]) {
-                const dataMessage = dataMessagesWithCompatibleSchemas[messageIndex];
-                sparseDataMessagesWithIncompatibleData[messageIndex]
-                    = dataMessage;
-                dataMessagesWithIncompatibleData.push(dataMessage);
-                compatibleDataMessageFlags[messageIndex] = false;
-            }
-            else {
-                dataMessage
-                    = sparseDataMessagesWithIncompatibleData[messageIndex];
-            }
-            missingRecordDataToTMs.push({
-                missingRecord,
-                dataMessage
-            });
+    checkOldValues(recordHistory, operationHistory) {
+        switch (operationHistory.changeType) {
+            case ChangeType.DELETE_ROWS:
+            case ChangeType.INSERT_REFERENCE_VALUES:
+            case ChangeType.INSERT_VALUES:
+                if (recordHistory.oldValues) {
+                    throw new Error(`Cannot specify TerminalMessage.history -> operationHistory.recordHistory.oldValues
+for ChangeType.DELETE_ROWS|INSERT_REFERENCE_VALUES|INSERT_VALUES`);
+                }
+                return;
+            case ChangeType.UPDATE_ROWS:
+                if (!(recordHistory.newValues instanceof Array) || !recordHistory.oldValues.length) {
+                    throw new Error(`Must specify TerminalMessage.history -> operationHistory.recordHistory.oldValues
+for ChangeType.UPDATE_ROWS`);
+                }
+                break;
         }
-    }
-    createMissingRecord(repositoryId, schemaVersionId, entityId, actorId, actorRecordId) {
-        return {
-            schemaVersion: {
-                id: schemaVersionId
-            },
-            entity: {
-                id: entityId
-            },
-            repository: {
-                id: repositoryId
-            },
-            actor: {
-                id: actorId
-            },
-            actorRecordId,
-            status: MissingRecordStatus.MISSING
-        };
-    }
-    async getExistingRepoTransBlocksWithCompatibleSchemasAndData(foundMissingRecordIds, missingRecordDao, missingRecordRepoTransBlockDao, repositoryTransactionBlockDao) {
-        if (foundMissingRecordIds.length) {
-            return [];
+        for (const oldValue of recordHistory.oldValues) {
+            if (oldValue.recordHistory) {
+                throw new Error(`Cannot specify TerminalMessage.history -> operationHistory.recordHistory.newValues.recordHistory`);
+            }
+            oldValue.recordHistory = recordHistory;
+            if (typeof oldValue.columnIndex !== 'number') {
+                throw new Error(`Invalid TerminalMessage.history -> operationHistory.recordHistory.oldValues.columnIndex`);
+            }
+            if (typeof oldValue.oldValue === undefined) {
+                throw new Error(`Invalid TerminalMessage.history -> operationHistory.recordHistory.oldValues.oldValue`);
+            }
         }
-        const existingRepoTransBlocksWithCompatibleSchemasAndData = await repositoryTransactionBlockDao.findWithMissingRecordIdsAndNoMissingRecordsWithStatus(foundMissingRecordIds, MissingRecordStatus.MISSING);
-        await missingRecordRepoTransBlockDao.deleteWhereMissingRecordIdsIn(foundMissingRecordIds);
-        await missingRecordDao.deleteWhereIdsIn(foundMissingRecordIds);
-        return existingRepoTransBlocksWithCompatibleSchemasAndData;
     }
 }
 DI.set(SYNC_IN_DATA_CHECKER, SyncInDataChecker);

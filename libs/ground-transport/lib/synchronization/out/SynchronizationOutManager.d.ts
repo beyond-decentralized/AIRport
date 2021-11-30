@@ -15,7 +15,7 @@ export declare class SynchronizationOutManager implements ISynchronizationOutMan
     synchronize(sharingNodes: ISharingNode[], terminal: ITerminal): Promise<void>;
     /**
      *
-     * @param {SharingNodeId[]} sharingNodeIds
+     * @param {SharingNode_Id[]} sharingNodeIds
      * @returns {Promise<void>}
      */
     private getNotAcknowledgedRTBs;

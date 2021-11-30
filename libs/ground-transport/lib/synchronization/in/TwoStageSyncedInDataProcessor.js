@@ -1,27 +1,19 @@
 import { RepoTransBlockSyncOutcomeType } from '@airport/arrivals-n-departures';
 import { container, DI } from '@airport/di';
 import { ensureChildArray, TransactionType } from '@airport/ground-control';
-import { REPO_ACTOR_DAO, REPO_TRANS_HISTORY_DUO, RepositoryTransactionType } from '@airport/holding-pattern';
-import { REPO_TRANS_BLOCK_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO } from '@airport/moving-walkway';
+import { REPO_ACTOR_DAO, RepositoryTransactionType } from '@airport/holding-pattern';
+import { REPO_TRANS_BLOCK_DAO, SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO } from '@airport/moving-walkway';
 import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { parse } from 'zipson/lib';
 import { STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR, SYNC_IN_CHECKER, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR } from '../../tokens';
 export class TwoStageSyncedInDataProcessor {
     /**
-     * Synchronize the data messages coming from AGT (new data for this TM).
-     * @param {IDataToTM[]} dataMessages  Incoming data messages.
-     * @param {Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>}
-     *   sharingNodeRepositoryMap Local (TM) repository Id Map.
-     * @returns {Promise<void>}
+     * Synchronize the data messages coming to Terminal (new data for this TM)
      */
-    async syncDataMessages(dataMessages //,
-    // sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>
-    // sharingNodeRepositoryMap: Map<SharingNodeId, Map<AgtRepositoryId, RepositoryId>>,
-    // dataMessagesWithInvalidData: IDataToTM[]
-    ) {
+    async syncDataMessage(dataMessages) {
         // TODO: remove unused injections once tested
-        const [repositoryActorDao, repositoryTransactionHistoryDuo, sharingMessageDao, sharingMessageRepoTransBlockDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictPendingNotificationDao, syncInChecker, repositoryTransactionBlockDao, transactionManager] = await container(this).get(REPO_ACTOR_DAO, REPO_TRANS_HISTORY_DUO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR, SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO, SYNC_IN_CHECKER, REPO_TRANS_BLOCK_DAO, TRANSACTION_MANAGER);
-        const [actorMapById, existingRepoTransBlocksWithCompatibleSchemasAndData, dataMessagesWithCompatibleSchemas, sharingMessagesWithCompatibleSchemasAndData,] = await syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(
+        const [repositoryActorDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictPendingNotificationDao, syncInChecker, repositoryTransactionBlockDao, transactionManager] = await container(this).get(REPO_ACTOR_DAO, STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR, SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO, SYNC_IN_CHECKER, REPO_TRANS_BLOCK_DAO, TRANSACTION_MANAGER);
+        const { messageHasCompatibleSchemas, messageHasValidData, } = await syncInChecker.checkMessage(
         // consistentMessages, actorMap, sharingNodeRepositoryMap,
         // dataMessagesWithInvalidData
         dataMessages);
