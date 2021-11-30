@@ -24,7 +24,7 @@ cd ../flight-log-archive
 tsc
 cd ../guideway
 tsc
-cd ../traffic-pattern
+cd ../airspace
 tsc
 cd ../travel-document-checkpoint
 tsc

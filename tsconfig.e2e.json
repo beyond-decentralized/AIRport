@@ -52,7 +52,7 @@
         "schemas/holding-pattern/src"
       ],
       "@airport/airspace": [
-        "schemas/traffic-pattern/src"
+        "schemas/airspace/src"
       ]
     }
   },
