@@ -18,7 +18,7 @@ import {
 	TableIndex
 } from '@airport/ground-control'
 import {
-	ActorId,
+	Actor_Id,
 	RepositoryEntity_ActorRecordId,
 	Repository_Id
 } from '@airport/holding-pattern'
@@ -58,7 +58,7 @@ interface ColumnUpdateKeyMap
 }
 
 interface RecordKeyMap
-	extends Map<Repository_Id, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>> {
+	extends Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>> {
 }
 
 type ColumnIndexAndValue = [ColumnIndex, any];
@@ -96,7 +96,7 @@ export class Stage2SyncedInDataProcessor
 
 	async performCreates(
 		recordCreations: Map<SchemaVersionId,
-			Map<TableIndex, Map<Repository_Id, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
 		airDb: IAirportDatabase,
@@ -164,7 +164,7 @@ export class Stage2SyncedInDataProcessor
 
 	async performUpdates(
 		recordUpdates: Map<SchemaVersionId,
-			Map<TableIndex, Map<Repository_Id, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
 		recordUpdateStageDao: IRecordUpdateStageDao
@@ -220,7 +220,7 @@ export class Stage2SyncedInDataProcessor
 
 	async performDeletes(
 		recordDeletions: Map<SchemaVersionId,
-			Map<TableIndex, Map<Repository_Id, Map<ActorId,
+			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Set<RepositoryEntity_ActorRecordId>>>>>,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
 		airDb: IAirportDatabase,
@@ -261,7 +261,7 @@ export class Stage2SyncedInDataProcessor
 	}
 
 	/**
-	 * Get the record key map (RecordKeyMap = RepositoryId -> ActorId
+	 * Get the record key map (RecordKeyMap = RepositoryId -> Actor_Id
 	 * -> RepositoryEntity_ActorRecordId) for the recordUpdateMap (the specified combination
 	 * of columns/values being updated)
 	 * @param {Map<ColumnIndex, RecordUpdate>} recordUpdateMap

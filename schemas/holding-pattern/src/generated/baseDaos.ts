@@ -65,19 +65,6 @@ import {
 	QRecordHistoryOldValue,
 } from './history/qrecordhistoryoldvalue';
 import {
-	IRepoTransHistoryChangedRepositoryActor,
-} from './history/repotranshistorychangedrepositoryactor';
-import {
-	RepoTransHistoryChangedRepositoryActorESelect,
-	RepoTransHistoryChangedRepositoryActorECreateColumns,
-	RepoTransHistoryChangedRepositoryActorECreateProperties,
-	RepoTransHistoryChangedRepositoryActorEUpdateColumns,
-	RepoTransHistoryChangedRepositoryActorEUpdateProperties,
-	RepoTransHistoryChangedRepositoryActorEId,
-	RepoTransHistoryChangedRepositoryActorGraph,
-	QRepoTransHistoryChangedRepositoryActor,
-} from './history/qrepotranshistorychangedrepositoryactor';
-import {
 	IRepository,
 } from './repository/repository';
 import {
@@ -238,11 +225,11 @@ export class BaseOperationHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(9)
+		super(8)
 	}
 }
 
@@ -294,11 +281,11 @@ export class BaseRecordHistoryNewValueDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(5)
+		super(4)
 	}
 }
 
@@ -322,39 +309,11 @@ export class BaseRecordHistoryOldValueDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(6)
-	}
-}
-
-
-export interface IBaseRepoTransHistoryChangedRepositoryActorDao
-  extends IDao<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateColumns, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, RepoTransHistoryChangedRepositoryActorGraph, QRepoTransHistoryChangedRepositoryActor> {
-}
-
-export class BaseRepoTransHistoryChangedRepositoryActorDao
-  extends SQDIDao<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateColumns, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, RepoTransHistoryChangedRepositoryActorGraph, QRepoTransHistoryChangedRepositoryActor>
-	implements IBaseRepoTransHistoryChangedRepositoryActorDao {
-	
-	static Find      = new DaoQueryDecorators<RepoTransHistoryChangedRepositoryActorESelect>();
-	static FindOne   = new DaoQueryDecorators<RepoTransHistoryChangedRepositoryActorESelect>();
-	static Search    = new DaoQueryDecorators<RepoTransHistoryChangedRepositoryActorESelect>();
-	static SearchOne = new DaoQueryDecorators<RepoTransHistoryChangedRepositoryActorESelect>();
-	static Save(
-		config: RepoTransHistoryChangedRepositoryActorGraph
-	): PropertyDecorator {
-		return Dao.BaseSave<RepoTransHistoryChangedRepositoryActorGraph>(config);
-  }
-
-	static diSet(): boolean {
-		return duoDiSet(4)
-	}
-	
-	constructor() {
-		super(4)
+		super(5)
 	}
 }
 
@@ -434,11 +393,11 @@ export class BaseRepositorySchemaDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(10)
+		super(9)
 	}
 }
 
@@ -462,11 +421,11 @@ export class BaseRepositoryTransactionHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(8)
+		super(7)
 	}
 }
 
@@ -490,10 +449,10 @@ export class BaseTransactionHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(7)
+		super(6)
 	}
 }

@@ -1,9 +1,9 @@
 import {
-	IRepositoryTransactionHistory,
-} from './repositorytransactionhistory';
-import {
 	ISchemaEntity,
 } from '@airport/airspace';
+import {
+	IRepositoryTransactionHistory,
+} from './repositorytransactionhistory';
 import {
 	IRecordHistory,
 } from './recordhistory';
@@ -27,8 +27,8 @@ export interface IOperationHistory {
 	systemWideOperationId?: number;
 
 	// Non-Id Relations
-	repositoryTransactionHistory?: IRepositoryTransactionHistory;
 	entity?: ISchemaEntity;
+	repositoryTransactionHistory?: IRepositoryTransactionHistory;
 	recordHistory?: IRecordHistory[];
 
 	// Transient Properties

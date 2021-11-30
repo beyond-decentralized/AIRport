@@ -27,6 +27,19 @@ __decorate([
     SequenceGenerator({ allocationSize: 200 })
 ], RepositoryTransactionHistory.prototype, "id", void 0);
 __decorate([
+    Column({ name: 'SAVE_TIMESTAMP', nullable: false }),
+    DbNumber()
+], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
+__decorate([
+    Column({ name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false }),
+    DbString()
+], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
+__decorate([
+    Column({
+        name: 'SYNCED'
+    })
+], RepositoryTransactionHistory.prototype, "synced", void 0);
+__decorate([
     ManyToOne(),
     JoinColumn({
         name: 'TRANSACTION_HISTORY_ID',
@@ -41,28 +54,12 @@ __decorate([
     })
 ], RepositoryTransactionHistory.prototype, "repository", void 0);
 __decorate([
-    OneToMany({ mappedBy: 'repositoryTransactionHistory' })
-], RepositoryTransactionHistory.prototype, "changedRepositoryActors", void 0);
-__decorate([
     ManyToOne(),
     JoinColumn({
         name: 'ACTOR_ID', referencedColumnName: 'ID',
         nullable: false
     })
 ], RepositoryTransactionHistory.prototype, "actor", void 0);
-__decorate([
-    Column({ name: 'SAVE_TIMESTAMP', nullable: false }),
-    DbNumber()
-], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
-__decorate([
-    Column({ name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false }),
-    DbString()
-], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
-__decorate([
-    Column({
-        name: 'SYNCED'
-    })
-], RepositoryTransactionHistory.prototype, "synced", void 0);
 __decorate([
     OneToMany({ mappedBy: 'repositoryTransactionHistory' })
 ], RepositoryTransactionHistory.prototype, "operationHistory", void 0);

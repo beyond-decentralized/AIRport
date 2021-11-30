@@ -8,17 +8,9 @@ import {
 import {
 	ITerminal,
 	ITerminalDao,
-	IUser,
 	TERMINAL_DAO,
 } from '@airport/travel-document-checkpoint'
 import { SYNC_IN_TERMINAL_CHECKER } from '../../../tokens'
-import { IDataToTM } from '../SyncInUtils'
-
-export interface TerminalCheckResults {
-	mapByMessageIndex: ITerminal[];
-	consistentMessages: IDataToTM[];
-	inconsistentMessages: IDataToTM[];
-}
 
 export interface ISyncInTerminalChecker {
 
@@ -48,7 +40,12 @@ export class SyncInTerminalChecker
 				if (!terminal.uuId || typeof terminal.uuId !== 'string') {
 					throw new Error(`Invalid 'terminal.uuid'`)
 				}
-				terminal.owner = message.terminals[terminal.owner as any]
+				const owner = message.users[terminal.owner as any]
+				if (!owner) {
+					throw new Error(
+						`Did not find user for terminal.owner with "in-message index" ${terminal.owner}`);
+				}
+				terminal.owner = owner
 				terminalUuids.push(terminal.uuId)
 				messageTerminalIndexMap.set(terminal.uuId, i)
 				// Make sure id field is not in the input

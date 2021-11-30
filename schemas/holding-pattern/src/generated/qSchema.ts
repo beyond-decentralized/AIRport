@@ -24,7 +24,6 @@ import { QRecordHistory } from './history/qrecordhistory';
 import { QRecordHistoryNewValue } from './history/qrecordhistorynewvalue';
 import { QRecordHistoryOldValue } from './history/qrecordhistoryoldvalue';
 import { QReferenceRow } from './traditional/qreferencerow';
-import { QRepoTransHistoryChangedRepositoryActor } from './history/qrepotranshistorychangedrepositoryactor';
 import { QRepository } from './repository/qrepository';
 import { QRepositoryActor } from './repository/qrepositoryactor';
 import { QRepositoryEntity } from './repository/qrepositoryentity';
@@ -45,7 +44,6 @@ import {
   RecordHistoryNewValue,
   RecordHistoryOldValue,
   ReferenceRow,
-  RepoTransHistoryChangedRepositoryActor,
   Repository,
   RepositoryActor,
   RepositoryEntity,
@@ -64,7 +62,6 @@ export interface LocalQSchema extends AirportQSchema {
 	RecordHistory: QRecordHistory;
 	RecordHistoryNewValue: QRecordHistoryNewValue;
 	RecordHistoryOldValue: QRecordHistoryOldValue;
-	RepoTransHistoryChangedRepositoryActor: QRepoTransHistoryChangedRepositoryActor;
 	Repository: QRepository;
 	RepositoryActor: QRepositoryActor;
 	RepositorySchema: QRepositorySchema;
@@ -86,7 +83,6 @@ const __constructors__ = {
 	RecordHistoryNewValue: RecordHistoryNewValue,
 	RecordHistoryOldValue: RecordHistoryOldValue,
 	ReferenceRow: ReferenceRow,
-	RepoTransHistoryChangedRepositoryActor: RepoTransHistoryChangedRepositoryActor,
 	Repository: Repository,
 	RepositoryActor: RepositoryActor,
 	RepositoryEntity: RepositoryEntity,

@@ -3,7 +3,6 @@ export * from './history/qrecordhistory';
 export * from './history/qrecordhistorynewvalue';
 export * from './history/qrecordhistoryoldvalue';
 export * from './history/qrepositorytransactionhistory';
-export * from './history/qrepotranshistorychangedrepositoryactor';
 export * from './history/qtransactionhistory';
 export * from './infrastructure/qactor';
 export * from './infrastructure/qstageable';

@@ -318,9 +318,8 @@ export declare const SCHEMA: {
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneSchemaIndex: number;
                     oneTableIndex: number;
-                    oneRelationIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
                 }[];
@@ -337,8 +336,9 @@ export declare const SCHEMA: {
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: number;
+                    oneSchemaIndex: any;
                     oneTableIndex: number;
+                    oneRelationIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
                 }[];
@@ -385,8 +385,8 @@ export declare const SCHEMA: {
                     index: number;
                 };
                 relationTableIndex: number;
+                relationTableSchemaIndex: number;
                 sinceVersion: number;
-                relationTableSchemaIndex?: undefined;
                 oneToManyElems?: undefined;
             } | {
                 index: number;
@@ -396,8 +396,8 @@ export declare const SCHEMA: {
                     index: number;
                 };
                 relationTableIndex: number;
-                relationTableSchemaIndex: number;
                 sinceVersion: number;
+                relationTableSchemaIndex?: undefined;
                 oneToManyElems?: undefined;
             } | {
                 index: number;

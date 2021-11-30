@@ -1,40 +1,14 @@
 import {
-	TerminalId,
 	TerminalMessage,
-	TerminalName,
-	TerminalSecondId
 } from '@airport/arrivals-n-departures'
 import {
 	container,
 	DI
 } from '@airport/di'
-import { ensureChildJsMap } from '@airport/ground-control'
 import {
-	ACTOR_DAO,
-	ActorId,
-	ActorUuId,
-	IActor
+	ACTOR_DAO
 } from '@airport/holding-pattern'
-import {
-	TERMINAL_DAO,
-	User_PrivateId
-} from '@airport/travel-document-checkpoint'
 import { SYNC_IN_ACTOR_CHECKER } from '../../../tokens'
-import { MessageToTM } from '../../types'
-import {
-	IDataToTM,
-	RemoteActorId
-} from '../SyncInUtils'
-import { TerminalCheckResults } from './SyncInTerminalChecker'
-import { UserCheckResults } from './SyncInUserChecker'
-
-export interface ActorCheckResults {
-	actorMap: Map<ActorUuId, Map<User_PrivateId,
-		Map<TerminalName, Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>>;
-	actorMapById: Map<ActorId, IActor>;
-	consistentMessages: IDataToTM[];
-	inconsistentMessages: IDataToTM[];
-}
 
 export interface ISyncInActorChecker {
 
@@ -54,34 +28,49 @@ export class SyncInActorChecker
 			const actorDao = await container(this).get(ACTOR_DAO)
 
 			let actorUuids: string[] = []
-			let messageTerminalIndexMap: Map<string, number> = new Map()
-			for (let i = 0; i < message.terminals.length; i++) {
-				const terminal = message.terminals[i]
-				if (typeof terminal.owner !== 'number') {
-					throw new Error(`Expecting "in-message index" (number)
-						in 'terminal.owner'`)
-				}
-				if (!terminal.uuId || typeof terminal.uuId !== 'string') {
+			let messageActorIndexMap: Map<string, number> = new Map()
+			for (let i = 0; i < message.actors.length; i++) {
+				const actor = message.actors[i]
+				if (!actor.uuId || typeof actor.uuId !== 'string') {
 					throw new Error(`Invalid 'terminal.uuid'`)
 				}
-				terminal.owner = message.terminals[terminal.owner as any]
-				actorUuids.push(terminal.uuId)
-				messageTerminalIndexMap.set(terminal.uuId, i)
+				if (typeof actor.user !== 'number') {
+					throw new Error(`Expecting "in-message index" (number)
+						in 'actor.user'`)
+				}
+				const user = message.users[actor.user as any]
+				if (!user) {
+					throw new Error(
+						`Did not find actor.user with "in-message index" ${actor.user}`);
+				}
+				actor.user = user
+				if (typeof actor.terminal !== 'number') {
+					throw new Error(`Expecting "in-message index" (number)
+						in 'actor.terminal'`)
+				}
+				const terminal = message.terminals[actor.terminal as any]
+				if (!terminal) {
+					throw new Error(
+						`Did not find actor.terminal with "in-message index" ${actor.terminal}`);
+				}
+				actor.terminal = terminal
+				actorUuids.push(actor.uuId)
+				messageActorIndexMap.set(actor.uuId, i)
 				// Make sure id field is not in the input
-				delete terminal.id
+				delete actor.id
 			}
 
-			const terminals = await actorDao.findByUuIds(actorUuids)
-			for (const terminal of terminals) {
-				const messageUserIndex = messageTerminalIndexMap.get(terminal.uuId)
-				message.terminals[messageUserIndex] = terminal
+			const actors = await actorDao.findByUuIds(actorUuids)
+			for (const actor of actors) {
+				const messageUserIndex = messageActorIndexMap.get(actor.uuId)
+				message.actors[messageUserIndex] = actor
 			}
 
-			const missingTerminals = message.terminals
-				.filter(messageTerminal => !messageTerminal.id)
+			const missingActors = message.actors
+				.filter(messageActor => !messageActor.id)
 
-			if (missingTerminals.length) {
-				await this.addMissingTerminals(missingTerminals, actorDao)
+			if (missingActors.length) {
+				await actorDao.insert(missingActors)
 			}
 		} catch (e) {
 			console.error(e)
@@ -89,16 +78,6 @@ export class SyncInActorChecker
 		}
 
 		return true
-	}
-
-	private async addMissingTerminals(
-		missingTerminals: ITerminal[],
-		terminalDao: ITerminalDao
-	): Promise<void> {
-		for (const terminal of missingTerminals) {
-			terminal.isLocal = false
-		}
-		await terminalDao.insert(missingTerminals)
 	}
 
 }

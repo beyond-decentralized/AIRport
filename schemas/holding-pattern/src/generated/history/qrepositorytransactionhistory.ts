@@ -48,19 +48,6 @@ import {
 	Repository,
 } from '../../ddl/repository/Repository';
 import {
-	RepoTransHistoryChangedRepositoryActorGraph,
-	RepoTransHistoryChangedRepositoryActorEId,
-	RepoTransHistoryChangedRepositoryActorEOptionalId,
-	RepoTransHistoryChangedRepositoryActorEUpdateProperties,
-	RepoTransHistoryChangedRepositoryActorESelect,
-	QRepoTransHistoryChangedRepositoryActor,
-	QRepoTransHistoryChangedRepositoryActorQId,
-	QRepoTransHistoryChangedRepositoryActorQRelation,
-} from './qrepotranshistorychangedrepositoryactor';
-import {
-	RepoTransHistoryChangedRepositoryActor,
-} from '../../ddl/history/RepoTransHistoryChangedRepositoryActor';
-import {
 	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -113,7 +100,6 @@ export interface RepositoryTransactionHistoryESelect
   // Non-Id relations (including OneToMany's)
 	transactionHistory?: TransactionHistoryESelect;
 	repository?: RepositoryESelect;
-	changedRepositoryActors?: RepoTransHistoryChangedRepositoryActorESelect;
 	actor?: ActorESelect;
 	operationHistory?: OperationHistoryESelect;
 
@@ -174,7 +160,6 @@ export interface RepositoryTransactionHistoryGraph
 	// Relations
 	transactionHistory?: TransactionHistoryGraph;
 	repository?: RepositoryGraph;
-	changedRepositoryActors?: RepoTransHistoryChangedRepositoryActorGraph[];
 	actor?: ActorGraph;
 	operationHistory?: OperationHistoryGraph[];
 
@@ -234,7 +219,6 @@ export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransa
 	// Non-Id Relations
 	transactionHistory: QTransactionHistoryQRelation;
 	repository: QRepositoryQRelation;
-	changedRepositoryActors: IQOneToManyRelation<RepoTransHistoryChangedRepositoryActor, QRepoTransHistoryChangedRepositoryActor>;
 	actor: QActorQRelation;
 	operationHistory: IQOneToManyRelation<OperationHistory, QOperationHistory>;
 

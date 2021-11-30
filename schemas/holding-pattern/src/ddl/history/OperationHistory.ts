@@ -21,9 +21,9 @@ import {RepositoryTransactionHistory} from './RepositoryTransactionHistory'
  * Created by Papa on 4/17/2017.
  */
 
-export type OperationHistoryId = number;
-export type OperationHistoryOrderNumber = number;
-export type OperationHistorySystemWideOperationId = SystemWideOperationId;
+export type OperationHistory_Id = number;
+export type OperationHistory_OrderNumber = number;
+export type OperationHistory_SystemWideOperationId = SystemWideOperationId;
 
 /**
  * Marks a group of mutation history changes.
@@ -35,17 +35,11 @@ export class OperationHistory {
 	@GeneratedValue()
 	@SequenceGenerator({allocationSize: 600})
 	@Id()
-	id: OperationHistoryId
-
-	@ManyToOne()
-	@JoinColumn({
-		name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID',
-		nullable: false
-	})
-	repositoryTransactionHistory: RepositoryTransactionHistory
+	id: OperationHistory_Id
 
 	@Column({name: 'ORDER_NUMBER', nullable: false})
-	orderNumber: OperationHistoryOrderNumber
+	@DbNumber()
+	orderNumber: OperationHistory_OrderNumber
 
 	@Column({name: 'CHANGE_TYPE', nullable: false})
 	@DbString()
@@ -53,11 +47,19 @@ export class OperationHistory {
 
 	// This field is local to the device only, when copied to new device this value is re-created
 	@Column({name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false})
-	systemWideOperationId: OperationHistorySystemWideOperationId
+	@DbNumber()
+	systemWideOperationId: OperationHistory_SystemWideOperationId
 
 	@ManyToOne()
 	@JoinColumn({name: 'ENTITY_ID', referencedColumnName: 'ID', nullable: false})
 	entity: ISchemaEntity
+
+	@ManyToOne()
+	@JoinColumn({
+		name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID',
+		nullable: false
+	})
+	repositoryTransactionHistory: RepositoryTransactionHistory
 
 	@OneToMany({mappedBy: 'operationHistory'})
 	recordHistory: RecordHistory[] = []

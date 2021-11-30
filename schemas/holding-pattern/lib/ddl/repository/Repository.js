@@ -18,24 +18,24 @@ __decorate([
     DbNumber()
 ], Repository.prototype, "id", void 0);
 __decorate([
+    Column({ name: 'AGE_SUITABILITY', nullable: false }),
+    DbNumber()
+], Repository.prototype, "ageSuitability", void 0);
+__decorate([
     Column({ name: "CREATED_AT", nullable: false }),
     DbDate()
 ], Repository.prototype, "createdAt", void 0);
 __decorate([
-    Column({ name: "UU_ID", nullable: false }),
-    DbString()
-], Repository.prototype, "uuId", void 0);
-__decorate([
-    Column({ name: 'AGE_SUITABILITY', nullable: false }),
-    DbNumber()
-], Repository.prototype, "ageSuitability", void 0);
+    Column({ name: "IMMUTABLE", nullable: false })
+], Repository.prototype, "immutable", void 0);
 __decorate([
     Column({ name: "SOURCE" }),
     DbString()
 ], Repository.prototype, "source", void 0);
 __decorate([
-    Column({ name: "IMMUTABLE", nullable: false })
-], Repository.prototype, "immutable", void 0);
+    Column({ name: "UU_ID", nullable: false }),
+    DbString()
+], Repository.prototype, "uuId", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({

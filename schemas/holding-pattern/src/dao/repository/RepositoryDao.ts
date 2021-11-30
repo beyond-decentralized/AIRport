@@ -15,7 +15,7 @@ import {
 	User_UuId
 } from '@airport/travel-document-checkpoint'
 import {
-	ActorUuId,
+	Actor_UuId,
 	Repository_Id,
 	Repository_CreatedAt,
 	Repository_Source,
@@ -56,7 +56,7 @@ export interface IRepositoryDao
 	findLocalRepoIdsByGlobalIds(
 		createdAts: Repository_CreatedAt[],
 		uuIds: Repository_UuId[],
-		ownerActorRandomIds: ActorUuId[],
+		ownerActorRandomIds: Actor_UuId[],
 		ownerUserUniqueIds: User_UuId[],
 		ownerTerminalUuids: Terminal_UuId[],
 		ownerTerminalOwnerUserUniqueIds: User_UuId[]
@@ -66,11 +66,19 @@ export interface IRepositoryDao
 		repositoryIds: Repository_Id[]
 	): Promise<Map<Repository_Id, IRepository>>;
 
+	findByUuIds(
+		uuIds: Repository_UuId[],
+	): Promise<IRepository[]>
+
+	insert(
+		repositories: IRepository[]
+	): Promise<void>
+
 }
 
 export type RepositoryIdMap = Map<User_UuId,
 	Map<Terminal_UuId, Map<User_UuId,
-		Map<ActorUuId, Map<number,
+		Map<Actor_UuId, Map<number,
 			Map<Repository_UuId, Repository_Id>>>>>>;
 
 export class RepositoryDao
@@ -252,7 +260,7 @@ export class RepositoryDao
 	async findLocalRepoIdsByGlobalIds(
 		createdAts: Repository_CreatedAt[],
 		uuIds: Repository_UuId[],
-		ownerActorRandomIds: ActorUuId[],
+		ownerActorRandomIds: Actor_UuId[],
 		ownerUserUniqueIds: User_UuId[],
 		ownerTerminalUuids: Terminal_UuId[],
 		ownerTerminalOwnerUserUniqueIds: User_UuId[]
@@ -296,18 +304,56 @@ export class RepositoryDao
 
 		for (const resultRow of resultRows) {
 			ensureChildJsMap(
+				ensureChildJsMap(
 					ensureChildJsMap(
 						ensureChildJsMap(
-							ensureChildJsMap(
-								ensureChildJsMap(repositoryIdMap, resultRow[0]),
-								resultRow[1]),
-							resultRow[2]),
-						resultRow[3]),
-					resultRow[4].getTime()).set(resultRow[5], resultRow[6])
+							ensureChildJsMap(repositoryIdMap, resultRow[0]),
+							resultRow[1]),
+						resultRow[2]),
+					resultRow[3]),
+				resultRow[4].getTime()).set(resultRow[5], resultRow[6])
 		}
 
 
 		return repositoryIdMap
+	}
+
+	async findByUuIds(
+		uuIds: Repository_UuId[],
+	): Promise<IRepository[]> {
+		let r: QRepository
+		return await this.db.find.tree({
+			select: {},
+			from: [
+				r = Q.QRepository
+			],
+			where: r.uuId.in(uuIds)
+		})
+	}
+
+	async insert(
+		repositories: IRepository[]
+	): Promise<void> {
+		let r: QRepository;
+		const values = []
+		for (const repository of repositories) {
+			values.push([
+				repository.createdAt, repository.uuId, repository.ageSuitability,
+				repository.source, repository.immutable, repository.ownerActor.id,
+			])
+		}
+		await this.db.insertValuesGenerateIds({
+			insertInto: r = Q.Repository,
+			columns: [
+				r.createdAt,
+				r.uuId,
+				r.ageSuitability,
+				r.source,
+				r.immutable,
+				r.ownerActor.id
+			],
+			values
+		})
 	}
 
 }

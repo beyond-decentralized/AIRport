@@ -7,7 +7,7 @@ import {
 }                                          from '@airport/ground-control'
 import {
 	ACTOR_DAO,
-	ActorId,
+	Actor_Id,
 	IActorDao,
 	IRepository,
 	IRepositoryDao,
@@ -64,8 +64,8 @@ export class SyncOutRepositoryTransactionBlockCreator
 			.findNewRepoTransHistoriesForSharingNodes(sharingNodeIds)
 
 		const repositoryIdSet: Set<RepositoryId>                      = new Set<RepositoryId>()
-		const actorIdSet: Set<ActorId>                                = new Set<ActorId>()
-		const repositoryIdsByActorId: Map<ActorId, Set<RepositoryId>> = new Map()
+		const actorIdSet: Set<Actor_Id>                                = new Set<Actor_Id>()
+		const repositoryIdsByActorId: Map<Actor_Id, Set<RepositoryId>> = new Map()
 		const repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>
 		                                                              = new Map()
 
@@ -109,8 +109,8 @@ export class SyncOutRepositoryTransactionBlockCreator
 		repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>,
 		schemaVersionIds: Set<SchemaIndex>,
 		schemaVersionIdSetsByRepository: Map<RepositoryId, Set<SchemaVersionId>>,
-		actorIdSet: Set<ActorId>,
-		repositoryIdsByActorId: Map<ActorId, Set<RepositoryId>>
+		actorIdSet: Set<Actor_Id>,
+		repositoryIdsByActorId: Map<Actor_Id, Set<RepositoryId>>
 	) {
 		repoTransHistoriesToSync.forEach(
 			repoTransHistory => {
@@ -135,8 +135,8 @@ export class SyncOutRepositoryTransactionBlockCreator
 		repoTransHistory: IRepositoryTransactionHistory,
 		schemaVersionIds: Set<SchemaIndex>,
 		schemaVersionIdSetsByRepository: Map<RepositoryId, Set<SchemaVersionId>>,
-		actorIdSet: Set<ActorId>,
-		repositoryIdsByActorId: Map<ActorId, Set<RepositoryId>>
+		actorIdSet: Set<Actor_Id>,
+		repositoryIdsByActorId: Map<Actor_Id, Set<RepositoryId>>
 	): void {
 		const repoTransHistoryActorId = repoTransHistory.actor.id
 		actorIdSet.add(repoTransHistoryActorId)
@@ -185,8 +185,8 @@ export class SyncOutRepositoryTransactionBlockCreator
 		schemaVersionIdSetsByRepository: Map<RepositoryId, Set<SchemaVersionId>>,
 		terminal: ITerminal,
 		repositoryIdSet: Set<RepositoryId>,
-		actorIdSet: Set<ActorId>,
-		repositoryIdsByActorId: Map<ActorId, Set<RepositoryId>>,
+		actorIdSet: Set<Actor_Id>,
+		repositoryIdsByActorId: Map<Actor_Id, Set<RepositoryId>>,
 		repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>,
 		actorDao: IActorDao,
 		repositoryDao: IRepositoryDao,
@@ -264,9 +264,9 @@ export class SyncOutRepositoryTransactionBlockCreator
 
 	private createRepositoryTransactionBlockAndStageData(
 		repositoryMapById: Map<RepositoryId, IRepository>,
-		actorIdSet: Set<ActorId>,
+		actorIdSet: Set<Actor_Id>,
 		repositoryId: RepositoryId,
-		repositoryIdsByActorId: Map<ActorId, Set<RepositoryId>>,
+		repositoryIdsByActorId: Map<Actor_Id, Set<RepositoryId>>,
 		repositoryTransactionHistories: IRepositoryTransactionHistory[],
 		schemasByRepositoryIdMap: Map<RepositoryId, ISchema[]>,
 		repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>,
@@ -342,8 +342,8 @@ export class SyncOutRepositoryTransactionBlockCreator
 	}
 
 	private async finishPopulatingRepositoryTransactionBlockData(
-		actorIdSet: Set<ActorId>,
-		repositoryIdsByActorId: Map<ActorId, Set<RepositoryId>>,
+		actorIdSet: Set<Actor_Id>,
+		repositoryIdsByActorId: Map<Actor_Id, Set<RepositoryId>>,
 		repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>,
 		repoTransBlocksByRepositoryId: Map<RepositoryId, IRepositoryTransactionBlock>,
 		repositoryTransactionBlocks: IRepositoryTransactionBlock[],

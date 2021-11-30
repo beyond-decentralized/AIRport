@@ -43,6 +43,34 @@ export class ActorDao extends BaseActorDao {
             where: schema.signature.equals(applicationSignature)
         });
     }
+    async findByUuIds(uuIds) {
+        let a;
+        return await this.db.find.tree({
+            select: {},
+            from: [
+                a = Q.Actor
+            ],
+            where: a.uuId.in(uuIds)
+        });
+    }
+    async insert(actors) {
+        let t;
+        const values = [];
+        for (const actor of actors) {
+            values.push([
+                actor.uuId, actor.user.id, actor.terminal.id,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            insertInto: t = Q.Terminal,
+            columns: [
+                t.uuId,
+                t.user.id,
+                t.terminal.id
+            ],
+            values
+        });
+    }
     async findWithDetailsAndGlobalIdsByWhereClause(getWhereClause) {
         let a;
         let u;

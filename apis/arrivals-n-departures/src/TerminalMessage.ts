@@ -1,7 +1,7 @@
 import {
 	IActor,
 	IRepository,
-	RepositoryTransactionHistory
+	IRepositoryTransactionHistory
 } from "@airport/holding-pattern";
 import {
 	ITerminal,
@@ -16,8 +16,8 @@ export interface TerminalMessage {
 	actors: IActor[]
 	schemaVersions: ISchemaVersion[]
 	schemas: ISchema[]
-	history: RepositoryTransactionHistory
-	// TODO: Replace current SyncInRepositoryChecker logic with check for referencedRepositories
+	history: IRepositoryTransactionHistory
+	// Repositories may reference records in other repositories
 	referencedRepositories: IRepository[]
 	syncTimestamp: number
 	users: IUser[]

@@ -9,11 +9,11 @@ import { Repository } from '../../ddl/repository/Repository';
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEOptionalId {
-    createdAt?: Date | IQDateField;
-    uuId?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
-    source?: string | IQStringField;
+    createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
+    source?: string | IQStringField;
+    uuId?: string | IQStringField;
     ownerActor?: ActorESelect;
     repositoryActors?: RepositoryActorESelect;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
@@ -34,22 +34,22 @@ export interface RepositoryEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
-    createdAt?: Date | IQDateField;
-    uuId?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
-    source?: string | IQStringField;
+    createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
+    source?: string | IQStringField;
+    uuId?: string | IQStringField;
     ownerActor?: ActorEOptionalId;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGraph {
-    createdAt?: Date | IQDateField;
-    uuId?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
-    source?: string | IQStringField;
+    createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
+    source?: string | IQStringField;
+    uuId?: string | IQStringField;
     ownerActor?: ActorGraph;
     repositoryActors?: RepositoryActorGraph[];
     repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
@@ -58,11 +58,11 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
  * UPDATE - non-id columns (optional).
  */
 export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
-    CREATED_AT?: Date | IQDateField;
-    UU_ID?: string | IQStringField;
     AGE_SUITABILITY?: number | IQNumberField;
-    SOURCE?: string | IQStringField;
+    CREATED_AT?: Date | IQDateField;
     IMMUTABLE?: boolean | IQBooleanField;
+    SOURCE?: string | IQStringField;
+    UU_ID?: string | IQStringField;
     OWNER_ACTOR_ID?: number | IQNumberField;
 }
 /**
@@ -80,11 +80,11 @@ export interface RepositoryECreateColumns extends RepositoryEId, RepositoryEUpda
  */
 export interface QRepository extends IQEntity<Repository> {
     id: IQNumberField;
-    createdAt: IQDateField;
-    uuId: IQStringField;
     ageSuitability: IQNumberField;
-    source: IQStringField;
+    createdAt: IQDateField;
     immutable: IQBooleanField;
+    source: IQStringField;
+    uuId: IQStringField;
     ownerActor: QActorQRelation;
     repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
     repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;

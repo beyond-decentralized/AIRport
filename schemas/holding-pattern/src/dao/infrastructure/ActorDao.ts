@@ -18,8 +18,8 @@ import {
 	UserId
 } from '@airport/travel-document-checkpoint'
 import {
-	ActorId,
-	ActorUuId,
+	Actor_Id,
+	Actor_UuId,
 } from '../../ddl/ddl'
 import { ACTOR_DAO } from '../../tokens'
 import {
@@ -35,26 +35,34 @@ export interface IActorDao
 	extends IBaseActorDao {
 
 	findWithDetailsAndGlobalIdsByIds(
-		actorIds: ActorId[]
+		actorIds: Actor_Id[]
 	): Promise<IActor[]>;
 
 	findWithDetailsByGlobalIds(
-		uuIds: ActorUuId[],
+		uuIds: Actor_UuId[],
 		userIds: UserId[],
 		terminalIds: TmTerminal_Id[]
 	): Promise<IActor[]>;
 
 	findMapsWithDetailsByGlobalIds(
-		uuIds: ActorUuId[],
+		uuIds: Actor_UuId[],
 		userIds: UserId[],
 		terminalIds: TmTerminal_Id[],
 		actorMap: Map<UserId, Map<TmTerminal_Id, IActor>>,
-		actorMapById: Map<ActorId, IActor>
+		actorMapById: Map<Actor_Id, IActor>
 	): Promise<void>;
 
 	findByApplicationSignature(
 		applicationSignature: ApplicationSignature
 	): Promise<IActor>
+
+	findByUuIds(
+		uuIds: Actor_UuId[],
+	): Promise<IActor[]>
+
+	insert(
+		actors: IActor[]
+	): Promise<void>
 
 }
 
@@ -63,7 +71,7 @@ export class ActorDao
 	implements IActorDao {
 
 	async findWithDetailsAndGlobalIdsByIds(
-		actorIds: ActorId[]
+		actorIds: Actor_Id[]
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor,
@@ -71,11 +79,11 @@ export class ActorDao
 	}
 
 	async findMapsWithDetailsByGlobalIds(
-		uuIds: ActorUuId[],
+		uuIds: Actor_UuId[],
 		userIds: UserId[],
 		terminalIds: TmTerminal_Id[],
 		actorMap: Map<UserId, Map<TmTerminal_Id, IActor>>,
-		actorMapById: Map<ActorId, IActor>
+		actorMapById: Map<Actor_Id, IActor>
 	): Promise<void> {
 		const actors = await this.findWithDetailsByGlobalIds(
 			uuIds,
@@ -91,7 +99,7 @@ export class ActorDao
 	}
 
 	async findWithDetailsByGlobalIds(
-		uuIds: ActorUuId[],
+		uuIds: Actor_UuId[],
 		userIds: UserId[],
 		terminalIds: TmTerminal_Id[]
 	): Promise<IActor[]> {
@@ -129,6 +137,40 @@ export class ActorDao
 				user = act.user.leftJoin()
 			],
 			where: schema.signature.equals(applicationSignature)
+		})
+	}
+
+	async findByUuIds(
+		uuIds: Actor_UuId[],
+	): Promise<IActor[]> {
+		let a: QActor
+		return await this.db.find.tree({
+			select: {},
+			from: [
+				a = Q.Actor
+			],
+			where: a.uuId.in(uuIds)
+		})
+	}
+
+	async insert(
+		actors: IActor[]
+	): Promise<void> {
+		let t: QActor;
+		const values = []
+		for (const actor of actors) {
+			values.push([
+				actor.uuId, actor.user.id, actor.terminal.id,
+			])
+		}
+		await this.db.insertValuesGenerateIds({
+			insertInto: t = Q.Terminal,
+			columns: [
+				t.uuId,
+				t.user.id,
+				t.terminal.id
+			],
+			values
 		})
 	}
 

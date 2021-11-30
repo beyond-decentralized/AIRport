@@ -8,8 +8,6 @@ import { IRecordHistoryNewValue } from './history/recordhistorynewvalue';
 import { RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateColumns, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, RecordHistoryNewValueGraph, QRecordHistoryNewValue } from './history/qrecordhistorynewvalue';
 import { IRecordHistoryOldValue } from './history/recordhistoryoldvalue';
 import { RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, RecordHistoryOldValueGraph, QRecordHistoryOldValue } from './history/qrecordhistoryoldvalue';
-import { IRepoTransHistoryChangedRepositoryActor } from './history/repotranshistorychangedrepositoryactor';
-import { RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateColumns, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, RepoTransHistoryChangedRepositoryActorGraph, QRepoTransHistoryChangedRepositoryActor } from './history/qrepotranshistorychangedrepositoryactor';
 import { IRepository } from './repository/repository';
 import { RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryGraph, QRepository } from './repository/qrepository';
 import { IRepositoryActor } from './repository/repositoryactor';
@@ -78,17 +76,6 @@ export declare class BaseRecordHistoryOldValueDao extends SQDIDao<IRecordHistory
     static Search: DaoQueryDecorators<RecordHistoryOldValueESelect>;
     static SearchOne: DaoQueryDecorators<RecordHistoryOldValueESelect>;
     static Save(config: RecordHistoryOldValueGraph): PropertyDecorator;
-    static diSet(): boolean;
-    constructor();
-}
-export interface IBaseRepoTransHistoryChangedRepositoryActorDao extends IDao<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateColumns, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, RepoTransHistoryChangedRepositoryActorGraph, QRepoTransHistoryChangedRepositoryActor> {
-}
-export declare class BaseRepoTransHistoryChangedRepositoryActorDao extends SQDIDao<IRepoTransHistoryChangedRepositoryActor, RepoTransHistoryChangedRepositoryActorESelect, RepoTransHistoryChangedRepositoryActorECreateProperties, RepoTransHistoryChangedRepositoryActorEUpdateColumns, RepoTransHistoryChangedRepositoryActorEUpdateProperties, RepoTransHistoryChangedRepositoryActorEId, RepoTransHistoryChangedRepositoryActorGraph, QRepoTransHistoryChangedRepositoryActor> implements IBaseRepoTransHistoryChangedRepositoryActorDao {
-    static Find: DaoQueryDecorators<RepoTransHistoryChangedRepositoryActorESelect>;
-    static FindOne: DaoQueryDecorators<RepoTransHistoryChangedRepositoryActorESelect>;
-    static Search: DaoQueryDecorators<RepoTransHistoryChangedRepositoryActorESelect>;
-    static SearchOne: DaoQueryDecorators<RepoTransHistoryChangedRepositoryActorESelect>;
-    static Save(config: RepoTransHistoryChangedRepositoryActorGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

@@ -18,11 +18,17 @@ export function duoDiSet(dbSchema, dbEntityId) {
         .schemaVersion.entities[dbEntityId];
 }
 export async function getSysWideOpId(airDb, sequenceGenerator) {
+    return getSysWideOpIds(1, airDb, sequenceGenerator)[0];
+}
+export async function getSysWideOpIds(numSequencesNeeded, airDb, sequenceGenerator) {
+    if (!numSequencesNeeded) {
+        return [];
+    }
     const sysWideOpIdGeneratedColumn = airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA]
         .__dbSchema__.currentVersion[0].schemaVersion
         .entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
     const generatedNumWrapper = await sequenceGenerator
-        .generateSequenceNumbers([sysWideOpIdGeneratedColumn], [1]);
-    return generatedNumWrapper[0][0];
+        .generateSequenceNumbers([sysWideOpIdGeneratedColumn], [numSequencesNeeded]);
+    return generatedNumWrapper[0];
 }
 //# sourceMappingURL=SequenceGenerator.js.map

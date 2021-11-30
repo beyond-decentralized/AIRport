@@ -11,7 +11,7 @@ import {
 	TransactionType
 } from '@airport/ground-control'
 import {
-	ActorId,
+	Actor_Id,
 	IActor,
 	IRepositoryActorDao,
 	IRepositoryTransactionHistory,
@@ -114,7 +114,7 @@ export class TwoStageSyncedInDataProcessor
 		sharingMessages: ISharingMessage[],
 		existingRepoTransBlocksWithCompatibleSchemasAndData: IRepositoryTransactionBlock[],
 		dataMessages: IDataToTM[],
-		actorMapById: Map<ActorId, IActor>,
+		actorMapById: Map<Actor_Id, IActor>,
 		repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
 		repoTransBlockRepoTransHistoryDao, // TODO: figure out the type
 		transactionManager: ITransactionManager
@@ -185,7 +185,7 @@ export class TwoStageSyncedInDataProcessor
 	private async getRepoTransHistoryMapByRepoId(
 		dataMessages: IDataToTM[],
 		existingRepoTransBlocksWithCompatibleSchemasAndData: IRepositoryTransactionBlock[],
-		actorMapById: Map<ActorId, IActor>,
+		actorMapById: Map<Actor_Id, IActor>,
 		repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
 		repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 	): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>> {
@@ -230,7 +230,7 @@ export class TwoStageSyncedInDataProcessor
 
 	private async updateLocalData(
 		repoTransHistoryMapByRepositoryId: Map<RepositoryId, ISyncRepoTransHistory[]>,
-		actorMayById: Map<ActorId, IActor>,
+		actorMayById: Map<Actor_Id, IActor>,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
 		repositoryActorDao: IRepositoryActorDao,
 		stage1SyncedInDataProcessor: IStage1SyncedInDataProcessor,

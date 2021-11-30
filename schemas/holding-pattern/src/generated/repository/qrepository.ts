@@ -78,11 +78,11 @@ declare function require(moduleName: string): any;
 export interface RepositoryESelect
     extends IEntitySelectProperties, RepositoryEOptionalId {
 	// Non-Id Properties
-	createdAt?: Date | IQDateField;
-	uuId?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
-	source?: string | IQStringField;
+	createdAt?: Date | IQDateField;
 	immutable?: boolean | IQBooleanField;
+	source?: string | IQStringField;
+	uuId?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -122,11 +122,11 @@ export interface RepositoryEOptionalId {
 export interface RepositoryEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	createdAt?: Date | IQDateField;
-	uuId?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
-	source?: string | IQStringField;
+	createdAt?: Date | IQDateField;
 	immutable?: boolean | IQBooleanField;
+	source?: string | IQStringField;
+	uuId?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	ownerActor?: ActorEOptionalId;
@@ -141,11 +141,11 @@ export interface RepositoryGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	createdAt?: Date | IQDateField;
-	uuId?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
-	source?: string | IQStringField;
+	createdAt?: Date | IQDateField;
 	immutable?: boolean | IQBooleanField;
+	source?: string | IQStringField;
+	uuId?: string | IQStringField;
 
 	// Relations
 	ownerActor?: ActorGraph;
@@ -160,11 +160,11 @@ export interface RepositoryGraph
 export interface RepositoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	CREATED_AT?: Date | IQDateField;
-	UU_ID?: string | IQStringField;
 	AGE_SUITABILITY?: number | IQNumberField;
-	SOURCE?: string | IQStringField;
+	CREATED_AT?: Date | IQDateField;
 	IMMUTABLE?: boolean | IQBooleanField;
+	SOURCE?: string | IQStringField;
+	UU_ID?: string | IQStringField;
 	OWNER_ACTOR_ID?: number | IQNumberField;
 
 }
@@ -201,11 +201,11 @@ export interface QRepository extends IQEntity<Repository>
 	// Id Relations
 
 	// Non-Id Fields
-	createdAt: IQDateField;
-	uuId: IQStringField;
 	ageSuitability: IQNumberField;
-	source: IQStringField;
+	createdAt: IQDateField;
 	immutable: IQBooleanField;
+	source: IQStringField;
+	uuId: IQStringField;
 
 	// Non-Id Relations
 	ownerActor: QActorQRelation;

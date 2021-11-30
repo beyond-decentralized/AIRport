@@ -5,9 +5,6 @@ import {
 	IRepository,
 } from '../repository/repository';
 import {
-	IRepoTransHistoryChangedRepositoryActor,
-} from './repotranshistorychangedrepositoryactor';
-import {
 	IActor,
 } from '../infrastructure/actor';
 import {
@@ -35,7 +32,6 @@ export interface IRepositoryTransactionHistory {
 	// Non-Id Relations
 	transactionHistory?: ITransactionHistory;
 	repository?: IRepository;
-	changedRepositoryActors?: IRepoTransHistoryChangedRepositoryActor[];
 	actor?: IActor;
 	operationHistory?: IOperationHistory[];
 

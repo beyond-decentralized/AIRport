@@ -20,6 +20,7 @@ import {
 	RecordHistoryNewValue,
 	RecordHistoryOldValue
 } from '../..'
+import { Repository } from '../ddl';
 
 /**
  * Entity Changes are always local-only, so a sequence for id will do.
@@ -49,6 +50,13 @@ export class RecordHistory {
 	@Column({name: 'ACTOR_RECORD_ID', nullable: false})
 	@DbNumber()
 	actorRecordId: RecordHistoryActorRecordId
+
+	@ManyToOne()
+	@JoinColumn({
+		name: 'REPOSITORY_ID',
+		referencedColumnName: 'ID', nullable: false
+	})
+	repository: Repository
 
 	@ManyToOne()
 	@JoinColumn({

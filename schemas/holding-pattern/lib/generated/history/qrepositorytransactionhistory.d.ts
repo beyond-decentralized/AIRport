@@ -1,8 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { TransactionHistoryGraph, TransactionHistoryEOptionalId, TransactionHistoryESelect, QTransactionHistoryQRelation } from './qtransactionhistory';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
-import { RepoTransHistoryChangedRepositoryActorGraph, RepoTransHistoryChangedRepositoryActorESelect, QRepoTransHistoryChangedRepositoryActor } from './qrepotranshistorychangedrepositoryactor';
-import { RepoTransHistoryChangedRepositoryActor } from '../../ddl/history/RepoTransHistoryChangedRepositoryActor';
 import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
 import { OperationHistoryGraph, OperationHistoryESelect, QOperationHistory } from './qoperationhistory';
 import { OperationHistory } from '../../ddl/history/OperationHistory';
@@ -16,7 +14,6 @@ export interface RepositoryTransactionHistoryESelect extends IEntitySelectProper
     synced?: boolean | IQBooleanField;
     transactionHistory?: TransactionHistoryESelect;
     repository?: RepositoryESelect;
-    changedRepositoryActors?: RepoTransHistoryChangedRepositoryActorESelect;
     actor?: ActorESelect;
     operationHistory?: OperationHistoryESelect;
 }
@@ -52,7 +49,6 @@ export interface RepositoryTransactionHistoryGraph extends RepositoryTransaction
     synced?: boolean | IQBooleanField;
     transactionHistory?: TransactionHistoryGraph;
     repository?: RepositoryGraph;
-    changedRepositoryActors?: RepoTransHistoryChangedRepositoryActorGraph[];
     actor?: ActorGraph;
     operationHistory?: OperationHistoryGraph[];
 }
@@ -87,7 +83,6 @@ export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransa
     synced: IQBooleanField;
     transactionHistory: QTransactionHistoryQRelation;
     repository: QRepositoryQRelation;
-    changedRepositoryActors: IQOneToManyRelation<RepoTransHistoryChangedRepositoryActor, QRepoTransHistoryChangedRepositoryActor>;
     actor: QActorQRelation;
     operationHistory: IQOneToManyRelation<OperationHistory, QOperationHistory>;
 }

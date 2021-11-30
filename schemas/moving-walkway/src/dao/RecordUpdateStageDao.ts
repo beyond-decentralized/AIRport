@@ -13,7 +13,7 @@ import {
 	TableIndex
 } from '@airport/ground-control'
 import {
-	ActorId,
+	Actor_Id,
 	RecordHistoryActorRecordId,
 	RepositoryEntity_ActorRecordId,
 	Repository_Id
@@ -32,7 +32,7 @@ export type RecordUpdateStageValues = [
 	SchemaVersionId,
 	TableIndex,
 	Repository_Id,
-	ActorId,
+	Actor_Id,
 	RecordHistoryActorRecordId,
 	ColumnIndex,
 	RecordUpdateStageValue
@@ -49,7 +49,7 @@ export interface IRecordUpdateStageDao
 		schemaIndex: SchemaIndex,
 		schemaVersionId: SchemaVersionId,
 		tableIndex: TableIndex,
-		idMap: Map<Repository_Id, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>,
+		idMap: Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
 	): Promise<void>;
 
@@ -94,7 +94,7 @@ export class RecordUpdateStageDao
 		schemaIndex: SchemaIndex,
 		schemaVersionId: SchemaVersionId,
 		tableIndex: TableIndex,
-		idMap: Map<Repository_Id, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>,
+		idMap: Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
 	): Promise<void> {
 		const airDb = await container(this).get(AIRPORT_DATABASE)

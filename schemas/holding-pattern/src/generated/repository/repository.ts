@@ -22,11 +22,11 @@ export interface IRepository {
 	// Id Relations
 
 	// Non-Id Properties
-	createdAt?: Date;
-	uuId?: string;
 	ageSuitability?: number;
-	source?: string;
+	createdAt?: Date;
 	immutable?: boolean;
+	source?: string;
+	uuId?: string;
 
 	// Non-Id Relations
 	ownerActor?: IActor;

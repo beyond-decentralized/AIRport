@@ -22,6 +22,19 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
+	RepositoryGraph,
+	RepositoryEId,
+	RepositoryEOptionalId,
+	RepositoryEUpdateProperties,
+	RepositoryESelect,
+	QRepository,
+	QRepositoryQId,
+	QRepositoryQRelation,
+} from '../repository/qrepository';
+import {
+	Repository,
+} from '../../ddl/repository/Repository';
+import {
 	ActorGraph,
 	ActorEId,
 	ActorEOptionalId,
@@ -96,6 +109,7 @@ export interface RecordHistoryESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
+	repository?: RepositoryESelect;
 	actor?: ActorESelect;
 	operationHistory?: OperationHistoryESelect;
 	newValues?: RecordHistoryNewValueESelect;
@@ -135,6 +149,7 @@ export interface RecordHistoryEUpdateProperties
 	actorRecordId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+	repository?: RepositoryEOptionalId;
 	actor?: ActorEOptionalId;
 	operationHistory?: OperationHistoryEOptionalId;
 
@@ -151,6 +166,7 @@ export interface RecordHistoryGraph
 	actorRecordId?: number | IQNumberField;
 
 	// Relations
+	repository?: RepositoryGraph;
 	actor?: ActorGraph;
 	operationHistory?: OperationHistoryGraph;
 	newValues?: RecordHistoryNewValueGraph[];
@@ -165,6 +181,7 @@ export interface RecordHistoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	ACTOR_RECORD_ID?: number | IQNumberField;
+	REPOSITORY_ID?: number | IQNumberField;
 	ACTOR_ID?: number | IQNumberField;
 	REPOSITORY_OPERATION_HISTORY_ID?: number | IQNumberField;
 
@@ -205,6 +222,7 @@ export interface QRecordHistory extends IQEntity<RecordHistory>
 	actorRecordId: IQNumberField;
 
 	// Non-Id Relations
+	repository: QRepositoryQRelation;
 	actor: QActorQRelation;
 	operationHistory: QOperationHistoryQRelation;
 	newValues: IQOneToManyRelation<RecordHistoryNewValue, QRecordHistoryNewValue>;

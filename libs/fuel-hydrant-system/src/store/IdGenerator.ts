@@ -9,7 +9,7 @@ import {
 	DbEntity
 } from '@airport/ground-control'
 import {
-	OperationHistoryId,
+	OperationHistory_Id,
 	Q,
 	RecordHistoryId,
 	RepositoryTransactionHistory_Id,
@@ -23,7 +23,7 @@ export type NumRecordHistories = number
 
 export interface TransactionHistoryIds {
 
-	operationHistoryIds: OperationHistoryId[]
+	operationHistoryIds: OperationHistory_Id[]
 	recordHistoryIds: RecordHistoryId[]
 	repositoryHistoryIds: RepositoryTransactionHistory_Id[]
 	transactionHistoryId: TransactionHistoryId

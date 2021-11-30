@@ -4,7 +4,7 @@ import {
 	DbEntity
 }                               from '@airport/ground-control'
 import {
-	ActorId,
+	Actor_Id,
 	Repository,
 	Repository_Id,
 	RepositoryTransactionHistory,
@@ -33,7 +33,7 @@ export interface IRepositoryTransactionHistoryDuo {
 
 	sortRepoTransHistories(
 		repoTransHistories: IRepositoryTransactionHistory[],
-		actorMapById: Map<ActorId, IActor>
+		actorMapById: Map<Actor_Id, IActor>
 	): void;
 
 	startOperation(
@@ -79,7 +79,7 @@ export class RepositoryTransactionHistoryDuo
 
 	sortRepoTransHistories(
 		repoTransHistories: IRepositoryTransactionHistory[],
-		actorMapById: Map<ActorId, IActor>
+		actorMapById: Map<Actor_Id, IActor>
 	): void {
 		repoTransHistories.sort((
 			repoTransHistory1: IRepositoryTransactionHistory,

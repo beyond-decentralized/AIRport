@@ -3,11 +3,11 @@ import { IRepositoryActor } from './repositoryactor';
 import { IRepositoryTransactionHistory } from '../history/repositorytransactionhistory';
 export interface IRepository {
     id: number;
-    createdAt?: Date;
-    uuId?: string;
     ageSuitability?: number;
-    source?: string;
+    createdAt?: Date;
     immutable?: boolean;
+    source?: string;
+    uuId?: string;
     ownerActor?: IActor;
     repositoryActors?: IRepositoryActor[];
     repositoryTransactionHistory?: IRepositoryTransactionHistory[];

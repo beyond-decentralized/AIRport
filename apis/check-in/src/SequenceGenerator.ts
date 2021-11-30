@@ -78,8 +78,19 @@ export function duoDiSet(
 
 export async function getSysWideOpId(
 	airDb: IAirportDatabase,
-	sequenceGenerator: ISequenceGenerator
+	sequenceGenerator: ISequenceGenerator,
 ): Promise<number> {
+	return getSysWideOpIds(1, airDb, sequenceGenerator)[0]
+}
+
+export async function getSysWideOpIds(
+	numSequencesNeeded: number,
+	airDb: IAirportDatabase,
+	sequenceGenerator: ISequenceGenerator,
+): Promise<number[]> {
+	if (!numSequencesNeeded) {
+		return []
+	}
 	const sysWideOpIdGeneratedColumn
 		= (airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA] as QSchemaInternal)
 			.__dbSchema__.currentVersion[0].schemaVersion
@@ -87,7 +98,7 @@ export async function getSysWideOpId(
 
 	const generatedNumWrapper = await sequenceGenerator
 		.generateSequenceNumbers(
-			[sysWideOpIdGeneratedColumn], [1]);
+			[sysWideOpIdGeneratedColumn], [numSequencesNeeded]);
 
-	return generatedNumWrapper[0][0];
+	return generatedNumWrapper[0];
 }

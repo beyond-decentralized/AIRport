@@ -20,7 +20,6 @@ import {
 import {
 	RepositoryTransactionHistory
 } from '../history/RepositoryTransactionHistory'
-import { SyncPriority } from "./SyncPrority";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -47,24 +46,24 @@ export class Repository {
 	@DbNumber()
 	id: Repository_Id;
 
+	@Column({ name: 'AGE_SUITABILITY', nullable: false })
+	@DbNumber()
+	ageSuitability: Repository_AgeSuitability
+
 	@Column({ name: "CREATED_AT", nullable: false })
 	@DbDate()
 	createdAt: Repository_CreatedAt;
 
-	@Column({ name: "UU_ID", nullable: false })
-	@DbString()
-	uuId: Repository_UuId;
-
-	@Column({ name: 'AGE_SUITABILITY', nullable: false })
-	@DbNumber()
-	ageSuitability: Repository_AgeSuitability
+	@Column({ name: "IMMUTABLE", nullable: false })
+	immutable: Repository_Immutable
 
 	@Column({ name: "SOURCE" })
 	@DbString()
 	source: Repository_Source
 
-	@Column({ name: "IMMUTABLE", nullable: false })
-	immutable: Repository_Immutable
+	@Column({ name: "UU_ID", nullable: false })
+	@DbString()
+	uuId: Repository_UuId;
 
 	@ManyToOne()
 	@JoinColumn({

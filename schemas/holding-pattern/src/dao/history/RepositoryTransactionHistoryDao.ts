@@ -20,7 +20,7 @@ import {
 	TransactionType
 }                             from '@airport/ground-control'
 import {
-	ActorId,
+	Actor_Id,
 	RecordHistoryActorRecordId,
 	RepositoryEntity_ActorRecordId,
 	Repository_Id,
@@ -76,10 +76,10 @@ export interface IRepositoryTransactionHistoryDao {
 	): Promise<IRepositoryTransactionHistory[]>;
 
 	findExistingRecordIdMap(
-		recordIdMap: Map<Repository_Id, Map<ActorId, 
+		recordIdMap: Map<Repository_Id, Map<Actor_Id, 
 			Map<EntityId, Set<RepositoryEntity_ActorRecordId>>>>
 	): Promise<Map<Repository_Id,
-		Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>;
+		Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>;
 
 	// updateSyncStatusHistory(
 	// 	syncStatus: SyncStatus,
@@ -101,7 +101,7 @@ export interface IRepositoryTransactionHistoryDao {
 }
 
 export interface IChangedRecordIdsForRepository {
-	ids: Map<EntityId, Map<ActorId, Set<RecordHistoryActorRecordId>>>;
+	ids: Map<EntityId, Map<Actor_Id, Set<RecordHistoryActorRecordId>>>;
 	firstChangeTime: number;
 }
 
@@ -353,11 +353,11 @@ export class RepositoryTransactionHistoryDao
 
 	async findExistingRecordIdMap(
 		recordIdMap: Map<Repository_Id,
-			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>
+			Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>
 	): Promise<Map<Repository_Id,
-		Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>> {
+		Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>> {
 		const existingRecordIdMap: Map<Repository_Id,
-			Map<EntityId, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>
+			Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>
 			      = new Map()
 
 		const rth = Q.RepositoryTransactionHistory,

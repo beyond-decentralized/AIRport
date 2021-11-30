@@ -6,7 +6,7 @@ import {DI}               from '@airport/di'
 import {ensureChildJsSet} from '@airport/ground-control'
 import {QTerminal}        from '@airport/travel-document-checkpoint'
 import {
-	ActorId,
+	Actor_Id,
 	Repository_Id
 }                         from '../../ddl/ddl'
 import {REPOSITORY_ACTOR_DAO}   from '../../tokens'
@@ -28,7 +28,7 @@ export interface IRepositoryActorDao
 
 	findActorIdMapByRepositoryIdForLocalActorsWhereRepositoryIdIn(
 		repositoryIds: Repository_Id[]
-	): Promise<Map<Repository_Id, Set<ActorId>>>;
+	): Promise<Map<Repository_Id, Set<Actor_Id>>>;
 
 }
 
@@ -67,10 +67,10 @@ export class RepositoryActorDao
 
 	async findActorIdMapByRepositoryIdForLocalActorsWhereRepositoryIdIn(
 		repositoryIds: Repository_Id[]
-	): Promise<Map<Repository_Id, Set<ActorId>>> {
+	): Promise<Map<Repository_Id, Set<Actor_Id>>> {
 		const records = await this.findAllForLocalActorsWhereRepositoryIdIn(repositoryIds)
 
-		const actorIdMapByRepositoryId: Map<Repository_Id, Set<ActorId>> = new Map()
+		const actorIdMapByRepositoryId: Map<Repository_Id, Set<Actor_Id>> = new Map()
 
 		for (const record of records) {
 			ensureChildJsSet(actorIdMapByRepositoryId, record.repository.id)

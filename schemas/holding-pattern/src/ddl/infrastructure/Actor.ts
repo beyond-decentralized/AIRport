@@ -16,8 +16,8 @@ import {
 import { RepositoryActor } from '../repository/RepositoryActor'
 import { Schema } from '@airport/airspace';
 
-export type ActorId = number;
-export type ActorUuId = string;
+export type Actor_Id = number;
+export type Actor_UuId = string;
 
 @Entity()
 export class Actor {
@@ -26,11 +26,11 @@ export class Actor {
 	@GeneratedValue()
 	@DbNumber()
 	@Column({ name: 'ID' })
-	id: ActorId
+	id: Actor_Id
 
 	@Column({ name: 'UU_ID', nullable: false })
 	@DbString()
-	uuId: ActorUuId
+	uuId: Actor_UuId
 
 	@ManyToOne()
 	@JoinColumn({

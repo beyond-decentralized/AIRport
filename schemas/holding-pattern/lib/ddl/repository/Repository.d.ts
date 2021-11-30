@@ -14,11 +14,11 @@ export declare type Repository_Url = string;
 export declare type Repository_UuId = string;
 export declare class Repository {
     id: Repository_Id;
-    createdAt: Repository_CreatedAt;
-    uuId: Repository_UuId;
     ageSuitability: Repository_AgeSuitability;
-    source: Repository_Source;
+    createdAt: Repository_CreatedAt;
     immutable: Repository_Immutable;
+    source: Repository_Source;
+    uuId: Repository_UuId;
     ownerActor: Actor;
     repositoryActors: RepositoryActor[];
     repositoryTransactionHistory: RepositoryTransactionHistory[];

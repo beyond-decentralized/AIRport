@@ -22,6 +22,17 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
+	SchemaEntityGraph,
+	SchemaEntityEId,
+	SchemaEntityEOptionalId,
+	SchemaEntityEUpdateProperties,
+	SchemaEntityESelect,
+	QSchemaEntity,
+	QSchemaEntityQId,
+	QSchemaEntityQRelation,
+	SchemaEntity,
+} from '@airport/airspace';
+import {
 	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
@@ -34,17 +45,6 @@ import {
 import {
 	RepositoryTransactionHistory,
 } from '../../ddl/history/RepositoryTransactionHistory';
-import {
-	SchemaEntityGraph,
-	SchemaEntityEId,
-	SchemaEntityEOptionalId,
-	SchemaEntityEUpdateProperties,
-	SchemaEntityESelect,
-	QSchemaEntity,
-	QSchemaEntityQId,
-	QSchemaEntityQRelation,
-	SchemaEntity,
-} from '@airport/airspace';
 import {
 	RecordHistoryGraph,
 	RecordHistoryEId,
@@ -83,8 +83,8 @@ export interface OperationHistoryESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 	entity?: SchemaEntityESelect;
+	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 	recordHistory?: RecordHistoryESelect;
 
 }
@@ -123,8 +123,8 @@ export interface OperationHistoryEUpdateProperties
 	systemWideOperationId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	repositoryTransactionHistory?: RepositoryTransactionHistoryEOptionalId;
 	entity?: SchemaEntityEOptionalId;
+	repositoryTransactionHistory?: RepositoryTransactionHistoryEOptionalId;
 
 }
 
@@ -141,8 +141,8 @@ export interface OperationHistoryGraph
 	systemWideOperationId?: number | IQNumberField;
 
 	// Relations
-	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph;
 	entity?: SchemaEntityGraph;
+	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph;
 	recordHistory?: RecordHistoryGraph[];
 
 }
@@ -156,8 +156,8 @@ export interface OperationHistoryEUpdateColumns
 	ORDER_NUMBER?: number | IQNumberField;
 	CHANGE_TYPE?: string | IQStringField;
 	SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
-	REPOSITORY_TRANSACTION_HISTORY_ID?: number | IQNumberField;
 	ENTITY_ID?: number | IQNumberField;
+	REPOSITORY_TRANSACTION_HISTORY_ID?: number | IQNumberField;
 
 }
 
@@ -198,8 +198,8 @@ export interface QOperationHistory extends IQEntity<OperationHistory>
 	systemWideOperationId: IQNumberField;
 
 	// Non-Id Relations
-	repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
 	entity: QSchemaEntityQRelation;
+	repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
 	recordHistory: IQOneToManyRelation<RecordHistory, QRecordHistory>;
 
 }

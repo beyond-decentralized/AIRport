@@ -3,7 +3,6 @@ export * from './history/recordhistory';
 export * from './history/recordhistorynewvalue';
 export * from './history/recordhistoryoldvalue';
 export * from './history/repositorytransactionhistory';
-export * from './history/repotranshistorychangedrepositoryactor';
 export * from './history/transactionhistory';
 export * from './infrastructure/actor';
 export * from './infrastructure/stageable';

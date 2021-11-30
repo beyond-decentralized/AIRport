@@ -170,6 +170,38 @@ export class RepositoryDao extends BaseRepositoryDao {
         }
         return repositoryIdMap;
     }
+    async findByUuIds(uuIds) {
+        let r;
+        return await this.db.find.tree({
+            select: {},
+            from: [
+                r = Q.QRepository
+            ],
+            where: r.uuId.in(uuIds)
+        });
+    }
+    async insert(repositories) {
+        let r;
+        const values = [];
+        for (const repository of repositories) {
+            values.push([
+                repository.createdAt, repository.uuId, repository.ageSuitability,
+                repository.source, repository.immutable, repository.ownerActor.id,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            insertInto: r = Q.Repository,
+            columns: [
+                r.createdAt,
+                r.uuId,
+                r.ageSuitability,
+                r.source,
+                r.immutable,
+                r.ownerActor.id
+            ],
+            values
+        });
+    }
 }
 DI.set(REPOSITORY_DAO, RepositoryDao);
 //# sourceMappingURL=RepositoryDao.js.map
