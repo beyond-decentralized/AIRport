@@ -27,7 +27,7 @@ import {
 	ISchemaRelation,
 	ISchemaRelationColumn,
 	ISchemaVersion
-} from '@airport/traffic-pattern';
+} from '@airport/airspace';
 import { ISchemaLocator } from '../locator/SchemaLocator';
 import { SCHEMA_COMPOSER, SCHEMA_LOCATOR } from '../tokens';
 

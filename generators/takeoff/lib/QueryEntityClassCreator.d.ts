@@ -1,6 +1,6 @@
 import { IAirportDatabase, QSchema } from '@airport/air-control';
 import { DbSchema } from '@airport/ground-control';
-import { ISchema } from '@airport/traffic-pattern';
+import { ISchema } from '@airport/airspace';
 export interface IQueryEntityClassCreator {
     createAll(schemas: ISchema[], airDb: IAirportDatabase): void;
 }

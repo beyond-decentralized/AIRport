@@ -18,7 +18,7 @@ import {
 	ISchemaRelation,
 	ISchemaRelationColumn,
 	ISchemaVersion
-}                                   from '@airport/traffic-pattern';
+}                                   from '@airport/airspace';
 import { IDdlObjectLinker }         from './DdlObjectLinker';
 import { IQueryEntityClassCreator } from './QueryEntityClassCreator';
 import {

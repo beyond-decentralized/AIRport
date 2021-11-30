@@ -248,7 +248,7 @@ export class RepositoryTransactionHistoryDao
 			      = new Map()
 		/*
 				const trafficPatternQSchema = this.airDb.QM[
-					getSchemaName('npmjs.org','@airport/traffic-pattern')
+					getSchemaName('npmjs.org','@airport/airspace')
 					]
 		*/
 

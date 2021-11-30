@@ -14,7 +14,7 @@ import {
   STORE_DRIVER,
 } from '@airport/ground-control';
 import { JsonSchemaWithLastIds } from '@airport/security-check';
-import { ISchema } from '@airport/traffic-pattern';
+import { ISchema } from '@airport/airspace';
 import { ISchemaBuilder } from './ISchemaBuilder';
 
 export abstract class SqlSchemaBuilder

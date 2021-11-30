@@ -2,7 +2,7 @@ import { IEntityContext, IQueryContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
 import { ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
 import { IIsolateMessage, LastIds } from '@airport/security-check';
-import { ISchemaVersion } from '@airport/traffic-pattern';
+import { ISchemaVersion } from '@airport/airspace';
 import { Observable, Observer } from 'rxjs';
 export interface IMessageInRecord {
     message: IIsolateMessage;

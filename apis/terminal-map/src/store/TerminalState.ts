@@ -2,7 +2,7 @@ import { IActor } from '@airport/holding-pattern'
 import type {
 	IDomain,
 	ISchema
-} from '@airport/traffic-pattern'
+} from '@airport/airspace'
 import type { ITerminal } from '@airport/travel-document-checkpoint'
 
 export interface ITerminalState {

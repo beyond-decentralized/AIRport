@@ -1,6 +1,6 @@
 import { container, DI } from '@airport/di';
 import { ensureChildJsMap, getSchemaName, } from '@airport/ground-control';
-import { SCHEMA_DAO } from '@airport/traffic-pattern';
+import { SCHEMA_DAO } from '@airport/airspace';
 import { SCHEMA_CHECKER } from '../tokens';
 export class SchemaChecker {
     async check(jsonSchema) {

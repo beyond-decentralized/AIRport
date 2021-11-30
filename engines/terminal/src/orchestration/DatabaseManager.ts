@@ -14,7 +14,7 @@ import {
 	Actor,
 } from '@airport/holding-pattern';
 import { SCHEMA_INITIALIZER } from '@airport/landing';
-import { ISchema, SCHEMA_DAO } from '@airport/traffic-pattern';
+import { ISchema, SCHEMA_DAO } from '@airport/airspace';
 import {
 	IDatabaseManager,
 	TRANSACTIONAL_SERVER

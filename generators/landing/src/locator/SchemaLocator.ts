@@ -5,7 +5,7 @@ import {
 	ITerminalStore,
 	TERMINAL_STORE
 } from '@airport/terminal-map'
-import { ISchemaVersion } from '@airport/traffic-pattern'
+import { ISchemaVersion } from '@airport/airspace'
 import { SCHEMA_LOCATOR } from '../tokens'
 
 export interface ISchemaLocator {

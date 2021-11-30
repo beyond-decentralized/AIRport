@@ -3,7 +3,7 @@ import { container, DI } from '@airport/di';
 import { getSchemaName, STORE_DRIVER, } from '@airport/ground-control';
 import { Actor, } from '@airport/holding-pattern';
 import { SCHEMA_INITIALIZER } from '@airport/landing';
-import { SCHEMA_DAO } from '@airport/traffic-pattern';
+import { SCHEMA_DAO } from '@airport/airspace';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER, INTERNAL_RECORD_MANAGER } from '../tokens';
 import { BLUEPRINT } from '@airport/blueprint';

@@ -10,7 +10,7 @@ import {
 import {
 	ISchema,
 	SCHEMA_DAO
-}                       from '@airport/traffic-pattern'
+}                       from '@airport/airspace'
 import {SCHEMA_CHECKER} from '../tokens'
 
 

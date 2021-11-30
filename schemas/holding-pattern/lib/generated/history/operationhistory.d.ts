@@ -1,5 +1,5 @@
 import { IRepositoryTransactionHistory } from './repositorytransactionhistory';
-import { ISchemaEntity } from '@airport/traffic-pattern';
+import { ISchemaEntity } from '@airport/airspace';
 import { IRecordHistory } from './recordhistory';
 export interface IOperationHistory {
     id: number;

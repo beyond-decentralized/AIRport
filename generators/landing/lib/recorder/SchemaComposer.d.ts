@@ -2,7 +2,7 @@ import { SchemaName } from '@airport/ground-control';
 import { JsonSchemaWithLastIds } from '@airport/security-check';
 import { AllDdlObjects, IDdlObjectRetriever } from '@airport/takeoff';
 import { ITerminalStore } from '@airport/terminal-map';
-import { ISchemaVersion } from '@airport/traffic-pattern';
+import { ISchemaVersion } from '@airport/airspace';
 import { ISchemaLocator } from '../locator/SchemaLocator';
 export interface ISchemaComposer {
     compose(jsonSchemas: JsonSchemaWithLastIds[], ddlObjectRetriever: IDdlObjectRetriever, schemaLocator: ISchemaLocator, terminalStore: ITerminalStore): Promise<AllDdlObjects>;

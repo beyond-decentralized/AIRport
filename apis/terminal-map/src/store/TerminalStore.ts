@@ -19,7 +19,7 @@ import {
 	ISchemaEntity,
 	ISchemaRelation,
 	ISchemaVersion
-} from '@airport/traffic-pattern';
+} from '@airport/airspace';
 import { BehaviorSubject } from 'rxjs';
 import { TERMINAL_STORE } from '../tokens';
 import { ITerminalState } from './TerminalState';

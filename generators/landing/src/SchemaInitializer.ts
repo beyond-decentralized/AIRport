@@ -27,7 +27,7 @@ import {
 	QUERY_OBJECT_INITIALIZER
 } from '@airport/takeoff';
 import { TERMINAL_STORE } from '@airport/terminal-map';
-import { ISchema } from '@airport/traffic-pattern';
+import { ISchema } from '@airport/airspace';
 import {
 	SCHEMA_BUILDER,
 	SCHEMA_CHECKER,

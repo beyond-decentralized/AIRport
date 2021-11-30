@@ -6,7 +6,7 @@ import {
     IDomain,
     ISchema,
     SCHEMA_DAO
-} from "@airport/traffic-pattern";
+} from "@airport/airspace";
 
 export interface IDomainCheckRecord {
     domain?: IDomain

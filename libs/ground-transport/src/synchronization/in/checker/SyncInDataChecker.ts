@@ -7,7 +7,7 @@ import {
 	ISchemaEntity,
 	ISchemaVersion,
 	SCHEMA_ENTITY_DAO
-} from '@airport/traffic-pattern'
+} from '@airport/airspace'
 import {
 	SYNC_IN_DATA_CHECKER
 } from '../../../tokens'

@@ -7,7 +7,7 @@ import {
 	IDomain,
 	ISchema,
 	ISchemaVersion
-}                from "@airport/traffic-pattern";
+}                from "@airport/airspace";
 import {
 	ITerminal,
 	IUser

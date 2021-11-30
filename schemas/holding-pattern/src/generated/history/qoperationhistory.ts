@@ -44,7 +44,7 @@ import {
 	QSchemaEntityQId,
 	QSchemaEntityQRelation,
 	SchemaEntity,
-} from '@airport/traffic-pattern';
+} from '@airport/airspace';
 import {
 	RecordHistoryGraph,
 	RecordHistoryEId,

@@ -51,7 +51,7 @@
       "@airport/holding-pattern": [
         "schemas/holding-pattern/src"
       ],
-      "@airport/traffic-pattern": [
+      "@airport/airspace": [
         "schemas/traffic-pattern/src"
       ]
     }

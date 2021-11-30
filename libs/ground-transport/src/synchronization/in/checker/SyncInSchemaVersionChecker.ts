@@ -6,7 +6,7 @@ import {
 import {
 	ISchemaVersion,
 	SCHEMA_VERSION_DAO
-} from '@airport/traffic-pattern'
+} from '@airport/airspace'
 import { SYNC_IN_SCHEMA_VERSION_CHECKER } from '../../../tokens'
 
 export interface ISchemaVersionCheckRecord {

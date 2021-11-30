@@ -9,7 +9,7 @@
     "@airport/security-check": "0.0.1",
     "@airport/takeoff": "0.0.1",
     "@airport/terminal-map": "0.0.1",
-    "@airport/traffic-pattern": "0.0.1",
+    "@airport/airspace": "0.0.1",
     "@airport/tower": "0.0.1",
     "rxjs": "~7.4.0"
   },

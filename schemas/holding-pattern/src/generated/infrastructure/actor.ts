@@ -4,7 +4,7 @@ import {
 } from '@airport/travel-document-checkpoint';
 import {
 	ISchema,
-} from '@airport/traffic-pattern';
+} from '@airport/airspace';
 import {
 	IRepositoryActor,
 } from '../repository/repositoryactor';

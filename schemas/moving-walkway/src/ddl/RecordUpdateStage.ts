@@ -17,7 +17,7 @@ import {
 	ISchemaColumn,
 	ISchemaEntity,
 	ISchemaVersion
-} from '@airport/traffic-pattern'
+} from '@airport/airspace'
 
 export type RecordUpdateStageId = number;
 

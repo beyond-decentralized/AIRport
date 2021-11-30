@@ -26,7 +26,7 @@ import {
 	SHARING_NODE_TERMINAL_DAO,
 	SharingNode_Id,
 }                        from '@airport/moving-walkway'
-import {SCHEMA_DAO}      from '@airport/traffic-pattern'
+import {SCHEMA_DAO}      from '@airport/airspace'
 import {ITerminal}       from '@airport/travel-document-checkpoint'
 import {
 	SYNC_OUT_MANAGER,

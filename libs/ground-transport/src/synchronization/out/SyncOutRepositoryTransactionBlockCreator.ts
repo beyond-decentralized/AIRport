@@ -32,7 +32,7 @@ import {
 	ISchema,
 	ISchemaDao,
 	SCHEMA_DAO
-}                                          from '@airport/traffic-pattern'
+}                                          from '@airport/airspace'
 import {ITerminal}                         from '@airport/travel-document-checkpoint'
 import {SYNC_OUT_REPO_TRANS_BLOCK_CREATOR} from '../../tokens'
 

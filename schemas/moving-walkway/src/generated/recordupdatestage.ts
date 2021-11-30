@@ -2,7 +2,7 @@ import {
 	ISchemaVersion,
 	ISchemaEntity,
 	ISchemaColumn,
-} from '@airport/traffic-pattern';
+} from '@airport/airspace';
 import {
 	IRepository,
 	IActor,

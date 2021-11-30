@@ -1,5 +1,5 @@
 import { ChangeType } from '@airport/ground-control';
-import { ISchemaEntity } from '@airport/traffic-pattern';
+import { ISchemaEntity } from '@airport/airspace';
 import { SystemWideOperationId } from '../common';
 import { RecordHistory } from './RecordHistory';
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory';

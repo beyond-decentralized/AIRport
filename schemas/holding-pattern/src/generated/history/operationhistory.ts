@@ -3,7 +3,7 @@ import {
 } from './repositorytransactionhistory';
 import {
 	ISchemaEntity,
-} from '@airport/traffic-pattern';
+} from '@airport/airspace';
 import {
 	IRecordHistory,
 } from './recordhistory';

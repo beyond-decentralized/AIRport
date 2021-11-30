@@ -21,7 +21,7 @@ import {
 	SCHEMA_RELATION_COLUMN_DAO,
 	SCHEMA_RELATION_DAO,
 	SCHEMA_VERSION_DAO,
-} from '@airport/traffic-pattern'
+} from '@airport/airspace'
 import { SCHEMA_RECORDER } from '../tokens'
 
 export interface ISchemaRecorder {

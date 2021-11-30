@@ -105,11 +105,11 @@ and TABLE_NAME = '${tableName}';`, [], context);
             await currentQuery;
         }
     }
-    getDialect() {
-        return SQLDialect.MYSQL;
-    }
     isServer() {
         return true;
+    }
+    getDialect() {
+        return SQLDialect.MYSQL;
     }
 }
 DI.set(STORE_DRIVER, MySqlDriver);

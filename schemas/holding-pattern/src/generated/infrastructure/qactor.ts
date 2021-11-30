@@ -51,7 +51,7 @@ import {
 	QSchemaQId,
 	QSchemaQRelation,
 	Schema,
-} from '@airport/traffic-pattern';
+} from '@airport/airspace';
 import {
 	RepositoryActorGraph,
 	RepositoryActorEId,

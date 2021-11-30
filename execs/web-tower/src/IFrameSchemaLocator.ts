@@ -2,7 +2,7 @@ import { container, DI } from '@airport/di'
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { SCHEMA_LOCATOR, SchemaLocator } from '@airport/landing'
 import { ITerminalStore } from '@airport/terminal-map'
-import { ISchemaVersion } from '@airport/traffic-pattern'
+import { ISchemaVersion } from '@airport/airspace'
 import { AllDdlObjects } from '@airport/takeoff'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 

@@ -27,7 +27,7 @@ import {
 	RECORD_UPDATE_STAGE_DAO,
 	RecordUpdateStageValues
 } from '@airport/moving-walkway'
-import { ISchema } from '@airport/traffic-pattern'
+import { ISchema } from '@airport/airspace'
 import { STAGE2_SYNCED_IN_DATA_PROCESSOR } from '../../tokens'
 import {
 	RecordUpdate,

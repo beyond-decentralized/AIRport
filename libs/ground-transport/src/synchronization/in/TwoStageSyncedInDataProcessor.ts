@@ -36,7 +36,7 @@ import {
 	ITransactionManager,
 	TRANSACTION_MANAGER
 } from '@airport/terminal-map'
-import { ISchema } from '@airport/traffic-pattern'
+import { ISchema } from '@airport/airspace'
 import { parse } from 'zipson/lib'
 import {
 	STAGE1_SYNCED_IN_DATA_PROCESSOR,

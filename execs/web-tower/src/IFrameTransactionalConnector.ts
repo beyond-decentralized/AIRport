@@ -35,7 +35,7 @@ import {
 	APPLICATION_INITIALIZER,
 	LOCAL_API_SERVER
 } from '@airport/security-check'
-import { ISchemaVersion } from '@airport/traffic-pattern'
+import { ISchemaVersion } from '@airport/airspace'
 import {
 	Observable,
 	Observer

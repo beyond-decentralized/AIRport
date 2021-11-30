@@ -286,7 +286,7 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/traffic-pattern",
+      "packageName": "@airport/airspace",
       "projectFolder": "schemas/traffic-pattern",
       "shouldPublish": true
     },

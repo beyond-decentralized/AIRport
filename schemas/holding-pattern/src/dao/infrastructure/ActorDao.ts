@@ -10,7 +10,7 @@ import {
 } from '@airport/ground-control'
 import {
 	QSchema
-} from '@airport/traffic-pattern'
+} from '@airport/airspace'
 import {
 	QTerminal,
 	QUser,

@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation, TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
-import { SchemaGraph, SchemaEOptionalId, SchemaESelect, QSchemaQRelation } from '@airport/traffic-pattern';
+import { SchemaGraph, SchemaEOptionalId, SchemaESelect, QSchemaQRelation } from '@airport/airspace';
 import { RepositoryActorGraph, RepositoryActorESelect, QRepositoryActor } from '../repository/qrepositoryactor';
 import { RepositoryActor } from '../../ddl/repository/RepositoryActor';
 import { Actor } from '../../ddl/infrastructure/Actor';

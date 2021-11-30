@@ -1,4 +1,4 @@
-import { ISchemaVersion, ISchemaEntity, ISchemaColumn } from '@airport/traffic-pattern';
+import { ISchemaVersion, ISchemaEntity, ISchemaColumn } from '@airport/airspace';
 import { IRepository, IActor } from '@airport/holding-pattern';
 export interface IRecordUpdateStage {
     id: number;

@@ -43,7 +43,7 @@ export declare class MySqlDriver extends SqlDriver {
     }): Promise<void>;
     initAllTables(context: IOperationContext): Promise<any>;
     initTables(createQueries: Promise<any>[]): Promise<void>;
-    protected getDialect(): import('@airport/fuel-hydrant-system').SQLDialect;
     isServer(): boolean;
+    protected getDialect(): import('@airport/fuel-hydrant-system').SQLDialect;
 }
 //# sourceMappingURL=MySqlDriver.d.ts.map

@@ -3,7 +3,7 @@ import { ISequenceGenerator } from '@airport/check-in';
 import { IContext } from '@airport/di';
 import { JsonSchemaWithLastIds } from '@airport/security-check';
 import { AllDdlObjects, IQueryObjectInitializer } from '@airport/takeoff';
-import { ISchema } from '@airport/traffic-pattern';
+import { ISchema } from '@airport/airspace';
 export interface ISchemaInitializer {
     initialize(jsonSchemas: JsonSchemaWithLastIds[], existingSchemaMap: Map<string, ISchema>, context: IContext, checkDependencies: boolean): Promise<void>;
     initializeForAIRportApp(jsonSchema: JsonSchemaWithLastIds): Promise<void>;

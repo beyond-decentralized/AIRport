@@ -1,5 +1,5 @@
 import { IUser, ITerminal } from '@airport/travel-document-checkpoint';
-import { ISchema } from '@airport/traffic-pattern';
+import { ISchema } from '@airport/airspace';
 import { IRepositoryActor } from '../repository/repositoryactor';
 export interface IActor {
     id: number;

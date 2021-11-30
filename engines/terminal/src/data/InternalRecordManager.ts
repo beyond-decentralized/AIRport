@@ -18,7 +18,7 @@ import {
     IDomain,
     ISchema,
     SCHEMA_DAO
-} from "@airport/traffic-pattern";
+} from "@airport/airspace";
 import { transactional } from "@airport/tower";
 import {
     Terminal,

@@ -49,7 +49,7 @@ import {
 	QSchemaColumnQId,
 	QSchemaColumnQRelation,
 	SchemaColumn,
-} from '@airport/traffic-pattern';
+} from '@airport/airspace';
 import {
 	RepositoryGraph,
 	RepositoryEId,

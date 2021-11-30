@@ -14,7 +14,7 @@ import {
 	User
 } from '@airport/travel-document-checkpoint'
 import { RepositoryActor } from '../repository/RepositoryActor'
-import { Schema } from '@airport/traffic-pattern';
+import { Schema } from '@airport/airspace';
 
 export type ActorId = number;
 export type ActorUuId = string;

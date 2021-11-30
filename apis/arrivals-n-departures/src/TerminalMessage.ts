@@ -10,7 +10,7 @@ import {
 import {
 	ISchema,
 	ISchemaVersion
-} from "@airport/traffic-pattern";
+} from "@airport/airspace";
 
 export interface TerminalMessage {
 	actors: IActor[]

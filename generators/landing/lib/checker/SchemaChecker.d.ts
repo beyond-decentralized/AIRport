@@ -1,5 +1,5 @@
 import { JsonSchema, SchemaName } from '@airport/ground-control';
-import { ISchema } from '@airport/traffic-pattern';
+import { ISchema } from '@airport/airspace';
 export interface CoreDomainAndSchemaNames {
     domain: string;
     schema: string;
