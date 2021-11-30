@@ -4,7 +4,7 @@ import {
 	ISharingNode,
 	SharingNode_Id
 }                            from '@airport/moving-walkway'
-import {SYNC_OUT_MSG_SENDER} from '../../tokens'
+import {SYNC_OUT_MESSAGE_SENDER} from '../../tokens'
 
 export interface ISyncOutMessageSender {
 
@@ -27,4 +27,4 @@ export class SyncOutMessageSender
 
 }
 
-DI.set(SYNC_OUT_MSG_SENDER, SyncOutMessageSender)
+DI.set(SYNC_OUT_MESSAGE_SENDER, SyncOutMessageSender)

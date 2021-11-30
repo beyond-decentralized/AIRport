@@ -58,20 +58,7 @@ export class TwoStageSyncedInDataProcessor
 	async syncDataMessage(
 		message: TerminalMessage
 	): Promise<void> {
-		// TODO: remove unused injections once tested
-		const [
-			repositoryActorDao,
-			stage1SyncedInDataProcessor,
-			stage2SyncedInDataProcessor,
-			synchronizationConflictDao,
-			synchronizationConflictPendingNotificationDao,
-			syncInChecker,
-			repositoryTransactionBlockDao,
-			transactionManager] = await container(this).get(REPO_ACTOR_DAO,
-				STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR,
-				SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO,
-				SYNC_IN_CHECKER, REPO_TRANS_BLOCK_DAO,
-				TRANSACTION_MANAGER)
+		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
 
 		const repoTransHistoryMapByRepositoryId
 			= await this.recordSharingMessageToHistoryRecords(
@@ -83,9 +70,7 @@ export class TwoStageSyncedInDataProcessor
 
 
 		await this.updateLocalData(repoTransHistoryMapByRepositoryId, actorMapById,
-			schemasBySchemaVersionIdMap,
-			repositoryActorDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor,
-			synchronizationConflictDao, synchronizationConflictPendingNotificationDao)
+			schemasBySchemaVersionIdMap)
 	}
 
 	private async recordSharingMessageToHistoryRecords(
@@ -210,12 +195,16 @@ export class TwoStageSyncedInDataProcessor
 		repoTransHistoryMapByRepositoryId: Map<RepositoryId, ISyncRepoTransHistory[]>,
 		actorMayById: Map<Actor_Id, IActor>,
 		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
-		repositoryActorDao: IRepositoryActorDao,
-		stage1SyncedInDataProcessor: IStage1SyncedInDataProcessor,
-		stage2SyncedInDataProcessor: IStage2SyncedInDataProcessor,
-		synchronizationConflictDao: ISynchronizationConflictDao,
-		synchronizationConflictPendingNotificationDao: ISynchronizationConflictPendingNotificationDao
 	): Promise<void> {
+		
+		const [
+			repositoryActorDao,
+			stage1SyncedInDataProcessor,
+			stage2SyncedInDataProcessor,
+			synchronizationConflictDao,
+			synchronizationConflictPendingNotificationDao] = await container(this).get(REPO_ACTOR_DAO,
+				STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR,
+				SYNC_CONFLICT_DAO, SYNC_CONFLICT_PENDING_NOTIFICATION_DAO)
 		const stage1Result
 			= await stage1SyncedInDataProcessor.performStage1DataProcessing(
 				repoTransHistoryMapByRepositoryId, actorMayById)

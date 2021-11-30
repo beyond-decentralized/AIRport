@@ -12,7 +12,7 @@ import {AbstractCompletable}        from '../../AbstractCompletable'
 import {
 	SYNC_NODE_MANAGER,
 	SYNCHRONIZATION_OUT_COORDINATOR,
-	SYNC_OUT_MANAGER
+	SYNCHRONIZATION_OUT_MANAGER
 }                                   from '../../tokens'
 import {ISynchronizationOutManager} from './SynchronizationOutManager'
 
@@ -36,7 +36,7 @@ export class SynchronizationOutCoordinator
 	async initialize(): Promise<void> {
 		const [syncNodeManager, syncOutManager,
 			      terminalStore] = await container(this).get(SYNC_NODE_MANAGER,
-			SYNC_OUT_MANAGER, TERMINAL_STORE)
+			SYNCHRONIZATION_OUT_MANAGER, TERMINAL_STORE)
 		await syncNodeManager.initialize()
 
 		/*

@@ -29,9 +29,9 @@ import {
 import {SCHEMA_DAO}      from '@airport/airspace'
 import {ITerminal}       from '@airport/travel-document-checkpoint'
 import {
-	SYNC_OUT_MANAGER,
-	SYNC_OUT_MSG_SENDER,
-	SYNC_OUT_REPO_TRANS_BLOCK_CREATOR,
+	SYNCHRONIZATION_OUT_MANAGER,
+	SYNC_OUT_MESSAGE_SENDER,
+	SYNC_OUT_REPOSITORY_TRANSACTION_BLOCK_CREATOR,
 	SYNC_OUT_SERIALIZER,
 }                        from '../../tokens'
 
@@ -91,8 +91,8 @@ export class SynchronizationOutManager
 				SHARING_NODE_TERMINAL_DAO,
 				SHARING_NODE_REPOSITORY_DAO,
 				SHARING_NODE_REPO_TRANS_BLOCK_DAO,
-				SYNC_OUT_REPO_TRANS_BLOCK_CREATOR,
-				SYNC_OUT_MSG_SENDER,
+				SYNC_OUT_REPOSITORY_TRANSACTION_BLOCK_CREATOR,
+				SYNC_OUT_MESSAGE_SENDER,
 				SYNC_OUT_SERIALIZER)
 
 		const sharingNodeMap: Map<SharingNode_Id, ISharingNode> = new Map()
@@ -344,4 +344,4 @@ export class SynchronizationOutManager
 
 }
 
-DI.set(SYNC_OUT_MANAGER, SynchronizationOutManager)
+DI.set(SYNCHRONIZATION_OUT_MANAGER, SynchronizationOutManager)

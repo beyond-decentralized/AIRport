@@ -34,7 +34,7 @@ import {
 	SCHEMA_DAO
 }                                          from '@airport/airspace'
 import {ITerminal}                         from '@airport/travel-document-checkpoint'
-import {SYNC_OUT_REPO_TRANS_BLOCK_CREATOR} from '../../tokens'
+import {SYNC_OUT_REPOSITORY_TRANSACTION_BLOCK_CREATOR} from '../../tokens'
 
 export interface ISyncOutRepositoryTransactionBlockCreator {
 
@@ -412,4 +412,4 @@ export class SyncOutRepositoryTransactionBlockCreator
 
 }
 
-DI.set(SYNC_OUT_REPO_TRANS_BLOCK_CREATOR, SyncOutRepositoryTransactionBlockCreator)
+DI.set(SYNC_OUT_REPOSITORY_TRANSACTION_BLOCK_CREATOR, SyncOutRepositoryTransactionBlockCreator)

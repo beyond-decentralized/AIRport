@@ -16,7 +16,7 @@ import {
 import { SynchronizationConflictType } from "./SynchronizationConflictType";
 import { SynchronizationConflictValues } from "./SynchronizationConflictValues";
 
-export type SynchronizationConflictId = number;
+export type SynchronizationConflict_Id = number;
 
 @Entity()
 @Table({ name: "SYNCHRONIZATION_CONFLICT" })
@@ -25,7 +25,7 @@ export class SynchronizationConflict {
 	@GeneratedValue()
 	@Id()
 	@DbNumber()
-	id: SynchronizationConflictId;
+	id: SynchronizationConflict_Id;
 
 	@ManyToOne()
 	@JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" })

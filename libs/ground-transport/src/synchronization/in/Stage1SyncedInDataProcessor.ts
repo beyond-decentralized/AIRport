@@ -86,23 +86,21 @@ export class Stage1SyncedInDataProcessor
 			of repoTransHistoryMapByRepositoryId) {
 			const changedRecordsForRepo: IChangedRecordIdsForRepository = {
 				ids: new Map(),
-				firstChangeTime: new Date(new Date().getTime() + 10000000000),
+				firstChangeTime: new Date().getTime() + 10000000000
 			}
 			changedRecordIds.set(repositoryId, changedRecordsForRepo)
 			for (const repoTransHistory of repoTransHistoriesForRepo) {
 				// determine the earliest change time of incoming history records
 
-				const saveMillis = repoTransHistory.saveTimestamp.getTime()
+				const saveMillis = repoTransHistory.saveTimestamp
 				if (saveMillis
-					< changedRecordsForRepo.firstChangeTime.getTime()) {
+					< changedRecordsForRepo.firstChangeTime) {
 					changedRecordsForRepo.firstChangeTime = repoTransHistory.saveTimestamp
 				}
 				for (const operationHistory of repoTransHistory.operationHistory) {
 					// Collect the Actor related ids
 					const idsForEntity: Map<Actor_Id, Set<RecordHistoryActorRecordId>>
-						      = ensureChildJsMap(
-						ensureChildJsMap(changedRecordsForRepo.ids,
-							operationHistory.entity.schemaVersion.id),
+						      = ensureChildJsMap(changedRecordsForRepo.ids,
 						operationHistory.entity.id)
 					for (const recordHistory of operationHistory.recordHistory) {
 						// Collect the Actor related ids
@@ -679,6 +677,7 @@ export class Stage1SyncedInDataProcessor
 		overwritingRecordHistory: IRecordHistory
 	): ISynchronizationConflict {
 		return {
+			id: null,
 			overwrittenRecordHistory,
 			overwritingRecordHistory,
 			repository: {

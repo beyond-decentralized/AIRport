@@ -81,22 +81,9 @@ export interface IRepositoryTransactionHistoryDao {
 	): Promise<Map<Repository_Id,
 		Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>;
 
-	// updateSyncStatusHistory(
-	// 	syncStatus: SyncStatus,
-	// 	repoTransHistoryIds: RepositoryTransactionHistory_Id[]
-	// ): Promise<void>;
-
 	findAllLocalChangesForRecordIds(
 		changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>
 	): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
-
-	// setBlockIdWhereId(
-	// 	getSetClause: {
-	// 		(
-	// 			id: IQNumberField
-	// 		): IQOrderableField<IQNumberField>
-	// 	}
-	// ): Promise<number>
 
 }
 
@@ -246,11 +233,6 @@ export class RepositoryTransactionHistoryDao
 	): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>> {
 		const repoTransHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>
 			      = new Map()
-		/*
-				const trafficPatternQSchema = this.airDb.QM[
-					getSchemaName('npmjs.org','@airport/airspace')
-					]
-		*/
 
 		const rth: QRepositoryTransactionHistory = Q.RepositoryTransactionHistory
 		const th: QTransactionHistory            = rth.transactionHistory.innerJoin()
@@ -416,23 +398,6 @@ export class RepositoryTransactionHistoryDao
 
 		return existingRecordIdMap
 	}
-
-	// async setBlockIdWhereId(
-	// 	getSetClause: {
-	// 		(
-	// 			id: IQNumberField
-	// 		): IQNumberField
-	// 	}
-	// ): Promise<number> {
-	// 	const rth: QRepositoryTransactionHistory = this.db.from
-
-	// 	return await this.db.updateWhere({
-	// 		update: rth,
-	// 		set: {
-	// 			blockId: getSetClause(rth.id)
-	// 		}
-	// 	})
-	// }
 
 }
 

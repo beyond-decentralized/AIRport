@@ -1,9 +1,9 @@
 import { IRecordHistory, IRepository } from "@airport/holding-pattern";
 import { SynchronizationConflictType } from "./SynchronizationConflictType";
 import { SynchronizationConflictValues } from "./SynchronizationConflictValues";
-export declare type SynchronizationConflictId = number;
+export declare type SynchronizationConflict_Id = number;
 export declare class SynchronizationConflict {
-    id: SynchronizationConflictId;
+    id: SynchronizationConflict_Id;
     repository: IRepository;
     overwrittenRecordHistory: IRecordHistory;
     overwritingRecordHistory: IRecordHistory;

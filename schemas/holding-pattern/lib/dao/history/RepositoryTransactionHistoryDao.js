@@ -87,11 +87,6 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
     }
     async findAllLocalChangesForRecordIds(changedRecordIds) {
         const repoTransHistoryMapByRepositoryId = new Map();
-        /*
-                const trafficPatternQSchema = this.airDb.QM[
-                    getSchemaName('npmjs.org','@airport/airspace')
-                    ]
-        */
         const rth = Q.RepositoryTransactionHistory;
         const th = rth.transactionHistory.innerJoin();
         const oh = rth.operationHistory.leftJoin();
