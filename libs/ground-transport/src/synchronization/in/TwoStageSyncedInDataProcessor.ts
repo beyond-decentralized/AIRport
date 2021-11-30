@@ -1,8 +1,5 @@
 import {
-	AgtRepositoryId,
-	RepoTransBlockSyncOutcomeType,
-	TerminalMessage,
-	TmSharingMessageId
+	TerminalMessage
 } from '@airport/arrivals-n-departures'
 import { container, DI } from '@airport/di'
 import {
@@ -15,11 +12,7 @@ import {
 	IActor,
 	IRepositoryActorDao,
 	IRepositoryTransactionHistory,
-	IRepositoryTransactionHistoryDao,
 	IRepositoryTransactionHistoryDuo,
-	REPO_ACTOR_DAO,
-	REPO_TRANS_HISTORY_DUO,
-	RepositoryId,
 	RepositoryTransactionType
 } from '@airport/holding-pattern'
 import {
@@ -27,7 +20,6 @@ import {
 	ISynchronizationConflictDao,
 	ISynchronizationConflictPendingNotification,
 	ISynchronizationConflictPendingNotificationDao,
-	REPO_TRANS_BLOCK_DAO,
 	RepositoryTransactionBlockData,
 	SYNC_CONFLICT_DAO,
 	SYNC_CONFLICT_PENDING_NOTIFICATION_DAO
@@ -37,7 +29,6 @@ import {
 	TRANSACTION_MANAGER
 } from '@airport/terminal-map'
 import { ISchema } from '@airport/airspace'
-import { parse } from 'zipson/lib'
 import {
 	STAGE1_SYNCED_IN_DATA_PROCESSOR,
 	STAGE2_SYNCED_IN_DATA_PROCESSOR,
@@ -46,10 +37,6 @@ import {
 } from '../../tokens'
 import { IStage1SyncedInDataProcessor } from './Stage1SyncedInDataProcessor'
 import { IStage2SyncedInDataProcessor } from './Stage2SyncedInDataProcessor'
-import {
-	IDataToTM,
-	ISyncRepoTransHistory
-} from './SyncInUtils'
 
 /**
  * Synchronizes incoming data and records message conflicts in two processing stages.
@@ -69,7 +56,7 @@ export class TwoStageSyncedInDataProcessor
 	 * Synchronize the data messages coming to Terminal (new data for this TM)
 	 */
 	async syncDataMessage(
-		dataMessages: TerminalMessage
+		message: TerminalMessage
 	): Promise<void> {
 		// TODO: remove unused injections once tested
 		const [
@@ -86,14 +73,13 @@ export class TwoStageSyncedInDataProcessor
 				SYNC_IN_CHECKER, REPO_TRANS_BLOCK_DAO,
 				TRANSACTION_MANAGER)
 
-		const {
-			messageHasCompatibleSchemas,
-			messageHasValidData,
-		} = await syncInChecker.checkMessage(
+		if (!await syncInChecker.checkMessage(
 			// consistentMessages, actorMap, sharingNodeRepositoryMap,
 			// dataMessagesWithInvalidData
-			dataMessages
-		)
+			message
+		)) {
+			return
+		}
 
 		const repoTransHistoryMapByRepositoryId
 			= await this.recordSharingMessageToHistoryRecords(

@@ -1,6 +1,6 @@
 import { TerminalMessage } from "@airport/arrivals-n-departures";
 import { container } from "@airport/di";
-import { SchemaScope, SchemaStatus } from '@airport/ground-control';
+import { SchemaStatus } from '@airport/ground-control';
 import {
     DOMAIN_DAO,
     IDomain,
