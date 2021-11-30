@@ -7,7 +7,7 @@ import {
 	ISchemaVersion,
 	SCHEMA_VERSION_DAO
 } from '@airport/traffic-pattern'
-import { SYNC_IN_SCHEMA_CHECKER } from '../../../tokens'
+import { SYNC_IN_SCHEMA_CHECKER as SYNC_IN_SCHEMA_VERSION_CHECKER } from '../../../tokens'
 
 export interface ISchemaCheckRecord {
 	found?: boolean
@@ -16,18 +16,18 @@ export interface ISchemaCheckRecord {
 	schemaVersionNumber: number
 }
 
-export interface ISyncInSchemaChecker {
+export interface ISyncInSchemaVersionChecker {
 
-	checkSchemas(
+	checkSchemaVersions(
 		message: TerminalMessage
 	): Promise<boolean>;
 
 }
 
-export class SyncInSchemaChecker
-	implements ISyncInSchemaChecker {
+export class SyncInSchemaVersionChecker
+	implements ISyncInSchemaVersionChecker {
 
-	async checkSchemas(
+	async checkSchemaVersions(
 		message: TerminalMessage
 	): Promise<boolean> {
 		try {
@@ -158,4 +158,4 @@ export class SyncInSchemaChecker
 	}
 
 }
-DI.set(SYNC_IN_SCHEMA_CHECKER, SyncInSchemaChecker)
+DI.set(SYNC_IN_SCHEMA_VERSION_CHECKER, SyncInSchemaVersionChecker)

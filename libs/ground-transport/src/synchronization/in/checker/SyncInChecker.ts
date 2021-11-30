@@ -75,7 +75,7 @@ export class SyncInChecker
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
 
 		const [syncInActorChecker, syncInDataChecker, syncInRepositoryChecker,
-			syncInSchemaChecker, syncInTerminalChecker, syncInUserChecker,
+			syncInSchemaVersionChecker, syncInTerminalChecker, syncInUserChecker,
 			syncInRepoTransBlockCreator] = await container(this).get(
 				SYNC_IN_ACTOR_CHECKER, SYNC_IN_DATA_CHECKER, SYNC_IN_REPO_CHECKER,
 				SYNC_IN_SCHEMA_CHECKER, SYNC_IN_TERMINAL_CHECKER, SYNC_IN_USER_CHECKER,
@@ -90,7 +90,7 @@ export class SyncInChecker
 		if (! await syncInActorChecker.ensureActors(message)) {
 			return false
 		}
-		if (!await syncInSchemaChecker.checkSchemas(message)) {
+		if (!await syncInSchemaVersionChecker.checkSchemas(message)) {
 			return false
 		}
 

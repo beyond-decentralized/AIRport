@@ -28,6 +28,10 @@ export class Actor {
 	@Column({ name: 'ID' })
 	id: ActorId
 
+	@Column({ name: 'UU_ID', nullable: false })
+	@DbString()
+	uuId: ActorUuId
+
 	@ManyToOne()
 	@JoinColumn({
 		name: 'USER_ID', referencedColumnName: 'ID',
@@ -41,10 +45,6 @@ export class Actor {
 		nullable: false
 	})
 	terminal: Terminal
-
-	@Column({ name: 'UU_ID', nullable: false })
-	@DbString()
-	uuId: ActorUuId
 
 	@ManyToOne()
 	@JoinColumn({ name: "SCHEMA_INDEX", referencedColumnName: "SCHEMA_INDEX" })

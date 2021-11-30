@@ -3,7 +3,7 @@ import { ISyncInActorChecker } from './synchronization/in/checker/SyncInActorChe
 import { ISyncInChecker } from './synchronization/in/checker/SyncInChecker'
 import { ISyncInDataChecker } from './synchronization/in/checker/SyncInDataChecker'
 import { ISyncInRepositoryChecker } from './synchronization/in/checker/SyncInRepositoryChecker'
-import { ISyncInSchemaChecker } from './synchronization/in/checker/SyncInSchemaChecker'
+import { ISyncInSchemaVersionChecker } from './synchronization/in/checker/SyncInSchemaVersionChecker'
 import { ISyncInTerminalChecker } from './synchronization/in/checker/SyncInTerminalChecker'
 import { ISyncInUserChecker } from './synchronization/in/checker/SyncInUserChecker'
 import { IMissingRecordCreator } from './synchronization/in/creator/MissingRecordCreator'
@@ -34,7 +34,7 @@ export const SYNC_IN_TERMINAL_CHECKER = groundTransport.token<ISyncInTerminalChe
 export const SYNC_IN_REPO_CHECKER = groundTransport.token<ISyncInRepositoryChecker>('ISyncInRepositoryChecker')
 export const SYNC_IN_REPO_TRANS_BLOCK_CREATOR
     = groundTransport.token<ISyncInRepositoryTransactionBlockCreator>('ISyncInRepositoryTransactionBlockCreator')
-export const SYNC_IN_SCHEMA_CHECKER = groundTransport.token<ISyncInSchemaChecker>('ISyncInSchemaChecker')
+export const SYNC_IN_SCHEMA_CHECKER = groundTransport.token<ISyncInSchemaVersionChecker>('ISyncInSchemaChecker')
 export const SYNC_IN_SHARING_MESSAGE_CREATOR = groundTransport.token<ISyncInSharingMessageCreator>('ISyncInSharingMessageCreator')
 export const SYNC_IN_USER_CHECKER = groundTransport.token<ISyncInUserChecker>('ISyncInUserChecker')
 export const SYNC_IN_UTILS = groundTransport.token<ISyncInUtils>('ISyncInUtils')
