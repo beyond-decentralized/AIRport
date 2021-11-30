@@ -190,8 +190,6 @@ export class UpdateManager
 			recordsToUpdate, getSheetSelectFromSetClauseResult)
 
 		const repositoryIds: number[] = Array.from(repositoryIdSet)
-		// const repositories: MappedEntityArray<IRepository> =
-		// 	      await repoManager.findReposWithDetailsByIds(...repositoryIds)
 
 		const recordHistoryMapByRecordId: RecordHistoryMap = {}
 

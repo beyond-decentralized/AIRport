@@ -35,19 +35,6 @@ import {
 	Actor,
 } from '../../ddl/infrastructure/Actor';
 import {
-	RepositoryActorGraph,
-	RepositoryActorEId,
-	RepositoryActorEOptionalId,
-	RepositoryActorEUpdateProperties,
-	RepositoryActorESelect,
-	QRepositoryActor,
-	QRepositoryActorQId,
-	QRepositoryActorQRelation,
-} from './qrepositoryactor';
-import {
-	RepositoryActor,
-} from '../../ddl/repository/RepositoryActor';
-import {
 	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryEOptionalId,
@@ -88,7 +75,6 @@ export interface RepositoryESelect
 
   // Non-Id relations (including OneToMany's)
 	ownerActor?: ActorESelect;
-	repositoryActors?: RepositoryActorESelect;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 
 }
@@ -149,7 +135,6 @@ export interface RepositoryGraph
 
 	// Relations
 	ownerActor?: ActorGraph;
-	repositoryActors?: RepositoryActorGraph[];
 	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
 
 }
@@ -209,7 +194,6 @@ export interface QRepository extends IQEntity<Repository>
 
 	// Non-Id Relations
 	ownerActor: QActorQRelation;
-	repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
 	repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
 
 }

@@ -2,9 +2,6 @@ import {
 	IActor,
 } from '../infrastructure/actor';
 import {
-	IRepositoryActor,
-} from './repositoryactor';
-import {
 	IRepositoryTransactionHistory,
 } from '../history/repositorytransactionhistory';
 
@@ -30,7 +27,6 @@ export interface IRepository {
 
 	// Non-Id Relations
 	ownerActor?: IActor;
-	repositoryActors?: IRepositoryActor[];
 	repositoryTransactionHistory?: IRepositoryTransactionHistory[];
 
 	// Transient Properties

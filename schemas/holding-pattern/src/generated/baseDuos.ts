@@ -78,19 +78,6 @@ import {
 	QRepository,
 } from './repository/qrepository';
 import {
-	IRepositoryActor,
-} from './repository/repositoryactor';
-import {
-	RepositoryActorESelect,
-	RepositoryActorECreateColumns,
-	RepositoryActorECreateProperties,
-	RepositoryActorEUpdateColumns,
-	RepositoryActorEUpdateProperties,
-	RepositoryActorEId,
-	RepositoryActorGraph,
-	QRepositoryActor,
-} from './repository/qrepositoryactor';
-import {
 	IRepositorySchema,
 } from './repository/repositoryschema';
 import {
@@ -186,11 +173,11 @@ export class BaseActorDuo
 	implements IBaseActorDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(3)
+		super(1)
 	}
 }
 
@@ -204,11 +191,11 @@ export class BaseOperationHistoryDuo
 	implements IBaseOperationHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(8)
+		super(7)
 	}
 }
 
@@ -240,11 +227,11 @@ export class BaseRecordHistoryNewValueDuo
 	implements IBaseRecordHistoryNewValueDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(4)
+		super(3)
 	}
 }
 
@@ -258,11 +245,11 @@ export class BaseRecordHistoryOldValueDuo
 	implements IBaseRecordHistoryOldValueDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(5)
+		super(4)
 	}
 }
 
@@ -274,24 +261,6 @@ export interface IBaseRepositoryDuo
 export class BaseRepositoryDuo
   extends SQDIDuo<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryGraph, QRepository>
 	implements IBaseRepositoryDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(1)
-	}
-	
-	constructor() {
-		super(1)
-	}
-}
-
-
-export interface IBaseRepositoryActorDuo
-  extends IDuo<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, RepositoryActorGraph, QRepositoryActor> {
-}
-
-export class BaseRepositoryActorDuo
-  extends SQDIDuo<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, RepositoryActorGraph, QRepositoryActor>
-	implements IBaseRepositoryActorDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(2)
@@ -312,11 +281,11 @@ export class BaseRepositorySchemaDuo
 	implements IBaseRepositorySchemaDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(9)
+		super(8)
 	}
 }
 
@@ -330,11 +299,11 @@ export class BaseRepositoryTransactionHistoryDuo
 	implements IBaseRepositoryTransactionHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(7)
+		super(6)
 	}
 }
 
@@ -348,10 +317,10 @@ export class BaseTransactionHistoryDuo
 	implements IBaseTransactionHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(6)
+		super(5)
 	}
 }

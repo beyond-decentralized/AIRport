@@ -1,4 +1,4 @@
-import { IEntityUpdateProperties, IQEntityInternal, MappedEntityArray, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
+import { IEntityUpdateProperties, IQEntityInternal, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
 import { IActor, IRepository, IRepositoryTransactionHistory } from '@airport/holding-pattern';
 import { IRepositoryManager, UpdateState } from '@airport/terminal-map';
 import { ITerminal } from '@airport/travel-document-checkpoint';
@@ -20,7 +20,6 @@ export declare class RepositoryManager implements IRepositoryManager {
     terminal: ITerminal;
     userUuId: string;
     initialize(): Promise<void>;
-    findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>>;
     createRepository(actor: IActor): Promise<IRepository>;
     getRepository(repositoryId: number): Promise<IRepository>;
     getActor(actorId: number): Promise<IActor>;

@@ -1,7 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
-import { RepositoryActorGraph, RepositoryActorESelect, QRepositoryActor } from './qrepositoryactor';
-import { RepositoryActor } from '../../ddl/repository/RepositoryActor';
 import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
 import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransactionHistory';
 import { Repository } from '../../ddl/repository/Repository';
@@ -15,7 +13,6 @@ export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEO
     source?: string | IQStringField;
     uuId?: string | IQStringField;
     ownerActor?: ActorESelect;
-    repositoryActors?: RepositoryActorESelect;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 }
 /**
@@ -51,7 +48,6 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
     source?: string | IQStringField;
     uuId?: string | IQStringField;
     ownerActor?: ActorGraph;
-    repositoryActors?: RepositoryActorGraph[];
     repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
 }
 /**
@@ -86,7 +82,6 @@ export interface QRepository extends IQEntity<Repository> {
     source: IQStringField;
     uuId: IQStringField;
     ownerActor: QActorQRelation;
-    repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
     repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
 }
 export interface QRepositoryQId {

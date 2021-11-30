@@ -15,9 +15,9 @@ export declare class RepositoryTransactionHistory {
     saveTimestamp: RepositoryTransactionHistory_SaveTimestamp;
     repositoryTransactionType: RepositoryTransactionType;
     synced: RepositoryTransactionHistory_Synced;
-    transactionHistory: TransactionHistory;
     repository: Repository;
     actor: Actor;
+    transactionHistory: TransactionHistory;
     operationHistory: OperationHistory[];
     constructor(data?: RepositoryTransactionHistory);
 }

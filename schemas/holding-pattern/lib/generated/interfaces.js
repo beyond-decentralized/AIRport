@@ -7,7 +7,6 @@ export * from './history/transactionhistory';
 export * from './infrastructure/actor';
 export * from './infrastructure/stageable';
 export * from './repository/repository';
-export * from './repository/repositoryactor';
 export * from './repository/repositoryentity';
 export * from './repository/repositoryschema';
 export * from './traditional/childreporow';

@@ -3,7 +3,6 @@ import { IRecordHistoryNewValueDao } from './dao/history/RecordHistoryNewValueDa
 import { IRecordHistoryOldValueDao } from './dao/history/RecordHistoryOldValueDao'
 import { IRepositoryTransactionHistoryDao } from './dao/history/RepositoryTransactionHistoryDao'
 import { IActorDao } from './dao/infrastructure/ActorDao'
-import { IRepositoryActorDao } from './dao/repository/RepositoryActorDao'
 import { IRepositoryDao } from './dao/repository/RepositoryDao'
 import { IOperationHistoryDuo } from './duo/history/OperationHistoryDuo'
 import { IRecordHistoryDuo } from './duo/history/RecordHistoryDuo'
@@ -22,7 +21,6 @@ export const REC_HIST_NEW_VALUE_DAO = holdingPattern.token<IRecordHistoryNewValu
 export const REC_HIST_NEW_VALUE_DUO = holdingPattern.token<IRecordHistoryNewValueDuo>('IRecordHistoryNewValueDuo')
 export const REC_HIST_OLD_VALUE_DAO = holdingPattern.token<IRecordHistoryOldValueDao>('IRecordHistoryOldValueDao')
 export const REC_HIST_OLD_VALUE_DUO = holdingPattern.token<IRecordHistoryOldValueDuo>('IRecordHistoryOldValueDuo')
-export const REPOSITORY_ACTOR_DAO = holdingPattern.token<IRepositoryActorDao>('IRepositoryActorDao')
 export const REPOSITORY_DAO = holdingPattern.token<IRepositoryDao>('IRepositoryDao')
 export const REPO_TRANS_HISTORY_DAO = holdingPattern.token<IRepositoryTransactionHistoryDao>('IRepositoryTransactionHistoryDao')
 export const REPO_TRANS_HISTORY_DUO = holdingPattern.token<IRepositoryTransactionHistoryDuo>('IRepositoryTransactionHistoryDuo')

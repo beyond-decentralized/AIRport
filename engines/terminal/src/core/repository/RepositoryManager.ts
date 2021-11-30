@@ -12,10 +12,8 @@ import { container, DI } from '@airport/di'
 import {
 	IActor,
 	IRepository,
-	IRepositoryActor,
 	IRepositoryTransactionHistory,
 	QRepositoryEntity,
-	REPOSITORY_ACTOR_DAO,
 	REPOSITORY_DAO,
 	SyncPriority
 } from '@airport/holding-pattern'
@@ -52,15 +50,6 @@ export class RepositoryManager
 	async initialize(): Promise<void> {
 		await this.ensureRepositoryRecords()
 		await this.ensureAndCacheRepositories()
-	}
-
-	async findReposWithDetailsByIds(
-		...repositoryIds: number[]
-	): Promise<MappedEntityArray<IRepository>> {
-		const repositoryDao = await container(this).get(REPOSITORY_DAO)
-
-		return await repositoryDao.findReposWithDetailsByIds(
-			repositoryIds, this.terminal.uuId, this.userUuId)
 	}
 
 	async createRepository(
@@ -126,13 +115,12 @@ export class RepositoryManager
 			ageSuitability: 0,
 			createdAt: new Date(),
 			id: null,
+			immutable: false,
 			ownerActor: actor,
 			// platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
 			// platformConfig: null,
-			repositoryActors: [],
 			repositoryTransactionHistory: [],
 			source: 'localhost:8080',
-			syncPriority: SyncPriority.NORMAL,
 			uuId: uuidv4(),
 		}
 
@@ -147,22 +135,12 @@ export class RepositoryManager
 	): Promise<IRepository> {
 		const repository: IRepository = this.getRepositoryRecord(actor)
 		
-		const repositoryActor: IRepositoryActor = {
-			actor,
-			id: null,
-			repository
-		}
-		
-		const [repositoryDao, repositoryActorDao] = await container(this)
-		.get(REPOSITORY_DAO, REPOSITORY_ACTOR_DAO)
+		const repositoryDao = await container(this).get(REPOSITORY_DAO)
 		
 		await repositoryDao.save(repository)
-		await repositoryActorDao.save(repositoryActor)
 
 		// const repositoryDao = await container(this).get(REPOSITORY_DAO)
 		// await repositoryDao.save(repository)
-
-		repository.repositoryActors.push(repositoryActor)
 
 		this.repositories.push(repository)
 

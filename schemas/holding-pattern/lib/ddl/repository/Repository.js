@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Column, DbDate, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
 let Repository = class Repository {
     constructor() {
-        this.repositoryActors = [];
         this.repositoryTransactionHistory = [];
     }
 };
@@ -43,9 +42,6 @@ __decorate([
         nullable: false
     })
 ], Repository.prototype, "ownerActor", void 0);
-__decorate([
-    OneToMany({ mappedBy: 'repository' })
-], Repository.prototype, "repositoryActors", void 0);
 __decorate([
     OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryTransactionHistory", void 0);

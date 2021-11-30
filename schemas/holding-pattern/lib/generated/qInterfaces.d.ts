@@ -7,7 +7,6 @@ export * from './history/qtransactionhistory';
 export * from './infrastructure/qactor';
 export * from './infrastructure/qstageable';
 export * from './repository/qrepository';
-export * from './repository/qrepositoryactor';
 export * from './repository/qrepositoryentity';
 export * from './repository/qrepositoryschema';
 export * from './traditional/qchildreporow';

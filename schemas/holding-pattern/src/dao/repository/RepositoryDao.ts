@@ -30,7 +30,6 @@ import {
 	Q,
 	QActor,
 	QRepository,
-	QRepositoryActor,
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
 } from '../../generated/generated'
@@ -42,16 +41,6 @@ export interface IRepositoryDao
 		repositorySource: Repository_Source,
 		repositoryUuId: Repository_UuId
 	): Promise<IRepository>
-
-	findReposWithDetailsByIds(
-		repositoryIdsInClause: RepositoryTransactionHistory_Id[]
-			| RawFieldQuery<IQNumberField>
-			| {
-				(...args: any[]): RawFieldQuery<IQNumberField>
-			},
-		uuId: Terminal_UuId,
-		userUuId: User_UuId,
-	): Promise<MappedEntityArray<IRepository>>;
 
 	findLocalRepoIdsByGlobalIds(
 		createdAts: Repository_CreatedAt[],
@@ -116,44 +105,6 @@ export class RepositoryDao
 		})
 	}
 
-	async findReposWithTransactionLogDetailsByIds(
-		repositoryIds: Repository_Id[]
-	): Promise<MappedEntityArray<IRepository>> {
-		let r: QRepository
-		let ra: QRepositoryActor
-		let a: QActor
-		let u: QUser
-		let d: QTerminal
-		let id = Y
-		return await this.db.find.map().tree({
-			select: {
-				createdAt: Y,
-				uuId: Y,
-				ownerActor: {
-					user: {
-						id
-					},
-					terminal: {
-						id
-					}
-				},
-			},
-			from: [
-				r = Q.Repository,
-				ra = r.repositoryActors.innerJoin(),
-				a = ra.actor.innerJoin(),
-				u = a.user.innerJoin(),
-				d = a.terminal.innerJoin()
-			],
-			where:
-				// and(
-				r.id.in(repositoryIds),
-			// d.name.equals(dbName),
-			// u.uniqueId.equals(userEmail)
-			// )
-		})
-	}
-
 	async findReposWithDetailsAndSyncNodeIds(
 		repositoryIds: Repository_Id[]
 	): Promise<IRepository[]> {
@@ -173,51 +124,6 @@ export class RepositoryDao
 			],
 			where: r.id.in(repositoryIds)
 		})
-	}
-
-	async findReposWithDetailsByIds(
-		repositoryIdsInClause: RepositoryTransactionHistory_Id[]
-			| RawFieldQuery<IQNumberField>
-			| {
-				(...args: any[]): RawFieldQuery<IQNumberField>
-			},
-		uuId: Terminal_UuId,
-		userUuId: User_UuId,
-	): Promise<MappedEntityArray<IRepository>> {
-		let r: QRepository
-		let ra: QRepositoryActor
-		let a: QActor
-		let u: QUser
-		let d: QTerminal
-		let id = Y
-		return await this.db.find.map().tree({
-			select: {
-				...this.db.duo.select.fields,
-				repositoryActors: {
-					actor: {
-						user: {
-							id
-						},
-						terminal: {
-							id
-						}
-					}
-				},
-			},
-			from: [
-				r = Q.Repository,
-				ra = r.repositoryActors.innerJoin(),
-				a = ra.actor.innerJoin(),
-				u = a.user.innerJoin(),
-				d = a.terminal.innerJoin()
-			],
-			where: and(
-				r.id.in(repositoryIdsInClause),
-				d.uuId.equals(uuId),
-				u.uuId.equals(userUuId)
-			)
-		}
-		)
 	}
 
 	async findReposWithGlobalIds(

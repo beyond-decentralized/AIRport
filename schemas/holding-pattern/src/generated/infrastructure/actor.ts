@@ -5,9 +5,6 @@ import {
 import {
 	ISchema,
 } from '@airport/airspace';
-import {
-	IRepositoryActor,
-} from '../repository/repositoryactor';
 
 
 
@@ -29,7 +26,6 @@ export interface IActor {
 	user?: IUser;
 	terminal?: ITerminal;
 	schema?: ISchema;
-	repositoryActors?: IRepositoryActor[];
 
 	// Transient Properties
 

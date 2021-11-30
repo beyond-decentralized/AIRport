@@ -49,7 +49,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 1,
+									"oneTableIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -71,7 +71,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 3,
+									"oneTableIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -93,7 +93,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 2,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 8,
+									"oneTableIndex": 7,
 									"oneRelationIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -192,7 +192,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 2
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 2,
 							"sinceVersion": 1
 						},
 						{
@@ -202,7 +202,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 3
 							},
-							"relationTableIndex": 3,
+							"relationTableIndex": 1,
 							"sinceVersion": 1
 						},
 						{
@@ -212,7 +212,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 4
 							},
-							"relationTableIndex": 8,
+							"relationTableIndex": 7,
 							"sinceVersion": 1
 						},
 						{
@@ -225,7 +225,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 5
 							},
-							"relationTableIndex": 4,
+							"relationTableIndex": 3,
 							"sinceVersion": 1
 						},
 						{
@@ -238,7 +238,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 6
 							},
-							"relationTableIndex": 5,
+							"relationTableIndex": 4,
 							"sinceVersion": 1
 						}
 					],
@@ -255,385 +255,6 @@ export const SCHEMA = {
 							}
 						]
 					}
-				},
-				{
-					"columns": [
-						{
-							"index": 0,
-							"isGenerated": true,
-							"manyRelationColumnRefs": [],
-							"name": "ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 0
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 1,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "AGE_SUITABILITY",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 1
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 2,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "CREATED_AT",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 2
-								}
-							],
-							"sinceVersion": 1,
-							"type": "DATE"
-						},
-						{
-							"index": 3,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "IMMUTABLE",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 3
-								}
-							],
-							"sinceVersion": 1,
-							"type": "BOOLEAN"
-						},
-						{
-							"index": 4,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "SOURCE",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 4
-								}
-							],
-							"sinceVersion": 1,
-							"type": "STRING"
-						},
-						{
-							"index": 5,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "UU_ID",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 5
-								}
-							],
-							"sinceVersion": 1,
-							"type": "STRING"
-						},
-						{
-							"index": 6,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
-									"oneTableIndex": 3,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "OWNER_ACTOR_ID",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 6
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						}
-					],
-					"idColumnRefs": [
-						{
-							"index": 0
-						}
-					],
-					"index": 1,
-					"isLocal": true,
-					"isRepositoryEntity": false,
-					"name": "Repository",
-					"properties": [
-						{
-							"columnRef": {
-								"index": 0
-							},
-							"index": 0,
-							"isId": true,
-							"name": "id",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 1
-							},
-							"index": 1,
-							"isId": false,
-							"name": "ageSuitability",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 2
-							},
-							"index": 2,
-							"isId": false,
-							"name": "createdAt",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 3
-							},
-							"index": 3,
-							"isId": false,
-							"name": "immutable",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 4
-							},
-							"index": 4,
-							"isId": false,
-							"name": "source",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 5
-							},
-							"index": 5,
-							"isId": false,
-							"name": "uuId",
-							"sinceVersion": 1
-						},
-						{
-							"index": 6,
-							"isId": false,
-							"name": "ownerActor",
-							"relationRef": {
-								"index": 0
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 7,
-							"isId": false,
-							"name": "repositoryActors",
-							"relationRef": {
-								"index": 1
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 8,
-							"isId": false,
-							"name": "repositoryTransactionHistory",
-							"relationRef": {
-								"index": 2
-							},
-							"sinceVersion": 1
-						}
-					],
-					"relations": [
-						{
-							"index": 0,
-							"isId": false,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 6
-							},
-							"relationTableIndex": 3,
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": false,
-							"oneToManyElems": {
-								"mappedBy": "repository"
-							},
-							"relationType": "ONE_TO_MANY",
-							"propertyRef": {
-								"index": 7
-							},
-							"relationTableIndex": 2,
-							"sinceVersion": 1
-						},
-						{
-							"index": 2,
-							"isId": false,
-							"oneToManyElems": {
-								"mappedBy": "repository"
-							},
-							"relationType": "ONE_TO_MANY",
-							"propertyRef": {
-								"index": 8
-							},
-							"relationTableIndex": 7,
-							"sinceVersion": 1
-						}
-					],
-					"sinceVersion": 1,
-					"tableConfig": {
-						"name": "REPOSITORY",
-						"columnIndexes": []
-					},
-					"operations": {}
-				},
-				{
-					"columns": [
-						{
-							"index": 0,
-							"isGenerated": true,
-							"manyRelationColumnRefs": [],
-							"name": "ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 0
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 1,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
-									"oneTableIndex": 1,
-									"oneRelationIndex": 1,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "REPOSITORY_ID",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 2
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 2,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 1,
-									"oneSchemaIndex": null,
-									"oneTableIndex": 3,
-									"oneRelationIndex": 3,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "ACTOR_ID",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 1
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						}
-					],
-					"idColumnRefs": [
-						{
-							"index": 0
-						},
-						{
-							"index": 1
-						}
-					],
-					"index": 2,
-					"isLocal": true,
-					"isRepositoryEntity": false,
-					"name": "RepositoryActor",
-					"properties": [
-						{
-							"columnRef": {
-								"index": 0
-							},
-							"index": 0,
-							"isId": true,
-							"name": "id",
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": false,
-							"name": "actor",
-							"relationRef": {
-								"index": 1
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 2,
-							"isId": true,
-							"name": "repository",
-							"relationRef": {
-								"index": 0
-							},
-							"sinceVersion": 1
-						}
-					],
-					"relations": [
-						{
-							"index": 0,
-							"isId": true,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 2
-							},
-							"relationTableIndex": 1,
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": false,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 1
-							},
-							"relationTableIndex": 3,
-							"sinceVersion": 1
-						}
-					],
-					"sinceVersion": 1,
-					"tableConfig": {
-						"name": "REPOSITORY_ACTORS",
-						"columnIndexes": []
-					},
-					"operations": {}
 				},
 				{
 					"columns": [
@@ -737,7 +358,7 @@ export const SCHEMA = {
 							"index": 0
 						}
 					],
-					"index": 3,
+					"index": 1,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "Actor",
@@ -786,15 +407,6 @@ export const SCHEMA = {
 								"index": 2
 							},
 							"sinceVersion": 1
-						},
-						{
-							"index": 5,
-							"isId": false,
-							"name": "repositoryActors",
-							"relationRef": {
-								"index": 3
-							},
-							"sinceVersion": 1
 						}
 					],
 					"relations": [
@@ -830,23 +442,234 @@ export const SCHEMA = {
 							"relationTableIndex": 10,
 							"relationTableSchemaIndex": 1,
 							"sinceVersion": 1
+						}
+					],
+					"sinceVersion": 1,
+					"tableConfig": {
+						"columnIndexes": []
+					},
+					"operations": {}
+				},
+				{
+					"columns": [
+						{
+							"index": 0,
+							"isGenerated": true,
+							"manyRelationColumnRefs": [],
+							"name": "ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 0
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 1,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "AGE_SUITABILITY",
+							"notNull": true,
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 2,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "CREATED_AT",
+							"notNull": true,
+							"propertyRefs": [
+								{
+									"index": 2
+								}
+							],
+							"sinceVersion": 1,
+							"type": "DATE"
 						},
 						{
 							"index": 3,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "IMMUTABLE",
+							"notNull": true,
+							"propertyRefs": [
+								{
+									"index": 3
+								}
+							],
+							"sinceVersion": 1,
+							"type": "BOOLEAN"
+						},
+						{
+							"index": 4,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "SOURCE",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 4
+								}
+							],
+							"sinceVersion": 1,
+							"type": "STRING"
+						},
+						{
+							"index": 5,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "UU_ID",
+							"notNull": true,
+							"propertyRefs": [
+								{
+									"index": 5
+								}
+							],
+							"sinceVersion": 1,
+							"type": "STRING"
+						},
+						{
+							"index": 6,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 0,
+									"oneSchemaIndex": null,
+									"oneTableIndex": 1,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "OWNER_ACTOR_ID",
+							"notNull": true,
+							"propertyRefs": [
+								{
+									"index": 6
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						}
+					],
+					"idColumnRefs": [
+						{
+							"index": 0
+						}
+					],
+					"index": 2,
+					"isLocal": true,
+					"isRepositoryEntity": false,
+					"name": "Repository",
+					"properties": [
+						{
+							"columnRef": {
+								"index": 0
+							},
+							"index": 0,
+							"isId": true,
+							"name": "id",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 1
+							},
+							"index": 1,
+							"isId": false,
+							"name": "ageSuitability",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 2
+							},
+							"index": 2,
+							"isId": false,
+							"name": "createdAt",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 3
+							},
+							"index": 3,
+							"isId": false,
+							"name": "immutable",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 4
+							},
+							"index": 4,
+							"isId": false,
+							"name": "source",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 5
+							},
+							"index": 5,
+							"isId": false,
+							"name": "uuId",
+							"sinceVersion": 1
+						},
+						{
+							"index": 6,
+							"isId": false,
+							"name": "ownerActor",
+							"relationRef": {
+								"index": 0
+							},
+							"sinceVersion": 1
+						},
+						{
+							"index": 7,
+							"isId": false,
+							"name": "repositoryTransactionHistory",
+							"relationRef": {
+								"index": 1
+							},
+							"sinceVersion": 1
+						}
+					],
+					"relations": [
+						{
+							"index": 0,
+							"isId": false,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 6
+							},
+							"relationTableIndex": 1,
+							"sinceVersion": 1
+						},
+						{
+							"index": 1,
 							"isId": false,
 							"oneToManyElems": {
-								"mappedBy": "actor"
+								"mappedBy": "repository"
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 5
+								"index": 7
 							},
-							"relationTableIndex": 2,
+							"relationTableIndex": 6,
 							"sinceVersion": 1
 						}
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
+						"name": "REPOSITORY",
 						"columnIndexes": []
 					},
 					"operations": {}
@@ -913,7 +736,7 @@ export const SCHEMA = {
 							"index": 2
 						}
 					],
-					"index": 4,
+					"index": 3,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "RecordHistoryNewValue",
@@ -1027,7 +850,7 @@ export const SCHEMA = {
 							"index": 2
 						}
 					],
-					"index": 5,
+					"index": 4,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "RecordHistoryOldValue",
@@ -1138,7 +961,7 @@ export const SCHEMA = {
 							"index": 0
 						}
 					],
-					"index": 6,
+					"index": 5,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "TransactionHistory",
@@ -1202,7 +1025,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 3
 							},
-							"relationTableIndex": 7,
+							"relationTableIndex": 6,
 							"sinceVersion": 1
 						}
 					],
@@ -1278,13 +1101,13 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 6,
+									"oneTableIndex": 2,
 									"oneRelationIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "TRANSACTION_HISTORY_ID",
+							"name": "REPOSITORY_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1302,12 +1125,11 @@ export const SCHEMA = {
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": null,
 									"oneTableIndex": 1,
-									"oneRelationIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "REPOSITORY_ID",
+							"name": "ACTOR_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1324,12 +1146,13 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 2,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 3,
+									"oneTableIndex": 5,
+									"oneRelationIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "ACTOR_ID",
+							"name": "TRANSACTION_HISTORY_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1345,7 +1168,7 @@ export const SCHEMA = {
 							"index": 0
 						}
 					],
-					"index": 7,
+					"index": 6,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "RepositoryTransactionHistory",
@@ -1389,7 +1212,7 @@ export const SCHEMA = {
 						{
 							"index": 4,
 							"isId": false,
-							"name": "transactionHistory",
+							"name": "repository",
 							"relationRef": {
 								"index": 0
 							},
@@ -1398,7 +1221,7 @@ export const SCHEMA = {
 						{
 							"index": 5,
 							"isId": false,
-							"name": "repository",
+							"name": "actor",
 							"relationRef": {
 								"index": 1
 							},
@@ -1407,7 +1230,7 @@ export const SCHEMA = {
 						{
 							"index": 6,
 							"isId": false,
-							"name": "actor",
+							"name": "transactionHistory",
 							"relationRef": {
 								"index": 2
 							},
@@ -1431,7 +1254,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 4
 							},
-							"relationTableIndex": 6,
+							"relationTableIndex": 2,
 							"sinceVersion": 1
 						},
 						{
@@ -1451,7 +1274,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 6
 							},
-							"relationTableIndex": 3,
+							"relationTableIndex": 5,
 							"sinceVersion": 1
 						},
 						{
@@ -1464,7 +1287,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 7
 							},
-							"relationTableIndex": 8,
+							"relationTableIndex": 7,
 							"sinceVersion": 1
 						}
 					],
@@ -1563,7 +1386,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 7,
+									"oneTableIndex": 6,
 									"oneRelationIndex": 3,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -1585,7 +1408,7 @@ export const SCHEMA = {
 							"index": 0
 						}
 					],
-					"index": 8,
+					"index": 7,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "OperationHistory",
@@ -1673,7 +1496,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 5
 							},
-							"relationTableIndex": 7,
+							"relationTableIndex": 6,
 							"sinceVersion": 1
 						},
 						{
@@ -1733,7 +1556,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": null,
-									"oneTableIndex": 1,
+									"oneTableIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -1757,7 +1580,7 @@ export const SCHEMA = {
 							"index": 2
 						}
 					],
-					"index": 9,
+					"index": 8,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "RepositorySchema",
@@ -1798,7 +1621,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 2,
 							"sinceVersion": 1
 						}
 					],

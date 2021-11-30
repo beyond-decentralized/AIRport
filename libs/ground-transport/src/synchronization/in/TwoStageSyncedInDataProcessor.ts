@@ -73,14 +73,6 @@ export class TwoStageSyncedInDataProcessor
 				SYNC_IN_CHECKER, REPO_TRANS_BLOCK_DAO,
 				TRANSACTION_MANAGER)
 
-		if (!await syncInChecker.checkMessage(
-			// consistentMessages, actorMap, sharingNodeRepositoryMap,
-			// dataMessagesWithInvalidData
-			message
-		)) {
-			return
-		}
-
 		const repoTransHistoryMapByRepositoryId
 			= await this.recordSharingMessageToHistoryRecords(
 				sharingMessagesWithCompatibleSchemasAndData,

@@ -69,13 +69,10 @@ export class UpdateManager {
             jsonQuery: jsonSelect,
             queryResultType: QueryResultType.SHEET,
             parameterMap: portableQuery.parameterMap,
-            // values: portableQuery.values,
         };
         const recordsToUpdate = await transaction.find(portableSelect, {}, context);
         const { recordsByRepositoryId, repositoryIdSet } = this.groupRecordsByRepository(recordsToUpdate, getSheetSelectFromSetClauseResult);
         const repositoryIds = Array.from(repositoryIdSet);
-        // const repositories: MappedEntityArray<IRepository> =
-        // 	      await repoManager.findReposWithDetailsByIds(...repositoryIds)
         const recordHistoryMapByRecordId = {};
         for (const repositoryId of repositoryIds) {
             // const repository                         = repositories.get(repositoryId)

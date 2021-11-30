@@ -163,7 +163,7 @@ export declare const SCHEMA: {
                 sinceVersion: number;
                 columnRef?: undefined;
             })[];
-            relations: ({
+            relations: {
                 index: number;
                 isId: boolean;
                 relationType: string;
@@ -173,21 +173,7 @@ export declare const SCHEMA: {
                 relationTableIndex: number;
                 relationTableSchemaIndex: number;
                 sinceVersion: number;
-                oneToManyElems?: undefined;
-            } | {
-                index: number;
-                isId: boolean;
-                oneToManyElems: {
-                    mappedBy: string;
-                };
-                relationType: string;
-                propertyRef: {
-                    index: number;
-                };
-                relationTableIndex: number;
-                sinceVersion: number;
-                relationTableSchemaIndex?: undefined;
-            })[];
+            }[];
             sinceVersion: number;
             tableConfig: {
                 columnIndexes: any[];

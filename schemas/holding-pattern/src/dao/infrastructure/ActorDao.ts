@@ -27,8 +27,7 @@ import {
 	IActor,
 	IBaseActorDao,
 	Q,
-	QActor,
-	QRepositoryActor,
+	QActor
 } from '../../generated/generated'
 
 export interface IActorDao
@@ -117,13 +116,11 @@ export class ActorDao
 	): Promise<IActor> {
 		let act: QActor
 		let schema: QSchema
-		let repoAct: QRepositoryActor
 		let terminal: QTerminal
 		let user: QUser
 		return await this.db.findOne.graph({
 			select: {
 				id: Y,
-				repositoryActors: {},
 				schema: {},
 				terminal: {},
 				user: {},
@@ -132,7 +129,6 @@ export class ActorDao
 			from: [
 				act = Q.Actor,
 				schema = act.schema.innerJoin(),
-				repoAct = act.repositoryActors.leftJoin(),
 				terminal = act.terminal.leftJoin(),
 				user = act.user.leftJoin()
 			],

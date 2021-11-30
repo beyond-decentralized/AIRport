@@ -8,18 +8,18 @@ export class SQDIDuo extends Duo {
 }
 export class BaseActorDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(3);
+        return duoDiSet(1);
     }
     constructor() {
-        super(3);
+        super(1);
     }
 }
 export class BaseOperationHistoryDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(8);
+        return duoDiSet(7);
     }
     constructor() {
-        super(8);
+        super(7);
     }
 }
 export class BaseRecordHistoryDuo extends SQDIDuo {
@@ -32,29 +32,21 @@ export class BaseRecordHistoryDuo extends SQDIDuo {
 }
 export class BaseRecordHistoryNewValueDuo extends SQDIDuo {
     static diSet() {
+        return duoDiSet(3);
+    }
+    constructor() {
+        super(3);
+    }
+}
+export class BaseRecordHistoryOldValueDuo extends SQDIDuo {
+    static diSet() {
         return duoDiSet(4);
     }
     constructor() {
         super(4);
     }
 }
-export class BaseRecordHistoryOldValueDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(5);
-    }
-    constructor() {
-        super(5);
-    }
-}
 export class BaseRepositoryDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(1);
-    }
-    constructor() {
-        super(1);
-    }
-}
-export class BaseRepositoryActorDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(2);
     }
@@ -64,26 +56,26 @@ export class BaseRepositoryActorDuo extends SQDIDuo {
 }
 export class BaseRepositorySchemaDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(9);
+        return duoDiSet(8);
     }
     constructor() {
-        super(9);
+        super(8);
     }
 }
 export class BaseRepositoryTransactionHistoryDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(7);
-    }
-    constructor() {
-        super(7);
-    }
-}
-export class BaseTransactionHistoryDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(6);
     }
     constructor() {
         super(6);
+    }
+}
+export class BaseTransactionHistoryDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(5);
+    }
+    constructor() {
+        super(5);
     }
 }
 //# sourceMappingURL=baseDuos.js.map

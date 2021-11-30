@@ -5,6 +5,7 @@ import {
 } from '@airport/di'
 import { transactional } from '@airport/tower'
 import {
+	SYNC_IN_CHECKER,
 	SYNCHRONIZATION_IN_MANAGER,
 	TWO_STAGE_SYNCED_IN_DATA_PROCESSOR
 } from '../../tokens'
@@ -28,15 +29,15 @@ export class SynchronizationInManager
 	implements ISynchronizationInManager {
 
 	/**
-	 * @param {MessageToTM[][]} incomingMessages    All of the incoming messages, grouped
+	 * @param {TerminalMessage[][]} incomingMessages    All of the incoming messages, grouped
 	 *   into arrays by sharing node
 	 * @returns {Promise<void>}   Return when all of the messages have been processed
 	 */
 	async receiveMessages(
 		messages: TerminalMessage[]
 	): Promise<void> {
-		const twoStageSyncedInDataProcessor = await container(this)
-			.get(TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
+		const [syncInChecker, twoStageSyncedInDataProcessor] = await container(this)
+			.get(SYNC_IN_CHECKER, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
 
 		const syncTimestamp = new Date().getTime()
 
@@ -54,7 +55,11 @@ export class SynchronizationInManager
 				continue
 			}
 
-			await transactional(async () => {
+			await transactional(async (transaction) => {
+				if (!await syncInChecker.checkMessage(message)) {
+					transaction.rollback()
+					return
+				}
 				await twoStageSyncedInDataProcessor.syncDataMessage(message)
 			})
 		}

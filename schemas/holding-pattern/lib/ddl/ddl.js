@@ -8,7 +8,6 @@ export * from './history/TransactionHistory';
 export * from './infrastructure/Actor';
 export * from './infrastructure/Stageable';
 export * from './repository/Repository';
-export * from './repository/RepositoryActor';
 export * from './repository/RepositoryEntity';
 export * from './repository/RepositorySchema';
 export * from './repository/SyncPrority';

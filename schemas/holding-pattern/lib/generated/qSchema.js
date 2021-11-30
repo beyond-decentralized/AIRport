@@ -2,7 +2,7 @@ import { AIRPORT_DATABASE } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
-import { Actor, ChildRepoRow, ChildRow, ImmutableRepoRow, ImmutableRow, MutableRepoRow, MutableRow, OperationHistory, RecordHistory, RecordHistoryNewValue, RecordHistoryOldValue, ReferenceRow, Repository, RepositoryActor, RepositoryEntity, RepositorySchema, RepositoryTransactionHistory, Stageable, TransactionHistory } from '../ddl/ddl';
+import { Actor, ChildRepoRow, ChildRow, ImmutableRepoRow, ImmutableRow, MutableRepoRow, MutableRow, OperationHistory, RecordHistory, RecordHistoryNewValue, RecordHistoryOldValue, ReferenceRow, Repository, RepositoryEntity, RepositorySchema, RepositoryTransactionHistory, Stageable, TransactionHistory } from '../ddl/ddl';
 const __constructors__ = {
     Actor: Actor,
     ChildRepoRow: ChildRepoRow,
@@ -17,7 +17,6 @@ const __constructors__ = {
     RecordHistoryOldValue: RecordHistoryOldValue,
     ReferenceRow: ReferenceRow,
     Repository: Repository,
-    RepositoryActor: RepositoryActor,
     RepositoryEntity: RepositoryEntity,
     RepositorySchema: RepositorySchema,
     RepositoryTransactionHistory: RepositoryTransactionHistory,

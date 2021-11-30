@@ -6,7 +6,6 @@ import { QRecordHistory } from './history/qrecordhistory';
 import { QRecordHistoryNewValue } from './history/qrecordhistorynewvalue';
 import { QRecordHistoryOldValue } from './history/qrecordhistoryoldvalue';
 import { QRepository } from './repository/qrepository';
-import { QRepositoryActor } from './repository/qrepositoryactor';
 import { QRepositorySchema } from './repository/qrepositoryschema';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
 import { QTransactionHistory } from './history/qtransactionhistory';
@@ -18,7 +17,6 @@ export interface LocalQSchema extends AirportQSchema {
     RecordHistoryNewValue: QRecordHistoryNewValue;
     RecordHistoryOldValue: QRecordHistoryOldValue;
     Repository: QRepository;
-    RepositoryActor: QRepositoryActor;
     RepositorySchema: QRepositorySchema;
     RepositoryTransactionHistory: QRepositoryTransactionHistory;
     TransactionHistory: QTransactionHistory;

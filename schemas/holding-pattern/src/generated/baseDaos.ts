@@ -78,19 +78,6 @@ import {
 	QRepository,
 } from './repository/qrepository';
 import {
-	IRepositoryActor,
-} from './repository/repositoryactor';
-import {
-	RepositoryActorESelect,
-	RepositoryActorECreateColumns,
-	RepositoryActorECreateProperties,
-	RepositoryActorEUpdateColumns,
-	RepositoryActorEUpdateProperties,
-	RepositoryActorEId,
-	RepositoryActorGraph,
-	QRepositoryActor,
-} from './repository/qrepositoryactor';
-import {
 	IRepositorySchema,
 } from './repository/repositoryschema';
 import {
@@ -197,11 +184,11 @@ export class BaseActorDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(3)
+		super(1)
 	}
 }
 
@@ -225,11 +212,11 @@ export class BaseOperationHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(8)
+		super(7)
 	}
 }
 
@@ -281,11 +268,11 @@ export class BaseRecordHistoryNewValueDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(4)
+		super(3)
 	}
 }
 
@@ -309,11 +296,11 @@ export class BaseRecordHistoryOldValueDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(5)
+		super(4)
 	}
 }
 
@@ -334,34 +321,6 @@ export class BaseRepositoryDao
 		config: RepositoryGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<RepositoryGraph>(config);
-  }
-
-	static diSet(): boolean {
-		return duoDiSet(1)
-	}
-	
-	constructor() {
-		super(1)
-	}
-}
-
-
-export interface IBaseRepositoryActorDao
-  extends IDao<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, RepositoryActorGraph, QRepositoryActor> {
-}
-
-export class BaseRepositoryActorDao
-  extends SQDIDao<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, RepositoryActorGraph, QRepositoryActor>
-	implements IBaseRepositoryActorDao {
-	
-	static Find      = new DaoQueryDecorators<RepositoryActorESelect>();
-	static FindOne   = new DaoQueryDecorators<RepositoryActorESelect>();
-	static Search    = new DaoQueryDecorators<RepositoryActorESelect>();
-	static SearchOne = new DaoQueryDecorators<RepositoryActorESelect>();
-	static Save(
-		config: RepositoryActorGraph
-	): PropertyDecorator {
-		return Dao.BaseSave<RepositoryActorGraph>(config);
   }
 
 	static diSet(): boolean {
@@ -393,11 +352,11 @@ export class BaseRepositorySchemaDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(9)
+		super(8)
 	}
 }
 
@@ -421,11 +380,11 @@ export class BaseRepositoryTransactionHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(7)
+		super(6)
 	}
 }
 
@@ -449,10 +408,10 @@ export class BaseTransactionHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(6)
+		super(5)
 	}
 }

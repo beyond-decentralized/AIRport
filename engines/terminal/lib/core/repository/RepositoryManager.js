@@ -1,6 +1,6 @@
 import { and, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { REPOSITORY_ACTOR_DAO, REPOSITORY_DAO, SyncPriority } from '@airport/holding-pattern';
+import { REPOSITORY_DAO } from '@airport/holding-pattern';
 import { REPOSITORY_FIELD, } from '@airport/terminal-map';
 import { v4 as uuidv4 } from "uuid";
 import { REPOSITORY_MANAGER } from '../../tokens';
@@ -12,10 +12,6 @@ export class RepositoryManager {
     async initialize() {
         await this.ensureRepositoryRecords();
         await this.ensureAndCacheRepositories();
-    }
-    async findReposWithDetailsByIds(...repositoryIds) {
-        const repositoryDao = await container(this).get(REPOSITORY_DAO);
-        return await repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.uuId, this.userUuId);
     }
     async createRepository(actor) {
         let repository = await this.createRepositoryRecord(actor);
@@ -63,13 +59,12 @@ export class RepositoryManager {
             ageSuitability: 0,
             createdAt: new Date(),
             id: null,
+            immutable: false,
             ownerActor: actor,
             // platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
             // platformConfig: null,
-            repositoryActors: [],
             repositoryTransactionHistory: [],
             source: 'localhost:8080',
-            syncPriority: SyncPriority.NORMAL,
             uuId: uuidv4(),
         };
         return repository;
@@ -80,18 +75,10 @@ export class RepositoryManager {
     // platformConfig: any,
     ) {
         const repository = this.getRepositoryRecord(actor);
-        const repositoryActor = {
-            actor,
-            id: null,
-            repository
-        };
-        const [repositoryDao, repositoryActorDao] = await container(this)
-            .get(REPOSITORY_DAO, REPOSITORY_ACTOR_DAO);
+        const repositoryDao = await container(this).get(REPOSITORY_DAO);
         await repositoryDao.save(repository);
-        await repositoryActorDao.save(repositoryActor);
         // const repositoryDao = await container(this).get(REPOSITORY_DAO)
         // await repositoryDao.save(repository)
-        repository.repositoryActors.push(repositoryActor);
         this.repositories.push(repository);
         return repository;
     }

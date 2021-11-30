@@ -1,5 +1,4 @@
 import { Actor } from '../infrastructure/Actor';
-import { RepositoryActor } from '../repository/RepositoryActor';
 import { RepositoryTransactionHistory } from '../history/RepositoryTransactionHistory';
 /**
  * Created by Papa on 2/9/2017.
@@ -20,7 +19,6 @@ export declare class Repository {
     source: Repository_Source;
     uuId: Repository_UuId;
     ownerActor: Actor;
-    repositoryActors: RepositoryActor[];
     repositoryTransactionHistory: RepositoryTransactionHistory[];
 }
 //# sourceMappingURL=Repository.d.ts.map

@@ -42,13 +42,6 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'TRANSACTION_HISTORY_ID',
-        referencedColumnName: 'ID', nullable: false
-    })
-], RepositoryTransactionHistory.prototype, "transactionHistory", void 0);
-__decorate([
-    ManyToOne(),
-    JoinColumn({
         name: 'REPOSITORY_ID',
         referencedColumnName: 'ID', nullable: false
     })
@@ -60,6 +53,13 @@ __decorate([
         nullable: false
     })
 ], RepositoryTransactionHistory.prototype, "actor", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({
+        name: 'TRANSACTION_HISTORY_ID',
+        referencedColumnName: 'ID', nullable: false
+    })
+], RepositoryTransactionHistory.prototype, "transactionHistory", void 0);
 __decorate([
     OneToMany({ mappedBy: 'repositoryTransactionHistory' })
 ], RepositoryTransactionHistory.prototype, "operationHistory", void 0);

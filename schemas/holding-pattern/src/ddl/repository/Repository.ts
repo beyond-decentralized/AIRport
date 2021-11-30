@@ -15,9 +15,6 @@ import {
 	Actor
 } from '../infrastructure/Actor'
 import {
-	RepositoryActor
-} from '../repository/RepositoryActor'
-import {
 	RepositoryTransactionHistory
 } from '../history/RepositoryTransactionHistory'
 
@@ -71,9 +68,6 @@ export class Repository {
 		nullable: false
 	})
 	ownerActor: Actor;
-
-	@OneToMany({ mappedBy: 'repository' })
-	repositoryActors: RepositoryActor[] = [];
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];

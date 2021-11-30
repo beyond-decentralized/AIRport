@@ -22,19 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	TransactionHistoryGraph,
-	TransactionHistoryEId,
-	TransactionHistoryEOptionalId,
-	TransactionHistoryEUpdateProperties,
-	TransactionHistoryESelect,
-	QTransactionHistory,
-	QTransactionHistoryQId,
-	QTransactionHistoryQRelation,
-} from './qtransactionhistory';
-import {
-	TransactionHistory,
-} from '../../ddl/history/TransactionHistory';
-import {
 	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -60,6 +47,19 @@ import {
 import {
 	Actor,
 } from '../../ddl/infrastructure/Actor';
+import {
+	TransactionHistoryGraph,
+	TransactionHistoryEId,
+	TransactionHistoryEOptionalId,
+	TransactionHistoryEUpdateProperties,
+	TransactionHistoryESelect,
+	QTransactionHistory,
+	QTransactionHistoryQId,
+	QTransactionHistoryQRelation,
+} from './qtransactionhistory';
+import {
+	TransactionHistory,
+} from '../../ddl/history/TransactionHistory';
 import {
 	OperationHistoryGraph,
 	OperationHistoryEId,
@@ -98,9 +98,9 @@ export interface RepositoryTransactionHistoryESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	transactionHistory?: TransactionHistoryESelect;
 	repository?: RepositoryESelect;
 	actor?: ActorESelect;
+	transactionHistory?: TransactionHistoryESelect;
 	operationHistory?: OperationHistoryESelect;
 
 }
@@ -139,9 +139,9 @@ export interface RepositoryTransactionHistoryEUpdateProperties
 	synced?: boolean | IQBooleanField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	transactionHistory?: TransactionHistoryEOptionalId;
 	repository?: RepositoryEOptionalId;
 	actor?: ActorEOptionalId;
+	transactionHistory?: TransactionHistoryEOptionalId;
 
 }
 
@@ -158,9 +158,9 @@ export interface RepositoryTransactionHistoryGraph
 	synced?: boolean | IQBooleanField;
 
 	// Relations
-	transactionHistory?: TransactionHistoryGraph;
 	repository?: RepositoryGraph;
 	actor?: ActorGraph;
+	transactionHistory?: TransactionHistoryGraph;
 	operationHistory?: OperationHistoryGraph[];
 
 }
@@ -174,9 +174,9 @@ export interface RepositoryTransactionHistoryEUpdateColumns
 	SAVE_TIMESTAMP?: number | IQNumberField;
 	REPOSITORY_TRANSACTION_TYPE?: string | IQStringField;
 	SYNCED?: boolean | IQBooleanField;
-	TRANSACTION_HISTORY_ID?: number | IQNumberField;
 	REPOSITORY_ID?: number | IQNumberField;
 	ACTOR_ID?: number | IQNumberField;
+	TRANSACTION_HISTORY_ID?: number | IQNumberField;
 
 }
 
@@ -217,9 +217,9 @@ export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransa
 	synced: IQBooleanField;
 
 	// Non-Id Relations
-	transactionHistory: QTransactionHistoryQRelation;
 	repository: QRepositoryQRelation;
 	actor: QActorQRelation;
+	transactionHistory: QTransactionHistoryQRelation;
 	operationHistory: IQOneToManyRelation<OperationHistory, QOperationHistory>;
 
 }

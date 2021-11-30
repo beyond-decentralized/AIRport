@@ -2,7 +2,6 @@ import { IRecordHistoryNewValueDao } from './dao/history/RecordHistoryNewValueDa
 import { IRecordHistoryOldValueDao } from './dao/history/RecordHistoryOldValueDao';
 import { IRepositoryTransactionHistoryDao } from './dao/history/RepositoryTransactionHistoryDao';
 import { IActorDao } from './dao/infrastructure/ActorDao';
-import { IRepositoryActorDao } from './dao/repository/RepositoryActorDao';
 import { IRepositoryDao } from './dao/repository/RepositoryDao';
 import { IOperationHistoryDuo } from './duo/history/OperationHistoryDuo';
 import { IRecordHistoryDuo } from './duo/history/RecordHistoryDuo';
@@ -18,7 +17,6 @@ export declare const REC_HIST_NEW_VALUE_DAO: import("@airport/di").IDiToken<IRec
 export declare const REC_HIST_NEW_VALUE_DUO: import("@airport/di").IDiToken<IRecordHistoryNewValueDuo>;
 export declare const REC_HIST_OLD_VALUE_DAO: import("@airport/di").IDiToken<IRecordHistoryOldValueDao>;
 export declare const REC_HIST_OLD_VALUE_DUO: import("@airport/di").IDiToken<IRecordHistoryOldValueDuo>;
-export declare const REPOSITORY_ACTOR_DAO: import("@airport/di").IDiToken<IRepositoryActorDao>;
 export declare const REPOSITORY_DAO: import("@airport/di").IDiToken<IRepositoryDao>;
 export declare const REPO_TRANS_HISTORY_DAO: import("@airport/di").IDiToken<IRepositoryTransactionHistoryDao>;
 export declare const REPO_TRANS_HISTORY_DUO: import("@airport/di").IDiToken<IRepositoryTransactionHistoryDuo>;

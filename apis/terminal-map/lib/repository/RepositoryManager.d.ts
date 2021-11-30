@@ -1,4 +1,4 @@
-import { IEntityUpdateProperties, IQEntityInternal, MappedEntityArray, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
+import { IEntityUpdateProperties, IQEntityInternal, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
 import { IActor, IRepository } from '@airport/holding-pattern';
 import { UpdateState } from '../core/UpdateState';
 export interface IRepositoryManager {
@@ -18,6 +18,5 @@ export interface IRepositoryManager {
     ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal<any>>(qEntity: IQEntityInternal<any>, repository: IRepository, rawUpdate: RawUpdate<IEUP, IQE>): RawUpdate<IEUP, IQE>;
     getOnlyRepositoryInDatabase(): IRepository;
     ensureRepositoryScopeOnDeleteWhere<IQE extends IQEntityInternal<any>>(qEntity: IQE, repository: IRepository, rawDelete: RawDelete<IQE>): RawDelete<IQE>;
-    findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>>;
 }
 //# sourceMappingURL=RepositoryManager.d.ts.map

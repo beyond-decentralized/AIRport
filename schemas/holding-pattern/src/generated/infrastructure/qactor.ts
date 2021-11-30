@@ -53,19 +53,6 @@ import {
 	Schema,
 } from '@airport/airspace';
 import {
-	RepositoryActorGraph,
-	RepositoryActorEId,
-	RepositoryActorEOptionalId,
-	RepositoryActorEUpdateProperties,
-	RepositoryActorESelect,
-	QRepositoryActor,
-	QRepositoryActorQId,
-	QRepositoryActorQRelation,
-} from '../repository/qrepositoryactor';
-import {
-	RepositoryActor,
-} from '../../ddl/repository/RepositoryActor';
-import {
 	Actor,
 } from '../../ddl/infrastructure/Actor';
 
@@ -91,7 +78,6 @@ export interface ActorESelect
 	user?: UserESelect;
 	terminal?: TerminalESelect;
 	schema?: SchemaESelect;
-	repositoryActors?: RepositoryActorESelect;
 
 }
 
@@ -147,7 +133,6 @@ export interface ActorGraph
 	user?: UserGraph;
 	terminal?: TerminalGraph;
 	schema?: SchemaGraph;
-	repositoryActors?: RepositoryActorGraph[];
 
 }
 
@@ -202,7 +187,6 @@ export interface QActor extends IQEntity<Actor>
 	user: QUserQRelation;
 	terminal: QTerminalQRelation;
 	schema: QSchemaQRelation;
-	repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
 
 }
 

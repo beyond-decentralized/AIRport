@@ -8,7 +8,6 @@ export const REC_HIST_NEW_VALUE_DAO = holdingPattern.token('IRecordHistoryNewVal
 export const REC_HIST_NEW_VALUE_DUO = holdingPattern.token('IRecordHistoryNewValueDuo');
 export const REC_HIST_OLD_VALUE_DAO = holdingPattern.token('IRecordHistoryOldValueDao');
 export const REC_HIST_OLD_VALUE_DUO = holdingPattern.token('IRecordHistoryOldValueDuo');
-export const REPOSITORY_ACTOR_DAO = holdingPattern.token('IRepositoryActorDao');
 export const REPOSITORY_DAO = holdingPattern.token('IRepositoryDao');
 export const REPO_TRANS_HISTORY_DAO = holdingPattern.token('IRepositoryTransactionHistoryDao');
 export const REPO_TRANS_HISTORY_DUO = holdingPattern.token('IRepositoryTransactionHistoryDuo');

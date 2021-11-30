@@ -25,41 +25,6 @@ export class RepositoryDao extends BaseRepositoryDao {
             where: and(r.source.equals(repositorySource), r.uuId.equals(repositoryUuId), t.isLocal.equals(false))
         });
     }
-    async findReposWithTransactionLogDetailsByIds(repositoryIds) {
-        let r;
-        let ra;
-        let a;
-        let u;
-        let d;
-        let id = Y;
-        return await this.db.find.map().tree({
-            select: {
-                createdAt: Y,
-                uuId: Y,
-                ownerActor: {
-                    user: {
-                        id
-                    },
-                    terminal: {
-                        id
-                    }
-                },
-            },
-            from: [
-                r = Q.Repository,
-                ra = r.repositoryActors.innerJoin(),
-                a = ra.actor.innerJoin(),
-                u = a.user.innerJoin(),
-                d = a.terminal.innerJoin()
-            ],
-            where: 
-            // and(
-            r.id.in(repositoryIds),
-            // d.name.equals(dbName),
-            // u.uniqueId.equals(userEmail)
-            // )
-        });
-    }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
         let r;
         const id = Y;
@@ -76,37 +41,6 @@ export class RepositoryDao extends BaseRepositoryDao {
                 r = Q.Repository
             ],
             where: r.id.in(repositoryIds)
-        });
-    }
-    async findReposWithDetailsByIds(repositoryIdsInClause, uuId, userUuId) {
-        let r;
-        let ra;
-        let a;
-        let u;
-        let d;
-        let id = Y;
-        return await this.db.find.map().tree({
-            select: {
-                ...this.db.duo.select.fields,
-                repositoryActors: {
-                    actor: {
-                        user: {
-                            id
-                        },
-                        terminal: {
-                            id
-                        }
-                    }
-                },
-            },
-            from: [
-                r = Q.Repository,
-                ra = r.repositoryActors.innerJoin(),
-                a = ra.actor.innerJoin(),
-                u = a.user.innerJoin(),
-                d = a.terminal.innerJoin()
-            ],
-            where: and(r.id.in(repositoryIdsInClause), d.uuId.equals(uuId), u.uuId.equals(userUuId))
         });
     }
     async findReposWithGlobalIds(repositoryIds) {

@@ -10,8 +10,6 @@ import { IRecordHistoryOldValue } from './history/recordhistoryoldvalue';
 import { RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, RecordHistoryOldValueGraph, QRecordHistoryOldValue } from './history/qrecordhistoryoldvalue';
 import { IRepository } from './repository/repository';
 import { RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryGraph, QRepository } from './repository/qrepository';
-import { IRepositoryActor } from './repository/repositoryactor';
-import { RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, RepositoryActorGraph, QRepositoryActor } from './repository/qrepositoryactor';
 import { IRepositorySchema } from './repository/repositoryschema';
 import { RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaGraph, QRepositorySchema } from './repository/qrepositoryschema';
 import { IRepositoryTransactionHistory } from './history/repositorytransactionhistory';
@@ -87,17 +85,6 @@ export declare class BaseRepositoryDao extends SQDIDao<IRepository, RepositoryES
     static Search: DaoQueryDecorators<RepositoryESelect>;
     static SearchOne: DaoQueryDecorators<RepositoryESelect>;
     static Save(config: RepositoryGraph): PropertyDecorator;
-    static diSet(): boolean;
-    constructor();
-}
-export interface IBaseRepositoryActorDao extends IDao<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, RepositoryActorGraph, QRepositoryActor> {
-}
-export declare class BaseRepositoryActorDao extends SQDIDao<IRepositoryActor, RepositoryActorESelect, RepositoryActorECreateProperties, RepositoryActorEUpdateColumns, RepositoryActorEUpdateProperties, RepositoryActorEId, RepositoryActorGraph, QRepositoryActor> implements IBaseRepositoryActorDao {
-    static Find: DaoQueryDecorators<RepositoryActorESelect>;
-    static FindOne: DaoQueryDecorators<RepositoryActorESelect>;
-    static Search: DaoQueryDecorators<RepositoryActorESelect>;
-    static SearchOne: DaoQueryDecorators<RepositoryActorESelect>;
-    static Save(config: RepositoryActorGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

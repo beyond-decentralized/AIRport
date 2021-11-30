@@ -13,7 +13,6 @@ import {
 	Terminal,
 	User
 } from '@airport/travel-document-checkpoint'
-import { RepositoryActor } from '../repository/RepositoryActor'
 import { Schema } from '@airport/airspace';
 
 export type Actor_Id = number;
@@ -49,8 +48,5 @@ export class Actor {
 	@ManyToOne()
 	@JoinColumn({ name: "SCHEMA_INDEX", referencedColumnName: "SCHEMA_INDEX" })
 	schema: Schema
-
-	@OneToMany({ mappedBy: 'actor' })
-	repositoryActors: RepositoryActor[]
 
 }

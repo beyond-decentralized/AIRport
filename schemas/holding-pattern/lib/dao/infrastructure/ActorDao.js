@@ -2,7 +2,7 @@ import { and, Y } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { ACTOR_DAO } from '../../tokens';
-import { BaseActorDao, Q, } from '../../generated/generated';
+import { BaseActorDao, Q } from '../../generated/generated';
 export class ActorDao extends BaseActorDao {
     async findWithDetailsAndGlobalIdsByIds(actorIds) {
         return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a.id.in(actorIds));
@@ -21,13 +21,11 @@ export class ActorDao extends BaseActorDao {
     async findByApplicationSignature(applicationSignature) {
         let act;
         let schema;
-        let repoAct;
         let terminal;
         let user;
         return await this.db.findOne.graph({
             select: {
                 id: Y,
-                repositoryActors: {},
                 schema: {},
                 terminal: {},
                 user: {},
@@ -36,7 +34,6 @@ export class ActorDao extends BaseActorDao {
             from: [
                 act = Q.Actor,
                 schema = act.schema.innerJoin(),
-                repoAct = act.repositoryActors.leftJoin(),
                 terminal = act.terminal.leftJoin(),
                 user = act.user.leftJoin()
             ],

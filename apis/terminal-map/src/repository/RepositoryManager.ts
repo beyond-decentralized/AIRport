@@ -57,5 +57,4 @@ export interface IRepositoryManager {
 		rawDelete: RawDelete<IQE>
 	): RawDelete<IQE>;
 
-	findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>>;
 }

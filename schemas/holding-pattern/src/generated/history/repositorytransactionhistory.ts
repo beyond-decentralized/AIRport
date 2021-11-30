@@ -1,12 +1,12 @@
 import {
-	ITransactionHistory,
-} from './transactionhistory';
-import {
 	IRepository,
 } from '../repository/repository';
 import {
 	IActor,
 } from '../infrastructure/actor';
+import {
+	ITransactionHistory,
+} from './transactionhistory';
 import {
 	IOperationHistory,
 } from './operationhistory';
@@ -30,9 +30,9 @@ export interface IRepositoryTransactionHistory {
 	synced?: boolean;
 
 	// Non-Id Relations
-	transactionHistory?: ITransactionHistory;
 	repository?: IRepository;
 	actor?: IActor;
+	transactionHistory?: ITransactionHistory;
 	operationHistory?: IOperationHistory[];
 
 	// Transient Properties
