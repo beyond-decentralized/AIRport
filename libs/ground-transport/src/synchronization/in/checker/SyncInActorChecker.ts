@@ -1,5 +1,6 @@
 import {
 	TerminalId,
+	TerminalMessage,
 	TerminalName,
 	TerminalSecondId
 } from '@airport/arrivals-n-departures'
@@ -37,233 +38,67 @@ export interface ActorCheckResults {
 
 export interface ISyncInActorChecker {
 
-	ensureActor(
-		message: MessageToTM
-	): Promise<ActorCheckResults>;
+	ensureActors(
+		message: TerminalMessage
+	): Promise<boolean>
 
 }
 
 export class SyncInActorChecker
 	implements ISyncInActorChecker {
 
-	async ensureActorsAndGetAsMaps(
-		message: MessageToTM,
-		actorMap: Map<User_PrivateId, Map<TerminalName,
-			Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>,
-		actorMapById: Map<ActorId, IActor>,
-		dataMessagesWithInvalidData: IDataToTM[]
-	): Promise<ActorCheckResults> {
-		const [actorDao, terminalDao] = await container(this)
-			.get(ACTOR_DAO, TERMINAL_DAO)
+	async ensureActors(
+		message: TerminalMessage
+	): Promise<boolean> {
+		try {
+			const actorDao = await container(this).get(ACTOR_DAO)
 
-		const actorRandomIdSet: Set<ActorUuId> = new Set()
-		const userUniqueIdsSet: Set<User_PrivateId> = new Set()
-		const terminalNameSet: Set<TerminalName> = new Set()
-		const terminalSecondIdSet: Set<TerminalSecondId> = new Set()
-		const ownerUniqueIdSet: Set<User_PrivateId> = new Set()
+			let actorUuids: string[] = []
+			let messageTerminalIndexMap: Map<string, number> = new Map()
+			for (let i = 0; i < message.terminals.length; i++) {
+				const terminal = message.terminals[i]
+				if (typeof terminal.owner !== 'number') {
+					throw new Error(`Expecting "in-message index" (number)
+						in 'terminal.owner'`)
+				}
+				if (!terminal.uuId || typeof terminal.uuId !== 'string') {
+					throw new Error(`Invalid 'terminal.uuid'`)
+				}
+				terminal.owner = message.terminals[terminal.owner as any]
+				actorUuids.push(terminal.uuId)
+				messageTerminalIndexMap.set(terminal.uuId, i)
+				// Make sure id field is not in the input
+				delete terminal.id
+			}
 
-		const consistentMessages: IDataToTM[] = []
-		// split messages by repository and record actor information
-		if (!this.areActorIdsConsistentInMessage(message)) {
-			dataMessagesWithInvalidData.push(message)
-			continue
-		}
-		const data = message.data
-		terminalNameSet.add(data.terminal.name)
-		terminalSecondIdSet.add(data.terminal.secondId)
-		ownerUniqueIdSet.add(data.terminal.owner.privateId)
+			const terminals = await actorDao.findByUuIds(actorUuids)
+			for (const terminal of terminals) {
+				const messageUserIndex = messageTerminalIndexMap.get(terminal.uuId)
+				message.terminals[messageUserIndex] = terminal
+			}
 
-		consistentMessages.push(message)
+			const missingTerminals = message.terminals
+				.filter(messageTerminal => !messageTerminal.id)
 
-		for (const actor of data.actors) {
-			actorRandomIdSet.add(actor.uuId)
-			userUniqueIdsSet.add(actor.user.privateId)
-		}
-
-		const terminalMapByGlobalIds = await terminalDao.findMapByGlobalIds(
-			Array.from(ownerUniqueIdSet),
-			Array.from(terminalNameSet),
-			Array.from(terminalSecondIdSet)
-		)
-
-		const terminalIdSet: Set<TerminalId> = new Set()
-		const terminal = message.data.terminal
-		const terminalId = terminalMapByGlobalIds
-			.get(terminal.owner.privateId)
-			.get(terminal.name)
-			.get(terminal.secondId).id
-		terminalIdSet.add(terminalId)
-
-		// NOTE: remote actors should not contain terminal info, it should be populated here
-		// this is because a given RTB is always generated in one and only one terminal
-
-		await actorDao.findMapsWithDetailsByGlobalIds(
-			Array.from(actorRandomIdSet),
-			Array.from(userUniqueIdsSet),
-			Array.from(terminalIdSet),
-			actorMap,
-			actorMapById)
-
-		const newActors: IActor[] = this.getNewActors(consistentMessages, actorMap)
-		await actorDao.bulkCreate(newActors, false)
-
-		for (const newActor of newActors) {
-			actorMapById.set(newActor.id, newActor)
+			if (missingTerminals.length) {
+				await this.addMissingTerminals(missingTerminals, actorDao)
+			}
+		} catch (e) {
+			console.error(e)
+			return false
 		}
 
-		this.updateActorIdsInMessages(actorMap, consistentMessages)
-
-		return {
-			actorMap,
-			actorMapById,
-			consistentMessages
-		}
+		return true
 	}
 
-	private areActorIdsConsistentInMessage(
-		message: IDataToTM
-	): boolean {
-		const actorIdSet: Set<ActorId> = new Set()
-		const usedActorIdSet: Set<ActorId> = new Set()
-		for (const actor of message.data.actors) {
-			actorIdSet.add(actor.id)
+	private async addMissingTerminals(
+		missingTerminals: ITerminal[],
+		terminalDao: ITerminalDao
+	): Promise<void> {
+		for (const terminal of missingTerminals) {
+			terminal.isLocal = false
 		}
-
-		const data = message.data
-		for (const repoTransHistory of data.repoTransHistories) {
-			const transactionRemoteActorId = repoTransHistory.actor.id
-			if (!actorIdSet.has(transactionRemoteActorId)) {
-				return false
-			}
-			usedActorIdSet.add(transactionRemoteActorId)
-			for (const operationHistory of repoTransHistory.operationHistory) {
-				for (const recordHistory of operationHistory.recordHistory) {
-					const recordRemoteActorId = recordHistory.actor.id
-					if (!actorIdSet.has(recordRemoteActorId)) {
-						return false
-					}
-					usedActorIdSet.add(recordRemoteActorId)
-				}
-			}
-		}
-
-		return actorIdSet.size === usedActorIdSet.size
-	}
-
-	private updateActorIdsInMessages(
-		actorMap: Map<ActorUuId, Map<User_PrivateId,
-			Map<TerminalName, Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>>,
-		dataMessages: IDataToTM[]
-	): void {
-		for (const message of dataMessages) {
-			const messageActorMapByRemoteId: Map<RemoteActorId, IActor> = new Map()
-			const updatedActors: IActor[] = []
-			for (const actor of message.data.actors) {
-				const localActor: IActor = actorMap
-					.get(actor.uuId)
-					.get(actor.user.privateId)
-					.get(actor.terminal.name)
-					.get(actor.terminal.secondId)
-					.get(actor.terminal.owner.privateId)
-				updatedActors.push(localActor)
-				messageActorMapByRemoteId.set(actor.id, localActor)
-			}
-			const data = message.data
-			data.actors = updatedActors
-			for (const repoTransHistory of data.repoTransHistories) {
-				const transactionRemoteActorId = repoTransHistory.actor.id
-				const transactionLocalActor = messageActorMapByRemoteId.get(transactionRemoteActorId)
-				repoTransHistory.actor.id = transactionLocalActor.id
-				for (const operationHistory of repoTransHistory.operationHistory) {
-					for (const recordHistory of operationHistory.recordHistory) {
-						const recordRemoteActorId = recordHistory.actor.id
-						const recordLocalActor = messageActorMapByRemoteId.get(recordRemoteActorId)
-						recordHistory.actor.id = recordLocalActor.id
-					}
-				}
-			}
-		}
-	}
-
-	private getNewActors(
-		dataMessages: IDataToTM[],
-		actorMap: Map<ActorUuId, Map<User_PrivateId, Map<TerminalName,
-			Map<TerminalSecondId, Map<User_PrivateId, ActorId>>>>>
-	): IActor[] {
-		const newActorMap: Map<ActorUuId, Map<User_PrivateId, Map<TerminalName,
-			Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>> = new Map()
-
-		// split messages by repository
-		for (const message of dataMessages) {
-			for (let actor of message.data.actors) {
-				actor = {
-					id: undefined,
-					...actor,
-				}
-				const actorsForRandomId = actorMap.get(actor.uuId)
-				if (!actorsForRandomId) {
-					this.addActorToMap(actor, newActorMap)
-					this.addActorToMap(actor, actorMap)
-					break
-				}
-				const actorsForUserUniqueId = actorsForRandomId.get(actor.user.privateId)
-				if (!actorsForUserUniqueId) {
-					this.addActorToMap(actor, newActorMap)
-					this.addActorToMap(actor, actorMap)
-					break
-				}
-				const actorsForTerminalName = actorsForUserUniqueId.get(actor.terminal.name)
-				if (!actorsForTerminalName) {
-					this.addActorToMap(actor, newActorMap)
-					this.addActorToMap(actor, actorMap)
-					break
-				}
-				const actorsForTerminalSecondId
-					= actorsForTerminalName.get(actor.terminal.secondId)
-				if (!actorsForTerminalSecondId) {
-					this.addActorToMap(actor, newActorMap)
-					this.addActorToMap(actor, actorMap)
-					break
-				}
-				const existingActor = actorsForTerminalSecondId.get(actor.terminal.owner.privateId)
-				if (!existingActor) {
-					this.addActorToMap(actor, newActorMap)
-					this.addActorToMap(actor, actorMap)
-					break
-				}
-			}
-		}
-
-		const newActors: IActor[] = []
-		for (const [actorRandomId, actorsForRandomId] of newActorMap) {
-			for (const [userUniqueId, actorsForUserUniqueId] of actorsForRandomId) {
-				for (const [terminalName, actorsForTerminalName] of actorsForUserUniqueId) {
-					for (const [terminalSecondId, actorsForTerminalSecondId]
-						of actorsForTerminalName) {
-						for (const [terminalOwnerUniqueId, actor] of actorsForTerminalSecondId) {
-							newActors.push(actor)
-						}
-					}
-				}
-			}
-		}
-
-		return newActors
-	}
-
-	private addActorToMap(
-		actor: IActor,
-		actorMap: Map<ActorUuId, Map<User_PrivateId, Map<TerminalName,
-			Map<TerminalSecondId, Map<User_PrivateId, IActor>>>>>
-	): void {
-		ensureChildJsMap(
-			ensureChildJsMap(
-				ensureChildJsMap(
-					ensureChildJsMap(actorMap, actor.uuId),
-					actor.user.privateId),
-				actor.terminal.name),
-			actor.terminal.secondId)
-			.set(actor.terminal.owner.privateId, actor)
+		await terminalDao.insert(missingTerminals)
 	}
 
 }

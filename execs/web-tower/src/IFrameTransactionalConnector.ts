@@ -178,15 +178,6 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	async getApplicationRepositories(
-		context?: IContext
-	): Promise<AIRepository[]> {
-		return await this.sendMessage<IIsolateMessage, AIRepository[]>({
-			...this.getCoreFields(),
-			type: IsolateMessageType.GET_APP_REPOSITORIES,
-		})
-	}
-
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		context: IQueryContext,

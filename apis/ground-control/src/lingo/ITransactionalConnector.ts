@@ -17,10 +17,6 @@ export interface ITransactionalConnector {
 		context?: IContext,
 	): Promise<number>
 
-	getApplicationRepositories(
-		context?: IContext,
-	): Promise<AIRepository[]>
-
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		context?: IAbstractQueryContext<any>,

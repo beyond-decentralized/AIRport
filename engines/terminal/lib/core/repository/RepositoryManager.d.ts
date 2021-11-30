@@ -18,7 +18,7 @@ export declare class RepositoryManager implements IRepositoryManager {
         [repositoryId: string]: IRepository;
     };
     terminal: ITerminal;
-    userEmail: string;
+    userUuId: string;
     initialize(): Promise<void>;
     findReposWithDetailsByIds(...repositoryIds: number[]): Promise<MappedEntityArray<IRepository>>;
     createRepository(actor: IActor): Promise<IRepository>;

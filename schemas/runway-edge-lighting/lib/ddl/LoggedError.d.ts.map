@@ -1,1 +1,0 @@
-{"version":3,"file":"LoggedError.d.ts","sourceRoot":"","sources":["../../src/ddl/LoggedError.ts"],"names":[],"mappings":"AAOA,OAAO,EAAC,QAAQ,EAAC,MAAmB,YAAY,CAAC;AACjD,OAAO,EAAC,qBAAqB,EAAC,MAAM,yBAAyB,CAAC;AAE9D,qBAEa,WAAW;IAKvB,QAAQ,EAAE,QAAQ,CAAC;IAInB,UAAU,EAAE,qBAAqB,CAAC;CAElC"}

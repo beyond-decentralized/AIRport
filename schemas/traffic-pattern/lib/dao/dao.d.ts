@@ -1,3 +1,4 @@
+export * from './DomainDao';
 export * from './SchemaColumnDao';
 export * from './SchemaDao';
 export * from './SchemaEntityDao';

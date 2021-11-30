@@ -14,13 +14,12 @@ import {
 import { JsonSchemaWithLastIds } from "@airport/security-check";
 import { TERMINAL_STORE } from "@airport/terminal-map";
 import {
-    APPLICATION_DAO,
     DOMAIN_DAO,
-    IApplication,
-    IDomain
-} from "@airport/territory";
+    IDomain,
+    ISchema,
+    SCHEMA_DAO
+} from "@airport/traffic-pattern";
 import { transactional } from "@airport/tower";
-import { ISchema } from "@airport/traffic-pattern";
 import {
     Terminal,
     User
@@ -54,9 +53,9 @@ export class InternalRecordManager
         await transactional(async (
             _transaction
         ) => {
-            const [actorDao, applicationDao, terminalStore]
+            const [actorDao, schemaDao, terminalStore]
                 = await container(this)
-                    .get(ACTOR_DAO, APPLICATION_DAO, TERMINAL_STORE)
+                    .get(ACTOR_DAO, SCHEMA_DAO, TERMINAL_STORE)
 
             const domain = await this.updateDomain(schema)
 
@@ -67,28 +66,30 @@ export class InternalRecordManager
             }
 
             actor = await actorDao.findByApplicationSignature(signature)
-            let application: IApplication
+            let aSchema: ISchema
             if (!actor) {
-                application = {
+                aSchema = {
                     domain,
-                    id: null,
+                    index: null,
                     name: schema.name,
-                    signature
+                    packageName: 'bogus',
+                    scope: 'private',
+                    status: 'CURRENT'
                 }
-                await applicationDao.save(application)
+                await schemaDao.save(aSchema)
 
                 const frameworkActor = terminalStore.getFrameworkActor()
                 actor = {
-                    application: application,
                     id: null,
                     repositoryActors: [],
+                    schema: aSchema,
                     terminal: frameworkActor.terminal,
                     user: frameworkActor.user,
                     uuId: uuidv4()
                 }
                 await actorDao.save(actor)
             } else {
-                application = actor.application
+                aSchema = actor.schema
             }
 
             const lastTerminalState = terminalStore.getTerminalState()
@@ -114,8 +115,7 @@ export class InternalRecordManager
             _transaction
         ) => {
             const user = new User();
-            user.privateId = domainName;
-            user.publicId = domainName;
+            user.uuId = domainName;
             // const userDao = await container(this).get(USER_DAO);
             // await userDao.save(user, context);
 

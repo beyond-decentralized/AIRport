@@ -98,16 +98,6 @@ export class TransactionalServer
 		return repositoryId
 	}
 
-	async getApplicationRepositories(
-		credentials: ICredentials,
-		context: IOperationContext,
-	): Promise<AIRepository[]> {
-		const repositoryDao = await container(this).get(REPOSITORY_DAO)
-
-		return await repositoryDao
-			.findReposForAppSignature(credentials.applicationSignature)
-	}
-
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,

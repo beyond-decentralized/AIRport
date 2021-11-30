@@ -1,5 +1,18 @@
 /* eslint-disable */
 import {
+	IDomain,
+} from './schema/domain';
+import {
+	DomainESelect,
+	DomainECreateColumns,
+	DomainECreateProperties,
+	DomainEUpdateColumns,
+	DomainEUpdateProperties,
+	DomainEId,
+	DomainGraph,
+	QDomain,
+} from './schema/qdomain';
+import {
 	ISchema,
 } from './schema/schema';
 import {
@@ -187,6 +200,34 @@ export class SQDIDao<Entity,
 		dbEntityId: DbEntityId
 	) {
 		super(dbEntityId, Q)
+	}
+}
+
+
+export interface IBaseDomainDao
+  extends IDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
+}
+
+export class BaseDomainDao
+  extends SQDIDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain>
+	implements IBaseDomainDao {
+	
+	static Find      = new DaoQueryDecorators<DomainESelect>();
+	static FindOne   = new DaoQueryDecorators<DomainESelect>();
+	static Search    = new DaoQueryDecorators<DomainESelect>();
+	static SearchOne = new DaoQueryDecorators<DomainESelect>();
+	static Save(
+		config: DomainGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<DomainGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(11)
+	}
+	
+	constructor() {
+		super(11)
 	}
 }
 

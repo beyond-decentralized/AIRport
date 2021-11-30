@@ -69,6 +69,10 @@ export class SyncInDataChecker
 				if (typeof operationHistory.entity !== 'object') {
 					throw new Error(`Invalid operationHistory.entity`)
 				}
+				if(typeof operationHistory.entity.schemaVersion !== 'number') {
+					throw new Error(`Expecting "in-message index" (number)
+					in 'operationHistory.entity.schemaVersion'`)
+				}
 				const schemaVersion = message.schemaVersions[operationHistory.entity.schemaVersion as any]
 				if (!schemaVersion) {
 					throw new Error(`Invalid index into message.schemaVersions [${operationHistory.entity.schemaVersion}],

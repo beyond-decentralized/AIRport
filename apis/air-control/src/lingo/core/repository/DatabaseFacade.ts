@@ -59,10 +59,6 @@ export interface IDatabaseFacade {
 		ctx?: IContext
 	): Promise<number>;
 
-	getApplicationRepositories(
-		context?: IContext
-	): Promise<AIRepository[]>
-
 	insertColumnValues<IQE extends IQEntity<any>>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;

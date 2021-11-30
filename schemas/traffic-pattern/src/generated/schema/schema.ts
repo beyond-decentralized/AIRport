@@ -3,7 +3,7 @@ import {
 } from '@airport/security-check';
 import {
 	IDomain,
-} from '@airport/territory';
+} from './domain';
 import {
 	ISchemaVersion,
 } from './schemaversion';
@@ -29,6 +29,7 @@ export interface ISchema {
 	name?: string;
 	packageName?: string;
 	status?: string;
+	signature?: string;
 	jsonSchema?: JsonSchemaWithLastIds;
 
 	// Non-Id Relations

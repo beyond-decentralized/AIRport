@@ -126,7 +126,7 @@ BaseRepositoryActorDao.Find = new DaoQueryDecorators();
 BaseRepositoryActorDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryActorDao.Search = new DaoQueryDecorators();
 BaseRepositoryActorDao.SearchOne = new DaoQueryDecorators();
-export class BaseRepositoryApplicationDao extends SQDIDao {
+export class BaseRepositorySchemaDao extends SQDIDao {
     constructor() {
         super(10);
     }
@@ -135,21 +135,6 @@ export class BaseRepositoryApplicationDao extends SQDIDao {
     }
     static diSet() {
         return duoDiSet(10);
-    }
-}
-BaseRepositoryApplicationDao.Find = new DaoQueryDecorators();
-BaseRepositoryApplicationDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryApplicationDao.Search = new DaoQueryDecorators();
-BaseRepositoryApplicationDao.SearchOne = new DaoQueryDecorators();
-export class BaseRepositorySchemaDao extends SQDIDao {
-    constructor() {
-        super(11);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet(11);
     }
 }
 BaseRepositorySchemaDao.Find = new DaoQueryDecorators();

@@ -7,8 +7,8 @@ import type {
 	SchemaIndex
 } from '@airport/ground-control'
 import type { ITerminalStore } from '@airport/terminal-map'
-import type { IDomain } from '@airport/territory'
 import type {
+	IDomain,
 	ISchema,
 	ISchemaColumn,
 	ISchemaCurrentVersion,

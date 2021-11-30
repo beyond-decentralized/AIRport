@@ -23,6 +23,10 @@ export interface IUserDao
 		uuIds: User_UuId[]
 	): Promise<IUser[]>
 
+	insert(
+		users: IUser[]
+	): Promise<void>
+
 }
 
 export class UserDao
@@ -52,6 +56,26 @@ export class UserDao
 				u = Q.User
 			],
 			where: u.uuId.in(uuIds)
+		})
+	}
+
+	async insert(
+		users: IUser[]
+	): Promise<void> {
+		let u: QUser;
+		const values = []
+		for (const user of users) {
+			values.push([
+				user.uuId, user.username
+			])
+		}
+		await this.db.insertValuesGenerateIds({
+			insertInto: u = Q.User,
+			columns: [
+				u.uuId,
+				u.username
+			],
+			values
 		})
 	}
 

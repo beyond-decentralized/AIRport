@@ -33,8 +33,8 @@ __decorate([
 ], Actor.prototype, "uuId", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: "APPLICATION_ID", referencedColumnName: "ID" })
-], Actor.prototype, "application", void 0);
+    JoinColumn({ name: "SCHEMA_INDEX", referencedColumnName: "SCHEMA_INDEX" })
+], Actor.prototype, "schema", void 0);
 __decorate([
     OneToMany({ mappedBy: 'actor' })
 ], Actor.prototype, "repositoryActors", void 0);

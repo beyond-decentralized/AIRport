@@ -12,8 +12,8 @@ import {
 	SchemaName
 } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
-import type { IApplication, IDomain } from '@airport/territory';
 import {
+	IDomain,
 	ISchema,
 	ISchemaColumn,
 	ISchemaEntity,
@@ -31,10 +31,6 @@ export interface ITerminalStore {
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
 	getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>
-
-	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
-
-	getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>
 
@@ -73,10 +69,6 @@ export class TerminalStore
 
 	getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>
 
-	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
-
-	getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>
-
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
 
 	getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>
@@ -105,40 +97,28 @@ export class TerminalStore
 		const selectorManager = await DI.db().get(SELECTOR_MANAGER);
 		this.state = new BehaviorSubject<ITerminalState>({
 			applicationActors: [],
-			applications: [],
 			domains: [],
 			frameworkActor: null,
-			nodesBySyncFrequency: new Map(),
 			schemas: [],
 			terminal: null,
 		});
 
 		this.getTerminalState = selectorManager.createRootSelector(this.state);
-		this.getApplications = selectorManager.createSelector(this.getTerminalState,
-			terminal => terminal.applications)
 		this.getApplicationActors = selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.applicationActors)
 		this.getApplicationActorMapBySignature = selectorManager.createSelector(this.getApplicationActors,
 			applicationActors => {
 				const applicationActorsBySignature: Map<ApplicationSignature, IActor> = new Map()
 				for (const applicationActor of applicationActors) {
-					applicationActorsBySignature.set(applicationActor.application.signature, applicationActor)
+					applicationActorsBySignature.set(applicationActor.schema.signature, applicationActor)
 				}
 				return applicationActorsBySignature
-			})
-		this.getApplicationMapBySignature = selectorManager.createSelector(this.getApplications,
-			applications => {
-				const applicationsBySignature: Map<ApplicationSignature, IApplication> = new Map()
-				for (const application of applications) {
-					applicationsBySignature.set(application.signature, application)
-				}
-				return applicationsBySignature
 			})
 		this.getDomains = selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.domains);
 		this.getDomainMapByName = selectorManager.createSelector(this.getDomains,
 			domains => {
-				const domainsByName: Map<ApplicationSignature, IApplication> = new Map()
+				const domainsByName: Map<ApplicationSignature, IDomain> = new Map()
 				for (const domain of domains) {
 					domainsByName.set(domain.name, domain)
 				}
@@ -174,9 +154,6 @@ export class TerminalStore
 
 			return latestSchemaVersionMapBySchemaName;
 		});
-
-		// getNodesBySyncFrequency = createSelector(this.getTerminalState,
-		// 	terminal => terminal.nodesBySyncFrequency)
 
 		this.getAllSchemaVersionsByIds = selectorManager.createSelector(this.getDomains,
 			domains => {

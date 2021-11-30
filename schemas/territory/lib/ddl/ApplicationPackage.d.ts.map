@@ -1,1 +1,0 @@
-{"version":3,"file":"ApplicationPackage.d.ts","sourceRoot":"","sources":["../../src/ddl/ApplicationPackage.ts"],"names":[],"mappings":"AASA,OAAO,EAAC,oBAAoB,EAAC,MAAM,yBAAyB,CAAA;AAC5D,OAAO,EAAC,WAAW,EAAC,MAAe,eAAe,CAAC;AACnD,OAAO,EAAC,OAAO,EAAC,MAAmB,WAAW,CAAC;AAE/C,qBAEa,kBAAkB;IAK9B,EAAE,EAAE,oBAAoB,CAAA;IAIxB,WAAW,EAAE,WAAW,CAAA;IAIxB,OAAO,EAAE,OAAO,CAAA;CAEhB"}

@@ -2,12 +2,10 @@ import { system } from '@airport/di'
 import { ISynchronizationConflictDao } from "./dao/conflict/SynchronizationConflictDao";
 import { ISynchronizationConflictPendingNotificationDao } from "./dao/conflict/SynchronizationConflictPendingNotificationDao";
 import { ISynchronizationConflictValuesDao } from "./dao/conflict/SynchronizationConflictValuesDao";
-import { IMissingRecordDao } from "./dao/missingRecord/MissingRecordDao";
 import { IRecordUpdateStageDao } from "./dao/RecordUpdateStageDao";
 
 const movingWalkway = system('airport').lib('moving-walkway')
 
-export const MISSING_RECORD_DAO = movingWalkway.token<IMissingRecordDao>('IMissingRecordDao');
 export const RECORD_UPDATE_STAGE_DAO = movingWalkway.token<IRecordUpdateStageDao>('IRecordUpdateStageDao');
 export const SYNC_CONFLICT_DAO
 	= movingWalkway.token<ISynchronizationConflictDao>('ISynchronizationConflictDao');

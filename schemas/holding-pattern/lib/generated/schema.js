@@ -698,12 +698,12 @@ export const SCHEMA = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneSchemaIndex": 1,
-                                    "oneTableIndex": 3,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_ID",
+                            "name": "SCHEMA_INDEX",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -763,7 +763,7 @@ export const SCHEMA = {
                         {
                             "index": 4,
                             "isId": false,
-                            "name": "application",
+                            "name": "schema",
                             "relationRef": {
                                 "index": 2
                             },
@@ -809,7 +809,7 @@ export const SCHEMA = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 3,
+                            "relationTableIndex": 11,
                             "relationTableSchemaIndex": 1,
                             "sinceVersion": 1
                         },
@@ -1759,8 +1759,8 @@ export const SCHEMA = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 2,
-                                    "oneTableIndex": 6,
+                                    "oneSchemaIndex": 1,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
@@ -1868,8 +1868,8 @@ export const SCHEMA = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 6,
-                            "relationTableSchemaIndex": 2,
+                            "relationTableIndex": 7,
+                            "relationTableSchemaIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -1889,137 +1889,6 @@ export const SCHEMA = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "REPOSITORY_OPERATION_HISTORY",
-                        "columnIndexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneSchemaIndex": null,
-                                    "oneTableIndex": 1,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneSchemaIndex": 1,
-                                    "oneTableIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "APPLICATION_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        }
-                    ],
-                    "index": 10,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "RepositoryApplication",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "id",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "name": "application",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": true,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 3,
-                            "relationTableSchemaIndex": 1,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "REPOSITORY_APPLICATION",
                         "columnIndexes": []
                     }
                 },
@@ -2084,7 +1953,7 @@ export const SCHEMA = {
                             "index": 2
                         }
                     ],
-                    "index": 11,
+                    "index": 10,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "RepositorySchema",
@@ -2156,21 +2025,6 @@ export const SCHEMA = {
                 {
                     "domain": "air",
                     "index": 1,
-                    "name": "@airport/territory",
-                    "packageName": "@airport/territory",
-                    "sinceVersion": 1,
-                    "versions": [
-                        {
-                            "entities": null,
-                            "integerVersion": 1,
-                            "referencedSchemas": null,
-                            "versionString": "1.0.0"
-                        }
-                    ]
-                },
-                {
-                    "domain": "air",
-                    "index": 2,
                     "name": "@airport/traffic-pattern",
                     "packageName": "@airport/traffic-pattern",
                     "sinceVersion": 1,

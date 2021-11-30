@@ -15,8 +15,8 @@ import {
 	IDdlObjectRetriever
 } from '@airport/takeoff';
 import { ITerminalStore } from '@airport/terminal-map';
-import { IDomain } from '@airport/territory';
 import {
+	IDomain,
 	ISchema,
 	ISchemaColumn,
 	ISchemaCurrentVersion,

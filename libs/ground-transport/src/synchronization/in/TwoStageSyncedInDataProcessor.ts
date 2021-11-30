@@ -89,7 +89,7 @@ export class TwoStageSyncedInDataProcessor
 		const {
 			messageHasCompatibleSchemas,
 			messageHasValidData,
-		} = await syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(
+		} = await syncInChecker.checkMessage(
 			// consistentMessages, actorMap, sharingNodeRepositoryMap,
 			// dataMessagesWithInvalidData
 			dataMessages

@@ -1,18 +1,5 @@
 /* eslint-disable */
 import {
-	IMissingRecord,
-} from './missingRecord/missingrecord';
-import {
-	MissingRecordESelect,
-	MissingRecordECreateColumns,
-	MissingRecordECreateProperties,
-	MissingRecordEUpdateColumns,
-	MissingRecordEUpdateProperties,
-	MissingRecordEId,
-	MissingRecordGraph,
-	QMissingRecord,
-} from './missingRecord/qmissingrecord';
-import {
 	IRecordUpdateStage,
 } from './recordupdatestage';
 import {
@@ -112,24 +99,6 @@ export class SQDIDuo<Entity,
 }
 
 
-export interface IBaseMissingRecordDuo
-  extends IDuo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateColumns, MissingRecordEUpdateProperties, MissingRecordEId, MissingRecordGraph, QMissingRecord> {
-}
-
-export class BaseMissingRecordDuo
-  extends SQDIDuo<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateColumns, MissingRecordEUpdateProperties, MissingRecordEId, MissingRecordGraph, QMissingRecord>
-	implements IBaseMissingRecordDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(3)
-	}
-	
-	constructor() {
-		super(3)
-	}
-}
-
-
 export interface IBaseRecordUpdateStageDuo
   extends IDuo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage> {
 }
@@ -139,11 +108,11 @@ export class BaseRecordUpdateStageDuo
 	implements IBaseRecordUpdateStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(4)
+		super(3)
 	}
 }
 

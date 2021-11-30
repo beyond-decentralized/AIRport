@@ -3,8 +3,8 @@ import {
 	IRepository,
 	IRepositoryTransactionHistory
 }                from "@airport/holding-pattern";
-import {IDomain} from "@airport/territory";
 import {
+	IDomain,
 	ISchema,
 	ISchemaVersion
 }                from "@airport/traffic-pattern";

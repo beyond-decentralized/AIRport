@@ -13,8 +13,8 @@ import {
 	Terminal,
 	User
 } from '@airport/travel-document-checkpoint'
-import { Application } from '@airport/territory';
 import { RepositoryActor } from '../repository/RepositoryActor'
+import { Schema } from '@airport/traffic-pattern';
 
 export type ActorId = number;
 export type ActorUuId = string;
@@ -47,8 +47,8 @@ export class Actor {
 	uuId: ActorUuId
 
 	@ManyToOne()
-	@JoinColumn({ name: "APPLICATION_ID", referencedColumnName: "ID" })
-	application: Application
+	@JoinColumn({ name: "SCHEMA_INDEX", referencedColumnName: "SCHEMA_INDEX" })
+	schema: Schema
 
 	@OneToMany({ mappedBy: 'actor' })
 	repositoryActors: RepositoryActor[]

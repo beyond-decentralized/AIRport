@@ -4,8 +4,8 @@ import {
 	SchemaIndex,
 } from '@airport/ground-control'
 import type { LastIds } from '@airport/security-check'
-import { DOMAIN_DAO } from '@airport/territory'
 import {
+	DOMAIN_DAO,
 	ISchema,
 	ISchemaVersion,
 	SCHEMA_COLUMN_DAO,

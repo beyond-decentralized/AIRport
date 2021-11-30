@@ -17,15 +17,18 @@ import {
 export interface ITerminalDao
 	extends IBaseTerminalDao {
 
-	findMapByIds(
-		ownerUniqueIds: UserId[],
-		uuIds: Terminal_UuId[]
-	): Promise<Map<UserId, Map<Terminal_UuId, ITerminal>>>;
-
-	findByIds(
+	findByOwnerIdsAndUuIds(
 		ownerIds: UserId[],
 		uuIds: Terminal_UuId[]
 	): Promise<ITerminal[]>;
+
+	findByUuIds(
+		uuIds: Terminal_UuId[]
+	): Promise<ITerminal[]>;
+
+	insert(
+		terminals: ITerminal[]
+	): Promise<void>
 
 }
 
@@ -33,24 +36,9 @@ export class TerminalDao
 	extends BaseTerminalDao
 	implements ITerminalDao {
 
-	async findMapByIds(
+	async findByOwnerIdsAndUuIds(
 		ownerIds: UserId[],
-		uuIds: Terminal_UuId[],
-	): Promise<Map<UserId, Map<Terminal_UuId, ITerminal>>> {
-		const terminalMap: Map<UserId, Map<Terminal_UuId, ITerminal>> = new Map()
-
-		const terminals = await this.findByIds(ownerIds, uuIds)
-		for (const terminal of terminals) {
-			ensureChildJsMap(terminalMap, terminal.owner.id)
-				.set(terminal.uuId, terminal)
-		}
-
-		return terminalMap
-	}
-
-	async findByIds(
-		ownerIds: UserId[],
-		uuIds: Terminal_UuId[],
+		uuIds: Terminal_UuId[]
 	): Promise<ITerminal[]> {
 		let d: QTerminal
 		return await this.db.find.tree({
@@ -62,6 +50,40 @@ export class TerminalDao
 				d.owner.id.in(ownerIds),
 				d.uuId.in(uuIds)
 			)
+		})
+	}
+
+	async findByUuIds(
+		uuIds: Terminal_UuId[],
+	): Promise<ITerminal[]> {
+		let d: QTerminal
+		return await this.db.find.tree({
+			select: {},
+			from: [
+				d = Q.Terminal
+			],
+			where: d.uuId.in(uuIds)
+		})
+	}
+
+	async insert(
+		terminals: ITerminal[]
+	): Promise<void> {
+		let t: QTerminal;
+		const values = []
+		for (const user of terminals) {
+			values.push([
+				user.uuId, user.owner.id, false,
+			])
+		}
+		await this.db.insertValuesGenerateIds({
+			insertInto: t = Q.Terminal,
+			columns: [
+				t.uuId,
+				t.owner.id,
+				t.isLocal
+			],
+			values
 		})
 	}
 

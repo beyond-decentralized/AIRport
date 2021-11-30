@@ -1,5 +1,6 @@
 import { system } from '@airport/di';
 const trafficPattern = system('airport').lib('traffic-pattern');
+export const DOMAIN_DAO = trafficPattern.token('IDomainDao');
 export const SCHEMA_COLUMN_DAO = trafficPattern.token('ISchemaColumnDao');
 export const SCHEMA_DAO = trafficPattern.token('ISchemaDao');
 export const SCHEMA_ENTITY_DAO = trafficPattern.token('ISchemaEntityDao');

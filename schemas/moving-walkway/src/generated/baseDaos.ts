@@ -1,18 +1,5 @@
 /* eslint-disable */
 import {
-	IMissingRecord,
-} from './missingRecord/missingrecord';
-import {
-	MissingRecordESelect,
-	MissingRecordECreateColumns,
-	MissingRecordECreateProperties,
-	MissingRecordEUpdateColumns,
-	MissingRecordEUpdateProperties,
-	MissingRecordEId,
-	MissingRecordGraph,
-	QMissingRecord,
-} from './missingRecord/qmissingrecord';
-import {
 	IRecordUpdateStage,
 } from './recordupdatestage';
 import {
@@ -113,34 +100,6 @@ export class SQDIDao<Entity,
 }
 
 
-export interface IBaseMissingRecordDao
-  extends IDao<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateColumns, MissingRecordEUpdateProperties, MissingRecordEId, MissingRecordGraph, QMissingRecord> {
-}
-
-export class BaseMissingRecordDao
-  extends SQDIDao<IMissingRecord, MissingRecordESelect, MissingRecordECreateProperties, MissingRecordEUpdateColumns, MissingRecordEUpdateProperties, MissingRecordEId, MissingRecordGraph, QMissingRecord>
-	implements IBaseMissingRecordDao {
-	
-	static Find      = new DaoQueryDecorators<MissingRecordESelect>();
-	static FindOne   = new DaoQueryDecorators<MissingRecordESelect>();
-	static Search    = new DaoQueryDecorators<MissingRecordESelect>();
-	static SearchOne = new DaoQueryDecorators<MissingRecordESelect>();
-	static Save(
-		config: MissingRecordGraph
-	): PropertyDecorator {
-		return Dao.BaseSave<MissingRecordGraph>(config);
-  }
-
-	static diSet(): boolean {
-		return duoDiSet(3)
-	}
-	
-	constructor() {
-		super(3)
-	}
-}
-
-
 export interface IBaseRecordUpdateStageDao
   extends IDao<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage> {
 }
@@ -160,11 +119,11 @@ export class BaseRecordUpdateStageDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(4)
+		super(3)
 	}
 }
 

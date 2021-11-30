@@ -42,6 +42,7 @@ export class SchemaVersionDao extends BaseSchemaVersionDao {
         let d;
         return await this.db.find.tree({
             select: {
+                id: Y,
                 integerVersion: Y,
                 schema: {
                     domain: {

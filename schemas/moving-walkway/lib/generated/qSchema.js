@@ -2,9 +2,8 @@ import { AIRPORT_DATABASE } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
-import { MissingRecord, RecordUpdateStage, SynchronizationConflict, SynchronizationConflictPendingNotification, SynchronizationConflictValues } from '../ddl/ddl';
+import { RecordUpdateStage, SynchronizationConflict, SynchronizationConflictPendingNotification, SynchronizationConflictValues } from '../ddl/ddl';
 const __constructors__ = {
-    MissingRecord: MissingRecord,
     RecordUpdateStage: RecordUpdateStage,
     SynchronizationConflict: SynchronizationConflict,
     SynchronizationConflictPendingNotification: SynchronizationConflictPendingNotification,

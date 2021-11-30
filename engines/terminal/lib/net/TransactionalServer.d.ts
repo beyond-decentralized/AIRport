@@ -1,5 +1,5 @@
 import { IContext } from '@airport/di';
-import { AIRepository, ISaveResult, PortableQuery } from '@airport/ground-control';
+import { ISaveResult, PortableQuery } from '@airport/ground-control';
 import { IActor, Repository_Id } from '@airport/holding-pattern';
 import { ICredentials, IOperationContext, ITransactionalServer, IQueryOperationContext } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
@@ -34,7 +34,6 @@ export declare class TransactionalServer implements ITransactionalServer {
     tempActor: IActor;
     init(context?: IContext): Promise<void>;
     addRepository(credentials: ICredentials, context: IOperationContext): Promise<Repository_Id>;
-    getApplicationRepositories(credentials: ICredentials, context: IOperationContext): Promise<AIRepository[]>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<EntityArray>;

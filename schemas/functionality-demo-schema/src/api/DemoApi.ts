@@ -57,13 +57,6 @@ export class DemoApi implements IDemoApi {
     }
 
     @Api()
-    async getRepositoryListings(): Promise<AIRepository[]> {
-        const databaseFacade = await container(this).get(DATABASE_FACADE)
-        
-        return await databaseFacade.getApplicationRepositories()
-    }
-
-    @Api()
     async saveChanges(
         records: DeepPartial<Level1>[]
     ): Promise<void> {

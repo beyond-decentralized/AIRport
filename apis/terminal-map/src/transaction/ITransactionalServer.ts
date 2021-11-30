@@ -26,11 +26,6 @@ export interface ITransactionalServer {
 		context: IContext
 	): Promise<number>
 
-	getApplicationRepositories(
-		credentials: ICredentials,
-		context: IContext,
-	): Promise<AIRepository[]>
-
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,

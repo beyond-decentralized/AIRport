@@ -13,6 +13,7 @@ import { SchemaReference } from '../ddl/schema/SchemaReference';
 import { SchemaVersion } from '../ddl/schema/SchemaVersion';
 import { SchemaCurrentVersion } from '../ddl/schema/SchemaCurrentVersion';
 import { Schema } from '../ddl/schema/Schema';
+import { Domain } from '../ddl/schema/Domain';
 DI.db().get(AIRPORT_DATABASE).then(airDb => {
     const accumulator = airDb.getAccumulator('air', 'traffic-pattern');
     accumulator.add(VersionedSchemaObject, undefined);
@@ -27,5 +28,6 @@ DI.db().get(AIRPORT_DATABASE).then(airDb => {
     accumulator.add(SchemaVersion, 8);
     accumulator.add(SchemaCurrentVersion, 9);
     accumulator.add(Schema, 10);
+    accumulator.add(Domain, 11);
 });
 //# sourceMappingURL=entityMappings.js.map

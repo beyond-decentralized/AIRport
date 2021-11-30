@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation, TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
-import { ApplicationGraph, ApplicationEOptionalId, ApplicationESelect, QApplicationQRelation } from '@airport/territory';
+import { SchemaGraph, SchemaEOptionalId, SchemaESelect, QSchemaQRelation } from '@airport/traffic-pattern';
 import { RepositoryActorGraph, RepositoryActorESelect, QRepositoryActor } from '../repository/qrepositoryactor';
 import { RepositoryActor } from '../../ddl/repository/RepositoryActor';
 import { Actor } from '../../ddl/infrastructure/Actor';
@@ -11,7 +11,7 @@ export interface ActorESelect extends IEntitySelectProperties, ActorEOptionalId 
     uuId?: string | IQStringField;
     user?: UserESelect;
     terminal?: TerminalESelect;
-    application?: ApplicationESelect;
+    schema?: SchemaESelect;
     repositoryActors?: RepositoryActorESelect;
 }
 /**
@@ -33,7 +33,7 @@ export interface ActorEUpdateProperties extends IEntityUpdateProperties {
     uuId?: string | IQStringField;
     user?: UserEOptionalId;
     terminal?: TerminalEOptionalId;
-    application?: ApplicationEOptionalId;
+    schema?: SchemaEOptionalId;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
@@ -42,7 +42,7 @@ export interface ActorGraph extends ActorEOptionalId, IEntityCascadeGraph {
     uuId?: string | IQStringField;
     user?: UserGraph;
     terminal?: TerminalGraph;
-    application?: ApplicationGraph;
+    schema?: SchemaGraph;
     repositoryActors?: RepositoryActorGraph[];
 }
 /**
@@ -52,7 +52,7 @@ export interface ActorEUpdateColumns extends IEntityUpdateColumns {
     UU_ID?: string | IQStringField;
     USER_ID?: number | IQNumberField;
     TERMINAL_ID?: number | IQNumberField;
-    APPLICATION_ID?: number | IQNumberField;
+    SCHEMA_INDEX?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -72,7 +72,7 @@ export interface QActor extends IQEntity<Actor> {
     uuId: IQStringField;
     user: QUserQRelation;
     terminal: QTerminalQRelation;
-    application: QApplicationQRelation;
+    schema: QSchemaQRelation;
     repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
 }
 export interface QActorQId {

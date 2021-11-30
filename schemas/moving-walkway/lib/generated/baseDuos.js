@@ -6,20 +6,12 @@ export class SQDIDuo extends Duo {
         super(dbEntityId, Q);
     }
 }
-export class BaseMissingRecordDuo extends SQDIDuo {
+export class BaseRecordUpdateStageDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(3);
     }
     constructor() {
         super(3);
-    }
-}
-export class BaseRecordUpdateStageDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(4);
-    }
-    constructor() {
-        super(4);
     }
 }
 export class BaseSynchronizationConflictDuo extends SQDIDuo {

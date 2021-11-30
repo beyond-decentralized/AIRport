@@ -1,16 +1,13 @@
 import { IMemoizedSelector } from '@airport/check-in';
 import { ApplicationSignature, DomainName, JsonSchemaName, SchemaName } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
-import type { IApplication, IDomain } from '@airport/territory';
-import { ISchema, ISchemaColumn, ISchemaEntity, ISchemaRelation, ISchemaVersion } from '@airport/traffic-pattern';
+import { IDomain, ISchema, ISchemaColumn, ISchemaEntity, ISchemaRelation, ISchemaVersion } from '@airport/traffic-pattern';
 import { BehaviorSubject } from 'rxjs';
 import { ITerminalState } from './TerminalState';
 export interface ITerminalStore {
     state: BehaviorSubject<ITerminalState>;
     getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
     getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>;
-    getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
-    getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
     getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
@@ -29,8 +26,6 @@ export declare class TerminalStore implements ITerminalStore {
     state: BehaviorSubject<ITerminalState>;
     getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
     getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>;
-    getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
-    getApplicationMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IApplication>, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
     getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;

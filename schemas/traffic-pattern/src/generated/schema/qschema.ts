@@ -33,8 +33,10 @@ import {
 	QDomain,
 	QDomainQId,
 	QDomainQRelation,
+} from './qdomain';
+import {
 	Domain,
-} from '@airport/territory';
+} from '../../ddl/schema/Domain';
 import {
 	SchemaVersionGraph,
 	SchemaVersionEId,
@@ -83,6 +85,7 @@ export interface SchemaESelect
 	name?: string | IQStringField;
 	packageName?: string | IQStringField;
 	status?: string | IQStringField;
+	signature?: string | IQStringField;
 	jsonSchema?: JsonSchemaWithLastIds | IQStringField;
 
 	// Id Relations - full property interfaces
@@ -127,6 +130,7 @@ export interface SchemaEUpdateProperties
 	name?: string | IQStringField;
 	packageName?: string | IQStringField;
 	status?: string | IQStringField;
+	signature?: string | IQStringField;
 	jsonSchema?: JsonSchemaWithLastIds | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -146,6 +150,7 @@ export interface SchemaGraph
 	name?: string | IQStringField;
 	packageName?: string | IQStringField;
 	status?: string | IQStringField;
+	signature?: string | IQStringField;
 	jsonSchema?: JsonSchemaWithLastIds | IQStringField;
 
 	// Relations
@@ -165,6 +170,7 @@ export interface SchemaEUpdateColumns
 	SCHEMA_NAME?: string | IQStringField;
 	PACKAGE_NAME?: string | IQStringField;
 	STATUS?: string | IQStringField;
+	SIGNATURE?: string | IQStringField;
 	JSON_SCHEMA?: string | IQStringField;
 	DOMAIN_ID?: number | IQNumberField;
 
@@ -206,6 +212,7 @@ export interface QSchema extends IQEntity<Schema>
 	name: IQStringField;
 	packageName: IQStringField;
 	status: IQStringField;
+	signature: IQStringField;
 	jsonSchema: IQStringField;
 
 	// Non-Id Relations

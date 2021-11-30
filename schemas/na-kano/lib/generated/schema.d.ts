@@ -35,15 +35,6 @@ export declare const SCHEMA: {
             isRepositoryEntity: boolean;
             name: string;
             properties: ({
-                columnRef: {
-                    index: number;
-                };
-                index: number;
-                isId: boolean;
-                name: string;
-                sinceVersion: number;
-                relationRef?: undefined;
-            } | {
                 index: number;
                 isId: boolean;
                 name: string;
@@ -52,6 +43,15 @@ export declare const SCHEMA: {
                 };
                 sinceVersion: number;
                 columnRef?: undefined;
+            } | {
+                columnRef: {
+                    index: number;
+                };
+                index: number;
+                isId: boolean;
+                name: string;
+                sinceVersion: number;
+                relationRef?: undefined;
             })[];
             relations: ({
                 index: number;
@@ -81,7 +81,7 @@ export declare const SCHEMA: {
             sinceVersion: number;
             tableConfig: {
                 name: string;
-                indexes: any[];
+                columnIndexes: any[];
             };
         } | {
             columns: ({
@@ -128,15 +128,6 @@ export declare const SCHEMA: {
             isRepositoryEntity: boolean;
             name: string;
             properties: ({
-                columnRef: {
-                    index: number;
-                };
-                index: number;
-                isId: boolean;
-                name: string;
-                sinceVersion: number;
-                relationRef?: undefined;
-            } | {
                 index: number;
                 isId: boolean;
                 name: string;
@@ -145,6 +136,15 @@ export declare const SCHEMA: {
                 };
                 sinceVersion: number;
                 columnRef?: undefined;
+            } | {
+                columnRef: {
+                    index: number;
+                };
+                index: number;
+                isId: boolean;
+                name: string;
+                sinceVersion: number;
+                relationRef?: undefined;
             })[];
             relations: ({
                 index: number;
@@ -170,7 +170,7 @@ export declare const SCHEMA: {
             sinceVersion: number;
             tableConfig: {
                 name: string;
-                indexes: any[];
+                columnIndexes: any[];
             };
         })[];
         integerVersion: number;

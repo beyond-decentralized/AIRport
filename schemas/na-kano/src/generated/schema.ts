@@ -20,7 +20,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 4,
+									"oneTableIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -29,7 +29,7 @@ export const SCHEMA = {
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 1
+									"index": 0
 								}
 							],
 							"sinceVersion": 1,
@@ -42,7 +42,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 6,
+									"oneTableIndex": 3,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -51,7 +51,7 @@ export const SCHEMA = {
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 2
+									"index": 1
 								}
 							],
 							"sinceVersion": 1,
@@ -65,7 +65,7 @@ export const SCHEMA = {
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 3
+									"index": 2
 								}
 							],
 							"sinceVersion": 1,
@@ -75,21 +75,21 @@ export const SCHEMA = {
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "IS_DRAFT",
+							"name": "AGE_SUITABILITY",
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 0
+									"index": 3
 								}
 							],
 							"sinceVersion": 1,
-							"type": "BOOLEAN"
+							"type": "NUMBER"
 						},
 						{
 							"index": 4,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "AGE_SUITABILITY",
+							"name": "SYSTEM_WIDE_OPERATION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -103,25 +103,11 @@ export const SCHEMA = {
 							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "SYSTEM_WIDE_OPERATION_ID",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 5
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 6,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
 							"name": "NAME",
 							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 6
+									"index": 5
 								}
 							],
 							"sinceVersion": 1,
@@ -145,16 +131,7 @@ export const SCHEMA = {
 					"name": "TodoList",
 					"properties": [
 						{
-							"columnRef": {
-								"index": 3
-							},
 							"index": 0,
-							"isId": false,
-							"name": "draft",
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
 							"isId": true,
 							"name": "repository",
 							"relationRef": {
@@ -163,7 +140,7 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 2,
+							"index": 1,
 							"isId": true,
 							"name": "actor",
 							"relationRef": {
@@ -175,9 +152,18 @@ export const SCHEMA = {
 							"columnRef": {
 								"index": 2
 							},
-							"index": 3,
+							"index": 2,
 							"isId": true,
 							"name": "actorRecordId",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 3
+							},
+							"index": 3,
+							"isId": false,
+							"name": "ageSuitability",
 							"sinceVersion": 1
 						},
 						{
@@ -186,7 +172,7 @@ export const SCHEMA = {
 							},
 							"index": 4,
 							"isId": false,
-							"name": "ageSuitability",
+							"name": "systemWideOperationId",
 							"sinceVersion": 1
 						},
 						{
@@ -195,20 +181,11 @@ export const SCHEMA = {
 							},
 							"index": 5,
 							"isId": false,
-							"name": "systemWideOperationId",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 6
-							},
-							"index": 6,
-							"isId": false,
 							"name": "name",
 							"sinceVersion": 1
 						},
 						{
-							"index": 7,
+							"index": 6,
 							"isId": false,
 							"name": "items",
 							"relationRef": {
@@ -223,9 +200,9 @@ export const SCHEMA = {
 							"isId": true,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 1
+								"index": 0
 							},
-							"relationTableIndex": 4,
+							"relationTableIndex": 1,
 							"relationTableSchemaIndex": 0,
 							"sinceVersion": 1
 						},
@@ -234,9 +211,9 @@ export const SCHEMA = {
 							"isId": true,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 2
+								"index": 1
 							},
-							"relationTableIndex": 6,
+							"relationTableIndex": 3,
 							"relationTableSchemaIndex": 0,
 							"sinceVersion": 1
 						},
@@ -248,7 +225,7 @@ export const SCHEMA = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 7
+								"index": 6
 							},
 							"relationTableIndex": 1,
 							"sinceVersion": 1
@@ -257,7 +234,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "TODO_LIST",
-						"indexes": []
+						"columnIndexes": []
 					}
 				},
 				{
@@ -269,7 +246,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 4,
+									"oneTableIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -278,7 +255,7 @@ export const SCHEMA = {
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 1
+									"index": 0
 								}
 							],
 							"sinceVersion": 1,
@@ -291,7 +268,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 1,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 6,
+									"oneTableIndex": 3,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -300,7 +277,7 @@ export const SCHEMA = {
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 2
+									"index": 1
 								}
 							],
 							"sinceVersion": 1,
@@ -314,7 +291,7 @@ export const SCHEMA = {
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 3
+									"index": 2
 								}
 							],
 							"sinceVersion": 1,
@@ -324,21 +301,21 @@ export const SCHEMA = {
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "IS_DRAFT",
+							"name": "AGE_SUITABILITY",
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 0
+									"index": 3
 								}
 							],
 							"sinceVersion": 1,
-							"type": "BOOLEAN"
+							"type": "NUMBER"
 						},
 						{
 							"index": 4,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "AGE_SUITABILITY",
+							"name": "SYSTEM_WIDE_OPERATION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -352,21 +329,21 @@ export const SCHEMA = {
 							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "SYSTEM_WIDE_OPERATION_ID",
-							"notNull": true,
+							"name": "ASSIGNED_TO",
+							"notNull": false,
 							"propertyRefs": [
 								{
 									"index": 5
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "STRING"
 						},
 						{
 							"index": 6,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "ASSIGNED_TO",
+							"name": "COMPLETED",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -374,13 +351,13 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "STRING"
+							"type": "BOOLEAN"
 						},
 						{
 							"index": 7,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "COMPLETED",
+							"name": "NAME",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -388,24 +365,10 @@ export const SCHEMA = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "BOOLEAN"
-						},
-						{
-							"index": 8,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "NAME",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 8
-								}
-							],
-							"sinceVersion": 1,
 							"type": "STRING"
 						},
 						{
-							"index": 9,
+							"index": 8,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -417,11 +380,34 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "TODO_LIST_RID",
+							"name": "TODO_LIST_RID_1",
 							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 9
+									"index": 8
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 9,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 2,
+									"oneSchemaIndex": null,
+									"oneTableIndex": 0,
+									"oneRelationIndex": 2,
+									"oneColumnIndex": 1,
+									"sinceVersion": 1
+								}
+							],
+							"name": "TODO_LIST_AID_1",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 8
 								}
 							],
 							"sinceVersion": 1,
@@ -436,38 +422,15 @@ export const SCHEMA = {
 									"oneSchemaIndex": null,
 									"oneTableIndex": 0,
 									"oneRelationIndex": 2,
-									"oneColumnIndex": 1,
-									"sinceVersion": 1
-								}
-							],
-							"name": "TODO_LIST_AID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 9
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 11,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 2,
-									"oneSchemaIndex": null,
-									"oneTableIndex": 0,
-									"oneRelationIndex": 2,
 									"oneColumnIndex": 2,
 									"sinceVersion": 1
 								}
 							],
-							"name": "TODO_LIST_ARID",
+							"name": "TODO_LIST_ARID_1",
 							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 9
+									"index": 8
 								}
 							],
 							"sinceVersion": 1,
@@ -491,16 +454,7 @@ export const SCHEMA = {
 					"name": "TodoItem",
 					"properties": [
 						{
-							"columnRef": {
-								"index": 3
-							},
 							"index": 0,
-							"isId": false,
-							"name": "draft",
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
 							"isId": true,
 							"name": "repository",
 							"relationRef": {
@@ -509,7 +463,7 @@ export const SCHEMA = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 2,
+							"index": 1,
 							"isId": true,
 							"name": "actor",
 							"relationRef": {
@@ -521,9 +475,18 @@ export const SCHEMA = {
 							"columnRef": {
 								"index": 2
 							},
-							"index": 3,
+							"index": 2,
 							"isId": true,
 							"name": "actorRecordId",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 3
+							},
+							"index": 3,
+							"isId": false,
+							"name": "ageSuitability",
 							"sinceVersion": 1
 						},
 						{
@@ -532,7 +495,7 @@ export const SCHEMA = {
 							},
 							"index": 4,
 							"isId": false,
-							"name": "ageSuitability",
+							"name": "systemWideOperationId",
 							"sinceVersion": 1
 						},
 						{
@@ -541,7 +504,7 @@ export const SCHEMA = {
 							},
 							"index": 5,
 							"isId": false,
-							"name": "systemWideOperationId",
+							"name": "assignedTo",
 							"sinceVersion": 1
 						},
 						{
@@ -550,7 +513,7 @@ export const SCHEMA = {
 							},
 							"index": 6,
 							"isId": false,
-							"name": "assignedTo",
+							"name": "completed",
 							"sinceVersion": 1
 						},
 						{
@@ -559,20 +522,11 @@ export const SCHEMA = {
 							},
 							"index": 7,
 							"isId": false,
-							"name": "completed",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 8
-							},
-							"index": 8,
-							"isId": false,
 							"name": "name",
 							"sinceVersion": 1
 						},
 						{
-							"index": 9,
+							"index": 8,
 							"isId": false,
 							"name": "todoList",
 							"relationRef": {
@@ -587,9 +541,9 @@ export const SCHEMA = {
 							"isId": true,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 1
+								"index": 0
 							},
-							"relationTableIndex": 4,
+							"relationTableIndex": 1,
 							"relationTableSchemaIndex": 0,
 							"sinceVersion": 1
 						},
@@ -598,9 +552,9 @@ export const SCHEMA = {
 							"isId": true,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 2
+								"index": 1
 							},
-							"relationTableIndex": 6,
+							"relationTableIndex": 3,
 							"relationTableSchemaIndex": 0,
 							"sinceVersion": 1
 						},
@@ -609,7 +563,7 @@ export const SCHEMA = {
 							"isId": false,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 9
+								"index": 8
 							},
 							"relationTableIndex": 0,
 							"sinceVersion": 1
@@ -618,7 +572,7 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "TODO_ITEM",
-						"indexes": []
+						"columnIndexes": []
 					}
 				}
 			],

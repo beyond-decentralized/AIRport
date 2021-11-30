@@ -2,8 +2,9 @@ import { AIRPORT_DATABASE } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
-import { Schema, SchemaColumn, SchemaCurrentVersion, SchemaEntity, SchemaOperation, SchemaProperty, SchemaPropertyColumn, SchemaReference, SchemaRelation, SchemaRelationColumn, SchemaVersion, VersionedSchemaObject } from '../ddl/ddl';
+import { Domain, Schema, SchemaColumn, SchemaCurrentVersion, SchemaEntity, SchemaOperation, SchemaProperty, SchemaPropertyColumn, SchemaReference, SchemaRelation, SchemaRelationColumn, SchemaVersion, VersionedSchemaObject } from '../ddl/ddl';
 const __constructors__ = {
+    Domain: Domain,
     Schema: Schema,
     SchemaColumn: SchemaColumn,
     SchemaCurrentVersion: SchemaCurrentVersion,

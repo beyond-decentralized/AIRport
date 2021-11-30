@@ -702,7 +702,7 @@ export const MAPPED_SUPERCLASS = [
 													},
 													"Domain": {
 														"fileImports": null,
-														"isLocal": false,
+														"isLocal": true,
 														"objectMapByAsName": {
 															"Domain": {
 																"asName": "Domain",
@@ -710,7 +710,7 @@ export const MAPPED_SUPERCLASS = [
 																"sourceName": "Domain"
 															}
 														},
-														"path": "@airport/territory"
+														"path": "./Domain"
 													},
 													"SchemaCurrentVersion": {
 														"fileImports": null,
@@ -741,7 +741,7 @@ export const MAPPED_SUPERCLASS = [
 													"@airport/air-control": null,
 													"@airport/ground-control": null,
 													"@airport/security-check": null,
-													"@airport/territory": null,
+													"./Domain": null,
 													"./SchemaCurrentVersion": null,
 													"./SchemaVersion": null
 												}
@@ -803,157 +803,211 @@ export const MAPPED_SUPERCLASS = [
 													"type": "Domain",
 													"ownerEntity": null,
 													"nonArrayType": "Domain",
-													"fromProject": "@airport/territory",
-													"otherSchemaDbEntity": {
-														"columnMap": null,
-														"columns": [
+													"entity": {
+														"type": "Domain",
+														"path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\Domain.ts",
+														"parentClassName": null,
+														"isSuperclass": false,
+														"ids": [
 															{
-																"entity": null,
-																"id": null,
-																"index": 0,
+																"decorators": [
+																	{
+																		"name": "Id",
+																		"values": []
+																	},
+																	{
+																		"name": "DbNumber",
+																		"values": []
+																	}
+																],
 																"isGenerated": false,
-																"manyRelationColumns": [],
-																"name": "ID",
-																"notNull": false,
-																"oneRelationColumns": [],
-																"propertyColumnMap": null,
-																"propertyColumns": [
-																	{
-																		"column": null,
-																		"property": null,
-																		"sinceVersion": null
-																	}
-																],
-																"sinceVersion": null,
-																"type": "NUMBER",
-																"idIndex": 0
-															},
-															{
-																"entity": null,
-																"id": null,
-																"index": 1,
-																"isGenerated": false,
-																"manyRelationColumns": [],
-																"name": "NAME",
-																"notNull": false,
-																"oneRelationColumns": [],
-																"propertyColumnMap": null,
-																"propertyColumns": [
-																	{
-																		"column": null,
-																		"property": null,
-																		"sinceVersion": null
-																	}
-																],
-																"sinceVersion": null,
-																"type": "STRING"
-															}
-														],
-														"idColumns": [
-															{
-																"entity": null,
-																"id": null,
-																"index": 0,
-																"isGenerated": false,
-																"manyRelationColumns": [],
-																"name": "ID",
-																"notNull": false,
-																"oneRelationColumns": [],
-																"propertyColumnMap": null,
-																"propertyColumns": [
-																	{
-																		"column": null,
-																		"property": null,
-																		"sinceVersion": null
-																	}
-																],
-																"sinceVersion": null,
-																"type": "NUMBER",
-																"idIndex": 0
-															}
-														],
-														"idColumnMap": null,
-														"id": null,
-														"index": 2,
-														"isLocal": true,
-														"isRepositoryEntity": false,
-														"name": "Domain",
-														"propertyMap": null,
-														"properties": [
-															{
-																"propertyColumns": [
-																	{
-																		"column": null,
-																		"property": null,
-																		"sinceVersion": null
-																	}
-																],
-																"entity": null,
-																"id": null,
-																"index": 0,
 																"isId": true,
+																"isMappedSuperclass": false,
+																"isTransient": false,
 																"name": "id",
-																"relation": null,
-																"sinceVersion": null
-															},
-															{
-																"propertyColumns": [
-																	{
-																		"column": null,
-																		"property": null,
-																		"sinceVersion": null
-																	}
-																],
-																"entity": null,
-																"id": null,
-																"index": 1,
-																"isId": false,
-																"name": "name",
-																"relation": null,
-																"sinceVersion": null
-															},
-															{
-																"propertyColumns": [],
-																"entity": null,
-																"id": null,
-																"index": 2,
-																"isId": false,
-																"name": "applications",
-																"relation": [
-																	{
-																		"isId": false,
-																		"oneToManyElems": null,
-																		"relationType": "ONE_TO_MANY",
-																		"id": null,
-																		"index": 0,
-																		"property": null,
-																		"manyRelationColumns": [],
-																		"oneRelationColumns": [],
-																		"relationEntity": null,
-																		"sinceVersion": null
-																	}
-																],
-																"sinceVersion": null
+																"type": "DomainId",
+																"ownerEntity": null,
+																"nonArrayType": "DomainId",
+																"primitive": "number",
+																"index": 0
 															}
 														],
-														"relationReferences": [],
-														"relations": [
-															{
-																"isId": false,
-																"oneToManyElems": null,
-																"relationType": "ONE_TO_MANY",
-																"id": null,
-																"index": 0,
-																"property": null,
-																"manyRelationColumns": [],
-																"oneRelationColumns": [],
-																"relationEntity": null,
-																"sinceVersion": null
-															}
-														],
-														"schemaVersion": null,
-														"sinceVersion": null,
-														"tableConfig": null
+														"docEntry": {
+															"decorators": [
+																{
+																	"name": "Entity",
+																	"values": []
+																},
+																{
+																	"name": "Table",
+																	"values": [
+																		{
+																			"name": "DOMAINS"
+																		}
+																	]
+																}
+															],
+															"isGenerated": false,
+															"isId": false,
+															"isMappedSuperclass": false,
+															"isTransient": false,
+															"name": "Domain",
+															"type": "typeof Domain",
+															"fileImports": {
+																"importMapByObjectAsName": {
+																	"DbNumber": {
+																		"fileImports": null,
+																		"isLocal": false,
+																		"objectMapByAsName": {
+																			"DbNumber": {
+																				"asName": "DbNumber",
+																				"moduleImport": null,
+																				"sourceName": "DbNumber"
+																			},
+																			"DbString": {
+																				"asName": "DbString",
+																				"moduleImport": null,
+																				"sourceName": "DbString"
+																			},
+																			"Entity": {
+																				"asName": "Entity",
+																				"moduleImport": null,
+																				"sourceName": "Entity"
+																			},
+																			"Id": {
+																				"asName": "Id",
+																				"moduleImport": null,
+																				"sourceName": "Id"
+																			},
+																			"OneToMany": {
+																				"asName": "OneToMany",
+																				"moduleImport": null,
+																				"sourceName": "OneToMany"
+																			},
+																			"Table": {
+																				"asName": "Table",
+																				"moduleImport": null,
+																				"sourceName": "Table"
+																			}
+																		},
+																		"path": "@airport/air-control"
+																	},
+																	"DbString": null,
+																	"Entity": null,
+																	"Id": null,
+																	"OneToMany": null,
+																	"Table": null,
+																	"DomainId": {
+																		"fileImports": null,
+																		"isLocal": false,
+																		"objectMapByAsName": {
+																			"DomainId": {
+																				"asName": "DomainId",
+																				"moduleImport": null,
+																				"sourceName": "DomainId"
+																			},
+																			"DomainName": {
+																				"asName": "DomainName",
+																				"moduleImport": null,
+																				"sourceName": "DomainName"
+																			}
+																		},
+																		"path": "@airport/ground-control"
+																	},
+																	"DomainName": null,
+																	"Schema": {
+																		"fileImports": null,
+																		"isLocal": true,
+																		"objectMapByAsName": {
+																			"Schema": {
+																				"asName": "Schema",
+																				"moduleImport": null,
+																				"sourceName": "Schema"
+																			}
+																		},
+																		"path": "./Schema"
+																	}
+																},
+																"importMapByModulePath": {
+																	"@airport/air-control": null,
+																	"@airport/ground-control": null,
+																	"./Schema": null
+																}
+															},
+															"properties": [
+																{
+																	"decorators": [
+																		{
+																			"name": "Id",
+																			"values": []
+																		},
+																		{
+																			"name": "DbNumber",
+																			"values": []
+																		}
+																	],
+																	"isGenerated": false,
+																	"isId": true,
+																	"isMappedSuperclass": false,
+																	"isTransient": false,
+																	"name": "id",
+																	"type": "DomainId",
+																	"ownerEntity": null,
+																	"nonArrayType": "DomainId",
+																	"primitive": "number",
+																	"index": 0
+																},
+																{
+																	"decorators": [
+																		{
+																			"name": "DbString",
+																			"values": []
+																		}
+																	],
+																	"isGenerated": false,
+																	"isId": false,
+																	"isMappedSuperclass": false,
+																	"isTransient": false,
+																	"name": "name",
+																	"type": "DomainName",
+																	"ownerEntity": null,
+																	"nonArrayType": "DomainName",
+																	"primitive": "string",
+																	"index": 1
+																},
+																{
+																	"decorators": [
+																		{
+																			"name": "OneToMany",
+																			"values": [
+																				{
+																					"mappedBy": "domain"
+																				}
+																			]
+																		}
+																	],
+																	"isGenerated": false,
+																	"isId": false,
+																	"isMappedSuperclass": false,
+																	"isTransient": false,
+																	"name": "schemas",
+																	"type": "Schema[]",
+																	"ownerEntity": null,
+																	"isArray": true,
+																	"nonArrayType": "Schema",
+																	"entity": null,
+																	"index": 2
+																}
+															],
+															"methodSignatures": [],
+															"constructors": [
+																{
+																	"parameters": [],
+																	"returnType": "Domain"
+																}
+															]
+														},
+														"implementedInterfaceNames": []
 													},
 													"index": 1
 												},
@@ -1068,6 +1122,33 @@ export const MAPPED_SUPERCLASS = [
 												{
 													"decorators": [
 														{
+															"name": "Column",
+															"values": [
+																{
+																	"name": "SIGNATURE",
+																	"nullable": false
+																}
+															]
+														},
+														{
+															"name": "DbString",
+															"values": []
+														}
+													],
+													"isGenerated": false,
+													"isId": false,
+													"isMappedSuperclass": false,
+													"isTransient": false,
+													"name": "signature",
+													"type": "string",
+													"ownerEntity": null,
+													"nonArrayType": "string",
+													"primitive": "string",
+													"index": 6
+												},
+												{
+													"decorators": [
+														{
 															"name": "OneToMany",
 															"values": [
 																{
@@ -1086,7 +1167,7 @@ export const MAPPED_SUPERCLASS = [
 													"isArray": true,
 													"nonArrayType": "SchemaVersion",
 													"entity": null,
-													"index": 6
+													"index": 7
 												},
 												{
 													"decorators": [
@@ -1345,7 +1426,7 @@ export const MAPPED_SUPERCLASS = [
 														},
 														"implementedInterfaceNames": []
 													},
-													"index": 7
+													"index": 8
 												},
 												{
 													"decorators": [
@@ -1372,7 +1453,7 @@ export const MAPPED_SUPERCLASS = [
 													"ownerEntity": null,
 													"nonArrayType": "JsonSchemaWithLastIds",
 													"primitive": "Json",
-													"index": 8
+													"index": 9
 												}
 											],
 											"methodSignatures": [],

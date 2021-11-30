@@ -12,6 +12,7 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
+import { QDomain } from './schema/qdomain';
 import { QSchema } from './schema/qschema';
 import { QSchemaColumn } from './schema/qschemacolumn';
 import { QSchemaCurrentVersion } from './schema/qschemacurrentversion';
@@ -25,6 +26,7 @@ import { QSchemaRelationColumn } from './schema/qschemarelationcolumn';
 import { QSchemaVersion } from './schema/qschemaversion';
 import { QVersionedSchemaObject } from './schema/qversionedschemaobject';
 import {
+  Domain,
   Schema,
   SchemaColumn,
   SchemaCurrentVersion,
@@ -43,6 +45,7 @@ export interface LocalQSchema extends AirportQSchema {
 
   db: DbSchema;
 
+	Domain: QDomain;
 	Schema: QSchema;
 	SchemaColumn: QSchemaColumn;
 	SchemaCurrentVersion: QSchemaCurrentVersion;
@@ -58,6 +61,7 @@ export interface LocalQSchema extends AirportQSchema {
 }
 
 const __constructors__ = {
+	Domain: Domain,
 	Schema: Schema,
 	SchemaColumn: SchemaColumn,
 	SchemaCurrentVersion: SchemaCurrentVersion,

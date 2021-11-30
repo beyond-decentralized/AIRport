@@ -70,20 +70,12 @@ export class BaseRepositoryActorDuo extends SQDIDuo {
         super(2);
     }
 }
-export class BaseRepositoryApplicationDuo extends SQDIDuo {
+export class BaseRepositorySchemaDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(10);
     }
     constructor() {
         super(10);
-    }
-}
-export class BaseRepositorySchemaDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(11);
-    }
-    constructor() {
-        super(11);
     }
 }
 export class BaseRepositoryTransactionHistoryDuo extends SQDIDuo {

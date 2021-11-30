@@ -9,21 +9,9 @@ import {
 	IContext
 } from '@airport/di'
 import { DdlObjects } from '@airport/takeoff'
-import {
-	DOMAIN_DAO,
-	IDomainDao
-} from '@airport/territory'
 import { transactional } from '@airport/tower'
 import {
-	ISchemaColumnDao,
-	ISchemaDao,
-	ISchemaEntityDao,
-	ISchemaPropertyColumnDao,
-	ISchemaPropertyDao,
-	ISchemaReferenceDao,
-	ISchemaRelationColumnDao,
-	ISchemaRelationDao,
-	ISchemaVersionDao,
+	DOMAIN_DAO,
 	SCHEMA_COLUMN_DAO,
 	SCHEMA_DAO,
 	SCHEMA_ENTITY_DAO,
@@ -33,9 +21,6 @@ import {
 	SCHEMA_RELATION_COLUMN_DAO,
 	SCHEMA_RELATION_DAO,
 	SCHEMA_VERSION_DAO,
-	SchemaPropertyColumnECreateProperties,
-	SchemaReferenceECreateProperties,
-	SchemaRelationColumnECreateProperties
 } from '@airport/traffic-pattern'
 import { SCHEMA_RECORDER } from '../tokens'
 

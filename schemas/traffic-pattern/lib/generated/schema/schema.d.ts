@@ -1,5 +1,5 @@
 import { JsonSchemaWithLastIds } from '@airport/security-check';
-import { IDomain } from '@airport/territory';
+import { IDomain } from './domain';
 import { ISchemaVersion } from './schemaversion';
 import { ISchemaCurrentVersion } from './schemacurrentversion';
 export interface ISchema {
@@ -8,6 +8,7 @@ export interface ISchema {
     name?: string;
     packageName?: string;
     status?: string;
+    signature?: string;
     jsonSchema?: JsonSchemaWithLastIds;
     domain?: IDomain;
     versions?: ISchemaVersion[];

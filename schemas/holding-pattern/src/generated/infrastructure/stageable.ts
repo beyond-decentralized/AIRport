@@ -12,6 +12,7 @@ export interface IStageable {
 	// Id Relations
 
 	// Non-Id Properties
+	isRepositoryDependencyReference?: boolean;
 
 	// Non-Id Relations
 

@@ -34,10 +34,6 @@ cd ../moving-walkway
 tsc
 cd ../point-of-destination
 tsc
-cd ../runway-edge-lighting
-tsc
-cd ../../libs/approach-lighting-system
-tsc
 cd ../blueprint
 tsc
 cd ../../apis/terminal-map

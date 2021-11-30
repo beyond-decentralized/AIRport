@@ -7,7 +7,6 @@ export var IsolateMessageType;
     IsolateMessageType["DELETE_WHERE"] = "DELETE_WHERE";
     IsolateMessageType["FIND"] = "FIND";
     IsolateMessageType["FIND_ONE"] = "FIND_ONE";
-    IsolateMessageType["GET_APP_REPOSITORIES"] = "GET_APP_REPOSITORIES";
     IsolateMessageType["GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME"] = "GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME";
     IsolateMessageType["INSERT_VALUES"] = "INSERT_VALUES";
     IsolateMessageType["INSERT_VALUES_GET_IDS"] = "INSERT_VALUES_GET_IDS";

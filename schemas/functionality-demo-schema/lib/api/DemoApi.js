@@ -18,10 +18,6 @@ export class DemoApi {
         const level1Dao = await container(this).get(LEVEL_1_DAO);
         return await level1Dao.findAllWithLevel2();
     }
-    async getRepositoryListings() {
-        const databaseFacade = await container(this).get(DATABASE_FACADE);
-        return await databaseFacade.getApplicationRepositories();
-    }
     async saveChanges(records) {
         const level1Dao = await container(this).get(LEVEL_1_DAO);
         await level1Dao.saveChanges(records);
@@ -45,9 +41,6 @@ __decorate([
 __decorate([
     Api()
 ], DemoApi.prototype, "findAllLevel1WithLevel2", null);
-__decorate([
-    Api()
-], DemoApi.prototype, "getRepositoryListings", null);
 __decorate([
     Api()
 ], DemoApi.prototype, "saveChanges", null);

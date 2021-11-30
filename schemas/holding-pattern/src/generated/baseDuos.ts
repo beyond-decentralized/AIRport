@@ -104,19 +104,6 @@ import {
 	QRepositoryActor,
 } from './repository/qrepositoryactor';
 import {
-	IRepositoryApplication,
-} from './repository/repositoryapplication';
-import {
-	RepositoryApplicationESelect,
-	RepositoryApplicationECreateColumns,
-	RepositoryApplicationECreateProperties,
-	RepositoryApplicationEUpdateColumns,
-	RepositoryApplicationEUpdateProperties,
-	RepositoryApplicationEId,
-	RepositoryApplicationGraph,
-	QRepositoryApplication,
-} from './repository/qrepositoryapplication';
-import {
 	IRepositorySchema,
 } from './repository/repositoryschema';
 import {
@@ -347,24 +334,6 @@ export class BaseRepositoryActorDuo
 }
 
 
-export interface IBaseRepositoryApplicationDuo
-  extends IDuo<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication> {
-}
-
-export class BaseRepositoryApplicationDuo
-  extends SQDIDuo<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication>
-	implements IBaseRepositoryApplicationDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(10)
-	}
-	
-	constructor() {
-		super(10)
-	}
-}
-
-
 export interface IBaseRepositorySchemaDuo
   extends IDuo<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaGraph, QRepositorySchema> {
 }
@@ -374,11 +343,11 @@ export class BaseRepositorySchemaDuo
 	implements IBaseRepositorySchemaDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(11)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(11)
+		super(10)
 	}
 }
 

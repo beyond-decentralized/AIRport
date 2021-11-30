@@ -1,3 +1,4 @@
+import { IDomainDao } from './dao/DomainDao';
 import { ISchemaColumnDao } from './dao/SchemaColumnDao';
 import { ISchemaDao } from './dao/SchemaDao';
 import { ISchemaEntityDao } from './dao/SchemaEntityDao';
@@ -8,6 +9,7 @@ import { ISchemaRelationColumnDao } from './dao/SchemaRelationColumnDao';
 import { ISchemaRelationDao } from './dao/SchemaRelationDao';
 import { ISchemaVersionDao } from './dao/SchemaVersionDao';
 import { ISchemaVersionDuo } from './duo/SchemaVersionDuo';
+export declare const DOMAIN_DAO: import("@airport/di").IDiToken<IDomainDao>;
 export declare const SCHEMA_COLUMN_DAO: import("@airport/di").IDiToken<ISchemaColumnDao>;
 export declare const SCHEMA_DAO: import("@airport/di").IDiToken<ISchemaDao>;
 export declare const SCHEMA_ENTITY_DAO: import("@airport/di").IDiToken<ISchemaEntityDao>;

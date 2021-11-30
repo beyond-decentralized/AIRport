@@ -1,9 +1,7 @@
 import { ISynchronizationConflictDao } from "./dao/conflict/SynchronizationConflictDao";
 import { ISynchronizationConflictPendingNotificationDao } from "./dao/conflict/SynchronizationConflictPendingNotificationDao";
 import { ISynchronizationConflictValuesDao } from "./dao/conflict/SynchronizationConflictValuesDao";
-import { IMissingRecordDao } from "./dao/missingRecord/MissingRecordDao";
 import { IRecordUpdateStageDao } from "./dao/RecordUpdateStageDao";
-export declare const MISSING_RECORD_DAO: import("@airport/di").IDiToken<IMissingRecordDao>;
 export declare const RECORD_UPDATE_STAGE_DAO: import("@airport/di").IDiToken<IRecordUpdateStageDao>;
 export declare const SYNC_CONFLICT_DAO: import("@airport/di").IDiToken<ISynchronizationConflictDao>;
 export declare const SYNC_CONFLICT_PENDING_NOTIFICATION_DAO: import("@airport/di").IDiToken<ISynchronizationConflictPendingNotificationDao>;

@@ -1,6 +1,6 @@
 import { IEntityContext, IQueryContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
-import { AIRepository, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
+import { ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
 import { IIsolateMessage, LastIds } from '@airport/security-check';
 import { ISchemaVersion } from '@airport/traffic-pattern';
 import { Observable, Observer } from 'rxjs';
@@ -35,7 +35,6 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     messageCallback: (message: any) => void;
     init(): Promise<void>;
     addRepository(context: IContext): Promise<number>;
-    getApplicationRepositories(context?: IContext): Promise<AIRepository[]>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Observable<EntityArray>;

@@ -1,4 +1,4 @@
-import { AIRepository, ISaveResult, PortableQuery, QueryResultType } from '@airport/ground-control';
+import { ISaveResult, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 import { IAbstractQuery } from '../../query/facade/AbstractQuery';
 import { RawDelete } from '../../query/facade/Delete';
@@ -26,7 +26,6 @@ export interface IDatabaseFacade {
      */
     name: string;
     addRepository(ctx?: IContext): Promise<number>;
-    getApplicationRepositories(context?: IContext): Promise<AIRepository[]>;
     insertColumnValues<IQE extends IQEntity<any>>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx: IEntityContext): Promise<number>;

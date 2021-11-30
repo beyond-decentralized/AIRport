@@ -37,6 +37,10 @@ __decorate([
     DbString()
 ], Schema.prototype, "status", void 0);
 __decorate([
+    Column({ name: 'SIGNATURE', nullable: false }),
+    DbString()
+], Schema.prototype, "signature", void 0);
+__decorate([
     OneToMany({ mappedBy: 'schema' })
 ], Schema.prototype, "versions", void 0);
 __decorate([

@@ -1,3 +1,4 @@
+export * from './schema/qdomain';
 export * from './schema/qschema';
 export * from './schema/qschemacolumn';
 export * from './schema/qschemacurrentversion';

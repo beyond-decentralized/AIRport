@@ -3332,24 +3332,39 @@ export const SCHEMA = {
                             "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
+                            "name": "SIGNATURE",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
                             "name": "JSON_SCHEMA",
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 8
+                                    "index": 9
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "JSON"
                         },
                         {
-                            "index": 6,
+                            "index": 7,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneSchemaIndex": 0,
-                                    "oneTableIndex": 2,
+                                    "oneSchemaIndex": null,
+                                    "oneTableIndex": 11,
+                                    "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -3430,7 +3445,16 @@ export const SCHEMA = {
                             "sinceVersion": 1
                         },
                         {
+                            "columnRef": {
+                                "index": 5
+                            },
                             "index": 6,
+                            "isId": false,
+                            "name": "signature",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
                             "isId": false,
                             "name": "versions",
                             "relationRef": {
@@ -3439,7 +3463,7 @@ export const SCHEMA = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 7,
+                            "index": 8,
                             "isId": false,
                             "name": "currentVersion",
                             "relationRef": {
@@ -3449,9 +3473,9 @@ export const SCHEMA = {
                         },
                         {
                             "columnRef": {
-                                "index": 5
+                                "index": 6
                             },
-                            "index": 8,
+                            "index": 9,
                             "isId": false,
                             "name": "jsonSchema",
                             "sinceVersion": 1
@@ -3465,8 +3489,7 @@ export const SCHEMA = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 2,
-                            "relationTableSchemaIndex": 0,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -3477,7 +3500,7 @@ export const SCHEMA = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 6
+                                "index": 7
                             },
                             "relationTableIndex": 8,
                             "sinceVersion": 1
@@ -3490,7 +3513,7 @@ export const SCHEMA = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 7
+                                "index": 8
                             },
                             "relationTableIndex": 9,
                             "sinceVersion": 1
@@ -3502,26 +3525,101 @@ export const SCHEMA = {
                         "columnIndexes": []
                     },
                     "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "NAME",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 11,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "Domain",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "id",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "name",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "schemas",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "domain"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "DOMAINS",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
                 }
             ],
             "integerVersion": 1,
-            "referencedSchemas": [
-                {
-                    "domain": "air",
-                    "index": 0,
-                    "name": "@airport/territory",
-                    "packageName": "@airport/territory",
-                    "sinceVersion": 1,
-                    "versions": [
-                        {
-                            "entities": null,
-                            "integerVersion": 1,
-                            "referencedSchemas": null,
-                            "versionString": "1.0.0"
-                        }
-                    ]
-                }
-            ],
+            "referencedSchemas": [],
             "versionString": "1.0.0"
         }
     ]

@@ -12,13 +12,11 @@ import {
 	EntityId,
 	getSchemaName
 }                      from '@airport/ground-control';
-import { QMissingRecord } from './missingRecord/qmissingrecord';
 import { QRecordUpdateStage } from './qrecordupdatestage';
 import { QSynchronizationConflict } from './conflict/qsynchronizationconflict';
 import { QSynchronizationConflictPendingNotification } from './conflict/qsynchronizationconflictpendingnotification';
 import { QSynchronizationConflictValues } from './conflict/qsynchronizationconflictvalues';
 import {
-  MissingRecord,
   RecordUpdateStage,
   SynchronizationConflict,
   SynchronizationConflictPendingNotification,
@@ -29,7 +27,6 @@ export interface LocalQSchema extends AirportQSchema {
 
   db: DbSchema;
 
-	MissingRecord: QMissingRecord;
 	RecordUpdateStage: QRecordUpdateStage;
 	SynchronizationConflict: QSynchronizationConflict;
 	SynchronizationConflictPendingNotification: QSynchronizationConflictPendingNotification;
@@ -38,7 +35,6 @@ export interface LocalQSchema extends AirportQSchema {
 }
 
 const __constructors__ = {
-	MissingRecord: MissingRecord,
 	RecordUpdateStage: RecordUpdateStage,
 	SynchronizationConflict: SynchronizationConflict,
 	SynchronizationConflictPendingNotification: SynchronizationConflictPendingNotification,

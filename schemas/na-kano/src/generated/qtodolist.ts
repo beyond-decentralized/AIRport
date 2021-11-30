@@ -125,7 +125,6 @@ export interface TodoListGraph
 export interface TodoListEUpdateColumns
 	extends RepositoryEntityEUpdateColumns {
 	// Non-Id Columns
-	IS_DRAFT?: boolean | IQBooleanField;
 	AGE_SUITABILITY?: number | IQNumberField;
 	SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
 	NAME?: string | IQStringField;

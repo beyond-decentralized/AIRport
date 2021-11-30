@@ -43,20 +43,6 @@ export class TransactionalConnector
         );
     }
 
-    async getApplicationRepositories(
-        context?: IContext,
-    ): Promise<AIRepository[]> {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-
-        return await transServer.getApplicationRepositories(
-            {
-                applicationSignature: 'internal'
-            },
-            context
-        );
-
-    }
-
     async find<E, EntityArray extends Array<E>>(
         portableQuery: PortableQuery,
         context: IQueryContext,

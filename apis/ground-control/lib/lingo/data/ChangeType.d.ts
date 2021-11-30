@@ -1,6 +1,7 @@
 export declare enum ChangeType {
-    INSERT_VALUES = "INSERT_VALUES",
     DELETE_ROWS = "DELETE_ROWS",
+    INSERT_REFERENCE_VALUES = "INSERT_REFERENCE_VALUES",
+    INSERT_VALUES = "INSERT_VALUES",
     UPDATE_ROWS = "UPDATE_ROWS"
 }
 //# sourceMappingURL=ChangeType.d.ts.map

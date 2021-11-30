@@ -39,6 +39,7 @@ declare function require(moduleName: string): any;
 export interface StageableESelect
     extends IEntitySelectProperties, StageableEOptionalId {
 	// Non-Id Properties
+	isRepositoryDependencyReference?: boolean | IQBooleanField;
 
 	// Id Relations - full property interfaces
 
@@ -73,6 +74,7 @@ export interface StageableEOptionalId {
 export interface StageableEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
+	isRepositoryDependencyReference?: boolean | IQBooleanField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -86,6 +88,7 @@ export interface StageableGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
+	isRepositoryDependencyReference?: boolean | IQBooleanField;
 
 	// Relations
 
@@ -131,6 +134,7 @@ export interface QStageable<T> extends IQEntity<T>
 	// Id Relations
 
 	// Non-Id Fields
+	isRepositoryDependencyReference: IQBooleanField;
 
 	// Non-Id Relations
 

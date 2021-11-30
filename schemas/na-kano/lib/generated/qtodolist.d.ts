@@ -1,4 +1,4 @@
-import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField } from '@airport/air-control';
+import { IQNumberField, IQOneToManyRelation, IQStringField } from '@airport/air-control';
 import { RepositoryEntityGraph, RepositoryEntityEId, RepositoryEntityEUpdateColumns, RepositoryEntityEUpdateProperties, RepositoryEntityESelect, QRepositoryEntityQId, QRepositoryEntityQRelation, QRepositoryEntity } from '@airport/holding-pattern';
 import { TodoItemGraph, TodoItemESelect, QTodoItem } from './qtodoitem';
 import { TodoItem } from '../ddl/TodoItem';
@@ -37,7 +37,6 @@ export interface TodoListGraph extends TodoListEOptionalId, RepositoryEntityGrap
  * UPDATE - non-id columns (optional).
  */
 export interface TodoListEUpdateColumns extends RepositoryEntityEUpdateColumns {
-    IS_DRAFT?: boolean | IQBooleanField;
     AGE_SUITABILITY?: number | IQNumberField;
     SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
     NAME?: string | IQStringField;

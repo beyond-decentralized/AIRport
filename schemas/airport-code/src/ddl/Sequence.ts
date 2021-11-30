@@ -2,7 +2,6 @@ import {
 	Column,
 	DbNumber,
 	Entity,
-	GeneratedValue,
 	Id,
 	Table
 }               from '@airport/air-control'
@@ -11,7 +10,6 @@ import {
 	SchemaIndex,
 	TableIndex
 }               from '@airport/ground-control'
-import {Domain} from '@airport/territory'
 
 export type SequenceIncrementBy = number
 export type SequenceCurrentValue = number

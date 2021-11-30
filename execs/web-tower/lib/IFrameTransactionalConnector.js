@@ -97,12 +97,7 @@ export class IframeTransactionalConnector {
             // platform,
             // platformConfig,
             type: IsolateMessageType.ADD_REPOSITORY,
-        });
-    }
-    async getApplicationRepositories(context) {
-        return await this.sendMessage({
-            ...this.getCoreFields(),
-            type: IsolateMessageType.GET_APP_REPOSITORIES,
+            // url
         });
     }
     async find(portableQuery, context, cachedSqlQueryId) {

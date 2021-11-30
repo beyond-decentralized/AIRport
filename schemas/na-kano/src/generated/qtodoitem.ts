@@ -132,15 +132,14 @@ export interface TodoItemGraph
 export interface TodoItemEUpdateColumns
 	extends RepositoryEntityEUpdateColumns {
 	// Non-Id Columns
-	IS_DRAFT?: boolean | IQBooleanField;
 	AGE_SUITABILITY?: number | IQNumberField;
 	SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
 	ASSIGNED_TO?: string | IQStringField;
 	COMPLETED?: boolean | IQBooleanField;
 	NAME?: string | IQStringField;
-	TODO_LIST_RID?: number | IQNumberField;
-	TODO_LIST_AID?: number | IQNumberField;
-	TODO_LIST_ARID?: number | IQNumberField;
+	TODO_LIST_RID_1?: number | IQNumberField;
+	TODO_LIST_AID_1?: number | IQNumberField;
+	TODO_LIST_ARID_1?: number | IQNumberField;
 
 }
 

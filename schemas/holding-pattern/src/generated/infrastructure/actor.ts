@@ -3,8 +3,8 @@ import {
 	ITerminal,
 } from '@airport/travel-document-checkpoint';
 import {
-	IApplication,
-} from '@airport/territory';
+	ISchema,
+} from '@airport/traffic-pattern';
 import {
 	IRepositoryActor,
 } from '../repository/repositoryactor';
@@ -28,7 +28,7 @@ export interface IActor {
 	// Non-Id Relations
 	user?: IUser;
 	terminal?: ITerminal;
-	application?: IApplication;
+	schema?: ISchema;
 	repositoryActors?: IRepositoryActor[];
 
 	// Transient Properties

@@ -1,5 +1,18 @@
 /* eslint-disable */
 import {
+	IDomain,
+} from './schema/domain';
+import {
+	DomainESelect,
+	DomainECreateColumns,
+	DomainECreateProperties,
+	DomainEUpdateColumns,
+	DomainEUpdateProperties,
+	DomainEId,
+	DomainGraph,
+	QDomain,
+} from './schema/qdomain';
+import {
 	ISchema,
 } from './schema/schema';
 import {
@@ -186,6 +199,24 @@ export class SQDIDuo<Entity,
 		dbEntityId: DbEntityId
 	) {
 		super(dbEntityId, Q)
+	}
+}
+
+
+export interface IBaseDomainDuo
+  extends IDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
+}
+
+export class BaseDomainDuo
+  extends SQDIDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain>
+	implements IBaseDomainDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(11)
+	}
+	
+	constructor() {
+		super(11)
 	}
 }
 

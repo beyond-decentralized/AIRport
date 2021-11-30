@@ -21,12 +21,6 @@ export class TransactionalConnector {
             ...context
         });
     }
-    async getApplicationRepositories(context) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.getApplicationRepositories({
-            applicationSignature: 'internal'
-        }, context);
-    }
     async find(portableQuery, context, cachedSqlQueryId) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.find(portableQuery, {

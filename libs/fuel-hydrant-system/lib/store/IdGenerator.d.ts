@@ -1,13 +1,13 @@
 import { ISequenceGenerator } from '@airport/check-in';
 import { IContext } from '@airport/di';
-import { OperationHistoryId, RecordHistoryId, RepositoryTransactionHistoryId, TransactionHistoryId } from '@airport/holding-pattern';
+import { OperationHistoryId, RecordHistoryId, RepositoryTransactionHistory_Id, TransactionHistoryId } from '@airport/holding-pattern';
 export declare type NumRepositoryTransHistories = number;
 export declare type NumOperationTransHistories = number;
 export declare type NumRecordHistories = number;
 export interface TransactionHistoryIds {
     operationHistoryIds: OperationHistoryId[];
     recordHistoryIds: RecordHistoryId[];
-    repositoryHistoryIds: RepositoryTransactionHistoryId[];
+    repositoryHistoryIds: RepositoryTransactionHistory_Id[];
     transactionHistoryId: TransactionHistoryId;
 }
 export interface IIdGenerator {

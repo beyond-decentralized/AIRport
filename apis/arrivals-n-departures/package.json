@@ -2,7 +2,6 @@
   "dependencies": {
     "@airport/di": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
-    "@airport/territory": "0.0.1",
     "@airport/traffic-pattern": "0.0.1",
     "@airport/travel-document-checkpoint": "0.0.1"
   },

@@ -1,6 +1,6 @@
 import { container, DI } from '@airport/di';
 import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
-import { Actor, REPOSITORY_DAO } from '@airport/holding-pattern';
+import { Actor } from '@airport/holding-pattern';
 import { TRANSACTION_MANAGER, TRANSACTIONAL_SERVER, TERMINAL_STORE } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 /**
@@ -50,11 +50,6 @@ export class TransactionalServer {
             actor, context);
         }, context);
         return repositoryId;
-    }
-    async getApplicationRepositories(credentials, context) {
-        const repositoryDao = await container(this).get(REPOSITORY_DAO);
-        return await repositoryDao
-            .findReposForAppSignature(credentials.applicationSignature);
     }
     async find(portableQuery, credentials, context, cachedSqlQueryId) {
         await this.ensureIocContext(context);

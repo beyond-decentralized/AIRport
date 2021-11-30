@@ -11,7 +11,6 @@ dependencies:
   '@rollup/plugin-typescript': 8.2.5_rollup@2.56.3+tslib@2.1.0
   '@rush-temp/air-control': 'file:projects/air-control.tgz'
   '@rush-temp/airport-code': 'file:projects/airport-code.tgz'
-  '@rush-temp/approach-lighting-system': 'file:projects/approach-lighting-system.tgz'
   '@rush-temp/arrivals-n-departures': 'file:projects/arrivals-n-departures.tgz'
   '@rush-temp/automated-guideway-transit': 'file:projects/automated-guideway-transit.tgz'
   '@rush-temp/autopilot': 'file:projects/autopilot.tgz'
@@ -54,7 +53,6 @@ dependencies:
   '@rush-temp/ramp': 'file:projects/ramp.tgz'
   '@rush-temp/repository-demo-framework': 'file:projects/repository-demo-framework.tgz'
   '@rush-temp/runway': 'file:projects/runway.tgz'
-  '@rush-temp/runway-edge-lighting': 'file:projects/runway-edge-lighting.tgz'
   '@rush-temp/security-check': 'file:projects/security-check.tgz'
   '@rush-temp/sequence': 'file:projects/sequence.tgz'
   '@rush-temp/sqlite': 'file:projects/sqlite.tgz'
@@ -64,7 +62,6 @@ dependencies:
   '@rush-temp/taxiway': 'file:projects/taxiway.tgz'
   '@rush-temp/terminal': 'file:projects/terminal.tgz'
   '@rush-temp/terminal-map': 'file:projects/terminal-map.tgz'
-  '@rush-temp/territory': 'file:projects/territory.tgz'
   '@rush-temp/todo': 'file:projects/todo.tgz'
   '@rush-temp/tools': 'file:projects/tools.tgz'
   '@rush-temp/tower': 'file:projects/tower.tgz'
@@ -10735,21 +10732,14 @@ packages:
     dev: false
     name: '@rush-temp/airport-code'
     resolution:
-      integrity: sha512-s9A+DMw3Y5MFmAbCD/qzfjWRxmedNRK9DFVndlTbbiG6LAYsYIVNYrlxLofqbPeUMRQ0LF0ytxVFbGt0HE8F9w==
+      integrity: sha512-B6U5bvNWLlDTZQfxsfEMq+rUFtRX808K6f9vIhlC0bqInQCWV1GnmiimjNUyyqq04cUnM5Pesc7Z1rSHmuJpkA==
       tarball: 'file:projects/airport-code.tgz'
-    version: 0.0.0
-  'file:projects/approach-lighting-system.tgz':
-    dev: false
-    name: '@rush-temp/approach-lighting-system'
-    resolution:
-      integrity: sha512-cRbYpcpsyQizxVs3bqDTtTzTo1RBhngMo40FxToRU1/18P8zxTn52NKAAhl7r+EZn4cCnL3I7A/Ab1bkEADwng==
-      tarball: 'file:projects/approach-lighting-system.tgz'
     version: 0.0.0
   'file:projects/arrivals-n-departures.tgz':
     dev: false
     name: '@rush-temp/arrivals-n-departures'
     resolution:
-      integrity: sha512-3Cs22XD2zht3zwXqq3CHCVfKCKYnwoK0uL1YtO+xmWVeeBo4cYFcGqJbf2uvxpBMF45gA3NJaTOd5FPv6O9nOw==
+      integrity: sha512-IE65EZqFTVtxzPxK27ndn5DkMFh6/N0OXzESheYsSm9Z8byTJ1JVuhBMzbOFnKgk19cn8T9OC9Cri8p5xnUTqg==
       tarball: 'file:projects/arrivals-n-departures.tgz'
     version: 0.0.0
   'file:projects/automated-guideway-transit.tgz':
@@ -10758,7 +10748,7 @@ packages:
     dev: false
     name: '@rush-temp/automated-guideway-transit'
     resolution:
-      integrity: sha512-/Y8npDAw0p6WESme91Go11OeRl15ypoTTFzX9UiFprneeYGKjpgjdMbrettAsT0WOQThWEB7rf9Pep2q+QxqJw==
+      integrity: sha512-cpbR0G9Cpr/Buh/nH/GxsOZF5guFAaOsUJoNvQd/oGrLoq1EgMahkzyau+W0ecOVUfpmIBpMDjaDZEu7+CeA6g==
       tarball: 'file:projects/automated-guideway-transit.tgz'
     version: 0.0.0
   'file:projects/autopilot.tgz':
@@ -10777,7 +10767,7 @@ packages:
     dev: false
     name: '@rush-temp/blueprint'
     resolution:
-      integrity: sha512-MIBvgywC/e9yhuSBdgcqwVjzacyOfoiMRlrBGmHHlh9bbd6s4C4S2nXjmFj02VRGHrFaeT0eBXGYfee3gNDDvA==
+      integrity: sha512-iB2cqxgs8FzXA8dwzotVg05OnHOciWpXWSlVd8HlTg60gDfd/fLvaFjl5SbZZdFzKEShtu/syucA82HlMsoRxw==
       tarball: 'file:projects/blueprint.tgz'
     version: 0.0.0
   'file:projects/check-in.tgz':
@@ -10826,7 +10816,7 @@ packages:
     dev: false
     name: '@rush-temp/fuel-hydrant-system'
     resolution:
-      integrity: sha512-+caFm9I9VGDvCF6JP+hXwq7pvZemCHph1Bg1tDVh6HR4ZfY5q6eJdKZIZCWtQhQYvVZVBByszAmALuvd60ym5A==
+      integrity: sha512-9gk/pfBMZCkovmNqBx3pr6tR0+dz92nMK0+0grmgQEDSyeXUNb8erKIuMY68S23QxiT75QsbxYogBbBfg8pDKA==
       tarball: 'file:projects/fuel-hydrant-system.tgz'
     version: 0.0.0
   'file:projects/functionality-demo-frame.tgz':
@@ -10971,7 +10961,7 @@ packages:
     dev: false
     name: '@rush-temp/ground-transport'
     resolution:
-      integrity: sha512-j3Syy6Q6L/ln3PRl1DMg0wH5TTWrJL9o1k8t3S26gY5nplXcrOlBpaWaL7h/X7LA9oAqepEFXzVCw73hojJ4WQ==
+      integrity: sha512-i+z4VCnyVcyLgJb2J3xV9UP4a9kbkC9EanfZCkq2UuXYUAhho1Buies1CMVR9rp0uF2E9FdCOXgKQ/DzgBcrug==
       tarball: 'file:projects/ground-transport.tgz'
     version: 0.0.0
   'file:projects/guideway.tgz':
@@ -10985,7 +10975,7 @@ packages:
     dev: false
     name: '@rush-temp/holding-pattern'
     resolution:
-      integrity: sha512-eXZhil3BLsHJxx58axuEjDdo7p+mD4dHJXJzXXdUabiQMnR4u3DSmoXxVcgfIH9NzbxnvmEET3UScBPmFHhrOw==
+      integrity: sha512-Xz2eRtK35x9UTmMF9abbHZw8AO4QJdtqHEPJ4oHnxEkjX1vKK3rz3eU2MZsNUhJE4vsEkG0AniFhWgUxEvEMCw==
       tarball: 'file:projects/holding-pattern.tgz'
     version: 0.0.0
   'file:projects/hw-control.tgz':
@@ -11073,7 +11063,7 @@ packages:
     dev: false
     name: '@rush-temp/landing'
     resolution:
-      integrity: sha512-5ky1kqvNjmBHy/yQjgkmQX3RHXuAEhS7hC0Bl/rAHCic2yOyHMTnkNzAFcn0b2AzaO118eL7U5I9LSduSKXsCg==
+      integrity: sha512-uha0882+joy1dOEMisexZ5LOxRua133o6yInlKXp8HdvLAZjiOtV5EECEfKCFtcAk3OfIzohuf4OVRRGpVnVBA==
       tarball: 'file:projects/landing.tgz'
     version: 0.0.0
   'file:projects/mono-rail.tgz':
@@ -11091,7 +11081,7 @@ packages:
     dev: false
     name: '@rush-temp/moving-walkway'
     resolution:
-      integrity: sha512-hiz8JO2lUI469paqJaJqSVLBKSbovYSj7io2E3W4nRMYdqrke6RuW15mSBS4hgGXI/COfkmotcj97+oBWowmMg==
+      integrity: sha512-fFonMB4fca9Sdho4jlWBatAPuSXH2de7d+8Ac0s2pQHnNHufCMwjf0lU1Ds1idINizcRpR2ajZfvzIAchdAADQ==
       tarball: 'file:projects/moving-walkway.tgz'
     version: 0.0.0
   'file:projects/mysql.tgz':
@@ -11253,15 +11243,6 @@ packages:
       integrity: sha512-MJhWbW9i+MLXmtcrMmLYd1082bBRb26N3DrLcO5WphUqmyWRlxnnyry2zv7cAUhaqbuzoIMOhvCmvDmF08lLzQ==
       tarball: 'file:projects/repository-demo-framework.tgz'
     version: 0.0.0
-  'file:projects/runway-edge-lighting.tgz':
-    dependencies:
-      typedi: 0.8.0
-    dev: false
-    name: '@rush-temp/runway-edge-lighting'
-    resolution:
-      integrity: sha512-u1zuEhm9SytpEO8cSf2odx2HaVrtx04vhESHToa1VcX+5uJwoQlfgraM/DpuLY6Vl5x5jHNRy2++Edfqk3ZFTA==
-      tarball: 'file:projects/runway-edge-lighting.tgz'
-    version: 0.0.0
   'file:projects/runway.tgz':
     dependencies:
       '@types/node': 14.11.10
@@ -11311,7 +11292,7 @@ packages:
     dev: false
     name: '@rush-temp/takeoff'
     resolution:
-      integrity: sha512-brqtYgGGPpX+qGZYzTreuKOoKuha2OPbRQpcqHRtNKDoyOiYvhmqx5eyHisZ2WQReuWtTlZwBxSIhPNp8Bc05A==
+      integrity: sha512-4Esn1DqUoJ7/2grTt8nO8pWlzNrCw2b+BtpU320N6xgSLMhsjXaOgluL1ll0DmWg6ED/FxOaKY3or924jZk6hg==
       tarball: 'file:projects/takeoff.tgz'
     version: 0.0.0
   'file:projects/tarmaq.tgz':
@@ -11339,7 +11320,7 @@ packages:
     dev: false
     name: '@rush-temp/terminal-map'
     resolution:
-      integrity: sha512-HnMSB9/L9wHmbY7w8aGF9EmDCesJ6w949Uuw6XPyXGCnQJ13ksjbhhPzs0hkiS2RYaccVZN3Ijk3fohuh8LNHA==
+      integrity: sha512-H8Y9XmmLupBYXZEvSo2N3ZV/7WhvPbXiJX/YoDMi3ZuUyQFJzfVrI45oEWqQX0mPiq7QYvCo4uKb5zofzxK1aA==
       tarball: 'file:projects/terminal-map.tgz'
     version: 0.0.0
   'file:projects/terminal.tgz':
@@ -11350,15 +11331,8 @@ packages:
     dev: false
     name: '@rush-temp/terminal'
     resolution:
-      integrity: sha512-FA6xwNvTIFx/CxllhumAMC0GH0/js/0DUMM6rTZ7Km+lxXnCvAy8wTp7UcuLH+btB9DXybAZSwtJe2xLxYZ9Jw==
+      integrity: sha512-CH9rGu1htMwOnYV1+JNw26Et1u3L8O8yzlzocR88wKwuKitvCJ03XCd96kIjfk9lQirCA1eLkE0wYauBepN5/w==
       tarball: 'file:projects/terminal.tgz'
-    version: 0.0.0
-  'file:projects/territory.tgz':
-    dev: false
-    name: '@rush-temp/territory'
-    resolution:
-      integrity: sha512-ojKV6qsV1WbEJ+co0Fzzx0kmGVJRO0ifSQifia1xvV2nofFmRMegP3aPOf8Nwn66xPl/VBHywAtjScO29cgi6g==
-      tarball: 'file:projects/territory.tgz'
     version: 0.0.0
   'file:projects/todo.tgz':
     dependencies:
@@ -11391,7 +11365,7 @@ packages:
     dev: false
     name: '@rush-temp/traffic-pattern'
     resolution:
-      integrity: sha512-2yiE0o2WNTyycMTKeuC++x8VOWPKCYGu/7bV5FpNQnp1MPAKlHyG70KdjcP5vGUilX9lK9xohn7mIdqqRk+tjg==
+      integrity: sha512-8fNTPeOHXc2XxFDUBIrN4rA8kTz+7oqcsgd7PcTrv6jRfevjpu9nrqgs4DbT6vsow6xZ2LZnEQpNKL9QjX07Nw==
       tarball: 'file:projects/traffic-pattern.tgz'
     version: 0.0.0
   'file:projects/travel-document-checkpoint.tgz':
@@ -11400,7 +11374,7 @@ packages:
     dev: false
     name: '@rush-temp/travel-document-checkpoint'
     resolution:
-      integrity: sha512-xkJLcuUnK/bq065M3Nqo1dParB06Myqs/ygDn2ef3zoiZwAZcGq5u5NYSCJLRaUr9iI0wTL9idApVOCQ2jlktw==
+      integrity: sha512-ok7CQSlFTIfJYUKzhF8RoCCA5u76CT+A+YIelmwiQh055DwFvkzehKFn/LGyMKW+cPBOs8J/aKJ8i1U0e3rqjg==
       tarball: 'file:projects/travel-document-checkpoint.tgz'
     version: 0.0.0
   'file:projects/vasi.tgz':
@@ -11450,7 +11424,6 @@ specifiers:
   '@rollup/plugin-typescript': ^8.0.0
   '@rush-temp/air-control': 'file:./projects/air-control.tgz'
   '@rush-temp/airport-code': 'file:./projects/airport-code.tgz'
-  '@rush-temp/approach-lighting-system': 'file:./projects/approach-lighting-system.tgz'
   '@rush-temp/arrivals-n-departures': 'file:./projects/arrivals-n-departures.tgz'
   '@rush-temp/automated-guideway-transit': 'file:./projects/automated-guideway-transit.tgz'
   '@rush-temp/autopilot': 'file:./projects/autopilot.tgz'
@@ -11493,7 +11466,6 @@ specifiers:
   '@rush-temp/ramp': 'file:./projects/ramp.tgz'
   '@rush-temp/repository-demo-framework': 'file:./projects/repository-demo-framework.tgz'
   '@rush-temp/runway': 'file:./projects/runway.tgz'
-  '@rush-temp/runway-edge-lighting': 'file:./projects/runway-edge-lighting.tgz'
   '@rush-temp/security-check': 'file:./projects/security-check.tgz'
   '@rush-temp/sequence': 'file:./projects/sequence.tgz'
   '@rush-temp/sqlite': 'file:./projects/sqlite.tgz'
@@ -11503,7 +11475,6 @@ specifiers:
   '@rush-temp/taxiway': 'file:./projects/taxiway.tgz'
   '@rush-temp/terminal': 'file:./projects/terminal.tgz'
   '@rush-temp/terminal-map': 'file:./projects/terminal-map.tgz'
-  '@rush-temp/territory': 'file:./projects/territory.tgz'
   '@rush-temp/todo': 'file:./projects/todo.tgz'
   '@rush-temp/tools': 'file:./projects/tools.tgz'
   '@rush-temp/tower': 'file:./projects/tower.tgz'

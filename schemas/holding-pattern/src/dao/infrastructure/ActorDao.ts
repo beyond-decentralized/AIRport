@@ -8,7 +8,9 @@ import {
 	ensureChildJsMap,
 	JSONBaseOperation
 } from '@airport/ground-control'
-import { QApplication } from '@airport/territory'
+import {
+	QSchema
+} from '@airport/traffic-pattern'
 import {
 	QTerminal,
 	QUser,
@@ -106,27 +108,27 @@ export class ActorDao
 		applicationSignature: ApplicationSignature
 	): Promise<IActor> {
 		let act: QActor
-		let app: QApplication
+		let schema: QSchema
 		let repoAct: QRepositoryActor
 		let terminal: QTerminal
 		let user: QUser
 		return await this.db.findOne.graph({
 			select: {
-				application: {},
 				id: Y,
 				repositoryActors: {},
+				schema: {},
 				terminal: {},
 				user: {},
 				uuId: Y
 			},
 			from: [
 				act = Q.Actor,
-				app = act.application.innerJoin(),
+				schema = act.schema.innerJoin(),
 				repoAct = act.repositoryActors.leftJoin(),
 				terminal = act.terminal.leftJoin(),
 				user = act.user.leftJoin()
 			],
-			where: app.signature.equals(applicationSignature)
+			where: schema.signature.equals(applicationSignature)
 		})
 	}
 

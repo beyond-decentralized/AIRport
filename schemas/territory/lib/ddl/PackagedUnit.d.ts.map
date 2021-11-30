@@ -1,1 +1,0 @@
-{"version":3,"file":"PackagedUnit.d.ts","sourceRoot":"","sources":["../../src/ddl/PackagedUnit.ts"],"names":[],"mappings":"AAUA,OAAO,EAAC,OAAO,EAAC,MAAM,WAAW,CAAC;AAElC,oBAAY,cAAc,GAAG,MAAM,CAAC;AACpC,oBAAY,gBAAgB,GAAG,MAAM,CAAC;AAEtC,qBAEa,YAAY;IAKxB,EAAE,EAAE,cAAc,CAAC;IAGnB,IAAI,EAAE,gBAAgB,CAAC;IAIvB,OAAO,EAAE,OAAO,CAAC;CAEjB"}

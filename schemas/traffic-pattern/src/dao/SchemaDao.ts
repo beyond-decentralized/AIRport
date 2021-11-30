@@ -15,13 +15,13 @@ import {
 	SchemaStatus,
 	SchemaVersionId
 } from '@airport/ground-control'
-import { QDomain } from '@airport/territory'
 import { SCHEMA_DAO } from '../tokens'
 import {
 	BaseSchemaDao,
 	IBaseSchemaDao,
 	ISchema,
 	Q,
+	QDomain,
 	QSchema,
 	QSchemaVersion
 } from '../generated/generated'

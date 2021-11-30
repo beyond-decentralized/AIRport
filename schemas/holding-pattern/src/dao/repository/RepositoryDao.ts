@@ -34,7 +34,6 @@ import {
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
 } from '../../generated/generated'
-import { QApplication } from '@airport/territory'
 
 export interface IRepositoryDao
 	extends IBaseRepositoryDao {
@@ -66,10 +65,6 @@ export interface IRepositoryDao
 	findReposWithGlobalIds(
 		repositoryIds: Repository_Id[]
 	): Promise<Map<Repository_Id, IRepository>>;
-
-	findReposForAppSignature(
-		applicationSignature: ApplicationSignature
-	): Promise<IRepository[]>
 
 }
 
@@ -313,23 +308,6 @@ export class RepositoryDao
 
 
 		return repositoryIdMap
-	}
-
-	async findReposForAppSignature(
-		applicationSignature: ApplicationSignature
-	): Promise<IRepository[]> {
-		let repo: QRepository
-		let act: QActor
-		let app: QApplication
-		return await this.db.find.tree({
-			select: {},
-			from: [
-				repo = Q.Repository,
-				act = repo.ownerActor.innerJoin(),
-				app = act.application.innerJoin()
-			],
-			where: app.signature.equals(applicationSignature)
-		})
 	}
 
 }

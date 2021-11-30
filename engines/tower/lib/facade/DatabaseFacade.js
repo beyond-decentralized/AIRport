@@ -18,10 +18,6 @@ export class DatabaseFacade {
         // url, platform, platformConfig, distributionStrategy, 
         context);
     }
-    async getApplicationRepositories(context) {
-        const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-        return await transactionalConnector.getApplicationRepositories(context);
-    }
     async insertColumnValues(rawInsertColumnValues, context) {
         if (!rawInsertColumnValues) {
             return 0;

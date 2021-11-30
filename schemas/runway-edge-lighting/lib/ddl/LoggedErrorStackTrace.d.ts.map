@@ -1,1 +1,0 @@
-{"version":3,"file":"LoggedErrorStackTrace.d.ts","sourceRoot":"","sources":["../../src/ddl/LoggedErrorStackTrace.ts"],"names":[],"mappings":"AAOA,oBAAY,uBAAuB,GAAG,MAAM,CAAC;AAC7C,oBAAY,0BAA0B,GAAG,MAAM,CAAC;AAChD,oBAAY,8BAA8B,GAAG,MAAM,CAAC;AAEpD,qBAEa,qBAAqB;IAGjC,EAAE,EAAE,uBAAuB,CAAC;IAG5B,SAAS,EAAE,8BAA8B,CAAC;IAE1C,KAAK,EAAE,0BAA0B,CAAC;CAElC"}

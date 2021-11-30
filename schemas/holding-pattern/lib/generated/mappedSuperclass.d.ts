@@ -26,6 +26,11 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
+                        DbBoolean: {
+                            asName: string;
+                            moduleImport: any;
+                            sourceName: string;
+                        };
                         MappedSuperclass: {
                             asName: string;
                             moduleImport: any;
@@ -39,6 +44,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     path: string;
                 };
+                DbBoolean: any;
                 MappedSuperclass: any;
                 DbNumber?: undefined;
                 GeneratedValue?: undefined;
@@ -66,7 +72,25 @@ export declare const MAPPED_SUPERCLASS: ({
                 "./ImmutableRow"?: undefined;
             };
         };
-        properties: any[];
+        properties: {
+            decorators: {
+                name: string;
+                values: {
+                    name: string;
+                    nullable: boolean;
+                }[];
+            }[];
+            isGenerated: boolean;
+            isId: boolean;
+            isMappedSuperclass: boolean;
+            isTransient: boolean;
+            name: string;
+            type: string;
+            ownerEntity: any;
+            nonArrayType: string;
+            primitive: string;
+            index: number;
+        }[];
         methodSignatures: any[];
         constructors: {
             parameters: any[];
@@ -175,6 +199,7 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
+                        DbBoolean?: undefined;
                     };
                     path: string;
                 };
@@ -232,6 +257,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     path: string;
                 };
+                DbBoolean?: undefined;
                 RepositoryEntity?: undefined;
                 IUser?: undefined;
                 ImmutableRepoRow?: undefined;
@@ -324,6 +350,11 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            DbBoolean: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
                             MappedSuperclass: {
                                 asName: string;
                                 moduleImport: any;
@@ -337,6 +368,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
+                    DbBoolean: any;
                     MappedSuperclass: any;
                     DbNumber?: undefined;
                     GeneratedValue?: undefined;
@@ -360,7 +392,25 @@ export declare const MAPPED_SUPERCLASS: ({
                     "../repository/RepositoryEntity"?: undefined;
                 };
             };
-            properties: any[];
+            properties: {
+                decorators: {
+                    name: string;
+                    values: {
+                        name: string;
+                        nullable: boolean;
+                    }[];
+                }[];
+                isGenerated: boolean;
+                isId: boolean;
+                isMappedSuperclass: boolean;
+                isTransient: boolean;
+                name: string;
+                type: string;
+                ownerEntity: any;
+                nonArrayType: string;
+                primitive: string;
+                index: number;
+            }[];
             methodSignatures: any[];
             constructors: {
                 parameters: any[];
@@ -418,6 +468,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     path: string;
                 };
                 Column?: undefined;
+                DbBoolean?: undefined;
                 DbNumber?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
@@ -549,6 +600,7 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            DbBoolean?: undefined;
                         };
                         path: string;
                     };
@@ -606,6 +658,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
+                    DbBoolean?: undefined;
                     IUser?: undefined;
                     RepositoryEntity?: undefined;
                 };
@@ -694,6 +747,11 @@ export declare const MAPPED_SUPERCLASS: ({
                                     moduleImport: any;
                                     sourceName: string;
                                 };
+                                DbBoolean: {
+                                    asName: string;
+                                    moduleImport: any;
+                                    sourceName: string;
+                                };
                                 MappedSuperclass: {
                                     asName: string;
                                     moduleImport: any;
@@ -707,6 +765,7 @@ export declare const MAPPED_SUPERCLASS: ({
                             };
                             path: string;
                         };
+                        DbBoolean: any;
                         MappedSuperclass: any;
                         DbNumber?: undefined;
                         GeneratedValue?: undefined;
@@ -726,7 +785,25 @@ export declare const MAPPED_SUPERCLASS: ({
                         "./Repository"?: undefined;
                     };
                 };
-                properties: any[];
+                properties: {
+                    decorators: {
+                        name: string;
+                        values: {
+                            name: string;
+                            nullable: boolean;
+                        }[];
+                    }[];
+                    isGenerated: boolean;
+                    isId: boolean;
+                    isMappedSuperclass: boolean;
+                    isTransient: boolean;
+                    name: string;
+                    type: string;
+                    ownerEntity: any;
+                    nonArrayType: string;
+                    primitive: string;
+                    index: number;
+                }[];
                 methodSignatures: any[];
                 constructors: {
                     parameters: any[];
@@ -786,6 +863,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     path: string;
                 };
                 Column?: undefined;
+                DbBoolean?: undefined;
                 DbNumber?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
@@ -847,6 +925,11 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            DbBoolean: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
                             MappedSuperclass: {
                                 asName: string;
                                 moduleImport: any;
@@ -860,6 +943,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
+                    DbBoolean: any;
                     MappedSuperclass: any;
                     DbNumber?: undefined;
                     GeneratedValue?: undefined;
@@ -883,7 +967,25 @@ export declare const MAPPED_SUPERCLASS: ({
                     "../repository/RepositoryEntity"?: undefined;
                 };
             };
-            properties: any[];
+            properties: {
+                decorators: {
+                    name: string;
+                    values: {
+                        name: string;
+                        nullable: boolean;
+                    }[];
+                }[];
+                isGenerated: boolean;
+                isId: boolean;
+                isMappedSuperclass: boolean;
+                isTransient: boolean;
+                name: string;
+                type: string;
+                ownerEntity: any;
+                nonArrayType: string;
+                primitive: string;
+                index: number;
+            }[];
             methodSignatures: any[];
             constructors: {
                 parameters: any[];
@@ -940,6 +1042,7 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
+                        DbBoolean?: undefined;
                         DbNumber?: undefined;
                         GeneratedValue?: undefined;
                         Id?: undefined;
@@ -973,6 +1076,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     path: string;
                 };
+                DbBoolean?: undefined;
                 DbNumber?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
@@ -1118,6 +1222,7 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            DbBoolean?: undefined;
                         };
                         path: string;
                     };
@@ -1175,6 +1280,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
+                    DbBoolean?: undefined;
                     IUser?: undefined;
                     RepositoryEntity?: undefined;
                 };
@@ -1263,6 +1369,11 @@ export declare const MAPPED_SUPERCLASS: ({
                                     moduleImport: any;
                                     sourceName: string;
                                 };
+                                DbBoolean: {
+                                    asName: string;
+                                    moduleImport: any;
+                                    sourceName: string;
+                                };
                                 MappedSuperclass: {
                                     asName: string;
                                     moduleImport: any;
@@ -1276,6 +1387,7 @@ export declare const MAPPED_SUPERCLASS: ({
                             };
                             path: string;
                         };
+                        DbBoolean: any;
                         MappedSuperclass: any;
                         DbNumber?: undefined;
                         GeneratedValue?: undefined;
@@ -1295,7 +1407,25 @@ export declare const MAPPED_SUPERCLASS: ({
                         "./Repository"?: undefined;
                     };
                 };
-                properties: any[];
+                properties: {
+                    decorators: {
+                        name: string;
+                        values: {
+                            name: string;
+                            nullable: boolean;
+                        }[];
+                    }[];
+                    isGenerated: boolean;
+                    isId: boolean;
+                    isMappedSuperclass: boolean;
+                    isTransient: boolean;
+                    name: string;
+                    type: string;
+                    ownerEntity: any;
+                    nonArrayType: string;
+                    primitive: string;
+                    index: number;
+                }[];
                 methodSignatures: any[];
                 constructors: {
                     parameters: any[];
@@ -1354,6 +1484,7 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
+                        DbBoolean?: undefined;
                         DbNumber?: undefined;
                         GeneratedValue?: undefined;
                         Id?: undefined;
@@ -1387,6 +1518,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     path: string;
                 };
+                DbBoolean?: undefined;
                 DbNumber?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
@@ -1501,17 +1633,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     index: number;
                     isId: boolean;
                     name: string;
-                    relation: {
-                        isId: boolean;
-                        relationType: string;
-                        id: any;
-                        index: number;
-                        property: any;
-                        manyRelationColumns: any[];
-                        oneRelationColumns: any[];
-                        relationEntity: any;
-                        sinceVersion: any;
-                    }[];
+                    relation: any;
                     sinceVersion: any;
                 } | {
                     propertyColumns: any[];
@@ -1535,18 +1657,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     sinceVersion: any;
                 })[];
                 relationReferences: any[];
-                relations: ({
-                    isId: boolean;
-                    relationType: string;
-                    id: any;
-                    index: number;
-                    property: any;
-                    manyRelationColumns: any[];
-                    oneRelationColumns: any[];
-                    relationEntity: any;
-                    sinceVersion: any;
-                    oneToManyElems?: undefined;
-                } | {
+                relations: {
                     isId: boolean;
                     oneToManyElems: any;
                     relationType: string;
@@ -1557,7 +1668,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     oneRelationColumns: any[];
                     relationEntity: any;
                     sinceVersion: any;
-                })[];
+                }[];
                 schemaVersion: any;
                 sinceVersion: any;
                 tableConfig: any;
@@ -1619,6 +1730,11 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            DbBoolean: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
                             MappedSuperclass: {
                                 asName: string;
                                 moduleImport: any;
@@ -1632,6 +1748,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
+                    DbBoolean: any;
                     MappedSuperclass: any;
                     DbNumber?: undefined;
                     GeneratedValue?: undefined;
@@ -1655,7 +1772,25 @@ export declare const MAPPED_SUPERCLASS: ({
                     "../repository/RepositoryEntity"?: undefined;
                 };
             };
-            properties: any[];
+            properties: {
+                decorators: {
+                    name: string;
+                    values: {
+                        name: string;
+                        nullable: boolean;
+                    }[];
+                }[];
+                isGenerated: boolean;
+                isId: boolean;
+                isMappedSuperclass: boolean;
+                isTransient: boolean;
+                name: string;
+                type: string;
+                ownerEntity: any;
+                nonArrayType: string;
+                primitive: string;
+                index: number;
+            }[];
             methodSignatures: any[];
             constructors: {
                 parameters: any[];
@@ -1702,6 +1837,7 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
+                        DbBoolean?: undefined;
                         DbNumber?: undefined;
                         GeneratedValue?: undefined;
                         Id?: undefined;
@@ -1723,6 +1859,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     path: string;
                 };
+                DbBoolean?: undefined;
                 DbNumber?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
@@ -1817,6 +1954,7 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            DbBoolean?: undefined;
                             DbNumber?: undefined;
                             GeneratedValue?: undefined;
                             Id?: undefined;
@@ -1850,6 +1988,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
+                    DbBoolean?: undefined;
                     DbNumber?: undefined;
                     GeneratedValue?: undefined;
                     Id?: undefined;
@@ -1991,6 +2130,7 @@ export declare const MAPPED_SUPERCLASS: ({
                                     moduleImport: any;
                                     sourceName: string;
                                 };
+                                DbBoolean?: undefined;
                             };
                             path: string;
                         };
@@ -2048,6 +2188,7 @@ export declare const MAPPED_SUPERCLASS: ({
                             };
                             path: string;
                         };
+                        DbBoolean?: undefined;
                     };
                     importMapByModulePath: {
                         "@airport/air-control": any;
@@ -2132,6 +2273,11 @@ export declare const MAPPED_SUPERCLASS: ({
                                         moduleImport: any;
                                         sourceName: string;
                                     };
+                                    DbBoolean: {
+                                        asName: string;
+                                        moduleImport: any;
+                                        sourceName: string;
+                                    };
                                     MappedSuperclass: {
                                         asName: string;
                                         moduleImport: any;
@@ -2140,13 +2286,32 @@ export declare const MAPPED_SUPERCLASS: ({
                                 };
                                 path: string;
                             };
+                            DbBoolean: any;
                             MappedSuperclass: any;
                         };
                         importMapByModulePath: {
                             "@airport/air-control": any;
                         };
                     };
-                    properties: any[];
+                    properties: {
+                        decorators: {
+                            name: string;
+                            values: {
+                                name: string;
+                                nullable: boolean;
+                            }[];
+                        }[];
+                        isGenerated: boolean;
+                        isId: boolean;
+                        isMappedSuperclass: boolean;
+                        isTransient: boolean;
+                        name: string;
+                        type: string;
+                        ownerEntity: any;
+                        nonArrayType: string;
+                        primitive: string;
+                        index: number;
+                    }[];
                     methodSignatures: any[];
                     constructors: {
                         parameters: any[];
@@ -2195,6 +2360,7 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
+                        DbBoolean?: undefined;
                         DbNumber?: undefined;
                         GeneratedValue?: undefined;
                         Id?: undefined;
@@ -2216,6 +2382,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     path: string;
                 };
+                DbBoolean?: undefined;
                 DbNumber?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
@@ -2310,6 +2477,7 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            DbBoolean?: undefined;
                             DbNumber?: undefined;
                             GeneratedValue?: undefined;
                             Id?: undefined;
@@ -2343,6 +2511,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
+                    DbBoolean?: undefined;
                     DbNumber?: undefined;
                     GeneratedValue?: undefined;
                     Id?: undefined;
@@ -2453,17 +2622,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         index: number;
                         isId: boolean;
                         name: string;
-                        relation: {
-                            isId: boolean;
-                            relationType: string;
-                            id: any;
-                            index: number;
-                            property: any;
-                            manyRelationColumns: any[];
-                            oneRelationColumns: any[];
-                            relationEntity: any;
-                            sinceVersion: any;
-                        }[];
+                        relation: any;
                         sinceVersion: any;
                     } | {
                         propertyColumns: any[];
@@ -2487,18 +2646,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         sinceVersion: any;
                     })[];
                     relationReferences: any[];
-                    relations: ({
-                        isId: boolean;
-                        relationType: string;
-                        id: any;
-                        index: number;
-                        property: any;
-                        manyRelationColumns: any[];
-                        oneRelationColumns: any[];
-                        relationEntity: any;
-                        sinceVersion: any;
-                        oneToManyElems?: undefined;
-                    } | {
+                    relations: {
                         isId: boolean;
                         oneToManyElems: any;
                         relationType: string;
@@ -2509,7 +2657,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         oneRelationColumns: any[];
                         relationEntity: any;
                         sinceVersion: any;
-                    })[];
+                    }[];
                     schemaVersion: any;
                     sinceVersion: any;
                     tableConfig: any;
@@ -2571,6 +2719,11 @@ export declare const MAPPED_SUPERCLASS: ({
                                     moduleImport: any;
                                     sourceName: string;
                                 };
+                                DbBoolean: {
+                                    asName: string;
+                                    moduleImport: any;
+                                    sourceName: string;
+                                };
                                 MappedSuperclass: {
                                     asName: string;
                                     moduleImport: any;
@@ -2584,6 +2737,7 @@ export declare const MAPPED_SUPERCLASS: ({
                             };
                             path: string;
                         };
+                        DbBoolean: any;
                         MappedSuperclass: any;
                         DbNumber?: undefined;
                         GeneratedValue?: undefined;
@@ -2603,7 +2757,25 @@ export declare const MAPPED_SUPERCLASS: ({
                         "./Repository"?: undefined;
                     };
                 };
-                properties: any[];
+                properties: {
+                    decorators: {
+                        name: string;
+                        values: {
+                            name: string;
+                            nullable: boolean;
+                        }[];
+                    }[];
+                    isGenerated: boolean;
+                    isId: boolean;
+                    isMappedSuperclass: boolean;
+                    isTransient: boolean;
+                    name: string;
+                    type: string;
+                    ownerEntity: any;
+                    nonArrayType: string;
+                    primitive: string;
+                    index: number;
+                }[];
                 methodSignatures: any[];
                 constructors: {
                     parameters: any[];
@@ -2650,6 +2822,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     path: string;
                 };
                 Column?: undefined;
+                DbBoolean?: undefined;
                 DbNumber?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;

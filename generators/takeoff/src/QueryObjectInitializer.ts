@@ -7,8 +7,8 @@ import {
 	ITerminalStore,
 	TERMINAL_STORE
 }                                   from '@airport/terminal-map';
-import { IDomain }                  from '@airport/territory';
 import {
+	IDomain,
 	ISchema,
 	ISchemaColumn,
 	ISchemaEntity,

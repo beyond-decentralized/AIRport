@@ -18,7 +18,7 @@ import {
 	SchemaStatus
 } from '@airport/ground-control';
 import type { JsonSchemaWithLastIds } from '@airport/security-check';
-import { Domain } from '@airport/territory';
+import { Domain } from './Domain';
 import { SchemaCurrentVersion } from './SchemaCurrentVersion';
 import { SchemaVersion } from './SchemaVersion';
 
@@ -56,6 +56,10 @@ export class Schema {
 	@Column({ name: 'STATUS', nullable: false })
 	@DbString()
 	status: SchemaStatus;
+
+	@Column({ name: 'SIGNATURE', nullable: false })
+	@DbString()
+	signature: string;
 
 	@OneToMany({ mappedBy: 'schema' })
 	versions: SchemaVersion[] = [];

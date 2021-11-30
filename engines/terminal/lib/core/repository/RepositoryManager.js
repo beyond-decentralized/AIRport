@@ -15,7 +15,7 @@ export class RepositoryManager {
     }
     async findReposWithDetailsByIds(...repositoryIds) {
         const repositoryDao = await container(this).get(REPOSITORY_DAO);
-        return await repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.uuId, this.userEmail);
+        return await repositoryDao.findReposWithDetailsByIds(repositoryIds, this.terminal.uuId, this.userUuId);
     }
     async createRepository(actor) {
         let repository = await this.createRepositoryRecord(actor);

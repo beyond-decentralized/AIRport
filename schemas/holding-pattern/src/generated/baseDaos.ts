@@ -104,19 +104,6 @@ import {
 	QRepositoryActor,
 } from './repository/qrepositoryactor';
 import {
-	IRepositoryApplication,
-} from './repository/repositoryapplication';
-import {
-	RepositoryApplicationESelect,
-	RepositoryApplicationECreateColumns,
-	RepositoryApplicationECreateProperties,
-	RepositoryApplicationEUpdateColumns,
-	RepositoryApplicationEUpdateProperties,
-	RepositoryApplicationEId,
-	RepositoryApplicationGraph,
-	QRepositoryApplication,
-} from './repository/qrepositoryapplication';
-import {
 	IRepositorySchema,
 } from './repository/repositoryschema';
 import {
@@ -428,34 +415,6 @@ export class BaseRepositoryActorDao
 }
 
 
-export interface IBaseRepositoryApplicationDao
-  extends IDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication> {
-}
-
-export class BaseRepositoryApplicationDao
-  extends SQDIDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication>
-	implements IBaseRepositoryApplicationDao {
-	
-	static Find      = new DaoQueryDecorators<RepositoryApplicationESelect>();
-	static FindOne   = new DaoQueryDecorators<RepositoryApplicationESelect>();
-	static Search    = new DaoQueryDecorators<RepositoryApplicationESelect>();
-	static SearchOne = new DaoQueryDecorators<RepositoryApplicationESelect>();
-	static Save(
-		config: RepositoryApplicationGraph
-	): PropertyDecorator {
-		return Dao.BaseSave<RepositoryApplicationGraph>(config);
-  }
-
-	static diSet(): boolean {
-		return duoDiSet(10)
-	}
-	
-	constructor() {
-		super(10)
-	}
-}
-
-
 export interface IBaseRepositorySchemaDao
   extends IDao<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaGraph, QRepositorySchema> {
 }
@@ -475,11 +434,11 @@ export class BaseRepositorySchemaDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(11)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(11)
+		super(10)
 	}
 }
 

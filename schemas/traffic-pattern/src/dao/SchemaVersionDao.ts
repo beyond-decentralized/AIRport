@@ -8,10 +8,10 @@ import {
 	IBaseSchemaVersionDao,
 	ISchemaVersion,
 	Q,
+	QDomain,
 	QSchema,
 	QSchemaVersion
 } from '../generated/generated'
-import { QDomain } from '@airport/territory'
 
 export interface ISchemaVersionDao
 	extends IBaseSchemaVersionDao {

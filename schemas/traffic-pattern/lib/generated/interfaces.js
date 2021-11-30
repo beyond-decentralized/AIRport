@@ -1,3 +1,4 @@
+export * from './schema/domain';
 export * from './schema/schema';
 export * from './schema/schemacolumn';
 export * from './schema/schemacurrentversion';

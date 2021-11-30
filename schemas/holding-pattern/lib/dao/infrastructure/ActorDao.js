@@ -20,27 +20,27 @@ export class ActorDao extends BaseActorDao {
     }
     async findByApplicationSignature(applicationSignature) {
         let act;
-        let app;
+        let schema;
         let repoAct;
         let terminal;
         let user;
         return await this.db.findOne.graph({
             select: {
-                application: {},
                 id: Y,
                 repositoryActors: {},
+                schema: {},
                 terminal: {},
                 user: {},
                 uuId: Y
             },
             from: [
                 act = Q.Actor,
-                app = act.application.innerJoin(),
+                schema = act.schema.innerJoin(),
                 repoAct = act.repositoryActors.leftJoin(),
                 terminal = act.terminal.leftJoin(),
                 user = act.user.leftJoin()
             ],
-            where: app.signature.equals(applicationSignature)
+            where: schema.signature.equals(applicationSignature)
         });
     }
     async findWithDetailsAndGlobalIdsByWhereClause(getWhereClause) {

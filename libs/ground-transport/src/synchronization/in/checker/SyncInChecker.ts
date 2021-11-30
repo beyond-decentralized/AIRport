@@ -1,5 +1,6 @@
 import {
 	AgtRepositoryId,
+	TerminalMessage,
 	TerminalName,
 	TerminalSecondId
 } from '@airport/arrivals-n-departures'
@@ -23,6 +24,7 @@ import {
 	ISchema,
 	ISchemaVersion,
 } from '@airport/traffic-pattern'
+import { SYNC_IN_TERMINAL_CHECKER, SYNC_IN_USER_CHECKER } from '../../..'
 import {
 	SYNC_IN_ACTOR_CHECKER,
 	SYNC_IN_CHECKER,
@@ -46,16 +48,11 @@ export interface CheckSchemasResult {
 	usedSchemaVersionIdSet: Set<SchemaIndex>;
 }
 
-export interface CheckResults {
-	messageHasCompatibleSchemas: boolean
-	messageHasValidData: boolean
-}
-
 export interface ISyncInChecker {
 
-	checkSchemasAndDataAndRecordRepoTransBlocks(
+	checkMessage(
 		message: MessageToTM
-	): Promise<CheckResults>;
+	): Promise<boolean>;
 
 }
 
@@ -72,21 +69,29 @@ export class SyncInChecker
 	 *   have been verified to be in acceptable state for message processing
 	 *      ]
 	 */
-	async checkSchemasAndDataAndRecordRepoTransBlocks(
-		message: MessageToTM
-	): Promise<CheckResults> {
+	async checkMessage(
+		message: TerminalMessage
+	): Promise<boolean> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
 
 		const [syncInActorChecker, syncInDataChecker, syncInRepositoryChecker,
-			syncInSchemaChecker, syncInRepoTransBlockCreator] = await container(this).get(
+			syncInSchemaChecker, syncInTerminalChecker, syncInUserChecker,
+			syncInRepoTransBlockCreator] = await container(this).get(
 				SYNC_IN_ACTOR_CHECKER, SYNC_IN_DATA_CHECKER, SYNC_IN_REPO_CHECKER,
-				SYNC_IN_SCHEMA_CHECKER, SYNC_IN_REPO_TRANS_BLOCK_CREATOR)
+				SYNC_IN_SCHEMA_CHECKER, SYNC_IN_TERMINAL_CHECKER, SYNC_IN_USER_CHECKER,
+				SYNC_IN_REPO_TRANS_BLOCK_CREATOR)
 
+		if (! await syncInUserChecker.ensureUsers(message)) {
+			return false
+		}
+		if (! await syncInTerminalChecker.ensureTerminals(message)) {
+			return false
+		}
+		if (! await syncInActorChecker.ensureActors(message)) {
+			return false
+		}
 		if (!await syncInSchemaChecker.checkSchemas(message)) {
-			return {
-				messageHasCompatibleSchemas: false,
-				messageHasValidData: null
-			}
+			return false
 		}
 
 		const {

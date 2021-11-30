@@ -61,14 +61,6 @@ export class DatabaseFacade
 		)
 	}
 
-	async getApplicationRepositories(
-		context?: IContext
-	): Promise<AIRepository[]> {
-		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR)
-
-		return await transactionalConnector.getApplicationRepositories(context)
-	}
-
 	async insertColumnValues<IQE extends IQEntity<any>>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;

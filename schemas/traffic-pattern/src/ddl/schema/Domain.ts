@@ -1,0 +1,29 @@
+import {
+	DbNumber,
+	DbString,
+	Entity,
+	Id,
+	OneToMany,
+	Table,
+}                    from '@airport/air-control'
+import {
+	DomainId,
+	DomainName,
+}                    from '@airport/ground-control'
+import { Schema } from './Schema'
+
+@Entity()
+@Table({name: 'DOMAINS'})
+export class Domain {
+
+	@Id()
+	@DbNumber()
+	id: DomainId
+
+	@DbString()
+	name: DomainName
+
+	@OneToMany({mappedBy: 'domain'})
+	schemas: Schema[]
+
+}

@@ -22,6 +22,23 @@ export class UserDao extends BaseUserDao {
             where: u.uuId.in(uuIds)
         });
     }
+    async insert(users) {
+        let u;
+        const values = [];
+        for (const user of users) {
+            values.push([
+                user.uuId, user.username
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            insertInto: u = Q.User,
+            columns: [
+                u.uuId,
+                u.username
+            ],
+            values
+        });
+    }
 }
 DI.set(USER_DAO, UserDao);
 //# sourceMappingURL=UserDao.js.map

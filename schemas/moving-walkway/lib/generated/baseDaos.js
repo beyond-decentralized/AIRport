@@ -6,7 +6,7 @@ export class SQDIDao extends Dao {
         super(dbEntityId, Q);
     }
 }
-export class BaseMissingRecordDao extends SQDIDao {
+export class BaseRecordUpdateStageDao extends SQDIDao {
     constructor() {
         super(3);
     }
@@ -15,21 +15,6 @@ export class BaseMissingRecordDao extends SQDIDao {
     }
     static diSet() {
         return duoDiSet(3);
-    }
-}
-BaseMissingRecordDao.Find = new DaoQueryDecorators();
-BaseMissingRecordDao.FindOne = new DaoQueryDecorators();
-BaseMissingRecordDao.Search = new DaoQueryDecorators();
-BaseMissingRecordDao.SearchOne = new DaoQueryDecorators();
-export class BaseRecordUpdateStageDao extends SQDIDao {
-    constructor() {
-        super(4);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet(4);
     }
 }
 BaseRecordUpdateStageDao.Find = new DaoQueryDecorators();

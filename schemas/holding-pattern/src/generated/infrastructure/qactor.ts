@@ -42,16 +42,16 @@ import {
 	Terminal,
 } from '@airport/travel-document-checkpoint';
 import {
-	ApplicationGraph,
-	ApplicationEId,
-	ApplicationEOptionalId,
-	ApplicationEUpdateProperties,
-	ApplicationESelect,
-	QApplication,
-	QApplicationQId,
-	QApplicationQRelation,
-	Application,
-} from '@airport/territory';
+	SchemaGraph,
+	SchemaEId,
+	SchemaEOptionalId,
+	SchemaEUpdateProperties,
+	SchemaESelect,
+	QSchema,
+	QSchemaQId,
+	QSchemaQRelation,
+	Schema,
+} from '@airport/traffic-pattern';
 import {
 	RepositoryActorGraph,
 	RepositoryActorEId,
@@ -90,7 +90,7 @@ export interface ActorESelect
   // Non-Id relations (including OneToMany's)
 	user?: UserESelect;
 	terminal?: TerminalESelect;
-	application?: ApplicationESelect;
+	schema?: SchemaESelect;
 	repositoryActors?: RepositoryActorESelect;
 
 }
@@ -129,7 +129,7 @@ export interface ActorEUpdateProperties
 	// Non-Id Relations - ids only & no OneToMany's
 	user?: UserEOptionalId;
 	terminal?: TerminalEOptionalId;
-	application?: ApplicationEOptionalId;
+	schema?: SchemaEOptionalId;
 
 }
 
@@ -146,7 +146,7 @@ export interface ActorGraph
 	// Relations
 	user?: UserGraph;
 	terminal?: TerminalGraph;
-	application?: ApplicationGraph;
+	schema?: SchemaGraph;
 	repositoryActors?: RepositoryActorGraph[];
 
 }
@@ -160,7 +160,7 @@ export interface ActorEUpdateColumns
 	UU_ID?: string | IQStringField;
 	USER_ID?: number | IQNumberField;
 	TERMINAL_ID?: number | IQNumberField;
-	APPLICATION_ID?: number | IQNumberField;
+	SCHEMA_INDEX?: number | IQNumberField;
 
 }
 
@@ -201,7 +201,7 @@ export interface QActor extends IQEntity<Actor>
 	// Non-Id Relations
 	user: QUserQRelation;
 	terminal: QTerminalQRelation;
-	application: QApplicationQRelation;
+	schema: QSchemaQRelation;
 	repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
 
 }

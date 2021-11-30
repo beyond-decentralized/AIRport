@@ -48,9 +48,6 @@ export class TransactionalReceiver {
                     // addRepositoryMessage.distributionStrategy,
                     credentials, context);
                     break;
-                case IsolateMessageType.GET_APP_REPOSITORIES:
-                    result = await transactionalServer.getApplicationRepositories(credentials, context);
-                    break;
                 case IsolateMessageType.COMMIT:
                     result = await transactionalServer.commit(credentials, {});
                     break;
