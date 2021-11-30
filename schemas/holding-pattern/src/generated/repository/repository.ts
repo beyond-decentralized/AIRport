@@ -27,7 +27,6 @@ export interface IRepository {
 	ageSuitability?: number;
 	source?: string;
 	immutable?: boolean;
-	syncPriority?: string;
 
 	// Non-Id Relations
 	ownerActor?: IActor;

@@ -5,9 +5,9 @@ export declare type ActorId = number;
 export declare type ActorUuId = string;
 export declare class Actor {
     id: ActorId;
+    uuId: ActorUuId;
     user: User;
     terminal: Terminal;
-    uuId: ActorUuId;
     schema: Schema;
     repositoryActors: RepositoryActor[];
 }

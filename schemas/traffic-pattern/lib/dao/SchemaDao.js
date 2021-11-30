@@ -165,6 +165,29 @@ export class SchemaDao extends BaseSchemaDao {
         }
         return mapByName;
     }
+    async findByDomainNamesAndSchemaNames(domainNames, schemaNames) {
+        let s;
+        let d;
+        return await this.db.find.tree({
+            select: {
+                index: Y,
+                domain: {
+                    id: Y,
+                    name: Y
+                },
+                name: Y
+            },
+            from: [
+                s = Q.Schema,
+                d = s.domain.innerJoin()
+            ],
+            where: and(d.name.in(domainNames), s.name.in(schemaNames)),
+            orderBy: [
+                d.name.asc(),
+                s.index.asc()
+            ]
+        });
+    }
     async insert(schemas) {
         let s;
         const values = [];

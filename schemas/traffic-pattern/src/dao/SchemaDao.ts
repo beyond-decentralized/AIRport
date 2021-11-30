@@ -62,6 +62,11 @@ export interface ISchemaDao
 		schemaNames: SchemaName[]
 	): Promise<Map<SchemaName, ISchema>>
 
+	findByDomainNamesAndSchemaNames(
+		domainNames: string[],
+		schemaNames: string[]
+	): Promise<ISchema[]>
+
 	insert(
 		schemas: ISchema[]
 	): Promise<void>
@@ -270,12 +275,43 @@ export class SchemaDao
 		return mapByName
 	}
 
+	async findByDomainNamesAndSchemaNames(
+		domainNames: string[],
+		schemaNames: string[]
+	): Promise<ISchema[]> {
+		let s: QSchema
+		let d: QDomain
+
+		return await this.db.find.tree({
+			select: {
+				index: Y,
+				domain: {
+					id: Y,
+					name: Y
+				},
+				name: Y
+			},
+			from: [
+				s = Q.Schema,
+				d = s.domain.innerJoin()
+			],
+			where: and(
+				d.name.in(domainNames),
+				s.name.in(schemaNames)
+			),
+			orderBy: [
+				d.name.asc(),
+				s.index.asc()
+			]
+		})
+	}
+
 	async insert(
 		schemas: ISchema[]
 	): Promise<void> {
 		let s: QSchema;
 		const values = []
-		for(const schema of schemas) {
+		for (const schema of schemas) {
 			values.push([
 				schema.index, schema.domain.id, schema.scope,
 				schema.name, schema.packageName, schema.status,
@@ -283,18 +319,18 @@ export class SchemaDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-				insertInto: s = Q.Schema,
-				columns: [
-					s.index,
-					s.domain.id,
-					s.scope,
-					s.name,
-					s.packageName,
-					s.status,
-					s.jsonSchema
-				],
-				values
-			})
+			insertInto: s = Q.Schema,
+			columns: [
+				s.index,
+				s.domain.id,
+				s.scope,
+				s.name,
+				s.packageName,
+				s.status,
+				s.jsonSchema
+			],
+			values
+		})
 	}
 }
 

@@ -8,7 +8,6 @@ export interface IRepository {
     ageSuitability?: number;
     source?: string;
     immutable?: boolean;
-    syncPriority?: string;
     ownerActor?: IActor;
     repositoryActors?: IRepositoryActor[];
     repositoryTransactionHistory?: IRepositoryTransactionHistory[];

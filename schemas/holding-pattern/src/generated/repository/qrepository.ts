@@ -83,7 +83,6 @@ export interface RepositoryESelect
 	ageSuitability?: number | IQNumberField;
 	source?: string | IQStringField;
 	immutable?: boolean | IQBooleanField;
-	syncPriority?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -128,7 +127,6 @@ export interface RepositoryEUpdateProperties
 	ageSuitability?: number | IQNumberField;
 	source?: string | IQStringField;
 	immutable?: boolean | IQBooleanField;
-	syncPriority?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	ownerActor?: ActorEOptionalId;
@@ -148,7 +146,6 @@ export interface RepositoryGraph
 	ageSuitability?: number | IQNumberField;
 	source?: string | IQStringField;
 	immutable?: boolean | IQBooleanField;
-	syncPriority?: string | IQStringField;
 
 	// Relations
 	ownerActor?: ActorGraph;
@@ -168,7 +165,6 @@ export interface RepositoryEUpdateColumns
 	AGE_SUITABILITY?: number | IQNumberField;
 	SOURCE?: string | IQStringField;
 	IMMUTABLE?: boolean | IQBooleanField;
-	SYNC_PRIORITY?: string | IQStringField;
 	OWNER_ACTOR_ID?: number | IQNumberField;
 
 }
@@ -210,7 +206,6 @@ export interface QRepository extends IQEntity<Repository>
 	ageSuitability: IQNumberField;
 	source: IQStringField;
 	immutable: IQBooleanField;
-	syncPriority: IQStringField;
 
 	// Non-Id Relations
 	ownerActor: QActorQRelation;

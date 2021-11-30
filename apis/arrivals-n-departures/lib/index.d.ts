@@ -1,2 +1,2 @@
-export * from './Message';
+export * from './TerminalMessage';
 //# sourceMappingURL=index.d.ts.map

@@ -14,6 +14,10 @@ __decorate([
     Column({ name: 'ID' })
 ], Actor.prototype, "id", void 0);
 __decorate([
+    Column({ name: 'UU_ID', nullable: false }),
+    DbString()
+], Actor.prototype, "uuId", void 0);
+__decorate([
     ManyToOne(),
     JoinColumn({
         name: 'USER_ID', referencedColumnName: 'ID',
@@ -27,10 +31,6 @@ __decorate([
         nullable: false
     })
 ], Actor.prototype, "terminal", void 0);
-__decorate([
-    Column({ name: 'UU_ID', nullable: false }),
-    DbString()
-], Actor.prototype, "uuId", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({ name: "SCHEMA_INDEX", referencedColumnName: "SCHEMA_INDEX" })

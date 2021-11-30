@@ -47,13 +47,6 @@ export class Repository {
 	@DbNumber()
 	id: Repository_Id;
 
-	@ManyToOne()
-	@JoinColumn({
-		name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
-		nullable: false
-	})
-	ownerActor: Actor;
-
 	@Column({ name: "CREATED_AT", nullable: false })
 	@DbDate()
 	createdAt: Repository_CreatedAt;
@@ -73,35 +66,17 @@ export class Repository {
 	@Column({ name: "IMMUTABLE", nullable: false })
 	immutable: Repository_Immutable
 
-	// @Column({name: "DISTRIBUTION_STRATEGY"})
-	// @DbString()
-	// distributionStrategy: DistributionStrategy;
-	//
-	// @Column({name: "REPOSITORY_PLATFORM"})
-	// @DbString()
-	// platform: PlatformType
-
-	// @Column({ name: "PLATFORM_CONFIG", nullable: false })
-	// platformConfig: string;
-
-	/*
 	@ManyToOne()
-	@JoinColumns([
-		{name: "LAST_SYNCED_TRANSACTION_ID", referencedColumnName: "TRANSACTION_ID"},
-		{name: "LAST_SYNCED_REPO_TRANSACTION_ID", referencedColumnName: "INDEX"},
-		{name: "ID", referencedColumnName: "REPOSITORY_ID"}
-	])
-	lastSyncedTransaction: IRepositoryTransactionHistory;
-*/
+	@JoinColumn({
+		name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
+		nullable: false
+	})
+	ownerActor: Actor;
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryActors: RepositoryActor[] = [];
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];
-
-	@Column({ name: "SYNC_PRIORITY", nullable: false })
-	@DbString()
-	syncPriority: SyncPriority;
 
 }

@@ -69,7 +69,7 @@ export class SyncInDataChecker
 				if (typeof operationHistory.entity !== 'object') {
 					throw new Error(`Invalid operationHistory.entity`)
 				}
-				if(typeof operationHistory.entity.schemaVersion !== 'number') {
+				if (typeof operationHistory.entity.schemaVersion !== 'number') {
 					throw new Error(`Expecting "in-message index" (number)
 					in 'operationHistory.entity.schemaVersion'`)
 				}
@@ -84,6 +84,10 @@ export class SyncInDataChecker
 					throw new Error(`Invalid operationHistory.entity.index: ${operationHistory.entity.index}`)
 				}
 				operationHistory.entity = schemaEntity
+
+				for (const recordHistory of operationHistory.recordHistory) {
+					// TODO: populate actors and repositories
+				}
 			}
 		} catch (e) {
 			console.error(e)

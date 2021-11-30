@@ -1,39 +1,27 @@
 import {
-	AgtRepositoryId,
 	TerminalMessage,
-	TerminalName,
-	TerminalSecondId
 } from '@airport/arrivals-n-departures'
 import {
 	container,
 	DI
 } from '@airport/di'
 import {
-	DomainName,
 	SchemaIndex,
-	SchemaName,
-	SchemaVersionId
 } from '@airport/ground-control'
 import {
 	IActor
 } from '@airport/holding-pattern'
-import {
-	SchemaChangeStatus,
-} from '@airport/moving-walkway'
-import {
-	ISchema,
-	ISchemaVersion,
-} from '@airport/traffic-pattern'
-import { SYNC_IN_TERMINAL_CHECKER, SYNC_IN_USER_CHECKER } from '../../..'
 import {
 	SYNC_IN_ACTOR_CHECKER,
 	SYNC_IN_CHECKER,
 	SYNC_IN_DATA_CHECKER,
 	SYNC_IN_REPO_CHECKER,
 	SYNC_IN_REPO_TRANS_BLOCK_CREATOR,
-	SYNC_IN_SCHEMA_CHECKER
+	SYNC_IN_SCHEMA_CHECKER,
+	SYNC_IN_SCHEMA_VERSION_CHECKER,
+	SYNC_IN_TERMINAL_CHECKER,
+	SYNC_IN_USER_CHECKER
 } from '../../../tokens'
-import { MessageToTM } from '../../types'
 import {
 	IDataToTM,
 	RemoteActorId,
@@ -51,7 +39,7 @@ export interface CheckSchemasResult {
 export interface ISyncInChecker {
 
 	checkMessage(
-		message: MessageToTM
+		message: TerminalMessage
 	): Promise<boolean>;
 
 }
@@ -75,11 +63,11 @@ export class SyncInChecker
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
 
 		const [syncInActorChecker, syncInDataChecker, syncInRepositoryChecker,
-			syncInSchemaVersionChecker, syncInTerminalChecker, syncInUserChecker,
-			syncInRepoTransBlockCreator] = await container(this).get(
+			syncInSchemaChecker, syncInSchemaVersionChecker, syncInTerminalChecker,
+			syncInUserChecker, syncInRepoTransBlockCreator] = await container(this).get(
 				SYNC_IN_ACTOR_CHECKER, SYNC_IN_DATA_CHECKER, SYNC_IN_REPO_CHECKER,
-				SYNC_IN_SCHEMA_CHECKER, SYNC_IN_TERMINAL_CHECKER, SYNC_IN_USER_CHECKER,
-				SYNC_IN_REPO_TRANS_BLOCK_CREATOR)
+				SYNC_IN_SCHEMA_CHECKER, SYNC_IN_SCHEMA_VERSION_CHECKER, SYNC_IN_TERMINAL_CHECKER,
+				SYNC_IN_USER_CHECKER, SYNC_IN_REPO_TRANS_BLOCK_CREATOR)
 
 		if (! await syncInUserChecker.ensureUsers(message)) {
 			return false
@@ -87,10 +75,13 @@ export class SyncInChecker
 		if (! await syncInTerminalChecker.ensureTerminals(message)) {
 			return false
 		}
+		if (! await syncInSchemaChecker.ensureSchemas(message)) {
+			return false
+		}
 		if (! await syncInActorChecker.ensureActors(message)) {
 			return false
 		}
-		if (!await syncInSchemaVersionChecker.checkSchemas(message)) {
+		if (!await syncInSchemaVersionChecker.ensureSchemaVersions(message)) {
 			return false
 		}
 

@@ -14,7 +14,6 @@ export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEO
     ageSuitability?: number | IQNumberField;
     source?: string | IQStringField;
     immutable?: boolean | IQBooleanField;
-    syncPriority?: string | IQStringField;
     ownerActor?: ActorESelect;
     repositoryActors?: RepositoryActorESelect;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
@@ -40,7 +39,6 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     ageSuitability?: number | IQNumberField;
     source?: string | IQStringField;
     immutable?: boolean | IQBooleanField;
-    syncPriority?: string | IQStringField;
     ownerActor?: ActorEOptionalId;
 }
 /**
@@ -52,7 +50,6 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
     ageSuitability?: number | IQNumberField;
     source?: string | IQStringField;
     immutable?: boolean | IQBooleanField;
-    syncPriority?: string | IQStringField;
     ownerActor?: ActorGraph;
     repositoryActors?: RepositoryActorGraph[];
     repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
@@ -66,7 +63,6 @@ export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
     AGE_SUITABILITY?: number | IQNumberField;
     SOURCE?: string | IQStringField;
     IMMUTABLE?: boolean | IQBooleanField;
-    SYNC_PRIORITY?: string | IQStringField;
     OWNER_ACTOR_ID?: number | IQNumberField;
 }
 /**
@@ -89,7 +85,6 @@ export interface QRepository extends IQEntity<Repository> {
     ageSuitability: IQNumberField;
     source: IQStringField;
     immutable: IQBooleanField;
-    syncPriority: IQStringField;
     ownerActor: QActorQRelation;
     repositoryActors: IQOneToManyRelation<RepositoryActor, QRepositoryActor>;
     repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;

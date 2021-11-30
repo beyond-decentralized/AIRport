@@ -7,24 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Column, DbDate, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
 let Repository = class Repository {
     constructor() {
-        // @Column({name: "DISTRIBUTION_STRATEGY"})
-        // @DbString()
-        // distributionStrategy: DistributionStrategy;
-        //
-        // @Column({name: "REPOSITORY_PLATFORM"})
-        // @DbString()
-        // platform: PlatformType
-        // @Column({ name: "PLATFORM_CONFIG", nullable: false })
-        // platformConfig: string;
-        /*
-        @ManyToOne()
-        @JoinColumns([
-            {name: "LAST_SYNCED_TRANSACTION_ID", referencedColumnName: "TRANSACTION_ID"},
-            {name: "LAST_SYNCED_REPO_TRANSACTION_ID", referencedColumnName: "INDEX"},
-            {name: "ID", referencedColumnName: "REPOSITORY_ID"}
-        ])
-        lastSyncedTransaction: IRepositoryTransactionHistory;
-    */
         this.repositoryActors = [];
         this.repositoryTransactionHistory = [];
     }
@@ -35,13 +17,6 @@ __decorate([
     Id(),
     DbNumber()
 ], Repository.prototype, "id", void 0);
-__decorate([
-    ManyToOne(),
-    JoinColumn({
-        name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
-        nullable: false
-    })
-], Repository.prototype, "ownerActor", void 0);
 __decorate([
     Column({ name: "CREATED_AT", nullable: false }),
     DbDate()
@@ -62,15 +37,18 @@ __decorate([
     Column({ name: "IMMUTABLE", nullable: false })
 ], Repository.prototype, "immutable", void 0);
 __decorate([
+    ManyToOne(),
+    JoinColumn({
+        name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
+        nullable: false
+    })
+], Repository.prototype, "ownerActor", void 0);
+__decorate([
     OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryActors", void 0);
 __decorate([
     OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
-__decorate([
-    Column({ name: "SYNC_PRIORITY", nullable: false }),
-    DbString()
-], Repository.prototype, "syncPriority", void 0);
 Repository = __decorate([
     Entity(),
     Table({

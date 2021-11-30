@@ -6,6 +6,7 @@ export interface IDomainDao extends IBaseDomainDao {
     findOneByName(domainName: DomainName): Promise<IDomain>;
     findByNames(domainNames: DomainName[]): Promise<IDomain[]>;
     checkAndInsertIfNeeded(domains: IDomain[]): Promise<void>;
+    insert(domains: IDomain[]): Promise<void>;
 }
 export declare class DomainDao extends BaseDomainDao implements IDomainDao {
     findByIdIn(domainIds: DomainId[]): Promise<IDomain[]>;
@@ -13,5 +14,6 @@ export declare class DomainDao extends BaseDomainDao implements IDomainDao {
     findOneByName(name: DomainName): Promise<IDomain>;
     findByNames(names: DomainName[]): Promise<IDomain[]>;
     checkAndInsertIfNeeded(domains: IDomain[]): Promise<void>;
+    insert(domains: IDomain[]): Promise<void>;
 }
 //# sourceMappingURL=DomainDao.d.ts.map

@@ -35,6 +35,10 @@ export interface IDomainDao
 		domains: IDomain[]
 	): Promise<void>
 
+	insert(
+		domains: IDomain[]
+	): Promise<void>
+
 }
 
 export class DomainDao
@@ -122,6 +126,25 @@ export class DomainDao
 			columns: [
 				d.id,
 				d.name,
+			],
+			values
+		})
+	}
+
+	async insert(
+		domains: IDomain[]
+	): Promise<void> {
+		let d: QDomain;
+		const values = []
+		for (const domain of domains) {
+			values.push([
+				domain.name
+			])
+		}
+		await this.db.insertValuesGenerateIds({
+			insertInto: d = Q.Domain,
+			columns: [
+				d.name
 			],
 			values
 		})

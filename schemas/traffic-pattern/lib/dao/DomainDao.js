@@ -69,6 +69,22 @@ export class DomainDao extends BaseDomainDao {
             values
         });
     }
+    async insert(domains) {
+        let d;
+        const values = [];
+        for (const domain of domains) {
+            values.push([
+                domain.name
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            insertInto: d = Q.Domain,
+            columns: [
+                d.name
+            ],
+            values
+        });
+    }
 }
 DI.set(DOMAIN_DAO, DomainDao);
 //# sourceMappingURL=DomainDao.js.map
