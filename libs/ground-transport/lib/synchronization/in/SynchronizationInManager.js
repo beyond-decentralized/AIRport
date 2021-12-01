@@ -24,8 +24,9 @@ export class SynchronizationInManager {
         // each message is signed with the private key and the initial
         // message for repository is CREATE_REPOSITORY with the public key of the owner user
         let messagesToProcess = [];
+        const orderedMessages = this.timeOrderMessages(messageMapByUuId);
         // Split up messages by type
-        for (const message of messageMapByUuId.values()) {
+        for (const message of orderedMessages) {
             if (!this.isValidLastChangeTime(syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
                 continue;
             }
@@ -48,6 +49,33 @@ export class SynchronizationInManager {
             transaction.isSync = true;
             await twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction);
         });
+    }
+    timeOrderMessages(messageMapByUuId) {
+        const messages = [...messageMapByUuId.values()];
+        messages.sort((message1, message2) => {
+            if (message1.syncTimestamp < message2.syncTimestamp) {
+                return -1;
+            }
+            if (message1.syncTimestamp > message2.syncTimestamp) {
+                return 1;
+            }
+            let history1 = message1.history;
+            let history2 = message2.history;
+            if (history1.saveTimestamp < history2.saveTimestamp) {
+                return -1;
+            }
+            if (history1.saveTimestamp > history2.saveTimestamp) {
+                return 1;
+            }
+            if (history1.actor.uuId < history2.actor.uuId) {
+                return -1;
+            }
+            if (history1.actor.uuId > history2.actor.uuId) {
+                return 1;
+            }
+            return 0;
+        });
+        return messages;
     }
     isValidLastChangeTime(syncTimestamp, remoteTimestamp, remoteFieldName, syncFieldName = 'Reception Time:') {
         if (syncTimestamp < remoteTimestamp) {

@@ -7,7 +7,7 @@ export interface RepositorySynchronizationMessage {
     applications: IApplication[];
     history: IRepositoryTransactionHistory;
     referencedRepositories: IRepository[];
-    syncTimestamp: number;
+    syncTimestamp?: number;
     users: IUser[];
     terminals: ITerminal[];
 }

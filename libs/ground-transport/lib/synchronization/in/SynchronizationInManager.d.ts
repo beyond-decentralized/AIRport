@@ -10,6 +10,7 @@ export interface ISynchronizationInManager {
  */
 export declare class SynchronizationInManager implements ISynchronizationInManager {
     receiveMessages(messageMapByUuId: Map<string, RepositorySynchronizationMessage>): Promise<void>;
+    private timeOrderMessages;
     private isValidLastChangeTime;
 }
 //# sourceMappingURL=SynchronizationInManager.d.ts.map

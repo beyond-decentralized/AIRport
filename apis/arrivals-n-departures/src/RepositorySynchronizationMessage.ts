@@ -19,7 +19,7 @@ export interface RepositorySynchronizationMessage {
 	history: IRepositoryTransactionHistory
 	// Repositories may reference records in other repositories
 	referencedRepositories: IRepository[]
-	syncTimestamp: number
+	syncTimestamp?: number
 	users: IUser[]
 	terminals: ITerminal[]
 }
