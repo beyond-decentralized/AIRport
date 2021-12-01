@@ -12,12 +12,10 @@ import { IStage2SyncedInDataProcessor } from './synchronization/in/Stage2SyncedI
 import { ISynchronizationInManager } from './synchronization/in/SynchronizationInManager'
 import { ISyncInUtils } from './synchronization/in/SyncInUtils'
 import { ITwoStageSyncedInDataProcessor } from './synchronization/in/TwoStageSyncedInDataProcessor'
-import { ISynchronizationOutCoordinator } from './synchronization/out/SynchronizationOutCoordinator'
 import { ISynchronizationOutManager } from './synchronization/out/SynchronizationOutManager'
-import { ISyncOutMessageSender } from './synchronization/out/SyncOutMessageSender'
-import { ISyncOutRepositoryTransactionBlockCreator } from './synchronization/out/SyncOutRepositoryTransactionBlockCreator'
-import { ISyncOutSerializer } from './synchronization/out/SyncOutSerializer'
-import { ISyncNodeManager } from './synchronization/SyncNodeManager'
+import { ISynchronizationAdapter } from './adapters/ISynchronizationAdapter'
+import { ISynchronizationAdapterLoader } from './adapters/SynchronizationAdapterLoader'
+import { ISyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer'
 
 const groundTransport = lib('ground-transport')
 
@@ -32,14 +30,11 @@ export const SYNC_IN_APPLICATION_CHECKER = groundTransport.token<ISyncInApplicat
 export const SYNC_IN_APPLICATION_VERSION_CHECKER = groundTransport.token<ISyncInApplicationVersionChecker>('ISyncInApplicationVersionChecker')
 export const SYNC_IN_USER_CHECKER = groundTransport.token<ISyncInUserChecker>('ISyncInUserChecker')
 export const SYNC_IN_UTILS = groundTransport.token<ISyncInUtils>('ISyncInUtils')
-export const SYNC_NODE_MANAGER = groundTransport.token<ISyncNodeManager>('ISyncNodeManager')
 export const SYNCHRONIZATION_IN_MANAGER = groundTransport.token<ISynchronizationInManager>('ISynchronizationInManager')
-export const SYNCHRONIZATION_OUT_COORDINATOR = groundTransport.token<ISynchronizationOutCoordinator>('ISynchronizationOutCoordinator')
 export const SYNCHRONIZATION_OUT_MANAGER = groundTransport.token<ISynchronizationOutManager>('ISynchronizationOutManager')
-export const SYNC_OUT_MESSAGE_SENDER = groundTransport.token<ISyncOutMessageSender>('ISyncOutMessageSender')
-export const SYNC_OUT_REPOSITORY_TRANSACTION_BLOCK_CREATOR
-    = groundTransport.token<ISyncOutRepositoryTransactionBlockCreator>('ISyncOutRepositoryTransactionBlockCreator')
-export const SYNC_OUT_SERIALIZER = groundTransport.token<ISyncOutSerializer>('ISyncOutSerializer')
+export const SYNC_OUT_DATA_SERIALIZER = groundTransport.token<ISyncOutDataSerializer>('ISyncOutDataSerializer')
 export const TWO_STAGE_SYNCED_IN_DATA_PROCESSOR = groundTransport.token<ITwoStageSyncedInDataProcessor>('ITwoStageSyncedInDataProcessor')
 
 
+export const DEBUG_SYNCHRONIZATION_ADAPTER = groundTransport.token<ISynchronizationAdapter>('DebugSynchronizationAdapter')
+export const SYNCHRONIZATION_ADAPTER_LOADER = groundTransport.token<ISynchronizationAdapterLoader>('SYNCHRONIZATION_ADAPTER_LOADER')

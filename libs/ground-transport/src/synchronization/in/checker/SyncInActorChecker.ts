@@ -1,5 +1,5 @@
 import {
-	TerminalMessage,
+	RepositorySynchronizationMessage,
 } from '@airport/arrivals-n-departures'
 import {
 	container,
@@ -13,7 +13,7 @@ import { SYNC_IN_ACTOR_CHECKER } from '../../../tokens'
 export interface ISyncInActorChecker {
 
 	ensureActors(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean>
 
 }
@@ -22,7 +22,7 @@ export class SyncInActorChecker
 	implements ISyncInActorChecker {
 
 	async ensureActors(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean> {
 		try {
 			const actorDao = await container(this).get(ACTOR_DAO)

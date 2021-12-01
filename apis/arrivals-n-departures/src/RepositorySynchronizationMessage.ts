@@ -12,7 +12,7 @@ import {
 	IApplicationVersion
 } from "@airport/airspace";
 
-export interface TerminalMessage {
+export interface RepositorySynchronizationMessage {
 	actors: IActor[]
 	applicationVersions: IApplicationVersion[]
 	applications: IApplication[]

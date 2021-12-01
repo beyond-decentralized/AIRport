@@ -1,4 +1,4 @@
-import { TerminalMessage } from '@airport/arrivals-n-departures';
+import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
 import { IApplicationVersion } from '@airport/airspace';
 export interface IApplicationVersionCheckRecord {
     found?: boolean;
@@ -7,10 +7,10 @@ export interface IApplicationVersionCheckRecord {
     applicationVersionNumber: number;
 }
 export interface ISyncInApplicationVersionChecker {
-    ensureApplicationVersions(message: TerminalMessage): Promise<boolean>;
+    ensureApplicationVersions(message: RepositorySynchronizationMessage): Promise<boolean>;
 }
 export declare class SyncInApplicationVersionChecker implements ISyncInApplicationVersionChecker {
-    ensureApplicationVersions(message: TerminalMessage): Promise<boolean>;
+    ensureApplicationVersions(message: RepositorySynchronizationMessage): Promise<boolean>;
     private checkVersionsApplicationsDomains;
     private getNames;
 }

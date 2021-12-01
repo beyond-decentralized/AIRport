@@ -1,4 +1,4 @@
-import { TerminalMessage } from '@airport/arrivals-n-departures'
+import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	container,
 	DI
@@ -19,7 +19,7 @@ export interface IApplicationVersionCheckRecord {
 export interface ISyncInApplicationVersionChecker {
 
 	ensureApplicationVersions(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean>;
 
 }
@@ -28,7 +28,7 @@ export class SyncInApplicationVersionChecker
 	implements ISyncInApplicationVersionChecker {
 
 	async ensureApplicationVersions(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean> {
 		try {
 			let applicationCheckMap = await this.checkVersionsApplicationsDomains(message);
@@ -48,7 +48,7 @@ export class SyncInApplicationVersionChecker
 	}
 
 	private async checkVersionsApplicationsDomains(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<Map<string, Map<string, IApplicationVersionCheckRecord>>> {
 		const { allApplicationNames, domainNames, applicationVersionCheckMap } = this.getNames(message)
 
@@ -94,14 +94,14 @@ export class SyncInApplicationVersionChecker
 	}
 
 	private getNames(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): {
 		allApplicationNames: string[],
 		domainNames: string[],
 		applicationVersionCheckMap: Map<string, Map<string, IApplicationVersionCheckRecord>>
 	} {
 		if (!message.applicationVersions || !(message.applicationVersions instanceof Array)) {
-			throw new Error(`Did not find applicationVersions in TerminalMessage.`)
+			throw new Error(`Did not find applicationVersions in RepositorySynchronizationMessage.`)
 		}
 
 		const applicationVersionCheckMap: Map<string, Map<string, IApplicationVersionCheckRecord>> = new Map()

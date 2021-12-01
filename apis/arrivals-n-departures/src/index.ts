@@ -1,1 +1,1 @@
-export * from './TerminalMessage';
+export * from './RepositorySynchronizationMessage';

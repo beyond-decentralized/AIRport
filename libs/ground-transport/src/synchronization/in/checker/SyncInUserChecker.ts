@@ -1,4 +1,4 @@
-import { TerminalMessage } from '@airport/arrivals-n-departures'
+import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import { container, DI } from '@airport/di'
 import {
 	IUser,
@@ -10,7 +10,7 @@ import { SYNC_IN_USER_CHECKER } from '../../../tokens'
 export interface ISyncInUserChecker {
 
 	ensureUsers(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean>;
 
 }
@@ -19,7 +19,7 @@ export class SyncInUserChecker
 	implements ISyncInUserChecker {
 
 	async ensureUsers(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean> {
 		try {
 			const userDao = await container(this).get(USER_DAO)

@@ -1,5 +1,5 @@
 import {
-	TerminalMessage,
+	RepositorySynchronizationMessage,
 } from '@airport/arrivals-n-departures'
 import {
 	container,
@@ -15,7 +15,7 @@ import { SYNC_IN_TERMINAL_CHECKER } from '../../../tokens'
 export interface ISyncInTerminalChecker {
 
 	ensureTerminals(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean>
 
 }
@@ -24,7 +24,7 @@ export class SyncInTerminalChecker
 	implements ISyncInTerminalChecker {
 
 	async ensureTerminals(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean> {
 		try {
 			const terminalDao = await container(this).get(TERMINAL_DAO)

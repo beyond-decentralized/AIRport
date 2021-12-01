@@ -1,7 +1,7 @@
 import { IActor, IRepository, IRepositoryTransactionHistory } from "@airport/holding-pattern";
 import { ITerminal, IUser } from "@airport/travel-document-checkpoint";
 import { IApplication, IApplicationVersion } from "@airport/airspace";
-export interface TerminalMessage {
+export interface RepositorySynchronizationMessage {
     actors: IActor[];
     applicationVersions: IApplicationVersion[];
     applications: IApplication[];
@@ -11,4 +11,4 @@ export interface TerminalMessage {
     users: IUser[];
     terminals: ITerminal[];
 }
-//# sourceMappingURL=TerminalMessage.d.ts.map
+//# sourceMappingURL=RepositorySynchronizationMessage.d.ts.map

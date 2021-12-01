@@ -1,9 +1,9 @@
-import { TerminalMessage } from '@airport/arrivals-n-departures';
+import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
 export interface ISyncInRepositoryChecker {
-    ensureRepositories(message: TerminalMessage): Promise<boolean>;
+    ensureRepositories(message: RepositorySynchronizationMessage): Promise<boolean>;
 }
 export declare class SyncInRepositoryChecker implements ISyncInRepositoryChecker {
-    ensureRepositories(message: TerminalMessage): Promise<boolean>;
+    ensureRepositories(message: RepositorySynchronizationMessage): Promise<boolean>;
     private checkRepository;
 }
 //# sourceMappingURL=SyncInRepositoryChecker.d.ts.map

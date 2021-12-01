@@ -1,4 +1,4 @@
-import { TerminalMessage } from "@airport/arrivals-n-departures";
+import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { container } from "@airport/di";
 import { ApplicationStatus } from '@airport/ground-control';
 import {
@@ -23,7 +23,7 @@ export interface IApplicationCheckRecord {
 export interface ISyncInApplicationChecker {
 
     ensureApplications(
-        message: TerminalMessage
+        message: RepositorySynchronizationMessage
     ): Promise<boolean>
 
 }
@@ -32,7 +32,7 @@ export class SyncInApplicationChecker
     implements ISyncInApplicationChecker {
 
     async ensureApplications(
-        message: TerminalMessage
+        message: RepositorySynchronizationMessage
     ): Promise<boolean> {
         try {
             let applicationCheckMap = await this.checkApplicationsAndDomains(message);
@@ -52,7 +52,7 @@ export class SyncInApplicationChecker
     }
 
     private async checkApplicationsAndDomains(
-        message: TerminalMessage
+        message: RepositorySynchronizationMessage
     ): Promise<Map<string, Map<string, IApplicationCheckRecord>>> {
         const { allApplicationNames, domainCheckMap, domainNames, applicationCheckMap }
             = this.getNames(message)
@@ -122,7 +122,7 @@ export class SyncInApplicationChecker
     }
 
     private getNames(
-        message: TerminalMessage
+        message: RepositorySynchronizationMessage
     ): {
         allApplicationNames: string[],
         domainCheckMap: Map<string, IDomainCheckRecord>,
@@ -130,7 +130,7 @@ export class SyncInApplicationChecker
         applicationCheckMap: Map<string, Map<string, IApplicationCheckRecord>>
     } {
         if (!message.applications || !(message.applications instanceof Array)) {
-            throw new Error(`Did not find applications in TerminalMessage.`)
+            throw new Error(`Did not find applications in RepositorySynchronizationMessage.`)
         }
 
         const domainCheckMap: Map<string, IDomainCheckRecord> = new Map()

@@ -1,4 +1,4 @@
-import { TerminalMessage } from '@airport/arrivals-n-departures'
+import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	container,
 	DI
@@ -18,7 +18,7 @@ import {
 export interface ISynchronizationInManager {
 
 	receiveMessages(
-		messageMapByUuId: Map<string, TerminalMessage>
+		messageMapByUuId: Map<string, RepositorySynchronizationMessage>
 	): Promise<void>;
 
 }
@@ -30,7 +30,7 @@ export class SynchronizationInManager
 	implements ISynchronizationInManager {
 
 	async receiveMessages(
-		messageMapByUuId: Map<string, TerminalMessage>
+		messageMapByUuId: Map<string, RepositorySynchronizationMessage>
 	): Promise<void> {
 		const syncTimestamp = new Date().getTime()
 
@@ -54,10 +54,12 @@ export class SynchronizationInManager
 		// each message is signed with the private key and the initial
 		// message for repository is CREATE_REPOSITORY with the public key of the owner user
 
-		let messagesToProcess: TerminalMessage[] = []
+		let messagesToProcess: RepositorySynchronizationMessage[] = []
+
+		const orderedMessages = this.timeOrderMessages(messageMapByUuId)
 
 		// Split up messages by type
-		for (const message of messageMapByUuId.values()) {
+		for (const message of orderedMessages) {
 			if (!this.isValidLastChangeTime(
 				syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
 				continue
@@ -87,6 +89,39 @@ export class SynchronizationInManager
 			transaction.isSync = true
 			await twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction)
 		})
+	}
+
+	private timeOrderMessages(
+		messageMapByUuId: Map<string, RepositorySynchronizationMessage>
+	): RepositorySynchronizationMessage[] {
+		const messages: RepositorySynchronizationMessage[] = [...messageMapByUuId.values()]
+
+		messages.sort((message1, message2) => {
+			if (message1.syncTimestamp < message2.syncTimestamp) {
+				return -1
+			}
+			if (message1.syncTimestamp > message2.syncTimestamp) {
+				return 1
+			}
+			let history1 = message1.history
+			let history2 = message2.history
+			if (history1.saveTimestamp < history2.saveTimestamp) {
+				return -1
+			}
+			if (history1.saveTimestamp > history2.saveTimestamp) {
+				return 1
+			}
+			if (history1.actor.uuId < history2.actor.uuId) {
+				return -1
+			}
+			if (history1.actor.uuId > history2.actor.uuId) {
+				return 1
+			}
+
+			return 0
+		})
+
+		return messages
 	}
 
 	private isValidLastChangeTime(

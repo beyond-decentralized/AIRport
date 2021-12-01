@@ -1,9 +1,9 @@
-import { TerminalMessage } from '@airport/arrivals-n-departures';
+import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
 export interface ISyncInUserChecker {
-    ensureUsers(message: TerminalMessage): Promise<boolean>;
+    ensureUsers(message: RepositorySynchronizationMessage): Promise<boolean>;
 }
 export declare class SyncInUserChecker implements ISyncInUserChecker {
-    ensureUsers(message: TerminalMessage): Promise<boolean>;
+    ensureUsers(message: RepositorySynchronizationMessage): Promise<boolean>;
     private addMissingUsers;
 }
 //# sourceMappingURL=SyncInUserChecker.d.ts.map

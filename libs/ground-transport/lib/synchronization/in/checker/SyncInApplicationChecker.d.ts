@@ -1,4 +1,4 @@
-import { TerminalMessage } from "@airport/arrivals-n-departures";
+import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { IDomain, IApplication } from "@airport/airspace";
 export interface IDomainCheckRecord {
     domain?: IDomain;
@@ -11,10 +11,10 @@ export interface IApplicationCheckRecord {
     application?: IApplication;
 }
 export interface ISyncInApplicationChecker {
-    ensureApplications(message: TerminalMessage): Promise<boolean>;
+    ensureApplications(message: RepositorySynchronizationMessage): Promise<boolean>;
 }
 export declare class SyncInApplicationChecker implements ISyncInApplicationChecker {
-    ensureApplications(message: TerminalMessage): Promise<boolean>;
+    ensureApplications(message: RepositorySynchronizationMessage): Promise<boolean>;
     private checkApplicationsAndDomains;
     private getNames;
 }

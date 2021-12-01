@@ -56,7 +56,7 @@ export class SyncInApplicationVersionChecker {
     }
     getNames(message) {
         if (!message.applicationVersions || !(message.applicationVersions instanceof Array)) {
-            throw new Error(`Did not find applicationVersions in TerminalMessage.`);
+            throw new Error(`Did not find applicationVersions in RepositorySynchronizationMessage.`);
         }
         const applicationVersionCheckMap = new Map();
         for (let applicationVersion of message.applicationVersions) {

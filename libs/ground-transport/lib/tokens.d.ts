@@ -17,6 +17,8 @@ import { ISyncOutMessageSender } from './synchronization/out/SyncOutMessageSende
 import { ISyncOutRepositoryTransactionBlockCreator } from './synchronization/out/SyncOutRepositoryTransactionBlockCreator';
 import { ISyncOutSerializer } from './synchronization/out/SyncOutSerializer';
 import { ISyncNodeManager } from './synchronization/SyncNodeManager';
+import { ISynchronizationAdapter } from './adapters/ISynchronizationAdapter';
+import { ISynchronizationAdapterLoader } from './adapters/SynchronizationAdapterLoader';
 export declare const STAGE1_SYNCED_IN_DATA_PROCESSOR: import("@airport/di").IDiToken<IStage1SyncedInDataProcessor>;
 export declare const STAGE2_SYNCED_IN_DATA_PROCESSOR: import("@airport/di").IDiToken<IStage2SyncedInDataProcessor>;
 export declare const SYNC_IN_ACTOR_CHECKER: import("@airport/di").IDiToken<ISyncInActorChecker>;
@@ -36,4 +38,6 @@ export declare const SYNC_OUT_MESSAGE_SENDER: import("@airport/di").IDiToken<ISy
 export declare const SYNC_OUT_REPOSITORY_TRANSACTION_BLOCK_CREATOR: import("@airport/di").IDiToken<ISyncOutRepositoryTransactionBlockCreator>;
 export declare const SYNC_OUT_SERIALIZER: import("@airport/di").IDiToken<ISyncOutSerializer>;
 export declare const TWO_STAGE_SYNCED_IN_DATA_PROCESSOR: import("@airport/di").IDiToken<ITwoStageSyncedInDataProcessor>;
+export declare const DEBUG_SYNCHRONIZATION_ADAPTER: import("@airport/di").IDiToken<ISynchronizationAdapter>;
+export declare const SYNCHRONIZATION_ADAPTER_LOADER: import("@airport/di").IDiToken<ISynchronizationAdapterLoader>;
 //# sourceMappingURL=tokens.d.ts.map

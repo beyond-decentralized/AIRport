@@ -1,5 +1,5 @@
 import {
-	TerminalMessage,
+	RepositorySynchronizationMessage,
 } from '@airport/arrivals-n-departures'
 import {
 	container,
@@ -19,7 +19,7 @@ import {
 export interface ISyncInChecker {
 
 	checkMessage(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean>;
 
 }
@@ -31,7 +31,7 @@ export class SyncInChecker
 	 * Check the message and load all required auxiliary entities.
 	 */
 	async checkMessage(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
 

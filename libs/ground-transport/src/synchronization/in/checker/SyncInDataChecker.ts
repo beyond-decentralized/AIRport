@@ -1,4 +1,4 @@
-import { TerminalMessage } from '@airport/arrivals-n-departures'
+import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	container,
 	DI
@@ -29,7 +29,7 @@ import {
 export interface ISyncInDataChecker {
 
 	checkData(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean>
 
 }
@@ -45,12 +45,12 @@ export class SyncInDataChecker
 	 * @returns {DataCheckResults}
 	 */
 	async checkData(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean> {
 		const history = message.history
 		try {
 			if (!history || typeof history !== 'object') {
-				throw new Error(`Invalid TerminalMessage.history`)
+				throw new Error(`Invalid RepositorySynchronizationMessage.history`)
 			}
 			if (typeof history.uuId !== 'string' || history.uuId.length !== 36) {
 				return false
@@ -59,20 +59,20 @@ export class SyncInDataChecker
 				return false
 			}
 			if (!history.saveTimestamp || typeof history.saveTimestamp !== 'number') {
-				throw new Error(`Invalid TerminalMessage.history.saveTimestamp`)
+				throw new Error(`Invalid RepositorySynchronizationMessage.history.saveTimestamp`)
 			}
 			if (history.transactionHistory) {
-				throw new Error(`TerminalMessage.history.transactionHistory cannot be specified`)
+				throw new Error(`RepositorySynchronizationMessage.history.transactionHistory cannot be specified`)
 			}
 			if (history.repositoryTransactionType) {
-				throw new Error(`TerminalMessage.history.repositoryTransactionType cannot be specified`)
+				throw new Error(`RepositorySynchronizationMessage.history.repositoryTransactionType cannot be specified`)
 			}
 			if (history.syncTimestamp) {
-				throw new Error(`TerminalMessage.history.synced cannot be specified`)
+				throw new Error(`RepositorySynchronizationMessage.history.synced cannot be specified`)
 			}
 			const actor = message.actors[history.actor as any]
 			if (!actor) {
-				throw new Error(`Cannot find Actor for "in-message id" TerminalMessage.history.actor`)
+				throw new Error(`Cannot find Actor for "in-message id" RepositorySynchronizationMessage.history.actor`)
 			}
 			// Repository is already set in SyncInRepositoryChecker
 
@@ -93,7 +93,7 @@ export class SyncInDataChecker
 	}
 
 	private async populateApplicationEntityMap(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<Map<string, Map<string, Map<TableIndex, IApplicationEntity>>>> {
 		let applicationVersionsById: Map<number, IApplicationVersion> = new Map()
 		let applicationVersionIds: number[] = []
@@ -125,12 +125,12 @@ export class SyncInDataChecker
 	}
 
 	private async checkOperationHistories(
-		message: TerminalMessage,
+		message: RepositorySynchronizationMessage,
 		applicationEntityMap: Map<string, Map<string, Map<TableIndex, IApplicationEntity>>>
 	): Promise<void> {
 		const history = message.history
 		if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
-			throw new Error(`Invalid TerminalMessage.history.operationHistory`)
+			throw new Error(`Invalid RepositorySynchronizationMessage.history.operationHistory`)
 		}
 
 		const [airDb, sequenceGenerator] = await container(this)
@@ -147,7 +147,7 @@ export class SyncInDataChecker
 				throw new Error(`Invalid operationHistory`)
 			}
 			if (operationHistory.orderNumber) {
-				throw new Error(`TerminalMessage.history -> operationHistory.orderNumber cannot be specified`)
+				throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.orderNumber cannot be specified`)
 			}
 			operationHistory.orderNumber = ++orderNumber
 
@@ -180,12 +180,12 @@ export class SyncInDataChecker
 			operationHistory.entity = applicationEntity
 
 			if (operationHistory.repositoryTransactionHistory) {
-				throw new Error(`TerminalMessage.history -> operationHistory.repositoryTransactionHistory cannot be specified`)
+				throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.repositoryTransactionHistory cannot be specified`)
 			}
 			operationHistory.repositoryTransactionHistory = history
 
 			if (operationHistory.systemWideOperationId) {
-				throw new Error(`TerminalMessage.history -> operationHistory.systemWideOperationId cannot be specified`)
+				throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.systemWideOperationId cannot be specified`)
 			}
 			operationHistory.systemWideOperationId = systemWideOperationIds[i]
 
@@ -197,21 +197,21 @@ export class SyncInDataChecker
 
 	private async checkRecordHistories(
 		operationHistory: IOperationHistory,
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<void> {
 		const recordHistories = operationHistory.recordHistory
 		if (!(recordHistories instanceof Array) || !recordHistories.length) {
-			throw new Error(`Inalid TerminalMessage.history -> operationHistory.recordHistory`)
+			throw new Error(`Inalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory`)
 		}
 
 		for (const recordHistory of recordHistories) {
 			if (!recordHistory.actorRecordId || typeof recordHistory.actorRecordId !== 'number') {
-				throw new Error(`Invalid TerminalMessage.history -> operationHistory.recordHistory.actorRecordId`)
+				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.actorRecordId`)
 			}
 			switch (operationHistory.changeType) {
 				case ChangeType.INSERT_VALUES:
 					if (recordHistory.actor) {
-						throw new Error(`Cannot specify TerminalMessage.history -> operationHistory.recordHistory.actor
+						throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.actor
 for ChangeType.INSERT_VALUES`)
 					}
 					recordHistory.actor = operationHistory.repositoryTransactionHistory.actor
@@ -220,7 +220,7 @@ for ChangeType.INSERT_VALUES`)
 				case ChangeType.INSERT_REFERENCE_VALUES: {
 					const actor = message.actors[recordHistory.actor as any]
 					if (!actor) {
-						throw new Error(`Did find Actor for "in-message id" in TerminalMessage.history -> operationHistory.actor`)
+						throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationMessage.history -> operationHistory.actor`)
 					}
 					recordHistory.actor = actor
 					break
@@ -232,7 +232,7 @@ for ChangeType.INSERT_VALUES`)
 				case ChangeType.DELETE_ROWS:
 				case ChangeType.UPDATE_ROWS:
 					if (recordHistory.repository) {
-						throw new Error(`Cannot specify TerminalMessage.history -> operationHistory.recordHistory.repository
+						throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.repository
 for ChangeType.INSERT_VALUES|DELETE_ROWS|UPDATE_ROWS`)
 					}
 					recordHistory.repository = operationHistory.repositoryTransactionHistory.repository
@@ -240,7 +240,7 @@ for ChangeType.INSERT_VALUES|DELETE_ROWS|UPDATE_ROWS`)
 				case ChangeType.INSERT_REFERENCE_VALUES: {
 					const repository = message.referencedRepositories[recordHistory.repository as any]
 					if (!repository) {
-						throw new Error(`Did find Repository for "in-message id" in TerminalMessage.history -> operationHistory.repository`)
+						throw new Error(`Did find Repository for "in-message id" in RepositorySynchronizationMessage.history -> operationHistory.repository`)
 					}
 					recordHistory.repository = repository
 					break
@@ -248,7 +248,7 @@ for ChangeType.INSERT_VALUES|DELETE_ROWS|UPDATE_ROWS`)
 			}
 
 			if (recordHistory.operationHistory) {
-				throw new Error(`TerminalMessage.history -> operationHistory.recordHistory.operationHistory cannot be specified`)
+				throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.recordHistory.operationHistory cannot be specified`)
 			}
 
 			this.checkNewValues(recordHistory, operationHistory)
@@ -267,7 +267,7 @@ for ChangeType.INSERT_VALUES|DELETE_ROWS|UPDATE_ROWS`)
 		switch (operationHistory.changeType) {
 			case ChangeType.DELETE_ROWS:
 				if (recordHistory.newValues) {
-					throw new Error(`Cannot specify TerminalMessage.history -> operationHistory.recordHistory.newValues
+					throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues
 for ChangeType.DELETE_ROWS`)
 				}
 				return
@@ -275,21 +275,21 @@ for ChangeType.DELETE_ROWS`)
 			case ChangeType.UPDATE_ROWS:
 			case ChangeType.INSERT_REFERENCE_VALUES:
 				if (!(recordHistory.newValues instanceof Array) || !recordHistory.newValues.length) {
-					throw new Error(`Must specify TerminalMessage.history -> operationHistory.recordHistory.newValues
+					throw new Error(`Must specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues
 for ChangeType.INSERT_VALUES|UPDATE_ROWS|INSERT_REFERENCE_VALUES`)
 				}
 				break
 		}
 		for (const newValue of recordHistory.newValues) {
 			if (newValue.recordHistory) {
-				throw new Error(`Cannot specify TerminalMessage.history -> operationHistory.recordHistory.newValues.recordHistory`)
+				throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.recordHistory`)
 			}
 			newValue.recordHistory = recordHistory
 			if (typeof newValue.columnIndex !== 'number') {
-				throw new Error(`Invalid TerminalMessage.history -> operationHistory.recordHistory.newValues.columnIndex`)
+				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.columnIndex`)
 			}
 			if (typeof newValue.newValue === undefined) {
-				throw new Error(`Invalid TerminalMessage.history -> operationHistory.recordHistory.newValues.newValue`)
+				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue`)
 			}
 		}
 	}
@@ -303,27 +303,27 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS|INSERT_REFERENCE_VALUES`)
 			case ChangeType.INSERT_REFERENCE_VALUES:
 			case ChangeType.INSERT_VALUES:
 				if (recordHistory.oldValues) {
-					throw new Error(`Cannot specify TerminalMessage.history -> operationHistory.recordHistory.oldValues
+					throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues
 for ChangeType.DELETE_ROWS|INSERT_REFERENCE_VALUES|INSERT_VALUES`)
 				}
 				return
 			case ChangeType.UPDATE_ROWS:
 				if (!(recordHistory.newValues instanceof Array) || !recordHistory.oldValues.length) {
-					throw new Error(`Must specify TerminalMessage.history -> operationHistory.recordHistory.oldValues
+					throw new Error(`Must specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues
 for ChangeType.UPDATE_ROWS`)
 				}
 				break
 		}
 		for (const oldValue of recordHistory.oldValues) {
 			if (oldValue.recordHistory) {
-				throw new Error(`Cannot specify TerminalMessage.history -> operationHistory.recordHistory.newValues.recordHistory`)
+				throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.recordHistory`)
 			}
 			oldValue.recordHistory = recordHistory
 			if (typeof oldValue.columnIndex !== 'number') {
-				throw new Error(`Invalid TerminalMessage.history -> operationHistory.recordHistory.oldValues.columnIndex`)
+				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.columnIndex`)
 			}
 			if (typeof oldValue.oldValue === undefined) {
-				throw new Error(`Invalid TerminalMessage.history -> operationHistory.recordHistory.oldValues.oldValue`)
+				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue`)
 			}
 		}
 	}

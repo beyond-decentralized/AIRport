@@ -1,5 +1,5 @@
 import {
-	TerminalMessage
+	RepositorySynchronizationMessage
 } from '@airport/arrivals-n-departures'
 import { container, DI } from '@airport/di'
 import {
@@ -37,7 +37,7 @@ import { ISyncRepoTransHistory } from './SyncInUtils'
 export interface ITwoStageSyncedInDataProcessor {
 
 	syncMessages(
-		messages: TerminalMessage[],
+		messages: RepositorySynchronizationMessage[],
 		transaction: ITransaction
 	): Promise<void>;
 
@@ -50,7 +50,7 @@ export class TwoStageSyncedInDataProcessor
 	 * Synchronize the data messages coming to Terminal (new data for this TM)
 	 */
 	async syncMessages(
-		messages: TerminalMessage[],
+		messages: RepositorySynchronizationMessage[],
 		transaction: ITransaction
 	): Promise<void> {
 		this.aggregateHistoryRecords(messages, transaction)
@@ -63,7 +63,7 @@ export class TwoStageSyncedInDataProcessor
 	}
 
 	private aggregateHistoryRecords(
-		messages: TerminalMessage[],
+		messages: RepositorySynchronizationMessage[],
 		transaction: ITransaction
 	): void {
 
@@ -97,7 +97,7 @@ export class TwoStageSyncedInDataProcessor
 	}
 
 	private async getDataStructures(
-		messages: TerminalMessage[]
+		messages: RepositorySynchronizationMessage[]
 	): Promise<{
 		actorMapById: Map<number, IActor>
 		repoTransHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>

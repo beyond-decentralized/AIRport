@@ -79,7 +79,7 @@ export class SyncInApplicationChecker {
     }
     getNames(message) {
         if (!message.applications || !(message.applications instanceof Array)) {
-            throw new Error(`Did not find applications in TerminalMessage.`);
+            throw new Error(`Did not find applications in RepositorySynchronizationMessage.`);
         }
         const domainCheckMap = new Map();
         const applicationCheckMap = new Map();

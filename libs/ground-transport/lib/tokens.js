@@ -19,4 +19,6 @@ export const SYNC_OUT_MESSAGE_SENDER = groundTransport.token('ISyncOutMessageSen
 export const SYNC_OUT_REPOSITORY_TRANSACTION_BLOCK_CREATOR = groundTransport.token('ISyncOutRepositoryTransactionBlockCreator');
 export const SYNC_OUT_SERIALIZER = groundTransport.token('ISyncOutSerializer');
 export const TWO_STAGE_SYNCED_IN_DATA_PROCESSOR = groundTransport.token('ITwoStageSyncedInDataProcessor');
+export const DEBUG_SYNCHRONIZATION_ADAPTER = groundTransport.token('DebugSynchronizationAdapter');
+export const SYNCHRONIZATION_ADAPTER_LOADER = groundTransport.token('SYNCHRONIZATION_ADAPTER_LOADER');
 //# sourceMappingURL=tokens.js.map

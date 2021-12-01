@@ -1,4 +1,4 @@
-import { TerminalMessage } from '@airport/arrivals-n-departures'
+import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import { container, DI } from '@airport/di'
 import {
 	IRepository,
@@ -9,7 +9,7 @@ import { SYNC_IN_REPOSITORY_CHECKER } from '../../../tokens'
 export interface ISyncInRepositoryChecker {
 
 	ensureRepositories(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean>;
 
 }
@@ -18,7 +18,7 @@ export class SyncInRepositoryChecker
 	implements ISyncInRepositoryChecker {
 
 	async ensureRepositories(
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): Promise<boolean> {
 		try {
 			const repositoryDao = await container(this).get(REPOSITORY_DAO)
@@ -82,7 +82,7 @@ export class SyncInRepositoryChecker
 		repositoryIndex: number,
 		repositoryUuids: string[],
 		messageRepositoryIndexMap: Map<string, number>,
-		message: TerminalMessage
+		message: RepositorySynchronizationMessage
 	): void {
 		if (typeof repository.ageSuitability !== 'number') {
 			throw new Error(`Invalid 'repository.ageSuitability'`)

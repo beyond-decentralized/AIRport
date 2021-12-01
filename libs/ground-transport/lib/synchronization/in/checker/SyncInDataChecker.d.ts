@@ -1,6 +1,6 @@
-import { TerminalMessage } from '@airport/arrivals-n-departures';
+import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
 export interface ISyncInDataChecker {
-    checkData(message: TerminalMessage): Promise<boolean>;
+    checkData(message: RepositorySynchronizationMessage): Promise<boolean>;
 }
 export declare class SyncInDataChecker implements ISyncInDataChecker {
     /**
@@ -10,7 +10,7 @@ export declare class SyncInDataChecker implements ISyncInDataChecker {
      * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
      * @returns {DataCheckResults}
      */
-    checkData(message: TerminalMessage): Promise<boolean>;
+    checkData(message: RepositorySynchronizationMessage): Promise<boolean>;
     private populateApplicationEntityMap;
     private checkOperationHistories;
     private checkRecordHistories;
