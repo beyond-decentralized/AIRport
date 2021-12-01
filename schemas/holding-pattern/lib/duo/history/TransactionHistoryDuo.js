@@ -1,7 +1,7 @@
 import { DI } from '@airport/di';
 import { TransactionType } from '@airport/ground-control';
 import { TransactionHistory } from '../../ddl/ddl';
-import { TRANS_HISTORY_DUO } from '../../tokens';
+import { TRANSACTION_HISTORY_DUO } from '../../tokens';
 import { BaseTransactionHistoryDuo, } from '../../generated/generated';
 export class TransactionHistoryDuo extends BaseTransactionHistoryDuo {
     getNewRecord(transactionType = TransactionType.LOCAL) {
@@ -20,5 +20,5 @@ export class TransactionHistoryDuo extends BaseTransactionHistoryDuo {
         return repoTransHistory;
     }
 }
-DI.set(TRANS_HISTORY_DUO, TransactionHistoryDuo);
+DI.set(TRANSACTION_HISTORY_DUO, TransactionHistoryDuo);
 //# sourceMappingURL=TransactionHistoryDuo.js.map

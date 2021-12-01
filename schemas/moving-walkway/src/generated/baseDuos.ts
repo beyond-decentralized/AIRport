@@ -26,19 +26,6 @@ import {
 	QSynchronizationConflict,
 } from './conflict/qsynchronizationconflict';
 import {
-	ISynchronizationConflictPendingNotification,
-} from './conflict/synchronizationconflictpendingnotification';
-import {
-	SynchronizationConflictPendingNotificationESelect,
-	SynchronizationConflictPendingNotificationECreateColumns,
-	SynchronizationConflictPendingNotificationECreateProperties,
-	SynchronizationConflictPendingNotificationEUpdateColumns,
-	SynchronizationConflictPendingNotificationEUpdateProperties,
-	SynchronizationConflictPendingNotificationEId,
-	SynchronizationConflictPendingNotificationGraph,
-	QSynchronizationConflictPendingNotification,
-} from './conflict/qsynchronizationconflictpendingnotification';
-import {
 	ISynchronizationConflictValues,
 } from './conflict/synchronizationconflictvalues';
 import {
@@ -108,11 +95,11 @@ export class BaseRecordUpdateStageDuo
 	implements IBaseRecordUpdateStageDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(3)
+		super(2)
 	}
 }
 
@@ -131,24 +118,6 @@ export class BaseSynchronizationConflictDuo
 	
 	constructor() {
 		super(1)
-	}
-}
-
-
-export interface IBaseSynchronizationConflictPendingNotificationDuo
-  extends IDuo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationGraph, QSynchronizationConflictPendingNotification> {
-}
-
-export class BaseSynchronizationConflictPendingNotificationDuo
-  extends SQDIDuo<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationGraph, QSynchronizationConflictPendingNotification>
-	implements IBaseSynchronizationConflictPendingNotificationDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(2)
-	}
-	
-	constructor() {
-		super(2)
 	}
 }
 

@@ -8,13 +8,13 @@ export class SQDIDao extends Dao {
 }
 export class BaseRecordUpdateStageDao extends SQDIDao {
     constructor() {
-        super(3);
+        super(2);
     }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(3);
+        return duoDiSet(2);
     }
 }
 BaseRecordUpdateStageDao.Find = new DaoQueryDecorators();
@@ -36,21 +36,6 @@ BaseSynchronizationConflictDao.Find = new DaoQueryDecorators();
 BaseSynchronizationConflictDao.FindOne = new DaoQueryDecorators();
 BaseSynchronizationConflictDao.Search = new DaoQueryDecorators();
 BaseSynchronizationConflictDao.SearchOne = new DaoQueryDecorators();
-export class BaseSynchronizationConflictPendingNotificationDao extends SQDIDao {
-    constructor() {
-        super(2);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet(2);
-    }
-}
-BaseSynchronizationConflictPendingNotificationDao.Find = new DaoQueryDecorators();
-BaseSynchronizationConflictPendingNotificationDao.FindOne = new DaoQueryDecorators();
-BaseSynchronizationConflictPendingNotificationDao.Search = new DaoQueryDecorators();
-BaseSynchronizationConflictPendingNotificationDao.SearchOne = new DaoQueryDecorators();
 export class BaseSynchronizationConflictValuesDao extends SQDIDao {
     constructor() {
         super(0);

@@ -1,6 +1,7 @@
 export class SqlJsTransaction {
     constructor(driver) {
         this.driver = driver;
+        this.isSync = false;
         this.__container__ = driver.__container__;
         this.type = driver.type;
     }

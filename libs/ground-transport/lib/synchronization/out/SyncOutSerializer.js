@@ -1,7 +1,7 @@
 import { MessageFromTMContentType } from '@airport/arrivals-n-departures';
 import { container, DI } from '@airport/di';
 import { ensureChildArray } from '@airport/ground-control';
-import { REPO_TRANS_HISTORY_DAO } from '@airport/holding-pattern';
+import { REPOSITORY_TRANSACTION_HISTORY_DAO } from '@airport/holding-pattern';
 import { REPO_TRANS_BLOCK_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO } from '@airport/moving-walkway';
 import { transactional } from '@airport/tower';
 import { stringify } from 'zipson/lib';
@@ -10,7 +10,7 @@ export class SyncOutSerializer {
     async serializeMessages(sharingNodeDbMap, sharingNodeMap, repoMapBySharingNodeAndRepoIds, repoTransBlockDataByRepoId, repoTransHistoryIds, terminal) {
         const [repoTransBlockDao, repoTransBlockRepoTransHistoryDao, sharingMessageDao, sharingMessageRepoTransBlockDao] = await container(this).get(REPO_TRANS_BLOCK_DAO, 
         // TODO: is this what needs to be injected
-        REPO_TRANS_HISTORY_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO);
+        REPOSITORY_TRANSACTION_HISTORY_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO);
         const messageMap = new Map();
         const lastSyncAttemptTimestamp = new Date();
         const repositoryTransactionBlocks = [];

@@ -12,6 +12,7 @@ export interface IRepositoryTransactionHistoryDao {
     findWhereIdsIn(idsInClause: RepositoryTransactionHistory_Id[] | RawFieldQuery<IQNumberField> | {
         (...args: any[]): RawFieldQuery<IQNumberField>;
     }): Promise<IRepositoryTransactionHistory[]>;
+    findWhereUuIdIn(uuIds: string[]): Promise<IRepositoryTransactionHistory[]>;
     findExistingRecordIdMap(recordIdMap: Map<Repository_Id, Map<Actor_Id, Map<EntityId, Set<RepositoryEntity_ActorRecordId>>>>): Promise<Map<Repository_Id, Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>;
     findAllLocalChangesForRecordIds(changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
 }
@@ -27,6 +28,7 @@ export declare class RepositoryTransactionHistoryDao extends BaseRepositoryTrans
     findWhereIdsIn(idsInClause: RepositoryTransactionHistory_Id[] | RawFieldQuery<IQNumberField> | {
         (...args: any[]): RawFieldQuery<IQNumberField>;
     }): Promise<IRepositoryTransactionHistory[]>;
+    findWhereUuIdIn(uuIds: string[]): Promise<IRepositoryTransactionHistory[]>;
     findWithActorAndRepositoryWhere(whereClauseFunction: {
         (rth: QRepositoryTransactionHistory, a: QActor, r: QRepository): JSONBaseOperation;
     }): Promise<IRepositoryTransactionHistory[]>;

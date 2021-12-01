@@ -2,17 +2,17 @@ import { AIRPORT_DATABASE, SCHEMA_UTILS, valuesEqual, Y } from '@airport/air-con
 import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI, } from '@airport/di';
 import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType, } from '@airport/ground-control';
-import { OPER_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO, } from '@airport/holding-pattern';
+import { OPER_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
 import { DELETE_MANAGER, HISTORY_MANAGER } from '../tokens';
 export class DeleteManager {
     async deleteWhere(portableQuery, actor, transaction, context = {}) {
         const [airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, schemaUtils, sequenceGenerator] = await container(this)
-            .get(AIRPORT_DATABASE, HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPO_TRANS_HISTORY_DUO, SCHEMA_UTILS, SEQUENCE_GENERATOR);
+            .get(AIRPORT_DATABASE, HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO, SCHEMA_UTILS, SEQUENCE_GENERATOR);
         const dbEntity = airDb
             .schemas[portableQuery.schemaIndex].currentVersion[0].schemaVersion
             .entities[portableQuery.tableIndex];
         const deleteCommand = transaction.deleteWhere(portableQuery, context);
-        if (dbEntity.isLocal) {
+        if (dbEntity.isLocal || transaction.isSync) {
             return await deleteCommand;
         }
         const selectCascadeTree = this.getCascadeSubTree(dbEntity, schemaUtils);

@@ -21,8 +21,8 @@ export class RepositoryLoader {
         else if (!repositoryLoadInfo.immutable) {
             loadRepository = true;
             for (const remoteRepositoryTransactionHistory of repositoryLoadInfo.repositoryTransactionHistory) {
-                if (lastRemoteLoadTimestamp < remoteRepositoryTransactionHistory.saveTimestamp.getTime()) {
-                    lastRemoteLoadTimestamp = remoteRepositoryTransactionHistory.saveTimestamp.getTime();
+                if (lastRemoteLoadTimestamp < remoteRepositoryTransactionHistory.saveTimestamp) {
+                    lastRemoteLoadTimestamp = remoteRepositoryTransactionHistory.saveTimestamp;
                 }
             }
         }

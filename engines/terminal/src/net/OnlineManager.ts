@@ -8,7 +8,7 @@ import {
   IRepository,
   IRepositoryTransactionHistory,
   IRepositoryTransactionHistoryDao,
-  REPO_TRANS_HISTORY_DAO,
+  REPOSITORY_TRANSACTION_HISTORY_DAO,
   REPOSITORY_DAO,
   RepositoryTransactionHistory,
 } from '@airport/holding-pattern';
@@ -94,7 +94,7 @@ export class OnlineManager
       repositoryManager,
     ] = await container(this).get(
       OFFLINE_DELTA_STORE, REPOSITORY_DAO,
-      REPO_TRANS_HISTORY_DAO, REPOSITORY_MANAGER);
+      REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_MANAGER);
     await transactional(async () => {
       try {
         // 1)  Flip update state to GO_ONLINE

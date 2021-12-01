@@ -1,7 +1,7 @@
 import { AIRPORT_DATABASE, and, distinct, or, Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet, TransactionType } from '@airport/ground-control';
-import { OPER_HISTORY_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DAO, } from '../../tokens';
+import { OPER_HISTORY_DUO, REC_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DAO, } from '../../tokens';
 import { BaseRepositoryTransactionHistoryDao, Q } from '../../generated/generated';
 export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
     /*
@@ -55,6 +55,18 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
     }
     async findWhereIdsIn(idsInClause) {
         return await this.findWhere((rth) => rth.id.in(idsInClause));
+    }
+    async findWhereUuIdIn(uuIds) {
+        let rth;
+        return await this.db.find.tree({
+            select: {
+                uuId: Y
+            },
+            from: [
+                rth = Q.RepositoryTransactionHistory
+            ],
+            where: rth.uuId.in(uuIds)
+        });
     }
     async findWithActorAndRepositoryWhere(whereClauseFunction) {
         let rth, a, r;
@@ -199,5 +211,5 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
         return existingRecordIdMap;
     }
 }
-DI.set(REPO_TRANS_HISTORY_DAO, RepositoryTransactionHistoryDao);
+DI.set(REPOSITORY_TRANSACTION_HISTORY_DAO, RepositoryTransactionHistoryDao);
 //# sourceMappingURL=RepositoryTransactionHistoryDao.js.map

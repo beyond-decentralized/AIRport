@@ -21,6 +21,7 @@ export interface ISynchronizationConflict {
 
 	// Non-Id Properties
 	type?: string;
+	acknowledged?: boolean;
 
 	// Non-Id Relations
 	repository?: IRepository;

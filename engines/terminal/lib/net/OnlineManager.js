@@ -1,6 +1,6 @@
 import { container, DI } from '@airport/di';
 import { BlockSyncStatus } from '@airport/ground-control';
-import { REPO_TRANS_HISTORY_DAO, REPOSITORY_DAO, RepositoryTransactionHistory, } from '@airport/holding-pattern';
+import { REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_DAO, RepositoryTransactionHistory, } from '@airport/holding-pattern';
 import { UpdateState } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 import { ONLINE_MANAGER, REPOSITORY_MANAGER } from '../tokens';
@@ -46,7 +46,7 @@ export class OnlineManager {
      * @returns {Promise<void>}
      */
     async goOnline(context = {}) {
-        const [offlineDeltaStore, repositoryDao, repoTransHistoryDao, repositoryManager,] = await container(this).get(OFFLINE_DELTA_STORE, REPOSITORY_DAO, REPO_TRANS_HISTORY_DAO, REPOSITORY_MANAGER);
+        const [offlineDeltaStore, repositoryDao, repoTransHistoryDao, repositoryManager,] = await container(this).get(OFFLINE_DELTA_STORE, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_MANAGER);
         await transactional(async () => {
             try {
                 // 1)  Flip update state to GO_ONLINE

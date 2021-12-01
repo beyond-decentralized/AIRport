@@ -97,7 +97,7 @@ export class SyncInRepositoryChecker
 		if (!repository.source || typeof repository.source !== 'string') {
 			throw new Error(`Invalid 'repository.source'`)
 		}
-		if (!repository.uuId || typeof repository.uuId !== 'string') {
+		if (typeof repository.uuId !== 'string' || repository.uuId.length !== 36) {
 			throw new Error(`Invalid 'repository.uuid'`)
 		}
 		if (typeof repository.ownerActor !== 'number') {

@@ -27,18 +27,21 @@ __decorate([
     SequenceGenerator({ allocationSize: 200 })
 ], RepositoryTransactionHistory.prototype, "id", void 0);
 __decorate([
-    Column({ name: 'SAVE_TIMESTAMP', nullable: false }),
-    DbNumber()
-], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
-__decorate([
     Column({ name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false }),
     DbString()
 ], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
 __decorate([
-    Column({
-        name: 'SYNCED'
-    })
-], RepositoryTransactionHistory.prototype, "synced", void 0);
+    Column({ name: 'SAVE_TIMESTAMP', nullable: false }),
+    DbNumber()
+], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
+__decorate([
+    Column({ name: 'SYNC_TIMESTAMP' }),
+    DbNumber()
+], RepositoryTransactionHistory.prototype, "syncTimestamp", void 0);
+__decorate([
+    Column({ name: "UUID", nullable: false }),
+    DbString()
+], RepositoryTransactionHistory.prototype, "uuId", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({

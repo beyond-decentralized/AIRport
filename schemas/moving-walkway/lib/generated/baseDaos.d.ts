@@ -2,8 +2,6 @@ import { IRecordUpdateStage } from './recordupdatestage';
 import { RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage } from './qrecordupdatestage';
 import { ISynchronizationConflict } from './conflict/synchronizationconflict';
 import { SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict } from './conflict/qsynchronizationconflict';
-import { ISynchronizationConflictPendingNotification } from './conflict/synchronizationconflictpendingnotification';
-import { SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationGraph, QSynchronizationConflictPendingNotification } from './conflict/qsynchronizationconflictpendingnotification';
 import { ISynchronizationConflictValues } from './conflict/synchronizationconflictvalues';
 import { SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues } from './conflict/qsynchronizationconflictvalues';
 import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/air-control';
@@ -31,17 +29,6 @@ export declare class BaseSynchronizationConflictDao extends SQDIDao<ISynchroniza
     static Search: DaoQueryDecorators<SynchronizationConflictESelect>;
     static SearchOne: DaoQueryDecorators<SynchronizationConflictESelect>;
     static Save(config: SynchronizationConflictGraph): PropertyDecorator;
-    static diSet(): boolean;
-    constructor();
-}
-export interface IBaseSynchronizationConflictPendingNotificationDao extends IDao<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationGraph, QSynchronizationConflictPendingNotification> {
-}
-export declare class BaseSynchronizationConflictPendingNotificationDao extends SQDIDao<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationGraph, QSynchronizationConflictPendingNotification> implements IBaseSynchronizationConflictPendingNotificationDao {
-    static Find: DaoQueryDecorators<SynchronizationConflictPendingNotificationESelect>;
-    static FindOne: DaoQueryDecorators<SynchronizationConflictPendingNotificationESelect>;
-    static Search: DaoQueryDecorators<SynchronizationConflictPendingNotificationESelect>;
-    static SearchOne: DaoQueryDecorators<SynchronizationConflictPendingNotificationESelect>;
-    static Save(config: SynchronizationConflictPendingNotificationGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

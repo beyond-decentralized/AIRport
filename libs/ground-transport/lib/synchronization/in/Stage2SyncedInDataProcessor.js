@@ -69,11 +69,11 @@ export class Stage2SyncedInDataProcessor {
                     }
                 }
                 if (numInserts) {
-                    await dbFacade.insertValues(dbEntity, {
+                    await dbFacade.insertValues({
                         insertInto: qEntity,
                         columns,
                         values
-                    });
+                    }, null);
                 }
             }
         }
@@ -136,10 +136,10 @@ export class Stage2SyncedInDataProcessor {
                     repositoryWhereFragments.push(and(qEntity.repository.id.equals(repositoryId), or(...actorWhereFragments)));
                 }
                 if (numClauses) {
-                    await dbFacade.deleteWhere(dbEntity, {
+                    await dbFacade.deleteWhere({
                         deleteFrom: qEntity,
                         where: or(...repositoryWhereFragments)
-                    });
+                    }, null);
                 }
             }
         }

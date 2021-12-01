@@ -18,7 +18,7 @@ export declare const REC_HIST_NEW_VALUE_DUO: import("@airport/di").IDiToken<IRec
 export declare const REC_HIST_OLD_VALUE_DAO: import("@airport/di").IDiToken<IRecordHistoryOldValueDao>;
 export declare const REC_HIST_OLD_VALUE_DUO: import("@airport/di").IDiToken<IRecordHistoryOldValueDuo>;
 export declare const REPOSITORY_DAO: import("@airport/di").IDiToken<IRepositoryDao>;
-export declare const REPO_TRANS_HISTORY_DAO: import("@airport/di").IDiToken<IRepositoryTransactionHistoryDao>;
-export declare const REPO_TRANS_HISTORY_DUO: import("@airport/di").IDiToken<IRepositoryTransactionHistoryDuo>;
-export declare const TRANS_HISTORY_DUO: import("@airport/di").IDiToken<ITransactionHistoryDuo>;
+export declare const REPOSITORY_TRANSACTION_HISTORY_DAO: import("@airport/di").IDiToken<IRepositoryTransactionHistoryDao>;
+export declare const REPOSITORY_TRANSACTION_HISTORY_DUO: import("@airport/di").IDiToken<IRepositoryTransactionHistoryDuo>;
+export declare const TRANSACTION_HISTORY_DUO: import("@airport/di").IDiToken<ITransactionHistoryDuo>;
 //# sourceMappingURL=tokens.d.ts.map

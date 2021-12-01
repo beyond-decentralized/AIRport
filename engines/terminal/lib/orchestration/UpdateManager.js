@@ -2,13 +2,13 @@ import { QUERY_FACADE, SheetQuery } from '@airport/air-control';
 import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI } from '@airport/di';
 import { ChangeType, ensureChildArray, ensureChildMap, QueryResultType, repositoryEntity, } from '@airport/ground-control';
-import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPO_TRANS_HISTORY_DUO } from '@airport/holding-pattern';
+import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern';
 import { HISTORY_MANAGER, REPOSITORY_MANAGER, UPDATE_MANAGER } from '../tokens';
 export class UpdateManager {
     async updateValues(portableQuery, actor, transaction, context) {
         // TODO: remove unused dependencies after testing
         const [historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, sequenceGenerator] = await container(this)
-            .get(HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO, SEQUENCE_GENERATOR);
+            .get(HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DUO, SEQUENCE_GENERATOR);
         const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
             .currentVersion[0].schemaVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error updating '${dbEntity.name}'
@@ -19,7 +19,7 @@ export class UpdateManager {
         let recordHistoryMap;
         let repositorySheetSelectInfo;
         let systemWideOperationId;
-        if (!dbEntity.isLocal) {
+        if (!dbEntity.isLocal && !transaction.isSync) {
             systemWideOperationId = await getSysWideOpId(context.ioc.airDb, sequenceGenerator);
             // TODO: For entity queries an additional query really shouldn't be needed
             // Specifically for entity queries, we got the new values, just record them

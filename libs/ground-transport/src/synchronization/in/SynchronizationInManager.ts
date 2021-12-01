@@ -3,6 +3,7 @@ import {
 	container,
 	DI
 } from '@airport/di'
+import { REPOSITORY_TRANSACTION_HISTORY_DAO } from '@airport/holding-pattern'
 import { transactional } from '@airport/tower'
 import {
 	SYNC_IN_CHECKER,
@@ -17,7 +18,7 @@ import {
 export interface ISynchronizationInManager {
 
 	receiveMessages(
-		messages: TerminalMessage[]
+		messageMapByUuId: Map<string, TerminalMessage>
 	): Promise<void>;
 
 }
@@ -28,22 +29,35 @@ export interface ISynchronizationInManager {
 export class SynchronizationInManager
 	implements ISynchronizationInManager {
 
-	/**
-	 * @param {TerminalMessage[][]} incomingMessages    All of the incoming messages, grouped
-	 *   into arrays by sharing node
-	 * @returns {Promise<void>}   Return when all of the messages have been processed
-	 */
 	async receiveMessages(
-		messages: TerminalMessage[]
+		messageMapByUuId: Map<string, TerminalMessage>
 	): Promise<void> {
-		const [syncInChecker, twoStageSyncedInDataProcessor] = await container(this)
-			.get(SYNC_IN_CHECKER, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
-
 		const syncTimestamp = new Date().getTime()
 
+		const [repositoryTransactionHistoryDao, syncInChecker,
+			twoStageSyncedInDataProcessor] = await container(this)
+				.get(REPOSITORY_TRANSACTION_HISTORY_DAO, SYNC_IN_CHECKER, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
+
+		const existingRepositoryTransactionHistories = await repositoryTransactionHistoryDao
+			.findWhereUuIdIn([...messageMapByUuId.keys()])
+		for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
+			messageMapByUuId.delete(existingRepositoryTransactionHistory.uuId)
+		}
+
+		if (!messageMapByUuId.size) {
+			return
+		}
+
+		// TODO: add a signature check and prioritize adding of repository actors
+		// as a different message
+		// each actor will have a public key that they will distribute
+		// each message is signed with the private key and the initial
+		// message for repository is CREATE_REPOSITORY with the public key of the owner user
+
+		let messagesToProcess: TerminalMessage[] = []
+
 		// Split up messages by type
-		for (let i = 0; i < messages.length; i++) {
-			const message = messages[i]
+		for (const message of messageMapByUuId.values()) {
 			if (!this.isValidLastChangeTime(
 				syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
 				continue
@@ -55,14 +69,24 @@ export class SynchronizationInManager
 				continue
 			}
 
+			let processMessage = true
 			await transactional(async (transaction) => {
 				if (!await syncInChecker.checkMessage(message)) {
 					transaction.rollback()
+					processMessage = false
 					return
 				}
-				await twoStageSyncedInDataProcessor.syncDataMessage(message)
 			})
+			if (processMessage) {
+				messagesToProcess.push(message)
+			}
 		}
+
+
+		await transactional(async (transaction) => {
+			transaction.isSync = true
+			await twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction)
+		})
 	}
 
 	private isValidLastChangeTime(

@@ -22,6 +22,7 @@ export class PostgreTransaction
 	implements ITransaction {
 
 	credentials: ICredentials
+	isSync = false
 	pool: pg.Pool
 	transHistory: ITransactionHistory
 

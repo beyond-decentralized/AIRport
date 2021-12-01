@@ -18,14 +18,14 @@ import {
 	IRecordHistory,
 	RecordHistoryActorRecordId,
 	RecordHistoryId,
-	REPO_TRANS_HISTORY_DAO,
-	REPO_TRANS_HISTORY_DUO,
+	REPOSITORY_TRANSACTION_HISTORY_DAO,
+	REPOSITORY_TRANSACTION_HISTORY_DUO,
 	RepositoryEntity_ActorRecordId,
 	Repository_Id,
 }           from '@airport/holding-pattern'
 import {
 	ISynchronizationConflict,
-	SynchronizationConflictType
+	SynchronizationConflict_Type
 }           from '@airport/moving-walkway'
 import {
 	STAGE1_SYNCED_IN_DATA_PROCESSOR,
@@ -72,8 +72,8 @@ export class Stage1SyncedInDataProcessor
 	): Promise<Stage1SyncedInDataProcessingResult> {
 		const [actorDao, repoTransHistoryDao,
 			      repoTransHistoryDuo, syncInUtils] = await container(this).get(
-			ACTOR_DAO, REPO_TRANS_HISTORY_DAO,
-			REPO_TRANS_HISTORY_DUO, SYNC_IN_UTILS)
+			ACTOR_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO,
+			REPOSITORY_TRANSACTION_HISTORY_DUO, SYNC_IN_UTILS)
 
 		// query for all local operations on records in a repository (since the earliest
 		// received change time).  Get the
@@ -336,7 +336,7 @@ export class Stage1SyncedInDataProcessor
 			if (remoteDeleteRecordHistoryId) {
 				// remotely created record has been remotely deleted
 				this.addSyncConflict(
-					SynchronizationConflictType.REMOTE_CREATE_REMOTELY_DELETED,
+					SynchronizationConflict_Type.REMOTE_CREATE_REMOTELY_DELETED,
 					repositoryId,
 					recordHistory,
 					{
@@ -403,7 +403,7 @@ export class Stage1SyncedInDataProcessor
 				if (!isLocal) {
 					// A remote update to a record has been locally deleted
 					this.addSyncConflict(
-						SynchronizationConflictType.REMOTE_UPDATE_LOCALLY_DELETED,
+						SynchronizationConflict_Type.REMOTE_UPDATE_LOCALLY_DELETED,
 						repositoryId,
 						recordHistory,
 						{
@@ -423,7 +423,7 @@ export class Stage1SyncedInDataProcessor
 				if (isLocal) {
 					// A local update for a record that has been deleted remotely
 					this.addSyncConflict(
-						SynchronizationConflictType.LOCAL_UPDATE_REMOTELY_DELETED,
+						SynchronizationConflict_Type.LOCAL_UPDATE_REMOTELY_DELETED,
 						repositoryId,
 						recordHistory,
 						{
@@ -468,7 +468,7 @@ export class Stage1SyncedInDataProcessor
 						// remotely updated record value is being updated locally
 						if (!synchronizationConflict) {
 							synchronizationConflict        = this.addSyncConflict(
-								SynchronizationConflictType.REMOTE_UPDATE_LOCALLY_UPDATED,
+								SynchronizationConflict_Type.REMOTE_UPDATE_LOCALLY_UPDATED,
 								repositoryId,
 								{
 									id: recordUpdate.recordHistoryId,
@@ -653,7 +653,7 @@ export class Stage1SyncedInDataProcessor
 	}
 
 	private addSyncConflict(
-		synchronizationConflictType: SynchronizationConflictType,
+		synchronizationConflictType: SynchronizationConflict_Type,
 		repositoryId: Repository_Id,
 		overwrittenRecordHistory: IRecordHistory,
 		overwritingRecordHistory: IRecordHistory,
@@ -671,7 +671,7 @@ export class Stage1SyncedInDataProcessor
 	}
 
 	private createSynchronizationConflict(
-		synchronizationConflictType: SynchronizationConflictType,
+		synchronizationConflictType: SynchronizationConflict_Type,
 		repositoryId: Repository_Id,
 		overwrittenRecordHistory: IRecordHistory,
 		overwritingRecordHistory: IRecordHistory

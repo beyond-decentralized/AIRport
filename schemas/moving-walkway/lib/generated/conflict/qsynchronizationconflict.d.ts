@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, RecordHistoryGraph, RecordHistoryEOptionalId, RecordHistoryESelect, QRecordHistoryQRelation } from '@airport/holding-pattern';
 import { SynchronizationConflictValuesGraph, SynchronizationConflictValuesESelect, QSynchronizationConflictValues } from './qsynchronizationconflictvalues';
 import { SynchronizationConflictValues } from '../../ddl/conflict/SynchronizationConflictValues';
@@ -8,6 +8,7 @@ import { SynchronizationConflict } from '../../ddl/conflict/SynchronizationConfl
  */
 export interface SynchronizationConflictESelect extends IEntitySelectProperties, SynchronizationConflictEOptionalId {
     type?: string | IQStringField;
+    acknowledged?: boolean | IQBooleanField;
     repository?: RepositoryESelect;
     overwrittenRecordHistory?: RecordHistoryESelect;
     overwritingRecordHistory?: RecordHistoryESelect;
@@ -30,6 +31,7 @@ export interface SynchronizationConflictEOptionalId {
  */
 export interface SynchronizationConflictEUpdateProperties extends IEntityUpdateProperties {
     type?: string | IQStringField;
+    acknowledged?: boolean | IQBooleanField;
     repository?: RepositoryEOptionalId;
     overwrittenRecordHistory?: RecordHistoryEOptionalId;
     overwritingRecordHistory?: RecordHistoryEOptionalId;
@@ -39,6 +41,7 @@ export interface SynchronizationConflictEUpdateProperties extends IEntityUpdateP
  */
 export interface SynchronizationConflictGraph extends SynchronizationConflictEOptionalId, IEntityCascadeGraph {
     type?: string | IQStringField;
+    acknowledged?: boolean | IQBooleanField;
     repository?: RepositoryGraph;
     overwrittenRecordHistory?: RecordHistoryGraph;
     overwritingRecordHistory?: RecordHistoryGraph;
@@ -49,6 +52,7 @@ export interface SynchronizationConflictGraph extends SynchronizationConflictEOp
  */
 export interface SynchronizationConflictEUpdateColumns extends IEntityUpdateColumns {
     TYPE?: string | IQStringField;
+    ACKNOWLEDGED?: boolean | IQBooleanField;
     REPOSITORY_ID?: number | IQNumberField;
     OVERWRITTEN_RECORD_HISTORY_ID?: number | IQNumberField;
     OVERWRITING_RECORD_HISTORY_ID?: number | IQNumberField;
@@ -69,6 +73,7 @@ export interface SynchronizationConflictECreateColumns extends SynchronizationCo
 export interface QSynchronizationConflict extends IQEntity<SynchronizationConflict> {
     id: IQNumberField;
     type: IQStringField;
+    acknowledged: IQBooleanField;
     repository: QRepositoryQRelation;
     overwrittenRecordHistory: QRecordHistoryQRelation;
     overwritingRecordHistory: QRecordHistoryQRelation;

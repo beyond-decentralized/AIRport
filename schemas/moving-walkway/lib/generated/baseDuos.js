@@ -8,10 +8,10 @@ export class SQDIDuo extends Duo {
 }
 export class BaseRecordUpdateStageDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(3);
+        return duoDiSet(2);
     }
     constructor() {
-        super(3);
+        super(2);
     }
 }
 export class BaseSynchronizationConflictDuo extends SQDIDuo {
@@ -20,14 +20,6 @@ export class BaseSynchronizationConflictDuo extends SQDIDuo {
     }
     constructor() {
         super(1);
-    }
-}
-export class BaseSynchronizationConflictPendingNotificationDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(2);
-    }
-    constructor() {
-        super(2);
     }
 }
 export class BaseSynchronizationConflictValuesDuo extends SQDIDuo {

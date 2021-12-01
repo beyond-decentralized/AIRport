@@ -1,4 +1,5 @@
 import {
+	DbBoolean,
 	DbNumber,
 	DbString,
 	Entity,
@@ -13,10 +14,11 @@ import {
 	IRecordHistory,
 	IRepository
 } from "@airport/holding-pattern";
-import { SynchronizationConflictType } from "./SynchronizationConflictType";
+import { SynchronizationConflict_Type } from "./SynchronizationConflictType";
 import { SynchronizationConflictValues } from "./SynchronizationConflictValues";
 
 export type SynchronizationConflict_Id = number;
+export type SynchronizationConflict_Acknowledged = boolean;
 
 @Entity()
 @Table({ name: "SYNCHRONIZATION_CONFLICT" })
@@ -26,6 +28,12 @@ export class SynchronizationConflict {
 	@Id()
 	@DbNumber()
 	id: SynchronizationConflict_Id;
+
+	@DbString()
+	type: SynchronizationConflict_Type;
+
+	@DbBoolean()
+	acknowledged: SynchronizationConflict_Acknowledged;
 
 	@ManyToOne()
 	@JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" })
@@ -41,8 +49,5 @@ export class SynchronizationConflict {
 
 	@OneToMany({ mappedBy: "SYNCHRONIZATION_CONFLICT_ID" })
 	values: SynchronizationConflictValues[];
-
-	@DbString()
-	type: SynchronizationConflictType;
 
 }

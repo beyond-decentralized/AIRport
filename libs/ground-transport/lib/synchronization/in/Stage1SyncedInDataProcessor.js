@@ -1,7 +1,7 @@
 import { container, DI } from '@airport/di';
 import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
-import { ACTOR_DAO, REPO_TRANS_HISTORY_DAO, REPO_TRANS_HISTORY_DUO, } from '@airport/holding-pattern';
-import { SynchronizationConflictType } from '@airport/moving-walkway';
+import { ACTOR_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
+import { SynchronizationConflict_Type } from '@airport/moving-walkway';
 import { STAGE1_SYNCED_IN_DATA_PROCESSOR, SYNC_IN_UTILS } from '../../tokens';
 export class Stage1SyncedInDataProcessor {
     /**
@@ -15,7 +15,7 @@ export class Stage1SyncedInDataProcessor {
      * @returns {Promise<void>}
      */
     async performStage1DataProcessing(repoTransHistoryMapByRepositoryId, actorMayById) {
-        const [actorDao, repoTransHistoryDao, repoTransHistoryDuo, syncInUtils] = await container(this).get(ACTOR_DAO, REPO_TRANS_HISTORY_DAO, REPO_TRANS_HISTORY_DUO, SYNC_IN_UTILS);
+        const [actorDao, repoTransHistoryDao, repoTransHistoryDuo, syncInUtils] = await container(this).get(ACTOR_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, SYNC_IN_UTILS);
         // query for all local operations on records in a repository (since the earliest
         // received change time).  Get the
         // changes by repository ids or by the actual tables and records in those tables
@@ -24,19 +24,19 @@ export class Stage1SyncedInDataProcessor {
         for (const [repositoryId, repoTransHistoriesForRepo] of repoTransHistoryMapByRepositoryId) {
             const changedRecordsForRepo = {
                 ids: new Map(),
-                firstChangeTime: new Date(new Date().getTime() + 10000000000),
+                firstChangeTime: new Date().getTime() + 10000000000
             };
             changedRecordIds.set(repositoryId, changedRecordsForRepo);
             for (const repoTransHistory of repoTransHistoriesForRepo) {
                 // determine the earliest change time of incoming history records
-                const saveMillis = repoTransHistory.saveTimestamp.getTime();
+                const saveMillis = repoTransHistory.saveTimestamp;
                 if (saveMillis
-                    < changedRecordsForRepo.firstChangeTime.getTime()) {
+                    < changedRecordsForRepo.firstChangeTime) {
                     changedRecordsForRepo.firstChangeTime = repoTransHistory.saveTimestamp;
                 }
                 for (const operationHistory of repoTransHistory.operationHistory) {
                     // Collect the Actor related ids
-                    const idsForEntity = ensureChildJsMap(ensureChildJsMap(changedRecordsForRepo.ids, operationHistory.entity.schemaVersion.id), operationHistory.entity.id);
+                    const idsForEntity = ensureChildJsMap(changedRecordsForRepo.ids, operationHistory.entity.id);
                     for (const recordHistory of operationHistory.recordHistory) {
                         // Collect the Actor related ids
                         ensureChildJsSet(idsForEntity, recordHistory.actor.id)
@@ -182,7 +182,7 @@ export class Stage1SyncedInDataProcessor {
             const remoteDeleteRecordHistoryId = this.getRecordHistoryId(recordHistory, allRemoteRecordDeletesForRepoInTable);
             if (remoteDeleteRecordHistoryId) {
                 // remotely created record has been remotely deleted
-                this.addSyncConflict(SynchronizationConflictType.REMOTE_CREATE_REMOTELY_DELETED, repositoryId, recordHistory, {
+                this.addSyncConflict(SynchronizationConflict_Type.REMOTE_CREATE_REMOTELY_DELETED, repositoryId, recordHistory, {
                     id: remoteDeleteRecordHistoryId
                 }, syncConflictMapByRepoId);
                 // If the record has been deleted, do not process the create
@@ -215,7 +215,7 @@ export class Stage1SyncedInDataProcessor {
             if (localDeleteRecordHistoryId) {
                 if (!isLocal) {
                     // A remote update to a record has been locally deleted
-                    this.addSyncConflict(SynchronizationConflictType.REMOTE_UPDATE_LOCALLY_DELETED, repositoryId, recordHistory, {
+                    this.addSyncConflict(SynchronizationConflict_Type.REMOTE_UPDATE_LOCALLY_DELETED, repositoryId, recordHistory, {
                         id: localDeleteRecordHistoryId
                     }, syncConflictMapByRepoId);
                 }
@@ -227,7 +227,7 @@ export class Stage1SyncedInDataProcessor {
             if (remoteDeleteRecordHistoryId) {
                 if (isLocal) {
                     // A local update for a record that has been deleted remotely
-                    this.addSyncConflict(SynchronizationConflictType.LOCAL_UPDATE_REMOTELY_DELETED, repositoryId, recordHistory, {
+                    this.addSyncConflict(SynchronizationConflict_Type.LOCAL_UPDATE_REMOTELY_DELETED, repositoryId, recordHistory, {
                         id: remoteDeleteRecordHistoryId
                     }, syncConflictMapByRepoId);
                 }
@@ -263,7 +263,7 @@ export class Stage1SyncedInDataProcessor {
                     if (recordUpdate) {
                         // remotely updated record value is being updated locally
                         if (!synchronizationConflict) {
-                            synchronizationConflict = this.addSyncConflict(SynchronizationConflictType.REMOTE_UPDATE_LOCALLY_UPDATED, repositoryId, {
+                            synchronizationConflict = this.addSyncConflict(SynchronizationConflict_Type.REMOTE_UPDATE_LOCALLY_UPDATED, repositoryId, {
                                 id: recordUpdate.recordHistoryId,
                             }, {
                                 id: remoteDeleteRecordHistoryId
@@ -384,6 +384,7 @@ export class Stage1SyncedInDataProcessor {
     }
     createSynchronizationConflict(synchronizationConflictType, repositoryId, overwrittenRecordHistory, overwritingRecordHistory) {
         return {
+            id: null,
             overwrittenRecordHistory,
             overwritingRecordHistory,
             repository: {

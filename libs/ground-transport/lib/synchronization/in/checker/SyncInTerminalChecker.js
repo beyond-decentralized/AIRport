@@ -13,7 +13,7 @@ export class SyncInTerminalChecker {
                     throw new Error(`Expecting "in-message index" (number)
 					in 'terminal.owner'`);
                 }
-                if (!terminal.uuId || typeof terminal.uuId !== 'string') {
+                if (typeof terminal.uuId !== 'string' || terminal.uuId.length !== 36) {
                     throw new Error(`Invalid 'terminal.uuid'`);
                 }
                 const owner = message.users[terminal.owner];

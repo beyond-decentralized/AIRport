@@ -91,9 +91,10 @@ declare function require(moduleName: string): any;
 export interface RepositoryTransactionHistoryESelect
     extends IEntitySelectProperties, RepositoryTransactionHistoryEOptionalId {
 	// Non-Id Properties
-	saveTimestamp?: number | IQNumberField;
 	repositoryTransactionType?: string | IQStringField;
-	synced?: boolean | IQBooleanField;
+	saveTimestamp?: number | IQNumberField;
+	syncTimestamp?: number | IQNumberField;
+	uuId?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -134,9 +135,10 @@ export interface RepositoryTransactionHistoryEOptionalId {
 export interface RepositoryTransactionHistoryEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	saveTimestamp?: number | IQNumberField;
 	repositoryTransactionType?: string | IQStringField;
-	synced?: boolean | IQBooleanField;
+	saveTimestamp?: number | IQNumberField;
+	syncTimestamp?: number | IQNumberField;
+	uuId?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	repository?: RepositoryEOptionalId;
@@ -153,9 +155,10 @@ export interface RepositoryTransactionHistoryGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	saveTimestamp?: number | IQNumberField;
 	repositoryTransactionType?: string | IQStringField;
-	synced?: boolean | IQBooleanField;
+	saveTimestamp?: number | IQNumberField;
+	syncTimestamp?: number | IQNumberField;
+	uuId?: string | IQStringField;
 
 	// Relations
 	repository?: RepositoryGraph;
@@ -171,9 +174,10 @@ export interface RepositoryTransactionHistoryGraph
 export interface RepositoryTransactionHistoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	SAVE_TIMESTAMP?: number | IQNumberField;
 	REPOSITORY_TRANSACTION_TYPE?: string | IQStringField;
-	SYNCED?: boolean | IQBooleanField;
+	SAVE_TIMESTAMP?: number | IQNumberField;
+	SYNC_TIMESTAMP?: number | IQNumberField;
+	UUID?: string | IQStringField;
 	REPOSITORY_ID?: number | IQNumberField;
 	ACTOR_ID?: number | IQNumberField;
 	TRANSACTION_HISTORY_ID?: number | IQNumberField;
@@ -212,9 +216,10 @@ export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransa
 	// Id Relations
 
 	// Non-Id Fields
-	saveTimestamp: IQNumberField;
 	repositoryTransactionType: IQStringField;
-	synced: IQBooleanField;
+	saveTimestamp: IQNumberField;
+	syncTimestamp: IQNumberField;
+	uuId: IQStringField;
 
 	// Non-Id Relations
 	repository: QRepositoryQRelation;

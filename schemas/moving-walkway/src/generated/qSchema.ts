@@ -14,12 +14,10 @@ import {
 }                      from '@airport/ground-control';
 import { QRecordUpdateStage } from './qrecordupdatestage';
 import { QSynchronizationConflict } from './conflict/qsynchronizationconflict';
-import { QSynchronizationConflictPendingNotification } from './conflict/qsynchronizationconflictpendingnotification';
 import { QSynchronizationConflictValues } from './conflict/qsynchronizationconflictvalues';
 import {
   RecordUpdateStage,
   SynchronizationConflict,
-  SynchronizationConflictPendingNotification,
   SynchronizationConflictValues
 } from '../ddl/ddl';
 
@@ -29,7 +27,6 @@ export interface LocalQSchema extends AirportQSchema {
 
 	RecordUpdateStage: QRecordUpdateStage;
 	SynchronizationConflict: QSynchronizationConflict;
-	SynchronizationConflictPendingNotification: QSynchronizationConflictPendingNotification;
 	SynchronizationConflictValues: QSynchronizationConflictValues;
 
 }
@@ -37,7 +34,6 @@ export interface LocalQSchema extends AirportQSchema {
 const __constructors__ = {
 	RecordUpdateStage: RecordUpdateStage,
 	SynchronizationConflict: SynchronizationConflict,
-	SynchronizationConflictPendingNotification: SynchronizationConflictPendingNotification,
 	SynchronizationConflictValues: SynchronizationConflictValues
 };
 

@@ -15,6 +15,7 @@ export class MySqlTransaction
 	implements ITransaction {
 
 	credentials: ICredentials
+	isSync = false
 	transHistory: ITransactionHistory
 
 	constructor(

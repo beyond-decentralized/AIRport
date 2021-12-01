@@ -1,21 +1,12 @@
 import {
-	RepositoryTransactionHistory,
-} from '../../ddl/history/RepositoryTransactionHistory';
+	IOperationHistory,
+	IRecordHistory,
+	IRecordHistoryNewValue,
+	IRecordHistoryOldValue,
+} from '../../';
 import {
 	SyncSchemaMap,
 } from '@airport/ground-control';
-import {
-	OperationHistory,
-} from '../../ddl/history/OperationHistory';
-import {
-	RecordHistory,
-} from '../../ddl/history/RecordHistory';
-import {
-	RecordHistoryNewValue,
-} from '../../ddl/history/RecordHistoryNewValue';
-import {
-	RecordHistoryOldValue,
-} from '../../ddl/history/RecordHistoryOldValue';
 import {
 	ITerminal,
 } from '@airport/travel-document-checkpoint';
@@ -44,12 +35,12 @@ export interface ITransactionHistory {
 	repositoryTransactionHistories?: IRepositoryTransactionHistory[];
 
 	// Transient Properties
-	repoTransHistoryMap?: { [repositoryId: number]: RepositoryTransactionHistory; };
+	repoTransHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory};
 	schemaMap?: SyncSchemaMap;
-	allOperationHistory?: OperationHistory[];
-	allRecordHistory?: RecordHistory[];
-	allRecordHistoryNewValues?: RecordHistoryNewValue[];
-	allRecordHistoryOldValues?: RecordHistoryOldValue[];
+	allOperationHistory?: IOperationHistory[];
+	allRecordHistory?: IRecordHistory[];
+	allRecordHistoryNewValues?: IRecordHistoryNewValue[];
+	allRecordHistoryOldValues?: IRecordHistoryOldValue[];
 	numberOfOperations?: number;
 
 	// Public Methods

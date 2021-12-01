@@ -37,7 +37,7 @@ import {
 	OPER_HISTORY_DUO,
 	REC_HIST_OLD_VALUE_DUO,
 	REC_HISTORY_DUO,
-	REPO_TRANS_HISTORY_DUO,
+	REPOSITORY_TRANSACTION_HISTORY_DUO,
 } from '@airport/holding-pattern'
 import {
 	IDeleteManager,
@@ -71,7 +71,7 @@ export class DeleteManager
 			sequenceGenerator
 		] = await container(this)
 			.get(AIRPORT_DATABASE, HISTORY_MANAGER, OPER_HISTORY_DUO,
-				REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPO_TRANS_HISTORY_DUO,
+				REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO,
 				SCHEMA_UTILS, SEQUENCE_GENERATOR)
 
 		const dbEntity = airDb
@@ -79,7 +79,7 @@ export class DeleteManager
 			.entities[portableQuery.tableIndex]
 
 		const deleteCommand = transaction.deleteWhere(portableQuery, context)
-		if (dbEntity.isLocal) {
+		if (dbEntity.isLocal || transaction.isSync) {
 			return await deleteCommand
 		}
 

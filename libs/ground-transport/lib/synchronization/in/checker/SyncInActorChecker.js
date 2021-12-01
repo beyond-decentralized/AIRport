@@ -9,7 +9,7 @@ export class SyncInActorChecker {
             let messageActorIndexMap = new Map();
             for (let i = 0; i < message.actors.length; i++) {
                 const actor = message.actors[i];
-                if (!actor.uuId || typeof actor.uuId !== 'string') {
+                if (typeof actor.uuId !== 'string' || actor.uuId.length !== 36) {
                     throw new Error(`Invalid 'terminal.uuid'`);
                 }
                 if (typeof actor.user !== 'number') {

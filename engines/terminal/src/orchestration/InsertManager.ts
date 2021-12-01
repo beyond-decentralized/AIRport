@@ -29,7 +29,7 @@ import {
 	OPER_HISTORY_DUO,
 	REC_HIST_NEW_VALUE_DUO,
 	REC_HISTORY_DUO,
-	REPO_TRANS_HISTORY_DUO,
+	REPOSITORY_TRANSACTION_HISTORY_DUO,
 	SystemWideOperationId
 } from '@airport/holding-pattern'
 import {
@@ -142,7 +142,7 @@ export class InsertManager
 			.get(AIRPORT_DATABASE,
 				SEQUENCE_GENERATOR, HISTORY_MANAGER, OPER_HISTORY_DUO,
 				REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER,
-				REPO_TRANS_HISTORY_DUO)
+				REPOSITORY_TRANSACTION_HISTORY_DUO)
 
 		const dbEntity = airDb.schemas[portableQuery.schemaIndex]
 			.currentVersion[0].schemaVersion.entities[portableQuery.tableIndex]
@@ -193,7 +193,7 @@ appears more than once in the Columns clause`)
 				sequenceGenerator)
 		}
 
-		if (!dbEntity.isLocal) {
+		if (!dbEntity.isLocal && !transaction.isSync) {
 			await this.addInsertHistory(
 				dbEntity, portableQuery, actor, systemWideOperationId,
 				historyManager, operHistoryDuo, recHistoryDuo,

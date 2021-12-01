@@ -52,6 +52,9 @@ export class SyncInDataChecker
 			if (!history || typeof history !== 'object') {
 				throw new Error(`Invalid TerminalMessage.history`)
 			}
+			if (typeof history.uuId !== 'string' || history.uuId.length !== 36) {
+				return false
+			}
 			if (!history.operationHistory || !(history.operationHistory instanceof Array)) {
 				return false
 			}
@@ -64,7 +67,7 @@ export class SyncInDataChecker
 			if (history.repositoryTransactionType) {
 				throw new Error(`TerminalMessage.history.repositoryTransactionType cannot be specified`)
 			}
-			if (history.synced) {
+			if (history.syncTimestamp) {
 				throw new Error(`TerminalMessage.history.synced cannot be specified`)
 			}
 			const actor = message.actors[history.actor as any]
@@ -75,7 +78,7 @@ export class SyncInDataChecker
 
 			history.actor = actor
 			history.repositoryTransactionType = RepositoryTransactionType.REMOTE
-			history.synced = true
+			history.syncTimestamp = message.syncTimestamp
 			delete history.id
 
 			const schemaEntityMap = await this.populateSchemaEntityMap(message)

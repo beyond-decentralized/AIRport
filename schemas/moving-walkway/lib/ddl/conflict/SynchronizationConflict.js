@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
+import { DbBoolean, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-control";
 let SynchronizationConflict = class SynchronizationConflict {
 };
 __decorate([
@@ -12,6 +12,12 @@ __decorate([
     Id(),
     DbNumber()
 ], SynchronizationConflict.prototype, "id", void 0);
+__decorate([
+    DbString()
+], SynchronizationConflict.prototype, "type", void 0);
+__decorate([
+    DbBoolean()
+], SynchronizationConflict.prototype, "acknowledged", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" })
@@ -27,9 +33,6 @@ __decorate([
 __decorate([
     OneToMany({ mappedBy: "SYNCHRONIZATION_CONFLICT_ID" })
 ], SynchronizationConflict.prototype, "values", void 0);
-__decorate([
-    DbString()
-], SynchronizationConflict.prototype, "type", void 0);
 SynchronizationConflict = __decorate([
     Entity(),
     Table({ name: "SYNCHRONIZATION_CONFLICT" })

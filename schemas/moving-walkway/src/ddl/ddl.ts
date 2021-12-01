@@ -1,5 +1,4 @@
 export * from './conflict/SynchronizationConflict'
-export * from './conflict/SynchronizationConflictPendingNotification'
 export * from './conflict/SynchronizationConflictType'
 export * from './conflict/SynchronizationConflictValues'
 export * from './values/DataOrigin'

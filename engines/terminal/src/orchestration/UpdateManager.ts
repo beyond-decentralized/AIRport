@@ -34,7 +34,7 @@ import {
 	REC_HIST_NEW_VALUE_DUO,
 	REC_HIST_OLD_VALUE_DUO,
 	REC_HISTORY_DUO,
-	REPO_TRANS_HISTORY_DUO,
+	REPOSITORY_TRANSACTION_HISTORY_DUO,
 	RepositoryEntity_SystemWideOperationId,
 	SystemWideOperationId
 }                           from '@airport/holding-pattern'
@@ -74,7 +74,7 @@ export class UpdateManager
 			.get(HISTORY_MANAGER,
 				OPER_HISTORY_DUO, REC_HISTORY_DUO,
 				REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO,
-				REPOSITORY_MANAGER, REPO_TRANS_HISTORY_DUO,
+				REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DUO,
 				SEQUENCE_GENERATOR)
 
 		const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
@@ -90,7 +90,7 @@ export class UpdateManager
 		let recordHistoryMap: RecordHistoryMap
 		let repositorySheetSelectInfo: RepositorySheetSelectInfo
 		let systemWideOperationId: SystemWideOperationId
-		if (!dbEntity.isLocal) {
+		if (!dbEntity.isLocal && !transaction.isSync) {
 
 			systemWideOperationId = await getSysWideOpId(context.ioc.airDb, sequenceGenerator);
 

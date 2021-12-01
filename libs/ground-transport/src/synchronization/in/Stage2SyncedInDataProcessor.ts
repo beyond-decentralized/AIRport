@@ -152,11 +152,11 @@ export class Stage2SyncedInDataProcessor
 				}
 
 				if (numInserts) {
-					await dbFacade.insertValues(dbEntity, {
+					await dbFacade.insertValues({
 						insertInto: qEntity,
 						columns,
 						values
-					})
+					}, null)
 				}
 			}
 		}
@@ -251,10 +251,10 @@ export class Stage2SyncedInDataProcessor
 				}
 
 				if (numClauses) {
-					await dbFacade.deleteWhere(dbEntity, {
+					await dbFacade.deleteWhere({
 						deleteFrom: qEntity,
 						where: or(...repositoryWhereFragments)
-					})
+					}, null)
 				}
 			}
 		}

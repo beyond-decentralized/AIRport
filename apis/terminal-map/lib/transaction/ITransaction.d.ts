@@ -3,9 +3,10 @@ import { ITransactionHistory } from '@airport/holding-pattern';
 import { ICredentials } from '../Credentials';
 export interface ITransaction extends IStoreDriver {
     credentials: ICredentials;
+    isSync: boolean;
     transHistory: ITransactionHistory;
-    saveTransaction(transaction: ITransactionHistory): Promise<void>;
     commit(): Promise<void>;
     rollback(): Promise<void>;
+    saveTransaction(transaction: ITransactionHistory): Promise<void>;
 }
 //# sourceMappingURL=ITransaction.d.ts.map

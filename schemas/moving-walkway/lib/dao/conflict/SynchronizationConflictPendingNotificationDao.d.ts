@@ -1,6 +1,0 @@
-import { BaseSynchronizationConflictPendingNotificationDao, IBaseSynchronizationConflictPendingNotificationDao } from '../../generated/generated';
-export interface ISynchronizationConflictPendingNotificationDao extends IBaseSynchronizationConflictPendingNotificationDao {
-}
-export declare class SynchronizationConflictPendingNotificationDao extends BaseSynchronizationConflictPendingNotificationDao implements ISynchronizationConflictPendingNotificationDao {
-}
-//# sourceMappingURL=SynchronizationConflictPendingNotificationDao.d.ts.map

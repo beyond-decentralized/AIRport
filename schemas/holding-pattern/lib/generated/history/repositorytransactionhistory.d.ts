@@ -4,9 +4,10 @@ import { ITransactionHistory } from './transactionhistory';
 import { IOperationHistory } from './operationhistory';
 export interface IRepositoryTransactionHistory {
     id: number;
-    saveTimestamp?: number;
     repositoryTransactionType?: string;
-    synced?: boolean;
+    saveTimestamp?: number;
+    syncTimestamp?: number;
+    uuId?: string;
     repository?: IRepository;
     actor?: IActor;
     transactionHistory?: ITransactionHistory;

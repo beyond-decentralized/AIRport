@@ -3,20 +3,9 @@ import { container, DI } from '@airport/di'
 import {
 	IUser,
 	IUserDao,
-	USER_DAO,
-	UserId,
-	User_UuId
+	USER_DAO
 } from '@airport/travel-document-checkpoint'
 import { SYNC_IN_USER_CHECKER } from '../../../tokens'
-import { IDataToTM } from '../SyncInUtils'
-
-export interface UserCheckResults {
-	map: Map<User_UuId, IUser>;
-	mapById: Map<UserId, IUser>;
-	mapByMessageIndexAndRemoteUserId: Map<UserId, IUser>[];
-	consistentMessages: IDataToTM[];
-	inconsistentMessages: IDataToTM[];
-}
 
 export interface ISyncInUserChecker {
 
@@ -39,7 +28,7 @@ export class SyncInUserChecker
 			let messageUserIndexMap: Map<string, number> = new Map()
 			for (let i = 0; i < message.users.length; i++) {
 				const user = message.users[i]
-				if (!user.uuId || typeof user.uuId !== 'string') {
+				if (typeof user.uuId !== 'string' || user.uuId.length !== 36) {
 					throw new Error(`Invalid 'user.uuid'`)
 				}
 				userUuids.push(user.uuId)

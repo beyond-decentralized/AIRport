@@ -10790,7 +10790,7 @@ packages:
     dev: false
     name: '@rush-temp/cockroachdb'
     resolution:
-      integrity: sha512-2MZJapyFSWeiO6OamCaOYWl3FL/5IEC/xiZrJ3nmH6bCi9woCCnB2psg2gSr3dX6FJt7uZFksxhUMo1rzHMJTA==
+      integrity: sha512-nvTuWm09CtJE2rIa0akm03mF+7roouCEueJzpJunTjjfEMhuAhRiHxXeaiB+773ZW/JOIdrV3vuDuq7ziweq5g==
       tarball: 'file:projects/cockroachdb.tgz'
     version: 0.0.0
   'file:projects/config.tgz':
@@ -10823,7 +10823,7 @@ packages:
     dev: false
     name: '@rush-temp/fuel-hydrant-system'
     resolution:
-      integrity: sha512-sjhgmyP+DxJ62e2J5NWmTc9Sh68Lei+u4RTOJGOZOfS2m0iAJ+xwGZyEoNdeIRNKPqnK5NTjZ2YK63iCaaPwvg==
+      integrity: sha512-b55rpIgX8wPJ0wmgaMA5CIB1Ki2s2uzZEy+svu+FfC+efQ8iVEJ5bSVnNPEjq0AjSMq201HX95Ol+x4XwDDs7w==
       tarball: 'file:projects/fuel-hydrant-system.tgz'
     version: 0.0.0
   'file:projects/functionality-demo-frame.tgz':
@@ -10968,7 +10968,7 @@ packages:
     dev: false
     name: '@rush-temp/ground-transport'
     resolution:
-      integrity: sha512-34H1xvZTMlLDvlz/lk3xMPpmPFY82V+XoT94CK5l8c/nP7AiEQR3I/28ad/Bc7cCAu76hbyGOERNX8NWUMwH+Q==
+      integrity: sha512-UcD5Um9PbQySiwpq8MCj3KXULhz8vnWz6RUPJ5l/72ShEeX1LWWdChje2nj0JusE5KCGp0OJVAq5wGolk8/9nw==
       tarball: 'file:projects/ground-transport.tgz'
     version: 0.0.0
   'file:projects/guideway.tgz':
@@ -10979,10 +10979,12 @@ packages:
       tarball: 'file:projects/guideway.tgz'
     version: 0.0.0
   'file:projects/holding-pattern.tgz':
+    dependencies:
+      uuid: 8.3.2
     dev: false
     name: '@rush-temp/holding-pattern'
     resolution:
-      integrity: sha512-QwZCBadRaisTjgSv7EGzN8YeCa6kCLpJjpGWCVAR62IpsyeXMHlRKCE37sEnE6Ru5W4g5diMIGScr5PQBCLEHQ==
+      integrity: sha512-hbFv2Bl71RptvOp4nQQKRSoVVG+KMrgbSCN/Z9augxwKsrMJNhVNqgik2AGPZ4wVfPCoLX2Y/wIurcyiBrTvWw==
       tarball: 'file:projects/holding-pattern.tgz'
     version: 0.0.0
   'file:projects/hw-control.tgz':
@@ -11097,7 +11099,7 @@ packages:
     dev: false
     name: '@rush-temp/mysql'
     resolution:
-      integrity: sha512-Yz6QNhu9a+fd4dzzZMjKRtKVJLnLSRdjq4ik8li/sSs6O6Qi96co7Kh0OsqOjhIv5deKz9b8RpEoxfpZ6gX3NQ==
+      integrity: sha512-a8OPpQHikcQG65fzTuSZU4cVC2GtULKNCzHk50+nj6t+Aqjufgy3Tpzsv70ClwXtvq/HZXilzSHgqu248vghQg==
       tarball: 'file:projects/mysql.tgz'
     version: 0.0.0
   'file:projects/na-kano.tgz':
@@ -11187,7 +11189,7 @@ packages:
     dev: false
     name: '@rush-temp/postgres'
     resolution:
-      integrity: sha512-Kd69ZRwYvDXJ2OmplB1PAWVtQ98qt4becdjwtKzAb/VtfFUhhd1a0ATCJWWJlOo8ir/y7wwQ/0rk0UrRvaIpvQ==
+      integrity: sha512-xiOZFEc0CfAorGg+Kj5skCCPmsG1PHTSrxr3vt7p2WsgzIIlnSh6SwtjmTmZFMaqno7da3zGvBMhZ6z+0ynklw==
       tarball: 'file:projects/postgres.tgz'
     version: 0.0.0
   'file:projects/pressurization.tgz':
@@ -11281,7 +11283,7 @@ packages:
     dev: false
     name: '@rush-temp/sqlite'
     resolution:
-      integrity: sha512-e1ux+4Wrm+csz6Sd4CQb1Ad6/RvHBGBaCRC0VSsEmqX3N18ZN+DPCDR/0Wdu3GpTnRgfnu4jOYRXhpdJnqnqUA==
+      integrity: sha512-aSdRaxUWv2mHO1fjA+WHaC3lWsKI406kjxmL9hWke5OlFtyz5zfSBywEDNaIXAY2Bri9b0eFUhQ7FzcCyA04Ng==
       tarball: 'file:projects/sqlite.tgz'
     version: 0.0.0
   'file:projects/sqljs.tgz':
@@ -11292,7 +11294,7 @@ packages:
     dev: false
     name: '@rush-temp/sqljs'
     resolution:
-      integrity: sha512-mB+mI2CPwo0clbwaioPP8iimKX1/AtkK9FNDU+kfXvIAluJD3XgatJ80G0OIXSOM2sR6V0BdPF9Pel3HEMXvYg==
+      integrity: sha512-rl7BB4OAHTpMW7qb1HeLGwKkLnZxfyK5JqMXTL9TvddqGFrqF1aCzHOnUkRkhVUvBiV6Hlu+Vv+USOAaVij3Ww==
       tarball: 'file:projects/sqljs.tgz'
     version: 0.0.0
   'file:projects/takeoff.tgz':
@@ -11407,7 +11409,7 @@ packages:
     dev: false
     name: '@rush-temp/websql'
     resolution:
-      integrity: sha512-x69ovLGeXwVcLYAtnJHSzQulob5hT9x8BT2Tg5Rx1fhWCP4NOpqPGMCN81aXxrQOU68J7Pf3D/dLOYxNsa2iyg==
+      integrity: sha512-6YQ0F8DkRe278OTN2UOnagA7t03MCoSvCUEjYsw4pDKPSFcNyrkYpxNOUX33F0Rz8XdTmcLOZnhKACq8eCm+Ww==
       tarball: 'file:projects/websql.tgz'
     version: 0.0.0
 registry: ''

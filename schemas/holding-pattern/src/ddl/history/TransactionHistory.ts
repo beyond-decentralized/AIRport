@@ -18,6 +18,7 @@ import {
 	TransactionType
 } from '@airport/ground-control'
 import { Terminal } from '@airport/travel-document-checkpoint'
+import { IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRecordHistoryOldValue, IRepositoryTransactionHistory } from '../..'
 import { OperationHistory } from './OperationHistory'
 import { RecordHistory } from './RecordHistory'
 import { RecordHistoryNewValue } from './RecordHistoryNewValue'
@@ -54,22 +55,22 @@ export class TransactionHistory
 	repositoryTransactionHistories: RepositoryTransactionHistory[] = []
 
 	@Transient()
-	repoTransHistoryMap: { [repositoryId: number]: RepositoryTransactionHistory } = {}
+	repoTransHistoryMap: { [repositoryId: number]: IRepositoryTransactionHistory } = {}
 
 	@Transient()
 	schemaMap: SyncSchemaMap = new SyncSchemaMap()
 
 	@Transient()
-	allOperationHistory: OperationHistory[] = []
+	allOperationHistory: IOperationHistory[] = []
 
 	@Transient()
-	allRecordHistory: RecordHistory[] = []
+	allRecordHistory: IRecordHistory[] = []
 
 	@Transient()
-	allRecordHistoryNewValues: RecordHistoryNewValue[] = []
+	allRecordHistoryNewValues: IRecordHistoryNewValue[] = []
 
 	@Transient()
-	allRecordHistoryOldValues: RecordHistoryOldValue[] = []
+	allRecordHistoryOldValues: IRecordHistoryOldValue[] = []
 
 	@Transient()
 	numberOfOperations: TransactionHistoryNumberOfOperations = 0

@@ -8,8 +8,8 @@ import {
 	or,
 	RawFieldQuery,
 	Y
-}                             from '@airport/air-control'
-import {container, DI}                   from '@airport/di'
+} from '@airport/air-control'
+import { container, DI } from '@airport/di'
 import {
 	ChangeType,
 	ensureChildArray,
@@ -18,21 +18,21 @@ import {
 	EntityId,
 	JSONBaseOperation,
 	TransactionType
-}                             from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	Actor_Id,
 	RecordHistoryActorRecordId,
 	RepositoryEntity_ActorRecordId,
 	Repository_Id,
 	RepositoryTransactionHistory_Id
-}                             from '../../ddl/ddl'
+} from '../../ddl/ddl'
 import {
 	OPER_HISTORY_DUO,
 	REC_HISTORY_DUO,
-	REPO_TRANS_HISTORY_DAO,
-}                             from '../../tokens'
-import {IOperationHistoryDuo} from '../../duo/history/OperationHistoryDuo'
-import {IRecordHistoryDuo}    from '../../duo/history/RecordHistoryDuo'
+	REPOSITORY_TRANSACTION_HISTORY_DAO,
+} from '../../tokens'
+import { IOperationHistoryDuo } from '../../duo/history/OperationHistoryDuo'
+import { IRecordHistoryDuo } from '../../duo/history/RecordHistoryDuo'
 import {
 	BaseRepositoryTransactionHistoryDao,
 	IOperationHistory,
@@ -46,7 +46,7 @@ import {
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
 	RepositoryTransactionHistoryESelect
-}                             from '../../generated/generated'
+} from '../../generated/generated'
 
 export interface IRepositoryTransactionHistoryDao {
 
@@ -71,12 +71,16 @@ export interface IRepositoryTransactionHistoryDao {
 		idsInClause: RepositoryTransactionHistory_Id[]
 			| RawFieldQuery<IQNumberField>
 			| {
-			(...args: any[]): RawFieldQuery<IQNumberField>
-		}
-	): Promise<IRepositoryTransactionHistory[]>;
+				(...args: any[]): RawFieldQuery<IQNumberField>
+			}
+	): Promise<IRepositoryTransactionHistory[]>
+
+	findWhereUuIdIn(
+		uuIds: string[]
+	): Promise<IRepositoryTransactionHistory[]>
 
 	findExistingRecordIdMap(
-		recordIdMap: Map<Repository_Id, Map<Actor_Id, 
+		recordIdMap: Map<Repository_Id, Map<Actor_Id,
 			Map<EntityId, Set<RepositoryEntity_ActorRecordId>>>>
 	): Promise<Map<Repository_Id,
 		Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>;
@@ -150,9 +154,9 @@ export class RepositoryTransactionHistoryDao
 			OPER_HISTORY_DUO, REC_HISTORY_DUO)
 
 		let rth: QRepositoryTransactionHistory,
-		    r: QRepository,
-		    oh: QOperationHistory,
-		    rh: QRecordHistory
+			r: QRepository,
+			oh: QOperationHistory,
+			rh: QRecordHistory
 		const id = Y
 		return await this.db.find.tree({
 			select: this.getSelectClauseWithRecordHistory(
@@ -170,12 +174,27 @@ export class RepositoryTransactionHistoryDao
 		idsInClause: RepositoryTransactionHistory_Id[]
 			| RawFieldQuery<IQNumberField>
 			| {
-			(...args: any[]): RawFieldQuery<IQNumberField>
-		},
+				(...args: any[]): RawFieldQuery<IQNumberField>
+			},
 	): Promise<IRepositoryTransactionHistory[]> {
 		return await this.findWhere((
 			rth: QRepositoryTransactionHistory
 		) => rth.id.in(idsInClause))
+	}
+
+	async findWhereUuIdIn(
+		uuIds: string[]
+	): Promise<IRepositoryTransactionHistory[]> {
+		let rth: QRepositoryTransactionHistory
+		return await this.db.find.tree({
+			select: {
+				uuId: Y
+			},
+			from: [
+				rth = Q.RepositoryTransactionHistory
+			],
+			where: rth.uuId.in(uuIds)
+		})
 	}
 
 
@@ -189,8 +208,8 @@ export class RepositoryTransactionHistoryDao
 		}
 	): Promise<IRepositoryTransactionHistory[]> {
 		let rth: QRepositoryTransactionHistory,
-		    a: QActor,
-		    r: QRepository
+			a: QActor,
+			r: QRepository
 		return await this.db.find.graph({
 			select: {
 				...this.db.duo.select.fields,
@@ -220,8 +239,8 @@ export class RepositoryTransactionHistoryDao
 		idsInClause: RepositoryTransactionHistory_Id[]
 			| RawFieldQuery<IQNumberField>
 			| {
-			(...args: any[]): RawFieldQuery<IQNumberField>
-		}
+				(...args: any[]): RawFieldQuery<IQNumberField>
+			}
 	): Promise<IRepositoryTransactionHistory[]> {
 		return await this.findWithActorAndRepositoryWhere((
 			rth
@@ -232,18 +251,18 @@ export class RepositoryTransactionHistoryDao
 		changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>
 	): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>> {
 		const repoTransHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>
-			      = new Map()
+			= new Map()
 
 		const rth: QRepositoryTransactionHistory = Q.RepositoryTransactionHistory
-		const th: QTransactionHistory            = rth.transactionHistory.innerJoin()
-		const oh: QOperationHistory              = rth.operationHistory.leftJoin()
-		const rh: QRecordHistory                 = oh.recordHistory.leftJoin()
-		const nv: QRecordHistoryNewValue         = rh.newValues.leftJoin()
-		let id                                   = Y
+		const th: QTransactionHistory = rth.transactionHistory.innerJoin()
+		const oh: QOperationHistory = rth.operationHistory.leftJoin()
+		const rh: QRecordHistory = oh.recordHistory.leftJoin()
+		const nv: QRecordHistoryNewValue = rh.newValues.leftJoin()
+		let id = Y
 
 		const repositoryEquals: JSONBaseOperation[] = []
 		for (const [repositoryId, idsForRepository] of changedRecordIds) {
-			const recordMapForRepository            = idsForRepository.ids
+			const recordMapForRepository = idsForRepository.ids
 			const entityEquals: JSONBaseOperation[] = []
 			for (const [entityId, recordMapForEntity] of recordMapForRepository) {
 				const actorEquals: JSONBaseOperation[] = []
@@ -340,11 +359,11 @@ export class RepositoryTransactionHistoryDao
 		Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>> {
 		const existingRecordIdMap: Map<Repository_Id,
 			Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>
-			      = new Map()
+			= new Map()
 
 		const rth = Q.RepositoryTransactionHistory,
-		      oh  = rth.operationHistory.innerJoin(),
-		      rh  = oh.recordHistory.innerJoin()
+			oh = rth.operationHistory.innerJoin(),
+			rh = oh.recordHistory.innerJoin()
 
 		const idsFragments: JSONBaseOperation[] = []
 		for (const [repositoryId, recordIdMapForRepository] of recordIdMap) {
@@ -401,4 +420,4 @@ export class RepositoryTransactionHistoryDao
 
 }
 
-DI.set(REPO_TRANS_HISTORY_DAO, RepositoryTransactionHistoryDao)
+DI.set(REPOSITORY_TRANSACTION_HISTORY_DAO, RepositoryTransactionHistoryDao)

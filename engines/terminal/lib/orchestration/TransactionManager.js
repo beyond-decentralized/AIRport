@@ -1,7 +1,7 @@
 import { container, DI } from '@airport/di';
 import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system';
 import { STORE_DRIVER } from '@airport/ground-control';
-import { Q, TRANS_HISTORY_DUO, } from '@airport/holding-pattern';
+import { Q, TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
 import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export class TransactionManager extends AbstractMutationManager {
@@ -32,7 +32,7 @@ export class TransactionManager extends AbstractMutationManager {
             return;
         }
         const [storeDriver, transHistoryDuo] = await container(this)
-            .get(STORE_DRIVER, TRANS_HISTORY_DUO);
+            .get(STORE_DRIVER, TRANSACTION_HISTORY_DUO);
         const isServer = storeDriver.isServer(context);
         if (!isServer) {
             if (credentials.applicationSignature === this.signatureOfTransactionInProgress) {

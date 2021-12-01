@@ -22,7 +22,7 @@ import {
 	RecordHistoryNewValue,
 	RecordHistoryOldValue,
 	RepositoryTransactionHistory,
-	TRANS_HISTORY_DUO,
+	TRANSACTION_HISTORY_DUO,
 	TransactionHistory,
 } from '@airport/holding-pattern';
 import {
@@ -83,7 +83,7 @@ export class TransactionManager
 		}
 		const [storeDriver, transHistoryDuo] = await container(this)
 			.get(
-				STORE_DRIVER, TRANS_HISTORY_DUO,
+				STORE_DRIVER, TRANSACTION_HISTORY_DUO,
 			);
 
 		const isServer = storeDriver.isServer(context)

@@ -73,6 +73,7 @@ export interface SynchronizationConflictESelect
     extends IEntitySelectProperties, SynchronizationConflictEOptionalId {
 	// Non-Id Properties
 	type?: string | IQStringField;
+	acknowledged?: boolean | IQBooleanField;
 
 	// Id Relations - full property interfaces
 
@@ -114,6 +115,7 @@ export interface SynchronizationConflictEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	type?: string | IQStringField;
+	acknowledged?: boolean | IQBooleanField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	repository?: RepositoryEOptionalId;
@@ -131,6 +133,7 @@ export interface SynchronizationConflictGraph
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	type?: string | IQStringField;
+	acknowledged?: boolean | IQBooleanField;
 
 	// Relations
 	repository?: RepositoryGraph;
@@ -147,6 +150,7 @@ export interface SynchronizationConflictEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	TYPE?: string | IQStringField;
+	ACKNOWLEDGED?: boolean | IQBooleanField;
 	REPOSITORY_ID?: number | IQNumberField;
 	OVERWRITTEN_RECORD_HISTORY_ID?: number | IQNumberField;
 	OVERWRITING_RECORD_HISTORY_ID?: number | IQNumberField;
@@ -186,6 +190,7 @@ export interface QSynchronizationConflict extends IQEntity<SynchronizationConfli
 
 	// Non-Id Fields
 	type: IQStringField;
+	acknowledged: IQBooleanField;
 
 	// Non-Id Relations
 	repository: QRepositoryQRelation;

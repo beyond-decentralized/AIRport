@@ -9,7 +9,7 @@ export class SyncInUserChecker {
             let messageUserIndexMap = new Map();
             for (let i = 0; i < message.users.length; i++) {
                 const user = message.users[i];
-                if (!user.uuId || typeof user.uuId !== 'string') {
+                if (typeof user.uuId !== 'string' || user.uuId.length !== 36) {
                     throw new Error(`Invalid 'user.uuid'`);
                 }
                 userUuids.push(user.uuId);

@@ -134,11 +134,25 @@ export const SCHEMA = {
 						{
 							"index": 2,
 							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "ACKNOWLEDGED",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 6
+								}
+							],
+							"sinceVersion": 1,
+							"type": "BOOLEAN"
+						},
+						{
+							"index": 3,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 1,
+									"oneTableIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -154,7 +168,7 @@ export const SCHEMA = {
 							"type": "NUMBER"
 						},
 						{
-							"index": 3,
+							"index": 4,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -176,7 +190,7 @@ export const SCHEMA = {
 							"type": "NUMBER"
 						},
 						{
-							"index": 4,
+							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -261,6 +275,15 @@ export const SCHEMA = {
 							"isId": false,
 							"name": "type",
 							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 2
+							},
+							"index": 6,
+							"isId": false,
+							"name": "acknowledged",
+							"sinceVersion": 1
 						}
 					],
 					"relations": [
@@ -271,7 +294,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 2,
 							"relationTableSchemaIndex": 0,
 							"sinceVersion": 1
 						},
@@ -314,138 +337,6 @@ export const SCHEMA = {
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "SYNCHRONIZATION_CONFLICT",
-						"columnIndexes": []
-					},
-					"operations": {}
-				},
-				{
-					"columns": [
-						{
-							"index": 0,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "ACKNOWLEDGED",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 2
-								}
-							],
-							"sinceVersion": 1,
-							"type": "BOOLEAN"
-						},
-						{
-							"index": 1,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
-									"oneTableIndex": 1,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "SYNC_CONFLICT_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 0
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 2,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 1,
-									"oneSchemaIndex": 0,
-									"oneTableIndex": 3,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "ACTOR_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 1
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						}
-					],
-					"idColumnRefs": [
-						{
-							"index": 1
-						},
-						{
-							"index": 2
-						}
-					],
-					"index": 2,
-					"isLocal": true,
-					"isRepositoryEntity": false,
-					"name": "SynchronizationConflictPendingNotification",
-					"properties": [
-						{
-							"index": 0,
-							"isId": true,
-							"name": "synchronizationConflict",
-							"relationRef": {
-								"index": 0
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": true,
-							"name": "actor",
-							"relationRef": {
-								"index": 1
-							},
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 0
-							},
-							"index": 2,
-							"isId": false,
-							"name": "acknowledged",
-							"sinceVersion": 1
-						}
-					],
-					"relations": [
-						{
-							"index": 0,
-							"isId": true,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 0
-							},
-							"relationTableIndex": 1,
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": true,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 1
-							},
-							"relationTableIndex": 3,
-							"relationTableSchemaIndex": 0,
-							"sinceVersion": 1
-						}
-					],
-					"sinceVersion": 1,
-					"tableConfig": {
-						"name": "SYNC_CONFLICT_PENDING_NOTIFICATION",
 						"columnIndexes": []
 					},
 					"operations": {}
@@ -545,7 +436,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 2,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 1,
+									"oneTableIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -567,7 +458,7 @@ export const SCHEMA = {
 								{
 									"manyRelationIndex": 3,
 									"oneSchemaIndex": 0,
-									"oneTableIndex": 3,
+									"oneTableIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -610,7 +501,7 @@ export const SCHEMA = {
 							"index": 0
 						}
 					],
-					"index": 3,
+					"index": 2,
 					"isLocal": true,
 					"isRepositoryEntity": false,
 					"name": "RecordUpdateStage",
@@ -718,7 +609,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 3
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 2,
 							"relationTableSchemaIndex": 0,
 							"sinceVersion": 1
 						},
@@ -729,7 +620,7 @@ export const SCHEMA = {
 							"propertyRef": {
 								"index": 4
 							},
-							"relationTableIndex": 3,
+							"relationTableIndex": 1,
 							"relationTableSchemaIndex": 0,
 							"sinceVersion": 1
 						},

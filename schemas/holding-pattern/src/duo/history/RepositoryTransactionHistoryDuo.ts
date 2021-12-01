@@ -3,6 +3,7 @@ import {
 	ChangeType,
 	DbEntity
 }                               from '@airport/ground-control'
+import { v4 as uuidv4 } from "uuid";
 import {
 	Actor_Id,
 	Repository,
@@ -10,7 +11,7 @@ import {
 	RepositoryTransactionHistory,
 	SystemWideOperationId
 } from '../../ddl/ddl'
-import {REPO_TRANS_HISTORY_DUO} from '../../tokens'
+import {REPOSITORY_TRANSACTION_HISTORY_DUO} from '../../tokens'
 import {
 	BaseRepositoryTransactionHistoryDuo,
 	IActor,
@@ -54,17 +55,17 @@ export class RepositoryTransactionHistoryDuo
 		repositoryId: Repository_Id,
 		actor: IActor
 	): IRepositoryTransactionHistory {
-		let transaction: IRepositoryTransactionHistory = new RepositoryTransactionHistory()
+		let repositoryTransactionHistory: IRepositoryTransactionHistory = new RepositoryTransactionHistory() as IRepositoryTransactionHistory
 
 		let saveTimestamp = new Date().getTime()
 
-		transaction.saveTimestamp = saveTimestamp
-		transaction.repository    = new Repository()
-		transaction.repository.id = repositoryId
-		transaction.actor         = actor
-		// transaction.syncStatus = SyncStatus.SYNC_PENDING;
+		repositoryTransactionHistory.saveTimestamp = saveTimestamp
+		repositoryTransactionHistory.uuId = uuidv4()
+		repositoryTransactionHistory.repository    = new Repository() as IRepository
+		repositoryTransactionHistory.repository.id = repositoryId
+		repositoryTransactionHistory.actor         = actor
 
-		return transaction
+		return repositoryTransactionHistory
 	}
 
 	newRecord(
@@ -176,4 +177,4 @@ export class RepositoryTransactionHistoryDuo
 
 }
 
-DI.set(REPO_TRANS_HISTORY_DUO, RepositoryTransactionHistoryDuo)
+DI.set(REPOSITORY_TRANSACTION_HISTORY_DUO, RepositoryTransactionHistoryDuo)

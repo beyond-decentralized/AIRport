@@ -1,17 +1,18 @@
 import { DI } from '@airport/di';
+import { v4 as uuidv4 } from "uuid";
 import { Repository, RepositoryTransactionHistory } from '../../ddl/ddl';
-import { REPO_TRANS_HISTORY_DUO } from '../../tokens';
+import { REPOSITORY_TRANSACTION_HISTORY_DUO } from '../../tokens';
 import { BaseRepositoryTransactionHistoryDuo, } from '../../generated/generated';
 export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHistoryDuo {
     getNewRecord(repositoryId, actor) {
-        let transaction = new RepositoryTransactionHistory();
+        let repositoryTransactionHistory = new RepositoryTransactionHistory();
         let saveTimestamp = new Date().getTime();
-        transaction.saveTimestamp = saveTimestamp;
-        transaction.repository = new Repository();
-        transaction.repository.id = repositoryId;
-        transaction.actor = actor;
-        // transaction.syncStatus = SyncStatus.SYNC_PENDING;
-        return transaction;
+        repositoryTransactionHistory.saveTimestamp = saveTimestamp;
+        repositoryTransactionHistory.uuId = uuidv4();
+        repositoryTransactionHistory.repository = new Repository();
+        repositoryTransactionHistory.repository.id = repositoryId;
+        repositoryTransactionHistory.actor = actor;
+        return repositoryTransactionHistory;
     }
     newRecord(data) {
         if (!data) {
@@ -65,5 +66,5 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
         return 0;
     }
 }
-DI.set(REPO_TRANS_HISTORY_DUO, RepositoryTransactionHistoryDuo);
+DI.set(REPOSITORY_TRANSACTION_HISTORY_DUO, RepositoryTransactionHistoryDuo);
 //# sourceMappingURL=RepositoryTransactionHistoryDuo.js.map

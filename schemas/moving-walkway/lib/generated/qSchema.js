@@ -2,11 +2,10 @@ import { AIRPORT_DATABASE } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { getSchemaName } from '@airport/ground-control';
-import { RecordUpdateStage, SynchronizationConflict, SynchronizationConflictPendingNotification, SynchronizationConflictValues } from '../ddl/ddl';
+import { RecordUpdateStage, SynchronizationConflict, SynchronizationConflictValues } from '../ddl/ddl';
 const __constructors__ = {
     RecordUpdateStage: RecordUpdateStage,
     SynchronizationConflict: SynchronizationConflict,
-    SynchronizationConflictPendingNotification: SynchronizationConflictPendingNotification,
     SynchronizationConflictValues: SynchronizationConflictValues
 };
 export const Q_SCHEMA = {

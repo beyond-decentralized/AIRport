@@ -1,7 +1,7 @@
 import { container, DI } from '@airport/di';
 import { TERMINAL_STORE, } from '@airport/terminal-map';
 import { AbstractCompletable } from '../../AbstractCompletable';
-import { SYNC_NODE_MANAGER, SYNCHRONIZATION_OUT_COORDINATOR, SYNC_OUT_MANAGER } from '../../tokens';
+import { SYNC_NODE_MANAGER, SYNCHRONIZATION_OUT_COORDINATOR, SYNCHRONIZATION_OUT_MANAGER } from '../../tokens';
 export class SynchronizationOutCoordinator extends AbstractCompletable {
     constructor() {
         super(...arguments);
@@ -11,7 +11,7 @@ export class SynchronizationOutCoordinator extends AbstractCompletable {
     // private syncNodeManager: ISyncNodeManager
     // private terminalStore: ITerminalStore
     async initialize() {
-        const [syncNodeManager, syncOutManager, terminalStore] = await container(this).get(SYNC_NODE_MANAGER, SYNC_OUT_MANAGER, TERMINAL_STORE);
+        const [syncNodeManager, syncOutManager, terminalStore] = await container(this).get(SYNC_NODE_MANAGER, SYNCHRONIZATION_OUT_MANAGER, TERMINAL_STORE);
         await syncNodeManager.initialize();
         /*
                 pipe(this.terminalStore.getTerminalState.observable, (

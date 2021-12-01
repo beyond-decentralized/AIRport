@@ -1,9 +1,6 @@
 import { ATransactionHistory, SyncSchemaMap, TransactionType } from '@airport/ground-control';
 import { Terminal } from '@airport/travel-document-checkpoint';
-import { OperationHistory } from './OperationHistory';
-import { RecordHistory } from './RecordHistory';
-import { RecordHistoryNewValue } from './RecordHistoryNewValue';
-import { RecordHistoryOldValue } from './RecordHistoryOldValue';
+import { IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRecordHistoryOldValue, IRepositoryTransactionHistory } from '../..';
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory';
 export declare type TransactionHistoryNumberOfOperations = number;
 /**
@@ -16,13 +13,13 @@ export declare class TransactionHistory implements ATransactionHistory {
     terminal: Terminal;
     repositoryTransactionHistories: RepositoryTransactionHistory[];
     repoTransHistoryMap: {
-        [repositoryId: number]: RepositoryTransactionHistory;
+        [repositoryId: number]: IRepositoryTransactionHistory;
     };
     schemaMap: SyncSchemaMap;
-    allOperationHistory: OperationHistory[];
-    allRecordHistory: RecordHistory[];
-    allRecordHistoryNewValues: RecordHistoryNewValue[];
-    allRecordHistoryOldValues: RecordHistoryOldValue[];
+    allOperationHistory: IOperationHistory[];
+    allRecordHistory: IRecordHistory[];
+    allRecordHistoryNewValues: IRecordHistoryNewValue[];
+    allRecordHistoryOldValues: IRecordHistoryOldValue[];
     numberOfOperations: TransactionHistoryNumberOfOperations;
 }
 //# sourceMappingURL=TransactionHistory.d.ts.map

@@ -1,23 +1,21 @@
-import {DI}                        from '@airport/di'
-import {DbColumn}                  from '@airport/ground-control'
+import { DI } from '@airport/di'
+import { DbColumn } from '@airport/ground-control'
 import {
 	RecordHistory,
 	RepositoryEntity_ActorRecordId
-}                                  from '../../ddl/ddl'
+} from '../../ddl/ddl'
 import {
-	REC_HISTORY_DUO,
-	REC_HIST_NEW_VALUE_DUO,
-	REC_HIST_OLD_VALUE_DUO
-}                                  from '../../tokens'
+	REC_HISTORY_DUO
+} from '../../tokens'
 import {
 	BaseRecordHistoryDuo,
 	IBaseRecordHistoryDuo,
 	IRecordHistory,
 	IRecordHistoryNewValue,
 	IRecordHistoryOldValue,
-}                                  from '../../generated/generated'
-import {IRecordHistoryNewValueDuo} from './RecordHistoryNewValueDuo'
-import {IRecordHistoryOldValueDuo} from './RecordHistoryOldValueDuo'
+} from '../../generated/generated'
+import { IRecordHistoryNewValueDuo } from './RecordHistoryNewValueDuo'
+import { IRecordHistoryOldValueDuo } from './RecordHistoryOldValueDuo'
 
 
 export interface IRecordHistoryDuo
@@ -54,7 +52,7 @@ export class RecordHistoryDuo
 
 		recordHistory.actorRecordId = actorRecordId
 
-		return recordHistory
+		return recordHistory as IRecordHistory
 	}
 
 	addNewValue(

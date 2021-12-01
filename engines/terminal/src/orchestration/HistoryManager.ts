@@ -4,9 +4,9 @@ import {
 	IActor,
 	IRepositoryTransactionHistory,
 	ITransactionHistory,
-	REPO_TRANS_HISTORY_DUO,
+	REPOSITORY_TRANSACTION_HISTORY_DUO,
 	Repository_Id,
-	TRANS_HISTORY_DUO
+	TRANSACTION_HISTORY_DUO
 } from '@airport/holding-pattern'
 import { IHistoryManager } from '@airport/terminal-map'
 import { HISTORY_MANAGER } from '../tokens'
@@ -21,7 +21,7 @@ export class HistoryManager
 	async getNewTransHistory(
 		transactionType: TransactionType = TransactionType.LOCAL
 	): Promise<ITransactionHistory> {
-		const transHistoryDuo = await container(this).get(TRANS_HISTORY_DUO)
+		const transHistoryDuo = await container(this).get(TRANSACTION_HISTORY_DUO)
 
 		return await transHistoryDuo.getNewRecord(transactionType)
 	}
@@ -31,11 +31,11 @@ export class HistoryManager
 		repositoryId: Repository_Id,
 		actor: IActor,
 	): Promise<IRepositoryTransactionHistory> {
-		const [repoTransHistoryDuo, transHistoryDuo] = await container(this).get(
-			REPO_TRANS_HISTORY_DUO, TRANS_HISTORY_DUO)
+		const [repositoryTransactionHistoryDuo, transactionHistoryDuo] = await container(this).get(
+			REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO)
 
-		return await transHistoryDuo.getRepositoryTransaction(
-			transactionHistory, repositoryId, actor, repoTransHistoryDuo)
+		return await transactionHistoryDuo.getRepositoryTransaction(
+			transactionHistory, repositoryId, actor, repositoryTransactionHistoryDuo)
 	}
 
 }

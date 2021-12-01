@@ -1,5 +1,6 @@
 import {
 	Column,
+	DbBoolean,
 	DbNumber,
 	DbString,
 	Entity,
@@ -10,43 +11,48 @@ import {
 	OneToMany,
 	SequenceGenerator,
 	Table,
-}                                               from '@airport/air-control'
-import {Actor}                                  from '../infrastructure/Actor'
-import {Repository}                             from '../repository/Repository'
-import {OperationHistory}                       from './OperationHistory'
-import {RepositoryTransactionType}              from './RepositoryTransactionType'
-import {TransactionHistory}                     from './TransactionHistory'
+} from '@airport/air-control'
+import { Actor } from '../infrastructure/Actor'
+import { Repository } from '../repository/Repository'
+import { OperationHistory } from './OperationHistory'
+import { RepositoryTransactionType } from './RepositoryTransactionType'
+import { TransactionHistory } from './TransactionHistory'
 
 /**
  * Created by Papa on 9/15/2016.
  */
 
 export type RepositoryTransactionHistory_Id = number;
-export type RepositoryTransactionHistory_SaveTimestamp = number;
 export type RepositoryTransactionHistory_BlockId = number;
+export type RepositoryTransactionHistory_SaveTimestamp = number;
 export type RepositoryTransactionHistory_Synced = boolean;
+export type RepositoryTransactionHistory_SyncTimestamp = number;
+export type RepositoryTransactionHistory_UuId = string;
 
 @Entity()
-@Table({name: 'REPOSITORY_TRANSACTION_HISTORY'})
+@Table({ name: 'REPOSITORY_TRANSACTION_HISTORY' })
 export class RepositoryTransactionHistory {
 
 	@GeneratedValue()
 	@Id()
-	@SequenceGenerator({allocationSize: 200})
+	@SequenceGenerator({ allocationSize: 200 })
 	id: RepositoryTransactionHistory_Id
 
-	@Column({name: 'SAVE_TIMESTAMP', nullable: false})
-	@DbNumber()
-	saveTimestamp: RepositoryTransactionHistory_SaveTimestamp
-
-	@Column({name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false})
+	@Column({ name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false })
 	@DbString()
 	repositoryTransactionType: RepositoryTransactionType = RepositoryTransactionType.LOCAL
 
-	@Column({
-		name: 'SYNCED'
-	})
-	synced: RepositoryTransactionHistory_Synced
+	@Column({ name: 'SAVE_TIMESTAMP', nullable: false })
+	@DbNumber()
+	saveTimestamp: RepositoryTransactionHistory_SaveTimestamp
+
+	@Column({ name: 'SYNC_TIMESTAMP' })
+	@DbNumber()
+	syncTimestamp: RepositoryTransactionHistory_SyncTimestamp
+
+	@Column({ name: "UUID", nullable: false })
+	@DbString()
+	uuId: RepositoryTransactionHistory_UuId
 
 	@ManyToOne()
 	@JoinColumn({
@@ -69,9 +75,8 @@ export class RepositoryTransactionHistory {
 	})
 	transactionHistory: TransactionHistory
 
-	@OneToMany({mappedBy: 'repositoryTransactionHistory'})
+	@OneToMany({ mappedBy: 'repositoryTransactionHistory' })
 	operationHistory: OperationHistory[] = []
-
 
 	constructor(
 		data?: RepositoryTransactionHistory
@@ -80,12 +85,12 @@ export class RepositoryTransactionHistory {
 			return
 		}
 
-		this.id                 = data.id
+		this.id = data.id
 		this.transactionHistory = data.transactionHistory
-		this.repository         = data.repository
-		this.actor              = data.actor
-		this.saveTimestamp      = data.saveTimestamp
-		this.operationHistory   = data.operationHistory
+		this.repository = data.repository
+		this.actor = data.actor
+		this.saveTimestamp = data.saveTimestamp
+		this.operationHistory = data.operationHistory
 	}
 
 

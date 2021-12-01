@@ -12,7 +12,8 @@
     "@airport/di": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/travel-document-checkpoint": "0.0.1",
-    "@airport/airspace": "0.0.1"
+    "@airport/airspace": "0.0.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@airport/runway": "0.0.1"

@@ -12,7 +12,7 @@ import {
 }                            from '@airport/ground-control'
 import {
 	IRepository,
-	REPO_TRANS_HISTORY_DAO,
+	REPOSITORY_TRANSACTION_HISTORY_DAO,
 	Repository_Id,
 	RepositoryTransactionHistory_Id
 }                            from '@airport/holding-pattern'
@@ -65,7 +65,7 @@ export class SyncOutSerializer
 			      sharingMessageRepoTransBlockDao
 		      ]                                             = await container(this).get(REPO_TRANS_BLOCK_DAO,
 			// TODO: is this what needs to be injected
-			REPO_TRANS_HISTORY_DAO,
+			REPOSITORY_TRANSACTION_HISTORY_DAO,
 			SHARING_MESSAGE_DAO,
 			SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO)
 		const messageMap: Map<SharingNodeId, MessageFromTM> = new Map()

@@ -3,6 +3,7 @@ import { ISynchronizationConflictValues } from './synchronizationconflictvalues'
 export interface ISynchronizationConflict {
     id: number;
     type?: string;
+    acknowledged?: boolean;
     repository?: IRepository;
     overwrittenRecordHistory?: IRecordHistory;
     overwritingRecordHistory?: IRecordHistory;

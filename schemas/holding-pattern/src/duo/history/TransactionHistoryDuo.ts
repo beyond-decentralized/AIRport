@@ -4,7 +4,7 @@ import {
 	Repository_Id,
 	TransactionHistory
 }                                         from '../../ddl/ddl'
-import {TRANS_HISTORY_DUO}                from '../../tokens'
+import {TRANSACTION_HISTORY_DUO}                from '../../tokens'
 import {
 	BaseTransactionHistoryDuo,
 	IActor,
@@ -36,7 +36,7 @@ export class TransactionHistoryDuo
 	getNewRecord(
 		transactionType: TransactionType = TransactionType.LOCAL
 	): ITransactionHistory {
-		let transaction = new TransactionHistory()
+		let transaction = new TransactionHistory() as ITransactionHistory
 
 		transaction.transactionType = TransactionType.LOCAL
 
@@ -65,4 +65,4 @@ export class TransactionHistoryDuo
 
 }
 
-DI.set(TRANS_HISTORY_DUO, TransactionHistoryDuo)
+DI.set(TRANSACTION_HISTORY_DUO, TransactionHistoryDuo)

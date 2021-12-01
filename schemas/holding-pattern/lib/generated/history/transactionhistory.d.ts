@@ -1,9 +1,5 @@
-import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransactionHistory';
+import { IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRecordHistoryOldValue } from '../../';
 import { SyncSchemaMap } from '@airport/ground-control';
-import { OperationHistory } from '../../ddl/history/OperationHistory';
-import { RecordHistory } from '../../ddl/history/RecordHistory';
-import { RecordHistoryNewValue } from '../../ddl/history/RecordHistoryNewValue';
-import { RecordHistoryOldValue } from '../../ddl/history/RecordHistoryOldValue';
 import { ITerminal } from '@airport/travel-document-checkpoint';
 import { IRepositoryTransactionHistory } from './repositorytransactionhistory';
 export interface ITransactionHistory {
@@ -12,13 +8,13 @@ export interface ITransactionHistory {
     terminal?: ITerminal;
     repositoryTransactionHistories?: IRepositoryTransactionHistory[];
     repoTransHistoryMap?: {
-        [repositoryId: number]: RepositoryTransactionHistory;
+        [repositoryId: number]: IRepositoryTransactionHistory;
     };
     schemaMap?: SyncSchemaMap;
-    allOperationHistory?: OperationHistory[];
-    allRecordHistory?: RecordHistory[];
-    allRecordHistoryNewValues?: RecordHistoryNewValue[];
-    allRecordHistoryOldValues?: RecordHistoryOldValue[];
+    allOperationHistory?: IOperationHistory[];
+    allRecordHistory?: IRecordHistory[];
+    allRecordHistoryNewValues?: IRecordHistoryNewValue[];
+    allRecordHistoryOldValues?: IRecordHistoryOldValue[];
     numberOfOperations?: number;
 }
 //# sourceMappingURL=transactionhistory.d.ts.map

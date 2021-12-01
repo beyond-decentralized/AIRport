@@ -4,7 +4,7 @@ import {
 }                        from '@airport/di'
 import {BlockSyncStatus} from '@airport/ground-control'
 import {
-	REPO_TRANS_HISTORY_DAO,
+	REPOSITORY_TRANSACTION_HISTORY_DAO,
 	REPOSITORY_DAO
 }                        from '@airport/holding-pattern'
 import {
@@ -83,7 +83,7 @@ export class SynchronizationOutManager
 			.get(
 				REPOSITORY_DAO,
 				REPO_TRANS_BLOCK_DAO,
-				REPO_TRANS_HISTORY_DAO,
+				REPOSITORY_TRANSACTION_HISTORY_DAO,
 				SCHEMA_DAO,
 				SHARING_MESSAGE_DAO,
 				SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,

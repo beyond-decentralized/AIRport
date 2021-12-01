@@ -7,6 +7,7 @@ import type { SqlJsDriver } from "./SqlJsDriver";
 export declare class SqlJsTransaction implements ITransaction {
     private driver;
     credentials: ICredentials;
+    isSync: boolean;
     transHistory: ITransactionHistory;
     type: StoreType;
     constructor(driver: SqlJsDriver);

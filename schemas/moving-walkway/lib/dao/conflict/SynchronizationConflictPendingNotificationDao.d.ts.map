@@ -1,1 +1,0 @@
-{"version":3,"file":"SynchronizationConflictPendingNotificationDao.d.ts","sourceRoot":"","sources":["../../../src/dao/conflict/SynchronizationConflictPendingNotificationDao.ts"],"names":[],"mappings":"AAEA,OAAO,EACN,iDAAiD,EACjD,kDAAkD,EAClD,MAAoD,2BAA2B,CAAA;AAEhF,MAAM,WAAW,8CAChB,SAAQ,kDAAkD;CAC1D;AAED,qBAAa,6CACZ,SAAQ,iDACR,YAAW,8CAA8C;CAEzD"}

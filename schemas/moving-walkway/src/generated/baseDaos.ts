@@ -26,19 +26,6 @@ import {
 	QSynchronizationConflict,
 } from './conflict/qsynchronizationconflict';
 import {
-	ISynchronizationConflictPendingNotification,
-} from './conflict/synchronizationconflictpendingnotification';
-import {
-	SynchronizationConflictPendingNotificationESelect,
-	SynchronizationConflictPendingNotificationECreateColumns,
-	SynchronizationConflictPendingNotificationECreateProperties,
-	SynchronizationConflictPendingNotificationEUpdateColumns,
-	SynchronizationConflictPendingNotificationEUpdateProperties,
-	SynchronizationConflictPendingNotificationEId,
-	SynchronizationConflictPendingNotificationGraph,
-	QSynchronizationConflictPendingNotification,
-} from './conflict/qsynchronizationconflictpendingnotification';
-import {
 	ISynchronizationConflictValues,
 } from './conflict/synchronizationconflictvalues';
 import {
@@ -119,11 +106,11 @@ export class BaseRecordUpdateStageDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(3)
+		super(2)
 	}
 }
 
@@ -152,34 +139,6 @@ export class BaseSynchronizationConflictDao
 	
 	constructor() {
 		super(1)
-	}
-}
-
-
-export interface IBaseSynchronizationConflictPendingNotificationDao
-  extends IDao<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationGraph, QSynchronizationConflictPendingNotification> {
-}
-
-export class BaseSynchronizationConflictPendingNotificationDao
-  extends SQDIDao<ISynchronizationConflictPendingNotification, SynchronizationConflictPendingNotificationESelect, SynchronizationConflictPendingNotificationECreateProperties, SynchronizationConflictPendingNotificationEUpdateColumns, SynchronizationConflictPendingNotificationEUpdateProperties, SynchronizationConflictPendingNotificationEId, SynchronizationConflictPendingNotificationGraph, QSynchronizationConflictPendingNotification>
-	implements IBaseSynchronizationConflictPendingNotificationDao {
-	
-	static Find      = new DaoQueryDecorators<SynchronizationConflictPendingNotificationESelect>();
-	static FindOne   = new DaoQueryDecorators<SynchronizationConflictPendingNotificationESelect>();
-	static Search    = new DaoQueryDecorators<SynchronizationConflictPendingNotificationESelect>();
-	static SearchOne = new DaoQueryDecorators<SynchronizationConflictPendingNotificationESelect>();
-	static Save(
-		config: SynchronizationConflictPendingNotificationGraph
-	): PropertyDecorator {
-		return Dao.BaseSave<SynchronizationConflictPendingNotificationGraph>(config);
-  }
-
-	static diSet(): boolean {
-		return duoDiSet(2)
-	}
-	
-	constructor() {
-		super(2)
 	}
 }
 
