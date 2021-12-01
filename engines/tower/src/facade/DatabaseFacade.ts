@@ -27,11 +27,8 @@ import {
 	IContext
 } from '@airport/di'
 import {
-	AIRepository,
-	DistributionStrategy,
 	ENTITY_STATE_MANAGER,
 	ISaveResult,
-	PlatformType,
 	PortableQuery,
 	TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
@@ -173,14 +170,14 @@ export class DatabaseFacade
 		}
 		const entityCopy = await this.preSaveOperations(entity, context)
 
-		const [updateCacheManager, entityStateManager, schemaUtils,
+		const [updateCacheManager, entityStateManager, applicationUtils,
 			transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER,
 				ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
 
 		const saveResult = await transactionalConnector.save(entityCopy, context)
 
 		updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult,
-			entityStateManager, schemaUtils, new Set())
+			entityStateManager, applicationUtils, new Set())
 
 		return saveResult
 	}
@@ -195,7 +192,7 @@ export class DatabaseFacade
 		}
 		const entityCopy = await this.preSaveOperations(entity, context)
 
-		const [updateCacheManager, entityStateManager, schemaUtils,
+		const [updateCacheManager, entityStateManager, applicationUtils,
 			transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER,
 				ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
 
@@ -203,7 +200,7 @@ export class DatabaseFacade
 			.saveToDestination(repositoryDestination, entityCopy, context)
 
 		updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult,
-			entityStateManager, schemaUtils, new Set())
+			entityStateManager, applicationUtils, new Set())
 
 		return saveResult
 	}
@@ -215,7 +212,7 @@ export class DatabaseFacade
 		if (!entity) {
 			return null
 		}
-		const [updateCacheManager, entityCopier, entityStateManager, schemaUtils]
+		const [updateCacheManager, entityCopier, entityStateManager, applicationUtils]
 			= await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER,
 				ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
 
@@ -223,7 +220,7 @@ export class DatabaseFacade
 		const entityCopy = entityCopier
 			.copyEntityForProcessing(entity, dbEntity, entityStateManager)
 		updateCacheManager.setOperationState(
-			entityCopy, dbEntity, entityStateManager, schemaUtils, new Set())
+			entityCopy, dbEntity, entityStateManager, applicationUtils, new Set())
 
 		return entityCopy
 	}

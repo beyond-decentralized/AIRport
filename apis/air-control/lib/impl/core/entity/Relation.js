@@ -15,10 +15,10 @@ QRelation.prototype.leftJoin = function () {
     return this.getNewQEntity(JoinType.LEFT_JOIN);
 };
 QRelation.prototype.getNewQEntity = function (joinType) {
-    const [airDb, relationManager, schemaUtils] = DI.db()
+    const [airDb, relationManager, applicationUtils] = DI.db()
         .getSync(AIRPORT_DATABASE, RELATION_MANAGER, SCHEMA_UTILS);
     const dbEntity = this.dbRelation.relationEntity;
-    const qEntityConstructor = schemaUtils.getQEntityConstructor(this.dbRelation.relationEntity, airDb);
+    const qEntityConstructor = applicationUtils.getQEntityConstructor(this.dbRelation.relationEntity, airDb);
     let newQEntity = new qEntityConstructor(dbEntity, relationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType);
     newQEntity.__driver__.parentJoinEntity = this.parentQ;
     return newQEntity;

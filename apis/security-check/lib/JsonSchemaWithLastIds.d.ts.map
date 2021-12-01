@@ -1,1 +1,0 @@
-{"version":3,"file":"JsonSchemaWithLastIds.d.ts","sourceRoot":"","sources":["../src/JsonSchemaWithLastIds.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,mBAAmB,CAAA;AACrD,OAAO,EAAE,OAAO,EAAE,MAAM,WAAW,CAAC;AAEpC,MAAM,WAAW,qBACb,SAAQ,iBAAiB;IAEzB,OAAO,EAAE,OAAO,CAAA;CAEnB"}

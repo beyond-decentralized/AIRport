@@ -1,6 +1,6 @@
 import { PortableQuery } from "@airport/ground-control";
 import { Observable } from "rxjs";
-import { JsonSchemaWithLastIds } from '..';
+import { JsonApplicationWithLastIds } from '..';
 import { LastIds } from '../LastIds';
 export declare enum IsolateMessageType {
     ADD_REPOSITORY = "ADD_REPOSITORY",
@@ -29,7 +29,7 @@ export interface IIsolateMessage {
     id: number;
     repositoryDestination?: string;
     repositorySource?: string;
-    schemaSignature: string;
+    applicationSignature: string;
     type: IsolateMessageType;
 }
 export interface IIsolateMessageOut<T> extends IIsolateMessage {
@@ -38,10 +38,10 @@ export interface IIsolateMessageOut<T> extends IIsolateMessage {
     result: T;
 }
 export interface IInitConnectionIMI extends IIsolateMessage {
-    schema: JsonSchemaWithLastIds;
+    application: JsonApplicationWithLastIds;
 }
 export interface IConnectionInitializedIMI extends IIsolateMessage {
-    schemaName: string;
+    applicationName: string;
 }
 export interface IInitConnectionIMO extends IIsolateMessageOut<LastIds> {
 }
@@ -65,19 +65,19 @@ export interface IObservableDataIMO<T> extends IIsolateMessageOut<Observable<T>>
 export interface ISaveIMI<E, T = E | E[]> extends IIsolateMessage {
     dbEntity: {
         id: number;
-        schemaVersionId: number;
+        applicationVersionId: number;
     };
     entity: T;
 }
 export interface ISaveToDestinationIMI<E, T = E | E[]> extends IIsolateMessage {
     dbEntity: {
         id: number;
-        schemaVersionId: number;
+        applicationVersionId: number;
     };
     entity: T;
     repositoryDestination: string;
 }
-export interface IGetLatestSchemaVersionBySchemaNameIMI extends IIsolateMessage {
-    schemaName: string;
+export interface IGetLatestApplicationVersionByApplicationNameIMI extends IIsolateMessage {
+    applicationName: string;
 }
 //# sourceMappingURL=IsolateMessage.d.ts.map

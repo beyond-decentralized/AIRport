@@ -12,11 +12,11 @@ import {
 	IContext
 } from '@airport/di';
 import {
-	DbSchema,
-	getSchemaName,
-	JsonSchema
+	DbApplication,
+	getApplicationName,
+	JsonApplication
 } from '@airport/ground-control';
-import { JsonSchemaWithLastIds } from '@airport/security-check';
+import { JsonApplicationWithLastIds } from '@airport/security-check';
 import {
 	AllDdlObjects,
 	DDL_OBJECT_LINKER,
@@ -27,7 +27,7 @@ import {
 	QUERY_OBJECT_INITIALIZER
 } from '@airport/takeoff';
 import { TERMINAL_STORE } from '@airport/terminal-map';
-import { ISchema } from '@airport/airspace';
+import { IApplication } from '@airport/airspace';
 import {
 	SCHEMA_BUILDER,
 	SCHEMA_CHECKER,
@@ -37,53 +37,53 @@ import {
 	SCHEMA_RECORDER
 } from './tokens';
 
-export interface ISchemaInitializer {
+export interface IApplicationInitializer {
 
 	initialize(
-		jsonSchemas: JsonSchemaWithLastIds[],
-		existingSchemaMap: Map<string, ISchema>,
+		jsonApplications: JsonApplicationWithLastIds[],
+		existingApplicationMap: Map<string, IApplication>,
 		context: IContext,
 		checkDependencies: boolean
 	): Promise<void>
 
 	initializeForAIRportApp(
-		jsonSchema: JsonSchemaWithLastIds
+		jsonApplication: JsonApplicationWithLastIds
 	): Promise<void>
 
 	hydrate(
-		jsonSchemas: JsonSchemaWithLastIds[],
+		jsonApplications: JsonApplicationWithLastIds[],
 		context: IContext,
 	): Promise<void>
 
 	stage(
-		jsonSchemas: JsonSchemaWithLastIds[],
+		jsonApplications: JsonApplicationWithLastIds[],
 		context: IContext,
 	): Promise<[IAirportDatabase, IQueryObjectInitializer, ISequenceGenerator]>
 
 }
 
-export class SchemaInitializer
-	implements ISchemaInitializer {
+export class ApplicationInitializer
+	implements IApplicationInitializer {
 
-	addNewSchemaVersionsToAll(ddlObjects: AllDdlObjects) {
-		for (const schemaVersion of ddlObjects.added.schemaVersions) {
-			ddlObjects.allSchemaVersionsByIds[schemaVersion.id] = schemaVersion;
+	addNewApplicationVersionsToAll(ddlObjects: AllDdlObjects) {
+		for (const applicationVersion of ddlObjects.added.applicationVersions) {
+			ddlObjects.allApplicationVersionsByIds[applicationVersion.id] = applicationVersion;
 		}
 	}
 
 	async hydrate(
-		jsonSchemas: JsonSchemaWithLastIds[],
+		jsonApplications: JsonApplicationWithLastIds[],
 		context: IContext,
 	): Promise<void> {
 		const [airDb, queryObjectInitializer, sequenceGenerator] =
-			await this.stage(jsonSchemas, context);
+			await this.stage(jsonApplications, context);
 		// Hydrate all DDL objects and Sequences
 
 		const ddlObjects = await queryObjectInitializer.initialize(airDb);
 
-		this.addNewSchemaVersionsToAll(ddlObjects);
+		this.addNewApplicationVersionsToAll(ddlObjects);
 
-		this.setAirDbSchemas(airDb, ddlObjects);
+		this.setAirDbApplications(airDb, ddlObjects);
 
 		await sequenceGenerator.initialize();
 	}
@@ -91,158 +91,158 @@ export class SchemaInitializer
 	/*
 	 * Initialization scenarios:
 	 *
-	 * Brand new install - initialize BLUEPRINT schemas
-	 * Install new App - initialize New schema (and any new dependency schemas)
-	 * Reload existing install - hydrate all schemas
+	 * Brand new install - initialize BLUEPRINT applications
+	 * Install new App - initialize New application (and any new dependency applications)
+	 * Reload existing install - hydrate all applications
 	 * Reload exiting App - nothing to do
 	 */
 
 	async initialize(
-		jsonSchemas: JsonSchemaWithLastIds[],
-		existingSchemaMap: Map<string, ISchema>,
+		jsonApplications: JsonApplicationWithLastIds[],
+		existingApplicationMap: Map<string, IApplication>,
 		context: IContext,
 		checkDependencies: boolean
 	): Promise<void> {
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
-			queryObjectInitializer, schemaBuilder, schemaComposer,
-			schemaLocator, schemaRecorder, sequenceGenerator, terminalStore]
+			queryObjectInitializer, applicationBuilder, applicationComposer,
+			applicationLocator, applicationRecorder, sequenceGenerator, terminalStore]
 			= await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
 				QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER,
 				SCHEMA_COMPOSER, SCHEMA_LOCATOR, SCHEMA_RECORDER,
 				SEQUENCE_GENERATOR, TERMINAL_STORE);
 
-		const schemasWithValidDependencies = await this.
-			getSchemasWithValidDependencies(jsonSchemas, checkDependencies)
+		const applicationsWithValidDependencies = await this.
+			getApplicationsWithValidDependencies(jsonApplications, checkDependencies)
 
-		const newJsonSchemaMap: Map<string, JsonSchemaWithLastIds> = new Map()
-		for(const jsonSchema of jsonSchemas) {
-			newJsonSchemaMap.set(getSchemaName(jsonSchema), jsonSchema);
+		const newJsonApplicationMap: Map<string, JsonApplicationWithLastIds> = new Map()
+		for(const jsonApplication of jsonApplications) {
+			newJsonApplicationMap.set(getApplicationName(jsonApplication), jsonApplication);
 		}
 
-		for (const jsonSchema of schemasWithValidDependencies) {
-			await schemaBuilder.build(jsonSchema, existingSchemaMap, newJsonSchemaMap, context);
+		for (const jsonApplication of applicationsWithValidDependencies) {
+			await applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context);
 		}
 
-		const allDdlObjects = await schemaComposer.compose(
-			schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore);
+		const allDdlObjects = await applicationComposer.compose(
+			applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, terminalStore);
 
-		this.addNewSchemaVersionsToAll(allDdlObjects);
+		this.addNewApplicationVersionsToAll(allDdlObjects);
 
 		queryObjectInitializer.generateQObjectsAndPopulateStore(
 			allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
 
-		this.setAirDbSchemas(airDb, allDdlObjects);
+		this.setAirDbApplications(airDb, allDdlObjects);
 
-		const newSequences = await schemaBuilder.buildAllSequences(
-			schemasWithValidDependencies, context);
+		const newSequences = await applicationBuilder.buildAllSequences(
+			applicationsWithValidDependencies, context);
 
 		await sequenceGenerator.initialize(newSequences);
 
-		await schemaRecorder.record(allDdlObjects.added, context);
+		await applicationRecorder.record(allDdlObjects.added, context);
 	}
 
 	async initializeForAIRportApp(
-		jsonSchema: JsonSchemaWithLastIds
+		jsonApplication: JsonApplicationWithLastIds
 	): Promise<void> {
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
-			queryObjectInitializer, schemaComposer, schemaLocator, terminalStore]
+			queryObjectInitializer, applicationComposer, applicationLocator, terminalStore]
 			= await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
 				QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER,
 				SCHEMA_COMPOSER, SCHEMA_LOCATOR, TERMINAL_STORE);
 
-		const schemasWithValidDependencies = await this.
-			getSchemasWithValidDependencies([jsonSchema], false)
+		const applicationsWithValidDependencies = await this.
+			getApplicationsWithValidDependencies([jsonApplication], false)
 
-		const ddlObjects = await schemaComposer.compose(
-			schemasWithValidDependencies, ddlObjectRetriever, schemaLocator, terminalStore)
+		const ddlObjects = await applicationComposer.compose(
+			applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, terminalStore)
 
-		this.addNewSchemaVersionsToAll(ddlObjects);
+		this.addNewApplicationVersionsToAll(ddlObjects);
 
 		queryObjectInitializer.generateQObjectsAndPopulateStore(
 			ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
 
-		this.setAirDbSchemas(airDb, ddlObjects);
+		this.setAirDbApplications(airDb, ddlObjects);
 	}
 
 	async stage(
-		jsonSchemas: JsonSchemaWithLastIds[],
+		jsonApplications: JsonApplicationWithLastIds[],
 		context: IContext,
 	): Promise<[IAirportDatabase, IQueryObjectInitializer, ISequenceGenerator]> {
 		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
-			queryObjectInitializer, schemaBuilder, schemaComposer,
-			schemaLocator, sequenceGenerator, terminalStore]
+			queryObjectInitializer, applicationBuilder, applicationComposer,
+			applicationLocator, sequenceGenerator, terminalStore]
 			= await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
 				QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, SCHEMA_BUILDER,
 				SCHEMA_COMPOSER, SCHEMA_LOCATOR, SEQUENCE_GENERATOR, TERMINAL_STORE);
 
-		// Temporarily Initialize schema DDL objects and Sequences to allow for normal hydration
+		// Temporarily Initialize application DDL objects and Sequences to allow for normal hydration
 
-		const tempDdlObjects = await schemaComposer.compose(
-			jsonSchemas, ddlObjectRetriever, schemaLocator, terminalStore);
+		const tempDdlObjects = await applicationComposer.compose(
+			jsonApplications, ddlObjectRetriever, applicationLocator, terminalStore);
 
-		this.addNewSchemaVersionsToAll(tempDdlObjects);
+		this.addNewApplicationVersionsToAll(tempDdlObjects);
 
 		queryObjectInitializer.generateQObjectsAndPopulateStore(
 			tempDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
 
-		this.setAirDbSchemas(airDb, tempDdlObjects);
+		this.setAirDbApplications(airDb, tempDdlObjects);
 
-		const newSequences = await schemaBuilder.stageSequences(
-			jsonSchemas, airDb, context);
+		const newSequences = await applicationBuilder.stageSequences(
+			jsonApplications, airDb, context);
 
 		await sequenceGenerator.tempInitialize(newSequences);
 
 		return [airDb, queryObjectInitializer, sequenceGenerator];
 	}
 
-	private async getSchemasWithValidDependencies(
-		jsonSchemas: JsonSchemaWithLastIds[],
+	private async getApplicationsWithValidDependencies(
+		jsonApplications: JsonApplicationWithLastIds[],
 		checkDependencies: boolean
-	): Promise<JsonSchemaWithLastIds[]> {
-		const [schemaChecker, schemaLocator, terminalStore]
+	): Promise<JsonApplicationWithLastIds[]> {
+		const [applicationChecker, applicationLocator, terminalStore]
 			= await container(this).get(SCHEMA_CHECKER, SCHEMA_LOCATOR, TERMINAL_STORE);
-		const jsonSchemasToInstall: JsonSchema[] = [];
+		const jsonApplicationsToInstall: JsonApplication[] = [];
 
-		for (const jsonSchema of jsonSchemas) {
-			await schemaChecker.check(jsonSchema);
-			const existingSchema = schemaLocator.locateExistingSchemaVersionRecord(
-				jsonSchema, terminalStore);
+		for (const jsonApplication of jsonApplications) {
+			await applicationChecker.check(jsonApplication);
+			const existingApplication = applicationLocator.locateExistingApplicationVersionRecord(
+				jsonApplication, terminalStore);
 
-			if (existingSchema) {
-				// Nothing needs to be done, we already have this schema version
+			if (existingApplication) {
+				// Nothing needs to be done, we already have this application version
 				continue;
 			}
-			jsonSchemasToInstall.push(jsonSchema);
+			jsonApplicationsToInstall.push(jsonApplication);
 		}
 
-		let schemasWithValidDependencies;
+		let applicationsWithValidDependencies;
 
 		if (checkDependencies) {
-			const schemaReferenceCheckResults = await schemaChecker
-				.checkDependencies(jsonSchemasToInstall);
+			const applicationReferenceCheckResults = await applicationChecker
+				.checkDependencies(jsonApplicationsToInstall);
 
-			if (schemaReferenceCheckResults.neededDependencies.length
-				|| schemaReferenceCheckResults.schemasInNeedOfAdditionalDependencies.length) {
-				throw new Error(`Installing schemas with external dependencies
+			if (applicationReferenceCheckResults.neededDependencies.length
+				|| applicationReferenceCheckResults.applicationsInNeedOfAdditionalDependencies.length) {
+				throw new Error(`Installing applications with external dependencies
 			is not currently supported.`);
 			}
-			schemasWithValidDependencies = schemaReferenceCheckResults.schemasWithValidDependencies;
+			applicationsWithValidDependencies = applicationReferenceCheckResults.applicationsWithValidDependencies;
 		} else {
-			schemasWithValidDependencies = jsonSchemasToInstall;
+			applicationsWithValidDependencies = jsonApplicationsToInstall;
 		}
 
-		return schemasWithValidDependencies
+		return applicationsWithValidDependencies
 	}
 
-	private setAirDbSchemas(
+	private setAirDbApplications(
 		airDb: IAirportDatabase,
 		ddlObjects: AllDdlObjects
 	) {
-		for (let schema of ddlObjects.all.schemas) {
-			airDb.schemas[schema.index] = schema as DbSchema;
+		for (let application of ddlObjects.all.applications) {
+			airDb.applications[application.index] = application as DbApplication;
 		}
 	}
 
 }
 
-DI.set(SCHEMA_INITIALIZER, SchemaInitializer);
+DI.set(SCHEMA_INITIALIZER, ApplicationInitializer);

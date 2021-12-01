@@ -10,8 +10,8 @@ import { IRecordHistoryOldValue } from './history/recordhistoryoldvalue';
 import { RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, RecordHistoryOldValueGraph, QRecordHistoryOldValue } from './history/qrecordhistoryoldvalue';
 import { IRepository } from './repository/repository';
 import { RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryGraph, QRepository } from './repository/qrepository';
-import { IRepositorySchema } from './repository/repositoryschema';
-import { RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaGraph, QRepositorySchema } from './repository/qrepositoryschema';
+import { IRepositoryApplication } from './repository/repositoryapplication';
+import { RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication } from './repository/qrepositoryapplication';
 import { IRepositoryTransactionHistory } from './history/repositorytransactionhistory';
 import { RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryGraph, QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
 import { ITransactionHistory } from './history/transactionhistory';
@@ -88,14 +88,14 @@ export declare class BaseRepositoryDao extends SQDIDao<IRepository, RepositoryES
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseRepositorySchemaDao extends IDao<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaGraph, QRepositorySchema> {
+export interface IBaseRepositoryApplicationDao extends IDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication> {
 }
-export declare class BaseRepositorySchemaDao extends SQDIDao<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaGraph, QRepositorySchema> implements IBaseRepositorySchemaDao {
-    static Find: DaoQueryDecorators<RepositorySchemaESelect>;
-    static FindOne: DaoQueryDecorators<RepositorySchemaESelect>;
-    static Search: DaoQueryDecorators<RepositorySchemaESelect>;
-    static SearchOne: DaoQueryDecorators<RepositorySchemaESelect>;
-    static Save(config: RepositorySchemaGraph): PropertyDecorator;
+export declare class BaseRepositoryApplicationDao extends SQDIDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication> implements IBaseRepositoryApplicationDao {
+    static Find: DaoQueryDecorators<RepositoryApplicationESelect>;
+    static FindOne: DaoQueryDecorators<RepositoryApplicationESelect>;
+    static Search: DaoQueryDecorators<RepositoryApplicationESelect>;
+    static SearchOne: DaoQueryDecorators<RepositoryApplicationESelect>;
+    static Save(config: RepositoryApplicationGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

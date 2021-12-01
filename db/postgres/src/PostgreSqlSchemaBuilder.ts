@@ -1,39 +1,39 @@
-import { AIRPORT_DATABASE, IAirportDatabase, QSchemaInternal } from '@airport/air-control'
+import { AIRPORT_DATABASE, IAirportDatabase, QApplicationInternal } from '@airport/air-control'
 import { ISequence, SEQUENCE_DAO } from '@airport/airport-code'
 import { container, DI, IContext } from '@airport/di'
 import {
-	DbSchema,
-	getSchemaName,
+	DbApplication,
+	getApplicationName,
 	getSequenceName,
 	IStoreDriver,
-	JsonSchema,
-	JsonSchemaColumn,
-	JsonSchemaEntity,
+	JsonApplication,
+	JsonApplicationColumn,
+	JsonApplicationEntity,
 	QueryType,
 	SQLDataType,
 	STORE_DRIVER
 } from '@airport/ground-control'
-import { SCHEMA_BUILDER, SqlSchemaBuilder } from '@airport/landing'
+import { SCHEMA_BUILDER, SqlApplicationBuilder } from '@airport/landing'
 
-export class PostgreSqlSchemaBuilder
-	extends SqlSchemaBuilder {
+export class PostgreSqlApplicationBuilder
+	extends SqlApplicationBuilder {
 
-	async createSchema(
-		jsonSchema: JsonSchema,
+	async createApplication(
+		jsonApplication: JsonApplication,
 		storeDriver: IStoreDriver,
 		context: IContext,
 	): Promise<void> {
-		const schemaName = getSchemaName(jsonSchema)
-		const createSchemaStatement = `CREATE SCHEMA ${schemaName}`
+		const applicationName = getApplicationName(jsonApplication)
+		const createApplicationStatement = `CREATE SCHEMA ${applicationName}`
 
-		await storeDriver.query(QueryType.DDL, createSchemaStatement, [],
+		await storeDriver.query(QueryType.DDL, createApplicationStatement, [],
 			context, false)
 	}
 
 	getColumnSuffix(
-		jsonSchema: JsonSchema,
-		jsonEntity: JsonSchemaEntity,
-		jsonColumn: JsonSchemaColumn
+		jsonApplication: JsonApplication,
+		jsonEntity: JsonApplicationEntity,
+		jsonColumn: JsonApplicationColumn
 	): string {
 		let primaryKeySuffix = ''
 		if (jsonColumn.notNull
@@ -57,29 +57,29 @@ export class PostgreSqlSchemaBuilder
 			case SQLDataType.STRING:
 				return `TEXT ${suffix}`
 			default:
-				throw new Error(`Unexpected data type for column ${jsonSchema.name}.${jsonEntity.name}.${jsonColumn.name}`)
+				throw new Error(`Unexpected data type for column ${jsonApplication.name}.${jsonEntity.name}.${jsonColumn.name}`)
 		}
 	}
 
 	getCreateTableSuffix(
-		jsonSchema: JsonSchema,
-		jsonEntity: JsonSchemaEntity
+		jsonApplication: JsonApplication,
+		jsonEntity: JsonApplicationEntity
 	): string {
 		return ``
 	}
 
 	async buildAllSequences(
-		jsonSchemas: JsonSchema[]
+		jsonApplications: JsonApplication[]
 	): Promise<ISequence[]> {
 		console.log('buildAllSequences')
 
 		let [airDb, sequenceDao] = await container(this).get(AIRPORT_DATABASE, SEQUENCE_DAO)
 
 		let allSequences: ISequence[] = []
-		for (const jsonSchema of jsonSchemas) {
-			const qSchema = airDb.QM[getSchemaName(jsonSchema)] as QSchemaInternal
-			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-				allSequences = allSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity))
+		for (const jsonApplication of jsonApplications) {
+			const qApplication = airDb.QM[getApplicationName(jsonApplication)] as QApplicationInternal
+			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
+				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}
 		}
 
@@ -89,17 +89,17 @@ export class PostgreSqlSchemaBuilder
 	}
 
 	stageSequences(
-		jsonSchemas: JsonSchema[],
+		jsonApplications: JsonApplication[],
 		airDb: IAirportDatabase,
 		context: IContext,
 	): ISequence[] {
 		console.log('stageSequences')
 
 		let stagedSequences: ISequence[] = []
-		for (const jsonSchema of jsonSchemas) {
-			const qSchema = airDb.QM[getSchemaName(jsonSchema)] as QSchemaInternal
-			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-				stagedSequences = stagedSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity))
+		for (const jsonApplication of jsonApplications) {
+			const qApplication = airDb.QM[getApplicationName(jsonApplication)] as QApplicationInternal
+			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
+				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}
 		}
 
@@ -107,8 +107,8 @@ export class PostgreSqlSchemaBuilder
 	}
 
 	buildSequences(
-		dbSchema: DbSchema,
-		jsonEntity: JsonSchemaEntity,
+		dbApplication: DbApplication,
+		jsonEntity: JsonApplicationEntity,
 	): ISequence[] {
 		const sequences: ISequence[] = []
 		for (const jsonColumn of jsonEntity.columns) {
@@ -121,7 +121,7 @@ export class PostgreSqlSchemaBuilder
 			}
 
 			sequences.push({
-				schemaIndex: dbSchema.index,
+				applicationIndex: dbApplication.index,
 				tableIndex: jsonEntity.index,
 				columnIndex: jsonColumn.index,
 				incrementBy,
@@ -164,15 +164,15 @@ export class PostgreSqlSchemaBuilder
 	}
 
 	/* 	async buildSequences(
-			jsonSchema: JsonSchema,
-			jsonEntity: JsonSchemaEntity,
+			jsonApplication: JsonApplication,
+			jsonEntity: JsonApplicationEntity,
 			storeDriver: IStoreDriver
 		): Promise<void> {
 			for (const jsonColumn of jsonEntity.columns) {
 				if (!jsonColumn.isGenerated) {
 					continue
 				}
-				const prefixedTableName = storeDriver.getTableName(jsonSchema, jsonEntity)
+				const prefixedTableName = storeDriver.getTableName(jsonApplication, jsonEntity)
 				const sequenceName = getSequenceName(prefixedTableName, jsonColumn.name)
 				let incrementBy = jsonColumn.allocationSize
 				if (!incrementBy) {
@@ -188,4 +188,4 @@ export class PostgreSqlSchemaBuilder
 
 }
 
-DI.set(SCHEMA_BUILDER, PostgreSqlSchemaBuilder)
+DI.set(SCHEMA_BUILDER, PostgreSqlApplicationBuilder)

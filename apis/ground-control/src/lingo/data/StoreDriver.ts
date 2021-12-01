@@ -1,12 +1,12 @@
 import {IContext}      from '@airport/di'
 import {Observable}   from 'rxjs'
 import {PortableQuery} from '../query/PortableQuery'
-import {DbEntity}      from '../schema/Entity'
+import {DbEntity}      from '../application/Entity'
 import {
 	DomainName,
-	SchemaName
-}                      from '../schema/Schema'
-import {SchemaStatus}  from '../schema/SchemaStatus'
+	ApplicationName
+}                      from '../application/Application'
+import {ApplicationStatus}  from '../application/ApplicationStatus'
 import {
 	InternalFragments,
 	IStoreOperator
@@ -25,13 +25,13 @@ export interface IStoreDriver
 	type: StoreType;
 
 	doesTableExist(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IContext,
 	): Promise<boolean>
 
 	dropTable(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IContext,
 	): Promise<boolean>
@@ -42,10 +42,10 @@ export interface IStoreDriver
 	): string
 
 	getTableName(
-		schema: {
+		application: {
 			domain: DomainName | {
 				name: DomainName
-			}; name: SchemaName; status?: SchemaStatus;
+			}; name: ApplicationName; status?: ApplicationStatus;
 		},
 		table: {
 			name: string, tableConfig?: {

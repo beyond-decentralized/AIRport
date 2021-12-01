@@ -4,8 +4,8 @@ import { SyncColumnMap } from "./SyncColumnMap";
  * Created by Papa on 10/7/2016.
  */
 export class SyncTableMap extends TableMap {
-    constructor(schemaIndex, tableMap) {
-        super(schemaIndex, tableMap);
+    constructor(applicationIndex, tableMap) {
+        super(applicationIndex, tableMap);
     }
     ensureEntity(tableIndex, allColumns = false) {
         return super.ensure(tableIndex, allColumns, SyncColumnMap);

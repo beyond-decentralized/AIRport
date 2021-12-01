@@ -10,21 +10,21 @@ import {
 	SColumn,
 	SRelation
 } from './SProperty'
-import { SIndexedSchema } from './SSchema'
+import { SIndexedApplication } from './SApplication'
 
-export class SchemaRelationResolver {
+export class ApplicationRelationResolver {
 
 	resolveAllRelationLinks(
-		indexedSchema: SIndexedSchema,
+		indexedApplication: SIndexedApplication,
 	): void {
-		for (const entityName in indexedSchema.entityMapByName) {
-			const indexedEntity = indexedSchema.entityMapByName[entityName]
+		for (const entityName in indexedApplication.entityMapByName) {
+			const indexedEntity = indexedApplication.entityMapByName[entityName]
 			if (indexedEntity.entity.isRepositoryEntity) {
 				if (indexedEntity.idColumns[0].name !== repositoryEntity.FOREIGN_KEY) {
 					throw new Error(`@Id Column at index 0, must be 'REPOSITORY_ID'`)
 				}
 			}
-			this.resolveEntityRelationLinks(indexedSchema, indexedEntity)
+			this.resolveEntityRelationLinks(indexedApplication, indexedEntity)
 		}
 	}
 
@@ -42,7 +42,7 @@ export class SchemaRelationResolver {
 	}
 
 	private resolveEntityRelationLinks(
-		indexedSchema: SIndexedSchema,
+		indexedApplication: SIndexedApplication,
 		indexedEntity: SIndexedEntity,
 	): void {
 		const anEntity = indexedEntity.entity
@@ -60,16 +60,16 @@ export class SchemaRelationResolver {
 			let relationEntityIsLocal
 			let relationIndexedEntity: SIndexedEntity | DbEntity
 			let relationEntityName: string
-			let crossSchema = aRelation.referencedSchemaIndex || aRelation.referencedSchemaIndex === 0
-			if (crossSchema) {
-				relationIndexedEntity = indexedSchema.schema
-					.referencedSchemas[aRelation.referencedSchemaIndex].dbSchema.currentVersion[0]
-					.schemaVersion.entityMapByName[aRelation.entityName]
+			let crossApplication = aRelation.referencedApplicationIndex || aRelation.referencedApplicationIndex === 0
+			if (crossApplication) {
+				relationIndexedEntity = indexedApplication.application
+					.referencedApplications[aRelation.referencedApplicationIndex].dbApplication.currentVersion[0]
+					.applicationVersion.entityMapByName[aRelation.entityName]
 				relationEntityName = relationIndexedEntity.name
 				relationEntityIsLocal = relationIndexedEntity.isLocal
 			} else {
 				relationIndexedEntity =
-					indexedSchema.entityMapByName[aRelation.entityName]
+					indexedApplication.entityMapByName[aRelation.entityName]
 				if (!relationIndexedEntity) {
 					throw new Error(`Did not find ${aRelation.entityName} entity `
 						+ `(via the ${anEntity.name}.${aProperty.name} relation).`)
@@ -110,10 +110,10 @@ export class SchemaRelationResolver {
 											into a repository entity '${aRelation.entityName}'.
 											Cascading from Local entities to Repository entities is not currently supported.`)
 										}*/
-					if (crossSchema && !aRelation.sRelationColumns.length) {
+					if (crossApplication && !aRelation.sRelationColumns.length) {
 						throw new Error(
-							`@OneToMany Relation '${anEntity.name}.${aProperty.name}' is a cross-schema @OneToMany association.
-						@OneToMany associations are not allowed across schemas (without @JoinColumn(s)).`)
+							`@OneToMany Relation '${anEntity.name}.${aProperty.name}' is a cross-application @OneToMany association.
+						@OneToMany associations are not allowed across applications (without @JoinColumn(s)).`)
 					}
 					break
 				case EntityRelationType.MANY_TO_ONE:
@@ -130,7 +130,7 @@ export class SchemaRelationResolver {
 					// oneSideRelationIndex = aRelation.index
 					break
 				case EntityRelationType.MANY_TO_ONE:
-					if (!crossSchema) {
+					if (!crossApplication) {
 						const matchingRelatedOneToManys = relatedOneToManys.filter(
 							relatedOneToMany =>
 								relatedOneToMany.oneToMany && relatedOneToMany.oneToMany.mappedBy === aProperty.name
@@ -197,7 +197,7 @@ export class SchemaRelationResolver {
 					sRelationColumn.relationColumnReference = ownColumn.name
 				}
 
-				if (crossSchema) {
+				if (crossApplication) {
 					ownColumn.type = this.getTypeFromSQLDataType((<DbColumn>relatedColumn).type)
 					this.setTypeForLinkedColumns(ownColumn)
 				} else {

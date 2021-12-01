@@ -15,8 +15,8 @@ import {
 	RecordHistoryActorRecordId
 }                            from "@airport/holding-pattern";
 import {
-	ISchemaEntity,
-	ISchemaVersion
+	IApplicationEntity,
+	IApplicationVersion
 }                            from "@airport/traffic-pattern";
 import {MissingRecordStatus} from "./MissingRecordStatus";
 
@@ -31,13 +31,13 @@ export class MissingRecord {
 
 	@ManyToOne()
 	@JoinColumn({name: "SCHEMA_VERSION_ID", referencedColumnName: "ID"})
-	schemaVersion: ISchemaVersion;
+	applicationVersion: IApplicationVersion;
 
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized
 	// repository ledger (and hence, that using local ids is safe)
 	@JoinColumn({name: "SCHEMA_ENTITY_ID", referencedColumnName: 'ID'})
-	entity: ISchemaEntity;
+	entity: IApplicationEntity;
 
 	@ManyToOne()
 	@JoinColumn({

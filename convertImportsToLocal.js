@@ -9,7 +9,7 @@ const undesiredReferencePaths = [
     '../generators',
     '../highway',
     '../libs',
-    '../schemas'
+    '../applications'
 ];
 
 const pathMap = getProjectPathMap(projectDir);

@@ -58,10 +58,10 @@ import {
 import {
 	Q,
 	duoDiSet,
-} from './qSchema';
+} from './qApplication';
 
 
-// Schema Q object Dependency Injection readiness detection Dao
+// Application Q object Dependency Injection readiness detection Dao
 export class SQDIDao<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,

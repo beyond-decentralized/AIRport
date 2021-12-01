@@ -1,3 +1,3 @@
-function testChatSchema() {
-    console.log("hello test chat-schema!");
+function testChatApplication() {
+    console.log("hello test chat-application!");
 }

@@ -1,21 +1,21 @@
 import { IApiOperation } from "./ApiOperation";
 export interface IApiRegistry {
-    initialize(schemaApi: ISchemaApi): void;
-    findApiObjectAndOperation(systemName: string, schemaSignature: string, apiObjectName: string, methodName: string): Promise<{
+    initialize(applicationApi: IApplicationApi): void;
+    findApiObjectAndOperation(systemName: string, applicationSignature: string, apiObjectName: string, methodName: string): Promise<{
         apiObject: any;
         apiOperation: IApiOperation;
     }>;
 }
 export interface InstalledApi {
     /**
-     * TODO: Can a given schema be keyed by multiple hashes?  For example,
-     * a hash can be generated of each version of the same schema.
+     * TODO: Can a given application be keyed by multiple hashes?  For example,
+     * a hash can be generated of each version of the same application.
      */
-    schemaApiMap: {
-        [schemaSchemaApi: string]: ISchemaApi;
+    applicationApiMap: {
+        [applicationApplicationApi: string]: IApplicationApi;
     };
 }
-export interface ISchemaApi {
+export interface IApplicationApi {
     apiObjectMap: {
         [tokenName: string]: IApiObject;
     };

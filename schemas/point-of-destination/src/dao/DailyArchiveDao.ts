@@ -14,7 +14,7 @@ import {
 import { DAILY_ARCHIVE_DAO } from '../tokens'
 import { BaseDailyArchiveDao } from '../generated/baseDaos'
 import { QDailyArchive } from '../generated/qdailyarchive'
-import { Q } from '../generated/qSchema'
+import { Q } from '../generated/qApplication'
 
 export type FlatDailyArchive =
 	[DailyArchiveRepositoryId, DailyArchiveDate, DailyArchiveRepositoryData];
@@ -41,7 +41,7 @@ export class DailyArchiveDao
 	): Promise<void> {
 		const airDb = await container(this).get(AIRPORT_DATABASE)
 
-		const dbEntity = Q.db.currentVersion[0].schemaVersion
+		const dbEntity = Q.db.currentVersion[0].applicationVersion
 			.entityMapByName.DailyArchive
 		let da: QDailyArchive
 		await airDb.insertValues({

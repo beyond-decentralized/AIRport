@@ -38,7 +38,7 @@ button {
 <script lang="ts">
 import { isDeleted } from '@airport/autopilot';
 import { messages, repositoryListings } from './store';
-import type { Level1 } from '@airport/functionality-demo-schema';
+import type { Level1 } from '@airport/functionality-demo-application';
 import type { DeepPartial } from '@airport/pressurization';
 import { FunctionalityDemoService } from './service';
 import { allLevel1Records } from './store';

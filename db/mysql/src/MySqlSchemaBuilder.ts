@@ -1,7 +1,7 @@
 import {
 	AIRPORT_DATABASE,
 	IAirportDatabase,
-	QSchemaInternal
+	QApplicationInternal
 } from '@airport/air-control'
 import {
 	ISequence,
@@ -12,36 +12,36 @@ import {
 	DI, IContext,
 } from '@airport/di';
 import {
-	DbSchema,
-	getSchemaName,
+	DbApplication,
+	getApplicationName,
 	IStoreDriver,
-	JsonSchema,
-	JsonSchemaColumn,
-	JsonSchemaEntity,
+	JsonApplication,
+	JsonApplicationColumn,
+	JsonApplicationEntity,
 	QueryType,
 	SQLDataType
 } from '@airport/ground-control'
-import { SCHEMA_BUILDER, SqlSchemaBuilder } from '@airport/landing'
+import { SCHEMA_BUILDER, SqlApplicationBuilder } from '@airport/landing'
 
-export class MySqlSchemaBuilder
-	extends SqlSchemaBuilder {
+export class MySqlApplicationBuilder
+	extends SqlApplicationBuilder {
 
-	async createSchema(
-		jsonSchema: JsonSchema,
+	async createApplication(
+		jsonApplication: JsonApplication,
 		storeDriver: IStoreDriver,
 		context: IContext,
 	): Promise<void> {
-		const schemaName = getSchemaName(jsonSchema)
-		const createSchemaStatement = `CREATE SCHEMA ${schemaName}`
+		const applicationName = getApplicationName(jsonApplication)
+		const createApplicationStatement = `CREATE SCHEMA ${applicationName}`
 
-		await storeDriver.query(QueryType.DDL, createSchemaStatement, [],
+		await storeDriver.query(QueryType.DDL, createApplicationStatement, [],
 			context, false)
 	}
 
 	getColumnSuffix(
-		jsonSchema: JsonSchema,
-		jsonEntity: JsonSchemaEntity,
-		jsonColumn: JsonSchemaColumn
+		jsonApplication: JsonApplication,
+		jsonEntity: JsonApplicationEntity,
+		jsonColumn: JsonApplicationColumn
 	): string {
 		let primaryKeySuffix = ''
 		if (jsonColumn.notNull
@@ -52,7 +52,7 @@ export class MySqlSchemaBuilder
 		// SEQUENCES no longer have a generated id (for simplicity of code)
 		// let autoincrementSuffix = ''
 		// if (jsonColumn.isGenerated
-		// 	&& jsonSchema.name === '@airport/airport-code'
+		// 	&& jsonApplication.name === '@airport/airport-code'
 		// 	&& jsonEntity.name === 'SEQUENCES') {
 		// 	autoincrementSuffix = ' AUTOINCREMENT'
 		// }
@@ -78,19 +78,19 @@ export class MySqlSchemaBuilder
 			case SQLDataType.STRING:
 				return `TEXT ${suffix}`
 			default:
-				throw new Error(`Unexpected data type for column ${jsonSchema.name}${jsonEntity.name}.${jsonColumn.name}`)
+				throw new Error(`Unexpected data type for column ${jsonApplication.name}${jsonEntity.name}.${jsonColumn.name}`)
 		}
 	}
 
 	getCreateTableSuffix(
-		jsonSchema: JsonSchema,
-		jsonEntity: JsonSchemaEntity
+		jsonApplication: JsonApplication,
+		jsonEntity: JsonApplicationEntity
 	): string {
 		return ``
 	}
 
 	async buildAllSequences(
-		jsonSchemas: JsonSchema[],
+		jsonApplications: JsonApplication[],
 		context: IContext,
 	): Promise<ISequence[]> {
 		console.log('buildAllSequences')
@@ -98,10 +98,10 @@ export class MySqlSchemaBuilder
 		let [airDb, sequenceDao] = await container(this).get(AIRPORT_DATABASE, SEQUENCE_DAO)
 
 		let allSequences: ISequence[] = []
-		for (const jsonSchema of jsonSchemas) {
-			const qSchema = airDb.QM[getSchemaName(jsonSchema)] as QSchemaInternal
-			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-				allSequences = allSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity))
+		for (const jsonApplication of jsonApplications) {
+			const qApplication = airDb.QM[getApplicationName(jsonApplication)] as QApplicationInternal
+			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
+				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}
 		}
 
@@ -111,17 +111,17 @@ export class MySqlSchemaBuilder
 	}
 
 	stageSequences(
-		jsonSchemas: JsonSchema[],
+		jsonApplications: JsonApplication[],
 		airDb: IAirportDatabase,
 		context: IContext,
 	): ISequence[] {
 		console.log('stageSequences')
 
 		let stagedSequences: ISequence[] = []
-		for (const jsonSchema of jsonSchemas) {
-			const qSchema = airDb.QM[getSchemaName(jsonSchema)] as QSchemaInternal
-			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-				stagedSequences = stagedSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity))
+		for (const jsonApplication of jsonApplications) {
+			const qApplication = airDb.QM[getApplicationName(jsonApplication)] as QApplicationInternal
+			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
+				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}
 		}
 
@@ -129,8 +129,8 @@ export class MySqlSchemaBuilder
 	}
 
 	buildSequences(
-		dbSchema: DbSchema,
-		jsonEntity: JsonSchemaEntity,
+		dbApplication: DbApplication,
+		jsonEntity: JsonApplicationEntity,
 	): ISequence[] {
 		const sequences: ISequence[] = []
 		for (const jsonColumn of jsonEntity.columns) {
@@ -143,7 +143,7 @@ export class MySqlSchemaBuilder
 			}
 
 			sequences.push({
-				schemaIndex: dbSchema.index,
+				applicationIndex: dbApplication.index,
 				tableIndex: jsonEntity.index,
 				columnIndex: jsonColumn.index,
 				incrementBy,
@@ -156,4 +156,4 @@ export class MySqlSchemaBuilder
 
 }
 
-DI.set(SCHEMA_BUILDER, MySqlSchemaBuilder)
+DI.set(SCHEMA_BUILDER, MySqlApplicationBuilder)

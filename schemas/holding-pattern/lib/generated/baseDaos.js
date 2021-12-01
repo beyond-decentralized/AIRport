@@ -1,6 +1,6 @@
 import { Dao, DaoQueryDecorators, } from '@airport/check-in';
-import { Q, duoDiSet, } from './qSchema';
-// Schema Q object Dependency Injection readiness detection Dao
+import { Q, duoDiSet, } from './qApplication';
+// Application Q object Dependency Injection readiness detection Dao
 export class SQDIDao extends Dao {
     constructor(dbEntityId) {
         super(dbEntityId, Q);
@@ -96,7 +96,7 @@ BaseRepositoryDao.Find = new DaoQueryDecorators();
 BaseRepositoryDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryDao.Search = new DaoQueryDecorators();
 BaseRepositoryDao.SearchOne = new DaoQueryDecorators();
-export class BaseRepositorySchemaDao extends SQDIDao {
+export class BaseRepositoryApplicationDao extends SQDIDao {
     constructor() {
         super(8);
     }
@@ -107,10 +107,10 @@ export class BaseRepositorySchemaDao extends SQDIDao {
         return duoDiSet(8);
     }
 }
-BaseRepositorySchemaDao.Find = new DaoQueryDecorators();
-BaseRepositorySchemaDao.FindOne = new DaoQueryDecorators();
-BaseRepositorySchemaDao.Search = new DaoQueryDecorators();
-BaseRepositorySchemaDao.SearchOne = new DaoQueryDecorators();
+BaseRepositoryApplicationDao.Find = new DaoQueryDecorators();
+BaseRepositoryApplicationDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryApplicationDao.Search = new DaoQueryDecorators();
+BaseRepositoryApplicationDao.SearchOne = new DaoQueryDecorators();
 export class BaseRepositoryTransactionHistoryDao extends SQDIDao {
     constructor() {
         super(6);

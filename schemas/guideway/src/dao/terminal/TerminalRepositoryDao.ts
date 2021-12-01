@@ -13,7 +13,7 @@ import {
 	BaseTerminalRepositoryDao,
 	QTerminalRepository
 }                                     from '../../generated/generated'
-import {Q}                            from '../../generated/qSchema'
+import {Q}                            from '../../generated/qApplication'
 
 export interface ITerminalRepositoryDao {
 

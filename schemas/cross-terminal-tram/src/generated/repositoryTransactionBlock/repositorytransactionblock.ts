@@ -15,8 +15,8 @@ import {
 	IMissingRecordRepoTransBlock,
 } from '../missingRecord/missingrecordrepotransblock';
 import {
-	IRepoTransBlockSchemaToChange,
-} from './repotransblockschematochange';
+	IRepoTransBlockApplicationToChange,
+} from './repotransblockapplicationtochange';
 
 
 
@@ -44,7 +44,7 @@ export interface IRepositoryTransactionBlock {
 	sharingNodeRepoTransBlocks?: ISharingNodeRepoTransBlock[];
 	sharingMessageRepoTransBlocks?: ISharingMessageRepoTransBlock[];
 	missingRecordRepoTransBlocks?: IMissingRecordRepoTransBlock[];
-	repoTransBlockSchemasToChange?: IRepoTransBlockSchemaToChange[];
+	repoTransBlockApplicationsToChange?: IRepoTransBlockApplicationToChange[];
 
 	// Transient Properties
 

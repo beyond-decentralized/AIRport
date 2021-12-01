@@ -3,8 +3,8 @@ import { ISyncInActorChecker } from './synchronization/in/checker/SyncInActorChe
 import { ISyncInChecker } from './synchronization/in/checker/SyncInChecker'
 import { ISyncInDataChecker } from './synchronization/in/checker/SyncInDataChecker'
 import { ISyncInRepositoryChecker } from './synchronization/in/checker/SyncInRepositoryChecker'
-import { ISyncInSchemaChecker } from './synchronization/in/checker/SyncInSchemaChecker'
-import { ISyncInSchemaVersionChecker } from './synchronization/in/checker/SyncInSchemaVersionChecker'
+import { ISyncInApplicationChecker } from './synchronization/in/checker/SyncInApplicationChecker'
+import { ISyncInApplicationVersionChecker } from './synchronization/in/checker/SyncInApplicationVersionChecker'
 import { ISyncInTerminalChecker } from './synchronization/in/checker/SyncInTerminalChecker'
 import { ISyncInUserChecker } from './synchronization/in/checker/SyncInUserChecker'
 import { IStage1SyncedInDataProcessor } from './synchronization/in/Stage1SyncedInDataProcessor'
@@ -28,8 +28,8 @@ export const SYNC_IN_CHECKER = groundTransport.token<ISyncInChecker>('ISyncInChe
 export const SYNC_IN_DATA_CHECKER = groundTransport.token<ISyncInDataChecker>('ISyncInDataChecker')
 export const SYNC_IN_TERMINAL_CHECKER = groundTransport.token<ISyncInTerminalChecker>('ISyncInTerminalChecker')
 export const SYNC_IN_REPOSITORY_CHECKER = groundTransport.token<ISyncInRepositoryChecker>('ISyncInRepositoryChecker')
-export const SYNC_IN_SCHEMA_CHECKER = groundTransport.token<ISyncInSchemaChecker>('ISyncInSchemaChecker')
-export const SYNC_IN_SCHEMA_VERSION_CHECKER = groundTransport.token<ISyncInSchemaVersionChecker>('ISyncInSchemaVersionChecker')
+export const SYNC_IN_SCHEMA_CHECKER = groundTransport.token<ISyncInApplicationChecker>('ISyncInApplicationChecker')
+export const SYNC_IN_SCHEMA_VERSION_CHECKER = groundTransport.token<ISyncInApplicationVersionChecker>('ISyncInApplicationVersionChecker')
 export const SYNC_IN_USER_CHECKER = groundTransport.token<ISyncInUserChecker>('ISyncInUserChecker')
 export const SYNC_IN_UTILS = groundTransport.token<ISyncInUtils>('ISyncInUtils')
 export const SYNC_NODE_MANAGER = groundTransport.token<ISyncNodeManager>('ISyncNodeManager')

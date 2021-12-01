@@ -2,6 +2,6 @@ export * from '../tokens'
 export * from './DemoApi'
 export * from '../ddl/ddl'
 
-import { functionalityDemoSchema } from '../tokens'
+import { functionalityDemoApplication } from '../tokens'
 
-functionalityDemoSchema.autopilot = true
+functionalityDemoApplication.autopilot = true

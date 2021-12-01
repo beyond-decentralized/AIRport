@@ -8,14 +8,14 @@ import {
 	IUser
 } from "@airport/travel-document-checkpoint";
 import {
-	ISchema,
-	ISchemaVersion
+	IApplication,
+	IApplicationVersion
 } from "@airport/airspace";
 
 export interface TerminalMessage {
 	actors: IActor[]
-	schemaVersions: ISchemaVersion[]
-	schemas: ISchema[]
+	applicationVersions: IApplicationVersion[]
+	applications: IApplication[]
 	history: IRepositoryTransactionHistory
 	// Repositories may reference records in other repositories
 	referencedRepositories: IRepository[]

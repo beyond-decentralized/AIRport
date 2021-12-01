@@ -1,7 +1,7 @@
 import {
-	ISchemaVersion,
-	ISchemaEntity,
-	ISchemaColumn,
+	IApplicationVersion,
+	IApplicationEntity,
+	IApplicationColumn,
 } from '@airport/airspace';
 import {
 	IRepository,
@@ -26,11 +26,11 @@ export interface IRecordUpdateStage {
 	updatedValue?: any;
 
 	// Non-Id Relations
-	schemaVersion?: ISchemaVersion;
-	entity?: ISchemaEntity;
+	applicationVersion?: IApplicationVersion;
+	entity?: IApplicationEntity;
 	repository?: IRepository;
 	actor?: IActor;
-	column?: ISchemaColumn;
+	column?: IApplicationColumn;
 
 	// Transient Properties
 

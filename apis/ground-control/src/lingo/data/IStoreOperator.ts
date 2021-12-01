@@ -1,7 +1,7 @@
 import {IContext}      from '@airport/di'
 import {SQLDataType}   from '../core/field/JSONClause'
 import {PortableQuery} from '../query/PortableQuery'
-import {DbColumn}      from '../schema/Property'
+import {DbColumn}      from '../application/Property'
 
 export enum QueryType {
 	DDL = 'DDL',

@@ -21,7 +21,7 @@ import {
   IEntityUpdateProperties,
   IQEntity,
   MappedEntityArray,
-  QSchema,
+  QApplication,
   RawDelete,
   RawInsertColumnValues,
   RawInsertValues,
@@ -64,7 +64,7 @@ export class EntityDatabaseFacade<Entity,
 
   constructor(
     public dbEntity: DbEntity,
-    private Q: QSchema,
+    private Q: QApplication,
   ) {
     this.find = new EntityFind<Entity, Array<Entity>, EntitySelect>(
       this.dbEntity);

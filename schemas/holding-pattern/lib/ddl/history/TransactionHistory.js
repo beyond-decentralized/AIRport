@@ -5,12 +5,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, SequenceGenerator, Table, Transient } from '@airport/air-control';
-import { SyncSchemaMap } from '@airport/ground-control';
+import { SyncApplicationMap } from '@airport/ground-control';
 let TransactionHistory = class TransactionHistory {
     constructor() {
         this.repositoryTransactionHistories = [];
         this.repoTransHistoryMap = {};
-        this.schemaMap = new SyncSchemaMap();
+        this.applicationMap = new SyncApplicationMap();
         this.allOperationHistory = [];
         this.allRecordHistory = [];
         this.allRecordHistoryNewValues = [];
@@ -39,7 +39,7 @@ __decorate([
 ], TransactionHistory.prototype, "repoTransHistoryMap", void 0);
 __decorate([
     Transient()
-], TransactionHistory.prototype, "schemaMap", void 0);
+], TransactionHistory.prototype, "applicationMap", void 0);
 __decorate([
     Transient()
 ], TransactionHistory.prototype, "allOperationHistory", void 0);

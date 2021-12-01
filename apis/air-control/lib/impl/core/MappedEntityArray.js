@@ -2,7 +2,7 @@
  * Created by Papa on 10/14/2016.
  */
 // FIXME: MappedEnityArray does not serialize, make it serializable before it can be used
-export function newMappedEntityArray(schemaUtils, dbEntity) {
+export function newMappedEntityArray(applicationUtils, dbEntity) {
     let arr = Array.apply(null, []);
     arr.dataMap = {};
     arr.clear = function () {
@@ -15,8 +15,8 @@ export function newMappedEntityArray(schemaUtils, dbEntity) {
         });
     };
     arr.put = function (value) {
-        let keyValue = schemaUtils.getIdKey(value, dbEntity);
-        if (schemaUtils.isIdEmpty(keyValue)) {
+        let keyValue = applicationUtils.getIdKey(value, dbEntity);
+        if (applicationUtils.isIdEmpty(keyValue)) {
             throw new Error(`Composite @Id(s) value for entity '${dbEntity.name}' is not defined`);
         }
         if (this.dataMap[keyValue]) {

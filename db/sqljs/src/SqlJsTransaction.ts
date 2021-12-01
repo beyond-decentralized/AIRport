@@ -9,8 +9,8 @@ import {
     IStoreDriver,
     PortableQuery,
     QueryType,
-    SchemaName,
-    SchemaStatus,
+    ApplicationName,
+    ApplicationStatus,
     SQLDataType,
     StoreType
 } from '@airport/ground-control'
@@ -60,19 +60,19 @@ export class SqlJsTransaction
     }
 
     async doesTableExist(
-        schemaName: string,
+        applicationName: string,
         tableName: string,
         context: IOperationContext,
     ): Promise<boolean> {
-        return await this.driver.doesTableExist(schemaName, tableName, context)
+        return await this.driver.doesTableExist(applicationName, tableName, context)
     }
 
     async dropTable(
-        schemaName: string,
+        applicationName: string,
         tableName: string,
         context: IOperationContext,
     ): Promise<boolean> {
-        return await this.driver.dropTable(schemaName, tableName, context)
+        return await this.driver.dropTable(applicationName, tableName, context)
     }
 
     getEntityTableName(
@@ -83,12 +83,12 @@ export class SqlJsTransaction
     }
 
     getTableName(
-        schema: {
+        application: {
             domain: DomainName | {
                 name: DomainName
             };
-            name: SchemaName;
-            status?: SchemaStatus;
+            name: ApplicationName;
+            status?: ApplicationStatus;
         },
         table: {
             name: string, tableConfig?: {
@@ -97,7 +97,7 @@ export class SqlJsTransaction
         },
         context: IContext,
     ): string {
-        return this.driver.getTableName(schema, table, context)
+        return this.driver.getTableName(application, table, context)
     }
 
     async initialize(

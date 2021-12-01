@@ -421,7 +421,7 @@ export const SCHEMA = {
 				}
 			],
 			"integerVersion": 1,
-			"referencedSchemas": [
+			"referencedApplications": [
 				{
 					"domain": "air",
 					"index": 0,
@@ -432,7 +432,7 @@ export const SCHEMA = {
 						{
 							"entities": null,
 							"integerVersion": 1,
-							"referencedSchemas": null,
+							"referencedApplications": null,
 							"versionString": "1.0.0"
 						}
 					]

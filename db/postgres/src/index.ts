@@ -5,9 +5,9 @@ import { DATABASE_MANAGER } from '@airport/terminal';
 
 export * from './DDLManager'
 export * from './PostgreQueryAdaptor'
-export * from './PostgreSchemaBuilder'
+export * from './PostgreApplicationBuilder'
 export * from './PostgreSqlDriver'
-export * from './PostgreSqlSchemaBuilder'
+export * from './PostgreSqlApplicationBuilder'
 export * from './PostgreTransaction'
 
 export async function startDb(

@@ -1,1 +1,0 @@
-{"version":3,"file":"SchemaVersionDuo.js","sourceRoot":"","sources":["../../src/duo/SchemaVersionDuo.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,EAAE,EAAC,MAAsB,aAAa,CAAA;AAC9C,OAAO,EAAC,kBAAkB,EAAC,MAAM,WAAW,CAAA;AAC5C,OAAO,EACN,oBAAoB,EAEpB,MAAgC,wBAAwB,CAAA;AAOzD,MAAM,OAAO,gBACZ,SAAQ,oBAAoB;CAG5B;AAED,EAAE,CAAC,GAAG,CAAC,kBAAkB,EAAE,gBAAgB,CAAC,CAAA"}

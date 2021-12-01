@@ -1,64 +1,64 @@
 import {
 	AIRPORT_DATABASE,
 	IAirportDatabase,
-	QSchemaInternal
+	QApplicationInternal
 }                           from '@airport/air-control';
 import {
 	container,
 	IContext
 }                           from '@airport/di';
 import {
-	DbSchema,
-	getSchemaName,
+	DbApplication,
+	getApplicationName,
 	IStoreDriver,
-	JsonSchema,
-	JsonSchemaColumn,
-	JsonSchemaEntity,
+	JsonApplication,
+	JsonApplicationColumn,
+	JsonApplicationEntity,
 	QueryType
 }                           from '@airport/ground-control';
-import { SqlSchemaBuilder } from '@airport/landing';
+import { SqlApplicationBuilder } from '@airport/landing';
 
-export class NoOpSchemaBuilder
-	extends SqlSchemaBuilder {
+export class NoOpApplicationBuilder
+	extends SqlApplicationBuilder {
 
-	async createSchema(
-		jsonSchema: JsonSchema,
+	async createApplication(
+		jsonApplication: JsonApplication,
 		storeDriver: IStoreDriver,
 		context: IContext,
 	): Promise<void> {
-		const schemaName            = getSchemaName(jsonSchema);
-		const createSchemaStatement = `CREATE SCHEMA ${schemaName}`;
+		const applicationName            = getApplicationName(jsonApplication);
+		const createApplicationStatement = `CREATE SCHEMA ${applicationName}`;
 
-		await storeDriver.query(QueryType.DDL, createSchemaStatement, [],
+		await storeDriver.query(QueryType.DDL, createApplicationStatement, [],
 			context, false);
 	}
 
 	getColumnSuffix(
-		jsonSchema: JsonSchema,
-		jsonEntity: JsonSchemaEntity,
-		jsonColumn: JsonSchemaColumn
+		jsonApplication: JsonApplication,
+		jsonEntity: JsonApplicationEntity,
+		jsonColumn: JsonApplicationColumn
 	): string {
 		return '';
 	}
 
 	getCreateTableSuffix(
-		jsonSchema: JsonSchema,
-		jsonEntity: JsonSchemaEntity
+		jsonApplication: JsonApplication,
+		jsonEntity: JsonApplicationEntity
 	): string {
 		return ``;
 	}
 
 	async buildAllSequences(
-		jsonSchemas: JsonSchema[],
+		jsonApplications: JsonApplication[],
 		context: IContext,
 	): Promise<any[]> {
 		let airDb = await container(this).get(AIRPORT_DATABASE);
 
 		let allSequences: any[] = [];
-		for (const jsonSchema of jsonSchemas) {
-			const qSchema = airDb.QM[getSchemaName(jsonSchema)] as QSchemaInternal;
-			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-				allSequences = allSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity));
+		for (const jsonApplication of jsonApplications) {
+			const qApplication = airDb.QM[getApplicationName(jsonApplication)] as QApplicationInternal;
+			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
+				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
 			}
 		}
 
@@ -66,15 +66,15 @@ export class NoOpSchemaBuilder
 	}
 
 	stageSequences(
-		jsonSchemas: JsonSchema[],
+		jsonApplications: JsonApplication[],
 		airDb: IAirportDatabase,
 		context: IContext,
 	): any[] {
 		let stagedSequences: any[] = [];
-		for (const jsonSchema of jsonSchemas) {
-			const qSchema = airDb.QM[getSchemaName(jsonSchema)] as QSchemaInternal;
-			for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-				stagedSequences = stagedSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity));
+		for (const jsonApplication of jsonApplications) {
+			const qApplication = airDb.QM[getApplicationName(jsonApplication)] as QApplicationInternal;
+			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
+				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
 			}
 		}
 
@@ -82,8 +82,8 @@ export class NoOpSchemaBuilder
 	}
 
 	buildSequences(
-		dbSchema: DbSchema,
-		jsonEntity: JsonSchemaEntity,
+		dbApplication: DbApplication,
+		jsonEntity: JsonApplicationEntity,
 	): any[] {
 		const sequences: any[] = [];
 		for (const jsonColumn of jsonEntity.columns) {
@@ -96,7 +96,7 @@ export class NoOpSchemaBuilder
 			}
 
 			sequences.push({
-				schemaIndex: dbSchema.index,
+				applicationIndex: dbApplication.index,
 				tableIndex: jsonEntity.index,
 				columnIndex: jsonColumn.index,
 				incrementBy,

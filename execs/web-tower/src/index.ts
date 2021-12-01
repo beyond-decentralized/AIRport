@@ -1,2 +1,2 @@
-export * from './IFrameSchemaLocator'
+export * from './IFrameApplicationLocator'
 export * from './IFrameTransactionalConnector'

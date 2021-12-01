@@ -8,7 +8,7 @@ import {
   IEntityUpdateProperties,
   IFieldsSelect,
   IQEntity,
-  QSchema,
+  QApplication,
   Y,
 } from '@airport/air-control';
 import { DbEntity, EntityId as DbEntityId, EntityRelationType } from '@airport/ground-control';
@@ -103,11 +103,11 @@ export class Duo<Entity,
 
   constructor(
     dbEntityId: DbEntityId | DbEntity,
-    qSchema?: QSchema,
+    qApplication?: QApplication,
   ) {
     if (typeof dbEntityId === 'number') {
-      this.dbEntity = qSchema.__dbSchema__.currentVersion[0]
-        .schemaVersion.entities[dbEntityId];
+      this.dbEntity = qApplication.__dbApplication__.currentVersion[0]
+        .applicationVersion.entities[dbEntityId];
     } else {
       this.dbEntity = dbEntityId;
     }

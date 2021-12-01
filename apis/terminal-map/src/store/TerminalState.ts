@@ -1,7 +1,7 @@
 import { IActor } from '@airport/holding-pattern'
 import type {
 	IDomain,
-	ISchema
+	IApplication
 } from '@airport/airspace'
 import type { ITerminal } from '@airport/travel-document-checkpoint'
 
@@ -10,7 +10,7 @@ export interface ITerminalState {
 	applicationActors: IActor[]
 	domains: IDomain[]
 	frameworkActor: IActor
-	schemas: ISchema[]
+	applications: IApplication[]
 	terminal: ITerminal
 
 }

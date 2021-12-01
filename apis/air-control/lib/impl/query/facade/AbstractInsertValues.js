@@ -18,19 +18,19 @@ export class AbstractInsertValues extends AbstractQuery {
 				(table: ${dbEntity.tableConfig.name})
 						`);
         }
-        if (dbColumn.entity.schemaVersion.schema.index !==
-            dbEntity.schemaVersion.schema.index
+        if (dbColumn.entity.applicationVersion.application.index !==
+            dbEntity.applicationVersion.application.index
             || dbColumn.entity.index !== dbEntity.index) {
-            const columnSchema = dbColumn.entity.schemaVersion.schema;
-            const entitySchema = dbEntity.schemaVersion.schema;
+            const columnApplication = dbColumn.entity.applicationVersion.application;
+            const entityApplication = dbEntity.applicationVersion.application;
             throw new Error(`Unexpected entity for column ${dbColumn.name}.
 			Expecting:
-				Domain: ${entitySchema.domain.name}
-				Schema: ${entitySchema.name}
+				Domain: ${entityApplication.domain.name}
+				Application: ${entityApplication.name}
 				Entity: ${dbEntity.name}
 			Found:
-				Domain: ${columnSchema.domain.name}
-				Schema: ${columnSchema.name}
+				Domain: ${columnApplication.domain.name}
+				Application: ${columnApplication.name}
 				Entity: ${dbColumn.entity.name}`);
         }
     }

@@ -1,4 +1,4 @@
-import { DbEntity } from "../../schema/Entity";
+import { DbEntity } from "../../application/Entity";
 
 export enum EntityState {
 	CREATE = 'CREATE',
@@ -10,7 +10,7 @@ export enum EntityState {
 	// RESULT = 'RESULT',
 	STUB = 'STUB',
 	UPDATE = 'UPDATE',
-	// Json fields promote schema de-normalization
+	// Json fields promote application de-normalization
 	// RESULT_JSON = 'RESULT_JSON',
 	// RESULT_JSON_ARRAY = 'RESULT_JSON_ARRAY'
 }

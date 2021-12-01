@@ -20,20 +20,20 @@ export class PostgreSqlDriver
 	pool: pg.Pool
 
 	composeTableName(
-		schemaName: string,
+		applicationName: string,
 		tableName: string
 	): string {
-		return `${schemaName}.${tableName}`
+		return `${applicationName}.${tableName}`
 	}
 
 	async doesTableExist(
-		schemaName: string,
+		applicationName: string,
 		tableName: string
 	): Promise<boolean> {
 		try {
 			const result = await this.pool.query(`SELECT EXISTS (
-				SELECT FROM information_schema.tables 
-				WHERE  table_schema = '${schemaName}'
+				SELECT FROM information_application.tables 
+				WHERE  table_application = '${applicationName}'
 				AND    table_name   = '${tableName}'
 				)`)
 			return result.rows && !!result.rows.length
@@ -44,11 +44,11 @@ export class PostgreSqlDriver
 	}
 
 	async dropTable(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IOperationContext,
 	): Promise<boolean> {
-		await this.pool.query(`DROP TABLE  '${schemaName}'.'${tableName}'`)
+		await this.pool.query(`DROP TABLE  '${applicationName}'.'${tableName}'`)
 
 		return true
 	}

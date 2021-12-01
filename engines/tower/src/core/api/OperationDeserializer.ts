@@ -1,4 +1,4 @@
-import { ISchemaUtils } from "@airport/air-control";
+import { IApplicationUtils } from "@airport/air-control";
 import {
     IOperationDeserializer,
     OPERATION_DESERIALIZER
@@ -29,7 +29,7 @@ export class OperationDeserializer
         entity: T,
         dbEntity: DbEntity,
         entityStateManager: IEntityStateManager,
-        schemaUtils: ISchemaUtils
+        applicationUtils: IApplicationUtils
     ): T {
         const operation: IDeserializableOperation = {
             lookupTable: [],
@@ -37,10 +37,10 @@ export class OperationDeserializer
         let deserializedEntity
         if (entity instanceof Array) {
             deserializedEntity = <any><E[]>entity.map(anEntity => this.doDeserialize(
-                anEntity, dbEntity, operation, entityStateManager, schemaUtils))
+                anEntity, dbEntity, operation, entityStateManager, applicationUtils))
         } else {
             deserializedEntity = this.doDeserialize(
-                entity, dbEntity, operation, entityStateManager, schemaUtils)
+                entity, dbEntity, operation, entityStateManager, applicationUtils)
         }
 
         return deserializedEntity
@@ -51,7 +51,7 @@ export class OperationDeserializer
         dbEntity: DbEntity,
         operation: IDeserializableOperation,
         entityStateManager: IEntityStateManager,
-        schemaUtils: ISchemaUtils
+        applicationUtils: IApplicationUtils
     ): E {
         let state = entityStateManager.getEntityState(entity)
 
@@ -84,7 +84,7 @@ export class OperationDeserializer
 
         for (const dbProperty of dbEntity.properties) {
             let value = entity[dbProperty.name]
-            if (schemaUtils.isEmpty(value)) {
+            if (applicationUtils.isEmpty(value)) {
                 continue
             }
             let propertyCopy
@@ -98,7 +98,7 @@ export class OperationDeserializer
                         }
                         propertyCopy = value.map(aProperty => this.doDeserialize(
                             aProperty, dbRelation.entity, operation,
-                            entityStateManager, schemaUtils))
+                            entityStateManager, applicationUtils))
                         break
                     case EntityRelationType.MANY_TO_ONE:
                         if (!(value instanceof Object) || value instanceof Array) {
@@ -107,7 +107,7 @@ export class OperationDeserializer
                         }
                         propertyCopy = this.doDeserialize(
                             value, dbRelation.entity, operation,
-                            entityStateManager, schemaUtils)
+                            entityStateManager, applicationUtils)
                         break
                     default:
                         throw new Error(

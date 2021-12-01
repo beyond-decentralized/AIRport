@@ -1,6 +1,6 @@
 import {
     IApiObject,
-    ISchemaApi
+    IApplicationApi
 } from '@airport/check-in';
 import * as ts from 'typescript';
 import tsc from 'typescript';
@@ -8,7 +8,7 @@ import { forEach } from '../../ParserUtils';
 import { getRelativePath } from '../../resolve/pathResolver';
 import { projectInterfaces } from '../InterfaceRegistry';
 
-export const currentSchemaApi: ISchemaApi = {
+export const currentApplicationApi: IApplicationApi = {
     apiObjectMap: {}
 }
 /**

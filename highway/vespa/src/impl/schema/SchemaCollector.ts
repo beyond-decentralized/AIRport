@@ -1,10 +1,10 @@
-export interface ISchemaCollector {
+export interface IApplicationCollector {
 
 	collect(): Promise<string[]>
 }
 
-export class SchemaCollector
-	implements ISchemaCollector {
+export class ApplicationCollector
+	implements IApplicationCollector {
 
 	async collect(): Promise<string[]> {
 		return [];

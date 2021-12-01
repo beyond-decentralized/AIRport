@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
 	{
 		"type": "Immutable",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
+		"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\Immutable.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
@@ -81,7 +81,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "SystemGenerated",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\SystemGenerated.ts",
+		"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\SystemGenerated.ts",
 		"parentClassName": "Immutable",
 		"location": "./Immutable",
 		"isSuperclass": true,
@@ -143,7 +143,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "Immutable",
-			"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
+			"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\Immutable.ts",
 			"parentClassName": null,
 			"isSuperclass": true,
 			"ids": [],
@@ -224,7 +224,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "ImmutableWithActor",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\ImmutableWithActor.ts",
+		"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\ImmutableWithActor.ts",
 		"parentClassName": "Immutable",
 		"location": "./Immutable",
 		"isSuperclass": true,
@@ -324,7 +324,7 @@ export const MAPPED_SUPERCLASS = [
 					"ownerEntity": null,
 					"nonArrayType": "Actor",
 					"fromProject": "@airport/holding-pattern",
-					"otherSchemaDbEntity": {
+					"otherApplicationDbEntity": {
 						"columnMap": null,
 						"columns": [
 							{
@@ -624,7 +624,7 @@ export const MAPPED_SUPERCLASS = [
 								"sinceVersion": null
 							}
 						],
-						"schemaVersion": null,
+						"applicationVersion": null,
 						"sinceVersion": null,
 						"tableConfig": null
 					},
@@ -642,7 +642,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "Immutable",
-			"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
+			"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\Immutable.ts",
 			"parentClassName": null,
 			"isSuperclass": true,
 			"ids": [],
@@ -723,7 +723,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "AgeSuitable",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\AgeSuitable.ts",
+		"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\AgeSuitable.ts",
 		"parentClassName": "ImmutableWithActor",
 		"location": "./ImmutableWithActor",
 		"isSuperclass": true,
@@ -815,7 +815,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "ImmutableWithActor",
-			"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\ImmutableWithActor.ts",
+			"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\ImmutableWithActor.ts",
 			"parentClassName": "Immutable",
 			"location": "./Immutable",
 			"isSuperclass": true,
@@ -915,7 +915,7 @@ export const MAPPED_SUPERCLASS = [
 						"ownerEntity": null,
 						"nonArrayType": "Actor",
 						"fromProject": "@airport/holding-pattern",
-						"otherSchemaDbEntity": {
+						"otherApplicationDbEntity": {
 							"columnMap": null,
 							"columns": [
 								{
@@ -1215,7 +1215,7 @@ export const MAPPED_SUPERCLASS = [
 									"sinceVersion": null
 								}
 							],
-							"schemaVersion": null,
+							"applicationVersion": null,
 							"sinceVersion": null,
 							"tableConfig": null
 						},
@@ -1233,7 +1233,7 @@ export const MAPPED_SUPERCLASS = [
 			"implementedInterfaceNames": [],
 			"parentEntity": {
 				"type": "Immutable",
-				"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
+				"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\Immutable.ts",
 				"parentClassName": null,
 				"isSuperclass": true,
 				"ids": [],
@@ -1316,7 +1316,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "Mutable",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Mutable.ts",
+		"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\Mutable.ts",
 		"parentClassName": "Immutable",
 		"location": "./Immutable",
 		"isSuperclass": true,
@@ -1407,7 +1407,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "Immutable",
-			"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
+			"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\Immutable.ts",
 			"parentClassName": null,
 			"isSuperclass": true,
 			"ids": [],
@@ -1488,7 +1488,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "MutableWithActor",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\MutableWithActor.ts",
+		"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\MutableWithActor.ts",
 		"parentClassName": "Mutable",
 		"location": null,
 		"isSuperclass": true,
@@ -1588,7 +1588,7 @@ export const MAPPED_SUPERCLASS = [
 					"ownerEntity": null,
 					"nonArrayType": "Actor",
 					"fromProject": "@airport/holding-pattern",
-					"otherSchemaDbEntity": {
+					"otherApplicationDbEntity": {
 						"columnMap": null,
 						"columns": [
 							{
@@ -1888,7 +1888,7 @@ export const MAPPED_SUPERCLASS = [
 								"sinceVersion": null
 							}
 						],
-						"schemaVersion": null,
+						"applicationVersion": null,
 						"sinceVersion": null,
 						"tableConfig": null
 					},
@@ -1906,7 +1906,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "Mutable",
-			"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Mutable.ts",
+			"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\Mutable.ts",
 			"parentClassName": "Immutable",
 			"location": "./Immutable",
 			"isSuperclass": true,
@@ -1997,7 +1997,7 @@ export const MAPPED_SUPERCLASS = [
 			"implementedInterfaceNames": [],
 			"parentEntity": {
 				"type": "Immutable",
-				"path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
+				"path": "D:\\code\\AIR\\AIRport\\applications\\vasi\\src\\ddl\\attributes\\Immutable.ts",
 				"parentClassName": null,
 				"isSuperclass": true,
 				"ids": [],

@@ -2,8 +2,8 @@
 export const SCHEMA = {
 	"domain": "air",
 	"index": null,
-	"name": "@airport/functionality-demo-schema",
-	"packageName": "@airport/functionality-demo-schema",
+	"name": "@airport/functionality-demo-application",
+	"packageName": "@airport/functionality-demo-application",
 	"sinceVersion": 1,
 	"versions": [
 		{
@@ -108,7 +108,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -337,7 +337,7 @@ export const SCHEMA = {
 				}
 			],
 			"integerVersion": 1,
-			"referencedSchemas": [],
+			"referencedApplications": [],
 			"versionString": "1.0.0"
 		}
 	]

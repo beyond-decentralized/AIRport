@@ -8,7 +8,7 @@ import {
 import {IAirportDatabase}        from '../../AirportDatabase'
 import {IFieldUtils}             from '../../utils/FieldUtils'
 import {IQueryUtils}             from '../../utils/QueryUtils'
-import {ISchemaUtils}            from '../../utils/SchemaUtils'
+import {IApplicationUtils}            from '../../utils/ApplicationUtils'
 import {IQOperableFieldInternal} from '../field/OperableField'
 import {IFieldColumnAliases}     from './Aliases'
 import {IJoinFields}             from './Joins'
@@ -188,7 +188,7 @@ export interface IQEntityDriver<IEntity> {
 
 	getInstance(
 		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		applicationUtils: IApplicationUtils
 	): IQEntityInternal<IEntity>;
 
 	getRelationJson(

@@ -9,15 +9,15 @@ import {
 }                                   from '@airport/terminal-map';
 import {
 	IDomain,
-	ISchema,
-	ISchemaColumn,
-	ISchemaEntity,
-	ISchemaProperty,
-	ISchemaPropertyColumn,
-	ISchemaReference,
-	ISchemaRelation,
-	ISchemaRelationColumn,
-	ISchemaVersion
+	IApplication,
+	IApplicationColumn,
+	IApplicationEntity,
+	IApplicationProperty,
+	IApplicationPropertyColumn,
+	IApplicationReference,
+	IApplicationRelation,
+	IApplicationRelationColumn,
+	IApplicationVersion
 }                                   from '@airport/airspace';
 import { IDdlObjectLinker }         from './DdlObjectLinker';
 import { IQueryEntityClassCreator } from './QueryEntityClassCreator';
@@ -46,22 +46,22 @@ export interface IQueryObjectInitializer {
 
 export interface AllDdlObjects {
 	all: DdlObjects
-	allSchemaVersionsByIds: ISchemaVersion[]
+	allApplicationVersionsByIds: IApplicationVersion[]
 	added: DdlObjects
 }
 
 export interface DdlObjects {
-	columns: ISchemaColumn[]
+	columns: IApplicationColumn[]
 	domains: IDomain[]
-	entities: ISchemaEntity[]
-	latestSchemaVersions: ISchemaVersion[]
-	properties: ISchemaProperty[]
-	propertyColumns: ISchemaPropertyColumn[]
-	relationColumns: ISchemaRelationColumn[]
-	relations: ISchemaRelation[]
-	schemas: ISchema[]
-	schemaReferences: ISchemaReference[]
-	schemaVersions: ISchemaVersion[]
+	entities: IApplicationEntity[]
+	latestApplicationVersions: IApplicationVersion[]
+	properties: IApplicationProperty[]
+	propertyColumns: IApplicationPropertyColumn[]
+	relationColumns: IApplicationRelationColumn[]
+	relations: IApplicationRelation[]
+	applications: IApplication[]
+	applicationReferences: IApplicationReference[]
+	applicationVersions: IApplicationVersion[]
 
 }
 
@@ -76,7 +76,7 @@ export class QueryObjectInitializer
 		terminalStore: ITerminalStore
 	): void {
 		ddlObjectLinker.link(allDdlObjects, terminalStore);
-		queryEntityClassCreator.createAll(allDdlObjects.all.schemas, airDb);
+		queryEntityClassCreator.createAll(allDdlObjects.all.applications, airDb);
 		const lastTerminalState = terminalStore.getTerminalState();
 
 		const existingDomainMap = {};
@@ -91,16 +91,16 @@ export class QueryObjectInitializer
 			unmodifiedDomains.push(existingDomainMap[domainName]);
 		}
 
-		const existingSchemaMap = {};
-		for (const schema of lastTerminalState.schemas) {
-			existingSchemaMap[schema.name] = schema;
+		const existingApplicationMap = {};
+		for (const application of lastTerminalState.applications) {
+			existingApplicationMap[application.name] = application;
 		}
-		for (const schema of allDdlObjects.added.schemas) {
-			delete existingSchemaMap[schema.name];
+		for (const application of allDdlObjects.added.applications) {
+			delete existingApplicationMap[application.name];
 		}
-		const unmodifiedSchemas: ISchema[] = [];
-		for (const schemaName in existingSchemaMap) {
-			unmodifiedSchemas.push(existingSchemaMap[schemaName]);
+		const unmodifiedApplications: IApplication[] = [];
+		for (const applicationName in existingApplicationMap) {
+			unmodifiedApplications.push(existingApplicationMap[applicationName]);
 		}
 
 		terminalStore.state.next({
@@ -109,9 +109,9 @@ export class QueryObjectInitializer
 				...unmodifiedDomains,
 				...allDdlObjects.added.domains
 			],
-			schemas: [
-				...unmodifiedSchemas,
-				...allDdlObjects.added.schemas
+			applications: [
+				...unmodifiedApplications,
+				...allDdlObjects.added.applications
 			]
 		});
 	}
@@ -126,15 +126,15 @@ export class QueryObjectInitializer
 
 		const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects();
 
-		const allSchemaVersionsByIds = []
+		const allApplicationVersionsByIds = []
 
-		for(const schemaVersion of ddlObjects.schemaVersions) {
-			allSchemaVersionsByIds[schemaVersion.id] = schemaVersion
+		for(const applicationVersion of ddlObjects.applicationVersions) {
+			allApplicationVersionsByIds[applicationVersion.id] = applicationVersion
 		}
 
 		let allDdlObjects: AllDdlObjects = {
 			all: ddlObjects,
-			allSchemaVersionsByIds,
+			allApplicationVersionsByIds,
 			added: ddlObjects
 		}
 

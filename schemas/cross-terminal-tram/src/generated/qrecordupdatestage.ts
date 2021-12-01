@@ -22,33 +22,33 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	SchemaVersionGraph,
-	SchemaVersionEId,
-	SchemaVersionEOptionalId,
-	SchemaVersionEUpdateProperties,
-	SchemaVersionESelect,
-	QSchemaVersion,
-	QSchemaVersionQId,
-	QSchemaVersionQRelation,
-	SchemaVersion,
-	SchemaEntityGraph,
-	SchemaEntityEId,
-	SchemaEntityEOptionalId,
-	SchemaEntityEUpdateProperties,
-	SchemaEntityESelect,
-	QSchemaEntity,
-	QSchemaEntityQId,
-	QSchemaEntityQRelation,
-	SchemaEntity,
-	SchemaColumnGraph,
-	SchemaColumnEId,
-	SchemaColumnEOptionalId,
-	SchemaColumnEUpdateProperties,
-	SchemaColumnESelect,
-	QSchemaColumn,
-	QSchemaColumnQId,
-	QSchemaColumnQRelation,
-	SchemaColumn,
+	ApplicationVersionGraph,
+	ApplicationVersionEId,
+	ApplicationVersionEOptionalId,
+	ApplicationVersionEUpdateProperties,
+	ApplicationVersionESelect,
+	QApplicationVersion,
+	QApplicationVersionQId,
+	QApplicationVersionQRelation,
+	ApplicationVersion,
+	ApplicationEntityGraph,
+	ApplicationEntityEId,
+	ApplicationEntityEOptionalId,
+	ApplicationEntityEUpdateProperties,
+	ApplicationEntityESelect,
+	QApplicationEntity,
+	QApplicationEntityQId,
+	QApplicationEntityQRelation,
+	ApplicationEntity,
+	ApplicationColumnGraph,
+	ApplicationColumnEId,
+	ApplicationColumnEOptionalId,
+	ApplicationColumnEUpdateProperties,
+	ApplicationColumnESelect,
+	QApplicationColumn,
+	QApplicationColumnQId,
+	QApplicationColumnQRelation,
+	ApplicationColumn,
 } from '@airport/traffic-pattern';
 import {
 	RepositoryGraph,
@@ -94,11 +94,11 @@ export interface RecordUpdateStageESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	schemaVersion?: SchemaVersionESelect;
-	entity?: SchemaEntityESelect;
+	applicationVersion?: ApplicationVersionESelect;
+	entity?: ApplicationEntityESelect;
 	repository?: RepositoryESelect;
 	actor?: ActorESelect;
-	column?: SchemaColumnESelect;
+	column?: ApplicationColumnESelect;
 
 }
 
@@ -135,11 +135,11 @@ export interface RecordUpdateStageEUpdateProperties
 	updatedValue?: any | IQUntypedField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	schemaVersion?: SchemaVersionEOptionalId;
-	entity?: SchemaEntityEOptionalId;
+	applicationVersion?: ApplicationVersionEOptionalId;
+	entity?: ApplicationEntityEOptionalId;
 	repository?: RepositoryEOptionalId;
 	actor?: ActorEOptionalId;
-	column?: SchemaColumnEOptionalId;
+	column?: ApplicationColumnEOptionalId;
 
 }
 
@@ -155,11 +155,11 @@ export interface RecordUpdateStageGraph
 	updatedValue?: any | IQUntypedField;
 
 	// Relations
-	schemaVersion?: SchemaVersionGraph;
-	entity?: SchemaEntityGraph;
+	applicationVersion?: ApplicationVersionGraph;
+	entity?: ApplicationEntityGraph;
 	repository?: RepositoryGraph;
 	actor?: ActorGraph;
-	column?: SchemaColumnGraph;
+	column?: ApplicationColumnGraph;
 
 }
 
@@ -215,11 +215,11 @@ export interface QRecordUpdateStage extends IQEntity<RecordUpdateStage>
 	updatedValue: IQUntypedField;
 
 	// Non-Id Relations
-	schemaVersion: QSchemaVersionQRelation;
-	entity: QSchemaEntityQRelation;
+	applicationVersion: QApplicationVersionQRelation;
+	entity: QApplicationEntityQRelation;
 	repository: QRepositoryQRelation;
 	actor: QActorQRelation;
-	column: QSchemaColumnQRelation;
+	column: QApplicationColumnQRelation;
 
 }
 

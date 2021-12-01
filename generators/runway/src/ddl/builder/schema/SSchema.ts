@@ -1,40 +1,40 @@
-import { DbSchema } from '@airport/ground-control';
+import { DbApplication } from '@airport/ground-control';
 import {
 	SEntity,
 	SIndexedEntity
 }                   from './SEntity';
 
 /**
- * A schema.
+ * A application.
  */
-export interface SSchema {
+export interface SApplication {
 
 	domain: 'private' | string;
 
 	entities: SEntity[];
 
 	/**
-	 * Name of the schema.
+	 * Name of the application.
 	 */
 	name: string;
 
 	packageName: string;
 
-	referencedSchemas: SSchemaReference[];
+	referencedApplications: SApplicationReference[];
 
 }
 
-export interface SSchemaReference {
+export interface SApplicationReference {
 
 	index: number;
 
-	dbSchema: DbSchema;
+	dbApplication: DbApplication;
 }
 
 /**
- * A schema with additional indexes (maps).
+ * A application with additional indexes (maps).
  */
-export interface SIndexedSchema {
+export interface SIndexedApplication {
 
 	/**
 	 * Entities by their repository table indexes.
@@ -47,26 +47,26 @@ export interface SIndexedSchema {
 	entityMapByName: { [entityName: string]: SIndexedEntity };
 
 	/**
-	 * Schema definition.
+	 * Application definition.
 	 */
-	schema: SSchema;
+	application: SApplication;
 
-	referencedSchemasByName: { [projectName: string]: SSchemaReference };
+	referencedApplicationsByName: { [projectName: string]: SApplicationReference };
 
 }
 
-export function buildIndexedSSchema(
-	schema: SSchema,
-	referencedSchemasByName: { [projectName: string]: SSchemaReference }
-): SIndexedSchema {
-	const idx: SIndexedSchema = {
+export function buildIndexedSApplication(
+	application: SApplication,
+	referencedApplicationsByName: { [projectName: string]: SApplicationReference }
+): SIndexedApplication {
+	const idx: SIndexedApplication = {
 		entities: [],
 		entityMapByName: {},
-		referencedSchemasByName,
-		schema
+		referencedApplicationsByName,
+		application
 	};
 
-	for (const entity of schema.entities) {
+	for (const entity of application.entities) {
 		const columnMap   = {};
 		const propertyMap = {};
 		const relationMap = {};

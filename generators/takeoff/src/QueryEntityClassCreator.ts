@@ -1,21 +1,19 @@
 import {
 	IAirportDatabase,
-	orderSchemasInOrderOfPrecedence,
-	QSchema,
-	QSchemaInternal,
-	setQSchemaEntities
+	orderApplicationsInOrderOfPrecedence,
+	QApplication,
+	QApplicationInternal,
+	setQApplicationEntities
 }                                   from '@airport/air-control'
 import {DI}                         from '@airport/di'
-import {DbSchema}                   from '@airport/ground-control'
-import {ISchema}                    from '@airport/airspace'
+import {DbApplication}                   from '@airport/ground-control'
+import {IApplication}                    from '@airport/airspace'
 import {QUERY_ENTITY_CLASS_CREATOR} from './tokens'
-
-// https://github.com/russoturisto/tarmaq/blob/master/src/generated/data/schema/qRepositorySchema.ts
 
 export interface IQueryEntityClassCreator {
 
 	createAll(
-		schemas: ISchema[],
+		applications: IApplication[],
 		airDb: IAirportDatabase
 	): void
 
@@ -25,36 +23,36 @@ export class QueryEntityClassCreator
 	implements IQueryEntityClassCreator {
 
 	createAll(
-		schemas: ISchema[],
+		applications: IApplication[],
 		airDb: IAirportDatabase
 	): void {
-		const schemasToCreate = orderSchemasInOrderOfPrecedence(<any>schemas)
-		schemasToCreate.map(
-			dbSchema => this.create(dbSchema, airDb))
+		const applicationsToCreate = orderApplicationsInOrderOfPrecedence(<any>applications)
+		applicationsToCreate.map(
+			dbApplication => this.create(dbApplication, airDb))
 	}
 
 	create(
-		dbSchema: DbSchema,
+		dbApplication: DbApplication,
 		airDb: IAirportDatabase
-	): QSchema {
-		let qSchema: QSchemaInternal = airDb.QM[dbSchema.name] as QSchemaInternal
-		// If the Schema API source has already been loaded
-		if (qSchema) {
-			qSchema.__dbSchema__ = dbSchema
+	): QApplication {
+		let qApplication: QApplicationInternal = airDb.QM[dbApplication.name] as QApplicationInternal
+		// If the Application API source has already been loaded
+		if (qApplication) {
+			qApplication.__dbApplication__ = dbApplication
 		} else {
-			qSchema                 = {
+			qApplication                 = {
 				__constructors__: {},
 				__qConstructors__: {},
-				__dbSchema__: dbSchema,
-				name: dbSchema.name,
-				domain: dbSchema.domain.name
+				__dbApplication__: dbApplication,
+				name: dbApplication.name,
+				domain: dbApplication.domain.name
 			}
-			airDb.QM[dbSchema.name] = qSchema
+			airDb.QM[dbApplication.name] = qApplication
 		}
-		airDb.Q[dbSchema.index] = qSchema
-		setQSchemaEntities(dbSchema, qSchema, airDb.qSchemas)
+		airDb.Q[dbApplication.index] = qApplication
+		setQApplicationEntities(dbApplication, qApplication, airDb.qApplications)
 
-		return qSchema
+		return qApplication
 	}
 
 }

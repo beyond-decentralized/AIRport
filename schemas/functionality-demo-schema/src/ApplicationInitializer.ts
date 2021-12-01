@@ -6,11 +6,11 @@ import { SCHEMA_INITIALIZER } from '@airport/landing'
 import {
     APPLICATION_INITIALIZER,
     IApplicationInitializer,
-    JsonSchemaWithLastIds,
+    JsonApplicationWithLastIds,
     LastIds
 } from '@airport/security-check'
 import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff'
-import { SCHEMA } from './generated/schema'
+import { SCHEMA } from './generated/application'
 
 export class ApplicationInitializer
     implements IApplicationInitializer {
@@ -19,7 +19,7 @@ export class ApplicationInitializer
 
     async initialize(
         lastIds: LastIds,
-        librarySignature: string = 'functionality-demo-schema',
+        librarySignature: string = 'functionality-demo-application',
     ): Promise<void> {
         if (this.initializing) {
             return
@@ -28,18 +28,18 @@ export class ApplicationInitializer
 
         DI.db().context.inAIRportApp = true
 
-        const [apiRegistry, ddlObjectRetriever, schemaInitializer] = await container(this)
+        const [apiRegistry, ddlObjectRetriever, applicationInitializer] = await container(this)
             .get(API_REGISTRY, DDL_OBJECT_RETRIEVER, SCHEMA_INITIALIZER)
         ddlObjectRetriever.lastIds = lastIds
 
-        await schemaInitializer.initializeForAIRportApp(SCHEMA as any)
+        await applicationInitializer.initializeForAIRportApp(SCHEMA as any)
 
         apiRegistry.initialize(SCHEMA.versions[0].api)
 
-        SYSTEM.mapLibraryBySignature('functionality-demo-schema', librarySignature)
+        SYSTEM.mapLibraryBySignature('functionality-demo-application', librarySignature)
     }
 
-    getSchema(): JsonSchemaWithLastIds {
+    getApplication(): JsonApplicationWithLastIds {
         return SCHEMA as any
     }
 }

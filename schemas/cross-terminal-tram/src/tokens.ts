@@ -8,7 +8,7 @@ import {IRecordUpdateStageDao}                          from "./dao/RecordUpdate
 import {IRepositoryTransactionBlockDao}                 from "./dao/repositoryTransactionBlock/RepositoryTransactionBlockDao";
 import {IRepositoryTransactionHistoryUpdateStageDao}    from "./dao/repositoryTransactionBlock/RepositoryTransactionHistoryUpdateStageDao";
 import {IRepoTransBlockResponseStageDao}                from "./dao/repositoryTransactionBlock/RepoTransBlockResponseStageDao";
-import {IRepoTransBlockSchemaToChangeDao}  from "./dao/repositoryTransactionBlock/RepoTransBlockSchemaToChangeDao";
+import {IRepoTransBlockApplicationToChangeDao}  from "./dao/repositoryTransactionBlock/RepoTransBlockApplicationToChangeDao";
 import {ISharingMessageDao}                 from "./dao/sharingMessage/SharingMessageDao";
 import {ISharingMessageRepoTransBlockDao}   from "./dao/sharingMessage/SharingMessageRepoTransBlockDao";
 import {ISharingNodeDao}                    from "./dao/sharingNode/SharingNodeDao";
@@ -37,7 +37,7 @@ export const SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO = movingWalkway.token<ISharing
 // export const SharingMessageResponseStageDaoToken
 // 	= movingWalkway.token<ISharingMessageResponseStageDao>('ISharingMessageResponseStageDao');
 export const REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO
-	                                             = movingWalkway.token<IRepoTransBlockSchemaToChangeDao>('IRepoTransBlockSchemaToChangeDao');
+	                                             = movingWalkway.token<IRepoTransBlockApplicationToChangeDao>('IRepoTransBlockApplicationToChangeDao');
 export const SHARING_NODE_DAO                  = movingWalkway.token<ISharingNodeDao>('ISharingNodeDao');
 export const SHARING_NODE_TERMINAL_DAO         = movingWalkway.token<ISharingNodeTerminalDao>('ISharingNodeTerminalDao');
 export const SHARING_NODE_REPOSITORY_DAO       = movingWalkway.token<ISharingNodeRepositoryDao>('ISharingNodeRepositoryDao');

@@ -1,4 +1,4 @@
-import { JsonSchemaWithApi } from '@airport/check-in';
+import { JsonApplicationWithApi } from '@airport/check-in';
 import {
 	AJsonPropertyIndexConfiguration,
 	ColumnIndex,
@@ -6,88 +6,88 @@ import {
 	DatabaseObjectConfiguration,
 	DatabaseOneToManyElements,
 	DbEntity,
-	DbSchema,
+	DbApplication,
 	EntityRelationType,
 	getSqlDataType,
 	IntermediatePropertyIndexConfiguration,
 	JsonDatabaseObjectConfiguration,
 	JsonOperation,
-	JsonSchema,
-	JsonSchemaColumn,
-	JsonSchemaEntity,
-	JsonSchemaProperty,
-	JsonSchemaRelation,
-	SchemaIndex,
-	SchemaReferenceByIndex,
+	JsonApplication,
+	JsonApplicationColumn,
+	JsonApplicationEntity,
+	JsonApplicationProperty,
+	JsonApplicationRelation,
+	ApplicationIndex,
+	ApplicationReferenceByIndex,
 	TableIndex
 } from '@airport/ground-control';
-import { currentSchemaApi } from '../../../api/parser/ApiGenerator';
+import { currentApplicationApi } from '../../../api/parser/ApiGenerator';
 import { getExpectedPropertyIndexesFormatMessage } from '../../../ParserUtils';
 import { Configuration } from '../../options/Options';
 import { EntityCandidate } from '../../parser/EntityCandidate';
 import { SEntity, SIndexedEntity } from './SEntity';
 import { SProperty, SRelation } from './SProperty';
 import {
-	SIndexedSchema,
-	SSchemaReference
-} from './SSchema';
-import { SSchemaBuilder } from './SSchemaBuilder';
+	SIndexedApplication,
+	SApplicationReference
+} from './SApplication';
+import { SApplicationBuilder } from './SApplicationBuilder';
 
-export class JsonSchemaBuilder {
+export class JsonApplicationBuilder {
 
-	existingSchema: JsonSchema;
+	existingApplication: JsonApplication;
 
-	// schemaVarName = 'SCHEMA'
+	// applicationVarName = 'SCHEMA'
 
 	constructor(
 		private config: Configuration,
 		private entityMapByName: { [entityName: string]: EntityCandidate },
-		existingSchemaString: string
+		existingApplicationString: string
 	) {
-		if (existingSchemaString) {
-			// const indexOfAssignment = existingSchemaString.indexOf(this.schemaVarName + ' = {')
+		if (existingApplicationString) {
+			// const indexOfAssignment = existingApplicationString.indexOf(this.applicationVarName + ' = {')
 			//
-			// const errorMessage = `Could not parse existing schema, make sure file starts with with:
-			// 	 "export const ${this.schemaVarName} = {"
-			// 	 where "{" marks the start of the schema definition, and ends with:
+			// const errorMessage = `Could not parse existing application, make sure file starts with with:
+			// 	 "export const ${this.applicationVarName} = {"
+			// 	 where "{" marks the start of the application definition, and ends with:
 			// 	 "};"
-			// 	 where "}" marks the end of the schema definition.`
+			// 	 where "}" marks the end of the application definition.`
 			//
 			// if (indexOfAssignment < 0) {
 			// 	throw new Error(errorMessage)
 			// }
-			// if (existingSchemaString.indexOf('};') !== existingSchemaString.length - 2) {
+			// if (existingApplicationString.indexOf('};') !== existingApplicationString.length - 2) {
 			// 	throw new Error(errorMessage)
 			// }
 			//
-			// existingSchemaString = existingSchemaString.substring(indexOfAssignment + 9,
-			// existingSchemaString.length - 1)
+			// existingApplicationString = existingApplicationString.substring(indexOfAssignment + 9,
+			// existingApplicationString.length - 1)
 
-			this.existingSchema = JSON.parse(existingSchemaString);
+			this.existingApplication = JSON.parse(existingApplicationString);
 		}
 	}
 
 	build(
 		domain: string,
-		schemaMapByProjectName: { [projectName: string]: DbSchema },
+		applicationMapByProjectName: { [projectName: string]: DbApplication },
 		entityOperationMap: { [entityName: string]: { [operationName: string]: JsonOperation } }
-	): [JsonSchemaWithApi, SIndexedSchema] {
-		const sSchemaBuilder = new SSchemaBuilder(this.config, this.entityMapByName);
+	): [JsonApplicationWithApi, SIndexedApplication] {
+		const sApplicationBuilder = new SApplicationBuilder(this.config, this.entityMapByName);
 
-		const sIndexedSchema = sSchemaBuilder.build(schemaMapByProjectName);
+		const sIndexedApplication = sApplicationBuilder.build(applicationMapByProjectName);
 
-		const jsonSchema = this.convertSIndexedSchemaToJsonSchema(domain, sIndexedSchema);
+		const jsonApplication = this.convertSIndexedApplicationToJsonApplication(domain, sIndexedApplication);
 
-		// TODO: reset table and column and relation indexes based on existing schema
+		// TODO: reset table and column and relation indexes based on existing application
 
-		return [jsonSchema, sIndexedSchema];
+		return [jsonApplication, sIndexedApplication];
 	}
 
 	addOperations(
-		jsonSchema: JsonSchema,
+		jsonApplication: JsonApplication,
 		entityOperationMap: { [entityName: string]: { [operationName: string]: JsonOperation } }
 	) {
-		jsonSchema.versions[jsonSchema.versions.length - 1].entities.forEach(jsonEntity => {
+		jsonApplication.versions[jsonApplication.versions.length - 1].entities.forEach(jsonEntity => {
 			let entityOperations = entityOperationMap[jsonEntity.name];
 			if (!entityOperations) {
 				return;
@@ -96,16 +96,16 @@ export class JsonSchemaBuilder {
 		});
 	}
 
-	private convertSIndexedSchemaToJsonSchema(
+	private convertSIndexedApplicationToJsonApplication(
 		domain: string,
-		sIndexedSchema: SIndexedSchema,
-	): JsonSchemaWithApi {
-		const jsonEntities: JsonSchemaEntity[] = sIndexedSchema.entities.map(
+		sIndexedApplication: SIndexedApplication,
+	): JsonApplicationWithApi {
+		const jsonEntities: JsonApplicationEntity[] = sIndexedApplication.entities.map(
 			sIndexedEntity => {
 				const sEntity = sIndexedEntity.entity;
-				const columns: JsonSchemaColumn[] = sIndexedEntity.columns.map(
+				const columns: JsonApplicationColumn[] = sIndexedEntity.columns.map(
 					sColumn => {
-						const jsonColumn: JsonSchemaColumn = {
+						const jsonColumn: JsonApplicationColumn = {
 							allocationSize: sColumn.allocationSize,
 							// columnDefinition: sColumn.columnDefinition,
 							index: sColumn.index,
@@ -135,7 +135,7 @@ export class JsonSchemaBuilder {
 					a.index < b.index ? -1 : 1
 				);
 
-				const [properties, relations] = this.getPropertiesAndRelations(sIndexedSchema, sIndexedEntity, columns);
+				const [properties, relations] = this.getPropertiesAndRelations(sIndexedApplication, sIndexedEntity, columns);
 
 				const tableConfig = this.convertTableConfig(sEntity)
 
@@ -153,29 +153,29 @@ export class JsonSchemaBuilder {
 				};
 			});
 
-		// FIXME: add schema versioning support
+		// FIXME: add application versioning support
 		return {
 			domain,
 			index: null,
-			name: sIndexedSchema.schema.name,
-			packageName: sIndexedSchema.schema.name,
+			name: sIndexedApplication.application.name,
+			packageName: sIndexedApplication.application.name,
 			sinceVersion: 1,
 			versions: [{
-				api: currentSchemaApi,
+				api: currentApplicationApi,
 				entities: jsonEntities,
 				integerVersion: 1,
-				referencedSchemas: sIndexedSchema.schema.referencedSchemas.map((
-					sSchemaReference: SSchemaReference
+				referencedApplications: sIndexedApplication.application.referencedApplications.map((
+					sApplicationReference: SApplicationReference
 				) => ({
-					domain: sSchemaReference.dbSchema.domain.name,
-					index: sSchemaReference.index,
-					name: sSchemaReference.dbSchema.name,
-					packageName: sSchemaReference.dbSchema.packageName,
+					domain: sApplicationReference.dbApplication.domain.name,
+					index: sApplicationReference.index,
+					name: sApplicationReference.dbApplication.name,
+					packageName: sApplicationReference.dbApplication.packageName,
 					sinceVersion: 1,
 					versions: [{
 						entities: null,
 						integerVersion: 1,
-						referencedSchemas: null,
+						referencedApplications: null,
 						versionString: '1.0.0'
 					}]
 				})),
@@ -263,7 +263,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 
 	private getIdColumnReferences(
 		sIndexedEntity: SIndexedEntity
-	): SchemaReferenceByIndex<ColumnIndex>[] {
+	): ApplicationReferenceByIndex<ColumnIndex>[] {
 		return sIndexedEntity.idColumns.map(
 			sColumn => ({
 				index: sColumn.index
@@ -271,10 +271,10 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 	}
 
 	private getPropertiesAndRelations(
-		sIndexedSchema: SIndexedSchema,
+		sIndexedApplication: SIndexedApplication,
 		sIndexedEntity: SIndexedEntity,
-		columns: JsonSchemaColumn[],
-	): [JsonSchemaProperty[], JsonSchemaRelation[]] {
+		columns: JsonApplicationColumn[],
+	): [JsonApplicationProperty[], JsonApplicationRelation[]] {
 		const relations = [];
 		const properties = sIndexedEntity.entity.properties.map((
 			sProperty,
@@ -291,28 +291,28 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 				};
 
 			} else {
-				let relationTableSchemaIndex: number;
-				let relationSchemaIndex: SchemaIndex;
+				let relationTableApplicationIndex: number;
+				let relationApplicationIndex: ApplicationIndex;
 				let relationTableIndex: TableIndex;
 				let relatedIndexedEntity: SIndexedEntity | DbEntity;
-				if (sRelation.referencedSchemaIndex || sRelation.referencedSchemaIndex === 0) {
-					relationTableSchemaIndex = sRelation.referencedSchemaIndex;
-					const relatedDbSchema = sIndexedSchema.schema.referencedSchemas[sRelation.referencedSchemaIndex];
-					relationSchemaIndex = relatedDbSchema.index;
-					relatedIndexedEntity = relatedDbSchema.dbSchema
-						.currentVersion[0].schemaVersion.entityMapByName[sRelation.entityName];
+				if (sRelation.referencedApplicationIndex || sRelation.referencedApplicationIndex === 0) {
+					relationTableApplicationIndex = sRelation.referencedApplicationIndex;
+					const relatedDbApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedApplicationIndex];
+					relationApplicationIndex = relatedDbApplication.index;
+					relatedIndexedEntity = relatedDbApplication.dbApplication
+						.currentVersion[0].applicationVersion.entityMapByName[sRelation.entityName];
 					relationTableIndex = relatedIndexedEntity.index;
 				} else {
-					relatedIndexedEntity = sIndexedSchema.entityMapByName[sRelation.entityName];
-					relationSchemaIndex = null;
+					relatedIndexedEntity = sIndexedApplication.entityMapByName[sRelation.entityName];
+					relationApplicationIndex = null;
 					relationTableIndex = relatedIndexedEntity.entity.tableIndex;
 				}
 
 				this.buildColumnRelations(
 					sIndexedEntity, sRelation, relatedIndexedEntity,
-					relationSchemaIndex, relationTableIndex, columns);
+					relationApplicationIndex, relationTableIndex, columns);
 
-				const relation: JsonSchemaRelation = {
+				const relation: JsonApplicationRelation = {
 					// addToJoinFunction: sRelation.addToJoinFunction,
 					foreignKey: sRelation.foreignKey,
 					index: sRelation.index,
@@ -326,7 +326,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 						index: index
 					},
 					relationTableIndex,
-					relationTableSchemaIndex,
+					relationTableApplicationIndex,
 					sinceVersion: 1
 				};
 				relations[sRelation.index] = relation;
@@ -352,9 +352,9 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 		sIndexedEntity: SIndexedEntity,
 		sRelation: SRelation,
 		relatedIndexedEntity: SIndexedEntity | DbEntity,
-		relationSchemaIndex: number,
+		relationApplicationIndex: number,
 		relationTableIndex: number,
-		columns: JsonSchemaColumn[]
+		columns: JsonApplicationColumn[]
 	): void {
 		switch (sRelation.relationType) {
 			case EntityRelationType.MANY_TO_ONE:
@@ -388,7 +388,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 
 				column.manyRelationColumnRefs.push({
 					manyRelationIndex: sRelation.index,
-					oneSchemaIndex: relationSchemaIndex,
+					oneApplicationIndex: relationApplicationIndex,
 					oneTableIndex: relationTableIndex,
 					oneRelationIndex: sRelationColumn.oneSideRelationIndex,
 					oneColumnIndex: relationColumnIndex,

@@ -7,7 +7,7 @@ export * from './recordupdatestage';
 export * from './repositoryTransactionBlock/repositorytransactionblock';
 export * from './repositoryTransactionBlock/repositorytransactionhistoryupdatestage';
 export * from './repositoryTransactionBlock/repotransblockresponsestage';
-export * from './repositoryTransactionBlock/repotransblockschematochange';
+export * from './repositoryTransactionBlock/repotransblockapplicationtochange';
 export * from './sharingMessage/sharingmessage';
 export * from './sharingMessage/sharingmessagerepotransblock';
 export * from './sharingNode/sharingnode';

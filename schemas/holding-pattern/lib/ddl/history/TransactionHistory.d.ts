@@ -1,4 +1,4 @@
-import { ATransactionHistory, SyncSchemaMap, TransactionType } from '@airport/ground-control';
+import { ATransactionHistory, SyncApplicationMap, TransactionType } from '@airport/ground-control';
 import { Terminal } from '@airport/travel-document-checkpoint';
 import { IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRecordHistoryOldValue, IRepositoryTransactionHistory } from '../..';
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory';
@@ -15,7 +15,7 @@ export declare class TransactionHistory implements ATransactionHistory {
     repoTransHistoryMap: {
         [repositoryId: number]: IRepositoryTransactionHistory;
     };
-    schemaMap: SyncSchemaMap;
+    applicationMap: SyncApplicationMap;
     allOperationHistory: IOperationHistory[];
     allRecordHistory: IRecordHistory[];
     allRecordHistoryNewValues: IRecordHistoryNewValue[];

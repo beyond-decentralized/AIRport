@@ -1,27 +1,27 @@
-import { IDomain } from './schema/domain';
-import { DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain } from './schema/qdomain';
-import { ISchema } from './schema/schema';
-import { SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, SchemaGraph, QSchema } from './schema/qschema';
-import { ISchemaColumn } from './schema/schemacolumn';
-import { SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, SchemaColumnGraph, QSchemaColumn } from './schema/qschemacolumn';
-import { ISchemaCurrentVersion } from './schema/schemacurrentversion';
-import { SchemaCurrentVersionESelect, SchemaCurrentVersionECreateProperties, SchemaCurrentVersionEUpdateColumns, SchemaCurrentVersionEUpdateProperties, SchemaCurrentVersionEId, SchemaCurrentVersionGraph, QSchemaCurrentVersion } from './schema/qschemacurrentversion';
-import { ISchemaEntity } from './schema/schemaentity';
-import { SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityGraph, QSchemaEntity } from './schema/qschemaentity';
-import { ISchemaOperation } from './schema/schemaoperation';
-import { SchemaOperationESelect, SchemaOperationECreateProperties, SchemaOperationEUpdateColumns, SchemaOperationEUpdateProperties, SchemaOperationEId, SchemaOperationGraph, QSchemaOperation } from './schema/qschemaoperation';
-import { ISchemaProperty } from './schema/schemaproperty';
-import { SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, SchemaPropertyGraph, QSchemaProperty } from './schema/qschemaproperty';
-import { ISchemaPropertyColumn } from './schema/schemapropertycolumn';
-import { SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, SchemaPropertyColumnGraph, QSchemaPropertyColumn } from './schema/qschemapropertycolumn';
-import { ISchemaReference } from './schema/schemareference';
-import { SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, SchemaReferenceGraph, QSchemaReference } from './schema/qschemareference';
-import { ISchemaRelation } from './schema/schemarelation';
-import { SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, SchemaRelationGraph, QSchemaRelation } from './schema/qschemarelation';
-import { ISchemaRelationColumn } from './schema/schemarelationcolumn';
-import { SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, SchemaRelationColumnGraph, QSchemaRelationColumn } from './schema/qschemarelationcolumn';
-import { ISchemaVersion } from './schema/schemaversion';
-import { SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, SchemaVersionGraph, QSchemaVersion } from './schema/qschemaversion';
+import { IDomain } from './application/domain';
+import { DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain } from './application/qdomain';
+import { IApplication } from './application/application';
+import { ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication } from './application/qapplication';
+import { IApplicationColumn } from './application/applicationcolumn';
+import { ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn } from './application/qapplicationcolumn';
+import { IApplicationCurrentVersion } from './application/applicationcurrentversion';
+import { ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion } from './application/qapplicationcurrentversion';
+import { IApplicationEntity } from './application/applicationentity';
+import { ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity } from './application/qapplicationentity';
+import { IApplicationOperation } from './application/applicationoperation';
+import { ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation } from './application/qapplicationoperation';
+import { IApplicationProperty } from './application/applicationproperty';
+import { ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty } from './application/qapplicationproperty';
+import { IApplicationPropertyColumn } from './application/applicationpropertycolumn';
+import { ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn } from './application/qapplicationpropertycolumn';
+import { IApplicationReference } from './application/applicationreference';
+import { ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference } from './application/qapplicationreference';
+import { IApplicationRelation } from './application/applicationrelation';
+import { ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation } from './application/qapplicationrelation';
+import { IApplicationRelationColumn } from './application/applicationrelationcolumn';
+import { ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn } from './application/qapplicationrelationcolumn';
+import { IApplicationVersion } from './application/applicationversion';
+import { ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion } from './application/qapplicationversion';
 import { IDuo, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/air-control';
 import { Duo } from '@airport/check-in';
 import { EntityId as DbEntityId } from '@airport/ground-control';
@@ -34,69 +34,69 @@ export declare class BaseDomainDuo extends SQDIDuo<IDomain, DomainESelect, Domai
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseSchemaDuo extends IDuo<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, SchemaGraph, QSchema> {
+export interface IBaseApplicationDuo extends IDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> {
 }
-export declare class BaseSchemaDuo extends SQDIDuo<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, SchemaGraph, QSchema> implements IBaseSchemaDuo {
+export declare class BaseApplicationDuo extends SQDIDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> implements IBaseApplicationDuo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseSchemaColumnDuo extends IDuo<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, SchemaColumnGraph, QSchemaColumn> {
+export interface IBaseApplicationColumnDuo extends IDuo<IApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn> {
 }
-export declare class BaseSchemaColumnDuo extends SQDIDuo<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, SchemaColumnGraph, QSchemaColumn> implements IBaseSchemaColumnDuo {
+export declare class BaseApplicationColumnDuo extends SQDIDuo<IApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn> implements IBaseApplicationColumnDuo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseSchemaCurrentVersionDuo extends IDuo<ISchemaCurrentVersion, SchemaCurrentVersionESelect, SchemaCurrentVersionECreateProperties, SchemaCurrentVersionEUpdateColumns, SchemaCurrentVersionEUpdateProperties, SchemaCurrentVersionEId, SchemaCurrentVersionGraph, QSchemaCurrentVersion> {
+export interface IBaseApplicationCurrentVersionDuo extends IDuo<IApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion> {
 }
-export declare class BaseSchemaCurrentVersionDuo extends SQDIDuo<ISchemaCurrentVersion, SchemaCurrentVersionESelect, SchemaCurrentVersionECreateProperties, SchemaCurrentVersionEUpdateColumns, SchemaCurrentVersionEUpdateProperties, SchemaCurrentVersionEId, SchemaCurrentVersionGraph, QSchemaCurrentVersion> implements IBaseSchemaCurrentVersionDuo {
+export declare class BaseApplicationCurrentVersionDuo extends SQDIDuo<IApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion> implements IBaseApplicationCurrentVersionDuo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseSchemaEntityDuo extends IDuo<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityGraph, QSchemaEntity> {
+export interface IBaseApplicationEntityDuo extends IDuo<IApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity> {
 }
-export declare class BaseSchemaEntityDuo extends SQDIDuo<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityGraph, QSchemaEntity> implements IBaseSchemaEntityDuo {
+export declare class BaseApplicationEntityDuo extends SQDIDuo<IApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity> implements IBaseApplicationEntityDuo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseSchemaOperationDuo extends IDuo<ISchemaOperation, SchemaOperationESelect, SchemaOperationECreateProperties, SchemaOperationEUpdateColumns, SchemaOperationEUpdateProperties, SchemaOperationEId, SchemaOperationGraph, QSchemaOperation> {
+export interface IBaseApplicationOperationDuo extends IDuo<IApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation> {
 }
-export declare class BaseSchemaOperationDuo extends SQDIDuo<ISchemaOperation, SchemaOperationESelect, SchemaOperationECreateProperties, SchemaOperationEUpdateColumns, SchemaOperationEUpdateProperties, SchemaOperationEId, SchemaOperationGraph, QSchemaOperation> implements IBaseSchemaOperationDuo {
+export declare class BaseApplicationOperationDuo extends SQDIDuo<IApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation> implements IBaseApplicationOperationDuo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseSchemaPropertyDuo extends IDuo<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, SchemaPropertyGraph, QSchemaProperty> {
+export interface IBaseApplicationPropertyDuo extends IDuo<IApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty> {
 }
-export declare class BaseSchemaPropertyDuo extends SQDIDuo<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, SchemaPropertyGraph, QSchemaProperty> implements IBaseSchemaPropertyDuo {
+export declare class BaseApplicationPropertyDuo extends SQDIDuo<IApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty> implements IBaseApplicationPropertyDuo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseSchemaPropertyColumnDuo extends IDuo<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, SchemaPropertyColumnGraph, QSchemaPropertyColumn> {
+export interface IBaseApplicationPropertyColumnDuo extends IDuo<IApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn> {
 }
-export declare class BaseSchemaPropertyColumnDuo extends SQDIDuo<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, SchemaPropertyColumnGraph, QSchemaPropertyColumn> implements IBaseSchemaPropertyColumnDuo {
+export declare class BaseApplicationPropertyColumnDuo extends SQDIDuo<IApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn> implements IBaseApplicationPropertyColumnDuo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseSchemaReferenceDuo extends IDuo<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, SchemaReferenceGraph, QSchemaReference> {
+export interface IBaseApplicationReferenceDuo extends IDuo<IApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference> {
 }
-export declare class BaseSchemaReferenceDuo extends SQDIDuo<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, SchemaReferenceGraph, QSchemaReference> implements IBaseSchemaReferenceDuo {
+export declare class BaseApplicationReferenceDuo extends SQDIDuo<IApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference> implements IBaseApplicationReferenceDuo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseSchemaRelationDuo extends IDuo<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, SchemaRelationGraph, QSchemaRelation> {
+export interface IBaseApplicationRelationDuo extends IDuo<IApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation> {
 }
-export declare class BaseSchemaRelationDuo extends SQDIDuo<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, SchemaRelationGraph, QSchemaRelation> implements IBaseSchemaRelationDuo {
+export declare class BaseApplicationRelationDuo extends SQDIDuo<IApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation> implements IBaseApplicationRelationDuo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseSchemaRelationColumnDuo extends IDuo<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, SchemaRelationColumnGraph, QSchemaRelationColumn> {
+export interface IBaseApplicationRelationColumnDuo extends IDuo<IApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn> {
 }
-export declare class BaseSchemaRelationColumnDuo extends SQDIDuo<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, SchemaRelationColumnGraph, QSchemaRelationColumn> implements IBaseSchemaRelationColumnDuo {
+export declare class BaseApplicationRelationColumnDuo extends SQDIDuo<IApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn> implements IBaseApplicationRelationColumnDuo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseSchemaVersionDuo extends IDuo<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, SchemaVersionGraph, QSchemaVersion> {
+export interface IBaseApplicationVersionDuo extends IDuo<IApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion> {
 }
-export declare class BaseSchemaVersionDuo extends SQDIDuo<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, SchemaVersionGraph, QSchemaVersion> implements IBaseSchemaVersionDuo {
+export declare class BaseApplicationVersionDuo extends SQDIDuo<IApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion> implements IBaseApplicationVersionDuo {
     static diSet(): boolean;
     constructor();
 }

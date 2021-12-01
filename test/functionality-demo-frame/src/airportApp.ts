@@ -2,7 +2,7 @@
 import { IOC } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { loadIframeTransactionalConnector } from '@airport/web-tower'
-import { loadApplicationInitializer } from '@airport/functionality-demo-schema/lib/server'
+import { loadApplicationInitializer } from '@airport/functionality-demo-application/lib/server'
 import { messages } from './store';
 
 loadIframeTransactionalConnector()

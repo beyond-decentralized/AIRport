@@ -22,7 +22,7 @@ import {Terminal}                     from '@airport/travel-document-checkpoint'
 import {MissingRecordRepoTransBlock}  from "../missingRecord/MissingRecordRepoTransBlock";
 import {SharingMessageRepoTransBlock} from "../sharingMessage/SharingMessageRepoTransBlock";
 import {SharingNodeRepoTransBlock}    from "../sharingNode/SharingNodeRepoTransBlock";
-import {RepoTransBlockSchemaToChange} from "./RepoTransBlockSchemaToChange";
+import {RepoTransBlockApplicationToChange} from "./RepoTransBlockApplicationToChange";
 
 export type RepositoryTransactionBlockHash = string;
 
@@ -109,6 +109,6 @@ export class RepositoryTransactionBlock {
 	missingRecordRepoTransBlocks: MissingRecordRepoTransBlock[];
 
 	@OneToMany({mappedBy: "repositoryTransactionBlock"})
-	repoTransBlockSchemasToChange: RepoTransBlockSchemaToChange[];
+	repoTransBlockApplicationsToChange: RepoTransBlockApplicationToChange[];
 
 }

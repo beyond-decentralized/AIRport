@@ -1,5 +1,5 @@
 export interface ISequence {
-    schemaIndex: number;
+    applicationIndex: number;
     tableIndex: number;
     columnIndex: number;
     incrementBy?: number;

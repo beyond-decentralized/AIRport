@@ -12,7 +12,7 @@ import { ILocalAPIResponse } from "./LocalAPIResponse";
 export interface ILocalAPIClient {
 
     invokeApiMethod(
-        schemaSignature: string,
+        applicationSignature: string,
         daoName: string,
         methodName: string,
         args: any[]
@@ -73,9 +73,9 @@ export class LocalAPIClient
                         this.connectionReady = true
                         break
                     case 'ToClientRedirected':
-                        // All requests need to have a schema signature
-                        // to know what schema is being communicated to/from
-                        if (!this.hasValidSchemaSignature(message)) {
+                        // All requests need to have a application signature
+                        // to know what application is being communicated to/from
+                        if (!this.hasValidApplicationSignature(message)) {
                             return
                         }
                         let requestDemoMessage = this.pendingDemoMessageMap.get(message.id)
@@ -96,10 +96,10 @@ export class LocalAPIClient
         this.messageCallback = callback
     }
 
-    private hasValidSchemaSignature(
+    private hasValidApplicationSignature(
         message: ILocalAPIResponse
     ) {
-        return message.schemaSignature && message.schemaSignature.indexOf('.') === -1
+        return message.applicationSignature && message.applicationSignature.indexOf('.') === -1
     }
 
     async sendMessageToAIRport(
@@ -111,12 +111,12 @@ export class LocalAPIClient
     }
 
     async invokeApiMethod(
-        schemaSignature: string,
+        applicationSignature: string,
         objectName: string,
         methodName: string,
         args: any[]
     ): Promise<any> {
-        while (!await this.isConnectionReady(schemaSignature)) {
+        while (!await this.isConnectionReady(applicationSignature)) {
             await this.wait(100)
         }
 
@@ -148,7 +148,7 @@ export class LocalAPIClient
             methodName,
             objectName,
             protocol: window.location.protocol,
-            schemaSignature
+            applicationSignature
         }
 
         let response: ILocalAPIResponse
@@ -182,7 +182,7 @@ export class LocalAPIClient
     }
 
     private async isConnectionReady(
-        schemaSignature: string
+        applicationSignature: string
     ): Promise<boolean> {
         if (this.connectionReady) {
             return true
@@ -195,7 +195,7 @@ export class LocalAPIClient
             methodName: null,
             objectName: null,
             protocol: window.location.protocol,
-            schemaSignature
+            applicationSignature
         }
 
         if (_inDemoMode) {

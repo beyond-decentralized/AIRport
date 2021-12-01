@@ -1,10 +1,10 @@
 {
   "airport": {
     "domain": "air",
-    "schema": "airport-code",
+    "application": "airport-code",
     "user": "diapco",
     "project": "airport",
-    "path": "schemas/airport-code"
+    "path": "applications/airport-code"
   },
   "dependencies": {
     "@airport/air-control": "0.0.1",

@@ -244,7 +244,7 @@
       "projectFolder": "nonhub/processor-common",
       "shouldPublish": true
     },
-    // "schemas" folder (alphabetical order)
+    // "applications" folder (alphabetical order)
     {
       "packageName": "@airport/airport-code",
       "projectFolder": "schemas/airport-code",
@@ -256,8 +256,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/functionality-demo-schema",
-      "projectFolder": "schemas/functionality-demo-schema",
+      "packageName": "@airport/functionality-demo-application",
+      "projectFolder": "schemas/functionality-demo-application",
       "shouldPublish": true
     },
     {

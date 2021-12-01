@@ -33,14 +33,14 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 1,
-									"oneSchemaIndex": 0,
+									"oneApplicationIndex": 0,
 									"oneTableIndex": 9,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								},
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": 0,
+									"oneApplicationIndex": 0,
 									"oneTableIndex": 10,
 									"oneColumnIndex": 2,
 									"sinceVersion": 1
@@ -65,7 +65,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": 0,
+									"oneApplicationIndex": 0,
 									"oneTableIndex": 10,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -132,7 +132,7 @@ export const SCHEMA = {
 								"index": 1
 							},
 							"relationTableIndex": 10,
-							"relationTableSchemaIndex": 0,
+							"relationTableApplicationIndex": 0,
 							"sinceVersion": 1
 						},
 						{
@@ -143,7 +143,7 @@ export const SCHEMA = {
 								"index": 0
 							},
 							"relationTableIndex": 9,
-							"relationTableSchemaIndex": 0,
+							"relationTableApplicationIndex": 0,
 							"sinceVersion": 1
 						}
 					],
@@ -156,7 +156,7 @@ export const SCHEMA = {
 				}
 			],
 			"integerVersion": 1,
-			"referencedSchemas": [
+			"referencedApplications": [
 				{
 					"domain": "air",
 					"index": 0,
@@ -167,7 +167,7 @@ export const SCHEMA = {
 						{
 							"entities": null,
 							"integerVersion": 1,
-							"referencedSchemas": null,
+							"referencedApplications": null,
 							"versionString": "1.0.0"
 						}
 					]

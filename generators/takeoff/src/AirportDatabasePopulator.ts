@@ -7,15 +7,15 @@ export interface IAirportDatabasePopulator {
 
 }
 
-// TODO: probably not needed, included schema source populates itself
-// May be needed to populate schemas from the database
+// TODO: probably not needed, included application source populates itself
+// May be needed to populate applications from the database
 export class AirportDatabasePopulator
 	implements IAirportDatabasePopulator {
 
 	populate(): void {
 		// FIXME: implement
-		// this.airDb.schemas
-		// this.airDb.qSchemas
+		// this.airDb.applications
+		// this.airDb.qApplications
 	}
 
 }

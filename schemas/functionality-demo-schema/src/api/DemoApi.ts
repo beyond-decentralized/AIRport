@@ -1,7 +1,7 @@
 import { DATABASE_FACADE } from "@airport/air-control";
 import { Api } from "@airport/check-in";
 import { container, DI } from "@airport/di";
-import { AIRepository } from "@airport/ground-control";
+import { IRepository } from "@airport/holding-pattern";
 import { DeepPartial } from "@airport/pressurization";
 import {
     DEMO_API,
@@ -17,7 +17,7 @@ export interface IDemoApi {
 
     findAllLevel1WithLevel2(): Promise<DeepPartial<Level1>[]>
 
-    getRepositoryListings(): Promise<AIRepository[]>
+    getRepositoryListings(): Promise<IRepository[]>
 
     saveChanges(
         records: DeepPartial<Level1>[]

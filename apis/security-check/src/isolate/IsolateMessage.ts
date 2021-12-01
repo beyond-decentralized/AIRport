@@ -4,7 +4,7 @@ import {
     PortableQuery
 } from "@airport/ground-control";
 import { Observable } from "rxjs";
-import { JsonSchemaWithLastIds } from '..';
+import { JsonApplicationWithLastIds } from '..';
 import { LastIds } from '../LastIds';
 
 export enum IsolateMessageType {
@@ -35,7 +35,7 @@ export interface IIsolateMessage {
     id: number
     repositoryDestination?: string
     repositorySource?: string
-    schemaSignature: string
+    applicationSignature: string
     type: IsolateMessageType
 }
 
@@ -46,19 +46,19 @@ export interface IIsolateMessageOut<T>
     result: T
 }
 
-// FIXME: right now feature/App schema initialization happens on 
+// FIXME: right now feature/App application initialization happens on 
 // Initail connection handshake (as a short term solution)
-// rethink that - schema should probably be initialized at initial
-// schema retrieval request (from a UI or an app that needs it)
+// rethink that - application should probably be initialized at initial
+// application retrieval request (from a UI or an app that needs it)
 // and initial connection should probably not play a role in that
 export interface IInitConnectionIMI
     extends IIsolateMessage {
-    schema: JsonSchemaWithLastIds
+    application: JsonApplicationWithLastIds
 }
 
 export interface IConnectionInitializedIMI
     extends IIsolateMessage {
-    schemaName: string
+    applicationName: string
 }
 
 export interface IInitConnectionIMO
@@ -103,7 +103,7 @@ export interface ISaveIMI<E, T = E | E[]>
     extends IIsolateMessage {
     dbEntity: {
         id: number,
-        schemaVersionId: number
+        applicationVersionId: number
     }
     entity: T
 }
@@ -112,13 +112,13 @@ export interface ISaveToDestinationIMI<E, T = E | E[]>
     extends IIsolateMessage {
     dbEntity: {
         id: number,
-        schemaVersionId: number
+        applicationVersionId: number
     }
     entity: T
     repositoryDestination: string
 }
 
-export interface IGetLatestSchemaVersionBySchemaNameIMI
+export interface IGetLatestApplicationVersionByApplicationNameIMI
     extends IIsolateMessage {
-    schemaName: string
+    applicationName: string
 }

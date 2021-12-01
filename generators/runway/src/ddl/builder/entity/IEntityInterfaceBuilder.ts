@@ -4,7 +4,7 @@ import {addImportForType}    from '../../../resolve/pathResolver'
 import {
 	entityExtendsRepositoryEntity,
 	getManyToOneDecorator
-}                            from '../schema/SSchemaBuilder'
+}                            from '../application/SApplicationBuilder'
 import {IBuilder}            from '../Builder'
 import {QColumnBuilder}      from './QColumnBuilder'
 import {QEntityBuilder}      from './QEntityBuilder'

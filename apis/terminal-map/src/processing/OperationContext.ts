@@ -6,7 +6,7 @@ import {
     IQueryFacade,
     IQueryUtils,
     IRelationManager,
-    ISchemaUtils
+    IApplicationUtils
 } from "@airport/air-control";
 import { IContext } from "@airport/di";
 import {
@@ -62,7 +62,7 @@ export interface IIocOperationContext {
     queryUtils: IQueryUtils
     relationManager: IRelationManager
     repositoryManager: IRepositoryManager
-    schemaUtils: ISchemaUtils
+    applicationUtils: IApplicationUtils
     storeDriver: IStoreDriver
     structuralEntityValidator: IStructuralEntityValidator
     transactionalServer: ITransactionalServer

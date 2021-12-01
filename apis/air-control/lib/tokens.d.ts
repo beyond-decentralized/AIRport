@@ -9,7 +9,7 @@ import { IEntityUtils } from './lingo/utils/EntityUtils';
 import { IFieldUtils } from './lingo/utils/FieldUtils';
 import { IQMetadataUtils } from './lingo/utils/QMetadataUtils';
 import { IQueryUtils } from './lingo/utils/QueryUtils';
-import { ISchemaUtils } from './lingo/utils/SchemaUtils';
+import { IApplicationUtils } from './lingo/utils/ApplicationUtils';
 export declare const AIRPORT_DATABASE: import("@airport/di").IDiToken<IAirportDatabase>;
 export declare const DATABASE_FACADE: import("@airport/di").IDiToken<IDatabaseFacade>;
 export declare const LOOKUP: import("@airport/di").IDiToken<ILookup>;
@@ -21,6 +21,6 @@ export declare const QUERY_FACADE: import("@airport/di").IDiToken<IQueryFacade>;
 export declare const QUERY_UTILS: import("@airport/di").IDiToken<IQueryUtils>;
 export declare const RELATION_MANAGER: import("@airport/di").IDiToken<IRelationManager>;
 export declare const REPOSITORY_LOADER: import("@airport/di").IDiToken<IRepositoryLoader>;
-export declare const SCHEMA_UTILS: import("@airport/di").IDiToken<ISchemaUtils>;
+export declare const SCHEMA_UTILS: import("@airport/di").IDiToken<IApplicationUtils>;
 export declare const UPDATE_CACHE_MANAGER: import("@airport/di").IDiToken<IUpdateCacheManager>;
 //# sourceMappingURL=tokens.d.ts.map

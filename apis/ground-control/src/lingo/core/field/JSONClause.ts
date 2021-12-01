@@ -75,7 +75,7 @@ export interface JSONClauseObject {
 export interface JSONClauseField
 	extends JSONClauseObject {
 	/**
-	 * Schema Version id
+	 * Application Version id
 	 */
 	si?: number;
 	/**

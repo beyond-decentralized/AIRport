@@ -45,10 +45,10 @@ class FieldsSelect {
  * Data Manipulation object.
  */
 export class Duo {
-    constructor(dbEntityId, qSchema) {
+    constructor(dbEntityId, qApplication) {
         if (typeof dbEntityId === 'number') {
-            this.dbEntity = qSchema.__dbSchema__.currentVersion[0]
-                .schemaVersion.entities[dbEntityId];
+            this.dbEntity = qApplication.__dbApplication__.currentVersion[0]
+                .applicationVersion.entities[dbEntityId];
         }
         else {
             this.dbEntity = dbEntityId;

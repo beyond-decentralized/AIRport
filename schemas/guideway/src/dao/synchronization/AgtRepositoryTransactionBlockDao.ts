@@ -182,7 +182,7 @@ export class AgtRepositoryTransactionBlockDao
 		// values must be sorted by TerminalId [1]
 		values: InsertAgtRepositoryTransactionBlock[]
 	): Promise<AgtRepositoryTransactionBlockId[]> {
-		const dbEntity = Q.db.currentVersion[0].schemaVersion
+		const dbEntity = Q.db.currentVersion[0].applicationVersion
 			.entityMapByName.RealtimeAgtRepositoryTransactionBlock
 		let rtb: QAgtRepositoryTransactionBlock
 

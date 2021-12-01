@@ -1,7 +1,7 @@
 import {
     EntityId,
     PortableQuery,
-    SchemaIndex
+    ApplicationIndex
 } from "@airport/ground-control";
 import { IContext } from "@airport/di";
 import type {
@@ -23,4 +23,4 @@ export interface IDeleteManager {
 }
 
 export type RecordsToDelete =
-    Map<SchemaIndex, Map<EntityId, Map<Repository_Id, RepositoryEntity[]>>>
+    Map<ApplicationIndex, Map<EntityId, Map<Repository_Id, RepositoryEntity[]>>>

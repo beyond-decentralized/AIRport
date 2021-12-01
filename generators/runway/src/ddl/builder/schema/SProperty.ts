@@ -5,11 +5,11 @@ import {
 	DatabaseOneToManyElements,
 	EntityRelationType,
 	PropertyIndex,
-	SchemaReferenceByIndex
+	ApplicationReferenceByIndex
 } from '@airport/ground-control';
 
 /**
- * A property of an object in a schema.
+ * A property of an object in a application.
  */
 export interface SProperty {
 
@@ -41,7 +41,7 @@ export interface SProperty {
 }
 
 /**
- * A schema relation.
+ * A application relation.
  */
 export interface SRelation {
 
@@ -51,9 +51,9 @@ export interface SRelation {
 	entityName: string;
 
 	/**
-	 * Index of the schema of the related entity (if not local).
+	 * Index of the application of the related entity (if not local).
 	 */
-	referencedSchemaIndex?: number;
+	referencedApplicationIndex?: number;
 
 	/**
 	 * Explicitly defined foreign key (if any)
@@ -109,10 +109,10 @@ export interface SRelation {
 }
 
 /**
- * A column in a schema table.
+ * A column in a application table.
  */
 export interface SColumn
-	extends SchemaReferenceByIndex<ColumnIndex> {
+	extends ApplicationReferenceByIndex<ColumnIndex> {
 
 	/**
 	 * How many ids to allocate for a sequence at a time.

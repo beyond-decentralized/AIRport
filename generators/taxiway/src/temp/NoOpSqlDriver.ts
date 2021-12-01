@@ -10,7 +10,7 @@ import {
 export class NoOpSqlDriver
 	extends SqlDriver {
 	composeTableName(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IOperationContext
 	): string {
@@ -18,7 +18,7 @@ export class NoOpSqlDriver
 	}
 
 	doesTableExist(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IOperationContext
 	): Promise<boolean> {
@@ -26,7 +26,7 @@ export class NoOpSqlDriver
 	}
 
 	dropTable(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IOperationContext
 	): Promise<boolean> {

@@ -1,5 +1,5 @@
 import {
-  DbSchema,
+  DbApplication,
   DistributionStrategy,
   ISaveResult,
   PlatformType,
@@ -48,28 +48,28 @@ export interface IEntityRecord {
     index: number
     name: string
   }
-  schema: {
+  application: {
     domain: string
     name: string
   }
 }
 
-export interface SchemaHub {
+export interface ApplicationHub {
 
   entityMap: Map<any, IEntityRecord>
 
-  schemas: DbSchema[];
-  S: DbSchema[];
+  applications: DbApplication[];
+  S: DbApplication[];
 
-  qSchemas: QSchema[];
-  Q: QSchema[];
+  qApplications: QApplication[];
+  Q: QApplication[];
 
-  QM: { [name: string]: QSchema };
+  QM: { [name: string]: QApplication };
 
 }
 
 export interface IAirportDatabase
-  extends SchemaHub,
+  extends ApplicationHub,
     FunctionAndOperatorHub {
 
   find: INonEntityFind
@@ -81,8 +81,8 @@ export interface IAirportDatabase
       facade: IDatabaseFacade
     )
 
-    registerQSchemas(
-      qSchemas: QSchema[]
+    registerQApplications(
+      qApplications: QApplication[]
     )
 
     setCurrentDb(dbName: string)
@@ -94,8 +94,8 @@ export interface IAirportDatabase
     db: IDatabaseFacade*/
 
   getAccumulator(
-    schemaDomain: string,
-    schemaName: string,
+    applicationDomain: string,
+    applicationName: string,
   ): IEntityAccumulator
 
   addRepository(
@@ -188,17 +188,17 @@ export interface IAirportDatabase
 
 }
 
-export interface QSchema {
+export interface QApplication {
   domain: string;
   name: string;
 
   [name: string]: any;
 }
 
-export interface QSchemaInternal
-  extends QSchema {
+export interface QApplicationInternal
+  extends QApplication {
   __constructors__?: { [name: string]: EntityConstructor }
   __qConstructors__?: { [name: string]: QEntityConstructor<EntityConstructor> };
   __qIdRelationConstructors__?: typeof QRelation[];
-  __dbSchema__?: DbSchema;
+  __dbApplication__?: DbApplication;
 }

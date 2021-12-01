@@ -2,222 +2,222 @@ import {container, DI}             from '@airport/di'
 import {
 	DomainName,
 	ensureChildJsMap,
-	getSchemaName,
-	JsonSchema,
-	JsonSchemaName,
-	SchemaName,
+	getApplicationName,
+	JsonApplication,
+	JsonApplicationName,
+	ApplicationName,
 }                       from '@airport/ground-control'
 import {
-	ISchema,
+	IApplication,
 	SCHEMA_DAO
 }                       from '@airport/airspace'
 import {SCHEMA_CHECKER} from '../tokens'
 
 
-export interface CoreDomainAndSchemaNames {
+export interface CoreDomainAndApplicationNames {
 
 	domain: string;
-	schema: string;
+	application: string;
 
 }
 
-export interface ExistingSchemaInfo {
-	coreDomainAndSchemaNamesBySchemaName: Map<SchemaName, CoreDomainAndSchemaNames>
-	existingSchemaMapByName: Map<SchemaName, ISchema>
+export interface ExistingApplicationInfo {
+	coreDomainAndApplicationNamesByApplicationName: Map<ApplicationName, CoreDomainAndApplicationNames>
+	existingApplicationMapByName: Map<ApplicationName, IApplication>
 }
 
-export interface SchemaReferenceCheckResults {
+export interface ApplicationReferenceCheckResults {
 
-	schemasWithValidDependencies: JsonSchema[]
-	schemasInNeedOfAdditionalDependencies: JsonSchema[]
-	neededDependencies: JsonSchema[]
+	applicationsWithValidDependencies: JsonApplication[]
+	applicationsInNeedOfAdditionalDependencies: JsonApplication[]
+	neededDependencies: JsonApplication[]
 
 }
 
-export interface ISchemaChecker {
+export interface IApplicationChecker {
 
 	check(
-		jsonSchema: JsonSchema
+		jsonApplication: JsonApplication
 	): Promise<void>
 
 	checkDependencies(
-		jsonSchemas: JsonSchema[]
-	): Promise<SchemaReferenceCheckResults>
+		jsonApplications: JsonApplication[]
+	): Promise<ApplicationReferenceCheckResults>
 
 }
 
-export class SchemaChecker
-	implements ISchemaChecker {
+export class ApplicationChecker
+	implements IApplicationChecker {
 
 	async check(
-		jsonSchema: JsonSchema
+		jsonApplication: JsonApplication
 	): Promise<void> {
-		if (!jsonSchema) {
-			throw new Error(`Json Schema not provided`)
+		if (!jsonApplication) {
+			throw new Error(`Json Application not provided`)
 		}
-		if (!(jsonSchema.versions instanceof Array)) {
-			throw new Error('schema.versions is not an array')
+		if (!(jsonApplication.versions instanceof Array)) {
+			throw new Error('application.versions is not an array')
 		}
-		if (jsonSchema.versions.length !== 1) {
-			// FIXME: add support for schema versioning
-			throw new Error('Currently only 1 version of schema is supported')
+		if (jsonApplication.versions.length !== 1) {
+			// FIXME: add support for application versioning
+			throw new Error('Currently only 1 version of application is supported')
 		}
 
-		await this.checkDomain(jsonSchema)
+		await this.checkDomain(jsonApplication)
 	}
 
 	async checkDomain(
-		jsonSchema: JsonSchema
+		jsonApplication: JsonApplication
 	): Promise<void> {
 		// TODO: implement domain checking
 	}
 
 	async checkDependencies(
-		jsonSchemas: JsonSchema[]
-	): Promise<SchemaReferenceCheckResults> {
-		const allReferencedSchemaMap: Map<DomainName, Map<JsonSchemaName, JsonSchema>> = new Map()
+		jsonApplications: JsonApplication[]
+	): Promise<ApplicationReferenceCheckResults> {
+		const allReferencedApplicationMap: Map<DomainName, Map<JsonApplicationName, JsonApplication>> = new Map()
 
-		const referencedSchemaMapBySchema:
-			      Map<DomainName, Map<SchemaName, Map<DomainName, Map<JsonSchemaName, JsonSchema>>>>
+		const referencedApplicationMapByApplication:
+			      Map<DomainName, Map<ApplicationName, Map<DomainName, Map<JsonApplicationName, JsonApplication>>>>
 			      = new Map()
 
-		for (const jsonSchema of jsonSchemas) {
-			const lastJsonSchemaVersion        = jsonSchema.versions[jsonSchema.versions.length - 1]
-			const referencedSchemaMapForSchema = ensureChildJsMap(
+		for (const jsonApplication of jsonApplications) {
+			const lastJsonApplicationVersion        = jsonApplication.versions[jsonApplication.versions.length - 1]
+			const referencedApplicationMapForApplication = ensureChildJsMap(
 				ensureChildJsMap(
-					referencedSchemaMapBySchema, jsonSchema.domain
-				), jsonSchema.name)
-			for (const jsonReferencedSchema of lastJsonSchemaVersion.referencedSchemas) {
+					referencedApplicationMapByApplication, jsonApplication.domain
+				), jsonApplication.name)
+			for (const jsonReferencedApplication of lastJsonApplicationVersion.referencedApplications) {
 				ensureChildJsMap(
-					allReferencedSchemaMap, jsonReferencedSchema.domain
-				).set(jsonReferencedSchema.name, jsonReferencedSchema)
+					allReferencedApplicationMap, jsonReferencedApplication.domain
+				).set(jsonReferencedApplication.name, jsonReferencedApplication)
 				ensureChildJsMap(
-					referencedSchemaMapForSchema, jsonReferencedSchema.domain
-				).set(jsonReferencedSchema.name, jsonReferencedSchema)
+					referencedApplicationMapForApplication, jsonReferencedApplication.domain
+				).set(jsonReferencedApplication.name, jsonReferencedApplication)
 			}
 		}
 
-		this.pruneInGroupReferences(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema)
-		await this.pruneReferencesToExistingSchemas(jsonSchemas, allReferencedSchemaMap, referencedSchemaMapBySchema)
+		this.pruneInGroupReferences(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication)
+		await this.pruneReferencesToExistingApplications(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication)
 
 
-		const schemasWithValidDependencies: JsonSchema[]          = []
-		const schemasInNeedOfAdditionalDependencies: JsonSchema[] = []
-		const neededDependencies: JsonSchema[]                    = []
+		const applicationsWithValidDependencies: JsonApplication[]          = []
+		const applicationsInNeedOfAdditionalDependencies: JsonApplication[] = []
+		const neededDependencies: JsonApplication[]                    = []
 
-		for (const dependenciesForDomain of allReferencedSchemaMap.values()) {
+		for (const dependenciesForDomain of allReferencedApplicationMap.values()) {
 			for (const dependency of dependenciesForDomain.values()) {
 				neededDependencies.push(dependency)
 			}
 		}
 
-		for (const jsonSchema of jsonSchemas) {
-			const referencedSchemaMapForSchema
-				      = referencedSchemaMapBySchema.get(jsonSchema.domain).get(jsonSchema.name)
+		for (const jsonApplication of jsonApplications) {
+			const referencedApplicationMapForApplication
+				      = referencedApplicationMapByApplication.get(jsonApplication.domain).get(jsonApplication.name)
 
-			if (this.hasReferences(referencedSchemaMapForSchema)) {
-				schemasInNeedOfAdditionalDependencies.push(jsonSchema)
+			if (this.hasReferences(referencedApplicationMapForApplication)) {
+				applicationsInNeedOfAdditionalDependencies.push(jsonApplication)
 			} else {
-				schemasWithValidDependencies.push(jsonSchema)
+				applicationsWithValidDependencies.push(jsonApplication)
 			}
 		}
 
 		return {
-			schemasWithValidDependencies,
-			schemasInNeedOfAdditionalDependencies,
+			applicationsWithValidDependencies,
+			applicationsInNeedOfAdditionalDependencies,
 			neededDependencies
 		}
 	}
 
 	private pruneInGroupReferences(
-		jsonSchemas: JsonSchema[],
-		allReferencedSchemaMap: Map<DomainName, Map<JsonSchemaName, JsonSchema>>,
-		referencedSchemaMapBySchema:
-			Map<DomainName, Map<JsonSchemaName, Map<DomainName, Map<JsonSchemaName, JsonSchema>>>>
+		jsonApplications: JsonApplication[],
+		allReferencedApplicationMap: Map<DomainName, Map<JsonApplicationName, JsonApplication>>,
+		referencedApplicationMapByApplication:
+			Map<DomainName, Map<JsonApplicationName, Map<DomainName, Map<JsonApplicationName, JsonApplication>>>>
 	): void {
-		for (const jsonSchema of jsonSchemas) {
-			// Remove every in-group reference for this schema
-			for (const [domainName, referenceMapForSchemasOfDomain] of referencedSchemaMapBySchema) {
-				for (const [schemaName, schemasReferencedByAGivenSchema] of referenceMapForSchemasOfDomain) {
-					const schemaReferencesForDomain = schemasReferencedByAGivenSchema.get(jsonSchema.domain)
-					if (schemaReferencesForDomain) {
-						schemaReferencesForDomain.delete(jsonSchema.name)
+		for (const jsonApplication of jsonApplications) {
+			// Remove every in-group reference for this application
+			for (const [domainName, referenceMapForApplicationsOfDomain] of referencedApplicationMapByApplication) {
+				for (const [applicationName, applicationsReferencedByAGivenApplication] of referenceMapForApplicationsOfDomain) {
+					const applicationReferencesForDomain = applicationsReferencedByAGivenApplication.get(jsonApplication.domain)
+					if (applicationReferencesForDomain) {
+						applicationReferencesForDomain.delete(jsonApplication.name)
 					}
 				}
 			}
-			const allSchemaReferencesForDomain = allReferencedSchemaMap.get(jsonSchema.domain)
-			if (allSchemaReferencesForDomain) {
-				allSchemaReferencesForDomain.delete(jsonSchema.name)
+			const allApplicationReferencesForDomain = allReferencedApplicationMap.get(jsonApplication.domain)
+			if (allApplicationReferencesForDomain) {
+				allApplicationReferencesForDomain.delete(jsonApplication.name)
 			}
 		}
 	}
 
-	private async pruneReferencesToExistingSchemas(
-		jsonSchemas: JsonSchema[],
-		allReferencedSchemaMap: Map<DomainName, Map<JsonSchemaName, JsonSchema>>,
-		referencedSchemaMapBySchema:
-			Map<DomainName, Map<JsonSchemaName, Map<DomainName, Map<JsonSchemaName, JsonSchema>>>>
+	private async pruneReferencesToExistingApplications(
+		jsonApplications: JsonApplication[],
+		allReferencedApplicationMap: Map<DomainName, Map<JsonApplicationName, JsonApplication>>,
+		referencedApplicationMapByApplication:
+			Map<DomainName, Map<JsonApplicationName, Map<DomainName, Map<JsonApplicationName, JsonApplication>>>>
 	): Promise<void> {
-		const existingSchemaInfo = await this.findExistingSchemas(allReferencedSchemaMap)
+		const existingApplicationInfo = await this.findExistingApplications(allReferencedApplicationMap)
 
-		for (const schemaName of existingSchemaInfo.existingSchemaMapByName.keys()) {
-			const coreDomainAndSchemaNames
-				      = existingSchemaInfo.coreDomainAndSchemaNamesBySchemaName.get(schemaName)
+		for (const applicationName of existingApplicationInfo.existingApplicationMapByName.keys()) {
+			const coreDomainAndApplicationNames
+				      = existingApplicationInfo.coreDomainAndApplicationNamesByApplicationName.get(applicationName)
 
-			// Remove every reference for this existing schema
-			for (const referenceMapForSchemasOfDomain of referencedSchemaMapBySchema.values()) {
-				for (const schemasReferencedByAGivenSchema of referenceMapForSchemasOfDomain.values()) {
-					const schemaReferencesForDomain
-						      = schemasReferencedByAGivenSchema.get(coreDomainAndSchemaNames.domain)
-					if (schemaReferencesForDomain) {
-						schemaReferencesForDomain.delete(coreDomainAndSchemaNames.schema)
+			// Remove every reference for this existing application
+			for (const referenceMapForApplicationsOfDomain of referencedApplicationMapByApplication.values()) {
+				for (const applicationsReferencedByAGivenApplication of referenceMapForApplicationsOfDomain.values()) {
+					const applicationReferencesForDomain
+						      = applicationsReferencedByAGivenApplication.get(coreDomainAndApplicationNames.domain)
+					if (applicationReferencesForDomain) {
+						applicationReferencesForDomain.delete(coreDomainAndApplicationNames.application)
 					}
 				}
 			}
-			const allSchemaReferencesForDomain
-				      = allReferencedSchemaMap.get(coreDomainAndSchemaNames.domain)
-			if (allSchemaReferencesForDomain) {
-				allSchemaReferencesForDomain.delete(coreDomainAndSchemaNames.schema)
+			const allApplicationReferencesForDomain
+				      = allReferencedApplicationMap.get(coreDomainAndApplicationNames.domain)
+			if (allApplicationReferencesForDomain) {
+				allApplicationReferencesForDomain.delete(coreDomainAndApplicationNames.application)
 			}
 		}
 
 	}
 
-	private async findExistingSchemas(
-		allReferencedSchemaMap: Map<DomainName, Map<JsonSchemaName, JsonSchema>>
-	): Promise<ExistingSchemaInfo> {
-		const schemaNames: SchemaName[]                                                       = []
-		const coreDomainAndSchemaNamesBySchemaName: Map<SchemaName, CoreDomainAndSchemaNames> = new Map()
+	private async findExistingApplications(
+		allReferencedApplicationMap: Map<DomainName, Map<JsonApplicationName, JsonApplication>>
+	): Promise<ExistingApplicationInfo> {
+		const applicationNames: ApplicationName[]                                                       = []
+		const coreDomainAndApplicationNamesByApplicationName: Map<ApplicationName, CoreDomainAndApplicationNames> = new Map()
 
-		for (const [domainName, allReferencedSchemasForDomain] of allReferencedSchemaMap) {
-			for (const [coreSchemaName, referencedSchema] of allReferencedSchemasForDomain) {
-				const schemaName = getSchemaName(referencedSchema)
-				schemaNames.push(schemaName)
-				coreDomainAndSchemaNamesBySchemaName.set(schemaName, {
+		for (const [domainName, allReferencedApplicationsForDomain] of allReferencedApplicationMap) {
+			for (const [coreApplicationName, referencedApplication] of allReferencedApplicationsForDomain) {
+				const applicationName = getApplicationName(referencedApplication)
+				applicationNames.push(applicationName)
+				coreDomainAndApplicationNamesByApplicationName.set(applicationName, {
 					domain: domainName,
-					schema: coreSchemaName
+					application: coreApplicationName
 				})
 			}
 		}
 
-		let existingSchemaMapByName: Map<string, ISchema>
-		if (!schemaNames.length) {
-			existingSchemaMapByName = new Map()
+		let existingApplicationMapByName: Map<string, IApplication>
+		if (!applicationNames.length) {
+			existingApplicationMapByName = new Map()
 		} else {
-			const schemaDao         = await container(this).get(SCHEMA_DAO)
-			existingSchemaMapByName = await schemaDao.findMapByNames(schemaNames)
+			const applicationDao         = await container(this).get(SCHEMA_DAO)
+			existingApplicationMapByName = await applicationDao.findMapByNames(applicationNames)
 		}
 
 		return {
-			coreDomainAndSchemaNamesBySchemaName,
-			existingSchemaMapByName
+			coreDomainAndApplicationNamesByApplicationName,
+			existingApplicationMapByName
 		}
 	}
 
 	private hasReferences(
-		referencedSchemaMap: Map<DomainName, Map<JsonSchemaName, JsonSchema>>
+		referencedApplicationMap: Map<DomainName, Map<JsonApplicationName, JsonApplication>>
 	): boolean {
-		for (const referencesForDomain of referencedSchemaMap.values()) {
+		for (const referencesForDomain of referencedApplicationMap.values()) {
 			for (const _ of referencesForDomain) {
 				return true
 			}
@@ -228,4 +228,4 @@ export class SchemaChecker
 
 }
 
-DI.set(SCHEMA_CHECKER, SchemaChecker)
+DI.set(SCHEMA_CHECKER, ApplicationChecker)

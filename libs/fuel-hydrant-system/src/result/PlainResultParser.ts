@@ -29,7 +29,7 @@ export class PlainResultParser
 		dbEntity: DbEntity,
 		context: IFuelHydrantContext,
 	): any {
-		return context.ioc.schemaUtils.getNewEntity(dbEntity, context.ioc.airDb)
+		return context.ioc.applicationUtils.getNewEntity(dbEntity, context.ioc.airDb)
 	}
 
 	addProperty(

@@ -16,7 +16,7 @@ import {
 	BaseTerminalDao,
 	IBaseTerminalDao
 }                                            from '../../generated/baseDaos'
-import {Q}                                   from '../../generated/qSchema'
+import {Q}                                   from '../../generated/qApplication'
 import {
 	QTerminal
 }                                            from '../../generated/terminal/qterminal'

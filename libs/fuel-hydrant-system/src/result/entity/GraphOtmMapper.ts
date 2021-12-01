@@ -23,7 +23,7 @@ export interface OneToManyStubReference {
 // For OtM mapping in bridged queries
 export class GraphOtmMapper {
 	// Map of MtO referred objects by OtM references
-	// [] OTM Reference Entity Schema Index
+	// [] OTM Reference Entity Application Index
 	// [] OTM Reference Entity Index
 	mtoEntityReferenceMap: {
 		// Id of OTM reference facade
@@ -34,7 +34,7 @@ export class GraphOtmMapper {
 	}[][] = []
 
 	// Map of objects with OtM references by
-	// [] OtM reference Schema Entity Index
+	// [] OtM reference Application Entity Index
 	// [] OtM reference Entity Index
 	otmEntityReferenceMap: {
 		// Id of facade with OtM reference
@@ -57,14 +57,14 @@ export class GraphOtmMapper {
 		let mtoEntityReferenceMapForEntity: {
 			[otmReferenceId: string]: { [otmProperty: string]: Array<any> }
 		}                 = ensureChildMap(
-			ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.schemaVersion.schema.index),
+			ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
 			otmDbEntity.index
 		)
 		// TODO: MappedEntityArray is not serializable, make it so before using
 		// let mtoEntityReferenceMapForEntity: {
 		// 	[otmReferenceId: string]: { [otmProperty: string]: MappedEntityArray<any> }
 		// }                 = ensureChildMap(
-		// 	ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.schemaVersion.schema.index),
+		// 	ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
 		// 	otmDbEntity.index
 		// )
 
@@ -77,7 +77,7 @@ export class GraphOtmMapper {
 		// let mtoCollection: MappedEntityArray<any> = mapForOtmEntity[mtoStubReference.otmEntityField]
 		let mtoCollection: any[] = mapForOtmEntity[mtoStubReference.otmEntityField]
 		if (!mtoCollection) {
-			// mtoCollection = newMappedEntityArray<any>(context.ioc.schemaUtils, dbEntity)
+			// mtoCollection = newMappedEntityArray<any>(context.ioc.applicationUtils, dbEntity)
 			mtoCollection = []
 			mapForOtmEntity[mtoStubReference.otmEntityField]
 			              = mtoCollection
@@ -96,7 +96,7 @@ export class GraphOtmMapper {
 		let mtoEntityReferenceMapForEntity: {
 			[otmEntityId: string]: any
 		}                 = ensureChildMap(
-			ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.schemaVersion.schema.index),
+			ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
 			otmDbEntity.index
 		)
 
@@ -113,25 +113,25 @@ export class GraphOtmMapper {
 		entityMap: { [entityId: string]: any }[][],
 		keepMappedEntityArrays: boolean
 	) {
-		for (const schemaIndex in this.mtoEntityReferenceMap) {
-			const mtoEntityReferenceMapForSchema = this.mtoEntityReferenceMap[schemaIndex]
-			for (const entityIndex in mtoEntityReferenceMapForSchema) {
-				const mtoEntityReferenceMapForEntity = mtoEntityReferenceMapForSchema[entityIndex]
+		for (const applicationIndex in this.mtoEntityReferenceMap) {
+			const mtoEntityReferenceMapForApplication = this.mtoEntityReferenceMap[applicationIndex]
+			for (const entityIndex in mtoEntityReferenceMapForApplication) {
+				const mtoEntityReferenceMapForEntity = mtoEntityReferenceMapForApplication[entityIndex]
 
 				// If there are no entities of this type in query results, just keep the stubs
-				if(!entityMap[schemaIndex]) {
+				if(!entityMap[applicationIndex]) {
 					continue
 				}
-				let entityOfTypeMap = entityMap[schemaIndex][entityIndex]
+				let entityOfTypeMap = entityMap[applicationIndex][entityIndex]
 				// If there are no entities of this type in query results, just keep the stubs
 				if (!entityOfTypeMap) {
 					continue
 				}
 				// If there are no OTM for this type in query results, no mapping needs to happen
-				if(!this.otmEntityReferenceMap[schemaIndex]) {
+				if(!this.otmEntityReferenceMap[applicationIndex]) {
 					continue
 				}
-				let entityWithOtmMap: { [otmEntityId: string]: any } = this.otmEntityReferenceMap[schemaIndex][entityIndex]
+				let entityWithOtmMap: { [otmEntityId: string]: any } = this.otmEntityReferenceMap[applicationIndex][entityIndex]
 				// If there are no OTM for this type in query results, no mapping needs to happen
 				if (!entityWithOtmMap) {
 					continue

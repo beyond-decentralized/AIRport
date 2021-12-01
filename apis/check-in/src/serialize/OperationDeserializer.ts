@@ -1,4 +1,4 @@
-import { ISchemaUtils } from "@airport/air-control";
+import { IApplicationUtils } from "@airport/air-control";
 import {
     DbEntity,
     IEntityStateManager
@@ -10,7 +10,7 @@ export interface IOperationDeserializer {
         entity: T,
         dbEntity: DbEntity,
         entityStateManager: IEntityStateManager,
-        schemaUtils: ISchemaUtils
+        applicationUtils: IApplicationUtils
     ): T
 
 }

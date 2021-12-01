@@ -1,1 +1,0 @@
-{"version":3,"file":"schemapropertycolumn.d.ts","sourceRoot":"","sources":["../../../src/generated/schema/schemapropertycolumn.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,sBAAsB,EACtB,MAAM,yBAAyB,CAAC;AACjC,OAAO,EACN,aAAa,EACb,MAAM,gBAAgB,CAAC;AACxB,OAAO,EACN,eAAe,EACf,MAAM,kBAAkB,CAAC;AAQ1B,MAAM,WAAW,qBAAsB,SAAQ,sBAAsB;IAKpE,MAAM,EAAE,aAAa,CAAC;IACtB,QAAQ,EAAE,eAAe,CAAC;CAU1B"}

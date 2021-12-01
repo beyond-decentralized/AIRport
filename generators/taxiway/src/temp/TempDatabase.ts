@@ -2,7 +2,7 @@ import { AIRPORT_DATABASE } from '@airport/air-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { DI } from '@airport/di';
 import {
-	JsonSchema,
+	JsonApplication,
 	STORE_DRIVER
 } from '@airport/ground-control';
 import {
@@ -15,15 +15,15 @@ import {
 	injectTransactionalServer
 } from '@airport/terminal';
 import { injectAirportDatabase } from '@airport/tower';
-import { JsonSchemaWithLastIds } from '@airport/security-check';
-import { NoOpSchemaBuilder } from './NoOpSchemaBuilder';
+import { JsonApplicationWithLastIds } from '@airport/security-check';
+import { NoOpApplicationBuilder } from './NoOpApplicationBuilder';
 import { NoOpSequenceGenerator } from './NoOpSequenceGenerator';
 import { NoOpSqlDriver } from './NoOpSqlDriver';
 
 export interface ITempDatabase {
 
 	initialize(
-		schemas: JsonSchema[]
+		applications: JsonApplication[]
 	): Promise<void>
 
 }
@@ -34,16 +34,16 @@ export class TempDatabase
 	private tempDbInitialized = false;
 
 	async initialize(
-		schemas: JsonSchemaWithLastIds[]
+		applications: JsonApplicationWithLastIds[]
 	): Promise<void> {
 		if (this.tempDbInitialized) {
-			const schemaInitializer = await DI.db().get(SCHEMA_INITIALIZER);
-			await schemaInitializer.stage(schemas, {});
+			const applicationInitializer = await DI.db().get(SCHEMA_INITIALIZER);
+			await applicationInitializer.stage(applications, {});
 			return;
 		}
 
 		DI.set(SEQUENCE_GENERATOR, NoOpSequenceGenerator);
-		DI.set(SCHEMA_BUILDER, NoOpSchemaBuilder);
+		DI.set(SCHEMA_BUILDER, NoOpApplicationBuilder);
 		DI.set(STORE_DRIVER, NoOpSqlDriver);
 		injectAirportDatabase();
 		injectTransactionalServer();
@@ -51,7 +51,7 @@ export class TempDatabase
 
 		await DI.db().get(AIRPORT_DATABASE);
 		const dbManager = await DI.db().get(DATABASE_MANAGER);
-		await dbManager.initNoDb({}, ...schemas);
+		await dbManager.initNoDb({}, ...applications);
 
 		this.tempDbInitialized = true;
 	}

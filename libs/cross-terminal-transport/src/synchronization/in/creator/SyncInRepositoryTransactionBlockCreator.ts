@@ -31,10 +31,10 @@ import {IDataToTM}                        from '../SyncInUtils'
 export interface ISyncInRepositoryTransactionBlockCreator {
 
 	createRepositoryTransBlocks(
-		dataMessagesWithIncompatibleSchemas: IDataToTM[],
+		dataMessagesWithIncompatibleApplications: IDataToTM[],
 		dataMessagesWithIncompatibleData: IDataToTM[],
 		dataMessagesToBeUpgraded: IDataToTM[],
-		dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
+		dataMessagesWithCompatibleApplicationsAndData: IDataToTM[],
 		dataMessagesWithInvalidData: IDataToTM[]
 	): Promise<IDataToTM[]>;
 
@@ -57,10 +57,10 @@ export class SyncInRepositoryTransactionBlockCreator
 	implements ISyncInRepositoryTransactionBlockCreator {
 
 	async createRepositoryTransBlocks(
-		dataMessagesWithIncompatibleSchemas: IDataToTM[],
+		dataMessagesWithIncompatibleApplications: IDataToTM[],
 		dataMessagesWithIncompatibleData: IDataToTM[],
 		dataMessagesToBeUpgraded: IDataToTM[],
-		dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
+		dataMessagesWithCompatibleApplicationsAndData: IDataToTM[],
 		dataMessagesWithInvalidData: IDataToTM[],
 	): Promise<IDataToTM[]> {
 		// TODO: remove unneeded dependencies once tested
@@ -73,13 +73,13 @@ export class SyncInRepositoryTransactionBlockCreator
 
 		let allRepositoryTransactionBlocks: IRepositoryTransactionBlock[] = []
 
-		const repoTransBlocksNeedingSchemaChanges = this.createRepositoryTransactionBlocks(
-			dataMessagesWithIncompatibleSchemas,
+		const repoTransBlocksNeedingApplicationChanges = this.createRepositoryTransactionBlocks(
+			dataMessagesWithIncompatibleApplications,
 			RepoTransBlockSyncOutcomeType.SYNC_TO_TM_NEEDS_SCHEMA_CHANGES,
 			true
 		)
 		allRepositoryTransactionBlocks            = allRepositoryTransactionBlocks.concat(
-			repoTransBlocksNeedingSchemaChanges
+			repoTransBlocksNeedingApplicationChanges
 		)
 
 		const repoTransBlocksNeedingDataUpgrades = this.createRepositoryTransactionBlocks(
@@ -108,12 +108,12 @@ export class SyncInRepositoryTransactionBlockCreator
 			repoTransBlocksWithInvalidData
 		)
 
-		const repoTransBlocksWithValidDataAndSchemas = this.createRepositoryTransactionBlocks(
-			dataMessagesWithCompatibleSchemasAndData,
+		const repoTransBlocksWithValidDataAndApplications = this.createRepositoryTransactionBlocks(
+			dataMessagesWithCompatibleApplicationsAndData,
 			RepoTransBlockSyncOutcomeType.SYNC_TO_TM_SUCCESSFUL
 		)
 		allRepositoryTransactionBlocks               = allRepositoryTransactionBlocks.concat(
-			repoTransBlocksWithValidDataAndSchemas
+			repoTransBlocksWithValidDataAndApplications
 		)
 
 		await repositoryTransactionBlockDao.bulkCreate(
@@ -121,10 +121,10 @@ export class SyncInRepositoryTransactionBlockCreator
 
 
 		let allDataToTM: IDataToTM[] = []
-		allDataToTM                  = allDataToTM.concat(dataMessagesWithIncompatibleSchemas)
+		allDataToTM                  = allDataToTM.concat(dataMessagesWithIncompatibleApplications)
 		allDataToTM                  = allDataToTM.concat(dataMessagesWithIncompatibleData)
 		allDataToTM                  = allDataToTM.concat(dataMessagesToBeUpgraded)
-		allDataToTM                  = allDataToTM.concat(dataMessagesWithCompatibleSchemasAndData)
+		allDataToTM                  = allDataToTM.concat(dataMessagesWithCompatibleApplicationsAndData)
 		allDataToTM                  = allDataToTM.concat(dataMessagesWithInvalidData)
 
 		return allDataToTM
@@ -186,7 +186,7 @@ export class SyncInRepositoryTransactionBlockCreator
 
 	private async recordSharingMessageToHistoryRecords(
 		sharingMessages: ISharingMessage[],
-		existingRepoTransBlocksWithCompatibleSchemasAndData: IRepositoryTransactionBlock[],
+		existingRepoTransBlocksWithCompatibleApplicationsAndData: IRepositoryTransactionBlock[],
 		dataMessages: IDataToTM[],
 		actorMapById: Map<ActorId, IActor>,
 		repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
@@ -195,7 +195,7 @@ export class SyncInRepositoryTransactionBlockCreator
 	): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>> {
 		const repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>
 			      = await this.getRepoTransHistoryMapByRepoId(dataMessages,
-			existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById)
+			existingRepoTransBlocksWithCompatibleApplicationsAndData, actorMapById)
 
 		const repositoryTransactionBlocks: IRepositoryTransactionBlock[]                     = []
 		const sharingMessageRepoTransBlocks: SharingMessageRepoTransBlockECreateProperties[] = []

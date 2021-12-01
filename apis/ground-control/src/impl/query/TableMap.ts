@@ -1,6 +1,6 @@
-import {TableIndex}      from "../../lingo/schema/Entity";
-import {ColumnIndex}     from "../../lingo/schema/Property";
-import {SchemaVersionId} from "../../lingo/schema/Schema";
+import {TableIndex}      from "../../lingo/application/Entity";
+import {ColumnIndex}     from "../../lingo/application/Property";
+import {ApplicationVersionId} from "../../lingo/application/Application";
 import {ColumnMap}       from "./ColumnMap";
 
 /**
@@ -12,7 +12,7 @@ export const ALL_TABLE_COLUMNS = 'A';
 export class TableMap {
 
 	constructor(
-		public schemaVersionId: SchemaVersionId,
+		public applicationVersionId: ApplicationVersionId,
 		public tableMap: { [tableIndex: string]: ColumnMap } = {}
 	) {
 	}

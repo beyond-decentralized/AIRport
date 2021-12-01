@@ -298,9 +298,9 @@ export class RepositoryTransactionHistoryDao
 					changeType: Y,
 					entity: {
 						index: Y,
-						schemaVersion: {
+						applicationVersion: {
 							integerVersion: Y,
-							schema: {
+							application: {
 								index: Y
 							}
 						}

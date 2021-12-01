@@ -1,5 +1,5 @@
 import { IContext } from "@airport/di";
-import { DbEntity } from "../schema/Entity";
+import { DbEntity } from "../application/Entity";
 
 export interface IAbstractQueryContext<IocContext>
     extends IContext {

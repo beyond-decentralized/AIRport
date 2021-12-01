@@ -6,7 +6,7 @@ import { AIRPORT_DATABASE } from '@airport/air-control'
 import { container, DI } from '@airport/di'
 import {
 	JSONBaseOperation,
-	SchemaVersionId,
+	ApplicationVersionId,
 	TableIndex
 } from '@airport/ground-control'
 import {
@@ -14,7 +14,7 @@ import {
 	RepositoryEntity_ActorRecordId,
 	Repository_Id
 } from '@airport/holding-pattern'
-import { ISchemaVersion } from '@airport/traffic-pattern'
+import { IApplicationVersion } from '@airport/traffic-pattern'
 import {
 	MissingRecordId,
 	MissingRecordStatus,
@@ -31,13 +31,13 @@ export interface IMissingRecordDao
 	extends IBaseMissingRecordDao {
 
 	setStatusWhereIdsInAndReturnIds(
-		recordIdMap: Map<Repository_Id, Map<SchemaVersionId,
+		recordIdMap: Map<Repository_Id, Map<ApplicationVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>,
 		status: MissingRecordStatus
 	): Promise<MissingRecordId[]>;
 
 	findActualIdsByRecordIds(
-		recordIdMap: Map<Repository_Id, Map<SchemaVersionId,
+		recordIdMap: Map<Repository_Id, Map<ApplicationVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>
 	): Promise<MissingRecordId[]>;
 
@@ -52,7 +52,7 @@ export class MissingRecordDao
 	implements IMissingRecordDao {
 
 	async setStatusWhereIdsInAndReturnIds(
-		recordIdMap: Map<Repository_Id, Map<SchemaVersionId,
+		recordIdMap: Map<Repository_Id, Map<ApplicationVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>,
 		status: MissingRecordStatus
 	): Promise<MissingRecordId[]> {
@@ -76,29 +76,29 @@ export class MissingRecordDao
 	}
 
 	async findActualIdsByRecordIds(
-		recordIdMap: Map<Repository_Id, Map<SchemaVersionId,
+		recordIdMap: Map<Repository_Id, Map<ApplicationVersionId,
 			Map<TableIndex, Map<ActorId, Set<RepositoryEntity_ActorRecordId>>>>>
 	): Promise<MissingRecordId[]> {
 		const mr = Q.MissingRecord
 
 		let numClauses = 0
 
-		const currentSchemaVersionMapById: { [schemaVersionId: number]: ISchemaVersion } = {}
+		const currentApplicationVersionMapById: { [applicationVersionId: number]: IApplicationVersion } = {}
 
 		const airDb = await container(this).get(AIRPORT_DATABASE)
 
-		for (const schema of airDb.schemas) {
-			const schemaVersion = schema.currentVersion[0].schemaVersion
-			currentSchemaVersionMapById[schemaVersion.id] = schemaVersion
+		for (const application of airDb.applications) {
+			const applicationVersion = application.currentVersion[0].applicationVersion
+			currentApplicationVersionMapById[applicationVersion.id] = applicationVersion
 		}
 
 		let repositoryWhereFragments: JSONBaseOperation[] = []
 		for (const [repositoryId, recordIdsForRepository] of recordIdMap) {
-			let schemaWhereFragments: JSONBaseOperation[] = []
-			for (const [schemaVersionId, recordIdsForSchema] of recordIdsForRepository) {
+			let applicationWhereFragments: JSONBaseOperation[] = []
+			for (const [applicationVersionId, recordIdsForApplication] of recordIdsForRepository) {
 				let tableWhereFragments: JSONBaseOperation[] = []
-				for (const [tableIndex, recordIdsForTable] of recordIdsForSchema) {
-					const dbEntity = currentSchemaVersionMapById[schemaVersionId].entities[tableIndex]
+				for (const [tableIndex, recordIdsForTable] of recordIdsForApplication) {
+					const dbEntity = currentApplicationVersionMapById[applicationVersionId].entities[tableIndex]
 					let actorWhereFragments: JSONBaseOperation[] = []
 					for (const [actorId, recordIdsForActor] of recordIdsForTable) {
 						numClauses++
@@ -112,14 +112,14 @@ export class MissingRecordDao
 						or(...actorWhereFragments)
 					))
 				}
-				schemaWhereFragments.push(and(
-					mr.schemaVersion.id.equals(schemaVersionId),
+				applicationWhereFragments.push(and(
+					mr.applicationVersion.id.equals(applicationVersionId),
 					or(...tableWhereFragments)
 				))
 			}
 			repositoryWhereFragments.push(and(
 				mr.repository.id.equals(repositoryId),
-				or(...schemaWhereFragments)
+				or(...applicationWhereFragments)
 			))
 		}
 

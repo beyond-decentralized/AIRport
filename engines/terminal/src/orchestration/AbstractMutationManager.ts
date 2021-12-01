@@ -21,7 +21,7 @@ interface IColumnValueLookup {
 export class AbstractMutationManager {
 
   protected getPortableQuery(
-    schemaIndex: number,
+    applicationIndex: number,
     tableIndex: number,
     query: AbstractQuery,
     queryResultType: QueryResultType,
@@ -29,7 +29,7 @@ export class AbstractMutationManager {
     fieldUtils: IFieldUtils,
   ): PortableQuery {
     return {
-      schemaIndex,
+      applicationIndex,
       tableIndex,
       jsonQuery: <JsonQuery>query.toJSON(queryUtils, fieldUtils),
       parameterMap: query.getParameters(),
@@ -43,7 +43,7 @@ export class AbstractMutationManager {
     entities: any[],
     context: IContext,
   ): Promise<number> {
-    const [fieldUtils, queryUtils, schemaUtils,
+    const [fieldUtils, queryUtils, applicationUtils,
     ] = await container(this).get(
       FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS);
 
@@ -57,7 +57,7 @@ export class AbstractMutationManager {
       };
       if (dbProperty.relation && dbProperty.relation.length) {
         const dbRelation = dbProperty.relation[0];
-        schemaUtils.forEachColumnTypeOfRelation(dbRelation, (
+        applicationUtils.forEachColumnTypeOfRelation(dbRelation, (
           dbColumn: DbColumn,
           propertyNameChains: string[][],
         ) => {
@@ -108,7 +108,7 @@ export class AbstractMutationManager {
     };
     let insertValues: InsertValues<any> = new InsertValues(rawInsertValues, columnIndexes);
     let portableQuery: PortableQuery = this.getPortableQuery(
-      dbEntity.schemaVersion.schema.index, dbEntity.index,
+      dbEntity.applicationVersion.application.index, dbEntity.index,
       insertValues, null, queryUtils, fieldUtils);
 
     return await transaction.insertValues(portableQuery, context);

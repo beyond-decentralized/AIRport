@@ -1,11 +1,11 @@
 import {
 	IAirportDatabase,
-	QSchemaInternal
+	QApplicationInternal
 } from '@airport/air-control';
 import {
 	DbColumn,
 	DbEntity,
-	DbSchema,
+	DbApplication,
 	DbSequence,
 	repositoryEntity
 } from '@airport/ground-control';
@@ -54,26 +54,26 @@ export function setSeqGen(
 var SEQ_GEN: ISequenceGenerator;
 
 export function diSet(
-	dbSchema: DbSchema,
+	dbApplication: DbApplication,
 	dbEntityId: number // EntityId
 ): boolean {
 	if (!SEQ_GEN
-		|| !dbSchema) {
+		|| !dbApplication) {
 		return false;
 	}
 
-	const dbEntity = dbSchema.currentVersion[0]
-		.schemaVersion.entities[dbEntityId];
+	const dbEntity = dbApplication.currentVersion[0]
+		.applicationVersion.entities[dbEntityId];
 
 	return SEQ_GEN.exists(dbEntity);
 }
 
 export function duoDiSet(
-	dbSchema: DbSchema,
+	dbApplication: DbApplication,
 	dbEntityId: number
 ): boolean {
-	return dbSchema && dbSchema.currentVersion[0]
-		.schemaVersion.entities[dbEntityId] as any as boolean;
+	return dbApplication && dbApplication.currentVersion[0]
+		.applicationVersion.entities[dbEntityId] as any as boolean;
 }
 
 export async function getSysWideOpId(
@@ -92,8 +92,8 @@ export async function getSysWideOpIds(
 		return []
 	}
 	const sysWideOpIdGeneratedColumn
-		= (airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA] as QSchemaInternal)
-			.__dbSchema__.currentVersion[0].schemaVersion
+		= (airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA] as QApplicationInternal)
+			.__dbApplication__.currentVersion[0].applicationVersion
 			.entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
 
 	const generatedNumWrapper = await sequenceGenerator

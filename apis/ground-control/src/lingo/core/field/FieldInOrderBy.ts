@@ -28,7 +28,7 @@ export interface JSONFieldInOrderBy
  */
 export interface JSONEntityFieldInOrderBy
 	extends JSONFieldInOrderBy {
-	// Schema Version Id
+	// Application Version Id
 	si: number,
 	// Entity Type Index
 	ti: number,

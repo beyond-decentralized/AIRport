@@ -9,7 +9,7 @@ import { SharingNodeRepoTransBlock } from '../ddl/sharingNode/SharingNodeRepoTra
 import { SharingNode } from '../ddl/sharingNode/SharingNode';
 import { SharingMessage } from '../ddl/sharingMessage/SharingMessage';
 import { SharingMessageRepoTransBlock } from '../ddl/sharingMessage/SharingMessageRepoTransBlock';
-import { RepoTransBlockSchemaToChange } from '../ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange';
+import { RepoTransBlockApplicationToChange } from '../ddl/repositoryTransactionBlock/RepoTransBlockApplicationToChange';
 import { RepositoryTransactionBlock } from '../ddl/repositoryTransactionBlock/RepositoryTransactionBlock';
 import { MissingRecordRepoTransBlock } from '../ddl/missingRecord/MissingRecordRepoTransBlock';
 import { RepositoryTransactionHistoryUpdateStage } from '../ddl/repositoryTransactionBlock/RepositoryTransactionHistoryUpdateStage';
@@ -29,7 +29,7 @@ DI.db().get(AIRPORT_DATABASE).then(airDb => {
   accumulator.add(SharingNode, 5);
   accumulator.add(SharingMessage, 6);
   accumulator.add(SharingMessageRepoTransBlock, 7);
-  accumulator.add(RepoTransBlockSchemaToChange, 8);
+  accumulator.add(RepoTransBlockApplicationToChange, 8);
   accumulator.add(RepositoryTransactionBlock, 9);
   accumulator.add(MissingRecordRepoTransBlock, 10);
   accumulator.add(RepositoryTransactionHistoryUpdateStage, 11);

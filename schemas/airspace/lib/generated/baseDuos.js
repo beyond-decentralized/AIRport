@@ -1,6 +1,6 @@
 import { Duo, } from '@airport/check-in';
-import { Q, duoDiSet, } from './qSchema';
-// Schema Q object Dependency Injection readiness detection Duo
+import { Q, duoDiSet, } from './qApplication';
+// Application Q object Dependency Injection readiness detection Duo
 export class SQDIDuo extends Duo {
     constructor(dbEntityId) {
         super(dbEntityId, Q);
@@ -14,7 +14,7 @@ export class BaseDomainDuo extends SQDIDuo {
         super(11);
     }
 }
-export class BaseSchemaDuo extends SQDIDuo {
+export class BaseApplicationDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(10);
     }
@@ -22,7 +22,7 @@ export class BaseSchemaDuo extends SQDIDuo {
         super(10);
     }
 }
-export class BaseSchemaColumnDuo extends SQDIDuo {
+export class BaseApplicationColumnDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(4);
     }
@@ -30,7 +30,7 @@ export class BaseSchemaColumnDuo extends SQDIDuo {
         super(4);
     }
 }
-export class BaseSchemaCurrentVersionDuo extends SQDIDuo {
+export class BaseApplicationCurrentVersionDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(9);
     }
@@ -38,7 +38,7 @@ export class BaseSchemaCurrentVersionDuo extends SQDIDuo {
         super(9);
     }
 }
-export class BaseSchemaEntityDuo extends SQDIDuo {
+export class BaseApplicationEntityDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(6);
     }
@@ -46,7 +46,7 @@ export class BaseSchemaEntityDuo extends SQDIDuo {
         super(6);
     }
 }
-export class BaseSchemaOperationDuo extends SQDIDuo {
+export class BaseApplicationOperationDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(5);
     }
@@ -54,7 +54,7 @@ export class BaseSchemaOperationDuo extends SQDIDuo {
         super(5);
     }
 }
-export class BaseSchemaPropertyDuo extends SQDIDuo {
+export class BaseApplicationPropertyDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(2);
     }
@@ -62,7 +62,7 @@ export class BaseSchemaPropertyDuo extends SQDIDuo {
         super(2);
     }
 }
-export class BaseSchemaPropertyColumnDuo extends SQDIDuo {
+export class BaseApplicationPropertyColumnDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(3);
     }
@@ -70,7 +70,7 @@ export class BaseSchemaPropertyColumnDuo extends SQDIDuo {
         super(3);
     }
 }
-export class BaseSchemaReferenceDuo extends SQDIDuo {
+export class BaseApplicationReferenceDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(7);
     }
@@ -78,7 +78,7 @@ export class BaseSchemaReferenceDuo extends SQDIDuo {
         super(7);
     }
 }
-export class BaseSchemaRelationDuo extends SQDIDuo {
+export class BaseApplicationRelationDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(1);
     }
@@ -86,7 +86,7 @@ export class BaseSchemaRelationDuo extends SQDIDuo {
         super(1);
     }
 }
-export class BaseSchemaRelationColumnDuo extends SQDIDuo {
+export class BaseApplicationRelationColumnDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(0);
     }
@@ -94,7 +94,7 @@ export class BaseSchemaRelationColumnDuo extends SQDIDuo {
         super(0);
     }
 }
-export class BaseSchemaVersionDuo extends SQDIDuo {
+export class BaseApplicationVersionDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(8);
     }

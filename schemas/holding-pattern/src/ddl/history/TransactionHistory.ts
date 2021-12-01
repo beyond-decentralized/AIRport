@@ -14,7 +14,7 @@ import {
 } from '@airport/air-control'
 import {
 	ATransactionHistory,
-	SyncSchemaMap,
+	SyncApplicationMap,
 	TransactionType
 } from '@airport/ground-control'
 import { Terminal } from '@airport/travel-document-checkpoint'
@@ -58,7 +58,7 @@ export class TransactionHistory
 	repoTransHistoryMap: { [repositoryId: number]: IRepositoryTransactionHistory } = {}
 
 	@Transient()
-	schemaMap: SyncSchemaMap = new SyncSchemaMap()
+	applicationMap: SyncApplicationMap = new SyncApplicationMap()
 
 	@Transient()
 	allOperationHistory: IOperationHistory[] = []

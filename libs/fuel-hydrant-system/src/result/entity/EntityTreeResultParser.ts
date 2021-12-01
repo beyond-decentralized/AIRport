@@ -32,7 +32,7 @@ export class EntityTreeResultParser
 		dbEntity: DbEntity,
 		context: IFuelHydrantContext,
 	): any {
-		let resultObject                      = context.ioc.schemaUtils.getNewEntity(
+		let resultObject                      = context.ioc.applicationUtils.getNewEntity(
 			dbEntity, context.ioc.airDb)
 		this.currentRowObjectMap[entityAlias] = resultObject
 		if (this.objectEqualityMap[entityAlias] !== undefined) {

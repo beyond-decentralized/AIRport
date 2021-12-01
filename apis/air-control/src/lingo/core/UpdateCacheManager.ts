@@ -3,7 +3,7 @@ import {
     IEntityStateManager,
     ISaveResult
 } from "@airport/ground-control";
-import { ISchemaUtils } from "../utils/SchemaUtils";
+import { IApplicationUtils } from "../utils/ApplicationUtils";
 
 export interface IUpdateCacheManager {
 
@@ -11,14 +11,14 @@ export interface IUpdateCacheManager {
         entity: T,
         dbEntity: DbEntity,
         entityStateManager: IEntityStateManager,
-        schemaUtils: ISchemaUtils,
+        applicationUtils: IApplicationUtils,
     ): any
 
     setOperationState<E, T = E | E[]>(
         entityCopy: T,
         dbEntity: DbEntity,
         entityStateManager: IEntityStateManager,
-        schemaUtils: ISchemaUtils,
+        applicationUtils: IApplicationUtils,
         processedEntities: Set<any>
     ): void
 
@@ -27,7 +27,7 @@ export interface IUpdateCacheManager {
         dbEntity: DbEntity,
         saveResult: ISaveResult,
         entityStateManager: IEntityStateManager,
-        schemaUtils: ISchemaUtils,
+        applicationUtils: IApplicationUtils,
         processedEntities: Set<any>
     ): void
 

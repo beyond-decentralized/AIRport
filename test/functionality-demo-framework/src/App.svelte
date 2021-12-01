@@ -117,7 +117,7 @@ function getMessageDetails(message) {
         <iframe
           id="app"
           class="app"
-          name="functionality-demo-schema"
+          name="functionality-demo-application"
           src="http://localhost:4000/"
           title="application-frame"></iframe>
       </td>

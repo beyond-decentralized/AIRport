@@ -4,40 +4,40 @@ import {
 	DI
 } from '@airport/di'
 import {
-	ISchemaVersion,
+	IApplicationVersion,
 	SCHEMA_VERSION_DAO
 } from '@airport/airspace'
 import { SYNC_IN_SCHEMA_VERSION_CHECKER } from '../../../tokens'
 
-export interface ISchemaVersionCheckRecord {
+export interface IApplicationVersionCheckRecord {
 	found?: boolean
-	schemaName: string
-	schemaVersion?: ISchemaVersion;
-	schemaVersionNumber: number
+	applicationName: string
+	applicationVersion?: IApplicationVersion;
+	applicationVersionNumber: number
 }
 
-export interface ISyncInSchemaVersionChecker {
+export interface ISyncInApplicationVersionChecker {
 
-	ensureSchemaVersions(
+	ensureApplicationVersions(
 		message: TerminalMessage
 	): Promise<boolean>;
 
 }
 
-export class SyncInSchemaVersionChecker
-	implements ISyncInSchemaVersionChecker {
+export class SyncInApplicationVersionChecker
+	implements ISyncInApplicationVersionChecker {
 
-	async ensureSchemaVersions(
+	async ensureApplicationVersions(
 		message: TerminalMessage
 	): Promise<boolean> {
 		try {
-			let schemaCheckMap = await this.checkVersionsSchemasDomains(message);
+			let applicationCheckMap = await this.checkVersionsApplicationsDomains(message);
 
-			for (let i = 0; i < message.schemaVersions.length; i++) {
-				const schemaVersion = message.schemaVersions[i]
-				message.schemaVersions[i] = schemaCheckMap
-					.get(schemaVersion.schema.domain.name).get(schemaVersion.schema.name)
-					.schemaVersion
+			for (let i = 0; i < message.applicationVersions.length; i++) {
+				const applicationVersion = message.applicationVersions[i]
+				message.applicationVersions[i] = applicationCheckMap
+					.get(applicationVersion.application.domain.name).get(applicationVersion.application.name)
+					.applicationVersion
 			}
 		} catch (e) {
 			console.error(e)
@@ -47,104 +47,104 @@ export class SyncInSchemaVersionChecker
 		return true
 	}
 
-	private async checkVersionsSchemasDomains(
+	private async checkVersionsApplicationsDomains(
 		message: TerminalMessage
-	): Promise<Map<string, Map<string, ISchemaVersionCheckRecord>>> {
-		const { allSchemaNames, domainNames, schemaVersionCheckMap } = this.getNames(message)
+	): Promise<Map<string, Map<string, IApplicationVersionCheckRecord>>> {
+		const { allApplicationNames, domainNames, applicationVersionCheckMap } = this.getNames(message)
 
-		const schemaVersionDao = await container(this).get(SCHEMA_VERSION_DAO)
+		const applicationVersionDao = await container(this).get(SCHEMA_VERSION_DAO)
 
-		const schemaVersions = await schemaVersionDao.findByDomainNamesAndSchemaNames(domainNames, allSchemaNames)
+		const applicationVersions = await applicationVersionDao.findByDomainNamesAndApplicationNames(domainNames, allApplicationNames)
 
 		let lastDomainName
-		let lastSchemaName
-		for (let schemaVersion of schemaVersions) {
-			let domainName = schemaVersion.schema.domain.name
-			let schemaName = schemaVersion.schema.name
+		let lastApplicationName
+		for (let applicationVersion of applicationVersions) {
+			let domainName = applicationVersion.application.domain.name
+			let applicationName = applicationVersion.application.name
 			if (lastDomainName !== domainName
-				&& lastSchemaName !== schemaName) {
-				let schemaVersionNumber = schemaVersion.integerVersion
+				&& lastApplicationName !== applicationName) {
+				let applicationVersionNumber = applicationVersion.integerVersion
 
-				for (let [_, schemaCheck] of schemaVersionCheckMap.get(domainName)) {
-					if (schemaCheck.schemaName === schemaName) {
-						schemaCheck.found = true
-						if (schemaCheck.schemaVersionNumber > schemaVersionNumber) {
-							throw new Error(`Installed schema ${schemaName} for domain ${domainName}
-	is at a lower version ${schemaVersionNumber} than needed in message ${schemaCheck.schemaVersionNumber}.`)
+				for (let [_, applicationCheck] of applicationVersionCheckMap.get(domainName)) {
+					if (applicationCheck.applicationName === applicationName) {
+						applicationCheck.found = true
+						if (applicationCheck.applicationVersionNumber > applicationVersionNumber) {
+							throw new Error(`Installed application ${applicationName} for domain ${domainName}
+	is at a lower version ${applicationVersionNumber} than needed in message ${applicationCheck.applicationVersionNumber}.`)
 						}
-						schemaCheck.schemaVersion = schemaVersion
+						applicationCheck.applicationVersion = applicationVersion
 					}
 				}
 				lastDomainName = domainName
-				lastSchemaName = schemaName
+				lastApplicationName = applicationName
 			}
 		}
 
-		for (const [domainName, schemaChecks] of schemaVersionCheckMap) {
-			for (let [_, schemaCheck] of schemaChecks) {
-				if (!schemaCheck.found) {
-					// TODO: download and install the schema
+		for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
+			for (let [_, applicationCheck] of applicationChecks) {
+				if (!applicationCheck.found) {
+					// TODO: download and install the application
 					throw new Error(
-						`Schema ${schemaCheck.schemaName} for domain ${domainName} is not installed.`)
+						`Application ${applicationCheck.applicationName} for domain ${domainName} is not installed.`)
 				}
 			}
 		}
 
-		return schemaVersionCheckMap
+		return applicationVersionCheckMap
 	}
 
 	private getNames(
 		message: TerminalMessage
 	): {
-		allSchemaNames: string[],
+		allApplicationNames: string[],
 		domainNames: string[],
-		schemaVersionCheckMap: Map<string, Map<string, ISchemaVersionCheckRecord>>
+		applicationVersionCheckMap: Map<string, Map<string, IApplicationVersionCheckRecord>>
 	} {
-		if (!message.schemaVersions || !(message.schemaVersions instanceof Array)) {
-			throw new Error(`Did not find schemaVersions in TerminalMessage.`)
+		if (!message.applicationVersions || !(message.applicationVersions instanceof Array)) {
+			throw new Error(`Did not find applicationVersions in TerminalMessage.`)
 		}
 
-		const schemaVersionCheckMap: Map<string, Map<string, ISchemaVersionCheckRecord>> = new Map()
+		const applicationVersionCheckMap: Map<string, Map<string, IApplicationVersionCheckRecord>> = new Map()
 
-		for (let schemaVersion of message.schemaVersions) {
-			if (!schemaVersion.integerVersion || typeof schemaVersion.integerVersion !== 'number') {
-				throw new Error(`Invalid SchemaVersion.integerVersion.`)
+		for (let applicationVersion of message.applicationVersions) {
+			if (!applicationVersion.integerVersion || typeof applicationVersion.integerVersion !== 'number') {
+				throw new Error(`Invalid ApplicationVersion.integerVersion.`)
 			}
-			const schema = message.schemas[schemaVersion.schema as any]
-			if (typeof schema !== 'object') {
-				throw new Error(`Invalid SchemaVersion.schema`)
+			const application = message.applications[applicationVersion.application as any]
+			if (typeof application !== 'object') {
+				throw new Error(`Invalid ApplicationVersion.application`)
 			}
-			schemaVersion.schema = schema
-			const domain = schema.domain
+			applicationVersion.application = application
+			const domain = application.domain
 
-			let schemaChecksForDomain = schemaVersionCheckMap.get(domain.name)
-			if (!schemaChecksForDomain) {
-				schemaChecksForDomain = new Map()
-				schemaVersionCheckMap.set(domain.name, schemaChecksForDomain)
+			let applicationChecksForDomain = applicationVersionCheckMap.get(domain.name)
+			if (!applicationChecksForDomain) {
+				applicationChecksForDomain = new Map()
+				applicationVersionCheckMap.set(domain.name, applicationChecksForDomain)
 			}
-			if (!schemaChecksForDomain.has(schema.name)) {
-				schemaChecksForDomain.set(schema.name, {
-					schemaName: schema.name,
-					schemaVersionNumber: schemaVersion.integerVersion
+			if (!applicationChecksForDomain.has(application.name)) {
+				applicationChecksForDomain.set(application.name, {
+					applicationName: application.name,
+					applicationVersionNumber: applicationVersion.integerVersion
 				})
 			}
 		}
 
 		const domainNames = []
-		const allSchemaNames = []
-		for (const [domainName, schemaChecksForDomainMap] of schemaVersionCheckMap) {
+		const allApplicationNames = []
+		for (const [domainName, applicationChecksForDomainMap] of applicationVersionCheckMap) {
 			domainNames.push(domainName)
-			for (let [schemaName, _] of schemaChecksForDomainMap) {
-				allSchemaNames.push(schemaName)
+			for (let [applicationName, _] of applicationChecksForDomainMap) {
+				allApplicationNames.push(applicationName)
 			}
 		}
 
 		return {
-			allSchemaNames,
+			allApplicationNames,
 			domainNames,
-			schemaVersionCheckMap
+			applicationVersionCheckMap
 		}
 	}
 
 }
-DI.set(SYNC_IN_SCHEMA_VERSION_CHECKER, SyncInSchemaVersionChecker)
+DI.set(SYNC_IN_SCHEMA_VERSION_CHECKER, SyncInApplicationVersionChecker)

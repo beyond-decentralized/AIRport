@@ -24,7 +24,7 @@ import {
 } from '@airport/airspace'
 import { SCHEMA_RECORDER } from '../tokens'
 
-export interface ISchemaRecorder {
+export interface IApplicationRecorder {
 
 	record(
 		ddlObjects: DdlObjects,
@@ -34,18 +34,18 @@ export interface ISchemaRecorder {
 
 }
 
-export class SchemaRecorder
-	implements ISchemaRecorder {
+export class ApplicationRecorder
+	implements IApplicationRecorder {
 
 	async record(
 		ddlObjects: DdlObjects,
 		// normalOperation: boolean,
 		context: IContext
 	): Promise<void> {
-		const [airDb, domainDao, schemaColumnDao, schemaDao,
-			schemaEntityDao, schemaPropertyColumnDao, schemaPropertyDao,
-			schemaReferenceDao, schemaRelationColumnDao, schemaRelationDao,
-			schemaVersionDao] = await container(this)
+		const [airDb, domainDao, applicationColumnDao, applicationDao,
+			applicationEntityDao, applicationPropertyColumnDao, applicationPropertyDao,
+			applicationReferenceDao, applicationRelationColumnDao, applicationRelationDao,
+			applicationVersionDao] = await container(this)
 				.get(
 					AIRPORT_DATABASE, DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO,
 					SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_PROPERTY_DAO,
@@ -54,92 +54,92 @@ export class SchemaRecorder
 				)
 
 		await transactional(async () => {
-			// FIXME: add support for real schema versioning
+			// FIXME: add support for real application versioning
 			this.setDefaultVersioning(ddlObjects)
 
 			await domainDao.checkAndInsertIfNeeded(ddlObjects.domains)
 
-			await schemaDao.insert(ddlObjects.schemas)
+			await applicationDao.insert(ddlObjects.applications)
 			
-			await schemaVersionDao.insert(ddlObjects.schemaVersions)
-			await schemaReferenceDao.insert(ddlObjects.schemaReferences)
-			await schemaEntityDao.insert(ddlObjects.entities)
-			await schemaPropertyDao.insert(ddlObjects.properties)
-			await schemaRelationDao.insert(ddlObjects.relations)
-			await schemaColumnDao.insert(ddlObjects.columns)
-			await schemaPropertyColumnDao.insert(ddlObjects.propertyColumns)
-			await schemaRelationColumnDao.insert(ddlObjects.relationColumns)
+			await applicationVersionDao.insert(ddlObjects.applicationVersions)
+			await applicationReferenceDao.insert(ddlObjects.applicationReferences)
+			await applicationEntityDao.insert(ddlObjects.entities)
+			await applicationPropertyDao.insert(ddlObjects.properties)
+			await applicationRelationDao.insert(ddlObjects.relations)
+			await applicationColumnDao.insert(ddlObjects.columns)
+			await applicationPropertyColumnDao.insert(ddlObjects.propertyColumns)
+			await applicationRelationColumnDao.insert(ddlObjects.relationColumns)
 		}, context)
 	}
 	/*
 		private async normalRecord(
 			ddlObjects: DdlObjects,
 			domainDao: IDomainDao,
-			schemaDao: ISchemaDao,
-			schemaVersionDao: ISchemaVersionDao,
-			schemaReferenceDao: ISchemaReferenceDao,
-			schemaEntityDao: ISchemaEntityDao,
-			schemaPropertyDao: ISchemaPropertyDao,
-			schemaRelationDao: ISchemaRelationDao,
-			schemaColumnDao: ISchemaColumnDao,
-			schemaPropertyColumnDao: ISchemaPropertyColumnDao,
-			schemaRelationColumnDao: ISchemaRelationColumnDao,
+			applicationDao: IApplicationDao,
+			applicationVersionDao: IApplicationVersionDao,
+			applicationReferenceDao: IApplicationReferenceDao,
+			applicationEntityDao: IApplicationEntityDao,
+			applicationPropertyDao: IApplicationPropertyDao,
+			applicationRelationDao: IApplicationRelationDao,
+			applicationColumnDao: IApplicationColumnDao,
+			applicationPropertyColumnDao: IApplicationPropertyColumnDao,
+			applicationRelationColumnDao: IApplicationRelationColumnDao,
 			context: IContext
 		) {
 			// await domainDao.save(ddlObjects.domains, context)
-			await schemaDao.save(ddlObjects.schemas, context)
-			// await schemaVersionDao.save(ddlObjects.schemaVersions, context)
-			// await schemaReferenceDao.save(
-			// 	ddlObjects.schemaReferences as SchemaReferenceECreateProperties[], context)
-			// await schemaEntityDao.save(ddlObjects.entities, context)
-			// await schemaPropertyDao.save(ddlObjects.properties, context)
-			// await schemaRelationDao.save(ddlObjects.relations, context)
-			// await schemaColumnDao.save(ddlObjects.columns, context)
-			// await schemaPropertyColumnDao.save(
-			// 	ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[],
+			await applicationDao.save(ddlObjects.applications, context)
+			// await applicationVersionDao.save(ddlObjects.applicationVersions, context)
+			// await applicationReferenceDao.save(
+			// 	ddlObjects.applicationReferences as ApplicationReferenceECreateProperties[], context)
+			// await applicationEntityDao.save(ddlObjects.entities, context)
+			// await applicationPropertyDao.save(ddlObjects.properties, context)
+			// await applicationRelationDao.save(ddlObjects.relations, context)
+			// await applicationColumnDao.save(ddlObjects.columns, context)
+			// await applicationPropertyColumnDao.save(
+			// 	ddlObjects.propertyColumns as ApplicationPropertyColumnECreateProperties[],
 			// 	context)
-			// await schemaRelationColumnDao.save(
-			// 	ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[],
+			// await applicationRelationColumnDao.save(
+			// 	ddlObjects.relationColumns as ApplicationRelationColumnECreateProperties[],
 			// 	context)
 		}
 	 */
 	private setDefaultVersioning(
 		ddlObjects: DdlObjects,
 	) {
-		for (const schemaReference of ddlObjects.schemaReferences) {
-			schemaReference.deprecatedSinceVersion = null
-			schemaReference.removedInVersion = null
-			schemaReference.sinceVersion = schemaReference.ownSchemaVersion
+		for (const applicationReference of ddlObjects.applicationReferences) {
+			applicationReference.deprecatedSinceVersion = null
+			applicationReference.removedInVersion = null
+			applicationReference.sinceVersion = applicationReference.ownApplicationVersion
 		}
 		for (const entity of ddlObjects.entities) {
 			entity.deprecatedSinceVersion = null
 			entity.removedInVersion = null
-			entity.sinceVersion = entity.schemaVersion
+			entity.sinceVersion = entity.applicationVersion
 		}
 		for (const property of ddlObjects.properties) {
 			property.deprecatedSinceVersion = null
 			property.removedInVersion = null
-			property.sinceVersion = property.entity.schemaVersion
+			property.sinceVersion = property.entity.applicationVersion
 		}
 		for (const relation of ddlObjects.relations) {
 			relation.deprecatedSinceVersion = null
 			relation.removedInVersion = null
-			relation.sinceVersion = relation.entity.schemaVersion
+			relation.sinceVersion = relation.entity.applicationVersion
 		}
 		for (const column of ddlObjects.columns) {
 			column.deprecatedSinceVersion = null
 			column.removedInVersion = null
-			column.sinceVersion = column.entity.schemaVersion
+			column.sinceVersion = column.entity.applicationVersion
 		}
 		for (const propertyColumn of ddlObjects.propertyColumns) {
 			propertyColumn.deprecatedSinceVersion = null
 			propertyColumn.removedInVersion = null
-			propertyColumn.sinceVersion = propertyColumn.property.entity.schemaVersion
+			propertyColumn.sinceVersion = propertyColumn.property.entity.applicationVersion
 		}
 		for (const relationColumn of ddlObjects.relationColumns) {
 			relationColumn.deprecatedSinceVersion = null
 			relationColumn.removedInVersion = null
-			relationColumn.sinceVersion = relationColumn.parentRelation.entity.schemaVersion
+			relationColumn.sinceVersion = relationColumn.parentRelation.entity.applicationVersion
 		}
 	}
 	/* 
@@ -147,30 +147,30 @@ export class SchemaRecorder
 			airDb: IAirportDatabase,
 			ddlObjects: DdlObjects,
 			domainDao: IDomainDao,
-			schemaDao: ISchemaDao,
-			schemaVersionDao: ISchemaVersionDao,
-			schemaReferenceDao: ISchemaReferenceDao,
-			schemaEntityDao: ISchemaEntityDao,
-			schemaPropertyDao: ISchemaPropertyDao,
-			schemaRelationDao: ISchemaRelationDao,
-			schemaColumnDao: ISchemaColumnDao,
-			schemaPropertyColumnDao: ISchemaPropertyColumnDao,
-			schemaRelationColumnDao: ISchemaRelationColumnDao,
+			applicationDao: IApplicationDao,
+			applicationVersionDao: IApplicationVersionDao,
+			applicationReferenceDao: IApplicationReferenceDao,
+			applicationEntityDao: IApplicationEntityDao,
+			applicationPropertyDao: IApplicationPropertyDao,
+			applicationRelationDao: IApplicationRelationDao,
+			applicationColumnDao: IApplicationColumnDao,
+			applicationPropertyColumnDao: IApplicationPropertyColumnDao,
+			applicationRelationColumnDao: IApplicationRelationColumnDao,
 			context: IContext
 		) {
 			// await this.bulkCreate(domainDao, ddlObjects.domains, context)
-			await this.bulkCreate(schemaDao, ddlObjects.schemas, context)
-			// await this.bulkCreate(schemaVersionDao, ddlObjects.latestSchemaVersions, context)
-			// await this.bulkCreate(schemaReferenceDao,
-			// 	ddlObjects.schemaReferences as SchemaReferenceECreateProperties[], context)
-			// await this.bulkCreate(schemaEntityDao, ddlObjects.entities, context)
-			// await this.bulkCreate(schemaPropertyDao, ddlObjects.properties, context)
-			// await this.bulkCreate(schemaRelationDao, ddlObjects.relations, context)
-			// await this.bulkCreate(schemaColumnDao, ddlObjects.columns, context)
-			// await this.bulkCreate(schemaPropertyColumnDao,
-			// 	ddlObjects.propertyColumns as SchemaPropertyColumnECreateProperties[], context)
-			// await this.bulkCreate(schemaRelationColumnDao,
-			// 	ddlObjects.relationColumns as SchemaRelationColumnECreateProperties[], context)
+			await this.bulkCreate(applicationDao, ddlObjects.applications, context)
+			// await this.bulkCreate(applicationVersionDao, ddlObjects.latestApplicationVersions, context)
+			// await this.bulkCreate(applicationReferenceDao,
+			// 	ddlObjects.applicationReferences as ApplicationReferenceECreateProperties[], context)
+			// await this.bulkCreate(applicationEntityDao, ddlObjects.entities, context)
+			// await this.bulkCreate(applicationPropertyDao, ddlObjects.properties, context)
+			// await this.bulkCreate(applicationRelationDao, ddlObjects.relations, context)
+			// await this.bulkCreate(applicationColumnDao, ddlObjects.columns, context)
+			// await this.bulkCreate(applicationPropertyColumnDao,
+			// 	ddlObjects.propertyColumns as ApplicationPropertyColumnECreateProperties[], context)
+			// await this.bulkCreate(applicationRelationColumnDao,
+			// 	ddlObjects.relationColumns as ApplicationRelationColumnECreateProperties[], context)
 		}
 	 */
 	private async bulkCreate(
@@ -183,4 +183,4 @@ export class SchemaRecorder
 
 }
 
-DI.set(SCHEMA_RECORDER, SchemaRecorder)
+DI.set(SCHEMA_RECORDER, ApplicationRecorder)

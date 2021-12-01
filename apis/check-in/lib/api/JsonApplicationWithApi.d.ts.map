@@ -1,0 +1,1 @@
+{"version":3,"file":"JsonApplicationWithApi.d.ts","sourceRoot":"","sources":["../../src/api/JsonApplicationWithApi.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,sBAAsB,EAAE,MAAM,yBAAyB,CAAC;AAClF,OAAO,EAAE,eAAe,EAAE,MAAM,eAAe,CAAC;AAEhD,MAAM,WAAW,sBACb,SAAQ,eAAe;IAEvB,QAAQ,EAAE,6BAA6B,EAAE,CAAA;CAE5C;AAED,MAAM,WAAW,6BACb,SAAQ,sBAAsB;IAE9B,GAAG,EAAE,eAAe,CAAA;CAEvB"}

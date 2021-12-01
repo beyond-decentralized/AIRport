@@ -6,7 +6,7 @@ import {
 	ensureChildJsMap,
 	ensureChildJsSet,
 	EntityId,
-	SchemaVersionId,
+	ApplicationVersionId,
 	TableIndex
 }           from '@airport/ground-control'
 import {
@@ -160,13 +160,13 @@ export class Stage1SyncedInDataProcessor
 				.sortRepoTransHistories(repoTransHistoriesForRepository, actorMayById)
 		}
 
-		const recordCreations: Map<SchemaVersionId,
+		const recordCreations: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>          = new Map()
-		const recordUpdates: Map<SchemaVersionId,
+		const recordUpdates: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>> = new Map()
-		const recordDeletions: Map<SchemaVersionId,
+		const recordDeletions: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
 				Set<RepositoryEntity_ActorRecordId>>>>>                                 = new Map()
 
@@ -225,9 +225,9 @@ export class Stage1SyncedInDataProcessor
 		repoTransHistoryMapByRepoId: Map<Repository_Id, ISyncRepoTransHistory[]>,
 		syncInUtils: ISyncInUtils,
 		isLocal = false
-	): Map<SchemaVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
+	): Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 		Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>> {
-		const recordDeletions: Map<SchemaVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
+		const recordDeletions: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 			Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>> = new Map()
 		for (const [repositoryId, repoTransHistories] of repoTransHistoryMapByRepoId) {
 			this.mergeArraysInMap(allRepoTransHistoryMapByRepoId, repositoryId, repoTransHistories)
@@ -270,19 +270,19 @@ export class Stage1SyncedInDataProcessor
 		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
 		isLocal: boolean,
-		recordCreations: Map<SchemaVersionId,
+		recordCreations: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
-		recordUpdates: Map<SchemaVersionId,
+		recordUpdates: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
-		recordDeletions: Map<SchemaVersionId,
+		recordDeletions: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
 				Set<RepositoryEntity_ActorRecordId>>>>>,
-		allRemoteRecordDeletions: Map<SchemaVersionId,
+		allRemoteRecordDeletions: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
-		allLocalRecordDeletions: Map<SchemaVersionId,
+		allLocalRecordDeletions: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
 		syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>,
@@ -372,16 +372,16 @@ export class Stage1SyncedInDataProcessor
 		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
 		isLocal: boolean,
-		recordCreations: Map<SchemaVersionId,
+		recordCreations: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
-		recordUpdates: Map<SchemaVersionId,
+		recordUpdates: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
-		allRemoteRecordDeletions: Map<SchemaVersionId,
+		allRemoteRecordDeletions: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
-		allLocalRecordDeletions: Map<SchemaVersionId,
+		allLocalRecordDeletions: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
 		syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>,
@@ -509,16 +509,16 @@ export class Stage1SyncedInDataProcessor
 	private processDeletion(
 		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
-		recordCreations: Map<SchemaVersionId,
+		recordCreations: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
-		recordUpdates: Map<SchemaVersionId,
+		recordUpdates: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
-		recordDeletions: Map<SchemaVersionId,
+		recordDeletions: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Set<RepositoryEntity_ActorRecordId>>>>>,
-		allLocalRecordDeletions: Map<SchemaVersionId,
+		allLocalRecordDeletions: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
 		syncInUtils: ISyncInUtils
@@ -573,14 +573,14 @@ export class Stage1SyncedInDataProcessor
 	private getRecordsForRepoInTable<T>(
 		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
-		recordMapBySchemaTableAndRepository: Map<SchemaVersionId,
+		recordMapByApplicationTableAndRepository: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, T>>>
 	): T {
-		const recordMapForSchema = recordMapBySchemaTableAndRepository
-			.get(operationHistory.entity.schemaVersion.id)
+		const recordMapForApplication = recordMapByApplicationTableAndRepository
+			.get(operationHistory.entity.applicationVersion.id)
 		let recordMapForTable: Map<Repository_Id, T>
-		if (recordMapForSchema) {
-			recordMapForTable = recordMapForSchema.get(operationHistory.entity.id)
+		if (recordMapForApplication) {
+			recordMapForTable = recordMapForApplication.get(operationHistory.entity.id)
 		}
 		let recordMapForRepoInTable: T
 		if (recordMapForTable) {
@@ -644,7 +644,7 @@ export class Stage1SyncedInDataProcessor
 		recordHistory: IRecordHistory
 	): string {
 		return `
-		Schema Version ID: ${operationHistory.entity.schemaVersion.id}
+		Application Version ID: ${operationHistory.entity.applicationVersion.id}
 		Entity ID:         ${operationHistory.entity.id}
 		Repository ID:     ${repositoryId}
 		Actor ID:          ${recordHistory.actor.id}

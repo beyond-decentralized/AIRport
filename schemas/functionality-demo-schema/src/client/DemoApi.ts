@@ -1,6 +1,6 @@
 import { IOC } from "@airport/di"
-import { AIRepository } from "@airport/ground-control";
 import { DeepPartial } from "@airport/pressurization";
+import { IRepository } from "@airport/holding-pattern";
 import { Level1 } from "../ddl/Level1";
 import { DEMO_API } from "../tokens";
 
@@ -14,7 +14,7 @@ export class DemoApi {
         return await demoApi.addRepository(repositoryName)
     }
 
-    async getRepositoryListings(): Promise<AIRepository[]> {
+    async getRepositoryListings(): Promise<IRepository[]> {
         const demoApi = await IOC.get(DEMO_API)
 
         return await demoApi.getRepositoryListings()

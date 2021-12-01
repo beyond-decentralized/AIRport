@@ -42,15 +42,15 @@ import {
 	Terminal,
 } from '@airport/travel-document-checkpoint';
 import {
-	SchemaGraph,
-	SchemaEId,
-	SchemaEOptionalId,
-	SchemaEUpdateProperties,
-	SchemaESelect,
-	QSchema,
-	QSchemaQId,
-	QSchemaQRelation,
-	Schema,
+	ApplicationGraph,
+	ApplicationEId,
+	ApplicationEOptionalId,
+	ApplicationEUpdateProperties,
+	ApplicationESelect,
+	QApplication,
+	QApplicationQId,
+	QApplicationQRelation,
+	Application,
 } from '@airport/airspace';
 import {
 	Actor,
@@ -77,7 +77,7 @@ export interface ActorESelect
   // Non-Id relations (including OneToMany's)
 	user?: UserESelect;
 	terminal?: TerminalESelect;
-	schema?: SchemaESelect;
+	application?: ApplicationESelect;
 
 }
 
@@ -115,7 +115,7 @@ export interface ActorEUpdateProperties
 	// Non-Id Relations - ids only & no OneToMany's
 	user?: UserEOptionalId;
 	terminal?: TerminalEOptionalId;
-	schema?: SchemaEOptionalId;
+	application?: ApplicationEOptionalId;
 
 }
 
@@ -132,7 +132,7 @@ export interface ActorGraph
 	// Relations
 	user?: UserGraph;
 	terminal?: TerminalGraph;
-	schema?: SchemaGraph;
+	application?: ApplicationGraph;
 
 }
 
@@ -186,7 +186,7 @@ export interface QActor extends IQEntity<Actor>
 	// Non-Id Relations
 	user: QUserQRelation;
 	terminal: QTerminalQRelation;
-	schema: QSchemaQRelation;
+	application: QApplicationQRelation;
 
 }
 

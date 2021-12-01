@@ -1,8 +1,8 @@
 /* eslint-disable */
 export const MAPPED_SUPERCLASS = [
 	{
-		"type": "VersionedSchemaObject",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\VersionedSchemaObject.ts",
+		"type": "VersionedApplicationObject",
+		"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\VersionedApplicationObject.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
@@ -17,8 +17,8 @@ export const MAPPED_SUPERCLASS = [
 			"isId": false,
 			"isMappedSuperclass": true,
 			"isTransient": false,
-			"name": "VersionedSchemaObject",
-			"type": "typeof VersionedSchemaObject",
+			"name": "VersionedApplicationObject",
+			"type": "typeof VersionedApplicationObject",
 			"fileImports": {
 				"importMapByObjectAsName": {
 					"JoinColumn": {
@@ -45,22 +45,22 @@ export const MAPPED_SUPERCLASS = [
 					},
 					"ManyToOne": null,
 					"MappedSuperclass": null,
-					"SchemaVersion": {
+					"ApplicationVersion": {
 						"fileImports": null,
 						"isLocal": true,
 						"objectMapByAsName": {
-							"SchemaVersion": {
-								"asName": "SchemaVersion",
+							"ApplicationVersion": {
+								"asName": "ApplicationVersion",
 								"moduleImport": null,
-								"sourceName": "SchemaVersion"
+								"sourceName": "ApplicationVersion"
 							}
 						},
-						"path": "./SchemaVersion"
+						"path": "./ApplicationVersion"
 					}
 				},
 				"importMapByModulePath": {
 					"@airport/air-control": null,
-					"./SchemaVersion": null
+					"./ApplicationVersion": null
 				}
 			},
 			"properties": [
@@ -85,12 +85,12 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "deprecatedSinceVersion",
-					"type": "SchemaVersion",
+					"type": "ApplicationVersion",
 					"ownerEntity": null,
-					"nonArrayType": "SchemaVersion",
+					"nonArrayType": "ApplicationVersion",
 					"entity": {
-						"type": "SchemaVersion",
-						"path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaVersion.ts",
+						"type": "ApplicationVersion",
+						"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationVersion.ts",
 						"parentClassName": null,
 						"isSuperclass": false,
 						"ids": [
@@ -119,9 +119,9 @@ export const MAPPED_SUPERCLASS = [
 								"isMappedSuperclass": false,
 								"isTransient": false,
 								"name": "id",
-								"type": "SchemaVersionId",
+								"type": "ApplicationVersionId",
 								"ownerEntity": null,
-								"nonArrayType": "SchemaVersionId",
+								"nonArrayType": "ApplicationVersionId",
 								"primitive": "number",
 								"index": 0
 							}
@@ -145,8 +145,8 @@ export const MAPPED_SUPERCLASS = [
 							"isId": false,
 							"isMappedSuperclass": false,
 							"isTransient": false,
-							"name": "SchemaVersion",
-							"type": "typeof SchemaVersion",
+							"name": "ApplicationVersion",
+							"type": "typeof ApplicationVersion",
 							"fileImports": {
 								"importMapByObjectAsName": {
 									"Column": {
@@ -221,117 +221,117 @@ export const MAPPED_SUPERCLASS = [
 									"SequenceGenerator": null,
 									"Table": null,
 									"Transient": null,
-									"SchemaVersionId": {
+									"ApplicationVersionId": {
 										"fileImports": null,
 										"isLocal": false,
 										"objectMapByAsName": {
-											"SchemaVersionId": {
-												"asName": "SchemaVersionId",
+											"ApplicationVersionId": {
+												"asName": "ApplicationVersionId",
 												"moduleImport": null,
-												"sourceName": "SchemaVersionId"
+												"sourceName": "ApplicationVersionId"
 											},
-											"SchemaVersionInteger": {
-												"asName": "SchemaVersionInteger",
+											"ApplicationVersionInteger": {
+												"asName": "ApplicationVersionInteger",
 												"moduleImport": null,
-												"sourceName": "SchemaVersionInteger"
+												"sourceName": "ApplicationVersionInteger"
 											},
-											"SchemaVersionMajor": {
-												"asName": "SchemaVersionMajor",
+											"ApplicationVersionMajor": {
+												"asName": "ApplicationVersionMajor",
 												"moduleImport": null,
-												"sourceName": "SchemaVersionMajor"
+												"sourceName": "ApplicationVersionMajor"
 											},
-											"SchemaVersionMinor": {
-												"asName": "SchemaVersionMinor",
+											"ApplicationVersionMinor": {
+												"asName": "ApplicationVersionMinor",
 												"moduleImport": null,
-												"sourceName": "SchemaVersionMinor"
+												"sourceName": "ApplicationVersionMinor"
 											},
-											"SchemaVersionPatch": {
-												"asName": "SchemaVersionPatch",
+											"ApplicationVersionPatch": {
+												"asName": "ApplicationVersionPatch",
 												"moduleImport": null,
-												"sourceName": "SchemaVersionPatch"
+												"sourceName": "ApplicationVersionPatch"
 											},
-											"SchemaVersionString": {
-												"asName": "SchemaVersionString",
+											"ApplicationVersionString": {
+												"asName": "ApplicationVersionString",
 												"moduleImport": null,
-												"sourceName": "SchemaVersionString"
+												"sourceName": "ApplicationVersionString"
 											}
 										},
 										"path": "@airport/ground-control"
 									},
-									"SchemaVersionInteger": null,
-									"SchemaVersionMajor": null,
-									"SchemaVersionMinor": null,
-									"SchemaVersionPatch": null,
-									"SchemaVersionString": null,
-									"Schema": {
+									"ApplicationVersionInteger": null,
+									"ApplicationVersionMajor": null,
+									"ApplicationVersionMinor": null,
+									"ApplicationVersionPatch": null,
+									"ApplicationVersionString": null,
+									"Application": {
 										"fileImports": null,
 										"isLocal": true,
 										"objectMapByAsName": {
-											"Schema": {
-												"asName": "Schema",
+											"Application": {
+												"asName": "Application",
 												"moduleImport": null,
-												"sourceName": "Schema"
+												"sourceName": "Application"
 											}
 										},
-										"path": "./Schema"
+										"path": "./Application"
 									},
-									"SchemaEntity": {
+									"ApplicationEntity": {
 										"fileImports": null,
 										"isLocal": true,
 										"objectMapByAsName": {
-											"SchemaEntity": {
-												"asName": "SchemaEntity",
+											"ApplicationEntity": {
+												"asName": "ApplicationEntity",
 												"moduleImport": null,
-												"sourceName": "SchemaEntity"
+												"sourceName": "ApplicationEntity"
 											}
 										},
-										"path": "./SchemaEntity"
+										"path": "./ApplicationEntity"
 									},
-									"SchemaReference": {
+									"ApplicationReference": {
 										"fileImports": null,
 										"isLocal": true,
 										"objectMapByAsName": {
-											"SchemaReference": {
-												"asName": "SchemaReference",
+											"ApplicationReference": {
+												"asName": "ApplicationReference",
 												"moduleImport": null,
-												"sourceName": "SchemaReference"
+												"sourceName": "ApplicationReference"
 											}
 										},
-										"path": "./SchemaReference"
+										"path": "./ApplicationReference"
 									},
-									"ISchemaEntity": {
+									"IApplicationEntity": {
 										"fileImports": null,
 										"isLocal": true,
 										"objectMapByAsName": {
-											"ISchemaEntity": {
-												"asName": "ISchemaEntity",
+											"IApplicationEntity": {
+												"asName": "IApplicationEntity",
 												"moduleImport": null,
-												"sourceName": "ISchemaEntity"
+												"sourceName": "IApplicationEntity"
 											}
 										},
-										"path": "../../generated/schema/schemaentity"
+										"path": "../../generated/application/applicationentity"
 									},
-									"ISchemaReference": {
+									"IApplicationReference": {
 										"fileImports": null,
 										"isLocal": true,
 										"objectMapByAsName": {
-											"ISchemaReference": {
-												"asName": "ISchemaReference",
+											"IApplicationReference": {
+												"asName": "IApplicationReference",
 												"moduleImport": null,
-												"sourceName": "ISchemaReference"
+												"sourceName": "IApplicationReference"
 											}
 										},
-										"path": "../../generated/schema/schemareference"
+										"path": "../../generated/application/applicationreference"
 									}
 								},
 								"importMapByModulePath": {
 									"@airport/air-control": null,
 									"@airport/ground-control": null,
-									"./Schema": null,
-									"./SchemaEntity": null,
-									"./SchemaReference": null,
-									"../../generated/schema/schemaentity": null,
-									"../../generated/schema/schemareference": null
+									"./Application": null,
+									"./ApplicationEntity": null,
+									"./ApplicationReference": null,
+									"../../generated/application/applicationentity": null,
+									"../../generated/application/applicationreference": null
 								}
 							},
 							"properties": [
@@ -360,9 +360,9 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": false,
 									"name": "id",
-									"type": "SchemaVersionId",
+									"type": "ApplicationVersionId",
 									"ownerEntity": null,
-									"nonArrayType": "SchemaVersionId",
+									"nonArrayType": "ApplicationVersionId",
 									"primitive": "number",
 									"index": 0
 								},
@@ -387,9 +387,9 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": false,
 									"name": "integerVersion",
-									"type": "SchemaVersionInteger",
+									"type": "ApplicationVersionInteger",
 									"ownerEntity": null,
-									"nonArrayType": "SchemaVersionInteger",
+									"nonArrayType": "ApplicationVersionInteger",
 									"primitive": "number",
 									"index": 1
 								},
@@ -414,9 +414,9 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": false,
 									"name": "versionString",
-									"type": "SchemaVersionString",
+									"type": "ApplicationVersionString",
 									"ownerEntity": null,
-									"nonArrayType": "SchemaVersionString",
+									"nonArrayType": "ApplicationVersionString",
 									"primitive": "string",
 									"index": 2
 								},
@@ -441,9 +441,9 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": false,
 									"name": "majorVersion",
-									"type": "SchemaVersionMajor",
+									"type": "ApplicationVersionMajor",
 									"ownerEntity": null,
-									"nonArrayType": "SchemaVersionMajor",
+									"nonArrayType": "ApplicationVersionMajor",
 									"primitive": "number",
 									"index": 3
 								},
@@ -468,9 +468,9 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": false,
 									"name": "minorVersion",
-									"type": "SchemaVersionMinor",
+									"type": "ApplicationVersionMinor",
 									"ownerEntity": null,
-									"nonArrayType": "SchemaVersionMinor",
+									"nonArrayType": "ApplicationVersionMinor",
 									"primitive": "number",
 									"index": 4
 								},
@@ -495,9 +495,9 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": false,
 									"name": "patchVersion",
-									"type": "SchemaVersionPatch",
+									"type": "ApplicationVersionPatch",
 									"ownerEntity": null,
-									"nonArrayType": "SchemaVersionPatch",
+									"nonArrayType": "ApplicationVersionPatch",
 									"primitive": "number",
 									"index": 5
 								},
@@ -521,13 +521,13 @@ export const MAPPED_SUPERCLASS = [
 									"isId": false,
 									"isMappedSuperclass": false,
 									"isTransient": false,
-									"name": "schema",
-									"type": "Schema",
+									"name": "application",
+									"type": "Application",
 									"ownerEntity": null,
-									"nonArrayType": "Schema",
+									"nonArrayType": "Application",
 									"entity": {
-										"type": "Schema",
-										"path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\Schema.ts",
+										"type": "Application",
+										"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\Application.ts",
 										"parentClassName": null,
 										"isSuperclass": false,
 										"ids": [
@@ -556,9 +556,9 @@ export const MAPPED_SUPERCLASS = [
 												"isMappedSuperclass": false,
 												"isTransient": false,
 												"name": "index",
-												"type": "SchemaIndex",
+												"type": "ApplicationIndex",
 												"ownerEntity": null,
-												"nonArrayType": "SchemaIndex",
+												"nonArrayType": "ApplicationIndex",
 												"primitive": "number",
 												"index": 0
 											}
@@ -582,8 +582,8 @@ export const MAPPED_SUPERCLASS = [
 											"isId": false,
 											"isMappedSuperclass": false,
 											"isTransient": false,
-											"name": "Schema",
-											"type": "typeof Schema",
+											"name": "Application",
+											"type": "typeof Application",
 											"fileImports": {
 												"importMapByObjectAsName": {
 													"Column": {
@@ -661,41 +661,41 @@ export const MAPPED_SUPERCLASS = [
 																"moduleImport": null,
 																"sourceName": "PackageName"
 															},
-															"SchemaIndex": {
-																"asName": "SchemaIndex",
+															"ApplicationIndex": {
+																"asName": "ApplicationIndex",
 																"moduleImport": null,
-																"sourceName": "SchemaIndex"
+																"sourceName": "ApplicationIndex"
 															},
-															"SchemaName": {
-																"asName": "SchemaName",
+															"ApplicationName": {
+																"asName": "ApplicationName",
 																"moduleImport": null,
-																"sourceName": "SchemaName"
+																"sourceName": "ApplicationName"
 															},
-															"SchemaScope": {
-																"asName": "SchemaScope",
+															"ApplicationScope": {
+																"asName": "ApplicationScope",
 																"moduleImport": null,
-																"sourceName": "SchemaScope"
+																"sourceName": "ApplicationScope"
 															},
-															"SchemaStatus": {
-																"asName": "SchemaStatus",
+															"ApplicationStatus": {
+																"asName": "ApplicationStatus",
 																"moduleImport": null,
-																"sourceName": "SchemaStatus"
+																"sourceName": "ApplicationStatus"
 															}
 														},
 														"path": "@airport/ground-control"
 													},
-													"SchemaIndex": null,
-													"SchemaName": null,
-													"SchemaScope": null,
-													"SchemaStatus": null,
-													"JsonSchemaWithLastIds": {
+													"ApplicationIndex": null,
+													"ApplicationName": null,
+													"ApplicationScope": null,
+													"ApplicationStatus": null,
+													"JsonApplicationWithLastIds": {
 														"fileImports": null,
 														"isLocal": false,
 														"objectMapByAsName": {
-															"JsonSchemaWithLastIds": {
-																"asName": "JsonSchemaWithLastIds",
+															"JsonApplicationWithLastIds": {
+																"asName": "JsonApplicationWithLastIds",
 																"moduleImport": null,
-																"sourceName": "JsonSchemaWithLastIds"
+																"sourceName": "JsonApplicationWithLastIds"
 															}
 														},
 														"path": "@airport/security-check"
@@ -712,29 +712,29 @@ export const MAPPED_SUPERCLASS = [
 														},
 														"path": "./Domain"
 													},
-													"SchemaCurrentVersion": {
+													"ApplicationCurrentVersion": {
 														"fileImports": null,
 														"isLocal": true,
 														"objectMapByAsName": {
-															"SchemaCurrentVersion": {
-																"asName": "SchemaCurrentVersion",
+															"ApplicationCurrentVersion": {
+																"asName": "ApplicationCurrentVersion",
 																"moduleImport": null,
-																"sourceName": "SchemaCurrentVersion"
+																"sourceName": "ApplicationCurrentVersion"
 															}
 														},
-														"path": "./SchemaCurrentVersion"
+														"path": "./ApplicationCurrentVersion"
 													},
-													"SchemaVersion": {
+													"ApplicationVersion": {
 														"fileImports": null,
 														"isLocal": true,
 														"objectMapByAsName": {
-															"SchemaVersion": {
-																"asName": "SchemaVersion",
+															"ApplicationVersion": {
+																"asName": "ApplicationVersion",
 																"moduleImport": null,
-																"sourceName": "SchemaVersion"
+																"sourceName": "ApplicationVersion"
 															}
 														},
-														"path": "./SchemaVersion"
+														"path": "./ApplicationVersion"
 													}
 												},
 												"importMapByModulePath": {
@@ -742,8 +742,8 @@ export const MAPPED_SUPERCLASS = [
 													"@airport/ground-control": null,
 													"@airport/security-check": null,
 													"./Domain": null,
-													"./SchemaCurrentVersion": null,
-													"./SchemaVersion": null
+													"./ApplicationCurrentVersion": null,
+													"./ApplicationVersion": null
 												}
 											},
 											"properties": [
@@ -772,9 +772,9 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "index",
-													"type": "SchemaIndex",
+													"type": "ApplicationIndex",
 													"ownerEntity": null,
-													"nonArrayType": "SchemaIndex",
+													"nonArrayType": "ApplicationIndex",
 													"primitive": "number",
 													"index": 0
 												},
@@ -805,7 +805,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "Domain",
 													"entity": {
 														"type": "Domain",
-														"path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\Domain.ts",
+														"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\Domain.ts",
 														"parentClassName": null,
 														"isSuperclass": false,
 														"ids": [
@@ -915,23 +915,23 @@ export const MAPPED_SUPERCLASS = [
 																		"path": "@airport/ground-control"
 																	},
 																	"DomainName": null,
-																	"Schema": {
+																	"Application": {
 																		"fileImports": null,
 																		"isLocal": true,
 																		"objectMapByAsName": {
-																			"Schema": {
-																				"asName": "Schema",
+																			"Application": {
+																				"asName": "Application",
 																				"moduleImport": null,
-																				"sourceName": "Schema"
+																				"sourceName": "Application"
 																			}
 																		},
-																		"path": "./Schema"
+																		"path": "./Application"
 																	}
 																},
 																"importMapByModulePath": {
 																	"@airport/air-control": null,
 																	"@airport/ground-control": null,
-																	"./Schema": null
+																	"./Application": null
 																}
 															},
 															"properties": [
@@ -990,11 +990,11 @@ export const MAPPED_SUPERCLASS = [
 																	"isId": false,
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
-																	"name": "schemas",
-																	"type": "Schema[]",
+																	"name": "applications",
+																	"type": "Application[]",
 																	"ownerEntity": null,
 																	"isArray": true,
-																	"nonArrayType": "Schema",
+																	"nonArrayType": "Application",
 																	"entity": null,
 																	"index": 2
 																}
@@ -1032,9 +1032,9 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "scope",
-													"type": "SchemaScope",
+													"type": "ApplicationScope",
 													"ownerEntity": null,
-													"nonArrayType": "SchemaScope",
+													"nonArrayType": "ApplicationScope",
 													"primitive": "string",
 													"index": 2
 												},
@@ -1059,9 +1059,9 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "name",
-													"type": "SchemaName",
+													"type": "ApplicationName",
 													"ownerEntity": null,
-													"nonArrayType": "SchemaName",
+													"nonArrayType": "ApplicationName",
 													"primitive": "string",
 													"index": 3
 												},
@@ -1113,9 +1113,9 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "status",
-													"type": "SchemaStatus",
+													"type": "ApplicationStatus",
 													"ownerEntity": null,
-													"nonArrayType": "SchemaStatus",
+													"nonArrayType": "ApplicationStatus",
 													"primitive": "string",
 													"index": 5
 												},
@@ -1152,7 +1152,7 @@ export const MAPPED_SUPERCLASS = [
 															"name": "OneToMany",
 															"values": [
 																{
-																	"mappedBy": "schema"
+																	"mappedBy": "application"
 																}
 															]
 														}
@@ -1162,10 +1162,10 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "versions",
-													"type": "SchemaVersion[]",
+													"type": "ApplicationVersion[]",
 													"ownerEntity": null,
 													"isArray": true,
-													"nonArrayType": "SchemaVersion",
+													"nonArrayType": "ApplicationVersion",
 													"entity": null,
 													"index": 7
 												},
@@ -1175,7 +1175,7 @@ export const MAPPED_SUPERCLASS = [
 															"name": "OneToMany",
 															"values": [
 																{
-																	"mappedBy": "schema"
+																	"mappedBy": "application"
 																}
 															]
 														}
@@ -1185,13 +1185,13 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "currentVersion",
-													"type": "SchemaCurrentVersion[]",
+													"type": "ApplicationCurrentVersion[]",
 													"ownerEntity": null,
 													"isArray": true,
-													"nonArrayType": "SchemaCurrentVersion",
+													"nonArrayType": "ApplicationCurrentVersion",
 													"entity": {
-														"type": "SchemaCurrentVersion",
-														"path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaCurrentVersion.ts",
+														"type": "ApplicationCurrentVersion",
+														"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationCurrentVersion.ts",
 														"parentClassName": null,
 														"isSuperclass": false,
 														"ids": [
@@ -1220,10 +1220,10 @@ export const MAPPED_SUPERCLASS = [
 																"isId": true,
 																"isMappedSuperclass": false,
 																"isTransient": false,
-																"name": "schema",
-																"type": "Schema",
+																"name": "application",
+																"type": "Application",
 																"ownerEntity": null,
-																"nonArrayType": "Schema",
+																"nonArrayType": "Application",
 																"entity": null,
 																"index": 0
 															},
@@ -1252,10 +1252,10 @@ export const MAPPED_SUPERCLASS = [
 																"isId": true,
 																"isMappedSuperclass": false,
 																"isTransient": false,
-																"name": "schemaVersion",
-																"type": "SchemaVersion",
+																"name": "applicationVersion",
+																"type": "ApplicationVersion",
 																"ownerEntity": null,
-																"nonArrayType": "SchemaVersion",
+																"nonArrayType": "ApplicationVersion",
 																"entity": null,
 																"index": 1
 															}
@@ -1279,8 +1279,8 @@ export const MAPPED_SUPERCLASS = [
 															"isId": false,
 															"isMappedSuperclass": false,
 															"isTransient": false,
-															"name": "SchemaCurrentVersion",
-															"type": "typeof SchemaCurrentVersion",
+															"name": "ApplicationCurrentVersion",
+															"type": "typeof ApplicationCurrentVersion",
 															"fileImports": {
 																"importMapByObjectAsName": {
 																	"Entity": {
@@ -1319,35 +1319,35 @@ export const MAPPED_SUPERCLASS = [
 																	"JoinColumn": null,
 																	"ManyToOne": null,
 																	"Table": null,
-																	"Schema": {
+																	"Application": {
 																		"fileImports": null,
 																		"isLocal": true,
 																		"objectMapByAsName": {
-																			"Schema": {
-																				"asName": "Schema",
+																			"Application": {
+																				"asName": "Application",
 																				"moduleImport": null,
-																				"sourceName": "Schema"
+																				"sourceName": "Application"
 																			}
 																		},
-																		"path": "./Schema"
+																		"path": "./Application"
 																	},
-																	"SchemaVersion": {
+																	"ApplicationVersion": {
 																		"fileImports": null,
 																		"isLocal": true,
 																		"objectMapByAsName": {
-																			"SchemaVersion": {
-																				"asName": "SchemaVersion",
+																			"ApplicationVersion": {
+																				"asName": "ApplicationVersion",
 																				"moduleImport": null,
-																				"sourceName": "SchemaVersion"
+																				"sourceName": "ApplicationVersion"
 																			}
 																		},
-																		"path": "./SchemaVersion"
+																		"path": "./ApplicationVersion"
 																	}
 																},
 																"importMapByModulePath": {
 																	"@airport/air-control": null,
-																	"./Schema": null,
-																	"./SchemaVersion": null
+																	"./Application": null,
+																	"./ApplicationVersion": null
 																}
 															},
 															"properties": [
@@ -1376,10 +1376,10 @@ export const MAPPED_SUPERCLASS = [
 																	"isId": true,
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
-																	"name": "schema",
-																	"type": "Schema",
+																	"name": "application",
+																	"type": "Application",
 																	"ownerEntity": null,
-																	"nonArrayType": "Schema",
+																	"nonArrayType": "Application",
 																	"entity": null,
 																	"index": 0
 																},
@@ -1408,10 +1408,10 @@ export const MAPPED_SUPERCLASS = [
 																	"isId": true,
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
-																	"name": "schemaVersion",
-																	"type": "SchemaVersion",
+																	"name": "applicationVersion",
+																	"type": "ApplicationVersion",
 																	"ownerEntity": null,
-																	"nonArrayType": "SchemaVersion",
+																	"nonArrayType": "ApplicationVersion",
 																	"entity": null,
 																	"index": 1
 																}
@@ -1420,7 +1420,7 @@ export const MAPPED_SUPERCLASS = [
 															"constructors": [
 																{
 																	"parameters": [],
-																	"returnType": "SchemaCurrentVersion"
+																	"returnType": "ApplicationCurrentVersion"
 																}
 															]
 														},
@@ -1448,10 +1448,10 @@ export const MAPPED_SUPERCLASS = [
 													"isId": false,
 													"isMappedSuperclass": false,
 													"isTransient": false,
-													"name": "jsonSchema",
-													"type": "JsonSchemaWithLastIds",
+													"name": "jsonApplication",
+													"type": "JsonApplicationWithLastIds",
 													"ownerEntity": null,
-													"nonArrayType": "JsonSchemaWithLastIds",
+													"nonArrayType": "JsonApplicationWithLastIds",
 													"primitive": "Json",
 													"index": 9
 												}
@@ -1460,7 +1460,7 @@ export const MAPPED_SUPERCLASS = [
 											"constructors": [
 												{
 													"parameters": [],
-													"returnType": "Schema"
+													"returnType": "Application"
 												}
 											]
 										},
@@ -1474,7 +1474,7 @@ export const MAPPED_SUPERCLASS = [
 											"name": "OneToMany",
 											"values": [
 												{
-													"mappedBy": "schemaVersion"
+													"mappedBy": "applicationVersion"
 												}
 											]
 										}
@@ -1484,15 +1484,15 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": false,
 									"name": "entities",
-									"type": "SchemaEntity[]",
+									"type": "ApplicationEntity[]",
 									"ownerEntity": null,
 									"isArray": true,
-									"nonArrayType": "SchemaEntity",
+									"nonArrayType": "ApplicationEntity",
 									"entity": {
-										"type": "SchemaEntity",
-										"path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaEntity.ts",
-										"parentClassName": "VersionedSchemaObject",
-										"location": "./VersionedSchemaObject",
+										"type": "ApplicationEntity",
+										"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationEntity.ts",
+										"parentClassName": "VersionedApplicationObject",
+										"location": "./VersionedApplicationObject",
 										"isSuperclass": false,
 										"ids": [
 											{
@@ -1537,8 +1537,8 @@ export const MAPPED_SUPERCLASS = [
 											"isId": false,
 											"isMappedSuperclass": false,
 											"isTransient": false,
-											"name": "SchemaEntity",
-											"type": "typeof SchemaEntity",
+											"name": "ApplicationEntity",
+											"type": "typeof ApplicationEntity",
 											"fileImports": {
 												"importMapByObjectAsName": {
 													"Column": {
@@ -1661,114 +1661,114 @@ export const MAPPED_SUPERCLASS = [
 													"EntityIsRepositoryEntity": null,
 													"EntityName": null,
 													"TableIndex": null,
-													"SchemaColumn": {
+													"ApplicationColumn": {
 														"fileImports": null,
 														"isLocal": true,
 														"objectMapByAsName": {
-															"SchemaColumn": {
-																"asName": "SchemaColumn",
+															"ApplicationColumn": {
+																"asName": "ApplicationColumn",
 																"moduleImport": null,
-																"sourceName": "SchemaColumn"
+																"sourceName": "ApplicationColumn"
 															}
 														},
-														"path": "./SchemaColumn"
+														"path": "./ApplicationColumn"
 													},
-													"SchemaOperation": {
+													"ApplicationOperation": {
 														"fileImports": null,
 														"isLocal": true,
 														"objectMapByAsName": {
-															"SchemaOperation": {
-																"asName": "SchemaOperation",
+															"ApplicationOperation": {
+																"asName": "ApplicationOperation",
 																"moduleImport": null,
-																"sourceName": "SchemaOperation"
+																"sourceName": "ApplicationOperation"
 															}
 														},
-														"path": "./SchemaOperation"
+														"path": "./ApplicationOperation"
 													},
-													"SchemaProperty": {
+													"ApplicationProperty": {
 														"fileImports": null,
 														"isLocal": true,
 														"objectMapByAsName": {
-															"SchemaProperty": {
-																"asName": "SchemaProperty",
+															"ApplicationProperty": {
+																"asName": "ApplicationProperty",
 																"moduleImport": null,
-																"sourceName": "SchemaProperty"
+																"sourceName": "ApplicationProperty"
 															}
 														},
-														"path": "./SchemaProperty"
+														"path": "./ApplicationProperty"
 													},
-													"SchemaRelation": {
+													"ApplicationRelation": {
 														"fileImports": null,
 														"isLocal": true,
 														"objectMapByAsName": {
-															"SchemaRelation": {
-																"asName": "SchemaRelation",
+															"ApplicationRelation": {
+																"asName": "ApplicationRelation",
 																"moduleImport": null,
-																"sourceName": "SchemaRelation"
+																"sourceName": "ApplicationRelation"
 															}
 														},
-														"path": "./SchemaRelation"
+														"path": "./ApplicationRelation"
 													},
-													"SchemaVersion": {
+													"ApplicationVersion": {
 														"fileImports": null,
 														"isLocal": true,
 														"objectMapByAsName": {
-															"SchemaVersion": {
-																"asName": "SchemaVersion",
+															"ApplicationVersion": {
+																"asName": "ApplicationVersion",
 																"moduleImport": null,
-																"sourceName": "SchemaVersion"
+																"sourceName": "ApplicationVersion"
 															}
 														},
-														"path": "./SchemaVersion"
+														"path": "./ApplicationVersion"
 													},
-													"VersionedSchemaObject": {
+													"VersionedApplicationObject": {
 														"fileImports": null,
 														"isLocal": true,
 														"objectMapByAsName": {
-															"VersionedSchemaObject": {
-																"asName": "VersionedSchemaObject",
+															"VersionedApplicationObject": {
+																"asName": "VersionedApplicationObject",
 																"moduleImport": null,
-																"sourceName": "VersionedSchemaObject"
+																"sourceName": "VersionedApplicationObject"
 															}
 														},
-														"path": "./VersionedSchemaObject"
+														"path": "./VersionedApplicationObject"
 													},
-													"ISchemaColumn": {
+													"IApplicationColumn": {
 														"fileImports": null,
 														"isLocal": true,
 														"objectMapByAsName": {
-															"ISchemaColumn": {
-																"asName": "ISchemaColumn",
+															"IApplicationColumn": {
+																"asName": "IApplicationColumn",
 																"moduleImport": null,
-																"sourceName": "ISchemaColumn"
+																"sourceName": "IApplicationColumn"
 															}
 														},
-														"path": "../../generated/schema/schemacolumn"
+														"path": "../../generated/application/applicationcolumn"
 													},
-													"ISchemaProperty": {
+													"IApplicationProperty": {
 														"fileImports": null,
 														"isLocal": true,
 														"objectMapByAsName": {
-															"ISchemaProperty": {
-																"asName": "ISchemaProperty",
+															"IApplicationProperty": {
+																"asName": "IApplicationProperty",
 																"moduleImport": null,
-																"sourceName": "ISchemaProperty"
+																"sourceName": "IApplicationProperty"
 															}
 														},
-														"path": "../../generated/schema/schemaproperty"
+														"path": "../../generated/application/applicationproperty"
 													}
 												},
 												"importMapByModulePath": {
 													"@airport/air-control": null,
 													"@airport/ground-control": null,
-													"./SchemaColumn": null,
-													"./SchemaOperation": null,
-													"./SchemaProperty": null,
-													"./SchemaRelation": null,
-													"./SchemaVersion": null,
-													"./VersionedSchemaObject": null,
-													"../../generated/schema/schemacolumn": null,
-													"../../generated/schema/schemaproperty": null
+													"./ApplicationColumn": null,
+													"./ApplicationOperation": null,
+													"./ApplicationProperty": null,
+													"./ApplicationRelation": null,
+													"./ApplicationVersion": null,
+													"./VersionedApplicationObject": null,
+													"../../generated/application/applicationcolumn": null,
+													"../../generated/application/applicationproperty": null
 												}
 											},
 											"properties": [
@@ -1950,10 +1950,10 @@ export const MAPPED_SUPERCLASS = [
 													"isId": false,
 													"isMappedSuperclass": false,
 													"isTransient": false,
-													"name": "schemaVersion",
-													"type": "SchemaVersion",
+													"name": "applicationVersion",
+													"type": "ApplicationVersion",
 													"ownerEntity": null,
-													"nonArrayType": "SchemaVersion",
+													"nonArrayType": "ApplicationVersion",
 													"entity": null,
 													"index": 6
 												},
@@ -1973,15 +1973,15 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "columns",
-													"type": "SchemaColumn[]",
+													"type": "ApplicationColumn[]",
 													"ownerEntity": null,
 													"isArray": true,
-													"nonArrayType": "SchemaColumn",
+													"nonArrayType": "ApplicationColumn",
 													"entity": {
-														"type": "SchemaColumn",
-														"path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaColumn.ts",
-														"parentClassName": "VersionedSchemaObject",
-														"location": "./VersionedSchemaObject",
+														"type": "ApplicationColumn",
+														"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationColumn.ts",
+														"parentClassName": "VersionedApplicationObject",
+														"location": "./VersionedApplicationObject",
 														"isSuperclass": false,
 														"ids": [
 															{
@@ -2026,8 +2026,8 @@ export const MAPPED_SUPERCLASS = [
 															"isId": false,
 															"isMappedSuperclass": false,
 															"isTransient": false,
-															"name": "SchemaColumn",
-															"type": "typeof SchemaColumn",
+															"name": "ApplicationColumn",
+															"type": "typeof ApplicationColumn",
 															"fileImports": {
 																"importMapByObjectAsName": {
 																	"Column": {
@@ -2135,15 +2135,15 @@ export const MAPPED_SUPERCLASS = [
 																				"moduleImport": null,
 																				"sourceName": "IdColumnOnlyIndex"
 																			},
-																			"SchemaColumnAllocationSize": {
-																				"asName": "SchemaColumnAllocationSize",
+																			"ApplicationColumnAllocationSize": {
+																				"asName": "ApplicationColumnAllocationSize",
 																				"moduleImport": null,
-																				"sourceName": "SchemaColumnAllocationSize"
+																				"sourceName": "ApplicationColumnAllocationSize"
 																			},
-																			"SchemaColumnIsGenerated": {
-																				"asName": "SchemaColumnIsGenerated",
+																			"ApplicationColumnIsGenerated": {
+																				"asName": "ApplicationColumnIsGenerated",
 																				"moduleImport": null,
-																				"sourceName": "SchemaColumnIsGenerated"
+																				"sourceName": "ApplicationColumnIsGenerated"
 																			},
 																			"SQLDataType": {
 																				"asName": "SQLDataType",
@@ -2159,65 +2159,65 @@ export const MAPPED_SUPERCLASS = [
 																	"ColumnPrecision": null,
 																	"ColumnScale": null,
 																	"IdColumnOnlyIndex": null,
-																	"SchemaColumnAllocationSize": null,
-																	"SchemaColumnIsGenerated": null,
+																	"ApplicationColumnAllocationSize": null,
+																	"ApplicationColumnIsGenerated": null,
 																	"SQLDataType": null,
-																	"SchemaEntity": {
+																	"ApplicationEntity": {
 																		"fileImports": null,
 																		"isLocal": true,
 																		"objectMapByAsName": {
-																			"SchemaEntity": {
-																				"asName": "SchemaEntity",
+																			"ApplicationEntity": {
+																				"asName": "ApplicationEntity",
 																				"moduleImport": null,
-																				"sourceName": "SchemaEntity"
+																				"sourceName": "ApplicationEntity"
 																			}
 																		},
-																		"path": "./SchemaEntity"
+																		"path": "./ApplicationEntity"
 																	},
-																	"SchemaPropertyColumn": {
+																	"ApplicationPropertyColumn": {
 																		"fileImports": null,
 																		"isLocal": true,
 																		"objectMapByAsName": {
-																			"SchemaPropertyColumn": {
-																				"asName": "SchemaPropertyColumn",
+																			"ApplicationPropertyColumn": {
+																				"asName": "ApplicationPropertyColumn",
 																				"moduleImport": null,
-																				"sourceName": "SchemaPropertyColumn"
+																				"sourceName": "ApplicationPropertyColumn"
 																			}
 																		},
-																		"path": "./SchemaPropertyColumn"
+																		"path": "./ApplicationPropertyColumn"
 																	},
-																	"SchemaRelationColumn": {
+																	"ApplicationRelationColumn": {
 																		"fileImports": null,
 																		"isLocal": true,
 																		"objectMapByAsName": {
-																			"SchemaRelationColumn": {
-																				"asName": "SchemaRelationColumn",
+																			"ApplicationRelationColumn": {
+																				"asName": "ApplicationRelationColumn",
 																				"moduleImport": null,
-																				"sourceName": "SchemaRelationColumn"
+																				"sourceName": "ApplicationRelationColumn"
 																			}
 																		},
-																		"path": "./SchemaRelationColumn"
+																		"path": "./ApplicationRelationColumn"
 																	},
-																	"VersionedSchemaObject": {
+																	"VersionedApplicationObject": {
 																		"fileImports": null,
 																		"isLocal": true,
 																		"objectMapByAsName": {
-																			"VersionedSchemaObject": {
-																				"asName": "VersionedSchemaObject",
+																			"VersionedApplicationObject": {
+																				"asName": "VersionedApplicationObject",
 																				"moduleImport": null,
-																				"sourceName": "VersionedSchemaObject"
+																				"sourceName": "VersionedApplicationObject"
 																			}
 																		},
-																		"path": "./VersionedSchemaObject"
+																		"path": "./VersionedApplicationObject"
 																	}
 																},
 																"importMapByModulePath": {
 																	"@airport/air-control": null,
 																	"@airport/ground-control": null,
-																	"./SchemaEntity": null,
-																	"./SchemaPropertyColumn": null,
-																	"./SchemaRelationColumn": null,
-																	"./VersionedSchemaObject": null
+																	"./ApplicationEntity": null,
+																	"./ApplicationPropertyColumn": null,
+																	"./ApplicationRelationColumn": null,
+																	"./VersionedApplicationObject": null
 																}
 															},
 															"properties": [
@@ -2317,9 +2317,9 @@ export const MAPPED_SUPERCLASS = [
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
 																	"name": "isGenerated",
-																	"type": "SchemaColumnIsGenerated",
+																	"type": "ApplicationColumnIsGenerated",
 																	"ownerEntity": null,
-																	"nonArrayType": "SchemaColumnIsGenerated",
+																	"nonArrayType": "ApplicationColumnIsGenerated",
 																	"primitive": "boolean",
 																	"index": 3
 																},
@@ -2343,9 +2343,9 @@ export const MAPPED_SUPERCLASS = [
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
 																	"name": "allocationSize",
-																	"type": "SchemaColumnAllocationSize",
+																	"type": "ApplicationColumnAllocationSize",
 																	"ownerEntity": null,
-																	"nonArrayType": "SchemaColumnAllocationSize",
+																	"nonArrayType": "ApplicationColumnAllocationSize",
 																	"primitive": "number",
 																	"index": 4
 																},
@@ -2504,9 +2504,9 @@ export const MAPPED_SUPERCLASS = [
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
 																	"name": "entity",
-																	"type": "SchemaEntity",
+																	"type": "ApplicationEntity",
 																	"ownerEntity": null,
-																	"nonArrayType": "SchemaEntity",
+																	"nonArrayType": "ApplicationEntity",
 																	"entity": null,
 																	"index": 10
 																},
@@ -2526,15 +2526,15 @@ export const MAPPED_SUPERCLASS = [
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
 																	"name": "propertyColumns",
-																	"type": "SchemaPropertyColumn[]",
+																	"type": "ApplicationPropertyColumn[]",
 																	"ownerEntity": null,
 																	"isArray": true,
-																	"nonArrayType": "SchemaPropertyColumn",
+																	"nonArrayType": "ApplicationPropertyColumn",
 																	"entity": {
-																		"type": "SchemaPropertyColumn",
-																		"path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaPropertyColumn.ts",
-																		"parentClassName": "VersionedSchemaObject",
-																		"location": "./VersionedSchemaObject",
+																		"type": "ApplicationPropertyColumn",
+																		"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationPropertyColumn.ts",
+																		"parentClassName": "VersionedApplicationObject",
+																		"location": "./VersionedApplicationObject",
 																		"isSuperclass": false,
 																		"ids": [
 																			{
@@ -2563,9 +2563,9 @@ export const MAPPED_SUPERCLASS = [
 																				"isMappedSuperclass": false,
 																				"isTransient": false,
 																				"name": "column",
-																				"type": "SchemaColumn",
+																				"type": "ApplicationColumn",
 																				"ownerEntity": null,
-																				"nonArrayType": "SchemaColumn",
+																				"nonArrayType": "ApplicationColumn",
 																				"entity": null,
 																				"index": 0
 																			},
@@ -2595,9 +2595,9 @@ export const MAPPED_SUPERCLASS = [
 																				"isMappedSuperclass": false,
 																				"isTransient": false,
 																				"name": "property",
-																				"type": "SchemaProperty",
+																				"type": "ApplicationProperty",
 																				"ownerEntity": null,
-																				"nonArrayType": "SchemaProperty",
+																				"nonArrayType": "ApplicationProperty",
 																				"entity": null,
 																				"index": 1
 																			}
@@ -2621,8 +2621,8 @@ export const MAPPED_SUPERCLASS = [
 																			"isId": false,
 																			"isMappedSuperclass": false,
 																			"isTransient": false,
-																			"name": "SchemaPropertyColumn",
-																			"type": "typeof SchemaPropertyColumn",
+																			"name": "ApplicationPropertyColumn",
+																			"type": "typeof ApplicationPropertyColumn",
 																			"fileImports": {
 																				"importMapByObjectAsName": {
 																					"Entity": {
@@ -2661,48 +2661,48 @@ export const MAPPED_SUPERCLASS = [
 																					"JoinColumn": null,
 																					"ManyToOne": null,
 																					"Table": null,
-																					"SchemaColumn": {
+																					"ApplicationColumn": {
 																						"fileImports": null,
 																						"isLocal": true,
 																						"objectMapByAsName": {
-																							"SchemaColumn": {
-																								"asName": "SchemaColumn",
+																							"ApplicationColumn": {
+																								"asName": "ApplicationColumn",
 																								"moduleImport": null,
-																								"sourceName": "SchemaColumn"
+																								"sourceName": "ApplicationColumn"
 																							}
 																						},
-																						"path": "./SchemaColumn"
+																						"path": "./ApplicationColumn"
 																					},
-																					"SchemaProperty": {
+																					"ApplicationProperty": {
 																						"fileImports": null,
 																						"isLocal": true,
 																						"objectMapByAsName": {
-																							"SchemaProperty": {
-																								"asName": "SchemaProperty",
+																							"ApplicationProperty": {
+																								"asName": "ApplicationProperty",
 																								"moduleImport": null,
-																								"sourceName": "SchemaProperty"
+																								"sourceName": "ApplicationProperty"
 																							}
 																						},
-																						"path": "./SchemaProperty"
+																						"path": "./ApplicationProperty"
 																					},
-																					"VersionedSchemaObject": {
+																					"VersionedApplicationObject": {
 																						"fileImports": null,
 																						"isLocal": true,
 																						"objectMapByAsName": {
-																							"VersionedSchemaObject": {
-																								"asName": "VersionedSchemaObject",
+																							"VersionedApplicationObject": {
+																								"asName": "VersionedApplicationObject",
 																								"moduleImport": null,
-																								"sourceName": "VersionedSchemaObject"
+																								"sourceName": "VersionedApplicationObject"
 																							}
 																						},
-																						"path": "./VersionedSchemaObject"
+																						"path": "./VersionedApplicationObject"
 																					}
 																				},
 																				"importMapByModulePath": {
 																					"@airport/air-control": null,
-																					"./SchemaColumn": null,
-																					"./SchemaProperty": null,
-																					"./VersionedSchemaObject": null
+																					"./ApplicationColumn": null,
+																					"./ApplicationProperty": null,
+																					"./VersionedApplicationObject": null
 																				}
 																			},
 																			"properties": [
@@ -2732,9 +2732,9 @@ export const MAPPED_SUPERCLASS = [
 																					"isMappedSuperclass": false,
 																					"isTransient": false,
 																					"name": "column",
-																					"type": "SchemaColumn",
+																					"type": "ApplicationColumn",
 																					"ownerEntity": null,
-																					"nonArrayType": "SchemaColumn",
+																					"nonArrayType": "ApplicationColumn",
 																					"entity": null,
 																					"index": 0
 																				},
@@ -2764,9 +2764,9 @@ export const MAPPED_SUPERCLASS = [
 																					"isMappedSuperclass": false,
 																					"isTransient": false,
 																					"name": "property",
-																					"type": "SchemaProperty",
+																					"type": "ApplicationProperty",
 																					"ownerEntity": null,
-																					"nonArrayType": "SchemaProperty",
+																					"nonArrayType": "ApplicationProperty",
 																					"entity": null,
 																					"index": 1
 																				}
@@ -2775,7 +2775,7 @@ export const MAPPED_SUPERCLASS = [
 																			"constructors": [
 																				{
 																					"parameters": [],
-																					"returnType": "SchemaPropertyColumn"
+																					"returnType": "ApplicationPropertyColumn"
 																				}
 																			]
 																		},
@@ -2800,10 +2800,10 @@ export const MAPPED_SUPERCLASS = [
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
 																	"name": "manyRelationColumns",
-																	"type": "SchemaRelationColumn[]",
+																	"type": "ApplicationRelationColumn[]",
 																	"ownerEntity": null,
 																	"isArray": true,
-																	"nonArrayType": "SchemaRelationColumn",
+																	"nonArrayType": "ApplicationRelationColumn",
 																	"entity": null,
 																	"index": 12
 																},
@@ -2823,10 +2823,10 @@ export const MAPPED_SUPERCLASS = [
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
 																	"name": "oneRelationColumns",
-																	"type": "SchemaRelationColumn[]",
+																	"type": "ApplicationRelationColumn[]",
 																	"ownerEntity": null,
 																	"isArray": true,
-																	"nonArrayType": "SchemaRelationColumn",
+																	"nonArrayType": "ApplicationRelationColumn",
 																	"entity": null,
 																	"index": 13
 																}
@@ -2835,7 +2835,7 @@ export const MAPPED_SUPERCLASS = [
 															"constructors": [
 																{
 																	"parameters": [],
-																	"returnType": "SchemaColumn"
+																	"returnType": "ApplicationColumn"
 																}
 															]
 														},
@@ -2860,15 +2860,15 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "operations",
-													"type": "SchemaOperation[]",
+													"type": "ApplicationOperation[]",
 													"ownerEntity": null,
 													"isArray": true,
-													"nonArrayType": "SchemaOperation",
+													"nonArrayType": "ApplicationOperation",
 													"entity": {
-														"type": "SchemaOperation",
-														"path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaOperation.ts",
-														"parentClassName": "VersionedSchemaObject",
-														"location": "./VersionedSchemaObject",
+														"type": "ApplicationOperation",
+														"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationOperation.ts",
+														"parentClassName": "VersionedApplicationObject",
+														"location": "./VersionedApplicationObject",
 														"isSuperclass": false,
 														"ids": [
 															{
@@ -2917,8 +2917,8 @@ export const MAPPED_SUPERCLASS = [
 															"isId": false,
 															"isMappedSuperclass": false,
 															"isTransient": false,
-															"name": "SchemaOperation",
-															"type": "typeof SchemaOperation",
+															"name": "ApplicationOperation",
+															"type": "typeof ApplicationOperation",
 															"fileImports": {
 																"importMapByObjectAsName": {
 																	"Column": {
@@ -3017,36 +3017,36 @@ export const MAPPED_SUPERCLASS = [
 																	"Operation_Name": null,
 																	"Operation_Rule": null,
 																	"Operation_Type": null,
-																	"SchemaEntity": {
+																	"ApplicationEntity": {
 																		"fileImports": null,
 																		"isLocal": true,
 																		"objectMapByAsName": {
-																			"SchemaEntity": {
-																				"asName": "SchemaEntity",
+																			"ApplicationEntity": {
+																				"asName": "ApplicationEntity",
 																				"moduleImport": null,
-																				"sourceName": "SchemaEntity"
+																				"sourceName": "ApplicationEntity"
 																			}
 																		},
-																		"path": "./SchemaEntity"
+																		"path": "./ApplicationEntity"
 																	},
-																	"VersionedSchemaObject": {
+																	"VersionedApplicationObject": {
 																		"fileImports": null,
 																		"isLocal": true,
 																		"objectMapByAsName": {
-																			"VersionedSchemaObject": {
-																				"asName": "VersionedSchemaObject",
+																			"VersionedApplicationObject": {
+																				"asName": "VersionedApplicationObject",
 																				"moduleImport": null,
-																				"sourceName": "VersionedSchemaObject"
+																				"sourceName": "VersionedApplicationObject"
 																			}
 																		},
-																		"path": "./VersionedSchemaObject"
+																		"path": "./VersionedApplicationObject"
 																	}
 																},
 																"importMapByModulePath": {
 																	"@airport/air-control": null,
 																	"@airport/ground-control": null,
-																	"./SchemaEntity": null,
-																	"./VersionedSchemaObject": null
+																	"./ApplicationEntity": null,
+																	"./VersionedApplicationObject": null
 																}
 															},
 															"properties": [
@@ -3125,9 +3125,9 @@ export const MAPPED_SUPERCLASS = [
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
 																	"name": "entity",
-																	"type": "SchemaEntity",
+																	"type": "ApplicationEntity",
 																	"ownerEntity": null,
-																	"nonArrayType": "SchemaEntity",
+																	"nonArrayType": "ApplicationEntity",
 																	"entity": null,
 																	"index": 2
 																},
@@ -3190,7 +3190,7 @@ export const MAPPED_SUPERCLASS = [
 															"constructors": [
 																{
 																	"parameters": [],
-																	"returnType": "SchemaOperation"
+																	"returnType": "ApplicationOperation"
 																}
 															]
 														},
@@ -3215,10 +3215,10 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "properties",
-													"type": "SchemaProperty[]",
+													"type": "ApplicationProperty[]",
 													"ownerEntity": null,
 													"isArray": true,
-													"nonArrayType": "SchemaProperty",
+													"nonArrayType": "ApplicationProperty",
 													"entity": null,
 													"index": 9
 												},
@@ -3238,10 +3238,10 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "relations",
-													"type": "SchemaRelation[]",
+													"type": "ApplicationRelation[]",
 													"ownerEntity": null,
 													"isArray": true,
-													"nonArrayType": "SchemaRelation",
+													"nonArrayType": "ApplicationRelation",
 													"entity": null,
 													"index": 10
 												},
@@ -3261,10 +3261,10 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "relationReferences",
-													"type": "SchemaRelation[]",
+													"type": "ApplicationRelation[]",
 													"ownerEntity": null,
 													"isArray": true,
-													"nonArrayType": "SchemaRelation",
+													"nonArrayType": "ApplicationRelation",
 													"entity": null,
 													"index": 11
 												},
@@ -3280,11 +3280,11 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": true,
 													"name": "columnMap",
-													"type": "{ [name: string]: ISchemaColumn; }",
+													"type": "{ [name: string]: IApplicationColumn; }",
 													"ownerEntity": null,
-													"nonArrayType": "{ [name: string]: ISchemaColumn; }",
+													"nonArrayType": "{ [name: string]: IApplicationColumn; }",
 													"isMap": true,
-													"mapValueType": "ISchemaColumn",
+													"mapValueType": "IApplicationColumn",
 													"mapValueIsPrimitive": false,
 													"mapKeyName": "name",
 													"mapKeyType": "string"
@@ -3301,10 +3301,10 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": true,
 													"name": "idColumns",
-													"type": "ISchemaColumn[]",
+													"type": "IApplicationColumn[]",
 													"ownerEntity": null,
 													"isArray": true,
-													"nonArrayType": "ISchemaColumn"
+													"nonArrayType": "IApplicationColumn"
 												},
 												{
 													"decorators": [
@@ -3318,11 +3318,11 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": true,
 													"name": "idColumnMap",
-													"type": "{ [name: string]: ISchemaColumn; }",
+													"type": "{ [name: string]: IApplicationColumn; }",
 													"ownerEntity": null,
-													"nonArrayType": "{ [name: string]: ISchemaColumn; }",
+													"nonArrayType": "{ [name: string]: IApplicationColumn; }",
 													"isMap": true,
-													"mapValueType": "ISchemaColumn",
+													"mapValueType": "IApplicationColumn",
 													"mapValueIsPrimitive": false,
 													"mapKeyName": "name",
 													"mapKeyType": "string"
@@ -3339,11 +3339,11 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": true,
 													"name": "propertyMap",
-													"type": "{ [name: string]: ISchemaProperty; }",
+													"type": "{ [name: string]: IApplicationProperty; }",
 													"ownerEntity": null,
-													"nonArrayType": "{ [name: string]: ISchemaProperty; }",
+													"nonArrayType": "{ [name: string]: IApplicationProperty; }",
 													"isMap": true,
-													"mapValueType": "ISchemaProperty",
+													"mapValueType": "IApplicationProperty",
 													"mapValueIsPrimitive": false,
 													"mapKeyName": "name",
 													"mapKeyType": "string"
@@ -3353,7 +3353,7 @@ export const MAPPED_SUPERCLASS = [
 											"constructors": [
 												{
 													"parameters": [],
-													"returnType": "SchemaEntity"
+													"returnType": "ApplicationEntity"
 												}
 											]
 										},
@@ -3368,7 +3368,7 @@ export const MAPPED_SUPERCLASS = [
 											"name": "OneToMany",
 											"values": [
 												{
-													"mappedBy": "ownSchemaVersion"
+													"mappedBy": "ownApplicationVersion"
 												}
 											]
 										}
@@ -3378,15 +3378,15 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": false,
 									"name": "references",
-									"type": "SchemaReference[]",
+									"type": "ApplicationReference[]",
 									"ownerEntity": null,
 									"isArray": true,
-									"nonArrayType": "SchemaReference",
+									"nonArrayType": "ApplicationReference",
 									"entity": {
-										"type": "SchemaReference",
-										"path": "D:\\code\\AIR\\AIRport\\schemas\\traffic-pattern\\src\\ddl\\schema\\SchemaReference.ts",
-										"parentClassName": "VersionedSchemaObject",
-										"location": "./VersionedSchemaObject",
+										"type": "ApplicationReference",
+										"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationReference.ts",
+										"parentClassName": "VersionedApplicationObject",
+										"location": "./VersionedApplicationObject",
 										"isSuperclass": false,
 										"ids": [
 											{
@@ -3414,10 +3414,10 @@ export const MAPPED_SUPERCLASS = [
 												"isId": true,
 												"isMappedSuperclass": false,
 												"isTransient": false,
-												"name": "ownSchemaVersion",
-												"type": "SchemaVersion",
+												"name": "ownApplicationVersion",
+												"type": "ApplicationVersion",
 												"ownerEntity": null,
-												"nonArrayType": "SchemaVersion",
+												"nonArrayType": "ApplicationVersion",
 												"entity": null,
 												"index": 0
 											},
@@ -3446,10 +3446,10 @@ export const MAPPED_SUPERCLASS = [
 												"isId": true,
 												"isMappedSuperclass": false,
 												"isTransient": false,
-												"name": "referencedSchemaVersion",
-												"type": "SchemaVersion",
+												"name": "referencedApplicationVersion",
+												"type": "ApplicationVersion",
 												"ownerEntity": null,
-												"nonArrayType": "SchemaVersion",
+												"nonArrayType": "ApplicationVersion",
 												"entity": null,
 												"index": 1
 											}
@@ -3473,8 +3473,8 @@ export const MAPPED_SUPERCLASS = [
 											"isId": false,
 											"isMappedSuperclass": false,
 											"isTransient": false,
-											"name": "SchemaReference",
-											"type": "typeof SchemaReference",
+											"name": "ApplicationReference",
+											"type": "typeof ApplicationReference",
 											"fileImports": {
 												"importMapByObjectAsName": {
 													"Column": {
@@ -3525,48 +3525,48 @@ export const MAPPED_SUPERCLASS = [
 													"JoinColumn": null,
 													"ManyToOne": null,
 													"Table": null,
-													"SchemaReferenceIndex": {
+													"ApplicationReferenceIndex": {
 														"fileImports": null,
 														"isLocal": false,
 														"objectMapByAsName": {
-															"SchemaReferenceIndex": {
-																"asName": "SchemaReferenceIndex",
+															"ApplicationReferenceIndex": {
+																"asName": "ApplicationReferenceIndex",
 																"moduleImport": null,
-																"sourceName": "SchemaReferenceIndex"
+																"sourceName": "ApplicationReferenceIndex"
 															}
 														},
 														"path": "@airport/ground-control"
 													},
-													"SchemaVersion": {
+													"ApplicationVersion": {
 														"fileImports": null,
 														"isLocal": true,
 														"objectMapByAsName": {
-															"SchemaVersion": {
-																"asName": "SchemaVersion",
+															"ApplicationVersion": {
+																"asName": "ApplicationVersion",
 																"moduleImport": null,
-																"sourceName": "SchemaVersion"
+																"sourceName": "ApplicationVersion"
 															}
 														},
-														"path": "./SchemaVersion"
+														"path": "./ApplicationVersion"
 													},
-													"VersionedSchemaObject": {
+													"VersionedApplicationObject": {
 														"fileImports": null,
 														"isLocal": true,
 														"objectMapByAsName": {
-															"VersionedSchemaObject": {
-																"asName": "VersionedSchemaObject",
+															"VersionedApplicationObject": {
+																"asName": "VersionedApplicationObject",
 																"moduleImport": null,
-																"sourceName": "VersionedSchemaObject"
+																"sourceName": "VersionedApplicationObject"
 															}
 														},
-														"path": "./VersionedSchemaObject"
+														"path": "./VersionedApplicationObject"
 													}
 												},
 												"importMapByModulePath": {
 													"@airport/air-control": null,
 													"@airport/ground-control": null,
-													"./SchemaVersion": null,
-													"./VersionedSchemaObject": null
+													"./ApplicationVersion": null,
+													"./VersionedApplicationObject": null
 												}
 											},
 											"properties": [
@@ -3595,10 +3595,10 @@ export const MAPPED_SUPERCLASS = [
 													"isId": true,
 													"isMappedSuperclass": false,
 													"isTransient": false,
-													"name": "ownSchemaVersion",
-													"type": "SchemaVersion",
+													"name": "ownApplicationVersion",
+													"type": "ApplicationVersion",
 													"ownerEntity": null,
-													"nonArrayType": "SchemaVersion",
+													"nonArrayType": "ApplicationVersion",
 													"entity": null,
 													"index": 0
 												},
@@ -3627,10 +3627,10 @@ export const MAPPED_SUPERCLASS = [
 													"isId": true,
 													"isMappedSuperclass": false,
 													"isTransient": false,
-													"name": "referencedSchemaVersion",
-													"type": "SchemaVersion",
+													"name": "referencedApplicationVersion",
+													"type": "ApplicationVersion",
 													"ownerEntity": null,
-													"nonArrayType": "SchemaVersion",
+													"nonArrayType": "ApplicationVersion",
 													"entity": null,
 													"index": 1
 												},
@@ -3655,9 +3655,9 @@ export const MAPPED_SUPERCLASS = [
 													"isMappedSuperclass": false,
 													"isTransient": false,
 													"name": "index",
-													"type": "SchemaReferenceIndex",
+													"type": "ApplicationReferenceIndex",
 													"ownerEntity": null,
-													"nonArrayType": "SchemaReferenceIndex",
+													"nonArrayType": "ApplicationReferenceIndex",
 													"primitive": "number",
 													"index": 2
 												}
@@ -3666,7 +3666,7 @@ export const MAPPED_SUPERCLASS = [
 											"constructors": [
 												{
 													"parameters": [],
-													"returnType": "SchemaReference"
+													"returnType": "ApplicationReference"
 												}
 											]
 										},
@@ -3681,7 +3681,7 @@ export const MAPPED_SUPERCLASS = [
 											"name": "OneToMany",
 											"values": [
 												{
-													"mappedBy": "referencedSchemaVersion"
+													"mappedBy": "referencedApplicationVersion"
 												}
 											]
 										}
@@ -3691,10 +3691,10 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": false,
 									"name": "referencedBy",
-									"type": "SchemaReference[]",
+									"type": "ApplicationReference[]",
 									"ownerEntity": null,
 									"isArray": true,
-									"nonArrayType": "SchemaReference",
+									"nonArrayType": "ApplicationReference",
 									"entity": null,
 									"index": 9
 								},
@@ -3710,11 +3710,11 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": true,
 									"name": "entityMapByName",
-									"type": "{ [entityName: string]: ISchemaEntity; }",
+									"type": "{ [entityName: string]: IApplicationEntity; }",
 									"ownerEntity": null,
-									"nonArrayType": "{ [entityName: string]: ISchemaEntity; }",
+									"nonArrayType": "{ [entityName: string]: IApplicationEntity; }",
 									"isMap": true,
-									"mapValueType": "ISchemaEntity",
+									"mapValueType": "IApplicationEntity",
 									"mapValueIsPrimitive": false,
 									"mapKeyName": "entityName",
 									"mapKeyType": "string"
@@ -3731,13 +3731,13 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": true,
 									"name": "referencesMapByName",
-									"type": "{ [schemaName: string]: ISchemaReference; }",
+									"type": "{ [applicationName: string]: IApplicationReference; }",
 									"ownerEntity": null,
-									"nonArrayType": "{ [schemaName: string]: ISchemaReference; }",
+									"nonArrayType": "{ [applicationName: string]: IApplicationReference; }",
 									"isMap": true,
-									"mapValueType": "ISchemaReference",
+									"mapValueType": "IApplicationReference",
 									"mapValueIsPrimitive": false,
-									"mapKeyName": "schemaName",
+									"mapKeyName": "applicationName",
 									"mapKeyType": "string"
 								},
 								{
@@ -3752,13 +3752,13 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": true,
 									"name": "referencedByMapByName",
-									"type": "{ [schemaName: string]: ISchemaReference; }",
+									"type": "{ [applicationName: string]: IApplicationReference; }",
 									"ownerEntity": null,
-									"nonArrayType": "{ [schemaName: string]: ISchemaReference; }",
+									"nonArrayType": "{ [applicationName: string]: IApplicationReference; }",
 									"isMap": true,
-									"mapValueType": "ISchemaReference",
+									"mapValueType": "IApplicationReference",
 									"mapValueIsPrimitive": false,
-									"mapKeyName": "schemaName",
+									"mapKeyName": "applicationName",
 									"mapKeyType": "string"
 								}
 							],
@@ -3766,7 +3766,7 @@ export const MAPPED_SUPERCLASS = [
 							"constructors": [
 								{
 									"parameters": [],
-									"returnType": "SchemaVersion"
+									"returnType": "ApplicationVersion"
 								}
 							]
 						},
@@ -3795,9 +3795,9 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "removedInVersion",
-					"type": "SchemaVersion",
+					"type": "ApplicationVersion",
 					"ownerEntity": null,
-					"nonArrayType": "SchemaVersion",
+					"nonArrayType": "ApplicationVersion",
 					"entity": null,
 					"index": 1
 				},
@@ -3823,9 +3823,9 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "sinceVersion",
-					"type": "SchemaVersion",
+					"type": "ApplicationVersion",
 					"ownerEntity": null,
-					"nonArrayType": "SchemaVersion",
+					"nonArrayType": "ApplicationVersion",
 					"entity": null,
 					"index": 2
 				}
@@ -3834,7 +3834,7 @@ export const MAPPED_SUPERCLASS = [
 			"constructors": [
 				{
 					"parameters": [],
-					"returnType": "VersionedSchemaObject"
+					"returnType": "VersionedApplicationObject"
 				}
 			]
 		},

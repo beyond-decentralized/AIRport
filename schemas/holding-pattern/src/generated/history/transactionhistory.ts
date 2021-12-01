@@ -5,7 +5,7 @@ import {
 	IRecordHistoryOldValue,
 } from '../../';
 import {
-	SyncSchemaMap,
+	SyncApplicationMap,
 } from '@airport/ground-control';
 import {
 	ITerminal,
@@ -36,7 +36,7 @@ export interface ITransactionHistory {
 
 	// Transient Properties
 	repoTransHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory};
-	schemaMap?: SyncSchemaMap;
+	applicationMap?: SyncApplicationMap;
 	allOperationHistory?: IOperationHistory[];
 	allRecordHistory?: IRecordHistory[];
 	allRecordHistoryNewValues?: IRecordHistoryNewValue[];

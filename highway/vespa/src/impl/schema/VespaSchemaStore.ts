@@ -1,6 +1,6 @@
 import { IVespaDocument } from '../../lingo/model/VespaDocument';
 
-export interface IVespaSchemaStore {
+export interface IVespaApplicationStore {
 
 	documentMap: {
 		[documentName: string]: IVespaDocument
@@ -8,7 +8,7 @@ export interface IVespaSchemaStore {
 
 }
 
-export class VespaSchemaStore {
+export class VespaApplicationStore {
 
 	documentMap: {
 		[documentName: string]: IVespaDocument

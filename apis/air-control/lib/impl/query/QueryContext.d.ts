@@ -5,7 +5,7 @@ import { IIocQueryContext, IQueryContext } from '../../lingo/query/QueryContext'
 import { IEntityUtils } from '../../lingo/utils/EntityUtils';
 import { IFieldUtils } from '../../lingo/utils/FieldUtils';
 import { IQueryUtils } from '../../lingo/utils/QueryUtils';
-import { ISchemaUtils } from '../../lingo/utils/SchemaUtils';
+import { IApplicationUtils } from '../../lingo/utils/ApplicationUtils';
 export declare class IocQueryContext implements IIocQueryContext {
     airDb: IAirportDatabase;
     entityUtils: IEntityUtils;
@@ -13,7 +13,7 @@ export declare class IocQueryContext implements IIocQueryContext {
     init(): Promise<void>;
     queryFacade: IQueryFacade;
     queryUtils: IQueryUtils;
-    schemaUtils: ISchemaUtils;
+    applicationUtils: IApplicationUtils;
     transactionalConnector: ITransactionalConnector;
 }
 export interface IQueryContextLoader {

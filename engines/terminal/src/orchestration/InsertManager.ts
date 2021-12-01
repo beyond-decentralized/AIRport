@@ -144,8 +144,8 @@ export class InsertManager
 				REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER,
 				REPOSITORY_TRANSACTION_HISTORY_DUO)
 
-		const dbEntity = airDb.schemas[portableQuery.schemaIndex]
-			.currentVersion[0].schemaVersion.entities[portableQuery.tableIndex]
+		const dbEntity = airDb.applications[portableQuery.applicationIndex]
+			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
 
 		const errorPrefix = `Error inserting into '${dbEntity.name}'.'
 `

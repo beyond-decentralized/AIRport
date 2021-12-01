@@ -1,12 +1,12 @@
 import {
     IApiObject,
-    ISchemaApi
+    IApplicationApi
 } from '@airport/check-in';
 import * as ts from 'typescript';
 import tsc from 'typescript';
 import { forEach } from '../../ParserUtils';
 
-export const currentSchemaApi: ISchemaApi = {
+export const currentApplicationApi: IApplicationApi = {
     apiObjectMap: {}
 }
 
@@ -26,7 +26,7 @@ export function visitApiFile(
     const apiObject = serializeClass(symbol, className)
 
     if (apiObject) {
-        currentSchemaApi.apiObjectMap['I' + className] = apiObject
+        currentApplicationApi.apiObjectMap['I' + className] = apiObject
     }
 }
 

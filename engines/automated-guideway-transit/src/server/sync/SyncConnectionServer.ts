@@ -158,21 +158,21 @@ export class SyncConnectionServer
 			let maxSingleRepoChangeLength                        = Number.MAX_SAFE_INTEGER //1048576;
 			let maxAllRepoChangesLength                          = Number.MAX_SAFE_INTEGER //10485760;
 
-			const schemaValidationResult = messageFromTMVerifier.verifyMessage(
+			const applicationValidationResult = messageFromTMVerifier.verifyMessage(
 				message, maxAllRepoChangesLength, maxSingleRepoChangeLength)
 
-			const connectionDataError = schemaValidationResult[0]
+			const connectionDataError = applicationValidationResult[0]
 			if (connectionDataError) {
 				log.error(`
 	Message from TM validation error:
-		Invalid sync message data schema:
+		Invalid sync message data application:
 				Error Code:    {1}
 				Evaluation:    {2}
 				Data index:    {3}
 				`,
 					connectionDataError,
-					schemaValidationResult[1],
-					schemaValidationResult[2]
+					applicationValidationResult[1],
+					applicationValidationResult[2]
 				)
 				connectionDataCallback(null, false, null)
 			}

@@ -1,10 +1,10 @@
 import { TerminalMessage } from "@airport/arrivals-n-departures";
 import { container } from "@airport/di";
-import { SchemaStatus } from '@airport/ground-control';
+import { ApplicationStatus } from '@airport/ground-control';
 import {
     DOMAIN_DAO,
     IDomain,
-    ISchema,
+    IApplication,
     SCHEMA_DAO
 } from "@airport/airspace";
 
@@ -14,34 +14,34 @@ export interface IDomainCheckRecord {
     found?: boolean
 }
 
-export interface ISchemaCheckRecord {
+export interface IApplicationCheckRecord {
     found?: boolean
-    schemaName: string
-    schema?: ISchema;
+    applicationName: string
+    application?: IApplication;
 }
 
-export interface ISyncInSchemaChecker {
+export interface ISyncInApplicationChecker {
 
-    ensureSchemas(
+    ensureApplications(
         message: TerminalMessage
     ): Promise<boolean>
 
 }
 
-export class SyncInSchemaChecker
-    implements ISyncInSchemaChecker {
+export class SyncInApplicationChecker
+    implements ISyncInApplicationChecker {
 
-    async ensureSchemas(
+    async ensureApplications(
         message: TerminalMessage
     ): Promise<boolean> {
         try {
-            let schemaCheckMap = await this.checkSchemasAndDomains(message);
+            let applicationCheckMap = await this.checkApplicationsAndDomains(message);
 
-            for (let i = 0; i < message.schemas.length; i++) {
-                let schema = message.schemas[i]
-                message.schemas[i] = schemaCheckMap
-                    .get(schema.domain.name).get(schema.name)
-                    .schema
+            for (let i = 0; i < message.applications.length; i++) {
+                let application = message.applications[i]
+                message.applications[i] = applicationCheckMap
+                    .get(application.domain.name).get(application.name)
+                    .application
             }
         } catch (e) {
             console.error(e)
@@ -51,26 +51,26 @@ export class SyncInSchemaChecker
         return true
     }
 
-    private async checkSchemasAndDomains(
+    private async checkApplicationsAndDomains(
         message: TerminalMessage
-    ): Promise<Map<string, Map<string, ISchemaCheckRecord>>> {
-        const { allSchemaNames, domainCheckMap, domainNames, schemaCheckMap }
+    ): Promise<Map<string, Map<string, IApplicationCheckRecord>>> {
+        const { allApplicationNames, domainCheckMap, domainNames, applicationCheckMap }
             = this.getNames(message)
 
-        const schemaDao = await container(this).get(SCHEMA_DAO)
-        const schemas = await schemaDao.findByDomainNamesAndSchemaNames(domainNames, allSchemaNames)
+        const applicationDao = await container(this).get(SCHEMA_DAO)
+        const applications = await applicationDao.findByDomainNamesAndApplicationNames(domainNames, allApplicationNames)
 
-        for (let schema of schemas) {
-            let domainName = schema.domain.name
-            let schemaName = schema.name
+        for (let application of applications) {
+            let domainName = application.domain.name
+            let applicationName = application.name
 
-            for (let [_, schemaCheck] of schemaCheckMap.get(domainName)) {
-                if (schemaCheck.schemaName === schemaName) {
+            for (let [_, applicationCheck] of applicationCheckMap.get(domainName)) {
+                if (applicationCheck.applicationName === applicationName) {
                     let domainCheck = domainCheckMap.get(domainName)
                     domainCheck.found = true
-                    domainCheck.domain = schema.domain
-                    schemaCheck.found = true
-                    schemaCheck.schema = schema
+                    domainCheck.domain = application.domain
+                    applicationCheck.found = true
+                    applicationCheck.application = application
                 }
             }
         }
@@ -92,72 +92,72 @@ export class SyncInSchemaChecker
             await domainDao.insert(domainsToCreate)
         }
 
-        let schemasToCreate: ISchema[] = []
-        for (let [domainName, schemaChecksByName] of schemaCheckMap) {
-            for (let [name, schemaCheck] of schemaChecksByName) {
-                if (schemaCheck.found) {
+        let applicationsToCreate: IApplication[] = []
+        for (let [domainName, applicationChecksByName] of applicationCheckMap) {
+            for (let [name, applicationCheck] of applicationChecksByName) {
+                if (applicationCheck.found) {
                     continue
                 }
                 let domain = domainCheckMap.get(domainName).domain
-                let schema: ISchema = {
+                let application: IApplication = {
                     domain,
                     index: null,
-                    jsonSchema: {} as any,
+                    jsonApplication: {} as any,
                     packageName: 'bogus',
                     name,
                     scope: 'private',
-                    status: SchemaStatus.STUB,
+                    status: ApplicationStatus.STUB,
                     signature: null
                 }
-                schemaCheck.schema = schema
-                schemasToCreate.push(schema)
+                applicationCheck.application = application
+                applicationsToCreate.push(application)
             }
         }
 
-        if (schemasToCreate.length) {
-            await schemaDao.insert(schemasToCreate)
+        if (applicationsToCreate.length) {
+            await applicationDao.insert(applicationsToCreate)
         }
 
-        return schemaCheckMap
+        return applicationCheckMap
     }
 
     private getNames(
         message: TerminalMessage
     ): {
-        allSchemaNames: string[],
+        allApplicationNames: string[],
         domainCheckMap: Map<string, IDomainCheckRecord>,
         domainNames: string[],
-        schemaCheckMap: Map<string, Map<string, ISchemaCheckRecord>>
+        applicationCheckMap: Map<string, Map<string, IApplicationCheckRecord>>
     } {
-        if (!message.schemas || !(message.schemas instanceof Array)) {
-            throw new Error(`Did not find schemas in TerminalMessage.`)
+        if (!message.applications || !(message.applications instanceof Array)) {
+            throw new Error(`Did not find applications in TerminalMessage.`)
         }
 
         const domainCheckMap: Map<string, IDomainCheckRecord> = new Map()
-        const schemaCheckMap: Map<string, Map<string, ISchemaCheckRecord>> = new Map()
+        const applicationCheckMap: Map<string, Map<string, IApplicationCheckRecord>> = new Map()
 
-        for (let schema of message.schemas) {
-            if (typeof schema !== 'object') {
-                throw new Error(`Invalid SchemaVersion.schema`)
+        for (let application of message.applications) {
+            if (typeof application !== 'object') {
+                throw new Error(`Invalid ApplicationVersion.application`)
             }
-            if (!schema.name || typeof schema.name !== 'string') {
-                throw new Error(`Invalid SchemaVersion.Schema.name`)
+            if (!application.name || typeof application.name !== 'string') {
+                throw new Error(`Invalid ApplicationVersion.Application.name`)
             }
-            const domain = schema.domain
+            const domain = application.domain
             if (typeof domain !== 'object') {
-                throw new Error(`Invalid SchemaVersion.Schema.Domain`)
+                throw new Error(`Invalid ApplicationVersion.Application.Domain`)
             }
             if (!domain.name || typeof domain.name !== 'string') {
-                throw new Error(`Invalid SchemaVersion.Schema.Domain.name`)
+                throw new Error(`Invalid ApplicationVersion.Application.Domain.name`)
             }
-            let schemaChecksForDomain = schemaCheckMap.get(domain.name)
-            if (!schemaChecksForDomain) {
-                schemaChecksForDomain = new Map()
-                schemaCheckMap.set(domain.name, schemaChecksForDomain)
+            let applicationChecksForDomain = applicationCheckMap.get(domain.name)
+            if (!applicationChecksForDomain) {
+                applicationChecksForDomain = new Map()
+                applicationCheckMap.set(domain.name, applicationChecksForDomain)
             }
-            if (!schemaChecksForDomain.has(schema.name)) {
-                schemaChecksForDomain.set(schema.name, {
-                    schemaName: schema.name,
+            if (!applicationChecksForDomain.has(application.name)) {
+                applicationChecksForDomain.set(application.name, {
+                    applicationName: application.name,
                 })
             }
             let domainCheck = domainCheckMap.get(domain.name)
@@ -169,19 +169,19 @@ export class SyncInSchemaChecker
         }
 
         const domainNames = []
-        const allSchemaNames = []
-        for (const [domainName, schemaChecksForDomainMap] of schemaCheckMap) {
+        const allApplicationNames = []
+        for (const [domainName, applicationChecksForDomainMap] of applicationCheckMap) {
             domainNames.push(domainName)
-            for (let [schemaName, _] of schemaChecksForDomainMap) {
-                allSchemaNames.push(schemaName)
+            for (let [applicationName, _] of applicationChecksForDomainMap) {
+                allApplicationNames.push(applicationName)
             }
         }
 
         return {
-            allSchemaNames,
+            allApplicationNames,
             domainCheckMap,
             domainNames,
-            schemaCheckMap
+            applicationCheckMap
         }
     }
 

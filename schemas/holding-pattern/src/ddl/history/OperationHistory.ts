@@ -12,7 +12,7 @@ import {
 	Table
 }                                     from '@airport/air-control'
 import {ChangeType}                   from '@airport/ground-control'
-import {ISchemaEntity}                from '@airport/airspace'
+import {IApplicationEntity}                from '@airport/airspace'
 import {SystemWideOperationId}        from '../common'
 import {RecordHistory}                from './RecordHistory'
 import {RepositoryTransactionHistory} from './RepositoryTransactionHistory'
@@ -52,7 +52,7 @@ export class OperationHistory {
 
 	@ManyToOne()
 	@JoinColumn({name: 'ENTITY_ID', referencedColumnName: 'ID', nullable: false})
-	entity: ISchemaEntity
+	entity: IApplicationEntity
 
 	@ManyToOne()
 	@JoinColumn({

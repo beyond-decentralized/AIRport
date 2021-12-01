@@ -32,14 +32,14 @@ import { IEntityDatabaseFacade } from '../../../lingo/core/repository/EntityData
 import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery'
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
-import { ISchemaUtils } from '../../../lingo/utils/SchemaUtils'
+import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
 import {
 	AIRPORT_DATABASE,
 	RELATION_MANAGER,
 	SCHEMA_UTILS
 } from '../../../tokens'
 import { TreeQuery } from '../../query/facade/TreeQuery'
-import { extend } from '../../utils/qSchemaBuilderUtils'
+import { extend } from '../../utils/qApplicationBuilderUtils'
 import { JoinFields } from '../Joins'
 import { FieldColumnAliases } from './Aliases'
 
@@ -50,7 +50,7 @@ import { FieldColumnAliases } from './Aliases'
 export interface IQEntityInternalConstructor<T> {
 
 	entityConstructor: { new(...args: any[]): any };
-	schemaHash: string;
+	applicationHash: string;
 	entityIndex: number;
 
 	new <IQE extends IQEntityInternal<T>>(...args: any[]): IQE;
@@ -134,9 +134,9 @@ export class QEntityDriver<IEntity>
 
 	getInstance(
 		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		applicationUtils: IApplicationUtils
 	): IQEntityInternal<IEntity> {
-		const qEntityConstructor = schemaUtils
+		const qEntityConstructor = applicationUtils
 			.getQEntityConstructor(this.dbEntity, airDb)
 
 		let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType)
@@ -175,7 +175,7 @@ export class QEntityDriver<IEntity>
 		fieldUtils: IFieldUtils
 	): JSONRelation {
 		// FIXME: this does not work for non-entity tree queries, as there is not dbEntity
-		// see SchemaDao.findMaxVersionedMapBySchemaAndDomainNames for an example
+		// see ApplicationDao.findMaxVersionedMapByApplicationAndDomainNames for an example
 		let jsonRelation: JSONRelation = {
 			currentChildIndex: this.currentChildIndex,
 			ti: this.dbEntity.index,
@@ -183,7 +183,7 @@ export class QEntityDriver<IEntity>
 			jt: this.joinType,
 			rt: null,
 			rep: columnAliases.entityAliases.getNextAlias(this.getRootJoinEntity()),
-			si: this.dbEntity.schemaVersion.schema.index
+			si: this.dbEntity.applicationVersion.application.index
 		}
 		if (this.joinWhereClause) {
 			this.getJoinRelationJson(<JSONJoinRelation>jsonRelation, columnAliases,
@@ -264,10 +264,10 @@ export class QEntityDriver<IEntity>
 		right: IF,
 		joinType: JoinType,
 	): IJoinFields<IF> {
-		const [airDb, schemaUtils, relationManager] = DI.db().getSync(
+		const [airDb, applicationUtils, relationManager] = DI.db().getSync(
 			AIRPORT_DATABASE, SCHEMA_UTILS, RELATION_MANAGER)
 		let joinChild: IQEntityInternal<any> = (<IQEntityInternal<any>><any>right)
-			.__driver__.getInstance(airDb, schemaUtils)
+			.__driver__.getInstance(airDb, applicationUtils)
 		joinChild.__driver__.currentChildIndex = 0
 		let nextChildPosition = relationManager.getNextChildJoinPosition(this)
 		joinChild.__driver__.fromClausePosition = nextChildPosition
@@ -297,8 +297,8 @@ export class QEntityDriver<IEntity>
 		this.entityRelationMap = {};
 
 		for (const entityRelation of this.entityRelations) {
-			const propertyName = SchemaUtils.getIPropertyWithRelationIndex(
-				entityRelation.parentSchemaIndex,
+			const propertyName = ApplicationUtils.getIPropertyWithRelationIndex(
+				entityRelation.parentApplicationIndex,
 				entityRelation.parentTableIndex,
 				entityRelation.parentRelationIndex,
 			).name;
@@ -313,8 +313,8 @@ export class QEntityDriver<IEntity>
 			return this.oneToManyConfigMap;
 		}
 
-		const iEntity = SchemaUtils.getIEntity(this.schemaIndex, this.tableIndex);
-		this.oneToManyConfigMap = SchemaUtils.getOneToManyConfigMap(iEntity);
+		const iEntity = ApplicationUtils.getIEntity(this.applicationIndex, this.tableIndex);
+		this.oneToManyConfigMap = ApplicationUtils.getOneToManyConfigMap(iEntity);
 
 		return this.oneToManyConfigMap;
 	}
@@ -347,9 +347,9 @@ export class QTreeDriver<IEntity>
 
 	getInstance(
 		airDb: IAirportDatabase,
-		schemaUtils: ISchemaUtils
+		applicationUtils: IApplicationUtils
 	): IQEntityInternal<IEntity> {
-		let instance = super.getInstance(airDb, schemaUtils);
+		let instance = super.getInstance(airDb, applicationUtils);
 		(<IQTreeDriver<IEntity>>instance.__driver__)
 			.subQuery = this.subQuery
 

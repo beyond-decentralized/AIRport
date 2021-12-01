@@ -11,7 +11,7 @@ __decorate([
     Id(),
     Column({ name: 'SCHEMA_INDEX', nullable: false }),
     DbNumber()
-], Sequence.prototype, "schemaIndex", void 0);
+], Sequence.prototype, "applicationIndex", void 0);
 __decorate([
     Id(),
     Column({ name: 'TABLE_INDEX', nullable: false }),

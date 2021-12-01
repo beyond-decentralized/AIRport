@@ -10,8 +10,8 @@ import {
 	QDateFunction,
 	QNumberArrayFunction,
 	QNumberFunction,
-	QSchema,
-	QSchemaInternal,
+	QApplication,
+	QApplicationInternal,
 	QStringArrayFunction,
 	QStringFunction,
 	QUERY_FACADE,
@@ -19,11 +19,11 @@ import {
 }                                           from '@airport/air-control';
 import { DI }                               from '@airport/di';
 import {
-	getSchemaName,
-	ISchemaQuery,
+	getApplicationName,
+	IApplicationQuery,
 	JsonFormattedQuery,
 	JsonOperation,
-	JsonSchema,
+	JsonApplication,
 	OperationType,
 	QueryInputKind,
 	QueryParameter,
@@ -37,7 +37,7 @@ import {
 import tsc                                  from 'typescript';
 import { JsonFormattedQueryWithExpression } from './OperationGenerator';
 
-export class SchemaQueryGenerator {
+export class ApplicationQueryGenerator {
 
 	private tempDatabase: ITempDatabase = new TempDatabase();
 
@@ -47,12 +47,12 @@ export class SchemaQueryGenerator {
 				[operationName: string]: JsonOperation
 			}
 		},
-		jsonSchema: JsonSchema
+		jsonApplication: JsonApplication
 	): Promise<void> {
 		if (!this.haveQueries(entityOperationMap)) {
 			return;
 		}
-		await this.initTempDatabase(jsonSchema);
+		await this.initTempDatabase(jsonApplication);
 
 		for (const entityName in entityOperationMap) {
 			const operations: { [operationName: string]: JsonOperation; }
@@ -68,8 +68,8 @@ export class SchemaQueryGenerator {
 						const queryDefinition: JsonFormattedQueryWithExpression
 							      = operation as JsonFormattedQueryWithExpression;
 
-						const query = await this.getSchemaQuery(queryDefinition, entityName,
-							jsonSchema);
+						const query = await this.getApplicationQuery(queryDefinition, entityName,
+							jsonApplication);
 
 						const inputs: QueryParameter[] = queryDefinition.inputs.filter(input =>
 							(input as QueryParameter).type === QueryInputKind.PARAMETER) as any;
@@ -120,16 +120,16 @@ export class SchemaQueryGenerator {
 	}
 
 	private async initTempDatabase(
-		schema: JsonSchema
+		application: JsonApplication
 	): Promise<void> {
-		await this.tempDatabase.initialize([schema]);
+		await this.tempDatabase.initialize([application]);
 	}
 
-	private async getSchemaQuery(
+	private async getApplicationQuery(
 		queryDefinition: JsonFormattedQueryWithExpression,
 		entityName: string,
-		jsonSchema: JsonSchema,
-	): Promise<ISchemaQuery> {
+		jsonApplication: JsonApplication,
+	): Promise<IApplicationQuery> {
 		const queryTypescript    = queryDefinition.expression.getText();
 		let queryJavascript      = tsc.transpile(queryTypescript);
 		const functionStartRegex = /\(\s*function \s*\(\s*[\w,\s]*\)\s*\{\s*/;
@@ -154,16 +154,16 @@ export class SchemaQueryGenerator {
 		const queryFunction = new Function(...functionConstructorParams);
 
 		const [queryFunctionParameters, queryParameters] = this.getQueryFunctionParameters(
-			queryDefinition, jsonSchema, airDb);
+			queryDefinition, jsonApplication, airDb);
 
 		const rawQuery = queryFunction(...queryFunctionParameters);
 
 		const [lookup, queryFacade]    = await DI.db().get(LOOKUP, QUERY_FACADE);
 		const context                  = lookup.ensureContext(null);
-		const qSchema: QSchemaInternal = airDb.QM[getSchemaName(jsonSchema)];
-		const dbSchemaVersion          = qSchema.__dbSchema__
-			.versions[qSchema.__dbSchema__.versions.length - 1];
-		context.dbEntity               = dbSchemaVersion.entityMapByName[entityName];
+		const qApplication: QApplicationInternal = airDb.QM[getApplicationName(jsonApplication)];
+		const dbApplicationVersion          = qApplication.__dbApplication__
+			.versions[qApplication.__dbApplication__.versions.length - 1];
+		context.dbEntity               = dbApplicationVersion.entityMapByName[entityName];
 		await queryFacade.ensureIocContext(context);
 		const queryResultType = this.getQueryResultType(queryDefinition.type, false);
 
@@ -192,7 +192,7 @@ export class SchemaQueryGenerator {
 
 	private getQueryFunctionParameters(
 		queryDefinition: JsonFormattedQueryWithExpression,
-		jsonSchema: JsonSchema,
+		jsonApplication: JsonApplication,
 		airDb: IAirportDatabase,
 	): [any[], { index: number, parameter: IQOperableField<any, any, any, any> }[]] {
 		const queryFunctionParameters = [];
@@ -203,7 +203,7 @@ export class SchemaQueryGenerator {
 		let lastNumberParameter       = 0;
 		let lastStringParameter       = 0;
 		let lastDateParameter         = new Date().getTime();
-		let Q: QSchema;
+		let Q: QApplication;
 		for (const input of queryDefinition.inputs) {
 			switch (input.type) {
 				case QueryInputKind.PARAMETER:
@@ -251,7 +251,7 @@ export class SchemaQueryGenerator {
 					}
 					break;
 				case QueryInputKind.Q:
-					Q = airDb.QM[getSchemaName(jsonSchema)];
+					Q = airDb.QM[getApplicationName(jsonApplication)];
 					queryFunctionParameters.push(Q);
 					break;
 				case QueryInputKind.QENTITY:

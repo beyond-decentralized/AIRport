@@ -1,6 +1,6 @@
 import {DbEntity}          from '@airport/ground-control'
 import {MappedEntityArray} from '../../lingo/query/MappedEntityArray'
-import {ISchemaUtils}      from '../../lingo/utils/SchemaUtils'
+import {IApplicationUtils}      from '../../lingo/utils/ApplicationUtils'
 
 /**
  * Created by Papa on 10/14/2016.
@@ -8,7 +8,7 @@ import {ISchemaUtils}      from '../../lingo/utils/SchemaUtils'
 
 // FIXME: MappedEnityArray does not serialize, make it serializable before it can be used
 export function newMappedEntityArray<E>(
-	schemaUtils: ISchemaUtils,
+	applicationUtils: IApplicationUtils,
 	dbEntity: DbEntity
 ): MappedEntityArray<E> {
 
@@ -27,8 +27,8 @@ export function newMappedEntityArray<E>(
 	}
 
 	arr.put = function (value: E): E {
-		let keyValue = schemaUtils.getIdKey(value, dbEntity)
-		if (schemaUtils.isIdEmpty(keyValue)) {
+		let keyValue = applicationUtils.getIdKey(value, dbEntity)
+		if (applicationUtils.isIdEmpty(keyValue)) {
 			throw new Error(`Composite @Id(s) value for entity '${dbEntity.name}' is not defined`)
 		}
 		if (this.dataMap[keyValue]) {

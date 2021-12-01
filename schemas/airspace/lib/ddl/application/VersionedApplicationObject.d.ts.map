@@ -1,0 +1,1 @@
+{"version":3,"file":"VersionedApplicationObject.d.ts","sourceRoot":"","sources":["../../../src/ddl/application/VersionedApplicationObject.ts"],"names":[],"mappings":"AAKA,OAAO,EAAC,kBAAkB,EAAC,MAAM,sBAAsB,CAAA;AAEvD,qBACa,0BAA0B;IAItC,sBAAsB,CAAC,EAAE,kBAAkB,CAAA;IAI3C,gBAAgB,CAAC,EAAE,kBAAkB,CAAA;IAIrC,YAAY,CAAC,EAAE,kBAAkB,CAAA;CAEjC"}

@@ -3,10 +3,10 @@ import { Configuration } from '../options/Options';
 import { PathBuilder } from './PathBuilder';
 import { IBuilder } from './Builder';
 
-export class QSchemaBuilder
+export class QApplicationBuilder
   implements IBuilder {
 
-  public qSchemaFilePath;
+  public qApplicationFilePath;
 
   private entityNames: string[] = [];
   private ddlPathMapByEntityName: { [entityName: string]: string } = {};
@@ -18,7 +18,7 @@ export class QSchemaBuilder
     private pathBuilder: PathBuilder,
     private configuration: Configuration,
   ) {
-    this.qSchemaFilePath = pathBuilder.fullGeneratedDirPath + '/qSchema.ts';
+    this.qApplicationFilePath = pathBuilder.fullGeneratedDirPath + '/qApplication.ts';
   }
 
   addFileNameAndPaths(
@@ -27,10 +27,10 @@ export class QSchemaBuilder
     fullGenerationPath: string,
     isMappedSuperclass: boolean,
   ): void {
-    const ddlRelativePath = resolveRelativePath(this.qSchemaFilePath, fullDdlPath)
+    const ddlRelativePath = resolveRelativePath(this.qApplicationFilePath, fullDdlPath)
       .replace('.ts', '');
     this.ddlPathMapByEntityName[entityName] = ddlRelativePath;
-    const generatedRelativePath = resolveRelativePath(this.qSchemaFilePath, fullGenerationPath)
+    const generatedRelativePath = resolveRelativePath(this.qApplicationFilePath, fullGenerationPath)
       .replace('.ts', '');
     this.generatedFilePaths.push(generatedRelativePath);
     this.generatedPathMapByEntityName[entityName]
@@ -41,7 +41,7 @@ export class QSchemaBuilder
 
   build(
     domainName: string,
-    schemaName: string,
+    applicationName: string,
   ): string {
     this.entityNames.sort();
     this.generatedFilePaths.sort();
@@ -51,7 +51,7 @@ export class QSchemaBuilder
       .map(
       entityName => `${entityName}: Q${entityName};`,
     ).join('\n\t');
-    // TODO: enable DUO and DAO injections into QSchema, if needed
+    // TODO: enable DUO and DAO injections into QApplication, if needed
     // const duoDefinitions = this.entityNames.map(
     // 	entityName => `${entityName}: IBase${entityName}Duo;`
     // ).join('\n\t\t');
@@ -102,7 +102,7 @@ export class QSchemaBuilder
 
     return `import {
 	AIRPORT_DATABASE,
-	QSchema as AirportQSchema
+	QApplication as AirportQApplication
 }                      from '@airport/air-control'
 import {
 	diSet as dS,
@@ -110,16 +110,16 @@ import {
 }                      from '@airport/check-in'
 import {DI}            from '@airport/di'
 import {
-	DbSchema,
+	DbApplication,
 	EntityId,
-	getSchemaName
+	getApplicationName
 }                      from '@airport/ground-control';
 ${qEntityImports}
 ${entityImports}
 
-export interface LocalQSchema extends AirportQSchema {
+export interface LocalQApplication extends AirportQApplication {
 
-  db: DbSchema;
+  db: DbApplication;
 
 	${qApiDefinitions}
 
@@ -129,29 +129,29 @@ const __constructors__ = {
 	${constructorDefinitions}
 };
 
-export const Q_SCHEMA: LocalQSchema = <any>{
+export const Q_SCHEMA: LocalQApplication = <any>{
 	__constructors__,
   domain: '${domainName}',
-  name: '${schemaName}'
+  name: '${applicationName}'
 };
-export const Q: LocalQSchema = Q_SCHEMA
+export const Q: LocalQApplication = Q_SCHEMA
 
 export function diSet(
 	dbEntityId: EntityId
 ): boolean {
-	return dS(Q.__dbSchema__, dbEntityId)
+	return dS(Q.__dbApplication__, dbEntityId)
 }
 
 export function duoDiSet(
 	dbEntityId: EntityId
 ): boolean {
-	return ddS(Q.__dbSchema__, dbEntityId)
+	return ddS(Q.__dbApplication__, dbEntityId)
 }
 
 DI.db().eventuallyGet(AIRPORT_DATABASE).then((
 	airDb
 ) => {
-	airDb.QM[getSchemaName(Q_SCHEMA)] = Q
+	airDb.QM[getApplicationName(Q_SCHEMA)] = Q
 })
 `;
   }

@@ -33,7 +33,7 @@ export class QField {
         }
         let jsonField = {
             appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils),
-            si: this.dbProperty.entity.schemaVersion.id,
+            si: this.dbProperty.entity.applicationVersion.id,
             ti: this.dbProperty.entity.index,
             fa: alias,
             pi: this.dbProperty.index,

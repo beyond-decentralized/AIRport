@@ -1,10 +1,10 @@
 import {
 	DbEntity,
-	DbSchema
+	DbApplication
 } from '@airport/ground-control';
 import {
-	ISchemaLoader,
-	SchemaLoader
+	IApplicationLoader,
+	ApplicationLoader
 } from '@airport/taxiway';
 import {
 	canBeInterface,
@@ -35,11 +35,11 @@ export class EntityCandidateRegistry {
 	entityCandidateMap: Map<string, EntityCandidate> = new Map<string, EntityCandidate>();
 	allInterfacesMap: Map<string, Interface[]> = new Map<string, Interface[]>();
 	configuration: Configuration;
-	schemaMap: { [projectName: string]: DbSchema } = {};
+	applicationMap: { [projectName: string]: DbApplication } = {};
 	mappedSuperClassMap: {
 		[projectName: string]: { [mappedSuperClassName: string]: EntityCandidate }
 	} = {};
-	schemaLoader: ISchemaLoader = new SchemaLoader();
+	applicationLoader: IApplicationLoader = new ApplicationLoader();
 
 	constructor(
 		private enumMap?: Map<string, string>
@@ -236,10 +236,10 @@ export class EntityCandidateRegistry {
 				if (moduleImport && !moduleImport.isLocal) {
 					const projectName = this.getProjectReferenceFromPath(moduleImport.path);
 					property.fromProject = projectName;
-					if (!this.getReferencedSchema(projectName, property)) {
+					if (!this.getReferencedApplication(projectName, property)) {
 						throw new Error(`
 						Processing property ${property.ownerEntity.type}.${property.name}
-						Could not find related schema in project '${projectName}'
+						Could not find related application in project '${projectName}'
 						if using external primitive types did you forget to add @DbBoolean(), @DbNumber(), @DbDate() or @DbString() decorator to this property?`);
 					}
 				} else {
@@ -279,21 +279,21 @@ export class EntityCandidateRegistry {
 		return classifiedEntitySet;
 	}
 
-	getReferencedSchema(
+	getReferencedApplication(
 		projectName: string,
 		property: EntityReference,
-	): DbSchema {
-		const projectSchema = this.schemaMap[projectName];
-		if (projectSchema) {
-			property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, projectSchema, property);
-			return projectSchema;
+	): DbApplication {
+		const projectApplication = this.applicationMap[projectName];
+		if (projectApplication) {
+			property.otherApplicationDbEntity = this.getOtherApplicationEntity(projectName, projectApplication, property);
+			return projectApplication;
 		}
-		const dbSchema = this.schemaLoader.getReferencedSchema(projectName);
+		const dbApplication = this.applicationLoader.getReferencedApplication(projectName);
 
-		this.schemaMap[projectName] = dbSchema;
-		property.otherSchemaDbEntity = this.getOtherSchemaEntity(projectName, dbSchema, property);
+		this.applicationMap[projectName] = dbApplication;
+		property.otherApplicationDbEntity = this.getOtherApplicationEntity(projectName, dbApplication, property);
 
-		return dbSchema;
+		return dbApplication;
 	}
 
 	getProjectReferenceFromPath(
@@ -329,15 +329,15 @@ export class EntityCandidateRegistry {
 		if (projectMappedSuperclasses) {
 			return projectMappedSuperclasses[type];
 		}
-		// const pathsToReferencedSchemas =
-		// this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas
+		// const pathsToReferencedApplications =
+		// this.configuration.airport.node_modulesLinks.pathsToReferencedApplications
 		let relatedMappedSuperclassesProject;
-		// if (pathsToReferencedSchemas && pathsToReferencedSchemas[projectName]) {
-		// 	let referencedSchemaRelativePath = '../../' +
-		// pathsToReferencedSchemas[projectName] for (let i = 0; i < 10; i++) {
-		// referencedSchemaRelativePath = '../' + referencedSchemaRelativePath let
+		// if (pathsToReferencedApplications && pathsToReferencedApplications[projectName]) {
+		// 	let referencedApplicationRelativePath = '../../' +
+		// pathsToReferencedApplications[projectName] for (let i = 0; i < 10; i++) {
+		// referencedApplicationRelativePath = '../' + referencedApplicationRelativePath let
 		// pathToMappedSuperclasses =
-		// getFullPathFromRelativePath(referencedSchemaRelativePath, __filename) if
+		// getFullPathFromRelativePath(referencedApplicationRelativePath, __filename) if
 		// (fs.existsSync(pathToMappedSuperclasses) &&
 		// fs.lstatSync(pathToMappedSuperclasses).isDirectory()) {
 		// relatedMappedSuperclassesProject = require(pathToMappedSuperclasses) break } } }
@@ -345,7 +345,7 @@ export class EntityCandidateRegistry {
 		relatedMappedSuperclassesProject = await import('file://' + process.cwd() + '/node_modules/' + projectName + '/lib/index.js');
 		// }
 		if (!relatedMappedSuperclassesProject) {
-			throw new Error(`Could not find related schema project '${projectName}'`);
+			throw new Error(`Could not find related application project '${projectName}'`);
 		}
 		if (!relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
 			throw new Error(
@@ -376,20 +376,20 @@ export class EntityCandidateRegistry {
 		return entityCandidate;
 	}
 
-	private getOtherSchemaEntity(
+	private getOtherApplicationEntity(
 		projectName: string,
-		dbSchema: DbSchema,
+		dbApplication: DbApplication,
 		property: PropertyDocEntry,
 	): DbEntity {
 		const type = property.nonArrayType;
-		let otherSchemaDbEntity = dbSchema.currentVersion[0].schemaVersion
+		let otherApplicationDbEntity = dbApplication.currentVersion[0].applicationVersion
 			.entityMapByName[type];
-		if (!otherSchemaDbEntity) {
+		if (!otherApplicationDbEntity) {
 			if (canBeInterface(type)) {
 				const relatedImplementationName = getImplNameFromInterfaceName(type);
-				otherSchemaDbEntity = dbSchema.currentVersion[0].schemaVersion
+				otherApplicationDbEntity = dbApplication.currentVersion[0].applicationVersion
 					.entityMapByName[relatedImplementationName];
-				if (!otherSchemaDbEntity) {
+				if (!otherApplicationDbEntity) {
 					throw new Error(`Could not find entity '${relatedImplementationName}' 
 					(from interface ${type}) in project '${projectName}'`);
 				}
@@ -401,7 +401,7 @@ export class EntityCandidateRegistry {
 			}
 		}
 
-		return otherSchemaDbEntity;
+		return otherApplicationDbEntity;
 	}
 
 	private registerInterface(

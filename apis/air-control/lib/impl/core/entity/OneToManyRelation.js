@@ -1,4 +1,4 @@
-import { extend } from '../../utils/qSchemaBuilderUtils';
+import { extend } from '../../utils/qApplicationBuilderUtils';
 import { QRelation } from './Relation';
 /**
  * Created by Papa on 10/25/2016.

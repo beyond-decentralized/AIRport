@@ -35,10 +35,10 @@ export type SharingMessageDataCache = string;
  *
  * When the data in an incoming SharingMessage isn't ready to be processed
  * because of:
- *  Locally missing schemas
- *  Locally outdated schemas
+ *  Locally missing applications
+ *  Locally outdated applications
  *  Locally missing data
- *  Received data needing to be upgraded to latest version of schema
+ *  Received data needing to be upgraded to latest version of application
  *
  * Q: Should the entire message be blocked from processing or just the affected
  * RTBs?

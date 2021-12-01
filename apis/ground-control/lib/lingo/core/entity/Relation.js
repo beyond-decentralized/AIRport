@@ -23,7 +23,7 @@ export var JSONRelationType;
 (function (JSONRelationType) {
     // Join of an entity with the ON clause
     JSONRelationType["ENTITY_JOIN_ON"] = "ENTITY_JOIN_ON";
-    // Join of an entity via a schema relation
+    // Join of an entity via a application relation
     JSONRelationType["ENTITY_SCHEMA_RELATION"] = "ENTITY_SCHEMA_RELATION";
     // The root entity in a join
     JSONRelationType["ENTITY_ROOT"] = "ENTITY_ROOT";

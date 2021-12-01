@@ -170,7 +170,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				ri: null,
 				rt: JSONRelationType.ENTITY_ROOT,
 				rep: 'r_',
-				si: this.dbEntity.schemaVersion.id
+				si: this.dbEntity.applicationVersion.id
 			}
 			joinRelations.push(onlyJsonRelation)
 		}
@@ -200,11 +200,11 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		// In entity queries the first entity must always be the same as the query entity
 		const firstDbEntity = firstEntity.__driver__.dbEntity
 		// if (firstEntity.constructor != this.rootQEntity.constructor) {
-		if (firstDbEntity.schemaVersion.schema.index !== this.dbEntity.schemaVersion.schema.index || firstDbEntity.index !== this.dbEntity.index) {
+		if (firstDbEntity.applicationVersion.application.index !== this.dbEntity.applicationVersion.application.index || firstDbEntity.index !== this.dbEntity.index) {
 			throw new Error(`ERROR: Unexpected first table in FROM clause: 
-			'${firstDbEntity.schemaVersion.schema.name}.${firstDbEntity.name}',
+			'${firstDbEntity.applicationVersion.application.name}.${firstDbEntity.name}',
 			expecting:
-			'${this.dbEntity.schemaVersion.schema.name}.${this.dbEntity.name}'`)
+			'${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}'`)
 		}
 		jsonTree = new JoinTreeNode(firstRelation, [], null)
 
@@ -298,7 +298,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 						case EntityRelationType.MANY_TO_ONE:
 							let haveRelationValues = false
 							let relationInfos: ReferencedColumnData[] = []
-							context.ioc.schemaUtils.forEachColumnTypeOfRelation(dbRelation, (
+							context.ioc.applicationUtils.forEachColumnTypeOfRelation(dbRelation, (
 								dbColumn: DbColumn,
 								propertyNameChains: string[][],
 							) => {
@@ -362,7 +362,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			return null
 		}
 
-		let idValue = context.ioc.schemaUtils.getIdKey(resultObject, dbEntity)
+		let idValue = context.ioc.applicationUtils.getIdKey(resultObject, dbEntity)
 
 		return this.queryParser.flushEntity(entityAlias, dbEntity, selectClauseFragment, idValue, resultObject, context)
 	}
@@ -469,7 +469,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 						const manyToOneRelation = {}
 						context.ioc.entityStateManager.markAsStub(manyToOneRelation)
 						selectFragment[dbProperty.name] = manyToOneRelation
-						// schemaUtils.addRelationToEntitySelectClause(dbRelation, selectFragment,
+						// applicationUtils.addRelationToEntitySelectClause(dbRelation, selectFragment,
 						// allowDefaults)
 						break
 					default:
@@ -579,12 +579,12 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			let errorPrefix = 'Error building FROM: '
 			switch (currentRelation.rt) {
 				case JSONRelationType.ENTITY_SCHEMA_RELATION:
-					fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity,
+					fromFragment += this.getEntityApplicationRelationFromJoin(leftEntity, rightEntity,
 						<JSONEntityRelation>currentRelation, parentRelation, currentAlias, parentAlias,
 						joinTypeString, errorPrefix, context)
 					break
 				default:
-					throw new Error(`Only Entity schema relations are allowed in Entity query FROM clause.`)
+					throw new Error(`Only Entity application relations are allowed in Entity query FROM clause.`)
 			}
 		}
 		for (let i = 0; i < currentTree.childNodes.length; i++) {

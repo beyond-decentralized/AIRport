@@ -1,0 +1,1 @@
+{"version":3,"file":"applicationcurrentversion.d.ts","sourceRoot":"","sources":["../../../src/generated/application/applicationcurrentversion.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,YAAY,EACZ,MAAM,eAAe,CAAC;AACvB,OAAO,EACN,mBAAmB,EACnB,MAAM,sBAAsB,CAAC;AAQ9B,MAAM,WAAW,0BAA0B;IAK1C,WAAW,EAAE,YAAY,CAAC;IAC1B,kBAAkB,EAAE,mBAAmB,CAAC;CAUxC"}

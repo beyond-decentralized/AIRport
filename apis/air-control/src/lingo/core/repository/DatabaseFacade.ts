@@ -1,10 +1,5 @@
 import {
-	AIRepository,
-	DbEntity,
-	DbSchema,
-	DistributionStrategy,
 	ISaveResult,
-	PlatformType,
 	PortableQuery,
 	QueryResultType
 } from '@airport/ground-control';
@@ -20,7 +15,7 @@ import {
 	RawUpdateColumns
 } from '../../query/facade/Update';
 import { IQueryContext } from '../../query/QueryContext';
-import { EntityIdData } from '../../utils/SchemaUtils';
+import { EntityIdData } from '../../utils/ApplicationUtils';
 import { IEntityContext } from '../EntityContext';
 import {
 	IEntityUpdateColumns,

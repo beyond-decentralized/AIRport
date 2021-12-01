@@ -1,4 +1,4 @@
-import { IDatabaseFacade, IDuo, IEntityCascadeGraph, IEntityContext, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-control';
+import { IDatabaseFacade, IDuo, IEntityCascadeGraph, IEntityContext, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, QApplication, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-control';
 import { DbEntity, ISaveResult } from '@airport/ground-control';
 /**
  * Created by Papa on 12/11/2016.
@@ -9,7 +9,7 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     duo: IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>;
     find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
     findOne: IEntityFindOne<Entity, EntitySelect>;
-    constructor(dbEntity: DbEntity, Q: QSchema);
+    constructor(dbEntity: DbEntity, Q: QApplication);
     get from(): IQ;
     findForRepository(repositorySource: string, repositoryUuid: string): IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
     findOneForRepository(repositorySource: string, repositoryUuid: string): IEntityFindOne<Entity, EntitySelect>;

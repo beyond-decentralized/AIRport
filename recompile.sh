@@ -16,7 +16,7 @@ cd ../security-check
 tsc
 cd ../../generators/runway
 tsc
-cd ../../schemas/territory
+cd ../../applications/territory
 tsc
 cd ../airport-code
 tsc

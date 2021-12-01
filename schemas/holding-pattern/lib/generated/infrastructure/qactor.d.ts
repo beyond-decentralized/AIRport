@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation, TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
-import { SchemaGraph, SchemaEOptionalId, SchemaESelect, QSchemaQRelation } from '@airport/airspace';
+import { ApplicationGraph, ApplicationEOptionalId, ApplicationESelect, QApplicationQRelation } from '@airport/airspace';
 import { Actor } from '../../ddl/infrastructure/Actor';
 /**
  * SELECT - All fields and relations (optional).
@@ -9,7 +9,7 @@ export interface ActorESelect extends IEntitySelectProperties, ActorEOptionalId 
     uuId?: string | IQStringField;
     user?: UserESelect;
     terminal?: TerminalESelect;
-    schema?: SchemaESelect;
+    application?: ApplicationESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -30,7 +30,7 @@ export interface ActorEUpdateProperties extends IEntityUpdateProperties {
     uuId?: string | IQStringField;
     user?: UserEOptionalId;
     terminal?: TerminalEOptionalId;
-    schema?: SchemaEOptionalId;
+    application?: ApplicationEOptionalId;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
@@ -39,7 +39,7 @@ export interface ActorGraph extends ActorEOptionalId, IEntityCascadeGraph {
     uuId?: string | IQStringField;
     user?: UserGraph;
     terminal?: TerminalGraph;
-    schema?: SchemaGraph;
+    application?: ApplicationGraph;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -68,7 +68,7 @@ export interface QActor extends IQEntity<Actor> {
     uuId: IQStringField;
     user: QUserQRelation;
     terminal: QTerminalQRelation;
-    schema: QSchemaQRelation;
+    application: QApplicationQRelation;
 }
 export interface QActorQId {
     id: IQNumberField;

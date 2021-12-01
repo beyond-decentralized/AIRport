@@ -15,7 +15,7 @@ export class ClientQueryManager
     implements IClientQueryManager {
 
     async getClientQuery(
-        schemaName: string,
+        applicationName: string,
         daoName: string,
         methodName: string
     ): Promise<IClientQuery> {

@@ -41,7 +41,7 @@ export class SharingNodeRepoTransBlockStageDao
 	async insertValues(
 		values: SharingNodeRepoTransBlockStageValues[]
 	): Promise<number> {
-		const dbEntity = Q.db.currentVersion[0].schemaVersion
+		const dbEntity = Q.db.currentVersion[0].applicationVersion
 			.entityMapByName.SharingNodeRepoTransBlockStage
 
 		const airDb = await container(this)

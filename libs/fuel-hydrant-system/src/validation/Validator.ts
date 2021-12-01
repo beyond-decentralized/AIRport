@@ -4,7 +4,7 @@ import {
 	DbColumn,
 	DbEntity,
 	JSONRelation,
-	SchemaIndex,
+	ApplicationIndex,
 	TableIndex
 }                    from '@airport/ground-control'
 import {Q_VALIDATOR} from '../tokens'
@@ -37,13 +37,13 @@ export interface IValidator {
 	): void;
 
 	validateReadQEntityProperty(
-		schemaIndex: SchemaIndex,
+		applicationIndex: ApplicationIndex,
 		tableIndex: TableIndex,
 		columnIndex: ColumnIndex,
 	): void;
 
 	validateReadQEntityManyToOneRelation(
-		schemaIndex: SchemaIndex,
+		applicationIndex: ApplicationIndex,
 		tableIndex: TableIndex,
 		columnIndex: ColumnIndex,
 	): void;
@@ -83,14 +83,14 @@ export class QValidator
 	}
 
 	validateReadQEntityProperty(
-		schemaIndex: SchemaIndex,
+		applicationIndex: ApplicationIndex,
 		tableIndex: TableIndex,
 		columnIndex: ColumnIndex,
 	): void {
 	}
 
 	validateReadQEntityManyToOneRelation(
-		schemaIndex: SchemaIndex,
+		applicationIndex: ApplicationIndex,
 		tableIndex: TableIndex,
 		columnIndex: ColumnIndex,
 	): void {

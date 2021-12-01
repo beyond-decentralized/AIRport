@@ -86,7 +86,7 @@ export abstract class RepositoryEntity
 				],
 				where: f.and(
 					rh.actorRecordId.equals(re.actorRecordId),
-					oh.schema.index.equals(re.__driver__.dbEntity.schema.index),
+					oh.application.index.equals(re.__driver__.dbEntity.application.index),
 					oh.entity.index.equals(re.__driver__.dbEntity.table.index),
 					rth.repository.id.equals(re.repository.id),
 					rth.actor.id.equals(re.actor.id)

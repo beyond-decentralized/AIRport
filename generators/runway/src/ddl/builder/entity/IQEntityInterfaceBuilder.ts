@@ -2,7 +2,7 @@ import {EntityCandidate} from '../../parser/EntityCandidate'
 import {
 	entityExtendsRepositoryEntity,
 	getManyToOneDecorator
-}                        from '../schema/SSchemaBuilder'
+}                        from '../application/SApplicationBuilder'
 import {IBuilder}         from '../Builder'
 import {QColumnBuilder}   from './QColumnBuilder'
 import {QEntityBuilder}   from './QEntityBuilder'

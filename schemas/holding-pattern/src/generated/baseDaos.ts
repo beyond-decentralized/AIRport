@@ -78,18 +78,18 @@ import {
 	QRepository,
 } from './repository/qrepository';
 import {
-	IRepositorySchema,
-} from './repository/repositoryschema';
+	IRepositoryApplication,
+} from './repository/repositoryapplication';
 import {
-	RepositorySchemaESelect,
-	RepositorySchemaECreateColumns,
-	RepositorySchemaECreateProperties,
-	RepositorySchemaEUpdateColumns,
-	RepositorySchemaEUpdateProperties,
-	RepositorySchemaEId,
-	RepositorySchemaGraph,
-	QRepositorySchema,
-} from './repository/qrepositoryschema';
+	RepositoryApplicationESelect,
+	RepositoryApplicationECreateColumns,
+	RepositoryApplicationECreateProperties,
+	RepositoryApplicationEUpdateColumns,
+	RepositoryApplicationEUpdateProperties,
+	RepositoryApplicationEId,
+	RepositoryApplicationGraph,
+	QRepositoryApplication,
+} from './repository/qrepositoryapplication';
 import {
 	IRepositoryTransactionHistory,
 } from './history/repositorytransactionhistory';
@@ -136,10 +136,10 @@ import {
 import {
 	Q,
 	duoDiSet,
-} from './qSchema';
+} from './qApplication';
 
 
-// Schema Q object Dependency Injection readiness detection Dao
+// Application Q object Dependency Injection readiness detection Dao
 export class SQDIDao<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
@@ -333,22 +333,22 @@ export class BaseRepositoryDao
 }
 
 
-export interface IBaseRepositorySchemaDao
-  extends IDao<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaGraph, QRepositorySchema> {
+export interface IBaseRepositoryApplicationDao
+  extends IDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication> {
 }
 
-export class BaseRepositorySchemaDao
-  extends SQDIDao<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaGraph, QRepositorySchema>
-	implements IBaseRepositorySchemaDao {
+export class BaseRepositoryApplicationDao
+  extends SQDIDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication>
+	implements IBaseRepositoryApplicationDao {
 	
-	static Find      = new DaoQueryDecorators<RepositorySchemaESelect>();
-	static FindOne   = new DaoQueryDecorators<RepositorySchemaESelect>();
-	static Search    = new DaoQueryDecorators<RepositorySchemaESelect>();
-	static SearchOne = new DaoQueryDecorators<RepositorySchemaESelect>();
+	static Find      = new DaoQueryDecorators<RepositoryApplicationESelect>();
+	static FindOne   = new DaoQueryDecorators<RepositoryApplicationESelect>();
+	static Search    = new DaoQueryDecorators<RepositoryApplicationESelect>();
+	static SearchOne = new DaoQueryDecorators<RepositoryApplicationESelect>();
 	static Save(
-		config: RepositorySchemaGraph
+		config: RepositoryApplicationGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<RepositorySchemaGraph>(config);
+		return Dao.BaseSave<RepositoryApplicationGraph>(config);
   }
 
 	static diSet(): boolean {

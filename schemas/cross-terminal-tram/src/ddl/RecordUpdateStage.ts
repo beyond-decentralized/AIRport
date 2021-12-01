@@ -15,9 +15,9 @@ import {
 	RecordHistoryActorRecordId
 } from '@airport/holding-pattern'
 import {
-	ISchemaColumn,
-	ISchemaEntity,
-	ISchemaVersion
+	IApplicationColumn,
+	IApplicationEntity,
+	IApplicationVersion
 } from '@airport/traffic-pattern'
 
 export type RecordUpdateStageId = number;
@@ -37,13 +37,13 @@ export class RecordUpdateStage {
 
 	@ManyToOne()
 	@JoinColumn({name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID'})
-	schemaVersion: ISchemaVersion
+	applicationVersion: IApplicationVersion
 
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized
 	// repository ledger (and hence, that using local ids is safe)
 	@JoinColumn({name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID'})
-	entity: ISchemaEntity
+	entity: IApplicationEntity
 
 	@ManyToOne()
 	@JoinColumn({name: 'REPOSITORY_ID', referencedColumnName: 'ID'})
@@ -61,7 +61,7 @@ export class RecordUpdateStage {
 	// FIXME: verify that these records don't make it into serialized
 	// repository ledger (and hence, that using local ids is safe)
 	@JoinColumn({name: 'SCHEMA_COLUMN_ID', referencedColumnName: 'ID'})
-	column: ISchemaColumn
+	column: IApplicationColumn
 
 
 	@Column({name: 'UPDATED_VALUE'})

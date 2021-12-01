@@ -3,7 +3,7 @@ import {
 	ITerminal,
 } from '@airport/travel-document-checkpoint';
 import {
-	ISchema,
+	IApplication,
 } from '@airport/airspace';
 
 
@@ -25,7 +25,7 @@ export interface IActor {
 	// Non-Id Relations
 	user?: IUser;
 	terminal?: ITerminal;
-	schema?: ISchema;
+	application?: IApplication;
 
 	// Transient Properties
 

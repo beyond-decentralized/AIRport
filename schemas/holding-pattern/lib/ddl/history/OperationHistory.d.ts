@@ -1,5 +1,5 @@
 import { ChangeType } from '@airport/ground-control';
-import { ISchemaEntity } from '@airport/airspace';
+import { IApplicationEntity } from '@airport/airspace';
 import { SystemWideOperationId } from '../common';
 import { RecordHistory } from './RecordHistory';
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory';
@@ -17,7 +17,7 @@ export declare class OperationHistory {
     orderNumber: OperationHistory_OrderNumber;
     changeType: ChangeType;
     systemWideOperationId: OperationHistory_SystemWideOperationId;
-    entity: ISchemaEntity;
+    entity: IApplicationEntity;
     repositoryTransactionHistory: RepositoryTransactionHistory;
     recordHistory: RecordHistory[];
 }

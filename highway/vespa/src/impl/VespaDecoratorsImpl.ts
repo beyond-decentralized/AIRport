@@ -13,8 +13,8 @@ import {
 	VespaFieldsetConfiguration,
 	VespaIndexing
 }                                from '../lingo/VespaDecoratorsLingo';
-import { store }                 from './schema/store';
-import { IVespaSchemaStore }     from './schema/VespaSchemaStore';
+import { store }                 from './application/store';
+import { IVespaApplicationStore }     from './application/VespaApplicationStore';
 
 export const Document: VespaDocumentDecorator = function() {
 	return function(constructor: { new(): Object }) {
@@ -110,7 +110,7 @@ export function ensureField(
 
 function ensureDocument(
 	name: string | any,
-	store: IVespaSchemaStore
+	store: IVespaApplicationStore
 ): IVespaDocumentWithConstructor {
 	if (typeof name === 'string') {
 		// The name of the class is passed in
@@ -136,7 +136,7 @@ function ensureDocument(
 function ensureFieldset(
 	documentName: string,
 	name: string,
-	store: IVespaSchemaStore
+	store: IVespaApplicationStore
 ): IVespaFieldset {
 	const vespaDocument = ensureDocument(documentName, store);
 	let fieldset        = vespaDocument.fieldsetMap[name];

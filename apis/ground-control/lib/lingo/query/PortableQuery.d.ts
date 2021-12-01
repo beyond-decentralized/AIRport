@@ -9,7 +9,7 @@ export interface IQueryParameter<Value> {
     value: Value;
 }
 export interface PortableQuery {
-    schemaIndex?: number;
+    applicationIndex?: number;
     tableIndex?: number;
     jsonQuery: JsonStatement;
     queryResultType: QueryResultType;
@@ -17,7 +17,7 @@ export interface PortableQuery {
         [alias: string]: IQueryParameter<any>;
     };
 }
-export interface ISchemaQuery extends PortableQuery {
+export interface IApplicationQuery extends PortableQuery {
     parameterMap: {
         [alias: string]: IQueryParameter<QueryParameterPosition>;
     };

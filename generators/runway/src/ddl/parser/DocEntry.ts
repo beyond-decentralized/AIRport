@@ -41,7 +41,7 @@ export interface ArrowFunctionDecoratorPropertyParameter {
 export interface EntityReference {
 	entity?: EntityCandidate;
 	fromProject?: string;
-	otherSchemaDbEntity?: DbEntity;
+	otherApplicationDbEntity?: DbEntity;
 }
 
 export interface PropertyDocEntry extends DocEntry, EntityReference {

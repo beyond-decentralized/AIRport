@@ -132,9 +132,9 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
                     changeType: Y,
                     entity: {
                         index: Y,
-                        schemaVersion: {
+                        applicationVersion: {
                             integerVersion: Y,
-                            schema: {
+                            application: {
                                 index: Y
                             }
                         }

@@ -11,7 +11,7 @@ import { RepositoryTransactionHistory } from '../ddl/history/RepositoryTransacti
 import { OperationHistory } from '../ddl/history/OperationHistory';
 import { Stageable } from '../ddl/infrastructure/Stageable';
 import { RepositoryEntity } from '../ddl/repository/RepositoryEntity';
-import { RepositorySchema } from '../ddl/repository/RepositorySchema';
+import { RepositoryApplication } from '../ddl/repository/RepositoryApplication';
 import { ChildRepoRow } from '../ddl/traditional/ChildRepoRow';
 import { ChildRow } from '../ddl/traditional/ChildRow';
 import { ImmutableRepoRow } from '../ddl/traditional/ImmutableRepoRow';
@@ -31,7 +31,7 @@ DI.db().get(AIRPORT_DATABASE).then(airDb => {
     accumulator.add(OperationHistory, 7);
     accumulator.add(Stageable, undefined);
     accumulator.add(RepositoryEntity, undefined);
-    accumulator.add(RepositorySchema, 8);
+    accumulator.add(RepositoryApplication, 8);
     accumulator.add(ChildRepoRow, undefined);
     accumulator.add(ChildRow, undefined);
     accumulator.add(ImmutableRepoRow, undefined);

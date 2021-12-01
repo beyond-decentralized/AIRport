@@ -6,9 +6,9 @@ import {
 import {container, DI}           from '@airport/di'
 import {
 	DomainName,
-	SchemaIndex,
-	SchemaName,
-	SchemaVersionId
+	ApplicationIndex,
+	ApplicationName,
+	ApplicationVersionId
 }                     from '@airport/ground-control'
 import {
 	ActorRandomId,
@@ -17,18 +17,18 @@ import {
 }                     from '@airport/holding-pattern'
 import {
 	IRepositoryTransactionBlock,
-	IRepoTransBlockSchemaToChange,
-	IRepoTransBlockSchemaToChangeDao,
+	IRepoTransBlockApplicationToChange,
+	IRepoTransBlockApplicationToChangeDao,
 	ISharingMessage,
 	MISSING_RECORD_REPO_TRANS_BLOCK_DAO,
 	REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO,
-	SchemaChangeStatus,
+	ApplicationChangeStatus,
 	SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
 	SharingNode_Id
 }                     from '@airport/moving-walkway'
 import {
-	ISchema,
-	ISchemaVersion,
+	IApplication,
+	IApplicationVersion,
 }                     from '@airport/traffic-pattern'
 import {UserUniqueId} from '@airport/travel-document-checkpoint'
 import {
@@ -42,28 +42,28 @@ import {
 import {
 	IDataToTM,
 	RemoteActorId,
-	RemoteSchemaVersionId
+	RemoteApplicationVersionId
 }                     from '../SyncInUtils'
 
-export interface CheckSchemasResult {
+export interface CheckApplicationsResult {
 	dataMessagesToBeUpgraded: IDataToTM[];
-	dataMessagesWithCompatibleSchemasAndData: IDataToTM[];
-	dataMessagesWithIncompatibleSchemas: IDataToTM[];
+	dataMessagesWithCompatibleApplicationsAndData: IDataToTM[];
+	dataMessagesWithIncompatibleApplications: IDataToTM[];
 	dataMessagesWithMissingData: IDataToTM[];
-	usedSchemaVersionIdSet: Set<SchemaIndex>;
+	usedApplicationVersionIdSet: Set<ApplicationIndex>;
 }
 
 export interface CheckResults {
-	sharingMessagesWithCompatibleSchemasAndData: ISharingMessage[]
-	existingRepoTransBlocksWithCompatibleSchemasAndData: IRepositoryTransactionBlock[]
-	dataMessagesWithCompatibleSchemas: IDataToTM[]
+	sharingMessagesWithCompatibleApplicationsAndData: ISharingMessage[]
+	existingRepoTransBlocksWithCompatibleApplicationsAndData: IRepositoryTransactionBlock[]
+	dataMessagesWithCompatibleApplications: IDataToTM[]
 	dataMessagesWithInvalidData: IDataToTM[]
-	// usedSchemaVersionIdSet
+	// usedApplicationVersionIdSet
 }
 
 export interface ISyncInChecker {
 
-	checkSchemasAndDataAndRecordRepoTransBlocks(
+	checkApplicationsAndDataAndRecordRepoTransBlocks(
 		dataMessages: IDataToTM[]
 		// actorMap: Map<ActorRandomId,
 		// 	Map<UserUniqueId,
@@ -80,19 +80,19 @@ export class SyncInChecker
 	/**
 	 *
 	 * @param {IDataToTM[]} dataMessages
-	 * @returns {Promise<[IDataToTM[] , Map<SchemaDomainName, Map<SchemaName, ISchema>>]>}
+	 * @returns {Promise<[IDataToTM[] , Map<ApplicationDomainName, Map<ApplicationName, IApplication>>]>}
 	 *      [
-	 *          checked messages composed entirely of records from schemas with versions
-	 *   compatible to this TM (it's present state), map of schemas used in messages that
+	 *          checked messages composed entirely of records from applications with versions
+	 *   compatible to this TM (it's present state), map of applications used in messages that
 	 *   have been verified to be in acceptable state for message processing
 	 *      ]
 	 */
-	async checkSchemasAndDataAndRecordRepoTransBlocks(
+	async checkApplicationsAndDataAndRecordRepoTransBlocks(
 		dataMessages: IDataToTM[]
 	): Promise<CheckResults> {
 		const [syncInActorChecker, syncInDataChecker,
 			      missingRecordRepoTransBlockDao, syncInRepositoryChecker,
-			      repoTransBlockSchemasToChangeDao, syncInSchemaChecker,
+			      repoTransBlockApplicationsToChangeDao, syncInApplicationChecker,
 			      sharingMessageRepoTransBlockDao, syncInRepoTransBlockCreator] = await container(this).get(
 			SYNC_IN_ACTOR_CHECKER, SYNC_IN_DATA_CHECKER,
 			MISSING_RECORD_REPO_TRANS_BLOCK_DAO, SYNC_IN_REPO_CHECKER,
@@ -100,14 +100,14 @@ export class SyncInChecker
 			SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SYNC_IN_REPO_TRANS_BLOCK_CREATOR)
 
 		const {
-			      dataMessagesWithCompatibleSchemas,
-			      dataMessagesWithIncompatibleSchemas,
-			      dataMessagesWithInvalidSchemas,
+			      dataMessagesWithCompatibleApplications,
+			      dataMessagesWithIncompatibleApplications,
+			      dataMessagesWithInvalidApplications,
 			      dataMessagesToBeUpgraded,
-			      maxVersionedMapBySchemaAndDomainNames,
-			      requiredSchemaVersionIds,
-			      schemasWithChangesMap,
-		      } = await syncInSchemaChecker.checkSchemas(dataMessages)
+			      maxVersionedMapByApplicationAndDomainNames,
+			      requiredApplicationVersionIds,
+			      applicationsWithChangesMap,
+		      } = await syncInApplicationChecker.checkApplications(dataMessages)
 
 		const {
 			      actorMap,
@@ -122,39 +122,39 @@ export class SyncInChecker
 			allDataMessages, dataMessagesWithInvalidData)
 
 		dataMessagesWithInvalidData = dataMessagesWithInvalidData
-			.concat(dataMessagesWithInvalidSchemas)
+			.concat(dataMessagesWithInvalidApplications)
 
-		// this.updateSchemaReferences(dataMessagesWithIncompatibleSchemas, allSchemaMap);
-		// this.updateSchemaReferences(dataMessagesToBeUpgraded, allSchemaMap);
-		// Schema references for messages with incompatible schemas are converted
+		// this.updateApplicationReferences(dataMessagesWithIncompatibleApplications, allApplicationMap);
+		// this.updateApplicationReferences(dataMessagesToBeUpgraded, allApplicationMap);
+		// Application references for messages with incompatible applications are converted
 		// at when the messages are finally processed
-		const usedSchemaVersionIdSet
-			      = this.updateSchemaReferences(dataMessagesWithCompatibleSchemas,
-			maxVersionedMapBySchemaAndDomainNames)
-		// this.updateActorReferences(dataMessagesWithIncompatibleSchemas, actorMap)
+		const usedApplicationVersionIdSet
+			      = this.updateApplicationReferences(dataMessagesWithCompatibleApplications,
+			maxVersionedMapByApplicationAndDomainNames)
+		// this.updateActorReferences(dataMessagesWithIncompatibleApplications, actorMap)
 		// this.updateActorReferences(dataMessagesToBeUpgraded, actorMap)
-		this.updateActorReferences(dataMessagesWithCompatibleSchemas, actorMap)
+		this.updateActorReferences(dataMessagesWithCompatibleApplications, actorMap)
 		// this.updateRepositoryReferences(
-		// 	dataMessagesWithIncompatibleSchemas, sharingNodeRepositoryMap)
+		// 	dataMessagesWithIncompatibleApplications, sharingNodeRepositoryMap)
 		// this.updateRepositoryReferences(
 		// 	dataMessagesToBeUpgraded, sharingNodeRepositoryMap)
 		this.updateRepositoryReferences(
-			dataMessagesWithCompatibleSchemas, sharingNodeRepositoryMap)
+			dataMessagesWithCompatibleApplications, sharingNodeRepositoryMap)
 
 		const {
-			      dataMessagesWithCompatibleSchemasAndData,
+			      dataMessagesWithCompatibleApplicationsAndData,
 			      dataMessagesWithIncompatibleData,
-			      existingRepoTransBlocksWithCompatibleSchemasAndData,
+			      existingRepoTransBlocksWithCompatibleApplicationsAndData,
 			      missingRecordDataToTMs
-		      } = await syncInDataChecker.checkData(dataMessagesWithCompatibleSchemas)
+		      } = await syncInDataChecker.checkData(dataMessagesWithCompatibleApplications)
 
 
 		const allDataToTM = await syncInRepoTransBlockCreator
 			.createRepositoryTransBlocks(
-				dataMessagesWithIncompatibleSchemas,
+				dataMessagesWithIncompatibleApplications,
 				dataMessagesWithIncompatibleData,
 				dataMessagesToBeUpgraded,
-				dataMessagesWithCompatibleSchemasAndData,
+				dataMessagesWithCompatibleApplicationsAndData,
 				dataMessagesWithInvalidData
 			)
 
@@ -171,86 +171,86 @@ export class SyncInChecker
 		// Their are used to track the sync status of the outgoing RTBs only
 		// await this.recordAllSharingNodeRepoTransBlocks();
 
-		const sharingMessagesWithCompatibleSchemasAndData
-			      = await this.recordRepoTransBlockSchemaToChange(
-			dataMessagesWithIncompatibleSchemas,
+		const sharingMessagesWithCompatibleApplicationsAndData
+			      = await this.recordRepoTransBlockApplicationToChange(
+			dataMessagesWithIncompatibleApplications,
 			// dataMessagesToBeUpgraded,
-			schemasWithChangesMap,
-			// dataMessagesWithCompatibleSchemasAndData,
+			applicationsWithChangesMap,
+			// dataMessagesWithCompatibleApplicationsAndData,
 			// sharingMessagesWithIncompatibleData,
 			// missingRecordRepoTransBlocks,
-			repoTransBlockSchemasToChangeDao
+			repoTransBlockApplicationsToChangeDao
 		)
 
 		return [
-			sharingMessagesWithCompatibleSchemasAndData,
-			existingRepoTransBlocksWithCompatibleSchemasAndData,
-			dataMessagesWithCompatibleSchemas,
-			usedSchemaVersionIdSet
+			sharingMessagesWithCompatibleApplicationsAndData,
+			existingRepoTransBlocksWithCompatibleApplicationsAndData,
+			dataMessagesWithCompatibleApplications,
+			usedApplicationVersionIdSet
 		]
 	}
 
 	/**
-	 * Schema references are to be upgraded for messages with Compatible Schemas only. The
+	 * Application references are to be upgraded for messages with Compatible Applications only. The
 	 * remaining types of messages are only upgraded when processed
 	 *
-	 * 1) Incompatible schemas:
+	 * 1) Incompatible applications:
 	 *
-	 * Missing Schema ids cannot be upgraded
-	 * Schema version ids are not yet be upgraded
+	 * Missing Application ids cannot be upgraded
+	 * Application version ids are not yet be upgraded
 	 *
-	 * FIXME: when missing schemas are retrieved - map schema & schema version ids to local
-	 * values FIXME: when messages/or local schema are upgraded - map schema version ids to
+	 * FIXME: when missing applications are retrieved - map application & application version ids to local
+	 * values FIXME: when messages/or local application are upgraded - map application version ids to
 	 * local values
 	 *
 	 * 2) Data to be upgraded:
-	 * Schema version ids are not yet be upgraded
-	 * FIXME: when messages are upgraded - map schema version ids to local values
+	 * Application version ids are not yet be upgraded
+	 * FIXME: when messages are upgraded - map application version ids to local values
 	 *
 	 */
-	private updateSchemaReferences(
+	private updateApplicationReferences(
 		dataMessages: IDataToTM[],
-		maxVersionedMapBySchemaAndDomainNames:
-			Map<DomainName, Map<SchemaName, ISchemaVersion>>
-	): Set<SchemaIndex> {
-		const usedSchemaIndexSet: Set<SchemaIndex> = new Set()
+		maxVersionedMapByApplicationAndDomainNames:
+			Map<DomainName, Map<ApplicationName, IApplicationVersion>>
+	): Set<ApplicationIndex> {
+		const usedApplicationIndexSet: Set<ApplicationIndex> = new Set()
 
 		for (const dataMessage of dataMessages) {
 			const data = dataMessage.data
-			// const schemaIndexMapByRemoteSchemaIndex: Map<RemoteSchemaIndex, SchemaIndex> =
+			// const applicationIndexMapByRemoteApplicationIndex: Map<RemoteApplicationIndex, ApplicationIndex> =
 			// new Map();
-			const schemaVersionIdMapByRemoteSchemaVersionId:
-				      Map<RemoteSchemaVersionId, SchemaVersionId> = new Map()
-			const localSchemaVersions: ISchemaVersion[]         = []
-			const remoteSchemaVersions                          = data.schemaVersions
-			for (const schemaVersion of remoteSchemaVersions) {
-				const schema                                 = schemaVersion.schema
-				const localSchemaVersionView: ISchemaVersion = maxVersionedMapBySchemaAndDomainNames
-					.get(schema.domain.name).get(schema.name)
+			const applicationVersionIdMapByRemoteApplicationVersionId:
+				      Map<RemoteApplicationVersionId, ApplicationVersionId> = new Map()
+			const localApplicationVersions: IApplicationVersion[]         = []
+			const remoteApplicationVersions                          = data.applicationVersions
+			for (const applicationVersion of remoteApplicationVersions) {
+				const application                                 = applicationVersion.application
+				const localApplicationVersionView: IApplicationVersion = maxVersionedMapByApplicationAndDomainNames
+					.get(application.domain.name).get(application.name)
 
-				// const localSchemaIndex = localSchemaVersionView.index;
-				// const remoteSchemaIndex = schema.index;
-				// schema.index = localSchemaIndex;
-				schema.index = localSchemaVersionView.schema.index
-				// schemaIndexMapByRemoteSchemaIndex.set(remoteSchemaIndex, localSchemaIndex);
+				// const localApplicationIndex = localApplicationVersionView.index;
+				// const remoteApplicationIndex = application.index;
+				// application.index = localApplicationIndex;
+				application.index = localApplicationVersionView.application.index
+				// applicationIndexMapByRemoteApplicationIndex.set(remoteApplicationIndex, localApplicationIndex);
 
-				const localSchemaVersionId  = localSchemaVersionView.id
-				const remoteSchemaVersionId = schemaVersion.id
-				schemaVersionIdMapByRemoteSchemaVersionId.set(remoteSchemaVersionId,
-					localSchemaVersionId)
+				const localApplicationVersionId  = localApplicationVersionView.id
+				const remoteApplicationVersionId = applicationVersion.id
+				applicationVersionIdMapByRemoteApplicationVersionId.set(remoteApplicationVersionId,
+					localApplicationVersionId)
 
-				localSchemaVersions.push(schemaVersion)
+				localApplicationVersions.push(applicationVersion)
 			}
-			data.schemaVersions = localSchemaVersions
+			data.applicationVersions = localApplicationVersions
 
 			for (const repoTransHistory of data.repoTransHistories) {
 				delete repoTransHistory.id
 				for (const operationHistory of repoTransHistory.operationHistory) {
 					delete operationHistory.id
-					const localSchemaVersionId
-						      = schemaVersionIdMapByRemoteSchemaVersionId.get(operationHistory.entity.schemaVersion.id)
-					usedSchemaIndexSet.add(localSchemaVersionId)
-					operationHistory.entity.schemaVersion.id = localSchemaVersionId
+					const localApplicationVersionId
+						      = applicationVersionIdMapByRemoteApplicationVersionId.get(operationHistory.entity.applicationVersion.id)
+					usedApplicationIndexSet.add(localApplicationVersionId)
+					operationHistory.entity.applicationVersion.id = localApplicationVersionId
 					for (const recordHistory of operationHistory.recordHistory) {
 						delete recordHistory.id
 					}
@@ -258,7 +258,7 @@ export class SyncInChecker
 			}
 		}
 
-		return usedSchemaIndexSet
+		return usedApplicationIndexSet
 	}
 
 	private updateActorReferences(
@@ -308,37 +308,37 @@ export class SyncInChecker
 		}
 	}
 
-	private async recordRepoTransBlockSchemaToChange(
-		dataMessagesWithIncompatibleSchemas: IDataToTM[],
+	private async recordRepoTransBlockApplicationToChange(
+		dataMessagesWithIncompatibleApplications: IDataToTM[],
 		// dataMessagesToBeUpgraded: IDataToTM[],
-		schemaWithChangesMap: Map<DomainName, Map<SchemaName, ISchema>>,
-		// dataMessagesWithCompatibleSchemasAndData: IDataToTM[],
+		applicationWithChangesMap: Map<DomainName, Map<ApplicationName, IApplication>>,
+		// dataMessagesWithCompatibleApplicationsAndData: IDataToTM[],
 		// sharingMessagesWithIncompatibleData: ISharingMessage[],
 		// missingRecordRepoTransBlocks: IMissingRecordRepoTransBlock[],
-		repoTransBlockSchemasToChangeDao: IRepoTransBlockSchemaToChangeDao
+		repoTransBlockApplicationsToChangeDao: IRepoTransBlockApplicationToChangeDao
 	): Promise<ISharingMessage[]> {
-		// const sharingMessagesWithIncompatibleSchemas =
-		// dataMessagesWithIncompatibleSchemas.map(( dataMessagesWithIncompatibleSchemas ) =>
+		// const sharingMessagesWithIncompatibleApplications =
+		// dataMessagesWithIncompatibleApplications.map(( dataMessagesWithIncompatibleApplications ) =>
 		// { /** * Record the messages (with data, because it cannot yet be processed) for
-		// messages * that require schema changes (new schemas or schema upgrades). */ return
-		// this.syncInUtils.createSharingMessage( dataMessagesWithIncompatibleSchemas,
+		// messages * that require application changes (new applications or application upgrades). */ return
+		// this.syncInUtils.createSharingMessage( dataMessagesWithIncompatibleApplications,
 		// SharingMessageProcessingStatus.NEEDS_SCHEMA_CHANGES, true); }); const
 		// sharingMessagesToBeUpgraded = dataMessagesToBeUpgraded.map((
 		// dataMessageToBeUpgraded ) => { /** * Record the messages (with data, because it
-		// cannot yet be processed) for messages * that need to be upgraded to schema
+		// cannot yet be processed) for messages * that need to be upgraded to application
 		// versions present on this TM. * * Messages cannot yet be processed since messages
 		// upgrades are done by the client * domain code and need to be sent over to those
 		// allDomains for upgrading. */ return this.syncInUtils.createSharingMessage(
 		// dataMessageToBeUpgraded, SharingMessageProcessingStatus.NEEDS_DATA_UPGRADES,
-		// true); }); const sharingMessagesWithCompatibleSchemasAndData =
-		// dataMessagesWithCompatibleSchemasAndData.map(( sharingMessageWithCompatibleSchemas
+		// true); }); const sharingMessagesWithCompatibleApplicationsAndData =
+		// dataMessagesWithCompatibleApplicationsAndData.map(( sharingMessageWithCompatibleApplications
 		// ) => { return this.syncInUtils.createSharingMessage(
-		// sharingMessageWithCompatibleSchemas,
+		// sharingMessageWithCompatibleApplications,
 		// SharingMessageProcessingStatus.READY_FOR_PROCESSING, false); }); const
 		// allSharingMessagesToCreate: ISharingMessage[] = [
-		// ...sharingMessagesWithIncompatibleSchemas, ...sharingMessagesToBeUpgraded,
+		// ...sharingMessagesWithIncompatibleApplications, ...sharingMessagesToBeUpgraded,
 		// ...sharingMessagesWithIncompatibleData,
-		// ...sharingMessagesWithCompatibleSchemasAndData ]; await
+		// ...sharingMessagesWithCompatibleApplicationsAndData ]; await
 		// this.sharingMessageDao.bulkCreate( allSharingMessagesToCreate, false);
 
 		// const m: MissingRecordRepoTransBlock;
@@ -349,48 +349,48 @@ export class SyncInChecker
 		// }
 
 
-		// Record all schemas to change per sharing message with incompatible schemas
-		const repoTransBlockSchemasToChange: IRepoTransBlockSchemaToChange[] = []
-		for (let i = 0; i < dataMessagesWithIncompatibleSchemas.length; i++) {
-			const message: IDataToTM = dataMessagesWithIncompatibleSchemas[i]
+		// Record all applications to change per sharing message with incompatible applications
+		const repoTransBlockApplicationsToChange: IRepoTransBlockApplicationToChange[] = []
+		for (let i = 0; i < dataMessagesWithIncompatibleApplications.length; i++) {
+			const message: IDataToTM = dataMessagesWithIncompatibleApplications[i]
 			// const sharingMessage: ISharingMessage =
-			// sharingMessagesWithIncompatibleSchemas[i];
+			// sharingMessagesWithIncompatibleApplications[i];
 
-			let allMessageSchemasAreCompatible         = true
-			let messageBuildWithOutdatedSchemaVersions = false
-			// for every schema (at a given version) used in the message
-			for (const schema of message.data.schemas) {
-				let matchingSchema = this.findMatchingSchema(schemaWithChangesMap, schema)
-				if (!matchingSchema) {
+			let allMessageApplicationsAreCompatible         = true
+			let messageBuildWithOutdatedApplicationVersions = false
+			// for every application (at a given version) used in the message
+			for (const application of message.data.applications) {
+				let matchingApplication = this.findMatchingApplication(applicationWithChangesMap, application)
+				if (!matchingApplication) {
 					continue
 				}
 
-				// If a there was a schema that needs to be added or upgraded
-				repoTransBlockSchemasToChange.push({
+				// If a there was a application that needs to be added or upgraded
+				repoTransBlockApplicationsToChange.push({
 					// sharingMessage,
 					repositoryTransactionBlock: message.repositoryTransactionBlock,
-					status: SchemaChangeStatus.CHANGE_NEEDED,
-					schema: matchingSchema
+					status: ApplicationChangeStatus.CHANGE_NEEDED,
+					application: matchingApplication
 				})
 			}
 		}
-		await repoTransBlockSchemasToChangeDao.bulkCreate(
-			repoTransBlockSchemasToChange, false)
+		await repoTransBlockApplicationsToChangeDao.bulkCreate(
+			repoTransBlockApplicationsToChange, false)
 
-		return sharingMessagesWithCompatibleSchemasAndData
+		return sharingMessagesWithCompatibleApplicationsAndData
 	}
 
 
-	private findMatchingSchema(
-		schemaMap: Map<DomainName, Map<SchemaName, ISchema>>,
-		schema: ISchema
+	private findMatchingApplication(
+		applicationMap: Map<DomainName, Map<ApplicationName, IApplication>>,
+		application: IApplication
 	) {
-		const schemasForDomainName = schemaMap.get(schema.domain.name)
-		if (!schemasForDomainName) {
+		const applicationsForDomainName = applicationMap.get(application.domain.name)
+		if (!applicationsForDomainName) {
 			return null
 		}
 
-		return schemasForDomainName.get(schema.name)
+		return applicationsForDomainName.get(application.name)
 	}
 
 }

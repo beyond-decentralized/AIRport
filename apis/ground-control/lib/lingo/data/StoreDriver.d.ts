@@ -1,9 +1,9 @@
 import { IContext } from '@airport/di';
 import { Observable } from 'rxjs';
 import { PortableQuery } from '../query/PortableQuery';
-import { DbEntity } from '../schema/Entity';
-import { DomainName, SchemaName } from '../schema/Schema';
-import { SchemaStatus } from '../schema/SchemaStatus';
+import { DbEntity } from '../application/Entity';
+import { DomainName, ApplicationName } from '../application/Application';
+import { ApplicationStatus } from '../application/ApplicationStatus';
 import { InternalFragments, IStoreOperator } from './IStoreOperator';
 import { StoreType } from './storeInfo';
 /**
@@ -12,15 +12,15 @@ import { StoreType } from './storeInfo';
 export declare const INVALID_TABLE_NAME = "A0ZA2vKHIAeI9506rYzCSFKYcSbSuLy5sRieHPnd2NevufFEx9CxuZsAdXieZBbRj5mPYypr3TGYwb6limMcTTWHOnsk7F6991890";
 export interface IStoreDriver extends IStoreOperator {
     type: StoreType;
-    doesTableExist(schemaName: string, tableName: string, context: IContext): Promise<boolean>;
-    dropTable(schemaName: string, tableName: string, context: IContext): Promise<boolean>;
+    doesTableExist(applicationName: string, tableName: string, context: IContext): Promise<boolean>;
+    dropTable(applicationName: string, tableName: string, context: IContext): Promise<boolean>;
     getEntityTableName(dbEntity: DbEntity, context: IContext): string;
-    getTableName(schema: {
+    getTableName(application: {
         domain: DomainName | {
             name: DomainName;
         };
-        name: SchemaName;
-        status?: SchemaStatus;
+        name: ApplicationName;
+        status?: ApplicationStatus;
     }, table: {
         name: string;
         tableConfig?: {

@@ -58,13 +58,13 @@ export abstract class SequenceGenerator
 			return true
 		}
 
-		const schemaSequences = this.sequences[dbEntity.schemaVersion.schema.index]
+		const applicationSequences = this.sequences[dbEntity.applicationVersion.application.index]
 
-		if (!schemaSequences) {
+		if (!applicationSequences) {
 			return false
 		}
 
-		const tableSequences = schemaSequences[dbEntity.index]
+		const tableSequences = applicationSequences[dbEntity.index]
 
 		if (!tableSequences) {
 			return false
@@ -139,12 +139,12 @@ export abstract class SequenceGenerator
 			const columnNumbers = ensureChildArray(sequentialNumbers, i)
 
 			const dbEntity = dbColumn.propertyColumns[0].property.entity
-			const schema = dbEntity.schemaVersion.schema
+			const application = dbEntity.applicationVersion.application
 
-			let sequenceBlock = this.sequenceBlocks[schema.index]
+			let sequenceBlock = this.sequenceBlocks[application.index]
 			[dbEntity.index][dbColumn.index]
 
-			const sequence = this.sequences[schema.index]
+			const sequence = this.sequences[application.index]
 			[dbEntity.index][dbColumn.index]
 
 			while (numColumnSequencesNeeded && sequenceBlock) {
@@ -159,7 +159,7 @@ export abstract class SequenceGenerator
 				const newSequence = { ...sequence }
 				newSequence.currentValue += numNewSequencesNeeded
 				await sequenceDao.save(newSequence)
-				this.sequences[schema.index][dbEntity.index][dbColumn.index] = newSequence
+				this.sequences[application.index][dbEntity.index][dbColumn.index] = newSequence
 
 				sequenceBlock = numNewSequencesNeeded
 				while (numColumnSequencesNeeded) {
@@ -168,7 +168,7 @@ export abstract class SequenceGenerator
 					sequenceBlock--
 				}
 
-				this.sequenceBlocks[schema.index]
+				this.sequenceBlocks[application.index]
 				[dbEntity.index][dbColumn.index] = sequenceBlock
 			}
 		}
@@ -200,11 +200,11 @@ export abstract class SequenceGenerator
 	): void {
 		for (const sequence of sequences) {
 			ensureChildArray(
-				ensureChildArray(this.sequences, sequence.schemaIndex),
+				ensureChildArray(this.sequences, sequence.applicationIndex),
 				sequence.tableIndex)[sequence.columnIndex] = sequence
 			sequence.currentValue += sequence.incrementBy
 			ensureChildArray(
-				ensureChildArray(this.sequenceBlocks, sequence.schemaIndex),
+				ensureChildArray(this.sequenceBlocks, sequence.applicationIndex),
 				sequence.tableIndex)[sequence.columnIndex] = sequence.incrementBy
 		}
 	}

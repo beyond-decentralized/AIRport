@@ -44,7 +44,7 @@ import {
 	num,
 	OperationName,
 	or,
-	QSchema,
+	QApplication,
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
@@ -66,7 +66,7 @@ import {
 	DI,
 } from '@airport/di';
 import {
-	DbSchema,
+	DbApplication,
 	DistributionStrategy,
 	ISaveResult,
 	PlatformType,
@@ -76,8 +76,8 @@ class EntityAccumulator
 	implements IEntityAccumulator {
 
 	constructor(
-		private schemaDomain: string,
-		private schemaName: string,
+		private applicationDomain: string,
+		private applicationName: string,
 		private entityMap: Map<any, IEntityRecord>,
 	) {
 	}
@@ -91,9 +91,9 @@ class EntityAccumulator
 				index,
 				name: clazz.name,
 			},
-			schema: {
-				domain: this.schemaDomain,
-				name: this.schemaName,
+			application: {
+				domain: this.applicationDomain,
+				name: this.applicationName,
 			},
 		});
 	}
@@ -147,13 +147,13 @@ export class AirportDatabase
 		wrapPrimitive,
 	};
 
-	S: DbSchema[];
-	schemas: DbSchema[] = [];
+	S: DbApplication[];
+	applications: DbApplication[] = [];
 
-	qSchemas: QSchema[] = [];
-	Q: QSchema[];
+	qApplications: QApplication[] = [];
+	Q: QApplication[];
 
-	QM: { [name: string]: QSchema } = {};
+	QM: { [name: string]: QApplication } = {};
 
 	find: INonEntityFind;
 	findOne: INonEntityFindOne;
@@ -167,8 +167,8 @@ export class AirportDatabase
 	// private currentDbName = dbConst.DEFAULT_DB
 
 	constructor() {
-		this.S = this.schemas;
-		this.Q = this.qSchemas;
+		this.S = this.applications;
+		this.Q = this.qApplications;
 
 		this.find      = new NonEntityFind();
 		this.findOne   = new NonEntityFindOne();
@@ -187,12 +187,12 @@ export class AirportDatabase
 			this.dbNameSet[facade.name]   = true
 		}
 
-		async registerQSchemas(
-			qSchemas: QSchema[]
+		async registerQApplications(
+			qApplications: QApplication[]
 		) {
-			for (const qSchema of qSchemas) {
-				const schemaName    = getSchemaName(qSchema)
-				this.QM[schemaName] = qSchema
+			for (const qApplication of qApplications) {
+				const applicationName    = getApplicationName(qApplication)
+				this.QM[applicationName] = qApplication
 			}
 		}
 
@@ -220,10 +220,10 @@ export class AirportDatabase
 	*/
 
 	getAccumulator(
-		schemaDomain: string,
-		schemaName: string,
+		applicationDomain: string,
+		applicationName: string,
 	): IEntityAccumulator {
-		return new EntityAccumulator(schemaDomain, schemaName, this.entityMap);
+		return new EntityAccumulator(applicationDomain, applicationName, this.entityMap);
 	}
 
 	async addRepository(

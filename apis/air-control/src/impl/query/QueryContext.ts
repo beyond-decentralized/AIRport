@@ -12,7 +12,7 @@ import {
 import { IEntityUtils } from '../../lingo/utils/EntityUtils';
 import { IFieldUtils } from '../../lingo/utils/FieldUtils';
 import { IQueryUtils } from '../../lingo/utils/QueryUtils';
-import { ISchemaUtils } from '../../lingo/utils/SchemaUtils';
+import { IApplicationUtils } from '../../lingo/utils/ApplicationUtils';
 import {
 	AIRPORT_DATABASE,
 	ENTITY_UTILS,
@@ -32,7 +32,7 @@ export class IocQueryContext
 
 	async init(): Promise<void> {
 		const [airDb, entityUtils, fieldUtils, queryFacade,
-			queryUtils, schemaUtils, transactionalConnector] = await DI.db()
+			queryUtils, applicationUtils, transactionalConnector] = await DI.db()
 				.get(AIRPORT_DATABASE, ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE,
 					QUERY_UTILS, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR);
 		this.airDb = airDb;
@@ -40,13 +40,13 @@ export class IocQueryContext
 		this.fieldUtils = fieldUtils;
 		this.queryFacade = queryFacade;
 		this.queryUtils = queryUtils;
-		this.schemaUtils = schemaUtils;
+		this.applicationUtils = applicationUtils;
 		this.transactionalConnector = transactionalConnector;
 	}
 
 	queryFacade: IQueryFacade;
 	queryUtils: IQueryUtils;
-	schemaUtils: ISchemaUtils;
+	applicationUtils: IApplicationUtils;
 	transactionalConnector: ITransactionalConnector;
 }
 

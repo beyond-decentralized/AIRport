@@ -45,7 +45,7 @@ export class QRelationBuilder
 		if (this.entityProperty.entity) {
 			entityType = this.entityProperty.entity.type
 		} else {
-			entityType = this.entityProperty.otherSchemaDbEntity.name
+			entityType = this.entityProperty.otherApplicationDbEntity.name
 		}
 		entityType = entityType.replace('[]', '')
 		type       = `Q${entityType}`
@@ -80,7 +80,7 @@ export class QRelationBuilder
 		if (this.entityProperty.entity) {
 			type = this.entityProperty.entity.type
 		} else {
-			type = this.entityProperty.otherSchemaDbEntity.name
+			type = this.entityProperty.otherApplicationDbEntity.name
 		}
 		if (forInternalInterfaces) {
 			if (!forCascadeGraph) {

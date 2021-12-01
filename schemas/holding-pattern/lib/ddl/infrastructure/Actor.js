@@ -34,7 +34,7 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({ name: "SCHEMA_INDEX", referencedColumnName: "SCHEMA_INDEX" })
-], Actor.prototype, "schema", void 0);
+], Actor.prototype, "application", void 0);
 Actor = __decorate([
     Entity()
 ], Actor);

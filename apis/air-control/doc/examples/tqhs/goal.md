@@ -8,7 +8,7 @@
 
 <!-- /TOC -->
 
-Given this [schema](../schema.md) these are the auto-generated
+Given this [application](../application.md) these are the auto-generated
 artifacts for the Goal Entity
 
 ## Entity Query Interface

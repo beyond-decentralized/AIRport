@@ -1,19 +1,19 @@
 import { DI } from '@airport/di'
 import { REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO } from '../../tokens'
 import {
-	BaseRepoTransBlockSchemaToChangeDao,
-	IBaseRepoTransBlockSchemaToChangeDao
+	BaseRepoTransBlockApplicationToChangeDao,
+	IBaseRepoTransBlockApplicationToChangeDao
 } from '../../generated/generated'
 
-export interface IRepoTransBlockSchemaToChangeDao
-	extends IBaseRepoTransBlockSchemaToChangeDao {
+export interface IRepoTransBlockApplicationToChangeDao
+	extends IBaseRepoTransBlockApplicationToChangeDao {
 
 }
 
-export class RepoTransBlockSchemaToChangeDao
-	extends BaseRepoTransBlockSchemaToChangeDao
-	implements IRepoTransBlockSchemaToChangeDao {
+export class RepoTransBlockApplicationToChangeDao
+	extends BaseRepoTransBlockApplicationToChangeDao
+	implements IRepoTransBlockApplicationToChangeDao {
 
 }
 
-DI.set(REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO, RepoTransBlockSchemaToChangeDao)
+DI.set(REPO_TRANS_BLOCK_SCHEMA_TO_CHANGE_DAO, RepoTransBlockApplicationToChangeDao)

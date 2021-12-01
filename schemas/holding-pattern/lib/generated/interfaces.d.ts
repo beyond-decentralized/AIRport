@@ -8,7 +8,7 @@ export * from './infrastructure/actor';
 export * from './infrastructure/stageable';
 export * from './repository/repository';
 export * from './repository/repositoryentity';
-export * from './repository/repositoryschema';
+export * from './repository/repositoryapplication';
 export * from './traditional/childreporow';
 export * from './traditional/childrow';
 export * from './traditional/immutablereporow';

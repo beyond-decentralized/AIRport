@@ -11,12 +11,12 @@ import {
     Actor,
     ACTOR_DAO,
 } from "@airport/holding-pattern";
-import { JsonSchemaWithLastIds } from "@airport/security-check";
+import { JsonApplicationWithLastIds } from "@airport/security-check";
 import { TERMINAL_STORE } from "@airport/terminal-map";
 import {
     DOMAIN_DAO,
     IDomain,
-    ISchema,
+    IApplication,
     SCHEMA_DAO
 } from "@airport/airspace";
 import { transactional } from "@airport/tower";
@@ -29,9 +29,9 @@ import { INTERNAL_RECORD_MANAGER } from "../tokens";
 
 export interface IInternalRecordManager {
 
-    ensureSchemaRecords(
-        schema: JsonSchemaWithLastIds,
-        schemaSignature: string,
+    ensureApplicationRecords(
+        application: JsonApplicationWithLastIds,
+        applicationSignature: string,
         context: IContext
     ): Promise<void>
 
@@ -45,19 +45,19 @@ export interface IInternalRecordManager {
 export class InternalRecordManager
     implements IInternalRecordManager {
 
-    async ensureSchemaRecords(
-        schema: JsonSchemaWithLastIds,
+    async ensureApplicationRecords(
+        application: JsonApplicationWithLastIds,
         signature: string,
         context: IContext
     ): Promise<void> {
         await transactional(async (
             _transaction
         ) => {
-            const [actorDao, schemaDao, terminalStore]
+            const [actorDao, applicationDao, terminalStore]
                 = await container(this)
                     .get(ACTOR_DAO, SCHEMA_DAO, TERMINAL_STORE)
 
-            const domain = await this.updateDomain(schema)
+            const domain = await this.updateDomain(application)
 
             let actor = terminalStore
                 .getApplicationActorMapBySignature().get(signature)
@@ -66,30 +66,30 @@ export class InternalRecordManager
             }
 
             actor = await actorDao.findByApplicationSignature(signature)
-            let aSchema: ISchema
+            let aApplication: IApplication
             if (!actor) {
-                aSchema = {
+                aApplication = {
                     domain,
                     index: null,
-                    name: schema.name,
+                    name: application.name,
                     packageName: 'bogus',
                     scope: 'private',
                     status: 'CURRENT'
                 }
-                await schemaDao.save(aSchema)
+                await applicationDao.save(aApplication)
 
                 const frameworkActor = terminalStore.getFrameworkActor()
                 actor = {
                     id: null,
                     repositoryActors: [],
-                    schema: aSchema,
+                    application: aApplication,
                     terminal: frameworkActor.terminal,
                     user: frameworkActor.user,
                     uuId: uuidv4()
                 }
                 await actorDao.save(actor)
             } else {
-                aSchema = actor.schema
+                aApplication = actor.application
             }
 
             const lastTerminalState = terminalStore.getTerminalState()
@@ -144,18 +144,18 @@ export class InternalRecordManager
     }
 
     private async updateDomain(
-        schema: JsonSchemaWithLastIds,
+        application: JsonApplicationWithLastIds,
     ): Promise<IDomain> {
         const [domainDao, entityStateManager, terminalStore]
             = await container(this)
                 .get(DOMAIN_DAO, ENTITY_STATE_MANAGER,
                     TERMINAL_STORE)
-        let domain = terminalStore.getDomainMapByName().get(schema.domain)
+        let domain = terminalStore.getDomainMapByName().get(application.domain)
 
         if (domain && entityStateManager.getOriginalValues(domain)) {
             return domain
         }
-        let dbDomain = await domainDao.findByName(schema.domain)
+        let dbDomain = await domainDao.findByName(application.domain)
         let updatedDomain
         if (domain) {
             if (dbDomain) {
@@ -169,7 +169,7 @@ export class InternalRecordManager
             } else {
                 updatedDomain = {
                     id: null,
-                    name: schema.domain,
+                    name: application.domain,
                 }
                 await domainDao.save(updatedDomain)
             }

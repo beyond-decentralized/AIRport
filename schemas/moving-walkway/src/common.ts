@@ -5,8 +5,8 @@ import {
 }                from "@airport/holding-pattern";
 import {
 	IDomain,
-	ISchema,
-	ISchemaVersion
+	IApplication,
+	IApplicationVersion
 }                from "@airport/airspace";
 import {
 	ITerminal,
@@ -15,20 +15,20 @@ import {
 
 export interface RepositoryTransactionBlockData {
 	actors: IActor[];
-	// Domains can be referenced in multiple schemas of RTB
+	// Domains can be referenced in multiple applications of RTB
 	domains: IDomain[];
 	referencedRepositories: IRepository[];
 	repository: IRepository;
 	repoTransHistories: IRepositoryTransactionHistory[];
 	/*
-	 A given Repository Transaction Block can have multiple versions of any involved schema.
-	 This is because it may contain RTHs across any number of schema upgrades (over any
+	 A given Repository Transaction Block can have multiple versions of any involved application.
+	 This is because it may contain RTHs across any number of application upgrades (over any
 	 period of time).
 
-	 Hence schemas can be referenced in multiple schema versions
+	 Hence applications can be referenced in multiple application versions
 	  */
-	schemas: ISchema[];
-	schemaVersions: ISchemaVersion[];
+	applications: IApplication[];
+	applicationVersions: IApplicationVersion[];
 	terminal: ITerminal;
 	users: IUser[];
 }

@@ -3,10 +3,10 @@ import {
     container,
     IContext,
 } from '@airport/di';
-import { getSchemaName } from '@airport/ground-control';
+import { getApplicationName } from '@airport/ground-control';
 import {
     IConnectionInitializedIMI,
-    IGetLatestSchemaVersionBySchemaNameIMI,
+    IGetLatestApplicationVersionByApplicationNameIMI,
     IInitConnectionIMI,
     IIsolateMessage,
     IIsolateMessageOut,
@@ -15,7 +15,7 @@ import {
     ISaveIMI,
     ISaveToDestinationIMI,
     IsolateMessageType,
-    JsonSchemaWithLastIds
+    JsonApplicationWithLastIds
 } from '@airport/security-check';
 import {
     ICredentials,
@@ -42,7 +42,7 @@ export abstract class TransactionalReceiver {
         let result: any
         let errorMessage
         let credentials: ICredentials = {
-            applicationSignature: message.schemaSignature
+            applicationSignature: message.applicationSignature
         }
         let context: IContext = {}
         context.startedAt = new Date()
@@ -50,26 +50,26 @@ export abstract class TransactionalReceiver {
             switch (message.type) {
                 case IsolateMessageType.APP_INITIALIZING:
                     let initConnectionMessage: IInitConnectionIMI = message as any
-                    const schema: JsonSchemaWithLastIds = initConnectionMessage.schema
-                    const schemaName = getSchemaName(schema)
+                    const application: JsonApplicationWithLastIds = initConnectionMessage.application
+                    const applicationName = getApplicationName(application)
 
-                    if (this.initializingApps.has(schemaName)) {
+                    if (this.initializingApps.has(applicationName)) {
                         return null
                     }
-                    this.initializingApps.add(schemaName)
+                    this.initializingApps.add(applicationName)
 
                     const [databaseManager, internalRecordManager] = await container(this)
                         .get(DATABASE_MANAGER, INTERNAL_RECORD_MANAGER)
                     // FIXME: initalize ahead of time, at Isolate Loading
-                    await databaseManager.initFeatureSchemas({}, [schema])
+                    await databaseManager.initFeatureApplications({}, [application])
 
-                    await internalRecordManager.ensureSchemaRecords(
-                        schema, message.schemaSignature, {})
+                    await internalRecordManager.ensureApplicationRecords(
+                        application, message.applicationSignature, {})
 
-                    result = schema.lastIds
+                    result = application.lastIds
                     break;
                 case IsolateMessageType.APP_INITIALIZED:
-                    this.initializedApps.add((message as IConnectionInitializedIMI).schemaName)
+                    this.initializedApps.add((message as IConnectionInitializedIMI).applicationName)
                     return null
                 case IsolateMessageType.ADD_REPOSITORY:
                     // const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
@@ -215,8 +215,8 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME: {
                     const terminalStore = await container(this).get(TERMINAL_STORE)
-                    result = terminalStore.getLatestSchemaVersionMapBySchemaName()
-                        .get((message as IGetLatestSchemaVersionBySchemaNameIMI).schemaName)
+                    result = terminalStore.getLatestApplicationVersionMapByApplicationName()
+                        .get((message as IGetLatestApplicationVersionByApplicationNameIMI).applicationName)
                     break;
                 }
                 default:
@@ -232,7 +232,7 @@ export abstract class TransactionalReceiver {
             category: 'FromDb',
             errorMessage,
             id: message.id,
-            schemaSignature: message.schemaSignature,
+            applicationSignature: message.applicationSignature,
             type: message.type,
             result
         } as any

@@ -23,7 +23,7 @@ export class CockroachdbDriver
 	}
 
 	async doesTableExist(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IOperationContext,
 	): Promise<boolean> {
@@ -35,7 +35,7 @@ from
 	sqlite_master
 WHERE
 	type = 'table'
-	AND tbl_name = '${schemaName}__${tableName}'`,
+	AND tbl_name = '${applicationName}__${tableName}'`,
 			[], context
 		)
 
@@ -43,7 +43,7 @@ WHERE
 	}
 
 	composeTableName(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IOperationContext,
 	): string {

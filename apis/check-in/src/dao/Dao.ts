@@ -11,7 +11,7 @@ import {
 	IEntityUpdateProperties,
 	IQEntity,
 	OperationName,
-	QSchema,
+	QApplication,
 	Y
 } from '@airport/air-control';
 import {
@@ -60,11 +60,11 @@ export abstract class Dao<Entity,
 
 	constructor(
 		dbEntityId: DbEntityId,
-		Q: QSchema,
+		Q: QApplication,
 		private internal = false
 	) {
-		const dbEntity = Q.__dbSchema__.currentVersion[0]
-			.schemaVersion.entities[dbEntityId];
+		const dbEntity = Q.__dbApplication__.currentVersion[0]
+			.applicationVersion.entities[dbEntityId];
 		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
 		this.db = new EntityDatabaseFacade<Entity,
 			EntitySelect, EntityCreate,

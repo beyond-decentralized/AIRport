@@ -19,7 +19,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -41,7 +41,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 1,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 8,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -169,7 +169,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 7,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -360,7 +360,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 5,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -382,7 +382,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 1,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -490,7 +490,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 9,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -512,7 +512,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 1,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 5,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -810,7 +810,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 7,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -832,7 +832,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 1,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 9,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -1011,7 +1011,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 5,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -1237,7 +1237,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 9,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -1262,7 +1262,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 2,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 7,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -1284,7 +1284,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 3,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 17,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -1650,7 +1650,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 9,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -1749,7 +1749,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 10,
 									"oneColumnIndex": 2,
 									"sinceVersion": 1
@@ -1771,7 +1771,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 10,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -1793,7 +1793,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 1,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 7,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -1932,7 +1932,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 9,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -2053,7 +2053,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 12,
 									"oneColumnIndex": 3,
 									"sinceVersion": 1
@@ -2075,7 +2075,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 12,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -2097,7 +2097,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 1,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 7,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -2270,7 +2270,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 9,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -2292,7 +2292,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 1,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 14,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -2475,7 +2475,7 @@ export const SCHEMA = {
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
-									"oneSchemaIndex": null,
+									"oneApplicationIndex": null,
 									"oneTableIndex": 17,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -2801,7 +2801,7 @@ export const SCHEMA = {
 				}
 			],
 			"integerVersion": 1,
-			"referencedSchemas": [],
+			"referencedApplications": [],
 			"versionString": "1.0.0"
 		}
 	]

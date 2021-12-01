@@ -129,7 +129,7 @@ export class ChildContainer extends Container {
             objects
         };
     }
-    async getBySchemaSignatureAndName(systemName, librarySignature, tokenName) {
+    async getByApplicationSignatureAndName(systemName, librarySignature, tokenName) {
         const library = system(systemName).getLibBySignature(librarySignature);
         if (!library) {
             throw new Error(`Could not find library with signature:

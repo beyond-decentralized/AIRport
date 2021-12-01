@@ -12,7 +12,7 @@ import {
 	JsonQuery,
 	JSONRelation,
 	QueryResultType,
-	SchemaMap,
+	ApplicationMap,
 	SqlOperator
 } from '@airport/ground-control'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
@@ -64,7 +64,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		super(dbEntity, dialect, context)
 	}
 
-	getFieldMap(): SchemaMap {
+	getFieldMap(): ApplicationMap {
 		return this.fieldMap
 	}
 
@@ -97,11 +97,11 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		joinRelations: (JSONEntityRelation | JSONRelation)[],
 		joinNodeMap: { [alias: string]: JoinTreeNode },
 		context: IFuelHydrantContext,
-		schemaIndex?: number,
+		applicationIndex?: number,
 		tableIndex?: number
 	): JoinTreeNode | JoinTreeNode[];
 
-	protected getEntitySchemaRelationFromJoin(
+	protected getEntityApplicationRelationFromJoin(
 		leftQEntity: IQEntityInternal<any>,
 		rightQEntity: IQEntityInternal<any>,
 		entityRelation: JSONEntityRelation,
@@ -140,7 +140,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 				break
 			default:
 				throw new Error(`Unknown relation type ${dbRelation.relationType} 
-on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`)
+on '${leftDbEntity.applicationVersion.application.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`)
 		}
 		for (const relationColumn of relationColumns) {
 			let ownColumnName: string
@@ -156,7 +156,7 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
 					break
 				default:
 					throw new Error(`Unknown relation type ${dbRelation.relationType} 
-on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`)
+on '${leftDbEntity.applicationVersion.application.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`)
 			}
 			allJoinOnColumns.push({
 				leftColumn: ownColumnName,

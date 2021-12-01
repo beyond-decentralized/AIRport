@@ -2,8 +2,8 @@ import {container, DI}                                from '@airport/di'
 import {
 	ensureChildArray,
 	ensureChildJsSet,
-	SchemaIndex,
-	SchemaVersionId
+	ApplicationIndex,
+	ApplicationVersionId
 }                                          from '@airport/ground-control'
 import {
 	ACTOR_DAO,
@@ -29,8 +29,8 @@ import {
 	SharingNode_Id
 }                                          from '@airport/moving-walkway'
 import {
-	ISchema,
-	ISchemaDao,
+	IApplication,
+	IApplicationDao,
 	SCHEMA_DAO
 }                                          from '@airport/traffic-pattern'
 import {ITerminal}                         from '@airport/travel-document-checkpoint'
@@ -54,7 +54,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 		terminal: ITerminal
 	): Promise<Map<SharingNode_Id, IRepositoryTransactionBlock[]>> {
 		const [actorDao, repositoryDao, repositoryTransactionBlockDao,
-			      repositoryTransactionHistoryUpdateStageDao, schemaDao,
+			      repositoryTransactionHistoryUpdateStageDao, applicationDao,
 			      sharingNodeRepositoryDao] = await container(this).get(ACTOR_DAO, REPOSITORY_DAO,
 			REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, SCHEMA_DAO,
 			SHARING_NODE_REPOSITORY_DAO)
@@ -69,22 +69,22 @@ export class SyncOutRepositoryTransactionBlockCreator
 		const repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>
 		                                                              = new Map()
 
-		const schemaVersionIds: Set<SchemaIndex> = new Set()
+		const applicationVersionIds: Set<ApplicationIndex> = new Set()
 
-		const schemaVersionIdSetsByRepository: Map<RepositoryId, Set<SchemaVersionId>> = new Map()
+		const applicationVersionIdSetsByRepository: Map<RepositoryId, Set<ApplicationVersionId>> = new Map()
 
 		const repositoryTransactionHistoryIds: Set<RepositoryTransactionHistory_Id> = new Set()
 
 		this.gatherIdsForBlockCreation(
 			repoTransHistoriesToSync, repositoryTransactionHistoryIds, repositoryIdSet,
-			repoTransHistoryMapByRepositoryId, schemaVersionIds, schemaVersionIdSetsByRepository,
+			repoTransHistoryMapByRepositoryId, applicationVersionIds, applicationVersionIdSetsByRepository,
 			actorIdSet, repositoryIdsByActorId)
 
 		const repositoryTransactionBlocks = await this.createNewBlocksAndSetRepoTransHistoryBlockIds(
-			schemaVersionIds, schemaVersionIdSetsByRepository, terminal, repositoryIdSet,
+			applicationVersionIds, applicationVersionIdSetsByRepository, terminal, repositoryIdSet,
 			actorIdSet, repositoryIdsByActorId, repoTransHistoryMapByRepositoryId,
 			actorDao, repositoryDao, repositoryTransactionBlockDao,
-			repositoryTransactionHistoryUpdateStageDao, schemaDao)
+			repositoryTransactionHistoryUpdateStageDao, applicationDao)
 
 		return this.groupRepoTransBlocksBySharingNode(
 			repositoryTransactionBlocks,
@@ -92,13 +92,13 @@ export class SyncOutRepositoryTransactionBlockCreator
 		)
 	}
 
-	/*    Every history record is recorded as corresponding schema version.
-	 * Where does schema get used?
-	 *    OperationHistory - records which schema and version was used for a particular
+	/*    Every history record is recorded as corresponding application version.
+	 * Where does application get used?
+	 *    OperationHistory - records which application and version was used for a particular
 	 *        operation
-	 *    RepositorySchema - records which schemas are used in a repository
-	 * Are previous versions of schemas needed?
-	 *    Receiving outdated RepoTransBlocks - transaction history does not get upgraded, schema
+	 *    RepositoryApplication - records which applications are used in a repository
+	 * Are previous versions of applications needed?
+	 *    Receiving outdated RepoTransBlocks - transaction history does not get upgraded, application
 	 *    upgrades generate their own (not-syncable) transaction history
 	 *
 	 * So, we need all of the versions used by transaction history records. */
@@ -107,8 +107,8 @@ export class SyncOutRepositoryTransactionBlockCreator
 		repositoryTransactionHistoryIds: Set<RepositoryTransactionHistory_Id>,
 		repositoryIdSet: Set<RepositoryId>,
 		repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>,
-		schemaVersionIds: Set<SchemaIndex>,
-		schemaVersionIdSetsByRepository: Map<RepositoryId, Set<SchemaVersionId>>,
+		applicationVersionIds: Set<ApplicationIndex>,
+		applicationVersionIdSetsByRepository: Map<RepositoryId, Set<ApplicationVersionId>>,
 		actorIdSet: Set<ActorId>,
 		repositoryIdsByActorId: Map<ActorId, Set<RepositoryId>>
 	) {
@@ -126,15 +126,15 @@ export class SyncOutRepositoryTransactionBlockCreator
 					      = ensureChildArray(repoTransHistoryMapByRepositoryId, repositoryId)
 				repoTransHistoriesForRepositoryId.push(repoTransHistory)
 
-				this.gatherHistoryIds(repoTransHistory, schemaVersionIds, schemaVersionIdSetsByRepository,
+				this.gatherHistoryIds(repoTransHistory, applicationVersionIds, applicationVersionIdSetsByRepository,
 					actorIdSet, repositoryIdsByActorId)
 			})
 	}
 
 	private gatherHistoryIds(
 		repoTransHistory: IRepositoryTransactionHistory,
-		schemaVersionIds: Set<SchemaIndex>,
-		schemaVersionIdSetsByRepository: Map<RepositoryId, Set<SchemaVersionId>>,
+		applicationVersionIds: Set<ApplicationIndex>,
+		applicationVersionIdSetsByRepository: Map<RepositoryId, Set<ApplicationVersionId>>,
 		actorIdSet: Set<ActorId>,
 		repositoryIdsByActorId: Map<ActorId, Set<RepositoryId>>
 	): void {
@@ -147,15 +147,15 @@ export class SyncOutRepositoryTransactionBlockCreator
 			    = ensureChildJsSet(repositoryIdsByActorId, repoTransHistoryActorId)
 		repositoryIdsForActorId.add(repositoryId)
 
-		const schemaVersionIdSetForRepo = ensureChildJsSet(
-			schemaVersionIdSetsByRepository, repositoryId)
+		const applicationVersionIdSetForRepo = ensureChildJsSet(
+			applicationVersionIdSetsByRepository, repositoryId)
 
 		repoTransHistory.operationHistory.forEach(
 			operationHistory => {
 
-				const schemaVersionId = operationHistory.entity.schemaVersion.id
-				schemaVersionIds.add(schemaVersionId)
-				schemaVersionIdSetForRepo.add(schemaVersionId)
+				const applicationVersionId = operationHistory.entity.applicationVersion.id
+				applicationVersionIds.add(applicationVersionId)
+				applicationVersionIdSetForRepo.add(applicationVersionId)
 
 				operationHistory.recordHistory.forEach(
 					recordHistory => {
@@ -170,19 +170,19 @@ export class SyncOutRepositoryTransactionBlockCreator
 			})
 	}
 
-	/*    Every history record is recorded as corresponding schema version.
-	 * Where does schema get used?
-	 *    OperationHistory - records which schema and version was used for a particular
+	/*    Every history record is recorded as corresponding application version.
+	 * Where does application get used?
+	 *    OperationHistory - records which application and version was used for a particular
 	 *        operation
-	 *    RepositorySchema - records which schemas are used in a repository
-	 * Are previous versions of schemas needed?
-	 *    Receiving outdated RepoTransBlocks - transaction history does not get upgraded, schema
+	 *    RepositoryApplication - records which applications are used in a repository
+	 * Are previous versions of applications needed?
+	 *    Receiving outdated RepoTransBlocks - transaction history does not get upgraded, application
 	 *    upgrades generate their own (not-syncable) transaction history
 	 *
 	 * So, we need all of the versions used by transaction history records. */
 	private async createNewBlocksAndSetRepoTransHistoryBlockIds(
-		schemaVersionIds: Set<SchemaIndex>,
-		schemaVersionIdSetsByRepository: Map<RepositoryId, Set<SchemaVersionId>>,
+		applicationVersionIds: Set<ApplicationIndex>,
+		applicationVersionIdSetsByRepository: Map<RepositoryId, Set<ApplicationVersionId>>,
 		terminal: ITerminal,
 		repositoryIdSet: Set<RepositoryId>,
 		actorIdSet: Set<ActorId>,
@@ -192,12 +192,12 @@ export class SyncOutRepositoryTransactionBlockCreator
 		repositoryDao: IRepositoryDao,
 		repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
 		repositoryTransactionHistoryUpdateStageDao: IRepositoryTransactionHistoryUpdateStageDao,
-		schemaDao: ISchemaDao
+		applicationDao: IApplicationDao
 	): Promise<IRepositoryTransactionBlock[]> {
-		const schemasByRepositoryIdMap = await this.findSchemasByRepositoryMap(
-			schemaVersionIds,
-			schemaVersionIdSetsByRepository,
-			schemaDao
+		const applicationsByRepositoryIdMap = await this.findApplicationsByRepositoryMap(
+			applicationVersionIds,
+			applicationVersionIdSetsByRepository,
+			applicationDao
 		)
 
 		const repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>
@@ -218,7 +218,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 			of repoTransHistoryMapByRepositoryId) {
 			this.createRepositoryTransactionBlockAndStageData(
 				repositoryMapById, actorIdSet, repositoryId, repositoryIdsByActorId,
-				repositoryTransactionHistories, schemasByRepositoryIdMap, repoTransBlockDataByRepoId,
+				repositoryTransactionHistories, applicationsByRepositoryIdMap, repoTransBlockDataByRepoId,
 				terminal, repositoryTransactionBlocks, repoTransBlocksByRepositoryId,
 				repoTransHistoryUpdateStageValues, repoTransHistoryUpdateStageValuesByBlock)
 		}
@@ -241,25 +241,25 @@ export class SyncOutRepositoryTransactionBlockCreator
 		return repositoryTransactionBlocks
 	}
 
-	private async findSchemasByRepositoryMap(
-		schemaVersionIds: Set<SchemaIndex>,
-		schemaVersionIdSetsByRepository: Map<RepositoryId, Set<SchemaVersionId>>,
-		schemaDao: ISchemaDao
-	): Promise<Map<RepositoryId, ISchema[]>> {
-		const schemasByRepositoryIdMap: Map<RepositoryId, ISchema[]>
+	private async findApplicationsByRepositoryMap(
+		applicationVersionIds: Set<ApplicationIndex>,
+		applicationVersionIdSetsByRepository: Map<RepositoryId, Set<ApplicationVersionId>>,
+		applicationDao: IApplicationDao
+	): Promise<Map<RepositoryId, IApplication[]>> {
+		const applicationsByRepositoryIdMap: Map<RepositoryId, IApplication[]>
 			      = new Map()
 
-		const schemaMapByVersionId = await schemaDao
-			.findMapByVersionIds(Array.from(schemaVersionIds))
-		for (const [repositoryId, schemaVersionIdSetForRepo] of schemaVersionIdSetsByRepository) {
-			const schemasForRepository = ensureChildArray(
-				schemasByRepositoryIdMap, repositoryId)
-			for (const schemaVersionId of schemaVersionIdSetForRepo) {
-				schemasForRepository.push(schemaMapByVersionId.get(schemaVersionId))
+		const applicationMapByVersionId = await applicationDao
+			.findMapByVersionIds(Array.from(applicationVersionIds))
+		for (const [repositoryId, applicationVersionIdSetForRepo] of applicationVersionIdSetsByRepository) {
+			const applicationsForRepository = ensureChildArray(
+				applicationsByRepositoryIdMap, repositoryId)
+			for (const applicationVersionId of applicationVersionIdSetForRepo) {
+				applicationsForRepository.push(applicationMapByVersionId.get(applicationVersionId))
 			}
 		}
 
-		return schemasByRepositoryIdMap
+		return applicationsByRepositoryIdMap
 	}
 
 	private createRepositoryTransactionBlockAndStageData(
@@ -268,7 +268,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 		repositoryId: RepositoryId,
 		repositoryIdsByActorId: Map<ActorId, Set<RepositoryId>>,
 		repositoryTransactionHistories: IRepositoryTransactionHistory[],
-		schemasByRepositoryIdMap: Map<RepositoryId, ISchema[]>,
+		applicationsByRepositoryIdMap: Map<RepositoryId, IApplication[]>,
 		repoTransBlockDataByRepoId: Map<RepositoryId, RepositoryTransactionBlockData>,
 		terminal: ITerminal,
 		repositoryTransactionBlocks: IRepositoryTransactionBlock[],
@@ -296,7 +296,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 			actors: [],
 			repository: repositoryMapById.get(repositoryId),
 			repoTransHistories: repositoryTransactionHistories,
-			schemas: schemasByRepositoryIdMap.get(repositoryId),
+			applications: applicationsByRepositoryIdMap.get(repositoryId),
 		}
 		repoTransBlockDataByRepoId.set(repositoryId, repoTransBlockData)
 

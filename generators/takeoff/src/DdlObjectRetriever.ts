@@ -1,13 +1,13 @@
 import { container, DI } from '@airport/di'
 import {
 	DomainId,
-	SchemaIndex,
+	ApplicationIndex,
 } from '@airport/ground-control'
 import type { LastIds } from '@airport/security-check'
 import {
 	DOMAIN_DAO,
-	ISchema,
-	ISchemaVersion,
+	IApplication,
+	IApplicationVersion,
 	SCHEMA_COLUMN_DAO,
 	SCHEMA_DAO,
 	SCHEMA_ENTITY_DAO,
@@ -41,61 +41,61 @@ export class DdlObjectRetriever
 		propertyColumns: 0,
 		relations: 0,
 		relationColumns: 0,
-		schemas: 0,
-		schemaVersions: 0
+		applications: 0,
+		applicationVersions: 0
 	}
 
 	async retrieveDdlObjects(): Promise<DdlObjects> {
-		const [domainDao, schemaDao, schemaVersionDao, schemaReferenceDao,
-			schemaEntityDao, schemaPropertyDao, schemaRelationDao,
-			schemaColumnDao, schemaPropertyColumnDao,
-			schemaRelationColumnDao
+		const [domainDao, applicationDao, applicationVersionDao, applicationReferenceDao,
+			applicationEntityDao, applicationPropertyDao, applicationRelationDao,
+			applicationColumnDao, applicationPropertyColumnDao,
+			applicationRelationColumnDao
 		] = await container(this).get(DOMAIN_DAO,
 			SCHEMA_DAO, SCHEMA_VERSION_DAO, SCHEMA_REFERENCE_DAO,
 			SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_RELATION_DAO,
 			SCHEMA_COLUMN_DAO, SCHEMA_PROPERTY_COLUMN_DAO,
 			SCHEMA_RELATION_COLUMN_DAO)
-		const schemas = await schemaDao.findAllActive()
-		const schemaIndexes: SchemaIndex[] = []
+		const applications = await applicationDao.findAllActive()
+		const applicationIndexes: ApplicationIndex[] = []
 		const domainIdSet: Set<DomainId> = new Set()
-		schemas.forEach(
-			schema => {
-				schemaIndexes.push(schema.index)
-				domainIdSet.add(schema.domain.id)
+		applications.forEach(
+			application => {
+				applicationIndexes.push(application.index)
+				domainIdSet.add(application.domain.id)
 			})
-		schemas.sort((
-			schema1: ISchema,
-			schema2: ISchema
+		applications.sort((
+			application1: IApplication,
+			application2: IApplication
 		) => {
-			return schema1.index - schema2.index
+			return application1.index - application2.index
 		})
 
 		const domains = await domainDao.findByIdIn(Array.from(domainIdSet))
 
-		const allSchemaVersions = await schemaVersionDao
-			.findAllActiveOrderBySchemaIndexAndId()
+		const allApplicationVersions = await applicationVersionDao
+			.findAllActiveOrderByApplicationIndexAndId()
 
-		let lastSchemaIndex: SchemaIndex
-		// const allSchemaVersionsByIds: ISchemaVersion[] = []
-		const latestSchemaVersions: ISchemaVersion[] = []
-		const schemaVersions: ISchemaVersion[] = []
-		for (const schemaVersion of allSchemaVersions) {
-			if (schemaVersion.schema.index !== lastSchemaIndex) {
-				latestSchemaVersions.push(schemaVersion)
+		let lastApplicationIndex: ApplicationIndex
+		// const allApplicationVersionsByIds: IApplicationVersion[] = []
+		const latestApplicationVersions: IApplicationVersion[] = []
+		const applicationVersions: IApplicationVersion[] = []
+		for (const applicationVersion of allApplicationVersions) {
+			if (applicationVersion.application.index !== lastApplicationIndex) {
+				latestApplicationVersions.push(applicationVersion)
 			}
-			// allSchemaVersionsByIds[schemaVersion.id] = schemaVersion
-			lastSchemaIndex = schemaVersion.schema.index
-			schemaVersions.push(schemaVersion)
+			// allApplicationVersionsByIds[applicationVersion.id] = applicationVersion
+			lastApplicationIndex = applicationVersion.application.index
+			applicationVersions.push(applicationVersion)
 		}
 
-		const latestSchemaVersionIds = latestSchemaVersions.map(
-			schemaVersion => schemaVersion.id)
+		const latestApplicationVersionIds = latestApplicationVersions.map(
+			applicationVersion => applicationVersion.id)
 
-		const schemaReferences = await schemaReferenceDao
-			.findAllForSchemaVersions(latestSchemaVersionIds)
+		const applicationReferences = await applicationReferenceDao
+			.findAllForApplicationVersions(latestApplicationVersionIds)
 
-		const entities = await schemaEntityDao
-			.findAllForSchemaVersions(latestSchemaVersionIds)
+		const entities = await applicationEntityDao
+			.findAllForApplicationVersions(latestApplicationVersionIds)
 		const entityIds = entities.map(
 			entity => entity.id)
 		/*
@@ -108,23 +108,23 @@ export class DdlObjectRetriever
 	})
 		 */
 
-		const properties = await schemaPropertyDao
+		const properties = await applicationPropertyDao
 			.findAllForEntities(entityIds)
 		const propertyIds = properties.map(
 			property => property.id)
 
-		const relations = await schemaRelationDao
+		const relations = await applicationRelationDao
 			.findAllForProperties(propertyIds)
 
-		const columns = await schemaColumnDao
+		const columns = await applicationColumnDao
 			.findAllForEntities(entityIds)
 		const columnIds = columns.map(
 			column => column.id)
 
-		const propertyColumns = await schemaPropertyColumnDao
+		const propertyColumns = await applicationPropertyColumnDao
 			.findAllForColumns(columnIds)
 
-		const relationColumns = await schemaRelationColumnDao
+		const relationColumns = await applicationRelationColumnDao
 			.findAllForColumns(columnIds)
 
 		this.lastIds = {
@@ -135,25 +135,25 @@ export class DdlObjectRetriever
 			propertyColumns: propertyColumns.length,
 			relationColumns: relationColumns.length,
 			relations: relations.length,
-			schemas: schemas.length,
-			schemaVersions: schemaVersions.length,
+			applications: applications.length,
+			applicationVersions: applicationVersions.length,
 		}
 
 		return {
 			// allDomains: domains,
-			// allSchemas: schemas,
-			// allSchemaVersionsByIds,
+			// allApplications: applications,
+			// allApplicationVersionsByIds,
 			columns,
 			domains,
 			entities,
-			latestSchemaVersions,
+			latestApplicationVersions,
 			properties,
 			propertyColumns,
 			relationColumns,
 			relations,
-			schemaReferences,
-			schemas,
-			schemaVersions
+			applicationReferences,
+			applications,
+			applicationVersions
 		}
 	}
 

@@ -4,8 +4,8 @@ import { ColumnMap } from "./ColumnMap";
  */
 export const ALL_TABLE_COLUMNS = 'A';
 export class TableMap {
-    constructor(schemaVersionId, tableMap = {}) {
-        this.schemaVersionId = schemaVersionId;
+    constructor(applicationVersionId, tableMap = {}) {
+        this.applicationVersionId = applicationVersionId;
         this.tableMap = tableMap;
     }
     ensure(tableIndex, allColumns = false, ColumnMapConstructor = ColumnMap) {

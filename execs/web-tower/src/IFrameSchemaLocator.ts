@@ -1,29 +1,29 @@
 import { container, DI } from '@airport/di'
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
-import { SCHEMA_LOCATOR, SchemaLocator } from '@airport/landing'
+import { SCHEMA_LOCATOR, ApplicationLocator } from '@airport/landing'
 import { ITerminalStore } from '@airport/terminal-map'
-import { ISchemaVersion } from '@airport/airspace'
+import { IApplicationVersion } from '@airport/airspace'
 import { AllDdlObjects } from '@airport/takeoff'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 
-export class IFrameSchemaLocator
-    extends SchemaLocator {
+export class IFrameApplicationLocator
+    extends ApplicationLocator {
 
-    async locateLatestSchemaVersionBySchemaName(
-        schemaName: string,
+    async locateLatestApplicationVersionByApplicationName(
+        applicationName: string,
         terminalStore: ITerminalStore,
-    ): Promise<ISchemaVersion> {
-        let schemaVersion = terminalStore.getLatestSchemaVersionMapBySchemaName()
-            .get(schemaName)
+    ): Promise<IApplicationVersion> {
+        let applicationVersion = terminalStore.getLatestApplicationVersionMapByApplicationName()
+            .get(applicationName)
 
-        if (schemaVersion) {
-            return schemaVersion
+        if (applicationVersion) {
+            return applicationVersion
         }
 
         const transactionalConnector = await container(this)
             .get(TRANSACTIONAL_CONNECTOR) as IIframeTransactionalConnector
 
-        return await transactionalConnector.getLatestSchemaVersionMapBySchemaName(schemaName)
+        return await transactionalConnector.getLatestApplicationVersionMapByApplicationName(applicationName)
     }
 }
-DI.set(SCHEMA_LOCATOR, IFrameSchemaLocator)
+DI.set(SCHEMA_LOCATOR, IFrameApplicationLocator)

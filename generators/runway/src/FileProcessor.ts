@@ -1,4 +1,4 @@
-import { DbSchema } from '@airport/ground-control'
+import { DbApplication } from '@airport/ground-control'
 import * as ts from 'typescript'
 import { visitDaoFile } from './dao/parser/OperationGenerator'
 import { Configuration } from './ddl/options/Options'
@@ -21,7 +21,7 @@ export async function generateDefinitions(
 	fileNames: string[],
 	options: ts.CompilerOptions,
 	configuration: Configuration,
-	schemaMapByProjectName: { [projectName: string]: DbSchema }
+	applicationMapByProjectName: { [projectName: string]: DbApplication }
 ): Promise<{ [entityName: string]: EntityCandidate }> {
 	// Build a program using the set of root file names in fileNames
 	let program = tsc.createProgram(fileNames, options)
@@ -29,7 +29,7 @@ export async function generateDefinitions(
 
 	// Get the checker, we will use it to find more about classes
 	globalCandidateRegistry.configuration = configuration
-	globalCandidateRegistry.schemaMap = schemaMapByProjectName
+	globalCandidateRegistry.applicationMap = applicationMapByProjectName
 	globalThis.processedCandidateRegistry = new EntityCandidateRegistry(enumMap)
 
 	// const daoFileMap: { [classPath: string]: DaoFile } = {}

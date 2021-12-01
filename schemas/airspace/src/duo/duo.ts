@@ -1,1 +1,1 @@
-export * from './SchemaVersionDuo';
+export * from './ApplicationVersionDuo';

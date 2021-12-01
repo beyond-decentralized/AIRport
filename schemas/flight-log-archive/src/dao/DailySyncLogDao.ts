@@ -16,7 +16,7 @@ import {
 } from '../ddl/DailySyncLog'
 import { BaseDailySyncLogDao } from '../generated/baseDaos'
 import { QDailySyncLog } from '../generated/qdailysynclog'
-import { Q } from '../generated/qSchema'
+import { Q } from '../generated/qApplication'
 import { DAILY_SYNC_LOG_DAO } from '../tokens'
 
 export type DailyToMonthlyResult = [
@@ -59,7 +59,7 @@ export class DailySyncLogDao
 	async insertValues(
 		values: DailySyncLogValues[]
 	): Promise<void> {
-		const dbEntity = Q.db.currentVersion[0].schemaVersion
+		const dbEntity = Q.db.currentVersion[0].applicationVersion
 			.entityMapByName.RealtimeSyncLog
 		let dsl: QDailySyncLog
 

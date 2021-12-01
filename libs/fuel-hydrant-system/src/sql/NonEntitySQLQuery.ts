@@ -312,8 +312,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			case JSONClauseObjectType.EXISTS_FUNCTION:
 				throw new Error(`Exists function cannot be used in SELECT clause.`)
 			case JSONClauseObjectType.FIELD:
-				dbEntity = context.ioc.airDb.schemas[fieldJson.si].currentVersion[0]
-					.schemaVersion.entities[fieldJson.ti]
+				dbEntity = context.ioc.airDb.applications[fieldJson.si].currentVersion[0]
+					.applicationVersion.entities[fieldJson.ti]
 				dbProperty = dbEntity.properties[fieldJson.pi]
 				dbColumn = dbEntity.columns[fieldJson.ci]
 				switch (fieldJson.dt) {
@@ -466,7 +466,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 						qEntity.__driver__.dbEntity, context)} ${currentAlias} ON\n${joinOnClause}`
 					break
 				case JSONRelationType.ENTITY_SCHEMA_RELATION:
-					fromFragment += this.getEntitySchemaRelationFromJoin(
+					fromFragment += this.getEntityApplicationRelationFromJoin(
 						leftEntity, rightEntity, <JSONEntityRelation>currentRelation,
 						parentRelation, currentAlias, parentAlias,
 						joinTypeString, errorPrefix, context)
@@ -481,7 +481,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					break
 				default:
 					throw new Error(`Nested FROM entries must be Entity JOIN ON
-					or Schema Relation, or Sub-Query JOIN ON`)
+					or Application Relation, or Sub-Query JOIN ON`)
 
 			}
 		}

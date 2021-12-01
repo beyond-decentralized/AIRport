@@ -8,8 +8,8 @@ import {
 	TableIndex
 } from '@airport/ground-control'
 import {
-	ISchemaEntity,
-	ISchemaVersion,
+	IApplicationEntity,
+	IApplicationVersion,
 	SCHEMA_ENTITY_DAO
 } from '@airport/airspace'
 import {
@@ -41,7 +41,7 @@ export class SyncInDataChecker
 	 * Every dataMessage.data.repoTransHistories array must be sorted before entering
 	 * this method.
 	 *
-	 * @param {IDataToTM[]} dataMessagesWithCompatibleSchemas
+	 * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
 	 * @returns {DataCheckResults}
 	 */
 	async checkData(
@@ -81,9 +81,9 @@ export class SyncInDataChecker
 			history.syncTimestamp = message.syncTimestamp
 			delete history.id
 
-			const schemaEntityMap = await this.populateSchemaEntityMap(message)
+			const applicationEntityMap = await this.populateApplicationEntityMap(message)
 
-			await this.checkOperationHistories(message, schemaEntityMap)
+			await this.checkOperationHistories(message, applicationEntityMap)
 		} catch (e) {
 			console.error(e)
 			return false
@@ -92,41 +92,41 @@ export class SyncInDataChecker
 		return true
 	}
 
-	private async populateSchemaEntityMap(
+	private async populateApplicationEntityMap(
 		message: TerminalMessage
-	): Promise<Map<string, Map<string, Map<TableIndex, ISchemaEntity>>>> {
-		let schemaVersionsById: Map<number, ISchemaVersion> = new Map()
-		let schemaVersionIds: number[] = []
+	): Promise<Map<string, Map<string, Map<TableIndex, IApplicationEntity>>>> {
+		let applicationVersionsById: Map<number, IApplicationVersion> = new Map()
+		let applicationVersionIds: number[] = []
 
-		for (const schemaVersion of message.schemaVersions) {
-			schemaVersionIds.push(schemaVersion.id)
-			schemaVersionsById.set(schemaVersion.id, schemaVersion)
+		for (const applicationVersion of message.applicationVersions) {
+			applicationVersionIds.push(applicationVersion.id)
+			applicationVersionsById.set(applicationVersion.id, applicationVersion)
 		}
-		const schemaEntityDao = await container(this).get(SCHEMA_ENTITY_DAO)
-		const schemaEntities = await schemaEntityDao.findAllForSchemaVersions(schemaVersionIds);
-		const schemaEntityMap: Map<string, Map<string, Map<TableIndex, ISchemaEntity>>> = new Map()
+		const applicationEntityDao = await container(this).get(SCHEMA_ENTITY_DAO)
+		const applicationEntities = await applicationEntityDao.findAllForApplicationVersions(applicationVersionIds);
+		const applicationEntityMap: Map<string, Map<string, Map<TableIndex, IApplicationEntity>>> = new Map()
 
-		for (let schemaEntity of schemaEntities) {
-			const schemaVersion = schemaVersionsById.get(schemaEntity.schemaVersion.id)
-			let entitiesForDomain = schemaEntityMap.get(schemaVersion.schema.domain.name)
+		for (let applicationEntity of applicationEntities) {
+			const applicationVersion = applicationVersionsById.get(applicationEntity.applicationVersion.id)
+			let entitiesForDomain = applicationEntityMap.get(applicationVersion.application.domain.name)
 			if (!entitiesForDomain) {
 				entitiesForDomain = new Map()
-				schemaEntityMap.set(schemaVersion.schema.domain.name, entitiesForDomain)
+				applicationEntityMap.set(applicationVersion.application.domain.name, entitiesForDomain)
 			}
-			let entitiesForSchema = entitiesForDomain.get(schemaVersion.schema.name)
-			if (!entitiesForSchema) {
-				entitiesForSchema = new Map()
-				entitiesForDomain.set(schemaVersion.schema.name, entitiesForSchema)
+			let entitiesForApplication = entitiesForDomain.get(applicationVersion.application.name)
+			if (!entitiesForApplication) {
+				entitiesForApplication = new Map()
+				entitiesForDomain.set(applicationVersion.application.name, entitiesForApplication)
 			}
-			entitiesForSchema.set(schemaEntity.index, schemaEntity)
+			entitiesForApplication.set(applicationEntity.index, applicationEntity)
 		}
 
-		return schemaEntityMap
+		return applicationEntityMap
 	}
 
 	private async checkOperationHistories(
 		message: TerminalMessage,
-		schemaEntityMap: Map<string, Map<string, Map<TableIndex, ISchemaEntity>>>
+		applicationEntityMap: Map<string, Map<string, Map<TableIndex, IApplicationEntity>>>
 	): Promise<void> {
 		const history = message.history
 		if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
@@ -163,21 +163,21 @@ export class SyncInDataChecker
 			if (typeof operationHistory.entity !== 'object') {
 				throw new Error(`Invalid operationHistory.entity`)
 			}
-			if (typeof operationHistory.entity.schemaVersion !== 'number') {
+			if (typeof operationHistory.entity.applicationVersion !== 'number') {
 				throw new Error(`Expecting "in-message index" (number)
-					in 'operationHistory.entity.schemaVersion'`)
+					in 'operationHistory.entity.applicationVersion'`)
 			}
-			const schemaVersion = message.schemaVersions[operationHistory.entity.schemaVersion as any]
-			if (!schemaVersion) {
-				throw new Error(`Invalid index into message.schemaVersions [${operationHistory.entity.schemaVersion}],
-				in operationHistory.entity.schemaVersion`)
+			const applicationVersion = message.applicationVersions[operationHistory.entity.applicationVersion as any]
+			if (!applicationVersion) {
+				throw new Error(`Invalid index into message.applicationVersions [${operationHistory.entity.applicationVersion}],
+				in operationHistory.entity.applicationVersion`)
 			}
-			const schemaEntity = schemaEntityMap.get(schemaVersion.schema.domain.name)
-				.get(schemaVersion.schema.name).get(operationHistory.entity.index)
-			if (!schemaEntity) {
+			const applicationEntity = applicationEntityMap.get(applicationVersion.application.domain.name)
+				.get(applicationVersion.application.name).get(operationHistory.entity.index)
+			if (!applicationEntity) {
 				throw new Error(`Invalid operationHistory.entity.index: ${operationHistory.entity.index}`)
 			}
-			operationHistory.entity = schemaEntity
+			operationHistory.entity = applicationEntity
 
 			if (operationHistory.repositoryTransactionHistory) {
 				throw new Error(`TerminalMessage.history -> operationHistory.repositoryTransactionHistory cannot be specified`)

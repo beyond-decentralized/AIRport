@@ -1,100 +1,100 @@
 import {
-	DbSchema,
-	DbSchemaBuilder,
-	IDbSchemaBuilder,
-	JsonSchema
+	DbApplication,
+	DbApplicationBuilder,
+	IDbApplicationBuilder,
+	JsonApplication
 }         from '@airport/ground-control';
 import fs from 'fs';
 
-export interface ISchemaLoader {
+export interface IApplicationLoader {
 
-	findAllReferencedJsonSchemas(): JsonSchema[];
+	findAllReferencedJsonApplications(): JsonApplication[];
 
-	getReferencedSchema(
+	getReferencedApplication(
 		projectName: string,
-	): DbSchema
+	): DbApplication
 
 }
 
-export class SchemaLoader
-	implements ISchemaLoader {
+export class ApplicationLoader
+	implements IApplicationLoader {
 
-	allSchemas: DbSchema[]            = [];
-	dbSchemaBuilder: IDbSchemaBuilder = new DbSchemaBuilder();
+	allApplications: DbApplication[]            = [];
+	dbApplicationBuilder: IDbApplicationBuilder = new DbApplicationBuilder();
 	dictionary                        = {
 		dbColumnRelationMapByManySide: {},
 		dbColumnRelationMapByOneSide: {}
 	};
 
-	findAllReferencedJsonSchemas(): JsonSchema[] {
-		const jsonSchemas: JsonSchema[] = [];
+	findAllReferencedJsonApplications(): JsonApplication[] {
+		const jsonApplications: JsonApplication[] = [];
 		const fileNames                 = fs.readdirSync(process.cwd() + '/node_modules/');
 		for (let fileName of fileNames) {
 			if (fileName.startsWith('@')) {
 				const subDirFileNames = fs.readdirSync(process.cwd() + '/node_modules/' + fileName + '/');
 				for (let subDirFileName of subDirFileNames) {
-					const jsonSchema = this.getJsonSchema(fileName + '/' + subDirFileNames);
-					if (!jsonSchema) {
+					const jsonApplication = this.getJsonApplication(fileName + '/' + subDirFileNames);
+					if (!jsonApplication) {
 						continue;
 					}
-					jsonSchemas.push(jsonSchema);
+					jsonApplications.push(jsonApplication);
 				}
 			} else {
-				const jsonSchema = this.getJsonSchema(fileName);
-				if (!jsonSchema) {
+				const jsonApplication = this.getJsonApplication(fileName);
+				if (!jsonApplication) {
 					continue;
 				}
-				jsonSchemas.push(jsonSchema);
+				jsonApplications.push(jsonApplication);
 			}
 		}
 
-		return jsonSchemas;
+		return jsonApplications;
 	}
 
-	getReferencedSchema(
+	getReferencedApplication(
 		projectName: string,
-	): DbSchema {
-		const relatedSchema = this.getJsonSchema(projectName);
+	): DbApplication {
+		const relatedApplication = this.getJsonApplication(projectName);
 
-		if (!relatedSchema) {
+		if (!relatedApplication) {
 			return null;
 		}
 
-		return this.dbSchemaBuilder.buildDbSchemaWithoutReferences(
-			relatedSchema, this.allSchemas, this.dictionary);
+		return this.dbApplicationBuilder.buildDbApplicationWithoutReferences(
+			relatedApplication, this.allApplications, this.dictionary);
 	}
 
-	getJsonSchema(
+	getJsonApplication(
 		projectName: string,
-	): JsonSchema {
-		// const pathsToReferencedSchemas =
-		// this.configuration.airport.node_modulesLinks.pathsToReferencedSchemas let
-		// relatedSchemaProject if (pathsToReferencedSchemas &&
-		// pathsToReferencedSchemas[projectName]) { let referencedSchemaRelativePath =
-		// '../../' + pathsToReferencedSchemas[projectName] for (let i = 0; i < 10; i++) {
-		// referencedSchemaRelativePath = '../' + referencedSchemaRelativePath let
-		// pathToSchema             =
-		// getFullPathFromRelativePath(referencedSchemaRelativePath, __filename) if
-		// (fs.existsSync(pathToSchema) && fs.lstatSync(pathToSchema).isDirectory()) {
-		// relatedSchemaProject = require(pathToSchema) break } } } else {
-		// relatedSchemaProject = require(process.cwd() + '/node_modules/' + projectName) }
-		let relatedSchemaJson;
+	): JsonApplication {
+		// const pathsToReferencedApplications =
+		// this.configuration.airport.node_modulesLinks.pathsToReferencedApplications let
+		// relatedApplicationProject if (pathsToReferencedApplications &&
+		// pathsToReferencedApplications[projectName]) { let referencedApplicationRelativePath =
+		// '../../' + pathsToReferencedApplications[projectName] for (let i = 0; i < 10; i++) {
+		// referencedApplicationRelativePath = '../' + referencedApplicationRelativePath let
+		// pathToApplication             =
+		// getFullPathFromRelativePath(referencedApplicationRelativePath, __filename) if
+		// (fs.existsSync(pathToApplication) && fs.lstatSync(pathToApplication).isDirectory()) {
+		// relatedApplicationProject = require(pathToApplication) break } } } else {
+		// relatedApplicationProject = require(process.cwd() + '/node_modules/' + projectName) }
+		let relatedApplicationJson;
 		try {
-			relatedSchemaJson = fs.readFileSync(process.cwd() + '/node_modules/'
-				+ projectName + '/src/generated/schema.json');
+			relatedApplicationJson = fs.readFileSync(process.cwd() + '/node_modules/'
+				+ projectName + '/src/generated/application.json');
 		} catch (e) {
 			return null;
 		}
-		// if (!relatedSchemaProject) {
-		// 	throw new Error(`Could not find related schema project '${projectName}'`)
+		// if (!relatedApplicationProject) {
+		// 	throw new Error(`Could not find related application project '${projectName}'`)
 		// }
-		// if (!relatedSchemaProject.SCHEMA) {
-		// 	throw new Error(`Could not find related schema in project '${projectName}'`)
+		// if (!relatedApplicationProject.SCHEMA) {
+		// 	throw new Error(`Could not find related application in project '${projectName}'`)
 		// }
-		if (!relatedSchemaJson) {
+		if (!relatedApplicationJson) {
 			return null;
 		}
-		return JSON.parse(relatedSchemaJson);
+		return JSON.parse(relatedApplicationJson);
 	}
 
 }

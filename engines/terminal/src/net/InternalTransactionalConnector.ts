@@ -5,7 +5,6 @@ import {
     IContext
 } from '@airport/di';
 import {
-    AIRepository,
     ISaveResult,
     ITransactionalConnector,
     PortableQuery,

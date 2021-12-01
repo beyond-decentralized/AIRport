@@ -1,8 +1,8 @@
-import { ColumnIndex, SchemaIndex, TableIndex } from '@airport/ground-control';
+import { ColumnIndex, ApplicationIndex, TableIndex } from '@airport/ground-control';
 export declare type SequenceIncrementBy = number;
 export declare type SequenceCurrentValue = number;
 export declare class Sequence {
-    schemaIndex: SchemaIndex;
+    applicationIndex: ApplicationIndex;
     tableIndex: TableIndex;
     columnIndex: ColumnIndex;
     incrementBy: SequenceIncrementBy;

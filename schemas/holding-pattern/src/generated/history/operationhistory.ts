@@ -1,5 +1,5 @@
 import {
-	ISchemaEntity,
+	IApplicationEntity,
 } from '@airport/airspace';
 import {
 	IRepositoryTransactionHistory,
@@ -27,7 +27,7 @@ export interface IOperationHistory {
 	systemWideOperationId?: number;
 
 	// Non-Id Relations
-	entity?: ISchemaEntity;
+	entity?: IApplicationEntity;
 	repositoryTransactionHistory?: IRepositoryTransactionHistory;
 	recordHistory?: IRecordHistory[];
 

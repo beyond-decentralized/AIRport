@@ -6,7 +6,7 @@ export interface LastIds {
     propertyColumns: number;
     relationColumns: number;
     relations: number;
-    schemas: number;
-    schemaVersions: number;
+    applications: number;
+    applicationVersions: number;
 }
 //# sourceMappingURL=LastIds.d.ts.map

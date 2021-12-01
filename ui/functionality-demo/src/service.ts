@@ -1,5 +1,5 @@
 import { markForDeletion } from '@airport/autopilot'
-import { DemoApi, Level1 } from '@airport/functionality-demo-schema'
+import { DemoApi, Level1 } from '@airport/functionality-demo-application'
 import type { DeepPartial } from '@airport/pressurization';
 import { allLevel1Records, repositoryListings } from './store';
 export class FunctionalityDemoService {

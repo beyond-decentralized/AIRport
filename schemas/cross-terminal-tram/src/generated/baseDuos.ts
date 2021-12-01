@@ -52,18 +52,18 @@ import {
 	QRepoTransBlockResponseStage,
 } from './repositoryTransactionBlock/qrepotransblockresponsestage';
 import {
-	IRepoTransBlockSchemaToChange,
-} from './repositoryTransactionBlock/repotransblockschematochange';
+	IRepoTransBlockApplicationToChange,
+} from './repositoryTransactionBlock/repotransblockapplicationtochange';
 import {
-	RepoTransBlockSchemaToChangeESelect,
-	RepoTransBlockSchemaToChangeECreateColumns,
-	RepoTransBlockSchemaToChangeECreateProperties,
-	RepoTransBlockSchemaToChangeEUpdateColumns,
-	RepoTransBlockSchemaToChangeEUpdateProperties,
-	RepoTransBlockSchemaToChangeEId,
-	RepoTransBlockSchemaToChangeGraph,
-	QRepoTransBlockSchemaToChange,
-} from './repositoryTransactionBlock/qrepotransblockschematochange';
+	RepoTransBlockApplicationToChangeESelect,
+	RepoTransBlockApplicationToChangeECreateColumns,
+	RepoTransBlockApplicationToChangeECreateProperties,
+	RepoTransBlockApplicationToChangeEUpdateColumns,
+	RepoTransBlockApplicationToChangeEUpdateProperties,
+	RepoTransBlockApplicationToChangeEId,
+	RepoTransBlockApplicationToChangeGraph,
+	QRepoTransBlockApplicationToChange,
+} from './repositoryTransactionBlock/qrepotransblockapplicationtochange';
 import {
 	IRepositoryTransactionBlock,
 } from './repositoryTransactionBlock/repositorytransactionblock';
@@ -239,10 +239,10 @@ import {
 import {
 	Q,
 	duoDiSet,
-} from './qSchema';
+} from './qApplication';
 
 
-// Schema Q object Dependency Injection readiness detection Duo
+// Application Q object Dependency Injection readiness detection Duo
 export class SQDIDuo<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
@@ -340,13 +340,13 @@ export class BaseRepoTransBlockResponseStageDuo
 }
 
 
-export interface IBaseRepoTransBlockSchemaToChangeDuo
-  extends IDuo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateColumns, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeGraph, QRepoTransBlockSchemaToChange> {
+export interface IBaseRepoTransBlockApplicationToChangeDuo
+  extends IDuo<IRepoTransBlockApplicationToChange, RepoTransBlockApplicationToChangeESelect, RepoTransBlockApplicationToChangeECreateProperties, RepoTransBlockApplicationToChangeEUpdateColumns, RepoTransBlockApplicationToChangeEUpdateProperties, RepoTransBlockApplicationToChangeEId, RepoTransBlockApplicationToChangeGraph, QRepoTransBlockApplicationToChange> {
 }
 
-export class BaseRepoTransBlockSchemaToChangeDuo
-  extends SQDIDuo<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateColumns, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeGraph, QRepoTransBlockSchemaToChange>
-	implements IBaseRepoTransBlockSchemaToChangeDuo {
+export class BaseRepoTransBlockApplicationToChangeDuo
+  extends SQDIDuo<IRepoTransBlockApplicationToChange, RepoTransBlockApplicationToChangeESelect, RepoTransBlockApplicationToChangeECreateProperties, RepoTransBlockApplicationToChangeEUpdateColumns, RepoTransBlockApplicationToChangeEUpdateProperties, RepoTransBlockApplicationToChangeEId, RepoTransBlockApplicationToChangeGraph, QRepoTransBlockApplicationToChange>
+	implements IBaseRepoTransBlockApplicationToChangeDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(8)

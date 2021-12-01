@@ -26,7 +26,7 @@ export class DailyArchiveLogDao
 	async insertValues(
 		values: DailyArchiveLogValues[]
 	): Promise<number> {
-		const dbEntity = Q.db.currentVersion[0].schemaVersion
+		const dbEntity = Q.db.currentVersion[0].applicationVersion
 			.entityMapByName.DailyArchiveLog
 
 		let dal: QDailyArchiveLog

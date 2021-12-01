@@ -5,7 +5,7 @@ import {
 import {
 	DbEntity,
 	DomainName,
-	getSchemaName,
+	getApplicationName,
 	InternalFragments,
 	IStoreDriver,
 	JsonDelete,
@@ -17,11 +17,11 @@ import {
 	PortableQuery,
 	QueryResultType,
 	QueryType,
-	SchemaName,
-	SchemaStatus,
+	ApplicationName,
+	ApplicationStatus,
 	SQLDataType,
 	StoreType,
-	SyncSchemaMap
+	SyncApplicationMap
 }                          from '@airport/ground-control';
 import {
 	Observable,
@@ -70,14 +70,14 @@ export abstract class SqlDriver
 		dbEntity: DbEntity,
 		context: IFuelHydrantContext,
 	): string {
-		return this.getTableName(dbEntity.schemaVersion.schema, dbEntity, context);
+		return this.getTableName(dbEntity.applicationVersion.application, dbEntity, context);
 	}
 
 	getTableName(
-		schema: {
+		application: {
 			domain: DomainName | {
 				name: DomainName
-			}; name: SchemaName; status?: SchemaStatus;
+			}; name: ApplicationName; status?: ApplicationStatus;
 		},
 		table: {
 			name: string, tableConfig?: {
@@ -90,17 +90,17 @@ export abstract class SqlDriver
 		if (table.tableConfig && table.tableConfig.name) {
 			theTableName = table.tableConfig.name;
 		}
-		let schemaName;
-		if (schema.status) {
-			schemaName = schema.name;
+		let applicationName;
+		if (application.status) {
+			applicationName = application.name;
 		} else {
-			schemaName = getSchemaName(schema);
+			applicationName = getApplicationName(application);
 		}
-		return this.composeTableName(schemaName, theTableName, context);
+		return this.composeTableName(applicationName, theTableName, context);
 	}
 
 	abstract composeTableName(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IFuelHydrantContext,
 	): string;
@@ -150,7 +150,7 @@ export abstract class SqlDriver
 		const activeQueries = await container(this)
 			.get(ACTIVE_QUERIES);
 
-		let fieldMap                = new SyncSchemaMap();
+		let fieldMap                = new SyncApplicationMap();
 		let sqlDelete               = new SQLDelete(
 			<JsonDelete>portableQuery.jsonQuery, this.getDialect(context), context);
 		let sql                     = sqlDelete.toSQL(context);
@@ -206,8 +206,8 @@ export abstract class SqlDriver
 			case QueryResType.ENTITY_TREE:
 			case QueryResType.MAPPED_ENTITY_GRAPH:
 			case QueryResType.MAPPED_ENTITY_TREE:
-				const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
-					.currentVersion[0].schemaVersion.entities[portableQuery.tableIndex];
+				const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
+					.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
 				return new EntitySQLQuery(<JsonEntityQuery<any>>jsonQuery,
 					dbEntity, dialect, resultType, context);
 			case QueryResType.FIELD:
@@ -331,13 +331,13 @@ export abstract class SqlDriver
 	}
 
 	abstract doesTableExist(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IFuelHydrantContext,
 	): Promise<boolean>
 
 	abstract dropTable(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IFuelHydrantContext,
 	): Promise<boolean>

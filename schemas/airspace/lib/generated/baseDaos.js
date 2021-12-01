@@ -1,6 +1,6 @@
 import { Dao, DaoQueryDecorators, } from '@airport/check-in';
-import { Q, duoDiSet, } from './qSchema';
-// Schema Q object Dependency Injection readiness detection Dao
+import { Q, duoDiSet, } from './qApplication';
+// Application Q object Dependency Injection readiness detection Dao
 export class SQDIDao extends Dao {
     constructor(dbEntityId) {
         super(dbEntityId, Q);
@@ -21,7 +21,7 @@ BaseDomainDao.Find = new DaoQueryDecorators();
 BaseDomainDao.FindOne = new DaoQueryDecorators();
 BaseDomainDao.Search = new DaoQueryDecorators();
 BaseDomainDao.SearchOne = new DaoQueryDecorators();
-export class BaseSchemaDao extends SQDIDao {
+export class BaseApplicationDao extends SQDIDao {
     constructor() {
         super(10);
     }
@@ -32,11 +32,11 @@ export class BaseSchemaDao extends SQDIDao {
         return duoDiSet(10);
     }
 }
-BaseSchemaDao.Find = new DaoQueryDecorators();
-BaseSchemaDao.FindOne = new DaoQueryDecorators();
-BaseSchemaDao.Search = new DaoQueryDecorators();
-BaseSchemaDao.SearchOne = new DaoQueryDecorators();
-export class BaseSchemaColumnDao extends SQDIDao {
+BaseApplicationDao.Find = new DaoQueryDecorators();
+BaseApplicationDao.FindOne = new DaoQueryDecorators();
+BaseApplicationDao.Search = new DaoQueryDecorators();
+BaseApplicationDao.SearchOne = new DaoQueryDecorators();
+export class BaseApplicationColumnDao extends SQDIDao {
     constructor() {
         super(4);
     }
@@ -47,11 +47,11 @@ export class BaseSchemaColumnDao extends SQDIDao {
         return duoDiSet(4);
     }
 }
-BaseSchemaColumnDao.Find = new DaoQueryDecorators();
-BaseSchemaColumnDao.FindOne = new DaoQueryDecorators();
-BaseSchemaColumnDao.Search = new DaoQueryDecorators();
-BaseSchemaColumnDao.SearchOne = new DaoQueryDecorators();
-export class BaseSchemaCurrentVersionDao extends SQDIDao {
+BaseApplicationColumnDao.Find = new DaoQueryDecorators();
+BaseApplicationColumnDao.FindOne = new DaoQueryDecorators();
+BaseApplicationColumnDao.Search = new DaoQueryDecorators();
+BaseApplicationColumnDao.SearchOne = new DaoQueryDecorators();
+export class BaseApplicationCurrentVersionDao extends SQDIDao {
     constructor() {
         super(9);
     }
@@ -62,11 +62,11 @@ export class BaseSchemaCurrentVersionDao extends SQDIDao {
         return duoDiSet(9);
     }
 }
-BaseSchemaCurrentVersionDao.Find = new DaoQueryDecorators();
-BaseSchemaCurrentVersionDao.FindOne = new DaoQueryDecorators();
-BaseSchemaCurrentVersionDao.Search = new DaoQueryDecorators();
-BaseSchemaCurrentVersionDao.SearchOne = new DaoQueryDecorators();
-export class BaseSchemaEntityDao extends SQDIDao {
+BaseApplicationCurrentVersionDao.Find = new DaoQueryDecorators();
+BaseApplicationCurrentVersionDao.FindOne = new DaoQueryDecorators();
+BaseApplicationCurrentVersionDao.Search = new DaoQueryDecorators();
+BaseApplicationCurrentVersionDao.SearchOne = new DaoQueryDecorators();
+export class BaseApplicationEntityDao extends SQDIDao {
     constructor() {
         super(6);
     }
@@ -77,11 +77,11 @@ export class BaseSchemaEntityDao extends SQDIDao {
         return duoDiSet(6);
     }
 }
-BaseSchemaEntityDao.Find = new DaoQueryDecorators();
-BaseSchemaEntityDao.FindOne = new DaoQueryDecorators();
-BaseSchemaEntityDao.Search = new DaoQueryDecorators();
-BaseSchemaEntityDao.SearchOne = new DaoQueryDecorators();
-export class BaseSchemaOperationDao extends SQDIDao {
+BaseApplicationEntityDao.Find = new DaoQueryDecorators();
+BaseApplicationEntityDao.FindOne = new DaoQueryDecorators();
+BaseApplicationEntityDao.Search = new DaoQueryDecorators();
+BaseApplicationEntityDao.SearchOne = new DaoQueryDecorators();
+export class BaseApplicationOperationDao extends SQDIDao {
     constructor() {
         super(5);
     }
@@ -92,11 +92,11 @@ export class BaseSchemaOperationDao extends SQDIDao {
         return duoDiSet(5);
     }
 }
-BaseSchemaOperationDao.Find = new DaoQueryDecorators();
-BaseSchemaOperationDao.FindOne = new DaoQueryDecorators();
-BaseSchemaOperationDao.Search = new DaoQueryDecorators();
-BaseSchemaOperationDao.SearchOne = new DaoQueryDecorators();
-export class BaseSchemaPropertyDao extends SQDIDao {
+BaseApplicationOperationDao.Find = new DaoQueryDecorators();
+BaseApplicationOperationDao.FindOne = new DaoQueryDecorators();
+BaseApplicationOperationDao.Search = new DaoQueryDecorators();
+BaseApplicationOperationDao.SearchOne = new DaoQueryDecorators();
+export class BaseApplicationPropertyDao extends SQDIDao {
     constructor() {
         super(2);
     }
@@ -107,11 +107,11 @@ export class BaseSchemaPropertyDao extends SQDIDao {
         return duoDiSet(2);
     }
 }
-BaseSchemaPropertyDao.Find = new DaoQueryDecorators();
-BaseSchemaPropertyDao.FindOne = new DaoQueryDecorators();
-BaseSchemaPropertyDao.Search = new DaoQueryDecorators();
-BaseSchemaPropertyDao.SearchOne = new DaoQueryDecorators();
-export class BaseSchemaPropertyColumnDao extends SQDIDao {
+BaseApplicationPropertyDao.Find = new DaoQueryDecorators();
+BaseApplicationPropertyDao.FindOne = new DaoQueryDecorators();
+BaseApplicationPropertyDao.Search = new DaoQueryDecorators();
+BaseApplicationPropertyDao.SearchOne = new DaoQueryDecorators();
+export class BaseApplicationPropertyColumnDao extends SQDIDao {
     constructor() {
         super(3);
     }
@@ -122,11 +122,11 @@ export class BaseSchemaPropertyColumnDao extends SQDIDao {
         return duoDiSet(3);
     }
 }
-BaseSchemaPropertyColumnDao.Find = new DaoQueryDecorators();
-BaseSchemaPropertyColumnDao.FindOne = new DaoQueryDecorators();
-BaseSchemaPropertyColumnDao.Search = new DaoQueryDecorators();
-BaseSchemaPropertyColumnDao.SearchOne = new DaoQueryDecorators();
-export class BaseSchemaReferenceDao extends SQDIDao {
+BaseApplicationPropertyColumnDao.Find = new DaoQueryDecorators();
+BaseApplicationPropertyColumnDao.FindOne = new DaoQueryDecorators();
+BaseApplicationPropertyColumnDao.Search = new DaoQueryDecorators();
+BaseApplicationPropertyColumnDao.SearchOne = new DaoQueryDecorators();
+export class BaseApplicationReferenceDao extends SQDIDao {
     constructor() {
         super(7);
     }
@@ -137,11 +137,11 @@ export class BaseSchemaReferenceDao extends SQDIDao {
         return duoDiSet(7);
     }
 }
-BaseSchemaReferenceDao.Find = new DaoQueryDecorators();
-BaseSchemaReferenceDao.FindOne = new DaoQueryDecorators();
-BaseSchemaReferenceDao.Search = new DaoQueryDecorators();
-BaseSchemaReferenceDao.SearchOne = new DaoQueryDecorators();
-export class BaseSchemaRelationDao extends SQDIDao {
+BaseApplicationReferenceDao.Find = new DaoQueryDecorators();
+BaseApplicationReferenceDao.FindOne = new DaoQueryDecorators();
+BaseApplicationReferenceDao.Search = new DaoQueryDecorators();
+BaseApplicationReferenceDao.SearchOne = new DaoQueryDecorators();
+export class BaseApplicationRelationDao extends SQDIDao {
     constructor() {
         super(1);
     }
@@ -152,11 +152,11 @@ export class BaseSchemaRelationDao extends SQDIDao {
         return duoDiSet(1);
     }
 }
-BaseSchemaRelationDao.Find = new DaoQueryDecorators();
-BaseSchemaRelationDao.FindOne = new DaoQueryDecorators();
-BaseSchemaRelationDao.Search = new DaoQueryDecorators();
-BaseSchemaRelationDao.SearchOne = new DaoQueryDecorators();
-export class BaseSchemaRelationColumnDao extends SQDIDao {
+BaseApplicationRelationDao.Find = new DaoQueryDecorators();
+BaseApplicationRelationDao.FindOne = new DaoQueryDecorators();
+BaseApplicationRelationDao.Search = new DaoQueryDecorators();
+BaseApplicationRelationDao.SearchOne = new DaoQueryDecorators();
+export class BaseApplicationRelationColumnDao extends SQDIDao {
     constructor() {
         super(0);
     }
@@ -167,11 +167,11 @@ export class BaseSchemaRelationColumnDao extends SQDIDao {
         return duoDiSet(0);
     }
 }
-BaseSchemaRelationColumnDao.Find = new DaoQueryDecorators();
-BaseSchemaRelationColumnDao.FindOne = new DaoQueryDecorators();
-BaseSchemaRelationColumnDao.Search = new DaoQueryDecorators();
-BaseSchemaRelationColumnDao.SearchOne = new DaoQueryDecorators();
-export class BaseSchemaVersionDao extends SQDIDao {
+BaseApplicationRelationColumnDao.Find = new DaoQueryDecorators();
+BaseApplicationRelationColumnDao.FindOne = new DaoQueryDecorators();
+BaseApplicationRelationColumnDao.Search = new DaoQueryDecorators();
+BaseApplicationRelationColumnDao.SearchOne = new DaoQueryDecorators();
+export class BaseApplicationVersionDao extends SQDIDao {
     constructor() {
         super(8);
     }
@@ -182,8 +182,8 @@ export class BaseSchemaVersionDao extends SQDIDao {
         return duoDiSet(8);
     }
 }
-BaseSchemaVersionDao.Find = new DaoQueryDecorators();
-BaseSchemaVersionDao.FindOne = new DaoQueryDecorators();
-BaseSchemaVersionDao.Search = new DaoQueryDecorators();
-BaseSchemaVersionDao.SearchOne = new DaoQueryDecorators();
+BaseApplicationVersionDao.Find = new DaoQueryDecorators();
+BaseApplicationVersionDao.FindOne = new DaoQueryDecorators();
+BaseApplicationVersionDao.Search = new DaoQueryDecorators();
+BaseApplicationVersionDao.SearchOne = new DaoQueryDecorators();
 //# sourceMappingURL=baseDaos.js.map

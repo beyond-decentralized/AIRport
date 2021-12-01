@@ -29,8 +29,8 @@ export class SQLUpdate
 		dialect: SQLDialect,
 		context: IFuelHydrantContext,
 	) {
-		super(context.ioc.airDb.schemas[jsonUpdate.U.si].currentVersion[0]
-			.schemaVersion.entities[jsonUpdate.U.ti], dialect, context)
+		super(context.ioc.airDb.applications[jsonUpdate.U.si].currentVersion[0]
+			.applicationVersion.entities[jsonUpdate.U.ti], dialect, context)
 	}
 
 	toSQL(

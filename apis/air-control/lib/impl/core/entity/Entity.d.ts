@@ -9,7 +9,7 @@ import { IEntityDatabaseFacade } from '../../../lingo/core/repository/EntityData
 import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery';
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
-import { ISchemaUtils } from '../../../lingo/utils/SchemaUtils';
+import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils';
 import { FieldColumnAliases } from './Aliases';
 /**
  * Created by Papa on 4/21/2016.
@@ -18,7 +18,7 @@ export interface IQEntityInternalConstructor<T> {
     entityConstructor: {
         new (...args: any[]): any;
     };
-    schemaHash: string;
+    applicationHash: string;
     entityIndex: number;
     new <IQE extends IQEntityInternal<T>>(...args: any[]): IQE;
 }
@@ -55,7 +55,7 @@ export declare class QEntityDriver<IEntity> implements IQEntityDriver<IEntity> {
     private entityRelationMap;
     private oneToManyConfigMap;
     constructor(dbEntity: DbEntity, fromClausePosition: number[], dbRelation: DbRelation, joinType: JoinType, qEntity: IQEntityInternal<IEntity>);
-    getInstance(airDb: IAirportDatabase, schemaUtils: ISchemaUtils): IQEntityInternal<IEntity>;
+    getInstance(airDb: IAirportDatabase, applicationUtils: IApplicationUtils): IQEntityInternal<IEntity>;
     getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation;
     getJoinRelationJson(jsonRelation: JSONJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONJoinRelation;
     getEntityRelationJson(jsonRelation: JSONEntityRelation): JSONEntityRelation;
@@ -71,7 +71,7 @@ export interface IQTreeDriver<T> extends IQEntityDriver<T> {
 }
 export declare class QTreeDriver<IEntity> extends QEntityDriver<IEntity> implements IQTreeDriver<IEntity> {
     subQuery: RawTreeQuery<any>;
-    getInstance(airDb: IAirportDatabase, schemaUtils: ISchemaUtils): IQEntityInternal<IEntity>;
+    getInstance(airDb: IAirportDatabase, applicationUtils: IApplicationUtils): IQEntityInternal<IEntity>;
     getJoinRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONViewJoinRelation;
     getRootRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONViewJoinRelation;
 }

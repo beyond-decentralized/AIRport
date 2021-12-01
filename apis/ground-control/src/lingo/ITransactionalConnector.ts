@@ -1,8 +1,5 @@
 import { IContext } from '@airport/di'
 import { Observable } from 'rxjs'
-import { AIRepository } from './AIRepositoryEntities'
-import { DistributionStrategy } from './data/DistributionStrategy'
-import { PlatformType } from './data/PatformType'
 import { IAbstractQueryContext } from './query/AbstractQueryContext'
 import { PortableQuery } from './query/PortableQuery'
 import { ISaveResult } from './query/SaveResult'

@@ -15,7 +15,7 @@ export * from './api/Api';
 export * from './api/ApiOperation'
 export * from './api/ApiRegistry'
 export * from './api/ApiValidator'
-export * from './api/JsonSchemaWithApi'
+export * from './api/JsonApplicationWithApi'
 export * from './Duo';
 export * from './EntityDatabaseFacade';
 export * from './Selector';

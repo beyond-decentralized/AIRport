@@ -4,7 +4,7 @@ export var SyncPriority;
     SyncPriority["VITAL"] = "VITAL";
     // Framework updates
     SyncPriority["CRITICAL"] = "CRITICAL";
-    // Application/Schema Updates
+    // Application/Application Updates
     SyncPriority["HIGH"] = "HIGH";
     SyncPriority["ABOVE_NORMAL"] = "ABOVE_NORMAL";
     SyncPriority["NORMAL"] = "NORMAL";

@@ -7,7 +7,7 @@ import {
 	IQueryFacade,
 	IQueryUtils,
 	IRelationManager,
-	ISchemaUtils,
+	IApplicationUtils,
 	Q_METADATA_UTILS,
 	QUERY_FACADE,
 	QUERY_UTILS,
@@ -73,7 +73,7 @@ export class IocOperationContext
 	queryUtils: IQueryUtils
 	relationManager: IRelationManager
 	repositoryManager: IRepositoryManager
-	schemaUtils: ISchemaUtils
+	applicationUtils: IApplicationUtils
 	storeDriver: IStoreDriver
 	structuralEntityValidator: IStructuralEntityValidator
 	transactionalServer: ITransactionalServer
@@ -86,7 +86,7 @@ export class IocOperationContext
 			entityGraphReconstructor, entityStateManager, fieldUtils,
 			insertManager, metadataUtils, operationManager, queryFacade,
 			queryManager, queryUtils, relationManager, repositoryManager,
-			schemaUtils, storeDriver, structuralEntityValidator, transactionalServer,
+			applicationUtils, storeDriver, structuralEntityValidator, transactionalServer,
 			updateManager]
 			= await DI.db()
 				.get(
@@ -113,7 +113,7 @@ export class IocOperationContext
 		context.queryUtils = queryUtils
 		context.relationManager = relationManager
 		context.repositoryManager = repositoryManager
-		context.schemaUtils = schemaUtils
+		context.applicationUtils = applicationUtils
 		context.storeDriver = storeDriver
 		context.structuralEntityValidator = structuralEntityValidator
 		context.transactionalServer = transactionalServer
@@ -126,7 +126,7 @@ export class IocOperationContext
 		const [airDb, cascadeGraphVerifier, deleteManager, dependencyGraphResolver,
 			entityGraphReconstructor, entityStateManager, fieldUtils,
 			insertManager, metadataUtils, operationManager, queryFacade,
-			queryManager, queryUtils, relationManager, schemaUtils, storeDriver,
+			queryManager, queryUtils, relationManager, applicationUtils, storeDriver,
 			structuralEntityValidator, transactionalServer, updateManager]
 			= DI.db()
 				.getSync(
@@ -152,7 +152,7 @@ export class IocOperationContext
 		context.queryManager = queryManager
 		context.queryUtils = queryUtils
 		context.relationManager = relationManager
-		context.schemaUtils = schemaUtils
+		context.applicationUtils = applicationUtils
 		context.storeDriver = storeDriver
 		context.structuralEntityValidator = structuralEntityValidator
 		context.transactionalServer = transactionalServer
@@ -167,7 +167,7 @@ export class IocOperationContext
 			|| !context.entityStateManager || !context.fieldUtils || !context.insertManager
 			|| !context.metadataUtils || !context.operationManager || !context.queryFacade
 			|| !context.queryManager || !context.queryUtils || !context.relationManager
-			|| !context.schemaUtils || !context.storeDriver
+			|| !context.applicationUtils || !context.storeDriver
 			|| !context.structuralEntityValidator || !context.transactionalServer
 			|| !context.updateManager) {
 			await IocOperationContext.init(context)
@@ -182,7 +182,7 @@ export class IocOperationContext
 			|| !context.entityStateManager || !context.fieldUtils || !context.insertManager
 			|| !context.metadataUtils || !context.operationManager || !context.queryFacade
 			|| !context.queryManager || !context.queryUtils || !context.relationManager
-			|| !context.schemaUtils || !context.storeDriver
+			|| !context.applicationUtils || !context.storeDriver
 			|| !context.structuralEntityValidator || !context.transactionalServer
 			|| !context.updateManager) {
 			IocOperationContext.initSync(context)

@@ -1,0 +1,1 @@
+{"version":3,"file":"ApplicationApi.d.ts","sourceRoot":"","sources":["../../src/api/ApplicationApi.ts"],"names":[],"mappings":"AAIA,MAAM,WAAW,eAAe;IAE5B,2BAA2B,IAAI,OAAO,CAAC,IAAI,CAAC,CAAA;CAE/C;AAED,qBAAa,cACT,YAAW,eAAe;IAGpB,2BAA2B,IAAI,OAAO,CAAC,IAAI,CAAC;CAGrD"}

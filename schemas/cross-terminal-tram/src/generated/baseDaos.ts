@@ -52,18 +52,18 @@ import {
 	QRepoTransBlockResponseStage,
 } from './repositoryTransactionBlock/qrepotransblockresponsestage';
 import {
-	IRepoTransBlockSchemaToChange,
-} from './repositoryTransactionBlock/repotransblockschematochange';
+	IRepoTransBlockApplicationToChange,
+} from './repositoryTransactionBlock/repotransblockapplicationtochange';
 import {
-	RepoTransBlockSchemaToChangeESelect,
-	RepoTransBlockSchemaToChangeECreateColumns,
-	RepoTransBlockSchemaToChangeECreateProperties,
-	RepoTransBlockSchemaToChangeEUpdateColumns,
-	RepoTransBlockSchemaToChangeEUpdateProperties,
-	RepoTransBlockSchemaToChangeEId,
-	RepoTransBlockSchemaToChangeGraph,
-	QRepoTransBlockSchemaToChange,
-} from './repositoryTransactionBlock/qrepotransblockschematochange';
+	RepoTransBlockApplicationToChangeESelect,
+	RepoTransBlockApplicationToChangeECreateColumns,
+	RepoTransBlockApplicationToChangeECreateProperties,
+	RepoTransBlockApplicationToChangeEUpdateColumns,
+	RepoTransBlockApplicationToChangeEUpdateProperties,
+	RepoTransBlockApplicationToChangeEId,
+	RepoTransBlockApplicationToChangeGraph,
+	QRepoTransBlockApplicationToChange,
+} from './repositoryTransactionBlock/qrepotransblockapplicationtochange';
 import {
 	IRepositoryTransactionBlock,
 } from './repositoryTransactionBlock/repositorytransactionblock';
@@ -240,10 +240,10 @@ import {
 import {
 	Q,
 	duoDiSet,
-} from './qSchema';
+} from './qApplication';
 
 
-// Schema Q object Dependency Injection readiness detection Dao
+// Application Q object Dependency Injection readiness detection Dao
 export class SQDIDao<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
@@ -381,22 +381,22 @@ export class BaseRepoTransBlockResponseStageDao
 }
 
 
-export interface IBaseRepoTransBlockSchemaToChangeDao
-  extends IDao<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateColumns, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeGraph, QRepoTransBlockSchemaToChange> {
+export interface IBaseRepoTransBlockApplicationToChangeDao
+  extends IDao<IRepoTransBlockApplicationToChange, RepoTransBlockApplicationToChangeESelect, RepoTransBlockApplicationToChangeECreateProperties, RepoTransBlockApplicationToChangeEUpdateColumns, RepoTransBlockApplicationToChangeEUpdateProperties, RepoTransBlockApplicationToChangeEId, RepoTransBlockApplicationToChangeGraph, QRepoTransBlockApplicationToChange> {
 }
 
-export class BaseRepoTransBlockSchemaToChangeDao
-  extends SQDIDao<IRepoTransBlockSchemaToChange, RepoTransBlockSchemaToChangeESelect, RepoTransBlockSchemaToChangeECreateProperties, RepoTransBlockSchemaToChangeEUpdateColumns, RepoTransBlockSchemaToChangeEUpdateProperties, RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeGraph, QRepoTransBlockSchemaToChange>
-	implements IBaseRepoTransBlockSchemaToChangeDao {
+export class BaseRepoTransBlockApplicationToChangeDao
+  extends SQDIDao<IRepoTransBlockApplicationToChange, RepoTransBlockApplicationToChangeESelect, RepoTransBlockApplicationToChangeECreateProperties, RepoTransBlockApplicationToChangeEUpdateColumns, RepoTransBlockApplicationToChangeEUpdateProperties, RepoTransBlockApplicationToChangeEId, RepoTransBlockApplicationToChangeGraph, QRepoTransBlockApplicationToChange>
+	implements IBaseRepoTransBlockApplicationToChangeDao {
 	
-	static Find      = new DaoQueryDecorators<RepoTransBlockSchemaToChangeESelect>();
-	static FindOne   = new DaoQueryDecorators<RepoTransBlockSchemaToChangeESelect>();
-	static Search    = new DaoQueryDecorators<RepoTransBlockSchemaToChangeESelect>();
-	static SearchOne = new DaoQueryDecorators<RepoTransBlockSchemaToChangeESelect>();
+	static Find      = new DaoQueryDecorators<RepoTransBlockApplicationToChangeESelect>();
+	static FindOne   = new DaoQueryDecorators<RepoTransBlockApplicationToChangeESelect>();
+	static Search    = new DaoQueryDecorators<RepoTransBlockApplicationToChangeESelect>();
+	static SearchOne = new DaoQueryDecorators<RepoTransBlockApplicationToChangeESelect>();
 	static Save(
-		config: RepoTransBlockSchemaToChangeGraph
+		config: RepoTransBlockApplicationToChangeGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<RepoTransBlockSchemaToChangeGraph>(config);
+		return Dao.BaseSave<RepoTransBlockApplicationToChangeGraph>(config);
   }
 
 	static diSet(): boolean {

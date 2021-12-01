@@ -1,4 +1,4 @@
-import { ISchemaUtils } from '@airport/air-control'
+import { IApplicationUtils } from '@airport/air-control'
 import {
 	IQueryResultsSerializer,
 	QUERY_RESULTS_SERIALIZER
@@ -29,7 +29,7 @@ export class QueryResultsSerializer
 		entity: T,
 		dbEntity: DbEntity,
 		entityStateManager: IEntityStateManager,
-		schemaUtils: ISchemaUtils,
+		applicationUtils: IApplicationUtils,
 	): T {
 		const operation: ISerializableOperation = {
 			lookupTable: [],
@@ -39,10 +39,10 @@ export class QueryResultsSerializer
 		let serializedEntity
 		if (entity instanceof Array) {
 			serializedEntity = <any><E[]>entity.map(anEntity => this.doSerialize(
-				anEntity, dbEntity, operation, entityStateManager, schemaUtils))
+				anEntity, dbEntity, operation, entityStateManager, applicationUtils))
 		} else {
 			serializedEntity = this.doSerialize(
-				entity, dbEntity, operation, entityStateManager, schemaUtils)
+				entity, dbEntity, operation, entityStateManager, applicationUtils)
 		}
 
 		for (let i = 1; i < operation.lookupTable.length; i++) {
@@ -57,7 +57,7 @@ export class QueryResultsSerializer
 		dbEntity: DbEntity,
 		operation: ISerializableOperation,
 		entityStateManager: IEntityStateManager,
-		schemaUtils: ISchemaUtils,
+		applicationUtils: IApplicationUtils,
 	): E {
 		// TODO: add support for non-create operations
 		let operationUniqueId = entityStateManager.getOperationUniqueId(entity)
@@ -77,7 +77,7 @@ export class QueryResultsSerializer
 
 		for (const dbProperty of dbEntity.properties) {
 			let property = entity[dbProperty.name]
-			if (schemaUtils.isEmpty(property)) {
+			if (applicationUtils.isEmpty(property)) {
 				continue
 			}
 
@@ -87,11 +87,11 @@ export class QueryResultsSerializer
 				if (property instanceof Array) {
 					propertyCopy = property.map(manyObject => {
 						this.doSerialize(manyObject, dbRelation.relationEntity,
-							operation, entityStateManager, schemaUtils)
+							operation, entityStateManager, applicationUtils)
 					})
 				} else {
 					propertyCopy = this.doSerialize(property, dbRelation.relationEntity,
-						operation, entityStateManager, schemaUtils)
+						operation, entityStateManager, applicationUtils)
 				}
 			} else {
 				switch (dbProperty.propertyColumns[0].column.type) {
@@ -123,7 +123,7 @@ export class QueryResultsSerializer
 						propertyCopy = property
 						break;
 					default:
-						throw new Error(`Unsupported data type for property ${dbEntity.schemaVersion.schema.name}.${dbEntity.name}.${dbProperty.name}`)
+						throw new Error(`Unsupported data type for property ${dbEntity.applicationVersion.application.name}.${dbEntity.name}.${dbProperty.name}`)
 				}
 			}
 			entityCopy[dbProperty.name] = propertyCopy

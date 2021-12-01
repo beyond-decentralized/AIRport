@@ -9,7 +9,7 @@ import {
 	JSONBaseOperation
 } from '@airport/ground-control'
 import {
-	QSchema
+	QApplication
 } from '@airport/airspace'
 import {
 	QTerminal,
@@ -115,24 +115,24 @@ export class ActorDao
 		applicationSignature: ApplicationSignature
 	): Promise<IActor> {
 		let act: QActor
-		let schema: QSchema
+		let application: QApplication
 		let terminal: QTerminal
 		let user: QUser
 		return await this.db.findOne.graph({
 			select: {
 				id: Y,
-				schema: {},
+				application: {},
 				terminal: {},
 				user: {},
 				uuId: Y
 			},
 			from: [
 				act = Q.Actor,
-				schema = act.schema.innerJoin(),
+				application = act.application.innerJoin(),
 				terminal = act.terminal.leftJoin(),
 				user = act.user.leftJoin()
 			],
-			where: schema.signature.equals(applicationSignature)
+			where: application.signature.equals(applicationSignature)
 		})
 	}
 

@@ -1,10 +1,7 @@
 import { IEntityContext, IQueryContext } from '@airport/air-control'
 import { IContext } from '@airport/di'
 import {
-	AIRepository,
-	DistributionStrategy,
 	ISaveResult,
-	PlatformType,
 	PortableQuery
 } from '@airport/ground-control'
 import { Observable } from 'rxjs'

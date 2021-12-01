@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
 	IDomain,
-} from './schema/domain';
+} from './application/domain';
 import {
 	DomainESelect,
 	DomainECreateColumns,
@@ -11,150 +11,150 @@ import {
 	DomainEId,
 	DomainGraph,
 	QDomain,
-} from './schema/qdomain';
+} from './application/qdomain';
 import {
-	ISchema,
-} from './schema/schema';
+	IApplication,
+} from './application/application';
 import {
-	SchemaESelect,
-	SchemaECreateColumns,
-	SchemaECreateProperties,
-	SchemaEUpdateColumns,
-	SchemaEUpdateProperties,
-	SchemaEId,
-	SchemaGraph,
-	QSchema,
-} from './schema/qschema';
+	ApplicationESelect,
+	ApplicationECreateColumns,
+	ApplicationECreateProperties,
+	ApplicationEUpdateColumns,
+	ApplicationEUpdateProperties,
+	ApplicationEId,
+	ApplicationGraph,
+	QApplication,
+} from './application/qapplication';
 import {
-	ISchemaColumn,
-} from './schema/schemacolumn';
+	IApplicationColumn,
+} from './application/applicationcolumn';
 import {
-	SchemaColumnESelect,
-	SchemaColumnECreateColumns,
-	SchemaColumnECreateProperties,
-	SchemaColumnEUpdateColumns,
-	SchemaColumnEUpdateProperties,
-	SchemaColumnEId,
-	SchemaColumnGraph,
-	QSchemaColumn,
-} from './schema/qschemacolumn';
+	ApplicationColumnESelect,
+	ApplicationColumnECreateColumns,
+	ApplicationColumnECreateProperties,
+	ApplicationColumnEUpdateColumns,
+	ApplicationColumnEUpdateProperties,
+	ApplicationColumnEId,
+	ApplicationColumnGraph,
+	QApplicationColumn,
+} from './application/qapplicationcolumn';
 import {
-	ISchemaCurrentVersion,
-} from './schema/schemacurrentversion';
+	IApplicationCurrentVersion,
+} from './application/applicationcurrentversion';
 import {
-	SchemaCurrentVersionESelect,
-	SchemaCurrentVersionECreateColumns,
-	SchemaCurrentVersionECreateProperties,
-	SchemaCurrentVersionEUpdateColumns,
-	SchemaCurrentVersionEUpdateProperties,
-	SchemaCurrentVersionEId,
-	SchemaCurrentVersionGraph,
-	QSchemaCurrentVersion,
-} from './schema/qschemacurrentversion';
+	ApplicationCurrentVersionESelect,
+	ApplicationCurrentVersionECreateColumns,
+	ApplicationCurrentVersionECreateProperties,
+	ApplicationCurrentVersionEUpdateColumns,
+	ApplicationCurrentVersionEUpdateProperties,
+	ApplicationCurrentVersionEId,
+	ApplicationCurrentVersionGraph,
+	QApplicationCurrentVersion,
+} from './application/qapplicationcurrentversion';
 import {
-	ISchemaEntity,
-} from './schema/schemaentity';
+	IApplicationEntity,
+} from './application/applicationentity';
 import {
-	SchemaEntityESelect,
-	SchemaEntityECreateColumns,
-	SchemaEntityECreateProperties,
-	SchemaEntityEUpdateColumns,
-	SchemaEntityEUpdateProperties,
-	SchemaEntityEId,
-	SchemaEntityGraph,
-	QSchemaEntity,
-} from './schema/qschemaentity';
+	ApplicationEntityESelect,
+	ApplicationEntityECreateColumns,
+	ApplicationEntityECreateProperties,
+	ApplicationEntityEUpdateColumns,
+	ApplicationEntityEUpdateProperties,
+	ApplicationEntityEId,
+	ApplicationEntityGraph,
+	QApplicationEntity,
+} from './application/qapplicationentity';
 import {
-	ISchemaOperation,
-} from './schema/schemaoperation';
+	IApplicationOperation,
+} from './application/applicationoperation';
 import {
-	SchemaOperationESelect,
-	SchemaOperationECreateColumns,
-	SchemaOperationECreateProperties,
-	SchemaOperationEUpdateColumns,
-	SchemaOperationEUpdateProperties,
-	SchemaOperationEId,
-	SchemaOperationGraph,
-	QSchemaOperation,
-} from './schema/qschemaoperation';
+	ApplicationOperationESelect,
+	ApplicationOperationECreateColumns,
+	ApplicationOperationECreateProperties,
+	ApplicationOperationEUpdateColumns,
+	ApplicationOperationEUpdateProperties,
+	ApplicationOperationEId,
+	ApplicationOperationGraph,
+	QApplicationOperation,
+} from './application/qapplicationoperation';
 import {
-	ISchemaProperty,
-} from './schema/schemaproperty';
+	IApplicationProperty,
+} from './application/applicationproperty';
 import {
-	SchemaPropertyESelect,
-	SchemaPropertyECreateColumns,
-	SchemaPropertyECreateProperties,
-	SchemaPropertyEUpdateColumns,
-	SchemaPropertyEUpdateProperties,
-	SchemaPropertyEId,
-	SchemaPropertyGraph,
-	QSchemaProperty,
-} from './schema/qschemaproperty';
+	ApplicationPropertyESelect,
+	ApplicationPropertyECreateColumns,
+	ApplicationPropertyECreateProperties,
+	ApplicationPropertyEUpdateColumns,
+	ApplicationPropertyEUpdateProperties,
+	ApplicationPropertyEId,
+	ApplicationPropertyGraph,
+	QApplicationProperty,
+} from './application/qapplicationproperty';
 import {
-	ISchemaPropertyColumn,
-} from './schema/schemapropertycolumn';
+	IApplicationPropertyColumn,
+} from './application/applicationpropertycolumn';
 import {
-	SchemaPropertyColumnESelect,
-	SchemaPropertyColumnECreateColumns,
-	SchemaPropertyColumnECreateProperties,
-	SchemaPropertyColumnEUpdateColumns,
-	SchemaPropertyColumnEUpdateProperties,
-	SchemaPropertyColumnEId,
-	SchemaPropertyColumnGraph,
-	QSchemaPropertyColumn,
-} from './schema/qschemapropertycolumn';
+	ApplicationPropertyColumnESelect,
+	ApplicationPropertyColumnECreateColumns,
+	ApplicationPropertyColumnECreateProperties,
+	ApplicationPropertyColumnEUpdateColumns,
+	ApplicationPropertyColumnEUpdateProperties,
+	ApplicationPropertyColumnEId,
+	ApplicationPropertyColumnGraph,
+	QApplicationPropertyColumn,
+} from './application/qapplicationpropertycolumn';
 import {
-	ISchemaReference,
-} from './schema/schemareference';
+	IApplicationReference,
+} from './application/applicationreference';
 import {
-	SchemaReferenceESelect,
-	SchemaReferenceECreateColumns,
-	SchemaReferenceECreateProperties,
-	SchemaReferenceEUpdateColumns,
-	SchemaReferenceEUpdateProperties,
-	SchemaReferenceEId,
-	SchemaReferenceGraph,
-	QSchemaReference,
-} from './schema/qschemareference';
+	ApplicationReferenceESelect,
+	ApplicationReferenceECreateColumns,
+	ApplicationReferenceECreateProperties,
+	ApplicationReferenceEUpdateColumns,
+	ApplicationReferenceEUpdateProperties,
+	ApplicationReferenceEId,
+	ApplicationReferenceGraph,
+	QApplicationReference,
+} from './application/qapplicationreference';
 import {
-	ISchemaRelation,
-} from './schema/schemarelation';
+	IApplicationRelation,
+} from './application/applicationrelation';
 import {
-	SchemaRelationESelect,
-	SchemaRelationECreateColumns,
-	SchemaRelationECreateProperties,
-	SchemaRelationEUpdateColumns,
-	SchemaRelationEUpdateProperties,
-	SchemaRelationEId,
-	SchemaRelationGraph,
-	QSchemaRelation,
-} from './schema/qschemarelation';
+	ApplicationRelationESelect,
+	ApplicationRelationECreateColumns,
+	ApplicationRelationECreateProperties,
+	ApplicationRelationEUpdateColumns,
+	ApplicationRelationEUpdateProperties,
+	ApplicationRelationEId,
+	ApplicationRelationGraph,
+	QApplicationRelation,
+} from './application/qapplicationrelation';
 import {
-	ISchemaRelationColumn,
-} from './schema/schemarelationcolumn';
+	IApplicationRelationColumn,
+} from './application/applicationrelationcolumn';
 import {
-	SchemaRelationColumnESelect,
-	SchemaRelationColumnECreateColumns,
-	SchemaRelationColumnECreateProperties,
-	SchemaRelationColumnEUpdateColumns,
-	SchemaRelationColumnEUpdateProperties,
-	SchemaRelationColumnEId,
-	SchemaRelationColumnGraph,
-	QSchemaRelationColumn,
-} from './schema/qschemarelationcolumn';
+	ApplicationRelationColumnESelect,
+	ApplicationRelationColumnECreateColumns,
+	ApplicationRelationColumnECreateProperties,
+	ApplicationRelationColumnEUpdateColumns,
+	ApplicationRelationColumnEUpdateProperties,
+	ApplicationRelationColumnEId,
+	ApplicationRelationColumnGraph,
+	QApplicationRelationColumn,
+} from './application/qapplicationrelationcolumn';
 import {
-	ISchemaVersion,
-} from './schema/schemaversion';
+	IApplicationVersion,
+} from './application/applicationversion';
 import {
-	SchemaVersionESelect,
-	SchemaVersionECreateColumns,
-	SchemaVersionECreateProperties,
-	SchemaVersionEUpdateColumns,
-	SchemaVersionEUpdateProperties,
-	SchemaVersionEId,
-	SchemaVersionGraph,
-	QSchemaVersion,
-} from './schema/qschemaversion';
+	ApplicationVersionESelect,
+	ApplicationVersionECreateColumns,
+	ApplicationVersionECreateProperties,
+	ApplicationVersionEUpdateColumns,
+	ApplicationVersionEUpdateProperties,
+	ApplicationVersionEId,
+	ApplicationVersionGraph,
+	QApplicationVersion,
+} from './application/qapplicationversion';
 import {
 	IDao,
 	IEntityCascadeGraph,
@@ -175,10 +175,10 @@ import {
 import {
 	Q,
 	duoDiSet,
-} from './qSchema';
+} from './qApplication';
 
 
-// Schema Q object Dependency Injection readiness detection Dao
+// Application Q object Dependency Injection readiness detection Dao
 export class SQDIDao<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
@@ -232,22 +232,22 @@ export class BaseDomainDao
 }
 
 
-export interface IBaseSchemaDao
-  extends IDao<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, SchemaGraph, QSchema> {
+export interface IBaseApplicationDao
+  extends IDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> {
 }
 
-export class BaseSchemaDao
-  extends SQDIDao<ISchema, SchemaESelect, SchemaECreateProperties, SchemaEUpdateColumns, SchemaEUpdateProperties, SchemaEId, SchemaGraph, QSchema>
-	implements IBaseSchemaDao {
+export class BaseApplicationDao
+  extends SQDIDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication>
+	implements IBaseApplicationDao {
 	
-	static Find      = new DaoQueryDecorators<SchemaESelect>();
-	static FindOne   = new DaoQueryDecorators<SchemaESelect>();
-	static Search    = new DaoQueryDecorators<SchemaESelect>();
-	static SearchOne = new DaoQueryDecorators<SchemaESelect>();
+	static Find      = new DaoQueryDecorators<ApplicationESelect>();
+	static FindOne   = new DaoQueryDecorators<ApplicationESelect>();
+	static Search    = new DaoQueryDecorators<ApplicationESelect>();
+	static SearchOne = new DaoQueryDecorators<ApplicationESelect>();
 	static Save(
-		config: SchemaGraph
+		config: ApplicationGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<SchemaGraph>(config);
+		return Dao.BaseSave<ApplicationGraph>(config);
   }
 
 	static diSet(): boolean {
@@ -260,22 +260,22 @@ export class BaseSchemaDao
 }
 
 
-export interface IBaseSchemaColumnDao
-  extends IDao<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, SchemaColumnGraph, QSchemaColumn> {
+export interface IBaseApplicationColumnDao
+  extends IDao<IApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn> {
 }
 
-export class BaseSchemaColumnDao
-  extends SQDIDao<ISchemaColumn, SchemaColumnESelect, SchemaColumnECreateProperties, SchemaColumnEUpdateColumns, SchemaColumnEUpdateProperties, SchemaColumnEId, SchemaColumnGraph, QSchemaColumn>
-	implements IBaseSchemaColumnDao {
+export class BaseApplicationColumnDao
+  extends SQDIDao<IApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn>
+	implements IBaseApplicationColumnDao {
 	
-	static Find      = new DaoQueryDecorators<SchemaColumnESelect>();
-	static FindOne   = new DaoQueryDecorators<SchemaColumnESelect>();
-	static Search    = new DaoQueryDecorators<SchemaColumnESelect>();
-	static SearchOne = new DaoQueryDecorators<SchemaColumnESelect>();
+	static Find      = new DaoQueryDecorators<ApplicationColumnESelect>();
+	static FindOne   = new DaoQueryDecorators<ApplicationColumnESelect>();
+	static Search    = new DaoQueryDecorators<ApplicationColumnESelect>();
+	static SearchOne = new DaoQueryDecorators<ApplicationColumnESelect>();
 	static Save(
-		config: SchemaColumnGraph
+		config: ApplicationColumnGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<SchemaColumnGraph>(config);
+		return Dao.BaseSave<ApplicationColumnGraph>(config);
   }
 
 	static diSet(): boolean {
@@ -288,22 +288,22 @@ export class BaseSchemaColumnDao
 }
 
 
-export interface IBaseSchemaCurrentVersionDao
-  extends IDao<ISchemaCurrentVersion, SchemaCurrentVersionESelect, SchemaCurrentVersionECreateProperties, SchemaCurrentVersionEUpdateColumns, SchemaCurrentVersionEUpdateProperties, SchemaCurrentVersionEId, SchemaCurrentVersionGraph, QSchemaCurrentVersion> {
+export interface IBaseApplicationCurrentVersionDao
+  extends IDao<IApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion> {
 }
 
-export class BaseSchemaCurrentVersionDao
-  extends SQDIDao<ISchemaCurrentVersion, SchemaCurrentVersionESelect, SchemaCurrentVersionECreateProperties, SchemaCurrentVersionEUpdateColumns, SchemaCurrentVersionEUpdateProperties, SchemaCurrentVersionEId, SchemaCurrentVersionGraph, QSchemaCurrentVersion>
-	implements IBaseSchemaCurrentVersionDao {
+export class BaseApplicationCurrentVersionDao
+  extends SQDIDao<IApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion>
+	implements IBaseApplicationCurrentVersionDao {
 	
-	static Find      = new DaoQueryDecorators<SchemaCurrentVersionESelect>();
-	static FindOne   = new DaoQueryDecorators<SchemaCurrentVersionESelect>();
-	static Search    = new DaoQueryDecorators<SchemaCurrentVersionESelect>();
-	static SearchOne = new DaoQueryDecorators<SchemaCurrentVersionESelect>();
+	static Find      = new DaoQueryDecorators<ApplicationCurrentVersionESelect>();
+	static FindOne   = new DaoQueryDecorators<ApplicationCurrentVersionESelect>();
+	static Search    = new DaoQueryDecorators<ApplicationCurrentVersionESelect>();
+	static SearchOne = new DaoQueryDecorators<ApplicationCurrentVersionESelect>();
 	static Save(
-		config: SchemaCurrentVersionGraph
+		config: ApplicationCurrentVersionGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<SchemaCurrentVersionGraph>(config);
+		return Dao.BaseSave<ApplicationCurrentVersionGraph>(config);
   }
 
 	static diSet(): boolean {
@@ -316,22 +316,22 @@ export class BaseSchemaCurrentVersionDao
 }
 
 
-export interface IBaseSchemaEntityDao
-  extends IDao<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityGraph, QSchemaEntity> {
+export interface IBaseApplicationEntityDao
+  extends IDao<IApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity> {
 }
 
-export class BaseSchemaEntityDao
-  extends SQDIDao<ISchemaEntity, SchemaEntityESelect, SchemaEntityECreateProperties, SchemaEntityEUpdateColumns, SchemaEntityEUpdateProperties, SchemaEntityEId, SchemaEntityGraph, QSchemaEntity>
-	implements IBaseSchemaEntityDao {
+export class BaseApplicationEntityDao
+  extends SQDIDao<IApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity>
+	implements IBaseApplicationEntityDao {
 	
-	static Find      = new DaoQueryDecorators<SchemaEntityESelect>();
-	static FindOne   = new DaoQueryDecorators<SchemaEntityESelect>();
-	static Search    = new DaoQueryDecorators<SchemaEntityESelect>();
-	static SearchOne = new DaoQueryDecorators<SchemaEntityESelect>();
+	static Find      = new DaoQueryDecorators<ApplicationEntityESelect>();
+	static FindOne   = new DaoQueryDecorators<ApplicationEntityESelect>();
+	static Search    = new DaoQueryDecorators<ApplicationEntityESelect>();
+	static SearchOne = new DaoQueryDecorators<ApplicationEntityESelect>();
 	static Save(
-		config: SchemaEntityGraph
+		config: ApplicationEntityGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<SchemaEntityGraph>(config);
+		return Dao.BaseSave<ApplicationEntityGraph>(config);
   }
 
 	static diSet(): boolean {
@@ -344,22 +344,22 @@ export class BaseSchemaEntityDao
 }
 
 
-export interface IBaseSchemaOperationDao
-  extends IDao<ISchemaOperation, SchemaOperationESelect, SchemaOperationECreateProperties, SchemaOperationEUpdateColumns, SchemaOperationEUpdateProperties, SchemaOperationEId, SchemaOperationGraph, QSchemaOperation> {
+export interface IBaseApplicationOperationDao
+  extends IDao<IApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation> {
 }
 
-export class BaseSchemaOperationDao
-  extends SQDIDao<ISchemaOperation, SchemaOperationESelect, SchemaOperationECreateProperties, SchemaOperationEUpdateColumns, SchemaOperationEUpdateProperties, SchemaOperationEId, SchemaOperationGraph, QSchemaOperation>
-	implements IBaseSchemaOperationDao {
+export class BaseApplicationOperationDao
+  extends SQDIDao<IApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation>
+	implements IBaseApplicationOperationDao {
 	
-	static Find      = new DaoQueryDecorators<SchemaOperationESelect>();
-	static FindOne   = new DaoQueryDecorators<SchemaOperationESelect>();
-	static Search    = new DaoQueryDecorators<SchemaOperationESelect>();
-	static SearchOne = new DaoQueryDecorators<SchemaOperationESelect>();
+	static Find      = new DaoQueryDecorators<ApplicationOperationESelect>();
+	static FindOne   = new DaoQueryDecorators<ApplicationOperationESelect>();
+	static Search    = new DaoQueryDecorators<ApplicationOperationESelect>();
+	static SearchOne = new DaoQueryDecorators<ApplicationOperationESelect>();
 	static Save(
-		config: SchemaOperationGraph
+		config: ApplicationOperationGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<SchemaOperationGraph>(config);
+		return Dao.BaseSave<ApplicationOperationGraph>(config);
   }
 
 	static diSet(): boolean {
@@ -372,22 +372,22 @@ export class BaseSchemaOperationDao
 }
 
 
-export interface IBaseSchemaPropertyDao
-  extends IDao<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, SchemaPropertyGraph, QSchemaProperty> {
+export interface IBaseApplicationPropertyDao
+  extends IDao<IApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty> {
 }
 
-export class BaseSchemaPropertyDao
-  extends SQDIDao<ISchemaProperty, SchemaPropertyESelect, SchemaPropertyECreateProperties, SchemaPropertyEUpdateColumns, SchemaPropertyEUpdateProperties, SchemaPropertyEId, SchemaPropertyGraph, QSchemaProperty>
-	implements IBaseSchemaPropertyDao {
+export class BaseApplicationPropertyDao
+  extends SQDIDao<IApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty>
+	implements IBaseApplicationPropertyDao {
 	
-	static Find      = new DaoQueryDecorators<SchemaPropertyESelect>();
-	static FindOne   = new DaoQueryDecorators<SchemaPropertyESelect>();
-	static Search    = new DaoQueryDecorators<SchemaPropertyESelect>();
-	static SearchOne = new DaoQueryDecorators<SchemaPropertyESelect>();
+	static Find      = new DaoQueryDecorators<ApplicationPropertyESelect>();
+	static FindOne   = new DaoQueryDecorators<ApplicationPropertyESelect>();
+	static Search    = new DaoQueryDecorators<ApplicationPropertyESelect>();
+	static SearchOne = new DaoQueryDecorators<ApplicationPropertyESelect>();
 	static Save(
-		config: SchemaPropertyGraph
+		config: ApplicationPropertyGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<SchemaPropertyGraph>(config);
+		return Dao.BaseSave<ApplicationPropertyGraph>(config);
   }
 
 	static diSet(): boolean {
@@ -400,22 +400,22 @@ export class BaseSchemaPropertyDao
 }
 
 
-export interface IBaseSchemaPropertyColumnDao
-  extends IDao<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, SchemaPropertyColumnGraph, QSchemaPropertyColumn> {
+export interface IBaseApplicationPropertyColumnDao
+  extends IDao<IApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn> {
 }
 
-export class BaseSchemaPropertyColumnDao
-  extends SQDIDao<ISchemaPropertyColumn, SchemaPropertyColumnESelect, SchemaPropertyColumnECreateProperties, SchemaPropertyColumnEUpdateColumns, SchemaPropertyColumnEUpdateProperties, SchemaPropertyColumnEId, SchemaPropertyColumnGraph, QSchemaPropertyColumn>
-	implements IBaseSchemaPropertyColumnDao {
+export class BaseApplicationPropertyColumnDao
+  extends SQDIDao<IApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn>
+	implements IBaseApplicationPropertyColumnDao {
 	
-	static Find      = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
-	static FindOne   = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
-	static Search    = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
-	static SearchOne = new DaoQueryDecorators<SchemaPropertyColumnESelect>();
+	static Find      = new DaoQueryDecorators<ApplicationPropertyColumnESelect>();
+	static FindOne   = new DaoQueryDecorators<ApplicationPropertyColumnESelect>();
+	static Search    = new DaoQueryDecorators<ApplicationPropertyColumnESelect>();
+	static SearchOne = new DaoQueryDecorators<ApplicationPropertyColumnESelect>();
 	static Save(
-		config: SchemaPropertyColumnGraph
+		config: ApplicationPropertyColumnGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<SchemaPropertyColumnGraph>(config);
+		return Dao.BaseSave<ApplicationPropertyColumnGraph>(config);
   }
 
 	static diSet(): boolean {
@@ -428,22 +428,22 @@ export class BaseSchemaPropertyColumnDao
 }
 
 
-export interface IBaseSchemaReferenceDao
-  extends IDao<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, SchemaReferenceGraph, QSchemaReference> {
+export interface IBaseApplicationReferenceDao
+  extends IDao<IApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference> {
 }
 
-export class BaseSchemaReferenceDao
-  extends SQDIDao<ISchemaReference, SchemaReferenceESelect, SchemaReferenceECreateProperties, SchemaReferenceEUpdateColumns, SchemaReferenceEUpdateProperties, SchemaReferenceEId, SchemaReferenceGraph, QSchemaReference>
-	implements IBaseSchemaReferenceDao {
+export class BaseApplicationReferenceDao
+  extends SQDIDao<IApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference>
+	implements IBaseApplicationReferenceDao {
 	
-	static Find      = new DaoQueryDecorators<SchemaReferenceESelect>();
-	static FindOne   = new DaoQueryDecorators<SchemaReferenceESelect>();
-	static Search    = new DaoQueryDecorators<SchemaReferenceESelect>();
-	static SearchOne = new DaoQueryDecorators<SchemaReferenceESelect>();
+	static Find      = new DaoQueryDecorators<ApplicationReferenceESelect>();
+	static FindOne   = new DaoQueryDecorators<ApplicationReferenceESelect>();
+	static Search    = new DaoQueryDecorators<ApplicationReferenceESelect>();
+	static SearchOne = new DaoQueryDecorators<ApplicationReferenceESelect>();
 	static Save(
-		config: SchemaReferenceGraph
+		config: ApplicationReferenceGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<SchemaReferenceGraph>(config);
+		return Dao.BaseSave<ApplicationReferenceGraph>(config);
   }
 
 	static diSet(): boolean {
@@ -456,22 +456,22 @@ export class BaseSchemaReferenceDao
 }
 
 
-export interface IBaseSchemaRelationDao
-  extends IDao<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, SchemaRelationGraph, QSchemaRelation> {
+export interface IBaseApplicationRelationDao
+  extends IDao<IApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation> {
 }
 
-export class BaseSchemaRelationDao
-  extends SQDIDao<ISchemaRelation, SchemaRelationESelect, SchemaRelationECreateProperties, SchemaRelationEUpdateColumns, SchemaRelationEUpdateProperties, SchemaRelationEId, SchemaRelationGraph, QSchemaRelation>
-	implements IBaseSchemaRelationDao {
+export class BaseApplicationRelationDao
+  extends SQDIDao<IApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation>
+	implements IBaseApplicationRelationDao {
 	
-	static Find      = new DaoQueryDecorators<SchemaRelationESelect>();
-	static FindOne   = new DaoQueryDecorators<SchemaRelationESelect>();
-	static Search    = new DaoQueryDecorators<SchemaRelationESelect>();
-	static SearchOne = new DaoQueryDecorators<SchemaRelationESelect>();
+	static Find      = new DaoQueryDecorators<ApplicationRelationESelect>();
+	static FindOne   = new DaoQueryDecorators<ApplicationRelationESelect>();
+	static Search    = new DaoQueryDecorators<ApplicationRelationESelect>();
+	static SearchOne = new DaoQueryDecorators<ApplicationRelationESelect>();
 	static Save(
-		config: SchemaRelationGraph
+		config: ApplicationRelationGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<SchemaRelationGraph>(config);
+		return Dao.BaseSave<ApplicationRelationGraph>(config);
   }
 
 	static diSet(): boolean {
@@ -484,22 +484,22 @@ export class BaseSchemaRelationDao
 }
 
 
-export interface IBaseSchemaRelationColumnDao
-  extends IDao<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, SchemaRelationColumnGraph, QSchemaRelationColumn> {
+export interface IBaseApplicationRelationColumnDao
+  extends IDao<IApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn> {
 }
 
-export class BaseSchemaRelationColumnDao
-  extends SQDIDao<ISchemaRelationColumn, SchemaRelationColumnESelect, SchemaRelationColumnECreateProperties, SchemaRelationColumnEUpdateColumns, SchemaRelationColumnEUpdateProperties, SchemaRelationColumnEId, SchemaRelationColumnGraph, QSchemaRelationColumn>
-	implements IBaseSchemaRelationColumnDao {
+export class BaseApplicationRelationColumnDao
+  extends SQDIDao<IApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn>
+	implements IBaseApplicationRelationColumnDao {
 	
-	static Find      = new DaoQueryDecorators<SchemaRelationColumnESelect>();
-	static FindOne   = new DaoQueryDecorators<SchemaRelationColumnESelect>();
-	static Search    = new DaoQueryDecorators<SchemaRelationColumnESelect>();
-	static SearchOne = new DaoQueryDecorators<SchemaRelationColumnESelect>();
+	static Find      = new DaoQueryDecorators<ApplicationRelationColumnESelect>();
+	static FindOne   = new DaoQueryDecorators<ApplicationRelationColumnESelect>();
+	static Search    = new DaoQueryDecorators<ApplicationRelationColumnESelect>();
+	static SearchOne = new DaoQueryDecorators<ApplicationRelationColumnESelect>();
 	static Save(
-		config: SchemaRelationColumnGraph
+		config: ApplicationRelationColumnGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<SchemaRelationColumnGraph>(config);
+		return Dao.BaseSave<ApplicationRelationColumnGraph>(config);
   }
 
 	static diSet(): boolean {
@@ -512,22 +512,22 @@ export class BaseSchemaRelationColumnDao
 }
 
 
-export interface IBaseSchemaVersionDao
-  extends IDao<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, SchemaVersionGraph, QSchemaVersion> {
+export interface IBaseApplicationVersionDao
+  extends IDao<IApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion> {
 }
 
-export class BaseSchemaVersionDao
-  extends SQDIDao<ISchemaVersion, SchemaVersionESelect, SchemaVersionECreateProperties, SchemaVersionEUpdateColumns, SchemaVersionEUpdateProperties, SchemaVersionEId, SchemaVersionGraph, QSchemaVersion>
-	implements IBaseSchemaVersionDao {
+export class BaseApplicationVersionDao
+  extends SQDIDao<IApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion>
+	implements IBaseApplicationVersionDao {
 	
-	static Find      = new DaoQueryDecorators<SchemaVersionESelect>();
-	static FindOne   = new DaoQueryDecorators<SchemaVersionESelect>();
-	static Search    = new DaoQueryDecorators<SchemaVersionESelect>();
-	static SearchOne = new DaoQueryDecorators<SchemaVersionESelect>();
+	static Find      = new DaoQueryDecorators<ApplicationVersionESelect>();
+	static FindOne   = new DaoQueryDecorators<ApplicationVersionESelect>();
+	static Search    = new DaoQueryDecorators<ApplicationVersionESelect>();
+	static SearchOne = new DaoQueryDecorators<ApplicationVersionESelect>();
 	static Save(
-		config: SchemaVersionGraph
+		config: ApplicationVersionGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<SchemaVersionGraph>(config);
+		return Dao.BaseSave<ApplicationVersionGraph>(config);
   }
 
 	static diSet(): boolean {

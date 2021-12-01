@@ -1,5 +1,5 @@
 import { Terminal, User } from '@airport/travel-document-checkpoint';
-import { Schema } from '@airport/airspace';
+import { Application } from '@airport/airspace';
 export declare type Actor_Id = number;
 export declare type Actor_UuId = string;
 export declare class Actor {
@@ -7,6 +7,6 @@ export declare class Actor {
     uuId: Actor_UuId;
     user: User;
     terminal: Terminal;
-    schema: Schema;
+    application: Application;
 }
 //# sourceMappingURL=Actor.d.ts.map

@@ -25,8 +25,8 @@ export class SQLInsertValues
 		context: IFuelHydrantContext
 		// repository?: IRepository
 	) {
-		super(context.ioc.airDb.schemas[jsonInsertValues.II.si].currentVersion[0]
-			.schemaVersion.entities[jsonInsertValues.II.ti], dialect,
+		super(context.ioc.airDb.applications[jsonInsertValues.II.si].currentVersion[0]
+			.applicationVersion.entities[jsonInsertValues.II.ti], dialect,
 			context)
 	}
 

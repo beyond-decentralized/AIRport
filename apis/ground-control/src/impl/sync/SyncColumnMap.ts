@@ -1,4 +1,4 @@
-import {TableIndex} from "../../lingo/schema/Entity";
+import {TableIndex} from "../../lingo/application/Entity";
 import {ColumnMap}  from "../query/ColumnMap";
 
 export class SyncColumnMap extends ColumnMap {

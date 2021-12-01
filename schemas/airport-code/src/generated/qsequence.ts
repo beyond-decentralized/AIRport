@@ -54,7 +54,7 @@ export interface SequenceESelect
 export interface SequenceEId
     extends IEntityIdProperties {
 	// Id Properties
-	schemaIndex: number | IQNumberField;
+	applicationIndex: number | IQNumberField;
 	tableIndex: number | IQNumberField;
 	columnIndex: number | IQNumberField;
 
@@ -67,7 +67,7 @@ export interface SequenceEId
  */
 export interface SequenceEOptionalId {
 	// Id Properties
-	schemaIndex?: number | IQNumberField;
+	applicationIndex?: number | IQNumberField;
 	tableIndex?: number | IQNumberField;
 	columnIndex?: number | IQNumberField;
 
@@ -141,7 +141,7 @@ extends SequenceEId, SequenceEUpdateColumns {
 export interface QSequence extends IQEntity<Sequence>
 {
 	// Id Fields
-	schemaIndex: IQNumberField;
+	applicationIndex: IQNumberField;
 	tableIndex: IQNumberField;
 	columnIndex: IQNumberField;
 
@@ -161,7 +161,7 @@ export interface QSequenceQId
 {
 	
 	// Id Fields
-	schemaIndex: IQNumberField;
+	applicationIndex: IQNumberField;
 	tableIndex: IQNumberField;
 	columnIndex: IQNumberField;
 

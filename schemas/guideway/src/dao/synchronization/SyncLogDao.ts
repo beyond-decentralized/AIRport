@@ -66,7 +66,7 @@ export class SyncLogDao
 	async insertValues(
 		values: InsertSyncLog[]
 	): Promise<void> {
-		const dbEntity = Q.db.currentVersion[0].schemaVersion
+		const dbEntity = Q.db.currentVersion[0].applicationVersion
 			.entityMapByName.RealtimeSyncLog
 		let sl: QSyncLog
 

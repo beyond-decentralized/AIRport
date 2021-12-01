@@ -1,7 +1,7 @@
 
 /*
 FIXME: Last Ids are passed between framework and isolates for initialization,
-should probably switch to tracking of schemas by signature instead of an index.
+should probably switch to tracking of applications by signature instead of an index.
 */
 export interface LastIds {
     columns: number
@@ -11,6 +11,6 @@ export interface LastIds {
     propertyColumns: number
     relationColumns: number
     relations: number
-    schemas: number
-    schemaVersions: number
+    applications: number
+    applicationVersions: number
 }

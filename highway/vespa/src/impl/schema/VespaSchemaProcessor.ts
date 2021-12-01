@@ -2,21 +2,21 @@ import { QOperableField }                from '@airport/air-control';
 import { IVespaDocumentWithConstructor } from '../../lingo/model/VespaDocument';
 import { IVespaFieldWithDbInfo }         from '../../lingo/model/VespaField';
 import { ensureField }                   from '../VespaDecoratorsImpl';
-import { IVespaSchemaStore }             from './VespaSchemaStore';
+import { IVespaApplicationStore }             from './VespaApplicationStore';
 
-export interface IVespaSchemaProcessor {
+export interface IVespaApplicationProcessor {
 
 	process(
-		store: IVespaSchemaStore
+		store: IVespaApplicationStore
 	): Promise<void>
 
 }
 
-export class VespaSchemaProcessor
-	implements IVespaSchemaProcessor {
+export class VespaApplicationProcessor
+	implements IVespaApplicationProcessor {
 
 	async process(
-		store: IVespaSchemaStore
+		store: IVespaApplicationStore
 	): Promise<void> {
 		for (const documentName in store.documentMap) {
 			const document: IVespaDocumentWithConstructor

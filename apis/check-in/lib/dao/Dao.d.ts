@@ -1,4 +1,4 @@
-import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, QSchema } from '@airport/air-control';
+import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, QApplication } from '@airport/air-control';
 import { IContext } from '@airport/di';
 import { EntityId as DbEntityId, ISaveResult } from '@airport/ground-control';
 import { DaoStub } from './DaoStub';
@@ -10,7 +10,7 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     static BaseSave<EntitySelect extends IEntitySelectProperties>(config: EntitySelect): PropertyDecorator;
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE>;
     stub: DaoStub<Entity, EntityCreate>;
-    constructor(dbEntityId: DbEntityId, Q: QSchema, internal?: boolean);
+    constructor(dbEntityId: DbEntityId, Q: QApplication, internal?: boolean);
     count(context?: IContext): Promise<number>;
     exists(entityId: EntityId, context?: IContext): Promise<boolean>;
     protected repositoryId(): {

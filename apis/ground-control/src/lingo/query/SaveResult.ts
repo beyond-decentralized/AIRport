@@ -18,7 +18,7 @@ export interface ISaveRepository {
 }
 
 /**
- * Save results are needed to update application/schema isolates:
+ * Save results are needed to update application/application isolates:
  *     - created objects with new ids
  *     - trim deleted objects
  *     - notify the client if an expected update did not take place

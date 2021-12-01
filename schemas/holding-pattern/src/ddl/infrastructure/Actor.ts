@@ -13,7 +13,7 @@ import {
 	Terminal,
 	User
 } from '@airport/travel-document-checkpoint'
-import { Schema } from '@airport/airspace';
+import { Application } from '@airport/airspace';
 
 export type Actor_Id = number;
 export type Actor_UuId = string;
@@ -47,6 +47,6 @@ export class Actor {
 
 	@ManyToOne()
 	@JoinColumn({ name: "SCHEMA_INDEX", referencedColumnName: "SCHEMA_INDEX" })
-	schema: Schema
+	application: Application
 
 }

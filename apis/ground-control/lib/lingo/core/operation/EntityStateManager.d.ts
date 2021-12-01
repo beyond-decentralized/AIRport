@@ -1,4 +1,4 @@
-import { DbEntity } from "../../schema/Entity";
+import { DbEntity } from "../../application/Entity";
 export declare enum EntityState {
     CREATE = "CREATE",
     DATE = "DATE",

@@ -2,7 +2,7 @@ import {
 	DatabaseForeignKey,
 	DatabaseManyToOneElements,
 	DatabaseOneToManyElements,
-	DbSchema,
+	DbApplication,
 	EntityRelationType,
 	file,
 	property,
@@ -19,7 +19,7 @@ import {
 } from '../../parser/DocEntry';
 import { EntityCandidate } from '../../parser/EntityCandidate';
 import { globalCandidateRegistry } from '../../parser/EntityDefinitionGenerator';
-import { SchemaRelationResolver } from './SchemaRelationResolver';
+import { ApplicationRelationResolver } from './ApplicationRelationResolver';
 import { SEntity } from './SEntity';
 import {
 	SColumn,
@@ -27,13 +27,13 @@ import {
 	SRelationColumn
 } from './SProperty';
 import {
-	buildIndexedSSchema,
-	SIndexedSchema,
-	SSchema,
-	SSchemaReference
-} from './SSchema';
+	buildIndexedSApplication,
+	SIndexedApplication,
+	SApplication,
+	SApplicationReference
+} from './SApplication';
 
-export class SSchemaBuilder {
+export class SApplicationBuilder {
 
 	constructor(
 		private config: Configuration,
@@ -42,62 +42,62 @@ export class SSchemaBuilder {
 	}
 
 	build(
-		schemaMapByProjectName: { [projectName: string]: DbSchema }
-	): SIndexedSchema {
-		const referencedSchemasByProjectName: {
-			[projectName: string]: SSchemaReference
+		applicationMapByProjectName: { [projectName: string]: DbApplication }
+	): SIndexedApplication {
+		const referencedApplicationsByProjectName: {
+			[projectName: string]: SApplicationReference
 		} = {};
-		const originalReferencedSchemasByProjectName: {
-			[projectName: string]: SSchemaReference
+		const originalReferencedApplicationsByProjectName: {
+			[projectName: string]: SApplicationReference
 		} = {};
-		const referencedSchemas: SSchemaReference[] = [];
-		let schemaReferenceIndex = 0;
-		for (let projectName in schemaMapByProjectName) {
-			const sSchemaReference = {
-				index: schemaReferenceIndex,
-				dbSchema: schemaMapByProjectName[projectName]
+		const referencedApplications: SApplicationReference[] = [];
+		let applicationReferenceIndex = 0;
+		for (let projectName in applicationMapByProjectName) {
+			const sApplicationReference = {
+				index: applicationReferenceIndex,
+				dbApplication: applicationMapByProjectName[projectName]
 			};
-			referencedSchemas.push(sSchemaReference);
-			referencedSchemasByProjectName[projectName] = sSchemaReference;
-			originalReferencedSchemasByProjectName[projectName] = sSchemaReference;
+			referencedApplications.push(sApplicationReference);
+			referencedApplicationsByProjectName[projectName] = sApplicationReference;
+			originalReferencedApplicationsByProjectName[projectName] = sApplicationReference;
 
-			schemaReferenceIndex++;
+			applicationReferenceIndex++;
 		}
-		const schema: SSchema = {
+		const application: SApplication = {
 			domain: this.config.airport.domain,
 			entities: [],
 			packageName: this.config.name,
 			name: this.config.name,
-			referencedSchemas,
+			referencedApplications,
 		};
 
 		const sEntityMapByName: { [name: string]: SEntity } = {};
 		for (const entityName in this.entityMapByName) {
 			const entityCandidate: EntityCandidate = this.entityMapByName[entityName];
-			const tableIndex = schema.entities.length;
-			const entity = this.buildEntity(entityCandidate, tableIndex, referencedSchemasByProjectName);
+			const tableIndex = application.entities.length;
+			const entity = this.buildEntity(entityCandidate, tableIndex, referencedApplicationsByProjectName);
 			if (entity) {
-				schema.entities.push(entity);
+				application.entities.push(entity);
 				sEntityMapByName[entityName] = entity;
 			}
 		}
 
-		for (const projectName in referencedSchemasByProjectName) {
-			if (!originalReferencedSchemasByProjectName[projectName]) {
-				referencedSchemas.push(referencedSchemasByProjectName[projectName]);
+		for (const projectName in referencedApplicationsByProjectName) {
+			if (!originalReferencedApplicationsByProjectName[projectName]) {
+				referencedApplications.push(referencedApplicationsByProjectName[projectName]);
 			}
 		}
 
-		referencedSchemas.sort((
+		referencedApplications.sort((
 			a,
 			b
 		) => a.index - b.index);
 
-		const indexedSchema = buildIndexedSSchema(schema, referencedSchemasByProjectName);
+		const indexedApplication = buildIndexedSApplication(application, referencedApplicationsByProjectName);
 
-		new SchemaRelationResolver().resolveAllRelationLinks(indexedSchema);
+		new ApplicationRelationResolver().resolveAllRelationLinks(indexedApplication);
 
-		return indexedSchema;
+		return indexedApplication;
 	}
 
 	getIdColumnIndex(
@@ -145,7 +145,7 @@ export class SSchemaBuilder {
 	private buildEntity(
 		entityCandidate: EntityCandidate,
 		tableIndex: number,
-		referencedSchemasByProjectName: { [projectName: string]: SSchemaReference },
+		referencedApplicationsByProjectName: { [projectName: string]: SApplicationReference },
 	): SEntity {
 		let foundEntityDecorator = false;
 		let tableConfig;
@@ -198,7 +198,7 @@ export class SSchemaBuilder {
 
 		this.buildColumnsWithParentEntities(
 			entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName,
-			relatedTableMap, referencedSchemasByProjectName);
+			relatedTableMap, referencedApplicationsByProjectName);
 
 		entity.properties.sort((
 			prop1,
@@ -223,7 +223,7 @@ export class SSchemaBuilder {
 		primitiveColumnMapByName: { [columnName: string]: SColumn },
 		relationColumnMapByName: { [columnName: string]: SColumn },
 		relatedTableMap: Map<string, number>,
-		referencedSchemasByProjectName: { [projectName: string]: SSchemaReference },
+		referencedApplicationsByProjectName: { [projectName: string]: SApplicationReference },
 		project?: string,
 	) {
 		let parentEntity = entityCandidate.parentEntity;
@@ -235,11 +235,11 @@ export class SSchemaBuilder {
 			}
 			numParentProperties = this.buildColumnsWithParentEntities(
 				parentEntity, entity, primitiveColumnMapByName, relationColumnMapByName,
-				relatedTableMap, referencedSchemasByProjectName, parentProject);
+				relatedTableMap, referencedApplicationsByProjectName, parentProject);
 		}
 		return this.buildColumns(entityCandidate, entity,
 			primitiveColumnMapByName, relationColumnMapByName, relatedTableMap,
-			numParentProperties, referencedSchemasByProjectName, project);
+			numParentProperties, referencedApplicationsByProjectName, project);
 	}
 
 	private buildColumns(
@@ -249,7 +249,7 @@ export class SSchemaBuilder {
 		relationColumnMapByName: { [columnName: string]: SColumn },
 		relatedTableMap: Map<string, number>,
 		numParentProperties: number,
-		referencedSchemasByProjectName: { [projectName: string]: SSchemaReference },
+		referencedApplicationsByProjectName: { [projectName: string]: SApplicationReference },
 		project?: string,
 	): number {
 		const idProperties = entityCandidate.getIdProperties();
@@ -286,7 +286,7 @@ export class SSchemaBuilder {
 				primitiveColumnMapByName,
 				relatedTableMap,
 				numParentProperties,
-				referencedSchemasByProjectName
+				referencedApplicationsByProjectName
 			);
 		}
 
@@ -302,7 +302,7 @@ export class SSchemaBuilder {
 				primitiveColumnMapByName,
 				relatedTableMap,
 				numParentProperties,
-				referencedSchemasByProjectName
+				referencedApplicationsByProjectName
 			);
 		}
 
@@ -318,7 +318,7 @@ export class SSchemaBuilder {
 		primitiveColumnMapByName: { [columnName: string]: SColumn },
 		relatedTableMap: Map<string, number>,
 		numParentProperties: number,
-		referencedSchemasByProjectName: { [projectName: string]: SSchemaReference },
+		referencedApplicationsByProjectName: { [projectName: string]: SApplicationReference },
 	): void {
 		let columnRelationDefs = [];
 		let columnsDefined = false;
@@ -519,38 +519,38 @@ export class SSchemaBuilder {
 			}
 		}
 		let entityName;
-		let referencedSchemaIndex;
+		let referencedApplicationIndex;
 		if (!aProperty.entity) {
 			if (!aProperty.fromProject) {
 				throw new Error(`Neither entity nor source project was specified 
 				for ${entity.name}.${aProperty.name}`);
 			}
 
-			let schemaReference = referencedSchemasByProjectName[aProperty.fromProject];
+			let applicationReference = referencedApplicationsByProjectName[aProperty.fromProject];
 
-			if (!schemaReference) {
-				const dbSchema = globalCandidateRegistry.getReferencedSchema(aProperty.fromProject, aProperty);
-				if (!dbSchema) {
+			if (!applicationReference) {
+				const dbApplication = globalCandidateRegistry.getReferencedApplication(aProperty.fromProject, aProperty);
+				if (!dbApplication) {
 					throw new Error(`Could not find related project '${aProperty.fromProject}' 
 					for ${entity.name}.${aProperty.name}`);
 				}
 
-				schemaReference = {
-					index: Object.keys(referencedSchemasByProjectName).length,
-					dbSchema
+				applicationReference = {
+					index: Object.keys(referencedApplicationsByProjectName).length,
+					dbApplication
 				};
-				referencedSchemasByProjectName[aProperty.fromProject] = schemaReference;
+				referencedApplicationsByProjectName[aProperty.fromProject] = applicationReference;
 			}
 
-			referencedSchemaIndex = schemaReference.index;
+			referencedApplicationIndex = applicationReference.index;
 			const propertyType = aProperty.nonArrayType;
-			let relatedEntity = schemaReference.dbSchema.currentVersion[0]
-				.schemaVersion.entityMapByName[propertyType];
+			let relatedEntity = applicationReference.dbApplication.currentVersion[0]
+				.applicationVersion.entityMapByName[propertyType];
 			if (!relatedEntity) {
 				if (canBeInterface(propertyType)) {
 					const entityType = getImplNameFromInterfaceName(propertyType);
-					relatedEntity = schemaReference.dbSchema.currentVersion[0]
-						.schemaVersion.entityMapByName[entityType];
+					relatedEntity = applicationReference.dbApplication.currentVersion[0]
+						.applicationVersion.entityMapByName[entityType];
 					if (!relatedEntity) {
 						throw new Error(`Could not find related entity '${entityType}' 
 						(from interface ${propertyType}) 
@@ -576,7 +576,7 @@ export class SSchemaBuilder {
 			manyToOne,
 			oneToMany,
 			relationType,
-			referencedSchemaIndex,
+			referencedApplicationIndex,
 			relationMustBeSingleIdEntity,
 			// repositoryJoin,
 			sRelationColumns

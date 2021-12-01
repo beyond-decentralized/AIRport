@@ -11,7 +11,7 @@ export interface SequenceESelect extends IEntitySelectProperties, SequenceEOptio
  * DELETE - Ids fields and relations only (required).
  */
 export interface SequenceEId extends IEntityIdProperties {
-    schemaIndex: number | IQNumberField;
+    applicationIndex: number | IQNumberField;
     tableIndex: number | IQNumberField;
     columnIndex: number | IQNumberField;
 }
@@ -19,7 +19,7 @@ export interface SequenceEId extends IEntityIdProperties {
  * Ids fields and relations only (optional).
  */
 export interface SequenceEOptionalId {
-    schemaIndex?: number | IQNumberField;
+    applicationIndex?: number | IQNumberField;
     tableIndex?: number | IQNumberField;
     columnIndex?: number | IQNumberField;
 }
@@ -58,14 +58,14 @@ export interface SequenceECreateColumns extends SequenceEId, SequenceEUpdateColu
  * Query Entity Query Definition (used for Q.EntityName).
  */
 export interface QSequence extends IQEntity<Sequence> {
-    schemaIndex: IQNumberField;
+    applicationIndex: IQNumberField;
     tableIndex: IQNumberField;
     columnIndex: IQNumberField;
     incrementBy: IQNumberField;
     currentValue: IQNumberField;
 }
 export interface QSequenceQId {
-    schemaIndex: IQNumberField;
+    applicationIndex: IQNumberField;
     tableIndex: IQNumberField;
     columnIndex: IQNumberField;
 }

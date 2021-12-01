@@ -6,7 +6,7 @@ import {
 } from '../../../resolve/pathResolver';
 import { PathBuilder } from '../PathBuilder';
 import { IBuilder } from '../Builder';
-import { SIndexedEntity } from '../schema/SEntity';
+import { SIndexedEntity } from '../application/SEntity';
 import { FileBuilder } from './FileBuilder';
 import { IQEntityInterfaceBuilder } from './IQEntityInterfaceBuilder';
 import { QEntityBuilder } from './QEntityBuilder';
@@ -138,7 +138,7 @@ ${addEntityCommand}`;
       let qEntityRelativePath;
       if (property.fromProject) {
         qEntityRelativePath = property.fromProject;
-        type = property.otherSchemaDbEntity.name;
+        type = property.otherApplicationDbEntity.name;
       } else {
         type = property.entity.type;
         qEntityRelativePath = resolveRelativeEntityPath(this.entity, property.entity);

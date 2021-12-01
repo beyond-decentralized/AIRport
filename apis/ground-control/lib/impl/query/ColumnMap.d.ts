@@ -1,5 +1,5 @@
-import { TableIndex } from "../../lingo/schema/Entity";
-import { ColumnIndex } from "../../lingo/schema/Property";
+import { TableIndex } from "../../lingo/application/Entity";
+import { ColumnIndex } from "../../lingo/application/Property";
 export declare class ColumnMap {
     tableIndex: TableIndex;
     columnMap: {

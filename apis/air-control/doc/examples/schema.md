@@ -1,6 +1,6 @@
-# Example Schema
+# Example Application
 
-This the example schema used throughout the project:
+This the example application used throughout the project:
 
 ```ts
 @Entity()

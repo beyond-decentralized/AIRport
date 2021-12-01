@@ -3,8 +3,8 @@ import {
 	MemberData,
 	QCoreEntityBuilder
 }                        from "../Builder";
-import {SIndexedEntity}     from "../schema/SEntity";
-import {SColumn}            from "../schema/SProperty";
+import {SIndexedEntity}     from "../application/SEntity";
+import {SColumn}            from "../application/SProperty";
 import {FileBuilder}        from './FileBuilder'
 import {QColumnBuilder}     from "./QColumnBuilder";
 import {QEntityFileBuilder} from "./QEntityFileBuilder";

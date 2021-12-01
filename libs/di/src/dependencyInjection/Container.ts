@@ -359,7 +359,7 @@ export interface IChildContainer
 		...tokens: Array<IDiToken<any>>
 	): any
 
-	getBySchemaSignatureAndName(
+	getByApplicationSignatureAndName(
 		systemName: string,
 		librarySignature: string,
 		tokenName: string
@@ -567,7 +567,7 @@ export class ChildContainer
 		};
 	}
 
-	async getBySchemaSignatureAndName(
+	async getByApplicationSignatureAndName(
 		systemName: string,
 		librarySignature: string,
 		tokenName: string

@@ -39,7 +39,7 @@ export class RepoTransBlockResponseStageDao
 		values: RepoTransBlockResponseStageValues[]
 	): Promise<number> {
 
-		const dbEntity = Q.db.currentVersion[0].schemaVersion
+		const dbEntity = Q.db.currentVersion[0].applicationVersion
 			.entityMapByName.RepoTransBlockResponseStage
 
 		let smrs: QRepoTransBlockResponseStage

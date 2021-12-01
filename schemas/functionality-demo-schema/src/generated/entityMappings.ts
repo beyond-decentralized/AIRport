@@ -5,7 +5,7 @@ import { Level2 } from '../ddl/Level2';
 import { Level1 } from '../ddl/Level1';
 
 DI.db().get(AIRPORT_DATABASE).then(airDb => {
-  const accumulator = airDb.getAccumulator('air', 'functionality-demo-schema');
+  const accumulator = airDb.getAccumulator('air', 'functionality-demo-application');
   accumulator.add(Level2, 0);
   accumulator.add(Level1, 1);
 });

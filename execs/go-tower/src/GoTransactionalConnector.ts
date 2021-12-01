@@ -71,7 +71,7 @@ export class GoTransactionalConnector
 	 * This is a TIQL Insert statement coming from the client.
 	 * It will have an id of the operation to be invoked, as
 	 * well as the parameters for this specific operation.
-	 * The operation will then be looked up from the schema,
+	 * The operation will then be looked up from the application,
 	 * parsed, cached (if appropriate) and executed.
 	 * 
 	 * NOTE: some of these operations will be internal 

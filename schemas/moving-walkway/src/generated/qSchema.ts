@@ -1,6 +1,6 @@
 import {
 	AIRPORT_DATABASE,
-	QSchema as AirportQSchema
+	QApplication as AirportQApplication
 }                      from '@airport/air-control'
 import {
 	diSet as dS,
@@ -8,9 +8,9 @@ import {
 }                      from '@airport/check-in'
 import {DI}            from '@airport/di'
 import {
-	DbSchema,
+	DbApplication,
 	EntityId,
-	getSchemaName
+	getApplicationName
 }                      from '@airport/ground-control';
 import { QRecordUpdateStage } from './qrecordupdatestage';
 import { QSynchronizationConflict } from './conflict/qsynchronizationconflict';
@@ -21,9 +21,9 @@ import {
   SynchronizationConflictValues
 } from '../ddl/ddl';
 
-export interface LocalQSchema extends AirportQSchema {
+export interface LocalQApplication extends AirportQApplication {
 
-  db: DbSchema;
+  db: DbApplication;
 
 	RecordUpdateStage: QRecordUpdateStage;
 	SynchronizationConflict: QSynchronizationConflict;
@@ -37,27 +37,27 @@ const __constructors__ = {
 	SynchronizationConflictValues: SynchronizationConflictValues
 };
 
-export const Q_SCHEMA: LocalQSchema = <any>{
+export const Q_SCHEMA: LocalQApplication = <any>{
 	__constructors__,
   domain: 'air',
   name: '@airport/moving-walkway'
 };
-export const Q: LocalQSchema = Q_SCHEMA
+export const Q: LocalQApplication = Q_SCHEMA
 
 export function diSet(
 	dbEntityId: EntityId
 ): boolean {
-	return dS(Q.__dbSchema__, dbEntityId)
+	return dS(Q.__dbApplication__, dbEntityId)
 }
 
 export function duoDiSet(
 	dbEntityId: EntityId
 ): boolean {
-	return ddS(Q.__dbSchema__, dbEntityId)
+	return ddS(Q.__dbApplication__, dbEntityId)
 }
 
 DI.db().eventuallyGet(AIRPORT_DATABASE).then((
 	airDb
 ) => {
-	airDb.QM[getSchemaName(Q_SCHEMA)] = Q
+	airDb.QM[getApplicationName(Q_SCHEMA)] = Q
 })

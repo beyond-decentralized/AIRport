@@ -60,7 +60,7 @@ export class AgtSharingMessageDao
 	): Promise<Map<TerminalId, AgtSharingMessageId>> {
 		const sharingMessageIdsByTerminalId: Map<TerminalId, AgtSharingMessageId> = new Map()
 
-		const dbEntity = Q.db.currentVersion[0].schemaVersion
+		const dbEntity = Q.db.currentVersion[0].applicationVersion
 			.entityMapByName.AgtSharingMessage
 		let asm: QAgtSharingMessage
 

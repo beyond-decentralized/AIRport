@@ -7,7 +7,7 @@ import {
 }               from '@airport/air-control'
 import {
 	ColumnIndex,
-	SchemaIndex,
+	ApplicationIndex,
 	TableIndex
 }               from '@airport/ground-control'
 
@@ -21,7 +21,7 @@ export class Sequence {
 	@Id()
 	@Column({name: 'SCHEMA_INDEX', nullable: false})
 	@DbNumber()
-	schemaIndex: SchemaIndex
+	applicationIndex: ApplicationIndex
 
 	@Id()
 	@Column({name: 'TABLE_INDEX', nullable: false})

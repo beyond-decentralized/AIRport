@@ -1557,7 +1557,7 @@ export declare const MAPPED_SUPERCLASS: ({
             ownerEntity: any;
             nonArrayType: string;
             fromProject: string;
-            otherSchemaDbEntity: {
+            otherApplicationDbEntity: {
                 columnMap: any;
                 columns: ({
                     entity: any;
@@ -1669,7 +1669,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     relationEntity: any;
                     sinceVersion: any;
                 }[];
-                schemaVersion: any;
+                applicationVersion: any;
                 sinceVersion: any;
                 tableConfig: any;
             };
@@ -1693,7 +1693,7 @@ export declare const MAPPED_SUPERCLASS: ({
             primitive: string;
             index: number;
             fromProject?: undefined;
-            otherSchemaDbEntity?: undefined;
+            otherApplicationDbEntity?: undefined;
         })[];
         methodSignatures: any[];
         constructors: {
@@ -2546,7 +2546,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 ownerEntity: any;
                 nonArrayType: string;
                 fromProject: string;
-                otherSchemaDbEntity: {
+                otherApplicationDbEntity: {
                     columnMap: any;
                     columns: ({
                         entity: any;
@@ -2658,7 +2658,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         relationEntity: any;
                         sinceVersion: any;
                     }[];
-                    schemaVersion: any;
+                    applicationVersion: any;
                     sinceVersion: any;
                     tableConfig: any;
                 };
@@ -2682,7 +2682,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 primitive: string;
                 index: number;
                 fromProject?: undefined;
-                otherSchemaDbEntity?: undefined;
+                otherApplicationDbEntity?: undefined;
             })[];
             methodSignatures: any[];
             constructors: {

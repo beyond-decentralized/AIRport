@@ -30,7 +30,7 @@ export class LocalAPIServer
                 apiObject,
                 apiOperation
             } = await apiRegistry.findApiObjectAndOperation(
-                this.systemName, request.schemaSignature, request.objectName, request.methodName)
+                this.systemName, request.applicationSignature, request.objectName, request.methodName)
             const result = apiObject[request.methodName].apply(apiObject, request.args)
             if (apiOperation.isAsync) {
                 payload = await result
@@ -49,7 +49,7 @@ export class LocalAPIServer
             host: request.host,
             protocol: request.protocol,
             payload,
-            schemaSignature: request.schemaSignature
+            applicationSignature: request.applicationSignature
         }
 
         return response

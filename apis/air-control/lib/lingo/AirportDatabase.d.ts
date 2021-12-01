@@ -1,4 +1,4 @@
-import { DbSchema, ISaveResult } from '@airport/ground-control';
+import { DbApplication, ISaveResult } from '@airport/ground-control';
 import { QEntityConstructor } from '../impl/core/entity/Entity';
 import { QRelation } from '../impl/core/entity/Relation';
 import { IEntityContext } from './core/EntityContext';
@@ -24,27 +24,27 @@ export interface IEntityRecord {
         index: number;
         name: string;
     };
-    schema: {
+    application: {
         domain: string;
         name: string;
     };
 }
-export interface SchemaHub {
+export interface ApplicationHub {
     entityMap: Map<any, IEntityRecord>;
-    schemas: DbSchema[];
-    S: DbSchema[];
-    qSchemas: QSchema[];
-    Q: QSchema[];
+    applications: DbApplication[];
+    S: DbApplication[];
+    qApplications: QApplication[];
+    Q: QApplication[];
     QM: {
-        [name: string]: QSchema;
+        [name: string]: QApplication;
     };
 }
-export interface IAirportDatabase extends SchemaHub, FunctionAndOperatorHub {
+export interface IAirportDatabase extends ApplicationHub, FunctionAndOperatorHub {
     find: INonEntityFind;
     findOne: INonEntityFindOne;
     search: INonEntitySearch;
     searchOne: INonEntitySearchOne;
-    getAccumulator(schemaDomain: string, schemaName: string): IEntityAccumulator;
+    getAccumulator(applicationDomain: string, applicationName: string): IEntityAccumulator;
     addRepository(context?: IEntityContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity<any>>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
@@ -93,12 +93,12 @@ export interface IAirportDatabase extends SchemaHub, FunctionAndOperatorHub {
         (...args: any[]): RawUpdate<IEUP, IQE>;
     }, context?: IEntityContext): Promise<number>;
 }
-export interface QSchema {
+export interface QApplication {
     domain: string;
     name: string;
     [name: string]: any;
 }
-export interface QSchemaInternal extends QSchema {
+export interface QApplicationInternal extends QApplication {
     __constructors__?: {
         [name: string]: EntityConstructor;
     };
@@ -106,6 +106,6 @@ export interface QSchemaInternal extends QSchema {
         [name: string]: QEntityConstructor<EntityConstructor>;
     };
     __qIdRelationConstructors__?: typeof QRelation[];
-    __dbSchema__?: DbSchema;
+    __dbApplication__?: DbApplication;
 }
 //# sourceMappingURL=AirportDatabase.d.ts.map

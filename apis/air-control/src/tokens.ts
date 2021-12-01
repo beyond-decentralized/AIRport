@@ -13,7 +13,7 @@ import { IEntityUtils } from './lingo/utils/EntityUtils'
 import { IFieldUtils } from './lingo/utils/FieldUtils'
 import { IQMetadataUtils } from './lingo/utils/QMetadataUtils'
 import { IQueryUtils } from './lingo/utils/QueryUtils'
-import { ISchemaUtils } from './lingo/utils/SchemaUtils'
+import { IApplicationUtils } from './lingo/utils/ApplicationUtils'
 
 const airControl = lib('air-control')
 
@@ -28,6 +28,6 @@ export const QUERY_FACADE = airControl.token<IQueryFacade>('IQueryFacade')
 export const QUERY_UTILS = airControl.token<IQueryUtils>('IQueryUtils')
 export const RELATION_MANAGER = airControl.token<IRelationManager>('IRelationManager')
 export const REPOSITORY_LOADER = airControl.token<IRepositoryLoader>('IRepositoryLoader')
-export const SCHEMA_UTILS = airControl.token<ISchemaUtils>('ISchemaUtils')
+export const SCHEMA_UTILS = airControl.token<IApplicationUtils>('IApplicationUtils')
 export const UPDATE_CACHE_MANAGER = airControl.token<IUpdateCacheManager>('IUpdateCacheManager')
 

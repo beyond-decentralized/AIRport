@@ -3,21 +3,21 @@ import { SQLDataType } from '@airport/ground-control';
 import * as fs                   from 'fs';
 import { IVespaDocument }        from '../../lingo/model/VespaDocument';
 import { IVespaFieldWithDbInfo } from '../../lingo/model/VespaField';
-import { IVespaSchemaStore }     from './VespaSchemaStore';
+import { IVespaApplicationStore }     from './VespaApplicationStore';
 
-export interface IVespaSchemaGenerator {
+export interface IVespaApplicationGenerator {
 
 	generate(
-		store: IVespaSchemaStore
+		store: IVespaApplicationStore
 	): Promise<void>;
 
 }
 
-export class VespaSchemaGenerator
-	implements IVespaSchemaGenerator {
+export class VespaApplicationGenerator
+	implements IVespaApplicationGenerator {
 
 	async generate(
-		store: IVespaSchemaStore
+		store: IVespaApplicationStore
 	): Promise<void> {
 		const workingDirPath = process.cwd().replace(/\\/g, '/');
 		const mainDirPath    = workingDirPath + '/src/main';
@@ -70,7 +70,7 @@ export class VespaSchemaGenerator
 	}
 
 	private generateServicesXml(
-		store: IVespaSchemaStore
+		store: IVespaApplicationStore
 	): string {
 		let documents = [];
 		for (const documentName in store.documentMap) {

@@ -6,7 +6,7 @@ import {
 }                                    from "./SProperty";
 
 /**
- * An entity in a schema.
+ * An entity in a application.
  */
 
 export interface SEntity {
@@ -52,7 +52,7 @@ export interface SEntity {
 	table: DatabaseObjectConfiguration<any>;
 
 	/**
-	 * Schema specific index of the table represented by the entity.
+	 * Application specific index of the table represented by the entity.
 	 */
 	tableIndex: number;
 
@@ -60,7 +60,7 @@ export interface SEntity {
 
 
 /**
- * Schema Entity with additional indexes (maps).
+ * Application Entity with additional indexes (maps).
  */
 export interface SIndexedEntity {
 
@@ -75,7 +75,7 @@ export interface SIndexedEntity {
 	columns: SColumn[];
 
 	/**
-	 * Schema entity definition.
+	 * Application entity definition.
 	 */
 	entity: SEntity;
 

@@ -1,26 +1,26 @@
 import { IAirportDatabase } from '@airport/air-control'
 import { ISequence } from '@airport/airport-code'
 import { IContext } from '@airport/di';
-import { JsonSchema } from '@airport/ground-control'
-import { JsonSchemaWithLastIds } from '@airport/security-check';
-import { ISchema } from '@airport/airspace';
+import { JsonApplication } from '@airport/ground-control'
+import { JsonApplicationWithLastIds } from '@airport/security-check';
+import { IApplication } from '@airport/airspace';
 
-export interface ISchemaBuilder {
+export interface IApplicationBuilder {
 
 	build(
-		jsonSchema: JsonSchema,
-		existingSchemaMap: Map<string, ISchema>,
-		newJsonSchemaMap: Map<string, JsonSchemaWithLastIds>,
+		jsonApplication: JsonApplication,
+		existingApplicationMap: Map<string, IApplication>,
+		newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>,
 		context: IContext,
 	): Promise<void>
 
 	buildAllSequences(
-		jsonSchemas: JsonSchema[],
+		jsonApplications: JsonApplication[],
 		context: IContext,
 	): Promise<ISequence[]>
 
 	stageSequences(
-		jsonSchemas: JsonSchema[],
+		jsonApplications: JsonApplication[],
 		airDb: IAirportDatabase,
 		context: IContext,
 	): ISequence[]

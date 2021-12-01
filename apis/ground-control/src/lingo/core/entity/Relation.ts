@@ -28,7 +28,7 @@ export enum EntityRelationType {
 export enum JSONRelationType {
 	// Join of an entity with the ON clause
 	ENTITY_JOIN_ON = 'ENTITY_JOIN_ON',
-	// Join of an entity via a schema relation
+	// Join of an entity via a application relation
 	ENTITY_SCHEMA_RELATION = 'ENTITY_SCHEMA_RELATION',
 	// The root entity in a join
 	ENTITY_ROOT = 'ENTITY_ROOT',
@@ -73,8 +73,8 @@ export interface JSONRelation {
 	 */
 	rep: string;
 	/**
-	 *  Schema Index
-	 * Schema Index of the parent entity in relation
+	 *  Application Index
+	 * Application Index of the parent entity in relation
 	 */
 	si?: number;
 }

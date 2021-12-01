@@ -5,7 +5,7 @@ import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
 import { RawUpdate, RawUpdateColumns } from '../../query/facade/Update';
 import { IQueryContext } from '../../query/QueryContext';
-import { EntityIdData } from '../../utils/SchemaUtils';
+import { EntityIdData } from '../../utils/ApplicationUtils';
 import { IEntityContext } from '../EntityContext';
 import { IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../entity/Entity';
 import { IContext } from '@airport/di';

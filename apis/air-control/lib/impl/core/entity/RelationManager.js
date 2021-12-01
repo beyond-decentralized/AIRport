@@ -15,8 +15,8 @@ export class RelationManager {
         return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1));
     }
     createRelatedQEntity(joinRelation, context) {
-        const dbEntity = context.ioc.schemaUtils.getDbEntity(joinRelation.si, joinRelation.ti, context.ioc.airDb);
-        let QEntityConstructor = context.ioc.schemaUtils.getQEntityConstructor(dbEntity, context.ioc.airDb);
+        const dbEntity = context.ioc.applicationUtils.getDbEntity(joinRelation.si, joinRelation.ti, context.ioc.airDb);
+        let QEntityConstructor = context.ioc.applicationUtils.getQEntityConstructor(dbEntity, context.ioc.airDb);
         return new QEntityConstructor(dbEntity, joinRelation.fromClausePosition, dbEntity.relations[joinRelation.ri], joinRelation.jt);
     }
     getNextChildJoinPosition(joinParentDriver) {

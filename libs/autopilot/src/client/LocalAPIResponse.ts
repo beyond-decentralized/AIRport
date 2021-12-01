@@ -7,5 +7,5 @@ export interface ILocalAPIResponse {
     host: string
     payload: any
     protocol: string
-    schemaSignature: string
+    applicationSignature: string
 }

@@ -78,18 +78,18 @@ import {
 	QRepository,
 } from './repository/qrepository';
 import {
-	IRepositorySchema,
-} from './repository/repositoryschema';
+	IRepositoryApplication,
+} from './repository/repositoryapplication';
 import {
-	RepositorySchemaESelect,
-	RepositorySchemaECreateColumns,
-	RepositorySchemaECreateProperties,
-	RepositorySchemaEUpdateColumns,
-	RepositorySchemaEUpdateProperties,
-	RepositorySchemaEId,
-	RepositorySchemaGraph,
-	QRepositorySchema,
-} from './repository/qrepositoryschema';
+	RepositoryApplicationESelect,
+	RepositoryApplicationECreateColumns,
+	RepositoryApplicationECreateProperties,
+	RepositoryApplicationEUpdateColumns,
+	RepositoryApplicationEUpdateProperties,
+	RepositoryApplicationEId,
+	RepositoryApplicationGraph,
+	QRepositoryApplication,
+} from './repository/qrepositoryapplication';
 import {
 	IRepositoryTransactionHistory,
 } from './history/repositorytransactionhistory';
@@ -135,10 +135,10 @@ import {
 import {
 	Q,
 	duoDiSet,
-} from './qSchema';
+} from './qApplication';
 
 
-// Schema Q object Dependency Injection readiness detection Duo
+// Application Q object Dependency Injection readiness detection Duo
 export class SQDIDuo<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
@@ -272,13 +272,13 @@ export class BaseRepositoryDuo
 }
 
 
-export interface IBaseRepositorySchemaDuo
-  extends IDuo<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaGraph, QRepositorySchema> {
+export interface IBaseRepositoryApplicationDuo
+  extends IDuo<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication> {
 }
 
-export class BaseRepositorySchemaDuo
-  extends SQDIDuo<IRepositorySchema, RepositorySchemaESelect, RepositorySchemaECreateProperties, RepositorySchemaEUpdateColumns, RepositorySchemaEUpdateProperties, RepositorySchemaEId, RepositorySchemaGraph, QRepositorySchema>
-	implements IBaseRepositorySchemaDuo {
+export class BaseRepositoryApplicationDuo
+  extends SQDIDuo<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication>
+	implements IBaseRepositoryApplicationDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(8)

@@ -43,7 +43,7 @@ export type DailySyncLogValues = [
  * popular than others (though that might even itself out via randomness of
  * distribution of repositories).
  *
- * So, perhaps what we need is two separate schemas.  One for SyncLogs (daily and monthly),
+ * So, perhaps what we need is two separate applications.  One for SyncLogs (daily and monthly),
  * partitioned by the terminal id.  And one for Archives, partitioned by repositoryId.
  *
  * There are other NewSql systems out there that automate data partitioning.  Using those

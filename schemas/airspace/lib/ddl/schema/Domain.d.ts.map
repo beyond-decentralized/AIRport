@@ -1,1 +1,0 @@
-{"version":3,"file":"Domain.d.ts","sourceRoot":"","sources":["../../../src/ddl/schema/Domain.ts"],"names":[],"mappings":"AAQA,OAAO,EACN,QAAQ,EACR,UAAU,EACV,MAAyB,yBAAyB,CAAA;AACnD,OAAO,EAAE,MAAM,EAAE,MAAM,UAAU,CAAA;AAEjC,qBAEa,MAAM;IAIlB,EAAE,EAAE,QAAQ,CAAA;IAGZ,IAAI,EAAE,UAAU,CAAA;IAGhB,OAAO,EAAE,MAAM,EAAE,CAAA;CAEjB"}

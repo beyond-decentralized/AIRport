@@ -124,8 +124,8 @@ export class OperationManager
 		context: IOperationContext,
 		ensureGeneratedValues?: boolean
 	): Promise<void> {
-		const qEntity = context.ioc.airDb.qSchemas
-		[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
+		const qEntity = context.ioc.airDb.qApplications
+		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 
 		let rawInsert: RawInsertValues<any> = {
 			insertInto: qEntity,
@@ -153,7 +153,7 @@ export class OperationManager
 					const dbRelation = dbProperty.relation[0]
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
-							context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (
+							context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (
 								dbColumn: DbColumn,
 								columnValue: any,
 								propertyNameChains: string[][],
@@ -237,8 +237,8 @@ export class OperationManager
 		context: IOperationContext
 	): Promise<void> {
 		const entityStateManager = await container(this).get(ENTITY_STATE_MANAGER)
-		const qEntity = context.ioc.airDb.qSchemas
-		[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
+		const qEntity = context.ioc.airDb.qApplications
+		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 
 		for (const entity of entities) {
 			const setFragment: any = {}
@@ -269,7 +269,7 @@ export class OperationManager
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
 							let propertyOriginalValue = originalEntity[dbProperty.name]
-							context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (
+							context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (
 								_dbColumn: DbColumn,
 								value: any,
 								propertyNameChains: string[][],
@@ -360,8 +360,8 @@ export class OperationManager
 
 		const dbEntity = context.dbEntity
 		const qEntity =
-			context.ioc.airDb.qSchemas
-			[dbEntity.schemaVersion.schema.index][dbEntity.name]
+			context.ioc.airDb.qApplications
+			[dbEntity.applicationVersion.application.index][dbEntity.name]
 		const idWhereFragments: JSONValueOperation[] = []
 		const valuesMapByColumn: any[] = []
 		let entityIdWhereClauses = []
@@ -390,7 +390,7 @@ export class OperationManager
 				} else {
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
-							context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, dbEntity, (
+							context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, dbEntity, (
 								dbColumn: DbColumn,
 								value: any,
 								propertyNameChains: string[][]

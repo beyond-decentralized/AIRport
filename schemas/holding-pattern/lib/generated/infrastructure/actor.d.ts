@@ -1,10 +1,10 @@
 import { IUser, ITerminal } from '@airport/travel-document-checkpoint';
-import { ISchema } from '@airport/airspace';
+import { IApplication } from '@airport/airspace';
 export interface IActor {
     id: number;
     uuId?: string;
     user?: IUser;
     terminal?: ITerminal;
-    schema?: ISchema;
+    application?: IApplication;
 }
 //# sourceMappingURL=actor.d.ts.map

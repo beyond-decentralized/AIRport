@@ -25,7 +25,7 @@ export abstract class UtilityBuilder
 		return `/* eslint-disable */
 ${imports}
 
-// Schema Q object Dependency Injection readiness detection ${this.classSuffix}
+// Application Q object Dependency Injection readiness detection ${this.classSuffix}
 export class SQDI${this.classSuffix}<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
@@ -93,7 +93,7 @@ ${baseClassDefinitions}`;
 		this.addImport([
 			'Q',
 			`${this.diSet}`
-		], './qSchema', false);
+		], './qApplication', false);
 	}
 
 	protected buildBaseClassDefinitions(): string {

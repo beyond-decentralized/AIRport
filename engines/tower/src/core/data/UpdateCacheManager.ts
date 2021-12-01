@@ -1,5 +1,5 @@
 import {
-    ISchemaUtils,
+    IApplicationUtils,
     IUpdateCacheManager,
     UPDATE_CACHE_MANAGER
 } from "@airport/air-control";
@@ -22,12 +22,12 @@ export class UpdateCacheManager
         entity: T,
         dbEntity: DbEntity,
         entityStateManager: IEntityStateManager,
-        schemaUtils: ISchemaUtils
+        applicationUtils: IApplicationUtils
     ): any {
         if (entity instanceof Array) {
             for (let i = 0; i < entity.length; i++) {
                 this.saveOriginalValues(
-                    entity[i], dbEntity, entityStateManager, schemaUtils)
+                    entity[i], dbEntity, entityStateManager, applicationUtils)
             }
             return
         }
@@ -45,7 +45,7 @@ export class UpdateCacheManager
                 if (dbProperty.relation[0].relationType === EntityRelationType.MANY_TO_ONE) {
                     // Save the nested child object Ids in the original values of this object
                     // in case the object behind this relation is changed
-                    schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (
+                    applicationUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (
                         _dbColumn: DbColumn,
                         propertyNameChains: string[][],
                     ) => {
@@ -74,7 +74,7 @@ export class UpdateCacheManager
                     });
                 }
                 this.saveOriginalValues(property, dbProperty.relation[0].relationEntity,
-                    entityStateManager, schemaUtils)
+                    entityStateManager, applicationUtils)
             } else {
                 originalValuesObject[dbProperty.name] = entity[dbProperty.name]
             }
@@ -85,13 +85,13 @@ export class UpdateCacheManager
         entityCopy: T,
         dbEntity: DbEntity,
         entityStateManager: IEntityStateManager,
-        schemaUtils: ISchemaUtils,
+        applicationUtils: IApplicationUtils,
         processedEntities: Set<any>
     ): void {
         if (entityCopy instanceof Array) {
             for (var i = 0; i < entityCopy.length; i++) {
                 this.setOperationState(entityCopy[i], dbEntity,
-                    entityStateManager, schemaUtils, processedEntities)
+                    entityStateManager, applicationUtils, processedEntities)
             }
             return
         }
@@ -115,7 +115,7 @@ export class UpdateCacheManager
                 }
             }
             if (dbProperty.relation && dbProperty.relation.length) {
-                schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (
+                applicationUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (
                     _dbColumn: DbColumn,
                     propertyNameChains: string[][],
                 ) => {
@@ -153,7 +153,7 @@ export class UpdateCacheManager
                         continue
                     }
                     const dbRelation = dbProperty.relation[0];
-                    schemaUtils.forEachColumnTypeOfRelation(dbRelation, (
+                    applicationUtils.forEachColumnTypeOfRelation(dbRelation, (
                         _dbColumn: DbColumn,
                         propertyNameChains: string[][],
                     ) => {
@@ -239,7 +239,7 @@ export class UpdateCacheManager
             const property = entityCopy[dbProperty.name]
             if (property && dbProperty.relation && dbProperty.relation.length) {
                 this.setOperationState(property, dbProperty.relation[0].relationEntity,
-                    entityStateManager, schemaUtils, processedEntities);
+                    entityStateManager, applicationUtils, processedEntities);
             }
         }
         if (!entityState) {
@@ -257,11 +257,11 @@ export class UpdateCacheManager
         dbEntity: DbEntity,
         saveResult: ISaveResult,
         entityStateManager: IEntityStateManager,
-        schemaUtils: ISchemaUtils,
+        applicationUtils: IApplicationUtils,
         processedEntities: Set<any>
     ): void {
         this.updateOriginalValuesAfterSave(entity, dbEntity,
-            saveResult, entityStateManager, schemaUtils, new Set())
+            saveResult, entityStateManager, applicationUtils, new Set())
         this.removeDeletedEntities(entity, dbEntity,
             saveResult, entityStateManager, processedEntities)
     }
@@ -271,13 +271,13 @@ export class UpdateCacheManager
         dbEntity: DbEntity,
         saveResult: ISaveResult,
         entityStateManager: IEntityStateManager,
-        schemaUtils: ISchemaUtils,
+        applicationUtils: IApplicationUtils,
         processedEntities: Set<any>
     ): void {
         if (entity instanceof Array) {
             for (let i = 0; i < entity.length; i++) {
                 this.updateOriginalValuesAfterSave(entity[i], dbEntity,
-                    saveResult, entityStateManager, schemaUtils, processedEntities)
+                    saveResult, entityStateManager, applicationUtils, processedEntities)
             }
         } else {
             if (processedEntities.has(entity)) {
@@ -289,7 +289,7 @@ export class UpdateCacheManager
             let originalValuesObject = {}
             if (operationUniqueId) {
                 originalValuesObject = this.doUpdateOriginalValuesAfterSave(entity, dbEntity, saveResult,
-                    entityStateManager, schemaUtils, processedEntities, operationUniqueId)
+                    entityStateManager, applicationUtils, processedEntities, operationUniqueId)
             }
             entityStateManager.setOriginalValues(originalValuesObject, entity);
         }
@@ -300,7 +300,7 @@ export class UpdateCacheManager
         dbEntity: DbEntity,
         saveResult: ISaveResult,
         entityStateManager: IEntityStateManager,
-        schemaUtils: ISchemaUtils,
+        applicationUtils: IApplicationUtils,
         processedEntities: Set<any>,
         operationUniqueId: number
     ): Object {
@@ -330,7 +330,7 @@ export class UpdateCacheManager
                 if (dbProperty.relation[0].relationType === EntityRelationType.MANY_TO_ONE) {
                     // Save the nested child object Ids in the original values of this object
                     // in case the object behind this relation is changed
-                    schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (
+                    applicationUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (
                         _dbColumn: DbColumn,
                         propertyNameChains: string[][],
                     ) => {
@@ -360,7 +360,7 @@ export class UpdateCacheManager
                 }
                 this.updateOriginalValuesAfterSave(
                     property, dbProperty.relation[0].relationEntity,
-                    saveResult, entityStateManager, schemaUtils, processedEntities)
+                    saveResult, entityStateManager, applicationUtils, processedEntities)
             } else {
                 originalValuesObject[dbProperty.name] = property
             }

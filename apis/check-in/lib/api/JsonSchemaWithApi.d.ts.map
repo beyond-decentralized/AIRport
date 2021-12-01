@@ -1,1 +1,0 @@
-{"version":3,"file":"JsonSchemaWithApi.d.ts","sourceRoot":"","sources":["../../src/api/JsonSchemaWithApi.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,iBAAiB,EAAE,MAAM,yBAAyB,CAAC;AACxE,OAAO,EAAE,UAAU,EAAE,MAAM,eAAe,CAAC;AAE3C,MAAM,WAAW,iBACb,SAAQ,UAAU;IAElB,QAAQ,EAAE,wBAAwB,EAAE,CAAA;CAEvC;AAED,MAAM,WAAW,wBACb,SAAQ,iBAAiB;IAEzB,GAAG,EAAE,UAAU,CAAA;CAElB"}

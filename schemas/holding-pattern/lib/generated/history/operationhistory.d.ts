@@ -1,4 +1,4 @@
-import { ISchemaEntity } from '@airport/airspace';
+import { IApplicationEntity } from '@airport/airspace';
 import { IRepositoryTransactionHistory } from './repositorytransactionhistory';
 import { IRecordHistory } from './recordhistory';
 export interface IOperationHistory {
@@ -6,7 +6,7 @@ export interface IOperationHistory {
     orderNumber?: number;
     changeType?: string;
     systemWideOperationId?: number;
-    entity?: ISchemaEntity;
+    entity?: IApplicationEntity;
     repositoryTransactionHistory?: IRepositoryTransactionHistory;
     recordHistory?: IRecordHistory[];
 }

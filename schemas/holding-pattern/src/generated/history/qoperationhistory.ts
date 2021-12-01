@@ -22,15 +22,15 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	SchemaEntityGraph,
-	SchemaEntityEId,
-	SchemaEntityEOptionalId,
-	SchemaEntityEUpdateProperties,
-	SchemaEntityESelect,
-	QSchemaEntity,
-	QSchemaEntityQId,
-	QSchemaEntityQRelation,
-	SchemaEntity,
+	ApplicationEntityGraph,
+	ApplicationEntityEId,
+	ApplicationEntityEOptionalId,
+	ApplicationEntityEUpdateProperties,
+	ApplicationEntityESelect,
+	QApplicationEntity,
+	QApplicationEntityQId,
+	QApplicationEntityQRelation,
+	ApplicationEntity,
 } from '@airport/airspace';
 import {
 	RepositoryTransactionHistoryGraph,
@@ -83,7 +83,7 @@ export interface OperationHistoryESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	entity?: SchemaEntityESelect;
+	entity?: ApplicationEntityESelect;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 	recordHistory?: RecordHistoryESelect;
 
@@ -123,7 +123,7 @@ export interface OperationHistoryEUpdateProperties
 	systemWideOperationId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	entity?: SchemaEntityEOptionalId;
+	entity?: ApplicationEntityEOptionalId;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryEOptionalId;
 
 }
@@ -141,7 +141,7 @@ export interface OperationHistoryGraph
 	systemWideOperationId?: number | IQNumberField;
 
 	// Relations
-	entity?: SchemaEntityGraph;
+	entity?: ApplicationEntityGraph;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph;
 	recordHistory?: RecordHistoryGraph[];
 
@@ -198,7 +198,7 @@ export interface QOperationHistory extends IQEntity<OperationHistory>
 	systemWideOperationId: IQNumberField;
 
 	// Non-Id Relations
-	entity: QSchemaEntityQRelation;
+	entity: QApplicationEntityQRelation;
 	repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
 	recordHistory: IQOneToManyRelation<RecordHistory, QRecordHistory>;
 

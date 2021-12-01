@@ -83,7 +83,7 @@ export declare namespace table {
     const INDEXES = "indexes";
     const NAME = "name";
     const PRIMARY_KEY = "primaryKey";
-    const SCHEMA = "schema";
+    const SCHEMA = "application";
 }
 /**
  * Name of the RepositoryId column

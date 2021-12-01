@@ -1,6 +1,6 @@
 import {
-	ISchemaVersion,
-	ISchemaEntity,
+	IApplicationVersion,
+	IApplicationEntity,
 } from '@airport/traffic-pattern';
 import {
 	IRepository,
@@ -25,8 +25,8 @@ export interface IMissingRecord {
 	status?: string;
 
 	// Non-Id Relations
-	schemaVersion?: ISchemaVersion;
-	entity?: ISchemaEntity;
+	applicationVersion?: IApplicationVersion;
+	entity?: IApplicationEntity;
 	repository?: IRepository;
 	actor?: IActor;
 

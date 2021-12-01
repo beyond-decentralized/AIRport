@@ -1,10 +1,10 @@
 {
   "airport": {
     "domain": "air",
-    "schema": "moving-walkway",
+    "application": "moving-walkway",
     "user": "diapco",
     "project": "airport",
-    "path": "schemas/moving-walkway"
+    "path": "applications/moving-walkway"
   },
   "dependencies": {
     "@airport/air-control": "0.0.1",

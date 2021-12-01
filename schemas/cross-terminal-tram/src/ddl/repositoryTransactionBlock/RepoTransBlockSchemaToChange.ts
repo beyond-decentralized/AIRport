@@ -8,14 +8,14 @@ import {
 	Entity,
 	Table
 }                                   from "@airport/air-control/lib/impl/core/entity/metadata/EntityDecorators";
-import {Schema}                     from "@airport/traffic-pattern";
-import {SchemaChangeStatus}         from "../values/SchemaChangeStatus";
+import {Application}                     from "@airport/traffic-pattern";
+import {ApplicationChangeStatus}         from "../values/ApplicationChangeStatus";
 import {RepositoryTransactionBlock} from "./RepositoryTransactionBlock";
 
 
 @Entity()
 @Table({name: "REPO_TRANS_BLOCK_SCHEMAS_TO_CHANGE"})
-export class RepoTransBlockSchemaToChange {
+export class RepoTransBlockApplicationToChange {
 
 	@Id()
 	@ManyToOne()
@@ -25,13 +25,13 @@ export class RepoTransBlockSchemaToChange {
 	repositoryTransactionBlock: RepositoryTransactionBlock;
 
 	@DbString()
-	status: SchemaChangeStatus;
+	status: ApplicationChangeStatus;
 
 	@Id()
 	@ManyToOne()
 	@JoinColumn({
 		name: "SCHEMA_INDEX"
 	})
-	schema: Schema;
+	application: Application;
 
 }

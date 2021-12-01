@@ -8,7 +8,7 @@ import {
 	IQEntityDriver,
 	IQEntityInternal
 }                         from '../../../lingo/core/entity/Entity'
-import {ISchemaUtils}     from '../../../lingo/utils/SchemaUtils'
+import {IApplicationUtils}     from '../../../lingo/utils/ApplicationUtils'
 import {RELATION_MANAGER} from '../../../tokens'
 
 export interface IRelationManager {
@@ -40,7 +40,7 @@ export interface IRelationManager {
 export interface IRelationManagerContext {
 	ioc: {
 		airDb: IAirportDatabase
-		schemaUtils: ISchemaUtils
+		applicationUtils: IApplicationUtils
 	}
 }
 
@@ -74,9 +74,9 @@ export class RelationManager
 		joinRelation: JSONRelation,
 		context: IRelationManagerContext,
 	): IQ {
-		const dbEntity         = context.ioc.schemaUtils.getDbEntity(
+		const dbEntity         = context.ioc.applicationUtils.getDbEntity(
 			joinRelation.si, joinRelation.ti, context.ioc.airDb)
-		let QEntityConstructor = context.ioc.schemaUtils.getQEntityConstructor(
+		let QEntityConstructor = context.ioc.applicationUtils.getQEntityConstructor(
 			dbEntity, context.ioc.airDb)
 		return new QEntityConstructor<IQ>(
 			dbEntity,

@@ -21,14 +21,14 @@ export abstract class SqLiteDriver
 	}
 
 	composeTableName(
-		schemaName: string,
+		applicationName: string,
 		tableName: string
 	): string {
-		return `${schemaName}__${tableName}`
+		return `${applicationName}__${tableName}`
 	}
 
 	async doesTableExist(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IOperationContext,
 	): Promise<boolean> {
@@ -40,7 +40,7 @@ from
 	sqlite_master
 WHERE
 	type = 'table'
-	AND tbl_name = '${schemaName}__${tableName}'`,
+	AND tbl_name = '${applicationName}__${tableName}'`,
 			[], context
 		)
 
@@ -58,12 +58,12 @@ WHERE
 	)
 
 	async dropTable(
-		schemaName: string,
+		applicationName: string,
 		tableName: string,
 		context: IOperationContext,
 	): Promise<boolean> {
 		const matchingTableNames = await this.findNative(
-			`DROP TABLE '${schemaName}__${tableName}'`,
+			`DROP TABLE '${applicationName}__${tableName}'`,
 			[], context
 		)
 

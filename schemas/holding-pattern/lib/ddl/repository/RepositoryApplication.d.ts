@@ -1,14 +1,9 @@
-import { Application } from '@airport/territory';
+import { ApplicationIndex } from "@airport/ground-control";
 import { Repository } from './Repository';
-/**
- * Created by Papa on 12/18/2016.
- */
-/**
- * A record of device+datatabase that adds to a repository
- */
+export declare type RepositoryApplicationId = number;
 export declare class RepositoryApplication {
-    id: number;
-    application: Application;
+    id: RepositoryApplicationId;
     repository: Repository;
+    applicationIndex: ApplicationIndex;
 }
 //# sourceMappingURL=RepositoryApplication.d.ts.map

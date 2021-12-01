@@ -127,7 +127,7 @@ export abstract class AbstractObjectResultParser {
 		resultObject[propertyName] = manyToOneStub
 		let haveAllIds             = true
 		relationInfos.forEach((relationInfo) => {
-			if (context.ioc.schemaUtils.isIdEmpty(relationInfo.value)) {
+			if (context.ioc.applicationUtils.isIdEmpty(relationInfo.value)) {
 				haveAllIds = false
 				return
 			}

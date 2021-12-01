@@ -8,8 +8,8 @@ import { container, DI } from '@airport/di'
 import {
 	ColumnIndex,
 	JSONBaseOperation,
-	SchemaIndex,
-	SchemaVersionId,
+	ApplicationIndex,
+	ApplicationVersionId,
 	TableIndex
 } from '@airport/ground-control'
 import {
@@ -29,7 +29,7 @@ import {
 export type RecordUpdateStageValue = any;
 
 export type RecordUpdateStageValues = [
-	SchemaVersionId,
+	ApplicationVersionId,
 	TableIndex,
 	Repository_Id,
 	Actor_Id,
@@ -46,8 +46,8 @@ export interface IRecordUpdateStageDao
 	): Promise<number>;
 
 	updateEntityWhereIds(
-		schemaIndex: SchemaIndex,
-		schemaVersionId: SchemaVersionId,
+		applicationIndex: ApplicationIndex,
+		applicationVersionId: ApplicationVersionId,
 		tableIndex: TableIndex,
 		idMap: Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
@@ -69,7 +69,7 @@ export class RecordUpdateStageDao
 		const rus: QRecordUpdateStage = Q.RecordUpdateStage
 
 		const columns = [
-			rus.schemaVersion.id,
+			rus.applicationVersion.id,
 			rus.entity.id,
 			rus.repository.id,
 			rus.actor.id,
@@ -91,17 +91,17 @@ export class RecordUpdateStageDao
 	}
 
 	async updateEntityWhereIds(
-		schemaIndex: SchemaIndex,
-		schemaVersionId: SchemaVersionId,
+		applicationIndex: ApplicationIndex,
+		applicationVersionId: ApplicationVersionId,
 		tableIndex: TableIndex,
 		idMap: Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
 	): Promise<void> {
 		const airDb = await container(this).get(AIRPORT_DATABASE)
 
-		const dbEntity = airDb.schemas[schemaIndex].currentVersion[0]
-			.schemaVersion.entities[tableIndex]
-		const qEntity = airDb.qSchemas[schemaIndex][dbEntity.name]
+		const dbEntity = airDb.applications[applicationIndex].currentVersion[0]
+			.applicationVersion.entities[tableIndex]
+		const qEntity = airDb.qApplications[applicationIndex][dbEntity.name]
 
 		const repositoryEquals: JSONBaseOperation[] = []
 		for (const [repositoryId, idsForRepository] of idMap) {
@@ -129,7 +129,7 @@ export class RecordUpdateStageDao
 				select: columnRus.updatedValue,
 				where:
 					and(
-						columnRus.schemaVersion.id.equals(schemaVersionId),
+						columnRus.applicationVersion.id.equals(applicationVersionId),
 						columnRus.entity.id.equals(dbEntity.id),
 						columnRus.repository.id.equals(qEntity.repository.id),
 						columnRus.actor.id.equals(qEntity.actor.id),

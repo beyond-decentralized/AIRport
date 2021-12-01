@@ -1,6 +1,0 @@
-export enum SchemaStatus {
-	CURRENT = 'CURRENT',
-	MISSING = 'MISSING',
-	NEEDS_UPGRADES = 'NEEDS_UPGRADES',
-	STUB = 'STUB'
-}

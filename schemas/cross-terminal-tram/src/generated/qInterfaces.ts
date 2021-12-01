@@ -7,7 +7,7 @@ export * from './qrecordupdatestage';
 export * from './repositoryTransactionBlock/qrepositorytransactionblock';
 export * from './repositoryTransactionBlock/qrepositorytransactionhistoryupdatestage';
 export * from './repositoryTransactionBlock/qrepotransblockresponsestage';
-export * from './repositoryTransactionBlock/qrepotransblockschematochange';
+export * from './repositoryTransactionBlock/qrepotransblockapplicationtochange';
 export * from './sharingMessage/qsharingmessage';
 export * from './sharingMessage/qsharingmessagerepotransblock';
 export * from './sharingNode/qsharingnode';

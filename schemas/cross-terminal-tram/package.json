@@ -1,10 +1,10 @@
 {
   "airport": {
     "domain": "air",
-    "schema": "cross-terminal-tram",
+    "application": "cross-terminal-tram",
     "user": "diapco",
     "project": "airport",
-    "path": "schemas/cross-terminal-tram"
+    "path": "applications/cross-terminal-tram"
   },
   "dependencies": {
     "@airport/air-control": "0.0.1",

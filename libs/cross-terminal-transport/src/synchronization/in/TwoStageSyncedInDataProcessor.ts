@@ -6,7 +6,7 @@ import {
 import {container, DI}                           from '@airport/di'
 import {
 	ensureChildArray,
-	SchemaVersionId,
+	ApplicationVersionId,
 	TransactionType
 }                                     from '@airport/ground-control'
 import {
@@ -40,7 +40,7 @@ import {
 	ITransactionManager,
 	TRANSACTION_MANAGER
 }                                     from '@airport/terminal-map'
-import {ISchema}                      from '@airport/traffic-pattern'
+import {IApplication}                      from '@airport/traffic-pattern'
 import {parse}                        from 'zipson/lib'
 import {
 	STAGE1_SYNCED_IN_DATA_PROCESSOR,
@@ -105,11 +105,11 @@ export class TwoStageSyncedInDataProcessor
 
 		const [
 			      actorMapById,
-			      existingRepoTransBlocksWithCompatibleSchemasAndData,
-			      dataMessagesWithCompatibleSchemas,
-			      sharingMessagesWithCompatibleSchemasAndData,
-			      // usedSchemaVersionIdSet
-		      ] = await syncInChecker.checkSchemasAndDataAndRecordRepoTransBlocks(
+			      existingRepoTransBlocksWithCompatibleApplicationsAndData,
+			      dataMessagesWithCompatibleApplications,
+			      sharingMessagesWithCompatibleApplicationsAndData,
+			      // usedApplicationVersionIdSet
+		      ] = await syncInChecker.checkApplicationsAndDataAndRecordRepoTransBlocks(
 			// consistentMessages, actorMap, sharingNodeRepositoryMap,
 			// dataMessagesWithInvalidData
 			dataMessages
@@ -117,22 +117,22 @@ export class TwoStageSyncedInDataProcessor
 
 		const repoTransHistoryMapByRepositoryId
 			      = await this.recordSharingMessageToHistoryRecords(
-			sharingMessagesWithCompatibleSchemasAndData,
-			existingRepoTransBlocksWithCompatibleSchemasAndData,
-			dataMessagesWithCompatibleSchemas,
+			sharingMessagesWithCompatibleApplicationsAndData,
+			existingRepoTransBlocksWithCompatibleApplicationsAndData,
+			dataMessagesWithCompatibleApplications,
 			actorMapById, repositoryTransactionBlockDao,
 			repoTransBlockRepoTransHistoryDao, transactionManager)
 
 
 		await this.updateLocalData(repoTransHistoryMapByRepositoryId, actorMapById,
-			schemasBySchemaVersionIdMap,
+			applicationsByApplicationVersionIdMap,
 			repositoryActorDao, stage1SyncedInDataProcessor, stage2SyncedInDataProcessor,
 			synchronizationConflictDao, synchronizationConflictPendingNotificationDao)
 	}
 
 	private async recordSharingMessageToHistoryRecords(
 		sharingMessages: ISharingMessage[],
-		existingRepoTransBlocksWithCompatibleSchemasAndData: IRepositoryTransactionBlock[],
+		existingRepoTransBlocksWithCompatibleApplicationsAndData: IRepositoryTransactionBlock[],
 		dataMessages: IDataToTM[],
 		actorMapById: Map<ActorId, IActor>,
 		repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
@@ -141,7 +141,7 @@ export class TwoStageSyncedInDataProcessor
 	): Promise<Map<RepositoryId, IRepositoryTransactionHistory[]>> {
 		const repoTransHistoryMapByRepositoryId: Map<RepositoryId, IRepositoryTransactionHistory[]>
 			      = await this.getRepoTransHistoryMapByRepoId(dataMessages,
-			existingRepoTransBlocksWithCompatibleSchemasAndData, actorMapById)
+			existingRepoTransBlocksWithCompatibleApplicationsAndData, actorMapById)
 
 		const repositoryTransactionBlocks: IRepositoryTransactionBlock[]          = []
 		const repoTransBlockRepoTransHistories: IRepoTransBlockRepoTransHistory[] = []
@@ -204,7 +204,7 @@ export class TwoStageSyncedInDataProcessor
 
 	private async getRepoTransHistoryMapByRepoId(
 		dataMessages: IDataToTM[],
-		existingRepoTransBlocksWithCompatibleSchemasAndData: IRepositoryTransactionBlock[],
+		existingRepoTransBlocksWithCompatibleApplicationsAndData: IRepositoryTransactionBlock[],
 		actorMapById: Map<ActorId, IActor>,
 		repositoryTransactionBlockDao: IRepositoryTransactionBlockDao,
 		repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
@@ -218,7 +218,7 @@ export class TwoStageSyncedInDataProcessor
 
 		const repositoryTransactionBlockIds: TmSharingMessageId[] = []
 		for (const repositoryTransactionBlock
-			of existingRepoTransBlocksWithCompatibleSchemasAndData) {
+			of existingRepoTransBlocksWithCompatibleApplicationsAndData) {
 			const data: RepositoryTransactionBlockData = parse(repositoryTransactionBlock.contents)
 			this.addRepoTransHistoriesToMapFromData(repoTransHistoryMapByRepositoryId, data)
 			for (const actor of data.actors) {
@@ -251,7 +251,7 @@ export class TwoStageSyncedInDataProcessor
 	private async updateLocalData(
 		repoTransHistoryMapByRepositoryId: Map<RepositoryId, ISyncRepoTransHistory[]>,
 		actorMayById: Map<ActorId, IActor>,
-		schemasBySchemaVersionIdMap: Map<SchemaVersionId, ISchema>,
+		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
 		repositoryActorDao: IRepositoryActorDao,
 		stage1SyncedInDataProcessor: IStage1SyncedInDataProcessor,
 		stage2SyncedInDataProcessor: IStage2SyncedInDataProcessor,
@@ -290,7 +290,7 @@ export class TwoStageSyncedInDataProcessor
 		await synchronizationConflictPendingNotificationDao.bulkCreate(
 			syncConflictPendingNotifications, false)
 
-		await stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap)
+		await stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersionIdMap)
 	}
 
 }

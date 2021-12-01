@@ -244,7 +244,7 @@ export const SCHEMA = {
 				}
 			],
 			"integerVersion": 1,
-			"referencedSchemas": [],
+			"referencedApplications": [],
 			"versionString": "1.0.0"
 		}
 	]

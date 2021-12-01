@@ -3,14 +3,14 @@ import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { AIRPORT_DATABASE, ENTITY_UTILS, FIELD_UTILS, QUERY_CONTEXT_LOADER, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS } from '../../tokens';
 export class IocQueryContext {
     async init() {
-        const [airDb, entityUtils, fieldUtils, queryFacade, queryUtils, schemaUtils, transactionalConnector] = await DI.db()
+        const [airDb, entityUtils, fieldUtils, queryFacade, queryUtils, applicationUtils, transactionalConnector] = await DI.db()
             .get(AIRPORT_DATABASE, ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR);
         this.airDb = airDb;
         this.entityUtils = entityUtils;
         this.fieldUtils = fieldUtils;
         this.queryFacade = queryFacade;
         this.queryUtils = queryUtils;
-        this.schemaUtils = schemaUtils;
+        this.applicationUtils = applicationUtils;
         this.transactionalConnector = transactionalConnector;
     }
 }

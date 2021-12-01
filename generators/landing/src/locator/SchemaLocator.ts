@@ -1,65 +1,65 @@
 import { DI } from '@airport/di'
-import { getSchemaNameFromDomainAndName, JsonSchema } from '@airport/ground-control'
+import { getApplicationNameFromDomainAndName, JsonApplication } from '@airport/ground-control'
 import { AllDdlObjects } from '@airport/takeoff'
 import {
 	ITerminalStore,
 	TERMINAL_STORE
 } from '@airport/terminal-map'
-import { ISchemaVersion } from '@airport/airspace'
+import { IApplicationVersion } from '@airport/airspace'
 import { SCHEMA_LOCATOR } from '../tokens'
 
-export interface ISchemaLocator {
+export interface IApplicationLocator {
 
-	locateExistingSchemaVersionRecord(
-		jsonSchema: JsonSchema,
+	locateExistingApplicationVersionRecord(
+		jsonApplication: JsonApplication,
 		terminalStore: ITerminalStore
-	): ISchemaVersion
+	): IApplicationVersion
 
-	locateLatestSchemaVersionBySchemaName(
-		schemaName: string,
+	locateLatestApplicationVersionByApplicationName(
+		applicationName: string,
 		terminalStore: ITerminalStore,
-	): Promise<ISchemaVersion>
+	): Promise<IApplicationVersion>
 
 }
 
-export class SchemaLocator
-	implements ISchemaLocator {
+export class ApplicationLocator
+	implements IApplicationLocator {
 
 	// private terminalStore: ITerminalStore
 
-	locateExistingSchemaVersionRecord(
-		jsonSchema: JsonSchema,
+	locateExistingApplicationVersionRecord(
+		jsonApplication: JsonApplication,
 		terminalStore: ITerminalStore
-	): ISchemaVersion {
-		const schemaVersionsForDomainName = terminalStore
-			.getLatestSchemaVersionMapByNames().get(jsonSchema.domain)
-		if (!schemaVersionsForDomainName) {
+	): IApplicationVersion {
+		const applicationVersionsForDomainName = terminalStore
+			.getLatestApplicationVersionMapByNames().get(jsonApplication.domain)
+		if (!applicationVersionsForDomainName) {
 			return null
 		}
-		const schemaName = getSchemaNameFromDomainAndName(
-			jsonSchema.domain,
-			jsonSchema.name
+		const applicationName = getApplicationNameFromDomainAndName(
+			jsonApplication.domain,
+			jsonApplication.name
 		)
-		const latestSchemaVersionForSchema = schemaVersionsForDomainName.get(schemaName)
+		const latestApplicationVersionForApplication = applicationVersionsForDomainName.get(applicationName)
 
-		const jsonSchemaVersion = jsonSchema.versions[0]
+		const jsonApplicationVersion = jsonApplication.versions[0]
 
-		if (latestSchemaVersionForSchema
-			&& latestSchemaVersionForSchema.integerVersion !== jsonSchemaVersion.integerVersion) {
-			throw new Error(`Multiple versions of schemas are not yet supported`)
+		if (latestApplicationVersionForApplication
+			&& latestApplicationVersionForApplication.integerVersion !== jsonApplicationVersion.integerVersion) {
+			throw new Error(`Multiple versions of applications are not yet supported`)
 		}
 
-		return latestSchemaVersionForSchema
+		return latestApplicationVersionForApplication
 	}
 
-	async locateLatestSchemaVersionBySchemaName(
-		schemaName: string,
+	async locateLatestApplicationVersionByApplicationName(
+		applicationName: string,
 		terminalStore: ITerminalStore,
-	): Promise<ISchemaVersion> {
-		return terminalStore.getLatestSchemaVersionMapBySchemaName()
-			.get(schemaName)
+	): Promise<IApplicationVersion> {
+		return terminalStore.getLatestApplicationVersionMapByApplicationName()
+			.get(applicationName)
 	}
 
 }
 
-DI.set(SCHEMA_LOCATOR, SchemaLocator)
+DI.set(SCHEMA_LOCATOR, ApplicationLocator)

@@ -18,9 +18,9 @@ import {
 	JsonTreeQuery,
 	JSONValueOperation,
 	OperationCategory,
-	SchemaIndex,
-	SchemaMap,
-	SchemaVersionId,
+	ApplicationIndex,
+	ApplicationMap,
+	ApplicationVersionId,
 	SqlOperator,
 	TableIndex
 }                          from '@airport/ground-control'
@@ -47,7 +47,7 @@ export enum ClauseType {
 export abstract class SQLWhereBase
 	implements ISqlValueProvider {
 
-	protected fieldMap: SchemaMap                                                   = new SchemaMap()
+	protected fieldMap: ApplicationMap                                                   = new ApplicationMap()
 	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> }        = {}
 	protected jsonRelationMapByAlias: { [entityAlias: string]: JSONEntityRelation } = {}
 	protected parameterReferences: (string | number)[]                              = []
@@ -286,15 +286,15 @@ export abstract class SQLWhereBase
 		dbColumn: DbColumn,
 	): void {
 		const dbEntity = dbColumn.propertyColumns[0].property.entity
-		this.addField(dbEntity.schemaVersion.id, dbEntity.index, dbColumn.index)
+		this.addField(dbEntity.applicationVersion.id, dbEntity.index, dbColumn.index)
 	}
 
 	protected addField(
-		schemaIndex: SchemaIndex,
+		applicationIndex: ApplicationIndex,
 		tableIndex: TableIndex,
 		columnIndex: ColumnIndex,
 	): void {
-		this.fieldMap.ensure(schemaIndex, tableIndex)
+		this.fieldMap.ensure(applicationIndex, tableIndex)
 			.ensure(columnIndex)
 	}
 

@@ -1,2 +1,2 @@
-export * from './SchemaVersionDuo';
+export * from './ApplicationVersionDuo';
 //# sourceMappingURL=duo.js.map

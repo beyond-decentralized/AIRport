@@ -10,7 +10,7 @@ export class AutopilotApiLoader
     implements IAutopilotApiLoader {
 
     loadApiAutopilot<T>(
-        schemaSignature: string,
+        applicationSignature: string,
         daoName: string
     ): T {
         return new Proxy({}, {
@@ -23,7 +23,7 @@ export class AutopilotApiLoader
                 }
                 return function (...args) {
                     return IOC.getSync(LOCAL_API_CLIENT)
-                        .invokeApiMethod(schemaSignature, daoName, methodName, args);
+                        .invokeApiMethod(applicationSignature, daoName, methodName, args);
                 };
             }
         }) as T;

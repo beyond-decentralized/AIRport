@@ -1,1 +1,0 @@
-{"version":3,"file":"SchemaPropertyColumn.d.ts","sourceRoot":"","sources":["../../../src/ddl/schema/SchemaPropertyColumn.ts"],"names":[],"mappings":"AAOA,OAAO,EAAC,YAAY,EAAC,MAAe,gBAAgB,CAAA;AACpD,OAAO,EAAC,cAAc,EAAC,MAAa,kBAAkB,CAAA;AACtD,OAAO,EAAC,qBAAqB,EAAC,MAAM,yBAAyB,CAAA;AAE7D;;GAEG;AACH,qBAKa,oBACZ,SAAQ,qBAAqB;IAK7B,MAAM,EAAE,YAAY,CAAA;IAKpB,QAAQ,EAAE,cAAc,CAAA;CAExB"}

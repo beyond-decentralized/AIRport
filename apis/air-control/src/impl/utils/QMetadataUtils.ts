@@ -53,7 +53,7 @@ export class QMetadataUtils
 		airDb: IAirportDatabase
 	): any {
 		const dbEntity = qEntity.__driver__.dbEntity
-		const entityConstructor = airDb.qSchemas[dbEntity.schemaVersion.schema.index].__constructors__[dbEntity.name]
+		const entityConstructor = airDb.qApplications[dbEntity.applicationVersion.application.index].__constructors__[dbEntity.name]
 		if (!entityConstructor) {
 			return {}
 		}

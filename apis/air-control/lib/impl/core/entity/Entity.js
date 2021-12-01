@@ -2,7 +2,7 @@ import { DI } from '@airport/di';
 import { JoinType, JSONRelationType } from '@airport/ground-control';
 import { AIRPORT_DATABASE, RELATION_MANAGER, SCHEMA_UTILS } from '../../../tokens';
 import { TreeQuery } from '../../query/facade/TreeQuery';
-import { extend } from '../../utils/qSchemaBuilderUtils';
+import { extend } from '../../utils/qApplicationBuilderUtils';
 import { JoinFields } from '../Joins';
 export function QEntity(dbEntity, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
     this.__driver__ = new QDriver(dbEntity, fromClausePosition, dbRelation, joinType, this);
@@ -33,8 +33,8 @@ export class QEntityDriver {
         this.relations = [];
         this.currentChildIndex = -1;
     }
-    getInstance(airDb, schemaUtils) {
-        const qEntityConstructor = schemaUtils
+    getInstance(airDb, applicationUtils) {
+        const qEntityConstructor = applicationUtils
             .getQEntityConstructor(this.dbEntity, airDb);
         let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType);
         instance.__driver__.currentChildIndex = this.currentChildIndex;
@@ -63,7 +63,7 @@ export class QEntityDriver {
 */
     getRelationJson(columnAliases, queryUtils, fieldUtils) {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
-        // see SchemaDao.findMaxVersionedMapBySchemaAndDomainNames for an example
+        // see ApplicationDao.findMaxVersionedMapByApplicationAndDomainNames for an example
         let jsonRelation = {
             currentChildIndex: this.currentChildIndex,
             ti: this.dbEntity.index,
@@ -71,7 +71,7 @@ export class QEntityDriver {
             jt: this.joinType,
             rt: null,
             rep: columnAliases.entityAliases.getNextAlias(this.getRootJoinEntity()),
-            si: this.dbEntity.schemaVersion.schema.index
+            si: this.dbEntity.applicationVersion.application.index
         };
         if (this.joinWhereClause) {
             this.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);
@@ -124,9 +124,9 @@ export class QEntityDriver {
         return this.qEntity;
     }
     join(right, joinType) {
-        const [airDb, schemaUtils, relationManager] = DI.db().getSync(AIRPORT_DATABASE, SCHEMA_UTILS, RELATION_MANAGER);
+        const [airDb, applicationUtils, relationManager] = DI.db().getSync(AIRPORT_DATABASE, SCHEMA_UTILS, RELATION_MANAGER);
         let joinChild = right
-            .__driver__.getInstance(airDb, schemaUtils);
+            .__driver__.getInstance(airDb, applicationUtils);
         joinChild.__driver__.currentChildIndex = 0;
         let nextChildPosition = relationManager.getNextChildJoinPosition(this);
         joinChild.__driver__.fromClausePosition = nextChildPosition;
@@ -151,8 +151,8 @@ export function QTree(fromClausePosition = [], subQuery) {
 }
 extend(QEntity, QTree, {});
 export class QTreeDriver extends QEntityDriver {
-    getInstance(airDb, schemaUtils) {
-        let instance = super.getInstance(airDb, schemaUtils);
+    getInstance(airDb, applicationUtils) {
+        let instance = super.getInstance(airDb, applicationUtils);
         instance.__driver__
             .subQuery = this.subQuery;
         return instance;

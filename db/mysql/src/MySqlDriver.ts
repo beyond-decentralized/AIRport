@@ -74,21 +74,21 @@ export class MySqlDriver
   protected maxValues = 1000000;
 
   composeTableName(
-    schemaName: string,
+    applicationName: string,
     tableName: string,
   ): string {
-    return `${schemaName}.${tableName}`;
+    return `${applicationName}.${tableName}`;
   }
 
   async doesTableExist(
-    schemaName: string,
+    applicationName: string,
     tableName: string,
     context: IOperationContext,
   ): Promise<boolean> {
     const result = await this.findNative(
       // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
-      `select count(1) as count from information_schema.TABLES
-where TABLE_SCHEMA = '${schemaName}'
+      `select count(1) as count from information_application.TABLES
+where TABLE_SCHEMA = '${applicationName}'
 and TABLE_NAME = '${tableName}';`,
       [],
       context,
@@ -98,12 +98,12 @@ and TABLE_NAME = '${tableName}';`,
   }
 
   async dropTable(
-    schemaName: string,
+    applicationName: string,
     tableName: string,
     context: IOperationContext,
   ): Promise<boolean> {
     await this.findNative(
-      `DROP TABLE '${schemaName}'.'${tableName}'`,
+      `DROP TABLE '${applicationName}'.'${tableName}'`,
       [],
       context,
     );

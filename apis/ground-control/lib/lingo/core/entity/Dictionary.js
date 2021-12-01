@@ -97,7 +97,7 @@ export var table;
     table.INDEXES = 'indexes';
     table.NAME = 'name';
     table.PRIMARY_KEY = 'primaryKey';
-    table.SCHEMA = 'schema';
+    table.SCHEMA = 'application';
 })(table || (table = {}));
 /**
  * Name of the RepositoryId column

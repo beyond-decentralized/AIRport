@@ -1,12 +1,12 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { DI } from '@airport/di';
-import { JsonSchema } from '@airport/ground-control';
+import { JsonApplication } from '@airport/ground-control';
 import { DATABASE_MANAGER } from '@airport/terminal';
 
 export * from './DDLManager';
 export * from './MySqlDriver';
 export * from './MySqlQueryAdaptor';
-export * from './MySqlSchemaBuilder';
+export * from './MySqlApplicationBuilder';
 export * from './MySqlTransaction';
 
 export async function startDb(

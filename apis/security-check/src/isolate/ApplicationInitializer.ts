@@ -1,4 +1,4 @@
-import { JsonSchemaWithLastIds } from "../JsonSchemaWithLastIds";
+import { JsonApplicationWithLastIds } from "../JsonApplicationWithLastIds";
 import { LastIds } from "../LastIds";
 
 export interface IApplicationInitializer {
@@ -8,6 +8,6 @@ export interface IApplicationInitializer {
         librarySignature?: string,
     ): Promise<void>
 
-    getSchema(): JsonSchemaWithLastIds
+    getApplication(): JsonApplicationWithLastIds
 
 }

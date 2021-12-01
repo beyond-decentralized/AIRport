@@ -3,19 +3,19 @@ export function setSeqGen(sequenceGenerator) {
     SEQ_GEN = sequenceGenerator;
 }
 var SEQ_GEN;
-export function diSet(dbSchema, dbEntityId // EntityId
+export function diSet(dbApplication, dbEntityId // EntityId
 ) {
     if (!SEQ_GEN
-        || !dbSchema) {
+        || !dbApplication) {
         return false;
     }
-    const dbEntity = dbSchema.currentVersion[0]
-        .schemaVersion.entities[dbEntityId];
+    const dbEntity = dbApplication.currentVersion[0]
+        .applicationVersion.entities[dbEntityId];
     return SEQ_GEN.exists(dbEntity);
 }
-export function duoDiSet(dbSchema, dbEntityId) {
-    return dbSchema && dbSchema.currentVersion[0]
-        .schemaVersion.entities[dbEntityId];
+export function duoDiSet(dbApplication, dbEntityId) {
+    return dbApplication && dbApplication.currentVersion[0]
+        .applicationVersion.entities[dbEntityId];
 }
 export async function getSysWideOpId(airDb, sequenceGenerator) {
     return getSysWideOpIds(1, airDb, sequenceGenerator)[0];
@@ -25,7 +25,7 @@ export async function getSysWideOpIds(numSequencesNeeded, airDb, sequenceGenerat
         return [];
     }
     const sysWideOpIdGeneratedColumn = airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA]
-        .__dbSchema__.currentVersion[0].schemaVersion
+        .__dbApplication__.currentVersion[0].applicationVersion
         .entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
     const generatedNumWrapper = await sequenceGenerator
         .generateSequenceNumbers([sysWideOpIdGeneratedColumn], [numSequencesNeeded]);

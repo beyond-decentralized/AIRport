@@ -28,7 +28,7 @@ export class SyncInConsistencyChecker
 
 	}
 
-	private areSchemasConsistent(): boolean {
+	private areApplicationsConsistent(): boolean {
 
 	}
 

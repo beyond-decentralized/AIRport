@@ -6,7 +6,7 @@ import {
 }                        from '../../../resolve/pathResolver'
 import {PathBuilder}             from '../PathBuilder'
 import {IBuilder}                from '../Builder'
-import {SIndexedEntity}          from '../schema/SEntity'
+import {SIndexedEntity}          from '../application/SEntity'
 import {FileBuilder}             from './FileBuilder'
 import {IEntityInterfaceBuilder} from './IEntityInterfaceBuilder'
 import {QEntityBuilder}          from './QEntityBuilder'
@@ -80,7 +80,7 @@ ${interfaceSource}
 			let entityInterfaceRelativePath
 			if (property.fromProject) {
 				entityInterfaceRelativePath = property.fromProject
-				type                        = property.otherSchemaDbEntity.name
+				type                        = property.otherApplicationDbEntity.name
 			} else {
 				type                        = property.entity.type
 				entityInterfaceRelativePath = resolveRelativeEntityPath(this.entity, property.entity)

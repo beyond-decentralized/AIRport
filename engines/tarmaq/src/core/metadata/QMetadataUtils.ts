@@ -1,6 +1,6 @@
 // import {
 // 	IColumn, IEntity,
-// 	IIndexedEntity, IIndexedSchema,
+// 	IIndexedEntity, IIndexedApplication,
 // 	IQEntity,
 // 	IQOperableField,
 // 	IRelation,
@@ -8,7 +8,7 @@
 // 	JoinColumnConfiguration,
 // 	JSONBaseOperation,
 // 	OneToManyElements,
-// 	SchemaIndex,
+// 	ApplicationIndex,
 // 	SQLDataType,
 // 	TableIndex
 // } from "@airport/air-control";
@@ -35,7 +35,7 @@
 // import { QUntypedField } from "../../../../air-control/src/impl/core/field/UntypedField";
 // import {
 //  IDatabaseFacadeInternal,
-//  SchemaUtils,
+//  ApplicationUtils,
 // 	MetadataUtils,
 // 	ReferencedColumnAndValueData,
 // 	ReferencedColumnData
@@ -154,8 +154,8 @@
 // 		propertyName: string,
 // 		qEntity: IQE
 // 	): string {
-// 		const indexedEntity = SchemaUtils.getIndexedEntity(
-// 			qEntity.__driver__.schemaIndex, qEntity.__driver__.tableIndex);
+// 		const indexedEntity = ApplicationUtils.getIndexedEntity(
+// 			qEntity.__driver__.applicationIndex, qEntity.__driver__.tableIndex);
 //
 // 		const columnIndex = indexedEntity.propertyMap[propertyName].columnRef.index;
 //
@@ -166,8 +166,8 @@
 // 		columnName: string,
 // 		qEntity: IQE
 // 	): string {
-// 		const indexedEntity = SchemaUtils.getIndexedEntity(
-// 			qEntity.__driver__.schemaIndex, qEntity.__driver__.tableIndex);
+// 		const indexedEntity = ApplicationUtils.getIndexedEntity(
+// 			qEntity.__driver__.applicationIndex, qEntity.__driver__.tableIndex);
 //
 // 		const columnIndex = indexedEntity.columnMap[columnName].index;
 // 		const propertyIndex = indexedEntity.entity.columns[columnIndex].propertyRef.index;
@@ -179,10 +179,10 @@
 // 		propertyName: string,
 // 		qEntity: IQE
 // 	): string {
-// 		const indexedEntity = SchemaUtils.getIndexedEntity(
-// 			qEntity.__driver__.schemaIndex, qEntity.__driver__.tableIndex);
-// 		const property = SchemaUtils.getPropertyByName(indexedEntity, propertyName);
-// 		const relationRef = SchemaUtils.getRelationRef(property);
+// 		const indexedEntity = ApplicationUtils.getIndexedEntity(
+// 			qEntity.__driver__.applicationIndex, qEntity.__driver__.tableIndex);
+// 		const property = ApplicationUtils.getPropertyByName(indexedEntity, propertyName);
+// 		const relationRef = ApplicationUtils.getRelationRef(property);
 // 		const relation = indexedEntity.entity.relations[relationRef.index];
 //
 // 		if (relation.relationColumnRefs.length != 1) {
@@ -199,8 +199,8 @@
 // 		qEntity: IQE,
 // 	): IRelation {
 // 		if (typeof relationReference === 'number') {
-// 			const iSchema = SchemaUtils.getISchema(qEntity.__driver__.schemaIndex);
-// 			const iEntity = SchemaUtils.getIEntity(iSchema, qEntity.__driver__.tableIndex);
+// 			const iApplication = ApplicationUtils.getIApplication(qEntity.__driver__.applicationIndex);
+// 			const iEntity = ApplicationUtils.getIEntity(iApplication, qEntity.__driver__.tableIndex);
 // 			const iRelation = iEntity.relations[relationReference];
 // 			if (!iRelation) {
 // 				throw new Error(
@@ -209,8 +209,8 @@
 //
 // 			return iRelation;
 // 		} else {
-// 			const indexedEntity = SchemaUtils.getIndexedEntity(
-// 				qEntity.__driver__.schemaIndex, qEntity.__driver__.tableIndex);
+// 			const indexedEntity = ApplicationUtils.getIndexedEntity(
+// 				qEntity.__driver__.applicationIndex, qEntity.__driver__.tableIndex);
 // 			const relationRef = indexedEntity.propertyMap[relationReference].relationRef;
 // 			if (!relationRef) {
 // 				throw new Error(
@@ -250,7 +250,7 @@
 // 		}
 //
 // 		let oneToManyRelation = this.getRelation(qEntity, propertyName);
-// 		let manyToOneQEntity = dbFacade.getQEntityByIndex(oneToManyRelation.schemaIndex, oneToManyRelation.tableIndex);
+// 		let manyToOneQEntity = dbFacade.getQEntityByIndex(oneToManyRelation.applicationIndex, oneToManyRelation.tableIndex);
 //
 // 		return this.getJoinColumnConfigurations(oneToMany.mappedBy, manyToOneQEntity, dbFacade, true);
 // 	}
@@ -259,7 +259,7 @@
 // 		propertyName: string,
 // 		qEntity: IQE
 // 	): boolean {
-// 		return !SchemaUtils.isSchemaProperty(this.getQEntityIndexes(qEntity), propertyName);
+// 		return !ApplicationUtils.isApplicationProperty(this.getQEntityIndexes(qEntity), propertyName);
 // 	}
 //
 // 	static getIdKeyFromRow<IQE extends IQEntityInternal>(
@@ -378,7 +378,7 @@
 //
 // 	static getQEntityIndexes<IQE extends IQEntityInternal>(
 // 		qEntity: IQE
-// 	): [SchemaIndex, TableIndex] {
+// 	): [ApplicationIndex, TableIndex] {
 // 		throw new Error(`Not implemented`);
 // 	}
 //
@@ -388,9 +388,9 @@
 // 	): OneToManyElements {
 // 		let entityMetadata: EntityMetadata = this.getEntityMetadata(qEntity);
 //
-// 		const [schemaIndex, tableIndex] = this.getQEntityIndexes(qEntity);
+// 		const [applicationIndex, tableIndex] = this.getQEntityIndexes(qEntity);
 //
-// 		return SchemaUtils.getOneToManyConfig(schemaIndex, tableIndex, relationIndex);
+// 		return ApplicationUtils.getOneToManyConfig(applicationIndex, tableIndex, relationIndex);
 // 	}
 //
 // 	static forEachColumnsOfRelation(
@@ -407,8 +407,8 @@
 // 		},
 // 		failOnNoValue: boolean = true
 // 	) {
-// 		const idxSchema = SchemaUtils.getIndexedSchema(qEntity.__driver__.schemaIndex);
-// 		const idxEntity = SchemaUtils.getIndexedEntity(idxSchema, qEntity.__driver__.tableIndex);
+// 		const idxApplication = ApplicationUtils.getIndexedApplication(qEntity.__driver__.applicationIndex);
+// 		const idxEntity = ApplicationUtils.getIndexedEntity(idxApplication, qEntity.__driver__.tableIndex);
 //
 // 		const iProperty = idxEntity.propertyMap[propertyName];
 // 		const iRelation = idxEntity.entity.relations[iProperty.relationRef.index];
@@ -430,7 +430,7 @@
 // 	) {
 // 		let joinColumnConfigurations = this.getJoinColumnConfigurations(propertyName, qEntity, dbFacade);
 // 		let entityRelation = QMetadataUtils.getRelation(qEntity, propertyName);
-// 		let oneToManyQEntity: IQEntityInternal = dbFacade.getQEntityByIndex(entityRelation.schemaIndex, entityRelation.tableIndex);
+// 		let oneToManyQEntity: IQEntityInternal = dbFacade.getQEntityByIndex(entityRelation.applicationIndex, entityRelation.tableIndex);
 //
 // 		// if the value is null, stub it out to get column null values
 // 		if (!failOnNoValue && MetadataUtils.isEmpty(manyToOneReference)) {
@@ -470,18 +470,18 @@
 // 			): void | boolean
 // 		}
 // 	): void {
-// 		const idxSchema = SchemaUtils.getIndexedSchema(qEntity.__driver__.schemaIndex);
-// 		const idxEntity = SchemaUtils.getIndexedEntity(
-// 			idxSchema, qEntity.__driver__.tableIndex);
+// 		const idxApplication = ApplicationUtils.getIndexedApplication(qEntity.__driver__.applicationIndex);
+// 		const idxEntity = ApplicationUtils.getIndexedEntity(
+// 			idxApplication, qEntity.__driver__.tableIndex);
 // 		const iRelation = this.getRelationByReference(relationIndexOrPropertyName, qEntity);
-// 		const relatedIxSchema = SchemaUtils.getRelationSchema(idxSchema, iRelation);
-// 		const relatedIxEntity = SchemaUtils.getRelatedIdxEntity(idxSchema, iRelation);
+// 		const relatedIxApplication = ApplicationUtils.getRelationApplication(idxApplication, iRelation);
+// 		const relatedIxEntity = ApplicationUtils.getRelatedIdxEntity(idxApplication, iRelation);
 //
 // 		for (const relationColumnRef of iRelation.idxRelationColumns) {
 // 			const ownColumnName = idxEntity.columns[relationColumnRef.ownColumnIndex].name;
 // 			const referencedColumn = relatedIxEntity.columns[relationColumnRef.relationColumnIndex];
 //
-// 			const nameChainAndSQLDataType = this.getColumnRelationChainAndType(relatedIxSchema, referencedColumn, relatedIxEntity.entity);
+// 			const nameChainAndSQLDataType = this.getColumnRelationChainAndType(relatedIxApplication, referencedColumn, relatedIxEntity.entity);
 //
 // 			if (callback(ownColumnName, referencedColumn.name, nameChainAndSQLDataType)) {
 // 				return;
@@ -537,7 +537,7 @@
 // 		}
 //
 // 		let relation = this.getRelation(qEntity, propertyName);
-// 		let relationQEntity = dbFacade.getQEntityByIndex(relation.schemaIndex, relation.tableIndex);
+// 		let relationQEntity = dbFacade.getQEntityByIndex(relation.applicationIndex, relation.tableIndex);
 // 		let joinColumnConfigurations = this.getJoinColumnConfigurations(propertyName, qEntity, dbFacade);
 // 		let referencedData: ReferencedColumnAndValueData;
 // 		joinColumnConfigurations.some((joinColumnConfig) => {
@@ -564,7 +564,7 @@
 // 	}
 //
 // 	static getColumnRelationChainAndType(
-// 		idxSchema: IIndexedSchema,
+// 		idxApplication: IIndexedApplication,
 // 		iColumn: IColumn,
 // 		iEntity: IEntity,
 // 		propertyNameChain: string[] = [],
@@ -579,9 +579,9 @@
 // 			};
 // 		}
 // 		const iRelation = iEntity.relations[iProperty.relationRef.index];
-// 		const relationIdxSchema = SchemaUtils.getRelationSchema(idxSchema, iRelation);
-// 		const relationIdxEntity = SchemaUtils.getRelatedIdxEntity(
-// 			idxSchema, iRelation);
+// 		const relationIdxApplication = ApplicationUtils.getRelationApplication(idxApplication, iRelation);
+// 		const relationIdxEntity = ApplicationUtils.getRelatedIdxEntity(
+// 			idxApplication, iRelation);
 //
 // 		const relationColumnIndex = iRelation.relationColumnRefs.filter(
 // 			relationColumnRef =>
@@ -591,7 +591,7 @@
 // 		const relationColumn = relationEntity.columns[relationColumnIndex];
 //
 // 		return this.getColumnRelationChainAndType(
-// 			relationIdxSchema, relationColumn, relationEntity, propertyNameChain);
+// 			relationIdxApplication, relationColumn, relationEntity, propertyNameChain);
 //
 // 	}
 //

@@ -7,7 +7,7 @@ import { IQueryFacade } from '../core/repository/DatabaseFacade';
 import { IEntityUtils } from '../utils/EntityUtils';
 import { IFieldUtils } from '../utils/FieldUtils';
 import { IQueryUtils } from '../utils/QueryUtils';
-import { ISchemaUtils } from '../utils/SchemaUtils';
+import { IApplicationUtils } from '../utils/ApplicationUtils';
 
 export interface IQueryContext
 	extends IAbstractQueryContext<IIocQueryContext> {
@@ -20,7 +20,7 @@ export interface IIocQueryContext {
 	fieldUtils: IFieldUtils
 	queryFacade: IQueryFacade
 	queryUtils: IQueryUtils
-	schemaUtils: ISchemaUtils
+	applicationUtils: IApplicationUtils
 	transactionalConnector: ITransactionalConnector
 
 	init(): Promise<void>

@@ -1,6 +1,6 @@
 import {DbRelation}       from '@airport/ground-control'
 import {IQEntityInternal} from '../../../lingo/core/entity/Entity'
-import {extend}           from '../../utils/qSchemaBuilderUtils'
+import {extend}           from '../../utils/qApplicationBuilderUtils'
 import {QRelation}        from './Relation'
 
 /**

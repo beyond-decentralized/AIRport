@@ -3,7 +3,7 @@ export enum SyncPriority {
 	VITAL = 'VITAL',
 	// Framework updates
 	CRITICAL = 'CRITICAL',
-	// Application/Schema Updates
+	// Application/Application Updates
 	HIGH = 'HIGH',
 	ABOVE_NORMAL = 'ABOVE_NORMAL',
 	NORMAL = 'NORMAL',

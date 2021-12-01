@@ -7,14 +7,14 @@ import {
 	IContext
 } from '@airport/di';
 import {
-	getSchemaName,
+	getApplicationName,
 	STORE_DRIVER,
 } from '@airport/ground-control';
 import {
 	Actor,
 } from '@airport/holding-pattern';
 import { SCHEMA_INITIALIZER } from '@airport/landing';
-import { ISchema, SCHEMA_DAO } from '@airport/airspace';
+import { IApplication, SCHEMA_DAO } from '@airport/airspace';
 import {
 	IDatabaseManager,
 	TRANSACTIONAL_SERVER
@@ -23,7 +23,7 @@ import {
 	DATABASE_MANAGER,
 	INTERNAL_RECORD_MANAGER
 } from '../tokens';
-import { JsonSchemaWithLastIds } from '@airport/security-check';
+import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { BLUEPRINT } from '@airport/blueprint';
 
 export class DatabaseManager
@@ -36,17 +36,17 @@ export class DatabaseManager
 
 	async initNoDb(
 		context: IContext,
-		...schemas: JsonSchemaWithLastIds[]
+		...applications: JsonApplicationWithLastIds[]
 	): Promise<void> {
 		await container(this).get(AIRPORT_DATABASE);
 
 		const server = await container(this).get(TRANSACTIONAL_SERVER);
 		(server as any).tempActor = new Actor();
 
-		await this.installStarterSchema(true, false, context);
+		await this.installStarterApplication(true, false, context);
 
-		const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
-		await schemaInitializer.stage(schemas, context);
+		const applicationInitializer = await container(this).get(SCHEMA_INITIALIZER);
+		await applicationInitializer.stage(applications, context);
 		(server as any).tempActor = null;
 		this.initialized = true;
 	}
@@ -124,10 +124,10 @@ export class DatabaseManager
 		const server = await container(this).get(TRANSACTIONAL_SERVER);
 		(server as any).tempActor = new Actor();
 
-		const hydrate = await storeDriver.doesTableExist(getSchemaName(BLUEPRINT[0]),
+		const hydrate = await storeDriver.doesTableExist(getApplicationName(BLUEPRINT[0]),
 			'PACKAGES', context);
 
-		await this.installStarterSchema(false, hydrate, context);
+		await this.installStarterApplication(false, hydrate, context);
 
 		if (!hydrate) {
 			const internalRecordManager = await container(this)
@@ -143,63 +143,63 @@ export class DatabaseManager
 		return this.initialized;
 	}
 
-	async initFeatureSchemas(
+	async initFeatureApplications(
 		context: IContext,
-		jsonSchemas?: JsonSchemaWithLastIds[]
+		jsonApplications?: JsonApplicationWithLastIds[]
 	): Promise<void> {
-		const schemaDao = await container(this).get(SCHEMA_DAO);
+		const applicationDao = await container(this).get(SCHEMA_DAO);
 
-		const schemas = await schemaDao.findAll()
-		const existingSchemaMap: Map<string, ISchema> = new Map()
-		for (const schema of schemas) {
-			existingSchemaMap.set(schema.name, schema)
+		const applications = await applicationDao.findAll()
+		const existingApplicationMap: Map<string, IApplication> = new Map()
+		for (const application of applications) {
+			existingApplicationMap.set(application.name, application)
 		}
 
-		// const candidateSchemaDomainNames: DomainName[] = []
-		// const candidateSchemaNames: SchemaName[] = []
-		// for (const jsonSchema of jsonSchemas) {
-		// 	 candidateSchemaDomainNames.push(jsonSchema.domain)
-		// 	 candidateSchemaNames.push(getSchemaName(jsonSchema))
+		// const candidateApplicationDomainNames: DomainName[] = []
+		// const candidateApplicationNames: ApplicationName[] = []
+		// for (const jsonApplication of jsonApplications) {
+		// 	 candidateApplicationDomainNames.push(jsonApplication.domain)
+		// 	 candidateApplicationNames.push(getApplicationName(jsonApplication))
 		// }
-		// FIXME: this search should be done by schema signature
-		// const maxVersionedMapBySchemaAndDomainNames = await schemaDao.findMaxVersionedMapBySchemaAndDomainNames(
-		// 	candidateSchemaDomainNames, candidateSchemaNames)
-		// const lastIdsByDomainAndSchemaNames = new Map()
+		// FIXME: this search should be done by application signature
+		// const maxVersionedMapByApplicationAndDomainNames = await applicationDao.findMaxVersionedMapByApplicationAndDomainNames(
+		// 	candidateApplicationDomainNames, candidateApplicationNames)
+		// const lastIdsByDomainAndApplicationNames = new Map()
 
-		// const schemaNames: SchemaName[] = [];
-		// for (const jsonSchema of jsonSchemas) {
-		// 	const schemaName = getSchemaName(jsonSchema)
+		// const applicationNames: ApplicationName[] = [];
+		// for (const jsonApplication of jsonApplications) {
+		// 	const applicationName = getApplicationName(jsonApplication)
 		// FIXME: right now Non-Entity Tree queries don't work, fix them and figure out
 		// what needs to be done here
-		// const schemaMapForDomain = maxVersionedMapBySchemaAndDomainNames.get(jsonSchema.domain)
-		// if (!schemaMapForDomain) {
-		// 	schemaNames.push(schemaName)
+		// const applicationMapForDomain = maxVersionedMapByApplicationAndDomainNames.get(jsonApplication.domain)
+		// if (!applicationMapForDomain) {
+		// 	applicationNames.push(applicationName)
 		// } else {
-		// 	const schemaLookupRecord = schemaMapForDomain.get(schemaName)
-		// 	if (schemaLookupRecord) {
+		// 	const applicationLookupRecord = applicationMapForDomain.get(applicationName)
+		// 	if (applicationLookupRecord) {
 
 		// 	} else {
-		// schemaNames.push(schemaName)
+		// applicationNames.push(applicationName)
 		// }
 		// }
 		// }
 
-		const schemasToCreate: JsonSchemaWithLastIds[] = []
-		for (const jsonSchema of jsonSchemas) {
-			const existingSchema = existingSchemaMap.get(getSchemaName(jsonSchema))
-			if (existingSchema) {
-				jsonSchema.lastIds = existingSchema.jsonSchema.lastIds
+		const applicationsToCreate: JsonApplicationWithLastIds[] = []
+		for (const jsonApplication of jsonApplications) {
+			const existingApplication = existingApplicationMap.get(getApplicationName(jsonApplication))
+			if (existingApplication) {
+				jsonApplication.lastIds = existingApplication.jsonApplication.lastIds
 			} else {
-				schemasToCreate.push(jsonSchema)
+				applicationsToCreate.push(jsonApplication)
 			}
 		}
 
-		// if (schemasToCreate.length) {
-		const [schemaInitializer, server] = await container(this)
+		// if (applicationsToCreate.length) {
+		const [applicationInitializer, server] = await container(this)
 			.get(SCHEMA_INITIALIZER, TRANSACTIONAL_SERVER);
 		(server as any).tempActor = new Actor();
-		// await schemaInitializer.initialize(schemasToCreate, context, existingSchemasAreHydrated);
-		await schemaInitializer.initialize(schemasToCreate, existingSchemaMap, context, true);
+		// await applicationInitializer.initialize(applicationsToCreate, context, existingApplicationsAreHydrated);
+		await applicationInitializer.initialize(applicationsToCreate, existingApplicationMap, context, true);
 		// }
 
 		(server as any).tempActor = null;
@@ -240,32 +240,32 @@ export class DatabaseManager
 	}
 	*/
 
-	private async installStarterSchema(
+	private async installStarterApplication(
 		stage: boolean,
 		hydrate: boolean,
 		context: IContext,
 	) {
 		const blueprintFile = await import('@airport/blueprint');
-		const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
+		const applicationInitializer = await container(this).get(SCHEMA_INITIALIZER);
 		if (stage) {
-			await schemaInitializer.stage(blueprintFile.BLUEPRINT as any, context);
+			await applicationInitializer.stage(blueprintFile.BLUEPRINT as any, context);
 		} else if (hydrate) {
-			await schemaInitializer.hydrate(blueprintFile.BLUEPRINT as any, context);
-			// Below appears to be not needed - hydrate gets all schemas
-			// const schemaDao = await container(this).get(SCHEMA_DAO)
-			// const schemas = await schemaDao.findAll()
-			// const jsonSchemaNameSet: Set<string> = new Set()
+			await applicationInitializer.hydrate(blueprintFile.BLUEPRINT as any, context);
+			// Below appears to be not needed - hydrate gets all applications
+			// const applicationDao = await container(this).get(SCHEMA_DAO)
+			// const applications = await applicationDao.findAll()
+			// const jsonApplicationNameSet: Set<string> = new Set()
 			// blueprintFile.BLUEPRINT
-			// 	.map(jsonSchema => getSchemaName(jsonSchema))
-			// 	// schemname contains both domain and schema's actual name
-			// 	.forEach(schemaName => {
-			// 		jsonSchemaNameSet.add(schemaName)
+			// 	.map(jsonApplication => getApplicationName(jsonApplication))
+			// 	// schemname contains both domain and application's actual name
+			// 	.forEach(applicationName => {
+			// 		jsonApplicationNameSet.add(applicationName)
 			// 	})
-			// const jsonSchemas = schemas.filter(schema => !jsonSchemaNameSet.has(schema.name))
-			// 	.map(schema => schema.jsonSchema)
-			// await schemaInitializer.hydrate(jsonSchemas as any, context);
+			// const jsonApplications = applications.filter(application => !jsonApplicationNameSet.has(application.name))
+			// 	.map(application => application.jsonApplication)
+			// await applicationInitializer.hydrate(jsonApplications as any, context);
 		} else {
-			await schemaInitializer.initialize(blueprintFile.BLUEPRINT as any, new Map(),
+			await applicationInitializer.initialize(blueprintFile.BLUEPRINT as any, new Map(),
 				context, false);
 		}
 	}

@@ -4,51 +4,51 @@ import {
     IApiOperation,
     IApiRegistry,
     InstalledApi,
-    ISchemaApi
+    IApplicationApi
 } from "@airport/check-in";
 
 export class ApiRegistry
     implements IApiRegistry {
 
     // installedApi: InstalledApi
-    schemaApi: ISchemaApi
+    applicationApi: IApplicationApi
 
     initialize(
         // installedApi: InstalledApi
-        schemaApi: ISchemaApi
+        applicationApi: IApplicationApi
     ): void {
         // this.installedApi = installedApi
-        this.schemaApi = schemaApi
+        this.applicationApi = applicationApi
     }
 
     async findApiObjectAndOperation(
         systemName: string,
-        schemaSignature: string,
+        applicationSignature: string,
         apiObjectName: string,
         methodName: string
     ): Promise<{
         apiObject: any,
         apiOperation: IApiOperation
     }> {
-        // const schemaApi = this.installedApi.schemaApiMap[schemaSignature]
-        // if (!schemaApi) {
-        //     throw new Error(`Could not find SchemaAPI for signature:
-        //     ${schemaSignature}`)
+        // const applicationApi = this.installedApi.applicationApiMap[applicationSignature]
+        // if (!applicationApi) {
+        //     throw new Error(`Could not find ApplicationAPI for signature:
+        //     ${applicationSignature}`)
         // }
-        // const apiObjectDefinition = schemaApi.apiObjectMap[apiObjectName]
-        const apiObjectDefinition = this.schemaApi.apiObjectMap[apiObjectName]
+        // const apiObjectDefinition = applicationApi.apiObjectMap[apiObjectName]
+        const apiObjectDefinition = this.applicationApi.apiObjectMap[apiObjectName]
         if (!apiObjectDefinition) {
             throw new Error(`Could not find API object for 
-        Schema signature:
-            ${schemaSignature}
+        Application signature:
+            ${applicationSignature}
         Object name:
             ${apiObjectName}`)
         }
         const apiOperation = apiObjectDefinition.operationMap[methodName]
         if (!apiOperation) {
             throw new Error(`Could not find API object method for 
-        Schema signature:
-            ${schemaSignature}
+        Application signature:
+            ${applicationSignature}
         Object name:
             ${apiObjectName}
         Method name:
@@ -56,7 +56,7 @@ export class ApiRegistry
         }
 
         const apiObject = await container(this)
-            .getBySchemaSignatureAndName(systemName, schemaSignature, apiObjectName);
+            .getByApplicationSignatureAndName(systemName, applicationSignature, apiObjectName);
 
         return {
             apiObject,

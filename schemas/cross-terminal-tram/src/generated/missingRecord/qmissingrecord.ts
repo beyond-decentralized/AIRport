@@ -22,24 +22,24 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	SchemaVersionGraph,
-	SchemaVersionEId,
-	SchemaVersionEOptionalId,
-	SchemaVersionEUpdateProperties,
-	SchemaVersionESelect,
-	QSchemaVersion,
-	QSchemaVersionQId,
-	QSchemaVersionQRelation,
-	SchemaVersion,
-	SchemaEntityGraph,
-	SchemaEntityEId,
-	SchemaEntityEOptionalId,
-	SchemaEntityEUpdateProperties,
-	SchemaEntityESelect,
-	QSchemaEntity,
-	QSchemaEntityQId,
-	QSchemaEntityQRelation,
-	SchemaEntity,
+	ApplicationVersionGraph,
+	ApplicationVersionEId,
+	ApplicationVersionEOptionalId,
+	ApplicationVersionEUpdateProperties,
+	ApplicationVersionESelect,
+	QApplicationVersion,
+	QApplicationVersionQId,
+	QApplicationVersionQRelation,
+	ApplicationVersion,
+	ApplicationEntityGraph,
+	ApplicationEntityEId,
+	ApplicationEntityEOptionalId,
+	ApplicationEntityEUpdateProperties,
+	ApplicationEntityESelect,
+	QApplicationEntity,
+	QApplicationEntityQId,
+	QApplicationEntityQRelation,
+	ApplicationEntity,
 } from '@airport/traffic-pattern';
 import {
 	RepositoryGraph,
@@ -85,8 +85,8 @@ export interface MissingRecordESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	schemaVersion?: SchemaVersionESelect;
-	entity?: SchemaEntityESelect;
+	applicationVersion?: ApplicationVersionESelect;
+	entity?: ApplicationEntityESelect;
 	repository?: RepositoryESelect;
 	actor?: ActorESelect;
 
@@ -125,8 +125,8 @@ export interface MissingRecordEUpdateProperties
 	status?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	schemaVersion?: SchemaVersionEOptionalId;
-	entity?: SchemaEntityEOptionalId;
+	applicationVersion?: ApplicationVersionEOptionalId;
+	entity?: ApplicationEntityEOptionalId;
 	repository?: RepositoryEOptionalId;
 	actor?: ActorEOptionalId;
 
@@ -144,8 +144,8 @@ export interface MissingRecordGraph
 	status?: string | IQStringField;
 
 	// Relations
-	schemaVersion?: SchemaVersionGraph;
-	entity?: SchemaEntityGraph;
+	applicationVersion?: ApplicationVersionGraph;
+	entity?: ApplicationEntityGraph;
 	repository?: RepositoryGraph;
 	actor?: ActorGraph;
 
@@ -202,8 +202,8 @@ export interface QMissingRecord extends IQEntity<MissingRecord>
 	status: IQStringField;
 
 	// Non-Id Relations
-	schemaVersion: QSchemaVersionQRelation;
-	entity: QSchemaEntityQRelation;
+	applicationVersion: QApplicationVersionQRelation;
+	entity: QApplicationEntityQRelation;
 	repository: QRepositoryQRelation;
 	actor: QActorQRelation;
 

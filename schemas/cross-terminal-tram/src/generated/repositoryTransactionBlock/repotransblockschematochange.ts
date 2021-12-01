@@ -2,7 +2,7 @@ import {
 	IRepositoryTransactionBlock,
 } from './repositorytransactionblock';
 import {
-	ISchema,
+	IApplication,
 } from '@airport/traffic-pattern';
 
 
@@ -11,13 +11,13 @@ import {
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface IRepoTransBlockSchemaToChange {
+export interface IRepoTransBlockApplicationToChange {
 	
 	// Id Properties
 
 	// Id Relations
 	repositoryTransactionBlock: IRepositoryTransactionBlock;
-	schema: ISchema;
+	application: IApplication;
 
 	// Non-Id Properties
 	status?: string;

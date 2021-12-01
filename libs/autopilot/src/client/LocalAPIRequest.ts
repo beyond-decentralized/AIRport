@@ -8,5 +8,5 @@ export interface ILocalAPIRequest {
     methodName: string
     objectName: string
     protocol: string
-    schemaSignature: string
+    applicationSignature: string
 }

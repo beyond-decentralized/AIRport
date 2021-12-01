@@ -19,12 +19,12 @@ export class EntityLookup extends LookupProxy {
         context.repositorySource = this.repositorySource;
         context.repositoryUuid = this.repositoryUuid;
         const result = await this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);
-        const [entityStateManager, schemaUtils, updateCacheManager] = await DI.db().get(ENTITY_STATE_MANAGER, SCHEMA_UTILS, UPDATE_CACHE_MANAGER);
+        const [entityStateManager, applicationUtils, updateCacheManager] = await DI.db().get(ENTITY_STATE_MANAGER, SCHEMA_UTILS, UPDATE_CACHE_MANAGER);
         if (search) {
             throw new Error(`Search operations are not yet supported`);
         }
         else {
-            updateCacheManager.saveOriginalValues(result, context.dbEntity, entityStateManager, schemaUtils);
+            updateCacheManager.saveOriginalValues(result, context.dbEntity, entityStateManager, applicationUtils);
         }
         return result;
     }

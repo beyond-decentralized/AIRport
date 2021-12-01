@@ -27,9 +27,9 @@ export class LocalAPIClient {
                         this.connectionReady = true;
                         break;
                     case 'ToClientRedirected':
-                        // All requests need to have a schema signature
-                        // to know what schema is being communicated to/from
-                        if (!this.hasValidSchemaSignature(message)) {
+                        // All requests need to have a application signature
+                        // to know what application is being communicated to/from
+                        if (!this.hasValidApplicationSignature(message)) {
                             return;
                         }
                         let requestDemoMessage = this.pendingDemoMessageMap.get(message.id);
@@ -46,14 +46,14 @@ export class LocalAPIClient {
     onMessage(callback) {
         this.messageCallback = callback;
     }
-    hasValidSchemaSignature(message) {
-        return message.schemaSignature && message.schemaSignature.indexOf('.') === -1;
+    hasValidApplicationSignature(message) {
+        return message.applicationSignature && message.applicationSignature.indexOf('.') === -1;
     }
     async sendMessageToAIRport(objectName, methodName, args) {
         return await this.invokeApiMethod('AIRport', objectName, methodName, args);
     }
-    async invokeApiMethod(schemaSignature, objectName, methodName, args) {
-        while (!await this.isConnectionReady(schemaSignature)) {
+    async invokeApiMethod(applicationSignature, objectName, methodName, args) {
+        while (!await this.isConnectionReady(applicationSignature)) {
             await this.wait(100);
         }
         const [serializationStateManager, operationSerializer, queryResultsDeserializer] = await container(this).get(SERIALIZATION_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER);
@@ -83,7 +83,7 @@ export class LocalAPIClient {
             methodName,
             objectName,
             protocol: window.location.protocol,
-            schemaSignature
+            applicationSignature
         };
         let response;
         if (_inDemoMode) {
@@ -110,7 +110,7 @@ export class LocalAPIClient {
             }, milliseconds);
         });
     }
-    async isConnectionReady(schemaSignature) {
+    async isConnectionReady(applicationSignature) {
         if (this.connectionReady) {
             return true;
         }
@@ -122,7 +122,7 @@ export class LocalAPIClient {
             methodName: null,
             objectName: null,
             protocol: window.location.protocol,
-            schemaSignature
+            applicationSignature
         };
         if (_inDemoMode) {
             window.parent.postMessage(request, _demoServer);

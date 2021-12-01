@@ -20,24 +20,24 @@ export class ActorDao extends BaseActorDao {
     }
     async findByApplicationSignature(applicationSignature) {
         let act;
-        let schema;
+        let application;
         let terminal;
         let user;
         return await this.db.findOne.graph({
             select: {
                 id: Y,
-                schema: {},
+                application: {},
                 terminal: {},
                 user: {},
                 uuId: Y
             },
             from: [
                 act = Q.Actor,
-                schema = act.schema.innerJoin(),
+                application = act.application.innerJoin(),
                 terminal = act.terminal.leftJoin(),
                 user = act.user.leftJoin()
             ],
-            where: schema.signature.equals(applicationSignature)
+            where: application.signature.equals(applicationSignature)
         });
     }
     async findByUuIds(uuIds) {

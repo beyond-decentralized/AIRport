@@ -1,6 +1,6 @@
 import { ILocalAPIRequest } from "./LocalAPIRequest";
 export interface ILocalAPIClient {
-    invokeApiMethod(schemaSignature: string, daoName: string, methodName: string, args: any[]): Promise<void>;
+    invokeApiMethod(applicationSignature: string, daoName: string, methodName: string, args: any[]): Promise<void>;
     sendMessageToAIRport(objectName: string, methodName: string, args: any[]): Promise<any>;
     onMessage(callback: (message: any) => void): any;
 }
@@ -16,9 +16,9 @@ export declare class LocalAPIClient implements ILocalAPIClient {
     messageCallback: (message: any) => void;
     constructor();
     onMessage(callback: (message: any) => void): void;
-    private hasValidSchemaSignature;
+    private hasValidApplicationSignature;
     sendMessageToAIRport(objectName: string, methodName: string, args: any[]): Promise<any>;
-    invokeApiMethod(schemaSignature: string, objectName: string, methodName: string, args: any[]): Promise<any>;
+    invokeApiMethod(applicationSignature: string, objectName: string, methodName: string, args: any[]): Promise<any>;
     private wait;
     private isConnectionReady;
     private sendLocalRequest;

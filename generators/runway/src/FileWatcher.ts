@@ -1,17 +1,17 @@
 import {
-	DbSchema,
+	DbApplication,
 	EntityId,
 } from '@airport/ground-control';
 import {
-	JsonSchemaWithApi
+	JsonApplicationWithApi
 } from '@airport/check-in'
 import { AirportDatabase } from '@airport/tower';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import tsc from 'typescript';
-import { currentSchemaApi } from './api/parser/ApiGenerator';
+import { currentApplicationApi } from './api/parser/ApiGenerator';
 import { entityOperationMap } from './dao/parser/OperationGenerator';
-import { SchemaQueryGenerator } from './dao/parser/SchemaQueryGenerator';
+import { ApplicationQueryGenerator } from './dao/parser/ApplicationQueryGenerator';
 import { DaoBuilder } from './ddl/builder/DaoBuilder';
 import { DuoBuilder } from './ddl/builder/DuoBuilder';
 import { EntityInterfaceFileBuilder } from './ddl/builder/entity/EntityInterfaceFileBuilder';
@@ -20,22 +20,22 @@ import { EntityMappingBuilder } from './ddl/builder/EntityMappingBuilder';
 import { GeneratedFileListingBuilder } from './ddl/builder/GeneratedFileListingBuilder';
 import { GeneratedSummaryBuilder } from './ddl/builder/GeneratedSummaryBuilder';
 import { PathBuilder } from './ddl/builder/PathBuilder';
-import { QSchemaBuilder } from './ddl/builder/QSchemaBuilder';
-import { JsonSchemaBuilder } from './ddl/builder/schema/JsonSchemaBuilder';
+import { QApplicationBuilder } from './ddl/builder/QApplicationBuilder';
+import { JsonApplicationBuilder } from './ddl/builder/application/JsonApplicationBuilder';
 import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
 import { Configuration } from './ddl/options/Options';
 import { EntityCandidate } from './ddl/parser/EntityCandidate';
 import { generateDefinitions } from './FileProcessor';
 
 // TODO: figure out if this is needed
-(AirportDatabase as any).bogus = 'loaded for schema generation';
+(AirportDatabase as any).bogus = 'loaded for application generation';
 
 /**
  * Created by Papa on 3/30/2016.
  */
 
 
-const schemaQueryGenerator = new SchemaQueryGenerator();
+const applicationQueryGenerator = new ApplicationQueryGenerator();
 
 export async function watchFiles(
 	configuration: Configuration,
@@ -102,38 +102,38 @@ export async function watchFiles(
 		options: ts.CompilerOptions,
 		configuration: Configuration,
 	): Promise<void> {
-		currentSchemaApi.apiObjectMap = {}
+		currentApplicationApi.apiObjectMap = {}
 		options.target = tsc.ScriptTarget.ES5;
-		const schemaMapByProjectName: { [projectName: string]: DbSchema } = {};
+		const applicationMapByProjectName: { [projectName: string]: DbApplication } = {};
 		let entityMapByName =
-			await generateDefinitions(rootFileNames, options, configuration, schemaMapByProjectName);
-		emitFiles(entityMapByName, configuration, schemaMapByProjectName);
+			await generateDefinitions(rootFileNames, options, configuration, applicationMapByProjectName);
+		emitFiles(entityMapByName, configuration, applicationMapByProjectName);
 	}
 
 	function emitFiles(
 		entityMapByName: { [entityName: string]: EntityCandidate },
 		configuration: Configuration,
-		schemaMapByProjectName: { [projectName: string]: DbSchema },
+		applicationMapByProjectName: { [projectName: string]: DbApplication },
 	): void {
 		const generatedDirPath = pathBuilder.workingDirPath + '/' + pathBuilder.generatedDirPath;
-		const schemaPath = generatedDirPath + '/schema.json';
-		const schemaSourcePath = generatedDirPath + '/schema.ts';
+		const applicationPath = generatedDirPath + '/application.json';
+		const applicationSourcePath = generatedDirPath + '/application.ts';
 		const entityMappingsPath = generatedDirPath + '/entityMappings.ts';
 
 		if (!fs.existsSync(generatedDirPath)) {
 			fs.mkdirSync(generatedDirPath);
 		}
 
-		let schemaString;
-		if (fs.existsSync(schemaPath)) {
-			schemaString = fs.readFileSync(schemaPath, 'utf8');
+		let applicationString;
+		if (fs.existsSync(applicationPath)) {
+			applicationString = fs.readFileSync(applicationPath, 'utf8');
 		}
 
-		const schemaBuilder = new JsonSchemaBuilder(
-			configuration, entityMapByName, schemaString);
-		const [jsonSchema, indexedSchema] =
-			schemaBuilder.build(configuration.airport.domain,
-				schemaMapByProjectName,
+		const applicationBuilder = new JsonApplicationBuilder(
+			configuration, entityMapByName, applicationString);
+		const [jsonApplication, indexedApplication] =
+			applicationBuilder.build(configuration.airport.domain,
+				applicationMapByProjectName,
 				entityOperationMap);
 
 		const entityFileReference: { [entityName: string]: string } = {};
@@ -141,7 +141,7 @@ export async function watchFiles(
 		const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder);
 		const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
 		const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
-		const qSchemaBuilder = new QSchemaBuilder(pathBuilder, configuration);
+		const qApplicationBuilder = new QApplicationBuilder(pathBuilder, configuration);
 		const daoBuilder = new DaoBuilder(pathBuilder);
 		const duoBuilder = new DuoBuilder(pathBuilder);
 		const entityMappingBuilder = new EntityMappingBuilder(entityMappingsPath, pathBuilder);
@@ -152,19 +152,19 @@ export async function watchFiles(
 			const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, false);
 			const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
 			const qEntityFileBuilder = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
-				entityMapByName, configuration, indexedSchema.entityMapByName[entityName], entity.path);
+				entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
 			const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder,
-				entityMapByName, configuration, indexedSchema.entityMapByName[entityName]);
+				entityMapByName, configuration, indexedApplication.entityMapByName[entityName]);
 
 			if (!entity.isSuperclass) {
 				entityFileReference[entity.docEntry.name] = fullGenerationPath;
 			}
 			entityInterfaceListingBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
 			entityQInterfaceListingBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath);
-			qSchemaBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath,
+			qApplicationBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath,
 				entity.docEntry.isMappedSuperclass);
 
-			const sIndexedEntity = indexedSchema.entityMapByName[entityName];
+			const sIndexedEntity = indexedApplication.entityMapByName[entityName];
 
 			let tableIndex: EntityId;
 			if (sIndexedEntity) {
@@ -181,11 +181,11 @@ export async function watchFiles(
 			fs.writeFileSync(generationPath, entityInterfaceSourceString);
 		}
 		fs.writeFileSync(daoBuilder.daoListingFilePath, daoBuilder.build());
-		fs.writeFileSync(entityMappingBuilder.entityMappingsPath, entityMappingBuilder.build(configuration.airport.domain, configuration.airport.schema));
+		fs.writeFileSync(entityMappingBuilder.entityMappingsPath, entityMappingBuilder.build(configuration.airport.domain, configuration.airport.application));
 		fs.writeFileSync(duoBuilder.daoListingFilePath, duoBuilder.build());
-		fs.writeFileSync(qSchemaBuilder.qSchemaFilePath, qSchemaBuilder.build(
+		fs.writeFileSync(qApplicationBuilder.qApplicationFilePath, qApplicationBuilder.build(
 			configuration.airport.domain,
-			indexedSchema.schema.name,
+			indexedApplication.application.name,
 		));
 		fs.writeFileSync(entityInterfaceListingBuilder.generatedListingFilePath, entityInterfaceListingBuilder.build());
 		fs.writeFileSync(entityQInterfaceListingBuilder.generatedListingFilePath, entityQInterfaceListingBuilder.build());
@@ -197,26 +197,26 @@ export async function watchFiles(
 		const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
 		fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
 
-		addOperations(jsonSchema as JsonSchemaWithApi, schemaPath,
-			schemaSourcePath, schemaBuilder).then();
+		addOperations(jsonApplication as JsonApplicationWithApi, applicationPath,
+			applicationSourcePath, applicationBuilder).then();
 	}
 
 	async function addOperations(
-		jsonSchema: JsonSchemaWithApi,
-		schemaPath: string,
-		schemaSourcePath: string,
-		schemaBuilder: JsonSchemaBuilder
+		jsonApplication: JsonApplicationWithApi,
+		applicationPath: string,
+		applicationSourcePath: string,
+		applicationBuilder: JsonApplicationBuilder
 	) {
-		await schemaQueryGenerator.processQueries(entityOperationMap, jsonSchema);
-		schemaBuilder.addOperations(jsonSchema, entityOperationMap);
+		await applicationQueryGenerator.processQueries(entityOperationMap, jsonApplication);
+		applicationBuilder.addOperations(jsonApplication, entityOperationMap);
 
-		const schemaJsonString = JSON.stringify(jsonSchema, null, '\t');
+		const applicationJsonString = JSON.stringify(jsonApplication, null, '\t');
 
-		const schemaSourceString = `export const SCHEMA = `
-			+ schemaJsonString + ';';
+		const applicationSourceString = `export const SCHEMA = `
+			+ applicationJsonString + ';';
 
-		fs.writeFileSync(schemaPath, schemaJsonString);
-		fs.writeFileSync(schemaSourcePath, '/* eslint-disable */\n' + schemaSourceString);
+		fs.writeFileSync(applicationPath, applicationJsonString);
+		fs.writeFileSync(applicationSourcePath, '/* eslint-disable */\n' + applicationSourceString);
 	}
 
 	function emitFile(

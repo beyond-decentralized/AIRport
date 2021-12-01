@@ -92,18 +92,18 @@ import {
 	MissingRecordRepoTransBlock,
 } from '../../ddl/missingRecord/MissingRecordRepoTransBlock';
 import {
-	RepoTransBlockSchemaToChangeGraph,
-	RepoTransBlockSchemaToChangeEId,
-	RepoTransBlockSchemaToChangeEOptionalId,
-	RepoTransBlockSchemaToChangeEUpdateProperties,
-	RepoTransBlockSchemaToChangeESelect,
-	QRepoTransBlockSchemaToChange,
-	QRepoTransBlockSchemaToChangeQId,
-	QRepoTransBlockSchemaToChangeQRelation,
-} from './qrepotransblockschematochange';
+	RepoTransBlockApplicationToChangeGraph,
+	RepoTransBlockApplicationToChangeEId,
+	RepoTransBlockApplicationToChangeEOptionalId,
+	RepoTransBlockApplicationToChangeEUpdateProperties,
+	RepoTransBlockApplicationToChangeESelect,
+	QRepoTransBlockApplicationToChange,
+	QRepoTransBlockApplicationToChangeQId,
+	QRepoTransBlockApplicationToChangeQRelation,
+} from './qrepotransblockapplicationtochange';
 import {
-	RepoTransBlockSchemaToChange,
-} from '../../ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange';
+	RepoTransBlockApplicationToChange,
+} from '../../ddl/repositoryTransactionBlock/RepoTransBlockApplicationToChange';
 import {
 	RepositoryTransactionBlock,
 } from '../../ddl/repositoryTransactionBlock/RepositoryTransactionBlock';
@@ -136,7 +136,7 @@ export interface RepositoryTransactionBlockESelect
 	sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockESelect;
 	sharingMessageRepoTransBlocks?: SharingMessageRepoTransBlockESelect;
 	missingRecordRepoTransBlocks?: MissingRecordRepoTransBlockESelect;
-	repoTransBlockSchemasToChange?: RepoTransBlockSchemaToChangeESelect;
+	repoTransBlockApplicationsToChange?: RepoTransBlockApplicationToChangeESelect;
 
 }
 
@@ -200,7 +200,7 @@ export interface RepositoryTransactionBlockGraph
 	sharingNodeRepoTransBlocks?: SharingNodeRepoTransBlockGraph[];
 	sharingMessageRepoTransBlocks?: SharingMessageRepoTransBlockGraph[];
 	missingRecordRepoTransBlocks?: MissingRecordRepoTransBlockGraph[];
-	repoTransBlockSchemasToChange?: RepoTransBlockSchemaToChangeGraph[];
+	repoTransBlockApplicationsToChange?: RepoTransBlockApplicationToChangeGraph[];
 
 }
 
@@ -263,7 +263,7 @@ export interface QRepositoryTransactionBlock extends IQEntity<RepositoryTransact
 	sharingNodeRepoTransBlocks: IQOneToManyRelation<SharingNodeRepoTransBlock, QSharingNodeRepoTransBlock>;
 	sharingMessageRepoTransBlocks: IQOneToManyRelation<SharingMessageRepoTransBlock, QSharingMessageRepoTransBlock>;
 	missingRecordRepoTransBlocks: IQOneToManyRelation<MissingRecordRepoTransBlock, QMissingRecordRepoTransBlock>;
-	repoTransBlockSchemasToChange: IQOneToManyRelation<RepoTransBlockSchemaToChange, QRepoTransBlockSchemaToChange>;
+	repoTransBlockApplicationsToChange: IQOneToManyRelation<RepoTransBlockApplicationToChange, QRepoTransBlockApplicationToChange>;
 
 }
 

@@ -15,8 +15,8 @@ export class SQLDelete
 		dialect: SQLDialect,
 		context: IFuelHydrantContext,
 	) {
-		super(context.ioc.airDb.schemas[jsonDelete.DF.si].currentVersion[0]
-			.schemaVersion.entities[jsonDelete.DF.ti], dialect,
+		super(context.ioc.airDb.applications[jsonDelete.DF.si].currentVersion[0]
+			.applicationVersion.entities[jsonDelete.DF.ti], dialect,
 			context)
 	}
 

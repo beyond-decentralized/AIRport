@@ -3,11 +3,11 @@ import {
 } from "@airport/di"
 import {
 	DomainName,
-    JsonSchema,
-	SchemaName
+    JsonApplication,
+	ApplicationName
 } from "@airport/ground-control"
 import {
-	JsonSchemaWithLastIds
+	JsonApplicationWithLastIds
 } from "@airport/security-check"
 
 export interface IDatabaseManager {
@@ -32,12 +32,12 @@ export interface IDatabaseManager {
 
 	initNoDb(
 		context: IContext,
-		...schemas: JsonSchemaWithLastIds[]
+		...applications: JsonApplicationWithLastIds[]
 	): Promise<void>
 	
-	initFeatureSchemas(
+	initFeatureApplications(
 		context: IContext,
-		jsonSchemas?: JsonSchemaWithLastIds[],
+		jsonApplications?: JsonApplicationWithLastIds[],
 	): void
 
 }

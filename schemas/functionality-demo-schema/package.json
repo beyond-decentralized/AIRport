@@ -1,16 +1,17 @@
 {
   "airport": {
     "domain": "air",
-    "schema": "functionality-demo-schema",
+    "application": "functionality-demo-application",
     "user": "diapco",
     "project": "airport",
-    "path": "schemas/functionality-demo-schema"
+    "path": "applications/functionality-demo-application"
   },
   "dependencies": {
     "@airport/air-control": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/di": "0.0.1",
     "@airport/ground-control": "0.0.1",
+    "@airport/holding-pattern": "0.0.1",
     "@airport/landing": "0.0.1",
     "@airport/pressurization": "0.0.1",
     "@airport/security-check": "0.0.1",
@@ -20,7 +21,7 @@
     "@airport/runway": "0.0.1"
   },
   "main": "lib/client/index.js",
-  "name": "@airport/functionality-demo-schema",
+  "name": "@airport/functionality-demo-application",
   "type": "module",
   "typings": "lib/client/index",
   "version": "0.0.1"

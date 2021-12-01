@@ -21,8 +21,8 @@ export class SequenceDao
 	implements ISequenceDao {
 
 	static diSet(): boolean {
-		return Q.__dbSchema__ && Q.__dbSchema__.currentVersion[0]
-			.schemaVersion.entities[0]
+		return Q.__dbApplication__ && Q.__dbApplication__.currentVersion[0]
+			.applicationVersion.entities[0]
 	}
 
 	async incrementCurrentValues(): Promise<void> {

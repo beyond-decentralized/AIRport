@@ -3,8 +3,8 @@ import {
 	ColumnIndex,
 	ensureChildJsMap,
 	EntityId,
-	SchemaIndex,
-	SchemaVersionId
+	ApplicationIndex,
+	ApplicationVersionId
 }                      from '@airport/ground-control'
 import {
 	Actor_Id,
@@ -21,18 +21,18 @@ import {
 }                      from '@airport/moving-walkway'
 import {SYNC_IN_UTILS} from '../../tokens'
 
-export type RemoteSchemaIndex = SchemaIndex;
-export type RemoteSchemaVersionId = SchemaVersionId;
+export type RemoteApplicationIndex = ApplicationIndex;
+export type RemoteApplicationVersionId = ApplicationVersionId;
 export type RemoteActorId = Actor_Id;
 
 /**
- * Result of comparing to versions of a given schema.
+ * Result of comparing to versions of a given application.
  */
-export enum SchemaComparisonResult {
+export enum ApplicationComparisonResult {
 	// Version specified in the message is lower than it's version in the receiving
 	// Terminal (TM)
 	MESSAGE_SCHEMA_VERSION_IS_LOWER  = -1,
-	// Version of the schema used i the message is the same as that in the receiving
+	// Version of the application used i the message is the same as that in the receiving
 	// Terminal (TM)
 	MESSAGE_SCHEMA_VERSION_IS_EQUAL  = 0,
 	// Version specified in the message in higher than it's version in the receiving
@@ -72,20 +72,20 @@ export interface ISyncInUtils {
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
 		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
-		recordMapBySchemaTableAndRepository: Map<SchemaVersionId,
+		recordMapByApplicationTableAndRepository: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<CI, V>>>>
 	): Map<CI, V>;
 
 }
 
 export interface Stage1SyncedInDataProcessingResult {
-	recordCreations: Map<SchemaVersionId,
+	recordCreations: Map<ApplicationVersionId,
 		Map<EntityId, Map<Repository_Id, Map<Actor_Id,
 			Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
-	recordDeletions: Map<SchemaVersionId,
+	recordDeletions: Map<ApplicationVersionId,
 		Map<EntityId, Map<Repository_Id, Map<Actor_Id,
 			Set<RepositoryEntity_ActorRecordId>>>>>,
-	recordUpdates: Map<SchemaVersionId,
+	recordUpdates: Map<ApplicationVersionId,
 		Map<EntityId, Map<Repository_Id, Map<Actor_Id,
 			Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 	syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>
@@ -97,13 +97,13 @@ export class SyncInUtils
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
 		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
-		recordMapBySchemaTableAndRepository: Map<SchemaVersionId,
+		recordMapByApplicationTableAndRepository: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<CI, V>>>>
 	): Map<CI, V> {
 		return <any>ensureChildJsMap(
 			ensureChildJsMap(
 				ensureChildJsMap(
-					recordMapBySchemaTableAndRepository, operationHistory.entity.schemaVersion.id),
+					recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion.id),
 				operationHistory.entity.id), repositoryId)
 	}
 

@@ -1,6 +1,6 @@
 import {
-	IVespaSchemaStore,
-	VespaSchemaStore
-} from './VespaSchemaStore';
+	IVespaApplicationStore,
+	VespaApplicationStore
+} from './VespaApplicationStore';
 
-export const store: IVespaSchemaStore = new VespaSchemaStore();
+export const store: IVespaApplicationStore = new VespaApplicationStore();

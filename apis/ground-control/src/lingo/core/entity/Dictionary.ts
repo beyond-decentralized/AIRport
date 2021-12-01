@@ -101,7 +101,7 @@ export namespace table {
 	export const INDEXES = 'indexes'
 	export const NAME = 'name'
 	export const PRIMARY_KEY = 'primaryKey'
-	export const SCHEMA = 'schema'
+	export const SCHEMA = 'application'
 }
 
 /**

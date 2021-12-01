@@ -1,7 +1,7 @@
 import {DI}             from '@airport/di'
 import {
 	PortableQuery,
-	SyncSchemaMap
+	SyncApplicationMap
 }                       from '@airport/ground-control'
 import {Subject}       from 'rxjs'
 import {SQLQuery}       from '../sql/core/SQLQuery'
@@ -24,7 +24,7 @@ export interface IActiveQueries {
 	): void;
 
 	markQueriesToRerun(
-		schemaMap: SyncSchemaMap
+		applicationMap: SyncApplicationMap
 	): void;
 
 	rerunQueries( //
@@ -51,10 +51,10 @@ export class ActiveQueries
 	}
 
 	markQueriesToRerun(
-		schemaMap: SyncSchemaMap
+		applicationMap: SyncApplicationMap
 	): void {
 		this.queries.forEach((cachedSqlQuery) => {
-			if (schemaMap.intersects(cachedSqlQuery.sqlQuery.getFieldMap())) {
+			if (applicationMap.intersects(cachedSqlQuery.sqlQuery.getFieldMap())) {
 				cachedSqlQuery.rerun = true
 			}
 		})

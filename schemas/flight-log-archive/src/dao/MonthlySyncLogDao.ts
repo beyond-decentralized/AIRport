@@ -12,7 +12,7 @@ import {
 import {MONTHLY_SYNC_LOG_DAO}  from '../tokens'
 import {BaseMonthlySyncLogDao} from '../generated/baseDaos'
 import {QMonthlySyncLog}       from '../generated/qmonthlysynclog'
-import {Q}                     from '../generated/qSchema'
+import {Q}                     from '../generated/qApplication'
 
 export interface IMonthlySyncLogDao {
 

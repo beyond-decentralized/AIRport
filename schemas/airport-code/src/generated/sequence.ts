@@ -8,7 +8,7 @@
 export interface ISequence {
 	
 	// Id Properties
-	schemaIndex: number;
+	applicationIndex: number;
 	tableIndex: number;
 	columnIndex: number;
 

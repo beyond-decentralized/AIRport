@@ -35,19 +35,19 @@ import {
 	RepositoryTransactionBlock,
 } from '../../ddl/repositoryTransactionBlock/RepositoryTransactionBlock';
 import {
-	SchemaGraph,
-	SchemaEId,
-	SchemaEOptionalId,
-	SchemaEUpdateProperties,
-	SchemaESelect,
-	QSchema,
-	QSchemaQId,
-	QSchemaQRelation,
-	Schema,
+	ApplicationGraph,
+	ApplicationEId,
+	ApplicationEOptionalId,
+	ApplicationEUpdateProperties,
+	ApplicationESelect,
+	QApplication,
+	QApplicationQId,
+	QApplicationQRelation,
+	Application,
 } from '@airport/traffic-pattern';
 import {
-	RepoTransBlockSchemaToChange,
-} from '../../ddl/repositoryTransactionBlock/RepoTransBlockSchemaToChange';
+	RepoTransBlockApplicationToChange,
+} from '../../ddl/repositoryTransactionBlock/RepoTransBlockApplicationToChange';
 
 
 declare function require(moduleName: string): any;
@@ -60,14 +60,14 @@ declare function require(moduleName: string): any;
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepoTransBlockSchemaToChangeESelect
-    extends IEntitySelectProperties, RepoTransBlockSchemaToChangeEOptionalId {
+export interface RepoTransBlockApplicationToChangeESelect
+    extends IEntitySelectProperties, RepoTransBlockApplicationToChangeEOptionalId {
 	// Non-Id Properties
 	status?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 	repositoryTransactionBlock?: RepositoryTransactionBlockESelect;
-	schema?: SchemaESelect;
+	application?: ApplicationESelect;
 
   // Non-Id relations (including OneToMany's)
 
@@ -76,32 +76,32 @@ export interface RepoTransBlockSchemaToChangeESelect
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface RepoTransBlockSchemaToChangeEId
+export interface RepoTransBlockApplicationToChangeEId
     extends IEntityIdProperties {
 	// Id Properties
 
 	// Id Relations - Ids only
 	repositoryTransactionBlock: RepositoryTransactionBlockEId;
-	schema: SchemaEId;
+	application: ApplicationEId;
 
 }
 
 /**
  * Ids fields and relations only (optional).
  */
-export interface RepoTransBlockSchemaToChangeEOptionalId {
+export interface RepoTransBlockApplicationToChangeEOptionalId {
 	// Id Properties
 
 	// Id Relations - Ids only
 	repositoryTransactionBlock?: RepositoryTransactionBlockEOptionalId;
-	schema?: SchemaEOptionalId;
+	application?: ApplicationEOptionalId;
 
 }
 
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface RepoTransBlockSchemaToChangeEUpdateProperties
+export interface RepoTransBlockApplicationToChangeEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	status?: string | IQStringField;
@@ -113,8 +113,8 @@ export interface RepoTransBlockSchemaToChangeEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepoTransBlockSchemaToChangeGraph
-	extends RepoTransBlockSchemaToChangeEOptionalId, IEntityCascadeGraph {
+export interface RepoTransBlockApplicationToChangeGraph
+	extends RepoTransBlockApplicationToChangeEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
@@ -122,14 +122,14 @@ export interface RepoTransBlockSchemaToChangeGraph
 
 	// Relations
 	repositoryTransactionBlock?: RepositoryTransactionBlockGraph;
-	schema?: SchemaGraph;
+	application?: ApplicationGraph;
 
 }
 
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface RepoTransBlockSchemaToChangeEUpdateColumns
+export interface RepoTransBlockApplicationToChangeEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	STATUS?: string | IQStringField;
@@ -139,15 +139,15 @@ export interface RepoTransBlockSchemaToChangeEUpdateColumns
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface RepoTransBlockSchemaToChangeECreateProperties
-extends Partial<RepoTransBlockSchemaToChangeEId>, RepoTransBlockSchemaToChangeEUpdateProperties {
+export interface RepoTransBlockApplicationToChangeECreateProperties
+extends Partial<RepoTransBlockApplicationToChangeEId>, RepoTransBlockApplicationToChangeEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
-export interface RepoTransBlockSchemaToChangeECreateColumns
-extends RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeEUpdateColumns {
+export interface RepoTransBlockApplicationToChangeECreateColumns
+extends RepoTransBlockApplicationToChangeEId, RepoTransBlockApplicationToChangeEUpdateColumns {
 }
 
 
@@ -160,13 +160,13 @@ extends RepoTransBlockSchemaToChangeEId, RepoTransBlockSchemaToChangeEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepoTransBlockSchemaToChange extends IQEntity<RepoTransBlockSchemaToChange>
+export interface QRepoTransBlockApplicationToChange extends IQEntity<RepoTransBlockApplicationToChange>
 {
 	// Id Fields
 
 	// Id Relations
 	repositoryTransactionBlock: QRepositoryTransactionBlockQRelation;
-	schema: QSchemaQRelation;
+	application: QApplicationQRelation;
 
 	// Non-Id Fields
 	status: IQStringField;
@@ -177,20 +177,20 @@ export interface QRepoTransBlockSchemaToChange extends IQEntity<RepoTransBlockSc
 
 
 // Entity Id Interface
-export interface QRepoTransBlockSchemaToChangeQId
+export interface QRepoTransBlockApplicationToChangeQId
 {
 	
 	// Id Fields
 
 	// Id Relations
 	repositoryTransactionBlock: QRepositoryTransactionBlockQId;
-	schema: QSchemaQId;
+	application: QApplicationQId;
 
 
 }
 
 // Entity Relation Interface
-export interface QRepoTransBlockSchemaToChangeQRelation
-	extends IQRelation<RepoTransBlockSchemaToChange, QRepoTransBlockSchemaToChange>, QRepoTransBlockSchemaToChangeQId {
+export interface QRepoTransBlockApplicationToChangeQRelation
+	extends IQRelation<RepoTransBlockApplicationToChange, QRepoTransBlockApplicationToChange>, QRepoTransBlockApplicationToChangeQId {
 }
 

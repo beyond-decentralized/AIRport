@@ -1,6 +1,6 @@
-import { store }                from './schema/store';
-import { VespaSchemaGenerator } from './schema/VespaSchemaGenerator';
-import { VespaSchemaProcessor } from './schema/VespaSchemaProcessor';
+import { store }                from './application/store';
+import { VespaApplicationGenerator } from './application/VespaApplicationGenerator';
+import { VespaApplicationProcessor } from './application/VespaApplicationProcessor';
 
 export interface IVespaProcessor {
 
@@ -12,11 +12,11 @@ export class VespaProcessor
 	implements IVespaProcessor {
 
 	async process(): Promise<void> {
-		const schemaProcessor = new VespaSchemaProcessor();
-		const schemaGenerator = new VespaSchemaGenerator();
+		const applicationProcessor = new VespaApplicationProcessor();
+		const applicationGenerator = new VespaApplicationGenerator();
 
-		await schemaProcessor.process(store);
-		await schemaGenerator.generate(store);
+		await applicationProcessor.process(store);
+		await applicationGenerator.generate(store);
 	}
 
 }

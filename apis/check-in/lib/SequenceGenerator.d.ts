@@ -1,5 +1,5 @@
 import { IAirportDatabase } from '@airport/air-control';
-import { DbColumn, DbEntity, DbSchema, DbSequence } from '@airport/ground-control';
+import { DbColumn, DbEntity, DbApplication, DbSequence } from '@airport/ground-control';
 import { IContext } from '@airport/di';
 /**
  * Sequence generator is needed at Airport initialization time. A Dao
@@ -19,8 +19,8 @@ export interface ISequenceGenerator {
     tempInitialize(sequences?: DbSequence[]): Promise<void>;
 }
 export declare function setSeqGen(sequenceGenerator: ISequenceGenerator): void;
-export declare function diSet(dbSchema: DbSchema, dbEntityId: number): boolean;
-export declare function duoDiSet(dbSchema: DbSchema, dbEntityId: number): boolean;
+export declare function diSet(dbApplication: DbApplication, dbEntityId: number): boolean;
+export declare function duoDiSet(dbApplication: DbApplication, dbEntityId: number): boolean;
 export declare function getSysWideOpId(airDb: IAirportDatabase, sequenceGenerator: ISequenceGenerator): Promise<number>;
 export declare function getSysWideOpIds(numSequencesNeeded: number, airDb: IAirportDatabase, sequenceGenerator: ISequenceGenerator): Promise<number[]>;
 //# sourceMappingURL=SequenceGenerator.d.ts.map

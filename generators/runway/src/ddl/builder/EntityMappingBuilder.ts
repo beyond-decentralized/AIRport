@@ -36,8 +36,8 @@ export class EntityMappingBuilder {
 	}
 
 	build(
-		schemaDomain: string,
-		schemaName: string,
+		applicationDomain: string,
+		applicationName: string,
 	): string {
 		const imports: string[] = [];
 		const entityDefinitions = this.entityMappings.map(
@@ -53,7 +53,7 @@ import { DI } from '@airport/di';
 ${imports.join('\n')}
 
 DI.db().get(AIRPORT_DATABASE).then(airDb => {
-  const accumulator = airDb.getAccumulator('${schemaDomain}', '${schemaName}');
+  const accumulator = airDb.getAccumulator('${applicationDomain}', '${applicationName}');
 ${entityDefinitions}
 });
 `;

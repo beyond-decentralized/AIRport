@@ -77,8 +77,8 @@ export class UpdateManager
 				REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DUO,
 				SEQUENCE_GENERATOR)
 
-		const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
-			.currentVersion[0].schemaVersion.entities[portableQuery.tableIndex]
+		const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
+			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
 
 		const errorPrefix = `Error updating '${dbEntity.name}'
 `
@@ -156,9 +156,9 @@ export class UpdateManager
 		}
 
 		const qEntity                           = context.ioc.airDb
-			.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
+			.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 		const jsonUpdate: JsonUpdate<any>       = <JsonUpdate<any>>portableQuery.jsonQuery
-		const getSheetSelectFromSetClauseResult = context.ioc.schemaUtils.getSheetSelectFromSetClause(
+		const getSheetSelectFromSetClauseResult = context.ioc.applicationUtils.getSheetSelectFromSetClause(
 			context.dbEntity, qEntity, jsonUpdate.S, errorPrefix)
 
 		const sheetQuery = new SheetQuery(null)
@@ -173,7 +173,7 @@ export class UpdateManager
 			W: jsonUpdate.W,
 		}
 		const portableSelect: PortableQuery = {
-			schemaIndex: portableQuery.schemaIndex,
+			applicationIndex: portableQuery.applicationIndex,
 			tableIndex: portableQuery.tableIndex,
 			jsonQuery: jsonSelect,
 			queryResultType: QueryResultType.SHEET,
@@ -252,8 +252,8 @@ export class UpdateManager
 		transaction: ITransaction,
 		context: IOperationContext
 	): Promise<void> {
-		const qEntity = context.ioc.airDb.qSchemas
-			[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name]
+		const qEntity = context.ioc.airDb.qApplications
+			[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 
 		const sheetQuery = new SheetQuery({
 			from: [

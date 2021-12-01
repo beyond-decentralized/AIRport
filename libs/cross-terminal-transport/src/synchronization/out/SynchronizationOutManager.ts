@@ -69,7 +69,7 @@ export class SynchronizationOutManager
 			      repositoryDao,
 			      repoTransBlockDao,
 			      repoTransHistoryDao,
-			      schemaDao,
+			      applicationDao,
 			      sharingMessageDao,
 			      sharingMessageRepoTransBlockDao,
 			      sharingNodeDao,

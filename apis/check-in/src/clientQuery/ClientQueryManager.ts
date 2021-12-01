@@ -3,7 +3,7 @@ import { IClientQuery } from "./ClientQuery";
 export interface IClientQueryManager {
 
     getClientQuery(
-        schemaName: string,
+        applicationName: string,
         daoName: string,
         methodName: string
     ): Promise<IClientQuery>
