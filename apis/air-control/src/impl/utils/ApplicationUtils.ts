@@ -30,7 +30,7 @@ import {
 	RepositorySheetSelectInfo
 } from '../../lingo/utils/ApplicationUtils'
 import {
-	SCHEMA_UTILS
+	APPLICATION_UTILS
 } from '../../tokens'
 import { QEntityConstructor } from '../core/entity/Entity'
 import { valuesEqual } from '../Utils'
@@ -587,4 +587,4 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 
 }
 
-DI.set(SCHEMA_UTILS, ApplicationUtils)
+DI.set(APPLICATION_UTILS, ApplicationUtils)

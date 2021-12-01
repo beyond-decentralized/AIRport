@@ -14,7 +14,7 @@ let Application = class Application {
 __decorate([
     Id(),
     DbNumber(),
-    Column({ name: 'SCHEMA_INDEX', nullable: false })
+    Column({ name: 'APPLICATION_INDEX', nullable: false })
 ], Application.prototype, "index", void 0);
 __decorate([
     ManyToOne(),
@@ -25,7 +25,7 @@ __decorate([
     DbString()
 ], Application.prototype, "scope", void 0);
 __decorate([
-    Column({ name: 'SCHEMA_NAME', nullable: false }),
+    Column({ name: 'APPLICATION_NAME', nullable: false }),
     DbString()
 ], Application.prototype, "name", void 0);
 __decorate([
@@ -47,13 +47,13 @@ __decorate([
     OneToMany({ mappedBy: 'application' })
 ], Application.prototype, "currentVersion", void 0);
 __decorate([
-    Column({ name: 'JSON_SCHEMA', nullable: false }),
+    Column({ name: 'JSON_APPLICATION', nullable: false }),
     Json()
 ], Application.prototype, "jsonApplication", void 0);
 Application = __decorate([
     Entity(),
     Table({
-        name: 'SCHEMAS'
+        name: 'APPLICATIONS'
     })
 ], Application);
 export { Application };

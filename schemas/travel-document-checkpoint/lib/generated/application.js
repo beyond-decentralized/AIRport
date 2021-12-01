@@ -1,5 +1,5 @@
 /* eslint-disable */
-export const SCHEMA = {
+export const APPLICATION = {
     "domain": "air",
     "index": null,
     "name": "@airport/travel-document-checkpoint",

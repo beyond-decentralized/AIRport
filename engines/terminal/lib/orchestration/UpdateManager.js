@@ -9,8 +9,8 @@ export class UpdateManager {
         // TODO: remove unused dependencies after testing
         const [historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, sequenceGenerator] = await container(this)
             .get(HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DUO, SEQUENCE_GENERATOR);
-        const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
-            .currentVersion[0].schemaVersion.entities[portableQuery.tableIndex];
+        const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
+            .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error updating '${dbEntity.name}'
 `;
         const internalFragments = {
@@ -53,9 +53,9 @@ export class UpdateManager {
                 `Cannot add update history for a non-RepositoryEntity`);
         }
         const qEntity = context.ioc.airDb
-            .qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name];
+            .qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
         const jsonUpdate = portableQuery.jsonQuery;
-        const getSheetSelectFromSetClauseResult = context.ioc.schemaUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, jsonUpdate.S, errorPrefix);
+        const getSheetSelectFromSetClauseResult = context.ioc.applicationUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, jsonUpdate.S, errorPrefix);
         const sheetQuery = new SheetQuery(null);
         const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(getSheetSelectFromSetClauseResult.selectClause, context.ioc.queryUtils, context.ioc.fieldUtils);
         const jsonSelect = {
@@ -64,11 +64,12 @@ export class UpdateManager {
             W: jsonUpdate.W,
         };
         const portableSelect = {
-            schemaIndex: portableQuery.schemaIndex,
+            applicationIndex: portableQuery.applicationIndex,
             tableIndex: portableQuery.tableIndex,
             jsonQuery: jsonSelect,
             queryResultType: QueryResultType.SHEET,
             parameterMap: portableQuery.parameterMap,
+            // values: portableQuery.values,
         };
         const recordsToUpdate = await transaction.find(portableSelect, {}, context);
         const { recordsByRepositoryId, repositoryIdSet } = this.groupRecordsByRepository(recordsToUpdate, getSheetSelectFromSetClauseResult);
@@ -109,7 +110,7 @@ export class UpdateManager {
         return [recordHistoryMapByRecordId, getSheetSelectFromSetClauseResult];
     }
     async addNewValueHistory(jsonUpdate, recordHistoryMapByRecordId, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, recHistoryDuo, recHistoryNewValueDuo, transaction, context) {
-        const qEntity = context.ioc.airDb.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name];
+        const qEntity = context.ioc.airDb.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
         const sheetQuery = new SheetQuery({
             from: [
                 qEntity

@@ -1,7 +1,7 @@
 import { and, Y } from '@airport/air-control'
 import { DI } from '@airport/di'
 import {
-	SCHEMA_VERSION_DAO
+	APPLICATION_VERSION_DAO
 } from '../tokens'
 import {
 	BaseApplicationVersionDao,
@@ -208,4 +208,4 @@ export class ApplicationVersionDao
 
 }
 
-DI.set(SCHEMA_VERSION_DAO, ApplicationVersionDao)
+DI.set(APPLICATION_VERSION_DAO, ApplicationVersionDao)

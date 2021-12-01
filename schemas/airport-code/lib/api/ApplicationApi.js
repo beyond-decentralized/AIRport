@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { DI } from "@airport/di";
 import { Api } from "@airport/check-in";
-import { SCHEMA_API } from "../tokens";
+import { APPLICATION_API } from "../tokens";
 export class ApplicationApi {
     async testApiDefinitionGeneration() {
         console.log('testing API');
@@ -15,5 +15,5 @@ export class ApplicationApi {
 __decorate([
     Api()
 ], ApplicationApi.prototype, "testApiDefinitionGeneration", null);
-DI.set(SCHEMA_API, ApplicationApi);
+DI.set(APPLICATION_API, ApplicationApi);
 //# sourceMappingURL=ApplicationApi.js.map

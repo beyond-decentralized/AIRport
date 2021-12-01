@@ -92,7 +92,7 @@ export async function getSysWideOpIds(
 		return []
 	}
 	const sysWideOpIdGeneratedColumn
-		= (airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA] as QApplicationInternal)
+		= (airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_APPLICATION] as QApplicationInternal)
 			.__dbApplication__.currentVersion[0].applicationVersion
 			.entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
 

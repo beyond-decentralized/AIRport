@@ -24,7 +24,7 @@ export async function getSysWideOpIds(numSequencesNeeded, airDb, sequenceGenerat
     if (!numSequencesNeeded) {
         return [];
     }
-    const sysWideOpIdGeneratedColumn = airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_SCHEMA]
+    const sysWideOpIdGeneratedColumn = airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_APPLICATION]
         .__dbApplication__.currentVersion[0].applicationVersion
         .entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
     const generatedNumWrapper = await sequenceGenerator

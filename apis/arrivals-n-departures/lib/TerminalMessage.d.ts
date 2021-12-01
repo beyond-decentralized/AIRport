@@ -1,10 +1,10 @@
 import { IActor, IRepository, IRepositoryTransactionHistory } from "@airport/holding-pattern";
 import { ITerminal, IUser } from "@airport/travel-document-checkpoint";
-import { ISchema, ISchemaVersion } from "@airport/airspace";
+import { IApplication, IApplicationVersion } from "@airport/airspace";
 export interface TerminalMessage {
     actors: IActor[];
-    schemaVersions: ISchemaVersion[];
-    schemas: ISchema[];
+    applicationVersions: IApplicationVersion[];
+    applications: IApplication[];
     history: IRepositoryTransactionHistory;
     referencedRepositories: IRepository[];
     syncTimestamp: number;

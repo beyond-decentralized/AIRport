@@ -1,6 +1,6 @@
 import { and, Y } from '@airport/air-control';
 import { DI } from '@airport/di';
-import { SCHEMA_VERSION_DAO } from '../tokens';
+import { APPLICATION_VERSION_DAO } from '../tokens';
 import { BaseApplicationVersionDao, Q } from '../generated/generated';
 export class ApplicationVersionDao extends BaseApplicationVersionDao {
     /*
@@ -27,6 +27,7 @@ export class ApplicationVersionDao extends BaseApplicationVersionDao {
         return await this.db.find.tree({
             from: [
                 sv = Q.ApplicationVersion,
+                // s = sv.application.innerJoin()
             ],
             select: {},
             orderBy: [
@@ -162,5 +163,5 @@ export class ApplicationVersionDao extends BaseApplicationVersionDao {
         });
     }
 }
-DI.set(SCHEMA_VERSION_DAO, ApplicationVersionDao);
+DI.set(APPLICATION_VERSION_DAO, ApplicationVersionDao);
 //# sourceMappingURL=ApplicationVersionDao.js.map

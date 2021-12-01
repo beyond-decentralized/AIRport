@@ -1,6 +1,6 @@
 import tsc from 'typescript';
 import { forEach } from '../../ParserUtils';
-export const currentSchemaApi = {
+export const currentApplicationApi = {
     apiObjectMap: {}
 };
 export function visitApiFile(node, path) {
@@ -13,7 +13,7 @@ export function visitApiFile(node, path) {
     const className = classNode.name.escapedText;
     const apiObject = serializeClass(symbol, className);
     if (apiObject) {
-        currentSchemaApi.apiObjectMap['I' + className] = apiObject;
+        currentApplicationApi.apiObjectMap['I' + className] = apiObject;
     }
 }
 function serializeClass(symbol, className) {

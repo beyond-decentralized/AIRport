@@ -14,7 +14,7 @@ import { AbstractObjectResultParser, GraphQueryConfiguration, IEntityResultParse
 export declare class EntityGraphResultParser extends AbstractObjectResultParser implements IEntityResultParser {
     private config;
     private rootDbEntity;
-    entityMapBySchemaAndTableIndexes: {
+    entityMapByApplicationAndTableIndexes: {
         [entityId: string]: any;
     }[][];
     otmMapper: GraphOtmMapper;

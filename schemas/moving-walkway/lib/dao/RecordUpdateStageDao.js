@@ -6,7 +6,7 @@ export class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
     async insertValues(values) {
         const rus = Q.RecordUpdateStage;
         const columns = [
-            rus.schemaVersion.id,
+            rus.applicationVersion.id,
             rus.entity.id,
             rus.repository.id,
             rus.actor.id,
@@ -23,11 +23,11 @@ export class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
             values
         });
     }
-    async updateEntityWhereIds(schemaIndex, schemaVersionId, tableIndex, idMap, updatedColumnIndexes) {
+    async updateEntityWhereIds(applicationIndex, applicationVersionId, tableIndex, idMap, updatedColumnIndexes) {
         const airDb = await container(this).get(AIRPORT_DATABASE);
-        const dbEntity = airDb.schemas[schemaIndex].currentVersion[0]
-            .schemaVersion.entities[tableIndex];
-        const qEntity = airDb.qSchemas[schemaIndex][dbEntity.name];
+        const dbEntity = airDb.applications[applicationIndex].currentVersion[0]
+            .applicationVersion.entities[tableIndex];
+        const qEntity = airDb.qApplications[applicationIndex][dbEntity.name];
         const repositoryEquals = [];
         for (const [repositoryId, idsForRepository] of idMap) {
             const actorEquals = [];
@@ -45,7 +45,7 @@ export class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
                     columnRus
                 ],
                 select: columnRus.updatedValue,
-                where: and(columnRus.schemaVersion.id.equals(schemaVersionId), columnRus.entity.id.equals(dbEntity.id), columnRus.repository.id.equals(qEntity.repository.id), columnRus.actor.id.equals(qEntity.actor.id), columnRus.actorRecordId.equals(qEntity.actorRecordId), columnRus.column.id.equals(column.id))
+                where: and(columnRus.applicationVersion.id.equals(applicationVersionId), columnRus.entity.id.equals(dbEntity.id), columnRus.repository.id.equals(qEntity.repository.id), columnRus.actor.id.equals(qEntity.actor.id), columnRus.actorRecordId.equals(qEntity.actorRecordId), columnRus.column.id.equals(column.id))
             });
             const propertyName = column
                 .propertyColumns[0].property.name;

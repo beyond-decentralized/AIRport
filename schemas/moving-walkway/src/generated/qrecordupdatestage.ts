@@ -171,11 +171,11 @@ export interface RecordUpdateStageEUpdateColumns
 	// Non-Id Columns
 	ACTOR_RECORD_ID?: number | IQNumberField;
 	UPDATED_VALUE?: any | IQUntypedField;
-	SCHEMA_VERSION_ID?: number | IQNumberField;
-	SCHEMA_ENTITY_ID?: number | IQNumberField;
+	APPLICATION_VERSION_ID?: number | IQNumberField;
+	APPLICATION_ENTITY_ID?: number | IQNumberField;
 	REPOSITORY_ID?: number | IQNumberField;
 	ACTOR_ID?: number | IQNumberField;
-	SCHEMA_COLUMN_ID?: number | IQNumberField;
+	APPLICATION_COLUMN_ID?: number | IQNumberField;
 
 }
 

@@ -1,5 +1,5 @@
 import { IQEntityInternal, JoinTreeNode } from '@airport/air-control';
-import { DbEntity, InternalFragments, JSONEntityRelation, JsonQuery, JSONRelation, QueryResultType, SchemaMap } from '@airport/ground-control';
+import { DbEntity, InternalFragments, JSONEntityRelation, JsonQuery, JSONRelation, QueryResultType, ApplicationMap } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
 import { SQLWhereBase } from './SQLWhereBase';
 /**
@@ -28,7 +28,7 @@ export declare abstract class SQLQuery<JQ extends JsonQuery> extends SQLWhereBas
     protected queryResultType: QueryResultType;
     protected entityDefaults: EntityDefaults;
     constructor(jsonQuery: JQ, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, context: IFuelHydrantContext);
-    getFieldMap(): SchemaMap;
+    getFieldMap(): ApplicationMap;
     abstract toSQL(internalFragments: InternalFragments, context: IFuelHydrantContext): string;
     /**
      * If bridging is not applied:
@@ -45,7 +45,7 @@ export declare abstract class SQLQuery<JQ extends JsonQuery> extends SQLWhereBas
     abstract parseQueryResults(results: any[], internalFragments: InternalFragments, queryResultType: QueryResultType, context: IFuelHydrantContext, bridgedQueryConfiguration?: any): Promise<any[]>;
     protected abstract buildFromJoinTree(joinRelations: (JSONEntityRelation | JSONRelation)[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
-    }, context: IFuelHydrantContext, schemaIndex?: number, tableIndex?: number): JoinTreeNode | JoinTreeNode[];
-    protected getEntitySchemaRelationFromJoin(leftQEntity: IQEntityInternal<any>, rightQEntity: IQEntityInternal<any>, entityRelation: JSONEntityRelation, parentRelation: JSONRelation, currentAlias: string, parentAlias: string, joinTypeString: string, errorPrefix: string, context: IFuelHydrantContext): string;
+    }, context: IFuelHydrantContext, applicationIndex?: number, tableIndex?: number): JoinTreeNode | JoinTreeNode[];
+    protected getEntityApplicationRelationFromJoin(leftQEntity: IQEntityInternal<any>, rightQEntity: IQEntityInternal<any>, entityRelation: JSONEntityRelation, parentRelation: JSONRelation, currentAlias: string, parentAlias: string, joinTypeString: string, errorPrefix: string, context: IFuelHydrantContext): string;
 }
 //# sourceMappingURL=SQLQuery.d.ts.map

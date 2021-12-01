@@ -1,9 +1,9 @@
-export * from './builder/ISchemaBuilder';
-export * from './builder/SqlSchemaBuilder';
-export * from './checker/SchemaChecker';
-export * from './locator/SchemaLocator';
-export * from './recorder/SchemaComposer';
-export * from './recorder/SchemaRecorder';
+export * from './builder/IApplicationBuilder';
+export * from './builder/SqlApplicationBuilder';
+export * from './checker/ApplicationChecker';
+export * from './locator/ApplicationLocator';
+export * from './recorder/ApplicationComposer';
+export * from './recorder/ApplicationRecorder';
 export * from './tokens';
-export * from './SchemaInitializer';
+export * from './ApplicationInitializer';
 //# sourceMappingURL=index.d.ts.map

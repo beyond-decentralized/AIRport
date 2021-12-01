@@ -7,7 +7,7 @@ import {
 	Q,
 	QApplicationPropertyColumn,
 }                                   from '../generated/generated'
-import {SCHEMA_PROPERTY_COLUMN_DAO} from '../tokens'
+import {APPLICATION_PROPERTY_COLUMN_DAO} from '../tokens'
 
 export interface IApplicationPropertyColumnDao
 	extends IBaseApplicationPropertyColumnDao {
@@ -69,4 +69,4 @@ export class ApplicationPropertyColumnDao
 
 }
 
-DI.set(SCHEMA_PROPERTY_COLUMN_DAO, ApplicationPropertyColumnDao)
+DI.set(APPLICATION_PROPERTY_COLUMN_DAO, ApplicationPropertyColumnDao)

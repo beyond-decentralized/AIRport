@@ -6,21 +6,6 @@ export class SQDIDao extends Dao {
         super(dbEntityId, Q);
     }
 }
-export class BaseDomainDao extends SQDIDao {
-    constructor() {
-        super(11);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet(11);
-    }
-}
-BaseDomainDao.Find = new DaoQueryDecorators();
-BaseDomainDao.FindOne = new DaoQueryDecorators();
-BaseDomainDao.Search = new DaoQueryDecorators();
-BaseDomainDao.SearchOne = new DaoQueryDecorators();
 export class BaseApplicationDao extends SQDIDao {
     constructor() {
         super(10);
@@ -186,4 +171,19 @@ BaseApplicationVersionDao.Find = new DaoQueryDecorators();
 BaseApplicationVersionDao.FindOne = new DaoQueryDecorators();
 BaseApplicationVersionDao.Search = new DaoQueryDecorators();
 BaseApplicationVersionDao.SearchOne = new DaoQueryDecorators();
+export class BaseDomainDao extends SQDIDao {
+    constructor() {
+        super(11);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet(11);
+    }
+}
+BaseDomainDao.Find = new DaoQueryDecorators();
+BaseDomainDao.FindOne = new DaoQueryDecorators();
+BaseDomainDao.Search = new DaoQueryDecorators();
+BaseDomainDao.SearchOne = new DaoQueryDecorators();
 //# sourceMappingURL=baseDaos.js.map

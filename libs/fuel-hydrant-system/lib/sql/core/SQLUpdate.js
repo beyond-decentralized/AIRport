@@ -8,8 +8,8 @@ import { ClauseType } from './SQLWhereBase';
  */
 export class SQLUpdate extends SQLNoJoinQuery {
     constructor(jsonUpdate, dialect, context) {
-        super(context.ioc.airDb.schemas[jsonUpdate.U.si].currentVersion[0]
-            .schemaVersion.entities[jsonUpdate.U.ti], dialect, context);
+        super(context.ioc.airDb.applications[jsonUpdate.U.si].currentVersion[0]
+            .applicationVersion.entities[jsonUpdate.U.ti], dialect, context);
         this.jsonUpdate = jsonUpdate;
     }
     toSQL(internalFragments, context) {

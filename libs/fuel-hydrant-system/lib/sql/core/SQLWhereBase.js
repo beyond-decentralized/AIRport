@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { JSONClauseObjectType, OperationCategory, SchemaMap, SqlOperator } from '@airport/ground-control';
+import { JSONClauseObjectType, OperationCategory, ApplicationMap, SqlOperator } from '@airport/ground-control';
 import { Q_VALIDATOR, SQL_QUERY_ADAPTOR, SUB_STATEMENT_SQL_GENERATOR } from '../../tokens';
 /**
  * Created by Papa on 10/2/2016.
@@ -16,7 +16,7 @@ export class SQLWhereBase {
         this.dbEntity = dbEntity;
         this.dialect = dialect;
         this.context = context;
-        this.fieldMap = new SchemaMap();
+        this.fieldMap = new ApplicationMap();
         this.qEntityMapByAlias = {};
         this.jsonRelationMapByAlias = {};
         this.parameterReferences = [];
@@ -191,10 +191,10 @@ export class SQLWhereBase {
     }
     addFieldFromColumn(dbColumn) {
         const dbEntity = dbColumn.propertyColumns[0].property.entity;
-        this.addField(dbEntity.schemaVersion.id, dbEntity.index, dbColumn.index);
+        this.addField(dbEntity.applicationVersion.id, dbEntity.index, dbColumn.index);
     }
-    addField(schemaIndex, tableIndex, columnIndex) {
-        this.fieldMap.ensure(schemaIndex, tableIndex)
+    addField(applicationIndex, tableIndex, columnIndex) {
+        this.fieldMap.ensure(applicationIndex, tableIndex)
             .ensure(columnIndex);
     }
     warn(warning) {

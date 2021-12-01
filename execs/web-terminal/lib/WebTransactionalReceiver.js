@@ -12,15 +12,15 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         this.subsriptionMap = new Map();
         this.pendingFromClientMessageIds = new Map();
         this.pendingHostCounts = new Map();
-        this.pendingSchemaCounts = new Map();
-        this.installedSchemaFrames = new Set();
+        this.pendingApplicationCounts = new Map();
+        this.installedApplicationFrames = new Set();
         const ownDomain = window.location.hostname;
         this.mainDomainFragments = ownDomain.split('.');
         if (this.mainDomainFragments[0] === 'www') {
             this.mainDomainFragments.splice(0, 1);
         }
         this.domainPrefix = '.' + this.mainDomainFragments.join('.');
-        this.installedSchemaFrames.add("featureDemo");
+        this.installedApplicationFrames.add("featureDemo");
         // set domain to a random value so that an iframe cannot directly invoke logic in this domain
         if (document.domain !== 'localhost') {
             document.domain = Math.random() + '.' + Math.random() + this.domainPrefix;
@@ -36,9 +36,9 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                 message.__receivedTime__ = receivedDate.getTime();
                 this.messageCallback(message);
             }
-            // All requests need to have a schema signature
-            // to know what schema is being communicated to/from
-            if (!this.hasValidSchemaSignature(message)) {
+            // All requests need to have a application signature
+            // to know what application is being communicated to/from
+            if (!this.hasValidApplicationSignature(message)) {
                 return;
             }
             const messageOrigin = event.origin;
@@ -63,7 +63,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                         host: document.domain,
                         protocol: window.location.protocol,
                         payload: null,
-                        schemaSignature: message.schemaSignature
+                        applicationSignature: message.applicationSignature
                     };
                     event.source.postMessage(connectionIsReadyMessage, messageOrigin);
                     break;
@@ -84,15 +84,15 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
     onMessage(callback) {
         this.messageCallback = callback;
     }
-    hasValidSchemaSignature(message) {
-        return message.schemaSignature && message.schemaSignature.indexOf('.') === -1;
+    hasValidApplicationSignature(message) {
+        return message.applicationSignature && message.applicationSignature.indexOf('.') === -1;
     }
     async handleFromClientRequest(message, messageOrigin, sourceWindow) {
         const appDomainAndPort = messageOrigin.split('//')[1];
         if (message.host !== appDomainAndPort) {
             return;
         }
-        if (message.schemaSignature === 'AIRport') {
+        if (message.applicationSignature === 'AIRport') {
             this.handleToAIRportMessage(message, messageOrigin, sourceWindow);
             return;
         }
@@ -104,18 +104,18 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             // Prevent hosts from making local 'Denial of Service' attacks
             return;
         }
-        let numPendingMessagesForSchema = this.pendingSchemaCounts.get(message.schemaSignature);
-        if (!numPendingMessagesForSchema) {
-            numPendingMessagesForSchema = 0;
+        let numPendingMessagesForApplication = this.pendingApplicationCounts.get(message.applicationSignature);
+        if (!numPendingMessagesForApplication) {
+            numPendingMessagesForApplication = 0;
         }
-        if (numPendingMessagesForSchema === -1) {
-            // Already could not install the schema, may be a DOS attack, return right away
+        if (numPendingMessagesForApplication === -1) {
+            // Already could not install the application, may be a DOS attack, return right away
             return;
         }
         this.pendingHostCounts.set(message.host, numPendingMessagesFromHost + 1);
-        this.pendingSchemaCounts.set(message.schemaSignature, numPendingMessagesForSchema + 1);
-        if (!await this.ensureSchemaIsInstalled(message.schemaSignature, numPendingMessagesForSchema)) {
-            this.pendingSchemaCounts.set(message.schemaSignature, -1);
+        this.pendingApplicationCounts.set(message.applicationSignature, numPendingMessagesForApplication + 1);
+        if (!await this.ensureApplicationIsInstalled(message.applicationSignature, numPendingMessagesForApplication)) {
+            this.pendingApplicationCounts.set(message.applicationSignature, -1);
             return;
         }
         let pendingMessageIdsFromHost = this.pendingFromClientMessageIds.get(message.host);
@@ -123,19 +123,19 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             pendingMessageIdsFromHost = new Map();
             this.pendingFromClientMessageIds.set(message.host, pendingMessageIdsFromHost);
         }
-        let pendingMessageIdsFromHostForSchema = pendingMessageIdsFromHost.get(message.schemaSignature);
-        if (!pendingMessageIdsFromHostForSchema) {
-            pendingMessageIdsFromHostForSchema = new Map();
-            pendingMessageIdsFromHost.set(message.schemaSignature, pendingMessageIdsFromHostForSchema);
+        let pendingMessageIdsFromHostForApplication = pendingMessageIdsFromHost.get(message.applicationSignature);
+        if (!pendingMessageIdsFromHostForApplication) {
+            pendingMessageIdsFromHostForApplication = new Map();
+            pendingMessageIdsFromHost.set(message.applicationSignature, pendingMessageIdsFromHostForApplication);
         }
-        pendingMessageIdsFromHostForSchema.set(message.id, sourceWindow);
-        const frameWindow = this.getFrameWindow(message.schemaSignature);
+        pendingMessageIdsFromHostForApplication.set(message.id, sourceWindow);
+        const frameWindow = this.getFrameWindow(message.applicationSignature);
         if (frameWindow) {
-            // Forward the request to the correct schema iframe
+            // Forward the request to the correct application iframe
             frameWindow.postMessage(message, '*');
         }
         else {
-            throw new Error(`No Application IFrame found for signature: ${message.schemaSignature}`);
+            throw new Error(`No Application IFrame found for signature: ${message.applicationSignature}`);
         }
     }
     handleToAIRportMessage(message, messageOrigin, sourceWindow) {
@@ -149,11 +149,11 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             }
         }
     }
-    getFrameWindow(schemaSignature) {
+    getFrameWindow(applicationSignature) {
         const iframes = document.getElementsByTagName("iframe");
         for (var i = 0; i < iframes.length; i++) {
             let iframe = iframes[i];
-            if (iframe.name === schemaSignature) {
+            if (iframe.name === applicationSignature) {
                 return iframe.contentWindow;
             }
         }
@@ -167,70 +167,70 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         if (!pendingMessagesFromHost) {
             return;
         }
-        let pendingMessagesFromHostForSchema = pendingMessagesFromHost.get(message.schemaSignature);
-        if (!pendingMessagesFromHostForSchema) {
+        let pendingMessagesFromHostForApplication = pendingMessagesFromHost.get(message.applicationSignature);
+        if (!pendingMessagesFromHostForApplication) {
             return;
         }
-        let sourceWindow = pendingMessagesFromHostForSchema.get(message.id);
+        let sourceWindow = pendingMessagesFromHostForApplication.get(message.id);
         if (!sourceWindow) {
             return;
         }
-        pendingMessagesFromHostForSchema.delete(message.id);
+        pendingMessagesFromHostForApplication.delete(message.id);
         let numMessagesFromHost = this.pendingHostCounts.get(message.host);
         if (numMessagesFromHost > 0) {
             this.pendingHostCounts.set(message.host, numMessagesFromHost - 1);
         }
-        let numMessagesForSchema = this.pendingSchemaCounts.get(message.schemaSignature);
-        if (numMessagesForSchema > 0) {
-            this.pendingHostCounts.set(message.host, numMessagesForSchema - 1);
+        let numMessagesForApplication = this.pendingApplicationCounts.get(message.applicationSignature);
+        if (numMessagesForApplication > 0) {
+            this.pendingHostCounts.set(message.host, numMessagesForApplication - 1);
         }
         // Forward the request to the source client
         sourceWindow.postMessage(message, message.protocol + '//' + message.host);
     }
-    async ensureSchemaIsInstalled(schemaSignature, numPendingMessagesForSchema) {
-        if (!schemaSignature) {
+    async ensureApplicationIsInstalled(applicationSignature, numPendingMessagesForApplication) {
+        if (!applicationSignature) {
             return false;
         }
-        if (this.installedSchemaFrames.has(schemaSignature)) {
+        if (this.installedApplicationFrames.has(applicationSignature)) {
             return true;
         }
-        // TODO: ensure that the schema is installed
-        if (numPendingMessagesForSchema == 0) {
+        // TODO: ensure that the application is installed
+        if (numPendingMessagesForApplication == 0) {
         }
         else {
-            // TODO: wait for schema initialization
+            // TODO: wait for application initialization
         }
         return true;
     }
     messageIsFromValidApp(message, messageOrigin) {
-        const schemaDomain = messageOrigin.split('//')[1];
-        const schemaDomainFragments = schemaDomain.split('.');
+        const applicationDomain = messageOrigin.split('//')[1];
+        const applicationDomainFragments = applicationDomain.split('.');
         // Allow local debugging
-        if (schemaDomain.split(':')[0] === 'localhost') {
+        if (applicationDomain.split(':')[0] === 'localhost') {
             return true;
         }
         // Only accept requests from https protocol
         if (!messageOrigin.startsWith("https")
-            // and from schema domains that match the schemaSignature
-            || schemaDomain !== message.schemaSignature + this.domainPrefix) {
+            // and from application domains that match the applicationSignature
+            || applicationDomain !== message.applicationSignature + this.domainPrefix) {
             return false;
         }
-        // Only accept requests from '${schemaName}.${mainDomainName}'
-        if (schemaDomainFragments.length !== this.mainDomainFragments.length + 1) {
+        // Only accept requests from '${applicationName}.${mainDomainName}'
+        if (applicationDomainFragments.length !== this.mainDomainFragments.length + 1) {
             return false;
         }
         // Only accept requests from non-'www' domain (don't accept requests from self)
-        if (schemaDomainFragments[0] === 'www') {
+        if (applicationDomainFragments[0] === 'www') {
             return false;
         }
-        const schemaDomainSignature = schemaDomainFragments[0];
-        // check schema domain-embedded signature and schemaSignature in message
+        const applicationDomainSignature = applicationDomainFragments[0];
+        // check application domain-embedded signature and applicationSignature in message
         // and make sure they result in a match
-        if (schemaDomainSignature !== message.schemaSignature) {
+        if (applicationDomainSignature !== message.applicationSignature) {
             return false;
         }
-        // Make sure the schema is installed
-        return this.installedSchemaFrames.has(schemaDomainSignature);
+        // Make sure the application is installed
+        return this.installedApplicationFrames.has(applicationDomainSignature);
     }
     handleIsolateMessage(message, messageOrigin, source) {
         if (!this.messageIsFromValidApp(message, messageOrigin)) {
@@ -238,7 +238,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         }
         switch (message.type) {
             case IsolateMessageType.SEARCH_UNSUBSCRIBE:
-                let isolateSubscriptionMap = this.subsriptionMap.get(message.schemaSignature);
+                let isolateSubscriptionMap = this.subsriptionMap.get(message.applicationSignature);
                 if (!isolateSubscriptionMap) {
                     return;
                 }
@@ -254,7 +254,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             if (!response) {
                 return;
             }
-            let shemaDomainName = message.schemaSignature + '.' + _mainDomain;
+            let shemaDomainName = message.applicationSignature + '.' + _mainDomain;
             switch (message.type) {
                 case IsolateMessageType.SEARCH:
                 case IsolateMessageType.SEARCH_ONE:
@@ -263,10 +263,10 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                         window.postMessage(value, shemaDomainName);
                     }));
                     const subscription = observableDataResult.result.subscribe();
-                    let isolateSubscriptionMap = this.subsriptionMap.get(message.schemaSignature);
+                    let isolateSubscriptionMap = this.subsriptionMap.get(message.applicationSignature);
                     if (!isolateSubscriptionMap) {
                         isolateSubscriptionMap = new Map();
-                        this.subsriptionMap.set(message.schemaSignature, isolateSubscriptionMap);
+                        this.subsriptionMap.set(message.applicationSignature, isolateSubscriptionMap);
                     }
                     isolateSubscriptionMap.set(message.id, subscription);
                     return;

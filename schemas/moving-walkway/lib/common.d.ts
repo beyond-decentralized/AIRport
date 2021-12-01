@@ -1,5 +1,5 @@
 import { IActor, IRepository, IRepositoryTransactionHistory } from "@airport/holding-pattern";
-import { IDomain, ISchema, ISchemaVersion } from "@airport/airspace";
+import { IDomain, IApplication, IApplicationVersion } from "@airport/airspace";
 import { ITerminal, IUser } from '@airport/travel-document-checkpoint';
 export interface RepositoryTransactionBlockData {
     actors: IActor[];
@@ -7,8 +7,8 @@ export interface RepositoryTransactionBlockData {
     referencedRepositories: IRepository[];
     repository: IRepository;
     repoTransHistories: IRepositoryTransactionHistory[];
-    schemas: ISchema[];
-    schemaVersions: ISchemaVersion[];
+    applications: IApplication[];
+    applicationVersions: IApplicationVersion[];
     terminal: ITerminal;
     users: IUser[];
 }

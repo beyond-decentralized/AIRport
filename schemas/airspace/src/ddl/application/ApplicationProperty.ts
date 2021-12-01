@@ -23,7 +23,7 @@ import {VersionedApplicationObject} from './VersionedApplicationObject'
 
 @Entity()
 @Table({
-	name: 'SCHEMA_PROPERTIES'
+	name: 'APPLICATION_PROPERTIES'
 })
 export class ApplicationProperty
 	extends VersionedApplicationObject {
@@ -46,7 +46,7 @@ export class ApplicationProperty
 
 	@ManyToOne()
 	@JoinColumn(
-		{name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID', nullable: false}
+		{name: 'APPLICATION_ENTITY_ID', referencedColumnName: 'ID', nullable: false}
 	)
 	entity: ApplicationEntity
 

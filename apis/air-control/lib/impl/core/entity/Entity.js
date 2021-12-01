@@ -1,6 +1,6 @@
 import { DI } from '@airport/di';
 import { JoinType, JSONRelationType } from '@airport/ground-control';
-import { AIRPORT_DATABASE, RELATION_MANAGER, SCHEMA_UTILS } from '../../../tokens';
+import { AIRPORT_DATABASE, RELATION_MANAGER, APPLICATION_UTILS } from '../../../tokens';
 import { TreeQuery } from '../../query/facade/TreeQuery';
 import { extend } from '../../utils/qApplicationBuilderUtils';
 import { JoinFields } from '../Joins';
@@ -90,7 +90,7 @@ export class QEntityDriver {
         return jsonRelation;
     }
     getEntityRelationJson(jsonRelation) {
-        jsonRelation.rt = JSONRelationType.ENTITY_SCHEMA_RELATION;
+        jsonRelation.rt = JSONRelationType.ENTITY_APPLICATION_RELATION;
         jsonRelation.ri = this.dbRelation.index;
         // if (!this.dbRelation.whereJoinTable) {
         return jsonRelation;
@@ -124,7 +124,7 @@ export class QEntityDriver {
         return this.qEntity;
     }
     join(right, joinType) {
-        const [airDb, applicationUtils, relationManager] = DI.db().getSync(AIRPORT_DATABASE, SCHEMA_UTILS, RELATION_MANAGER);
+        const [airDb, applicationUtils, relationManager] = DI.db().getSync(AIRPORT_DATABASE, APPLICATION_UTILS, RELATION_MANAGER);
         let joinChild = right
             .__driver__.getInstance(airDb, applicationUtils);
         joinChild.__driver__.currentChildIndex = 0;

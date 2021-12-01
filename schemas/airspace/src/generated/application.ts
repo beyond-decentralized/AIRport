@@ -1,9 +1,9 @@
 /* eslint-disable */
-export const SCHEMA = {
+export const APPLICATION = {
 	"domain": "air",
 	"index": null,
-	"name": "@airport/traffic-pattern",
-	"packageName": "@airport/traffic-pattern",
+	"name": "@airport/airspace",
+	"packageName": "@airport/airspace",
 	"sinceVersion": 1,
 	"versions": [
 		{
@@ -25,7 +25,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+							"name": "DEPRECATED_SINCE_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -47,7 +47,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "REMOVED_IN_SCHEMA_VERSION_ID",
+							"name": "REMOVED_IN_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -69,7 +69,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SINCE_SCHEMA_VERSION_ID",
+							"name": "SINCE_APPLICATION_VERSION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -106,7 +106,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "MANY_SCHEMA_COLUMN_ID",
+							"name": "MANY_APPLICATION_COLUMN_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -129,7 +129,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "ONE_SCHEMA_COLUMN_ID",
+							"name": "ONE_APPLICATION_COLUMN_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -152,7 +152,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "MANY_SCHEMA_RELATION_ID",
+							"name": "MANY_APPLICATION_RELATION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -175,7 +175,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "ONE_SCHEMA_RELATION_ID",
+							"name": "ONE_APPLICATION_RELATION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -384,7 +384,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SCHEMA_RELATION_COLUMNS",
+						"name": "APPLICATION_RELATION_COLUMNS",
 						"columnIndexes": []
 					},
 					"operations": {}
@@ -403,7 +403,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+							"name": "DEPRECATED_SINCE_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -425,7 +425,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "REMOVED_IN_SCHEMA_VERSION_ID",
+							"name": "REMOVED_IN_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -447,7 +447,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SINCE_SCHEMA_VERSION_ID",
+							"name": "SINCE_APPLICATION_VERSION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -568,7 +568,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_PROPERTY_ID",
+							"name": "APPLICATION_PROPERTY_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -591,7 +591,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_TABLE_ID",
+							"name": "APPLICATION_TABLE_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -614,7 +614,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "RELATION_SCHEMA_TABLE_ID",
+							"name": "RELATION_APPLICATION_TABLE_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -861,7 +861,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SCHEMA_RELATIONS",
+						"name": "APPLICATION_RELATIONS",
 						"columnIndexes": []
 					},
 					"operations": {}
@@ -880,7 +880,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+							"name": "DEPRECATED_SINCE_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -902,7 +902,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "REMOVED_IN_SCHEMA_VERSION_ID",
+							"name": "REMOVED_IN_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -924,7 +924,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SINCE_SCHEMA_VERSION_ID",
+							"name": "SINCE_APPLICATION_VERSION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1003,7 +1003,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_ENTITY_ID",
+							"name": "APPLICATION_ENTITY_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1185,7 +1185,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SCHEMA_PROPERTIES",
+						"name": "APPLICATION_PROPERTIES",
 						"columnIndexes": []
 					},
 					"operations": {}
@@ -1204,7 +1204,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+							"name": "DEPRECATED_SINCE_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1226,7 +1226,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "REMOVED_IN_SCHEMA_VERSION_ID",
+							"name": "REMOVED_IN_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1248,7 +1248,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SINCE_SCHEMA_VERSION_ID",
+							"name": "SINCE_APPLICATION_VERSION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1271,7 +1271,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_COLUMN_ID",
+							"name": "APPLICATION_COLUMN_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1294,7 +1294,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_PROPERTY_ID",
+							"name": "APPLICATION_PROPERTY_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1418,7 +1418,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SCHEMA_PROPERTY_COLUMNS",
+						"name": "APPLICATION_PROPERTY_COLUMNS",
 						"columnIndexes": []
 					},
 					"operations": {}
@@ -1437,7 +1437,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+							"name": "DEPRECATED_SINCE_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1459,7 +1459,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "REMOVED_IN_SCHEMA_VERSION_ID",
+							"name": "REMOVED_IN_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1481,7 +1481,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SINCE_SCHEMA_VERSION_ID",
+							"name": "SINCE_APPLICATION_VERSION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1644,7 +1644,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_ENTITY_ID",
+							"name": "APPLICATION_ENTITY_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1902,7 +1902,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SCHEMA_COLUMNS",
+						"name": "APPLICATION_COLUMNS",
 						"columnIndexes": []
 					},
 					"operations": {}
@@ -1921,7 +1921,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+							"name": "DEPRECATED_SINCE_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1943,7 +1943,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "REMOVED_IN_SCHEMA_VERSION_ID",
+							"name": "REMOVED_IN_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1965,7 +1965,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SINCE_SCHEMA_VERSION_ID",
+							"name": "SINCE_APPLICATION_VERSION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -2044,7 +2044,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_ENTITY_ID",
+							"name": "APPLICATION_ENTITY_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -2182,7 +2182,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SCHEMA_OPERATIONS",
+						"name": "APPLICATION_OPERATIONS",
 						"columnIndexes": []
 					}
 				},
@@ -2200,7 +2200,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+							"name": "DEPRECATED_SINCE_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -2222,7 +2222,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "REMOVED_IN_SCHEMA_VERSION_ID",
+							"name": "REMOVED_IN_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -2244,7 +2244,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SINCE_SCHEMA_VERSION_ID",
+							"name": "SINCE_APPLICATION_VERSION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -2351,7 +2351,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_VERSION_ID",
+							"name": "APPLICATION_VERSION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -2617,7 +2617,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SCHEMA_ENTITIES",
+						"name": "APPLICATION_ENTITIES",
 						"columnIndexes": []
 					},
 					"operations": {}
@@ -2636,7 +2636,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+							"name": "DEPRECATED_SINCE_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -2658,7 +2658,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "REMOVED_IN_SCHEMA_VERSION_ID",
+							"name": "REMOVED_IN_APPLICATION_VERSION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -2680,7 +2680,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SINCE_SCHEMA_VERSION_ID",
+							"name": "SINCE_APPLICATION_VERSION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -2694,7 +2694,7 @@ export const SCHEMA = {
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "SCHEMA_REFERENCE_INDEX",
+							"name": "APPLICATION_REFERENCE_INDEX",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -2717,7 +2717,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "OWN_SCHEMA_VERSION_ID",
+							"name": "OWN_APPLICATION_VERSION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -2740,7 +2740,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "REFERENCED_SCHEMA_VERSION_ID",
+							"name": "REFERENCED_APPLICATION_VERSION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -2873,7 +2873,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SCHEMA_REFERENCES",
+						"name": "APPLICATION_REFERENCES",
 						"columnIndexes": []
 					},
 					"operations": {}
@@ -2978,7 +2978,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_INDEX",
+							"name": "APPLICATION_INDEX",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -3143,7 +3143,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SCHEMA_VERSIONS",
+						"name": "APPLICATION_VERSIONS",
 						"columnIndexes": []
 					},
 					"operations": {}
@@ -3163,7 +3163,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_INDEX",
+							"name": "APPLICATION_INDEX",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -3185,7 +3185,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_VERSION_ID",
+							"name": "APPLICATION_VERSION_ID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -3252,7 +3252,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SCHEMA_CURRENT_VERSIONS",
+						"name": "APPLICATION_CURRENT_VERSIONS",
 						"columnIndexes": []
 					}
 				},
@@ -3262,7 +3262,7 @@ export const SCHEMA = {
 							"index": 0,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "SCHEMA_INDEX",
+							"name": "APPLICATION_INDEX",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -3290,7 +3290,7 @@ export const SCHEMA = {
 							"index": 2,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "SCHEMA_NAME",
+							"name": "APPLICATION_NAME",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -3346,7 +3346,7 @@ export const SCHEMA = {
 							"index": 6,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "JSON_SCHEMA",
+							"name": "JSON_APPLICATION",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -3521,7 +3521,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SCHEMAS",
+						"name": "APPLICATIONS",
 						"columnIndexes": []
 					},
 					"operations": {}

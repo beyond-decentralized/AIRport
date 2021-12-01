@@ -3,11 +3,11 @@ import { ensureChildArray, ensureChildMap } from '@airport/ground-control';
 export class GraphOtmMapper {
     constructor() {
         // Map of MtO referred objects by OtM references
-        // [] OTM Reference Entity Schema Index
+        // [] OTM Reference Entity Application Index
         // [] OTM Reference Entity Index
         this.mtoEntityReferenceMap = [];
         // Map of objects with OtM references by
-        // [] OtM reference Schema Entity Index
+        // [] OtM reference Application Entity Index
         // [] OtM reference Entity Index
         this.otmEntityReferenceMap = [];
     }
@@ -18,12 +18,12 @@ export class GraphOtmMapper {
         }
         // Add into mtoEntityReferenceMap
         const otmDbEntity = mtoStubReference.otmDbEntity;
-        let mtoEntityReferenceMapForEntity = ensureChildMap(ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.schemaVersion.schema.index), otmDbEntity.index);
+        let mtoEntityReferenceMapForEntity = ensureChildMap(ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index), otmDbEntity.index);
         // TODO: MappedEntityArray is not serializable, make it so before using
         // let mtoEntityReferenceMapForEntity: {
         // 	[otmReferenceId: string]: { [otmProperty: string]: MappedEntityArray<any> }
         // }                 = ensureChildMap(
-        // 	ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.schemaVersion.schema.index),
+        // 	ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
         // 	otmDbEntity.index
         // )
         // let mapForOtmEntity: { [otmProperty: string]: MappedEntityArray<any> } = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId]
@@ -35,7 +35,7 @@ export class GraphOtmMapper {
         // let mtoCollection: MappedEntityArray<any> = mapForOtmEntity[mtoStubReference.otmEntityField]
         let mtoCollection = mapForOtmEntity[mtoStubReference.otmEntityField];
         if (!mtoCollection) {
-            // mtoCollection = newMappedEntityArray<any>(context.ioc.schemaUtils, dbEntity)
+            // mtoCollection = newMappedEntityArray<any>(context.ioc.applicationUtils, dbEntity)
             mtoCollection = [];
             mapForOtmEntity[mtoStubReference.otmEntityField]
                 = mtoCollection;
@@ -46,7 +46,7 @@ export class GraphOtmMapper {
     addOtmReference(otmStubReference, otmEntityIdValue) {
         // Add into otoEntityReferenceMap
         const otmDbEntity = otmStubReference.otmDbEntity;
-        let mtoEntityReferenceMapForEntity = ensureChildMap(ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.schemaVersion.schema.index), otmDbEntity.index);
+        let mtoEntityReferenceMapForEntity = ensureChildMap(ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.applicationVersion.application.index), otmDbEntity.index);
         let otmRecordByPropertyName = mtoEntityReferenceMapForEntity[otmEntityIdValue];
         if (!otmRecordByPropertyName) {
             otmRecordByPropertyName = {};
@@ -55,24 +55,24 @@ export class GraphOtmMapper {
         otmRecordByPropertyName[otmStubReference.otmPropertyName] = otmStubReference.otmObject;
     }
     populateOtms(entityMap, keepMappedEntityArrays) {
-        for (const schemaIndex in this.mtoEntityReferenceMap) {
-            const mtoEntityReferenceMapForSchema = this.mtoEntityReferenceMap[schemaIndex];
-            for (const entityIndex in mtoEntityReferenceMapForSchema) {
-                const mtoEntityReferenceMapForEntity = mtoEntityReferenceMapForSchema[entityIndex];
+        for (const applicationIndex in this.mtoEntityReferenceMap) {
+            const mtoEntityReferenceMapForApplication = this.mtoEntityReferenceMap[applicationIndex];
+            for (const entityIndex in mtoEntityReferenceMapForApplication) {
+                const mtoEntityReferenceMapForEntity = mtoEntityReferenceMapForApplication[entityIndex];
                 // If there are no entities of this type in query results, just keep the stubs
-                if (!entityMap[schemaIndex]) {
+                if (!entityMap[applicationIndex]) {
                     continue;
                 }
-                let entityOfTypeMap = entityMap[schemaIndex][entityIndex];
+                let entityOfTypeMap = entityMap[applicationIndex][entityIndex];
                 // If there are no entities of this type in query results, just keep the stubs
                 if (!entityOfTypeMap) {
                     continue;
                 }
                 // If there are no OTM for this type in query results, no mapping needs to happen
-                if (!this.otmEntityReferenceMap[schemaIndex]) {
+                if (!this.otmEntityReferenceMap[applicationIndex]) {
                     continue;
                 }
-                let entityWithOtmMap = this.otmEntityReferenceMap[schemaIndex][entityIndex];
+                let entityWithOtmMap = this.otmEntityReferenceMap[applicationIndex][entityIndex];
                 // If there are no OTM for this type in query results, no mapping needs to happen
                 if (!entityWithOtmMap) {
                     continue;

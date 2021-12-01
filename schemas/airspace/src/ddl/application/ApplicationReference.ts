@@ -13,22 +13,22 @@ import {VersionedApplicationObject} from './VersionedApplicationObject'
 
 @Entity()
 @Table({
-	name: 'SCHEMA_REFERENCES'
+	name: 'APPLICATION_REFERENCES'
 })
 export class ApplicationReference
 	extends VersionedApplicationObject {
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'OWN_SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumn({name: 'OWN_APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false})
 	ownApplicationVersion: ApplicationVersion
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'REFERENCED_SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumn({name: 'REFERENCED_APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false})
 	referencedApplicationVersion: ApplicationVersion
 
-	@Column({name: 'SCHEMA_REFERENCE_INDEX', nullable: false})
+	@Column({name: 'APPLICATION_REFERENCE_INDEX', nullable: false})
 	@DbNumber()
 	index: ApplicationReferenceIndex
 

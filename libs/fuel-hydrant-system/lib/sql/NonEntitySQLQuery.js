@@ -109,7 +109,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     jsonTrees.push(anotherTree);
                     joinNodeMap[alias] = anotherTree;
                     continue;
-                case JSONRelationType.ENTITY_SCHEMA_RELATION:
+                case JSONRelationType.ENTITY_APPLICATION_RELATION:
                     if (!joinRelation.ri) {
                         throw new Error(`Table ${i + 1} in FROM clause is missing relationPropertyName`);
                     }
@@ -197,8 +197,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             case JSONClauseObjectType.EXISTS_FUNCTION:
                 throw new Error(`Exists function cannot be used in SELECT clause.`);
             case JSONClauseObjectType.FIELD:
-                dbEntity = context.ioc.airDb.schemas[fieldJson.si].currentVersion[0]
-                    .schemaVersion.entities[fieldJson.ti];
+                dbEntity = context.ioc.airDb.applications[fieldJson.si].currentVersion[0]
+                    .applicationVersion.entities[fieldJson.ti];
                 dbProperty = dbEntity.properties[fieldJson.pi];
                 dbColumn = dbEntity.columns[fieldJson.ci];
                 switch (fieldJson.dt) {
@@ -309,8 +309,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     joinOnClause = this.getWHEREFragment(joinRelation.joinWhereClause, '\t', context);
                     fromFragment += `\t${joinTypeString} ${context.ioc.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context)} ${currentAlias} ON\n${joinOnClause}`;
                     break;
-                case JSONRelationType.ENTITY_SCHEMA_RELATION:
-                    fromFragment += this.getEntitySchemaRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, context);
+                case JSONRelationType.ENTITY_APPLICATION_RELATION:
+                    fromFragment += this.getEntityApplicationRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, context);
                     break;
                 case JSONRelationType.SUB_QUERY_JOIN_ON:
                     let viewJoinRelation = currentRelation;
@@ -320,7 +320,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     break;
                 default:
                     throw new Error(`Nested FROM entries must be Entity JOIN ON
-					or Schema Relation, or Sub-Query JOIN ON`);
+					or Application Relation, or Sub-Query JOIN ON`);
             }
         }
         for (let i = 0; i < currentTree.childNodes.length; i++) {

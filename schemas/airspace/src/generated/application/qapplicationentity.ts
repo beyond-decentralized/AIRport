@@ -203,15 +203,15 @@ export interface ApplicationEntityGraph
 export interface ApplicationEntityEUpdateColumns
 	extends VersionedApplicationObjectEUpdateColumns {
 	// Non-Id Columns
-	DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-	REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
-	SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+	DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+	REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
+	SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
 	TABLE_INDEX?: number | IQNumberField;
 	IS_LOCAL?: boolean | IQBooleanField;
 	IS_REPOSITORY_ENTITY?: boolean | IQBooleanField;
 	NAME?: string | IQStringField;
 	TABLE_CONFIGURATION?: string | IQStringField;
-	SCHEMA_VERSION_ID?: number | IQNumberField;
+	APPLICATION_VERSION_ID?: number | IQNumberField;
 
 }
 

@@ -3,37 +3,37 @@ import { API_REGISTRY } from "@airport/check-in";
 export class ApiRegistry {
     initialize(
     // installedApi: InstalledApi
-    schemaApi) {
+    applicationApi) {
         // this.installedApi = installedApi
-        this.schemaApi = schemaApi;
+        this.applicationApi = applicationApi;
     }
-    async findApiObjectAndOperation(systemName, schemaSignature, apiObjectName, methodName) {
-        // const schemaApi = this.installedApi.schemaApiMap[schemaSignature]
-        // if (!schemaApi) {
-        //     throw new Error(`Could not find SchemaAPI for signature:
-        //     ${schemaSignature}`)
+    async findApiObjectAndOperation(systemName, applicationSignature, apiObjectName, methodName) {
+        // const applicationApi = this.installedApi.applicationApiMap[applicationSignature]
+        // if (!applicationApi) {
+        //     throw new Error(`Could not find ApplicationAPI for signature:
+        //     ${applicationSignature}`)
         // }
-        // const apiObjectDefinition = schemaApi.apiObjectMap[apiObjectName]
-        const apiObjectDefinition = this.schemaApi.apiObjectMap[apiObjectName];
+        // const apiObjectDefinition = applicationApi.apiObjectMap[apiObjectName]
+        const apiObjectDefinition = this.applicationApi.apiObjectMap[apiObjectName];
         if (!apiObjectDefinition) {
             throw new Error(`Could not find API object for 
-        Schema signature:
-            ${schemaSignature}
+        Application signature:
+            ${applicationSignature}
         Object name:
             ${apiObjectName}`);
         }
         const apiOperation = apiObjectDefinition.operationMap[methodName];
         if (!apiOperation) {
             throw new Error(`Could not find API object method for 
-        Schema signature:
-            ${schemaSignature}
+        Application signature:
+            ${applicationSignature}
         Object name:
             ${apiObjectName}
         Method name:
             ${methodName}`);
         }
         const apiObject = await container(this)
-            .getBySchemaSignatureAndName(systemName, schemaSignature, apiObjectName);
+            .getByApplicationSignatureAndName(systemName, applicationSignature, apiObjectName);
         return {
             apiObject,
             apiOperation

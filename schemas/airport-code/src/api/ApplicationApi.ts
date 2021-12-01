@@ -1,6 +1,6 @@
 import { DI } from "@airport/di";
 import { Api } from "@airport/check-in";
-import { SCHEMA_API } from "../tokens";
+import { APPLICATION_API } from "../tokens";
 
 export interface IApplicationApi {
 
@@ -16,4 +16,4 @@ export class ApplicationApi
         console.log('testing API')
     }
 }
-DI.set(SCHEMA_API, ApplicationApi)
+DI.set(APPLICATION_API, ApplicationApi)

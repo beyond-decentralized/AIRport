@@ -35,13 +35,13 @@ export class RecordUpdateStage {
 	id: RecordUpdateStageId
 
 	@ManyToOne()
-	@JoinColumn({name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'APPLICATION_VERSION_ID', referencedColumnName: 'ID'})
 	applicationVersion: IApplicationVersion
 
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized
 	// repository ledger (and hence, that using local ids is safe)
-	@JoinColumn({name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'APPLICATION_ENTITY_ID', referencedColumnName: 'ID'})
 	entity: IApplicationEntity
 
 	@ManyToOne()
@@ -59,7 +59,7 @@ export class RecordUpdateStage {
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized
 	// repository ledger (and hence, that using local ids is safe)
-	@JoinColumn({name: 'SCHEMA_COLUMN_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'APPLICATION_COLUMN_ID', referencedColumnName: 'ID'})
 	column: IApplicationColumn
 
 

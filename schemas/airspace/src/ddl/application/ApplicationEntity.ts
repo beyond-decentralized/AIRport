@@ -31,7 +31,7 @@ import { IApplicationProperty } from '../../generated/application/applicationpro
 
 @Entity()
 @Table({
-	name: 'SCHEMA_ENTITIES',
+	name: 'APPLICATION_ENTITIES',
 	// indexes: (se: ApplicationEntity) => [{
 	// 	property: se.applicationVersion
 	// }]
@@ -74,7 +74,7 @@ export class ApplicationEntity
 	//
 
 	@ManyToOne()
-	@JoinColumn({name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumn({name: 'APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false})
 	applicationVersion: ApplicationVersion
 
 	//
@@ -87,7 +87,7 @@ export class ApplicationEntity
 	// TODO: implement if needed
 	// @OneToMany()
 	// @JoinColumns([
-	// 	{name: "SCHEMA_VERSION_ID"},
+	// 	{name: "APPLICATION_VERSION_ID"},
 	// 	{name: "TABLE_INDEX", referencedColumnName: "INDEX"}
 	// ])
 	// @WhereJoinTable((

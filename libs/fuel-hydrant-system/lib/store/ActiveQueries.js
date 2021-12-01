@@ -10,9 +10,9 @@ export class ActiveQueries {
     remove(portableQuery) {
         this.queries.delete(portableQuery);
     }
-    markQueriesToRerun(schemaMap) {
+    markQueriesToRerun(applicationMap) {
         this.queries.forEach((cachedSqlQuery) => {
-            if (schemaMap.intersects(cachedSqlQuery.sqlQuery.getFieldMap())) {
+            if (applicationMap.intersects(cachedSqlQuery.sqlQuery.getFieldMap())) {
                 cachedSqlQuery.rerun = true;
             }
         });

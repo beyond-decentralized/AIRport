@@ -188,7 +188,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					jsonTrees.push(anotherTree)
 					joinNodeMap[alias] = anotherTree
 					continue
-				case JSONRelationType.ENTITY_SCHEMA_RELATION:
+				case JSONRelationType.ENTITY_APPLICATION_RELATION:
 					if (!(<JSONEntityRelation>joinRelation).ri) {
 						throw new Error(
 							`Table ${i + 1} in FROM clause is missing relationPropertyName`)
@@ -465,7 +465,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					fromFragment += `\t${joinTypeString} ${context.ioc.storeDriver.getEntityTableName(
 						qEntity.__driver__.dbEntity, context)} ${currentAlias} ON\n${joinOnClause}`
 					break
-				case JSONRelationType.ENTITY_SCHEMA_RELATION:
+				case JSONRelationType.ENTITY_APPLICATION_RELATION:
 					fromFragment += this.getEntityApplicationRelationFromJoin(
 						leftEntity, rightEntity, <JSONEntityRelation>currentRelation,
 						parentRelation, currentAlias, parentAlias,

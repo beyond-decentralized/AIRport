@@ -13,7 +13,7 @@ import { IEntityLookup } from '../../../lingo/query/api/EntityLookup'
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
 import {
 	REPOSITORY_LOADER,
-	SCHEMA_UTILS,
+	APPLICATION_UTILS,
 	UPDATE_CACHE_MANAGER
 } from '../../../tokens'
 import { LookupProxy } from './Lookup'
@@ -100,7 +100,7 @@ export abstract class EntityLookup<Child, MappedChild,
 		const result = await this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)
 		const [entityStateManager, applicationUtils, updateCacheManager] =
-			await DI.db().get(ENTITY_STATE_MANAGER, SCHEMA_UTILS, UPDATE_CACHE_MANAGER)
+			await DI.db().get(ENTITY_STATE_MANAGER, APPLICATION_UTILS, UPDATE_CACHE_MANAGER)
 		if (search) {
 			throw new Error(`Search operations are not yet supported`);
 		} else {

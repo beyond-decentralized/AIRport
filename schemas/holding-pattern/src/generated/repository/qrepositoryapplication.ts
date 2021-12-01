@@ -119,7 +119,7 @@ export interface RepositoryApplicationGraph
 export interface RepositoryApplicationEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	SCHEMA_INDEX?: number | IQNumberField;
+	APPLICATION_INDEX?: number | IQNumberField;
 
 }
 

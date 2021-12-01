@@ -10,17 +10,17 @@ let ApplicationCurrentVersion = class ApplicationCurrentVersion {
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'SCHEMA_INDEX', referencedColumnName: 'SCHEMA_INDEX', nullable: false })
+    JoinColumn({ name: 'APPLICATION_INDEX', referencedColumnName: 'APPLICATION_INDEX', nullable: false })
 ], ApplicationCurrentVersion.prototype, "application", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({ name: 'APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false })
 ], ApplicationCurrentVersion.prototype, "applicationVersion", void 0);
 ApplicationCurrentVersion = __decorate([
     Entity(),
     Table({
-        name: 'SCHEMA_CURRENT_VERSIONS'
+        name: 'APPLICATION_CURRENT_VERSIONS'
     })
 ], ApplicationCurrentVersion);
 export { ApplicationCurrentVersion };

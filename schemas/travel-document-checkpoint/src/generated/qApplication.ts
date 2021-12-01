@@ -57,12 +57,12 @@ const __constructors__ = {
 	UserTerminalAgt: UserTerminalAgt
 };
 
-export const Q_SCHEMA: LocalQApplication = <any>{
+export const Q_APPLICATION: LocalQApplication = <any>{
 	__constructors__,
   domain: 'air',
   name: '@airport/travel-document-checkpoint'
 };
-export const Q: LocalQApplication = Q_SCHEMA
+export const Q: LocalQApplication = Q_APPLICATION
 
 export function diSet(
 	dbEntityId: EntityId
@@ -79,5 +79,5 @@ export function duoDiSet(
 DI.db().eventuallyGet(AIRPORT_DATABASE).then((
 	airDb
 ) => {
-	airDb.QM[getApplicationName(Q_SCHEMA)] = Q
+	airDb.QM[getApplicationName(Q_APPLICATION)] = Q
 })

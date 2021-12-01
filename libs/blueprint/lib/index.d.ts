@@ -7,7 +7,7 @@ export declare const BLUEPRINT: ({
     versions: {
         api: {
             apiObjectMap: {
-                ISchemaApi: {
+                IApplicationApi: {
                     operationMap: {
                         testApiDefinitionGeneration: {
                             isAsync: boolean;
@@ -91,7 +91,7 @@ export declare const BLUEPRINT: ({
             operations?: undefined;
         })[];
         integerVersion: number;
-        referencedSchemas: any[];
+        referencedApplications: any[];
         versionString: string;
     }[];
 } | {
@@ -122,7 +122,7 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneApplicationIndex: any;
                     oneTableIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
@@ -140,7 +140,7 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneApplicationIndex: any;
                     oneTableIndex: number;
                     oneRelationIndex: number;
                     oneColumnIndex: number;
@@ -220,7 +220,7 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: number;
+                    oneApplicationIndex: number;
                     oneTableIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
@@ -259,7 +259,7 @@ export declare const BLUEPRINT: ({
                 sinceVersion: number;
                 columnRef?: undefined;
             })[];
-            relations: ({
+            relations: {
                 index: number;
                 isId: boolean;
                 relationType: string;
@@ -267,23 +267,9 @@ export declare const BLUEPRINT: ({
                     index: number;
                 };
                 relationTableIndex: number;
-                relationTableSchemaIndex: number;
+                relationTableApplicationIndex: number;
                 sinceVersion: number;
-                oneToManyElems?: undefined;
-            } | {
-                index: number;
-                isId: boolean;
-                oneToManyElems: {
-                    mappedBy: string;
-                };
-                relationType: string;
-                propertyRef: {
-                    index: number;
-                };
-                relationTableIndex: number;
-                sinceVersion: number;
-                relationTableSchemaIndex?: undefined;
-            })[];
+            }[];
             sinceVersion: number;
             tableConfig: {
                 columnIndexes: any[];
@@ -308,7 +294,7 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneApplicationIndex: any;
                     oneTableIndex: number;
                     oneRelationIndex: number;
                     oneColumnIndex: number;
@@ -327,7 +313,7 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneApplicationIndex: any;
                     oneTableIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
@@ -414,9 +400,8 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneApplicationIndex: number;
                     oneTableIndex: number;
-                    oneRelationIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
                 }[];
@@ -433,8 +418,9 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: number;
+                    oneApplicationIndex: any;
                     oneTableIndex: number;
+                    oneRelationIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
                 }[];
@@ -481,8 +467,8 @@ export declare const BLUEPRINT: ({
                     index: number;
                 };
                 relationTableIndex: number;
+                relationTableApplicationIndex: number;
                 sinceVersion: number;
-                relationTableSchemaIndex?: undefined;
                 oneToManyElems?: undefined;
             } | {
                 index: number;
@@ -492,8 +478,8 @@ export declare const BLUEPRINT: ({
                     index: number;
                 };
                 relationTableIndex: number;
-                relationTableSchemaIndex: number;
                 sinceVersion: number;
+                relationTableApplicationIndex?: undefined;
                 oneToManyElems?: undefined;
             } | {
                 index: number;
@@ -507,7 +493,7 @@ export declare const BLUEPRINT: ({
                 };
                 relationTableIndex: number;
                 sinceVersion: number;
-                relationTableSchemaIndex?: undefined;
+                relationTableApplicationIndex?: undefined;
             })[];
             sinceVersion: number;
             tableConfig: {
@@ -517,7 +503,7 @@ export declare const BLUEPRINT: ({
             operations?: undefined;
         })[];
         integerVersion: number;
-        referencedSchemas: {
+        referencedApplications: {
             domain: string;
             index: number;
             name: string;
@@ -526,7 +512,7 @@ export declare const BLUEPRINT: ({
             versions: {
                 entities: any;
                 integerVersion: number;
-                referencedSchemas: any;
+                referencedApplications: any;
                 versionString: string;
             }[];
         }[];
@@ -548,7 +534,7 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneApplicationIndex: any;
                     oneTableIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
@@ -565,7 +551,7 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneApplicationIndex: any;
                     oneTableIndex: number;
                     oneRelationIndex: number;
                     oneColumnIndex: number;
@@ -640,7 +626,7 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneApplicationIndex: any;
                     oneTableIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
@@ -657,7 +643,7 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneApplicationIndex: any;
                     oneTableIndex: number;
                     oneRelationIndex: number;
                     oneColumnIndex: number;
@@ -731,7 +717,7 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneApplicationIndex: any;
                     oneTableIndex: number;
                     oneRelationIndex: number;
                     oneColumnIndex: number;
@@ -803,7 +789,7 @@ export declare const BLUEPRINT: ({
             operations: {};
         })[];
         integerVersion: number;
-        referencedSchemas: any[];
+        referencedApplications: any[];
         versionString: string;
     }[];
 } | {
@@ -835,7 +821,7 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneApplicationIndex: any;
                     oneTableIndex: number;
                     oneRelationIndex: number;
                     oneColumnIndex: number;
@@ -970,7 +956,7 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: any;
+                    oneApplicationIndex: any;
                     oneTableIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
@@ -1103,7 +1089,7 @@ export declare const BLUEPRINT: ({
             operations?: undefined;
         })[];
         integerVersion: number;
-        referencedSchemas: any[];
+        referencedApplications: any[];
         versionString: string;
     }[];
 })[];

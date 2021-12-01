@@ -36,7 +36,7 @@ import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
 import {
 	AIRPORT_DATABASE,
 	RELATION_MANAGER,
-	SCHEMA_UTILS
+	APPLICATION_UTILS
 } from '../../../tokens'
 import { TreeQuery } from '../../query/facade/TreeQuery'
 import { extend } from '../../utils/qApplicationBuilderUtils'
@@ -216,7 +216,7 @@ export class QEntityDriver<IEntity>
 		// queryUtils: IQueryUtils,
 		// fieldUtils: IFieldUtils
 	): JSONEntityRelation {
-		jsonRelation.rt = JSONRelationType.ENTITY_SCHEMA_RELATION
+		jsonRelation.rt = JSONRelationType.ENTITY_APPLICATION_RELATION
 		jsonRelation.ri = this.dbRelation.index
 
 		// if (!this.dbRelation.whereJoinTable) {
@@ -265,7 +265,7 @@ export class QEntityDriver<IEntity>
 		joinType: JoinType,
 	): IJoinFields<IF> {
 		const [airDb, applicationUtils, relationManager] = DI.db().getSync(
-			AIRPORT_DATABASE, SCHEMA_UTILS, RELATION_MANAGER)
+			AIRPORT_DATABASE, APPLICATION_UTILS, RELATION_MANAGER)
 		let joinChild: IQEntityInternal<any> = (<IQEntityInternal<any>><any>right)
 			.__driver__.getInstance(airDb, applicationUtils)
 		joinChild.__driver__.currentChildIndex = 0

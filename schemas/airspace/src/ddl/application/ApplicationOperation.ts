@@ -21,7 +21,7 @@ import {VersionedApplicationObject} from './VersionedApplicationObject'
 
 @Entity()
 @Table({
-	name: 'SCHEMA_OPERATIONS'
+	name: 'APPLICATION_OPERATIONS'
 })
 export class ApplicationOperation
 	extends VersionedApplicationObject {
@@ -40,7 +40,7 @@ export class ApplicationOperation
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'SCHEMA_ENTITY_ID',
+		name: 'APPLICATION_ENTITY_ID',
 		referencedColumnName: 'ID',
 		nullable: false
 	})

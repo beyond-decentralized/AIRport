@@ -19,7 +19,7 @@ export interface LocalQApplication extends AirportQApplication {
     UserTerminal: QUserTerminal;
     UserTerminalAgt: QUserTerminalAgt;
 }
-export declare const Q_SCHEMA: LocalQApplication;
+export declare const Q_APPLICATION: LocalQApplication;
 export declare const Q: LocalQApplication;
 export declare function diSet(dbEntityId: EntityId): boolean;
 export declare function duoDiSet(dbEntityId: EntityId): boolean;

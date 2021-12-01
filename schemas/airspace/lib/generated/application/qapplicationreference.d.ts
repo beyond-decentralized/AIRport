@@ -42,10 +42,10 @@ export interface ApplicationReferenceGraph extends ApplicationReferenceEOptional
  * UPDATE - non-id columns (optional).
  */
 export interface ApplicationReferenceEUpdateColumns extends VersionedApplicationObjectEUpdateColumns {
-    DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-    REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
-    SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-    SCHEMA_REFERENCE_INDEX?: number | IQNumberField;
+    DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
+    SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    APPLICATION_REFERENCE_INDEX?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).

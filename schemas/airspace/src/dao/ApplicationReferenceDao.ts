@@ -1,6 +1,6 @@
 import {DI}                   from '@airport/di'
 import {ApplicationVersionId}      from '@airport/ground-control'
-import {SCHEMA_REFERENCE_DAO} from '../tokens'
+import {APPLICATION_REFERENCE_DAO} from '../tokens'
 import {
 	BaseApplicationReferenceDao,
 	IBaseApplicationReferenceDao,
@@ -71,4 +71,4 @@ export class ApplicationReferenceDao
 
 }
 
-DI.set(SCHEMA_REFERENCE_DAO, ApplicationReferenceDao)
+DI.set(APPLICATION_REFERENCE_DAO, ApplicationReferenceDao)

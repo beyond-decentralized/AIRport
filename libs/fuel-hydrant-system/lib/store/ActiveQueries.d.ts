@@ -1,4 +1,4 @@
-import { PortableQuery, SyncSchemaMap } from '@airport/ground-control';
+import { PortableQuery, SyncApplicationMap } from '@airport/ground-control';
 import { Subject } from 'rxjs';
 import { SQLQuery } from '../sql/core/SQLQuery';
 /**
@@ -8,14 +8,14 @@ export interface IActiveQueries {
     queries: Map<PortableQuery, CachedSQLQuery>;
     add(portableQuery: PortableQuery, cachedSqlQuery: CachedSQLQuery): void;
     remove(portableQuery: PortableQuery): void;
-    markQueriesToRerun(schemaMap: SyncSchemaMap): void;
+    markQueriesToRerun(applicationMap: SyncApplicationMap): void;
     rerunQueries(): void;
 }
 export declare class ActiveQueries implements IActiveQueries {
     queries: Map<PortableQuery, CachedSQLQuery>;
     add(portableQuery: PortableQuery, cachedSqlQuery: CachedSQLQuery): void;
     remove(portableQuery: PortableQuery): void;
-    markQueriesToRerun(schemaMap: SyncSchemaMap): void;
+    markQueriesToRerun(applicationMap: SyncApplicationMap): void;
     rerunQueries(): void;
 }
 export interface CachedSQLQuery {

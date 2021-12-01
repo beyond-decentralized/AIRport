@@ -53,13 +53,13 @@ export interface ApplicationPropertyGraph extends ApplicationPropertyEOptionalId
  * UPDATE - non-id columns (optional).
  */
 export interface ApplicationPropertyEUpdateColumns extends VersionedApplicationObjectEUpdateColumns {
-    DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-    REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
-    SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+    DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
+    SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
     PROPERTY_INDEX?: number | IQNumberField;
     NAME?: string | IQStringField;
     IS_ID?: boolean | IQBooleanField;
-    SCHEMA_ENTITY_ID?: number | IQNumberField;
+    APPLICATION_ENTITY_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).

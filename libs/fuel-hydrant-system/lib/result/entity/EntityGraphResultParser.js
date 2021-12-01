@@ -18,7 +18,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
         this.config = config;
         this.rootDbEntity = rootDbEntity;
         // Keys can only be strings or numbers | TODO: change to JS Maps, if needed
-        this.entityMapBySchemaAndTableIndexes = [];
+        this.entityMapByApplicationAndTableIndexes = [];
         // One-To-Many & MtO temp stubs (before entityId is available)
         this.otmStubBuffer = [];
         this.mtoStubBuffer = [];
@@ -28,7 +28,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
         this.mtoMapper = new GraphMtoMapper();
     }
     addEntity(entityAlias, dbEntity, context) {
-        return context.ioc.schemaUtils.getNewEntity(dbEntity, context.ioc.airDb);
+        return context.ioc.applicationUtils.getNewEntity(dbEntity, context.ioc.airDb);
     }
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject[propertyName] = propertyValue;
@@ -37,7 +37,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
     bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, context) {
         const oneToManyStubAdded = this.addManyToOneStub(resultObject, propertyName, relationInfos, context);
         if (oneToManyStubAdded) {
-            const relatedEntityId = context.ioc.schemaUtils.getIdKey(resultObject[propertyName], relationDbEntity);
+            const relatedEntityId = context.ioc.applicationUtils.getIdKey(resultObject[propertyName], relationDbEntity);
             this.bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId);
         }
     }
@@ -47,7 +47,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
     }
     bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, context) {
         resultObject[propertyName] = childResultObject;
-        const relatedEntityId = context.ioc.schemaUtils.getIdKey(resultObject[propertyName], relationDbEntity);
+        const relatedEntityId = context.ioc.applicationUtils.getIdKey(resultObject[propertyName], relationDbEntity);
         this.bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId);
     }
     bufferBlankManyToOneObject(entityAlias, resultObject, propertyName) {
@@ -60,20 +60,20 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
     bufferOneToManyCollection(entityAlias, resultObject, otmDbEntity, propertyName, relationDbEntity, childResultObject, context) {
         this.bufferOneToMany(otmDbEntity, propertyName);
         // TODO: MappedEntityArray is not serializable, make it so before using
-        // let childResultsArray = newMappedEntityArray(context.ioc.schemaUtils, relationDbEntity)
+        // let childResultsArray = newMappedEntityArray(context.ioc.applicationUtils, relationDbEntity)
         // childResultsArray.put(childResultObject)
         // resultObject[propertyName] = childResultsArray
         resultObject[propertyName] = [childResultObject];
     }
     bufferBlankOneToMany(entityAlias, resultObject, otmEntityName, propertyName, relationDbEntity, context) {
         // TODO: MappedEntityArray is not serializable, make it so before using
-        // resultObject[propertyName] = newMappedEntityArray<any>(context.ioc.schemaUtils, relationDbEntity)
+        // resultObject[propertyName] = newMappedEntityArray<any>(context.ioc.applicationUtils, relationDbEntity)
         resultObject[propertyName] = [];
     }
     flushEntity(entityAlias, dbEntity, selectClauseFragment, entityIdValue, resultObject, context) {
         if (!entityIdValue) {
             throw new Error(`No Id provided for entity 
-			'${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'`);
+			'${dbEntity.applicationVersion.application.name}.${dbEntity.name}'`);
         }
         let currentEntity = this.getEntityToFlush(dbEntity, selectClauseFragment, entityIdValue, resultObject, context);
         this.flushRelationStubBuffers(entityIdValue, currentEntity, dbEntity, context);
@@ -83,11 +83,11 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
         // Nothing to do, bridged queries don't rely on rows changing
     }
     bridge(parsedResults, selectClauseFragment, context) {
-        this.mtoMapper.populateMtos(this.entityMapBySchemaAndTableIndexes);
-        this.otmMapper.populateOtms(this.entityMapBySchemaAndTableIndexes, !this.config || this.config.mapped);
+        this.mtoMapper.populateMtos(this.entityMapByApplicationAndTableIndexes);
+        this.otmMapper.populateOtms(this.entityMapByApplicationAndTableIndexes, !this.config || this.config.mapped);
         // merge any out of order entity references (there shouldn't be any)
         // TODO: MappedEntityArray is not serializable, make it so before using
-        // let resultMEA = newMappedEntityArray(context.ioc.schemaUtils, this.rootDbEntity)
+        // let resultMEA = newMappedEntityArray(context.ioc.applicationUtils, this.rootDbEntity)
         // resultMEA.putAll(parsedResults)
         // if (!this.config || this.config.mapped) {
         // 	return resultMEA
@@ -132,9 +132,9 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
     getEntityToFlush(dbEntity, selectClauseFragment, idValue, resultObject, context) {
         if (!idValue) {
             throw new Error(`Entity ID not specified for entity 
-			'${dbEntity.schemaVersion.schema.name}.${dbEntity.name}'.`);
+			'${dbEntity.applicationVersion.application.name}.${dbEntity.name}'.`);
         }
-        let entityMapForName = ensureChildMap(ensureChildArray(this.entityMapBySchemaAndTableIndexes, dbEntity.schemaVersion.schema.index), dbEntity.index);
+        let entityMapForName = ensureChildMap(ensureChildArray(this.entityMapByApplicationAndTableIndexes, dbEntity.applicationVersion.application.index), dbEntity.index);
         let existingEntity = entityMapForName[idValue];
         let currentEntity = this.mergeEntities(existingEntity, resultObject, dbEntity, selectClauseFragment, context);
         entityMapForName[idValue] = currentEntity;
@@ -156,7 +156,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
         if (!source || target === source) {
             return target;
         }
-        const id = context.ioc.schemaUtils.getIdKey(target, dbEntity);
+        const id = context.ioc.applicationUtils.getIdKey(target, dbEntity);
         for (let propertyName in selectClauseFragment) {
             if (selectClauseFragment[propertyName] === undefined) {
                 continue;
@@ -165,7 +165,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
             // Merge properties (conflicts detected at query parsing time):
             if (!dbProperty.relation || !dbProperty.relation.length) {
                 // If source property doesn't exist
-                if (context.ioc.schemaUtils.isEmpty(source[propertyName])) {
+                if (context.ioc.applicationUtils.isEmpty(source[propertyName])) {
                     // set the source property to value of target
                     source[propertyName] = target[propertyName];
                 }
@@ -218,7 +218,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
                             const sourceSet = {};
                             if (sourceArray) {
                                 sourceArray.forEach((sourceChild) => {
-                                    const sourceChildIdValue = context.ioc.schemaUtils.getIdKey(sourceChild, childDbEntity);
+                                    const sourceChildIdValue = context.ioc.applicationUtils.getIdKey(sourceChild, childDbEntity);
                                     sourceSet[sourceChildIdValue] = sourceChild;
                                 });
                             }
@@ -228,7 +228,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
                             }
                             if (targetArray) {
                                 targetArray.forEach((targetChild) => {
-                                    const targetChildIdValue = context.ioc.schemaUtils.getIdKey(targetChild, childDbEntity);
+                                    const targetChildIdValue = context.ioc.applicationUtils.getIdKey(targetChild, childDbEntity);
                                     if (this.config && this.config.strict && !sourceSet[targetChildIdValue]) {
                                         throw new Error(`One-to-Many child arrays don't match for 
 										'${dbEntity.name}.${dbProperty.name}', Id: ${id}`);

@@ -5,7 +5,7 @@ export interface IDdlObjectLinker {
 }
 export declare class DdlObjectLinker implements IDdlObjectLinker {
     link(allDdlObjects: AllDdlObjects, terminalStore: ITerminalStore): void;
-    private linkDomainsAndSchemasAndVersions;
+    private linkDomainsAndApplicationsAndVersions;
     private linkEntities;
     private linkPropertiesAndRelations;
     private linkColumns;

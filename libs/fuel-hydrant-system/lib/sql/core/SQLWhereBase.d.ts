@@ -1,5 +1,5 @@
 import { IQEntityInternal, JSONLogicalOperation, Parameter } from '@airport/air-control';
-import { ColumnIndex, DbColumn, DbEntity, JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONEntityRelation, JsonFieldQuery, SchemaIndex, SchemaMap, SqlOperator, TableIndex } from '@airport/ground-control';
+import { ColumnIndex, DbColumn, DbEntity, JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONEntityRelation, JsonFieldQuery, ApplicationIndex, ApplicationMap, SqlOperator, TableIndex } from '@airport/ground-control';
 import { ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
 import { SQLDialect } from './SQLQuery';
@@ -16,7 +16,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected dbEntity: DbEntity;
     protected dialect: SQLDialect;
     protected context: IFuelHydrantContext;
-    protected fieldMap: SchemaMap;
+    protected fieldMap: ApplicationMap;
     protected qEntityMapByAlias: {
         [entityAlias: string]: IQEntityInternal<any>;
     };
@@ -36,7 +36,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected getWHEREFragment(operation: JSONBaseOperation, nestingPrefix: string, context: IFuelHydrantContext): string;
     protected getEntityPropertyColumnName(qEntity: IQEntityInternal<any>, columnIndex: number, context: IFuelHydrantContext): string;
     protected addFieldFromColumn(dbColumn: DbColumn): void;
-    protected addField(schemaIndex: SchemaIndex, tableIndex: TableIndex, columnIndex: ColumnIndex): void;
+    protected addField(applicationIndex: ApplicationIndex, tableIndex: TableIndex, columnIndex: ColumnIndex): void;
     protected warn(warning: string): void;
     protected getSimpleColumnFragment(tableAlias: string, columnName: string): string;
     protected getComplexColumnFragment(value: JSONClauseField, columnName: string, context: IFuelHydrantContext): string;

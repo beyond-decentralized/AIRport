@@ -1,11 +1,11 @@
-import { IAirportDatabase, QSchema } from '@airport/air-control';
-import { DbSchema } from '@airport/ground-control';
-import { ISchema } from '@airport/airspace';
+import { IAirportDatabase, QApplication } from '@airport/air-control';
+import { DbApplication } from '@airport/ground-control';
+import { IApplication } from '@airport/airspace';
 export interface IQueryEntityClassCreator {
-    createAll(schemas: ISchema[], airDb: IAirportDatabase): void;
+    createAll(applications: IApplication[], airDb: IAirportDatabase): void;
 }
 export declare class QueryEntityClassCreator implements IQueryEntityClassCreator {
-    createAll(schemas: ISchema[], airDb: IAirportDatabase): void;
-    create(dbSchema: DbSchema, airDb: IAirportDatabase): QSchema;
+    createAll(applications: IApplication[], airDb: IAirportDatabase): void;
+    create(dbApplication: DbApplication, airDb: IAirportDatabase): QApplication;
 }
 //# sourceMappingURL=QueryEntityClassCreator.d.ts.map

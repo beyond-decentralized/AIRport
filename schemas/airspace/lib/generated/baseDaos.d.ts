@@ -1,5 +1,3 @@
-import { IDomain } from './application/domain';
-import { DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain } from './application/qdomain';
 import { IApplication } from './application/application';
 import { ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication } from './application/qapplication';
 import { IApplicationColumn } from './application/applicationcolumn';
@@ -22,22 +20,13 @@ import { IApplicationRelationColumn } from './application/applicationrelationcol
 import { ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn } from './application/qapplicationrelationcolumn';
 import { IApplicationVersion } from './application/applicationversion';
 import { ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion } from './application/qapplicationversion';
+import { IDomain } from './application/domain';
+import { DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain } from './application/qdomain';
 import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/air-control';
 import { Dao, DaoQueryDecorators } from '@airport/check-in';
 import { EntityId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity<Entity>> extends Dao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE> {
     constructor(dbEntityId: DbEntityId);
-}
-export interface IBaseDomainDao extends IDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
-}
-export declare class BaseDomainDao extends SQDIDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> implements IBaseDomainDao {
-    static Find: DaoQueryDecorators<DomainESelect>;
-    static FindOne: DaoQueryDecorators<DomainESelect>;
-    static Search: DaoQueryDecorators<DomainESelect>;
-    static SearchOne: DaoQueryDecorators<DomainESelect>;
-    static Save(config: DomainGraph): PropertyDecorator;
-    static diSet(): boolean;
-    constructor();
 }
 export interface IBaseApplicationDao extends IDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> {
 }
@@ -157,6 +146,17 @@ export declare class BaseApplicationVersionDao extends SQDIDao<IApplicationVersi
     static Search: DaoQueryDecorators<ApplicationVersionESelect>;
     static SearchOne: DaoQueryDecorators<ApplicationVersionESelect>;
     static Save(config: ApplicationVersionGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseDomainDao extends IDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
+}
+export declare class BaseDomainDao extends SQDIDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> implements IBaseDomainDao {
+    static Find: DaoQueryDecorators<DomainESelect>;
+    static FindOne: DaoQueryDecorators<DomainESelect>;
+    static Search: DaoQueryDecorators<DomainESelect>;
+    static SearchOne: DaoQueryDecorators<DomainESelect>;
+    static Save(config: DomainGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

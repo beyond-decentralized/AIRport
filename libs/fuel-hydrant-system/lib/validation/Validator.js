@@ -11,9 +11,9 @@ export class QValidator {
     }
     validateUpdateColumn(dbColumn) {
     }
-    validateReadQEntityProperty(schemaIndex, tableIndex, columnIndex) {
+    validateReadQEntityProperty(applicationIndex, tableIndex, columnIndex) {
     }
-    validateReadQEntityManyToOneRelation(schemaIndex, tableIndex, columnIndex) {
+    validateReadQEntityManyToOneRelation(applicationIndex, tableIndex, columnIndex) {
     }
     addFunctionAlias(functionAlias) {
     }

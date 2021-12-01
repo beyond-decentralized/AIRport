@@ -1,4 +1,4 @@
-import { ColumnIndex, DbColumn, DbEntity, JSONRelation, SchemaIndex, TableIndex } from '@airport/ground-control';
+import { ColumnIndex, DbColumn, DbEntity, JSONRelation, ApplicationIndex, TableIndex } from '@airport/ground-control';
 /**
  * Created by Papa on 11/1/2016.
  */
@@ -8,8 +8,8 @@ export interface IValidator {
     validateUpdateProperty(propertyName: string, dbEntity: DbEntity): void;
     validateUpdateColumn(dbColumn: DbColumn): void;
     validateInsertQEntity(dbEntity: DbEntity): void;
-    validateReadQEntityProperty(schemaIndex: SchemaIndex, tableIndex: TableIndex, columnIndex: ColumnIndex): void;
-    validateReadQEntityManyToOneRelation(schemaIndex: SchemaIndex, tableIndex: TableIndex, columnIndex: ColumnIndex): void;
+    validateReadQEntityProperty(applicationIndex: ApplicationIndex, tableIndex: TableIndex, columnIndex: ColumnIndex): void;
+    validateReadQEntityManyToOneRelation(applicationIndex: ApplicationIndex, tableIndex: TableIndex, columnIndex: ColumnIndex): void;
     addFunctionAlias(functionAlias: string): void;
     addSubQueryAlias(subQueryAlias: string): void;
     validateAliasedFieldAccess(fieldAlias: string): void;
@@ -20,8 +20,8 @@ export declare class QValidator implements IValidator {
     validateReadProperty(dbColumn: DbColumn): void;
     validateUpdateProperty(propertyName: string, dbEntity: DbEntity): void;
     validateUpdateColumn(dbColumn: DbColumn): void;
-    validateReadQEntityProperty(schemaIndex: SchemaIndex, tableIndex: TableIndex, columnIndex: ColumnIndex): void;
-    validateReadQEntityManyToOneRelation(schemaIndex: SchemaIndex, tableIndex: TableIndex, columnIndex: ColumnIndex): void;
+    validateReadQEntityProperty(applicationIndex: ApplicationIndex, tableIndex: TableIndex, columnIndex: ColumnIndex): void;
+    validateReadQEntityManyToOneRelation(applicationIndex: ApplicationIndex, tableIndex: TableIndex, columnIndex: ColumnIndex): void;
     addFunctionAlias(functionAlias: string): void;
     addSubQueryAlias(subQueryAlias: string): void;
     validateAliasedFieldAccess(fieldAlias: string): void;

@@ -1,12 +1,12 @@
 import { IContext } from '@airport/di';
 import { IDatabaseManager } from '@airport/terminal-map';
-import { JsonSchemaWithLastIds } from '@airport/security-check';
+import { JsonApplicationWithLastIds } from '@airport/security-check';
 export declare class DatabaseManager implements IDatabaseManager {
     private initialized;
-    initNoDb(context: IContext, ...schemas: JsonSchemaWithLastIds[]): Promise<void>;
+    initNoDb(context: IContext, ...applications: JsonApplicationWithLastIds[]): Promise<void>;
     initWithDb(domainName: string, context: IContext): Promise<void>;
     isInitialized(): boolean;
-    initFeatureSchemas(context: IContext, jsonSchemas?: JsonSchemaWithLastIds[]): Promise<void>;
-    private installStarterSchema;
+    initFeatureApplications(context: IContext, jsonApplications?: JsonApplicationWithLastIds[]): Promise<void>;
+    private installStarterApplication;
 }
 //# sourceMappingURL=DatabaseManager.d.ts.map

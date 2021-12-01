@@ -344,7 +344,7 @@ export class IframeTransactionalConnector
 		return await this.sendMessageNoWait<IGetLatestApplicationVersionByApplicationNameIMI, IApplicationVersion>({
 			...this.getCoreFields(),
 			applicationName,
-			type: IsolateMessageType.GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME
+			type: IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
 		})
 	}
 

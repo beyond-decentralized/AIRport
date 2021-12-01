@@ -182,18 +182,18 @@ export interface ApplicationRelationGraph
 export interface ApplicationRelationEUpdateColumns
 	extends VersionedApplicationObjectEUpdateColumns {
 	// Non-Id Columns
-	DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-	REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
-	SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+	DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+	REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
+	SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
 	RELATION_INDEX?: number | IQNumberField;
 	FOREIGN_KEY?: string | IQStringField;
 	MANY_TO_ONE_ELEMENTS?: string | IQStringField;
 	ONE_TO_MANY_ELEMENTS?: string | IQStringField;
 	RELATION_TYPE?: string | IQStringField;
 	IS_ID?: boolean | IQBooleanField;
-	SCHEMA_PROPERTY_ID?: number | IQNumberField;
-	SCHEMA_TABLE_ID?: number | IQNumberField;
-	RELATION_SCHEMA_TABLE_ID?: number | IQNumberField;
+	APPLICATION_PROPERTY_ID?: number | IQNumberField;
+	APPLICATION_TABLE_ID?: number | IQNumberField;
+	RELATION_APPLICATION_TABLE_ID?: number | IQNumberField;
 
 }
 

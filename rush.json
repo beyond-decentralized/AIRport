@@ -256,8 +256,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/functionality-demo-application",
-      "projectFolder": "schemas/functionality-demo-application",
+      "packageName": "@airport/functionality-demo-schema",
+      "projectFolder": "schemas/functionality-demo-schema",
       "shouldPublish": true
     },
     {

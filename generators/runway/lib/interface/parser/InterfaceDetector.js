@@ -1,7 +1,7 @@
 import tsc from 'typescript';
 import { getRelativePath } from '../../resolve/pathResolver';
 import { projectInterfaces } from '../InterfaceRegistry';
-export const currentSchemaApi = {
+export const currentApplicationApi = {
     apiObjectMap: {}
 };
 /**

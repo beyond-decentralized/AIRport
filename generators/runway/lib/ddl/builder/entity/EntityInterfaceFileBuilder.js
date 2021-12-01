@@ -45,7 +45,7 @@ ${interfaceSource}
             let entityInterfaceRelativePath;
             if (property.fromProject) {
                 entityInterfaceRelativePath = property.fromProject;
-                type = property.otherSchemaDbEntity.name;
+                type = property.otherApplicationDbEntity.name;
             }
             else {
                 type = property.entity.type;

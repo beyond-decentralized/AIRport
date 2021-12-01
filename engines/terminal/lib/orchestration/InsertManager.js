@@ -44,8 +44,8 @@ export class InsertManager {
         // TODO: remove unused dependencies after testing
         const [airDb, sequenceGenerator, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo] = await container(this)
             .get(AIRPORT_DATABASE, SEQUENCE_GENERATOR, HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DUO);
-        const dbEntity = airDb.schemas[portableQuery.schemaIndex]
-            .currentVersion[0].schemaVersion.entities[portableQuery.tableIndex];
+        const dbEntity = airDb.applications[portableQuery.applicationIndex]
+            .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error inserting into '${dbEntity.name}'.'
 `;
         const jsonInsertValues = portableQuery.jsonQuery;

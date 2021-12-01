@@ -14,7 +14,7 @@ export type ApplicationRelationColumnId = number;
 
 @Entity()
 @Table({
-	name: 'SCHEMA_RELATION_COLUMNS'
+	name: 'APPLICATION_RELATION_COLUMNS'
 })
 export class ApplicationRelationColumn
 	extends VersionedApplicationObject {
@@ -24,22 +24,22 @@ export class ApplicationRelationColumn
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'MANY_SCHEMA_COLUMN_ID',
+		name: 'MANY_APPLICATION_COLUMN_ID',
 		referencedColumnName: 'ID',
 		nullable: false
 	})
 	manyColumn: ApplicationColumn
 
 	@ManyToOne()
-	@JoinColumn({name: 'ONE_SCHEMA_COLUMN_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumn({name: 'ONE_APPLICATION_COLUMN_ID', referencedColumnName: 'ID', nullable: false})
 	oneColumn: ApplicationColumn
 
 	@ManyToOne()
-	@JoinColumn({name: 'MANY_SCHEMA_RELATION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'MANY_APPLICATION_RELATION_ID', referencedColumnName: 'ID'})
 	manyRelation?: ApplicationRelation
 
 	@ManyToOne()
-	@JoinColumn({name: 'ONE_SCHEMA_RELATION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({name: 'ONE_APPLICATION_RELATION_ID', referencedColumnName: 'ID'})
 	oneRelation?: ApplicationRelation
 
 	@ManyToOne()

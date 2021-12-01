@@ -54,15 +54,15 @@ export class EntityOrderByParser extends AbstractEntityOrderByParser {
                 if (parentNodeFound) {
                     return true;
                 }
-                const orderByDbEntity = context.ioc.airDb.schemas[orderByField.si]
-                    .currentVersion[0].schemaVersion.entities[orderByField.ti];
+                const orderByDbEntity = context.ioc.airDb.applications[orderByField.si]
+                    .currentVersion[0].applicationVersion.entities[orderByField.ti];
                 const dbColumn = orderByDbEntity.columns[orderByField.ci];
                 if (this.isForParentNode(currentJoinNode, orderByField)) {
                     throw new Error(`Found out of order entry in Order By 
-					[${orderByDbEntity.schemaVersion.schema.name} - ${orderByDbEntity.name}.${dbColumn.name}].
+					[${orderByDbEntity.applicationVersion.application.name} - ${orderByDbEntity.name}.${dbColumn.name}].
 					Entries must be ordered hierarchically, in breadth-first order.`);
                 }
-                if (orderByField.si !== dbEntity.schemaVersion.schema.index || orderByField.ti !== dbEntity.index) {
+                if (orderByField.si !== dbEntity.applicationVersion.application.index || orderByField.ti !== dbEntity.index) {
                     return true;
                 }
                 this.validator.validateReadProperty(dbColumn);
@@ -92,7 +92,7 @@ export class EntityOrderByParser extends AbstractEntityOrderByParser {
                     const dbEntity = dbRelation.relationEntity;
                     const matchingNodes = currentJoinNode.childNodes.filter(childNode => {
                         const jsonRelation = childNode.jsonRelation;
-                        return jsonRelation.si === dbEntity.schemaVersion.schema.index
+                        return jsonRelation.si === dbEntity.applicationVersion.application.index
                             && jsonRelation.ti === dbEntity.index;
                     });
                     if (!matchingNodes.length) {

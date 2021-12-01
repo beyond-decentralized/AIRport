@@ -6,8 +6,8 @@ import {
 	STORE_DRIVER
 } from '@airport/ground-control';
 import {
-	SCHEMA_BUILDER,
-	SCHEMA_INITIALIZER
+	APPLICATION_BUILDER,
+	APPLICATION_INITIALIZER
 } from '@airport/landing';
 import {
 	DATABASE_MANAGER,
@@ -37,13 +37,13 @@ export class TempDatabase
 		applications: JsonApplicationWithLastIds[]
 	): Promise<void> {
 		if (this.tempDbInitialized) {
-			const applicationInitializer = await DI.db().get(SCHEMA_INITIALIZER);
+			const applicationInitializer = await DI.db().get(APPLICATION_INITIALIZER);
 			await applicationInitializer.stage(applications, {});
 			return;
 		}
 
 		DI.set(SEQUENCE_GENERATOR, NoOpSequenceGenerator);
-		DI.set(SCHEMA_BUILDER, NoOpApplicationBuilder);
+		DI.set(APPLICATION_BUILDER, NoOpApplicationBuilder);
 		DI.set(STORE_DRIVER, NoOpSqlDriver);
 		injectAirportDatabase();
 		injectTransactionalServer();

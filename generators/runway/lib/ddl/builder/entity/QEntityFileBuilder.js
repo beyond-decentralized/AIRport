@@ -98,7 +98,7 @@ ${addEntityCommand}`;
             let qEntityRelativePath;
             if (property.fromProject) {
                 qEntityRelativePath = property.fromProject;
-                type = property.otherSchemaDbEntity.name;
+                type = property.otherApplicationDbEntity.name;
             }
             else {
                 type = property.entity.type;

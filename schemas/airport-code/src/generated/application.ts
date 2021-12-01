@@ -1,5 +1,5 @@
 /* eslint-disable */
-export const SCHEMA = {
+export const APPLICATION = {
 	"domain": "air",
 	"index": null,
 	"name": "@airport/airport-code",
@@ -26,7 +26,7 @@ export const SCHEMA = {
 							"index": 0,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "SCHEMA_INDEX",
+							"name": "APPLICATION_INDEX",
 							"notNull": true,
 							"propertyRefs": [
 								{

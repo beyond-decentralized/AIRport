@@ -578,7 +578,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 
 			let errorPrefix = 'Error building FROM: '
 			switch (currentRelation.rt) {
-				case JSONRelationType.ENTITY_SCHEMA_RELATION:
+				case JSONRelationType.ENTITY_APPLICATION_RELATION:
 					fromFragment += this.getEntityApplicationRelationFromJoin(leftEntity, rightEntity,
 						<JSONEntityRelation>currentRelation, parentRelation, currentAlias, parentAlias,
 						joinTypeString, errorPrefix, context)

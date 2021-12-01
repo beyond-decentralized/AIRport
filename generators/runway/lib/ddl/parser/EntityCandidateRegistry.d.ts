@@ -1,5 +1,5 @@
-import { DbSchema } from '@airport/ground-control';
-import { ISchemaLoader } from '@airport/taxiway';
+import { DbApplication } from '@airport/ground-control';
+import { IApplicationLoader } from '@airport/taxiway';
 import { Configuration } from '../options/Options';
 import { EntityReference } from './DocEntry';
 import { EntityCandidate, Interface } from './EntityCandidate';
@@ -11,15 +11,15 @@ export declare class EntityCandidateRegistry {
     entityCandidateMap: Map<string, EntityCandidate>;
     allInterfacesMap: Map<string, Interface[]>;
     configuration: Configuration;
-    schemaMap: {
-        [projectName: string]: DbSchema;
+    applicationMap: {
+        [projectName: string]: DbApplication;
     };
     mappedSuperClassMap: {
         [projectName: string]: {
             [mappedSuperClassName: string]: EntityCandidate;
         };
     };
-    schemaLoader: ISchemaLoader;
+    applicationLoader: IApplicationLoader;
     constructor(enumMap?: Map<string, string>);
     addCandidate(candidate: EntityCandidate): void;
     matchVerifiedEntities(//
@@ -29,12 +29,12 @@ export declare class EntityCandidateRegistry {
     classifyEntityProperties(entityInterfaceMap: {
         [interfaceName: string]: Interface;
     }): Set<EntityCandidate>;
-    getReferencedSchema(projectName: string, property: EntityReference): DbSchema;
+    getReferencedApplication(projectName: string, property: EntityReference): DbApplication;
     getProjectReferenceFromPath(path: string): string;
     matchToExistingEntity(entityCandidate: EntityCandidate): boolean;
     private getMappedSuperclassFromProject;
     private deserializeEntityCandidate;
-    private getOtherSchemaEntity;
+    private getOtherApplicationEntity;
     private registerInterface;
 }
 //# sourceMappingURL=EntityCandidateRegistry.d.ts.map

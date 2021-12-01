@@ -49,13 +49,13 @@ export interface ApplicationRelationColumnGraph extends ApplicationRelationColum
  * UPDATE - non-id columns (optional).
  */
 export interface ApplicationRelationColumnEUpdateColumns extends VersionedApplicationObjectEUpdateColumns {
-    DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-    REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
-    SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-    MANY_SCHEMA_COLUMN_ID?: number | IQNumberField;
-    ONE_SCHEMA_COLUMN_ID?: number | IQNumberField;
-    MANY_SCHEMA_RELATION_ID?: number | IQNumberField;
-    ONE_SCHEMA_RELATION_ID?: number | IQNumberField;
+    DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
+    SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    MANY_APPLICATION_COLUMN_ID?: number | IQNumberField;
+    ONE_APPLICATION_COLUMN_ID?: number | IQNumberField;
+    MANY_APPLICATION_RELATION_ID?: number | IQNumberField;
+    ONE_APPLICATION_RELATION_ID?: number | IQNumberField;
     PARENT_RELATION_ID?: number | IQNumberField;
 }
 /**

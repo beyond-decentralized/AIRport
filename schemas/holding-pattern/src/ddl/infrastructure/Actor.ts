@@ -46,7 +46,7 @@ export class Actor {
 	terminal: Terminal
 
 	@ManyToOne()
-	@JoinColumn({ name: "SCHEMA_INDEX", referencedColumnName: "SCHEMA_INDEX" })
+	@JoinColumn({ name: "APPLICATION_INDEX", referencedColumnName: "APPLICATION_INDEX" })
 	application: Application
 
 }

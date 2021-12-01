@@ -12,7 +12,7 @@ export interface Configuration {
         node_modulesLinks?: {
             pathToProject: string;
         };
-        schema: string;
+        application: string;
     };
 }
 //# sourceMappingURL=Options.d.ts.map

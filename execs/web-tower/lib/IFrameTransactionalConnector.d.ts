@@ -2,7 +2,7 @@ import { IEntityContext, IQueryContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
 import { ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
 import { IIsolateMessage, LastIds } from '@airport/security-check';
-import { ISchemaVersion } from '@airport/airspace';
+import { IApplicationVersion } from '@airport/airspace';
 import { Observable, Observer } from 'rxjs';
 export interface IMessageInRecord {
     message: IIsolateMessage;
@@ -21,7 +21,7 @@ export declare enum AppState {
     INITIALIZED = "INITIALIZED"
 }
 export interface IIframeTransactionalConnector extends ITransactionalConnector {
-    getLatestSchemaVersionMapBySchemaName(schemaName: string): Promise<ISchemaVersion>;
+    getLatestApplicationVersionMapByApplicationName(applicationName: string): Promise<IApplicationVersion>;
 }
 export declare class IframeTransactionalConnector implements IIframeTransactionalConnector {
     dbName: string;
@@ -48,7 +48,7 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     startTransaction(context: IContext): Promise<boolean>;
     commit(context: IContext): Promise<boolean>;
     rollback(context: IContext): Promise<boolean>;
-    getLatestSchemaVersionMapBySchemaName(schemaName: string): Promise<ISchemaVersion>;
+    getLatestApplicationVersionMapByApplicationName(applicationName: string): Promise<IApplicationVersion>;
     private initializeConnection;
     private handleLocalApiRequest;
     private handleDbToIsolateMessage;

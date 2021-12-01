@@ -1,7 +1,7 @@
 import {or}                         from '@airport/air-control'
 import {DI}                         from '@airport/di'
 import {ColumnId}                   from '@airport/ground-control'
-import {SCHEMA_RELATION_COLUMN_DAO} from '../tokens'
+import {APPLICATION_RELATION_COLUMN_DAO} from '../tokens'
 import {
 	BaseApplicationRelationColumnDao,
 	IBaseApplicationRelationColumnDao,
@@ -81,4 +81,4 @@ export class ApplicationRelationColumnDao
 
 }
 
-DI.set(SCHEMA_RELATION_COLUMN_DAO, ApplicationRelationColumnDao)
+DI.set(APPLICATION_RELATION_COLUMN_DAO, ApplicationRelationColumnDao)

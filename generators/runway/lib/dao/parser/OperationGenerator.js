@@ -388,7 +388,7 @@ function serializeQuery(daoName, daoOperations, decorator, decoratorName, entity
     const inputs = queryInputs.map((input, index) => {
         let name = input.escapedName;
         if (!input.valueDeclaration.type) {
-            throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is of an unknown kind and is not a boolean|Date|number|string|LocalQSchema|QObject
+            throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is of an unknown kind and is not a boolean|Date|number|string|LocalQApplication|QObject
 							
 							${name}: ?
 							
@@ -470,7 +470,7 @@ Query must be in the following format:
     paramC: number,
     paramD: string,
     ...
-    Q: LocalQSchema,
+    Q: LocalQApplication,
     alias1: QEntity1,
     alias2: QEntity1,
     ...
@@ -505,8 +505,8 @@ Query must be in the following format:
 Where: 
   paramA-N  are any number of parameters of types (
                 boolean, Date, Date[], number, number[], string, string[])
-  Q         is the reference to the schema's QLocalSchema object (in generated folder)
-  alias1-N  are any number of entity aliases for QObjects (in generated folder or in other schemas)
+  Q         is the reference to the application's QLocalApplication object (in generated folder)
+  alias1-N  are any number of entity aliases for QObjects (in generated folder or in other applications)
 
 The body of the function should only contain the query definition and no other
 statements.
@@ -574,7 +574,7 @@ function getTypeInfo(typeRef, daoName, decoratorName, memberName, index, name, a
         default: {
             throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is of an unknown kind and is not a
 
-  boolean | Date | Date[] | number | number[] | string | string[] | LocalQSchema | QObject
+  boolean | Date | Date[] | number | number[] | string | string[] | LocalQApplication | QObject
 							
 							${name}: ?
 							
@@ -590,13 +590,13 @@ function getTypeReferenceInfo(typeRef, daoName, decoratorName, memberName, index
         typeInfo.type = QueryInputKind.PARAMETER;
         typeInfo.parameterType = QueryParameterType.DATE;
     }
-    else if (typeInfo.clazz === 'LocalQSchema') {
+    else if (typeInfo.clazz === 'LocalQApplication') {
         typeInfo.type = QueryInputKind.Q;
     }
     else {
         typeInfo.type = QueryInputKind.QENTITY;
         if (!typeInfo.clazz.startsWith('Q')) {
-            throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is a non Date|LocalQSchema class and does not start with a Q
+            throwInvalidQuery(daoName, decoratorName, memberName, `input ${index + 1} is a non Date|LocalQApplication class and does not start with a Q
 							(it should be a Query Object from the (generated directory or other project)
 							
 							${name}: ${typeInfo.clazz}

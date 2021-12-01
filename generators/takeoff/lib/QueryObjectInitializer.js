@@ -4,7 +4,7 @@ import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QU
 export class QueryObjectInitializer {
     generateQObjectsAndPopulateStore(allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore) {
         ddlObjectLinker.link(allDdlObjects, terminalStore);
-        queryEntityClassCreator.createAll(allDdlObjects.all.schemas, airDb);
+        queryEntityClassCreator.createAll(allDdlObjects.all.applications, airDb);
         const lastTerminalState = terminalStore.getTerminalState();
         const existingDomainMap = {};
         for (const domain of lastTerminalState.domains) {
@@ -17,16 +17,16 @@ export class QueryObjectInitializer {
         for (const domainName in existingDomainMap) {
             unmodifiedDomains.push(existingDomainMap[domainName]);
         }
-        const existingSchemaMap = {};
-        for (const schema of lastTerminalState.schemas) {
-            existingSchemaMap[schema.name] = schema;
+        const existingApplicationMap = {};
+        for (const application of lastTerminalState.applications) {
+            existingApplicationMap[application.name] = application;
         }
-        for (const schema of allDdlObjects.added.schemas) {
-            delete existingSchemaMap[schema.name];
+        for (const application of allDdlObjects.added.applications) {
+            delete existingApplicationMap[application.name];
         }
-        const unmodifiedSchemas = [];
-        for (const schemaName in existingSchemaMap) {
-            unmodifiedSchemas.push(existingSchemaMap[schemaName]);
+        const unmodifiedApplications = [];
+        for (const applicationName in existingApplicationMap) {
+            unmodifiedApplications.push(existingApplicationMap[applicationName]);
         }
         terminalStore.state.next({
             ...lastTerminalState,
@@ -34,22 +34,22 @@ export class QueryObjectInitializer {
                 ...unmodifiedDomains,
                 ...allDdlObjects.added.domains
             ],
-            schemas: [
-                ...unmodifiedSchemas,
-                ...allDdlObjects.added.schemas
+            applications: [
+                ...unmodifiedApplications,
+                ...allDdlObjects.added.applications
             ]
         });
     }
     async initialize(airDb) {
         const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, terminalStore] = await container(this).get(DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE);
         const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects();
-        const allSchemaVersionsByIds = [];
-        for (const schemaVersion of ddlObjects.schemaVersions) {
-            allSchemaVersionsByIds[schemaVersion.id] = schemaVersion;
+        const allApplicationVersionsByIds = [];
+        for (const applicationVersion of ddlObjects.applicationVersions) {
+            allApplicationVersionsByIds[applicationVersion.id] = applicationVersion;
         }
         let allDdlObjects = {
             all: ddlObjects,
-            allSchemaVersionsByIds,
+            allApplicationVersionsByIds,
             added: ddlObjects
         };
         this.generateQObjectsAndPopulateStore(allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);

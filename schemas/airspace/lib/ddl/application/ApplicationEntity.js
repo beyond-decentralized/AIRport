@@ -16,7 +16,7 @@ let ApplicationEntity = class ApplicationEntity extends VersionedApplicationObje
         // TODO: implement if needed
         // @OneToMany()
         // @JoinColumns([
-        // 	{name: "SCHEMA_VERSION_ID"},
+        // 	{name: "APPLICATION_VERSION_ID"},
         // 	{name: "TABLE_INDEX", referencedColumnName: "INDEX"}
         // ])
         // @WhereJoinTable((
@@ -60,7 +60,7 @@ __decorate([
 ], ApplicationEntity.prototype, "tableConfig", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({ name: 'APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false })
 ], ApplicationEntity.prototype, "applicationVersion", void 0);
 __decorate([
     OneToMany({ mappedBy: 'entity' })
@@ -92,7 +92,10 @@ __decorate([
 ApplicationEntity = __decorate([
     Entity(),
     Table({
-        name: 'SCHEMA_ENTITIES',
+        name: 'APPLICATION_ENTITIES',
+        // indexes: (se: ApplicationEntity) => [{
+        // 	property: se.applicationVersion
+        // }]
     })
 ], ApplicationEntity);
 export { ApplicationEntity };

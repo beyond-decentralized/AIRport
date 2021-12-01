@@ -1,6 +1,6 @@
 import {DI}                  from '@airport/di'
 import {EntityId}            from '@airport/ground-control'
-import {SCHEMA_PROPERTY_DAO} from '../tokens'
+import {APPLICATION_PROPERTY_DAO} from '../tokens'
 import {
 	BaseApplicationPropertyDao,
 	IBaseApplicationPropertyDao,
@@ -73,4 +73,4 @@ export class ApplicationPropertyDao
 
 }
 
-DI.set(SCHEMA_PROPERTY_DAO, ApplicationPropertyDao)
+DI.set(APPLICATION_PROPERTY_DAO, ApplicationPropertyDao)

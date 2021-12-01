@@ -1,7 +1,7 @@
 import { AIRPORT_DATABASE, and, max, tree, Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
-import { SCHEMA_DAO } from '../tokens';
+import { APPLICATION_DAO } from '../tokens';
 import { BaseApplicationDao, Q } from '../generated/generated';
 export class ApplicationDao extends BaseApplicationDao {
     async findAllActive() {
@@ -213,5 +213,5 @@ export class ApplicationDao extends BaseApplicationDao {
         });
     }
 }
-DI.set(SCHEMA_DAO, ApplicationDao);
+DI.set(APPLICATION_DAO, ApplicationDao);
 //# sourceMappingURL=ApplicationDao.js.map

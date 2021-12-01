@@ -8,10 +8,10 @@ export class SqLiteDriver extends SqlDriver {
         super();
         this.maxValues = 999;
     }
-    composeTableName(schemaName, tableName) {
-        return `${schemaName}__${tableName}`;
+    composeTableName(applicationName, tableName) {
+        return `${applicationName}__${tableName}`;
     }
-    async doesTableExist(schemaName, tableName, context) {
+    async doesTableExist(applicationName, tableName, context) {
         const matchingTableNames = await this.findNative(
         // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
         `SELECT
@@ -20,14 +20,14 @@ from
 	sqlite_master
 WHERE
 	type = 'table'
-	AND tbl_name = '${schemaName}__${tableName}'`, [], context);
+	AND tbl_name = '${applicationName}__${tableName}'`, [], context);
         return this.getNumberOfRows(matchingTableNames) === 1;
     }
     getNumberOfRows(result) {
         return this.getRows(result).length;
     }
-    async dropTable(schemaName, tableName, context) {
-        const matchingTableNames = await this.findNative(`DROP TABLE '${schemaName}__${tableName}'`, [], context);
+    async dropTable(applicationName, tableName, context) {
+        const matchingTableNames = await this.findNative(`DROP TABLE '${applicationName}__${tableName}'`, [], context);
         return matchingTableNames.length === 1;
     }
     async findNative(sqlQuery, parameters, context) {

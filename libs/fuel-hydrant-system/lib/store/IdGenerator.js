@@ -18,7 +18,7 @@ export class IdGenerator {
         });
     }
     doPopulateTransactionHistoryIdColumns(resolve) {
-        if (Q.__dbSchema__ && Q.__dbSchema__.currentVersion) {
+        if (Q.__dbApplication__ && Q.__dbApplication__.currentVersion) {
             const transHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
             const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
             const operationHistoryDbEntity = this.getHoldingPatternDbEntity('OperationHistory');
@@ -53,7 +53,7 @@ export class IdGenerator {
     async generateEntityIds() {
     }
     getHoldingPatternDbEntity(holdingPatternEntityName) {
-        return Q.__dbSchema__.currentVersion[0].schemaVersion
+        return Q.__dbApplication__.currentVersion[0].applicationVersion
             .entityMapByName[holdingPatternEntityName];
     }
 }

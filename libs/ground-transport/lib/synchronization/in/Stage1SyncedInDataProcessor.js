@@ -327,12 +327,12 @@ export class Stage1SyncedInDataProcessor {
                 .add(recordHistory.actorRecordId);
         }
     }
-    getRecordsForRepoInTable(repositoryId, operationHistory, recordMapBySchemaTableAndRepository) {
-        const recordMapForSchema = recordMapBySchemaTableAndRepository
-            .get(operationHistory.entity.schemaVersion.id);
+    getRecordsForRepoInTable(repositoryId, operationHistory, recordMapByApplicationTableAndRepository) {
+        const recordMapForApplication = recordMapByApplicationTableAndRepository
+            .get(operationHistory.entity.applicationVersion.id);
         let recordMapForTable;
-        if (recordMapForSchema) {
-            recordMapForTable = recordMapForSchema.get(operationHistory.entity.id);
+        if (recordMapForApplication) {
+            recordMapForTable = recordMapForApplication.get(operationHistory.entity.id);
         }
         let recordMapForRepoInTable;
         if (recordMapForTable) {
@@ -370,7 +370,7 @@ export class Stage1SyncedInDataProcessor {
     }
     getRecordInfo(repositoryId, operationHistory, recordHistory) {
         return `
-		Schema Version ID: ${operationHistory.entity.schemaVersion.id}
+		Application Version ID: ${operationHistory.entity.applicationVersion.id}
 		Entity ID:         ${operationHistory.entity.id}
 		Repository ID:     ${repositoryId}
 		Actor ID:          ${recordHistory.actor.id}

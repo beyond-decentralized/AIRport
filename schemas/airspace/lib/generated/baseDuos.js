@@ -6,14 +6,6 @@ export class SQDIDuo extends Duo {
         super(dbEntityId, Q);
     }
 }
-export class BaseDomainDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(11);
-    }
-    constructor() {
-        super(11);
-    }
-}
 export class BaseApplicationDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(10);
@@ -100,6 +92,14 @@ export class BaseApplicationVersionDuo extends SQDIDuo {
     }
     constructor() {
         super(8);
+    }
+}
+export class BaseDomainDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(11);
+    }
+    constructor() {
+        super(11);
     }
 }
 //# sourceMappingURL=baseDuos.js.map

@@ -73,9 +73,9 @@ export interface ApplicationColumnGraph extends ApplicationColumnEOptionalId, Ve
  * UPDATE - non-id columns (optional).
  */
 export interface ApplicationColumnEUpdateColumns extends VersionedApplicationObjectEUpdateColumns {
-    DEPRECATED_SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
-    REMOVED_IN_SCHEMA_VERSION_ID?: number | IQNumberField;
-    SINCE_SCHEMA_VERSION_ID?: number | IQNumberField;
+    DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
+    SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
     COLUMN_INDEX?: number | IQNumberField;
     ID_INDEX?: number | IQNumberField;
     IS_GENERATED?: boolean | IQBooleanField;
@@ -85,7 +85,7 @@ export interface ApplicationColumnEUpdateColumns extends VersionedApplicationObj
     PRECISION?: number | IQNumberField;
     SCALE?: number | IQNumberField;
     TYPE?: string | IQStringField;
-    SCHEMA_ENTITY_ID?: number | IQNumberField;
+    APPLICATION_ENTITY_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).

@@ -24,13 +24,13 @@ import { ApplicationVersion } from './ApplicationVersion';
 
 @Entity()
 @Table({
-	name: 'SCHEMAS'
+	name: 'APPLICATIONS'
 })
 export class Application {
 
 	@Id()
 	@DbNumber()
-	@Column({ name: 'SCHEMA_INDEX', nullable: false })
+	@Column({ name: 'APPLICATION_INDEX', nullable: false })
 	index: ApplicationIndex;
 
 	@ManyToOne()
@@ -41,7 +41,7 @@ export class Application {
 	@DbString()
 	scope: ApplicationScope;
 
-	@Column({ name: 'SCHEMA_NAME', nullable: false })
+	@Column({ name: 'APPLICATION_NAME', nullable: false })
 	@DbString()
 	name: ApplicationName;
 
@@ -71,7 +71,7 @@ export class Application {
 	// FIXME: revisit application tracking when versioning is implemented
 	// better to track everything by names
 	// FIXME: once versioned should be in application version (if still needed)
-	@Column({ name: 'JSON_SCHEMA', nullable: false })
+	@Column({ name: 'JSON_APPLICATION', nullable: false })
 	@Json()
 	jsonApplication: JsonApplicationWithLastIds
 

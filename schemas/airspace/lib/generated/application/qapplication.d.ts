@@ -63,11 +63,11 @@ export interface ApplicationGraph extends ApplicationEOptionalId, IEntityCascade
  */
 export interface ApplicationEUpdateColumns extends IEntityUpdateColumns {
     SCOPE?: string | IQStringField;
-    SCHEMA_NAME?: string | IQStringField;
+    APPLICATION_NAME?: string | IQStringField;
     PACKAGE_NAME?: string | IQStringField;
     STATUS?: string | IQStringField;
     SIGNATURE?: string | IQStringField;
-    JSON_SCHEMA?: string | IQStringField;
+    JSON_APPLICATION?: string | IQStringField;
     DOMAIN_ID?: number | IQNumberField;
 }
 /**

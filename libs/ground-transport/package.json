@@ -11,8 +11,6 @@
     "@airport/tower": "0.0.1",
     "@airport/airspace": "0.0.1",
     "@airport/travel-document-checkpoint": "0.0.1",
-    "@types/gapi": "^0.0.35",
-    "@types/google-drive-realtime-api": "^0.0.33",
     "rxjs": "~7.4.0"
   },
   "main": "lib/index.js",

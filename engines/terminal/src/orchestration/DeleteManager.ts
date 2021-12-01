@@ -2,7 +2,7 @@ import {
 	AIRPORT_DATABASE,
 	IAirportDatabase,
 	IApplicationUtils,
-	SCHEMA_UTILS,
+	APPLICATION_UTILS,
 	valuesEqual,
 	Y
 } from '@airport/air-control'
@@ -72,7 +72,7 @@ export class DeleteManager
 		] = await container(this)
 			.get(AIRPORT_DATABASE, HISTORY_MANAGER, OPER_HISTORY_DUO,
 				REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO,
-				SCHEMA_UTILS, SEQUENCE_GENERATOR)
+				APPLICATION_UTILS, SEQUENCE_GENERATOR)
 
 		const dbEntity = airDb
 			.applications[portableQuery.applicationIndex].currentVersion[0].applicationVersion

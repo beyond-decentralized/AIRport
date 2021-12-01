@@ -31,7 +31,7 @@ __decorate([
 ], ApplicationProperty.prototype, "isId", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({ name: 'APPLICATION_ENTITY_ID', referencedColumnName: 'ID', nullable: false })
 ], ApplicationProperty.prototype, "entity", void 0);
 __decorate([
     OneToMany({ mappedBy: 'property' })
@@ -42,7 +42,7 @@ __decorate([
 ApplicationProperty = __decorate([
     Entity(),
     Table({
-        name: 'SCHEMA_PROPERTIES'
+        name: 'APPLICATION_PROPERTIES'
     })
 ], ApplicationProperty);
 export { ApplicationProperty };

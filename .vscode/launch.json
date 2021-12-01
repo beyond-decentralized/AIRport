@@ -21,6 +21,20 @@
         {
             "type": "pwa-node",
             "request": "launch",
+            "name": "airspace",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\airspace\\node_modules\\@airport\\runway\\lib\\index.js",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\airspace",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
             "name": "flight-log-archive",
             "skipFiles": [
                 "<node_internals>/**"
@@ -142,20 +156,6 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\territory",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "traffic-pattern",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\traffic-pattern\\node_modules\\@airport\\runway\\lib\\index.js",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\traffic-pattern",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
         },
         {

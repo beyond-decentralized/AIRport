@@ -1,7 +1,7 @@
 import { IMemoizedSelector } from '@airport/check-in';
-import { ApplicationSignature, DomainName, JsonSchemaName, SchemaName } from '@airport/ground-control';
+import { ApplicationSignature, DomainName, JsonApplicationName, ApplicationName } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
-import { IDomain, ISchema, ISchemaColumn, ISchemaEntity, ISchemaRelation, ISchemaVersion } from '@airport/airspace';
+import { IDomain, IApplication, IApplicationColumn, IApplicationEntity, IApplicationRelation, IApplicationVersion } from '@airport/airspace';
 import { BehaviorSubject } from 'rxjs';
 import { ITerminalState } from './TerminalState';
 export interface ITerminalStore {
@@ -11,15 +11,15 @@ export interface ITerminalStore {
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
     getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
-    getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>;
-    getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<SchemaName, ISchemaVersion>, ITerminalState>;
-    getAllSchemaVersionsByIds: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
-    getLatestSchemaVersionsBySchemaIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
+    getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>;
+    getLatestApplicationVersionMapByApplicationName: IMemoizedSelector<Map<ApplicationName, IApplicationVersion>, ITerminalState>;
+    getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
+    getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
     getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
-    getSchemas: IMemoizedSelector<ISchema[], ITerminalState>;
-    getAllColumns: IMemoizedSelector<ISchemaColumn[], ITerminalState>;
-    getAllEntities: IMemoizedSelector<ISchemaEntity[], ITerminalState>;
-    getAllRelations: IMemoizedSelector<ISchemaRelation[], ITerminalState>;
+    getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
+    getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>;
+    getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>;
+    getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>;
     tearDown(): any;
 }
 export declare class TerminalStore implements ITerminalStore {
@@ -29,15 +29,15 @@ export declare class TerminalStore implements ITerminalStore {
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
     getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
-    getLatestSchemaVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonSchemaName, ISchemaVersion>>, ITerminalState>;
-    getLatestSchemaVersionMapBySchemaName: IMemoizedSelector<Map<SchemaName, ISchemaVersion>, ITerminalState>;
-    getAllSchemaVersionsByIds: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
-    getLatestSchemaVersionsBySchemaIndexes: IMemoizedSelector<ISchemaVersion[], ITerminalState>;
+    getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>;
+    getLatestApplicationVersionMapByApplicationName: IMemoizedSelector<Map<ApplicationName, IApplicationVersion>, ITerminalState>;
+    getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
+    getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
     getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
-    getSchemas: IMemoizedSelector<ISchema[], ITerminalState>;
-    getAllColumns: IMemoizedSelector<ISchemaColumn[], ITerminalState>;
-    getAllEntities: IMemoizedSelector<ISchemaEntity[], ITerminalState>;
-    getAllRelations: IMemoizedSelector<ISchemaRelation[], ITerminalState>;
+    getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
+    getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>;
+    getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>;
+    getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>;
     init(): Promise<void>;
     tearDown(): void;
 }

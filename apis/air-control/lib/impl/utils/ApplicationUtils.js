@@ -1,7 +1,7 @@
 import { DI } from '@airport/di';
 import { CRUDOperation, EntityRelationType, ENTITY_STATE_MANAGER, repositoryEntity } from '@airport/ground-control';
 import { convertToY, isY } from '../../lingo/query/facade/Query';
-import { SCHEMA_UTILS } from '../../tokens';
+import { APPLICATION_UTILS } from '../../tokens';
 import { valuesEqual } from '../Utils';
 export class ApplicationUtils {
     getDbEntity(applicationIndex, tableIndex, airDb) {
@@ -395,5 +395,5 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
     }
 }
 ApplicationUtils.TEMP_ID = 0;
-DI.set(SCHEMA_UTILS, ApplicationUtils);
+DI.set(APPLICATION_UTILS, ApplicationUtils);
 //# sourceMappingURL=ApplicationUtils.js.map

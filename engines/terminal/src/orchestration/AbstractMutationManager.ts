@@ -8,7 +8,7 @@ import {
   IQueryUtils,
   QUERY_UTILS,
   RawInsertValues,
-  SCHEMA_UTILS,
+  APPLICATION_UTILS,
 } from '@airport/air-control';
 import { container, IContext } from '@airport/di';
 import { DbColumn, JsonQuery, PortableQuery, QueryResultType } from '@airport/ground-control';
@@ -45,7 +45,7 @@ export class AbstractMutationManager {
   ): Promise<number> {
     const [fieldUtils, queryUtils, applicationUtils,
     ] = await container(this).get(
-      FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS);
+      FIELD_UTILS, QUERY_UTILS, APPLICATION_UTILS);
 
     const dbEntity = (q as IQEntityInternal<any>).__driver__.dbEntity;
     const columnIndexes: number[] = [];

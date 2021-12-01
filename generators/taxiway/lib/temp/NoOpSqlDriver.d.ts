@@ -1,9 +1,9 @@
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
 import { IOperationContext, ITransaction } from '@airport/terminal-map';
 export declare class NoOpSqlDriver extends SqlDriver {
-    composeTableName(schemaName: string, tableName: string, context: IOperationContext): string;
-    doesTableExist(schemaName: string, tableName: string, context: IOperationContext): Promise<boolean>;
-    dropTable(schemaName: string, tableName: string, context: IOperationContext): Promise<boolean>;
+    composeTableName(applicationName: string, tableName: string, context: IOperationContext): string;
+    doesTableExist(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
+    dropTable(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
     findNative(sqlQuery: string, parameters: any[], context: IOperationContext): Promise<any[]>;
     initialize(dbName: string, context: IOperationContext): Promise<any>;
     isServer(context: IOperationContext): boolean;

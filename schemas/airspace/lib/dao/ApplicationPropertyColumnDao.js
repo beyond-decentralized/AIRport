@@ -1,6 +1,6 @@
 import { DI } from '@airport/di';
 import { BaseApplicationPropertyColumnDao, Q, } from '../generated/generated';
-import { SCHEMA_PROPERTY_COLUMN_DAO } from '../tokens';
+import { APPLICATION_PROPERTY_COLUMN_DAO } from '../tokens';
 export class ApplicationPropertyColumnDao extends BaseApplicationPropertyColumnDao {
     async findAllForColumns(columnIds) {
         let rc;
@@ -36,5 +36,5 @@ export class ApplicationPropertyColumnDao extends BaseApplicationPropertyColumnD
         });
     }
 }
-DI.set(SCHEMA_PROPERTY_COLUMN_DAO, ApplicationPropertyColumnDao);
+DI.set(APPLICATION_PROPERTY_COLUMN_DAO, ApplicationPropertyColumnDao);
 //# sourceMappingURL=ApplicationPropertyColumnDao.js.map

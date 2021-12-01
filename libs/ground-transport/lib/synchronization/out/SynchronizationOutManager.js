@@ -2,7 +2,7 @@ import { container, DI } from '@airport/di';
 import { BlockSyncStatus } from '@airport/ground-control';
 import { REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_DAO } from '@airport/holding-pattern';
 import { DataOrigin, REPO_TRANS_BLOCK_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SHARING_NODE_DAO, SHARING_NODE_REPO_TRANS_BLOCK_DAO, SHARING_NODE_REPOSITORY_DAO, SHARING_NODE_TERMINAL_DAO, } from '@airport/moving-walkway';
-import { SCHEMA_DAO } from '@airport/airspace';
+import { APPLICATION_DAO } from '@airport/airspace';
 import { SYNCHRONIZATION_OUT_MANAGER, SYNC_OUT_MESSAGE_SENDER, SYNC_OUT_REPOSITORY_TRANSACTION_BLOCK_CREATOR, SYNC_OUT_SERIALIZER, } from '../../tokens';
 const maxSingleRepoChangeLength = 1048576;
 const maxAllRepoChangesLength = 10485760;
@@ -18,8 +18,8 @@ const maxAllRepoChangesLength = 10485760;
 export class SynchronizationOutManager {
     async synchronize(sharingNodes, terminal) {
         // TODO: remove unneeded dependencies once implemented
-        const [repositoryDao, repoTransBlockDao, repoTransHistoryDao, schemaDao, sharingMessageDao, sharingMessageRepoTransBlockDao, sharingNodeDao, sharingNodeTerminalDao, sharingNodeRepositoryDao, sharingNodeRepoTransBlockDao, syncOutRepoTransBlockCreator, syncOutMessageSender, syncOutSerializer,] = await container(this)
-            .get(REPOSITORY_DAO, REPO_TRANS_BLOCK_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, SCHEMA_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SHARING_NODE_DAO, SHARING_NODE_TERMINAL_DAO, SHARING_NODE_REPOSITORY_DAO, SHARING_NODE_REPO_TRANS_BLOCK_DAO, SYNC_OUT_REPOSITORY_TRANSACTION_BLOCK_CREATOR, SYNC_OUT_MESSAGE_SENDER, SYNC_OUT_SERIALIZER);
+        const [repositoryDao, repoTransBlockDao, repoTransHistoryDao, applicationDao, sharingMessageDao, sharingMessageRepoTransBlockDao, sharingNodeDao, sharingNodeTerminalDao, sharingNodeRepositoryDao, sharingNodeRepoTransBlockDao, syncOutRepoTransBlockCreator, syncOutMessageSender, syncOutSerializer,] = await container(this)
+            .get(REPOSITORY_DAO, REPO_TRANS_BLOCK_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, APPLICATION_DAO, SHARING_MESSAGE_DAO, SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO, SHARING_NODE_DAO, SHARING_NODE_TERMINAL_DAO, SHARING_NODE_REPOSITORY_DAO, SHARING_NODE_REPO_TRANS_BLOCK_DAO, SYNC_OUT_REPOSITORY_TRANSACTION_BLOCK_CREATOR, SYNC_OUT_MESSAGE_SENDER, SYNC_OUT_SERIALIZER);
         const sharingNodeMap = new Map();
         sharingNodes.forEach(sharingNode => {
             sharingNodeMap.set(sharingNode.id, sharingNode);

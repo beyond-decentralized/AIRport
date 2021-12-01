@@ -1,6 +1,6 @@
 import { IAirportDatabase } from '@airport/air-control';
 import { ITerminalStore } from '@airport/terminal-map';
-import { IDomain, ISchema, ISchemaColumn, ISchemaEntity, ISchemaProperty, ISchemaPropertyColumn, ISchemaReference, ISchemaRelation, ISchemaRelationColumn, ISchemaVersion } from '@airport/airspace';
+import { IDomain, IApplication, IApplicationColumn, IApplicationEntity, IApplicationProperty, IApplicationPropertyColumn, IApplicationReference, IApplicationRelation, IApplicationRelationColumn, IApplicationVersion } from '@airport/airspace';
 import { IDdlObjectLinker } from './DdlObjectLinker';
 import { IQueryEntityClassCreator } from './QueryEntityClassCreator';
 export interface IQueryObjectInitializer {
@@ -9,21 +9,21 @@ export interface IQueryObjectInitializer {
 }
 export interface AllDdlObjects {
     all: DdlObjects;
-    allSchemaVersionsByIds: ISchemaVersion[];
+    allApplicationVersionsByIds: IApplicationVersion[];
     added: DdlObjects;
 }
 export interface DdlObjects {
-    columns: ISchemaColumn[];
+    columns: IApplicationColumn[];
     domains: IDomain[];
-    entities: ISchemaEntity[];
-    latestSchemaVersions: ISchemaVersion[];
-    properties: ISchemaProperty[];
-    propertyColumns: ISchemaPropertyColumn[];
-    relationColumns: ISchemaRelationColumn[];
-    relations: ISchemaRelation[];
-    schemas: ISchema[];
-    schemaReferences: ISchemaReference[];
-    schemaVersions: ISchemaVersion[];
+    entities: IApplicationEntity[];
+    latestApplicationVersions: IApplicationVersion[];
+    properties: IApplicationProperty[];
+    propertyColumns: IApplicationPropertyColumn[];
+    relationColumns: IApplicationRelationColumn[];
+    relations: IApplicationRelation[];
+    applications: IApplication[];
+    applicationReferences: IApplicationReference[];
+    applicationVersions: IApplicationVersion[];
 }
 export declare class QueryObjectInitializer implements IQueryObjectInitializer {
     generateQObjectsAndPopulateStore(allDdlObjects: AllDdlObjects, airDb: IAirportDatabase, ddlObjectLinker: IDdlObjectLinker, queryEntityClassCreator: IQueryEntityClassCreator, terminalStore: ITerminalStore): void;

@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { DOMAIN_DAO, SCHEMA_COLUMN_DAO, SCHEMA_DAO, SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_REFERENCE_DAO, SCHEMA_RELATION_COLUMN_DAO, SCHEMA_RELATION_DAO, SCHEMA_VERSION_DAO } from '@airport/airspace';
+import { DOMAIN_DAO, APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_RELATION_COLUMN_DAO, APPLICATION_RELATION_DAO, APPLICATION_VERSION_DAO } from '@airport/airspace';
 import { DDL_OBJECT_RETRIEVER } from './tokens';
 export class DdlObjectRetriever {
     constructor() {
@@ -11,42 +11,42 @@ export class DdlObjectRetriever {
             propertyColumns: 0,
             relations: 0,
             relationColumns: 0,
-            schemas: 0,
-            schemaVersions: 0
+            applications: 0,
+            applicationVersions: 0
         };
     }
     async retrieveDdlObjects() {
-        const [domainDao, schemaDao, schemaVersionDao, schemaReferenceDao, schemaEntityDao, schemaPropertyDao, schemaRelationDao, schemaColumnDao, schemaPropertyColumnDao, schemaRelationColumnDao] = await container(this).get(DOMAIN_DAO, SCHEMA_DAO, SCHEMA_VERSION_DAO, SCHEMA_REFERENCE_DAO, SCHEMA_ENTITY_DAO, SCHEMA_PROPERTY_DAO, SCHEMA_RELATION_DAO, SCHEMA_COLUMN_DAO, SCHEMA_PROPERTY_COLUMN_DAO, SCHEMA_RELATION_COLUMN_DAO);
-        const schemas = await schemaDao.findAllActive();
-        const schemaIndexes = [];
+        const [domainDao, applicationDao, applicationVersionDao, applicationReferenceDao, applicationEntityDao, applicationPropertyDao, applicationRelationDao, applicationColumnDao, applicationPropertyColumnDao, applicationRelationColumnDao] = await container(this).get(DOMAIN_DAO, APPLICATION_DAO, APPLICATION_VERSION_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_RELATION_DAO, APPLICATION_COLUMN_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_RELATION_COLUMN_DAO);
+        const applications = await applicationDao.findAllActive();
+        const applicationIndexes = [];
         const domainIdSet = new Set();
-        schemas.forEach(schema => {
-            schemaIndexes.push(schema.index);
-            domainIdSet.add(schema.domain.id);
+        applications.forEach(application => {
+            applicationIndexes.push(application.index);
+            domainIdSet.add(application.domain.id);
         });
-        schemas.sort((schema1, schema2) => {
-            return schema1.index - schema2.index;
+        applications.sort((application1, application2) => {
+            return application1.index - application2.index;
         });
         const domains = await domainDao.findByIdIn(Array.from(domainIdSet));
-        const allSchemaVersions = await schemaVersionDao
-            .findAllActiveOrderBySchemaIndexAndId();
-        let lastSchemaIndex;
-        // const allSchemaVersionsByIds: ISchemaVersion[] = []
-        const latestSchemaVersions = [];
-        const schemaVersions = [];
-        for (const schemaVersion of allSchemaVersions) {
-            if (schemaVersion.schema.index !== lastSchemaIndex) {
-                latestSchemaVersions.push(schemaVersion);
+        const allApplicationVersions = await applicationVersionDao
+            .findAllActiveOrderByApplicationIndexAndId();
+        let lastApplicationIndex;
+        // const allApplicationVersionsByIds: IApplicationVersion[] = []
+        const latestApplicationVersions = [];
+        const applicationVersions = [];
+        for (const applicationVersion of allApplicationVersions) {
+            if (applicationVersion.application.index !== lastApplicationIndex) {
+                latestApplicationVersions.push(applicationVersion);
             }
-            // allSchemaVersionsByIds[schemaVersion.id] = schemaVersion
-            lastSchemaIndex = schemaVersion.schema.index;
-            schemaVersions.push(schemaVersion);
+            // allApplicationVersionsByIds[applicationVersion.id] = applicationVersion
+            lastApplicationIndex = applicationVersion.application.index;
+            applicationVersions.push(applicationVersion);
         }
-        const latestSchemaVersionIds = latestSchemaVersions.map(schemaVersion => schemaVersion.id);
-        const schemaReferences = await schemaReferenceDao
-            .findAllForSchemaVersions(latestSchemaVersionIds);
-        const entities = await schemaEntityDao
-            .findAllForSchemaVersions(latestSchemaVersionIds);
+        const latestApplicationVersionIds = latestApplicationVersions.map(applicationVersion => applicationVersion.id);
+        const applicationReferences = await applicationReferenceDao
+            .findAllForApplicationVersions(latestApplicationVersionIds);
+        const entities = await applicationEntityDao
+            .findAllForApplicationVersions(latestApplicationVersionIds);
         const entityIds = entities.map(entity => entity.id);
         /*
         const entityIds = entities.map(
@@ -57,17 +57,17 @@ export class DdlObjectRetriever {
         return entity.id
     })
          */
-        const properties = await schemaPropertyDao
+        const properties = await applicationPropertyDao
             .findAllForEntities(entityIds);
         const propertyIds = properties.map(property => property.id);
-        const relations = await schemaRelationDao
+        const relations = await applicationRelationDao
             .findAllForProperties(propertyIds);
-        const columns = await schemaColumnDao
+        const columns = await applicationColumnDao
             .findAllForEntities(entityIds);
         const columnIds = columns.map(column => column.id);
-        const propertyColumns = await schemaPropertyColumnDao
+        const propertyColumns = await applicationPropertyColumnDao
             .findAllForColumns(columnIds);
-        const relationColumns = await schemaRelationColumnDao
+        const relationColumns = await applicationRelationColumnDao
             .findAllForColumns(columnIds);
         this.lastIds = {
             columns: columns.length,
@@ -77,24 +77,24 @@ export class DdlObjectRetriever {
             propertyColumns: propertyColumns.length,
             relationColumns: relationColumns.length,
             relations: relations.length,
-            schemas: schemas.length,
-            schemaVersions: schemaVersions.length,
+            applications: applications.length,
+            applicationVersions: applicationVersions.length,
         };
         return {
             // allDomains: domains,
-            // allSchemas: schemas,
-            // allSchemaVersionsByIds,
+            // allApplications: applications,
+            // allApplicationVersionsByIds,
             columns,
             domains,
             entities,
-            latestSchemaVersions,
+            latestApplicationVersions,
             properties,
             propertyColumns,
             relationColumns,
             relations,
-            schemaReferences,
-            schemas,
-            schemaVersions
+            applicationReferences,
+            applications,
+            applicationVersions
         };
     }
 }

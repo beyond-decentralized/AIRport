@@ -1,4 +1,4 @@
-import { IAirportDatabase, IFieldUtils, IQMetadataUtils, IQueryFacade, IQueryUtils, IRelationManager, ISchemaUtils } from '@airport/air-control';
+import { IAirportDatabase, IFieldUtils, IQMetadataUtils, IQueryFacade, IQueryUtils, IRelationManager, IApplicationUtils } from '@airport/air-control';
 import { IEntityStateManager, IOperationContextLoader, IStoreDriver } from '@airport/ground-control';
 import { ICascadeGraphVerifier, IDeleteManager, IDependencyGraphResolver, IEntityGraphReconstructor, IInsertManager, IIocOperationContext, IOperationContext, IOperationManager, IQueryManager, IRepositoryManager, IStructuralEntityValidator, ITransactionalServer, IUpdateManager } from '@airport/terminal-map';
 export declare class IocOperationContext implements IIocOperationContext {
@@ -17,7 +17,7 @@ export declare class IocOperationContext implements IIocOperationContext {
     queryUtils: IQueryUtils;
     relationManager: IRelationManager;
     repositoryManager: IRepositoryManager;
-    schemaUtils: ISchemaUtils;
+    applicationUtils: IApplicationUtils;
     storeDriver: IStoreDriver;
     structuralEntityValidator: IStructuralEntityValidator;
     transactionalServer: ITransactionalServer;

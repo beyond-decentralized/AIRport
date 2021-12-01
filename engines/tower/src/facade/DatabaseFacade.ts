@@ -16,7 +16,7 @@ import {
 	RawInsertValues,
 	RawUpdate,
 	RawUpdateColumns,
-	SCHEMA_UTILS,
+	APPLICATION_UTILS,
 	UPDATE_CACHE_MANAGER,
 	UpdateColumns,
 	UpdateProperties,
@@ -172,7 +172,7 @@ export class DatabaseFacade
 
 		const [updateCacheManager, entityStateManager, applicationUtils,
 			transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER,
-				ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
+				ENTITY_STATE_MANAGER, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR)
 
 		const saveResult = await transactionalConnector.save(entityCopy, context)
 
@@ -194,7 +194,7 @@ export class DatabaseFacade
 
 		const [updateCacheManager, entityStateManager, applicationUtils,
 			transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER,
-				ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
+				ENTITY_STATE_MANAGER, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR)
 
 		const saveResult = await transactionalConnector
 			.saveToDestination(repositoryDestination, entityCopy, context)
@@ -214,7 +214,7 @@ export class DatabaseFacade
 		}
 		const [updateCacheManager, entityCopier, entityStateManager, applicationUtils]
 			= await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER,
-				ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR)
+				ENTITY_STATE_MANAGER, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR)
 
 		const dbEntity = context.dbEntity;
 		const entityCopy = entityCopier

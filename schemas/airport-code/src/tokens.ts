@@ -7,4 +7,4 @@ const airportCode = lib('airport-code')
 
 export const SEQUENCE_DAO = airportCode.token<ISequenceDao>('ISequenceDao')
 export const TERMINAL_RUN_DAO = airportCode.token<ITerminalRunDao>('ITerminalRunDao')
-export const SCHEMA_API = airportCode.token<IApplicationApi>('IApplicationApi')
+export const APPLICATION_API = airportCode.token<IApplicationApi>('IApplicationApi')

@@ -17,12 +17,12 @@ export type RepositoryApplicationId = number;
 
 @Entity()
 @Table({
-	name: "REPOSITORY_SCHEMAS"
+	name: "REPOSITORY_APPLICATIONS"
 })
 export class RepositoryApplication {
 
 	@Id()
-	@Column({name: "REPOSITORY_SCHEMA_ID"})
+	@Column({name: "REPOSITORY_APPLICATION_ID"})
 	@GeneratedValue()
 	@DbNumber()
 	id: RepositoryApplicationId;
@@ -32,7 +32,7 @@ export class RepositoryApplication {
 	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID"})
 	repository: Repository;
 
-	@Column({name: "SCHEMA_INDEX", nullable: false})
+	@Column({name: "APPLICATION_INDEX", nullable: false})
 	@DbNumber()
 	applicationIndex: ApplicationIndex;
 

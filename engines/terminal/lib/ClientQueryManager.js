@@ -7,7 +7,7 @@ import { DI } from "@airport/di";
  * replaced with API registry.
  */
 export class ClientQueryManager {
-    async getClientQuery(schemaName, daoName, methodName) {
+    async getClientQuery(applicationName, daoName, methodName) {
         // const daoRegistry = await container(this).get(DAO_REGISTRY)
         throw new Error('TODO: implement');
     }

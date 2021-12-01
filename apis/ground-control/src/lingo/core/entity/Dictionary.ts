@@ -101,7 +101,7 @@ export namespace table {
 	export const INDEXES = 'indexes'
 	export const NAME = 'name'
 	export const PRIMARY_KEY = 'primaryKey'
-	export const SCHEMA = 'application'
+	export const APPLICATION = 'application'
 }
 
 /**
@@ -116,7 +116,7 @@ export namespace repositoryEntity {
 	export const IS_DRAFT = 'IS_DRAFT'
 	export const LOCAL_ENTITY_NAME = 'LocalRepositoryEntity'
 	export const REPOSITORY_ID = 'REPOSITORY_ID'
-	export const SYS_WIDE_OP_ID_SCHEMA = 'air___airport__airport_code'
+	export const SYS_WIDE_OP_ID_APPLICATION = 'air___airport__airport_code'
 	export const SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId'
 	export const systemWideOperationId = 'systemWideOperationId'
 	export const SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID'

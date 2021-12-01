@@ -5,7 +5,7 @@ import { QColumnBuilder } from './entity/QColumnBuilder';
 import { QPropertyBuilder } from './entity/QPropertyBuilder';
 import { QRelationBuilder } from './entity/QRelationBuilder';
 import { QTransientBuilder } from './entity/QTransientBuilder';
-import { SColumn } from './schema/SProperty';
+import { SColumn } from './application/SProperty';
 /**
  * Created by Papa on 4/25/2016.
  */

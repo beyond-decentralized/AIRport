@@ -7,11 +7,11 @@ export declare class SyncInDataChecker implements ISyncInDataChecker {
      * Every dataMessage.data.repoTransHistories array must be sorted before entering
      * this method.
      *
-     * @param {IDataToTM[]} dataMessagesWithCompatibleSchemas
+     * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
      * @returns {DataCheckResults}
      */
     checkData(message: TerminalMessage): Promise<boolean>;
-    private populateSchemaEntityMap;
+    private populateApplicationEntityMap;
     private checkOperationHistories;
     private checkRecordHistories;
     private checkNewValues;

@@ -1,5 +1,5 @@
 import {DI}                 from '@airport/di'
-import {SCHEMA_VERSION_DUO} from '../tokens'
+import {APPLICATION_VERSION_DUO} from '../tokens'
 import {
 	BaseApplicationVersionDuo,
 	IBaseApplicationVersionDuo
@@ -16,4 +16,4 @@ export class ApplicationVersionDuo
 
 }
 
-DI.set(SCHEMA_VERSION_DUO, ApplicationVersionDuo)
+DI.set(APPLICATION_VERSION_DUO, ApplicationVersionDuo)

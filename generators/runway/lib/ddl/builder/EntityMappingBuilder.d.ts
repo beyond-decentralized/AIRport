@@ -13,6 +13,6 @@ export declare class EntityMappingBuilder {
     entityMappings: IEntityMapping[];
     constructor(entityMappingsPath: string, pathBuilder: PathBuilder);
     addEntity(entityIndex: number, entityName: string, relativePath: string): void;
-    build(schemaDomain: string, schemaName: string): string;
+    build(applicationDomain: string, applicationName: string): string;
 }
 //# sourceMappingURL=EntityMappingBuilder.d.ts.map

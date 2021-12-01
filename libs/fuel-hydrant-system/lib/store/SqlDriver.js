@@ -1,6 +1,6 @@
 import { doEnsureContext } from '@airport/air-control';
 import { container } from '@airport/di';
-import { getSchemaName, QueryResultType, SyncSchemaMap } from '@airport/ground-control';
+import { getApplicationName, QueryResultType, SyncApplicationMap } from '@airport/ground-control';
 import { Subject } from 'rxjs';
 import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
 import { SQLDelete } from '../sql/core/SQLDelete';
@@ -19,21 +19,21 @@ export class SqlDriver {
         return true;
     }
     getEntityTableName(dbEntity, context) {
-        return this.getTableName(dbEntity.schemaVersion.schema, dbEntity, context);
+        return this.getTableName(dbEntity.applicationVersion.application, dbEntity, context);
     }
-    getTableName(schema, table, context) {
+    getTableName(application, table, context) {
         let theTableName = table.name;
         if (table.tableConfig && table.tableConfig.name) {
             theTableName = table.tableConfig.name;
         }
-        let schemaName;
-        if (schema.status) {
-            schemaName = schema.name;
+        let applicationName;
+        if (application.status) {
+            applicationName = application.name;
         }
         else {
-            schemaName = getSchemaName(schema);
+            applicationName = getApplicationName(application);
         }
-        return this.composeTableName(schemaName, theTableName, context);
+        return this.composeTableName(applicationName, theTableName, context);
     }
     async insertValues(portableQuery, context, cachedSqlQueryId) {
         const splitValues = this.splitValues(portableQuery.jsonQuery.V, context);
@@ -52,7 +52,7 @@ export class SqlDriver {
     async deleteWhere(portableQuery, context) {
         const activeQueries = await container(this)
             .get(ACTIVE_QUERIES);
-        let fieldMap = new SyncSchemaMap();
+        let fieldMap = new SyncApplicationMap();
         let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), context);
         let sql = sqlDelete.toSQL(context);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
@@ -86,8 +86,8 @@ export class SqlDriver {
             case QueryResType.ENTITY_TREE:
             case QueryResType.MAPPED_ENTITY_GRAPH:
             case QueryResType.MAPPED_ENTITY_TREE:
-                const dbEntity = context.ioc.airDb.schemas[portableQuery.schemaIndex]
-                    .currentVersion[0].schemaVersion.entities[portableQuery.tableIndex];
+                const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
+                    .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
                 return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, context);
             case QueryResType.FIELD:
                 return new FieldSQLQuery(jsonQuery, dialect, context);

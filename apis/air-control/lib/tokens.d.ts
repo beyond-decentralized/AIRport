@@ -21,6 +21,6 @@ export declare const QUERY_FACADE: import("@airport/di").IDiToken<IQueryFacade>;
 export declare const QUERY_UTILS: import("@airport/di").IDiToken<IQueryUtils>;
 export declare const RELATION_MANAGER: import("@airport/di").IDiToken<IRelationManager>;
 export declare const REPOSITORY_LOADER: import("@airport/di").IDiToken<IRepositoryLoader>;
-export declare const SCHEMA_UTILS: import("@airport/di").IDiToken<IApplicationUtils>;
+export declare const APPLICATION_UTILS: import("@airport/di").IDiToken<IApplicationUtils>;
 export declare const UPDATE_CACHE_MANAGER: import("@airport/di").IDiToken<IUpdateCacheManager>;
 //# sourceMappingURL=tokens.d.ts.map

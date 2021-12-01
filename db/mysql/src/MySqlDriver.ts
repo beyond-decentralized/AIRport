@@ -88,7 +88,7 @@ export class MySqlDriver
     const result = await this.findNative(
       // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
       `select count(1) as count from information_application.TABLES
-where TABLE_SCHEMA = '${applicationName}'
+where TABLE_APPLICATION = '${applicationName}'
 and TABLE_NAME = '${tableName}';`,
       [],
       context,

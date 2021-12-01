@@ -20,7 +20,7 @@ import {
 	QUERY_CONTEXT_LOADER,
 	QUERY_FACADE,
 	QUERY_UTILS,
-	SCHEMA_UTILS
+	APPLICATION_UTILS
 } from '../../tokens';
 
 export class IocQueryContext
@@ -34,7 +34,7 @@ export class IocQueryContext
 		const [airDb, entityUtils, fieldUtils, queryFacade,
 			queryUtils, applicationUtils, transactionalConnector] = await DI.db()
 				.get(AIRPORT_DATABASE, ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE,
-					QUERY_UTILS, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR);
+					QUERY_UTILS, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR);
 		this.airDb = airDb;
 		this.entityUtils = entityUtils;
 		this.fieldUtils = fieldUtils;

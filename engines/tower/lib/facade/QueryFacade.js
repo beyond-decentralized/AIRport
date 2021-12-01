@@ -16,7 +16,7 @@ export class QueryFacade {
             jsonQuery: query.toJSON(context.ioc.queryUtils, context.ioc.fieldUtils),
             parameterMap: query.getParameters(),
             queryResultType,
-            schemaIndex: context.dbEntity.schemaVersion.schema.index,
+            applicationIndex: context.dbEntity.applicationVersion.application.index,
             tableIndex: context.dbEntity.index,
             // values: query.values
         };

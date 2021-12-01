@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { getSchemaName, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
+import { getApplicationName, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
 import { APPLICATION_INITIALIZER, LOCAL_API_SERVER } from '@airport/security-check';
 import { Observable } from 'rxjs';
@@ -33,8 +33,8 @@ export class IframeTransactionalConnector {
                 this.messageCallback(message);
             }
             const origin = event.origin;
-            if (message.schemaSignature.indexOf('.') > -1) {
-                // Invalid schema signature - cannot have periods that would point to invalid subdomains
+            if (message.applicationSignature.indexOf('.') > -1) {
+                // Invalid application signature - cannot have periods that would point to invalid subdomains
                 return;
             }
             const mainDomain = origin.split('//')[1];
@@ -49,16 +49,16 @@ export class IframeTransactionalConnector {
             if (ownDomain !== 'localhost') {
                 // Only accept requests from https protocol
                 if (!origin.startsWith("https")
-                    // And only if message has the schema signature 
-                    || !message.schemaSignature
+                    // And only if message has the application signature 
+                    || !message.applicationSignature
                     // And if own domain is a direct sub-domain of the message's domain
-                    || ownDomain !== message.schemaSignature + domainSuffix) {
+                    || ownDomain !== message.applicationSignature + domainSuffix) {
                     return;
                 }
                 const ownDomainFragments = ownDomain.split('.');
                 // Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
                 // All 'App' messages must first come from the main domain, which ensures
-                // that the schema is installed
+                // that the application is installed
                 const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1);
                 if (ownDomainFragments.length !== expectedNumFragments) {
                     return;
@@ -132,7 +132,7 @@ export class IframeTransactionalConnector {
             ...this.getCoreFields(),
             dbEntity: {
                 id: dbEntity.id,
-                schemaVersionId: dbEntity.schemaVersion.id
+                applicationVersionId: dbEntity.applicationVersion.id
             },
             entity,
             type: IsolateMessageType.SAVE
@@ -144,7 +144,7 @@ export class IframeTransactionalConnector {
             ...this.getCoreFields(),
             dbEntity: {
                 id: dbEntity.id,
-                schemaVersionId: dbEntity.schemaVersion.id
+                applicationVersionId: dbEntity.applicationVersion.id
             },
             entity,
             repositoryDestination,
@@ -199,11 +199,11 @@ export class IframeTransactionalConnector {
             type: IsolateMessageType.ROLLBACK
         });
     }
-    async getLatestSchemaVersionMapBySchemaName(schemaName) {
+    async getLatestApplicationVersionMapByApplicationName(applicationName) {
         return await this.sendMessageNoWait({
             ...this.getCoreFields(),
-            schemaName,
-            type: IsolateMessageType.GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME
+            applicationName,
+            type: IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
         });
     }
     async initializeConnection() {
@@ -266,7 +266,7 @@ export class IframeTransactionalConnector {
         return {
             category: 'ToDb',
             id: ++this.messageId,
-            schemaSignature: window.location.hostname.split('.')[0],
+            applicationSignature: window.location.hostname.split('.')[0],
         };
     }
     async sendMessage(message) {
@@ -331,7 +331,7 @@ export class IframeTransactionalConnector {
                 this.appState = AppState.INITIALIZED;
                 window.parent.postMessage({
                     ...this.getCoreFields(),
-                    schemaName: getSchemaName(applicationInitializer.getSchema()),
+                    applicationName: getApplicationName(applicationInitializer.getApplication()),
                     type: IsolateMessageType.APP_INITIALIZED
                 }, hostServer);
                 return true;
@@ -341,7 +341,7 @@ export class IframeTransactionalConnector {
         const applicationInitializer = await DI.db().get(APPLICATION_INITIALIZER);
         let message = {
             ...this.getCoreFields(),
-            schema: applicationInitializer.getSchema(),
+            application: applicationInitializer.getApplication(),
             type: IsolateMessageType.APP_INITIALIZING
         };
         window.parent.postMessage(message, hostServer);

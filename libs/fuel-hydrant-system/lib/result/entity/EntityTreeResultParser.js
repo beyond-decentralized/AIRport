@@ -17,7 +17,7 @@ export class EntityTreeResultParser extends TreeResultParser {
         this.currentObjectOneToManys = {};
     }
     addEntity(entityAlias, dbEntity, context) {
-        let resultObject = context.ioc.schemaUtils.getNewEntity(dbEntity, context.ioc.airDb);
+        let resultObject = context.ioc.applicationUtils.getNewEntity(dbEntity, context.ioc.airDb);
         this.currentRowObjectMap[entityAlias] = resultObject;
         if (this.objectEqualityMap[entityAlias] !== undefined) {
             this.objectEqualityMap[entityAlias] = true;

@@ -7,13 +7,13 @@ import { visitApiFile } from './api/parser/ApiGenerator';
 const enumMap = new Map();
 globalThis.enumMap = enumMap;
 /** Generate documention for all classes in a set of .ts files */
-export async function generateDefinitions(fileNames, options, configuration, schemaMapByProjectName) {
+export async function generateDefinitions(fileNames, options, configuration, applicationMapByProjectName) {
     // Build a program using the set of root file names in fileNames
     let program = tsc.createProgram(fileNames, options);
     globalThis.checker = program.getTypeChecker();
     // Get the checker, we will use it to find more about classes
     globalCandidateRegistry.configuration = configuration;
-    globalCandidateRegistry.schemaMap = schemaMapByProjectName;
+    globalCandidateRegistry.applicationMap = applicationMapByProjectName;
     globalThis.processedCandidateRegistry = new EntityCandidateRegistry(enumMap);
     // const daoFileMap: { [classPath: string]: DaoFile } = {}
     const sourceFiles = program.getSourceFiles();

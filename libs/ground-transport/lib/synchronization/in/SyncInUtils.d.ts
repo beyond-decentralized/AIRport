@@ -1,16 +1,16 @@
-import { ColumnIndex, EntityId, SchemaIndex, SchemaVersionId } from '@airport/ground-control';
+import { ColumnIndex, EntityId, ApplicationIndex, ApplicationVersionId } from '@airport/ground-control';
 import { Actor_Id, IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRepositoryTransactionHistory, RecordHistoryId, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
 import { ISynchronizationConflict } from '@airport/moving-walkway';
-export declare type RemoteSchemaIndex = SchemaIndex;
-export declare type RemoteSchemaVersionId = SchemaVersionId;
+export declare type RemoteApplicationIndex = ApplicationIndex;
+export declare type RemoteApplicationVersionId = ApplicationVersionId;
 export declare type RemoteActorId = Actor_Id;
 /**
- * Result of comparing to versions of a given schema.
+ * Result of comparing to versions of a given application.
  */
-export declare enum SchemaComparisonResult {
-    MESSAGE_SCHEMA_VERSION_IS_LOWER = -1,
-    MESSAGE_SCHEMA_VERSION_IS_EQUAL = 0,
-    MESSAGE_SCHEMA_VERSION_IS_HIGHER = 1
+export declare enum ApplicationComparisonResult {
+    MESSAGE_APPLICATION_VERSION_IS_LOWER = -1,
+    MESSAGE_APPLICATION_VERSION_IS_EQUAL = 0,
+    MESSAGE_APPLICATION_VERSION_IS_HIGHER = 1
 }
 export interface ISyncRepoTransHistory extends IRepositoryTransactionHistory {
     isLocal?: boolean;
@@ -29,15 +29,15 @@ export interface RecordUpdate {
     recordHistoryId: RecordHistoryId;
 }
 export interface ISyncInUtils {
-    ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: Repository_Id, operationHistory: IOperationHistory, recordMapBySchemaTableAndRepository: Map<SchemaVersionId, Map<EntityId, Map<Repository_Id, Map<CI, V>>>>): Map<CI, V>;
+    ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: Repository_Id, operationHistory: IOperationHistory, recordMapByApplicationTableAndRepository: Map<ApplicationVersionId, Map<EntityId, Map<Repository_Id, Map<CI, V>>>>): Map<CI, V>;
 }
 export interface Stage1SyncedInDataProcessingResult {
-    recordCreations: Map<SchemaVersionId, Map<EntityId, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>;
-    recordDeletions: Map<SchemaVersionId, Map<EntityId, Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>;
-    recordUpdates: Map<SchemaVersionId, Map<EntityId, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>;
+    recordCreations: Map<ApplicationVersionId, Map<EntityId, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>;
+    recordDeletions: Map<ApplicationVersionId, Map<EntityId, Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>;
+    recordUpdates: Map<ApplicationVersionId, Map<EntityId, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>;
     syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>;
 }
 export declare class SyncInUtils implements ISyncInUtils {
-    ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: Repository_Id, operationHistory: IOperationHistory, recordMapBySchemaTableAndRepository: Map<SchemaVersionId, Map<EntityId, Map<Repository_Id, Map<CI, V>>>>): Map<CI, V>;
+    ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: Repository_Id, operationHistory: IOperationHistory, recordMapByApplicationTableAndRepository: Map<ApplicationVersionId, Map<EntityId, Map<Repository_Id, Map<CI, V>>>>): Map<CI, V>;
 }
 //# sourceMappingURL=SyncInUtils.d.ts.map

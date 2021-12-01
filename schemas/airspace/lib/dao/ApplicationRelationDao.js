@@ -1,6 +1,6 @@
 import { DI } from '@airport/di';
 import { undefinedToNull } from '@airport/ground-control';
-import { SCHEMA_RELATION_DAO } from '../tokens';
+import { APPLICATION_RELATION_DAO } from '../tokens';
 import { BaseApplicationRelationDao, Q, } from '../generated/generated';
 export class ApplicationRelationDao extends BaseApplicationRelationDao {
     async findAllForProperties(propertyIds) {
@@ -51,5 +51,5 @@ export class ApplicationRelationDao extends BaseApplicationRelationDao {
         });
     }
 }
-DI.set(SCHEMA_RELATION_DAO, ApplicationRelationDao);
+DI.set(APPLICATION_RELATION_DAO, ApplicationRelationDao);
 //# sourceMappingURL=ApplicationRelationDao.js.map

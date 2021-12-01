@@ -4,31 +4,31 @@ import { ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
 import { RECORD_UPDATE_STAGE_DAO } from '@airport/moving-walkway';
 import { STAGE2_SYNCED_IN_DATA_PROCESSOR } from '../../tokens';
 export class Stage2SyncedInDataProcessor {
-    async applyChangesToDb(stage1Result, schemasBySchemaVersionIdMap) {
+    async applyChangesToDb(stage1Result, applicationsByApplicationVersionIdMap) {
         const [airDb, dbFacade, recordUpdateStageDao] = await container(this).get(AIRPORT_DATABASE, DATABASE_FACADE, RECORD_UPDATE_STAGE_DAO);
-        await this.performCreates(stage1Result.recordCreations, schemasBySchemaVersionIdMap, airDb, dbFacade);
-        await this.performUpdates(stage1Result.recordUpdates, schemasBySchemaVersionIdMap, recordUpdateStageDao);
-        await this.performDeletes(stage1Result.recordDeletions, schemasBySchemaVersionIdMap, airDb, dbFacade);
+        await this.performCreates(stage1Result.recordCreations, applicationsByApplicationVersionIdMap, airDb, dbFacade);
+        await this.performUpdates(stage1Result.recordUpdates, applicationsByApplicationVersionIdMap, recordUpdateStageDao);
+        await this.performDeletes(stage1Result.recordDeletions, applicationsByApplicationVersionIdMap, airDb, dbFacade);
     }
     /**
-     * Remote changes come in with SchemaVersionIds not SchemaIndexes, so it makes
-     * sense to keep this structure.  NOTE: only one version of a given schema is
+     * Remote changes come in with ApplicationVersionIds not ApplicationIndexes, so it makes
+     * sense to keep this structure.  NOTE: only one version of a given application is
      * processed at one time:
      *
-     *  Changes for a schema version below the one in this Terminal must first be upgraded.
-     *  Terminal itself must first be upgraded to newer schema versions, before changes
-     *  for that schema version are processed.
+     *  Changes for a application version below the one in this Terminal must first be upgraded.
+     *  Terminal itself must first be upgraded to newer application versions, before changes
+     *  for that application version are processed.
      *
-     *  To tie in a given SchemaVersionId to its SchemaIndex an additional mapping data
+     *  To tie in a given ApplicationVersionId to its ApplicationIndex an additional mapping data
      *  structure is passed in.
      */
-    async performCreates(recordCreations, schemasBySchemaVersionIdMap, airDb, dbFacade) {
-        for (const [schemaVersionId, creationInSchemaMap] of recordCreations) {
-            for (const [tableIndex, creationInTableMap] of creationInSchemaMap) {
-                const schemaIndex = schemasBySchemaVersionIdMap[schemaVersionId];
-                const dbEntity = airDb.schemas[schemaIndex].currentVersion[0]
-                    .schemaVersion.entities[tableIndex];
-                const qEntity = airDb.qSchemas[schemaIndex][dbEntity.name];
+    async performCreates(recordCreations, applicationsByApplicationVersionIdMap, airDb, dbFacade) {
+        for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
+            for (const [tableIndex, creationInTableMap] of creationInApplicationMap) {
+                const applicationIndex = applicationsByApplicationVersionIdMap[applicationVersionId];
+                const dbEntity = airDb.applications[applicationIndex].currentVersion[0]
+                    .applicationVersion.entities[tableIndex];
+                const qEntity = airDb.qApplications[applicationIndex][dbEntity.name];
                 const columns = [
                     qEntity.repository.id,
                     qEntity.actor.id,
@@ -78,14 +78,14 @@ export class Stage2SyncedInDataProcessor {
             }
         }
     }
-    async performUpdates(recordUpdates, schemasBySchemaVersionIdMap, recordUpdateStageDao) {
+    async performUpdates(recordUpdates, applicationsByApplicationVersionIdMap, recordUpdateStageDao) {
         const finalUpdateMap = new Map();
         const recordUpdateStage = [];
         // Build the final update data structure
-        for (const [schemaVersionId, schemaUpdateMap] of recordUpdates) {
-            const finalSchemaUpdateMap = ensureChildJsMap(finalUpdateMap, schemaVersionId);
-            for (const [tableIndex, tableUpdateMap] of schemaUpdateMap) {
-                const finalTableUpdateMap = ensureChildJsMap(finalSchemaUpdateMap, tableIndex);
+        for (const [applicationVersionId, applicationUpdateMap] of recordUpdates) {
+            const finalApplicationUpdateMap = ensureChildJsMap(finalUpdateMap, applicationVersionId);
+            for (const [tableIndex, tableUpdateMap] of applicationUpdateMap) {
+                const finalTableUpdateMap = ensureChildJsMap(finalApplicationUpdateMap, tableIndex);
                 for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
                     for (const [actorId, actorUpdates] of repositoryUpdateMap) {
                         for (const [actorRecordId, recordUpdateMap] of actorUpdates) {
@@ -94,7 +94,7 @@ export class Stage2SyncedInDataProcessor {
                                 .add(actorRecordId);
                             for (const [columnIndex, columnUpdate] of recordUpdateMap) {
                                 recordUpdateStage.push([
-                                    schemaVersionId,
+                                    applicationVersionId,
                                     tableIndex,
                                     repositoryId,
                                     actorId,
@@ -110,21 +110,21 @@ export class Stage2SyncedInDataProcessor {
         }
         await recordUpdateStageDao.insertValues(recordUpdateStage);
         // Perform the updates
-        for (const [schemaVersionId, updateMapForSchema] of finalUpdateMap) {
-            const schema = schemasBySchemaVersionIdMap.get(schemaVersionId);
-            for (const [tableIndex, updateMapForTable] of updateMapForSchema) {
-                await this.runUpdatesForTable(schema.index, schemaVersionId, tableIndex, updateMapForTable, recordUpdateStageDao);
+        for (const [applicationVersionId, updateMapForApplication] of finalUpdateMap) {
+            const application = applicationsByApplicationVersionIdMap.get(applicationVersionId);
+            for (const [tableIndex, updateMapForTable] of updateMapForApplication) {
+                await this.runUpdatesForTable(application.index, applicationVersionId, tableIndex, updateMapForTable, recordUpdateStageDao);
             }
         }
         await recordUpdateStageDao.delete();
     }
-    async performDeletes(recordDeletions, schemasBySchemaVersionIdMap, airDb, dbFacade) {
-        for (const [schemaVersionId, deletionInSchemaMap] of recordDeletions) {
-            const schema = schemasBySchemaVersionIdMap.get(schemaVersionId);
-            for (const [tableIndex, deletionInTableMap] of deletionInSchemaMap) {
-                const dbEntity = airDb.schemas[schema.index].currentVersion[0]
-                    .schemaVersion.entities[tableIndex];
-                const qEntity = airDb.qSchemas[schema.index][dbEntity.name];
+    async performDeletes(recordDeletions, applicationsByApplicationVersionIdMap, airDb, dbFacade) {
+        for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
+            const application = applicationsByApplicationVersionIdMap.get(applicationVersionId);
+            for (const [tableIndex, deletionInTableMap] of deletionInApplicationMap) {
+                const dbEntity = airDb.applications[application.index].currentVersion[0]
+                    .applicationVersion.entities[tableIndex];
+                const qEntity = airDb.qApplications[application.index][dbEntity.name];
                 let numClauses = 0;
                 let repositoryWhereFragments = [];
                 for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
@@ -189,19 +189,19 @@ export class Stage2SyncedInDataProcessor {
      * Run all updates for a particular table.  One update per updated column combination
      * is run.
      *
-     * @param {SchemaIndex} schemaIndex
+     * @param {ApplicationIndex} applicationIndex
      * @param {TableIndex} tableIndex
      * @param {ColumnUpdateKeyMap} updateKeyMap
      * @returns {Promise<void>}
      */
-    async runUpdatesForTable(schemaIndex, schemaVersionId, tableIndex, updateKeyMap, recordUpdateStageDao) {
+    async runUpdatesForTable(applicationIndex, applicationVersionId, tableIndex, updateKeyMap, recordUpdateStageDao) {
         for (const columnValueUpdate of updateKeyMap.values()) {
             const updatedColumns = columnValueUpdate.updatedColumns;
             if (updatedColumns) {
-                await recordUpdateStageDao.updateEntityWhereIds(schemaIndex, schemaVersionId, tableIndex, columnValueUpdate.recordKeyMap, updatedColumns);
+                await recordUpdateStageDao.updateEntityWhereIds(applicationIndex, applicationVersionId, tableIndex, columnValueUpdate.recordKeyMap, updatedColumns);
             }
             // Traverse down into nested column update combinations
-            await this.runUpdatesForTable(schemaIndex, schemaVersionId, tableIndex, columnValueUpdate.childColumnUpdateKeyMap, recordUpdateStageDao);
+            await this.runUpdatesForTable(applicationIndex, applicationVersionId, tableIndex, columnValueUpdate.childColumnUpdateKeyMap, recordUpdateStageDao);
         }
     }
 }

@@ -13,8 +13,8 @@ import {
 import {
 	Actor,
 } from '@airport/holding-pattern';
-import { SCHEMA_INITIALIZER } from '@airport/landing';
-import { IApplication, SCHEMA_DAO } from '@airport/airspace';
+import { APPLICATION_INITIALIZER } from '@airport/landing';
+import { IApplication, APPLICATION_DAO } from '@airport/airspace';
 import {
 	IDatabaseManager,
 	TRANSACTIONAL_SERVER
@@ -45,7 +45,7 @@ export class DatabaseManager
 
 		await this.installStarterApplication(true, false, context);
 
-		const applicationInitializer = await container(this).get(SCHEMA_INITIALIZER);
+		const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER);
 		await applicationInitializer.stage(applications, context);
 		(server as any).tempActor = null;
 		this.initialized = true;
@@ -71,7 +71,7 @@ export class DatabaseManager
 				await storeDriver.dropTable('air__holding_pattern', 'REPOSITORY_RECORD_HISTORY')
 				await storeDriver.dropTable('air__holding_pattern', 'REPOSITORY_RECORD_HISTORY_NEW_VALUES')
 				await storeDriver.dropTable('air__holding_pattern', 'REPOSITORY_RECORD_HISTORY_OLD_VALUES')
-				await storeDriver.dropTable('air__holding_pattern', 'REPOSITORY_SCHEMAS')
+				await storeDriver.dropTable('air__holding_pattern', 'REPOSITORY_APPLICATIONS')
 				await storeDriver.dropTable('air__holding_pattern', 'REPOSITORY_TRANSACTION_HISTORY')
 				await storeDriver.dropTable('air__holding_pattern', 'REPO_TRANS_HISTORY_CHANGED_REPOSITORY_ACTORS')
 				await storeDriver.dropTable('air__holding_pattern', 'TRANSACTION_HISTORY')
@@ -80,15 +80,15 @@ export class DatabaseManager
 				await storeDriver.dropTable('air__territory', 'DOMAINS')
 				await storeDriver.dropTable('air__territory', 'PACKAGED_UNITS')
 				await storeDriver.dropTable('air__territory', 'PACKAGES')
-				await storeDriver.dropTable('air__traffic_pattern', 'SCHEMAS')
-				await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_COLUMNS')
-				await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_ENTITIES')
-				await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_PROPERTIES')
-				await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_PROPERTY_COLUMNS')
-				await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_REFERENCES')
-				await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_RELATIONS')
-				await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_RELATION_COLUMNS')
-				await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_VERSIONS')
+				await storeDriver.dropTable('air__traffic_pattern', 'APPLICATIONS')
+				await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_COLUMNS')
+				await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_ENTITIES')
+				await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_PROPERTIES')
+				await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_PROPERTY_COLUMNS')
+				await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_REFERENCES')
+				await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_RELATIONS')
+				await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_RELATION_COLUMNS')
+				await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_VERSIONS')
 				await storeDriver.dropTable('air__travel_document_checkpoint', 'Agt')
 				await storeDriver.dropTable('air__travel_document_checkpoint', 'TERMINAL_AGTS')
 				await storeDriver.dropTable('air__travel_document_checkpoint', 'Terminal')
@@ -147,7 +147,7 @@ export class DatabaseManager
 		context: IContext,
 		jsonApplications?: JsonApplicationWithLastIds[]
 	): Promise<void> {
-		const applicationDao = await container(this).get(SCHEMA_DAO);
+		const applicationDao = await container(this).get(APPLICATION_DAO);
 
 		const applications = await applicationDao.findAll()
 		const existingApplicationMap: Map<string, IApplication> = new Map()
@@ -196,7 +196,7 @@ export class DatabaseManager
 
 		// if (applicationsToCreate.length) {
 		const [applicationInitializer, server] = await container(this)
-			.get(SCHEMA_INITIALIZER, TRANSACTIONAL_SERVER);
+			.get(APPLICATION_INITIALIZER, TRANSACTIONAL_SERVER);
 		(server as any).tempActor = new Actor();
 		// await applicationInitializer.initialize(applicationsToCreate, context, existingApplicationsAreHydrated);
 		await applicationInitializer.initialize(applicationsToCreate, existingApplicationMap, context, true);
@@ -246,13 +246,13 @@ export class DatabaseManager
 		context: IContext,
 	) {
 		const blueprintFile = await import('@airport/blueprint');
-		const applicationInitializer = await container(this).get(SCHEMA_INITIALIZER);
+		const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER);
 		if (stage) {
 			await applicationInitializer.stage(blueprintFile.BLUEPRINT as any, context);
 		} else if (hydrate) {
 			await applicationInitializer.hydrate(blueprintFile.BLUEPRINT as any, context);
 			// Below appears to be not needed - hydrate gets all applications
-			// const applicationDao = await container(this).get(SCHEMA_DAO)
+			// const applicationDao = await container(this).get(APPLICATION_DAO)
 			// const applications = await applicationDao.findAll()
 			// const jsonApplicationNameSet: Set<string> = new Set()
 			// blueprintFile.BLUEPRINT

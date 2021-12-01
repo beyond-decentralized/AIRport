@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@airport/di": "0.0.1",
-    "@airport/functionality-demo-application": "0.0.1",
+    "@airport/functionality-demo-schema": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/web-tower": "0.0.1",
     "sirv-cli": "^1.0.0"

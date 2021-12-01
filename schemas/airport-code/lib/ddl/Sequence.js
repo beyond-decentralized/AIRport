@@ -9,7 +9,7 @@ let Sequence = class Sequence {
 };
 __decorate([
     Id(),
-    Column({ name: 'SCHEMA_INDEX', nullable: false }),
+    Column({ name: 'APPLICATION_INDEX', nullable: false }),
     DbNumber()
 ], Sequence.prototype, "applicationIndex", void 0);
 __decorate([

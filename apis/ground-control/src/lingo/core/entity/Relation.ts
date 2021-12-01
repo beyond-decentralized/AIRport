@@ -29,7 +29,7 @@ export enum JSONRelationType {
 	// Join of an entity with the ON clause
 	ENTITY_JOIN_ON = 'ENTITY_JOIN_ON',
 	// Join of an entity via a application relation
-	ENTITY_SCHEMA_RELATION = 'ENTITY_SCHEMA_RELATION',
+	ENTITY_APPLICATION_RELATION = 'ENTITY_APPLICATION_RELATION',
 	// The root entity in a join
 	ENTITY_ROOT = 'ENTITY_ROOT',
 	// Join of a sub-query (with the ON clause)

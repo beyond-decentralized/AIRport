@@ -132,7 +132,7 @@ export class TransactionManager extends AbstractMutationManager {
     // 		);
     // 		await this.offlineDeltaStore.markChangesAsSynced(transaction.repository,
     // [transaction]);
-    // this.queries.markQueriesToRerun(transaction.transactionHistory.schemaMap); } }
+    // this.queries.markQueriesToRerun(transaction.transactionHistory.applicationMap); } }
     clearTransaction() {
         this.signatureOfTransactionInProgress = null;
         this.transactionInProgress = null;
@@ -145,32 +145,32 @@ export class TransactionManager extends AbstractMutationManager {
         if (!transactionHistory.allRecordHistory.length) {
             return false;
         }
-        let schemaMap = transactionHistory.schemaMap;
+        let applicationMap = transactionHistory.applicationMap;
         const transHistoryIds = await idGenerator.generateTransactionHistoryIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
-        schemaMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true);
+        applicationMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true);
         transactionHistory.id = transHistoryIds.transactionHistoryId;
         await this.doInsertValues(transaction, Q.TransactionHistory, [transactionHistory], context);
-        schemaMap.ensureEntity(Q.RepositoryTransactionHistory.__driver__.dbEntity, true);
+        applicationMap.ensureEntity(Q.RepositoryTransactionHistory.__driver__.dbEntity, true);
         transactionHistory.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
             repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index];
         });
         await this.doInsertValues(transaction, Q.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories, context);
-        schemaMap.ensureEntity(Q.OperationHistory.__driver__.dbEntity, true);
+        applicationMap.ensureEntity(Q.OperationHistory.__driver__.dbEntity, true);
         transactionHistory.allOperationHistory.forEach((operationHistory, index) => {
             operationHistory.id = transHistoryIds.operationHistoryIds[index];
         });
         await this.doInsertValues(transaction, Q.OperationHistory, transactionHistory.allOperationHistory, context);
-        schemaMap.ensureEntity(Q.RecordHistory.__driver__.dbEntity, true);
+        applicationMap.ensureEntity(Q.RecordHistory.__driver__.dbEntity, true);
         transactionHistory.allRecordHistory.forEach((recordHistory, index) => {
             recordHistory.id = transHistoryIds.recordHistoryIds[index];
         });
         await this.doInsertValues(transaction, Q.RecordHistory, transactionHistory.allRecordHistory, context);
         if (transactionHistory.allRecordHistoryNewValues.length) {
-            schemaMap.ensureEntity(Q.RecordHistoryNewValue.__driver__.dbEntity, true);
+            applicationMap.ensureEntity(Q.RecordHistoryNewValue.__driver__.dbEntity, true);
             await this.doInsertValues(transaction, Q.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues, context);
         }
         if (transactionHistory.allRecordHistoryOldValues.length) {
-            schemaMap.ensureEntity(Q.RecordHistoryOldValue.__driver__.dbEntity, true);
+            applicationMap.ensureEntity(Q.RecordHistoryOldValue.__driver__.dbEntity, true);
             await this.doInsertValues(transaction, Q.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues, context);
         }
         return true;

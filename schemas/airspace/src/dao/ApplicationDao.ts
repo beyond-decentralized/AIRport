@@ -15,7 +15,7 @@ import {
 	ApplicationStatus,
 	ApplicationVersionId
 } from '@airport/ground-control'
-import { SCHEMA_DAO } from '../tokens'
+import { APPLICATION_DAO } from '../tokens'
 import {
 	BaseApplicationDao,
 	IBaseApplicationDao,
@@ -334,4 +334,4 @@ export class ApplicationDao
 	}
 }
 
-DI.set(SCHEMA_DAO, ApplicationDao)
+DI.set(APPLICATION_DAO, ApplicationDao)

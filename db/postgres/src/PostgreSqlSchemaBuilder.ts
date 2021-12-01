@@ -13,7 +13,7 @@ import {
 	SQLDataType,
 	STORE_DRIVER
 } from '@airport/ground-control'
-import { SCHEMA_BUILDER, SqlApplicationBuilder } from '@airport/landing'
+import { APPLICATION_BUILDER, SqlApplicationBuilder } from '@airport/landing'
 
 export class PostgreSqlApplicationBuilder
 	extends SqlApplicationBuilder {
@@ -24,7 +24,7 @@ export class PostgreSqlApplicationBuilder
 		context: IContext,
 	): Promise<void> {
 		const applicationName = getApplicationName(jsonApplication)
-		const createApplicationStatement = `CREATE SCHEMA ${applicationName}`
+		const createApplicationStatement = `CREATE APPLICATION ${applicationName}`
 
 		await storeDriver.query(QueryType.DDL, createApplicationStatement, [],
 			context, false)
@@ -188,4 +188,4 @@ export class PostgreSqlApplicationBuilder
 
 }
 
-DI.set(SCHEMA_BUILDER, PostgreSqlApplicationBuilder)
+DI.set(APPLICATION_BUILDER, PostgreSqlApplicationBuilder)

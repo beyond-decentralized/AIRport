@@ -31,7 +31,7 @@ import {
 import {
 	IApplication,
 	IApplicationDao,
-	SCHEMA_DAO
+	APPLICATION_DAO
 }                                          from '@airport/airspace'
 import {ITerminal}                         from '@airport/travel-document-checkpoint'
 import {SYNC_OUT_REPOSITORY_TRANSACTION_BLOCK_CREATOR} from '../../tokens'
@@ -56,7 +56,7 @@ export class SyncOutRepositoryTransactionBlockCreator
 		const [actorDao, repositoryDao, repositoryTransactionBlockDao,
 			      repositoryTransactionHistoryUpdateStageDao, applicationDao,
 			      sharingNodeRepositoryDao] = await container(this).get(ACTOR_DAO, REPOSITORY_DAO,
-			REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, SCHEMA_DAO,
+			REPO_TRANS_BLOCK_DAO, REPO_TRANS_HISTORY_UPDATE_STAGE_DAO, APPLICATION_DAO,
 			SHARING_NODE_REPOSITORY_DAO)
 
 		const [sharingNodeIdMapByRepositoryId,

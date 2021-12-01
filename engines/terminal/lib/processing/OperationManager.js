@@ -80,7 +80,7 @@ export class OperationManager {
         return saveResult;
     }
     async internalCreate(entities, actor, transaction, saveResult, context, ensureGeneratedValues) {
-        const qEntity = context.ioc.airDb.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name];
+        const qEntity = context.ioc.airDb.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
         let rawInsert = {
             insertInto: qEntity,
             columns: context.ioc.metadataUtils.getAllInsertableColumns(qEntity),
@@ -101,7 +101,7 @@ export class OperationManager {
                     const dbRelation = dbProperty.relation[0];
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, propertyNameChains) => {
+                            context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, propertyNameChains) => {
                                 if (dbColumn.isGenerated) {
                                     return;
                                 }
@@ -167,7 +167,7 @@ export class OperationManager {
      */
     async internalUpdate(entities, actor, transaction, saveResult, context) {
         const entityStateManager = await container(this).get(ENTITY_STATE_MANAGER);
-        const qEntity = context.ioc.airDb.qSchemas[context.dbEntity.schemaVersion.schema.index][context.dbEntity.name];
+        const qEntity = context.ioc.airDb.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
         for (const entity of entities) {
             const setFragment = {};
             const idWhereFragments = [];
@@ -197,7 +197,7 @@ export class OperationManager {
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
                             let propertyOriginalValue = originalEntity[dbProperty.name];
-                            context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (_dbColumn, value, propertyNameChains) => {
+                            context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (_dbColumn, value, propertyNameChains) => {
                                 let originalColumnValue = propertyOriginalValue;
                                 let columnValue = value;
                                 let valuePropertyNameChain = value;
@@ -271,7 +271,7 @@ export class OperationManager {
     }
     async internalDelete(entities, actor, transaction, saveResult, context) {
         const dbEntity = context.dbEntity;
-        const qEntity = context.ioc.airDb.qSchemas[dbEntity.schemaVersion.schema.index][dbEntity.name];
+        const qEntity = context.ioc.airDb.qApplications[dbEntity.applicationVersion.application.index][dbEntity.name];
         const idWhereFragments = [];
         const valuesMapByColumn = [];
         let entityIdWhereClauses = [];
@@ -300,7 +300,7 @@ export class OperationManager {
                 else {
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, dbEntity, (dbColumn, value, propertyNameChains) => {
+                            context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, dbEntity, (dbColumn, value, propertyNameChains) => {
                                 if (dbProperty.isId && valuesMapByColumn[dbColumn.index] === undefined) {
                                     let idQProperty = qEntity;
                                     for (const propertyNameLink of propertyNameChains[0]) {

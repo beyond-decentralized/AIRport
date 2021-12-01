@@ -3,7 +3,7 @@ import {
 	PropertyId,
 	undefinedToNull
 } from '@airport/ground-control'
-import { SCHEMA_RELATION_DAO } from '../tokens'
+import { APPLICATION_RELATION_DAO } from '../tokens'
 import {
 	BaseApplicationRelationDao,
 	IBaseApplicationRelationDao,
@@ -84,4 +84,4 @@ export class ApplicationRelationDao
 	}
 
 }
-DI.set(SCHEMA_RELATION_DAO, ApplicationRelationDao)
+DI.set(APPLICATION_RELATION_DAO, ApplicationRelationDao)

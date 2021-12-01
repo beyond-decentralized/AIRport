@@ -95,7 +95,7 @@ export class EntityStateManager {
             if (throwIfNotFound) {
                 let entityDescription;
                 if (dbEntity) {
-                    entityDescription = dbEntity.schemaVersion.schema.name + '.' + dbEntity.name;
+                    entityDescription = dbEntity.applicationVersion.application.name + '.' + dbEntity.name;
                 }
                 else {
                     entityDescription = JSON.stringify(entity);

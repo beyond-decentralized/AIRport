@@ -1,4 +1,4 @@
-import { markerFunction } from '@airport/functionality-demo-application/lib/server'
+import { markerFunction } from '@airport/functionality-demo-schema/lib/server'
 
 markerFunction()
 

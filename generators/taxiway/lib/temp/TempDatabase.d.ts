@@ -1,10 +1,10 @@
-import { JsonSchema } from '@airport/ground-control';
-import { JsonSchemaWithLastIds } from '@airport/security-check';
+import { JsonApplication } from '@airport/ground-control';
+import { JsonApplicationWithLastIds } from '@airport/security-check';
 export interface ITempDatabase {
-    initialize(schemas: JsonSchema[]): Promise<void>;
+    initialize(applications: JsonApplication[]): Promise<void>;
 }
 export declare class TempDatabase implements ITempDatabase {
     private tempDbInitialized;
-    initialize(schemas: JsonSchemaWithLastIds[]): Promise<void>;
+    initialize(applications: JsonApplicationWithLastIds[]): Promise<void>;
 }
 //# sourceMappingURL=TempDatabase.d.ts.map

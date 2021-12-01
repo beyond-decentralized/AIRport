@@ -1,9 +1,9 @@
-import { FIELD_UTILS, InsertValues, QUERY_UTILS, SCHEMA_UTILS, } from '@airport/air-control';
+import { FIELD_UTILS, InsertValues, QUERY_UTILS, APPLICATION_UTILS, } from '@airport/air-control';
 import { container } from '@airport/di';
 export class AbstractMutationManager {
-    getPortableQuery(schemaIndex, tableIndex, query, queryResultType, queryUtils, fieldUtils) {
+    getPortableQuery(applicationIndex, tableIndex, query, queryResultType, queryUtils, fieldUtils) {
         return {
-            schemaIndex,
+            applicationIndex,
             tableIndex,
             jsonQuery: query.toJSON(queryUtils, fieldUtils),
             parameterMap: query.getParameters(),
@@ -11,7 +11,7 @@ export class AbstractMutationManager {
         };
     }
     async doInsertValues(transaction, q, entities, context) {
-        const [fieldUtils, queryUtils, schemaUtils,] = await container(this).get(FIELD_UTILS, QUERY_UTILS, SCHEMA_UTILS);
+        const [fieldUtils, queryUtils, applicationUtils,] = await container(this).get(FIELD_UTILS, QUERY_UTILS, APPLICATION_UTILS);
         const dbEntity = q.__driver__.dbEntity;
         const columnIndexes = [];
         const columnValueLookups = [];
@@ -22,7 +22,7 @@ export class AbstractMutationManager {
             };
             if (dbProperty.relation && dbProperty.relation.length) {
                 const dbRelation = dbProperty.relation[0];
-                schemaUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
+                applicationUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
                     if (columnIndexes[dbColumn.index]) {
                         return;
                     }
@@ -68,7 +68,7 @@ export class AbstractMutationManager {
             values,
         };
         let insertValues = new InsertValues(rawInsertValues, columnIndexes);
-        let portableQuery = this.getPortableQuery(dbEntity.schemaVersion.schema.index, dbEntity.index, insertValues, null, queryUtils, fieldUtils);
+        let portableQuery = this.getPortableQuery(dbEntity.applicationVersion.application.index, dbEntity.index, insertValues, null, queryUtils, fieldUtils);
         return await transaction.insertValues(portableQuery, context);
     }
 }

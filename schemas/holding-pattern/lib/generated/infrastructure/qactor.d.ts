@@ -48,7 +48,7 @@ export interface ActorEUpdateColumns extends IEntityUpdateColumns {
     UU_ID?: string | IQStringField;
     USER_ID?: number | IQNumberField;
     TERMINAL_ID?: number | IQNumberField;
-    SCHEMA_INDEX?: number | IQNumberField;
+    APPLICATION_INDEX?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).

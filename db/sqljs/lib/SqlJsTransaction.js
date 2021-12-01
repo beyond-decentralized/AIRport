@@ -16,17 +16,17 @@ export class SqlJsTransaction {
     async query(queryType, query, params = [], context, saveTransaction = false) {
         return this.driver.query(queryType, query, params, context, saveTransaction);
     }
-    async doesTableExist(schemaName, tableName, context) {
-        return await this.driver.doesTableExist(schemaName, tableName, context);
+    async doesTableExist(applicationName, tableName, context) {
+        return await this.driver.doesTableExist(applicationName, tableName, context);
     }
-    async dropTable(schemaName, tableName, context) {
-        return await this.driver.dropTable(schemaName, tableName, context);
+    async dropTable(applicationName, tableName, context) {
+        return await this.driver.dropTable(applicationName, tableName, context);
     }
     getEntityTableName(dbEntity, context) {
         return this.driver.getEntityTableName(dbEntity, context);
     }
-    getTableName(schema, table, context) {
-        return this.driver.getTableName(schema, table, context);
+    getTableName(application, table, context) {
+        return this.driver.getTableName(application, table, context);
     }
     async initialize(dbName, context) {
         // Nothing to do

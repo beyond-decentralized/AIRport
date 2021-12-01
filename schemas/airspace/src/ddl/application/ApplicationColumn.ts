@@ -29,7 +29,7 @@ import { VersionedApplicationObject } from './VersionedApplicationObject';
 
 @Entity()
 @Table({
-	name: 'SCHEMA_COLUMNS'
+	name: 'APPLICATION_COLUMNS'
 })
 export class ApplicationColumn
 	extends VersionedApplicationObject {
@@ -82,7 +82,7 @@ export class ApplicationColumn
 	type: SQLDataType;
 
 	@ManyToOne()
-	@JoinColumn({ name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID', nullable: false })
+	@JoinColumn({ name: 'APPLICATION_ENTITY_ID', referencedColumnName: 'ID', nullable: false })
 	entity: ApplicationEntity;
 
 	@OneToMany({ mappedBy: 'column' })

@@ -1,6 +1,6 @@
 import { EntityCandidate } from "../../parser/EntityCandidate";
 import { QCoreEntityBuilder } from "../Builder";
-import { SIndexedEntity } from "../schema/SEntity";
+import { SIndexedEntity } from "../application/SEntity";
 import { FileBuilder } from './FileBuilder';
 import { QColumnBuilder } from "./QColumnBuilder";
 import { QPropertyBuilder } from "./QPropertyBuilder";

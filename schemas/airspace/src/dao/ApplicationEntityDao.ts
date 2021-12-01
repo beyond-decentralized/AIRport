@@ -7,7 +7,7 @@ import {
 	Q,
 	QApplicationEntity,
 }                          from '../generated/generated'
-import {SCHEMA_ENTITY_DAO} from '../tokens'
+import {APPLICATION_ENTITY_DAO} from '../tokens'
 
 export interface IApplicationEntityDao
 	extends IBaseApplicationEntityDao {
@@ -76,4 +76,4 @@ export class ApplicationEntityDao
 
 }
 
-DI.set(SCHEMA_ENTITY_DAO, ApplicationEntityDao)
+DI.set(APPLICATION_ENTITY_DAO, ApplicationEntityDao)

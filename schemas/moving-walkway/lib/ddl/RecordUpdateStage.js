@@ -18,14 +18,14 @@ __decorate([
 ], RecordUpdateStage.prototype, "id", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'SCHEMA_VERSION_ID', referencedColumnName: 'ID' })
-], RecordUpdateStage.prototype, "schemaVersion", void 0);
+    JoinColumn({ name: 'APPLICATION_VERSION_ID', referencedColumnName: 'ID' })
+], RecordUpdateStage.prototype, "applicationVersion", void 0);
 __decorate([
     ManyToOne()
     // FIXME: verify that these records don't make it into serialized
     // repository ledger (and hence, that using local ids is safe)
     ,
-    JoinColumn({ name: 'SCHEMA_ENTITY_ID', referencedColumnName: 'ID' })
+    JoinColumn({ name: 'APPLICATION_ENTITY_ID', referencedColumnName: 'ID' })
 ], RecordUpdateStage.prototype, "entity", void 0);
 __decorate([
     ManyToOne(),
@@ -44,7 +44,7 @@ __decorate([
     // FIXME: verify that these records don't make it into serialized
     // repository ledger (and hence, that using local ids is safe)
     ,
-    JoinColumn({ name: 'SCHEMA_COLUMN_ID', referencedColumnName: 'ID' })
+    JoinColumn({ name: 'APPLICATION_COLUMN_ID', referencedColumnName: 'ID' })
 ], RecordUpdateStage.prototype, "column", void 0);
 __decorate([
     Column({ name: 'UPDATED_VALUE' })

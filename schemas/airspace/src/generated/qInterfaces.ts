@@ -1,4 +1,3 @@
-export * from './application/qdomain';
 export * from './application/qapplication';
 export * from './application/qapplicationcolumn';
 export * from './application/qapplicationcurrentversion';
@@ -10,4 +9,5 @@ export * from './application/qapplicationreference';
 export * from './application/qapplicationrelation';
 export * from './application/qapplicationrelationcolumn';
 export * from './application/qapplicationversion';
+export * from './application/qdomain';
 export * from './application/qversionedapplicationobject';

@@ -10,7 +10,7 @@ import {
 	Q,
 	QApplicationColumn
 } from '../generated/generated'
-import { SCHEMA_COLUMN_DAO } from '../tokens'
+import { APPLICATION_COLUMN_DAO } from '../tokens'
 
 export interface IApplicationColumnDao
 	extends IBaseApplicationColumnDao {
@@ -89,4 +89,4 @@ export class ApplicationColumnDao
 
 }
 
-DI.set(SCHEMA_COLUMN_DAO, ApplicationColumnDao)
+DI.set(APPLICATION_COLUMN_DAO, ApplicationColumnDao)

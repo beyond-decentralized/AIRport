@@ -2,10 +2,10 @@ import { UPDATE_CACHE_MANAGER } from "@airport/air-control";
 import { DI } from "@airport/di";
 import { EntityRelationType, EntityState, SQLDataType } from "@airport/ground-control";
 export class UpdateCacheManager {
-    saveOriginalValues(entity, dbEntity, entityStateManager, schemaUtils) {
+    saveOriginalValues(entity, dbEntity, entityStateManager, applicationUtils) {
         if (entity instanceof Array) {
             for (let i = 0; i < entity.length; i++) {
-                this.saveOriginalValues(entity[i], dbEntity, entityStateManager, schemaUtils);
+                this.saveOriginalValues(entity[i], dbEntity, entityStateManager, applicationUtils);
             }
             return;
         }
@@ -23,7 +23,7 @@ export class UpdateCacheManager {
                 if (dbProperty.relation[0].relationType === EntityRelationType.MANY_TO_ONE) {
                     // Save the nested child object Ids in the original values of this object
                     // in case the object behind this relation is changed
-                    schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (_dbColumn, propertyNameChains) => {
+                    applicationUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (_dbColumn, propertyNameChains) => {
                         for (let propertyNameChain of propertyNameChains) {
                             let nestedProperty = entity;
                             let currentPropertyOriginalValue = originalValuesObject;
@@ -50,17 +50,17 @@ export class UpdateCacheManager {
                         }
                     });
                 }
-                this.saveOriginalValues(property, dbProperty.relation[0].relationEntity, entityStateManager, schemaUtils);
+                this.saveOriginalValues(property, dbProperty.relation[0].relationEntity, entityStateManager, applicationUtils);
             }
             else {
                 originalValuesObject[dbProperty.name] = entity[dbProperty.name];
             }
         }
     }
-    setOperationState(entityCopy, dbEntity, entityStateManager, schemaUtils, processedEntities) {
+    setOperationState(entityCopy, dbEntity, entityStateManager, applicationUtils, processedEntities) {
         if (entityCopy instanceof Array) {
             for (var i = 0; i < entityCopy.length; i++) {
-                this.setOperationState(entityCopy[i], dbEntity, entityStateManager, schemaUtils, processedEntities);
+                this.setOperationState(entityCopy[i], dbEntity, entityStateManager, applicationUtils, processedEntities);
             }
             return;
         }
@@ -83,7 +83,7 @@ export class UpdateCacheManager {
                 }
             }
             if (dbProperty.relation && dbProperty.relation.length) {
-                schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (_dbColumn, propertyNameChains) => {
+                applicationUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (_dbColumn, propertyNameChains) => {
                     for (let propertyNameChain of propertyNameChains) {
                         let nestedProperty = entityCopy;
                         for (let i = 0; i < propertyNameChain.length; i++) {
@@ -119,7 +119,7 @@ export class UpdateCacheManager {
                         continue;
                     }
                     const dbRelation = dbProperty.relation[0];
-                    schemaUtils.forEachColumnTypeOfRelation(dbRelation, (_dbColumn, propertyNameChains) => {
+                    applicationUtils.forEachColumnTypeOfRelation(dbRelation, (_dbColumn, propertyNameChains) => {
                         // const firstPropertyNameChain = propertyNameChains[0];
                         for (const propertyNameChain of propertyNameChains) {
                             let value = entityCopy;
@@ -203,7 +203,7 @@ export class UpdateCacheManager {
         for (const dbProperty of dbEntity.properties) {
             const property = entityCopy[dbProperty.name];
             if (property && dbProperty.relation && dbProperty.relation.length) {
-                this.setOperationState(property, dbProperty.relation[0].relationEntity, entityStateManager, schemaUtils, processedEntities);
+                this.setOperationState(property, dbProperty.relation[0].relationEntity, entityStateManager, applicationUtils, processedEntities);
             }
         }
         if (!entityState) {
@@ -216,14 +216,14 @@ export class UpdateCacheManager {
         }
         entityCopy[entityStateManager.getStateFieldName()] = entityState;
     }
-    afterSaveModifications(entity, dbEntity, saveResult, entityStateManager, schemaUtils, processedEntities) {
-        this.updateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager, schemaUtils, new Set());
+    afterSaveModifications(entity, dbEntity, saveResult, entityStateManager, applicationUtils, processedEntities) {
+        this.updateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager, applicationUtils, new Set());
         this.removeDeletedEntities(entity, dbEntity, saveResult, entityStateManager, processedEntities);
     }
-    updateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager, schemaUtils, processedEntities) {
+    updateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager, applicationUtils, processedEntities) {
         if (entity instanceof Array) {
             for (let i = 0; i < entity.length; i++) {
-                this.updateOriginalValuesAfterSave(entity[i], dbEntity, saveResult, entityStateManager, schemaUtils, processedEntities);
+                this.updateOriginalValuesAfterSave(entity[i], dbEntity, saveResult, entityStateManager, applicationUtils, processedEntities);
             }
         }
         else {
@@ -234,12 +234,12 @@ export class UpdateCacheManager {
             let operationUniqueId = entityStateManager.getOperationUniqueId(entity, false, dbEntity);
             let originalValuesObject = {};
             if (operationUniqueId) {
-                originalValuesObject = this.doUpdateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager, schemaUtils, processedEntities, operationUniqueId);
+                originalValuesObject = this.doUpdateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager, applicationUtils, processedEntities, operationUniqueId);
             }
             entityStateManager.setOriginalValues(originalValuesObject, entity);
         }
     }
-    doUpdateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager, schemaUtils, processedEntities, operationUniqueId) {
+    doUpdateOriginalValuesAfterSave(entity, dbEntity, saveResult, entityStateManager, applicationUtils, processedEntities, operationUniqueId) {
         let createdRecord = saveResult.created[operationUniqueId];
         if (createdRecord) {
             if (createdRecord !== true) {
@@ -267,7 +267,7 @@ export class UpdateCacheManager {
                 if (dbProperty.relation[0].relationType === EntityRelationType.MANY_TO_ONE) {
                     // Save the nested child object Ids in the original values of this object
                     // in case the object behind this relation is changed
-                    schemaUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (_dbColumn, propertyNameChains) => {
+                    applicationUtils.forEachColumnTypeOfRelation(dbProperty.relation[0], (_dbColumn, propertyNameChains) => {
                         for (let propertyNameChain of propertyNameChains) {
                             let nestedProperty = entity;
                             let currentPropertyOriginalValue = originalValuesObject;
@@ -294,7 +294,7 @@ export class UpdateCacheManager {
                         }
                     });
                 }
-                this.updateOriginalValuesAfterSave(property, dbProperty.relation[0].relationEntity, saveResult, entityStateManager, schemaUtils, processedEntities);
+                this.updateOriginalValuesAfterSave(property, dbProperty.relation[0].relationEntity, saveResult, entityStateManager, applicationUtils, processedEntities);
             }
             else {
                 originalValuesObject[dbProperty.name] = property;

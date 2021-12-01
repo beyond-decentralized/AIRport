@@ -9,17 +9,17 @@ export declare class WebTransactionalReceiver extends TransactionalReceiver impl
     subsriptionMap: Map<string, Map<number, Subscription>>;
     pendingFromClientMessageIds: Map<string, Map<string, Map<string, Window>>>;
     pendingHostCounts: Map<string, number>;
-    pendingSchemaCounts: Map<string, number>;
-    installedSchemaFrames: Set<string>;
+    pendingApplicationCounts: Map<string, number>;
+    installedApplicationFrames: Set<string>;
     messageCallback: (message: any) => void;
     constructor();
     onMessage(callback: (message: any) => void): void;
-    private hasValidSchemaSignature;
+    private hasValidApplicationSignature;
     private handleFromClientRequest;
     private handleToAIRportMessage;
     private getFrameWindow;
     private handleToClientRequest;
-    private ensureSchemaIsInstalled;
+    private ensureApplicationIsInstalled;
     private messageIsFromValidApp;
     private handleIsolateMessage;
 }

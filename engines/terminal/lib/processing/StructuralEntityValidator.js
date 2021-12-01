@@ -40,7 +40,7 @@ export class StructuralEntityValidator {
                             // checked as part of this entity
                             if (dbProperty.isId) {
                                 let newRepositoryNeeded = false;
-                                context.ioc.schemaUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, propertyNameChains) => {
+                                context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, propertyNameChains) => {
                                     if (this.validateRelationColumnAndCheckNewRepositoryNeed(dbEntity, dbProperty, dbColumn, isCreate, entity, columnValue, context)) {
                                         newRepositoryNeeded = true;
                                     }
@@ -86,7 +86,7 @@ for ${dbEntity.name}.${dbProperty.name}`);
                 else {
                     const dbColumn = dbProperty.propertyColumns[0].column;
                     if (dbProperty.isId) {
-                        const isIdColumnEmpty = context.ioc.schemaUtils.isIdEmpty(propertyValue);
+                        const isIdColumnEmpty = context.ioc.applicationUtils.isIdEmpty(propertyValue);
                         this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty);
                     }
                     else {
@@ -104,14 +104,14 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateMa
     }
     validateRelationColumnAndCheckNewRepositoryNeed(dbEntity, dbProperty, dbColumn, isCreate, entity, columnValue, context) {
         let newRepositoryNeeded = false;
-        const isIdColumnEmpty = context.ioc.schemaUtils.isIdEmpty(columnValue);
+        const isIdColumnEmpty = context.ioc.applicationUtils.isIdEmpty(columnValue);
         if (!dbColumn.idIndex && dbColumn.idIndex !== 0) {
             return;
         }
         if (dbEntity.isRepositoryEntity) {
             if (!isIdColumnEmpty) {
                 if (isCreate) {
-                    if (context.ioc.schemaUtils.isActorId(dbColumn.name)) {
+                    if (context.ioc.applicationUtils.isActorId(dbColumn.name)) {
                         throw new Error(`Actor cannot be passed in for create Operations`);
                     }
                 }
@@ -120,11 +120,11 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateMa
             if (!isCreate) {
                 throw new Error(`Ids must be populated in entities for non-Create operations`);
             }
-            if (context.ioc.schemaUtils.isRepositoryId(dbColumn.name)) {
+            if (context.ioc.applicationUtils.isRepositoryId(dbColumn.name)) {
                 // Repository was not provided - use context's 'newRepository'
                 newRepositoryNeeded = true;
             }
-            else if (context.ioc.schemaUtils.isActorId(dbColumn.name)) {
+            else if (context.ioc.applicationUtils.isActorId(dbColumn.name)) {
                 // Use context's 'actor'
                 entity[dbProperty.name] = context.actor;
             }

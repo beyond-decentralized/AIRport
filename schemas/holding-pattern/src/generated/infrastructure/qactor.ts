@@ -145,7 +145,7 @@ export interface ActorEUpdateColumns
 	UU_ID?: string | IQStringField;
 	USER_ID?: number | IQNumberField;
 	TERMINAL_ID?: number | IQNumberField;
-	SCHEMA_INDEX?: number | IQNumberField;
+	APPLICATION_INDEX?: number | IQNumberField;
 
 }
 

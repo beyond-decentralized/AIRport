@@ -19,7 +19,7 @@ export type SequenceCurrentValue = number
 export class Sequence {
 
 	@Id()
-	@Column({name: 'SCHEMA_INDEX', nullable: false})
+	@Column({name: 'APPLICATION_INDEX', nullable: false})
 	@DbNumber()
 	applicationIndex: ApplicationIndex
 

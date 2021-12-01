@@ -9,15 +9,15 @@ let VersionedApplicationObject = class VersionedApplicationObject {
 };
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'DEPRECATED_SINCE_SCHEMA_VERSION_ID', referencedColumnName: 'ID' })
+    JoinColumn({ name: 'DEPRECATED_SINCE_APPLICATION_VERSION_ID', referencedColumnName: 'ID' })
 ], VersionedApplicationObject.prototype, "deprecatedSinceVersion", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'REMOVED_IN_SCHEMA_VERSION_ID', referencedColumnName: 'ID' })
+    JoinColumn({ name: 'REMOVED_IN_APPLICATION_VERSION_ID', referencedColumnName: 'ID' })
 ], VersionedApplicationObject.prototype, "removedInVersion", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'SINCE_SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({ name: 'SINCE_APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false })
 ], VersionedApplicationObject.prototype, "sinceVersion", void 0);
 VersionedApplicationObject = __decorate([
     MappedSuperclass()

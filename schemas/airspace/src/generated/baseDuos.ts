@@ -1,18 +1,5 @@
 /* eslint-disable */
 import {
-	IDomain,
-} from './application/domain';
-import {
-	DomainESelect,
-	DomainECreateColumns,
-	DomainECreateProperties,
-	DomainEUpdateColumns,
-	DomainEUpdateProperties,
-	DomainEId,
-	DomainGraph,
-	QDomain,
-} from './application/qdomain';
-import {
 	IApplication,
 } from './application/application';
 import {
@@ -156,6 +143,19 @@ import {
 	QApplicationVersion,
 } from './application/qapplicationversion';
 import {
+	IDomain,
+} from './application/domain';
+import {
+	DomainESelect,
+	DomainECreateColumns,
+	DomainECreateProperties,
+	DomainEUpdateColumns,
+	DomainEUpdateProperties,
+	DomainEId,
+	DomainGraph,
+	QDomain,
+} from './application/qdomain';
+import {
 	IDuo,
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
@@ -199,24 +199,6 @@ export class SQDIDuo<Entity,
 		dbEntityId: DbEntityId
 	) {
 		super(dbEntityId, Q)
-	}
-}
-
-
-export interface IBaseDomainDuo
-  extends IDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
-}
-
-export class BaseDomainDuo
-  extends SQDIDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain>
-	implements IBaseDomainDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(11)
-	}
-	
-	constructor() {
-		super(11)
 	}
 }
 
@@ -415,5 +397,23 @@ export class BaseApplicationVersionDuo
 	
 	constructor() {
 		super(8)
+	}
+}
+
+
+export interface IBaseDomainDuo
+  extends IDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
+}
+
+export class BaseDomainDuo
+  extends SQDIDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain>
+	implements IBaseDomainDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(11)
+	}
+	
+	constructor() {
+		super(11)
 	}
 }

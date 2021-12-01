@@ -341,7 +341,7 @@
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_INDEX",
+							"name": "APPLICATION_INDEX",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1547,7 +1547,7 @@
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "REPOSITORY_SCHEMA_ID",
+							"name": "REPOSITORY_APPLICATION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1561,7 +1561,7 @@
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "SCHEMA_INDEX",
+							"name": "APPLICATION_INDEX",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1649,7 +1649,7 @@
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "REPOSITORY_SCHEMAS",
+						"name": "REPOSITORY_APPLICATIONS",
 						"columnIndexes": []
 					}
 				}
@@ -1674,8 +1674,8 @@
 				{
 					"domain": "air",
 					"index": 1,
-					"name": "@airport/traffic-pattern",
-					"packageName": "@airport/traffic-pattern",
+					"name": "@airport/airspace",
+					"packageName": "@airport/airspace",
 					"sinceVersion": 1,
 					"versions": [
 						{

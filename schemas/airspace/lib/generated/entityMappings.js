@@ -15,7 +15,7 @@ import { ApplicationCurrentVersion } from '../ddl/application/ApplicationCurrent
 import { Application } from '../ddl/application/Application';
 import { Domain } from '../ddl/application/Domain';
 DI.db().get(AIRPORT_DATABASE).then(airDb => {
-    const accumulator = airDb.getAccumulator('air', 'traffic-pattern');
+    const accumulator = airDb.getAccumulator('air', 'airspace');
     accumulator.add(VersionedApplicationObject, undefined);
     accumulator.add(ApplicationRelationColumn, 0);
     accumulator.add(ApplicationRelation, 1);

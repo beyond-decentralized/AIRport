@@ -26,7 +26,7 @@ import {
 	SHARING_NODE_TERMINAL_DAO,
 	SharingNode_Id,
 }                        from '@airport/moving-walkway'
-import {SCHEMA_DAO}      from '@airport/airspace'
+import {APPLICATION_DAO}      from '@airport/airspace'
 import {ITerminal}       from '@airport/travel-document-checkpoint'
 import {
 	SYNCHRONIZATION_OUT_MANAGER,
@@ -84,7 +84,7 @@ export class SynchronizationOutManager
 				REPOSITORY_DAO,
 				REPO_TRANS_BLOCK_DAO,
 				REPOSITORY_TRANSACTION_HISTORY_DAO,
-				SCHEMA_DAO,
+				APPLICATION_DAO,
 				SHARING_MESSAGE_DAO,
 				SHARING_MESSAGE_REPO_TRANS_BLOCK_DAO,
 				SHARING_NODE_DAO,

@@ -8,7 +8,7 @@ export declare class SyncOutRepositoryTransactionBlockCreator implements ISyncOu
     private gatherIdsForBlockCreation;
     private gatherHistoryIds;
     private createNewBlocksAndSetRepoTransHistoryBlockIds;
-    private findSchemasByRepositoryMap;
+    private findApplicationsByRepositoryMap;
     private createRepositoryTransactionBlockAndStageData;
     private createRepoTransHistoryUpdateStageValuesForBlock;
     private finishPopulatingRepositoryTransactionBlockData;

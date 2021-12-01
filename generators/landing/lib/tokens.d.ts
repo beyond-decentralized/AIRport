@@ -1,13 +1,13 @@
-import { ISchemaBuilder } from './builder/ISchemaBuilder';
-import { ISchemaChecker } from './checker/SchemaChecker';
-import { ISchemaLocator } from './locator/SchemaLocator';
-import { ISchemaComposer } from './recorder/SchemaComposer';
-import { ISchemaRecorder } from './recorder/SchemaRecorder';
-import { ISchemaInitializer } from './SchemaInitializer';
-export declare const SCHEMA_BUILDER: import("@airport/di").IDiToken<ISchemaBuilder>;
-export declare const SCHEMA_CHECKER: import("@airport/di").IDiToken<ISchemaChecker>;
-export declare const SCHEMA_COMPOSER: import("@airport/di").IDiToken<ISchemaComposer>;
-export declare const SCHEMA_INITIALIZER: import("@airport/di").IDiToken<ISchemaInitializer>;
-export declare const SCHEMA_LOCATOR: import("@airport/di").IDiToken<ISchemaLocator>;
-export declare const SCHEMA_RECORDER: import("@airport/di").IDiToken<ISchemaRecorder>;
+import { IApplicationBuilder } from './builder/IApplicationBuilder';
+import { IApplicationChecker } from './checker/ApplicationChecker';
+import { IApplicationLocator } from './locator/ApplicationLocator';
+import { IApplicationComposer } from './recorder/ApplicationComposer';
+import { IApplicationRecorder } from './recorder/ApplicationRecorder';
+import { IApplicationInitializer } from './ApplicationInitializer';
+export declare const APPLICATION_BUILDER: import("@airport/di").IDiToken<IApplicationBuilder>;
+export declare const APPLICATION_CHECKER: import("@airport/di").IDiToken<IApplicationChecker>;
+export declare const APPLICATION_COMPOSER: import("@airport/di").IDiToken<IApplicationComposer>;
+export declare const APPLICATION_INITIALIZER: import("@airport/di").IDiToken<IApplicationInitializer>;
+export declare const APPLICATION_LOCATOR: import("@airport/di").IDiToken<IApplicationLocator>;
+export declare const APPLICATION_RECORDER: import("@airport/di").IDiToken<IApplicationRecorder>;
 //# sourceMappingURL=tokens.d.ts.map

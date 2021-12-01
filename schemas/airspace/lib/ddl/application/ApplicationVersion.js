@@ -42,7 +42,7 @@ __decorate([
 ], ApplicationVersion.prototype, "patchVersion", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'SCHEMA_INDEX', nullable: false })
+    JoinColumn({ name: 'APPLICATION_INDEX', nullable: false })
 ], ApplicationVersion.prototype, "application", void 0);
 __decorate([
     OneToMany({ mappedBy: 'applicationVersion' })
@@ -64,7 +64,7 @@ __decorate([
 ], ApplicationVersion.prototype, "referencedByMapByName", void 0);
 ApplicationVersion = __decorate([
     Entity(),
-    Table({ name: 'SCHEMA_VERSIONS' })
+    Table({ name: 'APPLICATION_VERSIONS' })
 ], ApplicationVersion);
 export { ApplicationVersion };
 //# sourceMappingURL=ApplicationVersion.js.map

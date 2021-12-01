@@ -14,14 +14,14 @@ export class SQLNoJoinQuery extends SQLWhereBase {
         if (fromRelation.ri || fromRelation.jt) {
             throw new Error(`Table in UPDATE/DELETE clause cannot be joined`);
         }
-        const firstDbEntity = context.ioc.airDb.schemas[fromRelation.si]
-            .currentVersion[0].schemaVersion.entities[fromRelation.ti];
+        const firstDbEntity = context.ioc.airDb.applications[fromRelation.si]
+            .currentVersion[0].applicationVersion.entities[fromRelation.ti];
         let tableName = context.ioc.storeDriver.getEntityTableName(firstDbEntity, context);
-        if (fromRelation.si !== this.dbEntity.schemaVersion.schema.index
+        if (fromRelation.si !== this.dbEntity.applicationVersion.application.index
             || fromRelation.ti !== this.dbEntity.index) {
             throw new Error(`Unexpected table in UPDATE/DELETE clause: 
 			'${tableName}',
-			expecting: '${this.dbEntity.schemaVersion.schema.name}.${this.dbEntity.name}'`);
+			expecting: '${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}'`);
         }
         const firstQEntity = new QEntity(firstDbEntity);
         const tableAlias = context.ioc.relationManager.getAlias(fromRelation);

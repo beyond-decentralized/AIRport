@@ -44,7 +44,7 @@ export class JoinTreeNode {
             fromClausePosition: childPosition,
             ti: tableIndex,
             jt: JoinType.LEFT_JOIN,
-            rt: JSONRelationType.ENTITY_SCHEMA_RELATION,
+            rt: JSONRelationType.ENTITY_APPLICATION_RELATION,
             rep: rootEntityPrefix,
             ri: relationIndex,
             si: applicationIndex

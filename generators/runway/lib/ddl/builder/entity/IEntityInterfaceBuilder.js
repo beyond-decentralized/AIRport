@@ -1,5 +1,5 @@
 import { addImportForType } from '../../../resolve/pathResolver';
-import { entityExtendsRepositoryEntity } from '../schema/SSchemaBuilder';
+import { entityExtendsRepositoryEntity } from '../application/SApplicationBuilder';
 /**
  * Created by Papa on 5/20/2016.
  */

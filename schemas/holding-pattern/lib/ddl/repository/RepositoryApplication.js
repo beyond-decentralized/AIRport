@@ -9,7 +9,7 @@ let RepositoryApplication = class RepositoryApplication {
 };
 __decorate([
     Id(),
-    Column({ name: "REPOSITORY_SCHEMA_ID" }),
+    Column({ name: "REPOSITORY_APPLICATION_ID" }),
     GeneratedValue(),
     DbNumber()
 ], RepositoryApplication.prototype, "id", void 0);
@@ -19,13 +19,13 @@ __decorate([
     JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" })
 ], RepositoryApplication.prototype, "repository", void 0);
 __decorate([
-    Column({ name: "SCHEMA_INDEX", nullable: false }),
+    Column({ name: "APPLICATION_INDEX", nullable: false }),
     DbNumber()
 ], RepositoryApplication.prototype, "applicationIndex", void 0);
 RepositoryApplication = __decorate([
     Entity(),
     Table({
-        name: "REPOSITORY_SCHEMAS"
+        name: "REPOSITORY_APPLICATIONS"
     })
 ], RepositoryApplication);
 export { RepositoryApplication };

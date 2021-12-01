@@ -1,7 +1,7 @@
 import { DI } from '@airport/di';
 import { undefinedToNull } from '@airport/ground-control';
 import { BaseApplicationColumnDao, Q } from '../generated/generated';
-import { SCHEMA_COLUMN_DAO } from '../tokens';
+import { APPLICATION_COLUMN_DAO } from '../tokens';
 export class ApplicationColumnDao extends BaseApplicationColumnDao {
     async findAllForEntities(entityIds) {
         let c;
@@ -55,5 +55,5 @@ export class ApplicationColumnDao extends BaseApplicationColumnDao {
         });
     }
 }
-DI.set(SCHEMA_COLUMN_DAO, ApplicationColumnDao);
+DI.set(APPLICATION_COLUMN_DAO, ApplicationColumnDao);
 //# sourceMappingURL=ApplicationColumnDao.js.map

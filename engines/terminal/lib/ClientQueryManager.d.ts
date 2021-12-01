@@ -6,6 +6,6 @@ import { IClientQuery, IClientQueryManager } from "@airport/check-in";
  * replaced with API registry.
  */
 export declare class ClientQueryManager implements IClientQueryManager {
-    getClientQuery(schemaName: string, daoName: string, methodName: string): Promise<IClientQuery>;
+    getClientQuery(applicationName: string, daoName: string, methodName: string): Promise<IClientQuery>;
 }
 //# sourceMappingURL=ClientQueryManager.d.ts.map

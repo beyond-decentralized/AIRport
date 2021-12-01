@@ -1,6 +1,6 @@
 import { container, DI } from '@airport/di';
 import { ChangeType } from '@airport/ground-control';
-import { SCHEMA_ENTITY_DAO } from '@airport/airspace';
+import { APPLICATION_ENTITY_DAO } from '@airport/airspace';
 import { SYNC_IN_DATA_CHECKER } from '../../../tokens';
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { getSysWideOpIds, SEQUENCE_GENERATOR } from '@airport/check-in';
@@ -10,7 +10,7 @@ export class SyncInDataChecker {
      * Every dataMessage.data.repoTransHistories array must be sorted before entering
      * this method.
      *
-     * @param {IDataToTM[]} dataMessagesWithCompatibleSchemas
+     * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
      * @returns {DataCheckResults}
      */
     async checkData(message) {
@@ -46,8 +46,8 @@ export class SyncInDataChecker {
             history.repositoryTransactionType = RepositoryTransactionType.REMOTE;
             history.syncTimestamp = message.syncTimestamp;
             delete history.id;
-            const schemaEntityMap = await this.populateSchemaEntityMap(message);
-            await this.checkOperationHistories(message, schemaEntityMap);
+            const applicationEntityMap = await this.populateApplicationEntityMap(message);
+            await this.checkOperationHistories(message, applicationEntityMap);
         }
         catch (e) {
             console.error(e);
@@ -55,33 +55,33 @@ export class SyncInDataChecker {
         }
         return true;
     }
-    async populateSchemaEntityMap(message) {
-        let schemaVersionsById = new Map();
-        let schemaVersionIds = [];
-        for (const schemaVersion of message.schemaVersions) {
-            schemaVersionIds.push(schemaVersion.id);
-            schemaVersionsById.set(schemaVersion.id, schemaVersion);
+    async populateApplicationEntityMap(message) {
+        let applicationVersionsById = new Map();
+        let applicationVersionIds = [];
+        for (const applicationVersion of message.applicationVersions) {
+            applicationVersionIds.push(applicationVersion.id);
+            applicationVersionsById.set(applicationVersion.id, applicationVersion);
         }
-        const schemaEntityDao = await container(this).get(SCHEMA_ENTITY_DAO);
-        const schemaEntities = await schemaEntityDao.findAllForSchemaVersions(schemaVersionIds);
-        const schemaEntityMap = new Map();
-        for (let schemaEntity of schemaEntities) {
-            const schemaVersion = schemaVersionsById.get(schemaEntity.schemaVersion.id);
-            let entitiesForDomain = schemaEntityMap.get(schemaVersion.schema.domain.name);
+        const applicationEntityDao = await container(this).get(APPLICATION_ENTITY_DAO);
+        const applicationEntities = await applicationEntityDao.findAllForApplicationVersions(applicationVersionIds);
+        const applicationEntityMap = new Map();
+        for (let applicationEntity of applicationEntities) {
+            const applicationVersion = applicationVersionsById.get(applicationEntity.applicationVersion.id);
+            let entitiesForDomain = applicationEntityMap.get(applicationVersion.application.domain.name);
             if (!entitiesForDomain) {
                 entitiesForDomain = new Map();
-                schemaEntityMap.set(schemaVersion.schema.domain.name, entitiesForDomain);
+                applicationEntityMap.set(applicationVersion.application.domain.name, entitiesForDomain);
             }
-            let entitiesForSchema = entitiesForDomain.get(schemaVersion.schema.name);
-            if (!entitiesForSchema) {
-                entitiesForSchema = new Map();
-                entitiesForDomain.set(schemaVersion.schema.name, entitiesForSchema);
+            let entitiesForApplication = entitiesForDomain.get(applicationVersion.application.name);
+            if (!entitiesForApplication) {
+                entitiesForApplication = new Map();
+                entitiesForDomain.set(applicationVersion.application.name, entitiesForApplication);
             }
-            entitiesForSchema.set(schemaEntity.index, schemaEntity);
+            entitiesForApplication.set(applicationEntity.index, applicationEntity);
         }
-        return schemaEntityMap;
+        return applicationEntityMap;
     }
-    async checkOperationHistories(message, schemaEntityMap) {
+    async checkOperationHistories(message, applicationEntityMap) {
         const history = message.history;
         if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
             throw new Error(`Invalid TerminalMessage.history.operationHistory`);
@@ -111,21 +111,21 @@ export class SyncInDataChecker {
             if (typeof operationHistory.entity !== 'object') {
                 throw new Error(`Invalid operationHistory.entity`);
             }
-            if (typeof operationHistory.entity.schemaVersion !== 'number') {
+            if (typeof operationHistory.entity.applicationVersion !== 'number') {
                 throw new Error(`Expecting "in-message index" (number)
-					in 'operationHistory.entity.schemaVersion'`);
+					in 'operationHistory.entity.applicationVersion'`);
             }
-            const schemaVersion = message.schemaVersions[operationHistory.entity.schemaVersion];
-            if (!schemaVersion) {
-                throw new Error(`Invalid index into message.schemaVersions [${operationHistory.entity.schemaVersion}],
-				in operationHistory.entity.schemaVersion`);
+            const applicationVersion = message.applicationVersions[operationHistory.entity.applicationVersion];
+            if (!applicationVersion) {
+                throw new Error(`Invalid index into message.applicationVersions [${operationHistory.entity.applicationVersion}],
+				in operationHistory.entity.applicationVersion`);
             }
-            const schemaEntity = schemaEntityMap.get(schemaVersion.schema.domain.name)
-                .get(schemaVersion.schema.name).get(operationHistory.entity.index);
-            if (!schemaEntity) {
+            const applicationEntity = applicationEntityMap.get(applicationVersion.application.domain.name)
+                .get(applicationVersion.application.name).get(operationHistory.entity.index);
+            if (!applicationEntity) {
                 throw new Error(`Invalid operationHistory.entity.index: ${operationHistory.entity.index}`);
             }
-            operationHistory.entity = schemaEntity;
+            operationHistory.entity = applicationEntity;
             if (operationHistory.repositoryTransactionHistory) {
                 throw new Error(`TerminalMessage.history -> operationHistory.repositoryTransactionHistory cannot be specified`);
             }

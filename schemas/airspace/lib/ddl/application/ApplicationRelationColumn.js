@@ -14,22 +14,22 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'MANY_SCHEMA_COLUMN_ID',
+        name: 'MANY_APPLICATION_COLUMN_ID',
         referencedColumnName: 'ID',
         nullable: false
     })
 ], ApplicationRelationColumn.prototype, "manyColumn", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'ONE_SCHEMA_COLUMN_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({ name: 'ONE_APPLICATION_COLUMN_ID', referencedColumnName: 'ID', nullable: false })
 ], ApplicationRelationColumn.prototype, "oneColumn", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'MANY_SCHEMA_RELATION_ID', referencedColumnName: 'ID' })
+    JoinColumn({ name: 'MANY_APPLICATION_RELATION_ID', referencedColumnName: 'ID' })
 ], ApplicationRelationColumn.prototype, "manyRelation", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'ONE_SCHEMA_RELATION_ID', referencedColumnName: 'ID' })
+    JoinColumn({ name: 'ONE_APPLICATION_RELATION_ID', referencedColumnName: 'ID' })
 ], ApplicationRelationColumn.prototype, "oneRelation", void 0);
 __decorate([
     ManyToOne(),
@@ -38,7 +38,7 @@ __decorate([
 ApplicationRelationColumn = __decorate([
     Entity(),
     Table({
-        name: 'SCHEMA_RELATION_COLUMNS'
+        name: 'APPLICATION_RELATION_COLUMNS'
     })
 ], ApplicationRelationColumn);
 export { ApplicationRelationColumn };

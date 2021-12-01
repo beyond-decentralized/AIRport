@@ -27,7 +27,7 @@ import { IApplicationReference } from '../../generated/application/applicationre
 
 
 @Entity()
-@Table({name: 'SCHEMA_VERSIONS'})
+@Table({name: 'APPLICATION_VERSIONS'})
 export class ApplicationVersion {
 
 	@DbNumber()
@@ -56,7 +56,7 @@ export class ApplicationVersion {
 	patchVersion: ApplicationVersionPatch
 
 	@ManyToOne()
-	@JoinColumn({name: 'SCHEMA_INDEX', nullable: false})
+	@JoinColumn({name: 'APPLICATION_INDEX', nullable: false})
 	application: Application
 
 	@OneToMany({mappedBy: 'applicationVersion'})

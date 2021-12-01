@@ -9,8 +9,8 @@ export class SQLInsertValues extends SQLNoJoinQuery {
     constructor(jsonInsertValues, dialect, context
     // repository?: IRepository
     ) {
-        super(context.ioc.airDb.schemas[jsonInsertValues.II.si].currentVersion[0]
-            .schemaVersion.entities[jsonInsertValues.II.ti], dialect, context);
+        super(context.ioc.airDb.applications[jsonInsertValues.II.si].currentVersion[0]
+            .applicationVersion.entities[jsonInsertValues.II.ti], dialect, context);
         this.jsonInsertValues = jsonInsertValues;
     }
     toSQL(context) {

@@ -23,7 +23,7 @@ __decorate([
 ], ApplicationRelation.prototype, "index", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'SCHEMA_PROPERTY_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({ name: 'APPLICATION_PROPERTY_ID', referencedColumnName: 'ID', nullable: false })
 ], ApplicationRelation.prototype, "property", void 0);
 __decorate([
     Json(),
@@ -46,11 +46,11 @@ __decorate([
 ], ApplicationRelation.prototype, "isId", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'SCHEMA_TABLE_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({ name: 'APPLICATION_TABLE_ID', referencedColumnName: 'ID', nullable: false })
 ], ApplicationRelation.prototype, "entity", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'RELATION_SCHEMA_TABLE_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({ name: 'RELATION_APPLICATION_TABLE_ID', referencedColumnName: 'ID', nullable: false })
 ], ApplicationRelation.prototype, "relationEntity", void 0);
 __decorate([
     OneToMany({ mappedBy: 'manyRelation' })
@@ -61,7 +61,7 @@ __decorate([
 ApplicationRelation = __decorate([
     Entity(),
     Table({
-        name: 'SCHEMA_RELATIONS'
+        name: 'APPLICATION_RELATIONS'
     })
 ], ApplicationRelation);
 export { ApplicationRelation };

@@ -1,30 +1,30 @@
-import { orderSchemasInOrderOfPrecedence, setQSchemaEntities } from '@airport/air-control';
+import { orderApplicationsInOrderOfPrecedence, setQApplicationEntities } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { QUERY_ENTITY_CLASS_CREATOR } from './tokens';
 export class QueryEntityClassCreator {
-    createAll(schemas, airDb) {
-        const schemasToCreate = orderSchemasInOrderOfPrecedence(schemas);
-        schemasToCreate.map(dbSchema => this.create(dbSchema, airDb));
+    createAll(applications, airDb) {
+        const applicationsToCreate = orderApplicationsInOrderOfPrecedence(applications);
+        applicationsToCreate.map(dbApplication => this.create(dbApplication, airDb));
     }
-    create(dbSchema, airDb) {
-        let qSchema = airDb.QM[dbSchema.name];
-        // If the Schema API source has already been loaded
-        if (qSchema) {
-            qSchema.__dbSchema__ = dbSchema;
+    create(dbApplication, airDb) {
+        let qApplication = airDb.QM[dbApplication.name];
+        // If the Application API source has already been loaded
+        if (qApplication) {
+            qApplication.__dbApplication__ = dbApplication;
         }
         else {
-            qSchema = {
+            qApplication = {
                 __constructors__: {},
                 __qConstructors__: {},
-                __dbSchema__: dbSchema,
-                name: dbSchema.name,
-                domain: dbSchema.domain.name
+                __dbApplication__: dbApplication,
+                name: dbApplication.name,
+                domain: dbApplication.domain.name
             };
-            airDb.QM[dbSchema.name] = qSchema;
+            airDb.QM[dbApplication.name] = qApplication;
         }
-        airDb.Q[dbSchema.index] = qSchema;
-        setQSchemaEntities(dbSchema, qSchema, airDb.qSchemas);
-        return qSchema;
+        airDb.Q[dbApplication.index] = qApplication;
+        setQApplicationEntities(dbApplication, qApplication, airDb.qApplications);
+        return qApplication;
     }
 }
 DI.set(QUERY_ENTITY_CLASS_CREATOR, QueryEntityClassCreator);

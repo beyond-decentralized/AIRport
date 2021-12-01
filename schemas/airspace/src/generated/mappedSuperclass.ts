@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
 	{
 		"type": "VersionedApplicationObject",
-		"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\VersionedApplicationObject.ts",
+		"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\VersionedApplicationObject.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
@@ -74,7 +74,7 @@ export const MAPPED_SUPERCLASS = [
 							"name": "JoinColumn",
 							"values": [
 								{
-									"name": "DEPRECATED_SINCE_SCHEMA_VERSION_ID",
+									"name": "DEPRECATED_SINCE_APPLICATION_VERSION_ID",
 									"referencedColumnName": "ID"
 								}
 							]
@@ -90,7 +90,7 @@ export const MAPPED_SUPERCLASS = [
 					"nonArrayType": "ApplicationVersion",
 					"entity": {
 						"type": "ApplicationVersion",
-						"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationVersion.ts",
+						"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationVersion.ts",
 						"parentClassName": null,
 						"isSuperclass": false,
 						"ids": [
@@ -136,7 +136,7 @@ export const MAPPED_SUPERCLASS = [
 									"name": "Table",
 									"values": [
 										{
-											"name": "SCHEMA_VERSIONS"
+											"name": "APPLICATION_VERSIONS"
 										}
 									]
 								}
@@ -511,7 +511,7 @@ export const MAPPED_SUPERCLASS = [
 											"name": "JoinColumn",
 											"values": [
 												{
-													"name": "SCHEMA_INDEX",
+													"name": "APPLICATION_INDEX",
 													"nullable": false
 												}
 											]
@@ -527,7 +527,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "Application",
 									"entity": {
 										"type": "Application",
-										"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\Application.ts",
+										"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Application.ts",
 										"parentClassName": null,
 										"isSuperclass": false,
 										"ids": [
@@ -545,7 +545,7 @@ export const MAPPED_SUPERCLASS = [
 														"name": "Column",
 														"values": [
 															{
-																"name": "SCHEMA_INDEX",
+																"name": "APPLICATION_INDEX",
 																"nullable": false
 															}
 														]
@@ -573,7 +573,7 @@ export const MAPPED_SUPERCLASS = [
 													"name": "Table",
 													"values": [
 														{
-															"name": "SCHEMAS"
+															"name": "APPLICATIONS"
 														}
 													]
 												}
@@ -761,7 +761,7 @@ export const MAPPED_SUPERCLASS = [
 															"name": "Column",
 															"values": [
 																{
-																	"name": "SCHEMA_INDEX",
+																	"name": "APPLICATION_INDEX",
 																	"nullable": false
 																}
 															]
@@ -805,7 +805,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "Domain",
 													"entity": {
 														"type": "Domain",
-														"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\Domain.ts",
+														"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Domain.ts",
 														"parentClassName": null,
 														"isSuperclass": false,
 														"ids": [
@@ -1044,7 +1044,7 @@ export const MAPPED_SUPERCLASS = [
 															"name": "Column",
 															"values": [
 																{
-																	"name": "SCHEMA_NAME",
+																	"name": "APPLICATION_NAME",
 																	"nullable": false
 																}
 															]
@@ -1191,7 +1191,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationCurrentVersion",
 													"entity": {
 														"type": "ApplicationCurrentVersion",
-														"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationCurrentVersion.ts",
+														"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationCurrentVersion.ts",
 														"parentClassName": null,
 														"isSuperclass": false,
 														"ids": [
@@ -1209,8 +1209,8 @@ export const MAPPED_SUPERCLASS = [
 																		"name": "JoinColumn",
 																		"values": [
 																			{
-																				"name": "SCHEMA_INDEX",
-																				"referencedColumnName": "SCHEMA_INDEX",
+																				"name": "APPLICATION_INDEX",
+																				"referencedColumnName": "APPLICATION_INDEX",
 																				"nullable": false
 																			}
 																		]
@@ -1241,7 +1241,7 @@ export const MAPPED_SUPERCLASS = [
 																		"name": "JoinColumn",
 																		"values": [
 																			{
-																				"name": "SCHEMA_VERSION_ID",
+																				"name": "APPLICATION_VERSION_ID",
 																				"referencedColumnName": "ID",
 																				"nullable": false
 																			}
@@ -1270,7 +1270,7 @@ export const MAPPED_SUPERCLASS = [
 																	"name": "Table",
 																	"values": [
 																		{
-																			"name": "SCHEMA_CURRENT_VERSIONS"
+																			"name": "APPLICATION_CURRENT_VERSIONS"
 																		}
 																	]
 																}
@@ -1365,8 +1365,8 @@ export const MAPPED_SUPERCLASS = [
 																			"name": "JoinColumn",
 																			"values": [
 																				{
-																					"name": "SCHEMA_INDEX",
-																					"referencedColumnName": "SCHEMA_INDEX",
+																					"name": "APPLICATION_INDEX",
+																					"referencedColumnName": "APPLICATION_INDEX",
 																					"nullable": false
 																				}
 																			]
@@ -1397,7 +1397,7 @@ export const MAPPED_SUPERCLASS = [
 																			"name": "JoinColumn",
 																			"values": [
 																				{
-																					"name": "SCHEMA_VERSION_ID",
+																					"name": "APPLICATION_VERSION_ID",
 																					"referencedColumnName": "ID",
 																					"nullable": false
 																				}
@@ -1434,7 +1434,7 @@ export const MAPPED_SUPERCLASS = [
 															"name": "Column",
 															"values": [
 																{
-																	"name": "JSON_SCHEMA",
+																	"name": "JSON_APPLICATION",
 																	"nullable": false
 																}
 															]
@@ -1490,7 +1490,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "ApplicationEntity",
 									"entity": {
 										"type": "ApplicationEntity",
-										"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationEntity.ts",
+										"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationEntity.ts",
 										"parentClassName": "VersionedApplicationObject",
 										"location": "./VersionedApplicationObject",
 										"isSuperclass": false,
@@ -1528,7 +1528,7 @@ export const MAPPED_SUPERCLASS = [
 													"name": "Table",
 													"values": [
 														{
-															"name": "SCHEMA_ENTITIES"
+															"name": "APPLICATION_ENTITIES"
 														}
 													]
 												}
@@ -1939,7 +1939,7 @@ export const MAPPED_SUPERCLASS = [
 															"name": "JoinColumn",
 															"values": [
 																{
-																	"name": "SCHEMA_VERSION_ID",
+																	"name": "APPLICATION_VERSION_ID",
 																	"referencedColumnName": "ID",
 																	"nullable": false
 																}
@@ -1979,7 +1979,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationColumn",
 													"entity": {
 														"type": "ApplicationColumn",
-														"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationColumn.ts",
+														"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationColumn.ts",
 														"parentClassName": "VersionedApplicationObject",
 														"location": "./VersionedApplicationObject",
 														"isSuperclass": false,
@@ -2017,7 +2017,7 @@ export const MAPPED_SUPERCLASS = [
 																	"name": "Table",
 																	"values": [
 																		{
-																			"name": "SCHEMA_COLUMNS"
+																			"name": "APPLICATION_COLUMNS"
 																		}
 																	]
 																}
@@ -2492,7 +2492,7 @@ export const MAPPED_SUPERCLASS = [
 																			"name": "JoinColumn",
 																			"values": [
 																				{
-																					"name": "SCHEMA_ENTITY_ID",
+																					"name": "APPLICATION_ENTITY_ID",
 																					"referencedColumnName": "ID",
 																					"nullable": false
 																				}
@@ -2532,7 +2532,7 @@ export const MAPPED_SUPERCLASS = [
 																	"nonArrayType": "ApplicationPropertyColumn",
 																	"entity": {
 																		"type": "ApplicationPropertyColumn",
-																		"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationPropertyColumn.ts",
+																		"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationPropertyColumn.ts",
 																		"parentClassName": "VersionedApplicationObject",
 																		"location": "./VersionedApplicationObject",
 																		"isSuperclass": false,
@@ -2551,7 +2551,7 @@ export const MAPPED_SUPERCLASS = [
 																						"name": "JoinColumn",
 																						"values": [
 																							{
-																								"name": "SCHEMA_COLUMN_ID",
+																								"name": "APPLICATION_COLUMN_ID",
 																								"referencedColumnName": "ID",
 																								"nullable": false
 																							}
@@ -2583,7 +2583,7 @@ export const MAPPED_SUPERCLASS = [
 																						"name": "JoinColumn",
 																						"values": [
 																							{
-																								"name": "SCHEMA_PROPERTY_ID",
+																								"name": "APPLICATION_PROPERTY_ID",
 																								"referencedColumnName": "ID",
 																								"nullable": false
 																							}
@@ -2612,7 +2612,7 @@ export const MAPPED_SUPERCLASS = [
 																					"name": "Table",
 																					"values": [
 																						{
-																							"name": "SCHEMA_PROPERTY_COLUMNS"
+																							"name": "APPLICATION_PROPERTY_COLUMNS"
 																						}
 																					]
 																				}
@@ -2720,7 +2720,7 @@ export const MAPPED_SUPERCLASS = [
 																							"name": "JoinColumn",
 																							"values": [
 																								{
-																									"name": "SCHEMA_COLUMN_ID",
+																									"name": "APPLICATION_COLUMN_ID",
 																									"referencedColumnName": "ID",
 																									"nullable": false
 																								}
@@ -2752,7 +2752,7 @@ export const MAPPED_SUPERCLASS = [
 																							"name": "JoinColumn",
 																							"values": [
 																								{
-																									"name": "SCHEMA_PROPERTY_ID",
+																									"name": "APPLICATION_PROPERTY_ID",
 																									"referencedColumnName": "ID",
 																									"nullable": false
 																								}
@@ -2866,7 +2866,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationOperation",
 													"entity": {
 														"type": "ApplicationOperation",
-														"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationOperation.ts",
+														"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationOperation.ts",
 														"parentClassName": "VersionedApplicationObject",
 														"location": "./VersionedApplicationObject",
 														"isSuperclass": false,
@@ -2908,7 +2908,7 @@ export const MAPPED_SUPERCLASS = [
 																	"name": "Table",
 																	"values": [
 																		{
-																			"name": "SCHEMA_OPERATIONS"
+																			"name": "APPLICATION_OPERATIONS"
 																		}
 																	]
 																}
@@ -3113,7 +3113,7 @@ export const MAPPED_SUPERCLASS = [
 																			"name": "JoinColumn",
 																			"values": [
 																				{
-																					"name": "SCHEMA_ENTITY_ID",
+																					"name": "APPLICATION_ENTITY_ID",
 																					"referencedColumnName": "ID",
 																					"nullable": false
 																				}
@@ -3384,7 +3384,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "ApplicationReference",
 									"entity": {
 										"type": "ApplicationReference",
-										"path": "D:\\code\\AIR\\AIRport\\applications\\traffic-pattern\\src\\ddl\\application\\ApplicationReference.ts",
+										"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationReference.ts",
 										"parentClassName": "VersionedApplicationObject",
 										"location": "./VersionedApplicationObject",
 										"isSuperclass": false,
@@ -3403,7 +3403,7 @@ export const MAPPED_SUPERCLASS = [
 														"name": "JoinColumn",
 														"values": [
 															{
-																"name": "OWN_SCHEMA_VERSION_ID",
+																"name": "OWN_APPLICATION_VERSION_ID",
 																"referencedColumnName": "ID",
 																"nullable": false
 															}
@@ -3435,7 +3435,7 @@ export const MAPPED_SUPERCLASS = [
 														"name": "JoinColumn",
 														"values": [
 															{
-																"name": "REFERENCED_SCHEMA_VERSION_ID",
+																"name": "REFERENCED_APPLICATION_VERSION_ID",
 																"referencedColumnName": "ID",
 																"nullable": false
 															}
@@ -3464,7 +3464,7 @@ export const MAPPED_SUPERCLASS = [
 													"name": "Table",
 													"values": [
 														{
-															"name": "SCHEMA_REFERENCES"
+															"name": "APPLICATION_REFERENCES"
 														}
 													]
 												}
@@ -3584,7 +3584,7 @@ export const MAPPED_SUPERCLASS = [
 															"name": "JoinColumn",
 															"values": [
 																{
-																	"name": "OWN_SCHEMA_VERSION_ID",
+																	"name": "OWN_APPLICATION_VERSION_ID",
 																	"referencedColumnName": "ID",
 																	"nullable": false
 																}
@@ -3616,7 +3616,7 @@ export const MAPPED_SUPERCLASS = [
 															"name": "JoinColumn",
 															"values": [
 																{
-																	"name": "REFERENCED_SCHEMA_VERSION_ID",
+																	"name": "REFERENCED_APPLICATION_VERSION_ID",
 																	"referencedColumnName": "ID",
 																	"nullable": false
 																}
@@ -3640,7 +3640,7 @@ export const MAPPED_SUPERCLASS = [
 															"name": "Column",
 															"values": [
 																{
-																	"name": "SCHEMA_REFERENCE_INDEX",
+																	"name": "APPLICATION_REFERENCE_INDEX",
 																	"nullable": false
 																}
 															]
@@ -3784,7 +3784,7 @@ export const MAPPED_SUPERCLASS = [
 							"name": "JoinColumn",
 							"values": [
 								{
-									"name": "REMOVED_IN_SCHEMA_VERSION_ID",
+									"name": "REMOVED_IN_APPLICATION_VERSION_ID",
 									"referencedColumnName": "ID"
 								}
 							]
@@ -3811,7 +3811,7 @@ export const MAPPED_SUPERCLASS = [
 							"name": "JoinColumn",
 							"values": [
 								{
-									"name": "SINCE_SCHEMA_VERSION_ID",
+									"name": "SINCE_APPLICATION_VERSION_ID",
 									"referencedColumnName": "ID",
 									"nullable": false
 								}
@@ -3839,6 +3839,6 @@ export const MAPPED_SUPERCLASS = [
 			]
 		},
 		"implementedInterfaceNames": [],
-		"project": "@airport/traffic-pattern"
+		"project": "@airport/airspace"
 	}
 ];

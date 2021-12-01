@@ -28,6 +28,6 @@ export const QUERY_FACADE = airControl.token<IQueryFacade>('IQueryFacade')
 export const QUERY_UTILS = airControl.token<IQueryUtils>('IQueryUtils')
 export const RELATION_MANAGER = airControl.token<IRelationManager>('IRelationManager')
 export const REPOSITORY_LOADER = airControl.token<IRepositoryLoader>('IRepositoryLoader')
-export const SCHEMA_UTILS = airControl.token<IApplicationUtils>('IApplicationUtils')
+export const APPLICATION_UTILS = airControl.token<IApplicationUtils>('IApplicationUtils')
 export const UPDATE_CACHE_MANAGER = airControl.token<IUpdateCacheManager>('IUpdateCacheManager')
 

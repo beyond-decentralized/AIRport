@@ -12,7 +12,7 @@ export class EntityMappingBuilder {
             relativePath,
         });
     }
-    build(schemaDomain, schemaName) {
+    build(applicationDomain, applicationName) {
         const imports = [];
         const entityDefinitions = this.entityMappings.map(entityMapping => {
             const entityImportRelativePath = resolveRelativePath(this.entityMappingsPath, entityMapping.relativePath)
@@ -26,7 +26,7 @@ import { DI } from '@airport/di';
 ${imports.join('\n')}
 
 DI.db().get(AIRPORT_DATABASE).then(airDb => {
-  const accumulator = airDb.getAccumulator('${schemaDomain}', '${schemaName}');
+  const accumulator = airDb.getAccumulator('${applicationDomain}', '${applicationName}');
 ${entityDefinitions}
 });
 `;

@@ -11,21 +11,21 @@ let ApplicationReference = class ApplicationReference extends VersionedApplicati
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'OWN_SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({ name: 'OWN_APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false })
 ], ApplicationReference.prototype, "ownApplicationVersion", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'REFERENCED_SCHEMA_VERSION_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({ name: 'REFERENCED_APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false })
 ], ApplicationReference.prototype, "referencedApplicationVersion", void 0);
 __decorate([
-    Column({ name: 'SCHEMA_REFERENCE_INDEX', nullable: false }),
+    Column({ name: 'APPLICATION_REFERENCE_INDEX', nullable: false }),
     DbNumber()
 ], ApplicationReference.prototype, "index", void 0);
 ApplicationReference = __decorate([
     Entity(),
     Table({
-        name: 'SCHEMA_REFERENCES'
+        name: 'APPLICATION_REFERENCES'
     })
 ], ApplicationReference);
 export { ApplicationReference };

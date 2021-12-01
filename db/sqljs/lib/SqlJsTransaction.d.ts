@@ -1,5 +1,5 @@
 import { IContext } from '@airport/di';
-import { DbEntity, DomainName, InternalFragments, IStoreDriver, PortableQuery, QueryType, SchemaName, SchemaStatus, SQLDataType, StoreType } from '@airport/ground-control';
+import { DbEntity, DomainName, InternalFragments, IStoreDriver, PortableQuery, QueryType, ApplicationName, ApplicationStatus, SQLDataType, StoreType } from '@airport/ground-control';
 import { ITransactionHistory } from '@airport/holding-pattern';
 import { ICredentials, IOperationContext, ITransaction } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
@@ -15,15 +15,15 @@ export declare class SqlJsTransaction implements ITransaction {
     rollback(): Promise<void>;
     saveTransaction(transaction: ITransactionHistory): Promise<any>;
     query(queryType: QueryType, query: string, params: any[], context: IOperationContext, saveTransaction?: boolean): Promise<any>;
-    doesTableExist(schemaName: string, tableName: string, context: IOperationContext): Promise<boolean>;
-    dropTable(schemaName: string, tableName: string, context: IOperationContext): Promise<boolean>;
+    doesTableExist(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
+    dropTable(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
     getEntityTableName(dbEntity: DbEntity, context: IContext): string;
-    getTableName(schema: {
+    getTableName(application: {
         domain: DomainName | {
             name: DomainName;
         };
-        name: SchemaName;
-        status?: SchemaStatus;
+        name: ApplicationName;
+        status?: ApplicationStatus;
     }, table: {
         name: string;
         tableConfig?: {

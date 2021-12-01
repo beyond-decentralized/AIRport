@@ -167,7 +167,7 @@ export interface ApplicationVersionEUpdateColumns
 	MAJOR_VERSION?: number | IQNumberField;
 	MINOR_VERSION?: number | IQNumberField;
 	PATCH_VERSION?: number | IQNumberField;
-	SCHEMA_INDEX?: number | IQNumberField;
+	APPLICATION_INDEX?: number | IQNumberField;
 
 }
 

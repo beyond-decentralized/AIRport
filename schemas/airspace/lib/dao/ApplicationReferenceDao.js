@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { SCHEMA_REFERENCE_DAO } from '../tokens';
+import { APPLICATION_REFERENCE_DAO } from '../tokens';
 import { BaseApplicationReferenceDao, Q, } from '../generated/generated';
 export class ApplicationReferenceDao extends BaseApplicationReferenceDao {
     async findAllForApplicationVersions(applicationVersionIds) {
@@ -39,5 +39,5 @@ export class ApplicationReferenceDao extends BaseApplicationReferenceDao {
         });
     }
 }
-DI.set(SCHEMA_REFERENCE_DAO, ApplicationReferenceDao);
+DI.set(APPLICATION_REFERENCE_DAO, ApplicationReferenceDao);
 //# sourceMappingURL=ApplicationReferenceDao.js.map

@@ -1,5 +1,5 @@
 import { container, } from '@airport/di';
-import { getSchemaName } from '@airport/ground-control';
+import { getApplicationName } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
 import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER, INTERNAL_RECORD_MANAGER } from '../tokens';
@@ -15,7 +15,7 @@ export class TransactionalReceiver {
         let result;
         let errorMessage;
         let credentials = {
-            applicationSignature: message.schemaSignature
+            applicationSignature: message.applicationSignature
         };
         let context = {};
         context.startedAt = new Date();
@@ -23,21 +23,21 @@ export class TransactionalReceiver {
             switch (message.type) {
                 case IsolateMessageType.APP_INITIALIZING:
                     let initConnectionMessage = message;
-                    const schema = initConnectionMessage.schema;
-                    const schemaName = getSchemaName(schema);
-                    if (this.initializingApps.has(schemaName)) {
+                    const application = initConnectionMessage.application;
+                    const applicationName = getApplicationName(application);
+                    if (this.initializingApps.has(applicationName)) {
                         return null;
                     }
-                    this.initializingApps.add(schemaName);
+                    this.initializingApps.add(applicationName);
                     const [databaseManager, internalRecordManager] = await container(this)
                         .get(DATABASE_MANAGER, INTERNAL_RECORD_MANAGER);
                     // FIXME: initalize ahead of time, at Isolate Loading
-                    await databaseManager.initFeatureSchemas({}, [schema]);
-                    await internalRecordManager.ensureSchemaRecords(schema, message.schemaSignature, {});
-                    result = schema.lastIds;
+                    await databaseManager.initFeatureApplications({}, [application]);
+                    await internalRecordManager.ensureApplicationRecords(application, message.applicationSignature, {});
+                    result = application.lastIds;
                     break;
                 case IsolateMessageType.APP_INITIALIZED:
-                    this.initializedApps.add(message.schemaName);
+                    this.initializedApps.add(message.applicationName);
                     return null;
                 case IsolateMessageType.ADD_REPOSITORY:
                     // const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
@@ -129,10 +129,10 @@ export class TransactionalReceiver {
                     const updateValuesMessage = message;
                     result = await transactionalServer.updateValues(updateValuesMessage.portableQuery, credentials, context);
                     break;
-                case IsolateMessageType.GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME: {
+                case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                     const terminalStore = await container(this).get(TERMINAL_STORE);
-                    result = terminalStore.getLatestSchemaVersionMapBySchemaName()
-                        .get(message.schemaName);
+                    result = terminalStore.getLatestApplicationVersionMapByApplicationName()
+                        .get(message.applicationName);
                     break;
                 }
                 default:
@@ -149,7 +149,7 @@ export class TransactionalReceiver {
             category: 'FromDb',
             errorMessage,
             id: message.id,
-            schemaSignature: message.schemaSignature,
+            applicationSignature: message.applicationSignature,
             type: message.type,
             result
         };

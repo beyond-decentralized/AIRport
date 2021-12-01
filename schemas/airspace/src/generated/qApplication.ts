@@ -12,7 +12,6 @@ import {
 	EntityId,
 	getApplicationName
 }                      from '@airport/ground-control';
-import { QDomain } from './application/qdomain';
 import { QApplication } from './application/qapplication';
 import { QApplicationColumn } from './application/qapplicationcolumn';
 import { QApplicationCurrentVersion } from './application/qapplicationcurrentversion';
@@ -24,9 +23,9 @@ import { QApplicationReference } from './application/qapplicationreference';
 import { QApplicationRelation } from './application/qapplicationrelation';
 import { QApplicationRelationColumn } from './application/qapplicationrelationcolumn';
 import { QApplicationVersion } from './application/qapplicationversion';
+import { QDomain } from './application/qdomain';
 import { QVersionedApplicationObject } from './application/qversionedapplicationobject';
 import {
-  Domain,
   Application,
   ApplicationColumn,
   ApplicationCurrentVersion,
@@ -38,6 +37,7 @@ import {
   ApplicationRelation,
   ApplicationRelationColumn,
   ApplicationVersion,
+  Domain,
   VersionedApplicationObject
 } from '../ddl/ddl';
 
@@ -45,7 +45,6 @@ export interface LocalQApplication extends AirportQApplication {
 
   db: DbApplication;
 
-	Domain: QDomain;
 	Application: QApplication;
 	ApplicationColumn: QApplicationColumn;
 	ApplicationCurrentVersion: QApplicationCurrentVersion;
@@ -57,11 +56,11 @@ export interface LocalQApplication extends AirportQApplication {
 	ApplicationRelation: QApplicationRelation;
 	ApplicationRelationColumn: QApplicationRelationColumn;
 	ApplicationVersion: QApplicationVersion;
+	Domain: QDomain;
 
 }
 
 const __constructors__ = {
-	Domain: Domain,
 	Application: Application,
 	ApplicationColumn: ApplicationColumn,
 	ApplicationCurrentVersion: ApplicationCurrentVersion,
@@ -73,15 +72,16 @@ const __constructors__ = {
 	ApplicationRelation: ApplicationRelation,
 	ApplicationRelationColumn: ApplicationRelationColumn,
 	ApplicationVersion: ApplicationVersion,
+	Domain: Domain,
 	VersionedApplicationObject: VersionedApplicationObject
 };
 
-export const Q_SCHEMA: LocalQApplication = <any>{
+export const Q_APPLICATION: LocalQApplication = <any>{
 	__constructors__,
   domain: 'air',
-  name: '@airport/traffic-pattern'
+  name: '@airport/airspace'
 };
-export const Q: LocalQApplication = Q_SCHEMA
+export const Q: LocalQApplication = Q_APPLICATION
 
 export function diSet(
 	dbEntityId: EntityId
@@ -98,5 +98,5 @@ export function duoDiSet(
 DI.db().eventuallyGet(AIRPORT_DATABASE).then((
 	airDb
 ) => {
-	airDb.QM[getApplicationName(Q_SCHEMA)] = Q
+	airDb.QM[getApplicationName(Q_APPLICATION)] = Q
 })

@@ -10,7 +10,7 @@ export class TerminalStore {
             applicationActors: [],
             domains: [],
             frameworkActor: null,
-            schemas: [],
+            applications: [],
             terminal: null,
         });
         this.getTerminalState = selectorManager.createRootSelector(this.state);
@@ -18,7 +18,7 @@ export class TerminalStore {
         this.getApplicationActorMapBySignature = selectorManager.createSelector(this.getApplicationActors, applicationActors => {
             const applicationActorsBySignature = new Map();
             for (const applicationActor of applicationActors) {
-                applicationActorsBySignature.set(applicationActor.schema.signature, applicationActor);
+                applicationActorsBySignature.set(applicationActor.application.signature, applicationActor);
             }
             return applicationActorsBySignature;
         });
@@ -31,54 +31,54 @@ export class TerminalStore {
             return domainsByName;
         });
         this.getFrameworkActor = selectorManager.createSelector(this.getTerminalState, terminal => terminal.frameworkActor);
-        this.getLatestSchemaVersionMapByNames = selectorManager.createSelector(this.getDomains, domains => {
-            const latestSchemaVersionMapByNames = new Map();
+        this.getLatestApplicationVersionMapByNames = selectorManager.createSelector(this.getDomains, domains => {
+            const latestApplicationVersionMapByNames = new Map();
             for (const domain of domains) {
-                const mapForDomain = ensureChildJsMap(latestSchemaVersionMapByNames, domain.name);
-                for (const schema of domain.schemas) {
-                    mapForDomain.set(schema.name, schema.currentVersion[0].schemaVersion);
+                const mapForDomain = ensureChildJsMap(latestApplicationVersionMapByNames, domain.name);
+                for (const application of domain.applications) {
+                    mapForDomain.set(application.name, application.currentVersion[0].applicationVersion);
                 }
             }
-            return latestSchemaVersionMapByNames;
+            return latestApplicationVersionMapByNames;
         });
-        this.getLatestSchemaVersionMapBySchemaName = selectorManager.createSelector(this.getLatestSchemaVersionMapByNames, (latestSchemaVersionMapByNames) => {
-            const latestSchemaVersionMapBySchemaName = new Map();
-            for (const schemaVersionsForDomainName of latestSchemaVersionMapByNames.values()) {
-                for (const schemaVersion of schemaVersionsForDomainName.values()) {
-                    latestSchemaVersionMapBySchemaName.set(schemaVersion.schema.name, schemaVersion);
+        this.getLatestApplicationVersionMapByApplicationName = selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
+            const latestApplicationVersionMapByApplicationName = new Map();
+            for (const applicationVersionsForDomainName of latestApplicationVersionMapByNames.values()) {
+                for (const applicationVersion of applicationVersionsForDomainName.values()) {
+                    latestApplicationVersionMapByApplicationName.set(applicationVersion.application.name, applicationVersion);
                 }
             }
-            return latestSchemaVersionMapBySchemaName;
+            return latestApplicationVersionMapByApplicationName;
         });
-        this.getAllSchemaVersionsByIds = selectorManager.createSelector(this.getDomains, domains => {
-            const allSchemaVersionsByIds = [];
+        this.getAllApplicationVersionsByIds = selectorManager.createSelector(this.getDomains, domains => {
+            const allApplicationVersionsByIds = [];
             for (const domain of domains) {
-                for (const schema of domain.schemas) {
-                    for (const schemaVersion of schema.versions) {
-                        allSchemaVersionsByIds[schemaVersion.id] = schemaVersion;
+                for (const application of domain.applications) {
+                    for (const applicationVersion of application.versions) {
+                        allApplicationVersionsByIds[applicationVersion.id] = applicationVersion;
                     }
                 }
             }
-            return allSchemaVersionsByIds;
+            return allApplicationVersionsByIds;
         });
-        this.getLatestSchemaVersionsBySchemaIndexes = selectorManager.createSelector(this.getDomains, domains => {
-            const latestSchemaVersionsBySchemaIndexes = [];
+        this.getLatestApplicationVersionsByApplicationIndexes = selectorManager.createSelector(this.getDomains, domains => {
+            const latestApplicationVersionsByApplicationIndexes = [];
             for (const domain of domains) {
-                for (const schema of domain.schemas) {
-                    latestSchemaVersionsBySchemaIndexes[schema.index]
-                        = schema.currentVersion[0].schemaVersion;
+                for (const application of domain.applications) {
+                    latestApplicationVersionsByApplicationIndexes[application.index]
+                        = application.currentVersion[0].applicationVersion;
                 }
             }
-            return latestSchemaVersionsBySchemaIndexes;
+            return latestApplicationVersionsByApplicationIndexes;
         });
-        this.getSchemas = selectorManager.createSelector(this.getTerminalState, terminal => terminal.schemas);
-        this.getAllEntities = selectorManager.createSelector(this.getLatestSchemaVersionsBySchemaIndexes, latestSchemaVersionsBySchemaIndexes => {
+        this.getApplications = selectorManager.createSelector(this.getTerminalState, terminal => terminal.applications);
+        this.getAllEntities = selectorManager.createSelector(this.getLatestApplicationVersionsByApplicationIndexes, latestApplicationVersionsByApplicationIndexes => {
             const allEntities = [];
-            for (const latestSchemaVersion of latestSchemaVersionsBySchemaIndexes) {
-                if (!latestSchemaVersion) {
+            for (const latestApplicationVersion of latestApplicationVersionsByApplicationIndexes) {
+                if (!latestApplicationVersion) {
                     continue;
                 }
-                for (const entity of latestSchemaVersion.entities) {
+                for (const entity of latestApplicationVersion.entities) {
                     allEntities[entity.id] = entity;
                 }
             }

@@ -35,7 +35,7 @@ export class SQLQuery extends SQLWhereBase {
     getFieldMap() {
         return this.fieldMap;
     }
-    getEntitySchemaRelationFromJoin(leftQEntity, rightQEntity, entityRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, context) {
+    getEntityApplicationRelationFromJoin(leftQEntity, rightQEntity, entityRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, context) {
         const allJoinOnColumns = [];
         const leftDbEntity = leftQEntity.__driver__.dbEntity;
         const rightDbEntity = rightQEntity.__driver__.dbEntity;
@@ -61,7 +61,7 @@ export class SQLQuery extends SQLWhereBase {
                 break;
             default:
                 throw new Error(`Unknown relation type ${dbRelation.relationType} 
-on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`);
+on '${leftDbEntity.applicationVersion.application.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`);
         }
         for (const relationColumn of relationColumns) {
             let ownColumnName;
@@ -77,7 +77,7 @@ on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.
                     break;
                 default:
                     throw new Error(`Unknown relation type ${dbRelation.relationType} 
-on '${leftDbEntity.schemaVersion.schema.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`);
+on '${leftDbEntity.applicationVersion.application.name}.${leftDbEntity.name}.${dbRelation.property.name}'.`);
             }
             allJoinOnColumns.push({
                 leftColumn: ownColumnName,

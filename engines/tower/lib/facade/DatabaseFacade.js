@@ -1,4 +1,4 @@
-import { DATABASE_FACADE, Delete, InsertColumnValues, InsertValues, QUERY_CONTEXT_LOADER, SCHEMA_UTILS, UPDATE_CACHE_MANAGER, UpdateColumns, UpdateProperties, } from '@airport/air-control';
+import { DATABASE_FACADE, Delete, InsertColumnValues, InsertValues, QUERY_CONTEXT_LOADER, APPLICATION_UTILS, UPDATE_CACHE_MANAGER, UpdateColumns, UpdateProperties, } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { ENTITY_COPIER } from '../tokens';
@@ -88,9 +88,9 @@ export class DatabaseFacade {
             return null;
         }
         const entityCopy = await this.preSaveOperations(entity, context);
-        const [updateCacheManager, entityStateManager, schemaUtils, transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR);
+        const [updateCacheManager, entityStateManager, applicationUtils, transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR);
         const saveResult = await transactionalConnector.save(entityCopy, context);
-        updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult, entityStateManager, schemaUtils, new Set());
+        updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult, entityStateManager, applicationUtils, new Set());
         return saveResult;
     }
     async saveToDestination(repositoryDestination, entity, context) {
@@ -98,21 +98,21 @@ export class DatabaseFacade {
             return null;
         }
         const entityCopy = await this.preSaveOperations(entity, context);
-        const [updateCacheManager, entityStateManager, schemaUtils, transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR);
+        const [updateCacheManager, entityStateManager, applicationUtils, transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_STATE_MANAGER, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR);
         const saveResult = await transactionalConnector
             .saveToDestination(repositoryDestination, entityCopy, context);
-        updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult, entityStateManager, schemaUtils, new Set());
+        updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult, entityStateManager, applicationUtils, new Set());
         return saveResult;
     }
     async preSaveOperations(entity, context) {
         if (!entity) {
             return null;
         }
-        const [updateCacheManager, entityCopier, entityStateManager, schemaUtils] = await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER, ENTITY_STATE_MANAGER, SCHEMA_UTILS, TRANSACTIONAL_CONNECTOR);
+        const [updateCacheManager, entityCopier, entityStateManager, applicationUtils] = await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER, ENTITY_STATE_MANAGER, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR);
         const dbEntity = context.dbEntity;
         const entityCopy = entityCopier
             .copyEntityForProcessing(entity, dbEntity, entityStateManager);
-        updateCacheManager.setOperationState(entityCopy, dbEntity, entityStateManager, schemaUtils, new Set());
+        updateCacheManager.setOperationState(entityCopy, dbEntity, entityStateManager, applicationUtils, new Set());
         return entityCopy;
     }
     /**

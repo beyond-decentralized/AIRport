@@ -31,13 +31,13 @@ export type RemoteActorId = Actor_Id;
 export enum ApplicationComparisonResult {
 	// Version specified in the message is lower than it's version in the receiving
 	// Terminal (TM)
-	MESSAGE_SCHEMA_VERSION_IS_LOWER  = -1,
+	MESSAGE_APPLICATION_VERSION_IS_LOWER  = -1,
 	// Version of the application used i the message is the same as that in the receiving
 	// Terminal (TM)
-	MESSAGE_SCHEMA_VERSION_IS_EQUAL  = 0,
+	MESSAGE_APPLICATION_VERSION_IS_EQUAL  = 0,
 	// Version specified in the message in higher than it's version in the receiving
 	// Terminal (TM)
-	MESSAGE_SCHEMA_VERSION_IS_HIGHER = 1,
+	MESSAGE_APPLICATION_VERSION_IS_HIGHER = 1,
 }
 
 export interface ISyncRepoTransHistory

@@ -10,7 +10,7 @@ import {
 import {
 	IApplicationEntity,
 	IApplicationVersion,
-	SCHEMA_ENTITY_DAO
+	APPLICATION_ENTITY_DAO
 } from '@airport/airspace'
 import {
 	SYNC_IN_DATA_CHECKER
@@ -102,7 +102,7 @@ export class SyncInDataChecker
 			applicationVersionIds.push(applicationVersion.id)
 			applicationVersionsById.set(applicationVersion.id, applicationVersion)
 		}
-		const applicationEntityDao = await container(this).get(SCHEMA_ENTITY_DAO)
+		const applicationEntityDao = await container(this).get(APPLICATION_ENTITY_DAO)
 		const applicationEntities = await applicationEntityDao.findAllForApplicationVersions(applicationVersionIds);
 		const applicationEntityMap: Map<string, Map<string, Map<TableIndex, IApplicationEntity>>> = new Map()
 

@@ -16,7 +16,7 @@ export type JsonApplicationName = string;
 export type PackageId = number;
 export type PackageName = string;
 export type ApplicationIndex = number;
-// NOTE: ApplicationName contains DomainName as a prefix DOMAIN_NAME___SCHEMA_NAME
+// NOTE: ApplicationName contains DomainName as a prefix DOMAIN_NAME___APPLICATION_NAME
 export type ApplicationReferenceIndex = number;
 export type ApplicationScope = 'private' | 'public' | null;
 export type ApplicationVersionId = number;

@@ -9,7 +9,7 @@ export interface LocalQApplication extends AirportQApplication {
     SystemWideOperationId: QSystemWideOperationId;
     TerminalRun: QTerminalRun;
 }
-export declare const Q_SCHEMA: LocalQApplication;
+export declare const Q_APPLICATION: LocalQApplication;
 export declare const Q: LocalQApplication;
 export declare function diSet(dbEntityId: EntityId): boolean;
 export declare function duoDiSet(dbEntityId: EntityId): boolean;

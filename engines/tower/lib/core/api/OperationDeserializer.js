@@ -7,20 +7,20 @@ import { EntityRelationType, EntityState, SQLDataType } from "@airport/ground-co
 // method argiments passed it (and won't be tied to a query of any kind, API
 // interface is generic, unless already known to contain entity objects.)
 export class OperationDeserializer {
-    deserialize(entity, dbEntity, entityStateManager, schemaUtils) {
+    deserialize(entity, dbEntity, entityStateManager, applicationUtils) {
         const operation = {
             lookupTable: [],
         };
         let deserializedEntity;
         if (entity instanceof Array) {
-            deserializedEntity = entity.map(anEntity => this.doDeserialize(anEntity, dbEntity, operation, entityStateManager, schemaUtils));
+            deserializedEntity = entity.map(anEntity => this.doDeserialize(anEntity, dbEntity, operation, entityStateManager, applicationUtils));
         }
         else {
-            deserializedEntity = this.doDeserialize(entity, dbEntity, operation, entityStateManager, schemaUtils);
+            deserializedEntity = this.doDeserialize(entity, dbEntity, operation, entityStateManager, applicationUtils);
         }
         return deserializedEntity;
     }
-    doDeserialize(entity, dbEntity, operation, entityStateManager, schemaUtils) {
+    doDeserialize(entity, dbEntity, operation, entityStateManager, applicationUtils) {
         let state = entityStateManager.getEntityState(entity);
         let operationUniqueId = entityStateManager.getOperationUniqueId(entity);
         if (!operationUniqueId || typeof operationUniqueId !== 'number'
@@ -48,7 +48,7 @@ export class OperationDeserializer {
         deserializedEntity[entityStateManager.getStateFieldName()] = state;
         for (const dbProperty of dbEntity.properties) {
             let value = entity[dbProperty.name];
-            if (schemaUtils.isEmpty(value)) {
+            if (applicationUtils.isEmpty(value)) {
                 continue;
             }
             let propertyCopy;
@@ -59,13 +59,13 @@ export class OperationDeserializer {
                         if (!(value instanceof Array)) {
                             throw new Error(`Expecting @OneToMany for an array entity relation`);
                         }
-                        propertyCopy = value.map(aProperty => this.doDeserialize(aProperty, dbRelation.entity, operation, entityStateManager, schemaUtils));
+                        propertyCopy = value.map(aProperty => this.doDeserialize(aProperty, dbRelation.entity, operation, entityStateManager, applicationUtils));
                         break;
                     case EntityRelationType.MANY_TO_ONE:
                         if (!(value instanceof Object) || value instanceof Array) {
                             throw new Error(`Expecting @ManyToOne for a non-array entity relation`);
                         }
-                        propertyCopy = this.doDeserialize(value, dbRelation.entity, operation, entityStateManager, schemaUtils);
+                        propertyCopy = this.doDeserialize(value, dbRelation.entity, operation, entityStateManager, applicationUtils);
                         break;
                     default:
                         throw new Error(`Unknown relation type: ${dbRelation.relationType}`);

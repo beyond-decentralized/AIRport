@@ -1,4 +1,4 @@
-import { DbEntity, DomainName, InternalFragments, IStoreDriver, PortableQuery, QueryType, SchemaName, SchemaStatus, SQLDataType, StoreType } from '@airport/ground-control';
+import { DbEntity, DomainName, InternalFragments, IStoreDriver, PortableQuery, QueryType, ApplicationName, ApplicationStatus, SQLDataType, StoreType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 import { ITransaction } from '@airport/terminal-map';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
@@ -11,19 +11,19 @@ export declare abstract class SqlDriver implements IStoreDriver {
     protected maxValues: number;
     supportsLocalTransactions(context: IFuelHydrantContext): boolean;
     getEntityTableName(dbEntity: DbEntity, context: IFuelHydrantContext): string;
-    getTableName(schema: {
+    getTableName(application: {
         domain: DomainName | {
             name: DomainName;
         };
-        name: SchemaName;
-        status?: SchemaStatus;
+        name: ApplicationName;
+        status?: ApplicationStatus;
     }, table: {
         name: string;
         tableConfig?: {
             name?: string;
         };
     }, context: IFuelHydrantContext): string;
-    abstract composeTableName(schemaName: string, tableName: string, context: IFuelHydrantContext): string;
+    abstract composeTableName(applicationName: string, tableName: string, context: IFuelHydrantContext): string;
     abstract initialize(dbName: string, context: IFuelHydrantContext): Promise<any>;
     abstract transact(callback: {
         (transaction: ITransaction): Promise<void>;
@@ -39,8 +39,8 @@ export declare abstract class SqlDriver implements IStoreDriver {
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IFuelHydrantContext, cachedSqlQueryId?: number): Observable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IFuelHydrantContext, cachedSqlQueryId?: number): Observable<E>;
     warn(message: string): void;
-    abstract doesTableExist(schemaName: string, tableName: string, context: IFuelHydrantContext): Promise<boolean>;
-    abstract dropTable(schemaName: string, tableName: string, context: IFuelHydrantContext): Promise<boolean>;
+    abstract doesTableExist(applicationName: string, tableName: string, context: IFuelHydrantContext): Promise<boolean>;
+    abstract dropTable(applicationName: string, tableName: string, context: IFuelHydrantContext): Promise<boolean>;
     abstract query(queryType: QueryType, query: string, params: any, context: IFuelHydrantContext, saveTransaction?: boolean): Promise<any>;
     abstract isServer(context: IFuelHydrantContext): boolean;
     protected abstract executeNative(sql: string, parameters: any[], context: IFuelHydrantContext): Promise<number>;

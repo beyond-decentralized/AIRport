@@ -17,7 +17,7 @@ import {
     DOMAIN_DAO,
     IDomain,
     IApplication,
-    SCHEMA_DAO
+    APPLICATION_DAO
 } from "@airport/airspace";
 import { transactional } from "@airport/tower";
 import {
@@ -55,7 +55,7 @@ export class InternalRecordManager
         ) => {
             const [actorDao, applicationDao, terminalStore]
                 = await container(this)
-                    .get(ACTOR_DAO, SCHEMA_DAO, TERMINAL_STORE)
+                    .get(ACTOR_DAO, APPLICATION_DAO, TERMINAL_STORE)
 
             const domain = await this.updateDomain(application)
 

@@ -8,9 +8,9 @@ import {IApplicationInitializer} from './ApplicationInitializer'
 
 const landing = system('airport').lib('landing')
 
-export const SCHEMA_BUILDER     = landing.token<IApplicationBuilder>('IApplicationBuilder')
-export const SCHEMA_CHECKER     = landing.token<IApplicationChecker>('IApplicationChecker')
-export const SCHEMA_COMPOSER    = landing.token<IApplicationComposer>('IApplicationComposer')
-export const SCHEMA_INITIALIZER = landing.token<IApplicationInitializer>('IApplicationInitializer')
-export const SCHEMA_LOCATOR     = landing.token<IApplicationLocator>('IApplicationLocator')
-export const SCHEMA_RECORDER    = landing.token<IApplicationRecorder>('IApplicationRecorder')
+export const APPLICATION_BUILDER     = landing.token<IApplicationBuilder>('IApplicationBuilder')
+export const APPLICATION_CHECKER     = landing.token<IApplicationChecker>('IApplicationChecker')
+export const APPLICATION_COMPOSER    = landing.token<IApplicationComposer>('IApplicationComposer')
+export const APPLICATION_INITIALIZER = landing.token<IApplicationInitializer>('IApplicationInitializer')
+export const APPLICATION_LOCATOR     = landing.token<IApplicationLocator>('IApplicationLocator')
+export const APPLICATION_RECORDER    = landing.token<IApplicationRecorder>('IApplicationRecorder')

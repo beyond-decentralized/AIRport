@@ -23,7 +23,7 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'SCHEMA_ENTITY_ID',
+        name: 'APPLICATION_ENTITY_ID',
         referencedColumnName: 'ID',
         nullable: false
     })
@@ -39,7 +39,7 @@ __decorate([
 ApplicationOperation = __decorate([
     Entity(),
     Table({
-        name: 'SCHEMA_OPERATIONS'
+        name: 'APPLICATION_OPERATIONS'
     })
 ], ApplicationOperation);
 export { ApplicationOperation };

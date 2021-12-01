@@ -39,7 +39,7 @@ export interface RepositoryApplicationGraph extends RepositoryApplicationEOption
  * UPDATE - non-id columns (optional).
  */
 export interface RepositoryApplicationEUpdateColumns extends IEntityUpdateColumns {
-    SCHEMA_INDEX?: number | IQNumberField;
+    APPLICATION_INDEX?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).

@@ -184,12 +184,12 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
             if (dependencyOUID === nodeOUID) {
                 let entityPath = [];
                 for (let pathNode of nodePath) {
-                    let entityLongName = pathNode.dbEntity.schemaVersion.schema.name + ':' + pathNode.dbEntity.name;
+                    let entityLongName = pathNode.dbEntity.applicationVersion.application.name + ':' + pathNode.dbEntity.name;
                     entityPath.push(entityLongName);
                 }
-                let entityLongName = dependency.dbEntity.schemaVersion.schema.name + ':' + dependency.dbEntity.name;
+                let entityLongName = dependency.dbEntity.applicationVersion.application.name + ':' + dependency.dbEntity.name;
                 entityPath.push(entityLongName);
-                entityLongName = nodePath[0].dbEntity.schemaVersion.schema.name + ':' + nodePath[0].dbEntity.name;
+                entityLongName = nodePath[0].dbEntity.applicationVersion.application.name + ':' + nodePath[0].dbEntity.name;
                 throw new Error(`Found a circular dependency in
 					${entityPath.join(' -> ')}
 					`);
@@ -232,18 +232,18 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
     optimizePersistOperations(orderedDependencies, context) {
         let operationNodes = [];
         let processedNodes = [];
-        let operationsBySchemaIndex = [];
+        let operationsByApplicationIndex = [];
         for (const node of orderedDependencies) {
             const dbEntity = node.dbEntity;
-            const schemaOperationNodes = ensureChildArray(operationsBySchemaIndex, dbEntity.schemaVersion.schema.index);
-            let entityOperations = schemaOperationNodes[dbEntity.index];
+            const applicationOperationNodes = ensureChildArray(operationsByApplicationIndex, dbEntity.applicationVersion.application.index);
+            let entityOperations = applicationOperationNodes[dbEntity.index];
             if (!entityOperations) {
                 entityOperations = {
                     create: [],
                     delete: [],
                     update: []
                 };
-                schemaOperationNodes[dbEntity.index] = entityOperations;
+                applicationOperationNodes[dbEntity.index] = entityOperations;
             }
             let operations = [];
             if (node.isCreate) {

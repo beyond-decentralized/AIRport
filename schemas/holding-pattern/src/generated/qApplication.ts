@@ -25,8 +25,8 @@ import { QRecordHistoryNewValue } from './history/qrecordhistorynewvalue';
 import { QRecordHistoryOldValue } from './history/qrecordhistoryoldvalue';
 import { QReferenceRow } from './traditional/qreferencerow';
 import { QRepository } from './repository/qrepository';
-import { QRepositoryEntity } from './repository/qrepositoryentity';
 import { QRepositoryApplication } from './repository/qrepositoryapplication';
+import { QRepositoryEntity } from './repository/qrepositoryentity';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
 import { QStageable } from './infrastructure/qstageable';
 import { QTransactionHistory } from './history/qtransactionhistory';
@@ -44,8 +44,8 @@ import {
   RecordHistoryOldValue,
   ReferenceRow,
   Repository,
-  RepositoryEntity,
   RepositoryApplication,
+  RepositoryEntity,
   RepositoryTransactionHistory,
   Stageable,
   TransactionHistory
@@ -81,19 +81,19 @@ const __constructors__ = {
 	RecordHistoryOldValue: RecordHistoryOldValue,
 	ReferenceRow: ReferenceRow,
 	Repository: Repository,
-	RepositoryEntity: RepositoryEntity,
 	RepositoryApplication: RepositoryApplication,
+	RepositoryEntity: RepositoryEntity,
 	RepositoryTransactionHistory: RepositoryTransactionHistory,
 	Stageable: Stageable,
 	TransactionHistory: TransactionHistory
 };
 
-export const Q_SCHEMA: LocalQApplication = <any>{
+export const Q_APPLICATION: LocalQApplication = <any>{
 	__constructors__,
   domain: 'air',
   name: '@airport/holding-pattern'
 };
-export const Q: LocalQApplication = Q_SCHEMA
+export const Q: LocalQApplication = Q_APPLICATION
 
 export function diSet(
 	dbEntityId: EntityId
@@ -110,5 +110,5 @@ export function duoDiSet(
 DI.db().eventuallyGet(AIRPORT_DATABASE).then((
 	airDb
 ) => {
-	airDb.QM[getApplicationName(Q_SCHEMA)] = Q
+	airDb.QM[getApplicationName(Q_APPLICATION)] = Q
 })

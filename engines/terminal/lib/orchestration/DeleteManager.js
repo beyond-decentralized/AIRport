@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, SCHEMA_UTILS, valuesEqual, Y } from '@airport/air-control';
+import { AIRPORT_DATABASE, APPLICATION_UTILS, valuesEqual, Y } from '@airport/air-control';
 import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI, } from '@airport/di';
 import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType, } from '@airport/ground-control';
@@ -6,16 +6,16 @@ import { OPER_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPOSITORY_T
 import { DELETE_MANAGER, HISTORY_MANAGER } from '../tokens';
 export class DeleteManager {
     async deleteWhere(portableQuery, actor, transaction, context = {}) {
-        const [airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, schemaUtils, sequenceGenerator] = await container(this)
-            .get(AIRPORT_DATABASE, HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO, SCHEMA_UTILS, SEQUENCE_GENERATOR);
+        const [airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, applicationUtils, sequenceGenerator] = await container(this)
+            .get(AIRPORT_DATABASE, HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO, APPLICATION_UTILS, SEQUENCE_GENERATOR);
         const dbEntity = airDb
-            .schemas[portableQuery.schemaIndex].currentVersion[0].schemaVersion
+            .applications[portableQuery.applicationIndex].currentVersion[0].applicationVersion
             .entities[portableQuery.tableIndex];
         const deleteCommand = transaction.deleteWhere(portableQuery, context);
         if (dbEntity.isLocal || transaction.isSync) {
             return await deleteCommand;
         }
-        const selectCascadeTree = this.getCascadeSubTree(dbEntity, schemaUtils);
+        const selectCascadeTree = this.getCascadeSubTree(dbEntity, applicationUtils);
         const jsonDelete = portableQuery.jsonQuery;
         const jsonSelect = {
             S: selectCascadeTree,
@@ -23,27 +23,28 @@ export class DeleteManager {
             W: jsonDelete.W,
         };
         const portableSelect = {
-            schemaIndex: portableQuery.schemaIndex,
+            applicationIndex: portableQuery.applicationIndex,
             tableIndex: portableQuery.tableIndex,
             jsonQuery: jsonSelect,
             queryResultType: QueryResultType.ENTITY_TREE,
             parameterMap: portableQuery.parameterMap,
+            // values: portableQuery.values,
         };
         const treesToDelete = await transaction
             .find(portableSelect, {}, context);
         const recordsToDelete = new Map();
         const repositoryIdSet = new Set();
         for (const treeToDelete of treesToDelete) {
-            this.recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet, schemaUtils);
+            this.recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet, applicationUtils);
         }
-        await this.recordTreeToDelete(recordsToDelete, actor, airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, schemaUtils, sequenceGenerator, transaction);
+        await this.recordTreeToDelete(recordsToDelete, actor, airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, applicationUtils, sequenceGenerator, transaction);
         return await deleteCommand;
     }
-    recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet, schemaUtils) {
+    recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet, applicationUtils) {
         const repositoryId = treeToDelete.repository.id;
         repositoryIdSet.add(repositoryId);
-        const recordsToDeleteForSchema = ensureChildJsMap(recordsToDelete, dbEntity.schemaVersion.schema.index);
-        const recordsToDeleteForTable = ensureChildJsMap(recordsToDeleteForSchema, dbEntity.index);
+        const recordsToDeleteForApplication = ensureChildJsMap(recordsToDelete, dbEntity.applicationVersion.application.index);
+        const recordsToDeleteForTable = ensureChildJsMap(recordsToDeleteForApplication, dbEntity.index);
         const recordsToDeleteForRepository = ensureChildArray(recordsToDeleteForTable, repositoryId);
         const recordToDelete = {};
         // FIXME: implement
@@ -56,7 +57,7 @@ export class DeleteManager {
                 const dbRelation = dbProperty.relation[0];
                 switch (dbRelation.relationType) {
                     case EntityRelationType.MANY_TO_ONE:
-                        schemaUtils.forEachColumnOfRelation(dbRelation, treeToDelete, (dbColumn, value, propertyNameChains) => {
+                        applicationUtils.forEachColumnOfRelation(dbRelation, treeToDelete, (dbColumn, value, propertyNameChains) => {
                             this.columnProcessed(dbProperty, recordToDelete, dbColumn, value);
                         }, false);
                         break;
@@ -68,7 +69,7 @@ export class DeleteManager {
                         if (childTrees && childTrees.length) {
                             const childDbEntity = dbRelation.relationEntity;
                             childTrees.forEach(childTree => {
-                                this.recordRepositoryIds(childTree, childDbEntity, recordsToDelete, repositoryIdSet, schemaUtils);
+                                this.recordRepositoryIds(childTree, childDbEntity, recordsToDelete, repositoryIdSet, applicationUtils);
                             });
                         }
                         break;
@@ -106,12 +107,12 @@ export class DeleteManager {
         }
         return true;
     }
-    async recordTreeToDelete(recordsToDelete, actor, airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, schemaUtils, sequenceGenerator, transaction) {
+    async recordTreeToDelete(recordsToDelete, actor, airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, applicationUtils, sequenceGenerator, transaction) {
         let systemWideOperationId;
-        for (const [schemaIndex, schemaRecordsToDelete] of recordsToDelete) {
-            for (const [entityIndex, entityRecordsToDelete] of schemaRecordsToDelete) {
-                const dbEntity = airDb.schemas[schemaIndex].currentVersion[0]
-                    .schemaVersion.entities[entityIndex];
+        for (const [applicationIndex, applicationRecordsToDelete] of recordsToDelete) {
+            for (const [entityIndex, entityRecordsToDelete] of applicationRecordsToDelete) {
+                const dbEntity = airDb.applications[applicationIndex].currentVersion[0]
+                    .applicationVersion.entities[entityIndex];
                 if (!systemWideOperationId) {
                     systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator);
                 }
@@ -125,7 +126,7 @@ export class DeleteManager {
                                 const dbRelation = dbProperty.relation[0];
                                 switch (dbRelation.relationType) {
                                     case EntityRelationType.MANY_TO_ONE:
-                                        schemaUtils.forEachColumnOfRelation(dbRelation, recordToDelete, (dbColumn, value, propertyNameChains) => {
+                                        applicationUtils.forEachColumnOfRelation(dbRelation, recordToDelete, (dbColumn, value, propertyNameChains) => {
                                             recHistoryDuo.addOldValue(recordHistory, dbColumn, value, recHistoryOldValueDuo);
                                         });
                                         break;
@@ -148,7 +149,7 @@ export class DeleteManager {
             }
         }
     }
-    getCascadeSubTree(dbEntity, schemaUtils, selectClause = {}) {
+    getCascadeSubTree(dbEntity, applicationUtils, selectClause = {}) {
         for (const dbProperty of dbEntity.properties) {
             let dbRelation;
             if (dbProperty.relation && dbProperty.relation.length) {
@@ -162,10 +163,10 @@ export class DeleteManager {
                         }
                         const subTree = {};
                         selectClause[dbProperty.name] = subTree;
-                        this.getCascadeSubTree(dbRelation.relationEntity, schemaUtils, subTree);
+                        this.getCascadeSubTree(dbRelation.relationEntity, applicationUtils, subTree);
                         break;
                     case EntityRelationType.MANY_TO_ONE:
-                        schemaUtils.addRelationToEntitySelectClause(dbRelation, selectClause);
+                        applicationUtils.addRelationToEntitySelectClause(dbRelation, selectClause);
                         break;
                     default:
                         throw new Error(`Unknown relation type: '${dbRelation.relationType}' 

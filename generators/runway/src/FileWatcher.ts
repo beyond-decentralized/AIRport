@@ -212,7 +212,7 @@ export async function watchFiles(
 
 		const applicationJsonString = JSON.stringify(jsonApplication, null, '\t');
 
-		const applicationSourceString = `export const SCHEMA = `
+		const applicationSourceString = `export const APPLICATION = `
 			+ applicationJsonString + ';';
 
 		fs.writeFileSync(applicationPath, applicationJsonString);

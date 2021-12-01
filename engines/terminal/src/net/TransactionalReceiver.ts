@@ -213,7 +213,7 @@ export abstract class TransactionalReceiver {
                         context
                     )
                     break
-                case IsolateMessageType.GET_LATEST_SCHEMA_VERSION_BY_SCHEMA_NAME: {
+                case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                     const terminalStore = await container(this).get(TERMINAL_STORE)
                     result = terminalStore.getLatestApplicationVersionMapByApplicationName()
                         .get((message as IGetLatestApplicationVersionByApplicationNameIMI).applicationName)

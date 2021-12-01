@@ -1,9 +1,9 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { getSchemaName, STORE_DRIVER, } from '@airport/ground-control';
+import { getApplicationName, STORE_DRIVER, } from '@airport/ground-control';
 import { Actor, } from '@airport/holding-pattern';
-import { SCHEMA_INITIALIZER } from '@airport/landing';
-import { SCHEMA_DAO } from '@airport/airspace';
+import { APPLICATION_INITIALIZER } from '@airport/landing';
+import { APPLICATION_DAO } from '@airport/airspace';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER, INTERNAL_RECORD_MANAGER } from '../tokens';
 import { BLUEPRINT } from '@airport/blueprint';
@@ -13,13 +13,13 @@ export class DatabaseManager {
     }
     // constructor() {
     // }
-    async initNoDb(context, ...schemas) {
+    async initNoDb(context, ...applications) {
         await container(this).get(AIRPORT_DATABASE);
         const server = await container(this).get(TRANSACTIONAL_SERVER);
         server.tempActor = new Actor();
-        await this.installStarterSchema(true, false, context);
-        const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
-        await schemaInitializer.stage(schemas, context);
+        await this.installStarterApplication(true, false, context);
+        const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER);
+        await applicationInitializer.stage(applications, context);
         server.tempActor = null;
         this.initialized = true;
     }
@@ -39,7 +39,7 @@ export class DatabaseManager {
                 await storeDriver.dropTable('air__holding_pattern', 'REPOSITORY_RECORD_HISTORY')
                 await storeDriver.dropTable('air__holding_pattern', 'REPOSITORY_RECORD_HISTORY_NEW_VALUES')
                 await storeDriver.dropTable('air__holding_pattern', 'REPOSITORY_RECORD_HISTORY_OLD_VALUES')
-                await storeDriver.dropTable('air__holding_pattern', 'REPOSITORY_SCHEMAS')
+                await storeDriver.dropTable('air__holding_pattern', 'REPOSITORY_APPLICATIONS')
                 await storeDriver.dropTable('air__holding_pattern', 'REPOSITORY_TRANSACTION_HISTORY')
                 await storeDriver.dropTable('air__holding_pattern', 'REPO_TRANS_HISTORY_CHANGED_REPOSITORY_ACTORS')
                 await storeDriver.dropTable('air__holding_pattern', 'TRANSACTION_HISTORY')
@@ -48,15 +48,15 @@ export class DatabaseManager {
                 await storeDriver.dropTable('air__territory', 'DOMAINS')
                 await storeDriver.dropTable('air__territory', 'PACKAGED_UNITS')
                 await storeDriver.dropTable('air__territory', 'PACKAGES')
-                await storeDriver.dropTable('air__traffic_pattern', 'SCHEMAS')
-                await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_COLUMNS')
-                await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_ENTITIES')
-                await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_PROPERTIES')
-                await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_PROPERTY_COLUMNS')
-                await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_REFERENCES')
-                await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_RELATIONS')
-                await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_RELATION_COLUMNS')
-                await storeDriver.dropTable('air__traffic_pattern', 'SCHEMA_VERSIONS')
+                await storeDriver.dropTable('air__traffic_pattern', 'APPLICATIONS')
+                await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_COLUMNS')
+                await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_ENTITIES')
+                await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_PROPERTIES')
+                await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_PROPERTY_COLUMNS')
+                await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_REFERENCES')
+                await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_RELATIONS')
+                await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_RELATION_COLUMNS')
+                await storeDriver.dropTable('air__traffic_pattern', 'APPLICATION_VERSIONS')
                 await storeDriver.dropTable('air__travel_document_checkpoint', 'Agt')
                 await storeDriver.dropTable('air__travel_document_checkpoint', 'TERMINAL_AGTS')
                 await storeDriver.dropTable('air__travel_document_checkpoint', 'Terminal')
@@ -90,8 +90,8 @@ export class DatabaseManager {
         */
         const server = await container(this).get(TRANSACTIONAL_SERVER);
         server.tempActor = new Actor();
-        const hydrate = await storeDriver.doesTableExist(getSchemaName(BLUEPRINT[0]), 'PACKAGES', context);
-        await this.installStarterSchema(false, hydrate, context);
+        const hydrate = await storeDriver.doesTableExist(getApplicationName(BLUEPRINT[0]), 'PACKAGES', context);
+        await this.installStarterApplication(false, hydrate, context);
         if (!hydrate) {
             const internalRecordManager = await container(this)
                 .get(INTERNAL_RECORD_MANAGER);
@@ -103,55 +103,55 @@ export class DatabaseManager {
     isInitialized() {
         return this.initialized;
     }
-    async initFeatureSchemas(context, jsonSchemas) {
-        const schemaDao = await container(this).get(SCHEMA_DAO);
-        const schemas = await schemaDao.findAll();
-        const existingSchemaMap = new Map();
-        for (const schema of schemas) {
-            existingSchemaMap.set(schema.name, schema);
+    async initFeatureApplications(context, jsonApplications) {
+        const applicationDao = await container(this).get(APPLICATION_DAO);
+        const applications = await applicationDao.findAll();
+        const existingApplicationMap = new Map();
+        for (const application of applications) {
+            existingApplicationMap.set(application.name, application);
         }
-        // const candidateSchemaDomainNames: DomainName[] = []
-        // const candidateSchemaNames: SchemaName[] = []
-        // for (const jsonSchema of jsonSchemas) {
-        // 	 candidateSchemaDomainNames.push(jsonSchema.domain)
-        // 	 candidateSchemaNames.push(getSchemaName(jsonSchema))
+        // const candidateApplicationDomainNames: DomainName[] = []
+        // const candidateApplicationNames: ApplicationName[] = []
+        // for (const jsonApplication of jsonApplications) {
+        // 	 candidateApplicationDomainNames.push(jsonApplication.domain)
+        // 	 candidateApplicationNames.push(getApplicationName(jsonApplication))
         // }
-        // FIXME: this search should be done by schema signature
-        // const maxVersionedMapBySchemaAndDomainNames = await schemaDao.findMaxVersionedMapBySchemaAndDomainNames(
-        // 	candidateSchemaDomainNames, candidateSchemaNames)
-        // const lastIdsByDomainAndSchemaNames = new Map()
-        // const schemaNames: SchemaName[] = [];
-        // for (const jsonSchema of jsonSchemas) {
-        // 	const schemaName = getSchemaName(jsonSchema)
+        // FIXME: this search should be done by application signature
+        // const maxVersionedMapByApplicationAndDomainNames = await applicationDao.findMaxVersionedMapByApplicationAndDomainNames(
+        // 	candidateApplicationDomainNames, candidateApplicationNames)
+        // const lastIdsByDomainAndApplicationNames = new Map()
+        // const applicationNames: ApplicationName[] = [];
+        // for (const jsonApplication of jsonApplications) {
+        // 	const applicationName = getApplicationName(jsonApplication)
         // FIXME: right now Non-Entity Tree queries don't work, fix them and figure out
         // what needs to be done here
-        // const schemaMapForDomain = maxVersionedMapBySchemaAndDomainNames.get(jsonSchema.domain)
-        // if (!schemaMapForDomain) {
-        // 	schemaNames.push(schemaName)
+        // const applicationMapForDomain = maxVersionedMapByApplicationAndDomainNames.get(jsonApplication.domain)
+        // if (!applicationMapForDomain) {
+        // 	applicationNames.push(applicationName)
         // } else {
-        // 	const schemaLookupRecord = schemaMapForDomain.get(schemaName)
-        // 	if (schemaLookupRecord) {
+        // 	const applicationLookupRecord = applicationMapForDomain.get(applicationName)
+        // 	if (applicationLookupRecord) {
         // 	} else {
-        // schemaNames.push(schemaName)
+        // applicationNames.push(applicationName)
         // }
         // }
         // }
-        const schemasToCreate = [];
-        for (const jsonSchema of jsonSchemas) {
-            const existingSchema = existingSchemaMap.get(getSchemaName(jsonSchema));
-            if (existingSchema) {
-                jsonSchema.lastIds = existingSchema.jsonSchema.lastIds;
+        const applicationsToCreate = [];
+        for (const jsonApplication of jsonApplications) {
+            const existingApplication = existingApplicationMap.get(getApplicationName(jsonApplication));
+            if (existingApplication) {
+                jsonApplication.lastIds = existingApplication.jsonApplication.lastIds;
             }
             else {
-                schemasToCreate.push(jsonSchema);
+                applicationsToCreate.push(jsonApplication);
             }
         }
-        // if (schemasToCreate.length) {
-        const [schemaInitializer, server] = await container(this)
-            .get(SCHEMA_INITIALIZER, TRANSACTIONAL_SERVER);
+        // if (applicationsToCreate.length) {
+        const [applicationInitializer, server] = await container(this)
+            .get(APPLICATION_INITIALIZER, TRANSACTIONAL_SERVER);
         server.tempActor = new Actor();
-        // await schemaInitializer.initialize(schemasToCreate, context, existingSchemasAreHydrated);
-        await schemaInitializer.initialize(schemasToCreate, existingSchemaMap, context, true);
+        // await applicationInitializer.initialize(applicationsToCreate, context, existingApplicationsAreHydrated);
+        await applicationInitializer.initialize(applicationsToCreate, existingApplicationMap, context, true);
         // }
         server.tempActor = null;
     }
@@ -189,30 +189,30 @@ export class DatabaseManager {
         }, 100)
     }
     */
-    async installStarterSchema(stage, hydrate, context) {
+    async installStarterApplication(stage, hydrate, context) {
         const blueprintFile = await import('@airport/blueprint');
-        const schemaInitializer = await container(this).get(SCHEMA_INITIALIZER);
+        const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER);
         if (stage) {
-            await schemaInitializer.stage(blueprintFile.BLUEPRINT, context);
+            await applicationInitializer.stage(blueprintFile.BLUEPRINT, context);
         }
         else if (hydrate) {
-            await schemaInitializer.hydrate(blueprintFile.BLUEPRINT, context);
-            // Below appears to be not needed - hydrate gets all schemas
-            // const schemaDao = await container(this).get(SCHEMA_DAO)
-            // const schemas = await schemaDao.findAll()
-            // const jsonSchemaNameSet: Set<string> = new Set()
+            await applicationInitializer.hydrate(blueprintFile.BLUEPRINT, context);
+            // Below appears to be not needed - hydrate gets all applications
+            // const applicationDao = await container(this).get(APPLICATION_DAO)
+            // const applications = await applicationDao.findAll()
+            // const jsonApplicationNameSet: Set<string> = new Set()
             // blueprintFile.BLUEPRINT
-            // 	.map(jsonSchema => getSchemaName(jsonSchema))
-            // 	// schemname contains both domain and schema's actual name
-            // 	.forEach(schemaName => {
-            // 		jsonSchemaNameSet.add(schemaName)
+            // 	.map(jsonApplication => getApplicationName(jsonApplication))
+            // 	// schemname contains both domain and application's actual name
+            // 	.forEach(applicationName => {
+            // 		jsonApplicationNameSet.add(applicationName)
             // 	})
-            // const jsonSchemas = schemas.filter(schema => !jsonSchemaNameSet.has(schema.name))
-            // 	.map(schema => schema.jsonSchema)
-            // await schemaInitializer.hydrate(jsonSchemas as any, context);
+            // const jsonApplications = applications.filter(application => !jsonApplicationNameSet.has(application.name))
+            // 	.map(application => application.jsonApplication)
+            // await applicationInitializer.hydrate(jsonApplications as any, context);
         }
         else {
-            await schemaInitializer.initialize(blueprintFile.BLUEPRINT, new Map(), context, false);
+            await applicationInitializer.initialize(blueprintFile.BLUEPRINT, new Map(), context, false);
         }
     }
 }

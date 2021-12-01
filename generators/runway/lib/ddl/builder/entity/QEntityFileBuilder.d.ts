@@ -2,7 +2,7 @@ import { Configuration } from '../../options/Options';
 import { EntityCandidate } from '../../parser/EntityCandidate';
 import { PathBuilder } from '../PathBuilder';
 import { IBuilder } from '../Builder';
-import { SIndexedEntity } from '../schema/SEntity';
+import { SIndexedEntity } from '../application/SEntity';
 import { FileBuilder } from './FileBuilder';
 import { IQEntityInterfaceBuilder } from './IQEntityInterfaceBuilder';
 import { QEntityBuilder } from './QEntityBuilder';

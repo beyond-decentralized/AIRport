@@ -65,7 +65,7 @@ export interface ApplicationVersionEUpdateColumns extends IEntityUpdateColumns {
     MAJOR_VERSION?: number | IQNumberField;
     MINOR_VERSION?: number | IQNumberField;
     PATCH_VERSION?: number | IQNumberField;
-    SCHEMA_INDEX?: number | IQNumberField;
+    APPLICATION_INDEX?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).

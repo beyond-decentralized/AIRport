@@ -1,5 +1,5 @@
 /* eslint-disable */
-export const SCHEMA = {
+export const APPLICATION = {
 	"domain": "air",
 	"index": null,
 	"name": "@airport/holding-pattern",
@@ -342,7 +342,7 @@ export const SCHEMA = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "SCHEMA_INDEX",
+							"name": "APPLICATION_INDEX",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1548,7 +1548,7 @@ export const SCHEMA = {
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "REPOSITORY_SCHEMA_ID",
+							"name": "REPOSITORY_APPLICATION_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1562,7 +1562,7 @@ export const SCHEMA = {
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "SCHEMA_INDEX",
+							"name": "APPLICATION_INDEX",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1650,7 +1650,7 @@ export const SCHEMA = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "REPOSITORY_SCHEMAS",
+						"name": "REPOSITORY_APPLICATIONS",
 						"columnIndexes": []
 					}
 				}
@@ -1675,8 +1675,8 @@ export const SCHEMA = {
 				{
 					"domain": "air",
 					"index": 1,
-					"name": "@airport/traffic-pattern",
-					"packageName": "@airport/traffic-pattern",
+					"name": "@airport/airspace",
+					"packageName": "@airport/airspace",
 					"sinceVersion": 1,
 					"versions": [
 						{

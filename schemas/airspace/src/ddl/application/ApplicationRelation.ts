@@ -25,7 +25,7 @@ import {VersionedApplicationObject} from './VersionedApplicationObject'
 
 @Entity()
 @Table({
-	name: 'SCHEMA_RELATIONS'
+	name: 'APPLICATION_RELATIONS'
 })
 export class ApplicationRelation
 	extends VersionedApplicationObject {
@@ -39,7 +39,7 @@ export class ApplicationRelation
 	index: RelationIndex
 
 	@ManyToOne()
-	@JoinColumn({name: 'SCHEMA_PROPERTY_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumn({name: 'APPLICATION_PROPERTY_ID', referencedColumnName: 'ID', nullable: false})
 	property: ApplicationProperty
 
 	@Json()
@@ -71,11 +71,11 @@ export class ApplicationRelation
 	// joinFunctionWithOperator: number;
 
 	@ManyToOne()
-	@JoinColumn({name: 'SCHEMA_TABLE_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumn({name: 'APPLICATION_TABLE_ID', referencedColumnName: 'ID', nullable: false})
 	entity: ApplicationEntity
 
 	@ManyToOne()
-	@JoinColumn({name: 'RELATION_SCHEMA_TABLE_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumn({name: 'RELATION_APPLICATION_TABLE_ID', referencedColumnName: 'ID', nullable: false})
 	relationEntity: ApplicationEntity
 
 	@OneToMany({mappedBy: 'manyRelation'})

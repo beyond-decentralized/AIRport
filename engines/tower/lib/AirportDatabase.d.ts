@@ -1,23 +1,23 @@
-import { FunctionsAndOperators, IAirportDatabase, IDatabaseFacade, IEntityAccumulator, IEntityContext, IEntityRecord, IEntityUpdateColumns, IEntityUpdateProperties, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, IQEntity, OperationName, QSchema, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
-import { DbSchema, ISaveResult } from '@airport/ground-control';
+import { FunctionsAndOperators, IAirportDatabase, IDatabaseFacade, IEntityAccumulator, IEntityContext, IEntityRecord, IEntityUpdateColumns, IEntityUpdateProperties, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, IQEntity, OperationName, QApplication, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
+import { DbApplication, ISaveResult } from '@airport/ground-control';
 export declare class AirportDatabase implements IAirportDatabase {
     db: IDatabaseFacade;
     entityMap: Map<any, IEntityRecord>;
     F: FunctionsAndOperators;
     functions: FunctionsAndOperators;
-    S: DbSchema[];
-    schemas: DbSchema[];
-    qSchemas: QSchema[];
-    Q: QSchema[];
+    S: DbApplication[];
+    applications: DbApplication[];
+    qApplications: QApplication[];
+    Q: QApplication[];
     QM: {
-        [name: string]: QSchema;
+        [name: string]: QApplication;
     };
     find: INonEntityFind;
     findOne: INonEntityFindOne;
     search: INonEntitySearch;
     searchOne: INonEntitySearchOne;
     constructor();
-    getAccumulator(schemaDomain: string, schemaName: string): IEntityAccumulator;
+    getAccumulator(applicationDomain: string, applicationName: string): IEntityAccumulator;
     addRepository(context?: IEntityContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity<any>>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;

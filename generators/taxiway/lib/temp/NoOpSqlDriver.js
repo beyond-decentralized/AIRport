@@ -1,12 +1,12 @@
 import { SqlDriver } from '@airport/fuel-hydrant-system';
 export class NoOpSqlDriver extends SqlDriver {
-    composeTableName(schemaName, tableName, context) {
+    composeTableName(applicationName, tableName, context) {
         return '';
     }
-    doesTableExist(schemaName, tableName, context) {
+    doesTableExist(applicationName, tableName, context) {
         return Promise.resolve(false);
     }
-    dropTable(schemaName, tableName, context) {
+    dropTable(applicationName, tableName, context) {
         return Promise.resolve(false);
     }
     findNative(sqlQuery, parameters, context) {

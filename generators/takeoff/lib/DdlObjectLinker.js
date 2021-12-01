@@ -2,54 +2,54 @@ import { DI } from '@airport/di';
 import { DDL_OBJECT_LINKER } from './tokens';
 export class DdlObjectLinker {
     link(allDdlObjects, terminalStore) {
-        const { all, allSchemaVersionsByIds, added } = allDdlObjects;
-        const { latestSchemaVersions, properties, relations, schemaReferences, schemas } = added;
-        this.linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, all.domains, schemas, latestSchemaVersions, schemaReferences);
-        const entityArrayById = this.linkEntities(allSchemaVersionsByIds, all.entities, added.entities);
+        const { all, allApplicationVersionsByIds, added } = allDdlObjects;
+        const { latestApplicationVersions, properties, relations, applicationReferences, applications } = added;
+        this.linkDomainsAndApplicationsAndVersions(allApplicationVersionsByIds, all.domains, applications, latestApplicationVersions, applicationReferences);
+        const entityArrayById = this.linkEntities(allApplicationVersionsByIds, all.entities, added.entities);
         const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(properties, relations, entityArrayById, terminalStore);
         this.linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById, terminalStore);
     }
-    linkDomainsAndSchemasAndVersions(allSchemaVersionsByIds, domains, schemas, latestSchemaVersions, schemaReferences) {
+    linkDomainsAndApplicationsAndVersions(allApplicationVersionsByIds, domains, applications, latestApplicationVersions, applicationReferences) {
         const domainMapById = new Map();
         domains.forEach((domain) => {
             domainMapById.set(domain.id, domain);
         });
-        const schemaMapByIndex = new Map();
-        schemas.forEach((schema) => {
-            schemaMapByIndex.set(schema.index, schema);
-            const domain = domainMapById.get(schema.domain.id);
-            schema.domain = domain;
-            domain.schemas.push(schema);
+        const applicationMapByIndex = new Map();
+        applications.forEach((application) => {
+            applicationMapByIndex.set(application.index, application);
+            const domain = domainMapById.get(application.domain.id);
+            application.domain = domain;
+            domain.applications.push(application);
         });
-        latestSchemaVersions.forEach((schemaVersion) => {
-            const schema = schemaMapByIndex.get(schemaVersion.schema.index);
-            let schemaCurrentVersion = {
-                schema,
-                schemaVersion
+        latestApplicationVersions.forEach((applicationVersion) => {
+            const application = applicationMapByIndex.get(applicationVersion.application.index);
+            let applicationCurrentVersion = {
+                application,
+                applicationVersion
             };
-            schema.currentVersion = [schemaCurrentVersion];
-            schema.versions = [schemaVersion];
-            schemaVersion.schema = schema;
-            schemaVersion.entities = [];
-            schemaVersion.references = [];
-            schemaVersion.referencedBy = [];
-            schemaVersion.entityMapByName = {};
-            schemaVersion.referencesMapByName = {};
-            schemaVersion.referencedByMapByName = {};
+            application.currentVersion = [applicationCurrentVersion];
+            application.versions = [applicationVersion];
+            applicationVersion.application = application;
+            applicationVersion.entities = [];
+            applicationVersion.references = [];
+            applicationVersion.referencedBy = [];
+            applicationVersion.entityMapByName = {};
+            applicationVersion.referencesMapByName = {};
+            applicationVersion.referencedByMapByName = {};
         });
-        schemaReferences.forEach((schemaReference) => {
-            const ownSchemaVersion = allSchemaVersionsByIds[schemaReference.ownSchemaVersion.id];
-            const referencedSchemaVersion = allSchemaVersionsByIds[schemaReference.referencedSchemaVersion.id];
-            ownSchemaVersion.references[schemaReference.index] = schemaReference;
-            ownSchemaVersion.referencesMapByName[referencedSchemaVersion.schema.name] = schemaReference;
-            referencedSchemaVersion.referencedBy.push(schemaReference);
-            referencedSchemaVersion.referencedByMapByName[ownSchemaVersion.schema.name] = schemaReference;
-            schemaReference.ownSchemaVersion = ownSchemaVersion;
-            schemaReference.referencedSchemaVersion = referencedSchemaVersion;
+        applicationReferences.forEach((applicationReference) => {
+            const ownApplicationVersion = allApplicationVersionsByIds[applicationReference.ownApplicationVersion.id];
+            const referencedApplicationVersion = allApplicationVersionsByIds[applicationReference.referencedApplicationVersion.id];
+            ownApplicationVersion.references[applicationReference.index] = applicationReference;
+            ownApplicationVersion.referencesMapByName[referencedApplicationVersion.application.name] = applicationReference;
+            referencedApplicationVersion.referencedBy.push(applicationReference);
+            referencedApplicationVersion.referencedByMapByName[ownApplicationVersion.application.name] = applicationReference;
+            applicationReference.ownApplicationVersion = ownApplicationVersion;
+            applicationReference.referencedApplicationVersion = referencedApplicationVersion;
         });
     }
-    linkEntities(allSchemaVersionsByIds, allEntities, // All of the entities of newly created schemas
-    addedEntities // All of the entities of newly created schemas
+    linkEntities(allApplicationVersionsByIds, allEntities, // All of the entities of newly created applications
+    addedEntities // All of the entities of newly created applications
     // from the latest available versions
     ) {
         const entityArrayById = [];
@@ -57,10 +57,10 @@ export class DdlObjectLinker {
             entityArrayById[entity.id] = entity;
         });
         addedEntities.forEach((entity) => {
-            const schemaVersion = allSchemaVersionsByIds[entity.schemaVersion.id];
-            entity.schemaVersion = schemaVersion;
-            schemaVersion.entities[entity.index] = entity;
-            schemaVersion.entityMapByName[entity.name] = entity;
+            const applicationVersion = allApplicationVersionsByIds[entity.applicationVersion.id];
+            entity.applicationVersion = applicationVersion;
+            applicationVersion.entities[entity.index] = entity;
+            applicationVersion.entityMapByName[entity.name] = entity;
             entityArrayById[entity.id] = entity;
             entity.columns = [];
             entity.properties = [];

@@ -2,8 +2,8 @@ import { ISyncInActorChecker } from './synchronization/in/checker/SyncInActorChe
 import { ISyncInChecker } from './synchronization/in/checker/SyncInChecker';
 import { ISyncInDataChecker } from './synchronization/in/checker/SyncInDataChecker';
 import { ISyncInRepositoryChecker } from './synchronization/in/checker/SyncInRepositoryChecker';
-import { ISyncInSchemaChecker } from './synchronization/in/checker/SyncInSchemaChecker';
-import { ISyncInSchemaVersionChecker } from './synchronization/in/checker/SyncInSchemaVersionChecker';
+import { ISyncInApplicationChecker } from './synchronization/in/checker/SyncInApplicationChecker';
+import { ISyncInApplicationVersionChecker } from './synchronization/in/checker/SyncInApplicationVersionChecker';
 import { ISyncInTerminalChecker } from './synchronization/in/checker/SyncInTerminalChecker';
 import { ISyncInUserChecker } from './synchronization/in/checker/SyncInUserChecker';
 import { IStage1SyncedInDataProcessor } from './synchronization/in/Stage1SyncedInDataProcessor';
@@ -24,8 +24,8 @@ export declare const SYNC_IN_CHECKER: import("@airport/di").IDiToken<ISyncInChec
 export declare const SYNC_IN_DATA_CHECKER: import("@airport/di").IDiToken<ISyncInDataChecker>;
 export declare const SYNC_IN_TERMINAL_CHECKER: import("@airport/di").IDiToken<ISyncInTerminalChecker>;
 export declare const SYNC_IN_REPOSITORY_CHECKER: import("@airport/di").IDiToken<ISyncInRepositoryChecker>;
-export declare const SYNC_IN_SCHEMA_CHECKER: import("@airport/di").IDiToken<ISyncInSchemaChecker>;
-export declare const SYNC_IN_SCHEMA_VERSION_CHECKER: import("@airport/di").IDiToken<ISyncInSchemaVersionChecker>;
+export declare const SYNC_IN_APPLICATION_CHECKER: import("@airport/di").IDiToken<ISyncInApplicationChecker>;
+export declare const SYNC_IN_APPLICATION_VERSION_CHECKER: import("@airport/di").IDiToken<ISyncInApplicationVersionChecker>;
 export declare const SYNC_IN_USER_CHECKER: import("@airport/di").IDiToken<ISyncInUserChecker>;
 export declare const SYNC_IN_UTILS: import("@airport/di").IDiToken<ISyncInUtils>;
 export declare const SYNC_NODE_MANAGER: import("@airport/di").IDiToken<ISyncNodeManager>;
