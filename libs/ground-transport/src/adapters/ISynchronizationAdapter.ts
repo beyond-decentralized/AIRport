@@ -1,18 +1,22 @@
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { IRepositoryTransactionHistory } from "@airport/holding-pattern";
+import { Repository_Source, Repository_UuId } from "@airport/holding-pattern";
 
 export interface ISynchronizationAdapter {
 
     getTransactionsForRepository(
-        source: string,
-        uuId: string
+        repositorySource: Repository_Source,
+        repositoryUuId: Repository_UuId
     ): Promise<RepositorySynchronizationMessage>
 
+    sendTransactions(
+        repositorySource: Repository_Source,
+        messagesByRepository: Map<Repository_UuId, RepositorySynchronizationMessage[]>
+    ): Promise<boolean>
 
     sendTransactionsForRepository(
-        source: string,
-        uuId: string,
-        repositoryTransactionHistories: IRepositoryTransactionHistory[]
+        repositorySource: Repository_Source,
+        repositoryUuId: Repository_UuId,
+        repositoryTransactionHistories: RepositorySynchronizationMessage[]
     ): Promise<boolean>
 
 }

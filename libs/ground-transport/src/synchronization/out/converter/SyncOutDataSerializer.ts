@@ -6,7 +6,7 @@ import { SYNC_OUT_DATA_SERIALIZER } from "../../../tokens";
 export interface ISyncOutDataSerializer {
 
 	serialize(
-		repositoryTransactionHistories: IRepositoryTransactionHistory
+		repositoryTransactionHistories: IRepositoryTransactionHistory[]
 	): RepositorySynchronizationMessage[]
 }
 
@@ -14,7 +14,7 @@ export class SyncOutDataSerializer
 	implements ISyncOutDataSerializer {
 
 	serialize(
-		repositoryTransactionHistories: IRepositoryTransactionHistory
+		repositoryTransactionHistories: IRepositoryTransactionHistory[]
 	): RepositorySynchronizationMessage[] {
 		return []
 	}
