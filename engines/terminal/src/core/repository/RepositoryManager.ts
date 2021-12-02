@@ -14,8 +14,7 @@ import {
 	IRepository,
 	IRepositoryTransactionHistory,
 	QRepositoryEntity,
-	REPOSITORY_DAO,
-	SyncPriority
+	REPOSITORY_DAO
 } from '@airport/holding-pattern'
 import {
 	IRepositoryManager,

@@ -82,11 +82,11 @@ export class BaseLevel1Duo
 	implements IBaseLevel1Duo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(1)
+		super(0)
 	}
 }
 
@@ -100,10 +100,10 @@ export class BaseLevel2Duo
 	implements IBaseLevel2Duo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(0)
+		super(1)
 	}
 }

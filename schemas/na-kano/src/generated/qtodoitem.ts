@@ -134,6 +134,7 @@ export interface TodoItemEUpdateColumns
 	// Non-Id Columns
 	AGE_SUITABILITY?: number | IQNumberField;
 	SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
+	ORIGINAL_REPOSITORY_ID?: number | IQNumberField;
 	ASSIGNED_TO?: string | IQStringField;
 	COMPLETED?: boolean | IQBooleanField;
 	NAME?: string | IQStringField;
