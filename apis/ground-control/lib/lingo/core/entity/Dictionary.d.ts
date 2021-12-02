@@ -97,6 +97,8 @@ export declare namespace repositoryEntity {
     const IS_DRAFT = "IS_DRAFT";
     const LOCAL_ENTITY_NAME = "LocalRepositoryEntity";
     const REPOSITORY_ID = "REPOSITORY_ID";
+    const ORIGINAL_ACTOR_ID = "ORIGINAL_ACTOR_ID";
+    const ORIGINAL_ACTOR_RECORD_ID = "ORIGINAL_ACTOR_RECORD_ID";
     const ORIGINAL_REPOSITORY_ID = "ORIGINAL_REPOSITORY_ID";
     const SYS_WIDE_OP_ID_APPLICATION = "air___airport__airport_code";
     const SYS_WIDE_OP_ID_ENTITY = "SystemWideOperationId";

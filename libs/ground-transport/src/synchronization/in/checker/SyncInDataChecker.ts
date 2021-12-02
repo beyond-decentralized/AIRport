@@ -144,8 +144,6 @@ export class SyncInDataChecker
 
 		let orderNumber = 0
 
-		const originalRepositoryColumnIndexMap: Map<EntityId, ColumnIndex> = new Map()
-
 		for (let i = 0; i < history.operationHistory.length; i++) {
 			const operationHistory = history.operationHistory[i]
 			if (typeof operationHistory !== 'object') {
@@ -196,22 +194,28 @@ export class SyncInDataChecker
 
 			delete operationHistory.id
 
-			if (!originalRepositoryColumnIndexMap.has(operationHistory.entity.id)) {
-				for (const column of operationHistory.entity.columns) {
-					if (column.name === repositoryEntity.ORIGINAL_REPOSITORY_ID) {
-						originalRepositoryColumnIndexMap.set(operationHistory.entity.id, column.index)
-					}
+			let originalRepositoryColumnIndex: ColumnIndex
+			let originalActorColumnIndex: ColumnIndex
+			for (const column of operationHistory.entity.columns) {
+				switch (column.name) {
+					case repositoryEntity.ORIGINAL_ACTOR_ID:
+						originalActorColumnIndex = column.index
+						break
+					case repositoryEntity.ORIGINAL_REPOSITORY_ID:
+						originalRepositoryColumnIndex = column.index
+						break
 				}
 			}
 
 			await this.checkRecordHistories(operationHistory,
-				originalRepositoryColumnIndexMap.get(operationHistory.entity.id), message)
+				originalRepositoryColumnIndex, originalActorColumnIndex, message)
 		}
 	}
 
 	private async checkRecordHistories(
 		operationHistory: IOperationHistory,
 		originalRepositoryColumnIndex: ColumnIndex,
+		originalActorColumnIndex: ColumnIndex,
 		message: RepositorySynchronizationMessage
 	): Promise<void> {
 		const recordHistories = operationHistory.recordHistory
@@ -249,8 +253,8 @@ for ChangeType.INSERT_VALUES`)
 				throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.recordHistory.operationHistory cannot be specified`)
 			}
 
-			this.checkNewValues(recordHistory, originalRepositoryColumnIndex, operationHistory, message)
-			this.checkOldValues(recordHistory, originalRepositoryColumnIndex, operationHistory, message)
+			this.checkNewValues(recordHistory, originalRepositoryColumnIndex, originalActorColumnIndex, operationHistory, message)
+			this.checkOldValues(recordHistory, originalRepositoryColumnIndex, originalActorColumnIndex, operationHistory, message)
 
 			recordHistory.operationHistory = operationHistory
 
@@ -261,6 +265,7 @@ for ChangeType.INSERT_VALUES`)
 	private checkNewValues(
 		recordHistory: IRecordHistory,
 		originalRepositoryColumnIndex: ColumnIndex,
+		originalActorColumnIndex: ColumnIndex,
 		operationHistory: IOperationHistory,
 		message: RepositorySynchronizationMessage
 	): void {
@@ -303,11 +308,35 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS|INSERT_REFERENCE_VALUES`)
 				newValue.newValue = originalRepository.id
 			}
 		}
+
+		for (const newValue of recordHistory.newValues) {
+			switch (newValue.columnIndex) {
+				case originalRepositoryColumnIndex: {
+					const originalRepository = message.referencedRepositories[newValue.newValue]
+					if (!originalRepository) {
+						throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
+		Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${newValue.newValue}]`)
+					}
+					newValue.newValue = originalRepository.id
+					break
+				}
+				case originalActorColumnIndex: {
+					const originalActor = message.actors[newValue.newValue]
+					if (!originalActor) {
+						throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
+	Value is for ORIGINAL_ACTOR_ID and could find RepositorySynchronizationMessage.actors[${newValue.newValue}]`)
+					}
+					newValue.newValue = originalActor.id
+					break
+				}
+			}
+		}
 	}
 
 	private checkOldValues(
 		recordHistory: IRecordHistory,
 		originalRepositoryColumnIndex: ColumnIndex,
+		originalActorColumnIndex: ColumnIndex,
 		operationHistory: IOperationHistory,
 		message: RepositorySynchronizationMessage
 	): void {
@@ -341,13 +370,25 @@ for ChangeType.UPDATE_ROWS`)
 		}
 
 		for (const oldValue of recordHistory.oldValues) {
-			if (oldValue.columnIndex === originalRepositoryColumnIndex) {
-				const originalRepository = message.referencedRepositories[oldValue.oldValue]
-				if (!originalRepository) {
-					throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
+			switch (oldValue.columnIndex) {
+				case originalRepositoryColumnIndex: {
+					const originalRepository = message.referencedRepositories[oldValue.oldValue]
+					if (!originalRepository) {
+						throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
 	Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`)
+					}
+					oldValue.oldValue = originalRepository.id
+					break
 				}
-				oldValue.oldValue = originalRepository.id
+				case originalActorColumnIndex: {
+					const originalActor = message.actors[oldValue.oldValue]
+					if (!originalActor) {
+						throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
+	Value is for ORIGINAL_ACTOR_ID and could find RepositorySynchronizationMessage.actors[${oldValue.oldValue}]`)
+					}
+					oldValue.oldValue = originalActor.id
+					break
+				}
 			}
 		}
 	}

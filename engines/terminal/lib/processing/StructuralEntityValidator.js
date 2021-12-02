@@ -146,7 +146,11 @@ is now being forced to belong to repository id ${repositoryEntity.repository.id}
 	This is because it is being referenced from a ${parentRelationProperty.entity.name} via ${parentRelationProperty.entity.name} record
 	which belongs to repository id ${repositoryEntity.repository.id} (UUID: ${repositoryEntity.repository.id})
 	
-	Did you mean to set this record's repository to the same one as the referencing record?`);
+	If you are manually creating a copy of a record in another repository, there is no need,
+	AIRport automatically copies all records refrenced via @ManyToOne()s into the created/modified
+	repository.
+
+	Otherwise, did you mean to set this record's repository to the same one as the referencing record?`);
         }
         // If it doesn't then it is a reference to another repository - switch
         // the record to the parent repository and set the originalRepositoryValue
