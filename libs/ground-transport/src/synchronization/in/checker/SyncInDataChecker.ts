@@ -7,6 +7,7 @@ import {
 	ChangeType,
 	ColumnIndex,
 	EntityId,
+	repositoryEntity,
 	TableIndex
 } from '@airport/ground-control'
 import {
@@ -197,7 +198,7 @@ export class SyncInDataChecker
 
 			if (!originalRepositoryColumnIndexMap.has(operationHistory.entity.id)) {
 				for (const column of operationHistory.entity.columns) {
-					if (column.name === 'ORIGINAL_REPOSITORY_ID') {
+					if (column.name === repositoryEntity.ORIGINAL_REPOSITORY_ID) {
 						originalRepositoryColumnIndexMap.set(operationHistory.entity.id, column.index)
 					}
 				}
@@ -232,11 +233,14 @@ for ChangeType.INSERT_VALUES`)
 				case ChangeType.DELETE_ROWS:
 				case ChangeType.UPDATE_ROWS:
 				case ChangeType.INSERT_REFERENCE_VALUES: {
-					const actor = message.actors[recordHistory.actor as any]
-					if (!actor) {
-						throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationMessage.history -> operationHistory.actor`)
+					// If no actor is present on record level its the same actor that created the repositoryTransactionHistory
+					if (recordHistory.actor !== undefined) {
+						const actor = message.actors[recordHistory.actor as any]
+						if (!actor) {
+							throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationMessage.history -> operationHistory.actor`)
+						}
+						recordHistory.actor = actor
 					}
-					recordHistory.actor = actor
 					break
 				}
 			}

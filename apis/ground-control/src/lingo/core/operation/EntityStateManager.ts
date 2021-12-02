@@ -4,13 +4,14 @@ export enum EntityState {
 	CREATE = 'CREATE',
 	DATE = 'DATE',
 	DELETE = 'DELETE',
+	// TODO: PARENT_ID is currently not implemented.  It is meant for @ManyToOne()
+	// references when nothing is returned except for the id fields of the relation
 	PARENT_ID = 'PARENT_ID',
 	PASS_THROUGH = 'PASS_THROUGH',
-	// Not sure if RESULT is still needed, with removal of RESULT_JSON and RESULT_JSON_ARRAY
-	// RESULT = 'RESULT',
 	STUB = 'STUB',
 	UPDATE = 'UPDATE',
-	// Json fields promote application de-normalization
+	// Json fields promote application de-normalization and a currently not implemented
+	// except for internal APIs
 	// RESULT_JSON = 'RESULT_JSON',
 	// RESULT_JSON_ARRAY = 'RESULT_JSON_ARRAY'
 }
@@ -20,9 +21,7 @@ export interface IEntityStateAsFlags {
 	isDelete: boolean
 	isParentId: boolean
 	isPassThrough: boolean
-	// isResult: boolean
 	isResultDate: boolean
-	// isResultJson: boolean
 	isStub: boolean
 	isUpdate: boolean
 }

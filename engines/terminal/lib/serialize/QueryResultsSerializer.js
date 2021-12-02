@@ -39,7 +39,9 @@ export class QueryResultsSerializer {
         let entityCopy = {};
         operation.lookupTable[operationUniqueId] = entity;
         entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
-        entityCopy[entityStateManager.getStateFieldName()] = EntityState.RESULT;
+        // TODO: Test this - used to be assigned to EntitState.RESULT, which is removed
+        entityCopy[entityStateManager.getStateFieldName()]
+            = entity[entityStateManager.getStateFieldName()];
         for (const dbProperty of dbEntity.properties) {
             let property = entity[dbProperty.name];
             if (applicationUtils.isEmpty(property)) {

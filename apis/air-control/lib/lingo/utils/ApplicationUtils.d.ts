@@ -47,6 +47,7 @@ export interface IApplicationUtils {
     isEmpty(value: any): boolean;
     isRelationColumn(dbColumn: DbColumn): boolean;
     isActorId(columnName: string): boolean;
+    isActorRecordId(columnName: string): boolean;
     isRepositoryId(columnName: string): boolean;
     doCascade(dbRelation: DbRelation, crudOperation: CRUDOperation): boolean;
     getIdKey(entityObject: IEntityIdProperties, dbEntity: DbEntity, failOnNoId?: boolean, idValueCallback?: {

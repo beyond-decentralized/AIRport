@@ -7,6 +7,7 @@ export declare class ApplicationUtils implements IApplicationUtils {
     static TEMP_ID: number;
     getDbEntity(applicationIndex: ApplicationIndex, tableIndex: TableIndex, airDb: IAirportDatabase): DbEntity;
     isActorId(columnName: string): boolean;
+    isActorRecordId(columnName: string): boolean;
     isRepositoryId(columnName: string): boolean;
     doCascade(dbRelation: DbRelation, crudOperation: CRUDOperation): boolean;
     getQEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): QEntityConstructor<any>;

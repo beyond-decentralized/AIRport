@@ -60,6 +60,12 @@ export class ApplicationUtils
 		return columnName === repositoryEntity.ACTOR_ID
 	}
 
+	isActorRecordId(
+		columnName: string
+	): boolean {
+		return columnName === repositoryEntity.ACTOR_RECORD_ID
+	}
+
 	isRepositoryId(
 		columnName: string
 	): boolean {

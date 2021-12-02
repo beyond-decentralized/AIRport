@@ -28,10 +28,8 @@ export class SynchronizationOutManager
 	async synchronizeOut(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[]
 	): Promise<void> {
-		// FIXME: in InsertManager (for inserts only) add OperationHistories for all
-		// records referenced form other repositories (via @ManyToOne()s).  If
-		// objects behind those relations are not provided, query for them
-		// display a warning message about providing them
+		// FIXME: make sure that RepositoryEntity @Id()s are populated from RepositoryTransactionHistory
+		// and RecordHistory in the records and don't make it into NewValue
 		const [
 			syncOutDataSerializer,
 			synchronizationAdapterLoader

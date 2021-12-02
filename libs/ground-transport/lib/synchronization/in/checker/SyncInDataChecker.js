@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { ChangeType } from '@airport/ground-control';
+import { ChangeType, repositoryEntity } from '@airport/ground-control';
 import { APPLICATION_ENTITY_DAO } from '@airport/airspace';
 import { SYNC_IN_DATA_CHECKER } from '../../../tokens';
 import { AIRPORT_DATABASE } from '@airport/air-control';
@@ -90,6 +90,7 @@ export class SyncInDataChecker {
             .get(AIRPORT_DATABASE, SEQUENCE_GENERATOR);
         const systemWideOperationIds = getSysWideOpIds(history.operationHistory.length, airDb, sequenceGenerator);
         let orderNumber = 0;
+        const originalRepositoryColumnIndexMap = new Map();
         for (let i = 0; i < history.operationHistory.length; i++) {
             const operationHistory = history.operationHistory[i];
             if (typeof operationHistory !== 'object') {
@@ -135,10 +136,17 @@ export class SyncInDataChecker {
             }
             operationHistory.systemWideOperationId = systemWideOperationIds[i];
             delete operationHistory.id;
-            await this.checkRecordHistories(operationHistory, message);
+            if (!originalRepositoryColumnIndexMap.has(operationHistory.entity.id)) {
+                for (const column of operationHistory.entity.columns) {
+                    if (column.name === repositoryEntity.ORIGINAL_REPOSITORY_ID) {
+                        originalRepositoryColumnIndexMap.set(operationHistory.entity.id, column.index);
+                    }
+                }
+            }
+            await this.checkRecordHistories(operationHistory, originalRepositoryColumnIndexMap.get(operationHistory.entity.id), message);
         }
     }
-    async checkRecordHistories(operationHistory, message) {
+    async checkRecordHistories(operationHistory, originalRepositoryColumnIndex, message) {
         const recordHistories = operationHistory.recordHistory;
         if (!(recordHistories instanceof Array) || !recordHistories.length) {
             throw new Error(`Inalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory`);
@@ -157,43 +165,27 @@ for ChangeType.INSERT_VALUES`);
                 case ChangeType.DELETE_ROWS:
                 case ChangeType.UPDATE_ROWS:
                 case ChangeType.INSERT_REFERENCE_VALUES: {
-                    const actor = message.actors[recordHistory.actor];
-                    if (!actor) {
-                        throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationMessage.history -> operationHistory.actor`);
+                    // If no actor is present on record level its the same actor that created the repositoryTransactionHistory
+                    if (recordHistory.actor !== undefined) {
+                        const actor = message.actors[recordHistory.actor];
+                        if (!actor) {
+                            throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationMessage.history -> operationHistory.actor`);
+                        }
+                        recordHistory.actor = actor;
                     }
-                    recordHistory.actor = actor;
-                    break;
-                }
-            }
-            switch (operationHistory.changeType) {
-                case ChangeType.INSERT_VALUES:
-                case ChangeType.DELETE_ROWS:
-                case ChangeType.UPDATE_ROWS:
-                    if (recordHistory.repository) {
-                        throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.repository
-for ChangeType.INSERT_VALUES|DELETE_ROWS|UPDATE_ROWS`);
-                    }
-                    recordHistory.repository = operationHistory.repositoryTransactionHistory.repository;
-                    break;
-                case ChangeType.INSERT_REFERENCE_VALUES: {
-                    const repository = message.referencedRepositories[recordHistory.repository];
-                    if (!repository) {
-                        throw new Error(`Did find Repository for "in-message id" in RepositorySynchronizationMessage.history -> operationHistory.repository`);
-                    }
-                    recordHistory.repository = repository;
                     break;
                 }
             }
             if (recordHistory.operationHistory) {
                 throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
             }
-            this.checkNewValues(recordHistory, operationHistory);
-            this.checkOldValues(recordHistory, operationHistory);
+            this.checkNewValues(recordHistory, originalRepositoryColumnIndex, operationHistory, message);
+            this.checkOldValues(recordHistory, originalRepositoryColumnIndex, operationHistory, message);
             recordHistory.operationHistory = operationHistory;
             delete recordHistory.id;
         }
     }
-    checkNewValues(recordHistory, operationHistory) {
+    checkNewValues(recordHistory, originalRepositoryColumnIndex, operationHistory, message) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
                 if (recordHistory.newValues) {
@@ -222,8 +214,18 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS|INSERT_REFERENCE_VALUES`);
                 throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue`);
             }
         }
+        for (const newValue of recordHistory.newValues) {
+            if (newValue.columnIndex === originalRepositoryColumnIndex) {
+                const originalRepository = message.referencedRepositories[newValue.newValue];
+                if (!originalRepository) {
+                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
+	Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${newValue.newValue}]`);
+                }
+                newValue.newValue = originalRepository.id;
+            }
+        }
     }
-    checkOldValues(recordHistory, operationHistory) {
+    checkOldValues(recordHistory, originalRepositoryColumnIndex, operationHistory, message) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
             case ChangeType.INSERT_REFERENCE_VALUES:
@@ -250,6 +252,16 @@ for ChangeType.UPDATE_ROWS`);
             }
             if (typeof oldValue.oldValue === undefined) {
                 throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue`);
+            }
+        }
+        for (const oldValue of recordHistory.oldValues) {
+            if (oldValue.columnIndex === originalRepositoryColumnIndex) {
+                const originalRepository = message.referencedRepositories[oldValue.oldValue];
+                if (!originalRepository) {
+                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
+	Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`);
+                }
+                oldValue.oldValue = originalRepository.id;
             }
         }
     }

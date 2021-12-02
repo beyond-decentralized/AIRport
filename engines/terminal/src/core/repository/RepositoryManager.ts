@@ -3,7 +3,6 @@ import {
 	IEntityUpdateProperties,
 	IQEntityInternal,
 	IQOperableFieldInternal,
-	MappedEntityArray,
 	RawDelete,
 	RawInsertValues,
 	RawUpdate,

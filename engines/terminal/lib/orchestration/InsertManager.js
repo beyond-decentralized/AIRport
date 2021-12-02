@@ -6,9 +6,6 @@ import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HISTORY_DUO, REPOSITORY_T
 import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { HISTORY_MANAGER, INSERT_MANAGER, REPOSITORY_MANAGER } from '../tokens';
 export class InsertManager {
-    // get currentTransHistory(): ITransactionHistory {
-    // 	return this.transManager.currentTransHistory
-    // }
     async insertValues(portableQuery, actor, transaction, context, ensureGeneratedValues) {
         return await this.internalInsertValues(portableQuery, actor, transaction, context, false, ensureGeneratedValues);
     }

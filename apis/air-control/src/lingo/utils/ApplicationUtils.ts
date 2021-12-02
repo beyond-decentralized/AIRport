@@ -88,6 +88,10 @@ export interface IApplicationUtils {
 	isActorId(
 		columnName: string
 	): boolean
+  
+  isActorRecordId(
+		columnName: string
+	): boolean
 
   isRepositoryId(
     columnName: string,

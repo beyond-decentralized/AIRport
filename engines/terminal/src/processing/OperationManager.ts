@@ -18,7 +18,6 @@ import {
 	ISaveRepository,
 	ISaveResult,
 	JSONValueOperation,
-	PlatformType,
 	PortableQuery
 } from '@airport/ground-control'
 import { IActor } from '@airport/holding-pattern'
@@ -156,7 +155,7 @@ export class OperationManager
 							context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (
 								dbColumn: DbColumn,
 								columnValue: any,
-								propertyNameChains: string[][],
+								_propertyNameChains: string[][],
 							) => {
 								if (dbColumn.isGenerated) {
 									return

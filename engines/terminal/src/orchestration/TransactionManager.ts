@@ -12,8 +12,7 @@ import {
 import {
 	IStoreDriver,
 	STORE_DRIVER,
-	StoreType,
-	SyncApplicationMap
+	StoreType
 } from '@airport/ground-control';
 import {
 	OperationHistory,

@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, Id } from '@airport/air-control'
+import { AIRPORT_DATABASE } from '@airport/air-control'
 import {
 	getSysWideOpId,
 	ISequenceGenerator,
@@ -12,9 +12,7 @@ import {
 	ChangeType,
 	DbColumn,
 	DbEntity,
-	DistributionStrategy,
 	JsonInsertValues,
-	PlatformType,
 	PortableQuery,
 	repositoryEntity,
 } from '@airport/ground-control'
@@ -54,10 +52,6 @@ interface ColumnsToPopulate {
 
 export class InsertManager
 	implements IInsertManager {
-
-	// get currentTransHistory(): ITransactionHistory {
-	// 	return this.transManager.currentTransHistory
-	// }
 
 	async insertValues(
 		portableQuery: PortableQuery,
@@ -411,7 +405,7 @@ appears more than once in the Columns clause`)
 			const columnIndex = jsonInsertValues.C[i]
 			switch (columnIndex) {
 				case actorIdColumn.index:
-					if(context.isSaveOperation) {
+					if (context.isSaveOperation) {
 						// Save operations validate Actor ealier and set it on the entity objects
 						break;
 					}
@@ -436,9 +430,9 @@ You cannot explicitly provide a SYSTEM_WIDE_OPERATION_ID value for Repository en
 			`Error inserting into '${dbEntity.name}'.
 You must provide a valid REPOSITORY_ID value for Repository entities.`
 
-// 		const missingIsDraftErrorMsg = errorPrefix +
-// 			`Error inserting into '${dbEntity.name}'.
-// You must provide a valid IS_DRAFT value for Repository entities.`
+		// 		const missingIsDraftErrorMsg = errorPrefix +
+		// 			`Error inserting into '${dbEntity.name}'.
+		// You must provide a valid IS_DRAFT value for Repository entities.`
 
 		if (repositoryIdColumnQueryIndex === undefined) {
 			throw new Error(missingRepositoryIdErrorMsg)
@@ -480,13 +474,13 @@ You must provide a valid REPOSITORY_ID value for Repository entities.`
 
 				if (dbColumn.notNull && value === null
 					//  && !isDraft
-					 ) {
+				) {
 					throw new Error(errorPrefix +
 						`Column '${dbColumn.name}' is NOT NULL
 and cannot have NULL values.`)
 				}
 			}
-			if(!context.isSaveOperation) {
+			if (!context.isSaveOperation) {
 				// Save operation set Actor ealier (at the entity level, to be returned back to client)
 				entityValues[actorIdColumn.index] = actor.id
 			}

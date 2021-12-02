@@ -101,7 +101,7 @@ export class OperationManager {
                     const dbRelation = dbProperty.relation[0];
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, propertyNameChains) => {
+                            context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, _propertyNameChains) => {
                                 if (dbColumn.isGenerated) {
                                     return;
                                 }

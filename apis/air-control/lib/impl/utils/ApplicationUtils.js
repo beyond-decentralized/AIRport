@@ -11,6 +11,9 @@ export class ApplicationUtils {
     isActorId(columnName) {
         return columnName === repositoryEntity.ACTOR_ID;
     }
+    isActorRecordId(columnName) {
+        return columnName === repositoryEntity.ACTOR_RECORD_ID;
+    }
     isRepositoryId(columnName) {
         return columnName === repositoryEntity.REPOSITORY_ID;
     }
