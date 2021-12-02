@@ -22,16 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	StageableGraph,
-	StageableEId,
-	StageableEUpdateColumns,
-	StageableEUpdateProperties,
-	StageableESelect,
-	QStageableQId,
-	QStageableQRelation,
-	QStageable,
-} from '../infrastructure/qstageable';
-import {
 	UserGraph,
 	UserEId,
 	UserEOptionalId,
@@ -58,7 +48,7 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface ImmutableRowESelect
-    extends StageableESelect, ImmutableRowEOptionalId {
+    extends IEntitySelectProperties, ImmutableRowEOptionalId {
 	// Non-Id Properties
 	createdAt?: Date | IQDateField;
 
@@ -73,7 +63,7 @@ export interface ImmutableRowESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface ImmutableRowEId
-    extends StageableEId {
+    extends IEntityIdProperties {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -94,7 +84,7 @@ export interface ImmutableRowEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface ImmutableRowEUpdateProperties
-	extends StageableEUpdateProperties {
+	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	createdAt?: Date | IQDateField;
 
@@ -107,7 +97,7 @@ export interface ImmutableRowEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ImmutableRowGraph
-	extends ImmutableRowEOptionalId, StageableGraph {
+	extends ImmutableRowEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
@@ -122,7 +112,7 @@ export interface ImmutableRowGraph
  * UPDATE - non-id columns (optional).
  */
 export interface ImmutableRowEUpdateColumns
-	extends StageableEUpdateColumns {
+	extends IEntityUpdateColumns {
 	// Non-Id Columns
 
 }
@@ -151,7 +141,7 @@ extends ImmutableRowEId, ImmutableRowEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QImmutableRow<T> extends QStageable<T>
+export interface QImmutableRow<T> extends IQEntity<T>
 {
 	// Id Fields
 
@@ -167,7 +157,7 @@ export interface QImmutableRow<T> extends QStageable<T>
 
 
 // Entity Id Interface
-export interface QImmutableRowQId extends QStageableQId
+export interface QImmutableRowQId
 {
 	
 	// Id Fields
@@ -179,6 +169,6 @@ export interface QImmutableRowQId extends QStageableQId
 
 // Entity Relation Interface
 export interface QImmutableRowQRelation<SubType, SubQType extends IQEntity<SubType>>
-	extends QStageableQRelation<SubType, SubQType>, QImmutableRowQId {
+	extends IQRelation<SubType, SubQType>, QImmutableRowQId {
 }
 

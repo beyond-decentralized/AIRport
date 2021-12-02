@@ -9,7 +9,6 @@ import {
 }                                      from '@airport/air-control'
 import {Actor}                         from '../infrastructure/Actor'
 import {SystemWideOperationId}         from '../common'
-import {Stageable}                     from '../infrastructure/Stageable'
 import {Repository}                    from './Repository'
 
 /**
@@ -21,8 +20,7 @@ export type RepositoryEntity_AgeSuitability = 0 | 7 | 13 | 18
 export type RepositoryEntity_SystemWideOperationId = SystemWideOperationId
 
 @MappedSuperclass()
-export abstract class RepositoryEntity
-	extends Stageable {
+export abstract class RepositoryEntity {
 
 	@Id()
 	@ManyToOne()
@@ -52,6 +50,16 @@ export abstract class RepositoryEntity
 	// This field is local to the device only, when copied to new device this value is re-created
 	@Column({name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false})
 	systemWideOperationId: RepositoryEntity_SystemWideOperationId
+
+	// A record may actually be copied from another repository
+	// via a @ManytoOne dependency.  If that is the case
+	// the link to the original repository ID is saved
+	// here
+	@ManyToOne()
+	@JoinColumn({
+		name: 'ORIGINAL_REPOSITORY_ID', referencedColumnName: 'ID'
+	})
+	originalRepository: Repository
 
 	/*
 		@OneToMany()

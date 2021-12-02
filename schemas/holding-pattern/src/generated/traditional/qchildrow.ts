@@ -22,16 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	StageableGraph,
-	StageableEId,
-	StageableEUpdateColumns,
-	StageableEUpdateProperties,
-	StageableESelect,
-	QStageableQId,
-	QStageableQRelation,
-	QStageable,
-} from '../infrastructure/qstageable';
-import {
 	ChildRow,
 } from '../../ddl/traditional/ChildRow';
 
@@ -47,7 +37,7 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface ChildRowESelect
-    extends StageableESelect, ChildRowEOptionalId {
+    extends IEntitySelectProperties, ChildRowEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
@@ -60,7 +50,7 @@ export interface ChildRowESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface ChildRowEId
-    extends StageableEId {
+    extends IEntityIdProperties {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -81,7 +71,7 @@ export interface ChildRowEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface ChildRowEUpdateProperties
-	extends StageableEUpdateProperties {
+	extends IEntityUpdateProperties {
 	// Non-Id Properties
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -92,7 +82,7 @@ export interface ChildRowEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ChildRowGraph
-	extends ChildRowEOptionalId, StageableGraph {
+	extends ChildRowEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
@@ -105,7 +95,7 @@ export interface ChildRowGraph
  * UPDATE - non-id columns (optional).
  */
 export interface ChildRowEUpdateColumns
-	extends StageableEUpdateColumns {
+	extends IEntityUpdateColumns {
 	// Non-Id Columns
 
 }
@@ -134,7 +124,7 @@ extends ChildRowEId, ChildRowEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QChildRow<T> extends QStageable<T>
+export interface QChildRow<T> extends IQEntity<T>
 {
 	// Id Fields
 
@@ -148,7 +138,7 @@ export interface QChildRow<T> extends QStageable<T>
 
 
 // Entity Id Interface
-export interface QChildRowQId extends QStageableQId
+export interface QChildRowQId
 {
 	
 	// Id Fields
@@ -160,6 +150,6 @@ export interface QChildRowQId extends QStageableQId
 
 // Entity Relation Interface
 export interface QChildRowQRelation<SubType, SubQType extends IQEntity<SubType>>
-	extends QStageableQRelation<SubType, SubQType>, QChildRowQId {
+	extends IQRelation<SubType, SubQType>, QChildRowQId {
 }
 

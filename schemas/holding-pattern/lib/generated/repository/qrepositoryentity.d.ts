@@ -1,20 +1,20 @@
-import { IQNumberField, IQEntity } from '@airport/air-control';
-import { StageableGraph, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from './qrepository';
 import { ActorGraph, ActorEId, ActorEOptionalId, ActorESelect, QActorQId, QActorQRelation } from '../infrastructure/qactor';
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface RepositoryEntityESelect extends StageableESelect, RepositoryEntityEOptionalId {
+export interface RepositoryEntityESelect extends IEntitySelectProperties, RepositoryEntityEOptionalId {
     ageSuitability?: number | IQNumberField;
     systemWideOperationId?: number | IQNumberField;
     repository?: RepositoryESelect;
     actor?: ActorESelect;
+    originalRepository?: RepositoryESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface RepositoryEntityEId extends StageableEId {
+export interface RepositoryEntityEId extends IEntityIdProperties {
     actorRecordId: number | IQNumberField;
     repository: RepositoryEId;
     actor: ActorEId;
@@ -30,23 +30,25 @@ export interface RepositoryEntityEOptionalId {
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface RepositoryEntityEUpdateProperties extends StageableEUpdateProperties {
+export interface RepositoryEntityEUpdateProperties extends IEntityUpdateProperties {
     ageSuitability?: number | IQNumberField;
     systemWideOperationId?: number | IQNumberField;
+    originalRepository?: RepositoryEOptionalId;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface RepositoryEntityGraph extends RepositoryEntityEOptionalId, StageableGraph {
+export interface RepositoryEntityGraph extends RepositoryEntityEOptionalId, IEntityCascadeGraph {
     ageSuitability?: number | IQNumberField;
     systemWideOperationId?: number | IQNumberField;
     repository?: RepositoryGraph;
     actor?: ActorGraph;
+    originalRepository?: RepositoryGraph;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface RepositoryEntityEUpdateColumns extends StageableEUpdateColumns {
+export interface RepositoryEntityEUpdateColumns extends IEntityUpdateColumns {
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -61,18 +63,19 @@ export interface RepositoryEntityECreateColumns extends RepositoryEntityEId, Rep
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryEntity<T> extends QStageable<T> {
+export interface QRepositoryEntity<T> extends IQEntity<T> {
     actorRecordId: IQNumberField;
     repository: QRepositoryQRelation;
     actor: QActorQRelation;
     ageSuitability: IQNumberField;
     systemWideOperationId: IQNumberField;
+    originalRepository: QRepositoryQRelation;
 }
-export interface QRepositoryEntityQId extends QStageableQId {
+export interface QRepositoryEntityQId {
     actorRecordId: IQNumberField;
     repository: QRepositoryQId;
     actor: QActorQId;
 }
-export interface QRepositoryEntityQRelation<SubType, SubQType extends IQEntity<SubType>> extends QStageableQRelation<SubType, SubQType>, QRepositoryEntityQId {
+export interface QRepositoryEntityQRelation<SubType, SubQType extends IQEntity<SubType>> extends IQRelation<SubType, SubQType>, QRepositoryEntityQId {
 }
 //# sourceMappingURL=qrepositoryentity.d.ts.map

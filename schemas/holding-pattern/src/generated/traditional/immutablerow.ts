@@ -1,7 +1,4 @@
 import {
-	IStageable,
-} from '../infrastructure/stageable';
-import {
 	IUser,
 } from '@airport/travel-document-checkpoint';
 
@@ -11,7 +8,7 @@ import {
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface IImmutableRow extends IStageable {
+export interface IImmutableRow {
 	
 	// Id Properties
 

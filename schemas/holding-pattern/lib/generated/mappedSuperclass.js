@@ -1,100 +1,9 @@
 /* eslint-disable */
 export const MAPPED_SUPERCLASS = [
     {
-        "type": "Stageable",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\infrastructure\\Stageable.ts",
-        "parentClassName": null,
-        "isSuperclass": true,
-        "ids": [],
-        "docEntry": {
-            "decorators": [
-                {
-                    "name": "MappedSuperclass",
-                    "values": []
-                }
-            ],
-            "isGenerated": false,
-            "isId": false,
-            "isMappedSuperclass": true,
-            "isTransient": false,
-            "name": "Stageable",
-            "type": "typeof Stageable",
-            "fileImports": {
-                "importMapByObjectAsName": {
-                    "Column": {
-                        "fileImports": null,
-                        "isLocal": false,
-                        "objectMapByAsName": {
-                            "Column": {
-                                "asName": "Column",
-                                "moduleImport": null,
-                                "sourceName": "Column"
-                            },
-                            "DbBoolean": {
-                                "asName": "DbBoolean",
-                                "moduleImport": null,
-                                "sourceName": "DbBoolean"
-                            },
-                            "MappedSuperclass": {
-                                "asName": "MappedSuperclass",
-                                "moduleImport": null,
-                                "sourceName": "MappedSuperclass"
-                            }
-                        },
-                        "path": "@airport/air-control"
-                    },
-                    "DbBoolean": null,
-                    "MappedSuperclass": null
-                },
-                "importMapByModulePath": {
-                    "@airport/air-control": null
-                }
-            },
-            "properties": [
-                {
-                    "decorators": [
-                        {
-                            "name": "Column",
-                            "values": [
-                                {
-                                    "name": "IS_REPOSITORY_DEPENDENCY_REFERENCE",
-                                    "nullable": false
-                                }
-                            ]
-                        },
-                        {
-                            "name": "DbBoolean",
-                            "values": []
-                        }
-                    ],
-                    "isGenerated": false,
-                    "isId": false,
-                    "isMappedSuperclass": false,
-                    "isTransient": false,
-                    "name": "isRepositoryDependencyReference",
-                    "type": "boolean",
-                    "ownerEntity": null,
-                    "nonArrayType": "boolean",
-                    "primitive": "boolean",
-                    "index": 0
-                }
-            ],
-            "methodSignatures": [],
-            "constructors": [
-                {
-                    "parameters": [],
-                    "returnType": "Stageable"
-                }
-            ]
-        },
-        "implementedInterfaceNames": [],
-        "project": "@airport/holding-pattern"
-    },
-    {
         "type": "RepositoryEntity",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
-        "parentClassName": "Stageable",
-        "location": "../infrastructure/Stageable",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+        "parentClassName": null,
         "isSuperclass": true,
         "ids": [
             {
@@ -280,18 +189,6 @@ export const MAPPED_SUPERCLASS = [
                         },
                         "path": "../common"
                     },
-                    "Stageable": {
-                        "fileImports": null,
-                        "isLocal": true,
-                        "objectMapByAsName": {
-                            "Stageable": {
-                                "asName": "Stageable",
-                                "moduleImport": null,
-                                "sourceName": "Stageable"
-                            }
-                        },
-                        "path": "../infrastructure/Stageable"
-                    },
                     "Repository": {
                         "fileImports": null,
                         "isLocal": true,
@@ -309,7 +206,6 @@ export const MAPPED_SUPERCLASS = [
                     "@airport/air-control": null,
                     "../infrastructure/Actor": null,
                     "../common": null,
-                    "../infrastructure/Stageable": null,
                     "./Repository": null
                 }
             },
@@ -458,6 +354,33 @@ export const MAPPED_SUPERCLASS = [
                     "nonArrayType": "number",
                     "primitive": "number",
                     "index": 4
+                },
+                {
+                    "decorators": [
+                        {
+                            "name": "ManyToOne",
+                            "values": []
+                        },
+                        {
+                            "name": "JoinColumn",
+                            "values": [
+                                {
+                                    "name": "ORIGINAL_REPOSITORY_ID",
+                                    "referencedColumnName": "ID"
+                                }
+                            ]
+                        }
+                    ],
+                    "isGenerated": false,
+                    "isId": false,
+                    "isMappedSuperclass": false,
+                    "isTransient": false,
+                    "name": "originalRepository",
+                    "type": "Repository",
+                    "ownerEntity": null,
+                    "nonArrayType": "Repository",
+                    "entity": null,
+                    "index": 5
                 }
             ],
             "methodSignatures": [],
@@ -469,101 +392,11 @@ export const MAPPED_SUPERCLASS = [
             ]
         },
         "implementedInterfaceNames": [],
-        "parentEntity": {
-            "type": "Stageable",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\infrastructure\\Stageable.ts",
-            "parentClassName": null,
-            "isSuperclass": true,
-            "ids": [],
-            "docEntry": {
-                "decorators": [
-                    {
-                        "name": "MappedSuperclass",
-                        "values": []
-                    }
-                ],
-                "isGenerated": false,
-                "isId": false,
-                "isMappedSuperclass": true,
-                "isTransient": false,
-                "name": "Stageable",
-                "type": "typeof Stageable",
-                "fileImports": {
-                    "importMapByObjectAsName": {
-                        "Column": {
-                            "fileImports": null,
-                            "isLocal": false,
-                            "objectMapByAsName": {
-                                "Column": {
-                                    "asName": "Column",
-                                    "moduleImport": null,
-                                    "sourceName": "Column"
-                                },
-                                "DbBoolean": {
-                                    "asName": "DbBoolean",
-                                    "moduleImport": null,
-                                    "sourceName": "DbBoolean"
-                                },
-                                "MappedSuperclass": {
-                                    "asName": "MappedSuperclass",
-                                    "moduleImport": null,
-                                    "sourceName": "MappedSuperclass"
-                                }
-                            },
-                            "path": "@airport/air-control"
-                        },
-                        "DbBoolean": null,
-                        "MappedSuperclass": null
-                    },
-                    "importMapByModulePath": {
-                        "@airport/air-control": null
-                    }
-                },
-                "properties": [
-                    {
-                        "decorators": [
-                            {
-                                "name": "Column",
-                                "values": [
-                                    {
-                                        "name": "IS_REPOSITORY_DEPENDENCY_REFERENCE",
-                                        "nullable": false
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "DbBoolean",
-                                "values": []
-                            }
-                        ],
-                        "isGenerated": false,
-                        "isId": false,
-                        "isMappedSuperclass": false,
-                        "isTransient": false,
-                        "name": "isRepositoryDependencyReference",
-                        "type": "boolean",
-                        "ownerEntity": null,
-                        "nonArrayType": "boolean",
-                        "primitive": "boolean",
-                        "index": 0
-                    }
-                ],
-                "methodSignatures": [],
-                "constructors": [
-                    {
-                        "parameters": [],
-                        "returnType": "Stageable"
-                    }
-                ]
-            },
-            "implementedInterfaceNames": [],
-            "project": "@airport/holding-pattern"
-        },
         "project": "@airport/holding-pattern"
     },
     {
         "type": "ChildRepoRow",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRepoRow.ts",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRepoRow.ts",
         "parentClassName": "RepositoryEntity",
         "location": "../repository/RepositoryEntity",
         "isSuperclass": true,
@@ -625,9 +458,8 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "RepositoryEntity",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
-            "parentClassName": "Stageable",
-            "location": "../infrastructure/Stageable",
+            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+            "parentClassName": null,
             "isSuperclass": true,
             "ids": [
                 {
@@ -813,18 +645,6 @@ export const MAPPED_SUPERCLASS = [
                             },
                             "path": "../common"
                         },
-                        "Stageable": {
-                            "fileImports": null,
-                            "isLocal": true,
-                            "objectMapByAsName": {
-                                "Stageable": {
-                                    "asName": "Stageable",
-                                    "moduleImport": null,
-                                    "sourceName": "Stageable"
-                                }
-                            },
-                            "path": "../infrastructure/Stageable"
-                        },
                         "Repository": {
                             "fileImports": null,
                             "isLocal": true,
@@ -842,7 +662,6 @@ export const MAPPED_SUPERCLASS = [
                         "@airport/air-control": null,
                         "../infrastructure/Actor": null,
                         "../common": null,
-                        "../infrastructure/Stageable": null,
                         "./Repository": null
                     }
                 },
@@ -991,6 +810,33 @@ export const MAPPED_SUPERCLASS = [
                         "nonArrayType": "number",
                         "primitive": "number",
                         "index": 4
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "ManyToOne",
+                                "values": []
+                            },
+                            {
+                                "name": "JoinColumn",
+                                "values": [
+                                    {
+                                        "name": "ORIGINAL_REPOSITORY_ID",
+                                        "referencedColumnName": "ID"
+                                    }
+                                ]
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": false,
+                        "name": "originalRepository",
+                        "type": "Repository",
+                        "ownerEntity": null,
+                        "nonArrayType": "Repository",
+                        "entity": null,
+                        "index": 5
                     }
                 ],
                 "methodSignatures": [],
@@ -1002,105 +848,14 @@ export const MAPPED_SUPERCLASS = [
                 ]
             },
             "implementedInterfaceNames": [],
-            "parentEntity": {
-                "type": "Stageable",
-                "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\infrastructure\\Stageable.ts",
-                "parentClassName": null,
-                "isSuperclass": true,
-                "ids": [],
-                "docEntry": {
-                    "decorators": [
-                        {
-                            "name": "MappedSuperclass",
-                            "values": []
-                        }
-                    ],
-                    "isGenerated": false,
-                    "isId": false,
-                    "isMappedSuperclass": true,
-                    "isTransient": false,
-                    "name": "Stageable",
-                    "type": "typeof Stageable",
-                    "fileImports": {
-                        "importMapByObjectAsName": {
-                            "Column": {
-                                "fileImports": null,
-                                "isLocal": false,
-                                "objectMapByAsName": {
-                                    "Column": {
-                                        "asName": "Column",
-                                        "moduleImport": null,
-                                        "sourceName": "Column"
-                                    },
-                                    "DbBoolean": {
-                                        "asName": "DbBoolean",
-                                        "moduleImport": null,
-                                        "sourceName": "DbBoolean"
-                                    },
-                                    "MappedSuperclass": {
-                                        "asName": "MappedSuperclass",
-                                        "moduleImport": null,
-                                        "sourceName": "MappedSuperclass"
-                                    }
-                                },
-                                "path": "@airport/air-control"
-                            },
-                            "DbBoolean": null,
-                            "MappedSuperclass": null
-                        },
-                        "importMapByModulePath": {
-                            "@airport/air-control": null
-                        }
-                    },
-                    "properties": [
-                        {
-                            "decorators": [
-                                {
-                                    "name": "Column",
-                                    "values": [
-                                        {
-                                            "name": "IS_REPOSITORY_DEPENDENCY_REFERENCE",
-                                            "nullable": false
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "DbBoolean",
-                                    "values": []
-                                }
-                            ],
-                            "isGenerated": false,
-                            "isId": false,
-                            "isMappedSuperclass": false,
-                            "isTransient": false,
-                            "name": "isRepositoryDependencyReference",
-                            "type": "boolean",
-                            "ownerEntity": null,
-                            "nonArrayType": "boolean",
-                            "primitive": "boolean",
-                            "index": 0
-                        }
-                    ],
-                    "methodSignatures": [],
-                    "constructors": [
-                        {
-                            "parameters": [],
-                            "returnType": "Stageable"
-                        }
-                    ]
-                },
-                "implementedInterfaceNames": [],
-                "project": "@airport/holding-pattern"
-            },
             "project": "@airport/holding-pattern"
         },
         "project": "@airport/holding-pattern"
     },
     {
         "type": "ChildRow",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRow.ts",
-        "parentClassName": "Stageable",
-        "location": "../infrastructure/Stageable",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRow.ts",
+        "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
         "docEntry": {
@@ -1129,23 +884,10 @@ export const MAPPED_SUPERCLASS = [
                             }
                         },
                         "path": "@airport/air-control"
-                    },
-                    "Stageable": {
-                        "fileImports": null,
-                        "isLocal": true,
-                        "objectMapByAsName": {
-                            "Stageable": {
-                                "asName": "Stageable",
-                                "moduleImport": null,
-                                "sourceName": "Stageable"
-                            }
-                        },
-                        "path": "../infrastructure/Stageable"
                     }
                 },
                 "importMapByModulePath": {
-                    "@airport/air-control": null,
-                    "../infrastructure/Stageable": null
+                    "@airport/air-control": null
                 }
             },
             "properties": [],
@@ -1158,101 +900,11 @@ export const MAPPED_SUPERCLASS = [
             ]
         },
         "implementedInterfaceNames": [],
-        "parentEntity": {
-            "type": "Stageable",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\infrastructure\\Stageable.ts",
-            "parentClassName": null,
-            "isSuperclass": true,
-            "ids": [],
-            "docEntry": {
-                "decorators": [
-                    {
-                        "name": "MappedSuperclass",
-                        "values": []
-                    }
-                ],
-                "isGenerated": false,
-                "isId": false,
-                "isMappedSuperclass": true,
-                "isTransient": false,
-                "name": "Stageable",
-                "type": "typeof Stageable",
-                "fileImports": {
-                    "importMapByObjectAsName": {
-                        "Column": {
-                            "fileImports": null,
-                            "isLocal": false,
-                            "objectMapByAsName": {
-                                "Column": {
-                                    "asName": "Column",
-                                    "moduleImport": null,
-                                    "sourceName": "Column"
-                                },
-                                "DbBoolean": {
-                                    "asName": "DbBoolean",
-                                    "moduleImport": null,
-                                    "sourceName": "DbBoolean"
-                                },
-                                "MappedSuperclass": {
-                                    "asName": "MappedSuperclass",
-                                    "moduleImport": null,
-                                    "sourceName": "MappedSuperclass"
-                                }
-                            },
-                            "path": "@airport/air-control"
-                        },
-                        "DbBoolean": null,
-                        "MappedSuperclass": null
-                    },
-                    "importMapByModulePath": {
-                        "@airport/air-control": null
-                    }
-                },
-                "properties": [
-                    {
-                        "decorators": [
-                            {
-                                "name": "Column",
-                                "values": [
-                                    {
-                                        "name": "IS_REPOSITORY_DEPENDENCY_REFERENCE",
-                                        "nullable": false
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "DbBoolean",
-                                "values": []
-                            }
-                        ],
-                        "isGenerated": false,
-                        "isId": false,
-                        "isMappedSuperclass": false,
-                        "isTransient": false,
-                        "name": "isRepositoryDependencyReference",
-                        "type": "boolean",
-                        "ownerEntity": null,
-                        "nonArrayType": "boolean",
-                        "primitive": "boolean",
-                        "index": 0
-                    }
-                ],
-                "methodSignatures": [],
-                "constructors": [
-                    {
-                        "parameters": [],
-                        "returnType": "Stageable"
-                    }
-                ]
-            },
-            "implementedInterfaceNames": [],
-            "project": "@airport/holding-pattern"
-        },
         "project": "@airport/holding-pattern"
     },
     {
         "type": "ImmutableRepoRow",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
         "parentClassName": "RepositoryEntity",
         "location": "../repository/RepositoryEntity",
         "isSuperclass": true,
@@ -1368,9 +1020,8 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "RepositoryEntity",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
-            "parentClassName": "Stageable",
-            "location": "../infrastructure/Stageable",
+            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+            "parentClassName": null,
             "isSuperclass": true,
             "ids": [
                 {
@@ -1556,18 +1207,6 @@ export const MAPPED_SUPERCLASS = [
                             },
                             "path": "../common"
                         },
-                        "Stageable": {
-                            "fileImports": null,
-                            "isLocal": true,
-                            "objectMapByAsName": {
-                                "Stageable": {
-                                    "asName": "Stageable",
-                                    "moduleImport": null,
-                                    "sourceName": "Stageable"
-                                }
-                            },
-                            "path": "../infrastructure/Stageable"
-                        },
                         "Repository": {
                             "fileImports": null,
                             "isLocal": true,
@@ -1585,7 +1224,6 @@ export const MAPPED_SUPERCLASS = [
                         "@airport/air-control": null,
                         "../infrastructure/Actor": null,
                         "../common": null,
-                        "../infrastructure/Stageable": null,
                         "./Repository": null
                     }
                 },
@@ -1734,6 +1372,33 @@ export const MAPPED_SUPERCLASS = [
                         "nonArrayType": "number",
                         "primitive": "number",
                         "index": 4
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "ManyToOne",
+                                "values": []
+                            },
+                            {
+                                "name": "JoinColumn",
+                                "values": [
+                                    {
+                                        "name": "ORIGINAL_REPOSITORY_ID",
+                                        "referencedColumnName": "ID"
+                                    }
+                                ]
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": false,
+                        "name": "originalRepository",
+                        "type": "Repository",
+                        "ownerEntity": null,
+                        "nonArrayType": "Repository",
+                        "entity": null,
+                        "index": 5
                     }
                 ],
                 "methodSignatures": [],
@@ -1745,105 +1410,14 @@ export const MAPPED_SUPERCLASS = [
                 ]
             },
             "implementedInterfaceNames": [],
-            "parentEntity": {
-                "type": "Stageable",
-                "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\infrastructure\\Stageable.ts",
-                "parentClassName": null,
-                "isSuperclass": true,
-                "ids": [],
-                "docEntry": {
-                    "decorators": [
-                        {
-                            "name": "MappedSuperclass",
-                            "values": []
-                        }
-                    ],
-                    "isGenerated": false,
-                    "isId": false,
-                    "isMappedSuperclass": true,
-                    "isTransient": false,
-                    "name": "Stageable",
-                    "type": "typeof Stageable",
-                    "fileImports": {
-                        "importMapByObjectAsName": {
-                            "Column": {
-                                "fileImports": null,
-                                "isLocal": false,
-                                "objectMapByAsName": {
-                                    "Column": {
-                                        "asName": "Column",
-                                        "moduleImport": null,
-                                        "sourceName": "Column"
-                                    },
-                                    "DbBoolean": {
-                                        "asName": "DbBoolean",
-                                        "moduleImport": null,
-                                        "sourceName": "DbBoolean"
-                                    },
-                                    "MappedSuperclass": {
-                                        "asName": "MappedSuperclass",
-                                        "moduleImport": null,
-                                        "sourceName": "MappedSuperclass"
-                                    }
-                                },
-                                "path": "@airport/air-control"
-                            },
-                            "DbBoolean": null,
-                            "MappedSuperclass": null
-                        },
-                        "importMapByModulePath": {
-                            "@airport/air-control": null
-                        }
-                    },
-                    "properties": [
-                        {
-                            "decorators": [
-                                {
-                                    "name": "Column",
-                                    "values": [
-                                        {
-                                            "name": "IS_REPOSITORY_DEPENDENCY_REFERENCE",
-                                            "nullable": false
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "DbBoolean",
-                                    "values": []
-                                }
-                            ],
-                            "isGenerated": false,
-                            "isId": false,
-                            "isMappedSuperclass": false,
-                            "isTransient": false,
-                            "name": "isRepositoryDependencyReference",
-                            "type": "boolean",
-                            "ownerEntity": null,
-                            "nonArrayType": "boolean",
-                            "primitive": "boolean",
-                            "index": 0
-                        }
-                    ],
-                    "methodSignatures": [],
-                    "constructors": [
-                        {
-                            "parameters": [],
-                            "returnType": "Stageable"
-                        }
-                    ]
-                },
-                "implementedInterfaceNames": [],
-                "project": "@airport/holding-pattern"
-            },
             "project": "@airport/holding-pattern"
         },
         "project": "@airport/holding-pattern"
     },
     {
         "type": "ImmutableRow",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRow.ts",
-        "parentClassName": "Stageable",
-        "location": "../infrastructure/Stageable",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRow.ts",
+        "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
         "docEntry": {
@@ -1902,24 +1476,11 @@ export const MAPPED_SUPERCLASS = [
                             }
                         },
                         "path": "@airport/travel-document-checkpoint"
-                    },
-                    "Stageable": {
-                        "fileImports": null,
-                        "isLocal": true,
-                        "objectMapByAsName": {
-                            "Stageable": {
-                                "asName": "Stageable",
-                                "moduleImport": null,
-                                "sourceName": "Stageable"
-                            }
-                        },
-                        "path": "../infrastructure/Stageable"
                     }
                 },
                 "importMapByModulePath": {
                     "@airport/air-control": null,
-                    "@airport/travel-document-checkpoint": null,
-                    "../infrastructure/Stageable": null
+                    "@airport/travel-document-checkpoint": null
                 }
             },
             "properties": [
@@ -2203,101 +1764,11 @@ export const MAPPED_SUPERCLASS = [
             ]
         },
         "implementedInterfaceNames": [],
-        "parentEntity": {
-            "type": "Stageable",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\infrastructure\\Stageable.ts",
-            "parentClassName": null,
-            "isSuperclass": true,
-            "ids": [],
-            "docEntry": {
-                "decorators": [
-                    {
-                        "name": "MappedSuperclass",
-                        "values": []
-                    }
-                ],
-                "isGenerated": false,
-                "isId": false,
-                "isMappedSuperclass": true,
-                "isTransient": false,
-                "name": "Stageable",
-                "type": "typeof Stageable",
-                "fileImports": {
-                    "importMapByObjectAsName": {
-                        "Column": {
-                            "fileImports": null,
-                            "isLocal": false,
-                            "objectMapByAsName": {
-                                "Column": {
-                                    "asName": "Column",
-                                    "moduleImport": null,
-                                    "sourceName": "Column"
-                                },
-                                "DbBoolean": {
-                                    "asName": "DbBoolean",
-                                    "moduleImport": null,
-                                    "sourceName": "DbBoolean"
-                                },
-                                "MappedSuperclass": {
-                                    "asName": "MappedSuperclass",
-                                    "moduleImport": null,
-                                    "sourceName": "MappedSuperclass"
-                                }
-                            },
-                            "path": "@airport/air-control"
-                        },
-                        "DbBoolean": null,
-                        "MappedSuperclass": null
-                    },
-                    "importMapByModulePath": {
-                        "@airport/air-control": null
-                    }
-                },
-                "properties": [
-                    {
-                        "decorators": [
-                            {
-                                "name": "Column",
-                                "values": [
-                                    {
-                                        "name": "IS_REPOSITORY_DEPENDENCY_REFERENCE",
-                                        "nullable": false
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "DbBoolean",
-                                "values": []
-                            }
-                        ],
-                        "isGenerated": false,
-                        "isId": false,
-                        "isMappedSuperclass": false,
-                        "isTransient": false,
-                        "name": "isRepositoryDependencyReference",
-                        "type": "boolean",
-                        "ownerEntity": null,
-                        "nonArrayType": "boolean",
-                        "primitive": "boolean",
-                        "index": 0
-                    }
-                ],
-                "methodSignatures": [],
-                "constructors": [
-                    {
-                        "parameters": [],
-                        "returnType": "Stageable"
-                    }
-                ]
-            },
-            "implementedInterfaceNames": [],
-            "project": "@airport/holding-pattern"
-        },
         "project": "@airport/holding-pattern"
     },
     {
         "type": "MutableRepoRow",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\MutableRepoRow.ts",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\MutableRepoRow.ts",
         "parentClassName": "ImmutableRepoRow",
         "location": "./ImmutableRepoRow",
         "isSuperclass": true,
@@ -2388,7 +1859,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "ImmutableRepoRow",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
+            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
             "parentClassName": "RepositoryEntity",
             "location": "../repository/RepositoryEntity",
             "isSuperclass": true,
@@ -2504,9 +1975,8 @@ export const MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "RepositoryEntity",
-                "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
-                "parentClassName": "Stageable",
-                "location": "../infrastructure/Stageable",
+                "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+                "parentClassName": null,
                 "isSuperclass": true,
                 "ids": [
                     {
@@ -2692,18 +2162,6 @@ export const MAPPED_SUPERCLASS = [
                                 },
                                 "path": "../common"
                             },
-                            "Stageable": {
-                                "fileImports": null,
-                                "isLocal": true,
-                                "objectMapByAsName": {
-                                    "Stageable": {
-                                        "asName": "Stageable",
-                                        "moduleImport": null,
-                                        "sourceName": "Stageable"
-                                    }
-                                },
-                                "path": "../infrastructure/Stageable"
-                            },
                             "Repository": {
                                 "fileImports": null,
                                 "isLocal": true,
@@ -2721,7 +2179,6 @@ export const MAPPED_SUPERCLASS = [
                             "@airport/air-control": null,
                             "../infrastructure/Actor": null,
                             "../common": null,
-                            "../infrastructure/Stageable": null,
                             "./Repository": null
                         }
                     },
@@ -2870,6 +2327,33 @@ export const MAPPED_SUPERCLASS = [
                             "nonArrayType": "number",
                             "primitive": "number",
                             "index": 4
+                        },
+                        {
+                            "decorators": [
+                                {
+                                    "name": "ManyToOne",
+                                    "values": []
+                                },
+                                {
+                                    "name": "JoinColumn",
+                                    "values": [
+                                        {
+                                            "name": "ORIGINAL_REPOSITORY_ID",
+                                            "referencedColumnName": "ID"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "isGenerated": false,
+                            "isId": false,
+                            "isMappedSuperclass": false,
+                            "isTransient": false,
+                            "name": "originalRepository",
+                            "type": "Repository",
+                            "ownerEntity": null,
+                            "nonArrayType": "Repository",
+                            "entity": null,
+                            "index": 5
                         }
                     ],
                     "methodSignatures": [],
@@ -2881,96 +2365,6 @@ export const MAPPED_SUPERCLASS = [
                     ]
                 },
                 "implementedInterfaceNames": [],
-                "parentEntity": {
-                    "type": "Stageable",
-                    "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\infrastructure\\Stageable.ts",
-                    "parentClassName": null,
-                    "isSuperclass": true,
-                    "ids": [],
-                    "docEntry": {
-                        "decorators": [
-                            {
-                                "name": "MappedSuperclass",
-                                "values": []
-                            }
-                        ],
-                        "isGenerated": false,
-                        "isId": false,
-                        "isMappedSuperclass": true,
-                        "isTransient": false,
-                        "name": "Stageable",
-                        "type": "typeof Stageable",
-                        "fileImports": {
-                            "importMapByObjectAsName": {
-                                "Column": {
-                                    "fileImports": null,
-                                    "isLocal": false,
-                                    "objectMapByAsName": {
-                                        "Column": {
-                                            "asName": "Column",
-                                            "moduleImport": null,
-                                            "sourceName": "Column"
-                                        },
-                                        "DbBoolean": {
-                                            "asName": "DbBoolean",
-                                            "moduleImport": null,
-                                            "sourceName": "DbBoolean"
-                                        },
-                                        "MappedSuperclass": {
-                                            "asName": "MappedSuperclass",
-                                            "moduleImport": null,
-                                            "sourceName": "MappedSuperclass"
-                                        }
-                                    },
-                                    "path": "@airport/air-control"
-                                },
-                                "DbBoolean": null,
-                                "MappedSuperclass": null
-                            },
-                            "importMapByModulePath": {
-                                "@airport/air-control": null
-                            }
-                        },
-                        "properties": [
-                            {
-                                "decorators": [
-                                    {
-                                        "name": "Column",
-                                        "values": [
-                                            {
-                                                "name": "IS_REPOSITORY_DEPENDENCY_REFERENCE",
-                                                "nullable": false
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "name": "DbBoolean",
-                                        "values": []
-                                    }
-                                ],
-                                "isGenerated": false,
-                                "isId": false,
-                                "isMappedSuperclass": false,
-                                "isTransient": false,
-                                "name": "isRepositoryDependencyReference",
-                                "type": "boolean",
-                                "ownerEntity": null,
-                                "nonArrayType": "boolean",
-                                "primitive": "boolean",
-                                "index": 0
-                            }
-                        ],
-                        "methodSignatures": [],
-                        "constructors": [
-                            {
-                                "parameters": [],
-                                "returnType": "Stageable"
-                            }
-                        ]
-                    },
-                    "implementedInterfaceNames": [],
-                    "project": "@airport/holding-pattern"
-                },
                 "project": "@airport/holding-pattern"
             },
             "project": "@airport/holding-pattern"
@@ -2979,7 +2373,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "MutableRow",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\MutableRow.ts",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\MutableRow.ts",
         "parentClassName": "ImmutableRow",
         "location": "./ImmutableRow",
         "isSuperclass": true,
@@ -3070,9 +2464,8 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "ImmutableRow",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRow.ts",
-            "parentClassName": "Stageable",
-            "location": "../infrastructure/Stageable",
+            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRow.ts",
+            "parentClassName": null,
             "isSuperclass": true,
             "ids": [],
             "docEntry": {
@@ -3131,24 +2524,11 @@ export const MAPPED_SUPERCLASS = [
                                 }
                             },
                             "path": "@airport/travel-document-checkpoint"
-                        },
-                        "Stageable": {
-                            "fileImports": null,
-                            "isLocal": true,
-                            "objectMapByAsName": {
-                                "Stageable": {
-                                    "asName": "Stageable",
-                                    "moduleImport": null,
-                                    "sourceName": "Stageable"
-                                }
-                            },
-                            "path": "../infrastructure/Stageable"
                         }
                     },
                     "importMapByModulePath": {
                         "@airport/air-control": null,
-                        "@airport/travel-document-checkpoint": null,
-                        "../infrastructure/Stageable": null
+                        "@airport/travel-document-checkpoint": null
                     }
                 },
                 "properties": [
@@ -3432,103 +2812,13 @@ export const MAPPED_SUPERCLASS = [
                 ]
             },
             "implementedInterfaceNames": [],
-            "parentEntity": {
-                "type": "Stageable",
-                "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\infrastructure\\Stageable.ts",
-                "parentClassName": null,
-                "isSuperclass": true,
-                "ids": [],
-                "docEntry": {
-                    "decorators": [
-                        {
-                            "name": "MappedSuperclass",
-                            "values": []
-                        }
-                    ],
-                    "isGenerated": false,
-                    "isId": false,
-                    "isMappedSuperclass": true,
-                    "isTransient": false,
-                    "name": "Stageable",
-                    "type": "typeof Stageable",
-                    "fileImports": {
-                        "importMapByObjectAsName": {
-                            "Column": {
-                                "fileImports": null,
-                                "isLocal": false,
-                                "objectMapByAsName": {
-                                    "Column": {
-                                        "asName": "Column",
-                                        "moduleImport": null,
-                                        "sourceName": "Column"
-                                    },
-                                    "DbBoolean": {
-                                        "asName": "DbBoolean",
-                                        "moduleImport": null,
-                                        "sourceName": "DbBoolean"
-                                    },
-                                    "MappedSuperclass": {
-                                        "asName": "MappedSuperclass",
-                                        "moduleImport": null,
-                                        "sourceName": "MappedSuperclass"
-                                    }
-                                },
-                                "path": "@airport/air-control"
-                            },
-                            "DbBoolean": null,
-                            "MappedSuperclass": null
-                        },
-                        "importMapByModulePath": {
-                            "@airport/air-control": null
-                        }
-                    },
-                    "properties": [
-                        {
-                            "decorators": [
-                                {
-                                    "name": "Column",
-                                    "values": [
-                                        {
-                                            "name": "IS_REPOSITORY_DEPENDENCY_REFERENCE",
-                                            "nullable": false
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "DbBoolean",
-                                    "values": []
-                                }
-                            ],
-                            "isGenerated": false,
-                            "isId": false,
-                            "isMappedSuperclass": false,
-                            "isTransient": false,
-                            "name": "isRepositoryDependencyReference",
-                            "type": "boolean",
-                            "ownerEntity": null,
-                            "nonArrayType": "boolean",
-                            "primitive": "boolean",
-                            "index": 0
-                        }
-                    ],
-                    "methodSignatures": [],
-                    "constructors": [
-                        {
-                            "parameters": [],
-                            "returnType": "Stageable"
-                        }
-                    ]
-                },
-                "implementedInterfaceNames": [],
-                "project": "@airport/holding-pattern"
-            },
             "project": "@airport/holding-pattern"
         },
         "project": "@airport/holding-pattern"
     },
     {
         "type": "ReferenceRow",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ReferenceRow.ts",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ReferenceRow.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],

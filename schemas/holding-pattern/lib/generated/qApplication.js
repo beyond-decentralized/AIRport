@@ -2,7 +2,7 @@ import { AIRPORT_DATABASE } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { getApplicationName } from '@airport/ground-control';
-import { Actor, ChildRepoRow, ChildRow, ImmutableRepoRow, ImmutableRow, MutableRepoRow, MutableRow, OperationHistory, RecordHistory, RecordHistoryNewValue, RecordHistoryOldValue, ReferenceRow, Repository, RepositoryApplication, RepositoryEntity, RepositoryTransactionHistory, Stageable, TransactionHistory } from '../ddl/ddl';
+import { Actor, ChildRepoRow, ChildRow, ImmutableRepoRow, ImmutableRow, MutableRepoRow, MutableRow, OperationHistory, RecordHistory, RecordHistoryNewValue, RecordHistoryOldValue, ReferenceRow, Repository, RepositoryApplication, RepositoryEntity, RepositoryTransactionHistory, TransactionHistory } from '../ddl/ddl';
 const __constructors__ = {
     Actor: Actor,
     ChildRepoRow: ChildRepoRow,
@@ -20,7 +20,6 @@ const __constructors__ = {
     RepositoryApplication: RepositoryApplication,
     RepositoryEntity: RepositoryEntity,
     RepositoryTransactionHistory: RepositoryTransactionHistory,
-    Stageable: Stageable,
     TransactionHistory: TransactionHistory
 };
 export const Q_APPLICATION = {

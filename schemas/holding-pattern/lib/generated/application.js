@@ -49,12 +49,12 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 2,
+                                    "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REPOSITORY_ID",
+                            "name": "ACTOR_ID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -71,28 +71,6 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 1,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplicationIndex": null,
                                     "oneTableIndex": 7,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
@@ -103,7 +81,7 @@ export const APPLICATION = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 4
+                                    "index": 3
                                 }
                             ],
                             "sinceVersion": 1,
@@ -141,7 +119,7 @@ export const APPLICATION = {
                         {
                             "index": 2,
                             "isId": false,
-                            "name": "repository",
+                            "name": "actor",
                             "relationRef": {
                                 "index": 0
                             },
@@ -150,7 +128,7 @@ export const APPLICATION = {
                         {
                             "index": 3,
                             "isId": false,
-                            "name": "actor",
+                            "name": "operationHistory",
                             "relationRef": {
                                 "index": 1
                             },
@@ -159,7 +137,7 @@ export const APPLICATION = {
                         {
                             "index": 4,
                             "isId": false,
-                            "name": "operationHistory",
+                            "name": "newValues",
                             "relationRef": {
                                 "index": 2
                             },
@@ -168,18 +146,9 @@ export const APPLICATION = {
                         {
                             "index": 5,
                             "isId": false,
-                            "name": "newValues",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
                             "name": "oldValues",
                             "relationRef": {
-                                "index": 4
+                                "index": 3
                             },
                             "sinceVersion": 1
                         }
@@ -192,7 +161,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -202,17 +171,20 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
                             "index": 2,
                             "isId": false,
-                            "relationType": "MANY_TO_ONE",
+                            "oneToManyElems": {
+                                "mappedBy": "recordHistory"
+                            },
+                            "relationType": "ONE_TO_MANY",
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 3,
                             "sinceVersion": 1
                         },
                         {
@@ -224,19 +196,6 @@ export const APPLICATION = {
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
                                 "index": 5
-                            },
-                            "relationTableIndex": 3,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "recordHistory"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 6
                             },
                             "relationTableIndex": 4,
                             "sinceVersion": 1
@@ -513,7 +472,7 @@ export const APPLICATION = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "SOURCE",
-                            "notNull": false,
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 4
@@ -712,7 +671,7 @@ export const APPLICATION = {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
                                     "oneTableIndex": 0,
-                                    "oneRelationIndex": 3,
+                                    "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -826,7 +785,7 @@ export const APPLICATION = {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
                                     "oneTableIndex": 0,
-                                    "oneRelationIndex": 4,
+                                    "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }

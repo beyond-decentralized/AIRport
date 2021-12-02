@@ -23,13 +23,6 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'REPOSITORY_ID',
-        referencedColumnName: 'ID', nullable: false
-    })
-], RecordHistory.prototype, "repository", void 0);
-__decorate([
-    ManyToOne(),
-    JoinColumn({
         name: 'ACTOR_ID', referencedColumnName: 'ID',
         nullable: false
     })

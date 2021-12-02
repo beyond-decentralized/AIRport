@@ -5,7 +5,6 @@ export * from './history/qrecordhistoryoldvalue';
 export * from './history/qrepositorytransactionhistory';
 export * from './history/qtransactionhistory';
 export * from './infrastructure/qactor';
-export * from './infrastructure/qstageable';
 export * from './repository/qrepository';
 export * from './repository/qrepositoryapplication';
 export * from './repository/qrepositoryentity';

@@ -5,8 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { MappedSuperclass } from '@airport/air-control';
-import { Stageable } from '../infrastructure/Stageable';
-let ChildRow = class ChildRow extends Stageable {
+let ChildRow = class ChildRow {
 };
 ChildRow = __decorate([
     MappedSuperclass()

@@ -1,14 +1,13 @@
-import { IQEntity } from '@airport/air-control';
-import { StageableGraph, StageableEId, StageableEUpdateColumns, StageableEUpdateProperties, StageableESelect, QStageableQId, QStageableQRelation, QStageable } from '../infrastructure/qstageable';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-control';
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface ChildRowESelect extends StageableESelect, ChildRowEOptionalId {
+export interface ChildRowESelect extends IEntitySelectProperties, ChildRowEOptionalId {
 }
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface ChildRowEId extends StageableEId {
+export interface ChildRowEId extends IEntityIdProperties {
 }
 /**
  * Ids fields and relations only (optional).
@@ -18,17 +17,17 @@ export interface ChildRowEOptionalId {
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface ChildRowEUpdateProperties extends StageableEUpdateProperties {
+export interface ChildRowEUpdateProperties extends IEntityUpdateProperties {
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface ChildRowGraph extends ChildRowEOptionalId, StageableGraph {
+export interface ChildRowGraph extends ChildRowEOptionalId, IEntityCascadeGraph {
 }
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface ChildRowEUpdateColumns extends StageableEUpdateColumns {
+export interface ChildRowEUpdateColumns extends IEntityUpdateColumns {
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -43,10 +42,10 @@ export interface ChildRowECreateColumns extends ChildRowEId, ChildRowEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QChildRow<T> extends QStageable<T> {
+export interface QChildRow<T> extends IQEntity<T> {
 }
-export interface QChildRowQId extends QStageableQId {
+export interface QChildRowQId {
 }
-export interface QChildRowQRelation<SubType, SubQType extends IQEntity<SubType>> extends QStageableQRelation<SubType, SubQType>, QChildRowQId {
+export interface QChildRowQRelation<SubType, SubQType extends IQEntity<SubType>> extends IQRelation<SubType, SubQType>, QChildRowQId {
 }
 //# sourceMappingURL=qchildrow.d.ts.map

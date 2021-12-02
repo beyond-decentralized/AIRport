@@ -1,11 +1,11 @@
-import { IStageable } from '../infrastructure/stageable';
 import { IRepository } from './repository';
 import { IActor } from '../infrastructure/actor';
-export interface IRepositoryEntity extends IStageable {
+export interface IRepositoryEntity {
     actorRecordId: number;
     repository: IRepository;
     actor: IActor;
     ageSuitability?: number;
     systemWideOperationId?: number;
+    originalRepository?: IRepository;
 }
 //# sourceMappingURL=repositoryentity.d.ts.map

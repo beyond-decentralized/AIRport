@@ -5,8 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, DbNumber, GeneratedValue, Id, JoinColumn, ManyToOne, MappedSuperclass } from '@airport/air-control';
-import { Stageable } from '../infrastructure/Stageable';
-let RepositoryEntity = class RepositoryEntity extends Stageable {
+let RepositoryEntity = class RepositoryEntity {
 };
 __decorate([
     Id(),
@@ -36,6 +35,12 @@ __decorate([
 __decorate([
     Column({ name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false })
 ], RepositoryEntity.prototype, "systemWideOperationId", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({
+        name: 'ORIGINAL_REPOSITORY_ID', referencedColumnName: 'ID'
+    })
+], RepositoryEntity.prototype, "originalRepository", void 0);
 RepositoryEntity = __decorate([
     MappedSuperclass()
 ], RepositoryEntity);

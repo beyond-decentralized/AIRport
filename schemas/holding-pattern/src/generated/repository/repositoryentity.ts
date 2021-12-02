@@ -1,7 +1,4 @@
 import {
-	IStageable,
-} from '../infrastructure/stageable';
-import {
 	IRepository,
 } from './repository';
 import {
@@ -14,7 +11,7 @@ import {
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface IRepositoryEntity extends IStageable {
+export interface IRepositoryEntity {
 	
 	// Id Properties
 	actorRecordId: number;
@@ -28,6 +25,7 @@ export interface IRepositoryEntity extends IStageable {
 	systemWideOperationId?: number;
 
 	// Non-Id Relations
+	originalRepository?: IRepository;
 
 	// Transient Properties
 

@@ -5,11 +5,9 @@ import {
 	MappedSuperclass
 }                  from '@airport/air-control'
 import {IUser}     from '@airport/travel-document-checkpoint'
-import {Stageable} from '../infrastructure/Stageable'
 
 @MappedSuperclass()
-export abstract class ImmutableRow
-	extends Stageable {
+export abstract class ImmutableRow {
 
 	@ManyToOne()
 	@JoinColumn({name: 'USER_ACCOUNT_ID'})

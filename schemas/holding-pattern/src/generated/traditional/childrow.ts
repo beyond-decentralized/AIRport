@@ -1,6 +1,3 @@
-import {
-	IStageable,
-} from '../infrastructure/stageable';
 
 
 
@@ -8,7 +5,7 @@ import {
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface IChildRow extends IStageable {
+export interface IChildRow {
 	
 	// Id Properties
 

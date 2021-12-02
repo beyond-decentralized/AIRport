@@ -28,7 +28,6 @@ import { QRepository } from './repository/qrepository';
 import { QRepositoryApplication } from './repository/qrepositoryapplication';
 import { QRepositoryEntity } from './repository/qrepositoryentity';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
-import { QStageable } from './infrastructure/qstageable';
 import { QTransactionHistory } from './history/qtransactionhistory';
 import {
   Actor,
@@ -47,7 +46,6 @@ import {
   RepositoryApplication,
   RepositoryEntity,
   RepositoryTransactionHistory,
-  Stageable,
   TransactionHistory
 } from '../ddl/ddl';
 
@@ -84,7 +82,6 @@ const __constructors__ = {
 	RepositoryApplication: RepositoryApplication,
 	RepositoryEntity: RepositoryEntity,
 	RepositoryTransactionHistory: RepositoryTransactionHistory,
-	Stageable: Stageable,
 	TransactionHistory: TransactionHistory
 };
 

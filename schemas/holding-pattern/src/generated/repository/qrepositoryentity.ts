@@ -22,16 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	StageableGraph,
-	StageableEId,
-	StageableEUpdateColumns,
-	StageableEUpdateProperties,
-	StageableESelect,
-	QStageableQId,
-	QStageableQRelation,
-	QStageable,
-} from '../infrastructure/qstageable';
-import {
 	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -73,7 +63,7 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryEntityESelect
-    extends StageableESelect, RepositoryEntityEOptionalId {
+    extends IEntitySelectProperties, RepositoryEntityEOptionalId {
 	// Non-Id Properties
 	ageSuitability?: number | IQNumberField;
 	systemWideOperationId?: number | IQNumberField;
@@ -83,6 +73,7 @@ export interface RepositoryEntityESelect
 	actor?: ActorESelect;
 
   // Non-Id relations (including OneToMany's)
+	originalRepository?: RepositoryESelect;
 
 }
 
@@ -90,7 +81,7 @@ export interface RepositoryEntityESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface RepositoryEntityEId
-    extends StageableEId {
+    extends IEntityIdProperties {
 	// Id Properties
 	actorRecordId: number | IQNumberField;
 
@@ -117,12 +108,13 @@ export interface RepositoryEntityEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RepositoryEntityEUpdateProperties
-	extends StageableEUpdateProperties {
+	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	ageSuitability?: number | IQNumberField;
 	systemWideOperationId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
+	originalRepository?: RepositoryEOptionalId;
 
 }
 
@@ -130,7 +122,7 @@ export interface RepositoryEntityEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepositoryEntityGraph
-	extends RepositoryEntityEOptionalId, StageableGraph {
+	extends RepositoryEntityEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
@@ -140,6 +132,7 @@ export interface RepositoryEntityGraph
 	// Relations
 	repository?: RepositoryGraph;
 	actor?: ActorGraph;
+	originalRepository?: RepositoryGraph;
 
 }
 
@@ -147,7 +140,7 @@ export interface RepositoryEntityGraph
  * UPDATE - non-id columns (optional).
  */
 export interface RepositoryEntityEUpdateColumns
-	extends StageableEUpdateColumns {
+	extends IEntityUpdateColumns {
 	// Non-Id Columns
 
 }
@@ -176,7 +169,7 @@ extends RepositoryEntityEId, RepositoryEntityEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryEntity<T> extends QStageable<T>
+export interface QRepositoryEntity<T> extends IQEntity<T>
 {
 	// Id Fields
 	actorRecordId: IQNumberField;
@@ -190,12 +183,13 @@ export interface QRepositoryEntity<T> extends QStageable<T>
 	systemWideOperationId: IQNumberField;
 
 	// Non-Id Relations
+	originalRepository: QRepositoryQRelation;
 
 }
 
 
 // Entity Id Interface
-export interface QRepositoryEntityQId extends QStageableQId
+export interface QRepositoryEntityQId
 {
 	
 	// Id Fields
@@ -210,6 +204,6 @@ export interface QRepositoryEntityQId extends QStageableQId
 
 // Entity Relation Interface
 export interface QRepositoryEntityQRelation<SubType, SubQType extends IQEntity<SubType>>
-	extends QStageableQRelation<SubType, SubQType>, QRepositoryEntityQId {
+	extends IQRelation<SubType, SubQType>, QRepositoryEntityQId {
 }
 

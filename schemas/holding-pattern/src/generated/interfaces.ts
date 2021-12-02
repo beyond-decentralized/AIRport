@@ -5,7 +5,6 @@ export * from './history/recordhistoryoldvalue';
 export * from './history/repositorytransactionhistory';
 export * from './history/transactionhistory';
 export * from './infrastructure/actor';
-export * from './infrastructure/stageable';
 export * from './repository/repository';
 export * from './repository/repositoryapplication';
 export * from './repository/repositoryentity';

@@ -1,4 +1,3 @@
-import { IStageable } from '../infrastructure/stageable';
-export interface IChildRow extends IStageable {
+export interface IChildRow {
 }
 //# sourceMappingURL=childrow.d.ts.map

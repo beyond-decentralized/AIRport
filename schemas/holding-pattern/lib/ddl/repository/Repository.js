@@ -28,7 +28,7 @@ __decorate([
     Column({ name: "IMMUTABLE", nullable: false })
 ], Repository.prototype, "immutable", void 0);
 __decorate([
-    Column({ name: "SOURCE" }),
+    Column({ name: "SOURCE", nullable: false }),
     DbString()
 ], Repository.prototype, "source", void 0);
 __decorate([
@@ -38,8 +38,7 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
-        nullable: false
+        name: "OWNER_ACTOR_ID", referencedColumnName: "ID", nullable: false
     })
 ], Repository.prototype, "ownerActor", void 0);
 __decorate([
