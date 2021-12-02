@@ -2,19 +2,19 @@ import { DI } from '@airport/di';
 import { EntityRelationType, EntityState, SQLDataType } from '@airport/ground-control';
 import { STRUCTURAL_ENTITY_VALIDATOR } from '../tokens';
 export class StructuralEntityValidator {
-    async validate(entities, operatedOnEntityIndicator, context, fromOneToMany = false, parentRelationProperty = null, parentRelationRecord = null) {
+    async validate(records, operatedOnEntityIndicator, context, fromOneToMany = false, parentRelationProperty = null, parentRelationRecord = null) {
         const dbEntity = context.dbEntity;
         if (!dbEntity.idColumns.length) {
             throw new Error(`Cannot run 'save' for entity '${dbEntity.name}' with no @Id(s).
 					Please use non-entity operations (like 'insert' or 'updateWhere') instead.`);
         }
-        for (const entity of entities) {
-            const { isCreate, isParentId, isStub } = context.ioc.entityStateManager.getEntityStateTypeAsFlags(entity, dbEntity);
+        for (const record of records) {
+            const { isCreate, isParentId, isStub } = context.ioc.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity);
             if (isParentId) {
                 // No processing is needed (already covered by id check)
                 continue;
             }
-            const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity);
+            const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(record);
             const entityOperatedOn = !!operatedOnEntityIndicator[operationUniqueId];
             if (entityOperatedOn) {
                 continue;
@@ -22,10 +22,10 @@ export class StructuralEntityValidator {
             operatedOnEntityIndicator[operationUniqueId] = true;
             let newRepositoryNeeded = false;
             for (const dbProperty of dbEntity.properties) {
-                let propertyValue = entity[dbProperty.name];
+                let propertyValue = record[dbProperty.name];
                 if (propertyValue === undefined) {
                     propertyValue = null;
-                    entity[dbProperty.name] = propertyValue;
+                    record[dbProperty.name] = propertyValue;
                 }
                 /*
                  * It is possible for the @Id's of an entity to be in
@@ -42,11 +42,11 @@ export class StructuralEntityValidator {
                             // checked as part of this entity
                             if (dbProperty.isId) {
                                 let recordNeedsNewRepository = false;
-                                context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, _propertyNameChains) => {
+                                context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, record, (dbColumn, columnValue, _propertyNameChains) => {
                                     if (dbColumn.notNull) {
                                         isRelationNullable = false;
                                     }
-                                    if (this.isRepositoryColumnAndNewRepositoryNeed(dbEntity, dbProperty, dbColumn, isCreate, entity, columnValue, context)) {
+                                    if (this.isRepositoryColumnAndNewRepositoryNeed(dbEntity, dbProperty, dbColumn, isCreate, record, columnValue, context)) {
                                         recordNeedsNewRepository = true;
                                     }
                                 }, false);
@@ -56,7 +56,7 @@ export class StructuralEntityValidator {
                                             await context.ioc.repositoryManager.createRepository(context.actor);
                                         newRepositoryNeeded = true;
                                     }
-                                    entity[dbProperty.name] = context.newRepository;
+                                    record[dbProperty.name] = context.newRepository;
                                 }
                             }
                             if (fromOneToMany) {
@@ -65,7 +65,7 @@ export class StructuralEntityValidator {
                                 if (!dbRelation.manyToOneElems || !dbRelation.manyToOneElems.mappedBy
                                     || dbRelation.manyToOneElems.mappedBy === parentRelationProperty.name) {
                                     // Always fix to the parent record
-                                    entity[dbProperty.name] = parentRelationRecord;
+                                    record[dbProperty.name] = parentRelationRecord;
                                     // if (!propertyValue && !entity[dbProperty.name]) {
                                     // 	// The @ManyToOne side of the relationship is missing, add it
                                     // 	entity[dbProperty.name] = parentRelationEntity
@@ -95,7 +95,7 @@ for ${dbEntity.name}.${dbProperty.name}`);
                     if (relatedEntities && relatedEntities.length) {
                         const previousDbEntity = context.dbEntity;
                         context.dbEntity = dbRelation.relationEntity;
-                        this.validate(relatedEntities, operatedOnEntityIndicator, context, relationIsOneToMany, dbProperty, entity);
+                        this.validate(relatedEntities, operatedOnEntityIndicator, context, relationIsOneToMany, dbProperty, record);
                         context.dbEntity = previousDbEntity;
                     }
                 } // if (dbProperty.relation // If is a relation property
@@ -116,34 +116,59 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateMa
                     this.ensureNonRelationalValue(dbProperty, dbColumn, propertyValue);
                 } // else (dbProperty.relation  // If not a relation property
             } // for (const dbProperty of dbEntity.properties)
-            if (dbEntity.isRepositoryEntity && parentRelationRecord) {
-                if (newRepositoryNeeded) {
-                    throw new Error(`Error creating a new repository in a nested record:
+            this.ensureRepositoryValidity(record, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context);
+        } // for (const record of entities)
+    }
+    ensureRepositoryValidity(record, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context) {
+        if (!dbEntity.isRepositoryEntity || !parentRelationRecord) {
+            return;
+        }
+        if (newRepositoryNeeded) {
+            throw new Error(`Error creating a new repository in a nested record:
 In Entity: ${dbEntity.name}
 That is a child of ${parentRelationProperty.entity.name} via ${parentRelationProperty.entity.name}.${parentRelationProperty.name}
 ->
 When creating a new repository the top level record should be of the newly created repository.
 `);
-                }
-                if (!fromOneToMany) {
-                    // If coming from @ManyToOne() the repositories of parent record and child record should match
-                    let repositoryEntity = entity;
-                    if (parentRelationRecord.repository.id !== repositoryEntity.repository.id) {
-                        // If it doesn't then it is a reference to another repository - switch
-                        // the record to the parent repository and set the originalRepositoryValue
-                        // This is done so that the repository always has all of the records it needs
-                        repositoryEntity.originalRepository = repositoryEntity.repository;
-                        repositoryEntity.repository = parentRelationRecord.repository;
-                        // Flip the state of this record to CREATE
-                        repositoryEntity[context.ioc.entityStateManager.getStateFieldName()] = EntityState.CREATE;
-                        // NOTE: If the child record is not provided and it's an optional
-                        // @ManyToOne() it will be treated as if no record is there.  That is
-                        // probaby the only correct way to handle it and a warning is
-                        // shown to the user in this case
-                    }
-                }
-            }
-        } // for (const entity of entities)
+        }
+        if (fromOneToMany) {
+            return;
+        }
+        let repositoryEntity = record;
+        // If coming from @ManyToOne() the repositories of parent record and child record should match
+        if (parentRelationRecord.repository.id === repositoryEntity.repository.id) {
+            // If they do this is a valid scenario, no further checks needed
+            return;
+        }
+        if (isCreate) {
+            throw new Error(`A newly created ${dbEntity.name} via ${dbEntity.name} record for repository id ${repositoryEntity.repository.id} (UUID: ${repositoryEntity.repository.id})
+is now being forced to belong to repository id ${repositoryEntity.repository.id} (UUID: ${repositoryEntity.repository.id})
+	This is because it is being referenced from a ${parentRelationProperty.entity.name} via ${parentRelationProperty.entity.name} record
+	which belongs to repository id ${repositoryEntity.repository.id} (UUID: ${repositoryEntity.repository.id})
+	
+	Did you mean to set this record's repository to the same one as the referencing record?`);
+        }
+        // If it doesn't then it is a reference to another repository - switch
+        // the record to the parent repository and set the originalRepositoryValue
+        // This is done so that the repository always has all of the records it needs
+        repositoryEntity.originalRepository = repositoryEntity.repository;
+        repositoryEntity.repository = parentRelationRecord.repository;
+        // Aslo set originalActor and originalActorRecordId to look up the original record
+        if (!isCreate) { // Check may be needed if code is refactored
+            repositoryEntity.originalActor = repositoryEntity.actor;
+            repositoryEntity.originalActorRecordId = repositoryEntity.actorRecordId;
+        }
+        // reset 'actor' and clear 'actorRecordId' to prevents unique constraint
+        // violation if multiple databases flip to the same exact record (independently)
+        repositoryEntity.actor = context.actor;
+        delete repositoryEntity.actorRecordId;
+        // Flip the state of this record to EntityState.CREATE this record now
+        // has to be created in the referencing repository
+        repositoryEntity[context.ioc.entityStateManager.getStateFieldName()] = EntityState.CREATE;
+        // NOTE: If the child record is not provided and it's an optional
+        // @ManyToOne() it will be treated as if no record is there.  That is
+        // probaby the only correct way to handle it and a warning is
+        // shown to the user in this case
     }
     isRepositoryColumnAndNewRepositoryNeed(dbEntity, dbProperty, dbColumn, isCreate, entity, columnValue, context) {
         if (!dbColumn.idIndex && dbColumn.idIndex !== 0) {

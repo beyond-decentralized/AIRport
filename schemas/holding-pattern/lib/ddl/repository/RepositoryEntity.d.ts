@@ -14,5 +14,7 @@ export declare abstract class RepositoryEntity {
     ageSuitability: RepositoryEntity_AgeSuitability;
     systemWideOperationId: RepositoryEntity_SystemWideOperationId;
     originalRepository: Repository;
+    originalActor: Actor;
+    originalActorRecordId: RepositoryEntity_ActorRecordId;
 }
 //# sourceMappingURL=RepositoryEntity.d.ts.map

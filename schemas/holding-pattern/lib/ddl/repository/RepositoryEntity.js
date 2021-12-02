@@ -41,6 +41,18 @@ __decorate([
         name: 'ORIGINAL_REPOSITORY_ID', referencedColumnName: 'ID'
     })
 ], RepositoryEntity.prototype, "originalRepository", void 0);
+__decorate([
+    Id(),
+    ManyToOne(),
+    JoinColumn({
+        name: 'ORIGINAL_ACTOR_ID', referencedColumnName: 'ID'
+    })
+], RepositoryEntity.prototype, "originalActor", void 0);
+__decorate([
+    Id(),
+    Column({ name: 'ORIGINAL_ACTOR_RECORD_ID' }),
+    GeneratedValue()
+], RepositoryEntity.prototype, "originalActorRecordId", void 0);
 RepositoryEntity = __decorate([
     MappedSuperclass()
 ], RepositoryEntity);

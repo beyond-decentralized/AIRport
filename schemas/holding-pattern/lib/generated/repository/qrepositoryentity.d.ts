@@ -9,6 +9,7 @@ export interface RepositoryEntityESelect extends IEntitySelectProperties, Reposi
     systemWideOperationId?: number | IQNumberField;
     repository?: RepositoryESelect;
     actor?: ActorESelect;
+    originalActor?: ActorESelect;
     originalRepository?: RepositoryESelect;
 }
 /**
@@ -16,16 +17,20 @@ export interface RepositoryEntityESelect extends IEntitySelectProperties, Reposi
  */
 export interface RepositoryEntityEId extends IEntityIdProperties {
     actorRecordId: number | IQNumberField;
+    originalActorRecordId: number | IQNumberField;
     repository: RepositoryEId;
     actor: ActorEId;
+    originalActor: ActorEId;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface RepositoryEntityEOptionalId {
     actorRecordId?: number | IQNumberField;
+    originalActorRecordId?: number | IQNumberField;
     repository?: RepositoryEOptionalId;
     actor?: ActorEOptionalId;
+    originalActor?: ActorEOptionalId;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -43,6 +48,7 @@ export interface RepositoryEntityGraph extends RepositoryEntityEOptionalId, IEnt
     systemWideOperationId?: number | IQNumberField;
     repository?: RepositoryGraph;
     actor?: ActorGraph;
+    originalActor?: ActorGraph;
     originalRepository?: RepositoryGraph;
 }
 /**
@@ -65,16 +71,20 @@ export interface RepositoryEntityECreateColumns extends RepositoryEntityEId, Rep
  */
 export interface QRepositoryEntity<T> extends IQEntity<T> {
     actorRecordId: IQNumberField;
+    originalActorRecordId: IQNumberField;
     repository: QRepositoryQRelation;
     actor: QActorQRelation;
+    originalActor: QActorQRelation;
     ageSuitability: IQNumberField;
     systemWideOperationId: IQNumberField;
     originalRepository: QRepositoryQRelation;
 }
 export interface QRepositoryEntityQId {
     actorRecordId: IQNumberField;
+    originalActorRecordId: IQNumberField;
     repository: QRepositoryQId;
     actor: QActorQId;
+    originalActor: QActorQId;
 }
 export interface QRepositoryEntityQRelation<SubType, SubQType extends IQEntity<SubType>> extends IQRelation<SubType, SubQType>, QRepositoryEntityQId {
 }

@@ -38,7 +38,8 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: "OWNER_ACTOR_ID", referencedColumnName: "ID", nullable: false
+        name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
+        nullable: false
     })
 ], Repository.prototype, "ownerActor", void 0);
 __decorate([

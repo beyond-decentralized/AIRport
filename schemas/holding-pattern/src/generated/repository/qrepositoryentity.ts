@@ -71,6 +71,7 @@ export interface RepositoryEntityESelect
 	// Id Relations - full property interfaces
 	repository?: RepositoryESelect;
 	actor?: ActorESelect;
+	originalActor?: ActorESelect;
 
   // Non-Id relations (including OneToMany's)
 	originalRepository?: RepositoryESelect;
@@ -84,10 +85,12 @@ export interface RepositoryEntityEId
     extends IEntityIdProperties {
 	// Id Properties
 	actorRecordId: number | IQNumberField;
+	originalActorRecordId: number | IQNumberField;
 
 	// Id Relations - Ids only
 	repository: RepositoryEId;
 	actor: ActorEId;
+	originalActor: ActorEId;
 
 }
 
@@ -97,10 +100,12 @@ export interface RepositoryEntityEId
 export interface RepositoryEntityEOptionalId {
 	// Id Properties
 	actorRecordId?: number | IQNumberField;
+	originalActorRecordId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 	repository?: RepositoryEOptionalId;
 	actor?: ActorEOptionalId;
+	originalActor?: ActorEOptionalId;
 
 }
 
@@ -132,6 +137,7 @@ export interface RepositoryEntityGraph
 	// Relations
 	repository?: RepositoryGraph;
 	actor?: ActorGraph;
+	originalActor?: ActorGraph;
 	originalRepository?: RepositoryGraph;
 
 }
@@ -173,10 +179,12 @@ export interface QRepositoryEntity<T> extends IQEntity<T>
 {
 	// Id Fields
 	actorRecordId: IQNumberField;
+	originalActorRecordId: IQNumberField;
 
 	// Id Relations
 	repository: QRepositoryQRelation;
 	actor: QActorQRelation;
+	originalActor: QActorQRelation;
 
 	// Non-Id Fields
 	ageSuitability: IQNumberField;
@@ -194,10 +202,12 @@ export interface QRepositoryEntityQId
 	
 	// Id Fields
 	actorRecordId: IQNumberField;
+	originalActorRecordId: IQNumberField;
 
 	// Id Relations
 	repository: QRepositoryQId;
 	actor: QActorQId;
+	originalActor: QActorQId;
 
 
 }
