@@ -1,9 +1,9 @@
 import { JsonApplicationWithLastIds } from "../JsonApplicationWithLastIds";
 import { LastIds } from "../LastIds";
 
-export interface IApplicationInitializer {
+export interface IApplicationLoader {
 
-    initialize(
+    load(
         lastIds: LastIds,
         librarySignature?: string,
     ): Promise<void>

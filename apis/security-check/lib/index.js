@@ -1,4 +1,4 @@
-export * from './isolate/ApplicationInitializer';
+export * from './isolate/ApplicationLoader';
 export * from './isolate/IsolateMessage';
 export * from './isolate/LocalApiServer';
 export * from './JsonApplicationWithLastIds';

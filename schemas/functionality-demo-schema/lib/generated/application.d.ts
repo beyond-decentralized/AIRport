@@ -1,4 +1,4 @@
-export declare const SCHEMA: {
+export declare const APPLICATION: {
     domain: string;
     index: any;
     name: string;
@@ -14,10 +14,6 @@ export declare const SCHEMA: {
                             parameters: any[];
                         };
                         findAllLevel1WithLevel2: {
-                            isAsync: boolean;
-                            parameters: any[];
-                        };
-                        getRepositoryListings: {
                             isAsync: boolean;
                             parameters: any[];
                         };
@@ -42,6 +38,60 @@ export declare const SCHEMA: {
             };
         };
         entities: ({
+            columns: {
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: any[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: string;
+            }[];
+            idColumnRefs: {
+                index: number;
+            }[];
+            index: number;
+            isLocal: boolean;
+            isRepositoryEntity: boolean;
+            name: string;
+            properties: ({
+                columnRef: {
+                    index: number;
+                };
+                index: number;
+                isId: boolean;
+                name: string;
+                sinceVersion: number;
+                relationRef?: undefined;
+            } | {
+                index: number;
+                isId: boolean;
+                name: string;
+                relationRef: {
+                    index: number;
+                };
+                sinceVersion: number;
+                columnRef?: undefined;
+            })[];
+            relations: {
+                index: number;
+                isId: boolean;
+                relationType: string;
+                propertyRef: {
+                    index: number;
+                };
+                relationTableIndex: number;
+                sinceVersion: number;
+            }[];
+            sinceVersion: number;
+            tableConfig: {
+                columnIndexes: any[];
+            };
+            operations: {};
+        } | {
             columns: {
                 index: number;
                 isGenerated: boolean;
@@ -101,61 +151,7 @@ export declare const SCHEMA: {
             }[];
             sinceVersion: number;
             tableConfig: {
-                indexes: any[];
-            };
-            operations: {};
-        } | {
-            columns: {
-                index: number;
-                isGenerated: boolean;
-                manyRelationColumnRefs: any[];
-                name: string;
-                notNull: boolean;
-                propertyRefs: {
-                    index: number;
-                }[];
-                sinceVersion: number;
-                type: string;
-            }[];
-            idColumnRefs: {
-                index: number;
-            }[];
-            index: number;
-            isLocal: boolean;
-            isRepositoryEntity: boolean;
-            name: string;
-            properties: ({
-                columnRef: {
-                    index: number;
-                };
-                index: number;
-                isId: boolean;
-                name: string;
-                sinceVersion: number;
-                relationRef?: undefined;
-            } | {
-                index: number;
-                isId: boolean;
-                name: string;
-                relationRef: {
-                    index: number;
-                };
-                sinceVersion: number;
-                columnRef?: undefined;
-            })[];
-            relations: {
-                index: number;
-                isId: boolean;
-                relationType: string;
-                propertyRef: {
-                    index: number;
-                };
-                relationTableIndex: number;
-                sinceVersion: number;
-            }[];
-            sinceVersion: number;
-            tableConfig: {
-                indexes: any[];
+                columnIndexes: any[];
             };
             operations: {};
         })[];
@@ -164,4 +160,4 @@ export declare const SCHEMA: {
         versionString: string;
     }[];
 };
-//# sourceMappingURL=schema.d.ts.map
+//# sourceMappingURL=application.d.ts.map

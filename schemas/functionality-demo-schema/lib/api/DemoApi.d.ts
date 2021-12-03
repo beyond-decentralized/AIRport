@@ -1,10 +1,10 @@
-import { AIRepository } from "@airport/ground-control";
+import { IRepository } from "@airport/holding-pattern";
 import { DeepPartial } from "@airport/pressurization";
 import { Level1 } from "../client";
 export interface IDemoApi {
     addRepository(repositoryName: string): Promise<void>;
     findAllLevel1WithLevel2(): Promise<DeepPartial<Level1>[]>;
-    getRepositoryListings(): Promise<AIRepository[]>;
+    getRepositoryListings(): Promise<IRepository[]>;
     saveChanges(records: DeepPartial<Level1>[]): Promise<void>;
     updateAllBoolValues(newBoolValue: boolean): Promise<void>;
     updateAllNumValues(newNumValue: number): Promise<void>;

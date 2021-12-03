@@ -4,20 +4,20 @@ import {
 import { container, DI, SYSTEM } from '@airport/di'
 import { APPLICATION_INITIALIZER } from '@airport/landing'
 import {
-    APPLICATION_INITIALIZER,
-    IApplicationInitializer,
+    APPLICATION_LOADER,
+    IApplicationLoader,
     JsonApplicationWithLastIds,
     LastIds
 } from '@airport/security-check'
 import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff'
 import { APPLICATION } from './generated/application'
 
-export class ApplicationInitializer
-    implements IApplicationInitializer {
+export class ApplicationLoader
+    implements IApplicationLoader {
 
     private initializing = false
 
-    async initialize(
+    async load(
         lastIds: LastIds,
         librarySignature: string = 'functionality-demo-schema',
     ): Promise<void> {
@@ -43,7 +43,7 @@ export class ApplicationInitializer
         return APPLICATION as any
     }
 }
-DI.set(APPLICATION_INITIALIZER, ApplicationInitializer)
+DI.set(APPLICATION_LOADER, ApplicationLoader)
 
 export function loadApplicationInitializer() {
     console.log('Application Initializer loaded')
