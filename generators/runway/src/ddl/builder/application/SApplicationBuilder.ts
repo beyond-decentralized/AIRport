@@ -118,8 +118,8 @@ export class SApplicationBuilder {
 			case 'ACTOR_RECORD_ID':
 				return 2;
 			default:
-				throw new Error(`Repository Entity @Id columns must be 
-				'REPOSITORY_ID', 'ACTOR_ID' and 'ACTOR_RECORD_ID'`);
+				throw new Error(
+					`Repository Entity @Id columns must be 'REPOSITORY_ID', 'ACTOR_ID' and 'ACTOR_RECORD_ID'`);
 		}
 
 	}
@@ -488,7 +488,7 @@ export class SApplicationBuilder {
 					const columnSuffixes = ['_RID_', '_AID_', '_ARID_'].map(suffix =>
 						suffix + numExistingReferenceToTable)
 
-						columnSuffixes.forEach((
+					columnSuffixes.forEach((
 						suffix,
 						index
 					) => {

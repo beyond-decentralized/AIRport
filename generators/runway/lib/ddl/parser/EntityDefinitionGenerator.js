@@ -578,8 +578,6 @@ function serializeSignature(signature) {
     return {
         parameters: signature.parameters.map(serializeSymbol),
         returnType: globalThis.checker.typeToString(signature.getReturnType()),
-        // documentation:
-        // tsc.displayPartsToString(signature.getDocumentationComment(undefined))
     };
 }
 /** True if this is visible outside this file, false otherwise */

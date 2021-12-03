@@ -100,67 +100,6 @@ export const MAPPED_SUPERCLASS = [
                 "nonArrayType": "number",
                 "primitive": "number",
                 "index": 2
-            },
-            {
-                "decorators": [
-                    {
-                        "name": "Id",
-                        "values": []
-                    },
-                    {
-                        "name": "ManyToOne",
-                        "values": []
-                    },
-                    {
-                        "name": "JoinColumn",
-                        "values": [
-                            {
-                                "name": "ORIGINAL_ACTOR_ID",
-                                "referencedColumnName": "ID"
-                            }
-                        ]
-                    }
-                ],
-                "isGenerated": false,
-                "isId": true,
-                "isMappedSuperclass": false,
-                "isTransient": false,
-                "name": "originalActor",
-                "type": "Actor",
-                "ownerEntity": null,
-                "nonArrayType": "Actor",
-                "entity": null,
-                "index": 6
-            },
-            {
-                "decorators": [
-                    {
-                        "name": "Id",
-                        "values": []
-                    },
-                    {
-                        "name": "Column",
-                        "values": [
-                            {
-                                "name": "ORIGINAL_ACTOR_RECORD_ID"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "GeneratedValue",
-                        "values": []
-                    }
-                ],
-                "isGenerated": true,
-                "isId": true,
-                "isMappedSuperclass": false,
-                "isTransient": false,
-                "name": "originalActorRecordId",
-                "type": "number",
-                "ownerEntity": null,
-                "nonArrayType": "number",
-                "primitive": "number",
-                "index": 7
             }
         ],
         "docEntry": {
@@ -387,9 +326,9 @@ export const MAPPED_SUPERCLASS = [
                     "isMappedSuperclass": false,
                     "isTransient": false,
                     "name": "ageSuitability",
-                    "type": "Repository_AgeSuitability",
+                    "type": "RepositoryEntity_AgeSuitability",
                     "ownerEntity": null,
-                    "nonArrayType": "Repository_AgeSuitability",
+                    "nonArrayType": "RepositoryEntity_AgeSuitability",
                     "primitive": "number",
                     "index": 3
                 },
@@ -446,10 +385,6 @@ export const MAPPED_SUPERCLASS = [
                 {
                     "decorators": [
                         {
-                            "name": "Id",
-                            "values": []
-                        },
-                        {
                             "name": "ManyToOne",
                             "values": []
                         },
@@ -464,7 +399,7 @@ export const MAPPED_SUPERCLASS = [
                         }
                     ],
                     "isGenerated": false,
-                    "isId": true,
+                    "isId": false,
                     "isMappedSuperclass": false,
                     "isTransient": false,
                     "name": "originalActor",
@@ -476,10 +411,6 @@ export const MAPPED_SUPERCLASS = [
                 },
                 {
                     "decorators": [
-                        {
-                            "name": "Id",
-                            "values": []
-                        },
                         {
                             "name": "Column",
                             "values": [
@@ -494,7 +425,7 @@ export const MAPPED_SUPERCLASS = [
                         }
                     ],
                     "isGenerated": true,
-                    "isId": true,
+                    "isId": false,
                     "isMappedSuperclass": false,
                     "isTransient": false,
                     "name": "originalActorRecordId",
@@ -678,67 +609,6 @@ export const MAPPED_SUPERCLASS = [
                     "nonArrayType": "number",
                     "primitive": "number",
                     "index": 2
-                },
-                {
-                    "decorators": [
-                        {
-                            "name": "Id",
-                            "values": []
-                        },
-                        {
-                            "name": "ManyToOne",
-                            "values": []
-                        },
-                        {
-                            "name": "JoinColumn",
-                            "values": [
-                                {
-                                    "name": "ORIGINAL_ACTOR_ID",
-                                    "referencedColumnName": "ID"
-                                }
-                            ]
-                        }
-                    ],
-                    "isGenerated": false,
-                    "isId": true,
-                    "isMappedSuperclass": false,
-                    "isTransient": false,
-                    "name": "originalActor",
-                    "type": "Actor",
-                    "ownerEntity": null,
-                    "nonArrayType": "Actor",
-                    "entity": null,
-                    "index": 6
-                },
-                {
-                    "decorators": [
-                        {
-                            "name": "Id",
-                            "values": []
-                        },
-                        {
-                            "name": "Column",
-                            "values": [
-                                {
-                                    "name": "ORIGINAL_ACTOR_RECORD_ID"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "GeneratedValue",
-                            "values": []
-                        }
-                    ],
-                    "isGenerated": true,
-                    "isId": true,
-                    "isMappedSuperclass": false,
-                    "isTransient": false,
-                    "name": "originalActorRecordId",
-                    "type": "number",
-                    "ownerEntity": null,
-                    "nonArrayType": "number",
-                    "primitive": "number",
-                    "index": 7
                 }
             ],
             "docEntry": {
@@ -965,9 +835,9 @@ export const MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "ageSuitability",
-                        "type": "Repository_AgeSuitability",
+                        "type": "RepositoryEntity_AgeSuitability",
                         "ownerEntity": null,
-                        "nonArrayType": "Repository_AgeSuitability",
+                        "nonArrayType": "RepositoryEntity_AgeSuitability",
                         "primitive": "number",
                         "index": 3
                     },
@@ -1024,10 +894,6 @@ export const MAPPED_SUPERCLASS = [
                     {
                         "decorators": [
                             {
-                                "name": "Id",
-                                "values": []
-                            },
-                            {
                                 "name": "ManyToOne",
                                 "values": []
                             },
@@ -1042,7 +908,7 @@ export const MAPPED_SUPERCLASS = [
                             }
                         ],
                         "isGenerated": false,
-                        "isId": true,
+                        "isId": false,
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "originalActor",
@@ -1054,10 +920,6 @@ export const MAPPED_SUPERCLASS = [
                     },
                     {
                         "decorators": [
-                            {
-                                "name": "Id",
-                                "values": []
-                            },
                             {
                                 "name": "Column",
                                 "values": [
@@ -1072,7 +934,7 @@ export const MAPPED_SUPERCLASS = [
                             }
                         ],
                         "isGenerated": true,
-                        "isId": true,
+                        "isId": false,
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "originalActorRecordId",
@@ -1362,67 +1224,6 @@ export const MAPPED_SUPERCLASS = [
                     "nonArrayType": "number",
                     "primitive": "number",
                     "index": 2
-                },
-                {
-                    "decorators": [
-                        {
-                            "name": "Id",
-                            "values": []
-                        },
-                        {
-                            "name": "ManyToOne",
-                            "values": []
-                        },
-                        {
-                            "name": "JoinColumn",
-                            "values": [
-                                {
-                                    "name": "ORIGINAL_ACTOR_ID",
-                                    "referencedColumnName": "ID"
-                                }
-                            ]
-                        }
-                    ],
-                    "isGenerated": false,
-                    "isId": true,
-                    "isMappedSuperclass": false,
-                    "isTransient": false,
-                    "name": "originalActor",
-                    "type": "Actor",
-                    "ownerEntity": null,
-                    "nonArrayType": "Actor",
-                    "entity": null,
-                    "index": 6
-                },
-                {
-                    "decorators": [
-                        {
-                            "name": "Id",
-                            "values": []
-                        },
-                        {
-                            "name": "Column",
-                            "values": [
-                                {
-                                    "name": "ORIGINAL_ACTOR_RECORD_ID"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "GeneratedValue",
-                            "values": []
-                        }
-                    ],
-                    "isGenerated": true,
-                    "isId": true,
-                    "isMappedSuperclass": false,
-                    "isTransient": false,
-                    "name": "originalActorRecordId",
-                    "type": "number",
-                    "ownerEntity": null,
-                    "nonArrayType": "number",
-                    "primitive": "number",
-                    "index": 7
                 }
             ],
             "docEntry": {
@@ -1649,9 +1450,9 @@ export const MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "ageSuitability",
-                        "type": "Repository_AgeSuitability",
+                        "type": "RepositoryEntity_AgeSuitability",
                         "ownerEntity": null,
-                        "nonArrayType": "Repository_AgeSuitability",
+                        "nonArrayType": "RepositoryEntity_AgeSuitability",
                         "primitive": "number",
                         "index": 3
                     },
@@ -1708,10 +1509,6 @@ export const MAPPED_SUPERCLASS = [
                     {
                         "decorators": [
                             {
-                                "name": "Id",
-                                "values": []
-                            },
-                            {
                                 "name": "ManyToOne",
                                 "values": []
                             },
@@ -1726,7 +1523,7 @@ export const MAPPED_SUPERCLASS = [
                             }
                         ],
                         "isGenerated": false,
-                        "isId": true,
+                        "isId": false,
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "originalActor",
@@ -1738,10 +1535,6 @@ export const MAPPED_SUPERCLASS = [
                     },
                     {
                         "decorators": [
-                            {
-                                "name": "Id",
-                                "values": []
-                            },
                             {
                                 "name": "Column",
                                 "values": [
@@ -1756,7 +1549,7 @@ export const MAPPED_SUPERCLASS = [
                             }
                         ],
                         "isGenerated": true,
-                        "isId": true,
+                        "isId": false,
                         "isMappedSuperclass": false,
                         "isTransient": false,
                         "name": "originalActorRecordId",
@@ -2368,67 +2161,6 @@ export const MAPPED_SUPERCLASS = [
                         "nonArrayType": "number",
                         "primitive": "number",
                         "index": 2
-                    },
-                    {
-                        "decorators": [
-                            {
-                                "name": "Id",
-                                "values": []
-                            },
-                            {
-                                "name": "ManyToOne",
-                                "values": []
-                            },
-                            {
-                                "name": "JoinColumn",
-                                "values": [
-                                    {
-                                        "name": "ORIGINAL_ACTOR_ID",
-                                        "referencedColumnName": "ID"
-                                    }
-                                ]
-                            }
-                        ],
-                        "isGenerated": false,
-                        "isId": true,
-                        "isMappedSuperclass": false,
-                        "isTransient": false,
-                        "name": "originalActor",
-                        "type": "Actor",
-                        "ownerEntity": null,
-                        "nonArrayType": "Actor",
-                        "entity": null,
-                        "index": 6
-                    },
-                    {
-                        "decorators": [
-                            {
-                                "name": "Id",
-                                "values": []
-                            },
-                            {
-                                "name": "Column",
-                                "values": [
-                                    {
-                                        "name": "ORIGINAL_ACTOR_RECORD_ID"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "GeneratedValue",
-                                "values": []
-                            }
-                        ],
-                        "isGenerated": true,
-                        "isId": true,
-                        "isMappedSuperclass": false,
-                        "isTransient": false,
-                        "name": "originalActorRecordId",
-                        "type": "number",
-                        "ownerEntity": null,
-                        "nonArrayType": "number",
-                        "primitive": "number",
-                        "index": 7
                     }
                 ],
                 "docEntry": {
@@ -2655,9 +2387,9 @@ export const MAPPED_SUPERCLASS = [
                             "isMappedSuperclass": false,
                             "isTransient": false,
                             "name": "ageSuitability",
-                            "type": "Repository_AgeSuitability",
+                            "type": "RepositoryEntity_AgeSuitability",
                             "ownerEntity": null,
-                            "nonArrayType": "Repository_AgeSuitability",
+                            "nonArrayType": "RepositoryEntity_AgeSuitability",
                             "primitive": "number",
                             "index": 3
                         },
@@ -2714,10 +2446,6 @@ export const MAPPED_SUPERCLASS = [
                         {
                             "decorators": [
                                 {
-                                    "name": "Id",
-                                    "values": []
-                                },
-                                {
                                     "name": "ManyToOne",
                                     "values": []
                                 },
@@ -2732,7 +2460,7 @@ export const MAPPED_SUPERCLASS = [
                                 }
                             ],
                             "isGenerated": false,
-                            "isId": true,
+                            "isId": false,
                             "isMappedSuperclass": false,
                             "isTransient": false,
                             "name": "originalActor",
@@ -2744,10 +2472,6 @@ export const MAPPED_SUPERCLASS = [
                         },
                         {
                             "decorators": [
-                                {
-                                    "name": "Id",
-                                    "values": []
-                                },
                                 {
                                     "name": "Column",
                                     "values": [
@@ -2762,7 +2486,7 @@ export const MAPPED_SUPERCLASS = [
                                 }
                             ],
                             "isGenerated": true,
-                            "isId": true,
+                            "isId": false,
                             "isMappedSuperclass": false,
                             "isTransient": false,
                             "name": "originalActorRecordId",

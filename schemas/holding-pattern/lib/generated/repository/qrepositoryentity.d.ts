@@ -7,30 +7,27 @@ import { ActorGraph, ActorEId, ActorEOptionalId, ActorESelect, QActorQId, QActor
 export interface RepositoryEntityESelect extends IEntitySelectProperties, RepositoryEntityEOptionalId {
     ageSuitability?: number | IQNumberField;
     systemWideOperationId?: number | IQNumberField;
+    originalActorRecordId?: number | IQNumberField;
     repository?: RepositoryESelect;
     actor?: ActorESelect;
-    originalActor?: ActorESelect;
     originalRepository?: RepositoryESelect;
+    originalActor?: ActorESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
  */
 export interface RepositoryEntityEId extends IEntityIdProperties {
     actorRecordId: number | IQNumberField;
-    originalActorRecordId: number | IQNumberField;
     repository: RepositoryEId;
     actor: ActorEId;
-    originalActor: ActorEId;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface RepositoryEntityEOptionalId {
     actorRecordId?: number | IQNumberField;
-    originalActorRecordId?: number | IQNumberField;
     repository?: RepositoryEOptionalId;
     actor?: ActorEOptionalId;
-    originalActor?: ActorEOptionalId;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -38,7 +35,9 @@ export interface RepositoryEntityEOptionalId {
 export interface RepositoryEntityEUpdateProperties extends IEntityUpdateProperties {
     ageSuitability?: number | IQNumberField;
     systemWideOperationId?: number | IQNumberField;
+    originalActorRecordId?: number | IQNumberField;
     originalRepository?: RepositoryEOptionalId;
+    originalActor?: ActorEOptionalId;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
@@ -46,10 +45,11 @@ export interface RepositoryEntityEUpdateProperties extends IEntityUpdateProperti
 export interface RepositoryEntityGraph extends RepositoryEntityEOptionalId, IEntityCascadeGraph {
     ageSuitability?: number | IQNumberField;
     systemWideOperationId?: number | IQNumberField;
+    originalActorRecordId?: number | IQNumberField;
     repository?: RepositoryGraph;
     actor?: ActorGraph;
-    originalActor?: ActorGraph;
     originalRepository?: RepositoryGraph;
+    originalActor?: ActorGraph;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -71,20 +71,18 @@ export interface RepositoryEntityECreateColumns extends RepositoryEntityEId, Rep
  */
 export interface QRepositoryEntity<T> extends IQEntity<T> {
     actorRecordId: IQNumberField;
-    originalActorRecordId: IQNumberField;
     repository: QRepositoryQRelation;
     actor: QActorQRelation;
-    originalActor: QActorQRelation;
     ageSuitability: IQNumberField;
     systemWideOperationId: IQNumberField;
+    originalActorRecordId: IQNumberField;
     originalRepository: QRepositoryQRelation;
+    originalActor: QActorQRelation;
 }
 export interface QRepositoryEntityQId {
     actorRecordId: IQNumberField;
-    originalActorRecordId: IQNumberField;
     repository: QRepositoryQId;
     actor: QActorQId;
-    originalActor: QActorQId;
 }
 export interface QRepositoryEntityQRelation<SubType, SubQType extends IQEntity<SubType>> extends IQRelation<SubType, SubQType>, QRepositoryEntityQId {
 }

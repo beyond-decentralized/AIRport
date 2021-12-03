@@ -67,14 +67,15 @@ export interface RepositoryEntityESelect
 	// Non-Id Properties
 	ageSuitability?: number | IQNumberField;
 	systemWideOperationId?: number | IQNumberField;
+	originalActorRecordId?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
 	repository?: RepositoryESelect;
 	actor?: ActorESelect;
-	originalActor?: ActorESelect;
 
   // Non-Id relations (including OneToMany's)
 	originalRepository?: RepositoryESelect;
+	originalActor?: ActorESelect;
 
 }
 
@@ -85,12 +86,10 @@ export interface RepositoryEntityEId
     extends IEntityIdProperties {
 	// Id Properties
 	actorRecordId: number | IQNumberField;
-	originalActorRecordId: number | IQNumberField;
 
 	// Id Relations - Ids only
 	repository: RepositoryEId;
 	actor: ActorEId;
-	originalActor: ActorEId;
 
 }
 
@@ -100,12 +99,10 @@ export interface RepositoryEntityEId
 export interface RepositoryEntityEOptionalId {
 	// Id Properties
 	actorRecordId?: number | IQNumberField;
-	originalActorRecordId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 	repository?: RepositoryEOptionalId;
 	actor?: ActorEOptionalId;
-	originalActor?: ActorEOptionalId;
 
 }
 
@@ -117,9 +114,11 @@ export interface RepositoryEntityEUpdateProperties
 	// Non-Id Properties
 	ageSuitability?: number | IQNumberField;
 	systemWideOperationId?: number | IQNumberField;
+	originalActorRecordId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	originalRepository?: RepositoryEOptionalId;
+	originalActor?: ActorEOptionalId;
 
 }
 
@@ -133,12 +132,13 @@ export interface RepositoryEntityGraph
 	// Non-Id Properties
 	ageSuitability?: number | IQNumberField;
 	systemWideOperationId?: number | IQNumberField;
+	originalActorRecordId?: number | IQNumberField;
 
 	// Relations
 	repository?: RepositoryGraph;
 	actor?: ActorGraph;
-	originalActor?: ActorGraph;
 	originalRepository?: RepositoryGraph;
+	originalActor?: ActorGraph;
 
 }
 
@@ -179,19 +179,19 @@ export interface QRepositoryEntity<T> extends IQEntity<T>
 {
 	// Id Fields
 	actorRecordId: IQNumberField;
-	originalActorRecordId: IQNumberField;
 
 	// Id Relations
 	repository: QRepositoryQRelation;
 	actor: QActorQRelation;
-	originalActor: QActorQRelation;
 
 	// Non-Id Fields
 	ageSuitability: IQNumberField;
 	systemWideOperationId: IQNumberField;
+	originalActorRecordId: IQNumberField;
 
 	// Non-Id Relations
 	originalRepository: QRepositoryQRelation;
+	originalActor: QActorQRelation;
 
 }
 
@@ -202,12 +202,10 @@ export interface QRepositoryEntityQId
 	
 	// Id Fields
 	actorRecordId: IQNumberField;
-	originalActorRecordId: IQNumberField;
 
 	// Id Relations
 	repository: QRepositoryQId;
 	actor: QActorQId;
-	originalActor: QActorQId;
 
 
 }

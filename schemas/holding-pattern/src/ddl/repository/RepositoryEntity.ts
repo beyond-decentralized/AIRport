@@ -61,14 +61,12 @@ export abstract class RepositoryEntity {
 	})
 	originalRepository: Repository
 
-	@Id()
 	@ManyToOne()
 	@JoinColumn({
 		name: 'ORIGINAL_ACTOR_ID', referencedColumnName: 'ID'
 	})
 	originalActor: Actor
 
-	@Id()
 	@Column({name: 'ORIGINAL_ACTOR_RECORD_ID'})
 	@GeneratedValue()
 	originalActorRecordId: RepositoryEntity_ActorRecordId
