@@ -2,7 +2,6 @@ import {
     IAirportDatabase,
     IFieldUtils,
     IQMetadataUtils,
-    IQueryContext,
     IQueryFacade,
     IQueryUtils,
     IRelationManager,
@@ -36,6 +35,7 @@ export interface IOperationContext
     internal: boolean
     ioc: IIocOperationContext
     isSaveOperation?: boolean
+    // Only one new repository can be created at at time
     newRepository?: IRepository
 }
 

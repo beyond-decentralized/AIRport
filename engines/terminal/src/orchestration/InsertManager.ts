@@ -122,7 +122,6 @@ export class InsertManager
 		getIds: boolean = false,
 		ensureGeneratedValues: boolean = true
 	): Promise<number | RecordId[] | RecordId[][]> {
-		// TODO: remove unused dependencies after testing
 		const [
 			airDb,
 			sequenceGenerator,
@@ -192,7 +191,7 @@ appears more than once in the Columns clause`)
 				dbEntity, portableQuery, actor, systemWideOperationId,
 				historyManager, operHistoryDuo, recHistoryDuo,
 				recHistoryNewValueDuo, repositoryManager,
-				repoTransHistoryDuo, transaction)
+				repoTransHistoryDuo, transaction, context)
 		}
 
 		const numberOfInsertedRecords = await transaction.insertValues(
@@ -514,7 +513,8 @@ and cannot have NULL values.`)
 		recHistoryNewValueDuo: IRecordHistoryNewValueDuo,
 		repoManager: IRepositoryManager,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
-		transaction: ITransaction
+		transaction: ITransaction,
+		context: IOperationContext
 	): Promise<void> {
 		const jsonInsertValues = <JsonInsertValues>portableQuery.jsonQuery
 
@@ -550,7 +550,8 @@ and cannot have NULL values.`)
 			let repoTransHistory = repoTransHistories[repositoryId]
 			if (!repoTransHistory) {
 				repoTransHistory = await histManager
-					.getNewRepoTransHistory(transaction.transHistory, repositoryId, actor)
+					.getNewRepositoryTransactionHistory(transaction.transHistory,
+						repositoryId, actor, context)
 			}
 
 			let operationHistory = operationsByRepo[repositoryId]

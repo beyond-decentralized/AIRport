@@ -1,8 +1,8 @@
-import {DI}                     from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	ChangeType,
 	DbEntity
-}                               from '@airport/ground-control'
+} from '@airport/ground-control'
 import { v4 as uuidv4 } from "uuid";
 import {
 	Actor_Id,
@@ -11,21 +11,22 @@ import {
 	RepositoryTransactionHistory,
 	SystemWideOperationId
 } from '../../ddl/ddl'
-import {REPOSITORY_TRANSACTION_HISTORY_DUO} from '../../tokens'
+import { REPOSITORY_TRANSACTION_HISTORY_DUO } from '../../tokens'
 import {
 	BaseRepositoryTransactionHistoryDuo,
 	IActor,
 	IOperationHistory,
 	IRepository,
 	IRepositoryTransactionHistory,
-}                               from '../../generated/generated'
-import {IOperationHistoryDuo}   from './OperationHistoryDuo'
+} from '../../generated/generated'
+import { IOperationHistoryDuo } from './OperationHistoryDuo'
 
 export interface IRepositoryTransactionHistoryDuo {
 
 	getNewRecord(
 		repositoryId: Repository_Id,
-		actor: IActor
+		actor: IActor,
+		isRepositoryCreation: boolean
 	): IRepositoryTransactionHistory;
 
 	newRecord(
@@ -53,7 +54,8 @@ export class RepositoryTransactionHistoryDuo
 
 	getNewRecord(
 		repositoryId: Repository_Id,
-		actor: IActor
+		actor: IActor,
+		isRepositoryCreation: boolean
 	): IRepositoryTransactionHistory {
 		let repositoryTransactionHistory: IRepositoryTransactionHistory = new RepositoryTransactionHistory() as IRepositoryTransactionHistory
 
@@ -61,9 +63,10 @@ export class RepositoryTransactionHistoryDuo
 
 		repositoryTransactionHistory.saveTimestamp = saveTimestamp
 		repositoryTransactionHistory.uuId = uuidv4()
-		repositoryTransactionHistory.repository    = new Repository() as IRepository
+		repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation
+		repositoryTransactionHistory.repository = new Repository() as IRepository
 		repositoryTransactionHistory.repository.id = repositoryId
-		repositoryTransactionHistory.actor         = actor
+		repositoryTransactionHistory.actor = actor
 
 		return repositoryTransactionHistory
 	}
@@ -75,7 +78,7 @@ export class RepositoryTransactionHistoryDuo
 			return null
 		}
 
-		return {...data}
+		return { ...data }
 	}
 
 	sortRepoTransHistories(
@@ -86,8 +89,13 @@ export class RepositoryTransactionHistoryDuo
 			repoTransHistory1: IRepositoryTransactionHistory,
 			repoTransHistory2: IRepositoryTransactionHistory
 		) => {
+			const syncTimeComparison
+				= this.compareNumbers(repoTransHistory1.syncTimestamp, repoTransHistory2.syncTimestamp)
+			if (syncTimeComparison) {
+				return syncTimeComparison
+			}
 			const saveTimeComparison
-				      = this.compareNumbers(repoTransHistory1.saveTimestamp, repoTransHistory2.saveTimestamp)
+				= this.compareNumbers(repoTransHistory1.saveTimestamp, repoTransHistory2.saveTimestamp)
 			if (saveTimeComparison) {
 				return saveTimeComparison
 			}
@@ -95,25 +103,12 @@ export class RepositoryTransactionHistoryDuo
 			const actor1 = actorMapById.get(repoTransHistory1.actor.id)
 			const actor2 = actorMapById.get(repoTransHistory2.actor.id)
 
-			const userIdComparison = actor1.user.uuId.localeCompare(actor2.user.uuId)
-			if (userIdComparison) {
-				return userIdComparison
+			const actorUuIdComparison = actor1.uuId.localeCompare(actor2.uuId)
+			if (actorUuIdComparison) {
+				return actorUuIdComparison
 			}
 
-			const databaseUuidComparison = actor1.terminal.uuId.localeCompare(actor2.terminal.uuId)
-			if (databaseUuidComparison) {
-				return databaseUuidComparison
-			}
-
-			const databaseOwnerComparison
-				      = actor1.terminal.owner.uuId.localeCompare(actor2.terminal.owner.uuId)
-			if (databaseOwnerComparison) {
-				return databaseOwnerComparison
-			}
-
-			const actorRandomIdComparison = actor1.uuId.localeCompare(actor2.uuId)
-
-			return actorRandomIdComparison
+			return 0
 		})
 	}
 

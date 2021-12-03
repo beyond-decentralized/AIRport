@@ -1,5 +1,6 @@
 import {
 	AIRPORT_DATABASE,
+	ALL_FIELDS,
 	and,
 	IQNumberField,
 	MappedEntityArray,
@@ -51,9 +52,9 @@ export interface IRepositoryDao
 		ownerTerminalOwnerUserUniqueIds: User_UuId[]
 	): Promise<RepositoryIdMap>;
 
-	findReposWithGlobalIds(
+	findByIds(
 		repositoryIds: Repository_Id[]
-	): Promise<Map<Repository_Id, IRepository>>;
+	): Promise<IRepository[]>;
 
 	findByUuIds(
 		uuIds: Repository_UuId[],
@@ -126,41 +127,25 @@ export class RepositoryDao
 		})
 	}
 
-	async findReposWithGlobalIds(
+	async findByIds(
 		repositoryIds: Repository_Id[]
-	): Promise<Map<Repository_Id, IRepository>> {
-		const repositoryMapById: Map<Repository_Id, IRepository>
-			= new Map()
-
+	): Promise<IRepository[]> {
 		let r: QRepository
 		let a: QActor
-		let u: QUser
-		const repositories = await this.db.find.tree({
+		return await this.db.find.tree({
 			select: {
-				id: Y,
-				createdAt: Y,
-				uuId: Y,
+				...ALL_FIELDS,
 				ownerActor: {
-					id: Y,
-					user: {
-						uuId: Y
-					},
+					id: Y
 				}
 			},
 			from: [
 				r = Q.Repository,
-				a = r.ownerActor.innerJoin(),
-				u = a.user.innerJoin()
+				a = r.ownerActor.innerJoin()
 			],
 			where:
 				r.id.in(repositoryIds)
 		})
-
-		for (const repository of repositories) {
-			repositoryMapById.set(repository.id, repository)
-		}
-
-		return repositoryMapById
 	}
 
 	async findLocalRepoIdsByGlobalIds(

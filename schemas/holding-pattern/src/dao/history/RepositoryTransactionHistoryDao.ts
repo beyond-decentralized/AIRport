@@ -89,6 +89,10 @@ export interface IRepositoryTransactionHistoryDao {
 		changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>
 	): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
 
+	updateSyncTimestamp(
+		repositoryTransactionHistory: IRepositoryTransactionHistory
+	): Promise<void>
+
 }
 
 export interface IChangedRecordIdsForRepository {
@@ -418,6 +422,19 @@ export class RepositoryTransactionHistoryDao
 		return existingRecordIdMap
 	}
 
+	async updateSyncTimestamp(
+		repositoryTransactionHistory: IRepositoryTransactionHistory
+	): Promise<void> {
+		let rth: QRepositoryTransactionHistory
+
+		await this.db.updateWhere({
+			update: rth = Q.RepositoryTransactionHistory,
+			set: {
+				syncTimestamp: repositoryTransactionHistory.syncTimestamp
+			},
+			where: rth.id.equals(repositoryTransactionHistory.id)
+		})
+	}
 }
 
 DI.set(REPOSITORY_TRANSACTION_HISTORY_DAO, RepositoryTransactionHistoryDao)

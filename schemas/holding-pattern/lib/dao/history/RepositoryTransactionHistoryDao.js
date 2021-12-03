@@ -210,6 +210,16 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
         }
         return existingRecordIdMap;
     }
+    async updateSyncTimestamp(repositoryTransactionHistory) {
+        let rth;
+        await this.db.updateWhere({
+            update: rth = Q.RepositoryTransactionHistory,
+            set: {
+                syncTimestamp: repositoryTransactionHistory.syncTimestamp
+            },
+            where: rth.id.equals(repositoryTransactionHistory.id)
+        });
+    }
 }
 DI.set(REPOSITORY_TRANSACTION_HISTORY_DAO, RepositoryTransactionHistoryDao);
 //# sourceMappingURL=RepositoryTransactionHistoryDao.js.map

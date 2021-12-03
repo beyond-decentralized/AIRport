@@ -1,7 +1,7 @@
 import { DbEntity, JsonApplicationEntity } from './Entity';
 import { ApplicationReferenceByIndex } from './Property';
 import { ApplicationStatus } from './ApplicationStatus';
-export declare type ApplicationId = number;
+export declare type Application_Id = number;
 export declare type ApplicationName = string;
 export declare type ApplicationSignature = string;
 export declare type ApplicationPackageId = number;
@@ -33,7 +33,7 @@ export interface DbApplicationPackage {
 export interface DbApplication {
     applicationPackages: DbApplicationPackage[];
     domain: DbDomain;
-    id: ApplicationId;
+    id: Application_Id;
     name: ApplicationName;
     signature: ApplicationSignature;
 }

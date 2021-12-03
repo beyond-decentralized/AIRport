@@ -38,7 +38,6 @@ export class InsertManager {
         return dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
     }
     async internalInsertValues(portableQuery, actor, transaction, context, getIds = false, ensureGeneratedValues = true) {
-        // TODO: remove unused dependencies after testing
         const [airDb, sequenceGenerator, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo] = await container(this)
             .get(AIRPORT_DATABASE, SEQUENCE_GENERATOR, HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DUO);
         const dbEntity = airDb.applications[portableQuery.applicationIndex]
@@ -74,7 +73,7 @@ appears more than once in the Columns clause`);
             ids = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator);
         }
         if (!dbEntity.isLocal && !transaction.isSync) {
-            await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transaction);
+            await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transaction, context);
         }
         const numberOfInsertedRecords = await transaction.insertValues(portableQuery, context);
         return getIds ? ids : numberOfInsertedRecords;
@@ -325,7 +324,7 @@ and cannot have NULL values.`);
      * @param {PortableQuery} portableQuery
      * @returns {Promise<void>}
      */
-    async addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, histManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoManager, repoTransHistoryDuo, transaction) {
+    async addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, histManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoManager, repoTransHistoryDuo, transaction, context) {
         const jsonInsertValues = portableQuery.jsonQuery;
         let operationsByRepo = [];
         let repoTransHistories = [];
@@ -356,7 +355,7 @@ and cannot have NULL values.`);
             let repoTransHistory = repoTransHistories[repositoryId];
             if (!repoTransHistory) {
                 repoTransHistory = await histManager
-                    .getNewRepoTransHistory(transaction.transHistory, repositoryId, actor);
+                    .getNewRepositoryTransactionHistory(transaction.transHistory, repositoryId, actor, context);
             }
             let operationHistory = operationsByRepo[repositoryId];
             if (!operationHistory) {

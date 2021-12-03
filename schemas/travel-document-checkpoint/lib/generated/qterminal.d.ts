@@ -1,11 +1,5 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from './quser';
-import { TerminalAgtGraph, TerminalAgtESelect, QTerminalAgt } from './qterminalagt';
-import { TerminalAgt } from '../ddl/TerminalAgt';
-import { UserTerminalGraph, UserTerminalESelect, QUserTerminal } from './quserterminal';
-import { UserTerminal } from '../ddl/UserTerminal';
-import { UserTerminalAgtGraph, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
-import { UserTerminalAgt } from '../ddl/UserTerminalAgt';
 import { Terminal } from '../ddl/Terminal';
 /**
  * SELECT - All fields and relations (optional).
@@ -14,9 +8,6 @@ export interface TerminalESelect extends IEntitySelectProperties, TerminalEOptio
     uuId?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
     owner?: UserESelect;
-    terminalAgts?: TerminalAgtESelect;
-    userTerminal?: UserTerminalESelect;
-    userTerminalAgt?: UserTerminalAgtESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -45,9 +36,6 @@ export interface TerminalGraph extends TerminalEOptionalId, IEntityCascadeGraph 
     uuId?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
     owner?: UserGraph;
-    terminalAgts?: TerminalAgtGraph[];
-    userTerminal?: UserTerminalGraph[];
-    userTerminalAgt?: UserTerminalAgtGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -75,9 +63,6 @@ export interface QTerminal extends IQEntity<Terminal> {
     uuId: IQStringField;
     isLocal: IQBooleanField;
     owner: QUserQRelation;
-    terminalAgts: IQOneToManyRelation<TerminalAgt, QTerminalAgt>;
-    userTerminal: IQOneToManyRelation<UserTerminal, QUserTerminal>;
-    userTerminalAgt: IQOneToManyRelation<UserTerminalAgt, QUserTerminalAgt>;
 }
 export interface QTerminalQId {
     id: IQNumberField;

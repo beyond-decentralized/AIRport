@@ -35,45 +35,6 @@ import {
 	User,
 } from '../ddl/User';
 import {
-	TerminalAgtGraph,
-	TerminalAgtEId,
-	TerminalAgtEOptionalId,
-	TerminalAgtEUpdateProperties,
-	TerminalAgtESelect,
-	QTerminalAgt,
-	QTerminalAgtQId,
-	QTerminalAgtQRelation,
-} from './qterminalagt';
-import {
-	TerminalAgt,
-} from '../ddl/TerminalAgt';
-import {
-	UserTerminalGraph,
-	UserTerminalEId,
-	UserTerminalEOptionalId,
-	UserTerminalEUpdateProperties,
-	UserTerminalESelect,
-	QUserTerminal,
-	QUserTerminalQId,
-	QUserTerminalQRelation,
-} from './quserterminal';
-import {
-	UserTerminal,
-} from '../ddl/UserTerminal';
-import {
-	UserTerminalAgtGraph,
-	UserTerminalAgtEId,
-	UserTerminalAgtEOptionalId,
-	UserTerminalAgtEUpdateProperties,
-	UserTerminalAgtESelect,
-	QUserTerminalAgt,
-	QUserTerminalAgtQId,
-	QUserTerminalAgtQRelation,
-} from './quserterminalagt';
-import {
-	UserTerminalAgt,
-} from '../ddl/UserTerminalAgt';
-import {
 	Terminal,
 } from '../ddl/Terminal';
 
@@ -98,9 +59,6 @@ export interface TerminalESelect
 
   // Non-Id relations (including OneToMany's)
 	owner?: UserESelect;
-	terminalAgts?: TerminalAgtESelect;
-	userTerminal?: UserTerminalESelect;
-	userTerminalAgt?: UserTerminalAgtESelect;
 
 }
 
@@ -154,9 +112,6 @@ export interface TerminalGraph
 
 	// Relations
 	owner?: UserGraph;
-	terminalAgts?: TerminalAgtGraph[];
-	userTerminal?: UserTerminalGraph[];
-	userTerminalAgt?: UserTerminalAgtGraph[];
 
 }
 
@@ -209,9 +164,6 @@ export interface QTerminal extends IQEntity<Terminal>
 
 	// Non-Id Relations
 	owner: QUserQRelation;
-	terminalAgts: IQOneToManyRelation<TerminalAgt, QTerminalAgt>;
-	userTerminal: IQOneToManyRelation<UserTerminal, QUserTerminal>;
-	userTerminalAgt: IQOneToManyRelation<UserTerminalAgt, QUserTerminalAgt>;
 
 }
 

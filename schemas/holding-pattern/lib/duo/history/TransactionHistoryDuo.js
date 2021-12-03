@@ -9,10 +9,10 @@ export class TransactionHistoryDuo extends BaseTransactionHistoryDuo {
         transaction.transactionType = TransactionType.LOCAL;
         return transaction;
     }
-    getRepositoryTransaction(transactionHistory, repositoryId, actor, repoTransHistoryDuo) {
+    getRepositoryTransaction(transactionHistory, repositoryId, actor, isRepositoryCreation, repoTransHistoryDuo) {
         let repoTransHistory = transactionHistory.repoTransHistoryMap[repositoryId];
         if (!repoTransHistory) {
-            repoTransHistory = repoTransHistoryDuo.getNewRecord(repositoryId, actor);
+            repoTransHistory = repoTransHistoryDuo.getNewRecord(repositoryId, actor, isRepositoryCreation);
             transactionHistory.repositoryTransactionHistories.push(repoTransHistory);
             transactionHistory.repoTransHistoryMap[repositoryId] = repoTransHistory;
             repoTransHistory.transactionHistory = transactionHistory;

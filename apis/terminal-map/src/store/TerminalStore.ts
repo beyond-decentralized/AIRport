@@ -4,7 +4,7 @@ import {
 } from '@airport/check-in';
 import { DI } from '@airport/di';
 import {
-	ApplicationId,
+	Application_Id,
 	ApplicationSignature,
 	DomainName,
 	ensureChildJsMap,

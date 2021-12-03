@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, and, Y } from '@airport/air-control';
+import { AIRPORT_DATABASE, ALL_FIELDS, and, Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { REPOSITORY_DAO } from '../../tokens';
@@ -43,34 +43,22 @@ export class RepositoryDao extends BaseRepositoryDao {
             where: r.id.in(repositoryIds)
         });
     }
-    async findReposWithGlobalIds(repositoryIds) {
-        const repositoryMapById = new Map();
+    async findByIds(repositoryIds) {
         let r;
         let a;
-        let u;
-        const repositories = await this.db.find.tree({
+        return await this.db.find.tree({
             select: {
-                id: Y,
-                createdAt: Y,
-                uuId: Y,
+                ...ALL_FIELDS,
                 ownerActor: {
-                    id: Y,
-                    user: {
-                        uuId: Y
-                    },
+                    id: Y
                 }
             },
             from: [
                 r = Q.Repository,
-                a = r.ownerActor.innerJoin(),
-                u = a.user.innerJoin()
+                a = r.ownerActor.innerJoin()
             ],
             where: r.id.in(repositoryIds)
         });
-        for (const repository of repositories) {
-            repositoryMapById.set(repository.id, repository);
-        }
-        return repositoryMapById;
     }
     async findLocalRepoIdsByGlobalIds(createdAts, uuIds, ownerActorRandomIds, ownerUserUniqueIds, ownerTerminalUuids, ownerTerminalOwnerUserUniqueIds) {
         const repositoryIdMap = new Map();

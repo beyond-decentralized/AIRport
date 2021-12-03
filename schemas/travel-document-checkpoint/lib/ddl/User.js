@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, OneToMany } from '@airport/air-control';
+import { Column, DbNumber, DbString, Entity, GeneratedValue, Id } from '@airport/air-control';
 let User = class User {
 };
 __decorate([
@@ -20,12 +20,6 @@ __decorate([
     Column({ name: "USERNAME" }),
     DbString()
 ], User.prototype, "username", void 0);
-__decorate([
-    OneToMany({ mappedBy: 'user' })
-], User.prototype, "userTerminal", void 0);
-__decorate([
-    OneToMany({ mappedBy: 'user' })
-], User.prototype, "userTerminalAgts", void 0);
 User = __decorate([
     Entity()
 ], User);

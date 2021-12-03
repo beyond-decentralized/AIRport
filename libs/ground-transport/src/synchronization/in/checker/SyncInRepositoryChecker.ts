@@ -21,8 +21,6 @@ export class SyncInRepositoryChecker
 		message: RepositorySynchronizationMessage
 	): Promise<boolean> {
 		try {
-			const repositoryDao = await container(this).get(REPOSITORY_DAO)
-
 			let repositoryUuids: string[] = []
 			let messageRepositoryIndexMap: Map<string, number> = new Map()
 			for (let i = 0; i < message.referencedRepositories.length; i++) {
@@ -34,36 +32,51 @@ export class SyncInRepositoryChecker
 					message
 				)
 			}
-			if (typeof message.history.repository === 'string') {
-				repositoryUuids.push(message.history.repository as any)
-			} else {
+			const history = message.history
+			if (history.isRepositoryCreation) {
+				if (typeof history.repository !== 'object') {
+					throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be an object
+	if RepositorySynchronizationMessage.history.isRepositoryCreation === true`)
+				}
 				this.checkRepository(
-					message.history.repository,
+					history.repository,
 					null,
 					repositoryUuids,
 					messageRepositoryIndexMap,
 					message
 				)
+			} else {
+				if (typeof history.repository !== 'string') {
+					throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be a string
+	if RepositorySynchronizationMessage.history.isRepositoryCreation === false`)
+				}
+				repositoryUuids.push(history.repository as any)
 			}
 
+			const repositoryDao = await container(this).get(REPOSITORY_DAO)
 			const repositories = await repositoryDao.findByUuIds(repositoryUuids)
 			for (const repository of repositories) {
 				const messageUserIndex = messageRepositoryIndexMap.get(repository.uuId)
-				if (messageUserIndex || messageUserIndex == 0) {
+				if (messageUserIndex || messageUserIndex === 0) {
 					message.referencedRepositories[messageUserIndex] = repository
 				} else {
-					message.history.repository = repository
+					// Populating ahead of potential insert is OK, object
+					// gets modified with required state on an insert
+					history.repository = repository
 				}
 			}
 
 			const missingRepositories = message.referencedRepositories
 				.filter(messageActor => !messageActor.id)
 
-			if (typeof message.history.repository !== 'object') {
-				throw new Error(`Repository with UuId ${message.history.repository} is not
-					present and cannot be synced`)
-			} else if (!message.history.repository.id) {
-				missingRepositories.push(message.history.repository)
+			if (typeof history.repository !== 'object') {
+				throw new Error(`Repository with UuId ${history.repository} is not
+					present and cannot be synced
+	This RepositorySynchronizationMessage is for an existing repository and that
+	repository must already be loaded in this database for this message to be
+	processed.`)
+			} else if (!history.repository.id) {
+				missingRepositories.push(history.repository)
 			}
 
 			if (missingRepositories.length) {

@@ -4,11 +4,12 @@ import { Repository, RepositoryTransactionHistory } from '../../ddl/ddl';
 import { REPOSITORY_TRANSACTION_HISTORY_DUO } from '../../tokens';
 import { BaseRepositoryTransactionHistoryDuo, } from '../../generated/generated';
 export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHistoryDuo {
-    getNewRecord(repositoryId, actor) {
+    getNewRecord(repositoryId, actor, isRepositoryCreation) {
         let repositoryTransactionHistory = new RepositoryTransactionHistory();
         let saveTimestamp = new Date().getTime();
         repositoryTransactionHistory.saveTimestamp = saveTimestamp;
         repositoryTransactionHistory.uuId = uuidv4();
+        repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation;
         repositoryTransactionHistory.repository = new Repository();
         repositoryTransactionHistory.repository.id = repositoryId;
         repositoryTransactionHistory.actor = actor;
@@ -22,26 +23,21 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
     }
     sortRepoTransHistories(repoTransHistories, actorMapById) {
         repoTransHistories.sort((repoTransHistory1, repoTransHistory2) => {
+            const syncTimeComparison = this.compareNumbers(repoTransHistory1.syncTimestamp, repoTransHistory2.syncTimestamp);
+            if (syncTimeComparison) {
+                return syncTimeComparison;
+            }
             const saveTimeComparison = this.compareNumbers(repoTransHistory1.saveTimestamp, repoTransHistory2.saveTimestamp);
             if (saveTimeComparison) {
                 return saveTimeComparison;
             }
             const actor1 = actorMapById.get(repoTransHistory1.actor.id);
             const actor2 = actorMapById.get(repoTransHistory2.actor.id);
-            const userIdComparison = actor1.user.uuId.localeCompare(actor2.user.uuId);
-            if (userIdComparison) {
-                return userIdComparison;
+            const actorUuIdComparison = actor1.uuId.localeCompare(actor2.uuId);
+            if (actorUuIdComparison) {
+                return actorUuIdComparison;
             }
-            const databaseUuidComparison = actor1.terminal.uuId.localeCompare(actor2.terminal.uuId);
-            if (databaseUuidComparison) {
-                return databaseUuidComparison;
-            }
-            const databaseOwnerComparison = actor1.terminal.owner.uuId.localeCompare(actor2.terminal.owner.uuId);
-            if (databaseOwnerComparison) {
-                return databaseOwnerComparison;
-            }
-            const actorRandomIdComparison = actor1.uuId.localeCompare(actor2.uuId);
-            return actorRandomIdComparison;
+            return 0;
         });
     }
     startOperation(repositoryTransactionHistory, systemWideOperationId, entityChangeType, dbEntity, operHistoryDuo) {

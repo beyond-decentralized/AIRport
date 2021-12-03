@@ -1,4 +1,5 @@
 import {
+	ALL_FIELDS,
 	and,
 	Y
 } from '@airport/air-control'
@@ -176,21 +177,40 @@ export class ActorDao
 		) => JSONBaseOperation
 	): Promise<IActor[]> {
 		let a: QActor
-		let u: QUser
+		let ap: QApplication
+		let t: QTerminal
 		const id = Y
+		const uuId = Y
 		return await this.db.find.tree({
 			select: {
-				id,
-				uuId: Y,
-				user: {
-					id,
+				...ALL_FIELDS,
+				application: {
+					index: Y,
+					name: Y,
+					domain: {
+						name: Y
+					}
 				},
 				terminal: {
-					id
+					id,
+					uuId,
+					owner: {
+						id,
+						uuId,
+					}
+				},
+				user: {
+					id,
+					uuId
 				}
 			},
 			from: [
-				a = Q.Actor
+				a = Q.Actor,
+				ap = a.application.innerJoin(),
+				ap.domain.innerJoin(),
+				t = a.terminal.innerJoin(),
+				t.owner.innerJoin(),
+				a.user.innerJoin()
 			],
 			where: getWhereClause(a)
 		})

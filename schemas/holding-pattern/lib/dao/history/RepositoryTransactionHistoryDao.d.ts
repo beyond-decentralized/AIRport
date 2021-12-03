@@ -15,6 +15,7 @@ export interface IRepositoryTransactionHistoryDao {
     findWhereUuIdIn(uuIds: string[]): Promise<IRepositoryTransactionHistory[]>;
     findExistingRecordIdMap(recordIdMap: Map<Repository_Id, Map<Actor_Id, Map<EntityId, Set<RepositoryEntity_ActorRecordId>>>>): Promise<Map<Repository_Id, Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>;
     findAllLocalChangesForRecordIds(changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
+    updateSyncTimestamp(repositoryTransactionHistory: IRepositoryTransactionHistory): Promise<void>;
 }
 export interface IChangedRecordIdsForRepository {
     ids: Map<EntityId, Map<Actor_Id, Set<RecordHistoryActorRecordId>>>;
@@ -37,5 +38,6 @@ export declare class RepositoryTransactionHistoryDao extends BaseRepositoryTrans
     }): Promise<IRepositoryTransactionHistory[]>;
     findAllLocalChangesForRecordIds(changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
     findExistingRecordIdMap(recordIdMap: Map<Repository_Id, Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>): Promise<Map<Repository_Id, Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>;
+    updateSyncTimestamp(repositoryTransactionHistory: IRepositoryTransactionHistory): Promise<void>;
 }
 //# sourceMappingURL=RepositoryTransactionHistoryDao.d.ts.map

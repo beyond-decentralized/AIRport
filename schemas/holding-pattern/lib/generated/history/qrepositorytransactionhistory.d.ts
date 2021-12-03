@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
 import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
 import { TransactionHistoryGraph, TransactionHistoryEOptionalId, TransactionHistoryESelect, QTransactionHistoryQRelation } from './qtransactionhistory';
@@ -13,6 +13,7 @@ export interface RepositoryTransactionHistoryESelect extends IEntitySelectProper
     saveTimestamp?: number | IQNumberField;
     syncTimestamp?: number | IQNumberField;
     uuId?: string | IQStringField;
+    isRepositoryCreation?: boolean | IQBooleanField;
     repository?: RepositoryESelect;
     actor?: ActorESelect;
     transactionHistory?: TransactionHistoryESelect;
@@ -38,6 +39,7 @@ export interface RepositoryTransactionHistoryEUpdateProperties extends IEntityUp
     saveTimestamp?: number | IQNumberField;
     syncTimestamp?: number | IQNumberField;
     uuId?: string | IQStringField;
+    isRepositoryCreation?: boolean | IQBooleanField;
     repository?: RepositoryEOptionalId;
     actor?: ActorEOptionalId;
     transactionHistory?: TransactionHistoryEOptionalId;
@@ -50,6 +52,7 @@ export interface RepositoryTransactionHistoryGraph extends RepositoryTransaction
     saveTimestamp?: number | IQNumberField;
     syncTimestamp?: number | IQNumberField;
     uuId?: string | IQStringField;
+    isRepositoryCreation?: boolean | IQBooleanField;
     repository?: RepositoryGraph;
     actor?: ActorGraph;
     transactionHistory?: TransactionHistoryGraph;
@@ -63,6 +66,7 @@ export interface RepositoryTransactionHistoryEUpdateColumns extends IEntityUpdat
     SAVE_TIMESTAMP?: number | IQNumberField;
     SYNC_TIMESTAMP?: number | IQNumberField;
     UUID?: string | IQStringField;
+    IS_REPOSITORY_CREATION?: boolean | IQBooleanField;
     REPOSITORY_ID?: number | IQNumberField;
     ACTOR_ID?: number | IQNumberField;
     TRANSACTION_HISTORY_ID?: number | IQNumberField;
@@ -86,6 +90,7 @@ export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransa
     saveTimestamp: IQNumberField;
     syncTimestamp: IQNumberField;
     uuId: IQStringField;
+    isRepositoryCreation: IQBooleanField;
     repository: QRepositoryQRelation;
     actor: QActorQRelation;
     transactionHistory: QTransactionHistoryQRelation;

@@ -1,4 +1,4 @@
-import { and, Y } from '@airport/air-control';
+import { ALL_FIELDS, and, Y } from '@airport/air-control';
 import { DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { ACTOR_DAO } from '../../tokens';
@@ -70,21 +70,34 @@ export class ActorDao extends BaseActorDao {
     }
     async findWithDetailsAndGlobalIdsByWhereClause(getWhereClause) {
         let a;
-        let u;
+        let t;
         const id = Y;
+        const uuId = Y;
         return await this.db.find.tree({
             select: {
-                id,
-                uuId: Y,
-                user: {
-                    id,
+                ...ALL_FIELDS,
+                application: {
+                    index: Y,
                 },
                 terminal: {
-                    id
+                    id,
+                    uuId,
+                    owner: {
+                        id,
+                        uuId,
+                    }
+                },
+                user: {
+                    id,
+                    uuId
                 }
             },
             from: [
-                a = Q.Actor
+                a = Q.Actor,
+                a.application.innerJoin(),
+                t = a.terminal.innerJoin(),
+                t.owner.innerJoin(),
+                a.user.innerJoin()
             ],
             where: getWhereClause(a)
         });

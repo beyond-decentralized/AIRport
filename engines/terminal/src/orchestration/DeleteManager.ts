@@ -13,7 +13,7 @@ import {
 } from '@airport/check-in'
 import {
 	container,
-	DI, IContext,
+	DI
 } from '@airport/di';
 import {
 	ChangeType,
@@ -42,13 +42,13 @@ import {
 import {
 	IDeleteManager,
 	IHistoryManager,
+	IOperationContext,
 	ITransaction,
 	RecordsToDelete
 } from '@airport/terminal-map'
 import {
 	DELETE_MANAGER,
 	HISTORY_MANAGER,
-	REPOSITORY_MANAGER
 } from '../tokens'
 
 export class DeleteManager
@@ -58,7 +58,7 @@ export class DeleteManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
-		context: IContext = {},
+		context?: IOperationContext,
 	): Promise<number> {
 		const [
 			airDb,
@@ -112,7 +112,7 @@ export class DeleteManager
 		await this.recordTreeToDelete(recordsToDelete, actor,
 			airDb, historyManager, operHistoryDuo, recHistoryDuo,
 			recHistoryOldValueDuo, repoTransHistoryDuo, applicationUtils,
-			sequenceGenerator, transaction)
+			sequenceGenerator, transaction, context)
 
 		return await deleteCommand
 	}
@@ -224,7 +224,8 @@ export class DeleteManager
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
 		applicationUtils: IApplicationUtils,
 		sequenceGenerator: ISequenceGenerator,
-		transaction: ITransaction
+		transaction: ITransaction,
+		context: IOperationContext
 	): Promise<void> {
 		let systemWideOperationId
 		for (const [applicationIndex, applicationRecordsToDelete] of recordsToDelete) {
@@ -237,8 +238,8 @@ export class DeleteManager
 				}
 
 				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
-					const repoTransHistory = await historyManager.getNewRepoTransHistory(
-						transaction.transHistory, repositoryId, actor
+					const repoTransHistory = await historyManager.getNewRepositoryTransactionHistory(
+						transaction.transHistory, repositoryId, actor, context
 					)
 
 					const operationHistory = repoTransHistoryDuo.startOperation(

@@ -1,9 +1,3 @@
-import {
-	IUserTerminal,
-} from './userterminal';
-import {
-	IUserTerminalAgt,
-} from './userterminalagt';
 
 
 
@@ -23,8 +17,6 @@ export interface IUser {
 	username?: string;
 
 	// Non-Id Relations
-	userTerminal?: IUserTerminal[];
-	userTerminalAgts?: IUserTerminalAgt[];
 
 	// Transient Properties
 

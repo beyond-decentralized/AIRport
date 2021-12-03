@@ -1070,6 +1070,20 @@ export const APPLICATION = {
                         {
                             "index": 5,
                             "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IS_REPOSITORY_CREATION",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -1084,14 +1098,14 @@ export const APPLICATION = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 5
+                                    "index": 6
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 6,
+                            "index": 7,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -1106,14 +1120,14 @@ export const APPLICATION = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 6
+                                    "index": 7
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 7,
+                            "index": 8,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -1129,7 +1143,7 @@ export const APPLICATION = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 7
+                                    "index": 8
                                 }
                             ],
                             "sinceVersion": 1,
@@ -1192,7 +1206,16 @@ export const APPLICATION = {
                             "sinceVersion": 1
                         },
                         {
+                            "columnRef": {
+                                "index": 5
+                            },
                             "index": 5,
+                            "isId": false,
+                            "name": "isRepositoryCreation",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
                             "isId": false,
                             "name": "repository",
                             "relationRef": {
@@ -1201,7 +1224,7 @@ export const APPLICATION = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 6,
+                            "index": 7,
                             "isId": false,
                             "name": "actor",
                             "relationRef": {
@@ -1210,7 +1233,7 @@ export const APPLICATION = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 7,
+                            "index": 8,
                             "isId": false,
                             "name": "transactionHistory",
                             "relationRef": {
@@ -1219,7 +1242,7 @@ export const APPLICATION = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 8,
+                            "index": 9,
                             "isId": false,
                             "name": "operationHistory",
                             "relationRef": {
@@ -1234,7 +1257,7 @@ export const APPLICATION = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 5
+                                "index": 6
                             },
                             "relationTableIndex": 2,
                             "sinceVersion": 1
@@ -1244,7 +1267,7 @@ export const APPLICATION = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 6
+                                "index": 7
                             },
                             "relationTableIndex": 1,
                             "sinceVersion": 1
@@ -1254,7 +1277,7 @@ export const APPLICATION = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 7
+                                "index": 8
                             },
                             "relationTableIndex": 5,
                             "sinceVersion": 1
@@ -1267,7 +1290,7 @@ export const APPLICATION = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 8
+                                "index": 9
                             },
                             "relationTableIndex": 7,
                             "sinceVersion": 1

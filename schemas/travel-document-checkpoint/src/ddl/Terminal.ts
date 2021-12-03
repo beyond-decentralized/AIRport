@@ -52,13 +52,13 @@ export class Terminal {
 	@DbBoolean()
 	isLocal: Terminal_IsLocal = false
 
-	@OneToMany({ mappedBy: 'terminal' })
-	terminalAgts: TerminalAgt[]
+	// @OneToMany({ mappedBy: 'terminal' })
+	// terminalAgts: TerminalAgt[]
 
-	@OneToMany({ mappedBy: 'terminal' })
-	userTerminal: UserTerminal[]
+	// @OneToMany({ mappedBy: 'terminal' })
+	// userTerminal: UserTerminal[]
 
-	@OneToMany({ mappedBy: 'terminal' })
-	userTerminalAgt: UserTerminalAgt[]
+	// @OneToMany({ mappedBy: 'terminal' })
+	// userTerminalAgt: UserTerminalAgt[]
 
 }

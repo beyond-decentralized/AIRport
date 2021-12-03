@@ -5,7 +5,7 @@ import {
 import { ApplicationReferenceByIndex } from './Property';
 import { ApplicationStatus }           from './ApplicationStatus';
 
-export type ApplicationId = number;
+export type Application_Id = number;
 export type ApplicationName = string;
 export type ApplicationSignature = string;
 export type ApplicationPackageId = number;
@@ -52,7 +52,7 @@ export interface DbApplication {
 
 	domain: DbDomain
 
-	id: ApplicationId
+	id: Application_Id
 
 	name: ApplicationName
 

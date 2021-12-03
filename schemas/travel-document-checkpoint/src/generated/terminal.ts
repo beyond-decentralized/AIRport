@@ -1,15 +1,6 @@
 import {
 	IUser,
 } from './user';
-import {
-	ITerminalAgt,
-} from './terminalagt';
-import {
-	IUserTerminal,
-} from './userterminal';
-import {
-	IUserTerminalAgt,
-} from './userterminalagt';
 
 
 
@@ -30,9 +21,6 @@ export interface ITerminal {
 
 	// Non-Id Relations
 	owner?: IUser;
-	terminalAgts?: ITerminalAgt[];
-	userTerminal?: IUserTerminal[];
-	userTerminalAgt?: IUserTerminalAgt[];
 
 	// Transient Properties
 

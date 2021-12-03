@@ -4,10 +4,10 @@ import { BaseTransactionHistoryDuo, IActor, IRepositoryTransactionHistory, ITran
 import { IRepositoryTransactionHistoryDuo } from './RepositoryTransactionHistoryDuo';
 export interface ITransactionHistoryDuo {
     getNewRecord(transactionType?: TransactionType): ITransactionHistory;
-    getRepositoryTransaction(transactionHistory: ITransactionHistory, repositoryId: Repository_Id, actor: IActor, repoTransHistoryDuo: IRepositoryTransactionHistoryDuo): IRepositoryTransactionHistory;
+    getRepositoryTransaction(transactionHistory: ITransactionHistory, repositoryId: Repository_Id, actor: IActor, isRepositoryCreation: boolean, repoTransHistoryDuo: IRepositoryTransactionHistoryDuo): IRepositoryTransactionHistory;
 }
 export declare class TransactionHistoryDuo extends BaseTransactionHistoryDuo implements ITransactionHistoryDuo {
     getNewRecord(transactionType?: TransactionType): ITransactionHistory;
-    getRepositoryTransaction(transactionHistory: ITransactionHistory, repositoryId: Repository_Id, actor: IActor, repoTransHistoryDuo: IRepositoryTransactionHistoryDuo): IRepositoryTransactionHistory;
+    getRepositoryTransaction(transactionHistory: ITransactionHistory, repositoryId: Repository_Id, actor: IActor, isRepositoryCreation: boolean, repoTransHistoryDuo: IRepositoryTransactionHistoryDuo): IRepositoryTransactionHistory;
 }
 //# sourceMappingURL=TransactionHistoryDuo.d.ts.map

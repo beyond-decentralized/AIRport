@@ -6,7 +6,6 @@ import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REC_H
 import { HISTORY_MANAGER, REPOSITORY_MANAGER, UPDATE_MANAGER } from '../tokens';
 export class UpdateManager {
     async updateValues(portableQuery, actor, transaction, context) {
-        // TODO: remove unused dependencies after testing
         const [historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, sequenceGenerator] = await container(this)
             .get(HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DUO, SEQUENCE_GENERATOR);
         const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
@@ -78,7 +77,7 @@ export class UpdateManager {
             // const repository                         = repositories.get(repositoryId)
             const recordHistoryMapForRepository = {};
             recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository;
-            const repoTransHistory = await histManager.getNewRepoTransHistory(transaction.transHistory, repositoryId, actor);
+            const repoTransHistory = await histManager.getNewRepositoryTransactionHistory(transaction.transHistory, repositoryId, actor, context);
             const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.UPDATE_ROWS, context.dbEntity, operHistoryDuo);
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
             for (const recordToUpdate of recordsForRepositoryId) {

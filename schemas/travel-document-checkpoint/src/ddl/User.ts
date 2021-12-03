@@ -33,10 +33,10 @@ export class User {
 	@DbString()
 	username: User_Username;
 
-	@OneToMany({ mappedBy: 'user' })
-	userTerminal: UserTerminal[]
+	// @OneToMany({ mappedBy: 'user' })
+	// userTerminal: UserTerminal[]
 
-	@OneToMany({ mappedBy: 'user' })
-	userTerminalAgts: UserTerminalAgt[]
+	// @OneToMany({ mappedBy: 'user' })
+	// userTerminalAgts: UserTerminalAgt[]
 
 }

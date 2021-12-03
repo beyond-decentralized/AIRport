@@ -4,7 +4,7 @@ import { BaseRepositoryDao, IBaseRepositoryDao, IRepository } from '../../genera
 export interface IRepositoryDao extends IBaseRepositoryDao {
     getRepositoryLoadInfo(repositorySource: Repository_Source, repositoryUuId: Repository_UuId): Promise<IRepository>;
     findLocalRepoIdsByGlobalIds(createdAts: Repository_CreatedAt[], uuIds: Repository_UuId[], ownerActorRandomIds: Actor_UuId[], ownerUserUniqueIds: User_UuId[], ownerTerminalUuids: Terminal_UuId[], ownerTerminalOwnerUserUniqueIds: User_UuId[]): Promise<RepositoryIdMap>;
-    findReposWithGlobalIds(repositoryIds: Repository_Id[]): Promise<Map<Repository_Id, IRepository>>;
+    findByIds(repositoryIds: Repository_Id[]): Promise<IRepository[]>;
     findByUuIds(uuIds: Repository_UuId[]): Promise<IRepository[]>;
     insert(repositories: IRepository[]): Promise<void>;
 }
@@ -12,7 +12,7 @@ export declare type RepositoryIdMap = Map<User_UuId, Map<Terminal_UuId, Map<User
 export declare class RepositoryDao extends BaseRepositoryDao implements IRepositoryDao {
     getRepositoryLoadInfo(repositorySource: Repository_Source, repositoryUuId: Repository_UuId): Promise<IRepository>;
     findReposWithDetailsAndSyncNodeIds(repositoryIds: Repository_Id[]): Promise<IRepository[]>;
-    findReposWithGlobalIds(repositoryIds: Repository_Id[]): Promise<Map<Repository_Id, IRepository>>;
+    findByIds(repositoryIds: Repository_Id[]): Promise<IRepository[]>;
     findLocalRepoIdsByGlobalIds(createdAts: Repository_CreatedAt[], uuIds: Repository_UuId[], ownerActorRandomIds: Actor_UuId[], ownerUserUniqueIds: User_UuId[], ownerTerminalUuids: Terminal_UuId[], ownerTerminalOwnerUserUniqueIds: User_UuId[]): Promise<RepositoryIdMap>;
     findByUuIds(uuIds: Repository_UuId[]): Promise<IRepository[]>;
     insert(repositories: IRepository[]): Promise<void>;

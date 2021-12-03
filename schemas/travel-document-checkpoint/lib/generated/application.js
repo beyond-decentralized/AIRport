@@ -256,7 +256,6 @@ export const APPLICATION = {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
                                     "oneTableIndex": 4,
-                                    "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -279,7 +278,6 @@ export const APPLICATION = {
                                     "manyRelationIndex": 1,
                                     "oneApplicationIndex": null,
                                     "oneTableIndex": 5,
-                                    "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -424,7 +422,6 @@ export const APPLICATION = {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
                                     "oneTableIndex": 4,
-                                    "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -447,7 +444,6 @@ export const APPLICATION = {
                                     "manyRelationIndex": 1,
                                     "oneApplicationIndex": null,
                                     "oneTableIndex": 5,
-                                    "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 },
@@ -680,54 +676,9 @@ export const APPLICATION = {
                             "isId": false,
                             "name": "username",
                             "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "userTerminal",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "userTerminalAgts",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
                         }
                     ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "user"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 2,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "user"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 3,
-                            "sinceVersion": 1
-                        }
-                    ],
+                    "relations": [],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "columnIndexes": []
@@ -846,33 +797,6 @@ export const APPLICATION = {
                             "isId": false,
                             "name": "isLocal",
                             "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "terminalAgts",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "userTerminal",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "name": "userTerminalAgt",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -884,45 +808,6 @@ export const APPLICATION = {
                                 "index": 2
                             },
                             "relationTableIndex": 4,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "terminal"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 6,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "terminal"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 2,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "terminal"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 6
-                            },
-                            "relationTableIndex": 3,
                             "sinceVersion": 1
                         }
                     ],
@@ -962,7 +847,6 @@ export const APPLICATION = {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
                                     "oneTableIndex": 5,
-                                    "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }

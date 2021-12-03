@@ -23,9 +23,9 @@ import { TransactionHistory } from './TransactionHistory'
  */
 
 export type RepositoryTransactionHistory_Id = number;
+export type RepositoryTransactionHistory_IsRepositoryCreation = boolean;
 export type RepositoryTransactionHistory_BlockId = number;
 export type RepositoryTransactionHistory_SaveTimestamp = number;
-export type RepositoryTransactionHistory_Synced = boolean;
 export type RepositoryTransactionHistory_SyncTimestamp = number;
 export type RepositoryTransactionHistory_UuId = string;
 
@@ -53,6 +53,10 @@ export class RepositoryTransactionHistory {
 	@Column({ name: "UUID", nullable: false })
 	@DbString()
 	uuId: RepositoryTransactionHistory_UuId
+
+	@Column({ name: "IS_REPOSITORY_CREATION", nullable: false })
+	@DbBoolean()
+	isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation
 
 	@ManyToOne()
 	@JoinColumn({

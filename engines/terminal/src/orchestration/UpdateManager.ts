@@ -25,7 +25,6 @@ import {
 import {
 	IActor,
 	IOperationHistoryDuo,
-	IRecordHistory,
 	IRecordHistoryDuo,
 	IRecordHistoryNewValueDuo,
 	IRecordHistoryOldValueDuo,
@@ -61,7 +60,6 @@ export class UpdateManager
 		transaction: ITransaction,
 		context: IOperationContext
 	): Promise<number> {
-		// TODO: remove unused dependencies after testing
 		const [
 			      historyManager,
 			      operHistoryDuo,
@@ -197,8 +195,8 @@ export class UpdateManager
 			// const repository                         = repositories.get(repositoryId)
 			const recordHistoryMapForRepository      = {}
 			recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository
-			const repoTransHistory                   = await histManager.getNewRepoTransHistory(
-				transaction.transHistory, repositoryId, actor
+			const repoTransHistory                   = await histManager.getNewRepositoryTransactionHistory(
+				transaction.transHistory, repositoryId, actor, context
 			)
 			const operationHistory                   = repoTransHistoryDuo.startOperation(
 				repoTransHistory, systemWideOperationId, ChangeType.UPDATE_ROWS,

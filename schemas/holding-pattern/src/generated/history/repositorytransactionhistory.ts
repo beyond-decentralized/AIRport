@@ -29,6 +29,7 @@ export interface IRepositoryTransactionHistory {
 	saveTimestamp?: number;
 	syncTimestamp?: number;
 	uuId?: string;
+	isRepositoryCreation?: boolean;
 
 	// Non-Id Relations
 	repository?: IRepository;

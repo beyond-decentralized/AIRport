@@ -1,8 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { UserTerminalGraph, UserTerminalESelect, QUserTerminal } from './quserterminal';
-import { UserTerminal } from '../ddl/UserTerminal';
-import { UserTerminalAgtGraph, UserTerminalAgtESelect, QUserTerminalAgt } from './quserterminalagt';
-import { UserTerminalAgt } from '../ddl/UserTerminalAgt';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { User } from '../ddl/User';
 /**
  * SELECT - All fields and relations (optional).
@@ -10,8 +6,6 @@ import { User } from '../ddl/User';
 export interface UserESelect extends IEntitySelectProperties, UserEOptionalId {
     uuId?: string | IQStringField;
     username?: string | IQStringField;
-    userTerminal?: UserTerminalESelect;
-    userTerminalAgts?: UserTerminalAgtESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -38,8 +32,6 @@ export interface UserEUpdateProperties extends IEntityUpdateProperties {
 export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
     uuId?: string | IQStringField;
     username?: string | IQStringField;
-    userTerminal?: UserTerminalGraph[];
-    userTerminalAgts?: UserTerminalAgtGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -65,8 +57,6 @@ export interface QUser extends IQEntity<User> {
     id: IQNumberField;
     uuId: IQStringField;
     username: IQStringField;
-    userTerminal: IQOneToManyRelation<UserTerminal, QUserTerminal>;
-    userTerminalAgts: IQOneToManyRelation<UserTerminalAgt, QUserTerminalAgt>;
 }
 export interface QUserQId {
     id: IQNumberField;

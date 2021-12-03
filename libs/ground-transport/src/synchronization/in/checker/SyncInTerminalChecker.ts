@@ -35,15 +35,20 @@ export class SyncInTerminalChecker
 				const terminal = message.terminals[i]
 				if (typeof terminal.owner !== 'number') {
 					throw new Error(`Expecting "in-message index" (number)
-					in 'terminal.owner'`)
+					in 'terminal.owner' of RepositorySynchronizationMessage.terminals`)
 				}
 				if (typeof terminal.uuId !== 'string' || terminal.uuId.length !== 36) {
-					throw new Error(`Invalid 'terminal.uuid'`)
+					throw new Error(`Invalid 'terminal.uuid' in RepositorySynchronizationMessage.terminals`)
 				}
+				if (terminal.isLocal !== undefined) {
+					throw new Error(`'terminal.isLocal' cannot defined in RepositorySynchronizationMessage.terminals`)
+				}
+				terminal.isLocal = false
 				const owner = message.users[terminal.owner as any]
 				if (!owner) {
 					throw new Error(
-						`Did not find user for terminal.owner with "in-message index" ${terminal.owner}`);
+						`Did not find user for terminal.owner with "in-message index" ${terminal.owner}
+						for RepositorySynchronizationMessage.terminals`);
 				}
 				terminal.owner = owner
 				terminalUuids.push(terminal.uuId)

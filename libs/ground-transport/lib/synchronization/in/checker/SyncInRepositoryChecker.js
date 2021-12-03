@@ -4,36 +4,50 @@ import { SYNC_IN_REPOSITORY_CHECKER } from '../../../tokens';
 export class SyncInRepositoryChecker {
     async ensureRepositories(message) {
         try {
-            const repositoryDao = await container(this).get(REPOSITORY_DAO);
             let repositoryUuids = [];
             let messageRepositoryIndexMap = new Map();
             for (let i = 0; i < message.referencedRepositories.length; i++) {
                 this.checkRepository(message.referencedRepositories[i], i, repositoryUuids, messageRepositoryIndexMap, message);
             }
-            if (typeof message.history.repository === 'string') {
-                repositoryUuids.push(message.history.repository);
+            const history = message.history;
+            if (history.isRepositoryCreation) {
+                if (typeof history.repository !== 'object') {
+                    throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be an object
+	if RepositorySynchronizationMessage.history.isRepositoryCreation === true`);
+                }
+                this.checkRepository(history.repository, null, repositoryUuids, messageRepositoryIndexMap, message);
             }
             else {
-                this.checkRepository(message.history.repository, null, repositoryUuids, messageRepositoryIndexMap, message);
+                if (typeof history.repository !== 'string') {
+                    throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be a string
+	if RepositorySynchronizationMessage.history.isRepositoryCreation === false`);
+                }
+                repositoryUuids.push(history.repository);
             }
+            const repositoryDao = await container(this).get(REPOSITORY_DAO);
             const repositories = await repositoryDao.findByUuIds(repositoryUuids);
             for (const repository of repositories) {
                 const messageUserIndex = messageRepositoryIndexMap.get(repository.uuId);
-                if (messageUserIndex || messageUserIndex == 0) {
+                if (messageUserIndex || messageUserIndex === 0) {
                     message.referencedRepositories[messageUserIndex] = repository;
                 }
                 else {
-                    message.history.repository = repository;
+                    // Populating ahead of potential insert is OK, object
+                    // gets modified with required state on an insert
+                    history.repository = repository;
                 }
             }
             const missingRepositories = message.referencedRepositories
                 .filter(messageActor => !messageActor.id);
-            if (typeof message.history.repository !== 'object') {
-                throw new Error(`Repository with UuId ${message.history.repository} is not
-					present and cannot be synced`);
+            if (typeof history.repository !== 'object') {
+                throw new Error(`Repository with UuId ${history.repository} is not
+					present and cannot be synced
+	This RepositorySynchronizationMessage is for an existing repository and that
+	repository must already be loaded in this database for this message to be
+	processed.`);
             }
-            else if (!message.history.repository.id) {
-                missingRepositories.push(message.history.repository);
+            else if (!history.repository.id) {
+                missingRepositories.push(history.repository);
             }
             if (missingRepositories.length) {
                 await repositoryDao.insert(missingRepositories);

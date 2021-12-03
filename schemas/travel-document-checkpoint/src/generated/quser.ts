@@ -22,32 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	UserTerminalGraph,
-	UserTerminalEId,
-	UserTerminalEOptionalId,
-	UserTerminalEUpdateProperties,
-	UserTerminalESelect,
-	QUserTerminal,
-	QUserTerminalQId,
-	QUserTerminalQRelation,
-} from './quserterminal';
-import {
-	UserTerminal,
-} from '../ddl/UserTerminal';
-import {
-	UserTerminalAgtGraph,
-	UserTerminalAgtEId,
-	UserTerminalAgtEOptionalId,
-	UserTerminalAgtEUpdateProperties,
-	UserTerminalAgtESelect,
-	QUserTerminalAgt,
-	QUserTerminalAgtQId,
-	QUserTerminalAgtQRelation,
-} from './quserterminalagt';
-import {
-	UserTerminalAgt,
-} from '../ddl/UserTerminalAgt';
-import {
 	User,
 } from '../ddl/User';
 
@@ -71,8 +45,6 @@ export interface UserESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	userTerminal?: UserTerminalESelect;
-	userTerminalAgts?: UserTerminalAgtESelect;
 
 }
 
@@ -124,8 +96,6 @@ export interface UserGraph
 	username?: string | IQStringField;
 
 	// Relations
-	userTerminal?: UserTerminalGraph[];
-	userTerminalAgts?: UserTerminalAgtGraph[];
 
 }
 
@@ -176,8 +146,6 @@ export interface QUser extends IQEntity<User>
 	username: IQStringField;
 
 	// Non-Id Relations
-	userTerminal: IQOneToManyRelation<UserTerminal, QUserTerminal>;
-	userTerminalAgts: IQOneToManyRelation<UserTerminalAgt, QUserTerminalAgt>;
 
 }
 

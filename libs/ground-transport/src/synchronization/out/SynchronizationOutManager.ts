@@ -4,8 +4,13 @@ import {
 	DI
 } from '@airport/di'
 import {
+	ensureChildArray,
+	ensureChildJsMap
+} from '@airport/ground-control'
+import {
 	IRepositoryTransactionHistory,
 	Repository_Source,
+	REPOSITORY_TRANSACTION_HISTORY_DAO,
 	Repository_UuId
 } from '@airport/holding-pattern'
 import {
@@ -28,13 +33,11 @@ export class SynchronizationOutManager
 	async synchronizeOut(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[]
 	): Promise<void> {
-		// FIXME: make sure that RepositoryEntity @Id()s are populated from RepositoryTransactionHistory
-		// and RecordHistory in the records and don't make it into NewValue
 		const [
 			syncOutDataSerializer,
 			synchronizationAdapterLoader
 		] = await container(this).get(SYNC_OUT_DATA_SERIALIZER, SYNCHRONIZATION_ADAPTER_LOADER)
-		const messages = syncOutDataSerializer.serialize(repositoryTransactionHistories)
+		const messages = await syncOutDataSerializer.serialize(repositoryTransactionHistories)
 		const groupMessageMap = this.groupMessagesBySourceAndRepository(messages)
 
 		for (const [repositorySource, messageMapForSource] of groupMessageMap) {
@@ -51,7 +54,12 @@ export class SynchronizationOutManager
 		const groupMessageMap: Map<Repository_Source, Map<Repository_UuId, RepositorySynchronizationMessage[]>>
 			= new Map()
 
-		// TODO: group messages
+		for (const message of messages) {
+			const repository = message.history.repository
+			ensureChildArray(
+				ensureChildJsMap(groupMessageMap, repository.source),
+				repository.uuId).push(message)
+		}
 
 		return groupMessageMap
 	}
@@ -60,7 +68,17 @@ export class SynchronizationOutManager
 		messages: RepositorySynchronizationMessage[],
 		repositoryTransactionHistories: IRepositoryTransactionHistory[]
 	): Promise<void> {
-		// TODO: copy over syncTimestamp (if present) and update only the histories that have it
+		const repositoryTransactionHistoryDao = await container(this)
+			.get(REPOSITORY_TRANSACTION_HISTORY_DAO)
+
+		for (let i = 0; i < messages.length; i++) {
+			const message = messages[i]
+			const repositoryTransactionHistory = repositoryTransactionHistories[i]
+			if (message.syncTimestamp) {
+				repositoryTransactionHistory.syncTimestamp = message.syncTimestamp
+				await repositoryTransactionHistoryDao.updateSyncTimestamp(repositoryTransactionHistory)
+			}
+		}
 	}
 
 }
