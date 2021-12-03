@@ -76,15 +76,15 @@ export class SyncInRepositoryChecker {
         if (typeof repository.uuId !== 'string' || repository.uuId.length !== 36) {
             throw new Error(`Invalid 'repository.uuid'`);
         }
-        if (typeof repository.ownerActor !== 'number') {
+        if (typeof repository.owner !== 'number') {
             throw new Error(`Expecting "in-message index" (number)
-				in 'repository.ownerActor'`);
+				in 'repository.owner'`);
         }
-        const actor = message.actors[repository.ownerActor];
-        if (!actor) {
-            throw new Error(`Did not find repository.ownerActor with "in-message index" ${repository.ownerActor}`);
+        const user = message.users[repository.owner];
+        if (!user) {
+            throw new Error(`Did not find repository.owner (User) with "in-message index" ${repository.owner}`);
         }
-        repository.ownerActor = actor;
+        repository.owner = user;
         repositoryUuids.push(repository.uuId);
         if (typeof repositoryIndex === 'number') {
             messageRepositoryIndexMap.set(repository.uuId, repositoryIndex);

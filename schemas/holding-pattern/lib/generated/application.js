@@ -501,13 +501,13 @@ export const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplicationIndex": null,
-                                    "oneTableIndex": 1,
+                                    "oneApplicationIndex": 0,
+                                    "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "OWNER_ACTOR_ID",
+                            "name": "OWNER_USER_ID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -585,7 +585,7 @@ export const APPLICATION = {
                         {
                             "index": 6,
                             "isId": false,
-                            "name": "ownerActor",
+                            "name": "owner",
                             "relationRef": {
                                 "index": 0
                             },
@@ -609,7 +609,8 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 4,
+                            "relationTableApplicationIndex": 0,
                             "sinceVersion": 1
                         },
                         {

@@ -70,6 +70,7 @@ export class ActorDao extends BaseActorDao {
     }
     async findWithDetailsAndGlobalIdsByWhereClause(getWhereClause) {
         let a;
+        let ap;
         let t;
         const id = Y;
         const uuId = Y;
@@ -78,6 +79,10 @@ export class ActorDao extends BaseActorDao {
                 ...ALL_FIELDS,
                 application: {
                     index: Y,
+                    name: Y,
+                    domain: {
+                        name: Y
+                    }
                 },
                 terminal: {
                     id,
@@ -94,7 +99,8 @@ export class ActorDao extends BaseActorDao {
             },
             from: [
                 a = Q.Actor,
-                a.application.innerJoin(),
+                ap = a.application.innerJoin(),
+                ap.domain.innerJoin(),
                 t = a.terminal.innerJoin(),
                 t.owner.innerJoin(),
                 a.user.innerJoin()

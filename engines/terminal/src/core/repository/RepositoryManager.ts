@@ -114,7 +114,7 @@ export class RepositoryManager
 			createdAt: new Date(),
 			id: null,
 			immutable: false,
-			ownerActor: actor,
+			owner: actor.user,
 			// platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
 			// platformConfig: null,
 			repositoryTransactionHistory: [],

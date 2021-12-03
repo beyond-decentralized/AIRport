@@ -34,21 +34,25 @@ export class SyncOutDataSerializer {
             users: [],
             terminals: []
         };
+        const inMessageUserLookup = {
+            inMessageIndexesById: new Map(),
+            lastInMessageIndex: -1
+        };
         // TODO: replace db lookups with TerminalState lookups where possible
-        await this.serializeRepositories(repositoryTransactionHistory, message, lookups);
-        const inMessageApplicationLookup = await this.serializeActorsUsersAndTerminals(message, lookups);
+        await this.serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserLookup);
+        const inMessageApplicationLookup = await this.serializeActorsUsersAndTerminals(message, lookups, inMessageUserLookup);
         await this.serializeApplicationsAndVersions(message, inMessageApplicationLookup);
         return message;
     }
-    async serializeActorsUsersAndTerminals(message, lookups) {
+    async serializeActorsUsersAndTerminals(message, lookups, inMessageUserLookup) {
         let actorIdsToFindBy = [];
         for (let actorId of lookups.actorInMessageIndexesById.keys()) {
             actorIdsToFindBy.push(actorId);
         }
         const actorDao = await container(this).get(ACTOR_DAO);
         const actors = await actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy);
-        const userInMessageIndexesById = this.serializeUsers(actors, message);
-        const terminalInMessageIndexesById = this.serializeTerminals(actors, message, userInMessageIndexesById);
+        const userInMessageIndexesById = this.serializeUsers(actors, message, inMessageUserLookup);
+        const terminalInMessageIndexesById = this.serializeTerminals(actors, message, inMessageUserLookup);
         const inMessageApplicationLookup = {
             lastInMessageIndex: -1,
             inMessageIndexesById: new Map()
@@ -60,13 +64,13 @@ export class SyncOutDataSerializer {
                 ...WITH_ID,
                 application: applicationInMessageIndex,
                 terminal: terminalInMessageIndexesById.get(actor.terminal.id),
-                user: userInMessageIndexesById.get(actor.user.id),
+                user: inMessageUserLookup.inMessageIndexesById.get(actor.user.id),
                 uuId: actor.uuId
             };
         }
         return inMessageApplicationLookup;
     }
-    serializeTerminals(actors, message, userInMessageIndexesById) {
+    serializeTerminals(actors, message, inMessageUserLookup) {
         let lastInMessageTerminalIndex = -1;
         const terminalInMessageIndexesById = new Map();
         for (const actor of actors) {
@@ -79,35 +83,37 @@ export class SyncOutDataSerializer {
             message.terminals[terminalInMessageIndex] = {
                 ...WITH_ID,
                 uuId: terminal.uuId,
-                owner: userInMessageIndexesById.get(terminal.owner.id)
+                owner: inMessageUserLookup.inMessageIndexesById.get(terminal.owner.id)
             };
         }
         return terminalInMessageIndexesById;
     }
-    serializeUsers(actors, message) {
-        let lastInMessageUserIndexHandle = {
-            index: -1
-        };
-        const userInMessageIndexesById = new Map();
+    serializeUsers(actors, message, inMessageUserLookup) {
         for (const actor of actors) {
-            this.addUserToMessage(actor.user, message, userInMessageIndexesById, lastInMessageUserIndexHandle);
-            this.addUserToMessage(actor.terminal.owner, message, userInMessageIndexesById, lastInMessageUserIndexHandle);
+            this.addUserToMessage(actor.user, message, inMessageUserLookup);
+            this.addUserToMessage(actor.terminal.owner, message, inMessageUserLookup);
         }
-        return userInMessageIndexesById;
     }
-    addUserToMessage(user, message, userInMessageIndexesById, lastInMessageUserIndexHandle) {
-        if (userInMessageIndexesById.has(user.id)) {
+    addUserToMessage(user, message, inMessageUserLookup) {
+        if (inMessageUserLookup.inMessageIndexesById.has(user.id)) {
             return;
         }
-        let userInMessageIndex = ++lastInMessageUserIndexHandle.index;
-        userInMessageIndexesById.set(user.id, userInMessageIndex);
+        let userInMessageIndex = this.getUserInMessageIndex(user, inMessageUserLookup);
         message.users[userInMessageIndex] = {
             ...WITH_ID,
             username: user.username,
             uuId: user.uuId
         };
     }
-    async serializeRepositories(repositoryTransactionHistory, message, lookups) {
+    getUserInMessageIndex(user, inMessageUserLookup) {
+        if (inMessageUserLookup.inMessageIndexesById.has(user.id)) {
+            return inMessageUserLookup.inMessageIndexesById.get(user.id);
+        }
+        let userInMessageIndex = ++inMessageUserLookup.lastInMessageIndex;
+        inMessageUserLookup.inMessageIndexesById.set(user.id, userInMessageIndex);
+        return userInMessageIndex;
+    }
+    async serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserLookup) {
         let repositoryIdsToFindBy = [];
         for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
             repositoryIdsToFindBy.push(repositoryId);
@@ -116,14 +122,14 @@ export class SyncOutDataSerializer {
         const repositoryDao = await container(this).get(REPOSITORY_DAO);
         const repositories = await repositoryDao.findByIds(repositoryIdsToFindBy);
         for (const repository of repositories) {
-            let ownerActorInMessageIndex = this.getActorInMessageIndex(repository.ownerActor, lookups);
+            let userInMessageIndex = this.getUserInMessageIndex(repository.owner, inMessageUserLookup);
             if (lookups.repositoryInMessageIndexesById.has(repository.id)) {
                 const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository.id);
                 message.referencedRepositories[repositoryInMessageIndex] =
-                    this.serializeRepository(repository, ownerActorInMessageIndex);
+                    this.serializeRepository(repository, userInMessageIndex);
             }
             else {
-                message.history.repository.ownerActor = ownerActorInMessageIndex;
+                message.history.repository.owner = userInMessageIndex;
             }
         }
     }
@@ -303,13 +309,13 @@ export class SyncOutDataSerializer {
             [valueFieldName]: serailizedValue
         };
     }
-    serializeRepository(repository, ownerActor) {
+    serializeRepository(repository, owner) {
         return {
             ...WITH_ID,
             ageSuitability: repository.ageSuitability,
             createdAt: repository.createdAt,
             immutable: repository.immutable,
-            ownerActor,
+            owner,
             source: repository.source,
             uuId: repository.uuId
         };

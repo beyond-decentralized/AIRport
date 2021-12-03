@@ -1,8 +1,7 @@
 import { and } from '@airport/air-control'
 import { DI } from '@airport/di'
-import { ensureChildJsMap } from '@airport/ground-control'
 import {
-	UserId,
+	User_Id,
 	Terminal_UuId
 } from '../ddl/ddl'
 import { TERMINAL_DAO } from '../tokens'
@@ -18,7 +17,7 @@ export interface ITerminalDao
 	extends IBaseTerminalDao {
 
 	findByOwnerIdsAndUuIds(
-		ownerIds: UserId[],
+		ownerIds: User_Id[],
 		uuIds: Terminal_UuId[]
 	): Promise<ITerminal[]>;
 
@@ -37,7 +36,7 @@ export class TerminalDao
 	implements ITerminalDao {
 
 	async findByOwnerIdsAndUuIds(
-		ownerIds: UserId[],
+		ownerIds: User_Id[],
 		uuIds: Terminal_UuId[]
 	): Promise<ITerminal[]> {
 		let d: QTerminal

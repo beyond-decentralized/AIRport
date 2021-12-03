@@ -2,6 +2,7 @@ import { IApplicationVersion } from "@airport/airspace";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { Application_Id } from "@airport/ground-control";
 import { Actor_Id, IRecordHistory, IRepositoryTransactionHistory, Repository_Id } from "@airport/holding-pattern";
+import { User_Id } from "@airport/travel-document-checkpoint";
 export interface ISyncOutDataSerializer {
     serialize(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<RepositorySynchronizationMessage[]>;
 }
@@ -27,8 +28,12 @@ export interface InMessageLookupStructures {
     repositoryInMessageIndexesById: Map<Repository_Id, number>;
 }
 export interface InMessageApplicationLookup {
-    lastInMessageIndex: number;
     inMessageIndexesById: Map<Application_Id, number>;
+    lastInMessageIndex: number;
+}
+export interface InMessageUserLookup {
+    inMessageIndexesById: Map<User_Id, number>;
+    lastInMessageIndex: number;
 }
 export declare class SyncOutDataSerializer implements ISyncOutDataSerializer {
     serialize(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<RepositorySynchronizationMessage[]>;
@@ -37,6 +42,7 @@ export declare class SyncOutDataSerializer implements ISyncOutDataSerializer {
     private serializeTerminals;
     private serializeUsers;
     private addUserToMessage;
+    private getUserInMessageIndex;
     private serializeRepositories;
     private serializeApplicationsAndVersions;
     private serializeApplication;

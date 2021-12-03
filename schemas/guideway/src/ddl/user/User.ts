@@ -13,7 +13,7 @@ import {Terminal}                      from "../terminal/Terminal";
 import {SecurityAnswer}                from "./security/SecurityAnswer";
 import {UserRepository}                from "./UserRepository";
 
-export type UserId = number;
+export type User_Id = number;
 export type UserHash = string;
 export type UserEmail = string;
 export type UserIsInvitation = boolean;
@@ -24,7 +24,7 @@ export class User {
 
 	@Id()
 	@GeneratedValue()
-	id: UserId;
+	id: User_Id;
 
 	@Column({name: 'HASH', nullable: false})
 	@DbString()

@@ -1,6 +1,6 @@
 import {
-	IActor,
-} from '../infrastructure/actor';
+	IUser,
+} from '@airport/travel-document-checkpoint';
 import {
 	IRepositoryTransactionHistory,
 } from '../history/repositorytransactionhistory';
@@ -26,7 +26,7 @@ export interface IRepository {
 	uuId?: string;
 
 	// Non-Id Relations
-	ownerActor?: IActor;
+	owner?: IUser;
 	repositoryTransactionHistory?: IRepositoryTransactionHistory[];
 
 	// Transient Properties

@@ -39,7 +39,7 @@ export class SynchronizationInManager
 				.get(REPOSITORY_TRANSACTION_HISTORY_DAO, SYNC_IN_CHECKER, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
 
 		const existingRepositoryTransactionHistories = await repositoryTransactionHistoryDao
-			.findWhereUuIdIn([...messageMapByUuId.keys()])
+			.findWhereUuIdsIn([...messageMapByUuId.keys()])
 		for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
 			messageMapByUuId.delete(existingRepositoryTransactionHistory.uuId)
 		}
@@ -47,12 +47,6 @@ export class SynchronizationInManager
 		if (!messageMapByUuId.size) {
 			return
 		}
-
-		// TODO: add a signature check and prioritize adding of repository actors
-		// as a different message
-		// each actor will have a public key that they will distribute
-		// each message is signed with the private key and the initial
-		// message for repository is CREATE_REPOSITORY with the public key of the owner user
 
 		let messagesToProcess: RepositorySynchronizationMessage[] = []
 

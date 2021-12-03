@@ -1,6 +1,5 @@
-import { AIRPORT_DATABASE, ALL_FIELDS, and, Y } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { ensureChildJsMap } from '@airport/ground-control';
+import { ALL_FIELDS, and, Y } from '@airport/air-control';
+import { DI } from '@airport/di';
 import { REPOSITORY_DAO } from '../../tokens';
 import { BaseRepositoryDao, Q, } from '../../generated/generated';
 export class RepositoryDao extends BaseRepositoryDao {
@@ -31,7 +30,7 @@ export class RepositoryDao extends BaseRepositoryDao {
         return await this.db.find.tree({
             select: {
                 id,
-                ownerActor: {
+                owner: {
                     id
                 },
                 createdAt: Y,
@@ -45,52 +44,19 @@ export class RepositoryDao extends BaseRepositoryDao {
     }
     async findByIds(repositoryIds) {
         let r;
-        let a;
         return await this.db.find.tree({
             select: {
                 ...ALL_FIELDS,
-                ownerActor: {
+                owner: {
                     id: Y
                 }
             },
             from: [
                 r = Q.Repository,
-                a = r.ownerActor.innerJoin()
+                r.owner.innerJoin()
             ],
             where: r.id.in(repositoryIds)
         });
-    }
-    async findLocalRepoIdsByGlobalIds(createdAts, uuIds, ownerActorRandomIds, ownerUserUniqueIds, ownerTerminalUuids, ownerTerminalOwnerUserUniqueIds) {
-        const repositoryIdMap = new Map();
-        let repo;
-        let ownerActor;
-        let terminal;
-        let terminalUser;
-        let repoOwnerUser;
-        const airDb = await container(this).get(AIRPORT_DATABASE);
-        const resultRows = await airDb.find.sheet({
-            from: [
-                repo = Q.Repository,
-                ownerActor = repo.ownerActor.innerJoin(),
-                repoOwnerUser = ownerActor.user.innerJoin(),
-                terminal = ownerActor.terminal.innerJoin(),
-                terminalUser = terminal.owner.innerJoin(),
-            ],
-            select: [
-                terminalUser.uuId,
-                terminal.uuId,
-                repoOwnerUser.uuId,
-                ownerActor.uuId,
-                repo.createdAt,
-                repo.uuId,
-                repo.id,
-            ],
-            where: and(repo.createdAt.in(createdAts), repo.uuId.in(uuIds), ownerActor.uuId.in(ownerActorRandomIds), repoOwnerUser.uuId.in(ownerUserUniqueIds), terminal.uuId.in(ownerTerminalUuids), terminalUser.uuId.in(ownerTerminalOwnerUserUniqueIds))
-        });
-        for (const resultRow of resultRows) {
-            ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(repositoryIdMap, resultRow[0]), resultRow[1]), resultRow[2]), resultRow[3]), resultRow[4].getTime()).set(resultRow[5], resultRow[6]);
-        }
-        return repositoryIdMap;
     }
     async findByUuIds(uuIds) {
         let r;
@@ -108,7 +74,7 @@ export class RepositoryDao extends BaseRepositoryDao {
         for (const repository of repositories) {
             values.push([
                 repository.createdAt, repository.uuId, repository.ageSuitability,
-                repository.source, repository.immutable, repository.ownerActor.id,
+                repository.source, repository.immutable, repository.owner.id,
             ]);
         }
         await this.db.insertValuesGenerateIds({
@@ -119,7 +85,7 @@ export class RepositoryDao extends BaseRepositoryDao {
                 r.ageSuitability,
                 r.source,
                 r.immutable,
-                r.ownerActor.id
+                r.owner.id
             ],
             values
         });

@@ -17,6 +17,7 @@ import {
 import {
 	RepositoryTransactionHistory
 } from '../history/RepositoryTransactionHistory'
+import { User } from "@airport/travel-document-checkpoint";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -65,10 +66,10 @@ export class Repository {
 	// TODO: Does not have to be provided for repositoryReference, make nullable and adjust sync logic
 	@ManyToOne()
 	@JoinColumn({
-		name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
+		name: "OWNER_USER_ID", referencedColumnName: "ID",
 		nullable: false
 	})
-	ownerActor: Actor;
+	owner: User;
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];

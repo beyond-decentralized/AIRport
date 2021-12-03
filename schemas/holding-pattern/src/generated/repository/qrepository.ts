@@ -22,18 +22,16 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ActorGraph,
-	ActorEId,
-	ActorEOptionalId,
-	ActorEUpdateProperties,
-	ActorESelect,
-	QActor,
-	QActorQId,
-	QActorQRelation,
-} from '../infrastructure/qactor';
-import {
-	Actor,
-} from '../../ddl/infrastructure/Actor';
+	UserGraph,
+	UserEId,
+	UserEOptionalId,
+	UserEUpdateProperties,
+	UserESelect,
+	QUser,
+	QUserQId,
+	QUserQRelation,
+	User,
+} from '@airport/travel-document-checkpoint';
 import {
 	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
@@ -74,7 +72,7 @@ export interface RepositoryESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	ownerActor?: ActorESelect;
+	owner?: UserESelect;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 
 }
@@ -115,7 +113,7 @@ export interface RepositoryEUpdateProperties
 	uuId?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	ownerActor?: ActorEOptionalId;
+	owner?: UserEOptionalId;
 
 }
 
@@ -134,7 +132,7 @@ export interface RepositoryGraph
 	uuId?: string | IQStringField;
 
 	// Relations
-	ownerActor?: ActorGraph;
+	owner?: UserGraph;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
 
 }
@@ -150,7 +148,7 @@ export interface RepositoryEUpdateColumns
 	IMMUTABLE?: boolean | IQBooleanField;
 	SOURCE?: string | IQStringField;
 	UU_ID?: string | IQStringField;
-	OWNER_ACTOR_ID?: number | IQNumberField;
+	OWNER_USER_ID?: number | IQNumberField;
 
 }
 
@@ -193,7 +191,7 @@ export interface QRepository extends IQEntity<Repository>
 	uuId: IQStringField;
 
 	// Non-Id Relations
-	ownerActor: QActorQRelation;
+	owner: QUserQRelation;
 	repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
 
 }

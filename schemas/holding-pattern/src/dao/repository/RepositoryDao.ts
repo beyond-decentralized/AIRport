@@ -43,15 +43,6 @@ export interface IRepositoryDao
 		repositoryUuId: Repository_UuId
 	): Promise<IRepository>
 
-	findLocalRepoIdsByGlobalIds(
-		createdAts: Repository_CreatedAt[],
-		uuIds: Repository_UuId[],
-		ownerActorRandomIds: Actor_UuId[],
-		ownerUserUniqueIds: User_UuId[],
-		ownerTerminalUuids: Terminal_UuId[],
-		ownerTerminalOwnerUserUniqueIds: User_UuId[]
-	): Promise<RepositoryIdMap>;
-
 	findByIds(
 		repositoryIds: Repository_Id[]
 	): Promise<IRepository[]>;
@@ -114,7 +105,7 @@ export class RepositoryDao
 		return await this.db.find.tree({
 			select: {
 				id,
-				ownerActor: {
+				owner: {
 					id
 				},
 				createdAt: Y,
@@ -131,82 +122,20 @@ export class RepositoryDao
 		repositoryIds: Repository_Id[]
 	): Promise<IRepository[]> {
 		let r: QRepository
-		let a: QActor
 		return await this.db.find.tree({
 			select: {
 				...ALL_FIELDS,
-				ownerActor: {
+				owner: {
 					id: Y
 				}
 			},
 			from: [
 				r = Q.Repository,
-				a = r.ownerActor.innerJoin()
+				r.owner.innerJoin()
 			],
 			where:
 				r.id.in(repositoryIds)
 		})
-	}
-
-	async findLocalRepoIdsByGlobalIds(
-		createdAts: Repository_CreatedAt[],
-		uuIds: Repository_UuId[],
-		ownerActorRandomIds: Actor_UuId[],
-		ownerUserUniqueIds: User_UuId[],
-		ownerTerminalUuids: Terminal_UuId[],
-		ownerTerminalOwnerUserUniqueIds: User_UuId[]
-	): Promise<RepositoryIdMap> {
-		const repositoryIdMap: RepositoryIdMap = new Map()
-
-		let repo: QRepository
-		let ownerActor: QActor
-		let terminal: QTerminal
-		let terminalUser: QUser
-		let repoOwnerUser: QUser
-
-		const airDb = await container(this).get(AIRPORT_DATABASE)
-
-		const resultRows = await airDb.find.sheet({
-			from: [
-				repo = Q.Repository,
-				ownerActor = repo.ownerActor.innerJoin(),
-				repoOwnerUser = ownerActor.user.innerJoin(),
-				terminal = ownerActor.terminal.innerJoin(),
-				terminalUser = terminal.owner.innerJoin(),
-			],
-			select: [
-				terminalUser.uuId,
-				terminal.uuId,
-				repoOwnerUser.uuId,
-				ownerActor.uuId,
-				repo.createdAt,
-				repo.uuId,
-				repo.id,
-			],
-			where: and(
-				repo.createdAt.in(createdAts),
-				repo.uuId.in(uuIds),
-				ownerActor.uuId.in(ownerActorRandomIds),
-				repoOwnerUser.uuId.in(ownerUserUniqueIds),
-				terminal.uuId.in(ownerTerminalUuids),
-				terminalUser.uuId.in(ownerTerminalOwnerUserUniqueIds)
-			)
-		})
-
-		for (const resultRow of resultRows) {
-			ensureChildJsMap(
-				ensureChildJsMap(
-					ensureChildJsMap(
-						ensureChildJsMap(
-							ensureChildJsMap(repositoryIdMap, resultRow[0]),
-							resultRow[1]),
-						resultRow[2]),
-					resultRow[3]),
-				resultRow[4].getTime()).set(resultRow[5], resultRow[6])
-		}
-
-
-		return repositoryIdMap
 	}
 
 	async findByUuIds(
@@ -230,7 +159,7 @@ export class RepositoryDao
 		for (const repository of repositories) {
 			values.push([
 				repository.createdAt, repository.uuId, repository.ageSuitability,
-				repository.source, repository.immutable, repository.ownerActor.id,
+				repository.source, repository.immutable, repository.owner.id,
 			])
 		}
 		await this.db.insertValuesGenerateIds({
@@ -241,7 +170,7 @@ export class RepositoryDao
 				r.ageSuitability,
 				r.source,
 				r.immutable,
-				r.ownerActor.id
+				r.owner.id
 			],
 			values
 		})

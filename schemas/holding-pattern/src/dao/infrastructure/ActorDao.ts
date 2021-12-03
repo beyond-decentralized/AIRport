@@ -16,7 +16,7 @@ import {
 	QTerminal,
 	QUser,
 	TmTerminal_Id,
-	UserId
+	User_Id
 } from '@airport/travel-document-checkpoint'
 import {
 	Actor_Id,
@@ -40,15 +40,15 @@ export interface IActorDao
 
 	findWithDetailsByGlobalIds(
 		uuIds: Actor_UuId[],
-		userIds: UserId[],
+		userIds: User_Id[],
 		terminalIds: TmTerminal_Id[]
 	): Promise<IActor[]>;
 
 	findMapsWithDetailsByGlobalIds(
 		uuIds: Actor_UuId[],
-		userIds: UserId[],
+		userIds: User_Id[],
 		terminalIds: TmTerminal_Id[],
-		actorMap: Map<UserId, Map<TmTerminal_Id, IActor>>,
+		actorMap: Map<User_Id, Map<TmTerminal_Id, IActor>>,
 		actorMapById: Map<Actor_Id, IActor>
 	): Promise<void>;
 
@@ -80,9 +80,9 @@ export class ActorDao
 
 	async findMapsWithDetailsByGlobalIds(
 		uuIds: Actor_UuId[],
-		userIds: UserId[],
+		userIds: User_Id[],
 		terminalIds: TmTerminal_Id[],
-		actorMap: Map<UserId, Map<TmTerminal_Id, IActor>>,
+		actorMap: Map<User_Id, Map<TmTerminal_Id, IActor>>,
 		actorMapById: Map<Actor_Id, IActor>
 	): Promise<void> {
 		const actors = await this.findWithDetailsByGlobalIds(
@@ -100,7 +100,7 @@ export class ActorDao
 
 	async findWithDetailsByGlobalIds(
 		uuIds: Actor_UuId[],
-		userIds: UserId[],
+		userIds: User_Id[],
 		terminalIds: TmTerminal_Id[]
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((

@@ -23,7 +23,7 @@ import {
 	REPOSITORY_DAO,
 	Repository_Id
 } from "@airport/holding-pattern";
-import { IUser, TmTerminal_Id } from "@airport/travel-document-checkpoint";
+import { IUser, TmTerminal_Id, User_Id, User_UuId } from "@airport/travel-document-checkpoint";
 import { SYNC_OUT_DATA_SERIALIZER } from "../../../tokens";
 
 export interface ISyncOutDataSerializer {
@@ -59,8 +59,12 @@ export interface InMessageLookupStructures {
 }
 
 export interface InMessageApplicationLookup {
-	lastInMessageIndex: number
 	inMessageIndexesById: Map<Application_Id, number>
+	lastInMessageIndex: number
+}
+export interface InMessageUserLookup {
+	inMessageIndexesById: Map<User_Id, number>
+	lastInMessageIndex: number
 }
 
 export class SyncOutDataSerializer
@@ -104,9 +108,14 @@ export class SyncOutDataSerializer
 			terminals: []
 		}
 
+		const inMessageUserLookup: InMessageUserLookup = {
+			inMessageIndexesById: new Map(),
+			lastInMessageIndex: -1
+		}
 		// TODO: replace db lookups with TerminalState lookups where possible
-		await this.serializeRepositories(repositoryTransactionHistory, message, lookups)
-		const inMessageApplicationLookup = await this.serializeActorsUsersAndTerminals(message, lookups)
+		await this.serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserLookup)
+		const inMessageApplicationLookup = await this.serializeActorsUsersAndTerminals(
+			message, lookups, inMessageUserLookup)
 		await this.serializeApplicationsAndVersions(message, inMessageApplicationLookup)
 
 		return message
@@ -114,7 +123,8 @@ export class SyncOutDataSerializer
 
 	private async serializeActorsUsersAndTerminals(
 		message: RepositorySynchronizationMessage,
-		lookups: InMessageLookupStructures
+		lookups: InMessageLookupStructures,
+		inMessageUserLookup: InMessageUserLookup
 	): Promise<InMessageApplicationLookup> {
 		let actorIdsToFindBy: Actor_Id[] = []
 		for (let actorId of lookups.actorInMessageIndexesById.keys()) {
@@ -123,9 +133,9 @@ export class SyncOutDataSerializer
 		const actorDao = await container(this).get(ACTOR_DAO)
 		const actors = await actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy)
 
-		const userInMessageIndexesById = this.serializeUsers(actors, message)
+		const userInMessageIndexesById = this.serializeUsers(actors, message, inMessageUserLookup)
 		const terminalInMessageIndexesById =
-			this.serializeTerminals(actors, message, userInMessageIndexesById)
+			this.serializeTerminals(actors, message, inMessageUserLookup)
 
 		const inMessageApplicationLookup: InMessageApplicationLookup = {
 			lastInMessageIndex: -1,
@@ -140,7 +150,7 @@ export class SyncOutDataSerializer
 				...WITH_ID,
 				application: applicationInMessageIndex as any,
 				terminal: terminalInMessageIndexesById.get(actor.terminal.id) as any,
-				user: userInMessageIndexesById.get(actor.user.id) as any,
+				user: inMessageUserLookup.inMessageIndexesById.get(actor.user.id) as any,
 				uuId: actor.uuId
 			}
 		}
@@ -151,7 +161,7 @@ export class SyncOutDataSerializer
 	private serializeTerminals(
 		actors: IActor[],
 		message: RepositorySynchronizationMessage,
-		userInMessageIndexesById: Map<TmTerminal_Id, number>
+		inMessageUserLookup: InMessageUserLookup
 	): Map<TmTerminal_Id, number> {
 		let lastInMessageTerminalIndex = -1
 		const terminalInMessageIndexesById: Map<TmTerminal_Id, number> = new Map()
@@ -165,7 +175,7 @@ export class SyncOutDataSerializer
 			message.terminals[terminalInMessageIndex] = {
 				...WITH_ID,
 				uuId: terminal.uuId,
-				owner: userInMessageIndexesById.get(terminal.owner.id) as any
+				owner: inMessageUserLookup.inMessageIndexesById.get(terminal.owner.id) as any
 			}
 		}
 
@@ -174,35 +184,24 @@ export class SyncOutDataSerializer
 
 	private serializeUsers(
 		actors: IActor[],
-		message: RepositorySynchronizationMessage
-	): Map<TmTerminal_Id, number> {
-		let lastInMessageUserIndexHandle = {
-			index: -1
-		}
-		const userInMessageIndexesById: Map<TmTerminal_Id, number> = new Map()
+		message: RepositorySynchronizationMessage,
+		inMessageUserLookup: InMessageUserLookup
+	): void {
 		for (const actor of actors) {
-			this.addUserToMessage(actor.user, message, userInMessageIndexesById,
-				lastInMessageUserIndexHandle)
-			this.addUserToMessage(actor.terminal.owner, message, userInMessageIndexesById,
-				lastInMessageUserIndexHandle)
+			this.addUserToMessage(actor.user, message, inMessageUserLookup)
+			this.addUserToMessage(actor.terminal.owner, message, inMessageUserLookup)
 		}
-
-		return userInMessageIndexesById
 	}
 
 	private addUserToMessage(
 		user: IUser,
 		message: RepositorySynchronizationMessage,
-		userInMessageIndexesById: Map<TmTerminal_Id, number>,
-		lastInMessageUserIndexHandle: {
-			index: number
-		}
+		inMessageUserLookup: InMessageUserLookup
 	): void {
-		if (userInMessageIndexesById.has(user.id)) {
+		if (inMessageUserLookup.inMessageIndexesById.has(user.id)) {
 			return
 		}
-		let userInMessageIndex = ++lastInMessageUserIndexHandle.index
-		userInMessageIndexesById.set(user.id, userInMessageIndex)
+		let userInMessageIndex = this.getUserInMessageIndex(user, inMessageUserLookup)
 
 		message.users[userInMessageIndex] = {
 			...WITH_ID,
@@ -211,10 +210,24 @@ export class SyncOutDataSerializer
 		}
 	}
 
+	private getUserInMessageIndex(
+		user: IUser,
+		inMessageUserLookup: InMessageUserLookup
+	): number {
+		if (inMessageUserLookup.inMessageIndexesById.has(user.id)) {
+			return inMessageUserLookup.inMessageIndexesById.get(user.id)
+		}
+		let userInMessageIndex = ++inMessageUserLookup.lastInMessageIndex
+		inMessageUserLookup.inMessageIndexesById.set(user.id, userInMessageIndex)
+
+		return userInMessageIndex
+	}
+
 	private async serializeRepositories(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		message: RepositorySynchronizationMessage,
-		lookups: InMessageLookupStructures
+		lookups: InMessageLookupStructures,
+		inMessageUserLookup: InMessageUserLookup
 	): Promise<void> {
 		let repositoryIdsToFindBy: Repository_Id[] = []
 		for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
@@ -225,13 +238,13 @@ export class SyncOutDataSerializer
 		const repositories = await repositoryDao.findByIds(repositoryIdsToFindBy)
 
 		for (const repository of repositories) {
-			let ownerActorInMessageIndex = this.getActorInMessageIndex(repository.ownerActor, lookups)
+			let userInMessageIndex = this.getUserInMessageIndex(repository.owner, inMessageUserLookup)
 			if (lookups.repositoryInMessageIndexesById.has(repository.id)) {
 				const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository.id)
 				message.referencedRepositories[repositoryInMessageIndex] =
-					this.serializeRepository(repository, ownerActorInMessageIndex)
+					this.serializeRepository(repository, userInMessageIndex as any)
 			} else {
-				message.history.repository.ownerActor = ownerActorInMessageIndex
+				message.history.repository.owner = userInMessageIndex as any
 			}
 		}
 	}
@@ -477,14 +490,14 @@ export class SyncOutDataSerializer
 
 	private serializeRepository(
 		repository: IRepository,
-		ownerActor?: IActor
+		owner?: IUser
 	): IRepository {
 		return {
 			...WITH_ID,
 			ageSuitability: repository.ageSuitability,
 			createdAt: repository.createdAt,
 			immutable: repository.immutable,
-			ownerActor,
+			owner,
 			source: repository.source,
 			uuId: repository.uuId
 		}

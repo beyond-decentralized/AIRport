@@ -2017,81 +2017,10 @@ export const MAPPED_SUPERCLASS = [
 								"name": "username",
 								"relation": null,
 								"sinceVersion": null
-							},
-							{
-								"propertyColumns": [],
-								"entity": null,
-								"id": null,
-								"index": 3,
-								"isId": false,
-								"name": "userTerminal",
-								"relation": [
-									{
-										"isId": false,
-										"oneToManyElems": null,
-										"relationType": "ONE_TO_MANY",
-										"id": null,
-										"index": 0,
-										"property": null,
-										"manyRelationColumns": [],
-										"oneRelationColumns": [],
-										"relationEntity": null,
-										"sinceVersion": null
-									}
-								],
-								"sinceVersion": null
-							},
-							{
-								"propertyColumns": [],
-								"entity": null,
-								"id": null,
-								"index": 4,
-								"isId": false,
-								"name": "userTerminalAgts",
-								"relation": [
-									{
-										"isId": false,
-										"oneToManyElems": null,
-										"relationType": "ONE_TO_MANY",
-										"id": null,
-										"index": 1,
-										"property": null,
-										"manyRelationColumns": [],
-										"oneRelationColumns": [],
-										"relationEntity": null,
-										"sinceVersion": null
-									}
-								],
-								"sinceVersion": null
 							}
 						],
 						"relationReferences": [],
-						"relations": [
-							{
-								"isId": false,
-								"oneToManyElems": null,
-								"relationType": "ONE_TO_MANY",
-								"id": null,
-								"index": 0,
-								"property": null,
-								"manyRelationColumns": [],
-								"oneRelationColumns": [],
-								"relationEntity": null,
-								"sinceVersion": null
-							},
-							{
-								"isId": false,
-								"oneToManyElems": null,
-								"relationType": "ONE_TO_MANY",
-								"id": null,
-								"index": 1,
-								"property": null,
-								"manyRelationColumns": [],
-								"oneRelationColumns": [],
-								"relationEntity": null,
-								"sinceVersion": null
-							}
-						],
+						"relations": [],
 						"applicationVersion": null,
 						"sinceVersion": null,
 						"tableConfig": null
@@ -3187,81 +3116,10 @@ export const MAPPED_SUPERCLASS = [
 									"name": "username",
 									"relation": null,
 									"sinceVersion": null
-								},
-								{
-									"propertyColumns": [],
-									"entity": null,
-									"id": null,
-									"index": 3,
-									"isId": false,
-									"name": "userTerminal",
-									"relation": [
-										{
-											"isId": false,
-											"oneToManyElems": null,
-											"relationType": "ONE_TO_MANY",
-											"id": null,
-											"index": 0,
-											"property": null,
-											"manyRelationColumns": [],
-											"oneRelationColumns": [],
-											"relationEntity": null,
-											"sinceVersion": null
-										}
-									],
-									"sinceVersion": null
-								},
-								{
-									"propertyColumns": [],
-									"entity": null,
-									"id": null,
-									"index": 4,
-									"isId": false,
-									"name": "userTerminalAgts",
-									"relation": [
-										{
-											"isId": false,
-											"oneToManyElems": null,
-											"relationType": "ONE_TO_MANY",
-											"id": null,
-											"index": 1,
-											"property": null,
-											"manyRelationColumns": [],
-											"oneRelationColumns": [],
-											"relationEntity": null,
-											"sinceVersion": null
-										}
-									],
-									"sinceVersion": null
 								}
 							],
 							"relationReferences": [],
-							"relations": [
-								{
-									"isId": false,
-									"oneToManyElems": null,
-									"relationType": "ONE_TO_MANY",
-									"id": null,
-									"index": 0,
-									"property": null,
-									"manyRelationColumns": [],
-									"oneRelationColumns": [],
-									"relationEntity": null,
-									"sinceVersion": null
-								},
-								{
-									"isId": false,
-									"oneToManyElems": null,
-									"relationType": "ONE_TO_MANY",
-									"id": null,
-									"index": 1,
-									"property": null,
-									"manyRelationColumns": [],
-									"oneRelationColumns": [],
-									"relationEntity": null,
-									"sinceVersion": null
-								}
-							],
+							"relations": [],
 							"applicationVersion": null,
 							"sinceVersion": null,
 							"tableConfig": null

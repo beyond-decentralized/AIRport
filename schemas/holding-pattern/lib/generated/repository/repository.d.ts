@@ -1,4 +1,4 @@
-import { IActor } from '../infrastructure/actor';
+import { IUser } from '@airport/travel-document-checkpoint';
 import { IRepositoryTransactionHistory } from '../history/repositorytransactionhistory';
 export interface IRepository {
     id: number;
@@ -7,7 +7,7 @@ export interface IRepository {
     immutable?: boolean;
     source?: string;
     uuId?: string;
-    ownerActor?: IActor;
+    owner?: IUser;
     repositoryTransactionHistory?: IRepositoryTransactionHistory[];
 }
 //# sourceMappingURL=repository.d.ts.map

@@ -1,9 +1,8 @@
 import { Terminal_UuId, User_UuId } from '@airport/travel-document-checkpoint';
-import { Actor_UuId, Repository_Id, Repository_CreatedAt, Repository_Source, Repository_UuId } from '../../ddl/ddl';
+import { Actor_UuId, Repository_Id, Repository_Source, Repository_UuId } from '../../ddl/ddl';
 import { BaseRepositoryDao, IBaseRepositoryDao, IRepository } from '../../generated/generated';
 export interface IRepositoryDao extends IBaseRepositoryDao {
     getRepositoryLoadInfo(repositorySource: Repository_Source, repositoryUuId: Repository_UuId): Promise<IRepository>;
-    findLocalRepoIdsByGlobalIds(createdAts: Repository_CreatedAt[], uuIds: Repository_UuId[], ownerActorRandomIds: Actor_UuId[], ownerUserUniqueIds: User_UuId[], ownerTerminalUuids: Terminal_UuId[], ownerTerminalOwnerUserUniqueIds: User_UuId[]): Promise<RepositoryIdMap>;
     findByIds(repositoryIds: Repository_Id[]): Promise<IRepository[]>;
     findByUuIds(uuIds: Repository_UuId[]): Promise<IRepository[]>;
     insert(repositories: IRepository[]): Promise<void>;
@@ -13,7 +12,6 @@ export declare class RepositoryDao extends BaseRepositoryDao implements IReposit
     getRepositoryLoadInfo(repositorySource: Repository_Source, repositoryUuId: Repository_UuId): Promise<IRepository>;
     findReposWithDetailsAndSyncNodeIds(repositoryIds: Repository_Id[]): Promise<IRepository[]>;
     findByIds(repositoryIds: Repository_Id[]): Promise<IRepository[]>;
-    findLocalRepoIdsByGlobalIds(createdAts: Repository_CreatedAt[], uuIds: Repository_UuId[], ownerActorRandomIds: Actor_UuId[], ownerUserUniqueIds: User_UuId[], ownerTerminalUuids: Terminal_UuId[], ownerTerminalOwnerUserUniqueIds: User_UuId[]): Promise<RepositoryIdMap>;
     findByUuIds(uuIds: Repository_UuId[]): Promise<IRepository[]>;
     insert(repositories: IRepository[]): Promise<void>;
 }

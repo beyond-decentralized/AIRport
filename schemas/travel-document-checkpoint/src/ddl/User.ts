@@ -13,7 +13,7 @@ import { Country } from './Country';
 import { UserTerminal } from './UserTerminal'
 import { UserTerminalAgt } from './UserTerminalAgt'
 
-export type UserId = number;
+export type User_Id = number;
 export type User_UuId = string;
 export type User_Username = string;
 
@@ -23,7 +23,7 @@ export class User {
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	id: UserId;
+	id: User_Id;
 
 	@Column({ name: "UUID", nullable: false })
 	@DbString()

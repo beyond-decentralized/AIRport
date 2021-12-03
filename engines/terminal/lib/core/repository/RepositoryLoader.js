@@ -1,7 +1,7 @@
 import { REPOSITORY_LOADER } from "@airport/air-control";
 import { container, DI } from "@airport/di";
+import { SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATION_IN_MANAGER } from "@airport/ground-transport";
 import { REPOSITORY_DAO } from "@airport/holding-pattern";
-import { NONHUB_CLIENT } from "@airport/nonhub-client";
 export class RepositoryLoader {
     /*
     Repository can be loaded because:
@@ -14,15 +14,15 @@ export class RepositoryLoader {
         const repositoryDao = await container(this).get(REPOSITORY_DAO);
         const repositoryLoadInfo = await repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryUuId);
         let loadRepository = false;
-        let lastRemoteLoadTimestamp = 0;
+        let lastSyncTimestamp = 0;
         if (!repositoryLoadInfo) {
             loadRepository = true;
         }
         else if (!repositoryLoadInfo.immutable) {
             loadRepository = true;
             for (const remoteRepositoryTransactionHistory of repositoryLoadInfo.repositoryTransactionHistory) {
-                if (lastRemoteLoadTimestamp < remoteRepositoryTransactionHistory.saveTimestamp) {
-                    lastRemoteLoadTimestamp = remoteRepositoryTransactionHistory.saveTimestamp;
+                if (lastSyncTimestamp < remoteRepositoryTransactionHistory.saveTimestamp) {
+                    lastSyncTimestamp = remoteRepositoryTransactionHistory.saveTimestamp;
                 }
             }
         }
@@ -30,27 +30,39 @@ export class RepositoryLoader {
             return;
         }
         const now = new Date().getTime();
-        switch (repositorySource) {
-            case 'IPFS':
-                break;
-            default:
-                const nonhubClient = await container(this).get(NONHUB_CLIENT);
-                if (lastRemoteLoadTimestamp) {
-                    // If it's been less than 10 seconds, don't retrieve the repository
-                    if (lastRemoteLoadTimestamp >= now - 10000) {
-                        return;
-                    }
-                    // Check 100 seconds back, in case there were update issues
-                    lastRemoteLoadTimestamp -= 100000;
-                    await nonhubClient.getRepository(repositoryUuId, lastRemoteLoadTimestamp);
+        const [synchronizationAdapterLoader, synchronizationInManager] = await container(this).get(SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATION_IN_MANAGER);
+        const synchronizationAdapter = await synchronizationAdapterLoader
+            .load(repositorySource);
+        let messages;
+        try {
+            if (lastSyncTimestamp) {
+                // If it's been less than 10 seconds, don't retrieve the repository
+                if (lastSyncTimestamp >= now - 10000) {
+                    return;
                 }
-                else {
-                    await nonhubClient.getRepository(repositoryUuId);
-                }
-                // await nonhubClient.writeRepository(repositoryUuId, data)
-                break;
+                // Check 100 seconds back, in case there were update issues
+                lastSyncTimestamp -= 100000;
+                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryUuId, lastSyncTimestamp);
+            }
+            else {
+                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryUuId);
+            }
+            // TODO: Add a special message for repository for adding users
+            // into the repository 
+            // each user will have a public key that they will distribute
+            // each message is signed with the private key and the initial
+            // message for repository is CREATE_REPOSITORY with the public 
+            // key of the owner user
+            const messageMapByUuId = new Map();
+            for (const message of messages) {
+                messageMapByUuId.set(message.history.uuId, message);
+            }
+            await synchronizationInManager.receiveMessages(messageMapByUuId);
         }
-        // TODO: load repository into the database
+        catch (e) {
+            console.error(e);
+            return;
+        }
     }
 }
 DI.set(REPOSITORY_LOADER, RepositoryLoader);

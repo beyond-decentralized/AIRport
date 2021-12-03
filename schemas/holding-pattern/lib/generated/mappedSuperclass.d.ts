@@ -1271,7 +1271,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 isRepositoryEntity: boolean;
                 name: string;
                 propertyMap: any;
-                properties: ({
+                properties: {
                     propertyColumns: {
                         column: any;
                         property: any;
@@ -1284,40 +1284,9 @@ export declare const MAPPED_SUPERCLASS: ({
                     name: string;
                     relation: any;
                     sinceVersion: any;
-                } | {
-                    propertyColumns: any[];
-                    entity: any;
-                    id: any;
-                    index: number;
-                    isId: boolean;
-                    name: string;
-                    relation: {
-                        isId: boolean;
-                        oneToManyElems: any;
-                        relationType: string;
-                        id: any;
-                        index: number;
-                        property: any;
-                        manyRelationColumns: any[];
-                        oneRelationColumns: any[];
-                        relationEntity: any;
-                        sinceVersion: any;
-                    }[];
-                    sinceVersion: any;
-                })[];
-                relationReferences: any[];
-                relations: {
-                    isId: boolean;
-                    oneToManyElems: any;
-                    relationType: string;
-                    id: any;
-                    index: number;
-                    property: any;
-                    manyRelationColumns: any[];
-                    oneRelationColumns: any[];
-                    relationEntity: any;
-                    sinceVersion: any;
                 }[];
+                relationReferences: any[];
+                relations: any[];
                 applicationVersion: any;
                 sinceVersion: any;
                 tableConfig: any;
@@ -2116,7 +2085,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     isRepositoryEntity: boolean;
                     name: string;
                     propertyMap: any;
-                    properties: ({
+                    properties: {
                         propertyColumns: {
                             column: any;
                             property: any;
@@ -2129,40 +2098,9 @@ export declare const MAPPED_SUPERCLASS: ({
                         name: string;
                         relation: any;
                         sinceVersion: any;
-                    } | {
-                        propertyColumns: any[];
-                        entity: any;
-                        id: any;
-                        index: number;
-                        isId: boolean;
-                        name: string;
-                        relation: {
-                            isId: boolean;
-                            oneToManyElems: any;
-                            relationType: string;
-                            id: any;
-                            index: number;
-                            property: any;
-                            manyRelationColumns: any[];
-                            oneRelationColumns: any[];
-                            relationEntity: any;
-                            sinceVersion: any;
-                        }[];
-                        sinceVersion: any;
-                    })[];
-                    relationReferences: any[];
-                    relations: {
-                        isId: boolean;
-                        oneToManyElems: any;
-                        relationType: string;
-                        id: any;
-                        index: number;
-                        property: any;
-                        manyRelationColumns: any[];
-                        oneRelationColumns: any[];
-                        relationEntity: any;
-                        sinceVersion: any;
                     }[];
+                    relationReferences: any[];
+                    relations: any[];
                     applicationVersion: any;
                     sinceVersion: any;
                     tableConfig: any;

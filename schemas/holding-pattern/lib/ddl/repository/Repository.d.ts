@@ -1,5 +1,5 @@
-import { Actor } from '../infrastructure/Actor';
 import { RepositoryTransactionHistory } from '../history/RepositoryTransactionHistory';
+import { User } from "@airport/travel-document-checkpoint";
 /**
  * Created by Papa on 2/9/2017.
  */
@@ -16,7 +16,7 @@ export declare class Repository {
     immutable: Repository_Immutable;
     source: Repository_Source;
     uuId: Repository_UuId;
-    ownerActor: Actor;
+    owner: User;
     repositoryTransactionHistory: RepositoryTransactionHistory[];
 }
 //# sourceMappingURL=Repository.d.ts.map

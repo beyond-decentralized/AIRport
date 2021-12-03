@@ -9,10 +9,7 @@ export interface IRepositoryTransactionHistoryDao {
     findWhere(whereClauseFunction: {
         (rth: QRepositoryTransactionHistory, r: QRepository, oh?: QOperationHistory, rh?: QRecordHistory, rhnv?: QRecordHistoryNewValue): JSONLogicalOperation;
     }): Promise<IRepositoryTransactionHistory[]>;
-    findWhereIdsIn(idsInClause: RepositoryTransactionHistory_Id[] | RawFieldQuery<IQNumberField> | {
-        (...args: any[]): RawFieldQuery<IQNumberField>;
-    }): Promise<IRepositoryTransactionHistory[]>;
-    findWhereUuIdIn(uuIds: string[]): Promise<IRepositoryTransactionHistory[]>;
+    findWhereUuIdsIn(uuIds: string[]): Promise<IRepositoryTransactionHistory[]>;
     findExistingRecordIdMap(recordIdMap: Map<Repository_Id, Map<Actor_Id, Map<EntityId, Set<RepositoryEntity_ActorRecordId>>>>): Promise<Map<Repository_Id, Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>;
     findAllLocalChangesForRecordIds(changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
     updateSyncTimestamp(repositoryTransactionHistory: IRepositoryTransactionHistory): Promise<void>;
@@ -26,10 +23,7 @@ export declare class RepositoryTransactionHistoryDao extends BaseRepositoryTrans
     findWhere(whereClauseFunction: {
         (rth: QRepositoryTransactionHistory, r: QRepository, oh?: QOperationHistory, rh?: QRecordHistory): JSONBaseOperation;
     }): Promise<IRepositoryTransactionHistory[]>;
-    findWhereIdsIn(idsInClause: RepositoryTransactionHistory_Id[] | RawFieldQuery<IQNumberField> | {
-        (...args: any[]): RawFieldQuery<IQNumberField>;
-    }): Promise<IRepositoryTransactionHistory[]>;
-    findWhereUuIdIn(uuIds: string[]): Promise<IRepositoryTransactionHistory[]>;
+    findWhereUuIdsIn(uuIds: string[]): Promise<IRepositoryTransactionHistory[]>;
     findWithActorAndRepositoryWhere(whereClauseFunction: {
         (rth: QRepositoryTransactionHistory, a: QActor, r: QRepository): JSONBaseOperation;
     }): Promise<IRepositoryTransactionHistory[]>;

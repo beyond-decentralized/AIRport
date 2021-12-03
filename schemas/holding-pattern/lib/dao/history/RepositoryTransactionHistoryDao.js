@@ -53,10 +53,7 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
             where: whereClauseFunction(rth, r, oh, rh)
         });
     }
-    async findWhereIdsIn(idsInClause) {
-        return await this.findWhere((rth) => rth.id.in(idsInClause));
-    }
-    async findWhereUuIdIn(uuIds) {
+    async findWhereUuIdsIn(uuIds) {
         let rth;
         return await this.db.find.tree({
             select: {
@@ -80,7 +77,7 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
                 repository: {
                     createdAt: Y,
                     uuId: Y,
-                    ownerActor: {}
+                    owner: {}
                 },
                 transactionHistory: {
                     id: Y

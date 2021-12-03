@@ -38,10 +38,10 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: "OWNER_ACTOR_ID", referencedColumnName: "ID",
+        name: "OWNER_USER_ID", referencedColumnName: "ID",
         nullable: false
     })
-], Repository.prototype, "ownerActor", void 0);
+], Repository.prototype, "owner", void 0);
 __decorate([
     OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryTransactionHistory", void 0);

@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
+import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from '@airport/travel-document-checkpoint';
 import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
 import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransactionHistory';
 import { Repository } from '../../ddl/repository/Repository';
@@ -12,7 +12,7 @@ export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEO
     immutable?: boolean | IQBooleanField;
     source?: string | IQStringField;
     uuId?: string | IQStringField;
-    ownerActor?: ActorESelect;
+    owner?: UserESelect;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 }
 /**
@@ -36,7 +36,7 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     immutable?: boolean | IQBooleanField;
     source?: string | IQStringField;
     uuId?: string | IQStringField;
-    ownerActor?: ActorEOptionalId;
+    owner?: UserEOptionalId;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
@@ -47,7 +47,7 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
     immutable?: boolean | IQBooleanField;
     source?: string | IQStringField;
     uuId?: string | IQStringField;
-    ownerActor?: ActorGraph;
+    owner?: UserGraph;
     repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
 }
 /**
@@ -59,7 +59,7 @@ export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
     IMMUTABLE?: boolean | IQBooleanField;
     SOURCE?: string | IQStringField;
     UU_ID?: string | IQStringField;
-    OWNER_ACTOR_ID?: number | IQNumberField;
+    OWNER_USER_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -81,7 +81,7 @@ export interface QRepository extends IQEntity<Repository> {
     immutable: IQBooleanField;
     source: IQStringField;
     uuId: IQStringField;
-    ownerActor: QActorQRelation;
+    owner: QUserQRelation;
     repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
 }
 export interface QRepositoryQId {

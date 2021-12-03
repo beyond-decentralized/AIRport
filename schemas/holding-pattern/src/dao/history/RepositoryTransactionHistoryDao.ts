@@ -67,15 +67,7 @@ export interface IRepositoryTransactionHistoryDao {
 		}
 	): Promise<IRepositoryTransactionHistory[]>;
 
-	findWhereIdsIn(
-		idsInClause: RepositoryTransactionHistory_Id[]
-			| RawFieldQuery<IQNumberField>
-			| {
-				(...args: any[]): RawFieldQuery<IQNumberField>
-			}
-	): Promise<IRepositoryTransactionHistory[]>
-
-	findWhereUuIdIn(
+	findWhereUuIdsIn(
 		uuIds: string[]
 	): Promise<IRepositoryTransactionHistory[]>
 
@@ -174,19 +166,7 @@ export class RepositoryTransactionHistoryDao
 		})
 	}
 
-	async findWhereIdsIn(
-		idsInClause: RepositoryTransactionHistory_Id[]
-			| RawFieldQuery<IQNumberField>
-			| {
-				(...args: any[]): RawFieldQuery<IQNumberField>
-			},
-	): Promise<IRepositoryTransactionHistory[]> {
-		return await this.findWhere((
-			rth: QRepositoryTransactionHistory
-		) => rth.id.in(idsInClause))
-	}
-
-	async findWhereUuIdIn(
+	async findWhereUuIdsIn(
 		uuIds: string[]
 	): Promise<IRepositoryTransactionHistory[]> {
 		let rth: QRepositoryTransactionHistory
@@ -224,7 +204,7 @@ export class RepositoryTransactionHistoryDao
 				repository: {
 					createdAt: Y,
 					uuId: Y,
-					ownerActor: {}
+					owner: {}
 				},
 				transactionHistory: {
 					id: Y
