@@ -35,7 +35,7 @@ export class SyncInDataChecker {
                 throw new Error(`RepositorySynchronizationMessage.history.repositoryTransactionType cannot be specified`);
             }
             if (history.syncTimestamp) {
-                throw new Error(`RepositorySynchronizationMessage.history.synced cannot be specified`);
+                throw new Error(`RepositorySynchronizationMessage.history.syncTimestamp cannot be specified`);
             }
             const actor = message.actors[history.actor];
             if (!actor) {
@@ -96,7 +96,8 @@ export class SyncInDataChecker {
                 throw new Error(`Invalid operationHistory`);
             }
             if (operationHistory.orderNumber) {
-                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.orderNumber cannot be specified`);
+                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.orderNumber cannot be specified,
+				the position of orderHistory record determines it's order`);
             }
             operationHistory.orderNumber = ++orderNumber;
             switch (operationHistory.changeType) {

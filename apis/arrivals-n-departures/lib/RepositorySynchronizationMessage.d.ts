@@ -11,4 +11,20 @@ export interface RepositorySynchronizationMessage {
     users: IUser[];
     terminals: ITerminal[];
 }
+export interface RepositorySynchronizationWriteRequest {
+    messages: RepositorySynchronizationMessage[];
+    repositoryUuId: string;
+}
+export interface RepositorySynchronizationWriteResponse {
+    syncTimestamp: number;
+}
+export interface RepositorySynchronizationReadRequest {
+    repositoryUuId: string;
+    syncTimestamp?: number;
+}
+export interface RepositorySynchronizationReadResponse {
+    messages: RepositorySynchronizationMessage[];
+    repositoryUuId: string;
+    syncTimestamp: number;
+}
 //# sourceMappingURL=RepositorySynchronizationMessage.d.ts.map

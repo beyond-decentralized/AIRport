@@ -5,7 +5,7 @@ import { SYNC_OUT_DATA_SERIALIZER, SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATI
 export class SynchronizationOutManager {
     async synchronizeOut(repositoryTransactionHistories) {
         const [syncOutDataSerializer, synchronizationAdapterLoader] = await container(this).get(SYNC_OUT_DATA_SERIALIZER, SYNCHRONIZATION_ADAPTER_LOADER);
-        const messages = syncOutDataSerializer.serialize(repositoryTransactionHistories);
+        const messages = await syncOutDataSerializer.serialize(repositoryTransactionHistories);
         const groupMessageMap = this.groupMessagesBySourceAndRepository(messages);
         for (const [repositorySource, messageMapForSource] of groupMessageMap) {
             const synchronizationAdapter = await synchronizationAdapterLoader.load(repositorySource);

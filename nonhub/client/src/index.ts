@@ -1,16 +1,16 @@
 
+import {
+    RepositorySynchronizationMessage,
+    RepositorySynchronizationReadRequest,
+    RepositorySynchronizationReadResponse,
+    RepositorySynchronizationWriteRequest,
+    RepositorySynchronizationWriteResponse
+} from '@airport/arrivals-n-departures';
 import { DI, lib } from '@airport/di'
 import {
     decryptString,
     encryptString,
-    encryptStringSync
 } from "string-cipher";
-import {
-    IReadRequest,
-    IWriteReply,
-    IWriteRequest,
-    ServerState,
-} from '@airport/nonhub-types'
 import axios from 'axios';
 
 const client = lib('nonhub-client')
@@ -18,61 +18,78 @@ export const NONHUB_CLIENT = client.token<INonhubClient>('INonhubClient')
 
 export interface INonhubClient {
 
-    getRepository(
+    getRepositoryTransactions(
+        location: string,
         repositoryUuid: string,
-        transactionLogEntryTime?: number
-    ): Promise<any>
-    
-    writeRepository(
+        sinceSyncTimestamp?: number
+    ): Promise<RepositorySynchronizationReadResponse>
+
+    sendRepositoryTransactions(
+        location: string,
         repositoryUuId: string,
-        data: string
-    ): Promise<number>
+        messages: RepositorySynchronizationMessage[]
+    ): Promise<RepositorySynchronizationWriteResponse>
 
 }
 
 export class NonhubClient
     implements INonhubClient {
 
-    masterKey = 'ciw7p02f70000ysjon7gztjn7c2x7GfJ'
+    encryptionKey = process.env.ENCRYPTION_KEY
+    serverLocationProtocol = 'https://'
 
-    serverLocation = 'http://localhost:9000'
-
-    async getRepository(
+    async getRepositoryTransactions(
+        location: string,
         repositoryUuId: string,
-        transactionLogEntryTime: number = null
-    ): Promise<any> {
-        const textResponse = await this.sendMessage<IReadRequest, any>({
-            repositoryUuId,
-            transactionLogEntryTime
-        })
+        sinceSyncTimestamp: number = null
+    ): Promise<RepositorySynchronizationReadResponse> {
+        const response = await this.sendMessage<
+            RepositorySynchronizationReadRequest,
+            RepositorySynchronizationReadResponse>(location, {
+                repositoryUuId,
+                syncTimestamp: sinceSyncTimestamp
+            })
 
-        return JSON.parse(textResponse)
+        return response
     }
 
-    async writeRepository(
+    async sendRepositoryTransactions(
+        location: string,
         repositoryUuId: string,
-        data: string
-    ): Promise<number> {
-        const writeReply = await this.sendMessage<IWriteRequest, IWriteReply>({
-            data,
+        messages: RepositorySynchronizationMessage[]
+    ): Promise<RepositorySynchronizationWriteResponse> {
+        const writeReply = await this.sendMessage<
+            RepositorySynchronizationWriteRequest,
+            RepositorySynchronizationWriteResponse
+        >(location, {
+            messages,
             repositoryUuId
         })
 
-        return writeReply.transactionLogEntryTime
+        return writeReply
     }
 
     private async sendMessage<Req, Res>(
+        location: string,
         request: Req
     ): Promise<Res> {
-        const ecryptedMessage = await encryptString(
-            JSON.stringify(request), this.masterKey)
-        const response = await axios.put<string>(this.serverLocation + '/read', ecryptedMessage, {
+        let packagedMessage = JSON.stringify(request)
+        if (this.encryptionKey) {
+            packagedMessage = await encryptString(
+                packagedMessage, this.encryptionKey)
+        }
+        const response = await axios.put<string>(
+            this.serverLocationProtocol + location + '/read',
+            packagedMessage, {
             responseType: 'text'
         })
 
-        const decryptedMessage = await decryptString(response.data, this.masterKey)
+        let unpackagedMessage = response.data
+        if (this.encryptionKey) {
+            unpackagedMessage = await decryptString(unpackagedMessage, this.encryptionKey)
+        }
 
-        return JSON.parse(decryptedMessage)
+        return JSON.parse(unpackagedMessage)
     }
 
 }

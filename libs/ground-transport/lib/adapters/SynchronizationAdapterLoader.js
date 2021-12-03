@@ -7,7 +7,7 @@ export class SynchronizationAdapterLoader {
             case 'IPFS': {
                 throw new Error(`Not Implemented`);
             }
-            case 'localhost:8080': {
+            case 'localhost:9000': {
                 return new DebugSynchronizationAdapter();
             }
             default:

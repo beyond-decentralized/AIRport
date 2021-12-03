@@ -1,37 +1,33 @@
 import { ServerState, } from '@airport/nonhub-types';
 import { BasicServer } from '@airport/processor-common';
 import { decryptString, encryptStringSync } from "string-cipher";
-var masterKey = 'ciw7p02f70000ysjon7gztjn7c2x7GfJ';
+// var encryptionKey = 'ciw7p02f70000ysjon7gztjn7c2x7GfJ'
+var encryptionKey = process.env.ENCRYPTION_KEY;
 const EARLIEST_BIRTH_MONTH = Date.UTC(1900, 0);
 export const server = new BasicServer({
     logger: false,
 });
-let transactionLogs = new Map();
-/*
+const transactionLogs = new Map();
 server.fastify.register(require('fastify-cors'), {
-    origin: (
-        origin,
-        cb
-    ) => {
-        if (!origin || /my.favorite.host/.test(origin) || /localhost/.test(origin)) {
+    origin: (origin, cb) => {
+        if (!origin || /localhost/.test(origin)) {
             // Request from configured host or localhost (for testing) will pass
-            cb(null, true)
-            return
+            cb(null, true);
+            return;
         }
-        cb(new Error('Not allowed CORS host'), false)
+        cb(new Error('Not allowed CORS host'), false);
     }
-})
- */
+});
 server.fastify.put('/read', (request, reply) => {
-    serveReadRequest(request, reply, server.serverState, masterKey);
+    serveReadRequest(request, reply, server.serverState, encryptionKey);
 });
 server.fastify.put('/write', (request, reply) => {
-    serveWriteRequest(request, reply, server.serverState, masterKey);
+    serveWriteRequest(request, reply, server.serverState, encryptionKey);
 });
 server.fastify.put('/search', (request, reply) => {
     // TODO: implement
 });
-async function serveReadRequest(request, reply, serverState, masterKey) {
+async function serveReadRequest(request, reply, serverState, encryptionKey) {
     if (serverState !== ServerState.RUNNING) {
         reply.send('');
         return;
@@ -46,28 +42,34 @@ async function serveReadRequest(request, reply, serverState, masterKey) {
         return [];
     }
     let results = transactionLog;
-    if (readRequest.transactionLogEntryTime) {
+    if (readRequest.syncTimestamp) {
         results = [];
         for (let transactionLogEntry of transactionLog) {
-            if (transactionLogEntry.transactionLogEntryTime >= readRequest.transactionLogEntryTime) {
+            if (transactionLogEntry.syncTimestamp >= readRequest.syncTimestamp) {
                 results.push(transactionLogEntry);
             }
         }
     }
-    const ecryptedMessage = encryptStringSync(results.join('|'), masterKey);
-    reply.send(ecryptedMessage);
+    let packagedMessage;
+    if (encryptionKey) {
+        packagedMessage = encryptStringSync(results.join('|'), encryptionKey);
+    }
+    reply.send(packagedMessage);
 }
 async function processRequest(request) {
     try {
-        const decryptedMessage = await decryptString(request.body, masterKey);
-        return JSON.parse(decryptedMessage);
+        let unpackagedMessage;
+        if (encryptionKey) {
+            unpackagedMessage = await decryptString(request.body, encryptionKey);
+        }
+        return JSON.parse(unpackagedMessage);
     }
     catch (e) {
         console.log(e);
         return null;
     }
 }
-async function serveWriteRequest(request, reply, serverState, masterKey) {
+async function serveWriteRequest(request, reply, serverState, encryptionKey) {
     if (serverState !== ServerState.RUNNING) {
         reply.send('');
         return;
@@ -77,20 +79,24 @@ async function serveWriteRequest(request, reply, serverState, masterKey) {
         reply.send('');
         return;
     }
-    let transactionLogEntryTime = new Date().getTime();
+    const syncTimestamp = new Date().getTime();
+    const readResponse = {
+        ...writeRequest,
+        syncTimestamp
+    };
     let transactionLog = transactionLogs.get(writeRequest.repositoryUuId);
     if (!transactionLog) {
         transactionLog = [];
         transactionLogs.set(writeRequest.repositoryUuId, transactionLog);
     }
-    transactionLog.push({
-        ...writeRequest,
-        transactionLogEntryTime
+    transactionLog.push(readResponse);
+    let packagedMessage = JSON.stringify({
+        syncTimestamp
     });
-    const ecryptedMessage = encryptStringSync(JSON.stringify({
-        transactionLogEntryTime
-    }), masterKey);
-    reply.send(ecryptedMessage);
+    if (encryptionKey) {
+        packagedMessage = encryptStringSync(packagedMessage, encryptionKey);
+    }
+    reply.send(packagedMessage);
 }
 export function processSearchRequest(request, reply) {
     let searchRequest = request.body;
@@ -110,7 +116,7 @@ export function processSearchRequest(request, reply) {
     }
     // TODO: implement
 }
-export function processUserRequest(request, reply, masterKey) {
+export function processUserRequest(request, reply, encryptionKey) {
     const userRequest = request.body;
     const email = userRequest.email;
     const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;

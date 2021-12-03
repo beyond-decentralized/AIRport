@@ -5,8 +5,9 @@ export interface ISynchronizationAdapter {
 
     getTransactionsForRepository(
         repositorySource: Repository_Source,
-        repositoryUuId: Repository_UuId
-    ): Promise<RepositorySynchronizationMessage>
+        repositoryUuId: Repository_UuId,
+        sinceSyncTimestamp?: number
+    ): Promise<RepositorySynchronizationMessage[]>
 
     sendTransactions(
         repositorySource: Repository_Source,

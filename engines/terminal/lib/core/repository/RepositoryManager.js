@@ -64,7 +64,7 @@ export class RepositoryManager {
             // platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
             // platformConfig: null,
             repositoryTransactionHistory: [],
-            source: 'localhost:8080',
+            source: 'localhost:9000',
             uuId: uuidv4(),
         };
         return repository;

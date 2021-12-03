@@ -12,24 +12,9 @@ export class SyncInActorChecker {
                 if (typeof actor.uuId !== 'string' || actor.uuId.length !== 36) {
                     throw new Error(`Invalid 'terminal.uuid'`);
                 }
-                if (typeof actor.user !== 'number') {
-                    throw new Error(`Expecting "in-message index" (number)
-						in 'actor.user'`);
-                }
-                const user = message.users[actor.user];
-                if (!user) {
-                    throw new Error(`Did not find actor.user with "in-message index" ${actor.user}`);
-                }
-                actor.user = user;
-                if (typeof actor.terminal !== 'number') {
-                    throw new Error(`Expecting "in-message index" (number)
-						in 'actor.terminal'`);
-                }
-                const terminal = message.terminals[actor.terminal];
-                if (!terminal) {
-                    throw new Error(`Did not find actor.terminal with "in-message index" ${actor.terminal}`);
-                }
-                actor.terminal = terminal;
+                this.checkActorApplication(actor, message);
+                this.checkActorTerminal(actor, message);
+                this.checkActorUser(actor, message);
                 actorUuids.push(actor.uuId);
                 messageActorIndexMap.set(actor.uuId, i);
                 // Make sure id field is not in the input
@@ -51,6 +36,39 @@ export class SyncInActorChecker {
             return false;
         }
         return true;
+    }
+    checkActorApplication(actor, message) {
+        if (typeof actor.application !== 'number') {
+            throw new Error(`Expecting "in-message index" (number)
+			in 'actor.terminal'`);
+        }
+        const application = message.applications[actor.application];
+        if (!application) {
+            throw new Error(`Did not find actor.application with "in-message index" ${actor.application}`);
+        }
+        actor.application = application;
+    }
+    checkActorTerminal(actor, message) {
+        if (typeof actor.terminal !== 'number') {
+            throw new Error(`Expecting "in-message index" (number)
+			in 'actor.terminal'`);
+        }
+        const terminal = message.terminals[actor.terminal];
+        if (!terminal) {
+            throw new Error(`Did not find actor.terminal with "in-message index" ${actor.terminal}`);
+        }
+        actor.terminal = terminal;
+    }
+    checkActorUser(actor, message) {
+        if (typeof actor.user !== 'number') {
+            throw new Error(`Expecting "in-message index" (number)
+			in 'actor.user'`);
+        }
+        const user = message.users[actor.user];
+        if (!user) {
+            throw new Error(`Did not find actor.user with "in-message index" ${actor.user}`);
+        }
+        actor.user = user;
     }
 }
 DI.set(SYNC_IN_ACTOR_CHECKER, SyncInActorChecker);

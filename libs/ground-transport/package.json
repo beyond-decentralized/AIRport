@@ -7,10 +7,12 @@
     "@airport/ground-control": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
     "@airport/moving-walkway": "0.0.1",
+    "@airport/nonhub-client": "0.0.1",
     "@airport/terminal-map": "0.0.1",
     "@airport/tower": "0.0.1",
     "@airport/airspace": "0.0.1",
     "@airport/travel-document-checkpoint": "0.0.1",
+    "axios": "~0.24.0",
     "rxjs": "~7.4.0"
   },
   "main": "lib/index.js",

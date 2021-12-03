@@ -1,6 +1,10 @@
 import {
-    IReadRequest,
-    IWriteRequest,
+    RepositorySynchronizationReadRequest,
+    RepositorySynchronizationReadResponse,
+    RepositorySynchronizationWriteRequest,
+    RepositorySynchronizationWriteResponse
+} from '@airport/arrivals-n-departures';
+import {
     SearchRequest,
     ServerState,
     UserRequest,
@@ -8,24 +12,19 @@ import {
 import {
     BasicServer
 } from '@airport/processor-common'
-import type {
-    FastifyInstance,
-    FastifyLoggerInstance,
-    FastifyServerOptions,
-    RawReplyDefaultExpression,
-    RawRequestDefaultExpression,
-} from 'fastify'
 import * as http from 'http'
 import {
     decryptString,
     encryptStringSync
 } from "string-cipher";
+import { Repository_UuId } from '@airport/holding-pattern';
 
-var masterKey = 'ciw7p02f70000ysjon7gztjn7c2x7GfJ'
+// var encryptionKey = 'ciw7p02f70000ysjon7gztjn7c2x7GfJ'
+var encryptionKey = process.env.ENCRYPTION_KEY
 
 const EARLIEST_BIRTH_MONTH = Date.UTC(1900, 0)
 
-export const server = new BasicServer<http.Server>({
+export const server: BasicServer<http.Server> = new BasicServer<http.Server>({
     logger: false,
 })
 
@@ -35,15 +34,15 @@ export interface ITransactionLogEntry {
     transactionLogEntryTime: number
 }
 
-let transactionLogs: Map<string, ITransactionLogEntry[]> = new Map()
+const transactionLogs: Map<Repository_UuId, RepositorySynchronizationReadResponse[]>
+    = new Map()
 
-/* 
 server.fastify.register(require('fastify-cors'), {
     origin: (
         origin,
         cb
     ) => {
-        if (!origin || /my.favorite.host/.test(origin) || /localhost/.test(origin)) {
+        if (!origin || /localhost/.test(origin)) {
             // Request from configured host or localhost (for testing) will pass
             cb(null, true)
             return
@@ -51,8 +50,6 @@ server.fastify.register(require('fastify-cors'), {
         cb(new Error('Not allowed CORS host'), false)
     }
 })
- */
-
 
 server.fastify.put('/read', (
     request,
@@ -61,7 +58,7 @@ server.fastify.put('/read', (
     serveReadRequest(
         request, reply,
         server.serverState,
-        masterKey)
+        encryptionKey)
 })
 
 server.fastify.put('/write', (
@@ -71,7 +68,7 @@ server.fastify.put('/write', (
     serveWriteRequest(
         request, reply,
         server.serverState,
-        masterKey)
+        encryptionKey)
 })
 
 server.fastify.put('/search', (
@@ -85,13 +82,14 @@ async function serveReadRequest(
     request,
     reply,
     serverState: ServerState,
-    masterKey: string
+    encryptionKey: string
 ) {
     if (serverState !== ServerState.RUNNING) {
         reply.send('')
         return
     }
-    const readRequest = await processRequest<IReadRequest>(request.body)
+    const readRequest = await processRequest<RepositorySynchronizationReadRequest>(
+        request.body)
     if (!readRequest) {
         reply.send('')
         return
@@ -104,25 +102,31 @@ async function serveReadRequest(
     }
 
     let results = transactionLog
-    if (readRequest.transactionLogEntryTime) {
+    if (readRequest.syncTimestamp) {
         results = []
         for (let transactionLogEntry of transactionLog) {
-            if (transactionLogEntry.transactionLogEntryTime >= readRequest.transactionLogEntryTime) {
+            if (transactionLogEntry.syncTimestamp >= readRequest.syncTimestamp) {
                 results.push(transactionLogEntry)
             }
         }
     }
 
-    const ecryptedMessage = encryptStringSync(results.join('|'), masterKey)
-    reply.send(ecryptedMessage)
+    let packagedMessage
+    if (encryptionKey) {
+        packagedMessage = encryptStringSync(results.join('|'), encryptionKey)
+    }
+    reply.send(packagedMessage)
 }
 
 async function processRequest<Req>(
     request,
 ): Promise<Req> {
     try {
-        const decryptedMessage = await decryptString(request.body, masterKey)
-        return JSON.parse(decryptedMessage)
+        let unpackagedMessage
+        if (encryptionKey) {
+            unpackagedMessage = await decryptString(request.body, encryptionKey)
+        }
+        return JSON.parse(unpackagedMessage)
     } catch (e) {
         console.log(e)
         return null
@@ -133,35 +137,39 @@ async function serveWriteRequest(
     request,
     reply,
     serverState: ServerState,
-    masterKey: string
+    encryptionKey: string
 ) {
     if (serverState !== ServerState.RUNNING) {
         reply.send('')
         return
     }
-    const writeRequest = await processRequest<IWriteRequest>(request.body)
+    const writeRequest = await processRequest<RepositorySynchronizationWriteRequest>(request.body)
     if (!writeRequest) {
         reply.send('')
         return
     }
 
-    let transactionLogEntryTime = new Date().getTime()
+    const syncTimestamp = new Date().getTime()
+    const readResponse: RepositorySynchronizationReadResponse = {
+        ...writeRequest,
+        syncTimestamp
+    }
 
     let transactionLog = transactionLogs.get(writeRequest.repositoryUuId)
     if (!transactionLog) {
         transactionLog = []
         transactionLogs.set(writeRequest.repositoryUuId, transactionLog)
     }
-    transactionLog.push({
-        ...writeRequest,
-        transactionLogEntryTime
-    })
+    transactionLog.push(readResponse)
 
-    const ecryptedMessage = encryptStringSync(
-        JSON.stringify({
-            transactionLogEntryTime
-        }), masterKey)
-    reply.send(ecryptedMessage)
+    let packagedMessage = JSON.stringify({
+        syncTimestamp
+    } as RepositorySynchronizationWriteResponse)
+    if (encryptionKey) {
+        packagedMessage = encryptStringSync(
+            packagedMessage, encryptionKey)
+    }
+    reply.send(packagedMessage)
 }
 
 export function processSearchRequest(
@@ -190,7 +198,7 @@ export function processSearchRequest(
 export function processUserRequest(
     request,
     reply,
-    masterKey
+    encryptionKey
 ) {
     const userRequest: UserRequest = request.body
     const email = userRequest.email

@@ -72,13 +72,11 @@ dependencies:
   '@rush-temp/web-tower': 'file:projects/web-tower.tgz'
   '@rush-temp/websql': 'file:projects/websql.tgz'
   '@tsconfig/svelte': 2.0.1
-  '@types/gapi': 0.0.35
-  '@types/google-drive-realtime-api': 0.0.33
   '@types/pg': 8.6.1
   '@types/sql.js': 1.4.3
   '@types/uuid': 8.3.0
   async: 3.2.1
-  axios: 0.23.0
+  axios: 0.24.0
   cassandra-driver: 4.6.3
   cross-env: 7.0.3
   css-loader: 3.5.3_webpack@4.43.0
@@ -2457,12 +2455,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-XW2CMCmZaCmCCsIaJaLKxAzPwF37fXi1KGxNOvedOpeisLdmxZnblGc3hpHWYnlP+KOUxZsazh43WXNHgXpbqw==
-  /axios/0.23.0:
+  /axios/0.24.0:
     dependencies:
       follow-redirects: 1.14.4
     dev: false
     resolution:
-      integrity: sha512-NmvAE4i0YAv5cKq8zlDoPd1VLKAqX5oLuZKs8xkJa4qi6RGn0uhCYFjWtHHC9EM/MwOwYWOs53W+V0aqEXq1sg==
+      integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
   /babel-loader/8.2.2_02ab79faf18a98050fd2cd956ffa58f7:
     dependencies:
       '@babel/core': 7.15.5_@babel+core@7.15.5
@@ -10877,7 +10875,7 @@ packages:
     dev: false
     name: '@rush-temp/functionality-demo-schema'
     resolution:
-      integrity: sha512-uR6g96uU5f7Td+EcEHfxne1Go5d1HsBOBPJHvYGVHM6naZ/WURbkMN1Jy+AXSFmtC3EMIHCuYZCGiyVLLcun9w==
+      integrity: sha512-a10P1WS4Bt5dtygqFR6XC1Op69zkMIPfKttE6v71mOULp4eWFln0gELI9gSmrl9hCK1K2ThJqCIs0nBNcioi6w==
       tarball: 'file:projects/functionality-demo-schema.tgz'
     version: 0.0.0
   'file:projects/functionality-demo.tgz':
@@ -10963,12 +10961,13 @@ packages:
     dependencies:
       '@types/gapi': 0.0.35
       '@types/google-drive-realtime-api': 0.0.33
+      axios: 0.24.0
       rxjs: 7.4.0
       zipson: 0.2.12
     dev: false
     name: '@rush-temp/ground-transport'
     resolution:
-      integrity: sha512-UcD5Um9PbQySiwpq8MCj3KXULhz8vnWz6RUPJ5l/72ShEeX1LWWdChje2nj0JusE5KCGp0OJVAq5wGolk8/9nw==
+      integrity: sha512-0wIdvLWQQQMe93eRHHu5+IghKk4vnUYVLDw/qXaDXTAhAO8zNZbmTj/AJJBOar1eFEJkcWqCJWGOyqNREuqH4g==
       tarball: 'file:projects/ground-transport.tgz'
     version: 0.0.0
   'file:projects/guideway.tgz':
@@ -11112,7 +11111,7 @@ packages:
   'file:projects/nonhub-client.tgz':
     dependencies:
       '@types/node': 16.11.2
-      axios: 0.23.0
+      axios: 0.24.0
       fastify: 3.22.1
       fastify-cors: 6.0.2
       fastify-static: 4.4.2
@@ -11123,14 +11122,14 @@ packages:
     dev: false
     name: '@rush-temp/nonhub-client'
     resolution:
-      integrity: sha512-Tu8p7WOKRZwmZVdv0+N+oXLXcEUQgG7CTWOvWUT2xvQf8MmIUrNZebwkqXOurmAs9gG+tnTemIifd4jlPy4YjA==
+      integrity: sha512-KH2fgnFDizJXrs+oJY1HC8rq5aUDS+cg8e3esyK1Z5p8NymFU+PiONs8IGT6eNCoCYzpZ8ocSRvtpnqpym/vAg==
       tarball: 'file:projects/nonhub-client.tgz'
     version: 0.0.0
   'file:projects/nonhub-in-memory-server.tgz':
     dependencies:
       '@types/node': 16.11.2
       async: 3.2.1
-      axios: 0.23.0
+      axios: 0.24.0
       fastify: 3.22.1
       fastify-cors: 6.0.2
       string-cipher: 1.0.8
@@ -11140,14 +11139,14 @@ packages:
     dev: false
     name: '@rush-temp/nonhub-in-memory-server'
     resolution:
-      integrity: sha512-TxdAtI0qdpceB8IUIWkyHzG2UyKQU1SaiMT1jUOliEgW5enNePWrmHg1ekkVP9PWCJwtWzLJWDLYql6coFK6gA==
+      integrity: sha512-mXgVPlBEm8CTlXoXS21GgnPFx649HLLayRd4yFeBnBXUxa/oiiCCh2LAp/61dxb36pmfV+/ipr/oMAIPaTYeKg==
       tarball: 'file:projects/nonhub-in-memory-server.tgz'
     version: 0.0.0
   'file:projects/nonhub-server.tgz':
     dependencies:
       '@types/node': 16.11.2
       async: 3.2.1
-      axios: 0.23.0
+      axios: 0.24.0
       cassandra-driver: 4.6.3
       fastify: 3.22.1
       fastify-cors: 6.0.2
@@ -11158,7 +11157,7 @@ packages:
     dev: false
     name: '@rush-temp/nonhub-server'
     resolution:
-      integrity: sha512-XnHTLY2CDGKCkRMQySYy2QvREIBSHkItmU3TQCJvNNmo+kzFmjLzPB+SCI8H9f9h2PCs+aKVkYRITVxi2Gzj0w==
+      integrity: sha512-XTdtfd/gyzoobqAcPyrdhWDAZG+L3y8XYAhovHodKBzeY3fz4aZKWNT/ZhsBNd8JPdiLs0vOAiX2Kvx/U4rxbg==
       tarball: 'file:projects/nonhub-server.tgz'
     version: 0.0.0
   'file:projects/nonhub-types.tgz':
@@ -11170,7 +11169,7 @@ packages:
     dev: false
     name: '@rush-temp/nonhub-types'
     resolution:
-      integrity: sha512-oTAhwLDG8CnQTM6W0BBHJ/YR7afaYVRZ+FaJD/ELU1tNlozcD9rkiHu2D5T6jTry8YPmn6XviQvjb+38/4tBCg==
+      integrity: sha512-5YZgETLC9W1x1OOQESN65tOPrHBGqj68V1NOS6NafssBTdBpD37gSQQbfIE7/uvXllDFcLyQUBFij1sf41sP9g==
       tarball: 'file:projects/nonhub-types.tgz'
     version: 0.0.0
   'file:projects/point-of-destination.tgz':
@@ -11204,7 +11203,7 @@ packages:
   'file:projects/processor-common.tgz':
     dependencies:
       '@types/node': 16.11.2
-      axios: 0.23.0
+      axios: 0.24.0
       fastify: 3.22.1
       fastify-cors: 6.0.2
       fastify-static: 4.4.2
@@ -11218,7 +11217,7 @@ packages:
     dev: false
     name: '@rush-temp/processor-common'
     resolution:
-      integrity: sha512-3WRa04NfDZwOOhD6Qd5bfStdqY3o+GxRIES7zyDVAF4aTRcN+NdLlrcc72HV/E6BcZbo8UOFHkDtFIjoC1JS8g==
+      integrity: sha512-JlkRKsAnXGlWF2rwYO4fBv7Yjcs7BOo4KSDSvAkbgBfT4Xqu3mi19sm/gUNQzfQxXDvJh+dnjz+ierD83K4EYg==
       tarball: 'file:projects/processor-common.tgz'
     version: 0.0.0
   'file:projects/ramp.tgz':
@@ -11487,13 +11486,11 @@ specifiers:
   '@rush-temp/web-tower': 'file:./projects/web-tower.tgz'
   '@rush-temp/websql': 'file:./projects/websql.tgz'
   '@tsconfig/svelte': ^2.0.0
-  '@types/gapi': ^0.0.35
-  '@types/google-drive-realtime-api': ^0.0.33
   '@types/pg': latest
   '@types/sql.js': ^1.4.3
   '@types/uuid': ^8.3.0
   async: ^3.2.1
-  axios: ^0.23.0
+  axios: ~0.24.0
   cassandra-driver: ^4.6.3
   cross-env: ^7.0.2
   css-loader: ^3.5.3

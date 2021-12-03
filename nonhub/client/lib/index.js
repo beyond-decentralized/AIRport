@@ -1,34 +1,40 @@
 import { DI, lib } from '@airport/di';
-import { decryptString, encryptString } from "string-cipher";
+import { decryptString, encryptString, } from "string-cipher";
 import axios from 'axios';
 const client = lib('nonhub-client');
 export const NONHUB_CLIENT = client.token('INonhubClient');
 export class NonhubClient {
     constructor() {
-        this.masterKey = 'ciw7p02f70000ysjon7gztjn7c2x7GfJ';
-        this.serverLocation = 'http://localhost:9000';
+        this.encryptionKey = process.env.ENCRYPTION_KEY;
+        this.serverLocationProtocol = 'https://';
     }
-    async getRepository(repositoryUuId, transactionLogEntryTime = null) {
-        const textResponse = await this.sendMessage({
+    async getRepositoryTransactions(location, repositoryUuId, sinceSyncTimestamp = null) {
+        const response = await this.sendMessage(location, {
             repositoryUuId,
-            transactionLogEntryTime
+            syncTimestamp: sinceSyncTimestamp
         });
-        return JSON.parse(textResponse);
+        return response;
     }
-    async writeRepository(repositoryUuId, data) {
-        const writeReply = await this.sendMessage({
-            data,
+    async sendRepositoryTransactions(location, repositoryUuId, messages) {
+        const writeReply = await this.sendMessage(location, {
+            messages,
             repositoryUuId
         });
-        return writeReply.transactionLogEntryTime;
+        return writeReply;
     }
-    async sendMessage(request) {
-        const ecryptedMessage = await encryptString(JSON.stringify(request), this.masterKey);
-        const response = await axios.put(this.serverLocation + '/read', ecryptedMessage, {
+    async sendMessage(location, request) {
+        let packagedMessage = JSON.stringify(request);
+        if (this.encryptionKey) {
+            packagedMessage = await encryptString(packagedMessage, this.encryptionKey);
+        }
+        const response = await axios.put(this.serverLocationProtocol + location + '/read', packagedMessage, {
             responseType: 'text'
         });
-        const decryptedMessage = await decryptString(response.data, this.masterKey);
-        return JSON.parse(decryptedMessage);
+        let unpackagedMessage = response.data;
+        if (this.encryptionKey) {
+            unpackagedMessage = await decryptString(unpackagedMessage, this.encryptionKey);
+        }
+        return JSON.parse(unpackagedMessage);
     }
 }
 DI.set(NONHUB_CLIENT, NonhubClient);
