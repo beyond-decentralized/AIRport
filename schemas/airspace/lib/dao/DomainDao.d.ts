@@ -5,6 +5,7 @@ export interface IDomainDao extends IBaseDomainDao {
     findMapByNameWithNames(domainNames: DomainName[]): Promise<Map<DomainName, IDomain>>;
     findOneByName(domainName: DomainName): Promise<IDomain>;
     findByNames(domainNames: DomainName[]): Promise<IDomain[]>;
+    findByName(domainName: DomainName): Promise<IDomain>;
     checkAndInsertIfNeeded(domains: IDomain[]): Promise<void>;
     insert(domains: IDomain[]): Promise<void>;
 }
@@ -13,6 +14,7 @@ export declare class DomainDao extends BaseDomainDao implements IDomainDao {
     findMapByNameWithNames(domainNames: DomainName[]): Promise<Map<DomainName, IDomain>>;
     findOneByName(name: DomainName): Promise<IDomain>;
     findByNames(names: DomainName[]): Promise<IDomain[]>;
+    findByName(name: DomainName): Promise<IDomain>;
     checkAndInsertIfNeeded(domains: IDomain[]): Promise<void>;
     insert(domains: IDomain[]): Promise<void>;
 }

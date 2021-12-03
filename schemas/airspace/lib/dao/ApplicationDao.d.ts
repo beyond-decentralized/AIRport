@@ -19,6 +19,7 @@ export interface IApplicationDao extends IBaseApplicationDao {
     setStatusByIndexes(indexes: ApplicationIndex[], status: ApplicationStatus): Promise<void>;
     findMapByNames(applicationNames: ApplicationName[]): Promise<Map<ApplicationName, IApplication>>;
     findByDomainNamesAndApplicationNames(domainNames: string[], applicationNames: string[]): Promise<IApplication[]>;
+    findByIndex(index: ApplicationIndex): Promise<IApplication>;
     insert(applications: IApplication[]): Promise<void>;
 }
 export declare class ApplicationDao extends BaseApplicationDao implements IApplicationDao {
@@ -29,6 +30,7 @@ export declare class ApplicationDao extends BaseApplicationDao implements IAppli
     setStatusByIndexes(indexes: ApplicationIndex[], status: ApplicationStatus): Promise<void>;
     findMapByNames(applicationNames: ApplicationName[]): Promise<Map<ApplicationName, IApplication>>;
     findByDomainNamesAndApplicationNames(domainNames: string[], applicationNames: string[]): Promise<IApplication[]>;
+    findByIndex(index: ApplicationIndex): Promise<IApplication>;
     insert(applications: IApplication[]): Promise<void>;
 }
 //# sourceMappingURL=ApplicationDao.d.ts.map

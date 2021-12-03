@@ -226,6 +226,7 @@ export class ApplicationComposer {
                 name: applicationName,
                 packageName: jsonApplication.name,
                 scope: 'public',
+                signature: 'bogus',
                 status: ApplicationStatus.CURRENT,
             };
             allApplications.push(application);

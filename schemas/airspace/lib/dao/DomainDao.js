@@ -41,6 +41,14 @@ export class DomainDao extends BaseDomainDao {
             where: d.name.in(names)
         });
     }
+    async findByName(name) {
+        let d;
+        return await this.db.findOne.tree({
+            select: {},
+            from: [d = Q.Domain],
+            where: d.name.equals(name)
+        });
+    }
     async checkAndInsertIfNeeded(domains) {
         const existingDomains = await this.findByIdIn(domains.map(domain => domain.id));
         const existingDomainMap = new Map();

@@ -31,6 +31,10 @@ export interface IDomainDao
 		domainNames: DomainName[]
 	): Promise<IDomain[]>
 
+	findByName(
+		domainName: DomainName
+	): Promise<IDomain>
+
 	checkAndInsertIfNeeded(
 		domains: IDomain[]
 	): Promise<void>
@@ -97,6 +101,17 @@ export class DomainDao
 			select: {},
 			from: [d = Q.Domain],
 			where: d.name.in(names)
+		})
+	}
+
+	async findByName(
+		name: DomainName
+	): Promise<IDomain> {
+		let d: QDomain
+		return await this.db.findOne.tree({
+			select: {},
+			from: [d = Q.Domain],
+			where: d.name.equals(name)
 		})
 	}
 

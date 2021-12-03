@@ -28,6 +28,7 @@ export class DeleteManager {
             jsonQuery: jsonSelect,
             queryResultType: QueryResultType.ENTITY_TREE,
             parameterMap: portableQuery.parameterMap,
+            // values: portableQuery.values,
         };
         const treesToDelete = await transaction
             .find(portableSelect, {}, context);

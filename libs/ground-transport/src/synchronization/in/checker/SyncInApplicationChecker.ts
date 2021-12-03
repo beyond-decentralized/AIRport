@@ -107,7 +107,7 @@ export class SyncInApplicationChecker
                     name,
                     scope: 'private',
                     status: ApplicationStatus.STUB,
-                    signature: null
+                    signature: 'bogus'
                 }
                 applicationCheck.application = application
                 applicationsToCreate.push(application)

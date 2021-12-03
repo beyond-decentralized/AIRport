@@ -19,22 +19,13 @@ export class InternalRecordManager {
                 return;
             }
             actor = await actorDao.findByApplicationSignature(signature);
-            let aApplication;
+            let anApplication;
             if (!actor) {
-                aApplication = {
-                    domain,
-                    index: null,
-                    name: application.name,
-                    packageName: 'bogus',
-                    scope: 'private',
-                    status: 'CURRENT'
-                };
-                await applicationDao.save(aApplication);
+                anApplication = await applicationDao.findByIndex(application.lastIds.applications + 1);
                 const frameworkActor = terminalStore.getFrameworkActor();
                 actor = {
                     id: null,
-                    repositoryActors: [],
-                    application: aApplication,
+                    application: anApplication,
                     terminal: frameworkActor.terminal,
                     user: frameworkActor.user,
                     uuId: uuidv4()
@@ -42,11 +33,11 @@ export class InternalRecordManager {
                 await actorDao.save(actor);
             }
             else {
-                aApplication = actor.application;
+                anApplication = actor.application;
             }
             const lastTerminalState = terminalStore.getTerminalState();
             const applications = lastTerminalState.applications.slice();
-            applications.push(application);
+            applications.push(anApplication);
             const applicationActors = lastTerminalState.applicationActors.slice();
             applicationActors.push(actor);
             terminalStore.state.next({

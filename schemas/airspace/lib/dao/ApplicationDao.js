@@ -188,26 +188,37 @@ export class ApplicationDao extends BaseApplicationDao {
             ]
         });
     }
+    async findByIndex(index) {
+        let a;
+        return await this.db.findOne.tree({
+            select: {},
+            from: [
+                a = Q.Application
+            ],
+            where: a.index.equals(index)
+        });
+    }
     async insert(applications) {
-        let s;
+        let a;
         const values = [];
         for (const application of applications) {
             values.push([
                 application.index, application.domain.id, application.scope,
                 application.name, application.packageName, application.status,
-                application.jsonApplication
+                application.signature, application.jsonApplication
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            insertInto: s = Q.Application,
+            insertInto: a = Q.Application,
             columns: [
-                s.index,
-                s.domain.id,
-                s.scope,
-                s.name,
-                s.packageName,
-                s.status,
-                s.jsonApplication
+                a.index,
+                a.domain.id,
+                a.scope,
+                a.name,
+                a.packageName,
+                a.status,
+                a.signature,
+                a.jsonApplication
             ],
             values
         });
