@@ -29,7 +29,7 @@ import {
 	IInitConnectionIMO
 } from '@airport/security-check';
 import {
-	APPLICATION_INITIALIZER,
+	APPLICATION_LOADER,
 	LOCAL_API_SERVER
 } from '@airport/security-check'
 import { IApplicationVersion } from '@airport/airspace'
@@ -496,12 +496,12 @@ export class IframeTransactionalConnector
 				return false
 			case AppState.START_INITIALIZING:
 				this.appState = AppState.INITIALIZING_IN_PROGRESS
-				const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER)
-				await applicationInitializer.initialize(this.lastIds)
+				const applicationLoader = await container(this).get(APPLICATION_LOADER)
+				await applicationLoader.load(this.lastIds)
 				this.appState = AppState.INITIALIZED
 				window.parent.postMessage({
 					...this.getCoreFields(),
-					applicationName: getApplicationName(applicationInitializer.getApplication()),
+					applicationName: getApplicationName(applicationLoader.getApplication()),
 					type: IsolateMessageType.APP_INITIALIZED
 				}, hostServer)
 				return true
@@ -509,11 +509,11 @@ export class IframeTransactionalConnector
 				return true
 		}
 
-		const applicationInitializer = await DI.db().get(APPLICATION_INITIALIZER)
+		const applicationLoader = await DI.db().get(APPLICATION_LOADER)
 
 		let message: IInitConnectionIMI = {
 			...this.getCoreFields(),
-			application: applicationInitializer.getApplication(),
+			application: applicationLoader.getApplication(),
 			type: IsolateMessageType.APP_INITIALIZING
 		}
 

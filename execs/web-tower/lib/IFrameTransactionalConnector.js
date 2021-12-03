@@ -1,7 +1,7 @@
 import { container, DI } from '@airport/di';
 import { getApplicationName, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
-import { APPLICATION_INITIALIZER, LOCAL_API_SERVER } from '@airport/security-check';
+import { APPLICATION_LOADER, LOCAL_API_SERVER } from '@airport/security-check';
 import { Observable } from 'rxjs';
 // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
 // and debugging (http://localhost:7000)
@@ -322,22 +322,22 @@ export class IframeTransactionalConnector {
                 return false;
             case AppState.START_INITIALIZING:
                 this.appState = AppState.INITIALIZING_IN_PROGRESS;
-                const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER);
-                await applicationInitializer.initialize(this.lastIds);
+                const applicationLoader = await container(this).get(APPLICATION_LOADER);
+                await applicationLoader.load(this.lastIds);
                 this.appState = AppState.INITIALIZED;
                 window.parent.postMessage({
                     ...this.getCoreFields(),
-                    applicationName: getApplicationName(applicationInitializer.getApplication()),
+                    applicationName: getApplicationName(applicationLoader.getApplication()),
                     type: IsolateMessageType.APP_INITIALIZED
                 }, hostServer);
                 return true;
             case AppState.INITIALIZED:
                 return true;
         }
-        const applicationInitializer = await DI.db().get(APPLICATION_INITIALIZER);
+        const applicationLoader = await DI.db().get(APPLICATION_LOADER);
         let message = {
             ...this.getCoreFields(),
-            application: applicationInitializer.getApplication(),
+            application: applicationLoader.getApplication(),
             type: IsolateMessageType.APP_INITIALIZING
         };
         window.parent.postMessage(message, hostServer);
