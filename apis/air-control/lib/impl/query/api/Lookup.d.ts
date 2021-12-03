@@ -6,9 +6,6 @@ import { IAbstractQuery } from '../../../lingo/query/facade/AbstractQuery';
 import { RawQuery } from '../../../lingo/query/facade/Query';
 import { IQueryContext } from '../../../lingo/query/QueryContext';
 export declare class LookupProxy implements ILookup {
-    protected repositorySource: string;
-    protected repositoryUuid: string;
-    constructor(repositorySource?: string, repositoryUuid?: string);
     ensureContext<C extends IContext = IContext>(context?: C): C;
     lookup(rawQuery: RawQuery | {
         (...args: any[]): RawQuery;

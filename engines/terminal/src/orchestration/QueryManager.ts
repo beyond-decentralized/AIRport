@@ -71,9 +71,9 @@ export class QueryManager
 	private async ensureRepositoryPresenceAndCurrentState(
 		context: IQueryOperationContext
 	) {
-		if (context.repositorySource && context.repositoryUuid) {
+		if (context.repository && context.repository.source && context.repository.uuId) {
 			const repositoryLoader = await DI.db().get(REPOSITORY_LOADER)
-			await repositoryLoader.loadRepository(context.repositorySource, context.repositoryUuid)
+			await repositoryLoader.loadRepository(context.repository.source, context.repository.uuId)
 		}
 	}
 

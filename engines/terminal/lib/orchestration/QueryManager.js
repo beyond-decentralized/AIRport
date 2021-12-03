@@ -30,9 +30,9 @@ export class QueryManager {
         return storeDriver.searchOne(portableQuery, {}, context, cachedSqlQueryId);
     }
     async ensureRepositoryPresenceAndCurrentState(context) {
-        if (context.repositorySource && context.repositoryUuid) {
+        if (context.repository && context.repository.source && context.repository.uuId) {
             const repositoryLoader = await DI.db().get(REPOSITORY_LOADER);
-            await repositoryLoader.loadRepository(context.repositorySource, context.repositoryUuid);
+            await repositoryLoader.loadRepository(context.repository.source, context.repository.uuId);
         }
     }
 }

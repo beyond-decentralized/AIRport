@@ -3,7 +3,7 @@ import { DbEntity, IAbstractQueryContext } from '@airport/ground-control'
 
 export interface IEntityContext
 	extends IContext {
-	dbEntity: DbEntity
+	dbEntity?: DbEntity
 }
 
 

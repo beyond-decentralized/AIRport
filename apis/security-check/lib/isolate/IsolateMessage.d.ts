@@ -55,8 +55,10 @@ export interface IPortableQueryIMI extends IIsolateMessage {
 export interface IReadQueryIMI extends IPortableQueryIMI {
     cachedSqlQueryId?: number;
     portableQuery: PortableQuery;
-    repositorySource: string;
-    repositoryUuid: string;
+    repository?: {
+        source: string;
+        uuid?: string;
+    };
 }
 export interface IDataIMO<T> extends IIsolateMessageOut<T> {
 }

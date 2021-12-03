@@ -57,10 +57,8 @@ export abstract class EntityLookup<Child, MappedChild,
 	constructor(
 		protected dbEntity: DbEntity,
 		protected mapResults = EntityLookup.mapResults,
-		repositorySource: string = null,
-		repositoryUuid: string = null,
 	) {
-		super(repositorySource, repositoryUuid)
+		super()
 	}
 
 	abstract map(
@@ -94,8 +92,6 @@ export abstract class EntityLookup<Child, MappedChild,
 		context: IEntityQueryContext
 	): Promise<any> {
 		context.dbEntity = this.dbEntity
-		context.repositorySource = this.repositorySource
-		context.repositoryUuid = this.repositoryUuid
 
 		const result = await this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)

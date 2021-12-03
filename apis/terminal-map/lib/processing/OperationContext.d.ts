@@ -24,8 +24,6 @@ export interface IOperationContext extends IContext {
     newRepository?: IRepository;
 }
 export interface IQueryOperationContext extends IOperationContext {
-    repositorySource?: string;
-    repositoryUuid?: string;
 }
 export interface IIocOperationContext {
     airDb: IAirportDatabase;

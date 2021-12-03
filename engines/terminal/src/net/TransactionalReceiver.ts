@@ -103,8 +103,7 @@ export abstract class TransactionalReceiver {
                         credentials,
                         {
                             ...context as any,
-                            repositorySource: findMessage.repositorySource,
-                            repositoryUuId: findMessage.repositoryUuid
+                            repository: findMessage.repository
                         } as IQueryOperationContext
                     )
                     break
@@ -115,8 +114,7 @@ export abstract class TransactionalReceiver {
                         credentials,
                         {
                             ...context as any,
-                            repositorySource: findMessage.repositorySource,
-                            repositoryUuId: findMessage.repositoryUuid
+                            repository: findMessage.repository,
                         } as IQueryOperationContext
                     )
                     break
@@ -182,8 +180,7 @@ export abstract class TransactionalReceiver {
                         credentials,
                         {
                             ...context as any,
-                            repositorySource: findMessage.repositorySource,
-                            repositoryUuId: findMessage.repositoryUuid
+                            repository: findMessage.repository,
                         } as IQueryOperationContext
                     )
                     break
@@ -194,8 +191,7 @@ export abstract class TransactionalReceiver {
                         credentials,
                         {
                             ...context as any,
-                            repositorySource: findMessage.repositorySource,
-                            repositoryUuId: findMessage.repositoryUuid
+                            repository: findMessage.repository,
                         } as IQueryOperationContext
                     )
                     break

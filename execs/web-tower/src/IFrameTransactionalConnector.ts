@@ -184,8 +184,7 @@ export class IframeTransactionalConnector
 			...this.getCoreFields(),
 			cachedSqlQueryId,
 			portableQuery,
-			repositorySource: context.repositorySource,
-			repositoryUuid: context.repositoryUuid,
+			repository: context.repository,
 			type: IsolateMessageType.FIND
 		})
 	}
@@ -199,8 +198,7 @@ export class IframeTransactionalConnector
 			...this.getCoreFields(),
 			cachedSqlQueryId,
 			portableQuery,
-			repositorySource: context.repositorySource,
-			repositoryUuid: context.repositoryUuid,
+			repository: context.repository,
 			type: IsolateMessageType.FIND_ONE
 		})
 	}
@@ -459,8 +457,7 @@ export class IframeTransactionalConnector
 			...coreFields,
 			cachedSqlQueryId,
 			portableQuery,
-			repositorySource: context.repositorySource,
-			repositoryUuid: context.repositoryUuid,
+			repository: context.repository,
 			type
 		}
 		let observableMessageRecord: IObservableMessageInRecord<T> = {

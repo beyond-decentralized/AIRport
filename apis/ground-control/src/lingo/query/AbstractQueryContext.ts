@@ -4,8 +4,6 @@ import { DbEntity } from "../application/Entity";
 export interface IAbstractQueryContext<IocContext>
     extends IContext {
     checkIfProcessed: boolean
-    dbEntity: DbEntity
+    dbEntity?: DbEntity
     ioc: IocContext
-    repositorySource?: string
-    repositoryUuid?: string
 }

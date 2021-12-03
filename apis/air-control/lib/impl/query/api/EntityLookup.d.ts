@@ -15,7 +15,7 @@ export declare abstract class EntityLookup<Child, MappedChild, IESP extends IEnt
     protected dbEntity: DbEntity;
     protected mapResults: boolean;
     static mapResults: boolean;
-    constructor(dbEntity: DbEntity, mapResults?: boolean, repositorySource?: string, repositoryUuid?: string);
+    constructor(dbEntity: DbEntity, mapResults?: boolean);
     abstract map(isMapped?: boolean): MappedChild;
     setMap(MappedChildClass: new (dbEntity: DbEntity, mapResults: boolean) => MappedChild, isMapped?: boolean): MappedChild;
     setNoCache(ChildClass: new (dbEntity: DbEntity, mapResults: boolean) => Child): Child;

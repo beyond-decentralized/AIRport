@@ -41,8 +41,6 @@ export interface IOperationContext
 
 export interface IQueryOperationContext
     extends IOperationContext {
-    repositorySource?: string
-    repositoryUuid?: string
 }
 
 export interface IIocOperationContext {

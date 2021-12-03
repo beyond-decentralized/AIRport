@@ -3,8 +3,6 @@ import {
   EntityFind,
   EntityFindOne,
   EntityLookup,
-  EntitySearch,
-  EntitySearchOne,
   IDatabaseFacade,
   IDuo,
   IEntityCascadeGraph,
@@ -14,8 +12,6 @@ import {
   IEntityFind,
   IEntityFindOne,
   IEntityIdProperties,
-  IEntitySearch,
-  IEntitySearchOne,
   IEntitySelectProperties,
   IEntityUpdateColumns,
   IEntityUpdateProperties,
@@ -77,22 +73,6 @@ export class EntityDatabaseFacade<Entity,
 
   get from(): IQ {
     return this.Q[this.dbEntity.name];
-  }
-
-  findForRepository(
-    repositorySource: string,
-    repositoryUuid: string
-  ): IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect> {
-    return new EntityFind<Entity, Array<Entity>, EntitySelect>(
-      this.dbEntity, EntityLookup.mapResults, repositorySource, repositoryUuid);
-  }
-
-  findOneForRepository(
-    repositorySource: string,
-    repositoryUuid: string
-  ): IEntityFindOne<Entity, EntitySelect> {
-    return new EntityFindOne<Entity, EntitySelect>(
-      this.dbEntity, EntityLookup.mapResults, repositorySource, repositoryUuid);
   }
 
   async insertColumnValues<IQE extends IQEntity<Entity>>(

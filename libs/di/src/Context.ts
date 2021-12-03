@@ -1,4 +1,8 @@
 export interface IContext {
+	repository?: {
+		source: string
+		uuId?: string
+	}
 	startedAt?: Date
 	[propertyName: string]: any;
 }

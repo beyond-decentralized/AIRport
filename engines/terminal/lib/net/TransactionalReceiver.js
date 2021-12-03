@@ -59,16 +59,14 @@ export class TransactionalReceiver {
                     const findMessage = message;
                     result = await transactionalServer.find(findMessage.portableQuery, credentials, {
                         ...context,
-                        repositorySource: findMessage.repositorySource,
-                        repositoryUuId: findMessage.repositoryUuid
+                        repository: findMessage.repository
                     });
                     break;
                 case IsolateMessageType.FIND_ONE:
                     const findOneMessage = message;
                     result = await transactionalServer.findOne(findOneMessage.portableQuery, credentials, {
                         ...context,
-                        repositorySource: findMessage.repositorySource,
-                        repositoryUuId: findMessage.repositoryUuid
+                        repository: findMessage.repository,
                     });
                     break;
                 case IsolateMessageType.INSERT_VALUES:
@@ -110,16 +108,14 @@ export class TransactionalReceiver {
                     const searchMessage = message;
                     result = await transactionalServer.search(searchMessage.portableQuery, credentials, {
                         ...context,
-                        repositorySource: findMessage.repositorySource,
-                        repositoryUuId: findMessage.repositoryUuid
+                        repository: findMessage.repository,
                     });
                     break;
                 case IsolateMessageType.SEARCH_ONE:
                     const searchOneMessage = message;
                     result = await transactionalServer.search(searchOneMessage.portableQuery, credentials, {
                         ...context,
-                        repositorySource: findMessage.repositorySource,
-                        repositoryUuId: findMessage.repositoryUuid
+                        repository: findMessage.repository,
                     });
                     break;
                 case IsolateMessageType.START_TRANSACTION:

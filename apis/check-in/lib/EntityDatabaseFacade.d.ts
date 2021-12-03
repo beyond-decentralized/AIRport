@@ -11,8 +11,6 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     findOne: IEntityFindOne<Entity, EntitySelect>;
     constructor(dbEntity: DbEntity, Q: QApplication);
     get from(): IQ;
-    findForRepository(repositorySource: string, repositoryUuid: string): IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
-    findOneForRepository(repositorySource: string, repositoryUuid: string): IEntityFindOne<Entity, EntitySelect>;
     insertColumnValues<IQE extends IQEntity<Entity>>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx?: IEntityContext): Promise<number>;

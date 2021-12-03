@@ -16,12 +16,6 @@ import {
 export class LookupProxy
 	implements ILookup {
 
-		constructor(
-			protected repositorySource: string = null,
-			protected repositoryUuid: string = null,
-		) {
-		}
-
 	ensureContext<C extends IContext = IContext>(
 		context?: C
 	): C {
