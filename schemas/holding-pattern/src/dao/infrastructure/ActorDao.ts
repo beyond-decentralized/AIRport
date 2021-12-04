@@ -54,7 +54,7 @@ export interface IActorDao
 
 	findByApplicationSignature(
 		applicationSignature: ApplicationSignature
-	): Promise<IActor>
+	): Promise<IActor[]>
 
 	findByUuIds(
 		uuIds: Actor_UuId[],
@@ -114,12 +114,12 @@ export class ActorDao
 
 	async findByApplicationSignature(
 		applicationSignature: ApplicationSignature
-	): Promise<IActor> {
+	): Promise<IActor[]> {
 		let act: QActor
 		let application: QApplication
 		let terminal: QTerminal
 		let user: QUser
-		return await this.db.findOne.graph({
+		return await this.db.find.tree({
 			select: {
 				id: Y,
 				application: {},

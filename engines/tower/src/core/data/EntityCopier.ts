@@ -1,3 +1,4 @@
+import { IEntityContext } from "@airport/air-control"
 import { DI } from "@airport/di"
 import {
     DbEntity,
@@ -25,6 +26,7 @@ export interface IEntityCopier {
         entity: T,
         dbEntity: DbEntity,
         entityStateManager: IEntityStateManager,
+        context: IEntityContext
     ): T
 
 }
@@ -36,14 +38,19 @@ export class EntityCopier
         entity: T,
         dbEntity: DbEntity,
         entityStateManager: IEntityStateManager,
+        context: IEntityContext
     ): T {
         const operation: ICopyOperation = {
             processedEntityMap: new Map(),
-            sequence: 0,
+            sequence: context.lastOUID ? context.lastOUID : 0,
         }
 
-        return this.doCopyEntityForProcessing(entity, dbEntity,
+        const copy = this.doCopyEntityForProcessing(entity, dbEntity,
             entityStateManager, operation)
+
+        context.lastOUID = operation.sequence
+
+        return copy
     }
 
     private doCopyEntityForProcessing<E, T = E | E[]>(

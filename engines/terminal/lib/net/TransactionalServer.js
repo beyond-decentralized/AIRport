@@ -162,8 +162,19 @@ export class TransactionalServer {
             return new Actor();
         }
         const terminalStore = await container(this).get(TERMINAL_STORE);
-        const actor = terminalStore.getApplicationActorMapBySignature()
+        const actors = terminalStore.getApplicationActorMapBySignature()
             .get(credentials.applicationSignature);
+        const localTerminal = terminalStore.getFrameworkActor().terminal;
+        if (!localTerminal.isLocal) {
+            throw new Error(`Expecting terminal of the TerminalStore.frameworkActor to be .isLocal`);
+        }
+        let actor;
+        for (const anActor of actors) {
+            if (anActor.terminal.uuId === localTerminal.uuId) {
+                actor = anActor;
+                break;
+            }
+        }
         if (!actor) {
             throw new Error(`Could not find actor for Application Signature:
 	${credentials.applicationSignature}`);

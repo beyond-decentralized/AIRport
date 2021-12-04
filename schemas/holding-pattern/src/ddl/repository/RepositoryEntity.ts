@@ -48,6 +48,9 @@ export abstract class RepositoryEntity {
 	ageSuitability: RepositoryEntity_AgeSuitability
 
 	// This field is local to the device only, when copied to new device this value is re-created
+	// It is needed for bulk updates of repository records, where there is now way to find out
+	// what the new field values are (like 'UPDATE ... SET a = (SUBSELECT)'). It is used as
+	// a marker to find the new values after the update (and before saving them to history).
 	@Column({name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false})
 	systemWideOperationId: RepositoryEntity_SystemWideOperationId
 
@@ -68,7 +71,6 @@ export abstract class RepositoryEntity {
 	originalActor: Actor
 
 	@Column({name: 'ORIGINAL_ACTOR_RECORD_ID'})
-	@GeneratedValue()
 	originalActorRecordId: RepositoryEntity_ActorRecordId
 
 	/*

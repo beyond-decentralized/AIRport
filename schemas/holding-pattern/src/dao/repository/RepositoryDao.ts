@@ -1,27 +1,19 @@
 import {
-	AIRPORT_DATABASE,
 	ALL_FIELDS,
 	and,
-	IQNumberField,
-	MappedEntityArray,
-	RawFieldQuery,
 	Y
 } from '@airport/air-control'
-import { container, DI } from '@airport/di'
-import { ApplicationSignature, ensureChildJsMap } from '@airport/ground-control'
+import { DI } from '@airport/di'
+import { TransactionType } from '@airport/ground-control'
 import {
-	QTerminal,
-	QUser,
 	Terminal_UuId,
 	User_UuId
 } from '@airport/travel-document-checkpoint'
 import {
 	Actor_UuId,
 	Repository_Id,
-	Repository_CreatedAt,
 	Repository_Source,
 	Repository_UuId,
-	RepositoryTransactionHistory_Id,
 } from '../../ddl/ddl'
 import { REPOSITORY_DAO } from '../../tokens'
 import {
@@ -29,7 +21,6 @@ import {
 	IBaseRepositoryDao,
 	IRepository,
 	Q,
-	QActor,
 	QRepository,
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
@@ -74,7 +65,6 @@ export class RepositoryDao
 		let r: QRepository
 		let rth: QRepositoryTransactionHistory
 		let th: QTransactionHistory
-		let t: QTerminal
 
 		return await this.db.findOne.tree({
 			select: {
@@ -86,13 +76,12 @@ export class RepositoryDao
 			from: [
 				r = Q.Repository,
 				rth = r.repositoryTransactionHistory.innerJoin(),
-				th = rth.transactionHistory.innerJoin(),
-				t = th.terminal.innerJoin()
+				th = rth.transactionHistory.innerJoin()
 			],
 			where: and(
 				r.source.equals(repositorySource),
 				r.uuId.equals(repositoryUuId),
-				t.isLocal.equals(false)
+				th.transactionType.equals(TransactionType.REMOTE_SYNC)
 			)
 		})
 	}

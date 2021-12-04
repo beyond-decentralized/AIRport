@@ -18,7 +18,8 @@ export function duoDiSet(dbApplication, dbEntityId) {
         .applicationVersion.entities[dbEntityId];
 }
 export async function getSysWideOpId(airDb, sequenceGenerator) {
-    return getSysWideOpIds(1, airDb, sequenceGenerator)[0];
+    const sequences = await getSysWideOpIds(1, airDb, sequenceGenerator);
+    return sequences[0];
 }
 export async function getSysWideOpIds(numSequencesNeeded, airDb, sequenceGenerator) {
     if (!numSequencesNeeded) {

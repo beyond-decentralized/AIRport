@@ -47,10 +47,6 @@ export class TransactionHistory
 	@DbString()
 	transactionType: TransactionType
 
-	@ManyToOne()
-	@JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID', nullable: false })
-	terminal: Terminal
-
 	@OneToMany({ mappedBy: 'transactionHistory' })
 	repositoryTransactionHistories: RepositoryTransactionHistory[] = []
 

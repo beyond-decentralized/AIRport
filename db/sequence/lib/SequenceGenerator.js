@@ -107,7 +107,7 @@ export class SequenceGenerator {
         }
         return sequentialNumbers;
     }
-    async waitForPreviousGeneration() {
+    waitForPreviousGeneration() {
         return new Promise(resolve => {
             this.isDoneGeneratingSeqNums(resolve);
         });

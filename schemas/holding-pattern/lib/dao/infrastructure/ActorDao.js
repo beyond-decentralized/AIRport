@@ -23,7 +23,7 @@ export class ActorDao extends BaseActorDao {
         let application;
         let terminal;
         let user;
-        return await this.db.findOne.graph({
+        return await this.db.find.tree({
             select: {
                 id: Y,
                 application: {},

@@ -26,7 +26,6 @@ import {
 	IOperationManager,
 	ITransaction
 } from '@airport/terminal-map'
-import { IocOperationContext } from '..'
 import { OPERATION_MANAGER } from '../tokens'
 
 /**

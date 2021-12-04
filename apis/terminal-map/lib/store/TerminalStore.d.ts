@@ -7,7 +7,7 @@ import { ITerminalState } from './TerminalState';
 export interface ITerminalStore {
     state: BehaviorSubject<ITerminalState>;
     getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
-    getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>;
+    getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor[]>, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
     getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
@@ -25,7 +25,7 @@ export interface ITerminalStore {
 export declare class TerminalStore implements ITerminalStore {
     state: BehaviorSubject<ITerminalState>;
     getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
-    getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>;
+    getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor[]>, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
     getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;

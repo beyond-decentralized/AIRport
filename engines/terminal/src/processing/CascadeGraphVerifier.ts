@@ -16,6 +16,10 @@ export class CascadeGraphVerifier
 			root = [root]
 		}
 		// TODO: validate the rules specified in the graph
+		// The graph will be defined via a @Save({
+		//	...RULES
+		//})
+		// decorator
 
 		return root
 	}

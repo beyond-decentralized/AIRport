@@ -13,8 +13,8 @@ export class RepositoryManager {
         await this.ensureRepositoryRecords();
         await this.ensureAndCacheRepositories();
     }
-    async createRepository(actor) {
-        let repository = await this.createRepositoryRecord(actor);
+    async createRepository(actor, context) {
+        let repository = await this.createRepositoryRecord(actor, context);
         return repository;
     }
     async getRepository(repositoryId) {
@@ -69,16 +69,10 @@ export class RepositoryManager {
         };
         return repository;
     }
-    async createRepositoryRecord(actor
-    // distributionStrategy: DistributionStrategy,
-    // platformType: PlatformType,
-    // platformConfig: any,
-    ) {
+    async createRepositoryRecord(actor, context) {
         const repository = this.getRepositoryRecord(actor);
         const repositoryDao = await container(this).get(REPOSITORY_DAO);
-        await repositoryDao.save(repository);
-        // const repositoryDao = await container(this).get(REPOSITORY_DAO)
-        // await repositoryDao.save(repository)
+        await repositoryDao.save(repository, context);
         this.repositories.push(repository);
         return repository;
     }

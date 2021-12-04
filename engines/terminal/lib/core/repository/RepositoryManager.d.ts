@@ -1,4 +1,5 @@
 import { IEntityUpdateProperties, IQEntityInternal, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
+import { IContext } from '@airport/di';
 import { IActor, IRepository, IRepositoryTransactionHistory } from '@airport/holding-pattern';
 import { IRepositoryManager, UpdateState } from '@airport/terminal-map';
 import { ITerminal } from '@airport/travel-document-checkpoint';
@@ -20,7 +21,7 @@ export declare class RepositoryManager implements IRepositoryManager {
     terminal: ITerminal;
     userUuId: string;
     initialize(): Promise<void>;
-    createRepository(actor: IActor): Promise<IRepository>;
+    createRepository(actor: IActor, context?: IContext): Promise<IRepository>;
     getRepository(repositoryId: number): Promise<IRepository>;
     getActor(actorId: number): Promise<IActor>;
     goOffline(): void;

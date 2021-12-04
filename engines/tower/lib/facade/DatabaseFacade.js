@@ -111,7 +111,7 @@ export class DatabaseFacade {
         const [updateCacheManager, entityCopier, entityStateManager, applicationUtils] = await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER, ENTITY_STATE_MANAGER, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR);
         const dbEntity = context.dbEntity;
         const entityCopy = entityCopier
-            .copyEntityForProcessing(entity, dbEntity, entityStateManager);
+            .copyEntityForProcessing(entity, dbEntity, entityStateManager, context);
         updateCacheManager.setOperationState(entityCopy, dbEntity, entityStateManager, applicationUtils, new Set());
         return entityCopy;
     }

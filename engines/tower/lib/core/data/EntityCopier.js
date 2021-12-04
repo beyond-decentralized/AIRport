@@ -1,12 +1,14 @@
 import { DI } from "@airport/di";
 import { ENTITY_COPIER } from "../../tokens";
 export class EntityCopier {
-    copyEntityForProcessing(entity, dbEntity, entityStateManager) {
+    copyEntityForProcessing(entity, dbEntity, entityStateManager, context) {
         const operation = {
             processedEntityMap: new Map(),
-            sequence: 0,
+            sequence: context.lastOUID ? context.lastOUID : 0,
         };
-        return this.doCopyEntityForProcessing(entity, dbEntity, entityStateManager, operation);
+        const copy = this.doCopyEntityForProcessing(entity, dbEntity, entityStateManager, operation);
+        context.lastOUID = operation.sequence;
+        return copy;
     }
     doCopyEntityForProcessing(entity, dbEntity, entityStateManager, operation) {
         if (entity instanceof Array) {

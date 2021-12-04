@@ -74,7 +74,7 @@ export class StructuralEntityValidator
 							// Id columns are for the parent (currently processed) entity and must be
 							// checked as part of this entity
 							if (dbProperty.isId) {
-								let recordNeedsNewRepository = false;
+								let isMissingRepositoryProperty = false;
 								context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, record, (
 									dbColumn: DbColumn,
 									columnValue: any,
@@ -86,23 +86,28 @@ export class StructuralEntityValidator
 									if (this.isRepositoryColumnAndNewRepositoryNeed(
 										dbEntity, dbProperty, dbColumn,
 										isCreate, record, columnValue, context)) {
-										recordNeedsNewRepository = true
+										isMissingRepositoryProperty = true
 									}
 								}, false)
-								if (recordNeedsNewRepository) {
+								if (isMissingRepositoryProperty) {
 									if (!context.newRepository) {
 										context.newRepository =
-											await context.ioc.repositoryManager.createRepository(context.actor)
+											await context.ioc.repositoryManager.createRepository(context.actor, {
+												lastOUID: context.lastOUID
+											})
 										newRepositoryNeeded = true
 									}
 									record[dbProperty.name] = context.newRepository
 								}
 							}
 							if (fromOneToMany) {
-								// 'actor' or the 'repository' property may be automatically populated
+								const parentOneToManyElems = parentRelationProperty.relation[0].oneToManyElems
+								const parentMappedBy = parentOneToManyElems ? parentOneToManyElems.mappedBy : null
+								const mappedBy = dbRelation.manyToOneElems ? dbRelation.manyToOneElems.mappedBy : null
+								// NOTE: 'actor' or the 'repository' property may be automatically populated
 								// in the entity by this.validateRelationColumn
-								if (!dbRelation.manyToOneElems || !dbRelation.manyToOneElems.mappedBy
-									|| dbRelation.manyToOneElems.mappedBy === parentRelationProperty.name) {
+								if (parentMappedBy === dbProperty.name
+									|| mappedBy === parentRelationProperty.name) {
 									// Always fix to the parent record
 									record[dbProperty.name] = parentRelationRecord
 									// if (!propertyValue && !entity[dbProperty.name]) {
@@ -193,9 +198,9 @@ When creating a new repository the top level record should be of the newly creat
 
 		if (isCreate) {
 			throw new Error(`A newly created ${dbEntity.name} via ${dbEntity.name} record for repository id ${repositoryEntity.repository.id} (UUID: ${repositoryEntity.repository.id})
-is now being forced to belong to repository id ${repositoryEntity.repository.id} (UUID: ${repositoryEntity.repository.id})
-	This is because it is being referenced from a ${parentRelationProperty.entity.name} via ${parentRelationProperty.entity.name} record
-	which belongs to repository id ${repositoryEntity.repository.id} (UUID: ${repositoryEntity.repository.id})
+is being assigned to repository id ${repositoryEntity.repository.id} (UUID: ${repositoryEntity.repository.id})
+	This is because it is being referenced via ${parentRelationProperty.entity.name}.${parentRelationProperty.name},
+	from a record of repository id ${repositoryEntity.repository.id} (UUID: ${repositoryEntity.repository.id})
 	
 	If you are manually creating a copy of a record in another repository, there is no need,
 	AIRport automatically copies all records refrenced via @ManyToOne()s into the created/modified
@@ -207,12 +212,22 @@ is now being forced to belong to repository id ${repositoryEntity.repository.id}
 		// If it doesn't then it is a reference to another repository - switch
 		// the record to the parent repository and set the originalRepositoryValue
 
+		let alreadyCopiedRecord = false
+		if (repositoryEntity.originalActor && repositoryEntity.originalActorRecordId
+			&& repositoryEntity.originalRepository) {
+			// Record is already copied from another repository, keep the orignal
+			//reference 
+			alreadyCopiedRecord = true
+		}
+
 		// This is done so that the repository always has all of the records it needs
-		repositoryEntity.originalRepository = repositoryEntity.repository
+		if (!alreadyCopiedRecord) {
+			repositoryEntity.originalRepository = repositoryEntity.repository
+		}
 		repositoryEntity.repository = parentRelationRecord.repository
 
 		// Aslo set originalActor and originalActorRecordId to look up the original record
-		if (!isCreate) { // Check may be needed if code is refactored
+		if (!alreadyCopiedRecord) {
 			repositoryEntity.originalActor = repositoryEntity.actor
 			repositoryEntity.originalActorRecordId = repositoryEntity.actorRecordId
 		}

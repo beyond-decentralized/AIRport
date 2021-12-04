@@ -146,6 +146,7 @@ export class InsertManager
 		const jsonInsertValues = portableQuery.jsonQuery as JsonInsertValues
 
 		const columnIndexSet = {}
+		let inStatementIndex = 0
 		for (const columnIndex of jsonInsertValues.C) {
 			if (columnIndex < 0 || columnIndex >= dbEntity.columns.length) {
 				throw new Error(errorPrefix +
@@ -156,6 +157,17 @@ export class InsertManager
 					`Column ${dbEntity.name}.${dbEntity.columns[columnIndex].name} 
 appears more than once in the Columns clause`)
 			}
+			let rowNumber = 1
+			for (let row of jsonInsertValues.V) {
+				if (row[inStatementIndex] === undefined) {
+					throw new Error(errorPrefix +
+						`
+	'undefined' value in column ${dbEntity.name}.${dbEntity.columns[columnIndex].name} of row ${rowNumber}.
+	All values in an insert statment must either be null or have a non-null value.`)
+				}
+				rowNumber++
+			}
+			inStatementIndex++
 			columnIndexSet[columnIndex] = true
 		}
 

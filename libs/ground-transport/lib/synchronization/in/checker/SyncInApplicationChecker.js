@@ -66,7 +66,7 @@ export class SyncInApplicationChecker {
                     name,
                     scope: 'private',
                     status: ApplicationStatus.STUB,
-                    signature: 'bogus'
+                    signature: 'localhost'
                 };
                 applicationCheck.application = application;
                 applicationsToCreate.push(application);

@@ -1,5 +1,6 @@
 import { ALL_FIELDS, and, Y } from '@airport/air-control';
 import { DI } from '@airport/di';
+import { TransactionType } from '@airport/ground-control';
 import { REPOSITORY_DAO } from '../../tokens';
 import { BaseRepositoryDao, Q, } from '../../generated/generated';
 export class RepositoryDao extends BaseRepositoryDao {
@@ -7,7 +8,6 @@ export class RepositoryDao extends BaseRepositoryDao {
         let r;
         let rth;
         let th;
-        let t;
         return await this.db.findOne.tree({
             select: {
                 immutable: Y,
@@ -18,10 +18,9 @@ export class RepositoryDao extends BaseRepositoryDao {
             from: [
                 r = Q.Repository,
                 rth = r.repositoryTransactionHistory.innerJoin(),
-                th = rth.transactionHistory.innerJoin(),
-                t = th.terminal.innerJoin()
+                th = rth.transactionHistory.innerJoin()
             ],
-            where: and(r.source.equals(repositorySource), r.uuId.equals(repositoryUuId), t.isLocal.equals(false))
+            where: and(r.source.equals(repositorySource), r.uuId.equals(repositoryUuId), th.transactionType.equals(TransactionType.REMOTE_SYNC))
         });
     }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {

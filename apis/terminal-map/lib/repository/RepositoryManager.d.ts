@@ -1,4 +1,5 @@
 import { IEntityUpdateProperties, IQEntityInternal, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
+import { IContext } from '@airport/di';
 import { IActor, IRepository } from '@airport/holding-pattern';
 import { UpdateState } from '../core/UpdateState';
 export interface IRepositoryManager {
@@ -7,7 +8,7 @@ export interface IRepositoryManager {
         [repositoryId: string]: IRepository;
     };
     initialize(): Promise<void>;
-    createRepository(actor: IActor): Promise<IRepository>;
+    createRepository(actor: IActor, context?: IContext): Promise<IRepository>;
     getRepository(repositoryId: number): Promise<IRepository>;
     getActor(actorId: number): Promise<IActor>;
     goOffline(): void;

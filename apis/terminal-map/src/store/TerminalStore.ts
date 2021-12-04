@@ -30,7 +30,7 @@ export interface ITerminalStore {
 
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
-	getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>
+	getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor[]>, ITerminalState>
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>
 
@@ -67,7 +67,7 @@ export class TerminalStore
 
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
-	getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor>, ITerminalState>
+	getApplicationActorMapBySignature: IMemoizedSelector<Map<ApplicationSignature, IActor[]>, ITerminalState>
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
 
@@ -108,9 +108,16 @@ export class TerminalStore
 			terminal => terminal.applicationActors)
 		this.getApplicationActorMapBySignature = selectorManager.createSelector(this.getApplicationActors,
 			applicationActors => {
-				const applicationActorsBySignature: Map<ApplicationSignature, IActor> = new Map()
+				const applicationActorsBySignature: Map<ApplicationSignature, IActor[]> = new Map()
 				for (const applicationActor of applicationActors) {
-					applicationActorsBySignature.set(applicationActor.application.signature, applicationActor)
+					let actorsForSignature = applicationActorsBySignature
+						.get(applicationActor.application.signature)
+					if (!actorsForSignature) {
+						actorsForSignature = []
+						applicationActorsBySignature.set(
+							applicationActor.application.signature, actorsForSignature)
+					}
+					actorsForSignature.push(applicationActor)
 				}
 				return applicationActorsBySignature
 			})

@@ -7,7 +7,7 @@ import {
 	RawInsertValues,
 	RawUpdate,
 } from '@airport/air-control'
-import { container, DI } from '@airport/di'
+import { container, DI, IContext } from '@airport/di'
 import {
 	IActor,
 	IRepository,
@@ -52,8 +52,9 @@ export class RepositoryManager
 
 	async createRepository(
 		actor: IActor,
+		context?: IContext
 	): Promise<IRepository> {
-		let repository = await this.createRepositoryRecord(actor)
+		let repository = await this.createRepositoryRecord(actor, context)
 
 		return repository
 	}
@@ -126,20 +127,13 @@ export class RepositoryManager
 	}
 
 	private async createRepositoryRecord(
-		actor: IActor
-		// distributionStrategy: DistributionStrategy,
-		// platformType: PlatformType,
-		// platformConfig: any,
+		actor: IActor,
+		context?: IContext
 	): Promise<IRepository> {
 		const repository: IRepository = this.getRepositoryRecord(actor)
-		
+
 		const repositoryDao = await container(this).get(REPOSITORY_DAO)
-		
-		await repositoryDao.save(repository)
-
-		// const repositoryDao = await container(this).get(REPOSITORY_DAO)
-		// await repositoryDao.save(repository)
-
+		await repositoryDao.save(repository, context)
 		this.repositories.push(repository)
 
 		return repository

@@ -12,18 +12,17 @@ export class InternalRecordManager {
         await transactional(async (_transaction) => {
             const [actorDao, applicationDao, terminalStore] = await container(this)
                 .get(ACTOR_DAO, APPLICATION_DAO, TERMINAL_STORE);
-            const domain = await this.updateDomain(application);
-            let actor = terminalStore
+            await this.updateDomain(application);
+            let actors = terminalStore
                 .getApplicationActorMapBySignature().get(signature);
-            if (actor) {
+            if (actors && actors.length) {
                 return;
             }
-            actor = await actorDao.findByApplicationSignature(signature);
-            let anApplication;
-            if (!actor) {
-                anApplication = await applicationDao.findByIndex(application.lastIds.applications + 1);
+            actors = await actorDao.findByApplicationSignature(signature);
+            let anApplication = await applicationDao.findByIndex(application.lastIds.applications + 1);
+            if (!actors || !actors.length) {
                 const frameworkActor = terminalStore.getFrameworkActor();
-                actor = {
+                const actor = {
                     id: null,
                     application: anApplication,
                     terminal: frameworkActor.terminal,
@@ -31,15 +30,13 @@ export class InternalRecordManager {
                     uuId: uuidv4()
                 };
                 await actorDao.save(actor);
-            }
-            else {
-                anApplication = actor.application;
+                actors = [actor];
             }
             const lastTerminalState = terminalStore.getTerminalState();
             const applications = lastTerminalState.applications.slice();
             applications.push(anApplication);
-            const applicationActors = lastTerminalState.applicationActors.slice();
-            applicationActors.push(actor);
+            let applicationActors = lastTerminalState.applicationActors.slice();
+            applicationActors = applicationActors.concat(actors);
             terminalStore.state.next({
                 ...lastTerminalState,
                 applicationActors,

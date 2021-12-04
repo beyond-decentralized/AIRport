@@ -1,12 +1,12 @@
 import {
 	ISequence,
 	SEQUENCE_DAO
-}                    from '@airport/airport-code';
+} from '@airport/airport-code';
 import {
 	ISequenceGenerator,
 	SEQUENCE_GENERATOR,
 	setSeqGen
-}                    from '@airport/check-in';
+} from '@airport/check-in';
 import {
 	container,
 	DI
@@ -15,7 +15,7 @@ import {
 	DbColumn,
 	DbEntity,
 	ensureChildArray
-}                    from '@airport/ground-control';
+} from '@airport/ground-control';
 
 /**
  * Assumptions: 7/4/2019
@@ -38,7 +38,7 @@ import {
 export class SequenceGenerator
 	implements ISequenceGenerator {
 
-	protected sequences: ISequence[][][]   = [];
+	protected sequences: ISequence[][][] = [];
 	protected sequenceBlocks: number[][][] = [];
 
 	protected generatingSequenceNumbers = false;
@@ -127,16 +127,16 @@ export class SequenceGenerator
 			const dbColumn = dbColumns[i];
 
 			let numColumnSequencesNeeded = numSequencesNeeded[i];
-			const columnNumbers          = ensureChildArray(sequentialNumbers, i);
+			const columnNumbers = ensureChildArray(sequentialNumbers, i);
 
 			const dbEntity = dbColumn.propertyColumns[0].property.entity;
-			const application   = dbEntity.applicationVersion.application;
+			const application = dbEntity.applicationVersion.application;
 
 			let sequenceBlock = this.sequenceBlocks[application.index]
-				[dbEntity.index][dbColumn.index];
+			[dbEntity.index][dbColumn.index];
 
 			const sequence = this.sequences[application.index]
-				[dbEntity.index][dbColumn.index];
+			[dbEntity.index][dbColumn.index];
 
 			while (numColumnSequencesNeeded && sequenceBlock) {
 				columnNumbers.push(sequence.currentValue - sequenceBlock + 1);
@@ -144,7 +144,7 @@ export class SequenceGenerator
 				sequenceBlock--;
 			}
 			this.sequenceBlocks[application.index]
-				[dbEntity.index][dbColumn.index] = sequenceBlock;
+			[dbEntity.index][dbColumn.index] = sequenceBlock;
 
 			if (numColumnSequencesNeeded) {
 				const numNewSequencesNeeded = sequence.incrementBy + numColumnSequencesNeeded;
@@ -162,14 +162,14 @@ export class SequenceGenerator
 				}
 
 				this.sequenceBlocks[application.index]
-					[dbEntity.index][dbColumn.index] = sequenceBlock;
+				[dbEntity.index][dbColumn.index] = sequenceBlock;
 			}
 		}
 
 		return sequentialNumbers;
 	}
 
-	private async waitForPreviousGeneration(): Promise<void> {
+	private waitForPreviousGeneration(): Promise<void> {
 		return new Promise(
 			resolve => {
 				this.isDoneGeneratingSeqNums(resolve);

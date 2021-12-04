@@ -1,3 +1,4 @@
+import { IEntityContext } from "@airport/air-control";
 import { DbEntity, IEntityStateManager } from "@airport/ground-control";
 /**
  * A defensive copy maker.  It's a fast operation but might
@@ -9,10 +10,10 @@ import { DbEntity, IEntityStateManager } from "@airport/ground-control";
  * a non-op object becomes an update or an update becomes a delete).
  */
 export interface IEntityCopier {
-    copyEntityForProcessing<E, T = E | E[]>(entity: T, dbEntity: DbEntity, entityStateManager: IEntityStateManager): T;
+    copyEntityForProcessing<E, T = E | E[]>(entity: T, dbEntity: DbEntity, entityStateManager: IEntityStateManager, context: IEntityContext): T;
 }
 export declare class EntityCopier implements IEntityCopier {
-    copyEntityForProcessing<E, T = E | E[]>(entity: T, dbEntity: DbEntity, entityStateManager: IEntityStateManager): T;
+    copyEntityForProcessing<E, T = E | E[]>(entity: T, dbEntity: DbEntity, entityStateManager: IEntityStateManager, context: IEntityContext): T;
     private doCopyEntityForProcessing;
 }
 //# sourceMappingURL=EntityCopier.d.ts.map

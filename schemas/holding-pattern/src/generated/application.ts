@@ -892,28 +892,6 @@ export const APPLICATION = {
 							],
 							"sinceVersion": 1,
 							"type": "STRING"
-						},
-						{
-							"index": 2,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 0,
-									"oneApplicationIndex": 0,
-									"oneTableIndex": 5,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "TERMINAL_ID",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 2
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -947,18 +925,9 @@ export const APPLICATION = {
 						{
 							"index": 2,
 							"isId": false,
-							"name": "terminal",
-							"relationRef": {
-								"index": 0
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 3,
-							"isId": false,
 							"name": "repositoryTransactionHistories",
 							"relationRef": {
-								"index": 1
+								"index": 0
 							},
 							"sinceVersion": 1
 						}
@@ -967,23 +936,12 @@ export const APPLICATION = {
 						{
 							"index": 0,
 							"isId": false,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 2
-							},
-							"relationTableIndex": 5,
-							"relationTableApplicationIndex": 0,
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": false,
 							"oneToManyElems": {
 								"mappedBy": "transactionHistory"
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 3
+								"index": 2
 							},
 							"relationTableIndex": 6,
 							"sinceVersion": 1
@@ -1135,7 +1093,7 @@ export const APPLICATION = {
 									"manyRelationIndex": 2,
 									"oneApplicationIndex": null,
 									"oneTableIndex": 5,
-									"oneRelationIndex": 1,
+									"oneRelationIndex": 0,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}

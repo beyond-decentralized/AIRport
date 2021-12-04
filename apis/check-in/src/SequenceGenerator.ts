@@ -80,7 +80,8 @@ export async function getSysWideOpId(
 	airDb: IAirportDatabase,
 	sequenceGenerator: ISequenceGenerator,
 ): Promise<number> {
-	return getSysWideOpIds(1, airDb, sequenceGenerator)[0]
+	const sequences = await getSysWideOpIds(1, airDb, sequenceGenerator)
+	return sequences[0]
 }
 
 export async function getSysWideOpIds(

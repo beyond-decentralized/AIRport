@@ -6,6 +6,7 @@ import {
 	RawInsertValues,
 	RawUpdate,
 } from '@airport/air-control'
+import { IContext } from '@airport/di'
 import {
 	IActor,
 	IRepository
@@ -20,7 +21,8 @@ export interface IRepositoryManager {
 	initialize(): Promise<void>;
 
 	createRepository(
-		actor: IActor
+		actor: IActor,
+		context?: IContext
 	): Promise<IRepository>;
 
 	getRepository(repositoryId: number): Promise<IRepository>;

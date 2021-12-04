@@ -17,6 +17,7 @@ export class EntityGraphReconstructor {
 "${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${i}`);
             }
         }
+        context.lastOUID = entitiesByOperationIndex.length - 1;
         return rootCopy;
     }
     linkEntityGraph(currentEntities, entitiesByOperationIndex, processedEntitySet, context) {

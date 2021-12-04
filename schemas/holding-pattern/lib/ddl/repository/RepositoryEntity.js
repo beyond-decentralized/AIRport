@@ -48,8 +48,7 @@ __decorate([
     })
 ], RepositoryEntity.prototype, "originalActor", void 0);
 __decorate([
-    Column({ name: 'ORIGINAL_ACTOR_RECORD_ID' }),
-    GeneratedValue()
+    Column({ name: 'ORIGINAL_ACTOR_RECORD_ID' })
 ], RepositoryEntity.prototype, "originalActorRecordId", void 0);
 RepositoryEntity = __decorate([
     MappedSuperclass()

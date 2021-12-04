@@ -1,4 +1,5 @@
 export interface IContext {
+	lastOUID?: number
 	repository?: {
 		source: string
 		uuId?: string

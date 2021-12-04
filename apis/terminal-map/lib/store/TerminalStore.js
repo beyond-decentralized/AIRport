@@ -18,7 +18,13 @@ export class TerminalStore {
         this.getApplicationActorMapBySignature = selectorManager.createSelector(this.getApplicationActors, applicationActors => {
             const applicationActorsBySignature = new Map();
             for (const applicationActor of applicationActors) {
-                applicationActorsBySignature.set(applicationActor.application.signature, applicationActor);
+                let actorsForSignature = applicationActorsBySignature
+                    .get(applicationActor.application.signature);
+                if (!actorsForSignature) {
+                    actorsForSignature = [];
+                    applicationActorsBySignature.set(applicationActor.application.signature, actorsForSignature);
+                }
+                actorsForSignature.push(applicationActor);
             }
             return applicationActorsBySignature;
         });

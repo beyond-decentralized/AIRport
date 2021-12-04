@@ -1,5 +1,4 @@
 import { ATransactionHistory, SyncApplicationMap, TransactionType } from '@airport/ground-control';
-import { Terminal } from '@airport/travel-document-checkpoint';
 import { IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRecordHistoryOldValue, IRepositoryTransactionHistory } from '../..';
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory';
 export declare type TransactionHistoryNumberOfOperations = number;
@@ -10,7 +9,6 @@ export declare type TransactionHistoryId = number;
 export declare class TransactionHistory implements ATransactionHistory {
     id: TransactionHistoryId;
     transactionType: TransactionType;
-    terminal: Terminal;
     repositoryTransactionHistories: RepositoryTransactionHistory[];
     repoTransHistoryMap: {
         [repositoryId: number]: IRepositoryTransactionHistory;
